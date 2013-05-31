@@ -26,15 +26,10 @@ function initIntlNumberInput(options) {
   var selectedFlag = $("<div>", {"class": "selected-flag"}).appendTo(flagDropdown);
   $("<div>", {"class": "flag us"}).appendTo(selectedFlag);
   var countryList = $("<ul>", {"class": "country-list hide"}).appendTo(flagDropdown);
+  // list: preferred countries, then divider, then all countries
   intlNumberInputAppendListItems(preferredCountries, countryList);
   $("<li>", {"class": "divider"}).appendTo(countryList);
   intlNumberInputAppendListItems(countries, countryList);
-
-  /*BFApp.renderPartial(pluginContainer, "intl_number_input", {
-    mobileNumber: options.mobileVal,
-    placeholder: options.placeholder,
-    inputId: options.inputId
-  });*/
 
   var mobileInput = pluginContainer.find("#" + options.inputId);
   // update flag on keyup
@@ -96,7 +91,7 @@ function preprocessIntlNumberInput(input) {
   input.val(num);
 }
 
-
+// add a country <li> to the given <ul>
 function intlNumberInputAppendListItems(countryList, container) {
   $.each(countryList, function(i, c) {
     var listItem = $("<li>", {
