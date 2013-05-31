@@ -1,8 +1,5 @@
-input {padding: 4px;}
-.hide {display: none;}
-
 .intl-number-input {
-	position: relative; 
+	position: relative;
 
 	.flag-dropdown {
 		position: absolute;
@@ -20,11 +17,11 @@ input {padding: 4px;}
       padding: 0;
       margin: 0;
       z-index: 1;
-			box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+			box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
 			background-color: white;
-			border: 1px solid rgba(0,0,0,.2);
+			border: 1px solid rgba(0,0,0,.3);
 			position: absolute;
-			top: 28px;
+			top: 29px;
 			left: 0;
 			width: 330px;
 			height: 200px;
@@ -33,22 +30,23 @@ input {padding: 4px;}
 				border-bottom: 1px solid #ddd;
 			}
 			.country {
-				padding: 3px 10px;
+				padding: 4px 10px;
 				font-size: 14px;
 				.grey {color: #999;}
 				&:HOVER {
 					background-color: #eee;
 				}
 			}
-			.flag {
+			.flag, .country-name {
 				display: inline-block;
-				margin-right: 5px;
+				margin-right: 6px;
 				vertical-align: middle;
 			}
 		}
 	}
 
 	input[type='tel'] {
-		padding-left: 37px;
+		height: 30px;
+		padding: 4px 4px 4px 37px;
 	}
 }

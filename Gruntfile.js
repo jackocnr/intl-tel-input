@@ -3,9 +3,17 @@ module.exports = function(grunt) {
 	// config
 	grunt.initConfig({
 		sass: {
-			build: {
+			demo: {
 				files: {
 					'build/css/intlTelInput.css': 'src/css/**/*.scss'
+				}
+			},
+			build: {
+				files: {
+					'build/css/intlTelInput.css': [
+						'src/css/flags16.scss',
+						'src/css/intlTelInput.scss'
+					]
 				}
 			}
 		},
@@ -36,7 +44,7 @@ module.exports = function(grunt) {
 			},
 			css: {
 				files: "src/css/**/*.scss",
-				tasks: "sass"
+				tasks: "sass:demo"
 			}
 		}
 	});
@@ -49,7 +57,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-concat');
 
 	// tasks
-	grunt.registerTask('default', 'jshint');
-	grunt.registerTask('build', ['jshint', 'sass:build', 'uglify:build', 'concat:dev']);
+	grunt.registerTask('default', ['jshint', 'sass:build', 'uglify:build', 'concat:dev']);
 
 };
