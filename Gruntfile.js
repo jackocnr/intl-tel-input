@@ -3,17 +3,13 @@ module.exports = function(grunt) {
 	// config
 	grunt.initConfig({
 		sass: {
-			demo: {
-				files: {
-					'build/css/intlTelInput.css': 'src/css/**/*.scss'
-				}
-			},
 			build: {
 				files: {
 					'build/css/intlTelInput.css': [
 						'src/css/flags16.scss',
 						'src/css/intlTelInput.scss'
-					]
+					],
+					'build/css/demo.css': 'src/css/demo.scss'
 				}
 			}
 		},
