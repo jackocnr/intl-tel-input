@@ -1,4 +1,2 @@
-intl-tel-input
-==============
-
-International Telephone Input jQuery Plugin
+# International Telephone Input
+A jQuery plugin for entering international telephone numbers

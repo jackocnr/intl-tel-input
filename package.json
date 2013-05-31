@@ -1,0 +1,16 @@
+{
+  "name": "intl-tel-input",
+  "version": "0.1.0",
+  "description": "A jQuery plugin for entering international telephone numbers",
+  "license": "BSD",
+  "author": "Jack O'Connor (jackocnr.com)",
+  "devDependencies": {
+    "jquery": "~1.9.1",
+    "grunt": "~0.4.1",
+    "grunt-contrib-sass": "~0.3.0",
+    "grunt-contrib-jshint": "~0.5.4",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-uglify": "~0.2.1",
+    "grunt-contrib-concat": "~0.3.0"
+  }
+}
