@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 			},
 			css: {
 				files: "src/css/**/*.scss",
-				tasks: "sass:demo"
+				tasks: "sass:build"
 			}
 		}
 	});
