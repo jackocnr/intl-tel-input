@@ -8,17 +8,16 @@
 		<link rel="stylesheet" href="build/css/intlTelInput.css">
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script src="build/js/intlTelInput.js"></script>
-		<script>
-		$(function() {
-		  $("#user-mobile-number-container").intlTelInput({
-		    inputId: "user-mobile-number"
-		  });
-		});
-		</script>
+		
 	</head>
 
 	<body>
-		<div id="user-mobile-number-container"></div>
+		<input type="tel" id="mobile-number" value="+1 " placeholder="e.g. +44 1234567890"></div>
+		<script>
+		$(function() {
+		  $("#mobile-number").intlTelInput();
+		});
+		</script>
 	</body>
 
 </html>

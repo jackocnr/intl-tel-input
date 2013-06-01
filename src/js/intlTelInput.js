@@ -2,8 +2,8 @@
 
     var pluginName = "intlTelInput",
         defaults = {
-            placeholder: "e.g. +44 1234567890",
-            mobileVal: "+1 "
+            // placeholder: "e.g. +44 1234567890",
+            // mobileVal: "+1 "
         };
 
     function Plugin( element, options ) {
@@ -20,31 +20,26 @@
     Plugin.prototype = {
 
         init: function() {
-          var pluginContainer = $(this.element);
-          var innerContainer = $("<div>", {"class": "intl-number-input"}).appendTo(pluginContainer);
-          
-          var flagDropdown = $("<div>", {"class": "flag-dropdown f16"}).appendTo(innerContainer);
-          var input = $("<input>", {
-            type: "tel",
-            value: this.options.mobileVal,
-            "id": this.options.inputId
-          }).appendTo(innerContainer);
-          // this cannot be set in the constructor above
-          input.attr("placeholder", this.options.placeholder);
+          // telephone input
+          var telInput = $(this.element);
 
-          // dropdown contents
-          var selectedFlag = $("<div>", {"class": "selected-flag"}).appendTo(flagDropdown);
+          // containers
+          telInput.wrap($("<div>", {"class": "intl-number-input"}));
+          var flagsContainer = $("<div>", {"class": "flag-dropdown f16"}).insertBefore(telInput);
+          
+          // currently selected flag
+          var selectedFlag = $("<div>", {"class": "selected-flag"}).appendTo(flagsContainer);
           $("<div>", {"class": "flag us"}).appendTo(selectedFlag);
-          var countryList = $("<ul>", {"class": "country-list hide"}).appendTo(flagDropdown);
-          // list: preferred countries, then divider, then all countries
+          
+          // country list contains: preferred countries, then divider, then all countries
+          var countryList = $("<ul>", {"class": "country-list hide"}).appendTo(flagsContainer);
           this.intlNumberInputAppendListItems(preferredCountries, countryList);
           $("<li>", {"class": "divider"}).appendTo(countryList);
           this.intlNumberInputAppendListItems(countries, countryList);
 
           // update flag on keyup
-          var mobileInput = pluginContainer.find("#" + this.options.inputId);
-          mobileInput.keyup(function() {
-            var inputVal = mobileInput.val().trim();
+          telInput.keyup(function() {
+            var inputVal = telInput.val().trim();
             // only interested in international numbers
             if (inputVal.substring(0, 1) == "+") {
               // strip out non-numeric chars
@@ -58,7 +53,7 @@
                   if (countryCodes[dialCode]) {
                     // when we get a match, update the selected-flag
                     var countryCode = countryCodes[dialCode][0].toLowerCase();
-                    pluginContainer.find(".selected-flag .flag").attr("class", "flag "+countryCode);
+                    selectedFlag.find(".flag").attr("class", "flag "+countryCode);
                     break;
                   }
                 }
@@ -66,27 +61,27 @@
             }
           });
           // trigger it now
-          mobileInput.keyup();
+          telInput.keyup();
 
           // show country dropdown on click
-          pluginContainer.find(".selected-flag").click(function(e) {
+          selectedFlag.click(function(e) {
             // prevent the click-off-to-close listener from firing
             e.stopPropagation();
-            pluginContainer.find(".country-list").removeClass("hide");
+            countryList.removeClass("hide");
           });
 
           // listen for country selection
-          pluginContainer.find(".country-list .country").click(function(e) {
+          countryList.find(".country").click(function(e) {
             var countryCode = $(e.currentTarget).attr("data-country-code").toLowerCase();
-            pluginContainer.find(".selected-flag .flag").attr("class", "flag "+countryCode);
-            mobileInput.val("+" + $(e.currentTarget).attr("data-dial-code") + " ");
-            pluginContainer.find(".country-list").addClass("hide");
+            selectedFlag.find(".flag").attr("class", "flag "+countryCode);
+            telInput.val("+" + $(e.currentTarget).attr("data-dial-code") + " ");
+            countryList.addClass("hide");
           });
 
           // click off to close
           $('html').click(function(e) {
             if (!$(e.target).closest('.country-list').length) {
-              pluginContainer.find('.country-list').addClass("hide");
+              countryList.addClass("hide");
             }
           });
         },
