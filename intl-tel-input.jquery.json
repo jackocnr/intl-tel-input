@@ -1,0 +1,31 @@
+{
+	"name": "intl-tel-input",
+	"title": "International Telephone Input",
+	"description": "A jQuery plugin for entering international telephone numbers",
+	"keywords": [
+		"international",
+		"i18n",
+		"country",
+		"dial",
+		"code",
+		"telephone",
+		"mobile",
+		"input",
+		"flag"
+	],
+	"demo": "http://bluefieldscom.github.io/intl-tel-input/",
+	"version": "0.1.0",
+	"author": {
+    "name": "Jack O'Connor",
+    "url": "http://jackocnr.com"
+  },
+  "licenses": [
+		{
+	    "type": "MIT",
+	    "url": "https://raw.github.com/Bluefieldscom/intl-tel-input/master/LICENSE"
+	  }
+	],
+	"dependencies": {
+    "jquery": "~1.9"
+  }
+}
