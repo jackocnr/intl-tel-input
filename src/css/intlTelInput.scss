@@ -3,13 +3,26 @@
 
 	.flag-dropdown {
 		position: absolute;
-		top: 0;
-		left: 0;
-		border-right: 1px solid #CCC;
+		// allow 1px for the input's border
+		top: 1px;
+		left: 1px;
 		cursor: pointer;
 
 		.selected-flag {
-			padding: 7px;
+			padding: 6px 16px 6px 7px;
+			&:HOVER {
+				background-color: #EEE;
+			}
+			.flag {
+				position: relative;
+				&:after {
+					content: '▾';
+					position: absolute;
+					top: 0;
+					left: 20px;
+					color: #666;
+				}
+			}
 		}
 
 		.country-list {
@@ -47,6 +60,6 @@
 
 	input[type='tel'] {
 		height: 30px;
-		padding: 4px 4px 4px 37px;
+		padding: 4px 4px 4px 47px;
 	}
 }

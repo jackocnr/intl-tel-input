@@ -1,3 +1,54 @@
+@charset "UTF-8";
+.intl-number-input {
+  position: relative; }
+  .intl-number-input .flag-dropdown {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    cursor: pointer; }
+    .intl-number-input .flag-dropdown .selected-flag {
+      padding: 6px 16px 6px 7px; }
+      .intl-number-input .flag-dropdown .selected-flag:HOVER {
+        background-color: #EEE; }
+      .intl-number-input .flag-dropdown .selected-flag .flag {
+        position: relative; }
+        .intl-number-input .flag-dropdown .selected-flag .flag:after {
+          content: '▾';
+          position: absolute;
+          top: 0;
+          left: 20px;
+          color: #666; }
+    .intl-number-input .flag-dropdown .country-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      z-index: 1;
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+      background-color: white;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      position: absolute;
+      top: 29px;
+      left: 0;
+      width: 330px;
+      height: 200px;
+      overflow-y: scroll; }
+      .intl-number-input .flag-dropdown .country-list .divider {
+        border-bottom: 1px solid #ddd; }
+      .intl-number-input .flag-dropdown .country-list .country {
+        padding: 4px 10px;
+        font-size: 14px; }
+        .intl-number-input .flag-dropdown .country-list .country .grey {
+          color: #999; }
+        .intl-number-input .flag-dropdown .country-list .country:HOVER {
+          background-color: #eee; }
+      .intl-number-input .flag-dropdown .country-list .flag, .intl-number-input .flag-dropdown .country-list .country-name {
+        display: inline-block;
+        margin-right: 6px;
+        vertical-align: middle; }
+  .intl-number-input input[type='tel'] {
+    height: 30px;
+    padding: 4px 4px 4px 47px; }
+
 .f16 .flag {
   width: 16px;
   height: 16px;
@@ -490,44 +541,3 @@
   background-position: 0 -3872px; }
 .f16 .zw {
   background-position: 0 -3888px; }
-
-.intl-number-input {
-  position: relative; }
-  .intl-number-input .flag-dropdown {
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-right: 1px solid #CCC;
-    cursor: pointer; }
-    .intl-number-input .flag-dropdown .selected-flag {
-      padding: 7px; }
-    .intl-number-input .flag-dropdown .country-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      z-index: 1;
-      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-      background-color: white;
-      border: 1px solid rgba(0, 0, 0, 0.3);
-      position: absolute;
-      top: 29px;
-      left: 0;
-      width: 330px;
-      height: 200px;
-      overflow-y: scroll; }
-      .intl-number-input .flag-dropdown .country-list .divider {
-        border-bottom: 1px solid #ddd; }
-      .intl-number-input .flag-dropdown .country-list .country {
-        padding: 4px 10px;
-        font-size: 14px; }
-        .intl-number-input .flag-dropdown .country-list .country .grey {
-          color: #999; }
-        .intl-number-input .flag-dropdown .country-list .country:HOVER {
-          background-color: #eee; }
-      .intl-number-input .flag-dropdown .country-list .flag, .intl-number-input .flag-dropdown .country-list .country-name {
-        display: inline-block;
-        margin-right: 6px;
-        vertical-align: middle; }
-  .intl-number-input input[type='tel'] {
-    height: 30px;
-    padding: 4px 4px 4px 37px; }

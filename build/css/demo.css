@@ -8,4 +8,6 @@
   .intl-number-input input {
     width: 250px;
     font-family: inherit;
-    font-size: 100%; }
+    font-size: 100%;
+    border: 1px solid #CCC;
+    color: #666; }

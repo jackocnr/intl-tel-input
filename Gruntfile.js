@@ -6,8 +6,8 @@ module.exports = function(grunt) {
 			build: {
 				files: {
 					'build/css/intlTelInput.css': [
-						'src/css/flags16.scss',
-						'src/css/intlTelInput.scss'
+						'src/css/intlTelInput.scss',
+						'src/css/flags16.scss'
 					],
 					'build/css/demo.css': 'src/css/demo.scss'
 				}
