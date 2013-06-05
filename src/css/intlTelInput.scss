@@ -3,82 +3,82 @@ $greyText: #999;
 $greyBorder: #CCC;
 
 .intl-number-input {
-	position: relative;
+  position: relative;
 
-	.hide {
-		display: none;
-	}
+  .hide {
+    display: none;
+  }
 
-	.flag-dropdown {
-		position: absolute;
-		// allow 1px for the input's border
-		top: 1px;
-		left: 1px;
-		cursor: pointer;
+  .flag-dropdown {
+    position: absolute;
+    // allow 1px for the input's border
+    top: 1px;
+    left: 1px;
+    cursor: pointer;
 
-		.selected-flag {
-			padding: 6px 16px 6px 7px;
+    .selected-flag {
+      padding: 6px 16px 6px 7px;
 
-			&:HOVER {
-				background-color: $hoverColor;
-			}
+      &:HOVER {
+        background-color: $hoverColor;
+      }
 
-			.flag {
-				position: relative;
+      .flag {
+        position: relative;
 
-				&:after {
-					content: '▾';
-					position: absolute;
-					top: 0;
-					left: 20px;
-					color: #666;
-				}
-			}
-		}
+        &:after {
+          content: '▾';
+          position: absolute;
+          top: 0;
+          left: 20px;
+          color: #666;
+        }
+      }
+    }
 
-		.country-list {
-			list-style: none;
+    .country-list {
+      list-style: none;
       padding: 0;
       margin: 0;
       z-index: 1;
       overflow-y: scroll;
 
-			box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
-			background-color: white;
-			border: 1px solid $greyBorder;
+      box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+      background-color: white;
+      border: 1px solid $greyBorder;
 
-			position: absolute;
-			top: 28px;
-			left: 0;
-			width: 330px;
-			height: 200px;
+      position: absolute;
+      top: 28px;
+      left: 0;
+      width: 330px;
+      height: 200px;
 
-			.divider {
-				border-bottom: 1px solid $greyBorder;
-			}
+      .divider {
+        border-bottom: 1px solid $greyBorder;
+      }
 
-			.country {
-				padding: 4px 10px;
-				font-size: 14px;
-				.grey {color: $greyText;}
-				&:HOVER {
-					background-color: $hoverColor;
-				}
-			}
+      .country {
+        padding: 4px 10px;
+        font-size: 14px;
+        .grey {color: $greyText;}
+        &:HOVER {
+          background-color: $hoverColor;
+        }
+      }
 
-			.flag, .country-name {
-				display: inline-block;
-				margin-right: 6px;
-				vertical-align: middle;
-			}
-		}
-	}
+      .flag, .country-name {
+        display: inline-block;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+    }
+  }
 
-	input[type='tel'] {
-		// dont let padding make the input higher than the height value we give it
-		box-sizing: border-box;
-		height: 30px;
-		margin: 0;
-		padding: 4px 4px 4px 47px;
-	}
+  input[type='tel'] {
+    // dont let padding make the input higher than the height value we give it
+    box-sizing: border-box;
+    height: 30px;
+    margin: 0;
+    padding: 4px 4px 4px 47px;
+  }
 }
