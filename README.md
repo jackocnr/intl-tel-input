@@ -25,7 +25,7 @@ Add the stylesheet in your &lt;head&gt; section, and add the script file at the 
 </html>
 ```
 
-## Current features (v0.2.0)
+## Current features
 * Add the flag dropdown to any of your existing inputs with one line of JavaScript
 * Select a country from the dropdown to populate the input with it's international dial code
 * Click off the dropdown to close it
