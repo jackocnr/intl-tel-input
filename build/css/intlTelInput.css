@@ -1,6 +1,8 @@
 @charset "UTF-8";
 .intl-number-input {
   position: relative; }
+  .intl-number-input .hide {
+    display: none; }
   .intl-number-input .flag-dropdown {
     position: absolute;
     top: 1px;
@@ -9,7 +11,7 @@
     .intl-number-input .flag-dropdown .selected-flag {
       padding: 6px 16px 6px 7px; }
       .intl-number-input .flag-dropdown .selected-flag:HOVER {
-        background-color: #eeeeee; }
+        background-color: #f5f2f2; }
       .intl-number-input .flag-dropdown .selected-flag .flag {
         position: relative; }
         .intl-number-input .flag-dropdown .selected-flag .flag:after {
@@ -40,13 +42,15 @@
         .intl-number-input .flag-dropdown .country-list .country .grey {
           color: #999999; }
         .intl-number-input .flag-dropdown .country-list .country:HOVER {
-          background-color: #eeeeee; }
+          background-color: #f5f2f2; }
       .intl-number-input .flag-dropdown .country-list .flag, .intl-number-input .flag-dropdown .country-list .country-name {
         display: inline-block;
         margin-right: 6px;
         vertical-align: middle; }
   .intl-number-input input[type='tel'] {
+    box-sizing: border-box;
     height: 30px;
+    margin: 0;
     padding: 4px 4px 4px 47px; }
 
 .f16 .flag {

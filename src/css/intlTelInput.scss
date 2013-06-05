@@ -1,9 +1,13 @@
-$hoverColor: #eee;
+$hoverColor: #F5F2F2;
 $greyText: #999;
 $greyBorder: #CCC;
 
 .intl-number-input {
 	position: relative;
+
+	.hide {
+		display: none;
+	}
 
 	.flag-dropdown {
 		position: absolute;
@@ -71,7 +75,10 @@ $greyBorder: #CCC;
 	}
 
 	input[type='tel'] {
+		// dont let padding make the input higher than the height value we give it
+		box-sizing: border-box;
 		height: 30px;
+		margin: 0;
 		padding: 4px 4px 4px 47px;
 	}
 }

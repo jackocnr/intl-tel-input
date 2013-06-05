@@ -1,10 +1,6 @@
 .intl-number-input {
   margin: 10px;
   font: 80% Helvetica, Arial, "Lucida Grande", sans-serif; }
-  .intl-number-input .hide {
-    display: none; }
-  .intl-number-input * {
-    box-sizing: border-box; }
   .intl-number-input input {
     width: 250px;
     font-family: inherit;
