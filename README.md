@@ -29,7 +29,10 @@ You will need to include the following files from the build/ directory: *intlTel
 * Add the flag dropdown to any of your existing inputs with one line of JavaScript
 * Select a country from the dropdown to populate the input with it's international dial code
 * Click off the dropdown to close it
-* Typing a different dial code will automatically update the displayed flag
+* Type a different dial code to automatically update the displayed flag
+* Specify "preferred countries" (top of list) on initialisation e.g.
+
+        preferredCountries: ["US", "GB"]
 
 ## Roadmap
 * Type country name to select it
