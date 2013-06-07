@@ -5,7 +5,7 @@ A jQuery plugin for entering international telephone numbers. It adds a flag dro
 http://bluefieldscom.github.io/intl-tel-input/
 
 ## Getting started
-Add the stylesheet in your &lt;head&gt; section, and add the script file at the end of your &lt;body&gt;. You will also need to have jQuery included somewhere. You will then be able to initialise the plugin on your input using the main intlTelInput() function. See below.
+You will need to include the following files from the build/ directory: *intlTelInput.css*, *flags16.png* and *intlTelInput.min.js*. You will also need jQuery. You will then be able to initialise the plugin on your input using the main intlTelInput() function. See below.
 ```html
 <html>
   <head>
@@ -15,7 +15,7 @@ Add the stylesheet in your &lt;head&gt; section, and add the script file at the 
     <input type="tel" id="mobile-number">
 
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="build/js/intlTelInput.js"></script>
+    <script src="build/js/intlTelInput.min.js"></script>
     <script>
     $(function() {
       $("#mobile-number").intlTelInput();
@@ -34,6 +34,11 @@ Add the stylesheet in your &lt;head&gt; section, and add the script file at the 
 ## Roadmap
 * Type country name to select it
 * Option to use your own country data
+
+## Troubleshooting
+* Depending on your project setup, you may need to override the path to flags16.png in your CSS. You can do so like this:
+
+        .f16 .flag {background-image: url("path/to/flags16.png");}
 
 ## Attributions
 * Flag images and CSS from https://github.com/lafeber/world-flags-sprite
