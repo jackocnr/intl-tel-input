@@ -477,6 +477,7 @@ var intlTelInput = {
 
 };
 
+// based on jQuery Boilerplate - http://jqueryboilerplate.com/
 ;(function ( $, window, document, undefined ) {
 
   var pluginName = "intlTelInput",
@@ -501,7 +502,7 @@ var intlTelInput = {
       // telephone input
       var telInput = $(this.element);
 
-      // containers
+      // containers (mostly for positioning)
       telInput.wrap($("<div>", {"class": "intl-number-input"}));
       var flagsContainer = $("<div>", {"class": "flag-dropdown f16"}).insertBefore(telInput);
 
@@ -516,6 +517,7 @@ var intlTelInput = {
       this.intlNumberInputAppendListItems(intlTelInput.countries, countryList);
 
       // update flag on keyup
+      // (by extracting the dial code form the input value)
       telInput.keyup(function() {
         var inputVal = telInput.val().trim();
         // only interested in international numbers
@@ -525,7 +527,7 @@ var intlTelInput = {
           if (!isNaN(parseInt(num, 10))) {
             // make it a string again, to run substring
             var dialCode = ("" + parseInt(num, 10)).substring(0, 3);
-            // try first 3 digits, then 2 then 1
+            // try first 3 digits, then 2 then 1...
             for (var i = dialCode.length; i > 0; i--) {
               dialCode = dialCode.substring(0, i);
               if (intlTelInput.countryCodes[dialCode]) {
@@ -551,8 +553,11 @@ var intlTelInput = {
       // listen for country selection
       countryList.find(".country").click(function(e) {
         var countryCode = $(e.currentTarget).attr("data-country-code").toLowerCase();
+        // update selected flag
         selectedFlag.find(".flag").attr("class", "flag "+countryCode);
+        // reset input value to the country's dial code
         telInput.val("+" + $(e.currentTarget).attr("data-dial-code") + " ");
+        // hide dropdown again
         countryList.addClass("hide");
       });
 
@@ -566,17 +571,20 @@ var intlTelInput = {
 
     // add a country <li> to the given <ul>
     intlNumberInputAppendListItems: function(countryList, container) {
+      // for each country
       $.each(countryList, function(i, c) {
+        // create the list item
         var listItem = $("<li>", {
           "class": "country",
           "data-dial-code": c['calling-code'],
           "data-country-code": c.cca2
         }).appendTo(container);
 
+        // add the flag
         $("<div>", {
           "class": "flag "+c.cca2.toLowerCase()
         }).appendTo(listItem);
-
+        // and the country name and dial code
         $("<span>", {"class": "country-name"}).text(c.name).appendTo(listItem);
         $("<span>", {"class": "dial-code"}).text("+"+c['calling-code']).appendTo(listItem);
       });
