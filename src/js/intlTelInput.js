@@ -99,7 +99,7 @@
         }).appendTo(listItem);
 
         $("<span>", {"class": "country-name"}).text(c.name).appendTo(listItem);
-        $("<span>", {"class": "grey"}).text("+"+c['calling-code']).appendTo(listItem);
+        $("<span>", {"class": "dial-code"}).text("+"+c['calling-code']).appendTo(listItem);
       });
     }
   };

@@ -10,16 +10,12 @@
     cursor: pointer; }
     .intl-number-input .flag-dropdown .selected-flag {
       padding: 6px 16px 6px 7px; }
-      .intl-number-input .flag-dropdown .selected-flag:HOVER {
+      .intl-number-input .flag-dropdown .selected-flag:hover {
         background-color: #f5f2f2; }
-      .intl-number-input .flag-dropdown .selected-flag .flag {
-        position: relative; }
-        .intl-number-input .flag-dropdown .selected-flag .flag:after {
-          content: '▾';
-          position: absolute;
-          top: 0;
-          left: 20px;
-          color: #666; }
+      .intl-number-input .flag-dropdown .selected-flag .flag:after {
+        content: '▾';
+        position: relative;
+        left: 20px; }
     .intl-number-input .flag-dropdown .country-list {
       list-style: none;
       padding: 0;
@@ -37,17 +33,17 @@
       .intl-number-input .flag-dropdown .country-list .divider {
         border-bottom: 1px solid #cccccc; }
       .intl-number-input .flag-dropdown .country-list .country {
-        padding: 4px 10px;
-        font-size: 14px; }
-        .intl-number-input .flag-dropdown .country-list .country .grey {
+        padding: 4px 10px; }
+        .intl-number-input .flag-dropdown .country-list .country .dial-code {
           color: #999999; }
-        .intl-number-input .flag-dropdown .country-list .country:HOVER {
+        .intl-number-input .flag-dropdown .country-list .country:hover {
           background-color: #f5f2f2; }
-      .intl-number-input .flag-dropdown .country-list .flag, .intl-number-input .flag-dropdown .country-list .country-name {
+      .intl-number-input .flag-dropdown .country-list .flag {
         display: inline-block;
-        margin-right: 6px;
-        vertical-align: middle; }
-  .intl-number-input input[type='tel'] {
+        vertical-align: bottom; }
+      .intl-number-input .flag-dropdown .country-list .flag, .intl-number-input .flag-dropdown .country-list .country-name {
+        margin-right: 6px; }
+  .intl-number-input input {
     box-sizing: border-box;
     height: 30px;
     margin: 0;

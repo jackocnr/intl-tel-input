@@ -1,9 +1,10 @@
 .intl-number-input {
   margin: 10px;
-  font: 80% Helvetica, Arial, "Lucida Grande", sans-serif; }
+  font: 80% Helvetica, Arial, "Lucida Grande", sans-serif;
+  color: #444; }
   .intl-number-input input {
     width: 250px;
+    border: 1px solid #CCC;
     font-family: inherit;
     font-size: 100%;
-    border: 1px solid #CCC;
-    color: #666; }
+    color: inherit; }

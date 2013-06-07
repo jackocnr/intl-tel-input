@@ -3,6 +3,8 @@ $greyText: #999;
 $greyBorder: #CCC;
 
 .intl-number-input {
+  // need position on the container so the selected flag can be
+  // absolutely positioned over the input
   position: relative;
 
   .hide {
@@ -10,6 +12,7 @@ $greyBorder: #CCC;
   }
 
   .flag-dropdown {
+    // positioned over the top of the input
     position: absolute;
     // allow 1px for the input's border
     top: 1px;
@@ -19,28 +22,27 @@ $greyBorder: #CCC;
     .selected-flag {
       padding: 6px 16px 6px 7px;
 
-      &:HOVER {
+      &:hover {
         background-color: $hoverColor;
       }
 
-      .flag {
+      // insert a down arrow (unicode character) after the selected flag
+      .flag:after {
+        content: '▾';
         position: relative;
-
-        &:after {
-          content: '▾';
-          position: absolute;
-          top: 0;
-          left: 20px;
-          color: #666;
-        }
+        // 16px flag + 4px gap
+        left: 20px;
       }
     }
 
+    // the country dropdown
     .country-list {
       list-style: none;
       padding: 0;
       margin: 0;
+      // above the input
       z-index: 1;
+      // long list of countries
       overflow-y: scroll;
 
       box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
@@ -48,33 +50,40 @@ $greyBorder: #CCC;
       border: 1px solid $greyBorder;
 
       position: absolute;
+      // 30px height of input, but -2 as parent has top:1px and to avoid
+      // showing double border at the bottom
       top: 28px;
       left: 0;
+      // wide enough to fit long country names
       width: 330px;
       height: 200px;
 
+      // the divider below the preferred countries
       .divider {
         border-bottom: 1px solid $greyBorder;
       }
 
+      // each country item in dropdown
       .country {
         padding: 4px 10px;
-        font-size: 14px;
-        .grey {color: $greyText;}
-        &:HOVER {
+        // the dial codes after the country names are greyed out
+        .dial-code {color: $greyText;}
+        &:hover {
           background-color: $hoverColor;
         }
       }
 
-      .flag, .country-name {
+      .flag {
         display: inline-block;
+        vertical-align: bottom;
+      }
+      .flag, .country-name {
         margin-right: 6px;
-        vertical-align: middle;
       }
     }
   }
 
-  input[type='tel'] {
+  input {
     // dont let padding make the input higher than the height value we give it
     box-sizing: border-box;
     height: 30px;
