@@ -541,11 +541,11 @@ var intlTelInput = {
       // trigger it now
       telInput.keyup();
 
-      // show country dropdown on click
+      // toggle country dropdown on click
       selectedFlag.click(function(e) {
         // prevent the click-off-to-close listener from firing
         e.stopPropagation();
-        countryList.removeClass("hide");
+        countryList.toggleClass("hide");
       });
 
       // listen for country selection
