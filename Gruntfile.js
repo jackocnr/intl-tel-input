@@ -27,14 +27,14 @@ module.exports = function(grunt) {
     concat: {
       all: {
         files: {
-          'build/js/intlTelInput.js': ['src/js/**/*.js']
+          'build/js/intlTelInput.js': ['src/js/intlTelInput.js', 'src/js/data.js']
         }
       }
     },
     uglify: {
       all: {
         files: {
-          'build/js/intlTelInput.min.js': ['src/js/**/*.js']
+          'build/js/intlTelInput.min.js': ['src/js/intlTelInput.js', 'src/js/data.js']
         }
       }
     },

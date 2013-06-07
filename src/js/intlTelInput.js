@@ -3,7 +3,7 @@
 
   var pluginName = "intlTelInput",
     defaults = {
-      // TODO: add some defaults here
+      preferredCountries: ["US", "GB"]
     };
 
   function Plugin( element, options ) {
@@ -20,20 +20,37 @@
   Plugin.prototype = {
 
     init: function() {
+      // process preferred countries - iterate through the preferences,
+      // finding the relevant data from the provided intlTelInput.countries array
+      var preferredCountries = [];
+      $.each(this.options.preferredCountries, function(i, pc) {
+        var result = $.grep(intlTelInput.countries, function(c) {
+          return (c.cca2 == pc);
+        });
+        if (result.length) {
+          preferredCountries.push(result[0]);
+        }
+      });
+
       // telephone input
       var telInput = $(this.element);
+      // if empty, set it to the first country's dial code to get started
+      if (telInput.val() === "") {
+        telInput.val("+" + preferredCountries[0]["calling-code"] + " ");
+      }
 
       // containers (mostly for positioning)
       telInput.wrap($("<div>", {"class": "intl-number-input"}));
       var flagsContainer = $("<div>", {"class": "flag-dropdown f16"}).insertBefore(telInput);
 
       // currently selected flag
+      var firstCountry = preferredCountries[0].cca2.toLowerCase();
       var selectedFlag = $("<div>", {"class": "selected-flag"}).appendTo(flagsContainer);
-      $("<div>", {"class": "flag us"}).appendTo(selectedFlag);
+      $("<div>", {"class": "flag " + firstCountry}).appendTo(selectedFlag);
 
       // country list contains: preferred countries, then divider, then all countries
       var countryList = $("<ul>", {"class": "country-list hide"}).appendTo(flagsContainer);
-      this.intlNumberInputAppendListItems(intlTelInput.preferredCountries, countryList);
+      this.intlNumberInputAppendListItems(preferredCountries, countryList);
       $("<li>", {"class": "divider"}).appendTo(countryList);
       this.intlNumberInputAppendListItems(intlTelInput.countries, countryList);
 

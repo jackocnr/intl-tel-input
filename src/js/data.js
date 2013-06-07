@@ -251,11 +251,6 @@ var intlTelInput = {
     {"name":"Zimbabwe","cca2":"ZW","calling-code":"263"}
   ],
 
-  preferredCountries: [
-    {"name":"United States","cca2":"US","calling-code":"1"},
-    {"name":"United Kingdom","cca2":"GB","calling-code":"44"}
-  ],
-
   // originally from http://libphonenumber.googlecode.com/svn/trunk/javascript/i18n/phonenumbers/metadata.js
   countryCodes: {
   1:["US","AG","AI","AS","BB","BM","BS","CA","DM","DO","GD","GU","JM","KN","KY","LC","MP","MS","PR","SX","TC","TT","VC","VG","VI"]
