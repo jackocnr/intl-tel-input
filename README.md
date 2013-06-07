@@ -13,7 +13,7 @@ Add the stylesheet in your &lt;head&gt; section, and add the script file at the 
   </head>
   <body>
     <input type="tel" id="mobile-number">
-    
+
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="build/js/intlTelInput.js"></script>
     <script>
@@ -33,6 +33,7 @@ Add the stylesheet in your &lt;head&gt; section, and add the script file at the 
 
 ## Roadmap
 * Type country name to select it
+* Option to use your own country data
 
 ## Attributions
 * Flag images and CSS from https://github.com/lafeber/world-flags-sprite

@@ -3,12 +3,16 @@ module.exports = function(grunt) {
   // config
   grunt.initConfig({
     sass: {
-      build: {
+      main: {
         files: {
           'build/css/intlTelInput.css': [
             'src/css/intlTelInput.scss',
             'src/css/flags16.scss'
           ],
+        }
+      },
+      demo: {
+        files: {
           'build/css/demo.css': 'src/css/demo.scss'
         }
       }
@@ -16,18 +20,19 @@ module.exports = function(grunt) {
     jshint: {
       all: "src/js/**/*.js",
       options: {
+        // this is for data.js which sometimes has commas on the following line
         laxcomma: true
       }
     },
     concat: {
-      dev: {
+      all: {
         files: {
           'build/js/intlTelInput.js': ['src/js/**/*.js']
         }
       }
     },
     uglify: {
-      build: {
+      all: {
         files: {
           'build/js/intlTelInput.min.js': ['src/js/**/*.js']
         }
@@ -38,9 +43,13 @@ module.exports = function(grunt) {
         files: "src/js/**/*.js",
         tasks: ["jshint", "concat"]
       },
-      css: {
-        files: "src/css/**/*.scss",
-        tasks: "sass:build"
+      pluginCss: {
+        files: ["src/css/flags16.scss", "src/css/intlTelInput.scss"],
+        tasks: "sass:main"
+      },
+      demoCss: {
+        files: "src/css/demo.scss",
+        tasks: "sass:demo"
       }
     }
   });
@@ -53,6 +62,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
 
   // tasks
-  grunt.registerTask('default', ['jshint', 'sass:build', 'uglify:build', 'concat:dev']);
+  grunt.registerTask('default', ['jshint']);
+  // default is to build everything ready for a commit
+  grunt.registerTask('all', ['jshint', 'sass:main', 'sass:demo', 'uglify:all', 'concat:all']);
+  // prepare everything for the demo.html
+  grunt.registerTask('demo', ['jshint', 'sass:main', 'sass:demo', 'concat:all']);
 
 };

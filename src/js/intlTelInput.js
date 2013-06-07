@@ -2,8 +2,7 @@
 
   var pluginName = "intlTelInput",
     defaults = {
-      // placeholder: "e.g. +44 1234567890",
-      // mobileVal: "+1 "
+      // TODO: add some defaults here
     };
 
   function Plugin( element, options ) {
@@ -26,16 +25,16 @@
       // containers
       telInput.wrap($("<div>", {"class": "intl-number-input"}));
       var flagsContainer = $("<div>", {"class": "flag-dropdown f16"}).insertBefore(telInput);
-      
+
       // currently selected flag
       var selectedFlag = $("<div>", {"class": "selected-flag"}).appendTo(flagsContainer);
       $("<div>", {"class": "flag us"}).appendTo(selectedFlag);
-      
+
       // country list contains: preferred countries, then divider, then all countries
       var countryList = $("<ul>", {"class": "country-list hide"}).appendTo(flagsContainer);
-      this.intlNumberInputAppendListItems(preferredCountries, countryList);
+      this.intlNumberInputAppendListItems(intlTelInput.preferredCountries, countryList);
       $("<li>", {"class": "divider"}).appendTo(countryList);
-      this.intlNumberInputAppendListItems(countries, countryList);
+      this.intlNumberInputAppendListItems(intlTelInput.countries, countryList);
 
       // update flag on keyup
       telInput.keyup(function() {
@@ -50,9 +49,9 @@
             // try first 3 digits, then 2 then 1
             for (var i = dialCode.length; i > 0; i--) {
               dialCode = dialCode.substring(0, i);
-              if (countryCodes[dialCode]) {
+              if (intlTelInput.countryCodes[dialCode]) {
                 // when we get a match, update the selected-flag
-                var countryCode = countryCodes[dialCode][0].toLowerCase();
+                var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
                 selectedFlag.find(".flag").attr("class", "flag "+countryCode);
                 break;
               }
