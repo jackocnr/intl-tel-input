@@ -85,6 +85,7 @@ $greyBorder: #CCC;
   input {
     // dont let padding make the input higher than the height value we give it
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
     height: 30px;
     // make space for the selected flag
     padding-left: 47px;

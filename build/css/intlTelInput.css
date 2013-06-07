@@ -43,6 +43,7 @@
         margin-right: 6px; }
   .intl-number-input input {
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
     height: 30px;
     padding-left: 47px; }
 
