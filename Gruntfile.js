@@ -4,6 +4,9 @@ module.exports = function(grunt) {
   grunt.initConfig({
     sass: {
       main: {
+        options: {
+          style: "compact"
+        },
         files: {
           'build/css/intlTelInput.css': [
             'src/css/intlTelInput.scss',
