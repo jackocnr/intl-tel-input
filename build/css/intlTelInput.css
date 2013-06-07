@@ -5,10 +5,9 @@
     display: none; }
   .intl-number-input .flag-dropdown {
     position: absolute;
-    top: 1px;
-    left: 1px;
     cursor: pointer; }
     .intl-number-input .flag-dropdown .selected-flag {
+      margin: 1px;
       padding: 6px 16px 6px 7px; }
       .intl-number-input .flag-dropdown .selected-flag:hover {
         background-color: #f5f2f2; }
@@ -26,8 +25,7 @@
       background-color: white;
       border: 1px solid #cccccc;
       position: absolute;
-      top: 28px;
-      left: 0;
+      top: 29px;
       width: 330px;
       height: 200px; }
       .intl-number-input .flag-dropdown .country-list .divider {
@@ -46,8 +44,7 @@
   .intl-number-input input {
     box-sizing: border-box;
     height: 30px;
-    margin: 0;
-    padding: 4px 4px 4px 47px; }
+    padding-left: 47px; }
 
 .f16 .flag {
   width: 16px;

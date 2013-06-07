@@ -14,12 +14,11 @@ $greyBorder: #CCC;
   .flag-dropdown {
     // positioned over the top of the input
     position: absolute;
-    // allow 1px for the input's border
-    top: 1px;
-    left: 1px;
     cursor: pointer;
 
     .selected-flag {
+      // 1px margin to avoid covering the input border
+      margin: 1px;
       padding: 6px 16px 6px 7px;
 
       &:hover {
@@ -37,10 +36,12 @@ $greyBorder: #CCC;
 
     // the country dropdown
     .country-list {
+      // override default list styles
       list-style: none;
       padding: 0;
       margin: 0;
-      // above the input
+
+      // render above the input
       z-index: 1;
       // long list of countries
       overflow-y: scroll;
@@ -50,10 +51,8 @@ $greyBorder: #CCC;
       border: 1px solid $greyBorder;
 
       position: absolute;
-      // 30px height of input, but -2 as parent has top:1px and to avoid
-      // showing double border at the bottom
-      top: 28px;
-      left: 0;
+      // 30px height of input, but -1 to avoid showing double border at the bottom
+      top: 29px;
       // wide enough to fit long country names
       width: 330px;
       height: 200px;
@@ -87,7 +86,7 @@ $greyBorder: #CCC;
     // dont let padding make the input higher than the height value we give it
     box-sizing: border-box;
     height: 30px;
-    margin: 0;
-    padding: 4px 4px 4px 47px;
+    // make space for the selected flag
+    padding-left: 47px;
   }
 }
