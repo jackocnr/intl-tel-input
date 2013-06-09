@@ -3,6 +3,7 @@ A jQuery plugin for entering international telephone numbers. It adds a flag dro
 
 ## Demo
 http://bluefieldscom.github.io/intl-tel-input/
+Try it for yourself using the included demo.html
 
 ## Getting started
 First add the stylesheet to your &lt;head&gt;
@@ -16,9 +17,7 @@ Then include the plugin and initialise it on your input element
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script src="build/js/intlTelInput.min.js"></script>
   <script>
-  $(function() {
     $("#mobile-number").intlTelInput();
-  });
   </script>
 ```
 
