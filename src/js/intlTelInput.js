@@ -75,14 +75,20 @@
           countryListItems.children(".flag." + countryCode).parent().addClass("active");
         }
       });
-      // trigger it now
+      // trigger it now in case there is already a number in the input
       telInput.keyup();
 
       // toggle country dropdown on click
       selectedFlag.click(function(e) {
         // prevent the click-off-to-close listener from firing
         e.stopPropagation();
+        // toggle dropdown
         countryList.toggleClass("hide");
+
+        // scroll to active list item
+        var activeListItem = countryList.children(".active");
+        var top = activeListItem.offset().top - countryList.offset().top + countryList.scrollTop();
+        countryList.scrollTop(top);
       });
 
       // listen for country selection
