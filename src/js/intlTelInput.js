@@ -2,7 +2,8 @@
 
   var pluginName = "intlTelInput",
     defaults = {
-      preferredCountries: ["US", "GB"]
+      preferredCountries: ["US", "GB"],
+      americaMode: true
     };
 
   function Plugin( element, options ) {
@@ -35,6 +36,11 @@
 
       // telephone input
       var telInput = $(this.element);
+
+      // if empty, and americaMode is disabled, default the input to the american dial code
+      if (telInput.val() === "" && !this.options.americaMode) {
+          telInput.val("+1 ");
+      }
 
       // containers (mostly for positioning)
       telInput.wrap($("<div>", {"class": "intl-number-input"}));
@@ -136,8 +142,8 @@
         newNumber = newDialCode + " ";
       }
 
-      // dont display dial code for americans, apparently they dont understand it
-      if (newNumber.substring(0, 3) == "+1 ") {
+      // if americaMode is enabled, we dont display the dial code for american numbers
+      if (this.options.americaMode && newNumber.substring(0, 3) == "+1 ") {
         newNumber = newNumber.substring(3);
       }
       return newNumber;

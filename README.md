@@ -2,7 +2,7 @@
 A jQuery plugin for entering international telephone numbers. It adds a flag dropdown to any input, which lists all the countries and their international dial codes next to their flags.
 
 ## Demo
-http://bluefieldscom.github.io/intl-tel-input/  
+http://bluefieldscom.github.io/intl-tel-input/
 Try it for yourself using the included demo.html
 
 ## Getting started
@@ -22,13 +22,15 @@ Then include the plugin and initialise it on your input element
 ```
 
 ## Current features
-* Add the flag dropdown to any of your existing inputs with one line of JavaScript
-* Select a country from the dropdown to populate the input with it's international dial code
-* Click off the dropdown to close it
-* Type a different dial code to automatically update the displayed flag
-* Specify "preferred countries" (top of list) on initialisation e.g.
+* Selecting a country updates the dial code of the entered number
+* Typing a different dial code automatically updates the displayed flag
+* Option to specify "preferred countries" (which appear at the top of the list) e.g.
 
         preferredCountries: ["US", "GB"]
+
+* Option to set "america mode" (enabled by default), which doesn't display the +1 for American numbers, because a lot of Americans are unfamiliar with international dial codes
+
+        americaMode: false
 
 ## Roadmap
 * Type country name to select it
