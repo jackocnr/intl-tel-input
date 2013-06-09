@@ -35,10 +35,6 @@
 
       // telephone input
       var telInput = $(this.element);
-      // if empty, set it to the first country's dial code to get started
-      if (telInput.val() === "") {
-        telInput.val("+" + preferredCountries[0]["calling-code"] + " ");
-      }
 
       // containers (mostly for positioning)
       telInput.wrap($("<div>", {"class": "intl-number-input"}));
@@ -64,14 +60,16 @@
       // (by extracting the dial code from the input value)
       telInput.keyup(function() {
         var dialCode = that.getDialCode(telInput.val());
-        if (dialCode) {
-          // if we get a match, update the selected-flag
-          var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
-          selectedFlag.find(".flag").attr("class", "flag " + countryCode);
-          // and the active list item
-          countryListItems.removeClass("active");
-          countryListItems.children(".flag." + countryCode).parent().addClass("active");
+        // default to US dialcode
+        if (!dialCode) {
+          dialCode = "1";
         }
+        // if we get a match, update the selected-flag
+        var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
+        selectedFlag.find(".flag").attr("class", "flag " + countryCode);
+        // and the active list item
+        countryListItems.removeClass("active");
+        countryListItems.children(".flag." + countryCode).parent().addClass("active");
       });
       // trigger it now in case there is already a number in the input
       telInput.keyup();
@@ -121,7 +119,7 @@
       var newDialCode = "+" + dialCode;
       var newNumber;
 
-      // if there was a dial code, replace it
+      // if the previous number contained a valid dial code, replace it
       // (if more than just a plus character)
       if (prevDialCode.length > 1) {
         newNumber = inputVal.replace(prevDialCode, newDialCode);
@@ -131,12 +129,17 @@
           newNumber += " ";
         }
       } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
+        // previous number didn't contain a dial code, so persist it
         newNumber = newDialCode + " " + inputVal.trim();
       } else {
-        // if they have entered a plus character, but no valid dial code, then wipe it
+        // previous number contained an invalid dial code, so wipe it
         newNumber = newDialCode + " ";
       }
 
+      // dont display dial code for americans, apparently they dont understand it
+      if (newNumber.substring(0, 3) == "+1 ") {
+        newNumber = newNumber.substring(3);
+      }
       return newNumber;
     },
 
