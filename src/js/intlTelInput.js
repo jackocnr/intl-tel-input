@@ -1,4 +1,3 @@
-// based on jQuery Boilerplate - http://jqueryboilerplate.com/
 ;(function ( $, window, document, undefined ) {
 
   var pluginName = "intlTelInput",

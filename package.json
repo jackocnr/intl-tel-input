@@ -24,5 +24,9 @@
     "grunt-contrib-uglify": "~0.2.1",
     "grunt-contrib-concat": "~0.3.0"
   },
-  "title": "International Telephone Input",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bluefieldscom/intl-tel-input.git"
+  },
+  "title": "International Telephone Input"
 }
