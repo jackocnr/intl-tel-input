@@ -45,9 +45,10 @@
       telInput.wrap($("<div>", {"class": "intl-number-input"}));
       var flagsContainer = $("<div>", {"class": "flag-dropdown f16"}).insertBefore(telInput);
 
-      // currently selected flag
-      var firstCountry = preferredCountries[0].cca2.toLowerCase();
+      // currently selected flag (displayed to left of input)
       var selectedFlag = $("<div>", {"class": "selected-flag"}).appendTo(flagsContainer);
+      // here we default to the first country in the list
+      var firstCountry = preferredCountries[0].cca2.toLowerCase();
       $("<div>", {"class": "flag " + firstCountry}).appendTo(selectedFlag);
 
       // country list contains: preferred countries, then divider, then all countries
@@ -55,6 +56,10 @@
       this.intlNumberInputAppendListItems(preferredCountries, countryList);
       $("<li>", {"class": "divider"}).appendTo(countryList);
       this.intlNumberInputAppendListItems(intlTelInput.countries, countryList);
+
+      var countryListItems = countryList.children(".country");
+      // auto select the top one
+      countryListItems.first().addClass("active");
 
       // update flag on keyup
       // (by extracting the dial code from the input value)
@@ -65,6 +70,9 @@
           // if we get a match, update the selected-flag
           var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
           selectedFlag.find(".flag").attr("class", "flag " + countryCode);
+          // and the active list item
+          countryListItems.removeClass("active");
+          countryListItems.children(".flag." + countryCode).parent().addClass("active");
         }
       });
       // trigger it now
@@ -78,16 +86,20 @@
       });
 
       // listen for country selection
-      countryList.find(".country").click(function(e) {
-        var countryCode = $(e.currentTarget).attr("data-country-code").toLowerCase();
+      countryListItems.click(function(e) {
+        var listItem = $(e.currentTarget);
+        var countryCode = listItem.attr("data-country-code").toLowerCase();
         // update selected flag
         selectedFlag.find(".flag").attr("class", "flag " + countryCode);
         // reset input value to the country's dial code
-        telInput.val("+" + $(e.currentTarget).attr("data-dial-code") + " ");
+        telInput.val("+" + listItem.attr("data-dial-code") + " ");
         // hide dropdown again
         countryList.addClass("hide");
         // focus the input
         telInput.focus();
+        // mark the list item as active (incase they open the dropdown again)
+        countryListItems.removeClass("active");
+        listItem.addClass("active");
       });
 
       // click off to close
@@ -105,11 +117,12 @@
         // strip out non-numeric chars (e.g. spaces, brackets)
         var num = inputVal.replace(/\D/g,'');
         if (!isNaN(parseInt(num, 10))) {
-          // grab the first 3 numbers
+          // grab the first 3 numbers (max length of a dial code is 3)
           var dialCode = ("" + parseInt(num, 10)).substring(0, 3);
           // try first 3 digits, then 2 then 1...
           for (var i = dialCode.length; i > 0; i--) {
             dialCode = dialCode.substring(0, i);
+            // if we find a match (a valid dial code), then return the dial code
             if (intlTelInput.countryCodes[dialCode]) {
               return dialCode;
             }

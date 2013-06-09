@@ -6,10 +6,11 @@
 .intl-number-input .flag-dropdown .selected-flag:hover { background-color: #f5f2f2; }
 .intl-number-input .flag-dropdown .selected-flag .flag:after { content: '▾'; position: relative; left: 20px; }
 .intl-number-input .flag-dropdown .country-list { list-style: none; padding: 0; margin: 0; z-index: 1; overflow-y: scroll; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); background-color: white; border: 1px solid #cccccc; position: absolute; top: 29px; width: 330px; height: 200px; }
-.intl-number-input .flag-dropdown .country-list .divider { border-bottom: 1px solid #cccccc; }
+.intl-number-input .flag-dropdown .country-list .divider { padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px solid #cccccc; }
 .intl-number-input .flag-dropdown .country-list .country { padding: 4px 10px; }
 .intl-number-input .flag-dropdown .country-list .country .dial-code { color: #999999; }
 .intl-number-input .flag-dropdown .country-list .country:hover { background-color: #f5f2f2; }
+.intl-number-input .flag-dropdown .country-list .country.active { background-color: #f5f2f2; }
 .intl-number-input .flag-dropdown .country-list .flag { display: inline-block; vertical-align: bottom; }
 .intl-number-input .flag-dropdown .country-list .flag, .intl-number-input .flag-dropdown .country-list .country-name { margin-right: 6px; }
 .intl-number-input input { box-sizing: border-box; -moz-box-sizing: border-box; height: 30px; padding-left: 47px; }
