@@ -1,9 +1,11 @@
-// namespaced to prevent clashes
+// Namespaced to prevent clashes
 var intlTelInput = {
 
-  // originally from https://github.com/mledoze/countries
+  // Array of country objects for the flag dropdown.
+  // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
+  // Originally from https://github.com/mledoze/countries
   // then stripped down by copying the JSON into Chrome dev tools and manipulating it
-  // and then using JSON.stringify to print it out as a string again and then copying it here
+  // and then using JSON.stringify to print it out as a string again and copy it here
   countries: [
     {"name":"Afghanistan","cca2":"AF","calling-code":"93"},
     {"name":"Åland Islands","cca2":"AX","calling-code":"358"},
@@ -251,7 +253,10 @@ var intlTelInput = {
     {"name":"Zimbabwe","cca2":"ZW","calling-code":"263"}
   ],
 
-  // originally from http://libphonenumber.googlecode.com/svn/trunk/javascript/i18n/phonenumbers/metadata.js
+  // JavaScript object mapping dial code to country code.
+  // This is used when the user enters a number,
+  // to quickly look up the corresponding country code.
+  // Originally from http://libphonenumber.googlecode.com/svn/trunk/javascript/i18n/phonenumbers/metadata.js
   countryCodes: {
   1:["US","AG","AI","AS","BB","BM","BS","CA","DM","DO","GD","GU","JM","KN","KY","LC","MP","MS","PR","SX","TC","TT","VC","VG","VI"]
   ,7:["RU","KZ"]

@@ -20,6 +20,8 @@
   Plugin.prototype = {
 
     init: function() {
+      var that = this;
+
       // process preferred countries - iterate through the preferences,
       // finding the relevant data from the provided intlTelInput.countries array
       var preferredCountries = [];
@@ -55,27 +57,14 @@
       this.intlNumberInputAppendListItems(intlTelInput.countries, countryList);
 
       // update flag on keyup
-      // (by extracting the dial code form the input value)
+      // (by extracting the dial code from the input value)
       telInput.keyup(function() {
         var inputVal = telInput.val().trim();
-        // only interested in international numbers
-        if (inputVal.substring(0, 1) == "+") {
-          // strip out non-numeric chars
-          var num = inputVal.replace(/\D/g,'');
-          if (!isNaN(parseInt(num, 10))) {
-            // make it a string again, to run substring
-            var dialCode = ("" + parseInt(num, 10)).substring(0, 3);
-            // try first 3 digits, then 2 then 1...
-            for (var i = dialCode.length; i > 0; i--) {
-              dialCode = dialCode.substring(0, i);
-              if (intlTelInput.countryCodes[dialCode]) {
-                // when we get a match, update the selected-flag
-                var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
-                selectedFlag.find(".flag").attr("class", "flag "+countryCode);
-                break;
-              }
-            }
-          }
+        var dialCode = that.getDialCode(inputVal);
+        if (dialCode) {
+          // if we get a match, update the selected-flag
+          var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
+          selectedFlag.find(".flag").attr("class", "flag " + countryCode);
         }
       });
       // trigger it now
@@ -92,11 +81,13 @@
       countryList.find(".country").click(function(e) {
         var countryCode = $(e.currentTarget).attr("data-country-code").toLowerCase();
         // update selected flag
-        selectedFlag.find(".flag").attr("class", "flag "+countryCode);
+        selectedFlag.find(".flag").attr("class", "flag " + countryCode);
         // reset input value to the country's dial code
         telInput.val("+" + $(e.currentTarget).attr("data-dial-code") + " ");
         // hide dropdown again
         countryList.addClass("hide");
+        // focus the input
+        telInput.focus();
       });
 
       // click off to close
@@ -105,6 +96,27 @@
           countryList.addClass("hide");
         }
       });
+    },
+
+    // try and extract a valid international dial code from a full telephone number
+    getDialCode: function(inputVal) {
+      // only interested in international numbers
+      if (inputVal.substring(0, 1) == "+") {
+        // strip out non-numeric chars (e.g. spaces, brackets)
+        var num = inputVal.replace(/\D/g,'');
+        if (!isNaN(parseInt(num, 10))) {
+          // grab the first 3 numbers
+          var dialCode = ("" + parseInt(num, 10)).substring(0, 3);
+          // try first 3 digits, then 2 then 1...
+          for (var i = dialCode.length; i > 0; i--) {
+            dialCode = dialCode.substring(0, i);
+            if (intlTelInput.countryCodes[dialCode]) {
+              return dialCode;
+            }
+          }
+        }
+      }
+      return false;
     },
 
     // add a country <li> to the given <ul>
@@ -120,11 +132,11 @@
 
         // add the flag
         $("<div>", {
-          "class": "flag "+c.cca2.toLowerCase()
+          "class": "flag " + c.cca2.toLowerCase()
         }).appendTo(listItem);
         // and the country name and dial code
         $("<span>", {"class": "country-name"}).text(c.name).appendTo(listItem);
-        $("<span>", {"class": "dial-code"}).text("+"+c['calling-code']).appendTo(listItem);
+        $("<span>", {"class": "dial-code"}).text("+" + c['calling-code']).appendTo(listItem);
       });
     }
   };
