@@ -5,24 +5,21 @@ A jQuery plugin for entering international telephone numbers. It adds a flag dro
 http://bluefieldscom.github.io/intl-tel-input/
 
 ## Getting started
-You will need to include the following files from the build/ directory: *intlTelInput.css*, *flags16.png* and *intlTelInput.min.js*. You will also need jQuery. You will then be able to initialise the plugin on your input using the main intlTelInput() function. See below.
+First add the stylesheet to your &lt;head&gt;
 ```html
-<html>
-  <head>
-    <link rel="stylesheet" href="build/css/intlTelInput.css">
-  </head>
-  <body>
-    <input type="tel" id="mobile-number">
+  <link rel="stylesheet" href="build/css/intlTelInput.css">
+```
+Then include the plugin and initialise it on your input element
+```html
+  <input type="tel" id="mobile-number">
 
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="build/js/intlTelInput.min.js"></script>
-    <script>
-    $(function() {
-      $("#mobile-number").intlTelInput();
-    });
-    </script>
-  </body>
-</html>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="build/js/intlTelInput.min.js"></script>
+  <script>
+  $(function() {
+    $("#mobile-number").intlTelInput();
+  });
+  </script>
 ```
 
 ## Current features
