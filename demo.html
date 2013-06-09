@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset="utf-8">
     <title>International Telephone Input</title>
-    <link rel="stylesheet" href="build/css/demo.css">
     <link rel="stylesheet" href="build/css/intlTelInput.css">
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="build/js/intlTelInput.js"></script>
+    <link rel="stylesheet" href="build/css/demo.css">
   </head>
-
   <body>
     <input type="tel" id="mobile-number" placeholder="e.g. +1 702 123 4567">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="build/js/intlTelInput.js"></script>
     <script>
-    $(function() {
       $("#mobile-number").intlTelInput();
-    });
     </script>
   </body>
-
 </html>
