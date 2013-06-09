@@ -63,8 +63,7 @@
       // update flag on keyup
       // (by extracting the dial code from the input value)
       telInput.keyup(function() {
-        var inputVal = telInput.val().trim();
-        var dialCode = that.getDialCode(inputVal);
+        var dialCode = that.getDialCode(telInput.val());
         if (dialCode) {
           // if we get a match, update the selected-flag
           var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
@@ -96,8 +95,9 @@
         var countryCode = listItem.attr("data-country-code").toLowerCase();
         // update selected flag
         selectedFlag.find(".flag").attr("class", "flag " + countryCode);
-        // reset input value to the country's dial code
-        telInput.val("+" + listItem.attr("data-dial-code") + " ");
+        // update input value
+        var newNumber = that.updateNumber(telInput.val(), listItem.attr("data-dial-code"));
+        telInput.val(newNumber);
         // hide dropdown again
         countryList.addClass("hide");
         // focus the input
@@ -115,26 +115,49 @@
       });
     },
 
+    // replace any existing dial code with the new one
+    updateNumber: function(inputVal, dialCode) {
+      var prevDialCode = "+" + this.getDialCode(inputVal);
+      var newDialCode = "+" + dialCode;
+      var newNumber;
+
+      // if there was a dial code, replace it
+      // (if more than just a plus character)
+      if (prevDialCode.length > 1) {
+        newNumber = inputVal.replace(prevDialCode, newDialCode);
+        // if the old number was just the dial code,
+        // then we will need to add the space again
+        if (inputVal == prevDialCode) {
+          newNumber += " ";
+        }
+      } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
+        newNumber = newDialCode + " " + inputVal.trim();
+      } else {
+        // if they have entered a plus character, but no valid dial code, then wipe it
+        newNumber = newDialCode + " ";
+      }
+
+      return newNumber;
+    },
+
     // try and extract a valid international dial code from a full telephone number
     getDialCode: function(inputVal) {
-      // only interested in international numbers
-      if (inputVal.substring(0, 1) == "+") {
-        // strip out non-numeric chars (e.g. spaces, brackets)
-        var num = inputVal.replace(/\D/g,'');
-        if (!isNaN(parseInt(num, 10))) {
-          // grab the first 3 numbers (max length of a dial code is 3)
-          var dialCode = ("" + parseInt(num, 10)).substring(0, 3);
-          // try first 3 digits, then 2 then 1...
-          for (var i = dialCode.length; i > 0; i--) {
-            dialCode = dialCode.substring(0, i);
-            // if we find a match (a valid dial code), then return the dial code
-            if (intlTelInput.countryCodes[dialCode]) {
-              return dialCode;
-            }
+      var firstPart = inputVal.trim().split(" ")[0];
+      // only interested in international numbers (starting with a plus)
+      if (firstPart.substring(0, 1) == "+") {
+        // strip out non-numeric chars (e.g. pluses, spaces, brackets)
+        // and grab the first 3 numbers (max length of a dial code is 3)
+        var dialCode = firstPart.replace(/\D/g,'').substring(0, 3);
+        // try first 3 digits, then 2 then 1...
+        for (var i = dialCode.length; i > 0; i--) {
+          dialCode = dialCode.substring(0, i);
+          // if we find a match (a valid dial code), then return the dial code
+          if (intlTelInput.countryCodes[dialCode]) {
+            return dialCode;
           }
         }
       }
-      return false;
+      return "";
     },
 
     // add a country <li> to the given <ul> container
@@ -154,7 +177,7 @@
         // close the list item
         tmp += "</li>";
       });
-      container.html(tmp);
+      container.append(tmp);
     }
   };
 
