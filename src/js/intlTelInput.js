@@ -53,9 +53,9 @@
 
       // country list contains: preferred countries, then divider, then all countries
       var countryList = $("<ul>", {"class": "country-list hide"}).appendTo(flagsContainer);
-      this.intlNumberInputAppendListItems(preferredCountries, countryList);
+      this.appendListItems(preferredCountries, countryList);
       $("<li>", {"class": "divider"}).appendTo(countryList);
-      this.intlNumberInputAppendListItems(intlTelInput.countries, countryList);
+      this.appendListItems(intlTelInput.countries, countryList);
 
       var countryListItems = countryList.children(".country");
       // auto select the top one
@@ -138,25 +138,24 @@
       return false;
     },
 
-    // add a country <li> to the given <ul>
-    intlNumberInputAppendListItems: function(countryList, container) {
+    // add a country <li> to the given <ul> container
+    appendListItems: function(countryList, container) {
+      // we create so many DOM elements, I decided it was faster to build a temp string
+      // and then add everything to the DOM in one go at the end
+      var tmp = "";
       // for each country
       $.each(countryList, function(i, c) {
-        // create the list item
-        var listItem = $("<li>", {
-          "class": "country",
-          "data-dial-code": c['calling-code'],
-          "data-country-code": c.cca2
-        }).appendTo(container);
-
+        // open the list item
+        tmp += "<li class='country' data-dial-code='"+c['calling-code']+"' data-country-code='"+c.cca2+"'>";
         // add the flag
-        $("<div>", {
-          "class": "flag " + c.cca2.toLowerCase()
-        }).appendTo(listItem);
+        tmp += "<div class='flag " + c.cca2.toLowerCase()+"'></div>";
         // and the country name and dial code
-        $("<span>", {"class": "country-name"}).text(c.name).appendTo(listItem);
-        $("<span>", {"class": "dial-code"}).text("+" + c['calling-code']).appendTo(listItem);
+        tmp += "<span class='country-name'>"+c.name+"</span>";
+        tmp += "<span class='dial-code'>+" + c['calling-code']+"</span>";
+        // close the list item
+        tmp += "</li>";
       });
+      container.html(tmp);
     }
   };
 
