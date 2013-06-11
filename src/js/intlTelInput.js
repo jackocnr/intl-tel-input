@@ -62,6 +62,8 @@
       // auto select the top one
       countryListItems.first().addClass("active");
 
+
+
       // update flag on keyup
       // (by extracting the dial code from the input value)
       telInput.keyup(function() {
@@ -80,43 +82,130 @@
       // trigger it now in case there is already a number in the input
       telInput.keyup();
 
+
+
       // toggle country dropdown on click
       selectedFlag.click(function(e) {
         // prevent the click-off-to-close listener from firing
         e.stopPropagation();
-        // toggle dropdown
-        countryList.toggleClass("hide");
 
-        // scroll to active list item
-        var activeListItem = countryList.children(".active");
-        that.scrollTo(activeListItem, countryList);
+        // toggle dropdown
+        if (countryList.hasClass("hide")) {
+          // update highlighting and scroll to active list item
+          countryListItems.removeClass("highlight");
+          var activeListItem = countryList.children(".active").addClass("highlight");
+          that.scrollTo(activeListItem, countryList);
+
+          // show it
+          countryList.removeClass("hide");
+
+          // listen for typing
+          $(document).bind("keydown.intlTelInput", function(e) {
+            // up (38) and down (40) to navigate
+            if (e.which == 38 || e.which == 40) {
+              var current = countryList.children(".highlight");
+              var next = (e.which == 38) ? current.prev() : current.next();
+              if (next) {
+                current.removeClass("highlight");
+                next.addClass("highlight");
+                that.scrollTo(next, countryList);
+              }
+            }
+            // enter (13) to select
+            else if (e.which == 13) {
+              var currentCountry = countryList.children(".highlight").first();
+              if (currentCountry.length) {
+                that.selectCountry(currentCountry, selectedFlag, telInput, countryList);
+              }
+            }
+            // tab (9) or esc (27) to close
+            else if (e.which == 9 || e.which == 27) {
+              that.closeDropdown(countryList);
+            }
+            // lower case (97-122) or upper case (65-90) letters
+            // to cycle through countries beginning with that letter
+            else if ((e.which >= 97 && e.which <= 122) || (e.which >= 65 && e.which <= 90)) {
+              var letter = String.fromCharCode(e.which);
+              // filter out the countries beginning with that letter
+              var countries = countryListItems.filter(function() {
+                return ($(this).text().charAt(0) == letter);
+              });
+
+              if (countries.length) {
+                // if one is already highlighted, then we want the next one
+                var highlightedCountry = countries.filter(".highlight");
+                var listItem;
+                if (highlightedCountry && highlightedCountry.next() && highlightedCountry.next().text().charAt(0) == letter) {
+                  listItem = highlightedCountry.next();
+                } else {
+                  listItem = countries.first();
+                }
+                // update highlighting and scroll
+                countryListItems.removeClass("highlight");
+                listItem.addClass("highlight");
+                that.scrollTo(listItem, countryList);
+              }
+            }
+          });
+        } else {
+          // close it
+          that.closeDropdown(countryList);
+        }
       });
+
+
+      // when mouse over a list item, remove any highlighting from any other items
+      countryListItems.mouseover(function() {
+        countryListItems.removeClass("highlight");
+        $(this).addClass("highlight");
+      });
+
+
 
       // listen for country selection
       countryListItems.click(function(e) {
         var listItem = $(e.currentTarget);
-        var countryCode = listItem.attr("data-country-code").toLowerCase();
-        // update selected flag
-        selectedFlag.find(".flag").attr("class", "flag " + countryCode);
-        // update input value
-        var newNumber = that.updateNumber(telInput.val(), listItem.attr("data-dial-code"));
-        telInput.val(newNumber);
-        // hide dropdown again
-        countryList.addClass("hide");
-        // focus the input
-        telInput.focus();
-        // mark the list item as active (incase they open the dropdown again)
-        countryListItems.removeClass("active");
-        listItem.addClass("active");
+        that.selectCountry(listItem, selectedFlag, telInput, countryList);
       });
+
+
 
       // click off to close
       $('html').click(function(e) {
         if (!$(e.target).closest('.country-list').length) {
-          countryList.addClass("hide");
+          // close it
+          that.closeDropdown(countryList);
         }
       });
     },
+
+
+
+    selectCountry: function(listItem, selectedFlag, telInput, countryList) {
+      var countryCode = listItem.attr("data-country-code").toLowerCase();
+      // update selected flag
+      selectedFlag.find(".flag").attr("class", "flag " + countryCode);
+      // update input value
+      var newNumber = this.updateNumber(telInput.val(), listItem.attr("data-dial-code"));
+      telInput.val(newNumber);
+      // hide dropdown again
+      this.closeDropdown(countryList);
+      // focus the input
+      telInput.focus();
+      // mark the list item as active (incase they open the dropdown again)
+      countryList.children(".country").removeClass("active");
+      listItem.addClass("active");
+    },
+
+
+
+    // close the dropdown and unbind any listeners
+    closeDropdown: function(countryList) {
+      countryList.addClass("hide");
+      $(document).unbind("keydown.intlTelInput");
+    },
+
+
 
     // check if an element is visible within it's container, else scroll until it is
     scrollTo: function(element, container) {
@@ -139,6 +228,8 @@
         container.scrollTop(newScrollTop - heightDifference);
       }
     },
+
+
 
     // replace any existing dial code with the new one
     updateNumber: function(inputVal, dialCode) {
@@ -170,6 +261,8 @@
       return newNumber;
     },
 
+
+
     // try and extract a valid international dial code from a full telephone number
     getDialCode: function(inputVal) {
       var firstPart = inputVal.trim().split(" ")[0];
@@ -189,6 +282,8 @@
       }
       return "";
     },
+
+
 
     // add a country <li> to the given <ul> container
     appendListItems: function(countryList, container) {

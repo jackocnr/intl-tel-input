@@ -69,11 +69,8 @@ $greyBorder: #CCC;
         padding: 4px 10px;
         // the dial codes after the country names are greyed out
         .dial-code {color: $greyText;}
-        &:hover {
-          background-color: $hoverColor;
-        }
       }
-      .country.active {
+      .country.highlight {
         background-color: $hoverColor;
       }
 
