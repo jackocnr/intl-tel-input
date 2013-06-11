@@ -67,11 +67,8 @@
       // update flag on keyup
       // (by extracting the dial code from the input value)
       telInput.keyup(function() {
-        var dialCode = that.getDialCode(telInput.val());
-        // default to US dialcode
-        if (!dialCode) {
-          dialCode = "1";
-        }
+        // try and extract valid dial code from input, else default to US dialcode
+        var dialCode = that.getDialCode(telInput.val()) || "1";
         // if we get a match, update the selected-flag
         var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
         selectedFlag.find(".flag").attr("class", "flag " + countryCode);
@@ -103,10 +100,10 @@
           $(document).bind("keydown.intlTelInput", function(e) {
             // up (38) and down (40) to navigate
             if (e.which == 38 || e.which == 40) {
-              var current = countryList.children(".highlight");
+              var current = countryList.children(".highlight").first();
               var next = (e.which == 38) ? current.prev() : current.next();
               if (next) {
-                current.removeClass("highlight");
+                countryListItems.removeClass("highlight");
                 next.addClass("highlight");
                 that.scrollTo(next, countryList);
               }
@@ -133,8 +130,9 @@
 
               if (countries.length) {
                 // if one is already highlighted, then we want the next one
-                var highlightedCountry = countries.filter(".highlight");
+                var highlightedCountry = countries.filter(".highlight").first();
                 var listItem;
+                // if the next country in the list also starts with that letter
                 if (highlightedCountry && highlightedCountry.next() && highlightedCountry.next().text().charAt(0) == letter) {
                   listItem = highlightedCountry.next();
                 } else {
@@ -193,7 +191,7 @@
       // focus the input
       telInput.focus();
       // mark the list item as active (incase they open the dropdown again)
-      countryList.children(".country").removeClass("active");
+      countryList.children(".country").removeClass("active highlight");
       listItem.addClass("active");
     },
 
