@@ -89,8 +89,7 @@
 
         // scroll to active list item
         var activeListItem = countryList.children(".active");
-        var top = activeListItem.offset().top - countryList.offset().top + countryList.scrollTop();
-        countryList.scrollTop(top);
+        that.scrollTo(activeListItem, countryList);
       });
 
       // listen for country selection
@@ -117,6 +116,28 @@
           countryList.addClass("hide");
         }
       });
+    },
+
+    // check if an element is visible within it's container, else scroll until it is
+    scrollTo: function(element, container) {
+      var containerHeight = container.height();
+      var containerTop = container.offset().top;
+      var containerBottom = containerTop + containerHeight;
+
+      var elementHeight = element.outerHeight();
+      var elementTop = element.offset().top;
+      var elementBottom = elementTop + elementHeight;
+
+      var newScrollTop = elementTop - containerTop + container.scrollTop();
+
+      if (elementTop < containerTop) {
+        // scroll up
+        container.scrollTop(newScrollTop);
+      } else if (elementBottom > containerBottom) {
+        // scroll down
+        var heightDifference = containerHeight - elementHeight;
+        container.scrollTop(newScrollTop - heightDifference);
+      }
     },
 
     // replace any existing dial code with the new one
