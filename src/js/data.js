@@ -365,7 +365,7 @@ var intlTelInput = {
     }, {
       "name": "Vatican City",
       "cca2": "VA",
-      "calling-code": "39066"
+      "calling-code": "379"
     }, {
       "name": "Honduras",
       "cca2": "HN",
@@ -433,7 +433,7 @@ var intlTelInput = {
     }, {
       "name": "Kazakhstan",
       "cca2": "KZ",
-      "calling-code": "76"
+      "calling-code": "7"
     }, {
       "name": "Kenya",
       "cca2": "KE",
@@ -940,8 +940,10 @@ var intlTelInput = {
   // This is used when the user enters a number,
   // to quickly look up the corresponding country code.
   // Originally from http://libphonenumber.googlecode.com/svn/trunk/javascript/i18n/phonenumbers/metadata.js
+  // then I commented some weird 001 entries and added some 4-digit country-code
+  // items at the end e.g. 1246 for Barbados
   countryCodes: {
-    1: ["US", "AG", "AI", "AS", "BB", "BM", "BS", "CA", "DM", "DO", "GD", "GU", "JM", "KN", "KY", "LC", "MP", "MS", "PR", "SX", "TC", "TT", "VC", "VG", "VI"],
+    1: ["US"],
     7: ["RU", "KZ"],
     20: ["EG"],
     27: ["ZA"],
@@ -1155,7 +1157,29 @@ var intlTelInput = {
     994: ["AZ"],
     995: ["GE"],
     996: ["KG"],
-    998: ["UZ"]
+    998: ["UZ"],
+    // jack added
+    1242: ["BS"],
+    1246: ["BB"],
+    1264: ["AI"],
+    1268: ["AG"],
+    1284: ["VG"],
+    1340: ["VI"],
+    1345: ["KY"],
+    1441: ["BM"],
+    1473: ["GD"],
+    1649: ["TC"],
+    1664: ["MS"],
+    1671: ["GU"],
+    1684: ["AS"],
+    1758: ["LC"],
+    1767: ["DM"],
+    1784: ["VC"],
+    1787: ["PR"],
+    1809: ["DO"],
+    1868: ["TT"],
+    1869: ["KN"],
+    1876: ["JM"]
   }
 
 };
