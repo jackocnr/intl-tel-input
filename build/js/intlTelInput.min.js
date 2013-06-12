@@ -1,6 +1,6 @@
 /*
 intl-tel-input 
-version: 0.8.1
+version: 0.8.2
 description: A jQuery plugin for entering international telephone numbers
 repository: https://github.com/Bluefieldscom/intl-tel-input.git
 license: MIT
