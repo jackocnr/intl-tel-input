@@ -22,7 +22,7 @@ Then include the plugin and initialise it on your input element
 ```
 
 ## Current features
-# In the country dropdown you can navigate by typing, or using the up/down keys
+* In the country dropdown you can navigate by typing, or using the up/down keys
 * Selecting a country updates the dial code of the entered number
 * Typing a different dial code automatically updates the displayed flag
 * Option to specify "preferred countries" (which appear at the top of the list) e.g.
