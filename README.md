@@ -2,7 +2,7 @@
 A jQuery plugin for entering international telephone numbers. It adds a flag dropdown to any input, which lists all the countries and their international dial codes next to their flags.
 
 ## Demo
-http://bluefieldscom.github.io/intl-tel-input/  
+http://jackocnr.com/intl-tel-input.html  
 Try it for yourself using the included demo.html
 
 ## Getting started
