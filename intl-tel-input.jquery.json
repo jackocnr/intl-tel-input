@@ -25,5 +25,5 @@
   "dependencies": {
     "jquery": "~1.9"
   },
-  "demo": "http://bluefieldscom.github.io/intl-tel-input/"
+  "demo": "http://jackocnr.com/intl-tel-input.html"
 }
