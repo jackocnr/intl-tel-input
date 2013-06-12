@@ -189,13 +189,13 @@ var intlTelInput = {
       "cca2": "KM",
       "calling-code": "269"
     }, {
-      "name": "Republic of the Congo",
-      "cca2": "CG",
-      "calling-code": "242"
-    }, {
-      "name": "Democratic Republic of the Congo",
+      "name": "Congo (DRC)",
       "cca2": "CD",
       "calling-code": "243"
+    }, {
+      "name": "Congo (Republic)",
+      "cca2": "CG",
+      "calling-code": "242"
     }, {
       "name": "Cook Islands",
       "cca2": "CK",
@@ -362,10 +362,6 @@ var intlTelInput = {
       "name": "Haiti",
       "cca2": "HT",
       "calling-code": "509"
-    }, {
-      "name": "Vatican City",
-      "cca2": "VA",
-      "calling-code": "379"
     }, {
       "name": "Honduras",
       "cca2": "HN",
@@ -899,6 +895,10 @@ var intlTelInput = {
       "name": "Vanuatu",
       "cca2": "VU",
       "calling-code": "678"
+    }, {
+      "name": "Vatican City",
+      "cca2": "VA",
+      "calling-code": "379"
     }, {
       "name": "Venezuela",
       "cca2": "VE",
