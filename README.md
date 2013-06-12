@@ -14,7 +14,7 @@ Then include the plugin and initialise it on your input element
 ```html
   <input type="tel" id="mobile-number">
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="build/js/intlTelInput.min.js"></script>
   <script>
     $("#mobile-number").intlTelInput();
