@@ -1,0 +1,12 @@
+{
+  "name": "intl-tel-input",
+  "version": "0.8.0",
+  "main": [
+      "./build/js/intlTelInput.min.js",
+      "./build/img/flags16.png",
+      "./build/css/intlTelInput.css"
+  ],
+  "dependencies": {
+    "jquery": "~1.9"
+  }
+}
