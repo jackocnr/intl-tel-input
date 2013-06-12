@@ -1,4 +1,5 @@
-;(function ( $, window, document, undefined ) {
+;
+(function($, window, document, undefined) {
 
   var pluginName = "intlTelInput",
     defaults = {
@@ -6,10 +7,10 @@
       americaMode: true
     };
 
-  function Plugin( element, options ) {
+  function Plugin(element, options) {
     this.element = element;
 
-    this.options = $.extend( {}, defaults, options );
+    this.options = $.extend({}, defaults, options);
 
     this._defaults = defaults;
     this._name = pluginName;
@@ -39,23 +40,35 @@
 
       // if empty, and americaMode is disabled, default the input to the american dial code
       if (telInput.val() === "" && !this.options.americaMode) {
-          telInput.val("+1 ");
+        telInput.val("+1 ");
       }
 
       // containers (mostly for positioning)
-      telInput.wrap($("<div>", {"class": "intl-number-input"}));
-      var flagsContainer = $("<div>", {"class": "flag-dropdown f16"}).insertBefore(telInput);
+      telInput.wrap($("<div>", {
+        "class": "intl-number-input"
+      }));
+      var flagsContainer = $("<div>", {
+        "class": "flag-dropdown f16"
+      }).insertBefore(telInput);
 
       // currently selected flag (displayed to left of input)
-      var selectedFlag = $("<div>", {"class": "selected-flag"}).appendTo(flagsContainer);
+      var selectedFlag = $("<div>", {
+        "class": "selected-flag"
+      }).appendTo(flagsContainer);
       // here we default to the first country in the list
       var firstCountry = preferredCountries[0].cca2.toLowerCase();
-      $("<div>", {"class": "flag " + firstCountry}).appendTo(selectedFlag);
+      $("<div>", {
+        "class": "flag " + firstCountry
+      }).appendTo(selectedFlag);
 
       // country list contains: preferred countries, then divider, then all countries
-      var countryList = $("<ul>", {"class": "country-list hide"}).appendTo(flagsContainer);
+      var countryList = $("<ul>", {
+        "class": "country-list hide"
+      }).appendTo(flagsContainer);
       this.appendListItems(preferredCountries, countryList);
-      $("<li>", {"class": "divider"}).appendTo(countryList);
+      $("<li>", {
+        "class": "divider"
+      }).appendTo(countryList);
       this.appendListItems(intlTelInput.countries, countryList);
 
       var countryListItems = countryList.children(".country");
@@ -268,7 +281,7 @@
       if (firstPart.substring(0, 1) == "+") {
         // strip out non-numeric chars (e.g. pluses, spaces, brackets)
         // and grab the first 3 numbers (max length of a dial code is 3)
-        var dialCode = firstPart.replace(/\D/g,'').substring(0, 3);
+        var dialCode = firstPart.replace(/\D/g, '').substring(0, 3);
         // try first 3 digits, then 2 then 1...
         for (var i = dialCode.length; i > 0; i--) {
           dialCode = dialCode.substring(0, i);
@@ -291,12 +304,12 @@
       // for each country
       $.each(countryList, function(i, c) {
         // open the list item
-        tmp += "<li class='country' data-dial-code='"+c['calling-code']+"' data-country-code='"+c.cca2+"'>";
+        tmp += "<li class='country' data-dial-code='" + c['calling-code'] + "' data-country-code='" + c.cca2 + "'>";
         // add the flag
-        tmp += "<div class='flag " + c.cca2.toLowerCase()+"'></div>";
+        tmp += "<div class='flag " + c.cca2.toLowerCase() + "'></div>";
         // and the country name and dial code
-        tmp += "<span class='country-name'>"+c.name+"</span>";
-        tmp += "<span class='dial-code'>+" + c['calling-code']+"</span>";
+        tmp += "<span class='country-name'>" + c.name + "</span>";
+        tmp += "<span class='dial-code'>+" + c['calling-code'] + "</span>";
         // close the list item
         tmp += "</li>";
       });
@@ -304,12 +317,12 @@
     }
   };
 
-  $.fn[pluginName] = function ( options ) {
-      return this.each(function () {
-          if (!$.data(this, "plugin_" + pluginName)) {
-              $.data(this, "plugin_" + pluginName, new Plugin( this, options ));
-          }
-      });
+  $.fn[pluginName] = function(options) {
+    return this.each(function() {
+      if (!$.data(this, "plugin_" + pluginName)) {
+        $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+      }
+    });
   };
 
-})( jQuery, window, document );
+})(jQuery, window, document);
