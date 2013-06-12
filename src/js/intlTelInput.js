@@ -81,12 +81,23 @@
       telInput.keyup(function() {
         // try and extract valid dial code from input, else default to US dialcode
         var dialCode = that.getDialCode(telInput.val()) || "1";
-        // if we get a match, update the selected-flag
-        var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
-        selectedFlag.find(".flag").attr("class", "flag " + countryCode);
-        // and the active list item
-        countryListItems.removeClass("active");
-        countryListItems.children(".flag." + countryCode).parent().addClass("active");
+        // check if one of the matching country's is already selected
+        var countryCodes = intlTelInput.countryCodes[dialCode];
+        var selectedFlagInner = selectedFlag.find(".flag");
+        var alreadySelected = false;
+        $.each(countryCodes, function(i, c) {
+          if (selectedFlagInner.hasClass(c.toLowerCase())) {
+            alreadySelected = true;
+          }
+        });
+        // otherwise update selection
+        if (!alreadySelected) {
+          var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
+          selectedFlagInner.attr("class", "flag " + countryCode);
+          // and the active list item
+          countryListItems.removeClass("active");
+          countryListItems.children(".flag." + countryCode).parent().addClass("active");
+        }
       });
       // trigger it now in case there is already a number in the input
       telInput.keyup();
@@ -283,9 +294,9 @@
       // only interested in international numbers (starting with a plus)
       if (firstPart.substring(0, 1) == "+") {
         // strip out non-numeric chars (e.g. pluses, spaces, brackets)
-        // and grab the first 3 numbers (max length of a dial code is 3)
-        var dialCode = firstPart.replace(/\D/g, '').substring(0, 3);
-        // try first 3 digits, then 2 then 1...
+        // and grab the first 4 numbers (max length of a dial code is 4)
+        var dialCode = firstPart.replace(/\D/g, '').substring(0, 4);
+        // try first 4 digits, then 3, then 2, then 1...
         for (var i = dialCode.length; i > 0; i--) {
           dialCode = dialCode.substring(0, i);
           // if we find a match (a valid dial code), then return the dial code
