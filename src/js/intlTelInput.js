@@ -1,4 +1,3 @@
-;
 (function($, window, document, undefined) {
 
   var pluginName = "intlTelInput",
@@ -116,6 +115,10 @@
               var current = countryList.children(".highlight").first();
               var next = (e.which == 38) ? current.prev() : current.next();
               if (next) {
+                // skip the divider
+                if (next.hasClass("divider")) {
+                  next = (e.which == 38) ? next.prev() : next.next();
+                }
                 countryListItems.removeClass("highlight");
                 next.addClass("highlight");
                 that.scrollTo(next, countryList);
