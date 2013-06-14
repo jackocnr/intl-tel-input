@@ -34,6 +34,8 @@ Then include the plugin and initialise it on your input element
         americaMode: false
 
 ## Roadmap
+If there's enough interest, I may look into adding the following features:
+* Number validation
 * Option to use your own country data
 
 ## Troubleshooting
