@@ -56,9 +56,13 @@
       }).appendTo(flagsContainer);
       // here we default to the first country in the list
       var firstCountry = preferredCountries[0].cca2.toLowerCase();
-      $("<div>", {
+      var selectedFlagInner = $("<div>", {
         "class": "flag " + firstCountry
       }).appendTo(selectedFlag);
+      // CSS triangle
+      $("<div>", {
+        "class": "down-arrow"
+      }).appendTo(selectedFlagInner);
 
       // country list contains: preferred countries, then divider, then all countries
       var countryList = $("<ul>", {
@@ -83,7 +87,6 @@
         var dialCode = that.getDialCode(telInput.val()) || "1";
         // check if one of the matching country's is already selected
         var countryCodes = intlTelInput.countryCodes[dialCode];
-        var selectedFlagInner = selectedFlag.find(".flag");
         var alreadySelected = false;
         $.each(countryCodes, function(i, c) {
           if (selectedFlagInner.hasClass(c.toLowerCase())) {

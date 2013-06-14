@@ -27,12 +27,16 @@ $greyBorder: #CCC;
         background-color: $hoverColor;
       }
 
-      // insert a down arrow (unicode character) after the selected flag
-      .flag:after {
-        content: '▾';
+      .down-arrow {
+        top: 6px;
         position: relative;
-        // 16px flag + 4px gap
         left: 20px;
+
+        width: 0; 
+        height: 0; 
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 4px solid black;
       }
     }
 
@@ -68,6 +72,8 @@ $greyBorder: #CCC;
 
       // each country item in dropdown
       .country {
+        // set this to height of flag - if it is higher, things get misaligned
+        line-height: 16px;
         padding: 4px 10px;
         // the dial codes after the country names are greyed out
         .dial-code {color: $greyText;}

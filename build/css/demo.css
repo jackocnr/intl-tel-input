@@ -1,7 +1,8 @@
 .intl-number-input {
   margin: 10px;
-  font: 80% Helvetica, Arial, "Lucida Grande", sans-serif;
-  color: #444; }
+  font-size: 14px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #333; }
   .intl-number-input input {
     width: 250px;
     border: 1px solid #CCC;
