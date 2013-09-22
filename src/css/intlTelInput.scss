@@ -4,7 +4,7 @@ $hoverColor: rgba(0, 0, 0, 0.05);
 $greyText: #999;
 $greyBorder: #CCC;
 
-.intl-number-input {
+.intl-tel-input {
   // need position on the container so the selected flag can be
   // absolutely positioned over the input
   position: relative;
@@ -16,6 +16,7 @@ $greyBorder: #CCC;
   .flag-dropdown {
     // positioned over the top of the input
     position: absolute;
+    z-index: 1;
     cursor: pointer;
 
     .selected-flag {
@@ -99,5 +100,8 @@ $greyBorder: #CCC;
     height: 30px;
     // make space for the selected flag
     padding-left: 47px;
+
+    position: relative;
+    z-index: 0;
   }
 }

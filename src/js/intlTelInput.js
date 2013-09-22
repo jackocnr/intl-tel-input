@@ -44,7 +44,7 @@
 
       // containers (mostly for positioning)
       telInput.wrap($("<div>", {
-        "class": "intl-number-input"
+        "class": "intl-tel-input"
       }));
       var flagsContainer = $("<div>", {
         "class": "flag-dropdown f16"
