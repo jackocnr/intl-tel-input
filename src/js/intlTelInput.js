@@ -117,10 +117,10 @@
           // update highlighting and scroll to active list item
           countryListItems.removeClass("highlight");
           var activeListItem = countryList.children(".active").addClass("highlight");
-          that.scrollTo(activeListItem, countryList);
 
           // show it
           countryList.removeClass("hide");
+          that.scrollTo(activeListItem, countryList);
 
           // listen for typing
           $(document).bind("keydown.intlTelInput", function(e) {
