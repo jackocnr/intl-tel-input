@@ -35,20 +35,20 @@
       });
 
       // telephone input
-      var telInput = $(this.element);
+      this.telInput = $(this.element);
 
       // if empty, and americaMode is disabled, default the input to the american dial code
-      if (telInput.val() === "" && !this.options.americaMode) {
-        telInput.val("+1 ");
+      if (this.telInput.val() === "" && !this.options.americaMode) {
+        this.telInput.val("+1 ");
       }
 
       // containers (mostly for positioning)
-      telInput.wrap($("<div>", {
+      this.telInput.wrap($("<div>", {
         "class": "intl-tel-input"
       }));
       var flagsContainer = $("<div>", {
         "class": "flag-dropdown f16"
-      }).insertBefore(telInput);
+      }).insertBefore(this.telInput);
 
       // currently selected flag (displayed to left of input)
       var selectedFlag = $("<div>", {
@@ -56,54 +56,51 @@
       }).appendTo(flagsContainer);
       // here we default to the first country in the list
       var firstCountry = preferredCountries[0].cca2.toLowerCase();
-      var selectedFlagInner = $("<div>", {
+      this.selectedFlagInner = $("<div>", {
         "class": "flag " + firstCountry
       }).appendTo(selectedFlag);
       // CSS triangle
       $("<div>", {
         "class": "down-arrow"
-      }).appendTo(selectedFlagInner);
+      }).appendTo(this.selectedFlagInner);
 
       // country list contains: preferred countries, then divider, then all countries
-      var countryList = $("<ul>", {
+      this.countryList = $("<ul>", {
         "class": "country-list hide"
       }).appendTo(flagsContainer);
-      this._appendListItems(preferredCountries, countryList);
+      this._appendListItems(preferredCountries);
       $("<li>", {
         "class": "divider"
-      }).appendTo(countryList);
-      this._appendListItems(intlTelInput.countries, countryList);
+      }).appendTo(this.countryList);
+      this._appendListItems(intlTelInput.countries);
 
-      var countryListItems = countryList.children(".country");
+      this.countryListItems = this.countryList.children(".country");
       // auto select the top one
-      countryListItems.first().addClass("active");
+      this.countryListItems.first().addClass("active");
 
 
 
       // update flag on keyup
       // (by extracting the dial code from the input value)
-      telInput.keyup(function() {
+      this.telInput.keyup(function() {
         // try and extract valid dial code from input, else default to US dialcode
-        var dialCode = that._getDialCode(telInput.val()) || "1";
+        var dialCode = that._getDialCode(that.telInput.val()) || "1";
         // check if one of the matching country's is already selected
         var countryCodes = intlTelInput.countryCodes[dialCode];
         var alreadySelected = false;
         $.each(countryCodes, function(i, c) {
-          if (selectedFlagInner.hasClass(c.toLowerCase())) {
+          if (that.selectedFlagInner.hasClass(c.toLowerCase())) {
             alreadySelected = true;
           }
         });
         // otherwise update selection
         if (!alreadySelected) {
-          var countryCode = intlTelInput.countryCodes[dialCode][0].toLowerCase();
-          selectedFlagInner.attr("class", "flag " + countryCode);
-          // and the active list item
-          countryListItems.removeClass("active");
-          countryListItems.children(".flag." + countryCode).parent().addClass("active");
+          var countryCode = countryCodes[0].toLowerCase();
+          that._selectFlag(countryCode);
         }
       });
       // trigger it now in case there is already a number in the input
-      telInput.keyup();
+      this.telInput.keyup();
 
 
 
@@ -113,48 +110,48 @@
         e.stopPropagation();
 
         // toggle dropdown
-        if (countryList.hasClass("hide")) {
+        if (that.countryList.hasClass("hide")) {
           // update highlighting and scroll to active list item
-          countryListItems.removeClass("highlight");
-          var activeListItem = countryList.children(".active").addClass("highlight");
+          that.countryListItems.removeClass("highlight");
+          var activeListItem = that.countryList.children(".active").addClass("highlight");
 
           // show it
-          countryList.removeClass("hide");
-          that._scrollTo(activeListItem, countryList);
+          that.countryList.removeClass("hide");
+          that._scrollTo(activeListItem);
 
           // listen for typing
           $(document).bind("keydown.intlTelInput", function(e) {
             // up (38) and down (40) to navigate
             if (e.which == 38 || e.which == 40) {
-              var current = countryList.children(".highlight").first();
+              var current = that.countryList.children(".highlight").first();
               var next = (e.which == 38) ? current.prev() : current.next();
               if (next) {
                 // skip the divider
                 if (next.hasClass("divider")) {
                   next = (e.which == 38) ? next.prev() : next.next();
                 }
-                countryListItems.removeClass("highlight");
+                that.countryListItems.removeClass("highlight");
                 next.addClass("highlight");
-                that._scrollTo(next, countryList);
+                that._scrollTo(next);
               }
             }
             // enter (13) to select
             else if (e.which == 13) {
-              var currentCountry = countryList.children(".highlight").first();
+              var currentCountry = that.countryList.children(".highlight").first();
               if (currentCountry.length) {
-                that._selectCountry(currentCountry, selectedFlag, telInput, countryList);
+                that._selectListItem(currentCountry);
               }
             }
             // tab (9) or esc (27) to close
             else if (e.which == 9 || e.which == 27) {
-              that._closeDropdown(countryList);
+              that._closeDropdown();
             }
             // lower case (97-122) or upper case (65-90) letters
             // to cycle through countries beginning with that letter
             else if ((e.which >= 97 && e.which <= 122) || (e.which >= 65 && e.which <= 90)) {
               var letter = String.fromCharCode(e.which);
               // filter out the countries beginning with that letter
-              var countries = countryListItems.filter(function() {
+              var countries = that.countryListItems.filter(function() {
                 return ($(this).text().charAt(0) == letter);
               });
 
@@ -169,31 +166,31 @@
                   listItem = countries.first();
                 }
                 // update highlighting and scroll
-                countryListItems.removeClass("highlight");
+                that.countryListItems.removeClass("highlight");
                 listItem.addClass("highlight");
-                that._scrollTo(listItem, countryList);
+                that._scrollTo(listItem);
               }
             }
           });
         } else {
           // close it
-          that._closeDropdown(countryList);
+          that._closeDropdown();
         }
       });
 
 
       // when mouse over a list item, remove any highlighting from any other items
-      countryListItems.mouseover(function() {
-        countryListItems.removeClass("highlight");
+      this.countryListItems.mouseover(function() {
+        that.countryListItems.removeClass("highlight");
         $(this).addClass("highlight");
       });
 
 
 
       // listen for country selection
-      countryListItems.click(function(e) {
+      this.countryListItems.click(function(e) {
         var listItem = $(e.currentTarget);
-        that._selectCountry(listItem, selectedFlag, telInput, countryList);
+        that._selectListItem(listItem);
       });
 
 
@@ -202,41 +199,64 @@
       $('html').click(function(e) {
         if (!$(e.target).closest('.country-list').length) {
           // close it
-          that._closeDropdown(countryList);
+          that._closeDropdown();
         }
       });
     },
 
 
+    _selectFlag: function(countryCode) {
+      this.selectedFlagInner.attr("class", "flag " + countryCode);
+      // and the active list item
+      this.countryListItems.removeClass("active");
+      var listItem = this.countryListItems.children(".flag." + countryCode).parent();
+      listItem.addClass("active");
+      return listItem;
+    },
 
-    _selectCountry: function(listItem, selectedFlag, telInput, countryList) {
+
+
+    selectCountry: function(countryCode) {
+      countryCode = countryCode.toLowerCase();
+      // check if already selected
+      if (!this.selectedFlagInner.hasClass(countryCode)) {
+        var listItem = this._selectFlag(countryCode);
+        var dialCode = listItem.attr("data-dial-code");
+        this.telInput.val("+" + dialCode + " ");
+      }
+    },
+
+
+    _selectListItem: function(listItem) {
       var countryCode = listItem.attr("data-country-code").toLowerCase();
       // update selected flag
-      selectedFlag.find(".flag").attr("class", "flag " + countryCode);
+      this.selectedFlagInner.attr("class", "flag " + countryCode);
       // update input value
-      var newNumber = this._updateNumber(telInput.val(), listItem.attr("data-dial-code"));
-      telInput.val(newNumber);
+      var newNumber = this._updateNumber(this.telInput.val(), listItem.attr("data-dial-code"));
+      this.telInput.val(newNumber);
       // hide dropdown again
-      this._closeDropdown(countryList);
+      this._closeDropdown();
       // focus the input
-      telInput.focus();
+      this.telInput.focus();
       // mark the list item as active (incase they open the dropdown again)
-      countryList.children(".country").removeClass("active highlight");
+      this.countryListItems.removeClass("active highlight");
       listItem.addClass("active");
     },
 
 
 
     // close the dropdown and unbind any listeners
-    _closeDropdown: function(countryList) {
-      countryList.addClass("hide");
+    _closeDropdown: function() {
+      this.countryList.addClass("hide");
       $(document).unbind("keydown.intlTelInput");
     },
 
 
 
     // check if an element is visible within it's container, else scroll until it is
-    _scrollTo: function(element, container) {
+    _scrollTo: function(element) {
+      var container = this.countryList;
+
       var containerHeight = container.height();
       var containerTop = container.offset().top;
       var containerBottom = containerTop + containerHeight;
@@ -313,13 +333,13 @@
 
 
 
-    // add a country <li> to the given <ul> container
-    _appendListItems: function(countryList, container) {
+    // add a country <li> to the countryList <ul> container
+    _appendListItems: function(countries) {
       // we create so many DOM elements, I decided it was faster to build a temp string
       // and then add everything to the DOM in one go at the end
       var tmp = "";
       // for each country
-      $.each(countryList, function(i, c) {
+      $.each(countries, function(i, c) {
         // open the list item
         tmp += "<li class='country' data-dial-code='" + c['calling-code'] + "' data-country-code='" + c.cca2 + "'>";
         // add the flag
@@ -330,7 +350,7 @@
         // close the list item
         tmp += "</li>";
       });
-      container.append(tmp);
+      this.countryList.append(tmp);
     }
 
   };
