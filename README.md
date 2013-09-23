@@ -33,6 +33,10 @@ Then include the plugin and initialise it on your input element
 
         americaMode: false
 
+* Programatically select a country after initialisation (e.g. when the user is entering their address)
+
+        $('#mobile-number').intlTelInput('selectCountry', 'GB');
+
 ## Roadmap
 If there's enough interest, I may look into adding the following features:
 * Number validation
