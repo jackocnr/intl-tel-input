@@ -68,11 +68,11 @@
       var countryList = $("<ul>", {
         "class": "country-list hide"
       }).appendTo(flagsContainer);
-      this.appendListItems(preferredCountries, countryList);
+      this._appendListItems(preferredCountries, countryList);
       $("<li>", {
         "class": "divider"
       }).appendTo(countryList);
-      this.appendListItems(intlTelInput.countries, countryList);
+      this._appendListItems(intlTelInput.countries, countryList);
 
       var countryListItems = countryList.children(".country");
       // auto select the top one
@@ -84,7 +84,7 @@
       // (by extracting the dial code from the input value)
       telInput.keyup(function() {
         // try and extract valid dial code from input, else default to US dialcode
-        var dialCode = that.getDialCode(telInput.val()) || "1";
+        var dialCode = that._getDialCode(telInput.val()) || "1";
         // check if one of the matching country's is already selected
         var countryCodes = intlTelInput.countryCodes[dialCode];
         var alreadySelected = false;
@@ -120,7 +120,7 @@
 
           // show it
           countryList.removeClass("hide");
-          that.scrollTo(activeListItem, countryList);
+          that._scrollTo(activeListItem, countryList);
 
           // listen for typing
           $(document).bind("keydown.intlTelInput", function(e) {
@@ -135,19 +135,19 @@
                 }
                 countryListItems.removeClass("highlight");
                 next.addClass("highlight");
-                that.scrollTo(next, countryList);
+                that._scrollTo(next, countryList);
               }
             }
             // enter (13) to select
             else if (e.which == 13) {
               var currentCountry = countryList.children(".highlight").first();
               if (currentCountry.length) {
-                that.selectCountry(currentCountry, selectedFlag, telInput, countryList);
+                that._selectCountry(currentCountry, selectedFlag, telInput, countryList);
               }
             }
             // tab (9) or esc (27) to close
             else if (e.which == 9 || e.which == 27) {
-              that.closeDropdown(countryList);
+              that._closeDropdown(countryList);
             }
             // lower case (97-122) or upper case (65-90) letters
             // to cycle through countries beginning with that letter
@@ -171,13 +171,13 @@
                 // update highlighting and scroll
                 countryListItems.removeClass("highlight");
                 listItem.addClass("highlight");
-                that.scrollTo(listItem, countryList);
+                that._scrollTo(listItem, countryList);
               }
             }
           });
         } else {
           // close it
-          that.closeDropdown(countryList);
+          that._closeDropdown(countryList);
         }
       });
 
@@ -193,7 +193,7 @@
       // listen for country selection
       countryListItems.click(function(e) {
         var listItem = $(e.currentTarget);
-        that.selectCountry(listItem, selectedFlag, telInput, countryList);
+        that._selectCountry(listItem, selectedFlag, telInput, countryList);
       });
 
 
@@ -202,22 +202,22 @@
       $('html').click(function(e) {
         if (!$(e.target).closest('.country-list').length) {
           // close it
-          that.closeDropdown(countryList);
+          that._closeDropdown(countryList);
         }
       });
     },
 
 
 
-    selectCountry: function(listItem, selectedFlag, telInput, countryList) {
+    _selectCountry: function(listItem, selectedFlag, telInput, countryList) {
       var countryCode = listItem.attr("data-country-code").toLowerCase();
       // update selected flag
       selectedFlag.find(".flag").attr("class", "flag " + countryCode);
       // update input value
-      var newNumber = this.updateNumber(telInput.val(), listItem.attr("data-dial-code"));
+      var newNumber = this._updateNumber(telInput.val(), listItem.attr("data-dial-code"));
       telInput.val(newNumber);
       // hide dropdown again
-      this.closeDropdown(countryList);
+      this._closeDropdown(countryList);
       // focus the input
       telInput.focus();
       // mark the list item as active (incase they open the dropdown again)
@@ -228,7 +228,7 @@
 
 
     // close the dropdown and unbind any listeners
-    closeDropdown: function(countryList) {
+    _closeDropdown: function(countryList) {
       countryList.addClass("hide");
       $(document).unbind("keydown.intlTelInput");
     },
@@ -236,7 +236,7 @@
 
 
     // check if an element is visible within it's container, else scroll until it is
-    scrollTo: function(element, container) {
+    _scrollTo: function(element, container) {
       var containerHeight = container.height();
       var containerTop = container.offset().top;
       var containerBottom = containerTop + containerHeight;
@@ -260,8 +260,8 @@
 
 
     // replace any existing dial code with the new one
-    updateNumber: function(inputVal, dialCode) {
-      var prevDialCode = "+" + this.getDialCode(inputVal);
+    _updateNumber: function(inputVal, dialCode) {
+      var prevDialCode = "+" + this._getDialCode(inputVal);
       var newDialCode = "+" + dialCode;
       var newNumber;
 
@@ -292,7 +292,7 @@
 
 
     // try and extract a valid international dial code from a full telephone number
-    getDialCode: function(inputVal) {
+    _getDialCode: function(inputVal) {
       var firstPart = inputVal.trim().split(" ")[0];
       // only interested in international numbers (starting with a plus)
       if (firstPart.substring(0, 1) == "+") {
@@ -314,7 +314,7 @@
 
 
     // add a country <li> to the given <ul> container
-    appendListItems: function(countryList, container) {
+    _appendListItems: function(countryList, container) {
       // we create so many DOM elements, I decided it was faster to build a temp string
       // and then add everything to the DOM in one go at the end
       var tmp = "";
@@ -332,14 +332,50 @@
       });
       container.append(tmp);
     }
+
   };
 
+
+
+  // adapted to allow public functions
+  // using https://github.com/jquery-boilerplate/jquery-boilerplate/wiki/Extending-jQuery-Boilerplate
   $.fn[pluginName] = function(options) {
-    return this.each(function() {
-      if (!$.data(this, "plugin_" + pluginName)) {
-        $.data(this, "plugin_" + pluginName, new Plugin(this, options));
-      }
-    });
+    var args = arguments;
+
+    // Is the first parameter an object (options), or was omitted,
+    // instantiate a new instance of the plugin.
+    if (options === undefined || typeof options === 'object') {
+      return this.each(function() {
+        if (!$.data(this, "plugin_" + pluginName)) {
+          $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+        }
+      });
+    }
+
+    // If the first parameter is a string and it doesn't start
+    // with an underscore or "contains" the `init`-function,
+    // treat this as a call to a public method.
+    else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
+
+        // Cache the method call to make it possible to return a value
+        var returns;
+
+        this.each(function() {
+            var instance = $.data(this, 'plugin_' + pluginName);
+
+            // Tests that there's already a plugin-instance
+            // and checks that the requested public method exists
+            if (instance instanceof Plugin && typeof instance[options] === 'function') {
+                // Call the method of our plugin instance,
+                // and pass it the supplied arguments.
+                returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );
+            }
+        });
+
+        // If the earlier cached method gives a value back return the value,
+        // otherwise return this to preserve chainability.
+        return returns !== undefined ? returns : this;
+    }
   };
 
 })(jQuery, window, document);
