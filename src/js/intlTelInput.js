@@ -3,6 +3,7 @@
   var pluginName = "intlTelInput",
     defaults = {
       preferredCountries: ["US", "GB"],
+      initialDialCode: true,
       americaMode: false
     };
 
@@ -38,7 +39,7 @@
       this.telInput = $(this.element);
 
       // if empty, and americaMode is disabled, insert the default dial code
-      if (this.telInput.val() === "" && !this.options.americaMode) {
+      if (this.options.initialDialCode && this.telInput.val() === "") {
         this.telInput.val("+" + preferredCountries[0]["calling-code"] + " ");
       }
 
@@ -68,11 +69,11 @@
       this.countryList = $("<ul>", {
         "class": "country-list hide"
       }).appendTo(flagsContainer);
-      this._appendListItems(preferredCountries);
+      this._appendListItems(preferredCountries, "preferred");
       $("<li>", {
         "class": "divider"
       }).appendTo(this.countryList);
-      this._appendListItems(intlTelInput.countries);
+      this._appendListItems(intlTelInput.countries, "");
 
       this.countryListItems = this.countryList.children(".country");
       // auto select the top one
@@ -152,7 +153,7 @@
               var letter = String.fromCharCode(e.which);
               // filter out the countries beginning with that letter
               var countries = that.countryListItems.filter(function() {
-                return ($(this).text().charAt(0) == letter);
+                return ($(this).text().charAt(0) == letter && !$(this).hasClass("preferred"));
               });
 
               if (countries.length) {
@@ -334,14 +335,14 @@
 
 
     // add a country <li> to the countryList <ul> container
-    _appendListItems: function(countries) {
+    _appendListItems: function(countries, className) {
       // we create so many DOM elements, I decided it was faster to build a temp string
       // and then add everything to the DOM in one go at the end
       var tmp = "";
       // for each country
       $.each(countries, function(i, c) {
         // open the list item
-        tmp += "<li class='country' data-dial-code='" + c['calling-code'] + "' data-country-code='" + c.cca2 + "'>";
+        tmp += "<li class='country " + className + "' data-dial-code='" + c['calling-code'] + "' data-country-code='" + c.cca2 + "'>";
         // add the flag
         tmp += "<div class='flag " + c.cca2.toLowerCase() + "'></div>";
         // and the country name and dial code
