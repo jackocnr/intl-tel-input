@@ -3,7 +3,7 @@
   var pluginName = "intlTelInput",
     defaults = {
       preferredCountries: ["US", "GB"],
-      americaMode: true
+      americaMode: false
     };
 
   function Plugin(element, options) {
@@ -37,10 +37,10 @@
       // telephone input
       this.telInput = $(this.element);
 
-      // if empty, and americaMode is disabled, default the input to the american dial code
-      if (this.telInput.val() === "" && !this.options.americaMode) {
-        this.telInput.val("+1 ");
-      }
+      // if empty, and americaMode is disabled, insert the default dial code
+      /*if (this.telInput.val() === "" && !this.options.americaMode) {
+        this.telInput.val("+" + preferredCountries[0]["calling-code"] + " ");
+      }*/
 
       // containers (mostly for positioning)
       this.telInput.wrap($("<div>", {
@@ -84,7 +84,7 @@
       // (by extracting the dial code from the input value)
       this.telInput.keyup(function() {
         // try and extract valid dial code from input, else default to US dialcode
-        var dialCode = that._getDialCode(that.telInput.val()) || "1";
+        var dialCode = that._getDialCode(that.telInput.val()) || preferredCountries[0]["calling-code"];
         // check if one of the matching country's is already selected
         var countryCodes = intlTelInput.countryCodes[dialCode];
         var alreadySelected = false;
