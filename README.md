@@ -25,13 +25,17 @@ Then include the plugin and initialise it on your input element
 * In the country dropdown you can navigate by typing, or using the up/down keys
 * Selecting a country updates the dial code of the entered number
 * Typing a different dial code automatically updates the displayed flag
+* Option to insert the default country's dial code upon initialisation (enabled by default)
+
+        initialDialCode: false
+        
 * Option to specify "preferred countries" (which appear at the top of the list) e.g.
 
         preferredCountries: ["US", "GB"]
 
-* Option to set "america mode" (enabled by default), which doesn't display the +1 for American numbers, because a lot of Americans are unfamiliar with international dial codes
+* Option to set "america mode" (disabled by default), which doesn't display the +1 for American numbers, because a lot of Americans are unfamiliar with international dial codes
 
-        americaMode: false
+        americaMode: true
 
 * Programatically select a country after initialisation (e.g. when the user is entering their address)
 
