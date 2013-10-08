@@ -35,9 +35,9 @@ author: Jack O'Connor (http://jackocnr.com)
             // telephone input
             this.telInput = $(this.element);
             // if empty, and americaMode is disabled, insert the default dial code
-            /*if (this.telInput.val() === "" && !this.options.americaMode) {
-        this.telInput.val("+" + preferredCountries[0]["calling-code"] + " ");
-      }*/
+            if (this.telInput.val() === "" && !this.options.americaMode) {
+                this.telInput.val("+" + preferredCountries[0]["calling-code"] + " ");
+            }
             // containers (mostly for positioning)
             this.telInput.wrap($("<div>", {
                 "class": "intl-tel-input"
