@@ -4,6 +4,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    // CSS compilation
     sass: {
       main: {
         options: {
@@ -23,6 +24,7 @@ module.exports = function(grunt) {
       }
     },
 
+    // JS Code Lint
     jshint: {
       all: "src/js/**/*.js",
       options: {
@@ -31,6 +33,7 @@ module.exports = function(grunt) {
       }
     },
 
+    // JS compilation
     uglify: {
       options: {
         banner: '/*\n'+
@@ -60,6 +63,7 @@ module.exports = function(grunt) {
       }
     },
 
+    // Auto-compilation of assets
     watch: {
       js: {
         files: "src/js/**/*.js",
@@ -73,7 +77,22 @@ module.exports = function(grunt) {
         files: "src/css/demo.scss",
         tasks: "sass:demo"
       }
+    },
+
+    // Testing
+    jasmine: {
+      src: [
+        'lib/jquery/jquery.min.js',
+        'src/js/data.js',
+        'src/js/intlTelInput.js'
+      ],
+      options: {
+        specs: [
+          'src/js/tests.js'
+        ]
+      }
     }
+
   });
 
   // plugins
@@ -81,6 +100,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   // tasks
   grunt.registerTask('default', ['jshint']);
