@@ -37,6 +37,10 @@ Then include the plugin and initialise it on your input element
 
         americaMode: true
 
+* Option to set "only countries" (all by default), this shows only the countries you specify. Preferred countries option will only apply to the countries you put here.
+
+        onlyCountries: ['US', 'PH']
+
 * Programatically select a country after initialisation (e.g. when the user is entering their address)
 
         $('#mobile-number').intlTelInput('selectCountry', 'GB');
