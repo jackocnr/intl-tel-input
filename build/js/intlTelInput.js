@@ -10,7 +10,8 @@ author: Jack O'Connor (http://jackocnr.com)
     var pluginName = "intlTelInput", defaults = {
         preferredCountries: [ "US", "GB" ],
         initialDialCode: true,
-        americaMode: false
+        americaMode: false,
+        onlyCountries: []
     };
     function Plugin(element, options) {
         this.element = element;
@@ -22,11 +23,24 @@ author: Jack O'Connor (http://jackocnr.com)
     Plugin.prototype = {
         init: function() {
             var that = this;
+            var allCountries = [];
+            if (this.options.onlyCountries.length > 0) {
+                $.each(this.options.onlyCountries, function(i, pc) {
+                    var result = $.grep(intlTelInput.countries, function(c) {
+                        return c.cca2 == pc;
+                    });
+                    if (result.length) {
+                        allCountries.push(result[0]);
+                    }
+                });
+            } else {
+                allCountries = intlTelInput.countries;
+            }
             // process preferred countries - iterate through the preferences,
             // finding the relevant data from the provided intlTelInput.countries array
             var preferredCountries = [];
             $.each(this.options.preferredCountries, function(i, pc) {
-                var result = $.grep(intlTelInput.countries, function(c) {
+                var result = $.grep(allCountries, function(c) {
                     return c.cca2 == pc;
                 });
                 if (result.length) {
@@ -67,7 +81,7 @@ author: Jack O'Connor (http://jackocnr.com)
             $("<li>", {
                 "class": "divider"
             }).appendTo(this.countryList);
-            this._appendListItems(intlTelInput.countries, "");
+            this._appendListItems(allCountries, "");
             this.countryListItems = this.countryList.children(".country");
             // auto select the top one
             this.countryListItems.first().addClass("active");
