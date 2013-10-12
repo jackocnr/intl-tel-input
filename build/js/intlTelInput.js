@@ -23,28 +23,33 @@ author: Jack O'Connor (http://jackocnr.com)
     Plugin.prototype = {
         init: function() {
             var that = this;
-            var allCountries = [];
+            // process onlyCountries array and update intlTelInput.countries
+            // and intlTelInput.countryCodes accordingly
+            var newCountries = [], newCountryCodes = {};
             if (this.options.onlyCountries.length > 0) {
-                $.each(this.options.onlyCountries, function(i, pc) {
-                    var result = $.grep(intlTelInput.countries, function(c) {
-                        return c.cca2 == pc;
-                    });
-                    if (result.length) {
-                        allCountries.push(result[0]);
+                $.each(this.options.onlyCountries, function(i, countryCode) {
+                    var countryData = that._getCountryData(countryCode);
+                    if (countryData) {
+                        newCountries.push(countryData);
+                        var callingCode = countryData["calling-code"];
+                        if (newCountryCodes[callingCode]) {
+                            newCountryCodes[callingCode].push(countryCode);
+                        } else {
+                            newCountryCodes[callingCode] = [ countryCode ];
+                        }
                     }
                 });
-            } else {
-                allCountries = intlTelInput.countries;
+                // update the global data object
+                intlTelInput.countries = newCountries;
+                intlTelInput.countryCodes = newCountryCodes;
             }
             // process preferred countries - iterate through the preferences,
             // finding the relevant data from the provided intlTelInput.countries array
             var preferredCountries = [];
-            $.each(this.options.preferredCountries, function(i, pc) {
-                var result = $.grep(allCountries, function(c) {
-                    return c.cca2 == pc;
-                });
-                if (result.length) {
-                    preferredCountries.push(result[0]);
+            $.each(this.options.preferredCountries, function(i, countryCode) {
+                var countryData = that._getCountryData(countryCode);
+                if (countryData) {
+                    preferredCountries.push(countryData);
                 }
             });
             // telephone input
@@ -81,7 +86,7 @@ author: Jack O'Connor (http://jackocnr.com)
             $("<li>", {
                 "class": "divider"
             }).appendTo(this.countryList);
-            this._appendListItems(allCountries, "");
+            this._appendListItems(intlTelInput.countries, "");
             this.countryListItems = this.countryList.children(".country");
             // auto select the top one
             this.countryListItems.first().addClass("active");
@@ -185,6 +190,14 @@ author: Jack O'Connor (http://jackocnr.com)
                     that._closeDropdown();
                 }
             });
+        },
+        _getCountryData: function(countryCode) {
+            var result = $.grep(intlTelInput.countries, function(c) {
+                return c.cca2 == countryCode;
+            });
+            if (result.length) {
+                return result[0];
+            }
         },
         _selectFlag: function(countryCode) {
             this.selectedFlagInner.attr("class", "flag " + countryCode);
@@ -1263,7 +1276,7 @@ var intlTelInput = {
     // then I commented some weird 001 entries and added some 4-digit country-code
     // items at the end e.g. 1246 for Barbados
     countryCodes: {
-        1: [ "US" ],
+        1: [ "US", "CA" ],
         7: [ "RU", "KZ" ],
         20: [ "EG" ],
         27: [ "ZA" ],

@@ -24,29 +24,36 @@
     init: function() {
       var that = this;
 
-      var allCountries = [];
-      if(this.options.onlyCountries.length > 0) {
-        $.each(this.options.onlyCountries, function(i, pc) {
-          var result = $.grep(intlTelInput.countries, function(c) {
-            return (c.cca2 == pc);
-          });
-          if (result.length) {
-            allCountries.push(result[0]);
+      // process onlyCountries array and update intlTelInput.countries
+      // and intlTelInput.countryCodes accordingly
+      var newCountries = [], newCountryCodes = {};
+      if (this.options.onlyCountries.length > 0) {
+        $.each(this.options.onlyCountries, function(i, countryCode) {
+          var countryData = that._getCountryData(countryCode);
+          if (countryData) {
+            newCountries.push(countryData);
+
+            var callingCode = countryData["calling-code"];
+            if (newCountryCodes[callingCode]) {
+              newCountryCodes[callingCode].push(countryCode);
+            } else {
+              newCountryCodes[callingCode] = [countryCode];
+            }
           }
         });
-      } else {
-        allCountries = intlTelInput.countries;
+
+        // update the global data object
+        intlTelInput.countries = newCountries;
+        intlTelInput.countryCodes = newCountryCodes;
       }
 
       // process preferred countries - iterate through the preferences,
       // finding the relevant data from the provided intlTelInput.countries array
       var preferredCountries = [];
-      $.each(this.options.preferredCountries, function(i, pc) {
-        var result = $.grep(allCountries, function(c) {
-          return (c.cca2 == pc);
-        });
-        if (result.length) {
-          preferredCountries.push(result[0]);
+      $.each(this.options.preferredCountries, function(i, countryCode) {
+        var countryData = that._getCountryData(countryCode);
+        if (countryData) {
+          preferredCountries.push(countryData);
         }
       });
 
@@ -88,7 +95,7 @@
       $("<li>", {
         "class": "divider"
       }).appendTo(this.countryList);
-      this._appendListItems(allCountries, "");
+      this._appendListItems(intlTelInput.countries, "");
 
       this.countryListItems = this.countryList.children(".country");
       // auto select the top one
@@ -219,6 +226,18 @@
         }
       });
     },
+
+
+
+    _getCountryData: function(countryCode) {
+      var result = $.grep(intlTelInput.countries, function(c) {
+        return (c.cca2 == countryCode);
+      });
+      if (result.length) {
+        return result[0];
+      }
+    },
+
 
 
     _selectFlag: function(countryCode) {
@@ -392,25 +411,24 @@
     // with an underscore or "contains" the `init`-function,
     // treat this as a call to a public method.
     else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
+      // Cache the method call to make it possible to return a value
+      var returns;
 
-        // Cache the method call to make it possible to return a value
-        var returns;
+      this.each(function() {
+        var instance = $.data(this, 'plugin_' + pluginName);
 
-        this.each(function() {
-            var instance = $.data(this, 'plugin_' + pluginName);
+        // Tests that there's already a plugin-instance
+        // and checks that the requested public method exists
+        if (instance instanceof Plugin && typeof instance[options] === 'function') {
+          // Call the method of our plugin instance,
+          // and pass it the supplied arguments.
+          returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+        }
+      });
 
-            // Tests that there's already a plugin-instance
-            // and checks that the requested public method exists
-            if (instance instanceof Plugin && typeof instance[options] === 'function') {
-                // Call the method of our plugin instance,
-                // and pass it the supplied arguments.
-                returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );
-            }
-        });
-
-        // If the earlier cached method gives a value back return the value,
-        // otherwise return this to preserve chainability.
-        return returns !== undefined ? returns : this;
+      // If the earlier cached method gives a value back return the value,
+      // otherwise return this to preserve chainability.
+      return returns !== undefined ? returns : this;
     }
   };
 

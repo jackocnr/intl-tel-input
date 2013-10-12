@@ -943,7 +943,7 @@ var intlTelInput = {
   // then I commented some weird 001 entries and added some 4-digit country-code
   // items at the end e.g. 1246 for Barbados
   countryCodes: {
-    1: ["US"],
+    1: ["US", "CA"],
     7: ["RU", "KZ"],
     20: ["EG"],
     27: ["ZA"],
