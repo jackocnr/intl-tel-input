@@ -103,10 +103,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   // tasks
-  grunt.registerTask('default', ['jshint']);
-  // default is to build everything ready for a commit
-  grunt.registerTask('all', ['jshint', 'sass:main', 'sass:demo', 'uglify:dev', 'uglify:prod']);
+  // build everything ready for a commit
+  grunt.registerTask('build', ['jshint', 'sass', 'uglify']);
   // prepare everything for the demo.html
-  grunt.registerTask('demo', ['jshint', 'sass:main', 'sass:demo', 'uglify:dev']);
+  grunt.registerTask('demo', ['jshint', 'sass', 'uglify:dev']);
 
 };

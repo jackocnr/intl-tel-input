@@ -4,6 +4,22 @@ $hoverColor: rgba(0, 0, 0, 0.05);
 $greyText: #999;
 $greyBorder: #CCC;
 
+$flagHeight: 16px;
+$flagWidth: 16px;
+$flagPadding: 6px;
+// this border width is used for the popup and divider, but it is also
+// assumed to be the border width of the input, which we do not control
+$borderWidth: 1px;
+
+$arrowHeight: 4px;
+$arrowWidth: 6px;
+$triangleBorder: 4px;
+$arrowPadding: 4px;
+
+$inputHeight: $flagHeight + (2 * ($flagPadding + $borderWidth)); // 30px
+$inputPadding: 9px;
+$selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPadding;
+
 .intl-tel-input {
   // need position on the container so the selected flag can be
   // absolutely positioned over the input
@@ -20,24 +36,26 @@ $greyBorder: #CCC;
     cursor: pointer;
 
     .selected-flag {
-      // 1px margin to avoid covering the input border
-      margin: 1px;
-      padding: 6px 16px 6px 7px;
+      // we add margin to avoid covering the input border on hover
+      margin: $borderWidth;
+      padding: $flagPadding ($flagPadding + $arrowWidth + $arrowPadding) $flagPadding $flagPadding;
 
       &:hover {
         background-color: $hoverColor;
       }
 
       .down-arrow {
-        top: 6px;
+        // split the difference between the flag and the arrow height to verically center
+        top: ($flagHeight - $arrowHeight) / 2;
         position: relative;
-        left: 20px;
+        left: $flagWidth + $arrowPadding;
 
-        width: 0; 
-        height: 0; 
-        border-left: 4px solid transparent;
-        border-right: 4px solid transparent;
-        border-top: 4px solid black;
+        // css triangle
+        width: 0;
+        height: 0;
+        border-left: $triangleBorder solid transparent;
+        border-right: $triangleBorder solid transparent;
+        border-top: $arrowHeight solid black;
       }
     }
 
@@ -55,26 +73,26 @@ $greyBorder: #CCC;
 
       box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
       background-color: white;
-      border: 1px solid $greyBorder;
+      border: $borderWidth solid $greyBorder;
 
       position: absolute;
-      // 30px height of input, but -1 to avoid showing double border at the bottom
-      top: 29px;
+      // height of input -1px to avoid showing double border at the overlap
+      top: $inputHeight - 1px;
       // wide enough to fit long country names
       width: 330px;
-      height: 200px;
+      max-height: 200px;
 
       // the divider below the preferred countries
       .divider {
         padding-bottom: 5px;
         margin-bottom: 5px;
-        border-bottom: 1px solid $greyBorder;
+        border-bottom: $borderWidth solid $greyBorder;
       }
 
       // each country item in dropdown
       .country {
         // set this to height of flag - if it is higher, things get misaligned
-        line-height: 16px;
+        line-height: $flagHeight;
         padding: 4px 10px;
         // the dial codes after the country names are greyed out
         .dial-code {color: $greyText;}
@@ -87,6 +105,7 @@ $greyBorder: #CCC;
         display: inline-block;
         vertical-align: bottom;
       }
+      // spacing between country flag, name and dial code
       .flag, .country-name {
         margin-right: 6px;
       }
@@ -97,9 +116,11 @@ $greyBorder: #CCC;
     // dont let padding make the input higher than the height value we give it
     box-sizing: border-box;
     -moz-box-sizing: border-box;
-    height: 30px;
+
+    // hardcode the input's height to fit the selected flag inside it
+    height: $inputHeight;
     // make space for the selected flag
-    padding-left: 47px;
+    padding-left: $selectedFlagWidth + $inputPadding;
 
     position: relative;
     z-index: 0;
