@@ -54,7 +54,7 @@ author: Jack O'Connor (http://jackocnr.com)
             });
             // telephone input
             this.telInput = $(this.element);
-            // if empty, and americaMode is disabled, insert the default dial code
+            // if initialDialCode is enabled, insert the default dial code
             if (this.options.initialDialCode && this.telInput.val() === "") {
                 this.telInput.val("+" + preferredCountries[0]["calling-code"] + " ");
             }
@@ -93,19 +93,22 @@ author: Jack O'Connor (http://jackocnr.com)
             // update flag on keyup
             // (by extracting the dial code from the input value)
             this.telInput.keyup(function() {
-                // try and extract valid dial code from input, else default to US dialcode
-                var dialCode = that._getDialCode(that.telInput.val()) || preferredCountries[0]["calling-code"];
-                // check if one of the matching country's is already selected
-                var countryCodes = intlTelInput.countryCodes[dialCode];
-                var alreadySelected = false;
-                $.each(countryCodes, function(i, c) {
-                    if (that.selectedFlagInner.hasClass(c.toLowerCase())) {
-                        alreadySelected = true;
-                    }
-                });
-                // otherwise update selection
+                var countryCode, alreadySelected = false;
+                // try and extract valid dial code from input
+                var dialCode = that._getDialCode(that.telInput.val());
+                if (dialCode) {
+                    // check if one of the matching country's is already selected
+                    var countryCodes = intlTelInput.countryCodes[dialCode];
+                    $.each(countryCodes, function(i, c) {
+                        if (that.selectedFlagInner.hasClass(c.toLowerCase())) {
+                            alreadySelected = true;
+                        }
+                    });
+                    countryCode = countryCodes[0].toLowerCase();
+                } else {
+                    countryCode = preferredCountries[0].cca2.toLowerCase();
+                }
                 if (!alreadySelected) {
-                    var countryCode = countryCodes[0].toLowerCase();
                     that._selectFlag(countryCode);
                 }
             });
