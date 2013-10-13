@@ -25,8 +25,8 @@ author: Jack O'Connor (http://jackocnr.com)
             var that = this;
             // process onlyCountries array and update intlTelInput.countries
             // and intlTelInput.countryCodes accordingly
-            var newCountries = [], newCountryCodes = {};
             if (this.options.onlyCountries.length > 0) {
+                var newCountries = [], newCountryCodes = {};
                 $.each(this.options.onlyCountries, function(i, countryCode) {
                     var countryData = that._getCountryData(countryCode);
                     if (countryData) {
@@ -52,11 +52,12 @@ author: Jack O'Connor (http://jackocnr.com)
                     preferredCountries.push(countryData);
                 }
             });
+            this.defaultCountry = preferredCountries.length ? preferredCountries[0] : intlTelInput.countries[0];
             // telephone input
             this.telInput = $(this.element);
             // if initialDialCode is enabled, insert the default dial code
             if (this.options.initialDialCode && this.telInput.val() === "") {
-                this.telInput.val("+" + preferredCountries[0]["calling-code"] + " ");
+                this.telInput.val("+" + this.defaultCountry["calling-code"] + " ");
             }
             // containers (mostly for positioning)
             this.telInput.wrap($("<div>", {
@@ -70,7 +71,7 @@ author: Jack O'Connor (http://jackocnr.com)
                 "class": "selected-flag"
             }).appendTo(flagsContainer);
             // here we default to the first country in the list
-            var firstCountry = preferredCountries[0].cca2;
+            var firstCountry = this.defaultCountry.cca2;
             this.selectedFlagInner = $("<div>", {
                 "class": "flag " + firstCountry
             }).appendTo(selectedFlag);
@@ -82,10 +83,12 @@ author: Jack O'Connor (http://jackocnr.com)
             this.countryList = $("<ul>", {
                 "class": "country-list hide"
             }).appendTo(flagsContainer);
-            this._appendListItems(preferredCountries, "preferred");
-            $("<li>", {
-                "class": "divider"
-            }).appendTo(this.countryList);
+            if (preferredCountries.length) {
+                this._appendListItems(preferredCountries, "preferred");
+                $("<li>", {
+                    "class": "divider"
+                }).appendTo(this.countryList);
+            }
             this._appendListItems(intlTelInput.countries, "");
             this.countryListItems = this.countryList.children(".country");
             // auto select the top one
@@ -106,7 +109,7 @@ author: Jack O'Connor (http://jackocnr.com)
                     });
                     countryCode = countryCodes[0];
                 } else {
-                    countryCode = preferredCountries[0].cca2;
+                    countryCode = that.defaultCountry.cca2;
                 }
                 if (!alreadySelected) {
                     that._selectFlag(countryCode);
@@ -194,14 +197,15 @@ author: Jack O'Connor (http://jackocnr.com)
                 }
             });
         },
+        // find the country data for the given country code
         _getCountryData: function(countryCode) {
-            var result = $.grep(intlTelInput.countries, function(c) {
-                return c.cca2 == countryCode;
-            });
-            if (result.length) {
-                return result[0];
+            for (var i = 0; i < intlTelInput.countries.length; i++) {
+                if (intlTelInput.countries[i].cca2 == countryCode) {
+                    return intlTelInput.countries[i];
+                }
             }
         },
+        // update the selected flag and the active list item
         _selectFlag: function(countryCode) {
             this.selectedFlagInner.attr("class", "flag " + countryCode);
             // and the active list item
@@ -210,6 +214,7 @@ author: Jack O'Connor (http://jackocnr.com)
             listItem.addClass("active");
             return listItem;
         },
+        // update the selected flag, and insert the dial code
         selectCountry: function(countryCode) {
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {
@@ -218,6 +223,7 @@ author: Jack O'Connor (http://jackocnr.com)
                 this.telInput.val("+" + dialCode + " ");
             }
         },
+        // called when the user selects a list item from the dropdown
         _selectListItem: function(listItem) {
             var countryCode = listItem.attr("data-country-code");
             // update selected flag

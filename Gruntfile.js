@@ -105,6 +105,8 @@ module.exports = function(grunt) {
   // tasks
   // build everything ready for a commit
   grunt.registerTask('build', ['jshint', 'sass', 'uglify']);
+  // just javascript
+  grunt.registerTask('js', ['jshint', 'uglify']);
   // prepare everything for the demo.html
   grunt.registerTask('demo', ['jshint', 'sass', 'uglify:dev']);
 
