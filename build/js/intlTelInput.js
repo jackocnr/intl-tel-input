@@ -1,6 +1,6 @@
 /*
 intl-tel-input 
-version: 0.8.3
+version: 0.9.0
 description: A jQuery plugin for entering international telephone numbers
 repository: https://github.com/Bluefieldscom/intl-tel-input.git
 license: MIT
@@ -9,6 +9,7 @@ author: Jack O'Connor (http://jackocnr.com)
 (function($, window, document, undefined) {
     var pluginName = "intlTelInput", defaults = {
         preferredCountries: [ "us", "gb" ],
+        // united states and united kingdom
         initialDialCode: true,
         americaMode: false,
         onlyCountries: []
