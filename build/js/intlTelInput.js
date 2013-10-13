@@ -8,7 +8,7 @@ author: Jack O'Connor (http://jackocnr.com)
 */
 (function($, window, document, undefined) {
     var pluginName = "intlTelInput", defaults = {
-        preferredCountries: [ "US", "GB" ],
+        preferredCountries: [ "us", "gb" ],
         initialDialCode: true,
         americaMode: false,
         onlyCountries: []

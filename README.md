@@ -31,19 +31,19 @@ Then include the plugin and initialise it on your input element
         
 * Option to specify "preferred countries" (which appear at the top of the list) e.g.
 
-        preferredCountries: ["US", "GB"]
+        preferredCountries: ["us", "gb"]
 
 * Option to set "america mode" (disabled by default), which doesn't display the +1 for American numbers, because a lot of Americans are unfamiliar with international dial codes
 
         americaMode: true
 
-* Option to set "only countries" (all by default), this shows only the countries you specify. Preferred countries option will only apply to the countries you put here.
+* Option to set "only countries", to display only the countries you specify.
 
-        onlyCountries: ['US', 'PH']
+        onlyCountries: ['us', 'ph']
 
 * Programatically select a country after initialisation (e.g. when the user is entering their address)
 
-        $('#mobile-number').intlTelInput('selectCountry', 'GB');
+        $('#mobile-number').intlTelInput('selectCountry', 'gb');
 
 ## Roadmap
 If there's enough interest, I may look into adding the following features:

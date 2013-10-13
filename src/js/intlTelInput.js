@@ -2,7 +2,7 @@
 
   var pluginName = "intlTelInput",
     defaults = {
-      preferredCountries: ["US", "GB"],
+      preferredCountries: ["us", "gb"],
       initialDialCode: true,
       americaMode: false,
       onlyCountries: []
