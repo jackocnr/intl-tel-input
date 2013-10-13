@@ -7,7 +7,7 @@
       "./build/css/intlTelInput.css"
   ],
   "dependencies": {
-    "jquery": "~1.8"
+    "jquery": ">= 1.8.0"
   },
   "devDependencies": {
     "jasmine": "~1.3",
