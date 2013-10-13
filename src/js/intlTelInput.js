@@ -78,7 +78,7 @@
         "class": "selected-flag"
       }).appendTo(flagsContainer);
       // here we default to the first country in the list
-      var firstCountry = preferredCountries[0].cca2.toLowerCase();
+      var firstCountry = preferredCountries[0].cca2;
       this.selectedFlagInner = $("<div>", {
         "class": "flag " + firstCountry
       }).appendTo(selectedFlag);
@@ -113,15 +113,15 @@
           // check if one of the matching country's is already selected
           var countryCodes = intlTelInput.countryCodes[dialCode];
           $.each(countryCodes, function(i, c) {
-            if (that.selectedFlagInner.hasClass(c.toLowerCase())) {
+            if (that.selectedFlagInner.hasClass(c)) {
               alreadySelected = true;
             }
           });
-          countryCode = countryCodes[0].toLowerCase();
+          countryCode = countryCodes[0];
         }
         // else default to dialcode of the first preferred country
         else {
-          countryCode = preferredCountries[0].cca2.toLowerCase();
+          countryCode = preferredCountries[0].cca2;
         }
 
         if (!alreadySelected) {
@@ -258,7 +258,6 @@
 
 
     selectCountry: function(countryCode) {
-      countryCode = countryCode.toLowerCase();
       // check if already selected
       if (!this.selectedFlagInner.hasClass(countryCode)) {
         var listItem = this._selectFlag(countryCode);
@@ -269,7 +268,7 @@
 
 
     _selectListItem: function(listItem) {
-      var countryCode = listItem.attr("data-country-code").toLowerCase();
+      var countryCode = listItem.attr("data-country-code");
       // update selected flag
       this.selectedFlagInner.attr("class", "flag " + countryCode);
       // update input value
@@ -384,7 +383,7 @@
         // open the list item
         tmp += "<li class='country " + className + "' data-dial-code='" + c['calling-code'] + "' data-country-code='" + c.cca2 + "'>";
         // add the flag
-        tmp += "<div class='flag " + c.cca2.toLowerCase() + "'></div>";
+        tmp += "<div class='flag " + c.cca2 + "'></div>";
         // and the country name and dial code
         tmp += "<span class='country-name'>" + c.name + "</span>";
         tmp += "<span class='dial-code'>+" + c['calling-code'] + "</span>";

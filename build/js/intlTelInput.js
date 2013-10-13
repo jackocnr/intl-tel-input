@@ -70,7 +70,7 @@ author: Jack O'Connor (http://jackocnr.com)
                 "class": "selected-flag"
             }).appendTo(flagsContainer);
             // here we default to the first country in the list
-            var firstCountry = preferredCountries[0].cca2.toLowerCase();
+            var firstCountry = preferredCountries[0].cca2;
             this.selectedFlagInner = $("<div>", {
                 "class": "flag " + firstCountry
             }).appendTo(selectedFlag);
@@ -100,13 +100,13 @@ author: Jack O'Connor (http://jackocnr.com)
                     // check if one of the matching country's is already selected
                     var countryCodes = intlTelInput.countryCodes[dialCode];
                     $.each(countryCodes, function(i, c) {
-                        if (that.selectedFlagInner.hasClass(c.toLowerCase())) {
+                        if (that.selectedFlagInner.hasClass(c)) {
                             alreadySelected = true;
                         }
                     });
-                    countryCode = countryCodes[0].toLowerCase();
+                    countryCode = countryCodes[0];
                 } else {
-                    countryCode = preferredCountries[0].cca2.toLowerCase();
+                    countryCode = preferredCountries[0].cca2;
                 }
                 if (!alreadySelected) {
                     that._selectFlag(countryCode);
@@ -211,7 +211,6 @@ author: Jack O'Connor (http://jackocnr.com)
             return listItem;
         },
         selectCountry: function(countryCode) {
-            countryCode = countryCode.toLowerCase();
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {
                 var listItem = this._selectFlag(countryCode);
@@ -220,7 +219,7 @@ author: Jack O'Connor (http://jackocnr.com)
             }
         },
         _selectListItem: function(listItem) {
-            var countryCode = listItem.attr("data-country-code").toLowerCase();
+            var countryCode = listItem.attr("data-country-code");
             // update selected flag
             this.selectedFlagInner.attr("class", "flag " + countryCode);
             // update input value
@@ -314,7 +313,7 @@ author: Jack O'Connor (http://jackocnr.com)
                 // open the list item
                 tmp += "<li class='country " + className + "' data-dial-code='" + c["calling-code"] + "' data-country-code='" + c.cca2 + "'>";
                 // add the flag
-                tmp += "<div class='flag " + c.cca2.toLowerCase() + "'></div>";
+                tmp += "<div class='flag " + c.cca2 + "'></div>";
                 // and the country name and dial code
                 tmp += "<span class='country-name'>" + c.name + "</span>";
                 tmp += "<span class='dial-code'>+" + c["calling-code"] + "</span>";
@@ -366,910 +365,887 @@ var intlTelInput = {
     // Also commented some countries which we dont yet have flags for.
     countries: [ {
         name: "Afghanistan",
-        cca2: "AF",
+        cca2: "af",
         "calling-code": "93"
-    }, //{"name":"Åland Islands","cca2":"AX","calling-code":"358"},
-    {
+    }, {
         name: "Albania",
-        cca2: "AL",
+        cca2: "al",
         "calling-code": "355"
     }, {
         name: "Algeria",
-        cca2: "DZ",
+        cca2: "dz",
         "calling-code": "213"
     }, {
         name: "American Samoa",
-        cca2: "AS",
+        cca2: "as",
         "calling-code": "1684"
     }, {
         name: "Andorra",
-        cca2: "AD",
+        cca2: "ad",
         "calling-code": "376"
     }, {
         name: "Angola",
-        cca2: "AO",
+        cca2: "ao",
         "calling-code": "244"
     }, {
         name: "Anguilla",
-        cca2: "AI",
+        cca2: "ai",
         "calling-code": "1264"
     }, {
         name: "Antigua and Barbuda",
-        cca2: "AG",
+        cca2: "ag",
         "calling-code": "1268"
     }, {
         name: "Argentina",
-        cca2: "AR",
+        cca2: "ar",
         "calling-code": "54"
     }, {
         name: "Armenia",
-        cca2: "AM",
+        cca2: "am",
         "calling-code": "374"
     }, {
         name: "Aruba",
-        cca2: "AW",
+        cca2: "aw",
         "calling-code": "297"
     }, {
         name: "Australia",
-        cca2: "AU",
+        cca2: "au",
         "calling-code": "61"
     }, {
         name: "Austria",
-        cca2: "AT",
+        cca2: "at",
         "calling-code": "43"
     }, {
         name: "Azerbaijan",
-        cca2: "AZ",
+        cca2: "az",
         "calling-code": "994"
     }, {
         name: "Bahamas",
-        cca2: "BS",
+        cca2: "bs",
         "calling-code": "1242"
     }, {
         name: "Bahrain",
-        cca2: "BH",
+        cca2: "bh",
         "calling-code": "973"
     }, {
         name: "Bangladesh",
-        cca2: "BD",
+        cca2: "bd",
         "calling-code": "880"
     }, {
         name: "Barbados",
-        cca2: "BB",
+        cca2: "bb",
         "calling-code": "1246"
     }, {
         name: "Belarus",
-        cca2: "BY",
+        cca2: "by",
         "calling-code": "375"
     }, {
         name: "Belgium",
-        cca2: "BE",
+        cca2: "be",
         "calling-code": "32"
     }, {
         name: "Belize",
-        cca2: "BZ",
+        cca2: "bz",
         "calling-code": "501"
     }, {
         name: "Benin",
-        cca2: "BJ",
+        cca2: "bj",
         "calling-code": "229"
     }, {
         name: "Bermuda",
-        cca2: "BM",
+        cca2: "bm",
         "calling-code": "1441"
     }, {
         name: "Bhutan",
-        cca2: "BT",
+        cca2: "bt",
         "calling-code": "975"
     }, {
         name: "Bolivia",
-        cca2: "BO",
+        cca2: "bo",
         "calling-code": "591"
-    }, //{"name":"Bonaire","cca2":"BQ","calling-code":"5997"},
-    {
+    }, {
         name: "Bosnia and Herzegovina",
-        cca2: "BA",
+        cca2: "ba",
         "calling-code": "387"
     }, {
         name: "Botswana",
-        cca2: "BW",
+        cca2: "bw",
         "calling-code": "267"
     }, {
         name: "Brazil",
-        cca2: "BR",
+        cca2: "br",
         "calling-code": "55"
-    }, //{"name":"British Indian Ocean Territory","cca2":"IO","calling-code":"246"},
-    {
+    }, {
         name: "Brunei Darussalam",
-        cca2: "BN",
+        cca2: "bn",
         "calling-code": "673"
     }, {
         name: "Bulgaria",
-        cca2: "BG",
+        cca2: "bg",
         "calling-code": "359"
     }, {
         name: "Burkina Faso",
-        cca2: "BF",
+        cca2: "bf",
         "calling-code": "226"
     }, {
         name: "Burundi",
-        cca2: "BI",
+        cca2: "bi",
         "calling-code": "257"
     }, {
         name: "Cambodia",
-        cca2: "KH",
+        cca2: "kh",
         "calling-code": "855"
     }, {
         name: "Cameroon",
-        cca2: "CM",
+        cca2: "cm",
         "calling-code": "237"
     }, {
         name: "Canada",
-        cca2: "CA",
+        cca2: "ca",
         "calling-code": "1"
     }, {
         name: "Cape Verde",
-        cca2: "CV",
+        cca2: "cv",
         "calling-code": "238"
     }, {
         name: "Cayman Islands",
-        cca2: "KY",
+        cca2: "ky",
         "calling-code": "1345"
     }, {
         name: "Central African Republic",
-        cca2: "CF",
+        cca2: "cf",
         "calling-code": "236"
     }, {
         name: "Chad",
-        cca2: "TD",
+        cca2: "td",
         "calling-code": "235"
     }, {
         name: "Chile",
-        cca2: "CL",
+        cca2: "cl",
         "calling-code": "56"
     }, {
         name: "China",
-        cca2: "CN",
+        cca2: "cn",
         "calling-code": "86"
-    }, //{"name":"Christmas Island","cca2":"CX","calling-code":"61"},
-    //{"name":"Cocos (Keeling) Islands","cca2":"CC","calling-code":"61"},
-    {
+    }, {
         name: "Colombia",
-        cca2: "CO",
+        cca2: "co",
         "calling-code": "57"
     }, {
         name: "Comoros",
-        cca2: "KM",
+        cca2: "km",
         "calling-code": "269"
     }, {
         name: "Congo (DRC)",
-        cca2: "CD",
+        cca2: "cd",
         "calling-code": "243"
     }, {
         name: "Congo (Republic)",
-        cca2: "CG",
+        cca2: "cg",
         "calling-code": "242"
     }, {
         name: "Cook Islands",
-        cca2: "CK",
+        cca2: "ck",
         "calling-code": "682"
     }, {
         name: "Costa Rica",
-        cca2: "CR",
+        cca2: "cr",
         "calling-code": "506"
     }, {
         name: "Côte d'Ivoire",
-        cca2: "CI",
+        cca2: "ci",
         "calling-code": "225"
     }, {
         name: "Croatia",
-        cca2: "HR",
+        cca2: "hr",
         "calling-code": "385"
     }, {
         name: "Cuba",
-        cca2: "CU",
+        cca2: "cu",
         "calling-code": "53"
-    }, //{"name":"Curaçao","cca2":"CW","calling-code":"5999"},
-    {
+    }, {
         name: "Cyprus",
-        cca2: "CY",
+        cca2: "cy",
         "calling-code": "357"
     }, {
         name: "Czech Republic",
-        cca2: "CZ",
+        cca2: "cz",
         "calling-code": "420"
     }, {
         name: "Denmark",
-        cca2: "DK",
+        cca2: "dk",
         "calling-code": "45"
     }, {
         name: "Djibouti",
-        cca2: "DJ",
+        cca2: "dj",
         "calling-code": "253"
     }, {
         name: "Dominica",
-        cca2: "DM",
+        cca2: "dm",
         "calling-code": "1767"
     }, {
         name: "Dominican Republic",
-        cca2: "DO",
+        cca2: "do",
         "calling-code": "1809"
     }, {
         name: "Ecuador",
-        cca2: "EC",
+        cca2: "ec",
         "calling-code": "593"
     }, {
         name: "Egypt",
-        cca2: "EG",
+        cca2: "eg",
         "calling-code": "20"
     }, {
         name: "El Salvador",
-        cca2: "SV",
+        cca2: "sv",
         "calling-code": "503"
     }, {
         name: "Equatorial Guinea",
-        cca2: "GQ",
+        cca2: "gq",
         "calling-code": "240"
     }, {
         name: "Eritrea",
-        cca2: "ER",
+        cca2: "er",
         "calling-code": "291"
     }, {
         name: "Estonia",
-        cca2: "EE",
+        cca2: "ee",
         "calling-code": "372"
     }, {
         name: "Ethiopia",
-        cca2: "ET",
+        cca2: "et",
         "calling-code": "251"
-    }, //{"name":"Falkland Islands (Malvinas)","cca2":"FK","calling-code":"500"},
-    {
+    }, {
         name: "Faroe Islands",
-        cca2: "FO",
+        cca2: "fo",
         "calling-code": "298"
     }, {
         name: "Fiji",
-        cca2: "FJ",
+        cca2: "fj",
         "calling-code": "679"
     }, {
         name: "Finland",
-        cca2: "FI",
+        cca2: "fi",
         "calling-code": "358"
     }, {
         name: "France",
-        cca2: "FR",
+        cca2: "fr",
         "calling-code": "33"
-    }, //{"name":"French Guiana","cca2":"GF","calling-code":"594"},
-    {
+    }, {
         name: "French Polynesia",
-        cca2: "PF",
+        cca2: "pf",
         "calling-code": "689"
     }, {
         name: "Gabon",
-        cca2: "GA",
+        cca2: "ga",
         "calling-code": "241"
     }, {
         name: "Gambia",
-        cca2: "GM",
+        cca2: "gm",
         "calling-code": "220"
     }, {
         name: "Georgia",
-        cca2: "GE",
+        cca2: "ge",
         "calling-code": "995"
     }, {
         name: "Germany",
-        cca2: "DE",
+        cca2: "de",
         "calling-code": "49"
     }, {
         name: "Ghana",
-        cca2: "GH",
+        cca2: "gh",
         "calling-code": "233"
     }, {
         name: "Gibraltar",
-        cca2: "GI",
+        cca2: "gi",
         "calling-code": "350"
     }, {
         name: "Greece",
-        cca2: "GR",
+        cca2: "gr",
         "calling-code": "30"
     }, {
         name: "Greenland",
-        cca2: "GL",
+        cca2: "gl",
         "calling-code": "299"
     }, {
         name: "Grenada",
-        cca2: "GD",
+        cca2: "gd",
         "calling-code": "1473"
     }, {
         name: "Guadeloupe",
-        cca2: "GP",
+        cca2: "gp",
         "calling-code": "590"
     }, {
         name: "Guam",
-        cca2: "GU",
+        cca2: "gu",
         "calling-code": "1671"
     }, {
         name: "Guatemala",
-        cca2: "GT",
+        cca2: "gt",
         "calling-code": "502"
     }, {
         name: "Guernsey",
-        cca2: "GG",
+        cca2: "gg",
         "calling-code": "44"
     }, {
         name: "Guinea",
-        cca2: "GN",
+        cca2: "gn",
         "calling-code": "224"
     }, {
         name: "Guinea-Bissau",
-        cca2: "GW",
+        cca2: "gw",
         "calling-code": "245"
     }, {
         name: "Guyana",
-        cca2: "GY",
+        cca2: "gy",
         "calling-code": "592"
     }, {
         name: "Haiti",
-        cca2: "HT",
+        cca2: "ht",
         "calling-code": "509"
     }, {
         name: "Honduras",
-        cca2: "HN",
+        cca2: "hn",
         "calling-code": "504"
     }, {
         name: "Hong Kong",
-        cca2: "HK",
+        cca2: "hk",
         "calling-code": "852"
     }, {
         name: "Hungary",
-        cca2: "HU",
+        cca2: "hu",
         "calling-code": "36"
     }, {
         name: "Iceland",
-        cca2: "IS",
+        cca2: "is",
         "calling-code": "354"
     }, {
         name: "India",
-        cca2: "IN",
+        cca2: "in",
         "calling-code": "91"
     }, {
         name: "Indonesia",
-        cca2: "ID",
+        cca2: "id",
         "calling-code": "62"
     }, {
         name: "Iran",
-        cca2: "IR",
+        cca2: "ir",
         "calling-code": "98"
     }, {
         name: "Iraq",
-        cca2: "IQ",
+        cca2: "iq",
         "calling-code": "964"
     }, {
         name: "Ireland",
-        cca2: "IE",
+        cca2: "ie",
         "calling-code": "353"
     }, {
         name: "Isle of Man",
-        cca2: "IM",
+        cca2: "im",
         "calling-code": "44"
     }, {
         name: "Israel",
-        cca2: "IL",
+        cca2: "il",
         "calling-code": "972"
     }, {
         name: "Italy",
-        cca2: "IT",
+        cca2: "it",
         "calling-code": "39"
     }, {
         name: "Jamaica",
-        cca2: "JM",
+        cca2: "jm",
         "calling-code": "1876"
     }, {
         name: "Japan",
-        cca2: "JP",
+        cca2: "jp",
         "calling-code": "81"
     }, {
         name: "Jersey",
-        cca2: "JE",
+        cca2: "je",
         "calling-code": "44"
     }, {
         name: "Jordan",
-        cca2: "JO",
+        cca2: "jo",
         "calling-code": "962"
     }, {
         name: "Kazakhstan",
-        cca2: "KZ",
+        cca2: "kz",
         "calling-code": "7"
     }, {
         name: "Kenya",
-        cca2: "KE",
+        cca2: "ke",
         "calling-code": "254"
     }, {
         name: "Kiribati",
-        cca2: "KI",
+        cca2: "ki",
         "calling-code": "686"
     }, {
         name: "Kuwait",
-        cca2: "KW",
+        cca2: "kw",
         "calling-code": "965"
     }, {
         name: "Kyrgyzstan",
-        cca2: "KG",
+        cca2: "kg",
         "calling-code": "996"
     }, {
         name: "Laos",
-        cca2: "LA",
+        cca2: "la",
         "calling-code": "856"
     }, {
         name: "Latvia",
-        cca2: "LV",
+        cca2: "lv",
         "calling-code": "371"
     }, {
         name: "Lebanon",
-        cca2: "LB",
+        cca2: "lb",
         "calling-code": "961"
     }, {
         name: "Lesotho",
-        cca2: "LS",
+        cca2: "ls",
         "calling-code": "266"
     }, {
         name: "Liberia",
-        cca2: "LR",
+        cca2: "lr",
         "calling-code": "231"
     }, {
         name: "Libya",
-        cca2: "LY",
+        cca2: "ly",
         "calling-code": "218"
     }, {
         name: "Liechtenstein",
-        cca2: "LI",
+        cca2: "li",
         "calling-code": "423"
     }, {
         name: "Lithuania",
-        cca2: "LT",
+        cca2: "lt",
         "calling-code": "370"
     }, {
         name: "Luxembourg",
-        cca2: "LU",
+        cca2: "lu",
         "calling-code": "352"
     }, {
         name: "Macao",
-        cca2: "MO",
+        cca2: "mo",
         "calling-code": "853"
     }, {
         name: "Macedonia",
-        cca2: "MK",
+        cca2: "mk",
         "calling-code": "389"
     }, {
         name: "Madagascar",
-        cca2: "MG",
+        cca2: "mg",
         "calling-code": "261"
     }, {
         name: "Malawi",
-        cca2: "MW",
+        cca2: "mw",
         "calling-code": "265"
     }, {
         name: "Malaysia",
-        cca2: "MY",
+        cca2: "my",
         "calling-code": "60"
     }, {
         name: "Maldives",
-        cca2: "MV",
+        cca2: "mv",
         "calling-code": "960"
     }, {
         name: "Mali",
-        cca2: "ML",
+        cca2: "ml",
         "calling-code": "223"
     }, {
         name: "Malta",
-        cca2: "MT",
+        cca2: "mt",
         "calling-code": "356"
     }, {
         name: "Marshall Islands",
-        cca2: "MH",
+        cca2: "mh",
         "calling-code": "692"
     }, {
         name: "Martinique",
-        cca2: "MQ",
+        cca2: "mq",
         "calling-code": "596"
     }, {
         name: "Mauritania",
-        cca2: "MR",
+        cca2: "mr",
         "calling-code": "222"
     }, {
         name: "Mauritius",
-        cca2: "MU",
+        cca2: "mu",
         "calling-code": "230"
-    }, //{"name":"Mayotte","cca2":"YT","calling-code":"262"},
-    {
+    }, {
         name: "Mexico",
-        cca2: "MX",
+        cca2: "mx",
         "calling-code": "52"
     }, {
         name: "Micronesia",
-        cca2: "FM",
+        cca2: "fm",
         "calling-code": "691"
     }, {
         name: "Moldova",
-        cca2: "MD",
+        cca2: "md",
         "calling-code": "373"
     }, {
         name: "Monaco",
-        cca2: "MC",
+        cca2: "mc",
         "calling-code": "377"
     }, {
         name: "Mongolia",
-        cca2: "MN",
+        cca2: "mn",
         "calling-code": "976"
     }, {
         name: "Montenegro",
-        cca2: "ME",
+        cca2: "me",
         "calling-code": "382"
     }, {
         name: "Montserrat",
-        cca2: "MS",
+        cca2: "ms",
         "calling-code": "1664"
     }, {
         name: "Morocco",
-        cca2: "MA",
+        cca2: "ma",
         "calling-code": "212"
     }, {
         name: "Mozambique",
-        cca2: "MZ",
+        cca2: "mz",
         "calling-code": "258"
     }, {
         name: "Myanmar (Burma)",
-        cca2: "MM",
+        cca2: "mm",
         "calling-code": "95"
     }, {
         name: "Namibia",
-        cca2: "NA",
+        cca2: "na",
         "calling-code": "264"
     }, {
         name: "Nauru",
-        cca2: "NR",
+        cca2: "nr",
         "calling-code": "674"
     }, {
         name: "Nepal",
-        cca2: "NP",
+        cca2: "np",
         "calling-code": "977"
     }, {
         name: "Netherlands",
-        cca2: "NL",
+        cca2: "nl",
         "calling-code": "31"
     }, {
         name: "New Caledonia",
-        cca2: "NC",
+        cca2: "nc",
         "calling-code": "687"
     }, {
         name: "New Zealand",
-        cca2: "NZ",
+        cca2: "nz",
         "calling-code": "64"
     }, {
         name: "Nicaragua",
-        cca2: "NI",
+        cca2: "ni",
         "calling-code": "505"
     }, {
         name: "Niger",
-        cca2: "NE",
+        cca2: "ne",
         "calling-code": "227"
     }, {
         name: "Nigeria",
-        cca2: "NG",
+        cca2: "ng",
         "calling-code": "234"
-    }, //{"name":"Niue","cca2":"NU","calling-code":"683"},
-    //{"name":"Norfolk Island","cca2":"NF","calling-code":"672"},
-    {
+    }, {
         name: "North Korea",
-        cca2: "KP",
+        cca2: "kp",
         "calling-code": "850"
-    }, //{"name":"Northern Mariana Islands","cca2":"MP","calling-code":"1670"},
-    {
+    }, {
         name: "Norway",
-        cca2: "NO",
+        cca2: "no",
         "calling-code": "47"
     }, {
         name: "Oman",
-        cca2: "OM",
+        cca2: "om",
         "calling-code": "968"
     }, {
         name: "Pakistan",
-        cca2: "PK",
+        cca2: "pk",
         "calling-code": "92"
     }, {
         name: "Palau",
-        cca2: "PW",
+        cca2: "pw",
         "calling-code": "680"
     }, {
         name: "Palestinian Territory",
-        cca2: "PS",
+        cca2: "ps",
         "calling-code": "970"
     }, {
         name: "Panama",
-        cca2: "PA",
+        cca2: "pa",
         "calling-code": "507"
     }, {
         name: "Papua New Guinea",
-        cca2: "PG",
+        cca2: "pg",
         "calling-code": "675"
     }, {
         name: "Paraguay",
-        cca2: "PY",
+        cca2: "py",
         "calling-code": "595"
     }, {
         name: "Peru",
-        cca2: "PE",
+        cca2: "pe",
         "calling-code": "51"
     }, {
         name: "Philippines",
-        cca2: "PH",
+        cca2: "ph",
         "calling-code": "63"
-    }, //{"name":"Pitcairn","cca2":"PN","calling-code":"64"},
-    {
+    }, {
         name: "Poland",
-        cca2: "PL",
+        cca2: "pl",
         "calling-code": "48"
     }, {
         name: "Portugal",
-        cca2: "PT",
+        cca2: "pt",
         "calling-code": "351"
     }, {
         name: "Puerto Rico",
-        cca2: "PR",
+        cca2: "pr",
         "calling-code": "1787"
     }, {
         name: "Qatar",
-        cca2: "QA",
+        cca2: "qa",
         "calling-code": "974"
     }, {
         name: "Réunion",
-        cca2: "RE",
+        cca2: "re",
         "calling-code": "262"
     }, {
         name: "Romania",
-        cca2: "RO",
+        cca2: "ro",
         "calling-code": "40"
     }, {
         name: "Russian Federation",
-        cca2: "RU",
+        cca2: "ru",
         "calling-code": "7"
     }, {
         name: "Rwanda",
-        cca2: "RW",
+        cca2: "rw",
         "calling-code": "250"
-    }, //{"name":"Saint Barthélemy","cca2":"BL","calling-code":"590"},
-    //{"name":"Saint Helena","cca2":"SH","calling-code":"290"},
-    {
+    }, {
         name: "Saint Kitts and Nevis",
-        cca2: "KN",
+        cca2: "kn",
         "calling-code": "1869"
     }, {
         name: "Saint Lucia",
-        cca2: "LC",
+        cca2: "lc",
         "calling-code": "1758"
-    }, //{"name":"Saint Martin","cca2":"MF","calling-code":"590"},
-    //{"name":"Saint Pierre and Miquelon","cca2":"PM","calling-code":"508"},
-    {
+    }, {
         name: "Saint Vincent and the Grenadines",
-        cca2: "VC",
+        cca2: "vc",
         "calling-code": "1784"
     }, {
         name: "Samoa",
-        cca2: "WS",
+        cca2: "ws",
         "calling-code": "685"
     }, {
         name: "San Marino",
-        cca2: "SM",
+        cca2: "sm",
         "calling-code": "378"
     }, {
         name: "São Tomé and Príncipe",
-        cca2: "ST",
+        cca2: "st",
         "calling-code": "239"
     }, {
         name: "Saudi Arabia",
-        cca2: "SA",
+        cca2: "sa",
         "calling-code": "966"
     }, {
         name: "Senegal",
-        cca2: "SN",
+        cca2: "sn",
         "calling-code": "221"
     }, {
         name: "Serbia",
-        cca2: "RS",
+        cca2: "rs",
         "calling-code": "381"
     }, {
         name: "Seychelles",
-        cca2: "SC",
+        cca2: "sc",
         "calling-code": "248"
     }, {
         name: "Sierra Leone",
-        cca2: "SL",
+        cca2: "sl",
         "calling-code": "232"
     }, {
         name: "Singapore",
-        cca2: "SG",
+        cca2: "sg",
         "calling-code": "65"
-    }, //{"name":"Sint Maarten","cca2":"SX","calling-code":"1721"},
-    {
+    }, {
         name: "Slovakia",
-        cca2: "SK",
+        cca2: "sk",
         "calling-code": "421"
     }, {
         name: "Slovenia",
-        cca2: "SI",
+        cca2: "si",
         "calling-code": "386"
     }, {
         name: "Solomon Islands",
-        cca2: "SB",
+        cca2: "sb",
         "calling-code": "677"
     }, {
         name: "Somalia",
-        cca2: "SO",
+        cca2: "so",
         "calling-code": "252"
     }, {
         name: "South Africa",
-        cca2: "ZA",
+        cca2: "za",
         "calling-code": "27"
-    }, //{"name":"South Georgia","cca2":"GS","calling-code":"500"},
-    {
+    }, {
         name: "South Korea",
-        cca2: "KR",
+        cca2: "kr",
         "calling-code": "82"
-    }, //{"name":"South Sudan","cca2":"SS","calling-code":"211"},
-    {
+    }, {
         name: "Spain",
-        cca2: "ES",
+        cca2: "es",
         "calling-code": "34"
     }, {
         name: "Sri Lanka",
-        cca2: "LK",
+        cca2: "lk",
         "calling-code": "94"
     }, {
         name: "Sudan",
-        cca2: "SD",
+        cca2: "sd",
         "calling-code": "249"
     }, {
         name: "Suriname",
-        cca2: "SR",
+        cca2: "sr",
         "calling-code": "597"
-    }, //{"name":"Svalbard and Jan Mayen","cca2":"SJ","calling-code":"4779"},
-    {
+    }, {
         name: "Swaziland",
-        cca2: "SZ",
+        cca2: "sz",
         "calling-code": "268"
     }, {
         name: "Sweden",
-        cca2: "SE",
+        cca2: "se",
         "calling-code": "46"
     }, {
         name: "Switzerland",
-        cca2: "CH",
+        cca2: "ch",
         "calling-code": "41"
     }, {
         name: "Syrian Arab Republic",
-        cca2: "SY",
+        cca2: "sy",
         "calling-code": "963"
     }, {
         name: "Taiwan, Province of China",
-        cca2: "TW",
+        cca2: "tw",
         "calling-code": "886"
     }, {
         name: "Tajikistan",
-        cca2: "TJ",
+        cca2: "tj",
         "calling-code": "992"
     }, {
         name: "Tanzania",
-        cca2: "TZ",
+        cca2: "tz",
         "calling-code": "255"
     }, {
         name: "Thailand",
-        cca2: "TH",
+        cca2: "th",
         "calling-code": "66"
     }, {
         name: "Timor-Leste",
-        cca2: "TL",
+        cca2: "tl",
         "calling-code": "670"
     }, {
         name: "Togo",
-        cca2: "TG",
+        cca2: "tg",
         "calling-code": "228"
-    }, //{"name":"Tokelau","cca2":"TK","calling-code":"690"},
-    {
+    }, {
         name: "Tonga",
-        cca2: "TO",
+        cca2: "to",
         "calling-code": "676"
     }, {
         name: "Trinidad and Tobago",
-        cca2: "TT",
+        cca2: "tt",
         "calling-code": "1868"
     }, {
         name: "Tunisia",
-        cca2: "TN",
+        cca2: "tn",
         "calling-code": "216"
     }, {
         name: "Turkey",
-        cca2: "TR",
+        cca2: "tr",
         "calling-code": "90"
     }, {
         name: "Turkmenistan",
-        cca2: "TM",
+        cca2: "tm",
         "calling-code": "993"
     }, {
         name: "Turks and Caicos Islands",
-        cca2: "TC",
+        cca2: "tc",
         "calling-code": "1649"
     }, {
         name: "Tuvalu",
-        cca2: "TV",
+        cca2: "tv",
         "calling-code": "688"
     }, {
         name: "Uganda",
-        cca2: "UG",
+        cca2: "ug",
         "calling-code": "256"
     }, {
         name: "Ukraine",
-        cca2: "UA",
+        cca2: "ua",
         "calling-code": "380"
     }, {
         name: "United Arab Emirates",
-        cca2: "AE",
+        cca2: "ae",
         "calling-code": "971"
     }, {
         name: "United Kingdom",
-        cca2: "GB",
+        cca2: "gb",
         "calling-code": "44"
     }, {
         name: "United States",
-        cca2: "US",
+        cca2: "us",
         "calling-code": "1"
     }, {
         name: "Uruguay",
-        cca2: "UY",
+        cca2: "uy",
         "calling-code": "598"
     }, {
         name: "Uzbekistan",
-        cca2: "UZ",
+        cca2: "uz",
         "calling-code": "998"
     }, {
         name: "Vanuatu",
-        cca2: "VU",
+        cca2: "vu",
         "calling-code": "678"
     }, {
         name: "Vatican City",
-        cca2: "VA",
+        cca2: "va",
         "calling-code": "379"
     }, {
         name: "Venezuela",
-        cca2: "VE",
+        cca2: "ve",
         "calling-code": "58"
     }, {
         name: "Viet Nam",
-        cca2: "VN",
+        cca2: "vn",
         "calling-code": "84"
     }, {
         name: "Virgin Islands (British)",
-        cca2: "VG",
+        cca2: "vg",
         "calling-code": "1284"
     }, {
         name: "Virgin Islands (U.S.)",
-        cca2: "VI",
+        cca2: "vi",
         "calling-code": "1340"
-    }, //{"name":"Wallis and Futuna","cca2":"WF","calling-code":"681"},
-    {
+    }, {
         name: "Western Sahara",
-        cca2: "EH",
+        cca2: "eh",
         "calling-code": "212"
     }, {
         name: "Yemen",
-        cca2: "YE",
+        cca2: "ye",
         "calling-code": "967"
     }, {
         name: "Zambia",
-        cca2: "ZM",
+        cca2: "zm",
         "calling-code": "260"
     }, {
         name: "Zimbabwe",
-        cca2: "ZW",
+        cca2: "zw",
         "calling-code": "263"
     } ],
     // JavaScript object mapping dial code to country code.
@@ -1279,242 +1255,232 @@ var intlTelInput = {
     // then I commented some weird 001 entries and added some 4-digit country-code
     // items at the end e.g. 1246 for Barbados
     countryCodes: {
-        1: [ "US", "CA" ],
-        7: [ "RU", "KZ" ],
-        20: [ "EG" ],
-        27: [ "ZA" ],
-        30: [ "GR" ],
-        31: [ "NL" ],
-        32: [ "BE" ],
-        33: [ "FR" ],
-        34: [ "ES" ],
-        36: [ "HU" ],
-        39: [ "IT" ],
-        40: [ "RO" ],
-        41: [ "CH" ],
-        43: [ "AT" ],
-        44: [ "GB", "GG", "IM", "JE" ],
-        45: [ "DK" ],
-        46: [ "SE" ],
-        47: [ "NO", "SJ" ],
-        48: [ "PL" ],
-        49: [ "DE" ],
-        51: [ "PE" ],
-        52: [ "MX" ],
-        53: [ "CU" ],
-        54: [ "AR" ],
-        55: [ "BR" ],
-        56: [ "CL" ],
-        57: [ "CO" ],
-        58: [ "VE" ],
-        60: [ "MY" ],
-        61: [ "AU", "CC", "CX" ],
-        62: [ "ID" ],
-        63: [ "PH" ],
-        64: [ "NZ" ],
-        65: [ "SG" ],
-        66: [ "TH" ],
-        81: [ "JP" ],
-        82: [ "KR" ],
-        84: [ "VN" ],
-        86: [ "CN" ],
-        90: [ "TR" ],
-        91: [ "IN" ],
-        92: [ "PK" ],
-        93: [ "AF" ],
-        94: [ "LK" ],
-        95: [ "MM" ],
-        98: [ "IR" ],
-        211: [ "SS" ],
-        212: [ "MA", "EH" ],
-        213: [ "DZ" ],
-        216: [ "TN" ],
-        218: [ "LY" ],
-        220: [ "GM" ],
-        221: [ "SN" ],
-        222: [ "MR" ],
-        223: [ "ML" ],
-        224: [ "GN" ],
-        225: [ "CI" ],
-        226: [ "BF" ],
-        227: [ "NE" ],
-        228: [ "TG" ],
-        229: [ "BJ" ],
-        230: [ "MU" ],
-        231: [ "LR" ],
-        232: [ "SL" ],
-        233: [ "GH" ],
-        234: [ "NG" ],
-        235: [ "TD" ],
-        236: [ "CF" ],
-        237: [ "CM" ],
-        238: [ "CV" ],
-        239: [ "ST" ],
-        240: [ "GQ" ],
-        241: [ "GA" ],
-        242: [ "CG" ],
-        243: [ "CD" ],
-        244: [ "AO" ],
-        245: [ "GW" ],
-        246: [ "IO" ],
-        247: [ "AC" ],
-        248: [ "SC" ],
-        249: [ "SD" ],
-        250: [ "RW" ],
-        251: [ "ET" ],
-        252: [ "SO" ],
-        253: [ "DJ" ],
-        254: [ "KE" ],
-        255: [ "TZ" ],
-        256: [ "UG" ],
-        257: [ "BI" ],
-        258: [ "MZ" ],
-        260: [ "ZM" ],
-        261: [ "MG" ],
-        262: [ "RE", "YT" ],
-        263: [ "ZW" ],
-        264: [ "NA" ],
-        265: [ "MW" ],
-        266: [ "LS" ],
-        267: [ "BW" ],
-        268: [ "SZ" ],
-        269: [ "KM" ],
-        290: [ "SH" ],
-        291: [ "ER" ],
-        297: [ "AW" ],
-        298: [ "FO" ],
-        299: [ "GL" ],
-        350: [ "GI" ],
-        351: [ "PT" ],
-        352: [ "LU" ],
-        353: [ "IE" ],
-        354: [ "IS" ],
-        355: [ "AL" ],
-        356: [ "MT" ],
-        357: [ "CY" ],
-        358: [ "FI", "AX" ],
-        359: [ "BG" ],
-        370: [ "LT" ],
-        371: [ "LV" ],
-        372: [ "EE" ],
-        373: [ "MD" ],
-        374: [ "AM" ],
-        375: [ "BY" ],
-        376: [ "AD" ],
-        377: [ "MC" ],
-        378: [ "SM" ],
-        379: [ "VA" ],
-        380: [ "UA" ],
-        381: [ "RS" ],
-        382: [ "ME" ],
-        385: [ "HR" ],
-        386: [ "SI" ],
-        387: [ "BA" ],
-        389: [ "MK" ],
-        420: [ "CZ" ],
-        421: [ "SK" ],
-        423: [ "LI" ],
-        500: [ "FK" ],
-        501: [ "BZ" ],
-        502: [ "GT" ],
-        503: [ "SV" ],
-        504: [ "HN" ],
-        505: [ "NI" ],
-        506: [ "CR" ],
-        507: [ "PA" ],
-        508: [ "PM" ],
-        509: [ "HT" ],
-        590: [ "GP", "BL", "MF" ],
-        591: [ "BO" ],
-        592: [ "GY" ],
-        593: [ "EC" ],
-        594: [ "GF" ],
-        595: [ "PY" ],
-        596: [ "MQ" ],
-        597: [ "SR" ],
-        598: [ "UY" ],
-        599: [ "CW", "BQ" ],
-        670: [ "TL" ],
-        672: [ "NF" ],
-        673: [ "BN" ],
-        674: [ "NR" ],
-        675: [ "PG" ],
-        676: [ "TO" ],
-        677: [ "SB" ],
-        678: [ "VU" ],
-        679: [ "FJ" ],
-        680: [ "PW" ],
-        681: [ "WF" ],
-        682: [ "CK" ],
-        683: [ "NU" ],
-        685: [ "WS" ],
-        686: [ "KI" ],
-        687: [ "NC" ],
-        688: [ "TV" ],
-        689: [ "PF" ],
-        690: [ "TK" ],
-        691: [ "FM" ],
-        692: [ "MH" ],
-        //800: ["001"],
-        //808: ["001"],
-        850: [ "KP" ],
-        852: [ "HK" ],
-        853: [ "MO" ],
-        855: [ "KH" ],
-        856: [ "LA" ],
-        //870: ["001"],
-        //878: ["001"],
-        880: [ "BD" ],
-        //881: ["001"],
-        //882: ["001"],
-        //883: ["001"],
-        886: [ "TW" ],
-        //888: ["001"],
-        960: [ "MV" ],
-        961: [ "LB" ],
-        962: [ "JO" ],
-        963: [ "SY" ],
-        964: [ "IQ" ],
-        965: [ "KW" ],
-        966: [ "SA" ],
-        967: [ "YE" ],
-        968: [ "OM" ],
-        970: [ "PS" ],
-        971: [ "AE" ],
-        972: [ "IL" ],
-        973: [ "BH" ],
-        974: [ "QA" ],
-        975: [ "BT" ],
-        976: [ "MN" ],
-        977: [ "NP" ],
-        //979: ["001"],
-        992: [ "TJ" ],
-        993: [ "TM" ],
-        994: [ "AZ" ],
-        995: [ "GE" ],
-        996: [ "KG" ],
-        998: [ "UZ" ],
-        // jack added
-        1242: [ "BS" ],
-        1246: [ "BB" ],
-        1264: [ "AI" ],
-        1268: [ "AG" ],
-        1284: [ "VG" ],
-        1340: [ "VI" ],
-        1345: [ "KY" ],
-        1441: [ "BM" ],
-        1473: [ "GD" ],
-        1649: [ "TC" ],
-        1664: [ "MS" ],
-        1671: [ "GU" ],
-        1684: [ "AS" ],
-        1758: [ "LC" ],
-        1767: [ "DM" ],
-        1784: [ "VC" ],
-        1787: [ "PR" ],
-        1809: [ "DO" ],
-        1868: [ "TT" ],
-        1869: [ "KN" ],
-        1876: [ "JM" ]
+        "1": [ "us", "ca" ],
+        "7": [ "ru", "kz" ],
+        "20": [ "eg" ],
+        "27": [ "za" ],
+        "30": [ "gr" ],
+        "31": [ "nl" ],
+        "32": [ "be" ],
+        "33": [ "fr" ],
+        "34": [ "es" ],
+        "36": [ "hu" ],
+        "39": [ "it" ],
+        "40": [ "ro" ],
+        "41": [ "ch" ],
+        "43": [ "at" ],
+        "44": [ "gb", "gg", "im", "je" ],
+        "45": [ "dk" ],
+        "46": [ "se" ],
+        "47": [ "no", "sj" ],
+        "48": [ "pl" ],
+        "49": [ "de" ],
+        "51": [ "pe" ],
+        "52": [ "mx" ],
+        "53": [ "cu" ],
+        "54": [ "ar" ],
+        "55": [ "br" ],
+        "56": [ "cl" ],
+        "57": [ "co" ],
+        "58": [ "ve" ],
+        "60": [ "my" ],
+        "61": [ "au", "cc", "cx" ],
+        "62": [ "id" ],
+        "63": [ "ph" ],
+        "64": [ "nz" ],
+        "65": [ "sg" ],
+        "66": [ "th" ],
+        "81": [ "jp" ],
+        "82": [ "kr" ],
+        "84": [ "vn" ],
+        "86": [ "cn" ],
+        "90": [ "tr" ],
+        "91": [ "in" ],
+        "92": [ "pk" ],
+        "93": [ "af" ],
+        "94": [ "lk" ],
+        "95": [ "mm" ],
+        "98": [ "ir" ],
+        "211": [ "ss" ],
+        "212": [ "ma", "eh" ],
+        "213": [ "dz" ],
+        "216": [ "tn" ],
+        "218": [ "ly" ],
+        "220": [ "gm" ],
+        "221": [ "sn" ],
+        "222": [ "mr" ],
+        "223": [ "ml" ],
+        "224": [ "gn" ],
+        "225": [ "ci" ],
+        "226": [ "bf" ],
+        "227": [ "ne" ],
+        "228": [ "tg" ],
+        "229": [ "bj" ],
+        "230": [ "mu" ],
+        "231": [ "lr" ],
+        "232": [ "sl" ],
+        "233": [ "gh" ],
+        "234": [ "ng" ],
+        "235": [ "td" ],
+        "236": [ "cf" ],
+        "237": [ "cm" ],
+        "238": [ "cv" ],
+        "239": [ "st" ],
+        "240": [ "gq" ],
+        "241": [ "ga" ],
+        "242": [ "cg" ],
+        "243": [ "cd" ],
+        "244": [ "ao" ],
+        "245": [ "gw" ],
+        "246": [ "io" ],
+        "247": [ "ac" ],
+        "248": [ "sc" ],
+        "249": [ "sd" ],
+        "250": [ "rw" ],
+        "251": [ "et" ],
+        "252": [ "so" ],
+        "253": [ "dj" ],
+        "254": [ "ke" ],
+        "255": [ "tz" ],
+        "256": [ "ug" ],
+        "257": [ "bi" ],
+        "258": [ "mz" ],
+        "260": [ "zm" ],
+        "261": [ "mg" ],
+        "262": [ "re", "yt" ],
+        "263": [ "zw" ],
+        "264": [ "na" ],
+        "265": [ "mw" ],
+        "266": [ "ls" ],
+        "267": [ "bw" ],
+        "268": [ "sz" ],
+        "269": [ "km" ],
+        "290": [ "sh" ],
+        "291": [ "er" ],
+        "297": [ "aw" ],
+        "298": [ "fo" ],
+        "299": [ "gl" ],
+        "350": [ "gi" ],
+        "351": [ "pt" ],
+        "352": [ "lu" ],
+        "353": [ "ie" ],
+        "354": [ "is" ],
+        "355": [ "al" ],
+        "356": [ "mt" ],
+        "357": [ "cy" ],
+        "358": [ "fi", "ax" ],
+        "359": [ "bg" ],
+        "370": [ "lt" ],
+        "371": [ "lv" ],
+        "372": [ "ee" ],
+        "373": [ "md" ],
+        "374": [ "am" ],
+        "375": [ "by" ],
+        "376": [ "ad" ],
+        "377": [ "mc" ],
+        "378": [ "sm" ],
+        "379": [ "va" ],
+        "380": [ "ua" ],
+        "381": [ "rs" ],
+        "382": [ "me" ],
+        "385": [ "hr" ],
+        "386": [ "si" ],
+        "387": [ "ba" ],
+        "389": [ "mk" ],
+        "420": [ "cz" ],
+        "421": [ "sk" ],
+        "423": [ "li" ],
+        "500": [ "fk" ],
+        "501": [ "bz" ],
+        "502": [ "gt" ],
+        "503": [ "sv" ],
+        "504": [ "hn" ],
+        "505": [ "ni" ],
+        "506": [ "cr" ],
+        "507": [ "pa" ],
+        "508": [ "pm" ],
+        "509": [ "ht" ],
+        "590": [ "gp", "bl", "mf" ],
+        "591": [ "bo" ],
+        "592": [ "gy" ],
+        "593": [ "ec" ],
+        "594": [ "gf" ],
+        "595": [ "py" ],
+        "596": [ "mq" ],
+        "597": [ "sr" ],
+        "598": [ "uy" ],
+        "599": [ "cw", "bq" ],
+        "670": [ "tl" ],
+        "672": [ "nf" ],
+        "673": [ "bn" ],
+        "674": [ "nr" ],
+        "675": [ "pg" ],
+        "676": [ "to" ],
+        "677": [ "sb" ],
+        "678": [ "vu" ],
+        "679": [ "fj" ],
+        "680": [ "pw" ],
+        "681": [ "wf" ],
+        "682": [ "ck" ],
+        "683": [ "nu" ],
+        "685": [ "ws" ],
+        "686": [ "ki" ],
+        "687": [ "nc" ],
+        "688": [ "tv" ],
+        "689": [ "pf" ],
+        "690": [ "tk" ],
+        "691": [ "fm" ],
+        "692": [ "mh" ],
+        "850": [ "kp" ],
+        "852": [ "hk" ],
+        "853": [ "mo" ],
+        "855": [ "kh" ],
+        "856": [ "la" ],
+        "880": [ "bd" ],
+        "886": [ "tw" ],
+        "960": [ "mv" ],
+        "961": [ "lb" ],
+        "962": [ "jo" ],
+        "963": [ "sy" ],
+        "964": [ "iq" ],
+        "965": [ "kw" ],
+        "966": [ "sa" ],
+        "967": [ "ye" ],
+        "968": [ "om" ],
+        "970": [ "ps" ],
+        "971": [ "ae" ],
+        "972": [ "il" ],
+        "973": [ "bh" ],
+        "974": [ "qa" ],
+        "975": [ "bt" ],
+        "976": [ "mn" ],
+        "977": [ "np" ],
+        "992": [ "tj" ],
+        "993": [ "tm" ],
+        "994": [ "az" ],
+        "995": [ "ge" ],
+        "996": [ "kg" ],
+        "998": [ "uz" ],
+        "1242": [ "bs" ],
+        "1246": [ "bb" ],
+        "1264": [ "ai" ],
+        "1268": [ "ag" ],
+        "1284": [ "vg" ],
+        "1340": [ "vi" ],
+        "1345": [ "ky" ],
+        "1441": [ "bm" ],
+        "1473": [ "gd" ],
+        "1649": [ "tc" ],
+        "1664": [ "ms" ],
+        "1671": [ "gu" ],
+        "1684": [ "as" ],
+        "1758": [ "lc" ],
+        "1767": [ "dm" ],
+        "1784": [ "vc" ],
+        "1787": [ "pr" ],
+        "1809": [ "do" ],
+        "1868": [ "tt" ],
+        "1869": [ "kn" ],
+        "1876": [ "jm" ]
     }
 };
