@@ -22,6 +22,7 @@ Then include the plugin and initialise it on your input element
 ```
 
 ## Current features
+Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes
 * In the country dropdown you can navigate by typing, or using the up/down keys
 * Selecting a country updates the dial code of the entered number
 * Typing a different dial code automatically updates the displayed flag
