@@ -27,5 +27,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Bluefieldscom/intl-tel-input.git"
+  },
+  "scripts": {
+    "test": "grunt jasmine"
   }
 }
