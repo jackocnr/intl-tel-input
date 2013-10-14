@@ -24,7 +24,7 @@ describe("create input element", function() {
 
     it("has the right number of list items", function() {
       var listElements = input.siblings(".flag-dropdown").find("li.country");
-      expect(listElements.length).toEqual(intlTelInput.countries.length + defaultPreferredCountries);
+      expect(listElements.length).toEqual(intlData.countries.length + defaultPreferredCountries);
     });
 
     it("calling selectCountry updates the selected flag", function() {
@@ -48,13 +48,13 @@ describe("create input element", function() {
 
     it("defaults to the first country in the alphabet", function() {
       var selectedFlagElement = input.siblings(".flag-dropdown").find(".flag");
-      var firstCountry = intlTelInput.countries[0];
+      var firstCountry = intlData.countries[0];
       expect(selectedFlagElement).toHaveClass(firstCountry.cca2);
     });
 
     it("has the right number of list items", function() {
       var listElements = input.siblings(".flag-dropdown").find("li.country");
-      expect(listElements.length).toEqual(intlTelInput.countries.length);
+      expect(listElements.length).toEqual(intlData.countries.length);
     });
 
   });
@@ -84,7 +84,7 @@ describe("create input element", function() {
 
     it("has the right number of list items", function() {
       var listElements = input.siblings(".flag-dropdown").find("li.country");
-      expect(listElements.length).toEqual(intlTelInput.countries.length + preferredCountries.length);
+      expect(listElements.length).toEqual(intlData.countries.length + preferredCountries.length);
     });
 
   });
