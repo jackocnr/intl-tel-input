@@ -30,6 +30,6 @@
     "url": "https://github.com/Bluefieldscom/intl-tel-input.git"
   },
   "scripts": {
-    "test": "grunt jasmine"
+    "test": "grunt travis"
   }
 }
