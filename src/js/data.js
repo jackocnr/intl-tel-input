@@ -1,5 +1,5 @@
 // Namespaced to prevent clashes
-var intlTelInput = {
+var intlData = {
 
   // Array of country objects for the flag dropdown.
   // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.

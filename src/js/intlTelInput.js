@@ -24,8 +24,8 @@
     init: function() {
       var that = this;
 
-      // process onlyCountries array and update intlTelInput.countries
-      // and intlTelInput.countryCodes accordingly
+      // process onlyCountries array and update intlData.countries
+      // and intlData.countryCodes accordingly
       if (this.options.onlyCountries.length > 0) {
         var newCountries = [], newCountryCodes = {};
         $.each(this.options.onlyCountries, function(i, countryCode) {
@@ -43,12 +43,12 @@
         });
 
         // update the global data object
-        intlTelInput.countries = newCountries;
-        intlTelInput.countryCodes = newCountryCodes;
+        intlData.countries = newCountries;
+        intlData.countryCodes = newCountryCodes;
       }
 
       // process preferred countries - iterate through the preferences,
-      // finding the relevant data from the provided intlTelInput.countries array
+      // finding the relevant data from the provided intlData.countries array
       var preferredCountries = [];
       $.each(this.options.preferredCountries, function(i, countryCode) {
         var countryData = that._getCountryData(countryCode);
@@ -56,7 +56,7 @@
           preferredCountries.push(countryData);
         }
       });
-      this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlTelInput.countries[0];
+      this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
 
       // telephone input
       this.telInput = $(this.element);
@@ -98,7 +98,7 @@
           "class": "divider"
         }).appendTo(this.countryList);
       }
-      this._appendListItems(intlTelInput.countries, "");
+      this._appendListItems(intlData.countries, "");
 
       this.countryListItems = this.countryList.children(".country");
       // auto select the top one
@@ -114,7 +114,7 @@
         var dialCode = that._getDialCode(that.telInput.val());
         if (dialCode) {
           // check if one of the matching country's is already selected
-          var countryCodes = intlTelInput.countryCodes[dialCode];
+          var countryCodes = intlData.countryCodes[dialCode];
           $.each(countryCodes, function(i, c) {
             if (that.selectedFlagInner.hasClass(c)) {
               alreadySelected = true;
@@ -240,9 +240,9 @@
 
     // find the country data for the given country code
     _getCountryData: function(countryCode) {
-      for (var i = 0; i < intlTelInput.countries.length; i++) {
-        if (intlTelInput.countries[i].cca2 == countryCode) {
-          return intlTelInput.countries[i];
+      for (var i = 0; i < intlData.countries.length; i++) {
+        if (intlData.countries[i].cca2 == countryCode) {
+          return intlData.countries[i];
         }
       }
     },
@@ -370,7 +370,7 @@
         for (var i = dialCode.length; i > 0; i--) {
           dialCode = dialCode.substring(0, i);
           // if we find a match (a valid dial code), then return the dial code
-          if (intlTelInput.countryCodes[dialCode]) {
+          if (intlData.countryCodes[dialCode]) {
             return dialCode;
           }
         }
