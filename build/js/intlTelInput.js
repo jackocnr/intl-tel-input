@@ -6,6 +6,9 @@ repository: https://github.com/Bluefieldscom/intl-tel-input.git
 license: MIT
 author: Jack O'Connor (http://jackocnr.com)
 */
+(function() {
+"use strict";
+
 (function($, window, document, undefined) {
     var pluginName = "intlTelInput", defaults = {
         preferredCountries: [ "us", "gb" ],
@@ -1491,3 +1494,5 @@ var intlTelInput = {
         "1876": [ "jm" ]
     }
 };
+
+})();

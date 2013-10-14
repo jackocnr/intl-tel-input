@@ -43,7 +43,11 @@ module.exports = function(grunt) {
           'repository: <%= pkg.repository.url %>\n'+
           'license: <%= pkg.license %>\n'+
           'author: <%= pkg.author %>\n'+
-          '*/\n'
+          '*/\n'+
+          // wrap in self-executing anonymous function
+          '(function() {\n'+
+          '"use strict";\n\n',
+        footer: "\n\n})();\n"
       },
       dev: {
         options: {
