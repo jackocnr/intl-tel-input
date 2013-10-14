@@ -86,16 +86,26 @@ module.exports = function(grunt) {
     // Testing
     jasmine: {
       src: [
-        'lib/jquery/jquery.min.js',
         'src/js/data.js',
         'src/js/intlTelInput.js'
       ],
       options: {
+        vendor: [
+          'lib/jquery/jquery.min.js',
+          'lib/jasmine-jquery/lib/jasmine-jquery.js'
+        ],
         specs: [
           'src/js/tests.js'
         ]
       }
-    }
+    },
+
+    // Asset libs
+    bower: {
+      install: {
+        // defaults are fine
+      }
+    },
 
   });
 
@@ -105,6 +115,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-bower-task');
 
   // tasks
   // build everything ready for a commit
