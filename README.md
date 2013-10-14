@@ -52,9 +52,12 @@ Display only the countries you specify.
 
 ## Validation
 International number validation is hard (it varies by country/district).
-Personally, I just use this regex `/^\+[\d \(\)-.]+$/` to check it starts with a '+' and then only contains valid characters (numbers, spaces, brackets, hyphens and dots).
+Personally, I just use this regex `/^\+[\d \(\)-.]+$/` to check the number starts with a '+' and then only contains valid characters (numbers, spaces, brackets, hyphens and dots).
 After that, I strip out non-numeric characters with `val.replace(/\D/g,'')`, and check the length is between 5 and 15.
-If you really want to do this properly though, I would advise using Google's [libphonenumber](https://code.google.com/p/libphonenumber/), which can be compiled into JavaScript (a pre-compiled script can be found [here](https://github.com/albeebe/phoneformat.js), but beware that even after minification, this script is still >200kB).
+
+If you really want to do this properly though, I would advise using Google's [libphonenumber](https://code.google.com/p/libphonenumber/),
+which can be compiled into JavaScript (a pre-compiled script can be found [here](https://github.com/albeebe/phoneformat.js),
+but beware that even after minification, this script is still >300kB).
 
 ## Troubleshooting
 * Depending on your project setup, you may need to override the path to flags16.png in your CSS. You can do so like this:
