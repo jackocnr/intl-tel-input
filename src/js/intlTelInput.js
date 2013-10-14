@@ -362,10 +362,10 @@
     _getDialCode: function(inputVal) {
       var firstPart = inputVal.trim().split(" ")[0];
       // only interested in international numbers (starting with a plus)
-      if (firstPart.substring(0, 1) == "+") {
-        // strip out non-numeric chars (e.g. pluses, spaces, brackets)
+      if (firstPart.substring(0, 1) == "+" || firstPart.substring(0, 2) == "00") {
+        // strip out non-numeric chars (e.g. pluses, spaces, brackets) and zeros
         // and grab the first 4 numbers (max length of a dial code is 4)
-        var dialCode = firstPart.replace(/\D/g, '').substring(0, 4);
+        var dialCode = firstPart.replace(/\D|00/g, '').substring(0, 4);
         // try first 4 digits, then 3, then 2, then 1...
         for (var i = dialCode.length; i > 0; i--) {
           dialCode = dialCode.substring(0, i);
