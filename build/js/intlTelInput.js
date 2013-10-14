@@ -97,6 +97,9 @@ author: Jack O'Connor (http://jackocnr.com)
             this.countryListItems = this.countryList.children(".country");
             // auto select the top one
             this.countryListItems.first().addClass("active");
+            this.telInput.keydown(function() {
+                return String.fromCharCode(event.keyCode).replace(/[A-z]/g, "").length !== 0;
+            });
             // update flag on keyup
             // (by extracting the dial code from the input value)
             this.telInput.keyup(function() {
