@@ -32,10 +32,13 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
   .flag-dropdown {
     // positioned over the top of the input
     position: absolute;
-    z-index: 1;
     cursor: pointer;
 
     .selected-flag {
+      // render above the input
+      z-index: 1;
+      position: relative;
+
       // we add margin to avoid covering the input border on hover
       margin: $borderWidth;
       padding: $flagPadding ($flagPadding + $arrowWidth + $arrowPadding) $flagPadding $flagPadding;
@@ -66,8 +69,6 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       padding: 0;
       margin: 0;
 
-      // render above the input
-      z-index: 1;
       // long list of countries
       overflow-y: scroll;
 
@@ -76,6 +77,8 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       border: $borderWidth solid $greyBorder;
 
       position: absolute;
+      // popup so render above everything else
+      z-index: 2;
       // height of input -1px to avoid showing double border at the overlap
       top: $inputHeight - 1px;
       // wide enough to fit long country names
