@@ -10,7 +10,8 @@ author: Jack O'Connor (http://jackocnr.com)
 "use strict";
 
 (function($, window, document, undefined) {
-    var pluginName = "intlTelInput", defaults = {
+    var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
+    defaults = {
         preferredCountries: [ "us", "gb" ],
         // united states and united kingdom
         initialDialCode: true,
@@ -21,6 +22,7 @@ author: Jack O'Connor (http://jackocnr.com)
         this.element = element;
         this.options = $.extend({}, defaults, options);
         this._defaults = defaults;
+        this.id = id++;
         this._name = pluginName;
         this.init();
     }
@@ -123,8 +125,6 @@ author: Jack O'Connor (http://jackocnr.com)
             this.telInput.keyup();
             // toggle country dropdown on click
             selectedFlag.click(function(e) {
-                // prevent the click-off-to-close listener from firing
-                e.stopPropagation();
                 // toggle dropdown
                 if (that.countryList.hasClass("hide")) {
                     // update highlighting and scroll to active list item
@@ -133,8 +133,17 @@ author: Jack O'Connor (http://jackocnr.com)
                     // show it
                     that.countryList.removeClass("hide");
                     that._scrollTo(activeListItem);
+                    // click off to close
+                    // (except when this initial opening click is bubbling up)
+                    var isOpening = true;
+                    $("html").bind("click.intlTelInput" + that.id, function(e) {
+                        if (!isOpening) {
+                            that._closeDropdown();
+                        }
+                        isOpening = false;
+                    });
                     // listen for typing
-                    $(document).bind("keydown.intlTelInput", function(e) {
+                    $(document).bind("keydown.intlTelInput" + that.id, function(e) {
                         // up (38) and down (40) to navigate
                         if (e.which == 38 || e.which == 40) {
                             var current = that.countryList.children(".highlight").first();
@@ -178,9 +187,6 @@ author: Jack O'Connor (http://jackocnr.com)
                             }
                         }
                     });
-                } else {
-                    // close it
-                    that._closeDropdown();
                 }
             });
             // when mouse over a list item, remove any highlighting from any other items
@@ -193,14 +199,8 @@ author: Jack O'Connor (http://jackocnr.com)
                 var listItem = $(e.currentTarget);
                 that._selectListItem(listItem);
             });
-            // click off to close
-            $("html").click(function(e) {
-                if (!$(e.target).closest(".country-list").length) {
-                    // close it
-                    that._closeDropdown();
-                }
-            });
         },
+        // end of init()
         // find the country data for the given country code
         _getCountryData: function(countryCode) {
             for (var i = 0; i < intlData.countries.length; i++) {
@@ -235,8 +235,6 @@ author: Jack O'Connor (http://jackocnr.com)
             // update input value
             var newNumber = this._updateNumber(this.telInput.val(), listItem.attr("data-dial-code"));
             this.telInput.val(newNumber);
-            // hide dropdown again
-            this._closeDropdown();
             // focus the input
             this.telInput.focus();
             // mark the list item as active (incase they open the dropdown again)
@@ -246,7 +244,8 @@ author: Jack O'Connor (http://jackocnr.com)
         // close the dropdown and unbind any listeners
         _closeDropdown: function() {
             this.countryList.addClass("hide");
-            $(document).unbind("keydown.intlTelInput");
+            $(document).unbind("keydown.intlTelInput" + this.id);
+            $("html").unbind("click.intlTelInput" + this.id);
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element) {

@@ -1,6 +1,7 @@
 (function($, window, document, undefined) {
 
   var pluginName = "intlTelInput",
+    id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
       preferredCountries: ["us", "gb"], // united states and united kingdom
       initialDialCode: true,
@@ -14,6 +15,7 @@
     this.options = $.extend({}, defaults, options);
 
     this._defaults = defaults;
+    this.id = id++;
     this._name = pluginName;
 
     this.init();
@@ -27,7 +29,8 @@
       // process onlyCountries array and update intlData.countries
       // and intlData.countryCodes accordingly
       if (this.options.onlyCountries.length > 0) {
-        var newCountries = [], newCountryCodes = {};
+        var newCountries = [],
+          newCountryCodes = {};
         $.each(this.options.onlyCountries, function(i, countryCode) {
           var countryData = that._getCountryData(countryCode);
           if (countryData) {
@@ -138,8 +141,6 @@
 
       // toggle country dropdown on click
       selectedFlag.click(function(e) {
-        // prevent the click-off-to-close listener from firing
-        e.stopPropagation();
 
         // toggle dropdown
         if (that.countryList.hasClass("hide")) {
@@ -151,8 +152,18 @@
           that.countryList.removeClass("hide");
           that._scrollTo(activeListItem);
 
+          // click off to close
+          // (except when this initial opening click is bubbling up)
+          var isOpening = true;
+          $('html').bind("click.intlTelInput" + that.id, function(e) {
+            if (!isOpening) {
+              that._closeDropdown();
+            }
+            isOpening = false;
+          });
+
           // listen for typing
-          $(document).bind("keydown.intlTelInput", function(e) {
+          $(document).bind("keydown.intlTelInput" + that.id, function(e) {
             // up (38) and down (40) to navigate
             if (e.which == 38 || e.which == 40) {
               var current = that.countryList.children(".highlight").first();
@@ -204,11 +215,9 @@
               }
             }
           });
-        } else {
-          // close it
-          that._closeDropdown();
         }
       });
+
 
 
       // when mouse over a list item, remove any highlighting from any other items
@@ -225,16 +234,7 @@
         that._selectListItem(listItem);
       });
 
-
-
-      // click off to close
-      $('html').click(function(e) {
-        if (!$(e.target).closest('.country-list').length) {
-          // close it
-          that._closeDropdown();
-        }
-      });
-    },
+    }, // end of init()
 
 
 
@@ -281,8 +281,6 @@
       // update input value
       var newNumber = this._updateNumber(this.telInput.val(), listItem.attr("data-dial-code"));
       this.telInput.val(newNumber);
-      // hide dropdown again
-      this._closeDropdown();
       // focus the input
       this.telInput.focus();
       // mark the list item as active (incase they open the dropdown again)
@@ -295,7 +293,8 @@
     // close the dropdown and unbind any listeners
     _closeDropdown: function() {
       this.countryList.addClass("hide");
-      $(document).unbind("keydown.intlTelInput");
+      $(document).unbind("keydown.intlTelInput" + this.id);
+      $('html').unbind("click.intlTelInput" + this.id);
     },
 
 
