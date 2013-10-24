@@ -1,9 +1,11 @@
 # International Telephone Input [![Build Status](https://travis-ci.org/Bluefieldscom/intl-tel-input.png)](https://travis-ci.org/Bluefieldscom/intl-tel-input)
 A jQuery plugin for entering international telephone numbers. It adds a flag dropdown to any input, which lists all the countries and their international dial codes next to their flags.
 
+
 ## Demo
 http://jackocnr.com/intl-tel-input.html  
 Try it for yourself using the included demo.html
+
 
 ## Getting started
 First add the stylesheet to your &lt;head&gt;
@@ -20,6 +22,7 @@ Then include the plugin and initialise it on your input element
     $("#mobile-number").intlTelInput();
   </script>
 ```
+
 
 ## Options
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
@@ -40,6 +43,10 @@ Don't display the +1 prefix for American numbers, because a lot of Americans are
 Type: `Array` Default: `undefined`  
 Display only the countries you specify.
 
+**defaultStyling**  
+Type: `Boolean` Default: `true`  
+Apply the default minimal styling.
+
 
 ## Features
 * In the country dropdown you can navigate by typing, or using the up/down keys
@@ -59,10 +66,12 @@ If you really want to do this properly though, I would advise using Google's [li
 which can be compiled into JavaScript (a pre-compiled script can be found [here](https://github.com/albeebe/phoneformat.js),
 but beware that even after minification, this script is still >300kB).
 
+
 ## Troubleshooting
 * Depending on your project setup, you may need to override the path to flags16.png in your CSS. You can do so like this:
 
         .f16 .flag {background-image: url("path/to/flags16.png");}
+
 
 ## Attributions
 * Flag images and CSS from https://github.com/lafeber/world-flags-sprite
