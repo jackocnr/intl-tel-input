@@ -52,6 +52,7 @@ Apply the default minimal styling.
 * In the country dropdown you can navigate by typing, or using the up/down keys
 * Selecting a country from the dropdown updates the dial code of the entered number
 * Typing a different dial code automatically updates the displayed flag
+* Country names in the dropdown also include localised versions in brackets
 * Programatically select a country after initialisation (e.g. when the user is entering their address)
 
         $('#mobile-number').intlTelInput('selectCountry', 'gb');
