@@ -16,7 +16,8 @@ author: Jack O'Connor (http://jackocnr.com)
         // united states and united kingdom
         initialDialCode: true,
         americaMode: false,
-        onlyCountries: []
+        onlyCountries: [],
+        defaultStyling: true
     };
     function Plugin(element, options) {
         this.element = element;
@@ -66,8 +67,12 @@ author: Jack O'Connor (http://jackocnr.com)
                 this.telInput.val("+" + this.defaultCountry["calling-code"] + " ");
             }
             // containers (mostly for positioning)
+            var mainClass = "intl-tel-input";
+            if (this.options.defaultStyling) {
+                mainClass += " pretty";
+            }
             this.telInput.wrap($("<div>", {
-                "class": "intl-tel-input"
+                "class": mainClass
             }));
             var flagsContainer = $("<div>", {
                 "class": "flag-dropdown f16"

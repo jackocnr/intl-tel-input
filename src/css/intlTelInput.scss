@@ -38,94 +38,113 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       // render above the input
       z-index: 1;
       position: relative;
-
-      // we add margin to avoid covering the input border on hover
-      margin: $borderWidth;
-      padding: $flagPadding ($flagPadding + $arrowWidth + $arrowPadding) $flagPadding $flagPadding;
-
-      &:hover {
-        background-color: $hoverColor;
-      }
-
-      .down-arrow {
-        // split the difference between the flag and the arrow height to verically center
-        top: ($flagHeight - $arrowHeight) / 2;
-        position: relative;
-        left: $flagWidth + $arrowPadding;
-
-        // css triangle
-        width: 0;
-        height: 0;
-        border-left: $triangleBorder solid transparent;
-        border-right: $triangleBorder solid transparent;
-        border-top: $arrowHeight solid black;
-      }
     }
 
     // the country dropdown
     .country-list {
       // override default list styles
       list-style: none;
-      padding: 0;
-      margin: 0;
 
       // long list of countries
       overflow-y: scroll;
 
-      box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
-      background-color: white;
-      border: $borderWidth solid $greyBorder;
-
       position: absolute;
       // popup so render above everything else
       z-index: 2;
-      // height of input -1px to avoid showing double border at the overlap
-      top: $inputHeight - 1px;
-      // wide enough to fit long country names
-      width: 330px;
-      max-height: 200px;
-
-      // the divider below the preferred countries
-      .divider {
-        padding-bottom: 5px;
-        margin-bottom: 5px;
-        border-bottom: $borderWidth solid $greyBorder;
-      }
-
-      // each country item in dropdown
-      .country {
-        // set this to height of flag - if it is higher, things get misaligned
-        line-height: $flagHeight;
-        padding: 4px 10px;
-        // the dial codes after the country names are greyed out
-        .dial-code {color: $greyText;}
-      }
-      .country.highlight {
-        background-color: $hoverColor;
-      }
-
-      .flag {
-        display: inline-block;
-        vertical-align: bottom;
-      }
-      // spacing between country flag, name and dial code
-      .flag, .country-name {
-        margin-right: 6px;
-      }
     }
   }
 
   input {
-    // dont let padding make the input higher than the height value we give it
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-
-    // hardcode the input's height to fit the selected flag inside it
-    height: $inputHeight;
     // make space for the selected flag
     padding-left: $selectedFlagWidth + $inputPadding;
 
     position: relative;
     z-index: 0;
   }
+
+
+
+  &.pretty {
+
+    .flag-dropdown {
+      .selected-flag {
+        // we add margin to avoid covering the input border on hover
+        margin: $borderWidth;
+        padding: $flagPadding ($flagPadding + $arrowWidth + $arrowPadding) $flagPadding $flagPadding;
+
+        &:hover {
+          background-color: $hoverColor;
+        }
+
+        .down-arrow {
+          // split the difference between the flag and the arrow height to verically center
+          top: ($flagHeight - $arrowHeight) / 2;
+          position: relative;
+          left: $flagWidth + $arrowPadding;
+
+          // css triangle
+          width: 0;
+          height: 0;
+          border-left: $triangleBorder solid transparent;
+          border-right: $triangleBorder solid transparent;
+          border-top: $arrowHeight solid black;
+        }
+      }
+
+      .country-list {
+        padding: 0;
+        margin: 0;
+
+        box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+        background-color: white;
+        border: $borderWidth solid $greyBorder;
+
+        // height of input -1px to avoid showing double border at the overlap
+        top: $inputHeight - 1px;
+        // wide enough to fit long country names
+        width: 330px;
+        max-height: 200px;
+
+        // the divider below the preferred countries
+        .divider {
+          padding-bottom: 5px;
+          margin-bottom: 5px;
+          border-bottom: $borderWidth solid $greyBorder;
+        }
+
+        // each country item in dropdown
+        .country {
+          // set this to height of flag - if it is higher, things get misaligned
+          line-height: $flagHeight;
+          padding: 4px 10px;
+          // the dial codes after the country names are greyed out
+          .dial-code {color: $greyText;}
+        }
+        .country.highlight {
+          background-color: $hoverColor;
+        }
+
+        .flag {
+          display: inline-block;
+          vertical-align: bottom;
+        }
+        // spacing between country flag, name and dial code
+        .flag, .country-name {
+          margin-right: 6px;
+        }
+      }
+    }
+
+    input {
+      // dont let padding make the input higher than the height value we give it
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+
+      // hardcode the input's height to fit the selected flag inside it
+      height: $inputHeight;
+    }
+
+  }
+
 }
+
