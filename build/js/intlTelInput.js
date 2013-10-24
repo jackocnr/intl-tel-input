@@ -369,6 +369,8 @@ author: Jack O'Connor (http://jackocnr.com)
     };
 })(jQuery, window, document);
 
+// Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
+// jshint -W100
 // Namespaced to prevent clashes
 var intlData = {
     // Array of country objects for the flag dropdown.
