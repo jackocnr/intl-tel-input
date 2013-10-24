@@ -7,7 +7,7 @@
 .intl-tel-input.pretty .flag-dropdown .selected-flag { margin: 1px; padding: 6px 16px 6px 6px; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag:hover { background-color: rgba(0, 0, 0, 0.05); }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .down-arrow { top: 6px; position: relative; left: 20px; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid black; }
-.intl-tel-input.pretty .flag-dropdown .country-list { padding: 0; margin: 0; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); background-color: white; border: 1px solid #cccccc; top: 29px; width: 330px; max-height: 200px; }
+.intl-tel-input.pretty .flag-dropdown .country-list { padding: 0; margin: 0; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); background-color: white; border: 1px solid #cccccc; top: 29px; width: 420px; max-height: 200px; }
 .intl-tel-input.pretty .flag-dropdown .country-list .divider { padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px solid #cccccc; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country { line-height: 16px; padding: 4px 10px; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country .dial-code { color: #999999; }

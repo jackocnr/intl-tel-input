@@ -102,7 +102,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         // height of input -1px to avoid showing double border at the overlap
         top: $inputHeight - 1px;
         // wide enough to fit long country names
-        width: 330px;
+        width: 420px;
         max-height: 200px;
 
         // the divider below the preferred countries
