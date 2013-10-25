@@ -206,6 +206,9 @@ author: Jack O'Connor (http://jackocnr.com)
             });
         },
         // end of init()
+        /********************
+     *  PRIVATE METHODS
+     ********************/
         // find the country data for the given country code
         _getCountryData: function(countryCode) {
             for (var i = 0; i < intlData.countries.length; i++) {
@@ -222,15 +225,6 @@ author: Jack O'Connor (http://jackocnr.com)
             var listItem = this.countryListItems.children(".flag." + countryCode).parent();
             listItem.addClass("active");
             return listItem;
-        },
-        // update the selected flag, and insert the dial code
-        selectCountry: function(countryCode) {
-            // check if already selected
-            if (!this.selectedFlagInner.hasClass(countryCode)) {
-                var listItem = this._selectFlag(countryCode);
-                var dialCode = listItem.attr("data-dial-code");
-                this.telInput.val("+" + dialCode + " ");
-            }
         },
         // called when the user selects a list item from the dropdown
         _selectListItem: function(listItem) {
@@ -335,6 +329,26 @@ author: Jack O'Connor (http://jackocnr.com)
                 tmp += "</li>";
             });
             this.countryList.append(tmp);
+        },
+        /********************
+     *  PUBLIC METHODS
+     ********************/
+        // update the selected flag, and insert the dial code
+        selectCountry: function(countryCode) {
+            // check if already selected
+            if (!this.selectedFlagInner.hasClass(countryCode)) {
+                var listItem = this._selectFlag(countryCode);
+                var dialCode = listItem.attr("data-dial-code");
+                this.telInput.val("+" + dialCode + " ");
+            }
+        },
+        // get the country data object
+        getCountryData: function() {
+            return intlData;
+        },
+        // set the country data object
+        setCountryData: function(obj) {
+            intlData = obj;
         }
     };
     // adapted to allow public functions

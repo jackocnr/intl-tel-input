@@ -1,13 +1,13 @@
 describe("create input element", function() {
 
-  var input, defaultPreferredCountries = 2;
+  var input, container, totalCountries = 221;
 
   beforeEach(function() {
     input = $("<input>");
   });
 
   afterEach(function() {
-    input = null;
+    input = container = null;
   });
 
 
@@ -16,22 +16,39 @@ describe("create input element", function() {
 
     beforeEach(function() {
       input.intlTelInput();
+      container = input.parent();
     });
 
-    it("creates a parent with the right class", function() {
-      expect(input.parent()).toHaveClass("intl-tel-input");
+    it("creates a container with the right classes", function() {
+      expect(container).toHaveClass("intl-tel-input pretty");
     });
 
     it("has the right number of list items", function() {
-      var listElements = input.siblings(".flag-dropdown").find("li.country");
-      expect(listElements.length).toEqual(intlData.countries.length + defaultPreferredCountries);
+      var listElements = container.find(".country-list li.country");
+      var defaultPreferredCountries = 2;
+      expect(listElements.length).toEqual(totalCountries + defaultPreferredCountries);
+    });
+
+    it("defaults to the right flag", function() {
+      var selectedFlag = container.find(".selected-flag .flag");
+      expect(selectedFlag).toHaveClass("us");
+    });
+
+    it("defaults to the right dial code", function() {
+      expect(input.val().trim()).toEqual("+1");
     });
 
     it("calling selectCountry updates the selected flag", function() {
       var countryCode = "gb";
       input.intlTelInput("selectCountry", countryCode);
-      var selectedFlagElement = input.siblings(".flag-dropdown").find(".flag");
+      var selectedFlagElement = container.find(".selected-flag .flag");
       expect(selectedFlagElement).toHaveClass(countryCode);
+    });
+
+    it("typing a different dial code updates the selected flag", function() {
+      input.val("+44").keyup();
+      var selectedFlagElement = container.find(".selected-flag .flag");
+      expect(selectedFlagElement).toHaveClass("gb");
     });
 
   });
@@ -44,17 +61,17 @@ describe("create input element", function() {
       input.intlTelInput({
         preferredCountries: []
       });
+      container = input.parent();
     });
 
     it("defaults to the first country in the alphabet", function() {
-      var selectedFlagElement = input.siblings(".flag-dropdown").find(".flag");
-      var firstCountry = intlData.countries[0];
-      expect(selectedFlagElement).toHaveClass(firstCountry.cca2);
+      var selectedFlagElement = container.find(".selected-flag .flag");
+      expect(selectedFlagElement).toHaveClass("af");
     });
 
     it("has the right number of list items", function() {
-      var listElements = input.siblings(".flag-dropdown").find("li.country");
-      expect(listElements.length).toEqual(intlData.countries.length);
+      var listElements = container.find(".country-list li.country");
+      expect(listElements.length).toEqual(totalCountries);
     });
 
   });
@@ -71,6 +88,7 @@ describe("create input element", function() {
       input.intlTelInput({
         preferredCountries: preferredCountries
       });
+      container = input.parent();
     });
 
     afterEach(function() {
@@ -78,13 +96,13 @@ describe("create input element", function() {
     });
 
     it("defaults to the first preferredCountries", function() {
-      var selectedFlagElement = input.siblings(".flag-dropdown").find(".flag");
+      var selectedFlagElement = container.find(".selected-flag .flag");
       expect(selectedFlagElement).toHaveClass(preferredCountries[0]);
     });
 
     it("has the right number of list items", function() {
-      var listElements = input.siblings(".flag-dropdown").find("li.country");
-      expect(listElements.length).toEqual(intlData.countries.length + preferredCountries.length);
+      var listElements = container.find(".country-list li.country");
+      expect(listElements.length).toEqual(totalCountries + preferredCountries.length);
     });
 
   });
@@ -101,6 +119,7 @@ describe("create input element", function() {
       input.intlTelInput({
         onlyCountries: onlyCountries
       });
+      container = input.parent();
     });
 
     afterEach(function() {
@@ -108,7 +127,7 @@ describe("create input element", function() {
     });
 
     it("has the right number of list items", function() {
-      var listElements = input.siblings(".flag-dropdown").find("li.country");
+      var listElements = container.find(".country-list li.country");
       expect(listElements.length).toEqual(onlyCountries.length);
     });
 

@@ -243,6 +243,12 @@
 
 
 
+
+    /********************
+     *  PRIVATE METHODS
+     ********************/
+
+
     // find the country data for the given country code
     _getCountryData: function(countryCode) {
       for (var i = 0; i < intlData.countries.length; i++) {
@@ -251,7 +257,6 @@
         }
       }
     },
-
 
 
     // update the selected flag and the active list item
@@ -263,19 +268,6 @@
       listItem.addClass("active");
       return listItem;
     },
-
-
-
-    // update the selected flag, and insert the dial code
-    selectCountry: function(countryCode) {
-      // check if already selected
-      if (!this.selectedFlagInner.hasClass(countryCode)) {
-        var listItem = this._selectFlag(countryCode);
-        var dialCode = listItem.attr("data-dial-code");
-        this.telInput.val("+" + dialCode + " ");
-      }
-    },
-
 
 
     // called when the user selects a list item from the dropdown
@@ -294,14 +286,12 @@
     },
 
 
-
     // close the dropdown and unbind any listeners
     _closeDropdown: function() {
       this.countryList.addClass("hide");
       $(document).unbind("keydown.intlTelInput" + this.id);
       $('html').unbind("click.intlTelInput" + this.id);
     },
-
 
 
     // check if an element is visible within it's container, else scroll until it is
@@ -327,7 +317,6 @@
         container.scrollTop(newScrollTop - heightDifference);
       }
     },
-
 
 
     // replace any existing dial code with the new one
@@ -361,7 +350,6 @@
     },
 
 
-
     // try and extract a valid international dial code from a full telephone number
     _getDialCode: function(inputVal) {
       var firstPart = inputVal.trim().split(" ")[0];
@@ -383,7 +371,6 @@
     },
 
 
-
     // add a country <li> to the countryList <ul> container
     _appendListItems: function(countries, className) {
       // we create so many DOM elements, I decided it was faster to build a temp string
@@ -402,6 +389,36 @@
         tmp += "</li>";
       });
       this.countryList.append(tmp);
+    },
+
+
+
+
+    /********************
+     *  PUBLIC METHODS
+     ********************/
+
+
+    // update the selected flag, and insert the dial code
+    selectCountry: function(countryCode) {
+      // check if already selected
+      if (!this.selectedFlagInner.hasClass(countryCode)) {
+        var listItem = this._selectFlag(countryCode);
+        var dialCode = listItem.attr("data-dial-code");
+        this.telInput.val("+" + dialCode + " ");
+      }
+    },
+
+
+    // get the country data object
+    getCountryData: function() {
+      return intlData;
+    },
+
+
+    // set the country data object
+    setCountryData: function(obj) {
+      intlData = obj;
     }
 
   };
