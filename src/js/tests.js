@@ -1,13 +1,23 @@
+//"use strict";
+
 describe("create input element", function() {
 
-  var input, container, totalCountries = 221;
+  var input, totalCountries = 221;
+
+  var getListLength = function() {
+    return input.parent().find(".country-list li.country").length;
+  };
+
+  var getSelectedFlagElement = function() {
+    return input.parent().find(".selected-flag .flag");
+  };
 
   beforeEach(function() {
     input = $("<input>");
   });
 
   afterEach(function() {
-    input = container = null;
+    input = null;
   });
 
 
@@ -16,22 +26,19 @@ describe("create input element", function() {
 
     beforeEach(function() {
       input.intlTelInput();
-      container = input.parent();
     });
 
     it("creates a container with the right classes", function() {
-      expect(container).toHaveClass("intl-tel-input pretty");
+      expect(input.parent()).toHaveClass("intl-tel-input pretty");
     });
 
     it("has the right number of list items", function() {
-      var listElements = container.find(".country-list li.country");
       var defaultPreferredCountries = 2;
-      expect(listElements.length).toEqual(totalCountries + defaultPreferredCountries);
+      expect(getListLength()).toEqual(totalCountries + defaultPreferredCountries);
     });
 
     it("defaults to the right flag", function() {
-      var selectedFlag = container.find(".selected-flag .flag");
-      expect(selectedFlag).toHaveClass("us");
+      expect(getSelectedFlagElement()).toHaveClass("us");
     });
 
     it("defaults to the right dial code", function() {
@@ -41,14 +48,12 @@ describe("create input element", function() {
     it("calling selectCountry updates the selected flag", function() {
       var countryCode = "gb";
       input.intlTelInput("selectCountry", countryCode);
-      var selectedFlagElement = container.find(".selected-flag .flag");
-      expect(selectedFlagElement).toHaveClass(countryCode);
+      expect(getSelectedFlagElement()).toHaveClass(countryCode);
     });
 
     it("typing a different dial code updates the selected flag", function() {
       input.val("+44").keyup();
-      var selectedFlagElement = container.find(".selected-flag .flag");
-      expect(selectedFlagElement).toHaveClass("gb");
+      expect(getSelectedFlagElement()).toHaveClass("gb");
     });
 
   });
@@ -61,17 +66,15 @@ describe("create input element", function() {
       input.intlTelInput({
         preferredCountries: []
       });
-      container = input.parent();
     });
 
     it("defaults to the first country in the alphabet", function() {
-      var selectedFlagElement = container.find(".selected-flag .flag");
-      expect(selectedFlagElement).toHaveClass("af");
+      // Afghanistan
+      expect(getSelectedFlagElement()).toHaveClass("af");
     });
 
     it("has the right number of list items", function() {
-      var listElements = container.find(".country-list li.country");
-      expect(listElements.length).toEqual(totalCountries);
+      expect(getListLength()).toEqual(totalCountries);
     });
 
   });
@@ -83,12 +86,11 @@ describe("create input element", function() {
     var preferredCountries;
 
     beforeEach(function() {
-      // united kingdom
+      // United Kingdom
       preferredCountries = ['gb'];
       input.intlTelInput({
         preferredCountries: preferredCountries
       });
-      container = input.parent();
     });
 
     afterEach(function() {
@@ -96,13 +98,11 @@ describe("create input element", function() {
     });
 
     it("defaults to the first preferredCountries", function() {
-      var selectedFlagElement = container.find(".selected-flag .flag");
-      expect(selectedFlagElement).toHaveClass(preferredCountries[0]);
+      expect(getSelectedFlagElement()).toHaveClass(preferredCountries[0]);
     });
 
     it("has the right number of list items", function() {
-      var listElements = container.find(".country-list li.country");
-      expect(listElements.length).toEqual(totalCountries + preferredCountries.length);
+      expect(getListLength()).toEqual(totalCountries + preferredCountries.length);
     });
 
   });
@@ -114,12 +114,11 @@ describe("create input element", function() {
     var onlyCountries;
 
     beforeEach(function() {
-      // china and japan (these are NOT in the default preferredCountries)
+      // China and Japan (these are NOT in the default preferredCountries)
       onlyCountries = ['ch', 'jp'];
       input.intlTelInput({
         onlyCountries: onlyCountries
       });
-      container = input.parent();
     });
 
     afterEach(function() {
@@ -127,8 +126,7 @@ describe("create input element", function() {
     });
 
     it("has the right number of list items", function() {
-      var listElements = container.find(".country-list li.country");
-      expect(listElements.length).toEqual(onlyCountries.length);
+      expect(getListLength()).toEqual(onlyCountries.length);
     });
 
   });
