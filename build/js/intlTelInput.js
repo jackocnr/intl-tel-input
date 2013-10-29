@@ -62,8 +62,9 @@ author: Jack O'Connor (http://jackocnr.com)
             this.defaultCountry = preferredCountries.length ? preferredCountries[0] : intlData.countries[0];
             // telephone input
             this.telInput = $(this.element);
-            // if initialDialCode is enabled, insert the default dial code
-            if (this.options.initialDialCode && this.telInput.val() === "") {
+            // if initialDialCode is enabled (and input is not pre-populated), insert the default dial code
+            // update: also check that the default country is not america, or if it is, that americaMode is false
+            if (this.options.initialDialCode && this.telInput.val() === "" && (this.defaultCountry.cca2 != "us" || !this.options.americaMode)) {
                 this.telInput.val("+" + this.defaultCountry["calling-code"] + " ");
             }
             // containers (mostly for positioning)
