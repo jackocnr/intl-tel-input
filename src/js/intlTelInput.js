@@ -157,6 +157,9 @@
           // show it
           that.countryList.removeClass("hide");
           that._scrollTo(activeListItem);
+		  
+		  // set the focus on country list
+		  that.countryList.focus();
 
           // click off to close
           // (except when this initial opening click is bubbling up)
