@@ -114,6 +114,24 @@
       this.countryListItems.first().addClass("active");
 
 
+      this.telInput.focusin(function() {
+          var value = that.telInput.val().trim() ;
+          if (value.length == 0) {
+            var countryCode = that.selectedFlagInner.attr("class").split(" ")[1] ;
+            var listItem = that._selectFlag(countryCode);
+            var dialCode = listItem.attr("data-dial-code");
+            that.telInput.val("+" + dialCode + that.separator);          }
+      });
+
+      this.telInput.focusout(function() {
+          var value = that.telInput.val().trim() ;
+          if (value.length > 0) {
+            var dialCode = that._getDialCode(that.telInput.val());
+            if ("+" + dialCode == value.trim()) {
+                that.telInput.val("") ;
+            }
+          }
+      });
 
       // update flag on keyup
       // (by extracting the dial code from the input value)
@@ -164,6 +182,7 @@
           $('html').bind("click.intlTelInput" + that.id, function(e) {
             if (!isOpening) {
               that._closeDropdown();
+              that.telInput.focus();
             }
             isOpening = false;
           });
