@@ -6,6 +6,7 @@
       preferredCountries: ["us", "gb"], // united states and united kingdom
       initialDialCode: true,
       americaMode: false,
+      splitMode: true,
       onlyCountries: [],
       defaultStyling: true
     };
@@ -14,6 +15,7 @@
     this.element = element;
 
     this.options = $.extend({}, defaults, options);
+	this.separator = " " ;
 
     this._defaults = defaults;
     this.id = id++;
@@ -51,6 +53,11 @@
         intlData.countryCodes = newCountryCodes;
       }
 
+	  // if the splitMode is disabled set the separator to an empty String
+      if (this.options.splitMode == false) {
+          this.separator = "" ;
+      }
+
       // process preferred countries - iterate through the preferences,
       // finding the relevant data from the provided intlData.countries array
       var preferredCountries = [];
@@ -68,7 +75,7 @@
       // if initialDialCode is enabled (and input is not pre-populated), insert the default dial code
       // update: also check that the default country is not america, or if it is, that americaMode is false
       if (this.options.initialDialCode && this.telInput.val() === "" && (this.defaultCountry.cca2 != "us" || !this.options.americaMode)) {
-        this.telInput.val("+" + this.defaultCountry["calling-code"] + " ");
+        this.telInput.val("+" + this.defaultCountry["calling-code"] + this.separator);
       }
 
       // containers (mostly for positioning)
@@ -336,14 +343,14 @@
         // if the old number was just the dial code,
         // then we will need to add the space again
         if (inputVal == prevDialCode) {
-          newNumber += " ";
+          newNumber += this.separator;
         }
       } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
         // previous number didn't contain a dial code, so persist it
-        newNumber = newDialCode + " " + inputVal.trim();
+        newNumber = newDialCode + this.separator + inputVal.trim();
       } else {
         // previous number contained an invalid dial code, so wipe it
-        newNumber = newDialCode + " ";
+        newNumber = newDialCode + this.separator;
       }
 
       // if americaMode is enabled, we dont display the dial code for american numbers
@@ -409,7 +416,7 @@
       if (!this.selectedFlagInner.hasClass(countryCode)) {
         var listItem = this._selectFlag(countryCode);
         var dialCode = listItem.attr("data-dial-code");
-        this.telInput.val("+" + dialCode + " ");
+        this.telInput.val("+" + dialCode + this.separator);
       }
     },
 
