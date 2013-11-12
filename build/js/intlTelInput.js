@@ -295,7 +295,7 @@ author: Jack O'Connor (http://jackocnr.com)
         },
         // try and extract a valid international dial code from a full telephone number
         _getDialCode: function(inputVal) {
-            var firstPart = inputVal.trim().split(" ")[0];
+            var firstPart = $.trim(inputVal).split(" ")[0];
             // only interested in international numbers (starting with a plus)
             if (firstPart.substring(0, 1) == "+") {
                 // strip out non-numeric chars (e.g. pluses, spaces, brackets)
