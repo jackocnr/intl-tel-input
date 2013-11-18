@@ -282,7 +282,7 @@ author: Jack O'Connor (http://jackocnr.com)
                 }
             } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
                 // previous number didn't contain a dial code, so persist it
-                newNumber = newDialCode + " " + inputVal.trim();
+                newNumber = newDialCode + " " + $.trim(inputVal);
             } else {
                 // previous number contained an invalid dial code, so wipe it
                 newNumber = newDialCode + " ";
