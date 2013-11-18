@@ -337,7 +337,7 @@
         }
       } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
         // previous number didn't contain a dial code, so persist it
-        newNumber = newDialCode + " " + inputVal.trim();
+        newNumber = newDialCode + " " + $.trim(inputVal);
       } else {
         // previous number contained an invalid dial code, so wipe it
         newNumber = newDialCode + " ";
@@ -353,7 +353,7 @@
 
     // try and extract a valid international dial code from a full telephone number
     _getDialCode: function(inputVal) {
-      var firstPart = inputVal.trim().split(" ")[0];
+      var firstPart = $.trim(inputVal).split(" ")[0];
       // only interested in international numbers (starting with a plus)
       if (firstPart.substring(0, 1) == "+") {
         // strip out non-numeric chars (e.g. pluses, spaces, brackets)
