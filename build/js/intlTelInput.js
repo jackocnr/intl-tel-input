@@ -342,14 +342,6 @@ author: Jack O'Connor (http://jackocnr.com)
                 var dialCode = listItem.attr("data-dial-code");
                 this.telInput.val("+" + dialCode + " ");
             }
-        },
-        // get the country data object
-        getCountryData: function() {
-            return intlData;
-        },
-        // set the country data object
-        setCountryData: function(obj) {
-            intlData = obj;
         }
     };
     // adapted to allow public functions
@@ -381,6 +373,17 @@ author: Jack O'Connor (http://jackocnr.com)
             // otherwise return this to preserve chainability.
             return returns !== undefined ? returns : this;
         }
+    };
+    /********************
+   *  STATIC METHODS
+   ********************/
+    // get the country data object
+    $.fn[pluginName].getCountryData = function() {
+        return intlData;
+    };
+    // set the country data object
+    $.fn[pluginName].setCountryData = function(obj) {
+        intlData = obj;
     };
 })(jQuery, window, document);
 
