@@ -172,9 +172,10 @@
           $(document).bind("keydown.intlTelInput" + that.id, function(e) {
             // up (38) and down (40) to navigate
             if (e.which == 38 || e.which == 40) {
+              e.preventDefault();
               var current = that.countryList.children(".highlight").first();
               var next = (e.which == 38) ? current.prev() : current.next();
-              if (next) {
+              if (next.length) {
                 // skip the divider
                 if (next.hasClass("divider")) {
                   next = (e.which == 38) ? next.prev() : next.next();
