@@ -4,10 +4,11 @@
     id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
       preferredCountries: ["us", "gb"], // united states and united kingdom
-      initialDialCode: true,
+      initialDialCode: false,
       americaMode: false,
       onlyCountries: [],
-      defaultStyling: true
+      defaultStyling: true,
+      autoHideDialCode: true
     };
 
   function Plugin(element, options) {
@@ -114,32 +115,34 @@
       this.countryListItems.first().addClass("active");
 
 
-      this.telInput.focusin(function() {
-          var value = that.telInput.val().trim() ;
-          if (value.length == 0) {
-            var countryCode = that.selectedFlagInner.attr("class").split(" ")[1] ;
-            var listItem = that._selectFlag(countryCode);
-            var dialCode = listItem.attr("data-dial-code");
-            that.telInput.val("+" + dialCode + that.separator);          }
-      });
+      if (this.options.autoHideDialCode) {
+        this.telInput.focusin(function() {
+          var value = that.telInput.val().trim();
+          if (value.length === 0) {
+            var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
+            var countryData = that._getCountryData(countryCode);
+            that.telInput.val("+" + countryData["calling-code"] + " ");
+          }
+        });
 
-      this.telInput.focusout(function() {
-          var value = that.telInput.val().trim() ;
+        this.telInput.focusout(function() {
+          var value = that.telInput.val().trim();
           if (value.length > 0) {
-            var dialCode = that._getDialCode(that.telInput.val());
-            if ("+" + dialCode == value.trim()) {
-                that.telInput.val("") ;
+            var dialCode = that._getDialCode(value);
+            if ("+" + dialCode == value) {
+              that.telInput.val("");
             }
           }
-      });
+        });
+      }
 
       // update flag on keyup
       // (by extracting the dial code from the input value)
       this.telInput.keyup(function() {
-          that._performKeyUpAction(that) ;
+        that._performKeyUpAction(that);
       });
       // trigger it now in case there is already a number in the input
-      that._performKeyUpAction(that) ;
+      that._performKeyUpAction(that);
 
       // toggle country dropdown on click
       selectedFlag.click(function(e) {
@@ -160,7 +163,6 @@
           $('html').bind("click.intlTelInput" + that.id, function(e) {
             if (!isOpening) {
               that._closeDropdown();
-              that.telInput.focus();
             }
             isOpening = false;
           });
@@ -236,7 +238,6 @@
       this.countryListItems.click(function(e) {
         var listItem = $(e.currentTarget);
         that._selectListItem(listItem);
-        that.telInput.focus() ;
       });
 
     }, // end of init()
@@ -244,32 +245,37 @@
 
 
 
+
+
     /********************
      *  PRIVATE METHODS
      ********************/
-    _performKeyUpAction: function(intlInput) {
-        var countryCode, alreadySelected = false;
-        // try and extract valid dial code from input
-        var dialCode = intlInput._getDialCode(intlInput.telInput.val());
-        if (dialCode) {
-            // check if one of the matching country's is already selected
-            var countryCodes = intlData.countryCodes[dialCode];
-            $.each(countryCodes, function(i, c) {
-                if (intlInput.selectedFlagInner.hasClass(c)) {
-                    alreadySelected = true;
-                }
-            });
-            countryCode = countryCodes[0];
-        }
-        // else default to dialcode of the first preferred country
-        else {
-            countryCode = intlInput.defaultCountry.cca2;
-        }
 
-        if (!alreadySelected) {
-            intlInput._selectFlag(countryCode);
-        }
+
+    _performKeyUpAction: function(intlInput) {
+      var countryCode, alreadySelected = false;
+      // try and extract valid dial code from input
+      var dialCode = intlInput._getDialCode(intlInput.telInput.val());
+      if (dialCode) {
+        // check if one of the matching country's is already selected
+        var countryCodes = intlData.countryCodes[dialCode];
+        $.each(countryCodes, function(i, c) {
+          if (intlInput.selectedFlagInner.hasClass(c)) {
+            alreadySelected = true;
+          }
+        });
+        countryCode = countryCodes[0];
+      }
+      // else default to dialcode of the first preferred country
+      else {
+        countryCode = intlInput.defaultCountry.cca2;
+      }
+
+      if (!alreadySelected) {
+        intlInput._selectFlag(countryCode);
+      }
     },
+
 
     // find the country data for the given country code
     _getCountryData: function(countryCode) {
@@ -296,14 +302,12 @@
     _selectListItem: function(listItem) {
       var countryCode = listItem.attr("data-country-code");
       // update selected flag
-      //this.selectedFlagInner.attr("class", "flag " + countryCode);
+      this.selectedFlagInner.attr("class", "flag " + countryCode);
       // update input value
       var newNumber = this._updateNumber(this.telInput.val(), listItem.attr("data-dial-code"));
       this.telInput.val(newNumber);
       // focus the input
       this.telInput.focus();
-      // triggers the keyup event
-      this.telInput.keyup();
 
       // mark the list item as active (incase they open the dropdown again)
       this.countryListItems.removeClass("active highlight");
@@ -419,15 +423,19 @@
 
 
 
+
+
     /********************
      *  PUBLIC METHODS
      ********************/
 
-    // modify the value and updates the flag
-    val: function(number) {
-        this.telInput.val(number) ;
-        this._performKeyUpAction(this) ;
+
+    // set the input value and update the flag
+    setNumber: function(number) {
+      this.telInput.val(number);
+      this._performKeyUpAction(this);
     },
+
 
     // update the selected flag, and insert the dial code
     selectCountry: function(countryCode) {
@@ -440,6 +448,8 @@
     }
 
   };
+
+
 
 
 
@@ -482,6 +492,7 @@
       return returns !== undefined ? returns : this;
     }
   };
+
 
 
 

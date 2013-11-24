@@ -14,10 +14,11 @@ author: Jack O'Connor (http://jackocnr.com)
     defaults = {
         preferredCountries: [ "us", "gb" ],
         // united states and united kingdom
-        initialDialCode: true,
+        initialDialCode: false,
         americaMode: false,
         onlyCountries: [],
-        defaultStyling: true
+        defaultStyling: true,
+        autoHideDialCode: true
     };
     function Plugin(element, options) {
         this.element = element;
@@ -105,30 +106,32 @@ author: Jack O'Connor (http://jackocnr.com)
             this.countryListItems = this.countryList.children(".country");
             // auto select the top one
             this.countryListItems.first().addClass("active");
+            if (this.options.autoHideDialCode) {
+                this.telInput.focusin(function() {
+                    var value = that.telInput.val().trim();
+                    if (value.length === 0) {
+                        var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
+                        var countryData = that._getCountryData(countryCode);
+                        that.telInput.val("+" + countryData["calling-code"] + " ");
+                    }
+                });
+                this.telInput.focusout(function() {
+                    var value = that.telInput.val().trim();
+                    if (value.length > 0) {
+                        var dialCode = that._getDialCode(value);
+                        if ("+" + dialCode == value) {
+                            that.telInput.val("");
+                        }
+                    }
+                });
+            }
             // update flag on keyup
             // (by extracting the dial code from the input value)
             this.telInput.keyup(function() {
-                var countryCode, alreadySelected = false;
-                // try and extract valid dial code from input
-                var dialCode = that._getDialCode(that.telInput.val());
-                if (dialCode) {
-                    // check if one of the matching country's is already selected
-                    var countryCodes = intlData.countryCodes[dialCode];
-                    $.each(countryCodes, function(i, c) {
-                        if (that.selectedFlagInner.hasClass(c)) {
-                            alreadySelected = true;
-                        }
-                    });
-                    countryCode = countryCodes[0];
-                } else {
-                    countryCode = that.defaultCountry.cca2;
-                }
-                if (!alreadySelected) {
-                    that._selectFlag(countryCode);
-                }
+                that._performKeyUpAction(that);
             });
             // trigger it now in case there is already a number in the input
-            this.telInput.keyup();
+            that._performKeyUpAction(that);
             // toggle country dropdown on click
             selectedFlag.click(function(e) {
                 // toggle dropdown
@@ -211,6 +214,26 @@ author: Jack O'Connor (http://jackocnr.com)
         /********************
      *  PRIVATE METHODS
      ********************/
+        _performKeyUpAction: function(intlInput) {
+            var countryCode, alreadySelected = false;
+            // try and extract valid dial code from input
+            var dialCode = intlInput._getDialCode(intlInput.telInput.val());
+            if (dialCode) {
+                // check if one of the matching country's is already selected
+                var countryCodes = intlData.countryCodes[dialCode];
+                $.each(countryCodes, function(i, c) {
+                    if (intlInput.selectedFlagInner.hasClass(c)) {
+                        alreadySelected = true;
+                    }
+                });
+                countryCode = countryCodes[0];
+            } else {
+                countryCode = intlInput.defaultCountry.cca2;
+            }
+            if (!alreadySelected) {
+                intlInput._selectFlag(countryCode);
+            }
+        },
         // find the country data for the given country code
         _getCountryData: function(countryCode) {
             for (var i = 0; i < intlData.countries.length; i++) {
@@ -335,6 +358,11 @@ author: Jack O'Connor (http://jackocnr.com)
         /********************
      *  PUBLIC METHODS
      ********************/
+        // set the input value and update the flag
+        setNumber: function(number) {
+            this.telInput.val(number);
+            this._performKeyUpAction(this);
+        },
         // update the selected flag, and insert the dial code
         selectCountry: function(countryCode) {
             // check if already selected
