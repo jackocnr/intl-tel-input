@@ -64,9 +64,8 @@ author: Jack O'Connor (http://jackocnr.com)
             // telephone input
             this.telInput = $(this.element);
             // if initialDialCode is enabled (and input is not pre-populated), insert the default dial code
-            // update: also check that the default country is not america, or if it is, that americaMode is false
-            if (this.options.initialDialCode && this.telInput.val() === "" && (this.defaultCountry.cca2 != "us" || !this.options.americaMode)) {
-                this.telInput.val("+" + this.defaultCountry["calling-code"] + " ");
+            if (this.options.initialDialCode && this.telInput.val() === "") {
+                this._resetToDialCode(this.defaultCountry["calling-code"]);
             }
             // containers (mostly for positioning)
             var mainClass = "intl-tel-input";
@@ -112,7 +111,7 @@ author: Jack O'Connor (http://jackocnr.com)
                     if (value.length === 0) {
                         var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
                         var countryData = that._getCountryData(countryCode);
-                        that.telInput.val("+" + countryData["calling-code"] + " ");
+                        that._resetToDialCode(countryData["calling-code"]);
                     }
                 });
                 this.telInput.focusout(function() {
@@ -137,8 +136,8 @@ author: Jack O'Connor (http://jackocnr.com)
                 // toggle dropdown
                 if (that.countryList.hasClass("hide")) {
                     // update highlighting and scroll to active list item
-                    that.countryListItems.removeClass("highlight");
-                    var activeListItem = that.countryList.children(".active").addClass("highlight");
+                    var activeListItem = that.countryList.children(".active");
+                    that._highlightListItem(activeListItem);
                     // show it
                     that.countryList.removeClass("hide");
                     that._scrollTo(activeListItem);
@@ -155,6 +154,7 @@ author: Jack O'Connor (http://jackocnr.com)
                     $(document).bind("keydown.intlTelInput" + that.id, function(e) {
                         // up (38) and down (40) to navigate
                         if (e.which == 38 || e.which == 40) {
+                            // prevent scrolling the whole page
                             e.preventDefault();
                             var current = that.countryList.children(".highlight").first();
                             var next = e.which == 38 ? current.prev() : current.next();
@@ -163,8 +163,7 @@ author: Jack O'Connor (http://jackocnr.com)
                                 if (next.hasClass("divider")) {
                                     next = e.which == 38 ? next.prev() : next.next();
                                 }
-                                that.countryListItems.removeClass("highlight");
-                                next.addClass("highlight");
+                                that._highlightListItem(next);
                                 that._scrollTo(next);
                             }
                         } else if (e.which == 13) {
@@ -191,18 +190,17 @@ author: Jack O'Connor (http://jackocnr.com)
                                     listItem = countries.first();
                                 }
                                 // update highlighting and scroll
-                                that.countryListItems.removeClass("highlight");
-                                listItem.addClass("highlight");
+                                that._highlightListItem(listItem);
                                 that._scrollTo(listItem);
                             }
                         }
                     });
                 }
             });
-            // when mouse over a list item, remove any highlighting from any other items
+            // when mouse over a list item, just highlight that one
+            // we add the class "highlight", so if they hit "enter" we know which one to select
             this.countryListItems.mouseover(function() {
-                that.countryListItems.removeClass("highlight");
-                $(this).addClass("highlight");
+                that._highlightListItem($(this));
             });
             // listen for country selection
             this.countryListItems.click(function(e) {
@@ -234,6 +232,17 @@ author: Jack O'Connor (http://jackocnr.com)
                 intlInput._selectFlag(countryCode);
             }
         },
+        // reset the input value to just a dial code
+        _resetToDialCode: function(dialCode) {
+            // if the dialCode is for America, and americaMode is enabled, then don't insert the dial code
+            var value = dialCode == "1" && this.options.americaMode ? "" : "+" + dialCode + " ";
+            this.telInput.val(value);
+        },
+        // remove highlighting from other list items and highlight the given item
+        _highlightListItem: function(listItem) {
+            this.countryListItems.removeClass("highlight");
+            listItem.addClass("highlight");
+        },
         // find the country data for the given country code
         _getCountryData: function(countryCode) {
             for (var i = 0; i < intlData.countries.length; i++) {
@@ -262,7 +271,7 @@ author: Jack O'Connor (http://jackocnr.com)
             // focus the input
             this.telInput.focus();
             // mark the list item as active (incase they open the dropdown again)
-            this.countryListItems.removeClass("active highlight");
+            this.countryListItems.removeClass("active");
             listItem.addClass("active");
         },
         // close the dropdown and unbind any listeners
@@ -369,7 +378,7 @@ author: Jack O'Connor (http://jackocnr.com)
             if (!this.selectedFlagInner.hasClass(countryCode)) {
                 var listItem = this._selectFlag(countryCode);
                 var dialCode = listItem.attr("data-dial-code");
-                this.telInput.val("+" + dialCode + " ");
+                this._resetToDialCode(dialCode);
             }
         }
     };
