@@ -7,6 +7,13 @@ http://jackocnr.com/intl-tel-input.html
 Try it for yourself using the included demo.html
 
 
+## Features
+* In the country dropdown you can navigate by typing, or using the up/down keys
+* Selecting a country from the dropdown updates the dial code of the entered number
+* Typing a different dial code automatically updates the displayed flag
+* Country names in the dropdown also include localised versions in brackets
+
+
 ## Getting started
 First add the stylesheet to your &lt;head&gt;
 ```html
@@ -28,8 +35,12 @@ Then include the plugin and initialise it on your input element
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
 **initialDialCode**  
-Type: `Boolean` Default: `true`  
+Type: `Boolean` Default: `false`  
 Insert the default country's dial code upon initialisation.
+
+**autoHideDialCode**  
+Type: `Boolean` Default: `true`  
+If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form.
 
 **preferredCountries**  
 Type: `Array` Default: `["us", "gb"]`  
@@ -48,14 +59,19 @@ Type: `Boolean` Default: `true`
 Apply the default minimal styling.
 
 
-## Features
-* In the country dropdown you can navigate by typing, or using the up/down keys
-* Selecting a country from the dropdown updates the dial code of the entered number
-* Typing a different dial code automatically updates the displayed flag
-* Country names in the dropdown also include localised versions in brackets
-* Programatically select a country after initialisation (e.g. when the user is entering their address)
+## Public methods
+* Select a country after initialisation (e.g. when the user is entering their address)
 
         $('#mobile-number').intlTelInput('selectCountry', 'gb');
+        
+* Insert a number, and update the selected flag accordingly
+
+        $('#mobile-number').intlTelInput('setNumber', '+44 77333 123 456');
+        
+* Get and set the country data using these static methods
+
+        var countryData = $.fn.intlTelInput.getCountryData();
+        $.fn.intlTelInput.setCountryData(countryData);
 
 
 ## Validation
