@@ -50,8 +50,8 @@ describe("create input element", function() {
       expect(getSelectedFlagElement()).toHaveClass("us");
     });
 
-    it("defaults to the right dial code", function() {
-      expect(input.val().trim()).toEqual("+1");
+    it("doesn't automatically populate the input value", function() {
+      expect(input.val()).toEqual("");
     });
 
     it("typing a different dial code updates the selected flag", function() {
@@ -206,10 +206,6 @@ describe("create input element", function() {
       preferredCountries = null;
     });
 
-    it("defaults to the right dial code", function() {
-      expect(input.val().trim()).toEqual("+44");
-    });
-
     it("defaults to the first preferredCountries", function() {
       expect(getSelectedFlagElement()).toHaveClass(preferredCountries[0]);
     });
@@ -236,10 +232,6 @@ describe("create input element", function() {
 
     afterEach(function() {
       onlyCountries = null;
-    });
-
-    it("defaults to the right dial code", function() {
-      expect(input.val().trim()).toEqual("+41");
     });
 
     it("defaults to the first onlyCountries", function() {
