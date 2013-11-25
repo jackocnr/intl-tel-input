@@ -127,10 +127,10 @@ author: Jack O'Connor (http://jackocnr.com)
             // update flag on keyup
             // (by extracting the dial code from the input value)
             this.telInput.keyup(function() {
-                that._updateSelectedFlag();
+                that._updateFlagFromInputVal();
             });
             // trigger it now in case there is already a number in the input
-            that._updateSelectedFlag();
+            that._updateFlagFromInputVal();
             // toggle country dropdown on click
             selectedFlag.click(function(e) {
                 // toggle dropdown
@@ -213,7 +213,7 @@ author: Jack O'Connor (http://jackocnr.com)
      *  PRIVATE METHODS
      ********************/
         // update the selected flag using the input's current value
-        _updateSelectedFlag: function() {
+        _updateFlagFromInputVal: function() {
             var that = this;
             var countryCode, alreadySelected = false;
             // try and extract valid dial code from input
@@ -256,25 +256,20 @@ author: Jack O'Connor (http://jackocnr.com)
         // update the selected flag and the active list item
         _selectFlag: function(countryCode) {
             this.selectedFlagInner.attr("class", "flag " + countryCode);
-            // and the active list item
-            this.countryListItems.removeClass("active");
+            // and update the active list item
             var listItem = this.countryListItems.children(".flag." + countryCode).parent();
+            this.countryListItems.removeClass("active");
             listItem.addClass("active");
-            return listItem;
         },
         // called when the user selects a list item from the dropdown
         _selectListItem: function(listItem) {
             var countryCode = listItem.attr("data-country-code");
-            // update selected flag
-            this.selectedFlagInner.attr("class", "flag " + countryCode);
+            this._selectFlag(countryCode);
             // update input value
-            var newNumber = this._updateNumber(this.telInput.val(), listItem.attr("data-dial-code"));
+            var newNumber = this._updateNumber(listItem.attr("data-dial-code"));
             this.telInput.val(newNumber);
             // focus the input
             this.telInput.focus();
-            // mark the list item as active (incase they open the dropdown again)
-            this.countryListItems.removeClass("active");
-            listItem.addClass("active");
         },
         // close the dropdown and unbind any listeners
         _closeDropdown: function() {
@@ -302,7 +297,8 @@ author: Jack O'Connor (http://jackocnr.com)
             }
         },
         // replace any existing dial code with the new one
-        _updateNumber: function(inputVal, dialCode) {
+        _updateNumber: function(dialCode) {
+            var inputVal = this.telInput.val();
             var prevDialCode = "+" + this._getDialCode(inputVal);
             var newDialCode = "+" + dialCode;
             var newNumber;
@@ -372,15 +368,15 @@ author: Jack O'Connor (http://jackocnr.com)
         // set the input value and update the flag
         setNumber: function(number) {
             this.telInput.val(number);
-            this._updateSelectedFlag();
+            this._updateFlagFromInputVal();
         },
         // update the selected flag, and insert the dial code
         selectCountry: function(countryCode) {
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {
-                var listItem = this._selectFlag(countryCode);
-                var dialCode = listItem.attr("data-dial-code");
-                this._resetToDialCode(dialCode);
+                this._selectFlag(countryCode);
+                var countryData = this._getCountryData(countryCode);
+                this._resetToDialCode(countryData["calling-code"]);
             }
         }
     };
