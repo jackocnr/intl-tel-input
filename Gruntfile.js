@@ -94,8 +94,11 @@ module.exports = function(grunt) {
           'lib/jquery/jquery.js',
           'lib/jasmine-jquery/jasmine-jquery.js'
         ],
+        helpers: [
+          'src/spec/helpers/**/*.js'
+        ],
         specs: [
-          'src/js/tests.js'
+          'src/spec/tests/**/*.js'
         ]
       }
     },

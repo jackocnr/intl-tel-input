@@ -28,13 +28,12 @@
     init: function() {
       var that = this;
 
-      // process onlyCountries array and update intlData.countries
-      // and intlData.countryCodes accordingly
+      // process onlyCountries array
       if (this.options.onlyCountries.length > 0) {
         var newCountries = [],
           newCountryCodes = {};
         $.each(this.options.onlyCountries, function(i, countryCode) {
-          var countryData = that._getCountryData(countryCode);
+          var countryData = that._getCountryData(countryCode, true);
           if (countryData) {
             newCountries.push(countryData);
 
@@ -48,15 +47,19 @@
         });
 
         // update the global data object
-        intlData.countries = newCountries;
-        intlData.countryCodes = newCountryCodes;
+        window.intlData = {
+          countries: newCountries,
+          countryCodes: newCountryCodes
+        };
+      } else {
+        window.intlData = intlDataFull;
       }
 
       // process preferred countries - iterate through the preferences,
       // finding the relevant data from the provided intlData.countries array
       var preferredCountries = [];
       $.each(this.options.preferredCountries, function(i, countryCode) {
-        var countryData = that._getCountryData(countryCode);
+        var countryData = that._getCountryData(countryCode, false);
         if (countryData) {
           preferredCountries.push(countryData);
         }
@@ -119,7 +122,7 @@
           var value = that.telInput.val().trim();
           if (value.length === 0) {
             var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
-            var countryData = that._getCountryData(countryCode);
+            var countryData = that._getCountryData(countryCode, false);
             that._resetToDialCode(countryData["calling-code"]);
           }
         });
@@ -294,10 +297,11 @@
 
 
     // find the country data for the given country code
-    _getCountryData: function(countryCode) {
-      for (var i = 0; i < intlData.countries.length; i++) {
-        if (intlData.countries[i].cca2 == countryCode) {
-          return intlData.countries[i];
+    _getCountryData: function(countryCode, ignoreOnlyCountriesOption) {
+      var countryList = (ignoreOnlyCountriesOption) ? intlDataFull.countries : intlData.countries;
+      for (var i = 0; i < countryList.length; i++) {
+        if (countryList[i].cca2 == countryCode) {
+          return countryList[i];
         }
       }
     },
@@ -455,7 +459,7 @@
       // check if already selected
       if (!this.selectedFlagInner.hasClass(countryCode)) {
         this._selectFlag(countryCode);
-        var countryData = this._getCountryData(countryCode);
+        var countryData = this._getCountryData(countryCode, false);
         this._resetToDialCode(countryData["calling-code"]);
       }
     }
@@ -517,13 +521,13 @@
 
   // get the country data object
   $.fn[pluginName].getCountryData = function() {
-    return intlData;
+    return intlDataFull;
   };
 
 
   // set the country data object
   $.fn[pluginName].setCountryData = function(obj) {
-    intlData = obj;
+    intlDataFull = obj;
   };
 
 })(jQuery, window, document);

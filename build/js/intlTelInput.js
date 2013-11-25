@@ -31,12 +31,11 @@ author: Jack O'Connor (http://jackocnr.com)
     Plugin.prototype = {
         init: function() {
             var that = this;
-            // process onlyCountries array and update intlData.countries
-            // and intlData.countryCodes accordingly
+            // process onlyCountries array
             if (this.options.onlyCountries.length > 0) {
                 var newCountries = [], newCountryCodes = {};
                 $.each(this.options.onlyCountries, function(i, countryCode) {
-                    var countryData = that._getCountryData(countryCode);
+                    var countryData = that._getCountryData(countryCode, true);
                     if (countryData) {
                         newCountries.push(countryData);
                         var callingCode = countryData["calling-code"];
@@ -48,14 +47,18 @@ author: Jack O'Connor (http://jackocnr.com)
                     }
                 });
                 // update the global data object
-                intlData.countries = newCountries;
-                intlData.countryCodes = newCountryCodes;
+                window.intlData = {
+                    countries: newCountries,
+                    countryCodes: newCountryCodes
+                };
+            } else {
+                window.intlData = intlDataFull;
             }
             // process preferred countries - iterate through the preferences,
             // finding the relevant data from the provided intlData.countries array
             var preferredCountries = [];
             $.each(this.options.preferredCountries, function(i, countryCode) {
-                var countryData = that._getCountryData(countryCode);
+                var countryData = that._getCountryData(countryCode, false);
                 if (countryData) {
                     preferredCountries.push(countryData);
                 }
@@ -110,7 +113,7 @@ author: Jack O'Connor (http://jackocnr.com)
                     var value = that.telInput.val().trim();
                     if (value.length === 0) {
                         var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
-                        var countryData = that._getCountryData(countryCode);
+                        var countryData = that._getCountryData(countryCode, false);
                         that._resetToDialCode(countryData["calling-code"]);
                     }
                 });
@@ -246,10 +249,11 @@ author: Jack O'Connor (http://jackocnr.com)
             listItem.addClass("highlight");
         },
         // find the country data for the given country code
-        _getCountryData: function(countryCode) {
-            for (var i = 0; i < intlData.countries.length; i++) {
-                if (intlData.countries[i].cca2 == countryCode) {
-                    return intlData.countries[i];
+        _getCountryData: function(countryCode, ignoreOnlyCountriesOption) {
+            var countryList = ignoreOnlyCountriesOption ? intlDataFull.countries : intlData.countries;
+            for (var i = 0; i < countryList.length; i++) {
+                if (countryList[i].cca2 == countryCode) {
+                    return countryList[i];
                 }
             }
         },
@@ -375,7 +379,7 @@ author: Jack O'Connor (http://jackocnr.com)
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {
                 this._selectFlag(countryCode);
-                var countryData = this._getCountryData(countryCode);
+                var countryData = this._getCountryData(countryCode, false);
                 this._resetToDialCode(countryData["calling-code"]);
             }
         }
@@ -415,18 +419,18 @@ author: Jack O'Connor (http://jackocnr.com)
    ********************/
     // get the country data object
     $.fn[pluginName].getCountryData = function() {
-        return intlData;
+        return intlDataFull;
     };
     // set the country data object
     $.fn[pluginName].setCountryData = function(obj) {
-        intlData = obj;
+        intlDataFull = obj;
     };
 })(jQuery, window, document);
 
 // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
 // jshint -W100
 // Namespaced to prevent clashes
-var intlData = {
+var intlDataFull = {
     // Array of country objects for the flag dropdown.
     // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
     // Originally from https://github.com/mledoze/countries
