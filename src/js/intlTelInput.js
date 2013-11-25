@@ -138,10 +138,10 @@
       // update flag on keyup
       // (by extracting the dial code from the input value)
       this.telInput.keyup(function() {
-        that._performKeyUpAction(that);
+        that._updateSelectedFlag();
       });
       // trigger it now in case there is already a number in the input
-      that._performKeyUpAction(that);
+      that._updateSelectedFlag();
 
       // toggle country dropdown on click
       selectedFlag.click(function(e) {
@@ -250,15 +250,18 @@
      ********************/
 
 
-    _performKeyUpAction: function(intlInput) {
+     // update the selected flag using the input's current value
+    _updateSelectedFlag: function() {
+      var that = this;
+
       var countryCode, alreadySelected = false;
       // try and extract valid dial code from input
-      var dialCode = intlInput._getDialCode(intlInput.telInput.val());
+      var dialCode = this._getDialCode(this.telInput.val());
       if (dialCode) {
-        // check if one of the matching country's is already selected
+        // check if one of the matching countrys is already selected
         var countryCodes = intlData.countryCodes[dialCode];
         $.each(countryCodes, function(i, c) {
-          if (intlInput.selectedFlagInner.hasClass(c)) {
+          if (that.selectedFlagInner.hasClass(c)) {
             alreadySelected = true;
           }
         });
@@ -266,11 +269,11 @@
       }
       // else default to dialcode of the first preferred country
       else {
-        countryCode = intlInput.defaultCountry.cca2;
+        countryCode = this.defaultCountry.cca2;
       }
 
       if (!alreadySelected) {
-        intlInput._selectFlag(countryCode);
+        this._selectFlag(countryCode);
       }
     },
 
@@ -446,7 +449,7 @@
     // set the input value and update the flag
     setNumber: function(number) {
       this.telInput.val(number);
-      this._performKeyUpAction(this);
+      this._updateSelectedFlag();
     },
 
 
