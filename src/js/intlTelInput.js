@@ -8,7 +8,8 @@
       americaMode: false,
       onlyCountries: [],
       defaultStyling: true,
-      autoHideDialCode: true
+      autoHideDialCode: true,
+	  defaultCountry: ""
     };
 
   function Plugin(element, options) {
@@ -64,7 +65,14 @@
           preferredCountries.push(countryData);
         }
       });
-      this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
+	  
+	  // if the otion default country is set use it
+      if (this.options.defaultCountry.length == 2) {
+        this.defaultCountry =  that._getCountryData(this.options.defaultCountry);
+      }
+      if (this.defaultCountry == null) {
+		this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
+	  }
 
       // telephone input
       this.telInput = $(this.element);
@@ -119,7 +127,7 @@
 
       if (this.options.autoHideDialCode) {
         this.telInput.focusin(function() {
-          var value = that.telInput.val().trim();
+          var value = $.trim(that.telInput.val());
           if (value.length === 0) {
             var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
             var countryData = that._getCountryData(countryCode, false);
@@ -128,7 +136,7 @@
         });
 
         this.telInput.focusout(function() {
-          var value = that.telInput.val().trim();
+          var value = $.trim(that.telInput.val());
           if (value.length > 0) {
             var dialCode = that._getDialCode(value);
             if ("+" + dialCode == value) {
@@ -328,6 +336,8 @@
       this.telInput.val(newNumber);
       // focus the input
       this.telInput.focus();
+      // triggers the keyup event
+      this.telInput.keyup();
     },
 
 
