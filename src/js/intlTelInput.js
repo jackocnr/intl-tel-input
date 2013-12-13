@@ -336,6 +336,8 @@
       this.telInput.val(newNumber);
       // focus the input
       this.telInput.focus();
+      // triggers the keyup event
+      this.telInput.keyup();
     },
 
 
