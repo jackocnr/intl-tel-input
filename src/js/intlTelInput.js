@@ -8,7 +8,8 @@
       americaMode: false,
       onlyCountries: [],
       defaultStyling: true,
-      autoHideDialCode: true
+      autoHideDialCode: true,
+	  defaultCountry: ""
     };
 
   function Plugin(element, options) {
@@ -64,7 +65,14 @@
           preferredCountries.push(countryData);
         }
       });
-      this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
+	  
+	  // if the otion default country is set use it
+      if (this.options.defaultCountry.length == 2) {
+        this.defaultCountry =  that._getCountryData(this.options.defaultCountry);
+      }
+      if (this.defaultCountry == null) {
+		this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
+	  }
 
       // telephone input
       this.telInput = $(this.element);
