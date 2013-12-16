@@ -6,6 +6,7 @@ A jQuery plugin for entering international telephone numbers. It adds a flag dro
 http://jackocnr.com/intl-tel-input.html  
 Try it for yourself using the included demo.html
 
+![alt tag](https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png)
 
 ## Features
 * In the country dropdown you can navigate by typing, or using the up/down keys
