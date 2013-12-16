@@ -39,10 +39,6 @@ Note: any options that take country codes should be lower case [ISO 3166-1 alpha
 Type: `String` Default: `""`  
 Set the default country by it's country code. Otherwise it will just be the first country in the list.
 
-**initialDialCode**  
-Type: `Boolean` Default: `false`  
-Insert the default country's dial code upon initialisation.
-
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
 If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form.
