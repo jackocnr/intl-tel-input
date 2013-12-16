@@ -34,6 +34,10 @@ Then include the plugin and initialise it on your input element
 ## Options
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
+**defaultCountry**  
+Type: `String` Default: `""`  
+Set the default country by it's country code. Otherwise it will just be the first country in the list.
+
 **initialDialCode**  
 Type: `Boolean` Default: `false`  
 Insert the default country's dial code upon initialisation.
