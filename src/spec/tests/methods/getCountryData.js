@@ -21,7 +21,8 @@ describe("create input element", function() {
     });
 
     it("gets the country data object", function() {
-      expect(typeof countryData).toBe("object");
+      expect(countryData.countries.length).toEqual(221);
+      expect(Object.keys(countryData.countryCodes).length).toEqual(227);
     });
 
   });
