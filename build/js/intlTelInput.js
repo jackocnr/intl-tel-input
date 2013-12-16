@@ -18,7 +18,8 @@ author: Jack O'Connor (http://jackocnr.com)
         americaMode: false,
         onlyCountries: [],
         defaultStyling: true,
-        autoHideDialCode: true
+        autoHideDialCode: true,
+        defaultCountry: ""
     };
     function Plugin(element, options) {
         this.element = element;
@@ -63,7 +64,12 @@ author: Jack O'Connor (http://jackocnr.com)
                     preferredCountries.push(countryData);
                 }
             });
-            this.defaultCountry = preferredCountries.length ? preferredCountries[0] : intlData.countries[0];
+            // if the default country option is set then use it
+            if (this.options.defaultCountry) {
+                this.defaultCountry = this._getCountryData(this.options.defaultCountry, false);
+            } else {
+                this.defaultCountry = preferredCountries.length ? preferredCountries[0] : intlData.countries[0];
+            }
             // telephone input
             this.telInput = $(this.element);
             // if initialDialCode is enabled (and input is not pre-populated), insert the default dial code
@@ -110,7 +116,7 @@ author: Jack O'Connor (http://jackocnr.com)
             this.countryListItems.first().addClass("active");
             if (this.options.autoHideDialCode) {
                 this.telInput.focusin(function() {
-                    var value = that.telInput.val().trim();
+                    var value = $.trim(that.telInput.val());
                     if (value.length === 0) {
                         var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
                         var countryData = that._getCountryData(countryCode, false);
@@ -118,7 +124,7 @@ author: Jack O'Connor (http://jackocnr.com)
                     }
                 });
                 this.telInput.focusout(function() {
-                    var value = that.telInput.val().trim();
+                    var value = $.trim(that.telInput.val());
                     if (value.length > 0) {
                         var dialCode = that._getDialCode(value);
                         if ("+" + dialCode == value) {
@@ -249,6 +255,7 @@ author: Jack O'Connor (http://jackocnr.com)
             listItem.addClass("highlight");
         },
         // find the country data for the given country code
+        // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
         _getCountryData: function(countryCode, ignoreOnlyCountriesOption) {
             var countryList = ignoreOnlyCountriesOption ? intlDataFull.countries : intlData.countries;
             for (var i = 0; i < countryList.length; i++) {

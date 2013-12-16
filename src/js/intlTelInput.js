@@ -9,7 +9,7 @@
       onlyCountries: [],
       defaultStyling: true,
       autoHideDialCode: true,
-	  defaultCountry: ""
+      defaultCountry: ""
     };
 
   function Plugin(element, options) {
@@ -65,14 +65,13 @@
           preferredCountries.push(countryData);
         }
       });
-	  
-	  // if the otion default country is set use it
-      if (this.options.defaultCountry.length == 2) {
-        this.defaultCountry =  that._getCountryData(this.options.defaultCountry);
+    
+      // if the default country option is set then use it
+      if (this.options.defaultCountry) {
+        this.defaultCountry = this._getCountryData(this.options.defaultCountry, false);
+      } else {
+        this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
       }
-      if (this.defaultCountry == null) {
-		this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
-	  }
 
       // telephone input
       this.telInput = $(this.element);
@@ -305,6 +304,7 @@
 
 
     // find the country data for the given country code
+    // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
     _getCountryData: function(countryCode, ignoreOnlyCountriesOption) {
       var countryList = (ignoreOnlyCountriesOption) ? intlDataFull.countries : intlData.countries;
       for (var i = 0; i < countryList.length; i++) {
