@@ -1,41 +1,32 @@
 //"use strict";
 
-describe("create input element", function() {
+describe("init plugin with americaMode set to true", function() {
 
   beforeEach(function() {
     input = $("<input>");
+    input.intlTelInput({
+      americaMode: true
+    });
   });
 
   afterEach(function() {
     input = null;
   });
 
+  it("defaults to no dial code", function() {
+    expect(input.val()).toEqual("");
+  });
 
 
-  describe("init plugin with americaMode set to true", function() {
+
+  describe("selecting another country", function() {
 
     beforeEach(function() {
-      input.intlTelInput({
-        americaMode: true
-      });
+      selectFlag("gb");
     });
 
-    it("defaults to no dial code", function() {
-      expect(input.val()).toEqual("");
-    });
-
-
-
-    describe("selecting another country", function() {
-
-      beforeEach(function() {
-        selectFlag("gb");
-      });
-
-      it("still does update the dial code", function() {
-        expect(input.val().trim()).toEqual("+44");
-      });
-
+    it("does update the dial code", function() {
+      expect(input.val().trim()).toEqual("+44");
     });
 
 

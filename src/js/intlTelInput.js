@@ -4,7 +4,6 @@
     id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
       preferredCountries: ["us", "gb"], // united states and united kingdom
-      initialDialCode: false,
       americaMode: false,
       onlyCountries: [],
       defaultStyling: true,
@@ -76,8 +75,8 @@
       // telephone input
       this.telInput = $(this.element);
 
-      // if initialDialCode is enabled (and input is not pre-populated), insert the default dial code
-      if (this.options.initialDialCode && this.telInput.val() === "") {
+      // if autoHideDialCode is disabled (and input is not pre-populated), insert the default dial code
+      if (!this.options.autoHideDialCode && this.telInput.val() === "") {
         this._resetToDialCode(this.defaultCountry["calling-code"]);
       }
 
@@ -467,8 +466,10 @@
       // check if already selected
       if (!this.selectedFlagInner.hasClass(countryCode)) {
         this._selectFlag(countryCode);
-        var countryData = this._getCountryData(countryCode, false);
-        this._resetToDialCode(countryData["calling-code"]);
+        if (!this.options.autoHideDialCode) {
+          var countryData = this._getCountryData(countryCode, false);
+          this._resetToDialCode(countryData["calling-code"]);
+        }
       }
     }
 

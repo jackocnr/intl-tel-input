@@ -8,12 +8,12 @@ var getListLength = function() {
   return getListElement().find("li.country").length;
 };
 
-var getSelectedFlagElement = function() {
-  return input.parent().find(".selected-flag .flag");
+var getPreferredCountriesLength = function() {
+  return getListElement().find("li.country.preferred").length;
 };
 
-var getSelectedCountry = function() {
-  return getListElement().find(".active").attr("data-country-code");
+var getSelectedFlagElement = function() {
+  return input.parent().find(".selected-flag .flag");
 };
 
 var selectFlag = function(countryCode) {
