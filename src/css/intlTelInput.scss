@@ -58,7 +58,9 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
 
   input {
     // make space for the selected flag
-    padding-left: $selectedFlagWidth + $inputPadding;
+    // Note: added !important to override any custom styles the user may have
+    // as they will need this one!
+    padding-left: $selectedFlagWidth + $inputPadding !important;
 
     position: relative;
     z-index: 0;

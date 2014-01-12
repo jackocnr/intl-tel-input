@@ -4,7 +4,7 @@
 .intl-tel-input .flag-dropdown.hover { cursor: pointer; }
 .intl-tel-input .flag-dropdown .selected-flag { z-index: 1; position: relative; }
 .intl-tel-input .flag-dropdown .country-list { list-style: none; overflow-y: scroll; position: absolute; z-index: 2; }
-.intl-tel-input input { padding-left: 47px; position: relative; z-index: 0; }
+.intl-tel-input input { padding-left: 47px !important; position: relative; z-index: 0; }
 .intl-tel-input.pretty .flag-dropdown.hover .selected-flag { background-color: rgba(0, 0, 0, 0.05); }
 .intl-tel-input.pretty .flag-dropdown .selected-flag { margin: 1px; padding: 6px 16px 6px 6px; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .down-arrow { top: 6px; position: relative; left: 20px; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid black; }

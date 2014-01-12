@@ -109,8 +109,7 @@ describe("init vanilla plugin", function() {
         expect(getListElement()).toHaveClass("hide");
       });
 
-    });  
-
+    });
 
   }); 
 
