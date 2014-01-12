@@ -71,14 +71,26 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
   &.pretty {
 
     .flag-dropdown {
+      // prevent the highlighted child from overlapping the input border
+      padding: 1px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+
+      // on hover
       &.hover .selected-flag {
         background-color: $hoverColor;
       }
 
       .selected-flag {
-        // we add margin to avoid covering the input border on hover
-        margin: $borderWidth;
-        padding: $flagPadding ($flagPadding + $arrowWidth + $arrowPadding) $flagPadding $flagPadding;
+        width: $flagWidth;
+        padding: 0 ($flagPadding + $arrowWidth + $arrowPadding) 0 $flagPadding;
+
+        // vertically center the flag
+        .flag {
+          position: absolute;
+          top: 50%;
+          margin-top: -($flagHeight / 2);
+        }
 
         .down-arrow {
           // split the difference between the flag and the arrow height to verically center
@@ -95,6 +107,13 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         }
       }
 
+      // this must be full-height both for the hover highlight, and to push down the
+      // dropdown so it appears below the input
+      &, .selected-flag {
+        height: 100%;
+      }
+
+      // the dropdown
       .country-list {
         padding: 0;
         margin: 0;
@@ -103,8 +122,9 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         background-color: white;
         border: $borderWidth solid $greyBorder;
 
-        // height of input -1px to avoid showing double border at the overlap
-        top: $inputHeight - 1px;
+        // compensate for the padding on the parent
+        margin-left: -1px;
+
         // wide enough to fit long country names
         width: 420px;
         max-height: 200px;
@@ -138,17 +158,6 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         }
       }
     }
-
-    input {
-      // dont let padding make the input higher than the height value we give it
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
-
-      // hardcode the input's height to fit the selected flag inside it
-      height: $inputHeight;
-    }
-
   }
-
 }
 

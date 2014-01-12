@@ -5,6 +5,7 @@
   color: #333; }
   .intl-tel-input input {
     width: 250px;
+    height: 30px;
     border: 1px solid #CCC;
     font-family: inherit;
     font-size: 100%;
