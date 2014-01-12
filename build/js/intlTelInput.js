@@ -114,6 +114,15 @@ Plugin.prototype = {
         this.countryListItems = this.countryList.children(".country");
         // auto select the top one
         this.countryListItems.first().addClass("active");
+        // hover handling (do this here so can disable when input disabled)
+        flagsContainer.hover(function() {
+            if (!that.telInput.prop("disabled")) {
+                flagsContainer.addClass("hover");
+            }
+        }, function() {
+            flagsContainer.removeClass("hover");
+        });
+        // auto hide option
         if (this.options.autoHideDialCode) {
             // on focusin: if empty, insert the dial code for the currently selected flag
             this.telInput.focusin(function() {
@@ -144,7 +153,7 @@ Plugin.prototype = {
         // toggle country dropdown on click
         selectedFlag.click(function(e) {
             // toggle dropdown
-            if (that.countryList.hasClass("hide")) {
+            if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
                 // update highlighting and scroll to active list item
                 var activeListItem = that.countryList.children(".active");
                 that._highlightListItem(activeListItem);

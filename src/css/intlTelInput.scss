@@ -32,7 +32,9 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
   .flag-dropdown {
     // positioned over the top of the input
     position: absolute;
-    cursor: pointer;
+    &.hover {
+      cursor: pointer;
+    }
 
     .selected-flag {
       // render above the input
@@ -67,14 +69,14 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
   &.pretty {
 
     .flag-dropdown {
+      &.hover .selected-flag {
+        background-color: $hoverColor;
+      }
+
       .selected-flag {
         // we add margin to avoid covering the input border on hover
         margin: $borderWidth;
         padding: $flagPadding ($flagPadding + $arrowWidth + $arrowPadding) $flagPadding $flagPadding;
-
-        &:hover {
-          background-color: $hoverColor;
-        }
 
         .down-arrow {
           // split the difference between the flag and the arrow height to verically center
