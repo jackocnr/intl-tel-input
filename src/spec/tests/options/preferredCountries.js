@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("create input element", function() {
 

@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("use static method getCountryData", function() {
 

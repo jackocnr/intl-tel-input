@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("init plugin with americaMode set to true", function() {
 
@@ -14,7 +14,7 @@ describe("init plugin with americaMode set to true", function() {
   });
 
   it("defaults to no dial code", function() {
-    expect(input.val()).toEqual("");
+    expect(getInputVal()).toEqual("");
   });
 
 
@@ -26,7 +26,7 @@ describe("init plugin with americaMode set to true", function() {
     });
 
     it("does update the dial code", function() {
-      expect(input.val().trim()).toEqual("+44");
+      expect(getInputVal()).toEqual("+44");
     });
 
 
@@ -38,7 +38,7 @@ describe("init plugin with americaMode set to true", function() {
       });
 
       it("does not insert the dial code", function() {
-        expect(input.val()).toEqual("");
+        expect(getInputVal()).toEqual("");
       });
 
     });

@@ -1,5 +1,9 @@
 var input, totalCountries = 221;
 
+var getInputVal = function() {
+  return input.val().trim();
+};
+
 var getListElement = function() {
   return input.parent().find(".country-list");
 };
@@ -12,8 +16,12 @@ var getPreferredCountriesLength = function() {
   return getListElement().find("li.country.preferred").length;
 };
 
+var getSelectedFlagContainer = function() {
+  return input.parent().find(".selected-flag");
+};
+
 var getSelectedFlagElement = function() {
-  return input.parent().find(".selected-flag .flag");
+  return getSelectedFlagContainer().find(".flag");
 };
 
 var getFlagsContainerElement = function() {
@@ -21,6 +29,6 @@ var getFlagsContainerElement = function() {
 };
 
 var selectFlag = function(countryCode) {
-  getSelectedFlagElement().click();
+  getSelectedFlagContainer().click();
   getListElement().find("li[data-country-code='" + countryCode + "']").click();
 };

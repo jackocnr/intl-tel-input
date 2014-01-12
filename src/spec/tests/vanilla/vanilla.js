@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("init vanilla plugin", function() {
 
@@ -30,7 +30,7 @@ describe("init vanilla plugin", function() {
 
   // autoHideDialCode defaults to true, which means dont show dial code until focused
   it("doesn't automatically populate the input value on initialisation", function() {
-    expect(input.val()).toEqual("");
+    expect(getInputVal()).toEqual("");
   });
 
   it("typing a different dial code updates the selected flag", function() {
@@ -40,6 +40,7 @@ describe("init vanilla plugin", function() {
 
 
 
+  // must add to the dom to get focus/click-off-to-close to work
   describe("adding to dom", function() {
   
     beforeEach(function() {
@@ -52,11 +53,51 @@ describe("init vanilla plugin", function() {
   
     // autoHideDialCode defaults to true
     it("focusing the input adds the default dial code, and blur removes it again", function() {
-      expect(input.val()).toEqual("");
+      expect(getInputVal()).toEqual("");
       input.focus();
-      expect(input.val().trim()).toEqual("+1");
+      expect(getInputVal().trim()).toEqual("+1");
       input.blur();
-      expect(input.val()).toEqual("");
+      expect(getInputVal()).toEqual("");
+    });
+
+
+    describe("clicking the selected flag", function() {
+
+      beforeEach(function() {
+        getSelectedFlagContainer().click();
+      });
+
+      it("opens the dropdown with the top item marked as active and highlighted", function() {
+        expect(getListElement()).not.toHaveClass("hide");
+        var topItem = getListElement().find("li.country:first");
+        expect(topItem).toHaveClass("active highlight");
+      });
+
+      it("clicking it again closes the dropdown", function() {
+        getSelectedFlagContainer().click();
+        expect(getListElement()).toHaveClass("hide");
+      });
+
+
+
+      describe("selecting a new country item", function() {
+      
+        var countryCode = "gb";
+
+        beforeEach(function() {
+          getListElement().find("li[data-country-code='" + countryCode + "']").click();
+        });
+
+        it("updates the selected flag", function() {
+          expect(getSelectedFlagElement()).toHaveClass(countryCode);
+        });
+
+        it("updates the dial code", function() {
+          expect(getInputVal()).toEqual("+44");
+        });
+      
+      });
+
     });
 
   });
@@ -87,7 +128,7 @@ describe("init vanilla plugin", function() {
       });
 
       it("opens the dropdown on click", function() {
-        getSelectedFlagElement().click();
+        getSelectedFlagContainer().click();
         expect(getListElement()).not.toHaveClass("hide");
       });
 
@@ -105,30 +146,12 @@ describe("init vanilla plugin", function() {
       });
 
       it("doesn't open the dropdown on click", function() {
-        getSelectedFlagElement().click();
+        getSelectedFlagContainer().click();
         expect(getListElement()).toHaveClass("hide");
       });
 
     });
 
   }); 
-
-
-
-  describe("manually selecting another flag", function() {
-
-    beforeEach(function() {
-      selectFlag("gb");
-    });
-
-    it("updates the selected flag", function() {
-      expect(getSelectedFlagElement()).toHaveClass("gb");
-    });
-
-    it("updates the dial code", function() {
-      expect(input.val().trim()).toEqual("+44");
-    });
-
-  });
 
 });

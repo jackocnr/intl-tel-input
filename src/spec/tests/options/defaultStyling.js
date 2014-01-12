@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("init plugin with defaultStyling set to false", function() {
 

@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("init plugin with a default country", function() {
 

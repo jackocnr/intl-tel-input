@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("init plugin with autoHideDialCode set to false", function() {
 
@@ -18,14 +18,14 @@ describe("init plugin with autoHideDialCode set to false", function() {
   });
 
   it("automatically inserts the default dial code", function() {
-    expect(input.val().trim()).toEqual(defaultDialCode);
+    expect(getInputVal()).toEqual(defaultDialCode);
   });
 
   it("focusing and bluring the input dont change anything", function() {
     input.focus();
-    expect(input.val().trim()).toEqual(defaultDialCode);
+    expect(getInputVal()).toEqual(defaultDialCode);
     input.blur();
-    expect(input.val().trim()).toEqual(defaultDialCode);
+    expect(getInputVal()).toEqual(defaultDialCode);
   });
 
 });

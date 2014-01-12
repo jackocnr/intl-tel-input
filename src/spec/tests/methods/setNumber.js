@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("init plugin and call public method setNumber", function() {
 
@@ -15,7 +15,7 @@ describe("init plugin and call public method setNumber", function() {
   });
   
   it("sets the number", function() {
-    expect(input.val()).toEqual(number);
+    expect(getInputVal()).toEqual(number);
   });
 
   it("updates the flag", function() {

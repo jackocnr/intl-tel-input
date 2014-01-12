@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("init plugin and calling public method selectCountry()", function() {
 
@@ -19,7 +19,7 @@ describe("init plugin and calling public method selectCountry()", function() {
   });
 
   it("does not insert the dial code", function() {
-    expect(input.val()).toEqual("");
+    expect(getInputVal()).toEqual("");
   });
 
 });

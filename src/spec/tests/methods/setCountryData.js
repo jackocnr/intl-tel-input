@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 describe("use static method setCountryData before initialising the plugin", function() {
 
