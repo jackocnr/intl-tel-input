@@ -33,9 +33,23 @@ describe("init vanilla plugin", function() {
     expect(getInputVal()).toEqual("");
   });
 
-  it("typing a different dial code updates the selected flag", function() {
-    input.val("+44").keyup();
-    expect(getSelectedFlagElement()).toHaveClass("gb");
+
+
+  describe("typing a number with a different dial code", function() {
+  
+    beforeEach(function() {
+      input.val("+44 1234567").keyup();
+    });
+
+    it("updates the selected flag", function() {
+      expect(getSelectedFlagElement()).toHaveClass("gb");
+    });
+
+    it("clearing the input again defaults to the right flag", function() {
+      input.val("").keyup();
+      expect(getSelectedFlagElement()).toHaveClass("us");
+    });
+  
   });
 
 
@@ -103,20 +117,6 @@ describe("init vanilla plugin", function() {
       
       });
 
-    });
-
-  });
-
-
-
-  describe("clearing the input", function() {
-
-    beforeEach(function() {
-      input.val("").keyup();
-    });
-
-    it("defaults to the right flag", function() {
-      expect(getSelectedFlagElement()).toHaveClass("us");
     });
 
   });

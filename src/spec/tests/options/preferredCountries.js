@@ -1,6 +1,6 @@
 "use strict";
 
-describe("create input element", function() {
+describe("testing preferredCountries", function() {
 
   beforeEach(function() {
     input = $("<input>");

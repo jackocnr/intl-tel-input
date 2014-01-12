@@ -29,11 +29,36 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
     expect(zambiaListItem).toHaveClass("highlight");
   });
 
-  it("pressing z twice highlights Zimbabwe", function() {
+  it("pressing z three times also highlights Zambia (cyclical)", function() {
     triggerKey("z");
     triggerKey("z");
-    var zimbabweListItem = getListElement().find("li[data-country-code='zw']");
-    expect(zimbabweListItem).toHaveClass("highlight");
+    triggerKey("z");
+    var zambiaListItem = getListElement().find("li[data-country-code='zm']");
+    expect(zambiaListItem).toHaveClass("highlight");
+  });
+
+
+
+  describe("pressing z twice", function() {
+
+    var lastItem;
+
+    beforeEach(function() {
+      lastItem = getListElement().find("li.country:last");
+      triggerKey("z");
+      triggerKey("z");
+    });
+  
+    it("highlights the last item, which is Zimbabwe", function() {
+      expect(lastItem).toHaveClass("highlight");
+      expect(lastItem.attr("data-country-code")).toEqual("zw");
+    });
+
+    it("pressing down while on the last item does not change the highlighted item", function() {
+      triggerKey("down");
+      expect(lastItem).toHaveClass("highlight");
+    });
+
   });
 
 
