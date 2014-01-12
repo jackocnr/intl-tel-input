@@ -77,6 +77,45 @@ describe("init vanilla plugin", function() {
 
 
 
+  describe("enabled/disabled tests", function() {
+
+    describe("input enabled", function() {
+
+      it("adds the hover class on hover", function() {
+        getFlagsContainerElement().mouseover();
+        expect(getFlagsContainerElement()).toHaveClass("hover");
+      });
+
+      it("opens the dropdown on click", function() {
+        getSelectedFlagElement().click();
+        expect(getListElement()).not.toHaveClass("hide");
+      });
+
+    });
+
+    describe("input disabled", function() {
+
+      beforeEach(function() {
+        input.prop("disabled", true);
+      });
+
+      it("doesn't add the hover class on hover", function() {
+        getFlagsContainerElement().mouseover();
+        expect(getFlagsContainerElement()).not.toHaveClass("hover");
+      });
+
+      it("doesn't open the dropdown on click", function() {
+        getSelectedFlagElement().click();
+        expect(getListElement()).toHaveClass("hide");
+      });
+
+    });  
+
+
+  }); 
+
+
+
   describe("manually selecting another flag", function() {
 
     beforeEach(function() {

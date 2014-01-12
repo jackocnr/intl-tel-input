@@ -16,6 +16,10 @@ var getSelectedFlagElement = function() {
   return input.parent().find(".selected-flag .flag");
 };
 
+var getFlagsContainerElement = function() {
+  return input.parent().find(".flag-dropdown");
+};
+
 var selectFlag = function(countryCode) {
   getSelectedFlagElement().click();
   getListElement().find("li[data-country-code='" + countryCode + "']").click();
