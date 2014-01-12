@@ -7,37 +7,45 @@ var keyCodes = {
   'z': 90
 };
 
-var getInputVal = function() {
-  return input.val().trim();
+var getInputVal = function(i) {
+  i = i || input;
+  return i.val().trim();
 };
 
-var getListElement = function() {
-  return input.parent().find(".country-list");
+var getListElement = function(i) {
+  i = i || input;
+  return i.parent().find(".country-list");
 };
 
-var getListLength = function() {
-  return getListElement().find("li.country").length;
+var getListLength = function(i) {
+  i = i || input;
+  return getListElement(i).find("li.country").length;
 };
 
-var getPreferredCountriesLength = function() {
-  return getListElement().find("li.country.preferred").length;
+var getPreferredCountriesLength = function(i) {
+  i = i || input;
+  return getListElement(i).find("li.country.preferred").length;
 };
 
-var getSelectedFlagContainer = function() {
-  return input.parent().find(".selected-flag");
+var getSelectedFlagContainer = function(i) {
+  i = i || input;
+  return i.parent().find(".selected-flag");
 };
 
-var getSelectedFlagElement = function() {
-  return getSelectedFlagContainer().find(".flag");
+var getSelectedFlagElement = function(i) {
+  i = i || input;
+  return getSelectedFlagContainer(i).find(".flag");
 };
 
-var getFlagsContainerElement = function() {
-  return input.parent().find(".flag-dropdown");
+var getFlagsContainerElement = function(i) {
+  i = i || input;
+  return i.parent().find(".flag-dropdown");
 };
 
-var selectFlag = function(countryCode) {
-  getSelectedFlagContainer().click();
-  getListElement().find("li[data-country-code='" + countryCode + "']").click();
+var selectFlag = function(countryCode, i) {
+  i = i || input;
+  getSelectedFlagContainer(i).click();
+  getListElement(i).find("li[data-country-code='" + countryCode + "']").click();
 };
 
 var triggerKey = function(key) {
