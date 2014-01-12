@@ -333,6 +333,7 @@
       // update input value
       var newNumber = this._updateNumber(listItem.attr("data-dial-code"));
       this.telInput.val(newNumber);
+      this.telInput.trigger("change");
       // focus the input
       this.telInput.focus();
     },
