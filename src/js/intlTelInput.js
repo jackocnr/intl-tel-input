@@ -137,8 +137,7 @@
         this.telInput.focusout(function() {
           var value = $.trim(that.telInput.val());
           if (value.length > 0) {
-            var dialCode = that._getDialCode(value);
-            if ("+" + dialCode == value) {
+            if (that._getDialCode(value) == value) {
               that.telInput.val("");
             }
           }
@@ -269,7 +268,7 @@
       var dialCode = this._getDialCode(this.telInput.val());
       if (dialCode) {
         // check if one of the matching countrys is already selected
-        var countryCodes = intlData.countryCodes[dialCode];
+        var countryCodes = intlData.countryCodes[dialCode.replace(/\D/g, '')];
         $.each(countryCodes, function(i, c) {
           if (that.selectedFlagInner.hasClass(c)) {
             alreadySelected = true;
@@ -332,7 +331,7 @@
       this._selectFlag(countryCode);
 
       // update input value
-      var newNumber = this._updateNumber(listItem.attr("data-dial-code"));
+      var newNumber = this._updateNumber("+" + listItem.attr("data-dial-code"));
       this.telInput.val(newNumber);
       this.telInput.trigger("change");
       // focus the input
@@ -374,10 +373,9 @@
 
 
     // replace any existing dial code with the new one
-    _updateNumber: function(dialCode) {
+    _updateNumber: function(newDialCode) {
       var inputVal = this.telInput.val();
-      var prevDialCode = "+" + this._getDialCode(inputVal);
-      var newDialCode = "+" + dialCode;
+      var prevDialCode = this._getDialCode(inputVal);
       var newNumber;
 
       // if the previous number contained a valid dial code, replace it
@@ -406,23 +404,32 @@
 
 
     // try and extract a valid international dial code from a full telephone number
+    // Note: returns the raw string inc plus character and any whitespace/dots etc
     _getDialCode: function(inputVal) {
+      var dialCode = "";
       inputVal = $.trim(inputVal);
       // only interested in international numbers (starting with a plus)
-      if (inputVal.substring(0, 1) == "+") {
-        // strip out non-numeric chars (e.g. pluses, spaces, brackets)
-        // and grab the first 4 numbers (max length of a dial code is 4)
-        var dialCode = inputVal.replace(/\D/g, '').substring(0, 4);
-        // try first 4 digits, then 3, then 2, then 1...
-        for (var i = dialCode.length; i > 0; i--) {
-          dialCode = dialCode.substring(0, i);
-          // if we find a match (a valid dial code), then return the dial code
-          if (intlData.countryCodes[dialCode]) {
-            return dialCode;
+      if (inputVal.charAt(0) == "+") {
+        var numericChars = "";
+        // iterate over chars
+        for (var i = 0; i < inputVal.length; i++) {
+          var c = inputVal.charAt(i);
+          // if char is number
+          if ($.isNumeric(c)) {
+            numericChars += c;
+            // if current numericChars make a valid dial code
+            if (intlData.countryCodes[numericChars]) {
+              // store the actual raw string (useful for matching later)
+              dialCode = inputVal.substring(0, i+1);
+            }
+            // longest dial code is 4 chars
+            if (numericChars.length == 4) {
+              break;
+            }
           }
         }
       }
-      return "";
+      return dialCode;
     },
 
 
