@@ -54,6 +54,48 @@ describe("init vanilla plugin", function() {
 
 
 
+  describe("typing a dial code containing a space", function() {
+  
+    var telNo = "98765432";
+
+    beforeEach(function() {
+      input.val("+4 4 "+telNo).keyup();
+    });
+
+    it("still updates the flag correctly", function() {
+      expect(getSelectedFlagElement()).toHaveClass("gb");
+    });
+
+    it("then changing the flag updates the number correctly", function() {
+      selectFlag("zw");
+      expect(getInputVal()).toEqual("+263 "+telNo);
+    });
+  
+  });
+  
+  
+
+  describe("typing a dial code containing a dot", function() {
+  
+    var telNo = "98765432";
+
+    beforeEach(function() {
+      input.val("+4.4 "+telNo).keyup();
+    });
+
+    it("still updates the flag correctly", function() {
+      expect(getSelectedFlagElement()).toHaveClass("gb");
+    });
+
+    it("then changing the flag updates the number correctly", function() {
+      selectFlag("zw");
+      expect(getInputVal()).toEqual("+263 "+telNo);
+    });
+  
+  });
+
+
+
   // must add to the dom to get focus/click-off-to-close to work
   describe("adding to dom", function() {
   

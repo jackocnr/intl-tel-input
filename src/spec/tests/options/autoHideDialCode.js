@@ -21,7 +21,7 @@ describe("init plugin with autoHideDialCode set to false", function() {
     expect(getInputVal()).toEqual(defaultDialCode);
   });
 
-  it("focusing and bluring the input dont change anything", function() {
+  it("focusing and bluring the input dont change the val", function() {
     input.focus();
     expect(getInputVal()).toEqual(defaultDialCode);
     input.blur();
