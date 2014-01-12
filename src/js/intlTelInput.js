@@ -372,6 +372,25 @@
     },
 
 
+    // like indexOf + length, but ignores characters in the middle of a match
+    _findEndOfStringIgnoreNonConsecutive: function(str, searchValue) {
+        var charToFind = searchValue[0];
+        for(var i=0,len=str.length;i<len && searchValue.length>0;i++) {
+            if(str[i] === charToFind) {
+                searchValue = searchValue.substring(1);
+                if(searchValue.length === 0) {
+                    i++;
+                    break;
+                }
+                charToFind = searchValue[0];
+            }
+        }
+
+        if(searchValue.length > 0) return -1;
+        else return i;
+    },
+
+
     // replace any existing dial code with the new one
     _updateNumber: function(newDialCode) {
       var inputVal = this.telInput.val();
@@ -381,7 +400,7 @@
       // if the previous number contained a valid dial code, replace it
       // (if more than just a plus character)
       if (prevDialCode.length > 1) {
-        newNumber = inputVal.replace(prevDialCode, newDialCode);
+        newNumber = newDialCode + inputVal.substring(this._findEndOfStringIgnoreNonConsecutive(inputVal, prevDialCode));
         // if the old number was just the dial code,
         // then we will need to add the space again
         if (inputVal == prevDialCode) {
