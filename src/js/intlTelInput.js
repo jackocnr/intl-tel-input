@@ -217,9 +217,9 @@
             else if (e.which == 9 || e.which == 27) {
               that._closeDropdown();
             }
-            // lower case (97-122) or upper case (65-90) letters
+            // upper case letters (65-90) (note: keyup/keydown only return upper case letters)
             // to cycle through countries beginning with that letter
-            else if ((e.which >= 97 && e.which <= 122) || (e.which >= 65 && e.which <= 90)) {
+            else if (e.which >= 65 && e.which <= 90) {
               var letter = String.fromCharCode(e.which);
               // filter out the countries beginning with that letter
               var countries = that.countryListItems.filter(function() {
@@ -341,13 +341,16 @@
 
     // called when the user selects a list item from the dropdown
     _selectListItem: function(listItem) {
+      // update selected flag and active list item
       var countryCode = listItem.attr("data-country-code");
       this._selectFlag(countryCode);
+      this._closeDropdown();
 
       // update input value
       var newNumber = this._updateNumber("+" + listItem.attr("data-dial-code"));
       this.telInput.val(newNumber);
       this.telInput.trigger("change");
+
       // focus the input
       this.telInput.focus();
     },

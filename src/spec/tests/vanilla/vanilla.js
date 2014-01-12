@@ -55,13 +55,13 @@ describe("init vanilla plugin", function() {
     it("focusing the input adds the default dial code, and blur removes it again", function() {
       expect(getInputVal()).toEqual("");
       input.focus();
-      expect(getInputVal().trim()).toEqual("+1");
+      expect(getInputVal()).toEqual("+1");
       input.blur();
       expect(getInputVal()).toEqual("");
     });
 
 
-    describe("clicking the selected flag", function() {
+    describe("clicking the selected flag to open the dropdown", function() {
 
       beforeEach(function() {
         getSelectedFlagContainer().click();
@@ -75,6 +75,11 @@ describe("init vanilla plugin", function() {
 
       it("clicking it again closes the dropdown", function() {
         getSelectedFlagContainer().click();
+        expect(getListElement()).toHaveClass("hide");
+      });
+
+      it("clicking off closes the dropdown", function() {
+        $("body").click();
         expect(getListElement()).toHaveClass("hide");
       });
 

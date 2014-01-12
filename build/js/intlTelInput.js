@@ -192,7 +192,7 @@ Plugin.prototype = {
                         }
                     } else if (e.which == 9 || e.which == 27) {
                         that._closeDropdown();
-                    } else if (e.which >= 97 && e.which <= 122 || e.which >= 65 && e.which <= 90) {
+                    } else if (e.which >= 65 && e.which <= 90) {
                         var letter = String.fromCharCode(e.which);
                         // filter out the countries beginning with that letter
                         var countries = that.countryListItems.filter(function() {
@@ -284,8 +284,10 @@ Plugin.prototype = {
     },
     // called when the user selects a list item from the dropdown
     _selectListItem: function(listItem) {
+        // update selected flag and active list item
         var countryCode = listItem.attr("data-country-code");
         this._selectFlag(countryCode);
+        this._closeDropdown();
         // update input value
         var newNumber = this._updateNumber("+" + listItem.attr("data-dial-code"));
         this.telInput.val(newNumber);

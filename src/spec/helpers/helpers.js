@@ -1,4 +1,11 @@
 var input, totalCountries = 221;
+var keyCodes = {
+  'up': 38,
+  'down': 40,
+  'enter': 13,
+  'esc': 27,
+  'z': 90
+};
 
 var getInputVal = function() {
   return input.val().trim();
@@ -31,4 +38,11 @@ var getFlagsContainerElement = function() {
 var selectFlag = function(countryCode) {
   getSelectedFlagContainer().click();
   getListElement().find("li[data-country-code='" + countryCode + "']").click();
+};
+
+var triggerKey = function(key) {
+  var e = $.Event('keydown', {
+    which: keyCodes[key]
+  });
+  $("body").trigger(e);
 };
