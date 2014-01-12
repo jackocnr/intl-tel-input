@@ -45,9 +45,9 @@ module.exports = function(grunt) {
           'author: <%= pkg.author %>\n'+
           '*/\n'+
           // wrap in self-executing anonymous function
-          '(function() {\n'+
+          '(function($, window, document, undefined) {\n'+
           '"use strict";\n\n',
-        footer: "\n\n})();\n"
+        footer: "\n\n})(jQuery, window, document);\n"
       },
       dev: {
         options: {
