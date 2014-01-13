@@ -25,16 +25,19 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
     display: none;
   }
 
-  .flag-dropdown {
-    &.hover {
-      cursor: pointer;
-    }
+  // the country dropdown
+  .country-list {
+    // override default list styles
+    list-style: none;
+  }
 
-    // the country dropdown
-    .country-list {
-      // override default list styles
-      list-style: none;
-    }
+  // hover state - important to show flag is clickable even if default styling is disabled
+  .flag-dropdown:hover {
+    cursor: pointer;
+  }
+  // disable hover state when input is disabled
+  input[disabled] + .flag-dropdown:hover {
+    cursor: default;
   }
 
 
@@ -44,16 +47,20 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
     // absolutely positioned over the input
     position: relative;
 
+    // hover state
+    .flag-dropdown:hover .selected-flag {
+      background-color: $hoverColor;
+    }
+    // disable hover state when input is disabled
+    input[disabled] + .flag-dropdown:hover .selected-flag {
+      background-color: transparent;
+    }
+
     .flag-dropdown {
       // positioned over the top of the input
       position: absolute;
       top: 0;
       bottom: 0;
-
-      // on hover
-      &.hover .selected-flag {
-        background-color: $hoverColor;
-      }
 
       .selected-flag {
         // render above the input

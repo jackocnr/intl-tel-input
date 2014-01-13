@@ -10,6 +10,8 @@
     font-family: inherit;
     font-size: 100%;
     color: inherit; }
+    .intl-tel-input input[disabled] {
+      background-color: #eee; }
   .intl-tel-input.inside input {
     border: 1px solid #CCC; }
   .intl-tel-input.outside {
@@ -17,3 +19,5 @@
     border: 1px solid #CCC; }
     .intl-tel-input.outside input {
       border: none; }
+    .intl-tel-input.outside input[disabled] + .flag-dropdown {
+      background-color: #eee; }

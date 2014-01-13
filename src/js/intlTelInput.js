@@ -123,16 +123,6 @@
       this.countryListItems.first().addClass("active");
 
 
-      // hover handling (do this here so can disable when input disabled)
-      flagsContainer.hover(function() {
-        if (!that.telInput.prop("disabled")) {
-          flagsContainer.addClass("hover");
-        }
-      }, function() {
-        flagsContainer.removeClass("hover");
-      });
-
-
       // auto hide option
       if (this.options.autoHideDialCode) {
         // on focusin: if empty, insert the dial code for the currently selected flag

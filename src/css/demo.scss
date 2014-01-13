@@ -13,6 +13,10 @@
     font-family: inherit;
     font-size: 100%;
     color: inherit;
+
+    &[disabled] {
+      background-color: #eee;
+    }
   }
 
   &.inside input {
@@ -25,6 +29,9 @@
 
     input {
       border: none;
+    }
+    input[disabled] + .flag-dropdown {
+      background-color: #eee;
     }
   }
 }
