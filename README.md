@@ -56,7 +56,7 @@ Type: `Array` Default: `undefined`
 Display only the countries you specify.
 
 **defaultStyling**  
-Type: `Boolean` Default: `"outside"`  
+Type: `Boolean` Default: `"inside"`  
 If you would like the default minimal styling, there are two options to choose from which specify the position of the selected flag: `"inside"` or `"outside"` (relative to the input). You can also disable all styling by choosing `"none"`.
 
 

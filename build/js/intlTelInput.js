@@ -15,7 +15,7 @@ defaults = {
     // united states and united kingdom
     americaMode: false,
     onlyCountries: [],
-    defaultStyling: "outside",
+    defaultStyling: "inside",
     autoHideDialCode: true,
     defaultCountry: ""
 };
