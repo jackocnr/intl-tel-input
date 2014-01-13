@@ -50,9 +50,6 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       top: 0;
       bottom: 0;
 
-      // prevent the highlighted child from overlapping the input border
-      padding: $borderWidth;
-
       // on hover
       &.hover .selected-flag {
         background-color: $hoverColor;
@@ -141,13 +138,35 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
     }
 
     input {
+      position: relative;
+      z-index: 0;
+    }
+  }
+
+
+
+  &.inside {
+    .flag-dropdown {
+      // prevent the highlighted child from overlapping the input border
+      padding: $borderWidth;
+    }
+
+    input {
       // make space for the selected flag
       // Note: added !important to override any custom styles the user may have
       // as they will need this one!
       padding-left: $selectedFlagWidth + $inputPadding !important;
+    }
+  }
 
-      position: relative;
-      z-index: 0;
+
+
+  &.outside {
+    input {
+      // make space for the selected flag
+      // Note: added !important to override any custom styles the user may have
+      // as they will need this one!
+      margin-left: $selectedFlagWidth !important;
     }
   }
 }

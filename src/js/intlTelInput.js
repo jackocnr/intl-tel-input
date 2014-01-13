@@ -5,7 +5,7 @@
       preferredCountries: ["us", "gb"], // united states and united kingdom
       americaMode: false,
       onlyCountries: [],
-      defaultStyling: true,
+      defaultStyling: "outside",
       autoHideDialCode: true,
       defaultCountry: ""
     };
@@ -82,8 +82,8 @@
 
       // containers (mostly for positioning)
       var mainClass = "intl-tel-input";
-      if (this.options.defaultStyling) {
-        mainClass += " pretty";
+      if (this.options.defaultStyling != "none") {
+        mainClass += " pretty " + this.options.defaultStyling;
       }
       this.telInput.wrap($("<div>", {
         "class": mainClass

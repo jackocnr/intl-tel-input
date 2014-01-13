@@ -7,11 +7,24 @@
   input {
     width: 250px;
     height: 30px;
-    border: 1px solid #CCC;
+    padding: 0 8px;
 
     // same font style, size and color as rest of site
     font-family: inherit;
     font-size: 100%;
     color: inherit;
+  }
+
+  &.inside input {
+    border: 1px solid #CCC;
+  }
+
+  &.outside {
+    display: inline-block;
+    border: 1px solid #CCC;
+
+    input {
+      border: none;
+    }
   }
 }
