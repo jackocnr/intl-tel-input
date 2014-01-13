@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>International Telephone Input</title>
+    <link rel="stylesheet" href="../build/css/intlTelInput.css">
+    <link rel="stylesheet" href="../build/css/demo.css">
+  </head>
+
+  <body>
+    <h1>Example: defaultCountry</h1>
+    <p>Use IP address lookup to set the defaultCountry to the user's country</p>
+    
+    <h2>Code</h2>
+    <pre>$.get("http://ipinfo.io", function(response) {
+  $("input").intlTelInput({
+    defaultCountry: response.country.toLowerCase()
+  });
+}, "jsonp");</pre>
+
+    <h2>Result</h2>
+    <input type="tel" placeholder="e.g. +1 702 123 4567">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../build/js/intlTelInput.js"></script>
+    <script>
+      $.get("http://ipinfo.io", function(response) {
+        $("input").intlTelInput({
+          defaultCountry: response.country.toLowerCase()
+        });
+      }, "jsonp");
+    </script>
+  </body>
+</html>
