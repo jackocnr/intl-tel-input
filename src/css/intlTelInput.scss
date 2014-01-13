@@ -16,7 +16,6 @@ $arrowWidth: 6px;
 $triangleBorder: 4px;
 $arrowPadding: 4px;
 
-$inputHeight: $flagHeight + (2 * ($flagPadding + $borderWidth)); // 30px
 $inputPadding: 9px;
 $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPadding;
 
@@ -43,6 +42,13 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
 
 
   &.pretty {
+    // paul irish says this is ok
+    // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
+    * {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+
     // need position on the container so the selected flag can be
     // absolutely positioned over the input
     position: relative;
@@ -67,7 +73,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         z-index: 1;
         position: relative;
 
-        width: $flagWidth;
+        width: $selectedFlagWidth;
         // this must be full-height both for the hover highlight, and to push down the
         // dropdown so it appears below the input
         height: 100%;
