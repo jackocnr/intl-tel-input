@@ -1,9 +1,19 @@
-.intl-tel-input {
-  margin: 10px;
+body {
+  margin: 20px;
+
   font-size: 14px;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #333;
+}
 
+pre {
+  background-color: #eee;
+  padding: 10px;
+  margin: 0;
+  display: inline-block;
+}
+
+.intl-tel-input {
   input {
     width: 250px;
     height: 30px;

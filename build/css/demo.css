@@ -1,23 +1,30 @@
-.intl-tel-input {
-  margin: 10px;
+body {
+  margin: 20px;
   font-size: 14px;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #333; }
-  .intl-tel-input input {
-    width: 250px;
-    height: 30px;
-    padding: 0 8px;
-    font-family: inherit;
-    font-size: 100%;
-    color: inherit; }
-    .intl-tel-input input[disabled] {
-      background-color: #eee; }
-  .intl-tel-input.inside input {
-    border: 1px solid #CCC; }
-  .intl-tel-input.outside {
-    display: inline-block;
-    border: 1px solid #CCC; }
-    .intl-tel-input.outside input {
-      border: none; }
-    .intl-tel-input.outside input[disabled] + .flag-dropdown {
-      background-color: #eee; }
+
+pre {
+  background-color: #eee;
+  padding: 10px;
+  margin: 0;
+  display: inline-block; }
+
+.intl-tel-input input {
+  width: 250px;
+  height: 30px;
+  padding: 0 8px;
+  font-family: inherit;
+  font-size: 100%;
+  color: inherit; }
+  .intl-tel-input input[disabled] {
+    background-color: #eee; }
+.intl-tel-input.inside input {
+  border: 1px solid #CCC; }
+.intl-tel-input.outside {
+  display: inline-block;
+  border: 1px solid #CCC; }
+  .intl-tel-input.outside input {
+    border: none; }
+  .intl-tel-input.outside input[disabled] + .flag-dropdown {
+    background-color: #eee; }
