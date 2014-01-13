@@ -1,6 +1,6 @@
 // rgba is needed for the selected flag hover state to blend in with
 // the border-highlighting some browsers give the input on focus
-$hoverColor: rgba(0, 0, 0, 0.05);
+$hoverColor: red;//rgba(0, 0, 0, 0.05);
 $greyText: #999;
 $greyBorder: #CCC;
 
@@ -21,60 +21,37 @@ $inputPadding: 9px;
 $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPadding;
 
 .intl-tel-input {
-  // need position on the container so the selected flag can be
-  // absolutely positioned over the input
-  position: relative;
-
   .hide {
     display: none;
   }
 
   .flag-dropdown {
-    // positioned over the top of the input
-    position: absolute;
     &.hover {
       cursor: pointer;
-    }
-
-    .selected-flag {
-      // render above the input
-      z-index: 1;
-      position: relative;
     }
 
     // the country dropdown
     .country-list {
       // override default list styles
       list-style: none;
-
-      // long list of countries
-      overflow-y: scroll;
-
-      position: absolute;
-      // popup so render above everything else
-      z-index: 2;
     }
-  }
-
-  input {
-    // make space for the selected flag
-    // Note: added !important to override any custom styles the user may have
-    // as they will need this one!
-    padding-left: $selectedFlagWidth + $inputPadding !important;
-
-    position: relative;
-    z-index: 0;
   }
 
 
 
   &.pretty {
+    // need position on the container so the selected flag can be
+    // absolutely positioned over the input
+    position: relative;
 
     .flag-dropdown {
+      // positioned over the top of the input
+      position: absolute;
+      top: 0;
+      bottom: 0;
+
       // prevent the highlighted child from overlapping the input border
-      padding: 1px;
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
+      padding: $borderWidth;
 
       // on hover
       &.hover .selected-flag {
@@ -82,7 +59,14 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       }
 
       .selected-flag {
+        // render above the input
+        z-index: 1;
+        position: relative;
+
         width: $flagWidth;
+        // this must be full-height both for the hover highlight, and to push down the
+        // dropdown so it appears below the input
+        height: 100%;
         padding: 0 ($flagPadding + $arrowWidth + $arrowPadding) 0 $flagPadding;
 
         // vertically center the flag
@@ -107,27 +91,24 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         }
       }
 
-      // this must be full-height both for the hover highlight, and to push down the
-      // dropdown so it appears below the input
-      &, .selected-flag {
-        height: 100%;
-      }
-
       // the dropdown
       .country-list {
+        position: absolute;
+        // popup so render above everything else
+        z-index: 2;
+
         padding: 0;
-        margin: 0;
+        // margin-left to compensate for the padding on the parent
+        margin: 0 0 0 (-$borderWidth);
 
         box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
         background-color: white;
         border: $borderWidth solid $greyBorder;
 
-        // compensate for the padding on the parent
-        margin-left: -1px;
-
         // wide enough to fit long country names
         width: 420px;
         max-height: 200px;
+        overflow-y: scroll;
 
         // the divider below the preferred countries
         .divider {
@@ -157,6 +138,16 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
           margin-right: 6px;
         }
       }
+    }
+
+    input {
+      // make space for the selected flag
+      // Note: added !important to override any custom styles the user may have
+      // as they will need this one!
+      padding-left: $selectedFlagWidth + $inputPadding !important;
+
+      position: relative;
+      z-index: 0;
     }
   }
 }

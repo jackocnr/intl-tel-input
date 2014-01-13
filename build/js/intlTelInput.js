@@ -86,7 +86,7 @@ Plugin.prototype = {
         }));
         var flagsContainer = $("<div>", {
             "class": "flag-dropdown f16"
-        }).insertBefore(this.telInput);
+        }).insertAfter(this.telInput);
         // currently selected flag (displayed to left of input)
         var selectedFlag = $("<div>", {
             "class": "selected-flag"

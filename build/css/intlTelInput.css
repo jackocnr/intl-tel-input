@@ -1,23 +1,20 @@
-.intl-tel-input { position: relative; }
 .intl-tel-input .hide { display: none; }
-.intl-tel-input .flag-dropdown { position: absolute; }
 .intl-tel-input .flag-dropdown.hover { cursor: pointer; }
-.intl-tel-input .flag-dropdown .selected-flag { z-index: 1; position: relative; }
-.intl-tel-input .flag-dropdown .country-list { list-style: none; overflow-y: scroll; position: absolute; z-index: 2; }
-.intl-tel-input input { padding-left: 47px !important; position: relative; z-index: 0; }
-.intl-tel-input.pretty .flag-dropdown { padding: 1px; box-sizing: border-box; -moz-box-sizing: border-box; }
-.intl-tel-input.pretty .flag-dropdown.hover .selected-flag { background-color: rgba(0, 0, 0, 0.05); }
-.intl-tel-input.pretty .flag-dropdown .selected-flag { width: 16px; padding: 0 16px 0 6px; }
+.intl-tel-input .flag-dropdown .country-list { list-style: none; }
+.intl-tel-input.pretty { position: relative; }
+.intl-tel-input.pretty .flag-dropdown { position: absolute; top: 0; bottom: 0; padding: 1px; }
+.intl-tel-input.pretty .flag-dropdown.hover .selected-flag { background-color: red; }
+.intl-tel-input.pretty .flag-dropdown .selected-flag { z-index: 1; position: relative; width: 16px; height: 100%; padding: 0 16px 0 6px; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .flag { position: absolute; top: 50%; margin-top: -8px; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .down-arrow { top: 6px; position: relative; left: 20px; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid black; }
-.intl-tel-input.pretty .flag-dropdown, .intl-tel-input.pretty .flag-dropdown .selected-flag { height: 100%; }
-.intl-tel-input.pretty .flag-dropdown .country-list { padding: 0; margin: 0; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); background-color: white; border: 1px solid #cccccc; margin-left: -1px; width: 420px; max-height: 200px; }
+.intl-tel-input.pretty .flag-dropdown .country-list { position: absolute; z-index: 2; padding: 0; margin: 0 0 0 -1px; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); background-color: white; border: 1px solid #cccccc; width: 420px; max-height: 200px; overflow-y: scroll; }
 .intl-tel-input.pretty .flag-dropdown .country-list .divider { padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px solid #cccccc; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country { line-height: 16px; padding: 4px 10px; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country .dial-code { color: #999999; }
-.intl-tel-input.pretty .flag-dropdown .country-list .country.highlight { background-color: rgba(0, 0, 0, 0.05); }
+.intl-tel-input.pretty .flag-dropdown .country-list .country.highlight { background-color: red; }
 .intl-tel-input.pretty .flag-dropdown .country-list .flag { display: inline-block; vertical-align: bottom; }
 .intl-tel-input.pretty .flag-dropdown .country-list .flag, .intl-tel-input.pretty .flag-dropdown .country-list .country-name { margin-right: 6px; }
+.intl-tel-input.pretty input { padding-left: 47px !important; position: relative; z-index: 0; }
 
 /* originally from https://github.com/lafeber/world-flags-sprite */
 .f16 .flag { width: 16px; height: 16px; background: url("../img/flags16.png") no-repeat; }
