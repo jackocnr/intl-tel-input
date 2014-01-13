@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box; }
+
 body {
   margin: 20px;
   font-size: 14px;
@@ -10,15 +14,16 @@ pre {
   margin: 0;
   display: inline-block; }
 
-.intl-tel-input input {
+input[type="tel"] {
   width: 250px;
   height: 30px;
   padding: 0 8px;
   font-family: inherit;
   font-size: 100%;
   color: inherit; }
-  .intl-tel-input input[disabled] {
+  input[type="tel"][disabled] {
     background-color: #eee; }
+
 .intl-tel-input.inside input {
   border: 1px solid #CCC; }
 .intl-tel-input.outside {

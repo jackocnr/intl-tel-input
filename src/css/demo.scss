@@ -1,3 +1,8 @@
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
 body {
   margin: 20px;
 
@@ -13,22 +18,22 @@ pre {
   display: inline-block;
 }
 
-.intl-tel-input {
-  input {
-    width: 250px;
-    height: 30px;
-    padding: 0 8px;
+input[type="tel"] {
+  width: 250px;
+  height: 30px;
+  padding: 0 8px;
 
-    // same font style, size and color as rest of site
-    font-family: inherit;
-    font-size: 100%;
-    color: inherit;
+  // same font style, size and color as rest of site
+  font-family: inherit;
+  font-size: 100%;
+  color: inherit;
 
-    &[disabled] {
-      background-color: #eee;
-    }
+  &[disabled] {
+    background-color: #eee;
   }
+}
 
+.intl-tel-input {
   &.inside input {
     border: 1px solid #CCC;
   }
