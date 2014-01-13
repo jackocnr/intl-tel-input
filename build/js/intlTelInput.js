@@ -163,10 +163,11 @@ Plugin.prototype = {
                 });
                 // listen for typing
                 $(document).bind("keydown.intlTelInput" + that.id, function(e) {
+                    // prevent down key from scrolling the whole page,
+                    // and enter key from submitting a form etc
+                    e.preventDefault();
                     // up (38) and down (40) to navigate
                     if (e.which == 38 || e.which == 40) {
-                        // prevent scrolling the whole page
-                        e.preventDefault();
                         var current = that.countryList.children(".highlight").first();
                         var next = e.which == 38 ? current.prev() : current.next();
                         if (next.length) {
@@ -182,7 +183,7 @@ Plugin.prototype = {
                         if (currentCountry.length) {
                             that._selectListItem(currentCountry);
                         }
-                    } else if (e.which == 9 || e.which == 27) {
+                    } else if (e.which == 27) {
                         that._closeDropdown();
                     } else if (e.which >= 65 && e.which <= 90) {
                         var letter = String.fromCharCode(e.which);

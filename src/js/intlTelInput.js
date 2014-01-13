@@ -181,10 +181,12 @@
 
           // listen for typing
           $(document).bind("keydown.intlTelInput" + that.id, function(e) {
+            // prevent down key from scrolling the whole page,
+            // and enter key from submitting a form etc
+            e.preventDefault();
+
             // up (38) and down (40) to navigate
             if (e.which == 38 || e.which == 40) {
-              // prevent scrolling the whole page
-              e.preventDefault();
               var current = that.countryList.children(".highlight").first();
               var next = (e.which == 38) ? current.prev() : current.next();
               if (next.length) {
@@ -203,8 +205,8 @@
                 that._selectListItem(currentCountry);
               }
             }
-            // tab (9) or esc (27) to close
-            else if (e.which == 9 || e.which == 27) {
+            // esc (27) to close
+            else if (e.which == 27) {
               that._closeDropdown();
             }
             // upper case letters (65-90) (note: keyup/keydown only return upper case letters)
