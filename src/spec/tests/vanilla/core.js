@@ -159,7 +159,7 @@ describe("init vanilla plugin", function() {
       
       });
 
-    });
+    }); 
 
   });
 
@@ -169,10 +169,12 @@ describe("init vanilla plugin", function() {
 
     describe("input enabled", function() {
 
-      it("adds the hover class on hover", function() {
+      // apparently it is impossible to trigger a CSS psuedo selector like :hover
+      // http://stackoverflow.com/a/4347249/217866
+      /*it("adds the hover class on hover", function() {
         getFlagsContainerElement().mouseover();
-        expect(getFlagsContainerElement()).toHaveClass("hover");
-      });
+        expect(getFlagsContainerElement().css("cursor")).toEqual("pointer");
+      });*/
 
       it("opens the dropdown on click", function() {
         getSelectedFlagContainer().click();
@@ -187,10 +189,12 @@ describe("init vanilla plugin", function() {
         input.prop("disabled", true);
       });
 
-      it("doesn't add the hover class on hover", function() {
+      // apparently it is impossible to trigger a CSS psuedo selector like :hover
+      // http://stackoverflow.com/a/4347249/217866
+      /*it("doesn't add the hover class on hover", function() {
         getFlagsContainerElement().mouseover();
-        expect(getFlagsContainerElement()).not.toHaveClass("hover");
-      });
+        expect(getFlagsContainerElement()).toHaveCss({"cursor": "default"});
+      });*/
 
       it("doesn't open the dropdown on click", function() {
         getSelectedFlagContainer().click();
@@ -199,6 +203,6 @@ describe("init vanilla plugin", function() {
 
     });
 
-  }); 
+  });
 
 });
