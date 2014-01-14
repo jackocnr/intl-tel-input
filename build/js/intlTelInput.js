@@ -6,7 +6,15 @@ repository: https://github.com/Bluefieldscom/intl-tel-input.git
 license: MIT
 author: Jack O'Connor (http://jackocnr.com)
 */
-(function($, window, document, undefined) {
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], function($){factory($, window, document);});
+    } else {
+        // Browser globals
+        factory(jQuery, window, document);
+    }
+}(function ($, window, document, undefined) {
 "use strict";
 
 var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
@@ -1583,4 +1591,4 @@ var intlDataFull = {
     }
 };
 
-})(jQuery, window, document);
+}));

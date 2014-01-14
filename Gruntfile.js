@@ -44,10 +44,17 @@ module.exports = function(grunt) {
           'license: <%= pkg.license %>\n'+
           'author: <%= pkg.author %>\n'+
           '*/\n'+
-          // wrap in self-executing anonymous function
-          '(function($, window, document, undefined) {\n'+
+          '(function (factory) {\n'+
+          '    if (typeof define === \'function\' && define.amd) {\n'+
+          '        // AMD. Register as an anonymous module.\n'+
+          '        define([\'jquery\'], function($){factory($, window, document);});\n'+
+          '    } else {\n'+
+          '        // Browser globals\n'+
+          '        factory(jQuery, window, document);\n'+
+          '    }\n'+
+          '}(function ($, window, document, undefined) {\n'+
           '"use strict";\n\n',
-        footer: "\n\n})(jQuery, window, document);\n"
+        footer: '\n\n}));\n'
       },
       dev: {
         options: {
