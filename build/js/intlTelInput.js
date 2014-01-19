@@ -263,7 +263,7 @@ Plugin.prototype = {
         // try and extract valid dial code from input
         var dialCode = this._getDialCode(this.telInput.val());
         if (dialCode) {
-            // check if one of the matching countrys is already selected
+            // check if one of the matching countries is already selected
             var countryCodes = intlData.countryCodes[dialCode.replace(/\D/g, "")];
             $.each(countryCodes, function(i, c) {
                 if (that.selectedFlagInner.hasClass(c)) {
