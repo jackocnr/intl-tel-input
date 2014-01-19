@@ -1012,9 +1012,19 @@ var intlDataFull = {
   // JavaScript object mapping dial code to country code.
   // This is used when the user enters a number,
   // to quickly look up the corresponding country code.
-  // Originally from http://libphonenumber.googlecode.com/svn/trunk/javascript/i18n/phonenumbers/metadata.js
-  // then I commented some weird 001 entries and added some 4-digit country-code
-  // items at the end e.g. 1246 for Barbados
+  // Generated from the above array using this JavaScript:
+  /*
+  var uniqueDCs = _.unique(_.pluck(intlDataFull.countries, "calling-code"));
+  var cCodes = {};
+  _.each(uniqueDCs, function(dc) {
+    cCodes[dc] = _.pluck(_.filter(intlDataFull.countries, function(c) {
+      return c["calling-code"] == dc;
+    }), "cca2");
+  });
+   */
+  // Then reference this google code project for clash priority:
+  // http://libphonenumber.googlecode.com/svn/trunk/javascript/i18n/phonenumbers/metadata.js
+  // then updated vatican city to +379
   countryCodes: {
     "1": ["us", "ca"],
     "7": ["ru", "kz"],
@@ -1033,7 +1043,7 @@ var intlDataFull = {
     "44": ["gb", "gg", "im", "je"],
     "45": ["dk"],
     "46": ["se"],
-    "47": ["no", "sj"],
+    "47": ["no"],
     "48": ["pl"],
     "49": ["de"],
     "51": ["pe"],
@@ -1048,7 +1058,7 @@ var intlDataFull = {
     "61": ["au", "cc", "cx"],
     "62": ["id"],
     "63": ["ph"],
-    "64": ["nz"],
+    "64": ["nz", "pn"],
     "65": ["sg"],
     "66": ["th"],
     "81": ["jp"],
@@ -1094,7 +1104,6 @@ var intlDataFull = {
     "244": ["ao"],
     "245": ["gw"],
     "246": ["io"],
-    "247": ["ac"],
     "248": ["sc"],
     "249": ["sd"],
     "250": ["rw"],
@@ -1138,7 +1147,7 @@ var intlDataFull = {
     "374": ["am"],
     "375": ["by"],
     "376": ["ad"],
-    "377": ["mc"],
+    "377": ["mc", "xk"],
     "378": ["sm"],
     "379": ["va"],
     "380": ["ua"],
@@ -1151,7 +1160,7 @@ var intlDataFull = {
     "420": ["cz"],
     "421": ["sk"],
     "423": ["li"],
-    "500": ["fk"],
+    "500": ["fk", "gs"],
     "501": ["bz"],
     "502": ["gt"],
     "503": ["sv"],
@@ -1170,7 +1179,6 @@ var intlDataFull = {
     "596": ["mq"],
     "597": ["sr"],
     "598": ["uy"],
-    "599": ["cw", "bq"],
     "670": ["tl"],
     "672": ["nf"],
     "673": ["bn"],
@@ -1233,8 +1241,10 @@ var intlDataFull = {
     "1473": ["gd"],
     "1649": ["tc"],
     "1664": ["ms"],
+    "1670": ["mp"],
     "1671": ["gu"],
     "1684": ["as"],
+    "1721": ["sx"],
     "1758": ["lc"],
     "1767": ["dm"],
     "1784": ["vc"],
@@ -1242,7 +1252,10 @@ var intlDataFull = {
     "1809": ["do"],
     "1868": ["tt"],
     "1869": ["kn"],
-    "1876": ["jm"]
+    "1876": ["jm"],
+    "4779": ["sj"],
+    "5997": ["bq"],
+    "5999": ["cw"]
   }
 
 };
