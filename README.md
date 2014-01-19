@@ -92,6 +92,6 @@ but beware that even after minification, this script is still >300kB).
 
 
 ## Attributions
-* Flag images and CSS from https://github.com/lafeber/world-flags-sprite
+* Flag images and CSS from https://github.com/tkrotoff/famfamfam_flags
 * Country data from https://github.com/mledoze/countries
 * Mapping from international dial code to country code from http://libphonenumber.googlecode.com
