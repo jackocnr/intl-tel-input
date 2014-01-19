@@ -16,7 +16,7 @@ Try it for yourself using the included demo.html
 
 
 ## Getting started
-First add the stylesheet (note that this references the image `flags16.png`)
+First add the stylesheet (note that this references the image `flags.png`)
 ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
 ```
@@ -86,9 +86,9 @@ but beware that even after minification, this script is still >300kB).
 
 
 ## Troubleshooting
-* Depending on your project setup, you may need to override the path to flags16.png in your CSS. You can do so like this:
+* Depending on your project setup, you may need to override the path to flags.png in your CSS. You can do so like this:
 
-        .f16 .flag {background-image: url("path/to/flags16.png");}
+        .intl-tel-input .flag {background-image: url("path/to/flags.png");}
 
 
 ## Attributions
