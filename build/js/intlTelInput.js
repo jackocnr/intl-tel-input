@@ -11,8 +11,8 @@ author: Jack O'Connor (http://jackocnr.com)
 
 var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
 defaults = {
-    preferredCountries: [ "us", "gb" ],
     // united states and united kingdom
+    preferredCountries: [ "us", "gb" ],
     americaMode: false,
     onlyCountries: [],
     defaultStyling: "inside",
@@ -166,8 +166,8 @@ Plugin.prototype = {
                     // prevent down key from scrolling the whole page,
                     // and enter key from submitting a form etc
                     e.preventDefault();
-                    // up (38) and down (40) to navigate
                     if (e.which == 38 || e.which == 40) {
+                        // up (38) and down (40) to navigate
                         var current = that.countryList.children(".highlight").first();
                         var next = e.which == 38 ? current.prev() : current.next();
                         if (next.length) {
@@ -179,13 +179,17 @@ Plugin.prototype = {
                             that._scrollTo(next);
                         }
                     } else if (e.which == 13) {
+                        // enter (13) to select
                         var currentCountry = that.countryList.children(".highlight").first();
                         if (currentCountry.length) {
                             that._selectListItem(currentCountry);
                         }
                     } else if (e.which == 27) {
+                        // esc (27) to close
                         that._closeDropdown();
                     } else if (e.which >= 65 && e.which <= 90) {
+                        // upper case letters (65-90) (note: keyup/keydown only return upper case letters)
+                        // to cycle through countries beginning with that letter
                         var letter = String.fromCharCode(e.which);
                         // filter out the countries beginning with that letter
                         var countries = that.countryListItems.filter(function() {
@@ -240,6 +244,7 @@ Plugin.prototype = {
             });
             countryCode = countryCodes[0];
         } else {
+            // else default to dialcode of the first preferred country
             countryCode = this.defaultCountry.cca2;
         }
         if (!alreadySelected) {
@@ -421,6 +426,9 @@ $.fn[pluginName] = function(options) {
             }
         });
     } else if (typeof options === "string" && options[0] !== "_" && options !== "init") {
+        // If the first parameter is a string and it doesn't start
+        // with an underscore or "contains" the `init`-function,
+        // treat this as a call to a public method.
         // Cache the method call to make it possible to return a value
         var returns;
         this.each(function() {
