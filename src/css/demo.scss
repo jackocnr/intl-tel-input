@@ -18,10 +18,8 @@ pre {
   display: inline-block;
 }
 
-input[type="tel"] {
-  width: 250px;
-  height: 30px;
-  padding: 0 8px;
+input {
+  margin: 0;
 
   // same font style, size and color as rest of site
   font-family: inherit;
@@ -34,16 +32,23 @@ input[type="tel"] {
 }
 
 .intl-tel-input {
-  &.inside input {
-    border: 1px solid #CCC;
+  input {
+    padding: 0 8px;
+    height: 30px;
   }
 
+  // defaultStyling = "inside"
+  &.inside input {
+    border: 1px solid #CCC;
+    width: 250px;
+  }
+
+  // defaultStyling = "outside"
   &.outside {
-    display: inline-block;
     border: 1px solid #CCC;
 
     input {
-      border: none;
+      width: 210px; // 250 - 38 (margin-left) - 2 (border)
     }
     input[disabled] + .flag-dropdown {
       background-color: #eee;

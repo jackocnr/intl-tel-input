@@ -14,22 +14,23 @@ pre {
   margin: 0;
   display: inline-block; }
 
-input[type="tel"] {
-  width: 250px;
-  height: 30px;
-  padding: 0 8px;
+input {
+  margin: 0;
   font-family: inherit;
   font-size: 100%;
   color: inherit; }
-  input[type="tel"][disabled] {
+  input[disabled] {
     background-color: #eee; }
 
+.intl-tel-input input {
+  padding: 0 8px;
+  height: 30px; }
 .intl-tel-input.inside input {
-  border: 1px solid #CCC; }
+  border: 1px solid #CCC;
+  width: 250px; }
 .intl-tel-input.outside {
-  display: inline-block;
   border: 1px solid #CCC; }
   .intl-tel-input.outside input {
-    border: none; }
+    width: 210px; }
   .intl-tel-input.outside input[disabled] + .flag-dropdown {
     background-color: #eee; }

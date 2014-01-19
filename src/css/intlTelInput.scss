@@ -52,6 +52,8 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
     // need position on the container so the selected flag can be
     // absolutely positioned over the input
     position: relative;
+    // keep the input's default inline properties
+    display: inline-block;
 
     // hover state
     .flag-dropdown:hover .selected-flag {
@@ -154,10 +156,11 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       position: relative;
       z-index: 0;
 
-      // the selected-flag gets it's height from the input - any margin here will
-      // break the alignment
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
+      // the input is the only child of the wrapper div which is actually in the flow
+      // (position:relative), so it determines the height of everything. by setting
+      // display:block, we tell the parent to ignore any vertical margin, which
+      // otherwise would change the total height and hence mess up the alignment
+      display: block;
     }
   }
 
@@ -174,6 +177,9 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       // Note: added !important to override any custom styles the user may have
       // as they will need this one!
       padding-left: $selectedFlagWidth + $inputPadding !important;
+
+      // any margin-left here will push the selected-flag away
+      margin-left: 0 !important;
     }
   }
 
@@ -181,6 +187,9 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
 
   &.outside {
     input {
+      // the border should be around the parent in this case
+      border: none;
+
       // make space for the selected flag
       // Note: added !important to override any custom styles the user may have
       // as they will need this one!
