@@ -16,11 +16,11 @@ Try it for yourself using the included demo.html
 
 
 ## Getting started
-First add the stylesheet to your &lt;head&gt;
+First add the stylesheet (note that this references the image `flags16.png`)
 ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
 ```
-Then include the plugin and initialise it on your input element
+Then add the plugin script and initialise it on your input element
 ```html
   <input type="tel" id="mobile-number">
 
