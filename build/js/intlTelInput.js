@@ -1224,7 +1224,7 @@ var intlDataFull = {
         cca2: "pm",
         "calling-code": "508"
     }, {
-        name: "St. Vincent & Grenadines",
+        name: "Saint Vincent and the Grenadines",
         cca2: "vc",
         "calling-code": "1784"
     }, {
