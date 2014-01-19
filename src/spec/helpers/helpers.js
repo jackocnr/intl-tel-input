@@ -1,4 +1,4 @@
-var input, totalCountries = 221;
+var input, totalCountries = 245, totalDialCodes = 230;
 var keyCodes = {
   'up': 38,
   'down': 40,
