@@ -13,7 +13,7 @@ module.exports = function(grunt) {
         files: {
           'build/css/intlTelInput.css': [
             'src/css/intlTelInput.scss',
-            'src/css/flags16.scss'
+            'src/css/flags.scss'
           ],
         }
       },
@@ -74,7 +74,7 @@ module.exports = function(grunt) {
         tasks: ["jshint", "uglify:dev"]
       },
       pluginCss: {
-        files: ["src/css/flags16.scss", "src/css/intlTelInput.scss"],
+        files: ["src/css/flags.scss", "src/css/intlTelInput.scss"],
         tasks: "sass:main"
       },
       demoCss: {

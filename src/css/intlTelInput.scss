@@ -4,7 +4,7 @@ $hoverColor: rgba(0, 0, 0, 0.05);
 $greyText: #999;
 $greyBorder: #CCC;
 
-$flagHeight: 16px;
+$flagHeight: 11px;
 $flagWidth: 16px;
 $flagPadding: 6px;
 // this border width is used for the popup and divider, but it is also
@@ -133,7 +133,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         .country {
           // set this to height of flag - if it is higher, things get misaligned
           line-height: $flagHeight;
-          padding: 4px 10px;
+          padding: 7px 10px;
           // the dial codes after the country names are greyed out
           .dial-code {color: $greyText;}
         }
