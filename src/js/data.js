@@ -7,19 +7,40 @@ var intlDataFull = {
   // Array of country objects for the flag dropdown.
   // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
   // Originally from https://github.com/mledoze/countries
-  // then stripped down by copying the JSON into Chrome dev tools and manipulating it
-  // and then using JSON.stringify to print it out as a string again and copy it here.
-  // Also commented some countries which we dont yet have flags for.
+  // then modified using the following JavaScript:
+  /*
+  var result = [];
+  _.each(countries, function(c) {
+    // ignore countries without a dial code
+    if (c.callingCode[0].length) {
+      result.push({
+        // var locals contains country names with localised versions in brackets
+        name: _.findWhere(locals, {
+          countryCode: c.cca2
+        }).name,
+        cca2: c.cca2.toLowerCase(),
+        'calling-code': c.callingCode[0]
+      });
+    }
+  });
+  JSON.stringify(result);
+  */
+  // then with a couple of manual re-arrangements to be alphabetical
+  // then changed Kazakhstan from +76 to +7
   countries: [{
-    "name": "Afghanistan (افغانستان‎)",
+    "name": "Afghanistan (‫افغانستان‬‎)",
     "cca2": "af",
     "calling-code": "93"
   }, {
-    "name": "Albania (Shqipëria)",
+    "name": "Åland Islands (Åland)",
+    "cca2": "ax",
+    "calling-code": "358"
+  }, {
+    "name": "Albania (Shqipëri)",
     "cca2": "al",
     "calling-code": "355"
   }, {
-    "name": "Algeria (الجزائر‎)",
+    "name": "Algeria (‫الجزائر‬‎)",
     "cca2": "dz",
     "calling-code": "213"
   }, {
@@ -71,7 +92,7 @@ var intlDataFull = {
     "cca2": "bs",
     "calling-code": "1242"
   }, {
-    "name": "Bahrain (البحرين‎)",
+    "name": "Bahrain (‫البحرين‬‎)",
     "cca2": "bh",
     "calling-code": "973"
   }, {
@@ -111,6 +132,10 @@ var intlDataFull = {
     "cca2": "bo",
     "calling-code": "591"
   }, {
+    "name": "Caribbean Netherlands",
+    "cca2": "bq",
+    "calling-code": "5997"
+  }, {
     "name": "Bosnia and Herzegovina (Босна и Херцеговина)",
     "cca2": "ba",
     "calling-code": "387"
@@ -122,6 +147,14 @@ var intlDataFull = {
     "name": "Brazil (Brasil)",
     "cca2": "br",
     "calling-code": "55"
+  }, {
+    "name": "British Indian Ocean Territory",
+    "cca2": "io",
+    "calling-code": "246"
+  }, {
+    "name": "British Virgin Islands",
+    "cca2": "vg",
+    "calling-code": "1284"
   }, {
     "name": "Brunei",
     "cca2": "bn",
@@ -175,19 +208,27 @@ var intlDataFull = {
     "cca2": "cn",
     "calling-code": "86"
   }, {
+    "name": "Christmas Island",
+    "cca2": "cx",
+    "calling-code": "61"
+  }, {
+    "name": "Cocos (Keeling) Islands (Kepulauan Cocos (Keeling))",
+    "cca2": "cc",
+    "calling-code": "61"
+  }, {
     "name": "Colombia",
     "cca2": "co",
     "calling-code": "57"
   }, {
-    "name": "Comoros (جزر القمر‎)",
+    "name": "Comoros (‫جزر القمر‬‎)",
     "cca2": "km",
     "calling-code": "269"
   }, {
-    "name": "Congo [DRC] (Jamhuri ya Kidemokrasia ya Kongo)",
+    "name": "Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)",
     "cca2": "cd",
     "calling-code": "243"
   }, {
-    "name": "Congo [Republic] (Congo-Brazzaville)",
+    "name": "Congo (Republic) (Congo-Brazzaville)",
     "cca2": "cg",
     "calling-code": "242"
   }, {
@@ -210,6 +251,10 @@ var intlDataFull = {
     "name": "Cuba",
     "cca2": "cu",
     "calling-code": "53"
+  }, {
+    "name": "Curaçao",
+    "cca2": "cw",
+    "calling-code": "5999"
   }, {
     "name": "Cyprus (Κύπρος)",
     "cca2": "cy",
@@ -239,7 +284,7 @@ var intlDataFull = {
     "cca2": "ec",
     "calling-code": "593"
   }, {
-    "name": "Egypt (مصر‎)",
+    "name": "Egypt (‫مصر‬‎)",
     "cca2": "eg",
     "calling-code": "20"
   }, {
@@ -263,6 +308,10 @@ var intlDataFull = {
     "cca2": "et",
     "calling-code": "251"
   }, {
+    "name": "Falkland Islands (Islas Malvinas)",
+    "cca2": "fk",
+    "calling-code": "500"
+  }, {
     "name": "Faroe Islands (Føroyar)",
     "cca2": "fo",
     "calling-code": "298"
@@ -278,6 +327,10 @@ var intlDataFull = {
     "name": "France",
     "cca2": "fr",
     "calling-code": "33"
+  }, {
+    "name": "French Guiana (Guyane française)",
+    "cca2": "gf",
+    "calling-code": "594"
   }, {
     "name": "French Polynesia (Polynésie française)",
     "cca2": "pf",
@@ -375,11 +428,11 @@ var intlDataFull = {
     "cca2": "id",
     "calling-code": "62"
   }, {
-    "name": "Iran (ایران‎)",
+    "name": "Iran (‫ایران‬‎)",
     "cca2": "ir",
     "calling-code": "98"
   }, {
-    "name": "Iraq (العراق‎)",
+    "name": "Iraq (‫العراق‬‎)",
     "cca2": "iq",
     "calling-code": "964"
   }, {
@@ -391,7 +444,7 @@ var intlDataFull = {
     "cca2": "im",
     "calling-code": "44"
   }, {
-    "name": "Israel (ישראל‎)",
+    "name": "Israel (‫ישראל‬‎)",
     "cca2": "il",
     "calling-code": "972"
   }, {
@@ -411,7 +464,7 @@ var intlDataFull = {
     "cca2": "je",
     "calling-code": "44"
   }, {
-    "name": "Jordan (الأردن‎)",
+    "name": "Jordan (‫الأردن‬‎)",
     "cca2": "jo",
     "calling-code": "962"
   }, {
@@ -427,15 +480,19 @@ var intlDataFull = {
     "cca2": "ki",
     "calling-code": "686"
   }, {
-    "name": "Kuwait (الكويت‎)",
+    "name": "Kosovo (Kosovë)",
+    "cca2": "xk",
+    "calling-code": "377"
+  }, {
+    "name": "Kuwait (‫الكويت‬‎)",
     "cca2": "kw",
     "calling-code": "965"
   }, {
-    "name": "Kyrgyzstan",
+    "name": "Kyrgyzstan (Кыргызстан)",
     "cca2": "kg",
     "calling-code": "996"
   }, {
-    "name": "Laos (ສ.ປ.ປ ລາວ)",
+    "name": "Laos (ລາວ)",
     "cca2": "la",
     "calling-code": "856"
   }, {
@@ -443,7 +500,7 @@ var intlDataFull = {
     "cca2": "lv",
     "calling-code": "371"
   }, {
-    "name": "Lebanon (لبنان‎)",
+    "name": "Lebanon (‫لبنان‬‎)",
     "cca2": "lb",
     "calling-code": "961"
   }, {
@@ -455,7 +512,7 @@ var intlDataFull = {
     "cca2": "lr",
     "calling-code": "231"
   }, {
-    "name": "Libya (ليبيا‎)",
+    "name": "Libya (‫ليبيا‬‎)",
     "cca2": "ly",
     "calling-code": "218"
   }, {
@@ -475,7 +532,7 @@ var intlDataFull = {
     "cca2": "mo",
     "calling-code": "853"
   }, {
-    "name": "Macedonia [FYROM] (Македонија)",
+    "name": "Macedonia (FYROM) (Македонија)",
     "cca2": "mk",
     "calling-code": "389"
   }, {
@@ -511,13 +568,17 @@ var intlDataFull = {
     "cca2": "mq",
     "calling-code": "596"
   }, {
-    "name": "Mauritania (موريتانيا‎)",
+    "name": "Mauritania (‫موريتانيا‬‎)",
     "cca2": "mr",
     "calling-code": "222"
   }, {
     "name": "Mauritius (Moris)",
     "cca2": "mu",
     "calling-code": "230"
+  }, {
+    "name": "Mayotte",
+    "cca2": "yt",
+    "calling-code": "262"
   }, {
     "name": "Mexico (México)",
     "cca2": "mx",
@@ -547,7 +608,7 @@ var intlDataFull = {
     "cca2": "ms",
     "calling-code": "1664"
   }, {
-    "name": "Morocco (المغرب‎)",
+    "name": "Morocco (‫المغرب‬‎)",
     "cca2": "ma",
     "calling-code": "212"
   }, {
@@ -555,11 +616,11 @@ var intlDataFull = {
     "cca2": "mz",
     "calling-code": "258"
   }, {
-    "name": "Myanmar [Burma] (မြန်မာ)",
+    "name": "Myanmar (Burma) (မြန်မာ)",
     "cca2": "mm",
     "calling-code": "95"
   }, {
-    "name": "Namibia",
+    "name": "Namibia (Namibië)",
     "cca2": "na",
     "calling-code": "264"
   }, {
@@ -595,19 +656,31 @@ var intlDataFull = {
     "cca2": "ng",
     "calling-code": "234"
   }, {
+    "name": "Niue",
+    "cca2": "nu",
+    "calling-code": "683"
+  }, {
+    "name": "Norfolk Island",
+    "cca2": "nf",
+    "calling-code": "672"
+  }, {
     "name": "North Korea (조선 민주주의 인민 공화국)",
     "cca2": "kp",
     "calling-code": "850"
+  }, {
+    "name": "Northern Mariana Islands",
+    "cca2": "mp",
+    "calling-code": "1670"
   }, {
     "name": "Norway (Norge)",
     "cca2": "no",
     "calling-code": "47"
   }, {
-    "name": "Oman (عُمان‎)",
+    "name": "Oman (‫عُمان‬‎)",
     "cca2": "om",
     "calling-code": "968"
   }, {
-    "name": "Pakistan (پاکستان‎)",
+    "name": "Pakistan (‫پاکستان‬‎)",
     "cca2": "pk",
     "calling-code": "92"
   }, {
@@ -615,7 +688,7 @@ var intlDataFull = {
     "cca2": "pw",
     "calling-code": "680"
   }, {
-    "name": "Palestine (فلسطين‎)",
+    "name": "Palestine (‫فلسطين‬‎)",
     "cca2": "ps",
     "calling-code": "970"
   }, {
@@ -639,6 +712,10 @@ var intlDataFull = {
     "cca2": "ph",
     "calling-code": "63"
   }, {
+    "name": "Pitcairn Islands",
+    "cca2": "pn",
+    "calling-code": "64"
+  }, {
     "name": "Poland (Polska)",
     "cca2": "pl",
     "calling-code": "48"
@@ -651,11 +728,11 @@ var intlDataFull = {
     "cca2": "pr",
     "calling-code": "1787"
   }, {
-    "name": "Qatar (قطر‎)",
+    "name": "Qatar (‫قطر‬‎)",
     "cca2": "qa",
     "calling-code": "974"
   }, {
-    "name": "Réunion",
+    "name": "Réunion (La Réunion)",
     "cca2": "re",
     "calling-code": "262"
   }, {
@@ -671,6 +748,14 @@ var intlDataFull = {
     "cca2": "rw",
     "calling-code": "250"
   }, {
+    "name": "Saint Barthélemy (Saint-Barthélemy)",
+    "cca2": "bl",
+    "calling-code": "590"
+  }, {
+    "name": "Saint Helena",
+    "cca2": "sh",
+    "calling-code": "290"
+  }, {
     "name": "Saint Kitts and Nevis",
     "cca2": "kn",
     "calling-code": "1869"
@@ -679,7 +764,15 @@ var intlDataFull = {
     "cca2": "lc",
     "calling-code": "1758"
   }, {
-    "name": "Saint Vincent and the Grenadines",
+    "name": "Saint Martin (Saint-Martin (partie française))",
+    "cca2": "mf",
+    "calling-code": "590"
+  }, {
+    "name": "Saint Pierre and Miquelon (Saint-Pierre-et-Miquelon)",
+    "cca2": "pm",
+    "calling-code": "508"
+  }, {
+    "name": "St. Vincent & Grenadines",
     "cca2": "vc",
     "calling-code": "1784"
   }, {
@@ -695,7 +788,7 @@ var intlDataFull = {
     "cca2": "st",
     "calling-code": "239"
   }, {
-    "name": "Saudi Arabia (المملكة العربية السعودية‎)",
+    "name": "Saudi Arabia (‫المملكة العربية السعودية‬‎)",
     "cca2": "sa",
     "calling-code": "966"
   }, {
@@ -719,6 +812,10 @@ var intlDataFull = {
     "cca2": "sg",
     "calling-code": "65"
   }, {
+    "name": "Sint Maarten",
+    "cca2": "sx",
+    "calling-code": "1721"
+  }, {
     "name": "Slovakia (Slovensko)",
     "cca2": "sk",
     "calling-code": "421"
@@ -739,9 +836,17 @@ var intlDataFull = {
     "cca2": "za",
     "calling-code": "27"
   }, {
+    "name": "South Georgia & South Sandwich Islands",
+    "cca2": "gs",
+    "calling-code": "500"
+  }, {
     "name": "South Korea (대한민국)",
     "cca2": "kr",
     "calling-code": "82"
+  }, {
+    "name": "South Sudan (‫جنوب السودان‬‎)",
+    "cca2": "ss",
+    "calling-code": "211"
   }, {
     "name": "Spain (España)",
     "cca2": "es",
@@ -751,13 +856,17 @@ var intlDataFull = {
     "cca2": "lk",
     "calling-code": "94"
   }, {
-    "name": "Sudan (السودان‎)",
+    "name": "Sudan (‫السودان‬‎)",
     "cca2": "sd",
     "calling-code": "249"
   }, {
     "name": "Suriname",
     "cca2": "sr",
     "calling-code": "597"
+  }, {
+    "name": "Svalbard and Jan Mayen (Svalbard og Jan Mayen)",
+    "cca2": "sj",
+    "calling-code": "4779"
   }, {
     "name": "Swaziland",
     "cca2": "sz",
@@ -771,7 +880,7 @@ var intlDataFull = {
     "cca2": "ch",
     "calling-code": "41"
   }, {
-    "name": "Syria (سوريا‎)",
+    "name": "Syria (‫سوريا‬‎)",
     "cca2": "sy",
     "calling-code": "963"
   }, {
@@ -799,6 +908,10 @@ var intlDataFull = {
     "cca2": "tg",
     "calling-code": "228"
   }, {
+    "name": "Tokelau",
+    "cca2": "tk",
+    "calling-code": "690"
+  }, {
     "name": "Tonga",
     "cca2": "to",
     "calling-code": "676"
@@ -807,7 +920,7 @@ var intlDataFull = {
     "cca2": "tt",
     "calling-code": "1868"
   }, {
-    "name": "Tunisia (تونس‎)",
+    "name": "Tunisia (‫تونس‬‎)",
     "cca2": "tn",
     "calling-code": "216"
   }, {
@@ -835,7 +948,7 @@ var intlDataFull = {
     "cca2": "ua",
     "calling-code": "380"
   }, {
-    "name": "United Arab Emirates (الإمارات العربية المتحدة‎)",
+    "name": "United Arab Emirates (‫الإمارات العربية المتحدة‬‎)",
     "cca2": "ae",
     "calling-code": "971"
   }, {
@@ -847,11 +960,15 @@ var intlDataFull = {
     "cca2": "us",
     "calling-code": "1"
   }, {
+    "name": "U.S. Virgin Islands",
+    "cca2": "vi",
+    "calling-code": "1340"
+  }, {
     "name": "Uruguay",
     "cca2": "uy",
     "calling-code": "598"
   }, {
-    "name": "Uzbekistan (Ўзбекистон)",
+    "name": "Uzbekistan (Oʻzbekiston)",
     "cca2": "uz",
     "calling-code": "998"
   }, {
@@ -861,7 +978,7 @@ var intlDataFull = {
   }, {
     "name": "Vatican City (Città del Vaticano)",
     "cca2": "va",
-    "calling-code": "379"
+    "calling-code": "39066"
   }, {
     "name": "Venezuela",
     "cca2": "ve",
@@ -871,19 +988,15 @@ var intlDataFull = {
     "cca2": "vn",
     "calling-code": "84"
   }, {
-    "name": "British Virgin Islands",
-    "cca2": "vg",
-    "calling-code": "1284"
+    "name": "Wallis and Futuna",
+    "cca2": "wf",
+    "calling-code": "681"
   }, {
-    "name": "U.S. Virgin Islands",
-    "cca2": "vi",
-    "calling-code": "1340"
-  }, {
-    "name": "Western Sahara (الصحراء الغربية‎)",
+    "name": "Western Sahara (‫الصحراء الغربية‬‎)",
     "cca2": "eh",
     "calling-code": "212"
   }, {
-    "name": "Yemen (اليمن‎)",
+    "name": "Yemen (‫اليمن‬‎)",
     "cca2": "ye",
     "calling-code": "967"
   }, {
