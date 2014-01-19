@@ -978,7 +978,7 @@ var intlDataFull = {
   }, {
     "name": "Vatican City (Città del Vaticano)",
     "cca2": "va",
-    "calling-code": "39066"
+    "calling-code": "379"
   }, {
     "name": "Venezuela",
     "cca2": "ve",

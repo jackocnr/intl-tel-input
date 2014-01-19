@@ -28,7 +28,74 @@
     init: function() {
       var that = this;
 
-      // process onlyCountries array
+      // telephone input
+      this.telInput = $(this.element);
+
+      // set the global data object
+      this._setIntlData();
+
+      // get the preferred country data
+      var preferredCountries = this._getPreferredCountryData();
+      this.defaultCountry = this._getDefaultCountry(preferredCountries);
+
+      // generate the markup
+      this._generateMarkup(preferredCountries);
+
+      // trigger it now in case there is already a number in the input
+      that._updateFlagFromInputVal();
+
+      // auto hide option
+      if (this.options.autoHideDialCode) {
+        this._initAutoHideDialCode();
+      } else if (this.telInput.val() === "") {
+        // if autoHideDialCode is disabled (and input is not pre-populated),
+        // insert the default dial code
+        this._resetToDialCode(this.defaultCountry["calling-code"]);
+      }
+
+      // update flag on keyup
+      // (by extracting the dial code from the input value)
+      this.telInput.keyup(function() {
+        that._updateFlagFromInputVal();
+      });
+
+      // toggle country dropdown on click
+      this.selectedFlag.click(function(e) {
+        // only intercept this event if we're opening the dropdown
+        // else let it bubble up to the top ("click-off-to-close" listener)
+        if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
+          that._showDropdown();
+        }
+      });
+
+      // when mouse over a list item, just highlight that one
+      // we add the class "highlight", so if they hit "enter" we know which one to select
+      this.countryListItems.mouseover(function() {
+        that._highlightListItem($(this));
+      });
+
+      // listen for country selection
+      this.countryListItems.click(function(e) {
+        var listItem = $(e.currentTarget);
+        that._selectListItem(listItem);
+      });
+
+    }, // end of init()
+
+
+
+
+
+
+    /********************
+     *  PRIVATE METHODS
+     ********************/
+
+
+    // process onlyCountries array if present
+    _setIntlData: function() {
+      var that = this;
+
       if (this.options.onlyCountries.length > 0) {
         var newCountries = [],
           newCountryCodes = {};
@@ -46,7 +113,6 @@
           }
         });
 
-        // update the global data object
         window.intlData = {
           countries: newCountries,
           countryCodes: newCountryCodes
@@ -54,33 +120,35 @@
       } else {
         window.intlData = intlDataFull;
       }
+    },
 
-      // process preferred countries - iterate through the preferences,
-      // finding the relevant data from the provided intlData.countries array
-      var preferredCountries = [];
+
+    // process preferred countries - iterate through the preferences,
+    // finding the relevant data from the provided intlData.countries array
+    _getPreferredCountryData: function() {
+      var that = this,
+        preferredCountries = [];
       $.each(this.options.preferredCountries, function(i, countryCode) {
         var countryData = that._getCountryData(countryCode, false);
         if (countryData) {
           preferredCountries.push(countryData);
         }
       });
-    
+      return preferredCountries;
+    },
+
+
+    _getDefaultCountry: function(preferredCountries) {
       // if the default country option is set then use it
       if (this.options.defaultCountry) {
-        this.defaultCountry = this._getCountryData(this.options.defaultCountry, false);
+        return this._getCountryData(this.options.defaultCountry, false);
       } else {
-        this.defaultCountry = (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
+        return (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
       }
+    },
 
 
-      // telephone input
-      this.telInput = $(this.element);
-
-      // if autoHideDialCode is disabled (and input is not pre-populated), insert the default dial code
-      if (!this.options.autoHideDialCode && this.telInput.val() === "") {
-        this._resetToDialCode(this.defaultCountry["calling-code"]);
-      }
-
+    _generateMarkup: function(preferredCountries) {
       // containers (mostly for positioning)
       var mainClass = "intl-tel-input";
       if (this.options.defaultStyling != "none") {
@@ -94,14 +162,13 @@
       }).insertAfter(this.telInput);
 
       // currently selected flag (displayed to left of input)
-      var selectedFlag = $("<div>", {
+      this.selectedFlag = $("<div>", {
         "class": "selected-flag"
       }).appendTo(flagsContainer);
       // here we default to the first country in the list
-      var firstCountry = this.defaultCountry.cca2;
       this.selectedFlagInner = $("<div>", {
-        "class": "flag " + firstCountry
-      }).appendTo(selectedFlag);
+        "class": "flag " + this.defaultCountry.cca2
+      }).appendTo(this.selectedFlag);
       // CSS triangle
       $("<div>", {
         "class": "down-arrow"
@@ -122,152 +189,130 @@
       this.countryListItems = this.countryList.children(".country");
       // auto select the top one
       this.countryListItems.first().addClass("active");
+    },
 
 
-      // auto hide option
-      if (this.options.autoHideDialCode) {
-        // on focusin: if empty, insert the dial code for the currently selected flag
-        this.telInput.focusin(function() {
-          var value = $.trim(that.telInput.val());
-          if (value.length === 0) {
-            var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
-            var countryData = that._getCountryData(countryCode, false);
-            that._resetToDialCode(countryData["calling-code"]);
-          }
-        });
+    _initAutoHideDialCode: function() {
+      var that = this;
 
-        // on focusout: if just a dial code then remove it
-        this.telInput.focusout(function() {
-          var value = $.trim(that.telInput.val());
-          if (value.length > 0) {
-            if (that._getDialCode(value) == value) {
-              that.telInput.val("");
-            }
-          }
-        });
-      }
-
-
-      // update flag on keyup
-      // (by extracting the dial code from the input value)
-      this.telInput.keyup(function() {
-        that._updateFlagFromInputVal();
-      });
-      // trigger it now in case there is already a number in the input
-      that._updateFlagFromInputVal();
-
-
-      // toggle country dropdown on click
-      selectedFlag.click(function(e) {
-
-        // toggle dropdown
-        if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
-          // update highlighting and scroll to active list item
-          var activeListItem = that.countryList.children(".active");
-          that._highlightListItem(activeListItem);
-
-          // show it
-          that.countryList.removeClass("hide");
-          that._scrollTo(activeListItem);
-
-          // click off to close
-          // (except when this initial opening click is bubbling up)
-          var isOpening = true;
-          $('html').bind("click.intlTelInput" + that.id, function(e) {
-            if (!isOpening) {
-              that._closeDropdown();
-            }
-            isOpening = false;
-          });
-
-          // listen for typing
-          $(document).bind("keydown.intlTelInput" + that.id, function(e) {
-            // prevent down key from scrolling the whole page,
-            // and enter key from submitting a form etc
-            e.preventDefault();
-
-            if (e.which == 38 || e.which == 40) {
-              // up (38) and down (40) to navigate
-              var current = that.countryList.children(".highlight").first();
-              var next = (e.which == 38) ? current.prev() : current.next();
-              if (next.length) {
-                // skip the divider
-                if (next.hasClass("divider")) {
-                  next = (e.which == 38) ? next.prev() : next.next();
-                }
-                that._highlightListItem(next);
-                that._scrollTo(next);
-              }
-            } else if (e.which == 13) {
-              // enter (13) to select
-              var currentCountry = that.countryList.children(".highlight").first();
-              if (currentCountry.length) {
-                that._selectListItem(currentCountry);
-              }
-            } else if (e.which == 27) {
-              // esc (27) to close
-              that._closeDropdown();
-            } else if (e.which >= 65 && e.which <= 90) {
-              // upper case letters (65-90) (note: keyup/keydown only return upper case letters)
-              // to cycle through countries beginning with that letter
-              var letter = String.fromCharCode(e.which);
-              // filter out the countries beginning with that letter
-              var countries = that.countryListItems.filter(function() {
-                return ($(this).text().charAt(0) == letter && !$(this).hasClass("preferred"));
-              });
-
-              if (countries.length) {
-                // if one is already highlighted, then we want the next one
-                var highlightedCountry = countries.filter(".highlight").first();
-                var listItem;
-                // if the next country in the list also starts with that letter
-                if (highlightedCountry && highlightedCountry.next() && highlightedCountry.next().text().charAt(0) == letter) {
-                  listItem = highlightedCountry.next();
-                } else {
-                  listItem = countries.first();
-                }
-                // update highlighting and scroll
-                that._highlightListItem(listItem);
-                that._scrollTo(listItem);
-              }
-            }
-          });
+      // on focusin: if empty, insert the dial code for the currently selected flag
+      this.telInput.focusin(function() {
+        var value = $.trim(that.telInput.val());
+        if (value.length === 0) {
+          var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
+          var countryData = that._getCountryData(countryCode, false);
+          that._resetToDialCode(countryData["calling-code"]);
         }
       });
 
-
-
-      // when mouse over a list item, just highlight that one
-      // we add the class "highlight", so if they hit "enter" we know which one to select
-      this.countryListItems.mouseover(function() {
-        that._highlightListItem($(this));
+      // on focusout: if just a dial code then remove it
+      this.telInput.focusout(function() {
+        var value = $.trim(that.telInput.val());
+        if (value.length > 0) {
+          if (that._getDialCode(value) == value) {
+            that.telInput.val("");
+          }
+        }
       });
 
+      // made the decision not to trigger focusout() now, because would only 
+      // do anything in the case where they manually set the initial value to
+      // just a dial code, in which case they probably want it to be displayed.
+    },
 
 
-      // listen for country selection
-      this.countryListItems.click(function(e) {
-        var listItem = $(e.currentTarget);
-        that._selectListItem(listItem);
+    _showDropdown: function() {
+      var that = this;
+
+      // update highlighting and scroll to active list item
+      var activeListItem = this.countryList.children(".active");
+      this._highlightListItem(activeListItem);
+
+      // show it
+      this.countryList.removeClass("hide");
+      this._scrollTo(activeListItem);
+
+      // click off to close
+      // (except when this initial opening click is bubbling up)
+      var isOpening = true;
+      $('html').bind("click.intlTelInput" + this.id, function(e) {
+        if (!isOpening) {
+          that._closeDropdown();
+        }
+        isOpening = false;
       });
 
-    }, // end of init()
+      // listen for typing
+      $(document).bind("keydown.intlTelInput" + this.id, function(e) {
+        // prevent down key from scrolling the whole page,
+        // and enter key from submitting a form etc
+        e.preventDefault();
+
+        if (e.which == 38 || e.which == 40) {
+          // up (38) and down (40) to navigate
+          that._handleUpDownKey(e.which);
+        } else if (e.which == 13) {
+          // enter (13) to select
+          var currentCountry = that.countryList.children(".highlight").first();
+          if (currentCountry.length) {
+            that._selectListItem(currentCountry);
+          }
+        } else if (e.which == 27) {
+          // esc (27) to close
+          that._closeDropdown();
+        } else if (e.which >= 65 && e.which <= 90) {
+          // upper case letters (65-90) (note: keyup/keydown only return upper case letters)
+          // cycle through countries beginning with that letter
+          that._handleLetterKey(e.which);
+        }
+      });
+    },
 
 
+    _handleUpDownKey: function(key) {
+      var current = this.countryList.children(".highlight").first();
+      var next = (key == 38) ? current.prev() : current.next();
+      if (next.length) {
+        // skip the divider
+        if (next.hasClass("divider")) {
+          next = (key == 38) ? next.prev() : next.next();
+        }
+        this._highlightListItem(next);
+        this._scrollTo(next);
+      }
+    },
 
 
+    _handleLetterKey: function(key) {
+      var letter = String.fromCharCode(key);
+      // filter out the countries beginning with that letter
+      var countries = this.countryListItems.filter(function() {
+        return ($(this).text().charAt(0) == letter && !$(this).hasClass("preferred"));
+      });
 
-
-    /********************
-     *  PRIVATE METHODS
-     ********************/
+      if (countries.length) {
+        // if one is already highlighted, then we want the next one
+        var highlightedCountry = countries.filter(".highlight").first(),
+          listItem;
+        // if the next country in the list also starts with that letter
+        if (highlightedCountry && highlightedCountry.next() && highlightedCountry.next().text().charAt(0) == letter) {
+          listItem = highlightedCountry.next();
+        } else {
+          listItem = countries.first();
+        }
+        // update highlighting and scroll
+        this._highlightListItem(listItem);
+        this._scrollTo(listItem);
+      }
+    },
 
 
      // update the selected flag using the input's current value
     _updateFlagFromInputVal: function() {
-      var that = this;
+      var that = this,
+        countryCode,
+        alreadySelected = false;
 
-      var countryCode, alreadySelected = false;
       // try and extract valid dial code from input
       var dialCode = this._getDialCode(this.telInput.val());
       if (dialCode) {
@@ -355,17 +400,14 @@
 
     // check if an element is visible within it's container, else scroll until it is
     _scrollTo: function(element) {
-      var container = this.countryList;
-
-      var containerHeight = container.height();
-      var containerTop = container.offset().top;
-      var containerBottom = containerTop + containerHeight;
-
-      var elementHeight = element.outerHeight();
-      var elementTop = element.offset().top;
-      var elementBottom = elementTop + elementHeight;
-
-      var newScrollTop = elementTop - containerTop + container.scrollTop();
+      var container = this.countryList,
+        containerHeight = container.height(),
+        containerTop = container.offset().top,
+        containerBottom = containerTop + containerHeight,
+        elementHeight = element.outerHeight(),
+        elementTop = element.offset().top,
+        elementBottom = elementTop + elementHeight,
+        newScrollTop = elementTop - containerTop + container.scrollTop();
 
       if (elementTop < containerTop) {
         // scroll up
@@ -380,9 +422,9 @@
 
     // replace any existing dial code with the new one
     _updateNumber: function(newDialCode) {
-      var inputVal = this.telInput.val();
-      var prevDialCode = this._getDialCode(inputVal);
-      var newNumber;
+      var inputVal = this.telInput.val(),
+        prevDialCode = this._getDialCode(inputVal),
+        newNumber;
 
       // if the previous number contained a valid dial code, replace it
       // (if more than just a plus character)
