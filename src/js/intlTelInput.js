@@ -8,7 +8,8 @@
       onlyCountries: [],
       defaultStyling: "inside",
       autoHideDialCode: true,
-      defaultCountry: ""
+      defaultCountry: "",
+      ccDelimiter: " " // character to appear between country code and phone number
     };
 
   function Plugin(element, options) {
@@ -338,7 +339,7 @@
     // reset the input value to just a dial code
     _resetToDialCode: function(dialCode) {
       // if the dialCode is for America, and americaMode is enabled, then don't insert the dial code
-      var value = (dialCode == "1" && this.options.americaMode) ? "" : "+" + dialCode + " ";
+      var value = (dialCode == "1" && this.options.americaMode) ? "" : "+" + dialCode + this.options.ccDelimiter;
       this.telInput.val(value);
     },
 
@@ -433,18 +434,18 @@
         // if the old number was just the dial code,
         // then we will need to add the space again
         if (inputVal == prevDialCode) {
-          newNumber += " ";
+          newNumber += this.options.ccDelimiter;
         }
       } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
         // previous number didn't contain a dial code, so persist it
-        newNumber = newDialCode + " " + $.trim(inputVal);
+        newNumber = newDialCode + this.options.ccDelimiter + $.trim(inputVal);
       } else {
         // previous number contained an invalid dial code, so wipe it
-        newNumber = newDialCode + " ";
+        newNumber = newDialCode + this.options.ccDelimiter;
       }
 
       // if americaMode is enabled, we dont display the dial code for american numbers
-      if (this.options.americaMode && newNumber.substring(0, 3) == "+1 ") {
+      if (this.options.americaMode && newNumber.substring(0, 3) == "+1"+this.options.ccDelimiter) {
         newNumber = newNumber.substring(3);
       }
       return newNumber;
