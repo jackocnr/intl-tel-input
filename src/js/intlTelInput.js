@@ -9,7 +9,8 @@
       defaultStyling: "inside",
       autoHideDialCode: true,
       defaultCountry: "",
-      ccDelimiter: " " // character to appear between country code and phone number
+      // character to appear between dial code and phone number
+      dcDelimiter: " "
     };
 
   function Plugin(element, options) {
@@ -210,6 +211,11 @@
       this.telInput.focusout(function() {
         var value = $.trim(that.telInput.val());
         if (value.length > 0) {
+          // remove delimiter for comparison
+          var delimiterIndex = value.indexOf(that.options.dcDelimiter);
+          if (delimiterIndex != -1) {
+            value = value.substring(0, delimiterIndex);
+          }
           if (that._getDialCode(value) == value) {
             that.telInput.val("");
           }
@@ -339,7 +345,7 @@
     // reset the input value to just a dial code
     _resetToDialCode: function(dialCode) {
       // if the dialCode is for America, and americaMode is enabled, then don't insert the dial code
-      var value = (dialCode == "1" && this.options.americaMode) ? "" : "+" + dialCode + this.options.ccDelimiter;
+      var value = (dialCode == "1" && this.options.americaMode) ? "" : "+" + dialCode + this.options.dcDelimiter;
       this.telInput.val(value);
     },
 
@@ -434,18 +440,18 @@
         // if the old number was just the dial code,
         // then we will need to add the space again
         if (inputVal == prevDialCode) {
-          newNumber += this.options.ccDelimiter;
+          newNumber += this.options.dcDelimiter;
         }
       } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
         // previous number didn't contain a dial code, so persist it
-        newNumber = newDialCode + this.options.ccDelimiter + $.trim(inputVal);
+        newNumber = newDialCode + this.options.dcDelimiter + $.trim(inputVal);
       } else {
         // previous number contained an invalid dial code, so wipe it
-        newNumber = newDialCode + this.options.ccDelimiter;
+        newNumber = newDialCode + this.options.dcDelimiter;
       }
 
       // if americaMode is enabled, we dont display the dial code for american numbers
-      if (this.options.americaMode && newNumber.substring(0, 3) == "+1"+this.options.ccDelimiter) {
+      if (this.options.americaMode && newNumber.substring(0, 3) == "+1"+this.options.dcDelimiter) {
         newNumber = newNumber.substring(3);
       }
       return newNumber;
