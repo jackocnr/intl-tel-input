@@ -44,10 +44,11 @@ module.exports = function(grunt) {
           'license: <%= pkg.license %>\n'+
           'author: <%= pkg.author %>\n'+
           '*/\n'+
+          // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
           '(function (factory) {\n'+
-          '    if (typeof define === \'function\' && define.amd) {\n'+
+          '    if (typeof define === "function" && define.amd) {\n'+
           '        // AMD. Register as an anonymous module.\n'+
-          '        define([\'jquery\'], function($){factory($, window, document);});\n'+
+          '        define(["jquery"], function($){factory($, window, document);});\n'+
           '    } else {\n'+
           '        // Browser globals\n'+
           '        factory(jQuery, window, document);\n'+
