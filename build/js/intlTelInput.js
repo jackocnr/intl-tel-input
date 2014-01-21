@@ -188,12 +188,7 @@ Plugin.prototype = {
         this.telInput.focusout(function() {
             var value = $.trim(that.telInput.val());
             if (value.length > 0) {
-                // remove delimiter for comparison
-                var delimiterIndex = value.indexOf(that.options.dcDelimiter);
-                if (delimiterIndex != -1) {
-                    value = value.substring(0, delimiterIndex);
-                }
-                if (that._getDialCode(value) == value) {
+                if ($.trim(that._getDialCode(value) + that.options.dcDelimiter) == value) {
                     that.telInput.val("");
                 }
             }
