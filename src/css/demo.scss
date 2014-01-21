@@ -46,6 +46,8 @@ button:hover {
 .intl-tel-input {
   input {
     padding: 0 8px;
+    // add this for testing, as plugin should be able to cope
+    margin-bottom: 20px;
   }
 
   // defaultStyling = "inside"
