@@ -20,8 +20,39 @@ $inputPadding: 9px;
 $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPadding;
 
 .intl-tel-input {
+  // need position on the container so the selected flag can be
+  // absolutely positioned over the input
+  position: relative;
+  // keep the input's default inline properties
+  display: inline-block;
+
   .hide {
     display: none;
+  }
+  // this wrapper is required to ignore any vertical margin on the input
+  // (otherwise the alignment would be wrong for the selected flag/dropdown)
+  .intl-tel-input-position {
+    position: relative;
+  }
+
+  .flag-dropdown {
+    // positioned over the top of the input
+    position: absolute;
+    // full height
+    top: 0;
+    bottom: 0;
+
+    .selected-flag {
+      // render above the input
+      z-index: 1;
+      position: relative;
+    }
+
+    .country-list {
+      position: absolute;
+      // popup so render above everything else
+      z-index: 2;
+    }
   }
 
   // the country dropdown
@@ -39,6 +70,17 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
     cursor: default;
   }
 
+  input {
+    position: relative;
+    z-index: 0;
+
+    // the input is the only child of the wrapper div which is actually in the flow
+    // (position:relative), so it determines the height of everything. by setting
+    // display:block, we tell the parent to ignore any vertical margin, which
+    // otherwise would change the total height and hence mess up the alignment
+    display: block;
+  }
+
 
 
   &.pretty {
@@ -48,12 +90,6 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       box-sizing: border-box;
       -moz-box-sizing: border-box;
     }
-
-    // need position on the container so the selected flag can be
-    // absolutely positioned over the input
-    position: relative;
-    // keep the input's default inline properties
-    display: inline-block;
 
     // hover state
     .flag-dropdown:hover .selected-flag {
@@ -65,16 +101,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
     }
 
     .flag-dropdown {
-      // positioned over the top of the input
-      position: absolute;
-      top: 0;
-      bottom: 0;
-
       .selected-flag {
-        // render above the input
-        z-index: 1;
-        position: relative;
-
         width: $selectedFlagWidth;
         // this must be full-height both for the hover highlight, and to push down the
         // dropdown so it appears below the input
@@ -105,10 +132,6 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
 
       // the dropdown
       .country-list {
-        position: absolute;
-        // popup so render above everything else
-        z-index: 2;
-
         padding: 0;
         // margin-left to compensate for the padding on the parent
         margin: 0 0 0 (-$borderWidth);
@@ -150,17 +173,6 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
           margin-right: 6px;
         }
       }
-    }
-
-    input {
-      position: relative;
-      z-index: 0;
-
-      // the input is the only child of the wrapper div which is actually in the flow
-      // (position:relative), so it determines the height of everything. by setting
-      // display:block, we tell the parent to ignore any vertical margin, which
-      // otherwise would change the total height and hence mess up the alignment
-      display: block;
     }
   }
 

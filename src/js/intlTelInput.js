@@ -159,6 +159,9 @@
       this.telInput.wrap($("<div>", {
         "class": mainClass
       }));
+      this.telInput.wrap($("<div>", {
+        "class": "intl-tel-input-position"
+      }));
       var flagsContainer = $("<div>", {
         "class": "flag-dropdown"
       }).insertAfter(this.telInput);

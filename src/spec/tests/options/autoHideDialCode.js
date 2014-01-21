@@ -19,11 +19,11 @@ describe("testing autoHideDialCode option", function() {
       input.intlTelInput({
         autoHideDialCode: true
       });
-      input.parent().appendTo($("body"));
+      getParentElement().appendTo($("body"));
     });
 
     afterEach(function() {
-      input.parent().remove();
+      getParentElement().remove();
     });
 
     it("does not automatically insert the default dial code", function() {
@@ -65,11 +65,11 @@ describe("testing autoHideDialCode option", function() {
       input.intlTelInput({
         autoHideDialCode: false
       });
-      input.parent().appendTo($("body"));
+      getParentElement().appendTo($("body"));
     });
 
     afterEach(function() {
-      input.parent().remove();
+      getParentElement().remove();
     });
 
     it("automatically inserts the default dial code", function() {

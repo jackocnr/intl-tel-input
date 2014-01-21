@@ -14,7 +14,7 @@ describe("init vanilla plugin", function() {
 
   // defaultStyling defaults to true
   it("creates a container with the right classes", function() {
-    expect(input.parent()).toHaveClass("intl-tel-input pretty");
+    expect(getParentElement()).toHaveClass("intl-tel-input pretty");
   });
 
   // preferredCountries defaults to 2 countries
@@ -100,11 +100,11 @@ describe("init vanilla plugin", function() {
   describe("adding to dom", function() {
   
     beforeEach(function() {
-      input.parent().appendTo($("body"));
+      getParentElement().appendTo($("body"));
     });
 
     afterEach(function() {
-      input.parent().remove();
+      getParentElement().remove();
     });
   
     // autoHideDialCode defaults to true

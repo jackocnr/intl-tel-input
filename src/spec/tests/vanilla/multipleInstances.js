@@ -15,12 +15,12 @@ describe("init vanilla plugin to test multiple instances", function() {
     input2.intlTelInput({
       onlyCountries: ['kr', chinaCountryCode, 'ru']
     });
-    $("body").append(input.parent()).append(input2.parent());
+    $("body").append(getParentElement(input)).append(getParentElement(input2));
   });
 
   afterEach(function() {
-    input.parent().remove();
-    input2.parent().remove();
+    getParentElement(input).remove();
+    getParentElement(input2).remove();
     input = null;
     input2 = null;
   });

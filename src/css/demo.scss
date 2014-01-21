@@ -18,8 +18,10 @@ pre {
   display: inline-block;
 }
 
-input {
+input, button {
+  height: 30px;
   margin: 0;
+  border-radius: 2px;
 
   // same font style, size and color as rest of site
   font-family: inherit;
@@ -31,10 +33,19 @@ input {
   }
 }
 
+button {
+  border: none;
+  background-color: #E7E7E7;
+  padding: 5px 10px;
+}
+button:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
 .intl-tel-input {
   input {
     padding: 0 8px;
-    height: 30px;
   }
 
   // defaultStyling = "inside"

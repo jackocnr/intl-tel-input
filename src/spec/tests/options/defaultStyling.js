@@ -14,23 +14,23 @@ describe("testing defaultStyling option", function() {
     input.intlTelInput({
       defaultStyling: "inside"
     });
-    expect(input.parent()).toHaveClass("pretty inside");
+    expect(getParentElement()).toHaveClass("pretty inside");
   });
 
   it("setting it to 'outside' adds the appropriate classes", function() {
     input.intlTelInput({
       defaultStyling: "outside"
     });
-    expect(input.parent()).toHaveClass("pretty outside");
+    expect(getParentElement()).toHaveClass("pretty outside");
   });
 
   it("setting it to 'none' adds the appropriate classes", function() {
     input.intlTelInput({
       defaultStyling: "none"
     });
-    expect(input.parent()).not.toHaveClass("pretty");
-    expect(input.parent()).not.toHaveClass("inside");
-    expect(input.parent()).not.toHaveClass("outside");
+    expect(getParentElement()).not.toHaveClass("pretty");
+    expect(getParentElement()).not.toHaveClass("inside");
+    expect(getParentElement()).not.toHaveClass("outside");
   });
 
 });

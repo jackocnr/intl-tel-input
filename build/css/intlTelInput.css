@@ -1,23 +1,26 @@
+.intl-tel-input { position: relative; display: inline-block; }
 .intl-tel-input .hide { display: none; }
+.intl-tel-input .intl-tel-input-position { position: relative; }
+.intl-tel-input .flag-dropdown { position: absolute; top: 0; bottom: 0; }
+.intl-tel-input .flag-dropdown .selected-flag { z-index: 1; position: relative; }
+.intl-tel-input .flag-dropdown .country-list { position: absolute; z-index: 2; }
 .intl-tel-input .country-list { list-style: none; }
 .intl-tel-input .flag-dropdown:hover { cursor: pointer; }
 .intl-tel-input input[disabled] + .flag-dropdown:hover { cursor: default; }
-.intl-tel-input.pretty { position: relative; display: inline-block; }
+.intl-tel-input input { position: relative; z-index: 0; display: block; }
 .intl-tel-input.pretty * { box-sizing: border-box; -moz-box-sizing: border-box; }
 .intl-tel-input.pretty .flag-dropdown:hover .selected-flag { background-color: rgba(0, 0, 0, 0.05); }
 .intl-tel-input.pretty input[disabled] + .flag-dropdown:hover .selected-flag { background-color: transparent; }
-.intl-tel-input.pretty .flag-dropdown { position: absolute; top: 0; bottom: 0; }
-.intl-tel-input.pretty .flag-dropdown .selected-flag { z-index: 1; position: relative; width: 38px; height: 100%; padding: 0 16px 0 6px; }
+.intl-tel-input.pretty .flag-dropdown .selected-flag { width: 38px; height: 100%; padding: 0 16px 0 6px; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .flag { position: absolute; top: 50%; margin-top: -5.5px; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .down-arrow { top: 3.5px; position: relative; left: 20px; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid black; }
-.intl-tel-input.pretty .flag-dropdown .country-list { position: absolute; z-index: 2; padding: 0; margin: 0 0 0 -1px; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); background-color: white; border: 1px solid #cccccc; width: 420px; max-height: 200px; overflow-y: scroll; }
+.intl-tel-input.pretty .flag-dropdown .country-list { padding: 0; margin: 0 0 0 -1px; box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); background-color: white; border: 1px solid #cccccc; width: 420px; max-height: 200px; overflow-y: scroll; }
 .intl-tel-input.pretty .flag-dropdown .country-list .divider { padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px solid #cccccc; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country { line-height: 11px; padding: 7px 10px; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country .dial-code { color: #999999; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country.highlight { background-color: rgba(0, 0, 0, 0.05); }
 .intl-tel-input.pretty .flag-dropdown .country-list .flag { display: inline-block; vertical-align: bottom; }
 .intl-tel-input.pretty .flag-dropdown .country-list .flag, .intl-tel-input.pretty .flag-dropdown .country-list .country-name { margin-right: 6px; }
-.intl-tel-input.pretty input { position: relative; z-index: 0; display: block; }
 .intl-tel-input.inside .flag-dropdown { padding: 1px; }
 .intl-tel-input.inside input { padding-left: 47px !important; margin-left: 0 !important; }
 .intl-tel-input.outside input { border: none; margin-left: 38px !important; }

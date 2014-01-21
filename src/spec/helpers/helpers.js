@@ -12,6 +12,11 @@ var getInputVal = function(i) {
   return i.val().trim();
 };
 
+var getParentElement = function(i) {
+  i = i || input;
+  return i.closest(".intl-tel-input");
+};
+
 var getListElement = function(i) {
   i = i || input;
   return i.parent().find(".country-list");
