@@ -28,6 +28,13 @@ defaults = {
     defaultCountry: "",
     // character to appear between dial code and phone number
     dcDelimiter: " "
+}, keys = {
+    UP: 38,
+    DOWN: 40,
+    ENTER: 13,
+    ESCAPE: 27,
+    A: 65,
+    Z: 90
 };
 
 function Plugin(element, options) {
@@ -216,20 +223,20 @@ Plugin.prototype = {
             // prevent down key from scrolling the whole page,
             // and enter key from submitting a form etc
             e.preventDefault();
-            if (e.which == 38 || e.which == 40) {
-                // up (38) and down (40) to navigate
+            if (e.which == keys.UP || e.which == keys.DOWN) {
+                // up and down to navigate
                 that._handleUpDownKey(e.which);
-            } else if (e.which == 13) {
-                // enter (13) to select
+            } else if (e.which == keys.ENTER) {
+                // enter to select
                 var currentCountry = that.countryList.children(".highlight").first();
                 if (currentCountry.length) {
                     that._selectListItem(currentCountry);
                 }
-            } else if (e.which == 27) {
-                // esc (27) to close
+            } else if (e.which == keys.ESCAPE) {
+                // esc to close
                 that._closeDropdown();
-            } else if (e.which >= 65 && e.which <= 90) {
-                // upper case letters (65-90) (note: keyup/keydown only return upper case letters)
+            } else if (e.which >= keys.A && e.which <= keys.Z) {
+                // upper case letters (note: keyup/keydown only return upper case letters)
                 // cycle through countries beginning with that letter
                 that._handleLetterKey(e.which);
             }
@@ -237,11 +244,11 @@ Plugin.prototype = {
     },
     _handleUpDownKey: function(key) {
         var current = this.countryList.children(".highlight").first();
-        var next = key == 38 ? current.prev() : current.next();
+        var next = key == keys.UP ? current.prev() : current.next();
         if (next.length) {
             // skip the divider
             if (next.hasClass("divider")) {
-                next = key == 38 ? next.prev() : next.next();
+                next = key == keys.UP ? next.prev() : next.next();
             }
             this._highlightListItem(next);
             this._scrollTo(next);
