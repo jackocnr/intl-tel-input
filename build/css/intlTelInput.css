@@ -4,6 +4,7 @@
 .intl-tel-input .flag-dropdown .selected-flag { z-index: 1; position: relative; }
 .intl-tel-input .flag-dropdown .country-list { position: absolute; z-index: 2; }
 .intl-tel-input .country-list { list-style: none; }
+.intl-tel-input .country-list .flag { display: inline-block; }
 .intl-tel-input .flag-dropdown:hover { cursor: pointer; }
 .intl-tel-input input[disabled] + .flag-dropdown:hover { cursor: default; }
 .intl-tel-input input { position: relative; z-index: 0; margin-top: 0 !important; margin-bottom: 0 !important; }
@@ -18,7 +19,6 @@
 .intl-tel-input.pretty .flag-dropdown .country-list .country { line-height: 11px; padding: 7px 10px; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country .dial-code { color: #999999; }
 .intl-tel-input.pretty .flag-dropdown .country-list .country.highlight { background-color: rgba(0, 0, 0, 0.05); }
-.intl-tel-input.pretty .flag-dropdown .country-list .flag { display: inline-block; vertical-align: bottom; }
 .intl-tel-input.pretty .flag-dropdown .country-list .flag, .intl-tel-input.pretty .flag-dropdown .country-list .country-name { margin-right: 6px; }
 .intl-tel-input.inside .flag-dropdown { padding: 1px; }
 .intl-tel-input.inside input { padding-left: 47px !important; margin-left: 0 !important; }

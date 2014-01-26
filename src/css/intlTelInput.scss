@@ -54,6 +54,10 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
   .country-list {
     // override default list styles
     list-style: none;
+    // inline flags
+    .flag {
+      display: inline-block;
+    }
   }
 
   // hover state - important to show flag is clickable even if default styling is disabled
@@ -158,10 +162,6 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
           background-color: $hoverColor;
         }
 
-        .flag {
-          display: inline-block;
-          vertical-align: bottom;
-        }
         // spacing between country flag, name and dial code
         .flag, .country-name {
           margin-right: 6px;
