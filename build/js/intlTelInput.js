@@ -337,6 +337,7 @@ Plugin.prototype = {
                 return countryList[i];
             }
         }
+        return null;
     },
     // update the selected flag and the active list item
     _selectFlag: function(countryCode) {
