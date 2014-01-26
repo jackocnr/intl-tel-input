@@ -116,7 +116,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
           margin-top: -($flagHeight / 2);
         }
 
-        .down-arrow {
+        .arrow {
           // split the difference between the flag and the arrow height to verically center
           top: ($flagHeight - $arrowHeight) / 2;
           position: relative;
@@ -128,6 +128,11 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
           border-left: $triangleBorder solid transparent;
           border-right: $triangleBorder solid transparent;
           border-top: $arrowHeight solid black;
+
+          &.up {
+            border-top: none;
+            border-bottom: $arrowHeight solid black;
+          }
         }
       }
 

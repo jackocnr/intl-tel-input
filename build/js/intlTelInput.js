@@ -128,16 +128,16 @@ Plugin.prototype = {
             "class": "flag-dropdown"
         }).insertAfter(this.telInput);
         // currently selected flag (displayed to left of input)
-        this.selectedFlag = $("<div>", {
+        var selectedFlag = $("<div>", {
             "class": "selected-flag"
         }).appendTo(flagsContainer);
         // here we default to the first country in the list
         this.selectedFlagInner = $("<div>", {
             "class": "flag " + this.defaultCountry.cca2
-        }).appendTo(this.selectedFlag);
+        }).appendTo(selectedFlag);
         // CSS triangle
         $("<div>", {
-            "class": "down-arrow"
+            "class": "arrow"
         }).appendTo(this.selectedFlagInner);
         // country list contains: preferred countries, then divider, then all countries
         this.countryList = $("<ul>", {
@@ -175,9 +175,11 @@ Plugin.prototype = {
             that._updateFlagFromInputVal();
         });
         // toggle country dropdown on click
-        this.selectedFlag.click(function(e) {
+        var selectedFlag = this.selectedFlagInner.parent();
+        selectedFlag.click(function(e) {
             // only intercept this event if we're opening the dropdown
             // else let it bubble up to the top ("click-off-to-close" listener)
+            // we cannot just stopPropagation as it may be needed to close another instance
             if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
                 that._showDropdown();
             }
@@ -213,6 +215,8 @@ Plugin.prototype = {
         this._scrollTo(activeListItem);
         // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
         this._bindDropdownListeners();
+        // update the arrow
+        this.selectedFlagInner.children(".arrow").addClass("up");
     },
     _bindDropdownListeners: function() {
         var that = this;
@@ -227,6 +231,7 @@ Plugin.prototype = {
         });
         // click off to close
         // (except when this initial opening click is bubbling up)
+        // we cannot just stopPropagation as it may be needed to close another instance
         var isOpening = true;
         $("html").bind("click.intlTelInput" + this.id, function(e) {
             if (!isOpening) {
@@ -357,6 +362,9 @@ Plugin.prototype = {
     // close the dropdown and unbind any listeners
     _closeDropdown: function() {
         this.countryList.addClass("hide");
+        // update the arrow
+        this.selectedFlagInner.children(".arrow").removeClass("up");
+        // unbind event listeners
         $(document).unbind("keydown.intlTelInput" + this.id);
         $("html").unbind("click.intlTelInput" + this.id);
         // unbind both hover and click listeners
