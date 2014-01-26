@@ -36,64 +36,18 @@
   Plugin.prototype = {
 
     init: function() {
-      var that = this;
-
-      // telephone input
-      this.telInput = $(this.element);
-
-      // set the global data object
-      this._setIntlData();
-
-      // get the preferred country data
-      var preferredCountries = this._getPreferredCountryData();
-      this.defaultCountry = this._getDefaultCountry(preferredCountries);
+      // process all the data: onlyCounties, preferredCountries, defaultCountry etc
+      this._processCountryData();
 
       // generate the markup
-      this._generateMarkup(preferredCountries);
+      this._generateMarkup();
 
-      // trigger it now in case there is already a number in the input
-      that._updateFlagFromInputVal();
+      // conditionally set the input's initial value
+      this._setInitialValue();
 
-      // auto hide option
-      if (this.options.autoHideDialCode) {
-        this._initAutoHideDialCode();
-      } else if (this.telInput.val() === "") {
-        // if autoHideDialCode is disabled (and input is not pre-populated),
-        // insert the default dial code
-        this._resetToDialCode(this.defaultCountry["calling-code"]);
-      }
-
-      // update flag on keyup
-      // (by extracting the dial code from the input value)
-      this.telInput.keyup(function() {
-        that._updateFlagFromInputVal();
-      });
-
-      // toggle country dropdown on click
-      this.selectedFlag.click(function(e) {
-        // only intercept this event if we're opening the dropdown
-        // else let it bubble up to the top ("click-off-to-close" listener)
-        if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
-          that._showDropdown();
-        }
-      });
-
-      // when mouse over a list item, just highlight that one
-      // we add the class "highlight", so if they hit "enter" we know which one to select
-      this.countryListItems.mouseover(function() {
-        that._highlightListItem($(this));
-      });
-
-      // listen for country selection
-      this.countryListItems.click(function(e) {
-        var listItem = $(e.currentTarget);
-        that._selectListItem(listItem);
-      });
-
-    }, // end of init()
-
-
-
+      // start all of the event listeners: autoHideDialCode, input keyup, selectedFlag click
+      this._initListeners();
+    },
 
 
 
@@ -102,8 +56,20 @@
      ********************/
 
 
+    _processCountryData: function() {
+      // set the global data object
+      this._setGlobalIntlData();
+
+      // set the preferredCountries property
+      this._setPreferredCountries();
+
+      // set the defaultCountry property
+      this._setDefaultCountry();
+    },
+
+
     // process onlyCountries array if present
-    _setIntlData: function() {
+    _setGlobalIntlData: function() {
       var that = this;
 
       if (this.options.onlyCountries.length > 0) {
@@ -135,30 +101,32 @@
 
     // process preferred countries - iterate through the preferences,
     // finding the relevant data from the provided intlData.countries array
-    _getPreferredCountryData: function() {
-      var that = this,
-        preferredCountries = [];
+    _setPreferredCountries: function() {
+      var that = this;
+      this.preferredCountries = [];
       $.each(this.options.preferredCountries, function(i, countryCode) {
         var countryData = that._getCountryData(countryCode, false);
         if (countryData) {
-          preferredCountries.push(countryData);
+          that.preferredCountries.push(countryData);
         }
       });
-      return preferredCountries;
     },
 
 
-    _getDefaultCountry: function(preferredCountries) {
+    _setDefaultCountry: function() {
       // if the default country option is set then use it
       if (this.options.defaultCountry) {
-        return this._getCountryData(this.options.defaultCountry, false);
+        this.defaultCountry = this._getCountryData(this.options.defaultCountry, false);
       } else {
-        return (preferredCountries.length) ? preferredCountries[0] : intlData.countries[0];
+        this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0] : intlData.countries[0];
       }
     },
 
 
-    _generateMarkup: function(preferredCountries) {
+    _generateMarkup: function() {
+      // telephone input
+      this.telInput = $(this.element);
+
       // containers (mostly for positioning)
       var mainClass = "intl-tel-input";
       if (this.options.defaultStyling != "none") {
@@ -188,8 +156,8 @@
       this.countryList = $("<ul>", {
         "class": "country-list hide"
       }).appendTo(flagsContainer);
-      if (preferredCountries.length) {
-        this._appendListItems(preferredCountries, "preferred");
+      if (this.preferredCountries.length) {
+        this._appendListItems(this.preferredCountries, "preferred");
         $("<li>", {
           "class": "divider"
         }).appendTo(this.countryList);
@@ -199,6 +167,55 @@
       this.countryListItems = this.countryList.children(".country");
       // auto select the top one
       this.countryListItems.first().addClass("active");
+
+      // make sure the initial selected flag markup is correct
+      this._updateFlagFromInputVal();
+    },
+
+
+    _setInitialValue: function() {
+      // if autoHideDialCode is disabled (and input is not pre-populated),
+      // insert the default dial code
+      if (!this.options.autoHideDialCode && this.telInput.val() === "") {
+        this._resetToDialCode(this.defaultCountry["calling-code"]);
+      }
+    },
+
+
+    _initListeners: function() {
+      var that = this;
+      
+      // auto hide dial code option
+      if (this.options.autoHideDialCode) {
+        this._initAutoHideDialCode();
+      }
+
+      // update flag on keyup
+      // (by extracting the dial code from the input value)
+      this.telInput.keyup(function() {
+        that._updateFlagFromInputVal();
+      });
+
+      // toggle country dropdown on click
+      this.selectedFlag.click(function(e) {
+        // only intercept this event if we're opening the dropdown
+        // else let it bubble up to the top ("click-off-to-close" listener)
+        if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
+          that._showDropdown();
+        }
+      });
+
+      // when mouse over a list item, just highlight that one
+      // we add the class "highlight", so if they hit "enter" we know which one to select
+      this.countryListItems.mouseover(function() {
+        that._highlightListItem($(this));
+      });
+
+      // listen for country selection
+      this.countryListItems.click(function(e) {
+        var listItem = $(e.currentTarget);
+        that._selectListItem(listItem);
+      });
     },
 
 
