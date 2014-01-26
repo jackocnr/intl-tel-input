@@ -91,7 +91,6 @@ but beware that even after minification, this script is still >300kB).
         .intl-tel-input .flag {background-image: url("path/to/flags.png");}
 
 * Input margin: for the sake of alignment, the default CSS forces the input's vertical margin to 0px. If you want vertical margin, you should add it to the container (with class "intl-tel-input").
-* z-index: by default, the input has a z-index of 0, the selected flag: 1, and the dropdown: 2. If you have other elements with z-index on your page, you will need to make sure you apply an appropriate value to the container (with class "intl-tel-input") for this to work properly.
 
 
 ## Attributions
