@@ -86,7 +86,7 @@ but beware that even after minification, this script is still >300kB).
 
 
 ## CSS
-* Image path: depending on your project setup, you may need to override the path to flags.png in your CSS. You can do so like this:
+* Image path: depending on your project setup, you may need to override the path to flags.png in your CSS.
 
         .intl-tel-input .flag {background-image: url("path/to/flags.png");}
 
