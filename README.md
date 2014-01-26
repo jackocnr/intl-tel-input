@@ -16,19 +16,23 @@ Try it for yourself using the included demo.html
 
 
 ## Getting started
-First add the stylesheet (note that this references the image `flags.png`)
-```html
-  <link rel="stylesheet" href="build/css/intlTelInput.css">
-```
-Then add the plugin script and initialise it on your input element
-```html
-  <input type="tel" id="mobile-number">
+1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip) or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
+2. Link the stylesheet (note that this references the image `flags.png`)
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="build/js/intlTelInput.min.js"></script>
-  <script>
-    $("#mobile-number").intlTelInput();
-  </script>
+```html
+<link rel="stylesheet" href="build/css/intlTelInput.css">
+```
+
+3. Add the plugin script and initialise it on your input element
+
+```html
+<input type="tel" id="mobile-number">
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="build/js/intlTelInput.min.js"></script>
+<script>
+  $("#mobile-number").intlTelInput();
+</script>
 ```
 
 
@@ -63,16 +67,22 @@ If you would like the default minimal styling, there are two options to choose f
 ## Public methods
 * Select a country after initialisation (e.g. when the user is entering their address)
 
-        $('#mobile-number').intlTelInput('selectCountry', 'gb');
+```js
+$('#mobile-number').intlTelInput('selectCountry', 'gb');
+````
 
 * Insert a number, and update the selected flag accordingly
 
-        $('#mobile-number').intlTelInput('setNumber', '+44 77333 123 456');
+```js
+$('#mobile-number').intlTelInput('setNumber', '+44 77333 123 456');
+````
 
 * Get and set the country data using these static methods
 
-        var countryData = $.fn.intlTelInput.getCountryData();
-        $.fn.intlTelInput.setCountryData(countryData);
+```js
+var countryData = $.fn.intlTelInput.getCountryData();
+$.fn.intlTelInput.setCountryData(countryData);
+````
 
 
 ## Validation
@@ -88,7 +98,9 @@ but beware that even after minification, this script is still >300kB).
 ## CSS
 * Image path: depending on your project setup, you may need to override the path to flags.png in your CSS.
 
-        .intl-tel-input .flag {background-image: url("path/to/flags.png");}
+```css
+.intl-tel-input .flag {background-image: url("path/to/flags.png");}
+````
 
 * Input margin: for the sake of alignment, the default CSS forces the input's vertical margin to 0px. If you want vertical margin, you should add it to the container (with class "intl-tel-input").
 
