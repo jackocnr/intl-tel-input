@@ -1,13 +1,12 @@
 .intl-tel-input { position: relative; display: inline-block; }
 .intl-tel-input .hide { display: none; }
-.intl-tel-input .intl-tel-input-position { position: relative; }
 .intl-tel-input .flag-dropdown { position: absolute; top: 0; bottom: 0; }
 .intl-tel-input .flag-dropdown .selected-flag { z-index: 1; position: relative; }
 .intl-tel-input .flag-dropdown .country-list { position: absolute; z-index: 2; }
 .intl-tel-input .country-list { list-style: none; }
 .intl-tel-input .flag-dropdown:hover { cursor: pointer; }
 .intl-tel-input input[disabled] + .flag-dropdown:hover { cursor: default; }
-.intl-tel-input input { position: relative; z-index: 0; display: block; }
+.intl-tel-input input { position: relative; z-index: 0; margin-top: 0 !important; margin-bottom: 0 !important; }
 .intl-tel-input.pretty * { box-sizing: border-box; -moz-box-sizing: border-box; }
 .intl-tel-input.pretty .flag-dropdown:hover .selected-flag { background-color: rgba(0, 0, 0, 0.05); }
 .intl-tel-input.pretty input[disabled] + .flag-dropdown:hover .selected-flag { background-color: transparent; }
