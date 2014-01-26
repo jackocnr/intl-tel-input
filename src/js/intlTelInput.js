@@ -184,7 +184,7 @@
 
     _initListeners: function() {
       var that = this;
-      
+
       // auto hide dial code option
       if (this.options.autoHideDialCode) {
         this._initAutoHideDialCode();
@@ -203,18 +203,6 @@
         if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
           that._showDropdown();
         }
-      });
-
-      // when mouse over a list item, just highlight that one
-      // we add the class "highlight", so if they hit "enter" we know which one to select
-      this.countryListItems.mouseover(function() {
-        that._highlightListItem($(this));
-      });
-
-      // listen for country selection
-      this.countryListItems.click(function(e) {
-        var listItem = $(e.currentTarget);
-        that._selectListItem(listItem);
       });
     },
 
@@ -249,8 +237,6 @@
 
 
     _showDropdown: function() {
-      var that = this;
-
       // update highlighting and scroll to active list item
       var activeListItem = this.countryList.children(".active");
       this._highlightListItem(activeListItem);
@@ -258,6 +244,25 @@
       // show it
       this.countryList.removeClass("hide");
       this._scrollTo(activeListItem);
+
+      // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
+      this._bindDropdownListeners();
+    },
+
+
+    _bindDropdownListeners: function() {
+      var that = this;
+
+      // when mouse over a list item, just highlight that one
+      // we add the class "highlight", so if they hit "enter" we know which one to select
+      this.countryListItems.bind("mouseover.intlTelInput", function() {
+        that._highlightListItem($(this));
+      });
+
+      // listen for country selection
+      this.countryListItems.bind("click.intlTelInput", function(e) {
+        that._selectListItem($(this));
+      });
 
       // click off to close
       // (except when this initial opening click is bubbling up)
@@ -422,6 +427,8 @@
       this.countryList.addClass("hide");
       $(document).unbind("keydown.intlTelInput" + this.id);
       $('html').unbind("click.intlTelInput" + this.id);
+      // unbind both hover and click listeners
+      this.countryListItems.unbind(".intlTelInput");
     },
 
 

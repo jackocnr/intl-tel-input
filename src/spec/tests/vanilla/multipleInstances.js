@@ -35,19 +35,16 @@ describe("init vanilla plugin to test multiple instances", function() {
     expect(getSelectedFlagElement(input2)).toHaveClass("kr");
   });
 
+  it("selecting an item from the first input dropdown only updates the flag on that input", function() {
+    selectFlag(chinaCountryCode);
+    expect(getInputVal()).toEqual(chinaDialCode);
+    expect(getInputVal(input2)).toEqual("");
+  });
 
-
-  describe("updating the number on the first input", function() {
-  
-    beforeEach(function() {
-      input.val(chinaDialCode+" 123456").keyup();
-    });
-
-    it("updates the flag only on that input", function() {
-      expect(getSelectedFlagElement()).toHaveClass(chinaCountryCode);
-      expect(getSelectedFlagElement(input2)).toHaveClass("kr");
-    });
-  
+  it("updating the number on the first input only updates the flag on that input", function() {
+    input.val(chinaDialCode+" 123456").keyup();
+    expect(getSelectedFlagElement()).toHaveClass(chinaCountryCode);
+    expect(getSelectedFlagElement(input2)).toHaveClass("kr");
   });
 
 
@@ -61,12 +58,6 @@ describe("init vanilla plugin to test multiple instances", function() {
     it("only opens the dropdown on that input", function() {
       expect(getListElement()).not.toHaveClass("hide");
       expect(getListElement(input2)).toHaveClass("hide");
-    });
-
-    it("selecting an item from that dropdown only updates that input", function() {
-      selectFlag(chinaCountryCode);
-      expect(getInputVal()).toEqual(chinaDialCode);
-      expect(getInputVal(input2)).toEqual("");
     });
 
     it("then clicking open dropdown on the second will close the first and open the second", function() {
