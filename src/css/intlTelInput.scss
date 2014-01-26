@@ -180,9 +180,9 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
 
     input {
       // make space for the selected flag
-      // Note: added !important to override any custom styles the user may have
-      // as they will need this one!
-      padding-left: $selectedFlagWidth + $inputPadding !important;
+      // Note: no !important here, as the user may want to tweak this so that the 
+      // perceived input padding matches their existing styles
+      padding-left: $selectedFlagWidth + $inputPadding;
 
       // any margin-left here will push the selected-flag away
       margin-left: 0 !important;
