@@ -73,8 +73,11 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
     position: relative;
     z-index: 0;
 
-    // any vertical margin the user has on their inputs will no longer work as we're
-    // wrapping everything in a div. it will also break alignment, so we force remove it
+    // any vertical margin the user has on their inputs would no longer work as expected
+    // because we wrap everything in a container div. i justify the use of !important
+    // here because i don't think the user should ever have vertical margin here - when
+    // the input is wrapped in a container, vertical margin messes up alignment with other
+    // inline elements (e.g. an adjacent button) in firefox, and probably other browsers.
     margin-top: 0 !important;
     margin-bottom: 0 !important;
   }
@@ -185,7 +188,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       padding-left: $selectedFlagWidth + $inputPadding;
 
       // any margin-left here will push the selected-flag away
-      margin-left: 0 !important;
+      margin-left: 0;
     }
   }
 
@@ -197,9 +200,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
       border: none;
 
       // make space for the selected flag
-      // Note: added !important to override any custom styles the user may have
-      // as they will need this one!
-      margin-left: $selectedFlagWidth !important;
+      margin-left: $selectedFlagWidth;
     }
   }
 }
