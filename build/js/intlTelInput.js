@@ -187,8 +187,8 @@ Plugin.prototype = {
     },
     _initAutoHideDialCode: function() {
         var that = this;
-        // on focusin: if empty, insert the dial code for the currently selected flag
-        this.telInput.focusin(function() {
+        // on focus: if empty, insert the dial code for the currently selected flag
+        this.telInput.focus(function() {
             var value = $.trim(that.telInput.val());
             if (value.length === 0) {
                 var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
@@ -196,8 +196,8 @@ Plugin.prototype = {
                 that._resetToDialCode(countryData["calling-code"]);
             }
         });
-        // on focusout: if just a dial code then remove it
-        this.telInput.focusout(function() {
+        // on blur: if just a dial code then remove it
+        this.telInput.blur(function() {
             var value = $.trim(that.telInput.val());
             if (value.length > 0) {
                 if ($.trim(that._getDialCode(value) + that.options.dcDelimiter) == value) {

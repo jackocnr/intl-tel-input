@@ -212,8 +212,8 @@
     _initAutoHideDialCode: function() {
       var that = this;
 
-      // on focusin: if empty, insert the dial code for the currently selected flag
-      this.telInput.focusin(function() {
+      // on focus: if empty, insert the dial code for the currently selected flag
+      this.telInput.focus(function() {
         var value = $.trim(that.telInput.val());
         if (value.length === 0) {
           var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
@@ -222,8 +222,8 @@
         }
       });
 
-      // on focusout: if just a dial code then remove it
-      this.telInput.focusout(function() {
+      // on blur: if just a dial code then remove it
+      this.telInput.blur(function() {
         var value = $.trim(that.telInput.val());
         if (value.length > 0) {
           if ($.trim(that._getDialCode(value) + that.options.dcDelimiter) == value) {
@@ -232,7 +232,7 @@
         }
       });
 
-      // made the decision not to trigger focusout() now, because would only 
+      // made the decision not to trigger blur() now, because would only 
       // do anything in the case where they manually set the initial value to
       // just a dial code, in which case they probably want it to be displayed.
     },
