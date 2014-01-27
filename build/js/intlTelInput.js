@@ -60,6 +60,8 @@ Plugin.prototype = {
     /********************
      *  PRIVATE METHODS
      ********************/
+    // prepare all of the country data, including onlyCountries, preferredCountries and
+    // defaultCountry options
     _processCountryData: function() {
         // set the global data object
         this._setGlobalIntlData();
@@ -105,6 +107,7 @@ Plugin.prototype = {
             }
         });
     },
+    // process the defaultCountry option, else fall back to the first in the list
     _setDefaultCountry: function() {
         // if the default country option is set then use it
         if (this.options.defaultCountry) {
@@ -113,6 +116,7 @@ Plugin.prototype = {
             this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0] : intlData.countries[0];
         }
     },
+    // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
     _generateMarkup: function() {
         // telephone input
         this.telInput = $(this.element);
@@ -156,6 +160,7 @@ Plugin.prototype = {
         // make sure the initial selected flag markup is correct
         this._updateFlagFromInputVal();
     },
+    // give the input it's initial value
     _setInitialValue: function() {
         // if autoHideDialCode is disabled (and input is not pre-populated),
         // insert the default dial code
@@ -163,6 +168,7 @@ Plugin.prototype = {
             this._resetToDialCode(this.defaultCountry["calling-code"]);
         }
     },
+    // initialise the main event listeners: input keyup, and click selected flag
     _initListeners: function() {
         var that = this;
         // auto hide dial code option
@@ -185,6 +191,7 @@ Plugin.prototype = {
             }
         });
     },
+    // on focus: if empty add dial code. on blur: if just dial code, then empty it
     _initAutoHideDialCode: function() {
         var that = this;
         // on focus: if empty, insert the dial code for the currently selected flag
@@ -206,6 +213,7 @@ Plugin.prototype = {
             }
         });
     },
+    // show the dropdown
     _showDropdown: function() {
         // update highlighting and scroll to active list item
         var activeListItem = this.countryList.children(".active");
@@ -218,6 +226,7 @@ Plugin.prototype = {
         // update the arrow
         this.selectedFlagInner.children(".arrow").addClass("up");
     },
+    // we only bind dropdown listeners when the dropdown is open
     _bindDropdownListeners: function() {
         var that = this;
         // when mouse over a list item, just highlight that one
@@ -260,6 +269,7 @@ Plugin.prototype = {
             }
         });
     },
+    // highlight the next/prev item in the list (and ensure it is visible)
     _handleUpDownKey: function(key) {
         var current = this.countryList.children(".highlight").first();
         var next = key == keys.UP ? current.prev() : current.next();
@@ -272,12 +282,14 @@ Plugin.prototype = {
             this._scrollTo(next);
         }
     },
+    // select the currently highlighted item
     _handleEnterKey: function() {
         var currentCountry = this.countryList.children(".highlight").first();
         if (currentCountry.length) {
             this._selectListItem(currentCountry);
         }
     },
+    // iterate through the countries starting with the given letter
     _handleLetterKey: function(key) {
         var letter = String.fromCharCode(key);
         // filter out the countries beginning with that letter
@@ -345,7 +357,10 @@ Plugin.prototype = {
     // update the selected flag and the active list item
     _selectFlag: function(countryCode) {
         this.selectedFlagInner.attr("class", "flag " + countryCode);
-        // and update the active list item
+        // update the title attribute
+        var countryData = this._getCountryData(countryCode);
+        this.selectedFlagInner.parent().attr("title", countryData.name + ": +" + countryData["calling-code"]);
+        // update the active list item
         var listItem = this.countryListItems.children(".flag." + countryCode).parent();
         this.countryListItems.removeClass("active");
         listItem.addClass("active");
