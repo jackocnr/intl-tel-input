@@ -22,7 +22,7 @@ Try it for yourself using the included demo.html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
   ```
 
-3. Add the plugin script and initialise it on your input element
+3. Add the plugin script and initialise it on your input element (alternatively, use a script loader like [RequireJS](http://requirejs.org))
   ```html
   <input type="tel" id="mobile-number">
   
