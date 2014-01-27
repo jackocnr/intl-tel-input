@@ -16,7 +16,7 @@ Try it for yourself using the included demo.html
 
 
 ## Getting started
-1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip) or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
+1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
 2. Link the stylesheet (note that this references the image `flags.png`)
   ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
