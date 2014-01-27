@@ -291,10 +291,7 @@
           that._handleUpDownKey(e.which);
         } else if (e.which == keys.ENTER) {
           // enter to select
-          var currentCountry = that.countryList.children(".highlight").first();
-          if (currentCountry.length) {
-            that._selectListItem(currentCountry);
-          }
+          that._handleEnterKey();
         } else if (e.which == keys.ESCAPE) {
           // esc to close
           that._closeDropdown();
@@ -317,6 +314,14 @@
         }
         this._highlightListItem(next);
         this._scrollTo(next);
+      }
+    },
+
+
+    _handleEnterKey: function() {
+      var currentCountry = this.countryList.children(".highlight").first();
+      if (currentCountry.length) {
+        this._selectListItem(currentCountry);
       }
     },
 
