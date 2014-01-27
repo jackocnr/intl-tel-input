@@ -222,25 +222,25 @@ Plugin.prototype = {
         var that = this;
         // when mouse over a list item, just highlight that one
         // we add the class "highlight", so if they hit "enter" we know which one to select
-        this.countryListItems.bind("mouseover.intlTelInput", function() {
+        this.countryList.on("mouseover.intlTelInput", ".country", function(e) {
             that._highlightListItem($(this));
         });
         // listen for country selection
-        this.countryListItems.bind("click.intlTelInput", function(e) {
+        this.countryList.on("click.intlTelInput", ".country", function(e) {
             that._selectListItem($(this));
         });
         // click off to close
         // (except when this initial opening click is bubbling up)
         // we cannot just stopPropagation as it may be needed to close another instance
         var isOpening = true;
-        $("html").bind("click.intlTelInput" + this.id, function(e) {
+        $("html").on("click.intlTelInput" + this.id, function(e) {
             if (!isOpening) {
                 that._closeDropdown();
             }
             isOpening = false;
         });
         // listen for typing
-        $(document).bind("keydown.intlTelInput" + this.id, function(e) {
+        $(document).on("keydown.intlTelInput" + this.id, function(e) {
             // prevent down key from scrolling the whole page,
             // and enter key from submitting a form etc
             e.preventDefault();
@@ -366,10 +366,10 @@ Plugin.prototype = {
         // update the arrow
         this.selectedFlagInner.children(".arrow").removeClass("up");
         // unbind event listeners
-        $(document).unbind("keydown.intlTelInput" + this.id);
-        $("html").unbind("click.intlTelInput" + this.id);
+        $(document).off("keydown.intlTelInput" + this.id);
+        $("html").off("click.intlTelInput" + this.id);
         // unbind both hover and click listeners
-        this.countryListItems.unbind(".intlTelInput");
+        this.countryList.off(".intlTelInput");
     },
     // check if an element is visible within it's container, else scroll until it is
     _scrollTo: function(element) {
