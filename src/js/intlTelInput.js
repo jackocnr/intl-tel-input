@@ -223,8 +223,7 @@
       this.telInput.focus(function() {
         var value = $.trim(that.telInput.val());
         if (value.length === 0) {
-          var countryCode = that.selectedFlagInner.attr("class").split(" ")[1];
-          var countryData = that._getCountryData(countryCode, false);
+          var countryData = that.getSelectedCountryData();
           that._resetToDialCode(countryData["calling-code"]);
         }
       });
@@ -595,6 +594,15 @@
           this._resetToDialCode(countryData["calling-code"]);
         }
       }
+    },
+
+
+    // get the country data for the currently selected flag
+    getSelectedCountryData: function() {
+      // rely on the fact that we only set 2 classes on the selected flag element:
+      // the first is "flag" and the second is the 2-char country code
+      var countryCode = this.selectedFlagInner.attr("class").split(" ")[1];
+      return this._getCountryData(countryCode);
     }
 
   };
