@@ -73,7 +73,12 @@ If you would like the default minimal styling, there are two options to choose f
   $('#mobile-number').intlTelInput('setNumber', '+44 77333 123 456');
   ````
 
-* Get and set the country data using these static methods
+* Get the country data for the currently selected flag
+  ```js
+  $('#mobile-number').intlTelInput('getSelectedCountryData');
+  ````
+
+* Get and set all of the plugin's country data using these static methods
   ```js
   var countryData = $.fn.intlTelInput.getCountryData();
   $.fn.intlTelInput.setCountryData(countryData);
