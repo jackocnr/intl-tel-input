@@ -82,11 +82,11 @@
           if (countryData) {
             newCountries.push(countryData);
 
-            var callingCode = countryData["calling-code"];
-            if (newCountryCodes[callingCode]) {
-              newCountryCodes[callingCode].push(countryCode);
+            var dialCode = countryData.dialCode;
+            if (newCountryCodes[dialCode]) {
+              newCountryCodes[dialCode].push(countryCode);
             } else {
-              newCountryCodes[callingCode] = [countryCode];
+              newCountryCodes[dialCode] = [countryCode];
             }
           }
         });
@@ -149,7 +149,7 @@
       }).appendTo(flagsContainer);
       // here we default to the first country in the list
       this.selectedFlagInner = $("<div>", {
-        "class": "flag " + this.defaultCountry.cca2
+        "class": "flag " + this.defaultCountry.iso2
       }).appendTo(selectedFlag);
       // CSS triangle
       $("<div>", {
@@ -182,7 +182,7 @@
       // if autoHideDialCode is disabled (and input is not pre-populated),
       // insert the default dial code
       if (!this.options.autoHideDialCode && this.telInput.val() === "") {
-        this._resetToDialCode(this.defaultCountry["calling-code"]);
+        this._resetToDialCode(this.defaultCountry.dialCode);
       }
     },
 
@@ -224,7 +224,7 @@
         var value = $.trim(that.telInput.val());
         if (value.length === 0) {
           var countryData = that.getSelectedCountryData();
-          that._resetToDialCode(countryData["calling-code"]);
+          that._resetToDialCode(countryData.dialCode);
         }
       });
 
@@ -380,7 +380,7 @@
         countryCode = countryCodes[0];
       } else {
         // else default to dialcode of the first preferred country
-        countryCode = this.defaultCountry.cca2;
+        countryCode = this.defaultCountry.iso2;
       }
 
       if (!alreadySelected) {
@@ -409,7 +409,7 @@
     _getCountryData: function(countryCode, ignoreOnlyCountriesOption) {
       var countryList = (ignoreOnlyCountriesOption) ? intlDataFull.countries : intlData.countries;
       for (var i = 0; i < countryList.length; i++) {
-        if (countryList[i].cca2 == countryCode) {
+        if (countryList[i].iso2 == countryCode) {
           return countryList[i];
         }
       }
@@ -423,7 +423,7 @@
 
       // update the title attribute
       var countryData = this._getCountryData(countryCode);
-      this.selectedFlagInner.parent().attr("title", countryData.name + ": +" + countryData["calling-code"]);
+      this.selectedFlagInner.parent().attr("title", countryData.name + ": +" + countryData.dialCode);
 
       // update the active list item
       var listItem = this.countryListItems.children(".flag." + countryCode).parent();
@@ -555,12 +555,12 @@
       // for each country
       $.each(countries, function(i, c) {
         // open the list item
-        tmp += "<li class='country " + className + "' data-dial-code='" + c['calling-code'] + "' data-country-code='" + c.cca2 + "'>";
+        tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
         // add the flag
-        tmp += "<div class='flag " + c.cca2 + "'></div>";
+        tmp += "<div class='flag " + c.iso2 + "'></div>";
         // and the country name and dial code
         tmp += "<span class='country-name'>" + c.name + "</span>";
-        tmp += "<span class='dial-code'>+" + c['calling-code'] + "</span>";
+        tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
         // close the list item
         tmp += "</li>";
       });
@@ -591,7 +591,7 @@
         this._selectFlag(countryCode);
         if (!this.options.autoHideDialCode) {
           var countryData = this._getCountryData(countryCode, false);
-          this._resetToDialCode(countryData["calling-code"]);
+          this._resetToDialCode(countryData.dialCode);
         }
       }
     },
