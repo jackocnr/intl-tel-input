@@ -6,7 +6,7 @@ body {
   margin: 20px;
   font-size: 14px;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  color: #333; }
+  color: #555; }
 
 pre {
   background-color: #eee;
@@ -15,8 +15,9 @@ pre {
   display: inline-block; }
 
 input, button {
-  height: 30px;
+  height: 34px;
   margin: 0;
+  padding: 6px 12px;
   border-radius: 2px;
   font-family: inherit;
   font-size: 100%;
@@ -25,16 +26,14 @@ input, button {
     background-color: #eee; }
 
 button {
-  border: none;
-  background-color: #E7E7E7;
-  padding: 5px 10px; }
+  color: #FFF;
+  background-color: #428BCA;
+  border: 1px solid #357EBD; }
+  button:hover {
+    background-color: #3276B1;
+    border-color: #285E8E;
+    cursor: pointer; }
 
-button:hover {
-  background-color: #eee;
-  cursor: pointer; }
-
-.intl-tel-input input {
-  padding: 0 8px; }
 .intl-tel-input.inside input {
   border: 1px solid #CCC;
   width: 250px; }

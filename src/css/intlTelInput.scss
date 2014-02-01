@@ -147,7 +147,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         border: $borderWidth solid $greyBorder;
 
         // wide enough to fit long country names
-        width: 420px;
+        width: 430px;
         max-height: 200px;
         overflow-y: scroll;
 

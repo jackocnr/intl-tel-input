@@ -8,7 +8,7 @@ body {
 
   font-size: 14px;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  color: #333;
+  color: #555;
 }
 
 // example code blocks
@@ -21,8 +21,9 @@ pre {
 
 // general form styling
 input, button {
-  height: 30px;
+  height: 34px;
   margin: 0;
+  padding: 6px 12px;
   border-radius: 2px;
 
   // same font style, size and color as rest of site
@@ -34,21 +35,21 @@ input, button {
     background-color: #eee;
   }
 }
+
+// borrowed from bootstrap
 button {
-  border: none;
-  background-color: #E7E7E7;
-  padding: 5px 10px;
-}
-button:hover {
-  background-color: #eee;
-  cursor: pointer;
+  color: #FFF;
+  background-color: #428BCA;
+  border: 1px solid #357EBD;
+  &:hover {
+    background-color: #3276B1;
+    border-color: #285E8E;
+    cursor: pointer;
+  }
 }
 
 // custom plugin styling
 .intl-tel-input {
-  input {
-    padding: 0 8px;
-  }
 
   // defaultStyling = "inside"
   &.inside input {
