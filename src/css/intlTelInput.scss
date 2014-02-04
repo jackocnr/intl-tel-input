@@ -13,8 +13,9 @@ $borderWidth: 1px;
 
 $arrowHeight: 4px;
 $arrowWidth: 6px;
-$triangleBorder: 4px;
+$triangleBorder: 3px;
 $arrowPadding: 4px;
+$arrowColor: #555;
 
 $inputPadding: 9px;
 $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPadding;
@@ -113,13 +114,14 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         .flag {
           position: absolute;
           top: 50%;
-          margin-top: -($flagHeight / 2);
+          margin-top: -1 * floor($flagHeight / 2);
         }
 
         .arrow {
-          // split the difference between the flag and the arrow height to verically center
-          top: ($flagHeight - $arrowHeight) / 2;
           position: relative;
+          // split the difference between the flag and the arrow height to verically center
+          top: 50%;
+          margin-top: -1 * ($arrowHeight / 2);
           left: $flagWidth + $arrowPadding;
 
           // css triangle
@@ -127,11 +129,11 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
           height: 0;
           border-left: $triangleBorder solid transparent;
           border-right: $triangleBorder solid transparent;
-          border-top: $arrowHeight solid black;
+          border-top: $arrowHeight solid $arrowColor;
 
           &.up {
             border-top: none;
-            border-bottom: $arrowHeight solid black;
+            border-bottom: $arrowHeight solid $arrowColor;
           }
         }
       }

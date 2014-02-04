@@ -21,7 +21,8 @@ pre {
 
 // general form styling
 input, button {
-  height: 34px;
+  // set height to odd number so can perfectly center flag vertically (11px)
+  height: 33px;
   margin: 0;
   padding: 6px 12px;
   border-radius: 2px;
