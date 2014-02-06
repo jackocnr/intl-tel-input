@@ -10,7 +10,7 @@
       autoHideDialCode: true,
       defaultCountry: "",
       // character to appear between dial code and phone number
-      dcDelimiter: " "
+      dialCodeDelimiter: " "
     },
     keys = {
       UP: 38,
@@ -232,7 +232,7 @@
       this.telInput.blur(function() {
         var value = $.trim(that.telInput.val());
         if (value.length > 0) {
-          if ($.trim(that._getDialCode(value) + that.options.dcDelimiter) == value) {
+          if ($.trim(that._getDialCode(value) + that.options.dialCodeDelimiter) == value) {
             that.telInput.val("");
           }
         }
@@ -392,7 +392,7 @@
     // reset the input value to just a dial code
     _resetToDialCode: function(dialCode) {
       // if the dialCode is for America, and americaMode is enabled, then don't insert the dial code
-      var value = (dialCode == "1" && this.options.americaMode) ? "" : "+" + dialCode + this.options.dcDelimiter;
+      var value = (dialCode == "1" && this.options.americaMode) ? "" : "+" + dialCode + this.options.dialCodeDelimiter;
       this.telInput.val(value);
     },
 
@@ -499,18 +499,18 @@
         // if the old number was just the dial code,
         // then we will need to add the space again
         if (inputVal == prevDialCode) {
-          newNumber += this.options.dcDelimiter;
+          newNumber += this.options.dialCodeDelimiter;
         }
       } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
         // previous number didn't contain a dial code, so persist it
-        newNumber = newDialCode + this.options.dcDelimiter + $.trim(inputVal);
+        newNumber = newDialCode + this.options.dialCodeDelimiter + $.trim(inputVal);
       } else {
         // previous number contained an invalid dial code, so wipe it
-        newNumber = newDialCode + this.options.dcDelimiter;
+        newNumber = newDialCode + this.options.dialCodeDelimiter;
       }
 
       // if americaMode is enabled, we dont display the dial code for american numbers
-      if (this.options.americaMode && newNumber.substring(0, 3) == "+1"+this.options.dcDelimiter) {
+      if (this.options.americaMode && newNumber.substring(0, 3) == "+1"+this.options.dialCodeDelimiter) {
         newNumber = newNumber.substring(3);
       }
       return newNumber;
