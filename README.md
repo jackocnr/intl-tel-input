@@ -67,26 +67,30 @@ Specify the countries to appear at the top of the list.
 
 
 ## Public methods
-* Select a country after initialisation (e.g. when the user is entering their address)
-  ```js
-  $('#mobile-number').intlTelInput('selectCountry', 'gb');
-  ````
+**selectCountry**  
+Select a country after initialisation (e.g. when the user is entering their address)  
+```js
+$('#mobile-number').intlTelInput('selectCountry', 'gb');
+```
 
-* Insert a number, and update the selected flag accordingly
-  ```js
-  $('#mobile-number').intlTelInput('setNumber', '+44 77333 123 456');
-  ````
+**setNumber**  
+Insert a number, and update the selected flag accordingly  
+```js
+$('#mobile-number').intlTelInput('setNumber', '+44 77333 123 456');
+```
 
-* Get the country data for the currently selected flag
-  ```js
-  $('#mobile-number').intlTelInput('getSelectedCountryData');
-  ````
+**getSelectedCountryData**  
+Get the country data for the currently selected flag  
+```js
+$('#mobile-number').intlTelInput('getSelectedCountryData');
+```
 
-* Get and set all of the plugin's country data using these static methods
-  ```js
-  var countryData = $.fn.intlTelInput.getCountryData();
-  $.fn.intlTelInput.setCountryData(countryData);
-  ````
+**getCountryData** and **setCountryData**  
+Get and set all of the plugin's country data using these static methods  
+```js
+var countryData = $.fn.intlTelInput.getCountryData();
+$.fn.intlTelInput.setCountryData(countryData);
+```
 
 
 ## Validation
