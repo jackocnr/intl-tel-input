@@ -107,7 +107,7 @@ After that, I strip out non-numeric characters with `val.replace(/\D/g, "")`, an
 
 If you really want to do this properly though, I would advise using Google's [libphonenumber](https://code.google.com/p/libphonenumber/),
 which can be compiled into JavaScript (a pre-compiled script can be found [here](https://github.com/albeebe/phoneformat.js),
-but beware that even after minification, this script is >300kB).
+but beware that even after minification this script is >300kB).
 
 
 ## CSS
