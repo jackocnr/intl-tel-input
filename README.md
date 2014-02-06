@@ -67,28 +67,35 @@ Specify the countries to appear at the top of the list.
 
 
 ## Public methods
+**getSelectedCountryData**  
+Get the country data for the currently selected flag  
+```js
+$("#mobile-number").intlTelInput("getSelectedCountryData");
+```
+
 **selectCountry**  
 Select a country after initialisation (e.g. when the user is entering their address)  
 ```js
-$('#mobile-number').intlTelInput('selectCountry', 'gb');
+$("#mobile-number").intlTelInput("selectCountry", "gb");
 ```
 
 **setNumber**  
 Insert a number, and update the selected flag accordingly  
 ```js
-$('#mobile-number').intlTelInput('setNumber', '+44 77333 123 456');
+$("#mobile-number").intlTelInput("setNumber", "+44 77333 123 456");
 ```
 
-**getSelectedCountryData**  
-Get the country data for the currently selected flag  
-```js
-$('#mobile-number').intlTelInput('getSelectedCountryData');
-```
 
-**getCountryData** and **setCountryData**  
-Get and set all of the plugin's country data using these static methods  
+## Static methods
+**getCountryData**  
+Get all of the plugin's country data  
 ```js
 var countryData = $.fn.intlTelInput.getCountryData();
+```
+
+**setCountryData**  
+Set all of the plugin's country data  
+```js
 $.fn.intlTelInput.setCountryData(countryData);
 ```
 
@@ -96,7 +103,7 @@ $.fn.intlTelInput.setCountryData(countryData);
 ## Validation
 International number validation is hard (it varies by country/district).
 Personally, I just use this regex `/^\+[\d \(\)-.]+$/` to check the number starts with a '+' and then only contains valid characters (numbers, spaces, brackets, hyphens and dots).
-After that, I strip out non-numeric characters with `val.replace(/\D/g,'')`, and check the length is between 5 and 15.
+After that, I strip out non-numeric characters with `val.replace(/\D/g, "")`, and check the length is between 5 and 15.
 
 If you really want to do this properly though, I would advise using Google's [libphonenumber](https://code.google.com/p/libphonenumber/),
 which can be compiled into JavaScript (a pre-compiled script can be found [here](https://github.com/albeebe/phoneformat.js),
