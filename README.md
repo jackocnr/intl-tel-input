@@ -17,7 +17,7 @@ Try it for yourself using the included demo.html
 
 ## Getting started
 1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
-2. Link the stylesheet (note that this references the image `flags.png`)
+2. Link the stylesheet (note that this references the image flags.png)
   ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
   ```
@@ -102,7 +102,7 @@ $.fn.intlTelInput.setCountryData(countryData);
 
 ## Validation
 International number validation is hard (it varies by country/district).
-Personally, I just use this regex `/^\+[\d \(\)-.]+$/` to check the number starts with a '+' and then only contains valid characters (numbers, spaces, brackets, hyphens and dots).
+Personally, I just use this regex `/^\+[\d \(\)-.]+$/` to check the number starts with a `+` and then only contains valid characters (numbers, spaces, brackets, hyphens and dots).
 After that, I strip out non-numeric characters with `val.replace(/\D/g, "")`, and check the length is between 5 and 15.
 
 If you really want to do this properly though, I would advise using Google's [libphonenumber](https://code.google.com/p/libphonenumber/),
@@ -111,12 +111,14 @@ but beware that even after minification, this script is still >300kB).
 
 
 ## CSS
-* Image path: depending on your project setup, you may need to override the path to flags.png in your CSS.
-  ```css
-  .intl-tel-input .flag {background-image: url("path/to/flags.png");}
-  ````
+**Image path**  
+Depending on your project setup, you may need to override the path to flags.png in your CSS.  
+```css
+.intl-tel-input .flag {background-image: url("path/to/flags.png");}
+```
 
-* Input margin: for the sake of alignment, the default CSS forces the input's vertical margin to 0px. If you want vertical margin, you should add it to the container (with class "intl-tel-input").
+**Input margin**  
+For the sake of alignment, the default CSS forces the input's vertical margin to `0px`. If you want vertical margin, you should add it to the container (with class `intl-tel-input`).
 
 
 ## Attributions
