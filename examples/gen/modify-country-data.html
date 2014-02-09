@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Example: getCountryData</title>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css">
+    <link rel="stylesheet" href="../../build/css/demo.css">
+    
+  </head>
+
+  <body>
+    <h1>Example: getCountryData</h1>
+    <p>Use static getCountryData() to update the data to only show localised country names.</p>
+    
+    <h2>Markup</h2>
+    <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;</code></pre>
+
+    <h2>Code</h2>
+    <pre><code class="language-javascript">var countryData = $.fn.intlTelInput.getCountryData();
+$.each(countryData.countries, function(i, country) {
+  country.name = country.name.replace(/.+\((.+)\)/,&quot;$1&quot;);
+});
+$(&quot;#phone&quot;).intlTelInput();</code></pre>
+
+    <h2>Result</h2>
+    <div id="result">
+      <input id="phone" type="tel" placeholder="e.g. +1 702 123 4567">
+    </div>
+
+    <script src="../js/prism.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../../build/js/intlTelInput.js"></script>
+    <script src="../js/modifyCountryData.js"></script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Example: defaultStyling</title>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css">
+    <link rel="stylesheet" href="../../build/css/demo.css">
+    
+      <link rel="stylesheet" href="../css/defaultStyling.css">
+    
+  </head>
+
+  <body>
+    <h1>Example: defaultStyling</h1>
+    <p>The 3 different settings for the defaultStyling option: &#39;inside&#39; (default), &#39;outside&#39; and &#39;none&#39;.</p>
+    
+    <h2>Markup</h2>
+    <pre><code class="language-markup">&lt;p&gt;1. defaultStyling: &quot;inside&quot; (default)&lt;/p&gt;
+&lt;input id=&quot;phone1&quot;  type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;
+
+&lt;p&gt;2. defaultStyling: &quot;outside&quot; (looks the same, but isn&#39;t - see 3)&lt;/p&gt;
+&lt;input id=&quot;phone2&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;
+
+&lt;p&gt;3. defaultStyling: &quot;outside&quot; (with gap added)&lt;/p&gt;
+&lt;div class=&quot;outside-gap&quot;&gt;
+  &lt;input id=&quot;phone3&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;
+&lt;/div&gt;
+
+&lt;p&gt;4. defaultStyling: &quot;none&quot; (with completely custom styling)&lt;/p&gt;
+&lt;div class=&quot;custom-dark&quot;&gt;
+  &lt;input id=&quot;phone4&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;
+&lt;/div&gt;</code></pre>
+
+    <h2>Code</h2>
+    <pre><code class="language-javascript">$(&quot;#phone1&quot;).intlTelInput({defaultStyling: &quot;inside&quot;});
+$(&quot;#phone2&quot;).intlTelInput({defaultStyling: &quot;outside&quot;});
+$(&quot;#phone3&quot;).intlTelInput({defaultStyling: &quot;outside&quot;});
+$(&quot;#phone4&quot;).intlTelInput({defaultStyling: &quot;none&quot;});</code></pre>
+
+    <h2>Result</h2>
+    <div id="result">
+      <p>1. defaultStyling: "inside" (default)</p>
+<input id="phone1"  type="tel" placeholder="e.g. +1 702 123 4567">
+
+<p>2. defaultStyling: "outside" (looks the same, but isn't - see 3)</p>
+<input id="phone2" type="tel" placeholder="e.g. +1 702 123 4567">
+
+<p>3. defaultStyling: "outside" (with gap added)</p>
+<div class="outside-gap">
+  <input id="phone3" type="tel" placeholder="e.g. +1 702 123 4567">
+</div>
+
+<p>4. defaultStyling: "none" (with completely custom styling)</p>
+<div class="custom-dark">
+  <input id="phone4" type="tel" placeholder="e.g. +1 702 123 4567">
+</div>
+    </div>
+
+    <script src="../js/prism.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../../build/js/intlTelInput.js"></script>
+    <script src="../js/defaultStyling.js"></script>
+  </body>
+</html>

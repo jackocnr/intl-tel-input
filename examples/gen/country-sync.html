@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Example: Country sync</title>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css">
+    <link rel="stylesheet" href="../../build/css/demo.css">
+    
+      <link rel="stylesheet" href="../css/countrySync.css">
+    
+  </head>
+
+  <body>
+    <h1>Example: Country sync</h1>
+    <p>Use getCountryData to create a separate country dropdown for an address form, and then listen for change events to keep the two dropdowns in sync.</p>
+    
+    <h2>Markup</h2>
+    <pre><code class="language-markup">&lt;div class=&quot;form-item&quot;&gt;
+  &lt;label&gt;Telephone number&lt;/label&gt;
+  &lt;input id=&quot;phone&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;form-item&quot;&gt;
+  &lt;label&gt;Address&lt;/label&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;House name/number&quot;&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;City&quot;&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;State&quot;&gt;
+  &lt;input type=&quot;text&quot; placeholder=&quot;Zip code&quot;&gt;
+  &lt;select id=&quot;address-country&quot;&gt;&lt;/select&gt;
+&lt;/div&gt;</code></pre>
+
+    <h2>Code</h2>
+    <pre><code class="language-javascript">// get the country data from the plugin
+var telInput = $(&quot;#phone&quot;),
+  countryData = $.fn.intlTelInput.getCountryData(),
+  addressDropdown = $(&quot;#address-country&quot;);
+
+// init plugin
+telInput.intlTelInput();
+
+// populate the country dropdown
+$.each(countryData.countries, function(i, country) {
+  addressDropdown.append($(&quot;&lt;option&gt;&lt;/option&gt;&quot;).attr(&quot;value&quot;, country.iso2).text(country.name));
+});
+
+// listen to the telephone input for changes
+telInput.change(function() {
+  var countryCode = telInput.intlTelInput(&quot;getSelectedCountryData&quot;).iso2;
+  addressDropdown.val(countryCode);
+});
+
+// trigger a fake &quot;change&quot; event now, to trigger an initial sync
+telInput.change();
+
+// listen to the address dropdown for changes
+addressDropdown.change(function() {
+  var countryCode = $(this).val();
+  telInput.intlTelInput(&quot;selectCountry&quot;, countryCode);
+});</code></pre>
+
+    <h2>Result</h2>
+    <div id="result">
+      <div class="form-item">
+  <label>Telephone number</label>
+  <input id="phone" type="tel" placeholder="e.g. +1 702 123 4567">
+</div>
+
+<div class="form-item">
+  <label>Address</label>
+  <input type="text" placeholder="House name/number">
+  <input type="text" placeholder="City">
+  <input type="text" placeholder="State">
+  <input type="text" placeholder="Zip code">
+  <select id="address-country"></select>
+</div>
+    </div>
+
+    <script src="../js/prism.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../../build/js/intlTelInput.js"></script>
+    <script src="../js/countrySync.js"></script>
+  </body>
+</html>
