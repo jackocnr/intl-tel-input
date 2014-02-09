@@ -43,6 +43,12 @@ input, button {
   }
 }
 
+// select useful for examples
+input, select {
+  border: 1px solid #CCC;
+  width: 250px;
+}
+
 // borrowed from bootstrap
 button {
   color: #FFF;
@@ -57,12 +63,6 @@ button {
 
 // custom plugin styling
 .intl-tel-input {
-
-  // defaultStyling = "inside"
-  &.inside input {
-    border: 1px solid #CCC;
-    width: 250px;
-  }
 
   // defaultStyling = "outside"
   &.outside {

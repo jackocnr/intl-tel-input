@@ -31,6 +31,10 @@ input, button {
   input[disabled], button[disabled] {
     background-color: #eee; }
 
+input, select {
+  border: 1px solid #CCC;
+  width: 250px; }
+
 button {
   color: #FFF;
   background-color: #428BCA;
@@ -40,9 +44,6 @@ button {
     border-color: #285E8E;
     cursor: pointer; }
 
-.intl-tel-input.inside input {
-  border: 1px solid #CCC;
-  width: 250px; }
 .intl-tel-input.outside {
   border: 1px solid #CCC; }
   .intl-tel-input.outside input {

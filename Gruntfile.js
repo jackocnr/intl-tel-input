@@ -125,53 +125,71 @@ module.exports = function(grunt) {
     template: {
       defaultCountryIp: {
         src: 'examples/template.html.ejs',
-        dest: 'examples/default-country-ip.html',
+        dest: 'examples/gen/default-country-ip.html',
         variables: function () {
           return {
             title: "defaultCountry",
             desc: "Use IP address lookup to set the defaultCountry to the user's country.",
-            customHead: "",
+            stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
-            code: grunt.file.read('examples/js/defaultCountryIp.js')
+            code: grunt.file.read('examples/js/defaultCountryIp.js'),
+            script: "defaultCountryIp.js"
           }
         }
       },
       modifyCountryData: {
         src: 'examples/template.html.ejs',
-        dest: 'examples/modify-country-data.html',
+        dest: 'examples/gen/modify-country-data.html',
         variables: function () {
           return {
             title: "getCountryData",
             desc: "Use static getCountryData() to update the data to only show localised country names.",
-            customHead: "",
+            stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
-            code: grunt.file.read('examples/js/modifyCountryData.js')
+            code: grunt.file.read('examples/js/modifyCountryData.js'),
+            script: "modifyCountryData.js"
           }
         }
       },
       onlyCountries: {
         src: 'examples/template.html.ejs',
-        dest: 'examples/only-countries-europe.html',
+        dest: 'examples/gen/only-countries-europe.html',
         variables: function () {
           return {
             title: "onlyCountries",
             desc: "Set onlyCountries array to just European country codes.",
-            customHead: "",
+            stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
-            code: grunt.file.read('examples/js/onlyCountriesEurope.js')
+            code: grunt.file.read('examples/js/onlyCountriesEurope.js'),
+            script: "onlyCountriesEurope.js"
           }
         }
       },
       defaultStyling: {
         src: 'examples/template.html.ejs',
-        dest: 'examples/default-styling.html',
+        dest: 'examples/gen/default-styling.html',
         variables: function () {
           return {
             title: "defaultStyling",
             desc: "The 3 different settings for the defaultStyling option: 'inside' (default), 'outside' and 'none'.",
-            customHead: '<link rel="stylesheet" href="css/defaultStyling.css">',
+            stylesheet: 'defaultStyling.css',
             markup: grunt.file.read('examples/partials/defaultStyling.html'),
-            code: grunt.file.read('examples/js/defaultStyling.js')
+            code: grunt.file.read('examples/js/defaultStyling.js'),
+            script: "defaultStyling.js"
+          }
+        }
+      },
+      countrySync: {
+        src: 'examples/template.html.ejs',
+        dest: 'examples/gen/country-sync.html',
+        variables: function () {
+          return {
+            title: "Country sync",
+            desc: "Use getCountryData to create a separate country dropdown for an address form, and then listen for change events to keep the two dropdowns in sync.",
+            stylesheet: 'countrySync.css',
+            markup: grunt.file.read('examples/partials/countrySync.html'),
+            code: grunt.file.read('examples/js/countrySync.js'),
+            script: "countrySync.js"
           }
         }
       }

@@ -1,0 +1,14 @@
+input, label {
+  display: block;
+}
+
+input, select, label {
+  margin: 5px 0;
+}
+.form-item {
+  margin-bottom: 20px;
+}
+
+#result {
+  margin-bottom: 100px;
+}

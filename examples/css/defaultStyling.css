@@ -4,7 +4,6 @@
 .outside-gap .intl-tel-input.outside input {margin-left: 41px;}
 
 /* custom-dark example styles */
-.custom-dark { margin-bottom: 300px; }
 .custom-dark input, .custom-dark .country-list { background-color: #666; color: white; }
 .custom-dark ::-webkit-input-placeholder { color: #AAA; }
 /* copied from build/css/intlTelInput.css and modified */
@@ -25,3 +24,5 @@
 .custom-dark input { padding-left: 53px; margin-left: 0; }
 /* copied from build/css/demo.css and modified */
 .custom-dark input {border: 1px solid #444; height: 40px; width: 300px; }
+
+#result { margin-bottom: 250px; }
