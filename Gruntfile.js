@@ -1,5 +1,9 @@
 module.exports = function(grunt) {
 
+  // load all tasks from package.json
+  require('load-grunt-tasks')(grunt);
+  require('time-grunt')(grunt);
+
   // config
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -119,14 +123,6 @@ module.exports = function(grunt) {
     },
 
   });
-
-  // plugins
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
-  grunt.loadNpmTasks('grunt-bower-task');
 
   // tasks
   // build everything ready for a commit
