@@ -10,9 +10,10 @@ Try it for yourself using the included demo.html
 
 ## Features
 * In the country dropdown you can navigate by typing, or using the up/down keys
-* Selecting a country from the dropdown updates the dial code of the entered number
+* Selecting a country from the dropdown will update the dial code in the input
 * Typing a different dial code automatically updates the displayed flag
 * Country names in the dropdown also include localised versions in brackets
+* Lots of initialisation options for customisation, as well as public methods for interaction
 
 
 ## Getting started
