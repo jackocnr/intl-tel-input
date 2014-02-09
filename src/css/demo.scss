@@ -13,10 +13,17 @@ body {
 
 // example code blocks
 pre {
-  background-color: #eee;
-  padding: 10px;
-  margin: 0;
+  margin: 0 !important; // override prism.css
   display: inline-block;
+}
+// override weird rule in prism.css that puts a background on '='
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+  background: none;
 }
 
 // general form styling

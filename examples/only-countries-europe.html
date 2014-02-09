@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>International Telephone Input</title>
+    <link rel="stylesheet" href="css/prism.css">
     <link rel="stylesheet" href="../build/css/intlTelInput.css">
     <link rel="stylesheet" href="../build/css/demo.css">
   </head>
@@ -12,16 +13,17 @@
     <p>Set onlyCountries array to just European country codes</p>
 
     <h2>Code</h2>
-    <pre>$("input").intlTelInput({
+    <pre><code class="language-javascript">$("input").intlTelInput({
   onlyCountries: ["al", "ad", "at", "by", "be", "ba", "bg", "hr", "cz", "dk", "ee", "fo",
    "fi", "fr", "de", "gi", "gr", "gg", "va", "hu", "is", "ie", "im", "it", "je", "lv",
     "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "xk", "ro",
      "ru", "sm", "rs", "sk", "si", "es", "sj", "se", "ch", "ua", "gb"]
-});</pre>
+});</code></pre>
 
     <h2>Result</h2>
     <input type="tel" placeholder="e.g. +1 702 123 4567">
 
+    <script src="js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../build/js/intlTelInput.js"></script>
     <script>

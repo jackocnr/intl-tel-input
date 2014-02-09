@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>International Telephone Input</title>
+    <link rel="stylesheet" href="css/prism.css">
     <link rel="stylesheet" href="../build/css/intlTelInput.css">
     <link rel="stylesheet" href="../build/css/demo.css">
   </head>
@@ -12,15 +13,16 @@
     <p>Use static getCountryData() to update the data to only show localised country names</p>
     
     <h2>Code</h2>
-    <pre>var countryData = $.fn.intlTelInput.getCountryData();
+    <pre><code class="language-javascript">var countryData = $.fn.intlTelInput.getCountryData();
 $.each(countryData.countries, function(i, country) {
   country.name = country.name.replace(/.+\((.+)\)/,"$1");
 });
-$("input").intlTelInput();</pre>
+$("input").intlTelInput();</code></pre>
 
     <h2>Result</h2>
     <input type="tel" placeholder="e.g. +1 702 123 4567">
 
+    <script src="js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../build/js/intlTelInput.js"></script>
     <script>

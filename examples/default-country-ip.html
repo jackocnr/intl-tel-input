@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>International Telephone Input</title>
+    <link rel="stylesheet" href="css/prism.css">
     <link rel="stylesheet" href="../build/css/intlTelInput.css">
     <link rel="stylesheet" href="../build/css/demo.css">
   </head>
@@ -12,15 +13,16 @@
     <p>Use IP address lookup to set the defaultCountry to the user's country</p>
     
     <h2>Code</h2>
-    <pre>$.get("http://ipinfo.io", function(response) {
+    <pre><code class="language-javascript">$.get("http://ipinfo.io", function(response) {
   $("input").intlTelInput({
     defaultCountry: response.country.toLowerCase()
   });
-}, "jsonp");</pre>
+}, "jsonp");</code></pre>
 
     <h2>Result</h2>
     <input type="tel" placeholder="e.g. +1 702 123 4567">
 
+    <script src="js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../build/js/intlTelInput.js"></script>
     <script>

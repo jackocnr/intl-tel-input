@@ -9,10 +9,16 @@ body {
   color: #555; }
 
 pre {
-  background-color: #eee;
-  padding: 10px;
-  margin: 0;
+  margin: 0 !important;
   display: inline-block; }
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+  background: none; }
 
 input, button {
   height: 33px;
