@@ -108,7 +108,7 @@ $selectedFlagWidth: $flagWidth + (2 * $flagPadding) + $arrowWidth + $arrowPaddin
         // this must be full-height both for the hover highlight, and to push down the
         // dropdown so it appears below the input
         height: 100%;
-        padding: 0 ($flagPadding + $arrowWidth + $arrowPadding) 0 $flagPadding;
+        padding: 0 0 0 $flagPadding;
 
         // vertically center the flag
         .flag {

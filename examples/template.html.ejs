@@ -2,21 +2,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Example: <%- title %></title>
+    <title>Example: <%= title %></title>
     <link rel="stylesheet" href="css/prism.css">
     <link rel="stylesheet" href="../build/css/intlTelInput.css">
     <link rel="stylesheet" href="../build/css/demo.css">
+    <%- customHead %>
   </head>
 
   <body>
-    <h1>Example: <%- title %></h1>
-    <p><%- desc %></p>
+    <h1>Example: <%= title %></h1>
+    <p><%= desc %></p>
     
+    <h2>Markup</h2>
+    <pre><code class="language-markup"><%= markup %></code></pre>
+
     <h2>Code</h2>
-    <pre><code class="language-javascript"><%- code %></code></pre>
+    <pre><code class="language-javascript"><%= code %></code></pre>
 
     <h2>Result</h2>
-    <input type="tel" placeholder="e.g. +1 702 123 4567">
+    <%- markup %>
 
     <script src="js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

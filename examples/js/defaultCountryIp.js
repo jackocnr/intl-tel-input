@@ -1,5 +1,5 @@
 $.get("http://ipinfo.io", function(response) {
-  $("input").intlTelInput({
+  $("#phone").intlTelInput({
     defaultCountry: response.country.toLowerCase()
   });
 }, "jsonp");

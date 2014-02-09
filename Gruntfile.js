@@ -129,7 +129,9 @@ module.exports = function(grunt) {
         variables: function () {
           return {
             title: "defaultCountry",
-            desc: "Use IP address lookup to set the defaultCountry to the user's country",
+            desc: "Use IP address lookup to set the defaultCountry to the user's country.",
+            customHead: "",
+            markup: grunt.file.read('examples/partials/simpleInput.html'),
             code: grunt.file.read('examples/js/defaultCountryIp.js')
           }
         }
@@ -140,7 +142,9 @@ module.exports = function(grunt) {
         variables: function () {
           return {
             title: "getCountryData",
-            desc: "Use static getCountryData() to update the data to only show localised country names",
+            desc: "Use static getCountryData() to update the data to only show localised country names.",
+            customHead: "",
+            markup: grunt.file.read('examples/partials/simpleInput.html'),
             code: grunt.file.read('examples/js/modifyCountryData.js')
           }
         }
@@ -151,8 +155,23 @@ module.exports = function(grunt) {
         variables: function () {
           return {
             title: "onlyCountries",
-            desc: "Set onlyCountries array to just European country codes",
+            desc: "Set onlyCountries array to just European country codes.",
+            customHead: "",
+            markup: grunt.file.read('examples/partials/simpleInput.html'),
             code: grunt.file.read('examples/js/onlyCountriesEurope.js')
+          }
+        }
+      },
+      defaultStyling: {
+        src: 'examples/template.html.ejs',
+        dest: 'examples/default-styling.html',
+        variables: function () {
+          return {
+            title: "defaultStyling",
+            desc: "The 3 different settings for the defaultStyling option: 'inside' (default), 'outside' and 'none'.",
+            customHead: '<link rel="stylesheet" href="css/defaultStyling.css">',
+            markup: grunt.file.read('examples/partials/defaultStyling.html'),
+            code: grunt.file.read('examples/js/defaultStyling.js')
           }
         }
       }
