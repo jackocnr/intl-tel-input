@@ -2,14 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>International Telephone Input</title>
+    <title>Example: getCountryData</title>
     <link rel="stylesheet" href="css/prism.css">
     <link rel="stylesheet" href="../build/css/intlTelInput.css">
     <link rel="stylesheet" href="../build/css/demo.css">
   </head>
 
   <body>
-    <h1>Example: getCountryData()</h1>
+    <h1>Example: getCountryData</h1>
     <p>Use static getCountryData() to update the data to only show localised country names</p>
     
     <h2>Code</h2>
@@ -27,10 +27,10 @@ $("input").intlTelInput();</code></pre>
     <script src="../build/js/intlTelInput.js"></script>
     <script>
       var countryData = $.fn.intlTelInput.getCountryData();
-      $.each(countryData.countries, function(i, country) {
-        country.name = country.name.replace(/.+\((.+)\)/,"$1");
-      });
-      $("input").intlTelInput();
+$.each(countryData.countries, function(i, country) {
+  country.name = country.name.replace(/.+\((.+)\)/,"$1");
+});
+$("input").intlTelInput();
     </script>
   </body>
 </html>

@@ -25,7 +25,9 @@
     "grunt-contrib-jasmine": "~0.5.2",
     "grunt-bower-task": "~0.3.2",
     "grunt-templater": "0.0.4-1",
-    "load-grunt-tasks": "~0.3.0"
+    "load-grunt-tasks": "~0.3.0",
+    "time-grunt": "~0.2.9",
+    "ejs": "~0.8.5"
   },
   "repository": {
     "type": "git",
@@ -33,8 +35,5 @@
   },
   "scripts": {
     "test": "grunt travis"
-  },
-  "dependencies": {
-    "time-grunt": "~0.2.9"
   }
 }

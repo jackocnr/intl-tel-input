@@ -122,6 +122,42 @@ module.exports = function(grunt) {
       }
     },
 
+    template: {
+      defaultCountryIp: {
+        src: 'examples/template.html.ejs',
+        dest: 'examples/default-country-ip.html',
+        variables: function () {
+          return {
+            title: "defaultCountry",
+            desc: "Use IP address lookup to set the defaultCountry to the user's country",
+            code: grunt.file.read('examples/js/defaultCountryIp.js')
+          }
+        }
+      },
+      modifyCountryData: {
+        src: 'examples/template.html.ejs',
+        dest: 'examples/modify-country-data.html',
+        variables: function () {
+          return {
+            title: "getCountryData",
+            desc: "Use static getCountryData() to update the data to only show localised country names",
+            code: grunt.file.read('examples/js/modifyCountryData.js')
+          }
+        }
+      },
+      onlyCountries: {
+        src: 'examples/template.html.ejs',
+        dest: 'examples/only-countries-europe.html',
+        variables: function () {
+          return {
+            title: "onlyCountries",
+            desc: "Set onlyCountries array to just European country codes",
+            code: grunt.file.read('examples/js/onlyCountriesEurope.js')
+          }
+        }
+      }
+    }
+
   });
 
   // tasks
@@ -129,6 +165,8 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['jshint', 'sass', 'uglify']);
   // just javascript
   grunt.registerTask('js', ['jshint', 'uglify']);
+  // build examples
+  grunt.registerTask('examples', ['template']);
   // Travis CI
   grunt.registerTask('travis', ['bower', 'jasmine']);
   // prepare everything for the demo.html
