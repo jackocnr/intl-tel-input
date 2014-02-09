@@ -1,6 +1,6 @@
 // get the country data from the plugin
-var telInput = $("#phone"),
-  countryData = $.fn.intlTelInput.getCountryData(),
+var countryData = $.fn.intlTelInput.getCountryData(),
+  telInput = $("#phone"),
   addressDropdown = $("#address-country");
 
 // init plugin
