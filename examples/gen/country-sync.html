@@ -12,6 +12,7 @@
   </head>
 
   <body>
+    <a href="/intl-tel-input.html">Back</a>
     <h1>Example: Country sync</h1>
     <p>Use getCountryData to create a separate country dropdown for an address form, and then listen for change events to keep the two dropdowns in sync.</p>
     
@@ -32,8 +33,8 @@
 
     <h2>Code</h2>
     <pre><code class="language-javascript">// get the country data from the plugin
-var telInput = $(&quot;#phone&quot;),
-  countryData = $.fn.intlTelInput.getCountryData(),
+var countryData = $.fn.intlTelInput.getCountryData(),
+  telInput = $(&quot;#phone&quot;),
   addressDropdown = $(&quot;#address-country&quot;);
 
 // init plugin
