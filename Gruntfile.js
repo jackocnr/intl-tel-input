@@ -192,6 +192,20 @@ module.exports = function(grunt) {
             script: "countrySync.js"
           }
         }
+      },
+      validation: {
+        src: 'examples/template.html.ejs',
+        dest: 'examples/gen/validation.html',
+        variables: function () {
+          return {
+            title: "Validation",
+            desc: "Use Google's libphonenumber to validate the telephone number on the change event.",
+            stylesheet: '',
+            markup: grunt.file.read('examples/partials/validation.html'),
+            code: grunt.file.read('examples/js/validation.js'),
+            script: "validation.js"
+          }
+        }
       }
     }
 

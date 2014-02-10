@@ -49,6 +49,11 @@ input, select {
   width: 250px;
 }
 
+input.error {
+  background-color: #FFE7E7;
+  border: 1px solid #FF7C7C;
+}
+
 // borrowed from bootstrap
 button {
   color: #FFF;
@@ -75,4 +80,9 @@ button {
       background-color: #eee;
     }
   }
+}
+
+// examples
+#result {
+  margin-bottom: 100px;
 }

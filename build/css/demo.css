@@ -35,6 +35,10 @@ input, select {
   border: 1px solid #CCC;
   width: 250px; }
 
+input.error {
+  background-color: #FFE7E7;
+  border: 1px solid #FF7C7C; }
+
 button {
   color: #FFF;
   background-color: #428BCA;
@@ -50,3 +54,6 @@ button {
     width: 210px; }
   .intl-tel-input.outside input[disabled] + .flag-dropdown {
     background-color: #eee; }
+
+#result {
+  margin-bottom: 100px; }
