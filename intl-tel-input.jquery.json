@@ -23,7 +23,7 @@
     "url": "http://jackocnr.com"
   },
   "dependencies": {
-    "jquery": ">= 1.8.0"
+    "jquery": "^1.8.0"
   },
   "demo": "http://jackocnr.com/intl-tel-input.html",
   "title": "International Telephone Input"
