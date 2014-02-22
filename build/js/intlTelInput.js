@@ -73,7 +73,7 @@ Plugin.prototype = {
     // process onlyCountries array if present
     _setGlobalIntlData: function() {
         var that = this;
-        if (this.options.onlyCountries.length > 0) {
+        if (this.options.onlyCountries.length) {
             var newCountries = [], newCountryCodes = {};
             $.each(this.options.onlyCountries, function(i, countryCode) {
                 var countryData = that._getCountryData(countryCode, true);
@@ -194,10 +194,19 @@ Plugin.prototype = {
     // on focus: if empty add dial code. on blur: if just dial code, then empty it
     _initAutoHideDialCode: function() {
         var that = this;
+        // mousedown decides where the cursor goes, so if we're focusing
+        // we must prevent this from happening
+        this.telInput.mousedown(function(e) {
+            if (!that.telInput.is(":focus") && !that.telInput.val()) {
+                e.preventDefault();
+                // but this also cancels the focus, so we must trigger that manually
+                that.telInput.focus();
+                that._putCursorAtEnd();
+            }
+        });
         // on focus: if empty, insert the dial code for the currently selected flag
         this.telInput.focus(function() {
-            var value = $.trim(that.telInput.val());
-            if (value.length === 0) {
+            if (!$.trim(that.telInput.val())) {
                 var countryData = that.getSelectedCountryData();
                 that._resetToDialCode(countryData.dialCode);
             }
@@ -205,12 +214,21 @@ Plugin.prototype = {
         // on blur: if just a dial code then remove it
         this.telInput.blur(function() {
             var value = $.trim(that.telInput.val());
-            if (value.length > 0) {
+            if (value) {
                 if ($.trim(that._getDialCode(value) + that.options.dialCodeDelimiter) == value) {
                     that.telInput.val("");
                 }
             }
         });
+    },
+    // put the cursor at the end of the input
+    _putCursorAtEnd: function() {
+        var input = this.telInput[0];
+        // works for Chrome, FF, Safari, IE9+
+        if (input.setSelectionRange) {
+            var len = this.telInput.val().length;
+            input.setSelectionRange(len, len);
+        }
     },
     // show the dropdown
     _showDropdown: function() {
@@ -412,7 +430,7 @@ Plugin.prototype = {
             if (inputVal == prevDialCode) {
                 newNumber += this.options.dialCodeDelimiter;
             }
-        } else if (inputVal.length && inputVal.substr(0, 1) != "+") {
+        } else if (inputVal && inputVal.substr(0, 1) != "+") {
             // previous number didn't contain a dial code, so persist it
             newNumber = newDialCode + this.options.dialCodeDelimiter + $.trim(inputVal);
         } else {
