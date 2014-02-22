@@ -11,7 +11,7 @@
 .intl-tel-input.pretty * { box-sizing: border-box; -moz-box-sizing: border-box; }
 .intl-tel-input.pretty .flag-dropdown:hover .selected-flag { background-color: rgba(0, 0, 0, 0.05); }
 .intl-tel-input.pretty input[disabled] + .flag-dropdown:hover .selected-flag { background-color: transparent; }
-.intl-tel-input.pretty .flag-dropdown .selected-flag { width: 38px; height: 100%; padding: 0 0 0 6px; }
+.intl-tel-input.pretty .flag-dropdown .selected-flag { width: 38px; height: 100%; padding: 0 0 0 8px; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .flag { position: absolute; top: 50%; margin-top: -5px; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .arrow { position: relative; top: 50%; margin-top: -2px; left: 20px; width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-top: 4px solid #555555; }
 .intl-tel-input.pretty .flag-dropdown .selected-flag .arrow.up { border-top: none; border-bottom: 4px solid #555555; }
@@ -22,7 +22,7 @@
 .intl-tel-input.pretty .flag-dropdown .country-list .country.highlight { background-color: rgba(0, 0, 0, 0.05); }
 .intl-tel-input.pretty .flag-dropdown .country-list .flag, .intl-tel-input.pretty .flag-dropdown .country-list .country-name { margin-right: 6px; }
 .intl-tel-input.inside .flag-dropdown { padding: 1px; }
-.intl-tel-input.inside input { padding-left: 47px; margin-left: 0; }
+.intl-tel-input.inside input { padding-left: 44px; margin-left: 0; }
 .intl-tel-input.outside input { border: none; margin-left: 38px; }
 
 /** Originally from https://github.com/tkrotoff/famfamfam_flags Then converted to SCSS and simplified/optimised, and removed full country classes (as we only deal in 2 digit country codes) */
