@@ -225,8 +225,7 @@
         if (!that.telInput.is(":focus") && !that.telInput.val()) {
           e.preventDefault();
           // but this also cancels the focus, so we must trigger that manually
-          that.telInput.focus();
-          that._putCursorAtEnd();
+          that._focus();
         }
       });
 
@@ -254,8 +253,10 @@
     },
 
 
-    // put the cursor at the end of the input
-    _putCursorAtEnd: function() {
+    // focus input and put the cursor at the end
+    _focus: function() {
+      this.telInput.focus();
+
       var input = this.telInput[0];
       // works for Chrome, FF, Safari, IE9+
       if (input.setSelectionRange) {
@@ -466,7 +467,7 @@
       this.telInput.trigger("change");
 
       // focus the input
-      this.telInput.focus();
+      this._focus();
     },
 
 
