@@ -200,10 +200,13 @@ Plugin.prototype = {
         // if the user has specified the path to the validation script
         // inject a new script element for it at the end of the body
         if (this.options.validationScript) {
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            script.src = this.options.validationScript;
-            document.body.appendChild(script);
+            // but wait until the load event so we don't block any other requests e.g. the flags image
+            $(window).load(function() {
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.src = that.options.validationScript;
+                document.body.appendChild(script);
+            });
         }
     },
     // on focus: if empty add dial code. on blur: if just dial code, then empty it
