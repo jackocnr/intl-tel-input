@@ -1,18 +1,18 @@
 var telInput = $("#phone");
 
 // initialise plugin
-telInput.intlTelInput();
+telInput.intlTelInput({
+  validationScript: "../../lib/libphonenumber/build/isValidNumber.js"
+});
 
-// on change: check for errors
-telInput.change(function() {
-  if (isValidIntlNumber($(this).val())) {
-    $(this).removeClass("error");
-  } else {
+// on blur: check for errors
+telInput.blur(function() {
+  if ($.trim(telInput.val()) && !telInput.intlTelInput("isValidNumber")) {
     $(this).addClass("error");
   }
 });
 
-// on keyup remove any error
+// on keyup: remove any error
 telInput.keyup(function() {
   $(this).removeClass("error");
 });

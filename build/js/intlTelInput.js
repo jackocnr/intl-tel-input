@@ -197,6 +197,8 @@ Plugin.prototype = {
                 that._showDropdown();
             }
         });
+        // if the user has specified the path to the validation script
+        // inject a new script element for it at the end of the body
         if (this.options.validationScript) {
             var script = document.createElement("script");
             script.type = "text/javascript";

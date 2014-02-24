@@ -15,35 +15,31 @@
     <p>Use Google&#39;s libphonenumber to validate the telephone number on the change event.</p>
     
     <h2>Markup</h2>
-    <pre><code class="language-markup">&lt;script src=&quot;../../lib/libphonenumber/build/isValidIntlNumber.js&quot;&gt;&lt;/script&gt;
-
-&lt;input id=&quot;phone&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;</code></pre>
+    <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;</code></pre>
 
     <h2>Code</h2>
     <pre><code class="language-javascript">var telInput = $(&quot;#phone&quot;);
 
 // initialise plugin
-telInput.intlTelInput();
+telInput.intlTelInput({
+  validationScript: &quot;../../lib/libphonenumber/build/isValidNumber.js&quot;
+});
 
-// on change: check for errors
-telInput.change(function() {
-  if (isValidIntlNumber($(this).val())) {
-    $(this).removeClass(&quot;error&quot;);
-  } else {
+// on blur: check for errors
+telInput.blur(function() {
+  if ($.trim(telInput.val()) &amp;&amp; !telInput.intlTelInput(&quot;isValidNumber&quot;)) {
     $(this).addClass(&quot;error&quot;);
   }
 });
 
-// on keyup remove any error
+// on keyup: remove any error
 telInput.keyup(function() {
   $(this).removeClass(&quot;error&quot;);
 });</code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <script src="../../lib/libphonenumber/build/isValidIntlNumber.js"></script>
-
-<input id="phone" type="tel" placeholder="e.g. +1 702 123 4567">
+      <input id="phone" type="tel" placeholder="e.g. +1 702 123 4567">
     </div>
 
     <script src="../js/prism.js"></script>

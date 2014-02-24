@@ -200,7 +200,7 @@ module.exports = function(grunt) {
             title: "Validation",
             desc: "Use Google's libphonenumber to validate the telephone number on the change event.",
             stylesheet: '',
-            markup: grunt.file.read('examples/partials/validation.html'),
+            markup: grunt.file.read('examples/partials/simpleInput.html'),
             code: grunt.file.read('examples/js/validation.js'),
             script: "validation.js"
           }
