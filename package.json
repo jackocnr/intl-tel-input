@@ -27,7 +27,8 @@
     "load-grunt-tasks": "~0.3.0",
     "time-grunt": "~0.2.9",
     "ejs": "~0.8.5",
-    "grunt-bower-task": "~0.3.4"
+    "grunt-bower-task": "~0.3.4",
+    "grunt-bump": "0.0.13"
   },
   "repository": {
     "type": "git",

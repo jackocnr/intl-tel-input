@@ -206,11 +206,21 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+
+    bump: {
+      options: {
+        files: ['package.json', 'bower.json', 'intl-tel-input.jquery.json'],
+        //updateConfigs: ['pkg']
+      }
     }
 
   });
 
-  // tasks
+
+  /**
+   * TASKS
+   */
   // build everything ready for a commit
   grunt.registerTask('build', ['jshint', 'sass', 'uglify']);
   // just javascript
@@ -221,5 +231,7 @@ module.exports = function(grunt) {
   grunt.registerTask('travis', ['bower', 'jasmine']);
   // prepare everything for the demo.html
   grunt.registerTask('demo', ['jshint', 'sass', 'uglify:dev']);
+  // bump version number in 3 files, build to update js headers, then commit, tag and push
+  grunt.registerTask('release', ['bump-only', 'build']);
 
 };
