@@ -66,12 +66,22 @@ Display only the countries you specify.
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
 
+**validationScript**  
+Type: `String` Default: `""` Example: `"lib/libphonenumber/build/isValidNumber.js"`  
+Enable validation by specifying the URL to the included libphonenumber script. When the plugin is initialised, it will add a `<script>` element to the end of the body to load this ~200kb script.
+
 
 ## Public methods
 **getSelectedCountryData**  
 Get the country data for the currently selected flag  
 ```js
 $("#mobile-number").intlTelInput("getSelectedCountryData");
+```
+
+**isValidNumber**  
+Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the `validationScript` option to be set correctly)  
+```js
+$("#mobile-number").intlTelInput("isValidNumber");
 ```
 
 **selectCountry**  
@@ -102,13 +112,7 @@ $.fn.intlTelInput.setCountryData(countryData);
 
 
 ## Validation
-International number validation is hard (it varies by country/district).
-Personally, I just use this regex `/^\+[\d \(\)-.]+$/` to check the number starts with a `+` and then only contains valid characters (numbers, spaces, brackets, hyphens and dots).
-After that, I strip out non-numeric characters with `val.replace(/\D/g, "")`, and check the length is between 5 and 15.
-
-If you really want to do this properly though, I would advise using Google's [libphonenumber](https://code.google.com/p/libphonenumber/),
-which can be compiled into JavaScript (a pre-compiled script can be found [here](https://github.com/albeebe/phoneformat.js),
-but beware that even after minification this script is >300kB).
+International number validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200kb, so I have included it as an optional extra. If you specify the validationScript option then when the plugin is initialised it will add a `<script>` element to the end of the body to load the script, which is then accessible through the plugin's public `isValidNumber` function.
 
 
 ## CSS
@@ -125,4 +129,4 @@ For the sake of alignment, the default CSS forces the input's vertical margin to
 ## Attributions
 * Flag images and CSS from https://github.com/tkrotoff/famfamfam_flags
 * Country data from https://github.com/mledoze/countries
-* Mapping from international dial code to country code from http://libphonenumber.googlecode.com
+* Validation code from http://libphonenumber.googlecode.com
