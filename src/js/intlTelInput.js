@@ -2,15 +2,22 @@
   var pluginName = "intlTelInput",
     id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
-      // united states and united kingdom
-      preferredCountries: ["us", "gb"],
+      // don't display the +1 prefix when America is selected
       americaMode: false,
-      onlyCountries: [],
-      defaultStyling: "inside",
+      // if there is just a dial code in the input: remove it on blur, and re-add it on focus
       autoHideDialCode: true,
+      // default country
       defaultCountry: "",
       // character to appear between dial code and phone number
-      dialCodeDelimiter: " "
+      dialCodeDelimiter: " ",
+      // position the selected flag inside or outside of the input
+      defaultStyling: "inside",
+      // display only these countries
+      onlyCountries: [],
+      // the countries at the top of the list. defaults to united states and united kingdom
+      preferredCountries: ["us", "gb"],
+      // specify the path to the libphonenumber script to enable validation
+      validationScript: ""
     },
     keys = {
       UP: 38,
@@ -212,6 +219,13 @@
           that._showDropdown();
         }
       });
+
+      if (this.options.validationScript) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = this.options.validationScript;
+        document.body.appendChild(script);
+      }
     },
 
 
@@ -641,6 +655,14 @@
       // the first is "flag" and the second is the 2-char country code
       var countryCode = this.selectedFlagInner.attr("class").split(" ")[1];
       return this._getCountryData(countryCode);
+    },
+
+
+    // validate the input val - assumes the global function isValidNumber
+    isValidNumber: function() {
+      var val = $.trim(this.telInput.val());
+      var countryData = this.getSelectedCountryData();
+      return window.isValidNumber(val, countryData.iso2);
     }
 
   };
