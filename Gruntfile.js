@@ -211,7 +211,8 @@ module.exports = function(grunt) {
     bump: {
       options: {
         files: ['package.json', 'bower.json', 'intl-tel-input.jquery.json'],
-        //updateConfigs: ['pkg']
+        updateConfigs: ['pkg'],
+        commitFiles: ['-a']
       }
     }
 
@@ -232,6 +233,6 @@ module.exports = function(grunt) {
   // prepare everything for the demo.html
   grunt.registerTask('demo', ['jshint', 'sass', 'uglify:dev']);
   // bump version number in 3 files, build to update js headers, then commit, tag and push
-  grunt.registerTask('release', ['bump-only', 'build']);
+  grunt.registerTask('version', ['bump-only', 'build', 'bump-commit']);
 
 };
