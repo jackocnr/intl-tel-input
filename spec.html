@@ -1,69 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>Jasmine Spec Runner</title>
 
-  <link rel="stylesheet" href="lib/jasmine/lib/jasmine-core/jasmine.css">
-  <script src="lib/jasmine/lib/jasmine-core/jasmine.js"></script>
-  <script src="lib/jasmine/lib/jasmine-core/jasmine-html.js"></script>
+  <link rel="stylesheet" type="text/css" href=".grunt/grunt-contrib-jasmine/jasmine.css">
 
-  <!-- include source files here... -->
-  <script src="lib/jquery/jquery.js"></script>
-  <script src="build/js/intlTelInput.js"></script>
 
-  <!-- include helper files here... -->
-  <script src="lib/jasmine-jquery/jasmine-jquery.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/phantom-polyfill.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/jasmine.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/jasmine-html.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/boot.js"></script>
+  
+  <script src="lib/jquery/dist/jquery.js"></script>
+  
+  <script src="lib/jasmine-jquery/lib/jasmine-jquery.js"></script>
+  
   <script src="src/spec/helpers/helpers.js"></script>
-
-  <!-- include spec files here... -->
-  <!-- vanilla -->
-  <script src="src/spec/tests/vanilla/core.js"></script>
-  <script src="src/spec/tests/vanilla/multipleInstances.js"></script>
-  <script src="src/spec/tests/vanilla/keyboardShortcuts.js"></script>
-  <!-- options -->
-  <script src="src/spec/tests/options/autoHideDialCode.js"></script>
-  <script src="src/spec/tests/options/americaMode.js"></script>
-  <script src="src/spec/tests/options/preferredCountries.js"></script>
-  <script src="src/spec/tests/options/onlyCountries.js"></script>
-  <script src="src/spec/tests/options/defaultStyling.js"></script>
-  <script src="src/spec/tests/options/defaultCountry.js"></script>
-  <!-- methods -->
-  <script src="src/spec/tests/methods/selectCountry.js"></script>
-  <script src="src/spec/tests/methods/setNumber.js"></script>
+  
+  <script src="src/js/data.js"></script>
+  
+  <script src="src/js/intlTelInput.js"></script>
+  
   <script src="src/spec/tests/methods/getCountryData.js"></script>
+  
+  <script src="src/spec/tests/methods/selectCountry.js"></script>
+  
   <script src="src/spec/tests/methods/setCountryData.js"></script>
-
-  <script>
-    (function() {
-      var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
-
-      var htmlReporter = new jasmine.HtmlReporter();
-
-      jasmineEnv.addReporter(htmlReporter);
-
-      jasmineEnv.specFilter = function(spec) {
-        return htmlReporter.specFilter(spec);
-      };
-
-      var currentWindowOnload = window.onload;
-
-      window.onload = function() {
-        if (currentWindowOnload) {
-          currentWindowOnload();
-        }
-        execJasmine();
-      };
-
-      function execJasmine() {
-        jasmineEnv.execute();
-      }
-
-    })();
-  </script>
+  
+  <script src="src/spec/tests/methods/setNumber.js"></script>
+  
+  <script src="src/spec/tests/options/americaMode.js"></script>
+  
+  <script src="src/spec/tests/options/autoHideDialCode.js"></script>
+  
+  <script src="src/spec/tests/options/defaultCountry.js"></script>
+  
+  <script src="src/spec/tests/options/defaultStyling.js"></script>
+  
+  <script src="src/spec/tests/options/onlyCountries.js"></script>
+  
+  <script src="src/spec/tests/options/preferredCountries.js"></script>
+  
+  <script src="src/spec/tests/vanilla/core.js"></script>
+  
+  <script src="src/spec/tests/vanilla/keyboardShortcuts.js"></script>
+  
+  <script src="src/spec/tests/vanilla/multipleInstances.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/reporter.js"></script>
+  
 
 </head>
-
 <body>
 </body>
 </html>

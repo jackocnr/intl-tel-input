@@ -3,3 +3,5 @@
 /lib/jasmine-jquery/
 /lib/jquery/
 /.bower_cache/
+/.sass-cache/
+/.grunt/

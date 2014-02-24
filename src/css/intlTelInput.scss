@@ -1,3 +1,5 @@
+@import 'flags';
+
 // rgba is needed for the selected flag hover state to blend in with
 // the border-highlighting some browsers give the input on focus
 $hoverColor: rgba(0, 0, 0, 0.05);

@@ -15,10 +15,7 @@ module.exports = function(grunt) {
           style: "compact"
         },
         files: {
-          'build/css/intlTelInput.css': [
-            'src/css/intlTelInput.scss',
-            'src/css/flags.scss'
-          ],
+          'build/css/intlTelInput.css': 'src/css/intlTelInput.scss'
         }
       },
       demo: {
@@ -103,22 +100,17 @@ module.exports = function(grunt) {
       ],
       options: {
         vendor: [
-          'lib/jquery/jquery.js',
-          'lib/jasmine-jquery/jasmine-jquery.js'
+          'lib/jquery/dist/jquery.js',
+          'lib/jasmine-jquery/lib/jasmine-jquery.js'
         ],
         helpers: [
           'src/spec/helpers/**/*.js'
         ],
         specs: [
           'src/spec/tests/**/*.js'
-        ]
-      }
-    },
-
-    // Asset libs
-    bower: {
-      install: {
-        // defaults are fine
+        ],
+        outfile: 'spec.html',
+        keepRunner: true
       }
     },
 
