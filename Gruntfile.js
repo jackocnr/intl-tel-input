@@ -234,6 +234,6 @@ module.exports = function(grunt) {
   // prepare everything for the demo.html
   grunt.registerTask('demo', ['jshint', 'sass', 'uglify:dev']);
   // bump version number in 3 files, build to update js headers, then commit, tag and push
-  grunt.registerTask('version', ['bump-only', 'build', 'bump-commit']);
+  grunt.registerTask('version', ['bump-only', 'uglify', 'bump-commit']);
 
 };
