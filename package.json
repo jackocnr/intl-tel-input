@@ -23,11 +23,11 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-uglify": "~0.3.2",
     "grunt-contrib-jasmine": "~0.6.1",
-    "bower": "~1.2.8",
     "grunt-templater": "0.0.4",
     "load-grunt-tasks": "~0.3.0",
     "time-grunt": "~0.2.9",
-    "ejs": "~0.8.5"
+    "ejs": "~0.8.5",
+    "grunt-bower-task": "~0.3.4"
   },
   "repository": {
     "type": "git",

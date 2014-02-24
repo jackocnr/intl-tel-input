@@ -92,6 +92,13 @@ module.exports = function(grunt) {
       }
     },
 
+    // This is needed for travis task
+    bower: {
+      install: {
+        // defaults are fine
+      }
+    },
+
     // Testing
     jasmine: {
       src: [
