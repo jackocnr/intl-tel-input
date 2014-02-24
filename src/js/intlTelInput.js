@@ -629,10 +629,20 @@
      ********************/
 
 
-    // set the input value and update the flag
-    setNumber: function(number) {
-      this.telInput.val(number);
-      this._updateFlagFromInputVal();
+    // get the country data for the currently selected flag
+    getSelectedCountryData: function() {
+      // rely on the fact that we only set 2 classes on the selected flag element:
+      // the first is "flag" and the second is the 2-char country code
+      var countryCode = this.selectedFlagInner.attr("class").split(" ")[1];
+      return this._getCountryData(countryCode);
+    },
+
+
+    // validate the input val - assumes the global function isValidNumber
+    isValidNumber: function() {
+      var val = $.trim(this.telInput.val());
+      var countryData = this.getSelectedCountryData();
+      return window.isValidNumber(val, countryData.iso2);
     },
 
 
@@ -648,21 +658,10 @@
       }
     },
 
-
-    // get the country data for the currently selected flag
-    getSelectedCountryData: function() {
-      // rely on the fact that we only set 2 classes on the selected flag element:
-      // the first is "flag" and the second is the 2-char country code
-      var countryCode = this.selectedFlagInner.attr("class").split(" ")[1];
-      return this._getCountryData(countryCode);
-    },
-
-
-    // validate the input val - assumes the global function isValidNumber
-    isValidNumber: function() {
-      var val = $.trim(this.telInput.val());
-      var countryData = this.getSelectedCountryData();
-      return window.isValidNumber(val, countryData.iso2);
+    // set the input value and update the flag
+    setNumber: function(number) {
+      this.telInput.val(number);
+      this._updateFlagFromInputVal();
     }
 
   };

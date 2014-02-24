@@ -516,22 +516,6 @@ Plugin.prototype = {
     /********************
      *  PUBLIC METHODS
      ********************/
-    // set the input value and update the flag
-    setNumber: function(number) {
-        this.telInput.val(number);
-        this._updateFlagFromInputVal();
-    },
-    // update the selected flag, and insert the dial code
-    selectCountry: function(countryCode) {
-        // check if already selected
-        if (!this.selectedFlagInner.hasClass(countryCode)) {
-            this._selectFlag(countryCode);
-            if (!this.options.autoHideDialCode) {
-                var countryData = this._getCountryData(countryCode, false);
-                this._resetToDialCode(countryData.dialCode);
-            }
-        }
-    },
     // get the country data for the currently selected flag
     getSelectedCountryData: function() {
         // rely on the fact that we only set 2 classes on the selected flag element:
@@ -544,6 +528,22 @@ Plugin.prototype = {
         var val = $.trim(this.telInput.val());
         var countryData = this.getSelectedCountryData();
         return window.isValidNumber(val, countryData.iso2);
+    },
+    // update the selected flag, and insert the dial code
+    selectCountry: function(countryCode) {
+        // check if already selected
+        if (!this.selectedFlagInner.hasClass(countryCode)) {
+            this._selectFlag(countryCode);
+            if (!this.options.autoHideDialCode) {
+                var countryData = this._getCountryData(countryCode, false);
+                this._resetToDialCode(countryData.dialCode);
+            }
+        }
+    },
+    // set the input value and update the flag
+    setNumber: function(number) {
+        this.telInput.val(number);
+        this._updateFlagFromInputVal();
     }
 };
 
