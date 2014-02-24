@@ -12,7 +12,7 @@ telInput.blur(function() {
   }
 });
 
-// on keyup: remove any error
-telInput.keyup(function() {
+// on keydown: remove any error
+telInput.keydown(function() {
   $(this).removeClass("error");
 });
