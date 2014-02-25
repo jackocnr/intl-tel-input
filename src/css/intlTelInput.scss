@@ -190,7 +190,8 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
       padding: $borderWidth;
     }
 
-    input {
+    // specify types to increase specificity e.g. to override bootstrap v2.3
+    input[type="text"], input[type="tel"] {
       // make space for the selected flag
       // Note: no !important here, as the user may want to tweak this so that the 
       // perceived input padding matches their existing styles
@@ -204,7 +205,8 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
 
 
   &.outside {
-    input {
+    // specify types to increase specificity e.g. to override bootstrap v2.3
+    input[type="text"], input[type="tel"] {
       // the border should be around the parent in this case
       border: none;
 

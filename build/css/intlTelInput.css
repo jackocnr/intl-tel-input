@@ -276,5 +276,5 @@
 .intl-tel-input.pretty .flag-dropdown .country-list .country.highlight { background-color: rgba(0, 0, 0, 0.05); }
 .intl-tel-input.pretty .flag-dropdown .country-list .flag, .intl-tel-input.pretty .flag-dropdown .country-list .country-name { margin-right: 6px; }
 .intl-tel-input.inside .flag-dropdown { padding: 1px; }
-.intl-tel-input.inside input { padding-left: 44px; margin-left: 0; }
-.intl-tel-input.outside input { border: none; margin-left: 38px; }
+.intl-tel-input.inside input[type="text"], .intl-tel-input.inside input[type="tel"] { padding-left: 44px; margin-left: 0; }
+.intl-tel-input.outside input[type="text"], .intl-tel-input.outside input[type="tel"] { border: none; margin-left: 38px; }
