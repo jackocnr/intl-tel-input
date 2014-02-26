@@ -9,7 +9,7 @@ Try it for yourself using the included demo.html
 ![alt tag](https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png)
 
 ## Features
-* In the country dropdown you can navigate by typing (first letter of country name), or using the up/down keys
+* Navigate the country dropdown by typing (first letter of country name), or using up/down keys
 * Selecting a country from the dropdown will update the dial code in the input
 * Typing a different dial code will automatically update the displayed flag
 * Country names in the dropdown also include localised versions in brackets
