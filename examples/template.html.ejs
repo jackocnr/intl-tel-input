@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <title>Example: <%= title %></title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css">
-    <link rel="stylesheet" href="../../build/css/demo.css">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?<%= time %>">
+    <link rel="stylesheet" href="../../build/css/demo.css?<%= time %>">
     <% if (stylesheet) { %>
-      <link rel="stylesheet" href="../css/<%= stylesheet %>">
+      <link rel="stylesheet" href="../css/<%= stylesheet %>?<%= time %>">
     <% } %>
   </head>
 
@@ -29,7 +29,7 @@
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js"></script>
-    <script src="../js/<%= script %>"></script>
+    <script src="../../build/js/intlTelInput.js?<%= time %>"></script>
+    <script src="../js/<%= script %>?<%= time %>"></script>
   </body>
 </html>

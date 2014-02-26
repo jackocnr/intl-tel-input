@@ -4,6 +4,8 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
 
+  var time = (new Date()).getTime();
+
   // config
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -127,6 +129,7 @@ module.exports = function(grunt) {
         dest: 'examples/gen/default-country-ip.html',
         variables: function () {
           return {
+            time: time,
             title: "defaultCountry",
             desc: "Use IP address lookup to set the defaultCountry to the user's country.",
             stylesheet: "",
@@ -141,6 +144,7 @@ module.exports = function(grunt) {
         dest: 'examples/gen/modify-country-data.html',
         variables: function () {
           return {
+            time: time,
             title: "getCountryData",
             desc: "Use static getCountryData() to update the data to only show localised country names.",
             stylesheet: "",
@@ -155,6 +159,7 @@ module.exports = function(grunt) {
         dest: 'examples/gen/only-countries-europe.html',
         variables: function () {
           return {
+            time: time,
             title: "onlyCountries",
             desc: "Set onlyCountries array to just European country codes.",
             stylesheet: "",
@@ -169,6 +174,7 @@ module.exports = function(grunt) {
         dest: 'examples/gen/default-styling.html',
         variables: function () {
           return {
+            time: time,
             title: "defaultStyling",
             desc: "The 3 different settings for the defaultStyling option: 'inside' (default), 'outside' and 'none'.",
             stylesheet: 'defaultStyling.css',
@@ -183,6 +189,7 @@ module.exports = function(grunt) {
         dest: 'examples/gen/country-sync.html',
         variables: function () {
           return {
+            time: time,
             title: "Country sync",
             desc: "Use getCountryData to create a separate country dropdown for an address form, and then listen for change events to keep the two dropdowns in sync.",
             stylesheet: 'countrySync.css',
@@ -197,6 +204,7 @@ module.exports = function(grunt) {
         dest: 'examples/gen/validation.html',
         variables: function () {
           return {
+            time: time,
             title: "isValidNumber",
             desc: "Use Google's libphonenumber to validate the telephone number on the change event.",
             stylesheet: '',
