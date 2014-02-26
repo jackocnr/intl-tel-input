@@ -130,8 +130,8 @@ module.exports = function(grunt) {
         variables: function () {
           return {
             time: time,
-            title: "defaultCountry",
-            desc: "Use IP address lookup to set the defaultCountry to the user's country.",
+            title: "Lookup user's country",
+            desc: "Use IP address lookup to set the defaultCountry option to the user's country.",
             stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
             code: grunt.file.read('examples/js/defaultCountryIp.js'),
@@ -145,8 +145,8 @@ module.exports = function(grunt) {
         variables: function () {
           return {
             time: time,
-            title: "getCountryData",
-            desc: "Use static getCountryData() to update the data to only show localised country names.",
+            title: "Modify country data",
+            desc: "Use static getCountryData method to update the data to only show localised country names.",
             stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
             code: grunt.file.read('examples/js/modifyCountryData.js'),
@@ -160,8 +160,8 @@ module.exports = function(grunt) {
         variables: function () {
           return {
             time: time,
-            title: "onlyCountries",
-            desc: "Set onlyCountries array to just European country codes.",
+            title: "European countries",
+            desc: "Set onlyCountries option to just European country codes.",
             stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
             code: grunt.file.read('examples/js/onlyCountriesEurope.js'),
@@ -175,7 +175,7 @@ module.exports = function(grunt) {
         variables: function () {
           return {
             time: time,
-            title: "defaultStyling",
+            title: "Styling",
             desc: "The 3 different settings for the defaultStyling option: 'inside' (default), 'outside' and 'none'.",
             stylesheet: 'defaultStyling.css',
             markup: grunt.file.read('examples/partials/defaultStyling.html'),
@@ -191,7 +191,7 @@ module.exports = function(grunt) {
           return {
             time: time,
             title: "Country sync",
-            desc: "Use getCountryData to create a separate country dropdown for an address form, and then listen for change events to keep the two dropdowns in sync.",
+            desc: "Use static getCountryData method to create a separate country dropdown for an address form, and then listen for change events to keep the two dropdowns in sync.",
             stylesheet: 'countrySync.css',
             markup: grunt.file.read('examples/partials/countrySync.html'),
             code: grunt.file.read('examples/js/countrySync.js'),
@@ -205,8 +205,8 @@ module.exports = function(grunt) {
         variables: function () {
           return {
             time: time,
-            title: "isValidNumber",
-            desc: "Use Google's libphonenumber to validate the telephone number on the change event.",
+            title: "Validation",
+            desc: "Use public isValidNumber method (utilising Google's libphonenumber) to validate the telephone number on the change event.",
             stylesheet: '',
             markup: grunt.file.read('examples/partials/simpleInput.html'),
             code: grunt.file.read('examples/js/validation.js'),
