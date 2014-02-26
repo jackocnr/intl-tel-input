@@ -1,18 +1,28 @@
-var telInput = $("#phone");
+var telInput = $("#phone"),
+  errorMsg = $("#error-msg"),
+  validMsg = $("#valid-msg");
 
 // initialise plugin
 telInput.intlTelInput({
   validationScript: "../../lib/libphonenumber/build/isValidNumber.js"
 });
 
-// on blur: check for errors
+// on blur: validate
 telInput.blur(function() {
-  if ($.trim(telInput.val()) && !telInput.intlTelInput("isValidNumber")) {
-    $(this).addClass("error");
+  if ($.trim(telInput.val())) {
+    if (telInput.intlTelInput("isValidNumber")) {
+      validMsg.removeClass("hide");
+    } else {
+      telInput.addClass("error");
+      errorMsg.removeClass("hide");
+      validMsg.addClass("hide");
+    }
   }
 });
 
-// on keydown: remove any error
+// on keydown: reset
 telInput.keydown(function() {
-  $(this).removeClass("error");
+  telInput.removeClass("error");
+  errorMsg.addClass("hide");
+  validMsg.addClass("hide");
 });

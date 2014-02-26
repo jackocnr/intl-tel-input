@@ -4,8 +4,10 @@
     <meta charset="utf-8">
     <title>Example: Validation</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1393390464893">
-    <link rel="stylesheet" href="../../build/css/demo.css?1393390464893">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1393391557933">
+    <link rel="stylesheet" href="../../build/css/demo.css?1393391557933">
+    
+      <link rel="stylesheet" href="../css/validation.css?1393391557933">
     
   </head>
 
@@ -15,36 +17,50 @@
     <p>Use public isValidNumber method (utilising Google&#39;s libphonenumber) to validate the telephone number on the change event.</p>
     
     <h2>Markup</h2>
-    <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;</code></pre>
+    <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt; 
+&lt;span id=&quot;valid-msg&quot; class=&quot;hide&quot;&gt;✓ Valid&lt;/span&gt;
+&lt;span id=&quot;error-msg&quot; class=&quot;hide&quot;&gt;Invalid number&lt;/span&gt;</code></pre>
 
     <h2>Code</h2>
-    <pre><code class="language-javascript">var telInput = $(&quot;#phone&quot;);
+    <pre><code class="language-javascript">var telInput = $(&quot;#phone&quot;),
+  errorMsg = $(&quot;#error-msg&quot;),
+  validMsg = $(&quot;#valid-msg&quot;);
 
 // initialise plugin
 telInput.intlTelInput({
   validationScript: &quot;../../lib/libphonenumber/build/isValidNumber.js&quot;
 });
 
-// on blur: check for errors
+// on blur: validate
 telInput.blur(function() {
-  if ($.trim(telInput.val()) &amp;&amp; !telInput.intlTelInput(&quot;isValidNumber&quot;)) {
-    $(this).addClass(&quot;error&quot;);
+  if ($.trim(telInput.val())) {
+    if (telInput.intlTelInput(&quot;isValidNumber&quot;)) {
+      validMsg.removeClass(&quot;hide&quot;);
+    } else {
+      telInput.addClass(&quot;error&quot;);
+      errorMsg.removeClass(&quot;hide&quot;);
+      validMsg.addClass(&quot;hide&quot;);
+    }
   }
 });
 
-// on keydown: remove any error
+// on keydown: reset
 telInput.keydown(function() {
-  $(this).removeClass(&quot;error&quot;);
+  telInput.removeClass(&quot;error&quot;);
+  errorMsg.addClass(&quot;hide&quot;);
+  validMsg.addClass(&quot;hide&quot;);
 });</code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <input id="phone" type="tel" placeholder="e.g. +1 702 123 4567">
+      <input id="phone" type="tel" placeholder="e.g. +1 702 123 4567"> 
+<span id="valid-msg" class="hide">✓ Valid</span>
+<span id="error-msg" class="hide">Invalid number</span>
     </div>
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1393390464893"></script>
-    <script src="../js/validation.js?1393390464893"></script>
+    <script src="../../build/js/intlTelInput.js?1393391557933"></script>
+    <script src="../js/validation.js?1393391557933"></script>
   </body>
 </html>

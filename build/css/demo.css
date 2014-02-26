@@ -8,6 +8,9 @@ body {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   color: #555; }
 
+.hide {
+  display: none; }
+
 pre {
   margin: 0 !important;
   display: inline-block; }
@@ -34,10 +37,6 @@ input, button {
 input, select {
   border: 1px solid #CCC;
   width: 250px; }
-
-input.error {
-  background-color: #FFE7E7;
-  border: 1px solid #FF7C7C; }
 
 button {
   color: #FFF;
