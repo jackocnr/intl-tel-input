@@ -9,21 +9,22 @@
       "dial",
       "code",
       "telephone",
+      "tel",
+      "number",
       "mobile",
       "input",
       "flag"
   ],
   "licenses": [{
-      "type": "MIT",
-      "url": "https://raw.github.com/Bluefieldscom/intl-tel-input/master/LICENSE"
-    }
-  ],
+    "type": "MIT",
+    "url": "https://raw.github.com/Bluefieldscom/intl-tel-input/master/LICENSE"
+  }],
   "author": {
     "name": "Jack O'Connor",
     "url": "http://jackocnr.com"
   },
   "dependencies": {
-    "jquery": "^1.8.0"
+    "jquery": "~1"
   },
   "demo": "http://jackocnr.com/intl-tel-input.html",
   "title": "International Telephone Input"
