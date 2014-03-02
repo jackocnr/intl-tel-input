@@ -168,6 +168,25 @@ Plugin.prototype = {
         // make sure the initial selected flag markup is correct
         this._updateFlagFromInputVal();
     },
+    // add a country <li> to the countryList <ul> container
+    _appendListItems: function(countries, className) {
+        // we create so many DOM elements, I decided it was faster to build a temp string
+        // and then add everything to the DOM in one go at the end
+        var tmp = "";
+        // for each country
+        $.each(countries, function(i, c) {
+            // open the list item
+            tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
+            // add the flag
+            tmp += "<div class='flag " + c.iso2 + "'></div>";
+            // and the country name and dial code
+            tmp += "<span class='country-name'>" + c.name + "</span>";
+            tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
+            // close the list item
+            tmp += "</li>";
+        });
+        this.countryList.append(tmp);
+    },
     // give the input it's initial value
     _setInitialValue: function() {
         // if autoHideDialCode is disabled (and input is not pre-populated),
@@ -379,7 +398,7 @@ Plugin.prototype = {
             });
             countryCode = countryCodes[0];
         } else {
-            // else default to dialcode of the first preferred country
+            // else default to dialcode of the defaultCountry
             countryCode = this.defaultCountry.iso2;
         }
         if (!alreadySelected) {
@@ -467,12 +486,10 @@ Plugin.prototype = {
             if (inputVal == prevDialCode) {
                 newNumber += this.options.dialCodeDelimiter;
             }
-        } else if (inputVal && inputVal.substr(0, 1) != "+") {
-            // previous number didn't contain a dial code, so persist it
-            newNumber = newDialCode + this.options.dialCodeDelimiter + $.trim(inputVal);
         } else {
-            // previous number contained an invalid dial code, so wipe it
-            newNumber = newDialCode + this.options.dialCodeDelimiter;
+            // if the previous number didn't contain a dial code, we should persist it
+            var existingNumber = inputVal && inputVal.substr(0, 1) != "+" ? $.trim(inputVal) : "";
+            newNumber = newDialCode + this.options.dialCodeDelimiter + existingNumber;
         }
         // if americaMode is enabled, we dont display the dial code for american numbers
         if (this.options.americaMode && newNumber.substring(0, 3) == "+1" + this.options.dialCodeDelimiter) {
@@ -507,25 +524,6 @@ Plugin.prototype = {
             }
         }
         return dialCode;
-    },
-    // add a country <li> to the countryList <ul> container
-    _appendListItems: function(countries, className) {
-        // we create so many DOM elements, I decided it was faster to build a temp string
-        // and then add everything to the DOM in one go at the end
-        var tmp = "";
-        // for each country
-        $.each(countries, function(i, c) {
-            // open the list item
-            tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
-            // add the flag
-            tmp += "<div class='flag " + c.iso2 + "'></div>";
-            // and the country name and dial code
-            tmp += "<span class='country-name'>" + c.name + "</span>";
-            tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
-            // close the list item
-            tmp += "</li>";
-        });
-        this.countryList.append(tmp);
     },
     /********************
      *  PUBLIC METHODS
