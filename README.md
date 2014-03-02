@@ -131,3 +131,4 @@ For the sake of alignment, the default CSS forces the input's vertical margin to
 * Flag images and CSS from https://github.com/tkrotoff/famfamfam_flags
 * Country data from https://github.com/mledoze/countries
 * Validation code from http://libphonenumber.googlecode.com
+* Feature contributions are listed in the wiki: [Contributions](https://github.com/Bluefieldscom/intl-tel-input/wiki/Contributions)
