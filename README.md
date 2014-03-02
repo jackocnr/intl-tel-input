@@ -80,7 +80,7 @@ $("#mobile-number").intlTelInput("getSelectedCountryData");
 ```
 
 **isValidNumber**  
-Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the `validationScript` option to be set correctly)  
+Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the `validationScript` option to be set correctly). Expects an internationally formatted number. Optionally pass the argument `true` to accept national numbers as well.  
 ```js
 $("#mobile-number").intlTelInput("isValidNumber");
 ```
