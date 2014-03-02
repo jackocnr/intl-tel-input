@@ -24,6 +24,7 @@
       DOWN: 40,
       ENTER: 13,
       ESCAPE: 27,
+      PLUS: 43,
       A: 65,
       Z: 90
     };
@@ -253,6 +254,13 @@
         if (!$.trim(that.telInput.val())) {
           var countryData = that.getSelectedCountryData();
           that._resetToDialCode(countryData.dialCode);
+          // after auto-inserting a dial code, if the first key they hit is '+' then assume
+          // they are entering a new number, so remove the dial code
+          that.telInput.one("keypress.intlTelInput", function(e) {
+            if (e.which == keys.PLUS) {
+              that.telInput.val("");
+            }
+          });
         }
       });
 
@@ -264,6 +272,7 @@
             that.telInput.val("");
           }
         }
+        that.telInput.off("keypress.intlTelInput");
       });
 
       // made the decision not to trigger blur() now, because would only 
