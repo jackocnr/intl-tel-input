@@ -538,10 +538,10 @@ Plugin.prototype = {
         return this._getCountryData(countryCode);
     },
     // validate the input val - assumes the global function isValidNumber
-    isValidNumber: function() {
-        var val = $.trim(this.telInput.val());
-        var countryData = this.getSelectedCountryData();
-        return window.isValidNumber(val, countryData.iso2);
+    // pass in true if you want to allow national numbers (no country dial code)
+    isValidNumber: function(allowNational) {
+        var val = $.trim(this.telInput.val()), countryData = this.getSelectedCountryData(), countryCode = allowNational ? countryData.iso2 : "";
+        return window.isValidNumber(val, countryCode);
     },
     // update the selected flag, and insert the dial code
     selectCountry: function(countryCode) {
