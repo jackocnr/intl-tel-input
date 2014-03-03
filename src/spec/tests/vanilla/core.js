@@ -15,6 +15,10 @@ describe("init vanilla plugin on input with prepopulated value", function() {
     expect(getSelectedFlagElement()).toHaveClass("gb");
   });
 
+  it("sets the active list item correctly", function() {
+    expect(getActiveListItem().attr("data-country-code")).toEqual("gb");
+  });
+
 });
 
 
@@ -45,6 +49,10 @@ describe("init vanilla plugin", function() {
 
   it("defaults to the right flag", function() {
     expect(getSelectedFlagElement()).toHaveClass("us");
+  });
+
+  it("sets the active list item correctly", function() {
+    expect(getActiveListItem().attr("data-country-code")).toEqual("us");
   });
 
   // autoHideDialCode defaults to true, which means dont show dial code until focused

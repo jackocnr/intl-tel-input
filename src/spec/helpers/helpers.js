@@ -27,9 +27,14 @@ var getListLength = function(i) {
   return getListElement(i).find("li.country").length;
 };
 
+var getActiveListItem = function(i) {
+  i = i || input;
+  return getListElement(i).find("li.active");
+};
+
 var getPreferredCountriesLength = function(i) {
   i = i || input;
-  return getListElement(i).find("li.country.preferred").length;
+  return getListElement(i).find("li.preferred").length;
 };
 
 var getSelectedFlagContainer = function(i) {
