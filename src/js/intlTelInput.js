@@ -75,9 +75,6 @@
 
       // set the preferredCountries property
       this._setPreferredCountries();
-
-      // set the defaultCountry property
-      this._setDefaultCountry();
     },
 
 
@@ -123,17 +120,6 @@
           that.preferredCountries.push(countryData);
         }
       });
-    },
-
-
-    // process the defaultCountry option, else fall back to the first in the list
-    _setDefaultCountry: function() {
-      // if the default country option is set then use it
-      if (this.options.defaultCountry) {
-        this.defaultCountry = this._getCountryData(this.options.defaultCountry, false);
-      } else {
-        this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0] : intlData.countries[0];
-      }
     },
 
 
@@ -210,12 +196,20 @@
       if (this.telInput.val()) {
         this._updateFlagFromInputVal();
       } else {
-        // input is empty, so set the default flag
-        this._selectFlag(this.defaultCountry.iso2);
+        // input is empty, so set to the default country
+
+        var defaultCountry;
+        // check the defaultCountry option, else fall back to the first in the list
+        if (this.options.defaultCountry) {
+          defaultCountry = this._getCountryData(this.options.defaultCountry, false);
+        } else {
+          defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0] : intlData.countries[0];
+        }
+        this._selectFlag(defaultCountry.iso2);
 
         // if autoHideDialCode is disabled, insert the default dial code
         if (!this.options.autoHideDialCode) {
-          this._resetToDialCode(this.defaultCountry.dialCode);
+          this._resetToDialCode(defaultCountry.dialCode);
         }
       }
     },
