@@ -465,28 +465,23 @@
 
      // update the selected flag using the input's current value
     _updateFlagFromInputVal: function() {
-      var that = this,
-        countryCode,
-        alreadySelected = false;
+      var that = this;
 
       // try and extract valid dial code from input
       var dialCode = this._getDialCode(this.telInput.val());
       if (dialCode) {
         // check if one of the matching countries is already selected
-        var countryCodes = intlData.countryCodes[dialCode.replace(/\D/g, '')];
+        var countryCodes = intlData.countryCodes[dialCode.replace(/\D/g, '')],
+          alreadySelected = false;
         $.each(countryCodes, function(i, c) {
           if (that.selectedFlagInner.hasClass(c)) {
             alreadySelected = true;
           }
         });
-        countryCode = countryCodes[0];
-      } else {
-        // else default to dialcode of the defaultCountry
-        countryCode = this.defaultCountry.iso2;
-      }
-
-      if (!alreadySelected) {
-        this._selectFlag(countryCode);
+        
+        if (!alreadySelected) {
+          this._selectFlag(countryCodes[0]);
+        }
       }
     },
 
