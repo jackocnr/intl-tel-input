@@ -80,7 +80,7 @@ $("#mobile-number").intlTelInput("getSelectedCountryData");
 ```
 
 **isValidNumber**  
-Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the `validationScript` option to be set correctly)  
+Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the `validationScript` option to be set correctly). Expects an internationally formatted number. Optionally pass the argument `true` to accept national numbers as well.  
 ```js
 $("#mobile-number").intlTelInput("isValidNumber");
 ```
@@ -131,3 +131,4 @@ For the sake of alignment, the default CSS forces the input's vertical margin to
 * Flag images and CSS from https://github.com/tkrotoff/famfamfam_flags
 * Country data from https://github.com/mledoze/countries
 * Validation code from http://libphonenumber.googlecode.com
+* Feature contributions are listed in the wiki: [Contributions](https://github.com/Bluefieldscom/intl-tel-input/wiki/Contributions)
