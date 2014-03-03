@@ -39,9 +39,9 @@ Try it for yourself using the included demo.html
 ## Options
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
-**americaMode**  
+**nationalMode**  
 Type: `Boolean` Default: `false`  
-Don't display the +1 prefix for American numbers, because a lot of Americans are unfamiliar with international dial codes.
+Don't insert the international dial code when the user selects a country from the dropdown.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -69,7 +69,7 @@ Specify the countries to appear at the top of the list.
 
 **validationScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/isValidNumber.js"`  
-Enable validation by specifying the URL to the included libphonenumber script. When the plugin is initialised, it will add a `<script>` element to the end of the body to load this ~200kb script, which is then accessible through the public `isValidNumber` function.
+Enable validation by specifying the URL to the included libphonenumber script. This ~200k script is fetched only when the page has finished loading (to prevent blocking), and is then accessible through the public `isValidNumber` function.
 
 
 ## Public methods
@@ -113,7 +113,7 @@ $.fn.intlTelInput.setCountryData(countryData);
 
 
 ## Validation
-International number validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200kb, so I have included it as an optional extra. If you specify the validationScript option then when the plugin is initialised it will add a `<script>` element to the end of the body to load the script, which is then accessible through the public `isValidNumber` function.
+International number validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200kb, so I have included it as an optional extra. If you specify the validationScript option then it will fetch the script only when the page has finished loading (to prevent blocking), and will then be accessible through the public `isValidNumber` function.
 
 
 ## CSS
