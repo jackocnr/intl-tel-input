@@ -40,7 +40,7 @@ defaults = {
     DOWN: 40,
     ENTER: 13,
     ESCAPE: 27,
-    PLUS: 43,
+    PLUS: 187,
     A: 65,
     Z: 90
 };
@@ -202,8 +202,9 @@ Plugin.prototype = {
         if (this.options.autoHideDialCode) {
             this._initAutoHideDialCode();
         }
-        // update flag on keyup
-        // (by extracting the dial code from the input value)
+        // update flag on keyup (by extracting the dial code from the input value).
+        // use keyup instead of keypress because we want to update on backspace
+        // and instead of keydown because the value hasn't updated when that event is fired
         this.telInput.keyup(function() {
             that._updateFlagFromInputVal();
         });
@@ -247,10 +248,11 @@ Plugin.prototype = {
                 var countryData = that.getSelectedCountryData();
                 that._resetToDialCode(countryData.dialCode);
                 // after auto-inserting a dial code, if the first key they hit is '+' then assume
-                // they are entering a new number, so remove the dial code
-                that.telInput.one("keypress.intlTelInput", function(e) {
+                // they are entering a new number, so remove the dial code.
+                // use keyup to match the other keyup listener, so can unbind both at once
+                that.telInput.one("keyup.intlTelInput", function(e) {
                     if (e.which == keys.PLUS) {
-                        that.telInput.val("");
+                        that.telInput.val("+");
                     }
                 });
             }
@@ -263,7 +265,7 @@ Plugin.prototype = {
                     that.telInput.val("");
                 }
             }
-            that.telInput.off("keypress.intlTelInput");
+            that.telInput.off("keyup.intlTelInput");
         });
     },
     // focus input and put the cursor at the end
@@ -321,7 +323,10 @@ Plugin.prototype = {
             }
             isOpening = false;
         });
-        // listen for typing
+        // listen for up/down scrolling, enter to select, or letters to jump to country name.
+        // use keydown as keypress doesn't fire for non-char keys and we want to catch if they
+        // just hit down and hold it to scroll down (no keyup event).
+        // listen on the document because that's where key events are triggered if no input has focus
         $(document).on("keydown.intlTelInput" + this.id, function(e) {
             // prevent down key from scrolling the whole page,
             // and enter key from submitting a form etc
