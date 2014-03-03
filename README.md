@@ -39,9 +39,9 @@ Try it for yourself using the included demo.html
 ## Options
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
-**americaMode**  
+**nationalMode**  
 Type: `Boolean` Default: `false`  
-Don't display the +1 prefix for American numbers, because a lot of Americans are unfamiliar with international dial codes.
+Don't insert the international dial code when the user selects a country from the dropdown.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
