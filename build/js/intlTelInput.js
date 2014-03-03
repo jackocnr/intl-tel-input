@@ -40,7 +40,7 @@ defaults = {
     DOWN: 40,
     ENTER: 13,
     ESCAPE: 27,
-    PLUS: 187,
+    PLUS: 43,
     A: 65,
     Z: 90
 };
@@ -49,7 +49,8 @@ function Plugin(element, options) {
     this.element = element;
     this.options = $.extend({}, defaults, options);
     this._defaults = defaults;
-    this.id = id++;
+    // event namespace
+    this.ns = "." + pluginName + id++;
     this._name = pluginName;
     this.init();
 }
@@ -205,12 +206,12 @@ Plugin.prototype = {
         // update flag on keyup (by extracting the dial code from the input value).
         // use keyup instead of keypress because we want to update on backspace
         // and instead of keydown because the value hasn't updated when that event is fired
-        this.telInput.on("keyup", function() {
+        this.telInput.on("keyup" + this.ns, function() {
             that._updateFlagFromInputVal();
         });
         // toggle country dropdown on click
         var selectedFlag = this.selectedFlagInner.parent();
-        selectedFlag.click(function(e) {
+        selectedFlag.on("click" + this.ns, function(e) {
             // only intercept this event if we're opening the dropdown
             // else let it bubble up to the top ("click-off-to-close" listener)
             // we cannot just stopPropagation as it may be needed to close another instance
@@ -235,7 +236,7 @@ Plugin.prototype = {
         var that = this;
         // mousedown decides where the cursor goes, so if we're focusing
         // we must prevent this from happening
-        this.telInput.on("mousedown", function(e) {
+        this.telInput.on("mousedown" + this.ns, function(e) {
             if (!that.telInput.is(":focus") && !that.telInput.val()) {
                 e.preventDefault();
                 // but this also cancels the focus, so we must trigger that manually
@@ -243,29 +244,31 @@ Plugin.prototype = {
             }
         });
         // on focus: if empty, insert the dial code for the currently selected flag
-        this.telInput.on("focus", function() {
+        this.telInput.on("focus" + this.ns, function() {
             if (!$.trim(that.telInput.val())) {
                 var countryData = that.getSelectedCountryData();
                 that._resetToDialCode(countryData.dialCode);
                 // after auto-inserting a dial code, if the first key they hit is '+' then assume
                 // they are entering a new number, so remove the dial code.
-                // use keyup to match the other keyup listener, so can unbind both at once
-                that.telInput.one("keyup.intlTelInput", function(e) {
+                // use keypress instead of keydown because keydown gets triggered for the shift key
+                // (required to hit the + key), and instead of keyup because that shows the new '+'
+                // before removing the old one
+                that.telInput.one("keypress" + that.ns, function(e) {
                     if (e.which == keys.PLUS) {
-                        that.telInput.val("+");
+                        that.telInput.val("");
                     }
                 });
             }
         });
         // on blur: if just a dial code then remove it
-        this.telInput.on("blur", function() {
+        this.telInput.on("blur" + this.ns, function() {
             var value = $.trim(that.telInput.val());
             if (value) {
                 if ($.trim(that._getDialCode(value) + that.options.dialCodeDelimiter) == value) {
                     that.telInput.val("");
                 }
             }
-            that.telInput.off("keyup.intlTelInput");
+            that.telInput.off("keypress" + this.ns);
         });
     },
     // focus input and put the cursor at the end
@@ -306,18 +309,18 @@ Plugin.prototype = {
         var that = this;
         // when mouse over a list item, just highlight that one
         // we add the class "highlight", so if they hit "enter" we know which one to select
-        this.countryList.on("mouseover.intlTelInput", ".country", function(e) {
+        this.countryList.on("mouseover" + this.ns, ".country", function(e) {
             that._highlightListItem($(this));
         });
         // listen for country selection
-        this.countryList.on("click.intlTelInput", ".country", function(e) {
+        this.countryList.on("click" + this.ns, ".country", function(e) {
             that._selectListItem($(this));
         });
         // click off to close
         // (except when this initial opening click is bubbling up)
         // we cannot just stopPropagation as it may be needed to close another instance
         var isOpening = true;
-        $("html").on("click.intlTelInput" + this.id, function(e) {
+        $("html").on("click" + this.ns, function(e) {
             if (!isOpening) {
                 that._closeDropdown();
             }
@@ -327,7 +330,7 @@ Plugin.prototype = {
         // use keydown as keypress doesn't fire for non-char keys and we want to catch if they
         // just hit down and hold it to scroll down (no keyup event).
         // listen on the document because that's where key events are triggered if no input has focus
-        $(document).on("keydown.intlTelInput" + this.id, function(e) {
+        $(document).on("keydown" + this.ns, function(e) {
             // prevent down key from scrolling the whole page,
             // and enter key from submitting a form etc
             e.preventDefault();
@@ -462,10 +465,10 @@ Plugin.prototype = {
         // update the arrow
         this.selectedFlagInner.children(".arrow").removeClass("up");
         // unbind event listeners
-        $(document).off("keydown.intlTelInput" + this.id);
-        $("html").off("click.intlTelInput" + this.id);
+        $(document).off("keydown" + this.ns);
+        $("html").off("click" + this.ns);
         // unbind both hover and click listeners
-        this.countryList.off(".intlTelInput");
+        this.countryList.off(this.ns);
     },
     // check if an element is visible within it's container, else scroll until it is
     _scrollTo: function(element) {
