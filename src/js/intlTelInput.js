@@ -228,7 +228,7 @@
       // update flag on keyup (by extracting the dial code from the input value).
       // use keyup instead of keypress because we want to update on backspace
       // and instead of keydown because the value hasn't updated when that event is fired
-      this.telInput.keyup(function() {
+      this.telInput.on("keyup", function() {
         that._updateFlagFromInputVal();
       });
 
@@ -263,7 +263,7 @@
 
       // mousedown decides where the cursor goes, so if we're focusing
       // we must prevent this from happening
-      this.telInput.mousedown(function(e) {
+      this.telInput.on("mousedown", function(e) {
         if (!that.telInput.is(":focus") && !that.telInput.val()) {
           e.preventDefault();
           // but this also cancels the focus, so we must trigger that manually
@@ -272,7 +272,7 @@
       });
 
       // on focus: if empty, insert the dial code for the currently selected flag
-      this.telInput.focus(function() {
+      this.telInput.on("focus", function() {
         if (!$.trim(that.telInput.val())) {
           var countryData = that.getSelectedCountryData();
           that._resetToDialCode(countryData.dialCode);
@@ -288,7 +288,7 @@
       });
 
       // on blur: if just a dial code then remove it
-      this.telInput.blur(function() {
+      this.telInput.on("blur", function() {
         var value = $.trim(that.telInput.val());
         if (value) {
           if ($.trim(that._getDialCode(value) + that.options.dialCodeDelimiter) == value) {
