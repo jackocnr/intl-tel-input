@@ -72,9 +72,9 @@ describe("init vanilla plugin", function() {
       expect(getSelectedFlagElement()).toHaveClass("gb");
     });
 
-    it("clearing the input again defaults to the right flag", function() {
+    it("clearing the input again does not change the selected flag", function() {
       input.val("").keyup();
-      expect(getSelectedFlagElement()).toHaveClass("us");
+      expect(getSelectedFlagElement()).toHaveClass("gb");
     });
   
   });

@@ -19,8 +19,8 @@ author: Jack O'Connor (http://jackocnr.com)
 
 var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
 defaults = {
-    // don't display the +1 prefix when America is selected
-    americaMode: false,
+    // don't insert international dial codes
+    nationalMode: false,
     // if there is just a dial code in the input: remove it on blur, and re-add it on focus
     autoHideDialCode: true,
     // default country
@@ -201,8 +201,8 @@ Plugin.prototype = {
     // initialise the main event listeners: input keyup, and click selected flag
     _initListeners: function() {
         var that = this;
-        // auto hide dial code option
-        if (this.options.autoHideDialCode) {
+        // auto hide dial code option (ignore if in national mode)
+        if (this.options.autoHideDialCode && !this.options.nationalMode) {
             this._initAutoHideDialCode();
         }
         // update flag on keyup (by extracting the dial code from the input value).
@@ -414,8 +414,8 @@ Plugin.prototype = {
     },
     // reset the input value to just a dial code
     _resetToDialCode: function(dialCode) {
-        // if the dialCode is for America, and americaMode is enabled, then don't insert the dial code
-        var value = dialCode == "1" && this.options.americaMode ? "" : "+" + dialCode + this.options.dialCodeDelimiter;
+        // if nationalMode is enabled then don't insert the dial code
+        var value = this.options.nationalMode ? "" : "+" + dialCode + this.options.dialCodeDelimiter;
         this.telInput.val(value);
     },
     // remove highlighting from other list items and highlight the given item
@@ -452,9 +452,10 @@ Plugin.prototype = {
         this._selectFlag(countryCode);
         this._closeDropdown();
         // update input value
-        var newNumber = this._updateNumber("+" + listItem.attr("data-dial-code"));
-        this.telInput.val(newNumber);
-        this.telInput.trigger("change");
+        if (!this.options.nationalMode) {
+            this._updateNumber("+" + listItem.attr("data-dial-code"));
+            this.telInput.trigger("change");
+        }
         // focus the input
         this._focus();
     },
@@ -498,11 +499,7 @@ Plugin.prototype = {
             var existingNumber = inputVal && inputVal.substr(0, 1) != "+" ? $.trim(inputVal) : "";
             newNumber = newDialCode + this.options.dialCodeDelimiter + existingNumber;
         }
-        // if americaMode is enabled, we dont display the dial code for american numbers
-        if (this.options.americaMode && newNumber.substring(0, 3) == "+1" + this.options.dialCodeDelimiter) {
-            newNumber = newNumber.substring(3);
-        }
-        return newNumber;
+        this.telInput.val(newNumber);
     },
     // try and extract a valid international dial code from a full telephone number
     // Note: returns the raw string inc plus character and any whitespace/dots etc

@@ -19,6 +19,7 @@ describe("testing autoHideDialCode option", function() {
       input.intlTelInput({
         autoHideDialCode: true
       });
+      // must be in DOM for focus to work
       getParentElement().appendTo($("body"));
     });
 

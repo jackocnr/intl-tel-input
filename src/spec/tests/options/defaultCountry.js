@@ -15,26 +15,12 @@ describe("init plugin with a default country", function() {
     input = null;
   });
 
-  it("defaults to that country", function() {
+  it("sets the selected flag correctly", function() {
     expect(getSelectedFlagElement()).toHaveClass(defaultCountry);
   });
 
-
-  describe("typing a number with a different dial code", function() {
-  
-    beforeEach(function() {
-      input.val("+44 1234567").keyup();
-    });
-
-    it("updates the selected flag", function() {
-      expect(getSelectedFlagElement()).toHaveClass("gb");
-    });
-
-    it("clearing the input again defaults to the right flag", function() {
-      input.val("").keyup();
-      expect(getSelectedFlagElement()).toHaveClass(defaultCountry);
-    });
-  
+  it("sets the active list item correctly", function() {
+    expect(getActiveListItem().attr("data-country-code")).toEqual(defaultCountry);
   });
 
 });

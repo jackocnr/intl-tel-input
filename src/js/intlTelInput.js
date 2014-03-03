@@ -2,8 +2,8 @@
   var pluginName = "intlTelInput",
     id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
-      // don't display the +1 prefix when America is selected
-      americaMode: false,
+      // don't insert international dial codes
+      nationalMode: false,
       // if there is just a dial code in the input: remove it on blur, and re-add it on focus
       autoHideDialCode: true,
       // default country
@@ -225,8 +225,8 @@
     _initListeners: function() {
       var that = this;
 
-      // auto hide dial code option
-      if (this.options.autoHideDialCode) {
+      // auto hide dial code option (ignore if in national mode)
+      if (this.options.autoHideDialCode && !this.options.nationalMode) {
         this._initAutoHideDialCode();
       }
 
@@ -478,7 +478,7 @@
             alreadySelected = true;
           }
         });
-        
+
         if (!alreadySelected) {
           this._selectFlag(countryCodes[0]);
         }
@@ -488,8 +488,8 @@
 
     // reset the input value to just a dial code
     _resetToDialCode: function(dialCode) {
-      // if the dialCode is for America, and americaMode is enabled, then don't insert the dial code
-      var value = (dialCode == "1" && this.options.americaMode) ? "" : "+" + dialCode + this.options.dialCodeDelimiter;
+      // if nationalMode is enabled then don't insert the dial code
+      var value = (this.options.nationalMode) ? "" : "+" + dialCode + this.options.dialCodeDelimiter;
       this.telInput.val(value);
     },
 
@@ -537,9 +537,10 @@
       this._closeDropdown();
 
       // update input value
-      var newNumber = this._updateNumber("+" + listItem.attr("data-dial-code"));
-      this.telInput.val(newNumber);
-      this.telInput.trigger("change");
+      if (!this.options.nationalMode) {
+        this._updateNumber("+" + listItem.attr("data-dial-code"));
+        this.telInput.trigger("change");
+      }
 
       // focus the input
       this._focus();
@@ -604,11 +605,7 @@
         newNumber = newDialCode + this.options.dialCodeDelimiter + existingNumber;
       }
 
-      // if americaMode is enabled, we dont display the dial code for american numbers
-      if (this.options.americaMode && newNumber.substring(0, 3) == "+1"+this.options.dialCodeDelimiter) {
-        newNumber = newNumber.substring(3);
-      }
-      return newNumber;
+      this.telInput.val(newNumber);
     },
 
 
