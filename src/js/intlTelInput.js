@@ -324,21 +324,7 @@
 
     // show the dropdown
     _showDropdown: function() {
-      // decide where to position dropdown (depends on scroll)
-      var inputTop = this.telInput.offset().top,
-        windowTop = $(window).scrollTop(),
-        dropdownHeight = this.countryList.outerHeight(),
-        // dropdownFitsBelow = (dropdownBottom < windowBottom)
-        dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + dropdownHeight < windowTop + $(window).height()),
-        dropdownFitsAbove = (inputTop - dropdownHeight > windowTop);
-
-      // if the dropdown wont fit below and it will fit above, then put it above
-      if (!dropdownFitsBelow && dropdownFitsAbove) {
-        // dropdownHeight - 1 for border
-        this.countryList.css("top", "-" + (dropdownHeight - 1) + "px");
-      } else {
-        this.countryList.css("top", "");
-      }
+      this._setDropdownPosition();
 
       // update highlighting and scroll to active list item
       var activeListItem = this.countryList.children(".active");
@@ -353,6 +339,21 @@
 
       // update the arrow
       this.selectedFlagInner.children(".arrow").addClass("up");
+    },
+
+
+    // decide where to position dropdown (depends on position within viewport, and scroll)
+    _setDropdownPosition: function() {
+      var inputTop = this.telInput.offset().top,
+        windowTop = $(window).scrollTop(),
+        dropdownHeight = this.countryList.outerHeight(),
+        // dropdownFitsBelow = (dropdownBottom < windowBottom)
+        dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + dropdownHeight < windowTop + $(window).height()),
+        dropdownFitsAbove = (inputTop - dropdownHeight > windowTop);
+
+      // dropdownHeight - 1 for border
+      var cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (dropdownHeight - 1) + "px" : "";
+      this.countryList.css("top", cssTop);
     },
 
 
