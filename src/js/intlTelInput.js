@@ -300,7 +300,7 @@
             that.telInput.val("");
           }
         }
-        that.telInput.off("keypress" + this.ns);
+        that.telInput.off("keypress" + that.ns);
       });
 
       // made the decision not to trigger blur() now, because would only 

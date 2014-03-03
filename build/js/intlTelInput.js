@@ -268,7 +268,7 @@ Plugin.prototype = {
                     that.telInput.val("");
                 }
             }
-            that.telInput.off("keypress" + this.ns);
+            that.telInput.off("keypress" + that.ns);
         });
     },
     // focus input and put the cursor at the end
