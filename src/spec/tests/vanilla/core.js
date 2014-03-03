@@ -1,5 +1,24 @@
 "use strict";
 
+describe("init vanilla plugin on input with prepopulated value", function() {
+
+  beforeEach(function() {
+    input = $("<input value='+44 12345'>");
+    input.intlTelInput();
+  });
+
+  afterEach(function() {
+    input = null;
+  });
+
+  it("sets the selected flag correctly", function() {
+    expect(getSelectedFlagElement()).toHaveClass("gb");
+  });
+
+});
+
+
+
 describe("init vanilla plugin", function() {
 
   beforeEach(function() {

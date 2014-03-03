@@ -53,8 +53,8 @@
       // generate the markup
       this._generateMarkup();
 
-      // conditionally set the input's initial value
-      this._setInitialValue();
+      // set the initial state of the input value and the selected flag
+      this._setInitialState();
 
       // start all of the event listeners: autoHideDialCode, input keyup, selectedFlag click
       this._initListeners();
@@ -158,9 +158,8 @@
       var selectedFlag = $("<div>", {
         "class": "selected-flag"
       }).appendTo(flagsContainer);
-      // here we default to the first country in the list
       this.selectedFlagInner = $("<div>", {
-        "class": "flag " + this.defaultCountry.iso2
+        "class": "flag"
       }).appendTo(selectedFlag);
       // CSS triangle
       $("<div>", {
@@ -179,12 +178,8 @@
       }
       this._appendListItems(intlData.countries, "");
 
+      // this is useful in lots of places
       this.countryListItems = this.countryList.children(".country");
-      // auto select the top one
-      this.countryListItems.first().addClass("active");
-
-      // make sure the initial selected flag markup is correct
-      this._updateFlagFromInputVal();
     },
 
 
@@ -209,12 +204,19 @@
     },
 
 
-    // give the input it's initial value
-    _setInitialValue: function() {
-      // if autoHideDialCode is disabled (and input is not pre-populated),
-      // insert the default dial code
-      if (!this.options.autoHideDialCode && this.telInput.val() === "") {
-        this._resetToDialCode(this.defaultCountry.dialCode);
+    // set the initial state of the input value and the selected flag
+    _setInitialState: function() {
+      // if the input is pre-populated, then just update the selected flag accordingly
+      if (this.telInput.val()) {
+        this._updateFlagFromInputVal();
+      } else {
+        // input is empty, so set the default flag
+        this._selectFlag(this.defaultCountry.iso2);
+
+        // if autoHideDialCode is disabled, insert the default dial code
+        if (!this.options.autoHideDialCode) {
+          this._resetToDialCode(this.defaultCountry.dialCode);
+        }
       }
     },
 
@@ -231,6 +233,8 @@
       // update flag on keyup (by extracting the dial code from the input value).
       // use keyup instead of keypress because we want to update on backspace
       // and instead of keydown because the value hasn't updated when that event is fired
+      // NOTE: better to have this one listener all the time instead of starting it on focus
+      // and stopping it on blur, because then you've got two listeners (focus and blur)
       this.telInput.on("keyup" + this.ns, function() {
         that._updateFlagFromInputVal();
       });
