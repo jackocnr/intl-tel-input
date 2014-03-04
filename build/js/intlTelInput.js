@@ -1,22 +1,15 @@
 /*
-intl-tel-input 
-version: 1.1.0
-description: A jQuery plugin for entering international telephone numbers
-repository: https://github.com/Bluefieldscom/intl-tel-input.git
-license: MIT
-author: Jack O'Connor (http://jackocnr.com)
+International Telephone Input v1.1.0
+https://github.com/Bluefieldscom/intl-tel-input.git
 */
 (function (factory) {
-    if (typeof define === "function" && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(["jquery"], function($){factory($, window, document);});
-    } else {
-        // Browser globals
-        factory(jQuery, window, document);
-    }
+  if (typeof define === "function" && define.amd) {
+    define(["jquery"], function($){factory($, window, document);});
+  } else {
+    factory(jQuery, window, document);
+  }
 }(function ($, window, document, undefined) {
 "use strict";
-
 var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
 defaults = {
     // don't insert international dial codes
@@ -39,7 +32,7 @@ defaults = {
     UP: 38,
     DOWN: 40,
     ENTER: 13,
-    ESCAPE: 27,
+    ESC: 27,
     PLUS: 43,
     A: 65,
     Z: 90
@@ -339,7 +332,7 @@ Plugin.prototype = {
             } else if (e.which == keys.ENTER) {
                 // enter to select
                 that._handleEnterKey();
-            } else if (e.which == keys.ESCAPE) {
+            } else if (e.which == keys.ESC) {
                 // esc to close
                 that._closeDropdown();
             } else if (e.which >= keys.A && e.which <= keys.Z) {
@@ -1864,5 +1857,4 @@ var intlDataFull = {
         "5999": [ "cw" ]
     }
 };
-
 }));

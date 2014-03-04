@@ -23,7 +23,7 @@
       UP: 38,
       DOWN: 40,
       ENTER: 13,
-      ESCAPE: 27,
+      ESC: 27,
       PLUS: 43,
       A: 65,
       Z: 90
@@ -396,7 +396,7 @@
         } else if (e.which == keys.ENTER) {
           // enter to select
           that._handleEnterKey();
-        } else if (e.which == keys.ESCAPE) {
+        } else if (e.which == keys.ESC) {
           // esc to close
           that._closeDropdown();
         } else if (e.which >= keys.A && e.which <= keys.Z) {

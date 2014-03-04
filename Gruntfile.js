@@ -40,25 +40,19 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         banner: '/*\n'+
-          '<%= pkg.name %> \n'+
-          'version: <%= pkg.version %>\n'+
-          'description: <%= pkg.description %>\n'+
-          'repository: <%= pkg.repository.url %>\n'+
-          'license: <%= pkg.license %>\n'+
-          'author: <%= pkg.author %>\n'+
+          'International Telephone Input v<%= pkg.version %>\n'+
+          '<%= pkg.repository.url %>\n'+
           '*/\n'+
           // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
           '(function (factory) {\n'+
-          '    if (typeof define === "function" && define.amd) {\n'+
-          '        // AMD. Register as an anonymous module.\n'+
-          '        define(["jquery"], function($){factory($, window, document);});\n'+
-          '    } else {\n'+
-          '        // Browser globals\n'+
-          '        factory(jQuery, window, document);\n'+
-          '    }\n'+
+          '  if (typeof define === "function" && define.amd) {\n'+
+          '    define(["jquery"], function($){factory($, window, document);});\n'+
+          '  } else {\n'+
+          '    factory(jQuery, window, document);\n'+
+          '  }\n'+
           '}(function ($, window, document, undefined) {\n'+
-          '"use strict";\n\n',
-        footer: '\n\n}));\n'
+          '"use strict";\n',
+        footer: '\n}));\n'
       },
       dev: {
         options: {
