@@ -154,7 +154,7 @@
 
       // country list contains: preferred countries, then divider, then all countries
       this.countryList = $("<ul>", {
-        "class": "country-list hide"
+        "class": "country-list v-hide"
       }).appendTo(flagsContainer);
       if (this.preferredCountries.length) {
         this._appendListItems(this.preferredCountries, "preferred");
