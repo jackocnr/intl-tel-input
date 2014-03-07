@@ -254,6 +254,7 @@
 
 .intl-tel-input { position: relative; display: inline-block; }
 .intl-tel-input .hide { display: none; }
+.intl-tel-input .v-hide { visibility: hidden; }
 .intl-tel-input .flag-dropdown { position: absolute; top: 0; bottom: 0; }
 .intl-tel-input .flag-dropdown .selected-flag { z-index: 1; position: relative; }
 .intl-tel-input .flag-dropdown .country-list { position: absolute; z-index: 2; }

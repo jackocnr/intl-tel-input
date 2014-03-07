@@ -164,6 +164,10 @@
       }
       this._appendListItems(intlData.countries, "");
 
+      // now we can grab the dropdown height, and hide it properly
+      this.dropdownHeight = this.countryList.outerHeight();
+      this.countryList.removeClass("v-hide").addClass("hide");
+
       // this is useful in lots of places
       this.countryListItems = this.countryList.children(".country");
     },
@@ -344,13 +348,12 @@
     _setDropdownPosition: function() {
       var inputTop = this.telInput.offset().top,
         windowTop = $(window).scrollTop(),
-        dropdownHeight = this.countryList.outerHeight(),
         // dropdownFitsBelow = (dropdownBottom < windowBottom)
-        dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + dropdownHeight < windowTop + $(window).height()),
-        dropdownFitsAbove = (inputTop - dropdownHeight > windowTop);
+        dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height()),
+        dropdownFitsAbove = (inputTop - this.dropdownHeight > windowTop);
 
       // dropdownHeight - 1 for border
-      var cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (dropdownHeight - 1) + "px" : "";
+      var cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (this.dropdownHeight - 1) + "px" : "";
       this.countryList.css("top", cssTop);
     },
 

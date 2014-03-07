@@ -32,6 +32,10 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
   .hide {
     display: none;
   }
+  // need this during init, to get the height of the dropdown
+  .v-hide {
+    visibility: hidden;
+  }
 
   .flag-dropdown {
     // positioned over the top of the input
