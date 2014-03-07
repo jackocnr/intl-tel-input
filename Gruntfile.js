@@ -29,7 +29,8 @@ module.exports = function(grunt) {
 
     // JS Code Lint
     jshint: {
-      all: "src/js/**/*.js",
+      dev: "src/js/**/*.js",
+      build: "tmp/all.js",
       options: {
         // this is for data.js which sometimes has commas on the following line
         laxcomma: true
@@ -42,17 +43,7 @@ module.exports = function(grunt) {
         banner: '/*\n'+
           'International Telephone Input v<%= pkg.version %>\n'+
           '<%= pkg.repository.url %>\n'+
-          '*/\n'+
-          // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
-          '(function (factory) {\n'+
-          '  if (typeof define === "function" && define.amd) {\n'+
-          '    define(["jquery"], function($){factory($, window, document);});\n'+
-          '  } else {\n'+
-          '    factory(jQuery, window, document);\n'+
-          '  }\n'+
-          '}(function ($, window, document, undefined) {\n'+
-          '"use strict";\n',
-        footer: '\n}));\n'
+          '*/\n'
       },
       dev: {
         options: {
@@ -62,12 +53,12 @@ module.exports = function(grunt) {
           preserveComments: true
         },
         files: {
-          'build/js/intlTelInput.js': ['src/js/intlTelInput.js', 'src/js/data.js']
+          'build/js/intlTelInput.js': 'tmp/all.js'
         }
       },
       prod: {
         files: {
-          'build/js/intlTelInput.min.js': ['src/js/intlTelInput.js', 'src/js/data.js']
+          'build/js/intlTelInput.min.js': 'tmp/all.js'
         }
       }
     },
@@ -76,7 +67,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: "src/js/**/*.js",
-        tasks: ["jshint", "uglify:dev"]
+        tasks: "js"
       },
       pluginCss: {
         files: ["src/css/flags.scss", "src/css/intlTelInput.scss"],
@@ -118,6 +109,16 @@ module.exports = function(grunt) {
     },
 
     template: {
+      js: {
+        src: 'src/js/wrapper.js.ejs',
+        dest: 'tmp/all.js',
+        variables: function () {
+          return {
+            plugin: grunt.file.read('src/js/intlTelInput.js'),
+            data: grunt.file.read('src/js/data.js'),
+          }
+        }
+      },
       defaultCountryIp: {
         src: 'examples/template.html.ejs',
         dest: 'examples/gen/default-country-ip.html',
@@ -226,15 +227,13 @@ module.exports = function(grunt) {
    * TASKS
    */
   // build everything ready for a commit
-  grunt.registerTask('build', ['jshint', 'sass', 'uglify']);
+  grunt.registerTask('build', ['template:js', 'jshint:build', 'sass', 'uglify']);
   // just javascript
-  grunt.registerTask('js', ['jshint', 'uglify']);
+  grunt.registerTask('js', ['template:js', 'jshint:build', 'uglify']);
   // build examples
   grunt.registerTask('examples', ['template']);
   // Travis CI
   grunt.registerTask('travis', ['bower', 'jasmine']);
-  // prepare everything for the demo.html
-  grunt.registerTask('demo', ['jshint', 'sass', 'uglify:dev']);
   // bump version number in 3 files, build to update js headers, then commit, tag and push
   grunt.registerTask('version', ['bump-only', 'uglify', 'bump-commit']);
 
