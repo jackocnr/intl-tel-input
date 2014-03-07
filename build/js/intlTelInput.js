@@ -433,7 +433,7 @@ Plugin.prototype = {
         var countryData = this._getCountryData(countryCode);
         this.selectedFlagInner.parent().attr("title", countryData.name + ": +" + countryData.dialCode);
         // update the active list item
-        var listItem = this.countryListItems.children(".flag." + countryCode).parent();
+        var listItem = this.countryListItems.children(".flag." + countryCode).first().parent();
         this.countryListItems.removeClass("active");
         listItem.addClass("active");
     },
