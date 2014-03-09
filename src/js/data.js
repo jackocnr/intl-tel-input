@@ -1,9 +1,6 @@
 // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
 // jshint -W100
 
-// Namespaced to prevent clashes
-var intlDataFull = {
-
   // Array of country objects for the flag dropdown.
   // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
   // Originally from https://github.com/mledoze/countries
@@ -28,7 +25,7 @@ var intlDataFull = {
   // then with a couple of manual re-arrangements to be alphabetical
   // then changed Kazakhstan from +76 to +7
   // then manually removed quotes from property names as not required
-  countries: [{
+  var allCountries = [{
     name: "Afghanistan (‫افغانستان‬‎)",
     iso2: "af",
     dialCode: "93"
@@ -1008,7 +1005,7 @@ var intlDataFull = {
     name: "Zimbabwe",
     iso2: "zw",
     dialCode: "263"
-  }],
+  }];
 
   // JavaScript object mapping dial code to country code.
   // This is used when the user enters a number,
@@ -1026,7 +1023,7 @@ var intlDataFull = {
   // Then reference this google code project for clash priority:
   // http://libphonenumber.googlecode.com/svn/trunk/javascript/i18n/phonenumbers/metadata.js
   // then updated vatican city to +379
-  countryCodes: {
+  var allCountryCodes = {
     "1": ["us", "ca"],
     "7": ["ru", "kz"],
     "20": ["eg"],
@@ -1257,6 +1254,4 @@ var intlDataFull = {
     "4779": ["sj"],
     "5997": ["bq"],
     "5999": ["cw"]
-  }
-
-};
+  };

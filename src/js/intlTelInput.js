@@ -70,8 +70,8 @@
      // prepare all of the country data, including onlyCountries, preferredCountries and
      // defaultCountry options
     _processCountryData: function() {
-      // set the global data object
-      this._setGlobalIntlData();
+      // set the instances country data objects
+      this._setInstanceCountryData();
 
       // set the preferredCountries property
       this._setPreferredCountries();
@@ -79,7 +79,7 @@
 
 
     // process onlyCountries array if present
-    _setGlobalIntlData: function() {
+    _setInstanceCountryData: function() {
       var that = this;
 
       if (this.options.onlyCountries.length) {
@@ -99,18 +99,17 @@
           }
         });
 
-        this.intlData = {
-          countries: newCountries,
-          countryCodes: newCountryCodes
-        };
+        this.countries = newCountries;
+        this.countryCodes = newCountryCodes;
       } else {
-        this.intlData = intlDataFull;
+        this.countries = allCountries;
+        this.countryCodes = allCountryCodes;
       }
     },
 
 
     // process preferred countries - iterate through the preferences,
-    // finding the relevant data from the provided intlData.countries array
+    // fetching the country data for each one
     _setPreferredCountries: function() {
       var that = this;
       this.preferredCountries = [];
@@ -162,7 +161,7 @@
           "class": "divider"
         }).appendTo(this.countryList);
       }
-      this._appendListItems(this.intlData.countries, "");
+      this._appendListItems(this.countries, "");
 
       // now we can grab the dropdown height, and hide it properly
       this.dropdownHeight = this.countryList.outerHeight();
@@ -207,7 +206,7 @@
         if (this.options.defaultCountry) {
           defaultCountry = this._getCountryData(this.options.defaultCountry, false);
         } else {
-          defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0] : this.intlData.countries[0];
+          defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0] : this.countries[0];
         }
         this._selectFlag(defaultCountry.iso2);
 
@@ -468,7 +467,7 @@
       var dialCode = this._getDialCode(this.telInput.val());
       if (dialCode) {
         // check if one of the matching countries is already selected
-        var countryCodes = this.intlData.countryCodes[dialCode.replace(/\D/g, '')],
+        var countryCodes = this.countryCodes[dialCode.replace(/\D/g, '')],
           alreadySelected = false;
         $.each(countryCodes, function(i, c) {
           if (that.selectedFlagInner.hasClass(c)) {
@@ -501,7 +500,7 @@
     // find the country data for the given country code
     // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
     _getCountryData: function(countryCode, ignoreOnlyCountriesOption) {
-      var countryList = (ignoreOnlyCountriesOption) ? intlDataFull.countries : this.intlData.countries;
+      var countryList = (ignoreOnlyCountriesOption) ? allCountries : this.countries;
       for (var i = 0; i < countryList.length; i++) {
         if (countryList[i].iso2 == countryCode) {
           return countryList[i];
@@ -621,7 +620,7 @@
           if ($.isNumeric(c)) {
             numericChars += c;
             // if current numericChars make a valid dial code
-            if (this.intlData.countryCodes[numericChars]) {
+            if (this.countryCodes[numericChars]) {
               // store the actual raw string (useful for matching later)
               dialCode = inputVal.substring(0, i+1);
             }
@@ -738,13 +737,13 @@
 
   // get the country data object
   $.fn[pluginName].getCountryData = function() {
-    return intlDataFull;
+    return allCountries;
   };
 
 
   // set the country data object
   $.fn[pluginName].setCountryData = function(obj) {
-    intlDataFull = obj;
+    allCountries = obj;
   };
 
 
