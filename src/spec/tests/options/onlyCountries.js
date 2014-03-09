@@ -14,8 +14,7 @@ describe("init plugin with onlyCountries", function() {
   });
 
   afterEach(function() {
-    input = null;
-    onlyCountries = null;
+    input = onlyCountries = null;
   });
 
   it("defaults to the first onlyCountries", function() {
@@ -24,6 +23,37 @@ describe("init plugin with onlyCountries", function() {
 
   it("has the right number of list items", function() {
     expect(getListLength()).toEqual(onlyCountries.length);
+  });
+
+});
+
+describe("init plugin on 2 different inputs with different onlyCountries", function() {
+
+  var input2;
+
+  beforeEach(function() {
+    input = $("<input>");
+    input2 = $("<input>");
+    // japan
+    input.intlTelInput({
+      onlyCountries: ['jp']
+    });
+    // korea
+    input2.intlTelInput({
+      onlyCountries: ['kr']
+    });
+    $("body").append(getParentElement(input)).append(getParentElement(input2));
+  });
+
+  afterEach(function() {
+    getParentElement(input).remove();
+    getParentElement(input2).remove();
+    input = input2 = null;
+  });
+
+  it("first instance still works", function() {
+    input.focus();
+    expect(input.val()).toEqual("+81 ");
   });
 
 });

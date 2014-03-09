@@ -21,8 +21,7 @@ describe("init vanilla plugin to test multiple instances", function() {
   afterEach(function() {
     getParentElement(input).remove();
     getParentElement(input2).remove();
-    input = null;
-    input2 = null;
+    input = input2 = null;
   });
 
   it("instances have different country lists", function() {

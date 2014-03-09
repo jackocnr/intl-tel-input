@@ -88,12 +88,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         }
                     }
                 });
-                window.intlData = {
+                this.intlData = {
                     countries: newCountries,
                     countryCodes: newCountryCodes
                 };
             } else {
-                window.intlData = intlDataFull;
+                this.intlData = intlDataFull;
             }
         },
         // process preferred countries - iterate through the preferences,
@@ -144,7 +144,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     "class": "divider"
                 }).appendTo(this.countryList);
             }
-            this._appendListItems(intlData.countries, "");
+            this._appendListItems(this.intlData.countries, "");
             // now we can grab the dropdown height, and hide it properly
             this.dropdownHeight = this.countryList.outerHeight();
             this.countryList.removeClass("v-hide").addClass("hide");
@@ -182,7 +182,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 if (this.options.defaultCountry) {
                     defaultCountry = this._getCountryData(this.options.defaultCountry, false);
                 } else {
-                    defaultCountry = this.preferredCountries.length ? this.preferredCountries[0] : intlData.countries[0];
+                    defaultCountry = this.preferredCountries.length ? this.preferredCountries[0] : this.intlData.countries[0];
                 }
                 this._selectFlag(defaultCountry.iso2);
                 // if autoHideDialCode is disabled, insert the default dial code
@@ -394,7 +394,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var dialCode = this._getDialCode(this.telInput.val());
             if (dialCode) {
                 // check if one of the matching countries is already selected
-                var countryCodes = intlData.countryCodes[dialCode.replace(/\D/g, "")], alreadySelected = false;
+                var countryCodes = this.intlData.countryCodes[dialCode.replace(/\D/g, "")], alreadySelected = false;
                 $.each(countryCodes, function(i, c) {
                     if (that.selectedFlagInner.hasClass(c)) {
                         alreadySelected = true;
@@ -419,7 +419,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // find the country data for the given country code
         // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
         _getCountryData: function(countryCode, ignoreOnlyCountriesOption) {
-            var countryList = ignoreOnlyCountriesOption ? intlDataFull.countries : intlData.countries;
+            var countryList = ignoreOnlyCountriesOption ? intlDataFull.countries : this.intlData.countries;
             for (var i = 0; i < countryList.length; i++) {
                 if (countryList[i].iso2 == countryCode) {
                     return countryList[i];
@@ -509,7 +509,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     if ($.isNumeric(c)) {
                         numericChars += c;
                         // if current numericChars make a valid dial code
-                        if (intlData.countryCodes[numericChars]) {
+                        if (this.intlData.countryCodes[numericChars]) {
                             // store the actual raw string (useful for matching later)
                             dialCode = inputVal.substring(0, i + 1);
                         }
