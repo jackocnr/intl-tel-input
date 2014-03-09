@@ -78,12 +78,21 @@ Get the country data for the currently selected flag
 ```js
 $("#mobile-number").intlTelInput("getSelectedCountryData");
 ```
+Returns something like this:
+```js
+{
+  name: "Afghanistan (‫افغانستان‬‎)",
+  iso2: "af",
+  dialCode: "93"
+}
+```
 
 **isValidNumber**  
 Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the `validationScript` option to be set correctly). Expects an internationally formatted number. Optionally pass the argument `true` to accept national numbers as well.  
 ```js
 $("#mobile-number").intlTelInput("isValidNumber");
 ```
+Returns: true/false
 
 **selectCountry**  
 Select a country after initialisation (e.g. when the user is entering their address)  
@@ -103,6 +112,14 @@ $("#mobile-number").intlTelInput("setNumber", "+44 77333 123 456");
 Get all of the plugin's country data  
 ```js
 var countryData = $.fn.intlTelInput.getCountryData();
+```
+Returns an array of country objects:
+```js
+[{
+  name: "Afghanistan (‫افغانستان‬‎)",
+  iso2: "af",
+  dialCode: "93"
+}, ...]
 ```
 
 **setCountryData**  
