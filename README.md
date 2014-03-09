@@ -143,7 +143,7 @@ Depending on your project setup, you may need to override the path to flags.png 
 **Input margin**  
 For the sake of alignment, the default CSS forces the input's vertical margin to `0px`. If you want vertical margin, you should add it to the container (with class `intl-tel-input`).
 
-**Displaying error messages**
+**Displaying error messages**  
 If your error handling code inserts an error message before the `<input>` it will break the layout. Instead you must insert it before the container (with class `intl-tel-input`).
 
 
