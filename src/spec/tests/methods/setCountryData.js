@@ -2,16 +2,11 @@
 
 describe("use static method setCountryData before initialising the plugin", function() {
 
-  var oldCountryData, newCountryData = {
-    countries: [{
-      "name": "Afghanistan (افغانستان‎)",
-      "cca2": "af",
-      "calling-code": "93"
-    }],
-    countryCodes: {
-      "93": ["af"]
-    }
-  };
+  var oldCountryData, newCountryData = [{
+    "name": "Afghanistan (افغانستان‎)",
+    "cca2": "af",
+    "calling-code": "93"
+  }];
 
   beforeEach(function() {
     input = $("<input>");
@@ -26,7 +21,7 @@ describe("use static method setCountryData before initialising the plugin", func
   });
 
   it("the plugin is initialised with the new data", function() {
-    expect(getListLength()).toEqual(newCountryData.countries.length);
+    expect(getListLength()).toEqual(newCountryData.length);
   });
 
 });

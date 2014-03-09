@@ -45,6 +45,8 @@ describe("init vanilla plugin", function() {
     var defaultPreferredCountries = 2;
     expect(getListLength()).toEqual(totalCountries + defaultPreferredCountries);
     expect(getPreferredCountriesLength()).toEqual(defaultPreferredCountries);
+    // only 1 active list item
+    expect(getActiveListItem().length).toEqual(1);
   });
 
   it("defaults to the right flag", function() {

@@ -13,8 +13,7 @@ describe("use static method getCountryData", function() {
   });
 
   it("gets the country data object", function() {
-    expect(countryData.countries.length).toEqual(totalCountries);
-    expect(Object.keys(countryData.countryCodes).length).toEqual(totalDialCodes);
+    expect(countryData.length).toEqual(totalCountries);
   });
 
 });
