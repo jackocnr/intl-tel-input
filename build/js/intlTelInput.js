@@ -624,6 +624,10 @@ JSON.stringify(result);
     // then with a couple of manual re-arrangements to be alphabetical
     // then changed Kazakhstan from +76 to +7
     // then manually removed quotes from property names as not required
+    // Note: using single char property names to keep filesize down
+    // n = name
+    // i = iso2 (2-char country code)
+    // d = dial code
     var allCountries = $.each([ {
         n: "Afghanistan (‫افغانستان‬‎)",
         i: "af",
