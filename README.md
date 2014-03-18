@@ -39,10 +39,6 @@ Try it for yourself using the included demo.html
 ## Options
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
-**nationalMode**  
-Type: `Boolean` Default: `false`  
-Don't insert the international dial code when the user selects a country from the dropdown.
-
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
 If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form.
@@ -51,13 +47,17 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 Type: `String` Default: `""`  
 Set the default country by it's country code. Otherwise it will just be the first country in the list.
 
+**defaultStyling**  
+Type: `Boolean` Default: `"inside"`  
+If you would like the default minimal styling, there are two options to choose from which specify the position of the selected flag: `"inside"` or `"outside"` (relative to the input). You can also disable all styling by choosing `"none"`.
+
 **dialCodeDelimiter**  
 Type: `String` Default: `" "`  
 Choose the delimiter that is inserted after the dial code when the user selects a country from the dropdown.
 
-**defaultStyling**  
-Type: `Boolean` Default: `"inside"`  
-If you would like the default minimal styling, there are two options to choose from which specify the position of the selected flag: `"inside"` or `"outside"` (relative to the input). You can also disable all styling by choosing `"none"`.
+**nationalMode**  
+Type: `Boolean` Default: `false`  
+Don't insert the international dial code when the user selects a country from the dropdown.
 
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
