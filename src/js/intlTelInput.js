@@ -195,12 +195,16 @@
 
     // set the initial state of the input value and the selected flag
     _setInitialState: function() {
-      // if the input is pre-populated, then just update the selected flag accordingly
-      if (this.telInput.val()) {
-        this._updateFlagFromInputVal();
-      } else {
-        // input is empty, so set to the default country
+      var flagIsSet = false;
 
+      // if the input is pre-populated, then just update the selected flag accordingly
+      // // however, if no valid international dial code was found, flag will not have been set
+      if (this.telInput.val()) {
+        flagIsSet = this._updateFlagFromInputVal();
+      }
+
+      if (!flagIsSet) {
+        // flag is not set, so set to the default country
         var defaultCountry;
         // check the defaultCountry option, else fall back to the first in the list
         if (this.options.defaultCountry) {
@@ -478,7 +482,11 @@
         if (!alreadySelected) {
           this._selectFlag(countryCodes[0]);
         }
+        // valid international dial code found
+        return true;
       }
+      // valid international dial code not found
+      return false;
     },
 
 
