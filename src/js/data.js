@@ -135,10 +135,6 @@ var allCountries = $.each([{
   i: "bo",
   d: "591"
 }, {
-  n: "Caribbean Netherlands",
-  i: "bq",
-  d: "5997"
-}, {
   n: "Bosnia and Herzegovina (Босна и Херцеговина)",
   i: "ba",
   d: "387"
@@ -190,6 +186,10 @@ var allCountries = $.each([{
   n: "Cape Verde (Kabu Verdi)",
   i: "cv",
   d: "238"
+}, {
+  n: "Caribbean Netherlands",
+  i: "bq",
+  d: "5997"
 }, {
   n: "Cayman Islands",
   i: "ky",
