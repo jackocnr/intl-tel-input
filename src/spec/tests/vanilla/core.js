@@ -23,6 +23,29 @@ describe("init vanilla plugin on input with prepopulated value", function() {
 
 
 
+describe("init vanilla plugin on input with invalid prepopulated value", function() {
+
+  beforeEach(function() {
+    input = $("<input value='8'>");
+    input.intlTelInput();
+  });
+
+  afterEach(function() {
+    input = null;
+  });
+
+  it("sets the selected flag correctly", function() {
+    expect(getSelectedFlagElement()).toHaveClass("us");
+  });
+
+  it("sets the active list item correctly", function() {
+    expect(getActiveListItem().attr("data-country-code")).toEqual("us");
+  });
+
+});
+
+
+
 describe("init vanilla plugin", function() {
 
   beforeEach(function() {
@@ -65,7 +88,7 @@ describe("init vanilla plugin", function() {
 
 
   describe("typing a number with a different dial code", function() {
-  
+
     beforeEach(function() {
       input.val("+44 1234567").keyup();
     });
@@ -78,17 +101,17 @@ describe("init vanilla plugin", function() {
       input.val("").keyup();
       expect(getSelectedFlagElement()).toHaveClass("gb");
     });
-  
+
   });
 
 
 
   describe("typing a dial code containing a space", function() {
-  
+
     var telNo = "98765432";
 
     beforeEach(function() {
-      input.val("+4 4 "+telNo).keyup();
+      input.val("+4 4 " + telNo).keyup();
     });
 
     it("still updates the flag correctly", function() {
@@ -97,19 +120,19 @@ describe("init vanilla plugin", function() {
 
     it("then changing the flag updates the number correctly", function() {
       selectFlag("zw");
-      expect(getInputVal()).toEqual("+263 "+telNo);
+      expect(getInputVal()).toEqual("+263 " + telNo);
     });
-  
+
   });
-  
-  
+
+
 
   describe("typing a dial code containing a dot", function() {
-  
+
     var telNo = "98765432";
 
     beforeEach(function() {
-      input.val("+4.4 "+telNo).keyup();
+      input.val("+4.4 " + telNo).keyup();
     });
 
     it("still updates the flag correctly", function() {
@@ -118,16 +141,16 @@ describe("init vanilla plugin", function() {
 
     it("then changing the flag updates the number correctly", function() {
       selectFlag("zw");
-      expect(getInputVal()).toEqual("+263 "+telNo);
+      expect(getInputVal()).toEqual("+263 " + telNo);
     });
-  
+
   });
 
 
 
   // must add to the dom to get focus/click-off-to-close to work
   describe("adding to dom", function() {
-  
+
     beforeEach(function() {
       getParentElement().appendTo($("body"));
     });
@@ -135,7 +158,7 @@ describe("init vanilla plugin", function() {
     afterEach(function() {
       getParentElement().remove();
     });
-  
+
     // autoHideDialCode defaults to true
     it("focusing the input adds the default dial code, and blur removes it again", function() {
       expect(getInputVal()).toEqual("");
@@ -171,7 +194,7 @@ describe("init vanilla plugin", function() {
 
 
       describe("selecting a new country item", function() {
-      
+
         var countryCode = "gb";
 
         beforeEach(function() {
@@ -185,10 +208,10 @@ describe("init vanilla plugin", function() {
         it("updates the dial code", function() {
           expect(getInputVal()).toEqual("+44");
         });
-      
+
       });
 
-    }); 
+    });
 
   });
 

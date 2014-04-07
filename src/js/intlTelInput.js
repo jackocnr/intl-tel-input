@@ -198,7 +198,7 @@
       var flagIsSet = false;
 
       // if the input is pre-populated, then just update the selected flag accordingly
-      // // however, if no valid international dial code was found, flag will not have been set
+      // however, if no valid international dial code was found, flag will not have been set
       if (this.telInput.val()) {
         flagIsSet = this._updateFlagFromInputVal();
       }
