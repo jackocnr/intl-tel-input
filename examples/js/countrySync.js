@@ -7,7 +7,7 @@ var countryData = $.fn.intlTelInput.getCountryData(),
 telInput.intlTelInput();
 
 // populate the country dropdown
-$.each(countryData.countries, function(i, country) {
+$.each(countryData, function(i, country) {
   addressDropdown.append($("<option></option>").attr("value", country.iso2).text(country.name));
 });
 
