@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Modify country data</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1394691216932">
-    <link rel="stylesheet" href="../../build/css/demo.css?1394691216932">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1396984419542">
+    <link rel="stylesheet" href="../../build/css/demo.css?1396984419542">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -32,10 +32,11 @@
 
     <h2>Code</h2>
     <pre><code class="language-javascript">var countryData = $.fn.intlTelInput.getCountryData();
-$.each(countryData.countries, function(i, country) {
+$.each(countryData, function(i, country) {
   country.name = country.name.replace(/.+\((.+)\)/,&quot;$1&quot;);
 });
-$(&quot;#phone&quot;).intlTelInput();</code></pre>
+$(&quot;#phone&quot;).intlTelInput();
+</code></pre>
 
     <h2>Result</h2>
     <div id="result">
@@ -44,7 +45,7 @@ $(&quot;#phone&quot;).intlTelInput();</code></pre>
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1394691216932"></script>
-    <script src="../js/modifyCountryData.js?1394691216932"></script>
+    <script src="../../build/js/intlTelInput.js?1396984419542"></script>
+    <script src="../js/modifyCountryData.js?1396984419542"></script>
   </body>
 </html>
