@@ -73,6 +73,12 @@ Enable validation by specifying the URL to the included libphonenumber script. T
 
 
 ## Public methods
+**destroy**  
+Remove the plugin from the input, and unbind any event listeners  
+```js
+$("#mobile-number").intlTelInput("destroy");
+```
+
 **getSelectedCountryData**  
 Get the country data for the currently selected flag  
 ```js
