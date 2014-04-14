@@ -559,6 +559,15 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         setNumber: function(number) {
             this.telInput.val(number);
             this._updateFlagFromInputVal();
+        },
+        // remove plugin
+        destroy: function() {
+            // stop listeners
+            this.telInput.off(this.ns);
+            this.selectedFlagInner.parent().off(this.ns);
+            // remove markup
+            var container = this.telInput.parent();
+            container.before(this.telInput).remove();
         }
     };
     // adapted to allow public functions
@@ -587,6 +596,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     // Call the method of our plugin instance,
                     // and pass it the supplied arguments.
                     returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+                }
+                // Allow instances to be destroyed via the 'destroy' method
+                if (options === "destroy") {
+                    $.data(this, "plugin_" + pluginName, null);
                 }
             });
             // If the earlier cached method gives a value back return the value,

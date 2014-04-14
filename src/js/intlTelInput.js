@@ -651,7 +651,6 @@
      *  PUBLIC METHODS
      ********************/
 
-
     // get the country data for the currently selected flag
     getSelectedCountryData: function() {
       // rely on the fact that we only set 2 classes on the selected flag element:
@@ -687,6 +686,18 @@
     setNumber: function(number) {
       this.telInput.val(number);
       this._updateFlagFromInputVal();
+    },
+
+
+    // remove plugin
+    destroy: function() {
+      // stop listeners
+      this.telInput.off(this.ns);
+      this.selectedFlagInner.parent().off(this.ns);
+
+      // remove markup
+      var container = this.telInput.parent();
+      container.before(this.telInput).remove();
     }
 
   };
@@ -725,6 +736,11 @@
           // Call the method of our plugin instance,
           // and pass it the supplied arguments.
           returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+        }
+
+        // Allow instances to be destroyed via the 'destroy' method
+        if (options === 'destroy') {
+          $.data(this, 'plugin_' + pluginName, null);
         }
       });
 
