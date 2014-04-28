@@ -89,7 +89,7 @@
           var countryData = that._getCountryData(countryCode, true);
           if (countryData) {
             newCountries.push(countryData);
-
+            // add this country's dial code to the countryCodes
             var dialCode = countryData.dialCode;
             if (newCountryCodes[dialCode]) {
               newCountryCodes[dialCode].push(countryCode);
@@ -98,6 +98,21 @@
             }
           }
         });
+        
+        // maintain country priority
+        for (var dialCode in newCountryCodes) {
+          if (newCountryCodes[dialCode].length > 1) {
+            var sortedCountries = [];
+            // go through all of the allCountryCodes countries for this dialCode and create a new (ordered) array of values (if they're in the newCountryCodes array)
+            for (var i = 0; i < allCountryCodes[dialCode].length; i++) {
+              var country = allCountryCodes[dialCode][i];
+              if ($.inArray(newCountryCodes[dialCode], country)) {
+                sortedCountries.push(country);
+              }
+            }
+            newCountryCodes[dialCode] = sortedCountries;
+          }
+        }
 
         this.countries = newCountries;
         this.countryCodes = newCountryCodes;

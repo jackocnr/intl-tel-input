@@ -27,6 +27,35 @@ describe("init plugin with onlyCountries", function() {
 
 });
 
+
+
+
+describe("init plugin with onlyCountries for Afghanistan, Isle of Man and UK", function() {
+
+  var onlyCountries;
+
+  beforeEach(function() {
+    input = $("<input>");
+    input.intlTelInput({
+      preferredCountries: [],
+      onlyCountries: ["af", "im", "gb"]
+    });
+  });
+
+  afterEach(function() {
+    input = onlyCountries = null;
+  });
+
+  it("entering +44 defaults to the top priority country (UK)", function() {
+    input.val("+44").keyup();
+    expect(getSelectedFlagElement()).toHaveClass("gb");
+  });
+
+});
+
+
+
+
 describe("init plugin on 2 different inputs with different onlyCountries", function() {
 
   var input2;
