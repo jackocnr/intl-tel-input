@@ -3,17 +3,17 @@
   "version": "1.1.8",
   "description": "A jQuery plugin for entering international telephone numbers",
   "keywords": [
-      "international",
-      "i18n",
-      "country",
-      "dial",
-      "code",
-      "telephone",
-      "tel",
-      "number",
-      "mobile",
-      "input",
-      "flag"
+    "international",
+    "i18n",
+    "country",
+    "dial",
+    "code",
+    "telephone",
+    "tel",
+    "number",
+    "mobile",
+    "input",
+    "flag"
   ],
   "licenses": [{
     "type": "MIT",
@@ -24,7 +24,7 @@
     "url": "http://jackocnr.com"
   },
   "dependencies": {
-    "jquery": "~1"
+    "jquery": ">=1.7"
   },
   "demo": "http://jackocnr.com/intl-tel-input.html",
   "title": "International Telephone Input"

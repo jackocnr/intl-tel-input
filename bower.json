@@ -2,12 +2,12 @@
   "name": "intl-tel-input",
   "version": "1.1.8",
   "main": [
-      "./build/js/intlTelInput.min.js",
-      "./build/img/flags.png",
-      "./build/css/intlTelInput.css"
+    "./build/js/intlTelInput.min.js",
+    "./build/img/flags.png",
+    "./build/css/intlTelInput.css"
   ],
   "dependencies": {
-    "jquery": "~1"
+    "jquery": ">=1.7"
   },
   "devDependencies": {
     "jasmine-jquery": "~2.0.2"

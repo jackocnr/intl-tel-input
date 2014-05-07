@@ -16,7 +16,7 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
-    "jquery": "~1",
+    "jquery": ">=1.7",
     "grunt": "~0.4.1",
     "grunt-contrib-sass": "~0.7.2",
     "grunt-contrib-jshint": "~0.9.2",
