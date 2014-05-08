@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   return {
     main: {
       options: {
-        style: "compact"
+        style: "compressed"
       },
       files: {
         'build/css/intlTelInput.css': 'src/css/intlTelInput.scss'
