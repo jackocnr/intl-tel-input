@@ -39,7 +39,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         PLUS: 43,
         A: 65,
         Z: 90
-    };
+    }, windowLoaded = false;
+    // keep track of if the window.load event has fired as impossible to check after the fact
+    $(window).load(function() {
+        windowLoaded = true;
+    });
     function Plugin(element, options) {
         this.element = element;
         this.options = $.extend({}, defaults, options);
@@ -236,13 +240,19 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // if the user has specified the path to the validation script
             // inject a new script element for it at the end of the body
             if (this.options.validationScript) {
-                // but wait until the load event so we don't block any other requests e.g. the flags image
-                $(window).load(function() {
+                var injectValidationScript = function() {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
                     script.src = that.options.validationScript;
                     document.body.appendChild(script);
-                });
+                };
+                // if the plugin is being initialised after the window.load event has already been fired
+                if (windowLoaded) {
+                    injectValidationScript();
+                } else {
+                    // wait until the load event so we don't block any other requests e.g. the flags image
+                    $(window).load(injectValidationScript);
+                }
             }
         },
         // on focus: if empty add dial code. on blur: if just dial code, then empty it
