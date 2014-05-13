@@ -25,8 +25,8 @@
     "grunt-contrib-jasmine": "~0.6.1",
     "grunt-templater": "0.0.4",
     "load-grunt-config": "~0.7.2",
-    "time-grunt": "~0.2.9",
-    "ejs": "~0.8.5",
+    "time-grunt": "~0.2.10",
+    "ejs": "~0.8.8",
     "grunt-bower-task": "~0.3.4",
     "grunt-bump": "0.0.13"
   },
