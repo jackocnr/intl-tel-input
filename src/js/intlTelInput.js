@@ -150,8 +150,8 @@
 
       // containers (mostly for positioning)
       var mainClass = "intl-tel-input";
-      if (this.options.defaultStyling != "none") {
-        mainClass += " pretty " + this.options.defaultStyling;
+      if (this.options.defaultStyling) {
+        mainClass += " " + this.options.defaultStyling;
       }
       this.telInput.wrap($("<div>", {
         "class": mainClass

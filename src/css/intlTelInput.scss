@@ -22,6 +22,7 @@ $arrowColor: #555;
 $inputPadding: 6px;
 $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding);
 
+
 .intl-tel-input {
   // need position on the container so the selected flag can be
   // absolutely positioned over the input
@@ -29,51 +30,19 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
   // keep the input's default inline properties
   display: inline-block;
 
+  // paul irish says this is ok
+  // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
+  * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+  }
+
   .hide {
     display: none;
   }
   // need this during init, to get the height of the dropdown
   .v-hide {
     visibility: hidden;
-  }
-
-  .flag-dropdown {
-    // positioned over the top of the input
-    position: absolute;
-    // full height
-    top: 0;
-    bottom: 0;
-
-    .selected-flag {
-      // render above the input
-      z-index: 1;
-      position: relative;
-    }
-
-    .country-list {
-      position: absolute;
-      // popup so render above everything else
-      z-index: 2;
-    }
-  }
-
-  // the country dropdown
-  .country-list {
-    // override default list styles
-    list-style: none;
-    // inline flags
-    .flag {
-      display: inline-block;
-    }
-  }
-
-  // hover state - important to show flag is clickable even if default styling is disabled
-  .flag-dropdown:hover {
-    cursor: pointer;
-  }
-  // disable hover state when input is disabled
-  input[disabled] + .flag-dropdown:hover {
-    cursor: default;
   }
 
   input {
@@ -89,100 +58,116 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     margin-bottom: 0 !important;
   }
 
-
-
-  &.pretty {
-    // paul irish says this is ok
-    // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
-    * {
-      box-sizing: border-box;
-      -moz-box-sizing: border-box;
-    }
-
-    // hover state
-    .flag-dropdown:hover .selected-flag {
+  .flag-dropdown {
+    // positioned over the top of the input
+    position: absolute;
+    // full height
+    top: 0;
+    bottom: 0;
+  }
+  // hover state - show flag is clickable
+  .flag-dropdown:hover {
+    cursor: pointer;
+    .selected-flag {
       background-color: $hoverColor;
     }
-    // disable hover state when input is disabled
-    input[disabled] + .flag-dropdown:hover .selected-flag {
+  }
+  // disable hover state when input is disabled
+  input[disabled] + .flag-dropdown:hover {
+    cursor: default;
+    .selected-flag {
       background-color: transparent;
     }
+  }
 
-    .flag-dropdown {
-      .selected-flag {
-        width: $selectedFlagWidth;
-        // this must be full-height both for the hover highlight, and to push down the
-        // dropdown so it appears below the input
-        height: 100%;
-        padding: 0 0 0 $flagPadding;
+  .selected-flag {
+    // render above the input
+    z-index: 1;
+    position: relative;
+    width: $selectedFlagWidth;
+    // this must be full-height both for the hover highlight, and to push down the
+    // dropdown so it appears below the input
+    height: 100%;
+    padding: 0 0 0 $flagPadding;
 
-        // vertically center the flag
-        .flag {
-          position: absolute;
-          top: 50%;
-          margin-top: -1 * floor($flagHeight / 2);
-        }
+    // vertically center the flag
+    .flag {
+      position: absolute;
+      top: 50%;
+      margin-top: -1 * floor($flagHeight / 2);
+    }
 
-        .arrow {
-          position: relative;
-          // split the difference between the flag and the arrow height to verically center
-          top: 50%;
-          margin-top: -1 * ($arrowHeight / 2);
-          left: $flagWidth + $arrowPadding;
+    .arrow {
+      position: relative;
+      // split the difference between the flag and the arrow height to verically center
+      top: 50%;
+      margin-top: -1 * ($arrowHeight / 2);
+      left: $flagWidth + $arrowPadding;
 
-          // css triangle
-          width: 0;
-          height: 0;
-          border-left: $triangleBorder solid transparent;
-          border-right: $triangleBorder solid transparent;
-          border-top: $arrowHeight solid $arrowColor;
+      // css triangle
+      width: 0;
+      height: 0;
+      border-left: $triangleBorder solid transparent;
+      border-right: $triangleBorder solid transparent;
+      border-top: $arrowHeight solid $arrowColor;
 
-          &.up {
-            border-top: none;
-            border-bottom: $arrowHeight solid $arrowColor;
-          }
-        }
+      &.up {
+        border-top: none;
+        border-bottom: $arrowHeight solid $arrowColor;
       }
+    }
+  }
 
-      // the dropdown
-      .country-list {
-        padding: 0;
-        // margin-left to compensate for the padding on the parent
-        margin: 0 0 0 (-$borderWidth);
+  // the dropdown
+  .country-list {
+    // override default list styles
+    list-style: none;
+    position: absolute;
+    // popup so render above everything else
+    z-index: 2;
 
-        box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
-        background-color: white;
-        border: $borderWidth solid $greyBorder;
+    // inline flags
+    .flag {
+      display: inline-block;
+    }
 
-        // wide enough to fit long country names
-        width: 430px;
-        max-height: 200px;
-        overflow-y: scroll;
+    padding: 0;
+    // margin-left to compensate for the padding on the parent
+    margin: 0 0 0 (-$borderWidth);
 
-        // the divider below the preferred countries
-        .divider {
-          padding-bottom: 5px;
-          margin-bottom: 5px;
-          border-bottom: $borderWidth solid $greyBorder;
-        }
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    background-color: white;
+    border: $borderWidth solid $greyBorder;
 
-        // each country item in dropdown
-        .country {
-          // set this to height of flag - if it is higher, things get misaligned
-          line-height: $flagHeight;
-          padding: 7px 10px;
-          // the dial codes after the country names are greyed out
-          .dial-code {color: $greyText;}
-        }
-        .country.highlight {
-          background-color: $hoverColor;
-        }
+    // wide enough to fit long country names
+    width: 430px;
+    max-height: 200px;
+    overflow-y: scroll;
 
-        // spacing between country flag, name and dial code
-        .flag, .country-name {
-          margin-right: 6px;
-        }
+    // the divider below the preferred countries
+    .divider {
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+      border-bottom: $borderWidth solid $greyBorder;
+    }
+
+    // each country item in dropdown
+    .country {
+      // set this to height of flag - if it is higher, things get misaligned
+      line-height: $flagHeight;
+      padding: 7px 10px;
+      // the dial codes after the country names are greyed out
+      .dial-code {
+        color: $greyText;
       }
+    }
+    .country.highlight {
+      background-color: $hoverColor;
+    }
+
+    // spacing between country flag, name and dial code
+    .flag, .country-name {
+      margin-right: 6px;
     }
   }
 

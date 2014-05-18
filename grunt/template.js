@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     js: {
       src: 'src/js/wrapper.js.ejs',
       dest: 'tmp/all.js',
-      variables: function () {
+      variables: function() {
         return {
           plugin: grunt.file.read('src/js/intlTelInput.js'),
           data: grunt.file.read('src/js/data.js'),
@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     defaultCountryIp: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/default-country-ip.html',
-      variables: function () {
+      variables: function() {
         return {
           time: time,
           title: "Lookup user's country",
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
     modifyCountryData: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/modify-country-data.html',
-      variables: function () {
+      variables: function() {
         return {
           time: time,
           title: "Modify country data",
@@ -47,7 +47,7 @@ module.exports = function(grunt) {
     onlyCountries: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/only-countries-europe.html',
-      variables: function () {
+      variables: function() {
         return {
           time: time,
           title: "European countries",
@@ -62,11 +62,11 @@ module.exports = function(grunt) {
     defaultStyling: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/default-styling.html',
-      variables: function () {
+      variables: function() {
         return {
           time: time,
           title: "Styling",
-          desc: "The 3 different settings for the defaultStyling option: 'inside' (default), 'outside' and 'none'.",
+          desc: "The two different settings for the defaultStyling option: 'inside' (default) and 'outside'.",
           stylesheet: 'defaultStyling.css',
           markup: grunt.file.read('examples/partials/defaultStyling.html'),
           code: grunt.file.read('examples/js/defaultStyling.js'),
@@ -77,7 +77,7 @@ module.exports = function(grunt) {
     countrySync: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/country-sync.html',
-      variables: function () {
+      variables: function() {
         return {
           time: time,
           title: "Country sync",
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
     validation: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/validation.html',
-      variables: function () {
+      variables: function() {
         return {
           time: time,
           title: "Validation",

@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <title>Example: Styling</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1396984419542">
-    <link rel="stylesheet" href="../../build/css/demo.css?1396984419542">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1400377268998">
+    <link rel="stylesheet" href="../../build/css/demo.css?1400377268998">
     
-      <link rel="stylesheet" href="../css/defaultStyling.css?1396984419542">
+      <link rel="stylesheet" href="../css/defaultStyling.css?1400377268998">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -27,7 +27,7 @@
   <body>
     <a href="/intl-tel-input.html">Back</a>
     <h1>Example: Styling</h1>
-    <p>The 3 different settings for the defaultStyling option: &#39;inside&#39; (default), &#39;outside&#39; and &#39;none&#39;.</p>
+    <p>The two different settings for the defaultStyling option: &#39;inside&#39; (default) and &#39;outside&#39;.</p>
     
     <h2>Markup</h2>
     <pre><code class="language-markup">&lt;p&gt;1. defaultStyling: &quot;inside&quot; (default)&lt;/p&gt;
@@ -39,18 +39,12 @@
 &lt;p&gt;3. defaultStyling: &quot;outside&quot; (with gap added)&lt;/p&gt;
 &lt;div class=&quot;outside-gap&quot;&gt;
   &lt;input id=&quot;phone3&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;
-&lt;/div&gt;
-
-&lt;p&gt;4. defaultStyling: &quot;none&quot; (with completely custom styling)&lt;/p&gt;
-&lt;div class=&quot;custom-dark&quot;&gt;
-  &lt;input id=&quot;phone4&quot; type=&quot;tel&quot; placeholder=&quot;e.g. +1 702 123 4567&quot;&gt;
 &lt;/div&gt;</code></pre>
 
     <h2>Code</h2>
     <pre><code class="language-javascript">$(&quot;#phone1&quot;).intlTelInput({defaultStyling: &quot;inside&quot;});
 $(&quot;#phone2&quot;).intlTelInput({defaultStyling: &quot;outside&quot;});
-$(&quot;#phone3&quot;).intlTelInput({defaultStyling: &quot;outside&quot;});
-$(&quot;#phone4&quot;).intlTelInput({defaultStyling: &quot;none&quot;});</code></pre>
+$(&quot;#phone3&quot;).intlTelInput({defaultStyling: &quot;outside&quot;});</code></pre>
 
     <h2>Result</h2>
     <div id="result">
@@ -64,16 +58,11 @@ $(&quot;#phone4&quot;).intlTelInput({defaultStyling: &quot;none&quot;});</code><
 <div class="outside-gap">
   <input id="phone3" type="tel" placeholder="e.g. +1 702 123 4567">
 </div>
-
-<p>4. defaultStyling: "none" (with completely custom styling)</p>
-<div class="custom-dark">
-  <input id="phone4" type="tel" placeholder="e.g. +1 702 123 4567">
-</div>
     </div>
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1396984419542"></script>
-    <script src="../js/defaultStyling.js?1396984419542"></script>
+    <script src="../../build/js/intlTelInput.js?1400377268998"></script>
+    <script src="../js/defaultStyling.js?1400377268998"></script>
   </body>
 </html>

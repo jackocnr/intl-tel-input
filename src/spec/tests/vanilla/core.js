@@ -58,9 +58,9 @@ describe("init vanilla plugin", function() {
   });
 
 
-  // defaultStyling defaults to true
-  it("creates a container with the right classes", function() {
-    expect(getParentElement()).toHaveClass("intl-tel-input pretty");
+  // defaultStyling defaults to "inside"
+  it("creates a container with the right class", function() {
+    expect(getParentElement()).toHaveClass("intl-tel-input inside");
   });
 
   // preferredCountries defaults to 2 countries

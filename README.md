@@ -48,8 +48,8 @@ Type: `String` Default: `""`
 Set the default country by it's country code. Otherwise it will just be the first country in the list.
 
 **defaultStyling**  
-Type: `Boolean` Default: `"inside"`  
-If you would like the default minimal styling, there are two options to choose from which specify the position of the selected flag: `"inside"` or `"outside"` (relative to the input). You can also disable all styling by choosing `"none"`.
+Type: `String` Default: `"inside"`  
+The position of the selected flag: `"inside"` or `"outside"` (relative to the input).
 
 **dialCodeDelimiter**  
 Type: `String` Default: `" "`  

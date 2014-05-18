@@ -10,27 +10,18 @@ describe("testing defaultStyling option", function() {
     input = null;
   });
 
-  it("setting it to 'inside' adds the appropriate classes", function() {
+  it("setting it to 'inside' adds the appropriate class", function() {
     input.intlTelInput({
       defaultStyling: "inside"
     });
-    expect(getParentElement()).toHaveClass("pretty inside");
+    expect(getParentElement()).toHaveClass("inside");
   });
 
-  it("setting it to 'outside' adds the appropriate classes", function() {
+  it("setting it to 'outside' adds the appropriate class", function() {
     input.intlTelInput({
       defaultStyling: "outside"
     });
-    expect(getParentElement()).toHaveClass("pretty outside");
-  });
-
-  it("setting it to 'none' adds the appropriate classes", function() {
-    input.intlTelInput({
-      defaultStyling: "none"
-    });
-    expect(getParentElement()).not.toHaveClass("pretty");
-    expect(getParentElement()).not.toHaveClass("inside");
-    expect(getParentElement()).not.toHaveClass("outside");
+    expect(getParentElement()).toHaveClass("outside");
   });
 
 });
