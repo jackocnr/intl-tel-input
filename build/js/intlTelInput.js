@@ -219,6 +219,17 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (this.options.autoHideDialCode && !this.options.nationalMode) {
                 this._initAutoHideDialCode();
             }
+            // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
+            var label = this.telInput.closest("label");
+            if (label.length) {
+                label.on("click", function(e) {
+                    if (that.countryList.hasClass("hide")) {
+                        that.telInput.focus();
+                    } else {
+                        e.preventDefault();
+                    }
+                });
+            }
             // update flag on keyup (by extracting the dial code from the input value).
             // use keyup instead of keypress because we want to update on backspace
             // and instead of keydown because the value hasn't updated when that event is fired
