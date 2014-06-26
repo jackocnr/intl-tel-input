@@ -276,8 +276,8 @@
       // inject a new script element for it at the end of the body
       if (this.options.validationScript) {
         var injectValidationScript = function() {
-          var script = document.createElement('script');
-          script.type = 'text/javascript';
+          var script = document.createElement("script");
+          script.type = "text/javascript";
           script.src = that.options.validationScript;
           document.body.appendChild(script);
         };
@@ -407,7 +407,7 @@
       // (except when this initial opening click is bubbling up)
       // we cannot just stopPropagation as it may be needed to close another instance
       var isOpening = true;
-      $('html').on("click" + this.ns, function(e) {
+      $("html").on("click" + this.ns, function(e) {
         if (!isOpening) {
           that._closeDropdown();
         }
@@ -498,7 +498,7 @@
       var dialCode = this._getDialCode(this.telInput.val());
       if (dialCode) {
         // check if one of the matching countries is already selected
-        var countryCodes = this.countryCodes[dialCode.replace(/\D/g, '')],
+        var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")],
           alreadySelected = false;
         $.each(countryCodes, function(i, c) {
           if (that.selectedFlagInner.hasClass(c)) {
@@ -587,7 +587,7 @@
 
       // unbind event listeners
       $(document).off("keydown" + this.ns);
-      $('html').off("click" + this.ns);
+      $("html").off("click" + this.ns);
       // unbind both hover and click listeners
       this.countryList.off(this.ns);
     },
@@ -740,13 +740,13 @@
 
     // Is the first parameter an object (options), or was omitted,
     // instantiate a new instance of the plugin.
-    if (options === undefined || typeof options === 'object') {
+    if (options === undefined || typeof options === "object") {
       return this.each(function() {
         if (!$.data(this, "plugin_" + pluginName)) {
           $.data(this, "plugin_" + pluginName, new Plugin(this, options));
         }
       });
-    } else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
+    } else if (typeof options === "string" && options[0] !== "_" && options !== "init") {
       // If the first parameter is a string and it doesn't start
       // with an underscore or "contains" the `init`-function,
       // treat this as a call to a public method.
@@ -755,19 +755,19 @@
       var returns;
 
       this.each(function() {
-        var instance = $.data(this, 'plugin_' + pluginName);
+        var instance = $.data(this, "plugin_" + pluginName);
 
         // Tests that there's already a plugin-instance
         // and checks that the requested public method exists
-        if (instance instanceof Plugin && typeof instance[options] === 'function') {
+        if (instance instanceof Plugin && typeof instance[options] === "function") {
           // Call the method of our plugin instance,
           // and pass it the supplied arguments.
           returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
         }
 
         // Allow instances to be destroyed via the 'destroy' method
-        if (options === 'destroy') {
-          $.data(this, 'plugin_' + pluginName, null);
+        if (options === "destroy") {
+          $.data(this, "plugin_" + pluginName, null);
         }
       });
 
