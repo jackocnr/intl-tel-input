@@ -109,7 +109,7 @@ $("#mobile-number").intlTelInput("selectCountry", "gb");
 **setNumber**  
 Insert a number, and update the selected flag accordingly  
 ```js
-$("#mobile-number").intlTelInput("setNumber", "+44 77333 123 456");
+$("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 ```
 
 
