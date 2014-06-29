@@ -29,6 +29,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         onlyCountries: [],
         // the countries at the top of the list. defaults to united states and united kingdom
         preferredCountries: [ "us", "gb" ],
+        // make the dropdown the same width as the input
+        responsiveDropdown: false,
         // specify the path to the libphonenumber script to enable validation
         validationScript: ""
     }, keys = {
@@ -166,6 +168,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // now we can grab the dropdown height, and hide it properly
             this.dropdownHeight = this.countryList.outerHeight();
             this.countryList.removeClass("v-hide").addClass("hide");
+            // and set the width
+            if (this.options.responsiveDropdown) {
+                this.countryList.css("width", this.telInput.outerWidth());
+            }
             // this is useful in lots of places
             this.countryListItems = this.countryList.children(".country");
         },

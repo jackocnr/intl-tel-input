@@ -153,9 +153,8 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
 
     // each country item in dropdown
     .country {
-      // set this to height of flag - if it is higher, things get misaligned
-      line-height: $flagHeight;
-      padding: 7px 10px;
+      // Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines
+      padding: 5px 10px;
       // the dial codes after the country names are greyed out
       .dial-code {
         color: $greyText;
