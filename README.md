@@ -67,6 +67,10 @@ Display only the countries you specify.
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
 
+**responsiveDropdown**  
+Type: `Boolean` Default: `false`  
+Set the dropdown's width to be the same as the input. Useful for mobile devices etc.
+
 **validationScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/isValidNumber.js"`  
 Enable validation by specifying the URL to the included libphonenumber script. This ~200k script is fetched only when the page has finished loading (to prevent blocking), and is then accessible through the public `isValidNumber` function.
@@ -139,7 +143,7 @@ $.fn.intlTelInput.setCountryData(countryData);
 International number validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200kb, so I have included it as an optional extra. If you specify the validationScript option then it will fetch the script only when the page has finished loading (to prevent blocking), and will then be accessible through the public `isValidNumber` function.
 
 
-## CSS
+## Troubleshooting
 **Image path**  
 Depending on your project setup, you may need to override the path to flags.png in your CSS.  
 ```css
