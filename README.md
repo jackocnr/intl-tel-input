@@ -57,7 +57,7 @@ Choose the delimiter that is inserted after the dial code when the user selects 
 
 **nationalMode**  
 Type: `Boolean` Default: `false`  
-Don't insert the international dial code when the user selects a country from the dropdown.
+Don't insert the international dial code when the user selects a country from the dropdown. Useful if you want to accept numbers in national format, and then you can use `getSelectedCountryData` to get the selected country's dial code.
 
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
