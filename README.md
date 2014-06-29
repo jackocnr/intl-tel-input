@@ -153,6 +153,12 @@ For the sake of alignment, the default CSS forces the input's vertical margin to
 If your error handling code inserts an error message before the `<input>` it will break the layout. Instead you must insert it before the container (with class `intl-tel-input`).
 
 
+## Contributing
+I'm very open to contributions, big and small! For instructions on contributing to a project on Github, see this guide: [Fork A Repo](https://help.github.com/articles/fork-a-repo).
+
+I use [Grunt](http://gruntjs.com) to build the project, which relies on [npm](https://www.npmjs.org). In the project directory, run `npm install` to install Grunt (and other dependencies), then make your changes in the `src` directory and run `grunt build` to build the project.
+
+
 ## Attributions
 * Flag images and CSS from https://github.com/tkrotoff/famfamfam_flags
 * Country data from https://github.com/mledoze/countries
