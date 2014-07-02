@@ -1,5 +1,5 @@
 /*
-International Telephone Input v1.1.13
+International Telephone Input v1.2.0
 https://github.com/Bluefieldscom/intl-tel-input.git
 */
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
@@ -439,7 +439,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (listItem) {
                 // update highlighting and scroll
                 this._highlightListItem(listItem);
-                this._scrollTo(listItem);
+                this._scrollTo(listItem, true);
             }
         },
         // check if (uppercase) string a starts with string b
@@ -527,13 +527,19 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.countryList.off(this.ns);
         },
         // check if an element is visible within it's container, else scroll until it is
-        _scrollTo: function(element) {
-            var container = this.countryList, containerHeight = container.height(), containerTop = container.offset().top, containerBottom = containerTop + containerHeight, elementHeight = element.outerHeight(), elementTop = element.offset().top, elementBottom = elementTop + elementHeight, newScrollTop = elementTop - containerTop + container.scrollTop();
+        _scrollTo: function(element, middle) {
+            var container = this.countryList, containerHeight = container.height(), containerTop = container.offset().top, containerBottom = containerTop + containerHeight, elementHeight = element.outerHeight(), elementTop = element.offset().top, elementBottom = elementTop + elementHeight, newScrollTop = elementTop - containerTop + container.scrollTop(), middleOffset = containerHeight / 2 - elementHeight / 2;
             if (elementTop < containerTop) {
                 // scroll up
+                if (middle) {
+                    newScrollTop -= middleOffset;
+                }
                 container.scrollTop(newScrollTop);
             } else if (elementBottom > containerBottom) {
                 // scroll down
+                if (middle) {
+                    newScrollTop += middleOffset;
+                }
                 var heightDifference = containerHeight - elementHeight;
                 container.scrollTop(newScrollTop - heightDifference);
             }
