@@ -28,7 +28,8 @@
       ESC: 27,
       PLUS: 43,
       A: 65,
-      Z: 90
+      Z: 90,
+      SPACE: 32
     },
     windowLoaded = false;
 
@@ -453,7 +454,7 @@
         } else if (e.which == keys.ESC) {
           // esc to close
           that._closeDropdown();
-        } else if (e.which >= keys.A && e.which <= keys.Z) {
+        } else if ((e.which >= keys.A && e.which <= keys.Z) || e.which == keys.SPACE) {
           // upper case letters (note: keyup/keydown only return upper case letters)
           // jump to countries that start with the query string
           if (queryTimer) {
