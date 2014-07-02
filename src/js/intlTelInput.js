@@ -437,6 +437,8 @@
       // use keydown as keypress doesn't fire for non-char keys and we want to catch if they
       // just hit down and hold it to scroll down (no keyup event).
       // listen on the document because that's where key events are triggered if no input has focus
+      var query = "",
+        queryTimer = null;
       $(document).on("keydown" + this.ns, function(e) {
         // prevent down key from scrolling the whole page,
         // and enter key from submitting a form etc
@@ -453,8 +455,16 @@
           that._closeDropdown();
         } else if (e.which >= keys.A && e.which <= keys.Z) {
           // upper case letters (note: keyup/keydown only return upper case letters)
-          // cycle through countries beginning with that letter
-          that._handleLetterKey(e.which);
+          // jump to countries that start with the query string
+          if (queryTimer) {
+            clearTimeout(queryTimer);
+          }
+          query += String.fromCharCode(e.which);
+          that._searchForCountry(query);
+          // if the timer hits 1 second, reset the query
+          queryTimer = setTimeout(function() {
+            query = "";
+          }, 1000);
         }
       });
     },
@@ -484,19 +494,21 @@
     },
 
 
-    // iterate through the countries starting with the given letter
-    _handleLetterKey: function(key) {
-      var letter = String.fromCharCode(key),
-        nextCountry = this.countryList.children(".highlight").not(".preferred").first().next(),
+    // find the next list item whose name starts with the query string
+    _searchForCountry: function(query) {
+      var currentCountry = this.countryList.children(".highlight").not(".preferred").first(),
+        nextCountry = currentCountry.next(),
         listItem = null;
 
-      // if the next country in the list also starts with that letter
-      if (nextCountry.length && nextCountry.text().charAt(0) == letter) {
+      // if the current/next country in the list also starts with that letter
+      if (currentCountry.length && this._startsWith(currentCountry.text(), query)) {
+        listItem = currentCountry;
+      } else if (nextCountry.length && this._startsWith(nextCountry.text(), query)) {
         listItem = nextCountry;
       } else {
         // find the first country beginning with that letter
         for (var i = 0; i < this.countries.length; i++) {
-          if (this.countries[i].name.charAt(0) == letter) {
+          if (this._startsWith(this.countries[i].name, query)) {
             listItem = this.countryList.children("[data-country-code=" + this.countries[i].iso2 + "]").not(".preferred");
             break;
           }
@@ -508,6 +520,12 @@
         this._highlightListItem(listItem);
         this._scrollTo(listItem);
       }
+    },
+
+
+    // check if (uppercase) string a starts with string b
+    _startsWith: function(a, b) {
+      return (a.substr(0, b.length).toUpperCase() == b);
     },
 
 

@@ -4,6 +4,7 @@ var keyCodes = {
   'down': 40,
   'enter': 13,
   'esc': 27,
+  'i': 73,
   'z': 90
 };
 

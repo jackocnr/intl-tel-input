@@ -29,7 +29,7 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
     expect(zambiaListItem).toHaveClass("highlight");
   });
 
-  it("pressing z three times also highlights Zambia (cyclical)", function() {
+  it("pressing z three times also highlights Zambia (no further matches)", function() {
     triggerKey("z");
     triggerKey("z");
     triggerKey("z");
@@ -39,14 +39,14 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
 
 
 
-  describe("pressing z twice", function() {
+  describe("typing z then i", function() {
 
     var lastItem;
 
     beforeEach(function() {
       lastItem = getListElement().find("li.country:last");
       triggerKey("z");
-      triggerKey("z");
+      triggerKey("i");
     });
   
     it("highlights the last item, which is Zimbabwe", function() {
