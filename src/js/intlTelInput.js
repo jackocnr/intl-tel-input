@@ -486,22 +486,24 @@
 
     // iterate through the countries starting with the given letter
     _handleLetterKey: function(key) {
-      var letter = String.fromCharCode(key);
-      // filter out the countries beginning with that letter
-      var countries = this.countryListItems.filter(function() {
-        return ($(this).text().charAt(0) == letter && !$(this).hasClass("preferred"));
-      });
+      var letter = String.fromCharCode(key),
+        nextCountry = this.countryList.children(".highlight").not(".preferred").first().next(),
+        listItem = null;
 
-      if (countries.length) {
-        // if one is already highlighted, then we want the next one
-        var highlightedCountry = countries.filter(".highlight").first(),
-          listItem;
-        // if the next country in the list also starts with that letter
-        if (highlightedCountry && highlightedCountry.next() && highlightedCountry.next().text().charAt(0) == letter) {
-          listItem = highlightedCountry.next();
-        } else {
-          listItem = countries.first();
+      // if the next country in the list also starts with that letter
+      if (nextCountry.length && nextCountry.text().charAt(0) == letter) {
+        listItem = nextCountry;
+      } else {
+        // find the first country beginning with that letter
+        for (var i = 0; i < this.countries.length; i++) {
+          if (this.countries[i].name.charAt(0) == letter) {
+            listItem = this.countryList.children("[data-country-code=" + this.countries[i].iso2 + "]").not(".preferred");
+            break;
+          }
         }
+      }
+
+      if (listItem) {
         // update highlighting and scroll
         this._highlightListItem(listItem);
         this._scrollTo(listItem);
