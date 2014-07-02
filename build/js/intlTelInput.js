@@ -420,27 +420,16 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this._selectListItem(currentCountry);
             }
         },
-        // find the next list item whose name starts with the query string
+        // find the first list item whose name starts with the query string
         _searchForCountry: function(query) {
-            var currentCountry = this.countryList.children(".highlight").not(".preferred").first(), nextCountry = currentCountry.next(), listItem = null;
-            // if the current/next country in the list also starts with that letter
-            if (currentCountry.length && this._startsWith(currentCountry.text(), query)) {
-                listItem = currentCountry;
-            } else if (nextCountry.length && this._startsWith(nextCountry.text(), query)) {
-                listItem = nextCountry;
-            } else {
-                // find the first country beginning with that letter
-                for (var i = 0; i < this.countries.length; i++) {
-                    if (this._startsWith(this.countries[i].name, query)) {
-                        listItem = this.countryList.children("[data-country-code=" + this.countries[i].iso2 + "]").not(".preferred");
-                        break;
-                    }
+            for (var i = 0; i < this.countries.length; i++) {
+                if (this._startsWith(this.countries[i].name, query)) {
+                    var listItem = this.countryList.children("[data-country-code=" + this.countries[i].iso2 + "]").not(".preferred");
+                    // update highlighting and scroll
+                    this._highlightListItem(listItem);
+                    this._scrollTo(listItem, true);
+                    break;
                 }
-            }
-            if (listItem) {
-                // update highlighting and scroll
-                this._highlightListItem(listItem);
-                this._scrollTo(listItem, true);
             }
         },
         // check if (uppercase) string a starts with string b
