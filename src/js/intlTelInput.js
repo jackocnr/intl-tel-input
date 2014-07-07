@@ -226,7 +226,7 @@
     _setInitialState: function() {
       // if the input is pre-populated, then just update the selected flag accordingly
       // however, if no valid international dial code was found, flag will not have been set
-      if (!this._updateFlagFromVal(this.telInput.val())) {
+      if (!this._updateFromVal(this.telInput.val())) {
         // flag is not set, so set to the default country
         var defaultCountry;
         // check the defaultCountry option, else fall back to the first in the list
@@ -280,47 +280,7 @@
         val = val.substring(0, this.selectionStart) + String.fromCharCode(e.which) + val.substring(this.selectionEnd, val.length);
         console.log("\n\nnew val="+val);
 
-        var prefix = "",
-          formatted = "",
-          pure = val.replace(/\D/g, "");
-        console.log("pure="+pure);
-
-        if (val.substring(0, 1) == "+") {
-          console.log("starts with a plus");
-          // this will check there is a valid dial code
-          if (that._updateFlagFromVal(val)) {
-            console.log("valid dial code!");
-
-
-
-            
-            var format = that.getSelectedCountryData().format;
-            console.log("format="+format);
-            if (format) {
-              var len = format.length;
-              for (var i = 0; i < len; i++) {
-                // if the format character is a dot, add the number
-                if (format[i] == ".") {
-                  if (!pure) {
-                    break;
-                  }
-                  formatted += pure.substring(0, 1);
-                  pure = pure.substring(1);
-                } else if (pure.length > 0) {
-                  formatted += format[i];
-                }
-              }
-            }
-          }
-
-          if (!formatted) {
-            console.log("no formatted value, so setting prefix = +");
-            prefix = "+";
-          }
-        }
-
-        console.log("UPDATING VAL="+prefix + formatted + pure);
-        that.telInput.val(prefix + formatted + pure);
+        that._updateFromVal(val);
       });
 
       // toggle country dropdown on click
@@ -559,8 +519,12 @@
 
 
      // update the selected flag using the input's current value
-    _updateFlagFromVal: function(val) {
+    _updateFromVal: function(val) {
       var that = this;
+
+      var formatted = "",
+        pure = val.replace(/\D/g, "");
+      console.log("pure="+pure);
 
       // try and extract valid dial code from input
       var dialCode = this._getDialCode(val);
@@ -577,7 +541,34 @@
         if (!alreadySelected) {
           this._selectFlag(countryCodes[0]);
         }
+
+
+        // format the number
+        var format = that.getSelectedCountryData().format;
+        console.log("format="+format);
+        if (format) {
+          var len = format.length;
+          for (var i = 0; i < len; i++) {
+            // if the format character is a dot, add the number
+            if (format[i] == ".") {
+              if (!pure) {
+                break;
+              }
+              formatted += pure.substring(0, 1);
+              pure = pure.substring(1);
+            } else if (pure.length > 0) {
+              formatted += format[i];
+            }
+          }
+        }
       }
+
+      if (!formatted && val.substring(0, 1) == "+") {
+        formatted = "+";
+      }
+
+      console.log("UPDATING VAL="+formatted + pure);
+      that.telInput.val(formatted + pure);
 
       return dialCode;
     },
@@ -785,7 +776,7 @@
     // set the input value and update the flag
     setNumber: function(number) {
       this.telInput.val(number);
-      this._updateFlagFromVal(number);
+      this._updateFromVal(number);
     },
 
 
