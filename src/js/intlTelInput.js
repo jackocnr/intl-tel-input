@@ -274,10 +274,16 @@
         //console.log(e.which);
         e.preventDefault();
 
-        var val = that.telInput.val();
-        // replace any selection they may have made with the new char
-        // selectionStart works in Chrome, FF, Safari, IE9+
-        val = val.substring(0, this.selectionStart) + String.fromCharCode(e.which) + val.substring(this.selectionEnd, val.length);
+        var val = that.telInput.val(),
+          newChar = String.fromCharCode(e.which);
+        
+        // works in Chrome, FF, Safari, IE9+
+        if (this.setSelectionRange) {
+          // replace any selection they may have made with the new char
+          val = val.substring(0, this.selectionStart) + newChar + val.substring(this.selectionEnd, val.length);
+        } else {
+          val += newChar;
+        }
         console.log("\n\nnew val="+val);
 
         that._updateFromVal(val);
