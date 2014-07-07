@@ -15,16 +15,16 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     "use strict";
     var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
-        // don't insert international dial codes
-        nationalMode: false,
+        // automatically format the number according to the selected country
+        autoFormat: true,
         // if there is just a dial code in the input: remove it on blur, and re-add it on focus
         autoHideDialCode: true,
         // default country
         defaultCountry: "",
-        // character to appear between dial code and phone number
-        dialCodeDelimiter: " ",
         // position the selected flag inside or outside of the input
         defaultStyling: "inside",
+        // don't insert international dial codes
+        nationalMode: false,
         // display only these countries
         onlyCountries: [],
         // the countries at the top of the list. defaults to united states and united kingdom
@@ -199,7 +199,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _setInitialState: function() {
             // if the input is pre-populated, then just update the selected flag accordingly
             // however, if no valid international dial code was found, flag will not have been set
-            if (!this._updateFlagFromVal(this.telInput.val())) {
+            if (!this.setNumber(this.telInput.val())) {
                 // flag is not set, so set to the default country
                 var defaultCountry;
                 // check the defaultCountry option, else fall back to the first in the list
@@ -233,13 +233,31 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     }
                 });
             }
-            // update flag on keydown (by extracting the dial code from the input value).
-            // use keydown instead of keypress because we want to update on backspace
-            // and instead of keyup so we can intercept keys before the characters appear
+            // update flag on keypress (by extracting the dial code from the input value).
+            // use keypress event as we dont care about arrow keys or backspace keys etc
             // NOTE: better to have this one listener all the time instead of starting it on focus
             // and stopping it on blur, because then you've got two listeners (focus and blur)
-            this.telInput.on("keydown" + this.ns, function(e) {
-                that._updateFlagFromVal(that.telInput.val() + String.fromCharCode(e.which));
+            this.telInput.on("keypress" + this.ns, function(e) {
+                e.preventDefault();
+                var val = that.telInput.val(), newChar = String.fromCharCode(e.which), newCaretPos = null;
+                // works in Chrome, FF, Safari, IE9+
+                if (this.setSelectionRange) {
+                    var selectionEnd = this.selectionEnd, originalLen = val.length;
+                    // replace any selection they may have made with the new char
+                    val = val.substring(0, this.selectionStart) + newChar + val.substring(selectionEnd, val.length);
+                    // if the cursor/end of selection was not at the end, calculate the newCaretPos
+                    if (this.selectionEnd !== originalLen) {
+                        newCaretPos = selectionEnd + (val.length - originalLen);
+                    }
+                } else {
+                    val += newChar;
+                }
+                that.setNumber(val);
+                // update the caret position
+                // works in Chrome, FF, Safari, IE9+
+                if (this.setSelectionRange && newCaretPos) {
+                    this.setSelectionRange(newCaretPos, newCaretPos);
+                }
             });
             // toggle country dropdown on click
             var selectedFlag = this.selectedFlagInner.parent();
@@ -302,10 +320,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.on("blur" + this.ns, function() {
                 var value = $.trim(that.telInput.val());
                 if (value) {
-                    if ($.trim(that._getDialCode(value) + that.options.dialCodeDelimiter) == value) {
+                    if ($.trim(that._getDialCode(value)) == value) {
                         that.telInput.val("");
                     }
                 }
+                // remove the keypress listener we added on focus
                 that.telInput.off("keypress" + that.ns);
             });
         },
@@ -432,29 +451,42 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _startsWith: function(a, b) {
             return a.substr(0, b.length).toUpperCase() == b;
         },
-        // update the selected flag using the input's current value
-        _updateFlagFromVal: function(val) {
-            var that = this;
-            // try and extract valid dial code from input
-            var dialCode = this._getDialCode(val);
-            if (dialCode) {
-                // check if one of the matching countries is already selected
-                var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")], alreadySelected = false;
-                $.each(countryCodes, function(i, c) {
-                    if (that.selectedFlagInner.hasClass(c)) {
-                        alreadySelected = true;
+        _formatVal: function(val, hasDialCode) {
+            var formatted = "", pure = val.replace(/\D/g, "");
+            if (this.options.autoFormat) {
+                if (hasDialCode) {
+                    // format the number
+                    var format = this.getSelectedCountryData().format;
+                    if (format) {
+                        var len = format.length;
+                        for (var i = 0; i < len; i++) {
+                            // if the format character is a dot, add the number
+                            if (format[i] == ".") {
+                                if (!pure) {
+                                    break;
+                                }
+                                formatted += pure.substring(0, 1);
+                                pure = pure.substring(1);
+                            } else {
+                                formatted += format[i];
+                            }
+                        }
                     }
-                });
-                if (!alreadySelected) {
-                    this._selectFlag(countryCodes[0]);
                 }
+                // if no formatted version, we're left with the "pure" numbers, so just make sure to preserve any initial '+'
+                if (!formatted && val.substring(0, 1) == "+") {
+                    formatted = "+";
+                }
+            } else {
+                // no autoFormat, so just insert the true value
+                pure = val;
             }
-            return dialCode;
+            this.telInput.val(formatted + pure);
         },
         // reset the input value to just a dial code
         _resetToDialCode: function(dialCode) {
             // if nationalMode is enabled then don't insert the dial code
-            var value = this.options.nationalMode ? "" : "+" + dialCode + this.options.dialCodeDelimiter;
+            var value = this.options.nationalMode ? "" : "+" + dialCode;
             this.telInput.val(value);
         },
         // remove highlighting from other list items and highlight the given item
@@ -534,17 +566,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // (if more than just a plus character)
             if (prevDialCode.length > 1) {
                 newNumber = inputVal.replace(prevDialCode, newDialCode);
-                // if the old number was just the dial code,
-                // then we will need to add the space again
-                if (inputVal == prevDialCode) {
-                    newNumber += this.options.dialCodeDelimiter;
-                }
             } else {
                 // if the previous number didn't contain a dial code, we should persist it
                 var existingNumber = inputVal && inputVal.substr(0, 1) != "+" ? $.trim(inputVal) : "";
-                newNumber = newDialCode + this.options.dialCodeDelimiter + existingNumber;
+                newNumber = newDialCode + existingNumber;
             }
-            this.telInput.val(newNumber);
+            this._formatVal(newNumber, true);
         },
         // try and extract a valid international dial code from a full telephone number
         // Note: returns the raw string inc plus character and any whitespace/dots etc
@@ -603,8 +630,24 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // set the input value and update the flag
         setNumber: function(number) {
-            this.telInput.val(number);
-            this._updateFlagFromVal(number);
+            var that = this;
+            // try and extract valid dial code from input
+            var dialCode = this._getDialCode(number);
+            if (dialCode) {
+                // check if one of the matching countries is already selected
+                var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")], alreadySelected = false;
+                $.each(countryCodes, function(i, c) {
+                    if (that.selectedFlagInner.hasClass(c)) {
+                        alreadySelected = true;
+                    }
+                });
+                // else choose the first in the list
+                if (!alreadySelected) {
+                    this._selectFlag(countryCodes[0]);
+                }
+            }
+            this._formatVal(number, dialCode);
+            return dialCode;
         },
         // remove plugin
         destroy: function() {

@@ -226,7 +226,7 @@
     _setInitialState: function() {
       // if the input is pre-populated, then just update the selected flag accordingly
       // however, if no valid international dial code was found, flag will not have been set
-      if (!this._updateFromVal(this.telInput.val())) {
+      if (!this.setNumber(this.telInput.val())) {
         // flag is not set, so set to the default country
         var defaultCountry;
         // check the defaultCountry option, else fall back to the first in the list
@@ -291,7 +291,7 @@
           val += newChar;
         }
 
-        that._updateFromVal(val);
+        that.setNumber(val);
 
         // update the caret position
         // works in Chrome, FF, Safari, IE9+
@@ -535,34 +535,14 @@
     },
 
 
-     // update the selected flag using the input's current value
-    _updateFromVal: function(val) {
-      var that = this;
-
+    _formatVal: function(val, hasDialCode) {
       var formatted = "",
         pure = val.replace(/\D/g, "");
 
-      // try and extract valid dial code from input
-      var dialCode = this._getDialCode(val);
-      if (dialCode) {
-        // check if one of the matching countries is already selected
-        var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")],
-          alreadySelected = false;
-        $.each(countryCodes, function(i, c) {
-          if (that.selectedFlagInner.hasClass(c)) {
-            alreadySelected = true;
-          }
-        });
-        // else choose the first in the list
-        if (!alreadySelected) {
-          this._selectFlag(countryCodes[0]);
-        }
-      }
-
       if (this.options.autoFormat) {
-        if (dialCode) {
+        if (hasDialCode) {
           // format the number
-          var format = that.getSelectedCountryData().format;
+          var format = this.getSelectedCountryData().format;
           if (format) {
             var len = format.length;
             for (var i = 0; i < len; i++) {
@@ -589,9 +569,7 @@
         pure = val;
       }
 
-      that.telInput.val(formatted + pure);
-
-      return dialCode;
+      this.telInput.val(formatted + pure);
     },
 
 
@@ -716,7 +694,7 @@
         newNumber = newDialCode + existingNumber;
       }
 
-      this.telInput.val(newNumber);
+      this._formatVal(newNumber, true);
     },
 
 
@@ -791,8 +769,28 @@
 
     // set the input value and update the flag
     setNumber: function(number) {
-      this.telInput.val(number);
-      this._updateFromVal(number);
+      var that = this;
+
+      // try and extract valid dial code from input
+      var dialCode = this._getDialCode(number);
+      if (dialCode) {
+        // check if one of the matching countries is already selected
+        var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")],
+          alreadySelected = false;
+        $.each(countryCodes, function(i, c) {
+          if (that.selectedFlagInner.hasClass(c)) {
+            alreadySelected = true;
+          }
+        });
+        // else choose the first in the list
+        if (!alreadySelected) {
+          this._selectFlag(countryCodes[0]);
+        }
+      }
+
+      this._formatVal(number, dialCode);
+
+      return dialCode;
     },
 
 
