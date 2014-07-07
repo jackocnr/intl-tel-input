@@ -274,17 +274,30 @@
         e.preventDefault();
 
         var val = that.telInput.val(),
-          newChar = String.fromCharCode(e.which);
+          newChar = String.fromCharCode(e.which),
+          newCaretPos = null;
         
         // works in Chrome, FF, Safari, IE9+
         if (this.setSelectionRange) {
+          var selectionEnd = this.selectionEnd,
+            originalLen = val.length;
           // replace any selection they may have made with the new char
-          val = val.substring(0, this.selectionStart) + newChar + val.substring(this.selectionEnd, val.length);
+          val = val.substring(0, this.selectionStart) + newChar + val.substring(selectionEnd, val.length);
+          // if the cursor/end of selection was not at the end, calculate the newCaretPos
+          if (this.selectionEnd !== originalLen) {
+            newCaretPos = selectionEnd + (val.length - originalLen);
+          }
         } else {
           val += newChar;
         }
 
         that._updateFromVal(val);
+
+        // update the caret position
+        // works in Chrome, FF, Safari, IE9+
+        if (this.setSelectionRange && newCaretPos) {
+          this.setSelectionRange(newCaretPos, newCaretPos);
+        }
       });
 
       // toggle country dropdown on click
@@ -560,7 +573,7 @@
                 }
                 formatted += pure.substring(0, 1);
                 pure = pure.substring(1);
-              } else if (pure.length > 0) {
+              } else {
                 formatted += format[i];
               }
             }
