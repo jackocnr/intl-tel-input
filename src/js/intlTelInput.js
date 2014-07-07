@@ -2,16 +2,16 @@
   var pluginName = "intlTelInput",
     id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
-      // don't insert international dial codes
-      nationalMode: false,
+      // automatically format the number according to the selected country
+      autoFormat: true,
       // if there is just a dial code in the input: remove it on blur, and re-add it on focus
       autoHideDialCode: true,
       // default country
       defaultCountry: "",
-      // character to appear between dial code and phone number
-      dialCodeDelimiter: " ",
       // position the selected flag inside or outside of the input
       defaultStyling: "inside",
+      // don't insert international dial codes
+      nationalMode: false,
       // display only these countries
       onlyCountries: [],
       // the countries at the top of the list. defaults to united states and united kingdom
@@ -271,7 +271,6 @@
       // NOTE: better to have this one listener all the time instead of starting it on focus
       // and stopping it on blur, because then you've got two listeners (focus and blur)
       this.telInput.on("keypress" + this.ns, function(e) {
-        //console.log(e.which);
         e.preventDefault();
 
         var val = that.telInput.val(),
@@ -284,7 +283,6 @@
         } else {
           val += newChar;
         }
-        console.log("\n\nnew val="+val);
 
         that._updateFromVal(val);
       });
@@ -356,7 +354,7 @@
       this.telInput.on("blur" + this.ns, function() {
         var value = $.trim(that.telInput.val());
         if (value) {
-          if ($.trim(that._getDialCode(value) + that.options.dialCodeDelimiter) == value) {
+          if ($.trim(that._getDialCode(value)) == value) {
             that.telInput.val("");
           }
         }
@@ -530,7 +528,6 @@
 
       var formatted = "",
         pure = val.replace(/\D/g, "");
-      console.log("pure="+pure);
 
       // try and extract valid dial code from input
       var dialCode = this._getDialCode(val);
@@ -547,33 +544,38 @@
         if (!alreadySelected) {
           this._selectFlag(countryCodes[0]);
         }
+      }
 
-
-        // format the number
-        var format = that.getSelectedCountryData().format;
-        console.log("format="+format);
-        if (format) {
-          var len = format.length;
-          for (var i = 0; i < len; i++) {
-            // if the format character is a dot, add the number
-            if (format[i] == ".") {
-              if (!pure) {
-                break;
+      if (this.options.autoFormat) {
+        if (dialCode) {
+          // format the number
+          var format = that.getSelectedCountryData().format;
+          if (format) {
+            var len = format.length;
+            for (var i = 0; i < len; i++) {
+              // if the format character is a dot, add the number
+              if (format[i] == ".") {
+                if (!pure) {
+                  break;
+                }
+                formatted += pure.substring(0, 1);
+                pure = pure.substring(1);
+              } else if (pure.length > 0) {
+                formatted += format[i];
               }
-              formatted += pure.substring(0, 1);
-              pure = pure.substring(1);
-            } else if (pure.length > 0) {
-              formatted += format[i];
             }
           }
         }
+
+        // if no formatted version, we're left with the "pure" numbers, so just make sure to preserve any initial '+'
+        if (!formatted && val.substring(0, 1) == "+") {
+          formatted = "+";
+        }
+      } else {
+        // no autoFormat, so just insert the true value
+        pure = val;
       }
 
-      if (!formatted && val.substring(0, 1) == "+") {
-        formatted = "+";
-      }
-
-      console.log("UPDATING VAL="+formatted + pure);
       that.telInput.val(formatted + pure);
 
       return dialCode;
@@ -583,7 +585,7 @@
     // reset the input value to just a dial code
     _resetToDialCode: function(dialCode) {
       // if nationalMode is enabled then don't insert the dial code
-      var value = (this.options.nationalMode) ? "" : "+" + dialCode + this.options.dialCodeDelimiter;
+      var value = (this.options.nationalMode) ? "" : "+" + dialCode;
       this.telInput.val(value);
     },
 
@@ -695,15 +697,10 @@
       // (if more than just a plus character)
       if (prevDialCode.length > 1) {
         newNumber = inputVal.replace(prevDialCode, newDialCode);
-        // if the old number was just the dial code,
-        // then we will need to add the space again
-        if (inputVal == prevDialCode) {
-          newNumber += this.options.dialCodeDelimiter;
-        }
       } else {
         // if the previous number didn't contain a dial code, we should persist it
         var existingNumber = (inputVal && inputVal.substr(0, 1) != "+") ? $.trim(inputVal) : "";
-        newNumber = newDialCode + this.options.dialCodeDelimiter + existingNumber;
+        newNumber = newDialCode + existingNumber;
       }
 
       this.telInput.val(newNumber);
