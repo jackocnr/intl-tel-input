@@ -65,7 +65,7 @@
       // set the initial state of the input value and the selected flag
       this._setInitialState();
 
-      // start all of the event listeners: autoHideDialCode, input keyup, selectedFlag click
+      // start all of the event listeners: autoHideDialCode, input keydown, selectedFlag click
       this._initListeners();
     },
 
@@ -224,15 +224,9 @@
 
     // set the initial state of the input value and the selected flag
     _setInitialState: function() {
-      var flagIsSet = false;
-
       // if the input is pre-populated, then just update the selected flag accordingly
       // however, if no valid international dial code was found, flag will not have been set
-      if (this.telInput.val()) {
-        flagIsSet = this._updateFlagFromInputVal();
-      }
-
-      if (!flagIsSet) {
+      if (!this._updateFlagFromVal(this.telInput.val())) {
         // flag is not set, so set to the default country
         var defaultCountry;
         // check the defaultCountry option, else fall back to the first in the list
@@ -251,7 +245,7 @@
     },
 
 
-    // initialise the main event listeners: input keyup, and click selected flag
+    // initialise the main event listeners: input keydown, and click selected flag
     _initListeners: function() {
       var that = this;
 
@@ -272,13 +266,13 @@
         });
       }
 
-      // update flag on keyup (by extracting the dial code from the input value).
-      // use keyup instead of keypress because we want to update on backspace
-      // and instead of keydown because the value hasn't updated when that event is fired
+      // update flag on keydown (by extracting the dial code from the input value).
+      // use keydown instead of keypress because we want to update on backspace
+      // and instead of keyup so we can intercept keys before the characters appear
       // NOTE: better to have this one listener all the time instead of starting it on focus
       // and stopping it on blur, because then you've got two listeners (focus and blur)
-      this.telInput.on("keyup" + this.ns, function() {
-        that._updateFlagFromInputVal();
+      this.telInput.on("keydown" + this.ns, function(e) {
+        that._updateFlagFromVal(that.telInput.val() + String.fromCharCode(e.which));
       });
 
       // toggle country dropdown on click
@@ -516,11 +510,11 @@
 
 
      // update the selected flag using the input's current value
-    _updateFlagFromInputVal: function() {
+    _updateFlagFromVal: function(val) {
       var that = this;
 
       // try and extract valid dial code from input
-      var dialCode = this._getDialCode(this.telInput.val());
+      var dialCode = this._getDialCode(val);
       if (dialCode) {
         // check if one of the matching countries is already selected
         var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")],
@@ -534,11 +528,9 @@
         if (!alreadySelected) {
           this._selectFlag(countryCodes[0]);
         }
-        // valid international dial code found
-        return true;
       }
-      // valid international dial code not found
-      return false;
+
+      return dialCode;
     },
 
 
@@ -744,7 +736,7 @@
     // set the input value and update the flag
     setNumber: function(number) {
       this.telInput.val(number);
-      this._updateFlagFromInputVal();
+      this._updateFlagFromVal(number);
     },
 
 

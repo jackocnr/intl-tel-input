@@ -1299,6 +1299,9 @@ $.each(allCountries, function(i, c) {
     iso2: c[1],
     dialCode: c[2]
   };
+  if (c[3]) {
+    allCountries[i].format = c[3];
+  }
 });
 
 // JavaScript object mapping dial code to country code.

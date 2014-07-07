@@ -90,7 +90,7 @@ describe("init vanilla plugin", function() {
   describe("typing a number with a different dial code", function() {
 
     beforeEach(function() {
-      input.val("+44 1234567").keyup();
+      input.val("+44 1234567").keydown();
     });
 
     it("updates the selected flag", function() {
@@ -98,7 +98,7 @@ describe("init vanilla plugin", function() {
     });
 
     it("clearing the input again does not change the selected flag", function() {
-      input.val("").keyup();
+      input.val("").keydown();
       expect(getSelectedFlagElement()).toHaveClass("gb");
     });
 
@@ -111,7 +111,7 @@ describe("init vanilla plugin", function() {
     var telNo = "98765432";
 
     beforeEach(function() {
-      input.val("+4 4 " + telNo).keyup();
+      input.val("+4 4 " + telNo).keydown();
     });
 
     it("still updates the flag correctly", function() {
@@ -132,7 +132,7 @@ describe("init vanilla plugin", function() {
     var telNo = "98765432";
 
     beforeEach(function() {
-      input.val("+4.4 " + telNo).keyup();
+      input.val("+4.4 " + telNo).keydown();
     });
 
     it("still updates the flag correctly", function() {

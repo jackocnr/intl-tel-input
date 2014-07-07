@@ -47,7 +47,7 @@ describe("init plugin with onlyCountries for Afghanistan, Isle of Man and UK", f
   });
 
   it("entering +44 defaults to the top priority country (UK)", function() {
-    input.val("+44").keyup();
+    input.val("+44").keydown();
     expect(getSelectedFlagElement()).toHaveClass("gb");
   });
 

@@ -31,7 +31,7 @@ describe("init plugin with nationalMode set to true", function() {
   });
 
   it("but typing a dial code does still update the selected country", function() {
-    input.val("+44 1234567").keyup();
+    input.val("+44 1234567").keydown();
     expect(getSelectedFlagElement()).toHaveClass("gb");
   });
 
