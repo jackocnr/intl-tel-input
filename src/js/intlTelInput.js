@@ -266,13 +266,61 @@
         });
       }
 
-      // update flag on keydown (by extracting the dial code from the input value).
-      // use keydown instead of keypress because we want to update on backspace
-      // and instead of keyup so we can intercept keys before the characters appear
+      // update flag on keypress (by extracting the dial code from the input value).
+      // use keypress event as we dont care about arrow keys or backspace keys etc
       // NOTE: better to have this one listener all the time instead of starting it on focus
       // and stopping it on blur, because then you've got two listeners (focus and blur)
-      this.telInput.on("keydown" + this.ns, function(e) {
-        that._updateFlagFromVal(that.telInput.val() + String.fromCharCode(e.which));
+      this.telInput.on("keypress" + this.ns, function(e) {
+        //console.log(e.which);
+        e.preventDefault();
+
+        var val = that.telInput.val();
+        // replace any selection they may have made with the new char
+        // selectionStart works in Chrome, FF, Safari, IE9+
+        val = val.substring(0, this.selectionStart) + String.fromCharCode(e.which) + val.substring(this.selectionEnd, val.length);
+        console.log("\n\nnew val="+val);
+
+        var prefix = "",
+          formatted = "",
+          pure = val.replace(/\D/g, "");
+        console.log("pure="+pure);
+
+        if (val.substring(0, 1) == "+") {
+          console.log("starts with a plus");
+          // this will check there is a valid dial code
+          if (that._updateFlagFromVal(val)) {
+            console.log("valid dial code!");
+
+
+
+            
+            var format = that.getSelectedCountryData().format;
+            console.log("format="+format);
+            if (format) {
+              var len = format.length;
+              for (var i = 0; i < len; i++) {
+                // if the format character is a dot, add the number
+                if (format[i] == ".") {
+                  if (!pure) {
+                    break;
+                  }
+                  formatted += pure.substring(0, 1);
+                  pure = pure.substring(1);
+                } else if (pure.length > 0) {
+                  formatted += format[i];
+                }
+              }
+            }
+          }
+
+          if (!formatted) {
+            console.log("no formatted value, so setting prefix = +");
+            prefix = "+";
+          }
+        }
+
+        console.log("UPDATING VAL="+prefix + formatted + pure);
+        that.telInput.val(prefix + formatted + pure);
       });
 
       // toggle country dropdown on click
@@ -346,6 +394,7 @@
             that.telInput.val("");
           }
         }
+        // remove the keypress listener we added on focus
         that.telInput.off("keypress" + that.ns);
       });
 
@@ -524,7 +573,7 @@
             alreadySelected = true;
           }
         });
-
+        // else choose the first in the list
         if (!alreadySelected) {
           this._selectFlag(countryCodes[0]);
         }
