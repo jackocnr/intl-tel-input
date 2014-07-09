@@ -73,7 +73,7 @@ Set the dropdown's width to be the same as the input. Useful for mobile devices 
 
 **validationScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/isValidNumber.js"`  
-Enable validation by specifying the URL to the included libphonenumber script. This ~200k script is fetched only when the page has finished loading (to prevent blocking), and is then accessible through the public `isValidNumber` function.
+Enable validation by specifying the URL to the included isValidNumber.js script. This ~200k script is fetched only when the page has finished loading (to prevent blocking), and is then accessible through the public `isValidNumber` function.
 
 
 ## Public methods
