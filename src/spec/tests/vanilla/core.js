@@ -90,7 +90,7 @@ describe("init vanilla plugin", function() {
   describe("typing a number with a different dial code", function() {
 
     beforeEach(function() {
-      input.val("+44 1234567").keydown();
+      input.val("+44 1234567").keypress();
     });
 
     it("updates the selected flag", function() {
@@ -98,7 +98,7 @@ describe("init vanilla plugin", function() {
     });
 
     it("clearing the input again does not change the selected flag", function() {
-      input.val("").keydown();
+      input.val("").keypress();
       expect(getSelectedFlagElement()).toHaveClass("gb");
     });
 
@@ -111,7 +111,7 @@ describe("init vanilla plugin", function() {
     var telNo = "98765432";
 
     beforeEach(function() {
-      input.val("+4 4 " + telNo).keydown();
+      input.val("+4 4 " + telNo).keypress();
     });
 
     it("still updates the flag correctly", function() {
@@ -120,7 +120,7 @@ describe("init vanilla plugin", function() {
 
     it("then changing the flag updates the number correctly", function() {
       selectFlag("zw");
-      expect(getInputVal()).toEqual("+263 " + telNo);
+      expect(getInputVal()).toEqual("+263" + telNo);
     });
 
   });
@@ -132,7 +132,7 @@ describe("init vanilla plugin", function() {
     var telNo = "98765432";
 
     beforeEach(function() {
-      input.val("+4.4 " + telNo).keydown();
+      input.val("+4.4 " + telNo).keypress();
     });
 
     it("still updates the flag correctly", function() {
@@ -141,7 +141,7 @@ describe("init vanilla plugin", function() {
 
     it("then changing the flag updates the number correctly", function() {
       selectFlag("zw");
-      expect(getInputVal()).toEqual("+263 " + telNo);
+      expect(getInputVal()).toEqual("+263" + telNo);
     });
 
   });
@@ -163,7 +163,7 @@ describe("init vanilla plugin", function() {
     it("focusing the input adds the default dial code, and blur removes it again", function() {
       expect(getInputVal()).toEqual("");
       input.focus();
-      expect(getInputVal()).toEqual("+1");
+      expect(getInputVal()).toEqual("+1 ("); // auto-formatting
       input.blur();
       expect(getInputVal()).toEqual("");
     });

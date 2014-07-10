@@ -33,7 +33,7 @@ describe("testing autoHideDialCode option", function() {
 
     it("focusing the input adds the default dial code and blurring it removes it again", function() {
       input.focus();
-      expect(getInputVal()).toEqual(defaultDialCode);
+      expect(getInputVal()).toEqual("+1 ("); // this is now formatted
       input.blur();
       expect(getInputVal()).toEqual("");
     });

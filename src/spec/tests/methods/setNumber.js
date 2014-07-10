@@ -2,20 +2,18 @@
 
 describe("init plugin and call public method setNumber", function() {
 
-  var number = "+44 7733 123 456";
-
   beforeEach(function() {
     input = $("<input>");
     input.intlTelInput();
-    input.intlTelInput("setNumber", number);
+    input.intlTelInput("setNumber", "+447733123456");
   });
 
   afterEach(function() {
     input = null;
   });
   
-  it("sets the number", function() {
-    expect(getInputVal()).toEqual(number);
+  it("formats the number", function() {
+    expect(getInputVal()).toEqual("+44 7733 123456");
   });
 
   it("updates the flag", function() {
