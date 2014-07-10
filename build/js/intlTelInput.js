@@ -650,12 +650,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var val = $.trim(this.telInput.val()), countryCode = allowNational ? this.selectedCountryData.iso2 : "";
             return window.isValidNumber(val, countryCode);
         },
-        // update the selected flag, and insert the dial code
+        // update the selected flag, and if the input is empty: insert the new dial code
         selectCountry: function(countryCode) {
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {
                 this._selectFlag(countryCode);
-                if (!this.options.autoHideDialCode) {
+                if (!this.telInput.val() && !this.options.autoHideDialCode) {
                     this._resetToDialCode(this.selectedCountryData.dialCode);
                 }
             }
