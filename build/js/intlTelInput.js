@@ -333,8 +333,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // on focus: if empty, insert the dial code for the currently selected flag
             this.telInput.on("focus" + this.ns, function() {
                 if (!$.trim(that.telInput.val())) {
-                    var countryData = that.getSelectedCountryData();
-                    that._formatVal("+" + countryData.dialCode, true);
+                    that._formatVal("+" + that.selectedCountryData.dialCode, true);
                     // after auto-inserting a dial code, if the first key they hit is '+' then assume
                     // they are entering a new number, so remove the dial code.
                     // use keypress instead of keydown because keydown gets triggered for the shift key
@@ -488,7 +487,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (this.options.autoFormat) {
                 if (hasDialCode) {
                     // format the number
-                    var format = this.getSelectedCountryData().format;
+                    var format = this.selectedCountryData.format;
                     if (format) {
                         for (var i = 0; i < format.length; i++) {
                             // if the format character is a dot, add the number
@@ -545,8 +544,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _selectFlag: function(countryCode) {
             this.selectedFlagInner.attr("class", "flag " + countryCode);
             // update the title attribute
-            var countryData = this._getCountryData(countryCode);
-            this.selectedFlagInner.parent().attr("title", countryData.name + ": +" + countryData.dialCode);
+            this.selectedCountryData = this._getCountryData(countryCode);
+            var title = this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode;
+            this.selectedFlagInner.parent().attr("title", title);
             // update the active list item
             var listItem = this.countryListItems.children(".flag." + countryCode).first().parent();
             this.countryListItems.removeClass("active");
@@ -642,15 +642,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
      ********************/
         // get the country data for the currently selected flag
         getSelectedCountryData: function() {
-            // rely on the fact that we only set 2 classes on the selected flag element:
-            // the first is "flag" and the second is the 2-char country code
-            var countryCode = this.selectedFlagInner.attr("class").split(" ")[1];
-            return this._getCountryData(countryCode);
+            return this.selectedCountryData;
         },
         // validate the input val - assumes the global function isValidNumber
         // pass in true if you want to allow national numbers (no country dial code)
         isValidNumber: function(allowNational) {
-            var val = $.trim(this.telInput.val()), countryData = this.getSelectedCountryData(), countryCode = allowNational ? countryData.iso2 : "";
+            var val = $.trim(this.telInput.val()), countryCode = allowNational ? this.selectedCountryData.iso2 : "";
             return window.isValidNumber(val, countryCode);
         },
         // update the selected flag, and insert the dial code
@@ -659,8 +656,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (!this.selectedFlagInner.hasClass(countryCode)) {
                 this._selectFlag(countryCode);
                 if (!this.options.autoHideDialCode) {
-                    var countryData = this._getCountryData(countryCode, false);
-                    this._resetToDialCode(countryData.dialCode);
+                    this._resetToDialCode(this.selectedCountryData.dialCode);
                 }
             }
         },
