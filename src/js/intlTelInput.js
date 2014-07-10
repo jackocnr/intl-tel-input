@@ -291,7 +291,7 @@
         var isAllowed = (e.which == keys.PLUS || (e.which >= keys.ZERO && e.which <= keys.NINE));
         that._handleInputKey(e, false, String.fromCharCode(e.which), isAllowed);
       });
-      // also format number on delete
+      // also format number on delete - use keyup here as want to re-format AFTER the delete has done it's damage
       this.telInput.on("keyup" + this.ns, function(e) {
         if (e.which == keys.BACKSPACE || e.which == keys.DELETE) {
           that._handleInputKey(e, true, "", true);
