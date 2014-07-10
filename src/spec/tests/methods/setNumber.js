@@ -9,6 +9,7 @@ describe("init plugin and call public method setNumber", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
   

@@ -16,6 +16,7 @@ describe("use static method setCountryData before initialising the plugin", func
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
     $.fn.intlTelInput.setCountryData(oldCountryData);
   });

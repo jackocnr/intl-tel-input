@@ -13,6 +13,7 @@ describe("init plugin with nationalMode set to true", function() {
 
   afterEach(function() {
     getParentElement().remove();
+    input.intlTelInput("destroy");
     input = null;
   });
 

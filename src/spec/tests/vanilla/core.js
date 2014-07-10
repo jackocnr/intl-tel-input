@@ -8,6 +8,7 @@ describe("init vanilla plugin on input with prepopulated value", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 
@@ -31,6 +32,7 @@ describe("init vanilla plugin on input with invalid prepopulated value", functio
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 
@@ -54,6 +56,7 @@ describe("init vanilla plugin", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 

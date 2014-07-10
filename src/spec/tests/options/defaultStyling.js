@@ -7,6 +7,7 @@ describe("testing defaultStyling option", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 

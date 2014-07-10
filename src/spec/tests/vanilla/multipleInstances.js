@@ -21,6 +21,8 @@ describe("init vanilla plugin to test multiple instances", function() {
   afterEach(function() {
     getParentElement(input).remove();
     getParentElement(input2).remove();
+    input.intlTelInput("destroy");
+    input2.intlTelInput("destroy");
     input = input2 = null;
   });
 

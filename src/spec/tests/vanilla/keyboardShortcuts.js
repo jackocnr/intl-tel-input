@@ -9,6 +9,7 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 

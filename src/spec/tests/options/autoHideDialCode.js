@@ -9,6 +9,7 @@ describe("testing autoHideDialCode option", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 

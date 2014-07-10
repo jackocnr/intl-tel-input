@@ -7,6 +7,7 @@ describe("testing preferredCountries", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 

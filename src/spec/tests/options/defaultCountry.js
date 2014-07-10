@@ -12,6 +12,7 @@ describe("init plugin with a default country", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 

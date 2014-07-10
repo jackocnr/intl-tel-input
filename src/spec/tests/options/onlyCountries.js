@@ -14,6 +14,7 @@ describe("init plugin with onlyCountries", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = onlyCountries = null;
   });
 

@@ -2,7 +2,8 @@ module.exports = function(grunt) {
   return {
     src: [
       'src/js/data.js',
-      'src/js/intlTelInput.js'
+      'src/js/intlTelInput.js',
+      'lib/libphonenumber/build/isValidNumber.js'
     ],
     options: {
       vendor: [

@@ -11,6 +11,7 @@ describe("init plugin and calling public method selectCountry()", function() {
   });
 
   afterEach(function() {
+    input.intlTelInput("destroy");
     input = null;
   });
 
