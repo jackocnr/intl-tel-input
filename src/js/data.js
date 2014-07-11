@@ -1293,7 +1293,8 @@ var allCountries = [
     "263"
   ]
 ];
-$.each(allCountries, function(i, c) {
+for (var i = 0; i < allCountries.length; i++) {
+  var c = allCountries[i];
   allCountries[i] = {
     name: c[0],
     iso2: c[1],
@@ -1302,7 +1303,7 @@ $.each(allCountries, function(i, c) {
   if (c[3]) {
     allCountries[i].format = c[3];
   }
-});
+}
 
 // JavaScript object mapping dial code to country code.
 // This is used when the user enters a number,

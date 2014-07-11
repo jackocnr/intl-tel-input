@@ -105,27 +105,30 @@
 
       if (this.options.onlyCountries.length) {
         var newCountries = [],
-          newCountryCodes = {};
-        $.each(this.options.onlyCountries, function(i, countryCode) {
-          var countryData = that._getCountryData(countryCode, true);
+          newCountryCodes = {},
+          dialCode,
+          i;
+        for (i = 0; i < this.options.onlyCountries.length; i++) {
+          var countryCode = this.options.onlyCountries[i],
+            countryData = that._getCountryData(countryCode, true);
           if (countryData) {
             newCountries.push(countryData);
             // add this country's dial code to the countryCodes
-            var dialCode = countryData.dialCode;
+            dialCode = countryData.dialCode;
             if (newCountryCodes[dialCode]) {
               newCountryCodes[dialCode].push(countryCode);
             } else {
               newCountryCodes[dialCode] = [countryCode];
             }
           }
-        });
+        }
         
         // maintain country priority
-        for (var dialCode in newCountryCodes) {
+        for (dialCode in newCountryCodes) {
           if (newCountryCodes[dialCode].length > 1) {
             var sortedCountries = [];
             // go through all of the allCountryCodes countries for this dialCode and create a new (ordered) array of values (if they're in the newCountryCodes array)
-            for (var i = 0; i < allCountryCodes[dialCode].length; i++) {
+            for (i = 0; i < allCountryCodes[dialCode].length; i++) {
               var country = allCountryCodes[dialCode][i];
               if ($.inArray(newCountryCodes[dialCode], country)) {
                 sortedCountries.push(country);
@@ -149,12 +152,13 @@
     _setPreferredCountries: function() {
       var that = this;
       this.preferredCountries = [];
-      $.each(this.options.preferredCountries, function(i, countryCode) {
-        var countryData = that._getCountryData(countryCode, false);
+      for (var i = 0; i < this.options.preferredCountries.length; i++) {
+        var countryCode = this.options.preferredCountries[i],
+          countryData = that._getCountryData(countryCode, false);
         if (countryData) {
           that.preferredCountries.push(countryData);
         }
-      });
+      }
     },
 
 
@@ -219,7 +223,8 @@
       // and then add everything to the DOM in one go at the end
       var tmp = "";
       // for each country
-      $.each(countries, function(i, c) {
+      for (var i = 0; i < countries.length; i++) {
+        var c = countries[i];
         // open the list item
         tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
         // add the flag
@@ -229,7 +234,7 @@
         tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
         // close the list item
         tmp += "</li>";
-      });
+      }
       this.countryList.append(tmp);
     },
 
@@ -814,11 +819,11 @@
         // check if one of the matching countries is already selected
         var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")],
           alreadySelected = false;
-        $.each(countryCodes, function(i, c) {
-          if (that.selectedFlagInner.hasClass(c)) {
+        for (var i = 0; i < countryCodes.length; i++) {
+          if (that.selectedFlagInner.hasClass(countryCodes[i])) {
             alreadySelected = true;
           }
-        });
+        }
         // else choose the first in the list
         if (!alreadySelected) {
           this._selectFlag(countryCodes[0]);
