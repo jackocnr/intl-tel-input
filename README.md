@@ -1,12 +1,11 @@
 # International Telephone Input [![Build Status](https://travis-ci.org/Bluefieldscom/intl-tel-input.png)](https://travis-ci.org/Bluefieldscom/intl-tel-input)
 A jQuery plugin for entering and validating international telephone numbers. It adds a flag dropdown to any input, which lists all the countries and their international dial codes next to their flags.
 
-
-## Demo
-http://jackocnr.com/intl-tel-input.html  
-Try it for yourself using the included demo.html
-
 ![alt tag](https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png)
+
+
+## Demo and Examples
+You can view a live demo and some examples of how to use the various options here: http://jackocnr.com/intl-tel-input.html, or try it for yourself using the included demo.html.
 
 ## Features
 * Navigate the country dropdown by typing a country's name, or using up/down keys
@@ -17,7 +16,7 @@ Try it for yourself using the included demo.html
 * Lots of initialisation options for customisation, as well as public methods for interaction
 
 
-## Getting started
+## Getting Started
 1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
 2. Link the stylesheet (note that this references the image flags.png)
   ```html
@@ -76,7 +75,7 @@ Type: `String` Default: `""` Example: `"lib/libphonenumber/build/isValidNumber.j
 Enable validation by specifying the URL to the included isValidNumber.js script. This ~200k script is fetched only when the page has finished loading (to prevent blocking), and is then accessible through the public `isValidNumber` function.
 
 
-## Public methods
+## Public Methods
 **destroy**  
 Remove the plugin from the input, and unbind any event listeners  
 ```js
@@ -117,7 +116,7 @@ $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 ```
 
 
-## Static methods
+## Static Methods
 **getCountryData**  
 Get all of the plugin's country data  
 ```js
