@@ -4,7 +4,7 @@
 // Array of country objects for the flag dropdown.
 // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
 // Originally from https://github.com/mledoze/countries
-// then modified using the following JavaScript:
+// then modified using the following JavaScript (NOW OUT OF DATE):
 /*
 var result = [];
 _.each(countries, function(c) {

@@ -4,8 +4,8 @@ describe("use static method setCountryData before initialising the plugin", func
 
   var oldCountryData, newCountryData = [{
     "name": "Afghanistan (افغانستان‎)",
-    "cca2": "af",
-    "calling-code": "93"
+    "iso2": "af",
+    "dialCode": "93"
   }];
 
   beforeEach(function() {

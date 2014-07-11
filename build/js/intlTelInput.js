@@ -92,7 +92,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (this.options.onlyCountries.length) {
                 var newCountries = [], newCountryCodes = {}, dialCode, i;
                 for (i = 0; i < this.options.onlyCountries.length; i++) {
-                    var countryCode = this.options.onlyCountries[i], countryData = that._getCountryData(countryCode, true);
+                    var countryCode = this.options.onlyCountries[i], countryData = that._getCountryData(countryCode, true, false);
                     if (countryData) {
                         newCountries.push(countryData);
                         // add this country's dial code to the countryCodes
@@ -131,7 +131,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var that = this;
             this.preferredCountries = [];
             for (var i = 0; i < this.options.preferredCountries.length; i++) {
-                var countryCode = this.options.preferredCountries[i], countryData = that._getCountryData(countryCode, false);
+                var countryCode = this.options.preferredCountries[i], countryData = that._getCountryData(countryCode, false, true);
                 if (countryData) {
                     that.preferredCountries.push(countryData);
                 }
@@ -209,7 +209,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 var defaultCountry;
                 // check the defaultCountry option, else fall back to the first in the list
                 if (this.options.defaultCountry) {
-                    defaultCountry = this._getCountryData(this.options.defaultCountry, false);
+                    defaultCountry = this._getCountryData(this.options.defaultCountry, false, false);
                 } else {
                     defaultCountry = this.preferredCountries.length ? this.preferredCountries[0] : this.countries[0];
                 }
@@ -526,20 +526,24 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // find the country data for the given country code
         // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
-        _getCountryData: function(countryCode, ignoreOnlyCountriesOption) {
+        _getCountryData: function(countryCode, ignoreOnlyCountriesOption, allowFail) {
             var countryList = ignoreOnlyCountriesOption ? allCountries : this.countries;
             for (var i = 0; i < countryList.length; i++) {
                 if (countryList[i].iso2 == countryCode) {
                     return countryList[i];
                 }
             }
-            throw new Error("No country data for '" + countryCode + "'");
+            if (allowFail) {
+                return null;
+            } else {
+                throw new Error("No country data for '" + countryCode + "'");
+            }
         },
         // update the selected flag and the active list item
         _selectFlag: function(countryCode) {
             this.selectedFlagInner.attr("class", "flag " + countryCode);
             // update the title attribute
-            this.selectedCountryData = this._getCountryData(countryCode);
+            this.selectedCountryData = this._getCountryData(countryCode, false, false);
             var title = this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode;
             this.selectedFlagInner.parent().attr("title", title);
             // update the active list item
@@ -739,7 +743,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     // Array of country objects for the flag dropdown.
     // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
     // Originally from https://github.com/mledoze/countries
-    // then modified using the following JavaScript:
+    // then modified using the following JavaScript (NOW OUT OF DATE):
     /*
 var result = [];
 _.each(countries, function(c) {
