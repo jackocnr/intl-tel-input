@@ -59,21 +59,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    defaultStyling: {
-      src: 'examples/template.html.ejs',
-      dest: 'examples/gen/default-styling.html',
-      variables: function() {
-        return {
-          time: time,
-          title: "Styling",
-          desc: "The two different settings for the defaultStyling option: 'inside' (default) and 'outside'.",
-          stylesheet: 'defaultStyling.css',
-          markup: grunt.file.read('examples/partials/defaultStyling.html'),
-          code: grunt.file.read('examples/js/defaultStyling.js'),
-          script: "defaultStyling.js"
-        }
-      }
-    },
     countrySync: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/country-sync.html',

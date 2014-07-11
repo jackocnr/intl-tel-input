@@ -65,22 +65,6 @@ button {
   }
 }
 
-// custom plugin styling
-.intl-tel-input {
-
-  // defaultStyling = "outside"
-  &.outside {
-    border: 1px solid #CCC;
-
-    input {
-      width: 210px; // 250 - 38 (margin-left) - 2 (border)
-    }
-    input[disabled] + .flag-dropdown {
-      background-color: #eee;
-    }
-  }
-}
-
 // examples
 #result {
   margin-bottom: 100px;

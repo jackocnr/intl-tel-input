@@ -21,8 +21,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         autoHideDialCode: true,
         // default country
         defaultCountry: "",
-        // position the selected flag inside or outside of the input
-        defaultStyling: "inside",
         // don't insert international dial codes
         nationalMode: false,
         // display only these countries
@@ -144,12 +142,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // telephone input
             this.telInput = $(this.element);
             // containers (mostly for positioning)
-            var mainClass = "intl-tel-input";
-            if (this.options.defaultStyling) {
-                mainClass += " " + this.options.defaultStyling;
-            }
             this.telInput.wrap($("<div>", {
-                "class": mainClass
+                "class": "intl-tel-input"
             }));
             var flagsContainer = $("<div>", {
                 "class": "flag-dropdown"

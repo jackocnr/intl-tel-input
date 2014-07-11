@@ -45,8 +45,10 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     visibility: hidden;
   }
 
-  input {
+  // specify types to increase specificity e.g. to override bootstrap v2.3
+  input[type=text], input[type=tel] {
     position: relative;
+    // input is bottom level, below selected flag and dropdown
     z-index: 0;
 
     // any vertical margin the user has on their inputs would no longer work as expected
@@ -56,6 +58,14 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     // inline elements (e.g. an adjacent button) in firefox, and probably other browsers.
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+
+    // make space for the selected flag
+    // Note: no !important here, as the user may want to tweak this so that the 
+    // perceived input padding matches their existing styles
+    padding-left: $selectedFlagWidth + $inputPadding;
+
+    // any margin-left here will push the selected-flag away
+    margin-left: 0;
   }
 
   .flag-dropdown {
@@ -64,6 +74,8 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     // full height
     top: 0;
     bottom: 0;
+    // prevent the highlighted child from overlapping the input border
+    padding: $borderWidth;
   }
   // hover state - show flag is clickable
   .flag-dropdown:hover {
@@ -169,38 +181,4 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
       margin-right: 6px;
     }
   }
-
-
-
-  &.inside {
-    .flag-dropdown {
-      // prevent the highlighted child from overlapping the input border
-      padding: $borderWidth;
-    }
-
-    // specify types to increase specificity e.g. to override bootstrap v2.3
-    input[type="text"], input[type="tel"] {
-      // make space for the selected flag
-      // Note: no !important here, as the user may want to tweak this so that the 
-      // perceived input padding matches their existing styles
-      padding-left: $selectedFlagWidth + $inputPadding;
-
-      // any margin-left here will push the selected-flag away
-      margin-left: 0;
-    }
-  }
-
-
-
-  &.outside {
-    // specify types to increase specificity e.g. to override bootstrap v2.3
-    input[type="text"], input[type="tel"] {
-      // the border should be around the parent in this case
-      border: none;
-
-      // make space for the selected flag
-      margin-left: $selectedFlagWidth;
-    }
-  }
 }
-

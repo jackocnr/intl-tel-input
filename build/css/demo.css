@@ -47,12 +47,5 @@ button {
     border-color: #285E8E;
     cursor: pointer; }
 
-.intl-tel-input.outside {
-  border: 1px solid #CCC; }
-  .intl-tel-input.outside input {
-    width: 210px; }
-  .intl-tel-input.outside input[disabled] + .flag-dropdown {
-    background-color: #eee; }
-
 #result {
   margin-bottom: 100px; }
