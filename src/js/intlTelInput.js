@@ -643,7 +643,7 @@
           return countryList[i];
         }
       }
-      return null;
+      throw new Error("No country data for '" + countryCode + "'");
     },
 
 

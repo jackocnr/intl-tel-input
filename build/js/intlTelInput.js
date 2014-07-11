@@ -539,7 +539,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     return countryList[i];
                 }
             }
-            return null;
+            throw new Error("No country data for '" + countryCode + "'");
         },
         // update the selected flag and the active list item
         _selectFlag: function(countryCode) {
