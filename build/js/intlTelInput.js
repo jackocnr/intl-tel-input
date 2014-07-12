@@ -647,6 +647,20 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         /********************
      *  PUBLIC METHODS
      ********************/
+        // remove plugin
+        destroy: function() {
+            // make sure the dropdown is closed (and unbind listeners)
+            this._closeDropdown();
+            // key events, and focus/blur events if autoHideDialCode=true
+            this.telInput.off(this.ns);
+            // click event to open dropdown
+            this.selectedFlagInner.parent().off(this.ns);
+            // label click hack
+            this.telInput.closest("label").off(this.ns);
+            // remove markup
+            var container = this.telInput.parent();
+            container.before(this.telInput).remove();
+        },
         // get the country data for the currently selected flag
         getSelectedCountryData: function() {
             return this.selectedCountryData;
@@ -688,20 +702,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             this._updateVal(number, dialCode, preventFormatSuffix);
             return dialCode;
-        },
-        // remove plugin
-        destroy: function() {
-            // make sure the dropdown is closed (and unbind listeners)
-            this._closeDropdown();
-            // key events, and focus/blur events if autoHideDialCode=true
-            this.telInput.off(this.ns);
-            // click event to open dropdown
-            this.selectedFlagInner.parent().off(this.ns);
-            // label click hack
-            this.telInput.closest("label").off(this.ns);
-            // remove markup
-            var container = this.telInput.parent();
-            container.before(this.telInput).remove();
         }
     };
     // adapted to allow public functions
