@@ -4,7 +4,10 @@ describe("init plugin and call public method isValidNumber", function() {
 
   beforeEach(function() {
     input = $("<input>");
-    input.intlTelInput();
+    input.intlTelInput({
+      // we must disable formatting to test with alpha chars
+      autoFormat: false,
+    });
   });
 
   afterEach(function() {
@@ -19,6 +22,11 @@ describe("init plugin and call public method isValidNumber", function() {
 
   it("returns false for: invalid intl number", function() {
     input.intlTelInput("setNumber", "+44 7733 123");
+    expect(input.intlTelInput("isValidNumber")).toBeFalsy();
+  });
+
+  it("returns false for: valid intl number containing alpha chars", function() {
+    input.intlTelInput("setNumber", "+44 7733 123 abc");
     expect(input.intlTelInput("isValidNumber")).toBeFalsy();
   });
 
@@ -48,6 +56,10 @@ describe("init plugin with nationalMode=true and call public method isValidNumbe
   
     it("returns false for: incorrect selected country, no allowNational flag", function() {
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();
+    });
+
+    it("returns false for: incorrect selected country, allowNational flag", function() {
+      expect(input.intlTelInput("isValidNumber", true)).toBeFalsy();
     });
 
     it("returns false for: correct selected country, no allowNational flag", function() {
