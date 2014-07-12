@@ -388,7 +388,7 @@
       // on focus: if empty, insert the dial code for the currently selected flag
       this.telInput.on("focus" + this.ns, function() {
         if (!$.trim(that.telInput.val())) {
-          that._formatVal("+" + that.selectedCountryData.dialCode, true);
+          that._updateVal("+" + that.selectedCountryData.dialCode, true);
           // after auto-inserting a dial code, if the first key they hit is '+' then assume
           // they are entering a new number, so remove the dial code.
           // use keypress instead of keydown because keydown gets triggered for the shift key
@@ -576,8 +576,9 @@
     },
 
 
-    // format the given val according to the country-specific formatting rules
-    _formatVal: function(val, hasDialCode, preventFormatSuffix) {
+    // update the input's value to the given val
+    // if autoFormat=true, format it first according to the country-specific formatting rules
+    _updateVal: function(val, hasDialCode, preventFormatSuffix) {
       var formatted = "",
         pure;
 
@@ -678,7 +679,7 @@
 
       // update input value
       if (!this.options.nationalMode) {
-        this._updateNumber("+" + listItem.attr("data-dial-code"));
+        this._updateDialCode("+" + listItem.attr("data-dial-code"));
         this.telInput.trigger("change");
       }
 
@@ -733,7 +734,7 @@
 
 
     // replace any existing dial code with the new one
-    _updateNumber: function(newDialCode) {
+    _updateDialCode: function(newDialCode) {
       var inputVal = this.telInput.val(),
         prevDialCode = this._getDialCode(inputVal),
         newNumber;
@@ -748,7 +749,7 @@
         newNumber = newDialCode + existingNumber;
       }
 
-      this._formatVal(newNumber, true);
+      this._updateVal(newNumber, true);
     },
 
 
@@ -837,7 +838,7 @@
         }
       }
 
-      this._formatVal(number, dialCode, preventFormatSuffix);
+      this._updateVal(number, dialCode, preventFormatSuffix);
 
       return dialCode;
     },
