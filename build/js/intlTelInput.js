@@ -175,7 +175,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.countryList.removeClass("v-hide").addClass("hide");
             // and set the width
             if (this.options.responsiveDropdown) {
-                this.countryList.css("width", this.telInput.outerWidth());
+                this.countryList.outerWidth(this.telInput.outerWidth());
             }
             // this is useful in lots of places
             this.countryListItems = this.countryList.children(".country");

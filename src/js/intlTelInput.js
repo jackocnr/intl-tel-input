@@ -203,7 +203,7 @@
 
       // and set the width
       if (this.options.responsiveDropdown) {
-        this.countryList.css("width", this.telInput.outerWidth());
+        this.countryList.outerWidth(this.telInput.outerWidth());
       }
 
       // this is useful in lots of places
