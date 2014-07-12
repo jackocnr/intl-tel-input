@@ -230,7 +230,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
             var label = this.telInput.closest("label");
             if (label.length) {
-                label.on("click", function(e) {
+                label.on("click" + this.ns, function(e) {
                     // if the dropdown is closed, then focus the input, else ignore the click
                     if (that.countryList.hasClass("hide")) {
                         that.telInput.focus();
@@ -239,21 +239,26 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     }
                 });
             }
-            // update flag on keypress (by extracting the dial code from the input value).
-            // also: format number.
-            // use keypress event as we want to ignore all input except for a select few keys,
-            // but we dont want to ignore the navigation keys like the arrows etc.
-            // NOTE: better to have this one listener all the time instead of starting it on focus
-            // and stopping it on blur, because then you've got two listeners (focus and blur)
-            this.telInput.on("keypress" + this.ns, function(e) {
-                e.preventDefault();
-                // if the key is a plus, or numeric
-                var isAllowed = e.which == keys.PLUS || e.which >= keys.ZERO && e.which <= keys.NINE;
-                that._handleInputKey(e, false, String.fromCharCode(e.which), isAllowed);
-            });
-            // also format number on delete - use keyup here as want to re-format AFTER the delete has done it's damage
+            if (this.options.autoFormat) {
+                // format number and update flag on keypress
+                // use keypress event as we want to ignore all input except for a select few keys,
+                // but we dont want to ignore the navigation keys like the arrows etc.
+                // NOTE: no point in refactoring this to only bind these listeners on focus/blur because then you would need to have those 2 listeners running the whole time anyway...
+                this.telInput.on("keypress" + this.ns, function(e) {
+                    e.preventDefault();
+                    // if the key is a plus, or numeric
+                    var isAllowed = e.which == keys.PLUS || e.which >= keys.ZERO && e.which <= keys.NINE;
+                    that._handleInputKey(e, false, String.fromCharCode(e.which), isAllowed);
+                });
+            }
+            // handle keyup event
             this.telInput.on("keyup" + this.ns, function(e) {
-                if (e.which == keys.BACKSPACE || e.which == keys.DELETE) {
+                if (!that.options.autoFormat) {
+                    // if no autoFormat, just update flag
+                    that.setNumber(that.telInput.val());
+                } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE) {
+                    // autoFormat=true and this is a delete key, so reformat number
+                    // use keyup here as want to reformat AFTER the delete has done it's damage
                     that._handleInputKey(e, true, "", true);
                 }
             });
@@ -478,8 +483,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // format the given val according to the country-specific formatting rules
         _formatVal: function(val, hasDialCode, preventFormatSuffix) {
-            var formatted = "", pure = val.replace(/\D/g, "");
+            var formatted = "", pure;
             if (this.options.autoFormat) {
+                pure = val.replace(/\D/g, "");
                 if (hasDialCode) {
                     // format the number
                     var format = this.selectedCountryData.format;
@@ -570,10 +576,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.countryList.addClass("hide");
             // update the arrow
             this.selectedFlagInner.children(".arrow").removeClass("up");
-            // unbind event listeners
-            $(document).off("keydown" + this.ns);
-            $("html").off("click" + this.ns);
-            // unbind both hover and click listeners
+            // unbind key events
+            $(document).off(this.ns);
+            // unbind click-off-to-close
+            $("html").off(this.ns);
+            // unbind hover and click listeners
             this.countryList.off(this.ns);
         },
         // check if an element is visible within it's container, else scroll until it is
@@ -682,9 +689,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // remove plugin
         destroy: function() {
-            // stop listeners
+            // make sure the dropdown is closed (and unbind listeners)
+            this._closeDropdown();
+            // key events, and focus/blur events if autoHideDialCode=true
             this.telInput.off(this.ns);
+            // click event to open dropdown
             this.selectedFlagInner.parent().off(this.ns);
+            // label click hack
+            this.telInput.closest("label").off(this.ns);
             // remove markup
             var container = this.telInput.parent();
             container.before(this.telInput).remove();
