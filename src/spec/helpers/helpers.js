@@ -15,7 +15,7 @@ var getInputVal = function(i) {
 
 var getParentElement = function(i) {
   i = i || input;
-  return i.closest(".intl-tel-input");
+  return i.parent();
 };
 
 var getListElement = function(i) {
