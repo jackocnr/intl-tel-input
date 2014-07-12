@@ -8,6 +8,7 @@ A jQuery plugin for entering and validating international telephone numbers. It 
 You can view a live demo and some examples of how to use the various options here: http://jackocnr.com/intl-tel-input.html, or try it for yourself using the included demo.html.
 
 ## Features
+* Automatically format the number as the user types
 * Navigate the country dropdown by typing a country's name, or using up/down keys
 * Selecting a country from the dropdown will update the dial code in the input
 * Typing a different dial code will automatically update the displayed flag
@@ -38,6 +39,10 @@ You can view a live demo and some examples of how to use the various options her
 ## Options
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
+**autoFormat**  
+Type: `Boolean` Default: `true`  
+Format the number on each keypress according to the country-specific formatting rules. If enabled, this will prevent the user from entering invalid characters.
+
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
 If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form.
@@ -45,14 +50,6 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 **defaultCountry**  
 Type: `String` Default: `""`  
 Set the default country by it's country code. Otherwise it will just be the first country in the list.
-
-**defaultStyling**  
-Type: `String` Default: `"inside"`  
-The position of the selected flag: `"inside"` or `"outside"` (relative to the input).
-
-**dialCodeDelimiter**  
-Type: `String` Default: `" "`  
-Choose the delimiter that is inserted after the dial code when the user selects a country from the dropdown.
 
 **nationalMode**  
 Type: `Boolean` Default: `false`  
