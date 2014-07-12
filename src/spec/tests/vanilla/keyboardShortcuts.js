@@ -14,26 +14,26 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
   });
 
   it("pressing esc closes the popup", function() {
-    triggerKey("esc");
+    triggerKeyOnBody("ESC");
     expect(getListElement()).toHaveClass("hide");
   });
 
   it("pressing up while on the top item does not change the highlighted item", function() {
-    triggerKey("up");
+    triggerKeyOnBody("UP");
     var topItem = getListElement().find("li.country:eq(0)");
     expect(topItem).toHaveClass("highlight");
   });
 
   it("pressing z highlights Zambia", function() {
-    triggerKey("z");
+    triggerKeyOnBody("Z");
     var zambiaListItem = getListElement().find("li[data-country-code='zm']");
     expect(zambiaListItem).toHaveClass("highlight");
   });
 
   it("pressing z three times also highlights Zambia (no further matches)", function() {
-    triggerKey("z");
-    triggerKey("z");
-    triggerKey("z");
+    triggerKeyOnBody("Z");
+    triggerKeyOnBody("Z");
+    triggerKeyOnBody("Z");
     var zambiaListItem = getListElement().find("li[data-country-code='zm']");
     expect(zambiaListItem).toHaveClass("highlight");
   });
@@ -46,8 +46,8 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
 
     beforeEach(function() {
       lastItem = getListElement().find("li.country:last");
-      triggerKey("z");
-      triggerKey("i");
+      triggerKeyOnBody("Z");
+      triggerKeyOnBody("I");
     });
   
     it("highlights the last item, which is Zimbabwe", function() {
@@ -56,7 +56,7 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
     });
 
     it("pressing down while on the last item does not change the highlighted item", function() {
-      triggerKey("down");
+      triggerKeyOnBody("DOWN");
       expect(lastItem).toHaveClass("highlight");
     });
 
@@ -67,7 +67,7 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
   describe("pressing down", function() {
   
     beforeEach(function() {
-      triggerKey("down");
+      triggerKeyOnBody("DOWN");
     });
 
     it("changes the highlighted item", function() {
@@ -81,7 +81,7 @@ describe("init vanilla plugin to test keyboard shortcuts - open dropdown", funct
     describe("pressing enter", function() {
     
       beforeEach(function() {
-        triggerKey("enter");
+        triggerKeyOnBody("ENTER");
       });
 
       it("changes the active item", function() {

@@ -1,12 +1,22 @@
-var input, totalCountries = 245, totalDialCodes = 230;
-var keyCodes = {
-  'up': 38,
-  'down': 40,
-  'enter': 13,
-  'esc': 27,
-  'i': 73,
-  'z': 90
-};
+var input,
+  totalCountries = 245,
+  totalDialCodes = 230,
+  // don't call this "keys" as it will clash with the plugin
+  keyCodes = {
+    UP: 38,
+    DOWN: 40,
+    ENTER: 13,
+    ESC: 27,
+    PLUS: 43,
+    A: 65,
+    I: 73,
+    Z: 90,
+    ZERO: 48,
+    NINE: 57,
+    SPACE: 32,
+    BACKSPACE: 8,
+    DELETE: 46
+  };
 
 var getInputVal = function(i) {
   i = i || input;
@@ -59,9 +69,28 @@ var selectFlag = function(countryCode, i) {
   getListElement(i).find("li[data-country-code='" + countryCode + "']").click();
 };
 
-var triggerKey = function(key) {
-  var e = $.Event('keydown', {
+var putCursorAtEnd = function() {
+  var len = input.val().length;
+  input[0].setSelectionRange(len, len);
+};
+
+var getKeyEvent = function(key, type) {
+  return $.Event(type, {
     which: keyCodes[key]
   });
-  $("body").trigger(e);
+};
+
+var triggerKeyOnInput = function(key) {
+  triggerKey(input, key);
+};
+
+var triggerKeyOnBody = function(key) {
+  triggerKey($("body"), key);
+};
+
+// when a key is pressed IRL, these events are triggered in this order
+var triggerKey = function(target, key) {
+  target.trigger(getKeyEvent(key, "keydown"));
+  target.trigger(getKeyEvent(key, "keypress"));
+  target.trigger(getKeyEvent(key, "keyup"));
 };

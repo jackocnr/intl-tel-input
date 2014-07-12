@@ -4,7 +4,7 @@ describe("init plugin to test responsiveDropdown option", function() {
 
   beforeEach(function() {
     input = $("<input>");
-    // must be in DOM for focus to work
+    // must be in DOM for width to work
     input.appendTo($("body"));
   });
 
