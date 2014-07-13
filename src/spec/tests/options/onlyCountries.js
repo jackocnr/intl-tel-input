@@ -31,7 +31,7 @@ describe("init plugin with onlyCountries", function() {
 
 
 
-describe("init plugin with onlyCountries for Afghanistan, Isle of Man and UK", function() {
+describe("init plugin with onlyCountries for Afghanistan, Kazakhstan and Russia", function() {
 
   var onlyCountries;
 
@@ -39,7 +39,7 @@ describe("init plugin with onlyCountries for Afghanistan, Isle of Man and UK", f
     input = $("<input>");
     input.intlTelInput({
       preferredCountries: [],
-      onlyCountries: ["af", "im", "gb"]
+      onlyCountries: ["af", "kz", "ru"]
     });
   });
 
@@ -47,9 +47,9 @@ describe("init plugin with onlyCountries for Afghanistan, Isle of Man and UK", f
     input = onlyCountries = null;
   });
 
-  it("entering +44 defaults to the top priority country (UK)", function() {
-    input.val("+44").keypress();
-    expect(getSelectedFlagElement()).toHaveClass("gb");
+  it("entering +7 defaults to the top priority country (Russia)", function() {
+    input.val("+7").keypress();
+    expect(getSelectedFlagElement()).toHaveClass("ru");
   });
 
 });
