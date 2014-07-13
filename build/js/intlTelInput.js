@@ -290,32 +290,40 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             }
         },
-        // handle a key event on the input - deals with replacing any currently selected chars, and formatting
+        // handle a key event on the input - deals with replacing any currently selected chars, and then formatting and then putting the cursor back in the right place
         _handleInputKey: function(e, isDelete, newChar, isAllowed) {
-            var val = this.telInput.val(), newCaretStart = null, newCaretEnd = null, // raw DOM element
+            var val = this.telInput.val(), newCursor = null, cursorAtEnd = false, // raw DOM element
             input = this.telInput[0];
-            if (isAllowed) {
-                if (this.isGoodBrowser) {
-                    var selectionEnd = input.selectionEnd, originalLen = val.length;
+            if (this.isGoodBrowser) {
+                var selectionStart = input.selectionStart, originalLen = val.length;
+                // at this point, cursorAtEnd should be false even if selectionEnd is at the end, because if isAllowed is false, we wont be replacing the selection
+                cursorAtEnd = selectionStart == originalLen;
+                if (isAllowed) {
+                    var selectionEnd = input.selectionEnd;
                     // replace any selection they may have made with the new char
-                    val = val.substring(0, input.selectionStart) + newChar + val.substring(selectionEnd, val.length);
-                    // if the cursor/end of selection was not at the end, calculate the newCaretPos
-                    if (input.selectionEnd !== originalLen) {
-                        newCaretStart = newCaretEnd = selectionEnd + (val.length - originalLen);
+                    val = val.substring(0, selectionStart) + newChar + val.substring(selectionEnd, originalLen);
+                    // if the cursor/end of selection was at the end, we will make sure it's there afterwards
+                    // else calculate the newCursor position
+                    if (selectionEnd === originalLen) {
+                        cursorAtEnd = true;
+                    } else {
+                        newCursor = selectionEnd + (val.length - originalLen);
                     }
-                } else {
-                    val += newChar;
                 }
-            } else if (this.isGoodBrowser) {
-                // if not an allowed char, preserve their selection
-                newCaretStart = input.selectionStart;
-                newCaretEnd = input.selectionEnd;
+            } else if (isAllowed) {
+                val += newChar;
             }
-            // still re-format the number even if key is not allowed as may need to add formatting suffix
-            this.setNumber(val, isDelete);
-            // update the caret position
-            if (this.isGoodBrowser && newCaretStart) {
-                input.setSelectionRange(newCaretStart, newCaretEnd);
+            // if the cursor is at the end, then always trigger a reformat as may want to add extra formatting suffix
+            if (isAllowed || cursorAtEnd) {
+                // update the number and flag
+                this.setNumber(val, isDelete);
+                // update the cursor position
+                if (cursorAtEnd) {
+                    newCursor = this.telInput.val().length;
+                }
+                if (this.isGoodBrowser && newCursor) {
+                    input.setSelectionRange(newCursor, newCursor);
+                }
             }
         },
         // on focus: if empty add dial code. on blur: if just dial code, then empty it

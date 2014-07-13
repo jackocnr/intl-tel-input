@@ -7,13 +7,6 @@ var input,
     DOWN: 40,
     ENTER: 13,
     ESC: 27,
-    PLUS: 43,
-    A: 65,
-    I: 73,
-    Z: 90,
-    ZERO: 48,
-    NINE: 57,
-    SPACE: 32,
     BACKSPACE: 8,
     DELETE: 46
   };
@@ -76,7 +69,7 @@ var putCursorAtEnd = function() {
 
 var getKeyEvent = function(key, type) {
   return $.Event(type, {
-    which: keyCodes[key]
+    which: (key.length > 1) ? keyCodes[key] : key.charCodeAt(0)
   });
 };
 

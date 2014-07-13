@@ -54,10 +54,56 @@ describe("testing autoFormat option", function() {
     });
 
     it("triggering alpha key at end of input does not add the alpha char and formats the rest", function() {
-      // updating the input value will be silent (no events triggered)
-      input.val(unformattedNumber + "A");
+      // we dont have to manually alter the input val as when autoFormat is enabled this is all done in the event handler
+      putCursorAtEnd();
       triggerKeyOnInput("A");
       expect(input.val()).toEqual(formattedNumber);
+    });
+
+
+
+
+    it("adding a digit automatically adds any formatting suffix", function() {
+      input.val("+");
+      putCursorAtEnd();
+      // this is handled by the keypress handler, and so will insert the char for you
+      triggerKeyOnInput("1");
+      expect(input.val()).toEqual("+1 (");
+    });
+
+    it("deleting a digit automatically removes any remaining formatting suffix", function() {
+      // backspace key event is handled by the keyup handler, which expects the input val to already be updated, so instead of "+1 (7", I have already removed the 7
+      input.val("+1 (");
+      putCursorAtEnd();
+      triggerKeyOnInput("BACKSPACE");
+      expect(input.val()).toEqual("+1");
+    });
+
+
+
+
+    describe("after deleting a char and it removing any format suffix", function() {
+    
+      beforeEach(function() {
+        // e.g. imagine it was "+1 (7" and we deleted the 7 and it auto-removed the rest
+        input.val("+1");
+        putCursorAtEnd();
+      });
+    
+      it("hitting a number will re-add the formatting in between", function() {
+        // this is handled by the keypress handler, and so will insert the char for you
+        triggerKeyOnInput("7");
+        expect(input.val()).toEqual("+1 (7");
+      });
+
+      it("hitting any non-number char (e.g. a space) will re-add the formatting suffix", function() {
+        // this is handled by the keypress handler, and so will insert the char for you
+        triggerKeyOnInput(" ");
+        expect(input.val()).toEqual("+1 (");
+        // and move the cursor to the end
+        expect(input[0].selectionStart).toEqual(input.val().length);
+      });
+
     });
   
   });
