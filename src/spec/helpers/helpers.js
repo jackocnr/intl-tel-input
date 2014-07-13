@@ -64,7 +64,11 @@ var selectFlag = function(countryCode, i) {
 
 var putCursorAtEnd = function() {
   var len = input.val().length;
-  input[0].setSelectionRange(len, len);
+  selectInputChars(len, len);
+};
+
+var selectInputChars = function(start, end) {
+  input[0].setSelectionRange(start, end);
 };
 
 var getKeyEvent = function(key, type) {

@@ -105,6 +105,35 @@ describe("testing autoFormat option", function() {
       });
 
     });
+
+
+
+    describe("selecting some chars", function() {
+    
+      var cursorStart = 4,
+        cursorEnd = 7;
+
+      beforeEach(function() {
+        // formatted number is "+1 (702) 418-1234" so this will be "702"
+        selectInputChars(cursorStart, cursorEnd);
+      });
+
+      it("hitting a non-number char doesn't do anything", function() {
+        triggerKeyOnInput(" ");
+        expect(input.val()).toEqual(formattedNumber);
+        // check selection remains
+        expect(input[0].selectionStart).toEqual(cursorStart);
+        expect(input[0].selectionEnd).toEqual(cursorEnd);
+      });
+
+      it("hitting a number char will replace the selection, reformat, and put the cursor in the right place", function() {
+        triggerKeyOnInput("9");
+        expect(input.val()).toEqual("+1 (941) 812-34");
+        // cursor
+        expect(input[0].selectionStart).toEqual(cursorStart+1);
+      });
+    
+    });
   
   });
 
