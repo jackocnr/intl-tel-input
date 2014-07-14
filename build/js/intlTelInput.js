@@ -258,7 +258,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 if (!that.options.autoFormat) {
                     // if no autoFormat, just update flag
                     that.setNumber(that.telInput.val());
-                } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE || this.isAndroidChrome) {
+                } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE || that.isAndroidChrome) {
                     // autoFormat=true and this is a delete key, so reformat number
                     // use keyup here as want to reformat AFTER the delete has done it's damage
                     var isDelete = !that.isAndroidChrome;
