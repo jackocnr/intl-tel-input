@@ -57,6 +57,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         this.ns = "." + pluginName + id++;
         // Chrome, FF, Safari, IE9+
         this.isGoodBrowser = Boolean(element.setSelectionRange);
+        this.isAndroidChrome = navigator.userAgent.match(/Android/i) && navigator.userAgent.match(/Chrome/i);
         this._name = pluginName;
         this.init();
     }
@@ -239,7 +240,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     }
                 });
             }
-            if (this.options.autoFormat) {
+            // chrome on android can't handle keypress events
+            if (this.options.autoFormat && !this.isAndroidChrome) {
                 // format number and update flag on keypress
                 // use keypress event as we want to ignore all input except for a select few keys,
                 // but we dont want to ignore the navigation keys like the arrows etc.
@@ -256,10 +258,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 if (!that.options.autoFormat) {
                     // if no autoFormat, just update flag
                     that.setNumber(that.telInput.val());
-                } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE) {
+                } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE || this.isAndroidChrome) {
                     // autoFormat=true and this is a delete key, so reformat number
                     // use keyup here as want to reformat AFTER the delete has done it's damage
-                    that._handleInputKey(e, true, "", true);
+                    var isDelete = !that.isAndroidChrome;
+                    that._handleInputKey(e, isDelete, "", true);
                 }
             });
             // toggle country dropdown on click
