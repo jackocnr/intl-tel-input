@@ -1159,6 +1159,11 @@ var allCountries = [
     "688"
   ],
   [
+    "U.S. Virgin Islands",
+    "vi",
+    "1340"
+  ],
+  [
     "Uganda",
     "ug",
     "256"
@@ -1185,11 +1190,6 @@ var allCountries = [
     "1",
     "+. (...) ...-....",
     0
-  ],
-  [
-    "U.S. Virgin Islands",
-    "vi",
-    "1340"
   ],
   [
     "Uruguay",
