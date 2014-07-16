@@ -43,7 +43,8 @@ describe("init vanilla plugin to test multiple instances", function() {
   });
 
   it("updating the number on the first input only updates the flag on that input", function() {
-    input.val(chinaDialCode+" 123456").keypress();
+    input.val(chinaDialCode+" 123456");
+    triggerKeyOnInput(" ");
     expect(getSelectedFlagElement()).toHaveClass(chinaCountryCode);
     expect(getSelectedFlagElement(input2)).toHaveClass("kr");
   });

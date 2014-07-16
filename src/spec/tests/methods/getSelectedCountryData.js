@@ -17,7 +17,8 @@ describe("init plugin to test public method getSelectedCountryData", function() 
   });
 
   it("change country by number gets the right country data", function() {
-    input.val("+44").keypress();
+    input.val("+44");
+    triggerKeyOnInput(" ");
     expect(input.intlTelInput("getSelectedCountryData").iso2).toEqual("gb");
   });
 

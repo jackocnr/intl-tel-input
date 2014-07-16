@@ -48,7 +48,8 @@ describe("init plugin with onlyCountries for Afghanistan, Kazakhstan and Russia"
   });
 
   it("entering +7 defaults to the top priority country (Russia)", function() {
-    input.val("+7").keypress();
+    input.val("+7");
+    triggerKeyOnInput(" ");
     expect(getSelectedFlagElement()).toHaveClass("ru");
   });
 

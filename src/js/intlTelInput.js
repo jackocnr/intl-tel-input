@@ -284,7 +284,6 @@
         });
       }
 
-      // chrome on android can't handle keypress events
       if (this.options.autoFormat) {
         // format number and update flag on keypress
         // use keypress event as we want to ignore all input except for a select few keys,
@@ -292,6 +291,7 @@
         // NOTE: no point in refactoring this to only bind these listeners on focus/blur because then you would need to have those 2 listeners running the whole time anyway...
         this.telInput.on("keypress" + this.ns, function(e) {
           // 32 is space, and after that it's all chars (not meta/nav keys)
+          // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
           if (e.which >= keys.SPACE) {
             e.preventDefault();
             // if the key is a plus, or numeric
