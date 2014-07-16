@@ -57,7 +57,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         this.ns = "." + pluginName + id++;
         // Chrome, FF, Safari, IE9+
         this.isGoodBrowser = Boolean(element.setSelectionRange);
-        this.isAndroidChrome = navigator.userAgent.match(/Android/i) && navigator.userAgent.match(/Chrome/i);
         this._name = pluginName;
         this.init();
     }
@@ -66,6 +65,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // if in nationalMode, disable options relating to dial codes
             if (this.options.nationalMode) {
                 this.options.autoFormat = this.options.autoHideDialCode = false;
+            }
+            // chrome on android has issues with key events
+            // backspace issues for inputs with type=text: https://code.google.com/p/chromium/issues/detail?id=184812
+            // and improper key codes for keyup and keydown: https://code.google.com/p/chromium/issues/detail?id=118639
+            if (navigator.userAgent.match(/Android/i) && navigator.userAgent.match(/Chrome/i)) {
+                this.options.autoFormat = false;
             }
             // process all the data: onlyCounties, preferredCountries, defaultCountry etc
             this._processCountryData();
@@ -241,16 +246,19 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 });
             }
             // chrome on android can't handle keypress events
-            if (this.options.autoFormat && !this.isAndroidChrome) {
+            if (this.options.autoFormat) {
                 // format number and update flag on keypress
                 // use keypress event as we want to ignore all input except for a select few keys,
                 // but we dont want to ignore the navigation keys like the arrows etc.
                 // NOTE: no point in refactoring this to only bind these listeners on focus/blur because then you would need to have those 2 listeners running the whole time anyway...
                 this.telInput.on("keypress" + this.ns, function(e) {
-                    e.preventDefault();
-                    // if the key is a plus, or numeric
-                    var isAllowed = e.which == keys.PLUS || e.which >= keys.ZERO && e.which <= keys.NINE;
-                    that._handleInputKey(e, false, String.fromCharCode(e.which), isAllowed);
+                    // 32 is space, and after that it's all chars (not meta/nav keys)
+                    if (e.which >= keys.SPACE) {
+                        e.preventDefault();
+                        // if the key is a plus, or numeric
+                        var isAllowed = e.which == keys.PLUS || e.which >= keys.ZERO && e.which <= keys.NINE;
+                        that._handleInputKey(false, String.fromCharCode(e.which), isAllowed);
+                    }
                 });
             }
             // handle keyup event
@@ -258,11 +266,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 if (!that.options.autoFormat) {
                     // if no autoFormat, just update flag
                     that.setNumber(that.telInput.val());
-                } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE || that.isAndroidChrome) {
+                } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE) {
                     // autoFormat=true and this is a delete key, so reformat number
                     // use keyup here as want to reformat AFTER the delete has done it's damage
-                    var isDelete = !that.isAndroidChrome;
-                    that._handleInputKey(e, isDelete, "", true);
+                    that._handleInputKey(true, "", true);
                 }
             });
             // toggle country dropdown on click
@@ -294,7 +301,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
         },
         // handle a key event on the input - deals with replacing any currently selected chars, and then formatting and then putting the cursor back in the right place
-        _handleInputKey: function(e, isDelete, newChar, isAllowed) {
+        _handleInputKey: function(isDelete, newChar, isAllowed) {
             var val = this.telInput.val(), newCursor = null, cursorAtEnd = false, // raw DOM element
             input = this.telInput[0];
             if (this.isGoodBrowser) {
