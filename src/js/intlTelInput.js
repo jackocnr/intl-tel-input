@@ -30,8 +30,11 @@
       ZERO: 48,
       NINE: 57,
       SPACE: 32,
-      BACKSPACE: 8,
-      DELETE: 46
+      BSPACE: 8,
+      DEL: 46,
+      CTRL: 17,
+      CMD1: 91, // Chrome
+      CMD2: 224 // FF
     },
     windowLoaded = false;
 
@@ -303,13 +306,19 @@
 
       // handle keyup event
       this.telInput.on("keyup" + this.ns, function(e) {
-        if (!that.options.autoFormat) {
+        if (that.options.autoFormat) {
+          // if delete: reformat as could have removed number from 1) somewhere in the middle (in which case formatting is wrong), or 2) the end (in which case remove any formatting suffix)
+          var isDelete = (e.which == keys.BSPACE || e.which == keys.DEL);
+          // if paste: reformat as could contain invalid chars etc
+          var maybePaste = (e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2);
+          
+          if (isDelete || maybePaste) {
+            // use keyup here as want to reformat AFTER the key event has done it's damage
+            that._handleInputKey(isDelete, "", true);
+          }
+        } else {
           // if no autoFormat, just update flag
           that.setNumber(that.telInput.val());
-        } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE) {
-          // autoFormat=true and this is a delete key, so reformat number
-          // use keyup here as want to reformat AFTER the delete has done it's damage
-          that._handleInputKey(true, "", true);
         }
       });
 

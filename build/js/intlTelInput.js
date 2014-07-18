@@ -42,8 +42,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         ZERO: 48,
         NINE: 57,
         SPACE: 32,
-        BACKSPACE: 8,
-        DELETE: 46
+        BSPACE: 8,
+        DEL: 46,
+        CTRL: 17,
+        CMD1: 91,
+        // Chrome
+        CMD2: 224
     }, windowLoaded = false;
     // keep track of if the window.load event has fired as impossible to check after the fact
     $(window).load(function() {
@@ -245,7 +249,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     }
                 });
             }
-            // chrome on android can't handle keypress events
             if (this.options.autoFormat) {
                 // format number and update flag on keypress
                 // use keypress event as we want to ignore all input except for a select few keys,
@@ -253,6 +256,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 // NOTE: no point in refactoring this to only bind these listeners on focus/blur because then you would need to have those 2 listeners running the whole time anyway...
                 this.telInput.on("keypress" + this.ns, function(e) {
                     // 32 is space, and after that it's all chars (not meta/nav keys)
+                    // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
                     if (e.which >= keys.SPACE) {
                         e.preventDefault();
                         // if the key is a plus, or numeric
@@ -263,13 +267,18 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             // handle keyup event
             this.telInput.on("keyup" + this.ns, function(e) {
-                if (!that.options.autoFormat) {
+                if (that.options.autoFormat) {
+                    // if delete: reformat as could have removed number from 1) somewhere in the middle (in which case formatting is wrong), or 2) the end (in which case remove any formatting suffix)
+                    var isDelete = e.which == keys.BSPACE || e.which == keys.DEL;
+                    // if paste: reformat as could contain invalid chars etc
+                    var maybePaste = e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2;
+                    if (isDelete || maybePaste) {
+                        // use keyup here as want to reformat AFTER the key event has done it's damage
+                        that._handleInputKey(isDelete, "", true);
+                    }
+                } else {
                     // if no autoFormat, just update flag
                     that.setNumber(that.telInput.val());
-                } else if (e.which == keys.BACKSPACE || e.which == keys.DELETE) {
-                    // autoFormat=true and this is a delete key, so reformat number
-                    // use keyup here as want to reformat AFTER the delete has done it's damage
-                    that._handleInputKey(true, "", true);
                 }
             });
             // toggle country dropdown on click
