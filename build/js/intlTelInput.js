@@ -250,6 +250,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 });
             }
             if (this.options.autoFormat) {
+                // use keydown to prevent deleting the '+' prefix
+                this.telInput.on("keydown" + this.ns, function(e) {
+                    if ((e.which == keys.BSPACE || e.which == keys.DEL) && that.telInput.val() == "+") {
+                        e.preventDefault();
+                    }
+                });
                 // format number and update flag on keypress
                 // use keypress event as we want to ignore all input except for a select few keys,
                 // but we dont want to ignore the navigation keys like the arrows etc.
@@ -269,12 +275,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.on("keyup" + this.ns, function(e) {
                 if (that.options.autoFormat) {
                     // if delete: reformat as could have removed number from 1) somewhere in the middle (in which case formatting is wrong), or 2) the end (in which case remove any formatting suffix)
-                    var isDelete = e.which == keys.BSPACE || e.which == keys.DEL;
                     // if paste: reformat as could contain invalid chars etc
-                    var maybePaste = e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2;
-                    if (isDelete || maybePaste) {
+                    var isDelete = e.which == keys.BSPACE || e.which == keys.DEL, isCtrl = e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2, input = that.telInput[0], noSelection = that.isGoodBrowser && input.selectionStart == input.selectionEnd;
+                    if (isDelete || isCtrl && noSelection) {
                         // use keyup here as want to reformat AFTER the key event has done it's damage
                         that._handleInputKey(isDelete, "", true);
+                    }
+                    if (!that.telInput.val()) {
+                        that.telInput.val("+");
                     }
                 } else {
                     // if no autoFormat, just update flag
@@ -314,11 +322,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var val = this.telInput.val(), newCursor = null, cursorAtEnd = false, // raw DOM element
             input = this.telInput[0];
             if (this.isGoodBrowser) {
-                var selectionStart = input.selectionStart, originalLen = val.length;
+                var selectionStart = input.selectionStart, selectionEnd = input.selectionEnd, originalLen = val.length;
                 // at this point, cursorAtEnd should be false even if selectionEnd is at the end, because if isAllowed is false, we wont be replacing the selection
                 cursorAtEnd = selectionStart == originalLen;
-                if (isAllowed) {
-                    var selectionEnd = input.selectionEnd;
+                if (isAllowed && newChar) {
                     // replace any selection they may have made with the new char
                     val = val.substring(0, selectionStart) + newChar + val.substring(selectionEnd, originalLen);
                     // if the cursor/end of selection was at the end, we will make sure it's there afterwards
