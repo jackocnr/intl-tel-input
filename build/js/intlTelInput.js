@@ -266,7 +266,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     if (e.which >= keys.SPACE) {
                         e.preventDefault();
                         // if the key is a plus, or numeric
-                        var isAllowed = e.which == keys.PLUS || e.which >= keys.ZERO && e.which <= keys.NINE;
+                        var isAllowed = e.which >= keys.ZERO && e.which <= keys.NINE;
                         that._handleInputKey(false, String.fromCharCode(e.which), isAllowed);
                     }
                 });
@@ -382,10 +382,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             });
             // on blur: if just a dial code then remove it
             this.telInput.on("blur" + this.ns, function() {
-                var value = that.telInput.val(), startsPlus = value.substring(0, 1) == "+", pure = value.replace(/\D/g, "");
-                if (startsPlus && pure) {
-                    value = "+" + pure;
-                    if ($.trim(that._getDialCode(value)) == value) {
+                var value = that.telInput.val(), startsPlus = value.substring(0, 1) == "+";
+                if (startsPlus) {
+                    var numeric = value.replace(/\D/g, ""), clean = "+" + numeric;
+                    // if just a plus, or if just a dial code
+                    if (!numeric || $.trim(that._getDialCode(clean)) == value) {
                         that.telInput.val("");
                     }
                 }
