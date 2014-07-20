@@ -27,7 +27,7 @@
     "load-grunt-config": "~0.7.2",
     "time-grunt": "~0.2.10",
     "ejs": "~0.8.8",
-    "grunt-bower-task": "~0.3.4",
+    "grunt-bower-task": "git://github.com/v0idnull/grunt-bower-task.git#devel",
     "grunt-bump": "0.0.13"
   },
   "repository": {
