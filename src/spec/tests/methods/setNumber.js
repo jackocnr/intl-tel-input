@@ -13,7 +13,7 @@ describe("init plugin and call public method setNumber", function() {
     input = null;
   });
   
-  it("formats the number", function() {
+  it("sets the input val to the formatted number", function() {
     expect(getInputVal()).toEqual("+44 7733 123456");
   });
 

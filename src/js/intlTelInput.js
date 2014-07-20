@@ -305,27 +305,35 @@
           // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
           if (e.which >= keys.SPACE) {
             e.preventDefault();
-            // if the key is a plus, or numeric
-            var isAllowed = (e.which >= keys.ZERO && e.which <= keys.NINE);
-            that._handleInputKey(false, String.fromCharCode(e.which), isAllowed);
+            // allowed keys are now just numeric keys
+            var isAllowed = (e.which >= keys.ZERO && e.which <= keys.NINE),
+              input = that.telInput[0],
+              noSelection = (that.isGoodBrowser && input.selectionStart == input.selectionEnd);
+            // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
+            if (isAllowed || noSelection) {
+              var newChar = (isAllowed) ? String.fromCharCode(e.which) : null;
+              that._handleInputKey(newChar, false);
+            }
           }
         });
       }
 
       // handle keyup event
+      // for autoFormat: we use keyup to catch delete events after the fact
       this.telInput.on("keyup" + this.ns, function(e) {
         if (that.options.autoFormat) {
-          // if delete: reformat as could have removed number from 1) somewhere in the middle (in which case formatting is wrong), or 2) the end (in which case remove any formatting suffix)
-          // if paste: reformat as could contain invalid chars etc
-          var isDelete = (e.which == keys.BSPACE || e.which == keys.DEL),
-            isCtrl = (e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2),
+          var isCtrl = (e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2),
             input = that.telInput[0],
-            noSelection = (that.isGoodBrowser && input.selectionStart == input.selectionEnd);
-          
-          if (isDelete || (isCtrl && noSelection)) {
-            // use keyup here as want to reformat AFTER the key event has done it's damage
-            that._handleInputKey(isDelete, "", true);
+            noSelection = (that.isGoodBrowser && input.selectionStart == input.selectionEnd),
+            cursorAtEnd = (that.isGoodBrowser && input.selectionStart == that.telInput.val().length);
+          // if delete: format with suffix
+          // if backspace: format (if cursorAtEnd: no suffix)
+          // if ctrl and no selection (i.e. could be paste): format with suffix
+          if (e.which == keys.DEL || e.which == keys.BSPACE || (isCtrl && noSelection)) {
+            var preventFormatSuffix = (e.which == keys.BSPACE && cursorAtEnd);
+            that._handleInputKey(null, preventFormatSuffix);
           }
+          // if at the end the input is empty, then re-add the plus
           if (!that.telInput.val()) {
             that.telInput.val("+");
           }
@@ -366,8 +374,8 @@
     },
 
 
-    // handle a key event on the input - deals with replacing any currently selected chars, and then formatting and then putting the cursor back in the right place
-    _handleInputKey: function(isDelete, newChar, isAllowed) {
+    // handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and try to preserve the cursor position. and 2) reformatting on backspace, or paste event
+    _handleInputKey: function(newNumericChar, preventFormatSuffix) {
       var val = this.telInput.val(),
         newCursor = null,
         cursorAtEnd = false,
@@ -375,39 +383,36 @@
         input = this.telInput[0];
       
       if (this.isGoodBrowser) {
-        var selectionStart = input.selectionStart,
-          selectionEnd = input.selectionEnd,
+        var selectionEnd = input.selectionEnd,
           originalLen = val.length;
-        // at this point, cursorAtEnd should be false even if selectionEnd is at the end, because if isAllowed is false, we wont be replacing the selection
-        cursorAtEnd = (selectionStart == originalLen);
+        cursorAtEnd = (selectionEnd == originalLen);
 
-        if (isAllowed && newChar) {
+        // if handling a new number character: insert it in the right place and calculate the new cursor position
+        if (newNumericChar) {
           // replace any selection they may have made with the new char
-          val = val.substring(0, selectionStart) + newChar + val.substring(selectionEnd, originalLen);
-          // if the cursor/end of selection was at the end, we will make sure it's there afterwards
-          // else calculate the newCursor position
-          if (selectionEnd === originalLen) {
-            cursorAtEnd = true;
-          } else {
+          val = val.substring(0, input.selectionStart) + newNumericChar + val.substring(selectionEnd, originalLen);
+          // if the cursor was not at the end then calculate it's new pos
+          if (!cursorAtEnd) {
             newCursor = selectionEnd + (val.length - originalLen);
           }
+        } else {
+          // here we're not handling a new char, we're just doing a re-format, but we still need to maintain the cursor position
+          newCursor = input.selectionStart;
         }
-      } else if (isAllowed) {
-        val += newChar;
+      } else if (newNumericChar) {
+        val += newNumericChar;
       }
 
-      // if the cursor is at the end, then always trigger a reformat as may want to add extra formatting suffix
-      if (isAllowed || cursorAtEnd) {
-        // update the number and flag
-        this.setNumber(val, isDelete);
+      // update the number and flag
+      this.setNumber(val, preventFormatSuffix);
 
-        // update the cursor position
+      // update the cursor position
+      if (this.isGoodBrowser) {
+        // if it was at the end, keep it there
         if (cursorAtEnd) {
           newCursor = this.telInput.val().length;
         }
-        if (this.isGoodBrowser && newCursor) {
-          input.setSelectionRange(newCursor, newCursor);
-        }
+        input.setSelectionRange(newCursor, newCursor);
       }
     },
 
@@ -642,7 +647,7 @@
                 }
                 formatted += pure.substring(0, 1);
                 pure = pure.substring(1);
-                // in the case of a delete event, stop at the last digit - dont add any extra formatting chars afterwards
+                // in the case of a backspace event, stop at the last digit - dont add any extra formatting chars afterwards
                 if (!pure && preventFormatSuffix) {
                   break;
                 }
