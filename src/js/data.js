@@ -5,6 +5,7 @@
 // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
 // Originally from https://github.com/mledoze/countries
 // then modified using the following JavaScript (NOW OUT OF DATE):
+
 /*
 var result = [];
 _.each(countries, function(c) {
@@ -22,12 +23,26 @@ _.each(countries, function(c) {
 });
 JSON.stringify(result);
 */
+
 // then with a couple of manual re-arrangements to be alphabetical
 // then changed Kazakhstan from +76 to +7
+// and Vatican City from +379 to +39 (see issue 50)
+// and Caribean Netherlands from +5997 to +599
+// and Curacao from +5999 to +599
+// Removed: Åland Islands, Christmas Island, Cocos Islands, Guernsey, Isle of Man, Jersey, Kosovo, Mayotte, Pitcairn Islands, South Georgia, Svalbard, Western Sahara
 
 // Update: converted objects to arrays to save bytes!
 // Update: added formats for some countries
 // Update: added "priority" for countries with the same dialCode as others
+
+// So each country array has the following information:
+// [
+//    Country name,
+//    iso2 code,
+//    International dial code,
+//    Format (if available),
+//    Order (if >1 country with same dial code)
+// ]
 var allCountries = [
   [
     "Afghanistan (‫افغانستان‬‎)",
@@ -556,7 +571,8 @@ var allCountries = [
     "Italy (Italia)",
     "it",
     "39",
-    "+.. ... ......"
+    "+.. ... ......",
+    0
   ],
   [
     "Jamaica",
@@ -1209,7 +1225,9 @@ var allCountries = [
   [
     "Vatican City (Città del Vaticano)",
     "va",
-    "379"
+    "39",
+    "",
+    1
   ],
   [
     "Venezuela",
