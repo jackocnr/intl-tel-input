@@ -1226,7 +1226,7 @@ var allCountries = [
     "Vatican City (Città del Vaticano)",
     "va",
     "39",
-    "",
+    "+.. .. .... ....",
     1
   ],
   [
