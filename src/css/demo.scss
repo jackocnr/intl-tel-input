@@ -52,6 +52,16 @@ input, select {
   border: 1px solid #CCC;
   width: 250px;
 }
+::-webkit-input-placeholder {
+   color: #BBB;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #BBB;
+   opacity:  1; 
+}
+:-ms-input-placeholder {  
+   color: #BBB;  
+}
 
 // borrowed from bootstrap
 button {
