@@ -356,6 +356,16 @@ var allCountries = [
     "1809"
   ],
   [
+    "Dominican Republic (República Dominicana)",
+    "do",
+    "1829"
+  ],
+  [
+    "Dominican Republic (República Dominicana)",
+    "do",
+    "1849"
+  ],
+  [
     "Ecuador",
     "ec",
     "593"
