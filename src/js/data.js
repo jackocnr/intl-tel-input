@@ -353,7 +353,9 @@ var allCountries = [
   [
     "Dominican Republic (República Dominicana)",
     "do",
-    "1809"
+    "1",
+    "",
+    2
   ],
   [
     "Ecuador",
@@ -907,7 +909,9 @@ var allCountries = [
   [
     "Puerto Rico",
     "pr",
-    "1787"
+    "1",
+    "",
+    3
   ],
   [
     "Qatar (‫قطر‬‎)",
