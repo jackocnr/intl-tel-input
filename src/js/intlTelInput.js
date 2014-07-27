@@ -679,9 +679,14 @@
         // check if one of the matching countries is already selected
         var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")],
           alreadySelected = false;
-        for (var i = 0; i < countryCodes.length; i++) {
-          if (this.selectedFlagInner.hasClass(countryCodes[i])) {
-            alreadySelected = true;
+        // countries with area codes: we must always update the flag as if it's not an exact match
+        // we should always default to the first country in the list. This is to avoid having to
+        // explicitly define every possible area code in America (there are 999 possible area codes)
+        if (!this.selectedCountryData.hasAreaCodes) {
+          for (var i = 0; i < countryCodes.length; i++) {
+            if (this.selectedFlagInner.hasClass(countryCodes[i])) {
+              alreadySelected = true;
+            }
           }
         }
         // else choose the first in the list

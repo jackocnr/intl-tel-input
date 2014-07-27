@@ -34,6 +34,7 @@ JSON.stringify(result);
 // Update: converted objects to arrays to save bytes!
 // Update: added formats for some countries
 // Update: added "priority" for countries with the same dialCode as others
+// Update: added array of area codes for countries with the same dialCode as others
 
 // So each country array has the following information:
 // [
@@ -41,7 +42,8 @@ JSON.stringify(result);
 //    iso2 code,
 //    International dial code,
 //    Format (if available),
-//    Order (if >1 country with same dial code)
+//    Order (if >1 country with same dial code),
+//    Area codes (if >1 country with same dial code)
 // ]
 var allCountries = [
   [
@@ -231,7 +233,8 @@ var allCountries = [
     "ca",
     "1",
     "+. (...) ...-....",
-    1
+    1,
+    ["204", "236", "249", "250", "289", "306", "343", "365", "387", "403", "416", "418", "431", "437", "438", "450", "506", "514", "519", "548", "579", "581", "587", "604", "613", "639", "647", "672", "705", "709", "742", "778", "780", "782", "807", "819", "825", "867", "873", "902", "905"]
   ],
   [
     "Cape Verde (Kabu Verdi)",
@@ -355,7 +358,8 @@ var allCountries = [
     "do",
     "1",
     "",
-    2
+    2,
+    ["809", "829", "849"]
   ],
   [
     "Ecuador",
@@ -911,7 +915,8 @@ var allCountries = [
     "pr",
     "1",
     "",
-    3
+    3,
+    ["787", "939"]
   ],
   [
     "Qatar (‫قطر‬‎)",
@@ -1267,6 +1272,13 @@ var allCountries = [
 
 // we will build this in the loop below
 var allCountryCodes = {};
+var addCountryCode = function(iso2, dialCode, priority) {
+  if (!(dialCode in allCountryCodes)) {
+    allCountryCodes[dialCode] = [];
+  }
+  var index = priority || 0;
+  allCountryCodes[dialCode][index] = iso2;
+};
 
 // loop over all of the countries above
 for (var i = 0; i < allCountries.length; i++) {
@@ -1277,14 +1289,20 @@ for (var i = 0; i < allCountries.length; i++) {
     iso2: c[1],
     dialCode: c[2]
   };
+  // format
   if (c[3]) {
     allCountries[i].format = c[3];
   }
+  // area codes
+  if (c[5]) {
+    allCountries[i].hasAreaCodes = true;
+    for (var j = 0; j < c[5].length; j++) {
+      // full dial code is country code + dial code
+      var dialCode = c[2] + c[5][j];
+      addCountryCode(c[1], dialCode);
+    }
+  }
 
   // dial codes
-  if (!(c[2] in allCountryCodes)) {
-    allCountryCodes[c[2]] = [];
-  }
-  var j = c[4] || 0;
-  allCountryCodes[c[2]][j] = c[1];
+  addCountryCode(c[1], c[2], c[4]);
 }
