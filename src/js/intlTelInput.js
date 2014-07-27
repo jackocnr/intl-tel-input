@@ -433,7 +433,7 @@
 
       // on focus: if empty, insert the dial code for the currently selected flag
       this.telInput.on("focus" + this.ns, function() {
-        if (!$.trim(that.telInput.val())) {
+        if (!that.telInput.val()) {
           that._updateVal("+" + that.selectedCountryData.dialCode, true);
           // after auto-inserting a dial code, if the first key they hit is '+' then assume
           // they are entering a new number, so remove the dial code.
@@ -456,8 +456,7 @@
           var numeric = value.replace(/\D/g, ""),
             clean = "+" + numeric;
           // if just a plus, or if just a dial code
-          // Note: _getDialCode returns "dirty" number, so extract the numeric form for comparison
-          if (!numeric || that._getDialCode().replace(/\D/g, "") == numeric) {
+          if (!numeric || that.getSelectedCountryData.dialCode == numeric) {
             that.telInput.val("");
           }
         }
