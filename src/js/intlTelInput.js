@@ -422,12 +422,13 @@
       var that = this;
 
       // mousedown decides where the cursor goes, so if we're focusing
-      // we must prevent this from happening
+      // we must preventDefault as we'll be inserting the dial code,
+      // and we want the cursor to be at the end no matter where they click
       this.telInput.on("mousedown" + this.ns, function(e) {
         if (!that.telInput.is(":focus") && !that.telInput.val()) {
           e.preventDefault();
           // but this also cancels the focus, so we must trigger that manually
-          that._focus();
+          that.telInput.focus();
         }
       });
 
@@ -444,6 +445,13 @@
             if (e.which == keys.PLUS) {
               that.telInput.val("+");
             }
+          });
+
+          // after tabbing in, make sure the cursor is at the end
+          // we must use setTimeout to get outside of the focus handler as it seems the 
+          // selection happens after that
+          setTimeout(function() {
+            that._cursorToEnd();
           });
         }
       });
@@ -470,10 +478,8 @@
     },
 
 
-    // focus input and put the cursor at the end
-    _focus: function() {
-      this.telInput.focus();
-
+    // put the cursor to the end of the input (usually after a focus event)
+    _cursorToEnd: function() {
       var input = this.telInput[0];
       if (this.isGoodBrowser) {
         var len = this.telInput.val().length;
@@ -759,7 +765,8 @@
       }
 
       // focus the input
-      this._focus();
+      this.telInput.focus();
+      this._cursorToEnd();
     },
 
 
