@@ -639,8 +639,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // update input value
             if (!this.options.nationalMode) {
                 this._updateDialCode("+" + listItem.attr("data-dial-code"));
-                this.telInput.trigger("change");
             }
+            // always fire the change event as even if nationalMode=true (and we haven't updated
+            // the input val), the system as a whole has still changed - see country-sync example
+            this.telInput.trigger("change");
             // focus the input
             this.telInput.focus();
             this._cursorToEnd();
