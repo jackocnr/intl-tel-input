@@ -308,10 +308,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 // don't do this twice!
                 $.fn[pluginName].injectedUtilsScript = true;
                 var injectUtilsScript = function() {
-                    var script = document.createElement("script");
-                    script.type = "text/javascript";
-                    script.src = that.options.utilsScript;
-                    document.body.appendChild(script);
+                    $.getScript(that.options.utilsScript, function() {
+                        // tell all instances the utils are ready
+                        $(".intl-tel-input input").intlTelInput("utilsLoaded");
+                    });
                 };
                 // if the plugin is being initialised after the window.load event has already been fired
                 if (windowLoaded) {
@@ -732,6 +732,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var dialCode = this._updateFlag(number);
             this._updateVal(number);
             return dialCode;
+        },
+        utilsLoaded: function() {
+            // if autoFormat is enabled and there's an initial value in the input, then format it
+            if (this.options.autoFormat && this.telInput.val()) {
+                this._updateVal(this.telInput.val());
+            }
         }
     };
     // adapted to allow public functions
@@ -774,7 +780,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     /********************
    *  STATIC METHODS
    ********************/
-    // set the country data object
+    // format the given number
     $.fn[pluginName].formatNumber = function(number) {
         return window.formatNumber ? window.formatNumber(number) : number;
     };
