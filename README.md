@@ -40,8 +40,8 @@ You can view a live demo and some examples of how to use the various options her
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
 **autoFormat**  
-Type: `Boolean` Default: `true`  
-Format the number on each keypress according to the country-specific formatting rules. If enabled, this will prevent the user from entering invalid characters.
+Type: `Boolean` Default: `false`  
+Format the number on each keypress according to the country-specific formatting rules. If enabled, this will prevent the user from entering invalid characters. NOTE: this depends on the utilsScript option.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -67,9 +67,9 @@ Specify the countries to appear at the top of the list.
 Type: `Boolean` Default: `false`  
 Set the dropdown's width to be the same as the input. Useful for mobile devices etc.
 
-**validationScript**  
-Type: `String` Default: `""` Example: `"lib/libphonenumber/build/isValidNumber.js"`  
-Enable validation by specifying the URL to the included isValidNumber.js script. This ~200KB script is fetched only when the page has finished loading (to prevent blocking), and is then accessible through the public `isValidNumber` function.
+**utilsScript**  
+Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
+Enable formatting/validation by specifying the URL to the included utils.js script. This ~200KB script is fetched only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function. Also if you initialised the plugin with autoFormat enabled, this will automatically start working.
 
 
 ## Public Methods
@@ -114,6 +114,12 @@ $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 
 
 ## Static Methods
+**formatNumber**  
+Format the given number (depends on the utilsScript option)
+```js
+var formatted = $.fn.intlTelInput.formatNumber(number);
+```
+
 **getCountryData**  
 Get all of the plugin's country data  
 ```js
@@ -135,8 +141,8 @@ $.fn.intlTelInput.setCountryData(countryData);
 ```
 
 
-## Validation
-International number validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200KB, so I have included it as an optional extra. If you specify the validationScript option then it will fetch the script only when the page has finished loading (to prevent blocking), and will then be accessible through the public `isValidNumber` function.
+## Formatting/Validation
+International number formatting/validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200KB, so I have included it as an optional extra. If you specify the utilsScript option then it will fetch the script only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function. Also if you initialised the plugin with autoFormat enabled, this will automatically start working.
 
 
 ## Troubleshooting
@@ -162,5 +168,5 @@ I use [Grunt](http://gruntjs.com) to build the project, which relies on [npm](ht
 ## Attributions
 * Flag images and CSS from https://github.com/tkrotoff/famfamfam_flags
 * Country data from https://github.com/mledoze/countries
-* Validation code from http://libphonenumber.googlecode.com
+* Formatting/validation code from http://libphonenumber.googlecode.com
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/Bluefieldscom/intl-tel-input/wiki/Contributions)
