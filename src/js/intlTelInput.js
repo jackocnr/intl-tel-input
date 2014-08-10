@@ -259,7 +259,7 @@
         this._selectFlag(defaultCountry.iso2);
 
         // if autoHideDialCode is disabled, insert the default dial code
-        if (!this.options.autoHideDialCode) {
+        if (!val && !this.options.autoHideDialCode) {
           this._resetToDialCode(defaultCountry.dialCode);
         }
       }
