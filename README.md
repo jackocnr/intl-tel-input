@@ -160,7 +160,7 @@ I use [Grunt](http://gruntjs.com) to build the project, which relies on [npm](ht
 
 
 ## Attributions
-* Flag images and CSS from [Flag Sprites](http://flag-sprites.com) ([FamFamFam](https://github.com/tkrotoff/famfamfam_flags))
+* Flag images and CSS from [Flag Sprites](http://flag-sprites.com) (which uses [FamFamFam](https://github.com/tkrotoff/famfamfam_flags))
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation code from [libphonenumber](http://libphonenumber.googlecode.com)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/Bluefieldscom/intl-tel-input/wiki/Contributions)
