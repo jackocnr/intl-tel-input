@@ -781,10 +781,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     /********************
    *  STATIC METHODS
    ********************/
-    // format the given number
-    $.fn[pluginName].formatNumber = function(number) {
-        return window.intlTelInputUtils ? intlTelInputUtils.formatNumber(number) : number;
-    };
     // get the country data object
     $.fn[pluginName].getCountryData = function() {
         return allCountries;

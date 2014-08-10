@@ -114,12 +114,6 @@ $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 
 
 ## Static Methods
-**formatNumber**  
-Format the given number (depends on the utilsScript option)
-```js
-var formatted = $.fn.intlTelInput.formatNumber(number);
-```
-
 **getCountryData**  
 Get all of the plugin's country data  
 ```js
