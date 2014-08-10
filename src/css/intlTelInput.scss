@@ -23,7 +23,7 @@ $inputPadding: 6px;
 $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding);
 
 
-.intl-tel-input {
+.intl-tel-country-list {
   // need position on the container so the selected flag can be
   // absolutely positioned over the input
   position: relative;

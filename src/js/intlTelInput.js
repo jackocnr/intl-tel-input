@@ -17,7 +17,9 @@
       // make the dropdown the same width as the input
       responsiveDropdown: false,
       // specify the path to the libphonenumber script to enable validation
-      validationScript: ""
+      validationScript: "",
+      // specify a separated file to display country list and flag
+      countryListFieldSelector: false
     },
     keys = {
       UP: 38,
@@ -173,14 +175,21 @@
     _generateMarkup: function() {
       // telephone input
       this.telInput = $(this.element);
+      this.countryField = $(this.element);
+      if( this.options.countryListFieldSelector ) {
+        this.countryField = $(this.options.countryListFieldSelector);
+      }
 
       // containers (mostly for positioning)
-      this.telInput.wrap($("<div>", {
-        "class": "intl-tel-input"
+      //this.telInput.wrap($("<div>", {
+      //  "class": "intl-tel-input"
+      //}));
+      this.countryField.wrap($("<div>", {
+        "class": "intl-tel-country-list"
       }));
       var flagsContainer = $("<div>", {
         "class": "flag-dropdown"
-      }).insertAfter(this.telInput);
+      }).insertAfter(this.countryField);
 
       // currently selected flag (displayed to left of input)
       var selectedFlag = $("<div>", {
@@ -212,7 +221,7 @@
 
       // and set the width
       if (this.options.responsiveDropdown) {
-        this.countryList.outerWidth(this.telInput.outerWidth());
+        this.countryList.outerWidth(this.countryField.outerWidth());
       }
 
       // this is useful in lots of places
@@ -229,7 +238,7 @@
       for (var i = 0; i < countries.length; i++) {
         var c = countries[i];
         // open the list item
-        tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
+        tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "' data-country-name='" + c.name + "'>";
         // add the flag
         tmp += "<div class='flag " + c.iso2 + "'></div>";
         // and the country name and dial code
@@ -257,6 +266,9 @@
           defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0] : this.countries[0];
         }
         this._selectFlag(defaultCountry.iso2);
+        if( this.options.countryListFieldSelector ) {
+          this.countryField.val( defaultCountry.name );
+        }
 
         // if autoHideDialCode is disabled, insert the default dial code
         if (!this.options.autoHideDialCode) {
@@ -276,12 +288,12 @@
       }
 
       // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
-      var label = this.telInput.closest("label");
+      var label = this.countryField.closest("label");
       if (label.length) {
         label.on("click" + this.ns, function(e) {
           // if the dropdown is closed, then focus the input, else ignore the click
           if (that.countryList.hasClass("hide")) {
-            that.telInput.focus();
+            that.countryField.focus();
           } else {
             e.preventDefault();
           }
@@ -353,6 +365,19 @@
           that._showDropdown();
         }
       });
+      // if country name is displayed in a separate field, 
+      // we need to show the country list on click on the country name 
+      if( this.options.countryListFieldSelector ) {
+        var flagToggler = this.countryField;
+        flagToggler.on("click" + this.ns, function(e) {
+          // only intercept this event if we're opening the dropdown
+          // else let it bubble up to the top ("click-off-to-close" listener)
+          // we cannot just stopPropagation as it may be needed to close another instance
+          if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
+            that._showDropdown();
+          }
+        });
+      }
 
       // if the user has specified the path to the validation script
       // inject a new script element for it at the end of the body
@@ -697,6 +722,11 @@
         // else choose the first in the list
         if (!alreadySelected) {
           this._selectFlag(countryCodes[0]);
+          // update country name if needed
+          if( this.options.countryListFieldSelector ) {
+            var selectedCountry = this._getCountryData(countryCodes[0],false,false);
+            this.countryField.val(selectedCountry.name);
+          }
         }
       }
       return dialCode;
@@ -761,6 +791,9 @@
       // update input value
       if (!this.options.nationalMode) {
         this._updateDialCode("+" + listItem.attr("data-dial-code"));
+      }
+      if ( this.options.countryListFieldSelector ) {
+        this.countryField.val(listItem.attr("data-country-name"));
       }
 
       // always fire the change event as even if nationalMode=true (and we haven't updated

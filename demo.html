@@ -12,12 +12,19 @@
       <input id="mobile-number" type="tel" placeholder="+1 (702) 123-4567">
       <button type="submit">Submit</button>
     </form>
+	<h1>International Telephone Input with separated country list</h1>
+	<form>
+      <input id="mobile-number2" type="tel" placeholder="+1 (702) 123-4567">
+      <input id="country-list" type="text">
+      <button type="submit">Submit</button>
+    </form>
 
     <!-- Load jQuery from CDN so can run demo immediately -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="build/js/intlTelInput.js"></script>
     <script>
       $("#mobile-number").intlTelInput();
+	  $("#mobile-number2").intlTelInput({ countryListFieldSelector: "#country-list" });
     </script>
   </body>
 </html>
