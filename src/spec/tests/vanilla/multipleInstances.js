@@ -1,6 +1,6 @@
 "use strict";
 
-describe("init vanilla plugin to test multiple instances", function() {
+describe("multiple instances: init vanilla plugin to test multiple instances", function() {
 
   var input2, chinaCountryCode = "cn", chinaDialCode = "+86";
 

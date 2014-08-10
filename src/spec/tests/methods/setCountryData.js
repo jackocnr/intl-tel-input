@@ -1,6 +1,6 @@
 "use strict";
 
-describe("use static method setCountryData before initialising the plugin", function() {
+describe("setCountryData: use static method setCountryData before initialising the plugin", function() {
 
   var oldCountryData, newCountryData = [{
     "name": "Afghanistan (افغانستان‎)",

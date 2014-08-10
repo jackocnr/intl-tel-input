@@ -1,6 +1,6 @@
 "use strict";
 
-describe("testing autoHideDialCode option", function() {
+describe("autoHideDialCode option:", function() {
 
   var defaultDialCode = "+1";
 
@@ -34,7 +34,7 @@ describe("testing autoHideDialCode option", function() {
 
     it("focusing the input adds the default dial code and blurring it removes it again", function() {
       input.focus();
-      expect(getInputVal()).toEqual("+1 ("); // this is now formatted
+      expect(getInputVal()).toEqual("+1");
       input.blur();
       expect(getInputVal()).toEqual("");
     });

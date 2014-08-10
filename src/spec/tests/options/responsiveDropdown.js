@@ -1,6 +1,6 @@
 "use strict";
 
-describe("init plugin to test responsiveDropdown option", function() {
+describe("responsiveDropdown: init plugin to test responsiveDropdown option", function() {
 
   beforeEach(function() {
     input = $("<input>");

@@ -1,6 +1,6 @@
 "use strict";
 
-describe("init vanilla plugin to test keyboard shortcuts - open dropdown", function() {
+describe("keyboard shortcuts: init vanilla plugin to test keyboard shortcuts - open dropdown", function() {
 
   beforeEach(function() {
     input = $("<input>");

@@ -1,9 +1,9 @@
 "use strict";
 
-describe("testing autoFormat option", function() {
+describe("autoFormat option:", function() {
 
   var unformattedNumber = "+1 702 418 1234 B",
-    formattedNumber = "+1 (702) 418-1234";
+    formattedNumber = "+1 702-418-1234";
 
   beforeEach(function() {
     input = $("<input value='" + unformattedNumber + "'>");
@@ -63,17 +63,17 @@ describe("testing autoFormat option", function() {
 
 
 
-    it("adding a digit automatically adds any formatting suffix", function() {
+    /*it("adding a digit automatically adds any formatting suffix", function() {
       input.val("+");
       putCursorAtEnd();
       // this is handled by the keypress handler, and so will insert the char for you
       triggerKeyOnInput("1");
       expect(input.val()).toEqual("+1 (");
-    });
+    });*/
 
     it("deleting a digit automatically removes any remaining formatting suffix", function() {
-      // backspace key event is handled by the keyup handler, which expects the input val to already be updated, so instead of "+1 (7", I have already removed the 7
-      input.val("+1 (");
+      // backspace key event is handled by the keyup handler, which expects the input val to already be updated, so instead of "+1 7", I have already removed the 7
+      input.val("+1 ");
       putCursorAtEnd();
       triggerKeyOnInput("BACKSPACE");
       expect(input.val()).toEqual("+1");
@@ -85,7 +85,7 @@ describe("testing autoFormat option", function() {
     describe("after deleting a char and it removing any format suffix", function() {
     
       beforeEach(function() {
-        // e.g. imagine it was "+1 (7" and we deleted the 7 and it auto-removed the rest
+        // e.g. imagine it was "+1 7" and we deleted the 7 and it auto-removed the rest
         input.val("+1");
         putCursorAtEnd();
       });
@@ -93,16 +93,16 @@ describe("testing autoFormat option", function() {
       it("hitting a number will re-add the formatting in between", function() {
         // this is handled by the keypress handler, and so will insert the char for you
         triggerKeyOnInput("7");
-        expect(input.val()).toEqual("+1 (7");
+        expect(input.val()).toEqual("+1 7");
       });
 
-      it("hitting any non-number char (e.g. a space) will re-add the formatting suffix", function() {
+      /*it("hitting any non-number char (e.g. a space) will re-add the formatting suffix", function() {
         // this is handled by the keypress handler, and so will insert the char for you
         triggerKeyOnInput(" ");
         expect(input.val()).toEqual("+1 (");
         // and move the cursor to the end
         expect(input[0].selectionStart).toEqual(input.val().length);
-      });
+      });*/
 
     });
 
@@ -110,11 +110,11 @@ describe("testing autoFormat option", function() {
 
     describe("selecting some chars", function() {
     
-      var cursorStart = 4,
-        cursorEnd = 7;
+      var cursorStart = 3,
+        cursorEnd = 6;
 
       beforeEach(function() {
-        // formatted number is "+1 (702) 418-1234" so this will be "702"
+        // formatted number is "+1 702-418-1234" so this will be "702"
         selectInputChars(cursorStart, cursorEnd);
       });
 
@@ -128,7 +128,7 @@ describe("testing autoFormat option", function() {
 
       it("hitting a number char will replace the selection, reformat, and put the cursor in the right place", function() {
         triggerKeyOnInput("9");
-        expect(input.val()).toEqual("+1 (941) 812-34");
+        expect(input.val()).toEqual("+1 941-812-34");
         // cursor
         expect(input[0].selectionStart).toEqual(cursorStart+1);
       });

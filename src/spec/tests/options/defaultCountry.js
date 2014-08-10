@@ -1,6 +1,6 @@
 "use strict";
 
-describe("init plugin with a default country", function() {
+describe("defaultCountry: init plugin with a default country", function() {
 
   var defaultCountry = "jp";
 

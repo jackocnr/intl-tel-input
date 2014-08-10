@@ -1,6 +1,6 @@
 "use strict";
 
-describe("init plugin to test public method getSelectedCountryData", function() {
+describe("getSelectedCountryData: init plugin to test public method getSelectedCountryData", function() {
 
   beforeEach(function() {
     input = $("<input>");

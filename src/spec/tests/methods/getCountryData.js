@@ -1,6 +1,6 @@
 "use strict";
 
-describe("use static method getCountryData", function() {
+describe("getCountryData: use static method getCountryData", function() {
 
   var countryData;
 

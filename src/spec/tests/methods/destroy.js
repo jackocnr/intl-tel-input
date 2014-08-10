@@ -1,6 +1,6 @@
 "use strict";
 
-describe("init plugin to test public method destroy", function() {
+describe("destroy: init plugin to test public method destroy", function() {
 
   beforeEach(function() {
     input = $("<input>");
@@ -23,8 +23,6 @@ describe("init plugin to test public method destroy", function() {
     expect("blur" in listeners).toBeTruthy();
     expect("focus" in listeners).toBeTruthy();
     expect("mousedown" in listeners).toBeTruthy();
-    // autoFormat=true
-    expect("keypress" in listeners).toBeTruthy();
     // normal
     expect("keyup" in listeners).toBeTruthy();
   });

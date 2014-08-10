@@ -1,6 +1,6 @@
 "use strict";
 
-describe("init plugin with nationalMode set to true", function() {
+describe("nationalMode: init plugin with nationalMode set to true", function() {
 
   beforeEach(function() {
     input = $("<input>");

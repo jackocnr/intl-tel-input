@@ -1,6 +1,6 @@
 "use strict";
 
-describe("init plugin and call public method setNumber", function() {
+describe("setNumber: init (vanilla) plugin to call public method setNumber", function() {
 
   beforeEach(function() {
     input = $("<input>");
@@ -13,8 +13,8 @@ describe("init plugin and call public method setNumber", function() {
     input = null;
   });
   
-  it("sets the input val to the formatted number", function() {
-    expect(getInputVal()).toEqual("+44 7733 123456");
+  it("sets the input val to the given number", function() {
+    expect(getInputVal()).toEqual("+447733123456");
   });
 
   it("updates the flag", function() {

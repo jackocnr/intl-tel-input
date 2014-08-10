@@ -1,6 +1,6 @@
 "use strict";
 
-describe("testing preferredCountries", function() {
+describe("preferredCountries option:", function() {
 
   beforeEach(function() {
     input = $("<input>");
