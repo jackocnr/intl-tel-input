@@ -305,12 +305,13 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // if the user has specified the path to the utils script
             // inject a new script element for it at the end of the body
             if (this.options.utilsScript && !$.fn[pluginName].injectedUtilsScript) {
+                // don't do this twice!
+                $.fn[pluginName].injectedUtilsScript = true;
                 var injectUtilsScript = function() {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
                     script.src = that.options.utilsScript;
                     document.body.appendChild(script);
-                    $.fn[pluginName].injectedUtilsScript = true;
                 };
                 // if the plugin is being initialised after the window.load event has already been fired
                 if (windowLoaded) {
