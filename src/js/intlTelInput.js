@@ -3,7 +3,7 @@
     id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
       // automatically format the number according to the selected country
-      autoFormat: true,
+      autoFormat: false,
       // if there is just a dial code in the input: remove it on blur, and re-add it on focus
       autoHideDialCode: true,
       // default country
@@ -16,8 +16,8 @@
       preferredCountries: ["us", "gb"],
       // make the dropdown the same width as the input
       responsiveDropdown: false,
-      // specify the path to the libphonenumber script to enable validation
-      validationScript: ""
+      // specify the path to the libphonenumber script to enable validation/formatting
+      utilsScript: ""
     },
     keys = {
       UP: 38,
@@ -289,13 +289,6 @@
       }
 
       if (this.options.autoFormat) {
-        // use keydown to prevent deleting the '+' prefix
-        this.telInput.on("keydown" + this.ns, function(e) {
-          if ((e.which == keys.BSPACE || e.which == keys.DEL) && that.telInput.val() == "+") {
-            e.preventDefault();
-          }
-        });
-
         // format number and update flag on keypress
         // use keypress event as we want to ignore all input except for a select few keys,
         // but we dont want to ignore the navigation keys like the arrows etc.
@@ -312,7 +305,7 @@
             // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
             if (isAllowed || noSelection) {
               var newChar = (isAllowed) ? String.fromCharCode(e.which) : null;
-              that._handleInputKey(newChar, false);
+              that._handleInputKey(newChar);
             }
           }
         });
@@ -331,11 +324,12 @@
           // if ctrl and no selection (i.e. could be paste): format with suffix
           if (e.which == keys.DEL || e.which == keys.BSPACE || (isCtrl && noSelection)) {
             var preventFormatSuffix = (e.which == keys.BSPACE && cursorAtEnd);
-            that._handleInputKey(null, preventFormatSuffix);
+            that._handleInputKey(null);
           }
-          // if at the end the input is empty, then re-add the plus
-          if (!that.telInput.val()) {
-            that.telInput.val("+");
+          // prevent deleting the plus
+          var val = that.telInput.val();
+          if (val.substr(0, 1) != "+") {
+            that.telInput.val("+" + val);
           }
         } else {
           // if no autoFormat, just update flag
@@ -354,28 +348,29 @@
         }
       });
 
-      // if the user has specified the path to the validation script
+      // if the user has specified the path to the utils script
       // inject a new script element for it at the end of the body
-      if (this.options.validationScript) {
-        var injectValidationScript = function() {
+      if (this.options.utilsScript && !$.fn[pluginName].injectedUtilsScript) {
+        var injectUtilsScript = function() {
           var script = document.createElement("script");
           script.type = "text/javascript";
-          script.src = that.options.validationScript;
+          script.src = that.options.utilsScript;
           document.body.appendChild(script);
+          $.fn[pluginName].injectedUtilsScript = true;
         };
         // if the plugin is being initialised after the window.load event has already been fired
         if (windowLoaded) {
-          injectValidationScript();
+          injectUtilsScript();
         } else {
           // wait until the load event so we don't block any other requests e.g. the flags image
-          $(window).load(injectValidationScript);
+          $(window).load(injectUtilsScript);
         }
       }
     },
 
 
-    // handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and try to preserve the cursor position. and 2) reformatting on backspace, or paste event
-    _handleInputKey: function(newNumericChar, preventFormatSuffix) {
+    // when autoFormat is enabled: handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and try to preserve the cursor position. and 2) reformatting on backspace, or paste event
+    _handleInputKey: function(newNumericChar) {
       var val = this.telInput.val(),
         newCursor = null,
         cursorAtEnd = false,
@@ -404,7 +399,7 @@
       }
 
       // update the number and flag
-      this.setNumber(val, preventFormatSuffix);
+      this.setNumber(val);
 
       // update the cursor position
       if (this.isGoodBrowser) {
@@ -435,7 +430,7 @@
       // on focus: if empty, insert the dial code for the currently selected flag
       this.telInput.on("focus" + this.ns, function() {
         if (!that.telInput.val()) {
-          that._updateVal("+" + that.selectedCountryData.dialCode, true);
+          that._updateVal("+" + that.selectedCountryData.dialCode);
           // after auto-inserting a dial code, if the first key they hit is '+' then assume
           // they are entering a new number, so remove the dial code.
           // use keypress instead of keydown because keydown gets triggered for the shift key
@@ -459,7 +454,7 @@
       // on blur: if just a dial code then remove it
       this.telInput.on("blur" + this.ns, function() {
         var value = that.telInput.val(),
-          startsPlus = (value.substring(0, 1) == "+");
+          startsPlus = (value.substr(0, 1) == "+");
         if (startsPlus) {
           var numeric = value.replace(/\D/g, ""),
             clean = "+" + numeric;
@@ -631,48 +626,18 @@
 
     // update the input's value to the given val
     // if autoFormat=true, format it first according to the country-specific formatting rules
-    _updateVal: function(val, hasDialCode, preventFormatSuffix) {
-      var formatted = "",
-        pure;
+    _updateVal: function(val) {
+      var formatted;
 
-      if (this.options.autoFormat) {
-        pure = val.replace(/\D/g, "");
-
-        // only bother trying to format a number with a dialCode
-        if (hasDialCode) {
-          // format the number
-          var format = this.selectedCountryData.format;
-          if (format) {
-            for (var i = 0; i < format.length; i++) {
-              // if the format character is a dot, add the number
-              if (format[i] == ".") {
-                // only break out of looping over the formatted chars when we need to insert another digit, but we cant
-                if (!pure) {
-                  break;
-                }
-                formatted += pure.substring(0, 1);
-                pure = pure.substring(1);
-                // in the case of a backspace event, stop at the last digit - dont add any extra formatting chars afterwards
-                if (!pure && preventFormatSuffix) {
-                  break;
-                }
-              } else {
-                formatted += format[i];
-              }
-            }
-          }
-        }
-
-        // if no formatted version, we're left with the "pure" numbers, so just make sure to preserve any initial '+'
-        if (!formatted && val.substring(0, 1) == "+") {
-          formatted = "+";
-        }
+      if (this.options.autoFormat && window.formatNumber) {
+        // have to trim the result here, because "+44" formats to "+44 ", which means if autoFormat is enabled, you can never delete that space, as it keeps getting re-added
+        formatted = $.trim(window.formatNumber(val));
       } else {
-        // no autoFormat, so just insert the true value
-        pure = val;
+        // no autoFormat, so just insert the original value
+        formatted = val;
       }
 
-      this.telInput.val(formatted + pure);
+      this.telInput.val(formatted);
     },
 
 
@@ -834,7 +799,7 @@
         newNumber = newDialCode + existingNumber;
       }
 
-      this._updateVal(newNumber, true);
+      this._updateVal(newNumber);
     },
 
 
@@ -855,7 +820,7 @@
             // if current numericChars make a valid dial code
             if (this.countryCodes[numericChars]) {
               // store the actual raw string (useful for matching later)
-              dialCode = inputVal.substring(0, i+1);
+              dialCode = inputVal.substring(0, i + 1);
             }
             // longest dial code is 4 chars
             if (numericChars.length == 4) {
@@ -923,10 +888,10 @@
     },
 
     // set the input value and update the flag
-    setNumber: function(number, preventFormatSuffix) {
+    setNumber: function(number) {
       // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
       var dialCode = this._updateFlag(number);
-      this._updateVal(number, dialCode, preventFormatSuffix);
+      this._updateVal(number);
       return dialCode;
     }
 
@@ -987,6 +952,12 @@
   /********************
    *  STATIC METHODS
    ********************/
+
+
+  // set the country data object
+  $.fn[pluginName].formatNumber = function(number) {
+    return (window.formatNumber) ? window.formatNumber(number) : number;
+  };
 
 
   // get the country data object
