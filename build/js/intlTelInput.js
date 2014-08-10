@@ -529,9 +529,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // if autoFormat=true, format it first according to the country-specific formatting rules
         _updateVal: function(val) {
             var formatted;
-            if (this.options.autoFormat && window.formatNumber) {
+            if (this.options.autoFormat && window.intlTelInputUtils) {
                 // have to trim the result here, because "+44" formats to "+44 ", which means if autoFormat is enabled, you can never delete that space, as it keeps getting re-added
-                formatted = $.trim(window.formatNumber(val));
+                formatted = $.trim(intlTelInputUtils.formatNumber(val));
             } else {
                 // no autoFormat, so just insert the original value
                 formatted = val;
@@ -714,7 +714,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         isValidNumber: function(allowNational) {
             var val = $.trim(this.telInput.val()), countryCode = allowNational ? this.selectedCountryData.iso2 : "", // libphonenumber allows alpha chars, but in order to allow that, we'd need a method to retrieve the processed number, with letters replaced with numbers
             containsAlpha = /[a-zA-Z]/.test(val);
-            return !containsAlpha && window.isValidNumber(val, countryCode);
+            return !containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode);
         },
         // update the selected flag, and if the input is empty: insert the new dial code
         selectCountry: function(countryCode) {
@@ -733,6 +733,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this._updateVal(number);
             return dialCode;
         },
+        // this is called when the utils are ready
         utilsLoaded: function() {
             // if autoFormat is enabled and there's an initial value in the input, then format it
             if (this.options.autoFormat && this.telInput.val()) {
@@ -782,7 +783,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
    ********************/
     // format the given number
     $.fn[pluginName].formatNumber = function(number) {
-        return window.formatNumber ? window.formatNumber(number) : number;
+        return window.intlTelInputUtils ? intlTelInputUtils.formatNumber(number) : number;
     };
     // get the country data object
     $.fn[pluginName].getCountryData = function() {
