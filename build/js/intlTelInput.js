@@ -265,7 +265,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
                         if (isAllowed || noSelection) {
                             var newChar = isAllowed ? String.fromCharCode(e.which) : null;
-                            that._handleInputKey(newChar);
+                            that._handleInputKey(newChar, true);
                         }
                     }
                 });
@@ -279,8 +279,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     // if backspace: format (if cursorAtEnd: no suffix)
                     // if ctrl and no selection (i.e. could be paste): format with suffix
                     if (e.which == keys.DEL || e.which == keys.BSPACE || isCtrl && noSelection) {
-                        var preventFormatSuffix = e.which == keys.BSPACE && cursorAtEnd;
-                        that._handleInputKey(null);
+                        var addSuffix = !(e.which == keys.BSPACE && cursorAtEnd);
+                        that._handleInputKey(null, addSuffix);
                     }
                     // prevent deleting the plus
                     var val = that.telInput.val();
@@ -323,7 +323,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
         },
         // when autoFormat is enabled: handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and try to preserve the cursor position. and 2) reformatting on backspace, or paste event
-        _handleInputKey: function(newNumericChar) {
+        _handleInputKey: function(newNumericChar, addSuffix) {
             var val = this.telInput.val(), newCursor = null, cursorAtEnd = false, // raw DOM element
             input = this.telInput[0];
             if (this.isGoodBrowser) {
@@ -345,7 +345,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 val += newNumericChar;
             }
             // update the number and flag
-            this.setNumber(val);
+            this.setNumber(val, addSuffix);
             // update the cursor position
             if (this.isGoodBrowser) {
                 // if it was at the end, keep it there
@@ -371,7 +371,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // on focus: if empty, insert the dial code for the currently selected flag
             this.telInput.on("focus" + this.ns, function() {
                 if (!that.telInput.val()) {
-                    that._updateVal("+" + that.selectedCountryData.dialCode);
+                    that._updateVal("+" + that.selectedCountryData.dialCode, true);
                     // after auto-inserting a dial code, if the first key they hit is '+' then assume
                     // they are entering a new number, so remove the dial code.
                     // use keypress instead of keydown because keydown gets triggered for the shift key
@@ -527,11 +527,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // update the input's value to the given val
         // if autoFormat=true, format it first according to the country-specific formatting rules
-        _updateVal: function(val) {
+        _updateVal: function(val, addSuffix) {
             var formatted;
             if (this.options.autoFormat && window.intlTelInputUtils) {
-                // have to trim the result here, because "+44" formats to "+44 ", which means if autoFormat is enabled, you can never delete that space, as it keeps getting re-added
-                formatted = $.trim(intlTelInputUtils.formatNumber(val));
+                // don't try to add the suffix if we dont have a full dial code
+                if (!this._getDialCode(val)) {
+                    addSuffix = false;
+                }
+                formatted = intlTelInputUtils.formatNumber(val, addSuffix);
             } else {
                 // no autoFormat, so just insert the original value
                 formatted = val;
@@ -727,10 +730,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
         },
         // set the input value and update the flag
-        setNumber: function(number) {
+        setNumber: function(number, addSuffix) {
             // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
             var dialCode = this._updateFlag(number);
-            this._updateVal(number);
+            this._updateVal(number, addSuffix);
             return dialCode;
         },
         // this is called when the utils are ready
