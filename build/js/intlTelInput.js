@@ -285,7 +285,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     // prevent deleting the plus
                     var val = that.telInput.val();
                     if (val.substr(0, 1) != "+") {
+                        // newCursorPos is current pos + 1 to account for the plus we are about to add
+                        var newCursorPos = that.isGoodBrowser ? input.selectionStart + 1 : 0;
                         that.telInput.val("+" + val);
+                        if (that.isGoodBrowser) {
+                            input.setSelectionRange(newCursorPos, newCursorPos);
+                        }
                     }
                 } else {
                     // if no autoFormat, just update flag
