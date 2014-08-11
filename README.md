@@ -9,6 +9,7 @@ You can view a live demo and some examples of how to use the various options her
 
 ## Features
 * Automatically format the number as the user types
+* Changing the flag updates the input placeholder to an example number for that country
 * Navigate the country dropdown by typing a country's name, or using up/down keys
 * Selecting a country from the dropdown will update the dial code in the input
 * Typing a different dial code will automatically update the displayed flag
@@ -69,7 +70,7 @@ Set the dropdown's width to be the same as the input. Useful for mobile devices 
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
-Enable formatting/validation by specifying the URL to the included utils.js script. This ~200KB script is fetched only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function. Also if you initialised the plugin with autoFormat enabled, this will automatically start working.
+Enable formatting/validation/example numbers (for placeholders) by specifying the URL to the included utils.js script. This ~200KB script is fetched only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function. Also if you initialised the plugin with autoFormat enabled, this will automatically start working.
 
 
 ## Public Methods
@@ -162,5 +163,5 @@ I use [Grunt](http://gruntjs.com) to build the project, which relies on [npm](ht
 ## Attributions
 * Flag images and CSS from [Flag Sprites](http://flag-sprites.com) (which uses [FamFamFam](https://github.com/tkrotoff/famfamfam_flags))
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
-* Formatting/validation code from [libphonenumber](http://libphonenumber.googlecode.com)
+* Formatting/validation/example number code from [libphonenumber](http://libphonenumber.googlecode.com)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/Bluefieldscom/intl-tel-input/wiki/Contributions)
