@@ -714,6 +714,11 @@
     _selectFlag: function(countryCode) {
       this.selectedFlagInner.attr("class", "flag " + countryCode);
 
+      // update the placeholder
+      if (window.intlTelInputUtils) {
+        this.telInput.attr("placeholder", intlTelInputUtils.getExampleNumber(countryCode));
+      }
+
       // update the title attribute
       this.selectedCountryData = this._getCountryData(countryCode, false, false);
       var title = this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode;
