@@ -799,6 +799,7 @@
 
 
     // replace any existing dial code with the new one
+    // currently this is only called from _selectListItem
     _updateDialCode: function(newDialCode) {
       var inputVal = this.telInput.val(),
         prevDialCode = this._getDialCode(),
@@ -814,7 +815,7 @@
         newNumber = newDialCode + existingNumber;
       }
 
-      this._updateVal(newNumber);
+      this._updateVal(newNumber, true);
     },
 
 

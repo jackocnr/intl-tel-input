@@ -660,6 +660,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
         },
         // replace any existing dial code with the new one
+        // currently this is only called from _selectListItem
         _updateDialCode: function(newDialCode) {
             var inputVal = this.telInput.val(), prevDialCode = this._getDialCode(), newNumber;
             // if the previous number contained a valid dial code, replace it
@@ -671,7 +672,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 var existingNumber = inputVal && inputVal.substr(0, 1) != "+" ? $.trim(inputVal) : "";
                 newNumber = newDialCode + existingNumber;
             }
-            this._updateVal(newNumber);
+            this._updateVal(newNumber, true);
         },
         // try and extract a valid international dial code from a full telephone number
         // Note: returns the raw string inc plus character and any whitespace/dots etc
