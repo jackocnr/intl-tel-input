@@ -13,7 +13,7 @@ var input,
 
 var getInputVal = function(i) {
   i = i || input;
-  return i.val().trim();
+  return i.val();
 };
 
 var getParentElement = function(i) {
