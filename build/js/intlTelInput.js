@@ -112,6 +112,17 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         } else {
                             newCountryCodes[dialCode] = [ countryCode ];
                         }
+                        if (countryData.areaCodes) {
+                            for (var j = 0; j < countryData.areaCodes.length; j++) {
+                                // full dial code is country code + dial code
+                                var dialCode2 = dialCode + countryData.areaCodes[j];
+                                if (newCountryCodes[dialCode2]) {
+                                    newCountryCodes[dialCode2].push(countryCode);
+                                } else {
+                                    newCountryCodes[dialCode2] = [ countryCode ];
+                                }
+                            }
+                        }
                     }
                 }
                 // maintain country priority
@@ -388,7 +399,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         }
                     });
                     // after tabbing in, make sure the cursor is at the end
-                    // we must use setTimeout to get outside of the focus handler as it seems the 
+                    // we must use setTimeout to get outside of the focus handler as it seems the
                     // selection happens after that
                     setTimeout(function() {
                         that._cursorToEnd();
@@ -864,6 +875,7 @@ JSON.stringify(result);
         // area codes
         if (c[4]) {
             allCountries[i].hasAreaCodes = true;
+            allCountries[i].areaCodes = c[5];
             for (var j = 0; j < c[4].length; j++) {
                 // full dial code is country code + dial code
                 var dialCode = c[2] + c[4][j];
