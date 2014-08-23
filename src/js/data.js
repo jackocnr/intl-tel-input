@@ -240,7 +240,6 @@ var allCountries = [
     "Caribbean Netherlands",
     "bq",
     "599",
-    "",
     1
   ],
   [
@@ -317,7 +316,6 @@ var allCountries = [
     "Curaçao",
     "cw",
     "599",
-    "",
     0
   ],
   [
@@ -349,7 +347,6 @@ var allCountries = [
     "Dominican Republic (República Dominicana)",
     "do",
     "1",
-    "",
     2,
     ["809", "829", "849"]
   ],
@@ -472,7 +469,6 @@ var allCountries = [
     "Guadeloupe",
     "gp",
     "590",
-    "",
     0
   ],
   [
@@ -886,7 +882,6 @@ var allCountries = [
     "Puerto Rico",
     "pr",
     "1",
-    "",
     3,
     ["787", "939"]
   ],
@@ -920,7 +915,6 @@ var allCountries = [
     "Saint Barthélemy (Saint-Barthélemy)",
     "bl",
     "590",
-    "",
     1
   ],
   [
@@ -942,7 +936,6 @@ var allCountries = [
     "Saint Martin (Saint-Martin (partie française))",
     "mf",
     "590",
-    "",
     2
   ],
   [
