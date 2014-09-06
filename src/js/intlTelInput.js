@@ -240,7 +240,7 @@
     _setInitialState: function() {
       var val = this.telInput.val();
       // if the input is not pre-populated, or if it doesn't contain a valid dial code, fall back to the default country
-      // Note: calling setNumber will also format the number
+      // Note: calling setNumber will also format the number (if autoFormat is enabled)
       if (!val || !this.setNumber(val)) {
         // flag is not set, so set to the default country
         var defaultCountry;
@@ -332,7 +332,7 @@
           }
         } else {
           // if no autoFormat, just update flag
-          that._updateFlag();
+          that._updateFlag(that.telInput.val());
         }
       });
 
@@ -457,8 +457,7 @@
         var value = that.telInput.val(),
           startsPlus = (value.substr(0, 1) == "+");
         if (startsPlus) {
-          var numeric = value.replace(/\D/g, ""),
-            clean = "+" + numeric;
+          var numeric = that._getNumeric(value);
           // if just a plus, or if just a dial code
           if (!numeric || that.selectedCountryData.dialCode == numeric) {
             that.telInput.val("");
@@ -471,6 +470,12 @@
       // made the decision not to trigger blur() now, because would only
       // do anything in the case where they manually set the initial value to
       // just a dial code, in which case they probably want it to be displayed.
+    },
+
+
+    // extract the numeric digits from the given string
+    _getNumeric: function(s) {
+      return s.replace(/\D/g, "");
     },
 
 
@@ -651,20 +656,17 @@
       var dialCode = this._getDialCode(number);
       if (dialCode) {
         // check if one of the matching countries is already selected
-        var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")],
+        var countryCodes = this.countryCodes[this._getNumeric(dialCode)],
           alreadySelected = false;
-        // countries with area codes: we must always update the flag as if it's not an exact match
-        // we should always default to the first country in the list. This is to avoid having to
-        // explicitly define every possible area code in America (there are 999 possible area codes)
-        if (!this.selectedCountryData || !this.selectedCountryData.areaCodes) {
+        if (this.selectedCountryData) {
           for (var i = 0; i < countryCodes.length; i++) {
-            if (this.selectedFlagInner.hasClass(countryCodes[i])) {
+            if (countryCodes[i] == this.selectedCountryData.iso2) {
               alreadySelected = true;
             }
           }
         }
-        // else choose the first in the list
-        if (!alreadySelected) {
+        // if a matching country is not already selected (or this is an unknown NANP area code): choose the first in the list
+        if (!alreadySelected || this._isUnknownNanp(number, dialCode)) {
           // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first non-empty index
           for (var j = 0; j < countryCodes.length; j++) {
             if (countryCodes[j]) {
@@ -675,6 +677,12 @@
         }
       }
       return dialCode;
+    },
+
+
+    // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 but the actual number's length is >=4
+    _isUnknownNanp: function(number, dialCode) {
+      return (dialCode == "+1" && this._getNumeric(number).length >= 4);
     },
 
 
@@ -749,7 +757,6 @@
 
       // focus the input
       this.telInput.focus();
-      this._cursorToEnd();
     },
 
 
@@ -802,7 +809,7 @@
     // currently this is only called from _selectListItem
     _updateDialCode: function(newDialCode) {
       var inputVal = this.telInput.val(),
-        prevDialCode = this._getDialCode(),
+        prevDialCode = this._getDialCode(inputVal),
         newNumber;
 
       // if the previous number contained a valid dial code, replace it
@@ -822,21 +829,20 @@
     // try and extract a valid international dial code from a full telephone number
     // Note: returns the raw string inc plus character and any whitespace/dots etc
     _getDialCode: function(number) {
-      var dialCode = "",
-        inputVal = number || this.telInput.val();
+      var dialCode = "";
       // only interested in international numbers (starting with a plus)
-      if (inputVal.charAt(0) == "+") {
+      if (number.charAt(0) == "+") {
         var numericChars = "";
         // iterate over chars
-        for (var i = 0; i < inputVal.length; i++) {
-          var c = inputVal.charAt(i);
+        for (var i = 0; i < number.length; i++) {
+          var c = number.charAt(i);
           // if char is number
           if ($.isNumeric(c)) {
             numericChars += c;
             // if current numericChars make a valid dial code
             if (this.countryCodes[numericChars]) {
               // store the actual raw string (useful for matching later)
-              dialCode = inputVal.substring(0, i + 1);
+              dialCode = number.substring(0, i + 1);
             }
             // longest dial code is 4 chars
             if (numericChars.length == 4) {

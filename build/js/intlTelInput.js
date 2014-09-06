@@ -211,7 +211,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _setInitialState: function() {
             var val = this.telInput.val();
             // if the input is not pre-populated, or if it doesn't contain a valid dial code, fall back to the default country
-            // Note: calling setNumber will also format the number
+            // Note: calling setNumber will also format the number (if autoFormat is enabled)
             if (!val || !this.setNumber(val)) {
                 // flag is not set, so set to the default country
                 var defaultCountry;
@@ -291,7 +291,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     }
                 } else {
                     // if no autoFormat, just update flag
-                    that._updateFlag();
+                    that._updateFlag(that.telInput.val());
                 }
             });
             // toggle country dropdown on click
@@ -396,7 +396,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.on("blur" + this.ns, function() {
                 var value = that.telInput.val(), startsPlus = value.substr(0, 1) == "+";
                 if (startsPlus) {
-                    var numeric = value.replace(/\D/g, ""), clean = "+" + numeric;
+                    var numeric = that._getNumeric(value);
                     // if just a plus, or if just a dial code
                     if (!numeric || that.selectedCountryData.dialCode == numeric) {
                         that.telInput.val("");
@@ -405,6 +405,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 // remove the keypress listener we added on focus
                 that.telInput.off("keypress.plus" + that.ns);
             });
+        },
+        // extract the numeric digits from the given string
+        _getNumeric: function(s) {
+            return s.replace(/\D/g, "");
         },
         // put the cursor to the end of the input (usually after a focus event)
         _cursorToEnd: function() {
@@ -549,19 +553,16 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var dialCode = this._getDialCode(number);
             if (dialCode) {
                 // check if one of the matching countries is already selected
-                var countryCodes = this.countryCodes[dialCode.replace(/\D/g, "")], alreadySelected = false;
-                // countries with area codes: we must always update the flag as if it's not an exact match
-                // we should always default to the first country in the list. This is to avoid having to
-                // explicitly define every possible area code in America (there are 999 possible area codes)
-                if (!this.selectedCountryData || !this.selectedCountryData.areaCodes) {
+                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = false;
+                if (this.selectedCountryData) {
                     for (var i = 0; i < countryCodes.length; i++) {
-                        if (this.selectedFlagInner.hasClass(countryCodes[i])) {
+                        if (countryCodes[i] == this.selectedCountryData.iso2) {
                             alreadySelected = true;
                         }
                     }
                 }
-                // else choose the first in the list
-                if (!alreadySelected) {
+                // if a matching country is not already selected (or this is an unknown NANP area code): choose the first in the list
+                if (!alreadySelected || this._isUnknownNanp(number, dialCode)) {
                     // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first non-empty index
                     for (var j = 0; j < countryCodes.length; j++) {
                         if (countryCodes[j]) {
@@ -572,6 +573,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             }
             return dialCode;
+        },
+        // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 but the actual number's length is >=4
+        _isUnknownNanp: function(number, dialCode) {
+            return dialCode == "+1" && this._getNumeric(number).length >= 4;
         },
         // reset the input value to just a dial code
         _resetToDialCode: function(dialCode) {
@@ -630,7 +635,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.trigger("change");
             // focus the input
             this.telInput.focus();
-            this._cursorToEnd();
         },
         // close the dropdown and unbind any listeners
         _closeDropdown: function() {
@@ -665,7 +669,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // replace any existing dial code with the new one
         // currently this is only called from _selectListItem
         _updateDialCode: function(newDialCode) {
-            var inputVal = this.telInput.val(), prevDialCode = this._getDialCode(), newNumber;
+            var inputVal = this.telInput.val(), prevDialCode = this._getDialCode(inputVal), newNumber;
             // if the previous number contained a valid dial code, replace it
             // (if more than just a plus character)
             if (prevDialCode.length > 1) {
@@ -680,20 +684,20 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // try and extract a valid international dial code from a full telephone number
         // Note: returns the raw string inc plus character and any whitespace/dots etc
         _getDialCode: function(number) {
-            var dialCode = "", inputVal = number || this.telInput.val();
+            var dialCode = "";
             // only interested in international numbers (starting with a plus)
-            if (inputVal.charAt(0) == "+") {
+            if (number.charAt(0) == "+") {
                 var numericChars = "";
                 // iterate over chars
-                for (var i = 0; i < inputVal.length; i++) {
-                    var c = inputVal.charAt(i);
+                for (var i = 0; i < number.length; i++) {
+                    var c = number.charAt(i);
                     // if char is number
                     if ($.isNumeric(c)) {
                         numericChars += c;
                         // if current numericChars make a valid dial code
                         if (this.countryCodes[numericChars]) {
                             // store the actual raw string (useful for matching later)
-                            dialCode = inputVal.substring(0, i + 1);
+                            dialCode = number.substring(0, i + 1);
                         }
                         // longest dial code is 4 chars
                         if (numericChars.length == 4) {
