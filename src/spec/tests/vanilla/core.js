@@ -91,6 +91,25 @@ describe("vanilla:", function() {
 
 
 
+    describe("opening the dropdown and clicking on canada", function() {
+
+      beforeEach(function() {
+        selectFlag("ca");
+      });
+
+      it("updates the selected flag", function() {
+        expect(getSelectedFlagElement()).toHaveClass("ca");
+      });
+
+      it("adding a space doesnt reset to the default country for that dial code", function() {
+        triggerKeyOnInput(" ");
+        expect(getSelectedFlagElement()).toHaveClass("ca");
+      });
+
+    });
+
+
+
     describe("typing a number with a different dial code", function() {
 
       beforeEach(function() {
