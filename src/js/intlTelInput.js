@@ -56,6 +56,8 @@
     // Chrome, FF, Safari, IE9+
     this.isGoodBrowser = Boolean(element.setSelectionRange);
 
+    this.hadInitialPlaceholder = Boolean($(element).attr("placeholder"));
+
     this._name = pluginName;
 
     this.init();
@@ -722,20 +724,27 @@
     _selectFlag: function(countryCode) {
       this.selectedFlagInner.attr("class", "flag " + countryCode);
 
-      // update the placeholder
-      if (window.intlTelInputUtils) {
-        this.telInput.attr("placeholder", intlTelInputUtils.getExampleNumber(countryCode));
-      }
-
-      // update the title attribute
+      // update the selected country's title attribute
       this.selectedCountryData = this._getCountryData(countryCode, false, false);
       var title = this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode;
       this.selectedFlagInner.parent().attr("title", title);
+
+      // and the input's placeholder
+      this._updatePlaceholder();
 
       // update the active list item
       var listItem = this.countryListItems.children(".flag." + countryCode).first().parent();
       this.countryListItems.removeClass("active");
       listItem.addClass("active");
+    },
+
+
+    // update the input placeholder to an example number from the currently selected country
+    _updatePlaceholder: function() {
+      if (window.intlTelInputUtils && !this.hadInitialPlaceholder) {
+        var placeholder = intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2);
+        this.telInput.attr("placeholder", placeholder);
+      }
     },
 
 
@@ -925,6 +934,7 @@
       if (this.options.autoFormat && this.telInput.val()) {
         this._updateVal(this.telInput.val());
       }
+      this._updatePlaceholder();
     }
 
   };
