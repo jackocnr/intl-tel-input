@@ -127,9 +127,20 @@
             } else {
               newCountryCodes[dialCode] = [countryCode];
             }
+            if (countryData.areaCodes) {
+              for (var j = 0; j < countryData.areaCodes.length; j++) {
+                // full dial code is country code + dial code
+                var dialCode2 = dialCode + countryData.areaCodes[j];
+                if (newCountryCodes[dialCode2]) {
+                  newCountryCodes[dialCode2].push(countryCode);
+                } else {
+                  newCountryCodes[dialCode2] = [ countryCode ];
+                }
+              }
+            }
           }
         }
-        
+
         // maintain country priority
         for (dialCode in newCountryCodes) {
           if (newCountryCodes[dialCode].length > 1) {
@@ -383,7 +394,7 @@
         cursorAtEnd = false,
         // raw DOM element
         input = this.telInput[0];
-      
+
       if (this.isGoodBrowser) {
         var selectionEnd = input.selectionEnd,
           originalLen = val.length;
@@ -450,7 +461,7 @@
           });
 
           // after tabbing in, make sure the cursor is at the end
-          // we must use setTimeout to get outside of the focus handler as it seems the 
+          // we must use setTimeout to get outside of the focus handler as it seems the
           // selection happens after that
           setTimeout(function() {
             that._cursorToEnd();
@@ -474,7 +485,7 @@
         that.telInput.off("keypress.plus" + that.ns);
       });
 
-      // made the decision not to trigger blur() now, because would only 
+      // made the decision not to trigger blur() now, because would only
       // do anything in the case where they manually set the initial value to
       // just a dial code, in which case they probably want it to be displayed.
     },

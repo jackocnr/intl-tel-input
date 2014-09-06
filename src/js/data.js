@@ -1249,6 +1249,7 @@ for (var i = 0; i < allCountries.length; i++) {
   // area codes
   if (c[4]) {
     allCountries[i].hasAreaCodes = true;
+    allCountries[i].areaCodes = c[5];
     for (var j = 0; j < c[4].length; j++) {
       // full dial code is country code + dial code
       var dialCode = c[2] + c[4][j];
