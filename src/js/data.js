@@ -1227,16 +1227,6 @@ var allCountries = [
   ]
 ];
 
-// we will build this in the loop below
-var allCountryCodes = {};
-var addCountryCode = function(iso2, dialCode, priority) {
-  if (!(dialCode in allCountryCodes)) {
-    allCountryCodes[dialCode] = [];
-  }
-  var index = priority || 0;
-  allCountryCodes[dialCode][index] = iso2;
-};
-
 // loop over all of the countries above
 for (var i = 0; i < allCountries.length; i++) {
   // countries
@@ -1244,19 +1234,8 @@ for (var i = 0; i < allCountries.length; i++) {
   allCountries[i] = {
     name: c[0],
     iso2: c[1],
-    dialCode: c[2]
+    dialCode: c[2],
+    priority: c[3] || 0,
+    areaCodes: c[4] || null
   };
-  // area codes
-  if (c[4]) {
-    allCountries[i].hasAreaCodes = true;
-    allCountries[i].areaCodes = c[4];
-    for (var j = 0; j < c[4].length; j++) {
-      // full dial code is country code + dial code
-      var dialCode = c[2] + c[4][j];
-      addCountryCode(c[1], dialCode);
-    }
-  }
-
-  // dial codes
-  addCountryCode(c[1], c[2], c[3]);
 }

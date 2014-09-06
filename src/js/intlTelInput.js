@@ -106,61 +106,45 @@
     },
 
 
-    // process onlyCountries array if present
+    // add a country code to this.countryCodes
+    _addCountryCode: function(iso2, dialCode, priority) {
+      if (!(dialCode in this.countryCodes)) {
+        this.countryCodes[dialCode] = [];
+      }
+      var index = priority || 0;
+      this.countryCodes[dialCode][index] = iso2;
+    },
+
+
+    // process onlyCountries array if present, and generate the countryCodes map
     _setInstanceCountryData: function() {
-      var that = this;
+      var i;
 
+      // process onlyCountries option
       if (this.options.onlyCountries.length) {
-        var newCountries = [],
-          newCountryCodes = {},
-          dialCode,
-          i;
+        this.countries = [];
         for (i = 0; i < this.options.onlyCountries.length; i++) {
-          var countryCode = this.options.onlyCountries[i],
-            countryData = that._getCountryData(countryCode, true, false);
+          var countryData = this._getCountryData(this.options.onlyCountries[i], true, false);
           if (countryData) {
-            newCountries.push(countryData);
-            // add this country's dial code to the countryCodes
-            dialCode = countryData.dialCode;
-            if (newCountryCodes[dialCode]) {
-              newCountryCodes[dialCode].push(countryCode);
-            } else {
-              newCountryCodes[dialCode] = [countryCode];
-            }
-            if (countryData.areaCodes) {
-              for (var j = 0; j < countryData.areaCodes.length; j++) {
-                // full dial code is country code + dial code
-                var dialCode2 = dialCode + countryData.areaCodes[j];
-                if (newCountryCodes[dialCode2]) {
-                  newCountryCodes[dialCode2].push(countryCode);
-                } else {
-                  newCountryCodes[dialCode2] = [ countryCode ];
-                }
-              }
-            }
+            this.countries.push(countryData);
           }
         }
-
-        // maintain country priority
-        for (dialCode in newCountryCodes) {
-          if (newCountryCodes[dialCode].length > 1) {
-            var sortedCountries = [];
-            // go through all of the allCountryCodes countries for this dialCode and create a new (ordered) array of values (if they're in the newCountryCodes array)
-            for (i = 0; i < allCountryCodes[dialCode].length; i++) {
-              var country = allCountryCodes[dialCode][i];
-              if ($.inArray(newCountryCodes[dialCode], country)) {
-                sortedCountries.push(country);
-              }
-            }
-            newCountryCodes[dialCode] = sortedCountries;
-          }
-        }
-
-        this.countries = newCountries;
-        this.countryCodes = newCountryCodes;
       } else {
         this.countries = allCountries;
-        this.countryCodes = allCountryCodes;
+      }
+
+      // generate countryCodes map
+      this.countryCodes = {};
+      for (i = 0; i < this.countries.length; i++) {
+        var c = this.countries[i];
+        this._addCountryCode(c.iso2, c.dialCode, c.priority);
+        // area codes
+        if (c.areaCodes) {
+          for (var j = 0; j < c.areaCodes.length; j++) {
+            // full dial code is country code + dial code
+            this._addCountryCode(c.iso2, c.dialCode + c.areaCodes[j]);
+          }
+        }
       }
     },
 
@@ -673,7 +657,7 @@
         // countries with area codes: we must always update the flag as if it's not an exact match
         // we should always default to the first country in the list. This is to avoid having to
         // explicitly define every possible area code in America (there are 999 possible area codes)
-        if (!this.selectedCountryData || !this.selectedCountryData.hasAreaCodes) {
+        if (!this.selectedCountryData || !this.selectedCountryData.areaCodes) {
           for (var i = 0; i < countryCodes.length; i++) {
             if (this.selectedFlagInner.hasClass(countryCodes[i])) {
               alreadySelected = true;
@@ -682,7 +666,13 @@
         }
         // else choose the first in the list
         if (!alreadySelected) {
-          this._selectFlag(countryCodes[0]);
+          // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first non-empty index
+          for (var j = 0; j < countryCodes.length; j++) {
+            if (countryCodes[j]) {
+              this._selectFlag(countryCodes[j]);
+              break;
+            }
+          }
         }
       }
       return dialCode;
