@@ -1229,7 +1229,6 @@ var allCountries = [
 
 // loop over all of the countries above
 for (var i = 0; i < allCountries.length; i++) {
-  // countries
   var c = allCountries[i];
   allCountries[i] = {
     name: c[0],

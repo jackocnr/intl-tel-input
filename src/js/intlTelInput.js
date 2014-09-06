@@ -152,13 +152,12 @@
     // process preferred countries - iterate through the preferences,
     // fetching the country data for each one
     _setPreferredCountries: function() {
-      var that = this;
       this.preferredCountries = [];
       for (var i = 0; i < this.options.preferredCountries.length; i++) {
         var countryCode = this.options.preferredCountries[i],
-          countryData = that._getCountryData(countryCode, false, true);
+          countryData = this._getCountryData(countryCode, false, true);
         if (countryData) {
-          that.preferredCountries.push(countryData);
+          this.preferredCountries.push(countryData);
         }
       }
     },
@@ -261,7 +260,7 @@
     },
 
 
-    // initialise the main event listeners: input keydown, and click selected flag
+    // initialise the main event listeners: input keyup, and click selected flag
     _initListeners: function() {
       var that = this;
 
