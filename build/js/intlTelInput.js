@@ -620,7 +620,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {
             if (window.intlTelInputUtils && !this.hadInitialPlaceholder) {
-                var placeholder = intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2);
+                var iso2 = this.selectedCountryData.iso2, placeholder = intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode);
                 this.telInput.attr("placeholder", placeholder);
             }
         },
