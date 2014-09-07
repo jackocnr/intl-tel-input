@@ -9,7 +9,7 @@ You can view a live demo and some examples of how to use the various options her
 
 ## Features
 * Automatically format the number as the user types
-* Automatically set the input placeholder to an example number for the selected country (requires the utilsScript option)
+* Automatically set the input placeholder to an example number for the selected country
 * Navigate the country dropdown by typing a country's name, or using up/down keys
 * Selecting a country from the dropdown will update the dial code in the input
 * Typing a different dial code will automatically update the displayed flag
@@ -69,7 +69,7 @@ Set the dropdown's width to be the same as the input. Useful for mobile devices 
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
-Enable formatting/validation/example numbers (for placeholders) by specifying the URL to the included utils.js script. This ~200KB script is fetched only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function. Also if you initialised the plugin with autoFormat enabled, this will automatically start working.
+Enable formatting/validation/example numbers (for placeholders) by specifying the URL to the included utils.js script (~200KB), which is fetched only when the page has finished loading (to prevent blocking). See [Utilities Script](/#utilities-script) for more information.
 
 
 ## Public Methods
@@ -135,8 +135,8 @@ $.fn.intlTelInput.setCountryData(countryData);
 ```
 
 
-## Formatting/Validation
-International number formatting/validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200KB, so I have included it as an optional extra. If you specify the utilsScript option then it will fetch the script only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function. Also if you initialised the plugin with autoFormat enabled, this will automatically start working.
+## Utilities Script
+International number formatting/validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200KB, so I have included it as an optional extra. If you specify the utilsScript option then it will fetch the script only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function, autoFormat mode and will automatically update your input's placeholder to an example number for the selected country.
 
 
 ## Troubleshooting
