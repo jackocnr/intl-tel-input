@@ -69,7 +69,7 @@ Set the dropdown's width to be the same as the input. Useful for mobile devices 
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
-Enable formatting/validation/example numbers (for placeholders) by specifying the URL to the included utils.js script (~200KB), which is fetched only when the page has finished loading (to prevent blocking). See [Utilities Script](/#utilities-script) for more information.
+Enable formatting/validation/example numbers (for placeholders) by specifying the URL to the included utils.js script (~200KB), which is fetched only when the page has finished loading (to prevent blocking). See [Utilities Script](#utilities-script) for more information.
 
 
 ## Public Methods
