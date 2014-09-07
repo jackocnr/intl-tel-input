@@ -69,7 +69,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         init: function() {
             // if in nationalMode, disable options relating to dial codes
             if (this.options.nationalMode) {
-                this.options.autoFormat = this.options.autoHideDialCode = false;
+                this.options.autoHideDialCode = false;
             }
             // chrome on android has issues with key events
             // backspace issues for inputs with type=text: https://code.google.com/p/chromium/issues/detail?id=184812
@@ -280,14 +280,16 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         var addSuffix = !(e.which == keys.BSPACE && cursorAtEnd);
                         that._handleInputKey(null, addSuffix);
                     }
-                    // prevent deleting the plus
-                    var val = that.telInput.val();
-                    if (val.substr(0, 1) != "+") {
-                        // newCursorPos is current pos + 1 to account for the plus we are about to add
-                        var newCursorPos = that.isGoodBrowser ? input.selectionStart + 1 : 0;
-                        that.telInput.val("+" + val);
-                        if (that.isGoodBrowser) {
-                            input.setSelectionRange(newCursorPos, newCursorPos);
+                    // prevent deleting the plus (if not in nationalMode)
+                    if (!that.options.nationalMode) {
+                        var val = that.telInput.val();
+                        if (val.substr(0, 1) != "+") {
+                            // newCursorPos is current pos + 1 to account for the plus we are about to add
+                            var newCursorPos = that.isGoodBrowser ? input.selectionStart + 1 : 0;
+                            that.telInput.val("+" + val);
+                            if (that.isGoodBrowser) {
+                                input.setSelectionRange(newCursorPos, newCursorPos);
+                            }
                         }
                     }
                 } else {
@@ -537,11 +539,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _updateVal: function(val, addSuffix) {
             var formatted;
             if (this.options.autoFormat && window.intlTelInputUtils) {
-                // don't try to add the suffix if we dont have a full dial code
-                if (!this._getDialCode(val)) {
-                    addSuffix = false;
-                }
-                formatted = intlTelInputUtils.formatNumber(val, addSuffix);
+                formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix);
             } else {
                 // no autoFormat, so just insert the original value
                 formatted = val;
