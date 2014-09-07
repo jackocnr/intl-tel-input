@@ -146,6 +146,12 @@ Depending on your project setup, you may need to override the path to flags.png 
 .intl-tel-input .flag {background-image: url("path/to/flags.png");}
 ```
 
+**Full width input**  
+If you want your input to be full-width, you need to set the container to be the same i.e.
+```css
+.intl-tel-input {width: 100%;}
+```
+
 **Input margin**  
 For the sake of alignment, the default CSS forces the input's vertical margin to `0px`. If you want vertical margin, you should add it to the container (with class `intl-tel-input`).
 
