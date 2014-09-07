@@ -4,7 +4,7 @@ var telInput = $("#phone"),
 
 // initialise plugin
 telInput.intlTelInput({
-  validationScript: "../../lib/libphonenumber/build/isValidNumber.js"
+  utilsScript: "../../lib/libphonenumber/build/utils.js"
 });
 
 // on blur: validate

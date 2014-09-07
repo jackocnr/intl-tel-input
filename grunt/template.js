@@ -76,16 +76,16 @@ module.exports = function(grunt) {
     },
     validation: {
       src: 'examples/template.html.ejs',
-      dest: 'examples/gen/validation.html',
+      dest: 'examples/gen/is-valid-number.html',
       variables: function() {
         return {
           time: time,
           title: "Validation",
           desc: "Use public isValidNumber method (utilising Google's libphonenumber) to validate the telephone number on the change event.",
-          stylesheet: 'validation.css',
-          markup: grunt.file.read('examples/partials/validation.html'),
-          code: grunt.file.read('examples/js/validation.js'),
-          script: "validation.js"
+          stylesheet: 'isValidNumber.css',
+          markup: grunt.file.read('examples/partials/isValidNumber.html'),
+          code: grunt.file.read('examples/js/isValidNumber.js'),
+          script: "isValidNumber.js"
         }
       }
     }
