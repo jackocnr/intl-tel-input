@@ -4,7 +4,9 @@ var countryData = $.fn.intlTelInput.getCountryData(),
   addressDropdown = $("#address-country");
 
 // init plugin
-telInput.intlTelInput();
+telInput.intlTelInput({
+  utilsScript: "../../lib/libphonenumber/build/utils.js" // just for formatting/placeholders etc
+});
 
 // populate the country dropdown
 $.each(countryData, function(i, country) {

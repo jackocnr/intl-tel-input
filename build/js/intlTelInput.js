@@ -16,7 +16,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
         // automatically format the number according to the selected country
-        autoFormat: false,
+        autoFormat: true,
         // if there is just a dial code in the input: remove it on blur, and re-add it on focus
         autoHideDialCode: true,
         // default country
@@ -67,6 +67,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     }
     Plugin.prototype = {
         init: function() {
+            // no utils means no formatting
+            if (!this.options.utilsScript) {
+                this.options.autoFormat = false;
+            }
             // if in nationalMode, disable options relating to dial codes
             if (this.options.nationalMode) {
                 this.options.autoHideDialCode = false;

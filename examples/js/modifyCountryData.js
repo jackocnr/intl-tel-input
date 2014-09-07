@@ -2,4 +2,6 @@ var countryData = $.fn.intlTelInput.getCountryData();
 $.each(countryData, function(i, country) {
   country.name = country.name.replace(/.+\((.+)\)/,"$1");
 });
-$("#phone").intlTelInput();
+$("#phone").intlTelInput({
+  utilsScript: "../../lib/libphonenumber/build/utils.js" // just for formatting/placeholders etc
+});
