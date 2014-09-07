@@ -896,11 +896,10 @@
     },
 
 
-    // validate the input val - assumes the global function isValidNumber
-    // pass in true if you want to allow national numbers (no country dial code)
-    isValidNumber: function(allowNational) {
+    // validate the input val - assumes the global function isValidNumber (from utilsScript)
+    isValidNumber: function() {
       var val = $.trim(this.telInput.val()),
-        countryCode = (allowNational) ? this.selectedCountryData.iso2 : "",
+        countryCode = (this.options.nationalMode) ? this.selectedCountryData.iso2 : "",
         // libphonenumber allows alpha chars, but in order to allow that, we'd need a method to retrieve the processed number, with letters replaced with numbers
         containsAlpha = /[a-zA-Z]/.test(val);
       return (!containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode));
