@@ -40,8 +40,8 @@ You can view a live demo and some examples of how to use the various options her
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
 **autoFormat**  
-Type: `Boolean` Default: `false`  
-Format the number on each keypress according to the country-specific formatting rules. If enabled, this will prevent the user from entering invalid characters. Requires the utilsScript option.
+Type: `Boolean` Default: `true` _(if you specify the utilsScript option)_  
+Format the number on each keypress according to the country-specific formatting rules. If enabled, this will prevent the user from entering invalid characters.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
