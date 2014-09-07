@@ -94,7 +94,7 @@ Returns something like this:
 ```
 
 **isValidNumber**  
-Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the utilsScript option). Expects an internationally formatted number. Optionally pass the argument `true` to accept national numbers as well.  
+Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the utilsScript option). Expects an internationally formatted number (unless nationalMode is enabled).  
 ```js
 $("#mobile-number").intlTelInput("isValidNumber");
 ```
