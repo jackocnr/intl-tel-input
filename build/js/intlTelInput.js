@@ -275,7 +275,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // handle keyup event
             // for autoFormat: we use keyup to catch delete events after the fact
             this.telInput.on("keyup" + this.ns, function(e) {
-                if (that.options.autoFormat) {
+                // the "enter" key event from selecting a dropdown item is triggered here on the input, because the document.keydown handler that initially handles that event triggers a focus on the input, and so the keyup for that same key event gets triggered here. weird, but just make sure we dont bother doing any re-formatting in this case (we've already done preventDefault in the keydown handler, so it wont actually submit the form or anything).
+                if (e.which == keys.ENTER) {} else if (that.options.autoFormat) {
                     var isCtrl = e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2, input = that.telInput[0], noSelection = that.isGoodBrowser && input.selectionStart == input.selectionEnd, cursorAtEnd = that.isGoodBrowser && input.selectionStart == that.telInput.val().length;
                     // if delete: format with suffix
                     // if backspace: format (if cursorAtEnd: no suffix)
