@@ -9,11 +9,10 @@ You can view a live demo and some examples of how to use the various options her
 
 ## Features
 * Automatically format the number as the user types
-* Changing the flag updates the input placeholder to an example number for that country
+* Automatically set the input placeholder to an example number for the selected country (requires the utilsScript option)
 * Navigate the country dropdown by typing a country's name, or using up/down keys
 * Selecting a country from the dropdown will update the dial code in the input
 * Typing a different dial code will automatically update the displayed flag
-* Country names in the dropdown also include localised versions in brackets
 * Dropdown appears above or below the input depending on available space/scroll position
 * Lots of initialisation options for customisation, as well as public methods for interaction
 
@@ -42,7 +41,7 @@ Note: any options that take country codes should be lower case [ISO 3166-1 alpha
 
 **autoFormat**  
 Type: `Boolean` Default: `false`  
-Format the number on each keypress according to the country-specific formatting rules. If enabled, this will prevent the user from entering invalid characters. NOTE: this depends on the utilsScript option.
+Format the number on each keypress according to the country-specific formatting rules. If enabled, this will prevent the user from entering invalid characters. Requires the utilsScript option.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -95,7 +94,7 @@ Returns something like this:
 ```
 
 **isValidNumber**  
-Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the utilsScript option to be set correctly). Expects an internationally formatted number. Optionally pass the argument `true` to accept national numbers as well.  
+Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the utilsScript option). Expects an internationally formatted number. Optionally pass the argument `true` to accept national numbers as well.  
 ```js
 $("#mobile-number").intlTelInput("isValidNumber");
 ```
