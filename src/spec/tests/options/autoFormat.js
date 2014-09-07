@@ -18,7 +18,8 @@ describe("autoFormat option:", function() {
       input.appendTo($("body"));
 
       input.intlTelInput({
-        autoFormat: true
+        autoFormat: true,
+        utilsScript: "lib/libphonenumber/build/utils.js"
       });
     });
 
@@ -70,7 +71,8 @@ describe("autoFormat option:", function() {
     
       beforeEach(function() {
         input.intlTelInput({
-          autoFormat: true
+          autoFormat: true,
+          utilsScript: "lib/libphonenumber/build/utils.js"
         });
       });
 

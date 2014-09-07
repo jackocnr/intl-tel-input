@@ -18,9 +18,10 @@ describe("utilsScript: init plugin to test utilsScript option", function() {
   });
 
   it("setting utilsScript option does load the script", function() {
-    var scriptSrc = "lib/libphonenumber/build/utils.js";
+    // here we must fake that the script has not yet been loaded
+    $.fn["intlTelInput"].injectedUtilsScript = false;
     input.intlTelInput({
-      utilsScript: scriptSrc
+      utilsScript: "lib/libphonenumber/build/utils.js"
     });
     expect($.ajax).toHaveBeenCalled();
   });
