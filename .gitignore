@@ -7,3 +7,4 @@
 /.sass-cache/
 /.grunt/
 /tmp/
+.DS_Store
