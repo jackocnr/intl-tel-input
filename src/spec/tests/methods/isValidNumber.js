@@ -57,22 +57,13 @@ describe("isValidNumber:", function() {
         input.intlTelInput("setNumber", "07733 123456");
       });
     
-      it("returns false for: incorrect selected country, no allowNational flag", function() {
+      it("returns false for: incorrect selected country", function() {
         expect(input.intlTelInput("isValidNumber")).toBeFalsy();
       });
 
-      it("returns false for: incorrect selected country, allowNational flag", function() {
-        expect(input.intlTelInput("isValidNumber", true)).toBeFalsy();
-      });
-
-      it("returns false for: correct selected country, no allowNational flag", function() {
+      it("returns true for: correct selected country", function() {
         input.intlTelInput("selectCountry", "gb");
-        expect(input.intlTelInput("isValidNumber")).toBeFalsy();
-      });
-
-      it("returns true for: correct selected country, allowNational flag", function() {
-        input.intlTelInput("selectCountry", "gb");
-        expect(input.intlTelInput("isValidNumber", true)).toBeTruthy();
+        expect(input.intlTelInput("isValidNumber")).toBeTruthy();
       });
 
     });
@@ -81,7 +72,7 @@ describe("isValidNumber:", function() {
     it("returns false for: invalid national number, correct selected country, allowNational flag", function() {
       input.intlTelInput("setNumber", "07733 123");
       input.intlTelInput("selectCountry", "gb");
-      expect(input.intlTelInput("isValidNumber", true)).toBeFalsy();
+      expect(input.intlTelInput("isValidNumber")).toBeFalsy();
     });
 
   });
