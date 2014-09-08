@@ -298,8 +298,9 @@
           // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
           if (e.which >= keys.SPACE) {
             e.preventDefault();
-            // allowed keys are now just numeric keys
-            var isAllowed = (e.which >= keys.ZERO && e.which <= keys.NINE),
+            // allowed keys are just numeric keys and plus
+            // we must allow plus for the case where the user does select-all and then hits plus to start typing a new number. we could refine this logic to first check that the selection contains a plus, but that wont work in old browsers, and I think it's overkill anyway
+            var isAllowed = ((e.which >= keys.ZERO && e.which <= keys.NINE) || e.which == keys.PLUS),
               input = that.telInput[0],
               noSelection = (that.isGoodBrowser && input.selectionStart == input.selectionEnd);
             // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
@@ -450,7 +451,9 @@
           // before removing the old one
           that.telInput.one("keypress.plus" + that.ns, function(e) {
             if (e.which == keys.PLUS) {
-              that.telInput.val("+");
+              // if autoFormat is enabled, this key event will have already have been handled by another keypress listener (hence we need to add the "+"). if disabled, it will be handled after this by a keyup listener (hence no need to add the "+").
+              var newVal = (that.options.autoFormat) ? "+" : "";
+              that.telInput.val(newVal);
             }
           });
 
