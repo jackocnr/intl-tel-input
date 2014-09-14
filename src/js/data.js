@@ -34,7 +34,7 @@ JSON.stringify(result);
 // Update: converted objects to arrays to save bytes!
 // Update: added "priority" for countries with the same dialCode as others
 // Update: added array of area codes for countries with the same dialCode as others
-
+ 
 // So each country array has the following information:
 // [
 //    Country name,
