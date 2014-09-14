@@ -305,8 +305,22 @@
               noSelection = (that.isGoodBrowser && input.selectionStart == input.selectionEnd);
             // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
             if (isAllowed || noSelection) {
-              var newChar = (isAllowed) ? String.fromCharCode(e.which) : null;
-              that._handleInputKey(newChar, true);
+              var newChar = (isAllowed) ? String.fromCharCode(e.which) : null,
+                  // grab the maxlength of the input
+                  max = input.maxLength;
+                // check to see if maxlength has been defined for the input
+                if (max !==undefined) {
+                  // check to see if the input value is less than or equal to the defined maxlength
+                  if (input.value.length <= max) {
+                    // if input value length is less than the defined maxlength add the character to the string
+                    // otherwise new characters will be ignored
+                    that._handleInputKey(newChar, true);
+                  }
+                }
+                // if there is no defined maxlength allow new character to be added to the string
+                else {
+                  that._handleInputKey(newChar, true);
+              }
             }
           }
         });
