@@ -1,5 +1,5 @@
 /*
-International Telephone Input v3.0.3
+International Telephone Input v3.1.0
 https://github.com/Bluefieldscom/intl-tel-input.git
 */
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
@@ -265,7 +265,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.telInput.on("keypress" + this.ns, function(e) {
                     // 32 is space, and after that it's all chars (not meta/nav keys)
                     // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
-                    if (e.which >= keys.SPACE) {
+                    // Update: also ignore if this is a metaKey e.g. FF and Safari trigger keypress on the v of Ctrl+v
+                    if (e.which >= keys.SPACE && !e.metaKey) {
                         e.preventDefault();
                         // allowed keys are just numeric keys and plus
                         // we must allow plus for the case where the user does select-all and then hits plus to start typing a new number. we could refine this logic to first check that the selection contains a plus, but that wont work in old browsers, and I think it's overkill anyway
