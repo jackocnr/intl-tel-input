@@ -79,6 +79,21 @@ Remove the plugin from the input, and unbind any event listeners
 $("#mobile-number").intlTelInput("destroy");
 ```
 
+**getCleanNumber**  
+Returns the current number formatted to the [E164 standard](http://en.wikipedia.org/wiki/E.164) (requires the utilsScript option).  
+```js
+$("#mobile-number").intlTelInput("getCleanNumber");
+```
+
+**getNumberType**  
+Returns the type (fixed-line/mobile/toll-free etc) of the current number (requires the utilsScript option). Use the global intlTelInputUtils.numberType enum for matching. Enum details [here](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#896) (note that there's no way to differentiate between fixed-line and mobile numbers in the US, so instead it will return FIXED_LINE_OR_MOBILE).  
+```js
+var type = $("#mobile-number").intlTelInput("getNumberType");
+if (type == intlTelInputUtils.numberType.MOBILE) {
+    // is a mobile number
+}
+```
+
 **getSelectedCountryData**  
 Get the country data for the currently selected flag  
 ```js
