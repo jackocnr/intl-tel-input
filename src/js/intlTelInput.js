@@ -426,6 +426,8 @@
         }
         input.setSelectionRange(newCursor, newCursor);
       }
+      
+      this.telInput.trigger("change"); //fix for angularJS keydown event not-bubbling and not updating model
     },
 
 
