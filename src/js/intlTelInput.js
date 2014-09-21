@@ -245,10 +245,11 @@
     // set the initial state of the input value and the selected flag
     _setInitialState: function() {
       var val = this.telInput.val();
-      // if the input is not pre-populated, or if it doesn't contain a valid dial code, fall back to the default country
-      // Note: calling setNumber will also format the number (if autoFormat is enabled)
-      if (!val || !this.setNumber(val)) {
-        // flag is not set, so set to the default country
+
+      // if there is a number, and it's valid, we can go ahead and set the flag, else fall back to default
+      if (this._getDialCode(val)) {
+        this._updateFlagFromNumber(val);
+      } else {
         var defaultCountry;
         // check the defaultCountry option, else fall back to the first in the list
         if (this.options.defaultCountry) {
@@ -258,10 +259,16 @@
         }
         this._selectFlag(defaultCountry.iso2);
 
-        // if autoHideDialCode is disabled, insert the default dial code
+        // if empty and autoHideDialCode is disabled, insert the default dial code (this function will check nationalMode)
         if (!val && !this.options.autoHideDialCode) {
           this._resetToDialCode(defaultCountry.dialCode);
         }
+      }
+
+      // format
+      if (val) {
+        // this wont be run after _resetToDialCode as that's only called if val is empty
+        this._updateVal(val, false);
       }
     },
 
@@ -348,7 +355,7 @@
           }
         } else {
           // if no autoFormat, just update flag
-          that._updateFlag(that.telInput.val());
+          that._updateFlagFromNumber(that.telInput.val());
         }
       });
 
@@ -669,8 +676,8 @@
     },
 
 
-    // update the selected flag
-    _updateFlag: function(number) {
+    // check if need to select a new flag based on the given number
+    _updateFlagFromNumber: function(number) {
       // try and extract valid dial code from input
       var dialCode = this._getDialCode(number);
       if (dialCode) {
@@ -695,7 +702,6 @@
           }
         }
       }
-      return dialCode;
     },
 
 
@@ -737,7 +743,7 @@
     },
 
 
-    // update the selected flag and the active list item
+    // select the given flag, update the placeholder and the active list item
     _selectFlag: function(countryCode) {
       this.selectedFlagInner.attr("class", "flag " + countryCode);
 
@@ -939,9 +945,8 @@
     // set the input value and update the flag
     setNumber: function(number, addSuffix) {
       // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
-      var dialCode = this._updateFlag(number);
+      this._updateFlagFromNumber(number);
       this._updateVal(number, addSuffix);
-      return dialCode;
     },
 
 

@@ -10,6 +10,28 @@ describe("autoFormat option:", function() {
 
 
 
+  describe("input containing national number, init plugin with autoFormat and nationalMode enabled", function() {
+  
+    beforeEach(function() {
+      input = $("<input value='7024181234 A'>");
+      // must be in DOM for focus/keys to work
+      input.appendTo($("body"));
+
+      input.intlTelInput({
+        autoFormat: true,
+        nationalMode: true,
+        utilsScript: "lib/libphonenumber/build/utils.js"
+      });
+    });
+
+    it("formats the number according to the defaultCountry", function() {
+      expect(getInputVal()).toEqual("(702) 418-1234");
+    });
+  
+  });
+
+
+
   describe("input with maxlength=6, init plugin with autoFormat enabled", function() {
   
     beforeEach(function() {
