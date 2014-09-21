@@ -69,7 +69,7 @@ describe("isValidNumber:", function() {
     });
 
 
-    it("returns false for: invalid national number, correct selected country, allowNational flag", function() {
+    it("returns false for: invalid national number, correct selected country", function() {
       input.intlTelInput("setNumber", "07733 123");
       input.intlTelInput("selectCountry", "gb");
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();

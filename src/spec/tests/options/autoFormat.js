@@ -64,6 +64,18 @@ describe("autoFormat option:", function() {
       input.focus();
       expect(getInputVal()).toEqual("+1 ");
     });
+
+    it("replacing the val with a number (faking a paste event) re-adds the plus", function() {
+      input.val("1");
+      triggerKeyOnInput("CTRL");
+      expect(getInputVal()).toEqual("+1");
+    });
+
+    it("replacing the val with an alpha (faking a paste event) re-adds the plus and removes the alpha", function() {
+      input.val("a");
+      triggerKeyOnInput("CTRL");
+      expect(getInputVal()).toEqual("+");
+    });
   
   });
 

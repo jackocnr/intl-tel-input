@@ -329,7 +329,7 @@
             cursorAtEnd = (that.isGoodBrowser && input.selectionStart == that.telInput.val().length);
           // if delete: format with suffix
           // if backspace: format (if cursorAtEnd: no suffix)
-          // if ctrl and no selection (i.e. could be paste): format with suffix
+          // if ctrl and no selection (i.e. could have just been a paste): format with suffix
           if (e.which == keys.DEL || e.which == keys.BSPACE || (isCtrl && noSelection)) {
             var addSuffix = !(e.which == keys.BSPACE && cursorAtEnd);
             that._handleInputKey(null, addSuffix);

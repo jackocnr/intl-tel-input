@@ -8,7 +8,8 @@ var input,
     ENTER: 13,
     ESC: 27,
     BACKSPACE: 8,
-    DELETE: 46
+    DELETE: 46,
+    CTRL: 17
   };
 
 var getInputVal = function(i) {
