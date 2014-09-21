@@ -10,6 +10,43 @@ describe("autoFormat option:", function() {
 
 
 
+  describe("input with maxlength=6, init plugin with autoFormat enabled", function() {
+  
+    beforeEach(function() {
+      input = $("<input value='+1 70' maxlength='6'>");
+      // must be in DOM for focus/keys to work
+      input.appendTo($("body"));
+
+      input.intlTelInput({
+        autoFormat: true,
+        utilsScript: "lib/libphonenumber/build/utils.js"
+      });
+    });
+
+    it("adding a 6th char doesnt add the normal formatting suffix", function() {
+      triggerKeyOnInput("2");
+      expect(getInputVal()).toEqual("+1 702");
+    });
+
+    it("typing a 7th char doesnt do anything", function() {
+      triggerKeyOnInput("2");
+      triggerKeyOnInput("4");
+      expect(getInputVal()).toEqual("+1 702");
+    });
+
+    it("focusing input (at the maximum length) with cursor in middle, typing char doesnt do anything", function() {
+      triggerKeyOnInput("2");
+      input.focus();
+      input[0].setSelectionRange(4, 4);
+      triggerKeyOnInput("4");
+      expect(getInputVal()).toEqual("+1 702");
+    });
+  
+  });
+
+
+
+
   describe("input with no initial value, init plugin with autoFormat enabled", function() {
   
     beforeEach(function() {
@@ -29,6 +66,7 @@ describe("autoFormat option:", function() {
     });
   
   });
+
 
 
 

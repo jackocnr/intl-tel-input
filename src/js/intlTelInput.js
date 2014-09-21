@@ -306,6 +306,7 @@
               max = that.telInput.attr("maxlength"),
               // assumes that if max exists, it is >0
               isBelowMax = (max) ? (that.telInput.val().length < max) : true;
+            // first: ensure we dont go over maxlength. we must do this here to prevent adding digits in the middle of the number
             // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
             if (isBelowMax && (isAllowedKey || noSelection)) {
               var newChar = (isAllowedKey) ? String.fromCharCode(e.which) : null;
@@ -654,6 +655,7 @@
 
       if (this.options.autoFormat && window.intlTelInputUtils) {
         formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix);
+        // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
         var max = this.telInput.attr("maxlength");
         if (max && formatted.length > max) {
           formatted = formatted.substr(0, max);
