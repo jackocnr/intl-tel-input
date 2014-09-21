@@ -748,6 +748,13 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var container = this.telInput.parent();
             container.before(this.telInput).remove();
         },
+        // format the number to E164
+        getCleanNumber: function() {
+            if (window.intlTelInputUtils) {
+                return intlTelInputUtils.formatNumberE164(this.telInput.val(), this.selectedCountryData.iso2);
+            }
+            return "";
+        },
         // get the type of the entered number e.g. landline/mobile
         getNumberType: function() {
             if (window.intlTelInputUtils) {
