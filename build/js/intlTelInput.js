@@ -748,6 +748,13 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var container = this.telInput.parent();
             container.before(this.telInput).remove();
         },
+        // get the type of the entered number e.g. landline/mobile
+        getNumberType: function() {
+            if (window.intlTelInputUtils) {
+                return intlTelInputUtils.getNumberType(this.telInput.val(), this.selectedCountryData.iso2);
+            }
+            return -2;
+        },
         // get the country data for the currently selected flag
         getSelectedCountryData: function() {
             return this.selectedCountryData;
