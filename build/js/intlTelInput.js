@@ -549,6 +549,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var formatted;
             if (this.options.autoFormat && window.intlTelInputUtils) {
                 formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix);
+                var max = this.telInput.attr("maxlength");
+                if (max && formatted.length > max) {
+                    formatted = formatted.substr(0, max);
+                }
             } else {
                 // no autoFormat, so just insert the original value
                 formatted = val;
