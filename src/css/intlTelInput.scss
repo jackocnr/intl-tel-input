@@ -46,7 +46,7 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
   }
 
   // specify types to increase specificity e.g. to override bootstrap v2.3
-  input[type=text], input[type=tel] {
+  input, input[type=text], input[type=tel] {
     position: relative;
     // input is bottom level, below selected flag and dropdown
     z-index: 0;
