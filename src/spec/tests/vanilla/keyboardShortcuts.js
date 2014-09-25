@@ -3,6 +3,7 @@
 describe("keyboard shortcuts: init vanilla plugin to test keyboard shortcuts - open dropdown", function() {
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     input.intlTelInput();
     getSelectedFlagContainer().click();

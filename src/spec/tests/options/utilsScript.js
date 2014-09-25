@@ -3,6 +3,7 @@
 describe("utilsScript: init plugin to test utilsScript option", function() {
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     spyOn($, "ajax");
   });

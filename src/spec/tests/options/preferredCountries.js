@@ -3,6 +3,7 @@
 describe("preferredCountries option:", function() {
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
   });
 

@@ -12,6 +12,18 @@ var input,
     CTRL: 17
   };
 
+var intlSetup = function(utilsScript) {
+  // this should only run the first time
+  if (!window.intlTelInputUtilsBackup) {
+    window.intlTelInputUtilsBackup = window.intlTelInputUtils;
+  }
+  if (utilsScript) {
+    window.intlTelInputUtils = window.intlTelInputUtilsBackup;
+  } else {
+    window.intlTelInputUtils = null;
+  }
+};
+
 var getInputVal = function(i) {
   i = i || input;
   return i.val();

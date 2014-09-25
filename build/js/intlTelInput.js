@@ -67,10 +67,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     }
     Plugin.prototype = {
         init: function() {
-            // no utils means no formatting
-            if (!this.options.utilsScript) {
-                this.options.autoFormat = false;
-            }
             // if in nationalMode, disable options relating to dial codes
             if (this.options.nationalMode) {
                 this.options.autoHideDialCode = false;
@@ -765,13 +761,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // get the country data for the currently selected flag
         getSelectedCountryData: function() {
-            return this.selectedCountryData;
+            // if this is undefined, the plugin will return it's instance instead, so in that case an empty object makes more sense
+            return this.selectedCountryData || {};
         },
         // validate the input val - assumes the global function isValidNumber (from utilsScript)
         isValidNumber: function() {
             var val = $.trim(this.telInput.val()), countryCode = this.options.nationalMode ? this.selectedCountryData.iso2 : "", // libphonenumber allows alpha chars, but in order to allow that, we'd need a method to retrieve the processed number, with letters replaced with numbers
             containsAlpha = /[a-zA-Z]/.test(val);
-            return !containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode);
+            return Boolean(!containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode));
         },
         // update the selected flag, and if the input is empty: insert the new dial code
         selectCountry: function(countryCode) {

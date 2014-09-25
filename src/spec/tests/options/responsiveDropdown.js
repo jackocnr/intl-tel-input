@@ -3,6 +3,7 @@
 describe("responsiveDropdown: init plugin to test responsiveDropdown option", function() {
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     // must be in DOM for width to work
     input.appendTo($("body"));

@@ -5,6 +5,7 @@ describe("onlyCountries option:", function() {
   var onlyCountries;
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
   });
 

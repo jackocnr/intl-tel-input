@@ -2,6 +2,10 @@
 
 describe("autoFormat option:", function() {
 
+  beforeEach(function() {
+    intlSetup(true);
+  });
+
   afterEach(function() {
     getParentElement().remove();
     input.intlTelInput("destroy");
@@ -19,8 +23,7 @@ describe("autoFormat option:", function() {
 
       input.intlTelInput({
         autoFormat: true,
-        nationalMode: true,
-        utilsScript: "lib/libphonenumber/build/utils.js"
+        nationalMode: true
       });
     });
 
@@ -40,8 +43,7 @@ describe("autoFormat option:", function() {
       input.appendTo($("body"));
 
       input.intlTelInput({
-        autoFormat: true,
-        utilsScript: "lib/libphonenumber/build/utils.js"
+        autoFormat: true
       });
     });
 
@@ -77,8 +79,7 @@ describe("autoFormat option:", function() {
       input.appendTo($("body"));
 
       input.intlTelInput({
-        autoFormat: true,
-        utilsScript: "lib/libphonenumber/build/utils.js"
+        autoFormat: true
       });
     });
 
@@ -143,8 +144,7 @@ describe("autoFormat option:", function() {
     
       beforeEach(function() {
         input.intlTelInput({
-          autoFormat: true,
-          utilsScript: "lib/libphonenumber/build/utils.js"
+          autoFormat: true
         });
       });
 

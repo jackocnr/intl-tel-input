@@ -5,6 +5,7 @@ describe("multiple instances: init vanilla plugin to test multiple instances", f
   var input2, chinaCountryCode = "cn", chinaDialCode = "+86";
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     input2 = $("<input>");
     // japan and china

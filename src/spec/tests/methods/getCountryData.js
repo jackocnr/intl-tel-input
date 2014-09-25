@@ -5,6 +5,7 @@ describe("getCountryData: use static method getCountryData", function() {
   var countryData;
 
   beforeEach(function() {
+    intlSetup();
     countryData = $.fn.intlTelInput.getCountryData();
   });
 

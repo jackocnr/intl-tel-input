@@ -2,6 +2,12 @@
 
 describe("vanilla:", function() {
 
+  beforeEach(function() {
+    intlSetup();
+  });
+
+  
+
   describe("init plugin on input with prepopulated value", function() {
 
     beforeEach(function() {

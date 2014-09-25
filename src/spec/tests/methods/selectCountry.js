@@ -5,6 +5,7 @@ describe("setCountry: init plugin and calling public method selectCountry()", fu
   var countryCode = "gb";
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     input.intlTelInput();
     input.intlTelInput("selectCountry", countryCode);

@@ -3,6 +3,7 @@
 describe("destroy: init plugin to test public method destroy", function() {
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     input.intlTelInput();
   });

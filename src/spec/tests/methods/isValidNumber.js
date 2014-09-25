@@ -3,6 +3,7 @@
 describe("isValidNumber:", function() {
 
   beforeEach(function() {
+    intlSetup(true);
     input = $("<input>");
   });
 
@@ -49,29 +50,20 @@ describe("isValidNumber:", function() {
       });
     });
     
-
-
-    describe("with a valid national number", function() {
-    
-      beforeEach(function() {
-        input.intlTelInput("setNumber", "07733 123456");
-      });
-    
-      it("returns false for: incorrect selected country", function() {
-        expect(input.intlTelInput("isValidNumber")).toBeFalsy();
-      });
-
-      it("returns true for: correct selected country", function() {
-        input.intlTelInput("selectCountry", "gb");
-        expect(input.intlTelInput("isValidNumber")).toBeTruthy();
-      });
-
+    it("returns false for: incorrect selected country, valid number", function() {
+      input.intlTelInput("setNumber", "07733 123456");
+      expect(input.intlTelInput("isValidNumber")).toBeFalsy();
     });
 
-
-    it("returns false for: invalid national number, correct selected country", function() {
-      input.intlTelInput("setNumber", "07733 123");
+    it("returns true for: correct selected country, valid number", function() {
       input.intlTelInput("selectCountry", "gb");
+      input.intlTelInput("setNumber", "07733 123456");
+      expect(input.intlTelInput("isValidNumber")).toBeTruthy();
+    });
+
+    it("returns false for: correct selected country, invalid number", function() {
+      input.intlTelInput("selectCountry", "gb");
+      input.intlTelInput("setNumber", "07733 123");
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();
     });
 

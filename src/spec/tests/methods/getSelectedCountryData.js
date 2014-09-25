@@ -3,6 +3,7 @@
 describe("getSelectedCountryData: init plugin to test public method getSelectedCountryData", function() {
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     input.intlTelInput();
   });

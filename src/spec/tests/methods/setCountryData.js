@@ -9,6 +9,7 @@ describe("setCountryData: use static method setCountryData before initialising t
   }];
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     oldCountryData = $.fn.intlTelInput.getCountryData();
     $.fn.intlTelInput.setCountryData(newCountryData);

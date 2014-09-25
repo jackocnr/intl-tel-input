@@ -3,6 +3,10 @@
 
 describe("nationalMode:", function() {
 
+  beforeEach(function() {
+    intlSetup();
+  });
+
   afterEach(function() {
     input.intlTelInput("destroy");
     input = null;
@@ -40,7 +44,8 @@ describe("nationalMode:", function() {
     });
 
     it("but typing a dial code does still update the selected country", function() {
-      input.val("+44 1234567").keyup();
+      input.val("+44 1234567");
+      triggerKeyOnInput("7");
       expect(getSelectedFlagElement()).toHaveClass("gb");
     });
 

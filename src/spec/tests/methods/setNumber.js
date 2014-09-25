@@ -3,6 +3,7 @@
 describe("setNumber: init (vanilla) plugin to call public method setNumber", function() {
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
     input.intlTelInput();
     input.intlTelInput("setNumber", "+447733123456");

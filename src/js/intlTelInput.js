@@ -66,10 +66,6 @@
   Plugin.prototype = {
 
     init: function() {
-      // no utils means no formatting
-      if (!this.options.utilsScript) {
-        this.options.autoFormat = false;
-      }
       // if in nationalMode, disable options relating to dial codes
       if (this.options.nationalMode) {
         this.options.autoHideDialCode = false;
@@ -935,7 +931,8 @@
 
     // get the country data for the currently selected flag
     getSelectedCountryData: function() {
-      return this.selectedCountryData;
+      // if this is undefined, the plugin will return it's instance instead, so in that case an empty object makes more sense
+      return this.selectedCountryData || {};
     },
 
 
@@ -945,7 +942,7 @@
         countryCode = (this.options.nationalMode) ? this.selectedCountryData.iso2 : "",
         // libphonenumber allows alpha chars, but in order to allow that, we'd need a method to retrieve the processed number, with letters replaced with numbers
         containsAlpha = /[a-zA-Z]/.test(val);
-      return (!containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode));
+      return Boolean(!containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode));
     },
 
 

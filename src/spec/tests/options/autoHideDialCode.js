@@ -5,6 +5,7 @@ describe("autoHideDialCode option:", function() {
   var defaultDialCode = "+1";
 
   beforeEach(function() {
+    intlSetup();
     input = $("<input>");
   });
 
