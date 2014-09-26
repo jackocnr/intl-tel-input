@@ -82,20 +82,22 @@ $("#mobile-number").intlTelInput("destroy");
 **getCleanNumber**  
 Get the current number formatted to the [E164 standard](http://en.wikipedia.org/wiki/E.164). Requires the utilsScript option.  
 ```js
-$("#mobile-number").intlTelInput("getCleanNumber");
+var cleanNumber = $("#mobile-number").intlTelInput("getCleanNumber");
 ```
 Returns a string e.g. `"+17024181234"`
 
 **getNumberType**  
 Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the utilsScript option.  
 ```js
-var type = $("#mobile-number").intlTelInput("getNumberType");
-if (type == intlTelInputUtils.numberType.MOBILE) {
+var numberType = $("#mobile-number").intlTelInput("getNumberType");
+```
+Returns an integer, which you can match against the [various options](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#896) in the global enum `intlTelInputUtils.numberType`.  
+```js
+if (numberType == intlTelInputUtils.numberType.MOBILE) {
     // is a mobile number
 }
 ```
-Returns an integer, which you can match against the various options in the global enum `intlTelInputUtils.numberType`. Details [here](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#896).  
-Note that there's no way to differentiate between fixed-line and mobile numbers in the US, so instead it will return `FIXED_LINE_OR_MOBILE`.
+_Note that there's no way to differentiate between fixed-line and mobile numbers in the US, so instead it will return `FIXED_LINE_OR_MOBILE`._
 
 **getSelectedCountryData**  
 Get the country data for the currently selected flag  
