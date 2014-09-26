@@ -2,6 +2,7 @@ module.exports = function(grunt) {
   return {
     main: {
       options: {
+        sourcemap: "none",
         style: "compressed"
       },
       files: {
@@ -9,6 +10,9 @@ module.exports = function(grunt) {
       }
     },
     demo: {
+      options: {
+        sourcemap: "none"
+      },
       files: {
         'build/css/demo.css': 'src/css/demo.scss'
       }
