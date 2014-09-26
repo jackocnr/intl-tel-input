@@ -371,9 +371,15 @@ Plugin.prototype = {
       $.fn[pluginName].injectedUtilsScript = true;
 
       var injectUtilsScript = function() {
-        $.getScript(that.options.utilsScript, function() {
-          // tell all instances the utils are ready
-          $(".intl-tel-input input").intlTelInput("utilsLoaded");
+        // dont use $.getScript as it prevents caching
+        $.ajax({
+          url: that.options.utilsScript,
+          success: function() {
+            // tell all instances the utils are ready
+            $(".intl-tel-input input").intlTelInput("utilsLoaded");
+          },
+          dataType: "script",
+          cache: true
         });
       };
       // if the plugin is being initialised after the window.load event has already been fired
