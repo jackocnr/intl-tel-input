@@ -40,8 +40,8 @@ You can view a live demo and some examples of how to use the various options her
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
 **autoFormat**  
-Type: `Boolean` Default: `true` _(if you specify the utilsScript option)_  
-Format the number on each keypress according to the country-specific formatting rules. If enabled, this will prevent the user from entering invalid characters. Requires the utilsScript option.
+Type: `Boolean` Default: `true`  
+Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters. Requires the utilsScript option for the formatting logic.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -80,19 +80,22 @@ $("#mobile-number").intlTelInput("destroy");
 ```
 
 **getCleanNumber**  
-Returns the current number formatted to the [E164 standard](http://en.wikipedia.org/wiki/E.164) (requires the utilsScript option).  
+Get the current number formatted to the [E164 standard](http://en.wikipedia.org/wiki/E.164). Requires the utilsScript option.  
 ```js
 $("#mobile-number").intlTelInput("getCleanNumber");
 ```
+Returns a string e.g. `"+17024181234"`
 
 **getNumberType**  
-Returns the type (fixed-line/mobile/toll-free etc) of the current number (requires the utilsScript option). Use the global intlTelInputUtils.numberType enum for matching. Enum details [here](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#896) (note that there's no way to differentiate between fixed-line and mobile numbers in the US, so instead it will return FIXED_LINE_OR_MOBILE).  
+Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the utilsScript option.  
 ```js
 var type = $("#mobile-number").intlTelInput("getNumberType");
 if (type == intlTelInputUtils.numberType.MOBILE) {
     // is a mobile number
 }
 ```
+Returns an integer, which you can match against the various options in the global enum `intlTelInputUtils.numberType`. Details [here](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#896).  
+Note that there's no way to differentiate between fixed-line and mobile numbers in the US, so instead it will return `FIXED_LINE_OR_MOBILE`.
 
 **getSelectedCountryData**  
 Get the country data for the currently selected flag  
