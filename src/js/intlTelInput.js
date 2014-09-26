@@ -70,10 +70,8 @@
       if (this.options.nationalMode) {
         this.options.autoHideDialCode = false;
       }
-      // chrome on android has issues with key events
-      // backspace issues for inputs with type=text: https://code.google.com/p/chromium/issues/detail?id=184812
-      // and improper key codes for keyup and keydown: https://code.google.com/p/chromium/issues/detail?id=118639
-      if (navigator.userAgent.match(/Android/i) && navigator.userAgent.match(/Chrome/i)) {
+      // IE Mobile and Chrome for Android have issues with key events (see issues 56 and 68) which make autoFormat impossible
+      if (navigator.userAgent.match(/IEMobile/i) || (navigator.userAgent.match(/Android/i) && navigator.userAgent.match(/Chrome/i))) {
         this.options.autoFormat = false;
       }
 
