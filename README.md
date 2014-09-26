@@ -102,7 +102,7 @@ _Note that there's no way to differentiate between fixed-line and mobile numbers
 **getSelectedCountryData**  
 Get the country data for the currently selected flag  
 ```js
-$("#mobile-number").intlTelInput("getSelectedCountryData");
+var countryData = $("#mobile-number").intlTelInput("getSelectedCountryData");
 ```
 Returns something like this:
 ```js
@@ -116,7 +116,7 @@ Returns something like this:
 **isValidNumber**  
 Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the utilsScript option). Expects an internationally formatted number (unless nationalMode is enabled).  
 ```js
-$("#mobile-number").intlTelInput("isValidNumber");
+var isValid = $("#mobile-number").intlTelInput("isValidNumber");
 ```
 Returns: true/false
 
