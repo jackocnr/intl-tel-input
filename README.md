@@ -91,7 +91,7 @@ Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires t
 ```js
 var numberType = $("#mobile-number").intlTelInput("getNumberType");
 ```
-Returns an integer, which you can match against the [various options](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#896) in the global enum `intlTelInputUtils.numberType`.  
+Returns an integer, which you can match against the [various options](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#891) in the global enum `intlTelInputUtils.numberType`.  
 ```js
 if (numberType == intlTelInputUtils.numberType.MOBILE) {
     // is a mobile number
