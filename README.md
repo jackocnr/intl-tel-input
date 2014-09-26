@@ -97,7 +97,7 @@ if (numberType == intlTelInputUtils.numberType.MOBILE) {
     // is a mobile number
 }
 ```
-_Note that there's no way to differentiate between fixed-line and mobile numbers in the US, so instead it will return `FIXED_LINE_OR_MOBILE`._
+_Note that in the US there's no way to differentiate between fixed-line and mobile numbers, so instead it will return `FIXED_LINE_OR_MOBILE`._
 
 **getSelectedCountryData**  
 Get the country data for the currently selected flag  
