@@ -85,8 +85,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this._initListeners();
         },
         /********************
-     *  PRIVATE METHODS
-     ********************/
+   *  PRIVATE METHODS
+   ********************/
         // prepare all of the country data, including onlyCountries, preferredCountries and
         // defaultCountry options
         _processCountryData: function() {
@@ -727,8 +727,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             return dialCode;
         },
         /********************
-     *  PUBLIC METHODS
-     ********************/
+   *  PUBLIC METHODS
+   ********************/
         // remove plugin
         destroy: function() {
             // make sure the dropdown is closed (and unbind listeners)
@@ -831,8 +831,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         }
     };
     /********************
-   *  STATIC METHODS
-   ********************/
+ *  STATIC METHODS
+ ********************/
     // get the country data object
     $.fn[pluginName].getCountryData = function() {
         return allCountries;
