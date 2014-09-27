@@ -1,5 +1,5 @@
 /*
-International Telephone Input v3.1.4
+International Telephone Input v3.2.0
 https://github.com/Bluefieldscom/intl-tel-input.git
 */
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
@@ -316,9 +316,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             });
             // if the user has specified the path to the utils script, fetch it on window.load
-            if (this.options.utilsScript && !$.fn[pluginName].injectedUtilsScript) {
-                // don't do this twice!
-                $.fn[pluginName].injectedUtilsScript = true;
+            if (this.options.utilsScript) {
                 // if the plugin is being initialised after the window.load event has already been fired
                 if (windowLoaded) {
                     this.loadUtils();
@@ -764,17 +762,22 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             return Boolean(!containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode));
         },
         // load the utils script
-        loadUtils: function() {
-            // dont use $.getScript as it prevents caching
-            $.ajax({
-                url: this.options.utilsScript,
-                success: function() {
-                    // tell all instances the utils are ready
-                    $(".intl-tel-input input").intlTelInput("utilsLoaded");
-                },
-                dataType: "script",
-                cache: true
-            });
+        loadUtils: function(path) {
+            var utilsScript = path || this.options.utilsScript;
+            if (!$.fn[pluginName].loadedUtilsScript && utilsScript) {
+                // don't do this twice! (dont just check if the global intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
+                $.fn[pluginName].loadedUtilsScript = true;
+                // dont use $.getScript as it prevents caching
+                $.ajax({
+                    url: utilsScript,
+                    success: function() {
+                        // tell all instances the utils are ready
+                        $(".intl-tel-input input").intlTelInput("utilsLoaded");
+                    },
+                    dataType: "script",
+                    cache: true
+                });
+            }
         },
         // update the selected flag, and if the input is empty: insert the new dial code
         selectCountry: function(countryCode) {
