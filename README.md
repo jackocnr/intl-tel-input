@@ -187,6 +187,9 @@ If your error handling code inserts an error message before the `<input>` it wil
 **Dropdown position**  
 The dropdown should automatically appear above/below the input depending on the available space. For this to work properly, you must only initialise the plugin after the `<input>` has been added to the DOM.
 
+**Placeholders**  
+In order to get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`.
+
 
 ## Contributing
 I'm very open to contributions, big and small! For instructions on contributing to a project on Github, see this guide: [Fork A Repo](https://help.github.com/articles/fork-a-repo).
