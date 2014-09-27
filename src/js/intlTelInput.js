@@ -972,6 +972,10 @@ Plugin.prototype = {
 
   // set the input value and update the flag
   setNumber: function(number, addSuffix) {
+    // ensure starts with plus
+    if (!this.options.nationalMode && number.substr(0, 1) != "+") {
+      number = "+" + number;
+    }
     // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
     this._updateFlagFromNumber(number);
     this._updateVal(number, addSuffix);
