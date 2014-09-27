@@ -65,7 +65,7 @@ Specify the countries to appear at the top of the list.
 
 **responsiveDropdown**  
 Type: `Boolean` Default: `false`  
-Set the dropdown's width to be the same as the input. Useful for mobile devices etc.
+Set the dropdown's width to be the same as the input. This is automatically enabled for small screens.
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
