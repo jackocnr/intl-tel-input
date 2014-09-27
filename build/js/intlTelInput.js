@@ -75,6 +75,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/Android/i) && navigator.userAgent.match(/Chrome/i)) {
                 this.options.autoFormat = false;
             }
+            // auto enable responsiveDropdown mode on small screens (dropdown is currently set to 430px in CSS)
+            if (window.innerWidth < 500) {
+                this.options.responsiveDropdown = true;
+            }
             // process all the data: onlyCounties, preferredCountries, defaultCountry etc
             this._processCountryData();
             // generate the markup
