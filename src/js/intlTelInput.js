@@ -364,30 +364,19 @@ Plugin.prototype = {
       }
     });
 
-    // if the user has specified the path to the utils script
-    // inject a new script element for it at the end of the body
+    // if the user has specified the path to the utils script, fetch it on window.load
     if (this.options.utilsScript && !$.fn[pluginName].injectedUtilsScript) {
       // don't do this twice!
       $.fn[pluginName].injectedUtilsScript = true;
 
-      var injectUtilsScript = function() {
-        // dont use $.getScript as it prevents caching
-        $.ajax({
-          url: that.options.utilsScript,
-          success: function() {
-            // tell all instances the utils are ready
-            $(".intl-tel-input input").intlTelInput("utilsLoaded");
-          },
-          dataType: "script",
-          cache: true
-        });
-      };
       // if the plugin is being initialised after the window.load event has already been fired
       if (windowLoaded) {
-        injectUtilsScript();
+        this.loadUtils();
       } else {
         // wait until the load event so we don't block any other requests e.g. the flags image
-        $(window).load(injectUtilsScript);
+        $(window).load(function() {
+          that.loadUtils();
+        });
       }
     }
   },
@@ -943,6 +932,21 @@ Plugin.prototype = {
       // libphonenumber allows alpha chars, but in order to allow that, we'd need a method to retrieve the processed number, with letters replaced with numbers
       containsAlpha = /[a-zA-Z]/.test(val);
     return Boolean(!containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode));
+  },
+
+
+  // load the utils script
+  loadUtils: function() {
+    // dont use $.getScript as it prevents caching
+    $.ajax({
+      url: this.options.utilsScript,
+      success: function() {
+        // tell all instances the utils are ready
+        $(".intl-tel-input input").intlTelInput("utilsLoaded");
+      },
+      dataType: "script",
+      cache: true
+    });
   },
 
 
