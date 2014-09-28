@@ -736,10 +736,11 @@ Plugin.prototype = {
 
   // select the given flag, update the placeholder and the active list item
   _selectFlag: function(countryCode) {
-    this.selectedFlagInner.attr("class", "flag " + countryCode);
-
-    // update the selected country's title attribute
+    // do this first as it will throw an error and stop if countryCode is invalid
     this.selectedCountryData = this._getCountryData(countryCode, false, false);
+
+    this.selectedFlagInner.attr("class", "flag " + countryCode);
+    // update the selected country's title attribute
     var title = this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode;
     this.selectedFlagInner.parent().attr("title", title);
 

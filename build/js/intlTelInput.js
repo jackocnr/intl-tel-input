@@ -616,9 +616,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // select the given flag, update the placeholder and the active list item
         _selectFlag: function(countryCode) {
+            // do this first as it will throw an error and stop if countryCode is invalid
+            this.selectedCountryData = this._getCountryData(countryCode, false, false);
             this.selectedFlagInner.attr("class", "flag " + countryCode);
             // update the selected country's title attribute
-            this.selectedCountryData = this._getCountryData(countryCode, false, false);
             var title = this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode;
             this.selectedFlagInner.parent().attr("title", title);
             // and the input's placeholder
