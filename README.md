@@ -91,7 +91,7 @@ Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires t
 ```js
 var numberType = $("#mobile-number").intlTelInput("getNumberType");
 ```
-Returns an integer, which you can match against the [various options](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#891) in the global enum `intlTelInputUtils.numberType`.  
+Returns an integer, which you can match against the [various options](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#891) in the global enum `intlTelInputUtils.numberType` e.g.  
 ```js
 if (numberType == intlTelInputUtils.numberType.MOBILE) {
     // is a mobile number
@@ -110,6 +110,18 @@ Returns something like this:
   name: "Afghanistan (‫افغانستان‬‎)",
   iso2: "af",
   dialCode: "93"
+}
+```
+
+**getValidationError**  
+Get more information about a validation error.  
+```js
+var error = $("#mobile-number").intlTelInput("getValidationError");
+```
+Returns an integer, which you can match against the [various options](https://github.com/Bluefieldscom/intl-tel-input/blob/master/lib/libphonenumber/src/utils.js#L175) in the global enum `intlTelInputUtils.validationError` e.g.  
+```js
+if (error == intlTelInputUtils.validationError.TOO_SHORT) {
+    // the number is too short
 }
 ```
 
