@@ -74,7 +74,7 @@ Enable formatting/validation/example numbers (for placeholders) by specifying th
 
 ## Public Methods
 **destroy**  
-Remove the plugin from the input, and unbind any event listeners  
+Remove the plugin from the input, and unbind any event listeners.  
 ```js
 $("#mobile-number").intlTelInput("destroy");
 ```
@@ -100,7 +100,7 @@ if (numberType == intlTelInputUtils.numberType.MOBILE) {
 _Note that in the US there's no way to differentiate between fixed-line and mobile numbers, so instead it will return `FIXED_LINE_OR_MOBILE`._
 
 **getSelectedCountryData**  
-Get the country data for the currently selected flag  
+Get the country data for the currently selected flag.  
 ```js
 var countryData = $("#mobile-number").intlTelInput("getSelectedCountryData");
 ```
@@ -127,13 +127,13 @@ $("#mobile-number").intlTelInput("loadUtils", "lib/libphonenumber/build/utils.js
 ```
 
 **selectCountry**  
-Select a country after initialisation (e.g. when the user is entering their address)  
+Change the country selection (e.g. when the user is entering their address).  
 ```js
 $("#mobile-number").intlTelInput("selectCountry", "gb");
 ```
 
 **setNumber**  
-Insert a number, and update the selected flag accordingly  
+Insert a number, and update the selected flag accordingly.  
 ```js
 $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 ```
@@ -141,7 +141,7 @@ $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 
 ## Static Methods
 **getCountryData**  
-Get all of the plugin's country data  
+Get all of the plugin's country data.  
 ```js
 var countryData = $.fn.intlTelInput.getCountryData();
 ```
@@ -155,7 +155,7 @@ Returns an array of country objects:
 ```
 
 **setCountryData**  
-Set all of the plugin's country data  
+Set all of the plugin's country data.  
 ```js
 $.fn.intlTelInput.setCountryData(countryData);
 ```
