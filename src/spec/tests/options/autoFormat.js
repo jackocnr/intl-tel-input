@@ -15,7 +15,7 @@ describe("autoFormat option:", function() {
 
 
   describe("input containing national number, init plugin with autoFormat and nationalMode enabled", function() {
-  
+
     beforeEach(function() {
       input = $("<input value='7024181234 A'>");
       // must be in DOM for focus/keys to work
@@ -30,13 +30,13 @@ describe("autoFormat option:", function() {
     it("formats the number according to the defaultCountry", function() {
       expect(getInputVal()).toEqual("(702) 418-1234");
     });
-  
+
   });
 
 
 
   describe("input with maxlength=6, init plugin with autoFormat enabled", function() {
-  
+
     beforeEach(function() {
       input = $("<input value='+1 70' maxlength='6'>");
       // must be in DOM for focus/keys to work
@@ -65,14 +65,13 @@ describe("autoFormat option:", function() {
       triggerKeyOnInput("4");
       expect(getInputVal()).toEqual("+1 702");
     });
-  
+
   });
 
 
 
-
   describe("input with no initial value, init plugin with autoFormat enabled", function() {
-  
+
     beforeEach(function() {
       input = $("<input>");
       // must be in DOM for focus/keys to work
@@ -91,7 +90,7 @@ describe("autoFormat option:", function() {
     it("replacing the val with a number (faking a paste event) re-adds the plus", function() {
       input.val("1");
       triggerKeyOnInput("CTRL");
-      expect(getInputVal()).toEqual("+1");
+      expect(getInputVal()).toEqual("+1 ");
     });
 
     it("replacing the val with an alpha (faking a paste event) re-adds the plus and removes the alpha", function() {
@@ -99,9 +98,8 @@ describe("autoFormat option:", function() {
       triggerKeyOnInput("CTRL");
       expect(getInputVal()).toEqual("+");
     });
-  
-  });
 
+  });
 
 
 
@@ -118,7 +116,7 @@ describe("autoFormat option:", function() {
 
 
     describe("init plugin with autoFormat disabled", function() {
-    
+
       beforeEach(function() {
         input.intlTelInput({
           autoFormat: false
@@ -136,12 +134,12 @@ describe("autoFormat option:", function() {
 
         expect(input.val()).toEqual(unformattedNumber + "A");
       });
-    
+
     });
 
 
     describe("init plugin with autoFormat enabled", function() {
-    
+
       beforeEach(function() {
         input.intlTelInput({
           autoFormat: true
@@ -158,7 +156,6 @@ describe("autoFormat option:", function() {
         triggerKeyOnInput("A");
         expect(input.val()).toEqual(formattedNumber);
       });
-
 
 
 
@@ -180,15 +177,14 @@ describe("autoFormat option:", function() {
 
 
 
-
       describe("after deleting a char and it removing any format suffix", function() {
-      
+
         beforeEach(function() {
           // e.g. imagine it was "+1 7" and we deleted the 7 and it auto-removed the rest
           input.val("+1");
           putCursorAtEnd();
         });
-      
+
         it("hitting a number will re-add the formatting in between", function() {
           // this is handled by the keypress handler, and so will insert the char for you
           triggerKeyOnInput("7");
@@ -208,7 +204,7 @@ describe("autoFormat option:", function() {
 
 
       describe("selecting some chars", function() {
-      
+
         var cursorStart = 3,
           cursorEnd = 6;
 
@@ -229,11 +225,11 @@ describe("autoFormat option:", function() {
           triggerKeyOnInput("9");
           expect(input.val()).toEqual("+1 941-812-34");
           // cursor
-          expect(input[0].selectionStart).toEqual(cursorStart+1);
+          expect(input[0].selectionStart).toEqual(cursorStart + 1);
         });
-      
+
       });
-    
+
     });
 
   });

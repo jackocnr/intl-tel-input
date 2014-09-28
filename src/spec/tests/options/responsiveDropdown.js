@@ -16,6 +16,8 @@ describe("responsiveDropdown: init plugin to test responsiveDropdown option", fu
   });
 
   it("by default, it is full width (no CSS loaded in tests)", function() {
+    // by default, this seems to be tiny (384), so hack it here so that responsiveDropdown mode is not automatically enabled
+    window.innerWidth = 1024;
     input.intlTelInput();
     expect(getListElement().outerWidth()).toEqual($("body").outerWidth());
   });
