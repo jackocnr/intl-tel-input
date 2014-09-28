@@ -89,7 +89,7 @@ $("#mobile-number").intlTelInput("destroy");
 ```
 
 **getCleanNumber**  
-Get the current number formatted to the [E164 standard](http://en.wikipedia.org/wiki/E.164). Requires the utilsScript option.  
+Get the current number formatted to the [E.164 standard](http://en.wikipedia.org/wiki/E.164). Requires the utilsScript option. _Note that even if nationalMode is enabled, this will still return an international number, as specified by the E.164 standard._  
 ```js
 var cleanNumber = $("#mobile-number").intlTelInput("getCleanNumber");
 ```
