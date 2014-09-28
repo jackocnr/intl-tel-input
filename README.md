@@ -65,7 +65,7 @@ Specify the countries to appear at the top of the list.
 
 **responsiveDropdown**  
 Type: `Boolean` Default: `false`  
-Set the dropdown's width to be the same as the input. Useful for mobile devices etc.
+Set the dropdown's width to be the same as the input. This is automatically enabled for small screens.
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
@@ -186,6 +186,9 @@ If your error handling code inserts an error message before the `<input>` it wil
 
 **Dropdown position**  
 The dropdown should automatically appear above/below the input depending on the available space. For this to work properly, you must only initialise the plugin after the `<input>` has been added to the DOM.
+
+**Placeholders**  
+In order to get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`.
 
 
 ## Contributing
