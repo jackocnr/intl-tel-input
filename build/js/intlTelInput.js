@@ -753,12 +753,19 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (window.intlTelInputUtils) {
                 return intlTelInputUtils.getNumberType(this.telInput.val(), this.selectedCountryData.iso2);
             }
-            return -2;
+            return -99;
         },
         // get the country data for the currently selected flag
         getSelectedCountryData: function() {
             // if this is undefined, the plugin will return it's instance instead, so in that case an empty object makes more sense
             return this.selectedCountryData || {};
+        },
+        // get the validation error
+        getValidationError: function() {
+            if (window.intlTelInputUtils) {
+                return intlTelInputUtils.getValidationError(this.telInput.val(), this.selectedCountryData.iso2);
+            }
+            return -99;
         },
         // validate the input val - assumes the global function isValidNumber (from utilsScript)
         isValidNumber: function() {

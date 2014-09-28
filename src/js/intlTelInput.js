@@ -917,7 +917,7 @@ Plugin.prototype = {
     if (window.intlTelInputUtils) {
       return intlTelInputUtils.getNumberType(this.telInput.val(), this.selectedCountryData.iso2);
     }
-    return -2;
+    return -99;
   },
 
 
@@ -925,6 +925,15 @@ Plugin.prototype = {
   getSelectedCountryData: function() {
     // if this is undefined, the plugin will return it's instance instead, so in that case an empty object makes more sense
     return this.selectedCountryData || {};
+  },
+
+
+  // get the validation error
+  getValidationError: function() {
+    if (window.intlTelInputUtils) {
+      return intlTelInputUtils.getValidationError(this.telInput.val(), this.selectedCountryData.iso2);
+    }
+    return -99;
   },
 
 
