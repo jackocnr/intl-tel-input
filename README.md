@@ -7,6 +7,7 @@ A jQuery plugin for entering and validating international telephone numbers. It 
 ## Demo and Examples
 You can view a live demo and some examples of how to use the various options here: http://jackocnr.com/intl-tel-input.html, or try it for yourself using the included demo.html.
 
+
 ## Features
 * Automatically format the number as the user types
 * Automatically set the input placeholder to an example number for the selected country
@@ -15,6 +16,14 @@ You can view a live demo and some examples of how to use the various options her
 * Typing a different dial code will automatically update the displayed flag
 * Dropdown appears above or below the input depending on available space/scroll position
 * Lots of initialisation options for customisation, as well as public methods for interaction
+
+
+## Browser compatibility
+|            | Chrome | Firefox | Safari | IE  | Android (Chrome) | Mobile Safari | IE Mobile |
+| :--------- | :----: | :-----: | :----: | :-: | :--------------: | :-----------: | :-------: |
+| Core       |    ✓   |    ✓    |    ✓   |  8  |        ✓         |      ✓        |     ✓     |
+| autoFormat |    ✓   |    ✓    |    ✓   |  9  |        [X](https://github.com/Bluefieldscom/intl-tel-input/issues/56)         |      ✓        |     [X](https://github.com/Bluefieldscom/intl-tel-input/issues/68)     |
+
 
 
 ## Getting Started
