@@ -257,8 +257,8 @@ Plugin.prototype = {
       }
       this._selectFlag(defaultCountry.iso2);
 
-      // if empty and autoHideDialCode is disabled, insert the default dial code (this function will check nationalMode)
-      if (!val && !this.options.autoHideDialCode) {
+      // if empty, insert the default dial code (this function will check !nationalMode and !autoHideDialCode)
+      if (!val) {
         this._resetToDialCode(defaultCountry.dialCode);
       }
     }
@@ -704,9 +704,9 @@ Plugin.prototype = {
 
   // reset the input value to just a dial code
   _resetToDialCode: function(dialCode) {
-    // if nationalMode is enabled then don't insert the dial code
-    var value = (this.options.nationalMode) ? "" : "+" + dialCode;
-    this.telInput.val(value);
+    if (!this.options.nationalMode && !this.options.autoHideDialCode) {
+      this.telInput.val("+" + dialCode);
+    }
   },
 
 
@@ -958,12 +958,23 @@ Plugin.prototype = {
   },
 
 
-  // update the selected flag, and if the input is empty: insert the new dial code
+  // update the selected flag, and update the input val accordingly
   selectCountry: function(countryCode) {
     // check if already selected
     if (!this.selectedFlagInner.hasClass(countryCode)) {
       this._selectFlag(countryCode);
-      if (!this.telInput.val() && !this.options.autoHideDialCode) {
+
+      var val = this.telInput.val();
+      if (val) {
+        if (this.options.nationalMode) {
+          // reformat
+          this._updateVal(val);
+        } else if (val) {
+          // update DC and reformat
+          this._updateDialCode("+" + this.selectedCountryData.dialCode);
+        }
+      } else {
+        // insert DC (this will check !nationalMode and !autoHideDialCode)
         this._resetToDialCode(this.selectedCountryData.dialCode);
       }
     }
