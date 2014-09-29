@@ -1,5 +1,5 @@
 /*
-International Telephone Input v3.2.2
+International Telephone Input v3.3.0
 https://github.com/Bluefieldscom/intl-tel-input.git
 */
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
@@ -67,6 +67,18 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     }
     Plugin.prototype = {
         init: function() {
+            var that = this;
+            // if defaultCountry is set to "auto", we must do a lookup first
+            if (this.options.defaultCountry == "auto") {
+                $.get("http://ipinfo.io", function(response) {
+                    that.options.defaultCountry = response && response.country ? response.country.toLowerCase() : "";
+                    that.ready();
+                }, "jsonp");
+            } else {
+                this.ready();
+            }
+        },
+        ready: function() {
             // if in nationalMode, disable options relating to dial codes
             if (this.options.nationalMode) {
                 this.options.autoHideDialCode = false;
