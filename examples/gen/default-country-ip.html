@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Lookup user&#39;s country</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1410061029683">
-    <link rel="stylesheet" href="../../build/css/demo.css?1410061029683">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1411959417207">
+    <link rel="stylesheet" href="../../build/css/demo.css?1411959417207">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -25,18 +25,16 @@
   <body>
     <a href="/intl-tel-input.html">Back</a>
     <h1>Example: Lookup user&#39;s country</h1>
-    <p>Use IP address lookup to set the defaultCountry option to the user&#39;s country.</p>
+    <p>Set defaultCountry to &#39;auto&#39; to perform a JSONP request to ipinfo.io, which returns the user&#39;s country based on their IP address.</p>
     
     <h2>Markup</h2>
     <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;</code></pre>
 
     <h2>Code</h2>
-    <pre><code class="language-javascript">$.get(&quot;http://ipinfo.io&quot;, function(response) {
-  $(&quot;#phone&quot;).intlTelInput({
-    defaultCountry: response.country.toLowerCase(),
-    utilsScript: &quot;../../lib/libphonenumber/build/utils.js&quot; // just for formatting/placeholders etc
-  });
-}, &quot;jsonp&quot;);</code></pre>
+    <pre><code class="language-javascript">$(&quot;#phone&quot;).intlTelInput({
+  defaultCountry: &quot;auto&quot;,
+  utilsScript: &quot;../../lib/libphonenumber/build/utils.js&quot; // just for formatting/placeholders etc
+});</code></pre>
 
     <h2>Result</h2>
     <div id="result">
@@ -45,7 +43,7 @@
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1410061029683"></script>
-    <script src="../js/defaultCountryIp.js?1410061029683"></script>
+    <script src="../../build/js/intlTelInput.js?1411959417207"></script>
+    <script src="../js/defaultCountryIp.js?1411959417207"></script>
   </body>
 </html>

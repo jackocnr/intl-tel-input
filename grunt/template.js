@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         return {
           time: time,
           title: "Lookup user's country",
-          desc: "Use IP address lookup to set the defaultCountry option to the user's country.",
+          desc: "Set defaultCountry to 'auto' to perform a JSONP request to ipinfo.io, which returns the user's country based on their IP address.",
           stylesheet: "",
           markup: grunt.file.read('examples/partials/simpleInput.html'),
           code: grunt.file.read('examples/js/defaultCountryIp.js'),
