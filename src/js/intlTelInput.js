@@ -477,7 +477,11 @@ Plugin.prototype = {
         // we must use setTimeout to get outside of the focus handler as it seems the
         // selection happens after that
         setTimeout(function() {
-          that._cursorToEnd();
+          var input = that.telInput[0];
+          if (that.isGoodBrowser) {
+            var len = that.telInput.val().length;
+            input.setSelectionRange(len, len);
+          }
         });
       }
     });
@@ -506,16 +510,6 @@ Plugin.prototype = {
   // extract the numeric digits from the given string
   _getNumeric: function(s) {
     return s.replace(/\D/g, "");
-  },
-
-
-  // put the cursor to the end of the input (usually after a focus event)
-  _cursorToEnd: function() {
-    var input = this.telInput[0];
-    if (this.isGoodBrowser) {
-      var len = this.telInput.val().length;
-      input.setSelectionRange(len, len);
-    }
   },
 
 
