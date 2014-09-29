@@ -58,7 +58,7 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 
 **defaultCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. Otherwise it will just be the first country in the list.
+Set the default country by it's country code. You can also set it to "auto", which will lookup the user's country based on their IP address. Otherwise it will just be the first country in the list.
 
 **nationalMode**  
 Type: `Boolean` Default: `false`  
