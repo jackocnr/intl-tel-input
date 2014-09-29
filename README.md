@@ -78,7 +78,7 @@ Set the dropdown's width to be the same as the input. This is automatically enab
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
-Enable formatting/validation/example numbers (for placeholders) by specifying the URL to the included utils.js script (~200KB), which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. Note that if you lazy load the plugin script, window.load will have already fired and as there's no way to check that retrospectively you will need to use the loadUtils method.
+Enable formatting/validation/example numbers (for placeholders) by specifying the URL to the included utils.js script (~200KB), which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script (after the window.load event) this will not work and you will need to use the loadUtils method instead._
 
 
 ## Public Methods
@@ -89,7 +89,7 @@ $("#mobile-number").intlTelInput("destroy");
 ```
 
 **getCleanNumber**  
-Get the current number formatted to the [E164 standard](http://en.wikipedia.org/wiki/E.164). Requires the utilsScript option.  
+Get the current number formatted to the [E.164 standard](http://en.wikipedia.org/wiki/E.164). Requires the utilsScript option. _Note that even if nationalMode is enabled, this will still return an international number, as specified by the E.164 standard._  
 ```js
 var cleanNumber = $("#mobile-number").intlTelInput("getCleanNumber");
 ```
@@ -142,7 +142,7 @@ var isValid = $("#mobile-number").intlTelInput("isValidNumber");
 Returns: true/false
 
 **loadUtils**  
-Load the utils script - either pass the path as an argument, or it will default to the value of the utilsScript option. Use this if you're lazy loading the plugin script (in this case the utilsScript option will not work as it relies on the window.load event).  
+Load the utils script - either pass the path as an argument, or it will default to the value of the utilsScript option. Use this if you're lazy loading the plugin script (in which case the utilsScript option will not work as it relies on the window.load event).  
 ```js
 $("#mobile-number").intlTelInput("loadUtils", "lib/libphonenumber/build/utils.js");
 ```
