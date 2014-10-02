@@ -1,5 +1,5 @@
 /*
-International Telephone Input v3.4.3
+International Telephone Input v3.4.4
 https://github.com/Bluefieldscom/intl-tel-input.git
 */
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
