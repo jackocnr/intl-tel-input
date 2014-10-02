@@ -23,6 +23,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         defaultCountry: "",
         // don't insert international dial codes
         nationalMode: false,
+        // number type to use for placeholders
+        numberType: "",
         // display only these countries
         onlyCountries: [],
         // the countries at the top of the list. defaults to united states and united kingdom
@@ -645,7 +647,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {
             if (window.intlTelInputUtils && !this.hadInitialPlaceholder) {
-                var iso2 = this.selectedCountryData.iso2, placeholder = intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode);
+                var iso2 = this.selectedCountryData.iso2, numberType = this.options.numberType ? intlTelInputUtils.numberType[this.options.numberType] : intlTelInputUtils.numberType.FIXED_LINE, placeholder = intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType);
                 this.telInput.attr("placeholder", placeholder);
             }
         },
@@ -784,7 +786,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         isValidNumber: function() {
             var val = $.trim(this.telInput.val()), countryCode = this.options.nationalMode ? this.selectedCountryData.iso2 : "", // libphonenumber allows alpha chars, but in order to allow that, we'd need a method to retrieve the processed number, with letters replaced with numbers
             containsAlpha = /[a-zA-Z]/.test(val);
-            return Boolean(!containsAlpha && window.intlTelInputUtils && intlTelInputUtils.isValidNumber(val, countryCode));
+            if (!containsAlpha && window.intlTelInputUtils) {
+                return intlTelInputUtils.isValidNumber(val, countryCode);
+            }
+            return false;
         },
         // load the utils script
         loadUtils: function(path) {
