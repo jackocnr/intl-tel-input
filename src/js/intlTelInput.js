@@ -677,6 +677,10 @@ Plugin.prototype = {
 
   // check if need to select a new flag based on the given number
   _updateFlagFromNumber: function(number) {
+    // if we're in nationalMode and we're on US/Canada, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
+    if (this.options.nationalMode && this.selectedCountryData.dialCode == "1" && number.substr(0, 2) != "+1") {
+      number = "+1" + number;
+    }
     // try and extract valid dial code from input
     var dialCode = this._getDialCode(number);
     if (dialCode) {
