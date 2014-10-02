@@ -654,8 +654,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var countryCode = listItem.attr("data-country-code");
             this._selectFlag(countryCode);
             this._closeDropdown();
-            // update input value
-            if (!this.options.nationalMode) {
+            // update input value (if not in nationalMode OR if number starts with a plus)
+            if (!this.options.nationalMode || this.telInput.val().substring(0, 1) == "+") {
                 this._updateDialCode("+" + listItem.attr("data-dial-code"));
             }
             // always fire the change event as even if nationalMode=true (and we haven't updated
@@ -810,7 +810,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this._selectFlag(countryCode);
                 var val = this.telInput.val();
                 if (val) {
-                    if (this.options.nationalMode) {
+                    // even if in nationalMode, you can still enter a dial code
+                    if (this.options.nationalMode && val.substring(0, 1) != "+") {
                         // reformat
                         this._updateVal(val);
                     } else if (val) {

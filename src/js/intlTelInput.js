@@ -783,8 +783,8 @@ Plugin.prototype = {
     this._selectFlag(countryCode);
     this._closeDropdown();
 
-    // update input value
-    if (!this.options.nationalMode) {
+    // update input value (if not in nationalMode OR if number starts with a plus)
+    if (!this.options.nationalMode || this.telInput.val().substring(0, 1) == "+") {
       this._updateDialCode("+" + listItem.attr("data-dial-code"));
     }
 
@@ -988,7 +988,8 @@ Plugin.prototype = {
 
       var val = this.telInput.val();
       if (val) {
-        if (this.options.nationalMode) {
+        // even if in nationalMode, you can still enter a dial code
+        if (this.options.nationalMode && val.substring(0, 1) != "+") {
           // reformat
           this._updateVal(val);
         } else if (val) {
