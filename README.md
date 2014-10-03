@@ -64,6 +64,10 @@ Set the default country by it's country code. You can also set it to "auto", whi
 Type: `Boolean` Default: `false`  
 Don't insert the international dial code when the user selects a country from the dropdown. Useful if you want to accept numbers in national format, and then you can use `getSelectedCountryData` to get the selected country's dial code.
 
+**numberType**  
+Type: `String` Default: `""`  
+Specify one of the keys from the global enum `intlTelInputUtils.numberType` e.g. `"MOBILE"` to tell the plugin you're expecting that type of number. Currently this is only used to set the placeholder to the right type of number.
+
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
 Display only the countries you specify.
