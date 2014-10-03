@@ -275,13 +275,13 @@ Plugin.prototype = {
 
       // if empty, insert the default dial code (this function will check !nationalMode and !autoHideDialCode)
       if (!val) {
-        this._resetToDialCode(defaultCountry.dialCode);
+        this._updateDialCode(defaultCountry.dialCode, false);
       }
     }
 
     // format
     if (val) {
-      // this wont be run after _resetToDialCode as that's only called if val is empty
+      // this wont be run after _updateDialCode as that's only called if no val
       this._updateVal(val, false);
     }
   },
@@ -717,14 +717,6 @@ Plugin.prototype = {
   },
 
 
-  // reset the input value to just a dial code
-  _resetToDialCode: function(dialCode) {
-    if (!this.options.nationalMode && !this.options.autoHideDialCode) {
-      this.telInput.val("+" + dialCode);
-    }
-  },
-
-
   // remove highlighting from other list items and highlight the given item
   _highlightListItem: function(listItem) {
     this.countryListItems.removeClass("highlight");
@@ -787,10 +779,7 @@ Plugin.prototype = {
     this._selectFlag(countryCode);
     this._closeDropdown();
 
-    // update input value (if not in nationalMode OR if number starts with a plus)
-    if (!this.options.nationalMode || this.telInput.val().substring(0, 1) == "+") {
-      this._updateDialCode("+" + listItem.attr("data-dial-code"));
-    }
+    this._updateDialCode(listItem.attr("data-dial-code"), true);
 
     // always fire the change event as even if nationalMode=true (and we haven't updated
     // the input val), the system as a whole has still changed - see country-sync example
@@ -846,24 +835,34 @@ Plugin.prototype = {
   },
 
 
-  // replace any existing dial code with the new one
-  // currently this is only called from _selectListItem
-  _updateDialCode: function(newDialCode) {
+  // replace any existing dial code with the new one (if not in nationalMode)
+  // also we need to know if we're focusing for a couple of reasons e.g. if so, we want to add any formatting suffix, also if the input is empty and we're not in nationalMode, then we want to insert the dial code
+  _updateDialCode: function(newDialCode, focusing) {
     var inputVal = this.telInput.val(),
-      prevDialCode = this._getDialCode(inputVal),
       newNumber;
 
-    // if the previous number contained a valid dial code, replace it
-    // (if more than just a plus character)
-    if (prevDialCode.length > 1) {
-      newNumber = inputVal.replace(prevDialCode, newDialCode);
+    // save having to pass this every time
+    newDialCode = "+" + newDialCode;
+
+    if (this.options.nationalMode && inputVal.substr(0, 1) != "+") {
+      // if nationalMode, we just want to re-format
+      newNumber = inputVal;
+    } else if (inputVal) {
+      // if the previous number contained a valid dial code, replace it
+      // (if more than just a plus character)
+      var prevDialCode = this._getDialCode(inputVal);
+      if (prevDialCode.length > 1) {
+        newNumber = inputVal.replace(prevDialCode, newDialCode);
+      } else {
+        // if the previous number didn't contain a dial code, we should persist it
+        var existingNumber = (inputVal.substr(0, 1) != "+") ? $.trim(inputVal) : "";
+        newNumber = newDialCode + existingNumber;
+      }
     } else {
-      // if the previous number didn't contain a dial code, we should persist it
-      var existingNumber = (inputVal && inputVal.substr(0, 1) != "+") ? $.trim(inputVal) : "";
-      newNumber = newDialCode + existingNumber;
+      newNumber = (!this.options.autoHideDialCode || focusing) ? newDialCode : "";
     }
 
-    this._updateVal(newNumber, true);
+    this._updateVal(newNumber, focusing);
   },
 
 
@@ -992,21 +991,7 @@ Plugin.prototype = {
     // check if already selected
     if (!this.selectedFlagInner.hasClass(countryCode)) {
       this._selectFlag(countryCode);
-
-      var val = this.telInput.val();
-      if (val) {
-        // even if in nationalMode, you can still enter a dial code
-        if (this.options.nationalMode && val.substring(0, 1) != "+") {
-          // reformat
-          this._updateVal(val);
-        } else if (val) {
-          // update DC and reformat
-          this._updateDialCode("+" + this.selectedCountryData.dialCode);
-        }
-      } else {
-        // insert DC (this will check !nationalMode and !autoHideDialCode)
-        this._resetToDialCode(this.selectedCountryData.dialCode);
-      }
+      this._updateDialCode(this.selectedCountryData.dialCode, false);
     }
   },
 
