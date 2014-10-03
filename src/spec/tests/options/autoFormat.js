@@ -31,6 +31,11 @@ describe("autoFormat option:", function() {
       expect(getInputVal()).toEqual("(702) 418-1234");
     });
 
+    it("changing country still reformats even in nationalMode", function() {
+      selectFlag("ar");
+      expect(getInputVal()).toEqual("7024-1812");
+    });
+
   });
 
 

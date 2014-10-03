@@ -356,7 +356,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 // if handling a new number character: insert it in the right place and calculate the new cursor position
                 if (newNumericChar) {
                     // replace any selection they may have made with the new char
-                    val = val.substring(0, input.selectionStart) + newNumericChar + val.substring(selectionEnd, originalLen);
+                    val = val.substr(0, input.selectionStart) + newNumericChar + val.substring(selectionEnd, originalLen);
                     // if the cursor was not at the end then calculate it's new pos
                     if (!cursorAtEnd) {
                         newCursor = selectionEnd + (val.length - originalLen);
@@ -729,7 +729,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         // if current numericChars make a valid dial code
                         if (this.countryCodes[numericChars]) {
                             // store the actual raw string (useful for matching later)
-                            dialCode = number.substring(0, i + 1);
+                            dialCode = number.substr(0, i + 1);
                         }
                         // longest dial code is 4 chars
                         if (numericChars.length == 4) {
