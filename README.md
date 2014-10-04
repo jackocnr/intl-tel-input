@@ -209,7 +209,7 @@ A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
 * Extract the standardised (E.164) international number with `getCleanNumber` even when using the `nationalMode` option
 
-International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you specify the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking).
+International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking).
 
 
 ## Troubleshooting
