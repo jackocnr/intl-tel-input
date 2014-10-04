@@ -4,6 +4,21 @@ A jQuery plugin for entering and validating international telephone numbers. It 
 ![alt tag](https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png)
 
 
+## Table of contents
+
+- [Demo and Examples](#demo-and-examples)
+- [Features](#features)
+- [Browser compatibility](#browser-compatibility)
+- [Getting Started](#getting-started)
+- [Options](#options)
+- [Public Methods](#public-methods)
+- [Static Methods](#static-methods)
+- [Utilities Script](#utilities-script)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Attributions](#attributions)
+
+
 ## Demo and Examples
 You can view a live demo and some examples of how to use the various options here: http://jackocnr.com/intl-tel-input.html, or try it for yourself using the included demo.html.
 
