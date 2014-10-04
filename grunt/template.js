@@ -14,6 +14,21 @@ module.exports = function(grunt) {
         }
       }
     },
+    nationalMode: {
+      src: 'examples/template.html.ejs',
+      dest: 'examples/gen/national-mode.html',
+      variables: function() {
+        return {
+          time: time,
+          title: "National Mode",
+          desc: "Allow users to enter their national number, and then convert it to international format using the public method getCleanNumber.",
+          stylesheet: "",
+          markup: grunt.file.read('examples/partials/nationalMode.html'),
+          code: grunt.file.read('examples/js/nationalMode.js'),
+          script: "nationalMode.js"
+        }
+      }
+    },
     defaultCountryIp: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/default-country-ip.html',

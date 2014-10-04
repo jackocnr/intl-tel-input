@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Example: National Mode</title>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1412387391652">
+    <link rel="stylesheet" href="../../build/css/demo.css?1412387391652">
+    
+
+    <!-- GOOGLE ANALYTICS -->
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26178728-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <!-- /GOOGLE ANALYTICS -->
+  </head>
+
+  <body>
+    <a href="/intl-tel-input.html">Back</a>
+    <h1>Example: National Mode</h1>
+    <p>Allow users to enter their national number, and then convert it to international format using getCleanNumber.</p>
+    
+    <h2>Markup</h2>
+    <pre><code class="language-markup">&lt;p id=&quot;output&quot;&gt;Please enter a number below&lt;/p&gt;
+&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;</code></pre>
+
+    <h2>Code</h2>
+    <pre><code class="language-javascript">var input = $(&quot;#phone&quot;),
+  output = $(&quot;#output&quot;);
+
+input.intlTelInput({
+  nationalMode: true,
+  utilsScript: &quot;../../lib/libphonenumber/build/utils.js&quot; // just for formatting/placeholders etc
+});
+
+input.keyup(function() {
+  var intlNumber = input.intlTelInput(&quot;getCleanNumber&quot;);
+  if (intlNumber) {
+    output.text(&quot;International: &quot; + intlNumber);
+  } else {
+    output.text(&quot;Please enter a number below&quot;);
+  }
+});</code></pre>
+
+    <h2>Result</h2>
+    <div id="result">
+      <p id="output">Please enter a number below</p>
+<input id="phone" type="tel">
+    </div>
+
+    <script src="../js/prism.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../../build/js/intlTelInput.js?1412387391652"></script>
+    <script src="../js/nationalMode.js?1412387391652"></script>
+  </body>
+</html>
