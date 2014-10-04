@@ -202,7 +202,14 @@ $.fn.intlTelInput.setCountryData(countryData);
 
 
 ## Utilities Script
-International number formatting/validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200KB, so I have included it as an optional extra. If you specify the utilsScript option then it will fetch the script only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function, autoFormat mode and will automatically update your input's placeholder to an example number for the selected country.
+A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com) which enables the following features:
+
+* As-you-type formatting with `autoFormat` option, which prevents you from entering invalid characters, or too many characters
+* Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
+* Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
+* Extract the standardised (E.164) international number with `getCleanNumber` even when using the `nationalMode` option
+
+International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you specify the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking).
 
 
 ## Troubleshooting
