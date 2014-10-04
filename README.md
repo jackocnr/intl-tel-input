@@ -65,7 +65,7 @@ Note: any options that take country codes should be lower case [ISO 3166-1 alpha
 
 **autoFormat**  
 Type: `Boolean` Default: `true`  
-Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters. Requires the utilsScript option for the formatting logic.
+Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters. Requires the `utilsScript` option for the formatting logic.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -73,11 +73,11 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 
 **defaultCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to "auto", which will lookup the user's country based on their IP address. Otherwise it will just be the first country in the list.
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address. Otherwise it will just be the first country in the list.
 
 **nationalMode**  
 Type: `Boolean` Default: `false`  
-Don't insert the international dial code when the user selects a country from the dropdown. Useful if you want to accept numbers in national format, and then you can use `getSelectedCountryData` to get the selected country's dial code.
+Allow users to enter their national number. Formatting, validation and placeholders still work. Then you can use `getCleanNumber` to extract a standardised (E.164) international number.
 
 **numberType**  
 Type: `String` Default: `""`  
@@ -108,14 +108,14 @@ $("#mobile-number").intlTelInput("destroy");
 ```
 
 **getCleanNumber**  
-Get the current number formatted to the [E.164 standard](http://en.wikipedia.org/wiki/E.164). Requires the utilsScript option. _Note that even if nationalMode is enabled, this will still return an international number, as specified by the E.164 standard._  
+Get the current number formatted to the [E.164 standard](http://en.wikipedia.org/wiki/E.164). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this will still return an international number, as specified by the E.164 standard._  
 ```js
 var cleanNumber = $("#mobile-number").intlTelInput("getCleanNumber");
 ```
 Returns a string e.g. `"+17024181234"`
 
 **getNumberType**  
-Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the utilsScript option.  
+Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the `utilsScript` option.  
 ```js
 var numberType = $("#mobile-number").intlTelInput("getNumberType");
 ```
@@ -142,7 +142,7 @@ Returns something like this:
 ```
 
 **getValidationError**  
-Get more information about a validation error.  
+Get more information about a validation error. Requires the `utilsScript` option.  
 ```js
 var error = $("#mobile-number").intlTelInput("getValidationError");
 ```
@@ -154,14 +154,14 @@ if (error == intlTelInputUtils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the utilsScript option). Expects an internationally formatted number (unless nationalMode is enabled).  
+Validate the current number. Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
 ```js
 var isValid = $("#mobile-number").intlTelInput("isValidNumber");
 ```
 Returns: true/false
 
 **loadUtils**  
-Load the utils script - either pass the path as an argument, or it will default to the value of the utilsScript option. Use this if you're lazy loading the plugin script (in which case the utilsScript option will not work as it relies on the window.load event).  
+Load the utils script - either pass the path as an argument, or it will default to the value of the `utilsScript` option. Use this if you're lazy loading the plugin script (in which case the `utilsScript` option will not work as it relies on the window.load event).  
 ```js
 $("#mobile-number").intlTelInput("loadUtils", "lib/libphonenumber/build/utils.js");
 ```
