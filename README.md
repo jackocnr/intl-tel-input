@@ -43,12 +43,13 @@ You can view a live demo and some examples of how to use the various options her
 
 ## Getting Started
 1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
+
 2. Link the stylesheet (note that this references the image flags.png)
   ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
   ```
 
-3. Add the plugin script and initialise it on your input element (alternatively, use a script loader like [RequireJS](http://requirejs.org))
+3. Add the plugin script and initialise it on your input element
   ```html
   <input type="tel" id="mobile-number">
   
@@ -58,6 +59,8 @@ You can view a live demo and some examples of how to use the various options her
     $("#mobile-number").intlTelInput();
   </script>
   ```
+  
+4. Optional: the recommended way to use the plugin is to intialise it with the `utilsScript` option to enable formatting/validation etc., and the `nationalMode` option to allow users to enter national numbers (which you can convert to international numbers using `getCleanNumber`).
 
 
 ## Options
@@ -77,7 +80,7 @@ Set the default country by it's country code. You can also set it to `"auto"`, w
 
 **nationalMode**  
 Type: `Boolean` Default: `false`  
-Allow users to enter their national number. Formatting, validation and placeholders still work. Then you can use `getCleanNumber` to extract a standardised (E.164) international number.
+Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getCleanNumber` to extract a standardised (E.164) international number.
 
 **numberType**  
 Type: `String` Default: `""`  
