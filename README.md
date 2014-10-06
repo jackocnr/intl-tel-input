@@ -4,11 +4,11 @@ A jQuery plugin for entering and validating international telephone numbers. It 
 ![alt tag](https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png)
 
 
-## Table of contents
+## Table of Contents
 
 - [Demo and Examples](#demo-and-examples)
 - [Features](#features)
-- [Browser compatibility](#browser-compatibility)
+- [Browser Compatibility](#browser-compatibility)
 - [Getting Started](#getting-started)
 - [Options](#options)
 - [Public Methods](#public-methods)
@@ -33,7 +33,7 @@ You can view a live demo and some examples of how to use the various options her
 * Lots of initialisation options for customisation, as well as public methods for interaction
 
 
-## Browser compatibility
+## Browser Compatibility
 |            | Chrome | Firefox | Safari | IE  | Android (Chrome) | Mobile Safari | IE Mobile |
 | :--------- | :----: | :-----: | :----: | :-: | :--------------: | :-----------: | :-------: |
 | Core       |    ✓   |    ✓    |    ✓   |  8  |        ✓         |      ✓        |     ✓     |
