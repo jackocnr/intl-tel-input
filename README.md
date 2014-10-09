@@ -4,6 +4,21 @@ A jQuery plugin for entering and validating international telephone numbers. It 
 ![alt tag](https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png)
 
 
+## Table of Contents
+
+- [Demo and Examples](#demo-and-examples)
+- [Features](#features)
+- [Browser Compatibility](#browser-compatibility)
+- [Getting Started](#getting-started)
+- [Options](#options)
+- [Public Methods](#public-methods)
+- [Static Methods](#static-methods)
+- [Utilities Script](#utilities-script)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Attributions](#attributions)
+
+
 ## Demo and Examples
 You can view a live demo and some examples of how to use the various options here: http://jackocnr.com/intl-tel-input.html, or try it for yourself using the included demo.html.
 
@@ -18,7 +33,7 @@ You can view a live demo and some examples of how to use the various options her
 * Lots of initialisation options for customisation, as well as public methods for interaction
 
 
-## Browser compatibility
+## Browser Compatibility
 |            | Chrome | Firefox | Safari | IE  | Android (Chrome) | Mobile Safari | IE Mobile |
 | :--------- | :----: | :-----: | :----: | :-: | :--------------: | :-----------: | :-------: |
 | Core       |    ✓   |    ✓    |    ✓   |  8  |        ✓         |      ✓        |     ✓     |
@@ -28,12 +43,13 @@ You can view a live demo and some examples of how to use the various options her
 
 ## Getting Started
 1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
+
 2. Link the stylesheet (note that this references the image flags.png)
   ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
   ```
 
-3. Add the plugin script and initialise it on your input element (alternatively, use a script loader like [RequireJS](http://requirejs.org))
+3. Add the plugin script and initialise it on your input element
   ```html
   <input type="tel" id="mobile-number">
   
@@ -43,6 +59,8 @@ You can view a live demo and some examples of how to use the various options her
     $("#mobile-number").intlTelInput();
   </script>
   ```
+  
+4. Optional: the recommended way to use the plugin is to intialise it with the `utilsScript` option to enable formatting/validation etc., and the `nationalMode` option to allow users to enter national numbers (which you can convert to international numbers using `getCleanNumber`).
 
 
 ## Options
@@ -50,7 +68,7 @@ Note: any options that take country codes should be lower case [ISO 3166-1 alpha
 
 **autoFormat**  
 Type: `Boolean` Default: `true`  
-Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters. Requires the utilsScript option for the formatting logic.
+Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters. Requires the `utilsScript` option for the formatting logic.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -58,11 +76,11 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 
 **defaultCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to "auto", which will lookup the user's country based on their IP address. Otherwise it will just be the first country in the list.
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address. Otherwise it will just be the first country in the list.
 
 **nationalMode**  
 Type: `Boolean` Default: `false`  
-Don't insert the international dial code when the user selects a country from the dropdown. Useful if you want to accept numbers in national format, and then you can use `getSelectedCountryData` to get the selected country's dial code.
+Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getCleanNumber` to extract a standardised (E.164) international number.
 
 **numberType**  
 Type: `String` Default: `""`  
@@ -82,7 +100,7 @@ Set the dropdown's width to be the same as the input. This is automatically enab
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
-Enable formatting/validation/example numbers (for placeholders) by specifying the URL to the included utils.js script (~200KB), which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script (after the window.load event) this will not work and you will need to use the loadUtils method instead._
+Enable formatting/validation etc. by specifying the path to the included utils.js script, which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
 
 
 ## Public Methods
@@ -93,14 +111,14 @@ $("#mobile-number").intlTelInput("destroy");
 ```
 
 **getCleanNumber**  
-Get the current number formatted to the [E.164 standard](http://en.wikipedia.org/wiki/E.164). Requires the utilsScript option. _Note that even if nationalMode is enabled, this will still return an international number, as specified by the E.164 standard._  
+Get the current number formatted to the [E.164 standard](http://en.wikipedia.org/wiki/E.164). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this will still return an international number, as specified by the E.164 standard._  
 ```js
 var cleanNumber = $("#mobile-number").intlTelInput("getCleanNumber");
 ```
 Returns a string e.g. `"+17024181234"`
 
 **getNumberType**  
-Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the utilsScript option.  
+Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the `utilsScript` option.  
 ```js
 var numberType = $("#mobile-number").intlTelInput("getNumberType");
 ```
@@ -127,7 +145,7 @@ Returns something like this:
 ```
 
 **getValidationError**  
-Get more information about a validation error.  
+Get more information about a validation error. Requires the `utilsScript` option.  
 ```js
 var error = $("#mobile-number").intlTelInput("getValidationError");
 ```
@@ -139,14 +157,15 @@ if (error == intlTelInputUtils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Validate the current number using Google's [libphonenumber](http://libphonenumber.googlecode.com) (requires the utilsScript option). Expects an internationally formatted number (unless nationalMode is enabled).  
+Validate the current number. Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
 ```js
 var isValid = $("#mobile-number").intlTelInput("isValidNumber");
 ```
 Returns: true/false
 
 **loadUtils**  
-Load the utils script - either pass the path as an argument, or it will default to the value of the utilsScript option. Use this if you're lazy loading the plugin script (in which case the utilsScript option will not work as it relies on the window.load event).  
+_Note: this is only needed if you're lazy loading the plugin script itself (intlTelInput.js). If not then just use the `utilsScript` option._  
+Load the utils.js script (included in the lib directory) to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information.
 ```js
 $("#mobile-number").intlTelInput("loadUtils", "lib/libphonenumber/build/utils.js");
 ```
@@ -187,7 +206,14 @@ $.fn.intlTelInput.setCountryData(countryData);
 
 
 ## Utilities Script
-International number formatting/validation is hard (it varies by country/district). The only comprehensive solution I have found is Google's [libphonenumber](http://libphonenumber.googlecode.com), which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~200KB, so I have included it as an optional extra. If you specify the utilsScript option then it will fetch the script only when the page has finished loading (to prevent blocking), and allows you to use the public `isValidNumber` function, autoFormat mode and will automatically update your input's placeholder to an example number for the selected country.
+A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com) which enables the following features:
+
+* As-you-type formatting with `autoFormat` option, which prevents you from entering invalid characters, or too many characters
+* Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
+* Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
+* Extract the standardised (E.164) international number with `getCleanNumber` even when using the `nationalMode` option
+
+International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking).
 
 
 ## Troubleshooting
