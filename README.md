@@ -68,7 +68,7 @@ Note: any options that take country codes should be lower case [ISO 3166-1 alpha
 
 **autoFormat**  
 Type: `Boolean` Default: `true`  
-Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters. Requires the `utilsScript` option for the formatting logic.
+Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (listen for the `invalidkey` event if you want to give the user feedback). Requires the `utilsScript` option for the formatting logic.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
