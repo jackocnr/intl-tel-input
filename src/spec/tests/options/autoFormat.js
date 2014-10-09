@@ -110,8 +110,9 @@ describe("autoFormat option:", function() {
 
   describe("input with initial value", function() {
 
-    var unformattedNumber = "+1 702 418 1234 B",
-      formattedNumber = "+1 702-418-1234";
+    // use an incomplete number else pointless to test adding digits as they would be ignored anyway
+    var unformattedNumber = "+1 702 418 12 B",
+      formattedNumber = "+1 702-418-12";
 
     beforeEach(function() {
       input = $("<input value='" + unformattedNumber + "'>");
@@ -155,7 +156,7 @@ describe("autoFormat option:", function() {
         expect(input.val()).toEqual(formattedNumber);
       });
 
-      it("triggering alpha key at end of input does not add the alpha char and formats the rest", function() {
+      it("triggering alpha key at end of input does not add the alpha char", function() {
         // we dont have to manually alter the input val as when autoFormat is enabled this is all done in the event handler
         putCursorAtEnd();
         triggerKeyOnInput("A");
@@ -214,7 +215,7 @@ describe("autoFormat option:", function() {
           cursorEnd = 6;
 
         beforeEach(function() {
-          // formatted number is "+1 702-418-1234" so this will be "702"
+          // formatted number is "+1 702-418-12" so this will be "702"
           selectInputChars(cursorStart, cursorEnd);
         });
 
@@ -228,7 +229,7 @@ describe("autoFormat option:", function() {
 
         it("hitting a number char will replace the selection, reformat, and put the cursor in the right place", function() {
           triggerKeyOnInput("9");
-          expect(input.val()).toEqual("+1 941-812-34");
+          expect(input.val()).toEqual("+1 941-812-");
           // cursor
           expect(input[0].selectionStart).toEqual(cursorStart + 1);
         });
