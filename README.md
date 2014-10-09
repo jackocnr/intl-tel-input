@@ -76,7 +76,7 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 
 **defaultCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address. Otherwise it will just be the first country in the list.
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list.
 
 **nationalMode**  
 Type: `Boolean` Default: `false`  
@@ -185,7 +185,7 @@ $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 
 ## Static Methods
 **getCountryData**  
-Get all of the plugin's country data - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/modify-country-data.html).  
+Get all of the plugin's country data - either to re-use elsewhere e.g. to populate a country dropdown - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/country-sync.html), or to modify - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/modify-country-data.html).  
 ```js
 var countryData = $.fn.intlTelInput.getCountryData();
 ```
