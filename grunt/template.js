@@ -22,7 +22,7 @@ module.exports = function(grunt) {
           time: time,
           title: "Invalid Key",
           desc: "Use the custom invalidkey event to flash the input red. To test it, focus the input and type an invalid character e.g. a letter.",
-          stylesheet: 'invalidkey.css',
+          stylesheet: 'invalidKey.css',
           markup: grunt.file.read('examples/partials/simpleInput.html'),
           code: grunt.file.read('examples/js/invalidKey.js'),
           script: "invalidKey.js"
