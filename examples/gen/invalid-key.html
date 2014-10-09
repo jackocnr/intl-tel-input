@@ -2,10 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Example: National Mode</title>
+    <title>Example: Invalid Key</title>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../../build/css/intlTelInput.css?1412823133324">
     <link rel="stylesheet" href="../../build/css/demo.css?1412823133324">
+    
+      <link rel="stylesheet" href="../css/invalidkey.css?1412823133324">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -24,40 +26,34 @@
 
   <body>
     <a href="/intl-tel-input.html">Back</a>
-    <h1>Example: National Mode</h1>
-    <p>Allow users to enter their national number, and then convert it to international format using the public method getCleanNumber.</p>
+    <h1>Example: Invalid Key</h1>
+    <p>Use the custom invalidkey event to flash the input red. To test it, focus the input and type an invalid character e.g. a letter.</p>
     
     <h2>Markup</h2>
-    <pre><code class="language-markup">&lt;p id=&quot;output&quot;&gt;Please enter a number below&lt;/p&gt;
-&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;</code></pre>
+    <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;</code></pre>
 
     <h2>Code</h2>
-    <pre><code class="language-javascript">var input = $(&quot;#phone&quot;),
-  output = $(&quot;#output&quot;);
+    <pre><code class="language-javascript">var input = $(&quot;#phone&quot;);
 
 input.intlTelInput({
-  nationalMode: true,
   utilsScript: &quot;../../lib/libphonenumber/build/utils.js&quot; // just for formatting/placeholders etc
 });
 
-input.keyup(function() {
-  var intlNumber = input.intlTelInput(&quot;getCleanNumber&quot;);
-  if (intlNumber) {
-    output.text(&quot;International: &quot; + intlNumber);
-  } else {
-    output.text(&quot;Please enter a number below&quot;);
-  }
+input.on(&quot;invalidkey&quot;, function() {
+  input.addClass(&quot;flash&quot;);
+  setTimeout(function() {
+    input.removeClass(&quot;flash&quot;);
+  }, 100);
 });</code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <p id="output">Please enter a number below</p>
-<input id="phone" type="tel">
+      <input id="phone" type="tel">
     </div>
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../../build/js/intlTelInput.js?1412823133324"></script>
-    <script src="../js/nationalMode.js?1412823133324"></script>
+    <script src="../js/invalidKey.js?1412823133324"></script>
   </body>
 </html>

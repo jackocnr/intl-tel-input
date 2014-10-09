@@ -366,6 +366,9 @@ Plugin.prototype = {
             var newChar = (isAllowedKey) ? String.fromCharCode(e.which) : null;
             that._handleInputKey(newChar, true);
           }
+          if (!isAllowedKey) {
+            that.telInput.trigger("invalidkey");
+          }
         }
       });
     }
@@ -388,6 +391,7 @@ Plugin.prototype = {
         // if backspace: reformat with no suffix (need to reformat if at end to remove any lingering suffix - this is a feature)
         // if ctrl and no selection (i.e. could have just been a paste): reformat (if cursorAtEnd: add suffix)
         if ((e.which == keys.DEL && !cursorAtEnd) || e.which == keys.BSPACE || (isCtrl && noSelection)) {
+          // important to remember never to add suffix on any delete key as can fuck up in ie8 so you can never delete a formatting char at the end
           that._handleInputKey(null, (isCtrl && cursorAtEnd));
         }
         // prevent deleting the plus (if not in nationalMode)
