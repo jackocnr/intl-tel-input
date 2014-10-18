@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   return {
     src: [
       'src/js/data.js',
-      'src/js/intlTelInput.js',
+      'build/js/intlTelInput.min.js',
       'lib/libphonenumber/build/utils.js'
     ],
     options: {

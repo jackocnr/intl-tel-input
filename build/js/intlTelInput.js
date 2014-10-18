@@ -74,13 +74,13 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (this.options.defaultCountry == "auto") {
                 $.get("http://ipinfo.io", function(response) {
                     that.options.defaultCountry = response && response.country ? response.country.toLowerCase() : "";
-                    that.ready();
+                    that._ready();
                 }, "jsonp");
             } else {
-                this.ready();
+                this._ready();
             }
         },
-        ready: function() {
+        _ready: function() {
             // if in nationalMode, disable options relating to dial codes
             if (this.options.nationalMode) {
                 this.options.autoHideDialCode = false;
