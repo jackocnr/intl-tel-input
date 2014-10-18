@@ -6,7 +6,7 @@ module.exports = function(grunt) {
   return {
     js: {
       src: 'src/js/wrapper.js.ejs',
-      dest: 'tmp/all.js',
+      dest: 'tmp/wrapped.js',
       variables: function() {
         return {
           plugin: grunt.file.read('src/js/intlTelInput.js'),

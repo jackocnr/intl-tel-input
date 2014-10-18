@@ -1,98 +1,8 @@
 module.exports = function(grunt) {
   return {
-    js: {
+    one: {
       options: {
         patterns: [
-
-          /***********
-           * FIELDS
-           ***********/
-          {
-            match: /.element/g,
-            replacement: '.a'
-          }, {
-            match: /.options/g,
-            replacement: '.b'
-          }, {
-            match: /._defaults/g,
-            replacement: '.c'
-          }, {
-            match: /.isGoodBrowser/g,
-            replacement: '.d'
-          }, {
-            match: /.hadInitialPlaceholder/g,
-            replacement: '.e'
-          }, {
-            match: /._name/g,
-            replacement: '.f'
-          }, {
-            match: /.telInput/g,
-            replacement: '.g'
-          }, {
-            match: /.selectedFlagInner/g,
-            replacement: '.h'
-          }, {
-            match: /.countryList/g,
-            replacement: '.i'
-          }, {
-            match: /.dropdownHeight/g,
-            replacement: '.j'
-          }, {
-            match: /.countryListItems/g,
-            replacement: '.k'
-          }, {
-            match: /.countries/g,
-            replacement: '.l'
-          }, {
-            match: /.countryCodes/g,
-            replacement: '.m'
-          },
-          /*{
-            match: /.preferredCountries/g,
-            replacement: '.n'
-          },*/
-          {
-            match: /.selectedCountryData/g,
-            replacement: '.o'
-          },
-
-
-
-          /***********
-           * OPTIONS
-           ***********/
-          // changing the actual options names is problematic because they are passed in on initialisation
-          // it would require a map in the src, on init: rename the user's options to a, b, c before the call to extend().
-          /*{
-            match: /autoFormat/g,
-            replacement: 'a'
-          },{
-            match: /autoHideDialCode/g,
-            replacement: 'b'
-          },{
-            match: /defaultCountry/g,
-            replacement: 'd'
-          }, {
-            match: /nationalMode/g,
-            replacement: 'm'
-          }, {
-            match: /numberType/g,
-            replacement: 'n'
-          }, {
-            match: /onlyCountries/g,
-            replacement: 'o'
-          }, {
-            match: /preferredCountries/g,
-            replacement: 'p'
-          },{
-            match: /responsiveDropdown/g,
-            replacement: 'r'
-          }, {
-            match: /utilsScript/g,
-            replacement: 'u'
-          },*/
-
-
 
           /***********
            * PRIVATE METHODS
@@ -197,7 +107,176 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'build/js/intlTelInput.min.js': 'tmp/all.min.js'
+        'tmp/one.min.js': 'tmp/wrapped.min.js'
+      }
+    },
+
+
+
+    two: {
+      options: {
+        patterns: [
+
+          /***********
+           * OPTIONS
+           ***********/
+
+          // first occurence, when they are defined in the defaults object (no "options." prefix to match)
+          {
+            match: /autoFormat/,
+            replacement: 'a'
+          }, {
+            match: /autoHideDialCode/,
+            replacement: 'h'
+          }, {
+            match: /defaultCountry/,
+            replacement: 'd'
+          }, {
+            match: /nationalMode/,
+            replacement: 'n'
+          }, {
+            match: /numberType/,
+            replacement: 't'
+          }, {
+            match: /onlyCountries/,
+            replacement: 'o'
+          }, {
+            match: /preferredCountries/,
+            replacement: 'p'
+          }, {
+            match: /responsiveDropdown/,
+            replacement: 'r'
+          }, {
+            match: /utilsScript/,
+            replacement: 'u'
+          },
+
+
+          // all other occurrences have the options prefix
+          {
+            match: /options.autoFormat/g,
+            replacement: 'options.a'
+          }, {
+            match: /options.autoHideDialCode/g,
+            replacement: 'options.h'
+          }, {
+            match: /options.defaultCountry/g,
+            replacement: 'options.d'
+          }, {
+            match: /options.nationalMode/g,
+            replacement: 'options.n'
+          }, {
+            match: /options.numberType/g,
+            replacement: 'options.t'
+          }, {
+            match: /options.onlyCountries/g,
+            replacement: 'options.o'
+          }, {
+            match: /options.preferredCountries/g,
+            replacement: 'options.p'
+          }, {
+            match: /options.responsiveDropdown/g,
+            replacement: 'options.r'
+          }, {
+            match: /options.utilsScript/g,
+            replacement: 'options.u'
+          },
+
+        ]
+      },
+      files: {
+        'tmp/two.min.js': 'tmp/one.min.js'
+      }
+    },
+
+
+
+    three: {
+      options: {
+        patterns: [
+
+          /***********
+           * FIELDS
+           ***********/
+          {
+            match: /.element/g,
+            replacement: '.a'
+          }, {
+            match: /.options/g,
+            replacement: '.b'
+          }, {
+            match: /._defaults/g,
+            replacement: '.c'
+          }, {
+            match: /.isGoodBrowser/g,
+            replacement: '.d'
+          }, {
+            match: /.hadInitialPlaceholder/g,
+            replacement: '.e'
+          }, {
+            match: /._name/g,
+            replacement: '.f'
+          }, {
+            match: /.telInput/g,
+            replacement: '.g'
+          }, {
+            match: /.selectedFlagInner/g,
+            replacement: '.h'
+          }, {
+            match: /.countryList/g,
+            replacement: '.i'
+          }, {
+            match: /.dropdownHeight/g,
+            replacement: '.j'
+          }, {
+            match: /.countryListItems/g,
+            replacement: '.k'
+          }, {
+            match: /.countries/g,
+            replacement: '.l'
+          }, {
+            match: /.countryCodes/g,
+            replacement: '.m'
+          }, {
+            match: /.preferredCountries/g,
+            replacement: '.n'
+          }, {
+            match: /.selectedCountryData/g,
+            replacement: '.o'
+          }
+
+        ]
+      },
+      files: {
+        'tmp/three.min.js': 'tmp/two.min.js'
+      }
+    },
+
+
+
+    four: {
+      options: {
+        patterns: [
+
+          // hack to normalise runtime option names
+          {
+            match: /this.b=/g,
+            replacement: 'c&&(c={' +
+              'a:c.autoFormat,' +
+              'h:c.autoHideDialCode,' +
+              'd:c.defaultCountry,' +
+              'n:c.nationalMode,' +
+              't:c.numberType,' +
+              'o:c.onlyCountries,' +
+              'p:c.preferredCountries,' +
+              'r:c.responsiveDropdown,' +
+              'u:c.utilsScript' +
+              '}),this.b='
+          }
+        ]
+      },
+      files: {
+        'build/js/intlTelInput.min.js': 'tmp/three.min.js'
       }
     }
   };

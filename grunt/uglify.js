@@ -14,12 +14,12 @@ module.exports = function(grunt) {
         preserveComments: true
       },
       files: {
-        'build/js/intlTelInput.js': 'tmp/all.js'
+        'build/js/intlTelInput.js': 'tmp/wrapped.js'
       }
     },
     prod: {
       files: {
-        'tmp/all.min.js': 'tmp/all.js'
+        'tmp/wrapped.min.js': 'tmp/wrapped.js'
       }
     }
   };
