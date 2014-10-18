@@ -134,8 +134,6 @@ describe("autoFormat option:", function() {
       });
 
       it("triggering alpha key at end of input adds the alpha char and leaves the rest", function() {
-        // updating the input value will be silent (no events triggered)
-        input.val(unformattedNumber + "A");
         triggerKeyOnInput("A");
 
         expect(input.val()).toEqual(unformattedNumber + "A");

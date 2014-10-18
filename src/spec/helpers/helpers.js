@@ -90,17 +90,22 @@ var getKeyEvent = function(key, type) {
   });
 };
 
+// trigger keydown, then keypress, then add the key, then keyup
 var triggerKeyOnInput = function(key) {
-  triggerKey(input, key);
+  input.trigger(getKeyEvent(key, "keydown"));
+  var e = getKeyEvent(key, "keypress");
+  input.trigger(e);
+  // insert char
+  if (!e.isDefaultPrevented()) {
+    var domInput = input[0],
+      val = input.val();
+    input.val(val.substr(0, domInput.selectionStart) + key + val.substring(domInput.selectionEnd, val.length));
+  }
+  input.trigger(getKeyEvent(key, "keyup"));
 };
 
 var triggerKeyOnBody = function(key) {
-  triggerKey($("body"), key);
-};
-
-// when a key is pressed IRL, these events are triggered in this order
-var triggerKey = function(target, key) {
-  target.trigger(getKeyEvent(key, "keydown"));
-  target.trigger(getKeyEvent(key, "keypress"));
-  target.trigger(getKeyEvent(key, "keyup"));
+  $("body").trigger(getKeyEvent(key, "keydown"));
+  $("body").trigger(getKeyEvent(key, "keypress"));
+  $("body").trigger(getKeyEvent(key, "keyup"));
 };

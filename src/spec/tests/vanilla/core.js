@@ -6,7 +6,7 @@ describe("vanilla:", function() {
     intlSetup();
   });
 
-  
+
 
   describe("init plugin on input with prepopulated value", function() {
 
@@ -139,11 +139,12 @@ describe("vanilla:", function() {
 
     describe("typing a dial code containing a space", function() {
 
-      var telNo = "98765432";
+      var telNo = "98765432",
+        key = "1";
 
       beforeEach(function() {
         input.val("+4 4 " + telNo);
-        triggerKeyOnInput(" ");
+        triggerKeyOnInput(key);
       });
 
       it("still updates the flag correctly", function() {
@@ -152,7 +153,7 @@ describe("vanilla:", function() {
 
       it("then changing the flag updates the number correctly", function() {
         selectFlag("zw");
-        expect(getInputVal()).toEqual("+263 " + telNo);
+        expect(getInputVal()).toEqual("+263 " + telNo + key);
       });
 
     });
@@ -161,11 +162,12 @@ describe("vanilla:", function() {
 
     describe("typing a dial code containing a dot", function() {
 
-      var telNo = "98765432";
+      var telNo = "98765432",
+        key = "1";
 
       beforeEach(function() {
         input.val("+4.4 " + telNo);
-        triggerKeyOnInput(" ");
+        triggerKeyOnInput(key);
       });
 
       it("still updates the flag correctly", function() {
@@ -174,7 +176,7 @@ describe("vanilla:", function() {
 
       it("then changing the flag updates the number correctly", function() {
         selectFlag("zw");
-        expect(getInputVal()).toEqual("+263 " + telNo);
+        expect(getInputVal()).toEqual("+263 " + telNo + key);
       });
 
     });

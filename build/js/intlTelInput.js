@@ -304,7 +304,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     // 32 is space, and after that it's all chars (not meta/nav keys)
                     // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
                     // Update: also ignore if this is a metaKey e.g. FF and Safari trigger keypress on the v of Ctrl+v
-                    if (e.which >= keys.SPACE && !e.metaKey) {
+                    // Update: also check that we have utils before we do any autoFormat stuff
+                    if (e.which >= keys.SPACE && !e.metaKey && window.intlTelInputUtils) {
                         e.preventDefault();
                         // allowed keys are just numeric keys and plus
                         // we must allow plus for the case where the user does select-all and then hits plus to start typing a new number. we could refine this logic to first check that the selection contains a plus, but that wont work in old browsers, and I think it's overkill anyway
@@ -326,7 +327,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // for autoFormat: we use keyup to catch delete events after the fact
             this.telInput.on("keyup" + this.ns, function(e) {
                 // the "enter" key event from selecting a dropdown item is triggered here on the input, because the document.keydown handler that initially handles that event triggers a focus on the input, and so the keyup for that same key event gets triggered here. weird, but just make sure we dont bother doing any re-formatting in this case (we've already done preventDefault in the keydown handler, so it wont actually submit the form or anything).
-                if (e.which == keys.ENTER) {} else if (that.options.autoFormat) {
+                if (e.which == keys.ENTER) {} else if (that.options.autoFormat && window.intlTelInputUtils) {
                     var isCtrl = e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2, input = that.telInput[0], // noSelection defaults to false for bad browsers, else would be reformatting on all ctrl keys e.g. select-all/copy
                     noSelection = that.isGoodBrowser && input.selectionStart == input.selectionEnd, // cursorAtEnd defaults to false for bad browsers else they would never get a reformat on delete
                     cursorAtEnd = that.isGoodBrowser && input.selectionStart == that.telInput.val().length;
@@ -413,7 +414,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         that.telInput.one("keypress.plus" + that.ns, function(e) {
                             if (e.which == keys.PLUS) {
                                 // if autoFormat is enabled, this key event will have already have been handled by another keypress listener (hence we need to add the "+"). if disabled, it will be handled after this by a keyup listener (hence no need to add the "+").
-                                var newVal = that.options.autoFormat ? "+" : "";
+                                var newVal = that.options.autoFormat && window.intlTelInputUtils ? "+" : "";
                                 that.telInput.val(newVal);
                             }
                         });
@@ -442,8 +443,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     // remove the keypress listener we added on focus
                     that.telInput.off("keypress.plus" + that.ns);
                 }
-                // manually trigger change event if value has changed
-                if (that.options.autoFormat && that.telInput.val() != that.telInput.data("focusVal")) {
+                // if autoFormat, we must manually trigger change event if value has changed
+                if (that.options.autoFormat && window.intlTelInputUtils && that.telInput.val() != that.telInput.data("focusVal")) {
                     that.telInput.trigger("change");
                 }
             });
