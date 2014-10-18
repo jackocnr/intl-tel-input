@@ -2,7 +2,11 @@
 
 describe("multiple instances: init vanilla plugin to test multiple instances", function() {
 
-  var input2, chinaCountryCode = "cn", chinaDialCode = "+86";
+  var input2,
+    afghanistanCountryCode = "af",
+    albaniaCountryCode = "al",
+    chinaCountryCode = "cn",
+    chinaDialCode = "+86";
 
   beforeEach(function() {
     intlSetup();
@@ -10,11 +14,11 @@ describe("multiple instances: init vanilla plugin to test multiple instances", f
     input2 = $("<input>");
     // japan and china
     input.intlTelInput({
-      onlyCountries: ['jp', chinaCountryCode]
+      onlyCountries: [chinaCountryCode, afghanistanCountryCode]
     });
     // korea, china and russia
     input2.intlTelInput({
-      onlyCountries: ['kr', chinaCountryCode, 'ru']
+      onlyCountries: ['kr', chinaCountryCode, 'ru', albaniaCountryCode]
     });
     $("body").append(getParentElement(input)).append(getParentElement(input2));
   });
@@ -29,12 +33,12 @@ describe("multiple instances: init vanilla plugin to test multiple instances", f
 
   it("instances have different country lists", function() {
     expect(getListLength()).toEqual(2);
-    expect(getListLength(input2)).toEqual(3);
+    expect(getListLength(input2)).toEqual(4);
   });
 
   it("instances have different default countries selected", function() {
-    expect(getSelectedFlagElement()).toHaveClass("jp");
-    expect(getSelectedFlagElement(input2)).toHaveClass("kr");
+    expect(getSelectedFlagElement()).toHaveClass(afghanistanCountryCode);
+    expect(getSelectedFlagElement(input2)).toHaveClass(albaniaCountryCode);
   });
 
   it("selecting an item from the first input dropdown only updates the flag on that input", function() {
@@ -44,16 +48,16 @@ describe("multiple instances: init vanilla plugin to test multiple instances", f
   });
 
   it("updating the number on the first input only updates the flag on that input", function() {
-    input.val(chinaDialCode+" 123456");
+    input.val(chinaDialCode + " 123456");
     triggerKeyOnInput(" ");
     expect(getSelectedFlagElement()).toHaveClass(chinaCountryCode);
-    expect(getSelectedFlagElement(input2)).toHaveClass("kr");
+    expect(getSelectedFlagElement(input2)).toHaveClass(albaniaCountryCode);
   });
 
 
 
   describe("clicking open dropdown on the first input", function() {
-  
+
     beforeEach(function() {
       getSelectedFlagContainer().click();
     });
@@ -68,7 +72,7 @@ describe("multiple instances: init vanilla plugin to test multiple instances", f
       expect(getListElement()).toHaveClass("hide");
       expect(getListElement(input2)).not.toHaveClass("hide");
     });
-  
+
   });
 
 });
