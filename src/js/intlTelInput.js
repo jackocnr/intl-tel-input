@@ -85,8 +85,8 @@ Plugin.prototype = {
     if (this.options.nationalMode) {
       this.options.autoHideDialCode = false;
     }
-    // IE Mobile and Chrome for Android have issues with key events (see issues 56 and 68) which make autoFormat impossible
-    if (navigator.userAgent.match(/IEMobile/i) || (navigator.userAgent.match(/Android/i) && navigator.userAgent.match(/Chrome/i))) {
+    // IE Mobile doesn't support the keypress event (see issue 68) which makes autoFormat impossible
+    if (navigator.userAgent.match(/IEMobile/i)) {
       this.options.autoFormat = false;
     }
 
