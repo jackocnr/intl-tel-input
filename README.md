@@ -37,7 +37,7 @@ You can view a live demo and some examples of how to use the various options her
 |            | Chrome | Firefox | Safari | IE  | Android (Chrome) | Mobile Safari | IE Mobile |
 | :--------- | :----: | :-----: | :----: | :-: | :--------------: | :-----------: | :-------: |
 | Core       |    ✓   |    ✓    |    ✓   |  8  |        ✓         |      ✓        |     ✓     |
-| autoFormat |    ✓   |    ✓    |    ✓   |  8  |        [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/56)         |      ✓        |     [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/68)     |
+| autoFormat |    ✓   |    ✓    |    ✓   |  8  |        ✓         |      ✓        |     [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/68)     |
 
 
 
