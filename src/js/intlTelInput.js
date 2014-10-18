@@ -95,7 +95,7 @@ Plugin.prototype = {
       this.options.responsiveDropdown = true;
     }
 
-    // process all the data: onlyCounties, preferredCountries, defaultCountry etc
+    // process all the data: onlyCountries, preferredCountries etc
     this._processCountryData();
 
     // generate the markup
@@ -115,8 +115,7 @@ Plugin.prototype = {
    ********************/
 
 
-  // prepare all of the country data, including onlyCountries, preferredCountries and
-  // defaultCountry options
+  // prepare all of the country data, including onlyCountries and preferredCountries options
   _processCountryData: function() {
     // set the instances country data objects
     this._setInstanceCountryData();
@@ -143,10 +142,9 @@ Plugin.prototype = {
     // process onlyCountries option
     if (this.options.onlyCountries.length) {
       this.countries = [];
-      for (i = 0; i < this.options.onlyCountries.length; i++) {
-        var countryData = this._getCountryData(this.options.onlyCountries[i], true, false);
-        if (countryData) {
-          this.countries.push(countryData);
+      for (i = 0; i < allCountries.length; i++) {
+        if ($.inArray(allCountries[i].iso2, this.options.onlyCountries) != -1) {
+          this.countries.push(allCountries[i]);
         }
       }
     } else {
