@@ -37,7 +37,7 @@ You can view a live demo and some examples of how to use the various options her
 |            | Chrome | Firefox | Safari | IE  | Android (Chrome) | Mobile Safari | IE Mobile |
 | :--------- | :----: | :-----: | :----: | :-: | :--------------: | :-----------: | :-------: |
 | Core       |    ✓   |    ✓    |    ✓   |  8  |        ✓         |      ✓        |     ✓     |
-| autoFormat |    ✓   |    ✓    |    ✓   |  9  |        [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/56)         |      ✓        |     [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/68)     |
+| autoFormat |    ✓   |    ✓    |    ✓   |  8  |        [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/56)         |      ✓        |     [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/68)     |
 
 
 
@@ -68,7 +68,7 @@ Note: any options that take country codes should be lower case [ISO 3166-1 alpha
 
 **autoFormat**  
 Type: `Boolean` Default: `true`  
-Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (listen for the `invalidkey` event if you want to give the user feedback). Requires the `utilsScript` option for the formatting logic.
+Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (listen for the `invalidkey` event if you want to give the user feedback - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/invalid-key.html)). Requires the `utilsScript` option for the formatting logic.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -76,11 +76,11 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 
 **defaultCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address. Otherwise it will just be the first country in the list.
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list.
 
 **nationalMode**  
 Type: `Boolean` Default: `false`  
-Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getCleanNumber` to extract a standardised (E.164) international number.
+Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getCleanNumber` to extract a standardised (E.164) international number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/national-mode.html).
 
 **numberType**  
 Type: `String` Default: `""`  
@@ -88,7 +88,7 @@ Specify one of the keys from the global enum `intlTelInputUtils.numberType` e.g.
 
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
-Display only the countries you specify.
+Display only the countries you specify - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/only-countries-europe.html).
 
 **preferredCountries**  
 Type: `Array` Default: `["us", "gb"]`  
@@ -157,7 +157,7 @@ if (error == intlTelInputUtils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Validate the current number. Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
+Validate the current number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/is-valid-number.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
 ```js
 var isValid = $("#mobile-number").intlTelInput("isValidNumber");
 ```
@@ -185,7 +185,7 @@ $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 
 ## Static Methods
 **getCountryData**  
-Get all of the plugin's country data.  
+Get all of the plugin's country data - either to re-use elsewhere e.g. to populate a country dropdown - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/country-sync.html), or to modify - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/modify-country-data.html).  
 ```js
 var countryData = $.fn.intlTelInput.getCountryData();
 ```
