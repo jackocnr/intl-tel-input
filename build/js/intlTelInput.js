@@ -72,10 +72,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var that = this;
             // if defaultCountry is set to "auto", we must do a lookup first
             if (this.options.defaultCountry == "auto") {
-                $.get("//ipinfo.io", function(response) {
+                $.get("//ipinfo.io?token=375de2bf8d71ce", function(response) {
                     that.options.defaultCountry = response && response.country ? response.country.toLowerCase() : "";
+                    
+                }, "jsonp").always(function() {
                     that._ready();
-                }, "jsonp");
+                });
             } else {
                 this._ready();
             }
