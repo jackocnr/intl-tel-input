@@ -1,6 +1,6 @@
 {
   "name": "intl-tel-input",
-  "version": "3.6.4",
+  "version": "3.6.5",
   "main": [
     "./build/js/intlTelInput.min.js",
     "./build/img/flags.png",
