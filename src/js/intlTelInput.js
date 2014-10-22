@@ -10,7 +10,7 @@ var pluginName = "intlTelInput",
     // don't insert international dial codes
     nationalMode: false,
     // number type to use for placeholders
-    numberType: "",
+    numberType: "MOBILE",
     // display only these countries
     onlyCountries: [],
     // the countries at the top of the list. defaults to united states and united kingdom
@@ -783,7 +783,7 @@ Plugin.prototype = {
   _updatePlaceholder: function() {
     if (window.intlTelInputUtils && !this.hadInitialPlaceholder) {
       var iso2 = this.selectedCountryData.iso2,
-        numberType = (this.options.numberType) ? intlTelInputUtils.numberType[this.options.numberType] : intlTelInputUtils.numberType.FIXED_LINE,
+        numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"],
         placeholder = intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType);
       this.telInput.attr("placeholder", placeholder);
     }
