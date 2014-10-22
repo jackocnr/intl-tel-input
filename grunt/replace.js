@@ -118,8 +118,50 @@ module.exports = function(grunt) {
         patterns: [
 
           /***********
-           * OPTIONS
+           * OPTIONS AND KEYS
            ***********/
+
+          // keys enum (ommitting A and Z)
+          {
+            match: /UP/g,
+            replacement: 'b'
+          }, {
+            match: /DOWN/g,
+            replacement: 'c'
+          }, {
+            match: /ENTER/g,
+            replacement: 'd'
+          }, {
+            match: /ESC/g,
+            replacement: 'e'
+          }, {
+            match: /PLUS/g,
+            replacement: 'f'
+          }, {
+            match: /ZERO/g,
+            replacement: 'g'
+          }, {
+            match: /NINE/g,
+            replacement: 'h'
+          }, {
+            match: /SPACE/g,
+            replacement: 'i'
+          }, {
+            match: /BSPACE/g,
+            replacement: 'j'
+          }, {
+            match: /DEL/g,
+            replacement: 'k'
+          }, {
+            match: /CTRL/g,
+            replacement: 'l'
+          }, {
+            match: /CMD1/g,
+            replacement: 'm'
+          }, {
+            match: /CMD2/g,
+            replacement: 'n'
+          },
 
           // first occurence, when they are defined in the defaults object (no "options." prefix to match)
           {
