@@ -44,7 +44,7 @@ You can view a live demo and some examples of how to use the various options her
 ## Getting Started
 1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
 
-2. Link the stylesheet (note that this references the image flags.png)
+2. Link the stylesheet (note that this references the included image flags.png)
   ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
   ```
@@ -157,7 +157,7 @@ if (error == intlTelInputUtils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Validate the current number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/is-valid-number.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
+Validate the current number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/is-valid-number.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option. Also see `getNumberType` if you want to make sure the user enters a certain type of number e.g. a mobile number.  
 ```js
 var isValid = $("#mobile-number").intlTelInput("isValidNumber");
 ```
