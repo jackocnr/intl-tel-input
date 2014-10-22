@@ -252,5 +252,6 @@ I use [Grunt](http://gruntjs.com) to build the project, which relies on [npm](ht
 * Flag images and CSS from [Flag Sprites](http://flag-sprites.com) (which uses [FamFamFam](https://github.com/tkrotoff/famfamfam_flags))
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](http://libphonenumber.googlecode.com)
+* Lookup user's country using [ipinfo.io](http://ipinfo.io)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/Bluefieldscom/intl-tel-input/wiki/Contributions)
 * List of [sites using intl-tel-input](https://github.com/Bluefieldscom/intl-tel-input/wiki/Sites-using-intl-tel-input)
