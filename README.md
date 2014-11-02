@@ -78,6 +78,10 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 Type: `String` Default: `""`  
 Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list.
 
+**ipinfoToken**  
+Type: `String` Default: `""`  
+When setting `defaultCountry` to `"auto"`, we use a service called [ipinfo](http://ipinfo.io) which requires a special token to be used over https, or if you make >1000 requests/day. Use this option to pass in that token.
+
 **nationalMode**  
 Type: `Boolean` Default: `false`  
 Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getCleanNumber` to extract a standardised (E.164) international number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/national-mode.html).
@@ -199,7 +203,7 @@ Returns an array of country objects:
 ```
 
 **setCountryData**  
-Set all of the plugin's country data.  
+Set all of the plugin's country data. Note: the data should be the same format as that above i.e. an array of objects.  
 ```js
 $.fn.intlTelInput.setCountryData(countryData);
 ```
