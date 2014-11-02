@@ -7,7 +7,7 @@ var pluginName = "intlTelInput",
     autoHideDialCode: true,
     // default country
     defaultCountry: "",
-    // token for default country https or over 1000 daily page views support (learn more at http://ipinfo.io)
+    // token for ipinfo - required for https or over 1000 daily page views support
     ipinfoToken: "",
     // don't insert international dial codes
     nationalMode: false,
@@ -73,12 +73,16 @@ Plugin.prototype = {
 
     // if defaultCountry is set to "auto", we must do a lookup first
     if (this.options.defaultCountry == "auto") {
+      // reset this in case lookup fails
+      this.options.defaultCountry = "";
       var ipinfoURL = "//ipinfo.io";
       if (this.options.ipinfoToken) {
         ipinfoURL += "?token=" + this.options.ipinfoToken;
       }
       $.get(ipinfoURL, function(response) {
-        that.options.defaultCountry = (response && response.country) ? response.country.toLowerCase() : "";
+        if (response && response.country) {
+          that.options.defaultCountry = response.country.toLowerCase();
+        }
       }, "jsonp").always(function() {
         that._ready();
       });
