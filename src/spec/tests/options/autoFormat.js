@@ -16,8 +16,11 @@ describe("autoFormat option:", function() {
 
   describe("input containing national number, init plugin with autoFormat and nationalMode enabled", function() {
 
+    var unformattedNumber = "7024181234",
+      formattedNumber = "(702) 418-1234";
+
     beforeEach(function() {
-      input = $("<input value='7024181234 A'>");
+      input = $("<input value='" + unformattedNumber + "'>");
       // must be in DOM for focus/keys to work
       input.appendTo($("body"));
 
@@ -28,12 +31,25 @@ describe("autoFormat option:", function() {
     });
 
     it("formats the number according to the defaultCountry", function() {
-      expect(getInputVal()).toEqual("(702) 418-1234");
+      expect(getInputVal()).toEqual(formattedNumber);
     });
 
     it("changing country still reformats even in nationalMode", function() {
       selectFlag("ar");
       expect(getInputVal()).toEqual("7024-1812");
+    });
+
+    it("adding another digit doesnt work", function() {
+      triggerKeyOnInput("2");
+      expect(getInputVal()).toEqual(formattedNumber);
+    });
+
+    it("check a previously broken case regarding a UK 0141 number", function() {
+      selectFlag("gb");
+      input.val("0141 534 40");
+      // adding a 0 here changes the formatting to "01415 34400", which previously stopped this char from appearing
+      triggerKeyOnInput("0");
+      expect(getInputVal()).toEqual("0141 534 400");
     });
 
   });
@@ -108,7 +124,7 @@ describe("autoFormat option:", function() {
 
 
 
-  describe("input with initial value", function() {
+  describe("input with bad initial value", function() {
 
     // use an incomplete number else pointless to test adding digits as they would be ignored anyway
     var unformattedNumber = "+1 702 418 12 B",
