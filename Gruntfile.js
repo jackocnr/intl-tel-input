@@ -8,7 +8,7 @@ module.exports = function(grunt) {
    * TASKS
    */
   // build everything ready for a commit
-  grunt.registerTask('build', ['template:js', 'jshint:build', 'sass', 'uglify']);
+  grunt.registerTask('build', ['sass', 'js', 'jasmine']);
   // just javascript
   grunt.registerTask('js', ['template:js', 'jshint:build', 'uglify', 'replace:one', 'replace:two', 'replace:three', 'replace:four']);
   // build examples

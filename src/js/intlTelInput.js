@@ -73,17 +73,17 @@ Plugin.prototype = {
 
     // if defaultCountry is set to "auto", we must do a lookup first
     if (this.options.defaultCountry == "auto") {
-        var ipinfoURL = "//ipinfo.io"
-        if(this.options.ipinfoToken) {
-            ipinfoURL += "?token="+this.options.ipinfoToken;
-        }
-        $.get(ipinfoURL, function(response) {
-            that.options.defaultCountry = response && response.country ? response.country.toLowerCase() : "";
-        }, "jsonp").always(function() {
-            that._ready();
-        });
+      var ipinfoURL = "//ipinfo.io";
+      if (this.options.ipinfoToken) {
+        ipinfoURL += "?token=" + this.options.ipinfoToken;
+      }
+      $.get(ipinfoURL, function(response) {
+        that.options.defaultCountry = (response && response.country) ? response.country.toLowerCase() : "";
+      }, "jsonp").always(function() {
+        that._ready();
+      });
     } else {
-        this._ready();
+      this._ready();
     }
   },
 
