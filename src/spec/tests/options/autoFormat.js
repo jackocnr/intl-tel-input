@@ -49,7 +49,10 @@ describe("autoFormat option:", function() {
       input.val("0141 534 40");
       // adding a 0 here changes the formatting to "01415 34400", which previously stopped this char from appearing
       triggerKeyOnInput("0");
-      expect(getInputVal()).toEqual("0141 534 400");
+      expect(getInputVal()).toEqual("01415 34400");
+      // and back again
+      triggerKeyOnInput("0");
+      expect(getInputVal()).toEqual("0141 534 4000");
     });
 
   });
