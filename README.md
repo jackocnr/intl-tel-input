@@ -60,7 +60,7 @@ You can view a live demo and some examples of how to use the various options her
   </script>
   ```
   
-4. Optional: the recommended way to use the plugin is to intialise it with the `utilsScript` option to enable formatting/validation etc., and the `nationalMode` option to allow users to enter national numbers (which you can convert to international numbers using `getCleanNumber`).
+4. Optional: the recommended way to use the plugin is to initialise it with the `utilsScript` option to enable formatting/validation etc., and the `nationalMode` option to allow users to enter national numbers (which you can convert to international numbers using `getCleanNumber`).
 
 
 ## Options
