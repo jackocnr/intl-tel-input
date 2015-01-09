@@ -181,4 +181,19 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
       margin-right: 6px;
     }
   }
+
+  // theme tweaks when coupled with bootstrap
+  &.form-control {
+    padding: 0;
+
+    // the input also has .form-control styling, so just account for the border and background
+    input, input[type=text], input[type=tel] {
+      background: transparent;
+
+      // the .intl-tel-input.form-control has a border; lay the border-box sized field over it
+      border: 0;
+      margin-top: -1px !important;
+      margin-left: -1px;
+    }
+  }
 }

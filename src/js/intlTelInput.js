@@ -197,9 +197,9 @@ Plugin.prototype = {
     // telephone input
     this.telInput = $(this.element);
 
-    // containers (mostly for positioning)
+    // containers (mostly for positioning), adopt the form-control class in Bootstrap for .input-group compatibility
     this.telInput.wrap($("<div>", {
-      "class": "intl-tel-input"
+      "class": "intl-tel-input" + (this.telInput.hasClass('form-control') ? " form-control clearfix" : "")
     }));
     var flagsContainer = $("<div>", {
       "class": "flag-dropdown"
