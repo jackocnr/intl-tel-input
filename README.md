@@ -249,7 +249,7 @@ In order to get the automatic country-specific placeholders, simply omit the pla
 ## Contributing
 I'm very open to contributions, big and small! For instructions on contributing to a project on Github, see this guide: [Fork A Repo](https://help.github.com/articles/fork-a-repo).
 
-I use [Grunt](http://gruntjs.com) to build the project, which relies on [npm](https://www.npmjs.org). In the project directory, run `npm install` to install Grunt (and other dependencies), then make your changes in the `src` directory and run `grunt build` to build the project.
+I use [Grunt](http://gruntjs.com) to build the project, which relies on [npm](https://www.npmjs.org). In the project directory, run `npm install` to install Grunt etc, then `grunt bower` to install other dependencies, then make your changes in the `src` directory and run `grunt build` to build the project.
 
 
 ## Attributions
