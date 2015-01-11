@@ -199,6 +199,9 @@ Plugin.prototype = {
     // telephone input
     this.telInput = $(this.element);
 
+    // prevent autocomplete as there's no safe, cross-browser event we can react to, so it can easily put the plugin in an inconsistent state e.g. the wrong flag selected for the autocompleted number, which on submit could mean the wrong number is saved (esp in nationalMode)
+    this.telInput.attr("autocomplete", "off");
+
     // containers (mostly for positioning)
     this.telInput.wrap($("<div>", {
       "class": "intl-tel-input"
