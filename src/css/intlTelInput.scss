@@ -103,7 +103,7 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     padding: 0 0 0 $flagPadding;
 
     // vertically center the flag
-    .iti-flag {
+    .flag {
       position: absolute;
       top: 50%;
       margin-top: -1 * floor($flagHeight / 2);
@@ -139,7 +139,7 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     z-index: 2;
 
     // inline flags
-    .iti-flag {
+    .flag {
       display: inline-block;
     }
 
@@ -177,7 +177,7 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     }
 
     // spacing between country flag, name and dial code
-    .iti-flag, .country-name {
+    .flag, .country-name {
       margin-right: 6px;
     }
   }

@@ -215,7 +215,7 @@ Plugin.prototype = {
       "class": "selected-flag"
     }).appendTo(flagsContainer);
     this.selectedFlagInner = $("<div>", {
-      "class": "iti-flag"
+      "class": "flag"
     }).appendTo(selectedFlag);
     // CSS triangle
     $("<div>", {
@@ -259,7 +259,7 @@ Plugin.prototype = {
       // open the list item
       tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
       // add the flag
-      tmp += "<div class='iti-flag " + c.iso2 + "'></div>";
+      tmp += "<div class='flag " + c.iso2 + "'></div>";
       // and the country name and dial code
       tmp += "<span class='country-name'>" + c.name + "</span>";
       tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
@@ -825,7 +825,7 @@ Plugin.prototype = {
     // do this first as it will throw an error and stop if countryCode is invalid
     this.selectedCountryData = this._getCountryData(countryCode, false, false);
 
-    this.selectedFlagInner.attr("class", "iti-flag " + countryCode);
+    this.selectedFlagInner.attr("class", "flag " + countryCode);
     // update the selected country's title attribute
     var title = this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode;
     this.selectedFlagInner.parent().attr("title", title);
@@ -834,7 +834,7 @@ Plugin.prototype = {
     this._updatePlaceholder();
 
     // update the active list item
-    var listItem = this.countryListItems.children(".iti-flag." + countryCode).first().parent();
+    var listItem = this.countryListItems.children(".flag." + countryCode).first().parent();
     this.countryListItems.removeClass("active");
     listItem.addClass("active");
   },
