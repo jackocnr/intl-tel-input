@@ -17,6 +17,8 @@ var pluginName = "intlTelInput",
     onlyCountries: [],
     // the countries at the top of the list. defaults to united states and united kingdom
     preferredCountries: ["us", "gb"],
+    // stop the user from typing invalid numbers
+    preventInvalidNumbers: false,
     // make the dropdown the same width as the input
     responsiveDropdown: false,
     // specify the path to the libphonenumber script to enable validation/formatting
@@ -691,7 +693,7 @@ Plugin.prototype = {
     var formatted;
 
     if (this.options.autoFormat && window.intlTelInputUtils) {
-      formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix);
+      formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix, this.options.preventInvalidNumbers);
       // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
       var max = this.telInput.attr("maxlength");
       if (max && formatted.length > max) {
