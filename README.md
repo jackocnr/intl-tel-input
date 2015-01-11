@@ -216,7 +216,8 @@ $.fn.intlTelInput.setCountryData(countryData);
 ## Utilities Script
 A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com) which enables the following features:
 
-* As-you-type formatting with `autoFormat` option, which prevents you from entering invalid characters, or too many characters
+* As-you-type formatting with `autoFormat` option, which prevents you from entering invalid characters
+* `preventInvalidNumbers` option, which stops the user from accidentally entering an invalid number
 * Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
 * Extract the standardised (E.164) international number with `getCleanNumber` even when using the `nationalMode` option
@@ -228,7 +229,7 @@ International number formatting/validation is hard (it varies by country/distric
 **Image path**  
 Depending on your project setup, you may need to override the path to flags.png in your CSS.  
 ```css
-.intl-tel-input .flag {background-image: url("path/to/flags.png");}
+.iti-flag {background-image: url("path/to/flags.png");}
 ```
 
 **Full width input**  
