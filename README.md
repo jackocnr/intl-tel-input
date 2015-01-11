@@ -98,6 +98,10 @@ Display only the countries you specify - [see example](http://jackocnr.com/lib/i
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
 
+**preventInvalidNumbers**  
+Type: `Boolean` Default: `false`  
+Stop the user from entering invalid numbers.
+
 **responsiveDropdown**  
 Type: `Boolean` Default: `false`  
 Set the dropdown's width to be the same as the input. This is automatically enabled for small screens.
