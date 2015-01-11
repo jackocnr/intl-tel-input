@@ -341,7 +341,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 });
             }
             // handle keyup event
-            // for autoFormat: we use keyup to catch delete events after the fact
+            // for autoFormat: we use keyup to catch cut/paste events and also delete events (after the fact)
             this.telInput.on("keyup" + this.ns, function(e) {
                 // the "enter" key event from selecting a dropdown item is triggered here on the input, because the document.keydown handler that initially handles that event triggers a focus on the input, and so the keyup for that same key event gets triggered here. weird, but just make sure we dont bother doing any re-formatting in this case (we've already done preventDefault in the keydown handler, so it wont actually submit the form or anything).
                 // ALSO: ignore keyup if readonly
@@ -376,21 +376,17 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // when autoFormat is enabled: handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and try to preserve the cursor position. and 2) reformatting on backspace, or paste event
         _handleInputKey: function(newNumericChar, addSuffix) {
-            var val = this.telInput.val(), newCursor = null, cursorAtEnd = false, // raw DOM element
-            input = this.telInput[0];
+            var val = this.telInput.val(), newCursor = null, // raw DOM element
+            input = this.telInput[0], digitsOnRight = 0;
             if (this.isGoodBrowser) {
-                var selectionEnd = input.selectionEnd, originalLen = val.length;
-                cursorAtEnd = selectionEnd == originalLen;
+                // cursor strategy: maintain the number of digits on the right. we use the right instead of the left so that A) we dont have to account for the new digit (or digits if paste event), and B) we're always on the right side of formatting suffixes
+                digitsOnRight = this._getDigitsOnRight(val, input.selectionEnd);
                 // if handling a new number character: insert it in the right place and calculate the new cursor position
                 if (newNumericChar) {
                     // replace any selection they may have made with the new char
-                    val = val.substr(0, input.selectionStart) + newNumericChar + val.substring(selectionEnd, originalLen);
-                    // if the cursor was not at the end then calculate it's new pos
-                    if (!cursorAtEnd) {
-                        newCursor = selectionEnd + (val.length - originalLen);
-                    }
+                    val = val.substr(0, input.selectionStart) + newNumericChar + val.substring(input.selectionEnd, val.length);
                 } else {
-                    // here we're not handling a new char, we're just doing a re-format, but we still need to maintain the cursor position
+                    // here we're not handling a new char, we're just doing a re-format (e.g. on delete/backspace/paste, after the fact), but we still need to maintain the cursor position. would be great if we could maintain the position relative to the other digits in the case of a user fixing an incorrect digit (a quick delete and re-add), but this is super complicated with bi-directional deleting and formatting suffixes and cut/paste events etc... so dont bother.
                     newCursor = input.selectionStart;
                 }
             } else if (newNumericChar) {
@@ -400,12 +396,36 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.setNumber(val, addSuffix);
             // update the cursor position
             if (this.isGoodBrowser) {
+                val = this.telInput.val();
                 // if it was at the end, keep it there
-                if (cursorAtEnd) {
-                    newCursor = this.telInput.val().length;
+                if (!digitsOnRight) {
+                    newCursor = val.length;
+                } else if (newNumericChar) {
+                    // else if we've added a new char, figure out where the cursor should be
+                    newCursor = this._getCursorFromDigits(val, digitsOnRight);
                 }
+                // (else if delete etc, we've already got the newCursor position - same as before)
                 input.setSelectionRange(newCursor, newCursor);
             }
+        },
+        _getCursorFromDigits: function(val, digitsOnRight) {
+            for (var i = val.length - 1; i >= 0; i--) {
+                if ($.isNumeric(val.charAt(i))) {
+                    if (--digitsOnRight === 0) {
+                        return i;
+                    }
+                }
+            }
+            return 0;
+        },
+        _getDigitsOnRight: function(val, selectionEnd) {
+            var digitsOnRight = 0;
+            for (var i = selectionEnd; i < val.length; i++) {
+                if ($.isNumeric(val.charAt(i))) {
+                    digitsOnRight++;
+                }
+            }
+            return digitsOnRight;
         },
         // listen for focus and blur
         _initFocusListeners: function() {
