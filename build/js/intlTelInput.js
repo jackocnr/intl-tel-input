@@ -395,9 +395,15 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // update the number and flag
             this.setNumber(val, addSuffix);
             val = this.telInput.val();
-            // if we're trying to add a new numeric char and the numeric digits haven't changed, then trigger invalid
-            if (this.options.preventInvalidNumbers && newNumericChar && numericBefore == this._getNumeric(val)) {
-                this.telInput.trigger("invalidkey");
+            var numericAfter = this._getNumeric(val), numericIsSame = numericBefore == numericAfter;
+            if (this.options.preventInvalidNumbers && newNumericChar) {
+                if (numericIsSame) {
+                    // if we're trying to add a new numeric char and the numeric digits haven't changed, then trigger invalid
+                    this.telInput.trigger("invalidkey");
+                } else if (numericBefore.length == numericAfter.length) {
+                    // preventInvalidNumbers edge case: adding digit in middle of full number, so a digit gets dropped from the end (numeric digits have changed but are same length)
+                    digitsOnRight--;
+                }
             }
             // update the cursor position
             if (this.isGoodBrowser) {
