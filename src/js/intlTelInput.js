@@ -331,7 +331,7 @@ Plugin.prototype = {
       // only intercept this event if we're opening the dropdown
       // else let it bubble up to the top ("click-off-to-close" listener)
       // we cannot just stopPropagation as it may be needed to close another instance
-      if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled")) {
+      if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled") && !that.telInput.prop("readonly")) {
         that._showDropdown();
       }
     });
@@ -365,7 +365,7 @@ Plugin.prototype = {
         // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
         // Update: also ignore if this is a metaKey e.g. FF and Safari trigger keypress on the v of Ctrl+v
         // Update: also check that we have utils before we do any autoFormat stuff
-        if (e.which >= keys.SPACE && !e.metaKey && window.intlTelInputUtils) {
+        if (e.which >= keys.SPACE && !e.metaKey && window.intlTelInputUtils && !that.telInput.prop("readonly")) {
           e.preventDefault();
           // allowed keys are just numeric keys and plus
           // we must allow plus for the case where the user does select-all and then hits plus to start typing a new number. we could refine this logic to first check that the selection contains a plus, but that wont work in old browsers, and I think it's overkill anyway
@@ -392,7 +392,8 @@ Plugin.prototype = {
     // for autoFormat: we use keyup to catch delete events after the fact
     this.telInput.on("keyup" + this.ns, function(e) {
       // the "enter" key event from selecting a dropdown item is triggered here on the input, because the document.keydown handler that initially handles that event triggers a focus on the input, and so the keyup for that same key event gets triggered here. weird, but just make sure we dont bother doing any re-formatting in this case (we've already done preventDefault in the keydown handler, so it wont actually submit the form or anything).
-      if (e.which == keys.ENTER) {
+      // ALSO: ignore keyup if readonly
+      if (e.which == keys.ENTER || that.telInput.prop("readonly")) {
         // do nothing
       } else if (that.options.autoFormat && window.intlTelInputUtils) {
         var isCtrl = (e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2),
@@ -487,33 +488,31 @@ Plugin.prototype = {
       });
     }
 
-    this.telInput.on("focus" + this.ns, function() {
+    this.telInput.on("focus" + this.ns, function(e) {
       var value = that.telInput.val();
       // save this to compare on blur
       that.telInput.data("focusVal", value);
 
-      if (that.options.autoHideDialCode) {
-        // on focus: if empty, insert the dial code for the currently selected flag
-        if (!value) {
-          that._updateVal("+" + that.selectedCountryData.dialCode, true);
-          // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
-          that.telInput.one("keypress.plus" + that.ns, function(e) {
-            if (e.which == keys.PLUS) {
-              // if autoFormat is enabled, this key event will have already have been handled by another keypress listener (hence we need to add the "+"). if disabled, it will be handled after this by a keyup listener (hence no need to add the "+").
-              var newVal = (that.options.autoFormat && window.intlTelInputUtils) ? "+" : "";
-              that.telInput.val(newVal);
-            }
-          });
+      // on focus: if empty, insert the dial code for the currently selected flag
+      if (that.options.autoHideDialCode && !value && !that.telInput.prop("readonly")) {
+        that._updateVal("+" + that.selectedCountryData.dialCode, true);
+        // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
+        that.telInput.one("keypress.plus" + that.ns, function(e) {
+          if (e.which == keys.PLUS) {
+            // if autoFormat is enabled, this key event will have already have been handled by another keypress listener (hence we need to add the "+"). if disabled, it will be handled after this by a keyup listener (hence no need to add the "+").
+            var newVal = (that.options.autoFormat && window.intlTelInputUtils) ? "+" : "";
+            that.telInput.val(newVal);
+          }
+        });
 
-          // after tabbing in, make sure the cursor is at the end we must use setTimeout to get outside of the focus handler as it seems the selection happens after that
-          setTimeout(function() {
-            var input = that.telInput[0];
-            if (that.isGoodBrowser) {
-              var len = that.telInput.val().length;
-              input.setSelectionRange(len, len);
-            }
-          });
-        }
+        // after tabbing in, make sure the cursor is at the end we must use setTimeout to get outside of the focus handler as it seems the selection happens after that
+        setTimeout(function() {
+          var input = that.telInput[0];
+          if (that.isGoodBrowser) {
+            var len = that.telInput.val().length;
+            input.setSelectionRange(len, len);
+          }
+        });
       }
     });
 

@@ -60,7 +60,7 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     margin-bottom: 0 !important;
 
     // make space for the selected flag
-    // Note: no !important here, as the user may want to tweak this so that the 
+    // Note: no !important here, as the user may want to tweak this so that the
     // perceived input padding matches their existing styles
     padding-left: $selectedFlagWidth + $inputPadding;
 
@@ -85,7 +85,7 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     }
   }
   // disable hover state when input is disabled
-  input[disabled] + .flag-dropdown:hover {
+  input[disabled] + .flag-dropdown:hover, input[readonly] + .flag-dropdown:hover {
     cursor: default;
     .selected-flag {
       background-color: transparent;
