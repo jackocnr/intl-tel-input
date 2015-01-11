@@ -322,13 +322,17 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         e.preventDefault();
                         // allowed keys are just numeric keys and plus
                         // we must allow plus for the case where the user does select-all and then hits plus to start typing a new number. we could refine this logic to first check that the selection contains a plus, but that wont work in old browsers, and I think it's overkill anyway
-                        var isAllowedKey = e.which >= keys.ZERO && e.which <= keys.NINE || e.which == keys.PLUS, input = that.telInput[0], noSelection = that.isGoodBrowser && input.selectionStart == input.selectionEnd, max = that.telInput.attr("maxlength"), // assumes that if max exists, it is >0
-                        isBelowMax = max ? that.telInput.val().length < max : true;
+                        var isAllowedKey = e.which >= keys.ZERO && e.which <= keys.NINE || e.which == keys.PLUS, input = that.telInput[0], noSelection = that.isGoodBrowser && input.selectionStart == input.selectionEnd, max = that.telInput.attr("maxlength"), val = that.telInput.val(), // assumes that if max exists, it is >0
+                        isBelowMax = max ? val.length < max : true;
                         // first: ensure we dont go over maxlength. we must do this here to prevent adding digits in the middle of the number
                         // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
                         if (isBelowMax && (isAllowedKey || noSelection)) {
                             var newChar = isAllowedKey ? String.fromCharCode(e.which) : null;
                             that._handleInputKey(newChar, true);
+                            // if something has changed, trigger the input event (which was otherwised squashed by the preventDefault)
+                            if (val != that.telInput.val()) {
+                                that.telInput.trigger("input");
+                            }
                         }
                         if (!isAllowedKey) {
                             that.telInput.trigger("invalidkey");

@@ -373,13 +373,18 @@ Plugin.prototype = {
             input = that.telInput[0],
             noSelection = (that.isGoodBrowser && input.selectionStart == input.selectionEnd),
             max = that.telInput.attr("maxlength"),
+            val = that.telInput.val(),
             // assumes that if max exists, it is >0
-            isBelowMax = (max) ? (that.telInput.val().length < max) : true;
+            isBelowMax = (max) ? (val.length < max) : true;
           // first: ensure we dont go over maxlength. we must do this here to prevent adding digits in the middle of the number
           // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
           if (isBelowMax && (isAllowedKey || noSelection)) {
             var newChar = (isAllowedKey) ? String.fromCharCode(e.which) : null;
             that._handleInputKey(newChar, true);
+            // if something has changed, trigger the input event (which was otherwised squashed by the preventDefault)
+            if (val != that.telInput.val()) {
+              that.telInput.trigger("input");
+            }
           }
           if (!isAllowedKey) {
             that.telInput.trigger("invalidkey");
