@@ -61,7 +61,7 @@ var getSelectedFlagContainer = function(i) {
 
 var getSelectedFlagElement = function(i) {
   i = i || input;
-  return getSelectedFlagContainer(i).find(".iti-flag");
+  return getSelectedFlagContainer(i).find(".flag");
 };
 
 var getFlagsContainerElement = function(i) {
