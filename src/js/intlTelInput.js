@@ -438,6 +438,7 @@ Plugin.prototype = {
   // when autoFormat is enabled: handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and preserve the cursor position. and 2) reformatting on backspace, or paste event (etc)
   _handleInputKey: function(newNumericChar, addSuffix) {
     var val = this.telInput.val(),
+      numericBefore = this._getNumeric(val),
       originalLeftChar,
       // raw DOM element
       input = this.telInput[0],
@@ -462,10 +463,15 @@ Plugin.prototype = {
     // update the number and flag
     this.setNumber(val, addSuffix);
 
+    val = this.telInput.val();
+    // if we're trying to add a new numeric char and the numeric digits haven't changed, then trigger invalid
+    if (this.options.preventInvalidNumbers && newNumericChar && numericBefore == this._getNumeric(val)) {
+      this.telInput.trigger("invalidkey");
+    }
+
     // update the cursor position
     if (this.isGoodBrowser) {
       var newCursor;
-      val = this.telInput.val();
 
       // if it was at the end, keep it there
       if (!digitsOnRight) {
@@ -485,6 +491,7 @@ Plugin.prototype = {
   },
 
 
+  // we start from the position in guessCursor, and work our way left until we hit the originalLeftChar or a number to make sure that after reformatting the cursor has the same char on the left in the case of a delete etc
   _getCursorFromLeftChar: function(val, guessCursor, originalLeftChar) {
     for (var i = guessCursor; i > 0; i--) {
       var leftChar = val.charAt(i - 1);
@@ -496,6 +503,7 @@ Plugin.prototype = {
   },
 
 
+  // after a reformat we need to make sure there are still the same number of digits to the right of the cursor
   _getCursorFromDigitsOnRight: function(val, digitsOnRight) {
     for (var i = val.length - 1; i >= 0; i--) {
       if ($.isNumeric(val.charAt(i))) {
@@ -508,6 +516,7 @@ Plugin.prototype = {
   },
 
 
+  // get the number of numeric digits to the right of the cursor so we can reposition the cursor correctly after the reformat has happened
   _getDigitsOnRight: function(val, selectionEnd) {
     var digitsOnRight = 0;
     for (var i = selectionEnd; i < val.length; i++) {
