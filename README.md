@@ -100,7 +100,7 @@ Specify the countries to appear at the top of the list.
 
 **preventInvalidNumbers**  
 Type: `Boolean` Default: `false`  
-Stop the user from entering invalid numbers.
+Stop the user from entering invalid numbers. You can react to the `invalidkey` event if you want to give the user some visual feedback. _Note that we use libphonenumber's AsYouTypeFormatter for this, and there's currently [a bug](https://github.com/googlei18n/libphonenumber/issues/555) which means that all Samoa numbers (and maybe others) are incorrectly flagged as invalid._
 
 **responsiveDropdown**  
 Type: `Boolean` Default: `false`  
