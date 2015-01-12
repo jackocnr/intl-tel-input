@@ -15,7 +15,7 @@ module.exports = function(grunt) {
   grunt.registerTask('examples', ['template']);
   // Travis CI
   grunt.registerTask('travis', ['bower', 'jasmine']);
-  // bump version number in 3 files, build to update js headers, then commit, tag and push
-  grunt.registerTask('version', ['bump-only', 'uglify', 'bump-commit', 'shell:publish']);
+  // bump version number in 3 files, rebuild js to update headers, then commit, tag and push
+  grunt.registerTask('version', ['bump-only', 'js', 'bump-commit', 'shell:publish']);
 
 };
