@@ -121,7 +121,7 @@ module.exports = function(grunt) {
            * OPTIONS AND KEYS
            ***********/
 
-          // keys enum (ommitting A and Z)
+          // keys enum (ommitting A and Z keys, which are already a single char)
           {
             match: /UP/g,
             replacement: 'b'
@@ -164,6 +164,7 @@ module.exports = function(grunt) {
           },
 
           // first occurence, when they are defined in the defaults object (no "options." prefix to match)
+          // (using meaningful letter substitutions here)
           {
             match: /autoFormat/,
             replacement: 'a'
@@ -173,6 +174,9 @@ module.exports = function(grunt) {
           }, {
             match: /defaultCountry/,
             replacement: 'd'
+          }, {
+            match: /ipinfoToken/,
+            replacement: 'i'
           }, {
             match: /nationalMode/,
             replacement: 'n'
@@ -186,6 +190,9 @@ module.exports = function(grunt) {
             match: /preferredCountries/,
             replacement: 'p'
           }, {
+            match: /preventInvalidNumbers/,
+            replacement: 'v'
+          }, {
             match: /responsiveDropdown/,
             replacement: 'r'
           }, {
@@ -195,6 +202,7 @@ module.exports = function(grunt) {
 
 
           // all other occurrences have the options prefix
+          // (using meaningful letter substitutions here)
           {
             match: /options.autoFormat/g,
             replacement: 'options.a'
@@ -204,6 +212,9 @@ module.exports = function(grunt) {
           }, {
             match: /options.defaultCountry/g,
             replacement: 'options.d'
+          }, {
+            match: /options.ipinfoToken/g,
+            replacement: 'options.i'
           }, {
             match: /options.nationalMode/g,
             replacement: 'options.n'
@@ -216,6 +227,9 @@ module.exports = function(grunt) {
           }, {
             match: /options.preferredCountries/g,
             replacement: 'options.p'
+          }, {
+            match: /options.preventInvalidNumbers/g,
+            replacement: 'options.v'
           }, {
             match: /options.responsiveDropdown/g,
             replacement: 'options.r'
@@ -301,19 +315,23 @@ module.exports = function(grunt) {
         patterns: [
 
           // hack to normalise runtime option names
+          // (using meaningful letter substitutions here)
+          // UPDATE: instead of replacing the runtime option names with a newly created object, we $.extend the existing object so that if we forget to add any new/modified option names in this build file, they will still work! The downside is that this options object will contain both the full key and the minified key, but that really doesn't matter.
           {
             match: /this.b=/g,
-            replacement: 'c&&(c={' +
+            replacement: 'c&&($.extend(c, c, {' +
               'a:c.autoFormat,' +
               'h:c.autoHideDialCode,' +
               'd:c.defaultCountry,' +
+              'i:c.ipinfoToken,' +
               'n:c.nationalMode,' +
               't:c.numberType,' +
               'o:c.onlyCountries,' +
               'p:c.preferredCountries,' +
+              'v:c.preventInvalidNumbers,' +
               'r:c.responsiveDropdown,' +
               'u:c.utilsScript' +
-              '}),this.b='
+              '})),this.b='
           }
         ]
       },
