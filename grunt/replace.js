@@ -193,9 +193,6 @@ module.exports = function(grunt) {
             match: /preventInvalidNumbers/,
             replacement: 'v'
           }, {
-            match: /responsiveDropdown/,
-            replacement: 'r'
-          }, {
             match: /utilsScript/,
             replacement: 'u'
           },
@@ -230,9 +227,6 @@ module.exports = function(grunt) {
           }, {
             match: /options.preventInvalidNumbers/g,
             replacement: 'options.v'
-          }, {
-            match: /options.responsiveDropdown/g,
-            replacement: 'options.r'
           }, {
             match: /options.utilsScript/g,
             replacement: 'options.u'
@@ -329,7 +323,6 @@ module.exports = function(grunt) {
               'o:c.onlyCountries,' +
               'p:c.preferredCountries,' +
               'v:c.preventInvalidNumbers,' +
-              'r:c.responsiveDropdown,' +
               'u:c.utilsScript' +
               '})),this.b='
           }
