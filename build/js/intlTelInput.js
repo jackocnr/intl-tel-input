@@ -24,7 +24,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // token for ipinfo - required for https or over 1000 daily page views support
         ipinfoToken: "",
         // don't insert international dial codes
-        nationalMode: false,
+        nationalMode: true,
         // number type to use for placeholders
         numberType: "MOBILE",
         // display only these countries
@@ -33,8 +33,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         preferredCountries: [ "us", "gb" ],
         // stop the user from typing invalid numbers
         preventInvalidNumbers: false,
-        // make the dropdown the same width as the input
-        responsiveDropdown: false,
         // specify the path to the libphonenumber script to enable validation/formatting
         utilsScript: ""
     }, keys = {
@@ -101,10 +99,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // IE Mobile doesn't support the keypress event (see issue 68) which makes autoFormat impossible
             if (navigator.userAgent.match(/IEMobile/i)) {
                 this.options.autoFormat = false;
-            }
-            // auto enable responsiveDropdown mode on small screens (dropdown is currently set to 430px in CSS)
-            if (window.innerWidth < 500) {
-                this.options.responsiveDropdown = true;
             }
             // process all the data: onlyCountries, preferredCountries etc
             this._processCountryData();
@@ -210,8 +204,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // now we can grab the dropdown height, and hide it properly
             this.dropdownHeight = this.countryList.outerHeight();
             this.countryList.removeClass("v-hide").addClass("hide");
-            // and set the width
-            if (this.options.responsiveDropdown) {
+            // on small screens make the dropdown the same width as the input
+            if (window.innerWidth < 500) {
                 this.countryList.outerWidth(this.telInput.outerWidth());
             }
             // this is useful in lots of places
