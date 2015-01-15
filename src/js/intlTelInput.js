@@ -1170,9 +1170,3 @@ $.fn[pluginName] = function(options) {
 $.fn[pluginName].getCountryData = function() {
   return allCountries;
 };
-
-
-// set the country data object
-$.fn[pluginName].setCountryData = function(obj) {
-  allCountries = obj;
-};
