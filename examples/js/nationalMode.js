@@ -7,7 +7,7 @@ input.intlTelInput({
 });
 
 input.keyup(function() {
-  var intlNumber = input.intlTelInput("getCleanNumber");
+  var intlNumber = input.intlTelInput("getNumber");
   if (intlNumber) {
     output.text("International: " + intlNumber);
   } else {
