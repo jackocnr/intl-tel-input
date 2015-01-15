@@ -97,7 +97,7 @@ describe("autoFormat option:", function() {
 
 
 
-  describe("input with no initial value, init plugin with autoFormat enabled", function() {
+  describe("input with no initial value, init plugin with autoFormat enabled and nationalMode disabled", function() {
 
     beforeEach(function() {
       input = $("<input>");
@@ -105,7 +105,8 @@ describe("autoFormat option:", function() {
       input.appendTo($("body"));
 
       input.intlTelInput({
-        autoFormat: true
+        autoFormat: true,
+        nationalMode: false
       });
     });
 

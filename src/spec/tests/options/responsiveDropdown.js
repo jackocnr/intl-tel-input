@@ -23,9 +23,9 @@ describe("responsiveDropdown: init plugin to test responsiveDropdown option", fu
   });
 
   it("when enabled, it is the width of the input", function() {
-    input.intlTelInput({
-      responsiveDropdown: true
-    });
+    // set this to a mobile width
+    window.innerWidth = 350;
+    input.intlTelInput();
     expect(getListElement().outerWidth()).toEqual(input.outerWidth());
   });
 

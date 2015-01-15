@@ -58,7 +58,7 @@ describe("onlyCountries option:", function() {
 
 
 
-  describe("init plugin on 2 different inputs with different onlyCountries", function() {
+  describe("init plugin on 2 different inputs with different onlyCountries and nationalMode = false", function() {
 
     var input2;
 
@@ -66,11 +66,13 @@ describe("onlyCountries option:", function() {
       input2 = $("<input>");
       // japan
       input.intlTelInput({
-        onlyCountries: ['jp']
+        onlyCountries: ['jp'],
+        nationalMode: false
       });
       // korea
       input2.intlTelInput({
-        onlyCountries: ['kr']
+        onlyCountries: ['kr'],
+        nationalMode: false
       });
       $("body").append(getParentElement(input)).append(getParentElement(input2));
     });

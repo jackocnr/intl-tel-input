@@ -1,6 +1,6 @@
 "use strict";
 
-describe("setCountry: init plugin and calling public method selectCountry()", function() {
+describe("selectCountry: init plugin and calling public method selectCountry()", function() {
 
   var countryCode = "gb";
 

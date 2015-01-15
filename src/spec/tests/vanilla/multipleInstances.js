@@ -1,6 +1,6 @@
 "use strict";
 
-describe("multiple instances: init vanilla plugin to test multiple instances", function() {
+describe("multiple instances: init vanilla plugin (with nationalMode=false) to test multiple instances", function() {
 
   var input2,
     afghanistanCountryCode = "af",
@@ -14,11 +14,13 @@ describe("multiple instances: init vanilla plugin to test multiple instances", f
     input2 = $("<input>");
     // japan and china
     input.intlTelInput({
-      onlyCountries: [chinaCountryCode, afghanistanCountryCode]
+      onlyCountries: [chinaCountryCode, afghanistanCountryCode],
+      nationalMode: false
     });
     // korea, china and russia
     input2.intlTelInput({
-      onlyCountries: ['kr', chinaCountryCode, 'ru', albaniaCountryCode]
+      onlyCountries: ['kr', chinaCountryCode, 'ru', albaniaCountryCode],
+      nationalMode: false
     });
     $("body").append(getParentElement(input)).append(getParentElement(input2));
   });

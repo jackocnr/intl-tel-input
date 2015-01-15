@@ -17,20 +17,20 @@ describe("destroy: init plugin to test public method destroy", function() {
     expect(getSelectedFlagContainer()).toExist();
     expect(getListElement()).toExist();
   });
-  
+
   it("binds the events listeners", function() {
     var listeners = $._data(input[0], 'events');
-    // autoHideDialCode=true
     expect("blur" in listeners).toBeTruthy();
     expect("focus" in listeners).toBeTruthy();
-    expect("mousedown" in listeners).toBeTruthy();
+    // autoHideDialCode defaults to false now because nationalMode defaults to true
+    //expect("mousedown" in listeners).toBeTruthy();
     // normal
     expect("keyup" in listeners).toBeTruthy();
   });
 
 
   describe("calling destroy", function() {
-  
+
     beforeEach(function() {
       input.intlTelInput("destroy");
     });
@@ -45,7 +45,7 @@ describe("destroy: init plugin to test public method destroy", function() {
       var listeners = $._data(input[0], 'events');
       expect(listeners).toBeUndefined();
     });
-  
+
   });
 
 });

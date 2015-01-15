@@ -56,11 +56,13 @@ describe("vanilla:", function() {
 
 
 
-  describe("init vanilla plugin", function() {
+  describe("init vanilla plugin with nationalMode = false", function() {
 
     beforeEach(function() {
       input = $("<input>");
-      input.intlTelInput();
+      input.intlTelInput({
+        nationalMode: false
+      });
     });
 
     afterEach(function() {

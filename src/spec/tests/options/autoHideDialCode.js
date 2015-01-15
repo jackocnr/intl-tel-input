@@ -15,11 +15,12 @@ describe("autoHideDialCode option:", function() {
   });
 
 
-  describe("init plugin with autoHideDialCode = true", function() {
-  
+  describe("init plugin with autoHideDialCode = true and nationalMode = false", function() {
+
     beforeEach(function() {
       input.intlTelInput({
-        autoHideDialCode: true
+        autoHideDialCode: true,
+        nationalMode: false
       });
       // must be in DOM for focus to work
       getParentElement().appendTo($("body"));
@@ -43,7 +44,7 @@ describe("autoHideDialCode option:", function() {
 
 
     describe("with a phone number", function() {
-    
+
       var number = "+1 702 987 2345";
 
       beforeEach(function() {
@@ -56,17 +57,18 @@ describe("autoHideDialCode option:", function() {
         input.blur();
         expect(getInputVal()).toEqual(number);
       });
-    
+
     });
-  
+
   });
 
 
-  describe("init plugin with autoHideDialCode = false", function() {
-  
+  describe("init plugin with autoHideDialCode = false and nationalMode = false", function() {
+
     beforeEach(function() {
       input.intlTelInput({
-        autoHideDialCode: false
+        autoHideDialCode: false,
+        nationalMode: false
       });
       getParentElement().appendTo($("body"));
     });
@@ -88,7 +90,7 @@ describe("autoHideDialCode option:", function() {
 
 
     describe("with a phone number", function() {
-    
+
       var number = "+1 702 987 2345";
 
       beforeEach(function() {
@@ -101,9 +103,9 @@ describe("autoHideDialCode option:", function() {
         input.blur();
         expect(getInputVal()).toEqual(number);
       });
-    
+
     });
-  
+
   });
 
 });

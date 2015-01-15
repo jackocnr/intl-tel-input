@@ -1,11 +1,13 @@
 "use strict";
 
-describe("keyboard shortcuts: init vanilla plugin to test keyboard shortcuts - open dropdown", function() {
+describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to test keyboard shortcuts - open dropdown", function() {
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>");
-    input.intlTelInput();
+    input.intlTelInput({
+      nationalMode: false
+    });
     getSelectedFlagContainer().click();
   });
 
@@ -50,7 +52,7 @@ describe("keyboard shortcuts: init vanilla plugin to test keyboard shortcuts - o
       triggerKeyOnBody("Z");
       triggerKeyOnBody("I");
     });
-  
+
     it("highlights the last item, which is Zimbabwe", function() {
       expect(lastItem).toHaveClass("highlight");
       expect(lastItem.attr("data-country-code")).toEqual("zw");
@@ -66,7 +68,7 @@ describe("keyboard shortcuts: init vanilla plugin to test keyboard shortcuts - o
 
 
   describe("pressing down", function() {
-  
+
     beforeEach(function() {
       triggerKeyOnBody("DOWN");
     });
@@ -79,8 +81,10 @@ describe("keyboard shortcuts: init vanilla plugin to test keyboard shortcuts - o
       expect(secondItem).toHaveClass("highlight");
     });
 
+
+
     describe("pressing enter", function() {
-    
+
       beforeEach(function() {
         triggerKeyOnBody("ENTER");
       });
@@ -96,13 +100,13 @@ describe("keyboard shortcuts: init vanilla plugin to test keyboard shortcuts - o
       it("closes the dropdown", function() {
         expect(getListElement()).toHaveClass("hide");
       });
-    
+
       it("updates the dial code", function() {
         expect(getInputVal()).toEqual("+44");
       });
 
     });
-  
+
   });
 
 });
