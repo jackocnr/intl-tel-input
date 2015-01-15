@@ -60,7 +60,7 @@ You can view a live demo and some examples of how to use the various options her
   </script>
   ```
   
-4. Optional: the recommended way to use the plugin is to initialise it with the `utilsScript` option to enable formatting/validation etc., and the `nationalMode` option to allow users to enter national numbers (which you can convert to international numbers using `getCleanNumber`).
+4. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
 
 
 ## Options
@@ -83,8 +83,8 @@ Type: `String` Default: `""`
 When setting `defaultCountry` to `"auto"`, we use a service called [ipinfo](http://ipinfo.io) which requires a special token to be used over https, or if you make >1000 requests/day. Use this option to pass in that token.
 
 **nationalMode**  
-Type: `Boolean` Default: `false`  
-Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getCleanNumber` to extract a standardised (E.164) international number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/national-mode.html).
+Type: `Boolean` Default: `true`  
+Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getNumber` to extract a full international number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/national-mode.html).
 
 **numberType**  
 Type: `String` Default: `""`  
@@ -102,10 +102,6 @@ Specify the countries to appear at the top of the list.
 Type: `Boolean` Default: `false`  
 Stop the user from entering invalid numbers. You can react to the `invalidkey` event if you want to give the user some visual feedback. Requires the `autoFormat` option to be enabled. _Note that we use libphonenumber's AsYouTypeFormatter for this, and there's currently [a bug](https://github.com/googlei18n/libphonenumber/issues/555) which means that all Samoa numbers (and maybe others) are incorrectly flagged as invalid._
 
-**responsiveDropdown**  
-Type: `Boolean` Default: `false`  
-Set the dropdown's width to be the same as the input. This is automatically enabled for small screens.
-
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
 Enable formatting/validation etc. by specifying the path to the included utils.js script, which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
@@ -118,10 +114,12 @@ Remove the plugin from the input, and unbind any event listeners.
 $("#mobile-number").intlTelInput("destroy");
 ```
 
-**getCleanNumber**  
-Get the current number formatted to the [E.164 standard](http://en.wikipedia.org/wiki/E.164). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this will still return an international number, as specified by the E.164 standard._  
+**getNumber**  
+Get the current number formatted to the given type (defaults to [E.164 standard](http://en.wikipedia.org/wiki/E.164)). The different formatting types are available in the enum `intlTelInputUtils.numberFormat` - taken from [here](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number._  
 ```js
-var cleanNumber = $("#mobile-number").intlTelInput("getCleanNumber");
+var intlNumber = $("#mobile-number").intlTelInput("getNumber");
+// or
+var ntlNumber = $("#mobile-number").intlTelInput("getNumber", intlTelInputUtils.numberFormat.NATIONAL);
 ```
 Returns a string e.g. `"+17024181234"`
 
@@ -214,7 +212,7 @@ A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com
 * `preventInvalidNumbers` option, which stops the user from accidentally entering an invalid number
 * Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
-* Extract the standardised (E.164) international number with `getCleanNumber` even when using the `nationalMode` option
+* Extract the standardised (E.164) international number with `getNumber` even when using the `nationalMode` option
 
 International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking).
 
