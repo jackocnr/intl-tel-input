@@ -193,7 +193,7 @@ $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 
 ## Static Methods
 **getCountryData**  
-Get all of the plugin's country data - either to re-use elsewhere e.g. to populate a country dropdown - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/country-sync.html), or to modify - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/modify-country-data.html).  
+Get all of the plugin's country data - either to re-use elsewhere e.g. to populate a country dropdown - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/country-sync.html), or to modify - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/modify-country-data.html). Note that any modifications must be done before initialising the plugin.  
 ```js
 var countryData = $.fn.intlTelInput.getCountryData();
 ```
@@ -204,12 +204,6 @@ Returns an array of country objects:
   iso2: "af",
   dialCode: "93"
 }, ...]
-```
-
-**setCountryData**  
-Set all of the plugin's country data. Note: the data should be the same format as that above i.e. an array of objects.  
-```js
-$.fn.intlTelInput.setCountryData(countryData);
 ```
 
 
