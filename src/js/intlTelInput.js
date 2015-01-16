@@ -1052,6 +1052,20 @@ Plugin.prototype = {
     return false;
   },
 
+  // check if the input val starts with not allowed code. This function may be useful if you want to hide country flags if no country allows this code
+  isNumberStartWithWrong: function(){
+    var val = $.trim(this.telInput.val()).replace(/[\-\+\s]/g, '');
+    var one = val[0];
+    var two = val.substr(0, 2);
+    var three = val.substr(0, 3);
+
+    var wrongCodes = ['0', '214', '217', '219', '259', '28', '292', '293', '294', '295', '296', '384', '424', '425', '426', '427', '428', '429',
+      '671', '693', '694', '695', '696', '697', '698', '699', '72', '801', '802', '803', '804', '805', '806', '807',
+      '809', '83', '851', '854', '857', '858', '859', '875', '876', '877', '879', '884', '885', '887', '888', '889', '89',
+      '969', '978', '990', '997', '999'];
+
+    return _.indexOf(wrongCodes, one) != -1 || _.indexOf(wrongCodes, two) != -1 || _.indexOf(wrongCodes, three) != -1;
+  },
 
   // load the utils script
   loadUtils: function(path) {
