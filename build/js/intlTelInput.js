@@ -143,9 +143,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             // generate countryCodes map
             this.countryCodes = {};
+            // and potential country code map
+            //this.pcc = {};
             for (i = 0; i < this.countries.length; i++) {
                 var c = this.countries[i];
                 this._addCountryCode(c.iso2, c.dialCode, c.priority);
+                //this._addPotentialCountryCode(c.dialCode, this.pcc, 0);
                 // area codes
                 if (c.areaCodes) {
                     for (var j = 0; j < c.areaCodes.length; j++) {
@@ -155,6 +158,16 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             }
         },
+        // keep a map of potential country codes
+        /*_addPotentialCountryCode: function(dialCode, map, i) {
+    var digit = dialCode.charAt(i);
+    if (!map[digit]) {
+      map[digit] = (dialCode.length == i + 1) ? true : {};
+    }
+    if (dialCode.length > i + 1) {
+      this._addPotentialCountryCode(dialCode, map[digit], i + 1);
+    }
+  },*/
         // process preferred countries - iterate through the preferences,
         // fetching the country data for each one
         _setPreferredCountries: function() {
@@ -515,10 +528,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this._setDropdownPosition();
             // update highlighting and scroll to active list item
             var activeListItem = this.countryList.children(".active");
-            this._highlightListItem(activeListItem);
+            if (activeListItem.length) {
+                this._highlightListItem(activeListItem);
+            }
             // show it
             this.countryList.removeClass("hide");
-            this._scrollTo(activeListItem);
+            if (activeListItem.length) {
+                this._scrollTo(activeListItem);
+            }
             // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
             this._bindDropdownListeners();
             // update the arrow
@@ -649,6 +666,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             // try and extract valid dial code from input
             var dialCode = this._getDialCode(number);
+            //var dialCode = this._getPotentialDialCode(number);
             if (dialCode) {
                 // check if one of the matching countries is already selected
                 var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) != -1;
@@ -662,8 +680,46 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         }
                     }
                 }
+            } else {
+                this._selectFlag("");
             }
         },
+        /*_getPotentialDialCode: function(number) {
+    if (number.charAt(0) != "+" || number.length < 2) {
+      //TODO: return default country dial code
+      return "";
+    }
+    var numeric = this._getNumeric(number),
+      first = this.pcc[numeric.charAt(0)];
+
+    //TODO: turn this into a recursive function
+    if (!first) {
+      return "";
+    } else if (first === true) {
+      return number.substr(0, 1);
+    } else if (typeof first == "object") {
+
+      // if we've reached the end of the current number, find it's full potential number
+      if (numeric.length == 1) {
+        return "+" + numeric.substr(0, 1) + this._getPotentialSuffix(first);
+      }
+      var second = first[numeric.charAt(1)];
+      if (second === true) {
+        return "+" + numeric.substr(0, 2);
+      }
+    }
+    return "";
+  },
+
+
+  _getPotentialSuffix: function(map) {
+    for (var key in map) break;
+    if (map[key] === true) {
+      return key;
+    } else {
+      return key + this._getPotentialSuffix(map[key]);
+    }
+  },*/
         // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 but the actual number's length is >=4
         _isUnknownNanp: function(number, dialCode) {
             return dialCode == "+1" && this._getNumeric(number).length >= 4;
@@ -691,21 +747,23 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // select the given flag, update the placeholder and the active list item
         _selectFlag: function(countryCode) {
             // do this first as it will throw an error and stop if countryCode is invalid
-            this.selectedCountryData = this._getCountryData(countryCode, false, false);
+            this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
             this.selectedFlagInner.attr("class", "iti-flag " + countryCode);
             // update the selected country's title attribute
-            var title = this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode;
+            var title = countryCode ? this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode : "Unknown";
             this.selectedFlagInner.parent().attr("title", title);
             // and the input's placeholder
             this._updatePlaceholder();
             // update the active list item
             this.countryListItems.removeClass("active");
-            this.countryListItems.children(".iti-flag." + countryCode).first().parent().addClass("active");
+            if (countryCode) {
+                this.countryListItems.children(".iti-flag." + countryCode).first().parent().addClass("active");
+            }
         },
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {
             if (window.intlTelInputUtils && !this.hadInitialPlaceholder) {
-                var iso2 = this.selectedCountryData.iso2, numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"], placeholder = intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType);
+                var iso2 = this.selectedCountryData.iso2, numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"], placeholder = iso2 ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
                 this.telInput.attr("placeholder", placeholder);
             }
         },
