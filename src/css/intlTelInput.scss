@@ -66,11 +66,14 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
 
     // any margin-left here will push the selected-flag away
     margin-left: 0;
-  }
-  input {
+
+    // when user presses invalid key, we add a class which instantly adds a bg color,
+    // then when we remove that class, this does a quick fade back to no bg
     transition: background-color 100ms ease-out;
   }
+  // when user presses invalid key, add this class temporarily to change bg color
   input.iti-invalid-key {
+    // override the default transition state to show the change instantly
     transition: background-color 0;
     background-color: #FFC7C7;
   }
