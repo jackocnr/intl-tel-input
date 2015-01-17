@@ -778,14 +778,7 @@ Plugin.prototype = {
     if (dialCode) {
       // check if one of the matching countries is already selected
       var countryCodes = this.countryCodes[this._getNumeric(dialCode)],
-        alreadySelected = false;
-      if (this.selectedCountryData) {
-        for (var i = 0; i < countryCodes.length; i++) {
-          if (countryCodes[i] == this.selectedCountryData.iso2) {
-            alreadySelected = true;
-          }
-        }
-      }
+        alreadySelected = (this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) != -1);
       // if a matching country is not already selected (or this is an unknown NANP area code): choose the first in the list
       if (!alreadySelected || this._isUnknownNanp(number, dialCode)) {
         // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first non-empty index
