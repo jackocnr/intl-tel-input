@@ -699,9 +699,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // and the input's placeholder
             this._updatePlaceholder();
             // update the active list item
-            var listItem = this.countryListItems.children(".iti-flag." + countryCode).first().parent();
             this.countryListItems.removeClass("active");
-            listItem.addClass("active");
+            this.countryListItems.children(".iti-flag." + countryCode).first().parent().addClass("active");
         },
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {

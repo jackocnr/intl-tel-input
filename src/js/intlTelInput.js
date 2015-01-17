@@ -837,9 +837,8 @@ Plugin.prototype = {
     this._updatePlaceholder();
 
     // update the active list item
-    var listItem = this.countryListItems.children(".iti-flag." + countryCode).first().parent();
     this.countryListItems.removeClass("active");
-    listItem.addClass("active");
+    this.countryListItems.children(".iti-flag." + countryCode).first().parent().addClass("active");
   },
 
 
