@@ -289,18 +289,17 @@ Plugin.prototype = {
     if (this._getDialCode(val)) {
       this._updateFlagFromNumber(val);
     } else {
-      var defaultCountry;
       // check the defaultCountry option, else fall back to the first in the list
       if (this.options.defaultCountry) {
-        defaultCountry = this._getCountryData(this.options.defaultCountry, false, false);
+        this.options.defaultCountry = this._getCountryData(this.options.defaultCountry, false, false);
       } else {
-        defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0] : this.countries[0];
+        this.options.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0] : this.countries[0];
       }
-      this._selectFlag(defaultCountry.iso2);
+      this._selectFlag(this.options.defaultCountry.iso2);
 
       // if empty, insert the default dial code (this function will check !nationalMode and !autoHideDialCode)
       if (!val) {
-        this._updateDialCode(defaultCountry.dialCode, false);
+        this._updateDialCode(this.options.defaultCountry.dialCode, false);
       }
     }
 
@@ -602,7 +601,7 @@ Plugin.prototype = {
       that.telInput.data("focusVal", value);
 
       // on focus: if empty, insert the dial code for the currently selected flag
-      if (that.options.autoHideDialCode && !value && !that.telInput.prop("readonly")) {
+      if (that.options.autoHideDialCode && !value && !that.telInput.prop("readonly") && that.selectedCountryData.dialCode) {
         that._updateVal("+" + that.selectedCountryData.dialCode, true);
         // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
         that.telInput.one("keypress.plus" + that.ns, function(e) {
@@ -846,9 +845,16 @@ Plugin.prototype = {
           }
         }
       }
-    } else {
-      this._selectFlag("");
+    } else if (number.charAt(0) == "+") {
+      // no valid dial code, but only empty it if they've actually typed an invalid one, not just a plus
+      if (number.length > 1) {
+        this._selectFlag("");
+      } else if (!this.selectedCountryData.iso2) {
+        // if just a plus and there's no currently selecte country, revert to default
+        this._selectFlag(this.options.defaultCountry.iso2);
+      }
     }
+    // if the number doesn't even start with a plus, don't do anything
   },
 
 
