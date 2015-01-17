@@ -67,6 +67,13 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     // any margin-left here will push the selected-flag away
     margin-left: 0;
   }
+  input {
+    transition: background-color 100ms ease-out;
+  }
+  input.iti-invalid-key {
+    transition: background-color 0;
+    background-color: #FFC7C7;
+  }
 
   .flag-dropdown {
     // positioned over the top of the input

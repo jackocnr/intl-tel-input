@@ -19,6 +19,8 @@ var pluginName = "intlTelInput",
     preferredCountries: ["us", "gb"],
     // stop the user from typing invalid numbers
     preventInvalidNumbers: false,
+    // stop the user from typing invalid dial codes
+    preventInvalidDialCodes: false,
     // specify the path to the libphonenumber script to enable validation/formatting
     utilsScript: ""
   },
@@ -160,11 +162,11 @@ Plugin.prototype = {
     // generate countryCodes map
     this.countryCodes = {};
     // and potential country code map
-    //this.pcc = {};
+    this.pcc = {};
     for (i = 0; i < this.countries.length; i++) {
       var c = this.countries[i];
       this._addCountryCode(c.iso2, c.dialCode, c.priority);
-      //this._addPotentialCountryCode(c.dialCode, this.pcc, 0);
+      this._addPotentialCountryCode(c.dialCode, this.pcc, 0);
       // area codes
       if (c.areaCodes) {
         for (var j = 0; j < c.areaCodes.length; j++) {
@@ -177,7 +179,7 @@ Plugin.prototype = {
 
 
   // keep a map of potential country codes
-  /*_addPotentialCountryCode: function(dialCode, map, i) {
+  _addPotentialCountryCode: function(dialCode, map, i) {
     var digit = dialCode.charAt(i);
     if (!map[digit]) {
       map[digit] = (dialCode.length == i + 1) ? true : {};
@@ -185,7 +187,7 @@ Plugin.prototype = {
     if (dialCode.length > i + 1) {
       this._addPotentialCountryCode(dialCode, map[digit], i + 1);
     }
-  },*/
+  },
 
 
 
@@ -396,7 +398,7 @@ Plugin.prototype = {
             }
           }
           if (!isAllowedKey) {
-            that.telInput.trigger("invalidkey");
+            that._handleInvalidKey();
           }
         }
       });
@@ -444,6 +446,17 @@ Plugin.prototype = {
   },
 
 
+  // alert the user to an invalid key event
+  _handleInvalidKey: function() {
+    var that = this;
+
+    this.telInput.trigger("invalidkey").addClass("iti-invalid-key");
+    setTimeout(function() {
+      that.telInput.removeClass("iti-invalid-key");
+    }, 100);
+  },
+
+
   // when autoFormat is enabled: handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and preserve the cursor position. and 2) reformatting on backspace, or paste event (etc)
   _handleInputKey: function(newNumericChar, addSuffix) {
     var val = this.telInput.val(),
@@ -469,6 +482,12 @@ Plugin.prototype = {
       val += newNumericChar;
     }
 
+    var numeric = this._getNumeric(val);
+    if (this.options.preventInvalidDialCodes && val.charAt(0) == "+" && numeric.length && !this._hasPotentialDialCode(numeric, this.pcc, 0)) {
+      this._handleInvalidKey();
+      return;
+    }
+
     // update the number and flag
     this.setNumber(val, addSuffix);
 
@@ -479,7 +498,7 @@ Plugin.prototype = {
     if (this.options.preventInvalidNumbers && newNumericChar) {
       if (numericIsSame) {
         // if we're trying to add a new numeric char and the numeric digits haven't changed, then trigger invalid
-        this.telInput.trigger("invalidkey");
+        this._handleInvalidKey();
       } else if (numericBefore.length == numericAfter.length) {
         // preventInvalidNumbers edge case: adding digit in middle of full number, so a digit gets dropped from the end (numeric digits have changed but are same length)
         digitsOnRight--;
@@ -504,6 +523,23 @@ Plugin.prototype = {
       }
       // set the new cursor
       input.setSelectionRange(newCursor, newCursor);
+    }
+  },
+
+
+  // check if the given number contains a potentially valid dial code by recursing through the provided map
+  _hasPotentialDialCode: function(number, map, i) {
+    var node = map[number.charAt(i)];
+    if (!node) {
+      return false;
+    } else if (node === true) {
+      return true;
+    } else if (typeof node == "object") {
+      if (number.length == i + 1) {
+        return true;
+      } else {
+        return this._hasPotentialDialCode(number, node, i + 1);
+      }
     }
   },
 
@@ -814,44 +850,6 @@ Plugin.prototype = {
       this._selectFlag("");
     }
   },
-
-
-  /*_getPotentialDialCode: function(number) {
-    if (number.charAt(0) != "+" || number.length < 2) {
-      //TODO: return default country dial code
-      return "";
-    }
-    var numeric = this._getNumeric(number),
-      first = this.pcc[numeric.charAt(0)];
-
-    //TODO: turn this into a recursive function
-    if (!first) {
-      return "";
-    } else if (first === true) {
-      return number.substr(0, 1);
-    } else if (typeof first == "object") {
-
-      // if we've reached the end of the current number, find it's full potential number
-      if (numeric.length == 1) {
-        return "+" + numeric.substr(0, 1) + this._getPotentialSuffix(first);
-      }
-      var second = first[numeric.charAt(1)];
-      if (second === true) {
-        return "+" + numeric.substr(0, 2);
-      }
-    }
-    return "";
-  },
-
-
-  _getPotentialSuffix: function(map) {
-    for (var key in map) break;
-    if (map[key] === true) {
-      return key;
-    } else {
-      return key + this._getPotentialSuffix(map[key]);
-    }
-  },*/
 
 
   // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 but the actual number's length is >=4
