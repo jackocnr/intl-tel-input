@@ -855,7 +855,8 @@ Plugin.prototype = {
       }
     } else if (number.charAt(0) == "+") {
       // no valid dial code, but only empty it if they've actually typed an invalid one, not just a plus
-      if (number.length > 1) {
+      // Note: use getNumeric here because the number has not been formatted yet, so could contain bad shit
+      if (this._getNumeric(number).length) {
         this._selectFlag("");
       } else if (!this.selectedCountryData.iso2) {
         // if just a plus and there's no currently selecte country, revert to default
