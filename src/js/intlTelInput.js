@@ -166,7 +166,10 @@ Plugin.prototype = {
     for (i = 0; i < this.countries.length; i++) {
       var c = this.countries[i];
       this._addCountryCode(c.iso2, c.dialCode, c.priority);
-      this._addPotentialCountryCode(c.dialCode, this.pcc, 0);
+      // dont add NANP area codes to pcc map
+      if (c.dialCode.charAt(0) != "1" || c.dialCode.length == 1) {
+        this._addPotentialCountryCode(c.dialCode, this.pcc, 0);
+      }
       // area codes
       if (c.areaCodes) {
         for (var j = 0; j < c.areaCodes.length; j++) {
@@ -482,6 +485,7 @@ Plugin.prototype = {
     }
 
     var numeric = this._getNumeric(val);
+    // check if adding this digit would make an invalid dial code
     if (this.options.preventInvalidDialCodes && val.charAt(0) == "+" && numeric.length && !this._hasPotentialDialCode(numeric, this.pcc, 0)) {
       this._handleInvalidKey();
       return;
