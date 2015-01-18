@@ -837,7 +837,8 @@ Plugin.prototype = {
       number = "+1" + number;
     }
     // try and extract valid dial code from input
-    var dialCode = this._getDialCode(number);
+    var dialCode = this._getDialCode(number),
+      countryCode = null;
     //var dialCode = this._getPotentialDialCode(number);
     if (dialCode) {
       // check if one of the matching countries is already selected
@@ -848,7 +849,7 @@ Plugin.prototype = {
         // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first non-empty index
         for (var j = 0; j < countryCodes.length; j++) {
           if (countryCodes[j]) {
-            this._selectFlag(countryCodes[j]);
+            countryCode = countryCodes[j];
             break;
           }
         }
@@ -857,13 +858,19 @@ Plugin.prototype = {
       // no valid dial code, but only empty it if they've actually typed an invalid one, not just a plus
       // Note: use getNumeric here because the number has not been formatted yet, so could contain bad shit
       if (this._getNumeric(number).length) {
-        this._selectFlag("");
+        countryCode = "";
       } else if (!this.selectedCountryData.iso2) {
-        // if just a plus and there's no currently selecte country, revert to default
-        this._selectFlag(this.options.defaultCountry.iso2);
+        // if just a plus and there's no currently selected country, revert to default
+        countryCode = this.options.defaultCountry.iso2;
       }
+    } else if (!this.selectedCountryData.iso2 && !number) {
+      // if no selected country and no number, revert to default
+      countryCode = this.options.defaultCountry.iso2;
     }
-    // if the number doesn't even start with a plus, don't do anything
+
+    if (countryCode !== null) {
+      this._selectFlag(countryCode);
+    }
   },
 
 
