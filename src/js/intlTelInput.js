@@ -19,8 +19,6 @@ var pluginName = "intlTelInput",
     preferredCountries: ["us", "gb"],
     // stop the user from typing invalid numbers
     preventInvalidNumbers: false,
-    // stop the user from typing invalid dial codes
-    preventInvalidDialCodes: false,
     // specify the path to the libphonenumber script to enable validation/formatting
     utilsScript: ""
   },
@@ -462,7 +460,7 @@ Plugin.prototype = {
   // when autoFormat is enabled: handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and preserve the cursor position. and 2) reformatting on backspace, or paste event (etc)
   _handleInputKey: function(newNumericChar, addSuffix) {
     var val = this.telInput.val(),
-      numericBefore = this._getNumeric(val),
+      cleanBefore = this._getClean(val),
       originalLeftChar,
       // raw DOM element
       input = this.telInput[0],
@@ -486,7 +484,7 @@ Plugin.prototype = {
 
     var numeric = this._getNumeric(val);
     // check if adding this digit would make an invalid dial code
-    if (this.options.preventInvalidDialCodes && val.charAt(0) == "+" && numeric.length && !this._hasPotentialDialCode(numeric, this.pcc, 0)) {
+    if (this.options.preventInvalidNumbers && val.charAt(0) == "+" && numeric.length && !this._hasPotentialDialCode(numeric, this.pcc, 0)) {
       this._handleInvalidKey();
       return;
     }
@@ -495,14 +493,14 @@ Plugin.prototype = {
     this.setNumber(val, addSuffix);
 
     val = this.telInput.val();
-    var numericAfter = this._getNumeric(val),
-      numericIsSame = (numericBefore == numericAfter);
+    var cleanAfter = this._getClean(val),
+      cleanIsSame = (cleanBefore == cleanAfter);
 
     if (this.options.preventInvalidNumbers && newNumericChar) {
-      if (numericIsSame) {
+      if (cleanIsSame) {
         // if we're trying to add a new numeric char and the numeric digits haven't changed, then trigger invalid
         this._handleInvalidKey();
-      } else if (numericBefore.length == numericAfter.length) {
+      } else if (cleanBefore.length == cleanAfter.length) {
         // preventInvalidNumbers edge case: adding digit in middle of full number, so a digit gets dropped from the end (numeric digits have changed but are same length)
         digitsOnRight--;
       }
@@ -656,6 +654,12 @@ Plugin.prototype = {
   // extract the numeric digits from the given string
   _getNumeric: function(s) {
     return s.replace(/\D/g, "");
+  },
+
+
+  _getClean: function(s) {
+    var prefix = (s.charAt(0) == "+") ? "+" : "";
+    return prefix + this._getNumeric(s);
   },
 
 
