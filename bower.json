@@ -3,6 +3,7 @@
   "version": "4.0.1",
   "main": [
     "./build/js/intlTelInput.min.js",
+    "./lib/libphonenumber/build/utils.js",
     "./build/img/flags.png",
     "./build/css/intlTelInput.css"
   ],
