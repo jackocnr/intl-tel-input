@@ -392,7 +392,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 val += newNumericChar;
             }
             // update the number and flag
-            this.setNumber(val, addSuffix);
+            this.setNumber(val, addSuffix, true);
             // update the cursor position
             if (this.isGoodBrowser) {
                 var newCursor;
@@ -628,10 +628,15 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // update the input's value to the given val
         // if autoFormat=true, format it first according to the country-specific formatting rules
-        _updateVal: function(val, addSuffix) {
+        _updateVal: function(val, addSuffix, preventConversion) {
             var formatted;
             if (this.options.autoFormat && window.intlTelInputUtils) {
-                formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix);
+                // if nationalMode and we have a valid intl number, convert it to ntl
+                if (!preventConversion && this.options.nationalMode && val.charAt(0) == "+" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
+                    formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, intlTelInputUtils.numberFormat.NATIONAL);
+                } else {
+                    formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix);
+                }
                 // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
                 var max = this.telInput.attr("maxlength");
                 if (max && formatted.length > max) {
@@ -902,14 +907,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
         },
         // set the input value and update the flag
-        setNumber: function(number, addSuffix) {
+        setNumber: function(number, addSuffix, preventConversion) {
             // ensure starts with plus
             if (!this.options.nationalMode && number.charAt(0) != "+") {
                 number = "+" + number;
             }
             // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
             this._updateFlagFromNumber(number);
-            this._updateVal(number, addSuffix);
+            this._updateVal(number, addSuffix, preventConversion);
         },
         // this is called when the utils are ready
         utilsLoaded: function() {
