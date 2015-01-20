@@ -14,21 +14,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    invalidKey: {
-      src: 'examples/template.html.ejs',
-      dest: 'examples/gen/invalid-key.html',
-      variables: function() {
-        return {
-          time: time,
-          title: "Invalid Key",
-          desc: "Use the custom invalidkey event to flash the input red. To test it, focus the input and type an invalid character e.g. a letter.",
-          stylesheet: 'invalidKey.css',
-          markup: grunt.file.read('examples/partials/simpleInput.html'),
-          code: grunt.file.read('examples/js/invalidKey.js'),
-          script: "invalidKey.js"
-        }
-      }
-    },
     nationalMode: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/national-mode.html',

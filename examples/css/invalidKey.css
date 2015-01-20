@@ -1,7 +1,0 @@
-input {
-  transition: background-color 100ms ease-out;
-}
-input.flash {
-  transition: background-color 0;
-  background-color: #FFC7C7;
-}
