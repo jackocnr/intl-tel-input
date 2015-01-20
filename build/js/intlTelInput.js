@@ -350,7 +350,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     // prevent deleting the plus (if not in nationalMode)
                     if (!that.options.nationalMode) {
                         var val = that.telInput.val();
-                        if (val.substr(0, 1) != "+") {
+                        if (val.charAt(0) != "+") {
                             // newCursorPos is current pos + 1 to account for the plus we are about to add
                             var newCursorPos = that.isGoodBrowser ? input.selectionStart + 1 : 0;
                             that.telInput.val("+" + val);
@@ -484,7 +484,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.on("blur" + this.ns, function() {
                 if (that.options.autoHideDialCode) {
                     // on blur: if just a dial code then remove it
-                    var value = that.telInput.val(), startsPlus = value.substr(0, 1) == "+";
+                    var value = that.telInput.val(), startsPlus = value.charAt(0) == "+";
                     if (startsPlus) {
                         var numeric = that._getNumeric(value);
                         // if just a plus, or if just a dial code
@@ -647,7 +647,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _updateFlagFromNumber: function(number) {
             // if we're in nationalMode and we're on US/Canada, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
             // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
-            if (this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.substr(0, 1) != "+") {
+            if (this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
                 number = "+1" + number;
             }
             // try and extract valid dial code from input
@@ -777,7 +777,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var inputVal = this.telInput.val(), newNumber;
             // save having to pass this every time
             newDialCode = "+" + newDialCode;
-            if (this.options.nationalMode && inputVal.substr(0, 1) != "+") {
+            if (this.options.nationalMode && inputVal.charAt(0) != "+") {
                 // if nationalMode, we just want to re-format
                 newNumber = inputVal;
             } else if (inputVal) {
@@ -788,7 +788,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     newNumber = inputVal.replace(prevDialCode, newDialCode);
                 } else {
                     // if the previous number didn't contain a dial code, we should persist it
-                    var existingNumber = inputVal.substr(0, 1) != "+" ? $.trim(inputVal) : "";
+                    var existingNumber = inputVal.charAt(0) != "+" ? $.trim(inputVal) : "";
                     newNumber = newDialCode + existingNumber;
                 }
             } else {
@@ -904,7 +904,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // set the input value and update the flag
         setNumber: function(number, addSuffix) {
             // ensure starts with plus
-            if (!this.options.nationalMode && number.substr(0, 1) != "+") {
+            if (!this.options.nationalMode && number.charAt(0) != "+") {
                 number = "+" + number;
             }
             // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
