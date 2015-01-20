@@ -68,7 +68,7 @@ Note: any options that take country codes should be lower case [ISO 3166-1 alpha
 
 **autoFormat**  
 Type: `Boolean` Default: `true`  
-Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (listen for the `invalidkey` event if you want to give the user feedback - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/invalid-key.html)). Requires the `utilsScript` option for the formatting logic.
+Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (triggering a red flash in the input - see [Troubleshooting](#troubleshooting) to customise this). Requires the `utilsScript` option.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -217,6 +217,12 @@ International number formatting/validation is hard (it varies by country/distric
 Depending on your project setup, you may need to override the path to flags.png in your CSS.  
 ```css
 .iti-flag {background-image: url("path/to/flags.png");}
+```
+
+**Customise invalid key flash**  
+Set the colour like this (or set to `none` to disable):  
+```css
+.intl-tel-input input.iti-invalid-key {background-color: #FFC7C7;}
 ```
 
 **Full width input**  
