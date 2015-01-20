@@ -17,8 +17,6 @@ var pluginName = "intlTelInput",
     onlyCountries: [],
     // the countries at the top of the list. defaults to united states and united kingdom
     preferredCountries: ["us", "gb"],
-    // stop the user from typing invalid numbers
-    preventInvalidNumbers: false,
     // specify the path to the libphonenumber script to enable validation/formatting
     utilsScript: ""
   },
@@ -159,15 +157,9 @@ Plugin.prototype = {
 
     // generate countryCodes map
     this.countryCodes = {};
-    // and potential country code map
-    this.pcc = {};
     for (i = 0; i < this.countries.length; i++) {
       var c = this.countries[i];
       this._addCountryCode(c.iso2, c.dialCode, c.priority);
-      // dont add NANP area codes to pcc map
-      if (c.dialCode.charAt(0) != "1" || c.dialCode.length == 1) {
-        this._addPotentialCountryCode(c.dialCode, this.pcc, 0);
-      }
       // area codes
       if (c.areaCodes) {
         for (var j = 0; j < c.areaCodes.length; j++) {
@@ -177,19 +169,6 @@ Plugin.prototype = {
       }
     }
   },
-
-
-  // keep a map of potential country codes
-  _addPotentialCountryCode: function(dialCode, map, i) {
-    var digit = dialCode.charAt(i);
-    if (!map[digit]) {
-      map[digit] = (dialCode.length == i + 1) ? true : {};
-    }
-    if (dialCode.length > i + 1) {
-      this._addPotentialCountryCode(dialCode, map[digit], i + 1);
-    }
-  },
-
 
 
   // process preferred countries - iterate through the preferences,
@@ -482,33 +461,13 @@ Plugin.prototype = {
       val += newNumericChar;
     }
 
-    var numeric = this._getNumeric(val);
-    // check if adding this digit would make an invalid dial code
-    if (this.options.preventInvalidNumbers && val.charAt(0) == "+" && numeric.length && !this._hasPotentialDialCode(numeric, this.pcc, 0)) {
-      this._handleInvalidKey();
-      return;
-    }
-
     // update the number and flag
     this.setNumber(val, addSuffix);
-
-    val = this.telInput.val();
-    var cleanAfter = this._getClean(val),
-      cleanIsSame = (cleanBefore == cleanAfter);
-
-    if (this.options.preventInvalidNumbers && newNumericChar) {
-      if (cleanIsSame) {
-        // if we're trying to add a new numeric char and the numeric digits haven't changed, then trigger invalid
-        this._handleInvalidKey();
-      } else if (cleanBefore.length == cleanAfter.length) {
-        // preventInvalidNumbers edge case: adding digit in middle of full number, so a digit gets dropped from the end (numeric digits have changed but are same length)
-        digitsOnRight--;
-      }
-    }
 
     // update the cursor position
     if (this.isGoodBrowser) {
       var newCursor;
+      val = this.telInput.val();
 
       // if it was at the end, keep it there
       if (!digitsOnRight) {
@@ -524,23 +483,6 @@ Plugin.prototype = {
       }
       // set the new cursor
       input.setSelectionRange(newCursor, newCursor);
-    }
-  },
-
-
-  // check if the given number contains a potentially valid dial code by recursing through the provided map
-  _hasPotentialDialCode: function(number, map, i) {
-    var node = map[number.charAt(i)];
-    if (!node) {
-      return false;
-    } else if (node === true) {
-      return true;
-    } else if (typeof node == "object") {
-      if (number.length == i + 1) {
-        return true;
-      } else {
-        return this._hasPotentialDialCode(number, node, i + 1);
-      }
     }
   },
 
@@ -814,7 +756,7 @@ Plugin.prototype = {
     var formatted;
 
     if (this.options.autoFormat && window.intlTelInputUtils) {
-      formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix, this.options.preventInvalidNumbers);
+      formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix);
       // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
       var max = this.telInput.attr("maxlength");
       if (max && formatted.length > max) {
@@ -839,7 +781,6 @@ Plugin.prototype = {
     // try and extract valid dial code from input
     var dialCode = this._getDialCode(number),
       countryCode = null;
-    //var dialCode = this._getPotentialDialCode(number);
     if (dialCode) {
       // check if one of the matching countries is already selected
       var countryCodes = this.countryCodes[this._getNumeric(dialCode)],
