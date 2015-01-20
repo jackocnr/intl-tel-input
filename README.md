@@ -98,10 +98,6 @@ Display only the countries you specify - [see example](http://jackocnr.com/lib/i
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
 
-**preventInvalidNumbers**  
-Type: `Boolean` Default: `false`  
-Stop the user from entering invalid numbers. You can react to the `invalidkey` event if you want to give the user some visual feedback. Requires the `autoFormat` option to be enabled. _Note that we use libphonenumber's AsYouTypeFormatter for this, and there's currently [a bug](https://github.com/googlei18n/libphonenumber/issues/555) which means that all Samoa numbers (and maybe others) are incorrectly flagged as invalid._
-
 **utilsScript**  
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
 Enable formatting/validation etc. by specifying the path to the included utils.js script, which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
@@ -209,7 +205,6 @@ Returns an array of country objects:
 A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com) which enables the following features:
 
 * As-you-type formatting with `autoFormat` option, which prevents you from entering invalid characters
-* `preventInvalidNumbers` option, which stops the user from accidentally entering an invalid number
 * Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
 * Extract the standardised (E.164) international number with `getNumber` even when using the `nationalMode` option
