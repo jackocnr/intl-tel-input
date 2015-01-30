@@ -655,7 +655,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // if we're in nationalMode and we're on US/Canada, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
             // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
             if (this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
-                number = "+1" + number;
+                if (number.charAt(0) != "1") {
+                    number = "1" + number;
+                }
+                number = "+" + number;
             }
             // try and extract valid dial code from input
             var dialCode = this._getDialCode(number), countryCode = null;
