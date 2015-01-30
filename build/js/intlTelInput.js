@@ -17,6 +17,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     defaults = {
         // automatically format the number according to the selected country
         autoFormat: true,
+        // add or remove input placeholder with an example number for the selected country
+        autoPlaceholder: true,
         // if there is just a dial code in the input: remove it on blur, and re-add it on focus
         autoHideDialCode: true,
         // default country
@@ -729,7 +731,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {
-            if (window.intlTelInputUtils && !this.hadInitialPlaceholder) {
+            if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder) {
                 var iso2 = this.selectedCountryData.iso2, numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"], placeholder = iso2 ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
                 this.telInput.attr("placeholder", placeholder);
             }

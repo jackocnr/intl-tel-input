@@ -3,6 +3,8 @@ var pluginName = "intlTelInput",
   defaults = {
     // automatically format the number according to the selected country
     autoFormat: true,
+    // add or remove input placeholder with an example number for the selected country
+    autoPlaceholder: true,
     // if there is just a dial code in the input: remove it on blur, and re-add it on focus
     autoHideDialCode: true,
     // default country
@@ -18,9 +20,7 @@ var pluginName = "intlTelInput",
     // the countries at the top of the list. defaults to united states and united kingdom
     preferredCountries: ["us", "gb"],
     // specify the path to the libphonenumber script to enable validation/formatting
-    utilsScript: "",
-    // add or remove input placeholder with an example number for the selected country
-    autoPlaceholder: true
+    utilsScript: ""
   },
   keys = {
     UP: 38,
