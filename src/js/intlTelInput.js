@@ -18,7 +18,9 @@ var pluginName = "intlTelInput",
     // the countries at the top of the list. defaults to united states and united kingdom
     preferredCountries: ["us", "gb"],
     // specify the path to the libphonenumber script to enable validation/formatting
-    utilsScript: ""
+    utilsScript: "",
+    // add or remove input placeholder with an example number for the selected country
+    autoPlaceholder: true
   },
   keys = {
     UP: 38,
@@ -873,7 +875,7 @@ Plugin.prototype = {
 
   // update the input placeholder to an example number from the currently selected country
   _updatePlaceholder: function() {
-    if (window.intlTelInputUtils && !this.hadInitialPlaceholder) {
+    if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder) {
       var iso2 = this.selectedCountryData.iso2,
         numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"],
         placeholder = (iso2) ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
