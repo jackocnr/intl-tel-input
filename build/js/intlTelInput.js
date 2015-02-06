@@ -882,9 +882,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // validate the input val - assumes the global function isValidNumber (from utilsScript)
         isValidNumber: function() {
-            var val = $.trim(this.telInput.val()), countryCode = this.options.nationalMode ? this.selectedCountryData.iso2 : "", // libphonenumber allows alpha chars, but in order to allow that, we'd need a method to retrieve the processed number, with letters replaced with numbers
-            containsAlpha = /[a-zA-Z]/.test(val);
-            if (!containsAlpha && window.intlTelInputUtils) {
+            var val = $.trim(this.telInput.val()), countryCode = this.options.nationalMode ? this.selectedCountryData.iso2 : "";
+            if (window.intlTelInputUtils) {
                 return intlTelInputUtils.isValidNumber(val, countryCode);
             }
             return false;
