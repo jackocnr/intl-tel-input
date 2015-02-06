@@ -1036,6 +1036,12 @@ Plugin.prototype = {
   },
 
 
+  // extract the phone number extension if present
+  getExtension: function() {
+    return this.telInput.val().split(" ext. ")[1] || "";
+  },
+
+
   // format the number to the given type
   getNumber: function(type) {
     if (window.intlTelInputUtils) {
