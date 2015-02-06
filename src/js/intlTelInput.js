@@ -374,7 +374,7 @@ Plugin.prototype = {
           // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
           if (isBelowMax && (isAllowedKey || noSelection)) {
             var newChar = (isAllowedKey) ? String.fromCharCode(e.which) : null;
-            that._handleInputKey(newChar, true);
+            that._handleInputKey(newChar, true, isAllowedKey);
             // if something has changed, trigger the input event (which was otherwised squashed by the preventDefault)
             if (val != that.telInput.val()) {
               that.telInput.trigger("input");
@@ -441,7 +441,7 @@ Plugin.prototype = {
 
 
   // when autoFormat is enabled: handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and preserve the cursor position. and 2) reformatting on backspace, or paste event (etc)
-  _handleInputKey: function(newNumericChar, addSuffix) {
+  _handleInputKey: function(newNumericChar, addSuffix, isAllowedKey) {
     var val = this.telInput.val(),
       cleanBefore = this._getClean(val),
       originalLeftChars,
@@ -467,7 +467,7 @@ Plugin.prototype = {
     }
 
     // update the number and flag
-    this.setNumber(val, addSuffix, true);
+    this.setNumber(val, addSuffix, true, isAllowedKey);
 
     // update the cursor position
     if (this.isGoodBrowser) {
@@ -757,7 +757,7 @@ Plugin.prototype = {
 
   // update the input's value to the given val
   // if autoFormat=true, format it first according to the country-specific formatting rules
-  _updateVal: function(val, addSuffix, preventConversion) {
+  _updateVal: function(val, addSuffix, preventConversion, isAllowedKey) {
     var formatted;
 
     if (this.options.autoFormat && window.intlTelInputUtils) {
@@ -766,7 +766,7 @@ Plugin.prototype = {
       if (!preventConversion && this.options.nationalMode && val.charAt(0) == "+" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
         formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, intlTelInputUtils.numberFormat.NATIONAL);
       } else {
-        formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix, this.options.allowExtensions);
+        formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix, this.options.allowExtensions, isAllowedKey);
       }
       // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
       var max = this.telInput.attr("maxlength");
@@ -1115,14 +1115,14 @@ Plugin.prototype = {
 
 
   // set the input value and update the flag
-  setNumber: function(number, addSuffix, preventConversion) {
+  setNumber: function(number, addSuffix, preventConversion, isAllowedKey) {
     // ensure starts with plus
     if (!this.options.nationalMode && number.charAt(0) != "+") {
       number = "+" + number;
     }
     // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
     this._updateFlagFromNumber(number);
-    this._updateVal(number, addSuffix, preventConversion);
+    this._updateVal(number, addSuffix, preventConversion, isAllowedKey);
   },
 
 
