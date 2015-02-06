@@ -15,6 +15,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     "use strict";
     var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
+        // typing digits after a valid number will be added to the extension part of the number
+        allowExtensions: false,
         // automatically format the number according to the selected country
         autoFormat: true,
         // add or remove input placeholder with an example number for the selected country
@@ -377,10 +379,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // when autoFormat is enabled: handle various key events on the input: the 2 main situations are 1) adding a new number character, which will replace any selection, reformat, and preserve the cursor position. and 2) reformatting on backspace, or paste event (etc)
         _handleInputKey: function(newNumericChar, addSuffix) {
-            var val = this.telInput.val(), cleanBefore = this._getClean(val), originalLeftChar, // raw DOM element
+            var val = this.telInput.val(), cleanBefore = this._getClean(val), originalLeftChars, // raw DOM element
             input = this.telInput[0], digitsOnRight = 0;
             if (this.isGoodBrowser) {
-                // cursor strategy: maintain the number of digits on the right. we use the right instead of the left so that A) we dont have to account for the new digit (or digits if paste event), and B) we're always on the right side of formatting suffixes
+                // cursor strategy: maintain the number of digits on the right. we use the right instead of the left so that A) we dont have to account for the new digit (or multiple digits if paste event), and B) we're always on the right side of formatting suffixes
                 digitsOnRight = this._getDigitsOnRight(val, input.selectionEnd);
                 // if handling a new number character: insert it in the right place
                 if (newNumericChar) {
@@ -388,7 +390,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     val = val.substr(0, input.selectionStart) + newNumericChar + val.substring(input.selectionEnd, val.length);
                 } else {
                     // here we're not handling a new char, we're just doing a re-format (e.g. on delete/backspace/paste, after the fact), but we still need to maintain the cursor position. so make note of the char on the left, and then after the re-format, we'll count in the same number of digits from the right, and then keep going through any formatting chars until we hit the same left char that we had before.
-                    originalLeftChar = val.charAt(input.selectionStart - 1);
+                    // UPDATE: now have to store 2 chars as extensions formatting contains 2 spaces so you need to be able to distinguish
+                    originalLeftChars = val.substr(input.selectionStart - 2, 2);
                 }
             } else if (newNumericChar) {
                 val += newNumericChar;
@@ -407,18 +410,18 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     newCursor = this._getCursorFromDigitsOnRight(val, digitsOnRight);
                     // but if delete/paste etc, keep going left until hit the same left char as before
                     if (!newNumericChar) {
-                        newCursor = this._getCursorFromLeftChar(val, newCursor, originalLeftChar);
+                        newCursor = this._getCursorFromLeftChar(val, newCursor, originalLeftChars);
                     }
                 }
                 // set the new cursor
                 input.setSelectionRange(newCursor, newCursor);
             }
         },
-        // we start from the position in guessCursor, and work our way left until we hit the originalLeftChar or a number to make sure that after reformatting the cursor has the same char on the left in the case of a delete etc
-        _getCursorFromLeftChar: function(val, guessCursor, originalLeftChar) {
+        // we start from the position in guessCursor, and work our way left until we hit the originalLeftChars or a number to make sure that after reformatting the cursor has the same char on the left in the case of a delete etc
+        _getCursorFromLeftChar: function(val, guessCursor, originalLeftChars) {
             for (var i = guessCursor; i > 0; i--) {
                 var leftChar = val.charAt(i - 1);
-                if (leftChar == originalLeftChar || $.isNumeric(leftChar)) {
+                if ($.isNumeric(leftChar) || val.substr(i - 2, 2) == originalLeftChars) {
                     return i;
                 }
             }
@@ -634,10 +637,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var formatted;
             if (this.options.autoFormat && window.intlTelInputUtils) {
                 // if nationalMode and we have a valid intl number, convert it to ntl
+                // preventConversion is false (i.e. we allow conversion) when dev calls setNumber, or on init
                 if (!preventConversion && this.options.nationalMode && val.charAt(0) == "+" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
                     formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, intlTelInputUtils.numberFormat.NATIONAL);
                 } else {
-                    formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix);
+                    formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix, this.options.allowExtensions);
                 }
                 // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
                 var max = this.telInput.attr("maxlength");
