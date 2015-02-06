@@ -23,7 +23,7 @@ describe("isValidNumber:", function() {
         autoFormat: false,
       });
     });
-    
+
     it("returns true for: valid intl number", function() {
       input.intlTelInput("setNumber", "+44 7733 123456");
       expect(input.intlTelInput("isValidNumber")).toBeTruthy();
@@ -34,10 +34,10 @@ describe("isValidNumber:", function() {
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();
     });
 
-    it("returns false for: valid intl number containing alpha chars", function() {
+    /*it("returns false for: valid intl number containing alpha chars", function() {
       input.intlTelInput("setNumber", "+44 7733 123 abc");
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();
-    });
+    });*/
 
   });
 
@@ -49,7 +49,7 @@ describe("isValidNumber:", function() {
         nationalMode: true
       });
     });
-    
+
     it("returns false for: incorrect selected country, valid number", function() {
       input.intlTelInput("setNumber", "07733 123456");
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();
