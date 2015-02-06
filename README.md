@@ -247,6 +247,12 @@ The dropdown should automatically appear above/below the input depending on the 
 **Placeholders**  
 In order to get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`.
 
+**Bootstrap input groups**  
+Simply add this line to get [input groups](http://getbootstrap.com/components/#input-groups) working properly.
+```css
+.intl-tel-input {display: table-cell;}
+```
+
 
 ## Contributing
 I'm very open to contributions, big and small! For instructions on contributing to a project on Github, see this guide: [Fork A Repo](https://help.github.com/articles/fork-a-repo).
