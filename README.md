@@ -66,6 +66,10 @@ You can view a live demo and some examples of how to use the various options her
 ## Options
 Note: any options that take country codes should be lower case [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
+**allowExtensions**  
+Type: `Boolean` Default: `false`  
+When `autoFormat` is enabled, this option will support formatting extension numbers e.g. "+1 (702) 123-1234 ext. 12345".
+
 **autoFormat**  
 Type: `Boolean` Default: `true`  
 Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (triggering a red flash in the input - see [Troubleshooting](#troubleshooting) to customise this). Requires the `utilsScript` option.
@@ -113,6 +117,13 @@ Remove the plugin from the input, and unbind any event listeners.
 ```js
 $("#mobile-number").intlTelInput("destroy");
 ```
+
+**getExtension**  
+Get the extension part of the current number, so if the number was `"+1 (702) 123-1234 ext. 12345"` this would return `"12345"`.
+```js
+var extension = $("#mobile-number").intlTelInput("getExtension");
+```
+Returns a string e.g. `"12345"`
 
 **getNumber**  
 Get the current number formatted to the given type (defaults to [E.164 standard](http://en.wikipedia.org/wiki/E.164)). The different formatting types are available in the enum `intlTelInputUtils.numberFormat` - taken from [here](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number._  
