@@ -407,7 +407,8 @@ Plugin.prototype = {
         // if ctrl and no selection (i.e. could have just been a paste): reformat (if cursorAtEnd: add suffix)
         if ((e.which == keys.DEL && !cursorAtEnd) || e.which == keys.BSPACE || (isCtrl && noSelection)) {
           // important to remember never to add suffix on any delete key as can fuck up in ie8 so you can never delete a formatting char at the end
-          that._handleInputKey(null, (isCtrl && cursorAtEnd));
+          // UPDATE: pass true for 3rd arg (isAllowedKey) if might have been a paste event - this is just passed through to intlTelInputUtils.formatNumber and used to check an extensions edge case
+          that._handleInputKey(null, (isCtrl && cursorAtEnd), isCtrl);
         }
         // prevent deleting the plus (if not in nationalMode)
         if (!that.options.nationalMode) {
