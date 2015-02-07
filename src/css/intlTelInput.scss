@@ -161,8 +161,13 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     background-color: white;
     border: $borderWidth solid $greyBorder;
 
-    // wide enough to fit long country names
-    width: 430px;
+    // don't let the contents wrap AKA the container will be as wide as the contents
+    white-space: nowrap;
+    // except on small screens, where we force the dropdown width to match the input
+    @media (max-width: 500px) {
+      white-space: normal;
+    }
+
     max-height: 200px;
     overflow-y: scroll;
 
