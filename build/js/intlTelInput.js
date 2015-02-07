@@ -134,6 +134,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var i;
             // process onlyCountries option
             if (this.options.onlyCountries.length) {
+                // standardise case
+                for (i = 0; i < this.options.onlyCountries.length; i++) {
+                    this.options.onlyCountries[i] = this.options.onlyCountries[i].toLowerCase();
+                }
+                // build instance country array
                 this.countries = [];
                 for (i = 0; i < allCountries.length; i++) {
                     if ($.inArray(allCountries[i].iso2, this.options.onlyCountries) != -1) {
@@ -162,7 +167,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _setPreferredCountries: function() {
             this.preferredCountries = [];
             for (var i = 0; i < this.options.preferredCountries.length; i++) {
-                var countryCode = this.options.preferredCountries[i], countryData = this._getCountryData(countryCode, false, true);
+                var countryCode = this.options.preferredCountries[i].toLowerCase(), countryData = this._getCountryData(countryCode, false, true);
                 if (countryData) {
                     this.preferredCountries.push(countryData);
                 }
@@ -242,7 +247,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             } else {
                 // check the defaultCountry option, else fall back to the first in the list
                 if (this.options.defaultCountry) {
-                    this.options.defaultCountry = this._getCountryData(this.options.defaultCountry, false, false);
+                    this.options.defaultCountry = this._getCountryData(this.options.defaultCountry.toLowerCase(), false, false);
                 } else {
                     this.options.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0] : this.countries[0];
                 }
@@ -913,6 +918,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // update the selected flag, and update the input val accordingly
         selectCountry: function(countryCode) {
+            countryCode = countryCode.toLowerCase();
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {
                 this._selectFlag(countryCode);
