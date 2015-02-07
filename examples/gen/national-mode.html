@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: National Mode</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1421726152408">
-    <link rel="stylesheet" href="../../build/css/demo.css?1421726152408">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1423285208856">
+    <link rel="stylesheet" href="../../build/css/demo.css?1423285208856">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -40,7 +40,8 @@ input.intlTelInput({
   utilsScript: &quot;../../lib/libphonenumber/build/utils.js&quot; // just for formatting/placeholders etc
 });
 
-input.keyup(function() {
+// listen to &quot;keyup&quot;, but also &quot;change&quot; to update when the user selects a country
+input.on(&quot;keyup change&quot;, function() {
   var intlNumber = input.intlTelInput(&quot;getNumber&quot;);
   if (intlNumber) {
     output.text(&quot;International: &quot; + intlNumber);
@@ -57,7 +58,7 @@ input.keyup(function() {
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1421726152408"></script>
-    <script src="../js/nationalMode.js?1421726152408"></script>
+    <script src="../../build/js/intlTelInput.js?1423285208856"></script>
+    <script src="../js/nationalMode.js?1423285208856"></script>
   </body>
 </html>
