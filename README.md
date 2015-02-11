@@ -261,7 +261,11 @@ In order to get the automatic country-specific placeholders, simply omit the pla
 **Bootstrap input groups**  
 Simply add this line to get [input groups](http://getbootstrap.com/components/#input-groups) working properly.
 ```css
-.intl-tel-input {display: table-cell;}
+.intl-tel-input {
+  width: 100%;
+  text-align:left;
+  padding-top: 5px;
+}
 ```
 
 
