@@ -363,8 +363,9 @@ Plugin.prototype = {
         // 32 is space, and after that it's all chars (not meta/nav keys)
         // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
         // Update: also ignore if this is a metaKey e.g. FF and Safari trigger keypress on the v of Ctrl+v
+        // Update: also ignore if ctrlKey (FF on Windows/Ubuntu)
         // Update: also check that we have utils before we do any autoFormat stuff
-        if (e.which >= keys.SPACE && !e.metaKey && window.intlTelInputUtils && !that.telInput.prop("readonly")) {
+        if (e.which >= keys.SPACE && !e.ctrlKey && !e.metaKey && window.intlTelInputUtils && !that.telInput.prop("readonly")) {
           e.preventDefault();
           // allowed keys are just numeric keys and plus
           // we must allow plus for the case where the user does select-all and then hits plus to start typing a new number. we could refine this logic to first check that the selection contains a plus, but that wont work in old browsers, and I think it's overkill anyway
