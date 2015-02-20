@@ -263,7 +263,7 @@ Simply add this line to get [input groups](http://getbootstrap.com/components/#i
 ```css
 .intl-tel-input {display: table-cell;}
 ```
-
+_Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822) in Mobile Safari which causes a crash when you click the dropdown arrow (a CSS triangle) inside a Bootstrap input group. The simplest workaround is to remove the CSS triangle with this line of CSS: `.intl-tel-input .iti-flag .arrow {border: none;}`_
 
 ## Contributing
 I'm very open to contributions, big and small! For instructions on contributing to a project on Github, see this guide: [Fork A Repo](https://help.github.com/articles/fork-a-repo).
