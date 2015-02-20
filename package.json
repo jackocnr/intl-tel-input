@@ -27,6 +27,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-replace": "^0.8.0",
     "grunt-shell": "^1.1.1",
+    "grunt-svg-sprite": "^1.0.16",
     "grunt-templater": "0.0.6",
     "jquery": ">=1.7",
     "load-grunt-config": "~0.13.1",
