@@ -26,6 +26,7 @@
     "grunt-contrib-uglify": "~0.6.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-replace": "^0.8.0",
+    "grunt-retinafy": "^0.1.5",
     "grunt-shell": "^1.1.1",
     "grunt-svg-sprite": "^1.0.16",
     "grunt-svg2png": "^0.2.5",
