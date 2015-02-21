@@ -3,6 +3,7 @@
 /lib/jasmine/
 /lib/jasmine-jquery/
 /lib/jquery/
+/lib/flag-icon-css/
 /.bower_cache/
 /.sass-cache/
 /.grunt/
