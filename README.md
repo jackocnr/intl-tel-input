@@ -232,6 +232,7 @@ Depending on your project setup, you may need to override the path to flags.png 
 ```css
 .iti-flag {background-image: url("path/to/flags.png");}
 ```
+_Note: we now support retina devices with a separate hi-res image (flags@2x.png). To override the path to that file, you must copy the @media query at the end of `src/css/flags.scss`._
 
 **Customise invalid key flash**  
 Set the colour like this (or set to `none` to disable):  
@@ -267,11 +268,11 @@ _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822
 ## Contributing
 I'm very open to contributions, big and small! For instructions on contributing to a project on Github, see this guide: [Fork A Repo](https://help.github.com/articles/fork-a-repo).
 
-I use [Grunt](http://gruntjs.com) to build the project, which relies on [npm](https://www.npmjs.org). In the project directory, run `npm install` to install Grunt etc, then `grunt bower` to install other dependencies, then make your changes in the `src` directory and run `grunt build` to build the project.
+You will need to install [Grunt](http://gruntjs.com) to build the project, which relies on [npm](https://www.npmjs.org). You will also need [imagemagick](http://www.imagemagick.org/) to generate retina flag sprites. In the project directory, run `npm install` to install Grunt etc, then `grunt bower` to install other dependencies, then you should be good to run `grunt build` to build the project. At this point, the included demo.html should be working. You should make your changes in the `src` directory and be sure to run `grunt build` again before committing.
 
 
 ## Attributions
-* Flag images and CSS from [Flag Sprites](http://flag-sprites.com) (which uses [FamFamFam](https://github.com/tkrotoff/famfamfam_flags))
+* Flag images from [flag-icon-css](https://github.com/lipis/flag-icon-css)
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](http://libphonenumber.googlecode.com)
 * Lookup user's country using [ipinfo.io](http://ipinfo.io)
