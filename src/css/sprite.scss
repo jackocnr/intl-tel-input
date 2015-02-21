@@ -1,0 +1,1261 @@
+@mixin retina-bg-size($spriteWidth, $spriteHeight) {
+  background-size: ($spriteWidth * 0.5) + px ($spriteHeight * 0.5) + px;
+}
+
+.iti-flag {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (   min--moz-device-pixel-ratio: 2),
+  only screen and (     -o-min-device-pixel-ratio: 2/1),
+  only screen and (        min-device-pixel-ratio: 2),
+  only screen and (                min-resolution: 192dpi),
+  only screen and (                min-resolution: 2dppx) {
+    @include retina-bg-size(504, 486);
+  }
+
+  &.ad {
+    background-position: 7.6923076923076925% 0;
+  }
+
+
+&.ae {
+    background-position: 30.76923076923077% 70.58823529411765%;
+  }
+
+
+&.af {
+    background-position: 0 5.882352941176471%;
+  }
+
+
+&.ag {
+    background-position: 7.6923076923076925% 5.882352941176471%;
+  }
+
+
+&.ai {
+    background-position: 15.384615384615385% 0;
+  }
+
+
+&.al {
+    background-position: 15.384615384615385% 5.882352941176471%;
+  }
+
+
+&.am {
+    background-position: 0 11.764705882352942%;
+  }
+
+
+&.ao {
+    background-position: 7.6923076923076925% 11.764705882352942%;
+  }
+
+
+&.aq {
+    background-position: 15.384615384615385% 11.764705882352942%;
+  }
+
+
+&.ar {
+    background-position: 0 17.647058823529413%;
+  }
+
+
+&.as {
+    background-position: 7.6923076923076925% 17.647058823529413%;
+  }
+
+
+&.at {
+    background-position: 15.384615384615385% 17.647058823529413%;
+  }
+
+
+&.au {
+    background-position: 23.076923076923077% 0;
+  }
+
+
+&.aw {
+    background-position: 23.076923076923077% 5.882352941176471%;
+  }
+
+
+&.ax {
+    background-position: 23.076923076923077% 11.764705882352942%;
+  }
+
+
+&.az {
+    background-position: 23.076923076923077% 17.647058823529413%;
+  }
+
+
+&.ba {
+    background-position: 0 23.529411764705884%;
+  }
+
+
+&.bb {
+    background-position: 7.6923076923076925% 23.529411764705884%;
+  }
+
+
+&.bd {
+    background-position: 15.384615384615385% 23.529411764705884%;
+  }
+
+
+&.be {
+    background-position: 23.076923076923077% 23.529411764705884%;
+  }
+
+
+&.bf {
+    background-position: 30.76923076923077% 0;
+  }
+
+
+&.bg {
+    background-position: 30.76923076923077% 5.882352941176471%;
+  }
+
+
+&.bh {
+    background-position: 30.76923076923077% 11.764705882352942%;
+  }
+
+
+&.bi {
+    background-position: 30.76923076923077% 17.647058823529413%;
+  }
+
+
+&.bj {
+    background-position: 30.76923076923077% 23.529411764705884%;
+  }
+
+
+&.bl {
+    background-position: 0 29.41176470588235%;
+  }
+
+
+&.bm {
+    background-position: 7.6923076923076925% 29.41176470588235%;
+  }
+
+
+&.bn {
+    background-position: 15.384615384615385% 29.41176470588235%;
+  }
+
+
+&.bo {
+    background-position: 23.076923076923077% 29.41176470588235%;
+  }
+
+
+&.bq {
+    background-position: 30.76923076923077% 29.41176470588235%;
+  }
+
+
+&.br {
+    background-position: 38.46153846153846% 0;
+  }
+
+
+&.bs {
+    background-position: 38.46153846153846% 5.882352941176471%;
+  }
+
+
+&.bt {
+    background-position: 38.46153846153846% 11.764705882352942%;
+  }
+
+
+&.bv {
+    background-position: 38.46153846153846% 17.647058823529413%;
+  }
+
+
+&.bw {
+    background-position: 38.46153846153846% 23.529411764705884%;
+  }
+
+
+&.by {
+    background-position: 38.46153846153846% 29.41176470588235%;
+  }
+
+
+&.bz {
+    background-position: 0 35.294117647058826%;
+  }
+
+
+&.ca {
+    background-position: 7.6923076923076925% 35.294117647058826%;
+  }
+
+
+&.cc {
+    background-position: 15.384615384615385% 35.294117647058826%;
+  }
+
+
+&.cd {
+    background-position: 23.076923076923077% 35.294117647058826%;
+  }
+
+
+&.cf {
+    background-position: 30.76923076923077% 35.294117647058826%;
+  }
+
+
+&.cg {
+    background-position: 38.46153846153846% 35.294117647058826%;
+  }
+
+
+&.ch {
+    background-position: 0 41.1764705882353%;
+  }
+
+
+&.ci {
+    background-position: 7.6923076923076925% 41.1764705882353%;
+  }
+
+
+&.ck {
+    background-position: 15.384615384615385% 41.1764705882353%;
+  }
+
+
+&.cl {
+    background-position: 23.076923076923077% 41.1764705882353%;
+  }
+
+
+&.cm {
+    background-position: 30.76923076923077% 41.1764705882353%;
+  }
+
+
+&.cn {
+    background-position: 38.46153846153846% 41.1764705882353%;
+  }
+
+
+&.co {
+    background-position: 46.15384615384615% 0;
+  }
+
+
+&.cr {
+    background-position: 46.15384615384615% 5.882352941176471%;
+  }
+
+
+&.cu {
+    background-position: 46.15384615384615% 11.764705882352942%;
+  }
+
+
+&.cv {
+    background-position: 46.15384615384615% 17.647058823529413%;
+  }
+
+
+&.cw {
+    background-position: 46.15384615384615% 23.529411764705884%;
+  }
+
+
+&.cx {
+    background-position: 46.15384615384615% 29.41176470588235%;
+  }
+
+
+&.cy {
+    background-position: 46.15384615384615% 35.294117647058826%;
+  }
+
+
+&.cz {
+    background-position: 46.15384615384615% 41.1764705882353%;
+  }
+
+
+&.de {
+    background-position: 0 47.05882352941177%;
+  }
+
+
+&.dj {
+    background-position: 7.6923076923076925% 47.05882352941177%;
+  }
+
+
+&.dk {
+    background-position: 15.384615384615385% 47.05882352941177%;
+  }
+
+
+&.dm {
+    background-position: 23.076923076923077% 47.05882352941177%;
+  }
+
+
+&.do {
+    background-position: 30.76923076923077% 47.05882352941177%;
+  }
+
+
+&.dz {
+    background-position: 38.46153846153846% 47.05882352941177%;
+  }
+
+
+&.ec {
+    background-position: 46.15384615384615% 47.05882352941177%;
+  }
+
+
+&.ee {
+    background-position: 53.84615384615385% 0;
+  }
+
+
+&.eg {
+    background-position: 53.84615384615385% 5.882352941176471%;
+  }
+
+
+&.eh {
+    background-position: 53.84615384615385% 11.764705882352942%;
+  }
+
+
+&.er {
+    background-position: 53.84615384615385% 17.647058823529413%;
+  }
+
+
+&.es {
+    background-position: 53.84615384615385% 23.529411764705884%;
+  }
+
+
+&.et {
+    background-position: 53.84615384615385% 29.41176470588235%;
+  }
+
+
+&.fi {
+    background-position: 53.84615384615385% 35.294117647058826%;
+  }
+
+
+&.fj {
+    background-position: 53.84615384615385% 41.1764705882353%;
+  }
+
+
+&.fk {
+    background-position: 53.84615384615385% 47.05882352941177%;
+  }
+
+
+&.fm {
+    background-position: 0 52.94117647058823%;
+  }
+
+
+&.fo {
+    background-position: 7.6923076923076925% 52.94117647058823%;
+  }
+
+
+&.fr {
+    background-position: 15.384615384615385% 52.94117647058823%;
+  }
+
+
+&.ga {
+    background-position: 23.076923076923077% 52.94117647058823%;
+  }
+
+
+&.gb {
+    background-position: 30.76923076923077% 52.94117647058823%;
+  }
+
+
+&.gd {
+    background-position: 38.46153846153846% 52.94117647058823%;
+  }
+
+
+&.ge {
+    background-position: 46.15384615384615% 52.94117647058823%;
+  }
+
+
+&.gf {
+    background-position: 53.84615384615385% 52.94117647058823%;
+  }
+
+
+&.gg {
+    background-position: 61.53846153846154% 0;
+  }
+
+
+&.gh {
+    background-position: 61.53846153846154% 5.882352941176471%;
+  }
+
+
+&.gi {
+    background-position: 61.53846153846154% 11.764705882352942%;
+  }
+
+
+&.gl {
+    background-position: 61.53846153846154% 17.647058823529413%;
+  }
+
+
+&.gm {
+    background-position: 61.53846153846154% 23.529411764705884%;
+  }
+
+
+&.gn {
+    background-position: 61.53846153846154% 29.41176470588235%;
+  }
+
+
+&.gp {
+    background-position: 61.53846153846154% 35.294117647058826%;
+  }
+
+
+&.gq {
+    background-position: 61.53846153846154% 41.1764705882353%;
+  }
+
+
+&.gr {
+    background-position: 61.53846153846154% 47.05882352941177%;
+  }
+
+
+&.gs {
+    background-position: 61.53846153846154% 52.94117647058823%;
+  }
+
+
+&.gt {
+    background-position: 0 58.8235294117647%;
+  }
+
+
+&.gu {
+    background-position: 7.6923076923076925% 58.8235294117647%;
+  }
+
+
+&.gw {
+    background-position: 15.384615384615385% 58.8235294117647%;
+  }
+
+
+&.gy {
+    background-position: 23.076923076923077% 58.8235294117647%;
+  }
+
+
+&.hk {
+    background-position: 30.76923076923077% 58.8235294117647%;
+  }
+
+
+&.hm {
+    background-position: 38.46153846153846% 58.8235294117647%;
+  }
+
+
+&.hn {
+    background-position: 46.15384615384615% 58.8235294117647%;
+  }
+
+
+&.hr {
+    background-position: 53.84615384615385% 58.8235294117647%;
+  }
+
+
+&.ht {
+    background-position: 61.53846153846154% 58.8235294117647%;
+  }
+
+
+&.hu {
+    background-position: 0 64.70588235294117%;
+  }
+
+
+&.id {
+    background-position: 7.6923076923076925% 64.70588235294117%;
+  }
+
+
+&.ie {
+    background-position: 15.384615384615385% 64.70588235294117%;
+  }
+
+
+&.il {
+    background-position: 23.076923076923077% 64.70588235294117%;
+  }
+
+
+&.im {
+    background-position: 30.76923076923077% 64.70588235294117%;
+  }
+
+
+&.in {
+    background-position: 38.46153846153846% 64.70588235294117%;
+  }
+
+
+&.io {
+    background-position: 46.15384615384615% 64.70588235294117%;
+  }
+
+
+&.iq {
+    background-position: 53.84615384615385% 64.70588235294117%;
+  }
+
+
+&.ir {
+    background-position: 61.53846153846154% 64.70588235294117%;
+  }
+
+
+&.is {
+    background-position: 69.23076923076923% 0;
+  }
+
+
+&.it {
+    background-position: 69.23076923076923% 5.882352941176471%;
+  }
+
+
+&.je {
+    background-position: 69.23076923076923% 11.764705882352942%;
+  }
+
+
+&.jm {
+    background-position: 69.23076923076923% 17.647058823529413%;
+  }
+
+
+&.jo {
+    background-position: 69.23076923076923% 23.529411764705884%;
+  }
+
+
+&.jp {
+    background-position: 69.23076923076923% 29.41176470588235%;
+  }
+
+
+&.ke {
+    background-position: 69.23076923076923% 35.294117647058826%;
+  }
+
+
+&.kg {
+    background-position: 69.23076923076923% 41.1764705882353%;
+  }
+
+
+&.kh {
+    background-position: 69.23076923076923% 47.05882352941177%;
+  }
+
+
+&.ki {
+    background-position: 69.23076923076923% 52.94117647058823%;
+  }
+
+
+&.km {
+    background-position: 69.23076923076923% 58.8235294117647%;
+  }
+
+
+&.kn {
+    background-position: 69.23076923076923% 64.70588235294117%;
+  }
+
+
+&.kp {
+    background-position: 0 70.58823529411765%;
+  }
+
+
+&.kr {
+    background-position: 7.6923076923076925% 70.58823529411765%;
+  }
+
+
+&.kw {
+    background-position: 15.384615384615385% 70.58823529411765%;
+  }
+
+
+&.ky {
+    background-position: 23.076923076923077% 70.58823529411765%;
+  }
+
+
+&.kz {
+    background-position: 0 0;
+  }
+
+
+&.la {
+    background-position: 38.46153846153846% 70.58823529411765%;
+  }
+
+
+&.lb {
+    background-position: 46.15384615384615% 70.58823529411765%;
+  }
+
+
+&.lc {
+    background-position: 53.84615384615385% 70.58823529411765%;
+  }
+
+
+&.li {
+    background-position: 61.53846153846154% 70.58823529411765%;
+  }
+
+
+&.lk {
+    background-position: 69.23076923076923% 70.58823529411765%;
+  }
+
+
+&.lr {
+    background-position: 76.92307692307692% 0;
+  }
+
+
+&.ls {
+    background-position: 76.92307692307692% 5.882352941176471%;
+  }
+
+
+&.lt {
+    background-position: 76.92307692307692% 11.764705882352942%;
+  }
+
+
+&.lu {
+    background-position: 76.92307692307692% 17.647058823529413%;
+  }
+
+
+&.lv {
+    background-position: 76.92307692307692% 23.529411764705884%;
+  }
+
+
+&.ly {
+    background-position: 76.92307692307692% 29.41176470588235%;
+  }
+
+
+&.ma {
+    background-position: 76.92307692307692% 35.294117647058826%;
+  }
+
+
+&.mc {
+    background-position: 76.92307692307692% 41.1764705882353%;
+  }
+
+
+&.md {
+    background-position: 76.92307692307692% 47.05882352941177%;
+  }
+
+
+&.me {
+    background-position: 76.92307692307692% 52.94117647058823%;
+  }
+
+
+&.mf {
+    background-position: 76.92307692307692% 58.8235294117647%;
+  }
+
+
+&.mg {
+    background-position: 76.92307692307692% 64.70588235294117%;
+  }
+
+
+&.mh {
+    background-position: 76.92307692307692% 70.58823529411765%;
+  }
+
+
+&.mk {
+    background-position: 0 76.47058823529412%;
+  }
+
+
+&.ml {
+    background-position: 7.6923076923076925% 76.47058823529412%;
+  }
+
+
+&.mm {
+    background-position: 15.384615384615385% 76.47058823529412%;
+  }
+
+
+&.mn {
+    background-position: 23.076923076923077% 76.47058823529412%;
+  }
+
+
+&.mo {
+    background-position: 30.76923076923077% 76.47058823529412%;
+  }
+
+
+&.mp {
+    background-position: 38.46153846153846% 76.47058823529412%;
+  }
+
+
+&.mq {
+    background-position: 46.15384615384615% 76.47058823529412%;
+  }
+
+
+&.mr {
+    background-position: 53.84615384615385% 76.47058823529412%;
+  }
+
+
+&.ms {
+    background-position: 61.53846153846154% 76.47058823529412%;
+  }
+
+
+&.mt {
+    background-position: 69.23076923076923% 76.47058823529412%;
+  }
+
+
+&.mu {
+    background-position: 76.92307692307692% 76.47058823529412%;
+  }
+
+
+&.mv {
+    background-position: 84.61538461538461% 0;
+  }
+
+
+&.mw {
+    background-position: 84.61538461538461% 5.882352941176471%;
+  }
+
+
+&.mx {
+    background-position: 84.61538461538461% 11.764705882352942%;
+  }
+
+
+&.my {
+    background-position: 84.61538461538461% 17.647058823529413%;
+  }
+
+
+&.mz {
+    background-position: 84.61538461538461% 23.529411764705884%;
+  }
+
+
+&.na {
+    background-position: 84.61538461538461% 29.41176470588235%;
+  }
+
+
+&.nc {
+    background-position: 84.61538461538461% 35.294117647058826%;
+  }
+
+
+&.ne {
+    background-position: 84.61538461538461% 41.1764705882353%;
+  }
+
+
+&.nf {
+    background-position: 84.61538461538461% 47.05882352941177%;
+  }
+
+
+&.ng {
+    background-position: 84.61538461538461% 52.94117647058823%;
+  }
+
+
+&.ni {
+    background-position: 84.61538461538461% 58.8235294117647%;
+  }
+
+
+&.nl {
+    background-position: 84.61538461538461% 64.70588235294117%;
+  }
+
+
+&.no {
+    background-position: 84.61538461538461% 70.58823529411765%;
+  }
+
+
+&.np {
+    background-position: 84.61538461538461% 76.47058823529412%;
+  }
+
+
+&.nr {
+    background-position: 0 82.3529411764706%;
+  }
+
+
+&.nu {
+    background-position: 7.6923076923076925% 82.3529411764706%;
+  }
+
+
+&.nz {
+    background-position: 15.384615384615385% 82.3529411764706%;
+  }
+
+
+&.om {
+    background-position: 23.076923076923077% 82.3529411764706%;
+  }
+
+
+&.pa {
+    background-position: 30.76923076923077% 82.3529411764706%;
+  }
+
+
+&.pe {
+    background-position: 38.46153846153846% 82.3529411764706%;
+  }
+
+
+&.pf {
+    background-position: 46.15384615384615% 82.3529411764706%;
+  }
+
+
+&.pg {
+    background-position: 53.84615384615385% 82.3529411764706%;
+  }
+
+
+&.ph {
+    background-position: 61.53846153846154% 82.3529411764706%;
+  }
+
+
+&.pk {
+    background-position: 69.23076923076923% 82.3529411764706%;
+  }
+
+
+&.pl {
+    background-position: 76.92307692307692% 82.3529411764706%;
+  }
+
+
+&.pm {
+    background-position: 84.61538461538461% 82.3529411764706%;
+  }
+
+
+&.pn {
+    background-position: 0 88.23529411764706%;
+  }
+
+
+&.pr {
+    background-position: 7.6923076923076925% 88.23529411764706%;
+  }
+
+
+&.ps {
+    background-position: 15.384615384615385% 88.23529411764706%;
+  }
+
+
+&.pt {
+    background-position: 23.076923076923077% 88.23529411764706%;
+  }
+
+
+&.pw {
+    background-position: 30.76923076923077% 88.23529411764706%;
+  }
+
+
+&.py {
+    background-position: 38.46153846153846% 88.23529411764706%;
+  }
+
+
+&.qa {
+    background-position: 46.15384615384615% 88.23529411764706%;
+  }
+
+
+&.re {
+    background-position: 53.84615384615385% 88.23529411764706%;
+  }
+
+
+&.ro {
+    background-position: 61.53846153846154% 88.23529411764706%;
+  }
+
+
+&.rs {
+    background-position: 69.23076923076923% 88.23529411764706%;
+  }
+
+
+&.ru {
+    background-position: 76.92307692307692% 88.23529411764706%;
+  }
+
+
+&.rw {
+    background-position: 84.61538461538461% 88.23529411764706%;
+  }
+
+
+&.sa {
+    background-position: 92.3076923076923% 0;
+  }
+
+
+&.sb {
+    background-position: 92.3076923076923% 5.882352941176471%;
+  }
+
+
+&.sc {
+    background-position: 92.3076923076923% 11.764705882352942%;
+  }
+
+
+&.sd {
+    background-position: 92.3076923076923% 17.647058823529413%;
+  }
+
+
+&.se {
+    background-position: 92.3076923076923% 23.529411764705884%;
+  }
+
+
+&.sg {
+    background-position: 92.3076923076923% 29.41176470588235%;
+  }
+
+
+&.sh {
+    background-position: 92.3076923076923% 35.294117647058826%;
+  }
+
+
+&.si {
+    background-position: 92.3076923076923% 41.1764705882353%;
+  }
+
+
+&.sj {
+    background-position: 92.3076923076923% 47.05882352941177%;
+  }
+
+
+&.sk {
+    background-position: 92.3076923076923% 52.94117647058823%;
+  }
+
+
+&.sl {
+    background-position: 92.3076923076923% 58.8235294117647%;
+  }
+
+
+&.sm {
+    background-position: 92.3076923076923% 64.70588235294117%;
+  }
+
+
+&.sn {
+    background-position: 92.3076923076923% 70.58823529411765%;
+  }
+
+
+&.so {
+    background-position: 92.3076923076923% 76.47058823529412%;
+  }
+
+
+&.sr {
+    background-position: 92.3076923076923% 82.3529411764706%;
+  }
+
+
+&.ss {
+    background-position: 92.3076923076923% 88.23529411764706%;
+  }
+
+
+&.st {
+    background-position: 0 94.11764705882354%;
+  }
+
+
+&.sv {
+    background-position: 7.6923076923076925% 94.11764705882354%;
+  }
+
+
+&.sx {
+    background-position: 15.384615384615385% 94.11764705882354%;
+  }
+
+
+&.sy {
+    background-position: 23.076923076923077% 94.11764705882354%;
+  }
+
+
+&.sz {
+    background-position: 30.76923076923077% 94.11764705882354%;
+  }
+
+
+&.tc {
+    background-position: 38.46153846153846% 94.11764705882354%;
+  }
+
+
+&.td {
+    background-position: 46.15384615384615% 94.11764705882354%;
+  }
+
+
+&.tf {
+    background-position: 53.84615384615385% 94.11764705882354%;
+  }
+
+
+&.tg {
+    background-position: 61.53846153846154% 94.11764705882354%;
+  }
+
+
+&.th {
+    background-position: 69.23076923076923% 94.11764705882354%;
+  }
+
+
+&.tj {
+    background-position: 76.92307692307692% 94.11764705882354%;
+  }
+
+
+&.tk {
+    background-position: 84.61538461538461% 94.11764705882354%;
+  }
+
+
+&.tl {
+    background-position: 92.3076923076923% 94.11764705882354%;
+  }
+
+
+&.tm {
+    background-position: 100% 0;
+  }
+
+
+&.tn {
+    background-position: 100% 5.882352941176471%;
+  }
+
+
+&.to {
+    background-position: 100% 11.764705882352942%;
+  }
+
+
+&.tr {
+    background-position: 100% 17.647058823529413%;
+  }
+
+
+&.tt {
+    background-position: 100% 23.529411764705884%;
+  }
+
+
+&.tv {
+    background-position: 100% 29.41176470588235%;
+  }
+
+
+&.tw {
+    background-position: 100% 35.294117647058826%;
+  }
+
+
+&.tz {
+    background-position: 100% 41.1764705882353%;
+  }
+
+
+&.ua {
+    background-position: 100% 47.05882352941177%;
+  }
+
+
+&.ug {
+    background-position: 100% 52.94117647058823%;
+  }
+
+
+&.um {
+    background-position: 100% 58.8235294117647%;
+  }
+
+
+&.us {
+    background-position: 100% 64.70588235294117%;
+  }
+
+
+&.uy {
+    background-position: 100% 70.58823529411765%;
+  }
+
+
+&.uz {
+    background-position: 100% 76.47058823529412%;
+  }
+
+
+&.va {
+    background-position: 100% 82.3529411764706%;
+  }
+
+
+&.vc {
+    background-position: 100% 88.23529411764706%;
+  }
+
+
+&.ve {
+    background-position: 100% 94.11764705882354%;
+  }
+
+
+&.vg {
+    background-position: 0 100%;
+  }
+
+
+&.vi {
+    background-position: 7.6923076923076925% 100%;
+  }
+
+
+&.vn {
+    background-position: 15.384615384615385% 100%;
+  }
+
+
+&.vu {
+    background-position: 23.076923076923077% 100%;
+  }
+
+
+&.wf {
+    background-position: 30.76923076923077% 100%;
+  }
+
+
+&.ws {
+    background-position: 38.46153846153846% 100%;
+  }
+
+
+&.ye {
+    background-position: 46.15384615384615% 100%;
+  }
+
+
+&.yt {
+    background-position: 53.84615384615385% 100%;
+  }
+
+
+&.za {
+    background-position: 61.53846153846154% 100%;
+  }
+
+
+&.zm {
+    background-position: 69.23076923076923% 100%;
+  }
+
+
+&.zw {
+    background-position: 76.92307692307692% 100%;
+  }
+
+
+}
