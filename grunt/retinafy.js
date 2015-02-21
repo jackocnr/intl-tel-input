@@ -1,9 +1,13 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   return {
     options: {
       sizes: {
-        '50%':  { suffix: '' },
-        '100%': { suffix: '@2x' }
+        '50%': {
+          suffix: ''
+        },
+        '100%': {
+          suffix: '@2x'
+        }
       }
     },
     files: {
