@@ -350,10 +350,13 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     var isCtrl = e.which == keys.CTRL || e.which == keys.CMD1 || e.which == keys.CMD2, input = that.telInput[0], // noSelection defaults to false for bad browsers, else would be reformatting on all ctrl keys e.g. select-all/copy
                     noSelection = that.isGoodBrowser && input.selectionStart == input.selectionEnd, // cursorAtEnd defaults to false for bad browsers else they would never get a reformat on delete
                     cursorAtEnd = that.isGoodBrowser && input.selectionStart == that.telInput.val().length;
-                    // if delete in the middle: reformat with no suffix (no need to reformat if delete at end)
-                    // if backspace: reformat with no suffix (need to reformat if at end to remove any lingering suffix - this is a feature)
-                    // if ctrl and no selection (i.e. could have just been a paste): reformat (if cursorAtEnd: add suffix)
-                    if (e.which == keys.DEL && !cursorAtEnd || e.which == keys.BSPACE || isCtrl && noSelection) {
+                    if (!that.telInput.val()) {
+                        // if they just cleared the input, update the flag to the default
+                        that._updateFlagFromNumber("");
+                    } else if (e.which == keys.DEL && !cursorAtEnd || e.which == keys.BSPACE || isCtrl && noSelection) {
+                        // if delete in the middle: reformat with no suffix (no need to reformat if delete at end)
+                        // if backspace: reformat with no suffix (need to reformat if at end to remove any lingering suffix - this is a feature)
+                        // if ctrl and no selection (i.e. could have just been a paste): reformat (if cursorAtEnd: add suffix)
                         // important to remember never to add suffix on any delete key as can fuck up in ie8 so you can never delete a formatting char at the end
                         // UPDATE: pass true for 3rd arg (isAllowedKey) if might have been a paste event - this is just passed through to intlTelInputUtils.formatNumber and used to check an extensions edge case
                         that._handleInputKey(null, isCtrl && cursorAtEnd, isCtrl);
@@ -665,7 +668,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _updateFlagFromNumber: function(number) {
             // if we're in nationalMode and we're on US/Canada, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
             // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
-            if (this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
+            if (number && this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
                 if (number.charAt(0) != "1") {
                     number = "1" + number;
                 }
@@ -686,17 +689,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         }
                     }
                 }
-            } else if (number.charAt(0) == "+") {
-                // no valid dial code, but only empty it if they've actually typed an invalid one, not just a plus
+            } else if (number.charAt(0) == "+" && this._getNumeric(number).length) {
+                // invalid dial code, so empty
                 // Note: use getNumeric here because the number has not been formatted yet, so could contain bad shit
-                if (this._getNumeric(number).length) {
-                    countryCode = "";
-                } else if (!this.selectedCountryData.iso2) {
-                    // if just a plus and there's no currently selected country, revert to default
-                    countryCode = this.options.defaultCountry.iso2;
-                }
-            } else if (!this.selectedCountryData.iso2 && !number) {
-                // if no selected country and no number, revert to default
+                countryCode = "";
+            } else if (!number || number == "+") {
+                // empty, or just a plus, so default
                 countryCode = this.options.defaultCountry.iso2;
             }
             if (countryCode !== null) {
@@ -728,9 +726,16 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
         },
         // select the given flag, update the placeholder and the active list item
-        _selectFlag: function(countryCode) {
+        _selectFlag: function(countryCode, updateDefault) {
             // do this first as it will throw an error and stop if countryCode is invalid
             this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
+            // update the "defaultCountry" - we only need the iso2 from now on, so just store that
+            if (updateDefault && this.selectedCountryData.iso2) {
+                // can't just make this equal to selectedCountryData as would be a ref to that object
+                this.options.defaultCountry = {
+                    iso2: this.selectedCountryData.iso2
+                };
+            }
             this.selectedFlagInner.attr("class", "iti-flag " + countryCode);
             // update the selected country's title attribute
             var title = countryCode ? this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode : "Unknown";
@@ -754,7 +759,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _selectListItem: function(listItem) {
             // update selected flag and active list item
             var countryCode = listItem.attr("data-country-code");
-            this._selectFlag(countryCode);
+            this._selectFlag(countryCode, true);
             this._closeDropdown();
             this._updateDialCode(listItem.attr("data-dial-code"), true);
             // always fire the change event as even if nationalMode=true (and we haven't updated the input val), the system as a whole has still changed - see country-sync example. think of it as making a selection from a select element.
@@ -922,7 +927,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             countryCode = countryCode.toLowerCase();
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {
-                this._selectFlag(countryCode);
+                this._selectFlag(countryCode, true);
                 this._updateDialCode(this.selectedCountryData.dialCode, false);
             }
         },
