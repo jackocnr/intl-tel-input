@@ -8,8 +8,8 @@ module.exports = function(grunt) {
       options     : {
         shape           : {
           dimension     : {        // Set maximum dimensions
-            maxWidth    : 32,
-            maxHeight   : 24
+            maxWidth    : 36,
+            maxHeight   : 27
           },
           spacing       : {        // Add padding
             padding     : 0
