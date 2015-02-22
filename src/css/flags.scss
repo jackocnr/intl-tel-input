@@ -8,6 +8,9 @@
   height: 13px;
   box-shadow: 0px 0px 1px 0px #888;
   background-image: url("../img/flags.png");
+  // empty state
+  background-color: #DBDBDB;
+  background-position: 100% 100%;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
