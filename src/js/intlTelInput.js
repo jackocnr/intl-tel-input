@@ -103,6 +103,9 @@ Plugin.prototype = {
       this.options.autoFormat = false;
     }
 
+    // for some reason jasmine fucks up if you put this in the main Plugin function with the rest of these declarations
+    this.isMobile = (window.innerWidth < 500);
+
     // process all the data: onlyCountries, preferredCountries etc
     this._processCountryData();
 
@@ -222,49 +225,59 @@ Plugin.prototype = {
       "class": "arrow"
     }).appendTo(this.selectedFlagInner);
 
-    // country list contains: preferred countries, then divider, then all countries
-    this.countryList = $("<ul>", {
-      "class": "country-list v-hide"
-    }).appendTo(flagsContainer);
-    if (this.preferredCountries.length) {
-      this._appendListItems(this.preferredCountries, "preferred");
-      $("<li>", {
-        "class": "divider"
-      }).appendTo(this.countryList);
+    // country list
+    // mobile is just a native select element
+    // desktop is a proper list containing: preferred countries, then divider, then all countries
+    if (this.isMobile) {
+      this.countryList = $("<select>").appendTo(flagsContainer);
+    } else {
+      this.countryList = $("<ul>", {
+        "class": "country-list v-hide"
+      }).appendTo(flagsContainer);
+      if (this.preferredCountries.length && !this.isMobile) {
+        this._appendListItems(this.preferredCountries, "preferred");
+        $("<li>", {
+          "class": "divider"
+        }).appendTo(this.countryList);
+      }
     }
     this._appendListItems(this.countries, "");
 
-    // now we can grab the dropdown height, and hide it properly
-    this.dropdownHeight = this.countryList.outerHeight();
-    this.countryList.removeClass("v-hide").addClass("hide");
+    if (!this.isMobile) {
+      // now we can grab the dropdown height, and hide it properly
+      this.dropdownHeight = this.countryList.outerHeight();
+      this.countryList.removeClass("v-hide").addClass("hide");
 
-    // on small screens make the dropdown the same width as the input
-    if (window.innerWidth < 500) {
-      this.countryList.outerWidth(this.telInput.outerWidth());
+      // this is useful in lots of places
+      this.countryListItems = this.countryList.children(".country");
     }
-
-    // this is useful in lots of places
-    this.countryListItems = this.countryList.children(".country");
   },
 
 
   // add a country <li> to the countryList <ul> container
+  // UPDATE: if isMobile, add an <option> to the countryList <select> container
   _appendListItems: function(countries, className) {
-    // we create so many DOM elements, I decided it was faster to build a temp string
+    // we create so many DOM elements, it is faster to build a temp string
     // and then add everything to the DOM in one go at the end
     var tmp = "";
     // for each country
     for (var i = 0; i < countries.length; i++) {
       var c = countries[i];
-      // open the list item
-      tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
-      // add the flag
-      tmp += "<div class='iti-flag " + c.iso2 + "'></div>";
-      // and the country name and dial code
-      tmp += "<span class='country-name'>" + c.name + "</span>";
-      tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
-      // close the list item
-      tmp += "</li>";
+      if (this.isMobile) {
+        tmp += "<option data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
+        tmp += c.name + " +" + c.dialCode;
+        tmp += "</option>";
+      } else {
+        // open the list item
+        tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
+        // add the flag
+        tmp += "<div class='iti-flag " + c.iso2 + "'></div>";
+        // and the country name and dial code
+        tmp += "<span class='country-name'>" + c.name + "</span>";
+        tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
+        // close the list item
+        tmp += "</li>";
+      }
     }
     this.countryList.append(tmp);
   },
@@ -311,29 +324,35 @@ Plugin.prototype = {
       this._initFocusListeners();
     }
 
-    // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
-    var label = this.telInput.closest("label");
-    if (label.length) {
-      label.on("click" + this.ns, function(e) {
-        // if the dropdown is closed, then focus the input, else ignore the click
-        if (that.countryList.hasClass("hide")) {
-          that.telInput.focus();
-        } else {
-          e.preventDefault();
+    if (this.isMobile) {
+      this.countryList.on("change" + this.ns, function(e) {
+        that._selectListItem($(this).find("option:selected"));
+      });
+    } else {
+      // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
+      var label = this.telInput.closest("label");
+      if (label.length) {
+        label.on("click" + this.ns, function(e) {
+          // if the dropdown is closed, then focus the input, else ignore the click
+          if (that.countryList.hasClass("hide")) {
+            that.telInput.focus();
+          } else {
+            e.preventDefault();
+          }
+        });
+      }
+
+      // toggle country dropdown on click
+      var selectedFlag = this.selectedFlagInner.parent();
+      selectedFlag.on("click" + this.ns, function(e) {
+        // only intercept this event if we're opening the dropdown
+        // else let it bubble up to the top ("click-off-to-close" listener)
+        // we cannot just stopPropagation as it may be needed to close another instance
+        if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled") && !that.telInput.prop("readonly")) {
+          that._showDropdown();
         }
       });
     }
-
-    // toggle country dropdown on click
-    var selectedFlag = this.selectedFlagInner.parent();
-    selectedFlag.on("click" + this.ns, function(e) {
-      // only intercept this event if we're opening the dropdown
-      // else let it bubble up to the top ("click-off-to-close" listener)
-      // we cannot just stopPropagation as it may be needed to close another instance
-      if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled") && !that.telInput.prop("readonly")) {
-        that._showDropdown();
-      }
-    });
 
     // if the user has specified the path to the utils script, fetch it on window.load
     if (this.options.utilsScript) {
@@ -884,10 +903,12 @@ Plugin.prototype = {
     // and the input's placeholder
     this._updatePlaceholder();
 
-    // update the active list item
-    this.countryListItems.removeClass("active");
-    if (countryCode) {
-      this.countryListItems.children(".iti-flag." + countryCode).first().parent().addClass("active");
+    if (!this.isMobile) {
+      // update the active list item
+      this.countryListItems.removeClass("active");
+      if (countryCode) {
+        this.countryListItems.children(".iti-flag." + countryCode).first().parent().addClass("active");
+      }
     }
   },
 
@@ -906,9 +927,10 @@ Plugin.prototype = {
   // called when the user selects a list item from the dropdown
   _selectListItem: function(listItem) {
     // update selected flag and active list item
-    var countryCode = listItem.attr("data-country-code");
-    this._selectFlag(countryCode, true);
-    this._closeDropdown();
+    this._selectFlag(listItem.attr("data-country-code"), true);
+    if (!this.isMobile) {
+      this._closeDropdown();
+    }
 
     this._updateDialCode(listItem.attr("data-dial-code"), true);
 
@@ -1032,15 +1054,23 @@ Plugin.prototype = {
 
   // remove plugin
   destroy: function() {
-    // make sure the dropdown is closed (and unbind listeners)
-    this._closeDropdown();
+    if (!this.isMobile) {
+      // make sure the dropdown is closed (and unbind listeners)
+      this._closeDropdown();
+    }
 
     // key events, and focus/blur events if autoHideDialCode=true
     this.telInput.off(this.ns);
-    // click event to open dropdown
-    this.selectedFlagInner.parent().off(this.ns);
-    // label click hack
-    this.telInput.closest("label").off(this.ns);
+
+    if (this.isMobile) {
+      // change event on select country
+      this.countryList.off(this.ns);
+    } else {
+      // click event to open dropdown
+      this.selectedFlagInner.parent().off(this.ns);
+      // label click hack
+      this.telInput.closest("label").off(this.ns);
+    }
 
     // remove markup
     var container = this.telInput.parent();

@@ -196,4 +196,15 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
       margin-right: 6px;
     }
   }
+
+  // on mobiles we use a select for the country dropdown
+  select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: $selectedFlagWidth;
+    height: 100%;
+    opacity: 0;
+  }
 }
