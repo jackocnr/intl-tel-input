@@ -102,8 +102,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (navigator.userAgent.match(/IEMobile/i)) {
                 this.options.autoFormat = false;
             }
-            // for some reason jasmine fucks up if you put this in the main Plugin function with the rest of these declarations
-            this.isMobile = window.innerWidth < 500;
+            // we cannot just test screen size as some smartphones/website meta tags will report desktop resolutions
+            // Note: for some reason jasmine fucks up if you put this in the main Plugin function with the rest of these declarations
+            // Note: to target Android Mobiles (and not Tablets), we must find "Android" and "Mobile"
+            this.isMobile = /Android.+Mobile|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             // process all the data: onlyCountries, preferredCountries etc
             this._processCountryData();
             // generate the markup
