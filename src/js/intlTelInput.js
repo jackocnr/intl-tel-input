@@ -266,7 +266,7 @@ Plugin.prototype = {
     for (var i = 0; i < countries.length; i++) {
       var c = countries[i];
       if (this.isMobile) {
-        tmp += "<option data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
+        tmp += "<option data-dial-code='" + c.dialCode + "' value='" + c.iso2 + "'>";
         tmp += c.name + " +" + c.dialCode;
         tmp += "</option>";
       } else {
@@ -905,7 +905,9 @@ Plugin.prototype = {
     // and the input's placeholder
     this._updatePlaceholder();
 
-    if (!this.isMobile) {
+    if (this.isMobile) {
+      this.countryList.val(countryCode);
+    } else {
       // update the active list item
       this.countryListItems.removeClass("active");
       if (countryCode) {
@@ -928,8 +930,9 @@ Plugin.prototype = {
 
   // called when the user selects a list item from the dropdown
   _selectListItem: function(listItem) {
+    var countryCodeAttr = (this.isMobile) ? "value" : "data-country-code";
     // update selected flag and active list item
-    this._selectFlag(listItem.attr("data-country-code"), true);
+    this._selectFlag(listItem.attr(countryCodeAttr), true);
     if (!this.isMobile) {
       this._closeDropdown();
     }
