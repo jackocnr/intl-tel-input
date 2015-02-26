@@ -13,17 +13,17 @@
     @include retina-bg-size({{{spriteWidth}}}, {{{spriteHeight}}});
   }
 
-  {{#shapes}}&{{#selector.shape}}{{expression}}{{^last}},
+  {{#shapes}}&{{#selector.shape}}{{#name_lowercase}}{{expression}}{{/name_lowercase}}{{^last}},
   {{/last}}{{/selector.shape}} {
     background-position: {{position.relative.xy}};{{#dimensions.inline}}
-    width: {{width.outer}}px;
-    height: {{height.outer}}px;{{/dimensions.inline}}
+    width: {{#half_width}}{{width.outer}}{{/half_width}}px;
+    height: {{#half_height}}{{height.outer}}{{/half_height}}px;{{/dimensions.inline}}
   }{{#dimensions.extra}}
 
   {{#selector.dimensions}}&{{expression}}{{^last}},
   {{/last}}{{/selector.dimensions}} {
-    width: {{width.outer}}px;
-    height: {{height.outer}}px;
+    width: {{#half_width}}{{width.outer}}{{/half_width}}px;
+    height: {{#half_height}}{{height.outer}}{{/half_height}}px;
   }{{/dimensions.extra}}
 
 

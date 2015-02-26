@@ -2,14 +2,14 @@ module.exports = function(grunt) {
   return {
     main: {
       expand: true,
-      cwd: 'bower_components/flag-icon-css/flags/4x3',
+      cwd: 'region-flags/svg',
       src: ['*.svg'],
       dest: './src/img',
       options: {
         shape: {
           dimension: { // Set maximum dimensions
-            maxWidth: 36,
-            maxHeight: 27
+            maxWidth: 32,
+            maxHeight: 22
           },
           spacing: { // Add padding
             padding: 0
@@ -17,9 +17,10 @@ module.exports = function(grunt) {
         },
         mode: {
           view: { // Activate the «view» mode
+            layout: "diagonal",
             dest: ".",
             prefix: ".%s", // Prefix for CSS selectors
-            dimensions: false, // Suffix for dimension CSS selectors
+            dimensions: true, // Suffix for dimension CSS selectors
             bust: false,
             render: {
               scss: {
@@ -28,6 +29,23 @@ module.exports = function(grunt) {
               }
             },
             sprite: "flags.svg"
+          }
+        },
+        variables: {
+          half_width: function () {
+            return function (width, render) {
+              return render(width)/2;
+            }
+          },
+          half_height: function () {
+            return function (height, render) {
+              return render(height)/2;
+            }
+          },
+          name_lowercase: function () {
+            return function (shapes, render) {
+              return render(shapes).toLowerCase();
+            }
           }
         }
       }
