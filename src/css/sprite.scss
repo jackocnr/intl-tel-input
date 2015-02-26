@@ -10,1251 +10,1805 @@
   only screen and (        min-device-pixel-ratio: 2),
   only screen and (                min-resolution: 192dpi),
   only screen and (                min-resolution: 2dppx) {
-    @include retina-bg-size(504, 486);
+    @include retina-bg-size(8157, 5059);
   }
 
-  &.ad {
-    background-position: 7.6923076923076925% 0;
+  &.ac {
+    background-position: 0 0;
+    width: 16px;
+    height: 8px;
+  }
+
+
+&.ad {
+    background-position: 0.393818525961871% 0.3176493944808418%;
+    width: 15.715px;
+    height: 11px;
   }
 
 
 &.ae {
-    background-position: 30.76923076923077% 70.58823529411765%;
+    background-position: 0.7876923076923077% 0.7535197303192545%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.af {
-    background-position: 0 5.882352941176471%;
+    background-position: 1.1815384615384616% 1.0719241236524029%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ag {
-    background-position: 7.6923076923076925% 5.882352941176471%;
+    background-position: 1.5753846153846154% 1.5086339518070855%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ai {
-    background-position: 15.384615384615385% 0;
+    background-position: 1.9692307692307693% 1.9432877255601824%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.al {
-    background-position: 15.384615384615385% 5.882352941176471%;
+    background-position: 2.3627279663311267% 2.2632519356759975%;
+    width: 15.4px;
+    height: 11px;
   }
 
 
 &.am {
-    background-position: 0 11.764705882352942%;
+    background-position: 2.7446153846153845% 2.696807455879437%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ao {
-    background-position: 7.6923076923076925% 11.764705882352942%;
+    background-position: 3.1384615384615384% 3.017267903614171%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.aq {
-    background-position: 15.384615384615385% 11.764705882352942%;
+    background-position: 3.5323076923076924% 3.4539777317688536%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ar {
-    background-position: 0 17.647058823529413%;
+    background-position: 3.9261538461538463% 3.8896606469537605%;
+    width: 16px;
+    height: 10px;
   }
 
 
 &.as {
-    background-position: 7.6923076923076925% 17.647058823529413%;
+    background-position: 4.32% 4.283164782867341%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.at {
-    background-position: 15.384615384615385% 17.647058823529413%;
+    background-position: 4.713846153846154% 4.6053036423584714%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.au {
-    background-position: 23.076923076923077% 0;
+    background-position: 5.107692307692307% 5.036684513186596%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.aw {
-    background-position: 23.076923076923077% 5.882352941176471%;
+    background-position: 5.501538461538462% 5.359620618262014%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ax {
-    background-position: 23.076923076923077% 11.764705882352942%;
+    background-position: 5.895384615384615% 5.795858739837398%;
+    width: 16px;
+    height: 10.46px;
   }
 
 
 &.az {
-    background-position: 23.076923076923077% 17.647058823529413%;
+    background-position: 6.28923076923077% 6.206623041840174%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ba {
-    background-position: 0 23.529411764705884%;
+    background-position: 6.683076923076923% 6.523894507237755%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.bb {
-    background-position: 7.6923076923076925% 23.529411764705884%;
+    background-position: 7.076923076923077% 6.848404123334795%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.bd {
-    background-position: 15.384615384615385% 23.529411764705884%;
+    background-position: 7.470769230769231% 7.282035001388944%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.be {
-    background-position: 23.076923076923077% 23.529411764705884%;
+    background-position: 7.858212754654054% 7.6831447290053605%;
+    width: 12.69px;
+    height: 11px;
   }
 
 
 &.bf {
-    background-position: 30.76923076923077% 0;
+    background-position: 8.184615384615384% 8.118832714330235%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.bg {
-    background-position: 30.76923076923077% 5.882352941176471%;
+    background-position: 8.57846153846154% 8.551926663756499%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.bh {
-    background-position: 30.76923076923077% 11.764705882352942%;
+    background-position: 8.972307692307693% 8.948767808246359%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.bi {
-    background-position: 30.76923076923077% 17.647058823529413%;
+    background-position: 9.366153846153846% 9.34560895273622%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.bj {
-    background-position: 30.76923076923077% 23.529411764705884%;
+    background-position: 9.76% 9.746569346543144%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.bl {
-    background-position: 0 29.41176470588235%;
+    background-position: 10.153846153846153% 10.183279174697827%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.bm {
-    background-position: 7.6923076923076925% 29.41176470588235%;
+    background-position: 10.547692307692307% 10.608764624231608%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.bn {
-    background-position: 15.384615384615385% 29.41176470588235%;
+    background-position: 10.941538461538462% 10.92603608962919%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.bo {
-    background-position: 23.076923076923077% 29.41176470588235%;
+    background-position: 11.335384615384616% 11.25629816683144%;
+    width: 16px;
+    height: 10.91px;
   }
 
 
 &.bq {
-    background-position: 30.76923076923077% 29.41176470588235%;
+    background-position: 11.72923076923077% 11.691913126504911%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.br {
-    background-position: 38.46153846153846% 0;
+    background-position: 12.122226502263842% 12.130236251737145%;
+    width: 15.715px;
+    height: 11px;
   }
 
 
 &.bs {
-    background-position: 38.46153846153846% 5.882352941176471%;
+    background-position: 12.516923076923076% 12.55205234979179%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.bt {
-    background-position: 38.46153846153846% 11.764705882352942%;
+    background-position: 12.910769230769231% 12.882939930563138%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.bv {
-    background-position: 38.46153846153846% 17.647058823529413%;
+    background-position: 13.301750392223214% 13.321421481040302%;
+    width: 15.125px;
+    height: 11px;
   }
 
 
 &.bw {
-    background-position: 38.46153846153846% 23.529411764705884%;
+    background-position: 13.686153846153847% 13.756359586872502%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.by {
-    background-position: 38.46153846153846% 29.41176470588235%;
+    background-position: 14.08% 14.178068609954392%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.bz {
-    background-position: 0 35.294117647058826%;
+    background-position: 14.473846153846154% 14.510676562776045%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ca {
-    background-position: 7.6923076923076925% 35.294117647058826%;
+    background-position: 14.867692307692307% 14.931588340273647%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.cc {
-    background-position: 15.384615384615385% 35.294117647058826%;
+    background-position: 15.261538461538462% 15.248859805671227%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.cd {
-    background-position: 23.076923076923077% 35.294117647058826%;
+    background-position: 15.65024170518734% 15.5846734167163%;
+    width: 14.665px;
+    height: 11px;
   }
 
 
 &.cf {
-    background-position: 30.76923076923077% 35.294117647058826%;
+    background-position: 16.024615384615384% 16.01931051458313%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.cg {
-    background-position: 38.46153846153846% 35.294117647058826%;
+    background-position: 16.41846153846154% 16.456020342737812%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ch {
-    background-position: 0 41.1764705882353%;
+    background-position: 16.79164105716042% 16.894977168949772%;
+    width: 11px;
+    height: 11px;
   }
 
 
 &.ci {
-    background-position: 7.6923076923076925% 41.1764705882353%;
+    background-position: 17.083076923076923% 17.329439999047178%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ck {
-    background-position: 15.384615384615385% 41.1764705882353%;
+    background-position: 17.476923076923075% 17.747372595677177%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.cl {
-    background-position: 23.076923076923077% 41.1764705882353%;
+    background-position: 17.87076923076923% 18.08375697495072%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.cm {
-    background-position: 30.76923076923077% 41.1764705882353%;
+    background-position: 18.264615384615386% 18.520466803105403%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.cn {
-    background-position: 38.46153846153846% 41.1764705882353%;
+    background-position: 18.658461538461538% 18.957176631260086%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.co {
-    background-position: 46.15384615384615% 0;
+    background-position: 19.052307692307693% 19.39388645941477%;
+    width: 16px;
+    height: 10.665px;
+  }
+
+
+&.cp {
+    background-position: 19.446153846153845% 19.830596287569453%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.cr {
-    background-position: 46.15384615384615% 5.882352941176471%;
+    background-position: 19.84% 20.25874042620739%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.cu {
-    background-position: 46.15384615384615% 11.764705882352942%;
+    background-position: 20.233846153846155% 20.6424747174301%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.cv {
-    background-position: 46.15384615384615% 17.647058823529413%;
+    background-position: 20.627692307692307% 20.971473241035042%;
+    width: 16px;
+    height: 9.41px;
   }
 
 
 &.cw {
-    background-position: 46.15384615384615% 23.529411764705884%;
+    background-position: 21.021538461538462% 21.35908068611084%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.cx {
-    background-position: 46.15384615384615% 29.41176470588235%;
+    background-position: 21.415384615384614% 21.772754312908983%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.cy {
-    background-position: 46.15384615384615% 35.294117647058826%;
+    background-position: 21.80923076923077% 22.113397662014382%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.cz {
-    background-position: 46.15384615384615% 41.1764705882353%;
+    background-position: 22.203076923076924% 22.550107490169065%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.de {
-    background-position: 0 47.05882352941177%;
+    background-position: 22.596923076923076% 22.977102265962934%;
+    width: 16px;
+    height: 9.6px;
+  }
+
+
+&.dg {
+    background-position: 22.99076923076923% 23.359111639896888%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.dj {
-    background-position: 7.6923076923076925% 47.05882352941177%;
+    background-position: 23.384615384615383% 23.701433400758685%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.dk {
-    background-position: 15.384615384615385% 47.05882352941177%;
+    background-position: 23.769889750526886% 24.141353980543975%;
+    width: 14.535px;
+    height: 11px;
   }
 
 
 &.dm {
-    background-position: 23.076923076923077% 47.05882352941177%;
+    background-position: 24.147692307692306% 24.548879635137816%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.do {
-    background-position: 30.76923076923077% 47.05882352941177%;
+    background-position: 24.54153846153846% 24.8858900575511%;
+    width: 16px;
+    height: 10px;
   }
 
 
 &.dz {
-    background-position: 38.46153846153846% 47.05882352941177%;
+    background-position: 24.935384615384617% 25.289469139502984%;
+    width: 16px;
+    height: 10.665px;
+  }
+
+
+&.ea {
+    background-position: 25.32923076923077% 25.726178967657667%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ec {
-    background-position: 46.15384615384615% 47.05882352941177%;
+    background-position: 25.723076923076924% 26.16288879581235%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ee {
-    background-position: 53.84615384615385% 0;
+    background-position: 26.116923076923076% 26.594477874982136%;
+    width: 16px;
+    height: 10.18px;
   }
 
 
 &.eg {
-    background-position: 53.84615384615385% 5.882352941176471%;
+    background-position: 26.51076923076923% 27.01645800538741%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.eh {
-    background-position: 53.84615384615385% 11.764705882352942%;
+    background-position: 26.904615384615386% 27.42415229030339%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.er {
-    background-position: 53.84615384615385% 17.647058823529413%;
+    background-position: 27.298461538461538% 27.74142375570097%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.es {
-    background-position: 53.84615384615385% 23.529411764705884%;
+    background-position: 27.692307692307693% 28.088382129039815%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.et {
-    background-position: 53.84615384615385% 29.41176470588235%;
+    background-position: 28.086153846153845% 28.494943486020226%;
+    width: 16px;
+    height: 8px;
+  }
+
+
+&.eu {
+    background-position: 28.48% 28.842699104943357%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.fi {
-    background-position: 53.84615384615385% 35.294117647058826%;
+    background-position: 28.873846153846152% 29.269125140888672%;
+    width: 16px;
+    height: 9.78px;
   }
 
 
 &.fj {
-    background-position: 53.84615384615385% 41.1764705882353%;
+    background-position: 29.267692307692307% 29.645052548086458%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.fk {
-    background-position: 53.84615384615385% 47.05882352941177%;
+    background-position: 29.661538461538463% 29.962324013484036%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.fm {
-    background-position: 0 52.94117647058823%;
+    background-position: 30.055384615384614% 30.28463991622638%;
+    width: 16px;
+    height: 8.42px;
   }
 
 
 &.fo {
-    background-position: 7.6923076923076925% 52.94117647058823%;
+    background-position: 30.442673885624636% 30.653166567401232%;
+    width: 15.125px;
+    height: 11px;
   }
 
 
 &.fr {
-    background-position: 15.384615384615385% 52.94117647058823%;
+    background-position: 30.83076923076923% 31.08579958591968%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ga {
-    background-position: 23.076923076923077% 52.94117647058823%;
+    background-position: 31.214357866399595% 31.526702402223545%;
+    width: 14.665px;
+    height: 11px;
   }
 
 
 &.gb {
-    background-position: 30.76923076923077% 52.94117647058823%;
+    background-position: 31.593846153846155% 31.925441205631568%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.gd {
-    background-position: 38.46153846153846% 52.94117647058823%;
+    background-position: 31.987692307692306% 32.26318504702567%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.ge {
-    background-position: 46.15384615384615% 52.94117647058823%;
+    background-position: 32.38153846153846% 32.67383532466398%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gf {
-    background-position: 53.84615384615385% 52.94117647058823%;
+    background-position: 32.77538461538462% 33.110545152818666%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gg {
-    background-position: 61.53846153846154% 0;
+    background-position: 33.16923076923077% 33.54725498097335%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gh {
-    background-position: 61.53846153846154% 5.882352941176471%;
+    background-position: 33.56307692307692% 33.98396480912803%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gi {
-    background-position: 61.53846153846154% 11.764705882352942%;
+    background-position: 33.956923076923076% 34.38429506246282%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.gl {
-    background-position: 61.53846153846154% 17.647058823529413%;
+    background-position: 34.35076923076923% 34.738281785031575%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gm {
-    background-position: 61.53846153846154% 23.529411764705884%;
+    background-position: 34.744615384615386% 35.17499161318626%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gn {
-    background-position: 61.53846153846154% 29.41176470588235%;
+    background-position: 35.13846153846154% 35.611701441340934%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gp {
-    background-position: 61.53846153846154% 35.294117647058826%;
+    background-position: 35.53230769230769% 36.04841126949562%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gq {
-    background-position: 61.53846153846154% 41.1764705882353%;
+    background-position: 35.926153846153845% 36.4851210976503%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gr {
-    background-position: 61.53846153846154% 47.05882352941177%;
+    background-position: 36.32% 36.92183092580498%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.gs {
-    background-position: 61.53846153846154% 52.94117647058823%;
+    background-position: 36.713846153846156% 37.319056117390446%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.gt {
-    background-position: 0 58.8235294117647%;
+    background-position: 37.10769230769231% 37.66620361182775%;
+    width: 16px;
+    height: 10px;
   }
 
 
 &.gu {
-    background-position: 7.6923076923076925% 58.8235294117647%;
+    background-position: 37.50153846153846% 38.04174277990333%;
+    width: 16px;
+    height: 8.585px;
   }
 
 
 &.gw {
-    background-position: 15.384615384615385% 58.8235294117647%;
+    background-position: 37.895384615384614% 38.389847313107275%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.gy {
-    background-position: 23.076923076923077% 58.8235294117647%;
+    background-position: 38.28923076923077% 38.7316957022104%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.hk {
-    background-position: 30.76923076923077% 58.8235294117647%;
+    background-position: 38.683076923076925% 39.145080960047004%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.hm {
-    background-position: 38.46153846153846% 58.8235294117647%;
+    background-position: 39.07692307692308% 39.53995637517351%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.hn {
-    background-position: 46.15384615384615% 58.8235294117647%;
+    background-position: 39.47076923076923% 39.85722784057109%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.hr {
-    background-position: 53.84615384615385% 58.8235294117647%;
+    background-position: 39.864615384615384% 40.174499305968666%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ht {
-    background-position: 61.53846153846154% 58.8235294117647%;
+    background-position: 40.25846153846154% 40.51748085241478%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.hu {
-    background-position: 0 64.70588235294117%;
+    background-position: 40.652307692307694% 40.88836010311323%;
+    width: 16px;
+    height: 8px;
+  }
+
+
+&.ic {
+    background-position: 41.04615384615385% 41.2492283138832%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.id {
-    background-position: 7.6923076923076925% 64.70588235294117%;
+    background-position: 41.44% 41.685938142037884%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ie {
-    background-position: 15.384615384615385% 64.70588235294117%;
+    background-position: 41.83384615384615% 42.078128098354156%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.il {
-    background-position: 23.076923076923077% 64.70588235294117%;
+    background-position: 42.21859907096933% 42.44590033750248%;
+    width: 15.125px;
+    height: 11px;
   }
 
 
 &.im {
-    background-position: 30.76923076923077% 64.70588235294117%;
+    background-position: 42.60923076923077% 42.83164782867341%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.in {
-    background-position: 38.46153846153846% 64.70588235294117%;
+    background-position: 43.003076923076925% 43.19457209384497%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.io {
-    background-position: 46.15384615384615% 64.70588235294117%;
+    background-position: 43.39692307692307% 43.585167558992666%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.iq {
-    background-position: 53.84615384615385% 64.70588235294117%;
+    background-position: 43.79076923076923% 43.94888906974852%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ir {
-    background-position: 61.53846153846154% 64.70588235294117%;
+    background-position: 44.184615384615384% 44.358830402859915%;
+    width: 16px;
+    height: 9.145px;
   }
 
 
 &.is {
-    background-position: 69.23076923076923% 0;
+    background-position: 44.570562263426545% 44.768711534643636%;
+    width: 15.28px;
+    height: 11px;
   }
 
 
 &.it {
-    background-position: 69.23076923076923% 5.882352941176471%;
+    background-position: 44.96% 45.19946721400965%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.je {
-    background-position: 69.23076923076923% 11.764705882352942%;
+    background-position: 45.353846153846156% 45.61688955910949%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.jm {
-    background-position: 69.23076923076923% 17.647058823529413%;
+    background-position: 45.747692307692304% 45.98453301606187%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.jo {
-    background-position: 69.23076923076923% 23.529411764705884%;
+    background-position: 46.14153846153846% 46.30180448145945%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.jp {
-    background-position: 69.23076923076923% 29.41176470588235%;
+    background-position: 46.535384615384615% 46.66840027234813%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ke {
-    background-position: 69.23076923076923% 35.294117647058826%;
+    background-position: 46.92923076923077% 47.10511010050281%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.kg {
-    background-position: 69.23076923076923% 41.1764705882353%;
+    background-position: 47.323076923076925% 47.521727052660815%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.kh {
-    background-position: 69.23076923076923% 47.05882352941177%;
+    background-position: 47.716923076923074% 47.930741566968074%;
+    width: 16px;
+    height: 10.24px;
   }
 
 
 &.ki {
-    background-position: 69.23076923076923% 52.94117647058823%;
+    background-position: 48.11076923076923% 48.30458060678168%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.km {
-    background-position: 69.23076923076923% 58.8235294117647%;
+    background-position: 48.504615384615384% 48.65272431445692%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.kn {
-    background-position: 69.23076923076923% 64.70588235294117%;
+    background-position: 48.89846153846154% 49.07030432719888%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.kp {
-    background-position: 0 70.58823529411765%;
+    background-position: 49.292307692307695% 49.454689668847905%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.kr {
-    background-position: 7.6923076923076925% 70.58823529411765%;
+    background-position: 49.68615384615384% 49.824621303102425%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.kw {
-    background-position: 15.384615384615385% 70.58823529411765%;
+    background-position: 50.08% 50.20820939916716%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ky {
-    background-position: 23.076923076923077% 70.58823529411765%;
+    background-position: 50.473846153846154% 50.52548086456474%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.kz {
-    background-position: 0 0;
+    background-position: 50.86769230769231% 50.84275232996232%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.la {
-    background-position: 38.46153846153846% 70.58823529411765%;
+    background-position: 51.261538461538464% 51.214152574503686%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.lb {
-    background-position: 46.15384615384615% 70.58823529411765%;
+    background-position: 51.65538461538461% 51.65086240265837%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.lc {
-    background-position: 53.84615384615385% 70.58823529411765%;
+    background-position: 52.04923076923077% 52.03252032520325%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.li {
-    background-position: 61.53846153846154% 70.58823529411765%;
+    background-position: 52.44307692307692% 52.38303107266161%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.lk {
-    background-position: 69.23076923076923% 70.58823529411765%;
+    background-position: 52.83692307692308% 52.746381122347806%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.lr {
-    background-position: 76.92307692307692% 0;
+    background-position: 53.23076923076923% 53.072492741206155%;
+    width: 16px;
+    height: 8.42px;
   }
 
 
 &.ls {
-    background-position: 76.92307692307692% 5.882352941176471%;
+    background-position: 53.62461538461538% 53.45725305548001%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.lt {
-    background-position: 76.92307692307692% 11.764705882352942%;
+    background-position: 54.01846153846154% 53.87118536449859%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.lu {
-    background-position: 76.92307692307692% 17.647058823529413%;
+    background-position: 54.41230769230769% 54.26802650898845%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.lv {
-    background-position: 76.92307692307692% 23.529411764705884%;
+    background-position: 54.80615384615385% 54.63018044814594%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ly {
-    background-position: 76.92307692307692% 29.41176470588235%;
+    background-position: 55.2% 54.947451913543524%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ma {
-    background-position: 76.92307692307692% 35.294117647058826%;
+    background-position: 55.59384615384615% 55.323195048504566%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mc {
-    background-position: 76.92307692307692% 41.1764705882353%;
+    background-position: 55.95670090411465% 55.76732181854278%;
+    width: 13.75px;
+    height: 11px;
   }
 
 
 &.md {
-    background-position: 76.92307692307692% 47.05882352941177%;
+    background-position: 56.332307692307694% 56.13721990878445%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.me {
-    background-position: 76.92307692307692% 52.94117647058823%;
+    background-position: 56.72615384615385% 56.454491374182034%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.mf {
-    background-position: 76.92307692307692% 58.8235294117647%;
+    background-position: 57.12% 56.83182900031165%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mg {
-    background-position: 76.92307692307692% 64.70588235294117%;
+    background-position: 57.51384615384615% 57.26853882846633%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mh {
-    background-position: 76.92307692307692% 70.58823529411765%;
+    background-position: 57.90769230769231% 57.653862630301305%;
+    width: 16px;
+    height: 8.42px;
   }
 
 
 &.mk {
-    background-position: 0 76.47058823529412%;
+    background-position: 58.30153846153846% 57.98136030140789%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ml {
-    background-position: 7.6923076923076925% 76.47058823529412%;
+    background-position: 58.69538461538462% 58.36031339885304%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mm {
-    background-position: 15.384615384615385% 76.47058823529412%;
+    background-position: 59.08923076923077% 58.79702322700772%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mn {
-    background-position: 23.076923076923077% 76.47058823529412%;
+    background-position: 59.48307692307692% 59.17112829664882%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.mo {
-    background-position: 30.76923076923077% 76.47058823529412%;
+    background-position: 59.87692307692308% 59.55134020291126%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mp {
-    background-position: 38.46153846153846% 76.47058823529412%;
+    background-position: 60.27076923076923% 59.92464802696807%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.mq {
-    background-position: 46.15384615384615% 76.47058823529412%;
+    background-position: 60.66461538461539% 60.305657178814805%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mr {
-    background-position: 53.84615384615385% 76.47058823529412%;
+    background-position: 61.058461538461536% 60.74236700696949%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ms {
-    background-position: 61.53846153846154% 76.47058823529412%;
+    background-position: 61.45230769230769% 61.114416022209%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.mt {
-    background-position: 69.23076923076923% 76.47058823529412%;
+    background-position: 61.84615384615385% 61.49668398287304%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mu {
-    background-position: 76.92307692307692% 76.47058823529412%;
+    background-position: 62.24% 61.93339381102771%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mv {
-    background-position: 84.61538461538461% 0;
+    background-position: 62.63384615384616% 62.370103639182396%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mw {
-    background-position: 84.61538461538461% 5.882352941176471%;
+    background-position: 63.027692307692305% 62.80681346733708%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.mx {
-    background-position: 84.61538461538461% 11.764705882352942%;
+    background-position: 63.42153846153846% 63.20538178153475%;
+    width: 16px;
+    height: 9.145px;
   }
 
 
 &.my {
-    background-position: 84.61538461538461% 17.647058823529413%;
+    background-position: 63.815384615384616% 63.55344041245291%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.mz {
-    background-position: 84.61538461538461% 23.529411764705884%;
+    background-position: 64.20923076923077% 63.938288931192396%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.na {
-    background-position: 84.61538461538461% 29.41176470588235%;
+    background-position: 64.60307692307693% 64.37499875934708%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.nc {
-    background-position: 84.61538461538461% 35.294117647058826%;
+    background-position: 64.99692307692308% 64.74320840769383%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ne {
-    background-position: 84.61538461538461% 41.1764705882353%;
+    background-position: 65.3398644502191% 65.13797895572762%;
+    width: 12.835px;
+    height: 11px;
   }
 
 
 &.nf {
-    background-position: 84.61538461538461% 47.05882352941177%;
+    background-position: 65.71076923076923% 65.49672813801308%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ng {
-    background-position: 84.61538461538461% 52.94117647058823%;
+    background-position: 66.10461538461539% 65.81399960341066%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.ni {
-    background-position: 84.61538461538461% 58.8235294117647%;
+    background-position: 66.49846153846154% 66.17326084368428%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.nl {
-    background-position: 84.61538461538461% 64.70588235294117%;
+    background-position: 66.8923076923077% 66.5982487935891%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.no {
-    background-position: 84.61538461538461% 70.58823529411765%;
+    background-position: 67.27166456455532% 67.04387532261266%;
+    width: 15.125px;
+    height: 11px;
   }
 
 
 &.np {
-    background-position: 84.61538461538461% 76.47058823529412%;
+    background-position: 67.55171121582022% 67.48064324002382%;
+    width: 9.025px;
+    height: 11px;
   }
 
 
 &.nr {
-    background-position: 0 82.3529411764706%;
+    background-position: 67.90153846153846% 67.83660519532025%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.nu {
-    background-position: 7.6923076923076925% 82.3529411764706%;
+    background-position: 68.29538461538462% 68.15387666071783%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.nz {
-    background-position: 15.384615384615385% 82.3529411764706%;
+    background-position: 68.68923076923078% 68.47114812611541%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.om {
-    background-position: 23.076923076923077% 82.3529411764706%;
+    background-position: 69.08307692307692% 68.78841959151299%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.pa {
-    background-position: 30.76923076923077% 82.3529411764706%;
+    background-position: 69.47692307692307% 69.17880686904859%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.pe {
-    background-position: 38.46153846153846% 82.3529411764706%;
+    background-position: 69.87076923076923% 69.61551669720328%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.pf {
-    background-position: 46.15384615384615% 82.3529411764706%;
+    background-position: 70.26461538461538% 70.05222652535795%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.pg {
-    background-position: 53.84615384615385% 82.3529411764706%;
+    background-position: 70.6352497087111% 70.49831248759182%;
+    width: 14.665px;
+    height: 11px;
   }
 
 
 &.ph {
-    background-position: 61.53846153846154% 82.3529411764706%;
+    background-position: 71.0276923076923% 70.85068411659726%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.pk {
-    background-position: 69.23076923076923% 82.3529411764706%;
+    background-position: 71.42153846153846% 71.24325332941618%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.pl {
-    background-position: 76.92307692307692% 82.3529411764706%;
+    background-position: 71.81538461538462% 71.66104385790831%;
+    width: 16px;
+    height: 10px;
   }
 
 
 &.pm {
-    background-position: 84.61538461538461% 82.3529411764706%;
+    background-position: 72.20923076923077% 72.07697209225694%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.pn {
-    background-position: 0 88.23529411764706%;
+    background-position: 72.60307692307693% 72.43704144358517%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.pr {
-    background-position: 7.6923076923076925% 88.23529411764706%;
+    background-position: 72.99692307692308% 72.83128906816047%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ps {
-    background-position: 15.384615384615385% 88.23529411764706%;
+    background-position: 73.39076923076924% 73.19056117390443%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.pt {
-    background-position: 23.076923076923077% 88.23529411764706%;
+    background-position: 73.78461538461538% 73.58560604406402%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.pw {
-    background-position: 30.76923076923077% 88.23529411764706%;
+    background-position: 74.17846153846153% 74.00277832903353%;
+    width: 16px;
+    height: 10px;
   }
 
 
 &.py {
-    background-position: 38.46153846153846% 88.23529411764706%;
+    background-position: 74.57230769230769% 74.36426389494981%;
+    width: 16px;
+    height: 8.8px;
   }
 
 
 &.qa {
-    background-position: 46.15384615384615% 88.23529411764706%;
+    background-position: 74.96615384615384% 74.64727330374129%;
+    width: 16px;
+    height: 6.3px;
   }
 
 
 &.re {
-    background-position: 53.84615384615385% 88.23529411764706%;
+    background-position: 75.36% 75.03468865566819%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ro {
-    background-position: 61.53846153846154% 88.23529411764706%;
+    background-position: 75.75384615384615% 75.47139848382288%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.rs {
-    background-position: 69.23076923076923% 88.23529411764706%;
+    background-position: 76.14769230769231% 75.90810831197756%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ru {
-    background-position: 76.92307692307692% 88.23529411764706%;
+    background-position: 76.54153846153847% 76.34481814013225%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.rw {
-    background-position: 84.61538461538461% 88.23529411764706%;
+    background-position: 76.93538461538462% 76.78152796828692%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.sa {
-    background-position: 92.3076923076923% 0;
+    background-position: 77.32923076923078% 77.21823779644161%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.sb {
-    background-position: 92.3076923076923% 5.882352941176471%;
+    background-position: 77.72307692307692% 77.57287328970851%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.sc {
-    background-position: 92.3076923076923% 11.764705882352942%;
+    background-position: 78.11692307692307% 77.89014475510609%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.sd {
-    background-position: 92.3076923076923% 17.647058823529413%;
+    background-position: 78.51076923076923% 78.20741622050367%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.se {
-    background-position: 92.3076923076923% 23.529411764705884%;
+    background-position: 78.90461538461538% 78.5870212343719%;
+    width: 16px;
+    height: 10px;
   }
 
 
 &.sg {
-    background-position: 92.3076923076923% 29.41176470588235%;
+    background-position: 79.29846153846154% 79.00477800252895%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.sh {
-    background-position: 92.3076923076923% 35.294117647058826%;
+    background-position: 79.6923076923077% 79.3575252825699%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.si {
-    background-position: 92.3076923076923% 41.1764705882353%;
+    background-position: 80.08615384615385% 79.67479674796748%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.sj {
-    background-position: 92.3076923076923% 47.05882352941177%;
+    background-position: 80.46266957885994% 80.08735358348223%;
+    width: 15.125px;
+    height: 11px;
   }
 
 
 &.sk {
-    background-position: 92.3076923076923% 52.94117647058823%;
+    background-position: 80.86153846153846% 80.51341195433604%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.sl {
-    background-position: 92.3076923076923% 58.8235294117647%;
+    background-position: 81.25538461538461% 80.95012178249071%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.sm {
-    background-position: 92.3076923076923% 64.70588235294117%;
+    background-position: 81.62240839010443% 81.3976573357157%;
+    width: 14.665px;
+    height: 11px;
   }
 
 
 &.sn {
-    background-position: 92.3076923076923% 70.58823529411765%;
+    background-position: 82.01846153846154% 81.82354143880008%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.so {
-    background-position: 92.3076923076923% 76.47058823529412%;
+    background-position: 82.41230769230769% 82.26025126695477%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.sr {
-    background-position: 92.3076923076923% 82.3529411764706%;
+    background-position: 82.80615384615385% 82.69696109510944%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ss {
-    background-position: 92.3076923076923% 88.23529411764706%;
+    background-position: 83.2% 83.04580606781677%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.st {
-    background-position: 0 94.11764705882354%;
+    background-position: 83.59384615384616% 83.36307753321435%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.sv {
-    background-position: 7.6923076923076925% 94.11764705882354%;
+    background-position: 83.98769230769231% 83.71437923407295%;
+    width: 16px;
+    height: 9.025px;
   }
 
 
 &.sx {
-    background-position: 15.384615384615385% 94.11764705882354%;
+    background-position: 84.38153846153845% 84.14604370671361%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.sy {
-    background-position: 23.076923076923077% 94.11764705882354%;
+    background-position: 84.77538461538461% 84.5827535348683%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.sz {
-    background-position: 30.76923076923077% 94.11764705882354%;
+    background-position: 85.16923076923077% 85.01946336302298%;
+    width: 16px;
+    height: 10.665px;
+  }
+
+
+&.ta {
+    background-position: 85.56307692307692% 85.36585365853658%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.tc {
-    background-position: 38.46153846153846% 94.11764705882354%;
+    background-position: 85.95692307692308% 85.68312512393416%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.td {
-    background-position: 46.15384615384615% 94.11764705882354%;
+    background-position: 86.35076923076923% 86.09138748667539%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.tf {
-    background-position: 53.84615384615385% 94.11764705882354%;
+    background-position: 86.74461538461539% 86.52809731483006%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.tg {
-    background-position: 61.53846153846154% 94.11764705882354%;
+    background-position: 87.13846153846154% 86.93805787403606%;
+    width: 16px;
+    height: 9.89px;
   }
 
 
 &.th {
-    background-position: 69.23076923076923% 94.11764705882354%;
+    background-position: 87.5323076923077% 87.36181607767082%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.tj {
-    background-position: 76.92307692307692% 94.11764705882354%;
+    background-position: 87.92615384615385% 87.70573071584374%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.tk {
-    background-position: 84.61538461538461% 94.11764705882354%;
+    background-position: 88.32% 88.02300218124132%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.tl {
-    background-position: 92.3076923076923% 94.11764705882354%;
+    background-position: 88.71384615384615% 88.3402736466389%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.tm {
-    background-position: 100% 0;
+    background-position: 89.1076923076923% 88.75134734907209%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.tn {
-    background-position: 100% 5.882352941176471%;
+    background-position: 89.50153846153846% 89.18805717722677%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.to {
-    background-position: 100% 11.764705882352942%;
+    background-position: 89.89538461538461% 89.53004164187983%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.tr {
-    background-position: 100% 17.647058823529413%;
+    background-position: 90.28923076923077% 89.94237415313032%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.tt {
-    background-position: 100% 23.529411764705884%;
+    background-position: 90.68307692307692% 90.34088654311678%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.tv {
-    background-position: 100% 29.41176470588235%;
+    background-position: 91.07692307692308% 90.68015070394607%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.tw {
-    background-position: 100% 35.294117647058826%;
+    background-position: 91.47076923076924% 91.09370006371994%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.tz {
-    background-position: 100% 41.1764705882353%;
+    background-position: 91.86461538461539% 91.53040989187461%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ua {
-    background-position: 100% 47.05882352941177%;
+    background-position: 92.25846153846153% 91.9671197200293%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ug {
-    background-position: 100% 52.94117647058823%;
+    background-position: 92.65230769230769% 92.40382954818398%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.um {
-    background-position: 100% 58.8235294117647%;
+    background-position: 93.04615384615384% 92.75786567661478%;
+    width: 16px;
+    height: 8.42px;
   }
 
 
 &.us {
-    background-position: 100% 64.70588235294117%;
+    background-position: 93.44% 93.09502276802006%;
+    width: 16px;
+    height: 8.42px;
   }
 
 
 &.uy {
-    background-position: 100% 70.58823529411765%;
+    background-position: 93.83384615384615% 93.51545456530499%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.uz {
-    background-position: 100% 76.47058823529412%;
+    background-position: 94.22769230769231% 93.85286535792187%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.va {
-    background-position: 100% 82.3529411764706%;
+    background-position: 94.50522433927473% 94.28231089934485%;
+    width: 11px;
+    height: 11px;
   }
 
 
 &.vc {
-    background-position: 100% 88.23529411764706%;
+    background-position: 94.8923076923077% 94.70648136936322%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ve {
-    background-position: 100% 94.11764705882354%;
+    background-position: 95.28615384615385% 95.1431911975179%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.vg {
-    background-position: 0 100%;
+    background-position: 95.68% 95.47888161808447%;
+    width: 16px;
+    height: 8px;
   }
 
 
 &.vi {
-    background-position: 7.6923076923076925% 100%;
+    background-position: 96.07384615384615% 95.89750817342144%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.vn {
-    background-position: 15.384615384615385% 100%;
+    background-position: 96.4676923076923% 96.33421800157612%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.vu {
-    background-position: 23.076923076923077% 100%;
+    background-position: 96.86153846153846% 96.73002896940355%;
+    width: 16px;
+    height: 9.6px;
   }
 
 
 &.wf {
-    background-position: 30.76923076923077% 100%;
+    background-position: 97.25538461538461% 97.16793676441688%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.ws {
-    background-position: 38.46153846153846% 100%;
+    background-position: 97.64923076923077% 97.50148720999405%;
+    width: 16px;
+    height: 8px;
+  }
+
+
+&.xk {
+    background-position: 98.02859885309248% 97.93527893587454%;
+    width: 15.4px;
+    height: 11px;
   }
 
 
 &.ye {
-    background-position: 46.15384615384615% 100%;
+    background-position: 98.42461538461538% 98.3589635684751%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.yt {
-    background-position: 53.84615384615385% 100%;
+    background-position: 98.81846153846153% 98.7956733966298%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.za {
-    background-position: 61.53846153846154% 100%;
+    background-position: 99.21230769230769% 99.23238322478447%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.zm {
-    background-position: 69.23076923076923% 100%;
+    background-position: 99.60615384615384% 99.66909305293916%;
+    width: 16px;
+    height: 10.665px;
   }
 
 
 &.zw {
-    background-position: 76.92307692307692% 100%;
+    background-position: 100% 100%;
+    width: 16px;
+    height: 8px;
   }
 
 
