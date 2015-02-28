@@ -1,3 +1,4 @@
+// these vars persist through all instances of the plugin
 var pluginName = "intlTelInput",
   id = 1, // give each instance it's own id for namespaced event handling
   defaults = {
@@ -64,13 +65,11 @@ function Plugin(element, options) {
   this.hadInitialPlaceholder = Boolean($(element).attr("placeholder"));
 
   this._name = pluginName;
-
-  this.init();
 }
 
 Plugin.prototype = {
 
-  init: function() {
+  _init: function() {
     // if in nationalMode, disable options relating to dial codes
     if (this.options.nationalMode) {
       this.options.autoHideDialCode = false;
@@ -84,6 +83,11 @@ Plugin.prototype = {
     // Note: for some reason jasmine fucks up if you put this in the main Plugin function with the rest of these declarations
     // Note: to target Android Mobiles (and not Tablets), we must find "Android" and "Mobile"
     this.isMobile = /Android.+Mobile|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // we return these deferred objects from the _init() call so they can be watched, and then we resolve them when each specific request returns
+    // Note: again, jasmine had a spazz when I put these in the Plugin function
+    this.autoCountryDeferred = new $.Deferred();
+    this.utilsScriptDeferred = new $.Deferred();
 
     // process all the data: onlyCountries, preferredCountries etc
     this._processCountryData();
@@ -99,6 +103,9 @@ Plugin.prototype = {
 
     // utils script, and auto country
     this._initRequests();
+
+    // return the deferreds
+    return [this.autoCountryDeferred, this.utilsScriptDeferred];
   },
 
 
@@ -352,10 +359,14 @@ Plugin.prototype = {
           that.loadUtils();
         });
       }
+    } else {
+      this.utilsScriptDeferred.resolve();
     }
 
     if (this.options.defaultCountry == "auto") {
       this._loadAutoCountry();
+    } else {
+      this.autoCountryDeferred.resolve();
     }
   },
 
@@ -372,12 +383,14 @@ Plugin.prototype = {
       if (this.options.ipinfoToken) {
         ipinfoURL += "?token=" + this.options.ipinfoToken;
       }
-      $.get(ipinfoURL, function(response) {
-        if (response && response.country) {
-          // tell all instances the auto country is ready
-          $(".intl-tel-input input").intlTelInput("autoCountryLoaded", response.country.toLowerCase());
-        }
-      }, "jsonp");
+      // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
+      $.get(ipinfoURL, function() {}, "jsonp").always(function(resp) {
+        var countryCode = (resp && resp.country) ? resp.country.toLowerCase() : "";
+        // tell all instances the auto country is ready
+        $(".intl-tel-input input").intlTelInput("autoCountryLoaded", countryCode);
+      });
+    } else {
+      this.autoCountryDeferred.resolve();
     }
   },
 
@@ -1070,8 +1083,11 @@ Plugin.prototype = {
 
   // this is called when the ipinfo call returns
   autoCountryLoaded: function(countryCode) {
-    this.options.defaultCountry = countryCode;
-    this._setInitialState();
+    if (this.options.defaultCountry == "auto") {
+      this.options.defaultCountry = countryCode;
+      this._setInitialState();
+      this.autoCountryDeferred.resolve();
+    }
   },
 
   // remove plugin
@@ -1153,6 +1169,8 @@ Plugin.prototype = {
 
   // load the utils script
   loadUtils: function(path) {
+    var that = this;
+
     var utilsScript = path || this.options.utilsScript;
     if (!$.fn[pluginName].loadedUtilsScript && utilsScript) {
       // don't do this twice! (dont just check if the global intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
@@ -1165,9 +1183,14 @@ Plugin.prototype = {
           // tell all instances the utils are ready
           $(".intl-tel-input input").intlTelInput("utilsLoaded");
         },
+        complete: function() {
+          that.utilsScriptDeferred.resolve();
+        },
         dataType: "script",
         cache: true
       });
+    } else {
+      this.utilsScriptDeferred.resolve();
     }
   },
 
@@ -1216,12 +1239,20 @@ $.fn[pluginName] = function(options) {
   // Is the first parameter an object (options), or was omitted,
   // instantiate a new instance of the plugin.
   if (options === undefined || typeof options === "object") {
-    return this.each(function() {
+    var deferreds = [];
+    this.each(function() {
       if (!$.data(this, "plugin_" + pluginName)) {
-        $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+        var instance = new Plugin(this, options);
+        var instanceDeferreds = instance._init();
+        // we now have 2 deffereds: 1 for auto country, 1 for utils script
+        deferreds.push(instanceDeferreds[0]);
+        deferreds.push(instanceDeferreds[1]);
+        $.data(this, "plugin_" + pluginName, instance);
       }
     });
-  } else if (typeof options === "string" && options[0] !== "_" && options !== "init") {
+    // return the promise from the "master" deferred object that tracks all the others
+    return $.when.apply(null, deferreds);
+  } else if (typeof options === "string" && options[0] !== "_") {
     // If the first parameter is a string and it doesn't start
     // with an underscore or "contains" the `init`-function,
     // treat this as a call to a public method.
