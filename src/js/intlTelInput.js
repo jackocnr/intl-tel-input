@@ -71,29 +71,6 @@ function Plugin(element, options) {
 Plugin.prototype = {
 
   init: function() {
-    var that = this;
-
-    // if defaultCountry is set to "auto", we must do a lookup first
-    if (this.options.defaultCountry == "auto") {
-      // reset this in case lookup fails
-      this.options.defaultCountry = "";
-      var ipinfoURL = "//ipinfo.io";
-      if (this.options.ipinfoToken) {
-        ipinfoURL += "?token=" + this.options.ipinfoToken;
-      }
-      $.get(ipinfoURL, function(response) {
-        if (response && response.country) {
-          that.options.defaultCountry = response.country.toLowerCase();
-        }
-      }, "jsonp").always(function() {
-        that._ready();
-      });
-    } else {
-      this._ready();
-    }
-  },
-
-  _ready: function() {
     // if in nationalMode, disable options relating to dial codes
     if (this.options.nationalMode) {
       this.options.autoHideDialCode = false;
@@ -119,6 +96,9 @@ Plugin.prototype = {
 
     // start all of the event listeners: autoHideDialCode, input keydown, selectedFlag click
     this._initListeners();
+
+    // utils script, and auto country
+    this._initRequests();
   },
 
 
@@ -292,7 +272,7 @@ Plugin.prototype = {
     // if there is a number, and it's valid, we can go ahead and set the flag, else fall back to default
     if (this._getDialCode(val)) {
       this._updateFlagFromNumber(val);
-    } else {
+    } else if (this.options.defaultCountry != "auto") {
       // check the defaultCountry option, else fall back to the first in the list
       if (this.options.defaultCountry) {
         this.options.defaultCountry = this._getCountryData(this.options.defaultCountry.toLowerCase(), false, false);
@@ -355,6 +335,11 @@ Plugin.prototype = {
         }
       });
     }
+  },
+
+
+  _initRequests: function() {
+    var that = this;
 
     // if the user has specified the path to the utils script, fetch it on window.load
     if (this.options.utilsScript) {
@@ -367,6 +352,32 @@ Plugin.prototype = {
           that.loadUtils();
         });
       }
+    }
+
+    if (this.options.defaultCountry == "auto") {
+      this._loadAutoCountry();
+    }
+  },
+
+
+
+  _loadAutoCountry: function() {
+    var that = this;
+
+    if (!$.fn[pluginName].loadedAutoCountry) {
+      // don't do this twice!
+      $.fn[pluginName].loadedAutoCountry = true;
+
+      var ipinfoURL = "//ipinfo.io";
+      if (this.options.ipinfoToken) {
+        ipinfoURL += "?token=" + this.options.ipinfoToken;
+      }
+      $.get(ipinfoURL, function(response) {
+        if (response && response.country) {
+          // tell all instances the auto country is ready
+          $(".intl-tel-input input").intlTelInput("autoCountryLoaded", response.country.toLowerCase());
+        }
+      }, "jsonp");
     }
   },
 
@@ -791,7 +802,7 @@ Plugin.prototype = {
   _updateVal: function(val, addSuffix, preventConversion, isAllowedKey) {
     var formatted;
 
-    if (this.options.autoFormat && window.intlTelInputUtils) {
+    if (this.options.autoFormat && window.intlTelInputUtils && this.selectedCountryData) {
       // if nationalMode and we have a valid intl number, convert it to ntl
       // preventConversion is false (i.e. we allow conversion) when dev calls setNumber, or on init
       if (!preventConversion && this.options.nationalMode && val.charAt(0) == "+" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
@@ -919,7 +930,7 @@ Plugin.prototype = {
 
   // update the input placeholder to an example number from the currently selected country
   _updatePlaceholder: function() {
-    if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder) {
+    if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder && this.selectedCountryData) {
       var iso2 = this.selectedCountryData.iso2,
         numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"],
         placeholder = (iso2) ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
@@ -1056,6 +1067,12 @@ Plugin.prototype = {
   /********************
    *  PUBLIC METHODS
    ********************/
+
+  // this is called when the ipinfo call returns
+  autoCountryLoaded: function(countryCode) {
+    this.options.defaultCountry = countryCode;
+    this._setInitialState();
+  },
 
   // remove plugin
   destroy: function() {
