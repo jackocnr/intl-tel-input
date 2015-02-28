@@ -1,0 +1,31 @@
+@function strip-units($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+@function retina-size($value) {
+  @return strip-units($value)/2 + px;
+}
+
+@mixin retina-bg-size($spriteWidth, $spriteHeight) {
+  background-size: (strip-units($spriteWidth)/2) + px (strip-units($spriteHeight)/2) + px;
+}
+
+.iti-flag {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (   min--moz-device-pixel-ratio: 2),
+  only screen and (     -o-min-device-pixel-ratio: 2/1),
+  only screen and (        min-device-pixel-ratio: 2),
+  only screen and (                min-resolution: 192dpi),
+  only screen and (                min-resolution: 2dppx) {
+    @include retina-bg-size({{spritesheet.px.width}}, {{spritesheet.px.height}});
+  }
+
+  {{#items}}
+  &.{{strings.name}} {
+    width: retina-size({{px.width}});
+    height: retina-size({{px.height}});
+    background-position: retina-size({{px.offset_x}}) retina-size({{px.offset_y}});
+  }
+  {{/items}}
+}
