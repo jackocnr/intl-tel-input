@@ -41,7 +41,7 @@ You can view a live demo and some examples of how to use the various options her
 
 
 ## Getting Started
-1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [Bower](http://bower.io): `bower install intl-tel-input`
+1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [npm](https://www.npmjs.com/) or [Bower](http://bower.io)
 
 2. Link the stylesheet (note that this references the included image flags.png)
   ```html
