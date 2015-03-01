@@ -5,6 +5,7 @@
     "./build/js/intlTelInput.min.js",
     "./lib/libphonenumber/build/utils.js",
     "./build/img/flags.png",
+    "./build/img/flags@2x.png",
     "./build/css/intlTelInput.css"
   ],
   "dependencies": {
