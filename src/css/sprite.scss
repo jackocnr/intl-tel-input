@@ -11,6 +11,18 @@
 }
 
 .iti-flag {
+  $item-width-maps: (ac: 40px, ad: 40px, ae: 40px, af: 40px, ag: 40px, ai: 40px, al: 40px, am: 40px, ao: 40px, aq: 40px, ar: 40px, as: 40px, at: 40px, au: 40px, aw: 40px, ax: 40px, az: 40px, ba: 40px, bb: 40px, bd: 40px, be: 35px, bf: 40px, bg: 40px, bh: 40px, bi: 40px, bj: 40px, bl: 40px, bm: 40px, bn: 40px, bo: 40px, bq: 40px, br: 40px, bs: 40px, bt: 40px, bv: 40px, bw: 40px, by: 40px, bz: 40px, ca: 40px, cc: 40px, cd: 40px, cf: 40px, cg: 40px, ch: 30px, ci: 40px, ck: 40px, cl: 40px, cm: 40px, cn: 40px, co: 40px, cp: 40px, cr: 40px, cu: 40px, cv: 40px, cw: 40px, cx: 40px, cy: 40px, cz: 40px, de: 40px, dg: 40px, dj: 40px, dk: 40px, dm: 40px, do: 40px, dz: 40px, ea: 40px, ec: 40px, ee: 40px, eg: 40px, eh: 40px, er: 40px, es: 40px, et: 40px, eu: 40px, fi: 40px, fj: 40px, fk: 40px, fm: 40px, fo: 40px, fr: 40px, ga: 40px, gb: 40px, gd: 40px, ge: 40px, gf: 40px, gg: 40px, gh: 40px, gi: 40px, gl: 40px, gm: 40px, gn: 40px, gp: 40px, gq: 40px, gr: 40px, gs: 40px, gt: 40px, gu: 40px, gw: 40px, gy: 40px, hk: 40px, hm: 40px, hn: 40px, hr: 40px, ht: 40px, hu: 40px, ic: 40px, id: 40px, ie: 40px, il: 40px, im: 40px, in: 40px, io: 40px, iq: 40px, ir: 40px, is: 40px, it: 40px, je: 40px, jm: 40px, jo: 40px, jp: 40px, ke: 40px, kg: 40px, kh: 40px, ki: 40px, km: 40px, kn: 40px, kp: 40px, kr: 40px, kw: 40px, ky: 40px, kz: 40px, la: 40px, lb: 40px, lc: 40px, li: 40px, lk: 40px, lr: 40px, ls: 40px, lt: 40px, lu: 40px, lv: 40px, ly: 40px, ma: 40px, mc: 38px, md: 40px, me: 40px, mf: 40px, mg: 40px, mh: 40px, mk: 40px, ml: 40px, mm: 40px, mn: 40px, mo: 40px, mp: 40px, mq: 40px, mr: 40px, ms: 40px, mt: 40px, mu: 40px, mv: 40px, mw: 40px, mx: 40px, my: 40px, mz: 40px, na: 40px, nc: 40px, ne: 35px, nf: 40px, ng: 40px, ni: 40px, nl: 40px, no: 40px, np: 25px, nr: 40px, nu: 40px, nz: 40px, om: 40px, pa: 40px, pe: 40px, pf: 40px, pg: 40px, ph: 40px, pk: 40px, pl: 40px, pm: 40px, pn: 40px, pr: 40px, ps: 40px, pt: 40px, pw: 40px, py: 40px, qa: 40px, re: 40px, ro: 40px, rs: 40px, ru: 40px, rw: 40px, sa: 40px, sb: 40px, sc: 40px, sd: 40px, se: 40px, sg: 40px, sh: 40px, si: 40px, sj: 40px, sk: 40px, sl: 40px, sm: 40px, sn: 40px, so: 40px, sr: 40px, ss: 40px, st: 40px, sv: 40px, sx: 40px, sy: 40px, sz: 40px, ta: 40px, tc: 40px, td: 40px, tf: 40px, tg: 40px, th: 40px, tj: 40px, tk: 40px, tl: 40px, tm: 40px, tn: 40px, to: 40px, tr: 40px, tt: 40px, tv: 40px, tw: 40px, tz: 40px, ua: 40px, ug: 40px, um: 40px, us: 40px, uy: 40px, uz: 40px, va: 30px, vc: 40px, ve: 40px, vg: 40px, vi: 40px, vn: 40px, vu: 40px, wf: 40px, ws: 40px, xk: 40px, ye: 40px, yt: 40px, za: 40px, zm: 40px, zw: 40px, );
+  $standard-country: 'ac';
+  width: retina-size(map-get($item-width-maps, $standard-country));
+
+  @each $key, $width in $item-width-maps {
+    @if $width != map-get($item-width-maps, $standard-country) {
+      &.#{$key} {
+        width: retina-size($width);
+      }
+    }
+  }
+
   @media
   only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (   min--moz-device-pixel-ratio: 2),
@@ -22,1287 +34,1030 @@
   }
 
   &.ac {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-378px) retina-size(-445px);
   }
   &.ad {
-    width: retina-size(40px);
     height: retina-size(28px);
     background-position: retina-size(-126px) retina-size(-63px);
   }
   &.ae {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-154px);
   }
   &.af {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-300px);
   }
   &.ag {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-271px);
   }
   &.ai {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-264px);
   }
   &.al {
-    width: retina-size(40px);
     height: retina-size(29px);
     background-position: retina-size(-84px) retina-size(-64px);
   }
   &.am {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-420px) retina-size(-468px);
   }
   &.ao {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-87px);
   }
   &.aq {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-155px);
   }
   &.ar {
-    width: retina-size(40px);
     height: retina-size(25px);
     background-position: retina-size(-200px) retina-size(-387px);
   }
   &.as {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-168px) retina-size(-468px);
   }
   &.at {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-174px);
   }
   &.au {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-66px);
   }
   &.aw {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-242px);
   }
   &.ax {
-    width: retina-size(40px);
     height: retina-size(26px);
     background-position: retina-size(-74px) retina-size(-387px);
   }
   &.az {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-84px) retina-size(-490px);
   }
   &.ba {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-66px);
   }
   &.bb {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-271px);
   }
   &.bd {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-236px);
   }
   &.be {
-    width: retina-size(35px);
     height: retina-size(30px);
     background-position: retina-size(0px) retina-size(-387px);
   }
   &.bf {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-203px);
   }
   &.bg {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-132px);
   }
   &.bh {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-158px);
   }
   &.bi {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-288px);
   }
   &.bj {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-126px);
   }
   &.bl {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-126px);
   }
   &.bm {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-420px) retina-size(-445px);
   }
   &.bn {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-42px) retina-size(-468px);
   }
   &.bo {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-126px);
   }
   &.bq {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(0px);
   }
   &.br {
-    width: retina-size(40px);
     height: retina-size(28px);
     background-position: retina-size(-126px) retina-size(-93px);
   }
   &.bs {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-110px);
   }
   &.bt {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-58px);
   }
   &.bv {
-    width: retina-size(40px);
     height: retina-size(29px);
     background-position: retina-size(0px) retina-size(-64px);
   }
   &.bw {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-116px);
   }
   &.by {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-168px) retina-size(-512px);
   }
   &.bz {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-155px);
   }
   &.ca {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-110px);
   }
   &.cc {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-242px);
   }
   &.cd {
-    width: retina-size(40px);
     height: retina-size(30px);
     background-position: retina-size(-84px) retina-size(0px);
   }
   &.cf {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-155px);
   }
   &.cg {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-155px);
   }
   &.ch {
-    width: retina-size(30px);
     height: retina-size(30px);
     background-position: retina-size(-462px) retina-size(0px);
   }
   &.ci {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(0px);
   }
   &.ck {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-44px);
   }
   &.cl {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-29px);
   }
   &.cm {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-58px);
   }
   &.cn {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-87px);
   }
   &.co {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-116px);
   }
   &.cp {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-145px);
   }
   &.cr {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-168px) retina-size(-419px);
   }
   &.cu {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-252px) retina-size(-512px);
   }
   &.cv {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-126px) retina-size(-419px);
   }
   &.cw {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-184px);
   }
   &.cx {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-154px);
   }
   &.cy {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-184px);
   }
   &.cz {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-184px);
   }
   &.de {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-84px) retina-size(-419px);
   }
   &.dg {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(0px) retina-size(-468px);
   }
   &.dj {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-213px);
   }
   &.dk {
-    width: retina-size(40px);
     height: retina-size(30px);
     background-position: retina-size(-42px) retina-size(-32px);
   }
   &.dm {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-378px) retina-size(-468px);
   }
   &.do {
-    width: retina-size(40px);
     height: retina-size(25px);
     background-position: retina-size(-420px) retina-size(-27px);
   }
   &.dz {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-213px);
   }
   &.ea {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-213px);
   }
   &.ec {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-213px);
   }
   &.ee {
-    width: retina-size(40px);
     height: retina-size(25px);
     background-position: retina-size(-420px) retina-size(0px);
   }
   &.eg {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-29px);
   }
   &.eh {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-330px);
   }
   &.er {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-418px);
   }
   &.es {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-58px);
   }
   &.et {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-378px) retina-size(-490px);
   }
   &.eu {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-87px);
   }
   &.fi {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-366px);
   }
   &.fj {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-420px) retina-size(-512px);
   }
   &.fk {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(0px);
   }
   &.fm {
-    width: retina-size(40px);
     height: retina-size(21px);
     background-position: retina-size(-42px) retina-size(-445px);
   }
   &.fo {
-    width: retina-size(40px);
     height: retina-size(29px);
     background-position: retina-size(-42px) retina-size(-64px);
   }
   &.fr {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-203px);
   }
   &.ga {
-    width: retina-size(40px);
     height: retina-size(30px);
     background-position: retina-size(0px) retina-size(0px);
   }
   &.gb {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-264px);
   }
   &.gd {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-314px);
   }
   &.ge {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-242px);
   }
   &.gf {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-242px);
   }
   &.gg {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-242px);
   }
   &.gh {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-242px);
   }
   &.gi {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-210px) retina-size(-468px);
   }
   &.gl {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-242px);
   }
   &.gm {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(0px);
   }
   &.gn {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-29px);
   }
   &.gp {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-58px);
   }
   &.gq {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-87px);
   }
   &.gr {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-116px);
   }
   &.gs {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-242px);
   }
   &.gt {
-    width: retina-size(40px);
     height: retina-size(25px);
     background-position: retina-size(-326px) retina-size(-387px);
   }
   &.gu {
-    width: retina-size(40px);
     height: retina-size(21px);
     background-position: retina-size(-84px) retina-size(-445px);
   }
   &.gw {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-396px);
   }
   &.gy {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-210px) retina-size(-419px);
   }
   &.hk {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-232px);
   }
   &.hm {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-126px) retina-size(-490px);
   }
   &.hn {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-168px) retina-size(-490px);
   }
   &.hr {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-336px) retina-size(-490px);
   }
   &.ht {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-184px);
   }
   &.hu {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-462px) retina-size(-490px);
   }
   &.ic {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-271px);
   }
   &.id {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-271px);
   }
   &.ie {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-378px) retina-size(-512px);
   }
   &.il {
-    width: retina-size(40px);
     height: retina-size(29px);
     background-position: retina-size(0px) retina-size(-95px);
   }
   &.im {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-462px) retina-size(-512px);
   }
   &.in {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-271px);
   }
   &.io {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-22px);
   }
   &.iq {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-271px);
   }
   &.ir {
-    width: retina-size(40px);
     height: retina-size(23px);
     background-position: retina-size(-252px) retina-size(-419px);
   }
   &.is {
-    width: retina-size(40px);
     height: retina-size(29px);
     background-position: retina-size(-42px) retina-size(-95px);
   }
   &.it {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-300px);
   }
   &.je {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-106px);
   }
   &.jm {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-308px);
   }
   &.jo {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-330px);
   }
   &.jp {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-300px);
   }
   &.ke {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-300px);
   }
   &.kg {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-80px);
   }
   &.kh {
-    width: retina-size(40px);
     height: retina-size(26px);
     background-position: retina-size(-116px) retina-size(-387px);
   }
   &.ki {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-126px) retina-size(-468px);
   }
   &.km {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-42px) retina-size(-419px);
   }
   &.kn {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-126px);
   }
   &.kp {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-294px) retina-size(-468px);
   }
   &.kr {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(0px);
   }
   &.kw {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-210px) retina-size(-445px);
   }
   &.ky {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(0px);
   }
   &.kz {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-22px);
   }
   &.la {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-58px);
   }
   &.lb {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-87px);
   }
   &.lc {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-88px);
   }
   &.li {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-392px);
   }
   &.lk {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-132px);
   }
   &.lr {
-    width: retina-size(40px);
     height: retina-size(21px);
     background-position: retina-size(-126px) retina-size(-445px);
   }
   &.ls {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-174px);
   }
   &.lt {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-262px);
   }
   &.lu {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-210px);
   }
   &.lv {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-352px);
   }
   &.ly {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-374px);
   }
   &.ma {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-261px);
   }
   &.mc {
-    width: retina-size(38px);
     height: retina-size(30px);
     background-position: retina-size(-126px) retina-size(-31px);
   }
   &.md {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-440px);
   }
   &.me {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-462px);
   }
   &.mf {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-329px);
   }
   &.mg {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-329px);
   }
   &.mh {
-    width: retina-size(40px);
     height: retina-size(21px);
     background-position: retina-size(-168px) retina-size(-445px);
   }
   &.mk {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-210px) retina-size(-490px);
   }
   &.ml {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-329px);
   }
   &.mm {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-329px);
   }
   &.mn {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-420px) retina-size(-490px);
   }
   &.mo {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-329px);
   }
   &.mp {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-126px) retina-size(-512px);
   }
   &.mq {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-329px);
   }
   &.mr {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-329px);
   }
   &.ms {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-294px) retina-size(-512px);
   }
   &.mt {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-329px);
   }
   &.mu {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(0px);
   }
   &.mv {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-29px);
   }
   &.mw {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-58px);
   }
   &.mx {
-    width: retina-size(40px);
     height: retina-size(23px);
     background-position: retina-size(-336px) retina-size(-419px);
   }
   &.my {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-44px);
   }
   &.mz {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-116px);
   }
   &.na {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-145px);
   }
   &.nc {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-132px);
   }
   &.ne {
-    width: retina-size(35px);
     height: retina-size(30px);
     background-position: retina-size(-37px) retina-size(-387px);
   }
   &.nf {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-198px);
   }
   &.ng {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-220px);
   }
   &.ni {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-54px);
   }
   &.nl {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-232px);
   }
   &.no {
-    width: retina-size(40px);
     height: retina-size(29px);
     background-position: retina-size(-84px) retina-size(-95px);
   }
   &.np {
-    width: retina-size(25px);
     height: retina-size(30px);
     background-position: retina-size(-536px) retina-size(-396px);
   }
   &.nr {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-352px);
   }
   &.nu {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-252px) retina-size(-445px);
   }
   &.nz {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-294px) retina-size(-445px);
   }
   &.om {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-336px) retina-size(-445px);
   }
   &.pa {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-319px);
   }
   &.pe {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-358px);
   }
   &.pf {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-358px);
   }
   &.pg {
-    width: retina-size(40px);
     height: retina-size(30px);
     background-position: retina-size(-42px) retina-size(0px);
   }
   &.ph {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-84px) retina-size(-468px);
   }
   &.pk {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-126px) retina-size(-358px);
   }
   &.pl {
-    width: retina-size(40px);
     height: retina-size(25px);
     background-position: retina-size(-284px) retina-size(-387px);
   }
   &.pm {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-358px);
   }
   &.pn {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-252px) retina-size(-468px);
   }
   &.pr {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-358px);
   }
   &.ps {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-336px) retina-size(-468px);
   }
   &.pt {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-358px);
   }
   &.pw {
-    width: retina-size(40px);
     height: retina-size(25px);
     background-position: retina-size(-368px) retina-size(-387px);
   }
   &.py {
-    width: retina-size(40px);
     height: retina-size(22px);
     background-position: retina-size(-378px) retina-size(-419px);
   }
   &.qa {
-    width: retina-size(40px);
     height: retina-size(16px);
     background-position: retina-size(-536px) retina-size(-428px);
   }
   &.re {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-358px);
   }
   &.ro {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-358px);
   }
   &.rs {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-203px);
   }
   &.ru {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-174px);
   }
   &.rw {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-87px);
   }
   &.sa {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-329px);
   }
   &.sb {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-176px);
   }
   &.sc {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-198px);
   }
   &.sd {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-220px);
   }
   &.se {
-    width: retina-size(40px);
     height: retina-size(25px);
     background-position: retina-size(-242px) retina-size(-387px);
   }
   &.sg {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-232px);
   }
   &.sh {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-286px);
   }
   &.si {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-494px) retina-size(-308px);
   }
   &.sj {
-    width: retina-size(40px);
     height: retina-size(29px);
     background-position: retina-size(-126px) retina-size(0px);
   }
   &.sk {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-145px);
   }
   &.sl {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-116px);
   }
   &.sm {
-    width: retina-size(40px);
     height: retina-size(30px);
     background-position: retina-size(0px) retina-size(-32px);
   }
   &.sn {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-300px);
   }
   &.so {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-300px);
   }
   &.sr {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-300px);
   }
   &.ss {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(0px) retina-size(-490px);
   }
   &.st {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-42px) retina-size(-490px);
   }
   &.sv {
-    width: retina-size(40px);
     height: retina-size(23px);
     background-position: retina-size(-294px) retina-size(-419px);
   }
   &.sx {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-271px);
   }
   &.sy {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-271px);
   }
   &.sz {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-203px);
   }
   &.ta {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-252px) retina-size(-490px);
   }
   &.tc {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-294px) retina-size(-490px);
   }
   &.td {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-174px);
   }
   &.tf {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-294px) retina-size(-145px);
   }
   &.tg {
-    width: retina-size(40px);
     height: retina-size(25px);
     background-position: retina-size(-158px) retina-size(-387px);
   }
   &.th {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-242px);
   }
   &.tj {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(0px) retina-size(-512px);
   }
   &.tk {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-42px) retina-size(-512px);
   }
   &.tl {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-84px) retina-size(-512px);
   }
   &.tm {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-145px);
   }
   &.tn {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-116px);
   }
   &.to {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-210px) retina-size(-512px);
   }
   &.tr {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(0px);
   }
   &.tt {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(0px) retina-size(-419px);
   }
   &.tv {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-336px) retina-size(-512px);
   }
   &.tw {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-213px);
   }
   &.tz {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-210px) retina-size(-184px);
   }
   &.ua {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-184px);
   }
   &.ug {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(0px) retina-size(-184px);
   }
   &.um {
-    width: retina-size(40px);
     height: retina-size(21px);
     background-position: retina-size(0px) retina-size(-445px);
   }
   &.us {
-    width: retina-size(40px);
     height: retina-size(21px);
     background-position: retina-size(-420px) retina-size(-419px);
   }
   &.uy {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-155px);
   }
   &.uz {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-88px);
   }
   &.va {
-    width: retina-size(30px);
     height: retina-size(30px);
     background-position: retina-size(-462px) retina-size(-32px);
   }
   &.vc {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-84px) retina-size(-358px);
   }
   &.ve {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-261px);
   }
   &.vg {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-176px);
   }
   &.vi {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-290px);
   }
   &.vn {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-336px) retina-size(-29px);
   }
   &.vu {
-    width: retina-size(40px);
     height: retina-size(24px);
     background-position: retina-size(-420px) retina-size(-340px);
   }
   &.wf {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-252px) retina-size(-300px);
   }
   &.ws {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-286px);
   }
   &.xk {
-    width: retina-size(40px);
     height: retina-size(29px);
     background-position: retina-size(-84px) retina-size(-32px);
   }
   &.ye {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-42px) retina-size(-213px);
   }
   &.yt {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-168px) retina-size(-29px);
   }
   &.za {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-358px);
   }
   &.zm {
-    width: retina-size(40px);
     height: retina-size(27px);
     background-position: retina-size(-378px) retina-size(-290px);
   }
   &.zw {
-    width: retina-size(40px);
     height: retina-size(20px);
     background-position: retina-size(-536px) retina-size(-374px);
   }
