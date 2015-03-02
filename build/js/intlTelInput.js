@@ -785,7 +785,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 // update the active list item
                 this.countryListItems.removeClass("active");
                 if (countryCode) {
-                    this.countryListItems.children(".iti-flag." + countryCode).first().parent().addClass("active");
+                    this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country").addClass("active");
                 }
             }
         },
