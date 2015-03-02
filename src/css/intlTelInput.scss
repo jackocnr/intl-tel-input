@@ -1,13 +1,11 @@
-@import 'flags';
-
 // rgba is needed for the selected flag hover state to blend in with
 // the border-highlighting some browsers give the input on focus
 $hoverColor: rgba(0, 0, 0, 0.05);
 $greyText: #999;
 $greyBorder: #CCC;
 
-$flagHeight: 13px;
-$flagWidth: 18px;
+$flagHeight: 15px;
+$flagWidth: 20px;
 $flagPadding: 8px;
 // this border width is used for the popup and divider, but it is also
 // assumed to be the border width of the input, which we do not control
@@ -115,8 +113,9 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     // vertically center the flag
     .iti-flag {
       position: absolute;
-      top: 50%;
-      margin-top: -1 * floor($flagHeight / 2);
+      top: 0;
+      bottom: 0;
+      margin: auto;
     }
 
     .arrow {
@@ -149,8 +148,9 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     z-index: 2;
 
     // inline flags
-    .iti-flag {
+    .flag {
       display: inline-block;
+      width: $flagWidth;
     }
 
     padding: 0;
@@ -192,7 +192,10 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     }
 
     // spacing between country flag, name and dial code
-    .iti-flag, .country-name {
+    .flag, .country-name, .dial-code {
+      vertical-align: middle;
+    }
+    .flag, .country-name {
       margin-right: 6px;
     }
   }
@@ -206,5 +209,28 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     width: $selectedFlagWidth;
     height: 100%;
     opacity: 0;
+  }
+}
+
+
+
+
+
+
+@import "sprite";
+
+.iti-flag {
+  width: $flagWidth;
+  height: $flagHeight;
+  box-shadow: 0px 0px 1px 0px #888;
+  background-image: url("../img/flags.png");
+  // empty state
+  background-color: #DBDBDB;
+  background-position: 100% 100%;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .iti-flag {
+    background-image: url("../img/flags@2x.png");
   }
 }

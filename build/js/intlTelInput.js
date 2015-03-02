@@ -230,7 +230,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     // open the list item
                     tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
                     // add the flag
-                    tmp += "<div class='iti-flag " + c.iso2 + "'></div>";
+                    tmp += "<div class='flag'><div class='iti-flag " + c.iso2 + "'></div></div>";
                     // and the country name and dial code
                     tmp += "<span class='country-name'>" + c.name + "</span>";
                     tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
