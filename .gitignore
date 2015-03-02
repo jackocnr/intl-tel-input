@@ -9,3 +9,6 @@
 /.grunt/
 /tmp/
 .DS_Store
+
+# these files are now auto-generated
+/src/img/
