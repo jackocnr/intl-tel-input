@@ -11,6 +11,18 @@
 }
 
 .iti-flag {
+  $item-width-maps: ({{#items}}{{strings.name}}: {{px.width}}, {{/items}});
+  $standard-country: 'ac';
+  width: retina-size(map-get($item-width-maps, $standard-country));
+
+  @each $key, $width in $item-width-maps {
+    @if $width != map-get($item-width-maps, $standard-country) {
+      &.#{$key} {
+        width: retina-size($width);
+      }
+    }
+  }
+
   @media
   only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (   min--moz-device-pixel-ratio: 2),
@@ -23,7 +35,6 @@
 
   {{#items}}
   &.{{strings.name}} {
-    width: retina-size({{px.width}});
     height: retina-size({{px.height}});
     background-position: retina-size({{px.offset_x}}) retina-size({{px.offset_y}});
   }
