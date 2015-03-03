@@ -1,7 +1,7 @@
 # International Telephone Input [![Build Status](https://travis-ci.org/Bluefieldscom/intl-tel-input.png)](https://travis-ci.org/Bluefieldscom/intl-tel-input)
 A jQuery plugin for entering and validating international telephone numbers. It adds a flag dropdown to any input, which lists all the countries and their international dial codes next to their flags.
 
-<img src="https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png" width="422px" height="247px">
+<img src="https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png" width="424px" height="246px">
 
 ## Table of Contents
 
@@ -272,7 +272,7 @@ You will need to install [Grunt](http://gruntjs.com) to build the project, which
 
 
 ## Attributions
-* Flag images from [flag-icon-css](https://github.com/lipis/flag-icon-css)
+* Flag images from [region-flags](https://github.com/behdad/region-flags)
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](http://libphonenumber.googlecode.com)
 * Lookup user's country using [ipinfo.io](http://ipinfo.io)
