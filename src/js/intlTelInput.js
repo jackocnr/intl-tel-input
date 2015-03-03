@@ -297,7 +297,7 @@ Plugin.prototype = {
     // format
     if (val) {
       // this wont be run after _updateDialCode as that's only called if no val
-      this._updateVal(val, false);
+      this._updateVal(val);
     }
   },
 
@@ -522,7 +522,7 @@ Plugin.prototype = {
     }
 
     // update the number and flag
-    this.setNumber(val, addSuffix, true, isAllowedKey);
+    this.setNumber(val, null, addSuffix, true, isAllowedKey);
 
     // update the cursor position
     if (this.isGoodBrowser) {
@@ -606,7 +606,7 @@ Plugin.prototype = {
 
       // on focus: if empty, insert the dial code for the currently selected flag
       if (that.options.autoHideDialCode && !value && !that.telInput.prop("readonly") && that.selectedCountryData.dialCode) {
-        that._updateVal("+" + that.selectedCountryData.dialCode, true);
+        that._updateVal("+" + that.selectedCountryData.dialCode, null, true);
         // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
         that.telInput.one("keypress.plus" + that.ns, function(e) {
           if (e.which == keys.PLUS) {
@@ -812,15 +812,19 @@ Plugin.prototype = {
 
   // update the input's value to the given val
   // if autoFormat=true, format it first according to the country-specific formatting rules
-  _updateVal: function(val, addSuffix, preventConversion, isAllowedKey) {
+  // Note: preventConversion will be false (i.e. we allow conversion) on init and when dev calls public method setNumber
+  _updateVal: function(val, format, addSuffix, preventConversion, isAllowedKey) {
     var formatted;
 
     if (this.options.autoFormat && window.intlTelInputUtils && this.selectedCountryData) {
-      // if nationalMode and we have a valid intl number, convert it to ntl
-      // preventConversion is false (i.e. we allow conversion) when dev calls setNumber, or on init
-      if (!preventConversion && this.options.nationalMode && val.charAt(0) == "+" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
+      if (typeof(format) == "number" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
+        // if user specified a format, and it's a valid number, then format it accordingly
+        formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, format);
+      } else if (!preventConversion && this.options.nationalMode && val.charAt(0) == "+" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
+        // if nationalMode and we have a valid intl number, convert it to ntl
         formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, intlTelInputUtils.numberFormat.NATIONAL);
       } else {
+        // else do the regular AsYouType formatting
         formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix, this.options.allowExtensions, isAllowedKey);
       }
       // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
@@ -1043,7 +1047,7 @@ Plugin.prototype = {
       newNumber = (!this.options.autoHideDialCode || focusing) ? newDialCode : "";
     }
 
-    this._updateVal(newNumber, focusing);
+    this._updateVal(newNumber, null, focusing);
   },
 
 
@@ -1207,14 +1211,14 @@ Plugin.prototype = {
 
 
   // set the input value and update the flag
-  setNumber: function(number, addSuffix, preventConversion, isAllowedKey) {
+  setNumber: function(number, format, addSuffix, preventConversion, isAllowedKey) {
     // ensure starts with plus
     if (!this.options.nationalMode && number.charAt(0) != "+") {
       number = "+" + number;
     }
     // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
     this._updateFlagFromNumber(number);
-    this._updateVal(number, addSuffix, preventConversion, isAllowedKey);
+    this._updateVal(number, format, addSuffix, preventConversion, isAllowedKey);
   },
 
 
