@@ -272,7 +272,7 @@ You will need to install [Grunt](http://gruntjs.com) to build the project, which
 
 
 ## Attributions
-* Flag images from [flag-icon-css](https://github.com/lipis/flag-icon-css)
+* Flag images from [region-flags](https://github.com/behdad/region-flags)
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](http://libphonenumber.googlecode.com)
 * Lookup user's country using [ipinfo.io](http://ipinfo.io)
