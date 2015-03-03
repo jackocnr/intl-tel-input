@@ -234,3 +234,10 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     background-image: url("../img/flags@2x.png");
   }
 }
+
+
+
+// hack for Nepal which is the only flag that is not square/rectangle, so it has transparency, so you can see the default grey behind it
+.iti-flag.np {
+  background-color: transparent;
+}
