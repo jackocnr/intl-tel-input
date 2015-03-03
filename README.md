@@ -125,7 +125,7 @@ var extension = $("#mobile-number").intlTelInput("getExtension");
 Returns a string e.g. `"12345"`
 
 **getNumber**  
-Get the current number formatted to the given type (defaults to [E.164 standard](http://en.wikipedia.org/wiki/E.164)). The different formatting types are available in the enum `intlTelInputUtils.numberFormat` - taken from [here](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number._  
+Get the current number in the given format (defaults to [E.164 standard](http://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInputUtils.numberFormat` - taken from [here](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number._  
 ```js
 var intlNumber = $("#mobile-number").intlTelInput("getNumber");
 // or
@@ -193,7 +193,7 @@ $("#mobile-number").intlTelInput("selectCountry", "gb");
 ```
 
 **setNumber**  
-Insert a number, and update the selected flag accordingly.  
+Insert a number, and update the selected flag accordingly. Optionally pass a `intlTelInputUtils.numberFormat` as the second argument if you want to specify national/international formatting (must be a valid number). _Note that by default, if `nationalMode` is enabled it will try to use national formatting._  
 ```js
 $("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
 ```
