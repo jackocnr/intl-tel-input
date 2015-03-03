@@ -1,6 +1,6 @@
 {
   "name": "intl-tel-input",
-  "version": "5.6.1",
+  "version": "5.7.0",
   "main": [
     "./build/js/intlTelInput.min.js",
     "./lib/libphonenumber/build/utils.js",
