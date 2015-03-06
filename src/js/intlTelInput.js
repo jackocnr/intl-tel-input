@@ -379,16 +379,26 @@ Plugin.prototype = {
       // don't do this twice!
       $.fn[pluginName].loadedAutoCountry = true;
 
-      var ipinfoURL = "//ipinfo.io";
-      if (this.options.ipinfoToken) {
-        ipinfoURL += "?token=" + this.options.ipinfoToken;
-      }
-      // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
-      $.get(ipinfoURL, function() {}, "jsonp").always(function(resp) {
-        var countryCode = (resp && resp.country) ? resp.country.toLowerCase() : "";
+      if ($.cookie != null && $.cookie("intlTelInputLoadedAutoCountry") != null) {
+        var countryCode = $.cookie("intlTelInputLoadedAutoCountry");
         // tell all instances the auto country is ready
         $(".intl-tel-input input").intlTelInput("autoCountryLoaded", countryCode);
-      });
+      }
+      else {
+        var ipinfoURL = "//ipinfo.io";
+        if (this.options.ipinfoToken) {
+          ipinfoURL += "?token=" + this.options.ipinfoToken;
+        }
+        // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
+        $.get(ipinfoURL, function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country.toLowerCase() : "";
+          
+          if ($.cookie != null) { $.cookie("intlTelInputLoadedAutoCountry", countryCode, { path: '/', expires: 1 }); }
+          
+          // tell all instances the auto country is ready
+          $(".intl-tel-input input").intlTelInput("autoCountryLoaded", countryCode);
+        });
+      }
     } else {
       this.autoCountryDeferred.resolve();
     }
