@@ -227,6 +227,15 @@ International number formatting/validation is hard (it varies by country/distric
 
 
 ## Troubleshooting
+**Submitting the full international number when in nationalMode**  
+If you're submitting the form using Ajax, simply use `getNumber` to get the full international number before sending it. If you're using the standard form POST method, you have two options. The easiest thing to do is simply update the input value using `getNumber` in a submit handler:  
+```js
+$("form").submit(function() {
+  myInput.val(myInput.intlTelInput("getNumber"));
+});
+```
+But this way the user will see their value change when they submit the form, which is weird. A better solution would be to update the value of a separate hidden input, and then read that POST variable on the server instead.  
+
 **Image path**  
 Depending on your project setup, you may need to override the path to flags.png in your CSS.  
 ```css
