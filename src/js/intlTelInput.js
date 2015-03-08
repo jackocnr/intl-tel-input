@@ -212,7 +212,7 @@ Plugin.prototype = {
     // CSS triangle
     $("<div>", {
       "class": "arrow"
-    }).appendTo(this.selectedFlagInner);
+    }).appendTo(selectedFlag);
 
     // country list
     // mobile is just a native select element

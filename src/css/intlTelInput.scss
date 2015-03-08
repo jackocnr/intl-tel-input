@@ -119,11 +119,11 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
     }
 
     .arrow {
-      position: relative;
+      position: absolute;
       // split the difference between the flag and the arrow height to verically center
       top: 50%;
       margin-top: -1 * ($arrowHeight / 2);
-      left: $flagWidth + $arrowPadding;
+      right: $arrowPadding;
 
       // css triangle
       width: 0;

@@ -187,7 +187,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // CSS triangle
             $("<div>", {
                 "class": "arrow"
-            }).appendTo(this.selectedFlagInner);
+            }).appendTo(selectedFlag);
             // country list
             // mobile is just a native select element
             // desktop is a proper list containing: preferred countries, then divider, then all countries
