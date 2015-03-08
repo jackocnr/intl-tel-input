@@ -94,8 +94,8 @@ Type: `Boolean` Default: `true`
 Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getNumber` to extract a full international number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/national-mode.html).
 
 **numberType**  
-Type: `String` Default: `""`  
-Specify one of the keys from the global enum `intlTelInputUtils.numberType` e.g. `"MOBILE"` to tell the plugin you're expecting that type of number. Currently this is only used to set the placeholder to the right type of number.
+Type: `String` Default: `"MOBILE"`  
+Specify one of the keys from the global enum `intlTelInputUtils.numberType` e.g. `"FIXED_LINE"` to tell the plugin you're expecting that type of number. Currently this is only used to set the placeholder to the right type of number.
 
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
@@ -138,7 +138,7 @@ Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires t
 ```js
 var numberType = $("#mobile-number").intlTelInput("getNumberType");
 ```
-Returns an integer, which you can match against the [various options](https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js#891) in the global enum `intlTelInputUtils.numberType` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L896) in the global enum `intlTelInputUtils.numberType` e.g.  
 ```js
 if (numberType == intlTelInputUtils.numberType.MOBILE) {
     // is a mobile number
@@ -227,6 +227,15 @@ International number formatting/validation is hard (it varies by country/distric
 
 
 ## Troubleshooting
+**Submitting the full international number when in nationalMode**  
+If you're submitting the form using Ajax, simply use `getNumber` to get the full international number before sending it. If you're using the standard form POST method, you have two options. The easiest thing to do is simply update the input value using `getNumber` in a submit handler:  
+```js
+$("form").submit(function() {
+  myInput.val(myInput.intlTelInput("getNumber"));
+});
+```
+But this way the user will see their value change when they submit the form, which is weird. A better solution would be to update the value of a separate hidden input, and then read that POST variable on the server instead.  
+
 **Image path**  
 Depending on your project setup, you may need to override the path to flags.png in your CSS.  
 ```css
