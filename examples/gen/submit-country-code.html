@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Example: Submit country code</title>
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1425851251027">
+    <link rel="stylesheet" href="../../build/css/demo.css?1425851251027">
+    
+
+    <!-- GOOGLE ANALYTICS -->
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26178728-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <!-- /GOOGLE ANALYTICS -->
+  </head>
+
+  <body>
+    <a href="/intl-tel-input.html">Back</a>
+    <h1>Example: Submit country code</h1>
+    <p>Keep a hidden input with the dial code from the chosen country for POST submission.</p>
+    
+    <h2>Markup</h2>
+    <pre><code class="language-markup">&lt;pre id=&quot;output&quot;&gt;&lt;/pre&gt;
+&lt;form&gt;
+  &lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;
+&lt;/form&gt;</code></pre>
+
+    <h2>Code</h2>
+    <pre><code class="language-javascript">var input = $(&quot;#phone&quot;),
+  output = $(&quot;#output&quot;),
+  form = $(&#39;form&#39;);
+
+input.intlTelInput({
+  nationalMode: true,
+  submitCountryCode: true,
+  submitCountryCodeName: &#39;country_code&#39;
+});
+
+// listen to &quot;keyup&quot;, but also &quot;change&quot; to update when the user selects a country
+input.on(&quot;keyup change&quot;, function() {
+  output.text(JSON.stringify(form.serializeArray()));
+});
+
+// initial payload on output
+output.text(JSON.stringify(form.serializeArray()));</code></pre>
+
+    <h2>Result</h2>
+    <div id="result">
+      <pre id="output"></pre>
+<form>
+  <input id="phone" type="tel">
+</form>
+    </div>
+
+    <script src="../js/prism.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../../build/js/intlTelInput.js?1425851251027"></script>
+    <script src="../js/submitCountryCode.js?1425851251027"></script>
+  </body>
+</html>

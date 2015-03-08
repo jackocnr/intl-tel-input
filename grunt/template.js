@@ -103,6 +103,21 @@ module.exports = function(grunt) {
           script: "isValidNumber.js"
         }
       }
-    }
+    },
+    submitCountryCode: {
+      src: 'examples/template.html.ejs',
+      dest: 'examples/gen/submit-country-code.html',
+      variables: function() {
+        return {
+          time: time,
+          title: "Submit country code",
+          desc: "Keep a hidden input with the dial code from the chosen country for POST submission.",
+          stylesheet: '',
+          markup: grunt.file.read('examples/partials/submitCountryCode.html'),
+          code: grunt.file.read('examples/js/submitCountryCode.js'),
+          script: "submitCountryCode.js"
+        }
+      }
+    },
   };
 };

@@ -37,7 +37,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // the countries at the top of the list. defaults to united states and united kingdom
         preferredCountries: [ "us", "gb" ],
         // specify the path to the libphonenumber script to enable validation/formatting
-        utilsScript: ""
+        utilsScript: "",
+        // keep a hidden input with the selected country dial code
+        submitCountryCode: false,
+        // hidden input name for country dial code
+        submitCountryCodeName: "country_code"
     }, keys = {
         UP: 38,
         DOWN: 40,
@@ -211,6 +215,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.countryList.removeClass("v-hide").addClass("hide");
                 // this is useful in lots of places
                 this.countryListItems = this.countryList.children(".country");
+            }
+            if (this.options.submitCountryCode) {
+                this.hiddenCountryInput = $("<input>", {
+                    type: "hidden",
+                    name: this.options.submitCountryCodeName
+                }).insertAfter(this.telInput);
             }
         },
         // add a country <li> to the countryList <ul> container
@@ -848,6 +858,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // also we need to know if we're focusing for a couple of reasons e.g. if so, we want to add any formatting suffix, also if the input is empty and we're not in nationalMode, then we want to insert the dial code
         _updateDialCode: function(newDialCode, focusing) {
             var inputVal = this.telInput.val(), newNumber;
+            if (this.options.submitCountryCode) {
+                this.hiddenCountryInput.val(newDialCode);
+            }
             // save having to pass this every time
             newDialCode = "+" + newDialCode;
             if (this.options.nationalMode && inputVal.charAt(0) != "+") {

@@ -23,7 +23,11 @@ var pluginName = "intlTelInput",
     // the countries at the top of the list. defaults to united states and united kingdom
     preferredCountries: ["us", "gb"],
     // specify the path to the libphonenumber script to enable validation/formatting
-    utilsScript: ""
+    utilsScript: "",
+    // keep a hidden input with the selected country dial code
+    submitCountryCode: false,
+    // hidden input name for country dial code
+    submitCountryCodeName: 'country_code'
   },
   keys = {
     UP: 38,
@@ -239,6 +243,13 @@ Plugin.prototype = {
 
       // this is useful in lots of places
       this.countryListItems = this.countryList.children(".country");
+    }
+
+    if (this.options.submitCountryCode) {
+      this.hiddenCountryInput = $("<input>", {
+        "type": "hidden",
+        "name": this.options.submitCountryCodeName
+      }).insertAfter(this.telInput);
     }
   },
 
@@ -1025,6 +1036,10 @@ Plugin.prototype = {
   _updateDialCode: function(newDialCode, focusing) {
     var inputVal = this.telInput.val(),
       newNumber;
+
+    if (this.options.submitCountryCode) {
+      this.hiddenCountryInput.val(newDialCode);
+    }
 
     // save having to pass this every time
     newDialCode = "+" + newDialCode;
