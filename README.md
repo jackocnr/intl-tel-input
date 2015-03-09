@@ -241,7 +241,7 @@ Depending on your project setup, you may need to override the path to flags.png 
 ```css
 .iti-flag {background-image: url("path/to/flags.png");}
 ```
-_Note: we now support retina devices with a separate hi-res image (flags@2x.png). To override the path to that file, you must copy the @media query at the end of `src/css/flags.scss`._
+_Note: we now support retina devices with a separate hi-res image (flags@2x.png). To override the path to that file, you must copy the @media query at the end of `src/css/intlTelInput.scss`._
 
 **Customise invalid key flash**  
 Set the colour like this (or set to `none` to disable):  
