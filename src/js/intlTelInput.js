@@ -387,7 +387,7 @@ Plugin.prototype = {
       $.get(ipinfoURL, function() {}, "jsonp").always(function(resp) {
         var countryCode = (resp && resp.country) ? resp.country.toLowerCase() : "";
         // tell all instances the auto country is ready
-        $(".intl-tel-input input").intlTelInput("autoCountryLoaded", countryCode);
+        that.autoCountryLoaded(countryCode);
       });
     } else {
       this.autoCountryDeferred.resolve();
