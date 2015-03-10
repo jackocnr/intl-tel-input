@@ -1,13 +1,9 @@
-@function strip-units($value) {
-  @return $value / ($value * 0 + 1);
-}
-
 @function retina-size($value) {
-  @return strip-units($value)/2 + px;
+  @return floor($value / 2);
 }
 
 @mixin retina-bg-size($spriteWidth, $spriteHeight) {
-  background-size: (strip-units($spriteWidth)/2) + px (strip-units($spriteHeight)/2) + px;
+  background-size: floor($spriteWidth / 2) floor($spriteHeight / 2);
 }
 
 .iti-flag {
