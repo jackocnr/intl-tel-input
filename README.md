@@ -234,7 +234,7 @@ $("form").submit(function() {
   myInput.val(myInput.intlTelInput("getNumber"));
 });
 ```
-But this way the user will see their value change when they submit the form, which is weird. A better solution would be to update the value of a separate hidden input, and then read that POST variable on the server instead.  
+But this way the user will see their value change when they submit the form, which is weird. A better solution would be to update the value of a separate hidden input, and then read that POST variable on the server instead. See an example of this solution [here](http://jackocnr.com/lib/intl-tel-input/examples/gen/hidden-input.html).  
 
 **Image path**  
 Depending on your project setup, you may need to override the path to flags.png in your CSS.  
