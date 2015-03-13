@@ -79,7 +79,7 @@ Add or remove input placeholder with an example number for the selected country.
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
-If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form.
+If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
 
 **defaultCountry**  
 Type: `String` Default: `""`  
@@ -91,7 +91,7 @@ When setting `defaultCountry` to `"auto"`, we use a service called [ipinfo](http
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
-Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getNumber` to extract a full international number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/national-mode.html).
+Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getNumber` to extract a full international number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/national-mode.html). This option now defaults to `true`, and it is recommended that you leave it that way as it provides a better experience for the user.
 
 **numberType**  
 Type: `String` Default: `"MOBILE"`  
@@ -177,7 +177,7 @@ Validate the current number - [see example](http://jackocnr.com/lib/intl-tel-inp
 ```js
 var isValid = $("#mobile-number").intlTelInput("isValidNumber");
 ```
-Returns: true/false
+Returns: `true`/`false`
 
 **loadUtils**  
 _Note: this is only needed if you're lazy loading the plugin script itself (intlTelInput.js). If not then just use the `utilsScript` option._  
