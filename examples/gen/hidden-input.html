@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Example: Lookup user&#39;s country</title>
+    <title>Example: Submitting the full international number when in nationalMode</title>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../../build/css/intlTelInput.css?1426268823984">
     <link rel="stylesheet" href="../../build/css/demo.css?1426268823984">
@@ -24,26 +24,38 @@
 
   <body>
     <a href="/intl-tel-input.html">Back</a>
-    <h1>Example: Lookup user&#39;s country</h1>
-    <p>Set defaultCountry to &#39;auto&#39; to perform a JSONP request to ipinfo.io, which returns the user&#39;s country based on their IP address.</p>
+    <h1>Example: Submitting the full international number when in nationalMode</h1>
+    <p>If you&#39;re submitting the form using Ajax, simply use getNumber to get the number before sending it. If you&#39;re using the standard form POST method, you should use a separate hidden input which you update on submit to send the full international number. Try submitting a valid number below, and then check the &#39;phone-full&#39; parameter in the URL.</p>
     
     <h2>Markup</h2>
-    <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;</code></pre>
+    <pre><code class="language-markup">&lt;form&gt;
+  &lt;input id=&quot;phone&quot; type=&quot;tel&quot; name=&quot;phone&quot;&gt;
+  &lt;input id=&quot;hidden&quot; type=&quot;hidden&quot; name=&quot;phone-full&quot;&gt;
+  &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</code></pre>
 
     <h2>Code</h2>
     <pre><code class="language-javascript">$(&quot;#phone&quot;).intlTelInput({
-  defaultCountry: &quot;auto&quot;,
   utilsScript: &quot;../../lib/libphonenumber/build/utils.js&quot; // just for formatting/placeholders etc
+});
+
+// update the hidden input on submit
+$(&quot;form&quot;).submit(function() {
+  $(&quot;#hidden&quot;).val($(&quot;#phone&quot;).intlTelInput(&quot;getNumber&quot;));
 });</code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <input id="phone" type="tel">
+      <form>
+  <input id="phone" type="tel" name="phone">
+  <input id="hidden" type="hidden" name="phone-full">
+  <button type="submit">Submit</button>
+</form>
     </div>
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../../build/js/intlTelInput.js?1426268823984"></script>
-    <script src="../js/defaultCountryIp.js?1426268823984"></script>
+    <script src="../js/hiddenInput.js?1426268823984"></script>
   </body>
 </html>

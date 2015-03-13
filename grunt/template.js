@@ -103,6 +103,21 @@ module.exports = function(grunt) {
           script: "isValidNumber.js"
         }
       }
+    },
+    hiddenInput: {
+      src: 'examples/template.html.ejs',
+      dest: 'examples/gen/hidden-input.html',
+      variables: function() {
+        return {
+          time: time,
+          title: "Submitting the full international number when in nationalMode",
+          desc: "If you're submitting the form using Ajax, simply use getNumber to get the number before sending it. If you're using the standard form POST method, you should use a separate hidden input which you update on submit to send the full international number. Try submitting a valid number below, and then check the 'phone-full' parameter in the URL.",
+          stylesheet: '',
+          markup: grunt.file.read('examples/partials/hiddenInput.html'),
+          code: grunt.file.read('examples/js/hiddenInput.js'),
+          script: "hiddenInput.js"
+        }
+      }
     }
   };
 };
