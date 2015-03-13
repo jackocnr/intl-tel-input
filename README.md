@@ -228,7 +228,7 @@ International number formatting/validation is hard (it varies by country/distric
 
 ## Troubleshooting
 **Submitting the full international number when in nationalMode**  
-If you're submitting the form using Ajax, simply use `getNumber` to get the full international number before sending it. If you're using the standard form POST method, you have two options. The easiest thing to do is simply update the input value using `getNumber` in a submit handler:  
+If you're submitting the form using Ajax, simply use `getNumber` to get the number before sending it. If you're using the standard form POST method, you have two options. The easiest thing to do is simply update the input value using `getNumber` in a submit handler:  
 ```js
 $("form").submit(function() {
   myInput.val(myInput.intlTelInput("getNumber"));
