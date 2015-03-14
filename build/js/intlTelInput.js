@@ -326,6 +326,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         _loadAutoCountry: function() {
             var that = this;
+            // check for cookie
+            var cookieAutoCountry = $.cookie ? $.cookie("itiAutoCountry") : "";
+            if (cookieAutoCountry) {
+                $.fn[pluginName].autoCountry = cookieAutoCountry;
+            }
             // 3 options:
             // 1) already loaded (we're done)
             // 2) not already started loading (start)
@@ -342,6 +347,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
                 $.get(ipinfoURL, function() {}, "jsonp").always(function(resp) {
                     $.fn[pluginName].autoCountry = resp && resp.country ? resp.country.toLowerCase() : "";
+                    if ($.cookie) {
+                        $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
+                            path: "/"
+                        });
+                    }
                     // tell all instances the auto country is ready
                     // TODO: this should just be the current instances
                     $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
