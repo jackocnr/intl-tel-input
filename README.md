@@ -83,7 +83,7 @@ Add or remove input placeholder with an example number for the selected country.
 
 **defaultCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list.
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html) (and if you use the [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it will then store the loaded country in a cookie for future use). Otherwise it will just be the first country in the list.
 
 **ipinfoToken**  
 Type: `String` Default: `""`  
