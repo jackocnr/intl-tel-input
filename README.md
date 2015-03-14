@@ -43,7 +43,7 @@ You can view a live demo and some examples of how to use the various options her
 ## Getting Started
 1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [npm](https://www.npmjs.com/) or [Bower](http://bower.io)
 
-2. Link the stylesheet (which references the included flags.png - see [Troubleshooting](#troubleshooting) if the flags don't display)
+2. Link the stylesheet (see [Troubleshooting](#troubleshooting) if the flags don't display)
   ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
   ```
