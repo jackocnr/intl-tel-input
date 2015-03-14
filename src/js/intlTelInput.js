@@ -375,9 +375,15 @@ Plugin.prototype = {
   _loadAutoCountry: function() {
     var that = this;
 
-    if (!$.fn[pluginName].loadedAutoCountry) {
+    // 3 options:
+    // 1) already loaded (we're done)
+    // 2) not already started loading (start)
+    // 3) already started loading (do nothing - just wait for loading callback to fire)
+    if ($.fn[pluginName].autoCountry) {
+      this.autoCountryLoaded();
+    } else if (!$.fn[pluginName].startedLoadingAutoCountry) {
       // don't do this twice!
-      $.fn[pluginName].loadedAutoCountry = true;
+      $.fn[pluginName].startedLoadingAutoCountry = true;
 
       var ipinfoURL = "//ipinfo.io";
       if (this.options.ipinfoToken) {
@@ -385,12 +391,11 @@ Plugin.prototype = {
       }
       // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
       $.get(ipinfoURL, function() {}, "jsonp").always(function(resp) {
-        var countryCode = (resp && resp.country) ? resp.country.toLowerCase() : "";
+        $.fn[pluginName].autoCountry = (resp && resp.country) ? resp.country.toLowerCase() : "";
         // tell all instances the auto country is ready
-        $(".intl-tel-input input").intlTelInput("autoCountryLoaded", countryCode);
+        // TODO: this should just be the current instances
+        $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
       });
-    } else {
-      this.autoCountryDeferred.resolve();
     }
   },
 
@@ -1086,9 +1091,9 @@ Plugin.prototype = {
    ********************/
 
   // this is called when the ipinfo call returns
-  autoCountryLoaded: function(countryCode) {
+  autoCountryLoaded: function() {
     if (this.options.defaultCountry == "auto") {
-      this.options.defaultCountry = countryCode;
+      this.options.defaultCountry = $.fn[pluginName].autoCountry;
       this._setInitialState();
       this.autoCountryDeferred.resolve();
     }
