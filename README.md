@@ -73,13 +73,13 @@ When `autoFormat` is enabled, this option will support formatting extension numb
 Type: `Boolean` Default: `true`  
 Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (triggering a red flash in the input - see [Troubleshooting](#troubleshooting) to customise this). Requires the `utilsScript` option.
 
-**autoPlaceholder**  
-Type: `Boolean` Default: `true`  
-Add or remove input placeholder with an example number for the selected country. Requires the `utilsScript` option.
-
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
 If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
+
+**autoPlaceholder**  
+Type: `Boolean` Default: `true`  
+Add or remove input placeholder with an example number for the selected country. Requires the `utilsScript` option.
 
 **defaultCountry**  
 Type: `String` Default: `""`  
