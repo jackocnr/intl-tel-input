@@ -313,7 +313,7 @@ module.exports = function(grunt) {
           // UPDATE: instead of replacing the runtime option names with a newly created object, we $.extend the existing object so that if we forget to add any new/modified option names in this build file, they will still work! The downside is that this options object will contain both the full key and the minified key, but that really doesn't matter.
           {
             match: /this.b=/g,
-            replacement: 'c&&($.extend(c, c, {' +
+            replacement: 'c&&(a.extend(c, c, {' +
               'a:c.autoFormat,' +
               'h:c.autoHideDialCode,' +
               'd:c.defaultCountry,' +
