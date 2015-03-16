@@ -828,6 +828,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.trigger("change");
             // focus the input
             this.telInput.focus();
+            // fix for FF and IE11 (with nationalMode=false i.e. auto inserting dial code), who try to put the cursor at the beginning the first time
+            if (this.isGoodBrowser) {
+                var len = this.telInput.val().length;
+                this.telInput[0].setSelectionRange(len, len);
+            }
         },
         // close the dropdown and unbind any listeners
         _closeDropdown: function() {
