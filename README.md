@@ -43,12 +43,18 @@ You can view a live demo and some examples of how to use the various options her
 ## Getting Started
 1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [npm](https://www.npmjs.com/) or [Bower](http://bower.io)
 
-2. Link the stylesheet (see [Troubleshooting](#troubleshooting) if the flags don't display)
+2. Link the stylesheet
   ```html
   <link rel="stylesheet" href="build/css/intlTelInput.css">
   ```
 
-3. Add the plugin script and initialise it on your input element
+3. Override the path to flags.png in your CSS
+```css
+.iti-flag {background-image: url("path/to/flags.png");}
+```
+_Update: you will now also need to override the path to flags@2x.png (for retina devices). The best way to do this is to copy the media query at the end of [intlTelInput.scss](https://github.com/Bluefieldscom/intl-tel-input/blob/master/src/css/intlTelInput.scss) and update the path._
+
+4. Add the plugin script and initialise it on your input element
   ```html
   <input type="tel" id="mobile-number">
   
@@ -59,7 +65,7 @@ You can view a live demo and some examples of how to use the various options her
   </script>
   ```
   
-4. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
+5. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
 
 
 ## Options
@@ -235,13 +241,6 @@ $("form").submit(function() {
 });
 ```
 But this way the user will see their value change when they submit the form, which is weird. A better solution would be to update the value of a separate hidden input, and then read that POST variable on the server instead. See an example of this solution [here](http://jackocnr.com/lib/intl-tel-input/examples/gen/hidden-input.html).  
-
-**Image path**  
-Depending on your project setup, you may need to override the path to flags.png in your CSS.  
-```css
-.iti-flag {background-image: url("path/to/flags.png");}
-```
-_Note: we now support retina devices with a separate hi-res image (flags@2x.png). To override the path to that file, you must copy the @media query at the end of `src/css/intlTelInput.scss`._
 
 **Customise invalid key flash**  
 Set the colour like this (or set to `none` to disable):  
