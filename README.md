@@ -49,10 +49,10 @@ You can view a live demo and some examples of how to use the various options her
   ```
 
 3. Override the path to flags.png in your CSS
-```css
-.iti-flag {background-image: url("path/to/flags.png");}
-```
-_Update: you will now also need to override the path to flags@2x.png (for retina devices). The best way to do this is to copy the media query at the end of [intlTelInput.scss](https://github.com/Bluefieldscom/intl-tel-input/blob/master/src/css/intlTelInput.scss) and update the path._
+  ```css
+  .iti-flag {background-image: url("path/to/flags.png");}
+  ```
+  _Update: you will now also need to override the path to flags@2x.png (for retina devices). The best way to do this is to copy the media query at the end of [intlTelInput.scss](https://github.com/Bluefieldscom/intl-tel-input/blob/master/src/css/intlTelInput.scss) and update the path._
 
 4. Add the plugin script and initialise it on your input element
   ```html
