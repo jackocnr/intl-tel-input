@@ -45,7 +45,7 @@ You can view a live demo and some examples of how to use the various options her
 
 2. Link the stylesheet
   ```html
-  <link rel="stylesheet" href="build/css/intlTelInput.css">
+  <link rel="stylesheet" href="path/to/intlTelInput.css">
   ```
 
 3. Override the path to flags.png in your CSS
@@ -59,7 +59,7 @@ You can view a live demo and some examples of how to use the various options her
   <input type="tel" id="mobile-number">
   
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="build/js/intlTelInput.min.js"></script>
+  <script src="path/to/intlTelInput.min.js"></script>
   <script>
     $("#mobile-number").intlTelInput();
   </script>
