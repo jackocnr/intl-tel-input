@@ -30,7 +30,7 @@
   only screen and (        min-device-pixel-ratio: 2),
   only screen and (                min-resolution: 192dpi),
   only screen and (                min-resolution: 2dppx) {
-    background-size: 5630px 16px;
+    background-size: 5630px 15px;
   }
 
   &.ac {
@@ -726,7 +726,7 @@
     background-position: -3774px 0px;
   }
   &.np {
-    height: 16px;
+    height: 15px;
     background-position: -3796px 0px;
   }
   &.nr {
