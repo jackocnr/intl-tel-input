@@ -33,10 +33,10 @@ You can view a live demo and some examples of how to use the various options her
 
 
 ## Browser Compatibility
-|            | Chrome | Firefox | Safari | IE  | Chrome for Android | Mobile Safari | IE Mobile |
-| :--------- | :----: | :-----: | :----: | :-: | :----------------: | :-----------: | :-------: |
-| Core       |    ✓   |    ✓    |    ✓   |  8  |          ✓         |       ✓       |     ✓     |
-| autoFormat |    ✓   |    ✓    |    ✓   |  8  |          ✓         |       ✓       |     [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/68)     |
+|            | Chrome | FF  | Safari | IE  | Chrome Android | Android WebView | Mobile Safari | IE Mob |
+| :--------- | :----: | :-: | :----: | :-: | :------------: | :-------------: | :-----------: | :----: |
+| Core       |    ✓   |  ✓  |    ✓   |  8  |      ✓         |      ✓          |       ✓       |     ✓  |
+| autoFormat |    ✓   |  ✓  |    ✓   |  8  |      ✓         |      [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/187)          |       ✓       |     [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/68)  |
 
 
 
