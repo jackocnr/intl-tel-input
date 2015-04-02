@@ -246,6 +246,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // if there is a number, and it's valid, we can go ahead and set the flag, else fall back to default
             if (this._getDialCode(val)) {
                 this._updateFlagFromNumber(val);
+                this.options.defaultCountry = {
+                    iso2: this.selectedCountryData.iso2
+                };
             } else if (this.options.defaultCountry != "auto") {
                 // check the defaultCountry option, else fall back to the first in the list
                 if (this.options.defaultCountry) {
