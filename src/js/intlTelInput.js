@@ -278,7 +278,7 @@ Plugin.prototype = {
 
     // if there is a number, and it's valid, we can go ahead and set the flag, else fall back to default
     if (this._getDialCode(val)) {
-      this._updateFlagFromNumber(val);
+      this._updateFlagFromNumber(val, true);
     } else if (this.options.defaultCountry != "auto") {
       // check the defaultCountry option, else fall back to the first in the list
       if (this.options.defaultCountry) {
@@ -877,7 +877,7 @@ Plugin.prototype = {
 
 
   // check if need to select a new flag based on the given number
-  _updateFlagFromNumber: function(number) {
+  _updateFlagFromNumber: function(number, updateDefault) {
     // if we're in nationalMode and we're on US/Canada, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
     // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
     if (number && this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
@@ -913,7 +913,7 @@ Plugin.prototype = {
     }
 
     if (countryCode !== null) {
-      this._selectFlag(countryCode);
+      this._selectFlag(countryCode, updateDefault);
     }
   },
 

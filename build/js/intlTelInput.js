@@ -245,7 +245,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var val = this.telInput.val();
             // if there is a number, and it's valid, we can go ahead and set the flag, else fall back to default
             if (this._getDialCode(val)) {
-                this._updateFlagFromNumber(val);
+                this._updateFlagFromNumber(val, true);
             } else if (this.options.defaultCountry != "auto") {
                 // check the defaultCountry option, else fall back to the first in the list
                 if (this.options.defaultCountry) {
@@ -739,7 +739,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.val(formatted);
         },
         // check if need to select a new flag based on the given number
-        _updateFlagFromNumber: function(number) {
+        _updateFlagFromNumber: function(number, updateDefault) {
             // if we're in nationalMode and we're on US/Canada, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
             // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
             if (number && this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
@@ -772,7 +772,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 countryCode = this.options.defaultCountry.iso2;
             }
             if (countryCode !== null) {
-                this._selectFlag(countryCode);
+                this._selectFlag(countryCode, updateDefault);
             }
         },
         // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 but the actual number's length is >=4
