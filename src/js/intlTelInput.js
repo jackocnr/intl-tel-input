@@ -223,8 +223,13 @@ Plugin.prototype = {
       this.countryList = $("<ul>", {
         "class": "country-list v-hide"
       }).appendTo(flagsContainer);
-      if (this.preferredCountries.length && !this.isMobile) {
-        this._appendListItems(this.preferredCountries, "preferred");
+    }
+
+    if (this.preferredCountries.length > 0) {
+      this._appendListItems(this.preferredCountries, "preferred");
+      if (this.isMobile) {
+        $('<optgroup/>').appendTo(this.countryList);
+      } else {
         $("<li>", {
           "class": "divider"
         }).appendTo(this.countryList);
