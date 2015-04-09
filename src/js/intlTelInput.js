@@ -734,11 +734,14 @@ Plugin.prototype = {
       windowTop = $(window).scrollTop(),
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
       dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height()),
-      dropdownFitsAbove = (inputTop - this.dropdownHeight > windowTop);
+      dropdownFitsAbove = (inputTop - this.dropdownHeight > windowTop),
+      isDropdownSetAbove = !dropdownFitsBelow && dropdownFitsAbove;
 
     // dropdownHeight - 1 for border
-    var cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (this.dropdownHeight - 1) + "px" : "";
+    var cssTop = (isDropdownSetAbove) ? "-" + (this.dropdownHeight - 1) + "px" : "";
     this.countryList.css("top", cssTop);
+    this.telInputWrapper.removeClass("above down");
+    this.telInputWrapper.addClass(isDropdownSetAbove ? "above" : "down");
   },
 
 
@@ -1022,7 +1025,7 @@ Plugin.prototype = {
   // close the dropdown and unbind any listeners
   _closeDropdown: function() {
     this.countryList.addClass("hide");
-    this.telInputWrapper.removeClass("expanded");
+    this.telInputWrapper.removeClass("expanded above down");
 
     // update the arrow
     this.selectedFlagInner.children(".arrow").removeClass("up");

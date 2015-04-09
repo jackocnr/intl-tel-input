@@ -619,10 +619,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
             var inputTop = this.telInput.offset().top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
-            dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop;
+            dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop, isDropdownSetAbove = !dropdownFitsBelow && dropdownFitsAbove;
             // dropdownHeight - 1 for border
-            var cssTop = !dropdownFitsBelow && dropdownFitsAbove ? "-" + (this.dropdownHeight - 1) + "px" : "";
+            var cssTop = isDropdownSetAbove ? "-" + (this.dropdownHeight - 1) + "px" : "";
             this.countryList.css("top", cssTop);
+            this.telInputWrapper.removeClass("above down");
+            this.telInputWrapper.addClass(isDropdownSetAbove ? "above" : "down");
         },
         // we only bind dropdown listeners when the dropdown is open
         _bindDropdownListeners: function() {
@@ -859,7 +861,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // close the dropdown and unbind any listeners
         _closeDropdown: function() {
             this.countryList.addClass("hide");
-            this.telInputWrapper.removeClass("expanded");
+            this.telInputWrapper.removeClass("expanded above down");
             // update the arrow
             this.selectedFlagInner.children(".arrow").removeClass("up");
             // unbind key events
