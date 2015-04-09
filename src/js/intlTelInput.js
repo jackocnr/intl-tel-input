@@ -198,6 +198,8 @@ Plugin.prototype = {
     this.telInput.wrap($("<div>", {
       "class": "intl-tel-input"
     }));
+    // store reference to telInput wrapper so it can be accessed later
+    this.telInputWrapper = this.telInput.closest('.intl-tel-input');
     var flagsContainer = $("<div>", {
       "class": "flag-dropdown"
     }).insertAfter(this.telInput);
@@ -712,6 +714,8 @@ Plugin.prototype = {
 
     // show it
     this.countryList.removeClass("hide");
+    // reflect it in wrapper class
+    this.telInputWrapper.addClass("expanded");
     if (activeListItem.length) {
       this._scrollTo(activeListItem);
     }
@@ -730,11 +734,14 @@ Plugin.prototype = {
       windowTop = $(window).scrollTop(),
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
       dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height()),
-      dropdownFitsAbove = (inputTop - this.dropdownHeight > windowTop);
+      dropdownFitsAbove = (inputTop - this.dropdownHeight > windowTop),
+      isDropdownSetAbove = !dropdownFitsBelow && dropdownFitsAbove;
 
     // dropdownHeight - 1 for border
-    var cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (this.dropdownHeight - 1) + "px" : "";
+    var cssTop = (isDropdownSetAbove) ? "-" + (this.dropdownHeight - 1) + "px" : "";
     this.countryList.css("top", cssTop);
+    this.telInputWrapper.removeClass("above down");
+    this.telInputWrapper.addClass(isDropdownSetAbove ? "above" : "down");
   },
 
 
@@ -1018,6 +1025,7 @@ Plugin.prototype = {
   // close the dropdown and unbind any listeners
   _closeDropdown: function() {
     this.countryList.addClass("hide");
+    this.telInputWrapper.removeClass("expanded above down");
 
     // update the arrow
     this.selectedFlagInner.children(".arrow").removeClass("up");
