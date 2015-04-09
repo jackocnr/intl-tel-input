@@ -174,6 +174,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.wrap($("<div>", {
                 "class": "intl-tel-input"
             }));
+            // store reference to telInput wrapper so it can be accessed later
+            this.telInputWrapper = this.telInput.closest(".intl-tel-input");
             var flagsContainer = $("<div>", {
                 "class": "flag-dropdown"
             }).insertAfter(this.telInput);
@@ -604,6 +606,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             // show it
             this.countryList.removeClass("hide");
+            // reflect it in wrapper class
+            this.telInputWrapper.addClass("expanded");
             if (activeListItem.length) {
                 this._scrollTo(activeListItem);
             }
@@ -855,6 +859,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // close the dropdown and unbind any listeners
         _closeDropdown: function() {
             this.countryList.addClass("hide");
+            this.telInputWrapper.removeClass("expanded");
             // update the arrow
             this.selectedFlagInner.children(".arrow").removeClass("up");
             // unbind key events

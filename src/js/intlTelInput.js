@@ -198,6 +198,8 @@ Plugin.prototype = {
     this.telInput.wrap($("<div>", {
       "class": "intl-tel-input"
     }));
+    // store reference to telInput wrapper so it can be accessed later
+    this.telInputWrapper = this.telInput.closest('.intl-tel-input');
     var flagsContainer = $("<div>", {
       "class": "flag-dropdown"
     }).insertAfter(this.telInput);
@@ -712,6 +714,8 @@ Plugin.prototype = {
 
     // show it
     this.countryList.removeClass("hide");
+    // reflect it in wrapper class
+    this.telInputWrapper.addClass("expanded");
     if (activeListItem.length) {
       this._scrollTo(activeListItem);
     }
@@ -1018,6 +1022,7 @@ Plugin.prototype = {
   // close the dropdown and unbind any listeners
   _closeDropdown: function() {
     this.countryList.addClass("hide");
+    this.telInputWrapper.removeClass("expanded");
 
     // update the arrow
     this.selectedFlagInner.children(".arrow").removeClass("up");
