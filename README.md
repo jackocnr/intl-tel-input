@@ -91,9 +91,13 @@ Add or remove input placeholder with an example number for the selected country.
 Type: `String` Default: `""`  
 Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it will store the loaded country code in a cookie for future use._
 
-**ipinfoToken**  
-Type: `String` Default: `""`  
-When setting `defaultCountry` to `"auto"`, we use a service called [ipinfo](http://ipinfo.io) which requires a special token to be used over https, or if you make >1000 requests/day. Use this option to pass in that token.
+**geoipProvider**
+Type: `String` Default: `"freegeoip"`
+When setting `defaultCountry` to `"auto"`, we use a special service to provide us the location data of the given user. Currently we support three different values: "[freegeoip](https://freegeoip.net/)", "[telize](https://telize.com/)" and "[ipinfo](https://ipinfo.io/)".
+
+**geoipToken**
+Type: `String` Default: `""`
+When setting `defaultCountry` to `"auto"`, the geoIP data provider may require you an auth token to enable special features, like calls over https or extra limits on your requests quota. Use this option to pass in that token.
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
