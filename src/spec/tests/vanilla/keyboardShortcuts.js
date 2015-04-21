@@ -11,6 +11,29 @@ describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to t
   });
 
   describe("when dropdown is closed", function () {
+    beforeEach(function () {
+      getFlagsContainerElement().focus();
+    });
+
+    it("pressing UP opens the dropdown", function () {
+      triggerKeyOnFlagsContainerElement("UP");
+      expect(getListElement()).not.toHaveClass("hide");
+    });
+
+    it("pressing DOWN opens the dropdown", function () {
+      triggerKeyOnFlagsContainerElement("DOWN");
+      expect(getListElement()).not.toHaveClass("hide");
+    });
+
+    it("pressing SPACE opens the dropdown", function () {
+      triggerKeyOnFlagsContainerElement("SPACE");
+      expect(getListElement()).not.toHaveClass("hide");
+    });
+
+    it("pressing ENTER opens the dropdown", function () {
+      triggerKeyOnFlagsContainerElement("ENTER");
+      expect(getListElement()).not.toHaveClass("hide");
+    });
   });
 
   describe("when dropdown is opened", function () {
