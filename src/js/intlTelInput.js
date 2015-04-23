@@ -203,12 +203,12 @@ Plugin.prototype = {
     // define "tabindex" for accessibility
     // this way, element is focusable and tab naviagable
     this.flagsContainer = $("<div>", {
-      "tabindex": "0",
       "class": "flag-dropdown"
     }).insertBefore(this.telInput);
 
     // currently selected flag (displayed to left of input)
     var selectedFlag = $("<div>", {
+      "tabindex": "0",
       "class": "selected-flag"
     }).appendTo(this.flagsContainer);
     this.selectedFlagInner = $("<div>", {
