@@ -37,6 +37,7 @@ var pluginName = "intlTelInput",
     NINE: 57,
     SPACE: 32,
     BSPACE: 8,
+    TAB: 9,
     DEL: 46,
     CTRL: 17,
     CMD1: 91, // Chrome
@@ -198,14 +199,18 @@ Plugin.prototype = {
     this.telInput.wrap($("<div>", {
       "class": "intl-tel-input"
     }));
-    var flagsContainer = $("<div>", {
+
+    // define "tabindex" for accessibility
+    // this way, element is focusable and tab naviagable
+    this.flagsContainer = $("<div>", {
       "class": "flag-dropdown"
-    }).insertAfter(this.telInput);
+    }).insertBefore(this.telInput);
 
     // currently selected flag (displayed to left of input)
     var selectedFlag = $("<div>", {
+      "tabindex": "0",
       "class": "selected-flag"
-    }).appendTo(flagsContainer);
+    }).appendTo(this.flagsContainer);
     this.selectedFlagInner = $("<div>", {
       "class": "iti-flag"
     }).appendTo(selectedFlag);
@@ -218,11 +223,11 @@ Plugin.prototype = {
     // mobile is just a native select element
     // desktop is a proper list containing: preferred countries, then divider, then all countries
     if (this.isMobile) {
-      this.countryList = $("<select>").appendTo(flagsContainer);
+      this.countryList = $("<select>").appendTo(this.flagsContainer);
     } else {
       this.countryList = $("<ul>", {
         "class": "country-list v-hide"
-      }).appendTo(flagsContainer);
+      }).appendTo(this.flagsContainer);
       if (this.preferredCountries.length && !this.isMobile) {
         this._appendListItems(this.preferredCountries, "preferred");
         $("<li>", {
@@ -342,6 +347,29 @@ Plugin.prototype = {
         }
       });
     }
+
+    // open dropdown list if currently focused
+    this.flagsContainer.on("keydown" + that.ns, function(e) {
+      var isDropdownHidden = that.countryList.hasClass('hide');
+
+      if (isDropdownHidden &&
+         (e.which == keys.UP || e.which == keys.DOWN ||
+          e.which == keys.SPACE || e.which == keys.ENTER)
+        ) {
+        // prevent form from being submitted if "ENTER" was pressed
+        e.preventDefault();
+
+        // prevent event from being handled again by document
+        e.stopPropagation();
+
+        that._showDropdown();
+      }
+
+      // allow navigation from dropdown to input on TAB
+      if (e.which == keys.TAB) {
+        that._closeDropdown();
+      }
+    });
   },
 
 
