@@ -433,11 +433,12 @@ Plugin.prototype = {
           url: "//freegeoip.net/json/",
           field: "country_code"
         }
-      };
+      },
+      self = this;
 
       if (typeof this.options.geoipProvider === 'function') {
         this.options.geoipProvider(function(resp) {
-          this._autoCountryLoaded(resp);
+          self._autoCountryLoaded(resp);
         });
       } else {
         var provider = providers[this.options.geoipProvider];
@@ -445,7 +446,7 @@ Plugin.prototype = {
 
         // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
         $.get(url).always(function(resp) {
-          this._autoCountryLoaded(resp && resp[provider.field] || '');
+          self._autoCountryLoaded(resp && resp[provider.field] || '');
         });
       }
     }
@@ -461,7 +462,9 @@ Plugin.prototype = {
     }
     // tell all instances the auto country is ready
     // TODO: this should just be the current instances
-    $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+    // $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+    // Why not just call it directly??
+    this.autoCountryLoaded();
   },
 
 

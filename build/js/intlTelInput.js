@@ -373,17 +373,17 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         url: "//freegeoip.net/json/",
                         field: "country_code"
                     }
-                };
+                }, self = this;
                 if (typeof this.options.geoipProvider === "function") {
                     this.options.geoipProvider(function(resp) {
-                        this._autoCountryLoaded(resp);
+                        self._autoCountryLoaded(resp);
                     });
                 } else {
                     var provider = providers[this.options.geoipProvider];
                     var url = provider.url.replace("{token}", this.options.geoipToken || "");
                     // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
                     $.get(url).always(function(resp) {
-                        this._autoCountryLoaded(resp && resp[provider.field] || "");
+                        self._autoCountryLoaded(resp && resp[provider.field] || "");
                     });
                 }
             }
@@ -397,7 +397,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             // tell all instances the auto country is ready
             // TODO: this should just be the current instances
-            $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+            // $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+            // Why not just call it directly??
+            this.autoCountryLoaded();
         },
         _initKeyListeners: function() {
             var that = this;
