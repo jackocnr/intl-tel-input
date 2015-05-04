@@ -12,8 +12,10 @@ var pluginName = "intlTelInput",
     autoHideDialCode: true,
     // default country
     defaultCountry: "",
-    // token for ipinfo - required for https or over 1000 daily page views support
-    ipinfoToken: "",
+    // geoIP provider name
+    geoipProvider: "freegeoip",
+    // token for the geoIP provider
+    geoipToken: "",
     // don't insert international dial codes
     nationalMode: true,
     // number type to use for placeholders
@@ -418,23 +420,48 @@ Plugin.prototype = {
       // don't do this twice!
       $.fn[pluginName].startedLoadingAutoCountry = true;
 
-      var ipinfoURL = "//ipinfo.io";
-      if (this.options.ipinfoToken) {
-        ipinfoURL += "?token=" + this.options.ipinfoToken;
-      }
-      // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
-      $.get(ipinfoURL, function() {}, "jsonp").always(function(resp) {
-        $.fn[pluginName].autoCountry = (resp && resp.country) ? resp.country.toLowerCase() : "";
-        if ($.cookie) {
-          $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
-            path: '/'
-          });
+      var providers = {
+        ipinfo: {
+          url: "//ipinfo.io/json?token={token}",
+          field: "country"
+        },
+        telize: {
+          url: "//www.telize.com/geoip",
+          field: "country_code"
+        },
+        freegeoip: {
+          url: "//freegeoip.net/json/",
+          field: "country_code"
         }
-        // tell all instances the auto country is ready
-        // TODO: this should just be the current instances
-        $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+      };
+
+      if (typeof this.options.geoipProvider === 'function') {
+        this.options.geoipProvider(function(resp) {
+          this._autoCountryLoaded(resp);
+        });
+      } else {
+        var provider = providers[this.options.geoipProvider];
+        var url = provider.url.replace('{token}', this.options.geoipToken || '');
+
+        // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
+        $.get(url).always(function(resp) {
+          this._autoCountryLoaded(resp && resp[provider.field] || '');
+        });
+      }
+    }
+  },
+
+
+  _autoCountryLoaded: function(country_code) {
+    $.fn[pluginName].autoCountry = country_code.toLowerCase();
+    if ($.cookie) {
+      $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
+        path: '/'
       });
     }
+    // tell all instances the auto country is ready
+    // TODO: this should just be the current instances
+    $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
   },
 
 
@@ -1152,7 +1179,7 @@ Plugin.prototype = {
    *  PUBLIC METHODS
    ********************/
 
-  // this is called when the ipinfo call returns
+  // this is called when the geoip call returns
   autoCountryLoaded: function() {
     if (this.options.defaultCountry == "auto") {
       this.options.defaultCountry = $.fn[pluginName].autoCountry;
