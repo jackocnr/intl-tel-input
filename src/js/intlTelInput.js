@@ -223,7 +223,7 @@ Plugin.prototype = {
     // desktop is a proper list containing: preferred countries, then divider, then all countries
     if (this.isMobile) {
       this.countryList = $("<select>", { 
-        "class": "intl-tel-mobile-select"
+        "class": "iti-mobile-select"
       }).appendTo(this.flagsContainer);
     } else {
       this.countryList = $("<ul>", {
