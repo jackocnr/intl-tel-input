@@ -13,9 +13,7 @@ var pluginName = "intlTelInput",
     // default country
     defaultCountry: "",
     // geoIP provider name
-    geoipProvider: "freegeoip",
-    // token for the geoIP provider
-    geoipToken: "",
+    geoipProvider: null,
     // don't insert international dial codes
     nationalMode: true,
     // number type to use for placeholders
@@ -420,33 +418,11 @@ Plugin.prototype = {
       // don't do this twice!
       $.fn[pluginName].startedLoadingAutoCountry = true;
 
-      var providers = {
-        ipinfo: {
-          url: "//ipinfo.io/json?token={token}",
-          field: "country"
-        },
-        telize: {
-          url: "//www.telize.com/geoip",
-          field: "country_code"
-        },
-        freegeoip: {
-          url: "//freegeoip.net/json/",
-          field: "country_code"
-        }
-      },
-      self = this;
+      var self = this;
 
       if (typeof this.options.geoipProvider === 'function') {
         this.options.geoipProvider(function(resp) {
           self._autoCountryLoaded(resp);
-        });
-      } else {
-        var provider = providers[this.options.geoipProvider];
-        var url = provider.url.replace('{token}', this.options.geoipToken || '');
-
-        // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
-        $.get(url).always(function(resp) {
-          self._autoCountryLoaded(resp && resp[provider.field] || '');
         });
       }
     }

@@ -92,10 +92,10 @@ Type: `String` Default: `""`
 Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it will store the loaded country code in a cookie for future use._
 
 **geoipProvider**
-Type: `String` Default: `"freegeoip"`
-When setting `defaultCountry` to `"auto"`, we use a special service to provide us the location data of the given user. Currently we support three different third party apis: "[freegeoip](https://freegeoip.net/)", "[telize](https://telize.com/)" and "[ipinfo](https://ipinfo.io/)".
+Type: `Function` Default: `null`  
+When setting `defaultCountry` to `"auto"`, we need use a special service to provide us the location data of the given user. Write a custom method to get the country code.
 
-You can also write a custom method to get the country code. For example
+For ipinfo
 ```javascript
 geoipProvider: function(callback) {
     $.get('http://ipinfo.io/json?token={token}').always(function(resp) {
@@ -104,9 +104,23 @@ geoipProvider: function(callback) {
 }
 ```
 
-**geoipToken**
-Type: `String` Default: `""`
-When setting `defaultCountry` to `"auto"`, the geoIP data provider may require you an auth token to enable special features, like calls over https or extra limits on your requests quota. Use this option to pass in that token.
+For telize
+```javascript
+geoipProvider: function(callback) {
+    $.get('http://www.telize.com/geoip').always(function(resp) {
+        callback(resp && resp['country_code'] || '');
+   });
+}
+```
+
+For freegeoip
+```javascript
+geoipProvider: function(callback) {
+    $.get('http://freegeoip.net/json/').always(function(resp) {
+        callback(resp && resp['country_code'] || '');
+   });
+}
+```
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
