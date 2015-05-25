@@ -12,8 +12,8 @@ var pluginName = "intlTelInput",
     autoHideDialCode: true,
     // default country
     defaultCountry: "",
-    // geoIP provider name
-    geoipProvider: null,
+    // geoIp lookup function
+    geoIpLookup: null,
     // don't insert international dial codes
     nationalMode: true,
     // number type to use for placeholders
@@ -420,27 +420,22 @@ Plugin.prototype = {
 
       var self = this;
 
-      if (typeof this.options.geoipProvider === 'function') {
-        this.options.geoipProvider(function(resp) {
-          self._autoCountryLoaded(resp);
+      if (typeof this.options.geoIpLookup === 'function') {
+        this.options.geoIpLookup(function(countryCode) {
+          $.fn[pluginName].autoCountry = countryCode.toLowerCase();
+          if ($.cookie) {
+            $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
+              path: '/'
+            });
+          }
+          // tell all instances the auto country is ready
+          // TODO: this should just be the current instances
+          // $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+          // Why not just call it directly??
+          this.autoCountryLoaded();
         });
       }
     }
-  },
-
-
-  _autoCountryLoaded: function(country_code) {
-    $.fn[pluginName].autoCountry = country_code.toLowerCase();
-    if ($.cookie) {
-      $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
-        path: '/'
-      });
-    }
-    // tell all instances the auto country is ready
-    // TODO: this should just be the current instances
-    // $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
-    // Why not just call it directly??
-    this.autoCountryLoaded();
   },
 
 
