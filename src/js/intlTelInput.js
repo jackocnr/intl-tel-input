@@ -418,7 +418,7 @@ Plugin.prototype = {
       // don't do this twice!
       $.fn[pluginName].startedLoadingAutoCountry = true;
 
-      var self = this;
+      var that = this;
 
       if (typeof this.options.geoIpLookup === 'function') {
         this.options.geoIpLookup(function(countryCode) {
@@ -432,7 +432,7 @@ Plugin.prototype = {
           // TODO: this should just be the current instances
           // $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
           // Why not just call it directly??
-          this.autoCountryLoaded();
+          that.autoCountryLoaded();
         });
       }
     }
