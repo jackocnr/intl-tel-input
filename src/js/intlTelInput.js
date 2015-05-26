@@ -418,8 +418,6 @@ Plugin.prototype = {
       // don't do this twice!
       $.fn[pluginName].startedLoadingAutoCountry = true;
 
-      var that = this;
-
       if (typeof this.options.geoIpLookup === 'function') {
         this.options.geoIpLookup(function(countryCode) {
           $.fn[pluginName].autoCountry = countryCode.toLowerCase();
@@ -430,9 +428,7 @@ Plugin.prototype = {
           }
           // tell all instances the auto country is ready
           // TODO: this should just be the current instances
-          // $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
-          // Why not just call it directly??
-          that.autoCountryLoaded();
+          $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
         });
       }
     }
