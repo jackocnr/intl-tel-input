@@ -12,8 +12,8 @@ var pluginName = "intlTelInput",
     autoHideDialCode: true,
     // default country
     defaultCountry: "",
-    // token for ipinfo - required for https or over 1000 daily page views support
-    ipinfoToken: "",
+    // geoIp lookup function
+    geoIpLookup: null,
     // don't insert international dial codes
     nationalMode: true,
     // number type to use for placeholders
@@ -420,22 +420,19 @@ Plugin.prototype = {
       // don't do this twice!
       $.fn[pluginName].startedLoadingAutoCountry = true;
 
-      var ipinfoURL = "//ipinfo.io";
-      if (this.options.ipinfoToken) {
-        ipinfoURL += "?token=" + this.options.ipinfoToken;
+      if (typeof this.options.geoIpLookup === 'function') {
+        this.options.geoIpLookup(function(countryCode) {
+          $.fn[pluginName].autoCountry = countryCode.toLowerCase();
+          if ($.cookie) {
+            $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
+              path: '/'
+            });
+          }
+          // tell all instances the auto country is ready
+          // TODO: this should just be the current instances
+          $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+        });
       }
-      // dont bother with the success function arg - instead use always() as should still set a defaultCountry even if the lookup fails
-      $.get(ipinfoURL, function() {}, "jsonp").always(function(resp) {
-        $.fn[pluginName].autoCountry = (resp && resp.country) ? resp.country.toLowerCase() : "";
-        if ($.cookie) {
-          $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
-            path: '/'
-          });
-        }
-        // tell all instances the auto country is ready
-        // TODO: this should just be the current instances
-        $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
-      });
     }
   },
 
@@ -1154,7 +1151,7 @@ Plugin.prototype = {
    *  PUBLIC METHODS
    ********************/
 
-  // this is called when the ipinfo call returns
+  // this is called when the geoip call returns
   autoCountryLoaded: function() {
     if (this.options.defaultCountry == "auto") {
       this.options.defaultCountry = $.fn[pluginName].autoCountry;
