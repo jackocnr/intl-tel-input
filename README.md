@@ -91,20 +91,20 @@ Add or remove input placeholder with an example number for the selected country.
 
 **defaultCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it will store the loaded country code in a cookie for future use._
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it will store the loaded country code in a cookie for future use._
 
 **geoIpLookup**
 Type: `Function` Default: `null`  
-When setting `defaultCountry` to `"auto"`, we need use a special service to provide us the location data of the given user. Write a custom method to get the country code.
-
-For example if you use ipinfo:
-```javascript
-geoipProvider: function(callback) {
-    $.get('http://ipinfo.io/json?token={token}').always(function(resp) {
-        callback(resp && resp['country'] || '');
-   });
+When setting `defaultCountry` to `"auto"`, we need to use a special service to lookup the location data for the user. Write a custom method to get the country code. For example if you use [ipinfo.io](http://ipinfo.io/):
+```js
+geoIpLookup: function(callback) {
+  $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+    var countryCode = (resp && resp.country) ? resp.country : "";
+    callback(countryCode);
+  });
 }
 ```
+_Note that the callback must still be called in the event of an error, hence the use of `always` in this example._
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
