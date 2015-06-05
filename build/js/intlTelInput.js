@@ -195,7 +195,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // mobile is just a native select element
             // desktop is a proper list containing: preferred countries, then divider, then all countries
             if (this.isMobile) {
-                this.countryList = $("<select>").appendTo(this.flagsContainer);
+                this.countryList = $("<select>", {
+                    "class": "iti-mobile-select"
+                }).appendTo(this.flagsContainer);
             } else {
                 this.countryList = $("<ul>", {
                     "class": "country-list v-hide"
