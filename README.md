@@ -3,6 +3,8 @@ A jQuery plugin for entering and validating international telephone numbers. It 
 
 <img src="https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png" width="424px" height="246px">
 
+If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts/intl-tel-input)!
+
 ## Table of Contents
 
 - [Demo and Examples](#demo-and-examples)
@@ -89,11 +91,20 @@ Add or remove input placeholder with an example number for the selected country.
 
 **defaultCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it will store the loaded country code in a cookie for future use._
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). Otherwise it will just be the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it will store the loaded country code in a cookie for future use._
 
-**ipinfoToken**  
-Type: `String` Default: `""`  
-When setting `defaultCountry` to `"auto"`, we use a service called [ipinfo](http://ipinfo.io) which requires a special token to be used over https, or if you make >1000 requests/day. Use this option to pass in that token.
+**geoIpLookup**  
+Type: `Function` Default: `null`  
+When setting `defaultCountry` to `"auto"`, we need to use a special service to lookup the location data for the user. Write a custom method to get the country code. For example if you use [ipinfo.io](http://ipinfo.io/):  
+```js
+geoIpLookup: function(callback) {
+  $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+    var countryCode = (resp && resp.country) ? resp.country : "";
+    callback(countryCode);
+  });
+}
+```
+_Note that the callback must still be called in the event of an error, hence the use of `always` in this example._
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
