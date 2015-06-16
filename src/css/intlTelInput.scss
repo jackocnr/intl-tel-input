@@ -1,25 +1,44 @@
+/**
+ * Variables declared here can be overridden by consuming applications, with
+ * the help of the `!default` flag.
+ *
+ * @example
+ *     // overriding $hoverColor
+ *     $hoverColor: rgba(red, 0.05);
+ *
+ *     // overriding image path
+ *     $flagsImagePath: "images/";
+ *
+ *     // import the scss file after the overrides
+ *     @import "bower_component/intl-tel-input/src/css/intlTelInput";
+ */
+
 // rgba is needed for the selected flag hover state to blend in with
 // the border-highlighting some browsers give the input on focus
-$hoverColor: rgba(0, 0, 0, 0.05);
-$greyText: #999;
-$greyBorder: #CCC;
+$hoverColor: rgba(0, 0, 0, 0.05) !default;
+$greyText: #999 !default;
+$greyBorder: #CCC !default;
 
-$flagHeight: 15px;
-$flagWidth: 20px;
-$flagPadding: 8px;
+$flagHeight: 15px !default;
+$flagWidth: 20px !default;
+$flagPadding: 8px !default;
 // this border width is used for the popup and divider, but it is also
 // assumed to be the border width of the input, which we do not control
-$borderWidth: 1px;
+$borderWidth: 1px !default;
 
-$arrowHeight: 4px;
-$arrowWidth: 6px;
-$triangleBorder: 3px;
-$arrowPadding: 4px;
-$arrowColor: #555;
+$arrowHeight: 4px !default;
+$arrowWidth: 6px !default;
+$triangleBorder: 3px !default;
+$arrowPadding: 4px !default;
+$arrowColor: #555 !default;
 
-$inputPadding: 6px;
-$selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding);
+$inputPadding: 6px !default;
+$selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding) !default;
 
+// image related variables
+$flagsImagePath: "../img/" !default;
+$flagsImageName: "flags" !default;
+$flagsImageExtension: "png" !default;
 
 .intl-tel-input {
   // need position on the container so the selected flag can be
@@ -223,15 +242,13 @@ $selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding
   width: $flagWidth;
   height: $flagHeight;
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: url("../img/flags.png");
+  background-image: url("#{$flagsImagePath}#{$flagsImageName}.#{$flagsImageExtension}");
   // empty state
   background-color: #DBDBDB;
   background-position: 100% 100%;
-}
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-  .iti-flag {
-    background-image: url("../img/flags@2x.png");
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+    background-image: url("#{$flagsImagePath}#{$flagsImageName}@2x.#{$flagsImageExtension}");
   }
 }
 
