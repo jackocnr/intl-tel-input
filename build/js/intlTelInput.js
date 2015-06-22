@@ -20,10 +20,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         allowExtensions: false,
         // automatically format the number according to the selected country
         autoFormat: true,
-        // add or remove input placeholder with an example number for the selected country
-        autoPlaceholder: true,
         // if there is just a dial code in the input: remove it on blur, and re-add it on focus
         autoHideDialCode: true,
+        // add or remove input placeholder with an example number for the selected country
+        autoPlaceholder: true,
         // default country
         defaultCountry: "",
         // geoIp lookup function
