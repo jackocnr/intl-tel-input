@@ -229,6 +229,11 @@ $flagsImageExtension: "png" !default;
     height: 100%;
     opacity: 0;
   }
+
+  // if container option is set, increase z-index to prevent display issues
+  &.iti-container {
+    z-index: 1060;
+  }
 }
 
 
