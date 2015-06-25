@@ -4,12 +4,19 @@ module.exports = function(grunt) {
   var time = (new Date()).getTime();
 
   return {
-    js: {
+    js1: {
+      src: 'src/js/intlTelInput.js.ejs',
+      dest: 'tmp/versioned.js',
+      variables: {
+        version: '<%= package.version %>'
+      }
+    },
+    js2: {
       src: 'src/js/wrapper.js.ejs',
       dest: 'tmp/wrapped.js',
       variables: function() {
         return {
-          plugin: grunt.file.read('src/js/intlTelInput.js'),
+          plugin: grunt.file.read('tmp/versioned.js'),
           data: grunt.file.read('src/js/data.js'),
         }
       }

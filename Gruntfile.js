@@ -10,7 +10,7 @@ module.exports = function(grunt) {
   // build everything ready for a commit
   grunt.registerTask('build', ['responsive_images', 'exec:evenizer', 'retinafy', 'sprite', 'sass', 'js', 'jasmine']);
   // just javascript
-  grunt.registerTask('js', ['template:js', 'jshint', 'uglify', 'replace:one', 'replace:two', 'replace:three', 'replace:four']);
+  grunt.registerTask('js', ['template:js1', 'template:js2', 'jshint', 'uglify', 'replace:one', 'replace:two', 'replace:three', 'replace:four']);
   // build examples
   grunt.registerTask('examples', ['template']);
   // Travis CI

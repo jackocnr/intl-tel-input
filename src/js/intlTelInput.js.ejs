@@ -354,9 +354,9 @@ Plugin.prototype = {
       var isDropdownHidden = that.countryList.hasClass('hide');
 
       if (isDropdownHidden &&
-         (e.which == keys.UP || e.which == keys.DOWN ||
+        (e.which == keys.UP || e.which == keys.DOWN ||
           e.which == keys.SPACE || e.which == keys.ENTER)
-        ) {
+      ) {
         // prevent form from being submitted if "ENTER" was pressed
         e.preventDefault();
 
@@ -1363,3 +1363,5 @@ $.fn[pluginName] = function(options) {
 $.fn[pluginName].getCountryData = function() {
   return allCountries;
 };
+
+$.fn[pluginName].version = "<%= version %>";

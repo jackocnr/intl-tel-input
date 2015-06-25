@@ -1125,6 +1125,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     $.fn[pluginName].getCountryData = function() {
         return allCountries;
     };
+    $.fn[pluginName].version = "6.0.2";
     // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
     // jshint -W100
     // Array of country objects for the flag dropdown.
