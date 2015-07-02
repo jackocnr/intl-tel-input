@@ -232,6 +232,7 @@ $flagsImageExtension: "png" !default;
 
   // if container option is set, increase z-index to prevent display issues
   &.iti-container {
+    position: absolute;
     z-index: 1060;
   }
 }
