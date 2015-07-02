@@ -193,6 +193,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             $("<div>", {
                 "class": "arrow"
             }).appendTo(selectedFlag);
+            if (this.options.container) {
+                this.$drop = $("<div>", {
+                    "class": "intl-tel-input iti-container"
+                });
+                $("<div>", {
+                    "class": "flag-dropdown"
+                }).appendTo(this.$drop).append(this.countryList);
+            }
             // country list
             // mobile is just a native select element
             // desktop is a proper list containing: preferred countries, then divider, then all countries
@@ -638,26 +646,19 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // dropdownHeight - 1 for border
             var cssTop = !dropdownFitsBelow && dropdownFitsAbove ? "-" + (this.dropdownHeight - 1) + "px" : "";
             this.countryList.css("top", cssTop);
-            // if container, append countryList to this.$drop and this.$drop to container
+            // if container calculate postion and append this.$drop to container
             if (this.options.container) {
-                this.$drop = $("<div>", {
-                    "class": "intl-tel-input iti-container"
-                });
-                var $dropInner = $("<div>", {
-                    "class": "flag-dropdown"
-                }).appendTo(this.$drop), inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : that.telInput.outerHeight();
+                var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : that.telInput.outerHeight();
                 // calculate placement
-                that.$drop.css({
+                this.$drop.css({
                     top: pos.top + inputHeight - parseInt(this.telInput.css("borderTopWidth"), 10) - parseInt(this.telInput.css("borderBottomWidth"), 10),
-                    left: pos.left,
-                    position: "absolute"
+                    left: pos.left
                 });
                 // close menu on resize/scroll
                 this.telInput.parents().off("resize" + this.ns + " scroll" + this.ns).on("resize" + this.ns + " scroll" + this.ns, function() {
                     if (!that.countryList.hasClass("hide")) that._closeDropdown();
                 });
                 this.$drop.appendTo(this.options.container);
-                $dropInner.append(this.countryList);
             }
         },
         // we only bind dropdown listeners when the dropdown is open
