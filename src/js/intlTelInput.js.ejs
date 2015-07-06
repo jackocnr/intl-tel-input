@@ -11,7 +11,7 @@ var pluginName = "intlTelInput",
     // add or remove input placeholder with an example number for the selected country
     autoPlaceholder: true,
     // append menu to a specific element
-    container: false,
+    dropdownContainer: false,
     // default country
     defaultCountry: "",
     // geoIp lookup function
@@ -220,7 +220,7 @@ Plugin.prototype = {
       "class": "arrow"
     }).appendTo(selectedFlag);
 
-    if (this.options.container) {
+    if (this.options.dropdownContainer) {
       this.$drop = $("<div>", {
         "class": "intl-tel-input iti-container"
       });
@@ -777,7 +777,7 @@ Plugin.prototype = {
     this.countryList.css("top", cssTop);
     
     // if container calculate postion and append this.$drop to container
-    if (this.options.container) {      
+    if (this.options.dropdownContainer) {
       var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : that.telInput.outerHeight();
       
       // calculate placement
@@ -791,7 +791,7 @@ Plugin.prototype = {
         if (!that.countryList.hasClass("hide")) that._closeDropdown();
       });
       
-      this.$drop.appendTo(this.options.container);
+      this.$drop.appendTo(this.options.dropdownContainer);
     }
   },
 
@@ -1087,7 +1087,7 @@ Plugin.prototype = {
     // unbind hover and click listeners
     this.countryList.off(this.ns);
     // remove menu from container
-    if (this.options.container) this.$drop.detach();
+    if (this.options.dropdownContainer) this.$drop.detach();
   },
 
 
