@@ -220,16 +220,6 @@ Plugin.prototype = {
       "class": "arrow"
     }).appendTo(selectedFlag);
 
-    if (this.options.dropdownContainer) {
-      this.$drop = $("<div>", {
-        "class": "intl-tel-input iti-container"
-      });
-      
-      $("<div>", {
-        "class": "flag-dropdown"
-      }).appendTo(this.$drop).append(this.countryList);
-    }
-
     // country list
     // mobile is just a native select element
     // desktop is a proper list containing: preferred countries, then divider, then all countries
@@ -257,6 +247,17 @@ Plugin.prototype = {
 
       // this is useful in lots of places
       this.countryListItems = this.countryList.children(".country");
+
+      // create dropdownContainer markup
+      if (this.options.dropdownContainer) {
+        this.$drop = $("<div>", {
+          "class": "intl-tel-input iti-container"
+        });
+        
+        $("<div>", {
+          "class": "flag-dropdown"
+        }).appendTo(this.$drop).append(this.countryList);
+      }
     }
   },
 
@@ -777,7 +778,7 @@ Plugin.prototype = {
     this.countryList.css("top", cssTop);
     
     // if container calculate postion and append this.$drop to container
-    if (this.options.dropdownContainer) {
+    if (this.options.dropdownContainer && !this.isMobile) {
       var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : that.telInput.outerHeight();
       
       // calculate placement
@@ -1087,7 +1088,7 @@ Plugin.prototype = {
     // unbind hover and click listeners
     this.countryList.off(this.ns);
     // remove menu from container
-    if (this.options.dropdownContainer) this.$drop.detach();
+    if (this.options.dropdownContainer && !this.isMobile) this.$drop.detach();
   },
 
 
