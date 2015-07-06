@@ -25,7 +25,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // add or remove input placeholder with an example number for the selected country
         autoPlaceholder: true,
         // append menu to a specific element
-        container: false,
+        dropdownContainer: false,
         // default country
         defaultCountry: "",
         // geoIp lookup function
@@ -193,14 +193,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             $("<div>", {
                 "class": "arrow"
             }).appendTo(selectedFlag);
-            if (this.options.container) {
-                this.$drop = $("<div>", {
-                    "class": "intl-tel-input iti-container"
-                });
-                $("<div>", {
-                    "class": "flag-dropdown"
-                }).appendTo(this.$drop).append(this.countryList);
-            }
             // country list
             // mobile is just a native select element
             // desktop is a proper list containing: preferred countries, then divider, then all countries
@@ -226,6 +218,15 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.countryList.removeClass("v-hide").addClass("hide");
                 // this is useful in lots of places
                 this.countryListItems = this.countryList.children(".country");
+                // create dropdownContainer markup
+                if (this.options.dropdownContainer) {
+                    this.$drop = $("<div>", {
+                        "class": "intl-tel-input iti-container"
+                    });
+                    $("<div>", {
+                        "class": "flag-dropdown"
+                    }).appendTo(this.$drop).append(this.countryList);
+                }
             }
         },
         // add a country <li> to the countryList <ul> container
@@ -647,7 +648,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var cssTop = !dropdownFitsBelow && dropdownFitsAbove ? "-" + (this.dropdownHeight - 1) + "px" : "";
             this.countryList.css("top", cssTop);
             // if container calculate postion and append this.$drop to container
-            if (this.options.container) {
+            if (this.options.dropdownContainer && !this.isMobile) {
                 var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : that.telInput.outerHeight();
                 // calculate placement
                 this.$drop.css({
@@ -658,7 +659,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.telInput.parents().off("resize" + this.ns + " scroll" + this.ns).on("resize" + this.ns + " scroll" + this.ns, function() {
                     if (!that.countryList.hasClass("hide")) that._closeDropdown();
                 });
-                this.$drop.appendTo(this.options.container);
+                this.$drop.appendTo(this.options.dropdownContainer);
             }
         },
         // we only bind dropdown listeners when the dropdown is open
@@ -905,7 +906,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // unbind hover and click listeners
             this.countryList.off(this.ns);
             // remove menu from container
-            if (this.options.container) this.$drop.detach();
+            if (this.options.dropdownContainer && !this.isMobile) this.$drop.detach();
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element, middle) {
