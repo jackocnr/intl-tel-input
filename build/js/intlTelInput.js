@@ -37,7 +37,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // the countries at the top of the list. defaults to united states and united kingdom
         preferredCountries: [ "us", "gb" ],
         // specify the path to the libphonenumber script to enable validation/formatting
-        utilsScript: ""
+        utilsScript: "",
+        // prepend a custom message to placeholder, for instance: "e.g."
+        prePlaceholderMessage: ""
     }, keys = {
         UP: 38,
         DOWN: 40,
@@ -847,6 +849,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _updatePlaceholder: function() {
             if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder && this.selectedCountryData) {
                 var iso2 = this.selectedCountryData.iso2, numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"], placeholder = iso2 ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
+                placeholder = this.options.prePlaceholderMessage.concat(placeholder);
                 this.telInput.attr("placeholder", placeholder);
             }
         },
