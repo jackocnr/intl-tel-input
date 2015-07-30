@@ -655,10 +655,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     top: pos.top + inputHeight - parseInt(this.telInput.css("borderTopWidth"), 10) - parseInt(this.telInput.css("borderBottomWidth"), 10),
                     left: pos.left
                 });
-                // close menu on resize/scroll
-                this.telInput.parents().off("resize" + this.ns + " scroll" + this.ns).on("resize" + this.ns + " scroll" + this.ns, function() {
-                    if (!that.countryList.hasClass("hide")) that._closeDropdown();
-                });
                 this.$drop.appendTo(this.options.dropdownContainer);
             }
         },
