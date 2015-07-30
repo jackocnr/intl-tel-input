@@ -642,14 +642,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
-            var that = this, pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
+            var pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
             dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop;
             // dropdownHeight - 1 for border
             var cssTop = !dropdownFitsBelow && dropdownFitsAbove ? "-" + (this.dropdownHeight - 1) + "px" : "";
             this.countryList.css("top", cssTop);
             // if container calculate postion and append this.$drop to container
             if (this.options.dropdownContainer && !this.isMobile) {
-                var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : that.telInput.outerHeight();
+                var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.outerHeight();
                 // calculate placement
                 this.$drop.css({
                     top: pos.top + inputHeight - parseInt(this.telInput.css("borderTopWidth"), 10) - parseInt(this.telInput.css("borderBottomWidth"), 10),
