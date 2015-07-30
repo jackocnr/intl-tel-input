@@ -787,11 +787,6 @@ Plugin.prototype = {
         "left": pos.left
       });
       
-      // close menu on resize/scroll
-      this.telInput.parents().off("resize" + this.ns + " scroll" + this.ns).on("resize" + this.ns + " scroll" + this.ns, function () {
-        if (!that.countryList.hasClass("hide")) that._closeDropdown();
-      });
-      
       this.$drop.appendTo(this.options.dropdownContainer);
     }
   },
