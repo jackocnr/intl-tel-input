@@ -430,7 +430,9 @@ Plugin.prototype = {
           }
           // tell all instances the auto country is ready
           // TODO: this should just be the current instances
-          $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+          setTimeout(function() {
+            $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+          });
         });
       }
     }
