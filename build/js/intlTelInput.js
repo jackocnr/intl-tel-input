@@ -1,5 +1,5 @@
 /*
-International Telephone Input v6.0.4
+International Telephone Input v6.0.6
 https://github.com/Bluefieldscom/intl-tel-input.git
 */
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPlugin.js
@@ -381,7 +381,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         }
                         // tell all instances the auto country is ready
                         // TODO: this should just be the current instances
-                        $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+                        // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight away (e.g. if they have already done the geo ip lookup somewhere else). Using setTimeout means that the current thread of execution will finish before executing this, which allows the plugin to finish initialising.
+                        setTimeout(function() {
+                            $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+                        });
                     });
                 }
             }
@@ -1148,7 +1151,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     $.fn[pluginName].getCountryData = function() {
         return allCountries;
     };
-    $.fn[pluginName].version = "6.0.4";
+    $.fn[pluginName].version = "6.0.6";
     // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
     // jshint -W100
     // Array of country objects for the flag dropdown.

@@ -242,6 +242,8 @@ A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com
 
 International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking).
 
+To recompile [Utilities Script](#utilities-script) see js-docs in top of [utils.js](lib/libphonenumber/src/utils.js).
+
 
 ## Troubleshooting
 **Submitting the full international number when in nationalMode**  
