@@ -781,11 +781,11 @@ Plugin.prototype = {
     
     // if container calculate postion and append this.dropdown to container
     if (this.options.dropdownContainer && !this.isMobile) {
-      var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.outerHeight();
+      var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
       
       // calculate placement
       this.dropdown.css({
-        "top": pos.top + inputHeight - parseInt(this.telInput.css('borderTopWidth'), 10) - parseInt(this.telInput.css('borderBottomWidth'), 10),
+        "top": pos.top + inputHeight,
         "left": pos.left
       });
       
