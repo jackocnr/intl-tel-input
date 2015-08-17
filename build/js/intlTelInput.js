@@ -220,12 +220,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.countryListItems = this.countryList.children(".country");
                 // create dropdownContainer markup
                 if (this.options.dropdownContainer) {
-                    this.$drop = $("<div>", {
+                    this.dropdown = $("<div>", {
                         "class": "intl-tel-input iti-container"
                     });
                     $("<div>", {
                         "class": "flag-dropdown"
-                    }).appendTo(this.$drop).append(this.countryList);
+                    }).appendTo(this.dropdown).append(this.countryList);
                 }
             }
         },
@@ -650,15 +650,15 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // dropdownHeight - 1 for border
             var cssTop = !dropdownFitsBelow && dropdownFitsAbove ? "-" + (this.dropdownHeight - 1) + "px" : "";
             this.countryList.css("top", cssTop);
-            // if container calculate postion and append this.$drop to container
+            // if container calculate postion and append this.dropdown to container
             if (this.options.dropdownContainer && !this.isMobile) {
-                var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.outerHeight();
+                var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
                 // calculate placement
-                this.$drop.css({
-                    top: pos.top + inputHeight - parseInt(this.telInput.css("borderTopWidth"), 10) - parseInt(this.telInput.css("borderBottomWidth"), 10),
+                this.dropdown.css({
+                    top: pos.top + inputHeight,
                     left: pos.left
                 });
-                this.$drop.appendTo(this.options.dropdownContainer);
+                this.dropdown.appendTo(this.options.dropdownContainer);
             }
         },
         // we only bind dropdown listeners when the dropdown is open
@@ -905,7 +905,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // unbind hover and click listeners
             this.countryList.off(this.ns);
             // remove menu from container
-            if (this.options.dropdownContainer && !this.isMobile) this.$drop.detach();
+            if (this.options.dropdownContainer && !this.isMobile) this.dropdown.detach();
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element, middle) {
