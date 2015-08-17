@@ -250,13 +250,13 @@ Plugin.prototype = {
 
       // create dropdownContainer markup
       if (this.options.dropdownContainer) {
-        this.$drop = $("<div>", {
+        this.dropdown = $("<div>", {
           "class": "intl-tel-input iti-container"
         });
         
         $("<div>", {
           "class": "flag-dropdown"
-        }).appendTo(this.$drop).append(this.countryList);
+        }).appendTo(this.dropdown).append(this.countryList);
       }
     }
   },
@@ -779,17 +779,17 @@ Plugin.prototype = {
     var cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (this.dropdownHeight - 1) + "px" : "";
     this.countryList.css("top", cssTop);
     
-    // if container calculate postion and append this.$drop to container
+    // if container calculate postion and append this.dropdown to container
     if (this.options.dropdownContainer && !this.isMobile) {
       var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.outerHeight();
       
       // calculate placement
-      this.$drop.css({
+      this.dropdown.css({
         "top": pos.top + inputHeight - parseInt(this.telInput.css('borderTopWidth'), 10) - parseInt(this.telInput.css('borderBottomWidth'), 10),
         "left": pos.left
       });
       
-      this.$drop.appendTo(this.options.dropdownContainer);
+      this.dropdown.appendTo(this.options.dropdownContainer);
     }
   },
 
@@ -1085,7 +1085,7 @@ Plugin.prototype = {
     // unbind hover and click listeners
     this.countryList.off(this.ns);
     // remove menu from container
-    if (this.options.dropdownContainer && !this.isMobile) this.$drop.detach();
+    if (this.options.dropdownContainer && !this.isMobile) this.dropdown.detach();
   },
 
 
