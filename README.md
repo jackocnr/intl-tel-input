@@ -128,7 +128,7 @@ Enable formatting/validation etc. by specifying the path to the included utils.j
 
 **disablePicker**
 Type: `Boolean` Default: `false`
-Set disablePicker = true to turn off the country picker
+Set disablePicker = true to turn off the country picker.
 
 **disableUpdateFlagFromNumber**
 Type: `Boolean` Default: `false`
