@@ -126,6 +126,13 @@ Specify the countries to appear at the top of the list.
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
 Enable formatting/validation etc. by specifying the path to the included utils.js script, which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
 
+**disablePicker**  
+Type: `Boolean` Default: `false`  
+Set disablePicker = true to turn off the country picker.  
+
+**disableUpdateFlagFromNumber**  
+Type: `Boolean` Default: `false`  
+Set disableUpdateFlagFromNumber = true to turn off detecting country from number.
 
 ## Public Methods
 **destroy**  
@@ -193,6 +200,13 @@ if (error == intlTelInputUtils.validationError.TOO_SHORT) {
 Validate the current number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/is-valid-number.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option. Also see `getNumberType` if you want to make sure the user enters a certain type of number e.g. a mobile number.  
 ```js
 var isValid = $("#mobile-number").intlTelInput("isValidNumber");
+```
+Returns: `true`/`false`
+
+**isValidNumberForRegion**
+Validate the current number strict to the selected region
+```js
+var isValid = $("#mobile-number").intlTelInput("isValidNumberForRegion");
 ```
 Returns: `true`/`false`
 
