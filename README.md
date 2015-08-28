@@ -132,7 +132,7 @@ Set disablePicker = true to turn off the country picker.
 
 **disableUpdateFlagFromNumber**
 Type: `Boolean` Default: `false`
-Set disableUpdateFlagFromNumber = true to turn off detecting country from number
+Set disableUpdateFlagFromNumber = true to turn off detecting country from number.
 
 ## Public Methods
 **destroy**  
