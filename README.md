@@ -126,12 +126,12 @@ Specify the countries to appear at the top of the list.
 Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
 Enable formatting/validation etc. by specifying the path to the included utils.js script, which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
 
-**disablePicker**
-Type: `Boolean` Default: `false`
-Set disablePicker = true to turn off the country picker.
+**disablePicker**  
+Type: `Boolean` Default: `false`  
+Set disablePicker = true to turn off the country picker.  
 
-**disableUpdateFlagFromNumber**
-Type: `Boolean` Default: `false`
+**disableUpdateFlagFromNumber**  
+Type: `Boolean` Default: `false`  
 Set disableUpdateFlagFromNumber = true to turn off detecting country from number.
 
 ## Public Methods
