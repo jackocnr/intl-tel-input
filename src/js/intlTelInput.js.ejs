@@ -23,7 +23,11 @@ var pluginName = "intlTelInput",
     // the countries at the top of the list. defaults to united states and united kingdom
     preferredCountries: ["us", "gb"],
     // specify the path to the libphonenumber script to enable validation/formatting
-    utilsScript: ""
+    utilsScript: "",
+    //will not show up the country picker
+    disablePicker: false,
+    //will not update flag automatically
+    disableUpdateFlagFromNumber: false
   },
   keys = {
     UP: 38,
@@ -214,9 +218,11 @@ Plugin.prototype = {
       "class": "iti-flag"
     }).appendTo(selectedFlag);
     // CSS triangle
-    $("<div>", {
-      "class": "arrow"
-    }).appendTo(selectedFlag);
+    if(!this.options.disablePicker) {
+        $("<div>", {
+          "class": "arrow"
+        }).appendTo(selectedFlag);
+    }
 
     // country list
     // mobile is just a native select element
@@ -339,14 +345,16 @@ Plugin.prototype = {
 
       // toggle country dropdown on click
       var selectedFlag = this.selectedFlagInner.parent();
-      selectedFlag.on("click" + this.ns, function(e) {
-        // only intercept this event if we're opening the dropdown
-        // else let it bubble up to the top ("click-off-to-close" listener)
-        // we cannot just stopPropagation as it may be needed to close another instance
-        if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled") && !that.telInput.prop("readonly")) {
-          that._showDropdown();
-        }
-      });
+      if(!this.options.disablePicker) {
+          selectedFlag.on("click" + this.ns, function(e) {
+            // only intercept this event if we're opening the dropdown
+            // else let it bubble up to the top ("click-off-to-close" listener)
+            // we cannot just stopPropagation as it may be needed to close another instance
+            if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled") && !that.telInput.prop("readonly")) {
+              that._showDropdown();
+            }
+          });
+      }
     }
 
     // open dropdown list if currently focused
@@ -909,6 +917,9 @@ Plugin.prototype = {
   _updateFlagFromNumber: function(number, updateDefault) {
     // if we're in nationalMode and we're on US/Canada, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
     // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
+    if(!!this.options.disableUpdateFlagFromNumber) {
+      return;
+    }
     if (number && this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
       if (number.charAt(0) != "1") {
         number = "1" + number;
@@ -1235,6 +1246,16 @@ Plugin.prototype = {
       countryCode = (this.options.nationalMode) ? this.selectedCountryData.iso2 : "";
     if (window.intlTelInputUtils) {
       return intlTelInputUtils.isValidNumber(val, countryCode);
+    }
+    return false;
+  },
+
+  // validate the input val - assumes the global function isValidNumberForRegion (from utilsScript)
+  isValidNumberForRegion: function() {
+    var val = $.trim(this.telInput.val()),
+      countryCode = (this.options.nationalMode) ? this.selectedCountryData.iso2 : "";
+    if (window.intlTelInputUtils) {
+      return intlTelInputUtils.isValidNumberForRegion(val, countryCode);
     }
     return false;
   },
