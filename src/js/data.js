@@ -482,6 +482,12 @@ var allCountries = [
     "502"
   ],
   [
+    "Guernsey",
+    "gg",
+    "44",
+    1
+  ],
+  [
     "Guinea (Guinée)",
     "gn",
     "224"
@@ -547,6 +553,12 @@ var allCountries = [
     "353"
   ],
   [
+    "Isle of Man",
+    "im",
+    "44",
+    2
+  ],
+  [
     "Israel (‫ישראל‬‎)",
     "il",
     "972"
@@ -566,6 +578,12 @@ var allCountries = [
     "Japan (日本)",
     "jp",
     "81"
+  ],
+  [
+    "Jersey",
+    "je",
+    "44",
+    3
   ],
   [
     "Jordan (‫الأردن‬‎)",
@@ -704,6 +722,12 @@ var allCountries = [
     "230"
   ],
   [
+    "Mayotte",
+    "yt",
+    "262",
+    1
+  ],
+  [
     "Mexico (México)",
     "mx",
     "52"
@@ -741,7 +765,8 @@ var allCountries = [
   [
     "Morocco (‫المغرب‬‎)",
     "ma",
-    "212"
+    "212",
+    0
   ],
   [
     "Mozambique (Moçambique)",
@@ -893,7 +918,8 @@ var allCountries = [
   [
     "Réunion (La Réunion)",
     "re",
-    "262"
+    "262",
+    0
   ],
   [
     "Romania (România)",
@@ -1166,7 +1192,8 @@ var allCountries = [
   [
     "United Kingdom",
     "gb",
-    "44"
+    "44",
+    0
   ],
   [
     "United States",
@@ -1209,6 +1236,12 @@ var allCountries = [
     "Wallis and Futuna",
     "wf",
     "681"
+  ],
+  [
+    "Western Sahara (‫الصحراء الغربية‬‎)",
+    "eh",
+    "212",
+    1
   ],
   [
     "Yemen (‫اليمن‬‎)",
