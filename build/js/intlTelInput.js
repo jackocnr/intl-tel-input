@@ -850,6 +850,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _updatePlaceholder: function() {
             if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder && this.selectedCountryData) {
                 var iso2 = this.selectedCountryData.iso2, numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"], placeholder = iso2 ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
+                if (typeof this.options.customPlaceholder === "function") {
+                    placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
+                }
                 this.telInput.attr("placeholder", placeholder);
             }
         },
