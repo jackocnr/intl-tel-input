@@ -3,14 +3,14 @@
 describe("onlyCountries option:", function() {
 
   var onlyCountries;
+  var input;
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
   });
 
   afterEach(function() {
-    input.intlTelInput("destroy");
+    input.destroy();
     input = onlyCountries = null;
   });
 
@@ -23,17 +23,17 @@ describe("onlyCountries option:", function() {
     beforeEach(function() {
       // China and Japan (note that none of the default preferredCountries are included here, so wont be in the list)
       onlyCountries = ['jp', chinaCountryCode, 'kr'];
-      input.intlTelInput({
+      input = new IntlTelInput(document.createElement("input"), {
         onlyCountries: onlyCountries
       });
     });
 
     it("defaults to the first onlyCountries alphabetically", function() {
-      expect(getSelectedFlagElement()).toHaveClass(chinaCountryCode);
+      expect(getSelectedFlagElement(input.inputElement)).toHaveClass(chinaCountryCode);
     });
 
     it("has the right number of list items", function() {
-      expect(getListLength()).toEqual(onlyCountries.length);
+      expect(getListLength(input.inputElement)).toEqual(onlyCountries.length);
     });
 
   });
@@ -42,16 +42,16 @@ describe("onlyCountries option:", function() {
   describe("init plugin with onlyCountries for Afghanistan, Kazakhstan and Russia", function() {
 
     beforeEach(function() {
-      input.intlTelInput({
+      input = new IntlTelInput(document.createElement("input"), {
         preferredCountries: [],
         onlyCountries: ["af", "kz", "ru"]
       });
     });
 
     it("entering +7 defaults to the top priority country (Russia)", function() {
-      input.val("+7");
-      triggerKeyOnInput(" ");
-      expect(getSelectedFlagElement()).toHaveClass("ru");
+      input.inputElement.value = "+7";
+      triggerNativeKeyOnInput(" ", input.inputElement);
+      expect(getSelectedFlagElement(input.inputElement)).toHaveClass("ru");
     });
 
   });
@@ -63,29 +63,34 @@ describe("onlyCountries option:", function() {
     var input2;
 
     beforeEach(function() {
-      input2 = $("<input>");
       // japan
-      input.intlTelInput({
+      input = new IntlTelInput(document.createElement("input"), {
         onlyCountries: ['jp'],
         nationalMode: false
       });
       // korea
-      input2.intlTelInput({
+      input2 = new IntlTelInput(document.createElement("input"), {
         onlyCountries: ['kr'],
         nationalMode: false
       });
-      $("body").append(getParentElement(input)).append(getParentElement(input2));
+
+      document.body.appendChild(input.inputElement.parentNode);
+      document.body.appendChild(input2.inputElement.parentNode);
     });
 
     afterEach(function() {
-      getParentElement(input).remove();
-      getParentElement(input2).remove();
+      var parent1 = input.inputElement.parentNode;
+      var parent2 = input2.inputElement.parentNode;
+
+      parent1.parentNode.removeChild(parent1);
+      parent2.parentNode.removeChild(parent2);
+
       input2 = null;
     });
 
     it("first instance still works", function() {
-      input.focus();
-      expect(input.val()).toEqual("+81");
+      input.inputElement.focus();
+      expect(input.inputElement.value).toEqual("+81");
     });
 
   });

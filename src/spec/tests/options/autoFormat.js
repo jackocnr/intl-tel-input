@@ -2,16 +2,20 @@
 
 describe("autoFormat option:", function() {
 
+  var input;
+
   beforeEach(function() {
     intlSetup(true);
   });
 
   afterEach(function() {
-    getParentElement().remove();
-    input.intlTelInput("destroy");
+    var parent = input.inputElement.parentNode;
+
+    parent.parentNode.removeChild(parent);
+
+    input.destroy();
     input = null;
   });
-
 
 
   describe("input containing national number, init plugin with autoFormat and nationalMode enabled", function() {
@@ -20,42 +24,48 @@ describe("autoFormat option:", function() {
       formattedNumber = "(702) 418-12";
 
     beforeEach(function() {
-      input = $("<input value='" + unformattedNumber + "'>");
-      // must be in DOM for focus/keys to work
-      input.appendTo($("body"));
+      var element = document.createElement("input");
+      element.value = unformattedNumber;
 
-      input.intlTelInput({
+      // must be in DOM for focus/keys to work
+      // FIXME: tests still pass when this line is commented out -_-
+      document.body.appendChild(element);
+
+      input = new IntlTelInput(element, {
         autoFormat: true,
         nationalMode: true
       });
     });
 
     it("formats the number according to the defaultCountry", function() {
-      expect(getInputVal()).toEqual(formattedNumber);
+      expect(input.inputElement.value).toEqual(formattedNumber);
     });
 
     it("changing country still reformats even in nationalMode", function() {
-      selectFlag("ar");
-      expect(getInputVal()).toEqual("7024-1812");
+      selectFlag("ar", input.inputElement);
+      expect(input.inputElement.value).toEqual("7024-1812");
     });
 
     //TODO: this should be in it's own preventInvalidNumbers test file, with more tests
     it("adding too many digits does work even tho it breaks the formatting", function() {
-      triggerKeyOnInput("2");
-      triggerKeyOnInput("2");
-      triggerKeyOnInput("2");
-      expect(getInputVal()).toEqual(unformattedNumber + "222");
+      triggerNativeKeyOnInput("2", input.inputElement);
+      triggerNativeKeyOnInput("2", input.inputElement);
+      triggerNativeKeyOnInput("2", input.inputElement);
+
+      expect(input.inputElement.value).toEqual(unformattedNumber + "222");
     });
 
     it("check a previously broken case regarding a UK 0141 number", function() {
-      selectFlag("gb");
-      input.val("0141 534 40");
+      selectFlag("gb", input.inputElement);
+      input.inputElement.value = "0141 534 40";
+
       // adding a 0 here changes the formatting to "01415 34400", which previously stopped this char from appearing
-      triggerKeyOnInput("0");
-      expect(getInputVal()).toEqual("01415 34400");
+      triggerNativeKeyOnInput("0", input.inputElement);
+      expect(input.inputElement.value).toEqual("01415 34400");
+
       // and back again
-      triggerKeyOnInput("0");
-      expect(getInputVal()).toEqual("0141 534 4000");
+      triggerNativeKeyOnInput("0", input.inputElement);
+      expect(input.inputElement.value).toEqual("0141 534 4000");
     });
 
   });
@@ -65,32 +75,36 @@ describe("autoFormat option:", function() {
   describe("input with maxlength=6, init plugin with autoFormat enabled", function() {
 
     beforeEach(function() {
-      input = $("<input value='+1 70' maxlength='6'>");
-      // must be in DOM for focus/keys to work
-      input.appendTo($("body"));
+      var element = document.createElement("input");
+      element.setAttribute("maxlength", "6");
+      element.value = "+1 70";
 
-      input.intlTelInput({
+      document.body.appendChild(element);
+
+      input = new IntlTelInput(element, {
         autoFormat: true
       });
     });
 
     it("adding a 6th char doesnt add the normal formatting suffix", function() {
-      triggerKeyOnInput("2");
-      expect(getInputVal()).toEqual("+1 702");
+      triggerNativeKeyOnInput("2", input.inputElement);
+      expect(input.inputElement.value).toEqual("+1 702");
     });
 
     it("typing a 7th char doesnt do anything", function() {
-      triggerKeyOnInput("2");
-      triggerKeyOnInput("4");
-      expect(getInputVal()).toEqual("+1 702");
+      triggerNativeKeyOnInput("2", input.inputElement);
+      triggerNativeKeyOnInput("4", input.inputElement);
+
+      expect(input.inputElement.value).toEqual("+1 702");
     });
 
     it("focusing input (at the maximum length) with cursor in middle, typing char doesnt do anything", function() {
-      triggerKeyOnInput("2");
-      input.focus();
-      input[0].setSelectionRange(4, 4);
-      triggerKeyOnInput("4");
-      expect(getInputVal()).toEqual("+1 702");
+      triggerNativeKeyOnInput("2", input.inputElement);
+      input.inputElement.focus();
+      input.inputElement.setSelectionRange(4, 4);
+      triggerNativeKeyOnInput("4", input.inputElement);
+
+      expect(input.inputElement.value).toEqual("+1 702");
     });
 
   });
@@ -100,11 +114,11 @@ describe("autoFormat option:", function() {
   describe("input with no initial value, init plugin with autoFormat enabled and nationalMode disabled", function() {
 
     beforeEach(function() {
-      input = $("<input>");
-      // must be in DOM for focus/keys to work
-      input.appendTo($("body"));
+      var element = document.createElement("input");
 
-      input.intlTelInput({
+      document.body.appendChild(element);
+
+      input = new IntlTelInput(element, {
         autoFormat: true,
         nationalMode: false
       });
@@ -117,22 +131,27 @@ describe("autoFormat option:", function() {
     });
 
     it("focusing the input adds the dial code and format suffix", function() {
-      input.focus();
-      expect(getInputVal()).toEqual("+1 ");
+      input.inputElement.focus();
+      expect(input.inputElement.value).toEqual("+1 ");
     });
 
     it("replacing the val with a number (faking a paste event) re-adds the plus", function() {
-      input.val("1");
-      input.trigger("paste");
+      input.inputElement.value = "1";
+
+      dispatchEvent(input.inputElement, "paste", true, false);
       jasmine.clock().tick(1);
-      expect(getInputVal()).toEqual("+1 ");
+
+      expect(input.inputElement.value).toEqual("+1 ");
     });
 
     it("replacing the val with an alpha (faking a paste event) re-adds the plus and removes the alpha", function() {
-      input.val("a");
-      input.trigger("paste");
+      // FXIME: tests still pass when this line is commented out -_-
+      input.inputElement.value = "a";
+
+      dispatchEvent(input.inputElement, "paste", true, false);
       jasmine.clock().tick(1);
-      expect(getInputVal()).toEqual("+");
+
+      expect(input.inputElement.value).toEqual("+");
     });
 
   });
@@ -145,29 +164,31 @@ describe("autoFormat option:", function() {
     var unformattedNumber = "+1 702 418 12 B",
       formattedNumber = "+1 702-418-12";
 
+    var element;
+
     beforeEach(function() {
-      input = $("<input value='" + unformattedNumber + "'>");
-      // must be in DOM for focus/keys to work
-      input.appendTo($("body"));
+      element = document.createElement("input");
+      element.value = unformattedNumber;
+
+      document.body.appendChild(element);
     });
 
 
     describe("init plugin with autoFormat disabled", function() {
 
       beforeEach(function() {
-        input.intlTelInput({
+        input = new IntlTelInput(element, {
           autoFormat: false
         });
       });
 
       it("initialising the plugin leaves the number the same", function() {
-        expect(input.val()).toEqual(unformattedNumber);
+        expect(input.inputElement.value).toEqual(unformattedNumber);
       });
 
       it("triggering alpha key at end of input adds the alpha char and leaves the rest", function() {
-        triggerKeyOnInput("A");
-
-        expect(input.val()).toEqual(unformattedNumber + "A");
+        triggerNativeKeyOnInput("A", input.inputElement);
+        expect(input.inputElement.value).toEqual(unformattedNumber + "A");
       });
 
     });
@@ -176,38 +197,41 @@ describe("autoFormat option:", function() {
     describe("init plugin with autoFormat enabled", function() {
 
       beforeEach(function() {
-        input.intlTelInput({
+        input = new IntlTelInput(element, {
           autoFormat: true
         });
       });
 
       it("initialising the plugin formats the number", function() {
-        expect(input.val()).toEqual(formattedNumber);
+        expect(input.inputElement.value).toEqual(formattedNumber);
       });
 
       it("triggering alpha key at end of input does not add the alpha char", function() {
         // we dont have to manually alter the input val as when autoFormat is enabled this is all done in the event handler
-        putCursorAtEnd();
-        triggerKeyOnInput("A");
-        expect(input.val()).toEqual(formattedNumber);
+        putCursorAtEnd(input.inputElement);
+        triggerNativeKeyOnInput("A", input.inputElement);
+
+        expect(input.inputElement.value).toEqual(formattedNumber);
       });
 
 
 
       it("adding a digit automatically adds any formatting suffix", function() {
-        input.val("+");
-        putCursorAtEnd();
+        input.inputElement.value = "+";
+        putCursorAtEnd(input.inputElement);
+
         // this is handled by the keypress handler, and so will insert the char for you
-        triggerKeyOnInput("1");
-        expect(input.val()).toEqual("+1 ");
+        triggerNativeKeyOnInput("1", input.inputElement);
+        expect(input.inputElement.value).toEqual("+1 ");
       });
 
       it("deleting a digit automatically removes any remaining formatting suffix", function() {
         // backspace key event is handled by the keyup handler, which expects the input val to already be updated, so instead of "+1 7", I have already removed the 7
-        input.val("+1 ");
-        putCursorAtEnd();
-        triggerKeyOnInput("BACKSPACE");
-        expect(input.val()).toEqual("+1");
+        input.inputElement.value = "+1 ";
+        putCursorAtEnd(input.inputElement);
+        triggerNativeKeyOnInput("BACKSPACE", input.inputElement);
+
+        expect(input.inputElement.value).toEqual("+1");
       });
 
 
@@ -216,22 +240,23 @@ describe("autoFormat option:", function() {
 
         beforeEach(function() {
           // e.g. imagine it was "+1 7" and we deleted the 7 and it auto-removed the rest
-          input.val("+1");
-          putCursorAtEnd();
+          input.inputElement.value = "+1";
+          putCursorAtEnd(input.inputElement);
         });
 
         it("hitting a number will re-add the formatting in between", function() {
           // this is handled by the keypress handler, and so will insert the char for you
-          triggerKeyOnInput("7");
-          expect(input.val()).toEqual("+1 7");
+          triggerNativeKeyOnInput("7", input.inputElement);
+          expect(input.inputElement.value).toEqual("+1 7");
         });
 
         it("hitting any non-number char (e.g. a space) will re-add the formatting suffix", function() {
           // this is handled by the keypress handler, and so will insert the char for you
-          triggerKeyOnInput(" ");
-          expect(input.val()).toEqual("+1 ");
+          triggerNativeKeyOnInput(" ", input.inputElement);
+          expect(input.inputElement.value).toEqual("+1 ");
+
           // and move the cursor to the end
-          expect(input[0].selectionStart).toEqual(input.val().length);
+          expect(input.inputElement.selectionStart).toEqual(input.inputElement.value.length);
         });
 
       });
@@ -245,22 +270,24 @@ describe("autoFormat option:", function() {
 
         beforeEach(function() {
           // formatted number is "+1 702-418-12" so this will be "702"
-          selectInputChars(cursorStart, cursorEnd);
+          input.inputElement.setSelectionRange(cursorStart, cursorEnd);
         });
 
         it("hitting a non-number char doesn't do anything", function() {
-          triggerKeyOnInput(" ");
-          expect(input.val()).toEqual(formattedNumber);
+          triggerNativeKeyOnInput(" ", input.inputElement);
+          expect(input.inputElement.value).toEqual(formattedNumber);
+
           // check selection remains
-          expect(input[0].selectionStart).toEqual(cursorStart);
-          expect(input[0].selectionEnd).toEqual(cursorEnd);
+          expect(input.inputElement.selectionStart).toEqual(cursorStart);
+          expect(input.inputElement.selectionEnd).toEqual(cursorEnd);
         });
 
         it("hitting a number char will replace the selection, reformat, and put the cursor in the right place", function() {
-          triggerKeyOnInput("9");
-          expect(input.val()).toEqual("+1 941-812-");
+          triggerNativeKeyOnInput("9", input.inputElement);
+          expect(input.inputElement.value).toEqual("+1 941-812-");
+
           // cursor
-          expect(input[0].selectionStart).toEqual(cursorStart + 1);
+          expect(input.inputElement.selectionStart).toEqual(cursorStart + 1);
         });
 
       });

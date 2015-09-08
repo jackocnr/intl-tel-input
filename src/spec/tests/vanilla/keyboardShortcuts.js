@@ -2,67 +2,77 @@
 
 describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to test keyboard shortcuts", function() {
 
+  var input;
+
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
-    input.intlTelInput({
+    input = new IntlTelInput(document.createElement("input"), {
       nationalMode: false
     });
   });
 
+  afterEach(function() {
+    input.destroy();
+    input = null;
+  });
+
   describe("when dropdown is closed", function () {
     beforeEach(function () {
-      getFlagsContainerElement().focus();
+      // FIXME: tests still pass when this line is commented out -_-
+      getFlagsContainerElement(input.inputElement).focus();
     });
 
     it("pressing UP opens the dropdown", function () {
-      triggerKeyOnFlagsContainerElement("UP");
-      expect(getListElement()).not.toHaveClass("hide");
+      triggerKeyOnFlagsContainerElement(input.inputElement, "UP");
+      expect(getListElement(input.inputElement)).not.toHaveClass("hide");
     });
 
     it("pressing DOWN opens the dropdown", function () {
-      triggerKeyOnFlagsContainerElement("DOWN");
-      expect(getListElement()).not.toHaveClass("hide");
+      triggerKeyOnFlagsContainerElement(input.inputElement, "DOWN");
+      expect(getListElement(input.inputElement)).not.toHaveClass("hide");
     });
 
     it("pressing SPACE opens the dropdown", function () {
-      triggerKeyOnFlagsContainerElement("SPACE");
-      expect(getListElement()).not.toHaveClass("hide");
+      triggerKeyOnFlagsContainerElement(input.inputElement, "SPACE");
+      expect(getListElement(input.inputElement)).not.toHaveClass("hide");
     });
 
     it("pressing ENTER opens the dropdown", function () {
-      triggerKeyOnFlagsContainerElement("ENTER");
-      expect(getListElement()).not.toHaveClass("hide");
+      triggerKeyOnFlagsContainerElement(input.inputElement, "ENTER");
+      expect(getListElement(input.inputElement)).not.toHaveClass("hide");
     });
   });
 
   describe("when dropdown is opened", function () {
     beforeEach(function () {
-      getSelectedFlagContainer().click();
+      dispatchEvent(getSelectedFlagContainer(input.inputElement), "click", true, false);;
     });
 
     it("pressing esc closes the popup", function() {
       triggerKeyOnBody("ESC");
-      expect(getListElement()).toHaveClass("hide");
+      expect(getListElement(input.inputElement)).toHaveClass("hide");
     });
 
     it("pressing up while on the top item does not change the highlighted item", function() {
+      var topItem = getListElement(input.inputElement).querySelector("li.country:first-child");
       triggerKeyOnBody("UP");
-      var topItem = getListElement().find("li.country:eq(0)");
+
       expect(topItem).toHaveClass("highlight");
     });
 
     it("pressing z highlights Zambia", function() {
+      var zambiaListItem = getListElement(input.inputElement).querySelector("li[data-country-code='zm']");
       triggerKeyOnBody("Z");
-      var zambiaListItem = getListElement().find("li[data-country-code='zm']");
+
       expect(zambiaListItem).toHaveClass("highlight");
     });
 
     it("pressing z three times also highlights Zambia (no further matches)", function() {
+      var zambiaListItem = getListElement(input.inputElement).querySelector("li[data-country-code='zm']");
       triggerKeyOnBody("Z");
       triggerKeyOnBody("Z");
       triggerKeyOnBody("Z");
-      var zambiaListItem = getListElement().find("li[data-country-code='zm']");
+
       expect(zambiaListItem).toHaveClass("highlight");
     });
 
@@ -71,14 +81,14 @@ describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to t
       var lastItem;
 
       beforeEach(function() {
-        lastItem = getListElement().find("li.country:last");
+        lastItem = getListElement(input.inputElement).querySelector("li.country:last-child");
         triggerKeyOnBody("Z");
         triggerKeyOnBody("I");
       });
 
       it("highlights the last item, which is Zimbabwe", function() {
+        expect(lastItem.getAttribute("data-country-code")).toEqual("zw");
         expect(lastItem).toHaveClass("highlight");
-        expect(lastItem.attr("data-country-code")).toEqual("zw");
       });
 
       it("pressing down while on the last item does not change the highlighted item", function() {
@@ -96,10 +106,11 @@ describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to t
       });
 
       it("changes the highlighted item", function() {
-        var listElement = getListElement();
-        var topItem = listElement.find("li.country:eq(0)");
+        var listElement = getListElement(input.inputElement);
+        var topItem = listElement.querySelector("li.country:first-child");
+        var secondItem = listElement.querySelector("li.country:nth-child(2)");
+
         expect(topItem).not.toHaveClass("highlight");
-        var secondItem = listElement.find("li.country:eq(1)");
         expect(secondItem).toHaveClass("highlight");
       });
 
@@ -112,29 +123,25 @@ describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to t
         });
 
         it("changes the active item", function() {
-          var listElement = getListElement();
-          var topItem = listElement.find("li.country:eq(0)");
+          var listElement = getListElement(input.inputElement);
+          var topItem = listElement.querySelector("li.country:first-child");
+          var secondItem = listElement.querySelector("li.country:nth-child(2)");
+
           expect(topItem).not.toHaveClass("active");
-          var secondItem = listElement.find("li.country:eq(1)");
           expect(secondItem).toHaveClass("active");
         });
 
         it("closes the dropdown", function() {
-          expect(getListElement()).toHaveClass("hide");
+          expect(getListElement(input.inputElement)).toHaveClass("hide");
         });
 
         it("updates the dial code", function() {
-          expect(getInputVal()).toEqual("+44");
+          expect(input.inputElement.value).toEqual("+44");
         });
 
       });
 
     });
-  });
-
-  afterEach(function() {
-    input.intlTelInput("destroy");
-    input = null;
   });
 
 });

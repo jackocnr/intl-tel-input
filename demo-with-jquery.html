@@ -13,9 +13,11 @@
       <button type="submit">Submit</button>
     </form>
 
+    <!-- Load jQuery from CDN so can run demo immediately -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="build/js/intlTelInput.js"></script>
     <script>
-      intlTelInput = new IntlTelInput(document.getElementById("phone"), {
+      $("#phone").intlTelInput({
         //allowExtensions: true,
         //autoFormat: false,
         //autoHideDialCode: false,
