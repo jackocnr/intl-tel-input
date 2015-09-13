@@ -106,6 +106,13 @@ var allCountries = [
     "61"
   ],
   [
+    "Australian Antarctic Territory",
+    "aq",
+    "672"
+    0,
+    ["1"]
+  ],
+  [
     "Austria (Österreich)",
     "at",
     "43"
@@ -807,7 +814,9 @@ var allCountries = [
   [
     "Norfolk Island",
     "nf",
-    "672"
+    "672",
+    1,
+    ["3"]
   ],
   [
     "North Korea (조선 민주주의 인민 공화국)",
