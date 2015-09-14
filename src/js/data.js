@@ -15,7 +15,6 @@
 // UPDATE Sept 12th 2015
 // List of regions that have iso2 country codes, which I have chosen to omit:
 // (based on this information: https://en.wikipedia.org/wiki/List_of_country_calling_codes)
-// AQ - Antarctica - all different country codes depending on which "base"
 // AX - Åland Islands - region of Finland (same calling code)
 // BV - Bouvet Island - no calling code
 // CC - Cocos (Keeling) Islands - territory of Australia (same calling code)
@@ -104,6 +103,13 @@ var allCountries = [
     "Australia",
     "au",
     "61"
+  ],
+  [
+    "Australian Antarctic Territory",
+    "aq",
+    "672"
+    0,
+    ["1"]
   ],
   [
     "Austria (Österreich)",
@@ -807,7 +813,9 @@ var allCountries = [
   [
     "Norfolk Island",
     "nf",
-    "672"
+    "672",
+    1,
+    ["3"]
   ],
   [
     "North Korea (조선 민주주의 인민 공화국)",
