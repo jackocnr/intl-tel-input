@@ -660,6 +660,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     top: pos.top + inputHeight,
                     left: pos.left
                 });
+                // close menu on body scroll
+                $("body").off("scroll" + this.ns).on("scroll" + this.ns, function() {
+                    if (!that.countryList.hasClass("hide")) that._closeDropdown();
+                });
                 this.dropdown.appendTo(this.options.dropdownContainer);
             }
         },
