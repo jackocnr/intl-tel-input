@@ -26,10 +26,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         autoHideDialCode: true,
         // add or remove input placeholder with an example number for the selected country
         autoPlaceholder: true,
-        // append menu to a specific element
-        dropdownContainer: false,
         // default country
         defaultCountry: "",
+        // append menu to a specific element
+        dropdownContainer: false,
         // geoIp lookup function
         geoIpLookup: null,
         // don't insert international dial codes
