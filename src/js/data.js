@@ -4,25 +4,6 @@
 // Array of country objects for the flag dropdown.
 // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
 // Originally from https://github.com/mledoze/countries
-// then modified using the following JavaScript (NOW OUT OF DATE):
-
-/*
-var result = [];
-_.each(countries, function(c) {
-  // ignore countries without a dial code
-  if (c.callingCode[0].length) {
-    result.push({
-      // var locals contains country names with localised versions in brackets
-      n: _.findWhere(locals, {
-        countryCode: c.cca2
-      }).name,
-      i: c.cca2.toLowerCase(),
-      d: c.callingCode[0]
-    });
-  }
-});
-JSON.stringify(result);
-*/
 
 // then with a couple of manual re-arrangements to be alphabetical
 // then changed Kazakhstan from +76 to +7
@@ -30,6 +11,26 @@ JSON.stringify(result);
 // and Caribean Netherlands from +5997 to +599
 // and Curacao from +5999 to +599
 // Removed: Åland Islands, Christmas Island, Cocos Islands, Guernsey, Isle of Man, Jersey, Kosovo, Mayotte, Pitcairn Islands, South Georgia, Svalbard, Western Sahara
+
+// UPDATE Sept 12th 2015
+// List of regions that have iso2 country codes, which I have chosen to omit:
+// (based on this information: https://en.wikipedia.org/wiki/List_of_country_calling_codes)
+// AQ - Antarctica - all different country codes depending on which "base"
+// AX - Åland Islands - region of Finland (same calling code)
+// BV - Bouvet Island - no calling code
+// CC - Cocos (Keeling) Islands - territory of Australia (same calling code)
+// CX - Christmas Island - territory of Australia (same calling code)
+// EH - Western Sahara - disputed territory (calling code is same as Morocco)
+// GG - Guernsey - territory of Britain (same calling code)
+// GS - South Georgia and the South Sandwich Islands - "inhospitable collection of islands" - same flag and calling code as Falkland Islands
+// HM - Heard Island and McDonald Islands - no calling code
+// IM - Isle of Man - territory of Britain (same calling code)
+// JE - Jersey - territory of Britain (same calling code)
+// PN - Pitcairn - tiny population (56), same calling code as New Zealand
+// SJ - Svalbard and Jan Mayen - territories of Norway (same calling code)
+// TF - French Southern Territories - no calling code
+// UM - United States Minor Outlying Islands - no calling code
+// YT - Mayotte - territory of France, same calling code as Réunion
 
 // Update: converted objects to arrays to save bytes!
 // Update: added "priority" for countries with the same dialCode as others
