@@ -103,6 +103,10 @@ customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
 Type: `String` Default: `""`  
 Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). When instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when it is finished. If you leave `defaultCountry` blank, it will default to the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [jquery-cookie](https://github.com/carhartl/jquery-cookie) plugin, it will store the loaded country code in a cookie for future use._
 
+**dropdownContainer**  
+Type: `String | false` Default: `false`
+Appends the country list menu to a specific element. Example: `dropdownContainer: 'body'`. This option is particularly useful for cases when the input is within a scrolling element or an element with `overflow: hidden`.
+
 **geoIpLookup**  
 Type: `Function` Default: `null`  
 When setting `defaultCountry` to `"auto"`, we need to use a special service to lookup the location data for the user. Write a custom method to get the country code. For example if you use [ipinfo.io](http://ipinfo.io/):  
