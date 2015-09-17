@@ -661,7 +661,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     left: pos.left
                 });
                 // close menu on body scroll
-                $("body").off("scroll" + this.ns).on("scroll" + this.ns, function() {
+                $("body").on("scroll" + this.ns, function() {
                     that._closeDropdown();
                 });
                 this.dropdown.appendTo(this.options.dropdownContainer);
