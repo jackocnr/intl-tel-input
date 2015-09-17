@@ -792,7 +792,7 @@ Plugin.prototype = {
 
       // close menu on body scroll
       $("body").off("scroll" + this.ns).on("scroll" + this.ns, function () {
-        if (!that.countryList.hasClass("hide")) that._closeDropdown();
+        that._closeDropdown();
       });
       
       this.dropdown.appendTo(this.options.dropdownContainer);
@@ -1096,7 +1096,10 @@ Plugin.prototype = {
     // unbind hover and click listeners
     this.countryList.off(this.ns);
     // remove menu from container
-    if (this.options.dropdownContainer && !this.isMobile) this.dropdown.detach();
+    if (this.options.dropdownContainer && !this.isMobile) {
+      $("body").off("scroll" + this.ns);
+      this.dropdown.detach();
+    }
   },
 
 

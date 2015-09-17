@@ -662,7 +662,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 });
                 // close menu on body scroll
                 $("body").off("scroll" + this.ns).on("scroll" + this.ns, function() {
-                    if (!that.countryList.hasClass("hide")) that._closeDropdown();
+                    that._closeDropdown();
                 });
                 this.dropdown.appendTo(this.options.dropdownContainer);
             }
@@ -914,7 +914,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // unbind hover and click listeners
             this.countryList.off(this.ns);
             // remove menu from container
-            if (this.options.dropdownContainer && !this.isMobile) this.dropdown.detach();
+            if (this.options.dropdownContainer && !this.isMobile) {
+                $("body").off("scroll" + this.ns);
+                this.dropdown.detach();
+            }
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element, middle) {
