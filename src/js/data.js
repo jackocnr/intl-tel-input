@@ -20,17 +20,12 @@
 // BV - Bouvet Island - no calling code
 // CC - Cocos (Keeling) Islands - territory of Australia (same calling code)
 // CX - Christmas Island - territory of Australia (same calling code)
-// EH - Western Sahara - disputed territory (calling code is same as Morocco)
-// GG - Guernsey - territory of Britain (same calling code)
 // GS - South Georgia and the South Sandwich Islands - "inhospitable collection of islands" - same flag and calling code as Falkland Islands
 // HM - Heard Island and McDonald Islands - no calling code
-// IM - Isle of Man - territory of Britain (same calling code)
-// JE - Jersey - territory of Britain (same calling code)
 // PN - Pitcairn - tiny population (56), same calling code as New Zealand
 // SJ - Svalbard and Jan Mayen - territories of Norway (same calling code)
 // TF - French Southern Territories - no calling code
 // UM - United States Minor Outlying Islands - no calling code
-// YT - Mayotte - territory of France, same calling code as Réunion
 
 // Update: converted objects to arrays to save bytes!
 // Update: added "priority" for countries with the same dialCode as others
