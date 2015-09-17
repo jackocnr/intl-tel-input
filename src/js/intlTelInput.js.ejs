@@ -768,7 +768,8 @@ Plugin.prototype = {
 
   // decide where to position dropdown (depends on position within viewport, and scroll)
   _setDropdownPosition: function() {
-    var pos = this.telInput.offset(),
+    var that = this,
+      pos = this.telInput.offset(),
       inputTop = pos.top,
       windowTop = $(window).scrollTop(),
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
