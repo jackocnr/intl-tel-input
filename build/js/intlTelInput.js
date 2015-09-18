@@ -204,8 +204,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }).appendTo(this.flagsContainer);
             } else {
                 this.countryList = $("<ul>", {
-                    "class": "country-list v-hide"
-                }).appendTo(this.flagsContainer);
+                    "class": "country-list hide"
+                });
                 if (this.preferredCountries.length && !this.isMobile) {
                     this._appendListItems(this.preferredCountries, "preferred");
                     $("<li>", {
@@ -215,9 +215,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             this._appendListItems(this.countries, "");
             if (!this.isMobile) {
-                // now we can grab the dropdown height, and hide it properly
-                this.dropdownHeight = this.countryList.outerHeight();
-                this.countryList.removeClass("v-hide").addClass("hide");
                 // this is useful in lots of places
                 this.countryListItems = this.countryList.children(".country");
                 // create dropdownContainer markup
@@ -228,6 +225,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     $("<div>", {
                         "class": "flag-dropdown"
                     }).appendTo(this.dropdown).append(this.countryList);
+                } else {
+                    this.countryList.appendTo(this.flagsContainer);
                 }
             }
         },
@@ -635,8 +634,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (activeListItem.length) {
                 this._highlightListItem(activeListItem);
             }
-            // show it
-            this.countryList.removeClass("hide");
             if (activeListItem.length) {
                 this._scrollTo(activeListItem);
             }
@@ -647,13 +644,16 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
-            var that = this, pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
-            dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop;
+            var showDropdownContainer = this.options.dropdownContainer && !this.isMobile;
+            if (showDropdownContainer) this.dropdown.appendTo(this.options.dropdownContainer);
+            var that = this, pos = this.telInput.offset(), // show the menu and grab the dropdown height
+            dropdownHeight = this.countryList.removeClass("hide").outerHeight(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
+            dropdownFitsBelow = inputTop + this.telInput.outerHeight() + dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
             // dropdownHeight - 1 for border
-            var cssTop = !dropdownFitsBelow && dropdownFitsAbove ? "-" + (this.dropdownHeight - 1) + "px" : "";
+            var cssTop = !dropdownFitsBelow && dropdownFitsAbove ? "-" + (dropdownHeight - 1) + "px" : "";
             this.countryList.css("top", cssTop);
-            // if container calculate postion and append this.dropdown to container
-            if (this.options.dropdownContainer && !this.isMobile) {
+            // if dropdownContainer is enabled, calculate postion
+            if (showDropdownContainer) {
                 var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
                 // calculate placement
                 this.dropdown.css({
@@ -664,7 +664,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 $("body").on("scroll" + this.ns, function() {
                     that._closeDropdown();
                 });
-                this.dropdown.appendTo(this.options.dropdownContainer);
             }
         },
         // we only bind dropdown listeners when the dropdown is open
