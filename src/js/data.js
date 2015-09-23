@@ -20,17 +20,12 @@
 // BV - Bouvet Island - no calling code
 // CC - Cocos (Keeling) Islands - territory of Australia (same calling code)
 // CX - Christmas Island - territory of Australia (same calling code)
-// EH - Western Sahara - disputed territory (calling code is same as Morocco)
-// GG - Guernsey - territory of Britain (same calling code)
 // GS - South Georgia and the South Sandwich Islands - "inhospitable collection of islands" - same flag and calling code as Falkland Islands
 // HM - Heard Island and McDonald Islands - no calling code
-// IM - Isle of Man - territory of Britain (same calling code)
-// JE - Jersey - territory of Britain (same calling code)
 // PN - Pitcairn - tiny population (56), same calling code as New Zealand
 // SJ - Svalbard and Jan Mayen - territories of Norway (same calling code)
 // TF - French Southern Territories - no calling code
 // UM - United States Minor Outlying Islands - no calling code
-// YT - Mayotte - territory of France, same calling code as Réunion
 
 // Update: converted objects to arrays to save bytes!
 // Update: added "priority" for countries with the same dialCode as others
@@ -483,6 +478,12 @@ var allCountries = [
     "502"
   ],
   [
+    "Guernsey",
+    "gg",
+    "44",
+    1
+  ],
+  [
     "Guinea (Guinée)",
     "gn",
     "224"
@@ -548,6 +549,12 @@ var allCountries = [
     "353"
   ],
   [
+    "Isle of Man",
+    "im",
+    "44",
+    2
+  ],
+  [
     "Israel (‫ישראל‬‎)",
     "il",
     "972"
@@ -567,6 +574,12 @@ var allCountries = [
     "Japan (日本)",
     "jp",
     "81"
+  ],
+  [
+    "Jersey",
+    "je",
+    "44",
+    3
   ],
   [
     "Jordan (‫الأردن‬‎)",
@@ -705,6 +718,12 @@ var allCountries = [
     "230"
   ],
   [
+    "Mayotte",
+    "yt",
+    "262",
+    1
+  ],
+  [
     "Mexico (México)",
     "mx",
     "52"
@@ -742,7 +761,8 @@ var allCountries = [
   [
     "Morocco (‫المغرب‬‎)",
     "ma",
-    "212"
+    "212",
+    0
   ],
   [
     "Mozambique (Moçambique)",
@@ -894,7 +914,8 @@ var allCountries = [
   [
     "Réunion (La Réunion)",
     "re",
-    "262"
+    "262",
+    0
   ],
   [
     "Romania (România)",
@@ -1167,7 +1188,8 @@ var allCountries = [
   [
     "United Kingdom",
     "gb",
-    "44"
+    "44",
+    0
   ],
   [
     "United States",
@@ -1210,6 +1232,12 @@ var allCountries = [
     "Wallis and Futuna",
     "wf",
     "681"
+  ],
+  [
+    "Western Sahara (‫الصحراء الغربية‬‎)",
+    "eh",
+    "212",
+    1
   ],
   [
     "Yemen (‫اليمن‬‎)",
