@@ -1144,21 +1144,22 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     // and Vatican City from +379 to +39 (see issue 50)
     // and Caribean Netherlands from +5997 to +599
     // and Curacao from +5999 to +599
-    // Removed: Åland Islands, Christmas Island, Cocos Islands, Guernsey, Isle of Man, Jersey, Kosovo, Mayotte, Pitcairn Islands, South Georgia, Svalbard, Western Sahara
+    // Removed:  Kosovo, Pitcairn Islands, South Georgia
     // UPDATE Sept 12th 2015
     // List of regions that have iso2 country codes, which I have chosen to omit:
     // (based on this information: https://en.wikipedia.org/wiki/List_of_country_calling_codes)
     // AQ - Antarctica - all different country codes depending on which "base"
-    // AX - Åland Islands - region of Finland (same calling code)
     // BV - Bouvet Island - no calling code
-    // CC - Cocos (Keeling) Islands - territory of Australia (same calling code)
-    // CX - Christmas Island - territory of Australia (same calling code)
     // GS - South Georgia and the South Sandwich Islands - "inhospitable collection of islands" - same flag and calling code as Falkland Islands
     // HM - Heard Island and McDonald Islands - no calling code
     // PN - Pitcairn - tiny population (56), same calling code as New Zealand
-    // SJ - Svalbard and Jan Mayen - territories of Norway (same calling code)
     // TF - French Southern Territories - no calling code
     // UM - United States Minor Outlying Islands - no calling code
+    // UPDATE the criteria of supported countries or territories (see issue 297)
+    // Have an iso2 code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+    // Have a country calling code: https://en.wikipedia.org/wiki/List_of_country_calling_codes
+    // Have a flag
+    // Must be supported by libphonenumber: https://github.com/googlei18n/libphonenumber
     // Update: converted objects to arrays to save bytes!
     // Update: added "priority" for countries with the same dialCode as others
     // Update: added array of area codes for countries with the same dialCode as others
