@@ -793,7 +793,7 @@ Plugin.prototype = {
       });
 
       // close menu on body scroll
-      $("body").on("scroll" + this.ns, function () {
+      $(window).on("scroll" + this.ns, function () {
         that._closeDropdown();
       });
     }
@@ -1097,7 +1097,7 @@ Plugin.prototype = {
     this.countryList.off(this.ns);
     // remove menu from container
     if (this.options.dropdownContainer && !this.isMobile) {
-      $("body").off("scroll" + this.ns);
+      $(window).off("scroll" + this.ns);
       this.dropdown.detach();
     }
   },
