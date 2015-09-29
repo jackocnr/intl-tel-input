@@ -105,11 +105,11 @@ Set the default country by it's country code. You can also set it to `"auto"`, w
 
 **dropdownContainer**  
 Type: `String | false` Default: `false`  
-Appends the country list menu to a specific element. Example: `dropdownContainer: 'body'`. This option is particularly useful for cases when the input is within a scrolling element or an element with `overflow: hidden`. The menu is automatically closed on `'body'` scroll to prevent positioning issues. If you want the menu to close when a different element is scrolled (such as the input's parent), simply listen for the scroll event on that element, and trigger `$('body').scroll()`.
+Appends the country list menu to a specific element. Example: `dropdownContainer: 'body'`. This option is particularly useful for cases when the input is within a scrolling element or an element with `overflow: hidden`. The menu is automatically closed on `'body'` scroll to prevent positioning issues. If you want the menu to close when a different element is scrolled (such as the input's parent), simply listen for the scroll event on that element, and trigger `$(window).scroll()`.
 
 ```js
 $('#scrollingElement').scroll(function() {
-  $('body').scroll();
+  $(window).scroll();
 });
 ```
 
