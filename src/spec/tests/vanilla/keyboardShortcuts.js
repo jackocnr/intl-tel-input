@@ -66,7 +66,7 @@ describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to t
       expect(zambiaListItem).toHaveClass("highlight");
     });
 
-    describe("typing z then i", function() {
+    describe("typing z then i then DOWN", function() {
 
       var lastItem;
 
@@ -74,11 +74,12 @@ describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to t
         lastItem = getListElement().find("li.country:last");
         triggerKeyOnBody("Z");
         triggerKeyOnBody("I");
+        triggerKeyOnBody("DOWN");
       });
 
-      it("highlights the last item, which is Zimbabwe", function() {
+      it("highlights the last item, which is Åland Islands", function() {
         expect(lastItem).toHaveClass("highlight");
-        expect(lastItem.attr("data-country-code")).toEqual("zw");
+        expect(lastItem.attr("data-country-code")).toEqual("ax");
       });
 
       it("pressing down while on the last item does not change the highlighted item", function() {
