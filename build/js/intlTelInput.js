@@ -661,7 +661,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     left: pos.left
                 });
                 // close menu on body scroll
-                $("body").on("scroll" + this.ns, function() {
+                $(window).on("scroll" + this.ns, function() {
                     that._closeDropdown();
                 });
             }
@@ -914,7 +914,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.countryList.off(this.ns);
             // remove menu from container
             if (this.options.dropdownContainer && !this.isMobile) {
-                $("body").off("scroll" + this.ns);
+                $(window).off("scroll" + this.ns);
                 this.dropdown.detach();
             }
         },
