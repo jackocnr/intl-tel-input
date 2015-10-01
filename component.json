@@ -1,7 +1,7 @@
 {
   "name": "intl-tel-input",
   "repo": "Bluefieldscom/intl-tel-input",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "scripts": ["index.js"],
   "dependencies": {
     "jquery": ">=1.7"
