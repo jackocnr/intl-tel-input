@@ -1033,22 +1033,21 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         loadUtils: function(path) {
             var that = this;
             var utilsScript = path || this.options.utilsScript;
-            if (!$.fn[pluginName].loadedUtilsScript && utilsScript) {
-                // don't do this twice! (dont just check if the global intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
-                $.fn[pluginName].loadedUtilsScript = true;
-                // dont use $.getScript as it prevents caching
-                $.ajax({
-                    url: utilsScript,
-                    success: function() {
-                        // tell all instances the utils are ready
-                        $(".intl-tel-input input").intlTelInput("utilsLoaded");
-                    },
-                    complete: function() {
-                        that.utilsScriptDeferred.resolve();
-                    },
-                    dataType: "script",
-                    cache: true
-                });
+            if (utilsScript) {
+                if (!$.fn[pluginName].loadedUtilsScript) {
+                    // don't do this twice! (dont just check if the global intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
+                    $.fn[pluginName].loadedUtilsScript = true;
+                    // dont use $.getScript as it prevents caching
+                    $.ajax({
+                        url: utilsScript,
+                        complete: function() {
+                            // tell all instances that the utils request is complete
+                            $(".intl-tel-input input").intlTelInput("utilsRequestComplete");
+                        },
+                        dataType: "script",
+                        cache: true
+                    });
+                }
             } else {
                 this.utilsScriptDeferred.resolve();
             }
@@ -1072,13 +1071,17 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this._updateFlagFromNumber(number);
             this._updateVal(number, format, addSuffix, preventConversion, isAllowedKey);
         },
-        // this is called when the utils are ready
-        utilsLoaded: function() {
-            // if autoFormat is enabled and there's an initial value in the input, then format it
-            if (this.options.autoFormat && this.telInput.val()) {
-                this._updateVal(this.telInput.val());
+        // this is called when the utils request completes
+        utilsRequestComplete: function() {
+            // if the request was successful
+            if (window.intlTelInputUtils) {
+                // if autoFormat is enabled and there's an initial value in the input, then format it
+                if (this.options.autoFormat && this.telInput.val()) {
+                    this._updateVal(this.telInput.val());
+                }
+                this._updatePlaceholder();
             }
-            this._updatePlaceholder();
+            this.utilsScriptDeferred.resolve();
         }
     };
     // adapted to allow public functions
