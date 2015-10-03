@@ -27,8 +27,9 @@ module.exports = function(grunt) {
       },
       files: [{
         expand: true,
-        cwd: "region-flags/png/",
-        src: ['*.png'],
+        cwd: "bower_components/region-flags/png/",
+        // only 2-letter files (not sub-regions)
+        src: ['??.png'],
         dest: 'src/img/flags/@2x/'
       }]
     }
