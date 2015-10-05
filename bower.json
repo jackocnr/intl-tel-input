@@ -11,6 +11,7 @@
     "jquery": ">=1.7"
   },
   "devDependencies": {
-    "jasmine-jquery": "~2.0.2"
+    "jasmine-jquery": "~2.0.2",
+    "region-flags": "1.0.0"
   }
 }
