@@ -248,11 +248,7 @@ Plugin.prototype = {
       if (this.options.dropdownContainer) {
         this.dropdown = $("<div>", {
           "class": "intl-tel-input iti-container"
-        });
-
-        $("<div>", {
-          "class": "flag-dropdown"
-        }).appendTo(this.dropdown).append(this.countryList);
+        }).append(this.countryList);
       } else {
         this.countryList.appendTo(this.flagsContainer);
       }
@@ -768,31 +764,33 @@ Plugin.prototype = {
 
     if (showDropdownContainer) this.dropdown.appendTo(this.options.dropdownContainer);
 
+    // show the menu and grab the dropdown height
+    this.dropdownHeight = this.countryList.removeClass("hide").outerHeight();
+
     var that = this,
       pos = this.telInput.offset(),
-      // show the menu and grab the dropdown height
-      dropdownHeight = this.countryList.removeClass("hide").outerHeight(),
       inputTop = pos.top,
       windowTop = $(window).scrollTop(),
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
-      dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + dropdownHeight < windowTop + $(window).height()),
-      dropdownFitsAbove = (inputTop - dropdownHeight > windowTop);
+      dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height()),
+      dropdownFitsAbove = (inputTop - this.dropdownHeight > windowTop),
+      // by default, the dropdown will be below the input (due to the height of the selected flag element). If we want to position it above the input, we need to change it's "top" value. Setting top: 0 would position it directly over the input, so we set it to minus it's height so it appears above.
+      cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (this.dropdownHeight - 1) + "px" : "";
 
-    // dropdownHeight - 1 for border
-    var cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (dropdownHeight - 1) + "px" : "";
     this.countryList.css("top", cssTop);
     
     // if dropdownContainer is enabled, calculate postion
     if (showDropdownContainer) {
-      var inputHeight = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
+      // by default the dropdown will be directly over the input because it's not in the flow. If we want to position it below, we need to add some extra top value.
+      var extraTop = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
       
       // calculate placement
       this.dropdown.css({
-        "top": pos.top + inputHeight,
+        "top": inputTop + extraTop,
         "left": pos.left
       });
 
-      // close menu on body scroll
+      // close menu on window scroll
       $(window).on("scroll" + this.ns, function () {
         that._closeDropdown();
       });

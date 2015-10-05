@@ -233,6 +233,10 @@ $flagsImageExtension: "png" !default;
   // if dropdownContainer option is set, increase z-index to prevent display issues
   &.iti-container {
     position: absolute;
+    top: 0;
+    left: 0;
+    // to keep consistent with .flag-dropdown
+    padding: $borderWidth;
     z-index: 1060; // higher than default Bootstrap modal z-index of 1050
   }
 }
