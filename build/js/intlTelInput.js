@@ -180,7 +180,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 "class": "intl-tel-input"
             }));
             this.flagsContainer = $("<div>", {
-                "class": "flag-dropdown"
+                "class": "flag-container"
             }).insertBefore(this.telInput);
             // currently selected flag (displayed to left of input)
             var selectedFlag = $("<div>", {
