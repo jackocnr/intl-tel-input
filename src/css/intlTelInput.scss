@@ -235,9 +235,13 @@ $flagsImageExtension: "png" !default;
     position: absolute;
     top: 0;
     left: 0;
-    // to keep consistent with .flag-container
+    // higher than default Bootstrap modal z-index of 1050
+    z-index: 1060;
+    // to keep styling consistent with .flag-container
     padding: $borderWidth;
-    z-index: 1060; // higher than default Bootstrap modal z-index of 1050
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
