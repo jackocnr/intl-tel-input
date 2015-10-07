@@ -26,6 +26,10 @@ $flagPadding: 8px !default;
 // assumed to be the border width of the input, which we do not control
 $borderWidth: 1px !default;
 
+// spacing between flag, country name and dial code in the countries list dropdown
+$countryListSpacing: 6px !default;
+
+
 $arrowHeight: 4px !default;
 $arrowWidth: 6px !default;
 $triangleBorder: 3px !default;
@@ -212,10 +216,11 @@ $flagsImageExtension: "png" !default;
 
     // spacing between country flag, name and dial code
     .flag, .country-name, .dial-code {
+      display: inline-block;
       vertical-align: middle;
     }
     .flag, .country-name {
-      margin-right: 6px;
+      margin-right: $countryListSpacing;
     }
   }
 
@@ -228,6 +233,41 @@ $flagsImageExtension: "png" !default;
     width: $selectedFlagWidth;
     height: 100%;
     opacity: 0;
+  }
+  
+  // right-to-left
+  &.iti-rtl {
+    direction: rtl;
+    
+    input, input[type=text], input[type=tel] {
+      // cancel left padding and set it as right padding
+      padding-left: 0;
+      padding-right: $selectedFlagWidth + $inputPadding;
+      
+      // for RTL languages, the phone number should be LTR and right-aligned
+      direction: ltr !important;
+      text-align: right;
+    }
+    
+    .selected-flag {
+      padding-left: 0;
+      
+      .iti-flag {
+        left: $flagPadding;
+      }
+    }
+    
+    .country-list {
+      .flag, .country-name {
+        // cancel right margin and set it as left margin
+        margin-left: $countryListSpacing;
+        margin-right: 0;
+      }
+      .dial-code {
+        // dial codes should be LTR
+        direction: ltr;
+      }
+    }
   }
 }
 

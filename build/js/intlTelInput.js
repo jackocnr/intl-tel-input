@@ -39,7 +39,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // the countries at the top of the list. defaults to united states and united kingdom
         preferredCountries: [ "us", "gb" ],
         // specify the path to the libphonenumber script to enable validation/formatting
-        utilsScript: ""
+        utilsScript: "",
+        // format intlTelInput for right-to-left languages
+        rtl: false
     }, keys = {
         UP: 38,
         DOWN: 40,
@@ -177,6 +179,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.telInput.wrap($("<div>", {
                 "class": "intl-tel-input"
             }));
+            this.telInputRootElement = this.telInput.parent();
             this.flagsContainer = $("<div>", {
                 "class": "flag-dropdown"
             }).insertBefore(this.telInput);
@@ -218,6 +221,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.countryList.removeClass("v-hide").addClass("hide");
                 // this is useful in lots of places
                 this.countryListItems = this.countryList.children(".country");
+            }
+            // add the RTL class if requested
+            if (this.options.rtl === true) {
+                this.telInputRootElement.addClass("iti-rtl");
             }
         },
         // add a country <li> to the countryList <ul> container
