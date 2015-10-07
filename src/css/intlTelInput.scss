@@ -212,6 +212,7 @@ $flagsImageExtension: "png" !default;
 
     // spacing between country flag, name and dial code
     .flag, .country-name, .dial-code {
+      display: inline-block;
       vertical-align: middle;
     }
     .flag, .country-name {
@@ -228,6 +229,41 @@ $flagsImageExtension: "png" !default;
     width: $selectedFlagWidth;
     height: 100%;
     opacity: 0;
+  }
+  
+  // right-to-left
+  &.iti-rtl {
+    direction: rtl;
+    
+    input, input[type=text], input[type=tel] {
+      // cancel left padding and set it as right padding
+      padding-left: 0;
+      padding-right: $selectedFlagWidth + $inputPadding;
+      
+      // for RTL languages, the phone number should be LTR and right-aligned
+      direction: ltr !important;
+      text-align: right;
+    }
+    
+    .selected-flag {
+      padding-left: 0;
+      
+      .iti-flag {
+        left: $flagPadding;
+      }
+    }
+    
+    .country-list {
+      .flag, .country-name {
+        // cancel right margin and set it as left margin
+        margin-left: 6px;
+        margin-right: 0;
+      }
+      .dial-code {
+        // dial codes should be LTR
+        direction: ltr;
+      }
+    }
   }
 }
 
