@@ -773,11 +773,10 @@ Plugin.prototype = {
       windowTop = $(window).scrollTop(),
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
       dropdownFitsBelow = (inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height()),
-      dropdownFitsAbove = (inputTop - this.dropdownHeight > windowTop),
-      // by default, the dropdown will be below the input (due to the height of the selected flag element). If we want to position it above the input, we need to change it's "top" value. Setting top: 0 would position it directly over the input, so we set it to minus it's height so it appears above.
-      cssTop = (!dropdownFitsBelow && dropdownFitsAbove) ? "-" + (this.dropdownHeight - 1) + "px" : "";
+      dropdownFitsAbove = (inputTop - this.dropdownHeight > windowTop);
 
-    this.countryList.css("top", cssTop);
+    // by default, the dropdown will be below the input. If we want to position it above the input, we add the dropup class.
+    this.countryList.toggleClass("dropup", !dropdownFitsBelow && dropdownFitsAbove);
     
     // if dropdownContainer is enabled, calculate postion
     if (showDropdownContainer) {

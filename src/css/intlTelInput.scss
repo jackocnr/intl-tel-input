@@ -166,6 +166,12 @@ $flagsImageExtension: "png" !default;
     // popup so render above everything else
     z-index: 2;
 
+    // place menu above the input element
+    &.dropup {
+      bottom: 100%;
+      margin-bottom: (-$borderWidth);
+    }
+
     // inline flags
     .flag {
       display: inline-block;
