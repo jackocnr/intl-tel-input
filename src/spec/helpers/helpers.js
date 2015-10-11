@@ -70,7 +70,7 @@ var getSelectedFlagElement = function(i) {
 
 var getFlagsContainerElement = function(i) {
   i = i || input;
-  return i.parent().find(".flag-dropdown");
+  return i.parent().find(".flag-container");
 };
 
 var selectFlag = function(countryCode, i) {

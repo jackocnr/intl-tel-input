@@ -95,7 +95,7 @@ $flagsImageExtension: "png" !default;
     background-color: #FFC7C7;
   }
 
-  .flag-dropdown {
+  .flag-container {
     // positioned over the top of the input
     position: absolute;
     // full height
@@ -105,14 +105,14 @@ $flagsImageExtension: "png" !default;
     padding: $borderWidth;
   }
   // hover state - show flag is clickable
-  .flag-dropdown:hover {
+  .flag-container:hover {
     cursor: pointer;
     .selected-flag {
       background-color: $hoverColor;
     }
   }
   // disable hover state when input is disabled
-  input[disabled] + .flag-dropdown:hover, input[readonly] + .flag-dropdown:hover {
+  input[disabled] + .flag-container:hover, input[readonly] + .flag-container:hover {
     cursor: default;
     .selected-flag {
       background-color: transparent;
@@ -165,6 +165,12 @@ $flagsImageExtension: "png" !default;
     position: absolute;
     // popup so render above everything else
     z-index: 2;
+
+    // place menu above the input element
+    &.dropup {
+      bottom: 100%;
+      margin-bottom: (-$borderWidth);
+    }
 
     // inline flags
     .flag {
@@ -228,6 +234,20 @@ $flagsImageExtension: "png" !default;
     width: $selectedFlagWidth;
     height: 100%;
     opacity: 0;
+  }
+
+  // if dropdownContainer option is set, increase z-index to prevent display issues
+  &.iti-container {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    // higher than default Bootstrap modal z-index of 1050
+    z-index: 1060;
+    // to keep styling consistent with .flag-container
+    padding: $borderWidth;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 

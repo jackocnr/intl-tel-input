@@ -28,6 +28,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         autoPlaceholder: true,
         // default country
         defaultCountry: "",
+        // append menu to a specific element
+        dropdownContainer: false,
         // geoIp lookup function
         geoIpLookup: null,
         // don't insert international dial codes
@@ -178,7 +180,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 "class": "intl-tel-input"
             }));
             this.flagsContainer = $("<div>", {
-                "class": "flag-dropdown"
+                "class": "flag-container"
             }).insertBefore(this.telInput);
             // currently selected flag (displayed to left of input)
             var selectedFlag = $("<div>", {
@@ -202,8 +204,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }).appendTo(this.flagsContainer);
             } else {
                 this.countryList = $("<ul>", {
-                    "class": "country-list v-hide"
-                }).appendTo(this.flagsContainer);
+                    "class": "country-list hide"
+                });
                 if (this.preferredCountries.length && !this.isMobile) {
                     this._appendListItems(this.preferredCountries, "preferred");
                     $("<li>", {
@@ -213,11 +215,16 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             this._appendListItems(this.countries, "");
             if (!this.isMobile) {
-                // now we can grab the dropdown height, and hide it properly
-                this.dropdownHeight = this.countryList.outerHeight();
-                this.countryList.removeClass("v-hide").addClass("hide");
                 // this is useful in lots of places
                 this.countryListItems = this.countryList.children(".country");
+                // create dropdownContainer markup
+                if (this.options.dropdownContainer) {
+                    this.dropdown = $("<div>", {
+                        "class": "intl-tel-input iti-container"
+                    }).append(this.countryList);
+                } else {
+                    this.countryList.appendTo(this.flagsContainer);
+                }
             }
         },
         // add a country <li> to the countryList <ul> container
@@ -624,8 +631,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (activeListItem.length) {
                 this._highlightListItem(activeListItem);
             }
-            // show it
-            this.countryList.removeClass("hide");
             if (activeListItem.length) {
                 this._scrollTo(activeListItem);
             }
@@ -636,11 +641,28 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
-            var inputTop = this.telInput.offset().top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
+            var showDropdownContainer = this.options.dropdownContainer && !this.isMobile;
+            if (showDropdownContainer) this.dropdown.appendTo(this.options.dropdownContainer);
+            // show the menu and grab the dropdown height
+            this.dropdownHeight = this.countryList.removeClass("hide").outerHeight();
+            var that = this, pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
             dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop;
-            // dropdownHeight - 1 for border
-            var cssTop = !dropdownFitsBelow && dropdownFitsAbove ? "-" + (this.dropdownHeight - 1) + "px" : "";
-            this.countryList.css("top", cssTop);
+            // by default, the dropdown will be below the input. If we want to position it above the input, we add the dropup class.
+            this.countryList.toggleClass("dropup", !dropdownFitsBelow && dropdownFitsAbove);
+            // if dropdownContainer is enabled, calculate postion
+            if (showDropdownContainer) {
+                // by default the dropdown will be directly over the input because it's not in the flow. If we want to position it below, we need to add some extra top value.
+                var extraTop = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
+                // calculate placement
+                this.dropdown.css({
+                    top: inputTop + extraTop,
+                    left: pos.left
+                });
+                // close menu on window scroll
+                $(window).on("scroll" + this.ns, function() {
+                    that._closeDropdown();
+                });
+            }
         },
         // we only bind dropdown listeners when the dropdown is open
         _bindDropdownListeners: function() {
@@ -888,6 +910,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             $("html").off(this.ns);
             // unbind hover and click listeners
             this.countryList.off(this.ns);
+            // remove menu from container
+            if (this.options.dropdownContainer && !this.isMobile) {
+                $(window).off("scroll" + this.ns);
+                this.dropdown.detach();
+            }
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element, middle) {
