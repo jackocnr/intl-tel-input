@@ -147,10 +147,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // process onlyCountries option
             if (this.options.onlyCountries.length) {
                 this.processCountries(this.options.onlyCountries, function(inArray) {
+                    // if country is in array
                     return inArray != -1;
                 });
             } else if (this.options.excludeCountries.length) {
                 this.processCountries(this.options.excludeCountries, function(inArray) {
+                    // if country is not in array
                     return inArray == -1;
                 });
             } else {
