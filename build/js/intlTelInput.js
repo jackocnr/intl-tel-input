@@ -1,5 +1,5 @@
 /*
-International Telephone Input v6.3.1
+International Telephone Input v6.4.0
 https://github.com/Bluefieldscom/intl-tel-input.git
 */
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
@@ -1177,7 +1177,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     $.fn[pluginName].getCountryData = function() {
         return allCountries;
     };
-    $.fn[pluginName].version = "6.3.1";
+    $.fn[pluginName].version = "6.4.0";
     // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
     // jshint -W100
     // Array of country objects for the flag dropdown.
