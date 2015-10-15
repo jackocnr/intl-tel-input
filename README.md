@@ -112,6 +112,9 @@ $('#scrollingElement').scroll(function() {
   $(window).scroll();
 });
 ```
+**excludeCountries**  
+Type: `Array` Default: `undefined`  
+Don't display the countries you specify.
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  

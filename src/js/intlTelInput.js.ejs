@@ -14,6 +14,8 @@ var pluginName = "intlTelInput",
     defaultCountry: "",
     // append menu to a specific element
     dropdownContainer: false,
+    // don't display these countries
+    excludeCountries: [],
     // geoIp lookup function
     geoIpLookup: null,
     // don't insert international dial codes
@@ -92,7 +94,7 @@ Plugin.prototype = {
     this.autoCountryDeferred = new $.Deferred();
     this.utilsScriptDeferred = new $.Deferred();
 
-    // process all the data: onlyCountries, preferredCountries etc
+    // process all the data: onlyCountries, excludeCountries, preferredCountries etc
     this._processCountryData();
 
     // generate the markup
@@ -118,7 +120,7 @@ Plugin.prototype = {
    ********************/
 
 
-  // prepare all of the country data, including onlyCountries and preferredCountries options
+  // prepare all of the country data, including onlyCountries, excludeCountries and preferredCountries options
   _processCountryData: function() {
     // set the instances country data objects
     this._setInstanceCountryData();
@@ -138,30 +140,45 @@ Plugin.prototype = {
   },
 
 
-  // process onlyCountries array if present, and generate the countryCodes map
-  _setInstanceCountryData: function() {
+  // process countries
+  processCountries: function(countryArray, processFunc) {
     var i;
 
+    // standardise case
+    for (i = 0; i < countryArray.length; i++) {
+      countryArray[i] = countryArray[i].toLowerCase();
+    }
+    // build instance country array
+    this.countries = [];
+    for (i = 0; i < allCountries.length; i++) {
+      if (processFunc($.inArray(allCountries[i].iso2, countryArray))) {
+        this.countries.push(allCountries[i]);
+      }
+    }
+  },
+
+
+  // process onlyCountries or excludeCountries array if present, and generate the countryCodes map
+  _setInstanceCountryData: function() {
     // process onlyCountries option
     if (this.options.onlyCountries.length) {
-      // standardise case
-      for (i = 0; i < this.options.onlyCountries.length; i++) {
-        this.options.onlyCountries[i] = this.options.onlyCountries[i].toLowerCase();
-      }
-      // build instance country array
-      this.countries = [];
-      for (i = 0; i < allCountries.length; i++) {
-        if ($.inArray(allCountries[i].iso2, this.options.onlyCountries) != -1) {
-          this.countries.push(allCountries[i]);
-        }
-      }
+      this.processCountries(this.options.onlyCountries, function(inArray) {
+        // if country is in array
+        return (inArray != -1);
+      });
+    // process excludeCountries option
+    } else if (this.options.excludeCountries.length) {
+      this.processCountries(this.options.excludeCountries, function(inArray) {
+        // if country is not in array
+        return (inArray == -1);
+      });
     } else {
       this.countries = allCountries;
     }
 
     // generate countryCodes map
     this.countryCodes = {};
-    for (i = 0; i < this.countries.length; i++) {
+    for (var i = 0; i < this.countries.length; i++) {
       var c = this.countries[i];
       this._addCountryCode(c.iso2, c.dialCode, c.priority);
       // area codes
