@@ -1,7 +1,7 @@
 {
   "name": "intl-tel-input",
   "main": [
-    "./build/js/intlTelInput.min.js",
+    "./build/js/intlTelInput.js",
     "./lib/libphonenumber/build/utils.js",
     "./build/img/flags.png",
     "./build/img/flags@2x.png",
