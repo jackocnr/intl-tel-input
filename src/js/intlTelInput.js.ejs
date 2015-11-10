@@ -429,7 +429,7 @@ Plugin.prototype = {
     var that = this;
 
     // check for cookie
-    var cookieAutoCountry = ($.cookie) ? $.cookie("itiAutoCountry") : "";
+    var cookieAutoCountry = (!!Cookies.get) ? Cookies.get("itiAutoCountry") : "";
     if (cookieAutoCountry) {
       $.fn[pluginName].autoCountry = cookieAutoCountry;
     }
@@ -447,8 +447,8 @@ Plugin.prototype = {
       if (typeof this.options.geoIpLookup === 'function') {
         this.options.geoIpLookup(function(countryCode) {
           $.fn[pluginName].autoCountry = countryCode.toLowerCase();
-          if ($.cookie) {
-            $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
+          if (!!Cookies.set) {
+            Cookies.set("itiAutoCountry", $.fn[pluginName].autoCountry, {
               path: '/'
             });
           }
