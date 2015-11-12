@@ -370,7 +370,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _loadAutoCountry: function() {
             var that = this;
             // check for cookie
-            var cookieAutoCountry = $.cookie ? $.cookie("itiAutoCountry") : "";
+            var cookieAutoCountry = window.Cookies ? Cookies.get("itiAutoCountry") : "";
             if (cookieAutoCountry) {
                 $.fn[pluginName].autoCountry = cookieAutoCountry;
             }
@@ -386,8 +386,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 if (typeof this.options.geoIpLookup === "function") {
                     this.options.geoIpLookup(function(countryCode) {
                         $.fn[pluginName].autoCountry = countryCode.toLowerCase();
-                        if ($.cookie) {
-                            $.cookie("itiAutoCountry", $.fn[pluginName].autoCountry, {
+                        if (window.Cookies) {
+                            Cookies.set("itiAutoCountry", $.fn[pluginName].autoCountry, {
                                 path: "/"
                             });
                         }
