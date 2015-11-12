@@ -429,7 +429,7 @@ Plugin.prototype = {
     var that = this;
 
     // check for cookie
-    var cookieAutoCountry = (!!window.Cookies) ? Cookies.get("itiAutoCountry") : "";
+    var cookieAutoCountry = (window.Cookies) ? Cookies.get("itiAutoCountry") : "";
     if (cookieAutoCountry) {
       $.fn[pluginName].autoCountry = cookieAutoCountry;
     }
@@ -447,7 +447,7 @@ Plugin.prototype = {
       if (typeof this.options.geoIpLookup === 'function') {
         this.options.geoIpLookup(function(countryCode) {
           $.fn[pluginName].autoCountry = countryCode.toLowerCase();
-          if (!!window.Cookies) {
+          if (window.Cookies) {
             Cookies.set("itiAutoCountry", $.fn[pluginName].autoCountry, {
               path: '/'
             });
