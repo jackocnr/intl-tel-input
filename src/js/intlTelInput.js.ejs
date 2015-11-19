@@ -1427,4 +1427,9 @@ $.fn[pluginName].getCountryData = function() {
   return allCountries;
 };
 
+// set the country data object
+$.fn[pluginName].setCountryData = function setCountryData(countryData) {
+  allCountries = countryData;
+};
+
 $.fn[pluginName].version = "<%= version %>";
