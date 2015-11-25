@@ -1,7 +1,7 @@
-# International Telephone Input [![Build Status](https://travis-ci.org/Bluefieldscom/intl-tel-input.svg)](https://travis-ci.org/Bluefieldscom/intl-tel-input)
+# International Telephone Input [![Build Status](https://travis-ci.org/jackocnr/intl-tel-input.svg)](https://travis-ci.org/jackocnr/intl-tel-input)
 A jQuery plugin for entering and validating international telephone numbers. It adds a flag dropdown to any input, automatically detects the user's country, displays a relevant placeholder and auto formats the number as they type.
 
-<img src="https://raw.github.com/Bluefieldscom/intl-tel-input/master/screenshot.png" width="424px" height="246px">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshot.png" width="424px" height="246px">
 
 If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts/intl-tel-input)!
 
@@ -38,12 +38,12 @@ You can view a live demo and some examples of how to use the various options her
 |            | Chrome | FF  | Safari | IE  | Chrome Android | Android WebView | Mobile Safari | IE Mob |
 | :--------- | :----: | :-: | :----: | :-: | :------------: | :-------------: | :-----------: | :----: |
 | Core       |    ✓   |  ✓  |    ✓   |  8  |      ✓         |      ✓          |       ✓       |     ✓  |
-| autoFormat |    ✓   |  ✓  |    ✓   |  8  |      ✓         |      [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/187)          |       ✓       |     [✗](https://github.com/Bluefieldscom/intl-tel-input/issues/68)  |
+| autoFormat |    ✓   |  ✓  |    ✓   |  8  |      ✓         |      [✗](https://github.com/jackocnr/intl-tel-input/issues/187)          |       ✓       |     [✗](https://github.com/jackocnr/intl-tel-input/issues/68)  |
 
 
 
 ## Getting Started
-1. Download the [latest version](https://github.com/Bluefieldscom/intl-tel-input/archive/master.zip), or better yet install it with [npm](https://www.npmjs.com/) or [Bower](http://bower.io)
+1. Download the [latest version](https://github.com/jackocnr/intl-tel-input/archive/master.zip), or better yet install it with [npm](https://www.npmjs.com/) or [Bower](http://bower.io)
 
 2. Link the stylesheet
   ```html
@@ -54,7 +54,7 @@ You can view a live demo and some examples of how to use the various options her
   ```css
   .iti-flag {background-image: url("path/to/flags.png");}
   ```
-  _Update: you will now also need to override the path to flags@2x.png (for retina devices). The best way to do this is to copy the media query at the end of [intlTelInput.scss](https://github.com/Bluefieldscom/intl-tel-input/blob/master/src/css/intlTelInput.scss) and update the path._
+  _Update: you will now also need to override the path to flags@2x.png (for retina devices). The best way to do this is to copy the media query at the end of [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) and update the path._
 
 4. Add the plugin script and initialise it on your input element
   ```html
@@ -205,7 +205,7 @@ Get more information about a validation error. Requires the `utilsScript` option
 ```js
 var error = $("#mobile-number").intlTelInput("getValidationError");
 ```
-Returns an integer, which you can match against the [various options](https://github.com/Bluefieldscom/intl-tel-input/blob/master/lib/libphonenumber/src/utils.js#L175) in the global enum `intlTelInputUtils.validationError` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/lib/libphonenumber/src/utils.js#L175) in the global enum `intlTelInputUtils.validationError` e.g.  
 ```js
 if (error == intlTelInputUtils.validationError.TOO_SHORT) {
     // the number is too short
@@ -322,5 +322,5 @@ If when building, you get an error in the "exec:evenizer" task, you may need to 
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](http://libphonenumber.googlecode.com)
 * Lookup user's country using [ipinfo.io](http://ipinfo.io)
-* Feature contributions are listed in the wiki: [Contributions](https://github.com/Bluefieldscom/intl-tel-input/wiki/Contributions)
-* List of [sites using intl-tel-input](https://github.com/Bluefieldscom/intl-tel-input/wiki/Sites-using-intl-tel-input)
+* Feature contributions are listed in the wiki: [Contributions](https://github.com/jackocnr/intl-tel-input/wiki/Contributions)
+* List of [sites using intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Sites-using-intl-tel-input)
