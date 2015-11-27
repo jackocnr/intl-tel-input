@@ -1177,6 +1177,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     $.fn[pluginName].getCountryData = function() {
         return allCountries;
     };
+    // set the country data object
+    $.fn[pluginName].setCountryData = function setCountryData(countryData) {
+        allCountries = countryData;
+    };
     $.fn[pluginName].version = "6.4.3";
     // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
     // jshint -W100
