@@ -318,7 +318,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
                 // allow navigation from dropdown to input on TAB
                 if (e.which == keys.TAB) {
-                    that._closeDropdown();
+                    // the enter handler will update the focus
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // select the highlighed entry
+                    that._handleEnterKey();
                 }
             });
         },

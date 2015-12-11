@@ -129,6 +129,29 @@ describe("keyboard shortcuts: init vanilla plugin (with nationalMode=false) to t
 
       });
 
+      describe("pressing tab", function() {
+
+        beforeEach(function() {
+          triggerKeyOnFlagsContainerElement("TAB");
+        });
+
+        it("changes the active item", function() {
+          var listElement = getListElement();
+          var topItem = listElement.find("li.country:eq(0)");
+          expect(topItem).not.toHaveClass("active");
+          var secondItem = listElement.find("li.country:eq(1)");
+          expect(secondItem).toHaveClass("active");
+        });
+
+        it("closes the dropdown", function() {
+          expect(getListElement()).toHaveClass("hide");
+        });
+
+        it("updates the dial code", function() {
+          expect(getInputVal()).toEqual("+44");
+        });
+      });
+
     });
   });
 

@@ -10,7 +10,8 @@ var input,
     SPACE: 32,
     BACKSPACE: 8,
     DELETE: 46,
-    CTRL: 17
+    CTRL: 17,
+    TAB: 9
   };
 
 var intlSetup = function(utilsScript) {
