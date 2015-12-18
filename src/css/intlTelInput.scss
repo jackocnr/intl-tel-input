@@ -137,7 +137,7 @@ $flagsImageExtension: "png" !default;
       margin: auto;
     }
 
-    .arrow {
+    .iti-arrow {
       position: absolute;
       // split the difference between the flag and the arrow height to verically center
       top: 50%;
@@ -172,8 +172,8 @@ $flagsImageExtension: "png" !default;
       margin-bottom: (-$borderWidth);
     }
 
-    // inline flags
-    .flag {
+    // dropdown flags need consistent width, so wrap in a container
+    .flag-box {
       display: inline-block;
       width: $flagWidth;
     }
@@ -203,7 +203,7 @@ $flagsImageExtension: "png" !default;
       border-bottom: $borderWidth solid $greyBorder;
     }
 
-    // each country item in dropdown
+    // each country item in dropdown (we must have separate class to differentiate from dividers)
     .country {
       // Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines
       padding: 5px 10px;
@@ -217,10 +217,10 @@ $flagsImageExtension: "png" !default;
     }
 
     // spacing between country flag, name and dial code
-    .flag, .country-name, .dial-code {
+    .flag-box, .country-name, .dial-code {
       vertical-align: middle;
     }
-    .flag, .country-name {
+    .flag-box, .country-name {
       margin-right: 6px;
     }
   }

@@ -207,7 +207,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }).appendTo(selectedFlag);
             // CSS triangle
             $("<div>", {
-                "class": "arrow"
+                "class": "iti-arrow"
             }).appendTo(selectedFlag);
             // country list
             // mobile is just a native select element
@@ -258,7 +258,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     // open the list item
                     tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
                     // add the flag
-                    tmp += "<div class='flag'><div class='iti-flag " + c.iso2 + "'></div></div>";
+                    tmp += "<div class='flag-box'><div class='iti-flag " + c.iso2 + "'></div></div>";
                     // and the country name and dial code
                     tmp += "<span class='country-name'>" + c.name + "</span>";
                     tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
@@ -656,7 +656,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
             this._bindDropdownListeners();
             // update the arrow
-            this.selectedFlagInner.children(".arrow").addClass("up");
+            this.selectedFlagInner.children(".iti-arrow").addClass("up");
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
@@ -922,7 +922,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _closeDropdown: function() {
             this.countryList.addClass("hide");
             // update the arrow
-            this.selectedFlagInner.children(".arrow").removeClass("up");
+            this.selectedFlagInner.children(".iti-arrow").removeClass("up");
             // unbind key events
             $(document).off(this.ns);
             // unbind click-off-to-close
