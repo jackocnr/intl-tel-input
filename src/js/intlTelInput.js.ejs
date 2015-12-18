@@ -316,7 +316,10 @@ Plugin.prototype = {
       } else {
         this.defaultCountryData = (this.preferredCountries.length) ? this.preferredCountries[0] : this.countries[0];
       }
-      this._selectFlag(this.defaultCountryData.iso2);
+      // if there's an initialCountry, or if the input's empty, then set the flag
+      if (this.options.initialCountry || !val) {
+        this._selectFlag(this.defaultCountryData.iso2);
+      }
 
       // if empty, insert the default dial code (this function will check !nationalMode and !autoHideDialCode)
       if (!val) {
@@ -995,7 +998,7 @@ Plugin.prototype = {
   },
 
 
-  // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 but the actual number's length is >=4
+  // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1 702) and the actual number's length is >=4
   _isUnknownNanp: function(number, dialCode) {
     return (dialCode == "+1" && this._getNumeric(number).length >= 4);
   },
@@ -1215,6 +1218,7 @@ Plugin.prototype = {
   // this is called when the geoip call returns
   geoIpLookupComplete: function() {
     if (this.options.initialCountry === "auto") {
+      // we must set this even if there is an initial val in the input: in case the initial val is invalid and they delete it - they should see their auto country
       this.defaultCountryData = this._getCountryData($.fn[pluginName].autoCountry, false, false);
       // if there's no initial value in the input, then update the flag
       if (!this.telInput.val()) {

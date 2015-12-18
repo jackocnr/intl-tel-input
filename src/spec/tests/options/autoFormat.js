@@ -26,6 +26,7 @@ describe("autoFormat option:", function() {
 
       input.intlTelInput({
         autoFormat: true,
+        initialCountry: "us",
         nationalMode: true
       });
     });

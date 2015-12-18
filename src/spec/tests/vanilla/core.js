@@ -8,6 +8,27 @@ describe("vanilla:", function() {
 
 
 
+  describe("init vanilla plugin on empty input", function() {
+
+    beforeEach(function() {
+      input = $("<input>");
+      input.intlTelInput();
+    });
+
+    afterEach(function() {
+      input.intlTelInput("destroy");
+      input = null;
+    });
+
+    it("sets the selected flag correctly", function() {
+      expect(getSelectedFlagElement()).toHaveClass("us");
+      expect(getActiveListItem().attr("data-country-code")).toEqual("us");
+    });
+
+  });
+
+
+
   describe("init plugin on input with prepopulated value", function() {
 
     beforeEach(function() {
@@ -22,9 +43,6 @@ describe("vanilla:", function() {
 
     it("sets the selected flag correctly", function() {
       expect(getSelectedFlagElement()).toHaveClass("gb");
-    });
-
-    it("sets the active list item correctly", function() {
       expect(getActiveListItem().attr("data-country-code")).toEqual("gb");
     });
 
@@ -44,12 +62,9 @@ describe("vanilla:", function() {
       input = null;
     });
 
-    it("sets the selected flag correctly", function() {
-      expect(getSelectedFlagElement()).toHaveClass("us");
-    });
-
-    it("sets the active list item correctly", function() {
-      expect(getActiveListItem().attr("data-country-code")).toEqual("us");
+    it("doesnt set the selected flag", function() {
+      expect(getSelectedFlagElement().attr("class")).toBe("iti-flag");
+      expect(getActiveListItem().length).toEqual(0);
     });
 
   });
