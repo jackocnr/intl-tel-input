@@ -99,10 +99,6 @@ customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
 }
 ```
 
-**initialCountry**  
-Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). When instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when it is finished. If you leave `initialCountry` blank, it will default to the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [js-cookie](https://github.com/js-cookie/js-cookie) plugin, it will store the loaded country code in a cookie for future use._
-
 **dropdownContainer**  
 Type: `String | false` Default: `false`  
 Appends the country list menu to a specific element. Example: `dropdownContainer: 'body'`. This option is particularly useful for cases when the input is within a scrolling element or an element with `overflow: hidden`. The menu is automatically closed on `window` scroll to prevent positioning issues. If you want the menu to close when a different element is scrolled (such as the input's parent), simply listen for the scroll event on that element, and trigger `$(window).scroll()`.
@@ -112,6 +108,7 @@ $('#scrollingElement').scroll(function() {
   $(window).scroll();
 });
 ```
+
 **excludeCountries**  
 Type: `Array` Default: `undefined`  
 Don't display the countries you specify.
@@ -128,6 +125,10 @@ geoIpLookup: function(callback) {
 }
 ```
 _Note that the callback must still be called in the event of an error, hence the use of `always` in this example._
+
+**initialCountry**  
+Type: `String` Default: `""`  
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). When instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when it is finished. If you leave `initialCountry` blank, it will default to the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [js-cookie](https://github.com/js-cookie/js-cookie) plugin, it will store the loaded country code in a cookie for future use._
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
