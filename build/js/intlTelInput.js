@@ -348,15 +348,15 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         _initRequests: function() {
             var that = this;
-            // if the user has specified the path to the utils script, fetch it on window.load
+            // if the user has specified the path to the utils script, fetch it on window.load, else resolve
             if (this.options.utilsScript) {
                 // if the plugin is being initialised after the window.load event has already been fired
                 if (windowLoaded) {
-                    this.loadUtils();
+                    $.fn[pluginName].loadUtils(this.options.utilsScript, this.utilsScriptDeferred);
                 } else {
                     // wait until the load event so we don't block any other requests e.g. the flags image
                     $(window).load(function() {
-                        that.loadUtils();
+                        $.fn[pluginName].loadUtils(that.options.utilsScript, that.utilsScriptDeferred);
                     });
                 }
             } else {
@@ -1074,29 +1074,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             return false;
         },
-        // load the utils script
-        loadUtils: function(path) {
-            var that = this;
-            var utilsScript = path || this.options.utilsScript;
-            if (utilsScript) {
-                if (!$.fn[pluginName].loadedUtilsScript) {
-                    // don't do this twice! (dont just check if the global intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
-                    $.fn[pluginName].loadedUtilsScript = true;
-                    // dont use $.getScript as it prevents caching
-                    $.ajax({
-                        url: utilsScript,
-                        complete: function() {
-                            // tell all instances that the utils request is complete
-                            $(".intl-tel-input input").intlTelInput("utilsRequestComplete");
-                        },
-                        dataType: "script",
-                        cache: true
-                    });
-                }
-            } else {
-                this.utilsScriptDeferred.resolve();
-            }
-        },
         // update the selected flag, and update the input val accordingly
         setCountry: function(countryCode) {
             countryCode = countryCode.toLowerCase();
@@ -1181,6 +1158,26 @@ https://github.com/Bluefieldscom/intl-tel-input.git
     $.fn[pluginName].getCountryData = function() {
         return allCountries;
     };
+    // load the utils script
+    $.fn[pluginName].loadUtils = function(path, utilsScriptDeferred) {
+        if (!$.fn[pluginName].loadedUtilsScript) {
+            // don't do this twice! (dont just check if window.intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
+            $.fn[pluginName].loadedUtilsScript = true;
+            // dont use $.getScript as it prevents caching
+            $.ajax({
+                url: path,
+                complete: function() {
+                    // tell all instances that the utils request is complete
+                    $(".intl-tel-input input").intlTelInput("utilsRequestComplete");
+                },
+                dataType: "script",
+                cache: true
+            });
+        } else if (utilsScriptDeferred) {
+            utilsScriptDeferred.resolve();
+        }
+    };
+    // version
     $.fn[pluginName].version = "6.4.4";
     // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
     // jshint -W100

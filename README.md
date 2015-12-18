@@ -220,13 +220,6 @@ var isValid = $("#mobile-number").intlTelInput("isValidNumber");
 ```
 Returns: `true`/`false`
 
-**loadUtils**  
-_Note: this is only needed if you're lazy loading the plugin script itself (intlTelInput.js). If not then just use the `utilsScript` option._  
-Load the utils.js script (included in the lib directory) to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information.
-```js
-$("#mobile-number").intlTelInput("loadUtils", "lib/libphonenumber/build/utils.js");
-```
-
 **setCountry**  
 Change the country selection (e.g. when the user is entering their address).  
 ```js
@@ -253,6 +246,13 @@ Returns an array of country objects:
   iso2: "af",
   dialCode: "93"
 }, ...]
+```
+
+**loadUtils**  
+_Note: this is only needed if you're lazy loading the plugin script itself (intlTelInput.js). If not then just use the `utilsScript` option._  
+Load the utils.js script (included in the lib directory) to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information.
+```js
+$.fn.intlTelInput.loadUtils("lib/libphonenumber/build/utils.js");
 ```
 
 
