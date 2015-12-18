@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         return {
           time: time,
           title: "National Mode",
-          desc: "Allow users to enter their national number, and then convert it to international format using the public method getCleanNumber.",
+          desc: "Allow users to enter their national number, and then convert it to international format using the public method getNumber.",
           stylesheet: "",
           markup: grunt.file.read('examples/partials/nationalMode.html'),
           code: grunt.file.read('examples/js/nationalMode.js'),
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
         return {
           time: time,
           title: "Lookup user's country",
-          desc: "Set defaultCountry to 'auto' and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user's country based on their IP address.",
+          desc: "Set initialCountry to 'auto' and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user's country based on their IP address.",
           stylesheet: "",
           markup: grunt.file.read('examples/partials/simpleInput.html'),
           code: grunt.file.read('examples/js/defaultCountryIp.js'),

@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Lookup user&#39;s country</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1433497107037">
-    <link rel="stylesheet" href="../../build/css/demo.css?1433497107037">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1450474669660">
+    <link rel="stylesheet" href="../../build/css/demo.css?1450474669660">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -25,14 +25,14 @@
   <body>
     <a href="/intl-tel-input.html">Back</a>
     <h1>Example: Lookup user&#39;s country</h1>
-    <p>Set defaultCountry to &#39;auto&#39; and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user&#39;s country based on their IP address.</p>
+    <p>Set initialCountry to &#39;auto&#39; and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user&#39;s country based on their IP address.</p>
     
     <h2>Markup</h2>
     <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;</code></pre>
 
     <h2>Code</h2>
     <pre><code class="language-javascript">$(&quot;#phone&quot;).intlTelInput({
-  defaultCountry: &quot;auto&quot;,
+  initialCountry: &quot;auto&quot;,
   geoIpLookup: function(callback) {
     $.get(&#39;http://ipinfo.io&#39;, function() {}, &quot;jsonp&quot;).always(function(resp) {
       var countryCode = (resp &amp;&amp; resp.country) ? resp.country : &quot;&quot;;
@@ -49,7 +49,7 @@
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1433497107037"></script>
-    <script src="../js/defaultCountryIp.js?1433497107037"></script>
+    <script src="../../build/js/intlTelInput.js?1450474669660"></script>
+    <script src="../js/defaultCountryIp.js?1450474669660"></script>
   </body>
 </html>

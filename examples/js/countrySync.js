@@ -25,5 +25,5 @@ telInput.change();
 // listen to the address dropdown for changes
 addressDropdown.change(function() {
   var countryCode = $(this).val();
-  telInput.intlTelInput("selectCountry", countryCode);
+  telInput.intlTelInput("setCountry", countryCode);
 });
