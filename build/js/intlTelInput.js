@@ -128,7 +128,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.countryCodes[dialCode][index] = iso2;
         },
         // process countries
-        processCountries: function(countryArray, processFunc) {
+        _processCountries: function(countryArray, processFunc) {
             var i;
             // standardise case
             for (i = 0; i < countryArray.length; i++) {
@@ -146,12 +146,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _setInstanceCountryData: function() {
             // process onlyCountries option
             if (this.options.onlyCountries.length) {
-                this.processCountries(this.options.onlyCountries, function(inArray) {
+                this._processCountries(this.options.onlyCountries, function(inArray) {
                     // if country is in array
                     return inArray != -1;
                 });
             } else if (this.options.excludeCountries.length) {
-                this.processCountries(this.options.excludeCountries, function(inArray) {
+                this._processCountries(this.options.excludeCountries, function(inArray) {
                     // if country is not in array
                     return inArray == -1;
                 });
@@ -637,6 +637,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _getNumeric: function(s) {
             return s.replace(/\D/g, "");
         },
+        // extract the clean number (numeric with optionally plus)
         _getClean: function(s) {
             var prefix = s.charAt(0) == "+" ? "+" : "";
             return prefix + this._getNumeric(s);

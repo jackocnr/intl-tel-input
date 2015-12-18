@@ -141,7 +141,7 @@ Plugin.prototype = {
 
 
   // process countries
-  processCountries: function(countryArray, processFunc) {
+  _processCountries: function(countryArray, processFunc) {
     var i;
 
     // standardise case
@@ -162,13 +162,13 @@ Plugin.prototype = {
   _setInstanceCountryData: function() {
     // process onlyCountries option
     if (this.options.onlyCountries.length) {
-      this.processCountries(this.options.onlyCountries, function(inArray) {
+      this._processCountries(this.options.onlyCountries, function(inArray) {
         // if country is in array
         return (inArray != -1);
       });
     // process excludeCountries option
     } else if (this.options.excludeCountries.length) {
-      this.processCountries(this.options.excludeCountries, function(inArray) {
+      this._processCountries(this.options.excludeCountries, function(inArray) {
         // if country is not in array
         return (inArray == -1);
       });
@@ -751,6 +751,7 @@ Plugin.prototype = {
   },
 
 
+  // extract the clean number (numeric with optionally plus)
   _getClean: function(s) {
     var prefix = (s.charAt(0) == "+") ? "+" : "";
     return prefix + this._getNumeric(s);

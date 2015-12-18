@@ -8,7 +8,7 @@ module.exports = function(grunt) {
            * PRIVATE METHODS
            ***********/
           {
-            match: /_ready/g,
+            match: /_init/g,
             replacement: '_a'
           }, {
             match: /_processCountryData/g,
@@ -16,6 +16,9 @@ module.exports = function(grunt) {
           }, {
             match: /_addCountryCode/g,
             replacement: '_c'
+          }, {
+            match: /_processCountries/g,
+            replacement: '_c2'
           }, {
             match: /_setInstanceCountryData/g,
             replacement: '_d'
@@ -35,17 +38,41 @@ module.exports = function(grunt) {
             match: /_initListeners/g,
             replacement: '_i'
           }, {
+            match: /_initRequests/g,
+            replacement: '_i2'
+          }, {
+            match: /_loadAutoCountry/g,
+            replacement: '_i3'
+          }, {
             match: /_initKeyListeners/g,
             replacement: '_j'
           }, {
+            match: /_ensurePlus/g,
+            replacement: '_j2'
+          }, {
+            match: /_handleInvalidKey/g,
+            replacement: '_j3'
+          }, {
             match: /_handleInputKey/g,
             replacement: '_k'
+          }, {
+            match: /_getCursorFromLeftChar/g,
+            replacement: '_k1'
+          }, {
+            match: /_getCursorFromDigitsOnRight/g,
+            replacement: '_k2'
+          }, {
+            match: /_getDigitsOnRight/g,
+            replacement: '_k3'
           }, {
             match: /_initFocusListeners/g,
             replacement: '_l'
           }, {
             match: /_getNumeric/g,
             replacement: '_m'
+          }, {
+            match: /_getClean/g,
+            replacement: '_m2'
           }, {
             match: /_showDropdown/g,
             replacement: '_n'
@@ -150,86 +177,107 @@ module.exports = function(grunt) {
             match: /BSPACE/g,
             replacement: 'j'
           }, {
-            match: /DEL/g,
+            match: /TAB/g,
             replacement: 'k'
           }, {
-            match: /CTRL/g,
+            match: /DEL/g,
             replacement: 'l'
           }, {
-            match: /CMD1/g,
+            match: /CTRL/g,
             replacement: 'm'
           }, {
-            match: /CMD2/g,
+            match: /CMD1/g,
             replacement: 'n'
+          }, {
+            match: /CMD2/g,
+            replacement: 'o'
           },
 
           // first occurence, when they are defined in the defaults object (no "options." prefix to match)
           // (using meaningful letter substitutions here)
           {
-            match: /autoFormat/,
+            match: /allowExtensions/,
             replacement: 'a'
           }, {
-            match: /autoHideDialCode/,
-            replacement: 'h'
+            match: /autoFormat/,
+            replacement: 'b'
           }, {
-            match: /initialCountry/,
+            match: /autoHideDialCode/,
+            replacement: 'c'
+          }, {
+            match: /autoPlaceholder/,
             replacement: 'd'
           }, {
-            match: /ipinfoToken/,
-            replacement: 'i'
+            match: /dropdownContainer/,
+            replacement: 'e'
+          }, {
+            match: /excludeCountries/,
+            replacement: 'f'
+          }, {
+            match: /geoIpLookup/,
+            replacement: 'g'
+          }, {
+            match: /initialCountry/,
+            replacement: 'h'
           }, {
             match: /nationalMode/,
-            replacement: 'n'
+            replacement: 'i'
           }, {
             match: /numberType/,
-            replacement: 't'
+            replacement: 'j'
           }, {
             match: /onlyCountries/,
-            replacement: 'o'
+            replacement: 'k'
           }, {
             match: /preferredCountries/,
-            replacement: 'p'
-          }, {
-            match: /preventInvalidNumbers/,
-            replacement: 'v'
+            replacement: 'l'
           }, {
             match: /utilsScript/,
-            replacement: 'u'
+            replacement: 'm'
           },
 
 
           // all other occurrences have the options prefix
           // (using meaningful letter substitutions here)
           {
-            match: /options.autoFormat/g,
+            match: /options.allowExtensions/g,
             replacement: 'options.a'
           }, {
-            match: /options.autoHideDialCode/g,
-            replacement: 'options.h'
+            match: /options.autoFormat/g,
+            replacement: 'options.b'
           }, {
-            match: /options.initialCountry/g,
+            match: /options.autoHideDialCode/g,
+            replacement: 'options.c'
+          }, {
+            match: /options.autoPlaceholder/g,
             replacement: 'options.d'
           }, {
-            match: /options.ipinfoToken/g,
-            replacement: 'options.i'
+            match: /options.dropdownContainer/g,
+            replacement: 'options.e'
+          }, {
+            match: /options.excludeCountries/g,
+            replacement: 'options.f'
+          }, {
+            match: /options.geoIpLookup/g,
+            replacement: 'options.g'
+          }, {
+            match: /options.initialCountry/g,
+            replacement: 'options.h'
           }, {
             match: /options.nationalMode/g,
-            replacement: 'options.n'
+            replacement: 'options.i'
           }, {
             match: /options.numberType/g,
-            replacement: 'options.t'
+            replacement: 'options.j'
           }, {
             match: /options.onlyCountries/g,
-            replacement: 'options.o'
+            replacement: 'options.k'
           }, {
             match: /options.preferredCountries/g,
-            replacement: 'options.p'
-          }, {
-            match: /options.preventInvalidNumbers/g,
-            replacement: 'options.v'
+            replacement: 'options.l'
           }, {
             match: /options.utilsScript/g,
-            replacement: 'options.u'
+            replacement: 'options.m'
           },
 
         ]
@@ -246,7 +294,7 @@ module.exports = function(grunt) {
         patterns: [
 
           /***********
-           * FIELDS
+           * FIELDS ON "this"
            ***********/
           {
             match: /.element/g,
@@ -266,33 +314,51 @@ module.exports = function(grunt) {
           }, {
             match: /._name/g,
             replacement: '.f'
-          }, {
-            match: /.telInput/g,
+          },
+
+
+          {
+            match: /.isMobile/g,
             replacement: '.g'
           }, {
-            match: /.selectedFlagInner/g,
+            match: /.autoCountryDeferred/g,
             replacement: '.h'
           }, {
-            match: /.countryList/g,
+            match: /.utilsScriptDeferred/g,
             replacement: '.i'
-          }, {
-            match: /.dropdownHeight/g,
+          },
+
+
+          {
+            match: /.telInput/g,
             replacement: '.j'
           }, {
-            match: /.countryListItems/g,
+            match: /.flagsContainer/g,
             replacement: '.k'
           }, {
-            match: /.countries/g,
+            match: /.selectedFlagInner/g,
             replacement: '.l'
           }, {
-            match: /.countryCodes/g,
+            match: /.countryList/g,
             replacement: '.m'
           }, {
-            match: /.preferredCountries/g,
+            match: /.dropdownHeight/g,
             replacement: '.n'
           }, {
-            match: /.selectedCountryData/g,
+            match: /.countryListItems/g,
             replacement: '.o'
+          }, {
+            match: /.countries/g,
+            replacement: '.p'
+          }, {
+            match: /.countryCodes/g,
+            replacement: '.q'
+          }, {
+            match: /.preferredCountries/g,
+            replacement: '.r'
+          }, {
+            match: /.selectedCountryData/g,
+            replacement: '.s'
           }
 
         ]
@@ -309,21 +375,23 @@ module.exports = function(grunt) {
         patterns: [
 
           // hack to normalise runtime option names
-          // (using meaningful letter substitutions here)
           // UPDATE: instead of replacing the runtime option names with a newly created object, we $.extend the existing object so that if we forget to add any new/modified option names in this build file, they will still work! The downside is that this options object will contain both the full key and the minified key, but that really doesn't matter.
           {
             match: /this.b=/g,
             replacement: 'c&&(a.extend(c, c, {' +
-              'a:c.autoFormat,' +
-              'h:c.autoHideDialCode,' +
-              'd:c.initialCountry,' +
-              'i:c.ipinfoToken,' +
-              'n:c.nationalMode,' +
-              't:c.numberType,' +
-              'o:c.onlyCountries,' +
-              'p:c.preferredCountries,' +
-              'v:c.preventInvalidNumbers,' +
-              'u:c.utilsScript' +
+              'a:c.allowExtensions,' +
+              'b:c.autoFormat,' +
+              'c:c.autoHideDialCode,' +
+              'd:c.autoPlaceholder,' +
+              'e:c.dropdownContainer,' +
+              'f:c.excludeCountries,' +
+              'g:c.geoIpLookup,' +
+              'h:c.initialCountry,' +
+              'i:c.nationalMode,' +
+              'j:c.numberType,' +
+              'k:c.onlyCountries,' +
+              'l:c.preferredCountries,' +
+              'm:c.utilsScript' +
               '})),this.b='
           }
         ]
