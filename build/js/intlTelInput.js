@@ -271,10 +271,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // set the initial state of the input value and the selected flag
         _setInitialState: function() {
             var val = this.telInput.val();
-            // if there is a number, and it's valid, we can go ahead and set the flag, else fall back to default
+            // if we already have a dial code we can go ahead and set the flag, else fall back to default
             if (this._getDialCode(val)) {
                 this._updateFlagFromNumber(val, true);
-            } else if (this.options.defaultCountry != "auto") {
+            } else if (this.options.defaultCountry !== "auto") {
                 // check the defaultCountry option, else fall back to the first in the list
                 if (this.options.defaultCountry) {
                     this.options.defaultCountry = this._getCountryData(this.options.defaultCountry.toLowerCase(), false, false);
@@ -287,6 +287,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     this._updateDialCode(this.options.defaultCountry.dialCode, false);
                 }
             }
+            // NOTE: if defaultCountry is set to auto, that will be handled separately
             // format
             if (val) {
                 // this wont be run after _updateDialCode as that's only called if no val
@@ -361,7 +362,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             } else {
                 this.utilsScriptDeferred.resolve();
             }
-            if (this.options.defaultCountry == "auto") {
+            if (this.options.defaultCountry === "auto") {
                 this._loadAutoCountry();
             } else {
                 this.autoCountryDeferred.resolve();
@@ -379,7 +380,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // 2) not already started loading (start)
             // 3) already started loading (do nothing - just wait for loading callback to fire)
             if ($.fn[pluginName].autoCountry) {
-                this.autoCountryLoaded();
+                this.geoIpLookupComplete();
             } else if (!$.fn[pluginName].startedLoadingAutoCountry) {
                 // don't do this twice!
                 $.fn[pluginName].startedLoadingAutoCountry = true;
@@ -395,7 +396,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         // TODO: this should just be the current instances
                         // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight away (e.g. if they have already done the geo ip lookup somewhere else). Using setTimeout means that the current thread of execution will finish before executing this, which allows the plugin to finish initialising.
                         setTimeout(function() {
-                            $(".intl-tel-input input").intlTelInput("autoCountryLoaded");
+                            $(".intl-tel-input input").intlTelInput("geoIpLookupComplete");
                         });
                     });
                 }
@@ -861,7 +862,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _selectFlag: function(countryCode, updateDefault) {
             // do this first as it will throw an error and stop if countryCode is invalid
             this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
-            // update the "defaultCountry" - we only need the iso2 from now on, so just store that
+            // update the defaultCountry - we only need the iso2 from now on, so just store that
             if (updateDefault && this.selectedCountryData.iso2) {
                 // can't just make this equal to selectedCountryData as would be a ref to that object
                 this.options.defaultCountry = {
@@ -1004,8 +1005,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
    *  PUBLIC METHODS
    ********************/
         // this is called when the geoip call returns
-        autoCountryLoaded: function() {
-            if (this.options.defaultCountry == "auto") {
+        geoIpLookupComplete: function() {
+            if (this.options.defaultCountry === "auto") {
                 this.options.defaultCountry = $.fn[pluginName].autoCountry;
                 this._setInitialState();
                 this.autoCountryDeferred.resolve();
