@@ -18,21 +18,23 @@
     <script src="build/js/intlTelInput.js"></script>
     <script>
       $("#phone").intlTelInput({
-        //allowExtensions: true,
-        //autoFormat: false,
-        //autoHideDialCode: false,
-        //autoPlaceholder: false,
-        //defaultCountry: "auto",
+        // allowExtensions: true,
+        // autoFormat: false,
+        // autoHideDialCode: false,
+        // autoPlaceholder: false,
+        // dropdownContainer: $("body"),
+        // excludeCountries: ["us"],
         // geoIpLookup: function(callback) {
         //   $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
         //     var countryCode = (resp && resp.country) ? resp.country : "";
         //     callback(countryCode);
         //   });
         // },
-        //nationalMode: false,
-        //numberType: "MOBILE",
-        //onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
-        //preferredCountries: ['cn', 'jp'],
+        // initialCountry: "auto",
+        // nationalMode: false,
+        // numberType: "MOBILE",
+        // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+        // preferredCountries: ['cn', 'jp'],
         utilsScript: "lib/libphonenumber/build/utils.js"
       });
     </script>
