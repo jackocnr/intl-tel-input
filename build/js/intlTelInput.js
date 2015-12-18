@@ -27,7 +27,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // add or remove input placeholder with an example number for the selected country
         autoPlaceholder: true,
         // default country
-        defaultCountry: "",
+        initialCountry: "",
         // append menu to a specific element
         dropdownContainer: false,
         // don't display these countries
@@ -268,26 +268,26 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             this.countryList.append(tmp);
         },
-        // set the initial state of the input value and the selected flag by either extracting a dial code from the given number, or using defaultCountry
+        // set the initial state of the input value and the selected flag by either extracting a dial code from the given number, or using initialCountry
         _setInitialState: function() {
             var val = this.telInput.val();
             // if we already have a dial code we can go ahead and set the flag, else fall back to default
             if (this._getDialCode(val)) {
                 this._updateFlagFromNumber(val, true);
-            } else if (this.options.defaultCountry !== "auto") {
-                // check the defaultCountry option, else fall back to the first in the list
-                if (this.options.defaultCountry) {
-                    this.options.defaultCountryData = this._getCountryData(this.options.defaultCountry.toLowerCase(), false, false);
+            } else if (this.options.initialCountry !== "auto") {
+                // check the initialCountry option, else fall back to the first in the list
+                if (this.options.initialCountry) {
+                    this.defaultCountryData = this._getCountryData(this.options.initialCountry.toLowerCase(), false, false);
                 } else {
-                    this.options.defaultCountryData = this.preferredCountries.length ? this.preferredCountries[0] : this.countries[0];
+                    this.defaultCountryData = this.preferredCountries.length ? this.preferredCountries[0] : this.countries[0];
                 }
-                this._selectFlag(this.options.defaultCountryData.iso2);
+                this._selectFlag(this.defaultCountryData.iso2);
                 // if empty, insert the default dial code (this function will check !nationalMode and !autoHideDialCode)
                 if (!val) {
-                    this._updateDialCode(this.options.defaultCountryData.dialCode, false);
+                    this._updateDialCode(this.defaultCountryData.dialCode, false);
                 }
             }
-            // NOTE: if defaultCountry is set to auto, that will be handled separately
+            // NOTE: if initialCountry is set to auto, that will be handled separately
             // format
             if (val) {
                 // this wont be run after _updateDialCode as that's only called if no val
@@ -362,7 +362,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             } else {
                 this.utilsScriptDeferred.resolve();
             }
-            if (this.options.defaultCountry === "auto") {
+            if (this.options.initialCountry === "auto") {
                 this._loadAutoCountry();
             } else {
                 this.autoCountryDeferred.resolve();
@@ -828,7 +828,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 countryCode = "";
             } else if (!number || number == "+") {
                 // empty, or just a plus, so default
-                countryCode = this.options.defaultCountryData.iso2;
+                countryCode = this.defaultCountryData.iso2;
             }
             if (countryCode !== null) {
                 this._selectFlag(countryCode, updateDefault);
@@ -865,7 +865,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // update the defaultCountryData - we only need the iso2 from now on, so just store that
             if (updateDefault && this.selectedCountryData.iso2) {
                 // can't just make this equal to selectedCountryData as would be a ref to that object
-                this.options.defaultCountryData = {
+                this.defaultCountryData = {
                     iso2: this.selectedCountryData.iso2
                 };
             }
@@ -1006,8 +1006,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
    ********************/
         // this is called when the geoip call returns
         geoIpLookupComplete: function() {
-            if (this.options.defaultCountry === "auto") {
-                this.options.defaultCountryData = this._getCountryData($.fn[pluginName].autoCountry, false, false);
+            if (this.options.initialCountry === "auto") {
+                this.defaultCountryData = this._getCountryData($.fn[pluginName].autoCountry, false, false);
                 // if there's no initial value in the input, then update the flag
                 if (!this.telInput.val()) {
                     this.selectCountry($.fn[pluginName].autoCountry);
