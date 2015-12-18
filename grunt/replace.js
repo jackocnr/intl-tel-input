@@ -172,7 +172,7 @@ module.exports = function(grunt) {
             match: /autoHideDialCode/,
             replacement: 'h'
           }, {
-            match: /defaultCountry/,
+            match: /initialCountry/,
             replacement: 'd'
           }, {
             match: /ipinfoToken/,
@@ -207,7 +207,7 @@ module.exports = function(grunt) {
             match: /options.autoHideDialCode/g,
             replacement: 'options.h'
           }, {
-            match: /options.defaultCountry/g,
+            match: /options.initialCountry/g,
             replacement: 'options.d'
           }, {
             match: /options.ipinfoToken/g,
@@ -316,7 +316,7 @@ module.exports = function(grunt) {
             replacement: 'c&&(a.extend(c, c, {' +
               'a:c.autoFormat,' +
               'h:c.autoHideDialCode,' +
-              'd:c.defaultCountry,' +
+              'd:c.initialCountry,' +
               'i:c.ipinfoToken,' +
               'n:c.nationalMode,' +
               't:c.numberType,' +

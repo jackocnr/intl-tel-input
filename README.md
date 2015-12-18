@@ -226,10 +226,10 @@ Load the utils.js script (included in the lib directory) to enable formatting/va
 $("#mobile-number").intlTelInput("loadUtils", "lib/libphonenumber/build/utils.js");
 ```
 
-**selectCountry**  
+**setCountry**  
 Change the country selection (e.g. when the user is entering their address).  
 ```js
-$("#mobile-number").intlTelInput("selectCountry", "gb");
+$("#mobile-number").intlTelInput("setCountry", "gb");
 ```
 
 **setNumber**  

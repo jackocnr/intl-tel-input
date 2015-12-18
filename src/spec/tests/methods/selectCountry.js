@@ -1,6 +1,6 @@
 "use strict";
 
-describe("selectCountry: init plugin and calling public method selectCountry()", function() {
+describe("setCountry: init plugin and calling public method setCountry()", function() {
 
   var countryCode = "gb";
 
@@ -8,7 +8,7 @@ describe("selectCountry: init plugin and calling public method selectCountry()",
     intlSetup();
     input = $("<input>");
     input.intlTelInput();
-    input.intlTelInput("selectCountry", countryCode);
+    input.intlTelInput("setCountry", countryCode);
   });
 
   afterEach(function() {

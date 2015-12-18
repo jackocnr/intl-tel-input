@@ -1010,7 +1010,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.defaultCountryData = this._getCountryData($.fn[pluginName].autoCountry, false, false);
                 // if there's no initial value in the input, then update the flag
                 if (!this.telInput.val()) {
-                    this.selectCountry($.fn[pluginName].autoCountry);
+                    this.setCountry($.fn[pluginName].autoCountry);
                 }
                 this.autoCountryDeferred.resolve();
             }
@@ -1098,7 +1098,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
         },
         // update the selected flag, and update the input val accordingly
-        selectCountry: function(countryCode) {
+        setCountry: function(countryCode) {
             countryCode = countryCode.toLowerCase();
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {

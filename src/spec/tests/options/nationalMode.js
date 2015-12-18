@@ -54,7 +54,7 @@ describe("nationalMode:", function() {
 
 
 
-  describe("init plugin with US national number and selectCountry=us", function() {
+  describe("init plugin with US national number and setCountry=us", function() {
 
     var nationalNum = "702 418 1234";
 
@@ -63,7 +63,7 @@ describe("nationalMode:", function() {
       input.intlTelInput({
         nationalMode: true
       });
-      input.intlTelInput("selectCountry", "us");
+      input.intlTelInput("setCountry", "us");
     });
 
     it("displays the number and has US flag selected", function() {

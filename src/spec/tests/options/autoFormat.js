@@ -30,7 +30,7 @@ describe("autoFormat option:", function() {
       });
     });
 
-    it("formats the number according to the defaultCountry", function() {
+    it("formats the number according to the initialCountry", function() {
       expect(getInputVal()).toEqual(formattedNumber);
     });
 

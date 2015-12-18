@@ -1,14 +1,14 @@
 "use strict";
 
-describe("defaultCountry: init plugin with a default country", function() {
+describe("initialCountry: init plugin with a default country", function() {
 
-  var defaultCountry = "jp";
+  var initialCountry = "jp";
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>");
     input.intlTelInput({
-      defaultCountry: defaultCountry
+      initialCountry: initialCountry
     });
   });
 
@@ -18,11 +18,11 @@ describe("defaultCountry: init plugin with a default country", function() {
   });
 
   it("sets the selected flag correctly", function() {
-    expect(getSelectedFlagElement()).toHaveClass(defaultCountry);
+    expect(getSelectedFlagElement()).toHaveClass(initialCountry);
   });
 
   it("sets the active list item correctly", function() {
-    expect(getActiveListItem().attr("data-country-code")).toEqual(defaultCountry);
+    expect(getActiveListItem().attr("data-country-code")).toEqual(initialCountry);
   });
 
 });

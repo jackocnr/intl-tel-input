@@ -14,7 +14,6 @@ describe("isValidNumber:", function() {
 
 
 
-
   describe("init plugin and call public method isValidNumber", function() {
 
     beforeEach(function() {
@@ -56,13 +55,13 @@ describe("isValidNumber:", function() {
     });
 
     it("returns true for: correct selected country, valid number", function() {
-      input.intlTelInput("selectCountry", "gb");
+      input.intlTelInput("setCountry", "gb");
       input.intlTelInput("setNumber", "07733 123456");
       expect(input.intlTelInput("isValidNumber")).toBeTruthy();
     });
 
     it("returns false for: correct selected country, invalid number", function() {
-      input.intlTelInput("selectCountry", "gb");
+      input.intlTelInput("setCountry", "gb");
       input.intlTelInput("setNumber", "07733 123");
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();
     });
