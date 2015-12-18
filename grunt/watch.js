@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   return {
     js: {
-      files: "src/js/**/*.js",
+      files: "src/js/**/*",
       tasks: "js"
     },
     pluginCss: {
