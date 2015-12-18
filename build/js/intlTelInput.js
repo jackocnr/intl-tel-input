@@ -446,7 +446,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 setTimeout(function() {
                     if (that.options.autoFormat && window.intlTelInputUtils) {
                         var cursorAtEnd = that.isGoodBrowser && that.telInput[0].selectionStart == that.telInput.val().length;
-                        that._handleInputKey(null, cursorAtEnd);
+                        that._handleInputKey(null, cursorAtEnd, true);
                         that._ensurePlus();
                     } else {
                         // if no autoFormat, just update flag

@@ -24,6 +24,19 @@ describe("allowExtensions option:", function() {
 			input.intlTelInput({
 				allowExtensions: true
 			});
+
+			jasmine.clock().install();
+		});
+
+		afterEach(function() {
+			jasmine.clock().uninstall();
+		});
+
+		it("pasting a valid number does not auto add the ext suffix", function() {
+			input.val("702 123 1234");
+			input.trigger("paste");
+			jasmine.clock().tick(1);
+			expect(getInputVal()).toEqual("(702) 123-1234");
 		});
 
 		it("shifting format does not prematurely detect extension", function() {
