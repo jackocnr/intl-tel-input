@@ -295,7 +295,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // format
             if (val) {
                 // this wont be run after _updateDialCode as that's only called if no val
-                this._updateVal(val);
+                this._updateVal(val, null, false, false, false);
             }
         },
         // initialise the main event listeners: input keyup, and click selected flag
@@ -595,7 +595,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 that.telInput.data("focusVal", value);
                 // on focus: if empty, insert the dial code for the currently selected flag
                 if (that.options.autoHideDialCode && !value && !that.telInput.prop("readonly") && that.selectedCountryData.dialCode) {
-                    that._updateVal("+" + that.selectedCountryData.dialCode, null, true);
+                    that._updateVal("+" + that.selectedCountryData.dialCode, null, true, false, false);
                     // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
                     that.telInput.one("keypress.plus" + that.ns, function(e) {
                         if (e.which == keys.PLUS) {
@@ -975,7 +975,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             } else {
                 newNumber = !this.options.autoHideDialCode || focusing ? newDialCode : "";
             }
-            this._updateVal(newNumber, null, focusing);
+            this._updateVal(newNumber, null, focusing, false, false);
         },
         // try and extract a valid international dial code from a full telephone number
         // Note: returns the raw string inc plus character and any whitespace/dots etc
@@ -1103,7 +1103,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (window.intlTelInputUtils) {
                 // if autoFormat is enabled and there's an initial value in the input, then format it
                 if (this.options.autoFormat && this.telInput.val()) {
-                    this._updateVal(this.telInput.val());
+                    this._updateVal(this.telInput.val(), null, false, false, false);
                 }
                 this._updatePlaceholder();
             }
