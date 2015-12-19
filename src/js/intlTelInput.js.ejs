@@ -308,22 +308,23 @@ Plugin.prototype = {
 
     // if we already have a dial code we can go ahead and set the flag, else fall back to default
     if (this._getDialCode(val)) {
-      this._updateFlagFromNumber(val, true);
+      this._updateFlagFromNumber(val);
     } else if (this.options.initialCountry !== "auto") {
-      // check the initialCountry option, else fall back to the first in the list
+      // see if we should select a flag
       if (this.options.initialCountry) {
-        this.defaultCountryData = this._getCountryData(this.options.initialCountry.toLowerCase(), false, false);
+        this._selectFlag(this.options.initialCountry);
       } else {
-        this.defaultCountryData = (this.preferredCountries.length) ? this.preferredCountries[0] : this.countries[0];
-      }
-      // if there's an initialCountry, or if the input's empty, then set the flag
-      if (this.options.initialCountry || !val) {
-        this._selectFlag(this.defaultCountryData.iso2);
+        // no dial code and no initialCountry, so default to first in list
+        this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
+        if (!val) {
+          this._selectFlag(this.defaultCountry);
+        }
       }
 
       // if empty, insert the default dial code (this function will check !nationalMode and !autoHideDialCode)
       if (!val) {
-        this._updateDialCode(this.defaultCountryData.dialCode, false);
+        var countryData = this._getCountryData(this.defaultCountry, false, false);
+        this._updateDialCode(countryData.dialCode, false);
       }
     }
     // NOTE: if initialCountry is set to auto, that will be handled separately
@@ -545,7 +546,7 @@ Plugin.prototype = {
           // if delete in the middle: reformat with no suffix (no need to reformat if delete at end)
           // if backspace: reformat with no suffix (need to reformat if at end to remove any lingering suffix - this is a feature)
           // important to remember never to add suffix on any delete key as can fuck up in ie8 so you can never delete a formatting char at the end
-          that._handleInputKey();
+          that._handleInputKey(null, false, false);
         }
         that._ensurePlus();
       } else {
@@ -958,7 +959,7 @@ Plugin.prototype = {
 
 
   // check if need to select a new flag based on the given number
-  _updateFlagFromNumber: function(number, updateDefault) {
+  _updateFlagFromNumber: function(number) {
     // if we're in nationalMode and we already have US/Canada selected, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
     // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
     if (number && this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
@@ -990,11 +991,11 @@ Plugin.prototype = {
       countryCode = "";
     } else if (!number || number == "+") {
       // empty, or just a plus, so default
-      countryCode = this.defaultCountryData.iso2;
+      countryCode = this.defaultCountry;
     }
 
     if (countryCode !== null) {
-      this._selectFlag(countryCode, updateDefault);
+      this._selectFlag(countryCode);
     }
   },
 
@@ -1030,15 +1031,13 @@ Plugin.prototype = {
 
 
   // select the given flag, update the placeholder and the active list item
-  _selectFlag: function(countryCode, updateDefault) {
+  _selectFlag: function(countryCode) {
     // do this first as it will throw an error and stop if countryCode is invalid
     this.selectedCountryData = (countryCode) ? this._getCountryData(countryCode, false, false) : {};
-    // update the defaultCountryData - we only need the iso2 from now on, so just store that
-    if (updateDefault && this.selectedCountryData.iso2) {
+    // update the defaultCountry - we only need the iso2 from now on, so just store that
+    if (this.selectedCountryData.iso2) {
       // can't just make this equal to selectedCountryData as would be a ref to that object
-      this.defaultCountryData = {
-        iso2: this.selectedCountryData.iso2
-      };
+      this.defaultCountry = this.selectedCountryData.iso2;
     }
 
     this.selectedFlagInner.attr("class", "iti-flag " + countryCode);
@@ -1081,7 +1080,7 @@ Plugin.prototype = {
   _selectListItem: function(listItem) {
     var countryCodeAttr = (this.isMobile) ? "value" : "data-country-code";
     // update selected flag and active list item
-    this._selectFlag(listItem.attr(countryCodeAttr), true);
+    this._selectFlag(listItem.attr(countryCodeAttr));
     if (!this.isMobile) {
       this._closeDropdown();
     }
@@ -1220,10 +1219,10 @@ Plugin.prototype = {
   geoIpLookupComplete: function() {
     if (this.options.initialCountry === "auto") {
       // we must set this even if there is an initial val in the input: in case the initial val is invalid and they delete it - they should see their auto country
-      this.defaultCountryData = this._getCountryData($.fn[pluginName].autoCountry, false, false);
+      this.defaultCountry = $.fn[pluginName].autoCountry;
       // if there's no initial value in the input, then update the flag
       if (!this.telInput.val()) {
-        this.setCountry($.fn[pluginName].autoCountry);
+        this.setCountry(this.defaultCountry);
       }
       this.autoCountryDeferred.resolve();
     }
@@ -1311,7 +1310,7 @@ Plugin.prototype = {
     countryCode = countryCode.toLowerCase();
     // check if already selected
     if (!this.selectedFlagInner.hasClass(countryCode)) {
-      this._selectFlag(countryCode, true);
+      this._selectFlag(countryCode);
       this._updateDialCode(this.selectedCountryData.dialCode, false);
     }
   },
