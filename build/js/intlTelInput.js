@@ -114,10 +114,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
    ********************/
         // prepare all of the country data, including onlyCountries, excludeCountries and preferredCountries options
         _processCountryData: function() {
-            // set the instances country data objects
-            this._setInstanceCountryData();
-            // set the preferredCountries property
-            this._setPreferredCountries();
+            // process this instance's countries
+            this._processAllCountries();
+            // process the countryCodes map
+            this._processCountryCodes();
+            // process the preferredCountries
+            this._processPreferredCountries();
         },
         // add a country code to this.countryCodes
         _addCountryCode: function(iso2, dialCode, priority) {
@@ -127,8 +129,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var index = priority || 0;
             this.countryCodes[dialCode][index] = iso2;
         },
-        // process countries
-        _processCountries: function(countryArray, processFunc) {
+        // filter the given countries using the process function
+        _filterCountries: function(countryArray, processFunc) {
             var i;
             // standardise case
             for (i = 0; i < countryArray.length; i++) {
@@ -142,23 +144,25 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             }
         },
-        // process onlyCountries or excludeCountries array if present, and generate the countryCodes map
-        _setInstanceCountryData: function() {
+        // process onlyCountries or excludeCountries array if present
+        _processAllCountries: function() {
             // process onlyCountries option
             if (this.options.onlyCountries.length) {
-                this._processCountries(this.options.onlyCountries, function(inArray) {
+                this._filterCountries(this.options.onlyCountries, function(inArray) {
                     // if country is in array
                     return inArray != -1;
                 });
             } else if (this.options.excludeCountries.length) {
-                this._processCountries(this.options.excludeCountries, function(inArray) {
+                this._filterCountries(this.options.excludeCountries, function(inArray) {
                     // if country is not in array
                     return inArray == -1;
                 });
             } else {
                 this.countries = allCountries;
             }
-            // generate countryCodes map
+        },
+        // process the countryCodes map
+        _processCountryCodes: function() {
             this.countryCodes = {};
             for (var i = 0; i < this.countries.length; i++) {
                 var c = this.countries[i];
@@ -172,9 +176,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             }
         },
-        // process preferred countries - iterate through the preferences,
-        // fetching the country data for each one
-        _setPreferredCountries: function() {
+        // process preferred countries - iterate through the preferences, fetching the country data for each one
+        _processPreferredCountries: function() {
             this.preferredCountries = [];
             for (var i = 0; i < this.options.preferredCountries.length; i++) {
                 var countryCode = this.options.preferredCountries[i].toLowerCase(), countryData = this._getCountryData(countryCode, false, true);
@@ -384,7 +387,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // 2) not already started loading (start)
             // 3) already started loading (do nothing - just wait for loading callback to fire)
             if ($.fn[pluginName].autoCountry) {
-                this.geoIpLookupComplete();
+                this.handleAutoCountry();
             } else if (!$.fn[pluginName].startedLoadingAutoCountry) {
                 // don't do this twice!
                 $.fn[pluginName].startedLoadingAutoCountry = true;
@@ -400,7 +403,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                         // TODO: this should just be the current instances
                         // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight away (e.g. if they have already done the geo ip lookup somewhere else). Using setTimeout means that the current thread of execution will finish before executing this, which allows the plugin to finish initialising.
                         setTimeout(function() {
-                            $(".intl-tel-input input").intlTelInput("geoIpLookupComplete");
+                            $(".intl-tel-input input").intlTelInput("handleAutoCountry");
                         });
                     });
                 }
@@ -1008,7 +1011,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
    *  PUBLIC METHODS
    ********************/
         // this is called when the geoip call returns
-        geoIpLookupComplete: function() {
+        handleAutoCountry: function() {
             if (this.options.initialCountry === "auto") {
                 // we must set this even if there is an initial val in the input: in case the initial val is invalid and they delete it - they should see their auto country
                 this.defaultCountry = $.fn[pluginName].autoCountry;
@@ -1098,7 +1101,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this._updateVal(number, format, addSuffix, preventConversion, isAllowedKey);
         },
         // this is called when the utils request completes
-        utilsRequestComplete: function() {
+        handleUtils: function() {
             // if the request was successful
             if (window.intlTelInputUtils) {
                 // if autoFormat is enabled and there's an initial value in the input, then format it
@@ -1172,7 +1175,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 url: path,
                 complete: function() {
                     // tell all instances that the utils request is complete
-                    $(".intl-tel-input input").intlTelInput("utilsRequestComplete");
+                    $(".intl-tel-input input").intlTelInput("handleUtils");
                 },
                 dataType: "script",
                 cache: true
