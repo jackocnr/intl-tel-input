@@ -1114,8 +1114,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.utilsScriptDeferred.resolve();
         }
     };
-    // adapted to allow public functions
     // using https://github.com/jquery-boilerplate/jquery-boilerplate/wiki/Extending-jQuery-Boilerplate
+    // (adapted to allow public functions)
     $.fn[pluginName] = function(options) {
         var args = arguments;
         // Is the first parameter an object (options), or was omitted,
