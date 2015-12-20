@@ -317,12 +317,12 @@ Plugin.prototype = {
     } else if (this.options.initialCountry !== "auto") {
       // see if we should select a flag
       if (this.options.initialCountry) {
-        this._selectFlag(this.options.initialCountry);
+        this._setFlag(this.options.initialCountry);
       } else {
         // no dial code and no initialCountry, so default to first in list
         this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
         if (!val) {
-          this._selectFlag(this.defaultCountry);
+          this._setFlag(this.defaultCountry);
         }
       }
 
@@ -408,6 +408,7 @@ Plugin.prototype = {
   },
 
 
+  // init many requests: utils script / geo ip lookup
   _initRequests: function() {
     var that = this;
 
@@ -434,7 +435,7 @@ Plugin.prototype = {
   },
 
 
-
+  // perform the geo ip lookup
   _loadAutoCountry: function() {
     var that = this;
 
@@ -474,7 +475,7 @@ Plugin.prototype = {
   },
 
 
-
+  // initialize any key listeners
   _initKeyListeners: function() {
     var that = this;
 
@@ -649,6 +650,7 @@ Plugin.prototype = {
   _getCursorFromLeftChar: function(val, guessCursor, originalLeftChars) {
     for (var i = guessCursor; i > 0; i--) {
       var leftChar = val.charAt(i - 1);
+      // UPDATE: now have to store 2 chars as extensions formatting contains 2 spaces so you need to be able to distinguish
       if ($.isNumeric(leftChar) || val.substr(i - 2, 2) == originalLeftChars) {
         return i;
       }
@@ -660,10 +662,8 @@ Plugin.prototype = {
   // after a reformat we need to make sure there are still the same number of digits to the right of the cursor
   _getCursorFromDigitsOnRight: function(val, digitsOnRight) {
     for (var i = val.length - 1; i >= 0; i--) {
-      if ($.isNumeric(val.charAt(i))) {
-        if (--digitsOnRight === 0) {
-          return i;
-        }
+      if ($.isNumeric(val.charAt(i)) && --digitsOnRight === 0) {
+        return i;
       }
     }
     return 0;
@@ -772,9 +772,6 @@ Plugin.prototype = {
     var activeListItem = this.countryList.children(".active");
     if (activeListItem.length) {
       this._highlightListItem(activeListItem);
-    }
-
-    if (activeListItem.length) {
       this._scrollTo(activeListItem);
     }
 
@@ -788,15 +785,14 @@ Plugin.prototype = {
 
   // decide where to position dropdown (depends on position within viewport, and scroll)
   _setDropdownPosition: function() {
-    var showDropdownContainer = this.options.dropdownContainer && !this.isMobile;
-
+    var that = this,
+      showDropdownContainer = this.options.dropdownContainer && !this.isMobile;
     if (showDropdownContainer) this.dropdown.appendTo(this.options.dropdownContainer);
 
     // show the menu and grab the dropdown height
     this.dropdownHeight = this.countryList.removeClass("hide").outerHeight();
 
-    var that = this,
-      pos = this.telInput.offset(),
+    var pos = this.telInput.offset(),
       inputTop = pos.top,
       windowTop = $(window).scrollTop(),
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
@@ -1000,7 +996,7 @@ Plugin.prototype = {
     }
 
     if (countryCode !== null) {
-      this._selectFlag(countryCode);
+      this._setFlag(countryCode);
     }
   },
 
@@ -1036,7 +1032,7 @@ Plugin.prototype = {
 
 
   // select the given flag, update the placeholder and the active list item
-  _selectFlag: function(countryCode) {
+  _setFlag: function(countryCode) {
     // do this first as it will throw an error and stop if countryCode is invalid
     this.selectedCountryData = (countryCode) ? this._getCountryData(countryCode, false, false) : {};
     // update the defaultCountry - we only need the iso2 from now on, so just store that
@@ -1085,7 +1081,7 @@ Plugin.prototype = {
   _selectListItem: function(listItem) {
     var countryCodeAttr = (this.isMobile) ? "value" : "data-country-code";
     // update selected flag and active list item
-    this._selectFlag(listItem.attr(countryCodeAttr));
+    this._setFlag(listItem.attr(countryCodeAttr));
     if (!this.isMobile) {
       this._closeDropdown();
     }
@@ -1220,6 +1216,7 @@ Plugin.prototype = {
    *  PUBLIC METHODS
    ********************/
 
+
   // this is called when the geoip call returns
   handleAutoCountry: function() {
     if (this.options.initialCountry === "auto") {
@@ -1232,6 +1229,7 @@ Plugin.prototype = {
       this.autoCountryDeferred.resolve();
     }
   },
+
 
   // remove plugin
   destroy: function() {
@@ -1310,18 +1308,19 @@ Plugin.prototype = {
   },
 
 
-  // update the selected flag, and update the input val accordingly
+  // update the selected flag, and update the input val accordingly ()
   setCountry: function(countryCode) {
     countryCode = countryCode.toLowerCase();
     // check if already selected
     if (!this.selectedFlagInner.hasClass(countryCode)) {
-      this._selectFlag(countryCode);
+      this._setFlag(countryCode);
       this._updateDialCode(this.selectedCountryData.dialCode, false);
     }
   },
 
 
   // set the input value and update the flag
+  // NOTE: format arg is for public method: to allow devs to format how they want
   setNumber: function(number, format, addSuffix, preventConversion, isAllowedKey) {
     // ensure starts with plus
     if (!this.options.nationalMode && number.charAt(0) != "+") {

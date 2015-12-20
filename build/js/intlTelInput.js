@@ -280,12 +280,12 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             } else if (this.options.initialCountry !== "auto") {
                 // see if we should select a flag
                 if (this.options.initialCountry) {
-                    this._selectFlag(this.options.initialCountry);
+                    this._setFlag(this.options.initialCountry);
                 } else {
                     // no dial code and no initialCountry, so default to first in list
                     this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
                     if (!val) {
-                        this._selectFlag(this.defaultCountry);
+                        this._setFlag(this.defaultCountry);
                     }
                 }
                 // if empty, insert the default dial code (this function will check !nationalMode and !autoHideDialCode)
@@ -353,6 +353,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             });
         },
+        // init many requests: utils script / geo ip lookup
         _initRequests: function() {
             var that = this;
             // if the user has specified the path to the utils script, fetch it on window.load, else resolve
@@ -375,6 +376,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.autoCountryDeferred.resolve();
             }
         },
+        // perform the geo ip lookup
         _loadAutoCountry: function() {
             var that = this;
             // check for cookie
@@ -409,6 +411,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             }
         },
+        // initialize any key listeners
         _initKeyListeners: function() {
             var that = this;
             if (this.options.autoFormat) {
@@ -552,6 +555,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _getCursorFromLeftChar: function(val, guessCursor, originalLeftChars) {
             for (var i = guessCursor; i > 0; i--) {
                 var leftChar = val.charAt(i - 1);
+                // UPDATE: now have to store 2 chars as extensions formatting contains 2 spaces so you need to be able to distinguish
                 if ($.isNumeric(leftChar) || val.substr(i - 2, 2) == originalLeftChars) {
                     return i;
                 }
@@ -561,10 +565,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // after a reformat we need to make sure there are still the same number of digits to the right of the cursor
         _getCursorFromDigitsOnRight: function(val, digitsOnRight) {
             for (var i = val.length - 1; i >= 0; i--) {
-                if ($.isNumeric(val.charAt(i))) {
-                    if (--digitsOnRight === 0) {
-                        return i;
-                    }
+                if ($.isNumeric(val.charAt(i)) && --digitsOnRight === 0) {
+                    return i;
                 }
             }
             return 0;
@@ -653,8 +655,6 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             var activeListItem = this.countryList.children(".active");
             if (activeListItem.length) {
                 this._highlightListItem(activeListItem);
-            }
-            if (activeListItem.length) {
                 this._scrollTo(activeListItem);
             }
             // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
@@ -664,11 +664,11 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
-            var showDropdownContainer = this.options.dropdownContainer && !this.isMobile;
+            var that = this, showDropdownContainer = this.options.dropdownContainer && !this.isMobile;
             if (showDropdownContainer) this.dropdown.appendTo(this.options.dropdownContainer);
             // show the menu and grab the dropdown height
             this.dropdownHeight = this.countryList.removeClass("hide").outerHeight();
-            var that = this, pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
+            var pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
             dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop;
             // by default, the dropdown will be below the input. If we want to position it above the input, we add the dropup class.
             this.countryList.toggleClass("dropup", !dropdownFitsBelow && dropdownFitsAbove);
@@ -839,7 +839,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 countryCode = this.defaultCountry;
             }
             if (countryCode !== null) {
-                this._selectFlag(countryCode);
+                this._setFlag(countryCode);
             }
         },
         // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1 702) and the actual number's length is >=4
@@ -867,7 +867,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
         },
         // select the given flag, update the placeholder and the active list item
-        _selectFlag: function(countryCode) {
+        _setFlag: function(countryCode) {
             // do this first as it will throw an error and stop if countryCode is invalid
             this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
             // update the defaultCountry - we only need the iso2 from now on, so just store that
@@ -905,7 +905,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         _selectListItem: function(listItem) {
             var countryCodeAttr = this.isMobile ? "value" : "data-country-code";
             // update selected flag and active list item
-            this._selectFlag(listItem.attr(countryCodeAttr));
+            this._setFlag(listItem.attr(countryCodeAttr));
             if (!this.isMobile) {
                 this._closeDropdown();
             }
@@ -1081,16 +1081,17 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             }
             return false;
         },
-        // update the selected flag, and update the input val accordingly
+        // update the selected flag, and update the input val accordingly ()
         setCountry: function(countryCode) {
             countryCode = countryCode.toLowerCase();
             // check if already selected
             if (!this.selectedFlagInner.hasClass(countryCode)) {
-                this._selectFlag(countryCode);
+                this._setFlag(countryCode);
                 this._updateDialCode(this.selectedCountryData.dialCode, false);
             }
         },
         // set the input value and update the flag
+        // NOTE: format arg is for public method: to allow devs to format how they want
         setNumber: function(number, format, addSuffix, preventConversion, isAllowedKey) {
             // ensure starts with plus
             if (!this.options.nationalMode && number.charAt(0) != "+") {
