@@ -91,7 +91,7 @@ $flagsImageExtension: "png" !default;
   // when user presses invalid key, add this class temporarily to change bg color
   input.iti-invalid-key {
     // override the default transition state to show the change instantly
-    transition: background-color 0;
+    transition: background-color 0s;
     background-color: #FFC7C7;
   }
 
