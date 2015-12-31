@@ -7,10 +7,17 @@ telInput.intlTelInput({
   utilsScript: "../../lib/libphonenumber/build/utils.js"
 });
 
-// on blur: validate
-telInput.blur(function() {
+
+telInput.on("change", function() {
+  // reset validation
+  telInput.removeClass("error");
+  errorMsg.addClass("hide");
+  validMsg.addClass("hide");
+
   if ($.trim(telInput.val())) {
     if (telInput.intlTelInput("isValidNumber")) {
+      telInput.removeClass("error");
+      errorMsg.addClass("hide");
       validMsg.removeClass("hide");
     } else {
       telInput.addClass("error");
@@ -18,11 +25,5 @@ telInput.blur(function() {
       validMsg.addClass("hide");
     }
   }
-});
 
-// on keydown: reset
-telInput.keydown(function() {
-  telInput.removeClass("error");
-  errorMsg.addClass("hide");
-  validMsg.addClass("hide");
 });
