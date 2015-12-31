@@ -2,8 +2,18 @@ var telInput = $("#phone"),
   errorMsg = $("#error-msg"),
   validMsg = $("#valid-msg");
 
-function validate(){
-  //display validation 
+// initialise plugin
+telInput.intlTelInput({
+  utilsScript: "../../lib/libphonenumber/build/utils.js"
+});
+
+
+telInput.on("change", function() {
+  // reset validation
+  telInput.removeClass("error");
+  errorMsg.addClass("hide");
+  validMsg.addClass("hide");
+
   if ($.trim(telInput.val())) {
     if (telInput.intlTelInput("isValidNumber")) {
       telInput.removeClass("error");
@@ -15,20 +25,5 @@ function validate(){
       validMsg.addClass("hide");
     }
   }
-}
 
-// initialise plugin
-telInput.intlTelInput({
-  utilsScript: "../../lib/libphonenumber/build/utils.js"
 });
-
-// on blur: validate
-telInput.blur(function() {
-  validate();
-});
-
-// on keyup: validate
-telInput.keyup(function() {
-  validate();
-});
-
