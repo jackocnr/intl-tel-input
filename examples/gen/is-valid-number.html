@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <title>Example: Validation</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1450474669660">
-    <link rel="stylesheet" href="../../build/css/demo.css?1450474669660">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1451758466519">
+    <link rel="stylesheet" href="../../build/css/demo.css?1451758466519">
     
-      <link rel="stylesheet" href="../css/isValidNumber.css?1450474669660">
+      <link rel="stylesheet" href="../css/isValidNumber.css?1451758466519">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -44,25 +44,27 @@ telInput.intlTelInput({
   utilsScript: &quot;../../lib/libphonenumber/build/utils.js&quot;
 });
 
+var reset = function() {
+  telInput.removeClass(&quot;error&quot;);
+  errorMsg.addClass(&quot;hide&quot;);
+  validMsg.addClass(&quot;hide&quot;);
+};
+
 // on blur: validate
 telInput.blur(function() {
+  reset();
   if ($.trim(telInput.val())) {
     if (telInput.intlTelInput(&quot;isValidNumber&quot;)) {
       validMsg.removeClass(&quot;hide&quot;);
     } else {
       telInput.addClass(&quot;error&quot;);
       errorMsg.removeClass(&quot;hide&quot;);
-      validMsg.addClass(&quot;hide&quot;);
     }
   }
 });
 
-// on keydown: reset
-telInput.keydown(function() {
-  telInput.removeClass(&quot;error&quot;);
-  errorMsg.addClass(&quot;hide&quot;);
-  validMsg.addClass(&quot;hide&quot;);
-});</code></pre>
+// on keyup / change flag: reset
+telInput.on(&quot;keyup change&quot;, reset);</code></pre>
 
     <h2>Result</h2>
     <div id="result">
@@ -73,7 +75,7 @@ telInput.keydown(function() {
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1450474669660"></script>
-    <script src="../js/isValidNumber.js?1450474669660"></script>
+    <script src="../../build/js/intlTelInput.js?1451758466519"></script>
+    <script src="../js/isValidNumber.js?1451758466519"></script>
   </body>
 </html>
