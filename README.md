@@ -25,12 +25,14 @@ You can view a live demo and some examples of how to use the various options her
 
 
 ## Features
+* Automatically select the user's current country using an IP lookup
 * Automatically format the number as the user types
 * Automatically set the input placeholder to an example number for the selected country
 * Navigate the country dropdown by typing a country's name, or using up/down keys
-* Selecting a country from the dropdown will update the dial code in the input
-* Typing a different dial code will automatically update the displayed flag
-* Dropdown appears above or below the input depending on available space/scroll position
+* Handle phone number extensions
+* The user types their national number and the plugin gives you the full standardized international number
+* Full validation, including specific error types
+* Retina flag icons
 * Lots of initialisation options for customisation, as well as public methods for interaction
 
 
