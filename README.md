@@ -331,3 +331,4 @@ If when building, you get an error in the "exec:evenizer" task, you may need to 
 ## Links
 * List of [sites using intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Sites-using-intl-tel-input)
 * List of [integrations with intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Integrations)
+* [Android native port - IntlPhoneInput](https://github.com/Rimoto/IntlPhoneInput)
