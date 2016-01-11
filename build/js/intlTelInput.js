@@ -910,8 +910,8 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this._closeDropdown();
             }
             this._updateDialCode(listItem.attr("data-dial-code"), true);
-            // always fire the change event as even if nationalMode=true (and we haven't updated the input val), the system as a whole has still changed - see country-sync example. think of it as making a selection from a select element.
-            this.telInput.trigger("change");
+            // trigger a custom event as even in nationalMode the state has changed
+            this.telInput.trigger("country-change");
             // focus the input
             this.telInput.focus();
             // fix for FF and IE11 (with nationalMode=false i.e. auto inserting dial code), who try to put the cursor at the beginning the first time
