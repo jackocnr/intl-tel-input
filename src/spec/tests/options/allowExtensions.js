@@ -22,6 +22,7 @@ describe("allowExtensions option:", function() {
 			input.appendTo($("body"));
 
 			input.intlTelInput({
+				autoFormat: true,
 				allowExtensions: true
 			});
 
