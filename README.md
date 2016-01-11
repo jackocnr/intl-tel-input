@@ -78,7 +78,8 @@ Type: `Boolean` Default: `false`
 When `autoFormat` is enabled, this option will support formatting extension numbers e.g. "+1 (702) 123-1234 ext. 12345".
 
 **autoFormat**  
-Type: `Boolean` Default: `true`  
+Type: `Boolean` Default: `false`  
+_Note this option is currently not recommended, due to a [known UX issue](https://github.com/jackocnr/intl-tel-input/issues/322)._  
 Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (triggering a red flash in the input - see [Troubleshooting](#troubleshooting) to customise this). Requires the `utilsScript` option.
 
 **autoHideDialCode**  
