@@ -1,9 +1,7 @@
 /bower_components/
 /node_modules/
-/lib/jasmine/
-/lib/jasmine-jquery/
-/lib/jquery/
-/lib/flag-icon-css/
+/lib/*
+!/lib/libphonenumber 
 /.bower_cache/
 /.sass-cache/
 /.grunt/
