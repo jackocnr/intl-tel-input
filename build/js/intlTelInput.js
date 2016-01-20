@@ -904,7 +904,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 // update the active list item
                 this.countryListItems.removeClass("active");
                 if (countryCode) {
-                    this.countryListItems.filter('.country[data-country-code="' + countryCode + '"]').addClass("active");
+                    this.countryListItems.filter('.country[data-country-code="' + countryCode + '"]').first().addClass("active");
                 }
             }
             return ("+" + this.selectedCountryData.dialCode).length;
