@@ -18,6 +18,14 @@ var pluginName = "intlTelInput",
     geoIpLookup: null,
     // initial country
     initialCountry: "",
+    // show Flag
+    selectedShowFlag: true,
+    //show flags in dropdown
+    showFlags: true,
+    //internationaliztion
+    locale: 'en',
+    //custom translations layer
+    translations: {},
     // don't insert international dial codes
     nationalMode: true,
     // number type to use for placeholders
@@ -232,10 +240,10 @@ Plugin.prototype = {
     var selectedFlag = $("<div>", {
       // make element focusable and tab naviagable
       "tabindex": "0",
-      "class": "selected-flag"
+      "class": "selected-flag" + (this.options.selectedShowFlag?"":" selected-code")
     }).appendTo(this.flagsContainer);
     this.selectedFlagInner = $("<div>", {
-      "class": "iti-flag"
+      "class": this.options.selectedShowFlag ? "iti-flag" : "iti-code"
     }).appendTo(selectedFlag);
     // CSS triangle
     $("<div>", {
@@ -289,15 +297,16 @@ Plugin.prototype = {
       var c = countries[i];
       if (this.isMobile) {
         tmp += "<option data-dial-code='" + c.dialCode + "' value='" + c.iso2 + "'>";
-        tmp += c.name + " +" + c.dialCode;
+        tmp += this._getCountryName(c) + " +" + c.dialCode;
         tmp += "</option>";
       } else {
         // open the list item
         tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
         // add the flag
-        tmp += "<div class='flag-box'><div class='iti-flag " + c.iso2 + "'></div></div>";
+        if(this.options.showFlags)
+          tmp += "<div class='flag-box'><div class='iti-flag " + c.iso2 + "'></div></div>";
         // and the country name and dial code
-        tmp += "<span class='country-name'>" + c.name + "</span>";
+        tmp += "<span class='country-name'>" + this._getCountryName(c) + "</span>";
         tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
         // close the list item
         tmp += "</li>";
@@ -315,16 +324,20 @@ Plugin.prototype = {
     if (this._getDialCode(val)) {
       this._updateFlagFromNumber(val);
     } else if (this.options.initialCountry !== "auto") {
+      var codeLength;
       // see if we should select a flag
       if (this.options.initialCountry) {
-        this._setFlag(this.options.initialCountry);
+        codeLength = this._setFlag(this.options.initialCountry);
       } else {
         // no dial code and no initialCountry, so default to first in list
         this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
         if (!val) {
-          this._setFlag(this.defaultCountry);
+          codeLength = this._setFlag(this.defaultCountry);
         }
       }
+
+      if(!this.options.selectedShowFlag)
+        this.telInput.parent().attr("class", "intl-tel-input intl-code-"+codeLength);
 
       // if empty, insert the default dial code (this function will check !nationalMode and !autoHideDialCode)
       if (!val) {
@@ -911,7 +924,7 @@ Plugin.prototype = {
   // find the first list item whose name starts with the query string
   _searchForCountry: function(query) {
     for (var i = 0; i < this.countries.length; i++) {
-      if (this._startsWith(this.countries[i].name, query)) {
+      if (this._startsWith(this._getCountryName(this.countries[i]), query)) {
         var listItem = this.countryList.children("[data-country-code=" + this.countries[i].iso2 + "]").not(".preferred");
         // update highlighting and scroll
         this._highlightListItem(listItem);
@@ -996,7 +1009,9 @@ Plugin.prototype = {
     }
 
     if (countryCode !== null) {
-      this._setFlag(countryCode);
+      var codeLength = this._setFlag(countryCode);
+      if(!this.options.selectedShowFlag)
+        this.telInput.parent().attr("class", "intl-tel-input intl-code-"+codeLength);
     }
   },
 
@@ -1030,6 +1045,18 @@ Plugin.prototype = {
     }
   },
 
+  //get Countryname by CountryData
+  _getCountryName: function(country){
+    if(this.options.locale && 
+        (country.translations[this.options.locale] || 
+          (Object.prototype.toString.call(this.options.translations) === '[object Object]' && 
+            this.options.translations[country.iso2] && 
+            this.options.translations[country.iso2][this.options.locale]
+          )
+      ) )
+      return (this.options.translations[country.iso2] && this.options.translations[country.iso2][this.options.locale]) || country.translations[this.options.locale];
+    return country.name;
+  },
 
   // select the given flag, update the placeholder and the active list item
   _setFlag: function(countryCode) {
@@ -1041,9 +1068,11 @@ Plugin.prototype = {
       this.defaultCountry = this.selectedCountryData.iso2;
     }
 
-    this.selectedFlagInner.attr("class", "iti-flag " + countryCode);
+    this.selectedFlagInner.attr("class", (this.options.selectedShowFlag ? "iti-flag " : "iti-code " ) + countryCode);
+    if(!this.options.selectedShowFlag)
+      this.selectedFlagInner.text("+"+this.selectedCountryData.dialCode);
     // update the selected country's title attribute
-    var title = (countryCode) ? this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode : "Unknown";
+    var title = (countryCode) ? this._getCountryName(this.selectedCountryData) + ": +" + this.selectedCountryData.dialCode : "Unknown";
     this.selectedFlagInner.parent().attr("title", title);
 
     // and the input's placeholder
@@ -1055,9 +1084,10 @@ Plugin.prototype = {
       // update the active list item
       this.countryListItems.removeClass("active");
       if (countryCode) {
-        this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country").addClass("active");
+        this.countryListItems.filter('.country[data-country-code="'+countryCode+'"]').addClass("active");
       }
     }
+    return ('+'+this.selectedCountryData.dialCode).length;
   },
 
 
@@ -1081,7 +1111,7 @@ Plugin.prototype = {
   _selectListItem: function(listItem) {
     var countryCodeAttr = (this.isMobile) ? "value" : "data-country-code";
     // update selected flag and active list item
-    this._setFlag(listItem.attr(countryCodeAttr));
+    var codeLength = this._setFlag(listItem.attr(countryCodeAttr));
     if (!this.isMobile) {
       this._closeDropdown();
     }
@@ -1090,6 +1120,8 @@ Plugin.prototype = {
 
     // trigger a custom event as even in nationalMode the state has changed
     this.telInput.trigger("country-change");
+    if(!this.options.selectedShowFlag)
+      this.telInput.parent().attr("class", "intl-tel-input intl-code-"+codeLength);
 
     // focus the input
     this.telInput.focus();
@@ -1313,7 +1345,9 @@ Plugin.prototype = {
     countryCode = countryCode.toLowerCase();
     // check if already selected
     if (!this.selectedFlagInner.hasClass(countryCode)) {
-      this._setFlag(countryCode);
+      var codeLength = this._setFlag(countryCode);
+      if(!this.options.selectedShowFlag)
+        this.telInput.parent().attr("class", "intl-tel-input intl-code-"+codeLength);
       this._updateDialCode(this.selectedCountryData.dialCode, false);
     }
   },

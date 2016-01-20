@@ -23,6 +23,14 @@ pre {
 .token.variable {
   background: none; }
 
+form > div {
+  display: block;
+  padding: 10px 0 0; }
+  form > div > label {
+    display: block; }
+form > div:last-of-type {
+  padding-bottom: 10px; }
+
 input, button {
   height: 35px;
   margin: 0;

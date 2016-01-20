@@ -30,6 +30,20 @@ pre {
   background: none;
 }
 
+form {
+  > div{
+    display:block;
+    padding:10px 0 0;
+
+    > label {
+      display:block;
+    } 
+  }
+  > div:last-of-type{
+    padding-bottom: 10px;
+  }
+}
+
 // general form styling
 input, button {
   height: 35px;

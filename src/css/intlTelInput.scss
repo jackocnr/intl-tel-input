@@ -88,6 +88,25 @@ $flagsImageExtension: "png" !default;
     // then when we remove that class, this does a quick fade back to no bg
     transition: background-color 100ms ease-out;
   }
+
+  &.intl-code-3{
+    input, input[type=text], input[type=tel] {
+      padding-left: 54px;
+    }
+  }
+
+  &.intl-code-4{
+    input, input[type=text], input[type=tel] {
+      padding-left: 62px;
+    }
+  }
+
+  &.intl-code-5{
+    input, input[type=text], input[type=tel] {
+      padding-left: 70px;
+    }
+  }
+
   // when user presses invalid key, add this class temporarily to change bg color
   input.iti-invalid-key {
     // override the default transition state to show the change instantly
@@ -129,12 +148,22 @@ $flagsImageExtension: "png" !default;
     height: 100%;
     padding: 0 0 0 $flagPadding;
 
+    &.selected-code{
+      width:auto;
+      background-color: $hoverColor;
+      padding-right:15px;
+    }
+
     // vertically center the flag
     .iti-flag {
       position: absolute;
       top: 0;
       bottom: 0;
       margin: auto;
+    }
+
+    .iti-code {
+      line-height: 32px;
     }
 
     .iti-arrow {
