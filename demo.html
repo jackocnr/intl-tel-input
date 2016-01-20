@@ -9,7 +9,26 @@
   <body>
     <h1>International Telephone Input</h1>
     <form>
-      <input id="phone" type="tel">
+      <div>
+        <label for="phone">Default</label>
+        <input id="phone" type="tel">
+      </div>
+      <div>
+        <label for="phone2">German</label>
+        <input id="phone2" type="tel">
+      </div>
+      <div>
+        <label for="phone3">French</label>
+        <input id="phone3" type="tel">
+      </div>
+      <div>
+        <label for="phone4">Spanish</label>
+        <input id="phone4" type="tel">
+      </div>
+      <div>
+        <label for="phone5">Hindi (using custom translations)</label>
+        <input id="phone5" type="tel">
+      </div>
       <button type="submit">Submit</button>
     </form>
 
@@ -17,25 +36,75 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="build/js/intlTelInput.js"></script>
     <script>
-      $("#phone").intlTelInput({
-        // allowExtensions: true,
-        // autoFormat: false,
-        // autoHideDialCode: false,
-        // autoPlaceholder: false,
-        // dropdownContainer: $("body"),
-        // excludeCountries: ["us"],
-        // geoIpLookup: function(callback) {
-        //   $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
-        //     var countryCode = (resp && resp.country) ? resp.country : "";
-        //     callback(countryCode);
-        //   });
-        // },
-        // initialCountry: "auto",
-        // nationalMode: false,
-        // numberType: "MOBILE",
-        // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
-        // preferredCountries: ['cn', 'jp'],
+      $("#phone2").intlTelInput({
+        initialCountry: "auto",
+        geoIpLookup: function(callback) {
+          $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+            var countryCode = (resp && resp.country) ? resp.country : "";
+            callback(countryCode);
+          });
+        },
+        selectedShowFlag: false,
+        showFlags: false,
+        locale: 'de',
         utilsScript: "lib/libphonenumber/build/utils.js"
+      });
+      $("#phone3").intlTelInput({
+        initialCountry: "auto",
+        geoIpLookup: function(callback) {
+          $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+            var countryCode = (resp && resp.country) ? resp.country : "";
+            callback(countryCode);
+          });
+        },
+        selectedShowFlag: false,
+        showFlags: false,
+        locale: 'fr',
+        utilsScript: "lib/libphonenumber/build/utils.js"
+      });
+      $("#phone4").intlTelInput({
+        initialCountry: "auto",
+        geoIpLookup: function(callback) {
+          $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+            var countryCode = (resp && resp.country) ? resp.country : "";
+            callback(countryCode);
+          });
+        },
+        selectedShowFlag: false,
+        showFlags: true,
+        locale: 'es',
+        utilsScript: "lib/libphonenumber/build/utils.js"
+      });
+      $("#phone").intlTelInput({
+        initialCountry: "auto",
+        geoIpLookup: function(callback) {
+          $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+            var countryCode = (resp && resp.country) ? resp.country : "";
+            callback(countryCode);
+          });
+        },
+        utilsScript: "lib/libphonenumber/build/utils.js"
+      });
+      $("#phone5").intlTelInput({
+        initialCountry: "auto",
+        geoIpLookup: function(callback) {
+          $.get('http://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+            var countryCode = (resp && resp.country) ? resp.country : "";
+            callback(countryCode);
+          });
+        },
+        selectedShowFlag: false,
+        showFlags: true,
+        locale: 'hi',
+        utilsScript: "lib/libphonenumber/build/utils.js",
+        onlyCountries: ['us', 'gb', 'de', 'in'],
+        preferredCountries: [],
+        translations: {
+          'us': {'hi': 'संयुक्त राज्य अमेरिका'},
+          'gb': {'hi': 'संयुक्त राजशाही'},
+          'de': {'hi': 'जर्मनी'},
+          'in': {'hi': 'भारत'}
+        }
       });
     </script>
   </body>
