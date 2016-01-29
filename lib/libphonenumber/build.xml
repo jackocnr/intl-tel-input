@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<project name="remove-local-formats" default="compile">
+
+    <!--
+        Produces an E164 variant of PhoneNumberMetadata.xml in the libphonenumber project.
+        Relative paths assume that libphonenumber is cloned as a sibling directory of the intl-tel-input project.
+    -->
+    <target name="compile">
+        <xslt   force="true"
+                style="remove-local-formats.xslt"
+                in="../../../libphonenumber/resources/PhoneNumberMetadata.xml"
+                out="../../../libphonenumber/resources/PhoneNumberMetadataE164.xml"
+        />
+    </target>
+
+</project>
