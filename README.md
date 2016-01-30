@@ -40,7 +40,7 @@ You can view a live demo and some examples of how to use the various options her
 |            | Chrome | FF  | Safari | IE  | Chrome Android | Android WebView | Mobile Safari | IE Mob |
 | :--------- | :----: | :-: | :----: | :-: | :------------: | :-------------: | :-----------: | :----: |
 | Core       |    ✓   |  ✓  |    ✓   |  8  |      ✓         |      ✓          |       ✓       |     ✓  |
-| autoFormat |    ✓   |  ✓  |    ✓   |  8  |      ✓         |      [✗](https://github.com/jackocnr/intl-tel-input/issues/187)          |       ✓       |     [✗](https://github.com/jackocnr/intl-tel-input/issues/68)  |
+| autoFormat |    ✓   |  ✓  |    ✓   |  8  |      ✓         |      ✓          |       ✓       |     [✗](https://github.com/jackocnr/intl-tel-input/issues/68)  |
 
 
 
