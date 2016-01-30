@@ -40,6 +40,9 @@ $flagsImagePath: "../img/" !default;
 $flagsImageName: "flags" !default;
 $flagsImageExtension: "png" !default;
 
+// enough space for them to click off to close
+$mobilePopupMargin: 30px;
+
 .intl-tel-input {
   // need position on the container so the selected flag can be
   // absolutely positioned over the input
@@ -225,17 +228,6 @@ $flagsImageExtension: "png" !default;
     }
   }
 
-  // on mobiles we use a select for the country dropdown
-  select {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: $selectedFlagWidth;
-    height: 100%;
-    opacity: 0;
-  }
-
   // if dropdownContainer option is set, increase z-index to prevent display issues
   &.iti-container {
     position: absolute;
@@ -247,6 +239,25 @@ $flagsImageExtension: "png" !default;
     padding: $borderWidth;
     &:hover {
       cursor: pointer;
+    }
+  }
+}
+
+// overrides for mobile popup
+.iti-mobile .intl-tel-input {
+  &.iti-container {
+    top: $mobilePopupMargin;
+    bottom: $mobilePopupMargin;
+    left: $mobilePopupMargin;
+    right: $mobilePopupMargin;
+  }
+  .country-list {
+    max-height: 100%;
+    width: 100%;
+    .country {
+      padding: 10px 10px;
+      // increase line height because dropdown copy is v likely to overflow on mobile and when it does it needs to be well spaced
+      line-height: 1.5em;
     }
   }
 }

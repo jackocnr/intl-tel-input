@@ -92,6 +92,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // Note: for some reason jasmine fucks up if you put this in the main Plugin function with the rest of these declarations
             // Note: to target Android Mobiles (and not Tablets), we must find "Android" and "Mobile"
             this.isMobile = /Android.+Mobile|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (this.isMobile) {
+                // trigger the mobile dropdown css
+                $("body").addClass("iti-mobile");
+                // on mobile, we want a full screen dropdown, so we must append it to the body
+                if (!this.options.dropdownContainer) {
+                    this.options.dropdownContainer = "body";
+                }
+            }
             // we return these deferred objects from the _init() call so they can be watched, and then we resolve them when each specific request returns
             // Note: again, jasmine had a spazz when I put these in the Plugin function
             this.autoCountryDeferred = new $.Deferred();
@@ -212,40 +220,29 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             $("<div>", {
                 "class": "iti-arrow"
             }).appendTo(selectedFlag);
-            // country list
-            // mobile is just a native select element
-            // desktop is a proper list containing: preferred countries, then divider, then all countries
-            if (this.isMobile) {
-                this.countryList = $("<select>", {
-                    "class": "iti-mobile-select"
-                }).appendTo(this.flagsContainer);
-            } else {
-                this.countryList = $("<ul>", {
-                    "class": "country-list hide"
-                });
-                if (this.preferredCountries.length && !this.isMobile) {
-                    this._appendListItems(this.preferredCountries, "preferred");
-                    $("<li>", {
-                        "class": "divider"
-                    }).appendTo(this.countryList);
-                }
+            // country dropdown: preferred countries, then divider, then all countries
+            this.countryList = $("<ul>", {
+                "class": "country-list hide"
+            });
+            if (this.preferredCountries.length) {
+                this._appendListItems(this.preferredCountries, "preferred");
+                $("<li>", {
+                    "class": "divider"
+                }).appendTo(this.countryList);
             }
             this._appendListItems(this.countries, "");
-            if (!this.isMobile) {
-                // this is useful in lots of places
-                this.countryListItems = this.countryList.children(".country");
-                // create dropdownContainer markup
-                if (this.options.dropdownContainer) {
-                    this.dropdown = $("<div>", {
-                        "class": "intl-tel-input iti-container"
-                    }).append(this.countryList);
-                } else {
-                    this.countryList.appendTo(this.flagsContainer);
-                }
+            // this is useful in lots of places
+            this.countryListItems = this.countryList.children(".country");
+            // create dropdownContainer markup
+            if (this.options.dropdownContainer) {
+                this.dropdown = $("<div>", {
+                    "class": "intl-tel-input iti-container"
+                }).append(this.countryList);
+            } else {
+                this.countryList.appendTo(this.flagsContainer);
             }
         },
         // add a country <li> to the countryList <ul> container
-        // UPDATE: if isMobile, add an <option> to the countryList <select> container
         _appendListItems: function(countries, className) {
             // we create so many DOM elements, it is faster to build a temp string
             // and then add everything to the DOM in one go at the end
@@ -253,21 +250,15 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // for each country
             for (var i = 0; i < countries.length; i++) {
                 var c = countries[i];
-                if (this.isMobile) {
-                    tmp += "<option data-dial-code='" + c.dialCode + "' value='" + c.iso2 + "'>";
-                    tmp += c.name + " +" + c.dialCode;
-                    tmp += "</option>";
-                } else {
-                    // open the list item
-                    tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
-                    // add the flag
-                    tmp += "<div class='flag-box'><div class='iti-flag " + c.iso2 + "'></div></div>";
-                    // and the country name and dial code
-                    tmp += "<span class='country-name'>" + c.name + "</span>";
-                    tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
-                    // close the list item
-                    tmp += "</li>";
-                }
+                // open the list item
+                tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
+                // add the flag
+                tmp += "<div class='flag-box'><div class='iti-flag " + c.iso2 + "'></div></div>";
+                // and the country name and dial code
+                tmp += "<span class='country-name'>" + c.name + "</span>";
+                tmp += "<span class='dial-code'>+" + c.dialCode + "</span>";
+                // close the list item
+                tmp += "</li>";
             }
             this.countryList.append(tmp);
         },
@@ -309,34 +300,28 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             if (this.options.autoHideDialCode || this.options.autoFormat) {
                 this._initFocusListeners();
             }
-            if (this.isMobile) {
-                this.countryList.on("change" + this.ns, function(e) {
-                    that._selectListItem($(this).find("option:selected"));
-                });
-            } else {
-                // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
-                var label = this.telInput.closest("label");
-                if (label.length) {
-                    label.on("click" + this.ns, function(e) {
-                        // if the dropdown is closed, then focus the input, else ignore the click
-                        if (that.countryList.hasClass("hide")) {
-                            that.telInput.focus();
-                        } else {
-                            e.preventDefault();
-                        }
-                    });
-                }
-                // toggle country dropdown on click
-                var selectedFlag = this.selectedFlagInner.parent();
-                selectedFlag.on("click" + this.ns, function(e) {
-                    // only intercept this event if we're opening the dropdown
-                    // else let it bubble up to the top ("click-off-to-close" listener)
-                    // we cannot just stopPropagation as it may be needed to close another instance
-                    if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled") && !that.telInput.prop("readonly")) {
-                        that._showDropdown();
+            // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
+            var label = this.telInput.closest("label");
+            if (label.length) {
+                label.on("click" + this.ns, function(e) {
+                    // if the dropdown is closed, then focus the input, else ignore the click
+                    if (that.countryList.hasClass("hide")) {
+                        that.telInput.focus();
+                    } else {
+                        e.preventDefault();
                     }
                 });
             }
+            // toggle country dropdown on click
+            var selectedFlag = this.selectedFlagInner.parent();
+            selectedFlag.on("click" + this.ns, function(e) {
+                // only intercept this event if we're opening the dropdown
+                // else let it bubble up to the top ("click-off-to-close" listener)
+                // we cannot just stopPropagation as it may be needed to close another instance
+                if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled") && !that.telInput.prop("readonly")) {
+                    that._showDropdown();
+                }
+            });
             // open dropdown list if currently focused
             this.flagsContainer.on("keydown" + that.ns, function(e) {
                 var isDropdownHidden = that.countryList.hasClass("hide");
@@ -664,27 +649,31 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
-            var that = this, showDropdownContainer = this.options.dropdownContainer && !this.isMobile;
-            if (showDropdownContainer) this.dropdown.appendTo(this.options.dropdownContainer);
+            var that = this;
+            if (this.options.dropdownContainer) {
+                this.dropdown.appendTo(this.options.dropdownContainer);
+            }
             // show the menu and grab the dropdown height
             this.dropdownHeight = this.countryList.removeClass("hide").outerHeight();
-            var pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
-            dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop;
-            // by default, the dropdown will be below the input. If we want to position it above the input, we add the dropup class.
-            this.countryList.toggleClass("dropup", !dropdownFitsBelow && dropdownFitsAbove);
-            // if dropdownContainer is enabled, calculate postion
-            if (showDropdownContainer) {
-                // by default the dropdown will be directly over the input because it's not in the flow. If we want to position it below, we need to add some extra top value.
-                var extraTop = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
-                // calculate placement
-                this.dropdown.css({
-                    top: inputTop + extraTop,
-                    left: pos.left
-                });
-                // close menu on window scroll
-                $(window).on("scroll" + this.ns, function() {
-                    that._closeDropdown();
-                });
+            if (!this.isMobile) {
+                var pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
+                dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop;
+                // by default, the dropdown will be below the input. If we want to position it above the input, we add the dropup class.
+                this.countryList.toggleClass("dropup", !dropdownFitsBelow && dropdownFitsAbove);
+                // if dropdownContainer is enabled, calculate postion
+                if (this.options.dropdownContainer) {
+                    // by default the dropdown will be directly over the input because it's not in the flow. If we want to position it below, we need to add some extra top value.
+                    var extraTop = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
+                    // calculate placement
+                    this.dropdown.css({
+                        top: inputTop + extraTop,
+                        left: pos.left
+                    });
+                    // close menu on window scroll
+                    $(window).on("scroll" + this.ns, function() {
+                        that._closeDropdown();
+                    });
+                }
             }
         },
         // we only bind dropdown listeners when the dropdown is open
@@ -881,14 +870,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             this.selectedFlagInner.parent().attr("title", title);
             // and the input's placeholder
             this._updatePlaceholder();
-            if (this.isMobile) {
-                this.countryList.val(countryCode);
-            } else {
-                // update the active list item
-                this.countryListItems.removeClass("active");
-                if (countryCode) {
-                    this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country").addClass("active");
-                }
+            // update the active list item
+            this.countryListItems.removeClass("active");
+            if (countryCode) {
+                this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country").addClass("active");
             }
         },
         // update the input placeholder to an example number from the currently selected country
@@ -903,12 +888,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // called when the user selects a list item from the dropdown
         _selectListItem: function(listItem) {
-            var countryCodeAttr = this.isMobile ? "value" : "data-country-code";
             // update selected flag and active list item
-            this._setFlag(listItem.attr(countryCodeAttr));
-            if (!this.isMobile) {
-                this._closeDropdown();
-            }
+            this._setFlag(listItem.attr("data-country-code"));
+            this._closeDropdown();
             this._updateDialCode(listItem.attr("data-dial-code"), true);
             // trigger a custom event as even in nationalMode the state has changed
             this.telInput.trigger("country-change");
@@ -932,8 +914,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
             // unbind hover and click listeners
             this.countryList.off(this.ns);
             // remove menu from container
-            if (this.options.dropdownContainer && !this.isMobile) {
-                $(window).off("scroll" + this.ns);
+            if (this.options.dropdownContainer) {
+                if (!this.isMobile) {
+                    $(window).off("scroll" + this.ns);
+                }
                 this.dropdown.detach();
             }
         },
@@ -1024,21 +1008,14 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         },
         // remove plugin
         destroy: function() {
-            if (!this.isMobile) {
-                // make sure the dropdown is closed (and unbind listeners)
-                this._closeDropdown();
-            }
+            // make sure the dropdown is closed (and unbind listeners)
+            this._closeDropdown();
             // key events, and focus/blur events if autoHideDialCode=true
             this.telInput.off(this.ns);
-            if (this.isMobile) {
-                // change event on select country
-                this.countryList.off(this.ns);
-            } else {
-                // click event to open dropdown
-                this.selectedFlagInner.parent().off(this.ns);
-                // label click hack
-                this.telInput.closest("label").off(this.ns);
-            }
+            // click event to open dropdown
+            this.selectedFlagInner.parent().off(this.ns);
+            // label click hack
+            this.telInput.closest("label").off(this.ns);
             // remove markup
             var container = this.telInput.parent();
             container.before(this.telInput).remove();
