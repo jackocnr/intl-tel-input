@@ -27,7 +27,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // add or remove input placeholder with an example number for the selected country
         autoPlaceholder: true,
         // append menu to a specific element
-        dropdownContainer: false,
+        dropdownContainer: "",
         // don't display these countries
         excludeCountries: [],
         // geoIp lookup function
@@ -894,7 +894,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {
             if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder && this.selectedCountryData) {
-                var iso2 = this.selectedCountryData.iso2, numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"], placeholder = iso2 ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
+                var iso2 = this.selectedCountryData.iso2, numberType = intlTelInputUtils.numberType[this.options.numberType], placeholder = iso2 ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
                 if (typeof this.options.customPlaceholder === "function") {
                     placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
                 }

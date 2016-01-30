@@ -11,7 +11,7 @@ var pluginName = "intlTelInput",
     // add or remove input placeholder with an example number for the selected country
     autoPlaceholder: true,
     // append menu to a specific element
-    dropdownContainer: false,
+    dropdownContainer: "",
     // don't display these countries
     excludeCountries: [],
     // geoIp lookup function
@@ -1065,7 +1065,7 @@ Plugin.prototype = {
   _updatePlaceholder: function() {
     if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder && this.selectedCountryData) {
       var iso2 = this.selectedCountryData.iso2,
-        numberType = intlTelInputUtils.numberType[this.options.numberType || "FIXED_LINE"],
+        numberType = intlTelInputUtils.numberType[this.options.numberType],
         placeholder = (iso2) ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
 
       if (typeof this.options.customPlaceholder === 'function') {
