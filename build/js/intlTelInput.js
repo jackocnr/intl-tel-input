@@ -89,7 +89,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 this.options.autoFormat = false;
             }
             // we cannot just test screen size as some smartphones/website meta tags will report desktop resolutions
-            // Note: for some reason jasmine fucks up if you put this in the main Plugin function with the rest of these declarations
+            // Note: for some reason jasmine breaks if you put this in the main Plugin function with the rest of these declarations
             // Note: to target Android Mobiles (and not Tablets), we must find "Android" and "Mobile"
             this.isMobile = /Android.+Mobile|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             if (this.isMobile) {
@@ -101,7 +101,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             }
             // we return these deferred objects from the _init() call so they can be watched, and then we resolve them when each specific request returns
-            // Note: again, jasmine had a spazz when I put these in the Plugin function
+            // Note: again, jasmine breaks when I put these in the Plugin function
             this.autoCountryDeferred = new $.Deferred();
             this.utilsScriptDeferred = new $.Deferred();
             // process all the data: onlyCountries, excludeCountries, preferredCountries etc
@@ -461,7 +461,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     } else if (e.which == keys.DEL && !cursorAtEnd || e.which == keys.BSPACE) {
                         // if delete in the middle: reformat with no suffix (no need to reformat if delete at end)
                         // if backspace: reformat with no suffix (need to reformat if at end to remove any lingering suffix - this is a feature)
-                        // important to remember never to add suffix on any delete key as can fuck up in ie8 so you can never delete a formatting char at the end
+                        // important to remember never to add suffix on any delete key as can confuse ie8 so you can never delete a formatting char at the end
                         that._handleInputKey(null, false, false);
                     }
                     that._ensurePlus();
@@ -821,7 +821,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             } else if (number.charAt(0) == "+" && this._getNumeric(number).length) {
                 // invalid dial code, so empty
-                // Note: use getNumeric here because the number has not been formatted yet, so could contain bad shit
+                // Note: use getNumeric here because the number has not been formatted yet, so could contain bad chars
                 countryCode = "";
             } else if (!number || number == "+") {
                 // empty, or just a plus, so default

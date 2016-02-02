@@ -152,7 +152,7 @@ function getNumberType(number, countryCode) {
   try {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
-    return phoneUtil.getNumberType(numberObj)
+    return phoneUtil.getNumberType(numberObj);
   } catch (e) {
     // broken
     return -99;
