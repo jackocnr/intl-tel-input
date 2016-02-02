@@ -1,5 +1,5 @@
 $("#phone").intlTelInput({
-  utilsScript: "../../lib/libphonenumber/build/utils.js" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js" // just for formatting/placeholders etc
 });
 
 // update the hidden input on submit

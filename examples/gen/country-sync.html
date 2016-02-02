@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <title>Example: Country sync</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1452529518601">
-    <link rel="stylesheet" href="../../build/css/demo.css?1452529518601">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1454431324268">
+    <link rel="stylesheet" href="../../build/css/demo.css?1454431324268">
     
-      <link rel="stylesheet" href="../css/countrySync.css?1452529518601">
+      <link rel="stylesheet" href="../css/countrySync.css?1454431324268">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -52,7 +52,7 @@ var countryData = $.fn.intlTelInput.getCountryData(),
 
 // init plugin
 telInput.intlTelInput({
-  utilsScript: &quot;../../lib/libphonenumber/build/utils.js&quot; // just for formatting/placeholders etc
+  utilsScript: &quot;../../build/js/utils.js&quot; // just for formatting/placeholders etc
 });
 
 // populate the country dropdown
@@ -73,7 +73,8 @@ telInput.trigger(&quot;country-change&quot;);
 addressDropdown.change(function() {
   var countryCode = $(this).val();
   telInput.intlTelInput(&quot;setCountry&quot;, countryCode);
-});</code></pre>
+});
+</code></pre>
 
     <h2>Result</h2>
     <div id="result">
@@ -94,7 +95,7 @@ addressDropdown.change(function() {
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1452529518601"></script>
-    <script src="../js/countrySync.js?1452529518601"></script>
+    <script src="../../build/js/intlTelInput.js?1454431324268"></script>
+    <script src="../js/countrySync.js?1454431324268"></script>
   </body>
 </html>

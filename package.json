@@ -15,10 +15,12 @@
   ],
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
+  "dependencies": {
+    "jquery": ">=1.7"
+  },
   "devDependencies": {
     "ejs": "~1.0.0",
     "grunt": "~0.4.5",
-    "grunt-bower-task": "~0.4.0",
     "grunt-bump": "0.0.15",
     "grunt-contrib-jasmine": "^0.8.0",
     "grunt-contrib-jshint": "~0.10.0",
@@ -34,7 +36,9 @@
     "grunt-templater": "0.0.6",
     "jquery": ">=1.7",
     "load-grunt-config": "~0.13.1",
-    "time-grunt": "~1.0.0"
+    "time-grunt": "~1.0.0",
+    "jasmine-jquery": "~2.0.2",
+    "region-flags": "behdad/region-flags#gh-pages"
   },
   "repository": {
     "type": "git",

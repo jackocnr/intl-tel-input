@@ -22,7 +22,7 @@ describe("utilsScript: init plugin to test utilsScript option", function() {
     // here we must fake that the script has not yet been loaded
     $.fn["intlTelInput"].injectedUtilsScript = false;
     input.intlTelInput({
-      utilsScript: "lib/libphonenumber/build/utils.js"
+      utilsScript: "build/js/utils.js"
     });
     expect($.ajax).toHaveBeenCalled();
   });

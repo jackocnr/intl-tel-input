@@ -5,7 +5,7 @@
  * Once setup, to re-compile:
  * 1) Copy the contents of this file into libphonenumber/javascript/i18n/phonenumbers/demo.js
  * 2) ant -f libphonenumber/javascript/build.xml compile-demo
- * 3) Copy libphonenumber/javascript/i18n/phonenumbers/demo-compiled.js to intl-tel-input/lib/libphonenumber/build/utils.js
+ * 3) Copy libphonenumber/javascript/i18n/phonenumbers/demo-compiled.js to intl-tel-input/build/js/utils.js
  */
 
 // includes
@@ -132,9 +132,9 @@ function formatNumber(val, countryCode, addSuffix, allowExtension, isAllowedKey)
         return test.substr(0, test.length - 1);
       } else if (allowExtension && result && test.length <= result.length && test.indexOf(" ") == -1 && getValidationError(clean.substring(0, i - 1), countryCode) != i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT && !isAllowedKey) {
         // else check for the case where the user already had a full valid number, and they have just hit space or 'e' (etc.) to try and add an extension - in which case we add the ext suffix.
-        // 
+        //
         // so we check if we're allowing extensions, and if adding this extra '5' to the number broke the formatting, and the number is not TOO_SHORT (i.e. they already have a full valid number), AND this is not an allowed key
-        // 
+        //
         // NOTE: we don't automatically add the ext suffix when the user finishes typing a full valid number - only when they add an extra digit (this situation is caught in the initial loop above), or if they try typing the ext suffix themselves (hance the check that this was not an allowed key)
         return result + extSuffix;
       }

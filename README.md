@@ -150,7 +150,7 @@ Type: `Array` Default: `["us", "gb"]`
 Specify the countries to appear at the top of the list.
 
 **utilsScript**  
-Type: `String` Default: `""` Example: `"lib/libphonenumber/build/utils.js"`  
+Type: `String` Default: `""` Example: `"build/js/utils.js"`  
 Enable formatting/validation etc. by specifying the path to the included utils.js script (also available from [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)), which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
 
 
@@ -209,7 +209,7 @@ Get more information about a validation error. Requires the `utilsScript` option
 ```js
 var error = $("#mobile-number").intlTelInput("getValidationError");
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/lib/libphonenumber/src/utils.js#L175) in the global enum `intlTelInputUtils.validationError` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L175) in the global enum `intlTelInputUtils.validationError` e.g.  
 ```js
 if (error == intlTelInputUtils.validationError.TOO_SHORT) {
     // the number is too short
@@ -255,7 +255,7 @@ Returns an array of country objects:
 _Note: this is only needed if you're lazy loading the plugin script itself (intlTelInput.js). If not then just use the `utilsScript` option._  
 Load the utils.js script (included in the lib directory) to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information.
 ```js
-$.fn.intlTelInput.loadUtils("lib/libphonenumber/build/utils.js");
+$.fn.intlTelInput.loadUtils("build/js/utils.js");
 ```
 
 
@@ -269,7 +269,7 @@ A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com
 
 International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking).
 
-To recompile [Utilities Script](#utilities-script) see js-docs in top of [utils.js](lib/libphonenumber/src/utils.js).
+To recompile [Utilities Script](#utilities-script) see js-docs in top of [utils.js](src/js/utils.js).
 
 
 ## Troubleshooting
