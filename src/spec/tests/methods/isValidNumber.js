@@ -19,7 +19,7 @@ describe("isValidNumber:", function() {
     beforeEach(function() {
       input.intlTelInput({
         // we must disable formatting to test with alpha chars
-        autoFormat: false,
+        formatAsYouType: false,
       });
     });
 

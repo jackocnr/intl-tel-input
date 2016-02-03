@@ -38,13 +38,13 @@ describe("destroy: init plugin to test public method destroy", function() {
 
 
 
-describe("destroy: init plugin with autoFormat enabled to test public method destroy", function() {
+describe("destroy: init plugin with formatAsYouType enabled to test public method destroy", function() {
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>");
     input.intlTelInput({
-      autoFormat: true
+      formatAsYouType: true
     });
   });
 

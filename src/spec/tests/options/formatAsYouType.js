@@ -1,6 +1,6 @@
 "use strict";
 
-describe("autoFormat option:", function() {
+describe("formatAsYouType option:", function() {
 
   beforeEach(function() {
     intlSetup(true);
@@ -14,7 +14,7 @@ describe("autoFormat option:", function() {
 
 
 
-  describe("input containing national number, init plugin with autoFormat and nationalMode enabled", function() {
+  describe("input containing national number, init plugin with formatAsYouType and nationalMode enabled", function() {
 
     var unformattedNumber = "70241812",
       formattedNumber = "(702) 418-12";
@@ -25,7 +25,7 @@ describe("autoFormat option:", function() {
       input.appendTo($("body"));
 
       input.intlTelInput({
-        autoFormat: true,
+        formatAsYouType: true,
         initialCountry: "us",
         nationalMode: true
       });
@@ -63,7 +63,7 @@ describe("autoFormat option:", function() {
 
 
 
-  describe("input with maxlength=6, init plugin with autoFormat enabled", function() {
+  describe("input with maxlength=6, init plugin with formatAsYouType enabled", function() {
 
     beforeEach(function() {
       input = $("<input value='+1 70' maxlength='6'>");
@@ -71,7 +71,7 @@ describe("autoFormat option:", function() {
       input.appendTo($("body"));
 
       input.intlTelInput({
-        autoFormat: true
+        formatAsYouType: true
       });
     });
 
@@ -98,7 +98,7 @@ describe("autoFormat option:", function() {
 
 
 
-  describe("input with no initial value, init plugin with autoFormat enabled and nationalMode disabled", function() {
+  describe("input with no initial value, init plugin with formatAsYouType enabled and nationalMode disabled", function() {
 
     beforeEach(function() {
       input = $("<input>");
@@ -106,7 +106,7 @@ describe("autoFormat option:", function() {
       input.appendTo($("body"));
 
       input.intlTelInput({
-        autoFormat: true,
+        formatAsYouType: true,
         nationalMode: false
       });
 
@@ -153,16 +153,12 @@ describe("autoFormat option:", function() {
     });
 
 
-    describe("init plugin with autoFormat disabled", function() {
+    describe("init plugin with formatAsYouType disabled", function() {
 
       beforeEach(function() {
         input.intlTelInput({
-          autoFormat: false
+          formatAsYouType: false
         });
-      });
-
-      it("initialising the plugin leaves the number the same", function() {
-        expect(input.val()).toEqual(unformattedNumber);
       });
 
       it("triggering alpha key at end of input adds the alpha char and leaves the rest", function() {
@@ -174,11 +170,11 @@ describe("autoFormat option:", function() {
     });
 
 
-    describe("init plugin with autoFormat enabled", function() {
+    describe("init plugin with formatAsYouType enabled", function() {
 
       beforeEach(function() {
         input.intlTelInput({
-          autoFormat: true
+          formatAsYouType: true
         });
       });
 
@@ -187,7 +183,7 @@ describe("autoFormat option:", function() {
       });
 
       it("triggering alpha key at end of input does not add the alpha char", function() {
-        // we dont have to manually alter the input val as when autoFormat is enabled this is all done in the event handler
+        // we dont have to manually alter the input val as when formatAsYouType is enabled this is all done in the event handler
         putCursorAtEnd();
         triggerKeyOnInput("A");
         expect(input.val()).toEqual(formattedNumber);

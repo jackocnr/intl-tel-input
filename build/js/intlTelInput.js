@@ -22,7 +22,7 @@
         // typing digits after a valid number will be added to the extension part of the number
         allowExtensions: false,
         // automatically format the number according to the selected country
-        autoFormat: false,
+        formatAsYouType: false,
         // if there is just a dial code in the input: remove it on blur, and re-add it on focus
         autoHideDialCode: true,
         // add or remove input placeholder with an example number for the selected country
@@ -85,9 +85,9 @@
             if (this.options.nationalMode) {
                 this.options.autoHideDialCode = false;
             }
-            // IE Mobile doesn't support the keypress event (see issue 68) which makes autoFormat impossible
+            // IE Mobile doesn't support the keypress event (see issue 68) which makes formatAsYouType impossible
             if (navigator.userAgent.match(/IEMobile/i)) {
-                this.options.autoFormat = false;
+                this.options.formatAsYouType = false;
             }
             // we cannot just test screen size as some smartphones/website meta tags will report desktop resolutions
             // Note: for some reason jasmine breaks if you put this in the main Plugin function with the rest of these declarations
@@ -298,8 +298,8 @@
         _initListeners: function() {
             var that = this;
             this._initKeyListeners();
-            // autoFormat prevents the change event from firing, so we need to check for changes between focus and blur in order to manually trigger it
-            if (this.options.autoHideDialCode || this.options.autoFormat) {
+            // formatAsYouType prevents the change event from firing, so we need to check for changes between focus and blur in order to manually trigger it
+            if (this.options.autoHideDialCode || this.options.formatAsYouType) {
                 this._initFocusListeners();
             }
             // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
@@ -401,7 +401,7 @@
         // initialize any key listeners
         _initKeyListeners: function() {
             var that = this;
-            if (this.options.autoFormat) {
+            if (this.options.formatAsYouType) {
                 // format number and update flag on keypress
                 // use keypress event as we want to ignore all input except for a select few keys,
                 // but we dont want to ignore the navigation keys like the arrows etc.
@@ -411,7 +411,7 @@
                     // this fix is needed for Firefox, which triggers keypress event for some meta/nav keys
                     // Update: also ignore if this is a metaKey e.g. FF and Safari trigger keypress on the v of Ctrl+v
                     // Update: also ignore if ctrlKey (FF on Windows/Ubuntu)
-                    // Update: also check that we have utils before we do any autoFormat stuff
+                    // Update: also check that we have utils before we do any formatAsYouType stuff
                     if (e.which >= keys.SPACE && !e.ctrlKey && !e.metaKey && window.intlTelInputUtils && !that.telInput.prop("readonly")) {
                         e.preventDefault();
                         // allowed keys are just numeric keys and plus
@@ -438,23 +438,23 @@
             this.telInput.on("cut" + this.ns + " paste" + this.ns, function() {
                 // hack because "paste" event is fired before input is updated
                 setTimeout(function() {
-                    if (that.options.autoFormat && window.intlTelInputUtils) {
+                    if (that.options.formatAsYouType && window.intlTelInputUtils) {
                         var cursorAtEnd = that.isGoodBrowser && that.telInput[0].selectionStart == that.telInput.val().length;
                         that._handleInputKey(null, cursorAtEnd, true);
                         that._ensurePlus();
                     } else {
-                        // if no autoFormat, just update flag
+                        // if no formatAsYouType, just update flag
                         that._updateFlagFromNumber(that.telInput.val());
                     }
                 });
             });
             // handle keyup event
-            // if autoFormat enabled: we use keyup to catch delete events (after the fact)
-            // if no autoFormat, this is used to update the flag
+            // if formatAsYouType enabled: we use keyup to catch delete events (after the fact)
+            // if no formatAsYouType, this is used to update the flag
             this.telInput.on("keyup" + this.ns, function(e) {
                 // the "enter" key event from selecting a dropdown item is triggered here on the input, because the document.keydown handler that initially handles that event triggers a focus on the input, and so the keyup for that same key event gets triggered here. weird, but just make sure we dont bother doing any re-formatting in this case (we've already done preventDefault in the keydown handler, so it wont actually submit the form or anything).
                 // ALSO: ignore keyup if readonly
-                if (e.which == keys.ENTER || that.telInput.prop("readonly")) {} else if (that.options.autoFormat && window.intlTelInputUtils) {
+                if (e.which == keys.ENTER || that.telInput.prop("readonly")) {} else if (that.options.formatAsYouType && window.intlTelInputUtils) {
                     // cursorAtEnd defaults to false for bad browsers else they would never get a reformat on delete
                     var cursorAtEnd = that.isGoodBrowser && that.telInput[0].selectionStart == that.telInput.val().length;
                     if (!that.telInput.val()) {
@@ -468,7 +468,7 @@
                     }
                     that._ensurePlus();
                 } else {
-                    // if no autoFormat, just update flag
+                    // if no formatAsYouType, just update flag
                     that._updateFlagFromNumber(that.telInput.val());
                 }
             });
@@ -495,7 +495,7 @@
                 that.telInput.removeClass("iti-invalid-key");
             }, 100);
         },
-        // when autoFormat is enabled: handle various key events on the input:
+        // when formatAsYouType is enabled: handle various key events on the input:
         // 1) adding a new number character, which will replace any selection, reformat, and preserve the cursor position
         // 2) reformatting on backspace/delete
         // 3) cut/paste event
@@ -591,8 +591,8 @@
                     // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
                     that.telInput.one("keypress.plus" + that.ns, function(e) {
                         if (e.which == keys.PLUS) {
-                            // if autoFormat is enabled, this key event will have already have been handled by another keypress listener (hence we need to add the "+"). if disabled, it will be handled after this by a keyup listener (hence no need to add the "+").
-                            var newVal = that.options.autoFormat && window.intlTelInputUtils ? "+" : "";
+                            // if formatAsYouType is enabled, this key event will have already have been handled by another keypress listener (hence we need to add the "+"). if disabled, it will be handled after this by a keyup listener (hence no need to add the "+").
+                            var newVal = that.options.formatAsYouType && window.intlTelInputUtils ? "+" : "";
                             that.telInput.val(newVal);
                         }
                     });
@@ -620,8 +620,8 @@
                     // remove the keypress listener we added on focus
                     that.telInput.off("keypress.plus" + that.ns);
                 }
-                // if autoFormat, we must manually trigger change event if value has changed
-                if (that.options.autoFormat && window.intlTelInputUtils && that.telInput.val() != that.telInput.data("focusVal")) {
+                // if formatAsYouType, we must manually trigger change event if value has changed
+                if (that.options.formatAsYouType && window.intlTelInputUtils && that.telInput.val() != that.telInput.data("focusVal")) {
                     that.telInput.trigger("change");
                 }
             });
@@ -770,28 +770,30 @@
             return a.substr(0, b.length).toUpperCase() == b;
         },
         // update the input's value to the given val
-        // if autoFormat=true, format it first according to the country-specific formatting rules
+        // if formatAsYouType=true, format it first according to the country-specific formatting rules
         // Note: preventConversion will be false (i.e. we allow conversion) on init and when dev calls public method setNumber
         _updateVal: function(val, format, addSuffix, preventConversion, isAllowedKey) {
-            var formatted;
-            if (this.options.autoFormat && window.intlTelInputUtils && this.selectedCountryData) {
+            var formatted = null;
+            if (window.intlTelInputUtils && this.selectedCountryData) {
                 if (typeof format == "number" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
                     // if user specified a format, and it's a valid number, then format it accordingly
                     formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, format);
                 } else if (!preventConversion && this.options.nationalMode && val.charAt(0) == "+" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
                     // if nationalMode and we have a valid intl number, convert it to ntl
                     formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, intlTelInputUtils.numberFormat.NATIONAL);
-                } else {
+                } else if (this.options.formatAsYouType) {
                     // else do the regular AsYouType formatting
                     formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix, this.options.allowExtensions, isAllowedKey);
                 }
+            }
+            if (formatted) {
                 // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
                 var max = this.telInput.attr("maxlength");
                 if (max && formatted.length > max) {
                     formatted = formatted.substr(0, max);
                 }
             } else {
-                // no autoFormat, so just insert the original value
+                // no formatAsYouType, so just insert the original value
                 formatted = val;
             }
             this.telInput.val(formatted);
@@ -1084,8 +1086,8 @@
         handleUtils: function() {
             // if the request was successful
             if (window.intlTelInputUtils) {
-                // if autoFormat is enabled and there's an initial value in the input, then format it
-                if (this.options.autoFormat && this.telInput.val()) {
+                // if formatAsYouType is enabled and there's an initial value in the input, then format it
+                if (this.telInput.val()) {
                     this._updateVal(this.telInput.val(), null, false, false, false);
                 }
                 this._updatePlaceholder();

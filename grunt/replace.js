@@ -199,7 +199,7 @@ module.exports = function(grunt) {
             match: /allowExtensions/,
             replacement: 'a'
           }, {
-            match: /autoFormat/,
+            match: /formatAsYouType/,
             replacement: 'b'
           }, {
             match: /autoHideDialCode/,
@@ -243,7 +243,7 @@ module.exports = function(grunt) {
             match: /options.allowExtensions/g,
             replacement: 'options.a'
           }, {
-            match: /options.autoFormat/g,
+            match: /options.formatAsYouType/g,
             replacement: 'options.b'
           }, {
             match: /options.autoHideDialCode/g,
@@ -380,7 +380,7 @@ module.exports = function(grunt) {
             match: /this.b=/g,
             replacement: 'c&&(a.extend(c, c, {' +
               'a:c.allowExtensions,' +
-              'b:c.autoFormat,' +
+              'b:c.formatAsYouType,' +
               'c:c.autoHideDialCode,' +
               'd:c.autoPlaceholder,' +
               'e:c.dropdownContainer,' +
