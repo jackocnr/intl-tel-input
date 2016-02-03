@@ -33,5 +33,5 @@ module.exports = function(grunt) {
         dest: 'src/img/flags/@2x/'
       }]
     }
-  }
-}
+  };
+};

@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         return {
           plugin: grunt.file.read('tmp/versioned.js'),
           data: grunt.file.read('src/js/data.js'),
-        }
+        };
       }
     },
     nationalMode: {
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
           markup: grunt.file.read('examples/partials/nationalMode.html'),
           code: grunt.file.read('examples/js/nationalMode.js'),
           script: "nationalMode.js"
-        }
+        };
       }
     },
     defaultCountryIp: {
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
           markup: grunt.file.read('examples/partials/simpleInput.html'),
           code: grunt.file.read('examples/js/defaultCountryIp.js'),
           script: "defaultCountryIp.js"
-        }
+        };
       }
     },
     modifyCountryData: {
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
           markup: grunt.file.read('examples/partials/simpleInput.html'),
           code: grunt.file.read('examples/js/modifyCountryData.js'),
           script: "modifyCountryData.js"
-        }
+        };
       }
     },
     onlyCountries: {
@@ -78,7 +78,7 @@ module.exports = function(grunt) {
           markup: grunt.file.read('examples/partials/simpleInput.html'),
           code: grunt.file.read('examples/js/onlyCountriesEurope.js'),
           script: "onlyCountriesEurope.js"
-        }
+        };
       }
     },
     countrySync: {
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
           markup: grunt.file.read('examples/partials/countrySync.html'),
           code: grunt.file.read('examples/js/countrySync.js'),
           script: "countrySync.js"
-        }
+        };
       }
     },
     validation: {
@@ -108,7 +108,7 @@ module.exports = function(grunt) {
           markup: grunt.file.read('examples/partials/isValidNumber.html'),
           code: grunt.file.read('examples/js/isValidNumber.js'),
           script: "isValidNumber.js"
-        }
+        };
       }
     },
     hiddenInput: {
@@ -123,7 +123,7 @@ module.exports = function(grunt) {
           markup: grunt.file.read('examples/partials/hiddenInput.html'),
           code: grunt.file.read('examples/js/hiddenInput.js'),
           script: "hiddenInput.js"
-        }
+        };
       }
     }
   };

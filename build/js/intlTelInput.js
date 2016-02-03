@@ -1,7 +1,8 @@
 /*
-International Telephone Input v7.1.1
-https://github.com/Bluefieldscom/intl-tel-input.git
-*/
+ * International Telephone Input v7.1.1
+ * https://github.com/jackocnr/intl-tel-input.git
+ * Licensed under the MIT license
+ */
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
 (function(factory) {
     if (typeof define === "function" && define.amd) {
