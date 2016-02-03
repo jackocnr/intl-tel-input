@@ -155,13 +155,14 @@
         },
         // process onlyCountries or excludeCountries array if present
         _processAllCountries: function() {
-            // process onlyCountries option
             if (this.options.onlyCountries.length) {
+                // process onlyCountries option
                 this._filterCountries(this.options.onlyCountries, function(inArray) {
                     // if country is in array
                     return inArray != -1;
                 });
             } else if (this.options.excludeCountries.length) {
+                // process excludeCountries option
                 this._filterCountries(this.options.excludeCountries, function(inArray) {
                     // if country is not in array
                     return inArray == -1;

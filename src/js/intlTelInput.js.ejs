@@ -173,14 +173,14 @@ Plugin.prototype = {
 
   // process onlyCountries or excludeCountries array if present
   _processAllCountries: function() {
-    // process onlyCountries option
     if (this.options.onlyCountries.length) {
+      // process onlyCountries option
       this._filterCountries(this.options.onlyCountries, function(inArray) {
         // if country is in array
         return (inArray != -1);
       });
-    // process excludeCountries option
     } else if (this.options.excludeCountries.length) {
+      // process excludeCountries option
       this._filterCountries(this.options.excludeCountries, function(inArray) {
         // if country is not in array
         return (inArray == -1);
@@ -804,7 +804,7 @@ Plugin.prototype = {
         });
 
         // close menu on window scroll
-        $(window).on("scroll" + this.ns, function () {
+        $(window).on("scroll" + this.ns, function() {
           that._closeDropdown();
         });
       }
