@@ -11,7 +11,7 @@
 <body>
   <h1>International Telephone Input</h1>
   <form>
-    <input id="phone" type="tel" value="+17024182678B">
+    <input id="phone" type="tel">
     <button type="submit">Submit</button>
   </form>
 
@@ -21,11 +21,11 @@
   <script>
     $("#phone").intlTelInput({
       // allowExtensions: true,
-      // formatAsYouType: true,
       // autoHideDialCode: false,
       // autoPlaceholder: false,
       // dropdownContainer: "body",
       // excludeCountries: ["us"],
+      // formatAsYouType: true,
       // geoIpLookup: function(callback) {
       //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
       //     var countryCode = (resp && resp.country) ? resp.country : "";

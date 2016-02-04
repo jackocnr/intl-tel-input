@@ -291,7 +291,7 @@
             // format
             if (val) {
                 // this wont be run after _updateDialCode as that's only called if no val
-                this._updateVal(val, null, false, false, false);
+                this._updateValFromNumber(val);
             }
         },
         // initialise the main event listeners: input keyup, and click selected flag
@@ -473,7 +473,7 @@
                 }
             });
         },
-        // prevent deleting the plus (if not in nationalMode)
+        // if not in nationalMode: prevent deleting the plus and put the cursor back in the right place
         _ensurePlus: function() {
             if (!this.options.nationalMode) {
                 var val = this.telInput.val(), input = this.telInput[0];
@@ -517,8 +517,13 @@
             } else if (newNumericChar) {
                 val += newNumericChar;
             }
-            // update the number and flag
-            this.setNumber(val, null, addSuffix, true, isAllowedKey);
+            // ensure starts with plus
+            if (!this.options.nationalMode && val.charAt(0) != "+") {
+                val = "+" + val;
+            }
+            // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
+            this._updateFlagFromNumber(val);
+            this._updateValAsYouType(val, addSuffix, isAllowedKey);
             // update the cursor position
             if (this.isGoodBrowser) {
                 var newCursor;
@@ -537,6 +542,22 @@
                 // set the new cursor
                 input.setSelectionRange(newCursor, newCursor);
             }
+        },
+        // try to formatNumberAsYouType, then update the input val
+        // NOTE: called from _handleInputKey, _updateDialCode (when change flag) and in the focus handler for autoHideDialCode
+        _updateValAsYouType: function(val, addSuffix, isAllowedKey) {
+            var formatted;
+            if (window.intlTelInputUtils && this.selectedCountryData) {
+                formatted = this._cap(intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2, addSuffix, this.options.allowExtensions, isAllowedKey));
+            } else {
+                formatted = val;
+            }
+            this.telInput.val(formatted);
+        },
+        // adhere to the input's maxlength attr
+        _cap: function(number) {
+            var max = this.telInput.attr("maxlength");
+            return max && number.length > max ? number.substr(0, max) : number;
         },
         // we start from the position in guessCursor, and work our way left until we hit the originalLeftChars or a number to make sure that after reformatting the cursor has the same char on the left in the case of a delete etc
         _getCursorFromLeftChar: function(val, guessCursor, originalLeftChars) {
@@ -587,7 +608,8 @@
                 that.telInput.data("focusVal", value);
                 // on focus: if empty, insert the dial code for the currently selected flag
                 if (that.options.autoHideDialCode && !value && !that.telInput.prop("readonly") && that.selectedCountryData.dialCode) {
-                    that._updateVal("+" + that.selectedCountryData.dialCode, null, true, false, false);
+                    // apply as-you-type-formatting as some dial codes are long enough
+                    that._updateValAsYouType("+" + that.selectedCountryData.dialCode, true, false);
                     // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
                     that.telInput.one("keypress.plus" + that.ns, function(e) {
                         if (e.which == keys.PLUS) {
@@ -770,33 +792,15 @@
             return a.substr(0, b.length).toUpperCase() == b;
         },
         // update the input's value to the given val
-        // if formatAsYouType=true, format it first according to the country-specific formatting rules
-        // Note: preventConversion will be false (i.e. we allow conversion) on init and when dev calls public method setNumber
-        _updateVal: function(val, format, addSuffix, preventConversion, isAllowedKey) {
-            var formatted = null;
-            if (window.intlTelInputUtils && this.selectedCountryData) {
-                if (typeof format == "number" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
-                    // if user specified a format, and it's a valid number, then format it accordingly
-                    formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, format);
-                } else if (!preventConversion && this.options.nationalMode && val.charAt(0) == "+" && intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)) {
-                    // if nationalMode and we have a valid intl number, convert it to ntl
-                    formatted = intlTelInputUtils.formatNumberByType(val, this.selectedCountryData.iso2, intlTelInputUtils.numberFormat.NATIONAL);
-                } else if (this.options.formatAsYouType) {
-                    // else do the regular AsYouType formatting
-                    formatted = intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, addSuffix, this.options.allowExtensions, isAllowedKey);
-                }
+        // NOTE: this is called from _setInitialState, handleUtils and setNumber
+        _updateValFromNumber: function(number) {
+            // if nationalMode and number starts "+", then first we convert it e.g. add a zero if converting a GB number from intl to ntl mode
+            if (window.intlTelInputUtils && this.selectedCountryData && this.options.nationalMode && number.charAt(0) === "+") {
+                number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, intlTelInputUtils.numberFormat.NATIONAL);
             }
-            if (formatted) {
-                // ensure we dont go over maxlength. we must do this here to truncate any formatting suffix, and also handle paste events
-                var max = this.telInput.attr("maxlength");
-                if (max && formatted.length > max) {
-                    formatted = formatted.substr(0, max);
-                }
-            } else {
-                // no formatAsYouType, so just insert the original value
-                formatted = val;
-            }
-            this.telInput.val(formatted);
+            // we always finish by applying as-you-type-formatting because that's what will happen if the user types anything
+            // NOTE: the result of the above formatNumber call will not be pretty if the number was incomplete
+            this._updateValAsYouType(number, false, false);
         },
         // check if need to select a new flag based on the given number
         _updateFlagFromNumber: function(number) {
@@ -966,7 +970,7 @@
             } else {
                 newNumber = !this.options.autoHideDialCode || focusing ? newDialCode : "";
             }
-            this._updateVal(newNumber, null, focusing, false, false);
+            this._updateValAsYouType(newNumber, focusing, false);
         },
         // try and extract a valid international dial code from a full telephone number
         // Note: returns the raw string inc plus character and any whitespace/dots etc
@@ -1028,10 +1032,10 @@
         getExtension: function() {
             return this.telInput.val().split(" ext. ")[1] || "";
         },
-        // format the number to the given type
-        getNumber: function(type) {
+        // format the number to the given format
+        getNumber: function(format) {
             if (window.intlTelInputUtils) {
-                return intlTelInputUtils.formatNumberByType(this.telInput.val(), this.selectedCountryData.iso2, type);
+                return intlTelInputUtils.formatNumber(this.telInput.val(), this.selectedCountryData.iso2, format);
             }
             return "";
         },
@@ -1073,14 +1077,15 @@
         },
         // set the input value and update the flag
         // NOTE: format arg is for public method: to allow devs to format how they want
-        setNumber: function(number, format, addSuffix, preventConversion, isAllowedKey) {
-            // ensure starts with plus
-            if (!this.options.nationalMode && number.charAt(0) != "+") {
-                number = "+" + number;
-            }
+        setNumber: function(number, format) {
             // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
             this._updateFlagFromNumber(number);
-            this._updateVal(number, format, addSuffix, preventConversion, isAllowedKey);
+            // if they specify a format then do that
+            if ($.isNumeric(format) && window.intlTelInputUtils && this.selectedCountryData) {
+                this.telInput.val(this._cap(intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, format)));
+            } else {
+                this._updateValFromNumber(number);
+            }
         },
         // this is called when the utils request completes
         handleUtils: function() {
@@ -1088,7 +1093,7 @@
             if (window.intlTelInputUtils) {
                 // if formatAsYouType is enabled and there's an initial value in the input, then format it
                 if (this.telInput.val()) {
-                    this._updateVal(this.telInput.val(), null, false, false, false);
+                    this._updateValFromNumber(this.telInput.val());
                 }
                 this._updatePlaceholder();
             }

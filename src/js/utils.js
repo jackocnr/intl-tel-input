@@ -27,13 +27,13 @@ function getExampleNumber(countryCode, national, numberType) {
 }
 
 
-// format the given number to the given type
-function formatNumberByType(number, countryCode, type) {
+// format the given number to the given format
+function formatNumber(number, countryCode, format) {
   try {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
-    type = (typeof type == "undefined") ? i18n.phonenumbers.PhoneNumberFormat.E164 : type;
-    return phoneUtil.format(numberObj, type);
+    format = (typeof format == "undefined") ? i18n.phonenumbers.PhoneNumberFormat.E164 : format;
+    return phoneUtil.format(numberObj, format);
   } catch (e) {
     return "";
   }
@@ -82,7 +82,7 @@ function getValidationError(number, countryCode) {
 
 
 // format the given number (optionally add any formatting suffix e.g. a hyphen)
-function formatNumber(val, countryCode, addSuffix, allowExtension, isAllowedKey) {
+function formatNumberAsYouType(val, countryCode, addSuffix, allowExtension, isAllowedKey) {
   try {
     var clean = val.replace(/\D/g, ""),
       // NOTE: we use AsYouTypeFormatter because the default format function can't handle incomplete numbers e.g. "+17024" formats to "+1 7024" as opposed to "+1 702-4"
@@ -215,8 +215,8 @@ var numberFormat = {
 
 // exports
 goog.exportSymbol('intlTelInputUtils', {});
+goog.exportSymbol('intlTelInputUtils.formatNumberAsYouType', formatNumberAsYouType);
 goog.exportSymbol('intlTelInputUtils.formatNumber', formatNumber);
-goog.exportSymbol('intlTelInputUtils.formatNumberByType', formatNumberByType);
 goog.exportSymbol('intlTelInputUtils.getExampleNumber', getExampleNumber);
 goog.exportSymbol('intlTelInputUtils.getNumberType', getNumberType);
 goog.exportSymbol('intlTelInputUtils.getValidationError', getValidationError);

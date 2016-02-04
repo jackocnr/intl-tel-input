@@ -16,8 +16,8 @@ describe("formatAsYouType option:", function() {
 
   describe("input containing national number, init plugin with formatAsYouType and nationalMode enabled", function() {
 
-    var unformattedNumber = "70241812",
-      formattedNumber = "(702) 418-12";
+    var unformattedNumber = "0701234567",
+      formattedNumber = "070 123 4567";
 
     beforeEach(function() {
       input = $("<input value='" + unformattedNumber + "'>");
@@ -26,7 +26,7 @@ describe("formatAsYouType option:", function() {
 
       input.intlTelInput({
         formatAsYouType: true,
-        initialCountry: "us",
+        initialCountry: "af",
         nationalMode: true
       });
     });
@@ -36,11 +36,10 @@ describe("formatAsYouType option:", function() {
     });
 
     it("changing country still reformats even in nationalMode", function() {
-      selectFlag("ar");
-      expect(getInputVal()).toEqual("7024-1812");
+      selectFlag("us");
+      expect(getInputVal()).toEqual("(070) 123-4567");
     });
 
-    //TODO: this should be in it's own preventInvalidNumbers test file, with more tests
     it("adding too many digits does work even tho it breaks the formatting", function() {
       triggerKeyOnInput("2");
       triggerKeyOnInput("2");
@@ -71,7 +70,8 @@ describe("formatAsYouType option:", function() {
       input.appendTo($("body"));
 
       input.intlTelInput({
-        formatAsYouType: true
+        formatAsYouType: true,
+        nationalMode: false
       });
     });
 
@@ -157,14 +157,15 @@ describe("formatAsYouType option:", function() {
 
       beforeEach(function() {
         input.intlTelInput({
-          formatAsYouType: false
+          formatAsYouType: false,
+          nationalMode: false
         });
       });
 
-      it("triggering alpha key at end of input adds the alpha char and leaves the rest", function() {
+      it("triggering alpha key at end of input adds the alpha char", function() {
         triggerKeyOnInput("A");
 
-        expect(input.val()).toEqual(unformattedNumber + "A");
+        expect(input.val()).toEqual(formattedNumber + "A");
       });
 
     });
@@ -174,11 +175,12 @@ describe("formatAsYouType option:", function() {
 
       beforeEach(function() {
         input.intlTelInput({
-          formatAsYouType: true
+          formatAsYouType: true,
+          nationalMode: false
         });
       });
 
-      it("initialising the plugin formats the number", function() {
+      it("initialising the plugin applies as-you-type-formatting", function() {
         expect(input.val()).toEqual(formattedNumber);
       });
 
