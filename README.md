@@ -42,7 +42,7 @@ You can view a live demo and some examples of how to use the various options her
 |            | Chrome | FF  | Safari | IE  | Chrome Android | Mobile Safari | IE Mob |
 | :--------- | :----: | :-: | :----: | :-: | :------------: | :-----------: | :----: |
 | Core       |    ✓   |  ✓  |    ✓   |  8  |      ✓         |       ✓       |     ✓  |
-| autoFormat |    ✓   |  ✓  |    ✓   |  8  |      ✓         |       ✓       |     [✗](https://github.com/jackocnr/intl-tel-input/issues/68)  |
+| formatAsYouType |    ✓   |  ✓  |    ✓   |  8  |      ✓         |       ✓       |     [✗](https://github.com/jackocnr/intl-tel-input/issues/68)  |
 
 
 
@@ -79,12 +79,7 @@ Note: any options that take country codes should be [ISO 3166-1 alpha-2](http://
 
 **allowExtensions**  
 Type: `Boolean` Default: `false`  
-When `autoFormat` is enabled, this option will support formatting extension numbers e.g. "+1 (702) 123-1234 ext. 12345".
-
-**autoFormat**  
-Type: `Boolean` Default: `false`  
-_Note this option is currently not recommended, due to a [known UX issue](https://github.com/jackocnr/intl-tel-input/issues/322)._  
-Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (triggering a red flash in the input - see [Troubleshooting](#troubleshooting) to customise this). Requires the `utilsScript` option.
+When `formatAsYouType` is enabled, this option will support formatting extension numbers e.g. "+1 (702) 123-1234 ext. 12345".
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
@@ -117,6 +112,11 @@ $("#scrollingElement").scroll(function() {
 **excludeCountries**  
 Type: `Array` Default: `undefined`  
 Don't display the countries you specify.
+
+**formatAsYouType**  
+Type: `Boolean` Default: `false`  
+_Note this option is currently not recommended, due to a [known UX issue](https://github.com/jackocnr/intl-tel-input/issues/322)._  
+Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (triggering a red flash in the input - see [Troubleshooting](#troubleshooting) to customise this). Requires the `utilsScript` option.
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
@@ -264,7 +264,7 @@ $.fn.intlTelInput.loadUtils("build/js/utils.js");
 ## Utilities Script
 A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com) which enables the following features:
 
-* As-you-type formatting with `autoFormat` option, which prevents you from entering invalid characters
+* As-you-type formatting with `formatAsYouType` option, which prevents you from entering invalid characters
 * Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
 * Extract the standardised (E.164) international number with `getNumber` even when using the `nationalMode` option
