@@ -488,12 +488,19 @@ Plugin.prototype = {
             val = that.telInput.val(),
             // assumes that if max exists, it is >0
             isBelowMax = (max) ? (val.length < max) : true;
-          // first: ensure we dont go over maxlength. we must do this here to prevent adding digits in the middle of the number
-          // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
+          // first: ensure we don't go over maxlength. we must do this here to prevent adding digits in the middle of the number
+          // still reformat even if not an allowed key as they could be typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
           if (isBelowMax && (isAllowedKey || noSelection)) {
-            var newChar = (isAllowedKey) ? String.fromCharCode(e.which) : null;
+            var newChar = String.fromCharCode(e.which);
+            if (!isAllowedKey) {
+              if (that.lastPlaceholder && newChar === that.lastPlaceholder.charAt(that.isGoodBrowser ? input.selectionStart : val.length)) {
+                isAllowedKey = true; // permit if it matches the placeholder at that position
+              } else {
+                newChar = null;
+              }
+            }
             that._handleInputKey(newChar, true, isAllowedKey);
-            // if something has changed, trigger the input event (which was otherwised squashed by the preventDefault)
+            // if something has changed, trigger the input event (which was otherwise squashed by the preventDefault)
             if (val != that.telInput.val()) {
               that.telInput.trigger("input");
             }
@@ -614,6 +621,10 @@ Plugin.prototype = {
     // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
     this._updateFlagFromNumber(val);
     this._updateValAsYouType(val, addSuffix, isAllowedKey);
+
+    if (isAllowedKey && this.telInput.val() === this._getClean(this.telInput.val())) {
+      this.telInput.val(val); // no formatting applied yet; revert to what was typed
+    }
 
     // update the cursor position
     if (this.isGoodBrowser) {
@@ -1068,6 +1079,7 @@ Plugin.prototype = {
       if (typeof this.options.customPlaceholder === 'function') {
         placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
       }
+      this.lastPlaceholder = placeholder;
 
       this.telInput.attr("placeholder", placeholder);
     }

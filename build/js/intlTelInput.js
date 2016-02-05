@@ -418,12 +418,19 @@
                         // we must allow plus for the case where the user does select-all and then hits plus to start typing a new number. we could refine this logic to first check that the selection contains a plus, but that wont work in old browsers, and I think it's overkill anyway
                         var isAllowedKey = e.which >= keys.ZERO && e.which <= keys.NINE || e.which == keys.PLUS, input = that.telInput[0], noSelection = that.isGoodBrowser && input.selectionStart == input.selectionEnd, max = that.telInput.attr("maxlength"), val = that.telInput.val(), // assumes that if max exists, it is >0
                         isBelowMax = max ? val.length < max : true;
-                        // first: ensure we dont go over maxlength. we must do this here to prevent adding digits in the middle of the number
-                        // still reformat even if not an allowed key as they could by typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
+                        // first: ensure we don't go over maxlength. we must do this here to prevent adding digits in the middle of the number
+                        // still reformat even if not an allowed key as they could be typing a formatting char, but ignore if there's a selection as doesn't make sense to replace selection with illegal char and then immediately remove it
                         if (isBelowMax && (isAllowedKey || noSelection)) {
-                            var newChar = isAllowedKey ? String.fromCharCode(e.which) : null;
+                            var newChar = String.fromCharCode(e.which);
+                            if (!isAllowedKey) {
+                                if (that.lastPlaceholder && newChar === that.lastPlaceholder.charAt(that.isGoodBrowser ? input.selectionStart : val.length)) {
+                                    isAllowedKey = true;
+                                } else {
+                                    newChar = null;
+                                }
+                            }
                             that._handleInputKey(newChar, true, isAllowedKey);
-                            // if something has changed, trigger the input event (which was otherwised squashed by the preventDefault)
+                            // if something has changed, trigger the input event (which was otherwise squashed by the preventDefault)
                             if (val != that.telInput.val()) {
                                 that.telInput.trigger("input");
                             }
@@ -524,6 +531,9 @@
             // we must update the flag first, which updates this.selectedCountryData, which is used later for formatting the number before displaying it
             this._updateFlagFromNumber(val);
             this._updateValAsYouType(val, addSuffix, isAllowedKey);
+            if (isAllowedKey && this.telInput.val() === this._getClean(this.telInput.val())) {
+                this.telInput.val(val);
+            }
             // update the cursor position
             if (this.isGoodBrowser) {
                 var newCursor;
@@ -891,6 +901,7 @@
                 if (typeof this.options.customPlaceholder === "function") {
                     placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
                 }
+                this.lastPlaceholder = placeholder;
                 this.telInput.attr("placeholder", placeholder);
             }
         },
