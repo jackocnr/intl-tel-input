@@ -1,8 +1,22 @@
 /**
- * Follow instructions here to compile this file:
+ * Follow instructions here to setup your build environment for libphonenumber:
  * https://github.com/googlei18n/libphonenumber/blob/master/javascript/README.md
  *
- * Once setup, to re-compile:
+ * This will involve cloning/checking out some repos and installing java and ant if they are not already available.
+ *
+ * Always make sure your libphonenumber is up-to-date so you are picking up the latest metadata available.
+ *
+ * Before building, you need to transform the libphonenumber/resources/PhoneNumberMetadata.xml file to remove local
+ * format options.  You can do this by shelling to intl-tel-input/lib/libphonenumber and running "ant".  This should
+ * produce libphonenumber/resources/PhoneNumberMetadataE164.xml.
+ *
+ * Next, edit libphonenumber/java/build.xml and change PhoneNumberMetadata.xml to PhoneNumberMetadataE164.xml under the
+ * build-js-metadata target element.  This ensures that the libphonenumber build process picks up the modified metadata
+ * file that you produced.
+ *
+ * Now change to libphonenumber/java and run "ant build-js-metadata".  This creates metadata.js from your E164 version.
+ *
+ * Finally:
  * 1) Copy the contents of this file into libphonenumber/javascript/i18n/phonenumbers/demo.js
  * 2) ant -f libphonenumber/javascript/build.xml compile-demo
  * 3) Copy libphonenumber/javascript/i18n/phonenumbers/demo-compiled.js to intl-tel-input/build/js/utils.js
