@@ -16,6 +16,7 @@ If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts
 - [Options](#options)
 - [Public Methods](#public-methods)
 - [Static Methods](#static-methods)
+- [Events](#events)
 - [Utilities Script](#utilities-script)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
@@ -259,6 +260,16 @@ Load the utils.js script (included in the lib directory) to enable formatting/va
 ```js
 $.fn.intlTelInput.loadUtils("build/js/utils.js");
 ```
+
+
+## Events
+You can listen for the following events on the input.
+
+**country-change**  
+This is triggered when the user selects a country from the dropdown.
+
+**invalidkey**  
+If formatAsYouType is enabled, this is triggered when the user types an invalid key. The only allowed keys are numerics and the plus character.
 
 
 ## Utilities Script
