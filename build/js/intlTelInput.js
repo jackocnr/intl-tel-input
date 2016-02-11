@@ -265,16 +265,16 @@
             var val = this.telInput.val();
             // if we already have a dial code we can go ahead and set the flag, else fall back to default
             if (this._getDialCode(val)) {
-                this._updateFlagFromNumber(val);
+                this._updateFlagFromNumber(val, true);
             } else if (this.options.initialCountry !== "auto") {
                 // see if we should select a flag
                 if (this.options.initialCountry) {
-                    this._setFlag(this.options.initialCountry);
+                    this._setFlag(this.options.initialCountry, true);
                 } else {
                     // no dial code and no initialCountry, so default to first in list
                     this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
                     if (!val) {
-                        this._setFlag(this.defaultCountry);
+                        this._setFlag(this.defaultCountry, true);
                     }
                 }
                 // if empty and no nationalMode and no autoHideDialCode then insert the default dial code
@@ -607,7 +607,8 @@
             this.telInput.val(number);
         },
         // check if need to select a new flag based on the given number
-        _updateFlagFromNumber: function(number) {
+        // Note: called from _setInitialState, keyup handler, setNumber
+        _updateFlagFromNumber: function(number, isInit) {
             // if we're in nationalMode and we already have US/Canada selected, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
             // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
             if (number && this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
@@ -640,7 +641,7 @@
                 countryCode = this.defaultCountry;
             }
             if (countryCode !== null) {
-                this._setFlag(countryCode);
+                this._setFlag(countryCode, isInit);
             }
         },
         // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1 702) and the actual number's length is >=4
@@ -668,12 +669,13 @@
             }
         },
         // select the given flag, update the placeholder and the active list item
-        _setFlag: function(countryCode) {
+        // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
+        _setFlag: function(countryCode, isInit) {
+            var prevCountryCode = this.selectedCountryData && this.selectedCountryData.iso2 ? this.selectedCountryData.iso2 : "";
             // do this first as it will throw an error and stop if countryCode is invalid
             this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
             // update the defaultCountry - we only need the iso2 from now on, so just store that
             if (this.selectedCountryData.iso2) {
-                // can't just make this equal to selectedCountryData as would be a ref to that object
                 this.defaultCountry = this.selectedCountryData.iso2;
             }
             this.selectedFlagInner.attr("class", "iti-flag " + countryCode);
@@ -686,6 +688,10 @@
             this.countryListItems.removeClass("active");
             if (countryCode) {
                 this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country").addClass("active");
+            }
+            // on change flag, trigger a custom event
+            if (!isInit && prevCountryCode !== countryCode) {
+                this.telInput.trigger("countrychange");
             }
         },
         // update the input placeholder to an example number from the currently selected country
@@ -704,8 +710,6 @@
             this._setFlag(listItem.attr("data-country-code"));
             this._closeDropdown();
             this._updateDialCode(listItem.attr("data-dial-code"), true);
-            // trigger a custom event as even in nationalMode the state has changed
-            this.telInput.trigger("countrychange");
             // focus the input
             this.telInput.focus();
             // fix for FF and IE11 (with nationalMode=false i.e. auto inserting dial code), who try to put the cursor at the beginning the first time
