@@ -18,6 +18,13 @@ describe("destroy: init plugin to test public method destroy", function() {
     expect(getListElement()).toExist();
   });
 
+  it("binds the events listeners", function() {
+    var listeners = $._data(input[0], 'events');
+    expect("cut" in listeners).toBeTruthy();
+    expect("paste" in listeners).toBeTruthy();
+    expect("keyup" in listeners).toBeTruthy();
+  });
+
 
   describe("calling destroy", function() {
 
@@ -31,6 +38,11 @@ describe("destroy: init plugin to test public method destroy", function() {
       expect(getListElement()).not.toExist();
     });
 
+    it("unbinds the event listeners", function() {
+      var listeners = $._data(input[0], 'events');
+      expect(listeners).toBeUndefined();
+    });
+
   });
 
 });
@@ -38,13 +50,14 @@ describe("destroy: init plugin to test public method destroy", function() {
 
 
 
-describe("destroy: init plugin with formatAsYouType enabled to test public method destroy", function() {
+describe("destroy: init plugin with nationalMode=false and autoHideDialCode=true", function() {
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>");
     input.intlTelInput({
-      formatAsYouType: true
+      nationalMode: false,
+      autoHideDialCode: true
     });
   });
 
@@ -56,9 +69,7 @@ describe("destroy: init plugin with formatAsYouType enabled to test public metho
     var listeners = $._data(input[0], 'events');
     expect("blur" in listeners).toBeTruthy();
     expect("focus" in listeners).toBeTruthy();
-    // autoHideDialCode defaults to false now because nationalMode defaults to true
-    //expect("mousedown" in listeners).toBeTruthy();
-    expect("keyup" in listeners).toBeTruthy();
+    expect("mousedown" in listeners).toBeTruthy();
   });
 
 

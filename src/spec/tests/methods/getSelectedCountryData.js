@@ -12,7 +12,7 @@ describe("getSelectedCountryData: init plugin to test public method getSelectedC
     input.intlTelInput("destroy");
     input = null;
   });
-  
+
   it("gets the right default country data", function() {
     expect(input.intlTelInput("getSelectedCountryData").iso2).toEqual("us");
   });

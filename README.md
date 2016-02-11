@@ -1,7 +1,7 @@
 This branch is in development. [Docs for the latest stable release here](https://github.com/jackocnr/intl-tel-input/tree/v7.1.1).
 
 # International Telephone Input [![Build Status](https://travis-ci.org/jackocnr/intl-tel-input.svg)](https://travis-ci.org/jackocnr/intl-tel-input)
-A jQuery plugin for entering and validating international telephone numbers. It adds a flag dropdown to any input, automatically detects the user's country, displays a relevant placeholder and auto formats the number as they type.
+A jQuery plugin for entering and validating international telephone numbers. It adds a flag dropdown to any input, detects the user's country, displays a relevant placeholder and provides formatting/validation methods.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshot.png" width="424px" height="246px">
 
@@ -29,7 +29,6 @@ You can view a live demo and some examples of how to use the various options her
 
 ## Features
 * Automatically select the user's current country using an IP lookup
-* Automatically format the number as the user types
 * Automatically set the input placeholder to an example number for the selected country
 * Navigate the country dropdown by typing a country's name, or using up/down keys
 * Handle phone number extensions
@@ -40,10 +39,9 @@ You can view a live demo and some examples of how to use the various options her
 
 
 ## Browser Compatibility
-|            | Chrome | FF  | Safari | IE  | Chrome Android | Mobile Safari | IE Mob |
-| :--------- | :----: | :-: | :----: | :-: | :------------: | :-----------: | :----: |
-| Core       |    ✓   |  ✓  |    ✓   |  8  |      ✓         |       ✓       |     ✓  |
-| formatAsYouType |    ✓   |  ✓  |    ✓   |  8  |      ✓         |       ✓       |     [✗](https://github.com/jackocnr/intl-tel-input/issues/68)  |
+| Chrome | FF  | Safari | IE  | Chrome Android | Mobile Safari | IE Mob |
+| :----: | :-: | :----: | :-: | :------------: | :-----------: | :----: |
+|    ✓   |  ✓  |    ✓   |  8  |      ✓         |       ✓       |     ✓  |
 
 
 
@@ -78,10 +76,6 @@ You can view a live demo and some examples of how to use the various options her
 ## Options
 Note: any options that take country codes should be [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
-**allowExtensions**  
-Type: `Boolean` Default: `false`  
-When `formatAsYouType` is enabled, this option will support formatting extension numbers e.g. "+1 (702) 123-1234 ext. 12345".
-
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
 If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
@@ -113,11 +107,6 @@ $("#scrollingElement").scroll(function() {
 **excludeCountries**  
 Type: `Array` Default: `undefined`  
 Don't display the countries you specify.
-
-**formatAsYouType**  
-Type: `Boolean` Default: `false`  
-_Note this option is currently not recommended, due to a [known UX issue](https://github.com/jackocnr/intl-tel-input/issues/322)._  
-Format the number on each keypress according to the country-specific formatting rules. This will also prevent the user from entering invalid characters (triggering a red flash in the input - see [Troubleshooting](#troubleshooting) to customise this). Requires the `utilsScript` option.
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
@@ -163,13 +152,6 @@ Remove the plugin from the input, and unbind any event listeners.
 ```js
 $("#mobile-number").intlTelInput("destroy");
 ```
-
-**getExtension**  
-Get the extension part of the current number, so if the number was `"+1 (702) 123-1234 ext. 12345"` this would return `"12345"`.
-```js
-var extension = $("#mobile-number").intlTelInput("getExtension");
-```
-Returns a string e.g. `"12345"`
 
 **getNumber**  
 Get the current number in the given format (defaults to [E.164 standard](http://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInputUtils.numberFormat` - taken from [here](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number._  
@@ -268,14 +250,11 @@ You can listen for the following events on the input.
 **countrychange**  
 This is triggered when the user selects a country from the dropdown.
 
-**invalidkey**  
-If formatAsYouType is enabled, this is triggered when the user types an invalid key. The only allowed keys are numerics and the plus character.
-
 
 ## Utilities Script
 A custom build of Google's [libphonenumber](http://libphonenumber.googlecode.com) which enables the following features:
 
-* As-you-type formatting with `formatAsYouType` option, which prevents you from entering invalid characters
+* Formatting upon initialisation, as well as with `getNumber` and `setNumber`
 * Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
 * Extract the standardised (E.164) international number with `getNumber` even when using the `nationalMode` option
@@ -294,12 +273,6 @@ $("form").submit(function() {
 });
 ```
 But this way the user will see their value change when they submit the form, which is weird. A better solution would be to update the value of a separate hidden input, and then read that POST variable on the server instead. See an example of this solution [here](http://jackocnr.com/lib/intl-tel-input/examples/gen/hidden-input.html).  
-
-**Customise invalid key flash**  
-Set the colour like this (or set to `none` to disable):  
-```css
-.intl-tel-input input.iti-invalid-key {background-color: #FFC7C7;}
-```
 
 **Full width input**  
 If you want your input to be full-width, you need to set the container to be the same i.e.

@@ -17,10 +17,7 @@ describe("isValidNumber:", function() {
   describe("init plugin and call public method isValidNumber", function() {
 
     beforeEach(function() {
-      input.intlTelInput({
-        // we must disable formatting to test with alpha chars
-        formatAsYouType: false,
-      });
+      input.intlTelInput();
     });
 
     it("returns true for: valid intl number", function() {
