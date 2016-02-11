@@ -1083,7 +1083,7 @@ Plugin.prototype = {
     this._updateDialCode(listItem.attr("data-dial-code"), true);
 
     // trigger a custom event as even in nationalMode the state has changed
-    this.telInput.trigger("country-change");
+    this.telInput.trigger("countrychange");
 
     // focus the input
     this.telInput.focus();

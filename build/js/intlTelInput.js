@@ -901,7 +901,7 @@
             this._closeDropdown();
             this._updateDialCode(listItem.attr("data-dial-code"), true);
             // trigger a custom event as even in nationalMode the state has changed
-            this.telInput.trigger("country-change");
+            this.telInput.trigger("countrychange");
             // focus the input
             this.telInput.focus();
             // fix for FF and IE11 (with nationalMode=false i.e. auto inserting dial code), who try to put the cursor at the beginning the first time
