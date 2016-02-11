@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v7.1.1
+ * International Telephone Input v8.0.0
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -985,7 +985,7 @@
         }
     };
     // version
-    $.fn[pluginName].version = "7.1.1";
+    $.fn[pluginName].version = "8.0.0";
     // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
     // jshint -W100
     // Array of country objects for the flag dropdown.
