@@ -196,12 +196,6 @@ module.exports = function(grunt) {
           // first occurence, when they are defined in the defaults object (no "options." prefix to match)
           // (using meaningful letter substitutions here)
           {
-            match: /allowExtensions/,
-            replacement: 'a'
-          }, {
-            match: /formatAsYouType/,
-            replacement: 'b'
-          }, {
             match: /autoHideDialCode/,
             replacement: 'c'
           }, {
@@ -240,12 +234,6 @@ module.exports = function(grunt) {
           // all other occurrences have the options prefix
           // (using meaningful letter substitutions here)
           {
-            match: /options.allowExtensions/g,
-            replacement: 'options.a'
-          }, {
-            match: /options.formatAsYouType/g,
-            replacement: 'options.b'
-          }, {
             match: /options.autoHideDialCode/g,
             replacement: 'options.c'
           }, {
@@ -379,8 +367,6 @@ module.exports = function(grunt) {
           {
             match: /this.b=/g,
             replacement: 'c&&(a.extend(c, c, {' +
-              'a:c.allowExtensions,' +
-              'b:c.formatAsYouType,' +
               'c:c.autoHideDialCode,' +
               'd:c.autoPlaceholder,' +
               'e:c.dropdownContainer,' +
