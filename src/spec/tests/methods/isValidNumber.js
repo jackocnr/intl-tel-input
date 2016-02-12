@@ -30,6 +30,12 @@ describe("isValidNumber:", function() {
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();
     });
 
+    it("returns null when utils script is not available", function() {
+      delete window.intlTelInputUtils;
+      input.intlTelInput("setNumber", "+44 7733 123456");
+      expect(input.intlTelInput("isValidNumber")).toBeNull();
+    });
+
     /*it("returns false for: valid intl number containing alpha chars", function() {
       input.intlTelInput("setNumber", "+44 7733 123 abc");
       expect(input.intlTelInput("isValidNumber")).toBeFalsy();
