@@ -42,11 +42,10 @@ You can view a live demo and some examples of how to use the various options her
 |    ✓   |  ✓  |    ✓   |  8  |      ✓         |       ✓       |     ✓  |
 
 
-
 ## Getting Started
 1. Download the [latest version](https://github.com/jackocnr/intl-tel-input/archive/master.zip), or better yet install it with [npm](https://www.npmjs.com/) or [Bower](http://bower.io)
 
-2. Link the stylesheet
+2. Include the stylesheet
   ```html
   <link rel="stylesheet" href="path/to/intlTelInput.css">
   ```
@@ -59,12 +58,12 @@ You can view a live demo and some examples of how to use the various options her
 
 4. Add the plugin script and initialise it on your input element
   ```html
-  <input type="tel" id="mobile-number">
+  <input type="tel" id="phone">
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="path/to/intlTelInput.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="path/to/intlTelInput.js"></script>
   <script>
-    $("#mobile-number").intlTelInput();
+    $("#phone").intlTelInput();
   </script>
   ```
 
