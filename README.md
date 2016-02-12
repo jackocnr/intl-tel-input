@@ -107,7 +107,7 @@ Don't display the countries you specify.
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
-When setting `initialCountry` to `"auto"`, we need to use a special service to lookup the location data for the user. Write a custom method to get the country code. For example if you use [ipinfo.io](http://ipinfo.io/):  
+When setting `initialCountry` to `"auto"`, we need to use a special service to lookup the location data for the user. Write a custom method to get the country code. For example using the [ipinfo.io](http://ipinfo.io/) service:  
 ```js
 geoIpLookup: function(callback) {
   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
@@ -120,7 +120,7 @@ _Note that the callback must still be called in the event of an error, hence the
 
 **initialCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). When instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when it is finished. If you leave `initialCountry` blank, it will default to the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [js-cookie](https://github.com/js-cookie/js-cookie) plugin, it will store the loaded country code in a cookie for future use._
+Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/default-country-ip.html). When instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialization requests like this have finished. If you leave `initialCountry` blank, it will default to the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [js-cookie](https://github.com/js-cookie/js-cookie) plugin, it will store the loaded country code in a cookie for future use._
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
@@ -140,7 +140,7 @@ Specify the countries to appear at the top of the list.
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
-Enable formatting/validation etc. by specifying the path to the included utils.js script (also available from [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)), which is fetched only when the page has finished loading (on window.load) to prevent blocking. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
+Enable formatting/validation etc. by specifying the path to the included utils.js script (also available from [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)), which is fetched only when the page has finished loading (on window.load) to prevent blocking. When instantiating the plugin, we return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialization requests like this have finished. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
 
 
 ## Public Methods
