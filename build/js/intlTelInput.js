@@ -874,10 +874,7 @@
         // validate the input val - assumes the global function isValidNumber (from utilsScript)
         isValidNumber: function() {
             var val = $.trim(this.telInput.val()), countryCode = this.options.nationalMode ? this.selectedCountryData.iso2 : "";
-            if (window.intlTelInputUtils) {
-                return intlTelInputUtils.isValidNumber(val, countryCode);
-            }
-            return false;
+            return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, countryCode) : null;
         },
         // update the selected flag, and update the input val accordingly ()
         setCountry: function(countryCode) {
