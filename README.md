@@ -73,6 +73,10 @@ You can view a live demo and some examples of how to use the various options her
 ## Options
 Note: any options that take country codes should be [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
+**allowDropdown**  
+Type: `Boolean` Default: `true`  
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also we display the selected flag on the right instead because it is just a marker of state.
+
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
 If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
