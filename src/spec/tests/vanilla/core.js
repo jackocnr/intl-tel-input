@@ -92,7 +92,6 @@ describe("vanilla:", function() {
 
     // preferredCountries defaults to 2 countries
     it("has the right number of list items", function() {
-      var defaultPreferredCountries = 2;
       expect(getListLength()).toEqual(totalCountries + defaultPreferredCountries);
       expect(getPreferredCountriesLength()).toEqual(defaultPreferredCountries);
       // only 1 active list item

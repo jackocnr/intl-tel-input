@@ -16,7 +16,7 @@ describe("onlyCountries option:", function() {
 
 
 
-  describe("init plugin with onlyCountries", function() {
+  describe("init plugin with onlyCountries set to japan, china and korea", function() {
 
     var chinaCountryCode = "cn";
 
@@ -49,8 +49,8 @@ describe("onlyCountries option:", function() {
     });
 
     it("entering +7 defaults to the top priority country (Russia)", function() {
-      input.val("+7");
-      triggerKeyOnInput(" ");
+      input.val("+");
+      triggerKeyOnInput("7");
       expect(getSelectedFlagElement()).toHaveClass("ru");
     });
 
