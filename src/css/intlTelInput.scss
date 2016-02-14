@@ -33,7 +33,8 @@ $arrowPadding: 4px !default;
 $arrowColor: #555 !default;
 
 $inputPadding: 6px !default;
-$selectedFlagWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding) !default;
+$selectedFlagWidth: $flagWidth + (2 * $flagPadding) !default;
+$selectedFlagAndArrowWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding) !default;
 
 // image related variables
 $flagsImagePath: "../img/" !default;
@@ -82,20 +83,10 @@ $mobilePopupMargin: 30px;
     // make space for the selected flag
     // Note: no !important here, as the user may want to tweak this so that the
     // perceived input padding matches their existing styles
-    padding-left: $selectedFlagWidth + $inputPadding;
+    padding-right: $selectedFlagWidth;
 
-    // any margin-left here will push the selected-flag away
-    margin-left: 0;
-
-    // when user presses invalid key, we add a class which instantly adds a bg color,
-    // then when we remove that class, this does a quick fade back to no bg
-    transition: background-color 100ms ease-out;
-  }
-  // when user presses invalid key, add this class temporarily to change bg color
-  input.iti-invalid-key {
-    // override the default transition state to show the change instantly
-    transition: background-color 0s;
-    background-color: #FFC7C7;
+    // any margin-right here will push the selected-flag away
+    margin-right: 0;
   }
 
   .flag-container {
@@ -104,22 +95,9 @@ $mobilePopupMargin: 30px;
     // full height
     top: 0;
     bottom: 0;
+    right: 0;
     // prevent the highlighted child from overlapping the input border
     padding: $borderWidth;
-  }
-  // hover state - show flag is clickable
-  .flag-container:hover {
-    cursor: pointer;
-    .selected-flag {
-      background-color: $hoverColor;
-    }
-  }
-  // disable hover state when input is disabled
-  input[disabled] + .flag-container:hover, input[readonly] + .flag-container:hover {
-    cursor: default;
-    .selected-flag {
-      background-color: transparent;
-    }
   }
 
   .selected-flag {
@@ -225,6 +203,35 @@ $mobilePopupMargin: 30px;
     }
     .flag-box, .country-name {
       margin-right: 6px;
+    }
+  }
+
+  &.allow-dropdown {
+    input, input[type=text], input[type=tel] {
+      padding-right: $inputPadding;
+      padding-left: $selectedFlagAndArrowWidth + $inputPadding;
+      margin-left: 0;
+    }
+    .flag-container {
+      left: 0;
+    }
+    .selected-flag {
+      width: $selectedFlagAndArrowWidth;
+    }
+
+    // hover state - show flag is clickable
+    .flag-container:hover {
+      cursor: pointer;
+      .selected-flag {
+        background-color: $hoverColor;
+      }
+    }
+    // disable hover state when input is disabled
+    input[disabled] + .flag-container:hover, input[readonly] + .flag-container:hover {
+      cursor: default;
+      .selected-flag {
+        background-color: transparent;
+      }
     }
   }
 

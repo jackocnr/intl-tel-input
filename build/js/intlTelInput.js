@@ -19,6 +19,8 @@
     // these vars persist through all instances of the plugin
     var pluginName = "intlTelInput", id = 1, // give each instance it's own id for namespaced event handling
     defaults = {
+        // whether or not to allow the dropdown
+        allowDropdown: true,
         // if there is just a dial code in the input: remove it on blur, and re-add it on focus
         autoHideDialCode: true,
         // add or remove input placeholder with an example number for the selected country
@@ -115,7 +117,7 @@
    ********************/
         // prepare all of the country data, including onlyCountries, excludeCountries and preferredCountries options
         _processCountryData: function() {
-            // process this instance's countries
+            // process onlyCountries or excludeCountries array if present
             this._processAllCountries();
             // process the countryCodes map
             this._processCountryCodes();
@@ -203,38 +205,43 @@
             }).insertBefore(this.telInput);
             // currently selected flag (displayed to left of input)
             var selectedFlag = $("<div>", {
-                // make element focusable and tab naviagable
-                tabindex: "0",
                 "class": "selected-flag"
-            }).appendTo(this.flagsContainer);
+            });
+            selectedFlag.appendTo(this.flagsContainer);
             this.selectedFlagInner = $("<div>", {
                 "class": "iti-flag"
             }).appendTo(selectedFlag);
-            // CSS triangle
-            $("<div>", {
-                "class": "iti-arrow"
-            }).appendTo(selectedFlag);
-            // country dropdown: preferred countries, then divider, then all countries
-            this.countryList = $("<ul>", {
-                "class": "country-list hide"
-            });
-            if (this.preferredCountries.length) {
-                this._appendListItems(this.preferredCountries, "preferred");
-                $("<li>", {
-                    "class": "divider"
-                }).appendTo(this.countryList);
+            if (this.options.allowDropdown) {
+                // make element focusable and tab naviagable
+                selectedFlag.attr("tabindex", "0");
+                // CSS triangle
+                $("<div>", {
+                    "class": "iti-arrow"
+                }).appendTo(selectedFlag);
+                this.telInput.parent().addClass("allow-dropdown");
+                // country dropdown: preferred countries, then divider, then all countries
+                this.countryList = $("<ul>", {
+                    "class": "country-list hide"
+                });
+                if (this.preferredCountries.length) {
+                    this._appendListItems(this.preferredCountries, "preferred");
+                    $("<li>", {
+                        "class": "divider"
+                    }).appendTo(this.countryList);
+                }
+                this._appendListItems(this.countries, "");
+                // this is useful in lots of places
+                this.countryListItems = this.countryList.children(".country");
+                // create dropdownContainer markup
+                if (this.options.dropdownContainer) {
+                    this.dropdown = $("<div>", {
+                        "class": "intl-tel-input iti-container"
+                    }).append(this.countryList);
+                } else {
+                    this.countryList.appendTo(this.flagsContainer);
+                }
             }
-            this._appendListItems(this.countries, "");
-            // this is useful in lots of places
-            this.countryListItems = this.countryList.children(".country");
-            // create dropdownContainer markup
-            if (this.options.dropdownContainer) {
-                this.dropdown = $("<div>", {
-                    "class": "intl-tel-input iti-container"
-                }).append(this.countryList);
-            } else {
-                this.countryList.appendTo(this.flagsContainer);
-            }
+            this.countryListItems = $();
         },
         // add a country <li> to the countryList <ul> container
         _appendListItems: function(countries, className) {
@@ -291,11 +298,16 @@
         },
         // initialise the main event listeners: input keyup, and click selected flag
         _initListeners: function() {
-            var that = this;
             this._initKeyListeners();
             if (this.options.autoHideDialCode) {
                 this._initFocusListeners();
             }
+            if (this.options.allowDropdown) {
+                this._initDropdownListeners();
+            }
+        },
+        _initDropdownListeners: function() {
+            var that = this;
             // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
             var label = this.telInput.closest("label");
             if (label.length) {
