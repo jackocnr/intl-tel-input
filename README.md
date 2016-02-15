@@ -151,22 +151,22 @@ Enable formatting/validation etc. by specifying the path to the included utils.j
 **destroy**  
 Remove the plugin from the input, and unbind any event listeners.  
 ```js
-$("#mobile-number").intlTelInput("destroy");
+$("#phone").intlTelInput("destroy");
 ```
 
 **getNumber**  
 Get the current number in the given format (defaults to [E.164 standard](http://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInputUtils.numberFormat` - taken from [here](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number._  
 ```js
-var intlNumber = $("#mobile-number").intlTelInput("getNumber");
+var intlNumber = $("#phone").intlTelInput("getNumber");
 // or
-var ntlNumber = $("#mobile-number").intlTelInput("getNumber", intlTelInputUtils.numberFormat.NATIONAL);
+var ntlNumber = $("#phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.NATIONAL);
 ```
 Returns a string e.g. `"+17024181234"`
 
 **getNumberType**  
 Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the `utilsScript` option.  
 ```js
-var numberType = $("#mobile-number").intlTelInput("getNumberType");
+var numberType = $("#phone").intlTelInput("getNumberType");
 ```
 Returns an integer, which you can match against the [various options](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L896) in the global enum `intlTelInputUtils.numberType` e.g.  
 ```js
@@ -179,7 +179,7 @@ _Note that in the US there's no way to differentiate between fixed-line and mobi
 **getSelectedCountryData**  
 Get the country data for the currently selected flag.  
 ```js
-var countryData = $("#mobile-number").intlTelInput("getSelectedCountryData");
+var countryData = $("#phone").intlTelInput("getSelectedCountryData");
 ```
 Returns something like this:
 ```js
@@ -193,7 +193,7 @@ Returns something like this:
 **getValidationError**  
 Get more information about a validation error. Requires the `utilsScript` option.  
 ```js
-var error = $("#mobile-number").intlTelInput("getValidationError");
+var error = $("#phone").intlTelInput("getValidationError");
 ```
 Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L175) in the global enum `intlTelInputUtils.validationError` e.g.  
 ```js
@@ -205,20 +205,20 @@ if (error == intlTelInputUtils.validationError.TOO_SHORT) {
 **isValidNumber**  
 Validate the current number - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/is-valid-number.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option. Also see `getNumberType` if you want to make sure the user enters a certain type of number e.g. a mobile number.  
 ```js
-var isValid = $("#mobile-number").intlTelInput("isValidNumber");
+var isValid = $("#phone").intlTelInput("isValidNumber");
 ```
 Returns: `true`/`false`
 
 **setCountry**  
 Change the country selection (e.g. when the user is entering their address).  
 ```js
-$("#mobile-number").intlTelInput("setCountry", "gb");
+$("#phone").intlTelInput("setCountry", "gb");
 ```
 
 **setNumber**  
 Insert a number, and update the selected flag accordingly. Optionally pass a `intlTelInputUtils.numberFormat` as the second argument if you want to specify national/international formatting (must be a valid number). _Note that by default, if `nationalMode` is enabled it will try to use national formatting._  
 ```js
-$("#mobile-number").intlTelInput("setNumber", "+44 7733 123 456");
+$("#phone").intlTelInput("setNumber", "+44 7733 123 456");
 ```
 
 
