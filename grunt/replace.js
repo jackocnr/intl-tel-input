@@ -6,10 +6,14 @@ module.exports = function(grunt) {
 
           /***********
            * PRIVATE METHODS
+           * (special treatment for the _init method, which is a subset of other method names)
            ***********/
           {
-            match: /_init/g,
-            replacement: '_a'
+            match: /_init:/g,
+            replacement: '_a:'
+          }, {
+            match: /_init\(/g,
+            replacement: '_a('
           }, {
             match: /_processCountryData/g,
             replacement: '_b'
@@ -37,6 +41,9 @@ module.exports = function(grunt) {
           }, {
             match: /_initListeners/g,
             replacement: '_i'
+          }, {
+            match: /_initDropdownListeners/g,
+            replacement: '_i1'
           }, {
             match: /_initRequests/g,
             replacement: '_i2'
@@ -194,8 +201,10 @@ module.exports = function(grunt) {
           },
 
           // first occurence, when they are defined in the defaults object (no "options." prefix to match)
-          // (using meaningful letter substitutions here)
           {
+            match: /allowDropdown/,
+            replacement: 'a'
+          }, {
             match: /autoHideDialCode/,
             replacement: 'c'
           }, {
@@ -232,8 +241,10 @@ module.exports = function(grunt) {
 
 
           // all other occurrences have the options prefix
-          // (using meaningful letter substitutions here)
           {
+            match: /options.allowDropdown/g,
+            replacement: 'options.a'
+          }, {
             match: /options.autoHideDialCode/g,
             replacement: 'options.c'
           }, {
@@ -266,7 +277,7 @@ module.exports = function(grunt) {
           }, {
             match: /options.utilsScript/g,
             replacement: 'options.m'
-          },
+          }
 
         ]
       },
@@ -365,8 +376,9 @@ module.exports = function(grunt) {
           // hack to normalise runtime option names
           // UPDATE: instead of replacing the runtime option names with a newly created object, we $.extend the existing object so that if we forget to add any new/modified option names in this build file, they will still work! The downside is that this options object will contain both the full key and the minified key, but that really doesn't matter.
           {
-            match: /this.b=/g,
-            replacement: 'c&&(a.extend(c, c, {' +
+            match: /this\.b=/g,
+            replacement: 'c&&(a.extend(c,c,{' +
+              'a:c.allowDropdown,' +
               'c:c.autoHideDialCode,' +
               'd:c.autoPlaceholder,' +
               'e:c.dropdownContainer,' +

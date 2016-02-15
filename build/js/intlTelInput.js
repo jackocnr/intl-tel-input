@@ -240,8 +240,10 @@
                 } else {
                     this.countryList.appendTo(this.flagsContainer);
                 }
+            } else {
+                // a little hack so we don't break anything
+                this.countryListItems = $();
             }
-            this.countryListItems = $();
         },
         // add a country <li> to the countryList <ul> container
         _appendListItems: function(countries, className) {
@@ -306,6 +308,7 @@
                 this._initDropdownListeners();
             }
         },
+        // initialise the dropdown listeners
         _initDropdownListeners: function() {
             var that = this;
             // hack for input nested inside label: clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
