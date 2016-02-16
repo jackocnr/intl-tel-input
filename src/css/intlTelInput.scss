@@ -141,11 +141,14 @@ $mobilePopupMargin: 30px;
 
   // the dropdown
   .country-list {
-    // override default list styles
-    list-style: none;
     position: absolute;
     // popup so render above everything else
     z-index: 2;
+
+    // override default list styles
+    list-style: none;
+    // in case any container has text-align:center
+    text-align: left;
 
     // place menu above the input element
     &.dropup {
