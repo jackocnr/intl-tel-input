@@ -41,6 +41,8 @@
         onlyCountries: [],
         // the countries at the top of the list. defaults to united states and united kingdom
         preferredCountries: [ "us", "gb" ],
+        // display the country dial code next to the flag so it's not part of the typed number
+        separateDialCode: false,
         // specify the path to the libphonenumber script to enable validation/formatting
         utilsScript: ""
     }, keys = {
@@ -82,6 +84,10 @@
             // if in nationalMode, disable options relating to dial codes
             if (this.options.nationalMode) {
                 this.options.autoHideDialCode = false;
+            }
+            // if separateDialCode then doesn't make sense to A) insert dial code into input (autoHideDialCode), and B) display national numbers (because we're displaying the country dial code next to them)
+            if (this.options.separateDialCode) {
+                this.options.autoHideDialCode = this.options.nationalMode = false;
             }
             // we cannot just test screen size as some smartphones/website meta tags will report desktop resolutions
             // Note: for some reason jasmine breaks if you put this in the main Plugin function with the rest of these declarations
@@ -197,8 +203,15 @@
             // prevent autocomplete as there's no safe, cross-browser event we can react to, so it can easily put the plugin in an inconsistent state e.g. the wrong flag selected for the autocompleted number, which on submit could mean the wrong number is saved (esp in nationalMode)
             this.telInput.attr("autocomplete", "off");
             // containers (mostly for positioning)
+            var parentClass = "intl-tel-input";
+            if (this.options.allowDropdown) {
+                parentClass += " allow-dropdown";
+            }
+            if (this.options.separateDialCode) {
+                parentClass += " separate-dial-code";
+            }
             this.telInput.wrap($("<div>", {
-                "class": "intl-tel-input"
+                "class": parentClass
             }));
             this.flagsContainer = $("<div>", {
                 "class": "flag-container"
@@ -218,7 +231,6 @@
                 $("<div>", {
                     "class": "iti-arrow"
                 }).appendTo(selectedFlag);
-                this.telInput.parent().addClass("allow-dropdown");
                 // country dropdown: preferred countries, then divider, then all countries
                 this.countryList = $("<ul>", {
                     "class": "country-list hide"
@@ -243,6 +255,11 @@
             } else {
                 // a little hack so we don't break anything
                 this.countryListItems = $();
+            }
+            if (this.options.separateDialCode) {
+                this.selectedDialCode = $("<div>", {
+                    "class": "selected-dial-code"
+                }).appendTo(selectedFlag);
             }
         },
         // add a country <li> to the countryList <ul> container
@@ -697,6 +714,10 @@
             // update the selected country's title attribute
             var title = countryCode ? this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode : "Unknown";
             this.selectedFlagInner.parent().attr("title", title);
+            if (this.options.separateDialCode) {
+                var dialCode = this.selectedCountryData.dialCode ? "+" + this.selectedCountryData.dialCode : "";
+                this.selectedDialCode.text(dialCode);
+            }
             // and the input's placeholder
             this._updatePlaceholder();
             // update the active list item

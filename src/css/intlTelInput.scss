@@ -236,6 +236,21 @@ $mobilePopupMargin: 30px;
         background-color: transparent;
       }
     }
+
+    &.separate-dial-code {
+      input, input[type=text], input[type=tel] {
+        padding-left: $selectedFlagAndArrowWidth + $inputPadding + 30;
+      }
+      .selected-flag {
+        display: table;
+        width: $selectedFlagWidth + 35;
+      }
+      .selected-dial-code {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 28px;
+      }
+    }
   }
 
   // if dropdownContainer option is set, increase z-index to prevent display issues
