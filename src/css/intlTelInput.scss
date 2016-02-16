@@ -34,7 +34,8 @@ $arrowColor: #555 !default;
 
 $inputPadding: 6px !default;
 $selectedFlagWidth: $flagWidth + (2 * $flagPadding) !default;
-$selectedFlagAndArrowWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding) !default;
+$selectedFlagArrowWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding) !default;
+$selectedFlagArrowDialCodeWidth: $selectedFlagArrowWidth + 11px !default;
 
 // image related variables
 $flagsImagePath: "../img/" !default;
@@ -212,14 +213,14 @@ $mobilePopupMargin: 30px;
   &.allow-dropdown {
     input, input[type=text], input[type=tel] {
       padding-right: $inputPadding;
-      padding-left: $selectedFlagAndArrowWidth + $inputPadding;
+      padding-left: $selectedFlagArrowWidth + $inputPadding;
       margin-left: 0;
     }
     .flag-container {
       left: 0;
     }
     .selected-flag {
-      width: $selectedFlagAndArrowWidth;
+      width: $selectedFlagArrowWidth;
     }
 
     // hover state - show flag is clickable
@@ -238,17 +239,48 @@ $mobilePopupMargin: 30px;
     }
 
     &.separate-dial-code {
-      input, input[type=text], input[type=tel] {
-        padding-left: $selectedFlagAndArrowWidth + $inputPadding + 30;
-      }
       .selected-flag {
         display: table;
-        width: $selectedFlagWidth + 35;
       }
       .selected-dial-code {
         display: table-cell;
         vertical-align: middle;
-        padding-left: 28px;
+        padding-left: $flagWidth + $flagPadding;
+      }
+
+      // .iti-sdc is for Separate Dial Code, with lengths from 2-5 because shortest is "+1", longest is "+1684"
+      $charLength: 8px;
+      &.iti-sdc-2 {
+        input, input[type=text], input[type=tel] {
+          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + (2 * $charLength);
+        }
+        .selected-flag {
+          width: $selectedFlagArrowDialCodeWidth + (2 * $charLength);
+        }
+      }
+      &.iti-sdc-3 {
+        input, input[type=text], input[type=tel] {
+          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + (3 * $charLength);
+        }
+        .selected-flag {
+          width: $selectedFlagArrowDialCodeWidth + (3 * $charLength);
+        }
+      }
+      &.iti-sdc-4 {
+        input, input[type=text], input[type=tel] {
+          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + (4 * $charLength);
+        }
+        .selected-flag {
+          width: $selectedFlagArrowDialCodeWidth + (4 * $charLength);
+        }
+      }
+      &.iti-sdc-5 {
+        input, input[type=text], input[type=tel] {
+          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + (5 * $charLength);
+        }
+        .selected-flag {
+          width: $selectedFlagArrowDialCodeWidth + (5 * $charLength);
+        }
       }
     }
   }

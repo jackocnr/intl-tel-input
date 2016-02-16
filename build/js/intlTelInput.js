@@ -224,6 +224,11 @@
             this.selectedFlagInner = $("<div>", {
                 "class": "iti-flag"
             }).appendTo(selectedFlag);
+            if (this.options.separateDialCode) {
+                this.selectedDialCode = $("<div>", {
+                    "class": "selected-dial-code"
+                }).appendTo(selectedFlag);
+            }
             if (this.options.allowDropdown) {
                 // make element focusable and tab naviagable
                 selectedFlag.attr("tabindex", "0");
@@ -255,11 +260,6 @@
             } else {
                 // a little hack so we don't break anything
                 this.countryListItems = $();
-            }
-            if (this.options.separateDialCode) {
-                this.selectedDialCode = $("<div>", {
-                    "class": "selected-dial-code"
-                }).appendTo(selectedFlag);
             }
         },
         // add a country <li> to the countryList <ul> container
@@ -703,7 +703,7 @@
         // select the given flag, update the placeholder and the active list item
         // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
         _setFlag: function(countryCode, isInit) {
-            var prevCountryCode = this.selectedCountryData && this.selectedCountryData.iso2 ? this.selectedCountryData.iso2 : "";
+            var prevCountry = this.selectedCountryData && this.selectedCountryData.iso2 ? this.selectedCountryData : {};
             // do this first as it will throw an error and stop if countryCode is invalid
             this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
             // update the defaultCountry - we only need the iso2 from now on, so just store that
@@ -715,7 +715,13 @@
             var title = countryCode ? this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode : "Unknown";
             this.selectedFlagInner.parent().attr("title", title);
             if (this.options.separateDialCode) {
-                var dialCode = this.selectedCountryData.dialCode ? "+" + this.selectedCountryData.dialCode : "";
+                var dialCode = this.selectedCountryData.dialCode ? "+" + this.selectedCountryData.dialCode : "", parent = this.telInput.parent();
+                if (prevCountry.dialCode) {
+                    parent.removeClass("iti-sdc-" + (prevCountry.dialCode.length + 1));
+                }
+                if (dialCode) {
+                    parent.addClass("iti-sdc-" + dialCode.length);
+                }
                 this.selectedDialCode.text(dialCode);
             }
             // and the input's placeholder
@@ -726,7 +732,7 @@
                 this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country").addClass("active");
             }
             // on change flag, trigger a custom event
-            if (!isInit && prevCountryCode !== countryCode) {
+            if (!isInit && prevCountry.iso2 !== countryCode) {
                 this.telInput.trigger("countrychange");
             }
         },
