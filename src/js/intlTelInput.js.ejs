@@ -345,7 +345,7 @@ Plugin.prototype = {
       }
 
       // if empty and no nationalMode and no autoHideDialCode then insert the default dial code
-      if (!val && !this.options.nationalMode && !this.options.autoHideDialCode) {
+      if (!val && !this.options.nationalMode && !this.options.autoHideDialCode && !this.options.separateDialCode) {
         this.telInput.val("+" + this.selectedCountryData.dialCode);
       }
     }
@@ -753,11 +753,15 @@ Plugin.prototype = {
 
   // update the input's value to the given val (format first if possible)
   // NOTE: this is called from _setInitialState, handleUtils and setNumber
-  _updateValFromNumber: function(number) {
+  _updateValFromNumber: function(number, format) {
     if (window.intlTelInputUtils && this.selectedCountryData) {
-      var format = (this.options.nationalMode || number.charAt(0) != "+") ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
+      if (!$.isNumeric(format)) {
+        format = (this.options.nationalMode || number.charAt(0) != "+") ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
+      }
       number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
     }
+
+    number = this._beforeSetNumber(number);
     this.telInput.val(number);
   },
 
@@ -884,9 +888,10 @@ Plugin.prototype = {
   // update the input placeholder to an example number from the currently selected country
   _updatePlaceholder: function() {
     if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder && this.selectedCountryData) {
-      var iso2 = this.selectedCountryData.iso2,
-        numberType = intlTelInputUtils.numberType[this.options.numberType],
-        placeholder = (iso2) ? intlTelInputUtils.getExampleNumber(iso2, this.options.nationalMode, numberType) : "";
+      var numberType = intlTelInputUtils.numberType[this.options.numberType],
+        placeholder = (this.selectedCountryData.iso2) ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
+
+      placeholder = this._beforeSetNumber(placeholder);
 
       if (typeof this.options.customPlaceholder === 'function') {
         placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
@@ -968,7 +973,7 @@ Plugin.prototype = {
 
 
   // replace any existing dial code with the new one
-  // Note: called from _selectListItem and _setCountry
+  // Note: called from _selectListItem and setCountry
   _updateDialCode: function(newDialCode, hasSelectedListItem) {
     var inputVal = this.telInput.val(),
       newNumber;
@@ -987,8 +992,8 @@ Plugin.prototype = {
         // (no way to determine where the invalid dial code ends and the rest of the number begins)
         newNumber = newDialCode;
       }
-    } else if (this.options.nationalMode) {
-      // nationalMode so don't do anything
+    } else if (this.options.nationalMode || this.options.separateDialCode) {
+      // don't do anything
       return;
     } else {
       // nationalMode is disabled
@@ -1035,6 +1040,25 @@ Plugin.prototype = {
     return dialCode;
   },
 
+  _getFullNumber: function() {
+    var prefix = (this.options.separateDialCode) ? "+" + this.selectedCountryData.dialCode : "";
+    return prefix + this.telInput.val();
+  },
+
+  _beforeSetNumber: function(number) {
+    if (this.options.separateDialCode) {
+      var dialCode = this._getDialCode(number);
+      if (dialCode) {
+        // a lot of numbers will have a space separating the dial code and the main number, and some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get rid of it
+        // NOTE: don't just trim all non-numerics as may want to preserve an open parenthesis etc
+        var start = (number[dialCode.length] === " " || number[dialCode.length] === "-") ? dialCode.length + 1 : dialCode.length;
+        number = number.substr(start);
+      }
+    }
+
+    return this._cap(number);
+  },
+
 
 
   /********************
@@ -1078,7 +1102,7 @@ Plugin.prototype = {
   // format the number to the given format
   getNumber: function(format) {
     if (window.intlTelInputUtils) {
-      return intlTelInputUtils.formatNumber(this.telInput.val(), this.selectedCountryData.iso2, format);
+      return intlTelInputUtils.formatNumber(this._getFullNumber(), this.selectedCountryData.iso2, format);
     }
     return "";
   },
@@ -1087,7 +1111,7 @@ Plugin.prototype = {
   // get the type of the entered number e.g. landline/mobile
   getNumberType: function() {
     if (window.intlTelInputUtils) {
-      return intlTelInputUtils.getNumberType(this.telInput.val(), this.selectedCountryData.iso2);
+      return intlTelInputUtils.getNumberType(this._getFullNumber(), this.selectedCountryData.iso2);
     }
     return -99;
   },
@@ -1103,7 +1127,7 @@ Plugin.prototype = {
   // get the validation error
   getValidationError: function() {
     if (window.intlTelInputUtils) {
-      return intlTelInputUtils.getValidationError(this.telInput.val(), this.selectedCountryData.iso2);
+      return intlTelInputUtils.getValidationError(this._getFullNumber(), this.selectedCountryData.iso2);
     }
     return -99;
   },
@@ -1111,13 +1135,13 @@ Plugin.prototype = {
 
   // validate the input val - assumes the global function isValidNumber (from utilsScript)
   isValidNumber: function() {
-    var val = $.trim(this.telInput.val()),
+    var val = $.trim(this._getFullNumber()),
       countryCode = (this.options.nationalMode) ? this.selectedCountryData.iso2 : "";
     return (window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, countryCode) : null);
   },
 
 
-  // update the selected flag, and update the input val accordingly ()
+  // update the selected flag, and update the input val accordingly
   setCountry: function(countryCode) {
     countryCode = countryCode.toLowerCase();
     // check if already selected
@@ -1133,12 +1157,7 @@ Plugin.prototype = {
   setNumber: function(number, format) {
     // we must update the flag first, which updates this.selectedCountryData, which is used for formatting the number before displaying it
     this._updateFlagFromNumber(number);
-    // if they specify a format then do that
-    if ($.isNumeric(format) && window.intlTelInputUtils && this.selectedCountryData) {
-      this.telInput.val(this._cap(intlTelInputUtils.formatNumber(val, this.selectedCountryData.iso2, format)));
-    } else {
-      this._updateValFromNumber(number);
-    }
+    this._updateValFromNumber(number);
   },
 
 
