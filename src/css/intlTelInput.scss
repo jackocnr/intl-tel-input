@@ -256,36 +256,14 @@ $mobilePopupMargin: 30px;
 
       // .iti-sdc is for Separate Dial Code, with lengths from 2-5 because shortest is "+1", longest is "+1684"
       $charLength: 8px;
-      &.iti-sdc-2 {
-        input, input[type=text], input[type=tel] {
-          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + (2 * $charLength);
-        }
-        .selected-flag {
-          width: $selectedFlagArrowDialCodeWidth + (2 * $charLength);
-        }
-      }
-      &.iti-sdc-3 {
-        input, input[type=text], input[type=tel] {
-          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + (3 * $charLength);
-        }
-        .selected-flag {
-          width: $selectedFlagArrowDialCodeWidth + (3 * $charLength);
-        }
-      }
-      &.iti-sdc-4 {
-        input, input[type=text], input[type=tel] {
-          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + (4 * $charLength);
-        }
-        .selected-flag {
-          width: $selectedFlagArrowDialCodeWidth + (4 * $charLength);
-        }
-      }
-      &.iti-sdc-5 {
-        input, input[type=text], input[type=tel] {
-          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + (5 * $charLength);
-        }
-        .selected-flag {
-          width: $selectedFlagArrowDialCodeWidth + (5 * $charLength);
+      @for $i from 2 through 5 {
+        &.iti-sdc-#{$i} {
+          input, input[type=text], input[type=tel] {
+            padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + ($i * $charLength);
+          }
+          .selected-flag {
+            width: $selectedFlagArrowDialCodeWidth + ($i * $charLength);
+          }
         }
       }
     }
