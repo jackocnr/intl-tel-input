@@ -956,7 +956,7 @@
         setNumber: function(number, format) {
             // we must update the flag first, which updates this.selectedCountryData, which is used for formatting the number before displaying it
             this._updateFlagFromNumber(number);
-            this._updateValFromNumber(number);
+            this._updateValFromNumber(number, format);
         },
         // this is called when the utils request completes
         handleUtils: function() {
