@@ -88,6 +88,8 @@
             // if separateDialCode then doesn't make sense to A) insert dial code into input (autoHideDialCode), and B) display national numbers (because we're displaying the country dial code next to them)
             if (this.options.separateDialCode) {
                 this.options.autoHideDialCode = this.options.nationalMode = false;
+                // let's force this for now for simplicity - we can support this later if need be
+                this.options.allowDropdown = true;
             }
             // we cannot just test screen size as some smartphones/website meta tags will report desktop resolutions
             // Note: for some reason jasmine breaks if you put this in the main Plugin function with the rest of these declarations
