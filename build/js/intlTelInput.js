@@ -41,7 +41,7 @@
         onlyCountries: [],
         // the countries at the top of the list. defaults to united states and united kingdom
         preferredCountries: [ "us", "gb" ],
-        // display the country dial code next to the flag so it's not part of the typed number
+        // display the country dial code next to the selected flag so it's not part of the typed number
         separateDialCode: false,
         // specify the path to the libphonenumber script to enable validation/formatting
         utilsScript: ""
@@ -864,10 +864,12 @@
             }
             return dialCode;
         },
+        // get the input val, adding the dial code if separateDialCode is enabled
         _getFullNumber: function() {
             var prefix = this.options.separateDialCode ? "+" + this.selectedCountryData.dialCode : "";
             return prefix + this.telInput.val();
         },
+        // remove the dial code if separateDialCode is enabled
         _beforeSetNumber: function(number) {
             if (this.options.separateDialCode) {
                 var dialCode = this._getDialCode(number);

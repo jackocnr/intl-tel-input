@@ -142,6 +142,10 @@ Display only the countries you specify - [see example](http://jackocnr.com/lib/i
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
 
+**separateDialCode**  
+Type: `Boolean` Default: `false`  
+Display the country dial code next to the selected flag so it's not part of the typed number.
+
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
 Enable formatting/validation etc. by specifying the path to the included utils.js script (also available from [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)), which is fetched only when the page has finished loading (on window.load) to prevent blocking. When instantiating the plugin, we return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
