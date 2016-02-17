@@ -978,6 +978,7 @@
         // Is the first parameter an object (options), or was omitted,
         // instantiate a new instance of the plugin.
         if (options === undefined || typeof options === "object") {
+            // collect all of the deferred objects for all instances created with this selector
             var deferreds = [];
             this.each(function() {
                 if (!$.data(this, "plugin_" + pluginName)) {
