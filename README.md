@@ -158,6 +158,13 @@ Remove the plugin from the input, and unbind any event listeners.
 $("#phone").intlTelInput("destroy");
 ```
 
+**getExtension**  
+Get the extension from the current number. Requires the `utilsScript` option.
+```js
+var extension = $("#phone").intlTelInput("getExtension");
+```
+Returns a string e.g. if the input value was `"(702) 555-5555 ext. 1234"`, this would return `"1234"`
+
 **getNumber**  
 Get the current number in the given format (defaults to [E.164 standard](http://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInputUtils.numberFormat` - taken from [here](https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number._  
 ```js
