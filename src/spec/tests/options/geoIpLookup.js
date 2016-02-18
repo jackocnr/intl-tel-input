@@ -6,11 +6,12 @@ describe("geoIpLookup:", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    // must be in DOM for geoIpLookup callback to work - it looks for $(".intl-tel-input input")
+    input = $("<input>").appendTo("body");
   });
 
   afterEach(function() {
-    input.intlTelInput("destroy");
+    input.intlTelInput("destroy").remove();
     input = deferred = null;
   });
 
@@ -33,12 +34,9 @@ describe("geoIpLookup:", function() {
           }, 1000);
         }
       });
-      // must be in DOM for geoIpLookup callback to work - it looks for $(".intl-tel-input input")
-      getParentElement().appendTo($("body"));
     });
 
     afterEach(function() {
-      getParentElement().remove();
       jasmine.clock().uninstall();
     });
 

@@ -6,11 +6,12 @@ describe("autoHideDialCode option:", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    // must be in DOM for focus to work
+    input = $("<input>").appendTo("body");
   });
 
   afterEach(function() {
-    input.intlTelInput("destroy");
+    input.intlTelInput("destroy").remove();
     input = null;
   });
 
@@ -22,12 +23,6 @@ describe("autoHideDialCode option:", function() {
         autoHideDialCode: true,
         nationalMode: false
       });
-      // must be in DOM for focus to work
-      getParentElement().appendTo($("body"));
-    });
-
-    afterEach(function() {
-      getParentElement().remove();
     });
 
     it("does not automatically insert the default dial code", function() {
@@ -70,11 +65,6 @@ describe("autoHideDialCode option:", function() {
         autoHideDialCode: false,
         nationalMode: false
       });
-      getParentElement().appendTo($("body"));
-    });
-
-    afterEach(function() {
-      getParentElement().remove();
     });
 
     it("automatically inserts the default dial code", function() {

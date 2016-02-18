@@ -899,15 +899,17 @@
         },
         // remove plugin
         destroy: function() {
-            // make sure the dropdown is closed (and unbind listeners)
-            this._closeDropdown();
-            // key events, and focus/blur events if autoHideDialCode=true
+            if (this.allowDropdown) {
+                // make sure the dropdown is closed (and unbind listeners)
+                this._closeDropdown();
+                // click event to open dropdown
+                this.selectedFlagInner.parent().off(this.ns);
+                // label click hack
+                this.telInput.closest("label").off(this.ns);
+            }
+            // unbind all events: key events, and focus/blur events if autoHideDialCode=true
             this.telInput.off(this.ns);
-            // click event to open dropdown
-            this.selectedFlagInner.parent().off(this.ns);
-            // label click hack
-            this.telInput.closest("label").off(this.ns);
-            // remove markup
+            // remove markup (but leave the original input)
             var container = this.telInput.parent();
             container.before(this.telInput).remove();
         },

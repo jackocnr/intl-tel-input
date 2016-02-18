@@ -4,19 +4,44 @@ describe("dropdownContainer:", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    // insert input into the DOM so our visibility tests will work
+    input = $("<input>").appendTo("body");
   });
 
   afterEach(function() {
-    input.intlTelInput("destroy");
+    input.intlTelInput("destroy").remove();
     input = null;
   });
 
-  it("init plugin with dropdownContainer='' adds the dropdown markup next to the input", function() {
-    input.intlTelInput({
-      dropdownContainer: ""
+  describe("init plugin with dropdownContainer=''", function() {
+
+    beforeEach(function() {
+      input.intlTelInput({
+        dropdownContainer: ""
+      });
     });
-    expect(getSelectedFlagContainer()).toExist();
+
+    it("adds the dropdown markup next to the input", function() {
+      expect(getListElement()).toExist();
+    });
+
+    describe("clicking the selected flag", function() {
+
+      beforeEach(function() {
+        getSelectedFlagContainer().click();
+      });
+
+      it("shows the dropdown", function() {
+        expect(getListElement()).toBeVisible();
+      });
+
+      it("clicking-off removes the markup again", function() {
+        $("body").click();
+        expect(getListElement()).not.toBeVisible();
+      });
+
+    });
+
   });
 
   describe("init plugin with dropdownContainer='body'", function() {
@@ -27,12 +52,6 @@ describe("dropdownContainer:", function() {
       input.intlTelInput({
         dropdownContainer: selector
       });
-      // must be in DOM for the detach call to work in _closeDropdown
-      getParentElement().appendTo($(selector));
-    });
-
-    afterEach(function() {
-      getParentElement().remove();
     });
 
     it("doesnt immediately add the markup to that element", function() {
@@ -51,6 +70,11 @@ describe("dropdownContainer:", function() {
 
       it("selecting a country removes the markup again", function() {
         $(selector+">.iti-container").find("li[data-country-code='gb']").click();
+        expect($(selector+">.iti-container")).not.toExist();
+      });
+
+      it("clicking-off removes the markup again", function() {
+        $("body").click();
         expect($(selector+">.iti-container")).not.toExist();
       });
 
