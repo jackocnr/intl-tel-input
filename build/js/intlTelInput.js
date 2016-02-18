@@ -913,6 +913,13 @@
             var container = this.telInput.parent();
             container.before(this.telInput).remove();
         },
+        // get the extension from the current number
+        getExtension: function() {
+            if (window.intlTelInputUtils) {
+                return intlTelInputUtils.getExtension(this._getFullNumber(), this.selectedCountryData.iso2);
+            }
+            return "";
+        },
         // format the number to the given format
         getNumber: function(format) {
             if (window.intlTelInputUtils) {

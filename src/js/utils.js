@@ -13,19 +13,6 @@ goog.require('i18n.phonenumbers.PhoneNumberFormat');
 goog.require('i18n.phonenumbers.PhoneNumberUtil');
 
 
-// get an example number for the given country code
-function getExampleNumber(countryCode, national, numberType) {
-  try {
-    var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    var numberObj = phoneUtil.getExampleNumberForType(countryCode, numberType);
-    var format = (national) ? i18n.phonenumbers.PhoneNumberFormat.NATIONAL : i18n.phonenumbers.PhoneNumberFormat.INTERNATIONAL;
-    return phoneUtil.format(numberObj, format);
-  } catch (e) {
-    return "";
-  }
-}
-
-
 // format the given number to the given format
 function formatNumber(number, countryCode, format) {
   try {
@@ -39,14 +26,40 @@ function formatNumber(number, countryCode, format) {
 }
 
 
-// check if given number is valid
-function isValidNumber(number, countryCode) {
+// get an example number for the given country code
+function getExampleNumber(countryCode, national, numberType) {
+  try {
+    var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+    var numberObj = phoneUtil.getExampleNumberForType(countryCode, numberType);
+    var format = (national) ? i18n.phonenumbers.PhoneNumberFormat.NATIONAL : i18n.phonenumbers.PhoneNumberFormat.INTERNATIONAL;
+    return phoneUtil.format(numberObj, format);
+  } catch (e) {
+    return "";
+  }
+}
+
+
+// get the extension from the given number
+function getExtension(number, countryCode) {
   try {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
-    return phoneUtil.isValidNumber(numberObj);
+    return numberObj.getExtension();
   } catch (e) {
-    return false;
+    return "";
+  }
+}
+
+
+// get the type of the given number e.g. fixed-line/mobile
+function getNumberType(number, countryCode) {
+  try {
+    var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+    var numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    return phoneUtil.getNumberType(numberObj);
+  } catch (e) {
+    // broken
+    return -99;
   }
 }
 
@@ -80,17 +93,25 @@ function getValidationError(number, countryCode) {
 }
 
 
-// get the type of the given number e.g. fixed-line/mobile
-function getNumberType(number, countryCode) {
+// check if given number is valid
+function isValidNumber(number, countryCode) {
   try {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
-    return phoneUtil.getNumberType(numberObj);
+    return phoneUtil.isValidNumber(numberObj);
   } catch (e) {
-    // broken
-    return -99;
+    return false;
   }
 }
+
+
+// copied this from https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883
+var numberFormat = {
+  "E164": 0,
+  "INTERNATIONAL": 1,
+  "NATIONAL": 2,
+  "RFC3966": 3
+};
 
 
 // copied this from i18n.phonenumbers.PhoneNumberType in https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js and put the keys in quotes to force closure compiler to preserve the keys
@@ -137,23 +158,16 @@ var validationError = {
   "NOT_A_NUMBER": 4
 };
 
-// copied this from https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883
-var numberFormat = {
-  "E164": 0,
-  "INTERNATIONAL": 1,
-  "NATIONAL": 2,
-  "RFC3966": 3
-};
-
 
 // exports
 goog.exportSymbol('intlTelInputUtils', {});
 goog.exportSymbol('intlTelInputUtils.formatNumber', formatNumber);
 goog.exportSymbol('intlTelInputUtils.getExampleNumber', getExampleNumber);
+goog.exportSymbol('intlTelInputUtils.getExtension', getExtension);
 goog.exportSymbol('intlTelInputUtils.getNumberType', getNumberType);
 goog.exportSymbol('intlTelInputUtils.getValidationError', getValidationError);
 goog.exportSymbol('intlTelInputUtils.isValidNumber', isValidNumber);
 // enums
+goog.exportSymbol('intlTelInputUtils.numberFormat', numberFormat);
 goog.exportSymbol('intlTelInputUtils.numberType', numberType);
 goog.exportSymbol('intlTelInputUtils.validationError', validationError);
-goog.exportSymbol('intlTelInputUtils.numberFormat', numberFormat);
