@@ -83,7 +83,7 @@ If there is just a dial code in the input: remove it on blur, and re-add it on f
 
 **autoPlaceholder**  
 Type: `Boolean` Default: `true`  
-Add or remove input placeholder with an example number for the selected country. Requires the `utilsScript` option.
+Set the input's placeholder to an example number for the selected country. You can specify the number type using the `numberType` option. If there is already a placeholder attribute set on the input then that will take precedence. Requires the `utilsScript` option.
 
 **customPlaceholder**  
 Type: `Function` Default: `null`  
