@@ -109,6 +109,10 @@ $("#scrollingElement").scroll(function() {
 Type: `Array` Default: `undefined`  
 Don't display the countries you specify.
 
+**formatOnInit**  
+Type: `Boolean` Default: `true`  
+Format the input value during initialisation.
+
 **geoIpLookup**  
 Type: `Function` Default: `null`  
 When setting `initialCountry` to `"auto"`, we need to use a special service to lookup the location data for the user. Write a custom method to get the country code. For example using the [ipinfo.io](http://ipinfo.io/) service:  
