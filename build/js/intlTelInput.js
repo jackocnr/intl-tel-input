@@ -29,6 +29,8 @@
         dropdownContainer: "",
         // don't display these countries
         excludeCountries: [],
+        // format the input value during initialisation
+        formatOnInit: true,
         // geoIp lookup function
         geoIpLookup: null,
         // initial country
@@ -314,7 +316,7 @@
             // format
             if (val) {
                 // this wont be run after _updateDialCode as that's only called if no val
-                this._updateValFromNumber(val);
+                this._updateValFromNumber(val, this.options.formatOnInit);
             }
         },
         // initialise the main event listeners: input keyup, and click selected flag
@@ -633,8 +635,8 @@
         },
         // update the input's value to the given val (format first if possible)
         // NOTE: this is called from _setInitialState, handleUtils and setNumber
-        _updateValFromNumber: function(number, format) {
-            if (window.intlTelInputUtils && this.selectedCountryData) {
+        _updateValFromNumber: function(number, doFormat, format) {
+            if (doFormat && window.intlTelInputUtils && this.selectedCountryData) {
                 if (!$.isNumeric(format)) {
                     format = this.options.nationalMode || number.charAt(0) != "+" ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
                 }
@@ -965,7 +967,7 @@
         setNumber: function(number, format) {
             // we must update the flag first, which updates this.selectedCountryData, which is used for formatting the number before displaying it
             this._updateFlagFromNumber(number);
-            this._updateValFromNumber(number, format);
+            this._updateValFromNumber(number, $.isNumeric(format), format);
         },
         // this is called when the utils request completes
         handleUtils: function() {
@@ -973,7 +975,7 @@
             if (window.intlTelInputUtils) {
                 // if there's an initial value in the input, then format it
                 if (this.telInput.val()) {
-                    this._updateValFromNumber(this.telInput.val());
+                    this._updateValFromNumber(this.telInput.val(), this.options.formatOnInit);
                 }
                 this._updatePlaceholder();
             }

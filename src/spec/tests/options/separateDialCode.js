@@ -30,7 +30,7 @@ describe("separateDialCode:", function() {
   });
 
 
-  
+
 
   describe("calling setNumber to a valid intl number", function() {
 
@@ -40,7 +40,7 @@ describe("separateDialCode:", function() {
 
     it("formats the number correctly", function() {
       // international format minus the dial code
-      expect(getInputVal()).toEqual("7400 123456");
+      expect(getInputVal()).toEqual("7400123456");
     });
 
     it("calling getNumber returns the full intl number", function() {

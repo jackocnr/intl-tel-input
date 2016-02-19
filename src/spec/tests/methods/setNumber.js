@@ -37,10 +37,10 @@ describe("setNumber: init plugin with utils", function() {
     input = null;
   });
 
-  describe("call setNumber with a valid UK number", function() {
+  describe("call setNumber with a valid UK number, and format=NATIONAL", function() {
 
     beforeEach(function() {
-      input.intlTelInput("setNumber", "+447733123456");
+      input.intlTelInput("setNumber", "+447733123456", intlTelInputUtils.numberFormat.NATIONAL);
     });
 
     it("sets the input val to the given number, with default formatting", function() {
