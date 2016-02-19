@@ -148,7 +148,7 @@ Specify the countries to appear at the top of the list.
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
-Display the country dial code next to the selected flag so it's not part of the typed number.
+Display the country dial code next to the selected flag so it's not part of the typed number. Note that this will disable `nationalMode` because technically we are dealing with international numbers, but with the dial code separated.
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
