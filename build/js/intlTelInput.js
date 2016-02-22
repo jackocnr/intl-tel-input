@@ -72,15 +72,13 @@
         $.fn[pluginName].windowLoaded = true;
     });
     function Plugin(element, options) {
-        this.element = element;
+        this.telInput = $(element);
         this.options = $.extend({}, defaults, options);
-        this._defaults = defaults;
         // event namespace
         this.ns = "." + pluginName + id++;
         // Chrome, FF, Safari, IE9+
         this.isGoodBrowser = Boolean(element.setSelectionRange);
         this.hadInitialPlaceholder = Boolean($(element).attr("placeholder"));
-        this._name = pluginName;
     }
     Plugin.prototype = {
         _init: function() {
@@ -203,8 +201,6 @@
         },
         // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
         _generateMarkup: function() {
-            // telephone input
-            this.telInput = $(this.element);
             // prevent autocomplete as there's no safe, cross-browser event we can react to, so it can easily put the plugin in an inconsistent state e.g. the wrong flag selected for the autocompleted number, which on submit could mean the wrong number is saved (esp in nationalMode)
             this.telInput.attr("autocomplete", "off");
             // containers (mostly for positioning)
