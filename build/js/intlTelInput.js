@@ -65,10 +65,11 @@
         CMD1: 91,
         // Chrome
         CMD2: 224
-    }, windowLoaded = false;
+    };
     // keep track of if the window.load event has fired as impossible to check after the fact
     $(window).load(function() {
-        windowLoaded = true;
+        // UPDATE: use a public static field so we can fudge it in the tests
+        $.fn[pluginName].windowLoaded = true;
     });
     function Plugin(element, options) {
         this.element = element;
@@ -376,7 +377,7 @@
             // if the user has specified the path to the utils script, fetch it on window.load, else resolve
             if (this.options.utilsScript) {
                 // if the plugin is being initialised after the window.load event has already been fired
-                if (windowLoaded) {
+                if ($.fn[pluginName].windowLoaded) {
                     $.fn[pluginName].loadUtils(this.options.utilsScript, this.utilsScriptDeferred);
                 } else {
                     // wait until the load event so we don't block any other requests e.g. the flags image
