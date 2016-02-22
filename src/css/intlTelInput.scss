@@ -291,6 +291,7 @@ $mobilePopupMargin: 30px;
     bottom: $mobilePopupMargin;
     left: $mobilePopupMargin;
     right: $mobilePopupMargin;
+    position: fixed;
   }
   .country-list {
     max-height: 100%;
