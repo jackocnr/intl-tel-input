@@ -25,6 +25,8 @@
         autoHideDialCode: true,
         // add or remove input placeholder with an example number for the selected country
         autoPlaceholder: true,
+        // modify the auto placeholder
+        customPlaceholder: null,
         // append menu to a specific element
         dropdownContainer: "",
         // don't display these countries

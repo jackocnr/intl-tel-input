@@ -181,6 +181,9 @@ module.exports = function(grunt) {
             match: /autoPlaceholder/,
             replacement: 'c'
           }, {
+            match: /customPlaceholder/,
+            replacement: 'c2'
+          }, {
             match: /dropdownContainer/,
             replacement: 'd'
           }, {
@@ -226,6 +229,9 @@ module.exports = function(grunt) {
           }, {
             match: /options.autoPlaceholder/g,
             replacement: 'options.c'
+          }, {
+            match: /options.customPlaceholder/g,
+            replacement: 'options.c2'
           }, {
             match: /options.dropdownContainer/g,
             replacement: 'options.d'
@@ -301,6 +307,9 @@ module.exports = function(grunt) {
           }, {
             match: /.utilsScriptDeferred/g,
             replacement: '.i'
+          }, {
+            match: /.defaultCountry/g,
+            replacement: '.j'
           },
 
 
@@ -331,6 +340,9 @@ module.exports = function(grunt) {
           }, {
             match: /.selectedCountryData/g,
             replacement: '.s'
+          }, {
+            match: /.selectedDialCode/g,
+            replacement: '.t'
           }
 
         ]
@@ -354,6 +366,7 @@ module.exports = function(grunt) {
               'a:c.allowDropdown,' +
               'b:c.autoHideDialCode,' +
               'c:c.autoPlaceholder,' +
+              'c2:c.customPlaceholder,' +
               'd:c.dropdownContainer,' +
               'e:c.excludeCountries,' +
               'f:c.formatOnInit,' +
