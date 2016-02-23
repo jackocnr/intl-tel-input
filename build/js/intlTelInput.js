@@ -55,16 +55,8 @@
         PLUS: 43,
         A: 65,
         Z: 90,
-        ZERO: 48,
-        NINE: 57,
         SPACE: 32,
-        BSPACE: 8,
-        TAB: 9,
-        DEL: 46,
-        CTRL: 17,
-        CMD1: 91,
-        // Chrome
-        CMD2: 224
+        TAB: 9
     };
     // keep track of if the window.load event has fired as impossible to check after the fact
     $(window).load(function() {
