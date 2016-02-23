@@ -15,15 +15,14 @@ describe("countrychange event:", function() {
     input = null;
   });
 
-  it("init plugin does not trigger the event", function() {
-    input.intlTelInput();
-    expect(spy).not.toHaveBeenTriggered();
-  });
-
   describe("init plugin", function() {
 
     beforeEach(function() {
       input.intlTelInput();
+    });
+
+    it("does not trigger the event", function() {
+      expect(spy).not.toHaveBeenTriggered();
     });
 
     it("calling setCountry triggers the event", function() {

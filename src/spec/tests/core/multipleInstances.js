@@ -1,6 +1,6 @@
 "use strict";
 
-describe("multiple instances: init vanilla plugin (with nationalMode=false) to test multiple instances", function() {
+describe("multiple instances: init plugin (with nationalMode=false) to test multiple instances", function() {
 
   var input2,
     afghanistanCountryCode = "af",
@@ -65,14 +65,14 @@ describe("multiple instances: init vanilla plugin (with nationalMode=false) to t
     });
 
     it("only opens the dropdown on that input", function() {
-      expect(getListElement()).not.toHaveClass("hide");
-      expect(getListElement(input2)).toHaveClass("hide");
+      expect(getListElement()).toBeVisible();
+      expect(getListElement(input2)).not.toBeVisible();
     });
 
     it("then clicking open dropdown on the second will close the first and open the second", function() {
       getSelectedFlagContainer(input2).click();
-      expect(getListElement()).toHaveClass("hide");
-      expect(getListElement(input2)).not.toHaveClass("hide");
+      expect(getListElement()).not.toBeVisible();
+      expect(getListElement(input2)).toBeVisible();
     });
 
   });

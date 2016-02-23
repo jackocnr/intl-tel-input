@@ -16,7 +16,7 @@ describe("autoHideDialCode option:", function() {
   });
 
 
-  describe("init plugin with autoHideDialCode = true and nationalMode = false", function() {
+  describe("init plugin with autoHideDialCode=true and nationalMode=false", function() {
 
     beforeEach(function() {
       input.intlTelInput({
@@ -29,11 +29,29 @@ describe("autoHideDialCode option:", function() {
       expect(getInputVal()).toEqual("");
     });
 
-    it("focusing the input adds the default dial code and blurring it removes it again", function() {
-      input.focus();
-      expect(getInputVal()).toEqual("+1");
-      input.blur();
-      expect(getInputVal()).toEqual("");
+    describe("focusing the input", function() {
+
+      beforeEach(function() {
+        input.focus();
+      });
+
+      it("adds the default dial code", function() {
+        expect(getInputVal()).toEqual("+1");
+      });
+
+      // special case: if first char you type is a plus, then we remove auto-added dial code
+      it("typing a new dial code replaces the old one", function() {
+        triggerKeyOnInput("+");
+        triggerKeyOnInput("4");
+        triggerKeyOnInput("4");
+        expect(getInputVal()).toEqual("+44");
+      });
+
+      it("blurring it removes it again", function() {
+        input.blur();
+        expect(getInputVal()).toEqual("");
+      });
+
     });
 
 
@@ -58,7 +76,7 @@ describe("autoHideDialCode option:", function() {
   });
 
 
-  describe("init plugin with autoHideDialCode = false and nationalMode = false", function() {
+  describe("init plugin with autoHideDialCode=false and nationalMode=false", function() {
 
     beforeEach(function() {
       input.intlTelInput({
