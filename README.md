@@ -78,7 +78,7 @@ Type: `Boolean` Default: `true`
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also we display the selected flag on the right instead because it is just a marker of state.
 
 **~~autoFormat~~ [REMOVED]**  
-Automatically format the number as the user types. Unfortunately this had to be removed for the reasons listed here: https://github.com/jackocnr/intl-tel-input/issues/346.
+Automatically format the number as the user types. Unfortunately this had to be removed for the reasons listed here: [#346 Disable and remove autoFormat feature](https://github.com/jackocnr/intl-tel-input/issues/346).
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
