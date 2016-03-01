@@ -12,18 +12,16 @@ telInput.intlTelInput({
 $.each(countryData, function(i, country) {
   addressDropdown.append($("<option></option>").attr("value", country.iso2).text(country.name));
 });
+// set it's initial value
+var initialCountry = telInput.intlTelInput("getSelectedCountryData").iso2;
+addressDropdown.val(initialCountry);
 
 // listen to the telephone input for changes
-telInput.on("countrychange", function() {
-  var countryCode = telInput.intlTelInput("getSelectedCountryData").iso2;
-  addressDropdown.val(countryCode);
+telInput.on("countrychange", function(e, countryData) {
+  addressDropdown.val(countryData.iso2);
 });
-
-// trigger a fake "change" event now, to trigger an initial sync
-telInput.trigger("countrychange");
 
 // listen to the address dropdown for changes
 addressDropdown.change(function() {
-  var countryCode = $(this).val();
-  telInput.intlTelInput("setCountry", countryCode);
+  telInput.intlTelInput("setCountry", $(this).val());
 });
