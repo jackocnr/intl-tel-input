@@ -731,7 +731,7 @@
             }
             // on change flag, trigger a custom event
             if (!isInit && prevCountry.iso2 !== countryCode) {
-                this.telInput.trigger("countrychange");
+                this.telInput.trigger("countrychange", this.selectedCountryData);
             }
         },
         // update the input placeholder to an example number from the currently selected country
