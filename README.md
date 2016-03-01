@@ -267,6 +267,18 @@ $.fn.intlTelInput.loadUtils("build/js/utils.js");
 You can listen for the following events on the input.
 
 **countrychange**  
+
+
+```
+var $input = $('#phone);
+
+$input.intlTelInput({});
+
+$input.on('countrychange', function(e, country) {
+  // Do something with country object
+});
+```
+
 This is triggered when the user selects a country from the dropdown.
 
 

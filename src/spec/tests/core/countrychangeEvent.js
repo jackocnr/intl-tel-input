@@ -46,6 +46,20 @@ describe("countrychange event:", function() {
       expect(spy).toHaveBeenTriggered();
     });
 
+    it("returns the selected country as extraParameter", function() {
+      selectFlag("fr");
+
+      var expectedCountry = {
+        name: 'France',
+        iso2: 'fr',
+        dialCode: '33',
+        priority: 0,
+        areaCodes: null
+      }
+
+      expect('countrychange').
+        toHaveBeenTriggeredOnAndWith(input, expectedCountry);
+    });
   });
 
 });
