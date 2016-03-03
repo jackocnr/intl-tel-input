@@ -241,6 +241,7 @@ $("#phone").intlTelInput("setNumber", "+44 7733 123 456");
 
 
 ## Static Methods
+
 **getCountryData**  
 Get all of the plugin's country data - either to re-use elsewhere e.g. to populate a country dropdown - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/country-sync.html), or to modify - [see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/modify-country-data.html). Note that any modifications must be done before initialising the plugin.  
 ```js
@@ -261,6 +262,9 @@ Load the utils.js script (included in the lib directory) to enable formatting/va
 ```js
 $.fn.intlTelInput.loadUtils("build/js/utils.js");
 ```
+
+**~~setCountryData~~ [REMOVED]**  
+Set the plugin's country data. This method was removed because it makes much more sense to just use `getCountryData` and then modify that ([see example](http://jackocnr.com/lib/intl-tel-input/examples/gen/modify-country-data.html)) instead of having to generate the whole thing yourself - the country data has become increasingly complicated and for each country we now have five properties: the name, [iso2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), international dial code, priority (in case two countries have the same international dial code), and finally a list of area codes used in that country - see [data.js](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.js#L36) for more info.
 
 
 ## Events
