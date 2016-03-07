@@ -14,7 +14,7 @@ describe("setNumber: init (vanilla) plugin and call setNumber with a valid UK nu
     input = null;
   });
 
-  it("sets the input val to the given number", function() {
+  it("sets the input val to the given number (no formatting)", function() {
     expect(getInputVal()).toEqual("+447733123456");
   });
 
