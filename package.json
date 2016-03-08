@@ -16,6 +16,7 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "dependencies": {
+    "evenizer": "^0.1.17",
     "jquery": ">=1.7"
   },
   "devDependencies": {
