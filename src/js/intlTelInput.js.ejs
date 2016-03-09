@@ -1045,8 +1045,13 @@ Plugin.prototype = {
     if (this.options.separateDialCode) {
       var dialCode = this._getDialCode(number);
       if (dialCode) {
-        // _getDialCode returns area code as well, but we just want the dial code
-        dialCode = "+" + this.selectedCountryData.dialCode;
+        // US dialCode is "+1", which is what we want
+        // CA dialCode is "+1 123", which is wrong - should be "+1" (as it has multiple area codes)
+        // AS dialCode is "+1 684", which is what we want
+        // Solution: if the country has area codes, then revert to just the dial code
+        if (this.selectedCountryData.areaCodes !== null) {
+          dialCode = "+" + this.selectedCountryData.dialCode;
+        }
         // a lot of numbers will have a space separating the dial code and the main number, and some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get rid of it
         // NOTE: don't just trim all non-numerics as may want to preserve an open parenthesis etc
         var start = (number[dialCode.length] === " " || number[dialCode.length] === "-") ? dialCode.length + 1 : dialCode.length;
