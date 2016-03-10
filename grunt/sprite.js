@@ -1,10 +1,10 @@
 module.exports = function(grunt) {
   return {
     retina: {
-        src: 'src/img/flags/*@2x.png',
+        src: 'src/img/flags/@2x/*.png',
         dest: 'build/img/flags@2x.png',
         destCss: 'src/css/sprite@2x.scss',
-        cssTemplate: function() { return ''; },
+        cssTemplate: function() { return ''; }, // ignore - we just use the @1x styles for both
         padding: 4,
         algorithm: 'left-right',
         algorithmOpts: {
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         }
     },
     main: {
-      src: ['src/img/flags/*.png', '!<%= sprite.retina.src %>'],
+      src: ['src/img/flags/@1x/*.png'],
       dest: 'build/img/flags.png',
       cssTemplate: 'grunt/tmpl/sprite-retina-mustache.scss',
       destCss: 'src/css/sprite.scss',
