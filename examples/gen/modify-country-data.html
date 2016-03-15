@@ -49,5 +49,12 @@ $(&quot;#phone&quot;).intlTelInput({
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../../build/js/intlTelInput.js?1456859475147"></script>
     <script src="../js/modifyCountryData.js?1456859475147"></script>
+    <script type="text/javascript">
+		$('.country').click(function(){
+			 //This event will automatically get the countries prefix into the input fields
+			 var text_val = $(this).children('span.dial-code').text();
+			 $("#phone").val(text_val);
+		});
+    </script>
   </body>
 </html>
