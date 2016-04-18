@@ -82,7 +82,7 @@ Automatically format the number as the user types. Unfortunately this had to be 
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
-If there is just a dial code in the input: remove it on blur, and re-add it on focus. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
+If there is just a dial code in the input: remove it on blur or submit, and re-add it on focus. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
 
 **autoPlaceholder**  
 Type: `Boolean` Default: `true`  
