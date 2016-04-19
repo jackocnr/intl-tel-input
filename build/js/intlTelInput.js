@@ -475,7 +475,7 @@
             // on blur or form submit: if just a dial code then remove it
             var form = this.telInput.prop("form");
             if (form) {
-                $(form).on("submit", function() {
+                $(form).on("submit" + this.ns, function() {
                     that._removeEmptyDialCode();
                 });
             }
