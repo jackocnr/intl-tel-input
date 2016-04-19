@@ -916,6 +916,13 @@
                 // label click hack
                 this.telInput.closest("label").off(this.ns);
             }
+            // unbind submit event handler on form
+            if (this.options.autoHideDialCode) {
+                var form = this.telInput.prop("form");
+                if (form) {
+                    $(form).off(this.ns);
+                }
+            }
             // unbind all events: key events, and focus/blur events if autoHideDialCode=true
             this.telInput.off(this.ns);
             // remove markup (but leave the original input)
