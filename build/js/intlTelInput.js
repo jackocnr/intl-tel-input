@@ -472,19 +472,28 @@
                     });
                 }
             });
-            // on blur: if just a dial code then remove it
+            // on blur or form submit: if just a dial code then remove it
+            var form = this.telInput.prop("form");
+            if (form) {
+                $(form).on("submit" + this.ns, function() {
+                    that._removeEmptyDialCode();
+                });
+            }
             this.telInput.on("blur" + this.ns, function() {
-                var value = that.telInput.val(), startsPlus = value.charAt(0) == "+";
-                if (startsPlus) {
-                    var numeric = that._getNumeric(value);
-                    // if just a plus, or if just a dial code
-                    if (!numeric || that.selectedCountryData.dialCode == numeric) {
-                        that.telInput.val("");
-                    }
-                }
-                // remove the keypress listener we added on focus
-                that.telInput.off("keypress.plus" + that.ns);
+                that._removeEmptyDialCode();
             });
+        },
+        _removeEmptyDialCode: function() {
+            var value = this.telInput.val(), startsPlus = value.charAt(0) == "+";
+            if (startsPlus) {
+                var numeric = this._getNumeric(value);
+                // if just a plus, or if just a dial code
+                if (!numeric || this.selectedCountryData.dialCode == numeric) {
+                    this.telInput.val("");
+                }
+            }
+            // remove the keypress listener we added on focus
+            this.telInput.off("keypress.plus" + this.ns);
         },
         // extract the numeric digits from the given string
         _getNumeric: function(s) {
@@ -906,6 +915,13 @@
                 this.selectedFlagInner.parent().off(this.ns);
                 // label click hack
                 this.telInput.closest("label").off(this.ns);
+            }
+            // unbind submit event handler on form
+            if (this.options.autoHideDialCode) {
+                var form = this.telInput.prop("form");
+                if (form) {
+                    $(form).off(this.ns);
+                }
             }
             // unbind all events: key events, and focus/blur events if autoHideDialCode=true
             this.telInput.off(this.ns);

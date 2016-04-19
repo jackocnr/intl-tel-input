@@ -6,8 +6,14 @@ describe("autoHideDialCode option:", function() {
 
   beforeEach(function() {
     intlSetup();
+
+    var form = $("<form></form>").appendTo("body");
+    form.on("submit", function (e) {
+      e.preventDefault();
+    });
+
     // must be in DOM for focus to work
-    input = $("<input>").appendTo("body");
+    input = $("<input>").appendTo(form);
   });
 
   afterEach(function() {
@@ -49,6 +55,11 @@ describe("autoHideDialCode option:", function() {
 
       it("blurring it removes it again", function() {
         input.blur();
+        expect(getInputVal()).toEqual("");
+      });
+
+      it("submitting it removes it again", function() {
+        input.parent().submit();
         expect(getInputVal()).toEqual("");
       });
 
