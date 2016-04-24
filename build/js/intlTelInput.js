@@ -145,7 +145,7 @@
             // build instance country array
             this.countries = [];
             for (i = 0; i < allCountries.length; i++) {
-                if (processFunc($.inArray(allCountries[i].iso2, countryArray))) {
+                if (processFunc(countryArray.indexOf(allCountries[i].iso2))) {
                     this.countries.push(allCountries[i]);
                 }
             }
@@ -156,13 +156,13 @@
                 // process onlyCountries option
                 this._filterCountries(this.options.onlyCountries, function(inArray) {
                     // if country is in array
-                    return inArray != -1;
+                    return inArray !== -1;
                 });
             } else if (this.options.excludeCountries.length) {
                 // process excludeCountries option
                 this._filterCountries(this.options.excludeCountries, function(inArray) {
                     // if country is not in array
-                    return inArray == -1;
+                    return inArray === -1;
                 });
             } else {
                 this.countries = allCountries;
@@ -660,7 +660,7 @@
             var dialCode = this._getDialCode(number), countryCode = null;
             if (dialCode) {
                 // check if one of the matching countries is already selected
-                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) != -1;
+                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && countryCodes.indexOf(this.selectedCountryData.iso2) !== -1;
                 // if a matching country is not already selected (or this is an unknown NANP area code): choose the first in the list
                 if (!alreadySelected || this._isUnknownNanp(number, dialCode)) {
                     // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first non-empty index
