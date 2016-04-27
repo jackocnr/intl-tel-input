@@ -106,4 +106,24 @@ describe("separateDialCode:", function() {
 
   });
 
+
+
+  // we test with "ru" because we had a bug
+  describe("init plugin with initialCountry=ru and valid ntl number", function() {
+
+    beforeEach(function() {
+      input.val("(922) 555-1234");
+      input.intlTelInput({
+        separateDialCode: true,
+        initialCountry: "ru"
+      });
+    });
+
+    it("formats the number correctly", function() {
+      // used to be '8 (922) 555-12-34'
+      expect(input.val()).toEqual("922 555-12-34");
+    });
+
+  });
+
 });

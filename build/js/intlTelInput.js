@@ -638,7 +638,7 @@
         _updateValFromNumber: function(number, doFormat, format) {
             if (doFormat && window.intlTelInputUtils && this.selectedCountryData) {
                 if (!$.isNumeric(format)) {
-                    format = this.options.nationalMode || number.charAt(0) != "+" ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
+                    format = !this.options.separateDialCode && (this.options.nationalMode || number.charAt(0) != "+") ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
                 }
                 number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
             }
