@@ -234,9 +234,11 @@ $("#phone").intlTelInput("setCountry", "gb");
 ```
 
 **setNumber**  
-Insert a number, and update the selected flag accordingly. Optionally pass a `intlTelInputUtils.numberFormat` as the second argument if you want to specify national/international formatting (must be a valid number). _Note that by default, if `nationalMode` is enabled it will try to use national formatting._  
+Insert a number, and update the selected flag accordingly. Optionally pass a `intlTelInputUtils.numberFormat` as the third argument if you want to specify national/international formatting (must be a valid number). _Note that by default, if `nationalMode` is enabled it will try to use national formatting._  
 ```js
 $("#phone").intlTelInput("setNumber", "+44 7733 123 456");
+// or with formatting
+$("#phone").intlTelInput("setNumber", "+44 7733 123 456", intlTelInputUtils.numberFormat.NATIONAL);
 ```
 
 
