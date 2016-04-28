@@ -635,11 +635,9 @@
         },
         // update the input's value to the given val (format first if possible)
         // NOTE: this is called from _setInitialState, handleUtils and setNumber
-        _updateValFromNumber: function(number, doFormat, format) {
+        _updateValFromNumber: function(number, doFormat) {
             if (doFormat && window.intlTelInputUtils && this.selectedCountryData) {
-                if (!$.isNumeric(format)) {
-                    format = !this.options.separateDialCode && (this.options.nationalMode || number.charAt(0) != "+") ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
-                }
+                var format = !this.options.separateDialCode && (this.options.nationalMode || number.charAt(0) != "+") ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
                 number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
             }
             number = this._beforeSetNumber(number);
@@ -977,11 +975,11 @@
             }
         },
         // set the input value and update the flag
-        // NOTE: format arg is for public method: to allow devs to format how they want
-        setNumber: function(number, format) {
+        // NOTE: preventFormat arg is for public method
+        setNumber: function(number, preventFormat) {
             // we must update the flag first, which updates this.selectedCountryData, which is used for formatting the number before displaying it
             this._updateFlagFromNumber(number);
-            this._updateValFromNumber(number, $.isNumeric(format), format);
+            this._updateValFromNumber(number, !preventFormat);
         },
         // this is called when the utils request completes
         handleUtils: function() {
