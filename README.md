@@ -10,7 +10,8 @@ If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts
 - [Demo and Examples](#demo-and-examples)
 - [Features](#features)
 - [Browser Compatibility](#browser-compatibility)
-- [Getting Started](#getting-started)in
+- [Getting Started](#getting-started)
+- [Recommended Usage](#recommended-usage)
 - [Options](#options)
 - [Public Methods](#public-methods)
 - [Static Methods](#static-methods)
@@ -68,6 +69,12 @@ You can view a live demo and some examples of how to use the various options her
   ```
 
 5. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
+
+
+## Recommended Usage
+We highly recommend you load the included utils.js using the `utilsScript` option. Then even when `nationalMode` or `separateDialCode` is enabled, the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly. I recommend you get, store, and set numbers exclusively in this format for simplicity.
+
+You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number it will automatically set the country and format it according to the options you specify (e.g. if you enable `nationalMode` it will automatically remove the international dial code for you).
 
 
 ## Options
