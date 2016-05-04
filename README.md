@@ -84,6 +84,10 @@ Note: any options that take country codes should be [ISO 3166-1 alpha-2](http://
 Type: `Boolean` Default: `true`  
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also we display the selected flag on the right instead because it is just a marker of state.
 
+**allowPlaceholderOverwrite**  
+Type: `Boolean` Default: `false`
+Whether or not to allow the placeholder attribute to be overwritten. 
+
 **~~autoFormat~~ [REMOVED]**  
 Automatically format the number as the user types. Unfortunately this had to be removed for the reasons listed here: [#346 Disable and remove autoFormat feature](https://github.com/jackocnr/intl-tel-input/issues/346).
 
