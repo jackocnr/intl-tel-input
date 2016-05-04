@@ -10,7 +10,7 @@ module.exports = function(grunt) {
   // build everything ready for a commit
   grunt.registerTask('build', ['img', 'sass', 'js', 'jasmine']);
   // just images
-  grunt.registerTask('img', ['responsive_images:retina', 'exec:evenizer', 'responsive_images:regular', 'sprite']);
+  grunt.registerTask('img', ['responsive_images:retina', 'exec:evenizer', 'responsive_images:regular', 'sprite', 'imagemin']);
   // just javascript
   grunt.registerTask('js', ['template:js1', 'template:js2', 'jshint', 'uglify', 'replace:one', 'replace:two', 'replace:three', 'replace:four']);
   // build examples
