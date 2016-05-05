@@ -21,6 +21,8 @@
     defaults = {
         // whether or not to allow the dropdown
         allowDropdown: true,
+        // whether or not to allow placeholder overwrite
+        allowPlaceholderOverwrite: false,
         // if there is just a dial code in the input: remove it on blur, and re-add it on focus
         autoHideDialCode: true,
         // add or remove input placeholder with an example number for the selected country
@@ -743,7 +745,7 @@
         },
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {
-            if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder && this.selectedCountryData) {
+            if (window.intlTelInputUtils && (!this.hadInitialPlaceholder || this.options.allowPlaceholderOverwrite) && this.options.autoPlaceholder && this.selectedCountryData) {
                 var numberType = intlTelInputUtils.numberType[this.options.numberType], placeholder = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
                 placeholder = this._beforeSetNumber(placeholder);
                 if (typeof this.options.customPlaceholder === "function") {
