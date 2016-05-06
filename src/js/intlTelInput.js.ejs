@@ -14,6 +14,8 @@ var pluginName = "intlTelInput",
     dropdownContainer: "",
     // don't display these countries
     excludeCountries: [],
+    // set countries list dropdown width the same as initial input width
+    fitWidth: false,
     // format the input value during initialisation
     formatOnInit: true,
     // geoIp lookup function
@@ -389,6 +391,9 @@ Plugin.prototype = {
       // else let it bubble up to the top ("click-off-to-close" listener)
       // we cannot just stopPropagation as it may be needed to close another instance
       if (that.countryList.hasClass("hide") && !that.telInput.prop("disabled") && !that.telInput.prop("readonly")) {
+        if (that.options.fitWidth) {
+            that.countryList.width(that.telInput.outerWidth());
+        }
         that._showDropdown();
       }
     });
