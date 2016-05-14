@@ -125,7 +125,7 @@ Format the input value during initialisation.
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
-When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that looks up the user's location. Also note that when instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialisation requests like this have finished.
+When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that looks up the user's location. Also note that when instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialisation requests like this have completed.
 
 Here is an example using the [ipinfo.io](http://ipinfo.io/) service:  
 ```js
@@ -136,7 +136,8 @@ geoIpLookup: function(callback) {
   });
 }
 ```
-_Note that the callback must still be called in the event of an error, hence the use of `always` in this example._
+_Note that the callback must still be called in the event of an error, hence the use of `always` in this example._  
+_Tip: store the result in a cookie to avoid repeat lookups!_
 
 **initialCountry**  
 Type: `String` Default: `""`  

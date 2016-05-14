@@ -387,11 +387,6 @@
         // perform the geo ip lookup
         _loadAutoCountry: function() {
             var that = this;
-            // check for cookie
-            var cookieAutoCountry = window.Cookies ? Cookies.get("itiAutoCountry") : "";
-            if (cookieAutoCountry) {
-                $.fn[pluginName].autoCountry = cookieAutoCountry;
-            }
             // 3 options:
             // 1) already loaded (we're done)
             // 2) not already started loading (start)
@@ -404,11 +399,6 @@
                 if (typeof this.options.geoIpLookup === "function") {
                     this.options.geoIpLookup(function(countryCode) {
                         $.fn[pluginName].autoCountry = countryCode.toLowerCase();
-                        if (window.Cookies) {
-                            Cookies.set("itiAutoCountry", $.fn[pluginName].autoCountry, {
-                                path: "/"
-                            });
-                        }
                         // tell all instances the auto country is ready
                         // TODO: this should just be the current instances
                         // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight away (e.g. if they have already done the geo ip lookup somewhere else). Using setTimeout means that the current thread of execution will finish before executing this, which allows the plugin to finish initialising.
