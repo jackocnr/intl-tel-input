@@ -38,7 +38,7 @@ $selectedFlagArrowWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPa
 $selectedFlagArrowDialCodeWidth: $selectedFlagArrowWidth + $flagPadding !default;
 
 // image related variables
-$flagsImagePath: "../img/" !default;
+$flagsImagePath: "/images/" !default;
 $flagsImageName: "flags" !default;
 $flagsImageExtension: "png" !default;
 
