@@ -334,7 +334,7 @@ The dropdown should automatically appear above/below the input depending on the 
 In order to get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`.
 
 **Bootstrap input groups**  
-Simply add this line to get [input groups](http://getbootstrap.com/components/#input-groups) working properly.
+Simply add the following line of CSS to get Bootstrap [input groups](http://getbootstrap.com/components/#input-groups) working properly. You can view an example [here](http://codepen.io/jackocnr/pen/EyPXed).  
 ```css
 .intl-tel-input {display: table-cell;}
 ```
