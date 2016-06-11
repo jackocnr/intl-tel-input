@@ -61,7 +61,7 @@
         TAB: 9
     };
     // keep track of if the window.load event has fired as impossible to check after the fact
-    $(window).load(function() {
+    $(window).on("load", function() {
         // UPDATE: use a public static field so we can fudge it in the tests
         $.fn[pluginName].windowLoaded = true;
     });
@@ -371,7 +371,7 @@
                     $.fn[pluginName].loadUtils(this.options.utilsScript, this.utilsScriptDeferred);
                 } else {
                     // wait until the load event so we don't block any other requests e.g. the flags image
-                    $(window).load(function() {
+                    $(window).on("load", function() {
                         $.fn[pluginName].loadUtils(that.options.utilsScript, that.utilsScriptDeferred);
                     });
                 }
