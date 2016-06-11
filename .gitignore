@@ -1,11 +1,13 @@
 /bower_components/
 /node_modules/
 /lib/*
-!/lib/libphonenumber 
+!/lib/libphonenumber
 /.bower_cache/
 /.sass-cache/
 /.grunt/
 /tmp/
+/.idea/
+*.iml
 .DS_Store
 
 # these files are now auto-generated
