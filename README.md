@@ -161,6 +161,9 @@ Display only the countries you specify - [see example](http://jackocnr.com/node_
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
 
+**~~preventInvalidNumbers~~ [REMOVED]**  
+Prevent the user from entering invalid characters. Unfortunately this had to be removed for the reasons listed here: [#79 Limit Input Characters to Formatted String Length](https://github.com/jackocnr/intl-tel-input/issues/79#issuecomment-121799307).
+
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
 Display the country dial code next to the selected flag so it's not part of the typed number. Note that this will disable `nationalMode` because technically we are dealing with international numbers, but with the dial code separated.
