@@ -17,6 +17,7 @@ If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts
 - [Static Methods](#static-methods)
 - [Events](#events)
 - [Utilities Script](#utilities-script)
+- [Typescript type definitions](#typescript-type-definitions)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [Attributions](#attributions)
@@ -307,6 +308,11 @@ International number formatting/validation is hard (it varies by country/distric
 
 To recompile [Utilities Script](#utilities-script) see js-docs in top of [utils.js](src/js/utils.js).
 
+## Typescript type definitions
+If you are using this plugin in a Typescript project, you might want to have corresponding type definitions. These are located in [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/intl-tel-input/intl-tel-input.d.ts) repo.
+To install it, you can use i.e. `typings` (dependency to jquery typings) :
+
+    typings install --save --global dt~jquery dt~intl-tel-input
 
 ## Troubleshooting
 **Submitting the full international number when in nationalMode**  
