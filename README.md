@@ -340,6 +340,7 @@ In order to get the automatic country-specific placeholders, simply omit the pla
 A couple of CSS fixes are required to get the plugin to play nice with Bootstrap [input groups](http://getbootstrap.com/components/#input-groups). You can see a Codepen [here](http://codepen.io/jackocnr/pen/EyPXed).  
 _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822) in Mobile Safari which causes a crash when you click the dropdown arrow (a CSS triangle) inside an input group. The simplest workaround is to remove the CSS triangle with this line: `.intl-tel-input .iti-flag .arrow {border: none;}`_
 
+
 ## Contributing
 See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md).
 
@@ -348,7 +349,6 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * Flag images from [region-flags](https://github.com/behdad/region-flags)
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](http://libphonenumber.googlecode.com)
-* Lookup user's country using [ipinfo.io](http://ipinfo.io)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/jackocnr/intl-tel-input/wiki/Contributions)
 
 
@@ -356,3 +356,4 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * List of [sites using intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Sites-using-intl-tel-input)
 * List of [integrations with intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Integrations)
 * Android native port: [IntlPhoneInput](https://github.com/Rimoto/IntlPhoneInput)
+* Typescript type definitions are available in the [DefinitelyTyped repo](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/intl-tel-input/intl-tel-input.d.ts)
