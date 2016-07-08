@@ -31,6 +31,8 @@
         dropdownContainer: "",
         // don't display these countries
         excludeCountries: [],
+        // show a flag when a valid dial code has not been entered
+        flagOnEmptyDialCode: true,
         // format the input value during initialisation
         formatOnInit: true,
         // geoIp lookup function
@@ -206,22 +208,22 @@
                 parentClass += " separate-dial-code";
             }
             this.telInput.wrap($("<div>", {
-                "class": parentClass
+                class: parentClass
             }));
             this.flagsContainer = $("<div>", {
-                "class": "flag-container"
+                class: "flag-container"
             }).insertBefore(this.telInput);
             // currently selected flag (displayed to left of input)
             var selectedFlag = $("<div>", {
-                "class": "selected-flag"
+                class: "selected-flag"
             });
             selectedFlag.appendTo(this.flagsContainer);
             this.selectedFlagInner = $("<div>", {
-                "class": "iti-flag"
+                class: "iti-flag"
             }).appendTo(selectedFlag);
             if (this.options.separateDialCode) {
                 this.selectedDialCode = $("<div>", {
-                    "class": "selected-dial-code"
+                    class: "selected-dial-code"
                 }).appendTo(selectedFlag);
             }
             if (this.options.allowDropdown) {
@@ -229,16 +231,16 @@
                 selectedFlag.attr("tabindex", "0");
                 // CSS triangle
                 $("<div>", {
-                    "class": "iti-arrow"
+                    class: "iti-arrow"
                 }).appendTo(selectedFlag);
                 // country dropdown: preferred countries, then divider, then all countries
                 this.countryList = $("<ul>", {
-                    "class": "country-list hide"
+                    class: "country-list hide"
                 });
                 if (this.preferredCountries.length) {
                     this._appendListItems(this.preferredCountries, "preferred");
                     $("<li>", {
-                        "class": "divider"
+                        class: "divider"
                     }).appendTo(this.countryList);
                 }
                 this._appendListItems(this.countries, "");
@@ -247,7 +249,7 @@
                 // create dropdownContainer markup
                 if (this.options.dropdownContainer) {
                     this.dropdown = $("<div>", {
-                        "class": "intl-tel-input iti-container"
+                        class: "intl-tel-input iti-container"
                     }).append(this.countryList);
                 } else {
                     this.countryList.appendTo(this.flagsContainer);
@@ -287,7 +289,7 @@
             // if we already have a dial code we can go ahead and set the flag, else fall back to default
             if (this._getDialCode(val)) {
                 this._updateFlagFromNumber(val, true);
-            } else if (this.options.initialCountry !== "auto") {
+            } else if (this.options.initialCountry !== "auto" && this.options.initialCountry !== "blank") {
                 // see if we should select a flag
                 if (this.options.initialCountry) {
                     this._setFlag(this.options.initialCountry, true);
@@ -443,7 +445,7 @@
             });
             // on focus: if empty, insert the dial code for the currently selected flag
             this.telInput.on("focus" + this.ns, function(e) {
-                if (!that.telInput.val() && !that.telInput.prop("readonly") && that.selectedCountryData.dialCode) {
+                if (!that.telInput.val() && !that.telInput.prop("readonly") && that.selectedCountryData && that.selectedCountryData.dialCode) {
                     // insert the dial code
                     that.telInput.val("+" + that.selectedCountryData.dialCode);
                     // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
@@ -665,7 +667,7 @@
                 countryCode = "";
             } else if (!number || number == "+") {
                 // empty, or just a plus, so default
-                countryCode = this.defaultCountry;
+                countryCode = this.options.flagOnEmptyDialCode ? this.defaultCountry : "";
             }
             if (countryCode !== null) {
                 this._setFlag(countryCode, isInit);

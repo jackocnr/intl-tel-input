@@ -119,6 +119,10 @@ $("#scrollingElement").scroll(function() {
 Type: `Array` Default: `undefined`  
 Don't display the countries you specify.
 
+**flagOnEmptyDialCode**  
+Type: `Boolean` Default: `true`  
+Whether to keep showing the previous flag when the country dial code has been deleted.
+
 **formatOnInit**  
 Type: `Boolean` Default: `true`  
 Format the input value during initialisation.
@@ -141,7 +145,7 @@ _Tip: store the result in a cookie to avoid repeat lookups!_
 
 **initialCountry**  
 Type: `String` Default: `""`  
-Set the initial country selection by specifying it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](http://jackocnr.com/node_modules/intl-tel-input/examples/gen/default-country-ip.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
+Set the initial country selection by specifying its country code. You can also set it to `"blank"`, which will ensure that no country gets selected automatically, or `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](http://jackocnr.com/node_modules/intl-tel-input/examples/gen/default-country-ip.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
 
 If you leave `initialCountry` blank, it will default to the first country in the list.
 
