@@ -589,6 +589,9 @@ Plugin.prototype = {
 
     // update the arrow
     this.selectedFlagInner.children(".iti-arrow").addClass("up");
+    
+    // Trigger open event
+    this.telInput.trigger("showDropdown");
   },
 
 
@@ -928,6 +931,9 @@ Plugin.prototype = {
       }
       this.dropdown.detach();
     }
+    
+    // Trigger hide dropdown event
+    this.telInput.trigger("hideDropdown");
   },
 
 
