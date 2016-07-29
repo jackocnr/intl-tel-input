@@ -107,7 +107,7 @@ customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
 
 **dropdownContainer**  
 Type: `String` Default: `""`  
-Specify the container for the country dropdown (use a jQuery selector e.g. `"body"`). This is useful when the input is within a scrolling element, or an element with `overflow: hidden`. Wherever you put the dropdown it will automatically close on the `window` scroll event to prevent positioning issues. If you want it to close when a different element is scrolled (such as the input's parent), simply listen for the that scroll event, and trigger `$(window).scroll()` e.g.
+Expects a jQuery selector e.g. `"body"`. Instead of putting the country dropdown next to the input, append it to the element specified, and it will then be positioned absolutely next to the input using JavaScript. This is useful when the input is inside a container with `overflow: hidden`. Note that the absolute positioning can be broken by scrolling, so it will automatically close on the `window` scroll event. If you have a different scrolling element that is causing problems, simply listen for the scroll event on that element, and trigger `$(window).scroll()` e.g.
 
 ```js
 $("#scrollingElement").scroll(function() {
