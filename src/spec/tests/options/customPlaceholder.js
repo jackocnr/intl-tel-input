@@ -19,7 +19,7 @@ describe("customPlaceholder: init plugin with autoPlaceholder=true and customPla
   });
 
   it("sets the placeholder to the customised US number", function() {
-    expect(input.attr("placeholder")).toEqual("e.g. (201) 555-5555");
+    expect(input.attr("placeholder")).toEqual("e.g. (201) 555-0123");
   });
 
   it("selecting UK updates the placeholder", function() {

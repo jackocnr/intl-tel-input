@@ -3,8 +3,8 @@
 
 // Array of country objects for the flag dropdown.
 // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
-// Originally from https://github.com/mledoze/countries
 
+// Originally from https://github.com/mledoze/countries
 // then with a couple of manual re-arrangements to be alphabetical
 // then changed Kazakhstan from +76 to +7
 // and Vatican City from +379 to +39 (see issue 50)
@@ -617,6 +617,11 @@ var allCountries = [
     "Kiribati",
     "ki",
     "686"
+  ],
+  [
+    "Kosovo",
+    "xk",
+    "383"
   ],
   [
     "Kuwait (‫الكويت‬‎)",

@@ -1,6 +1,6 @@
 var input,
-  totalCountries = 242,
-  totalDialCodes = 227,
+  totalCountries = 243,
+  totalDialCodes = 228,
   defaultPreferredCountries = 2,
   // don't call this "keys" as it will clash with the plugin
   keyCodes = {

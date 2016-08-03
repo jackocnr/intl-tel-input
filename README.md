@@ -11,6 +11,7 @@ If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts
 - [Features](#features)
 - [Browser Compatibility](#browser-compatibility)
 - [Getting Started](#getting-started)
+- [Recommended Usage](#recommended-usage)
 - [Options](#options)
 - [Public Methods](#public-methods)
 - [Static Methods](#static-methods)
@@ -70,6 +71,12 @@ You can view a live demo and some examples of how to use the various options her
 5. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
 
 
+## Recommended Usage
+We highly recommend you load the included utils.js using the `utilsScript` option. Then even when `nationalMode` or `separateDialCode` is enabled, the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly. I recommend you get, store, and set numbers exclusively in this format for simplicity.
+
+You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number it will automatically set the country and format it according to the options you specify (e.g. if you enable `nationalMode` it will automatically remove the international dial code for you).
+
+
 ## Options
 Note: any options that take country codes should be [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
@@ -100,7 +107,7 @@ customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
 
 **dropdownContainer**  
 Type: `String` Default: `""`  
-Specify the container for the country dropdown (use a jQuery selector e.g. `"body"`). This is useful when the input is within a scrolling element, or an element with `overflow: hidden`. Wherever you put the dropdown it will automatically close on the `window` scroll event to prevent positioning issues. If you want it to close when a different element is scrolled (such as the input's parent), simply listen for the that scroll event, and trigger `$(window).scroll()` e.g.
+Expects a jQuery selector e.g. `"body"`. Instead of putting the country dropdown next to the input, append it to the element specified, and it will then be positioned absolutely next to the input using JavaScript. This is useful when the input is inside a container with `overflow: hidden`. Note that the absolute positioning can be broken by scrolling, so it will automatically close on the `window` scroll event. If you have a different scrolling element that is causing problems, simply listen for the scroll event on that element, and trigger `$(window).scroll()` e.g.
 
 ```js
 $("#scrollingElement").scroll(function() {
@@ -118,7 +125,9 @@ Format the input value during initialisation.
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
-When setting `initialCountry` to `"auto"`, we need to use a special service to lookup the location data for the user. Write a custom method to get the country code. For example using the [ipinfo.io](http://ipinfo.io/) service:  
+When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that looks up the user's location. Also note that when instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialisation requests like this have completed.
+
+Here is an example using the [ipinfo.io](http://ipinfo.io/) service:  
 ```js
 geoIpLookup: function(callback) {
   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
@@ -127,11 +136,14 @@ geoIpLookup: function(callback) {
   });
 }
 ```
-_Note that the callback must still be called in the event of an error, hence the use of `always` in this example._
+_Note that the callback must still be called in the event of an error, hence the use of `always` in this example._  
+_Tip: store the result in a cookie to avoid repeat lookups!_
 
 **initialCountry**  
 Type: `String` Default: `""`  
-Set the default country by it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address - requires the `geoIpLookup` option - [see example](http://jackocnr.com/node_modules/intl-tel-input/examples/gen/default-country-ip.html). When instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialisation requests like this have finished. If you leave `initialCountry` blank, it will default to the first country in the list. _Note that if you choose to do the auto lookup, and you also happen to use the [js-cookie](https://github.com/js-cookie/js-cookie) plugin, it will store the loaded country code in a cookie for future use._
+Set the initial country selection by specifying it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](http://jackocnr.com/node_modules/intl-tel-input/examples/gen/default-country-ip.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
+
+If you leave `initialCountry` blank, it will default to the first country in the list.
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
@@ -148,6 +160,9 @@ Display only the countries you specify - [see example](http://jackocnr.com/node_
 **preferredCountries**  
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
+
+**~~preventInvalidNumbers~~ [REMOVED]**  
+Prevent the user from entering invalid characters. Unfortunately this had to be removed for the reasons listed here: [#79 Limit Input Characters to Formatted String Length](https://github.com/jackocnr/intl-tel-input/issues/79#issuecomment-121799307).
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
@@ -234,9 +249,9 @@ $("#phone").intlTelInput("setCountry", "gb");
 ```
 
 **setNumber**  
-Insert a number, and update the selected flag accordingly. Optionally pass a `intlTelInputUtils.numberFormat` as the second argument if you want to specify national/international formatting (must be a valid number). _Note that by default, if `nationalMode` is enabled it will try to use national formatting._  
+Insert a number, and update the selected flag accordingly. _Note that by default, if `nationalMode` is enabled it will try to use national formatting._  
 ```js
-$("#phone").intlTelInput("setNumber", "+44 7733 123 456");
+$("#phone").intlTelInput("setNumber", "+447733123456");
 ```
 
 
@@ -322,11 +337,9 @@ The dropdown should automatically appear above/below the input depending on the 
 In order to get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`.
 
 **Bootstrap input groups**  
-Simply add this line to get [input groups](http://getbootstrap.com/components/#input-groups) working properly.
-```css
-.intl-tel-input {display: table-cell;}
-```
+A couple of CSS fixes are required to get the plugin to play nice with Bootstrap [input groups](http://getbootstrap.com/components/#input-groups). You can see a Codepen [here](http://codepen.io/jackocnr/pen/EyPXed).  
 _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822) in Mobile Safari which causes a crash when you click the dropdown arrow (a CSS triangle) inside an input group. The simplest workaround is to remove the CSS triangle with this line: `.intl-tel-input .iti-flag .arrow {border: none;}`_
+
 
 ## Contributing
 See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md).
@@ -336,7 +349,6 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * Flag images from [region-flags](https://github.com/behdad/region-flags)
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](http://libphonenumber.googlecode.com)
-* Lookup user's country using [ipinfo.io](http://ipinfo.io)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/jackocnr/intl-tel-input/wiki/Contributions)
 
 
@@ -344,3 +356,4 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * List of [sites using intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Sites-using-intl-tel-input)
 * List of [integrations with intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Integrations)
 * Android native port: [IntlPhoneInput](https://github.com/Rimoto/IntlPhoneInput)
+* Typescript type definitions are available in the [DefinitelyTyped repo](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/intl-tel-input/intl-tel-input.d.ts) (more info [here](https://github.com/jackocnr/intl-tel-input/issues/433#issuecomment-228517623))

@@ -46,7 +46,7 @@ var pluginName = "intlTelInput",
   };
 
 // keep track of if the window.load event has fired as impossible to check after the fact
-$(window).load(function() {
+$(window).on("load", function() {
   // UPDATE: use a public static field so we can fudge it in the tests
   $.fn[pluginName].windowLoaded = true;
 });
@@ -429,7 +429,7 @@ Plugin.prototype = {
         $.fn[pluginName].loadUtils(this.options.utilsScript, this.utilsScriptDeferred);
       } else {
         // wait until the load event so we don't block any other requests e.g. the flags image
-        $(window).load(function() {
+        $(window).on("load", function() {
           $.fn[pluginName].loadUtils(that.options.utilsScript, that.utilsScriptDeferred);
         });
       }
@@ -449,12 +449,6 @@ Plugin.prototype = {
   _loadAutoCountry: function() {
     var that = this;
 
-    // check for cookie
-    var cookieAutoCountry = (window.Cookies) ? Cookies.get("itiAutoCountry") : "";
-    if (cookieAutoCountry) {
-      $.fn[pluginName].autoCountry = cookieAutoCountry;
-    }
-
     // 3 options:
     // 1) already loaded (we're done)
     // 2) not already started loading (start)
@@ -468,11 +462,6 @@ Plugin.prototype = {
       if (typeof this.options.geoIpLookup === 'function') {
         this.options.geoIpLookup(function(countryCode) {
           $.fn[pluginName].autoCountry = countryCode.toLowerCase();
-          if (window.Cookies) {
-            Cookies.set("itiAutoCountry", $.fn[pluginName].autoCountry, {
-              path: '/'
-            });
-          }
           // tell all instances the auto country is ready
           // TODO: this should just be the current instances
           // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight away (e.g. if they have already done the geo ip lookup somewhere else). Using setTimeout means that the current thread of execution will finish before executing this, which allows the plugin to finish initialising.
@@ -496,7 +485,7 @@ Plugin.prototype = {
     });
 
     // update flag on cut/paste events (now supported in all major browsers)
-    this.telInput.on("cut" + this.ns + " paste" + this.ns + " keyup" + this.ns, function() {
+    this.telInput.on("cut" + this.ns + " paste" + this.ns, function() {
       // hack because "paste" event is fired before input is updated
       setTimeout(function() {
         that._updateFlagFromNumber(that.telInput.val());
@@ -754,11 +743,9 @@ Plugin.prototype = {
 
   // update the input's value to the given val (format first if possible)
   // NOTE: this is called from _setInitialState, handleUtils and setNumber
-  _updateValFromNumber: function(number, doFormat, format) {
+  _updateValFromNumber: function(number, doFormat) {
     if (doFormat && window.intlTelInputUtils && this.selectedCountryData) {
-      if (!$.isNumeric(format)) {
-        format = (this.options.nationalMode || number.charAt(0) != "+") ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
-      }
+      var format = (!this.options.separateDialCode && (this.options.nationalMode || number.charAt(0) != "+")) ? intlTelInputUtils.numberFormat.NATIONAL : intlTelInputUtils.numberFormat.INTERNATIONAL;
       number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
     }
 
@@ -913,7 +900,7 @@ Plugin.prototype = {
 
     // focus the input
     this.telInput.focus();
-    // fix for FF and IE11 (with nationalMode=false i.e. auto inserting dial code), who try to put the cursor at the beginning the first time
+    // put cursor at end - this fix is required for FF and IE11 (with nationalMode=false i.e. auto inserting dial code), who try to put the cursor at the beginning the first time
     if (this.isGoodBrowser) {
       var len = this.telInput.val().length;
       this.telInput[0].setSelectionRange(len, len);
@@ -1183,11 +1170,11 @@ Plugin.prototype = {
 
 
   // set the input value and update the flag
-  // NOTE: format arg is for public method: to allow devs to format how they want
-  setNumber: function(number, format) {
+  // NOTE: preventFormat arg is for public method
+  setNumber: function(number, preventFormat) {
     // we must update the flag first, which updates this.selectedCountryData, which is used for formatting the number before displaying it
     this._updateFlagFromNumber(number);
-    this._updateValFromNumber(number, $.isNumeric(format), format);
+    this._updateValFromNumber(number, !preventFormat);
   },
 
 

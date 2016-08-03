@@ -41,7 +41,7 @@ describe("separateDialCode:", function() {
     describe("calling setNumber to a valid intl number", function() {
 
       beforeEach(function() {
-        input.intlTelInput("setNumber", "+447400123456", intlTelInputUtils.numberFormat.INTERNATIONAL);
+        input.intlTelInput("setNumber", "+447400123456");
       });
 
       it("formats the number correctly", function() {
@@ -74,7 +74,7 @@ describe("separateDialCode:", function() {
     });
 
     it("calling setNumber will set the number correctly", function() {
-      input.intlTelInput("setNumber", "+15194971234", intlTelInputUtils.numberFormat.INTERNATIONAL);
+      input.intlTelInput("setNumber", "+15194971234");
       // used to be '497-1234'
       expect(getInputVal()).toEqual("519-497-1234");
     });
@@ -99,9 +99,29 @@ describe("separateDialCode:", function() {
     });
 
     it("calling setNumber will set the number correctly", function() {
-      input.intlTelInput("setNumber", "+16847331234", intlTelInputUtils.numberFormat.INTERNATIONAL);
+      input.intlTelInput("setNumber", "+16847331234");
       // used to be '4-733-1234'
       expect(getInputVal()).toEqual("733-1234");
+    });
+
+  });
+
+
+
+  // we test with "ru" because we had a bug
+  describe("init plugin with initialCountry=ru and valid ntl number", function() {
+
+    beforeEach(function() {
+      input.val("(922) 555-1234");
+      input.intlTelInput({
+        separateDialCode: true,
+        initialCountry: "ru"
+      });
+    });
+
+    it("formats the number correctly", function() {
+      // used to be '8 (922) 555-12-34'
+      expect(input.val()).toEqual("922 555-12-34");
     });
 
   });
