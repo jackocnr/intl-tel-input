@@ -228,7 +228,7 @@ Get more information about a validation error. Requires the `utilsScript` option
 ```js
 var error = $("#phone").intlTelInput("getValidationError");
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L175) in the global enum `intlTelInputUtils.validationError` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L153) in the global enum `intlTelInputUtils.validationError` e.g.  
 ```js
 if (error == intlTelInputUtils.validationError.TOO_SHORT) {
     // the number is too short
