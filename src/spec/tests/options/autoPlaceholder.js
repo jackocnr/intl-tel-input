@@ -12,18 +12,18 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
     input = null;
   });
 
-  it("init plugin with autoPlaceholder=false leaves the placeholder empty", function() {
+  it("init plugin with autoPlaceholder=off leaves the placeholder empty", function() {
     input.intlTelInput({
-      autoPlaceholder: false
+      autoPlaceholder: "off"
     });
     expect(input.attr("placeholder")).toBeUndefined();
   });
 
-  describe("init plugin with autoPlaceholder=true and nationalMode=true", function() {
+  describe("init plugin with autoPlaceholder=polite and nationalMode=true", function() {
 
     beforeEach(function() {
       input.intlTelInput({
-        autoPlaceholder: true,
+        autoPlaceholder: "polite",
         nationalMode: true
       });
     });
@@ -46,11 +46,11 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
 
   });
 
-  describe("init plugin with autoPlaceholder=true and nationalMode=false", function() {
+  describe("init plugin with autoPlaceholder=polite and nationalMode=false", function() {
 
     beforeEach(function() {
       input.intlTelInput({
-        autoPlaceholder: true,
+        autoPlaceholder: "polite",
         nationalMode: false
       });
     });
@@ -100,9 +100,16 @@ describe("autoPlaceholder: testing input with an initial placeholder", function(
     input = null;
   });
 
-  it("init plugin with autoPlaceholder=false leaves the placeholder the same", function() {
+  it("init plugin with autoPlaceholder=off leaves the placeholder the same", function() {
     input.intlTelInput({
-      autoPlaceholder: false
+      autoPlaceholder: "off"
+    });
+    expect(input.attr("placeholder")).toEqual(placeholder);
+  });
+
+  it("init plugin with autoPlaceholder=polite leaves the placeholder the same", function() {
+    input.intlTelInput({
+      autoPlaceholder: "polite"
     });
     expect(input.attr("placeholder")).toEqual(placeholder);
   });
@@ -112,6 +119,13 @@ describe("autoPlaceholder: testing input with an initial placeholder", function(
       autoPlaceholder: true
     });
     expect(input.attr("placeholder")).toEqual(placeholder);
+  });
+
+  it("init plugin with autoPlaceholder=aggressive overwrites the placeholder", function() {
+    input.intlTelInput({
+      autoPlaceholder: "aggressive"
+    });
+    expect(input.attr("placeholder")).toEqual("(201) 555-0123");
   });
 
 });

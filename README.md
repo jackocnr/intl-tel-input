@@ -92,8 +92,8 @@ Type: `Boolean` Default: `true`
 If there is just a dial code in the input: remove it on blur or submit, and re-add it on focus. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
 
 **autoPlaceholder**  
-Type: `Boolean` Default: `true`  
-Set the input's placeholder to an example number for the selected country. You can specify the number type using the `numberType` option. If there is already a placeholder attribute set on the input then that will take precedence. Requires the `utilsScript` option.
+Type: `String` Default: `"polite"`  
+Specify one of `"off"`, `"polite"`, or `"aggressive"`. Unless `"off"`, this will set the input's placeholder to an example number for the selected country. You can specify the number type using the `numberType` option. If you specify `"polite"` and there is already a placeholder attribute set on the input then that will take precedence. Requires the `utilsScript` option.
 
 **customPlaceholder**  
 Type: `Function` Default: `null`  
