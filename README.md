@@ -3,7 +3,7 @@ A jQuery plugin for entering and validating international telephone numbers. It 
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshot.png" width="424px" height="246px">
 
-If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts/intl-tel-input)!
+If you like it, please consider making a donation, which you can do from [the demo page](http://jackocnr.com/intl-tel-input.html).
 
 ## Table of Contents
 
