@@ -875,7 +875,7 @@ Plugin.prototype = {
 
   // update the input placeholder to an example number from the currently selected country
   _updatePlaceholder: function() {
-    var shouldSetPlaceholder = this.options.autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && (this.options.autoPlaceholder === true || this.options.autoPlaceholder === "polite");
+    var shouldSetPlaceholder = this.options.autoPlaceholder === "aggressive" || (!this.hadInitialPlaceholder && (this.options.autoPlaceholder === true || this.options.autoPlaceholder === "polite"));
     if (window.intlTelInputUtils && shouldSetPlaceholder && this.selectedCountryData) {
       var numberType = intlTelInputUtils.numberType[this.options.numberType],
         placeholder = (this.selectedCountryData.iso2) ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
