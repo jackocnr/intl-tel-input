@@ -1044,6 +1044,7 @@
             $.fn[pluginName].loadedUtilsScript = true;
             // dont use $.getScript as it prevents caching
             $.ajax({
+                type: "GET",
                 url: path,
                 complete: function() {
                     // tell all instances that the utils request is complete
