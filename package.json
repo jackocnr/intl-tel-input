@@ -37,7 +37,7 @@
     "jasmine-jquery": "~2.0.2",
     "jquery": ">=1.7",
     "load-grunt-config": "~0.13.1",
-    "region-flags": "git://github.com/behdad/region-flags#gh-pages",
+    "region-flags": "1.0.1",
     "time-grunt": "~1.0.0"
   },
   "repository": {
