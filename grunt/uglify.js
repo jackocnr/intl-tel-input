@@ -12,7 +12,8 @@ module.exports = function(grunt) {
         beautify: true,
         compress: false,
         mangle: false,
-        preserveComments: true
+        preserveComments: true,
+        screwIE8: false
       },
       files: {
         'build/js/intlTelInput.js': 'tmp/wrapped.js'
