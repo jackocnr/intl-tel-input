@@ -3,8 +3,8 @@ module.exports = function(grunt) {
     dev: "src/js/**/*.js",
     build: "tmp/wrapped.js",
     options: {
-      // this is for data.js which sometimes has commas on the following line
-      laxcomma: true
+      // this is for data.js to avoid errors about (foreign) characters getting silently deleted by some browsers
+      '-W100': true
     }
   };
 };
