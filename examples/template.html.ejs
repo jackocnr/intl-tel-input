@@ -28,14 +28,14 @@
     <p><%= desc %></p>
 
     <h2>Markup</h2>
-    <pre><code class="language-markup"><%= markup %></code></pre>
+    <pre><code class="language-markup"><%- markup %></code></pre>
 
     <h2>Code</h2>
-    <pre><code class="language-javascript"><%= code %></code></pre>
+    <pre><code class="language-javascript"><%- code %></code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <%- markup %>
+      <%= markup %>
     </div>
 
     <script src="../js/prism.js"></script>
