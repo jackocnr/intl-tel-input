@@ -54,7 +54,7 @@ $(window).on("load", function() {
 function Plugin(element, options) {
   this.telInput = $(element);
 
-  this.options = $.extend({}, defaults, options);
+  this.options = $.extend({}, $.fn[pluginName].defaults, options);
 
   // event namespace
   this.ns = "." + pluginName + (id++);
@@ -1288,3 +1288,6 @@ $.fn[pluginName].loadUtils = function(path, utilsScriptDeferred) {
 
 // version
 $.fn[pluginName].version = "<%= version %>";
+
+// default options
+$.fn[pluginName].defaults = defaults;
