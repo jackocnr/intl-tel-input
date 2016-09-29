@@ -93,7 +93,7 @@ If there is just a dial code in the input: remove it on blur or submit, and re-a
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
-Specify one of `"off"`, `"polite"`, or `"aggressive"`. Unless `"off"`, this will set the input's placeholder to an example number for the selected country. You can specify the number type using the `numberType` option. If you specify `"polite"` and there is already a placeholder attribute set on the input then that will take precedence. Requires the `utilsScript` option.
+Set the input's placeholder to an example number for the selected country (you can specify the number type using the `numberType` option). By default it is set to `"polite"`, which means it will only set it if the input doesn't already have a placeholder attribute. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the `utilsScript` option.
 
 **customPlaceholder**  
 Type: `Function` Default: `null`  
