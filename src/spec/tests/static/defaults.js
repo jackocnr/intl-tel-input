@@ -12,6 +12,7 @@ describe("defaults: change default plugin options", function() {
 	afterEach(function() {
 		input.intlTelInput("destroy");
 		input = null;
+		$.fn.intlTelInput.defaults = defaults;
 	});
 
 	it("set default option initialCountry=ru", function() {
