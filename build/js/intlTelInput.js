@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v9.0.14
+ * International Telephone Input v9.1.0
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -1059,7 +1059,7 @@
         }
     };
     // version
-    $.fn[pluginName].version = "9.0.14";
+    $.fn[pluginName].version = "9.1.0";
     // Array of country objects for the flag dropdown.
     // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
     // Originally from https://github.com/mledoze/countries
