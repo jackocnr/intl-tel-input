@@ -1060,6 +1060,8 @@
     };
     // version
     $.fn[pluginName].version = "9.1.0";
+    // default options
+    $.fn[pluginName].defaults = defaults;
     // Array of country objects for the flag dropdown.
     // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
     // Originally from https://github.com/mledoze/countries
