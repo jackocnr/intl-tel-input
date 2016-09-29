@@ -54,7 +54,7 @@ $(window).on("load", function() {
 function Plugin(element, options) {
   this.telInput = $(element);
 
-  this.options = $.extend({}, $.fn[pluginName].defaults, options);
+  this.options = $.extend({}, defaults, options);
 
   // event namespace
   this.ns = "." + pluginName + (id++);

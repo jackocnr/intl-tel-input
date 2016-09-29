@@ -12,7 +12,7 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['responsive_images:retina', 'exec:evenizer', 'responsive_images:regular', 'sprite', 'imagemin']);
   // just javascript
-  grunt.registerTask('js', ['template:js1', 'template:js2', 'jshint', 'uglify', 'replace:one', 'replace:two', 'replace:three', 'replace:four']);
+  grunt.registerTask('js', ['template:js1', 'template:js2', 'jshint', 'uglify', 'replace:one', 'replace:two', 'replace:three']);
   // build examples
   grunt.registerTask('examples', ['template']);
   // Travis CI
