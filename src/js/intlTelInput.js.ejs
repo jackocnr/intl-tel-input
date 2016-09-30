@@ -327,7 +327,7 @@ Plugin.prototype = {
     } else if (this.options.initialCountry !== "auto") {
       // see if we should select a flag
       if (this.options.initialCountry) {
-        this._setFlag(this.options.initialCountry, true);
+        this._setFlag(this.options.initialCountry.toLowerCase(), true);
       } else {
         // no dial code and no initialCountry, so default to first in list
         this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
