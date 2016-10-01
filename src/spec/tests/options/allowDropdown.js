@@ -46,7 +46,7 @@ describe("allowDropdown:", function() {
       expect(getSelectedFlagContainer().find(".iti-arrow")).not.toExist();
     });
 
-    it("show selected dial code", function() {
+    it("shows selected dial code element", function() {
       expect(getSelectedDialCodeElement()).toExist();
       expect(getSelectedDialCodeElement().text()).toEqual('+1');
     });
