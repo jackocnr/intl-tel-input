@@ -29,7 +29,7 @@ describe("separateDialCode:", function() {
     });
 
     it("displays the dial code next to the selected flag", function() {
-      expect(getSelectedFlagContainer().find(".selected-dial-code").text()).toEqual("+44");
+      expect(getSelectedDialCodeElement().text()).toEqual("+44");
     });
 
     it("formats the placeholder correctly", function() {

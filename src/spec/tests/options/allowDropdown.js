@@ -20,7 +20,7 @@ describe("allowDropdown:", function() {
       });
     });
 
-    it("doesnt show the arrow or generate the dropdown markup", function() {
+    it("doesn't show the arrow or generate the dropdown markup", function() {
       expect(getSelectedFlagContainer().find(".iti-arrow")).not.toExist();
       expect(getListElement()).not.toExist();
     });
@@ -29,6 +29,26 @@ describe("allowDropdown:", function() {
       input.val("+4");
       triggerKeyOnInput("4");
       expect(getSelectedFlagElement()).toHaveClass("gb");
+    });
+
+  });
+
+  describe("init plugin with allowDropdown=false and separateDialCode=true", function() {
+
+    beforeEach(function() {
+      input.intlTelInput({
+        allowDropdown: false,
+        separateDialCode: true
+      });
+    });
+
+    it("doesn't show the arrow or generate the dropdown markup", function() {
+      expect(getSelectedFlagContainer().find(".iti-arrow")).not.toExist();
+    });
+
+    it("show selected dial code", function() {
+      expect(getSelectedDialCodeElement()).toExist();
+      expect(getSelectedDialCodeElement().text()).toEqual('+1');
     });
 
   });

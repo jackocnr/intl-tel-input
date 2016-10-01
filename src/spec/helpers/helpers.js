@@ -66,6 +66,11 @@ var getSelectedFlagElement = function(i) {
   return getSelectedFlagContainer(i).find(".iti-flag");
 };
 
+var getSelectedDialCodeElement = function(i) {
+  i = i || input;
+  return getSelectedFlagContainer(i).find(".selected-dial-code");
+};
+
 var getFlagsContainerElement = function(i) {
   i = i || input;
   return i.parent().find(".flag-container");
