@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v9.0.6
+ * International Telephone Input v9.2.3
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -23,8 +23,8 @@
         allowDropdown: true,
         // if there is just a dial code in the input: remove it on blur, and re-add it on focus
         autoHideDialCode: true,
-        // add or remove input placeholder with an example number for the selected country
-        autoPlaceholder: true,
+        // add a placeholder in the input with an example number for the selected country
+        autoPlaceholder: "polite",
         // modify the auto placeholder
         customPlaceholder: null,
         // append menu to a specific element
@@ -83,8 +83,6 @@
             // if separateDialCode then doesn't make sense to A) insert dial code into input (autoHideDialCode), and B) display national numbers (because we're displaying the country dial code next to them)
             if (this.options.separateDialCode) {
                 this.options.autoHideDialCode = this.options.nationalMode = false;
-                // let's force this for now for simplicity - we can support this later if need be
-                this.options.allowDropdown = true;
             }
             // we cannot just test screen size as some smartphones/website meta tags will report desktop resolutions
             // Note: for some reason jasmine breaks if you put this in the main Plugin function with the rest of these declarations
@@ -290,7 +288,7 @@
             } else if (this.options.initialCountry !== "auto") {
                 // see if we should select a flag
                 if (this.options.initialCountry) {
-                    this._setFlag(this.options.initialCountry, true);
+                    this._setFlag(this.options.initialCountry.toLowerCase(), true);
                 } else {
                     // no dial code and no initialCountry, so default to first in list
                     this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
@@ -733,7 +731,8 @@
         },
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {
-            if (window.intlTelInputUtils && !this.hadInitialPlaceholder && this.options.autoPlaceholder && this.selectedCountryData) {
+            var shouldSetPlaceholder = this.options.autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && (this.options.autoPlaceholder === true || this.options.autoPlaceholder === "polite");
+            if (window.intlTelInputUtils && shouldSetPlaceholder && this.selectedCountryData) {
                 var numberType = intlTelInputUtils.numberType[this.options.numberType], placeholder = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
                 placeholder = this._beforeSetNumber(placeholder);
                 if (typeof this.options.customPlaceholder === "function") {
@@ -1044,6 +1043,7 @@
             $.fn[pluginName].loadedUtilsScript = true;
             // dont use $.getScript as it prevents caching
             $.ajax({
+                type: "GET",
                 url: path,
                 complete: function() {
                     // tell all instances that the utils request is complete
@@ -1057,9 +1057,9 @@
         }
     };
     // version
-    $.fn[pluginName].version = "9.0.6";
-    // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
-    // jshint -W100
+    $.fn[pluginName].version = "9.2.3";
+    // default options
+    $.fn[pluginName].defaults = defaults;
     // Array of country objects for the flag dropdown.
     // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
     // Originally from https://github.com/mledoze/countries

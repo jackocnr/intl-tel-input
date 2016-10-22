@@ -1,6 +1,3 @@
-// Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
-// jshint -W100
-
 // Array of country objects for the flag dropdown.
 // Each contains a name, country code (ISO 3166-1 alpha-2) and dial code.
 
