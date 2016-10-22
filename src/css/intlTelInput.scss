@@ -35,6 +35,7 @@ $arrowColor: #555 !default;
 $inputPadding: 6px !default;
 $selectedFlagWidth: $flagWidth + (2 * $flagPadding) !default;
 $selectedFlagArrowWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding) !default;
+$selectedFlagDialCodeWidth: $selectedFlagWidth + $flagPadding !default;
 $selectedFlagArrowDialCodeWidth: $selectedFlagArrowWidth + $flagPadding !default;
 
 // image related variables
@@ -210,7 +211,7 @@ $mobilePopupMargin: 30px;
     }
   }
 
-  &.allow-dropdown {
+  &.allow-dropdown, &.separate-dial-code {
     input, input[type=text], input[type=tel] {
       padding-right: $inputPadding;
       padding-left: $selectedFlagArrowWidth + $inputPadding;
@@ -223,7 +224,9 @@ $mobilePopupMargin: 30px;
     .selected-flag {
       width: $selectedFlagArrowWidth;
     }
+  }
 
+  &.allow-dropdown {
     // hover state - show flag is clickable
     .flag-container:hover {
       cursor: pointer;
@@ -238,32 +241,40 @@ $mobilePopupMargin: 30px;
         background-color: transparent;
       }
     }
+  }
 
-    &.separate-dial-code {
-      .selected-flag {
-        // now that we have digits in this section, it needs this visual separation
-        background-color: $hoverColor;
-        // for vertical centering
-        display: table;
+  &.separate-dial-code {
+    .selected-flag {
+      // now that we have digits in this section, it needs this visual separation
+      background-color: $hoverColor;
+      // for vertical centering
+      display: table;
+    }
+    .selected-dial-code {
+      // for vertical centering
+      display: table-cell;
+      vertical-align: middle;
+
+      padding-left: $flagWidth + $flagPadding;
+    }
+
+    // .iti-sdc is for Separate Dial Code, with lengths from 2-5 because shortest is "+1", longest is "+1684"
+    $charLength: 8px;
+    @for $i from 2 through 5 {
+      &.iti-sdc-#{$i} {
+        input, input[type=text], input[type=tel] {
+          padding-left: $selectedFlagDialCodeWidth + $inputPadding + ($i * $charLength);
+        }
+        .selected-flag {
+          width: $selectedFlagDialCodeWidth + ($i * $charLength);
+        }
       }
-      .selected-dial-code {
-        // for vertical centering
-        display: table-cell;
-        vertical-align: middle;
-
-        padding-left: $flagWidth + $flagPadding;
-      }
-
-      // .iti-sdc is for Separate Dial Code, with lengths from 2-5 because shortest is "+1", longest is "+1684"
-      $charLength: 8px;
-      @for $i from 2 through 5 {
-        &.iti-sdc-#{$i} {
-          input, input[type=text], input[type=tel] {
-            padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + ($i * $charLength);
-          }
-          .selected-flag {
-            width: $selectedFlagArrowDialCodeWidth + ($i * $charLength);
-          }
+      &.allow-dropdown.iti-sdc-#{$i} {
+        input, input[type=text], input[type=tel] {
+          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + ($i * $charLength);
+        }
+        .selected-flag {
+          width: $selectedFlagArrowDialCodeWidth + ($i * $charLength);
         }
       }
     }

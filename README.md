@@ -3,7 +3,7 @@ A jQuery plugin for entering and validating international telephone numbers. It 
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshot.png" width="424px" height="246px">
 
-If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts/intl-tel-input)!
+If you like it, please consider making a donation, which you can do from [the demo page](http://intl-tel-input.com).
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ If you like it, please upvote on [Product Hunt](http://www.producthunt.com/posts
 
 
 ## Demo and Examples
-You can view a live demo and some examples of how to use the various options here: http://jackocnr.com/intl-tel-input.html, or try it for yourself using the included demo.html.
+You can view a live demo and some examples of how to use the various options here: http://intl-tel-input.com, or try it for yourself using the included demo.html.
 
 
 ## Features
@@ -92,8 +92,8 @@ Type: `Boolean` Default: `true`
 If there is just a dial code in the input: remove it on blur or submit, and re-add it on focus. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
 
 **autoPlaceholder**  
-Type: `Boolean` Default: `true`  
-Set the input's placeholder to an example number for the selected country. You can specify the number type using the `numberType` option. If there is already a placeholder attribute set on the input then that will take precedence. Requires the `utilsScript` option.
+Type: `String` Default: `"polite"`  
+Set the input's placeholder to an example number for the selected country (you can specify the number type using the `numberType` option). By default it is set to `"polite"`, which means it will only set it if the input doesn't already have a placeholder attribute. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the `utilsScript` option.
 
 **customPlaceholder**  
 Type: `Function` Default: `null`  
@@ -228,7 +228,7 @@ Get more information about a validation error. Requires the `utilsScript` option
 ```js
 var error = $("#phone").intlTelInput("getValidationError");
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L175) in the global enum `intlTelInputUtils.validationError` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L153) in the global enum `intlTelInputUtils.validationError` e.g.  
 ```js
 if (error == intlTelInputUtils.validationError.TOO_SHORT) {
     // the number is too short

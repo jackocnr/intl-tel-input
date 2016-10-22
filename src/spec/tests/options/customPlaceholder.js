@@ -1,12 +1,12 @@
 "use strict";
 
-describe("customPlaceholder: init plugin with autoPlaceholder=true and customPlaceholder function", function() {
+describe("customPlaceholder: init plugin with autoPlaceholder=polite and customPlaceholder function", function() {
 
   beforeEach(function() {
     intlSetup(true);
     input = $("<input>");
     input.intlTelInput({
-      autoPlaceholder: true,
+      autoPlaceholder: "polite",
       customPlaceholder: function(placeholder) {
         return "e.g. " + placeholder;
       }

@@ -5,7 +5,8 @@ module.exports = function(grunt) {
         ' * International Telephone Input v<%= package.version %>\n' +
         ' * <%= package.repository.url %>\n' +
         ' * Licensed under the MIT license\n' +
-        ' */\n'
+        ' */\n',
+      screwIE8: false
     },
     dev: {
       options: {
