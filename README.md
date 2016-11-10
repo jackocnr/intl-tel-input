@@ -68,11 +68,14 @@ You can view a live demo and some examples of how to use the various options her
   </script>
   ```
 
-5. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
+5. **Recommended:** To allow you to extract full international numbers and to enable formatting/validation, you need to initialise the utils plugin. You can do so by either:
+
+  **A:** Lazy load the plugin with the `utilsScript` option, or...
+  **B:** If you're precompiling your javascript, ensure `window.intlTelInputUtils` is available by loading `build/js/utils.js` before `build/js/intlTelInput.js`. In this case, `utilsScript` is not required.
 
 
 ## Recommended Usage
-We highly recommend you load the included utils.js using the `utilsScript` option. Then even when `nationalMode` or `separateDialCode` is enabled, the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly. I recommend you get, store, and set numbers exclusively in this format for simplicity.
+We highly recommend you use the included utils.js, either by loading `utils.js` before `intlTelInput.js` or by using the `utilsScript` option for lazy loading. Then even when `nationalMode` or `separateDialCode` is enabled, the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly. I recommend you get, store, and set numbers exclusively in this format for simplicity.
 
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number it will automatically set the country and format it according to the options you specify (e.g. if you enable `nationalMode` it will automatically remove the international dial code for you).
 
