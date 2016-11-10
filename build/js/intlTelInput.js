@@ -362,8 +362,10 @@
         // init many requests: utils script / geo ip lookup
         _initRequests: function() {
             var that = this;
-            // if the user has specified the path to the utils script, fetch it on window.load, else resolve
-            if (this.options.utilsScript) {
+            if (window.intlTelInputUtils) {
+                // tell all instances that the utils request is complete
+                $(".intl-tel-input input").intlTelInput("handleUtils");
+            } else if (this.options.utilsScript) {
                 // if the plugin is being initialised after the window.load event has already been fired
                 if ($.fn[pluginName].windowLoaded) {
                     $.fn[pluginName].loadUtils(this.options.utilsScript, this.utilsScriptDeferred);
