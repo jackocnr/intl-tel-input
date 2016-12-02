@@ -59,7 +59,7 @@
         Z: 90,
         SPACE: 32,
         TAB: 9
-    };
+    }, regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
     // keep track of if the window.load event has fired as impossible to check after the fact
     $(window).on("load", function() {
         // UPDATE: use a public static field so we can fudge it in the tests
@@ -281,9 +281,9 @@
         // 3. picking the first preferred country
         // 4. picking the first country
         _setInitialState: function() {
-            var val = this.telInput.val();
-            // if we already have a dial code we can go ahead and set the flag, else fall back to default
-            if (this._getDialCode(val)) {
+            var val = this.telInput.val(), dialCode = this._getDialCode(val);
+            // if we already have a dial code, and it's not a regionlessNanp we can go ahead and set the flag, else fall back to default
+            if (dialCode && !this._isRegionlessNanp(val)) {
                 this._updateFlagFromNumber(val, true);
             } else if (this.options.initialCountry !== "auto") {
                 // see if we should select a flag
@@ -643,12 +643,13 @@
                 number = "+" + number;
             }
             // try and extract valid dial code from input
-            var dialCode = this._getDialCode(number), countryCode = null;
+            var dialCode = this._getDialCode(number), countryCode = null, numeric = this._getNumeric(number);
             if (dialCode) {
                 // check if one of the matching countries is already selected
-                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) != -1;
-                // if a matching country is not already selected (or this is an unknown NANP area code): choose the first in the list
-                if (!alreadySelected || this._isUnknownNanp(number, dialCode)) {
+                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) != -1, // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1 204) and the actual number's length is >=4
+                isUnknownNanp = dialCode == "+1" && numeric.length >= 4;
+                // if a matching country is not already selected (or this is an unknown NANP area code) AND it's not a regionlessNanp: choose the first in the list
+                if ((!alreadySelected || isUnknownNanp) && !this._isRegionlessNanp(numeric)) {
                     // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first non-empty index
                     for (var j = 0; j < countryCodes.length; j++) {
                         if (countryCodes[j]) {
@@ -657,7 +658,7 @@
                         }
                     }
                 }
-            } else if (number.charAt(0) == "+" && this._getNumeric(number).length) {
+            } else if (number.charAt(0) == "+" && numeric.length) {
                 // invalid dial code, so empty
                 // Note: use getNumeric here because the number has not been formatted yet, so could contain bad chars
                 countryCode = "";
@@ -669,9 +670,10 @@
                 this._setFlag(countryCode, isInit);
             }
         },
-        // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1 702) and the actual number's length is >=4
-        _isUnknownNanp: function(number, dialCode) {
-            return dialCode == "+1" && this._getNumeric(number).length >= 4;
+        // check if the given number is a regionless NANP number
+        _isRegionlessNanp: function(number) {
+            var areaCode = this._getNumeric(number).substr(1, 3);
+            return regionlessNanpNumbers.indexOf(areaCode) > -1;
         },
         // remove highlighting from other list items and highlight the given item
         _highlightListItem: function(listItem) {
