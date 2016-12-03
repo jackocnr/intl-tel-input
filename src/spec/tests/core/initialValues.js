@@ -55,7 +55,24 @@ describe("initial values:", function() {
   });
 
 
-  describe("init vanilla plugin on input containing number invalid dial code", function() {
+
+  describe("init vanilla plugin on input containing valid toll-free (regionless) NANP number with intl dial code", function() {
+
+    beforeEach(function() {
+      input = $("<input value='+1 800 123 1234'>");
+      input.intlTelInput();
+    });
+
+    it("does not set the selected flag or the active list item", function() {
+      expect(getSelectedFlagElement().attr("class")).toBe("iti-flag");
+      expect(getActiveListItem().length).toEqual(0);
+    });
+
+  });
+
+
+
+  describe("init vanilla plugin on input containing number with invalid dial code", function() {
 
     beforeEach(function() {
       input = $("<input value='+969999'>");
