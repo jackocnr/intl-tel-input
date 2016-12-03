@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v9.2.5
+ * International Telephone Input v9.2.6
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -281,9 +281,9 @@
         // 3. picking the first preferred country
         // 4. picking the first country
         _setInitialState: function() {
-            var val = this.telInput.val(), dialCode = this._getDialCode(val);
+            var val = this.telInput.val();
             // if we already have a dial code, and it's not a regionlessNanp we can go ahead and set the flag, else fall back to default
-            if (dialCode && !this._isRegionlessNanp(val)) {
+            if (this._getDialCode(val) && !this._isRegionlessNanp(val)) {
                 this._updateFlagFromNumber(val, true);
             } else if (this.options.initialCountry !== "auto") {
                 // see if we should select a flag
@@ -1067,7 +1067,7 @@
         }
     };
     // version
-    $.fn[pluginName].version = "9.2.5";
+    $.fn[pluginName].version = "9.2.6";
     // default options
     $.fn[pluginName].defaults = defaults;
     // Array of country objects for the flag dropdown.
