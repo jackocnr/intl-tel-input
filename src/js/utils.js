@@ -74,16 +74,16 @@ function getValidationError(number, countryCode) {
     //console.log(e);
 
     // here I convert thrown errors into ValidationResult enums (if possible)
-    if (e == i18n.phonenumbers.Error.INVALID_COUNTRY_CODE) {
+    if (e.message == i18n.phonenumbers.Error.INVALID_COUNTRY_CODE) {
       return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.INVALID_COUNTRY_CODE;
     }
-    if (e == i18n.phonenumbers.Error.NOT_A_NUMBER) {
+    if (e.message == i18n.phonenumbers.Error.NOT_A_NUMBER) {
       return 4;
     }
-    if (e == i18n.phonenumbers.Error.TOO_SHORT_AFTER_IDD || e == i18n.phonenumbers.Error.TOO_SHORT_NSN) {
+    if (e.message == i18n.phonenumbers.Error.TOO_SHORT_AFTER_IDD || e == i18n.phonenumbers.Error.TOO_SHORT_NSN) {
       return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT;
     }
-    if (e == i18n.phonenumbers.Error.TOO_LONG) {
+    if (e.message == i18n.phonenumbers.Error.TOO_LONG) {
       return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_LONG;
     }
 
@@ -105,7 +105,7 @@ function isValidNumber(number, countryCode) {
 }
 
 
-// copied this from https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js#L883
+// copied this from i18n.phonenumbers.PhoneNumberFormat in the file https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js
 var numberFormat = {
   "E164": 0,
   "INTERNATIONAL": 1,
@@ -114,7 +114,7 @@ var numberFormat = {
 };
 
 
-// copied this from i18n.phonenumbers.PhoneNumberType in https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js and put the keys in quotes to force closure compiler to preserve the keys
+// copied this from i18n.phonenumbers.PhoneNumberType in https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js and put the keys in quotes to force closure compiler to preserve the keys
 // TODO: there must be a way to just tell closure compiler to preserve the keys on i18n.phonenumbers.PhoneNumberType and just export that
 var numberType = {
   "FIXED_LINE": 0,
@@ -148,7 +148,7 @@ var numberType = {
 };
 
 
-// copied this from i18n.phonenumbers.PhoneNumberUtil.ValidationResult in https://code.google.com/p/libphonenumber/source/browse/trunk/javascript/i18n/phonenumbers/phonenumberutil.js and again put the keys in quotes.
+// copied this from i18n.phonenumbers.PhoneNumberUtil.ValidationResult in https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js and again put the keys in quotes.
 // Also: added NOT_A_NUMBER to match i18n.phonenumbers.Error.NOT_A_NUMBER
 var validationError = {
   "IS_POSSIBLE": 0,

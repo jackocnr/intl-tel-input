@@ -14,7 +14,7 @@ describe("getValidationError:", function() {
   });
 
   it("returns the right error for a number that is too short", function() {
-    input.intlTelInput("setNumber", "+447");
+    input.intlTelInput("setNumber", "+4477");
     expect(input.intlTelInput("getValidationError")).toEqual(intlTelInputUtils.validationError.TOO_SHORT);
   });
 
