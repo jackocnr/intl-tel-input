@@ -93,9 +93,6 @@ module.exports = function(grunt) {
             match: /_updateFlagFromNumber/g,
             replacement: '_v'
           }, {
-            match: /_isUnknownNanp/g,
-            replacement: '_w'
-          }, {
             match: /_highlightListItem/g,
             replacement: '_x'
           }, {
