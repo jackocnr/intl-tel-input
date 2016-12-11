@@ -119,9 +119,9 @@ $("#scrollingElement").scroll(function() {
 Type: `Array` Default: `undefined`  
 Don't display the countries you specify.
 
-**formatOnInit**  
+**formatOnDisplay**  
 Type: `Boolean` Default: `true`  
-Format the input value during initialisation.
+If set to true, format the input (according to the `nationalMode` option) value during initialisation and on setNumber.
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
@@ -249,7 +249,7 @@ $("#phone").intlTelInput("setCountry", "gb");
 ```
 
 **setNumber**  
-Insert a number, and update the selected flag accordingly. _Note that by default, if `nationalMode` is enabled it will try to use national formatting._  
+Insert a number, and update the selected flag accordingly. _Note that if `formatOnDisplay` is enabled, this will attempt to format the number according to the `nationalMode` option._  
 ```js
 $("#phone").intlTelInput("setNumber", "+447733123456");
 ```

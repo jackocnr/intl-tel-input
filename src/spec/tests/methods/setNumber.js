@@ -66,17 +66,4 @@ describe("setNumber: with utils", function() {
 
   });
 
-  describe("init plugin and call setNumber with a valid UK number, and preventFormat=true", function() {
-
-    beforeEach(function() {
-      input.intlTelInput();
-      input.intlTelInput("setNumber", "+447733123456", true);
-    });
-
-    it("sets the input val to the given number, with no formatting", function() {
-      expect(getInputVal()).toEqual("+447733123456");
-    });
-
-  });
-
 });
