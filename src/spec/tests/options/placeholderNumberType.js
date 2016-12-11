@@ -1,6 +1,6 @@
 "use strict";
 
-describe("numberType:", function() {
+describe("placeholderNumberType:", function() {
 
   beforeEach(function() {
     intlSetup(true);
@@ -12,7 +12,7 @@ describe("numberType:", function() {
     input = null;
   });
 
-  it("init plugin with default numberType sets the placeholder correctly", function() {
+  it("init plugin with default placeholderNumberType sets the placeholder correctly", function() {
     input.intlTelInput({
       nationalMode: true,
       initialCountry: "gb"
@@ -20,11 +20,11 @@ describe("numberType:", function() {
     expect(input.attr("placeholder")).toEqual("07400 123456");
   });
 
-  it("init plugin with numberType=FIXED_LINE sets the placeholder correctly", function() {
+  it("init plugin with placeholderNumberType=FIXED_LINE sets the placeholder correctly", function() {
     input.intlTelInput({
       nationalMode: true,
       initialCountry: "gb",
-      numberType: "FIXED_LINE"
+      placeholderNumberType: "FIXED_LINE"
     });
     expect(input.attr("placeholder")).toEqual("0121 234 5678");
   });

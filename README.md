@@ -93,7 +93,7 @@ If there is just a dial code in the input: remove it on blur or submit, and re-a
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
-Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the `numberType` option. By default it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the `utilsScript` option.
+Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the `placeholderNumberType` option. By default it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the `utilsScript` option.
 
 **customPlaceholder**  
 Type: `Function` Default: `null`  
@@ -149,9 +149,9 @@ If you leave `initialCountry` blank, it will default to the first country in the
 Type: `Boolean` Default: `true`  
 Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getNumber` to extract a full international number - [see example](http://jackocnr.com/node_modules/intl-tel-input/examples/gen/national-mode.html). This option now defaults to `true`, and it is recommended that you leave it that way as it provides a better experience for the user.
 
-**numberType**  
+**placeholderNumberType**  
 Type: `String` Default: `"MOBILE"`  
-Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L119) from the global enum `intlTelInputUtils.numberType` e.g. `"FIXED_LINE"` to tell the plugin you're expecting that type of number. Currently this is only used to set the placeholder to the right type of number.
+Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L119) from the global enum `intlTelInputUtils.numberType` e.g. `"FIXED_LINE"` to set the number type to use for the placeholder.
 
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
@@ -300,7 +300,7 @@ The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build 
 
 * Formatting upon initialisation, as well as with `getNumber` and `setNumber`
 * Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
-* Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `numberType` option
+* Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `placeholderNumberType` option
 * Extract the standardised (E.164) international number with `getNumber` even when using the `nationalMode` option
 
 International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, which I have precompiled into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking). If size is not a concern, then you can manually include the script yourself however you like, and as long as it has loaded before you initialise the plugin then it should work fine.

@@ -40,7 +40,7 @@
         // don't insert international dial codes
         nationalMode: true,
         // number type to use for placeholders
-        numberType: "MOBILE",
+        placeholderNumberType: "MOBILE",
         // display only these countries
         onlyCountries: [],
         // the countries at the top of the list. defaults to united states and united kingdom
@@ -735,7 +735,7 @@
         _updatePlaceholder: function() {
             var shouldSetPlaceholder = this.options.autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && (this.options.autoPlaceholder === true || this.options.autoPlaceholder === "polite");
             if (window.intlTelInputUtils && shouldSetPlaceholder && this.selectedCountryData) {
-                var numberType = intlTelInputUtils.numberType[this.options.numberType], placeholder = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
+                var numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType], placeholder = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
                 placeholder = this._beforeSetNumber(placeholder);
                 if (typeof this.options.customPlaceholder === "function") {
                     placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
