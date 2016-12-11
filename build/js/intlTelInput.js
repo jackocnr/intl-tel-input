@@ -39,10 +39,10 @@
         initialCountry: "",
         // don't insert international dial codes
         nationalMode: true,
-        // number type to use for placeholders
-        placeholderNumberType: "MOBILE",
         // display only these countries
         onlyCountries: [],
+        // number type to use for placeholders
+        placeholderNumberType: "MOBILE",
         // the countries at the top of the list. defaults to united states and united kingdom
         preferredCountries: [ "us", "gb" ],
         // display the country dial code next to the selected flag so it's not part of the typed number
@@ -888,9 +888,9 @@
             }
             return this._cap(number);
         },
-        /********************
-   *  PUBLIC METHODS
-   ********************/
+        /**************************
+   *  SECRET PUBLIC METHODS
+   **************************/
         // this is called when the geoip call returns
         handleAutoCountry: function() {
             if (this.options.initialCountry === "auto") {
@@ -903,6 +903,21 @@
                 this.autoCountryDeferred.resolve();
             }
         },
+        // this is called when the utils request completes
+        handleUtils: function() {
+            // if the request was successful
+            if (window.intlTelInputUtils) {
+                // if there's an initial value in the input, then format it
+                if (this.telInput.val()) {
+                    this._updateValFromNumber(this.telInput.val());
+                }
+                this._updatePlaceholder();
+            }
+            this.utilsScriptDeferred.resolve();
+        },
+        /********************
+   *  PUBLIC METHODS
+   ********************/
         // remove plugin
         destroy: function() {
             if (this.allowDropdown) {
@@ -978,18 +993,6 @@
             // we must update the flag first, which updates this.selectedCountryData, which is used for formatting the number before displaying it
             this._updateFlagFromNumber(number);
             this._updateValFromNumber(number);
-        },
-        // this is called when the utils request completes
-        handleUtils: function() {
-            // if the request was successful
-            if (window.intlTelInputUtils) {
-                // if there's an initial value in the input, then format it
-                if (this.telInput.val()) {
-                    this._updateValFromNumber(this.telInput.val());
-                }
-                this._updatePlaceholder();
-            }
-            this.utilsScriptDeferred.resolve();
         }
     };
     // using https://github.com/jquery-boilerplate/jquery-boilerplate/wiki/Extending-jQuery-Boilerplate
