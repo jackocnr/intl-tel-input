@@ -1,3 +1,24 @@
+## v10.0.0 (2016-12-10)
+
+* rename numberType option to placeholderNumberType
+* rename formatOnInit to formatOnDisplay
+
+## v9.2.7 (2016-12-07)
+
+## v9.2.6 (2016-12-02)
+
+## v9.2.5 (2016-11-30)
+
+## v9.2.4 (2016-10-31)
+
+## v9.2.3 (2016-10-11)
+
+## v9.2.2 (2016-10-07)
+
+## v9.2.1 (2016-10-07)
+
+
+
 ## v9.2.0 (2016-10-01)
 
 * separate `allowDropdown` and `separateDialCode` options
@@ -344,4 +365,3 @@
 ## v0.9.2 (2013-10-13)
 
 * Added some tests.
-
