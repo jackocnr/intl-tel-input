@@ -72,6 +72,22 @@ describe("initial values:", function() {
 
 
 
+  describe("init vanilla plugin on input containing valid Cook Island number with intl dial code", function() {
+
+    beforeEach(function() {
+      input = $("<input value='+682 21 234'>");
+      input.intlTelInput();
+    });
+
+    // issue 520
+    it("sets the selected flag correctly", function() {
+      expect(getSelectedFlagElement()).toHaveClass("ck");
+    });
+
+  });
+
+
+
   describe("init vanilla plugin on input containing number with invalid dial code", function() {
 
     beforeEach(function() {

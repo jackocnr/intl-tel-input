@@ -650,7 +650,7 @@
             var dialCode = this._getDialCode(number), countryCode = null, numeric = this._getNumeric(number);
             if (dialCode) {
                 // check if one of the matching countries is already selected
-                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) != -1, // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1 204) and the actual number's length is >=4
+                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) != -1, // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
                 isUnknownNanp = dialCode == "+1" && numeric.length >= 4;
                 // if a matching country is not already selected (or this is an unknown NANP area code) AND it's not a regionlessNanp: choose the first in the list
                 if ((!alreadySelected || isUnknownNanp) && !this._isRegionlessNanp(numeric)) {
@@ -675,10 +675,14 @@
             }
             return false;
         },
-        // check if the given number is a regionless NANP number
+        // check if the given number is a regionless NANP number (expects the number to contain an international dial code)
         _isRegionlessNanp: function(number) {
-            var areaCode = this._getNumeric(number).substr(1, 3);
-            return regionlessNanpNumbers.indexOf(areaCode) > -1;
+            var numeric = this._getNumeric(number);
+            if (numeric.charAt(0) == "1") {
+                var areaCode = numeric.substr(1, 3);
+                return regionlessNanpNumbers.indexOf(areaCode) > -1;
+            }
+            return false;
         },
         // remove highlighting from other list items and highlight the given item
         _highlightListItem: function(listItem) {
