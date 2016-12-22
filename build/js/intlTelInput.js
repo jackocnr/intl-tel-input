@@ -143,7 +143,7 @@
             // build instance country array
             this.countries = [];
             for (i = 0; i < allCountries.length; i++) {
-                if (processFunc($.inArray(allCountries[i].iso2, countryArray))) {
+                if (processFunc(countryArray.indexOf(allCountries[i].iso2))) {
                     this.countries.push(allCountries[i]);
                 }
             }
@@ -152,15 +152,15 @@
         _processAllCountries: function() {
             if (this.options.onlyCountries.length) {
                 // process onlyCountries option
-                this._filterCountries(this.options.onlyCountries, function(inArray) {
+                this._filterCountries(this.options.onlyCountries, function(arrayPos) {
                     // if country is in array
-                    return inArray != -1;
+                    return arrayPos > -1;
                 });
             } else if (this.options.excludeCountries.length) {
                 // process excludeCountries option
-                this._filterCountries(this.options.excludeCountries, function(inArray) {
+                this._filterCountries(this.options.excludeCountries, function(arrayPos) {
                     // if country is not in array
-                    return inArray == -1;
+                    return arrayPos == -1;
                 });
             } else {
                 this.countries = allCountries;
@@ -650,7 +650,7 @@
             var dialCode = this._getDialCode(number), countryCode = null, numeric = this._getNumeric(number);
             if (dialCode) {
                 // check if one of the matching countries is already selected
-                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) != -1, // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
+                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && countryCodes.indexOf(this.selectedCountryData.iso2) > -1, // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
                 isUnknownNanp = dialCode == "+1" && numeric.length >= 4;
                 // if a matching country is not already selected (or this is an unknown NANP area code) AND it's not a regionlessNanp: choose the first in the list
                 if ((!alreadySelected || isUnknownNanp) && !this._isRegionlessNanp(numeric)) {
