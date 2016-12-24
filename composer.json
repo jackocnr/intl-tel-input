@@ -1,0 +1,19 @@
+{
+  "name": "defro/intl-tel-input",
+  "version": "10.0.2",
+  "description": "A jQuery plugin for entering international telephone numbers",
+  "keywords": [
+    "international",
+    "i18n",
+    "country",
+    "dial",
+    "code",
+    "telephone",
+    "tel",
+    "number",
+    "mobile",
+    "input",
+    "flag"
+  ],
+  "license": "MIT"
+}
