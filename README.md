@@ -127,7 +127,7 @@ Format the input value (according to the `nationalMode` option) during initialis
 Type: `Function` Default: `null`  
 When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that looks up the user's location. Also note that when instantiating the plugin, we now return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialisation requests like this have completed.
 
-Here is an example using the [ipinfo.io](http://ipinfo.io/) service:  
+Here is an example using the [ipinfo.io](http://ipinfo.io/) service (note: this service requires a paid account to use over HTTPS):  
 ```js
 geoIpLookup: function(callback) {
   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
