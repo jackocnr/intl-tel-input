@@ -57,6 +57,18 @@ describe("getNumber: ", function() {
 
     });
 
+    describe("typing a full international number for Anguilla", function() {
+
+      beforeEach(function() {
+        input.val("+12642351234").keyup();
+      });
+
+      it("getNumber returns the correct number", function() {
+        expect(input.intlTelInput("getNumber")).toEqual("+12642351234");
+      });
+
+    });
+
   });
 
 });
