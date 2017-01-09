@@ -6,5 +6,18 @@
   ],
   "dependencies": {
     "jquery": ">=1.7"
-  }
+  },
+  "homepage": "https://github.com/Massad/intl-tel-input",
+  "authors": [
+    "Omar Massad <contact@omarmassad.com>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }

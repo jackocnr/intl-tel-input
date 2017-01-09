@@ -1015,6 +1015,19 @@
             if (flagChanged) {
                 this._triggerCountryChange();
             }
+        },
+        // get the phone object with code and number
+        getPhoneObject: function() {
+            // check if the country data and number is valid
+            if (this.selectedCountryData && this.getNumber()) {
+                return {
+                    code: this.selectedCountryData.dialCode,
+                    //add the country dial code
+                    number: this.getNumber().split(this.selectedCountryData.dialCode)[1]
+                };
+            } else {
+                return {};
+            }
         }
     };
     // using https://github.com/jquery-boilerplate/jquery-boilerplate/wiki/Extending-jQuery-Boilerplate

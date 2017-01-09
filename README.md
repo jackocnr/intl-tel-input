@@ -254,6 +254,19 @@ Insert a number, and update the selected flag accordingly. _Note that if `format
 $("#phone").intlTelInput("setNumber", "+447733123456");
 ```
 
+**getPhoneObject**
+Returning phone as an object that includes the dial code and phone number
+
+```js
+{
+ 'code': '44',
+ 'number': '7733123456'
+}
+```
+
+```js
+$("#phone").intlTelInput("getPhoneObject", "+447733123456");
+```
 
 ## Static Methods
 
