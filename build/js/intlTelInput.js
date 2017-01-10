@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v10.0.2
+ * International Telephone Input v10.0.4
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -59,7 +59,8 @@
         Z: 90,
         SPACE: 32,
         TAB: 9
-    }, regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
+    }, // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
+    regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
     // keep track of if the window.load event has fired as impossible to check after the fact
     $(window).on("load", function() {
         // UPDATE: use a public static field so we can fudge it in the tests
@@ -87,7 +88,7 @@
             // we cannot just test screen size as some smartphones/website meta tags will report desktop resolutions
             // Note: for some reason jasmine breaks if you put this in the main Plugin function with the rest of these declarations
             // Note: to target Android Mobiles (and not Tablets), we must find "Android" and "Mobile"
-            this.isMobile = /Android.+Mobile|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            this.isMobile = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             if (this.isMobile) {
                 // trigger the mobile dropdown css
                 $("body").addClass("iti-mobile");
@@ -650,10 +651,13 @@
             var dialCode = this._getDialCode(number), countryCode = null, numeric = this._getNumeric(number);
             if (dialCode) {
                 // check if one of the matching countries is already selected
-                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && countryCodes.indexOf(this.selectedCountryData.iso2) > -1, // check if the given number contains an unknown area code from the North American Numbering Plan i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
-                isUnknownNanp = dialCode == "+1" && numeric.length >= 4;
-                // if a matching country is not already selected (or this is an unknown NANP area code) AND it's not a regionlessNanp: choose the first in the list
-                if ((!alreadySelected || isUnknownNanp) && !this._isRegionlessNanp(numeric)) {
+                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && countryCodes.indexOf(this.selectedCountryData.iso2) > -1, // check if the given number contains a NANP area code i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
+                isNanpAreaCode = dialCode == "+1" && numeric.length >= 4, nanpSelected = this.selectedCountryData && this.selectedCountryData.dialCode == "1";
+                // only update the flag if:
+                // A) NOT (we currently have a NANP flag selected, and the number is a regionlessNanp)
+                // AND
+                // B) either a matching country is not already selected OR the number contains a NANP area code (ensure the flag is set to the first matching country)
+                if (!(nanpSelected && this._isRegionlessNanp(numeric)) && (!alreadySelected || isNanpAreaCode)) {
                     // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first non-empty index
                     for (var j = 0; j < countryCodes.length; j++) {
                         if (countryCodes[j]) {
@@ -867,10 +871,10 @@
         },
         // get the input val, adding the dial code if separateDialCode is enabled
         _getFullNumber: function() {
-            var val = this.telInput.val(), dialCode = this.selectedCountryData.dialCode, prefix;
+            var val = this.telInput.val(), dialCode = this.selectedCountryData.dialCode, prefix, normalizedVal = val.substr(0, 2) == "+1" ? val.substr(2) : val;
             if (this.options.separateDialCode) {
                 prefix = "+" + dialCode;
-            } else if (dialCode && dialCode.charAt(0) == "1" && dialCode.length == 4 && dialCode.substr(1) != val.substr(0, 3)) {
+            } else if (dialCode && dialCode.charAt(0) == "1" && dialCode.length == 4 && dialCode.substr(1) != normalizedVal.substr(0, 3)) {
                 // if we're dealing with a NANP country, ensure the number includes the area code
                 prefix = dialCode.substr(1);
             } else {
@@ -1087,7 +1091,7 @@
         }
     };
     // version
-    $.fn[pluginName].version = "10.0.2";
+    $.fn[pluginName].version = "10.0.4";
     // default options
     $.fn[pluginName].defaults = defaults;
     // Array of country objects for the flag dropdown.

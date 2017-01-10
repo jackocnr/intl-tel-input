@@ -86,6 +86,33 @@ describe("using input: ", function() {
 
     });
 
+
+
+    describe("typing a bangladesh intl dial code", function() {
+
+      beforeEach(function() {
+        input.val("+880").keyup();
+      });
+
+      it("selects the bangladesh flag", function() {
+        expect(getSelectedFlagElement()).toHaveClass("bd");
+      });
+
+      // this was a bug: https://github.com/jackocnr/intl-tel-input/issues/533
+      describe("adding a 1 at the beginning", function() {
+
+        beforeEach(function() {
+          input.val("+1880").keyup();
+        });
+
+        it("changes to US flag", function() {
+          expect(getSelectedFlagElement()).toHaveClass("us");
+        });
+
+      });
+
+    });
+
   });
 
 
@@ -104,7 +131,7 @@ describe("using input: ", function() {
       input = null;
     });
 
-    describe("selecting Canada and then typing a toll free number", function() {
+    describe("selecting Canada and then typing a regionless number", function() {
 
       beforeEach(function() {
         selectFlag("ca");
