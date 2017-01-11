@@ -6,6 +6,7 @@
 /.sass-cache/
 /.grunt/
 /tmp/
+/vendor/
 /.idea/
 *.iml
 .DS_Store
