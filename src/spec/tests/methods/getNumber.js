@@ -60,7 +60,8 @@ describe("getNumber: ", function() {
     describe("typing a full international number for Anguilla", function() {
 
       beforeEach(function() {
-        input.val("+12642351234").keyup();
+        // important that this test contains formatting because that caused a bug before
+        input.val("+1 264-235-1234").keyup();
       });
 
       it("getNumber returns the correct number", function() {

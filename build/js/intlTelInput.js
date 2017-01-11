@@ -871,11 +871,12 @@
         },
         // get the input val, adding the dial code if separateDialCode is enabled
         _getFullNumber: function() {
-            var val = this.telInput.val(), dialCode = this.selectedCountryData.dialCode, prefix, normalizedVal = val.substr(0, 2) == "+1" ? val.substr(2) : val;
+            var val = $.trim(this.telInput.val()), dialCode = this.selectedCountryData.dialCode, prefix, numericVal = this._getNumeric(val), // normalized means ensure starts with a 1, so we can match against the full dial code
+            normalizedVal = numericVal.charAt(0) == "1" ? numericVal : "1" + numericVal;
             if (this.options.separateDialCode) {
                 prefix = "+" + dialCode;
-            } else if (dialCode && dialCode.charAt(0) == "1" && dialCode.length == 4 && dialCode.substr(1) != normalizedVal.substr(0, 3)) {
-                // if we're dealing with a NANP country, ensure the number includes the area code
+            } else if (val.charAt(0) != "+" && val.charAt(0) != "1" && dialCode && dialCode.charAt(0) == "1" && dialCode.length == 4 && dialCode != normalizedVal.substr(0, 4)) {
+                // if the user has entered a national NANP number, then ensure it includes the full dial code / area code
                 prefix = dialCode.substr(1);
             } else {
                 prefix = "";
