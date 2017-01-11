@@ -1,5 +1,6 @@
 {
   "name": "jackocnr/intl-tel-input",
+  "version": "10.0.4",
   "description": "A jQuery plugin for entering international telephone numbers",
   "keywords": [
     "international",
