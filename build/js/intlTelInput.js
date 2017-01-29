@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v10.0.7
+ * International Telephone Input v10.0.8
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -1092,7 +1092,7 @@
         }
     };
     // version
-    $.fn[pluginName].version = "10.0.7";
+    $.fn[pluginName].version = "10.0.8";
     // default options
     $.fn[pluginName].defaults = defaults;
     // Array of country objects for the flag dropdown.
