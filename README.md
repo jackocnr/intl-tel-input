@@ -40,8 +40,8 @@ You can view a live demo and some examples of how to use the various options her
 ## Browser Compatibility
 | Chrome | FF  | Safari | IE  | Chrome Android | Mobile Safari | IE Mob |
 | :----: | :-: | :----: | :-: | :------------: | :-----------: | :----: |
-|    ✓   |  ✓  |    ✓   |  8  |      ✓         |       ✓       |     ✓  |
-
+|    ✓   |  ✓  |    ✓   | 9\* |      ✓         |       ✓       |     ✓  |
+* In v11.0.0 we dropped support for IE8, because it is no longer supported by any version of Windows - see https://www.xfive.co/blog/stop-supporting-ie10-ie9-ie8/
 
 ## Getting Started
 1. Download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest), or better yet install it with [npm](https://www.npmjs.com/) or [Bower](http://bower.io)
