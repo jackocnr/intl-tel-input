@@ -144,7 +144,7 @@
             // build instance country array
             this.countries = [];
             for (i = 0; i < allCountries.length; i++) {
-                if (processFunc(countryArray.indexOf(allCountries[i].iso2))) {
+                if (processFunc($.inArray(allCountries[i].iso2, countryArray))) {
                     this.countries.push(allCountries[i]);
                 }
             }
@@ -651,7 +651,7 @@
             var dialCode = this._getDialCode(number), countryCode = null, numeric = this._getNumeric(number);
             if (dialCode) {
                 // check if one of the matching countries is already selected
-                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && countryCodes.indexOf(this.selectedCountryData.iso2) > -1, // check if the given number contains a NANP area code i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
+                var countryCodes = this.countryCodes[this._getNumeric(dialCode)], alreadySelected = this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) > -1, // check if the given number contains a NANP area code i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
                 isNanpAreaCode = dialCode == "+1" && numeric.length >= 4, nanpSelected = this.selectedCountryData && this.selectedCountryData.dialCode == "1";
                 // only update the flag if:
                 // A) NOT (we currently have a NANP flag selected, and the number is a regionlessNanp)
@@ -684,7 +684,7 @@
             var numeric = this._getNumeric(number);
             if (numeric.charAt(0) == "1") {
                 var areaCode = numeric.substr(1, 3);
-                return regionlessNanpNumbers.indexOf(areaCode) > -1;
+                return $.inArray(areaCode, regionlessNanpNumbers) > -1;
             }
             return false;
         },
