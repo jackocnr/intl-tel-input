@@ -1335,9 +1335,5 @@ $.fn[pluginName].loadUtils = function(path, utilsScriptDeferred) {
   }
 };
 
-
-// version
-$.fn[pluginName].version = "<%= version %>";
-
 // default options
 $.fn[pluginName].defaults = defaults;
