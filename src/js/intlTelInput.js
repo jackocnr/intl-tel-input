@@ -100,6 +100,9 @@ Plugin.prototype = {
     this.autoCountryDeferred = new $.Deferred();
     this.utilsScriptDeferred = new $.Deferred();
 
+    // in various situations there could be no country selected initially, but we need to be able to assume this variable exists
+    this.selectedCountryData = {};
+
     // process all the data: onlyCountries, excludeCountries, preferredCountries etc
     this._processCountryData();
 
@@ -763,7 +766,7 @@ Plugin.prototype = {
   _updateFlagFromNumber: function(number) {
     // if we're in nationalMode and we already have US/Canada selected, make sure the number starts with a +1 so _getDialCode will be able to extract the area code
     // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag from the number), that means we're initialising the plugin with a number that already has a dial code, so fine to ignore this bit
-    if (number && this.options.nationalMode && this.selectedCountryData && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
+    if (number && this.options.nationalMode && this.selectedCountryData.dialCode == "1" && number.charAt(0) != "+") {
       if (number.charAt(0) != "1") {
         number = "1" + number;
       }
@@ -777,10 +780,10 @@ Plugin.prototype = {
     if (dialCode) {
       // check if one of the matching countries is already selected
       var countryCodes = this.countryCodes[this._getNumeric(dialCode)],
-        alreadySelected = (this.selectedCountryData && $.inArray(this.selectedCountryData.iso2, countryCodes) > -1),
+        alreadySelected = ($.inArray(this.selectedCountryData.iso2, countryCodes) > -1),
         // check if the given number contains a NANP area code i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
         isNanpAreaCode = (dialCode == "+1" && numeric.length >= 4),
-        nanpSelected = (this.selectedCountryData && this.selectedCountryData.dialCode == "1");
+        nanpSelected = (this.selectedCountryData.dialCode == "1");
 
       // only update the flag if:
       // A) NOT (we currently have a NANP flag selected, and the number is a regionlessNanp)
@@ -851,7 +854,7 @@ Plugin.prototype = {
   // select the given flag, update the placeholder and the active list item
   // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
   _setFlag: function(countryCode) {
-    var prevCountry = (this.selectedCountryData && this.selectedCountryData.iso2) ? this.selectedCountryData : {};
+    var prevCountry = (this.selectedCountryData.iso2) ? this.selectedCountryData : {};
 
     // do this first as it will throw an error and stop if countryCode is invalid
     this.selectedCountryData = (countryCode) ? this._getCountryData(countryCode, false, false) : {};
@@ -894,7 +897,7 @@ Plugin.prototype = {
   // update the input placeholder to an example number from the currently selected country
   _updatePlaceholder: function() {
     var shouldSetPlaceholder = (this.options.autoPlaceholder === "aggressive") || (!this.hadInitialPlaceholder && (this.options.autoPlaceholder === true || this.options.autoPlaceholder === "polite"));
-    if (window.intlTelInputUtils && shouldSetPlaceholder && this.selectedCountryData) {
+    if (window.intlTelInputUtils && shouldSetPlaceholder) {
       var numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType],
         placeholder = (this.selectedCountryData.iso2) ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
 
@@ -1198,8 +1201,7 @@ Plugin.prototype = {
 
   // get the country data for the currently selected flag
   getSelectedCountryData: function() {
-    // if this is undefined, the plugin will return it's instance instead, so in that case an empty object makes more sense
-    return this.selectedCountryData || {};
+    return this.selectedCountryData;
   },
 
 
