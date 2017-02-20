@@ -22,6 +22,7 @@
     "jquery": ">=1.7"
   },
   "devDependencies": {
+    "evenizer": "^0.1.17",
     "grunt": "^1.0.1",
     "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.2.0",
