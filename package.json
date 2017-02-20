@@ -24,6 +24,7 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-bump": "^0.8.0",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-imagemin": "^1.0.1",
     "grunt-contrib-jasmine": "^1.0.3",
     "grunt-contrib-jshint": "^1.0.0",
