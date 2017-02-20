@@ -55,7 +55,6 @@
     "build:css": "grunt css",
     "build:img": "grunt img",
     "watch": "grunt watch",
-    "postinstall": "grunt build",
     "prepublish": "grunt build"
   }
 }
