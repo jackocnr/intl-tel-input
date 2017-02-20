@@ -45,6 +45,9 @@
   },
   "scripts": {
     "test": "grunt travis",
-    "build": "grunt build"
+    "build": "grunt build",
+    "build:js": "grunt js",
+    "build:css": "grunt sass",
+    "build:img": "grunt img"
   }
 }
