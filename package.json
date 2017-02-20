@@ -49,6 +49,7 @@
     "build:js": "grunt js",
     "build:css": "grunt css",
     "build:img": "grunt img",
-    "watch": "grunt watch"
+    "watch": "grunt watch",
+    "postinstall": "grunt build"
   }
 }
