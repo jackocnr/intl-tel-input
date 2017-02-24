@@ -1,7 +1,3 @@
-build/css
-build/img
-build/js/*.js
-!build/js/utils.js
 /bower_components/
 /node_modules/
 /lib/*
