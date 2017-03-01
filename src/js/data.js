@@ -2,7 +2,7 @@
 
 // Here is the criteria for the plugin to support a given country/territory
 // - It has an iso2 code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-// - It has a country calling code: https://en.wikipedia.org/wiki/List_of_country_calling_codes
+// - It has it's own country calling code (it is not a sub-region of another country): https://en.wikipedia.org/wiki/List_of_country_calling_codes
 // - It has a flag in the region-flags project: https://github.com/behdad/region-flags/tree/gh-pages/png
 // - It is supported by libphonenumber (it must be listed here): https://github.com/googlei18n/libphonenumber/blob/master/resources/ShortNumberMetadata.xml
 
