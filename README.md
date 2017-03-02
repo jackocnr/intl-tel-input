@@ -54,8 +54,8 @@ Note: In v11.0.0 we dropped support for IE8, because it is no longer supported b
 3. Override the path to flags.png in your CSS
   ```css
   .iti-flag {background-image: url("path/to/flags.png");}
+   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {background-image: url("path/to/flags@2x.png");}
   ```
-  _Update: you will now also need to override the path to flags@2x.png (for retina devices). The best way to do this is to copy the media query at the end of [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) and update the path._
 
 4. Add the plugin script and initialise it on your input element
   ```html
