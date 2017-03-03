@@ -13,9 +13,6 @@
     "input",
     "flag"
   ],
-  "files": [
-    "build"
-  ],
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "peerDependencies": {
@@ -54,7 +51,6 @@
     "build:js": "grunt js",
     "build:css": "grunt css",
     "build:img": "grunt img",
-    "watch": "grunt watch",
-    "prepublish": "grunt build"
+    "watch": "grunt watch"
   }
 }
