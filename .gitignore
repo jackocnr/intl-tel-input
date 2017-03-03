@@ -13,3 +13,5 @@
 
 # these files are now auto-generated
 /src/img/
+
+/src/js/intlTelInputPure.js
