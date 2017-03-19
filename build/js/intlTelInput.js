@@ -136,34 +136,24 @@
             var index = priority || 0;
             this.countryCodes[dialCode][index] = iso2;
         },
-        // filter the given countries using the process function
-        _filterCountries: function(countryArray, processFunc) {
-            var i;
-            // standardise case
-            for (i = 0; i < countryArray.length; i++) {
-                countryArray[i] = countryArray[i].toLowerCase();
-            }
-            // build instance country array
-            this.countries = [];
-            for (i = 0; i < allCountries.length; i++) {
-                if (processFunc($.inArray(allCountries[i].iso2, countryArray))) {
-                    this.countries.push(allCountries[i]);
-                }
-            }
-        },
         // process onlyCountries or excludeCountries array if present
         _processAllCountries: function() {
             if (this.options.onlyCountries.length) {
                 // process onlyCountries option
-                this._filterCountries(this.options.onlyCountries, function(arrayPos) {
-                    // if country is in array
-                    return arrayPos > -1;
+                var lowerCaseOnly = this.options.onlyCountries.map(function(country) {
+                    return country.toLowerCase();
+                });
+                this.countries = allCountries.filter(function(country) {
+                    return lowerCaseOnly.indexOf(country.iso2) > -1;
                 });
             } else if (this.options.excludeCountries.length) {
                 // process excludeCountries option
-                this._filterCountries(this.options.excludeCountries, function(arrayPos) {
-                    // if country is not in array
-                    return arrayPos == -1;
+                // lowecasing array from options
+                var lowerCaseExclude = this.options.excludeCountries.map(function(country) {
+                    return country.toLowerCase();
+                });
+                this.countries = allCountries.filter(function(country) {
+                    return lowerCaseExclude.indexOf(country.iso2) === -1;
                 });
             } else {
                 this.countries = allCountries;

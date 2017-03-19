@@ -156,15 +156,16 @@ Plugin.prototype = {
   _processAllCountries: function() {
     if (this.options.onlyCountries.length) {
         // process onlyCountries option
-        this.countries = this.options.onlyCountries
-                                        .map(function(unknownRegCountry) { return unknownRegCountry.toLowerCase(); })
-                                        .filter(function(country) { return allCountries.indexOf(country) > -1; });
+        var lowerCaseOnly = this.options.onlyCountries.map(function(country) { return country.toLowerCase(); });        
+        this.countries = allCountries.filter(function(country) {
+                                                return lowerCaseOnly.indexOf(country.iso2) > -1; 
+                                              });
     } else if (this.options.excludeCountries.length) {
         // process excludeCountries option
         // lowecasing array from options
         var lowerCaseExclude = this.options.excludeCountries.map(function(country) { return country.toLowerCase(); });
         this.countries = allCountries.filter(function(country) {
-                return lowerCaseExclude.indexOf(country) === -1; 
+                return lowerCaseExclude.indexOf(country.iso2) === -1; 
               });
     } else {
         this.countries = allCountries;
