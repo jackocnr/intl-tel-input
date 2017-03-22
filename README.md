@@ -41,6 +41,7 @@ You can view a live demo and some examples of how to use the various options her
 | Chrome | FF  | Safari | IE  | Chrome Android | Mobile Safari | IE Mob |
 | :----: | :-: | :----: | :-: | :------------: | :-----------: | :----: |
 |    ✓   |  ✓  |    ✓   |  9  |      ✓         |       ✓       |     ✓  |
+
 Note: In v11.0.0 we dropped support for IE8, because it is no longer supported by any version of Windows - see https://www.xfive.co/blog/stop-supporting-ie10-ie9-ie8/
 
 ## Getting Started
