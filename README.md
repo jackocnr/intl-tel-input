@@ -54,8 +54,13 @@ Note: In v11.0.0 we dropped support for IE8, because it is no longer supported b
 
 3. Override the path to flags.png in your CSS
   ```css
-  .iti-flag {background-image: url("path/to/flags.png");}
-   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {background-image: url("path/to/flags@2x.png");}
+  .iti-flag {
+    background-image: url("path/to/flags.png");
+    
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+      background-image: url("path/to/flags@2x.png");
+    }
+  }
   ```
 
 4. Add the plugin script and initialise it on your input element
