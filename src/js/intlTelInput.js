@@ -155,20 +155,21 @@ Plugin.prototype = {
    // process onlyCountries or excludeCountries array if present
   _processAllCountries: function() {
     if (this.options.onlyCountries.length) {
-        // process onlyCountries option
-        var lowerCaseOnly = this.options.onlyCountries.map(function(country) { return country.toLowerCase(); });        
-        this.countries = allCountries.filter(function(country) {
-                                                return lowerCaseOnly.indexOf(country.iso2) > -1; 
-                                              });
+      var lowerCaseOnlyCountries = this.options.onlyCountries.map(function(country) {
+        return country.toLowerCase();
+      });
+      this.countries = allCountries.filter(function(country) {
+        return lowerCaseOnlyCountries.indexOf(country.iso2) > -1;
+      });
     } else if (this.options.excludeCountries.length) {
-        // process excludeCountries option
-        // lowecasing array from options
-        var lowerCaseExclude = this.options.excludeCountries.map(function(country) { return country.toLowerCase(); });
-        this.countries = allCountries.filter(function(country) {
-                return lowerCaseExclude.indexOf(country.iso2) === -1; 
-              });
+      var lowerCaseExcludeCountries = this.options.excludeCountries.map(function(country) {
+        return country.toLowerCase();
+      });
+      this.countries = allCountries.filter(function(country) {
+        return lowerCaseExcludeCountries.indexOf(country.iso2) === -1;
+      });
     } else {
-        this.countries = allCountries;
+      this.countries = allCountries;
     }
   },
 
