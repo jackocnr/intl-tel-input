@@ -841,11 +841,11 @@
             if (rawDial) {
                 dialCode = rawDial[0];
                 // we will construct array of up to four digits like ['1', '2', '3', '4']
-                var digits = rawDial[1].replace(/\D/, "").split("");
+                var digits = rawDial[1].replace(/\D*/g, "").split("");
                 while (digits.length && !(digits.join("") in this.countryCodes)) {
                     var lastDigit = digits.pop();
                     // remove this digit from dial code together with everything non-digit around
-                    var re = new RegExp("D*" + lastDigit + "D*$");
+                    var re = new RegExp("\\D*" + lastDigit + "\\D*$");
                     dialCode = dialCode.replace(re, "");
                 }
                 // cleanup
