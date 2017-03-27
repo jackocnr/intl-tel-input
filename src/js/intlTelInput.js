@@ -1015,25 +1015,20 @@ Plugin.prototype = {
   _getDialCode: function(number) {
     var dialCode = "";
     // only interested in international numbers (starting with a plus)
-    if (number.charAt(0) == "+") {
-      var numericChars = "";
-      // iterate over chars
-      for (var i = 0; i < number.length; i++) {
-        var c = number.charAt(i);
-        // if char is number
-        if ($.isNumeric(c)) {
-          numericChars += c;
-          // if current numericChars make a valid dial code
-          if (this.countryCodes[numericChars]) {
-            // store the actual raw string (useful for matching later)
-            dialCode = number.substr(0, i + 1);
-          }
-          // longest dial code is 4 chars
-          if (numericChars.length == 4) {
-            break;
-          }
-        }
+    // longest dial code is 4 digits, and we chasing for longest as best match
+    var rawDial = /^\+(\d[\D]*\d?[\D]*\d?[\D]*\d?)/.exec(number);
+    if (rawDial) {
+      dialCode = rawDial[0];
+      // we will construct array of up to four digits like ['1', '2', '3', '4']
+      var digits = rawDial[1].replace(/\D/, '').split('');
+      while (digits.length && !(digits.join('') in  this.countryCodes)) {
+        var lastDigit = digits.pop();
+        // remove this digit from dial code together with everything non-digit around
+        var re = new RegExp("\D*" + lastDigit + "\D*$"); 
+        dialCode = dialCode.replace(re, '');
       }
+      // cleanup
+      if (!digits.length) dialCode = "";
     }
     return dialCode;
   },
@@ -1063,7 +1058,8 @@ Plugin.prototype = {
   _beforeSetNumber: function(number) {
     if (this.options.separateDialCode) {
       var dialCode = this._getDialCode(number);
-      if (dialCode) {
+      // _getDialCode returns empty string if there is no dialCode
+      if (dialCode && dialCode !== "") {
         // US dialCode is "+1", which is what we want
         // CA dialCode is "+1 123", which is wrong - should be "+1" (as it has multiple area codes)
         // AS dialCode is "+1 684", which is what we want
@@ -1073,8 +1069,7 @@ Plugin.prototype = {
         }
         // a lot of numbers will have a space separating the dial code and the main number, and some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get rid of it
         // NOTE: don't just trim all non-numerics as may want to preserve an open parenthesis etc
-        var start = (number[dialCode.length] === " " || number[dialCode.length] === "-") ? dialCode.length + 1 : dialCode.length;
-        number = number.substr(start);
+        number = number.replace(dialCode, '').replace(/^[\s-]*/, '');
       }
     }
 
