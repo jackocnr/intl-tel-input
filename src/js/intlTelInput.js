@@ -1058,8 +1058,7 @@ Plugin.prototype = {
   _beforeSetNumber: function(number) {
     if (this.options.separateDialCode) {
       var dialCode = this._getDialCode(number);
-      // _getDialCode returns empty string if there is no dialCode
-      if (dialCode && dialCode !== "") {
+      if (dialCode) {
         // US dialCode is "+1", which is what we want
         // CA dialCode is "+1 123", which is wrong - should be "+1" (as it has multiple area codes)
         // AS dialCode is "+1 684", which is what we want
