@@ -1016,16 +1016,15 @@ Plugin.prototype = {
     var dialCode = "";
     // only interested in international numbers (starting with a plus)
     // longest dial code is 4 digits, and we chasing for longest as best match
-    var rawDial = /^\+(\d[\D]*\d?[\D]*\d?[\D]*\d?)/.exec(number);
+    var rawDial = /^\+((\d)[\D]*(\d)?[\D]*(\d)?[\D]*(\d)?)/.exec(number);
     if (rawDial) {
       dialCode = rawDial[0];
       // we will construct array of up to four digits like ['1', '2', '3', '4']
-      var digits = rawDial[1].replace(/\D*/g, '').split('');
+      var digits = rawDial.slice(2);
       while (digits.length && !(digits.join('') in  this.countryCodes)) {
         var lastDigit = digits.pop();
         // remove this digit from dial code together with everything non-digit around
-        var re = new RegExp("\\D*" + lastDigit + "\\D*$"); 
-        dialCode = dialCode.replace(re, '');
+        dialCode = dialCode.replace(/\D*\d\D*$/, '');
       }
       // cleanup
       if (!digits.length) dialCode = "";
