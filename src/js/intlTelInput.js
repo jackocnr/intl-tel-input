@@ -62,7 +62,7 @@ function Plugin(element, options) {
   this.ns = "." + pluginName + (id++);
 
   // Chrome, FF, Safari, IE9+
-  this.isGoodBrowser = Boolean(element.setSelectionRange);
+  this.isGoodBrowser = Boolean(this.telInput[0].setSelectionRange);
 
   this.hadInitialPlaceholder = Boolean($(element).attr("placeholder"));
 }
