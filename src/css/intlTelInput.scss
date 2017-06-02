@@ -191,6 +191,7 @@ $mobilePopupMargin: 30px;
 
     // each country item in dropdown (we must have separate class to differentiate from dividers)
     .country {
+      margin: 0;
       // Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines
       padding: 5px 10px;
       // the dial codes after the country names are greyed out
@@ -308,6 +309,7 @@ $mobilePopupMargin: 30px;
     max-height: 100%;
     width: 100%;
     .country {
+      margin: 0;
       padding: 10px 10px;
       // increase line height because dropdown copy is v likely to overflow on mobile and when it does it needs to be well spaced
       line-height: 1.5em;
