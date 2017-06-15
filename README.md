@@ -76,7 +76,7 @@ Note: In v11.0.0 we dropped support for IE8, because it is no longer supported b
 
 
 ## Recommended Usage
-We highly recommend you load the included utils.js using the `utilsScript` option. Then even when `nationalMode` or `separateDialCode` is enabled, the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly. I recommend you get, store, and set numbers exclusively in this format for simplicity.
+We highly recommend you load the included utils.js using the `utilsScript` option. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. I recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information.
 
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number it will automatically set the country and format it according to the options you specify (e.g. if you enable `nationalMode` it will automatically remove the international dial code for you).
 
