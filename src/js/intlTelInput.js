@@ -566,6 +566,7 @@ Plugin.prototype = {
 
   // show the dropdown
   _showDropdown: function() {
+    
     this._setDropdownPosition();
 
     // update highlighting and scroll to active list item
@@ -920,6 +921,8 @@ Plugin.prototype = {
 
   // close the dropdown and unbind any listeners
   _closeDropdown: function() {
+
+
     this.countryList.addClass("hide");
 
     // update the arrow
@@ -938,6 +941,9 @@ Plugin.prototype = {
       }
       this.dropdown.detach();
     }
+
+    this._triggerCloseCountryDropdown();
+
   },
 
 
@@ -1085,6 +1091,11 @@ Plugin.prototype = {
   // trigger the 'countrychange' event
   _triggerCountryChange: function() {
     this.telInput.trigger("countrychange", this.selectedCountryData);
+  },
+
+  // trigger the 'close:countrydropdown' event
+  _triggerCloseCountryDropdown: function() {
+    this.telInput.trigger("close:countrydropdown");
   },
 
 

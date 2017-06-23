@@ -3,6 +3,7 @@
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
+
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
 (function(factory) {
     if (typeof define === "function" && define.amd) {
@@ -483,6 +484,7 @@
         },
         // show the dropdown
         _showDropdown: function() {
+            //findme
             this._setDropdownPosition();
             // update highlighting and scroll to active list item
             var activeListItem = this.countryList.children(".active");
@@ -762,6 +764,7 @@
         },
         // close the dropdown and unbind any listeners
         _closeDropdown: function() {
+            //findme
             this.countryList.addClass("hide");
             // update the arrow
             this.selectedFlagInner.children(".iti-arrow").removeClass("up");
@@ -778,6 +781,7 @@
                 }
                 this.dropdown.detach();
             }
+            this._triggerCloseCountryDropdown();
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element, middle) {
@@ -895,6 +899,10 @@
         // trigger the 'countrychange' event
         _triggerCountryChange: function() {
             this.telInput.trigger("countrychange", this.selectedCountryData);
+        },
+        //findme
+        _triggerCloseCountryDropdown: function() {
+            this.telInput.trigger("close:countrydropdown");
         },
         /**************************
    *  SECRET PUBLIC METHODS
