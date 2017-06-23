@@ -929,7 +929,7 @@ var allCountries = [
     "250"
   ],
   [
-    "Saint Barthélemy (Saint-Barthélemy)",
+    "Saint Barthélemy",
     "bl",
     "590",
     1
@@ -1230,7 +1230,7 @@ var allCountries = [
     "84"
   ],
   [
-    "Wallis and Futuna",
+    "Wallis and Futuna (Wallis-et-Futuma)",
     "wf",
     "681"
   ],
