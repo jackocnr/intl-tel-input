@@ -27,8 +27,14 @@ describe("close:countrydropdown event:", function() {
 
     it("clicking outside the dropdown to close it triggers the event", function() {
       openCountryDropDown();
-      $("<h1>").click();
-      expect(spy).not.toHaveBeenTriggered();
+      $("<body>").click();
+      expect(spy).toHaveBeenTriggered();
+    });
+
+    it("pressing esc triggers the event", function() {
+      openCountryDropDown();
+      triggerKeyOnBody("ESC");
+      expect(spy).toHaveBeenTriggered();
     });
 
     it("selecting another country triggers the event", function() {

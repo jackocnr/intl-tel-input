@@ -83,7 +83,7 @@ var selectFlag = function(countryCode, i) {
 };
 
 var openCountryDropDown = function() {
-    $(".selected-flag").click();
+    getSelectedFlagContainer().click();
 };
 
 var putCursorAtEnd = function() {
