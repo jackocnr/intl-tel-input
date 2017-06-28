@@ -6,12 +6,12 @@ describe("close:countrydropdown event:", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").appendTo("body");
     spy = spyOnEvent(input, 'close:countrydropdown');
   });
 
   afterEach(function() {
-    input.intlTelInput("destroy");
+    input.intlTelInput("destroy").remove();
     input = null;
   });
 
@@ -27,7 +27,7 @@ describe("close:countrydropdown event:", function() {
 
     it("clicking outside the dropdown to close it triggers the event", function() {
       openCountryDropDown();
-      $("<body>").click();
+      input.click();
       expect(spy).toHaveBeenTriggered();
     });
 
