@@ -779,7 +779,7 @@
                 }
                 this.dropdown.detach();
             }
-            this._triggerCloseCountryDropdown();
+            this.telInput.trigger("close:countrydropdown");
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element, middle) {
@@ -897,10 +897,6 @@
         // trigger the 'countrychange' event
         _triggerCountryChange: function() {
             this.telInput.trigger("countrychange", this.selectedCountryData);
-        },
-        // trigger the 'close:countrydropdown' event
-        _triggerCloseCountryDropdown: function() {
-            this.telInput.trigger("close:countrydropdown");
         },
         /**************************
    *  SECRET PUBLIC METHODS
