@@ -941,9 +941,8 @@ Plugin.prototype = {
       }
       this.dropdown.detach();
     }
-
-    this._triggerCloseCountryDropdown();
-
+    
+    this.telInput.trigger("close:countrydropdown");
   },
 
 
@@ -1092,14 +1091,6 @@ Plugin.prototype = {
   _triggerCountryChange: function() {
     this.telInput.trigger("countrychange", this.selectedCountryData);
   },
-
-  // trigger the 'close:countrydropdown' event
-  _triggerCloseCountryDropdown: function() {
-    this.telInput.trigger("close:countrydropdown");
-  },
-
-
-
   /**************************
    *  SECRET PUBLIC METHODS
    **************************/
