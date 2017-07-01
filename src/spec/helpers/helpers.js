@@ -82,6 +82,10 @@ var selectFlag = function(countryCode, i) {
   getListElement(i).find("li[data-country-code='" + countryCode + "']").click();
 };
 
+var openCountryDropDown = function() {
+    getSelectedFlagContainer().click();
+};
+
 var putCursorAtEnd = function() {
   var len = input.val().length;
   selectInputChars(len, len);
