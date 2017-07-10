@@ -4,6 +4,8 @@ var pluginName = "intlTelInput",
   defaults = {
     // whether or not to allow the dropdown
     allowDropdown: true,
+    // should tab key be able to toggle to flag
+    allowTabOnFlag: true,
     // if there is just a dial code in the input: remove it on blur, and re-add it on focus
     autoHideDialCode: true,
     // add a placeholder in the input with an example number for the selected country
@@ -241,8 +243,10 @@ Plugin.prototype = {
     }
 
     if (this.options.allowDropdown) {
-      // make element focusable and tab naviagable
-      selectedFlag.attr("tabindex", "0");
+      if (this.options.allowTabOnFlag) {
+        // make element focusable and tab navigable
+        selectedFlag.attr("tabindex", "0");
+      }
       // CSS triangle
       $("<div>", {
         "class": "iti-arrow"
