@@ -1230,7 +1230,7 @@ var allCountries = [
     "84"
   ],
   [
-    "Wallis and Futuna (Wallis-et-Futuma)",
+    "Wallis and Futuna (Wallis-et-Futuna)",
     "wf",
     "681"
   ],
