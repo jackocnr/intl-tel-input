@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Lookup user's country</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1475869934842">
-    <link rel="stylesheet" href="../../build/css/demo.css?1475869934842">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1501227254404">
+    <link rel="stylesheet" href="../../build/css/demo.css?1501227254404">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -32,13 +32,14 @@
     <pre><code class="language-javascript">$(&quot;#phone&quot;).intlTelInput({
   initialCountry: &quot;auto&quot;,
   geoIpLookup: function(callback) {
-    $.get(&#39;http://ipinfo.io&#39;, function() {}, &quot;jsonp&quot;).always(function(resp) {
+    $.get(&#39;https://ipinfo.io&#39;, function() {}, &quot;jsonp&quot;).always(function(resp) {
       var countryCode = (resp &amp;&amp; resp.country) ? resp.country : &quot;&quot;;
       callback(countryCode);
     });
   },
   utilsScript: &quot;../../build/js/utils.js&quot; // just for formatting/placeholders etc
-});</code></pre>
+});
+</code></pre>
 
     <h2>Result</h2>
     <div id="result">
@@ -47,7 +48,7 @@
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1475869934842"></script>
-    <script src="../js/defaultCountryIp.js?1475869934842"></script>
+    <script src="../../build/js/intlTelInput.js?1501227254404"></script>
+    <script src="../js/defaultCountryIp.js?1501227254404"></script>
   </body>
 </html>
