@@ -18,6 +18,8 @@ var pluginName = "intlTelInput",
     formatOnDisplay: true,
     // geoIp lookup function
     geoIpLookup: null,
+    // inject a hidden input with this name, and on submit, populate it with the result of getNumber
+    hiddenInput: "",
     // initial country
     initialCountry: "",
     // don't insert international dial codes
@@ -278,6 +280,13 @@ Plugin.prototype = {
       // a little hack so we don't break anything
       this.countryListItems = $();
     }
+
+    if (this.options.hiddenInput) {
+      this.hiddenInput = $("<input>", {
+        type: "hidden",
+        name: this.options.hiddenInput,
+      }).insertBefore(this.telInput);
+    }
   },
 
 
@@ -352,6 +361,23 @@ Plugin.prototype = {
 
     if (this.options.allowDropdown) {
       this._initDropdownListeners();
+    }
+
+    if (this.hiddenInput) {
+      this._initHiddenInputListener();
+    }
+  },
+
+
+  // update hidden input on form submit
+  _initHiddenInputListener: function() {
+    var that = this;
+    
+    var form = this.telInput.closest("form");
+    if (form.length) {
+      form.submit(function() {
+        that.hiddenInput.val(that.getNumber());
+      });
     }
   },
 

@@ -143,6 +143,10 @@ geoIpLookup: function(callback) {
 _Note that the callback must still be called in the event of an error, hence the use of `always` in this example._  
 _Tip: store the result in a cookie to avoid repeat lookups!_
 
+**hiddenInput**  
+Type: `String` Default: `""`  
+Add a hidden input with the given name, and on submit, populate it with the full international number (using `getNumber`). This is a quick way for people using non-ajax forms to get the full international number, even when `nationalMode` is enabled. _Note: requires the main telephone input to be inside a form element, as this feature works by listening for the submit event on the closest form element_
+
 **initialCountry**  
 Type: `String` Default: `""`  
 Set the initial country selection by specifying it's country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](http://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/default-country-ip.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
