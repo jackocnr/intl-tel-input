@@ -145,7 +145,7 @@ _Tip: store the result in a cookie to avoid repeat lookups!_
 
 **hiddenInput**  
 Type: `String` Default: `""`  
-Add a hidden input with the given name, and on submit, populate it with the full international number (using `getNumber`). This is a quick way for people using non-ajax forms to get the full international number, even when `nationalMode` is enabled. _Note: requires the main telephone input to be inside a form element, as this feature works by listening for the submit event on the closest form element_
+Add a hidden input with the given name, and on submit, populate it with the full international number (using `getNumber`). This is a quick way for people using non-ajax forms to get the full international number, even when `nationalMode` is enabled. _Note: requires the main telephone input to be inside a form element, as this feature works by listening for the submit event on the closest form element._
 
 **initialCountry**  
 Type: `String` Default: `""`  
