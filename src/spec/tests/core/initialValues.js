@@ -56,16 +56,53 @@ describe("initial values:", function() {
 
 
 
-  describe("init vanilla plugin on input containing valid toll-free (regionless) NANP number with intl dial code", function() {
+  describe("input containing valid regionless NANP number with intl dial code", function() {
 
     beforeEach(function() {
       input = $("<input value='+1 800 123 1234'>");
-      input.intlTelInput();
     });
 
-    it("does not set the selected flag or the active list item", function() {
-      expect(getSelectedFlagElement().attr("class")).toBe("iti-flag");
-      expect(getActiveListItem().length).toEqual(0);
+    describe("init plugin with nationalMode enabled", function() {
+
+      beforeEach(function() {
+        input.intlTelInput();
+      });
+
+      it("defaults to US flag", function() {
+        expect(getSelectedFlagElement()).toHaveClass("us");
+      });
+
+    });
+
+    describe("init plugin with nationalMode enabled and an initialCountry", function() {
+
+      var initialCountry = "ca";
+
+      beforeEach(function() {
+        input.intlTelInput({
+          initialCountry: initialCountry
+        });
+      });
+
+      it("defaults to the initialCountry flag", function() {
+        expect(getSelectedFlagElement()).toHaveClass(initialCountry);
+      });
+
+    });
+
+    describe("init plugin with nationalMode disabled", function() {
+
+      beforeEach(function() {
+        input.intlTelInput({
+          nationalMode: false
+        });
+      });
+
+      it("does not set the selected flag or the active list item", function() {
+        expect(getSelectedFlagElement().attr("class")).toBe("iti-flag");
+        expect(getActiveListItem().length).toEqual(0);
+      });
+
     });
 
   });
