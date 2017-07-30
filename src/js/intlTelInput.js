@@ -584,6 +584,8 @@ Plugin.prototype = {
 
     // update the arrow
     this.selectedFlagInner.children(".iti-arrow").addClass("up");
+
+    this.telInput.trigger("open:countrydropdown");
   },
 
 

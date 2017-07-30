@@ -495,6 +495,7 @@
             this._bindDropdownListeners();
             // update the arrow
             this.selectedFlagInner.children(".iti-arrow").addClass("up");
+            this.telInput.trigger("open:countrydropdown");
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
