@@ -272,8 +272,9 @@
         // 4. picking the first country
         _setInitialState: function() {
             var val = this.telInput.val();
-            // if we already have a dial code, and it's not a regionlessNanp we can go ahead and set the flag, else fall back to default
-            if (this._getDialCode(val) && !this._isRegionlessNanp(val)) {
+            // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the flag, else fall back to the default country
+            // UPDATE: actually we do want to set the flag for a regionlessNanp in one situation: if we're in nationalMode and there's no initialCountry - otherwise we lose the +1 and we're left with an invalid number
+            if (this._getDialCode(val) && (!this._isRegionlessNanp(val) || this.options.nationalMode && !this.options.initialCountry)) {
                 this._updateFlagFromNumber(val);
             } else if (this.options.initialCountry !== "auto") {
                 // see if we should select a flag

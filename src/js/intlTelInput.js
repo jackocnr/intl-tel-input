@@ -47,11 +47,13 @@ var pluginName = "intlTelInput",
   // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
   regionlessNanpNumbers = ["800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889"];
 
+
 // keep track of if the window.load event has fired as impossible to check after the fact
 $(window).on("load", function() {
   // UPDATE: use a public static field so we can fudge it in the tests
   $.fn[pluginName].windowLoaded = true;
 });
+
 
 function Plugin(element, options) {
   this.telInput = $(element);
@@ -66,6 +68,7 @@ function Plugin(element, options) {
 
   this.hadInitialPlaceholder = Boolean($(element).attr("placeholder"));
 }
+
 
 Plugin.prototype = {
 
@@ -308,8 +311,9 @@ Plugin.prototype = {
   _setInitialState: function() {
     var val = this.telInput.val();
 
-    // if we already have a dial code, and it's not a regionlessNanp we can go ahead and set the flag, else fall back to default
-    if (this._getDialCode(val) && !this._isRegionlessNanp(val)) {
+    // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the flag, else fall back to the default country
+    // UPDATE: actually we do want to set the flag for a regionlessNanp in one situation: if we're in nationalMode and there's no initialCountry - otherwise we lose the +1 and we're left with an invalid number
+    if (this._getDialCode(val) && (!this._isRegionlessNanp(val) || (this.options.nationalMode && !this.options.initialCountry))) {
       this._updateFlagFromNumber(val);
     } else if (this.options.initialCountry !== "auto") {
       // see if we should select a flag
@@ -1322,6 +1326,7 @@ $.fn[pluginName].loadUtils = function(path, utilsScriptDeferred) {
     utilsScriptDeferred.resolve();
   }
 };
+
 
 // default options
 $.fn[pluginName].defaults = defaults;
