@@ -126,8 +126,8 @@ module.exports = function(grunt) {
         data: function() {
           return {
             time: time,
-            title: "Submitting the full international number when in nationalMode",
-            desc: "If you're submitting the form using Ajax, simply use getNumber to get the number before sending it. If you're using the standard form POST method, you should use a separate hidden input which you update on submit to send the full international number. Try submitting a valid number below, and then check the 'phone-full' parameter in the URL.",
+            title: "Submitting the full international number using a hidden input",
+            desc: "If you're submitting the form using Ajax, simply use getNumber to get the full international number before sending it. If you're using the standard form POST method, you can use the hiddenInput option to automatically create a hidden input that gets populated with the full international number on submit. Try submitting a valid number below, and then check the 'full_phone' parameter in the URL.",
             stylesheet: '',
             markup: grunt.file.read('examples/partials/hiddenInput.html'),
             code: grunt.file.read('examples/js/hiddenInput.js'),

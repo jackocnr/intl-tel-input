@@ -2,10 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Example: Submitting the full international number when in nationalMode</title>
+    <title>Example: Submitting the full international number using a hidden input</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1501227254404">
-    <link rel="stylesheet" href="../../build/css/demo.css?1501227254404">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1501407258255">
+    <link rel="stylesheet" href="../../build/css/demo.css?1501407258255">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -22,38 +22,35 @@
 
   <body>
     <a href="/">Back</a>
-    <h1>Example: Submitting the full international number when in nationalMode</h1>
-    <p>If you're submitting the form using Ajax, simply use getNumber to get the number before sending it. If you're using the standard form POST method, you should use a separate hidden input which you update on submit to send the full international number. Try submitting a valid number below, and then check the 'phone-full' parameter in the URL.</p>
+    <h1>Example: Submitting the full international number using a hidden input</h1>
+    <p>If you're submitting the form using Ajax, simply use getNumber to get the full international number before sending it. If you're using the standard form POST method, you can use the hiddenInput option to automatically create a hidden input that gets populated with the full international number on submit. Try submitting a valid number below, and then check the 'full_phone' parameter in the URL.</p>
 
     <h2>Markup</h2>
     <pre><code class="language-markup">&lt;form&gt;
   &lt;input id=&quot;phone&quot; type=&quot;tel&quot; name=&quot;phone&quot;&gt;
-  &lt;input id=&quot;hidden&quot; type=&quot;hidden&quot; name=&quot;phone-full&quot;&gt;
   &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
-&lt;/form&gt;</code></pre>
+&lt;/form&gt;
+</code></pre>
 
     <h2>Code</h2>
     <pre><code class="language-javascript">$(&quot;#phone&quot;).intlTelInput({
+  hiddenInput: &quot;full_phone&quot;,
   utilsScript: &quot;../../build/js/utils.js&quot; // just for formatting/placeholders etc
 });
-
-// update the hidden input on submit
-$(&quot;form&quot;).submit(function() {
-  $(&quot;#hidden&quot;).val($(&quot;#phone&quot;).intlTelInput(&quot;getNumber&quot;));
-});</code></pre>
+</code></pre>
 
     <h2>Result</h2>
     <div id="result">
       <form>
   <input id="phone" type="tel" name="phone">
-  <input id="hidden" type="hidden" name="phone-full">
   <button type="submit">Submit</button>
 </form>
+
     </div>
 
     <script src="../js/prism.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1501227254404"></script>
-    <script src="../js/hiddenInput.js?1501227254404"></script>
+    <script src="../../build/js/intlTelInput.js?1501407258255"></script>
+    <script src="../js/hiddenInput.js?1501407258255"></script>
   </body>
 </html>
