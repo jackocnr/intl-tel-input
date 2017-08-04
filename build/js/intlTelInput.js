@@ -1,8 +1,9 @@
 /*
- * International Telephone Input v12.0.0
+ * International Telephone Input v12.0.1
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
+
 // wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
 (function(factory) {
     if (typeof define === "function" && define.amd) {
@@ -1106,7 +1107,7 @@
     // default options
     $.fn[pluginName].defaults = defaults;
     // version
-    $.fn[pluginName].version = "12.0.0";
+    $.fn[pluginName].version = "12.0.1";
     // Array of country objects for the flag dropdown.
     // Here is the criteria for the plugin to support a given country/territory
     // - It has an iso2 code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
