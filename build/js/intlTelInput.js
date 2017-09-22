@@ -1029,6 +1029,11 @@
             if (flagChanged) {
                 this._triggerCountryChange();
             }
+        },
+        // set the placeholder number typ
+        setPlaceholderNumberType: function(type) {
+            this.options.placeholderNumberType = type;
+            this._updatePlaceholder();
         }
     };
     // using https://github.com/jquery-boilerplate/jquery-boilerplate/wiki/Extending-jQuery-Boilerplate
