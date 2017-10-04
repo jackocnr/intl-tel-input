@@ -372,7 +372,7 @@ Plugin.prototype = {
   // update hidden input on form submit
   _initHiddenInputListener: function() {
     var that = this;
-    
+
     var form = this.telInput.closest("form");
     if (form.length) {
       form.submit(function() {
@@ -1118,6 +1118,12 @@ Plugin.prototype = {
 
   // trigger the 'countrychange' event
   _triggerCountryChange: function() {
+    try{
+      this.selectedCountryData.cleanName = this.selectedCountryData.name.replace(/ *\([^)]*\) */g, "");
+    }catch(e){
+      this.selectedCountryData.cleanName = "";
+      console.log(e);
+    }
     this.telInput.trigger("countrychange", this.selectedCountryData);
   },
 
