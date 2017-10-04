@@ -919,6 +919,12 @@
         },
         // trigger the 'countrychange' event
         _triggerCountryChange: function() {
+            try {
+                this.selectedCountryData.cleanName = this.selectedCountryData.name.replace(/ *\([^)]*\) */g, "");
+            } catch (e) {
+                this.selectedCountryData.cleanName = "";
+                console.log(e);
+            }
             this.telInput.trigger("countrychange", this.selectedCountryData);
         },
         /**************************
