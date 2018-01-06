@@ -65,18 +65,18 @@
     }, // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
     regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
     // keep track of if the window.load event has fired as impossible to check after the fact
-    $(window).on("load", function() {
+    window.addEventListener("load", function() {
         // UPDATE: use a public static field so we can fudge it in the tests
         $.fn[pluginName].windowLoaded = true;
     });
     function Plugin(element, options) {
         this.telInput = $(element);
-        this.options = $.extend({}, defaults, options);
+        this.options = this._extend({}, defaults, options);
         // event namespace
         this.ns = "." + pluginName + id++;
         // Chrome, FF, Safari, IE9+
         this.isGoodBrowser = Boolean(element.setSelectionRange);
-        this.hadInitialPlaceholder = Boolean($(element).attr("placeholder"));
+        this.hadInitialPlaceholder = Boolean(element.getAttribute("placeholder"));
     }
     Plugin.prototype = {
         _init: function() {
@@ -94,7 +94,7 @@
             this.isMobile = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             if (this.isMobile) {
                 // trigger the mobile dropdown css
-                $("body").addClass("iti-mobile");
+                document.body.classList.add("iti-mobile");
                 // on mobile, we want a full screen dropdown, so we must append it to the body
                 if (!this.options.dropdownContainer) {
                     this.options.dropdownContainer = "body";
@@ -122,6 +122,16 @@
         /********************
    *  PRIVATE METHODS
    ********************/
+        _extend: function(out) {
+            out = out || {};
+            for (var i = 1; i < arguments.length; i++) {
+                if (!arguments[i]) continue;
+                for (var key in arguments[i]) {
+                    if (arguments[i].hasOwnProperty(key)) out[key] = arguments[i][key];
+                }
+            }
+            return out;
+        },
         // prepare all of the country data, including onlyCountries, excludeCountries and preferredCountries options
         _processCountryData: function() {
             // process onlyCountries or excludeCountries array if present
@@ -1095,16 +1105,12 @@
             // don't do this twice! (dont just check if window.intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
             $.fn[pluginName].loadedUtilsScript = true;
             // dont use $.getScript as it prevents caching
-            $.ajax({
-                type: "GET",
-                url: path,
-                complete: function() {
-                    // tell all instances that the utils request is complete
-                    $(".intl-tel-input input").intlTelInput("handleUtils");
-                },
-                dataType: "script",
-                cache: true
-            });
+            var request = new XMLHttpRequest();
+            request.open("GET", path, true);
+            request.onloadend = function() {
+                $(".intl-tel-input input").intlTelInput("handleUtils");
+            };
+            request.send();
         } else if (utilsScriptDeferred) {
             utilsScriptDeferred.resolve();
         }
