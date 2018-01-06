@@ -51,7 +51,7 @@ var pluginName = "intlTelInput",
 
 
 // keep track of if the window.load event has fired as impossible to check after the fact
-$(window).on("load", function() {
+window.addEventListener("load", function() {
   // UPDATE: use a public static field so we can fudge it in the tests
   $.fn[pluginName].windowLoaded = true;
 });
@@ -60,7 +60,7 @@ $(window).on("load", function() {
 function Plugin(element, options) {
   this.telInput = $(element);
 
-  this.options = $.extend({}, defaults, options);
+  this.options = this._extend({}, defaults, options);
 
   // event namespace
   this.ns = "." + pluginName + (id++);
@@ -68,7 +68,7 @@ function Plugin(element, options) {
   // Chrome, FF, Safari, IE9+
   this.isGoodBrowser = Boolean(element.setSelectionRange);
 
-  this.hadInitialPlaceholder = Boolean($(element).attr("placeholder"));
+  this.hadInitialPlaceholder = Boolean(element.getAttribute("placeholder"));
 }
 
 
@@ -92,7 +92,7 @@ Plugin.prototype = {
 
     if (this.isMobile) {
       // trigger the mobile dropdown css
-      $("body").addClass("iti-mobile");
+      document.body.classList.add("iti-mobile");
 
       // on mobile, we want a full screen dropdown, so we must append it to the body
       if (!this.options.dropdownContainer) {
@@ -133,6 +133,21 @@ Plugin.prototype = {
    *  PRIVATE METHODS
    ********************/
 
+  _extend: function (out) {
+    out = out || {};
+
+    for (var i = 1; i < arguments.length; i++) {
+      if (!arguments[i])
+        continue;
+
+      for (var key in arguments[i]) {
+        if (arguments[i].hasOwnProperty(key))
+          out[key] = arguments[i][key];
+      }
+    }
+
+    return out;
+  },
 
   // prepare all of the country data, including onlyCountries, excludeCountries and preferredCountries options
   _processCountryData: function() {
@@ -372,7 +387,7 @@ Plugin.prototype = {
   // update hidden input on form submit
   _initHiddenInputListener: function() {
     var that = this;
-    
+
     var form = this.telInput.closest("form");
     if (form.length) {
       form.submit(function() {
@@ -1346,16 +1361,15 @@ $.fn[pluginName].loadUtils = function(path, utilsScriptDeferred) {
     $.fn[pluginName].loadedUtilsScript = true;
 
     // dont use $.getScript as it prevents caching
-    $.ajax({
-      type: 'GET',
-      url: path,
-      complete: function() {
-        // tell all instances that the utils request is complete
-        $(".intl-tel-input input").intlTelInput("handleUtils");
-      },
-      dataType: "script",
-      cache: true
-    });
+    var request = new XMLHttpRequest();
+    request.open("GET", path, true);
+
+    request.onloadend = function () {
+      $(".intl-tel-input input").intlTelInput("handleUtils");
+    };
+
+    request.send();
+
   } else if (utilsScriptDeferred) {
     utilsScriptDeferred.resolve();
   }
