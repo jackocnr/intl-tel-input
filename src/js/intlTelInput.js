@@ -12,6 +12,8 @@ var pluginName = "intlTelInput",
     customPlaceholder: null,
     // append menu to a specific element
     dropdownContainer: "",
+    // add custom class to container
+    containerClass: null,
     // don't display these countries
     excludeCountries: [],
     // format the input value during initialisation and on setNumber
@@ -218,6 +220,9 @@ Plugin.prototype = {
     var parentClass = "intl-tel-input";
     if (this.options.allowDropdown) {
       parentClass += " allow-dropdown";
+    }
+    if (this.options.containerClass) {
+      parentClass += " " + containerClass;
     }
     if (this.options.separateDialCode) {
       parentClass += " separate-dial-code";
