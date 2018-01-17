@@ -119,6 +119,10 @@ $("#scrollingElement").scroll(function() {
 });
 ```
 
+**containerClass**  
+Type: `String` Default: `null`  
+Add custom class to container element.
+
 **excludeCountries**  
 Type: `Array` Default: `undefined`  
 Don't display the countries you specify.
