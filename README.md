@@ -65,7 +65,7 @@ Note: In v12.0.0 we dropped support for IE9 and IE10, because they are no longer
   ```html
   <input type="tel" id="phone">
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="path/to/intlTelInput.js"></script>
   <script>
     $("#phone").intlTelInput();
