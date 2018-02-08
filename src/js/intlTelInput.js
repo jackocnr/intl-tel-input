@@ -372,7 +372,7 @@ Plugin.prototype = {
   // update hidden input on form submit
   _initHiddenInputListener: function() {
     var that = this;
-    
+
     var form = this.telInput.closest("form");
     if (form.length) {
       form.submit(function() {
@@ -917,7 +917,7 @@ Plugin.prototype = {
       var numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType],
         placeholder = (this.selectedCountryData.iso2) ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
 
-      placeholder = this._beforeSetNumber(placeholder);
+      placeholder = this._beforeSetNumber(placeholder, true);
 
       if (typeof this.options.customPlaceholder === 'function') {
         placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
@@ -1094,7 +1094,7 @@ Plugin.prototype = {
 
 
   // remove the dial code if separateDialCode is enabled
-  _beforeSetNumber: function(number) {
+  _beforeSetNumber: function(number, isPlaceHolder) {
     if (this.options.separateDialCode) {
       var dialCode = this._getDialCode(number);
       if (dialCode) {
@@ -1110,6 +1110,11 @@ Plugin.prototype = {
         var start = (number[dialCode.length] === " " || number[dialCode.length] === "-") ? dialCode.length + 1 : dialCode.length;
         number = number.substr(start);
       }
+    }
+
+    // Prevent capping placeholders
+    if(isPlaceHolder) {
+      return number;
     }
 
     return this._cap(number);
