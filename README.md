@@ -380,4 +380,5 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 
 <a href="https://www.browserstack.com">
 <img src="https://p3.zdusercontent.com/attachment/1015988/y0Sl6KKaxGxel8uLLhHApi2qm?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..hoHbaGv1_jq5R6TNcCFGIA.473ykDjNHc14lsbZiXZGif42ZDHhoPJNqdfU8b-ihD4tLIuUViVWg5946CdM3HN8K6OIBhLLRtLNlgqFo7a33Yqm7QPvWpOnVJMlAlqF_Po_UVift60eQWwCjjPgd9G8qML_yu5SqBJM6e5RrqmKHz6DBHD-w_VlmNyjNNi9ELmBH3rE-ukofrhD38UFvsSUVkMX_J7CpW7qhw63VWuMaDETGnL2Udd2tMoe512agY17jbY74WtA20VgfljcnZuvzdYu0_CLPnd54_mUs2_UxefRQ1Nhp1L24Dacf6BdUVc.dPdKrHesuyEMEjCWAC5cTA" width="200px"></a>
+
 Tested on [BrowserStack](https://www.browserstack.com)
