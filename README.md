@@ -125,7 +125,7 @@ Don't display the countries you specify.
 
 **formatOnDisplay**  
 Type: `Boolean` Default: `true`  
-Format the input value (according to the `nationalMode` option) during initialisation, and on setNumber. Requires the `utilsScript` option.
+Format the input value (according to the `nationalMode` option) during initialisation, and on `setNumber`. Requires the `utilsScript` option.
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
