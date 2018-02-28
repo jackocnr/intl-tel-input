@@ -121,7 +121,7 @@ $("#scrollingElement").scroll(function() {
 
 **excludeCountries**  
 Type: `Array` Default: `undefined`  
-Don't display the countries you specify.
+In the dropdown, display all countries except the ones you specify here.
 
 **formatOnDisplay**  
 Type: `Boolean` Default: `true`  
@@ -163,7 +163,7 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
-Display only the countries you specify - [see example](http://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/only-countries-europe.html).
+In the dropdown, display only the countries you specify - [see example](http://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/only-countries-europe.html).
 
 **preferredCountries**  
 Type: `Array` Default: `["us", "gb"]`  
