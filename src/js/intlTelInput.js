@@ -33,7 +33,9 @@ var pluginName = "intlTelInput",
     // display the country dial code next to the selected flag so it's not part of the typed number
     separateDialCode: false,
     // specify the path to the libphonenumber script to enable validation/formatting
-    utilsScript: ""
+    utilsScript: "",
+    // default locale eg.: {'DE':'Deutschland'}
+    localizedCountries: {},
   },
   keys = {
     UP: 38,
@@ -144,6 +146,9 @@ Plugin.prototype = {
 
     // process the preferredCountries
     this._processPreferredCountries();
+
+    // translate countries according to locale object literal
+    this._translateCountriesByLocale();
   },
 
 
@@ -178,6 +183,15 @@ Plugin.prototype = {
     }
   },
 
+  // Translate Countries by object literal provided on config
+  _translateCountriesByLocale: function() {
+      for (var i = 0; i < this.countries.length; i++) {
+          var iso = this.countries[i].iso2.toUpperCase();
+          if (iso in this.options.localizedCountries) {
+              this.countries[i].name = this.options.localizedCountries[iso];
+          }
+      }
+  },
 
   // process the countryCodes map
   _processCountryCodes: function() {
