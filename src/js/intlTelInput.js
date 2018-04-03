@@ -1341,9 +1341,9 @@ $.fn[pluginName].getCountryData = function() {
 
 // load the utils script
 $.fn[pluginName].loadUtils = function(path, utilsScriptDeferred) {
-  if (!$.fn[pluginName].loadedUtilsScript) {
+  if (!$.fn[pluginName].utilsLoading) {
     // don't do this twice! (dont just check if window.intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
-    $.fn[pluginName].loadedUtilsScript = true;
+    $.fn[pluginName].utilsLoading = new $.Deferred();
 
     // dont use $.getScript as it prevents caching
     $.ajax({
@@ -1357,7 +1357,7 @@ $.fn[pluginName].loadUtils = function(path, utilsScriptDeferred) {
       cache: true
     });
   } else if (utilsScriptDeferred) {
-    utilsScriptDeferred.resolve();
+    $.fn[pluginName].utilsLoading.then(utilsScriptDeferred.resolve);
   }
 };
 
