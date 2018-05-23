@@ -198,9 +198,9 @@ Returns a string e.g. if the input value was `"(702) 555-5555 ext. 1234"`, this 
 **getNumber**  
 Get the current number in the given format (defaults to [E.164 standard](http://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInputUtils.numberFormat` - which you can see [here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L109). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
 ```js
-var intlNumber = $("#phone").intlTelInput("getNumber");
+var number = $("#phone").intlTelInput("getNumber");
 // or
-var ntlNumber = $("#phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.E164);
+var number = $("#phone").intlTelInput("getNumber", intlTelInputUtils.numberFormat.E164);
 ```
 Returns a string e.g. `"+17024181234"`
 
