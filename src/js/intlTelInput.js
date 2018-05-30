@@ -285,7 +285,7 @@ Plugin.prototype = {
       this.hiddenInput = $("<input>", {
         type: "hidden",
         name: this.options.hiddenInput,
-      }).insertBefore(this.telInput);
+      }).insertAfter(this.telInput);
     }
   },
 

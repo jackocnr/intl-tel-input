@@ -251,7 +251,7 @@
                 this.hiddenInput = $("<input>", {
                     type: "hidden",
                     name: this.options.hiddenInput
-                }).insertBefore(this.telInput);
+                }).insertAfter(this.telInput);
             }
         },
         // add a country <li> to the countryList <ul> container
