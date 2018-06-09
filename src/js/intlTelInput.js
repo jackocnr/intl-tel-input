@@ -144,6 +144,9 @@ Plugin.prototype = {
 
     // process the preferredCountries
     this._processPreferredCountries();
+
+    // sort countries by their name
+    this._processCountrySort();
   },
 
 
@@ -176,6 +179,16 @@ Plugin.prototype = {
     } else {
       this.countries = allCountries;
     }
+  },
+
+  // Sort countries by locale name
+  _processCountrySort: function() {
+      this.countries.sort(this._countrySort);
+  },
+
+    // Sort countries by locale name
+  _countrySort: function compare(a,b) {
+    return a.name.localeCompare(b.name);
   },
 
 
