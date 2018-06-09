@@ -48,11 +48,11 @@ describe("getNumber: ", function() {
 
       beforeEach(function() {
         selectFlag("as");
-        input.val("9785585898").keyup();
+        input.val("6847331234").keyup();
       });
 
       it("getNumber returns the correct number (with full dialcode/area code)", function() {
-        expect(input.intlTelInput("getNumber")).toEqual("+16849785585898");
+        expect(input.intlTelInput("getNumber")).toEqual("+16847331234");
       });
 
     });
