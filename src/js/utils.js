@@ -18,8 +18,12 @@ function formatNumber(number, countryCode, format) {
   try {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
-    format = (typeof format == "undefined") ? i18n.phonenumbers.PhoneNumberFormat.E164 : format;
-    return phoneUtil.format(numberObj, format);
+    if (phoneUtil.isPossibleNumber(numberObj)) {
+        format = (typeof format == "undefined") ? i18n.phonenumbers.PhoneNumberFormat.E164 : format;
+        return phoneUtil.format(numberObj, format);
+    } else {
+        return number;
+    }
   } catch (e) {
     return number;
   }
