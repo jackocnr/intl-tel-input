@@ -144,9 +144,6 @@ Plugin.prototype = {
 
     // process the preferredCountries
     this._processPreferredCountries();
-
-    // sort countries by their name
-    this._processCountrySort();
   },
 
 
@@ -169,6 +166,7 @@ Plugin.prototype = {
       this.countries = allCountries.filter(function(country) {
         return lowerCaseOnlyCountries.indexOf(country.iso2) > -1;
       });
+      this.countries.sort(this._countryNameSort);
     } else if (this.options.excludeCountries.length) {
       var lowerCaseExcludeCountries = this.options.excludeCountries.map(function(country) {
         return country.toLowerCase();
@@ -181,13 +179,9 @@ Plugin.prototype = {
     }
   },
 
-  // Sort countries by locale name
-  _processCountrySort: function() {
-      this.countries.sort(this._countrySort);
-  },
 
-    // Sort countries by locale name
-  _countrySort: function compare(a,b) {
+  // sort by country name
+  _countryNameSort: function(a, b) {
     return a.name.localeCompare(b.name);
   },
 
@@ -385,7 +379,7 @@ Plugin.prototype = {
   // update hidden input on form submit
   _initHiddenInputListener: function() {
     var that = this;
-    
+
     var form = this.telInput.closest("form");
     if (form.length) {
       form.submit(function() {

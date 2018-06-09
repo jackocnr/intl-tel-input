@@ -148,6 +148,7 @@
                 this.countries = allCountries.filter(function(country) {
                     return lowerCaseOnlyCountries.indexOf(country.iso2) > -1;
                 });
+                this.countries.sort(this._countryNameSort);
             } else if (this.options.excludeCountries.length) {
                 var lowerCaseExcludeCountries = this.options.excludeCountries.map(function(country) {
                     return country.toLowerCase();
@@ -158,6 +159,10 @@
             } else {
                 this.countries = allCountries;
             }
+        },
+        // sort by country name
+        _countryNameSort: function(a, b) {
+            return a.name.localeCompare(b.name);
         },
         // process the countryCodes map
         _processCountryCodes: function() {
