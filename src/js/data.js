@@ -557,7 +557,9 @@ var allCountries = [
   [
     "Jamaica",
     "jm",
-    "1876"
+    "1",
+    4,
+    ["876", "658"]
   ],
   [
     "Japan (日本)",
