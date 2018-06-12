@@ -185,7 +185,7 @@ Type: `Object` Default: `{}`
 Allows to translate the countries by its given iso code e.g.:
 
 ```js
-{'DE':'Deutschland'} 
+{'de':'Deutschland'} 
 ```
 
 

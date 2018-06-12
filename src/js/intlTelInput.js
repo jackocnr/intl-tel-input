@@ -34,8 +34,8 @@ var pluginName = "intlTelInput",
     separateDialCode: false,
     // specify the path to the libphonenumber script to enable validation/formatting
     utilsScript: "",
-    // default locale eg.: {'DE':'Deutschland'}
-    localizedCountries: {},
+    // default locale eg.: {'de':'Deutschland'}
+    localizedCountries: null,
   },
   keys = {
     UP: 38,
@@ -148,7 +148,9 @@ Plugin.prototype = {
     this._processPreferredCountries();
 
     // translate countries according to locale object literal
-    this._translateCountriesByLocale();
+    if (this.options.localizedCountries) {
+      this._translateCountriesByLocale();
+    }
   },
 
 
@@ -186,7 +188,7 @@ Plugin.prototype = {
   // Translate Countries by object literal provided on config
   _translateCountriesByLocale: function() {
       for (var i = 0; i < this.countries.length; i++) {
-          var iso = this.countries[i].iso2.toUpperCase();
+          var iso = this.countries[i].iso2.toLowerCase();
           if (iso in this.options.localizedCountries) {
               this.countries[i].name = this.options.localizedCountries[iso];
           }
