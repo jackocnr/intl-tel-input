@@ -291,8 +291,12 @@ Plugin.prototype = {
     if (this.options.hiddenInput) {
       this.hiddenInput = $("<input>", {
         type: "hidden",
-        name: this.options.hiddenInput,
+        name: (this.telInput.attr('name')) ? this.telInput.attr('name') + '[' + this.options.hiddenInput + ']' : this.options.hiddenInput,
       }).insertAfter(this.telInput);
+
+      if (this.telInput.attr('name')) {
+          this.telInput.attr('name', this.telInput.attr('name') + '[main]');
+      }
     }
   },
 
