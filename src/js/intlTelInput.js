@@ -22,6 +22,8 @@ var pluginName = "intlTelInput",
     hiddenInput: "",
     // initial country
     initialCountry: "",
+    // localized country names e.g. { 'de': 'Deutschland' }
+    localizedCountries: null,
     // don't insert international dial codes
     nationalMode: true,
     // display only these countries
@@ -34,8 +36,6 @@ var pluginName = "intlTelInput",
     separateDialCode: false,
     // specify the path to the libphonenumber script to enable validation/formatting
     utilsScript: "",
-    // default locale eg.: {'de':'Deutschland'}
-    localizedCountries: null,
   },
   keys = {
     UP: 38,
@@ -147,9 +147,14 @@ Plugin.prototype = {
     // process the preferredCountries
     this._processPreferredCountries();
 
-    // translate countries according to locale object literal
+    // translate countries according to localizedCountries option
     if (this.options.localizedCountries) {
       this._translateCountriesByLocale();
+    }
+
+    // sort countries by name
+    if (this.options.onlyCountries.length || this.options.localizedCountries) {
+      this.countries.sort(this._countryNameSort);
     }
   },
 
@@ -173,7 +178,6 @@ Plugin.prototype = {
       this.countries = allCountries.filter(function(country) {
         return lowerCaseOnlyCountries.indexOf(country.iso2) > -1;
       });
-      this.countries.sort(this._countryNameSort);
     } else if (this.options.excludeCountries.length) {
       var lowerCaseExcludeCountries = this.options.excludeCountries.map(function(country) {
         return country.toLowerCase();

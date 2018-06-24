@@ -40,6 +40,8 @@
         hiddenInput: "",
         // initial country
         initialCountry: "",
+        // localized country names e.g. { 'de': 'Deutschland' }
+        localizedCountries: null,
         // don't insert international dial codes
         nationalMode: true,
         // display only these countries
@@ -51,9 +53,7 @@
         // display the country dial code next to the selected flag so it's not part of the typed number
         separateDialCode: false,
         // specify the path to the libphonenumber script to enable validation/formatting
-        utilsScript: "",
-        // default locale eg.: {'de':'Deutschland'}
-        localizedCountries: null
+        utilsScript: ""
     }, keys = {
         UP: 38,
         DOWN: 40,
@@ -132,9 +132,13 @@
             this._processCountryCodes();
             // process the preferredCountries
             this._processPreferredCountries();
-            // translate countries according to locale object literal
+            // translate countries according to localizedCountries option
             if (this.options.localizedCountries) {
                 this._translateCountriesByLocale();
+            }
+            // sort countries by name
+            if (this.options.onlyCountries.length || this.options.localizedCountries) {
+                this.countries.sort(this._countryNameSort);
             }
         },
         // add a country code to this.countryCodes
@@ -154,7 +158,6 @@
                 this.countries = allCountries.filter(function(country) {
                     return lowerCaseOnlyCountries.indexOf(country.iso2) > -1;
                 });
-                this.countries.sort(this._countryNameSort);
             } else if (this.options.excludeCountries.length) {
                 var lowerCaseExcludeCountries = this.options.excludeCountries.map(function(country) {
                     return country.toLowerCase();
