@@ -1191,7 +1191,7 @@ Plugin.prototype = {
 
   // remove plugin
   destroy: function() {
-    if (this.allowDropdown) {
+    if (this.options.allowDropdown) {
       // make sure the dropdown is closed (and unbind listeners)
       this._closeDropdown();
       // click event to open dropdown
