@@ -309,9 +309,17 @@ Plugin.prototype = {
     }
 
     if (this.options.hiddenInput) {
+      var hiddenInputName = this.options.hiddenInput;
+      var name = this.telInput.attr("name");
+      if (name) {
+        var i = name.lastIndexOf("[");
+        // if input name contains square brackets, then give the hidden input the same name,
+        // replacing the contents of the last set of brackets with the given hiddenInput name
+        if (i !== -1) hiddenInputName = name.substr(0, i) + "[" + hiddenInputName + "]";
+      }
       this.hiddenInput = $("<input>", {
         type: "hidden",
-        name: this.options.hiddenInput,
+        name: hiddenInputName,
       }).insertAfter(this.telInput);
     }
   },
