@@ -36,8 +36,8 @@ var pluginName = "intlTelInput",
     separateDialCode: false,
     // specify the path to the libphonenumber script to enable validation/formatting
     utilsScript: "",
-    // add custom user agent strings for determing whether the device is mobile or not
-    customUserAgents: [],
+    // use a custom user-agent string for testing whether the user device is mobile or not
+    customUserAgent: null,
   },
   keys = {
     UP: 38,
@@ -94,8 +94,8 @@ Plugin.prototype = {
     // Note: to target Android Mobiles (and not Tablets), we must find "Android" and "Mobile"
     var defaultString = 'Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini';
     this.isMobile = new RegExp(
-      this.options.customUserAgents.length > 0 ?
-        this.options.customUserAgents.join('|') :
+      this.options.customUserAgent !== null ?
+        this.options.customUserAgent :
         defaultString,
       'i').test(navigator.userAgent);
 
