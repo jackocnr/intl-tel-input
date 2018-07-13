@@ -36,6 +36,8 @@ var pluginName = "intlTelInput",
     separateDialCode: false,
     // specify the path to the libphonenumber script to enable validation/formatting
     utilsScript: "",
+    // add custom user agent strings for determing whether the device is mobile or not
+    customUserAgents: [],
   },
   keys = {
     UP: 38,
@@ -90,7 +92,12 @@ Plugin.prototype = {
     // we cannot just test screen size as some smartphones/website meta tags will report desktop resolutions
     // Note: for some reason jasmine breaks if you put this in the main Plugin function with the rest of these declarations
     // Note: to target Android Mobiles (and not Tablets), we must find "Android" and "Mobile"
-    this.isMobile = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    var defaultString = 'Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini';
+    this.isMobile = new RegExp(
+      this.options.customUserAgents.length > 0 ?
+        this.options.customUserAgents.join('|') :
+        defaultString,
+      'i').test(navigator.userAgent);
 
     if (this.isMobile) {
       // trigger the mobile dropdown css
