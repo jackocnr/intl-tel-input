@@ -188,6 +188,9 @@ Allows to translate the countries by its given iso code e.g.:
 { 'de': 'Deutschland' }
 ```
 
+**customUserAgent**  
+Type: `String` Default: `null`  
+Use a custom user-agent string for testing whether the user device is mobile or not. This will override the default user agent string `Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini`.
 
 ## Public Methods
 **destroy**  
