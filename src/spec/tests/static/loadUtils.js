@@ -17,7 +17,7 @@ describe("loadUtils:", function() {
     input.intlTelInput("destroy").remove();
     input = deferred = null;
     // reset this flag so it doesn't think utils.js is already loaded
-    $.fn.intlTelInput.loadedUtilsScript = $.fn.intlTelInput.windowLoaded = false;
+    $.fn.intlTelInput.startedLoadingUtilsScript = $.fn.intlTelInput.windowLoaded = false;
   });
 
   describe("calling loadUtils before init plugin", function() {

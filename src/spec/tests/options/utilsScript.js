@@ -12,7 +12,7 @@ describe("utilsScript:", function() {
     input.intlTelInput("destroy");
     input = null;
     // here we must fake that the script has not yet been loaded
-    $.fn.intlTelInput.loadedUtilsScript = $.fn.intlTelInput.windowLoaded = false;
+    $.fn.intlTelInput.startedLoadingUtilsScript = $.fn.intlTelInput.windowLoaded = false;
   });
 
   it("init vanilla plugin does not load the script", function() {

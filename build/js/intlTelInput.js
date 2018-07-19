@@ -786,11 +786,13 @@
             // and the input's placeholder
             this._updatePlaceholder();
             // update the active list item
-            this.countryListItems.removeClass("active").attr("aria-selected", "false");
-            if (countryCode) {
-                var listItem = this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country");
-                listItem.addClass("active").attr("aria-selected", "true");
-                this.countryList.attr("aria-activedescendant", listItem.attr("id"));
+            if (this.options.allowDropdown) {
+                this.countryListItems.removeClass("active").attr("aria-selected", "false");
+                if (countryCode) {
+                    var listItem = this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country");
+                    listItem.addClass("active").attr("aria-selected", "true");
+                    this.countryList.attr("aria-activedescendant", listItem.attr("id"));
+                }
             }
             // return if the flag has changed or not
             return prevCountry.iso2 !== countryCode;
