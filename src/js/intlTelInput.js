@@ -341,7 +341,7 @@ Plugin.prototype = {
     for (var i = 0; i < countries.length; i++) {
       var c = countries[i];
       // open the list item
-      tmp += "<li tabindex='0' class='country " + className + "' id='" + c.dialCode + "-" + c.iso2 + "' role='option' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
+      tmp += "<li class='country " + className + "' id='iti-item-" + c.iso2 + "' role='option' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
       // add the flag
       tmp += "<div class='flag-box'><div class='iti-flag " + c.iso2 + "'></div></div>";
       // and the country name and dial code
@@ -889,10 +889,6 @@ Plugin.prototype = {
   _highlightListItem: function(listItem) {
     this.countryListItems.removeClass("highlight");
     listItem.addClass("highlight");
-    this.countryListItems.attr("aria-selected", "false");
-    listItem.attr("aria-selected", "true");
-    this.countryList.attr("aria-activedescendant", listItem.attr("id"));
-    listItem.focus();
   },
 
 
@@ -946,9 +942,11 @@ Plugin.prototype = {
     this._updatePlaceholder();
 
     // update the active list item
-    this.countryListItems.removeClass("active");
+    this.countryListItems.removeClass("active").attr("aria-selected", "false");
     if (countryCode) {
-      this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country").addClass("active");
+      var listItem = this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country");
+      listItem.addClass("active").attr("aria-selected", "true");
+      this.countryList.attr("aria-activedescendant", listItem.attr("id"));
     }
 
     // return if the flag has changed or not
