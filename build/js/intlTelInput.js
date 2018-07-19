@@ -414,14 +414,14 @@
         _initRequests: function() {
             var that = this;
             // if the user has specified the path to the utils script, fetch it on window.load, else resolve
-            if (this.options.utilsScript) {
+            if (this.options.utilsScript && !window.intlTelInputUtils) {
                 // if the plugin is being initialised after the window.load event has already been fired
                 if ($.fn[pluginName].windowLoaded) {
-                    $.fn[pluginName].loadUtils(this.options.utilsScript, this.utilsScriptDeferred);
+                    $.fn[pluginName].loadUtils(this.options.utilsScript);
                 } else {
                     // wait until the load event so we don't block any other requests e.g. the flags image
                     $(window).on("load", function() {
-                        $.fn[pluginName].loadUtils(that.options.utilsScript, that.utilsScriptDeferred);
+                        $.fn[pluginName].loadUtils(that.options.utilsScript);
                     });
                 }
             } else {
@@ -1131,12 +1131,18 @@
         return allCountries;
     };
     // load the utils script
-    $.fn[pluginName].loadUtils = function(path, utilsScriptDeferred) {
-        if (!$.fn[pluginName].loadedUtilsScript) {
-            // don't do this twice! (dont just check if window.intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
-            $.fn[pluginName].loadedUtilsScript = true;
+    // (assumes it has not already loaded - we check this before calling this internally)
+    // (also assumes that if it is called manually, it will only be once per page)
+    $.fn[pluginName].loadUtils = function(path) {
+        // 2 options:
+        // 1) not already started loading (start)
+        // 2) already started loading (do nothing - just wait for loading callback to fire, which will trigger handleUtils on all instances, resolving each of their utilsScriptDeferred objects)
+        if (!$.fn[pluginName].startedLoadingUtilsScript) {
+            // don't do this twice!
+            $.fn[pluginName].startedLoadingUtilsScript = true;
             // dont use $.getScript as it prevents caching
-            $.ajax({
+            // return the ajax Deferred object, so manual calls can be chained with .then(callback)
+            return $.ajax({
                 type: "GET",
                 url: path,
                 complete: function() {
@@ -1146,9 +1152,8 @@
                 dataType: "script",
                 cache: true
             });
-        } else if (utilsScriptDeferred) {
-            utilsScriptDeferred.resolve();
         }
+        return null;
     };
     // default options
     $.fn[pluginName].defaults = defaults;

@@ -295,7 +295,7 @@ Returns an array of country objects:
 
 **loadUtils**  
 _Note: this is only needed if you're lazy loading the plugin script itself (intlTelInput.js). If not then just use the `utilsScript` option._  
-Load the utils.js script (included in the lib directory) to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information.
+Load the utils.js script (included in the lib directory) to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information. This method should only be called once per page. It returns a Deferred object, so you can chain it with `.done(callback)` to know when it's finished.
 ```js
 $.fn.intlTelInput.loadUtils("build/js/utils.js");
 ```
