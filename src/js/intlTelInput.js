@@ -259,7 +259,9 @@ Plugin.prototype = {
 
     // currently selected flag (displayed to left of input)
     var selectedFlag = $("<div>", {
-      "class": "selected-flag"
+      "class": "selected-flag",
+      "role": "combobox",
+      "aria-owns": "country-listbox"
     });
     selectedFlag.appendTo(this.flagsContainer);
     this.selectedFlagInner = $("<div>", {
@@ -282,12 +284,17 @@ Plugin.prototype = {
 
       // country dropdown: preferred countries, then divider, then all countries
       this.countryList = $("<ul>", {
-        "class": "country-list hide"
+        "class": "country-list hide",
+        "id": "country-listbox",
+        "aria-expanded": "false",
+        "role": "listbox"
       });
       if (this.preferredCountries.length) {
         this._appendListItems(this.preferredCountries, "preferred");
         $("<li>", {
-          "class": "divider"
+          "class": "divider",
+          "role": "separator",
+          "aria-disabled": "true"
         }).appendTo(this.countryList);
       }
       this._appendListItems(this.countries, "");
@@ -334,7 +341,7 @@ Plugin.prototype = {
     for (var i = 0; i < countries.length; i++) {
       var c = countries[i];
       // open the list item
-      tmp += "<li class='country " + className + "' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
+      tmp += "<li tabindex='0' class='country " + className + "' id='" + c.dialCode + "-" + c.iso2 + "' role='option' data-dial-code='" + c.dialCode + "' data-country-code='" + c.iso2 + "'>";
       // add the flag
       tmp += "<div class='flag-box'><div class='iti-flag " + c.iso2 + "'></div></div>";
       // and the country name and dial code
@@ -659,7 +666,7 @@ Plugin.prototype = {
     }
 
     // show the menu and grab the dropdown height
-    this.dropdownHeight = this.countryList.removeClass("hide").outerHeight();
+    this.dropdownHeight = this.countryList.removeClass("hide").attr("aria-expanded", "true").outerHeight();
 
     if (!this.isMobile) {
       var pos = this.telInput.offset(),
@@ -882,6 +889,10 @@ Plugin.prototype = {
   _highlightListItem: function(listItem) {
     this.countryListItems.removeClass("highlight");
     listItem.addClass("highlight");
+    this.countryListItems.attr("aria-selected", "false");
+    listItem.attr("aria-selected", "true");
+    this.countryList.attr("aria-activedescendant", listItem.attr("id"));
+    listItem.focus();
   },
 
 
@@ -988,7 +999,7 @@ Plugin.prototype = {
   // close the dropdown and unbind any listeners
   _closeDropdown: function() {
     this.countryList.addClass("hide");
-
+    this.countryList.attr("aria-expanded", "false");
     // update the arrow
     this.selectedFlagInner.children(".iti-arrow").removeClass("up");
 
