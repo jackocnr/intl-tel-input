@@ -153,17 +153,25 @@ Set the initial country selection by specifying it's country code. You can also 
 
 If you leave `initialCountry` blank, it will default to the first country in the list.
 
+**localizedCountries**  
+Type: `Object` Default: `{}`  
+Allows to translate the countries by its given iso code e.g.:
+
+```js
+{ 'de': 'Deutschland' }
+```
+
 **nationalMode**  
 Type: `Boolean` Default: `true`  
 Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getNumber` to extract a full international number - [see example](http://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html). This option now defaults to `true`, and it is recommended that you leave it that way as it provides a better experience for the user.
 
-**placeholderNumberType**  
-Type: `String` Default: `"MOBILE"`  
-Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L119) from the global enum `intlTelInputUtils.numberType` e.g. `"FIXED_LINE"` to set the number type to use for the placeholder.
-
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
 In the dropdown, display only the countries you specify - [see example](http://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/only-countries-europe.html).
+
+**placeholderNumberType**  
+Type: `String` Default: `"MOBILE"`  
+Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L119) from the global enum `intlTelInputUtils.numberType` e.g. `"FIXED_LINE"` to set the number type to use for the placeholder.
 
 **preferredCountries**  
 Type: `Array` Default: `["us", "gb"]`  
@@ -179,14 +187,6 @@ Display the country dial code next to the selected flag so it's not part of the 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
 Enable formatting/validation etc. by specifying the URL of the included utils.js script (or alternatively just point it to the file on [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)). The script is fetched using Ajax when the page has finished loading (on the `window.load` event) to prevent blocking (the script is ~215KB). When instantiating the plugin, we return a [deferred object](https://api.jquery.com/category/deferred-object/), so you can use `.done(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._
-
-**localizedCountries**  
-Type: `Object` Default: `{}`  
-Allows to translate the countries by its given iso code e.g.:
-
-```js
-{ 'de': 'Deutschland' }
-```
 
 
 ## Public Methods
