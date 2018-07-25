@@ -361,20 +361,26 @@ Plugin.prototype = {
   // 4. picking the first country
   _setInitialState: function() {
     var val = this.telInput.val();
+    var dialCode = this._getDialCode(val);
+    var isRegionlessNanp = this._isRegionlessNanp(val);
 
     // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the flag, else fall back to the default country
-    // UPDATE: actually we do want to set the flag for a regionlessNanp in one situation: if we're in nationalMode and there's no initialCountry - otherwise we lose the +1 and we're left with an invalid number
-    if (this._getDialCode(val) && (!this._isRegionlessNanp(val) || (this.options.nationalMode && !this.options.initialCountry))) {
+    if (dialCode && !isRegionlessNanp) {
       this._updateFlagFromNumber(val);
     } else if (this.options.initialCountry !== "auto") {
       // see if we should select a flag
       if (this.options.initialCountry) {
         this._setFlag(this.options.initialCountry.toLowerCase());
       } else {
-        // no dial code and no initialCountry, so default to first in list
-        this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
-        if (!val) {
-          this._setFlag(this.defaultCountry);
+        if (dialCode && isRegionlessNanp) {
+          // has intl dial code, is regionless nanp, and no initialCountry, so default to US
+          this._setFlag('us');
+        } else {
+          // no dial code and no initialCountry, so default to first in list
+          this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
+          if (!val) {
+            this._setFlag(this.defaultCountry);
+          }
         }
       }
 
