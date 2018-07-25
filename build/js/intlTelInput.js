@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v12.4.0
+ * International Telephone Input v13.0.0
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -1167,7 +1167,7 @@
     // default options
     $.fn[pluginName].defaults = defaults;
     // version
-    $.fn[pluginName].version = "12.4.0";
+    $.fn[pluginName].version = "13.0.0";
     // Array of country objects for the flag dropdown.
     // Here is the criteria for the plugin to support a given country/territory
     // - It has an iso2 code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
