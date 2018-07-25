@@ -90,21 +90,6 @@ describe("initial values:", function() {
 
     });
 
-    describe("init plugin with nationalMode disabled", function() {
-
-      beforeEach(function() {
-        input.intlTelInput({
-          nationalMode: false
-        });
-      });
-
-      it("does not set the selected flag or the active list item", function() {
-        expect(getSelectedFlagElement().attr("class")).toBe("iti-flag");
-        expect(getActiveListItem().length).toEqual(0);
-      });
-
-    });
-
   });
 
 
