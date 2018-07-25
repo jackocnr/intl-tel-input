@@ -937,9 +937,10 @@
             var val = $.trim(this.telInput.val()), dialCode = this.selectedCountryData.dialCode, prefix, numericVal = this._getNumeric(val), // normalized means ensure starts with a 1, so we can match against the full dial code
             normalizedVal = numericVal.charAt(0) == "1" ? numericVal : "1" + numericVal;
             if (this.options.separateDialCode) {
+                // when using separateDialCode, it is visible so is effectively part of the typed number
                 prefix = "+" + dialCode;
-            } else if (val.charAt(0) != "+" && val.charAt(0) != "1" && dialCode && dialCode.charAt(0) == "1" && dialCode.length == 4 && dialCode != normalizedVal.substr(0, 4)) {
-                // if the user has entered a national NANP number, then ensure it includes the full dial code / area code
+            } else if (val && val.charAt(0) != "+" && val.charAt(0) != "1" && dialCode && dialCode.charAt(0) == "1" && dialCode.length == 4 && dialCode != normalizedVal.substr(0, 4)) {
+                // ensure national NANP numbers contain the area code
                 prefix = dialCode.substr(1);
             } else {
                 prefix = "";
