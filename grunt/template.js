@@ -4,6 +4,8 @@ module.exports = function(grunt) {
   var time = (new Date()).getTime();
 
   return {
+
+    // this is the first step in generating the actual plugin main JS file
     js: {
       src: 'src/js/wrapper.js.ejs',
       dest: 'tmp/wrapped.js',
@@ -17,6 +19,73 @@ module.exports = function(grunt) {
         })('<%= package.version %>')
       }
     },
+
+    // generate the JS scripts for the examples (and cache-bust the utils.js URL)
+    nationalModeJs: {
+      src: 'examples/js/nationalMode.js.ejs',
+      dest: 'examples/gen/js/nationalMode.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+    defaultCountryIpJs: {
+      src: 'examples/js/defaultCountryIp.js.ejs',
+      dest: 'examples/gen/js/defaultCountryIp.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+    modifyCountryDataJs: {
+      src: 'examples/js/modifyCountryData.js.ejs',
+      dest: 'examples/gen/js/modifyCountryData.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+    onlyCountriesEuropeJs: {
+      src: 'examples/js/onlyCountriesEurope.js.ejs',
+      dest: 'examples/gen/js/onlyCountriesEurope.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+    countrySyncJs: {
+      src: 'examples/js/countrySync.js.ejs',
+      dest: 'examples/gen/js/countrySync.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+    isValidNumberJs: {
+      src: 'examples/js/isValidNumber.js.ejs',
+      dest: 'examples/gen/js/isValidNumber.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+    hiddenInputJs: {
+      src: 'examples/js/hiddenInput.js.ejs',
+      dest: 'examples/gen/js/hiddenInput.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+
+    // generate the HTML example pages
     nationalMode: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/national-mode.html',
@@ -28,7 +97,7 @@ module.exports = function(grunt) {
             desc: "Allow users to enter their national number, and then convert it to international format using the public method getNumber.",
             stylesheet: "",
             markup: grunt.file.read('examples/partials/nationalMode.html'),
-            code: grunt.file.read('examples/js/nationalMode.js'),
+            code: grunt.file.read('examples/gen/js/nationalMode.js'),
             script: "nationalMode.js"
           };
         }
@@ -45,7 +114,7 @@ module.exports = function(grunt) {
             desc: "Set initialCountry to 'auto' and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user's country based on their IP address.",
             stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
-            code: grunt.file.read('examples/js/defaultCountryIp.js'),
+            code: grunt.file.read('examples/gen/js/defaultCountryIp.js'),
             script: "defaultCountryIp.js"
           };
         }
@@ -62,13 +131,13 @@ module.exports = function(grunt) {
             desc: "Use static getCountryData method to update the data to only show localised country names.",
             stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
-            code: grunt.file.read('examples/js/modifyCountryData.js'),
+            code: grunt.file.read('examples/gen/js/modifyCountryData.js'),
             script: "modifyCountryData.js"
           };
         }
       }
     },
-    onlyCountries: {
+    onlyCountriesEurope: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/only-countries-europe.html',
       options: {
@@ -79,7 +148,7 @@ module.exports = function(grunt) {
             desc: "Set onlyCountries option to just European country codes.",
             stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
-            code: grunt.file.read('examples/js/onlyCountriesEurope.js'),
+            code: grunt.file.read('examples/gen/js/onlyCountriesEurope.js'),
             script: "onlyCountriesEurope.js"
           };
         }
@@ -96,13 +165,13 @@ module.exports = function(grunt) {
             desc: "Use static getCountryData method to create a separate country dropdown for an address form, and then listen for change events to keep the two dropdowns in sync.",
             stylesheet: 'countrySync.css',
             markup: grunt.file.read('examples/partials/countrySync.html'),
-            code: grunt.file.read('examples/js/countrySync.js'),
+            code: grunt.file.read('examples/gen/js/countrySync.js'),
             script: "countrySync.js"
           };
         }
       }
     },
-    validation: {
+    isValidNumber: {
       src: 'examples/template.html.ejs',
       dest: 'examples/gen/is-valid-number.html',
       options: {
@@ -113,7 +182,7 @@ module.exports = function(grunt) {
             desc: "Use public isValidNumber method (utilising Google's libphonenumber) to validate the telephone number on the change event.",
             stylesheet: 'isValidNumber.css',
             markup: grunt.file.read('examples/partials/isValidNumber.html'),
-            code: grunt.file.read('examples/js/isValidNumber.js'),
+            code: grunt.file.read('examples/gen/js/isValidNumber.js'),
             script: "isValidNumber.js"
           };
         }
@@ -130,7 +199,7 @@ module.exports = function(grunt) {
             desc: "If you're submitting the form using Ajax, simply use getNumber to get the full international number before sending it. If you're using the standard form POST method, you can use the hiddenInput option to automatically create a hidden input that gets populated with the full international number on submit. Try submitting a valid number below, and then check the 'full_phone' parameter in the URL.",
             stylesheet: '',
             markup: grunt.file.read('examples/partials/hiddenInput.html'),
-            code: grunt.file.read('examples/js/hiddenInput.js'),
+            code: grunt.file.read('examples/gen/js/hiddenInput.js'),
             script: "hiddenInput.js"
           };
         }
