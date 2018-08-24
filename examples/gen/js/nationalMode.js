@@ -3,7 +3,7 @@ var input = $("#phone"),
 
 input.intlTelInput({
   nationalMode: true,
-  utilsScript: "../../build/js/utils.js?1533313793009" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1535108287294" // just for formatting/placeholders etc
 });
 
 // listen to "keyup", but also "change" to update when the user selects a country
