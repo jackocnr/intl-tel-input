@@ -934,7 +934,7 @@
         },
         // get the input val, adding the dial code if separateDialCode is enabled
         _getFullNumber: function() {
-            var val = $.trim(this.telInput.val()), dialCode = this.selectedCountryData.dialCode, prefix, numericVal = this._getNumeric(val), // normalized means ensure starts with a 1, so we can match against the full dial code
+            var val = this.telInput.val().trim(), dialCode = this.selectedCountryData.dialCode, prefix, numericVal = this._getNumeric(val), // normalized means ensure starts with a 1, so we can match against the full dial code
             normalizedVal = numericVal.charAt(0) == "1" ? numericVal : "1" + numericVal;
             if (this.options.separateDialCode) {
                 // when using separateDialCode, it is visible so is effectively part of the typed number
@@ -1058,7 +1058,7 @@
         },
         // validate the input val - assumes the global function isValidNumber (from utilsScript)
         isValidNumber: function() {
-            var val = $.trim(this._getFullNumber()), countryCode = this.options.nationalMode ? this.selectedCountryData.iso2 : "";
+            var val = this._getFullNumber().trim(), countryCode = this.options.nationalMode ? this.selectedCountryData.iso2 : "";
             return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, countryCode) : null;
         },
         // update the selected flag, and update the input val accordingly
