@@ -844,7 +844,7 @@ Plugin.prototype = {
     if (dialCode) {
       // check if one of the matching countries is already selected
       var countryCodes = this.countryCodes[this._getNumeric(dialCode)],
-        alreadySelected = ($.inArray(this.selectedCountryData.iso2, countryCodes) > -1),
+        alreadySelected = (countryCodes.indexOf(this.selectedCountryData.iso2) !== -1),
         // check if the given number contains a NANP area code i.e. the only dialCode that could be extracted was +1 (instead of say +1204) and the actual number's length is >=4
         isNanpAreaCode = (dialCode == "+1" && numeric.length >= 4),
         nanpSelected = (this.selectedCountryData.dialCode == "1");
@@ -884,7 +884,7 @@ Plugin.prototype = {
     var numeric = this._getNumeric(number);
     if (numeric.charAt(0) == "1") {
       var areaCode = numeric.substr(1, 3);
-      return ($.inArray(areaCode, regionlessNanpNumbers) > -1);
+      return (regionlessNanpNumbers.indexOf(areaCode) !== -1);
     }
     return false;
   },
