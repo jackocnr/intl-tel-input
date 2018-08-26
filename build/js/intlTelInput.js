@@ -73,7 +73,12 @@
     });
     function Plugin(element, options) {
         this.telInput = $(element);
-        this.options = $.extend({}, defaults, options);
+        // process specified options / defaults
+        var customOptions = options || {};
+        this.options = {};
+        for (var key in defaults) {
+            this.options[key] = customOptions.hasOwnProperty(key) ? customOptions[key] : defaults[key];
+        }
         // event namespace
         this.ns = "." + pluginName + id++;
         // Chrome, FF, Safari, IE9+
