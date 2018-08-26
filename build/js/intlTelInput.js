@@ -920,8 +920,8 @@
                 // iterate over chars
                 for (var i = 0; i < number.length; i++) {
                     var c = number.charAt(i);
-                    // if char is number
-                    if ($.isNumeric(c)) {
+                    // if char is number (https://stackoverflow.com/a/8935649/217866)
+                    if (!isNaN(parseInt(c, 10))) {
                         numericChars += c;
                         // if current numericChars make a valid dial code
                         if (this.countryCodes[numericChars]) {
