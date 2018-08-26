@@ -53,7 +53,7 @@ var pluginName = "intlTelInput",
 
 
 // keep track of if the window.load event has fired as impossible to check after the fact
-$(window).on("load", function() {
+window.addEventListener('load', function() {
   // UPDATE: use a public static field so we can fudge it in the tests
   $.fn[pluginName].windowLoaded = true;
 });
@@ -494,7 +494,7 @@ Plugin.prototype = {
         $.fn[pluginName].loadUtils(this.options.utilsScript);
       } else {
         // wait until the load event so we don't block any other requests e.g. the flags image
-        $(window).on("load", function() {
+        window.addEventListener('load', function() {
           $.fn[pluginName].loadUtils(that.options.utilsScript);
         });
       }

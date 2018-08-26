@@ -67,7 +67,7 @@
     }, // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
     regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
     // keep track of if the window.load event has fired as impossible to check after the fact
-    $(window).on("load", function() {
+    window.addEventListener("load", function() {
         // UPDATE: use a public static field so we can fudge it in the tests
         $.fn[pluginName].windowLoaded = true;
     });
@@ -426,7 +426,7 @@
                     $.fn[pluginName].loadUtils(this.options.utilsScript);
                 } else {
                     // wait until the load event so we don't block any other requests e.g. the flags image
-                    $(window).on("load", function() {
+                    window.addEventListener("load", function() {
                         $.fn[pluginName].loadUtils(that.options.utilsScript);
                     });
                 }
