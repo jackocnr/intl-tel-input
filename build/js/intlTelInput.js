@@ -101,7 +101,7 @@
             this.isMobile = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             if (this.isMobile) {
                 // trigger the mobile dropdown css
-                $("body").addClass("iti-mobile");
+                document.body.classList.add("iti-mobile");
                 // on mobile, we want a full screen dropdown, so we must append it to the body
                 if (!this.options.dropdownContainer) {
                     this.options.dropdownContainer = "body";
@@ -212,10 +212,23 @@
                 }
             }
         },
+        // create a DOM element
+        _createEl: function(name, classes, container, attrs) {
+            var el = document.createElement(name);
+            if (classes) el.className = classes;
+            if (attrs) {
+                for (var attr in attrs) {
+                    el.setAttribute(attr, attrs[attr]);
+                }
+            }
+            // when purge jquery, remove this [0] and $(el)
+            if (container) container[0].appendChild(el);
+            return $(el);
+        },
         // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
         _generateMarkup: function() {
             // prevent autocomplete as there's no safe, cross-browser event we can react to, so it can easily put the plugin in an inconsistent state e.g. the wrong flag selected for the autocompleted number, which on submit could mean the wrong number is saved (esp in nationalMode)
-            this.telInput.attr("autocomplete", "off");
+            this.telInput[0].setAttribute("autocomplete", "off");
             // containers (mostly for positioning)
             var parentClass = "intl-tel-input";
             if (this.options.allowDropdown) {
@@ -224,59 +237,45 @@
             if (this.options.separateDialCode) {
                 parentClass += " separate-dial-code";
             }
-            this.telInput.wrap($("<div>", {
-                "class": parentClass
-            }));
-            this.flagsContainer = $("<div>", {
-                "class": "flag-container"
-            }).insertBefore(this.telInput);
-            // currently selected flag (displayed to left of input)
-            var selectedFlag = $("<div>", {
-                "class": "selected-flag",
+            var wrapper = this._createEl("div", parentClass);
+            this.telInput[0].parentNode.insertBefore(wrapper[0], this.telInput[0]);
+            this.flagsContainer = this._createEl("div", "flag-container", wrapper);
+            wrapper[0].appendChild(this.telInput[0]);
+            // selected flag (displayed to left of input)
+            this.selectedFlag = this._createEl("div", "selected-flag", this.flagsContainer, {
                 role: "combobox",
                 "aria-owns": "country-listbox"
             });
-            selectedFlag.appendTo(this.flagsContainer);
-            this.selectedFlagInner = $("<div>", {
-                "class": "iti-flag"
-            }).appendTo(selectedFlag);
+            this.selectedFlagInner = this._createEl("div", "iti-flag", this.selectedFlag);
             if (this.options.separateDialCode) {
-                this.selectedDialCode = $("<div>", {
-                    "class": "selected-dial-code"
-                }).appendTo(selectedFlag);
+                this.selectedDialCode = this._createEl("div", "selected-dial-code", this.selectedFlag);
             }
             if (this.options.allowDropdown) {
-                // make element focusable and tab naviagable
-                selectedFlag.attr("tabindex", "0");
-                // CSS triangle
-                $("<div>", {
-                    "class": "iti-arrow"
-                }).appendTo(selectedFlag);
+                // make element focusable and tab navigable
+                this.selectedFlag[0].setAttribute("tabindex", "0");
+                this.dropdownArrow = this._createEl("div", "iti-arrow", this.selectedFlag);
                 // country dropdown: preferred countries, then divider, then all countries
-                this.countryList = $("<ul>", {
-                    "class": "country-list hide",
+                this.countryList = this._createEl("ul", "country-list hide", null, {
                     id: "country-listbox",
                     "aria-expanded": "false",
                     role: "listbox"
                 });
                 if (this.preferredCountries.length) {
                     this._appendListItems(this.preferredCountries, "preferred");
-                    $("<li>", {
-                        "class": "divider",
+                    this._createEl("li", "divider", this.countryList, {
                         role: "separator",
                         "aria-disabled": "true"
-                    }).appendTo(this.countryList);
+                    });
                 }
                 this._appendListItems(this.countries, "");
                 // this is useful in lots of places
                 this.countryListItems = this.countryList.children(".country");
                 // create dropdownContainer markup
                 if (this.options.dropdownContainer) {
-                    this.dropdown = $("<div>", {
-                        "class": "intl-tel-input iti-container"
-                    }).append(this.countryList);
+                    this.dropdown = this._createEl("div", "intl-tel-input iti-container");
+                    this.dropdown[0].appendChild(this.countryList[0]);
                 } else {
-                    this.countryList.appendTo(this.flagsContainer);
+                    this.flagsContainer[0].appendChild(this.countryList[0]);
                 }
             } else {
                 // a little hack so we don't break anything
@@ -284,17 +283,18 @@
             }
             if (this.options.hiddenInput) {
                 var hiddenInputName = this.options.hiddenInput;
-                var name = this.telInput.attr("name");
+                var name = this.telInput[0].getAttribute("name");
                 if (name) {
                     var i = name.lastIndexOf("[");
                     // if input name contains square brackets, then give the hidden input the same name,
                     // replacing the contents of the last set of brackets with the given hiddenInput name
                     if (i !== -1) hiddenInputName = name.substr(0, i) + "[" + hiddenInputName + "]";
                 }
-                this.hiddenInput = $("<input>", {
+                this.hiddenInput = this._createEl("input", null, null, {
                     type: "hidden",
                     name: hiddenInputName
-                }).insertAfter(this.telInput);
+                });
+                wrapper[0].appendChild(this.hiddenInput[0]);
             }
         },
         // add a country <li> to the countryList <ul> container
@@ -315,7 +315,7 @@
                 // close the list item
                 tmp += "</li>";
             }
-            this.countryList.append(tmp);
+            this.countryList[0].insertAdjacentHTML("beforeend", tmp);
         },
         // set the initial state of the input value and the selected flag by:
         // 1. extracting a dial code from the given number
@@ -396,8 +396,7 @@
                 });
             }
             // toggle country dropdown on click
-            var selectedFlag = this.selectedFlagInner.parent();
-            selectedFlag.on("click" + this.ns, function(e) {
+            this.selectedFlag.on("click" + this.ns, function(e) {
                 // only intercept this event if we're opening the dropdown
                 // else let it bubble up to the top ("click-off-to-close" listener)
                 // we cannot just stopPropagation as it may be needed to close another instance
@@ -565,7 +564,7 @@
             // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
             this._bindDropdownListeners();
             // update the arrow
-            this.selectedFlagInner.children(".iti-arrow").addClass("up");
+            this.dropdownArrow.addClass("up");
             this.telInput.trigger("open:countrydropdown");
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
@@ -783,7 +782,7 @@
             this.selectedFlagInner.attr("class", "iti-flag " + countryCode);
             // update the selected country's title attribute
             var title = countryCode ? this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode : "Unknown";
-            this.selectedFlagInner.parent().attr("title", title);
+            this.selectedFlag.attr("title", title);
             if (this.options.separateDialCode) {
                 var dialCode = this.selectedCountryData.dialCode ? "+" + this.selectedCountryData.dialCode : "", parent = this.telInput.parent();
                 if (prevCountry.dialCode) {
@@ -842,7 +841,7 @@
             this.countryList.addClass("hide");
             this.countryList.attr("aria-expanded", "false");
             // update the arrow
-            this.selectedFlagInner.children(".iti-arrow").removeClass("up");
+            this.dropdownArrow.removeClass("up");
             // unbind key events
             $(document).off(this.ns);
             // unbind click-off-to-close
@@ -1012,7 +1011,7 @@
                 // make sure the dropdown is closed (and unbind listeners)
                 this._closeDropdown();
                 // click event to open dropdown
-                this.selectedFlagInner.parent().off(this.ns);
+                this.selectedFlag.off(this.ns);
                 // label click hack
                 this.telInput.closest("label").off(this.ns);
             }
