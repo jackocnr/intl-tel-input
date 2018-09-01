@@ -185,7 +185,7 @@ var intlTelInput = (function() {
       // selected flag
       this.selectedFlag = this._createEl("div", "selected-flag", this.flagsContainer);
       this.selectedFlagInner = this._createEl("div", "iti-flag", this.selectedFlag);
-      this.triangle = this._createEl("div", "iti-arrow", this.selectedFlag);
+      this.dropdownArrow = this._createEl("div", "iti-arrow", this.selectedFlag);
 
       // country list
       this.countryList = this._createEl("ul", "country-list hide");
@@ -274,7 +274,7 @@ var intlTelInput = (function() {
     _showDropdown: function() {
       this._setDropdownPosition();
       this._bindDropdownListeners();
-      this.triangle.classList.add("up");
+      this.dropdownArrow.classList.add("up");
     },
 
     _setDropdownPosition: function() {
@@ -440,7 +440,7 @@ var intlTelInput = (function() {
 
     _closeDropdown: function() {
       this.countryList.classList.add("hide");
-      this.triangle.classList.remove("up");
+      this.dropdownArrow.classList.remove("up");
 
       // unbind click-off-to-close
       document.documentElement.removeEventListener("click", this.clickOffToCloseHandler);
