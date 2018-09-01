@@ -6,7 +6,7 @@ describe("defaults: change default plugin options", function() {
 
 	beforeEach(function() {
 		intlSetup();
-		input = $("<input>");
+		input = $("<input>").wrap("div");
 	});
 
 	afterEach(function() {

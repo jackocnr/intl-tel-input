@@ -10,8 +10,8 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
-    input2 = $("<input>");
+    input = $("<input>").wrap("div");
+    input2 = $("<input>").wrap("div");
     // japan and china
     input.intlTelInput({
       onlyCountries: [chinaCountryCode, afghanistanCountryCode],

@@ -4,7 +4,7 @@ describe("customPlaceholder: init plugin with autoPlaceholder=polite and customP
 
   beforeEach(function() {
     intlSetup(true);
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     input.intlTelInput({
       autoPlaceholder: "polite",
       customPlaceholder: function(placeholder) {

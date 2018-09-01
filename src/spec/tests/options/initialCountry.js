@@ -8,7 +8,7 @@ describe("initialCountry: ", function() {
 
     beforeEach(function() {
       intlSetup();
-      input = $("<input>");
+      input = $("<input>").wrap("div");
       input.intlTelInput({
         initialCountry: initialCountry
       });

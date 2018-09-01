@@ -4,7 +4,7 @@ describe("destroy: init plugin to test public method destroy", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     input.intlTelInput();
   });
 
@@ -54,7 +54,7 @@ describe("destroy: init plugin with nationalMode=false and autoHideDialCode=true
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     input.intlTelInput({
       nationalMode: false,
       autoHideDialCode: true

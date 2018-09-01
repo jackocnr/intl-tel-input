@@ -7,7 +7,7 @@ describe("getExtension: init plugin with utils", function() {
 
   beforeEach(function() {
     intlSetup(true);
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     input.intlTelInput();
   });
 

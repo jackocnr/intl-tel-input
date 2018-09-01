@@ -4,7 +4,7 @@ describe("setNumber: init vanilla plugin (no utils) and call setNumber with a va
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     input.intlTelInput();
     input.intlTelInput("setNumber", "+447733123456");
   });
@@ -30,7 +30,7 @@ describe("setNumber: with utils", function() {
 
   beforeEach(function() {
     intlSetup(true);
-    input = $("<input>");
+    input = $("<input>").wrap("div");
   });
 
   afterEach(function() {

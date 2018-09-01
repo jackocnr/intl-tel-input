@@ -4,7 +4,7 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
 
   beforeEach(function() {
     intlSetup(true);
-    input = $("<input>");
+    input = $("<input>").wrap("div");
   });
 
   afterEach(function() {

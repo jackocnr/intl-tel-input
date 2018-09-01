@@ -4,7 +4,7 @@ describe("preferredCountries option:", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").wrap("div");
   });
 
   afterEach(function() {

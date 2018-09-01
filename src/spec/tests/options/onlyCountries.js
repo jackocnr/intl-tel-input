@@ -6,7 +6,7 @@ describe("onlyCountries option:", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").wrap("div");
   });
 
   afterEach(function() {
@@ -63,7 +63,7 @@ describe("onlyCountries option:", function() {
     var input2;
 
     beforeEach(function() {
-      input2 = $("<input>");
+      input2 = $("<input>").wrap("div");
       // japan
       input.intlTelInput({
         onlyCountries: ['jp'],

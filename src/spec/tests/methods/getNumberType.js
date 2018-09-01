@@ -4,7 +4,7 @@ describe("getNumberType:", function() {
 
   beforeEach(function() {
     intlSetup(true);
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     input.intlTelInput();
   });
 

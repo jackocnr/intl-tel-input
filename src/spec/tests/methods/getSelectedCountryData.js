@@ -4,7 +4,7 @@ describe("getSelectedCountryData: init plugin to test public method getSelectedC
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     input.intlTelInput();
   });
 

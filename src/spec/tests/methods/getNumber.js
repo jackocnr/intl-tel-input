@@ -35,7 +35,7 @@ describe("getNumber: ", function() {
 
     beforeEach(function() {
       intlSetup(true);
-      input = $("<input>");
+      input = $("<input>").wrap("div");
       input.intlTelInput();
     });
 

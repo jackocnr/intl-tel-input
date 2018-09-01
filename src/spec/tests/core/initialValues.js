@@ -16,7 +16,7 @@ describe("initial values:", function() {
   describe("init vanilla plugin on empty input", function() {
 
     beforeEach(function() {
-      input = $("<input>");
+      input = $("<input>").wrap("div");
       input.intlTelInput();
     });
 

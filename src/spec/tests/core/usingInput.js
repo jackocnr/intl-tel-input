@@ -6,7 +6,7 @@ describe("using input: ", function() {
 
     beforeEach(function() {
       intlSetup();
-      input = $("<input>");
+      input = $("<input>").wrap("div");
       // nationalMode=false because we want to play with dial codes
       input.intlTelInput({
         nationalMode: false
@@ -122,7 +122,7 @@ describe("using input: ", function() {
 
     beforeEach(function() {
       intlSetup();
-      input = $("<input>");
+      input = $("<input>").wrap("div");
       input.intlTelInput();
     });
 

@@ -4,7 +4,7 @@ describe("utilsScript:", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     spyOn($, "ajax");
   });
 

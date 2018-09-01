@@ -6,7 +6,7 @@ describe("countrychange event:", function() {
 
   beforeEach(function() {
     intlSetup();
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     spy = spyOnEvent(input, 'countrychange');
   });
 

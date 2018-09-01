@@ -4,7 +4,7 @@ describe("setPlaceholderNumberType: init vanilla plugin and call setPlaceholderN
 
   beforeEach(function() {
     intlSetup(true);
-    input = $("<input>");
+    input = $("<input>").wrap("div");
     input.intlTelInput({
       initialCountry: "gb"
     });
