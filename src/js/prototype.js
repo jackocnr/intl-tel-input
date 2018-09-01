@@ -168,16 +168,10 @@ var intlTelInput = (function() {
       }
     },
 
-    _create: function(name, classes, text, container) {
+    _create: function(name, classes, container) {
       var elem = document.createElement(name);
       elem.className = classes;
-      if (text) {
-        var elemText = document.createTextNode(text);
-        elem.appendChild(elemText);
-      }
-      if (container) {
-        container.appendChild(elem);
-      }
+      if (container) container.appendChild(elem);
       return elem;
     },
 
@@ -185,19 +179,19 @@ var intlTelInput = (function() {
       // wrap input in container
       var wrapper = this._create('div', "intl-tel-input allow-dropdown");
       this.telInput.parentNode.insertBefore(wrapper, this.telInput);
-      this.flagsContainer = this._create('div', "flag-container", null, wrapper);
+      this.flagsContainer = this._create('div', "flag-container", wrapper);
       wrapper.appendChild(this.telInput);
 
       // selected flag
-      this.selectedFlag = this._create('div', "selected-flag", null, this.flagsContainer);
-      this.selectedFlagInner = this._create('div', "iti-flag", null, this.selectedFlag);
-      this.triangle = this._create('div', "iti-arrow", null, this.selectedFlag);
+      this.selectedFlag = this._create('div', "selected-flag", this.flagsContainer);
+      this.selectedFlagInner = this._create('div', "iti-flag", this.selectedFlag);
+      this.triangle = this._create('div', "iti-arrow", this.selectedFlag);
 
       // country list
       this.countryList = this._create('ul', "country-list hide");
       if (this.preferredCountries.length) {
         this._appendListItems(this.preferredCountries, "preferred");
-        this._create('li', "divider", null, this.countryList);
+        this._create('li', "divider", this.countryList);
       }
       this._appendListItems(this.countries, '');
 
