@@ -168,35 +168,35 @@ var intlTelInput = (function() {
       }
     },
 
-    _create: function(name, classes, container) {
-      var elem = document.createElement(name);
-      elem.className = classes;
-      if (container) container.appendChild(elem);
-      return elem;
+    _createEl: function(name, classes, container) {
+      var el = document.createElement(name);
+      el.className = classes;
+      if (container) container.appendChild(el);
+      return el;
     },
 
     _generateMarkup: function() {
       // wrap input in container
-      var wrapper = this._create('div', "intl-tel-input allow-dropdown");
+      var wrapper = this._createEl("div", "intl-tel-input allow-dropdown");
       this.telInput.parentNode.insertBefore(wrapper, this.telInput);
-      this.flagsContainer = this._create('div', "flag-container", wrapper);
+      this.flagsContainer = this._createEl("div", "flag-container", wrapper);
       wrapper.appendChild(this.telInput);
 
       // selected flag
-      this.selectedFlag = this._create('div', "selected-flag", this.flagsContainer);
-      this.selectedFlagInner = this._create('div', "iti-flag", this.selectedFlag);
-      this.triangle = this._create('div', "iti-arrow", this.selectedFlag);
+      this.selectedFlag = this._createEl("div", "selected-flag", this.flagsContainer);
+      this.selectedFlagInner = this._createEl("div", "iti-flag", this.selectedFlag);
+      this.triangle = this._createEl("div", "iti-arrow", this.selectedFlag);
 
       // country list
-      this.countryList = this._create('ul', "country-list hide");
+      this.countryList = this._createEl("ul", "country-list hide");
       if (this.preferredCountries.length) {
         this._appendListItems(this.preferredCountries, "preferred");
-        this._create('li', "divider", this.countryList);
+        this._createEl("li", "divider", this.countryList);
       }
-      this._appendListItems(this.countries, '');
+      this._appendListItems(this.countries, "");
 
       if (this.isMobile) {
-        this.dropdown = this._create('div', "intl-tel-input iti-container");
+        this.dropdown = this._createEl("div", "intl-tel-input iti-container");
         this.dropdown.appendChild(this.countryList);
       } else {
         this.flagsContainer.appendChild(this.countryList);
@@ -220,7 +220,7 @@ var intlTelInput = (function() {
         // close the list item
         tmp += "</li>";
       }
-      this.countryList.insertAdjacentHTML('beforeend', tmp);
+      this.countryList.insertAdjacentHTML("beforeend", tmp);
     },
 
     _setInitialState: function() {
@@ -290,7 +290,7 @@ var intlTelInput = (function() {
       // when mouse over a list item, just highlight that one
       // we add the class "highlight", so if they hit "enter" we know which one to select
       this.countryMouseoverHandler = function(e) {
-        var countryItem = e.target.closest('.country');
+        var countryItem = e.target.closest(".country");
         if (countryItem) {
           that._highlightListItem(countryItem);
         }
@@ -299,7 +299,7 @@ var intlTelInput = (function() {
 
       // listen for country selection
       this.countryClickHandler = function(e) {
-        var countryItem = e.target.closest('.country');
+        var countryItem = e.target.closest(".country");
         if (countryItem) {
           that._selectListItem(countryItem);
         }
@@ -424,7 +424,7 @@ var intlTelInput = (function() {
         var numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType],
           placeholder = (this.selectedCountryData.iso2) ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
 
-        if (typeof this.options.customPlaceholder === 'function') {
+        if (typeof this.options.customPlaceholder === "function") {
           placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
         }
 
@@ -443,10 +443,10 @@ var intlTelInput = (function() {
       this.triangle.classList.remove("up");
 
       // unbind click-off-to-close
-      document.documentElement.removeEventListener('click', this.clickOffToCloseHandler);
+      document.documentElement.removeEventListener("click", this.clickOffToCloseHandler);
       // unbind hover and click listeners
-      this.countryList.removeEventListener('mouseover', this.countryMouseoverHandler);
-      this.countryList.removeEventListener('click', this.countryClickHandler);
+      this.countryList.removeEventListener("mouseover", this.countryMouseoverHandler);
+      this.countryList.removeEventListener("click", this.countryClickHandler);
 
       if (this.isMobile) {
         this.dropdown.remove();
