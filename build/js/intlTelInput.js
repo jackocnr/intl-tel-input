@@ -83,7 +83,7 @@
         this.ns = "." + pluginName + id++;
         // Chrome, FF, Safari, IE9+
         this.isGoodBrowser = Boolean(element.setSelectionRange);
-        this.hadInitialPlaceholder = Boolean($(element).attr("placeholder"));
+        this.hadInitialPlaceholder = Boolean(this.telInput[0].getAttribute("placeholder"));
     }
     Plugin.prototype = {
         _init: function() {
@@ -817,7 +817,7 @@
                 if (typeof this.options.customPlaceholder === "function") {
                     placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
                 }
-                this.telInput.attr("placeholder", placeholder);
+                this.telInput[0].setAttribute("placeholder", placeholder);
             }
         },
         // called when the user selects a list item from the dropdown
