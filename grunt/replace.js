@@ -137,47 +137,6 @@ module.exports = function(grunt) {
         patterns: [
 
           /***********
-           * KEYS
-           ***********/
-
-          // keys enum (omitting A and Z keys, which are already a single char)
-          {
-            match: /UP/g,
-            replacement: 'b'
-          }, {
-            match: /DOWN/g,
-            replacement: 'c'
-          }, {
-            match: /ENTER/g,
-            replacement: 'd'
-          }, {
-            match: /ESC/g,
-            replacement: 'e'
-          }, {
-            match: /PLUS/g,
-            replacement: 'f'
-          }, {
-            match: /SPACE/g,
-            replacement: 'j'
-          }, {
-            match: /TAB/g,
-            replacement: 'k'
-          }
-
-        ]
-      },
-      files: {
-        'tmp/two.min.js': 'tmp/one.min.js'
-      }
-    },
-
-
-
-    three: {
-      options: {
-        patterns: [
-
-          /***********
            * FIELDS ON "this"
            ***********/
           {
@@ -242,7 +201,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'build/js/intlTelInput.min.js': 'tmp/two.min.js'
+        'build/js/intlTelInput.min.js': 'tmp/one.min.js'
       }
     }
   };

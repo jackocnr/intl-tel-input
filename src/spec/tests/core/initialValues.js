@@ -7,6 +7,7 @@ describe("initial values:", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

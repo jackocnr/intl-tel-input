@@ -12,6 +12,7 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

@@ -9,6 +9,7 @@ describe("getSelectedCountryData: init plugin to test public method getSelectedC
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

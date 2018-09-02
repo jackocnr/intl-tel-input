@@ -10,6 +10,7 @@ describe("setNumber: init vanilla plugin (no utils) and call setNumber with a va
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

@@ -11,6 +11,7 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy").remove();
     input = null;
   });
@@ -24,22 +25,22 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
     });
 
     it("pressing UP opens the dropdown", function() {
-      triggerKeyOnFlagsContainerElement("UP");
+      triggerKeyOnFlagsContainerElement("ArrowUp");
       expect(getListElement()).toBeVisible();
     });
 
     it("pressing DOWN opens the dropdown", function() {
-      triggerKeyOnFlagsContainerElement("DOWN");
+      triggerKeyOnFlagsContainerElement("ArrowDown");
       expect(getListElement()).toBeVisible();
     });
 
     it("pressing SPACE opens the dropdown", function() {
-      triggerKeyOnFlagsContainerElement("SPACE");
+      triggerKeyOnFlagsContainerElement(" ");
       expect(getListElement()).toBeVisible();
     });
 
     it("pressing ENTER opens the dropdown", function() {
-      triggerKeyOnFlagsContainerElement("ENTER");
+      triggerKeyOnFlagsContainerElement("Enter");
       expect(getListElement()).toBeVisible();
     });
 
@@ -50,30 +51,30 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
   describe("when dropdown is opened", function() {
 
     beforeEach(function() {
-      getSelectedFlagContainer().click();
+      getSelectedFlagContainer()[0].click();
     });
 
     it("pressing esc closes the popup", function() {
-      triggerKeyOnBody("ESC");
+      triggerKeyOnBody("Escape");
       expect(getListElement()).not.toBeVisible();
     });
 
     it("pressing up while on the top item does not change the highlighted item", function() {
-      triggerKeyOnBody("UP");
+      triggerKeyOnBody("ArrowUp");
       var topItem = getListElement().find("li.country:eq(0)");
       expect(topItem).toHaveClass("highlight");
     });
 
     it("pressing z highlights Zambia", function() {
-      triggerKeyOnBody("Z");
+      triggerKeyOnBody("z");
       var zambiaListItem = getListElement().find("li[data-country-code='zm']");
       expect(zambiaListItem).toHaveClass("highlight");
     });
 
     it("pressing z three times also highlights Zambia (no further matches)", function() {
-      triggerKeyOnBody("Z");
-      triggerKeyOnBody("Z");
-      triggerKeyOnBody("Z");
+      triggerKeyOnBody("z");
+      triggerKeyOnBody("z");
+      triggerKeyOnBody("z");
       var zambiaListItem = getListElement().find("li[data-country-code='zm']");
       expect(zambiaListItem).toHaveClass("highlight");
     });
@@ -86,9 +87,9 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
 
       beforeEach(function() {
         lastItem = getListElement().find("li.country:last");
-        triggerKeyOnBody("Z");
-        triggerKeyOnBody("I");
-        triggerKeyOnBody("DOWN");
+        triggerKeyOnBody("z");
+        triggerKeyOnBody("i");
+        triggerKeyOnBody("ArrowDown");
       });
 
       it("highlights the last item, which is Åland Islands", function() {
@@ -97,7 +98,7 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
       });
 
       it("pressing down while on the last item does not change the highlighted item", function() {
-        triggerKeyOnBody("DOWN");
+        triggerKeyOnBody("ArrowDown");
         expect(lastItem).toHaveClass("highlight");
       });
     });
@@ -107,7 +108,7 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
     describe("pressing down", function() {
 
       beforeEach(function() {
-        triggerKeyOnBody("DOWN");
+        triggerKeyOnBody("ArrowDown");
       });
 
       it("changes the highlighted item", function() {
@@ -123,7 +124,7 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
       describe("pressing enter", function() {
 
         beforeEach(function() {
-          triggerKeyOnBody("ENTER");
+          triggerKeyOnBody("Enter");
         });
 
         it("changes the active item", function() {

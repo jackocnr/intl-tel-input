@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['responsive_images:retina', 'exec:evenizer', 'responsive_images:regular', 'sprite', 'imagemin']);
   // just javascript
-  grunt.registerTask('js', ['template:js', 'jshint', 'uglify', 'replace:one', 'replace:two', 'replace:three']);
+  grunt.registerTask('js', ['template:js', 'jshint', 'uglify', 'replace:one', 'replace:two']);
   // build examples
   grunt.registerTask('examples', ['template']);
   // Travis CI

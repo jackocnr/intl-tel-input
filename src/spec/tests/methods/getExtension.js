@@ -12,6 +12,7 @@ describe("getExtension: init plugin with utils", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

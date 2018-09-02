@@ -10,6 +10,7 @@ describe("onlyCountries option:", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = onlyCountries = null;
   });

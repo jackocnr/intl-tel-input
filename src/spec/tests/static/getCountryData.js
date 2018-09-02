@@ -10,6 +10,7 @@ describe("getCountryData: use static method getCountryData", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     countryData = null;
   });
 

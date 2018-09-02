@@ -14,6 +14,7 @@ describe("using input: ", function() {
     });
 
     afterEach(function() {
+      intlTeardown();
       input.intlTelInput("destroy");
       input = null;
     });
@@ -91,7 +92,8 @@ describe("using input: ", function() {
     describe("typing a bangladesh intl dial code", function() {
 
       beforeEach(function() {
-        input.val("+880").keyup();
+        input.val("+880");
+        triggerKeyOnInput(" ");
       });
 
       it("selects the bangladesh flag", function() {
@@ -102,7 +104,8 @@ describe("using input: ", function() {
       describe("adding a 1 at the beginning", function() {
 
         beforeEach(function() {
-          input.val("+1880").keyup();
+          input.val("+1880");
+          triggerKeyOnInput(" ");
         });
 
         it("changes to US flag", function() {

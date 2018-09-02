@@ -26,6 +26,7 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
   });
 
   afterEach(function() {
+    intlTeardown();
     getParentElement(input).remove();
     getParentElement(input2).remove();
     input.intlTelInput("destroy");
@@ -61,7 +62,7 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
   describe("clicking open dropdown on the first input", function() {
 
     beforeEach(function() {
-      getSelectedFlagContainer().click();
+      getSelectedFlagContainer()[0].click();
     });
 
     it("only opens the dropdown on that input", function() {
@@ -70,7 +71,7 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
     });
 
     it("then clicking open dropdown on the second will close the first and open the second", function() {
-      getSelectedFlagContainer(input2).click();
+      getSelectedFlagContainer(input2)[0].click();
       expect(getListElement()).not.toBeVisible();
       expect(getListElement(input2)).toBeVisible();
     });

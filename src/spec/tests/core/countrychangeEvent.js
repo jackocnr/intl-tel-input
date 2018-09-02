@@ -11,6 +11,7 @@ describe("countrychange event:", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

@@ -10,6 +10,7 @@ describe("formatOnDisplay: testing input containing valid US number", function()
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

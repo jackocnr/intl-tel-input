@@ -11,6 +11,7 @@ describe("getNumber: ", function() {
     });
 
     afterEach(function() {
+      intlTeardown();
       input.intlTelInput("destroy");
       input = null;
     });
@@ -40,6 +41,7 @@ describe("getNumber: ", function() {
     });
 
     afterEach(function() {
+      intlTeardown();
       input.intlTelInput("destroy");
       input = null;
     });

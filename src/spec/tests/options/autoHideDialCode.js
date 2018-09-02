@@ -7,16 +7,12 @@ describe("autoHideDialCode option:", function() {
   beforeEach(function() {
     intlSetup();
 
-    var form = $("<form></form>").appendTo("body");
-    form.on("submit", function (e) {
-      e.preventDefault();
-    });
-
     // must be in DOM for focus to work
-    input = $("<input>").appendTo(form);
+    input = $("<input>").appendTo("body");
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy").remove();
     input = null;
   });
@@ -38,7 +34,7 @@ describe("autoHideDialCode option:", function() {
     describe("focusing the input", function() {
 
       beforeEach(function() {
-        input.focus();
+        input[0].focus();
       });
 
       it("adds the default dial code", function() {
@@ -54,12 +50,7 @@ describe("autoHideDialCode option:", function() {
       });
 
       it("blurring it removes it again", function() {
-        input.blur();
-        expect(getInputVal()).toEqual("");
-      });
-
-      it("submitting it removes it again", function() {
-        input.parent().submit();
+        input[0].blur();
         expect(getInputVal()).toEqual("");
       });
 
@@ -76,9 +67,9 @@ describe("autoHideDialCode option:", function() {
       });
 
       it("focusing and blurring the input doesn't change it", function() {
-        input.focus();
+        input[0].focus();
         expect(getInputVal()).toEqual(number);
-        input.blur();
+        input[0].blur();
         expect(getInputVal()).toEqual(number);
       });
 
@@ -101,9 +92,9 @@ describe("autoHideDialCode option:", function() {
     });
 
     it("focusing and bluring the input dont change the val", function() {
-      input.focus();
+      input[0].focus();
       expect(getInputVal()).toEqual(defaultDialCode);
-      input.blur();
+      input[0].blur();
       expect(getInputVal()).toEqual(defaultDialCode);
     });
 
@@ -117,9 +108,9 @@ describe("autoHideDialCode option:", function() {
       });
 
       it("focusing and blurring the input doesn't change it", function() {
-        input.focus();
+        input[0].focus();
         expect(getInputVal()).toEqual(number);
-        input.blur();
+        input[0].blur();
         expect(getInputVal()).toEqual(number);
       });
 

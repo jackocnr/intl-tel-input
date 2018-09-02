@@ -11,6 +11,7 @@ describe("setPlaceholderNumberType: init vanilla plugin and call setPlaceholderN
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy'");
     input = null;
   });

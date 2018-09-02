@@ -14,6 +14,7 @@ describe("loadUtils:", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy").remove();
     input = deferred = null;
     // reset this flag so it doesn't think utils.js is already loaded

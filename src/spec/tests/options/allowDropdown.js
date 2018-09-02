@@ -8,6 +8,7 @@ describe("allowDropdown:", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy").remove();
     input = null;
   });

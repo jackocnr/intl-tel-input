@@ -14,6 +14,7 @@ describe("customPlaceholder: init plugin with autoPlaceholder=polite and customP
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

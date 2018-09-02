@@ -11,6 +11,7 @@ describe("close:countrydropdown event:", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy").remove();
     input = null;
   });
@@ -27,13 +28,13 @@ describe("close:countrydropdown event:", function() {
 
     it("clicking outside the dropdown to close it triggers the event", function() {
       openCountryDropDown();
-      input.click();
+      input[0].click();
       expect(spy).toHaveBeenTriggered();
     });
 
     it("pressing esc triggers the event", function() {
       openCountryDropDown();
-      triggerKeyOnBody("ESC");
+      triggerKeyOnBody("Escape");
       expect(spy).toHaveBeenTriggered();
     });
 

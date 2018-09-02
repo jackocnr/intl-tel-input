@@ -9,6 +9,7 @@ describe("getValidationError:", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });

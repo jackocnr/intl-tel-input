@@ -9,6 +9,7 @@ describe("destroy: init plugin to test public method destroy", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input = null;
   });
 
@@ -18,12 +19,13 @@ describe("destroy: init plugin to test public method destroy", function() {
     expect(getListElement()).toExist();
   });
 
-  it("binds the events listeners", function() {
-    var listeners = $._data(input[0], 'events');
-    expect("cut" in listeners).toBeTruthy();
-    expect("paste" in listeners).toBeTruthy();
-    expect("keyup" in listeners).toBeTruthy();
-  });
+  // this is currently impossible in pure JS, until getEventListeners becomes standard
+  // it("binds the event listeners", function() {
+  //   var listeners = getEventListeners(input[0]);
+  //   expect("cut" in listeners).toBeTruthy();
+  //   expect("paste" in listeners).toBeTruthy();
+  //   expect("keyup" in listeners).toBeTruthy();
+  // });
 
 
   describe("calling destroy", function() {
@@ -38,10 +40,11 @@ describe("destroy: init plugin to test public method destroy", function() {
       expect(getListElement()).not.toExist();
     });
 
-    it("unbinds the event listeners", function() {
-      var listeners = $._data(input[0], 'events');
-      expect(listeners).toBeUndefined();
-    });
+    // this is currently impossible in pure JS, until getEventListeners becomes standard
+    // it("unbinds the event listeners", function() {
+    //   var listeners = getEventListeners(input[0]);
+    //   expect(listeners).toBeUndefined();
+    // });
 
   });
 
@@ -62,15 +65,17 @@ describe("destroy: init plugin with nationalMode=false and autoHideDialCode=true
   });
 
   afterEach(function() {
+    intlTeardown();
     input = null;
   });
 
-  it("binds the events listeners", function() {
-    var listeners = $._data(input[0], 'events');
-    expect("blur" in listeners).toBeTruthy();
-    expect("focus" in listeners).toBeTruthy();
-    expect("mousedown" in listeners).toBeTruthy();
-  });
+  // this is currently impossible in pure JS, until getEventListeners becomes standard
+  // it("binds the events listeners", function() {
+  //   var listeners = getEventListeners(input[0]);
+  //   expect("blur" in listeners).toBeTruthy();
+  //   expect("focus" in listeners).toBeTruthy();
+  //   expect("mousedown" in listeners).toBeTruthy();
+  // });
 
 
   describe("calling destroy", function() {
@@ -79,10 +84,11 @@ describe("destroy: init plugin with nationalMode=false and autoHideDialCode=true
       input.intlTelInput("destroy");
     });
 
-    it("unbinds the event listeners", function() {
-      var listeners = $._data(input[0], 'events');
-      expect(listeners).toBeUndefined();
-    });
+    // this is currently impossible in pure JS, until getEventListeners becomes standard
+    // it("unbinds the event listeners", function() {
+    //   var listeners = getEventListeners(input[0]);
+    //   expect(listeners).toBeUndefined();
+    // });
 
   });
 

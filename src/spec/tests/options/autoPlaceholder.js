@@ -8,6 +8,7 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
   });
 
   afterEach(function() {
+    intlTeardown();
     input.intlTelInput("destroy");
     input = null;
   });
@@ -78,14 +79,6 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
 
 
 
-
-
-
-
-
-
-
-
 describe("autoPlaceholder: testing input with an initial placeholder", function() {
 
   var placeholder = "lol";
@@ -104,28 +97,21 @@ describe("autoPlaceholder: testing input with an initial placeholder", function(
     input.intlTelInput({
       autoPlaceholder: "off"
     });
-    expect(input.attr("placeholder")).toEqual(placeholder);
+    expect(input[0].getAttribute("placeholder")).toEqual(placeholder);
   });
 
   it("init plugin with autoPlaceholder=polite leaves the placeholder the same", function() {
     input.intlTelInput({
       autoPlaceholder: "polite"
     });
-    expect(input.attr("placeholder")).toEqual(placeholder);
-  });
-
-  it("init plugin with autoPlaceholder=true leaves the placeholder the same", function() {
-    input.intlTelInput({
-      autoPlaceholder: true
-    });
-    expect(input.attr("placeholder")).toEqual(placeholder);
+    expect(input[0].getAttribute("placeholder")).toEqual(placeholder);
   });
 
   it("init plugin with autoPlaceholder=aggressive overwrites the placeholder", function() {
     input.intlTelInput({
       autoPlaceholder: "aggressive"
     });
-    expect(input.attr("placeholder")).toEqual("(201) 555-0123");
+    expect(input[0].getAttribute("placeholder")).toEqual("(201) 555-0123");
   });
 
 });
