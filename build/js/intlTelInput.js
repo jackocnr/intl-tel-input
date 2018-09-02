@@ -213,9 +213,8 @@
             }
         },
         // create a DOM element
-        _createEl: function(name, classes, container, attrs) {
+        _createEl: function(name, attrs, container) {
             var el = document.createElement(name);
-            if (classes) el.className = classes;
             if (attrs) {
                 for (var attr in attrs) {
                     el.setAttribute(attr, attrs[attr]);
@@ -237,42 +236,57 @@
             if (this.options.separateDialCode) {
                 parentClass += " separate-dial-code";
             }
-            var wrapper = this._createEl("div", parentClass);
+            var wrapper = this._createEl("div", {
+                "class": parentClass
+            });
             this.telInput[0].parentNode.insertBefore(wrapper[0], this.telInput[0]);
-            this.flagsContainer = this._createEl("div", "flag-container", wrapper);
+            this.flagsContainer = this._createEl("div", {
+                "class": "flag-container"
+            }, wrapper);
             wrapper[0].appendChild(this.telInput[0]);
             // selected flag (displayed to left of input)
-            this.selectedFlag = this._createEl("div", "selected-flag", this.flagsContainer, {
+            this.selectedFlag = this._createEl("div", {
+                "class": "selected-flag",
                 role: "combobox",
                 "aria-owns": "country-listbox"
-            });
-            this.selectedFlagInner = this._createEl("div", "iti-flag", this.selectedFlag);
+            }, this.flagsContainer);
+            this.selectedFlagInner = this._createEl("div", {
+                "class": "iti-flag"
+            }, this.selectedFlag);
             if (this.options.separateDialCode) {
-                this.selectedDialCode = this._createEl("div", "selected-dial-code", this.selectedFlag);
+                this.selectedDialCode = this._createEl("div", {
+                    "class": "selected-dial-code"
+                }, this.selectedFlag);
             }
             if (this.options.allowDropdown) {
                 // make element focusable and tab navigable
                 this.selectedFlag[0].setAttribute("tabindex", "0");
-                this.dropdownArrow = this._createEl("div", "iti-arrow", this.selectedFlag);
+                this.dropdownArrow = this._createEl("div", {
+                    "class": "iti-arrow"
+                }, this.selectedFlag);
                 // country dropdown: preferred countries, then divider, then all countries
-                this.countryList = this._createEl("ul", "country-list hide", null, {
+                this.countryList = this._createEl("ul", {
+                    "class": "country-list hide",
                     id: "country-listbox",
                     "aria-expanded": "false",
                     role: "listbox"
                 });
                 if (this.preferredCountries.length) {
                     this._appendListItems(this.preferredCountries, "preferred");
-                    this._createEl("li", "divider", this.countryList, {
+                    this._createEl("li", {
+                        "class": "divider",
                         role: "separator",
                         "aria-disabled": "true"
-                    });
+                    }, this.countryList);
                 }
                 this._appendListItems(this.countries, "");
                 // this is useful in lots of places
                 this.countryListItems = this.countryList.children(".country");
                 // create dropdownContainer markup
                 if (this.options.dropdownContainer) {
-                    this.dropdown = this._createEl("div", "intl-tel-input iti-container");
+                    this.dropdown = this._createEl("div", {
+                        "class": "intl-tel-input iti-container"
+                    });
                     this.dropdown[0].appendChild(this.countryList[0]);
                 } else {
                     this.flagsContainer[0].appendChild(this.countryList[0]);
@@ -290,7 +304,7 @@
                     // replacing the contents of the last set of brackets with the given hiddenInput name
                     if (i !== -1) hiddenInputName = name.substr(0, i) + "[" + hiddenInputName + "]";
                 }
-                this.hiddenInput = this._createEl("input", null, null, {
+                this.hiddenInput = this._createEl("input", {
                     type: "hidden",
                     name: hiddenInputName
                 });
