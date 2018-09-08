@@ -549,6 +549,13 @@
         _getNumeric: function(s) {
             return s.replace(/\D/g, "");
         },
+        // trigger a custom event on the input
+        _trigger: function(name) {
+            var e = document.createEvent("Event");
+            e.initEvent(name, true, true);
+            //can bubble, and is cancellable
+            this.telInput.dispatchEvent(e);
+        },
         // show the dropdown
         _showDropdown: function() {
             this.countryList.classList.remove("hide");
@@ -564,6 +571,7 @@
             this._bindDropdownListeners();
             // update the arrow
             this.dropdownArrow.classList.add("up");
+            this._trigger("open:countrydropdown");
         },
         // make sure the el has the className or not, depending on the value of shouldHaveClass
         _toggleClass: function(el, className, shouldHaveClass) {
@@ -860,6 +868,7 @@
                 if (!this.isMobile) window.removeEventListener("scroll", this._handleWindowScroll);
                 if (this.dropdown.parentNode) this.dropdown.parentNode.removeChild(this.dropdown);
             }
+            this._trigger("close:countrydropdown");
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element, middle) {
@@ -978,7 +987,9 @@
             return this._cap(number);
         },
         // trigger the 'countrychange' event
-        _triggerCountryChange: function() {},
+        _triggerCountryChange: function() {
+            this._trigger("countrychange");
+        },
         /**************************
    *  SECRET PUBLIC METHODS
    **************************/

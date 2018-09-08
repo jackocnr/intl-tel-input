@@ -627,6 +627,14 @@ Plugin.prototype = {
   },
 
 
+  // trigger a custom event on the input
+  _trigger: function(name) {
+    var e = document.createEvent('Event');
+    e.initEvent(name, true, true); //can bubble, and is cancellable
+    this.telInput.dispatchEvent(e);
+  },
+
+
   // show the dropdown
   _showDropdown: function() {
     this.countryList.classList.remove("hide");
@@ -647,8 +655,7 @@ Plugin.prototype = {
     // update the arrow
     this.dropdownArrow.classList.add("up");
 
-    // TODO
-    // this.telInput.trigger("open:countrydropdown");
+    this._trigger("open:countrydropdown");
   },
 
 
@@ -1030,8 +1037,7 @@ Plugin.prototype = {
       if (this.dropdown.parentNode) this.dropdown.parentNode.removeChild(this.dropdown);
     }
 
-    // TODO
-    // this.telInput.trigger("close:countrydropdown");
+    this._trigger("close:countrydropdown");
   },
 
 
@@ -1182,8 +1188,7 @@ Plugin.prototype = {
 
   // trigger the 'countrychange' event
   _triggerCountryChange: function() {
-    // TODO
-    // this.telInput.trigger("countrychange", this.selectedCountryData);
+    this._trigger("countrychange");
   },
 
 
