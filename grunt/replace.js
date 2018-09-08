@@ -1,13 +1,13 @@
 module.exports = function(grunt) {
   return {
+
+    /***********
+     * PRIVATE METHODS
+     * (special treatment for the _init method, which is a subset of other method names)
+     ***********/
     one: {
       options: {
         patterns: [
-
-          /***********
-           * PRIVATE METHODS
-           * (special treatment for the _init method, which is a subset of other method names)
-           ***********/
           {
             match: /_init:/g,
             replacement: '_a:'
@@ -131,14 +131,12 @@ module.exports = function(grunt) {
     },
 
 
-
+    /***********
+     * FIELDS ON "this"
+     ***********/
     two: {
       options: {
         patterns: [
-
-          /***********
-           * FIELDS ON "this"
-           ***********/
           {
             match: /.telInput/g,
             replacement: '.a'
@@ -151,10 +149,7 @@ module.exports = function(grunt) {
           }, {
             match: /.hadInitialPlaceholder/g,
             replacement: '.e'
-          },
-
-
-          {
+          }, {
             match: /.isMobile/g,
             replacement: '.g'
           }, {
@@ -166,10 +161,7 @@ module.exports = function(grunt) {
           }, {
             match: /.defaultCountry/g,
             replacement: '.j'
-          },
-
-
-          {
+          }, {
             match: /.flagsContainer/g,
             replacement: '.k'
           }, {
@@ -178,12 +170,6 @@ module.exports = function(grunt) {
           }, {
             match: /.countryList/g,
             replacement: '.m'
-          }, {
-            match: /.dropdownHeight/g,
-            replacement: '.n'
-          }, {
-            match: /.countryListItems/g,
-            replacement: '.o'
           }, {
             match: /.countries/g,
             replacement: '.p'
@@ -197,7 +183,6 @@ module.exports = function(grunt) {
             match: /.selectedDialCode/g,
             replacement: '.t'
           }
-
         ]
       },
       files: {

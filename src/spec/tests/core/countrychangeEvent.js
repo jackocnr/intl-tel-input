@@ -46,17 +46,6 @@ describe("countrychange event:", function() {
       triggerKeyOnInput("4"); // selects uk
       expect(spy).toHaveBeenTriggered();
     });
-
-    it("returns the selected country as extraParameter", function() {
-      selectFlag("fr");
-      expect('countrychange').toHaveBeenTriggeredOnAndWith(input, {
-        name: 'France',
-        iso2: 'fr',
-        dialCode: '33',
-        priority: 0,
-        areaCodes: null
-      });
-    });
   });
 
 });

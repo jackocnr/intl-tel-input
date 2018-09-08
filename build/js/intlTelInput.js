@@ -28,8 +28,8 @@
         autoPlaceholder: "polite",
         // modify the auto placeholder
         customPlaceholder: null,
-        // append menu to a specific element
-        dropdownContainer: "",
+        // append menu to specified element
+        dropdownContainer: null,
         // don't display these countries
         excludeCountries: [],
         // format the input value during initialisation and on setNumber
@@ -62,7 +62,7 @@
         $.fn[pluginName].windowLoaded = true;
     });
     function Plugin(element, options) {
-        this.telInput = $(element);
+        this.telInput = element;
         // process specified options / defaults
         var customOptions = options || {};
         this.options = {};
@@ -73,7 +73,7 @@
         this.ns = "." + pluginName + id++;
         // Chrome, FF, Safari, IE9+
         this.isGoodBrowser = Boolean(element.setSelectionRange);
-        this.hadInitialPlaceholder = Boolean(this.telInput[0].getAttribute("placeholder"));
+        this.hadInitialPlaceholder = Boolean(this.telInput.getAttribute("placeholder"));
     }
     Plugin.prototype = {
         _init: function() {
@@ -94,7 +94,7 @@
                 document.body.classList.add("iti-mobile");
                 // on mobile, we want a full screen dropdown, so we must append it to the body
                 if (!this.options.dropdownContainer) {
-                    this.options.dropdownContainer = "body";
+                    this.options.dropdownContainer = document.body;
                 }
             }
             // we return these deferred objects from the _init() call so they can be watched, and then we resolve them when each specific request returns
@@ -210,14 +210,13 @@
                     el.setAttribute(attr, attrs[attr]);
                 }
             }
-            // when purge jquery, remove this [0] and $(el)
-            if (container) container[0].appendChild(el);
-            return $(el);
+            if (container) container.appendChild(el);
+            return el;
         },
         // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
         _generateMarkup: function() {
             // prevent autocomplete as there's no safe, cross-browser event we can react to, so it can easily put the plugin in an inconsistent state e.g. the wrong flag selected for the autocompleted number, which on submit could mean the wrong number is saved (esp in nationalMode)
-            this.telInput[0].setAttribute("autocomplete", "off");
+            this.telInput.setAttribute("autocomplete", "off");
             // containers (mostly for positioning)
             var parentClass = "intl-tel-input";
             if (this.options.allowDropdown) {
@@ -229,11 +228,11 @@
             var wrapper = this._createEl("div", {
                 "class": parentClass
             });
-            this.telInput[0].parentNode.insertBefore(wrapper[0], this.telInput[0]);
+            this.telInput.parentNode.insertBefore(wrapper, this.telInput);
             this.flagsContainer = this._createEl("div", {
                 "class": "flag-container"
             }, wrapper);
-            wrapper[0].appendChild(this.telInput[0]);
+            wrapper.appendChild(this.telInput);
             // selected flag (displayed to left of input)
             this.selectedFlag = this._createEl("div", {
                 "class": "selected-flag",
@@ -250,7 +249,7 @@
             }
             if (this.options.allowDropdown) {
                 // make element focusable and tab navigable
-                this.selectedFlag[0].setAttribute("tabindex", "0");
+                this.selectedFlag.setAttribute("tabindex", "0");
                 this.dropdownArrow = this._createEl("div", {
                     "class": "iti-arrow"
                 }, this.selectedFlag);
@@ -269,25 +268,20 @@
                         "aria-disabled": "true"
                     }, this.countryList);
                 }
-                this._appendListItems(this.countries, "");
-                // this is useful in lots of places
-                this.countryListItems = this.countryList.children(".country");
+                this._appendListItems(this.countries, "standard");
                 // create dropdownContainer markup
                 if (this.options.dropdownContainer) {
                     this.dropdown = this._createEl("div", {
                         "class": "intl-tel-input iti-container"
                     });
-                    this.dropdown[0].appendChild(this.countryList[0]);
+                    this.dropdown.appendChild(this.countryList);
                 } else {
-                    this.flagsContainer[0].appendChild(this.countryList[0]);
+                    this.flagsContainer.appendChild(this.countryList);
                 }
-            } else {
-                // a little hack so we don't break anything
-                this.countryListItems = $();
             }
             if (this.options.hiddenInput) {
                 var hiddenInputName = this.options.hiddenInput;
-                var name = this.telInput[0].getAttribute("name");
+                var name = this.telInput.getAttribute("name");
                 if (name) {
                     var i = name.lastIndexOf("[");
                     // if input name contains square brackets, then give the hidden input the same name,
@@ -298,7 +292,7 @@
                     type: "hidden",
                     name: hiddenInputName
                 });
-                wrapper[0].appendChild(this.hiddenInput[0]);
+                wrapper.appendChild(this.hiddenInput);
             }
         },
         // add a country <li> to the countryList <ul> container
@@ -319,7 +313,7 @@
                 // close the list item
                 tmp += "</li>";
             }
-            this.countryList[0].insertAdjacentHTML("beforeend", tmp);
+            this.countryList.insertAdjacentHTML("beforeend", tmp);
         },
         // set the initial state of the input value and the selected flag by:
         // 1. extracting a dial code from the given number
@@ -327,7 +321,7 @@
         // 3. picking the first preferred country
         // 4. picking the first country
         _setInitialState: function() {
-            var val = this.telInput.val();
+            var val = this.telInput.value;
             var dialCode = this._getDialCode(val);
             var isRegionlessNanp = this._isRegionlessNanp(val);
             // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the flag, else fall back to the default country
@@ -351,7 +345,7 @@
                 }
                 // if empty and no nationalMode and no autoHideDialCode then insert the default dial code
                 if (!val && !this.options.nationalMode && !this.options.autoHideDialCode && !this.options.separateDialCode) {
-                    this.telInput.val("+" + this.selectedCountryData.dialCode);
+                    this.telInput.value = "+" + this.selectedCountryData.dialCode;
                 }
             }
             // NOTE: if initialCountry is set to auto, that will be handled separately
@@ -380,12 +374,12 @@
             this._handleHiddenInputSubmit = function() {
                 that.hiddenInput.value = that.getNumber();
             };
-            var form = this.telInput[0].form;
+            var form = this.telInput.form;
             if (form) form.addEventListener("submit", this._handleHiddenInputSubmit);
         },
         // iterate through parent nodes to find the closest label ancestor, if it exists
         _getClosestLabel: function() {
-            var el = this.telInput[0];
+            var el = this.telInput;
             while (el && el.tagName !== "LABEL") el = el.parentNode;
             return el;
         },
@@ -395,8 +389,8 @@
             // hack for input nested inside label (which is valid markup): clicking the selected-flag to open the dropdown would then automatically trigger a 2nd click on the input which would close it again
             this._handleLabelClick = function(e) {
                 // if the dropdown is closed, then focus the input, else ignore the click
-                if (that.countryList[0].classList.contains("hide")) {
-                    that.telInput[0].focus();
+                if (that.countryList.classList.contains("hide")) {
+                    that.telInput.focus();
                 } else {
                     e.preventDefault();
                 }
@@ -408,14 +402,14 @@
                 // only intercept this event if we're opening the dropdown
                 // else let it bubble up to the top ("click-off-to-close" listener)
                 // we cannot just stopPropagation as it may be needed to close another instance
-                if (that.countryList[0].classList.contains("hide") && !that.telInput[0].disabled && !that.telInput[0].readOnly) {
+                if (that.countryList.classList.contains("hide") && !that.telInput.disabled && !that.telInput.readOnly) {
                     that._showDropdown();
                 }
             };
-            this.selectedFlag[0].addEventListener("click", this._handleClickSelectedFlag);
+            this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
             // open dropdown list if currently focused
             this._handleFlagsContainerKeydown = function(e) {
-                var isDropdownHidden = that.countryList[0].classList.contains("hide");
+                var isDropdownHidden = that.countryList.classList.contains("hide");
                 if (isDropdownHidden && [ "ArrowUp", "ArrowDown", " ", "Enter" ].indexOf(e.key) !== -1) {
                     // prevent form from being submitted if "ENTER" was pressed
                     e.preventDefault();
@@ -426,7 +420,7 @@
                 // allow navigation from dropdown to input on TAB
                 if (e.key === "Tab") that._closeDropdown();
             };
-            this.flagsContainer[0].addEventListener("keydown", this._handleFlagsContainerKeydown);
+            this.flagsContainer.addEventListener("keydown", this._handleFlagsContainerKeydown);
         },
         // init many requests: utils script / geo ip lookup
         _initRequests: function() {
@@ -481,22 +475,22 @@
             var that = this;
             // update flag on keyup
             this._handleKeyupEvent = function() {
-                if (that._updateFlagFromNumber(that.telInput[0].value)) {
+                if (that._updateFlagFromNumber(that.telInput.value)) {
                     that._triggerCountryChange();
                 }
             };
-            this.telInput[0].addEventListener("keyup", this._handleKeyupEvent);
+            this.telInput.addEventListener("keyup", this._handleKeyupEvent);
             // update flag on cut/paste events (now supported in all major browsers)
             this._handleClipboardEvent = function() {
                 // hack because "paste" event is fired before input is updated
                 setTimeout(that._handleKeyupEvent);
             };
-            this.telInput[0].addEventListener("cut", this._handleClipboardEvent);
-            this.telInput[0].addEventListener("paste", this._handleClipboardEvent);
+            this.telInput.addEventListener("cut", this._handleClipboardEvent);
+            this.telInput.addEventListener("paste", this._handleClipboardEvent);
         },
         // adhere to the input's maxlength attr
         _cap: function(number) {
-            var max = this.telInput.attr("maxlength");
+            var max = this.telInput.getAttribute("maxlength");
             return max && number.length > max ? number.substr(0, max) : number;
         },
         // listen for mousedown, focus and blur (for autoHideDialCode feature)
@@ -504,53 +498,52 @@
             var that = this;
             // mousedown decides where the cursor goes, so if we're focusing we must preventDefault as we'll be inserting the dial code, and we want the cursor to be at the end no matter where they click
             this._handleMousedownFocusEvent = function(e) {
-                if (that.telInput[0] !== document.activeElement && !that.telInput[0].value) {
+                if (that.telInput !== document.activeElement && !that.telInput.value) {
                     e.preventDefault();
                     // but this also cancels the focus, so we must trigger that manually
-                    that.telInput[0].focus();
+                    that.telInput.focus();
                 }
             };
-            this.telInput[0].addEventListener("mousedown", this._handleMousedownFocusEvent);
+            this.telInput.addEventListener("mousedown", this._handleMousedownFocusEvent);
             this._handleKeypressPlusEvent = function(e) {
-                if (e.key === "+") that.telInput[0].value = "";
+                if (e.key === "+") that.telInput.value = "";
             };
             // on focus: if empty, insert the dial code for the currently selected flag
             this._handleFocusEvent = function(e) {
-                if (!that.telInput[0].value && !that.telInput[0].readOnly && that.selectedCountryData.dialCode) {
+                if (!that.telInput.value && !that.telInput.readOnly && that.selectedCountryData.dialCode) {
                     // insert the dial code
-                    that.telInput[0].value = "+" + that.selectedCountryData.dialCode;
+                    that.telInput.value = "+" + that.selectedCountryData.dialCode;
                     // after auto-inserting a dial code, if the first key they hit is '+' then assume they are entering a new number, so remove the dial code. use keypress instead of keydown because keydown gets triggered for the shift key (required to hit the + key), and instead of keyup because that shows the new '+' before removing the old one
-                    that.telInput[0].addEventListener("keypress", that._handleKeypressPlusEvent);
+                    that.telInput.addEventListener("keypress", that._handleKeypressPlusEvent);
                     // after tabbing in, make sure the cursor is at the end we must use setTimeout to get outside of the focus handler as it seems the selection happens after that
                     setTimeout(function() {
-                        var input = that.telInput[0];
                         if (that.isGoodBrowser) {
-                            var len = input.value.length;
-                            input.setSelectionRange(len, len);
+                            var len = that.telInput.value.length;
+                            that.telInput.setSelectionRange(len, len);
                         }
                     });
                 }
             };
-            this.telInput[0].addEventListener("focus", this._handleFocusEvent);
+            this.telInput.addEventListener("focus", this._handleFocusEvent);
             // on blur or form submit: if just a dial code then remove it
             this._handleSubmitOrBlurEvent = function() {
                 that._removeEmptyDialCode();
             };
-            var form = this.telInput[0].form;
+            var form = this.telInput.form;
             if (form) form.addEventListener("submit", this._handleSubmitOrBlurEvent);
-            this.telInput[0].addEventListener("blur", this._handleSubmitOrBlurEvent);
+            this.telInput.addEventListener("blur", this._handleSubmitOrBlurEvent);
         },
         _removeEmptyDialCode: function() {
-            var value = this.telInput[0].value, startsPlus = value.charAt(0) == "+";
+            var startsPlus = this.telInput.value.charAt(0) === "+";
             if (startsPlus) {
-                var numeric = this._getNumeric(value);
+                var numeric = this._getNumeric(this.telInput.value);
                 // if just a plus, or if just a dial code
                 if (!numeric || this.selectedCountryData.dialCode == numeric) {
-                    this.telInput[0].value = "";
+                    this.telInput.value = "";
                 }
             }
             // remove the keypress listener we added on focus
-            this.telInput[0].removeEventListener("keypress", this._handleKeypressPlusEvent);
+            this.telInput.removeEventListener("keypress", this._handleKeypressPlusEvent);
         },
         // extract the numeric digits from the given string
         _getNumeric: function(s) {
@@ -558,41 +551,43 @@
         },
         // show the dropdown
         _showDropdown: function() {
+            this.countryList.classList.remove("hide");
+            this.countryList.setAttribute("aria-expanded", "true");
             this._setDropdownPosition();
             // update highlighting and scroll to active list item
-            var activeListItem = this.countryList.children(".active");
-            if (activeListItem.length) {
-                this._highlightListItem(activeListItem);
-                this._scrollTo(activeListItem);
+            var activeItem = this.countryList.querySelector(".active");
+            if (activeItem) {
+                this._highlightListItem(activeItem);
+                this._scrollTo(activeItem);
             }
             // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
             this._bindDropdownListeners();
             // update the arrow
-            this.dropdownArrow.addClass("up");
-            this.telInput.trigger("open:countrydropdown");
+            this.dropdownArrow.classList.add("up");
+        },
+        // make sure the el has the className or not, depending on the value of shouldHaveClass
+        _toggleClass: function(el, className, shouldHaveClass) {
+            if (shouldHaveClass && !el.classList.contains(className)) el.classList.add(className); else if (!shouldHaveClass && el.classList.contains(className)) el.classList.remove(className);
         },
         // decide where to position dropdown (depends on position within viewport, and scroll)
         _setDropdownPosition: function() {
             var that = this;
             if (this.options.dropdownContainer) {
-                this.dropdown.appendTo(this.options.dropdownContainer);
+                this.options.dropdownContainer.appendChild(this.dropdown);
             }
-            // show the menu and grab the dropdown height
-            this.dropdownHeight = this.countryList.removeClass("hide").attr("aria-expanded", "true").outerHeight();
             if (!this.isMobile) {
-                var pos = this.telInput.offset(), inputTop = pos.top, windowTop = $(window).scrollTop(), // dropdownFitsBelow = (dropdownBottom < windowBottom)
-                dropdownFitsBelow = inputTop + this.telInput.outerHeight() + this.dropdownHeight < windowTop + $(window).height(), dropdownFitsAbove = inputTop - this.dropdownHeight > windowTop;
+                var pos = this.telInput.getBoundingClientRect(), // windowTop from https://stackoverflow.com/a/14384091/217866
+                windowTop = window.pageYOffset || document.documentElement.scrollTop, inputTop = pos.top + windowTop, dropdownHeight = this.countryList.offsetHeight, // dropdownFitsBelow = (dropdownBottom < windowBottom)
+                dropdownFitsBelow = inputTop + this.telInput.offsetHeight + dropdownHeight < windowTop + window.innerHeight, dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
                 // by default, the dropdown will be below the input. If we want to position it above the input, we add the dropup class.
-                this.countryList.toggleClass("dropup", !dropdownFitsBelow && dropdownFitsAbove);
+                this._toggleClass(this.countryList, "dropup", !dropdownFitsBelow && dropdownFitsAbove);
                 // if dropdownContainer is enabled, calculate postion
                 if (this.options.dropdownContainer) {
                     // by default the dropdown will be directly over the input because it's not in the flow. If we want to position it below, we need to add some extra top value.
-                    var extraTop = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.innerHeight();
+                    var extraTop = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.offsetHeight;
                     // calculate placement
-                    this.dropdown.css({
-                        top: inputTop + extraTop,
-                        left: pos.left
-                    });
+                    this.dropdown.style.top = "" + (inputTop + extraTop) + "px";
+                    this.dropdown.style.left = "" + (pos.left + document.body.scrollLeft) + "px";
                     // close menu on window scroll
                     this._handleWindowScroll = function() {
                         that._closeDropdown();
@@ -604,9 +599,9 @@
         // iterate through parent nodes to find the closest list item
         _getClosestListItem: function(target) {
             var el = target;
-            while (el && el !== this.countryList[0] && !el.classList.contains("country")) el = el.parentNode;
+            while (el && el !== this.countryList && !el.classList.contains("country")) el = el.parentNode;
             // if we reached the countryList element, then return null
-            return el === this.countryList[0] ? null : el;
+            return el === this.countryList ? null : el;
         },
         // we only bind dropdown listeners when the dropdown is open
         _bindDropdownListeners: function() {
@@ -616,15 +611,15 @@
             this._handleMouseoverCountryList = function(e) {
                 // handle event delegation, as we're listening for this event on the countryList
                 var listItem = that._getClosestListItem(e.target);
-                if (listItem) that._highlightListItem($(listItem));
+                if (listItem) that._highlightListItem(listItem);
             };
-            this.countryList[0].addEventListener("mouseover", this._handleMouseoverCountryList);
+            this.countryList.addEventListener("mouseover", this._handleMouseoverCountryList);
             // listen for country selection
             this._handleClickCountryList = function(e) {
                 var listItem = that._getClosestListItem(e.target);
-                if (listItem) that._selectListItem($(listItem));
+                if (listItem) that._selectListItem(listItem);
             };
-            this.countryList[0].addEventListener("click", this._handleClickCountryList);
+            this.countryList.addEventListener("click", this._handleClickCountryList);
             // click off to close
             // (except when this initial opening click is bubbling up)
             // we cannot just stopPropagation as it may be needed to close another instance
@@ -659,12 +654,12 @@
         },
         // highlight the next/prev item in the list (and ensure it is visible)
         _handleUpDownKey: function(key) {
-            var current = this.countryList.children(".highlight").first();
-            var next = key === "ArrowUp" ? current.prev() : current.next();
-            if (next.length) {
+            var current = this.countryList.querySelector(".country.highlight");
+            var next = key === "ArrowUp" ? current.previousElementSibling : current.nextElementSibling;
+            if (next) {
                 // skip the divider
-                if (next.hasClass("divider")) {
-                    next = key === "ArrowUp" ? next.prev() : next.next();
+                if (next.classList.contains("divider")) {
+                    next = key === "ArrowUp" ? next.previousElementSibling : next.nextElementSibling;
                 }
                 this._highlightListItem(next);
                 this._scrollTo(next);
@@ -672,8 +667,8 @@
         },
         // select the currently highlighted item
         _handleEnterKey: function() {
-            var currentCountry = this.countryList.children(".highlight").first();
-            if (currentCountry.length) {
+            var currentCountry = this.countryList.querySelector(".country.highlight");
+            if (currentCountry) {
                 this._selectListItem(currentCountry);
             }
         },
@@ -681,7 +676,7 @@
         _searchForCountry: function(query) {
             for (var i = 0; i < this.countries.length; i++) {
                 if (this._startsWith(this.countries[i].name, query)) {
-                    var listItem = this.countryList.children("[data-country-code=" + this.countries[i].iso2 + "]").not(".preferred");
+                    var listItem = this.countryList.querySelector("#iti-item-" + this.countries[i].iso2);
                     // update highlighting and scroll
                     this._highlightListItem(listItem);
                     this._scrollTo(listItem, true);
@@ -701,7 +696,7 @@
                 number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
             }
             number = this._beforeSetNumber(number);
-            this.telInput.val(number);
+            this.telInput.value = number;
         },
         // check if need to select a new flag based on the given number
         // Note: called from _setInitialState, keyup handler, setNumber
@@ -757,8 +752,9 @@
         },
         // remove highlighting from other list items and highlight the given item
         _highlightListItem: function(listItem) {
-            this.countryListItems.removeClass("highlight");
-            listItem.addClass("highlight");
+            var prevItem = this.countryList.querySelector(".country.highlight");
+            if (prevItem) prevItem.classList.remove("highlight");
+            listItem.classList.add("highlight");
         },
         // find the country data for the given country code
         // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
@@ -785,29 +781,35 @@
             if (this.selectedCountryData.iso2) {
                 this.defaultCountry = this.selectedCountryData.iso2;
             }
-            this.selectedFlagInner.attr("class", "iti-flag " + countryCode);
+            this.selectedFlagInner.setAttribute("class", "iti-flag " + countryCode);
             // update the selected country's title attribute
             var title = countryCode ? this.selectedCountryData.name + ": +" + this.selectedCountryData.dialCode : "Unknown";
-            this.selectedFlag.attr("title", title);
+            this.selectedFlag.setAttribute("title", title);
             if (this.options.separateDialCode) {
-                var dialCode = this.selectedCountryData.dialCode ? "+" + this.selectedCountryData.dialCode : "", parent = this.telInput.parent();
+                var dialCode = this.selectedCountryData.dialCode ? "+" + this.selectedCountryData.dialCode : "", parent = this.telInput.parentNode;
                 if (prevCountry.dialCode) {
-                    parent.removeClass("iti-sdc-" + (prevCountry.dialCode.length + 1));
+                    parent.classList.remove("iti-sdc-" + (prevCountry.dialCode.length + 1));
                 }
                 if (dialCode) {
-                    parent.addClass("iti-sdc-" + dialCode.length);
+                    parent.classList.add("iti-sdc-" + dialCode.length);
                 }
-                this.selectedDialCode.text(dialCode);
+                var textNode = document.createTextNode(dialCode);
+                this.selectedDialCode.appendChild(textNode);
             }
             // and the input's placeholder
             this._updatePlaceholder();
             // update the active list item
             if (this.options.allowDropdown) {
-                this.countryListItems.removeClass("active").attr("aria-selected", "false");
+                var prevItem = this.countryList.querySelector(".country.active");
+                if (prevItem) {
+                    prevItem.classList.remove("active");
+                    prevItem.setAttribute("aria-selected", "false");
+                }
                 if (countryCode) {
-                    var listItem = this.countryListItems.find(".iti-flag." + countryCode).first().parent().parent();
-                    listItem.addClass("active").attr("aria-selected", "true");
-                    this.countryList.attr("aria-activedescendant", listItem.attr("id"));
+                    var nextItem = this.countryList.querySelector("#iti-item-" + countryCode);
+                    nextItem.classList.add("active");
+                    nextItem.setAttribute("aria-selected", "true");
+                    this.countryList.setAttribute("aria-activedescendant", nextItem.getAttribute("id"));
                 }
             }
             // return if the flag has changed or not
@@ -822,21 +824,21 @@
                 if (typeof this.options.customPlaceholder === "function") {
                     placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
                 }
-                this.telInput[0].setAttribute("placeholder", placeholder);
+                this.telInput.setAttribute("placeholder", placeholder);
             }
         },
         // called when the user selects a list item from the dropdown
         _selectListItem: function(listItem) {
             // update selected flag and active list item
-            var flagChanged = this._setFlag(listItem.attr("data-country-code"));
+            var flagChanged = this._setFlag(listItem.getAttribute("data-country-code"));
             this._closeDropdown();
-            this._updateDialCode(listItem.attr("data-dial-code"), true);
+            this._updateDialCode(listItem.getAttribute("data-dial-code"), true);
             // focus the input
             this.telInput.focus();
             // put cursor at end - this fix is required for FF and IE11 (with nationalMode=false i.e. auto inserting dial code), who try to put the cursor at the beginning the first time
             if (this.isGoodBrowser) {
-                var len = this.telInput.val().length;
-                this.telInput[0].setSelectionRange(len, len);
+                var len = this.telInput.value.length;
+                this.telInput.setSelectionRange(len, len);
             }
             if (flagChanged) {
                 this._triggerCountryChange();
@@ -844,44 +846,44 @@
         },
         // close the dropdown and unbind any listeners
         _closeDropdown: function() {
-            this.countryList.addClass("hide");
-            this.countryList.attr("aria-expanded", "false");
+            this.countryList.classList.add("hide");
+            this.countryList.setAttribute("aria-expanded", "false");
             // update the arrow
-            this.dropdownArrow.removeClass("up");
+            this.dropdownArrow.classList.remove("up");
             // unbind key events
             document.removeEventListener("keydown", this._handleKeydownOnDropdown);
             document.documentElement.removeEventListener("click", this._handleClickOffToClose);
-            this.countryList[0].removeEventListener("mouseover", this._handleMouseoverCountryList);
-            this.countryList[0].removeEventListener("click", this._handleClickCountryList);
+            this.countryList.removeEventListener("mouseover", this._handleMouseoverCountryList);
+            this.countryList.removeEventListener("click", this._handleClickCountryList);
             // remove menu from container
             if (this.options.dropdownContainer) {
                 if (!this.isMobile) window.removeEventListener("scroll", this._handleWindowScroll);
-                this.dropdown.detach();
+                if (this.dropdown.parentNode) this.dropdown.parentNode.removeChild(this.dropdown);
             }
-            this.telInput.trigger("close:countrydropdown");
         },
         // check if an element is visible within it's container, else scroll until it is
         _scrollTo: function(element, middle) {
-            var container = this.countryList, containerHeight = container.height(), containerTop = container.offset().top, containerBottom = containerTop + containerHeight, elementHeight = element.outerHeight(), elementTop = element.offset().top, elementBottom = elementTop + elementHeight, newScrollTop = elementTop - containerTop + container.scrollTop(), middleOffset = containerHeight / 2 - elementHeight / 2;
+            var container = this.countryList, // windowTop from https://stackoverflow.com/a/14384091/217866
+            windowTop = window.pageYOffset || document.documentElement.scrollTop, containerHeight = container.offsetHeight, containerTop = container.getBoundingClientRect().top + windowTop, containerBottom = containerTop + containerHeight, elementHeight = element.offsetHeight, elementTop = element.getBoundingClientRect().top + windowTop, elementBottom = elementTop + elementHeight, newScrollTop = elementTop - containerTop + container.scrollTop, middleOffset = containerHeight / 2 - elementHeight / 2;
             if (elementTop < containerTop) {
                 // scroll up
                 if (middle) {
                     newScrollTop -= middleOffset;
                 }
-                container.scrollTop(newScrollTop);
+                container.scrollTop = newScrollTop;
             } else if (elementBottom > containerBottom) {
                 // scroll down
                 if (middle) {
                     newScrollTop += middleOffset;
                 }
                 var heightDifference = containerHeight - elementHeight;
-                container.scrollTop(newScrollTop - heightDifference);
+                container.scrollTop = newScrollTop - heightDifference;
             }
         },
         // replace any existing dial code with the new one
         // Note: called from _selectListItem and setCountry
         _updateDialCode: function(newDialCode, hasSelectedListItem) {
-            var inputVal = this.telInput.val(), newNumber;
+            var inputVal = this.telInput.value, newNumber;
             // save having to pass this every time
             newDialCode = "+" + newDialCode;
             if (inputVal.charAt(0) == "+") {
@@ -910,7 +912,7 @@
                     return;
                 }
             }
-            this.telInput.val(newNumber);
+            this.telInput.value = newNumber;
         },
         // try and extract a valid international dial code from a full telephone number
         // Note: returns the raw string inc plus character and any whitespace/dots etc
@@ -941,7 +943,7 @@
         },
         // get the input val, adding the dial code if separateDialCode is enabled
         _getFullNumber: function() {
-            var val = this.telInput.val().trim(), dialCode = this.selectedCountryData.dialCode, prefix, numericVal = this._getNumeric(val), // normalized means ensure starts with a 1, so we can match against the full dial code
+            var val = this.telInput.value.trim(), dialCode = this.selectedCountryData.dialCode, prefix, numericVal = this._getNumeric(val), // normalized means ensure starts with a 1, so we can match against the full dial code
             normalizedVal = numericVal.charAt(0) == "1" ? numericVal : "1" + numericVal;
             if (this.options.separateDialCode) {
                 // when using separateDialCode, it is visible so is effectively part of the typed number
@@ -976,9 +978,7 @@
             return this._cap(number);
         },
         // trigger the 'countrychange' event
-        _triggerCountryChange: function() {
-            this.telInput.trigger("countrychange", this.selectedCountryData);
-        },
+        _triggerCountryChange: function() {},
         /**************************
    *  SECRET PUBLIC METHODS
    **************************/
@@ -988,7 +988,7 @@
                 // we must set this even if there is an initial val in the input: in case the initial val is invalid and they delete it - they should see their auto country
                 this.defaultCountry = $.fn[pluginName].autoCountry;
                 // if there's no initial value in the input, then update the flag
-                if (!this.telInput.val()) {
+                if (!this.telInput.value) {
                     this.setCountry(this.defaultCountry);
                 }
                 this.autoCountryDeferred.resolve();
@@ -999,8 +999,8 @@
             // if the request was successful
             if (window.intlTelInputUtils) {
                 // if there's an initial value in the input, then format it
-                if (this.telInput.val()) {
-                    this._updateValFromNumber(this.telInput.val());
+                if (this.telInput.value) {
+                    this._updateValFromNumber(this.telInput.value);
                 }
                 this._updatePlaceholder();
             }
@@ -1011,35 +1011,32 @@
    ********************/
         // remove plugin
         destroy: function() {
-            var form = this.telInput[0].form;
+            var form = this.telInput.form;
             if (this.options.allowDropdown) {
                 // make sure the dropdown is closed (and unbind listeners)
                 this._closeDropdown();
-                this.selectedFlag[0].removeEventListener("click", this._handleClickSelectedFlag);
-                this.flagsContainer[0].removeEventListener("keydown", this._handleFlagsContainerKeydown);
+                this.selectedFlag.removeEventListener("click", this._handleClickSelectedFlag);
+                this.flagsContainer.removeEventListener("keydown", this._handleFlagsContainerKeydown);
                 // label click hack
                 var label = this._getClosestLabel();
                 if (label) label.removeEventListener("click", this._handleLabelClick);
             }
             // unbind hiddenInput listeners
-            if (this.hiddenInput) {
-                if (form) form.removeEventListener("submit", this._handleHiddenInputSubmit);
-            }
+            if (this.hiddenInput && form) form.removeEventListener("submit", this._handleHiddenInputSubmit);
             // unbind autoHideDialCode listeners
             if (this.options.autoHideDialCode) {
-                this.telInput[0].removeEventListener("mousedown", this._handleMousedownFocusEvent);
-                this.telInput[0].removeEventListener("focus", this._handleFocusEvent);
+                this.telInput.removeEventListener("mousedown", this._handleMousedownFocusEvent);
+                this.telInput.removeEventListener("focus", this._handleFocusEvent);
                 if (form) form.removeEventListener("submit", this._handleSubmitOrBlurEvent);
-                this.telInput[0].removeEventListener("blur", this._handleSubmitOrBlurEvent);
+                this.telInput.removeEventListener("blur", this._handleSubmitOrBlurEvent);
             }
             // unbind all events: key events, and focus/blur events if autoHideDialCode=true
-            this.telInput.off(this.ns);
-            this.telInput[0].removeEventListener("keyup", this._handleKeyupEvent);
-            this.telInput[0].removeEventListener("cut", this._handleClipboardEvent);
-            this.telInput[0].removeEventListener("paste", this._handleClipboardEvent);
+            this.telInput.removeEventListener("keyup", this._handleKeyupEvent);
+            this.telInput.removeEventListener("cut", this._handleClipboardEvent);
+            this.telInput.removeEventListener("paste", this._handleClipboardEvent);
             // remove markup (but leave the original input)
-            var wrapper = this.telInput[0].parentNode;
-            wrapper.parentNode.insertBefore(this.telInput[0], wrapper);
+            var wrapper = this.telInput.parentNode;
+            wrapper.parentNode.insertBefore(this.telInput, wrapper);
             wrapper.parentNode.removeChild(wrapper);
         },
         // get the extension from the current number
@@ -1083,7 +1080,7 @@
         setCountry: function(countryCode) {
             countryCode = countryCode.toLowerCase();
             // check if already selected
-            if (!this.selectedFlagInner.hasClass(countryCode)) {
+            if (!this.selectedFlagInner.classList.contains(countryCode)) {
                 this._setFlag(countryCode);
                 this._updateDialCode(this.selectedCountryData.dialCode, false);
                 this._triggerCountryChange();
