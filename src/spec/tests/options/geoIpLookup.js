@@ -1,8 +1,7 @@
 "use strict";
 
 describe("geoIpLookup:", function() {
-  var deferred,
-    country = "gb";
+  var country = "gb";
 
   beforeEach(function() {
     intlSetup();
@@ -12,18 +11,16 @@ describe("geoIpLookup:", function() {
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy").remove();
-    input = deferred = null;
   });
 
   it("init vanilla plugin resolves straight away", function() {
-    deferred = input.intlTelInput();
-    expect(deferred.state()).toEqual("resolved");
+    iti = window.intlTelInput(input[0]);
+    expect(iti.deferred.state()).toEqual("resolved");
   });
 
   describe("init plugin with geoIpLookup", function() {
     beforeEach(function() {
-      deferred = input.intlTelInput({
+      iti = window.intlTelInput(input[0], {
         initialCountry: "auto",
         geoIpLookup: function(callback) {
           callback(country);
@@ -32,13 +29,13 @@ describe("geoIpLookup:", function() {
     });
 
     it("does not resolve straight away", function() {
-      expect(deferred.state()).toEqual("pending");
+      expect(iti.deferred.state()).toEqual("pending");
     });
   });
 
   describe('init plugin with geoIpLookup, and wait for it to finish', function() {
     beforeEach(function(done) {
-      deferred = input.intlTelInput({
+      iti = window.intlTelInput(input[0], {
         initialCountry: "auto",
         geoIpLookup: function(callback) {
           callback(country);
@@ -48,14 +45,16 @@ describe("geoIpLookup:", function() {
     });
 
     it("does resolve", function() {
-      expect(deferred.state()).toEqual("resolved");
+      expect(iti.deferred.state()).toEqual("resolved");
     });
 
     describe('init a second instance with geoIpLookup', function() {
-      var deferred2;
+      var input2,
+        iti2;
 
       beforeEach(function() {
-        deferred2 = input.intlTelInput({
+        input2 = $("<input>").appendTo("body");
+        iti2 = window.intlTelInput(input2[0], {
           initialCountry: "auto",
           geoIpLookup: function(callback) {
             callback(country);
@@ -64,12 +63,14 @@ describe("geoIpLookup:", function() {
       });
 
       afterEach(function() {
-        deferred2 = null;
+        iti2.destroy();
+        input2.remove();
+        input2 = iti2 = null;
       });
 
       it("does resolve straight away", function() {
-        expect($.fn.intlTelInput.autoCountry).toEqual(country);
-        expect(deferred2.state()).toEqual("resolved");
+        expect(window.intlTelInputGlobals.autoCountry).toEqual(country);
+        expect(iti2.deferred.state()).toEqual("resolved");
       });
     });
   });

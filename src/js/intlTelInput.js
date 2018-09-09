@@ -1,6 +1,9 @@
+window.intlTelInputGlobals = {
+  instances: {},
+};
+
 // these vars persist through all instances of the plugin
-var pluginName = "intlTelInput",
-  id = 1, // give each instance it's own id for namespaced event handling
+var id = 0,
   defaults = {
     // whether or not to allow the dropdown
     allowDropdown: true,
@@ -44,12 +47,13 @@ var pluginName = "intlTelInput",
 // keep track of if the window.load event has fired as impossible to check after the fact
 window.addEventListener('load', function() {
   // UPDATE: use a public static field so we can fudge it in the tests
-  $.fn[pluginName].windowLoaded = true;
+  window.intlTelInputGlobals.windowLoaded = true;
 });
 
 
-function Plugin(element, options) {
-  this.telInput = element;
+var Iti = function(input, options) {
+  this.id = id++;
+  this.telInput = input;
 
   // process specified options / defaults
   var customOptions = options || {};
@@ -58,17 +62,11 @@ function Plugin(element, options) {
     this.options[key] = (customOptions.hasOwnProperty(key)) ? customOptions[key] : defaults[key];
   }
 
-  // event namespace
-  this.ns = "." + pluginName + (id++);
-
-  // Chrome, FF, Safari, IE9+
-  this.isGoodBrowser = Boolean(element.setSelectionRange);
-
-  this.hadInitialPlaceholder = Boolean(this.telInput.getAttribute("placeholder"));
-}
+  this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
+};
 
 
-Plugin.prototype = {
+Iti.prototype = {
 
   _init: function() {
     // if in nationalMode, disable options relating to dial codes
@@ -100,6 +98,7 @@ Plugin.prototype = {
     // Note: again, jasmine breaks when I put these in the Plugin function
     this.autoCountryDeferred = new $.Deferred();
     this.utilsScriptDeferred = new $.Deferred();
+    this.deferred = $.when(this.autoCountryDeferred, this.utilsScriptDeferred);
 
     // in various situations there could be no country selected initially, but we need to be able to assume this variable exists
     this.selectedCountryData = {};
@@ -118,9 +117,6 @@ Plugin.prototype = {
 
     // utils script, and auto country
     this._initRequests();
-
-    // return the deferreds
-    return [this.autoCountryDeferred, this.utilsScriptDeferred];
   },
 
 
@@ -480,12 +476,12 @@ Plugin.prototype = {
     // if the user has specified the path to the utils script, fetch it on window.load, else resolve
     if (this.options.utilsScript && !window.intlTelInputUtils) {
       // if the plugin is being initialised after the window.load event has already been fired
-      if ($.fn[pluginName].windowLoaded) {
-        $.fn[pluginName].loadUtils(this.options.utilsScript);
+      if (window.intlTelInputGlobals.windowLoaded) {
+        window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
       } else {
         // wait until the load event so we don't block any other requests e.g. the flags image
         window.addEventListener('load', function() {
-          $.fn[pluginName].loadUtils(that.options.utilsScript);
+          window.intlTelInputGlobals.loadUtils(that.options.utilsScript);
         });
       }
     } else {
@@ -508,20 +504,23 @@ Plugin.prototype = {
     // 1) already loaded (we're done)
     // 2) not already started loading (start)
     // 3) already started loading (do nothing - just wait for loading callback to fire)
-    if ($.fn[pluginName].autoCountry) {
+    if (window.intlTelInputGlobals.autoCountry) {
       this.handleAutoCountry();
-    } else if (!$.fn[pluginName].startedLoadingAutoCountry) {
+    } else if (!window.intlTelInputGlobals.startedLoadingAutoCountry) {
       // don't do this twice!
-      $.fn[pluginName].startedLoadingAutoCountry = true;
+      window.intlTelInputGlobals.startedLoadingAutoCountry = true;
 
       if (typeof this.options.geoIpLookup === 'function') {
         this.options.geoIpLookup(function(countryCode) {
-          $.fn[pluginName].autoCountry = countryCode.toLowerCase();
+          window.intlTelInputGlobals.autoCountry = countryCode.toLowerCase();
           // tell all instances the auto country is ready
           // TODO: this should just be the current instances
           // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight away (e.g. if they have already done the geo ip lookup somewhere else). Using setTimeout means that the current thread of execution will finish before executing this, which allows the plugin to finish initialising.
           setTimeout(function() {
-            $(".intl-tel-input input").intlTelInput("handleAutoCountry");
+            var instanceIds = Object.keys(window.intlTelInputGlobals.instances);
+            for (var i = 0; i < instanceIds.length; i++) {
+              window.intlTelInputGlobals.instances[instanceIds[i]].handleAutoCountry();
+            }
           });
         });
       }
@@ -586,10 +585,8 @@ Plugin.prototype = {
 
         // after tabbing in, make sure the cursor is at the end we must use setTimeout to get outside of the focus handler as it seems the selection happens after that
         setTimeout(function() {
-          if (that.isGoodBrowser) {
-            var len = that.telInput.value.length;
-            that.telInput.setSelectionRange(len, len);
-          }
+          var len = that.telInput.value.length;
+          that.telInput.setSelectionRange(len, len);
         });
       }
     };
@@ -1007,10 +1004,8 @@ Plugin.prototype = {
     // focus the input
     this.telInput.focus();
     // put cursor at end - this fix is required for FF and IE11 (with nationalMode=false i.e. auto inserting dial code), who try to put the cursor at the beginning the first time
-    if (this.isGoodBrowser) {
-      var len = this.telInput.value.length;
-      this.telInput.setSelectionRange(len, len);
-    }
+    var len = this.telInput.value.length;
+    this.telInput.setSelectionRange(len, len);
 
     if (flagChanged) {
       this._triggerCountryChange();
@@ -1202,7 +1197,7 @@ Plugin.prototype = {
   handleAutoCountry: function() {
     if (this.options.initialCountry === "auto") {
       // we must set this even if there is an initial val in the input: in case the initial val is invalid and they delete it - they should see their auto country
-      this.defaultCountry = $.fn[pluginName].autoCountry;
+      this.defaultCountry = window.intlTelInputGlobals.autoCountry;
       // if there's no initial value in the input, then update the flag
       if (!this.telInput.value) {
         this.setCountry(this.defaultCountry);
@@ -1266,6 +1261,8 @@ Plugin.prototype = {
     var wrapper = this.telInput.parentNode;
     wrapper.parentNode.insertBefore(this.telInput, wrapper);
     wrapper.parentNode.removeChild(wrapper);
+
+    delete window.intlTelInputGlobals.instances[this.id];
   },
 
 
@@ -1352,68 +1349,13 @@ Plugin.prototype = {
 
 
 
-// using https://github.com/jquery-boilerplate/jquery-boilerplate/wiki/Extending-jQuery-Boilerplate
-// (adapted to allow public functions)
-$.fn[pluginName] = function(options) {
-  var args = arguments;
-
-  // Is the first parameter an object (options), or was omitted,
-  // instantiate a new instance of the plugin.
-  if (options === undefined || typeof options === "object") {
-    // collect all of the deferred objects for all instances created with this selector
-    var deferreds = [];
-    this.each(function() {
-      if (!$.data(this, "plugin_" + pluginName)) {
-        var instance = new Plugin(this, options);
-        var instanceDeferreds = instance._init();
-        // we now have 2 deffereds: 1 for auto country, 1 for utils script
-        deferreds.push(instanceDeferreds[0]);
-        deferreds.push(instanceDeferreds[1]);
-        $.data(this, "plugin_" + pluginName, instance);
-      }
-    });
-    // return the promise from the "master" deferred object that tracks all the others
-    return $.when.apply(null, deferreds);
-  } else if (typeof options === "string" && options[0] !== "_") {
-    // If the first parameter is a string and it doesn't start
-    // with an underscore or "contains" the `init`-function,
-    // treat this as a call to a public method.
-
-    // Cache the method call to make it possible to return a value
-    var returns;
-
-    this.each(function() {
-      var instance = $.data(this, "plugin_" + pluginName);
-
-      // Tests that there's already a plugin-instance
-      // and checks that the requested public method exists
-      if (instance instanceof Plugin && typeof instance[options] === "function") {
-        // Call the method of our plugin instance,
-        // and pass it the supplied arguments.
-        returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
-      }
-
-      // Allow instances to be destroyed via the 'destroy' method
-      if (options === "destroy") {
-        $.data(this, "plugin_" + pluginName, null);
-      }
-    });
-
-    // If the earlier cached method gives a value back return the value,
-    // otherwise return this to preserve chainability.
-    return returns !== undefined ? returns : this;
-  }
-};
-
-
-
 /********************
  *  STATIC METHODS
  ********************/
 
 
 // get the country data object
-$.fn[pluginName].getCountryData = function() {
+window.intlTelInputGlobals.getCountryData = function() {
   return allCountries;
 };
 
@@ -1421,13 +1363,13 @@ $.fn[pluginName].getCountryData = function() {
 // load the utils script
 // (assumes it has not already loaded - we check this before calling this internally)
 // (also assumes that if it is called manually, it will only be once per page)
-$.fn[pluginName].loadUtils = function(path) {
+window.intlTelInputGlobals.loadUtils = function(path) {
   // 2 options:
   // 1) not already started loading (start)
   // 2) already started loading (do nothing - just wait for loading callback to fire, which will trigger handleUtils on all instances, resolving each of their utilsScriptDeferred objects)
-  if (!$.fn[pluginName].startedLoadingUtilsScript) {
+  if (!window.intlTelInputGlobals.startedLoadingUtilsScript) {
     // don't do this twice!
-    $.fn[pluginName].startedLoadingUtilsScript = true;
+    window.intlTelInputGlobals.startedLoadingUtilsScript = true;
 
     // dont use $.getScript as it prevents caching
     // return the ajax Deferred object, so manual calls can be chained with .then(callback)
@@ -1436,7 +1378,10 @@ $.fn[pluginName].loadUtils = function(path) {
       url: path,
       complete: function() {
         // tell all instances that the utils request is complete
-        $(".intl-tel-input input").intlTelInput("handleUtils");
+        var instanceIds = Object.keys(window.intlTelInputGlobals.instances);
+        for (var i = 0; i < instanceIds.length; i++) {
+          window.intlTelInputGlobals.instances[instanceIds[i]].handleUtils();
+        }
       },
       dataType: "script",
       cache: true
@@ -1447,4 +1392,4 @@ $.fn[pluginName].loadUtils = function(path) {
 
 
 // default options
-$.fn[pluginName].defaults = defaults;
+window.intlTelInputGlobals.defaults = defaults;

@@ -13,15 +13,13 @@ describe("autoHideDialCode option:", function() {
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy").remove();
-    input = null;
   });
 
 
   describe("init plugin with autoHideDialCode=true and nationalMode=false", function() {
 
     beforeEach(function() {
-      input.intlTelInput({
+      iti = window.intlTelInput(input[0], {
         autoHideDialCode: true,
         nationalMode: false
       });
@@ -81,7 +79,7 @@ describe("autoHideDialCode option:", function() {
   describe("init plugin with autoHideDialCode=false and nationalMode=false", function() {
 
     beforeEach(function() {
-      input.intlTelInput({
+      iti = window.intlTelInput(input[0], {
         autoHideDialCode: false,
         nationalMode: false
       });

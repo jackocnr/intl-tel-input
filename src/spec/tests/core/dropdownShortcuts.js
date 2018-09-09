@@ -5,15 +5,13 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
   beforeEach(function() {
     intlSetup();
     input = $("<input>").appendTo("body");
-    input.intlTelInput({
+    iti = window.intlTelInput(input[0], {
       nationalMode: false
     });
   });
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy").remove();
-    input = null;
   });
 
 

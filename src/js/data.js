@@ -1265,7 +1265,7 @@ var allCountries = [
   ]
 ];
 
-// loop over all of the countries above
+// loop over all of the countries above, restructuring the data to be objects with named keys
 for (var i = 0; i < allCountries.length; i++) {
   var c = allCountries[i];
   allCountries[i] = {

@@ -5,12 +5,11 @@ describe("destroy: init plugin to test public method destroy", function() {
   beforeEach(function() {
     intlSetup();
     input = $("<input>").wrap("div");
-    input.intlTelInput();
+    iti = window.intlTelInput(input[0]);
   });
 
   afterEach(function() {
     intlTeardown();
-    input = null;
   });
 
   it("adds the markup", function() {
@@ -31,7 +30,7 @@ describe("destroy: init plugin to test public method destroy", function() {
   describe("calling destroy", function() {
 
     beforeEach(function() {
-      input.intlTelInput("destroy");
+      iti.destroy();
     });
 
     it("removes the markup", function() {
@@ -58,7 +57,7 @@ describe("destroy: init plugin with nationalMode=false and autoHideDialCode=true
   beforeEach(function() {
     intlSetup();
     input = $("<input>").wrap("div");
-    input.intlTelInput({
+    iti = window.intlTelInput(input[0], {
       nationalMode: false,
       autoHideDialCode: true
     });
@@ -66,7 +65,6 @@ describe("destroy: init plugin with nationalMode=false and autoHideDialCode=true
 
   afterEach(function() {
     intlTeardown();
-    input = null;
   });
 
   // this is currently impossible in pure JS, until getEventListeners becomes standard

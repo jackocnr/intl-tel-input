@@ -2,21 +2,24 @@
 
 describe("using input: ", function() {
 
+  beforeEach(function() {
+    intlSetup();
+  });
+
+  afterEach(function() {
+    intlTeardown();
+  });
+
+
+
   describe("init plugin with nationalMode=false", function() {
 
     beforeEach(function() {
-      intlSetup();
       input = $("<input>").wrap("div");
       // nationalMode=false because we want to play with dial codes
-      input.intlTelInput({
+      iti = window.intlTelInput(input[0], {
         nationalMode: false
       });
-    });
-
-    afterEach(function() {
-      intlTeardown();
-      input.intlTelInput("destroy");
-      input = null;
     });
 
 
@@ -124,14 +127,8 @@ describe("using input: ", function() {
   describe("init plugin", function() {
 
     beforeEach(function() {
-      intlSetup();
       input = $("<input>").wrap("div");
-      input.intlTelInput();
-    });
-
-    afterEach(function() {
-      input.intlTelInput("destroy");
-      input = null;
+      iti = window.intlTelInput(input[0]);
     });
 
     describe("selecting Canada and then typing a regionless number", function() {

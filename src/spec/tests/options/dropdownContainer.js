@@ -10,14 +10,12 @@ describe("dropdownContainer:", function() {
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy").remove();
-    input = null;
   });
 
   describe("init plugin with dropdownContainer=null", function() {
 
     beforeEach(function() {
-      input.intlTelInput({
+      iti = window.intlTelInput(input[0], {
         dropdownContainer: null,
       });
     });
@@ -48,7 +46,7 @@ describe("dropdownContainer:", function() {
   describe("init plugin with dropdownContainer=document.body", function() {
 
     beforeEach(function() {
-      input.intlTelInput({
+      iti = window.intlTelInput(input[0], {
         dropdownContainer: document.body,
       });
     });

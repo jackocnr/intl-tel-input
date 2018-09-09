@@ -6,15 +6,13 @@ describe("using dropdown: init plugin with nationalMode=false", function() {
     intlSetup();
     input = $("<input>").appendTo("body");
     // nationalMode=false because we're playing with dial codes
-    input.intlTelInput({
+    iti = window.intlTelInput(input[0], {
       nationalMode: false
     });
   });
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy").remove();
-    input = null;
   });
 
   it("normal input: clicking the selected flag opens the dropdown", function() {

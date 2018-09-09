@@ -1,4 +1,5 @@
 var input,
+  iti,
   totalCountries = 243,
   totalDialCodes = 228,
   defaultPreferredCountries = 2;
@@ -19,15 +20,18 @@ var intlSetup = function(utilsScript) {
 };
 
 var intlTeardown = function() {
-  $.fn.intlTelInput.startedLoadingUtilsScript = false;
-  $.fn.intlTelInput.windowLoaded = false;
-  $.fn.intlTelInput.autoCountry = null;
-  $.fn.intlTelInput.startedLoadingAutoCountry = false;
+  window.intlTelInputGlobals.startedLoadingUtilsScript = false;
+  window.intlTelInputGlobals.windowLoaded = false;
+  window.intlTelInputGlobals.autoCountry = null;
+  window.intlTelInputGlobals.startedLoadingAutoCountry = false;
   // just make sure before we change the ref
   if (!window.intlTelInputUtilsBackup) {
     window.intlTelInputUtilsBackup = window.intlTelInputUtils;
   }
   window.intlTelInputUtils = null;
+  if (iti) iti.destroy();
+  if (input) input.remove();
+  input = iti = null;
 };
 
 var getInputVal = function(i) {

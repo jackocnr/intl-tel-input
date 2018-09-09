@@ -12,14 +12,12 @@ describe("close:countrydropdown event:", function() {
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy").remove();
-    input = null;
   });
 
   describe("init plugin", function() {
 
     beforeEach(function() {
-      input.intlTelInput();
+      iti = window.intlTelInput(input[0])
     });
 
     it("does not trigger the event", function() {

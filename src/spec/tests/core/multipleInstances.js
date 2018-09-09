@@ -3,6 +3,7 @@
 describe("multiple instances: init plugin (with nationalMode=false) to test multiple instances", function() {
 
   var input2,
+    iti2,
     afghanistanCountryCode = "af",
     albaniaCountryCode = "al",
     chinaCountryCode = "cn",
@@ -13,25 +14,23 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
     input = $("<input>").wrap("div");
     input2 = $("<input>").wrap("div");
     // japan and china
-    input.intlTelInput({
+    iti = window.intlTelInput(input[0], {
       onlyCountries: [chinaCountryCode, afghanistanCountryCode],
-      nationalMode: false
+      nationalMode: false,
     });
     // korea, china and russia
-    input2.intlTelInput({
+    iti2 = window.intlTelInput(input2[0], {
       onlyCountries: ['kr', chinaCountryCode, 'ru', albaniaCountryCode],
-      nationalMode: false
+      nationalMode: false,
     });
     $("body").append(getParentElement(input)).append(getParentElement(input2));
   });
 
   afterEach(function() {
     intlTeardown();
-    getParentElement(input).remove();
-    getParentElement(input2).remove();
-    input.intlTelInput("destroy");
-    input2.intlTelInput("destroy");
-    input = input2 = null;
+    iti2.destroy();
+    input2.remove();
+    input2 = iti2 = null;
   });
 
   it("instances have different country lists", function() {

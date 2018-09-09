@@ -12,14 +12,12 @@ describe("countrychange event:", function() {
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy");
-    input = null;
   });
 
   describe("init plugin", function() {
 
     beforeEach(function() {
-      input.intlTelInput();
+      iti = window.intlTelInput(input[0])
     });
 
     it("does not trigger the event", function() {
@@ -27,12 +25,12 @@ describe("countrychange event:", function() {
     });
 
     it("calling setCountry triggers the event", function() {
-      input.intlTelInput("setCountry", "fr");
+      iti.setCountry("fr");
       expect(spy).toHaveBeenTriggered();
     });
 
     it("calling setNumber triggers the event", function() {
-      input.intlTelInput("setNumber", "+34");
+      iti.setNumber("+34");
       expect(spy).toHaveBeenTriggered();
     });
 

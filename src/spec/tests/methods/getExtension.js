@@ -8,13 +8,11 @@ describe("getExtension: init plugin with utils", function() {
   beforeEach(function() {
     intlSetup(true);
     input = $("<input>").wrap("div");
-    input.intlTelInput();
+    iti = window.intlTelInput(input[0]);
   });
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy");
-    input = null;
   });
 
   it("works for various delimiters", function() {
@@ -22,15 +20,15 @@ describe("getExtension: init plugin with utils", function() {
     for (var i = 0; i < delimiters.length; i++) {
       input.val(number + " " + delimiters[i] + " " + extension);
       //if (!input.intlTelInput("getExtension")) console.log("bad: "+delimiters[i]);
-      expect(input.intlTelInput("getExtension")).toEqual(extension);
+      expect(iti.getExtension()).toEqual(extension);
     }
   });
 
   it("doesnt work for a space, or no delimiter", function() {
     input.val(number + " " + extension);
-    expect(input.intlTelInput("getExtension")).toEqual(null);
+    expect(iti.getExtension()).toEqual(null);
     input.val(number + extension);
-    expect(input.intlTelInput("getExtension")).toEqual(null);
+    expect(iti.getExtension()).toEqual(null);
   });
 
 });

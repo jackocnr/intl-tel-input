@@ -5,28 +5,26 @@ describe("getNumberType:", function() {
   beforeEach(function() {
     intlSetup(true);
     input = $("<input>").wrap("div");
-    input.intlTelInput();
+    iti = window.intlTelInput(input[0]);
   });
 
   afterEach(function() {
     intlTeardown();
-    input.intlTelInput("destroy");
-    input = null;
   });
 
   it("returns the right type for a UK mobile number", function() {
-    input.intlTelInput("setNumber", "+447733123456");
-    expect(input.intlTelInput("getNumberType")).toEqual(intlTelInputUtils.numberType.MOBILE);
+    iti.setNumber("+447733123456");
+    expect(iti.getNumberType()).toEqual(intlTelInputUtils.numberType.MOBILE);
   });
 
   it("returns the right type for a UK landline number", function() {
-    input.intlTelInput("setNumber", "+441531123456");
-    expect(input.intlTelInput("getNumberType")).toEqual(intlTelInputUtils.numberType.FIXED_LINE);
+    iti.setNumber("+441531123456");
+    expect(iti.getNumberType()).toEqual(intlTelInputUtils.numberType.FIXED_LINE);
   });
 
   it("returns the right type for a UK toll-free number", function() {
-    input.intlTelInput("setNumber", "+448000123456");
-    expect(input.intlTelInput("getNumberType")).toEqual(intlTelInputUtils.numberType.TOLL_FREE);
+    iti.setNumber("+448000123456");
+    expect(iti.getNumberType()).toEqual(intlTelInputUtils.numberType.TOLL_FREE);
   });
 
 });
