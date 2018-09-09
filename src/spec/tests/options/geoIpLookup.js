@@ -1,7 +1,8 @@
 "use strict";
 
 describe("geoIpLookup:", function() {
-  var country = "gb";
+  var country = "gb",
+    resolved = false;
 
   beforeEach(function() {
     intlSetup();
@@ -11,11 +12,21 @@ describe("geoIpLookup:", function() {
 
   afterEach(function() {
     intlTeardown();
+    resolved = false;
   });
 
-  it("init vanilla plugin resolves straight away", function() {
-    iti = window.intlTelInput(input[0]);
-    expect(iti.deferred.state()).toEqual("resolved");
+  describe("init vanilla plugin", function() {
+    beforeEach(function(done) {
+      iti = window.intlTelInput(input[0]);
+      iti.promise.then(function() {
+        resolved = true;
+      });
+      setTimeout(done);
+    });
+
+    it("does not resolve straight away", function() {
+      expect(resolved).toEqual(true);
+    });
   });
 
   describe("init plugin with geoIpLookup", function() {
@@ -26,10 +37,13 @@ describe("geoIpLookup:", function() {
           callback(country);
         },
       });
+      iti.promise.then(function() {
+        resolved = true;
+      });
     });
 
     it("does not resolve straight away", function() {
-      expect(iti.deferred.state()).toEqual("pending");
+      expect(resolved).toEqual(false);
     });
   });
 
@@ -41,18 +55,22 @@ describe("geoIpLookup:", function() {
           callback(country);
         },
       });
+      iti.promise.then(function() {
+        resolved = true;
+      });
       setTimeout(done);
     });
 
     it("does resolve", function() {
-      expect(iti.deferred.state()).toEqual("resolved");
+      expect(resolved).toEqual(true);
     });
 
     describe('init a second instance with geoIpLookup', function() {
       var input2,
-        iti2;
+        iti2,
+        resolved2 = false;
 
-      beforeEach(function() {
+      beforeEach(function(done) {
         input2 = $("<input>").appendTo("body");
         iti2 = window.intlTelInput(input2[0], {
           initialCountry: "auto",
@@ -60,17 +78,22 @@ describe("geoIpLookup:", function() {
             callback(country);
           },
         });
+        iti2.promise.then(function() {
+          resolved2 = true;
+        });
+        setTimeout(done);
       });
 
       afterEach(function() {
         iti2.destroy();
         input2.remove();
         input2 = iti2 = null;
+        resolved2 = false
       });
 
       it("does resolve straight away", function() {
         expect(window.intlTelInputGlobals.autoCountry).toEqual(country);
-        expect(iti2.deferred.state()).toEqual("resolved");
+        expect(resolved2).toEqual(true);
       });
     });
   });

@@ -41,11 +41,19 @@ describe("loadUtils:", function() {
 
   describe("calling loadUtils after init plugin", function() {
 
-    var url2 = "test/url/two/utils.js";
+    var url2 = "test/url/two/utils.js"
+      resolved = false;
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0]);
+      iti.promise.then(function() {
+        resolved = true;
+      });
       window.intlTelInputGlobals.loadUtils(url2);
+    });
+
+    afterEach(function() {
+      resolved = false;
     });
 
     it("makes an ajax call to the given url", function() {
@@ -53,8 +61,8 @@ describe("loadUtils:", function() {
       expect($.ajax.calls.mostRecent().args[0].url).toEqual(url2);
     });
 
-    it("resolves the deferred object", function() {
-      expect(iti.deferred.state()).toEqual("resolved");
+    it("resolves the promise object", function() {
+      expect(resolved).toEqual(true);
     });
 
     it("then init plugin again with utilsScript option does not make another request", function() {

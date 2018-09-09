@@ -101,6 +101,7 @@
         };
         Iti.prototype = {
             _init: function() {
+                var that = this;
                 // if in nationalMode, disable options relating to dial codes
                 if (this.options.nationalMode) {
                     this.options.autoHideDialCode = false;
@@ -121,11 +122,20 @@
                         this.options.dropdownContainer = document.body;
                     }
                 }
-                // we return these deferred objects from the _init() call so they can be watched, and then we resolve them when each specific request returns
-                // Note: again, jasmine breaks when I put these in the Plugin function
-                this.autoCountryDeferred = new $.Deferred();
-                this.utilsScriptDeferred = new $.Deferred();
-                this.deferred = $.when(this.autoCountryDeferred, this.utilsScriptDeferred);
+                // these promises get resolved when their individual requests complete
+                // this way the dev can do something like iti.promise.then(...) to know when all requests are complete
+                if (typeof Promise !== "undefined") {
+                    var autoCountryPromise = new Promise(function(resolve) {
+                        that.resolveAutoCountryPromise = resolve;
+                    });
+                    var utilsScriptPromise = new Promise(function(resolve) {
+                        that.resolveUtilsScriptPromise = resolve;
+                    });
+                    this.promise = Promise.all([ autoCountryPromise, utilsScriptPromise ]);
+                } else {
+                    // prevent errors when Promise doesn't exist
+                    this.resolveAutoCountryPromise = this.resolveUtilsScriptPromise = function() {};
+                }
                 // in various situations there could be no country selected initially, but we need to be able to assume this variable exists
                 this.selectedCountryData = {};
                 // process all the data: onlyCountries, excludeCountries, preferredCountries etc
@@ -460,12 +470,12 @@
                         });
                     }
                 } else {
-                    this.utilsScriptDeferred.resolve();
+                    this.resolveUtilsScriptPromise();
                 }
                 if (this.options.initialCountry === "auto") {
                     this._loadAutoCountry();
                 } else {
-                    this.autoCountryDeferred.resolve();
+                    this.resolveAutoCountryPromise();
                 }
             },
             // perform the geo ip lookup
@@ -1024,7 +1034,7 @@
                     if (!this.telInput.value) {
                         this.setCountry(this.defaultCountry);
                     }
-                    this.autoCountryDeferred.resolve();
+                    this.resolveAutoCountryPromise();
                 }
             },
             // this is called when the utils request completes
@@ -1037,7 +1047,7 @@
                     }
                     this._updatePlaceholder();
                 }
-                this.utilsScriptDeferred.resolve();
+                this.resolveUtilsScriptPromise();
             },
             /********************
    *  PUBLIC METHODS
