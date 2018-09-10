@@ -144,19 +144,16 @@ module.exports = function(grunt) {
             match: /.options/g,
             replacement: '.b'
           }, {
-            match: /.isGoodBrowser/g,
-            replacement: '.d'
-          }, {
             match: /.hadInitialPlaceholder/g,
             replacement: '.e'
           }, {
             match: /.isMobile/g,
             replacement: '.g'
           }, {
-            match: /.autoCountryDeferred/g,
+            match: /.resolveAutoCountryPromise/g,
             replacement: '.h'
           }, {
-            match: /.utilsScriptDeferred/g,
+            match: /.resolveUtilsScriptPromise/g,
             replacement: '.i'
           }, {
             match: /.defaultCountry/g,
