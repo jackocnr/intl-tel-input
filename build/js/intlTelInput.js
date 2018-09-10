@@ -1152,28 +1152,45 @@
         window.intlTelInputGlobals.getCountryData = function() {
             return allCountries;
         };
+        var injectScript = function(path, resolve, reject) {
+            // inject a new script element into the page
+            var script = document.createElement("script");
+            script.onload = resolve;
+            if (reject) script.onerror = reject;
+            script.className = "iti-load-utils";
+            script.async = true;
+            script.src = path;
+            document.body.appendChild(script);
+        };
+        var triggerHandleUtils = function() {
+            // tell all instances that the utils request is complete
+            var instanceIds = Object.keys(window.intlTelInputGlobals.instances);
+            for (var i = 0; i < instanceIds.length; i++) {
+                window.intlTelInputGlobals.instances[instanceIds[i]].handleUtils();
+            }
+        };
         // load the utils script
         window.intlTelInputGlobals.loadUtils = function(path) {
+            var promise = null;
             // 2 options:
             // 1) not already started loading (start)
             // 2) already started loading (do nothing - just wait for the onload callback to fire, which will trigger handleUtils on all instances, invoking each of their resolveUtilsScriptPromise functions)
             if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
                 // only do this once
                 window.intlTelInputGlobals.startedLoadingUtilsScript = true;
-                // inject a new script element into the page
-                var script = document.createElement("script");
-                script.onload = function() {
-                    // tell all instances that the utils request is complete
-                    var instanceIds = Object.keys(window.intlTelInputGlobals.instances);
-                    for (var i = 0; i < instanceIds.length; i++) {
-                        window.intlTelInputGlobals.instances[instanceIds[i]].handleUtils();
-                    }
-                };
-                script.className = "iti-load-utils";
-                script.async = true;
-                script.src = path;
-                document.body.appendChild(script);
+                // if we have promises, then return a promise
+                if (typeof Promise !== "undefined") {
+                    promise = new Promise(function(resolve, reject) {
+                        injectScript(path, function() {
+                            triggerHandleUtils();
+                            resolve();
+                        }, reject);
+                    });
+                } else {
+                    injectScript(path, triggerHandleUtils);
+                }
             }
+            return promise;
         };
         // default options
         window.intlTelInputGlobals.defaults = defaults;
