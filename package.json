@@ -1,7 +1,7 @@
 {
   "name": "intl-tel-input",
   "version": "13.0.4",
-  "description": "A jQuery plugin for entering international telephone numbers",
+  "description": "A JavaScript plugin for entering and validating international telephone numbers",
   "keywords": [
     "international",
     "i18n",
@@ -15,9 +15,6 @@
   ],
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
-  "peerDependencies": {
-    "jquery": ">=1.7"
-  },
   "devDependencies": {
     "evenizer": "^0.1.17",
     "grunt": "^1.0.1",

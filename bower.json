@@ -3,8 +3,5 @@
   "main": [
     "./build/js/intlTelInput.js",
     "./build/css/intlTelInput.css"
-  ],
-  "dependencies": {
-    "jquery": ">=1.7"
-  }
+  ]
 }
