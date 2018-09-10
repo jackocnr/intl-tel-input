@@ -1,27 +1,31 @@
 // get the country data from the plugin
-var countryData = $.fn.intlTelInput.getCountryData(),
-  telInput = $("#phone"),
-  addressDropdown = $("#address-country");
+var countryData = window.intlTelInputGlobals.getCountryData(),
+  input = document.querySelector("#phone"),
+  addressDropdown = document.querySelector("#address-country");
 
 // init plugin
-telInput.intlTelInput({
+var iti = window.intlTelInput(input, {
   utilsScript: "../../build/js/utils.js?<%= time %>" // just for formatting/placeholders etc
 });
 
 // populate the country dropdown
-$.each(countryData, function(i, country) {
-  addressDropdown.append($("<option></option>").attr("value", country.iso2).text(country.name));
-});
+for (var i = 0; i < countryData.length; i++) {
+  var country = countryData[i];
+  var optionNode = document.createElement("option");
+  optionNode.value = country.iso2;
+  var textNode = document.createTextNode(country.name);
+  optionNode.appendChild(textNode);
+  addressDropdown.appendChild(optionNode);
+}
 // set it's initial value
-var initialCountry = telInput.intlTelInput("getSelectedCountryData").iso2;
-addressDropdown.val(initialCountry);
+addressDropdown.value = iti.getSelectedCountryData().iso2;
 
 // listen to the telephone input for changes
-telInput.on("countrychange", function(e, countryData) {
-  addressDropdown.val(countryData.iso2);
+input.addEventListener('countrychange', function(e) {
+  addressDropdown.value = iti.getSelectedCountryData().iso2;
 });
 
 // listen to the address dropdown for changes
-addressDropdown.change(function() {
-  telInput.intlTelInput("setCountry", $(this).val());
+addressDropdown.addEventListener('change', function() {
+  iti.setCountry(this.value);
 });

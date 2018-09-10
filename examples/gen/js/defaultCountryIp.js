@@ -1,4 +1,5 @@
-$("#phone").intlTelInput({
+var input = document.querySelector("#phone");
+window.intlTelInput(input, {
   initialCountry: "auto",
   geoIpLookup: function(callback) {
     $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
@@ -6,5 +7,5 @@ $("#phone").intlTelInput({
       callback(countryCode);
     });
   },
-  utilsScript: "../../build/js/utils.js?1536844998850" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1537705480435" // just for formatting/placeholders etc
 });

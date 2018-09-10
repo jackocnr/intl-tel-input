@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Submitting the full international number using a hidden input</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1536844998850">
-    <link rel="stylesheet" href="../../build/css/demo.css?1536844998850">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1537705480435">
+    <link rel="stylesheet" href="../../build/css/demo.css?1537705480435">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -33,9 +33,10 @@
 </code></pre>
 
     <h2>Code</h2>
-    <pre><code class="language-javascript">$(&quot;#phone&quot;).intlTelInput({
+    <pre><code class="language-javascript">var input = document.querySelector(&quot;#phone&quot;);
+window.intlTelInput(input, {
   hiddenInput: &quot;full_phone&quot;,
-  utilsScript: &quot;../../build/js/utils.js?1536844998850&quot; // just for formatting/placeholders etc
+  utilsScript: &quot;../../build/js/utils.js?1537705480435&quot; // just for formatting/placeholders etc
 });
 </code></pre>
 
@@ -49,8 +50,7 @@
     </div>
 
     <script src="../js/prism.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1536844998850"></script>
-    <script src="./js/hiddenInput.js?1536844998850"></script>
+    <script src="../../build/js/intlTelInput.js?1537705480435"></script>
+    <script src="./js/hiddenInput.js?1537705480435"></script>
   </body>
 </html>

@@ -1,17 +1,18 @@
-var input = $("#phone"),
-  output = $("#output");
+var input = document.querySelector("#phone"),
+  output = document.querySelector("#output");
 
-input.intlTelInput({
+var iti = window.intlTelInput(input, {
   nationalMode: true,
-  utilsScript: "../../build/js/utils.js?1536844998850" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1537705480435" // just for formatting/placeholders etc
 });
+
+var handleChange = function() {
+  var text = (iti.isValidNumber()) ? "International: " + iti.getNumber() : "Please enter a number below";
+  var textNode = document.createTextNode(text);
+  output.innerHTML = "";
+  output.appendChild(textNode);
+};
 
 // listen to "keyup", but also "change" to update when the user selects a country
-input.on("keyup change", function() {
-  var intlNumber = input.intlTelInput("getNumber");
-  if (intlNumber) {
-    output.text("International: " + intlNumber);
-  } else {
-    output.text("Please enter a number below");
-  }
-});
+input.addEventListener('change', handleChange);
+input.addEventListener('keyup', handleChange);

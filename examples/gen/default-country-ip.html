@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Lookup user's country</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1536844998850">
-    <link rel="stylesheet" href="../../build/css/demo.css?1536844998850">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1537705480435">
+    <link rel="stylesheet" href="../../build/css/demo.css?1537705480435">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -26,10 +26,13 @@
     <p>Set initialCountry to 'auto' and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user's country based on their IP address.</p>
 
     <h2>Markup</h2>
-    <pre><code class="language-markup">&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;</code></pre>
+    <pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;
+</code></pre>
 
     <h2>Code</h2>
-    <pre><code class="language-javascript">$(&quot;#phone&quot;).intlTelInput({
+    <pre><code class="language-javascript">var input = document.querySelector(&quot;#phone&quot;);
+window.intlTelInput(input, {
   initialCountry: &quot;auto&quot;,
   geoIpLookup: function(callback) {
     $.get(&#39;https://ipinfo.io&#39;, function() {}, &quot;jsonp&quot;).always(function(resp) {
@@ -37,18 +40,19 @@
       callback(countryCode);
     });
   },
-  utilsScript: &quot;../../build/js/utils.js?1536844998850&quot; // just for formatting/placeholders etc
+  utilsScript: &quot;../../build/js/utils.js?1537705480435&quot; // just for formatting/placeholders etc
 });
 </code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <input id="phone" type="tel">
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<input id="phone" type="tel">
+
     </div>
 
     <script src="../js/prism.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1536844998850"></script>
-    <script src="./js/defaultCountryIp.js?1536844998850"></script>
+    <script src="../../build/js/intlTelInput.js?1537705480435"></script>
+    <script src="./js/defaultCountryIp.js?1537705480435"></script>
   </body>
 </html>

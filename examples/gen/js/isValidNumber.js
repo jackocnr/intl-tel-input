@@ -1,30 +1,31 @@
-var telInput = $("#phone"),
-  errorMsg = $("#error-msg"),
-  validMsg = $("#valid-msg");
+var input = document.querySelector("#phone"),
+  errorMsg = document.querySelector("#error-msg"),
+  validMsg = document.querySelector("#valid-msg");
 
 // initialise plugin
-telInput.intlTelInput({
-  utilsScript: "../../build/js/utils.js?1536844998850"
+var iti = window.intlTelInput(input, {
+  utilsScript: "../../build/js/utils.js?1537705480435"
 });
 
 var reset = function() {
-  telInput.removeClass("error");
-  errorMsg.addClass("hide");
-  validMsg.addClass("hide");
+  input.classList.remove("error");
+  errorMsg.classList.add("hide");
+  validMsg.classList.add("hide");
 };
 
 // on blur: validate
-telInput.blur(function() {
+input.addEventListener('blur', function() {
   reset();
-  if ($.trim(telInput.val())) {
-    if (telInput.intlTelInput("isValidNumber")) {
-      validMsg.removeClass("hide");
+  if (input.value.trim()) {
+    if (iti.isValidNumber()) {
+      validMsg.classList.remove("hide");
     } else {
-      telInput.addClass("error");
-      errorMsg.removeClass("hide");
+      input.classList.add("error");
+      errorMsg.classList.remove("hide");
     }
   }
 });
 
 // on keyup / change flag: reset
-telInput.on("keyup change", reset);
+input.addEventListener('change', reset);
+input.addEventListener('keyup', reset);

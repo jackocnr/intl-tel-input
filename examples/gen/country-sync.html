@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <title>Example: Country sync</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1536844998850">
-    <link rel="stylesheet" href="../../build/css/demo.css?1536844998850">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1537705480435">
+    <link rel="stylesheet" href="../../build/css/demo.css?1537705480435">
     
-      <link rel="stylesheet" href="../css/countrySync.css?1536844998850">
+      <link rel="stylesheet" href="../css/countrySync.css?1537705480435">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -44,31 +44,35 @@
 
     <h2>Code</h2>
     <pre><code class="language-javascript">// get the country data from the plugin
-var countryData = $.fn.intlTelInput.getCountryData(),
-  telInput = $(&quot;#phone&quot;),
-  addressDropdown = $(&quot;#address-country&quot;);
+var countryData = window.intlTelInputGlobals.getCountryData(),
+  input = document.querySelector(&quot;#phone&quot;),
+  addressDropdown = document.querySelector(&quot;#address-country&quot;);
 
 // init plugin
-telInput.intlTelInput({
-  utilsScript: &quot;../../build/js/utils.js?1536844998850&quot; // just for formatting/placeholders etc
+var iti = window.intlTelInput(input, {
+  utilsScript: &quot;../../build/js/utils.js?1537705480435&quot; // just for formatting/placeholders etc
 });
 
 // populate the country dropdown
-$.each(countryData, function(i, country) {
-  addressDropdown.append($(&quot;&lt;option&gt;&lt;/option&gt;&quot;).attr(&quot;value&quot;, country.iso2).text(country.name));
-});
+for (var i = 0; i &lt; countryData.length; i++) {
+  var country = countryData[i];
+  var optionNode = document.createElement(&quot;option&quot;);
+  optionNode.value = country.iso2;
+  var textNode = document.createTextNode(country.name);
+  optionNode.appendChild(textNode);
+  addressDropdown.appendChild(optionNode);
+}
 // set it&#39;s initial value
-var initialCountry = telInput.intlTelInput(&quot;getSelectedCountryData&quot;).iso2;
-addressDropdown.val(initialCountry);
+addressDropdown.value = iti.getSelectedCountryData().iso2;
 
 // listen to the telephone input for changes
-telInput.on(&quot;countrychange&quot;, function(e, countryData) {
-  addressDropdown.val(countryData.iso2);
+input.addEventListener(&#39;countrychange&#39;, function(e) {
+  addressDropdown.value = iti.getSelectedCountryData().iso2;
 });
 
 // listen to the address dropdown for changes
-addressDropdown.change(function() {
-  telInput.intlTelInput(&quot;setCountry&quot;, $(this).val());
+addressDropdown.addEventListener(&#39;change&#39;, function() {
+  iti.setCountry(this.value);
 });
 </code></pre>
 
@@ -90,8 +94,7 @@ addressDropdown.change(function() {
     </div>
 
     <script src="../js/prism.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1536844998850"></script>
-    <script src="./js/countrySync.js?1536844998850"></script>
+    <script src="../../build/js/intlTelInput.js?1537705480435"></script>
+    <script src="./js/countrySync.js?1537705480435"></script>
   </body>
 </html>

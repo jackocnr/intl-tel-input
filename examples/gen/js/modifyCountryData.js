@@ -1,7 +1,11 @@
-var countryData = $.fn.intlTelInput.getCountryData();
-$.each(countryData, function(i, country) {
+var countryData = window.intlTelInputGlobals.getCountryData(),
+  input = document.querySelector("#phone");
+
+for (var i = 0; i < countryData.length; i++) {
+  var country = countryData[i];
   country.name = country.name.replace(/.+\((.+)\)/,"$1");
-});
-$("#phone").intlTelInput({
-  utilsScript: "../../build/js/utils.js?1536844998850" // just for formatting/placeholders etc
+}
+
+window.intlTelInput(input, {
+  utilsScript: "../../build/js/utils.js?1537705480435" // just for formatting/placeholders etc
 });

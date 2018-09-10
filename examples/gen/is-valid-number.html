@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <title>Example: Validation</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1536844998850">
-    <link rel="stylesheet" href="../../build/css/demo.css?1536844998850">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1537705480435">
+    <link rel="stylesheet" href="../../build/css/demo.css?1537705480435">
     
-      <link rel="stylesheet" href="../css/isValidNumber.css?1536844998850">
+      <link rel="stylesheet" href="../css/isValidNumber.css?1537705480435">
     
 
     <!-- GOOGLE ANALYTICS -->
@@ -33,36 +33,37 @@
 &lt;span id=&quot;error-msg&quot; class=&quot;hide&quot;&gt;Invalid number&lt;/span&gt;</code></pre>
 
     <h2>Code</h2>
-    <pre><code class="language-javascript">var telInput = $(&quot;#phone&quot;),
-  errorMsg = $(&quot;#error-msg&quot;),
-  validMsg = $(&quot;#valid-msg&quot;);
+    <pre><code class="language-javascript">var input = document.querySelector(&quot;#phone&quot;),
+  errorMsg = document.querySelector(&quot;#error-msg&quot;),
+  validMsg = document.querySelector(&quot;#valid-msg&quot;);
 
 // initialise plugin
-telInput.intlTelInput({
-  utilsScript: &quot;../../build/js/utils.js?1536844998850&quot;
+var iti = window.intlTelInput(input, {
+  utilsScript: &quot;../../build/js/utils.js?1537705480435&quot;
 });
 
 var reset = function() {
-  telInput.removeClass(&quot;error&quot;);
-  errorMsg.addClass(&quot;hide&quot;);
-  validMsg.addClass(&quot;hide&quot;);
+  input.classList.remove(&quot;error&quot;);
+  errorMsg.classList.add(&quot;hide&quot;);
+  validMsg.classList.add(&quot;hide&quot;);
 };
 
 // on blur: validate
-telInput.blur(function() {
+input.addEventListener(&#39;blur&#39;, function() {
   reset();
-  if ($.trim(telInput.val())) {
-    if (telInput.intlTelInput(&quot;isValidNumber&quot;)) {
-      validMsg.removeClass(&quot;hide&quot;);
+  if (input.value.trim()) {
+    if (iti.isValidNumber()) {
+      validMsg.classList.remove(&quot;hide&quot;);
     } else {
-      telInput.addClass(&quot;error&quot;);
-      errorMsg.removeClass(&quot;hide&quot;);
+      input.classList.add(&quot;error&quot;);
+      errorMsg.classList.remove(&quot;hide&quot;);
     }
   }
 });
 
 // on keyup / change flag: reset
-telInput.on(&quot;keyup change&quot;, reset);
+input.addEventListener(&#39;change&#39;, reset);
+input.addEventListener(&#39;keyup&#39;, reset);
 </code></pre>
 
     <h2>Result</h2>
@@ -73,8 +74,7 @@ telInput.on(&quot;keyup change&quot;, reset);
     </div>
 
     <script src="../js/prism.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="../../build/js/intlTelInput.js?1536844998850"></script>
-    <script src="./js/isValidNumber.js?1536844998850"></script>
+    <script src="../../build/js/intlTelInput.js?1537705480435"></script>
+    <script src="./js/isValidNumber.js?1537705480435"></script>
   </body>
 </html>
