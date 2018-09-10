@@ -2,36 +2,37 @@
 
 describe("utilsScript:", function() {
 
+  var url = "build/js/utils.js";
+
   beforeEach(function() {
     intlSetup();
     input = $("<input>").wrap("div");
-    spyOn($, "ajax");
   });
 
   afterEach(function() {
     intlTeardown();
   });
 
-  it("init vanilla plugin does not load the script", function() {
+  it("init vanilla plugin does not inject the script", function() {
     iti = window.intlTelInput(input[0]);
-    expect($.ajax).not.toHaveBeenCalled();
+    expect($("script.iti-load-utils")).not.toExist();
   });
 
-  it("init plugin with utilsScript before window.load event does not load the script", function() {
+  it("init plugin with utilsScript before window.load event does not inject the script", function() {
+    // must explicitly call this here, as when running the test the real window.load event might have just fired
+    window.intlTelInputGlobals.windowLoaded = false;
     iti = window.intlTelInput(input[0], {
-      utilsScript: "this/is/not/real.lol",
+      utilsScript: url,
     });
-    expect($.ajax).not.toHaveBeenCalled();
+    expect($("script.iti-load-utils")).not.toExist();
   });
 
-  it("faking window.load then init plugin with utilsScript does load the script", function() {
-    var url = "build/js/utils.js";
+  it("faking window.load then init plugin with utilsScript does inject the script", function() {
     window.intlTelInputGlobals.windowLoaded = true;
     iti = window.intlTelInput(input[0], {
       utilsScript: url,
     });
-    expect($.ajax.calls.count()).toEqual(1);
-    expect($.ajax.calls.mostRecent().args[0].url).toEqual(url);
+    expect($("script.iti-load-utils")).toExist();
   });
 
 });

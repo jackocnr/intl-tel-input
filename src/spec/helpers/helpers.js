@@ -20,6 +20,7 @@ var intlSetup = function(utilsScript) {
 };
 
 var intlTeardown = function() {
+  $("script.iti-load-utils").remove();
   window.intlTelInputGlobals.startedLoadingUtilsScript = false;
   window.intlTelInputGlobals.windowLoaded = false;
   window.intlTelInputGlobals.autoCountry = null;

@@ -1153,32 +1153,27 @@
             return allCountries;
         };
         // load the utils script
-        // (assumes it has not already loaded - we check this before calling this internally)
-        // (also assumes that if it is called manually, it will only be once per page)
         window.intlTelInputGlobals.loadUtils = function(path) {
             // 2 options:
             // 1) not already started loading (start)
-            // 2) already started loading (do nothing - just wait for loading callback to fire, which will trigger handleUtils on all instances, resolving each of their utilsScriptDeferred objects)
-            if (!window.intlTelInputGlobals.startedLoadingUtilsScript) {
-                // don't do this twice!
+            // 2) already started loading (do nothing - just wait for the onload callback to fire, which will trigger handleUtils on all instances, invoking each of their resolveUtilsScriptPromise functions)
+            if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
+                // only do this once
                 window.intlTelInputGlobals.startedLoadingUtilsScript = true;
-                // dont use $.getScript as it prevents caching
-                // return the ajax Deferred object, so manual calls can be chained with .then(callback)
-                return $.ajax({
-                    type: "GET",
-                    url: path,
-                    complete: function() {
-                        // tell all instances that the utils request is complete
-                        var instanceIds = Object.keys(window.intlTelInputGlobals.instances);
-                        for (var i = 0; i < instanceIds.length; i++) {
-                            window.intlTelInputGlobals.instances[instanceIds[i]].handleUtils();
-                        }
-                    },
-                    dataType: "script",
-                    cache: true
-                });
+                // inject a new script element into the page
+                var script = document.createElement("script");
+                script.onload = function() {
+                    // tell all instances that the utils request is complete
+                    var instanceIds = Object.keys(window.intlTelInputGlobals.instances);
+                    for (var i = 0; i < instanceIds.length; i++) {
+                        window.intlTelInputGlobals.instances[instanceIds[i]].handleUtils();
+                    }
+                };
+                script.className = "iti-load-utils";
+                script.async = true;
+                script.src = path;
+                document.body.appendChild(script);
             }
-            return null;
         };
         // default options
         window.intlTelInputGlobals.defaults = defaults;

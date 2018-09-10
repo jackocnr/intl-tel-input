@@ -6,14 +6,13 @@ describe("loadUtils:", function() {
     intlSetup();
     // must be in markup for utils loaded handler to work
     input = $("<input>").appendTo("body");
-    spyOn($, "ajax").and.callFake(function(params) {
-      params.complete({});
-    });
   });
 
   afterEach(function() {
     intlTeardown();
   });
+
+
 
   describe("calling loadUtils before init plugin", function() {
 
@@ -23,56 +22,93 @@ describe("loadUtils:", function() {
       window.intlTelInputGlobals.loadUtils(url);
     });
 
-    it("makes an ajax call to the given url", function() {
-      expect($.ajax.calls.count()).toEqual(1);
-      expect($.ajax.calls.mostRecent().args[0].url).toEqual(url);
+    it("injects the script", function() {
+      expect($("script.iti-load-utils")).toExist();
+      expect($("script.iti-load-utils").attr("src")).toEqual(url);
     });
 
-    it("then if init plugin with utilsScript option it does not make another request", function() {
-      iti = window.intlTelInput(input[0], {
-        utilsScript: "some/other/url/ok",
+    describe("then init plugin with utilsScript option", function() {
+
+      beforeEach(function(done) {
+        iti = window.intlTelInput(input[0], {
+          utilsScript: "some/other/url/ok",
+        });
+        setTimeout(done);
       });
-      expect($.ajax.calls.count()).toEqual(1);
-      expect($.ajax.calls.mostRecent().args[0].url).toEqual(url);
+
+      it("does not inject another script", function() {
+        expect($("script.iti-load-utils").length).toEqual(1);
+        expect($("script.iti-load-utils").attr("src")).toEqual(url);
+      });
+
     });
 
   });
 
 
-  describe("calling loadUtils after init plugin", function() {
+
+  describe("init plugin with utilsScript option, but force windowLoaded=false so it wont fire", function() {
 
     var url2 = "test/url/two/utils.js"
       resolved = false;
 
     beforeEach(function() {
-      iti = window.intlTelInput(input[0]);
+      window.intlTelInputGlobals.windowLoaded = false;
+      iti = window.intlTelInput(input[0], {
+        utilsScript: "some/other/url/ok",
+      });
       iti.promise.then(function() {
         resolved = true;
       });
-      window.intlTelInputGlobals.loadUtils(url2);
     });
 
     afterEach(function() {
       resolved = false;
     });
 
-    it("makes an ajax call to the given url", function() {
-      expect($.ajax.calls.count()).toEqual(1);
-      expect($.ajax.calls.mostRecent().args[0].url).toEqual(url2);
+    it("does not inject the script", function() {
+      expect($("script.iti-load-utils")).not.toExist();
     });
 
-    it("resolves the promise object", function() {
-      expect(resolved).toEqual(true);
+    it("does not resolve the promise", function() {
+      expect(resolved).toEqual(false);
     });
 
-    it("then init plugin again with utilsScript option does not make another request", function() {
-      iti = window.intlTelInput(input[0], {
-        utilsScript: "build/js/utils.js",
+    describe("calling loadUtils", function() {
+
+      beforeEach(function() {
+        iti.loadUtils(url2);
       });
-      expect($.ajax.calls.count()).toEqual(1);
+
+      it("does inject the script", function() {
+        expect($("script.iti-load-utils")).toExist();
+      });
+
+      it("does resolve the promise", function() {
+        expect(resolved).toEqual(true);
+      });
+
+      describe("then init another plugin instance with utilsScript option", function() {
+
+        beforeEach(function(done) {
+          var input2 = $("<input>").appendTo("body");
+          var iti2 = window.intlTelInput(input2[0], {
+            utilsScript: "test/url/three/utils.js",
+          });
+          setTimeout(done);
+        });
+
+        it("does not inject another script", function() {
+          expect($("script.iti-load-utils").length).toEqual(1);
+          expect($("script.iti-load-utils").attr("src")).toEqual(url2);
+        });
+
+      });
+
     });
 
   });
+
 
 
   describe("fake window.load event then init plugin with utilsScript", function() {
@@ -86,15 +122,14 @@ describe("loadUtils:", function() {
       });
     });
 
-    it("makes an ajax call to the given url", function() {
-      expect($.ajax.calls.count()).toEqual(1);
-      expect($.ajax.calls.mostRecent().args[0].url).toEqual(url3);
+    it("injects the script", function() {
+      expect($("script.iti-load-utils")).toExist();
     });
 
-    it("then calling loadUtils does not make another request", function() {
+    it("then calling loadUtils does not inject another script", function() {
       window.intlTelInputGlobals.loadUtils("this/is/a/test");
-      expect($.ajax.calls.count()).toEqual(1);
-      expect($.ajax.calls.mostRecent().args[0].url).toEqual(url3);
+      expect($("script.iti-load-utils").length).toEqual(1);
+      expect($("script.iti-load-utils").attr("src")).toEqual(url3);
     });
 
   });
