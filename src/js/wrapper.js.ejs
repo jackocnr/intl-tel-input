@@ -1,7 +1,7 @@
-// wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
+// wrap in UMD - see https://github.com/umdjs/umd
 (function (factory) {
   if (typeof define === "function" && define.amd) {
-    define([], factory(window, document));
+    define("intlTelInput", factory(window, document));
   } else if (typeof module === "object" && module.exports) {
     module.exports = factory(window, document);
   } else {
