@@ -1,13 +1,9 @@
-// wrap in UMD - see https://github.com/umdjs/umd
-(function (factory) {
-  if (typeof define === "function" && define.amd) {
-    define("intlTelInput", factory(window, document));
-  } else if (typeof module === "object" && module.exports) {
-    module.exports = factory(window, document);
-  } else {
-    window.intlTelInput = factory(window, document);
-  }
-}(function (window, document, undefined) {
+// wrap in UMD
+(function(factory) {
+  var intlTelInput = factory(window, document);
+  if (typeof module === "object" && module.exports) module.exports = intlTelInput;
+  else window.intlTelInput = intlTelInput;
+}(function(window, document, undefined) {
   "use strict";
 
   return (function() {
