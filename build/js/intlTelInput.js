@@ -4,15 +4,10 @@
  * Licensed under the MIT license
  */
 
-// wrap in UMD - see https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
+// wrap in UMD
 (function(factory) {
-    if (typeof define === "function" && define.amd) {
-        define([], factory(window, document));
-    } else if (typeof module === "object" && module.exports) {
-        module.exports = factory(window, document);
-    } else {
-        window.intlTelInput = factory(window, document);
-    }
+    var intlTelInput = factory(window, document);
+    if (typeof module === "object" && module.exports) module.exports = intlTelInput; else window.intlTelInput = intlTelInput;
 })(function(window, document, undefined) {
     "use strict";
     return function() {
