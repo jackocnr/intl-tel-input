@@ -83,15 +83,23 @@
             // UPDATE: use a public static field so we can fudge it in the tests
             window.intlTelInputGlobals.windowLoaded = true;
         });
+        var forEachProp = function(obj, callback) {
+            var keys = Object.keys(obj);
+            for (var i = 0; i < keys.length; i++) {
+                callback(keys[i], obj[keys[i]]);
+            }
+        };
         var Iti = function(input, options) {
+            var that = this;
             this.id = id++;
             this.telInput = input;
             // process specified options / defaults
+            // alternative to Object.assign, which isn't supported by IE11
             var customOptions = options || {};
             this.options = {};
-            for (var key in defaults) {
-                this.options[key] = customOptions.hasOwnProperty(key) ? customOptions[key] : defaults[key];
-            }
+            forEachProp(defaults, function(key, value) {
+                that.options[key] = customOptions.hasOwnProperty(key) ? customOptions[key] : value;
+            });
             this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
         };
         Iti.prototype = {
@@ -166,7 +174,7 @@
             },
             // add a country code to this.countryCodes
             _addCountryCode: function(iso2, dialCode, priority) {
-                if (!(dialCode in this.countryCodes)) {
+                if (!this.countryCodes.hasOwnProperty(dialCode)) {
                     this.countryCodes[dialCode] = [];
                 }
                 var index = priority || 0;
@@ -196,7 +204,7 @@
             _translateCountriesByLocale: function() {
                 for (var i = 0; i < this.countries.length; i++) {
                     var iso = this.countries[i].iso2.toLowerCase();
-                    if (iso in this.options.localizedCountries) {
+                    if (this.options.localizedCountries.hasOwnProperty(iso)) {
                         this.countries[i].name = this.options.localizedCountries[iso];
                     }
                 }
@@ -234,9 +242,9 @@
             _createEl: function(name, attrs, container) {
                 var el = document.createElement(name);
                 if (attrs) {
-                    for (var attr in attrs) {
-                        el.setAttribute(attr, attrs[attr]);
-                    }
+                    forEachProp(attrs, function(key, value) {
+                        el.setAttribute(key, value);
+                    });
                 }
                 if (container) container.appendChild(el);
                 return el;
@@ -492,10 +500,9 @@
                             // TODO: this should just be the current instances
                             // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight away (e.g. if they have already done the geo ip lookup somewhere else). Using setTimeout means that the current thread of execution will finish before executing this, which allows the plugin to finish initialising.
                             setTimeout(function() {
-                                var instanceIds = Object.keys(window.intlTelInputGlobals.instances);
-                                for (var i = 0; i < instanceIds.length; i++) {
-                                    window.intlTelInputGlobals.instances[instanceIds[i]].handleAutoCountry();
-                                }
+                                forEachProp(window.intlTelInputGlobals.instances, function(key, value) {
+                                    window.intlTelInputGlobals.instances[key].handleAutoCountry();
+                                });
                             });
                         });
                     }
@@ -1147,11 +1154,11 @@
         window.intlTelInputGlobals.getCountryData = function() {
             return allCountries;
         };
-        var injectScript = function(path, resolve, reject) {
+        var injectScript = function(path, handleSuccess, handleFailure) {
             // inject a new script element into the page
             var script = document.createElement("script");
-            script.onload = resolve;
-            if (reject) script.onerror = reject;
+            script.onload = handleSuccess;
+            if (handleFailure) script.onerror = handleFailure;
             script.className = "iti-load-utils";
             script.async = true;
             script.src = path;
@@ -1159,10 +1166,9 @@
         };
         var triggerHandleUtils = function() {
             // tell all instances that the utils request is complete
-            var instanceIds = Object.keys(window.intlTelInputGlobals.instances);
-            for (var i = 0; i < instanceIds.length; i++) {
-                window.intlTelInputGlobals.instances[instanceIds[i]].handleUtils();
-            }
+            forEachProp(window.intlTelInputGlobals.instances, function(key, value) {
+                window.intlTelInputGlobals.instances[key].handleUtils();
+            });
         };
         // load the utils script
         window.intlTelInputGlobals.loadUtils = function(path) {

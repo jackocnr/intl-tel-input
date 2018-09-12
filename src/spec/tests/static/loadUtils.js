@@ -49,7 +49,7 @@ describe("loadUtils:", function() {
 
   describe("init plugin with utilsScript option, but force windowLoaded=false so it wont fire", function() {
 
-    var url2 = "test/url/two/utils.js"
+    var url2 = "test/url/two/utils.js",
       resolved = false;
 
     beforeEach(function() {
@@ -74,10 +74,13 @@ describe("loadUtils:", function() {
       expect(resolved).toEqual(false);
     });
 
+
+
     describe("calling loadUtils", function() {
 
-      beforeEach(function() {
-        iti.loadUtils(url2);
+      beforeEach(function(done) {
+        window.intlTelInputGlobals.loadUtils(url2);
+        setTimeout(done);
       });
 
       it("does inject the script", function() {
