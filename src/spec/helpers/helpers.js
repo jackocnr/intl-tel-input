@@ -35,6 +35,11 @@ var intlTeardown = function() {
   input = iti = null;
 };
 
+var waitForUtilsRequest = function(done) {
+  // this wait is needed while jasmine actually does the request to load utils.js
+  setTimeout(done, 100);
+};
+
 var getInputVal = function(i) {
   i = i || input;
   return i.val();

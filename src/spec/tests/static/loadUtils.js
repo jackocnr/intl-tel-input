@@ -16,10 +16,19 @@ describe("loadUtils:", function() {
 
   describe("calling loadUtils before init plugin", function() {
 
-    var url = "test/url/one/utils.js";
+    var url = "build/js/utils.js?v=1",
+      resolved = false;
 
-    beforeEach(function() {
-      window.intlTelInputGlobals.loadUtils(url);
+    beforeEach(function(done) {
+      var promise = window.intlTelInputGlobals.loadUtils(url);
+      promise.then(function() {
+        resolved = true;
+        done();
+      });
+    });
+
+    afterEach(function() {
+      resolved = false;
     });
 
     it("injects the script", function() {
@@ -27,18 +36,37 @@ describe("loadUtils:", function() {
       expect($("script.iti-load-utils").attr("src")).toEqual(url);
     });
 
+    it("does resolve the promise", function() {
+      expect(resolved).toEqual(true);
+    });
+
+
+
     describe("then init plugin with utilsScript option", function() {
+
+      var resolved2 = false;
 
       beforeEach(function(done) {
         iti = window.intlTelInput(input[0], {
           utilsScript: "some/other/url/ok",
         });
+        iti.promise.then(function() {
+          resolved2 = true;
+        });
         setTimeout(done);
+      });
+
+      afterEach(function() {
+        resolved2 = false;
       });
 
       it("does not inject another script", function() {
         expect($("script.iti-load-utils").length).toEqual(1);
         expect($("script.iti-load-utils").attr("src")).toEqual(url);
+      });
+
+      it("does resolve the promise immediately", function() {
+        expect(resolved2).toEqual(true);
       });
 
     });
@@ -49,10 +77,10 @@ describe("loadUtils:", function() {
 
   describe("init plugin with utilsScript option, but force windowLoaded=false so it wont fire", function() {
 
-    var url2 = "test/url/two/utils.js",
+    var url2 = "build/js/utils.js?v=2",
       resolved = false;
 
-    beforeEach(function() {
+    beforeEach(function(done) {
       window.intlTelInputGlobals.windowLoaded = false;
       iti = window.intlTelInput(input[0], {
         utilsScript: "some/other/url/ok",
@@ -60,6 +88,7 @@ describe("loadUtils:", function() {
       iti.promise.then(function() {
         resolved = true;
       });
+      waitForUtilsRequest(done);
     });
 
     afterEach(function() {
@@ -80,7 +109,7 @@ describe("loadUtils:", function() {
 
       beforeEach(function(done) {
         window.intlTelInputGlobals.loadUtils(url2);
-        setTimeout(done);
+        waitForUtilsRequest(done);
       });
 
       it("does inject the script", function() {
@@ -91,19 +120,38 @@ describe("loadUtils:", function() {
         expect(resolved).toEqual(true);
       });
 
+
+
       describe("then init another plugin instance with utilsScript option", function() {
 
+        var iti2,
+          input2,
+          resolved2 = false;
+
         beforeEach(function(done) {
-          var input2 = $("<input>").appendTo("body");
-          var iti2 = window.intlTelInput(input2[0], {
+          input2 = $("<input>").appendTo("body");
+          iti2 = window.intlTelInput(input2[0], {
             utilsScript: "test/url/three/utils.js",
           });
+          iti2.promise.then(function() {
+            resolved2 = true;
+          });
           setTimeout(done);
+        });
+
+        afterEach(function() {
+          iti2.destroy();
+          input2.remove();
+          iti2 = input2 = null;
         });
 
         it("does not inject another script", function() {
           expect($("script.iti-load-utils").length).toEqual(1);
           expect($("script.iti-load-utils").attr("src")).toEqual(url2);
+        });
+
+        it("does resolve the promise immediately", function() {
+          expect(resolved2).toEqual(true);
         });
 
       });
@@ -116,7 +164,7 @@ describe("loadUtils:", function() {
 
   describe("fake window.load event then init plugin with utilsScript", function() {
 
-    var url3 = "test/url/three/utils.js";
+    var url3 = "build/js/utils.js?v=3";
 
     beforeEach(function() {
       window.intlTelInputGlobals.windowLoaded = true;
