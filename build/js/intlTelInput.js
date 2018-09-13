@@ -587,6 +587,7 @@
             },
             // trigger a custom event on the input
             _trigger: function(name) {
+                // have to use old school document.createEvent as IE11 doesn't support `new Event()` syntax
                 var e = document.createEvent("Event");
                 e.initEvent(name, true, true);
                 //can bubble, and is cancellable
