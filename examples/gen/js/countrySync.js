@@ -5,7 +5,7 @@ var countryData = $.fn.intlTelInput.getCountryData(),
 
 // init plugin
 telInput.intlTelInput({
-  utilsScript: "../../build/js/utils.js?1535108287294" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1536844998850" // just for formatting/placeholders etc
 });
 
 // populate the country dropdown
