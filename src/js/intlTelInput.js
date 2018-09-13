@@ -50,6 +50,8 @@ window.addEventListener('load', function() {
   window.intlTelInputGlobals.windowLoaded = true;
 });
 
+
+// utility function to iterate over an object. can't use Object.entries or native forEach because of IE11
 var forEachProp = function(obj, callback) {
   var keys = Object.keys(obj);
   for (var i = 0; i < keys.length; i++) {
@@ -58,6 +60,15 @@ var forEachProp = function(obj, callback) {
 };
 
 
+// run a method on each instance of the plugin
+var forEachInstance = function(method) {
+  forEachProp(window.intlTelInputGlobals.instances, function(key, value) {
+    window.intlTelInputGlobals.instances[key][method]();
+  });
+};
+
+
+// this is our plugin class that we will create an instance of
 var Iti = function(input, options) {
   var that = this;
 
@@ -76,6 +87,7 @@ var Iti = function(input, options) {
 };
 
 
+// define our class methods on the prototype
 Iti.prototype = {
 
   _init: function() {
@@ -109,16 +121,18 @@ Iti.prototype = {
     // these promises get resolved when their individual requests complete
     // this way the dev can do something like iti.promise.then(...) to know when all requests are complete
     if (typeof Promise !== "undefined") {
-      var autoCountryPromise = new Promise(function(resolve) {
+      var autoCountryPromise = new Promise(function(resolve, reject) {
         that.resolveAutoCountryPromise = resolve;
+        that.rejectAutoCountryPromise = reject;
       });
-      var utilsScriptPromise = new Promise(function(resolve) {
+      var utilsScriptPromise = new Promise(function(resolve, reject) {
         that.resolveUtilsScriptPromise = resolve;
+        that.rejectUtilsScriptPromise = reject;
       });
       this.promise = Promise.all([autoCountryPromise, utilsScriptPromise]);
     } else {
       // prevent errors when Promise doesn't exist
-      this.resolveAutoCountryPromise = this.resolveUtilsScriptPromise = function() {};
+      this.resolveAutoCountryPromise = this.rejectAutoCountryPromise = this.resolveUtilsScriptPromise = this.rejectUtilsScriptPromise = function() {};
     }
 
     // in various situations there could be no country selected initially, but we need to be able to assume this variable exists
@@ -538,10 +552,10 @@ Iti.prototype = {
           // TODO: this should just be the current instances
           // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight away (e.g. if they have already done the geo ip lookup somewhere else). Using setTimeout means that the current thread of execution will finish before executing this, which allows the plugin to finish initialising.
           setTimeout(function() {
-            forEachProp(window.intlTelInputGlobals.instances, function(key, value) {
-              window.intlTelInputGlobals.instances[key].handleAutoCountry();
-            });
+            forEachInstance("handleAutoCountry");
           });
+        }, function() {
+          forEachInstance("rejectAutoCountryPromise");
         });
       }
     }
@@ -1381,27 +1395,27 @@ window.intlTelInputGlobals.getCountryData = function() {
 };
 
 
+// inject a <script> element to load utils.js
 var injectScript = function(path, handleSuccess, handleFailure) {
   // inject a new script element into the page
   var script = document.createElement("script");
-  script.onload = handleSuccess;
-  if (handleFailure) script.onerror = handleFailure;
+  script.onload = function() {
+    forEachInstance("handleUtils");
+    if (handleSuccess) handleSuccess();
+  };
+  script.onerror = function() {
+    forEachInstance("rejectUtilsScriptPromise");
+    if (handleFailure) handleFailure();
+  };
   script.className = "iti-load-utils";
   script.async = true;
   script.src = path;
   document.body.appendChild(script);
 };
 
-var triggerHandleUtils = function() {
-  // tell all instances that the utils request is complete
-  forEachProp(window.intlTelInputGlobals.instances, function(key, value) {
-    window.intlTelInputGlobals.instances[key].handleUtils();
-  });
-};
 
 // load the utils script
 window.intlTelInputGlobals.loadUtils = function(path) {
-  var promise = null;
   // 2 options:
   // 1) not already started loading (start)
   // 2) already started loading (do nothing - just wait for the onload callback to fire, which will trigger handleUtils on all instances, invoking each of their resolveUtilsScriptPromise functions)
@@ -1411,17 +1425,12 @@ window.intlTelInputGlobals.loadUtils = function(path) {
 
     // if we have promises, then return a promise
     if (typeof Promise !== "undefined") {
-      promise = new Promise(function(resolve, reject) {
-        injectScript(path, function() {
-          triggerHandleUtils();
-          resolve();
-        }, reject);
+      return new Promise(function(resolve, reject) {
+        injectScript(path, resolve, reject);
       });
-    } else {
-      injectScript(path, triggerHandleUtils);
-    }
+    } else injectScript(path);
   }
-  return promise;
+  return null;
 };
 
 
