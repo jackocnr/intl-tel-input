@@ -115,12 +115,6 @@ var triggerKey = function(el, type, key) {
   return event;
 };
 
-// var triggerClick = function(el) {
-//   var event = new KeyboardEvent(type, { key: key });
-//   el.dispatchEvent(event);
-//   return event;
-// };
-
 // trigger keydown, then keypress, then add the key, then keyup
 var triggerKeyOnInput = function(key) {
   triggerKey(input[0], 'keydown', key);

@@ -1,3 +1,6 @@
+#### IMPORTANT: since v14 we have removed the jQuery dependency. See below for how to initialise and use the plugin with pure JavaScript. If you want to stick with the jQuery version, stick with v13.
+---
+
 # International Telephone Input [![Build Status](https://travis-ci.org/jackocnr/intl-tel-input.svg)](https://travis-ci.org/jackocnr/intl-tel-input)
 A JavaScript plugin for entering and validating international telephone numbers. It adds a flag dropdown to any input, detects the user's country, displays a relevant placeholder and provides formatting/validation methods.
 
@@ -191,7 +194,7 @@ Enable formatting/validation etc. by specifying the URL of the included utils.js
 
 
 ## Public Methods
-In these examples, `iti` refers to the plugin instance which gets returned from when you initialise the plugin e.g. `var iti = intlTelInput(input)`
+In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g. `var iti = intlTelInput(input)`
 
 **destroy**  
 Remove the plugin from the input, and unbind any event listeners.  
