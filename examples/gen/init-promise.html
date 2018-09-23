@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Example: Lookup user's country</title>
+    <title>Example: Using the promise returned from initialisation</title>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../../build/css/intlTelInput.css?1537717752654">
     <link rel="stylesheet" href="../../build/css/demo.css?1537717752654">
@@ -22,37 +22,47 @@
 
   <body>
     <a href="/">Back</a>
-    <h1>Example: Lookup user's country</h1>
-    <p>Set initialCountry to 'auto' and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user's country based on their IP address.</p>
+    <h1>Example: Using the promise returned from initialisation</h1>
+    <p>Use this promise to know when the plugin has completely finished initialising, including completing any asynchronous actions you might have enabled with the initialisation options e.g. fetching utils.js with the utilsScript option, and performing the ip lookup with the geoIpLookup option.</p>
 
     <h2>Markup</h2>
-    <pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+    <pre><code class="language-markup">&lt;!-- polyfill for IE11 --&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js&quot;&gt;&lt;/script&gt; 
+
+&lt;p&gt;
+  Status:
+  &lt;span id=&quot;status&quot;&gt;Initialising...&lt;/span&gt;
+&lt;/p&gt;
 &lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;
 </code></pre>
 
     <h2>Code</h2>
     <pre><code class="language-javascript">var input = document.querySelector(&quot;#phone&quot;);
-window.intlTelInput(input, {
-  initialCountry: &quot;auto&quot;,
-  geoIpLookup: function(callback) {
-    $.get(&#39;https://ipinfo.io&#39;, function() {}, &quot;jsonp&quot;).always(function(resp) {
-      var countryCode = (resp &amp;&amp; resp.country) ? resp.country : &quot;&quot;;
-      callback(countryCode);
-    });
-  },
-  utilsScript: &quot;../../build/js/utils.js?1537717752654&quot; // just for formatting/placeholders etc
+var statusElement = document.querySelector(&quot;#status&quot;);
+
+var iti = window.intlTelInput(input, {
+  utilsScript: &quot;../../build/js/utils.js?1537717752654&quot;,
+});
+iti.promise.then(function() {
+  statusElement.innerHTML = &quot;Initialised!&quot;;
 });
 </code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <!-- polyfill for IE11 -->
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script> 
+
+<p>
+  Status:
+  <span id="status">Initialising...</span>
+</p>
 <input id="phone" type="tel">
 
     </div>
 
     <script src="../js/prism.js"></script>
     <script src="../../build/js/intlTelInput.js?1537717752654"></script>
-    <script src="./js/defaultCountryIp.js?1537717752654"></script>
+    <script src="./js/initPromise.js?1537717752654"></script>
   </body>
 </html>

@@ -84,6 +84,33 @@ module.exports = function(grunt) {
         }
       }
     },
+    initPromiseJs: {
+      src: 'examples/js/initPromise.js.ejs',
+      dest: 'examples/gen/js/initPromise.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+    multipleInstancesJs: {
+      src: 'examples/js/multipleInstances.js.ejs',
+      dest: 'examples/gen/js/multipleInstances.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
+    displayNumberJs: {
+      src: 'examples/js/displayNumber.js.ejs',
+      dest: 'examples/gen/js/displayNumber.js',
+      options: {
+        data: function() {
+          return { time: time };
+        }
+      }
+    },
 
     // generate the HTML example pages
     nationalMode: {
@@ -179,7 +206,7 @@ module.exports = function(grunt) {
           return {
             time: time,
             title: "Validation",
-            desc: "Use public isValidNumber method (utilising Google's libphonenumber) to validate the telephone number on the change event.",
+            desc: "Use the isValidNumber method (which utilises Google's libphonenumber) to validate the telephone number on the blur event.",
             stylesheet: 'isValidNumber.css',
             markup: grunt.file.read('examples/partials/isValidNumber.html'),
             code: grunt.file.read('examples/gen/js/isValidNumber.js'),
@@ -204,6 +231,57 @@ module.exports = function(grunt) {
           };
         }
       }
-    }
+    },
+    initPromise: {
+      src: 'examples/template.html.ejs',
+      dest: 'examples/gen/init-promise.html',
+      options: {
+        data: function() {
+          return {
+            time: time,
+            title: "Using the promise returned from initialisation",
+            desc: "Use this promise to know when the plugin has completely finished initialising, including completing any asynchronous actions you might have enabled with the initialisation options e.g. fetching utils.js with the utilsScript option, and performing the ip lookup with the geoIpLookup option.",
+            stylesheet: '',
+            markup: grunt.file.read('examples/partials/initPromise.html'),
+            code: grunt.file.read('examples/gen/js/initPromise.js'),
+            script: "initPromise.js"
+          };
+        }
+      }
+    },
+    multipleInstances: {
+      src: 'examples/template.html.ejs',
+      dest: 'examples/gen/multiple-instances.html',
+      options: {
+        data: function() {
+          return {
+            time: time,
+            title: "Multiple Instances",
+            desc: "Here you can see multiple instances of the plugin working alongside each other. I've set the placeholderNumberType differently for each instance to highlight that the instances are completely independent of each other.",
+            stylesheet: '',
+            markup: grunt.file.read('examples/partials/multipleInstances.html'),
+            code: grunt.file.read('examples/gen/js/multipleInstances.js'),
+            script: "multipleInstances.js"
+          };
+        }
+      }
+    },
+    displayNumber: {
+      src: 'examples/template.html.ejs',
+      dest: 'examples/gen/display-number.html',
+      options: {
+        data: function() {
+          return {
+            time: time,
+            title: "Display an existing number",
+            desc: "We initialise the plugin on an input which already contains a full international number. The plugin will automatically select the relevant flag, and re-format the number to national format.",
+            stylesheet: '',
+            markup: grunt.file.read('examples/partials/displayNumber.html'),
+            code: grunt.file.read('examples/gen/js/displayNumber.js'),
+            script: "displayNumber.js"
+          };
+        }
+      }
+    },
   };
 };

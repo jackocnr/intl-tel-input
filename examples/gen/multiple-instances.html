@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Example: Lookup user's country</title>
+    <title>Example: Multiple Instances</title>
     <link rel="stylesheet" href="../css/prism.css">
     <link rel="stylesheet" href="../../build/css/intlTelInput.css?1537717752654">
     <link rel="stylesheet" href="../../build/css/demo.css?1537717752654">
@@ -22,37 +22,41 @@
 
   <body>
     <a href="/">Back</a>
-    <h1>Example: Lookup user's country</h1>
-    <p>Set initialCountry to 'auto' and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user's country based on their IP address.</p>
+    <h1>Example: Multiple Instances</h1>
+    <p>Here you can see multiple instances of the plugin working alongside each other. I've set the placeholderNumberType differently for each instance to highlight that the instances are completely independent of each other.</p>
 
     <h2>Markup</h2>
-    <pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
-&lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;
+    <pre><code class="language-markup">Home: &lt;input id=&quot;home&quot; type=&quot;tel&quot;&gt;
+&lt;br&gt;&lt;br&gt;
+Mobile: &lt;input id=&quot;mobile&quot; type=&quot;tel&quot;&gt;
 </code></pre>
 
     <h2>Code</h2>
-    <pre><code class="language-javascript">var input = document.querySelector(&quot;#phone&quot;);
-window.intlTelInput(input, {
-  initialCountry: &quot;auto&quot;,
-  geoIpLookup: function(callback) {
-    $.get(&#39;https://ipinfo.io&#39;, function() {}, &quot;jsonp&quot;).always(function(resp) {
-      var countryCode = (resp &amp;&amp; resp.country) ? resp.country : &quot;&quot;;
-      callback(countryCode);
-    });
-  },
+    <pre><code class="language-javascript">var inputHome = document.querySelector(&quot;#home&quot;);
+var inputMobile = document.querySelector(&quot;#mobile&quot;);
+
+window.intlTelInput(inputHome, {
+  initialCountry: &#39;gb&#39;,
+  placeholderNumberType: &#39;FIXED_LINE&#39;,
   utilsScript: &quot;../../build/js/utils.js?1537717752654&quot; // just for formatting/placeholders etc
+});
+window.intlTelInput(inputMobile, {
+  initialCountry: &#39;gb&#39;,
+  placeholderNumberType: &#39;MOBILE&#39;,
+  utilsScript: &quot;../../build/js/utils.js?1537717752654&quot;
 });
 </code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<input id="phone" type="tel">
+      Home: <input id="home" type="tel">
+<br><br>
+Mobile: <input id="mobile" type="tel">
 
     </div>
 
     <script src="../js/prism.js"></script>
     <script src="../../build/js/intlTelInput.js?1537717752654"></script>
-    <script src="./js/defaultCountryIp.js?1537717752654"></script>
+    <script src="./js/multipleInstances.js?1537717752654"></script>
   </body>
 </html>
