@@ -19,6 +19,19 @@ module.exports = function(grunt) {
         })('<%= package.version %>')
       }
     },
+    jqueryVersion: {
+      src: 'src/js/wrapper-jquery.js.ejs',
+      dest: 'tmp/wrapped-jquery.js',
+      options: {
+        data: (function(version) {
+          return {
+            plugin: grunt.file.read('src/js/intlTelInput.js'),
+            version: version,
+            data: grunt.file.read('src/js/data.js')
+          };
+        })('<%= package.version %>')
+      }
+    },
 
     // generate the JS scripts for the examples (and cache-bust the utils.js URL)
     nationalModeJs: {
