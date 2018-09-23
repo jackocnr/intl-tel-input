@@ -1,18 +1,18 @@
 module.exports = function(grunt) {
   return {
     retina: {
-        src: 'src/img/flags/@2x/*.png',
-        dest: 'build/img/flags@2x.png',
-        destCss: 'src/css/sprite@2x.scss',
-        cssTemplate: function() { return ''; }, // ignore - we just use the @1x styles for both
-        padding: 4,
-        algorithm: 'left-right',
-        algorithmOpts: {
-          sort: false
-        },
-        cssOpts: {
-          variableNameTransforms: ['toLowerCase']
-        }
+      src: 'src/img/flags/@2x/*.png',
+      dest: 'build/img/flags@2x.png',
+      destCss: 'src/css/sprite@2x.scss',
+      cssTemplate: function() { return ''; }, // ignore - we just use the @1x styles for both
+      padding: 4,
+      algorithm: 'left-right',
+      algorithmOpts: {
+        sort: false
+      },
+      cssOpts: {
+        variableNameTransforms: ['toLowerCase']
+      }
     },
     main: {
       src: ['src/img/flags/@1x/*.png'],

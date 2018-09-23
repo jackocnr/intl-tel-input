@@ -59,7 +59,7 @@ Note: In v12.0.0 we dropped support for IE9 and IE10, because they are no longer
   ```css
   .iti-flag {background-image: url("path/to/flags.png");}
 
-  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .iti-flag {background-image: url("path/to/flags@2x.png");}
   }
   ```
