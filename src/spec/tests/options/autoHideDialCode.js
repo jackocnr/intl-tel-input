@@ -32,7 +32,7 @@ describe("autoHideDialCode option:", function() {
     describe("focusing the input", function() {
 
       beforeEach(function() {
-        input[0].focus();
+        triggerInputEvent("focus");
       });
 
       it("adds the default dial code", function() {
@@ -48,7 +48,7 @@ describe("autoHideDialCode option:", function() {
       });
 
       it("blurring it removes it again", function() {
-        input[0].blur();
+        triggerInputEvent("blur");
         expect(getInputVal()).toEqual("");
       });
 
@@ -65,9 +65,9 @@ describe("autoHideDialCode option:", function() {
       });
 
       it("focusing and blurring the input doesn't change it", function() {
-        input[0].focus();
+        triggerInputEvent("focus");
         expect(getInputVal()).toEqual(number);
-        input[0].blur();
+        triggerInputEvent("blur");
         expect(getInputVal()).toEqual(number);
       });
 
@@ -90,9 +90,9 @@ describe("autoHideDialCode option:", function() {
     });
 
     it("focusing and bluring the input dont change the val", function() {
-      input[0].focus();
+      triggerInputEvent("focus");
       expect(getInputVal()).toEqual(defaultDialCode);
-      input[0].blur();
+      triggerInputEvent("blur");
       expect(getInputVal()).toEqual(defaultDialCode);
     });
 
@@ -106,9 +106,9 @@ describe("autoHideDialCode option:", function() {
       });
 
       it("focusing and blurring the input doesn't change it", function() {
-        input[0].focus();
+        triggerInputEvent("focus");
         expect(getInputVal()).toEqual(number);
-        input[0].blur();
+        triggerInputEvent("blur");
         expect(getInputVal()).toEqual(number);
       });
 

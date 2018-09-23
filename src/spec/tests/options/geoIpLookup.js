@@ -57,8 +57,8 @@ describe("geoIpLookup:", function() {
       });
       iti.promise.then(function() {
         resolved = true;
+        done();
       });
-      setTimeout(done);
     });
 
     it("does resolve", function() {

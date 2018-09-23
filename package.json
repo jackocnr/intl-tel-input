@@ -16,6 +16,8 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
+    "custom-event-polyfill": "^1.0.6",
+    "es6-promise": "^4.2.5",
     "evenizer": "^0.1.17",
     "grunt": "^1.0.1",
     "grunt-bump": "^0.8.0",

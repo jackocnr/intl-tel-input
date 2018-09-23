@@ -84,7 +84,7 @@ describe("onlyCountries option:", function() {
     });
 
     it("first instance still works", function() {
-      input.focus();
+      triggerInputEvent("focus");
       expect(input.val()).toEqual("+81");
     });
 

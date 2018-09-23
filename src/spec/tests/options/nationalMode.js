@@ -28,7 +28,7 @@ describe("nationalMode:", function() {
     });
 
     it("focusing the input does not insert the dial code", function() {
-      input.focus();
+      triggerInputEvent("focus");
       expect(getInputVal()).toEqual("");
     });
 

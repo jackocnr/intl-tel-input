@@ -97,7 +97,7 @@ var selectFlag = function(countryCode, i) {
 };
 
 var openCountryDropDown = function() {
-    getSelectedFlagContainer()[0].click();
+  getSelectedFlagContainer()[0].click();
 };
 
 var putCursorAtEnd = function() {
@@ -109,23 +109,24 @@ var selectInputChars = function(start, end) {
   input[0].setSelectionRange(start, end);
 };
 
+// use this for focus/blur (instead of using .focus() and .blur() directly, which cause problems in IE11)
+var triggerInputEvent = function(type) {
+  var e = new CustomEvent(type);
+  input[0].dispatchEvent(e);
+}
+
 var triggerKey = function(el, type, key) {
-  var event = new KeyboardEvent(type, { key: key });
-  el.dispatchEvent(event);
-  return event;
+  var e = new CustomEvent(type);
+  e.key = key;
+  el.dispatchEvent(e);
 };
 
 // trigger keydown, then keypress, then add the key, then keyup
 var triggerKeyOnInput = function(key) {
   triggerKey(input[0], 'keydown', key);
-  var e = triggerKey(input[0], 'keypress', key);
-  // insert char
-  if (!e.defaultPrevented) {
-    var val = input.val(),
-      before = val.substr(0, input[0].selectionStart),
-      after = val.substring(input[0].selectionEnd, val.length);
-    input.val(before + key + after);
-  }
+  triggerKey(input[0], 'keypress', key);
+  var val = input.val();
+  input.val(val + key);
   triggerKey(input[0], 'keyup', key);
 };
 
