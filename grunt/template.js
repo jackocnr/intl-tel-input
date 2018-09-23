@@ -12,7 +12,7 @@ module.exports = function(grunt) {
       options: {
         data: (function(version) {
           return {
-            plugin: grunt.file.read('src/js/intlTelInput.js'),
+            plugin: grunt.file.read('tmp/intlTelInput-babel.js'),
             version: version,
             data: grunt.file.read('src/js/data.js')
           };
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
       options: {
         data: (function(version) {
           return {
-            plugin: grunt.file.read('src/js/intlTelInput.js'),
+            plugin: grunt.file.read('tmp/intlTelInput-babel.js'),
             version: version,
             data: grunt.file.read('src/js/data.js')
           };
