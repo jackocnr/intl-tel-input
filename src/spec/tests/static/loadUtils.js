@@ -166,11 +166,13 @@ describe("loadUtils:", function() {
 
     var url3 = "build/js/utils.js?v=3";
 
-    beforeEach(function() {
+    beforeEach(function(done) {
       window.intlTelInputGlobals.windowLoaded = true;
       iti = window.intlTelInput(input[0], {
         utilsScript: url3,
       });
+      // wait for the request to finish so we dont interfere with other tests
+      iti.promise.finally(done);
     });
 
     it("injects the script", function() {
