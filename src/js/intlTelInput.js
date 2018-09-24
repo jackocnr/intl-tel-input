@@ -983,8 +983,7 @@ Iti.prototype = {
       if (dialCode) {
         parent.classList.add("iti-sdc-" + dialCode.length);
       }
-      var textNode = document.createTextNode(dialCode);
-      this.selectedDialCode.appendChild(textNode);
+      this.selectedDialCode.innerHTML = dialCode;
     }
 
     // and the input's placeholder
