@@ -9,12 +9,6 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /_init:/g,
-            replacement: '_a:'
-          }, {
-            match: /_init\(/g,
-            replacement: '_a('
-          }, {
             match: /_processCountryData/g,
             replacement: '_b'
           }, {
