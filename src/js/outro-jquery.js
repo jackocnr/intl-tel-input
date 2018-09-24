@@ -1,18 +1,3 @@
-// wrap in UMD
-(function(factory) {
-  if (typeof module === "object" && module.exports) {
-    module.exports = factory(require("jquery"), window, document);
-  } else if (typeof define === "function" && define.amd) {
-    define(["jquery"], function($) {
-      factory($, window, document);
-    });
-  } else factory(jQuery, window, document);
-}(function ($, window, document, undefined) {
-	"use strict";
-
-	<%= data %>
-  <%= plugin %>
-
   var pluginName = "intlTelInput";
 
 	// A really lightweight plugin wrapper around the constructor,
@@ -52,7 +37,4 @@
       return returns !== undefined ? returns : this;
     }
 	};
-
-  // version
-  $.fn[pluginName].version = "<%= version %>";
 }));

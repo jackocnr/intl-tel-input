@@ -1429,3 +1429,6 @@ window.intlTelInputGlobals.loadUtils = function(path) {
 
 // default options
 window.intlTelInputGlobals.defaults = defaults;
+
+// version
+window.intlTelInputGlobals.version = "<%= version %>";

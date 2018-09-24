@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     },
     dist: {
       files: {
-        'tmp/intlTelInput-babel.js': 'src/js/intlTelInput.js'
+        'tmp/versioned-babeled.js': 'tmp/versioned.js'
       }
     }
   };

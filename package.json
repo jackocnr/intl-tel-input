@@ -26,6 +26,7 @@
     "grunt-babel": "^8.0.0",
     "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.2.0",
+    "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-imagemin": "^1.0.1",
     "grunt-contrib-jasmine": "^2.0.2",

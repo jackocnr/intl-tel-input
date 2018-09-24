@@ -887,10 +887,6 @@
                 } else {
                     throw new Error("No country data for '" + countryCode + "'");
                 }
-<<<<<<< HEAD
-                this.selectedDialCode.innerHTML = dialCode;
-=======
->>>>>>> Add grunt-babel and start using ES6 in src file
             }
         }, {
             key: "_setFlag",
@@ -914,8 +910,7 @@
                     if (dialCode) {
                         parent.classList.add("iti-sdc-" + dialCode.length);
                     }
-                    var textNode = document.createTextNode(dialCode);
-                    this.selectedDialCode.appendChild(textNode);
+                    this.selectedDialCode.innerHTML = dialCode;
                 }
                 // and the input's placeholder
                 this._updatePlaceholder();
@@ -1281,6 +1276,8 @@
     };
     // default options
     window.intlTelInputGlobals.defaults = defaults;
+    // version
+    window.intlTelInputGlobals.version = "14.0.2";
     var pluginName = "intlTelInput";
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
@@ -1314,6 +1311,4 @@
             return returns !== undefined ? returns : this;
         }
     };
-    // version
-    $.fn[pluginName].version = "14.0.2";
 });
