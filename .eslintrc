@@ -1,6 +1,50 @@
 {
+  "extends": "airbnb",
   "parser": "babel-eslint",
   "env": {
-    "browser": true
-  }
+    "browser": true,
+  },
+  "rules": {
+    "arrow-parens": "off",
+    "camelcase": "off",
+    "class-methods-use-this": "off",
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "never",
+      "imports": "always-multiline",
+      "objects": "always-multiline",
+    }],
+    "no-cond-assign": ["error", "except-parens"],
+    "no-lonely-if": "off",
+    "no-multi-assign": "off",
+    "no-param-reassign": ["error", {
+      "props": false,
+    }],
+    "no-plusplus": "off",
+    "no-prototype-builtins": "off",
+    "no-restricted-globals": "off",
+    "no-return-assign": "off",
+    "no-underscore-dangle": "off",
+    "no-unused-vars": ["error", {
+      "ignoreRestSiblings": true
+    }],
+    "space-before-function-paren": "off",
+    # airbnb's version, adding "*" to block.exceptions section to allow blocks wrapped in loads of asterisks
+    "spaced-comment": ["error", "always", {
+      line: {
+        exceptions: ["-", "+"],
+        markers: ["=", "!"],
+      },
+      block: {
+        exceptions: ["-", "+", "*"],
+        markers: ["=", "!"],
+        balanced: true,
+      }
+    }],
+  },
+  "globals": {
+    "allCountries": true,
+    "intlTelInputUtils": true,
+  },
 }
