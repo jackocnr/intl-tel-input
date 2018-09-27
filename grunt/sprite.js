@@ -3,8 +3,7 @@ module.exports = function(grunt) {
     retina: {
       src: 'src/img/flags/@2x/*.png',
       dest: 'build/img/flags@2x.png',
-      destCss: 'src/css/sprite@2x.scss',
-      cssTemplate: function() { return ''; }, // ignore - we just use the @1x styles for both
+      destCss: 'tmp/sprite@2x.scss', // ignore - we just use the @1x styles for both
       padding: 4,
       algorithm: 'left-right',
       algorithmOpts: {
