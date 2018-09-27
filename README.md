@@ -4,7 +4,7 @@
 # International Telephone Input [![Build Status](https://travis-ci.org/jackocnr/intl-tel-input.svg?branch=master)](https://travis-ci.org/jackocnr/intl-tel-input)
 A JavaScript plugin for entering and validating international telephone numbers. It adds a flag dropdown to any input, detects the user's country, displays a relevant placeholder and provides formatting/validation methods.
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshot.png" width="424px" height="246px">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla.png" width="424px" height="246px">
 
 If you like it, please consider making a donation, which you can do from [the demo page](http://intl-tel-input.com).
 
@@ -186,7 +186,7 @@ Prevent the user from entering invalid characters. Unfortunately this had to be 
 Type: `Boolean` Default: `false`  
 Display the country dial code next to the selected flag so it's not part of the typed number. Note that this will disable `nationalMode` because technically we are dealing with international numbers, but with the dial code separated.
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/separateDialCodeScreenshot.png" width="257px" height="46px">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px">
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
