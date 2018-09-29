@@ -76,6 +76,9 @@ class Iti {
     this.id = id++;
     this.telInput = input;
 
+    this.activeItem = null;
+    this.highlightedItem = null;
+
     // process specified options / defaults
     // alternative to Object.assign, which isn't supported by IE11
     const customOptions = options || {};
@@ -648,10 +651,9 @@ class Iti {
     this._setDropdownPosition();
 
     // update highlighting and scroll to active list item
-    const activeItem = this.countryList.querySelector('.active');
-    if (activeItem) {
-      this._highlightListItem(activeItem);
-      this._scrollTo(activeItem);
+    if (this.activeItem) {
+      this._highlightListItem(this.activeItem);
+      this._scrollTo(this.activeItem);
     }
 
     // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
@@ -783,8 +785,7 @@ class Iti {
 
   // highlight the next/prev item in the list (and ensure it is visible)
   _handleUpDownKey(key) {
-    const current = this.countryList.querySelector('.country.highlight');
-    let next = (key === 'ArrowUp') ? current.previousElementSibling : current.nextElementSibling;
+    let next = (key === 'ArrowUp') ? this.highlightedItem.previousElementSibling : this.highlightedItem.nextElementSibling;
     if (next) {
       // skip the divider
       if (next.classList.contains('divider')) {
@@ -798,8 +799,7 @@ class Iti {
 
   // select the currently highlighted item
   _handleEnterKey() {
-    const currentCountry = this.countryList.querySelector('.country.highlight');
-    if (currentCountry) this._selectListItem(currentCountry);
+    if (this.highlightedItem) this._selectListItem(this.highlightedItem);
   }
 
 
@@ -914,9 +914,10 @@ class Iti {
 
   // remove highlighting from other list items and highlight the given item
   _highlightListItem(listItem) {
-    const prevItem = this.countryList.querySelector('.country.highlight');
+    const prevItem = this.highlightedItem;
     if (prevItem) prevItem.classList.remove('highlight');
-    listItem.classList.add('highlight');
+    this.highlightedItem = listItem;
+    this.highlightedItem.classList.add('highlight');
   }
 
 
@@ -970,15 +971,16 @@ class Iti {
 
     // update the active list item
     if (this.options.allowDropdown) {
-      const prevItem = this.countryList.querySelector('.country.active');
+      const prevItem = this.activeItem;
       if (prevItem) {
         prevItem.classList.remove('active');
         prevItem.setAttribute('aria-selected', 'false');
       }
       if (countryCode) {
         const nextItem = this.countryList.querySelector(`#iti-item-${countryCode}`);
-        nextItem.classList.add('active');
         nextItem.setAttribute('aria-selected', 'true');
+        nextItem.classList.add('active');
+        this.activeItem = nextItem;
         this.countryList.setAttribute('aria-activedescendant', nextItem.getAttribute('id'));
       }
     }

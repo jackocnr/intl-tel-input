@@ -132,6 +132,8 @@
             _classCallCheck(this, Iti);
             this.id = id++;
             this.telInput = input;
+            this.activeItem = null;
+            this.highlightedItem = null;
             // process specified options / defaults
             // alternative to Object.assign, which isn't supported by IE11
             var customOptions = options || {};
@@ -648,10 +650,9 @@
                 this.countryList.setAttribute("aria-expanded", "true");
                 this._setDropdownPosition();
                 // update highlighting and scroll to active list item
-                var activeItem = this.countryList.querySelector(".active");
-                if (activeItem) {
-                    this._highlightListItem(activeItem);
-                    this._scrollTo(activeItem);
+                if (this.activeItem) {
+                    this._highlightListItem(this.activeItem);
+                    this._scrollTo(this.activeItem);
                 }
                 // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
                 this._bindDropdownListeners();
@@ -763,8 +764,7 @@
         }, {
             key: "_handleUpDownKey",
             value: function _handleUpDownKey(key) {
-                var current = this.countryList.querySelector(".country.highlight");
-                var next = key === "ArrowUp" ? current.previousElementSibling : current.nextElementSibling;
+                var next = key === "ArrowUp" ? this.highlightedItem.previousElementSibling : this.highlightedItem.nextElementSibling;
                 if (next) {
                     // skip the divider
                     if (next.classList.contains("divider")) {
@@ -777,8 +777,7 @@
         }, {
             key: "_handleEnterKey",
             value: function _handleEnterKey() {
-                var currentCountry = this.countryList.querySelector(".country.highlight");
-                if (currentCountry) this._selectListItem(currentCountry);
+                if (this.highlightedItem) this._selectListItem(this.highlightedItem);
             }
         }, {
             key: "_searchForCountry",
@@ -879,9 +878,10 @@
         }, {
             key: "_highlightListItem",
             value: function _highlightListItem(listItem) {
-                var prevItem = this.countryList.querySelector(".country.highlight");
+                var prevItem = this.highlightedItem;
                 if (prevItem) prevItem.classList.remove("highlight");
-                listItem.classList.add("highlight");
+                this.highlightedItem = listItem;
+                this.highlightedItem.classList.add("highlight");
             }
         }, {
             key: "_getCountryData",
@@ -926,15 +926,16 @@
                 this._updatePlaceholder();
                 // update the active list item
                 if (this.options.allowDropdown) {
-                    var prevItem = this.countryList.querySelector(".country.active");
+                    var prevItem = this.activeItem;
                     if (prevItem) {
                         prevItem.classList.remove("active");
                         prevItem.setAttribute("aria-selected", "false");
                     }
                     if (countryCode) {
                         var nextItem = this.countryList.querySelector("#iti-item-".concat(countryCode));
-                        nextItem.classList.add("active");
                         nextItem.setAttribute("aria-selected", "true");
+                        nextItem.classList.add("active");
+                        this.activeItem = nextItem;
                         this.countryList.setAttribute("aria-activedescendant", nextItem.getAttribute("id"));
                     }
                 }
