@@ -3,11 +3,13 @@ module.exports = function(grunt) {
 
     /***********
      * PRIVATE METHODS
-     * (special treatment for the _init method, which is a subset of other method names)
+     * Ignore _init method, which is a subset of other method names, and is used in different ways
+     * Note: can't do public methods, as they need to be called as is
      ***********/
     one: {
       options: {
         patterns: [
+          // Note: _a is now reserved for step two
           {
             match: /_processCountryData/g,
             replacement: '_b'
@@ -18,11 +20,20 @@ module.exports = function(grunt) {
             match: /_processAllCountries/g,
             replacement: '_d'
           }, {
+            match: /_translateCountriesByLocale/g,
+            replacement: '_d0'
+          }, {
+            match: /_countryNameSort/g,
+            replacement: '_d1'
+          }, {
             match: /_processCountryCodes/g,
             replacement: '_d2'
           }, {
             match: /_processPreferredCountries/g,
             replacement: '_e'
+          }, {
+            match: /_createEl/g,
+            replacement: '_e2'
           }, {
             match: /_generateMarkup/g,
             replacement: '_f'
@@ -36,14 +47,20 @@ module.exports = function(grunt) {
             match: /_initListeners/g,
             replacement: '_i'
           }, {
-            match: /_initDropdownListeners/g,
+            match: /_initHiddenInputListener/g,
+            replacement: '_i0'
+          }, {
+            match: /_getClosestLabel/g,
             replacement: '_i1'
           }, {
-            match: /_initRequests/g,
+            match: /_initDropdownListeners/g,
             replacement: '_i2'
           }, {
-            match: /_loadAutoCountry/g,
+            match: /_initRequests/g,
             replacement: '_i3'
+          }, {
+            match: /_loadAutoCountry/g,
+            replacement: '_i4'
           }, {
             match: /_initKeyListeners/g,
             replacement: '_j'
@@ -54,14 +71,26 @@ module.exports = function(grunt) {
             match: /_initFocusListeners/g,
             replacement: '_l'
           }, {
+            match: /_removeEmptyDialCode/g,
+            replacement: '_l2'
+          }, {
             match: /_getNumeric/g,
             replacement: '_m'
+          }, {
+            match: /_trigger/g,
+            replacement: '_m2'
           }, {
             match: /_showDropdown/g,
             replacement: '_n'
           }, {
+            match: /_toggleClass/g,
+            replacement: '_n2'
+          }, {
             match: /_setDropdownPosition/g,
             replacement: '_o'
+          }, {
+            match: /_getClosestListItem/g,
+            replacement: '_o2'
           }, {
             match: /_bindDropdownListeners/g,
             replacement: '_p'
@@ -84,6 +113,9 @@ module.exports = function(grunt) {
             match: /_updateFlagFromNumber/g,
             replacement: '_v'
           }, {
+            match: /_isRegionlessNanp/g,
+            replacement: '_w'
+          }, {
             match: /_highlightListItem/g,
             replacement: '_x'
           }, {
@@ -94,28 +126,31 @@ module.exports = function(grunt) {
             replacement: '_z'
           }, {
             match: /_updatePlaceholder/g,
-            replacement: '_aa'
+            replacement: '_0'
           }, {
             match: /_selectListItem/g,
-            replacement: '_ab'
+            replacement: '_1'
           }, {
             match: /_closeDropdown/g,
-            replacement: '_ac'
+            replacement: '_2'
           }, {
             match: /_scrollTo/g,
-            replacement: '_ad'
+            replacement: '_3'
           }, {
             match: /_updateDialCode/g,
-            replacement: '_ae'
+            replacement: '_4'
           }, {
             match: /_getDialCode/g,
-            replacement: '_af'
+            replacement: '_5'
           }, {
             match: /_getFullNumber/g,
-            replacement: '_ag'
+            replacement: '_6'
           }, {
             match: /_beforeSetNumber/g,
-            replacement: '_ah'
+            replacement: '_7'
+          }, {
+            match: /_triggerCountryChange/g,
+            replacement: '_8'
           }
         ]
       },
@@ -127,59 +162,139 @@ module.exports = function(grunt) {
 
 
     /***********
-     * FIELDS ON "this"
+     * INLINE PRIVATE METHODS
      ***********/
     two: {
       options: {
         patterns: [
           {
-            match: /.telInput/g,
-            replacement: '.a'
+            match: /_handleMouseoverCountryList/g,
+            replacement: '_a0'
           }, {
-            match: /.options/g,
-            replacement: '.b'
+            match: /_handleClickCountryList/g,
+            replacement: '_a1'
           }, {
-            match: /.hadInitialPlaceholder/g,
-            replacement: '.e'
+            match: /_handleClickOffToClose/g,
+            replacement: '_a2'
           }, {
-            match: /.isMobile/g,
-            replacement: '.g'
+            match: /_handleKeydownOnDropdown/g,
+            replacement: '_a3'
           }, {
-            match: /.resolveAutoCountryPromise/g,
-            replacement: '.h'
+            match: /_handleWindowScroll/g,
+            replacement: '_a4'
           }, {
-            match: /.resolveUtilsScriptPromise/g,
-            replacement: '.i'
+            match: /_handleMousedownFocusEvent/g,
+            replacement: '_a5'
           }, {
-            match: /.defaultCountry/g,
-            replacement: '.j'
+            match: /_handleKeypressPlusEvent/g,
+            replacement: '_a6'
           }, {
-            match: /.flagsContainer/g,
-            replacement: '.k'
+            match: /_handleFocusEvent/g,
+            replacement: '_a7'
           }, {
-            match: /.selectedFlagInner/g,
-            replacement: '.l'
+            match: /_handleSubmitOrBlurEvent/g,
+            replacement: '_a8'
           }, {
-            match: /.countryList/g,
-            replacement: '.m'
+            match: /_handleLabelClick/g,
+            replacement: '_a9'
           }, {
-            match: /.countries/g,
-            replacement: '.p'
+            match: /_handleClickSelectedFlag/g,
+            replacement: '_a10'
           }, {
-            match: /.countryCodes/g,
-            replacement: '.q'
+            match: /_handleFlagsContainerKeydown/g,
+            replacement: '_a11'
           }, {
-            match: /.selectedCountryData/g,
-            replacement: '.s'
+            match: /_handleKeyupEvent/g,
+            replacement: '_a12'
           }, {
-            match: /.selectedDialCode/g,
-            replacement: '.t'
+            match: /_handleClipboardEvent/g,
+            replacement: '_a13'
+          }, {
+            match: /_handleHiddenInputSubmit/g,
+            replacement: '_a14'
           }
         ]
       },
       files: {
-        'build/js/intlTelInput.min.js': 'tmp/one.min.js',
-        'build/js/intlTelInput-jquery.min.js': 'tmp/one-jquery.min.js',
+        'tmp/two.min.js': 'tmp/one.min.js',
+        'tmp/two-jquery.min.js': 'tmp/one-jquery.min.js',
+      }
+    },
+
+
+    /***********
+     * INSTANCE FIELDS
+     * Note: avoid option names as that will break things!
+     ***********/
+    three: {
+      options: {
+        patterns: [
+          {
+            match: /\.telInput/g,
+            replacement: '.a'
+          }, {
+            match: /\.activeItem/g,
+            replacement: '.b'
+          }, {
+            match: /\.highlightedItem/g,
+            replacement: '.c'
+          }, {
+            match: /\.options/g,
+            replacement: '.d'
+          }, {
+            match: /\.hadInitialPlaceholder/g,
+            replacement: '.e'
+          }, {
+            match: /\.isMobile/g,
+            replacement: '.g'
+          }, {
+            match: /\.resolveAutoCountryPromise/g,
+            replacement: '.h'
+          }, {
+            match: /\.rejectAutoCountryPromise/g,
+            replacement: '.i'
+          }, {
+            match: /\.resolveUtilsScriptPromise/g,
+            replacement: '.i0'
+          }, {
+            match: /\.rejectUtilsScriptPromise/g,
+            replacement: '.i1'
+          }, {
+            match: /\.defaultCountry/g,
+            replacement: '.j'
+          }, {
+            match: /\.flagsContainer/g,
+            replacement: '.k'
+          }, {
+            match: /\.selectedFlagInner/g,
+            replacement: '.l'
+          }, {
+            match: /\.countryList/g,
+            replacement: '.m'
+          }, {
+            match: /\.countries/g,
+            replacement: '.p'
+          }, {
+            match: /\.countryCodes/g,
+            replacement: '.q'
+          }, {
+            match: /\.selectedCountryData/g,
+            replacement: '.s'
+          }, {
+            match: /\.selectedDialCode/g,
+            replacement: '.t'
+          }, {
+            match: /\.dropdownArrow/g,
+            replacement: '.u'
+          }, {
+            match: /\.hiddenInput/g,
+            replacement: '.w'
+          }
+        ]
+      },
+      files: {
+        'build/js/intlTelInput.min.js': 'tmp/two.min.js',
+        'build/js/intlTelInput-jquery.min.js': 'tmp/two-jquery.min.js',
       }
     }
   };
