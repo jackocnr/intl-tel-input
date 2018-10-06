@@ -379,7 +379,7 @@ _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822
 
 
 ## Contributing
-See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes to the main plugin functionality, and also for how to update to a new version of libphonenumber, or how to update the flag images.
+See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also for how to update to a new version of libphonenumber, or how to update the flag images.
 
 
 ## Attributions
