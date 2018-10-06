@@ -1,13 +1,3 @@
-/**
- * Follow instructions here to compile this file:
- * https://github.com/googlei18n/libphonenumber/blob/master/javascript/README.md
- *
- * Once setup, to re-compile:
- * 1) Copy the contents of this file into libphonenumber/javascript/i18n/phonenumbers/demo.js
- * 2) ant -f libphonenumber/javascript/build.xml compile-demo
- * 3) Copy libphonenumber/javascript/i18n/phonenumbers/demo-compiled.js to intl-tel-input/build/js/utils.js
- */
-
 // includes
 goog.require('i18n.phonenumbers.PhoneNumberFormat');
 goog.require('i18n.phonenumbers.PhoneNumberUtil');
