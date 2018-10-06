@@ -337,9 +337,9 @@ The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build 
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `placeholderNumberType` option
 * Extract the standardised (E.164) international number with `getNumber` even when using the `nationalMode` option
 
-International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, from which I have precompiled the relevant parts into a single JavaScript file and included in the lib directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking). If size is not a concern, then you can manually include the script yourself however you like, and as long as it has loaded before you initialise the plugin then it should work fine.
+International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, from which I have precompiled the relevant parts into a single JavaScript file and included in the build directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking). If size is not a concern, then you can manually include the script yourself however you like, and as long as it has loaded before you initialise the plugin then it should work fine.
 
-To recompile the utilities script yourself, see the comments at the top of [src/js/utils.js](src/js/utils.js).
+To recompile the utils script yourself (e.g. to update the version of libphonenumber it is built from), see the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#updating-to-a-new-version-of-libphonenumber).
 
 
 ## Troubleshooting
@@ -379,7 +379,7 @@ _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822
 
 
 ## Contributing
-See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md).
+See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes to the main plugin functionality, and also for how to update to a new version of libphonenumber, or how to update the flag images.
 
 
 ## Attributions
