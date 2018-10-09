@@ -388,7 +388,9 @@
                         tmp += "<div class='flag-box'><div class='iti-flag ".concat(c.iso2, "'></div></div>");
                         // and the country name and dial code
                         tmp += "<span class='country-name'>".concat(c.name, "</span>");
-                        tmp += "<span class='dial-code'>+".concat(c.dialCode, "</span>");
+                        if (c.dialCode !== null) {
+                            tmp += "<span class='dial-code'>+".concat(c.dialCode, "</span>");
+                        }
                         // close the list item
                         tmp += "</li>";
                     }

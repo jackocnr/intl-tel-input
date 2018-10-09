@@ -360,7 +360,9 @@ class Iti {
       tmp += `<div class='flag-box'><div class='iti-flag ${c.iso2}'></div></div>`;
       // and the country name and dial code
       tmp += `<span class='country-name'>${c.name}</span>`;
-      tmp += `<span class='dial-code'>+${c.dialCode}</span>`;
+      if (c.dialCode !== null) {
+        tmp += `<span class='dial-code'>+${c.dialCode}</span>`;
+      }
       // close the list item
       tmp += '</li>';
     }
