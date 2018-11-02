@@ -69,7 +69,7 @@ describe("separateDialCode:", function() {
 
     it("sets the placeholder correctly", function() {
       // used to be '234-5678'
-      expect(input.attr("placeholder")).toEqual("204-234-5678");
+      expect(input.attr("placeholder")).toEqual("506-234-5678");
     });
 
     it("calling setNumber will set the number correctly", function() {
