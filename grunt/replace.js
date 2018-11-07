@@ -286,9 +286,6 @@ module.exports = function(grunt) {
           }, {
             match: /\.dropdownArrow/g,
             replacement: '.u'
-          }, {
-            match: /\.hiddenInput/g,
-            replacement: '.w'
           }
         ]
       },
