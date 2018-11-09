@@ -50,6 +50,9 @@
     "region-flags": "^1.1.0",
     "time-grunt": "^1.4.0"
   },
+  "engines": {
+    "node": ">= 8"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jackocnr/intl-tel-input.git"
