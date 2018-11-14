@@ -57,7 +57,8 @@
     border: 1px solid #CCC;
     white-space: nowrap;
     max-height: 200px;
-    overflow-y: scroll; }
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch; }
     .intl-tel-input .country-list.dropup {
       bottom: 100%;
       margin-bottom: -1px; }
