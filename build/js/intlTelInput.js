@@ -941,7 +941,6 @@
             }, {
                 key: "_updatePlaceholder",
                 value: function _updatePlaceholder() {
-                    console.log('FORMAT: '+ this.selectedCountryData.iso2 + ', ' + this.options.nationalMode +', '+ 1)
                     var shouldSetPlaceholder = this.options.autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && this.options.autoPlaceholder === "polite";
                     if (window.intlTelInputUtils && shouldSetPlaceholder) {
                         var numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType];
