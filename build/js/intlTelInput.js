@@ -941,6 +941,7 @@
             }, {
                 key: "_updatePlaceholder",
                 value: function _updatePlaceholder() {
+                    console.log('FORMAT: '+ this.selectedCountryData.iso2 + ', ' + this.options.nationalMode +', '+ 1)
                     var shouldSetPlaceholder = this.options.autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && this.options.autoPlaceholder === "polite";
                     if (window.intlTelInputUtils && shouldSetPlaceholder) {
                         var numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType];
@@ -1081,6 +1082,13 @@
                 value: function _getFullNumber() {
                     var val = this.telInput.value.trim();
                     var dialCode = this.selectedCountryData.dialCode;
+
+                    //check if val starts with +{dialCode}, remove if true
+                    if (val.startsWith('+' + dialCode) == true){
+                        val = val.replace('+' + dialCode, '');
+                        this.telInput.value = val;
+                    }
+
                     var prefix;
                     var numericVal = this._getNumeric(val);
                     // normalized means ensure starts with a 1, so we can match against the full dial code
@@ -1094,7 +1102,23 @@
                     } else {
                         prefix = "";
                     }
-                    return prefix + val;
+
+                    //compare length format based on selecte country
+                    var _countryFormat = intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, intlTelInputUtils.numberType[this.options.placeholderNumberType]);
+                    var countryFormat = _countryFormat.replace(/\s+/g, '');
+
+                    var finalNumber = prefix + val;
+
+                    if (finalNumber.length != countryFormat.length && val.length > 0){
+                        if (this.options.placeholderNumberType == 'MOBILE'){
+                            alert('Invalid mobile number.');
+                        }else{
+                            alert('Invalid phone number.');
+                        }
+                    }else{
+                        return finalNumber;
+                        //return prefix + val;
+                    }
                 }
             }, {
                 key: "_beforeSetNumber",
