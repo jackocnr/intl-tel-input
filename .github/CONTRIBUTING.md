@@ -23,6 +23,8 @@ git clone https://github.com/google/closure-linter
 git clone https://github.com/google/python-gflags
 ```
 
+Build Closure's compiler.jar in closure-compiler directory: `mvn -DskipTests`
+
 If you have already cloned these projects before and just need to update libphonenumber, simply cd into that project dir and checkout the required version tag e.g.
 
 ```
