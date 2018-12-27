@@ -1,4 +1,8 @@
 window.intlTelInputGlobals = {
+  getInstance: function getInstance(htmlElement) {
+    const domElem = htmlElement.jquery ? htmlElement[0] : htmlElement;
+    return domElem.IntlTelInput_Instance;
+  },
   instances: {},
 };
 
