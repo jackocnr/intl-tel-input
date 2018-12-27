@@ -58,6 +58,10 @@
             return Constructor;
         }
         window.intlTelInputGlobals = {
+            getInstance: function getInstance(htmlElement) {
+                var domElem = htmlElement.jquery ? htmlElement[0] : htmlElement;
+                return domElem.IntlTelInput_Instance;
+            },
             instances: {}
         };
         // these vars persist through all instances of the plugin
@@ -1312,6 +1316,8 @@
         return function(input, options) {
             var iti = new Iti(input, options);
             iti._init();
+            var domElem = input.jquery ? input[0] : input;
+            domElem.IntlTelInput_Instance = iti;
             window.intlTelInputGlobals.instances[iti.id] = iti;
             return iti;
         };

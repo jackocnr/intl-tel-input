@@ -306,6 +306,17 @@ Load the utils.js script (included in the lib directory) to enable formatting/va
 window.intlTelInputGlobals.loadUtils("build/js/utils.js");
 ```
 
+**getInstance**  
+return the `iti` instance of the HTML Element
+```js
+var inputElement = document.getQuerySelector('#element-id');
+// retrieve instance
+var iti = window.intlTelInputGlobals.getInstance(inputElement);
+// working with instance retrieve
+var isValid = iti.isValidNumber();
+console.log(isValid);
+```
+
 **~~setCountryData~~ [REMOVED]**  
 Set the plugin's country data. This method was removed because it makes much more sense to just use `getCountryData` and then modify that ([see example](http://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/modify-country-data.html)) instead of having to generate the whole thing yourself - the country data has become increasingly complicated and for each country we now have five properties: the name, [iso2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), international dial code, priority (in case two countries have the same international dial code), and finally a list of area codes used in that country - see [data.js](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.js#L36) for more info.
 
