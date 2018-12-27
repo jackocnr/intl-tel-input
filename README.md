@@ -303,6 +303,14 @@ Returns an array of country objects:
 }, ...]
 ```
 
+**getInstance**  
+After initialising the plugin, you can always access the instance again using this method, by just passing in the relevant input element.
+```js
+var input = document.querySelector('#phone');
+var iti = window.intlTelInputGlobals.getInstance(input);
+iti.isValidNumber(); // etc
+```
+
 **loadUtils**  
 _Note: this is only needed if you're lazy loading the plugin script itself (intlTelInput.js). If not then just use the `utilsScript` option._  
 Load the utils.js script (included in the lib directory) to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information. This method should only be called once per page. If the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is defined, one of those is returned so you can use `.then(callback)` to know when it's finished.

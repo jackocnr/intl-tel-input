@@ -58,6 +58,10 @@
             return Constructor;
         }
         window.intlTelInputGlobals = {
+            getInstance: function getInstance(input) {
+                var id = input.getAttribute("data-intl-tel-input-id");
+                return window.intlTelInputGlobals.instances[id];
+            },
             instances: {}
         };
         // these vars persist through all instances of the plugin
@@ -1179,6 +1183,8 @@
                     this.telInput.removeEventListener("keyup", this._handleKeyupEvent);
                     this.telInput.removeEventListener("cut", this._handleClipboardEvent);
                     this.telInput.removeEventListener("paste", this._handleClipboardEvent);
+                    // remove attribute of id instance: data-intl-tel-input-id
+                    this.telInput.removeAttribute("data-intl-tel-input-id");
                     // remove markup (but leave the original input)
                     var wrapper = this.telInput.parentNode;
                     wrapper.parentNode.insertBefore(this.telInput, wrapper);
@@ -1313,6 +1319,7 @@
         return function(input, options) {
             var iti = new Iti(input, options);
             iti._init();
+            input.setAttribute("data-intl-tel-input-id", iti.id);
             window.intlTelInputGlobals.instances[iti.id] = iti;
             return iti;
         };
