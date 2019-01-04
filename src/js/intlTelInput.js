@@ -583,6 +583,12 @@ class Iti {
     // on focus: if empty, insert the dial code for the currently selected flag
     this._handleFocusEvent = () => {
       if (!this.telInput.value && !this.telInput.readOnly && this.selectedCountryData.dialCode) {
+        // save the browser's original form validation message, to show it after the dial code added
+        let originalValidationMessage;
+        if (this.telInput.checkValidity !== undefined && this.telInput.checkValidity() !== true) {
+          originalValidationMessage = this.telInput.validationMessage;
+        }
+
         // insert the dial code
         this.telInput.value = `+${this.selectedCountryData.dialCode}`;
         // after auto-inserting a dial code, if the first key they hit is '+' then assume they are
@@ -597,9 +603,23 @@ class Iti {
           const len = this.telInput.value.length;
           this.telInput.setSelectionRange(len, len);
         });
+
+        // showing the form validator message here (we need to use 'setCustomValidity()',
+        // as the input already has a value; it doesn't seem to be invalid for the browser)
+        if (originalValidationMessage) {
+          this.telInput.setCustomValidity(originalValidationMessage);
+          this.telInput.addEventListener('keypress', this._removeCustomValidationMessage);
+        }
       }
     };
     this.telInput.addEventListener('focus', this._handleFocusEvent);
+
+    // setCustomValidity() triggers the message after every keypress, so we remove
+    // the custom message immediately after the first event.
+    this._removeCustomValidationMessage = () => {
+      this.telInput.setCustomValidity('');
+      this.telInput.removeEventListener('keypress', this._removeCustomValidationMessage);
+    };
 
     // on blur or form submit: if just a dial code then remove it
     this._handleSubmitOrBlurEvent = () => {

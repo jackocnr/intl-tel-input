@@ -592,6 +592,11 @@
                 // on focus: if empty, insert the dial code for the currently selected flag
                 this._handleFocusEvent = function() {
                     if (!_this7.telInput.value && !_this7.telInput.readOnly && _this7.selectedCountryData.dialCode) {
+                        // save the browser's original form validation message, to show it after the dial code added
+                        var originalValidationMessage;
+                        if (_this7.telInput.checkValidity !== undefined && _this7.telInput.checkValidity() !== true) {
+                            originalValidationMessage = _this7.telInput.validationMessage;
+                        }
                         // insert the dial code
                         _this7.telInput.value = "+".concat(_this7.selectedCountryData.dialCode);
                         // after auto-inserting a dial code, if the first key they hit is '+' then assume they are
@@ -605,9 +610,21 @@
                             var len = _this7.telInput.value.length;
                             _this7.telInput.setSelectionRange(len, len);
                         });
+                        // showing the form validator message here (we need to use 'setCustomValidity()',
+                        // as the input already has a value; it doesn't seem to be invalid for the browser)
+                        if (originalValidationMessage) {
+                            _this7.telInput.setCustomValidity(originalValidationMessage);
+                            _this7.telInput.addEventListener("keypress", _this7._removeCustomValidationMessage);
+                        }
                     }
                 };
                 this.telInput.addEventListener("focus", this._handleFocusEvent);
+                // setCustomValidity() triggers the message after every keypress, so we remove
+                // the custom message immediately after the first event.
+                this._removeCustomValidationMessage = function() {
+                    _this7.telInput.setCustomValidity("");
+                    _this7.telInput.removeEventListener("keypress", _this7._removeCustomValidationMessage);
+                };
                 // on blur or form submit: if just a dial code then remove it
                 this._handleSubmitOrBlurEvent = function() {
                     _this7._removeEmptyDialCode();
