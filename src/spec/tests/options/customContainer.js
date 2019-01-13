@@ -1,6 +1,6 @@
 "use strict";
 
-describe("customParentClass option:", function() {
+describe("customContainer option:", function() {
 
   beforeEach(function() {
     intlSetup();
@@ -12,11 +12,11 @@ describe("customParentClass option:", function() {
   });
 
 
-  describe("init plugin with customParentClass", function() {
+  describe("init plugin with customContainer", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        customParentClass: 'cpc',
+        customContainer: 'cpc',
       });
     });
 

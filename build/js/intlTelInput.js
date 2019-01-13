@@ -69,6 +69,8 @@
             autoHideDialCode: true,
             // add a placeholder in the input with an example number for the selected country
             autoPlaceholder: "polite",
+            // modify the parentClass
+            customContainer: "",
             // modify the auto placeholder
             customPlaceholder: null,
             // append menu to specified element
@@ -303,6 +305,10 @@
                     var parentClass = "intl-tel-input";
                     if (this.options.allowDropdown) parentClass += " allow-dropdown";
                     if (this.options.separateDialCode) parentClass += " separate-dial-code";
+                    if (this.options.customContainer) {
+                        parentClass += " ";
+                        parentClass += this.options.customContainer;
+                    }
                     var wrapper = this._createEl("div", {
                         "class": parentClass
                     });
