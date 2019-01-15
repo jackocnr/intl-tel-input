@@ -1,20 +1,13 @@
 {
-  "name": "intl-tel-input",
+  "name": "@zurili/intl-tel-input",
   "version": "8.5.2",
   "description": "A jQuery plugin for entering international telephone numbers",
-  "keywords": [
-    "international",
-    "i18n",
-    "country",
-    "dial",
-    "code",
-    "telephone",
-    "mobile",
-    "input",
-    "flag"
+  "scripts": {
+    "test": "grunt travis"
+  },
+  "files": [
+    "build"
   ],
-  "license": "MIT",
-  "author": "Jack O'Connor (http://jackocnr.com)",
   "dependencies": {
     "jquery": ">=1.7"
   },
@@ -40,11 +33,21 @@
     "region-flags": "git://github.com/behdad/region-flags#gh-pages",
     "time-grunt": "~1.0.0"
   },
+  "keywords": [
+    "international",
+    "i18n",
+    "country",
+    "dial",
+    "code",
+    "telephone",
+    "mobile",
+    "input",
+    "flag"
+  ],
+  "license": "MIT",
+  "author": "Jack O'Connor (http://jackocnr.com)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jackocnr/intl-tel-input.git"
-  },
-  "scripts": {
-    "test": "grunt travis"
+    "url": "https://github.com/Zurili/intl-tel-input.git"
   }
 }
