@@ -6,11 +6,6 @@ I'm very open to contributions, big and small! For general instructions on submi
 
 In order to build the project, you will first need to install [npm](https://www.npmjs.org), and then globally install a package called evenizer with `npm install -g evenizer`. Then run `npm install` to install the project's dependencies, and then you should be good to run `npm run build` to build the project. At this point, the included `demo.html` should be working. You should make your changes in the `src` directory and be sure to run `npm run build` again before committing.
 
-Running `npm run build` can be quite slow - you can also run `npm run build:js` to just build the JavaScript (or `npm run build:css` for just CSS), and `npm test` to just run the tests.
-
-If when building, you get an error in the "exec:evenizer" task, you may need to temporarily increase the ulimit by running this command: `ulimit -S -n 2048`
-
-
 ### Updating to a new version of libphonenumber
 
 Create a new dir (e.g. ~/workspace/libphonenumber-tools) where you will clone the libphonenumber project and a few other dependencies, and cd into it, and then:
@@ -51,4 +46,6 @@ We get our flags from the region-flags project, which in turn pulls them in from
 
 Finally, the last time I did this (October 2018) there was a problem with the Cayman Islands flag (region-flags/png/KY.png) - it should be aprx 1200x600px, like the other flags, but was instead tiny (36x36px), so I replaced it with [the old one from the region-flags repo](https://github.com/behdad/region-flags/blob/gh-pages/png/KY.png).
 
-At this point, you should be good to re-build the assets with `npm run build`, and then check everything looks ok, and create a pull request on Github.
+At this point, you should be good to cd back to the project root directory, and re-build the images with `npm run build:img`, and then check everything looks ok, and create a pull request on Github.
+
+If when building, you get an error in the "exec:evenizer" task, you may need to temporarily increase the ulimit by running this command: `ulimit -S -n 2048`
