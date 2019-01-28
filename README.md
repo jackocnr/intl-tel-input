@@ -400,6 +400,6 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * Typescript type definitions are available in the [DefinitelyTyped repo](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/intl-tel-input/intl-tel-input.d.ts) (more info [here](https://github.com/jackocnr/intl-tel-input/issues/433#issuecomment-228517623))
 
 <a href="https://www.browserstack.com">
-<img src="https://p3.zdusercontent.com/attachment/1015988/y0Sl6KKaxGxel8uLLhHApi2qm?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..hoHbaGv1_jq5R6TNcCFGIA.473ykDjNHc14lsbZiXZGif42ZDHhoPJNqdfU8b-ihD4tLIuUViVWg5946CdM3HN8K6OIBhLLRtLNlgqFo7a33Yqm7QPvWpOnVJMlAlqF_Po_UVift60eQWwCjjPgd9G8qML_yu5SqBJM6e5RrqmKHz6DBHD-w_VlmNyjNNi9ELmBH3rE-ukofrhD38UFvsSUVkMX_J7CpW7qhw63VWuMaDETGnL2Udd2tMoe512agY17jbY74WtA20VgfljcnZuvzdYu0_CLPnd54_mUs2_UxefRQ1Nhp1L24Dacf6BdUVc.dPdKrHesuyEMEjCWAC5cTA" width="200px"></a>
+<img src="https://p14.zdusercontent.com/attachment/1015988/y0Sl6KKaxGxel8uLLhHApi2qm?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..tN0cDNWdP3tkoP03Sgjf9w.knp9cYYPDLOhhv5TEVpfKc86Ymt8a4FI72PrLSflve3XuXraQhMASa6acCMZpxdJytHHR68IKeY8uHvll1mv6YgcTojspO80PL1TywO2nOW8rENDqn_cfiR0ezRgzvQe_8iLEMya-oJYIAzW7i1-5wkgz27Qw0o2BaBJtBy-sVtriApV2gwAz7cB5yNQ2ZzKGcZKhBfdwsUVpGfOr17jGQtJ4L7QVP2rnuvYXcKZ5qCiIO4hGo66fSPoCH2vLhAAY8Cj1OdBPOt9RoN2fJFWgwDzNKaz3hL7SKep7Q-32OI.p3OapnE-H2lWYIH5lMsrmg" width="200px"></a>
 
 Tested on [BrowserStack](https://www.browserstack.com)
