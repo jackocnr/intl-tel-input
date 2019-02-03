@@ -60,7 +60,8 @@
         window.intlTelInputGlobals = {
             getInstance: function getInstance(htmlElement) {
                 var domElem = htmlElement.jquery ? htmlElement[0] : htmlElement;
-                return domElem.IntlTelInput_Instance;
+                var indexControl = domElem.getAttribute("data-intl-tel-input-id");
+                return window.intlTelInputGlobals.instances[indexControl];
             },
             instances: {}
         };
@@ -1317,8 +1318,9 @@
             var iti = new Iti(input, options);
             iti._init();
             var domElem = input.jquery ? input[0] : input;
-            domElem.IntlTelInput_Instance = iti;
-            window.intlTelInputGlobals.instances[iti.id] = iti;
+            var indexControl = document.querySelectorAll(".intl-tel-input").length;
+            domElem.setAttribute("data-intl-tel-input-id", indexControl);
+            window.intlTelInputGlobals.instances[indexControl] = iti;
             return iti;
         };
     }();
