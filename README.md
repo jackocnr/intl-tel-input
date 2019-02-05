@@ -104,7 +104,7 @@ Set the input's placeholder to an example number for the selected country, and u
 
 **customContainer**  
 Type: `String` Default: `""`  
-Additional classes to add to the parent div
+Additional classes to add to the parent div.
 
 **customPlaceholder**  
 Type: `Function` Default: `null`  
