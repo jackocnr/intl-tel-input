@@ -24,19 +24,12 @@
   .intl-tel-input .selected-flag {
     z-index: 1;
     position: relative;
-    width: 36px;
+    display: flex;
+    align-items: center;
     height: 100%;
-    padding: 0 0 0 8px; }
-    .intl-tel-input .selected-flag .iti-flag {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      margin: auto; }
+    padding: 0 6px 0 8px; }
     .intl-tel-input .selected-flag .iti-arrow {
-      position: absolute;
-      top: 50%;
-      margin-top: -2px;
-      right: 6px;
+      margin-left: 6px;
       width: 0;
       height: 0;
       border-left: 3px solid transparent;
@@ -89,8 +82,6 @@
   .intl-tel-input.allow-dropdown .flag-container, .intl-tel-input.separate-dial-code .flag-container {
     right: auto;
     left: 0; }
-  .intl-tel-input.allow-dropdown .selected-flag, .intl-tel-input.separate-dial-code .selected-flag {
-    width: 46px; }
   .intl-tel-input.allow-dropdown .flag-container:hover {
     cursor: pointer; }
     .intl-tel-input.allow-dropdown .flag-container:hover .selected-flag {
@@ -100,44 +91,9 @@
     .intl-tel-input.allow-dropdown input[disabled] + .flag-container:hover .selected-flag, .intl-tel-input.allow-dropdown input[readonly] + .flag-container:hover .selected-flag {
       background-color: transparent; }
   .intl-tel-input.separate-dial-code .selected-flag {
-    background-color: rgba(0, 0, 0, 0.05);
-    display: table; }
+    background-color: rgba(0, 0, 0, 0.05); }
   .intl-tel-input.separate-dial-code .selected-dial-code {
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 28px; }
-  .intl-tel-input.separate-dial-code.iti-sdc-2 input, .intl-tel-input.separate-dial-code.iti-sdc-2 input[type=text], .intl-tel-input.separate-dial-code.iti-sdc-2 input[type=tel] {
-    padding-left: 66px; }
-  .intl-tel-input.separate-dial-code.iti-sdc-2 .selected-flag {
-    width: 60px; }
-  .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-2 input, .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-2 input[type=text], .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-2 input[type=tel] {
-    padding-left: 76px; }
-  .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-2 .selected-flag {
-    width: 70px; }
-  .intl-tel-input.separate-dial-code.iti-sdc-3 input, .intl-tel-input.separate-dial-code.iti-sdc-3 input[type=text], .intl-tel-input.separate-dial-code.iti-sdc-3 input[type=tel] {
-    padding-left: 74px; }
-  .intl-tel-input.separate-dial-code.iti-sdc-3 .selected-flag {
-    width: 68px; }
-  .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-3 input, .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-3 input[type=text], .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-3 input[type=tel] {
-    padding-left: 84px; }
-  .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-3 .selected-flag {
-    width: 78px; }
-  .intl-tel-input.separate-dial-code.iti-sdc-4 input, .intl-tel-input.separate-dial-code.iti-sdc-4 input[type=text], .intl-tel-input.separate-dial-code.iti-sdc-4 input[type=tel] {
-    padding-left: 82px; }
-  .intl-tel-input.separate-dial-code.iti-sdc-4 .selected-flag {
-    width: 76px; }
-  .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-4 input, .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-4 input[type=text], .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-4 input[type=tel] {
-    padding-left: 92px; }
-  .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-4 .selected-flag {
-    width: 86px; }
-  .intl-tel-input.separate-dial-code.iti-sdc-5 input, .intl-tel-input.separate-dial-code.iti-sdc-5 input[type=text], .intl-tel-input.separate-dial-code.iti-sdc-5 input[type=tel] {
-    padding-left: 90px; }
-  .intl-tel-input.separate-dial-code.iti-sdc-5 .selected-flag {
-    width: 84px; }
-  .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-5 input, .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-5 input[type=text], .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-5 input[type=tel] {
-    padding-left: 100px; }
-  .intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-5 .selected-flag {
-    width: 94px; }
+    margin-left: 6px; }
   .intl-tel-input.iti-container {
     position: absolute;
     top: -1000px;
@@ -954,7 +910,6 @@
     background-position: -5632px 0px; }
 
 .iti-flag {
-  width: 20px;
   height: 15px;
   box-shadow: 0px 0px 1px 0px #888;
   background-image: url("../img/flags.png");

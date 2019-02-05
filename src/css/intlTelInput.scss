@@ -24,8 +24,6 @@ $arrowColor: #555 !default;
 $inputPadding: 6px !default;
 $selectedFlagWidth: $flagWidth + (2 * $flagPadding) !default;
 $selectedFlagArrowWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding) !default;
-$selectedFlagDialCodeWidth: $selectedFlagWidth + $flagPadding !default;
-$selectedFlagArrowDialCodeWidth: $selectedFlagArrowWidth + $flagPadding !default;
 
 // image related variables
 $flagsImagePath: "../img/" !default;
@@ -71,7 +69,7 @@ $mobilePopupMargin: 30px !default;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 
-    // make space for the selected flag
+    // make space for the selected flag on right of input (if disabled allowDropdown)
     // Note: no !important here, as the user may want to tweak this so that the
     // perceived input padding matches their existing styles
     padding-right: $selectedFlagWidth;
@@ -95,26 +93,15 @@ $mobilePopupMargin: 30px !default;
     // render above the input
     z-index: 1;
     position: relative;
-    width: $selectedFlagWidth;
+    display: flex;
+    align-items: center;
     // this must be full-height both for the hover highlight, and to push down the
     // dropdown so it appears below the input
     height: 100%;
-    padding: 0 0 0 $flagPadding;
-
-    // vertically center the flag
-    .iti-flag {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-    }
+    padding: 0 $arrowPadding 0 $flagPadding;
 
     .iti-arrow {
-      position: absolute;
-      // split the difference between the flag and the arrow height to verically center
-      top: 50%;
-      margin-top: -1 * ($arrowHeight / 2);
-      right: $arrowPadding;
+      margin-left: $arrowPadding;
 
       // css triangle
       width: 0;
@@ -206,6 +193,7 @@ $mobilePopupMargin: 30px !default;
     }
   }
 
+  // these settings are independent of each other, but both move selected flag to left of input
   &.allow-dropdown, &.separate-dial-code {
     input, input[type=text], input[type=tel] {
       padding-right: $inputPadding;
@@ -215,9 +203,6 @@ $mobilePopupMargin: 30px !default;
     .flag-container {
       right: auto;
       left: 0;
-    }
-    .selected-flag {
-      width: $selectedFlagArrowWidth;
     }
   }
 
@@ -242,36 +227,9 @@ $mobilePopupMargin: 30px !default;
     .selected-flag {
       // now that we have digits in this section, it needs this visual separation
       background-color: $hoverColor;
-      // for vertical centering
-      display: table;
     }
     .selected-dial-code {
-      // for vertical centering
-      display: table-cell;
-      vertical-align: middle;
-
-      padding-left: $flagWidth + $flagPadding;
-    }
-
-    // .iti-sdc is for Separate Dial Code, with lengths from 2-5 because shortest is "+1", longest is "+1684"
-    $charLength: 8px;
-    @for $i from 2 through 5 {
-      &.iti-sdc-#{$i} {
-        input, input[type=text], input[type=tel] {
-          padding-left: $selectedFlagDialCodeWidth + $inputPadding + ($i * $charLength);
-        }
-        .selected-flag {
-          width: $selectedFlagDialCodeWidth + ($i * $charLength);
-        }
-      }
-      &.allow-dropdown.iti-sdc-#{$i} {
-        input, input[type=text], input[type=tel] {
-          padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + ($i * $charLength);
-        }
-        .selected-flag {
-          width: $selectedFlagArrowDialCodeWidth + ($i * $charLength);
-        }
-      }
+      margin-left: $arrowPadding;
     }
   }
 
@@ -318,7 +276,6 @@ $mobilePopupMargin: 30px !default;
 @import "sprite";
 
 .iti-flag {
-  width: $flagWidth;
   height: $flagHeight;
   box-shadow: 0px 0px 1px 0px #888;
   background-image: url("#{$flagsImagePath}#{$flagsImageName}.#{$flagsImageExtension}");

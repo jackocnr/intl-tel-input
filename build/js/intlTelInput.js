@@ -915,14 +915,9 @@
                     this.selectedFlag.setAttribute("title", title);
                     if (this.options.separateDialCode) {
                         var dialCode = this.selectedCountryData.dialCode ? "+".concat(this.selectedCountryData.dialCode) : "";
-                        var parent = this.telInput.parentNode;
-                        if (prevCountry.dialCode) {
-                            parent.classList.remove("iti-sdc-".concat(prevCountry.dialCode.length + 1));
-                        }
-                        if (dialCode) {
-                            parent.classList.add("iti-sdc-".concat(dialCode.length));
-                        }
                         this.selectedDialCode.innerHTML = dialCode;
+                        // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
+                        this.telInput.style.paddingLeft = "".concat(this.selectedFlag.offsetWidth + 6, "px");
                     }
                     // and the input's placeholder
                     this._updatePlaceholder();

@@ -962,14 +962,9 @@ class Iti {
 
     if (this.options.separateDialCode) {
       const dialCode = (this.selectedCountryData.dialCode) ? `+${this.selectedCountryData.dialCode}` : '';
-      const parent = this.telInput.parentNode;
-      if (prevCountry.dialCode) {
-        parent.classList.remove(`iti-sdc-${prevCountry.dialCode.length + 1}`);
-      }
-      if (dialCode) {
-        parent.classList.add(`iti-sdc-${dialCode.length}`);
-      }
       this.selectedDialCode.innerHTML = dialCode;
+      // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
+      this.telInput.style.paddingLeft = `${this.selectedFlag.offsetWidth + 6}px`;
     }
 
     // and the input's placeholder

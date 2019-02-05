@@ -24,7 +24,7 @@ describe("separateDialCode:", function() {
     });
 
     it("sets the classes properly", function() {
-      expect(getParentElement()).toHaveClass("separate-dial-code iti-sdc-3");
+      expect(getParentElement()).toHaveClass("separate-dial-code");
     });
 
     it("displays the dial code next to the selected flag", function() {
