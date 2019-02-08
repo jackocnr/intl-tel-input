@@ -1,8 +1,13 @@
 window.intlTelInputGlobals = {
   getInstance: function getInstance(htmlElement) {
-    const domElem = htmlElement.jquery ? htmlElement[0] : htmlElement;
-    const indexControl = domElem.getAttribute('data-intl-tel-input-id');
-    return window.intlTelInputGlobals.instances[indexControl];
+    const itiInstance = undefined;
+    if (htmlElement.nodeName && htmlElement.nodeName.toLowerCase() === 'input') {
+      const itiInstance_id = htmlElement.getAttribute('data-intl-tel-input-id');
+      if (typeof itiInstance_id !== 'undefined') {
+        return window.intlTelInputGlobals.instances[itiInstance_id];
+      }
+    }
+    return itiInstance;
   },
   instances: {},
 };
@@ -1274,6 +1279,9 @@ class Iti {
     this.telInput.removeEventListener('keyup', this._handleKeyupEvent);
     this.telInput.removeEventListener('cut', this._handleClipboardEvent);
     this.telInput.removeEventListener('paste', this._handleClipboardEvent);
+
+    // remove attribute of id instance: data-intl-tel-input-id
+    this.telInput.removeAttribute('data-intl-tel-input-id');
 
     // remove markup (but leave the original input)
     const wrapper = this.telInput.parentNode;
