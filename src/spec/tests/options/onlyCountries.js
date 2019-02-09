@@ -83,9 +83,9 @@ describe("onlyCountries option:", function() {
       input2 = iti2 = null;
     });
 
-    it("first instance still works", function() {
-      triggerInputEvent("focus");
-      expect(input.val()).toEqual("+81");
+    it("they both display their respective only country option as the selected flag", function() {
+      expect(getSelectedFlagElement()).toHaveClass("jp");
+      expect(getSelectedFlagElement(input2)).toHaveClass("kr");
     });
 
   });

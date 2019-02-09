@@ -68,7 +68,7 @@ module.exports = function(grunt) {
             match: /_cap/g,
             replacement: '_j2'
           }, {
-            match: /_initFocusListeners/g,
+            match: /_initBlurListeners/g,
             replacement: '_l'
           }, {
             match: /_removeEmptyDialCode/g,
@@ -182,15 +182,6 @@ module.exports = function(grunt) {
           }, {
             match: /_handleWindowScroll/g,
             replacement: '_a4'
-          }, {
-            match: /_handleMousedownFocusEvent/g,
-            replacement: '_a5'
-          }, {
-            match: /_handleKeypressPlusEvent/g,
-            replacement: '_a6'
-          }, {
-            match: /_handleFocusEvent/g,
-            replacement: '_a7'
           }, {
             match: /_handleSubmitOrBlurEvent/g,
             replacement: '_a8'

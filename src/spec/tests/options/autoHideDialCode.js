@@ -29,25 +29,17 @@ describe("autoHideDialCode option:", function() {
       expect(getInputVal()).toEqual("");
     });
 
-    describe("focusing the input", function() {
+    describe("selecting a country", function() {
 
       beforeEach(function() {
-        triggerInputEvent("focus");
+        selectFlag("gb");
       });
 
-      it("adds the default dial code", function() {
-        expect(getInputVal()).toEqual("+1");
-      });
-
-      // special case: if first char you type is a plus, then we remove auto-added dial code
-      it("typing a new dial code replaces the old one", function() {
-        triggerKeyOnInput("+");
-        triggerKeyOnInput("4");
-        triggerKeyOnInput("4");
+      it("adds the dial code", function() {
         expect(getInputVal()).toEqual("+44");
       });
 
-      it("blurring it removes it again", function() {
+      it("blurring the input removes it again", function() {
         triggerInputEvent("blur");
         expect(getInputVal()).toEqual("");
       });
