@@ -697,7 +697,7 @@ class Iti {
       const dropdownHeight = this.countryList.offsetHeight;
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
       const dropdownFitsBelow = (inputTop + this.telInput.offsetHeight + dropdownHeight
-        < windowTop + window.innerHeight);
+        < (windowTop + window.innerHeight));
       const dropdownFitsAbove = (inputTop - dropdownHeight > windowTop);
 
       // by default, the dropdown will be below the input. If we want to position it above the
