@@ -7,5 +7,5 @@ for (var i = 0; i < countryData.length; i++) {
 }
 
 window.intlTelInput(input, {
-  utilsScript: "../../build/js/utils.js?1549804213570" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1551697588835" // just for formatting/placeholders etc
 });
