@@ -365,7 +365,7 @@ class Iti {
     for (let i = 0; i < countries.length; i++) {
       const c = countries[i];
       // open the list item
-      tmp += `<li class='country ${className}' id='iti-item-${c.iso2}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
+      tmp += `<li class='country ${className}' tabIndex='-1' id='iti-item-${c.iso2}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
       // add the flag
       tmp += `<div class='flag-box'><div class='iti-flag ${c.iso2}'></div></div>`;
       // and the country name and dial code
@@ -623,8 +623,8 @@ class Iti {
 
     // update highlighting and scroll to active list item
     if (this.activeItem) {
-      this._highlightListItem(this.activeItem);
-      this._scrollTo(this.activeItem);
+      this._highlightListItem(this.activeItem, false);
+      this._scrollTo(this.activeItem, true);
     }
 
     // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
@@ -699,7 +699,7 @@ class Iti {
     this._handleMouseoverCountryList = (e) => {
       // handle event delegation, as we're listening for this event on the countryList
       const listItem = this._getClosestListItem(e.target);
-      if (listItem) this._highlightListItem(listItem);
+      if (listItem) this._highlightListItem(listItem, false);
     };
     this.countryList.addEventListener('mouseover', this._handleMouseoverCountryList);
 
@@ -762,8 +762,7 @@ class Iti {
       if (next.classList.contains('divider')) {
         next = (key === 'ArrowUp') ? next.previousElementSibling : next.nextElementSibling;
       }
-      this._highlightListItem(next);
-      this._scrollTo(next);
+      this._highlightListItem(next, true);
     }
   }
 
@@ -780,7 +779,7 @@ class Iti {
       if (this._startsWith(this.countries[i].name, query)) {
         const listItem = this.countryList.querySelector(`#iti-item-${this.countries[i].iso2}`);
         // update highlighting and scroll
-        this._highlightListItem(listItem);
+        this._highlightListItem(listItem, false);
         this._scrollTo(listItem, true);
         break;
       }
@@ -884,11 +883,13 @@ class Iti {
 
 
   // remove highlighting from other list items and highlight the given item
-  _highlightListItem(listItem) {
+  _highlightListItem(listItem, shouldFocus) {
     const prevItem = this.highlightedItem;
     if (prevItem) prevItem.classList.remove('highlight');
     this.highlightedItem = listItem;
     this.highlightedItem.classList.add('highlight');
+
+    if (shouldFocus) this.highlightedItem.focus();
   }
 
 

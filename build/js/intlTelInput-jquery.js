@@ -397,7 +397,7 @@
                 for (var i = 0; i < countries.length; i++) {
                     var c = countries[i];
                     // open the list item
-                    tmp += "<li class='country ".concat(className, "' id='iti-item-").concat(c.iso2, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
+                    tmp += "<li class='country ".concat(className, "' tabIndex='-1' id='iti-item-").concat(c.iso2, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
                     // add the flag
                     tmp += "<div class='flag-box'><div class='iti-flag ".concat(c.iso2, "'></div></div>");
                     // and the country name and dial code
@@ -625,8 +625,8 @@
                 this._setDropdownPosition();
                 // update highlighting and scroll to active list item
                 if (this.activeItem) {
-                    this._highlightListItem(this.activeItem);
-                    this._scrollTo(this.activeItem);
+                    this._highlightListItem(this.activeItem, false);
+                    this._scrollTo(this.activeItem, true);
                 }
                 // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
                 this._bindDropdownListeners();
@@ -693,7 +693,7 @@
                 this._handleMouseoverCountryList = function(e) {
                     // handle event delegation, as we're listening for this event on the countryList
                     var listItem = _this9._getClosestListItem(e.target);
-                    if (listItem) _this9._highlightListItem(listItem);
+                    if (listItem) _this9._highlightListItem(listItem, false);
                 };
                 this.countryList.addEventListener("mouseover", this._handleMouseoverCountryList);
                 // listen for country selection
@@ -744,8 +744,7 @@
                     if (next.classList.contains("divider")) {
                         next = key === "ArrowUp" ? next.previousElementSibling : next.nextElementSibling;
                     }
-                    this._highlightListItem(next);
-                    this._scrollTo(next);
+                    this._highlightListItem(next, true);
                 }
             }
         }, {
@@ -760,7 +759,7 @@
                     if (this._startsWith(this.countries[i].name, query)) {
                         var listItem = this.countryList.querySelector("#iti-item-".concat(this.countries[i].iso2));
                         // update highlighting and scroll
-                        this._highlightListItem(listItem);
+                        this._highlightListItem(listItem, false);
                         this._scrollTo(listItem, true);
                         break;
                     }
@@ -851,11 +850,12 @@
             }
         }, {
             key: "_highlightListItem",
-            value: function _highlightListItem(listItem) {
+            value: function _highlightListItem(listItem, shouldFocus) {
                 var prevItem = this.highlightedItem;
                 if (prevItem) prevItem.classList.remove("highlight");
                 this.highlightedItem = listItem;
                 this.highlightedItem.classList.add("highlight");
+                if (shouldFocus) this.highlightedItem.focus();
             }
         }, {
             key: "_getCountryData",
