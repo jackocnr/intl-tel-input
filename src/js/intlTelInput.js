@@ -886,7 +886,7 @@ class Iti {
   // remove highlighting from other list items and highlight the given item
   _highlightListItem(listItem) {
     const prevItem = this.highlightedItem;
-    if (prevItem){
+    if (prevItem) {
       prevItem.classList.remove('highlight');
       prevItem.tabIndex = -1;
     }
