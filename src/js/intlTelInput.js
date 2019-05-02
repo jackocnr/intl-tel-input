@@ -365,7 +365,7 @@ class Iti {
     for (let i = 0; i < countries.length; i++) {
       const c = countries[i];
       // open the list item
-      tmp += `<li class='country ${className}' id='iti-item-${c.iso2}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
+      tmp += `<li class='country ${className}' tabIndex='-1' id='iti-item-${c.iso2}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
       // add the flag
       tmp += `<div class='flag-box'><div class='iti-flag ${c.iso2}'></div></div>`;
       // and the country name and dial code
@@ -888,11 +888,9 @@ class Iti {
     const prevItem = this.highlightedItem;
     if (prevItem) {
       prevItem.classList.remove('highlight');
-      prevItem.tabIndex = -1;
     }
     this.highlightedItem = listItem;
     this.highlightedItem.classList.add('highlight');
-    this.highlightedItem.tabIndex = 0;
     this.highlightedItem.focus();
   }
 

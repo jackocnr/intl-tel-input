@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v15.0.1
+ * International Telephone Input v15.0.2
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -397,7 +397,7 @@
                 for (var i = 0; i < countries.length; i++) {
                     var c = countries[i];
                     // open the list item
-                    tmp += "<li class='country ".concat(className, "' id='iti-item-").concat(c.iso2, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
+                    tmp += "<li class='country ".concat(className, "' tabIndex='-1' id='iti-item-").concat(c.iso2, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
                     // add the flag
                     tmp += "<div class='flag-box'><div class='iti-flag ".concat(c.iso2, "'></div></div>");
                     // and the country name and dial code
@@ -853,9 +853,12 @@
             key: "_highlightListItem",
             value: function _highlightListItem(listItem) {
                 var prevItem = this.highlightedItem;
-                if (prevItem) prevItem.classList.remove("highlight");
+                if (prevItem) {
+                    prevItem.classList.remove("highlight");
+                }
                 this.highlightedItem = listItem;
                 this.highlightedItem.classList.add("highlight");
+                this.highlightedItem.focus();
             }
         }, {
             key: "_getCountryData",
@@ -1280,7 +1283,7 @@
     // default options
     window.intlTelInputGlobals.defaults = defaults;
     // version
-    window.intlTelInputGlobals.version = "15.0.1";
+    window.intlTelInputGlobals.version = "15.0.2";
     var pluginName = "intlTelInput";
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
