@@ -623,8 +623,8 @@ class Iti {
 
     // update highlighting and scroll to active list item
     if (this.activeItem) {
-      this._highlightListItem(this.activeItem);
-      this._scrollTo(this.activeItem);
+      this._highlightListItem(this.activeItem, true);
+      // this._scrollTo(this.activeItem);
     }
 
     // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
@@ -699,7 +699,7 @@ class Iti {
     this._handleMouseoverCountryList = (e) => {
       // handle event delegation, as we're listening for this event on the countryList
       const listItem = this._getClosestListItem(e.target);
-      if (listItem) this._highlightListItem(listItem);
+      if (listItem) this._highlightListItem(listItem, false);
     };
     this.countryList.addEventListener('mouseover', this._handleMouseoverCountryList);
 
@@ -762,7 +762,7 @@ class Iti {
       if (next.classList.contains('divider')) {
         next = (key === 'ArrowUp') ? next.previousElementSibling : next.nextElementSibling;
       }
-      this._highlightListItem(next);
+      this._highlightListItem(next, true);
       this._scrollTo(next);
     }
   }
@@ -780,7 +780,7 @@ class Iti {
       if (this._startsWith(this.countries[i].name, query)) {
         const listItem = this.countryList.querySelector(`#iti-item-${this.countries[i].iso2}`);
         // update highlighting and scroll
-        this._highlightListItem(listItem);
+        this._highlightListItem(listItem, true);
         this._scrollTo(listItem, true);
         break;
       }
@@ -884,14 +884,13 @@ class Iti {
 
 
   // remove highlighting from other list items and highlight the given item
-  _highlightListItem(listItem) {
+  _highlightListItem(listItem, shouldFocus) {
     const prevItem = this.highlightedItem;
-    if (prevItem) {
-      prevItem.classList.remove('highlight');
-    }
+    if (prevItem) { prevItem.classList.remove('highlight'); }
     this.highlightedItem = listItem;
     this.highlightedItem.classList.add('highlight');
-    this.highlightedItem.focus();
+
+    if(shouldFocus) { this.highlightedItem.focus(); }
   }
 
 
