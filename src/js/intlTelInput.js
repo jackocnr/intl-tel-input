@@ -623,8 +623,8 @@ class Iti {
 
     // update highlighting and scroll to active list item
     if (this.activeItem) {
-      this._highlightListItem(this.activeItem, true);
-      // this._scrollTo(this.activeItem);
+      this._highlightListItem(this.activeItem, false);
+      this._scrollTo(this.activeItem, true);
     }
 
     // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
@@ -763,7 +763,6 @@ class Iti {
         next = (key === 'ArrowUp') ? next.previousElementSibling : next.nextElementSibling;
       }
       this._highlightListItem(next, true);
-      this._scrollTo(next);
     }
   }
 
@@ -780,7 +779,7 @@ class Iti {
       if (this._startsWith(this.countries[i].name, query)) {
         const listItem = this.countryList.querySelector(`#iti-item-${this.countries[i].iso2}`);
         // update highlighting and scroll
-        this._highlightListItem(listItem, true);
+        this._highlightListItem(listItem, false);
         this._scrollTo(listItem, true);
         break;
       }
