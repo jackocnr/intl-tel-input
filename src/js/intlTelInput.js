@@ -885,11 +885,11 @@ class Iti {
   // remove highlighting from other list items and highlight the given item
   _highlightListItem(listItem, shouldFocus) {
     const prevItem = this.highlightedItem;
-    if (prevItem) { prevItem.classList.remove('highlight'); }
+    if (prevItem) prevItem.classList.remove('highlight');
     this.highlightedItem = listItem;
     this.highlightedItem.classList.add('highlight');
 
-    if(shouldFocus) { this.highlightedItem.focus(); }
+    if (shouldFocus) this.highlightedItem.focus();
   }
 
 
