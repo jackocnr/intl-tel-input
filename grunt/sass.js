@@ -1,7 +1,10 @@
+const sass = require('node-sass');
+
 module.exports = function(grunt) {
   return {
     main: {
       options: {
+        implementation: sass,
         sourcemap: "none",
         style: "compressed"
       },
@@ -11,6 +14,7 @@ module.exports = function(grunt) {
     },
     demo: {
       options: {
+        implementation: sass,
         sourcemap: "none"
       },
       files: {
