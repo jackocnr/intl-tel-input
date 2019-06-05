@@ -928,9 +928,22 @@ class Iti {
 
     if (this.options.separateDialCode) {
       const dialCode = (this.selectedCountryData.dialCode) ? `+${this.selectedCountryData.dialCode}` : '';
+      let searchElement = this.telInput;
       this.selectedDialCode.innerHTML = dialCode;
+
+      // Create a clone of the container so the offsetWidth can be correctly calculated
+      while ((searchElement = searchElement.parentElement) && !searchElement.classList.contains('intl-tel-input'));
+      const clone = searchElement.cloneNode(true);
+      clone.style.visibility = 'hidden';
+      document.body.appendChild(clone);
+
+      const selectedFlagClone = clone.getElementsByClassName('selected-flag');
+      const offsetWidth = selectedFlagClone.length
+        ? selectedFlagClone[0].offsetWidth : this.selectedFlag.offsetWidth;
+      clone.remove();
+
       // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
-      this.telInput.style.paddingLeft = `${this.selectedFlag.offsetWidth + 6}px`;
+      this.telInput.style.paddingLeft = ''.concat(offsetWidth + 6, 'px');
     }
 
     // and the input's placeholder

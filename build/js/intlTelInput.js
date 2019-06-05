@@ -883,9 +883,19 @@
                     this.selectedFlag.setAttribute("title", title);
                     if (this.options.separateDialCode) {
                         var dialCode = this.selectedCountryData.dialCode ? "+".concat(this.selectedCountryData.dialCode) : "";
+                        var searchElement = this.telInput;
                         this.selectedDialCode.innerHTML = dialCode;
+                        // Create a clone of the container so the offsetWidth can be correctly calculated
+                        while ((searchElement = searchElement.parentElement) && !searchElement.classList.contains("intl-tel-input")) {
+                        }
+                        var clone = searchElement.cloneNode(true);
+                        clone.style.visibility = "hidden";
+                        document.body.appendChild(clone);
+                        var selectedFlagClone = clone.getElementsByClassName("selected-flag");
+                        var offsetWidth = selectedFlagClone.length ? selectedFlagClone[0].offsetWidth : this.selectedFlag.offsetWidth;
+                        clone.remove();
                         // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
-                        this.telInput.style.paddingLeft = "".concat(this.selectedFlag.offsetWidth + 6, "px");
+                        this.telInput.style.paddingLeft = "".concat(offsetWidth + 6, "px");
                     }
                     // and the input's placeholder
                     this._updatePlaceholder();
