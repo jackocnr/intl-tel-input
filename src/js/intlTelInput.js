@@ -929,8 +929,40 @@ class Iti {
     if (this.options.separateDialCode) {
       const dialCode = (this.selectedCountryData.dialCode) ? `+${this.selectedCountryData.dialCode}` : '';
       this.selectedDialCode.innerHTML = dialCode;
+      let { offsetWidth } = this.selectedFlag;
+
+      // Check visibility
+      if (this.selectedFlag.offsetWidth === 0 || this.selectedFlag.offsetHeight === 0) {
+        let searchElement = this.telInput;
+
+        // Find the parent element using a while loop as the input itself might be wrapped
+        while ((searchElement = searchElement.parentElement) && !searchElement.classList.contains('intl-tel-input')) ;
+
+        // Create a clone of the container so the offsetWidth can be correctly calculated
+        const telInputContainerClone = searchElement.cloneNode();
+        telInputContainerClone.style.visibility = 'hidden';
+        document.body.appendChild(telInputContainerClone);
+
+        // Create shallow clone to avoid cloning the flag list
+        const flagsContainerClone = this.flagsContainer.cloneNode();
+        telInputContainerClone.appendChild(flagsContainerClone);
+
+        const selectedFlagClone = this.selectedFlag.cloneNode(true);
+        flagsContainerClone.appendChild(selectedFlagClone);
+
+        // Add all child nodes as clones except for the flag container we added previously
+        searchElement.childNodes.forEach(value => {
+          if (value !== this.flagsContainer) {
+            telInputContainerClone.appendChild(value.cloneNode(true));
+          }
+        });
+
+        ({ offsetWidth } = selectedFlagClone);
+        telInputContainerClone.remove();
+      }
+
       // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
-      this.telInput.style.paddingLeft = `${this.selectedFlag.offsetWidth + 6}px`;
+      this.telInput.style.paddingLeft = `${offsetWidth + 6}px`;
     }
 
     // and the input's placeholder
