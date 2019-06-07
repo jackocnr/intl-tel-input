@@ -874,6 +874,7 @@
         }, {
             key: "_setFlag",
             value: function _setFlag(countryCode) {
+                var _this10 = this;
                 var prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
                 // do this first as it will throw an error and stop if countryCode is invalid
                 this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
@@ -888,8 +889,33 @@
                 if (this.options.separateDialCode) {
                     var dialCode = this.selectedCountryData.dialCode ? "+".concat(this.selectedCountryData.dialCode) : "";
                     this.selectedDialCode.innerHTML = dialCode;
+                    var offsetWidth = this.selectedFlag.offsetWidth;
+                    // Check visibility
+                    if (this.selectedFlag.offsetWidth === 0 || this.selectedFlag.offsetHeight === 0) {
+                        var searchElement = this.telInput;
+                        // Find the parent element using a while loop as the input itself might be wrapped
+                        while ((searchElement = searchElement.parentElement) && !searchElement.classList.contains("intl-tel-input")) {
+                        }
+                        // Create a clone of the container so the offsetWidth can be correctly calculated
+                        var telInputContainerClone = searchElement.cloneNode();
+                        telInputContainerClone.style.visibility = "hidden";
+                        document.body.appendChild(telInputContainerClone);
+                        // Create shallow clone to avoid cloning the flag list
+                        var flagsContainerClone = this.flagsContainer.cloneNode();
+                        telInputContainerClone.appendChild(flagsContainerClone);
+                        var selectedFlagClone = this.selectedFlag.cloneNode(true);
+                        flagsContainerClone.appendChild(selectedFlagClone);
+                        // Add all child nodes as clones except for the flag container we added previously
+                        searchElement.childNodes.forEach(function(value) {
+                            if (value !== _this10.flagsContainer) {
+                                telInputContainerClone.appendChild(value.cloneNode(true));
+                            }
+                        });
+                        offsetWidth = selectedFlagClone.offsetWidth;
+                        telInputContainerClone.remove();
+                    }
                     // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
-                    this.telInput.style.paddingLeft = "".concat(this.selectedFlag.offsetWidth + 6, "px");
+                    this.telInput.style.paddingLeft = "".concat(offsetWidth + 6, "px");
                 }
                 // and the input's placeholder
                 this._updatePlaceholder();
