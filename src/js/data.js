@@ -212,7 +212,8 @@ var allCountries = [
     "Caribbean Netherlands",
     "bq",
     "599",
-    1
+    1,
+    ["3", "4", "7"]
   ],
   [
     "Cayman Islands",
@@ -470,7 +471,8 @@ var allCountries = [
     "Guernsey",
     "gg",
     "44",
-    1
+    1,
+    ["1481", "7781", "7839", "7911"]
   ],
   [
     "Guinea (Guinée)",
@@ -541,7 +543,8 @@ var allCountries = [
     "Isle of Man",
     "im",
     "44",
-    2
+    2,
+    ["1624", "74576", "7524", "7924", "7624"]
   ],
   [
     "Israel (‫ישראל‬‎)",
@@ -570,7 +573,8 @@ var allCountries = [
     "Jersey",
     "je",
     "44",
-    3
+    3,
+    ["1534", "7509", "7700", "7797", "7829", "7937"]
   ],
   [
     "Jordan (‫الأردن‬‎)",
@@ -581,7 +585,8 @@ var allCountries = [
     "Kazakhstan (Казахстан)",
     "kz",
     "7",
-    1
+    1,
+    ["33", "7"]
   ],
   [
     "Kenya",
@@ -717,7 +722,8 @@ var allCountries = [
     "Mayotte",
     "yt",
     "262",
-    1
+    1,
+    ["269", "639"]
   ],
   [
     "Mexico (México)",
@@ -1076,7 +1082,8 @@ var allCountries = [
     "Svalbard and Jan Mayen",
     "sj",
     "47",
-    1
+    1,
+    ["79"]
   ],
   [
     "Swaziland",
@@ -1219,7 +1226,8 @@ var allCountries = [
     "Vatican City (Città del Vaticano)",
     "va",
     "39",
-    1
+    1,
+    ["06698"]
   ],
   [
     "Venezuela",
@@ -1240,7 +1248,8 @@ var allCountries = [
     "Western Sahara (‫الصحراء الغربية‬‎)",
     "eh",
     "212",
-    1
+    1,
+    ["5288", "5289"]
   ],
   [
     "Yemen (‫اليمن‬‎)",
@@ -1261,7 +1270,8 @@ var allCountries = [
     "Åland Islands",
     "ax",
     "358",
-    1
+    1,
+    ["18"]
   ]
 ];
 
