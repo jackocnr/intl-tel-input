@@ -191,6 +191,8 @@ class Iti {
 
   // add a country code to this.countryCodes
   _addCountryCode(iso2, dialCode, priority) {
+    if (dialCode.length > this.dialCodeMaxLen)
+      this.dialCodeMaxLen = dialCode.length;
     if (!this.countryCodes.hasOwnProperty(dialCode)) {
       this.countryCodes[dialCode] = [];
     }
@@ -238,6 +240,7 @@ class Iti {
 
   // process the countryCodes map
   _processCountryCodes() {
+    this.dialCodeMaxLen = 0;
     this.countryCodes = {};
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
@@ -1124,7 +1127,7 @@ class Iti {
             dialCode = number.substr(0, i + 1);
           }
           // longest dial code is 4 chars
-          if (numericChars.length === 4) {
+          if (numericChars.length === this.dialCodeMaxLen) {
             break;
           }
         }
