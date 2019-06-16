@@ -191,8 +191,9 @@ class Iti {
 
   // add a country code to this.countryCodes
   _addCountryCode(iso2, dialCode, priority) {
-    if (dialCode.length > this.dialCodeMaxLen)
+    if (dialCode.length > this.dialCodeMaxLen) {
       this.dialCodeMaxLen = dialCode.length;
+    }
     if (!this.countryCodes.hasOwnProperty(dialCode)) {
       this.countryCodes[dialCode] = [];
     }
@@ -1126,7 +1127,6 @@ class Iti {
             // store the actual raw string (useful for matching later)
             dialCode = number.substr(0, i + 1);
           }
-          // longest dial code is 4 chars
           if (numericChars.length === this.dialCodeMaxLen) {
             break;
           }

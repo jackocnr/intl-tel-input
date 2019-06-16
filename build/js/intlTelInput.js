@@ -220,6 +220,9 @@
             }, {
                 key: "_addCountryCode",
                 value: function _addCountryCode(iso2, dialCode, priority) {
+                    if (dialCode.length > this.dialCodeMaxLen) {
+                        this.dialCodeMaxLen = dialCode.length;
+                    }
                     if (!this.countryCodes.hasOwnProperty(dialCode)) {
                         this.countryCodes[dialCode] = [];
                     }
@@ -265,6 +268,7 @@
             }, {
                 key: "_processCountryCodes",
                 value: function _processCountryCodes() {
+                    this.dialCodeMaxLen = 0;
                     this.countryCodes = {};
                     for (var i = 0; i < this.countries.length; i++) {
                         var c = this.countries[i];
@@ -1052,8 +1056,7 @@
                                     // store the actual raw string (useful for matching later)
                                     dialCode = number.substr(0, i + 1);
                                 }
-                                // longest dial code is 4 chars
-                                if (numericChars.length === 4) {
+                                if (numericChars.length === this.dialCodeMaxLen) {
                                     break;
                                 }
                             }
