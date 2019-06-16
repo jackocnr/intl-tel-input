@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v15.1.1
+ * International Telephone Input v15.1.2
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -1295,7 +1295,7 @@
         // default options
         window.intlTelInputGlobals.defaults = defaults;
         // version
-        window.intlTelInputGlobals.version = "15.1.1";
+        window.intlTelInputGlobals.version = "15.1.2";
         // convenience wrapper
         return function(input, options) {
             var iti = new Iti(input, options);
