@@ -3,11 +3,11 @@ var input = document.querySelector("#phone"),
   validMsg = document.querySelector("#valid-msg");
 
 // here, the index maps to the error code returned from getValidationError - see readme
-var errorMap = [ "Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
 // initialise plugin
 var iti = window.intlTelInput(input, {
-  utilsScript: "../../build/js/utils.js?1551697588835"
+  utilsScript: "../../build/js/utils.js?1560794689211"
 });
 
 var reset = function() {

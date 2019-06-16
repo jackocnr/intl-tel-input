@@ -20,14 +20,14 @@ describe("allowDropdown:", function() {
     });
 
     it("doesn't show the arrow or generate the dropdown markup", function() {
-      expect(getSelectedFlagContainer().find(".iti-arrow")).not.toExist();
+      expect(getSelectedFlagContainer().find(".iti__arrow")).not.toExist();
       expect(getListElement()).not.toExist();
     });
 
     it("typing a different dial code updates the flag", function() {
       input.val("+4");
       triggerKeyOnInput("4");
-      expect(getSelectedFlagElement()).toHaveClass("gb");
+      expect(getSelectedFlagElement()).toHaveClass("iti__gb");
     });
 
   });
@@ -42,7 +42,7 @@ describe("allowDropdown:", function() {
     });
 
     it("doesn't show the arrow or generate the dropdown markup", function() {
-      expect(getSelectedFlagContainer().find(".iti-arrow")).not.toExist();
+      expect(getSelectedFlagContainer().find(".iti__arrow")).not.toExist();
     });
 
     it("shows selected dial code element", function() {
@@ -61,14 +61,14 @@ describe("allowDropdown:", function() {
     });
 
     it("shows the arrow and generate the dropdown markup", function() {
-      expect(getSelectedFlagContainer().find(".iti-arrow")).toExist();
+      expect(getSelectedFlagContainer().find(".iti__arrow")).toExist();
       expect(getListElement()).toExist();
     });
 
     it("typing a different dial code updates the flag", function() {
       input.val("+4");
       triggerKeyOnInput("4");
-      expect(getSelectedFlagElement()).toHaveClass("gb");
+      expect(getSelectedFlagElement()).toHaveClass("iti__gb");
     });
 
     it("clicking the selected flag shows the dropdown", function() {

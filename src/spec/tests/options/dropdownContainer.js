@@ -52,7 +52,7 @@ describe("dropdownContainer:", function() {
     });
 
     it("doesnt immediately add the markup to the DOM", function() {
-      expect($(".iti-container")).not.toExist();
+      expect($(".iti--container")).not.toExist();
     });
 
     describe("triggering the dropdown", function() {
@@ -62,17 +62,17 @@ describe("dropdownContainer:", function() {
       });
 
       it("adds the markup to that element and makes it visible in the document", function() {
-        expect($("body>.iti-container")).toBeVisible();
+        expect($("body>.iti--container")).toBeVisible();
       });
 
       it("selecting a country removes the markup again", function() {
-        $("body>.iti-container").find("li[data-country-code='gb']").click();
-        expect($("body>.iti-container")).not.toExist();
+        $("body>.iti--container").find("li[data-country-code='gb']").click();
+        expect($("body>.iti--container")).not.toExist();
       });
 
       it("clicking-off removes the markup again", function() {
         $("body").click();
-        expect($("body>.iti-container")).not.toExist();
+        expect($("body>.iti--container")).not.toExist();
       });
 
     });

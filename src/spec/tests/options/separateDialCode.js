@@ -24,7 +24,7 @@ describe("separateDialCode:", function() {
     });
 
     it("sets the classes properly", function() {
-      expect(getParentElement()).toHaveClass("separate-dial-code");
+      expect(getParentElement()).toHaveClass("iti--separate-dial-code");
     });
 
     it("displays the dial code next to the selected flag", function() {

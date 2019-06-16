@@ -59,14 +59,14 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
 
     it("pressing up while on the top item does not change the highlighted item", function() {
       triggerKeyOnBody("ArrowUp");
-      var topItem = getListElement().find("li.country:eq(0)");
-      expect(topItem).toHaveClass("highlight");
+      var topItem = getListElement().find("li.iti__country:eq(0)");
+      expect(topItem).toHaveClass("iti__highlight");
     });
 
     it("pressing z highlights Zambia", function() {
       triggerKeyOnBody("z");
       var zambiaListItem = getListElement().find("li[data-country-code='zm']");
-      expect(zambiaListItem).toHaveClass("highlight");
+      expect(zambiaListItem).toHaveClass("iti__highlight");
     });
 
     it("pressing z three times also highlights Zambia (no further matches)", function() {
@@ -74,7 +74,7 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
       triggerKeyOnBody("z");
       triggerKeyOnBody("z");
       var zambiaListItem = getListElement().find("li[data-country-code='zm']");
-      expect(zambiaListItem).toHaveClass("highlight");
+      expect(zambiaListItem).toHaveClass("iti__highlight");
     });
 
 
@@ -84,20 +84,20 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
       var lastItem;
 
       beforeEach(function() {
-        lastItem = getListElement().find("li.country:last");
+        lastItem = getListElement().find("li.iti__country:last");
         triggerKeyOnBody("z");
         triggerKeyOnBody("i");
         triggerKeyOnBody("ArrowDown");
       });
 
       it("highlights the last item, which is Åland Islands", function() {
-        expect(lastItem).toHaveClass("highlight");
+        expect(lastItem).toHaveClass("iti__highlight");
         expect(lastItem.attr("data-country-code")).toEqual("ax");
       });
 
       it("pressing down while on the last item does not change the highlighted item", function() {
         triggerKeyOnBody("ArrowDown");
-        expect(lastItem).toHaveClass("highlight");
+        expect(lastItem).toHaveClass("iti__highlight");
       });
     });
 
@@ -111,10 +111,10 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
 
       it("changes the highlighted item", function() {
         var listElement = getListElement();
-        var topItem = listElement.find("li.country:eq(0)");
-        expect(topItem).not.toHaveClass("highlight");
-        var secondItem = listElement.find("li.country:eq(1)");
-        expect(secondItem).toHaveClass("highlight");
+        var topItem = listElement.find("li.iti__country:eq(0)");
+        expect(topItem).not.toHaveClass("iti__highlight");
+        var secondItem = listElement.find("li.iti__country:eq(1)");
+        expect(secondItem).toHaveClass("iti__highlight");
       });
 
 
@@ -127,10 +127,10 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyb
 
         it("changes the active item", function() {
           var listElement = getListElement();
-          var topItem = listElement.find("li.country:eq(0)");
-          expect(topItem).not.toHaveClass("active");
-          var secondItem = listElement.find("li.country:eq(1)");
-          expect(secondItem).toHaveClass("active");
+          var topItem = listElement.find("li.iti__country:eq(0)");
+          expect(topItem).not.toHaveClass("iti__active");
+          var secondItem = listElement.find("li.iti__country:eq(1)");
+          expect(secondItem).toHaveClass("iti__active");
         });
 
         it("closes the dropdown", function() {

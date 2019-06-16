@@ -314,9 +314,9 @@
                 // autocompleted number, which on submit could mean wrong number is saved (esp in nationalMode)
                 this.telInput.setAttribute("autocomplete", "off");
                 // containers (mostly for positioning)
-                var parentClass = "intl-tel-input";
-                if (this.options.allowDropdown) parentClass += " allow-dropdown";
-                if (this.options.separateDialCode) parentClass += " separate-dial-code";
+                var parentClass = "iti";
+                if (this.options.allowDropdown) parentClass += " iti--allow-dropdown";
+                if (this.options.separateDialCode) parentClass += " iti--separate-dial-code";
                 if (this.options.customContainer) {
                     parentClass += " ";
                     parentClass += this.options.customContainer;
@@ -326,49 +326,49 @@
                 });
                 this.telInput.parentNode.insertBefore(wrapper, this.telInput);
                 this.flagsContainer = this._createEl("div", {
-                    "class": "flag-container"
+                    "class": "iti__flag-container"
                 }, wrapper);
                 wrapper.appendChild(this.telInput);
                 // selected flag (displayed to left of input)
                 this.selectedFlag = this._createEl("div", {
-                    "class": "selected-flag",
+                    "class": "iti__selected-flag",
                     role: "combobox",
                     "aria-owns": "country-listbox"
                 }, this.flagsContainer);
                 this.selectedFlagInner = this._createEl("div", {
-                    "class": "iti-flag"
+                    "class": "iti__flag"
                 }, this.selectedFlag);
                 if (this.options.separateDialCode) {
                     this.selectedDialCode = this._createEl("div", {
-                        "class": "selected-dial-code"
+                        "class": "iti__selected-dial-code"
                     }, this.selectedFlag);
                 }
                 if (this.options.allowDropdown) {
                     // make element focusable and tab navigable
                     this.selectedFlag.setAttribute("tabindex", "0");
                     this.dropdownArrow = this._createEl("div", {
-                        "class": "iti-arrow"
+                        "class": "iti__arrow"
                     }, this.selectedFlag);
                     // country dropdown: preferred countries, then divider, then all countries
                     this.countryList = this._createEl("ul", {
-                        "class": "country-list hide",
+                        "class": "iti__country-list iti__hide",
                         id: "country-listbox",
                         "aria-expanded": "false",
                         role: "listbox"
                     });
                     if (this.preferredCountries.length) {
-                        this._appendListItems(this.preferredCountries, "preferred");
+                        this._appendListItems(this.preferredCountries, "iti__preferred");
                         this._createEl("li", {
-                            "class": "divider",
+                            "class": "iti__divider",
                             role: "separator",
                             "aria-disabled": "true"
                         }, this.countryList);
                     }
-                    this._appendListItems(this.countries, "standard");
+                    this._appendListItems(this.countries, "iti__standard");
                     // create dropdownContainer markup
                     if (this.options.dropdownContainer) {
                         this.dropdown = this._createEl("div", {
-                            "class": "intl-tel-input iti-container"
+                            "class": "iti iti--container"
                         });
                         this.dropdown.appendChild(this.countryList);
                     } else {
@@ -401,12 +401,12 @@
                 for (var i = 0; i < countries.length; i++) {
                     var c = countries[i];
                     // open the list item
-                    tmp += "<li class='country ".concat(className, "' tabIndex='-1' id='iti-item-").concat(c.iso2, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
+                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-item-").concat(c.iso2, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
                     // add the flag
-                    tmp += "<div class='flag-box'><div class='iti-flag ".concat(c.iso2, "'></div></div>");
+                    tmp += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(c.iso2, "'></div></div>");
                     // and the country name and dial code
-                    tmp += "<span class='country-name'>".concat(c.name, "</span>");
-                    tmp += "<span class='dial-code'>+".concat(c.dialCode, "</span>");
+                    tmp += "<span class='iti__country-name'>".concat(c.name, "</span>");
+                    tmp += "<span class='iti__dial-code'>+".concat(c.dialCode, "</span>");
                     // close the list item
                     tmp += "</li>";
                 }
@@ -483,7 +483,7 @@
                 // close it again
                 this._handleLabelClick = function(e) {
                     // if the dropdown is closed, then focus the input, else ignore the click
-                    if (_this4.countryList.classList.contains("hide")) _this4.telInput.focus(); else e.preventDefault();
+                    if (_this4.countryList.classList.contains("iti__hide")) _this4.telInput.focus(); else e.preventDefault();
                 };
                 var label = this._getClosestLabel();
                 if (label) label.addEventListener("click", this._handleLabelClick);
@@ -492,14 +492,14 @@
                     // only intercept this event if we're opening the dropdown
                     // else let it bubble up to the top ("click-off-to-close" listener)
                     // we cannot just stopPropagation as it may be needed to close another instance
-                    if (_this4.countryList.classList.contains("hide") && !_this4.telInput.disabled && !_this4.telInput.readOnly) {
+                    if (_this4.countryList.classList.contains("iti__hide") && !_this4.telInput.disabled && !_this4.telInput.readOnly) {
                         _this4._showDropdown();
                     }
                 };
                 this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
                 // open dropdown list if currently focused
                 this._handleFlagsContainerKeydown = function(e) {
-                    var isDropdownHidden = _this4.countryList.classList.contains("hide");
+                    var isDropdownHidden = _this4.countryList.classList.contains("iti__hide");
                     if (isDropdownHidden && [ "ArrowUp", "ArrowDown", " ", "Enter" ].indexOf(e.key) !== -1) {
                         // prevent form from being submitted if "ENTER" was pressed
                         e.preventDefault();
@@ -624,7 +624,7 @@
         }, {
             key: "_showDropdown",
             value: function _showDropdown() {
-                this.countryList.classList.remove("hide");
+                this.countryList.classList.remove("iti__hide");
                 this.countryList.setAttribute("aria-expanded", "true");
                 this._setDropdownPosition();
                 // update highlighting and scroll to active list item
@@ -635,7 +635,7 @@
                 // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
                 this._bindDropdownListeners();
                 // update the arrow
-                this.dropdownArrow.classList.add("up");
+                this.dropdownArrow.classList.add("iti__arrow--up");
                 this._trigger("open:countrydropdown");
             }
         }, {
@@ -661,7 +661,7 @@
                     var dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
                     // by default, the dropdown will be below the input. If we want to position it above the
                     // input, we add the dropup class.
-                    this._toggleClass(this.countryList, "dropup", !dropdownFitsBelow && dropdownFitsAbove);
+                    this._toggleClass(this.countryList, "iti__country-list--dropup", !dropdownFitsBelow && dropdownFitsAbove);
                     // if dropdownContainer is enabled, calculate postion
                     if (this.options.dropdownContainer) {
                         // by default the dropdown will be directly over the input because it's not in the flow.
@@ -682,7 +682,7 @@
             key: "_getClosestListItem",
             value: function _getClosestListItem(target) {
                 var el = target;
-                while (el && el !== this.countryList && !el.classList.contains("country")) {
+                while (el && el !== this.countryList && !el.classList.contains("iti__country")) {
                     el = el.parentNode;
                 }
                 // if we reached the countryList element, then return null
@@ -745,7 +745,7 @@
                 var next = key === "ArrowUp" ? this.highlightedItem.previousElementSibling : this.highlightedItem.nextElementSibling;
                 if (next) {
                     // skip the divider
-                    if (next.classList.contains("divider")) {
+                    if (next.classList.contains("iti__divider")) {
                         next = key === "ArrowUp" ? next.previousElementSibling : next.nextElementSibling;
                     }
                     this._highlightListItem(next, true);
@@ -856,9 +856,9 @@
             key: "_highlightListItem",
             value: function _highlightListItem(listItem, shouldFocus) {
                 var prevItem = this.highlightedItem;
-                if (prevItem) prevItem.classList.remove("highlight");
+                if (prevItem) prevItem.classList.remove("iti__highlight");
                 this.highlightedItem = listItem;
-                this.highlightedItem.classList.add("highlight");
+                this.highlightedItem.classList.add("iti__highlight");
                 if (shouldFocus) this.highlightedItem.focus();
             }
         }, {
@@ -885,7 +885,7 @@
                 if (this.selectedCountryData.iso2) {
                     this.defaultCountry = this.selectedCountryData.iso2;
                 }
-                this.selectedFlagInner.setAttribute("class", "iti-flag ".concat(countryCode));
+                this.selectedFlagInner.setAttribute("class", "iti__flag iti__".concat(countryCode));
                 // update the selected country's title attribute
                 var title = countryCode ? "".concat(this.selectedCountryData.name, ": +").concat(this.selectedCountryData.dialCode) : "Unknown";
                 this.selectedFlag.setAttribute("title", title);
@@ -903,13 +903,13 @@
                 if (this.options.allowDropdown) {
                     var prevItem = this.activeItem;
                     if (prevItem) {
-                        prevItem.classList.remove("active");
+                        prevItem.classList.remove("iti__active");
                         prevItem.setAttribute("aria-selected", "false");
                     }
                     if (countryCode) {
                         var nextItem = this.countryList.querySelector("#iti-item-".concat(countryCode));
                         nextItem.setAttribute("aria-selected", "true");
-                        nextItem.classList.add("active");
+                        nextItem.classList.add("iti__active");
                         this.activeItem = nextItem;
                         this.countryList.setAttribute("aria-activedescendant", nextItem.getAttribute("id"));
                     }
@@ -965,10 +965,10 @@
         }, {
             key: "_closeDropdown",
             value: function _closeDropdown() {
-                this.countryList.classList.add("hide");
+                this.countryList.classList.add("iti__hide");
                 this.countryList.setAttribute("aria-expanded", "false");
                 // update the arrow
-                this.dropdownArrow.classList.remove("up");
+                this.dropdownArrow.classList.remove("iti__arrow--up");
                 // unbind key events
                 document.removeEventListener("keydown", this._handleKeydownOnDropdown);
                 document.documentElement.removeEventListener("click", this._handleClickOffToClose);
@@ -1227,7 +1227,7 @@
             value: function setCountry(originalCountryCode) {
                 var countryCode = originalCountryCode.toLowerCase();
                 // check if already selected
-                if (!this.selectedFlagInner.classList.contains(countryCode)) {
+                if (!this.selectedFlagInner.classList.contains("iti__".concat(countryCode))) {
                     this._setFlag(countryCode);
                     this._updateDialCode(this.selectedCountryData.dialCode, false);
                     this._triggerCountryChange();

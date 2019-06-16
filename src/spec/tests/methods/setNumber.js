@@ -18,7 +18,7 @@ describe("setNumber: init vanilla plugin (no utils) and call setNumber with a va
   });
 
   it("updates the flag", function() {
-    expect(getSelectedFlagElement()).toHaveClass("gb");
+    expect(getSelectedFlagElement()).toHaveClass("iti__gb");
   });
 
 });

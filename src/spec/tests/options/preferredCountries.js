@@ -23,7 +23,7 @@ describe("preferredCountries option:", function() {
 
     it("defaults to the first country in the alphabet", function() {
       // Afghanistan
-      expect(getSelectedFlagElement()).toHaveClass("af");
+      expect(getSelectedFlagElement()).toHaveClass("iti__af");
     });
 
     it("has the right number of list items", function() {
@@ -51,7 +51,7 @@ describe("preferredCountries option:", function() {
     });
 
     it("defaults to the first preferredCountries", function() {
-      expect(getSelectedFlagElement()).toHaveClass(preferredCountries[0]);
+      expect(getSelectedFlagElement()).toHaveClass(`iti__${preferredCountries[0]}`);
     });
 
     it("has the right number of list items", function() {

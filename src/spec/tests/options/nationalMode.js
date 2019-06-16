@@ -41,7 +41,7 @@ describe("nationalMode:", function() {
       input.val("+");
       triggerKeyOnInput("4");
       triggerKeyOnInput("4");
-      expect(getSelectedFlagElement()).toHaveClass("gb");
+      expect(getSelectedFlagElement()).toHaveClass("iti__gb");
     });
 
   });
@@ -62,13 +62,13 @@ describe("nationalMode:", function() {
 
     it("displays the number and has US flag selected", function() {
       expect(getInputVal()).toEqual(nationalNum);
-      expect(getSelectedFlagElement()).toHaveClass("us");
+      expect(getSelectedFlagElement()).toHaveClass("iti__us");
     });
 
     it("changing to canadian area code updates flag", function() {
       input.val("204 555 555");
       triggerKeyOnInput("5"); // trigger update flag
-      expect(getSelectedFlagElement()).toHaveClass("ca");
+      expect(getSelectedFlagElement()).toHaveClass("iti__ca");
     });
 
   });
@@ -88,13 +88,13 @@ describe("nationalMode:", function() {
 
     it("displays the number and selects the right flag", function() {
       expect(getInputVal()).toEqual(intlNumber);
-      expect(getSelectedFlagElement()).toHaveClass("gb");
+      expect(getSelectedFlagElement()).toHaveClass("iti__gb");
     });
 
     it("changing to another intl number updates the flag", function() {
       input.val("+34 5555555");
       triggerKeyOnInput("5"); // trigger update flag
-      expect(getSelectedFlagElement()).toHaveClass("es");
+      expect(getSelectedFlagElement()).toHaveClass("iti__es");
     });
 
   });
