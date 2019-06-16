@@ -1077,7 +1077,7 @@
                 var numericVal = this._getNumeric(val);
                 // normalized means ensure starts with a 1, so we can match against the full dial code
                 var normalizedVal = numericVal.charAt(0) === "1" ? numericVal : "1".concat(numericVal);
-                if (this.options.separateDialCode && val.charAt(0) !== "+" && dialCode) {
+                if (this.options.separateDialCode && val.charAt(0) !== "+" && dialCode && numericVal) {
                     // when using separateDialCode, it is visible so is effectively part of the typed number
                     prefix = "+".concat(dialCode);
                 } else if (val && val.charAt(0) !== "+" && val.charAt(0) !== "1" && dialCode && dialCode.charAt(0) === "1" && dialCode.length === 4 && dialCode !== normalizedVal.substr(0, 4)) {
