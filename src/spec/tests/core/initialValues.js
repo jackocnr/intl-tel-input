@@ -20,7 +20,7 @@ describe("initial values:", function() {
     });
 
     it("creates a container with the right class", function() {
-      expect(getParentElement()).toHaveClass("intl-tel-input");
+      expect(getParentElement()).toHaveClass("iti");
     });
 
     it("has the right number of list items", function() {
@@ -31,7 +31,7 @@ describe("initial values:", function() {
     });
 
     it("sets the state correctly: selected flag and active list item", function() {
-      expect(getSelectedFlagElement()).toHaveClass("us");
+      expect(getSelectedFlagElement()).toHaveClass("iti__us");
       expect(getActiveListItem().attr("data-country-code")).toEqual("us");
     });
 
@@ -47,7 +47,7 @@ describe("initial values:", function() {
     });
 
     it("sets the state correctly: selected flag and active list item", function() {
-      expect(getSelectedFlagElement()).toHaveClass("gb");
+      expect(getSelectedFlagElement()).toHaveClass("iti__gb");
       expect(getActiveListItem().attr("data-country-code")).toEqual("gb");
     });
 
@@ -68,7 +68,7 @@ describe("initial values:", function() {
       });
 
       it("defaults to US flag", function() {
-        expect(getSelectedFlagElement()).toHaveClass("us");
+        expect(getSelectedFlagElement()).toHaveClass("iti__us");
       });
 
     });
@@ -84,7 +84,7 @@ describe("initial values:", function() {
       });
 
       it("defaults to the initialCountry flag", function() {
-        expect(getSelectedFlagElement()).toHaveClass(initialCountry);
+        expect(getSelectedFlagElement()).toHaveClass(`iti__${initialCountry}`);
       });
 
     });
@@ -102,7 +102,7 @@ describe("initial values:", function() {
 
     // issue 520
     it("sets the selected flag correctly", function() {
-      expect(getSelectedFlagElement()).toHaveClass("ck");
+      expect(getSelectedFlagElement()).toHaveClass("iti__ck");
     });
 
   });
@@ -117,7 +117,7 @@ describe("initial values:", function() {
     });
 
     it("does not set the selected flag or the active list item", function() {
-      expect(getSelectedFlagElement().attr("class")).toBe("iti-flag");
+      expect(getSelectedFlagElement().attr("class")).toBe("iti__flag");
       expect(getActiveListItem().length).toEqual(0);
     });
 
@@ -133,7 +133,7 @@ describe("initial values:", function() {
     });
 
     it("does not set the selected flag or the active list item", function() {
-      expect(getSelectedFlagElement().attr("class")).toBe("iti-flag");
+      expect(getSelectedFlagElement().attr("class")).toBe("iti__flag");
       expect(getActiveListItem().length).toEqual(0);
     });
 

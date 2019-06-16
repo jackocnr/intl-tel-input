@@ -36,8 +36,8 @@ describe("using dropdown: init plugin with nationalMode=false", function() {
 
     it("opens the dropdown with the top item marked as active and highlighted", function() {
       expect(getListElement()).toBeVisible();
-      var topItem = getListElement().find("li.country:first");
-      expect(topItem).toHaveClass("active highlight");
+      var topItem = getListElement().find("li.iti__country:first");
+      expect(topItem).toHaveClass("iti__active iti__highlight");
     });
 
     it("clicking it again closes the dropdown", function() {
@@ -61,7 +61,7 @@ describe("using dropdown: init plugin with nationalMode=false", function() {
       });
 
       it("updates the selected flag", function() {
-        expect(getSelectedFlagElement()).toHaveClass(countryCode);
+        expect(getSelectedFlagElement()).toHaveClass(`iti__${countryCode}`);
       });
 
       it("updates the dial code", function() {
@@ -71,7 +71,7 @@ describe("using dropdown: init plugin with nationalMode=false", function() {
       // this was a bug
       it("adding a space doesnt reset to the default country for that dial code", function() {
         triggerKeyOnInput(" ");
-        expect(getSelectedFlagElement()).toHaveClass(countryCode);
+        expect(getSelectedFlagElement()).toHaveClass(`iti__${countryCode}`);
       });
 
     });

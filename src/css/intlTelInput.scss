@@ -33,7 +33,7 @@ $flagsImageExtension: "png" !default;
 // enough space for them to click off to close
 $mobilePopupMargin: 30px !default;
 
-.intl-tel-input {
+.iti {
   // need position on the container so the selected flag can be
   // absolutely positioned over the input
   position: relative;
@@ -47,11 +47,11 @@ $mobilePopupMargin: 30px !default;
     -moz-box-sizing: border-box;
   }
 
-  .hide {
+  &__hide {
     display: none;
   }
   // need this during init, to get the height of the dropdown
-  .v-hide {
+  &__v-hide {
     visibility: hidden;
   }
 
@@ -78,7 +78,7 @@ $mobilePopupMargin: 30px !default;
     margin-right: 0;
   }
 
-  .flag-container {
+  &__flag-container {
     // positioned over the top of the input
     position: absolute;
     // full height
@@ -89,7 +89,7 @@ $mobilePopupMargin: 30px !default;
     padding: $borderWidth;
   }
 
-  .selected-flag {
+  &__selected-flag {
     // render above the input
     z-index: 1;
     position: relative;
@@ -99,26 +99,26 @@ $mobilePopupMargin: 30px !default;
     // dropdown so it appears below the input
     height: 100%;
     padding: 0 $arrowPadding 0 $flagPadding;
+  }
 
-    .iti-arrow {
-      margin-left: $arrowPadding;
+  &__arrow {
+    margin-left: $arrowPadding;
 
-      // css triangle
-      width: 0;
-      height: 0;
-      border-left: $triangleBorder solid transparent;
-      border-right: $triangleBorder solid transparent;
-      border-top: $arrowHeight solid $arrowColor;
+    // css triangle
+    width: 0;
+    height: 0;
+    border-left: $triangleBorder solid transparent;
+    border-right: $triangleBorder solid transparent;
+    border-top: $arrowHeight solid $arrowColor;
 
-      &.up {
-        border-top: none;
-        border-bottom: $arrowHeight solid $arrowColor;
-      }
+    &--up {
+      border-top: none;
+      border-bottom: $arrowHeight solid $arrowColor;
     }
   }
 
   // the dropdown
-  .country-list {
+  &__country-list {
     position: absolute;
     // popup so render above everything else
     z-index: 2;
@@ -129,15 +129,9 @@ $mobilePopupMargin: 30px !default;
     text-align: left;
 
     // place menu above the input element
-    &.dropup {
+    &--dropup {
       bottom: 100%;
       margin-bottom: (-$borderWidth);
-    }
-
-    // dropdown flags need consistent width, so wrap in a container
-    .flag-box {
-      display: inline-block;
-      width: $flagWidth;
     }
 
     padding: 0;
@@ -163,79 +157,87 @@ $mobilePopupMargin: 30px !default;
     // If this is not set, then the country list scroll stops moving after rasing a finger, and users report that scroll is slow
     // Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll
     -webkit-overflow-scrolling: touch;
+  }
 
-    // the divider below the preferred countries
-    .divider {
-      padding-bottom: 5px;
-      margin-bottom: 5px;
-      border-bottom: $borderWidth solid $greyBorder;
-    }
+  // dropdown flags need consistent width, so wrap in a container
+  &__flag-box {
+    display: inline-block;
+    width: $flagWidth;
+  }
 
-    // each country item in dropdown (we must have separate class to differentiate from dividers)
-    .country {
-      // Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines
-      padding: 5px 10px;
-      outline: none;
-      // the dial codes after the country names are greyed out
-      .dial-code {
-        color: $greyText;
-      }
-    }
-    .country.highlight {
-      background-color: $hoverColor;
-    }
+  // the divider below the preferred countries
+  &__divider {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: $borderWidth solid $greyBorder;
+  }
 
-    // spacing between country flag, name and dial code
-    .flag-box, .country-name, .dial-code {
-      vertical-align: middle;
-    }
-    .flag-box, .country-name {
-      margin-right: 6px;
-    }
+  // each country item in dropdown (we must have separate class to differentiate from dividers)
+  &__country {
+    // Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines
+    padding: 5px 10px;
+    outline: none;
+  }
+
+  // the dial codes after the country names are greyed out
+  &__dial-code {
+    color: $greyText;
+  }
+  &__country.iti__highlight {
+    background-color: $hoverColor;
+  }
+
+  // spacing between country flag, name and dial code
+  &__flag-box, &__country-name, &__dial-code {
+    vertical-align: middle;
+  }
+  &__flag-box, &__country-name {
+    margin-right: 6px;
   }
 
   // these settings are independent of each other, but both move selected flag to left of input
-  &.allow-dropdown, &.separate-dial-code {
+  &--allow-dropdown, &--separate-dial-code {
     input, input[type=text], input[type=tel] {
       padding-right: $inputPadding;
       padding-left: $selectedFlagArrowWidth + $inputPadding;
       margin-left: 0;
     }
-    .flag-container {
+    .iti__flag-container {
       right: auto;
       left: 0;
     }
   }
 
-  &.allow-dropdown {
+  &--allow-dropdown {
     // hover state - show flag is clickable
-    .flag-container:hover {
+    .iti__flag-container:hover {
       cursor: pointer;
-      .selected-flag {
+      .iti__selected-flag {
         background-color: $hoverColor;
       }
     }
     // disable hover state when input is disabled
-    input[disabled] + .flag-container:hover, input[readonly] + .flag-container:hover {
+    input[disabled] + .iti__flag-container:hover,
+    input[readonly] + .iti__flag-container:hover {
       cursor: default;
-      .selected-flag {
+      .iti__selected-flag {
         background-color: transparent;
       }
     }
   }
 
-  &.separate-dial-code {
-    .selected-flag {
+  &--separate-dial-code {
+    .iti__selected-flag {
       // now that we have digits in this section, it needs this visual separation
       background-color: $hoverColor;
     }
-    .selected-dial-code {
+    .iti__selected-dial-code {
       margin-left: $arrowPadding;
     }
   }
 
   // if dropdownContainer option is set, increase z-index to prevent display issues
-  &.iti-container {
+  &--container {
     position: absolute;
     top: -1000px;
     left: -1000px;
@@ -249,23 +251,23 @@ $mobilePopupMargin: 30px !default;
   }
 }
 
-// overrides for mobile popup
-.iti-mobile .intl-tel-input {
-  &.iti-container {
+// overrides for mobile popup (note: .iti-mobile class is applied on body)
+.iti-mobile .iti {
+  &--container {
     top: $mobilePopupMargin;
     bottom: $mobilePopupMargin;
     left: $mobilePopupMargin;
     right: $mobilePopupMargin;
     position: fixed;
   }
-  .country-list {
+  &__country-list {
     max-height: 100%;
     width: 100%;
-    .country {
-      padding: 10px 10px;
-      // increase line height because dropdown copy is v likely to overflow on mobile and when it does it needs to be well spaced
-      line-height: 1.5em;
-    }
+  }
+  &__country {
+    padding: 10px 10px;
+    // increase line height because dropdown copy is v likely to overflow on mobile and when it does it needs to be well spaced
+    line-height: 1.5em;
   }
 }
 
@@ -276,7 +278,7 @@ $mobilePopupMargin: 30px !default;
 
 @import "sprite";
 
-.iti-flag {
+.iti__flag {
   height: $flagHeight;
   box-shadow: 0px 0px 1px 0px #888;
   background-image: url("#{$flagsImagePath}#{$flagsImageName}.#{$flagsImageExtension}");
@@ -293,6 +295,6 @@ $mobilePopupMargin: 30px !default;
 
 
 // hack for Nepal which is the only flag that is not square/rectangle, so it has transparency, so you can see the default grey behind it
-.iti-flag.np {
+.iti__flag.iti__np {
   background-color: transparent;
 }

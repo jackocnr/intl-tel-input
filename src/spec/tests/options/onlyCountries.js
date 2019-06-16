@@ -28,7 +28,7 @@ describe("onlyCountries option:", function() {
     });
 
     it("defaults to the first onlyCountries alphabetically", function() {
-      expect(getSelectedFlagElement()).toHaveClass(chinaCountryCode);
+      expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaCountryCode}`);
     });
 
     it("has the right number of list items", function() {
@@ -50,7 +50,7 @@ describe("onlyCountries option:", function() {
     it("entering +7 defaults to the top priority country (Russia)", function() {
       input.val("+");
       triggerKeyOnInput("7");
-      expect(getSelectedFlagElement()).toHaveClass("ru");
+      expect(getSelectedFlagElement()).toHaveClass("iti__ru");
     });
 
   });
@@ -84,8 +84,8 @@ describe("onlyCountries option:", function() {
     });
 
     it("they both display their respective only country option as the selected flag", function() {
-      expect(getSelectedFlagElement()).toHaveClass("jp");
-      expect(getSelectedFlagElement(input2)).toHaveClass("kr");
+      expect(getSelectedFlagElement()).toHaveClass("iti__jp");
+      expect(getSelectedFlagElement(input2)).toHaveClass("iti__kr");
     });
 
   });

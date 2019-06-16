@@ -57,10 +57,10 @@ Note: In v12.0.0 we dropped support for IE9 and IE10, because they are no longer
 
 3. Override the path to flags.png in your CSS
   ```css
-  .iti-flag {background-image: url("path/to/flags.png");}
+  .iti__flag {background-image: url("path/to/flags.png");}
 
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .iti-flag {background-image: url("path/to/flags@2x.png");}
+    .iti__flag {background-image: url("path/to/flags@2x.png");}
   }
   ```
 
@@ -359,7 +359,7 @@ To recompile the utils script yourself (e.g. to update the version of libphonenu
 **Full width input**  
 If you want your input to be full-width, you need to set the container to be the same i.e.
 ```css
-.intl-tel-input { width: 100%; }
+.iti { width: 100%; }
 ```
 
 **dropdownContainer: dropdown not closing on scroll**  
@@ -374,10 +374,10 @@ scrollingElement.addEventListener("scroll", function() {
 ```
 
 **Input margin**  
-For the sake of alignment, the default CSS forces the input's vertical margin to `0px`. If you want vertical margin, you should add it to the container (with class `intl-tel-input`).
+For the sake of alignment, the default CSS forces the input's vertical margin to `0px`. If you want vertical margin, you should add it to the container (with class `iti`).
 
 **Displaying error messages**  
-If your error handling code inserts an error message before the `<input>` it will break the layout. Instead you must insert it before the container (with class `intl-tel-input`).
+If your error handling code inserts an error message before the `<input>` it will break the layout. Instead you must insert it before the container (with class `iti`).
 
 **Dropdown position**  
 The dropdown should automatically appear above/below the input depending on the available space. For this to work properly, you must only initialise the plugin after the `<input>` has been added to the DOM.

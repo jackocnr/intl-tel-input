@@ -22,7 +22,7 @@ describe("initialCountry: ", function() {
     });
 
     it("sets the selected flag correctly", function() {
-      expect(getSelectedFlagElement()).toHaveClass(initialCountry);
+      expect(getSelectedFlagElement()).toHaveClass(`iti__${initialCountry}`);
     });
 
     it("sets the active list item correctly", function() {
@@ -45,7 +45,7 @@ describe("initialCountry: ", function() {
     });
 
     it("sets the state correctly: selected flag and active list item", function() {
-      expect(getSelectedFlagElement()).toHaveClass(initialCountry);
+      expect(getSelectedFlagElement()).toHaveClass(`iti__${initialCountry}`);
       expect(getActiveListItem().attr("data-country-code")).toEqual(initialCountry);
     });
 

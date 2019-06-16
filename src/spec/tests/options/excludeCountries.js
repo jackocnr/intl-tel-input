@@ -37,13 +37,13 @@ describe("excludeCountries option:", function() {
     });
 
     it("defaults to the next in the list", function() {
-      expect(getSelectedFlagElement()).toHaveClass("af");
+      expect(getSelectedFlagElement()).toHaveClass("iti__af");
     });
 
     it("typing +1 sets the flag to Dominican Republic", function() {
       input.val("+");
       triggerKeyOnInput("1");
-      expect(getSelectedFlagElement()).toHaveClass("do");
+      expect(getSelectedFlagElement()).toHaveClass("iti__do");
     });
 
   });

@@ -16,7 +16,7 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
   });
 
   it("updates the selected flag", function() {
-    expect(getSelectedFlagElement()).toHaveClass(countryCode);
+    expect(getSelectedFlagElement()).toHaveClass(`iti__${countryCode}`);
   });
 
   it("does not insert the dial code", function() {

@@ -52,42 +52,42 @@ var getParentElement = function(i) {
 
 var getListElement = function(i) {
   i = i || input;
-  return i.parent().find(".country-list");
+  return i.parent().find(".iti__country-list");
 };
 
 var getListLength = function(i) {
   i = i || input;
-  return getListElement(i).find("li.country").length;
+  return getListElement(i).find("li.iti__country").length;
 };
 
 var getActiveListItem = function(i) {
   i = i || input;
-  return getListElement(i).find("li.active");
+  return getListElement(i).find("li.iti__active");
 };
 
 var getPreferredCountriesLength = function(i) {
   i = i || input;
-  return getListElement(i).find("li.preferred").length;
+  return getListElement(i).find("li.iti__preferred").length;
 };
 
 var getSelectedFlagContainer = function(i) {
   i = i || input;
-  return i.parent().find(".selected-flag");
+  return i.parent().find(".iti__selected-flag");
 };
 
 var getSelectedFlagElement = function(i) {
   i = i || input;
-  return getSelectedFlagContainer(i).find(".iti-flag");
+  return getSelectedFlagContainer(i).find(".iti__flag");
 };
 
 var getSelectedDialCodeElement = function(i) {
   i = i || input;
-  return getSelectedFlagContainer(i).find(".selected-dial-code");
+  return getSelectedFlagContainer(i).find(".iti__selected-dial-code");
 };
 
 var getFlagsContainerElement = function(i) {
   i = i || input;
-  return i.parent().find(".flag-container");
+  return i.parent().find(".iti__flag-container");
 };
 
 var selectFlag = function(countryCode, i) {
