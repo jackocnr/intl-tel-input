@@ -929,40 +929,11 @@ class Iti {
     if (this.options.separateDialCode) {
       const dialCode = (this.selectedCountryData.dialCode) ? `+${this.selectedCountryData.dialCode}` : '';
       this.selectedDialCode.innerHTML = dialCode;
-      let { offsetWidth } = this.selectedFlag;
-
-      // Check visibility
-      if (this.selectedFlag.offsetWidth === 0 || this.selectedFlag.offsetHeight === 0) {
-        let searchElement = this.telInput;
-
-        // Find the parent element using a while loop as the input itself might be wrapped
-        while ((searchElement = searchElement.parentElement) && !searchElement.classList.contains('intl-tel-input')) ;
-
-        // Create a clone of the container so the offsetWidth can be correctly calculated
-        const telInputContainerClone = searchElement.cloneNode();
-        telInputContainerClone.style.visibility = 'hidden';
-        document.body.appendChild(telInputContainerClone);
-
-        // Create shallow clone to avoid cloning the flag list
-        const flagsContainerClone = this.flagsContainer.cloneNode();
-        telInputContainerClone.appendChild(flagsContainerClone);
-
-        const selectedFlagClone = this.selectedFlag.cloneNode(true);
-        flagsContainerClone.appendChild(selectedFlagClone);
-
-        // Add all child nodes as clones except for the flag container we added previously
-        searchElement.childNodes.forEach(value => {
-          if (value !== this.flagsContainer) {
-            telInputContainerClone.appendChild(value.cloneNode(true));
-          }
-        });
-
-        ({ offsetWidth } = selectedFlagClone);
-        telInputContainerClone.remove();
-      }
+      // offsetWidth is zero if input is in a hidden container during initialisation
+      const selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
 
       // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
-      this.telInput.style.paddingLeft = `${offsetWidth + 6}px`;
+      this.telInput.style.paddingLeft = `${selectedFlagWidth + 6}px`;
     }
 
     // and the input's placeholder
@@ -986,6 +957,24 @@ class Iti {
 
     // return if the flag has changed or not
     return (prevCountry.iso2 !== countryCode);
+  }
+
+
+  // when the input is in a hidden container during initialisation, we must inject some markup
+  // into the end of the DOM to calculate the correct offsetWidth
+  _getHiddenSelectedFlagWidth() {
+    // to get the right styling to apply, all we need is a shallow clone of the container,
+    // and then to inject a deep clone of the selectedFlag element
+    const containerClone = this.telInput.parentNode.cloneNode();
+    containerClone.style.visibility = 'hidden';
+    document.body.appendChild(containerClone);
+
+    const selectedFlagClone = this.selectedFlag.cloneNode(true);
+    containerClone.appendChild(selectedFlagClone);
+
+    const width = selectedFlagClone.offsetWidth;
+    containerClone.remove();
+    return width;
   }
 
 
