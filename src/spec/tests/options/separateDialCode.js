@@ -93,14 +93,12 @@ describe("separateDialCode:", function() {
     });
 
     it("sets the placeholder correctly", function() {
-      // used to be '4-733-1234'
-      expect(input.attr("placeholder")).toEqual("733-1234");
+      expect(input.attr("placeholder")).toEqual("684-733-1234");
     });
 
     it("calling setNumber will set the number correctly", function() {
       iti.setNumber("+16847331234");
-      // used to be '4-733-1234'
-      expect(getInputVal()).toEqual("733-1234");
+      expect(getInputVal()).toEqual("684-733-1234");
     });
 
   });
