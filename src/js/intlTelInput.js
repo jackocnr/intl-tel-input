@@ -848,10 +848,16 @@ class Iti {
     // from the number), that means we're initialising the plugin with a number that already has a
     // dial code, so fine to ignore this bit
     let number = originalNumber;
-    const isNanp = this.selectedCountryData.dialCode === '1';
+    const selectedDialCode = this.selectedCountryData.dialCode;
+    const isNanp = selectedDialCode === '1';
     if (number && this.options.nationalMode && isNanp && number.charAt(0) !== '+') {
       if (number.charAt(0) !== '1') number = `1${number}`;
       number = `+${number}`;
+    }
+
+    // update flag if user types area code for another country
+    if (this.options.separateDialCode && selectedDialCode && number.charAt(0) !== '+') {
+      number = `+${selectedDialCode}${number}`;
     }
 
     // try and extract valid dial code from input
@@ -866,7 +872,7 @@ class Iti {
       // just check that here, but it requires the same loop that we already have later)
       const alreadySelected = (countryCodes.indexOf(this.selectedCountryData.iso2) !== -1)
         && (numeric.length <= dialCode.length - 1);
-      const isRegionlessNanpNumber = (this.selectedCountryData.dialCode === '1' && this._isRegionlessNanp(numeric));
+      const isRegionlessNanpNumber = (selectedDialCode === '1' && this._isRegionlessNanp(numeric));
 
       // only update the flag if:
       // A) NOT (we currently have a NANP flag selected, and the number is a regionlessNanp)
