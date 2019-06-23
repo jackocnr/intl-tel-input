@@ -197,7 +197,12 @@ class Iti {
     if (!this.countryCodes.hasOwnProperty(dialCode)) {
       this.countryCodes[dialCode] = [];
     }
-    const index = priority || 0;
+    // bail if we already have this country for this dialCode
+    for (let i = 0; i < this.countryCodes[dialCode].length; i++) {
+      if (this.countryCodes[dialCode][i] === iso2) return;
+    }
+    // check for undefined as 0 is falsy
+    const index = (priority !== undefined) ? priority : this.countryCodes[dialCode].length;
     this.countryCodes[dialCode][index] = iso2;
   }
 
@@ -243,14 +248,34 @@ class Iti {
   _processCountryCodes() {
     this.dialCodeMaxLen = 0;
     this.countryCodes = {};
+
+    // first: add dial codes
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
       this._addCountryCode(c.iso2, c.dialCode, c.priority);
+    }
+
+    // next: add area codes
+    // this is a second loop over countries, to make sure we have all of the "root" countries
+    // already in the map, so that we can access them, as each time we add an area code substring
+    // to the map, we also need to include the "root" country's code, as that also matches
+    for (let i = 0; i < this.countries.length; i++) {
+      const c = this.countries[i];
       // area codes
       if (c.areaCodes) {
+        const rootCountryCode = this.countryCodes[c.dialCode][0];
+        // for each area code
         for (let j = 0; j < c.areaCodes.length; j++) {
-          // full dial code is country code + dial code
-          this._addCountryCode(c.iso2, c.dialCode + c.areaCodes[j]);
+          const areaCode = c.areaCodes[j];
+          // for each digit in the area code to add all partial matches as well
+          for (let k = 1; k < areaCode.length; k++) {
+            const partialDialCode = c.dialCode + areaCode.substr(0, k);
+            // start with the root country, as that also matches this dial code
+            this._addCountryCode(rootCountryCode, partialDialCode);
+            this._addCountryCode(c.iso2, partialDialCode);
+          }
+          // add the full area code
+          this._addCountryCode(c.iso2, c.dialCode + areaCode);
         }
       }
     }
@@ -834,20 +859,20 @@ class Iti {
     const numeric = this._getNumeric(number);
     let countryCode = null;
     if (dialCode) {
-      // check if one of the matching countries is already selected
       const countryCodes = this.countryCodes[this._getNumeric(dialCode)];
-      const alreadySelected = (countryCodes.indexOf(this.selectedCountryData.iso2) !== -1);
-      // check if the given number contains a NANP area code i.e. the only dialCode that could be
-      // extracted was +1 (instead of say +1204) and the actual number's length is >=4
-      const isNanpAreaCode = (dialCode === '+1' && numeric.length >= 4);
+      // check if the right country is already selected. this should be false if the number is
+      // longer than the matched dial code because in this case we need to make sure that if
+      // there are multiple country matches, that the first one is selected (note: we could
+      // just check that here, but it requires the same loop that we already have later)
+      const alreadySelected = (countryCodes.indexOf(this.selectedCountryData.iso2) !== -1)
+        && (numeric.length <= dialCode.length - 1);
       const isRegionlessNanpNumber = (this.selectedCountryData.dialCode === '1' && this._isRegionlessNanp(numeric));
 
       // only update the flag if:
       // A) NOT (we currently have a NANP flag selected, and the number is a regionlessNanp)
       // AND
-      // B) either a matching country is not already selected OR the number contains a NANP area
-      // code (ensure the flag is set to the first matching country)
-      if (!isRegionlessNanpNumber && (!alreadySelected || isNanpAreaCode)) {
+      // B) the right country is not already selected
+      if (!isRegionlessNanpNumber && !alreadySelected) {
         // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first
         // non-empty index
         for (let j = 0; j < countryCodes.length; j++) {
@@ -1160,14 +1185,10 @@ class Iti {
     let number = originalNumber;
     if (this.options.separateDialCode) {
       let dialCode = this._getDialCode(number);
+      // if there is a valid dial code
       if (dialCode) {
-        // US dialCode is "+1", which is what we want
-        // CA dialCode is "+1 123", which is wrong - should be "+1" (as it has multiple area codes)
-        // AS dialCode is "+1 684", which is what we want (as it doesn't have area codes)
-        // Solution: if the country has area codes, then revert to just the dial code
-        if (this.selectedCountryData.areaCodes !== null) {
-          dialCode = `+${this.selectedCountryData.dialCode}`;
-        }
+        // in case _getDialCode returned an area code as well
+        dialCode = `+${this.selectedCountryData.dialCode}`;
         // a lot of numbers will have a space separating the dial code and the main number, and
         // some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get
         // rid of it
