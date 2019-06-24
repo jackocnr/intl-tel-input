@@ -1,9 +1,11 @@
-// wrap in UMD
-(function(factory) {
-  var intlTelInput = factory(window, document);
-  if (typeof module === "object" && module.exports) module.exports = intlTelInput;
-  else window.intlTelInput = intlTelInput;
-}(function(window, document, undefined) {
-  "use strict";
+// We check if we are in browser
+if (typeof window !== 'undefined') {
+  // wrap in UMD
+  (function(factory) {
+    var intlTelInput = factory(window, document);
+    if (typeof module === "object" && module.exports) module.exports = intlTelInput;
+    else window.intlTelInput = intlTelInput;
+  }(function(window, document, undefined) {
+    "use strict";
 
-  return (function() {
+    return (function() {
