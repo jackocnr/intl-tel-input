@@ -8,6 +8,7 @@ In order to build the project, you will first need to install [npm](https://www.
 
 ### Updating to a new version of libphonenumber
 
+#### Step 1: Setup
 Create a new dir (e.g. ~/workspace/libphonenumber-tools) where you will clone the libphonenumber project and a few other dependencies, and cd into it, and then:
 
 ```
@@ -18,9 +19,11 @@ git clone https://github.com/google/closure-linter
 git clone https://github.com/google/python-gflags
 ```
 
-Build Closure's compiler.jar in closure-compiler directory: `mvn -DskipTests`
+Build Closure's compiler.jar in closure-compiler directory: `mvn -DskipTests` (requires maven to be installed - on MacOS, you can do this with `brew install maven`)
 
-If you have already cloned these projects before and just need to update libphonenumber, simply cd into that project dir and checkout the required version tag e.g.
+#### Step 2: Updating libphonenumber
+
+Simply cd into the libphonenumber dir and checkout the required version tag e.g.
 
 ```
 cd ~/workspace/libphonenumber-tools/libphonenumber
@@ -30,7 +33,7 @@ git checkout v8.9.14
 Then to build the new version of utils.js:
 
 1. Copy intl-tel-input/src/js/utils.js to libphonenumber/javascript/i18n/phonenumbers/demo.js
-2. `ant -f libphonenumber/javascript/build.xml compile-demo`
+2. `ant -f libphonenumber/javascript/build.xml compile-demo` (requires ant to be installed - on MacOS, you can do this with `brew install ant`)
 3. Copy libphonenumber/javascript/i18n/phonenumbers/demo-compiled.js to intl-tel-input/build/js/utils.js
 
 Then, back in the intl-tel-input dir, first run the tests to make sure nothing has broken: `npm test`, then just commit the new utils.js, and create a pull request on Github.
