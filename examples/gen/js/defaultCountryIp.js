@@ -7,5 +7,5 @@ window.intlTelInput(input, {
       callback(countryCode);
     });
   },
-  utilsScript: "../../build/js/utils.js?1560794689211" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1562189064761" // just for formatting/placeholders etc
 });
