@@ -1008,7 +1008,7 @@ class Iti {
     containerClone.appendChild(selectedFlagClone);
 
     const width = selectedFlagClone.offsetWidth;
-    containerClone.remove();
+    containerClone.parentNode.removeChild(containerClone);
     return width;
   }
 

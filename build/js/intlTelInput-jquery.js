@@ -955,7 +955,7 @@
                 var selectedFlagClone = this.selectedFlag.cloneNode(true);
                 containerClone.appendChild(selectedFlagClone);
                 var width = selectedFlagClone.offsetWidth;
-                containerClone.remove();
+                containerClone.parentNode.removeChild(containerClone);
                 return width;
             }
         }, {
