@@ -12,6 +12,7 @@
           var iti = new Iti(this, options);
           iti._init();
           window.intlTelInputGlobals.instances[iti.id] = iti;
+                    this.setAttribute('data-intl-tel-input-id', iti.id);
 					$.data(this, "plugin_" + pluginName, iti);
 				}
 			});

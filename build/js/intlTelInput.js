@@ -59,7 +59,7 @@
         }
         window.intlTelInputGlobals = {
             getInstance: function getInstance(input) {
-                var id = input.getAttribute("data-intl-tel-input-id");
+                var id = input.get(0).getAttribute("data-intl-tel-input-id");
                 return window.intlTelInputGlobals.instances[id];
             },
             instances: {}

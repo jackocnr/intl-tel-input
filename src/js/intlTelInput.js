@@ -1,6 +1,6 @@
 window.intlTelInputGlobals = {
   getInstance: (input) => {
-    const id = input.getAttribute('data-intl-tel-input-id');
+    const id = input.get(0).getAttribute('data-intl-tel-input-id');
     return window.intlTelInputGlobals.instances[id];
   },
   instances: {},

@@ -63,7 +63,7 @@
     }
     window.intlTelInputGlobals = {
         getInstance: function getInstance(input) {
-            var id = input.getAttribute("data-intl-tel-input-id");
+            var id = input.get(0).getAttribute("data-intl-tel-input-id");
             return window.intlTelInputGlobals.instances[id];
         },
         instances: {}
@@ -1330,6 +1330,7 @@
                     var iti = new Iti(this, options);
                     iti._init();
                     window.intlTelInputGlobals.instances[iti.id] = iti;
+                    this.setAttribute("data-intl-tel-input-id", iti.id);
                     $.data(this, "plugin_" + pluginName, iti);
                 }
             });
