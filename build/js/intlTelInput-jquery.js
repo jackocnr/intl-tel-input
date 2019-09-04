@@ -605,7 +605,8 @@
         }, {
             key: "_cap",
             value: function _cap(number) {
-                var max = this.telInput.getAttribute("maxlength");
+                var maxLength = this.telInput.getAttribute("maxlength");
+                var max = maxLength < 0 ? null : maxLength;
                 return max && number.length > max ? number.substr(0, max) : number;
             }
         }, {

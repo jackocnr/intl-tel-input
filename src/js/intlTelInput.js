@@ -596,7 +596,8 @@ class Iti {
 
   // adhere to the input's maxlength attr
   _cap(number) {
-    const max = this.telInput.getAttribute('maxlength');
+    const maxLength = this.telInput.getAttribute('maxlength');
+    const max = maxLength < 0 ? null : maxLength;
     return (max && number.length > max) ? number.substr(0, max) : number;
   }
 
