@@ -4,5 +4,5 @@ window.intlTelInput(input, {
   "ee", "fo", "fi", "fr", "de", "gi", "gr", "va", "hu", "is", "ie", "it", "lv",
   "li", "lt", "lu", "mk", "mt", "md", "mc", "me", "nl", "no", "pl", "pt", "ro",
   "ru", "sm", "rs", "sk", "si", "es", "se", "ch", "ua", "gb"],
-  utilsScript: "../../build/js/utils.js?1567329555819" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1570635132854" // just for formatting/placeholders etc
 });
