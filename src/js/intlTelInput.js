@@ -511,7 +511,7 @@ class Iti {
     this._handleFlagsContainerKeydown = (e) => {
       const isDropdownHidden = this.countryList.classList.contains('iti__hide');
 
-      if (isDropdownHidden && ['ArrowUp', 'ArrowDown', ' ', 'Enter'].indexOf(e.key) !== -1) {
+      if (isDropdownHidden && ['ArrowUp', 'Up', 'ArrowDown', 'Down', ' ', 'Enter'].indexOf(e.key) !== -1) {
         // prevent form from being submitted if "ENTER" was pressed
         e.preventDefault();
         // prevent event from being handled again by document
@@ -761,7 +761,7 @@ class Iti {
       e.preventDefault();
 
       // up and down to navigate
-      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') this._handleUpDownKey(e.key);
+      if (e.key === 'ArrowUp' || e.key === 'Up' || e.key === 'ArrowDown' || e.key === 'Down') this._handleUpDownKey(e.key);
       // enter to select
       else if (e.key === 'Enter') this._handleEnterKey();
       // esc to close
@@ -785,11 +785,11 @@ class Iti {
 
   // highlight the next/prev item in the list (and ensure it is visible)
   _handleUpDownKey(key) {
-    let next = (key === 'ArrowUp') ? this.highlightedItem.previousElementSibling : this.highlightedItem.nextElementSibling;
+    let next = (key === 'ArrowUp' || key === 'Up') ? this.highlightedItem.previousElementSibling : this.highlightedItem.nextElementSibling;
     if (next) {
       // skip the divider
       if (next.classList.contains('iti__divider')) {
-        next = (key === 'ArrowUp') ? next.previousElementSibling : next.nextElementSibling;
+        next = (key === 'ArrowUp' || key === 'Up') ? next.previousElementSibling : next.nextElementSibling;
       }
       this._highlightListItem(next, true);
     }
