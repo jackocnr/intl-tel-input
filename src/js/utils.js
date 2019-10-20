@@ -72,13 +72,19 @@ function getValidationError(number, countryCode) {
       return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.INVALID_COUNTRY_CODE;
     }
     if (e.message == i18n.phonenumbers.Error.NOT_A_NUMBER) {
-      return 4;
+      return 6;
     }
     if (e.message == i18n.phonenumbers.Error.TOO_SHORT_AFTER_IDD || e == i18n.phonenumbers.Error.TOO_SHORT_NSN) {
       return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT;
     }
     if (e.message == i18n.phonenumbers.Error.TOO_LONG) {
       return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_LONG;
+    }
+    if (e.message == i18n.phonenumbers.Error.IS_POSSIBLE_LOCAL_ONLY) {
+      return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE_LOCAL_ONLY;
+    }
+    if (e.message == i18n.phonenumbers.Error.INVALID_LENGTH) {
+      return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.INVALID_LENGTH;
     }
 
     // broken
@@ -149,7 +155,9 @@ var validationError = {
   "INVALID_COUNTRY_CODE": 1,
   "TOO_SHORT": 2,
   "TOO_LONG": 3,
-  "NOT_A_NUMBER": 4
+  "IS_POSSIBLE_LOCAL_ONLY": 4,
+  "INVALID_LENGTH": 5,
+  "NOT_A_NUMBER": 6
 };
 
 
