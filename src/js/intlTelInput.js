@@ -349,7 +349,7 @@ class Iti {
         role: 'listbox',
       });
       if (this.preferredCountries.length) {
-        this._appendListItems(this.preferredCountries, 'iti__preferred');
+        this._appendListItems(this.preferredCountries, 'iti__preferred', true);
         this._createEl('li', {
           class: 'iti__divider',
           role: 'separator',
@@ -386,7 +386,7 @@ class Iti {
 
 
   // add a country <li> to the countryList <ul> container
-  _appendListItems(countries, className) {
+  _appendListItems(countries, className, preferred = false) {
     // we create so many DOM elements, it is faster to build a temp string
     // and then add everything to the DOM in one go at the end
     let tmp = '';
@@ -394,7 +394,7 @@ class Iti {
     for (let i = 0; i < countries.length; i++) {
       const c = countries[i];
       // open the list item
-      tmp += `<li class='iti__country ${className}' tabIndex='-1' id='iti-item-${c.iso2}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
+      tmp += `<li class='iti__country ${className}' tabIndex='-1' id='iti-item-${c.iso2}${preferred ? '-preferred' : ''}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
       // add the flag
       tmp += `<div class='iti__flag-box'><div class='iti__flag iti__${c.iso2}'></div></div>`;
       // and the country name and dial code
