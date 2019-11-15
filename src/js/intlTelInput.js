@@ -329,6 +329,7 @@ class Iti {
       class: 'iti__selected-flag',
       role: 'combobox',
       'aria-owns': 'country-listbox',
+      'aria-expanded': 'false',
     }, this.flagsContainer);
     this.selectedFlagInner = this._createEl('div', { class: 'iti__flag' }, this.selectedFlag);
 
@@ -345,7 +346,6 @@ class Iti {
       this.countryList = this._createEl('ul', {
         class: 'iti__country-list iti__hide',
         id: 'country-listbox',
-        'aria-expanded': 'false',
         role: 'listbox',
       });
       if (this.preferredCountries.length) {
@@ -646,7 +646,7 @@ class Iti {
   // show the dropdown
   _showDropdown() {
     this.countryList.classList.remove('iti__hide');
-    this.countryList.setAttribute('aria-expanded', 'true');
+    this.selectedFlag.setAttribute('aria-expanded', 'true');
 
     this._setDropdownPosition();
 
@@ -986,7 +986,7 @@ class Iti {
         nextItem.setAttribute('aria-selected', 'true');
         nextItem.classList.add('iti__active');
         this.activeItem = nextItem;
-        this.countryList.setAttribute('aria-activedescendant', nextItem.getAttribute('id'));
+        this.selectedFlag.setAttribute('aria-activedescendant', nextItem.getAttribute('id'));
       }
     }
 
@@ -1053,7 +1053,7 @@ class Iti {
   // close the dropdown and unbind any listeners
   _closeDropdown() {
     this.countryList.classList.add('iti__hide');
-    this.countryList.setAttribute('aria-expanded', 'false');
+    this.selectedFlag.setAttribute('aria-expanded', 'false');
     // update the arrow
     this.dropdownArrow.classList.remove('iti__arrow--up');
 
