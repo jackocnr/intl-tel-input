@@ -157,6 +157,7 @@ module.exports = function(grunt) {
       files: {
         'tmp/one.min.js': 'tmp/wrapped.min.js',
         'tmp/one-jquery.min.js': 'tmp/wrapped-jquery.min.js',
+        'tmp/one-data.min.js': 'tmp/data.min.js'
       }
     },
 
@@ -209,6 +210,7 @@ module.exports = function(grunt) {
       files: {
         'tmp/two.min.js': 'tmp/one.min.js',
         'tmp/two-jquery.min.js': 'tmp/one-jquery.min.js',
+        'tmp/two-data.min.js': 'tmp/one-data.min.js'
       }
     },
 
@@ -283,6 +285,7 @@ module.exports = function(grunt) {
       files: {
         'build/js/intlTelInput.min.js': 'tmp/two.min.js',
         'build/js/intlTelInput-jquery.min.js': 'tmp/two-jquery.min.js',
+        'build/js/data.min.js': 'tmp/two-data.min.js'
       }
     }
   };
