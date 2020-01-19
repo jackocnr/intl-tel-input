@@ -8,5 +8,9 @@ module.exports = function(grunt) {
       src: ['src/js/intro-jquery.js', 'src/js/data.js', 'tmp/versioned-babeled.js', 'src/js/outro-jquery.js'],
       dest: 'tmp/wrapped-jquery.js',
     },
+    data: {
+      src: ['src/js/intro-data.js', 'src/js/data.js', 'src/js/outro-data.js'],
+      dest: 'tmp/data.js'
+    }
   };
 };
