@@ -3,7 +3,7 @@ var input = document.querySelector("#phone"),
 
 var iti = window.intlTelInput(input, {
   nationalMode: true,
-  utilsScript: "../../build/js/utils.js?1575016932390" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1581331045115" // just for formatting/placeholders etc
 });
 
 var handleChange = function() {
