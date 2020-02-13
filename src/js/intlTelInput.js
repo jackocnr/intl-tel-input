@@ -186,6 +186,8 @@ class Iti {
     if (this.options.onlyCountries.length || this.options.localizedCountries) {
       this.countries.sort(this._countryNameSort);
     }
+
+    this._prepareCountrySearchChars();
   }
 
 
@@ -293,6 +295,11 @@ class Iti {
     }
   }
 
+  // generate array of unique chars from country names
+  _prepareCountrySearchChars() {
+    this.countrySearchChars = this.countries.reduce((agg, country) => agg + country.name.toLowerCase() + country.name.toUpperCase(), '');
+    this.countrySearchChars = this.countrySearchChars.split('').filter((v, i, a) => a.indexOf(v) === i);
+  }
 
   // create a DOM element
   _createEl(name, attrs, container) {
@@ -768,7 +775,7 @@ class Iti {
       else if (e.key === 'Escape') this._closeDropdown();
       // alpha chars to perform search
       // regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866)
-      else if (/^[a-zA-ZÀ-ÿ ]$/.test(e.key)) {
+      else if (this.countrySearchChars.indexOf(e.key) !== -1) {
         // jump to countries that start with the query string
         if (queryTimer) clearTimeout(queryTimer);
         query += e.key.toLowerCase();

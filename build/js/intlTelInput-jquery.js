@@ -220,6 +220,7 @@
                 if (this.options.onlyCountries.length || this.options.localizedCountries) {
                     this.countries.sort(this._countryNameSort);
                 }
+                this._prepareCountrySearchChars();
             }
         }, {
             key: "_addCountryCode",
@@ -318,6 +319,16 @@
                     var countryData = this._getCountryData(countryCode, false, true);
                     if (countryData) this.preferredCountries.push(countryData);
                 }
+            }
+        }, {
+            key: "_prepareCountrySearchChars",
+            value: function _prepareCountrySearchChars() {
+                this.countrySearchChars = this.countries.reduce(function(agg, country) {
+                    return agg + country.name.toLowerCase() + country.name.toUpperCase();
+                }, "");
+                this.countrySearchChars = this.countrySearchChars.split("").filter(function(v, i, a) {
+                    return a.indexOf(v) === i;
+                });
             }
         }, {
             key: "_createEl",
@@ -749,7 +760,7 @@
                     // and enter key from submitting a form etc
                     e.preventDefault();
                     // up and down to navigate
-                    if (e.key === "ArrowUp" || e.key === "Up" || e.key === "ArrowDown" || e.key === "Down") _this9._handleUpDownKey(e.key); else if (e.key === "Enter") _this9._handleEnterKey(); else if (e.key === "Escape") _this9._closeDropdown(); else if (/^[a-zA-ZÀ-ÿ ]$/.test(e.key)) {
+                    if (e.key === "ArrowUp" || e.key === "Up" || e.key === "ArrowDown" || e.key === "Down") _this9._handleUpDownKey(e.key); else if (e.key === "Enter") _this9._handleEnterKey(); else if (e.key === "Escape") _this9._closeDropdown(); else if (_this9.countrySearchChars.indexOf(e.key) !== -1) {
                         // jump to countries that start with the query string
                         if (queryTimer) clearTimeout(queryTimer);
                         query += e.key.toLowerCase();
