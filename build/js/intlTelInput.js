@@ -352,6 +352,8 @@
                     this.selectedFlag = this._createEl("div", {
                         "class": "iti__selected-flag",
                         role: "combobox",
+                        "aria-expanded": "true",
+                        "aria-haspopup": "listbox",
                         "aria-owns": "country-listbox"
                     }, this.flagsContainer);
                     this.selectedFlagInner = this._createEl("div", {
@@ -372,7 +374,6 @@
                         this.countryList = this._createEl("ul", {
                             "class": "iti__country-list iti__hide",
                             id: "country-listbox",
-                            "aria-expanded": "false",
                             role: "listbox"
                         });
                         if (this.preferredCountries.length) {
@@ -512,6 +513,7 @@
                         // else let it bubble up to the top ("click-off-to-close" listener)
                         // we cannot just stopPropagation as it may be needed to close another instance
                         if (_this4.countryList.classList.contains("iti__hide") && !_this4.telInput.disabled && !_this4.telInput.readOnly) {
+                            _this4.selectedFlag.setAttribute("aria-expanded", true);
                             _this4._showDropdown();
                         }
                     };
@@ -644,7 +646,6 @@
                 key: "_showDropdown",
                 value: function _showDropdown() {
                     this.countryList.classList.remove("iti__hide");
-                    this.countryList.setAttribute("aria-expanded", "true");
                     this._setDropdownPosition();
                     // update highlighting and scroll to active list item
                     if (this.activeItem) {
@@ -934,7 +935,7 @@
                             nextItem.setAttribute("aria-selected", "true");
                             nextItem.classList.add("iti__active");
                             this.activeItem = nextItem;
-                            this.countryList.setAttribute("aria-activedescendant", nextItem.getAttribute("id"));
+                            this.selectedFlag.setAttribute("aria-activedescendant", nextItem.getAttribute("id"));
                         }
                     }
                     // return if the flag has changed or not
@@ -988,8 +989,8 @@
             }, {
                 key: "_closeDropdown",
                 value: function _closeDropdown() {
+                    this.selectedFlag.setAttribute("aria-expanded", false);
                     this.countryList.classList.add("iti__hide");
-                    this.countryList.setAttribute("aria-expanded", "false");
                     // update the arrow
                     this.dropdownArrow.classList.remove("iti__arrow--up");
                     // unbind key events

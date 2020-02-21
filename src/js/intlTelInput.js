@@ -328,6 +328,8 @@ class Iti {
     this.selectedFlag = this._createEl('div', {
       class: 'iti__selected-flag',
       role: 'combobox',
+      'aria-expanded': 'true',
+      'aria-haspopup': 'listbox',
       'aria-owns': 'country-listbox',
     }, this.flagsContainer);
     this.selectedFlagInner = this._createEl('div', { class: 'iti__flag' }, this.selectedFlag);
@@ -345,7 +347,6 @@ class Iti {
       this.countryList = this._createEl('ul', {
         class: 'iti__country-list iti__hide',
         id: 'country-listbox',
-        'aria-expanded': 'false',
         role: 'listbox',
       });
       if (this.preferredCountries.length) {
@@ -502,6 +503,7 @@ class Iti {
       // else let it bubble up to the top ("click-off-to-close" listener)
       // we cannot just stopPropagation as it may be needed to close another instance
       if (this.countryList.classList.contains('iti__hide') && !this.telInput.disabled && !this.telInput.readOnly) {
+        this.selectedFlag.setAttribute('aria-expanded', true);
         this._showDropdown();
       }
     };
@@ -646,7 +648,6 @@ class Iti {
   // show the dropdown
   _showDropdown() {
     this.countryList.classList.remove('iti__hide');
-    this.countryList.setAttribute('aria-expanded', 'true');
 
     this._setDropdownPosition();
 
@@ -986,7 +987,7 @@ class Iti {
         nextItem.setAttribute('aria-selected', 'true');
         nextItem.classList.add('iti__active');
         this.activeItem = nextItem;
-        this.countryList.setAttribute('aria-activedescendant', nextItem.getAttribute('id'));
+        this.selectedFlag.setAttribute('aria-activedescendant', nextItem.getAttribute('id'));
       }
     }
 
@@ -1052,8 +1053,8 @@ class Iti {
 
   // close the dropdown and unbind any listeners
   _closeDropdown() {
+    this.selectedFlag.setAttribute('aria-expanded', false);
     this.countryList.classList.add('iti__hide');
-    this.countryList.setAttribute('aria-expanded', 'false');
     // update the arrow
     this.dropdownArrow.classList.remove('iti__arrow--up');
 
