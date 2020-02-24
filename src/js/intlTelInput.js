@@ -140,8 +140,8 @@ class Iti {
       this.promise = Promise.all([autoCountryPromise, utilsScriptPromise]);
     } else {
       // prevent errors when Promise doesn't exist
-      this.resolveAutoCountryPromise = this.rejectAutoCountryPromise = () => {};
-      this.resolveUtilsScriptPromise = this.rejectUtilsScriptPromise = () => {};
+      this.resolveAutoCountryPromise = this.rejectAutoCountryPromise = () => { };
+      this.resolveUtilsScriptPromise = this.rejectUtilsScriptPromise = () => { };
     }
 
     // in various situations there could be no country selected initially, but we need to be able
