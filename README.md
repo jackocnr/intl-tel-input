@@ -192,6 +192,12 @@ Display the country dial code next to the selected flag so it's not part of the 
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px">
 
+**updateHiddenOnChange**
+Type: `Boolean` Default: `false`
+Updates the hidden input with the full telephone number on input change.
+This is useful for when we are handling the form in another way than via submit.
+Note that this requires the presence of `hiddenInput`.
+
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
 Enable formatting/validation etc. by specifying the URL of the included utils.js script (or alternatively just point it to the file on [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)). The script is fetched when the page has finished loading (on the window load event) to prevent blocking (the script is ~215KB). When instantiating the plugin, if the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is defined, one of those is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information. _Note that if you're lazy loading the plugin script itself (intlTelInput.js) this will not work and you will need to use the `loadUtils` method instead._

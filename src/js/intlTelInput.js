@@ -43,6 +43,9 @@ const defaults = {
   preferredCountries: ['us', 'gb'],
   // display the country dial code next to the selected flag so it's not part of the typed number
   separateDialCode: false,
+  // update the hidden telephone number on input change
+  // useful for when input is not in a form that is handled via "submit"
+  updateHiddenOnChange: false,
   // specify the path to the libphonenumber script to enable validation/formatting
   utilsScript: '',
 };
@@ -472,6 +475,7 @@ class Iti {
       this.hiddenInput.value = this.getNumber();
     };
     if (this.telInput.form) this.telInput.form.addEventListener('submit', this._handleHiddenInputSubmit);
+    if (this.options.updateHiddenOnChange) this.telInput.addEventListener('change', this._handleHiddenInputSubmit);
   }
 
 
