@@ -415,9 +415,7 @@
                         name: hiddenInputName
                     });
                     wrapper.appendChild(this.hiddenInput);
-                    if (this.options.updateHiddenOnChange) {
-                        this._handleHiddenInputSubmit();
-                    }
+                    this.hiddenInput.value = this.telInput.value;
                 }
             }
         }, {
