@@ -1002,6 +1002,7 @@ class Iti {
     // and then to inject a deep clone of the selectedFlag element
     const containerClone = this.telInput.parentNode.cloneNode();
     containerClone.style.visibility = 'hidden';
+    containerClone.style.display = "inline-block";
     document.body.appendChild(containerClone);
 
     const selectedFlagClone = this.selectedFlag.cloneNode(true);
