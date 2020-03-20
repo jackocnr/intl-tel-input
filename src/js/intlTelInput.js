@@ -1,10 +1,12 @@
-window.intlTelInputGlobals = {
+const intlTelInputGlobals = {
   getInstance: (input) => {
     const id = input.getAttribute('data-intl-tel-input-id');
     return window.intlTelInputGlobals.instances[id];
   },
   instances: {},
 };
+
+if (typeof window === 'object') window.intlTelInputGlobals = intlTelInputGlobals;
 
 // these vars persist through all instances of the plugin
 let id = 0;
@@ -50,11 +52,13 @@ const defaults = {
 const regionlessNanpNumbers = ['800', '822', '833', '844', '855', '866', '877', '880', '881', '882', '883', '884', '885', '886', '887', '888', '889'];
 
 
-// keep track of if the window.load event has fired as impossible to check after the fact
-window.addEventListener('load', () => {
-  // UPDATE: use a public static field so we can fudge it in the tests
-  window.intlTelInputGlobals.windowLoaded = true;
-});
+if (typeof window === 'object') {
+  // keep track of if the window.load event has fired as impossible to check after the fact
+  window.addEventListener('load', () => {
+    // UPDATE: use a public static field so we can fudge it in the tests
+    window.intlTelInputGlobals.windowLoaded = true;
+  });
+}
 
 
 // utility function to iterate over an object. can't use Object.entries or native forEach because
@@ -1382,7 +1386,7 @@ class Iti {
 
 
 // get the country data object
-window.intlTelInputGlobals.getCountryData = () => allCountries;
+intlTelInputGlobals.getCountryData = () => allCountries;
 
 
 // inject a <script> element to load utils.js
@@ -1405,7 +1409,7 @@ const injectScript = (path, handleSuccess, handleFailure) => {
 
 
 // load the utils script
-window.intlTelInputGlobals.loadUtils = (path) => {
+intlTelInputGlobals.loadUtils = (path) => {
   // 2 options:
   // 1) not already started loading (start)
   // 2) already started loading (do nothing - just wait for the onload callback to fire, which will
@@ -1424,7 +1428,7 @@ window.intlTelInputGlobals.loadUtils = (path) => {
 
 
 // default options
-window.intlTelInputGlobals.defaults = defaults;
+intlTelInputGlobals.defaults = defaults;
 
 // version
-window.intlTelInputGlobals.version = '<%= version %>';
+intlTelInputGlobals.version = '<%= version %>';

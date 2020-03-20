@@ -1,11 +1,11 @@
 // wrap in UMD
 (function(factory) {
   if (typeof module === "object" && module.exports) {
-    module.exports = factory(require("jquery"), window, document);
+    module.exports = factory(require("jquery"));
   } else if (typeof define === "function" && define.amd) {
     define(["jquery"], function($) {
-      factory($, window, document);
+      factory($);
     });
-  } else factory(jQuery, window, document);
-}(function ($, window, document, undefined) {
+  } else factory(jQuery);
+}(function ($, undefined) {
 	"use strict";
