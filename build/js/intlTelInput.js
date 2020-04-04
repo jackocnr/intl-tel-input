@@ -328,10 +328,6 @@
             }, {
                 key: "_generateMarkup",
                 value: function _generateMarkup() {
-                    // prevent autocomplete as there's no safe, cross-browser event we can react to, so it can
-                    // easily put the plugin in an inconsistent state e.g. the wrong flag selected for the
-                    // autocompleted number, which on submit could mean wrong number is saved (esp in nationalMode)
-                    this.telInput.setAttribute("autocomplete", "off");
                     // containers (mostly for positioning)
                     var parentClass = "iti";
                     if (this.options.allowDropdown) parentClass += " iti--allow-dropdown";
