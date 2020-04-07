@@ -6,9 +6,8 @@
 
 // wrap in UMD
 (function(factory) {
-    var intlTelInput = factory(window, document);
-    if (typeof module === "object" && module.exports) module.exports = intlTelInput; else window.intlTelInput = intlTelInput;
-})(function(window, document, undefined) {
+    if (typeof module === "object" && module.exports) module.exports = factory(); else window.intlTelInput = factory();
+})(function(undefined) {
     "use strict";
     return function() {
         // Array of country objects for the flag dropdown.
@@ -57,13 +56,14 @@
             if (staticProps) _defineProperties(Constructor, staticProps);
             return Constructor;
         }
-        window.intlTelInputGlobals = {
+        var intlTelInputGlobals = {
             getInstance: function getInstance(input) {
                 var id = input.getAttribute("data-intl-tel-input-id");
                 return window.intlTelInputGlobals.instances[id];
             },
             instances: {}
         };
+        if (typeof window === "object") window.intlTelInputGlobals = intlTelInputGlobals;
         // these vars persist through all instances of the plugin
         var id = 0;
         var defaults = {
@@ -106,11 +106,13 @@
         };
         // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
         var regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
-        // keep track of if the window.load event has fired as impossible to check after the fact
-        window.addEventListener("load", function() {
-            // UPDATE: use a public static field so we can fudge it in the tests
-            window.intlTelInputGlobals.windowLoaded = true;
-        });
+        if (typeof window === "object") {
+            // keep track of if the window.load event has fired as impossible to check after the fact
+            window.addEventListener("load", function() {
+                // UPDATE: use a public static field so we can fudge it in the tests
+                window.intlTelInputGlobals.windowLoaded = true;
+            });
+        }
         // utility function to iterate over an object. can't use Object.entries or native forEach because
         // of IE11
         var forEachProp = function forEachProp(obj, callback) {
@@ -1271,7 +1273,7 @@
  *  STATIC METHODS
  ********************/
         // get the country data object
-        window.intlTelInputGlobals.getCountryData = function() {
+        intlTelInputGlobals.getCountryData = function() {
             return allCountries;
         };
         // inject a <script> element to load utils.js
@@ -1292,7 +1294,7 @@
             document.body.appendChild(script);
         };
         // load the utils script
-        window.intlTelInputGlobals.loadUtils = function(path) {
+        intlTelInputGlobals.loadUtils = function(path) {
             // 2 options:
             // 1) not already started loading (start)
             // 2) already started loading (do nothing - just wait for the onload callback to fire, which will
@@ -1311,9 +1313,9 @@
             return null;
         };
         // default options
-        window.intlTelInputGlobals.defaults = defaults;
+        intlTelInputGlobals.defaults = defaults;
         // version
-        window.intlTelInputGlobals.version = "16.0.15";
+        intlTelInputGlobals.version = "16.0.15";
         // convenience wrapper
         return function(input, options) {
             var iti = new Iti(input, options);
