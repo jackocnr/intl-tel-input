@@ -59,6 +59,7 @@ function getNumberType(number, countryCode) {
 
 
 // get more info if the validation has failed e.g. too long/too short
+// NOTE that isPossibleNumberWithReason returns a i18n.phonenumbers.PhoneNumberUtil.ValidationResult
 function getValidationError(number, countryCode) {
   try {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
@@ -68,11 +69,9 @@ function getValidationError(number, countryCode) {
     //console.log(e);
 
     // here I convert thrown errors into ValidationResult enums (if possible)
+    // errors are from i18n.phonenumbers.Error in the file https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js
     if (e.message == i18n.phonenumbers.Error.INVALID_COUNTRY_CODE) {
       return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.INVALID_COUNTRY_CODE;
-    }
-    if (e.message == i18n.phonenumbers.Error.NOT_A_NUMBER) {
-      return 4;
     }
     if (e.message == i18n.phonenumbers.Error.TOO_SHORT_AFTER_IDD || e == i18n.phonenumbers.Error.TOO_SHORT_NSN) {
       return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT;
@@ -113,43 +112,27 @@ var numberFormat = {
 var numberType = {
   "FIXED_LINE": 0,
   "MOBILE": 1,
-  // In some regions (e.g. the USA), it is impossible to distinguish between
-  // fixed-line and mobile numbers by looking at the phone number itself.
   "FIXED_LINE_OR_MOBILE": 2,
-  // Freephone lines
   "TOLL_FREE": 3,
   "PREMIUM_RATE": 4,
-  // The cost of this call is shared between the caller and the recipient, and
-  // is hence typically less than PREMIUM_RATE calls. See
-  // http://en.wikipedia.org/wiki/Shared_Cost_Service for more information.
   "SHARED_COST": 5,
-  // Voice over IP numbers. This includes TSoIP (Telephony Service over IP).
   "VOIP": 6,
-  // A personal number is associated with a particular person, and may be routed
-  // to either a MOBILE or FIXED_LINE number. Some more information can be found
-  // here: http://en.wikipedia.org/wiki/Personal_Numbers
   "PERSONAL_NUMBER": 7,
   "PAGER": 8,
-  // Used for 'Universal Access Numbers' or 'Company Numbers'. They may be
-  // further routed to specific offices, but allow one number to be used for a
-  // company.
   "UAN": 9,
-  // Used for 'Voice Mail Access Numbers'.
   "VOICEMAIL": 10,
-  // A phone number is of type UNKNOWN when it does not fit any of the known
-  // patterns for a specific region.
   "UNKNOWN": -1
 };
 
 
 // copied this from i18n.phonenumbers.PhoneNumberUtil.ValidationResult in https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js and again put the keys in quotes.
-// Also: added NOT_A_NUMBER to match i18n.phonenumbers.Error.NOT_A_NUMBER
 var validationError = {
   "IS_POSSIBLE": 0,
   "INVALID_COUNTRY_CODE": 1,
   "TOO_SHORT": 2,
   "TOO_LONG": 3,
-  "NOT_A_NUMBER": 4
+  "IS_POSSIBLE_LOCAL_ONLY": 4,
+  "INVALID_LENGTH": 5,
 };
 
 
