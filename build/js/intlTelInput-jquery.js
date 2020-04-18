@@ -386,7 +386,7 @@
                         role: "listbox"
                     });
                     if (this.preferredCountries.length) {
-                        this._appendListItems(this.preferredCountries, "iti__preferred");
+                        this._appendListItems(this.preferredCountries, "iti__preferred", true);
                         this._createEl("li", {
                             "class": "iti__divider",
                             role: "separator",
@@ -422,15 +422,16 @@
             }
         }, {
             key: "_appendListItems",
-            value: function _appendListItems(countries, className) {
+            value: function _appendListItems(countries, className, preferred) {
                 // we create so many DOM elements, it is faster to build a temp string
                 // and then add everything to the DOM in one go at the end
                 var tmp = "";
                 // for each country
                 for (var i = 0; i < countries.length; i++) {
                     var c = countries[i];
+                    var idSuffix = preferred ? "-preferred" : "";
                     // open the list item
-                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-item-").concat(c.iso2, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
+                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
                     // add the flag
                     tmp += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(c.iso2, "'></div></div>");
                     // and the country name and dial code
@@ -940,7 +941,7 @@
                         prevItem.setAttribute("aria-selected", "false");
                     }
                     if (countryCode) {
-                        var nextItem = this.countryList.querySelector("#iti-item-".concat(countryCode));
+                        var nextItem = this.countryList.querySelector("#iti-item-".concat(countryCode, "-preferred")) || this.countryList.querySelector("#iti-item-".concat(countryCode));
                         nextItem.setAttribute("aria-selected", "true");
                         nextItem.classList.add("iti__active");
                         this.activeItem = nextItem;

@@ -356,7 +356,7 @@ class Iti {
         role: 'listbox',
       });
       if (this.preferredCountries.length) {
-        this._appendListItems(this.preferredCountries, 'iti__preferred');
+        this._appendListItems(this.preferredCountries, 'iti__preferred', true);
         this._createEl('li', {
           class: 'iti__divider',
           role: 'separator',
@@ -393,15 +393,16 @@ class Iti {
 
 
   // add a country <li> to the countryList <ul> container
-  _appendListItems(countries, className) {
+  _appendListItems(countries, className, preferred) {
     // we create so many DOM elements, it is faster to build a temp string
     // and then add everything to the DOM in one go at the end
     let tmp = '';
     // for each country
     for (let i = 0; i < countries.length; i++) {
       const c = countries[i];
+      const idSuffix = preferred ? '-preferred' : '';
       // open the list item
-      tmp += `<li class='iti__country ${className}' tabIndex='-1' id='iti-item-${c.iso2}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
+      tmp += `<li class='iti__country ${className}' tabIndex='-1' id='iti-item-${c.iso2}${idSuffix}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
       // add the flag
       tmp += `<div class='iti__flag-box'><div class='iti__flag iti__${c.iso2}'></div></div>`;
       // and the country name and dial code
@@ -989,7 +990,7 @@ class Iti {
         prevItem.setAttribute('aria-selected', 'false');
       }
       if (countryCode) {
-        const nextItem = this.countryList.querySelector(`#iti-item-${countryCode}`);
+        const nextItem = this.countryList.querySelector(`#iti-item-${countryCode}-preferred`) || this.countryList.querySelector(`#iti-item-${countryCode}`);
         nextItem.setAttribute('aria-selected', 'true');
         nextItem.classList.add('iti__active');
         this.activeItem = nextItem;
