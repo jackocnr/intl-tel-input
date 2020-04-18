@@ -1,5 +1,12 @@
 # Changelog
 
+## v17.0.0 (2020-04-18)
+- Update validationError enum in utils.js to match latest version of libphonenumber
+- Change ID attributes to be unique (both within the dropdown e.g. dupe countries in preferred section, AND across multiple instances of the plugin)
+
+## v16.1.0 (2020-04-10)
+
+
 ## v16.0.0 (2019-06-23)
 Breaking changes
 
