@@ -335,7 +335,7 @@ class Iti {
     this.selectedFlag = this._createEl('div', {
       class: 'iti__selected-flag',
       role: 'combobox',
-      'aria-owns': 'country-listbox',
+      'aria-owns': `iti-${this.id}__country-listbox`,
       'aria-expanded': 'false',
     }, this.flagsContainer);
     this.selectedFlagInner = this._createEl('div', { class: 'iti__flag' }, this.selectedFlag);
@@ -352,7 +352,7 @@ class Iti {
       // country dropdown: preferred countries, then divider, then all countries
       this.countryList = this._createEl('ul', {
         class: 'iti__country-list iti__hide',
-        id: 'country-listbox',
+        id: `iti-${this.id}__country-listbox`,
         role: 'listbox',
       });
       if (this.preferredCountries.length) {
@@ -402,7 +402,7 @@ class Iti {
       const c = countries[i];
       const idSuffix = preferred ? '-preferred' : '';
       // open the list item
-      tmp += `<li class='iti__country ${className}' tabIndex='-1' id='iti-item-${c.iso2}${idSuffix}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
+      tmp += `<li class='iti__country ${className}' tabIndex='-1' id='iti-${this.id}__item-${c.iso2}${idSuffix}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}'>`;
       // add the flag
       tmp += `<div class='iti__flag-box'><div class='iti__flag iti__${c.iso2}'></div></div>`;
       // and the country name and dial code
@@ -814,7 +814,7 @@ class Iti {
   _searchForCountry(query) {
     for (let i = 0; i < this.countries.length; i++) {
       if (this._startsWith(this.countries[i].name, query)) {
-        const listItem = this.countryList.querySelector(`#iti-item-${this.countries[i].iso2}`);
+        const listItem = this.countryList.querySelector(`#iti-${this.id}__item-${this.countries[i].iso2}`);
         // update highlighting and scroll
         this._highlightListItem(listItem, false);
         this._scrollTo(listItem, true);
@@ -990,7 +990,8 @@ class Iti {
         prevItem.setAttribute('aria-selected', 'false');
       }
       if (countryCode) {
-        const nextItem = this.countryList.querySelector(`#iti-item-${countryCode}-preferred`) || this.countryList.querySelector(`#iti-item-${countryCode}`);
+        // check if there is a preferred item first, else fall back to standard
+        const nextItem = this.countryList.querySelector(`#iti-${this.id}__item-${countryCode}-preferred`) || this.countryList.querySelector(`#iti-${this.id}__item-${countryCode}`);
         nextItem.setAttribute('aria-selected', 'true');
         nextItem.classList.add('iti__active');
         this.activeItem = nextItem;

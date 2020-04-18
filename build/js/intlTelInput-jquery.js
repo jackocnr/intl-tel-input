@@ -362,7 +362,7 @@
                 this.selectedFlag = this._createEl("div", {
                     "class": "iti__selected-flag",
                     role: "combobox",
-                    "aria-owns": "country-listbox",
+                    "aria-owns": "iti-".concat(this.id, "__country-listbox"),
                     "aria-expanded": "false"
                 }, this.flagsContainer);
                 this.selectedFlagInner = this._createEl("div", {
@@ -382,7 +382,7 @@
                     // country dropdown: preferred countries, then divider, then all countries
                     this.countryList = this._createEl("ul", {
                         "class": "iti__country-list iti__hide",
-                        id: "country-listbox",
+                        id: "iti-".concat(this.id, "__country-listbox"),
                         role: "listbox"
                     });
                     if (this.preferredCountries.length) {
@@ -431,7 +431,7 @@
                     var c = countries[i];
                     var idSuffix = preferred ? "-preferred" : "";
                     // open the list item
-                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
+                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-").concat(this.id, "__item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
                     // add the flag
                     tmp += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(c.iso2, "'></div></div>");
                     // and the country name and dial code
@@ -791,7 +791,7 @@
             value: function _searchForCountry(query) {
                 for (var i = 0; i < this.countries.length; i++) {
                     if (this._startsWith(this.countries[i].name, query)) {
-                        var listItem = this.countryList.querySelector("#iti-item-".concat(this.countries[i].iso2));
+                        var listItem = this.countryList.querySelector("#iti-".concat(this.id, "__item-").concat(this.countries[i].iso2));
                         // update highlighting and scroll
                         this._highlightListItem(listItem, false);
                         this._scrollTo(listItem, true);
@@ -941,7 +941,8 @@
                         prevItem.setAttribute("aria-selected", "false");
                     }
                     if (countryCode) {
-                        var nextItem = this.countryList.querySelector("#iti-item-".concat(countryCode, "-preferred")) || this.countryList.querySelector("#iti-item-".concat(countryCode));
+                        // check if there is a preferred item first, else fall back to standard
+                        var nextItem = this.countryList.querySelector("#iti-".concat(this.id, "__item-").concat(countryCode, "-preferred")) || this.countryList.querySelector("#iti-".concat(this.id, "__item-").concat(countryCode));
                         nextItem.setAttribute("aria-selected", "true");
                         nextItem.classList.add("iti__active");
                         this.activeItem = nextItem;
