@@ -260,13 +260,15 @@ var allCountries = [
     "Christmas Island",
     "cx",
     "61",
-    2
+    2,
+    ["89164"]
   ],
   [
     "Cocos (Keeling) Islands",
     "cc",
     "61",
-    1
+    1,
+    ["89162"]
   ],
   [
     "Colombia",
