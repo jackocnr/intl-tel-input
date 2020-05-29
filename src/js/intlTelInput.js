@@ -1119,7 +1119,7 @@ class Iti {
     let newNumber;
     if (inputVal.charAt(0) === '+') {
       // there's a plus so we're dealing with a replacement (doesn't matter if nationalMode or not)
-      const prevDialCode = this._getDialCode(inputVal);
+      const prevDialCode = this._getDialCode(inputVal, true);
       if (prevDialCode) {
         // current number contains a valid dial code, so replace it
         newNumber = inputVal.replace(prevDialCode, newDialCode);
@@ -1151,7 +1151,8 @@ class Iti {
 
   // try and extract a valid international dial code from a full telephone number
   // Note: returns the raw string inc plus character and any whitespace/dots etc
-  _getDialCode(number) {
+  // If bare === true, don't include area code of NANP numbers.
+  _getDialCode(number, bare = false) {
     let dialCode = '';
     // only interested in international numbers (starting with a plus)
     if (number.charAt(0) === '+') {
@@ -1167,7 +1168,7 @@ class Iti {
             // store the actual raw string (useful for matching later)
             dialCode = number.substr(0, i + 1);
           }
-          if (numericChars.length === this.dialCodeMaxLen) {
+          if (numericChars.length === this.dialCodeMaxLen || (bare && numericChars === '1')) {
             break;
           }
         }
