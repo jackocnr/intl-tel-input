@@ -226,20 +226,20 @@
             }
         }, {
             key: "_addCountryCode",
-            value: function _addCountryCode(iso2, dialCode, priority) {
-                if (dialCode.length > this.dialCodeMaxLen) {
-                    this.dialCodeMaxLen = dialCode.length;
+            value: function _addCountryCode(iso2, countryCode, priority) {
+                if (countryCode.length > this.countryCodeMaxLen) {
+                    this.countryCodeMaxLen = countryCode.length;
                 }
-                if (!this.countryCodes.hasOwnProperty(dialCode)) {
-                    this.countryCodes[dialCode] = [];
+                if (!this.countryCodes.hasOwnProperty(countryCode)) {
+                    this.countryCodes[countryCode] = [];
                 }
-                // bail if we already have this country for this dialCode
-                for (var i = 0; i < this.countryCodes[dialCode].length; i++) {
-                    if (this.countryCodes[dialCode][i] === iso2) return;
+                // bail if we already have this country for this countryCode
+                for (var i = 0; i < this.countryCodes[countryCode].length; i++) {
+                    if (this.countryCodes[countryCode][i] === iso2) return;
                 }
                 // check for undefined as 0 is falsy
-                var index = priority !== undefined ? priority : this.countryCodes[dialCode].length;
-                this.countryCodes[dialCode][index] = iso2;
+                var index = priority !== undefined ? priority : this.countryCodes[countryCode].length;
+                this.countryCodes[countryCode][index] = iso2;
             }
         }, {
             key: "_processAllCountries",
@@ -280,11 +280,15 @@
         }, {
             key: "_processCountryCodes",
             value: function _processCountryCodes() {
-                this.dialCodeMaxLen = 0;
+                this.countryCodeMaxLen = 0;
+                // here we store just dial codes
+                this.dialCodes = {};
+                // here we store "country codes" (both dial codes and their area codes)
                 this.countryCodes = {};
                 // first: add dial codes
                 for (var i = 0; i < this.countries.length; i++) {
                     var c = this.countries[i];
+                    if (!this.dialCodes[c.dialCode]) this.dialCodes[c.dialCode] = true;
                     this._addCountryCode(c.iso2, c.dialCode, c.priority);
                 }
                 // next: add area codes
@@ -837,7 +841,7 @@
                     number = "+".concat(selectedDialCode).concat(number);
                 }
                 // try and extract valid dial code from input
-                var dialCode = this._getDialCode(number);
+                var dialCode = this._getDialCode(number, true);
                 var numeric = this._getNumeric(number);
                 var countryCode = null;
                 if (dialCode) {
@@ -1079,7 +1083,7 @@
             }
         }, {
             key: "_getDialCode",
-            value: function _getDialCode(number) {
+            value: function _getDialCode(number, includeAreaCode) {
                 var dialCode = "";
                 // only interested in international numbers (starting with a plus)
                 if (number.charAt(0) === "+") {
@@ -1091,11 +1095,20 @@
                         if (!isNaN(parseInt(c, 10))) {
                             numericChars += c;
                             // if current numericChars make a valid dial code
-                            if (this.countryCodes[numericChars]) {
-                                // store the actual raw string (useful for matching later)
-                                dialCode = number.substr(0, i + 1);
+                            if (includeAreaCode) {
+                                if (this.countryCodes[numericChars]) {
+                                    // store the actual raw string (useful for matching later)
+                                    dialCode = number.substr(0, i + 1);
+                                }
+                            } else {
+                                if (this.dialCodes[numericChars]) {
+                                    dialCode = number.substr(0, i + 1);
+                                    // if we're just looking for a dial code, we can break as soon as we find one
+                                    break;
+                                }
                             }
-                            if (numericChars.length === this.dialCodeMaxLen) {
+                            // stop searching as soon as we can - in this case when we hit max len
+                            if (numericChars.length === this.countryCodeMaxLen) {
                                 break;
                             }
                         }

@@ -194,20 +194,20 @@ class Iti {
 
 
   // add a country code to this.countryCodes
-  _addCountryCode(iso2, dialCode, priority) {
-    if (dialCode.length > this.dialCodeMaxLen) {
-      this.dialCodeMaxLen = dialCode.length;
+  _addCountryCode(iso2, countryCode, priority) {
+    if (countryCode.length > this.countryCodeMaxLen) {
+      this.countryCodeMaxLen = countryCode.length;
     }
-    if (!this.countryCodes.hasOwnProperty(dialCode)) {
-      this.countryCodes[dialCode] = [];
+    if (!this.countryCodes.hasOwnProperty(countryCode)) {
+      this.countryCodes[countryCode] = [];
     }
-    // bail if we already have this country for this dialCode
-    for (let i = 0; i < this.countryCodes[dialCode].length; i++) {
-      if (this.countryCodes[dialCode][i] === iso2) return;
+    // bail if we already have this country for this countryCode
+    for (let i = 0; i < this.countryCodes[countryCode].length; i++) {
+      if (this.countryCodes[countryCode][i] === iso2) return;
     }
     // check for undefined as 0 is falsy
-    const index = (priority !== undefined) ? priority : this.countryCodes[dialCode].length;
-    this.countryCodes[dialCode][index] = iso2;
+    const index = (priority !== undefined) ? priority : this.countryCodes[countryCode].length;
+    this.countryCodes[countryCode][index] = iso2;
   }
 
 
@@ -250,12 +250,16 @@ class Iti {
 
   // process the countryCodes map
   _processCountryCodes() {
-    this.dialCodeMaxLen = 0;
+    this.countryCodeMaxLen = 0;
+    // here we store just dial codes
+    this.dialCodes = {};
+    // here we store "country codes" (both dial codes and their area codes)
     this.countryCodes = {};
 
     // first: add dial codes
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
+      if (!this.dialCodes[c.dialCode]) this.dialCodes[c.dialCode] = true;
       this._addCountryCode(c.iso2, c.dialCode, c.priority);
     }
 
@@ -869,7 +873,7 @@ class Iti {
     }
 
     // try and extract valid dial code from input
-    const dialCode = this._getDialCode(number);
+    const dialCode = this._getDialCode(number, true);
     const numeric = this._getNumeric(number);
     let countryCode = null;
     if (dialCode) {
@@ -1151,7 +1155,7 @@ class Iti {
 
   // try and extract a valid international dial code from a full telephone number
   // Note: returns the raw string inc plus character and any whitespace/dots etc
-  _getDialCode(number) {
+  _getDialCode(number, includeAreaCode) {
     let dialCode = '';
     // only interested in international numbers (starting with a plus)
     if (number.charAt(0) === '+') {
@@ -1163,11 +1167,20 @@ class Iti {
         if (!isNaN(parseInt(c, 10))) {
           numericChars += c;
           // if current numericChars make a valid dial code
-          if (this.countryCodes[numericChars]) {
-            // store the actual raw string (useful for matching later)
-            dialCode = number.substr(0, i + 1);
+          if (includeAreaCode) {
+            if (this.countryCodes[numericChars]) {
+              // store the actual raw string (useful for matching later)
+              dialCode = number.substr(0, i + 1);
+            }
+          } else {
+            if (this.dialCodes[numericChars]) {
+              dialCode = number.substr(0, i + 1);
+              // if we're just looking for a dial code, we can break as soon as we find one
+              break;
+            }
           }
-          if (numericChars.length === this.dialCodeMaxLen) {
+          // stop searching as soon as we can - in this case when we hit max len
+          if (numericChars.length === this.countryCodeMaxLen) {
             break;
           }
         }
