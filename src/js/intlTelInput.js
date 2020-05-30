@@ -1017,8 +1017,11 @@ class Iti {
     containerClone.style.visibility = 'hidden';
     document.body.appendChild(containerClone);
 
+    const flagsContainerClone = this.flagsContainer.cloneNode();
+    containerClone.appendChild(flagsContainerClone);
+
     const selectedFlagClone = this.selectedFlag.cloneNode(true);
-    containerClone.appendChild(selectedFlagClone);
+    flagsContainerClone.appendChild(selectedFlagClone);
 
     const width = selectedFlagClone.offsetWidth;
     containerClone.parentNode.removeChild(containerClone);

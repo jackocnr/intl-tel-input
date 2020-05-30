@@ -959,8 +959,10 @@
                     var containerClone = this.telInput.parentNode.cloneNode();
                     containerClone.style.visibility = "hidden";
                     document.body.appendChild(containerClone);
+                    var flagsContainerClone = this.flagsContainer.cloneNode();
+                    containerClone.appendChild(flagsContainerClone);
                     var selectedFlagClone = this.selectedFlag.cloneNode(true);
-                    containerClone.appendChild(selectedFlagClone);
+                    flagsContainerClone.appendChild(selectedFlagClone);
                     var width = selectedFlagClone.offsetWidth;
                     containerClone.parentNode.removeChild(containerClone);
                     return width;
