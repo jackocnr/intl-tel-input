@@ -63,5 +63,5 @@
     "build:img": "grunt img",
     "watch": "grunt watch"
   }
-  "style": "build/css/intlTelInput.css"
+  "style":"build/css/intlTelInput.css"
 }
