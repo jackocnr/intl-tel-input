@@ -113,10 +113,14 @@
     var regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
     if (typeof window === "object") {
         // keep track of if the window.load event has fired as impossible to check after the fact
-        window.addEventListener("load", function() {
-            // UPDATE: use a public static field so we can fudge it in the tests
+        if (document.readyState === "complete") {
             window.intlTelInputGlobals.windowLoaded = true;
-        });
+        } else {
+            window.addEventListener("load", function() {
+                // UPDATE: use a public static field so we can fudge it in the tests
+                window.intlTelInputGlobals.windowLoaded = true;
+            });
+        }
     }
     // utility function to iterate over an object. can't use Object.entries or native forEach because
     // of IE11
