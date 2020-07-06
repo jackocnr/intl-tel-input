@@ -15,7 +15,7 @@ If you like it, please consider making a donation, which you can do from [the de
 - [Browser Compatibility](#browser-compatibility)
 - [Getting Started](#getting-started)
 - [Recommended Usage](#recommended-usage)
-- [Options](#options)
+- [Options](#initialisation-options)
 - [Public Methods](#public-methods)
 - [Static Methods](#static-methods)
 - [Events](#events)
