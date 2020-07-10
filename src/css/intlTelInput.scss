@@ -28,7 +28,7 @@ $selectedFlagArrowWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPa
 // image related variables
 $flagsImagePath: "../img/" !default;
 $flagsImageName: "flags" !default;
-$flagsImageExtension: "png" !default;
+$flagsImageExtension: "webp" !default;
 
 // enough space for them to click off to close
 $mobilePopupMargin: 30px !default;
