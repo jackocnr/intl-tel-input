@@ -281,14 +281,14 @@ $mobilePopupMargin: 30px !default;
 .iti__flag {
   height: $flagHeight;
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: url("#{$flagsImagePath}#{$flagsImageName}.#{$flagsImageExtension}");
+  background-image: url("#{$flagsImagePath}#{$flagsImageName}.#{$flagsImageExtension}"),url("#{$flagsImagePath}#{$flagsImageName}.png");
   background-repeat: no-repeat;
   // empty state
   background-color: #DBDBDB;
   background-position: $flagWidth 0;
 
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    background-image: url("#{$flagsImagePath}#{$flagsImageName}@2x.#{$flagsImageExtension}");
+    background-image: url("#{$flagsImagePath}#{$flagsImageName}@2x.#{$flagsImageExtension}"),url("#{$flagsImagePath}#{$flagsImageName}@2x.png");
   }
 }
 
