@@ -414,7 +414,6 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * Android native port: [IntlPhoneInput](https://github.com/Rimoto/IntlPhoneInput)
 * Typescript type definitions are available in the [DefinitelyTyped repo](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/intl-tel-input/index.d.ts) (more info [here](https://github.com/jackocnr/intl-tel-input/issues/433#issuecomment-228517623))
 
-<a href="https://www.browserstack.com">
-<img src="https://p14.zdusercontent.com/attachment/1015988/y0Sl6KKaxGxel8uLLhHApi2qm?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..tN0cDNWdP3tkoP03Sgjf9w.knp9cYYPDLOhhv5TEVpfKc86Ymt8a4FI72PrLSflve3XuXraQhMASa6acCMZpxdJytHHR68IKeY8uHvll1mv6YgcTojspO80PL1TywO2nOW8rENDqn_cfiR0ezRgzvQe_8iLEMya-oJYIAzW7i1-5wkgz27Qw0o2BaBJtBy-sVtriApV2gwAz7cB5yNQ2ZzKGcZKhBfdwsUVpGfOr17jGQtJ4L7QVP2rnuvYXcKZ5qCiIO4hGo66fSPoCH2vLhAAY8Cj1OdBPOt9RoN2fJFWgwDzNKaz3hL7SKep7Q-32OI.p3OapnE-H2lWYIH5lMsrmg" width="200px"></a>
-
-Tested on [BrowserStack](https://www.browserstack.com)
+## Testing powered by 
+<a target="_blank" href="https://www.browserstack.com/"><img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png"></a><br>
+[[BrowserStack Open-Source Program](https://www.browserstack.com/open-source)]
