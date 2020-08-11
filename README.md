@@ -414,5 +414,5 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * Android native port: [IntlPhoneInput](https://github.com/Rimoto/IntlPhoneInput)
 * Typescript type definitions are available in the [DefinitelyTyped repo](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/intl-tel-input/index.d.ts) (more info [here](https://github.com/jackocnr/intl-tel-input/issues/433#issuecomment-228517623))
 
-Testing powered by <img href="https://www.browserstack.com/"><img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png">
-[BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
+<img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" /><br />
+Testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
