@@ -358,6 +358,7 @@ class Iti {
         class: 'iti__country-list iti__hide',
         id: `iti-${this.id}__country-listbox`,
         role: 'listbox',
+        'aria-label': 'List of countries',
       });
       if (this.preferredCountries.length) {
         this._appendListItems(this.preferredCountries, 'iti__preferred', true);
