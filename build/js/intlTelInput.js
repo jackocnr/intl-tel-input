@@ -61,7 +61,11 @@
                 var id = input.getAttribute("data-intl-tel-input-id");
                 return window.intlTelInputGlobals.instances[id];
             },
-            instances: {}
+            instances: {},
+            // using a global like this allows us to mock it in the tests
+            documentReady: function documentReady() {
+                return document.readyState === "complete";
+            }
         };
         if (typeof window === "object") window.intlTelInputGlobals = intlTelInputGlobals;
         // these vars persist through all instances of the plugin
@@ -542,7 +546,7 @@
                     // if the user has specified the path to the utils script, fetch it on window.load, else resolve
                     if (this.options.utilsScript && !window.intlTelInputUtils) {
                         // if the plugin is being initialised after the window.load event has already been fired
-                        if (document.readyState === "complete") {
+                        if (window.intlTelInputGlobals.documentReady()) {
                             window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
                         } else {
                             // wait until the load event so we don't block any other requests e.g. the flags image

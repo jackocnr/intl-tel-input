@@ -81,7 +81,7 @@ describe("loadUtils:", function() {
       resolved = false;
 
     beforeEach(function(done) {
-      window.intlTelInputGlobals.windowLoaded = false;
+      window.intlTelInputGlobals.documentReady = () => false;
       iti = window.intlTelInput(input[0], {
         utilsScript: "some/other/url/ok",
       });
@@ -167,7 +167,7 @@ describe("loadUtils:", function() {
     var url3 = "build/js/utils.js?v=3";
 
     beforeEach(function(done) {
-      window.intlTelInputGlobals.windowLoaded = true;
+      window.intlTelInputGlobals.documentReady = () => true;
       iti = window.intlTelInput(input[0], {
         utilsScript: url3,
       });
