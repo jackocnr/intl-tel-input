@@ -380,7 +380,8 @@
                     this.countryList = this._createEl("ul", {
                         "class": "iti__country-list iti__hide",
                         id: "iti-".concat(this.id, "__country-listbox"),
-                        role: "listbox"
+                        role: "listbox",
+                        "aria-label": "List of countries"
                     });
                     if (this.preferredCountries.length) {
                         this._appendListItems(this.preferredCountries, "iti__preferred", true);
@@ -428,7 +429,7 @@
                     var c = countries[i];
                     var idSuffix = preferred ? "-preferred" : "";
                     // open the list item
-                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-").concat(this.id, "__item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
+                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-").concat(this.id, "__item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "' aria-selected='false'>");
                     // add the flag
                     tmp += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(c.iso2, "'></div></div>");
                     // and the country name and dial code
