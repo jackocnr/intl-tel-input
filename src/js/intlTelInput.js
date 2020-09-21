@@ -1433,7 +1433,8 @@ intlTelInputGlobals.loadUtils = (path) => {
     // if we have promises, then return a promise
     if (typeof Promise !== 'undefined') {
       return new Promise((resolve, reject) => injectScript(path, resolve, reject));
-    } injectScript(path);
+    }
+    injectScript(path);
   }
   return null;
 };
