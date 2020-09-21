@@ -47,7 +47,33 @@ You can view a live demo and some examples of how to use the various options her
 
 Note: In v12.0.0 we dropped support for IE9 and IE10, because they are no longer supported by any version of Windows - see https://www.xfive.co/blog/stop-supporting-ie10-ie9-ie8/
 
-## Getting Started
+## Getting Started (Using a bundler e.g. Webpack)
+1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
+
+2. Import CSS: `import 'intl-tel-input/build/css/intlTelInput.css';`
+
+3. Override the path to flags.png in your CSS
+  ```css
+  .iti__flag {background-image: url("path/to/flags.png");}
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .iti__flag {background-image: url("path/to/flags@2x.png");}
+  }
+  ```
+
+4. Import JS and initialise plugin:
+  ```js
+  import intlTelInput from 'intl-tel-input';
+
+  const input = document.querySelector("#phone");
+  intlTelInput(input, {
+      // any initialisation options go here
+  });
+  ```
+
+5. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
+
+## Getting Started (Not using a bundler)
 1. Download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest), or better yet install it with [npm](https://www.npmjs.com/package/intl-tel-input)
 
 2. Include the stylesheet
