@@ -13,7 +13,7 @@ If you like it, please consider making a donation, which you can do from [the de
 - [Demo and Examples](#demo-and-examples)
 - [Features](#features)
 - [Browser Compatibility](#browser-compatibility)
-- [Getting Started](#getting-started)
+- [Getting Started](#getting-started-using-a-bundler-eg-webpack)
 - [Recommended Usage](#recommended-usage)
 - [Options](#initialisation-options)
 - [Public Methods](#public-methods)
