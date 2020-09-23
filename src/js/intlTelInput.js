@@ -4,6 +4,8 @@ const intlTelInputGlobals = {
     return window.intlTelInputGlobals.instances[id];
   },
   instances: {},
+  // using a global like this allows us to mock it in the tests
+  documentReady: () => document.readyState === 'complete',
 };
 
 if (typeof window === 'object') window.intlTelInputGlobals = intlTelInputGlobals;
@@ -50,15 +52,6 @@ const defaults = {
 };
 // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
 const regionlessNanpNumbers = ['800', '822', '833', '844', '855', '866', '877', '880', '881', '882', '883', '884', '885', '886', '887', '888', '889'];
-
-
-if (typeof window === 'object') {
-  // keep track of if the window.load event has fired as impossible to check after the fact
-  window.addEventListener('load', () => {
-    // UPDATE: use a public static field so we can fudge it in the tests
-    window.intlTelInputGlobals.windowLoaded = true;
-  });
-}
 
 
 // utility function to iterate over an object. can't use Object.entries or native forEach because
@@ -544,7 +537,7 @@ class Iti {
     // if the user has specified the path to the utils script, fetch it on window.load, else resolve
     if (this.options.utilsScript && !window.intlTelInputUtils) {
       // if the plugin is being initialised after the window.load event has already been fired
-      if (window.intlTelInputGlobals.windowLoaded) {
+      if (window.intlTelInputGlobals.documentReady()) {
         window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
       } else {
         // wait until the load event so we don't block any other requests e.g. the flags image
@@ -1443,7 +1436,8 @@ intlTelInputGlobals.loadUtils = (path) => {
     // if we have promises, then return a promise
     if (typeof Promise !== 'undefined') {
       return new Promise((resolve, reject) => injectScript(path, resolve, reject));
-    } injectScript(path);
+    }
+    injectScript(path);
   }
   return null;
 };

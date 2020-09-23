@@ -22,7 +22,7 @@ var intlSetup = function(utilsScript) {
 var intlTeardown = function() {
   $("script.iti-load-utils").remove();
   window.intlTelInputGlobals.startedLoadingUtilsScript = false;
-  window.intlTelInputGlobals.windowLoaded = false;
+  window.intlTelInputGlobals.documentReady = () => false;
   window.intlTelInputGlobals.autoCountry = null;
   window.intlTelInputGlobals.startedLoadingAutoCountry = false;
   // just make sure before we change the ref

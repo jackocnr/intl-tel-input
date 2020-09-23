@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v17.0.3
+ * International Telephone Input v17.0.5
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -66,7 +66,11 @@
             var id = input.getAttribute("data-intl-tel-input-id");
             return window.intlTelInputGlobals.instances[id];
         },
-        instances: {}
+        instances: {},
+        // using a global like this allows us to mock it in the tests
+        documentReady: function documentReady() {
+            return document.readyState === "complete";
+        }
     };
     if (typeof window === "object") window.intlTelInputGlobals = intlTelInputGlobals;
     // these vars persist through all instances of the plugin
@@ -111,13 +115,6 @@
     };
     // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
     var regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
-    if (typeof window === "object") {
-        // keep track of if the window.load event has fired as impossible to check after the fact
-        window.addEventListener("load", function() {
-            // UPDATE: use a public static field so we can fudge it in the tests
-            window.intlTelInputGlobals.windowLoaded = true;
-        });
-    }
     // utility function to iterate over an object. can't use Object.entries or native forEach because
     // of IE11
     var forEachProp = function forEachProp(obj, callback) {
@@ -387,7 +384,8 @@
                     this.countryList = this._createEl("ul", {
                         "class": "iti__country-list iti__hide",
                         id: "iti-".concat(this.id, "__country-listbox"),
-                        role: "listbox"
+                        role: "listbox",
+                        "aria-label": "List of countries"
                     });
                     if (this.preferredCountries.length) {
                         this._appendListItems(this.preferredCountries, "iti__preferred", true);
@@ -435,7 +433,7 @@
                     var c = countries[i];
                     var idSuffix = preferred ? "-preferred" : "";
                     // open the list item
-                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-").concat(this.id, "__item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "'>");
+                    tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-").concat(this.id, "__item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "' aria-selected='false'>");
                     // add the flag
                     tmp += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(c.iso2, "'></div></div>");
                     // and the country name and dial code
@@ -553,7 +551,7 @@
                 // if the user has specified the path to the utils script, fetch it on window.load, else resolve
                 if (this.options.utilsScript && !window.intlTelInputUtils) {
                     // if the plugin is being initialised after the window.load event has already been fired
-                    if (window.intlTelInputGlobals.windowLoaded) {
+                    if (window.intlTelInputGlobals.documentReady()) {
                         window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
                     } else {
                         // wait until the load event so we don't block any other requests e.g. the flags image
@@ -1340,7 +1338,7 @@
     // default options
     intlTelInputGlobals.defaults = defaults;
     // version
-    intlTelInputGlobals.version = "17.0.3";
+    intlTelInputGlobals.version = "17.0.5";
     var pluginName = "intlTelInput";
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
