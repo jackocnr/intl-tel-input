@@ -363,6 +363,7 @@
                 this.selectedFlag = this._createEl("div", {
                     "class": "iti__selected-flag",
                     role: "combobox",
+                    "aria-controls": "iti-".concat(this.id, "__country-listbox"),
                     "aria-owns": "iti-".concat(this.id, "__country-listbox"),
                     "aria-expanded": "false"
                 }, this.flagsContainer);
