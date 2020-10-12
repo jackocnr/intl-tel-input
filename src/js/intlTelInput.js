@@ -775,7 +775,7 @@ class Iti {
       else if (e.key === 'Escape') this._closeDropdown();
       // alpha chars to perform search
       // regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866)
-      else if (/^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
+      else if (/^[a-zA-ZàâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇа-яА-Я ]$/.test(e.key)) {
         // jump to countries that start with the query string
         if (queryTimer) clearTimeout(queryTimer);
         query += e.key.toLowerCase();
