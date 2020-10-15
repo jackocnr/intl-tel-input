@@ -3,12 +3,17 @@ module.exports = function(grunt) {
   // load all tasks from package.json
   require('load-grunt-config')(grunt);
   require('time-grunt')(grunt);
+  require('google-closure-compiler').grunt(grunt, {
+    platfrom: 'native'
+  })
 
   /**
    * TASKS
    */
   // build everything ready for a commit
   grunt.registerTask('build', ['css', 'js']);
+  // build utils
+  grunt.registerTask('build:utils', ['closure-compiler:utils']);
   // just CSS
   grunt.registerTask('css', ['sass', 'cssmin']);
   // just images

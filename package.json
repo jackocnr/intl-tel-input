@@ -28,6 +28,8 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.1",
     "evenizer": "^0.1.17",
+    "google-closure-compiler": "^20201006.0.0",
+    "google-closure-library": "^20200830.0.0",
     "grunt": "^1.0.3",
     "grunt-babel": "^8.0.0",
     "grunt-bump": "^0.8.0",
@@ -62,6 +64,7 @@
     "test": "grunt travis",
     "build": "grunt build",
     "build:js": "grunt js",
+    "build:utils": "grunt build:utils",
     "build:css": "grunt css",
     "build:img": "grunt img",
     "watch": "grunt watch"
