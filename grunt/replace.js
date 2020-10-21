@@ -125,6 +125,9 @@ module.exports = function(grunt) {
             match: /_setFlag/g,
             replacement: '_z'
           }, {
+            match: /_getHiddenSelectedFlagWidth/g,
+            replacement: '_z2'
+          }, {
             match: /_updatePlaceholder/g,
             replacement: '_0'
           }, {
@@ -148,9 +151,6 @@ module.exports = function(grunt) {
           }, {
             match: /_beforeSetNumber/g,
             replacement: '_7'
-          }, {
-            match: /_triggerCountryChange/g,
-            replacement: '_8'
           }
         ]
       },
