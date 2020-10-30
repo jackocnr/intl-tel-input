@@ -1,16 +1,19 @@
 const intlTelInputGlobals = {
-  getInstance: (input) => {
-    const id = input.getAttribute('data-intl-tel-input-id');
-    return window.intlTelInputGlobals.instances[id];
-  },
-  instances: {},
+  instances: {}, // IDs of elements registered with this plugin
   // using a global like this allows us to mock it in the tests
   documentReady: () => document.readyState === 'complete',
 };
 
-if (typeof window === 'object') window.intlTelInputGlobals = intlTelInputGlobals;
+intlTelInputGlobals.getInstance = (input) => {
+  const id = input.getAttribute('data-intl-tel-input-id');
+  return intlTelInputGlobals.instances[id];
+};
 
-// these vars persist through all instances of the plugin
+// Put it into the window object in the appropriate spot under `window`.
+// eslint-disable-next-line no-undef
+if (typeof window === 'object') window[instanceGlobalKey] = intlTelInputGlobals;
+
+// these vars persist over all elements using the plugin
 let id = 0;
 const defaults = {
   // whether or not to allow the dropdown
@@ -64,10 +67,10 @@ const forEachProp = (obj, callback) => {
 };
 
 
-// run a method on each instance of the plugin
+// run a method on each element using this plugin
 const forEachInstance = (method) => {
-  forEachProp(window.intlTelInputGlobals.instances, (key) => {
-    window.intlTelInputGlobals.instances[key][method]();
+  forEachProp(intlTelInputGlobals.instances, (key) => {
+    intlTelInputGlobals.instances[key][method]();
   });
 };
 
@@ -538,12 +541,12 @@ class Iti {
     // if the user has specified the path to the utils script, fetch it on window.load, else resolve
     if (this.options.utilsScript && !window.intlTelInputUtils) {
       // if the plugin is being initialised after the window.load event has already been fired
-      if (window.intlTelInputGlobals.documentReady()) {
-        window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
+      if (intlTelInputGlobals.documentReady()) {
+        intlTelInputGlobals.loadUtils(this.options.utilsScript);
       } else {
         // wait until the load event so we don't block any other requests e.g. the flags image
         window.addEventListener('load', () => {
-          window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
+          intlTelInputGlobals.loadUtils(this.options.utilsScript);
         });
       }
     } else this.resolveUtilsScriptPromise();
@@ -559,15 +562,15 @@ class Iti {
     // 1) already loaded (we're done)
     // 2) not already started loading (start)
     // 3) already started loading (do nothing - just wait for loading callback to fire)
-    if (window.intlTelInputGlobals.autoCountry) {
+    if (intlTelInputGlobals.autoCountry) {
       this.handleAutoCountry();
-    } else if (!window.intlTelInputGlobals.startedLoadingAutoCountry) {
+    } else if (!intlTelInputGlobals.startedLoadingAutoCountry) {
       // don't do this twice!
-      window.intlTelInputGlobals.startedLoadingAutoCountry = true;
+      intlTelInputGlobals.startedLoadingAutoCountry = true;
 
       if (typeof this.options.geoIpLookup === 'function') {
         this.options.geoIpLookup((countryCode) => {
-          window.intlTelInputGlobals.autoCountry = countryCode.toLowerCase();
+          intlTelInputGlobals.autoCountry = countryCode.toLowerCase();
           // tell all instances the auto country is ready
           // TODO: this should just be the current instances
           // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
@@ -1244,7 +1247,7 @@ class Iti {
     if (this.options.initialCountry === 'auto') {
       // we must set this even if there is an initial val in the input: in case the initial val is
       // invalid and they delete it - they should see their auto country
-      this.defaultCountry = window.intlTelInputGlobals.autoCountry;
+      this.defaultCountry = intlTelInputGlobals.autoCountry;
       // if there's no initial value in the input, then update the flag
       if (!this.telInput.value) {
         this.setCountry(this.defaultCountry);
@@ -1309,7 +1312,7 @@ class Iti {
     wrapper.parentNode.insertBefore(this.telInput, wrapper);
     wrapper.parentNode.removeChild(wrapper);
 
-    delete window.intlTelInputGlobals.instances[this.id];
+    delete intlTelInputGlobals.instances[this.id];
   }
 
 
@@ -1430,9 +1433,9 @@ intlTelInputGlobals.loadUtils = (path) => {
   // 1) not already started loading (start)
   // 2) already started loading (do nothing - just wait for the onload callback to fire, which will
   // trigger handleUtils on all instances, invoking their resolveUtilsScriptPromise functions)
-  if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
+  if (!window.intlTelInputUtils && !intlTelInputGlobals.startedLoadingUtilsScript) {
     // only do this once
-    window.intlTelInputGlobals.startedLoadingUtilsScript = true;
+    intlTelInputGlobals.startedLoadingUtilsScript = true;
 
     // if we have promises, then return a promise
     if (typeof Promise !== 'undefined') {

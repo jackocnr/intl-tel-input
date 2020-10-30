@@ -11,7 +11,7 @@
 				if (!$.data(this, "plugin_" + pluginName)) {
           var iti = new Iti(this, options);
           iti._init();
-          window.intlTelInputGlobals.instances[iti.id] = iti;
+          intlTelInputGlobals.instances[iti.id] = iti;
 					$.data(this, "plugin_" + pluginName, iti);
 				}
 			});
