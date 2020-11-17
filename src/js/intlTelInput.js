@@ -339,7 +339,12 @@ class Iti {
     this.selectedFlagInner = this._createEl('div', { class: 'iti__flag' }, this.selectedFlag);
 
     if (this.options.separateDialCode) {
-      this.selectedDialCode = this._createEl('div', { class: 'iti__selected-dial-code' }, this.selectedFlag);
+      this.selectedDialCode = this._createEl('div', {
+        class: 'iti__selected-dial-code',
+        role: 'textbox',
+        'aria-label': `iti-${this.id}__selected-dial-code`,
+        title: `iti-${this.id}__dial-code-textbox`
+      }, this.selectedFlag);
     }
 
     if (this.options.allowDropdown) {
