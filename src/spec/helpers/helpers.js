@@ -1,6 +1,6 @@
 var input,
   iti,
-  totalCountries = 243,
+  totalCountries = 244,
   totalDialCodes = 228,
   defaultPreferredCountries = 2;
 
