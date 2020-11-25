@@ -77,6 +77,11 @@ var allCountries = [
     "297"
   ],
   [
+    "Ascension Island",
+    "ac",
+    "247"
+  ],
+  [
     "Australia",
     "au",
     "61",
