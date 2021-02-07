@@ -8,7 +8,6 @@ const intlTelInputGlobals = {
   documentReady: () => document.readyState === 'complete',
 };
 
-if (typeof window === 'object') window.intlTelInputGlobals = intlTelInputGlobals;
 
 // these vars persist through all instances of the plugin
 let id = 0;
