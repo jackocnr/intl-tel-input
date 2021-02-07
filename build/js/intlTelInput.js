@@ -443,7 +443,13 @@
             }, {
                 key: "_setInitialState",
                 value: function _setInitialState() {
-                    var val = this.telInput.value;
+                    // fix firefox bug: when first load page (with input with value set to number with intl dial
+                    // code) and initialising plugin removes the dial code from the input, then refresh page,
+                    // and we try to init plugin again but this time on number without dial code so get grey flag
+                    var attributeValue = this.telInput.getAttribute("value");
+                    var inputValue = this.telInput.value;
+                    var useAttribute = attributeValue && attributeValue.charAt(0) === "+" && (!inputValue || inputValue.charAt(0) !== "+");
+                    var val = useAttribute ? attributeValue : inputValue;
                     var dialCode = this._getDialCode(val);
                     var isRegionlessNanp = this._isRegionlessNanp(val);
                     var _this$options = this.options, initialCountry = _this$options.initialCountry, nationalMode = _this$options.nationalMode, autoHideDialCode = _this$options.autoHideDialCode, separateDialCode = _this$options.separateDialCode;
