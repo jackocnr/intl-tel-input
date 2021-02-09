@@ -1196,7 +1196,7 @@ class Iti {
 
   // get the input val, adding the dial code if separateDialCode is enabled
   _getFullNumber() {
-    const val = this.telInput.value.trim();
+    const val = this.telInput.value.replace(/[^0-9+]+/g, "");
     const { dialCode } = this.selectedCountryData;
     let prefix;
     const numericVal = this._getNumeric(val);
