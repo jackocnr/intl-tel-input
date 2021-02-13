@@ -7,7 +7,7 @@ var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long
 
 // initialise plugin
 var iti = window.intlTelInput(input, {
-  utilsScript: "../../build/js/utils.js?1603274336113"
+  utilsScript: "../../build/js/utils.js?1613236686837"
 });
 
 var reset = function() {
