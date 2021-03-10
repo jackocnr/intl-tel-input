@@ -1,6 +1,8 @@
+goog.provide('i18n.phonenumbers.demo');
 // includes
 goog.require('i18n.phonenumbers.PhoneNumberFormat');
 goog.require('i18n.phonenumbers.PhoneNumberUtil');
+goog.require('i18n.phonenumbers.Error');
 
 
 // format the given number to the given format
