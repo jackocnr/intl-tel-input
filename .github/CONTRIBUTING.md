@@ -13,6 +13,7 @@ If you want to make changes to the CSS or the flags sprite, you will need to glo
 ### Updating to a new version of libphonenumber
 
 #### Step 1: Setup
+(Taken from the [libphonenumber JavaScript setup instructions](https://github.com/google/libphonenumber/blob/master/javascript/README.md))  
 Create a new dir (e.g. ~/workspace/libphonenumber-tools) where you will clone the libphonenumber project and a few other dependencies, and cd into it, and then:
 
 ```
