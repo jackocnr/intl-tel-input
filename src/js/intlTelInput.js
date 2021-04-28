@@ -973,6 +973,7 @@ class Iti {
     // update the selected country's title attribute
     const title = (countryCode) ? `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}` : 'Unknown';
     this.selectedFlag.setAttribute('title', title);
+    this.selectedFlag.setAttribute('data-intl-prefix', `${this.selectedCountryData.dialCode}`);
 
     if (this.options.separateDialCode) {
       const dialCode = (this.selectedCountryData.dialCode) ? `+${this.selectedCountryData.dialCode}` : '';

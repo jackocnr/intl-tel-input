@@ -9,6 +9,7 @@
 /vendor/
 /.idea/
 *.iml
+yarn.lock
 .DS_Store
 
 # these files are now auto-generated

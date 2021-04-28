@@ -126,8 +126,7 @@
         };
         // this is our plugin class that we will create an instance of
         // eslint-disable-next-line no-unused-vars
-        var Iti = /*#__PURE__*/
-        function() {
+        var Iti = /*#__PURE__*/ function() {
             function Iti(input, options) {
                 var _this = this;
                 _classCallCheck(this, Iti);
@@ -927,6 +926,7 @@
                     // update the selected country's title attribute
                     var title = countryCode ? "".concat(this.selectedCountryData.name, ": +").concat(this.selectedCountryData.dialCode) : "Unknown";
                     this.selectedFlag.setAttribute("title", title);
+                    this.selectedFlag.setAttribute("data-intl-prefix", "".concat(this.selectedCountryData.dialCode));
                     if (this.options.separateDialCode) {
                         var dialCode = this.selectedCountryData.dialCode ? "+".concat(this.selectedCountryData.dialCode) : "";
                         this.selectedDialCode.innerHTML = dialCode;
