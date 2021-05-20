@@ -8,6 +8,10 @@ A JavaScript plugin for entering and validating international telephone numbers.
 
 If you like it, please consider making a donation, which you can do from [the demo page](http://intl-tel-input.com).
 
+## Sponsored by
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.png" height="100" />
+Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input">Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more</a>. We can't wait to see what you build.
+
 ## Table of Contents
 
 - [Demo and Examples](#demo-and-examples)
