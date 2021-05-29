@@ -24,7 +24,7 @@ git clone https://github.com/google/closure-linter
 git clone https://github.com/google/python-gflags
 ```
 
-Build Closure's compiler.jar in closure-compiler directory: `bazelisk build :all` (requires bazelisk to be installed - on MacOS, you can do this with `brew install bazelisk`)
+Build Closure's compiler.jar in closure-compiler directory: `bazelisk build :all` (requires 2 things to be installed: (1) bazelisk - on MacOS, you can do this with `brew install bazelisk`, and (2) a JDK)
 
 #### Step 2: Updating libphonenumber
 
