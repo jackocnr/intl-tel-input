@@ -698,7 +698,7 @@ var allCountries = [
     "853"
   ],
   [
-    "Macedonia (FYROM) (Македонија)",
+    "North Macedonia (Македонија)",
     "mk",
     "389"
   ],
