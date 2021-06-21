@@ -20,14 +20,6 @@ describe("using dropdown: init plugin with nationalMode=false", function() {
     expect(getListElement()).toBeVisible();
   });
 
-  it("disabled input: clicking the selected flag does not open the dropdown", function() {
-    input.prop("disabled", true);
-    getSelectedFlagContainer()[0].click();
-    expect(getListElement()).not.toBeVisible();
-  });
-
-
-
   describe("clicking the selected flag to open the dropdown", function() {
 
     beforeEach(function() {
@@ -79,3 +71,25 @@ describe("using dropdown: init plugin with nationalMode=false", function() {
   });
 
 });
+
+describe("using dropdown: disabled input", () => {
+  beforeEach(function() {
+    intlSetup();
+    input = $("<input disabled>").appendTo("body");
+    iti = window.intlTelInput(input[0]);
+  });
+
+  afterEach(function() {
+    intlTeardown();
+  });
+
+  it("prevents the user from opening the dropdown using the keyboard", function() {
+    expect(getSelectedFlagContainer().attr('tabindex')).toEqual('-1');
+    expect(getSelectedFlagContainer().attr('aria-disabled')).toEqual('true');
+  });
+
+  it("clicking the selected flag does not open the dropdown", function() {
+    getSelectedFlagContainer()[0].click();
+    expect(getListElement()).not.toBeVisible();
+  });
+})
