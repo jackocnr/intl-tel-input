@@ -173,7 +173,6 @@ intlTelInput(input, {
     geoIpLookup: function (success){
         fetch('http://ip-api.com/json')
         .then( res => res.json() )
-        .then( data => data)
         .catch( error => console.log(error) )
         .then( data => success(data.countryCode) )
     }
