@@ -171,14 +171,15 @@ Here is an example using the [ip-api.com](http://ip-api.com/json/) service:
 intlTelInput(input, {
   initialCountry: "auto",
     geoIpLookup: function (success){
-        fetch('http://ip-api.com/json/')
+        fetch('http://ip-api.com/json')
         .then( res => res.json() )
-        .then( data => success(data.countryCode) )
+        .then( data => data)
         .catch( error => console.log(error) )
+        .then( data => success(data.countryCode) )
     }
 })
 ```
-_Note that the callback must still be called in the event of an error, hence the use of `always` in this example._  
+_Note that the callback must still be called in the event of an error, Hence the use of `then()` after `catch()` in this example._  
 _Tip: store the result in a cookie to avoid repeat lookups!_
 
 **hiddenInput**  
