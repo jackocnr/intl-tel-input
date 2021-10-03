@@ -1,6 +1,6 @@
 .iti {
   position: relative;
-  display: inline-block; }
+ }
   .iti * {
     box-sizing: border-box;
     -moz-box-sizing: border-box; }
@@ -20,7 +20,8 @@
     top: 0;
     bottom: 0;
     right: 0;
-    padding: 1px; }
+    padding: 1px;
+    padding-left: 2%; }
   .iti__selected-flag {
     z-index: 1;
     position: relative;
