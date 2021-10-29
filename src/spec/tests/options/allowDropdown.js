@@ -24,6 +24,10 @@ describe("allowDropdown:", function() {
       expect(getListElement()).not.toExist();
     });
 
+    if("Should not add role[combox]", function() {
+      expect(getSelectedFlagContainer().not.toHaveAttr("combobox"));
+    });
+
     it("typing a different dial code updates the flag", function() {
       input.val("+4");
       triggerKeyOnInput("4");
@@ -58,6 +62,10 @@ describe("allowDropdown:", function() {
       iti = window.intlTelInput(input[0], {
         allowDropdown: true
       });
+    });
+
+    if("Should have role[combox]", function() {
+      expect(getSelectedFlagContainer().toHaveAttr("combobox"));
     });
 
     it("shows the arrow and generate the dropdown markup", function() {

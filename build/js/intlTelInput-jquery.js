@@ -42,6 +42,34 @@
         };
     }
     "use strict";
+    function _objectSpread(target) {
+        for (var i = 1; i < arguments.length; i++) {
+            var source = arguments[i] != null ? arguments[i] : {};
+            var ownKeys = Object.keys(source);
+            if (typeof Object.getOwnPropertySymbols === "function") {
+                ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
+                    return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+                }));
+            }
+            ownKeys.forEach(function(key) {
+                _defineProperty(target, key, source[key]);
+            });
+        }
+        return target;
+    }
+    function _defineProperty(obj, key, value) {
+        if (key in obj) {
+            Object.defineProperty(obj, key, {
+                value: value,
+                enumerable: true,
+                configurable: true,
+                writable: true
+            });
+        } else {
+            obj[key] = value;
+        }
+        return obj;
+    }
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -360,13 +388,14 @@
                 }, wrapper);
                 wrapper.appendChild(this.telInput);
                 // selected flag (displayed to left of input)
-                this.selectedFlag = this._createEl("div", {
-                    "class": "iti__selected-flag",
+                this.selectedFlag = this._createEl("div", _objectSpread({
+                    "class": "iti__selected-flag"
+                }, this.options.allowDropdown && {
                     role: "combobox",
                     "aria-controls": "iti-".concat(this.id, "__country-listbox"),
                     "aria-owns": "iti-".concat(this.id, "__country-listbox"),
                     "aria-expanded": "false"
-                }, this.flagsContainer);
+                }), this.flagsContainer);
                 this.selectedFlagInner = this._createEl("div", {
                     "class": "iti__flag"
                 }, this.selectedFlag);
