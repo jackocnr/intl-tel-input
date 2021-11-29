@@ -24,7 +24,14 @@ git clone https://github.com/google/closure-linter
 git clone https://github.com/google/python-gflags
 ```
 
-Build Closure's compiler.jar in closure-compiler directory: `bazelisk build :all` (requires 2 things to be installed: (1) bazelisk - on MacOS, you can do this with `brew install bazelisk`, and (2) a JDK)
+Update 29/11/2021: the recommended versions of these dependencies didn't work for me, when trying to build against the latest version of libphonenumber (v8.12.38 at the time of writing), so I had to use the following versions to get it working:
+
+- closure-compiler v20210302
+- closure-library v20201006
+- closure-linter v2.3.19
+- python-gflags 3.1.2
+
+You also need to build Closure's compiler.jar in the closure-compiler directory: `bazelisk build :all` (requires 2 things to be installed: (1) bazelisk - on MacOS, you can do this with `brew install bazelisk`, and (2) a JDK)
 
 #### Step 2: Updating libphonenumber
 
