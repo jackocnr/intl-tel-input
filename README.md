@@ -442,3 +442,4 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 
 <img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" /><br />
 Testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
+
