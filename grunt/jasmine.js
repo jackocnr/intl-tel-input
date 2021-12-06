@@ -6,6 +6,8 @@ module.exports = function(grunt) {
       'build/js/utils.js'
     ],
     options: {
+      version: '3.8.0',
+      noSandbox: true,
       vendor: [
         'node_modules/jquery/dist/jquery.js',
         'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
