@@ -193,9 +193,6 @@ $mobilePopupMargin: 30px !default;
   }
 
   // spacing between country flag, name and dial code
-  &__flag-box, &__country-name, &__dial-code {
-    vertical-align: middle;
-  }
   &__flag-box, &__country-name {
     margin-right: 6px;
 
