@@ -335,7 +335,15 @@ class Iti {
       'aria-controls': `iti-${this.id}__country-listbox`,
       'aria-owns': `iti-${this.id}__country-listbox`,
       'aria-expanded': 'false',
+      id: `iti-${this.id}`,
     }, this.flagsContainer);
+
+    this.selectedFlagLabel = this._createEl('label', {
+      class: 'iti__label',
+      for: `iti-${this.id}`,
+    }, this.selectedFlag);
+    this.selectedFlagLabel.textContent = 'Telephone country code';
+
     this.selectedFlagInner = this._createEl('div', { class: 'iti__flag' }, this.selectedFlag);
 
     if (this.options.separateDialCode) {

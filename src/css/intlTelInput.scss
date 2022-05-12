@@ -89,6 +89,15 @@ $mobilePopupMargin: 30px !default;
     padding: $borderWidth;
   }
 
+  // visually hide the label
+  &__label {
+    position:absolute;
+    overflow:hidden;
+    clip:rect(1px,1px,1px,1px);
+    width:1px;
+    height:1px;
+  }
+
   &__selected-flag {
     // render above the input
     z-index: 1;

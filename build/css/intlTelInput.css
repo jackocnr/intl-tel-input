@@ -21,6 +21,12 @@
     bottom: 0;
     right: 0;
     padding: 1px; }
+  .iti__label {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+    width: 1px;
+    height: 1px; }
   .iti__selected-flag {
     z-index: 1;
     position: relative;
