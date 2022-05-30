@@ -4,7 +4,7 @@ I'm very open to contributions, big and small! For general instructions on submi
 
 ### Changes to the plugin
 
-In order to build the project, you will first need to install [npm](https://www.npmjs.org), and then run `npm install` to install the project's dependencies. At this point, the included `demo.html` should be working, if you open it in your browser. Then you should make your changes in the `src` directory, and be sure to run the build script before committing your changes - see below for more information on this.
+In order to build the project, you will first need to install [npm](https://www.npmjs.org), and then run `npm install` to install the project's dependencies (for now you must be using node v16 due to our node-sass dependency). At this point, the included `demo.html` should be working, if you open it in your browser. Then you should make your changes in the `src` directory, and be sure to run the build script before committing your changes - see below for more information on this.
 
 In most cases, you will only need to make changes to the JavaScript, in which case you can just run `npm run build:js` to build the JavaScript before committing.
 
