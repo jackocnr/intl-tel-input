@@ -134,8 +134,8 @@ class Iti {
       this.promise = Promise.all([autoCountryPromise, utilsScriptPromise]);
     } else {
       // prevent errors when Promise doesn't exist
-      this.resolveAutoCountryPromise = this.rejectAutoCountryPromise = () => {};
-      this.resolveUtilsScriptPromise = this.rejectUtilsScriptPromise = () => {};
+      this.resolveAutoCountryPromise = this.rejectAutoCountryPromise = () => { };
+      this.resolveUtilsScriptPromise = this.rejectUtilsScriptPromise = () => { };
     }
 
     // in various situations there could be no country selected initially, but we need to be able
@@ -883,8 +883,17 @@ class Iti {
       // longer than the matched dial code because in this case we need to make sure that if
       // there are multiple country matches, that the first one is selected (note: we could
       // just check that here, but it requires the same loop that we already have later)
-      const alreadySelected = (countryCodes.indexOf(this.selectedCountryData.iso2) !== -1)
-        && (numeric.length <= dialCode.length - 1);
+      // If we are in separateDialCode mode, we assume the selected country is the desired country,
+      // unless the number starts with +.
+      const alreadySelected = (() => {
+        if (this.options.separateDialCode) {
+          if (!(originalNumber.length && originalNumber.charAt(0) === '+')) {
+            return (typeof this.selectedCountryData !== 'undefined');
+          }
+        }
+        return (countryCodes.indexOf(this.selectedCountryData.iso2) !== -1)
+          && (numeric.length <= dialCode.length - 1);
+      })();
       const isRegionlessNanpNumber = (selectedDialCode === '1' && this._isRegionlessNanp(numeric));
 
       // only update the flag if:
