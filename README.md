@@ -116,6 +116,10 @@ You can always get the full international number (including country code) using 
 ## Initialisation Options
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
 
+**tabletMode**  
+Type: `Boolean` Default: `null`  
+Set a specific responsive display mode for country selector. If not passed, it will detect the mode based on the `navigator.userAgent` automatically.
+
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also we display the selected flag on the right instead because it is just a marker of state.

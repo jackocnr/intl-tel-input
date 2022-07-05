@@ -13,6 +13,8 @@ if (typeof window === 'object') window.intlTelInputGlobals = intlTelInputGlobals
 // these vars persist through all instances of the plugin
 let id = 0;
 const defaults = {
+  // modify the responsive display mode
+  tabletMode: null,
   // whether or not to allow the dropdown
   allowDropdown: true,
   // if there is just a dial code in the input: remove it on blur
@@ -109,7 +111,7 @@ class Iti {
     // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
     // rest of these declarations
     // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
-    this.isMobile = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    this.isMobile = tabletMode !== null ? tabletMode : /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     if (this.isMobile) {
       // trigger the mobile dropdown css
