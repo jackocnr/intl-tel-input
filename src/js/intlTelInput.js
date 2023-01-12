@@ -765,6 +765,27 @@ class Iti {
     // listen on the document because that's where key events are triggered if no input has focus
     let query = '';
     let queryTimer = null;
+
+    // Was (/^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)
+    function okToUse(char) {
+      if (/^[a-zA-Z]$/.test(char)) {
+        return true;
+      }
+      if (char.codePointAt(1)) {
+        return false;
+      }
+      const codePoint = char.codePointAt(0);
+      if (codePoint >= 1087 && codePoint <= 1103) { // а-я
+        return true;
+      }
+      if (codePoint >= 1055 && codePoint <= 1071) { // А-Я
+        return true;
+      }
+      if (codePoint >= 192 && codePoint <= 255) { // À-ÿ
+        return true;
+      }
+      return false;
+    };
     this._handleKeydownOnDropdown = (e) => {
       // prevent down key from scrolling the whole page,
       // and enter key from submitting a form etc
@@ -778,7 +799,7 @@ class Iti {
       else if (e.key === 'Escape') this._closeDropdown();
       // alpha chars to perform search
       // regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866)
-      else if (/^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
+      else if (okToUse(e.key)) {
         // jump to countries that start with the query string
         if (queryTimer) clearTimeout(queryTimer);
         query += e.key.toLowerCase();
