@@ -217,7 +217,7 @@ Prevent the user from entering invalid characters. Unfortunately this had to be 
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
-Display the country dial code next to the selected flag so it's not part of the typed number. Note that this will disable `nationalMode` because technically we are dealing with international numbers, but with the dial code separated.
+Display the country dial code next to the selected flag so it's not part of the typed number.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px">
 
