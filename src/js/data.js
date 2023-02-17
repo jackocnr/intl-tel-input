@@ -698,11 +698,6 @@ var allCountries = [
     "853"
   ],
   [
-    "North Macedonia (Македонија)",
-    "mk",
-    "389"
-  ],
-  [
     "Madagascar (Madagasikara)",
     "mg",
     "261"
@@ -871,6 +866,11 @@ var allCountries = [
     "North Korea (조선 민주주의 인민 공화국)",
     "kp",
     "850"
+  ],
+  [
+    "North Macedonia (Северна Македонија)",
+    "mk",
+    "389"
   ],
   [
     "Northern Mariana Islands",
