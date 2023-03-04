@@ -1,6 +1,6 @@
 {
   "name": "intl-tel-input",
-  "version": "17.0.13",
+  "version": "17.0.19",
   "description": "A JavaScript plugin for entering and validating international telephone numbers",
   "keywords": [
     "international",
@@ -33,7 +33,7 @@
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-imagemin": "^2.0.1",
-    "grunt-contrib-jasmine": "^2.1.0",
+    "grunt-contrib-jasmine": "^3.0.0",
     "grunt-contrib-uglify": "^2.1.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "^21.0.0",
@@ -47,7 +47,7 @@
     "jasmine-jquery": "^2.1.1",
     "jquery": "^3.1.1",
     "load-grunt-config": "^0.19.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^6.0.1",
     "region-flags": "^1.1.0",
     "time-grunt": "^1.4.0"
   },
