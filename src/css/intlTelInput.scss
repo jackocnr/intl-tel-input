@@ -43,8 +43,7 @@ $mobilePopupMargin: 30px !default;
   // paul irish says this is ok
   // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
   * {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    box-sizing: border-box;   
   }
 
   &__hide {
