@@ -2,8 +2,7 @@
   position: relative;
   display: inline-block; }
   .iti * {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box; }
+    box-sizing: border-box; }
   .iti__hide {
     display: none; }
   .iti__v-hide {
