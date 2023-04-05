@@ -75,8 +75,6 @@
     color: #999; }
   .iti__country.iti__highlight {
     background-color: rgba(0, 0, 0, 0.05); }
-  .iti__flag-box, .iti__country-name, .iti__dial-code {
-    vertical-align: middle; }
   .iti__flag-box, .iti__country-name {
     margin-right: 6px; }
     [dir=rtl] .iti__flag-box, [dir=rtl] .iti__country-name {
