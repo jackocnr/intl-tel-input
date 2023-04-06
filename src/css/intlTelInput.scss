@@ -44,7 +44,6 @@ $mobilePopupMargin: 30px !default;
   // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
   * {
     box-sizing: border-box;
-    -moz-box-sizing: border-box;
   }
 
   &__hide {
@@ -111,6 +110,11 @@ $mobilePopupMargin: 30px !default;
     border-right: $triangleBorder solid transparent;
     border-top: $arrowHeight solid $arrowColor;
 
+    [dir=rtl] & {
+      margin-right: $arrowPadding;
+      margin-left: 0;
+    }
+
     &--up {
       border-top: none;
       border-bottom: $arrowHeight solid $arrowColor;
@@ -125,8 +129,6 @@ $mobilePopupMargin: 30px !default;
 
     // override default list styles
     list-style: none;
-    // in case any container has text-align:center
-    text-align: left;
 
     // place menu above the input element
     &--dropup {
@@ -175,6 +177,8 @@ $mobilePopupMargin: 30px !default;
   // each country item in dropdown (we must have separate class to differentiate from dividers)
   &__country {
     // Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines
+    display: flex;
+    align-items: center;
     padding: 5px 10px;
     outline: none;
   }
@@ -188,11 +192,13 @@ $mobilePopupMargin: 30px !default;
   }
 
   // spacing between country flag, name and dial code
-  &__flag-box, &__country-name, &__dial-code {
-    vertical-align: middle;
-  }
   &__flag-box, &__country-name {
     margin-right: 6px;
+
+    [dir=rtl] & {
+      margin-right: 0;
+      margin-left: 6px;
+    }
   }
 
   // these settings are independent of each other, but both move selected flag to left of input
@@ -201,10 +207,21 @@ $mobilePopupMargin: 30px !default;
       padding-right: $inputPadding;
       padding-left: $selectedFlagArrowWidth + $inputPadding;
       margin-left: 0;
+
+      [dir=rtl] & {
+        padding-right: $selectedFlagArrowWidth + $inputPadding;
+        padding-left: $inputPadding;
+        margin-right: 0;
+      }
     }
     .iti__flag-container {
       right: auto;
       left: 0;
+
+      [dir=rtl] & {
+        right: 0;
+        left: auto;
+      }
     }
   }
 
