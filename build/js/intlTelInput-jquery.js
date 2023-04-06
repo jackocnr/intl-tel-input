@@ -44,10 +44,10 @@
     "use strict";
     function _objectSpread(target) {
         for (var i = 1; i < arguments.length; i++) {
-            var source = arguments[i] != null ? arguments[i] : {};
+            var source = arguments[i] != null ? Object(arguments[i]) : {};
             var ownKeys = Object.keys(source);
             if (typeof Object.getOwnPropertySymbols === "function") {
-                ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
+                ownKeys.push.apply(ownKeys, Object.getOwnPropertySymbols(source).filter(function(sym) {
                     return Object.getOwnPropertyDescriptor(source, sym).enumerable;
                 }));
             }
@@ -58,6 +58,7 @@
         return target;
     }
     function _defineProperty(obj, key, value) {
+        key = _toPropertyKey(key);
         if (key in obj) {
             Object.defineProperty(obj, key, {
                 value: value,
@@ -81,13 +82,30 @@
             descriptor.enumerable = descriptor.enumerable || false;
             descriptor.configurable = true;
             if ("value" in descriptor) descriptor.writable = true;
-            Object.defineProperty(target, descriptor.key, descriptor);
+            Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
         }
     }
     function _createClass(Constructor, protoProps, staticProps) {
         if (protoProps) _defineProperties(Constructor.prototype, protoProps);
         if (staticProps) _defineProperties(Constructor, staticProps);
+        Object.defineProperty(Constructor, "prototype", {
+            writable: false
+        });
         return Constructor;
+    }
+    function _toPropertyKey(arg) {
+        var key = _toPrimitive(arg, "string");
+        return typeof key === "symbol" ? key : String(key);
+    }
+    function _toPrimitive(input, hint) {
+        if (typeof input !== "object" || input === null) return input;
+        var prim = input[Symbol.toPrimitive];
+        if (prim !== undefined) {
+            var res = prim.call(input, hint || "default");
+            if (typeof res !== "object") return res;
+            throw new TypeError("@@toPrimitive must return a primitive value.");
+        }
+        return (hint === "string" ? String : Number)(input);
     }
     var intlTelInputGlobals = {
         getInstance: function getInstance(input) {
@@ -159,8 +177,7 @@
     };
     // this is our plugin class that we will create an instance of
     // eslint-disable-next-line no-unused-vars
-    var Iti = /*#__PURE__*/
-    function() {
+    var Iti = /*#__PURE__*/ function() {
         function Iti(input, options) {
             var _this = this;
             _classCallCheck(this, Iti);
