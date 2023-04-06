@@ -25,11 +25,11 @@
       // dropdownContainer: document.body,
       // excludeCountries: ["us"],
       // formatOnDisplay: false,
-      // geoIpLookup: function(callback) {
-      //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-      //     var countryCode = (resp && resp.country) ? resp.country : "";
-      //     callback(countryCode);
-      //   });
+      // geoIpLookup: callback => {
+      //   fetch("http://ip-api.com/json")
+      //     .then(res => res.json())
+      //     .then(data => callback(data.countryCode))
+      //     .catch(() => callback("us"));
       // },
       // hiddenInput: "full_number",
       // initialCountry: "auto",

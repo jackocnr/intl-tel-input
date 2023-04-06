@@ -163,19 +163,19 @@ Format the input value (according to the `nationalMode` option) during initialis
 Type: `Function` Default: `null`  
 When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that looks up the user's location, and then calls the success callback with the relevant country code. Also note that when instantiating the plugin, if the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is defined, one of those is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have completed.
 
-Here is an example using the [ip-api.com](http://ip-api.com/json/) service:  
+Here is an example using the [ip-api.com](https://ip-api.com/docs/api:json) service:  
 ```js
 intlTelInput(input, {
   initialCountry: "auto",
-    geoIpLookup: function (success){
-        fetch('http://ip-api.com/json')
-        .then( res => res.json() )
-        .catch( error => console.log(error) )
-        .then( data => success(data.countryCode) )
-    }
+  geoIpLookup: callback => {
+    fetch("http://ip-api.com/json")
+      .then(res => res.json())
+      .then(data => callback(data.countryCode))
+      .catch(() => callback("us"));
+  }
 })
 ```
-_Note that the callback must still be called in the event of an error, Hence the use of `then()` after `catch()` in this example._  
+_Note that the callback must still be called in the event of an error, Hence the use of `catch()` in this example._  
 _Tip: store the result in a cookie to avoid repeat lookups!_
 
 **hiddenInput**  
