@@ -365,7 +365,8 @@
                     role: "combobox",
                     "aria-controls": "iti-".concat(this.id, "__country-listbox"),
                     "aria-owns": "iti-".concat(this.id, "__country-listbox"),
-                    "aria-expanded": "false"
+                    "aria-expanded": "false",
+                    "aria-label": "Telephone country code"
                 }, this.flagsContainer);
                 this.selectedFlagInner = this._createEl("div", {
                     "class": "iti__flag"
