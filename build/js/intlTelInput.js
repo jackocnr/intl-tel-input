@@ -150,7 +150,7 @@
             placeholderNumberType: "MOBILE",
             // the countries at the top of the list. defaults to united states and united kingdom
             preferredCountries: [ "us", "gb" ],
-            // display the country dial code next to the selected flag so it's not part of the typed number
+            // display the country dial code next to the selected flag
             separateDialCode: false,
             // specify the path to the libphonenumber script to enable validation/formatting
             utilsScript: ""
@@ -194,14 +194,10 @@
                 key: "_init",
                 value: function _init() {
                     var _this2 = this;
-                    // if in nationalMode, disable options relating to dial codes
+                    // if in nationalMode, do not insert dial codes
                     if (this.options.nationalMode) this.options.autoInsertDialCode = false;
-                    // if separateDialCode then doesn't make sense to A) insert dial code into input
-                    // (autoInsertDialCode), and B) display national numbers (because we're displaying the country
-                    // dial code next to them)
-                    if (this.options.separateDialCode) {
-                        this.options.autoInsertDialCode = this.options.nationalMode = false;
-                    }
+                    // if separateDialCode enabled, do not insert dial codes
+                    if (this.options.separateDialCode) this.options.autoInsertDialCode = false;
                     // we cannot just test screen size as some smartphones/website meta tags will report desktop
                     // resolutions
                     // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
@@ -866,7 +862,7 @@
                 value: function _updateValFromNumber(originalNumber) {
                     var number = originalNumber;
                     if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
-                        var useNational = !this.options.separateDialCode && (this.options.nationalMode || number.charAt(0) !== "+");
+                        var useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.separateDialCode;
                         var _intlTelInputUtils$nu = intlTelInputUtils.numberFormat, NATIONAL = _intlTelInputUtils$nu.NATIONAL, INTERNATIONAL = _intlTelInputUtils$nu.INTERNATIONAL;
                         var format = useNational ? NATIONAL : INTERNATIONAL;
                         number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
@@ -889,7 +885,7 @@
                         if (number.charAt(0) !== "1") number = "1".concat(number);
                         number = "+".concat(number);
                     }
-                    // update flag if user types area code for another country
+                    // if separateDialCode enabled, then consider the selected dial code to be part of the number
                     if (this.options.separateDialCode && selectedDialCode && number.charAt(0) !== "+") {
                         number = "+".concat(selectedDialCode).concat(number);
                     }

@@ -46,7 +46,7 @@ const defaults = {
   placeholderNumberType: 'MOBILE',
   // the countries at the top of the list. defaults to united states and united kingdom
   preferredCountries: ['us', 'gb'],
-  // display the country dial code next to the selected flag so it's not part of the typed number
+  // display the country dial code next to the selected flag
   separateDialCode: false,
   // specify the path to the libphonenumber script to enable validation/formatting
   utilsScript: '',
@@ -95,15 +95,11 @@ class Iti {
   }
 
   _init() {
-    // if in nationalMode, disable options relating to dial codes
+    // if in nationalMode, do not insert dial codes
     if (this.options.nationalMode) this.options.autoInsertDialCode = false;
 
-    // if separateDialCode then doesn't make sense to A) insert dial code into input
-    // (autoInsertDialCode), and B) display national numbers (because we're displaying the country
-    // dial code next to them)
-    if (this.options.separateDialCode) {
-      this.options.autoInsertDialCode = this.options.nationalMode = false;
-    }
+    // if separateDialCode enabled, do not insert dial codes
+    if (this.options.separateDialCode) this.options.autoInsertDialCode = false;
 
     // we cannot just test screen size as some smartphones/website meta tags will report desktop
     // resolutions
@@ -849,8 +845,7 @@ class Iti {
   _updateValFromNumber(originalNumber) {
     let number = originalNumber;
     if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
-      const useNational = (!this.options.separateDialCode
-        && (this.options.nationalMode || number.charAt(0) !== '+'));
+      const useNational = (this.options.nationalMode || (number.charAt(0) !== '+' && !this.options.separateDialCode));
       const { NATIONAL, INTERNATIONAL } = intlTelInputUtils.numberFormat;
       const format = useNational ? NATIONAL : INTERNATIONAL;
       number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
@@ -877,7 +872,7 @@ class Iti {
       number = `+${number}`;
     }
 
-    // update flag if user types area code for another country
+    // if separateDialCode enabled, then consider the selected dial code to be part of the number
     if (this.options.separateDialCode && selectedDialCode && number.charAt(0) !== '+') {
       number = `+${selectedDialCode}${number}`;
     }
@@ -984,7 +979,7 @@ class Iti {
     this.selectedFlag.setAttribute('title', title);
 
     if (this.options.separateDialCode) {
-      const dialCode = (this.selectedCountryData.dialCode) ? `+${this.selectedCountryData.dialCode}` : '';
+      const dialCode = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : '';
       this.selectedDialCode.innerHTML = dialCode;
       // offsetWidth is zero if input is in a hidden container during initialisation
       const selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();

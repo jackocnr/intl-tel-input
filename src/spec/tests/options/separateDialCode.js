@@ -14,11 +14,12 @@ describe("separateDialCode:", function() {
 
 
   // we test with "gb" because the ntl number is different to the intl number (aside from the dial code)
-  describe("init plugin with initialCountry=gb", function() {
+  describe("init plugin with initialCountry=gb and nationalMode=false", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         separateDialCode: true,
+        nationalMode: false,
         initialCountry: "gb",
       });
     });
@@ -57,12 +58,49 @@ describe("separateDialCode:", function() {
   });
 
 
-  // we test with "ca" because we had some bugs with area codes
+  describe("init plugin with initialCountry=gb and nationalMode=true", function() {
+
+    beforeEach(function() {
+      iti = window.intlTelInput(input[0], {
+        separateDialCode: true,
+        nationalMode: true,
+        initialCountry: "gb",
+      });
+    });
+
+    it("formats the placeholder correctly", function() {
+      // national format
+      expect(input.attr("placeholder")).toEqual("07400 123456");
+    });
+
+
+    describe("calling setNumber to a valid intl number", function() {
+
+      beforeEach(function() {
+        iti.setNumber("+447400123456");
+      });
+
+      it("formats the number correctly", function() {
+        // national format
+        expect(getInputVal()).toEqual("07400 123456");
+      });
+
+      it("calling getNumber returns the full intl number", function() {
+        expect(iti.getNumber()).toEqual("+447400123456");
+      });
+
+    });
+
+  });
+
+
+  // we test with "ca" (Canada) because we had some bugs with area codes
   describe("init plugin with initialCountry=ca", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         separateDialCode: true,
+        nationalMode: false,
         initialCountry: "ca",
       });
     });
@@ -88,6 +126,7 @@ describe("separateDialCode:", function() {
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         separateDialCode: true,
+        nationalMode: false,
         initialCountry: "as",
       });
     });
@@ -112,6 +151,7 @@ describe("separateDialCode:", function() {
       input.val("(922) 555-1234");
       iti = window.intlTelInput(input[0], {
         separateDialCode: true,
+        nationalMode: false,
         initialCountry: "ru",
       });
     });
