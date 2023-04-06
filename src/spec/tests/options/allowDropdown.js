@@ -25,7 +25,7 @@ describe("allowDropdown:", function() {
     });
 
     if("Should not add role[combox]", function() {
-      expect(getSelectedFlagContainer().not.toHaveAttr("combobox"));
+      expect(getSelectedFlagContainer()).not.toHaveAttr("role", "combobox");
     });
 
     it("typing a different dial code updates the flag", function() {
@@ -65,7 +65,7 @@ describe("allowDropdown:", function() {
     });
 
     if("Should have role[combox]", function() {
-      expect(getSelectedFlagContainer().toHaveAttr("combobox"));
+      expect(getSelectedFlagContainer()).toHaveAttr("role", "combobox");
     });
 
     it("shows the arrow and generate the dropdown markup", function() {
