@@ -338,15 +338,21 @@ class Iti {
     }, this.flagsContainer);
     this.selectedFlagInner = this._createEl('div', { class: 'iti__flag' }, this.selectedFlag);
 
+    if (this.telInput.disabled) {
+      this.selectedFlag.setAttribute('aria-disabled', 'true');
+    }
+
     if (this.options.separateDialCode) {
       this.selectedDialCode = this._createEl('div', { class: 'iti__selected-dial-code' }, this.selectedFlag);
     }
 
     if (this.options.allowDropdown) {
-      const isInputDisabled = this.telInput.hasAttribute('disabled');
-      // make element focusable and tab navigable if the associated input isn't disabled
-      this.selectedFlag.setAttribute('tabindex', isInputDisabled ? '-1' : '0');
-      if (isInputDisabled) this.selectedFlag.setAttribute('aria-disabled', 'true');
+      // make element focusable and tab navigable
+      this.selectedFlag.setAttribute('tabindex', '0');
+
+      if (this.telInput.disabled) {
+        this.selectedFlag.setAttribute('tabindex', '-1');
+      }
 
       this.dropdownArrow = this._createEl('div', { class: 'iti__arrow' }, this.selectedFlag);
 
