@@ -15,7 +15,8 @@ let id = 0;
 const defaults = {
   // whether or not to allow the dropdown
   allowDropdown: true,
-  // if there is just a dial code in the input: remove it on blur
+  // if just a dial code in the input (e.g. auto added when selecting a country),
+  // then remove it on blur/submit
   autoHideDialCode: true,
   // add a placeholder in the input with an example number for the selected country
   autoPlaceholder: 'polite',

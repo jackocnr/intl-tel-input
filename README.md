@@ -125,7 +125,7 @@ Automatically format the number as the user types. Unfortunately this had to be 
 
 **autoHideDialCode**  
 Type: `Boolean` Default: `true`  
-If there is just a dial code in the input: remove it on blur or submit. This is to prevent just a dial code getting submitted with the form. Requires `nationalMode` to be set to `false`.
+If `nationalMode` is disabled, when the user selects a country from the dropdown the plugin will automatically inject the dial code into the input. By enabling `autoHideDialCode`, it will listen for submit/blur events and check if there is just a dial code in the input - if so it will remove it, to avoid submitting just that.
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
