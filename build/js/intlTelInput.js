@@ -374,10 +374,9 @@
                         }, this.selectedFlag);
                     }
                     if (this.options.allowDropdown) {
-                        // make element focusable and tab navigable
-                        this.selectedFlag.setAttribute("tabindex", "0");
-                        if (this.telInput.disabled) {
-                            this.selectedFlag.setAttribute("tabindex", "-1");
+                        if (!this.telInput.disabled) {
+                            // make element focusable and tab navigable
+                            this.selectedFlag.setAttribute("tabindex", "0");
                         }
                         this.dropdownArrow = this._createEl("div", {
                             "class": "iti__arrow"
