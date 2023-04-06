@@ -1,12 +1,13 @@
 "use strict";
 
-describe("dropdown shortcuts: init plugin (with nationalMode=false) to test keyboard shortcuts", function() {
+describe("dropdown shortcuts: init plugin (with nationalMode=false, autoInsertDialCode=true) to test keyboard shortcuts", function() {
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>").appendTo("body");
     iti = window.intlTelInput(input[0], {
-      nationalMode: false
+      nationalMode: false,
+      autoInsertDialCode: true,
     });
   });
 

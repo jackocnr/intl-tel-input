@@ -52,14 +52,14 @@ describe("destroy: init plugin to test public method destroy", function() {
 
 
 
-describe("destroy: init plugin with nationalMode=false and autoHideDialCode=true", function() {
+describe("destroy: init plugin with nationalMode=false and autoInsertDialCode=true", function() {
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>").wrap("div");
     iti = window.intlTelInput(input[0], {
       nationalMode: false,
-      autoHideDialCode: true
+      autoInsertDialCode: true
     });
   });
 

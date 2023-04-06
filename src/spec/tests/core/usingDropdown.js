@@ -1,13 +1,14 @@
 "use strict";
 
-describe("using dropdown: init plugin on normal input with nationalMode=false", function() {
+describe("using dropdown: init plugin on normal input with nationalMode=false, autoInsertDialCode=true", function() {
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>").appendTo("body");
-    // nationalMode=false because we're playing with dial codes
+    // nationalMode=false and autoInsertDialCode=true because we're playing with dial codes
     iti = window.intlTelInput(input[0], {
-      nationalMode: false
+      nationalMode: false,
+      autoInsertDialCode: true,
     });
   });
 

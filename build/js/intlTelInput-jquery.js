@@ -124,9 +124,9 @@
     var defaults = {
         // whether or not to allow the dropdown
         allowDropdown: true,
-        // if just a dial code in the input (e.g. auto added when selecting a country),
-        // then remove it on blur/submit
-        autoHideDialCode: true,
+        // auto insert dial code (A) on init, (B) on user selecting a country, (C) on calling setCountry
+        // also listen for blur/submit and auto remove dial code if that's all there is
+        autoInsertDialCode: false,
         // add a placeholder in the input with an example number for the selected country
         autoPlaceholder: "polite",
         // modify the parentClass
@@ -147,7 +147,7 @@
         initialCountry: "",
         // localized country names e.g. { 'de': 'Deutschland' }
         localizedCountries: null,
-        // don't insert international dial codes
+        // deal with national numbers instead of international numbers
         nationalMode: true,
         // display only these countries
         onlyCountries: [],
@@ -200,12 +200,12 @@
             value: function _init() {
                 var _this2 = this;
                 // if in nationalMode, disable options relating to dial codes
-                if (this.options.nationalMode) this.options.autoHideDialCode = false;
+                if (this.options.nationalMode) this.options.autoInsertDialCode = false;
                 // if separateDialCode then doesn't make sense to A) insert dial code into input
-                // (autoHideDialCode), and B) display national numbers (because we're displaying the country
+                // (autoInsertDialCode), and B) display national numbers (because we're displaying the country
                 // dial code next to them)
                 if (this.options.separateDialCode) {
-                    this.options.autoHideDialCode = this.options.nationalMode = false;
+                    this.options.autoInsertDialCode = this.options.nationalMode = false;
                 }
                 // we cannot just test screen size as some smartphones/website meta tags will report desktop
                 // resolutions
@@ -246,7 +246,7 @@
                 this._generateMarkup();
                 // set the initial state of the input value and the selected flag
                 this._setInitialState();
-                // start all of the event listeners: autoHideDialCode, input keydown, selectedFlag click
+                // start all of the event listeners: autoInsertDialCode, input keydown, selectedFlag click
                 this._initListeners();
                 // utils script, and auto country
                 this._initRequests();
@@ -510,7 +510,7 @@
                 var val = useAttribute ? attributeValue : inputValue;
                 var dialCode = this._getDialCode(val);
                 var isRegionlessNanp = this._isRegionlessNanp(val);
-                var _this$options = this.options, initialCountry = _this$options.initialCountry, nationalMode = _this$options.nationalMode, autoHideDialCode = _this$options.autoHideDialCode, separateDialCode = _this$options.separateDialCode;
+                var _this$options = this.options, initialCountry = _this$options.initialCountry, autoInsertDialCode = _this$options.autoInsertDialCode;
                 // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
                 // flag, else fall back to the default country
                 if (dialCode && !isRegionlessNanp) {
@@ -531,8 +531,8 @@
                             }
                         }
                     }
-                    // if empty and no nationalMode and no autoHideDialCode then insert the default dial code
-                    if (!val && !nationalMode && !autoHideDialCode && !separateDialCode) {
+                    // if empty and autoInsertDialCode then insert the dial code
+                    if (!val && autoInsertDialCode) {
                         this.telInput.value = "+".concat(this.selectedCountryData.dialCode);
                     }
                 }
@@ -544,7 +544,7 @@
             key: "_initListeners",
             value: function _initListeners() {
                 this._initKeyListeners();
-                if (this.options.autoHideDialCode) this._initBlurListeners();
+                if (this.options.autoInsertDialCode) this._initBlurListeners();
                 if (this.options.allowDropdown) this._initDropdownListeners();
                 if (this.hiddenInput) this._initHiddenInputListener();
             }
@@ -1050,7 +1050,7 @@
                 // update selected flag and active list item
                 var flagChanged = this._setFlag(listItem.getAttribute("data-country-code"));
                 this._closeDropdown();
-                this._updateDialCode(listItem.getAttribute("data-dial-code"), true);
+                this._updateDialCode(listItem.getAttribute("data-dial-code"));
                 // focus the input
                 this.telInput.focus();
                 // put cursor at end - this fix is required for FF and IE11 (with nationalMode=false i.e. auto
@@ -1107,7 +1107,7 @@
             }
         }, {
             key: "_updateDialCode",
-            value: function _updateDialCode(newDialCodeBare, hasSelectedListItem) {
+            value: function _updateDialCode(newDialCodeBare) {
                 var inputVal = this.telInput.value;
                 // save having to pass this every time
                 var newDialCode = "+".concat(newDialCodeBare);
@@ -1123,23 +1123,16 @@
                         // (no way to determine where the invalid dial code ends and the rest of the number begins)
                         newNumber = newDialCode;
                     }
-                } else if (this.options.nationalMode || this.options.separateDialCode) {
-                    // don't do anything
-                    return;
-                } else {
-                    // nationalMode is disabled
+                    this.telInput.value = newNumber;
+                } else if (this.options.autoInsertDialCode) {
                     if (inputVal) {
                         // there is an existing value with no dial code: prefix the new dial code
                         newNumber = newDialCode + inputVal;
-                    } else if (hasSelectedListItem || !this.options.autoHideDialCode) {
-                        // no existing value and either they've just selected a list item, or autoHideDialCode is
-                        // disabled: insert new dial code
-                        newNumber = newDialCode;
                     } else {
-                        return;
+                        newNumber = newDialCode;
                     }
+                    this.telInput.value = newNumber;
                 }
-                this.telInput.value = newNumber;
             }
         }, {
             key: "_getDialCode",
@@ -1258,8 +1251,8 @@
                 }
                 // unbind hiddenInput listeners
                 if (this.hiddenInput && form) form.removeEventListener("submit", this._handleHiddenInputSubmit);
-                // unbind autoHideDialCode listeners
-                if (this.options.autoHideDialCode) {
+                // unbind autoInsertDialCode listeners
+                if (this.options.autoInsertDialCode) {
                     if (form) form.removeEventListener("submit", this._handleSubmitOrBlurEvent);
                     this.telInput.removeEventListener("blur", this._handleSubmitOrBlurEvent);
                 }
@@ -1328,7 +1321,7 @@
                 // check if already selected
                 if (!this.selectedFlagInner.classList.contains("iti__".concat(countryCode))) {
                     this._setFlag(countryCode);
-                    this._updateDialCode(this.selectedCountryData.dialCode, false);
+                    this._updateDialCode(this.selectedCountryData.dialCode);
                     this._triggerCountryChange();
                 }
             }

@@ -123,9 +123,9 @@ Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, a
 **~~autoFormat~~ [REMOVED]**  
 Automatically format the number as the user types. Unfortunately this had to be removed for the reasons listed here: [#346 Disable and remove autoFormat feature](https://github.com/jackocnr/intl-tel-input/issues/346).
 
-**autoHideDialCode**  
-Type: `Boolean` Default: `true`  
-If `nationalMode` is disabled, when the user selects a country from the dropdown the plugin will automatically inject the dial code into the input. By enabling `autoHideDialCode`, it will listen for submit/blur events and check if there is just a dial code in the input - if so it will remove it, to avoid submitting just that.
+**autoInsertDialCode**  
+Type: `Boolean` Default: `false`  
+When enabled (requires `nationalMode` to be disabled), the international dial code will be automatically inserted into the input in 3 situations: (A) upon initialisation, and (B) when the user selects a country from the dropdown, and (C) upon calling `setCountry`. Additionally, the plugin will listen for blur/submit events, and if the input only contains a dial code, it will automatically be removed to avoid submitting just that.
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  

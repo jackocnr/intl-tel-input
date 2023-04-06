@@ -7,20 +7,21 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
     afghanistanCountryCode = "af",
     albaniaCountryCode = "al",
     chinaCountryCode = "cn",
-    chinaDialCode = "+86";
+    chinaDialCode = "+86",
+    koreaCountryCode = 'kr',
+    russiaCountryCode = 'ru';
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>").wrap("div");
     input2 = $("<input>").wrap("div");
-    // japan and china
+
     iti = window.intlTelInput(input[0], {
-      onlyCountries: [chinaCountryCode, afghanistanCountryCode],
+      onlyCountries: [afghanistanCountryCode, chinaCountryCode],
       nationalMode: false,
     });
-    // korea, china and russia
     iti2 = window.intlTelInput(input2[0], {
-      onlyCountries: ['kr', chinaCountryCode, 'ru', albaniaCountryCode],
+      onlyCountries: [albaniaCountryCode, chinaCountryCode, koreaCountryCode, russiaCountryCode],
       nationalMode: false,
     });
     $("body").append(getParentElement(input)).append(getParentElement(input2));
@@ -45,8 +46,8 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
 
   it("selecting an item from the first input dropdown only updates the flag on that input", function() {
     selectFlag(chinaCountryCode);
-    expect(getInputVal()).toEqual(chinaDialCode);
-    expect(getInputVal(input2)).toEqual("");
+    expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaCountryCode}`);
+    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaCountryCode}`);
   });
 
   it("updating the number on the first input only updates the flag on that input", function() {

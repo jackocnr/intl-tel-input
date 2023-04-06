@@ -15,9 +15,9 @@ let id = 0;
 const defaults = {
   // whether or not to allow the dropdown
   allowDropdown: true,
-  // if just a dial code in the input (e.g. auto added when selecting a country),
-  // then remove it on blur/submit
-  autoHideDialCode: true,
+  // auto insert dial code (A) on init, (B) on user selecting a country, (C) on calling setCountry
+  // also listen for blur/submit and auto remove dial code if that's all there is
+  autoInsertDialCode: false,
   // add a placeholder in the input with an example number for the selected country
   autoPlaceholder: 'polite',
   // modify the parentClass
@@ -38,7 +38,7 @@ const defaults = {
   initialCountry: '',
   // localized country names e.g. { 'de': 'Deutschland' }
   localizedCountries: null,
-  // don't insert international dial codes
+  // deal with national numbers instead of international numbers
   nationalMode: true,
   // display only these countries
   onlyCountries: [],
@@ -96,13 +96,13 @@ class Iti {
 
   _init() {
     // if in nationalMode, disable options relating to dial codes
-    if (this.options.nationalMode) this.options.autoHideDialCode = false;
+    if (this.options.nationalMode) this.options.autoInsertDialCode = false;
 
     // if separateDialCode then doesn't make sense to A) insert dial code into input
-    // (autoHideDialCode), and B) display national numbers (because we're displaying the country
+    // (autoInsertDialCode), and B) display national numbers (because we're displaying the country
     // dial code next to them)
     if (this.options.separateDialCode) {
-      this.options.autoHideDialCode = this.options.nationalMode = false;
+      this.options.autoInsertDialCode = this.options.nationalMode = false;
     }
 
     // we cannot just test screen size as some smartphones/website meta tags will report desktop
@@ -152,7 +152,7 @@ class Iti {
     // set the initial state of the input value and the selected flag
     this._setInitialState();
 
-    // start all of the event listeners: autoHideDialCode, input keydown, selectedFlag click
+    // start all of the event listeners: autoInsertDialCode, input keydown, selectedFlag click
     this._initListeners();
 
     // utils script, and auto country
@@ -442,9 +442,7 @@ class Iti {
     const isRegionlessNanp = this._isRegionlessNanp(val);
     const {
       initialCountry,
-      nationalMode,
-      autoHideDialCode,
-      separateDialCode,
+      autoInsertDialCode,
     } = this.options;
 
     // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
@@ -469,8 +467,8 @@ class Iti {
         }
       }
 
-      // if empty and no nationalMode and no autoHideDialCode then insert the default dial code
-      if (!val && !nationalMode && !autoHideDialCode && !separateDialCode) {
+      // if empty and autoInsertDialCode then insert the dial code
+      if (!val && autoInsertDialCode) {
         this.telInput.value = `+${this.selectedCountryData.dialCode}`;
       }
     }
@@ -484,7 +482,7 @@ class Iti {
   // initialise the main event listeners: input keyup, and click selected flag
   _initListeners() {
     this._initKeyListeners();
-    if (this.options.autoHideDialCode) this._initBlurListeners();
+    if (this.options.autoInsertDialCode) this._initBlurListeners();
     if (this.options.allowDropdown) this._initDropdownListeners();
     if (this.hiddenInput) this._initHiddenInputListener();
   }
@@ -625,7 +623,7 @@ class Iti {
   }
 
 
-  // listen for blur/submit (for autoHideDialCode feature)
+  // listen for blur/submit (for autoInsertDialCode feature)
   _initBlurListeners() {
     // on blur or form submit: if just a dial code then remove it
     this._handleSubmitOrBlurEvent = () => {
@@ -1063,7 +1061,7 @@ class Iti {
     const flagChanged = this._setFlag(listItem.getAttribute('data-country-code'));
     this._closeDropdown();
 
-    this._updateDialCode(listItem.getAttribute('data-dial-code'), true);
+    this._updateDialCode(listItem.getAttribute('data-dial-code'));
 
     // focus the input
     this.telInput.focus();
@@ -1130,7 +1128,7 @@ class Iti {
 
   // replace any existing dial code with the new one
   // Note: called from _selectListItem and setCountry
-  _updateDialCode(newDialCodeBare, hasSelectedListItem) {
+  _updateDialCode(newDialCodeBare) {
     const inputVal = this.telInput.value;
     // save having to pass this every time
     const newDialCode = `+${newDialCodeBare}`;
@@ -1147,24 +1145,16 @@ class Iti {
         // (no way to determine where the invalid dial code ends and the rest of the number begins)
         newNumber = newDialCode;
       }
-    } else if (this.options.nationalMode || this.options.separateDialCode) {
-      // don't do anything
-      return;
-    } else {
-      // nationalMode is disabled
+      this.telInput.value = newNumber;
+    } else if (this.options.autoInsertDialCode) {
       if (inputVal) {
         // there is an existing value with no dial code: prefix the new dial code
         newNumber = newDialCode + inputVal;
-      } else if (hasSelectedListItem || !this.options.autoHideDialCode) {
-        // no existing value and either they've just selected a list item, or autoHideDialCode is
-        // disabled: insert new dial code
-        newNumber = newDialCode;
       } else {
-        return;
+        newNumber = newDialCode;
       }
+      this.telInput.value = newNumber;
     }
-
-    this.telInput.value = newNumber;
   }
 
 
@@ -1307,8 +1297,8 @@ class Iti {
     // unbind hiddenInput listeners
     if (this.hiddenInput && form) form.removeEventListener('submit', this._handleHiddenInputSubmit);
 
-    // unbind autoHideDialCode listeners
-    if (this.options.autoHideDialCode) {
+    // unbind autoInsertDialCode listeners
+    if (this.options.autoInsertDialCode) {
       if (form) form.removeEventListener('submit', this._handleSubmitOrBlurEvent);
       this.telInput.removeEventListener('blur', this._handleSubmitOrBlurEvent);
     }
@@ -1388,7 +1378,7 @@ class Iti {
     // check if already selected
     if (!this.selectedFlagInner.classList.contains(`iti__${countryCode}`)) {
       this._setFlag(countryCode);
-      this._updateDialCode(this.selectedCountryData.dialCode, false);
+      this._updateDialCode(this.selectedCountryData.dialCode);
       this._triggerCountryChange();
     }
   }
