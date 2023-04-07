@@ -326,10 +326,13 @@ class Iti {
     wrapper.appendChild(this.telInput);
 
     // selected flag (displayed to left of input)
+    // using Aria tags for "Select-Only Combobox Example"
+    // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
     this.selectedFlag = this._createEl('div', {
       class: 'iti__selected-flag',
       ...(this.options.allowDropdown && {
         role: 'combobox',
+        'aria-haspopup': 'listbox',
         'aria-controls': `iti-${this.id}__country-listbox`,
         'aria-owns': `iti-${this.id}__country-listbox`,
         'aria-expanded': 'false',

@@ -397,10 +397,13 @@
                     }, wrapper);
                     wrapper.appendChild(this.telInput);
                     // selected flag (displayed to left of input)
+                    // using Aria tags for "Select-Only Combobox Example"
+                    // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
                     this.selectedFlag = this._createEl("div", _objectSpread({
                         "class": "iti__selected-flag"
                     }, this.options.allowDropdown && {
                         role: "combobox",
+                        "aria-haspopup": "listbox",
                         "aria-controls": "iti-".concat(this.id, "__country-listbox"),
                         "aria-owns": "iti-".concat(this.id, "__country-listbox"),
                         "aria-expanded": "false",
