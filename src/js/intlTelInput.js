@@ -869,7 +869,7 @@ class Iti {
     // dial code, so fine to ignore this bit
     let number = originalNumber;
     const selectedDialCode = this.selectedCountryData.dialCode;
-    const isNanp = selectedDialCode === '1';
+    const isNanp = (selectedDialCode === '1');
     if (number && this.options.nationalMode && isNanp && number.charAt(0) !== '+') {
       if (number.charAt(0) !== '1') number = `1${number}`;
       number = `+${number}`;
