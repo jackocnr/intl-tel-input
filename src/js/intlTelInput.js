@@ -943,6 +943,7 @@ class Iti {
     if (prevItem) prevItem.classList.remove('iti__highlight');
     this.highlightedItem = listItem;
     this.highlightedItem.classList.add('iti__highlight');
+    this.selectedFlag.setAttribute('aria-activedescendant', listItem.getAttribute('id'));
 
     if (shouldFocus) this.highlightedItem.focus();
   }
@@ -1007,7 +1008,6 @@ class Iti {
         nextItem.setAttribute('aria-selected', 'true');
         nextItem.classList.add('iti__active');
         this.activeItem = nextItem;
-        this.selectedFlag.setAttribute('aria-activedescendant', nextItem.getAttribute('id'));
       }
     }
 
@@ -1078,6 +1078,8 @@ class Iti {
   _closeDropdown() {
     this.countryList.classList.add('iti__hide');
     this.selectedFlag.setAttribute('aria-expanded', 'false');
+    this.selectedFlag.removeAttribute('aria-activedescendant');
+
     // update the arrow
     this.dropdownArrow.classList.remove('iti__arrow--up');
 
