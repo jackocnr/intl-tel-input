@@ -354,7 +354,7 @@ Set the plugin's country data. This method was removed because it makes much mor
 You can listen for the following events on the input.
 
 **countrychange**  
-This is triggered when the user selects a country from the dropdown.
+This is triggered when the selected flag is updated e.g. if the user selects a country from the dropdown, or they type a different dial code into the input, or you call `setCountry` etc.
 ```js
 input.addEventListener("countrychange", function() {
   // do something with iti.getSelectedCountryData()
