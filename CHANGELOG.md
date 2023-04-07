@@ -1,5 +1,9 @@
 # Changelog
 
+## v18.0.0 (2023-04-07)
+- Remove autoHideDialCode option in favour of new autoInsertDialCode option
+- Allow nationalMode to be used with separateDialCode
+
 ## v17.0.0 (2020-04-18)
 - Update validationError enum in utils.js to match latest version of libphonenumber
 - Change ID attributes to be unique (both within the dropdown e.g. dupe countries in preferred section, AND across multiple instances of the plugin)
