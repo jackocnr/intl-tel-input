@@ -168,9 +168,9 @@ Here is an example using the [ip-api.com](https://ip-api.com/docs/api:json) serv
 intlTelInput(input, {
   initialCountry: "auto",
   geoIpLookup: function(callback) {
-    fetch("http://ip-api.com/json")
+    fetch("https://ipapi.co/json")
       .then(function(res) { return res.json(); })
-      .then(function(data) { callback(data.countryCode); })
+      .then(function(data) { callback(data.country_code); })
       .catch(function() { callback("us"); });
   }
 })

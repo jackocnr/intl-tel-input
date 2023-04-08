@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Lookup user's country</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1680992740399">
-    <link rel="stylesheet" href="../../build/css/demo.css?1680992740399">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1680993492797">
+    <link rel="stylesheet" href="../../build/css/demo.css?1680993492797">
     
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -36,12 +36,12 @@
 window.intlTelInput(input, {
   initialCountry: &quot;auto&quot;,
   geoIpLookup: function(callback) {
-    fetch(&quot;http://ip-api.com/json&quot;)
+    fetch(&quot;https://ipapi.co/json&quot;)
       .then(function(res) { return res.json(); })
-      .then(function(data) { callback(data.countryCode); })
+      .then(function(data) { callback(data.country_code); })
       .catch(function() { callback(&quot;us&quot;); });
   },
-  utilsScript: &quot;../../build/js/utils.js?1680992740399&quot; // just for formatting/placeholders etc
+  utilsScript: &quot;../../build/js/utils.js?1680993492797&quot; // just for formatting/placeholders etc
 });
 </code></pre>
 
@@ -56,7 +56,7 @@ window.intlTelInput(input, {
     </div>
 
     <script src="../js/prism.js"></script>
-    <script src="../../build/js/intlTelInput.js?1680992740399"></script>
-    <script src="./js/defaultCountryIp.js?1680992740399"></script>
+    <script src="../../build/js/intlTelInput.js?1680993492797"></script>
+    <script src="./js/defaultCountryIp.js?1680993492797"></script>
   </body>
 </html>
