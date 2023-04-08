@@ -4,10 +4,10 @@ var inputMobile = document.querySelector("#mobile");
 window.intlTelInput(inputHome, {
   initialCountry: 'gb',
   placeholderNumberType: 'FIXED_LINE',
-  utilsScript: "../../build/js/utils.js?1680950494824" // just for formatting/placeholders etc
+  utilsScript: "../../build/js/utils.js?1680992740399" // just for formatting/placeholders etc
 });
 window.intlTelInput(inputMobile, {
   initialCountry: 'gb',
   placeholderNumberType: 'MOBILE',
-  utilsScript: "../../build/js/utils.js?1680950494824"
+  utilsScript: "../../build/js/utils.js?1680992740399"
 });
