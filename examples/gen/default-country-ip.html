@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Lookup user's country</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1680950450342">
-    <link rel="stylesheet" href="../../build/css/demo.css?1680950450342">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1680950494824">
+    <link rel="stylesheet" href="../../build/css/demo.css?1680950494824">
     
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -25,7 +25,7 @@
 
     <h2>Markup</h2>
     <pre><code class="language-markup">&lt;!-- fetch and Promise polyfills for IE11 --&gt;
-&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js&quot; integrity=&quot;sha512-1Gn7//DzfuF67BGkg97Oc6jPN6hqxuZXnaTpC9P5uw8C6W4yUNj5hoS/APga4g1nO2X6USBb/rXtGzADdaVDeA==&quot; crossorigin=&quot;anonymous&quot; referrerpolicy=&quot;no-referrer&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js&quot;&gt;&lt;/script&gt;
 
 &lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;
@@ -41,14 +41,14 @@ window.intlTelInput(input, {
       .then(function(data) { callback(data.countryCode); })
       .catch(function() { callback(&quot;us&quot;); });
   },
-  utilsScript: &quot;../../build/js/utils.js?1680950450342&quot; // just for formatting/placeholders etc
+  utilsScript: &quot;../../build/js/utils.js?1680950494824&quot; // just for formatting/placeholders etc
 });
 </code></pre>
 
     <h2>Result</h2>
     <div id="result">
       <!-- fetch and Promise polyfills for IE11 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js" integrity="sha512-1Gn7//DzfuF67BGkg97Oc6jPN6hqxuZXnaTpC9P5uw8C6W4yUNj5hoS/APga4g1nO2X6USBb/rXtGzADdaVDeA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
 
 <input id="phone" type="tel">
@@ -56,7 +56,7 @@ window.intlTelInput(input, {
     </div>
 
     <script src="../js/prism.js"></script>
-    <script src="../../build/js/intlTelInput.js?1680950450342"></script>
-    <script src="./js/defaultCountryIp.js?1680950450342"></script>
+    <script src="../../build/js/intlTelInput.js?1680950494824"></script>
+    <script src="./js/defaultCountryIp.js?1680950494824"></script>
   </body>
 </html>
