@@ -167,16 +167,15 @@ Here is an example using the [ip-api.com](https://ip-api.com/docs/api:json) serv
 ```js
 intlTelInput(input, {
   initialCountry: "auto",
-  geoIpLookup: callback => {
+  geoIpLookup: function(callback) {
     fetch("http://ip-api.com/json")
-      .then(res => res.json())
-      .then(data => callback(data.countryCode))
-      .catch(() => callback("us"));
+      .then(function(res) { return res.json(); })
+      .then(function(data) { callback(data.countryCode); })
+      .catch(function() { callback("us"); });
   }
 })
 ```
-_Note that the callback must still be called in the event of an error, Hence the use of `catch()` in this example._  
-_Tip: store the result in a cookie to avoid repeat lookups!_
+_Note that the callback must still be called in the event of an error, Hence the use of `catch()` in this example. Also `fetch` is not supported in IE11 and so requires [polyfilling](https://github.com/github/fetch) along with `Promise`. Tip: store the result in a cookie to avoid repeat lookups!_
 
 **hiddenInput**  
 Type: `String` Default: `""`  
