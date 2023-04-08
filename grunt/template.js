@@ -169,7 +169,7 @@ module.exports = function(grunt) {
         data: function() {
           return {
             time: time,
-            title: "European countries",
+            title: "Only countries option",
             desc: "Set onlyCountries option to just European country codes.",
             stylesheet: "",
             markup: grunt.file.read('examples/partials/simpleInput.html'),
