@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Example: Lookup user's country</title>
     <link rel="stylesheet" href="../css/prism.css">
-    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1680898893466">
-    <link rel="stylesheet" href="../../build/css/demo.css?1680898893466">
+    <link rel="stylesheet" href="../../build/css/intlTelInput.css?1680950450342">
+    <link rel="stylesheet" href="../../build/css/demo.css?1680950450342">
     
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -24,7 +24,10 @@
     <p>Set initialCountry to 'auto' and pass in a function for geoIpLookup to perform a JSONP request to ipinfo.io, which returns the user's country based on their IP address.</p>
 
     <h2>Markup</h2>
-    <pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+    <pre><code class="language-markup">&lt;!-- fetch and Promise polyfills for IE11 --&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js&quot; integrity=&quot;sha512-1Gn7//DzfuF67BGkg97Oc6jPN6hqxuZXnaTpC9P5uw8C6W4yUNj5hoS/APga4g1nO2X6USBb/rXtGzADdaVDeA==&quot; crossorigin=&quot;anonymous&quot; referrerpolicy=&quot;no-referrer&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js&quot;&gt;&lt;/script&gt;
+
 &lt;input id=&quot;phone&quot; type=&quot;tel&quot;&gt;
 </code></pre>
 
@@ -33,24 +36,27 @@
 window.intlTelInput(input, {
   initialCountry: &quot;auto&quot;,
   geoIpLookup: function(callback) {
-    $.get(&#39;https://ipinfo.io&#39;, function() {}, &quot;jsonp&quot;).always(function(resp) {
-      var countryCode = (resp &amp;&amp; resp.country) ? resp.country : &quot;us&quot;;
-      callback(countryCode);
-    });
+    fetch(&quot;http://ip-api.com/json&quot;)
+      .then(function(res) { return res.json(); })
+      .then(function(data) { callback(data.countryCode); })
+      .catch(function() { callback(&quot;us&quot;); });
   },
-  utilsScript: &quot;../../build/js/utils.js?1680898893466&quot; // just for formatting/placeholders etc
+  utilsScript: &quot;../../build/js/utils.js?1680950450342&quot; // just for formatting/placeholders etc
 });
 </code></pre>
 
     <h2>Result</h2>
     <div id="result">
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <!-- fetch and Promise polyfills for IE11 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js" integrity="sha512-1Gn7//DzfuF67BGkg97Oc6jPN6hqxuZXnaTpC9P5uw8C6W4yUNj5hoS/APga4g1nO2X6USBb/rXtGzADdaVDeA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+
 <input id="phone" type="tel">
 
     </div>
 
     <script src="../js/prism.js"></script>
-    <script src="../../build/js/intlTelInput.js?1680898893466"></script>
-    <script src="./js/defaultCountryIp.js?1680898893466"></script>
+    <script src="../../build/js/intlTelInput.js?1680950450342"></script>
+    <script src="./js/defaultCountryIp.js?1680950450342"></script>
   </body>
 </html>
