@@ -1,14 +1,15 @@
 const intlTelInputGlobals = {
   getInstance: (input) => {
-    const id = input.getAttribute('data-intl-tel-input-id');
+    const id = input.getAttribute("data-intl-tel-input-id");
     return window.intlTelInputGlobals.instances[id];
   },
   instances: {},
   // using a global like this allows us to mock it in the tests
-  documentReady: () => document.readyState === 'complete',
+  documentReady: () => document.readyState === "complete",
 };
 
-if (typeof window === 'object') window.intlTelInputGlobals = intlTelInputGlobals;
+if (typeof window === "object")
+  window.intlTelInputGlobals = intlTelInputGlobals;
 
 // these vars persist through all instances of the plugin
 let id = 0;
@@ -19,9 +20,9 @@ const defaults = {
   // also listen for blur/submit and auto remove dial code if that's all there is
   autoInsertDialCode: false,
   // add a placeholder in the input with an example number for the selected country
-  autoPlaceholder: 'polite',
+  autoPlaceholder: "polite",
   // modify the parentClass
-  customContainer: '',
+  customContainer: "",
   // modify the auto placeholder
   customPlaceholder: null,
   // append menu to specified element
@@ -33,9 +34,9 @@ const defaults = {
   // geoIp lookup function
   geoIpLookup: null,
   // inject a hidden input with this name, and on submit, populate it with the result of getNumber
-  hiddenInput: '',
+  hiddenInput: "",
   // initial country
-  initialCountry: '',
+  initialCountry: "",
   // localized country names e.g. { 'de': 'Deutschland' }
   localizedCountries: null,
   // deal with national numbers instead of international numbers
@@ -43,19 +44,36 @@ const defaults = {
   // display only these countries
   onlyCountries: [],
   // number type to use for placeholders
-  placeholderNumberType: 'MOBILE',
+  placeholderNumberType: "MOBILE",
   // the countries at the top of the list. defaults to united states and united kingdom
-  preferredCountries: ['us', 'gb'],
+  preferredCountries: ["us", "gb"],
   // display the country dial code next to the selected flag
   separateDialCode: false,
   // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
   showFlags: true,
   // specify the path to the libphonenumber script to enable validation/formatting
-  utilsScript: '',
+  utilsScript: "",
 };
 // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
-const regionlessNanpNumbers = ['800', '822', '833', '844', '855', '866', '877', '880', '881', '882', '883', '884', '885', '886', '887', '888', '889'];
-
+const regionlessNanpNumbers = [
+  "800",
+  "822",
+  "833",
+  "844",
+  "855",
+  "866",
+  "877",
+  "880",
+  "881",
+  "882",
+  "883",
+  "884",
+  "885",
+  "886",
+  "887",
+  "888",
+  "889",
+];
 
 // utility function to iterate over an object. can't use Object.entries or native forEach because
 // of IE11
@@ -66,14 +84,12 @@ const forEachProp = (obj, callback) => {
   }
 };
 
-
 // run a method on each instance of the plugin
 const forEachInstance = (method) => {
   forEachProp(window.intlTelInputGlobals.instances, (key) => {
     window.intlTelInputGlobals.instances[key][method]();
   });
 };
-
 
 // this is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
@@ -90,10 +106,12 @@ class Iti {
     const customOptions = options || {};
     this.options = {};
     forEachProp(defaults, (key, value) => {
-      this.options[key] = (customOptions.hasOwnProperty(key)) ? customOptions[key] : value;
+      this.options[key] = customOptions.hasOwnProperty(key)
+        ? customOptions[key]
+        : value;
     });
 
-    this.hadInitialPlaceholder = Boolean(input.getAttribute('placeholder'));
+    this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
   }
 
   _init() {
@@ -105,7 +123,8 @@ class Iti {
 
     // force showFlags=true if there's a dropdown and we're not displaying the dial code,
     // as otherwise you just have a down arrow on it's own which doesn't make sense
-    const forceShowFlags = (this.options.allowDropdown && !this.options.separateDialCode);
+    const forceShowFlags =
+      this.options.allowDropdown && !this.options.separateDialCode;
     if (!this.options.showFlags && forceShowFlags) {
       this.options.showFlags = true;
     }
@@ -115,20 +134,24 @@ class Iti {
     // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
     // rest of these declarations
     // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
-    this.isMobile = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    this.isMobile =
+      /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
 
     if (this.isMobile) {
       // trigger the mobile dropdown css
-      document.body.classList.add('iti-mobile');
+      document.body.classList.add("iti-mobile");
 
       // on mobile, we want a full screen dropdown, so we must append it to the body
-      if (!this.options.dropdownContainer) this.options.dropdownContainer = document.body;
+      if (!this.options.dropdownContainer)
+        this.options.dropdownContainer = document.body;
     }
 
     // these promises get resolved when their individual requests complete
     // this way the dev can do something like iti.promise.then(...) to know when all requests are
     // complete
-    if (typeof Promise !== 'undefined') {
+    if (typeof Promise !== "undefined") {
       const autoCountryPromise = new Promise((resolve, reject) => {
         this.resolveAutoCountryPromise = resolve;
         this.rejectAutoCountryPromise = reject;
@@ -164,11 +187,9 @@ class Iti {
     this._initRequests();
   }
 
-
   /********************
    *  PRIVATE METHODS
    ********************/
-
 
   // prepare all of the country data, including onlyCountries, excludeCountries and
   // preferredCountries options
@@ -191,7 +212,6 @@ class Iti {
     }
   }
 
-
   // add a country code to this.countryCodes
   _addCountryCode(iso2, countryCode, priority) {
     if (countryCode.length > this.countryCodeMaxLen) {
@@ -205,26 +225,26 @@ class Iti {
       if (this.countryCodes[countryCode][i] === iso2) return;
     }
     // check for undefined as 0 is falsy
-    const index = (priority !== undefined) ? priority : this.countryCodes[countryCode].length;
+    const index =
+      priority !== undefined ? priority : this.countryCodes[countryCode].length;
     this.countryCodes[countryCode][index] = iso2;
   }
-
 
   // process onlyCountries or excludeCountries array if present
   _processAllCountries() {
     if (this.options.onlyCountries.length) {
-      const lowerCaseOnlyCountries = this.options.onlyCountries.map(
-        country => country.toLowerCase()
+      const lowerCaseOnlyCountries = this.options.onlyCountries.map((country) =>
+        country.toLowerCase()
       );
       this.countries = allCountries.filter(
-        country => lowerCaseOnlyCountries.indexOf(country.iso2) > -1
+        (country) => lowerCaseOnlyCountries.indexOf(country.iso2) > -1
       );
     } else if (this.options.excludeCountries.length) {
       const lowerCaseExcludeCountries = this.options.excludeCountries.map(
-        country => country.toLowerCase()
+        (country) => country.toLowerCase()
       );
       this.countries = allCountries.filter(
-        country => lowerCaseExcludeCountries.indexOf(country.iso2) === -1
+        (country) => lowerCaseExcludeCountries.indexOf(country.iso2) === -1
       );
     } else {
       this.countries = allCountries;
@@ -247,7 +267,6 @@ class Iti {
     if (a.name > b.name) return 1;
     return 0;
   }
-
 
   // process the countryCodes map
   _processCountryCodes() {
@@ -290,7 +309,6 @@ class Iti {
     }
   }
 
-
   // process preferred countries - iterate through the preferences, fetching the country data for
   // each one
   _processPreferredCountries() {
@@ -302,7 +320,6 @@ class Iti {
     }
   }
 
-
   // create a DOM element
   _createEl(name, attrs, container) {
     const el = document.createElement(name);
@@ -311,15 +328,17 @@ class Iti {
     return el;
   }
 
-
   // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
   _generateMarkup() {
     // if autocomplete does not exist on the element and its form, then
     // prevent autocomplete as there's no safe, cross-browser event we can react to, so it can
     // easily put the plugin in an inconsistent state e.g. the wrong flag selected for the
     // autocompleted number, which on submit could mean wrong number is saved (esp in nationalMode)
-    if (!this.telInput.hasAttribute('autocomplete') && !(this.telInput.form && this.telInput.form.hasAttribute('autocomplete'))) {
-      this.telInput.setAttribute('autocomplete', 'off');
+    if (
+      !this.telInput.hasAttribute("autocomplete") &&
+      !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))
+    ) {
+      this.telInput.setAttribute("autocomplete", "off");
     }
 
     const {
@@ -332,20 +351,24 @@ class Iti {
     } = this.options;
 
     // containers (mostly for positioning)
-    let parentClass = 'iti';
-    if (allowDropdown) parentClass += ' iti--allow-dropdown';
-    if (separateDialCode) parentClass += ' iti--separate-dial-code';
-    if (showFlags) parentClass += ' iti--show-flags';
+    let parentClass = "iti";
+    if (allowDropdown) parentClass += " iti--allow-dropdown";
+    if (separateDialCode) parentClass += " iti--separate-dial-code";
+    if (showFlags) parentClass += " iti--show-flags";
     if (customContainer) {
       parentClass += ` ${customContainer}`;
     }
 
-    const wrapper = this._createEl('div', { class: parentClass });
+    const wrapper = this._createEl("div", { class: parentClass });
     this.telInput.parentNode.insertBefore(wrapper, this.telInput);
     // only hide the flagsContainer if allowDropdown, showFlags and separateDialCode are all false
-    const showFlagsContainer = (allowDropdown || showFlags || separateDialCode);
+    const showFlagsContainer = allowDropdown || showFlags || separateDialCode;
     if (showFlagsContainer) {
-      this.flagsContainer = this._createEl('div', { class: 'iti__flag-container' }, wrapper);
+      this.flagsContainer = this._createEl(
+        "div",
+        { class: "iti__flag-container" },
+        wrapper
+      );
     }
     wrapper.appendChild(this.telInput);
 
@@ -353,58 +376,78 @@ class Iti {
     // using Aria tags for "Select-Only Combobox Example"
     // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
     if (showFlagsContainer) {
-      this.selectedFlag = this._createEl('div', {
-        class: 'iti__selected-flag',
-        ...(allowDropdown && {
-          role: 'combobox',
-          'aria-haspopup': 'listbox',
-          'aria-controls': `iti-${this.id}__country-listbox`,
-          'aria-owns': `iti-${this.id}__country-listbox`,
-          'aria-expanded': 'false',
-          'aria-label': 'Telephone country code',
-        }),
-      }, this.flagsContainer);
+      this.selectedFlag = this._createEl(
+        "div",
+        {
+          class: "iti__selected-flag",
+          ...(allowDropdown && {
+            role: "combobox",
+            "aria-haspopup": "listbox",
+            "aria-controls": `iti-${this.id}__country-listbox`,
+            "aria-owns": `iti-${this.id}__country-listbox`,
+            "aria-expanded": "false",
+            "aria-label": "Telephone country code",
+          }),
+        },
+        this.flagsContainer
+      );
     }
     if (showFlags) {
-      this.selectedFlagInner = this._createEl('div', { class: 'iti__flag' }, this.selectedFlag);
+      this.selectedFlagInner = this._createEl(
+        "div",
+        { class: "iti__flag" },
+        this.selectedFlag
+      );
     }
 
     if (this.selectedFlag && this.telInput.disabled) {
-      this.selectedFlag.setAttribute('aria-disabled', 'true');
+      this.selectedFlag.setAttribute("aria-disabled", "true");
     }
 
     if (separateDialCode) {
-      this.selectedDialCode = this._createEl('div', { class: 'iti__selected-dial-code' }, this.selectedFlag);
+      this.selectedDialCode = this._createEl(
+        "div",
+        { class: "iti__selected-dial-code" },
+        this.selectedFlag
+      );
     }
 
     if (allowDropdown) {
       if (!this.telInput.disabled) {
         // make element focusable and tab navigable
-        this.selectedFlag.setAttribute('tabindex', '0');
+        this.selectedFlag.setAttribute("tabindex", "0");
       }
 
-      this.dropdownArrow = this._createEl('div', { class: 'iti__arrow' }, this.selectedFlag);
+      this.dropdownArrow = this._createEl(
+        "div",
+        { class: "iti__arrow" },
+        this.selectedFlag
+      );
 
       // country dropdown: preferred countries, then divider, then all countries
-      this.countryList = this._createEl('ul', {
-        class: 'iti__country-list iti__hide',
+      this.countryList = this._createEl("ul", {
+        class: "iti__country-list iti__hide",
         id: `iti-${this.id}__country-listbox`,
-        role: 'listbox',
-        'aria-label': 'List of countries',
+        role: "listbox",
+        "aria-label": "List of countries",
       });
       if (this.preferredCountries.length) {
-        this._appendListItems(this.preferredCountries, 'iti__preferred', true);
-        this._createEl('li', {
-          class: 'iti__divider',
-          role: 'separator',
-          'aria-disabled': 'true',
-        }, this.countryList);
+        this._appendListItems(this.preferredCountries, "iti__preferred", true);
+        this._createEl(
+          "li",
+          {
+            class: "iti__divider",
+            role: "separator",
+            "aria-disabled": "true",
+          },
+          this.countryList
+        );
       }
-      this._appendListItems(this.countries, 'iti__standard');
+      this._appendListItems(this.countries, "iti__standard");
 
       // create dropdownContainer markup
       if (dropdownContainer) {
-        this.dropdown = this._createEl('div', { class: 'iti iti--container' });
+        this.dropdown = this._createEl("div", { class: "iti iti--container" });
         this.dropdown.appendChild(this.countryList);
       } else {
         this.flagsContainer.appendChild(this.countryList);
@@ -413,31 +456,31 @@ class Iti {
 
     if (hiddenInput) {
       let hiddenInputName = hiddenInput;
-      const name = this.telInput.getAttribute('name');
+      const name = this.telInput.getAttribute("name");
       if (name) {
-        const i = name.lastIndexOf('[');
+        const i = name.lastIndexOf("[");
         // if input name contains square brackets, then give the hidden input the same name,
         // replacing the contents of the last set of brackets with the given hiddenInput name
-        if (i !== -1) hiddenInputName = `${name.substr(0, i)}[${hiddenInputName}]`;
+        if (i !== -1)
+          hiddenInputName = `${name.substr(0, i)}[${hiddenInputName}]`;
       }
-      this.hiddenInput = this._createEl('input', {
-        type: 'hidden',
+      this.hiddenInput = this._createEl("input", {
+        type: "hidden",
         name: hiddenInputName,
       });
       wrapper.appendChild(this.hiddenInput);
     }
   }
 
-
   // add a country <li> to the countryList <ul> container
   _appendListItems(countries, className, preferred) {
     // we create so many DOM elements, it is faster to build a temp string
     // and then add everything to the DOM in one go at the end
-    let tmp = '';
+    let tmp = "";
     // for each country
     for (let i = 0; i < countries.length; i++) {
       const c = countries[i];
-      const idSuffix = preferred ? '-preferred' : '';
+      const idSuffix = preferred ? "-preferred" : "";
       // open the list item
       tmp += `<li class='iti__country ${className}' tabIndex='-1' id='iti-${this.id}__item-${c.iso2}${idSuffix}' role='option' data-dial-code='${c.dialCode}' data-country-code='${c.iso2}' aria-selected='false'>`;
       // add the flag
@@ -448,11 +491,10 @@ class Iti {
       tmp += `<span class='iti__country-name'>${c.name}</span>`;
       tmp += `<span class='iti__dial-code'>+${c.dialCode}</span>`;
       // close the list item
-      tmp += '</li>';
+      tmp += "</li>";
     }
-    this.countryList.insertAdjacentHTML('beforeend', tmp);
+    this.countryList.insertAdjacentHTML("beforeend", tmp);
   }
-
 
   // set the initial state of the input value and the selected flag by:
   // 1. extracting a dial code from the given number
@@ -463,32 +505,33 @@ class Iti {
     // fix firefox bug: when first load page (with input with value set to number with intl dial
     // code) and initialising plugin removes the dial code from the input, then refresh page,
     // and we try to init plugin again but this time on number without dial code so get grey flag
-    const attributeValue = this.telInput.getAttribute('value');
+    const attributeValue = this.telInput.getAttribute("value");
     const inputValue = this.telInput.value;
-    const useAttribute = (attributeValue && attributeValue.charAt(0) === '+' && (!inputValue || inputValue.charAt(0) !== '+'));
+    const useAttribute =
+      attributeValue &&
+      attributeValue.charAt(0) === "+" &&
+      (!inputValue || inputValue.charAt(0) !== "+");
     const val = useAttribute ? attributeValue : inputValue;
     const dialCode = this._getDialCode(val);
     const isRegionlessNanp = this._isRegionlessNanp(val);
-    const {
-      initialCountry,
-      autoInsertDialCode,
-    } = this.options;
+    const { initialCountry, autoInsertDialCode } = this.options;
 
     // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
     // flag, else fall back to the default country
     if (dialCode && !isRegionlessNanp) {
       this._updateFlagFromNumber(val);
-    } else if (initialCountry !== 'auto') {
+    } else if (initialCountry !== "auto") {
       // see if we should select a flag
       if (initialCountry) {
         this._setFlag(initialCountry.toLowerCase());
       } else {
         if (dialCode && isRegionlessNanp) {
           // has intl dial code, is regionless nanp, and no initialCountry, so default to US
-          this._setFlag('us');
+          this._setFlag("us");
         } else {
           // no dial code and no initialCountry, so default to first in list
-          this.defaultCountry = (this.preferredCountries.length) ? this.preferredCountries[0].iso2
+          this.defaultCountry = this.preferredCountries.length
+            ? this.preferredCountries[0].iso2
             : this.countries[0].iso2;
           if (!val) {
             this._setFlag(this.defaultCountry);
@@ -507,7 +550,6 @@ class Iti {
     if (val) this._updateValFromNumber(val);
   }
 
-
   // initialise the main event listeners: input keyup, and click selected flag
   _initListeners() {
     this._initKeyListeners();
@@ -516,23 +558,24 @@ class Iti {
     if (this.hiddenInput) this._initHiddenInputListener();
   }
 
-
   // update hidden input on form submit
   _initHiddenInputListener() {
     this._handleHiddenInputSubmit = () => {
       this.hiddenInput.value = this.getNumber();
     };
-    if (this.telInput.form) this.telInput.form.addEventListener('submit', this._handleHiddenInputSubmit);
+    if (this.telInput.form)
+      this.telInput.form.addEventListener(
+        "submit",
+        this._handleHiddenInputSubmit
+      );
   }
-
 
   // iterate through parent nodes to find the closest label ancestor, if it exists
   _getClosestLabel() {
     let el = this.telInput;
-    while (el && el.tagName !== 'LABEL') el = el.parentNode;
+    while (el && el.tagName !== "LABEL") el = el.parentNode;
     return el;
   }
-
 
   // initialise the dropdown listeners
   _initDropdownListeners() {
@@ -541,28 +584,37 @@ class Iti {
     // close it again
     this._handleLabelClick = (e) => {
       // if the dropdown is closed, then focus the input, else ignore the click
-      if (this.countryList.classList.contains('iti__hide')) this.telInput.focus();
+      if (this.countryList.classList.contains("iti__hide"))
+        this.telInput.focus();
       else e.preventDefault();
     };
     const label = this._getClosestLabel();
-    if (label) label.addEventListener('click', this._handleLabelClick);
+    if (label) label.addEventListener("click", this._handleLabelClick);
 
     // toggle country dropdown on click
     this._handleClickSelectedFlag = () => {
       // only intercept this event if we're opening the dropdown
       // else let it bubble up to the top ("click-off-to-close" listener)
       // we cannot just stopPropagation as it may be needed to close another instance
-      if (this.countryList.classList.contains('iti__hide') && !this.telInput.disabled && !this.telInput.readOnly) {
+      if (
+        this.countryList.classList.contains("iti__hide") &&
+        !this.telInput.disabled &&
+        !this.telInput.readOnly
+      ) {
         this._showDropdown();
       }
     };
-    this.selectedFlag.addEventListener('click', this._handleClickSelectedFlag);
+    this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
 
     // open dropdown list if currently focused
     this._handleFlagsContainerKeydown = (e) => {
-      const isDropdownHidden = this.countryList.classList.contains('iti__hide');
+      const isDropdownHidden = this.countryList.classList.contains("iti__hide");
 
-      if (isDropdownHidden && ['ArrowUp', 'Up', 'ArrowDown', 'Down', ' ', 'Enter'].indexOf(e.key) !== -1) {
+      if (
+        isDropdownHidden &&
+        ["ArrowUp", "Up", "ArrowDown", "Down", " ", "Enter"].indexOf(e.key) !==
+          -1
+      ) {
         // prevent form from being submitted if "ENTER" was pressed
         e.preventDefault();
         // prevent event from being handled again by document
@@ -571,11 +623,13 @@ class Iti {
       }
 
       // allow navigation from dropdown to input on TAB
-      if (e.key === 'Tab') this._closeDropdown();
+      if (e.key === "Tab") this._closeDropdown();
     };
-    this.flagsContainer.addEventListener('keydown', this._handleFlagsContainerKeydown);
+    this.flagsContainer.addEventListener(
+      "keydown",
+      this._handleFlagsContainerKeydown
+    );
   }
-
 
   // init many requests: utils script / geo ip lookup
   _initRequests() {
@@ -586,16 +640,15 @@ class Iti {
         window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
       } else {
         // wait until the load event so we don't block any other requests e.g. the flags image
-        window.addEventListener('load', () => {
+        window.addEventListener("load", () => {
           window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
         });
       }
     } else this.resolveUtilsScriptPromise();
 
-    if (this.options.initialCountry === 'auto') this._loadAutoCountry();
+    if (this.options.initialCountry === "auto") this._loadAutoCountry();
     else this.resolveAutoCountryPromise();
   }
-
 
   // perform the geo ip lookup
   _loadAutoCountry() {
@@ -609,21 +662,23 @@ class Iti {
       // don't do this twice!
       window.intlTelInputGlobals.startedLoadingAutoCountry = true;
 
-      if (typeof this.options.geoIpLookup === 'function') {
-        this.options.geoIpLookup((countryCode) => {
-          window.intlTelInputGlobals.autoCountry = countryCode.toLowerCase();
-          // tell all instances the auto country is ready
-          // TODO: this should just be the current instances
-          // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
-          // away (e.g. if they have already done the geo ip lookup somewhere else). Using
-          // setTimeout means that the current thread of execution will finish before executing
-          // this, which allows the plugin to finish initialising.
-          setTimeout(() => forEachInstance('handleAutoCountry'));
-        }, () => forEachInstance('rejectAutoCountryPromise'));
+      if (typeof this.options.geoIpLookup === "function") {
+        this.options.geoIpLookup(
+          (countryCode) => {
+            window.intlTelInputGlobals.autoCountry = countryCode.toLowerCase();
+            // tell all instances the auto country is ready
+            // TODO: this should just be the current instances
+            // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
+            // away (e.g. if they have already done the geo ip lookup somewhere else). Using
+            // setTimeout means that the current thread of execution will finish before executing
+            // this, which allows the plugin to finish initialising.
+            setTimeout(() => forEachInstance("handleAutoCountry"));
+          },
+          () => forEachInstance("rejectAutoCountryPromise")
+        );
       }
     }
   }
-
 
   // initialize any key listeners
   _initKeyListeners() {
@@ -633,24 +688,22 @@ class Iti {
         this._triggerCountryChange();
       }
     };
-    this.telInput.addEventListener('keyup', this._handleKeyupEvent);
+    this.telInput.addEventListener("keyup", this._handleKeyupEvent);
 
     // update flag on cut/paste events (now supported in all major browsers)
     this._handleClipboardEvent = () => {
       // hack because "paste" event is fired before input is updated
       setTimeout(this._handleKeyupEvent);
     };
-    this.telInput.addEventListener('cut', this._handleClipboardEvent);
-    this.telInput.addEventListener('paste', this._handleClipboardEvent);
+    this.telInput.addEventListener("cut", this._handleClipboardEvent);
+    this.telInput.addEventListener("paste", this._handleClipboardEvent);
   }
-
 
   // adhere to the input's maxlength attr
   _cap(number) {
-    const max = this.telInput.getAttribute('maxlength');
-    return (max && number.length > max) ? number.substr(0, max) : number;
+    const max = this.telInput.getAttribute("maxlength");
+    return max && number.length > max ? number.substr(0, max) : number;
   }
-
 
   // listen for blur/submit (for autoInsertDialCode feature)
   _initBlurListeners() {
@@ -658,46 +711,46 @@ class Iti {
     this._handleSubmitOrBlurEvent = () => {
       this._removeEmptyDialCode();
     };
-    if (this.telInput.form) this.telInput.form.addEventListener('submit', this._handleSubmitOrBlurEvent);
-    this.telInput.addEventListener('blur', this._handleSubmitOrBlurEvent);
+    if (this.telInput.form)
+      this.telInput.form.addEventListener(
+        "submit",
+        this._handleSubmitOrBlurEvent
+      );
+    this.telInput.addEventListener("blur", this._handleSubmitOrBlurEvent);
 
     // made the decision not to trigger blur() now, because would only do anything in the case
     // where they manually set the initial value to just a dial code, in which case they probably
     // want it to be displayed.
   }
 
-
   // clear the input if it just contains a dial code
   _removeEmptyDialCode() {
-    if (this.telInput.value.charAt(0) === '+') {
+    if (this.telInput.value.charAt(0) === "+") {
       const numeric = this._getNumeric(this.telInput.value);
       // if just a plus, or if just a dial code
       if (!numeric || this.selectedCountryData.dialCode === numeric) {
-        this.telInput.value = '';
+        this.telInput.value = "";
       }
     }
   }
 
-
   // extract the numeric digits from the given string
   _getNumeric(s) {
-    return s.replace(/\D/g, '');
+    return s.replace(/\D/g, "");
   }
-
 
   // trigger a custom event on the input
   _trigger(name) {
     // have to use old school document.createEvent as IE11 doesn't support `new Event()` syntax
-    const e = document.createEvent('Event');
+    const e = document.createEvent("Event");
     e.initEvent(name, true, true); // can bubble, and is cancellable
     this.telInput.dispatchEvent(e);
   }
 
-
   // show the dropdown
   _showDropdown() {
-    this.countryList.classList.remove('iti__hide');
-    this.selectedFlag.setAttribute('aria-expanded', 'true');
+    this.countryList.classList.remove("iti__hide");
+    this.selectedFlag.setAttribute("aria-expanded", "true");
 
     this._setDropdownPosition();
 
@@ -711,18 +764,18 @@ class Iti {
     this._bindDropdownListeners();
 
     // update the arrow
-    this.dropdownArrow.classList.add('iti__arrow--up');
+    this.dropdownArrow.classList.add("iti__arrow--up");
 
-    this._trigger('open:countrydropdown');
+    this._trigger("open:countrydropdown");
   }
-
 
   // make sure the el has the className or not, depending on the value of shouldHaveClass
   _toggleClass(el, className, shouldHaveClass) {
-    if (shouldHaveClass && !el.classList.contains(className)) el.classList.add(className);
-    else if (!shouldHaveClass && el.classList.contains(className)) el.classList.remove(className);
+    if (shouldHaveClass && !el.classList.contains(className))
+      el.classList.add(className);
+    else if (!shouldHaveClass && el.classList.contains(className))
+      el.classList.remove(className);
   }
-
 
   // decide where to position dropdown (depends on position within viewport, and scroll)
   _setDropdownPosition() {
@@ -733,23 +786,32 @@ class Iti {
     if (!this.isMobile) {
       const pos = this.telInput.getBoundingClientRect();
       // windowTop from https://stackoverflow.com/a/14384091/217866
-      const windowTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowTop =
+        window.pageYOffset || document.documentElement.scrollTop;
       const inputTop = pos.top + windowTop;
       const dropdownHeight = this.countryList.offsetHeight;
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
-      const dropdownFitsBelow = (inputTop + this.telInput.offsetHeight + dropdownHeight
-        < (windowTop + window.innerHeight));
-      const dropdownFitsAbove = (inputTop - dropdownHeight > windowTop);
+      const dropdownFitsBelow =
+        inputTop + this.telInput.offsetHeight + dropdownHeight <
+        windowTop + window.innerHeight;
+      const dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
 
       // by default, the dropdown will be below the input. If we want to position it above the
       // input, we add the dropup class.
-      this._toggleClass(this.countryList, 'iti__country-list--dropup', (!dropdownFitsBelow && dropdownFitsAbove));
+      this._toggleClass(
+        this.countryList,
+        "iti__country-list--dropup",
+        !dropdownFitsBelow && dropdownFitsAbove
+      );
 
       // if dropdownContainer is enabled, calculate postion
       if (this.options.dropdownContainer) {
         // by default the dropdown will be directly over the input because it's not in the flow.
         // If we want to position it below, we need to add some extra top value.
-        const extraTop = (!dropdownFitsBelow && dropdownFitsAbove) ? 0 : this.telInput.offsetHeight;
+        const extraTop =
+          !dropdownFitsBelow && dropdownFitsAbove
+            ? 0
+            : this.telInput.offsetHeight;
 
         // calculate placement
         this.dropdown.style.top = `${inputTop + extraTop}px`;
@@ -757,20 +819,23 @@ class Iti {
 
         // close menu on window scroll
         this._handleWindowScroll = () => this._closeDropdown();
-        window.addEventListener('scroll', this._handleWindowScroll);
+        window.addEventListener("scroll", this._handleWindowScroll);
       }
     }
   }
 
-
   // iterate through parent nodes to find the closest list item
   _getClosestListItem(target) {
     let el = target;
-    while (el && el !== this.countryList && !el.classList.contains('iti__country')) el = el.parentNode;
+    while (
+      el &&
+      el !== this.countryList &&
+      !el.classList.contains("iti__country")
+    )
+      el = el.parentNode;
     // if we reached the countryList element, then return null
-    return (el === this.countryList) ? null : el;
+    return el === this.countryList ? null : el;
   }
-
 
   // we only bind dropdown listeners when the dropdown is open
   _bindDropdownListeners() {
@@ -781,14 +846,17 @@ class Iti {
       const listItem = this._getClosestListItem(e.target);
       if (listItem) this._highlightListItem(listItem, false);
     };
-    this.countryList.addEventListener('mouseover', this._handleMouseoverCountryList);
+    this.countryList.addEventListener(
+      "mouseover",
+      this._handleMouseoverCountryList
+    );
 
     // listen for country selection
     this._handleClickCountryList = (e) => {
       const listItem = this._getClosestListItem(e.target);
       if (listItem) this._selectListItem(listItem);
     };
-    this.countryList.addEventListener('click', this._handleClickCountryList);
+    this.countryList.addEventListener("click", this._handleClickCountryList);
 
     // click off to close
     // (except when this initial opening click is bubbling up)
@@ -798,13 +866,16 @@ class Iti {
       if (!isOpening) this._closeDropdown();
       isOpening = false;
     };
-    document.documentElement.addEventListener('click', this._handleClickOffToClose);
+    document.documentElement.addEventListener(
+      "click",
+      this._handleClickOffToClose
+    );
 
     // listen for up/down scrolling, enter to select, or letters to jump to country name.
     // use keydown as keypress doesn't fire for non-char keys and we want to catch if they
     // just hit down and hold it to scroll down (no keyup event).
     // listen on the document because that's where key events are triggered if no input has focus
-    let query = '';
+    let query = "";
     let queryTimer = null;
     this._handleKeydownOnDropdown = (e) => {
       // prevent down key from scrolling the whole page,
@@ -812,11 +883,17 @@ class Iti {
       e.preventDefault();
 
       // up and down to navigate
-      if (e.key === 'ArrowUp' || e.key === 'Up' || e.key === 'ArrowDown' || e.key === 'Down') this._handleUpDownKey(e.key);
+      if (
+        e.key === "ArrowUp" ||
+        e.key === "Up" ||
+        e.key === "ArrowDown" ||
+        e.key === "Down"
+      )
+        this._handleUpDownKey(e.key);
       // enter to select
-      else if (e.key === 'Enter') this._handleEnterKey();
+      else if (e.key === "Enter") this._handleEnterKey();
       // esc to close
-      else if (e.key === 'Escape') this._closeDropdown();
+      else if (e.key === "Escape") this._closeDropdown();
       // alpha chars to perform search
       // regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866)
       else if (/^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
@@ -826,38 +903,43 @@ class Iti {
         this._searchForCountry(query);
         // if the timer hits 1 second, reset the query
         queryTimer = setTimeout(() => {
-          query = '';
+          query = "";
         }, 1000);
       }
     };
-    document.addEventListener('keydown', this._handleKeydownOnDropdown);
+    document.addEventListener("keydown", this._handleKeydownOnDropdown);
   }
-
 
   // highlight the next/prev item in the list (and ensure it is visible)
   _handleUpDownKey(key) {
-    let next = (key === 'ArrowUp' || key === 'Up') ? this.highlightedItem.previousElementSibling : this.highlightedItem.nextElementSibling;
+    let next =
+      key === "ArrowUp" || key === "Up"
+        ? this.highlightedItem.previousElementSibling
+        : this.highlightedItem.nextElementSibling;
     if (next) {
       // skip the divider
-      if (next.classList.contains('iti__divider')) {
-        next = (key === 'ArrowUp' || key === 'Up') ? next.previousElementSibling : next.nextElementSibling;
+      if (next.classList.contains("iti__divider")) {
+        next =
+          key === "ArrowUp" || key === "Up"
+            ? next.previousElementSibling
+            : next.nextElementSibling;
       }
       this._highlightListItem(next, true);
     }
   }
-
 
   // select the currently highlighted item
   _handleEnterKey() {
     if (this.highlightedItem) this._selectListItem(this.highlightedItem);
   }
 
-
   // find the first list item whose name starts with the query string
   _searchForCountry(query) {
     for (let i = 0; i < this.countries.length; i++) {
       if (this._startsWith(this.countries[i].name, query)) {
-        const listItem = this.countryList.querySelector(`#iti-${this.id}__item-${this.countries[i].iso2}`);
+        const listItem = this.countryList.querySelector(
+          `#iti-${this.id}__item-${this.countries[i].iso2}`
+        );
         // update highlighting and scroll
         this._highlightListItem(listItem, false);
         this._scrollTo(listItem, true);
@@ -866,28 +948,35 @@ class Iti {
     }
   }
 
-
   // check if string a starts with string b
   _startsWith(a, b) {
-    return (a.substr(0, b.length).toLowerCase() === b);
+    return a.substr(0, b.length).toLowerCase() === b;
   }
-
 
   // update the input's value to the given val (format first if possible)
   // NOTE: this is called from _setInitialState, handleUtils and setNumber
   _updateValFromNumber(originalNumber) {
     let number = originalNumber;
-    if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
-      const useNational = (this.options.nationalMode || (number.charAt(0) !== '+' && !this.options.separateDialCode));
+    if (
+      this.options.formatOnDisplay &&
+      window.intlTelInputUtils &&
+      this.selectedCountryData
+    ) {
+      const useNational =
+        this.options.nationalMode ||
+        (number.charAt(0) !== "+" && !this.options.separateDialCode);
       const { NATIONAL, INTERNATIONAL } = intlTelInputUtils.numberFormat;
       const format = useNational ? NATIONAL : INTERNATIONAL;
-      number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
+      number = intlTelInputUtils.formatNumber(
+        number,
+        this.selectedCountryData.iso2,
+        format
+      );
     }
 
     number = this._beforeSetNumber(number);
     this.telInput.value = number;
   }
-
 
   // check if need to select a new flag based on the given number
   // Note: called from _setInitialState, keyup handler, setNumber
@@ -899,14 +988,23 @@ class Iti {
     // dial code, so fine to ignore this bit
     let number = originalNumber;
     const selectedDialCode = this.selectedCountryData.dialCode;
-    const isNanp = (selectedDialCode === '1');
-    if (number && this.options.nationalMode && isNanp && number.charAt(0) !== '+') {
-      if (number.charAt(0) !== '1') number = `1${number}`;
+    const isNanp = selectedDialCode === "1";
+    if (
+      number &&
+      this.options.nationalMode &&
+      isNanp &&
+      number.charAt(0) !== "+"
+    ) {
+      if (number.charAt(0) !== "1") number = `1${number}`;
       number = `+${number}`;
     }
 
     // if separateDialCode enabled, then consider the selected dial code to be part of the number
-    if (this.options.separateDialCode && selectedDialCode && number.charAt(0) !== '+') {
+    if (
+      this.options.separateDialCode &&
+      selectedDialCode &&
+      number.charAt(0) !== "+"
+    ) {
       number = `+${selectedDialCode}${number}`;
     }
 
@@ -920,9 +1018,11 @@ class Iti {
       // longer than the matched dial code because in this case we need to make sure that if
       // there are multiple country matches, that the first one is selected (note: we could
       // just check that here, but it requires the same loop that we already have later)
-      const alreadySelected = (countryCodes.indexOf(this.selectedCountryData.iso2) !== -1)
-        && (numeric.length <= dialCode.length - 1);
-      const isRegionlessNanpNumber = (selectedDialCode === '1' && this._isRegionlessNanp(numeric));
+      const alreadySelected =
+        countryCodes.indexOf(this.selectedCountryData.iso2) !== -1 &&
+        numeric.length <= dialCode.length - 1;
+      const isRegionlessNanpNumber =
+        selectedDialCode === "1" && this._isRegionlessNanp(numeric);
 
       // only update the flag if:
       // A) NOT (we currently have a NANP flag selected, and the number is a regionlessNanp)
@@ -938,12 +1038,12 @@ class Iti {
           }
         }
       }
-    } else if (number.charAt(0) === '+' && numeric.length) {
+    } else if (number.charAt(0) === "+" && numeric.length) {
       // invalid dial code, so empty
       // Note: use getNumeric here because the number has not been formatted yet, so could contain
       // bad chars
-      countryCode = '';
-    } else if (!number || number === '+') {
+      countryCode = "";
+    } else if (!number || number === "+") {
       // empty, or just a plus, so default
       countryCode = this.defaultCountry;
     }
@@ -954,35 +1054,37 @@ class Iti {
     return false;
   }
 
-
   // check if the given number is a regionless NANP number (expects the number to contain an
   // international dial code)
   _isRegionlessNanp(number) {
     const numeric = this._getNumeric(number);
-    if (numeric.charAt(0) === '1') {
+    if (numeric.charAt(0) === "1") {
       const areaCode = numeric.substr(1, 3);
-      return (regionlessNanpNumbers.indexOf(areaCode) !== -1);
+      return regionlessNanpNumbers.indexOf(areaCode) !== -1;
     }
     return false;
   }
 
-
   // remove highlighting from other list items and highlight the given item
   _highlightListItem(listItem, shouldFocus) {
     const prevItem = this.highlightedItem;
-    if (prevItem) prevItem.classList.remove('iti__highlight');
+    if (prevItem) prevItem.classList.remove("iti__highlight");
     this.highlightedItem = listItem;
-    this.highlightedItem.classList.add('iti__highlight');
-    this.selectedFlag.setAttribute('aria-activedescendant', listItem.getAttribute('id'));
+    this.highlightedItem.classList.add("iti__highlight");
+    this.selectedFlag.setAttribute(
+      "aria-activedescendant",
+      listItem.getAttribute("id")
+    );
 
     if (shouldFocus) this.highlightedItem.focus();
   }
 
-
   // find the country data for the given country code
   // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
   _getCountryData(countryCode, ignoreOnlyCountriesOption, allowFail) {
-    const countryList = (ignoreOnlyCountriesOption) ? allCountries : this.countries;
+    const countryList = ignoreOnlyCountriesOption
+      ? allCountries
+      : this.countries;
     for (let i = 0; i < countryList.length; i++) {
       if (countryList[i].iso2 === countryCode) {
         return countryList[i];
@@ -994,33 +1096,44 @@ class Iti {
     throw new Error(`No country data for '${countryCode}'`);
   }
 
-
   // select the given flag, update the placeholder and the active list item
   // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
   _setFlag(countryCode) {
-    const prevCountry = (this.selectedCountryData.iso2) ? this.selectedCountryData : {};
+    const prevCountry = this.selectedCountryData.iso2
+      ? this.selectedCountryData
+      : {};
 
     // do this first as it will throw an error and stop if countryCode is invalid
-    this.selectedCountryData = (countryCode) ? this._getCountryData(countryCode, false, false) : {};
+    this.selectedCountryData = countryCode
+      ? this._getCountryData(countryCode, false, false)
+      : {};
     // update the defaultCountry - we only need the iso2 from now on, so just store that
     if (this.selectedCountryData.iso2) {
       this.defaultCountry = this.selectedCountryData.iso2;
     }
 
     if (this.options.showFlags) {
-      this.selectedFlagInner.setAttribute('class', `iti__flag iti__${countryCode}`);
+      this.selectedFlagInner.setAttribute(
+        "class",
+        `iti__flag iti__${countryCode}`
+      );
     }
     // update the selected country's title attribute
     if (this.selectedFlag) {
-      const title = (countryCode) ? `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}` : 'Unknown';
-      this.selectedFlag.setAttribute('title', title);
+      const title = countryCode
+        ? `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}`
+        : "Unknown";
+      this.selectedFlag.setAttribute("title", title);
     }
 
     if (this.options.separateDialCode) {
-      const dialCode = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : '';
+      const dialCode = this.selectedCountryData.dialCode
+        ? `+${this.selectedCountryData.dialCode}`
+        : "";
       this.selectedDialCode.innerHTML = dialCode;
       // offsetWidth is zero if input is in a hidden container during initialisation
-      const selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
+      const selectedFlagWidth =
+        this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
 
       // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
       this.telInput.style.paddingLeft = `${selectedFlagWidth + 6}px`;
@@ -1033,22 +1146,27 @@ class Iti {
     if (this.options.allowDropdown) {
       const prevItem = this.activeItem;
       if (prevItem) {
-        prevItem.classList.remove('iti__active');
-        prevItem.setAttribute('aria-selected', 'false');
+        prevItem.classList.remove("iti__active");
+        prevItem.setAttribute("aria-selected", "false");
       }
       if (countryCode) {
         // check if there is a preferred item first, else fall back to standard
-        const nextItem = this.countryList.querySelector(`#iti-${this.id}__item-${countryCode}-preferred`) || this.countryList.querySelector(`#iti-${this.id}__item-${countryCode}`);
-        nextItem.setAttribute('aria-selected', 'true');
-        nextItem.classList.add('iti__active');
+        const nextItem =
+          this.countryList.querySelector(
+            `#iti-${this.id}__item-${countryCode}-preferred`
+          ) ||
+          this.countryList.querySelector(
+            `#iti-${this.id}__item-${countryCode}`
+          );
+        nextItem.setAttribute("aria-selected", "true");
+        nextItem.classList.add("iti__active");
         this.activeItem = nextItem;
       }
     }
 
     // return if the flag has changed or not
-    return (prevCountry.iso2 !== countryCode);
+    return prevCountry.iso2 !== countryCode;
   }
-
 
   // when the input is in a hidden container during initialisation, we must inject some markup
   // into the end of the DOM to calculate the correct offsetWidth
@@ -1058,7 +1176,7 @@ class Iti {
     // to get the right styling to apply, all we need is a shallow clone of the container,
     // and then to inject a deep clone of the selectedFlag element
     const containerClone = this.telInput.parentNode.cloneNode();
-    containerClone.style.visibility = 'hidden';
+    containerClone.style.visibility = "hidden";
     document.body.appendChild(containerClone);
 
     const flagsContainerClone = this.flagsContainer.cloneNode();
@@ -1072,30 +1190,43 @@ class Iti {
     return width;
   }
 
-
   // update the input placeholder to an example number from the currently selected country
   _updatePlaceholder() {
-    const shouldSetPlaceholder = (this.options.autoPlaceholder === 'aggressive') || (!this.hadInitialPlaceholder && this.options.autoPlaceholder === 'polite');
+    const shouldSetPlaceholder =
+      this.options.autoPlaceholder === "aggressive" ||
+      (!this.hadInitialPlaceholder &&
+        this.options.autoPlaceholder === "polite");
     if (window.intlTelInputUtils && shouldSetPlaceholder) {
-      const numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType];
-      let placeholder = (this.selectedCountryData.iso2) ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : '';
+      const numberType =
+        intlTelInputUtils.numberType[this.options.placeholderNumberType];
+      let placeholder = this.selectedCountryData.iso2
+        ? intlTelInputUtils.getExampleNumber(
+            this.selectedCountryData.iso2,
+            this.options.nationalMode,
+            numberType
+          )
+        : "";
 
       placeholder = this._beforeSetNumber(placeholder);
-      if (typeof this.options.customPlaceholder === 'function') {
-        placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
+      if (typeof this.options.customPlaceholder === "function") {
+        placeholder = this.options.customPlaceholder(
+          placeholder,
+          this.selectedCountryData
+        );
       }
-      this.telInput.setAttribute('placeholder', placeholder);
+      this.telInput.setAttribute("placeholder", placeholder);
     }
   }
-
 
   // called when the user selects a list item from the dropdown
   _selectListItem(listItem) {
     // update selected flag and active list item
-    const flagChanged = this._setFlag(listItem.getAttribute('data-country-code'));
+    const flagChanged = this._setFlag(
+      listItem.getAttribute("data-country-code")
+    );
     this._closeDropdown();
 
-    this._updateDialCode(listItem.getAttribute('data-dial-code'));
+    this._updateDialCode(listItem.getAttribute("data-dial-code"));
 
     // focus the input
     this.telInput.focus();
@@ -1109,31 +1240,37 @@ class Iti {
     }
   }
 
-
   // close the dropdown and unbind any listeners
   _closeDropdown() {
-    this.countryList.classList.add('iti__hide');
-    this.selectedFlag.setAttribute('aria-expanded', 'false');
-    this.selectedFlag.removeAttribute('aria-activedescendant');
+    this.countryList.classList.add("iti__hide");
+    this.selectedFlag.setAttribute("aria-expanded", "false");
+    this.selectedFlag.removeAttribute("aria-activedescendant");
 
     // update the arrow
-    this.dropdownArrow.classList.remove('iti__arrow--up');
+    this.dropdownArrow.classList.remove("iti__arrow--up");
 
     // unbind key events
-    document.removeEventListener('keydown', this._handleKeydownOnDropdown);
-    document.documentElement.removeEventListener('click', this._handleClickOffToClose);
-    this.countryList.removeEventListener('mouseover', this._handleMouseoverCountryList);
-    this.countryList.removeEventListener('click', this._handleClickCountryList);
+    document.removeEventListener("keydown", this._handleKeydownOnDropdown);
+    document.documentElement.removeEventListener(
+      "click",
+      this._handleClickOffToClose
+    );
+    this.countryList.removeEventListener(
+      "mouseover",
+      this._handleMouseoverCountryList
+    );
+    this.countryList.removeEventListener("click", this._handleClickCountryList);
 
     // remove menu from container
     if (this.options.dropdownContainer) {
-      if (!this.isMobile) window.removeEventListener('scroll', this._handleWindowScroll);
-      if (this.dropdown.parentNode) this.dropdown.parentNode.removeChild(this.dropdown);
+      if (!this.isMobile)
+        window.removeEventListener("scroll", this._handleWindowScroll);
+      if (this.dropdown.parentNode)
+        this.dropdown.parentNode.removeChild(this.dropdown);
     }
 
-    this._trigger('close:countrydropdown');
+    this._trigger("close:countrydropdown");
   }
-
 
   // check if an element is visible within it's container, else scroll until it is
   _scrollTo(element, middle) {
@@ -1147,7 +1284,7 @@ class Iti {
     const elementTop = element.getBoundingClientRect().top + windowTop;
     const elementBottom = elementTop + elementHeight;
     let newScrollTop = elementTop - containerTop + container.scrollTop;
-    const middleOffset = (containerHeight / 2) - (elementHeight / 2);
+    const middleOffset = containerHeight / 2 - elementHeight / 2;
 
     if (elementTop < containerTop) {
       // scroll up
@@ -1161,7 +1298,6 @@ class Iti {
     }
   }
 
-
   // replace any existing dial code with the new one
   // Note: called from _selectListItem and setCountry
   _updateDialCode(newDialCodeBare) {
@@ -1170,7 +1306,7 @@ class Iti {
     const newDialCode = `+${newDialCodeBare}`;
 
     let newNumber;
-    if (inputVal.charAt(0) === '+') {
+    if (inputVal.charAt(0) === "+") {
       // there's a plus so we're dealing with a replacement (doesn't matter if nationalMode or not)
       const prevDialCode = this._getDialCode(inputVal);
       if (prevDialCode) {
@@ -1193,14 +1329,13 @@ class Iti {
     }
   }
 
-
   // try and extract a valid international dial code from a full telephone number
   // Note: returns the raw string inc plus character and any whitespace/dots etc
   _getDialCode(number, includeAreaCode) {
-    let dialCode = '';
+    let dialCode = "";
     // only interested in international numbers (starting with a plus)
-    if (number.charAt(0) === '+') {
-      let numericChars = '';
+    if (number.charAt(0) === "+") {
+      let numericChars = "";
       // iterate over chars
       for (let i = 0; i < number.length; i++) {
         const c = number.charAt(i);
@@ -1230,7 +1365,6 @@ class Iti {
     return dialCode;
   }
 
-
   // get the input val, adding the dial code if separateDialCode is enabled
   _getFullNumber() {
     const val = this.telInput.value.trim();
@@ -1238,15 +1372,19 @@ class Iti {
     let prefix;
     const numericVal = this._getNumeric(val);
 
-    if (this.options.separateDialCode && val.charAt(0) !== '+' && dialCode && numericVal) {
+    if (
+      this.options.separateDialCode &&
+      val.charAt(0) !== "+" &&
+      dialCode &&
+      numericVal
+    ) {
       // when using separateDialCode, it is visible so is effectively part of the typed number
       prefix = `+${dialCode}`;
     } else {
-      prefix = '';
+      prefix = "";
     }
     return prefix + val;
   }
-
 
   // remove the dial code if separateDialCode is enabled
   // also cap the length if the input has a maxlength attribute
@@ -1262,7 +1400,10 @@ class Iti {
         // some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get
         // rid of it
         // NOTE: don't just trim all non-numerics as may want to preserve an open parenthesis etc
-        const start = (number[dialCode.length] === ' ' || number[dialCode.length] === '-') ? dialCode.length + 1 : dialCode.length;
+        const start =
+          number[dialCode.length] === " " || number[dialCode.length] === "-"
+            ? dialCode.length + 1
+            : dialCode.length;
         number = number.substr(start);
       }
     }
@@ -1270,21 +1411,18 @@ class Iti {
     return this._cap(number);
   }
 
-
   // trigger the 'countrychange' event
   _triggerCountryChange() {
-    this._trigger('countrychange');
+    this._trigger("countrychange");
   }
-
 
   /**************************
    *  SECRET PUBLIC METHODS
    **************************/
 
-
   // this is called when the geoip call returns
   handleAutoCountry() {
-    if (this.options.initialCountry === 'auto') {
+    if (this.options.initialCountry === "auto") {
       // we must set this even if there is an initial val in the input: in case the initial val is
       // invalid and they delete it - they should see their auto country
       this.defaultCountry = window.intlTelInputGlobals.autoCountry;
@@ -1295,7 +1433,6 @@ class Iti {
       this.resolveAutoCountryPromise();
     }
   }
-
 
   // this is called when the utils request completes
   handleUtils() {
@@ -1310,11 +1447,9 @@ class Iti {
     this.resolveUtilsScriptPromise();
   }
 
-
   /********************
    *  PUBLIC METHODS
    ********************/
-
 
   // remove plugin
   destroy() {
@@ -1323,29 +1458,37 @@ class Iti {
     if (this.options.allowDropdown) {
       // make sure the dropdown is closed (and unbind listeners)
       this._closeDropdown();
-      this.selectedFlag.removeEventListener('click', this._handleClickSelectedFlag);
-      this.flagsContainer.removeEventListener('keydown', this._handleFlagsContainerKeydown);
+      this.selectedFlag.removeEventListener(
+        "click",
+        this._handleClickSelectedFlag
+      );
+      this.flagsContainer.removeEventListener(
+        "keydown",
+        this._handleFlagsContainerKeydown
+      );
       // label click hack
       const label = this._getClosestLabel();
-      if (label) label.removeEventListener('click', this._handleLabelClick);
+      if (label) label.removeEventListener("click", this._handleLabelClick);
     }
 
     // unbind hiddenInput listeners
-    if (this.hiddenInput && form) form.removeEventListener('submit', this._handleHiddenInputSubmit);
+    if (this.hiddenInput && form)
+      form.removeEventListener("submit", this._handleHiddenInputSubmit);
 
     // unbind autoInsertDialCode listeners
     if (this.options.autoInsertDialCode) {
-      if (form) form.removeEventListener('submit', this._handleSubmitOrBlurEvent);
-      this.telInput.removeEventListener('blur', this._handleSubmitOrBlurEvent);
+      if (form)
+        form.removeEventListener("submit", this._handleSubmitOrBlurEvent);
+      this.telInput.removeEventListener("blur", this._handleSubmitOrBlurEvent);
     }
 
     // unbind key events, and cut/paste events
-    this.telInput.removeEventListener('keyup', this._handleKeyupEvent);
-    this.telInput.removeEventListener('cut', this._handleClipboardEvent);
-    this.telInput.removeEventListener('paste', this._handleClipboardEvent);
+    this.telInput.removeEventListener("keyup", this._handleKeyupEvent);
+    this.telInput.removeEventListener("cut", this._handleClipboardEvent);
+    this.telInput.removeEventListener("paste", this._handleClipboardEvent);
 
     // remove attribute of id instance: data-intl-tel-input-id
-    this.telInput.removeAttribute('data-intl-tel-input-id');
+    this.telInput.removeAttribute("data-intl-tel-input-id");
 
     // remove markup (but leave the original input)
     const wrapper = this.telInput.parentNode;
@@ -1355,40 +1498,45 @@ class Iti {
     delete window.intlTelInputGlobals.instances[this.id];
   }
 
-
   // get the extension from the current number
   getExtension() {
     if (window.intlTelInputUtils) {
-      return intlTelInputUtils.getExtension(this._getFullNumber(), this.selectedCountryData.iso2);
+      return intlTelInputUtils.getExtension(
+        this._getFullNumber(),
+        this.selectedCountryData.iso2
+      );
     }
-    return '';
+    return "";
   }
-
 
   // format the number to the given format
   getNumber(format) {
     if (window.intlTelInputUtils) {
       const { iso2 } = this.selectedCountryData;
-      return intlTelInputUtils.formatNumber(this._getFullNumber(), iso2, format);
+      return intlTelInputUtils.formatNumber(
+        this._getFullNumber(),
+        iso2,
+        format
+      );
     }
-    return '';
+    return "";
   }
-
 
   // get the type of the entered number e.g. landline/mobile
   getNumberType() {
     if (window.intlTelInputUtils) {
-      return intlTelInputUtils.getNumberType(this._getFullNumber(), this.selectedCountryData.iso2);
+      return intlTelInputUtils.getNumberType(
+        this._getFullNumber(),
+        this.selectedCountryData.iso2
+      );
     }
     return -99;
   }
-
 
   // get the country data for the currently selected flag
   getSelectedCountryData() {
     return this.selectedCountryData;
   }
-
 
   // get the validation error
   getValidationError() {
@@ -1399,14 +1547,16 @@ class Iti {
     return -99;
   }
 
-
   // validate the input val - assumes the global function isValidNumber (from utilsScript)
   isValidNumber() {
     const val = this._getFullNumber().trim();
-    const countryCode = (this.options.nationalMode) ? this.selectedCountryData.iso2 : '';
-    return (window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, countryCode) : null);
+    const countryCode = this.options.nationalMode
+      ? this.selectedCountryData.iso2
+      : "";
+    return window.intlTelInputUtils
+      ? intlTelInputUtils.isValidNumber(val, countryCode)
+      : null;
   }
-
 
   // update the selected flag, and update the input val accordingly
   setCountry(originalCountryCode) {
@@ -1418,7 +1568,6 @@ class Iti {
       this._triggerCountryChange();
     }
   }
-
 
   // set the input value and update the flag
   setNumber(number) {
@@ -1438,34 +1587,30 @@ class Iti {
   }
 }
 
-
 /********************
  *  STATIC METHODS
  ********************/
 
-
 // get the country data object
 intlTelInputGlobals.getCountryData = () => allCountries;
-
 
 // inject a <script> element to load utils.js
 const injectScript = (path, handleSuccess, handleFailure) => {
   // inject a new script element into the page
-  const script = document.createElement('script');
+  const script = document.createElement("script");
   script.onload = () => {
-    forEachInstance('handleUtils');
+    forEachInstance("handleUtils");
     if (handleSuccess) handleSuccess();
   };
   script.onerror = () => {
-    forEachInstance('rejectUtilsScriptPromise');
+    forEachInstance("rejectUtilsScriptPromise");
     if (handleFailure) handleFailure();
   };
-  script.className = 'iti-load-utils';
+  script.className = "iti-load-utils";
   script.async = true;
   script.src = path;
   document.body.appendChild(script);
 };
-
 
 // load the utils script
 intlTelInputGlobals.loadUtils = (path) => {
@@ -1473,22 +1618,26 @@ intlTelInputGlobals.loadUtils = (path) => {
   // 1) not already started loading (start)
   // 2) already started loading (do nothing - just wait for the onload callback to fire, which will
   // trigger handleUtils on all instances, invoking their resolveUtilsScriptPromise functions)
-  if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
+  if (
+    !window.intlTelInputUtils &&
+    !window.intlTelInputGlobals.startedLoadingUtilsScript
+  ) {
     // only do this once
     window.intlTelInputGlobals.startedLoadingUtilsScript = true;
 
     // if we have promises, then return a promise
-    if (typeof Promise !== 'undefined') {
-      return new Promise((resolve, reject) => injectScript(path, resolve, reject));
+    if (typeof Promise !== "undefined") {
+      return new Promise((resolve, reject) =>
+        injectScript(path, resolve, reject)
+      );
     }
     injectScript(path);
   }
   return null;
 };
 
-
 // default options
 intlTelInputGlobals.defaults = defaults;
 
 // version
-intlTelInputGlobals.version = '<%= version %>';
+intlTelInputGlobals.version = "<%= version %>";

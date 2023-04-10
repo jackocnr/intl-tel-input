@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  "extends": ["airbnb", "prettier"],
   "parser": "babel-eslint",
   "env": {
     "browser": true,
@@ -8,13 +8,6 @@
     "arrow-parens": "off",
     "camelcase": "off",
     "class-methods-use-this": "off",
-    "comma-dangle": ["error", {
-      "arrays": "always-multiline",
-      "exports": "always-multiline",
-      "functions": "never",
-      "imports": "always-multiline",
-      "objects": "always-multiline",
-    }],
     "no-cond-assign": ["error", "except-parens"],
     "no-lonely-if": "off",
     "no-multi-assign": "off",
