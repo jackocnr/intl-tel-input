@@ -19,7 +19,7 @@
   <script>
     var input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      // allowDropdown: false,
+      allowDropdown: false,
       // autoInsertDialCode: true,
       // autoPlaceholder: "off",
       // dropdownContainer: document.body,
@@ -39,6 +39,7 @@
       // placeholderNumberType: "MOBILE",
       // preferredCountries: ['cn', 'jp'],
       // separateDialCode: true,
+      showFlags: false,
       utilsScript: "build/js/utils.js",
     });
   </script>

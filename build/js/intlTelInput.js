@@ -152,6 +152,8 @@
             preferredCountries: [ "us", "gb" ],
             // display the country dial code next to the selected flag
             separateDialCode: false,
+            // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
+            showFlags: true,
             // specify the path to the libphonenumber script to enable validation/formatting
             utilsScript: ""
         };
@@ -198,6 +200,12 @@
                     if (this.options.nationalMode) this.options.autoInsertDialCode = false;
                     // if separateDialCode enabled, do not insert dial codes
                     if (this.options.separateDialCode) this.options.autoInsertDialCode = false;
+                    // force showFlags=true if there's a dropdown and we're not displaying the dial code,
+                    // as otherwise you just have a down arrow on it's own which doesn't make sense
+                    var forceShowFlags = this.options.allowDropdown && !this.options.separateDialCode;
+                    if (!this.options.showFlags && forceShowFlags) {
+                        this.options.showFlags = true;
+                    }
                     // we cannot just test screen size as some smartphones/website meta tags will report desktop
                     // resolutions
                     // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
@@ -382,47 +390,56 @@
                     if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
                         this.telInput.setAttribute("autocomplete", "off");
                     }
+                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, customContainer = _this$options.customContainer, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer;
                     // containers (mostly for positioning)
                     var parentClass = "iti";
-                    if (this.options.allowDropdown) parentClass += " iti--allow-dropdown";
-                    if (this.options.separateDialCode) parentClass += " iti--separate-dial-code";
-                    if (this.options.customContainer) {
-                        parentClass += " ";
-                        parentClass += this.options.customContainer;
+                    if (allowDropdown) parentClass += " iti--allow-dropdown";
+                    if (separateDialCode) parentClass += " iti--separate-dial-code";
+                    if (showFlags) parentClass += " iti--show-flags";
+                    if (customContainer) {
+                        parentClass += " ".concat(customContainer);
                     }
                     var wrapper = this._createEl("div", {
                         "class": parentClass
                     });
                     this.telInput.parentNode.insertBefore(wrapper, this.telInput);
-                    this.flagsContainer = this._createEl("div", {
-                        "class": "iti__flag-container"
-                    }, wrapper);
+                    // only hide the flagsContainer if allowDropdown, showFlags and separateDialCode are all false
+                    var showFlagsContainer = allowDropdown || showFlags || separateDialCode;
+                    if (showFlagsContainer) {
+                        this.flagsContainer = this._createEl("div", {
+                            "class": "iti__flag-container"
+                        }, wrapper);
+                    }
                     wrapper.appendChild(this.telInput);
                     // selected flag (displayed to left of input)
                     // using Aria tags for "Select-Only Combobox Example"
                     // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
-                    this.selectedFlag = this._createEl("div", _objectSpread({
-                        "class": "iti__selected-flag"
-                    }, this.options.allowDropdown && {
-                        role: "combobox",
-                        "aria-haspopup": "listbox",
-                        "aria-controls": "iti-".concat(this.id, "__country-listbox"),
-                        "aria-owns": "iti-".concat(this.id, "__country-listbox"),
-                        "aria-expanded": "false",
-                        "aria-label": "Telephone country code"
-                    }), this.flagsContainer);
-                    this.selectedFlagInner = this._createEl("div", {
-                        "class": "iti__flag"
-                    }, this.selectedFlag);
-                    if (this.telInput.disabled) {
+                    if (showFlagsContainer) {
+                        this.selectedFlag = this._createEl("div", _objectSpread({
+                            "class": "iti__selected-flag"
+                        }, allowDropdown && {
+                            role: "combobox",
+                            "aria-haspopup": "listbox",
+                            "aria-controls": "iti-".concat(this.id, "__country-listbox"),
+                            "aria-owns": "iti-".concat(this.id, "__country-listbox"),
+                            "aria-expanded": "false",
+                            "aria-label": "Telephone country code"
+                        }), this.flagsContainer);
+                    }
+                    if (showFlags) {
+                        this.selectedFlagInner = this._createEl("div", {
+                            "class": "iti__flag"
+                        }, this.selectedFlag);
+                    }
+                    if (this.selectedFlag && this.telInput.disabled) {
                         this.selectedFlag.setAttribute("aria-disabled", "true");
                     }
-                    if (this.options.separateDialCode) {
+                    if (separateDialCode) {
                         this.selectedDialCode = this._createEl("div", {
                             "class": "iti__selected-dial-code"
                         }, this.selectedFlag);
                     }
-                    if (this.options.allowDropdown) {
+                    if (allowDropdown) {
                         if (!this.telInput.disabled) {
                             // make element focusable and tab navigable
                             this.selectedFlag.setAttribute("tabindex", "0");
@@ -447,7 +464,7 @@
                         }
                         this._appendListItems(this.countries, "iti__standard");
                         // create dropdownContainer markup
-                        if (this.options.dropdownContainer) {
+                        if (dropdownContainer) {
                             this.dropdown = this._createEl("div", {
                                 "class": "iti iti--container"
                             });
@@ -456,8 +473,8 @@
                             this.flagsContainer.appendChild(this.countryList);
                         }
                     }
-                    if (this.options.hiddenInput) {
-                        var hiddenInputName = this.options.hiddenInput;
+                    if (hiddenInput) {
+                        var hiddenInputName = hiddenInput;
                         var name = this.telInput.getAttribute("name");
                         if (name) {
                             var i = name.lastIndexOf("[");
@@ -485,7 +502,9 @@
                         // open the list item
                         tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-").concat(this.id, "__item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "' aria-selected='false'>");
                         // add the flag
-                        tmp += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(c.iso2, "'></div></div>");
+                        if (this.options.showFlags) {
+                            tmp += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(c.iso2, "'></div></div>");
+                        }
                         // and the country name and dial code
                         tmp += "<span class='iti__country-name'>".concat(c.name, "</span>");
                         tmp += "<span class='iti__dial-code'>+".concat(c.dialCode, "</span>");
@@ -506,7 +525,7 @@
                     var val = useAttribute ? attributeValue : inputValue;
                     var dialCode = this._getDialCode(val);
                     var isRegionlessNanp = this._isRegionlessNanp(val);
-                    var _this$options = this.options, initialCountry = _this$options.initialCountry, autoInsertDialCode = _this$options.autoInsertDialCode;
+                    var _this$options2 = this.options, initialCountry = _this$options2.initialCountry, autoInsertDialCode = _this$options2.autoInsertDialCode;
                     // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
                     // flag, else fall back to the default country
                     if (dialCode && !isRegionlessNanp) {
@@ -978,10 +997,14 @@
                     if (this.selectedCountryData.iso2) {
                         this.defaultCountry = this.selectedCountryData.iso2;
                     }
-                    this.selectedFlagInner.setAttribute("class", "iti__flag iti__".concat(countryCode));
+                    if (this.options.showFlags) {
+                        this.selectedFlagInner.setAttribute("class", "iti__flag iti__".concat(countryCode));
+                    }
                     // update the selected country's title attribute
-                    var title = countryCode ? "".concat(this.selectedCountryData.name, ": +").concat(this.selectedCountryData.dialCode) : "Unknown";
-                    this.selectedFlag.setAttribute("title", title);
+                    if (this.selectedFlag) {
+                        var title = countryCode ? "".concat(this.selectedCountryData.name, ": +").concat(this.selectedCountryData.dialCode) : "Unknown";
+                        this.selectedFlag.setAttribute("title", title);
+                    }
                     if (this.options.separateDialCode) {
                         var dialCode = this.selectedCountryData.dialCode ? "+".concat(this.selectedCountryData.dialCode) : "";
                         this.selectedDialCode.innerHTML = dialCode;
@@ -1316,7 +1339,7 @@
                 value: function setCountry(originalCountryCode) {
                     var countryCode = originalCountryCode.toLowerCase();
                     // check if already selected
-                    if (!this.selectedFlagInner.classList.contains("iti__".concat(countryCode))) {
+                    if (this.selectedCountryData.iso2 !== countryCode) {
                         this._setFlag(countryCode);
                         this._updateDialCode(this.selectedCountryData.dialCode);
                         this._triggerCountryChange();

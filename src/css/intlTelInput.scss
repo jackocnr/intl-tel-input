@@ -248,7 +248,7 @@ $mobilePopupMargin: 30px !default;
       // now that we have digits in this section, it needs this visual separation
       background-color: $hoverColor;
     }
-    .iti__selected-dial-code {
+    &.iti--show-flags .iti__selected-dial-code {
       margin-left: $arrowPadding;
     }
   }

@@ -106,7 +106,7 @@
       background-color: transparent; }
   .iti--separate-dial-code .iti__selected-flag {
     background-color: rgba(0, 0, 0, 0.05); }
-  .iti--separate-dial-code .iti__selected-dial-code {
+  .iti--separate-dial-code.iti--show-flags .iti__selected-dial-code {
     margin-left: 6px; }
   .iti--container {
     position: absolute;
