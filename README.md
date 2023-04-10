@@ -39,6 +39,7 @@ You can view [a live demo](https://intl-tel-input.com) and see some examples of 
 * Full validation, including specific error types
 * Retina flag icons
 * Lots of initialisation options for customisation, as well as public methods for interaction
+* Accessibility provided via ARIA tags based on [W3's Select-Only Combobox Example](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/)
 
 
 ## Browser Compatibility
