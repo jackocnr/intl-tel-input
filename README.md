@@ -47,7 +47,7 @@ You can view [a live demo](https://intl-tel-input.com) and see some examples of 
 | :----: | :--: | :----: | :--: | :------------: | :-----------: | :----: |
 |    ✓   |   ✓  |    ✓   |  11  |       ✓        |       ✓       |    ✓   |
 
-Note: In v12.0.0 we dropped support for IE9 and IE10, because they are no longer supported by any version of Windows - see https://www.xfive.co/blog/stop-supporting-ie10-ie9-ie8/
+Note: In v12.0.0 we dropped support for IE9 and IE10, because they are [no longer supported](https://www.xfive.co/blog/stop-supporting-ie10-ie9-ie8/) by any version of Windows.
 
 ## Getting Started (Using a bundler e.g. Webpack)
 1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
