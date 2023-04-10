@@ -8,6 +8,7 @@
     "arrow-parens": "off",
     "camelcase": "off",
     "class-methods-use-this": "off",
+    "curly": ["error", "all"],
     "no-cond-assign": ["error", "except-parens"],
     "no-lonely-if": "off",
     "no-multi-assign": "off",

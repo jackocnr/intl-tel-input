@@ -21,6 +21,7 @@
     "babel-eslint": "^9.0.0",
     "custom-event-polyfill": "^1.0.6",
     "es6-promise": "^4.2.5",
+    "eslint": "^8.38.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.14.0",
@@ -49,6 +50,7 @@
     "jquery": "^3.1.1",
     "load-grunt-config": "^0.19.2",
     "node-sass": "^6.0.1",
+    "prettier": "^2.8.7",
     "region-flags": "^1.1.0",
     "time-grunt": "^1.4.0"
   },
