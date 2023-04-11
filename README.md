@@ -184,7 +184,7 @@ Add a hidden input with the given name. Alternatively, if your input name contai
 
 **initialCountry**  
 Type: `String` Default: `""`  
-Set the initial country selection by specifying its country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/default-country-ip.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
+Set the initial country selection by specifying its country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/default-country-ip.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
 
 If you leave `initialCountry` blank, it will default to the first country in the list.
 
@@ -198,11 +198,11 @@ Allows to translate the countries by its given iso code e.g.:
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
-Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getNumber` to extract a full international number - [see example](https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html). This option now defaults to `true`, and it is recommended that you leave it that way as it provides a better experience for the user.
+Allow users to enter national numbers (and not have to think about international dial codes). Formatting, validation and placeholders still work. Then you can use `getNumber` to extract a full international number - [see example](https://intl-tel-input.com/examples/national-mode.html). This option now defaults to `true`, and it is recommended that you leave it that way as it provides a better experience for the user.
 
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
-In the dropdown, display only the countries you specify - [see example](https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/only-countries-europe.html).
+In the dropdown, display only the countries you specify - [see example](https://intl-tel-input.com/examples/only-countries-europe.html).
 
 **placeholderNumberType**  
 Type: `String` Default: `"MOBILE"`  
@@ -295,7 +295,7 @@ if (error === intlTelInputUtils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Validate the current number - [see example](https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/is-valid-number.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option. Also see `getNumberType` if you want to make sure the user enters a certain type of number e.g. a mobile number.  
+Validate the current number - [see example](https://intl-tel-input.com/examples/is-valid-number.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option. Also see `getNumberType` if you want to make sure the user enters a certain type of number e.g. a mobile number.  
 ```js
 var isValid = iti.isValidNumber();
 ```
@@ -323,7 +323,7 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 ## Static Methods
 
 **getCountryData**  
-Get all of the plugin's country data - either to re-use elsewhere e.g. to populate a country dropdown - [see example](https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/country-sync.html), or to modify - [see example](https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/modify-country-data.html). Note that any modifications must be done before initialising the plugin.  
+Get all of the plugin's country data - either to re-use elsewhere e.g. to populate a country dropdown - [see example](https://intl-tel-input.com/examples/country-sync.html), or to modify - [see example](https://intl-tel-input.com/examples/modify-country-data.html). Note that any modifications must be done before initialising the plugin.  
 ```js
 var countryData = window.intlTelInputGlobals.getCountryData();
 ```
@@ -351,7 +351,7 @@ window.intlTelInputGlobals.loadUtils("build/js/utils.js");
 ```
 
 **~~setCountryData~~ [REMOVED]**  
-Set the plugin's country data. This method was removed because it makes much more sense to just use `getCountryData` and then modify that ([see example](https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/modify-country-data.html)) instead of having to generate the whole thing yourself - the country data has become increasingly complicated and for each country we now have five properties: the name, [iso2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), international dial code, priority (in case two countries have the same international dial code), and finally a list of area codes used in that country - see [data.js](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.js#L36) for more info.
+Set the plugin's country data. This method was removed because it makes much more sense to just use `getCountryData` and then modify that ([see example](https://intl-tel-input.com/examples/modify-country-data.html)) instead of having to generate the whole thing yourself - the country data has become increasingly complicated and for each country we now have five properties: the name, [iso2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), international dial code, priority (in case two countries have the same international dial code), and finally a list of area codes used in that country - see [data.js](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.js#L36) for more info.
 
 
 ## Events
@@ -364,7 +364,7 @@ input.addEventListener("countrychange", function() {
   // do something with iti.getSelectedCountryData()
 });
 ```
-See an example here: [Country sync](https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/country-sync.html)  
+See an example here: [Country sync](https://intl-tel-input.com/examples/country-sync.html)  
 
 **open:countrydropdown**  
 This is triggered when the user opens the dropdown.  
