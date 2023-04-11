@@ -121,9 +121,6 @@ When you initialise the plugin, the first argument is the input element, and the
 Type: `Boolean` Default: `true`  
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also we display the selected flag on the right instead because it is just a marker of state.
 
-**~~autoFormat~~ [REMOVED]**  
-Automatically format the number as the user types. Unfortunately this had to be removed for the reasons listed here: [#346 Disable and remove autoFormat feature](https://github.com/jackocnr/intl-tel-input/issues/346).
-
 **autoInsertDialCode**  
 Type: `Boolean` Default: `false`  
 When enabled (requires `nationalMode` to be disabled), the international dial code will be automatically inserted into the input in 3 situations: (A) upon initialisation, and (B) when the user selects a country from the dropdown, and (C) upon calling `setCountry`. Additionally, the plugin will listen for blur/submit events, and if the input only contains a dial code, it will automatically be removed to avoid submitting just that.
@@ -211,9 +208,6 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 **preferredCountries**  
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
-
-**~~preventInvalidNumbers~~ [REMOVED]**  
-Prevent the user from entering invalid characters. Unfortunately this had to be removed for the reasons listed here: [#79 Limit Input Characters to Formatted String Length](https://github.com/jackocnr/intl-tel-input/issues/79#issuecomment-121799307).
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
@@ -349,10 +343,6 @@ An alternative to the `utilsScript` option, this method lets you manually load t
 ```js
 window.intlTelInputGlobals.loadUtils("build/js/utils.js");
 ```
-
-**~~setCountryData~~ [REMOVED]**  
-Set the plugin's country data. This method was removed because it makes much more sense to just use `getCountryData` and then modify that ([see example](https://intl-tel-input.com/examples/modify-country-data.html)) instead of having to generate the whole thing yourself - the country data has become increasingly complicated and for each country we now have five properties: the name, [iso2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), international dial code, priority (in case two countries have the same international dial code), and finally a list of area codes used in that country - see [data.js](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.js#L36) for more info.
-
 
 ## Events
 You can listen for the following events on the input.
