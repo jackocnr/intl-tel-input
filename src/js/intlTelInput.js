@@ -40,7 +40,7 @@ const defaults = {
   initialCountry: "",
   // localized country names e.g. { 'de': 'Deutschland' }
   localizedCountries: null,
-  // deal with national numbers instead of international numbers
+  // national vs international formatting for numbers e.g. placeholders and displaying existing numbers
   nationalMode: true,
   // display only these countries
   onlyCountries: [],
@@ -355,7 +355,7 @@ class Iti {
     // if autocomplete does not exist on the element and its form, then
     // prevent autocomplete as there's no safe, cross-browser event we can react to, so it can
     // easily put the plugin in an inconsistent state e.g. the wrong flag selected for the
-    // autocompleted number, which on submit could mean wrong number is saved (esp in nationalMode)
+    // autocompleted number, which on submit could mean wrong number is saved
     if (
       !this.telInput.hasAttribute("autocomplete") &&
       !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))
@@ -1050,7 +1050,7 @@ class Iti {
   // check if need to select a new flag based on the given number
   // Note: called from _setInitialState, keyup handler, setNumber
   _updateFlagFromNumber(originalNumber) {
-    // if we're in nationalMode and we already have US/Canada selected, make sure the number starts
+    // if we already have US/Canada selected, make sure the number starts
     // with a +1 so _getDialCode will be able to extract the area code
     // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag
     // from the number), that means we're initialising the plugin with a number that already has a
@@ -1058,12 +1058,7 @@ class Iti {
     let number = originalNumber;
     const selectedDialCode = this.selectedCountryData.dialCode;
     const isNanp = selectedDialCode === "1";
-    if (
-      number &&
-      this.options.nationalMode &&
-      isNanp &&
-      number.charAt(0) !== "+"
-    ) {
+    if (number && isNanp && number.charAt(0) !== "+") {
       if (number.charAt(0) !== "1") {
         number = `1${number}`;
       }
@@ -1305,8 +1300,8 @@ class Iti {
 
     // focus the input
     this.telInput.focus();
-    // put cursor at end - this fix is required for FF and IE11 (with nationalMode=false i.e. auto
-    // inserting dial code), who try to put the cursor at the beginning the first time
+    // put cursor at end - this fix is required for FF and IE11 (with auto inserting dial code),
+    // who try to put the cursor at the beginning the first time
     const len = this.telInput.value.length;
     this.telInput.setSelectionRange(len, len);
 
@@ -1388,7 +1383,7 @@ class Iti {
 
     let newNumber;
     if (inputVal.charAt(0) === "+") {
-      // there's a plus so we're dealing with a replacement (doesn't matter if nationalMode or not)
+      // there's a plus so we're dealing with a replacement
       const prevDialCode = this._getDialCode(inputVal);
       if (prevDialCode) {
         // current number contains a valid dial code, so replace it
@@ -1635,11 +1630,8 @@ class Iti {
   // validate the input val - assumes the global function isValidNumber (from utilsScript)
   isValidNumber() {
     const val = this._getFullNumber().trim();
-    const countryCode = this.options.nationalMode
-      ? this.selectedCountryData.iso2
-      : "";
     return window.intlTelInputUtils
-      ? intlTelInputUtils.isValidNumber(val, countryCode)
+      ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)
       : null;
   }
 
