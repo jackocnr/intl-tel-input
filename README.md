@@ -181,7 +181,7 @@ Add a hidden input with the given name. Alternatively, if your input name contai
 
 **initialCountry**  
 Type: `String` Default: `""`  
-Set the initial country selection by specifying its country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/default-country-ip.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
+Set the initial country selection by specifying its country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
 
 If you leave `initialCountry` blank, it will default to the first country in the list.
 
@@ -199,7 +199,7 @@ Allow users to enter national numbers (and not have to think about international
 
 **onlyCountries**  
 Type: `Array` Default: `undefined`  
-In the dropdown, display only the countries you specify - [see example](https://intl-tel-input.com/examples/only-countries-europe.html).
+In the dropdown, display only the countries you specify - [see example](https://intl-tel-input.com/examples/only-countries.html).
 
 **placeholderNumberType**  
 Type: `String` Default: `"MOBILE"`  
@@ -289,7 +289,7 @@ if (error === intlTelInputUtils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Validate the current number - [see example](https://intl-tel-input.com/examples/is-valid-number.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option. Also see `getNumberType` if you want to make sure the user enters a certain type of number e.g. a mobile number.  
+Validate the current number - [see example](https://intl-tel-input.com/examples/validation.html). Expects an internationally formatted number (unless `nationalMode` is enabled). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option. Also see `getNumberType` if you want to make sure the user enters a certain type of number e.g. a mobile number.  
 ```js
 var isValid = iti.isValidNumber();
 ```
