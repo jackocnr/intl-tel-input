@@ -49,6 +49,23 @@ You can view [a live demo](https://intl-tel-input.com) and see some examples of 
 
 _Note: In v12.0.0 we dropped support for IE9 and IE10, because they are [no longer supported](https://www.xfive.co/blog/stop-supporting-ie10-ie9-ie8/) by any version of Windows._
 
+## Getting Started (Using a CDN)
+1. Add the CSS
+  ```html
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css">
+  ```
+
+2. Add the plugin script and initialise it on your input element
+  ```html
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+  <script>
+    var input = document.querySelector("#phone");
+    window.intlTelInput(input, {
+      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+    });
+  </script>
+  ```
+
 ## Getting Started (Using a bundler e.g. Webpack)
 1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
 
@@ -69,16 +86,14 @@ _Note: In v12.0.0 we dropped support for IE9 and IE10, because they are [no long
 
   const input = document.querySelector("#phone");
   intlTelInput(input, {
-      // any initialisation options go here
+      utilsScript: "path/to/utils.js"
   });
   ```
-
-5. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
 
 ## Getting Started (Not using a bundler)
 1. Download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest), or better yet install it with [npm](https://www.npmjs.com/package/intl-tel-input)
 
-2. Include the stylesheet
+2. Add the stylesheet
   ```html
   <link rel="stylesheet" href="path/to/intlTelInput.css">
   ```
@@ -98,13 +113,10 @@ _Note: In v12.0.0 we dropped support for IE9 and IE10, because they are [no long
   <script>
     var input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      // any initialisation options go here
+      utilsScript: "path/to/utils.js"
     });
   </script>
   ```
-
-5. **Recommended:** initialise the plugin with the `utilsScript` option to enable formatting/validation, and to allow you to extract full international numbers using `getNumber`.
-
 
 ## Recommended Usage
 We highly recommend you (lazy) load the included utils.js using the `utilsScript` option. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information.
