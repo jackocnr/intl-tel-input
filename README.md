@@ -199,7 +199,7 @@ If you leave `initialCountry` blank, it will default to the first country in the
 
 **localizedCountries**  
 Type: `Object` Default: `{}`  
-Allow localisation of country names. For each country, the key should be the iso2 country code, and the value should be the localised country name. [See example](https://intl-tel-input.com/examples/localised-countries.html).
+Allow localisation of country names. For each country, the key should be the iso2 country code, and the value should be the localised country name. [See example](https://intl-tel-input.com/examples/localise-countries.html).
 
 ```js
 // Country names in German
