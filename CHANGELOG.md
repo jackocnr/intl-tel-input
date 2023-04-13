@@ -1,5 +1,8 @@
 # Changelog
 
+## v18.2.0 (2023-04-13)
+- Simplify nationalMode option. Previously, when nationalMode was set to false, the plugin was needlessly creating a worse UX for users who typed a valid national number in 2 situations: (1) it wouldn't update the flag between NANP countries if you typed a different area code (in national format), and (2) isValidNumber would return false for a valid national number.
+
 ## v18.0.0 (2023-04-07)
 - Remove autoHideDialCode option in favour of new autoInsertDialCode option
 - Allow nationalMode to be used with separateDialCode
