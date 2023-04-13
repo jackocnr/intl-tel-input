@@ -199,10 +199,20 @@ If you leave `initialCountry` blank, it will default to the first country in the
 
 **localizedCountries**  
 Type: `Object` Default: `{}`  
-Allows to translate the countries by its given iso code e.g.:
+Allow localisation of country names. For each country, the key should be the iso2 country code, and the value should be the localised country name. [See example](https://intl-tel-input.com/examples/localised-countries.html).
 
 ```js
-{ 'de': 'Deutschland' }
+// Country names in German
+{
+    fr: "Frankreich",
+    de: "Deutschland",
+    es: "Spanien",
+    it: "Italien",
+    ch: "Schweiz",
+    nl: "Niederlande",
+    at: "Österreich",
+    dk: "Dänemark",
+  }
 ```
 
 **nationalMode**  
@@ -329,7 +339,7 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 ## Static Methods
 
 **getCountryData**  
-Get all of the plugin's country data - either to re-use elsewhere e.g. to populate a country dropdown - [see example](https://intl-tel-input.com/examples/country-sync.html), or to modify - [see example](https://intl-tel-input.com/examples/modify-country-data.html). Note that any modifications must be done before initialising the plugin.  
+Retrieve the plugin's country data - either to re-use elsewhere e.g. to generate your own country dropdown - [see example](https://intl-tel-input.com/examples/country-sync.html), or alternatively, you could use it to modify the country data. Note that any modifications must be done before initialising the plugin.  
 ```js
 var countryData = window.intlTelInputGlobals.getCountryData();
 ```
