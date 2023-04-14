@@ -1,18 +1,11 @@
 * {
   box-sizing: border-box;
-  -moz-box-sizing: border-box;
 }
-
 body {
   margin: 20px;
-
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #555;
-}
-
-.iti__hide {
-  display: none;
 }
 
 // example code blocks
@@ -54,14 +47,7 @@ select {
   border: 1px solid #ccc;
   width: 250px;
 }
-::-webkit-input-placeholder {
-  color: #bbb;
-}
-::-moz-placeholder {
-  /* Firefox 19+ */
-  color: #bbb;
-  opacity: 1;
-}
+::placeholder,
 :-ms-input-placeholder {
   color: #bbb;
 }
@@ -76,9 +62,4 @@ button {
     border-color: #285e8e;
     cursor: pointer;
   }
-}
-
-// examples
-#result {
-  margin-bottom: 100px;
 }
