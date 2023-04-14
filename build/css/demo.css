@@ -1,15 +1,18 @@
 * {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+}
 
 body {
   margin: 20px;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #555; }
+  color: #555;
+}
 
 pre {
   margin: 0 !important;
-  display: inline-block; }
+  display: inline-block;
+}
 
 .token.operator,
 .token.entity,
@@ -17,7 +20,8 @@ pre {
 .language-css .token.string,
 .style .token.string,
 .token.variable {
-  background: none; }
+  background: none;
+}
 
 input,
 button {
@@ -27,25 +31,31 @@ button {
   border-radius: 2px;
   font-family: inherit;
   font-size: 100%;
-  color: inherit; }
-  input[disabled],
-  button[disabled] {
-    background-color: #eee; }
+  color: inherit;
+}
+input[disabled],
+button[disabled] {
+  background-color: #eee;
+}
 
 input,
 select {
   border: 1px solid #ccc;
-  width: 250px; }
+  width: 250px;
+}
 
 ::placeholder,
 :-ms-input-placeholder {
-  color: #bbb; }
+  color: #bbb;
+}
 
 button {
   color: #fff;
   background-color: #428bca;
-  border: 1px solid #357ebd; }
-  button:hover {
-    background-color: #3276b1;
-    border-color: #285e8e;
-    cursor: pointer; }
+  border: 1px solid #357ebd;
+}
+button:hover {
+  background-color: #3276b1;
+  border-color: #285e8e;
+  cursor: pointer;
+}

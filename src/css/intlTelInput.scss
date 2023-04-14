@@ -1,3 +1,5 @@
+@use "sass:math";
+
 // NOTE: by using !default on all variables, we're saying only declare the variable if it doesn't
 // already exist, which allows devs to declare these variables themselves and assign them any value
 // they want before importing this file
@@ -17,7 +19,7 @@ $borderWidth: 1px !default;
 
 $arrowHeight: 4px !default;
 $arrowWidth: 6px !default;
-$triangleBorder: $arrowWidth / 2 !default;
+$triangleBorder: math.div($arrowWidth, 2) !default;
 $arrowPadding: $arrowWidth !default;
 $arrowColor: #555 !default;
 
