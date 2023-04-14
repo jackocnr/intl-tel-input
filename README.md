@@ -14,7 +14,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Demo and Examples](#demo-and-examples)
 - [Features](#features)
 - [Browser Compatibility](#browser-compatibility)
-- [Getting Started](#getting-started-using-a-bundler-eg-webpack)
+- [Getting Started](#getting-started-using-a-cdn)
 - [Recommended Usage](#recommended-usage)
 - [Options](#initialisation-options)
 - [Public Methods](#public-methods)
