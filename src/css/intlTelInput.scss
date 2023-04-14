@@ -17,8 +17,8 @@ $borderWidth: 1px !default;
 
 $arrowHeight: 4px !default;
 $arrowWidth: 6px !default;
-$triangleBorder: 3px !default;
-$arrowPadding: 6px !default;
+$triangleBorder: $arrowWidth / 2 !default;
+$arrowPadding: $arrowWidth !default;
 $arrowColor: #555 !default;
 
 $inputPadding: 6px !default;
