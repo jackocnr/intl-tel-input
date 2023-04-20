@@ -15,7 +15,6 @@ module.exports = function (grunt) {
           "!third_party/libphonenumber/javascript/i18n/phonenumbers/**_test.js",
         ],
         entry_point: "goog:i18n.phonenumbers.demo",
-        manage_closure_dependencies: true,
         compilation_level: "ADVANCED_OPTIMIZATIONS",
         output_wrapper: "(function(){%output%})();",
       },

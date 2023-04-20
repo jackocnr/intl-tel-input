@@ -40,5 +40,7 @@
   "globals": {
     "allCountries": true,
     "intlTelInputUtils": true,
+    "goog": true,
+    "i18n": true,
   },
 }
