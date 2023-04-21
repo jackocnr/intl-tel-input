@@ -8,7 +8,7 @@ In order to build the project, you will first need to install [npm](https://www.
 
 In most cases, you will only need to make changes to the JavaScript, in which case you can just run `npm run build:js` to build the JavaScript before committing.
 
-If you want to make changes to the CSS or the flags sprite, you will need to globally install a package called evenizer with `npm install -g evenizer` and ImageMagick with `brew install imagemagick` (on MacOS), then run `npm run build` to build all of the assets (warning: this can take a while), before committing.
+If you want to make changes to the CSS or the flags sprite, you will need to globally install a package called evenizer with `npm install -g evenizer` and ImageMagick (on MacOS you can do this with `brew install imagemagick`), then run `npm run build` to build all of the assets (warning: this can take a while), before committing.
 
 ### Updating to a new version of libphonenumber
 
