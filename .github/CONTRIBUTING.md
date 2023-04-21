@@ -8,47 +8,31 @@ In order to build the project, you will first need to install [npm](https://www.
 
 In most cases, you will only need to make changes to the JavaScript, in which case you can just run `npm run build:js` to build the JavaScript before committing.
 
-If you want to make changes to the CSS or the flags sprite, you will need to globally install a package called evenizer with `npm install -g evenizer` and ImageMagick with `brew install imagemagick`, then run `npm run build` to build all of the assets (warning: this can take a while), before committing.
+If you want to make changes to the CSS or the flags sprite, you will need to globally install a package called evenizer with `npm install -g evenizer` and ImageMagick with `brew install imagemagick` (on MacOS), then run `npm run build` to build all of the assets (warning: this can take a while), before committing.
 
 ### Updating to a new version of libphonenumber
 
 #### Step 1: Setup
-(Taken from the [libphonenumber JavaScript setup instructions](https://github.com/google/libphonenumber/blob/master/javascript/README.md))  
-Create a new dir (e.g. ~/workspace/libphonenumber-tools) where you will clone the libphonenumber project and a few other dependencies, and cd into it, and then:
 
-```
-git clone https://github.com/google/libphonenumber
-git clone https://github.com/google/closure-library
-git clone https://github.com/google/closure-compiler
-git clone https://github.com/google/closure-linter
-git clone https://github.com/google/python-gflags
-```
-
-Update 29/11/2021: the recommended versions of these dependencies didn't work for me, when trying to build against the latest version of libphonenumber (v8.12.38 at the time of writing), so I had to use the following versions to get it working:
-
-- closure-compiler v20210302
-- closure-library v20201006
-- closure-linter v2.3.19
-- python-gflags 3.1.2
-
-You also need to build Closure's compiler.jar in the closure-compiler directory: `bazelisk build :all` (requires 2 things to be installed: (1) bazelisk - on MacOS, you can do this with `brew install bazelisk`, and (2) a JDK)
+We now include libphonenumber as a submodule within this repository. The first time you update your local intl-tel-input repo to include this change, you need to run `npm install` to install the new closure-compiler dependencies, and then run `git pull --recurse-submodules` to initialise the submodule (this will populate the third_party/libphonenumber directory).
 
 #### Step 2: Updating libphonenumber
 
-Simply cd into the libphonenumber dir and checkout the required version tag e.g.
+First, cd into the libphonenumber submodule directory and checkout the required version tag e.g.
 
 ```
-cd ~/workspace/libphonenumber-tools/libphonenumber
+cd third_party/libphonenumber
 git checkout v8.9.14
 ```
 
-Then to build the new version of utils.js:
+Then to build the new version of utils.js, cd back to the root of your intl-tel-input repo and run the build command:
 
-1. Copy intl-tel-input/src/js/utils.js to libphonenumber/javascript/i18n/phonenumbers/demo.js
-2. `ant -f libphonenumber/javascript/build.xml compile-demo` (requires ant to be installed - on MacOS, you can do this with `brew install ant`)
-3. Copy libphonenumber/javascript/i18n/phonenumbers/demo-compiled.js to intl-tel-input/build/js/utils.js
+```
+cd ../..
+npm run build:utils
+```
 
-Then, back in the intl-tel-input dir, first run the tests to make sure nothing has broken: `npm test`, then just commit the new utils.js, and create a pull request on Github.
+Then run the tests to make sure nothing has broken: `npm test`, commit the updated build/js/utils.js, and create a pull request on Github.
 
 
 ### Updating the flag images
