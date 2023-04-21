@@ -60,6 +60,7 @@
     "type": "git",
     "url": "https://github.com/jackocnr/intl-tel-input.git"
   },
+  "homepage": "https://intl-tel-input.com",
   "scripts": {
     "test": "grunt travis",
     "build": "grunt build",
