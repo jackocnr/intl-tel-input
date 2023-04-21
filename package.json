@@ -9,9 +9,17 @@
     "dial",
     "code",
     "telephone",
+    "phone",
     "mobile",
     "input",
-    "flag"
+    "flag",
+    "dropdown",
+    "javascript",
+    "plugin",
+    "css",
+    "html",
+    "validation",
+    "formatting"
   ],
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
