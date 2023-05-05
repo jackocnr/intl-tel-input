@@ -1166,9 +1166,11 @@ class Iti {
     throw new Error(`No country data for '${countryCode}'`);
   }
 
-  // select the given flag, update the placeholder and the active list item
+  // select the given flag, update the placeholder, title, and the active list item
   // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
   _setFlag(countryCode) {
+    const { allowDropdown, separateDialCode, showFlags } = this.options;
+
     const prevCountry = this.selectedCountryData.iso2
       ? this.selectedCountryData
       : {};
@@ -1182,21 +1184,16 @@ class Iti {
       this.defaultCountry = this.selectedCountryData.iso2;
     }
 
-    if (this.options.showFlags) {
+    if (showFlags) {
       this.selectedFlagInner.setAttribute(
         "class",
         `iti__flag iti__${countryCode}`
       );
     }
-    // update the selected country's title attribute
-    if (this.selectedFlag) {
-      const title = countryCode
-        ? `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}`
-        : "Unknown";
-      this.selectedFlag.setAttribute("title", title);
-    }
 
-    if (this.options.separateDialCode) {
+    this._setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode);
+
+    if (separateDialCode) {
       const dialCode = this.selectedCountryData.dialCode
         ? `+${this.selectedCountryData.dialCode}`
         : "";
@@ -1213,7 +1210,7 @@ class Iti {
     this._updatePlaceholder();
 
     // update the active list item
-    if (this.options.allowDropdown) {
+    if (allowDropdown) {
       const prevItem = this.activeItem;
       if (prevItem) {
         prevItem.classList.remove("iti__active");
@@ -1236,6 +1233,25 @@ class Iti {
 
     // return if the flag has changed or not
     return prevCountry.iso2 !== countryCode;
+  }
+
+  _setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode) {
+    if (!this.selectedFlag) {
+      return;
+    }
+
+    let title;
+    if (countryCode && !separateDialCode) {
+      title = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}`;
+    } else if (countryCode) {
+      // For screen reader output, we don't want to include the dial code in the reader output twice
+      // so just use the selected country name here:
+      title = this.selectedCountryData.name;
+    } else {
+      title = "Unknown";
+    }
+
+    this.selectedFlag.setAttribute("title", title);
   }
 
   // when the input is in a hidden container during initialisation, we must inject some markup
