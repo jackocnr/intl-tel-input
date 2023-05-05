@@ -412,7 +412,6 @@ class Iti {
             role: "combobox",
             "aria-haspopup": "listbox",
             "aria-controls": `iti-${this.id}__country-listbox`,
-            "aria-owns": `iti-${this.id}__country-listbox`,
             "aria-expanded": "false",
             "aria-label": "Telephone country code"
           })
