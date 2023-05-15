@@ -451,7 +451,6 @@
                             role: "combobox",
                             "aria-haspopup": "listbox",
                             "aria-controls": "iti-".concat(this.id, "__country-listbox"),
-                            "aria-owns": "iti-".concat(this.id, "__country-listbox"),
                             "aria-expanded": "false",
                             "aria-label": "Telephone country code"
                         }), this.flagsContainer);
@@ -1074,6 +1073,7 @@
             }, {
                 key: "_setFlag",
                 value: function _setFlag(countryCode) {
+                    var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, separateDialCode = _this$options3.separateDialCode, showFlags = _this$options3.showFlags;
                     var prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
                     // do this first as it will throw an error and stop if countryCode is invalid
                     this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
@@ -1081,15 +1081,11 @@
                     if (this.selectedCountryData.iso2) {
                         this.defaultCountry = this.selectedCountryData.iso2;
                     }
-                    if (this.options.showFlags) {
+                    if (showFlags) {
                         this.selectedFlagInner.setAttribute("class", "iti__flag iti__".concat(countryCode));
                     }
-                    // update the selected country's title attribute
-                    if (this.selectedFlag) {
-                        var title = countryCode ? "".concat(this.selectedCountryData.name, ": +").concat(this.selectedCountryData.dialCode) : "Unknown";
-                        this.selectedFlag.setAttribute("title", title);
-                    }
-                    if (this.options.separateDialCode) {
+                    this._setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode);
+                    if (separateDialCode) {
                         var dialCode = this.selectedCountryData.dialCode ? "+".concat(this.selectedCountryData.dialCode) : "";
                         this.selectedDialCode.innerHTML = dialCode;
                         // offsetWidth is zero if input is in a hidden container during initialisation
@@ -1100,7 +1096,7 @@
                     // and the input's placeholder
                     this._updatePlaceholder();
                     // update the active list item
-                    if (this.options.allowDropdown) {
+                    if (allowDropdown) {
                         var prevItem = this.activeItem;
                         if (prevItem) {
                             prevItem.classList.remove("iti__active");
@@ -1116,6 +1112,24 @@
                     }
                     // return if the flag has changed or not
                     return prevCountry.iso2 !== countryCode;
+                }
+            }, {
+                key: "_setSelectedCountryFlagTitleAttribute",
+                value: function _setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode) {
+                    if (!this.selectedFlag) {
+                        return;
+                    }
+                    var title;
+                    if (countryCode && !separateDialCode) {
+                        title = "".concat(this.selectedCountryData.name, ": +").concat(this.selectedCountryData.dialCode);
+                    } else if (countryCode) {
+                        // For screen reader output, we don't want to include the dial code in the reader output twice
+                        // so just use the selected country name here:
+                        title = this.selectedCountryData.name;
+                    } else {
+                        title = "Unknown";
+                    }
+                    this.selectedFlag.setAttribute("title", title);
                 }
             }, {
                 key: "_getHiddenSelectedFlagWidth",
