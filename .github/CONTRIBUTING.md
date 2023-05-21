@@ -22,6 +22,7 @@ First, cd into the libphonenumber submodule directory and checkout the required 
 
 ```
 cd third_party/libphonenumber
+git fetch --tags
 git checkout v8.9.14
 ```
 
