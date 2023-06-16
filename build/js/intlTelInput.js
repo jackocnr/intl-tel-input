@@ -226,6 +226,8 @@
                             this.options.dropdownContainer = document.body;
                         }
                     }
+                    // check if input has one parent with RTL
+                    this.isRTL = !!this.telInput.closest("[dir=rtl]");
                     // these promises get resolved when their individual requests complete
                     // this way the dev can do something like iti.promise.then(...) to know when all requests are
                     // complete
@@ -1091,7 +1093,11 @@
                         // offsetWidth is zero if input is in a hidden container during initialisation
                         var selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
                         // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
-                        this.telInput.style.paddingLeft = "".concat(selectedFlagWidth + 6, "px");
+                        if (this.isRTL) {
+                            this.telInput.style.paddingRight = "".concat(selectedFlagWidth + 6, "px");
+                        } else {
+                            this.telInput.style.paddingLeft = "".concat(selectedFlagWidth + 6, "px");
+                        }
                     }
                     // and the input's placeholder
                     this._updatePlaceholder();

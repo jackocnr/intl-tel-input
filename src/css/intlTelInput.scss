@@ -259,6 +259,11 @@ $mobilePopupMargin: 30px !default;
     }
     &.iti--show-flags .iti__selected-dial-code {
       margin-left: $arrowPadding;
+
+      [dir="rtl"] & {
+        margin-left: 0;
+        margin-right: $arrowPadding;
+      }
     }
   }
 

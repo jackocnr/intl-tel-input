@@ -149,6 +149,10 @@
 .iti--separate-dial-code.iti--show-flags .iti__selected-dial-code {
   margin-left: 6px;
 }
+[dir=rtl] .iti--separate-dial-code.iti--show-flags .iti__selected-dial-code {
+  margin-left: 0;
+  margin-right: 6px;
+}
 .iti--container {
   position: absolute;
   top: -1000px;
