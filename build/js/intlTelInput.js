@@ -1452,6 +1452,12 @@
                     return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
                 }
             }, {
+                key: "isPossibleNumber",
+                value: function isPossibleNumber() {
+                    var val = this._getFullNumber().trim();
+                    return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2) : null;
+                }
+            }, {
                 key: "setCountry",
                 value: function setCountry(originalCountryCode) {
                     var countryCode = originalCountryCode.toLowerCase();

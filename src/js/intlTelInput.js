@@ -1657,6 +1657,14 @@ class Iti {
       : null;
   }
 
+  // check if input val is possible number (weaker validation, but more future-proof) - assumes the global function isPossibleNumber (from utilsScript)
+  isPossibleNumber() {
+    const val = this._getFullNumber().trim();
+    return window.intlTelInputUtils
+      ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2)
+      : null;
+  }
+
   // update the selected flag, and update the input val accordingly
   setCountry(originalCountryCode) {
     const countryCode = originalCountryCode.toLowerCase();

@@ -102,6 +102,19 @@ const isValidNumber = (number, countryCode) => {
   }
 };
 
+// check if given number is possible
+const isPossibleNumber = (number, countryCode) => {
+  try {
+    const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    // can't use phoneUtil.isPossibleNumber directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter
+    const result = phoneUtil.isPossibleNumberWithReason(numberObj);
+    return result === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
+  } catch (e) {
+    return false;
+  }
+};
+
 /********************
  * NOTE: for following sections, keys must be in quotes to force closure compiler to preserve them
  ********************/
@@ -149,6 +162,7 @@ goog.exportSymbol("intlTelInputUtils.getExtension", getExtension);
 goog.exportSymbol("intlTelInputUtils.getNumberType", getNumberType);
 goog.exportSymbol("intlTelInputUtils.getValidationError", getValidationError);
 goog.exportSymbol("intlTelInputUtils.isValidNumber", isValidNumber);
+goog.exportSymbol("intlTelInputUtils.isPossibleNumber", isPossibleNumber);
 // enums
 goog.exportSymbol("intlTelInputUtils.numberFormat", numberFormat);
 goog.exportSymbol("intlTelInputUtils.numberType", numberType);

@@ -24,8 +24,13 @@ describe("isValidNumber:", function() {
       expect(iti.isValidNumber()).toBeTruthy();
     });
 
-    it("returns false for: invalid intl number", function() {
+    it("returns false for: invalid (too short) intl number", function() {
       iti.setNumber("+44 7733 123");
+      expect(iti.isValidNumber()).toBeFalsy();
+    });
+
+    it("returns false for: possible but invalid (bad dial code) intl number", function() {
+      iti.setNumber("+44 9999 123456");
       expect(iti.isValidNumber()).toBeFalsy();
     });
 
@@ -34,11 +39,6 @@ describe("isValidNumber:", function() {
       iti.setNumber("+44 7733 123456");
       expect(iti.isValidNumber()).toBeNull();
     });
-
-    /*it("returns false for: valid intl number containing alpha chars", function() {
-      iti.setNumber("+44 7733 123 abc");
-      expect(iti.isValidNumber()).toBeFalsy();
-    });*/
 
   });
 
@@ -62,7 +62,7 @@ describe("isValidNumber:", function() {
       expect(iti.isValidNumber()).toBeTruthy();
     });
 
-    it("returns false for: correct selected country, invalid number", function() {
+    it("returns false for: correct selected country, invalid (too short) number", function() {
       iti.setCountry("gb");
       iti.setNumber("07733 123");
       expect(iti.isValidNumber()).toBeFalsy();
