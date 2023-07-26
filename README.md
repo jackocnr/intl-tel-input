@@ -121,9 +121,9 @@ _Note: In v12.0.0 we dropped support for IE9 and IE10, because they are [no long
 ## Recommended Usage
 We highly recommend you (lazy) load the included utils.js using the `utilsScript` option. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information.
 
-You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically remove the international dial code for you).
+You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
-Finally, make sure you have `<meta charset="utf-8">` in the `<head>` section of your page, else you will get an error as the JS contains some special unicode characters.
+Finally, make sure you have `<meta charset="utf-8">` in the `<head>` section of your page, else you will get an error as the JS contains some special unicode characters for localised country names.
 
 
 ## Initialisation Options
