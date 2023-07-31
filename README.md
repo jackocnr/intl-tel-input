@@ -311,14 +311,14 @@ if (error === intlTelInputUtils.validationError.TOO_SHORT) {
 ```
 
 **isPossibleNumber**  
-Check if the current number is possible. This is a simple form of validation that only checks the length of the number but should be sufficient for most use cases. See `isValidNumber` for more accurate validation, but the advantage of `isPossibleNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. Requires the `utilsScript` option.  
+Check if the current number is possible. This is a simple form of validation that only checks the length of the number but should be sufficient for most use cases. See `isValidNumber` for more accurate validation, but the advantage of `isPossibleNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. If it returns false, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
 ```js
 const isPossible = iti.isPossibleNumber();
 ```
 Returns: `true`/`false`
 
 **isValidNumber**  
-Check if the current number is valid - [see example](https://intl-tel-input.com/examples/validation.html). This is a very accurate validation check (with specific rules for each dial code etc). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
+Check if the current number is valid - [see example](https://intl-tel-input.com/examples/validation.html). This is a very accurate validation check (with specific rules for each dial code etc). Note that these valid number rules change each month for various countries around the world, so you need to be careful to keep the plugin up-to-date else you will start rejecting valid numbers. For a simpler and more future-proof form of validation, see `isPossibleNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
 ```js
 const isValid = iti.isValidNumber();
 ```
