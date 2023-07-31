@@ -311,7 +311,7 @@ if (error === intlTelInputUtils.validationError.TOO_SHORT) {
 ```
 
 **isPossibleNumber**  
-Check if the current number is possible. This is a simple form of validation that only checks the length of the number but should be sufficient for most use cases. See `isValidNumber` for more accurate validation, but the advantage of `isPossibleNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. If it returns false, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
+Check if the current number is possible - [see example](https://intl-tel-input.com/examples/validation-practical.html). This is a simple form of validation that only checks the length of the number but should be sufficient for most use cases. See `isValidNumber` for more accurate validation, but the advantage of `isPossibleNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. If it returns false, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
 ```js
 const isPossible = iti.isPossibleNumber();
 ```
