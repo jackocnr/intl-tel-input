@@ -59,7 +59,7 @@ _Note: In v12.0.0 we dropped support for IE9 and IE10, because they are [no long
   ```html
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
   <script>
-    var input = document.querySelector("#phone");
+    const input = document.querySelector("#phone");
     window.intlTelInput(input, {
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
     });
@@ -111,7 +111,7 @@ _Note: In v12.0.0 we dropped support for IE9 and IE10, because they are [no long
   ```html
   <script src="path/to/intlTelInput.js"></script>
   <script>
-    var input = document.querySelector("#phone");
+    const input = document.querySelector("#phone");
     window.intlTelInput(input, {
       utilsScript: "path/to/utils.js"
     });
@@ -247,7 +247,7 @@ Enable formatting/validation etc. by specifying the URL of the included utils.js
 
 
 ## Public Methods
-In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g. `var iti = intlTelInput(input)`
+In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g. `const iti = intlTelInput(input)`
 
 **destroy**  
 Remove the plugin from the input, and unbind any event listeners.  
@@ -258,23 +258,23 @@ iti.destroy();
 **getExtension**  
 Get the extension from the current number. Requires the `utilsScript` option.
 ```js
-var extension = iti.getExtension();
+const extension = iti.getExtension();
 ```
 Returns a string e.g. if the input value was `"(702) 555-5555 ext. 1234"`, this would return `"1234"`
 
 **getNumber**  
 Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInputUtils.numberFormat` - which you can see [here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L109). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
 ```js
-var number = iti.getNumber();
+const number = iti.getNumber();
 // or
-var number = iti.getNumber(intlTelInputUtils.numberFormat.E164);
+const number = iti.getNumber(intlTelInputUtils.numberFormat.E164);
 ```
 Returns a string e.g. `"+17024181234"`
 
 **getNumberType**  
 Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the `utilsScript` option.  
 ```js
-var numberType = iti.getNumberType();
+const numberType = iti.getNumberType();
 ```
 Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L119) in the global enum `intlTelInputUtils.numberType` e.g.  
 ```js
@@ -287,7 +287,7 @@ _Note that in the US there's no way to differentiate between fixed-line and mobi
 **getSelectedCountryData**  
 Get the country data for the currently selected flag.  
 ```js
-var countryData = iti.getSelectedCountryData();
+const countryData = iti.getSelectedCountryData();
 ```
 Returns something like this:
 ```js
@@ -301,7 +301,7 @@ Returns something like this:
 **getValidationError**  
 Get more information about a validation error. Requires the `utilsScript` option.  
 ```js
-var error = iti.getValidationError();
+const error = iti.getValidationError();
 ```
 Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L153) in the global enum `intlTelInputUtils.validationError` e.g.  
 ```js
@@ -310,10 +310,17 @@ if (error === intlTelInputUtils.validationError.TOO_SHORT) {
 }
 ```
 
-**isValidNumber**  
-Validate the current number - [see example](https://intl-tel-input.com/examples/validation.html). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option. Also see `getNumberType` if you want to make sure the user enters a certain type of number e.g. a mobile number.  
+**isPossibleNumber**  
+Check if the current number is possible. This is a simple form of validation that only checks the length of the number but should be sufficient for most use cases. See `isValidNumber` for more accurate validation, but the advantage of `isPossibleNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. Requires the `utilsScript` option.  
 ```js
-var isValid = iti.isValidNumber();
+const isPossible = iti.isPossibleNumber();
+```
+Returns: `true`/`false`
+
+**isValidNumber**  
+Check if the current number is valid - [see example](https://intl-tel-input.com/examples/validation.html). This is a very accurate validation check (with specific rules for each dial code etc). If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
+```js
+const isValid = iti.isValidNumber();
 ```
 Returns: `true`/`false`
 
@@ -341,7 +348,7 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 **getCountryData**  
 Retrieve the plugin's country data - either to re-use elsewhere e.g. to generate your own country dropdown - [see example](https://intl-tel-input.com/examples/country-sync.html), or alternatively, you could use it to modify the country data. Note that any modifications must be done before initialising the plugin.  
 ```js
-var countryData = window.intlTelInputGlobals.getCountryData();
+const countryData = window.intlTelInputGlobals.getCountryData();
 ```
 Returns an array of country objects:
 ```js
@@ -355,8 +362,8 @@ Returns an array of country objects:
 **getInstance**  
 After initialising the plugin, you can always access the instance again using this method, by just passing in the relevant input element.
 ```js
-var input = document.querySelector('#phone');
-var iti = window.intlTelInputGlobals.getInstance(input);
+const input = document.querySelector('#phone');
+const iti = window.intlTelInputGlobals.getInstance(input);
 iti.isValidNumber(); // etc
 ```
 
@@ -412,7 +419,7 @@ If you have a scrolling container other than `window` which is causing problems 
 
 ```js
 scrollingElement.addEventListener("scroll", function() {
-  var e = document.createEvent('Event');
+  const e = document.createEvent('Event');
   e.initEvent("scroll", true, true);
   window.dispatchEvent(e);
 });
