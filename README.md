@@ -318,7 +318,7 @@ const isPossible = iti.isPossibleNumber();
 Returns: `true`/`false`
 
 **isValidNumber**  
-Check if the current number is valid - [see example](https://intl-tel-input.com/examples/validation.html). This is a very accurate validation check (with specific rules for each dial code etc). Note that these valid number rules change each month for various countries around the world, so you need to be careful to keep the plugin up-to-date else you will start rejecting valid numbers. For a simpler and more future-proof form of validation, see `isPossibleNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
+Check if the current number is valid - [see example](https://intl-tel-input.com/examples/validation.html). This is a precise form of validation, with specific matching rules for each area code etc. Note that these rules change each month for various countries around the world, so you need to be careful to keep the plugin up-to-date else you will start rejecting valid numbers. For a simpler and more future-proof form of validation, see `isPossibleNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
 ```js
 const isValid = iti.isValidNumber();
 ```
