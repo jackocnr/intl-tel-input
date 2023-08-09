@@ -162,7 +162,9 @@
         // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
         showFlags: true,
         // specify the path to the libphonenumber script to enable validation/formatting
-        utilsScript: ""
+        utilsScript: "",
+        // Specify a callback that always gets executed whenever we are using the setNumber function.
+        afterSetNumber: function afterSetNumber() {}
     };
     // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
     var regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
@@ -1482,6 +1484,9 @@
                 this._updateValFromNumber(number);
                 if (flagChanged) {
                     this._triggerCountryChange();
+                }
+                if (this.options.afterSetNumber) {
+                    this.options.afterSetNumber(this);
                 }
             }
         }, {

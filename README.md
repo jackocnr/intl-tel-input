@@ -197,6 +197,26 @@ Set the initial country selection by specifying its country code. You can also s
 
 If you leave `initialCountry` blank, it will default to the first country in the list.
 
+**afterSetNumber**  
+Type: `Function` Default: `()=>{}`  
+Callback function that takes the instance as a parameter, and gets executed everytime setNumber(..) is getting called.
+
+```js
+...
+window.intlTelInput(input, {
+  ...
+  // for example, replacing '+' after it was filled.
+  afterSetNumber(instance=>{
+
+    var oldValue = $(instance.telInput).val();
+    oldValue.replaceAll("+","");
+    $(instance.telInput).val(oldValue);
+  })
+  ...
+})
+// Now each time we do instance.setNumber(..), it will automatically replace all "+"'s with empty string.
+```
+
 **localizedCountries**  
 Type: `Object` Default: `{}`  
 Allow localisation of country names. For each country, the key should be the iso2 country code, and the value should be the localised country name. [See example](https://intl-tel-input.com/examples/localise-countries.html).

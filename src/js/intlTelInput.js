@@ -53,7 +53,9 @@ const defaults = {
   // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
   showFlags: true,
   // specify the path to the libphonenumber script to enable validation/formatting
-  utilsScript: ""
+  utilsScript: "",
+  // Specify a callback that always gets executed whenever we are using the setNumber function.
+  afterSetNumber:()=>{}
 };
 // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
 const regionlessNanpNumbers = [
@@ -1684,6 +1686,10 @@ class Iti {
     this._updateValFromNumber(number);
     if (flagChanged) {
       this._triggerCountryChange();
+    }
+
+    if(this.options.afterSetNumber){
+      this.options.afterSetNumber(this);
     }
   }
 
