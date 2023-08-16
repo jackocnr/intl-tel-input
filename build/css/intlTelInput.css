@@ -65,6 +65,7 @@
   max-height: 200px;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+    border-radius: 8px !important;
 }
 .iti__country-list--dropup {
   bottom: 100%;
@@ -85,10 +86,12 @@
   border-bottom: 1px solid #ccc;
 }
 .iti__country {
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  outline: none;
+  display: flex !important;
+  align-items: center !important;
+  padding: 5px 10px !important;
+  outline: none !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 13px !important;
 }
 .iti__dial-code {
   color: #999;
