@@ -53,19 +53,21 @@
   border-bottom: 4px solid #555;
 }
 .iti__country-list {
-  position: absolute;
-  z-index: 2;
-  list-style: none;
-  padding: 0;
-  margin: 0 0 0 -1px;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-  background-color: white;
-  border: 1px solid #ccc;
-  white-space: nowrap;
-  max-height: 200px;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-    border-radius: 8px !important;
+  position: absolute !important;
+  z-index: 2 !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 300px !important;
+  box-sizing: border-box !important;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2) !important;
+  background-color: #ffffff !important;
+  border: 1px solid #ccc !important;
+  white-space: pre-wrap !important;
+  max-height: 200px !important;
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch !important;
+  border-radius: 8px !important;
 }
 .iti__country-list--dropup {
   bottom: 100%;
@@ -168,11 +170,14 @@
 }
 
 .iti-mobile .iti--container {
-  top: 30px;
-  bottom: 30px;
-  left: 30px;
-  right: 30px;
-  position: fixed;
+  top: 30px !important;
+  bottom: 30px !important;
+  left: 0px !important;
+  /* right: 30px; i removed this right */
+  position: fixed !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 .iti-mobile .iti__country-list {
   max-height: 100%;

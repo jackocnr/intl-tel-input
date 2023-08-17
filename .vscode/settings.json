@@ -3,5 +3,8 @@
     "editor.formatOnPaste": false, // required 
     "editor.formatOnType": false, // required
     "editor.formatOnSaveMode": "file", // required to format on save
-    "vs-code-prettier-eslint.prettierLast": "false" // set as "true" to run 'prettier' last not first
+    "vs-code-prettier-eslint.prettierLast": "false",
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "master"
+    ] // set as "true" to run 'prettier' last not first
 }
