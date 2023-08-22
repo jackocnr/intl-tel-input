@@ -161,6 +161,10 @@
         separateDialCode: false,
         // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
         showFlags: true,
+        // override full screen behavior of dropdown
+        useFullscreenPopup: function useFullscreenPopup() {
+            return this.isMobile;
+        },
         // specify the path to the libphonenumber script to enable validation/formatting
         utilsScript: ""
     };
@@ -223,7 +227,7 @@
                 // rest of these declarations
                 // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
                 this.isMobile = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                if (this.isMobile) {
+                if (this.options.useFullscreenPopup.apply(this)) {
                     // trigger the mobile dropdown css
                     document.body.classList.add("iti-mobile");
                     // on mobile, we want a full screen dropdown, so we must append it to the body

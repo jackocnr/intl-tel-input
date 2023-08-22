@@ -52,6 +52,8 @@ const defaults = {
   separateDialCode: false,
   // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
   showFlags: true,
+  // override full screen behavior of dropdown
+  useFullscreenPopup() { return this.isMobile; },
   // specify the path to the libphonenumber script to enable validation/formatting
   utilsScript: ""
 };
@@ -144,7 +146,7 @@ class Iti {
         navigator.userAgent
       );
 
-    if (this.isMobile) {
+    if (this.options.useFullscreenPopup.apply(this)) {
       // trigger the mobile dropdown css
       document.body.classList.add("iti-mobile");
 
