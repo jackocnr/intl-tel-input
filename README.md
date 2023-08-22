@@ -241,6 +241,11 @@ Display the country dial code next to the selected flag.
 Type: `Boolean` Default: `true`  
 Set this to false to hide the flags e.g. for political reasons. Must be used in combination with `separateDialCode` option, or with setting `allowDropdown` to `false`. 
 
+**useFullscreenPopup**  
+Type: `Function` Default: `function(){ return this.isMobile; }`  
+Override the dropdown's fullscreen behavior. Return `true` if fullscreen popup mode should be used.  
+Uses the value of `this.isMobile` by default.
+
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
 Enable formatting/validation etc. by specifying the URL of the included utils.js script (or alternatively just point it to the file on [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)). The script is fetched only when the page has finished loading (on the window load event) to prevent blocking (the script is ~215KB). When instantiating the plugin, if the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is defined, one of those is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information.
