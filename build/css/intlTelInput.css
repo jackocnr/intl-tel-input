@@ -1276,3 +1276,15 @@
 .iti__flag.iti__np {
   background-color: transparent;
 }
+
+.iti__search_box {
+  position: fixed !important;
+  width: 30%;
+  padding-left: 3px !important;
+}
+
+[dir=rtl] .iti__search_box {
+  position: fixed !important;
+  width: 30%;
+  padding-right: 3px !important;
+}

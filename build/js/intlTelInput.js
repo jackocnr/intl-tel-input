@@ -156,6 +156,8 @@
             separateDialCode: false,
             // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
             showFlags: true,
+            // country search option
+            searchCountry: false,
             // specify the path to the libphonenumber script to enable validation/formatting
             utilsScript: ""
         };
@@ -416,7 +418,7 @@
                     if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
                         this.telInput.setAttribute("autocomplete", "off");
                     }
-                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, customContainer = _this$options.customContainer, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer;
+                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, customContainer = _this$options.customContainer, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, searchCountry = _this$options.searchCountry;
                     // containers (mostly for positioning)
                     var parentClass = "iti";
                     if (allowDropdown) {
@@ -430,6 +432,9 @@
                     }
                     if (customContainer) {
                         parentClass += " ".concat(customContainer);
+                    }
+                    if (searchCountry) {
+                        parentClass += " iti--search-country";
                     }
                     var wrapper = this._createEl("div", {
                         "class": parentClass
@@ -485,6 +490,13 @@
                             role: "listbox",
                             "aria-label": "List of countries"
                         });
+                        if(searchCountry) {
+                            this._createEl("input", {
+                                "class": "iti__search_box",
+                                id: "iti-search-country",
+                                placeholder: "Search country name, code"
+                            }, this.countryList);
+                        }
                         if (this.preferredCountries.length) {
                             this._appendListItems(this.preferredCountries, "iti__preferred", true);
                             this._createEl("li", {
@@ -884,7 +896,12 @@
                     // (except when this initial opening click is bubbling up)
                     // we cannot just stopPropagation as it may be needed to close another instance
                     var isOpening = true;
-                    this._handleClickOffToClose = function() {
+                    var searchInputClicked = false;
+                    this._handleClickOffToClose = function(e) {
+                        if(e.target.classList.contains('iti__search_box')) {
+                            searchInputClicked = true;
+                            return false;
+                        }
                         if (!isOpening) {
                             _this9._closeDropdown();
                         }
@@ -900,6 +917,7 @@
                     this._handleKeydownOnDropdown = function(e) {
                         // prevent down key from scrolling the whole page,
                         // and enter key from submitting a form etc
+                        var searchCountry = _this9.options.searchCountry;
                         e.preventDefault();
                         // up and down to navigate
                         if (e.key === "ArrowUp" || e.key === "Up" || e.key === "ArrowDown" || e.key === "Down") {
@@ -908,17 +926,25 @@
                             _this9._handleEnterKey();
                         } else if (e.key === "Escape") {
                             _this9._closeDropdown();
+                        } else if (e.key === "Backspace" && searchCountry == true) {
+                            _this9._clearInputField(e);
+                        } else if (searchCountry == true && (e.keyCode >= 96 && e.keyCode <= 105)) {
+                            _this9._searchCountry(e);
                         } else if (/^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
                             // jump to countries that start with the query string
-                            if (queryTimer) {
-                                clearTimeout(queryTimer);
+                            if(searchCountry) {
+                                _this9._searchCountry(e);
+                            } else {
+                                if (queryTimer) {
+                                    clearTimeout(queryTimer);
+                                }
+                                query += e.key.toLowerCase();
+                                _this9._searchForCountry(query);
+                                // if the timer hits 1 second, reset the query
+                                queryTimer = setTimeout(function() {
+                                    query = "";
+                                }, 1e3);
                             }
-                            query += e.key.toLowerCase();
-                            _this9._searchForCountry(query);
-                            // if the timer hits 1 second, reset the query
-                            queryTimer = setTimeout(function() {
-                                query = "";
-                            }, 1e3);
                         }
                     };
                     document.addEventListener("keydown", this._handleKeydownOnDropdown);
@@ -953,6 +979,36 @@
                             this._scrollTo(listItem, true);
                             break;
                         }
+                    }
+                }
+            }, {
+                key: "_searchCountry",
+                value: function _searchCountry(e) {
+                    if(e.key == 'Backspace' || e.key == 'Delete') return;
+                    var toSearch = e.key;
+                    e.target.value += toSearch;
+                    for (var i = 0; i < this.countries.length; i++) {
+                        var listItem = null;
+                        if (this._startsWith(this.countries[i].name, e.target.value)) {
+                            listItem = this.countryList.querySelector("#iti-".concat(this.id, "__item-").concat(this.countries[i].iso2));
+                        } else if (this._startsWith(this.countries[i].dialCode, e.target.value)) {
+                            listItem = this.countryList.querySelector("[data-dial-code='"+this.countries[i].dialCode+"'");
+                        }
+                        // update highlighting and scroll
+                        if(listItem) {
+                            this._highlightListItem(listItem, false);
+                            this._scrollTo(listItem, true);
+                            break;
+                        }
+                    }
+                }
+            }, {
+                key: "_clearInputField",
+                value: function _clearInputField(e) {
+                    var inputText = e.target.value;
+                    if(inputText.length > 0) {
+                        e.target.value = inputText.substring(0, inputText.length - 1);
+                        this._searchCountry(e);
                     }
                 }
             }, {
