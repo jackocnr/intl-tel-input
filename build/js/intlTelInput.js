@@ -491,7 +491,7 @@
                             "aria-label": "List of countries"
                         });
                         if(searchCountry) {
-                            this._createEl("input", {
+                            this.searchInput = this._createEl("input", {
                                 "class": "iti__search_box",
                                 id: "iti-search-country",
                                 placeholder: "Search country name, code"
@@ -815,6 +815,7 @@
                     // update the arrow
                     this.dropdownArrow.classList.add("iti__arrow--up");
                     this._trigger("open:countrydropdown");
+                    this.searchInput.focus();
                 }
             }, {
                 key: "_toggleClass",
@@ -896,10 +897,8 @@
                     // (except when this initial opening click is bubbling up)
                     // we cannot just stopPropagation as it may be needed to close another instance
                     var isOpening = true;
-                    var searchInputClicked = false;
                     this._handleClickOffToClose = function(e) {
                         if(e.target.classList.contains('iti__search_box')) {
-                            searchInputClicked = true;
                             return false;
                         }
                         if (!isOpening) {
@@ -984,9 +983,9 @@
             }, {
                 key: "_searchCountry",
                 value: function _searchCountry(e) {
-                    if(e.key == 'Backspace' || e.key == 'Delete') return;
-                    var toSearch = e.key;
-                    e.target.value += toSearch;
+                    if(e.key != 'Backspace' && e.key != 'Delete') {
+                        e.target.value += e.key;
+                    }
                     for (var i = 0; i < this.countries.length; i++) {
                         var listItem = null;
                         if (this._startsWith(this.countries[i].name, e.target.value)) {
@@ -1263,6 +1262,7 @@
                         }
                     }
                     this._trigger("close:countrydropdown");
+                    this.searchInput.value = '';
                 }
             }, {
                 key: "_scrollTo",

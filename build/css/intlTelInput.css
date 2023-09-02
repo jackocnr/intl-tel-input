@@ -1288,3 +1288,7 @@
   width: 30%;
   padding-right: 3px !important;
 }
+
+.iti__country-list:has(>.iti__search_box) > li:first-of-type {
+  margin-top: 40px !important;
+}
