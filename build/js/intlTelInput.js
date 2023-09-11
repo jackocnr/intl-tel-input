@@ -533,14 +533,19 @@
                         var c = countries[i];
                         var idSuffix = preferred ? "-preferred" : "";
                         // open the list item
-                        tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-").concat(this.id, "__item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "' aria-selected='false'>");
+                        // @change add aria label to li and hidden to contents
+                        var label = "";
+                        if (navigator.userAgent.match(/Firefox/) || this.isMobile) {
+                            label = "aria-label='".concat(c.name, " ").concat(c.dialCode, "'");
+                        }
+                        tmp += "<li class='iti__country ".concat(className, "' tabIndex='-1' id='iti-").concat(this.id, "__item-").concat(c.iso2).concat(idSuffix, "' role='option' data-dial-code='").concat(c.dialCode, "' data-country-code='").concat(c.iso2, "' aria-selected='false' ").concat(label, ">");
                         // add the flag
                         if (this.options.showFlags) {
-                            tmp += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(c.iso2, "'></div></div>");
+                            tmp += "<div class='iti__flag-box' aria-hidden='true'><div class='iti__flag iti__".concat(c.iso2, "' aria-hidden='true'></div></div>");
                         }
                         // and the country name and dial code
-                        tmp += "<span class='iti__country-name'>".concat(c.name, "</span>");
-                        tmp += "<span class='iti__dial-code'>+".concat(c.dialCode, "</span>");
+                        tmp += "<span class='iti__country-name' aria-hidden='true'>".concat(c.name, "</span>");
+                        tmp += "<span class='iti__dial-code' aria-hidden='true'>+".concat(c.dialCode, "</span>");
                         // close the list item
                         tmp += "</li>";
                     }
@@ -662,6 +667,14 @@
                             // prevent event from being handled again by document
                             e.stopPropagation();
                             _this4._showDropdown();
+                        }
+                        // @change add event for enter and spacebar when dropdown open
+                        if (!isDropdownHidden && (e.key === "Enter" || e.key === " ")) {
+                            // prevent form from being submitted if "ENTER" was pressed
+                            e.preventDefault();
+                            // prevent event from being handled again by document
+                            e.stopPropagation();
+                            _this4._handleEnterKey();
                         }
                         // allow navigation from dropdown to input on TAB
                         if (e.key === "Tab") {
@@ -902,9 +915,12 @@
                         // and enter key from submitting a form etc
                         e.preventDefault();
                         // up and down to navigate
+                        // @change added enter and space actions
                         if (e.key === "ArrowUp" || e.key === "Up" || e.key === "ArrowDown" || e.key === "Down") {
                             _this9._handleUpDownKey(e.key);
                         } else if (e.key === "Enter") {
+                            _this9._handleEnterKey();
+                        } else if (e.key === " ") {
                             _this9._handleEnterKey();
                         } else if (e.key === "Escape") {
                             _this9._closeDropdown();
@@ -1054,9 +1070,14 @@
                     this.highlightedItem = listItem;
                     this.highlightedItem.classList.add("iti__highlight");
                     this.selectedFlag.setAttribute("aria-activedescendant", listItem.getAttribute("id"));
-                    if (shouldFocus) {
+                    // @change add firefox for screen readers
+                    if (shouldFocus && navigator.userAgent.match(/Firefox/)) {
                         this.highlightedItem.focus();
                     }
+                    // @change added for screen readers
+                    var title = this.highlightedItem.innerText;
+                    document.querySelector("#screen-reader-announcements").html("");
+                    document.querySelector("#screen-reader-announcements").html(title);
                 }
             }, {
                 key: "_getCountryData",
@@ -1085,6 +1106,15 @@
                     }
                     if (showFlags) {
                         this.selectedFlagInner.setAttribute("class", "iti__flag iti__".concat(countryCode));
+                    }
+                    // @change add text to title for screenreader
+                    var selectedText = "".concat(window.i18n_js.phone_country_code_selected, " ");
+                    var title = countryCode ? "".concat(selectedText).concat(this.selectedCountryData.name, " +").concat(this.selectedCountryData.dialCode) : selectedText.concat("unknown");
+                    this.selectedFlag.setAttribute("title", title);
+                    // @change only read for non firefox
+                    if (!navigator.userAgent.match(/Firefox/)) {
+                        document.querySelector("#screen-reader-announcements").html("");
+                        document.querySelector("#screen-reader-announcements").html(title);
                     }
                     this._setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode);
                     if (separateDialCode) {
@@ -1115,6 +1145,11 @@
                             nextItem.classList.add("iti__active");
                             this.activeItem = nextItem;
                         }
+                    }
+                    // @change only read for non firefox
+                    if (!navigator.userAgent.match(/Firefox/)) {
+                        document.querySelector("#screen-reader-announcements").html("");
+                        document.querySelector("#screen-reader-announcements").html(title);
                     }
                     // return if the flag has changed or not
                     return prevCountry.iso2 !== countryCode;
@@ -1170,6 +1205,8 @@
             }, {
                 key: "_selectListItem",
                 value: function _selectListItem(listItem) {
+                    // @change clear for screen readers
+                    document.querySelector("#screen-reader-announcements").html("");
                     // update selected flag and active list item
                     var flagChanged = this._setFlag(listItem.getAttribute("data-country-code"));
                     this._closeDropdown();
@@ -1182,6 +1219,12 @@
                     this.telInput.setSelectionRange(len, len);
                     if (flagChanged) {
                         this._triggerCountryChange();
+                        // @change announce selected country code on change if not firefox
+                        if (!navigator.userAgent.match(/Firefox/)) {
+                            // @change announce selected country code on change
+                            document.querySelector("#screen-reader-announcements").html("");
+                            document.querySelector("#screen-reader-announcements").html(this.selectedFlag.getAttribute("title"));
+                        }
                     }
                 }
             }, {
@@ -1205,6 +1248,10 @@
                         if (this.dropdown.parentNode) {
                             this.dropdown.parentNode.removeChild(this.dropdown);
                         }
+                    }
+                    // @change only blur not firefox to stop reading twice
+                    if (!navigator.userAgent.match(/Firefox/)) {
+                        this.selectedFlag.blur();
                     }
                     this._trigger("close:countrydropdown");
                 }
