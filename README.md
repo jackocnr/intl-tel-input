@@ -3,7 +3,7 @@ A JavaScript plugin for entering and validating international telephone numbers.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla.png" alt="Screenshot" width="424px" style="max-width: 100%" />
   
-If you like it, please consider making a donation, which you can do from [the demo page](https://intl-tel-input.com).
+If you find the plugin helpful, please consider [supporting the project](https://github.com/sponsors/jackocnr).
 
 ## Sponsored by
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.png" height="100" />
