@@ -1174,8 +1174,10 @@ class Iti {
 
     // @change added for screen readers
     const title = this.highlightedItem.innerText;
-    document.querySelector('#screen-reader-announcements').html('');
-    document.querySelector('#screen-reader-announcements').html(title);
+    const screenReader = document.querySelector('#screen-reader-announcements');
+    if(screenReader){
+      screenReader.html(title);
+    }
   }
 
   // find the country data for the given country code
@@ -1226,8 +1228,10 @@ class Iti {
 
     // @change only read for non firefox
     if (!navigator.userAgent.match(/Firefox/)) {
-      document.querySelector('#screen-reader-announcements').html('');
-      document.querySelector('#screen-reader-announcements').html(title);
+      const screenReader = document.querySelector('#screen-reader-announcements');
+      if(screenReader){
+        screenReader.html(title);
+      }
     }
 
     this._setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode);
@@ -1275,8 +1279,10 @@ class Iti {
     }
     // @change only read for non firefox
     if (!navigator.userAgent.match(/Firefox/)) {
-      document.querySelector('#screen-reader-announcements').html('');
-      document.querySelector('#screen-reader-announcements').html(title);
+      const screenReader = document.querySelector('#screen-reader-announcements');
+      if(screenReader){
+        screenReader.html(title);
+      }
     }
     // return if the flag has changed or not
     return prevCountry.iso2 !== countryCode;
@@ -1354,7 +1360,10 @@ class Iti {
   // called when the user selects a list item from the dropdown
   _selectListItem(listItem) {
     // @change clear for screen readers
-    document.querySelector('#screen-reader-announcements').html('');
+    const screenReader = document.querySelector('#screen-reader-announcements');
+    if(screenReader){
+      screenReader.html('');
+    }
 
     // update selected flag and active list item
     const flagChanged = this._setFlag(
@@ -1376,8 +1385,9 @@ class Iti {
       // @change announce selected country code on change if not firefox
       if (!navigator.userAgent.match(/Firefox/)) {
         // @change announce selected country code on change
-        document.querySelector('#screen-reader-announcements').html('');
-        document.querySelector('#screen-reader-announcements').html(this.selectedFlag.getAttribute("title"));
+        if(screenReader){
+          screenReader.html(this.selectedFlag.getAttribute("title"));
+        }
       }
     }
   }

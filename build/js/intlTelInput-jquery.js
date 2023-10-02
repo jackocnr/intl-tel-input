@@ -1081,8 +1081,10 @@
                 }
                 // @change added for screen readers
                 var title = this.highlightedItem.innerText;
-                document.querySelector("#screen-reader-announcements").html("");
-                document.querySelector("#screen-reader-announcements").html(title);
+                var screenReader = document.querySelector("#screen-reader-announcements");
+                if (screenReader) {
+                    screenReader.html(title);
+                }
             }
         }, {
             key: "_getCountryData",
@@ -1118,8 +1120,10 @@
                 this.selectedFlag.setAttribute("title", title);
                 // @change only read for non firefox
                 if (!navigator.userAgent.match(/Firefox/)) {
-                    document.querySelector("#screen-reader-announcements").html("");
-                    document.querySelector("#screen-reader-announcements").html(title);
+                    var screenReader = document.querySelector("#screen-reader-announcements");
+                    if (screenReader) {
+                        screenReader.html(title);
+                    }
                 }
                 this._setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode);
                 if (separateDialCode) {
@@ -1153,8 +1157,10 @@
                 }
                 // @change only read for non firefox
                 if (!navigator.userAgent.match(/Firefox/)) {
-                    document.querySelector("#screen-reader-announcements").html("");
-                    document.querySelector("#screen-reader-announcements").html(title);
+                    var _screenReader = document.querySelector("#screen-reader-announcements");
+                    if (_screenReader) {
+                        _screenReader.html(title);
+                    }
                 }
                 // return if the flag has changed or not
                 return prevCountry.iso2 !== countryCode;
@@ -1211,7 +1217,10 @@
             key: "_selectListItem",
             value: function _selectListItem(listItem) {
                 // @change clear for screen readers
-                document.querySelector("#screen-reader-announcements").html("");
+                var screenReader = document.querySelector("#screen-reader-announcements");
+                if (screenReader) {
+                    screenReader.html("");
+                }
                 // update selected flag and active list item
                 var flagChanged = this._setFlag(listItem.getAttribute("data-country-code"));
                 this._closeDropdown();
@@ -1227,8 +1236,9 @@
                     // @change announce selected country code on change if not firefox
                     if (!navigator.userAgent.match(/Firefox/)) {
                         // @change announce selected country code on change
-                        document.querySelector("#screen-reader-announcements").html("");
-                        document.querySelector("#screen-reader-announcements").html(this.selectedFlag.getAttribute("title"));
+                        if (screenReader) {
+                            screenReader.html(this.selectedFlag.getAttribute("title"));
+                        }
                     }
                 }
             }
