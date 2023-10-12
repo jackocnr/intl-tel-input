@@ -284,8 +284,8 @@ $mobilePopupMargin: 30px !default;
   }
 }
 
-// overrides for mobile popup (note: .iti-mobile class is applied on body)
-.iti-mobile .iti {
+// overrides for mobile popup (note: .iti-fullscreen-popup class is applied on body)
+.iti-fullscreen-popup .iti {
   &--container {
     top: $mobilePopupMargin;
     bottom: $mobilePopupMargin;
