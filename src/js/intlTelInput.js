@@ -52,8 +52,16 @@ const defaults = {
   separateDialCode: false,
   // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
   showFlags: true,
-  // override full screen behavior of dropdown
-  useFullscreenPopup() { return this.isMobile; },
+  // set full screen behavior of dropdown
+  useFullscreenPopup:
+    // we cannot just test screen size as some smartphones/website meta tags will report desktop
+    // resolutions
+    // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
+    // rest of these declarations
+    // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
+    /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) || window.innerWidth < 500,
   // specify the path to the libphonenumber script to enable validation/formatting
   utilsScript: ""
 };
@@ -136,19 +144,9 @@ class Iti {
       this.options.showFlags = true;
     }
 
-    // we cannot just test screen size as some smartphones/website meta tags will report desktop
-    // resolutions
-    // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
-    // rest of these declarations
-    // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
-    this.isMobile =
-      /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-
-    if (this.options.useFullscreenPopup.apply(this)) {
+    if (this.options.useFullscreenPopup) {
       // trigger the mobile dropdown css
-      document.body.classList.add("iti-mobile");
+      document.body.classList.add("iti-fullscreen-popup");
 
       // on mobile, we want a full screen dropdown, so we must append it to the body
       if (!this.options.dropdownContainer) {
@@ -840,7 +838,7 @@ class Iti {
       this.options.dropdownContainer.appendChild(this.dropdown);
     }
 
-    if (!this.isMobile) {
+    if (!this.options.useFullscreenPopup) {
       const pos = this.telInput.getBoundingClientRect();
       // windowTop from https://stackoverflow.com/a/14384091/217866
       const windowTop =
@@ -1357,7 +1355,7 @@ class Iti {
 
     // remove menu from container
     if (this.options.dropdownContainer) {
-      if (!this.isMobile) {
+      if (!this.options.useFullscreenPopup) {
         window.removeEventListener("scroll", this._handleWindowScroll);
       }
       if (this.dropdown.parentNode) {

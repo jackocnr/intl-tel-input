@@ -242,9 +242,9 @@ Type: `Boolean` Default: `true`
 Set this to false to hide the flags e.g. for political reasons. Must be used in combination with `separateDialCode` option, or with setting `allowDropdown` to `false`. 
 
 **useFullscreenPopup**  
-Type: `Function` Default: `function(){ return this.isMobile; }`  
-Override the dropdown's fullscreen behavior. Return `true` if fullscreen popup mode should be used.  
-Uses the value of `this.isMobile` by default.
+Type: `Boolean` Default: `true on mobile devices, false otherwise`  
+Override the dropdown's fullscreen behavior. Set to `true` if fullscreen popup mode should be used.  
+Tests for a mobile device by default.
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
