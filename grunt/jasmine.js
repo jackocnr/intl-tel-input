@@ -1,4 +1,11 @@
 module.exports = function(grunt) {
+  const os = require('os');
+  const ifMacOsWithArm64 = (os.platform() === 'darwin') &&  (process.arch === 'arm64')
+  const noSandbox = !ifMacOsWithArm64;
+  const sandboxArgs = ifMacOsWithArm64
+      ? { executablePath: '/Applications/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing' } // here is location for Google for Testing}
+      : {}
+
   return {
     src: [
       'src/js/data.js',
@@ -7,7 +14,7 @@ module.exports = function(grunt) {
     ],
     options: {
       version: '3.8.0',
-      noSandbox: true,
+      noSandbox: noSandbox,
       vendor: [
         'node_modules/jquery/dist/jquery.js',
         'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
@@ -22,7 +29,8 @@ module.exports = function(grunt) {
       ],
       styles: "build/css/intlTelInput.css", // required so adding "hide" class actually works etc.
       outfile: 'spec.html',
-      keepRunner: true
+      keepRunner: true,
+      sandboxArgs: sandboxArgs,
     }
   };
 };
