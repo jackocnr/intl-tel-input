@@ -489,8 +489,7 @@
                             this._appendListItems(this.preferredCountries, "iti__preferred", true);
                             this._createEl("li", {
                                 "class": "iti__divider",
-                                role: "separator",
-                                "aria-disabled": "true"
+                                "aria-hidden": "true"
                             }, this.countryList);
                         }
                         this._appendListItems(this.countries, "iti__standard");

@@ -467,8 +467,7 @@ class Iti {
           "li",
           {
             class: "iti__divider",
-            role: "separator",
-            "aria-disabled": "true"
+            "aria-hidden": "true"
           },
           this.countryList
         );
