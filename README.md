@@ -243,8 +243,7 @@ Set this to false to hide the flags e.g. for political reasons. Must be used in 
 
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
-Override the dropdown's fullscreen behavior. Set to `true` if fullscreen popup mode should be used.  
-Tests for a mobile device by default.
+Control when the country list appears as a fullscreen popup vs a dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), and as a dropdown on larger devices/screens.
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
