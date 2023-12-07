@@ -42,7 +42,7 @@ We get our flags from the region-flags project, which in turn pulls them in from
 
 1. Install some depenencies. On MacOS use brew: `brew install wget dos2unix librsvg optipng`
 2. Run the make-aliases command: `./make-aliases.sh` (Note: I got some "No such file or directory" warnings)
-3. Run the download command: `./download-wp.sh` (Note: this kept freezing for me, so I had to keep doing ctrl+c and then re-running it)
+3. Run the update command: `./update.sh` (Note: this kept freezing for me, so I had to keep doing ctrl+c and then re-running it)
 
 Finally, the last time I did this (October 2018) there was a problem with the Cayman Islands flag (region-flags/png/KY.png) - it should be aprx 1200x600px, like the other flags, but was instead tiny (36x36px), so I replaced it with [the old one from the region-flags repo](https://github.com/behdad/region-flags/blob/gh-pages/png/KY.png).
 
