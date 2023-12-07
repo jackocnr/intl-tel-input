@@ -156,13 +156,11 @@
             separateDialCode: false,
             // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
             showFlags: true,
-            // set full screen behavior of dropdown
+            // use full screen popup instead of dropdown for country list
             useFullscreenPopup: // we cannot just test screen size as some smartphones/website meta tags will report desktop
             // resolutions
-            // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
-            // rest of these declarations
             // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
-            /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 500,
+            /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 500,
             // specify the path to the libphonenumber script to enable validation/formatting
             utilsScript: ""
         };

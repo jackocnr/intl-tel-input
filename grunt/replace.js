@@ -236,9 +236,6 @@ module.exports = function(grunt) {
             match: /\.hadInitialPlaceholder/g,
             replacement: '.e'
           }, {
-            match: /\.isMobile/g,
-            replacement: '.g'
-          }, {
             match: /\.resolveAutoCountryPromise/g,
             replacement: '.h'
           }, {
