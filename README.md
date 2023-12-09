@@ -185,7 +185,7 @@ intlTelInput(input, {
   }
 })
 ```
-_Note that the callback must still be called in the event of an error, Hence the use of `catch()` in this example. Also `fetch` is not supported in IE11 and so requires [polyfilling](https://github.com/github/fetch) along with `Promise`. Tip: store the result in a cookie to avoid repeat lookups!_
+_Note that the callback must still be called in the event of an error, hence the use of `catch()` in this example. Tip: store the result in a cookie to avoid repeat lookups!_
 
 **hiddenInput**  
 Type: `String` Default: `""`  
