@@ -237,6 +237,11 @@ Display the country dial code next to the selected flag.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px">
 
+**shadowDomContainer**
+Type: `Node` Default: `null`
+Specify container(node) inside shadow dom (shadow root) to support mobile view.
+By default(mobile view) the library adds mobile class and list of countries to document.body. But if you want to use the library inside shadowDom, document.body can be unavailable and global classes will not have any effect on the library (closed shadow root). This option will give you a possibility to specify node where to add class and put list of countries (use a node inside shadowRoot/shadowDom).
+
 **showFlags**  
 Type: `Boolean` Default: `true`  
 Set this to false to hide the flags e.g. for political reasons. Must be used in combination with `separateDialCode` option, or with setting `allowDropdown` to `false`. 

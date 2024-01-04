@@ -154,6 +154,8 @@
             preferredCountries: [ "us", "gb" ],
             // display the country dial code next to the selected flag
             separateDialCode: false,
+            // custom container for mobile view (drop down and class) if library is using inside of shadow dom (document.body can be unavailable)
+            shadowDomContainer: null,
             // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
             showFlags: true,
             // use full screen popup instead of dropdown for country list
@@ -218,11 +220,12 @@
                         this.options.showFlags = true;
                     }
                     if (this.options.useFullscreenPopup) {
+                        var container = this.options.shadowDomContainer || document.body;
                         // trigger the mobile dropdown css
-                        document.body.classList.add("iti-fullscreen-popup");
+                        container.classList.add("iti-fullscreen-popup");
                         // on mobile, we want a full screen dropdown, so we must append it to the body
                         if (!this.options.dropdownContainer) {
-                            this.options.dropdownContainer = document.body;
+                            this.options.dropdownContainer = container;
                         }
                     }
                     // check if input has one parent with RTL
