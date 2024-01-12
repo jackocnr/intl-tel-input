@@ -77,6 +77,8 @@ const getValidationError = (number, countryCode) => {
         .INVALID_COUNTRY_CODE;
     }
     if (
+      // hack to solve issue where parseAndKeepRawInput throws weird error for zero or 1-digit (national) numbers e.g. "3" or "+13"   s
+      number.length <= 3 ||
       e.message === i18n.phonenumbers.Error.TOO_SHORT_AFTER_IDD ||
       e.message === i18n.phonenumbers.Error.TOO_SHORT_NSN
     ) {
