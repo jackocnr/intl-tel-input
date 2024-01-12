@@ -165,15 +165,20 @@
 }
 
 .iti-fullscreen-popup .iti--container {
-  top: 30px;
-  bottom: 30px;
-  left: 30px;
-  right: 30px;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   position: fixed;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .iti-fullscreen-popup .iti__country-list {
   max-height: 100%;
-  width: 100%;
+  position: relative;
 }
 .iti-fullscreen-popup .iti__country {
   padding: 10px 10px;

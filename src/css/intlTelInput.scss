@@ -287,15 +287,21 @@ $mobilePopupMargin: 30px !default;
 // overrides for mobile popup (note: .iti-fullscreen-popup class is applied on body)
 .iti-fullscreen-popup .iti {
   &--container {
-    top: $mobilePopupMargin;
-    bottom: $mobilePopupMargin;
-    left: $mobilePopupMargin;
-    right: $mobilePopupMargin;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     position: fixed;
+    padding: $mobilePopupMargin;
+    // short country lists should be vertically centered
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   &__country-list {
     max-height: 100%;
-    width: 100%;
+    position: relative; // override needed in order to get full-width working properly
   }
   &__country {
     padding: 10px 10px;
