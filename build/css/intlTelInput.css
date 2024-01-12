@@ -206,7 +206,7 @@
 .iti__flag.iti__va {
   width: 15px;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (min-resolution: 2x) {
   .iti__flag {
     background-size: 5762px 15px;
   }
@@ -1272,7 +1272,7 @@
   background-color: #dbdbdb;
   background-position: 20px 0;
 }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (min-resolution: 2x) {
   .iti__flag {
     background-image: url("../img/flags@2x.png?1");
   }

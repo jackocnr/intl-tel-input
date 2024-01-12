@@ -75,7 +75,7 @@ _Note: We have now dropped support for all versions of Internet Explorer because
   ```css
   .iti__flag {background-image: url("path/to/flags.png");}
 
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  @media (min-resolution: 2x) {
     .iti__flag {background-image: url("path/to/flags@2x.png");}
   }
   ```
@@ -102,7 +102,7 @@ _Note: We have now dropped support for all versions of Internet Explorer because
   ```css
   .iti__flag {background-image: url("path/to/flags.png");}
 
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  @media (min-resolution: 2x) {
     .iti__flag {background-image: url("path/to/flags@2x.png");}
   }
   ```

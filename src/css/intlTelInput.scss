@@ -321,7 +321,7 @@ $mobilePopupMargin: 30px !default;
   background-color: #dbdbdb;
   background-position: $flagWidth 0;
 
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  @media (min-resolution: 2x) {
     background-image: url("#{$flagsImagePath}#{$flagsImageName}@2x.#{$flagsImageExtension}#{$flagsImageQuery}");
   }
 }
