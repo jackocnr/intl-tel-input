@@ -60,9 +60,9 @@ $mobilePopupMargin: 30px !default;
   }
 
   // specify types to increase specificity e.g. to override bootstrap v2.3
-  input,
-  input[type="text"],
-  input[type="tel"] {
+  input.iti__tel-input,
+  input.iti__tel-input[type="text"],
+  input.iti__tel-input[type="tel"] {
     position: relative;
     // input is bottom level, below selected flag and dropdown
     z-index: 0;
@@ -129,13 +129,10 @@ $mobilePopupMargin: 30px !default;
   }
 
   // the dropdown
-  &__country-list {
+  &__dropdown-content {
     position: absolute;
     // popup so render above everything else
     z-index: 2;
-
-    // override default list styles
-    list-style: none;
 
     // place menu above the input element
     &--dropup {
@@ -143,18 +140,12 @@ $mobilePopupMargin: 30px !default;
       margin-bottom: (-$borderWidth);
     }
 
-    padding: 0;
     // margin-left to compensate for the padding on the parent
-    margin: 0 0 0 (-$borderWidth);
+    margin-left: (-$borderWidth);
 
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     background-color: white;
     border: $borderWidth solid $greyBorder;
-
-    // except on small screens, where we force the dropdown width to match the input
-    @media (max-width: 500px) {
-      white-space: normal;
-    }
 
     max-height: 200px;
     overflow-y: scroll;
@@ -165,9 +156,24 @@ $mobilePopupMargin: 30px !default;
     // Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll
     -webkit-overflow-scrolling: touch;
   }
+  &__search-input {
+    width: 100%;
+    border-width: 0;
+  }
+  &__country-list {
+    // override default list styles
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
   &--flexible-dropdown-width &__country-list {
     // don't let the contents wrap AKA the container will be as wide as the contents
     white-space: nowrap;
+
+    // except on small screens, where we force the dropdown width to match the input
+    @media (max-width: 500px) {
+      white-space: normal;
+    }
   }
 
   // dropdown flags need consistent width, so wrap in a container
@@ -214,9 +220,9 @@ $mobilePopupMargin: 30px !default;
   // these settings are independent of each other, but both move selected flag to left of input
   &--allow-dropdown,
   &--separate-dial-code {
-    input,
-    input[type="text"],
-    input[type="tel"] {
+    input.iti__tel-input,
+    input.iti__tel-input[type="text"],
+    input.iti__tel-input[type="tel"] {
       padding-right: $inputPadding;
       padding-left: $selectedFlagArrowWidth + $inputPadding;
       margin-left: 0;
@@ -301,7 +307,7 @@ $mobilePopupMargin: 30px !default;
     flex-direction: column;
     justify-content: center;
   }
-  .iti__country-list {
+  .iti__dropdown-content {
     max-height: 100%;
     position: relative; // override needed in order to get full-width working properly
   }
