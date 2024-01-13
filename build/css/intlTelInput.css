@@ -61,7 +61,6 @@
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   background-color: white;
   border: 1px solid #ccc;
-  white-space: nowrap;
   max-height: 200px;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -74,6 +73,9 @@
   .iti__country-list {
     white-space: normal;
   }
+}
+.iti--flexible-dropdown-width .iti__country-list {
+  white-space: nowrap;
 }
 .iti__flag-box {
   display: inline-block;

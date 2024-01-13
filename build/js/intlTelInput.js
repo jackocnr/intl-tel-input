@@ -134,6 +134,8 @@
             dropdownContainer: null,
             // don't display these countries
             excludeCountries: [],
+            // fix the dropdown width to the input width (rather than being as wide as the longest country name)
+            fixDropdownWidth: false,
             // format the input value during initialisation and on setNumber
             formatOnDisplay: true,
             // geoIp lookup function
@@ -203,6 +205,10 @@
                 key: "_init",
                 value: function _init() {
                     var _this2 = this;
+                    // if showing fullscreen popup, do not fix the width
+                    if (this.options.useFullscreenPopup) {
+                        this.options.fixDropdownWidth = false;
+                    }
                     // if in nationalMode, do not insert dial codes
                     if (this.options.nationalMode) {
                         this.options.autoInsertDialCode = false;
@@ -415,7 +421,7 @@
                     if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
                         this.telInput.setAttribute("autocomplete", "off");
                     }
-                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, customContainer = _this$options.customContainer, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer;
+                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, customContainer = _this$options.customContainer, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth;
                     // containers (mostly for positioning)
                     var parentClass = "iti";
                     if (allowDropdown) {
@@ -426,6 +432,9 @@
                     }
                     if (showFlags) {
                         parentClass += " iti--show-flags";
+                    }
+                    if (!fixDropdownWidth) {
+                        parentClass += " iti--flexible-dropdown-width";
                     }
                     if (customContainer) {
                         parentClass += " ".concat(customContainer);
@@ -788,6 +797,9 @@
             }, {
                 key: "_showDropdown",
                 value: function _showDropdown() {
+                    if (this.options.fixDropdownWidth) {
+                        this.countryList.style.width = "".concat(this.telInput.offsetWidth, "px");
+                    }
                     this.countryList.classList.remove("iti__hide");
                     this.selectedFlag.setAttribute("aria-expanded", "true");
                     this._setDropdownPosition();

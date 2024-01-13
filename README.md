@@ -165,6 +165,10 @@ Expects a node e.g. `document.body`. Instead of putting the country dropdown nex
 Type: `Array` Default: `undefined`  
 In the dropdown, display all countries except the ones you specify here.
 
+**fixDropdownWidth**  
+Type: `Boolean` Default: `false`  
+Fix the dropdown width to the input width (rather than being as wide as the longest country name).
+
 **formatOnDisplay**  
 Type: `Boolean` Default: `true`  
 Format the input value (according to the `nationalMode` option) during initialisation, and on `setNumber`. Requires the `utilsScript` option.

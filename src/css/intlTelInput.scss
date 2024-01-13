@@ -151,8 +151,6 @@ $mobilePopupMargin: 30px !default;
     background-color: white;
     border: $borderWidth solid $greyBorder;
 
-    // don't let the contents wrap AKA the container will be as wide as the contents
-    white-space: nowrap;
     // except on small screens, where we force the dropdown width to match the input
     @media (max-width: 500px) {
       white-space: normal;
@@ -166,6 +164,10 @@ $mobilePopupMargin: 30px !default;
     // If this is not set, then the country list scroll stops moving after rasing a finger, and users report that scroll is slow
     // Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll
     -webkit-overflow-scrolling: touch;
+  }
+  &--flexible-dropdown-width &__country-list {
+    // don't let the contents wrap AKA the container will be as wide as the contents
+    white-space: nowrap;
   }
 
   // dropdown flags need consistent width, so wrap in a container

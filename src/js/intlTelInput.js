@@ -30,6 +30,8 @@ const defaults = {
   dropdownContainer: null,
   // don't display these countries
   excludeCountries: [],
+  // fix the dropdown width to the input width (rather than being as wide as the longest country name)
+  fixDropdownWidth: false,
   // format the input value during initialisation and on setNumber
   formatOnDisplay: true,
   // geoIp lookup function
@@ -126,6 +128,11 @@ class Iti {
   }
 
   _init() {
+    // if showing fullscreen popup, do not fix the width
+    if (this.options.useFullscreenPopup) {
+      this.options.fixDropdownWidth = false;
+    }
+
     // if in nationalMode, do not insert dial codes
     if (this.options.nationalMode) {
       this.options.autoInsertDialCode = false;
@@ -372,7 +379,8 @@ class Iti {
       showFlags,
       customContainer,
       hiddenInput,
-      dropdownContainer
+      dropdownContainer,
+      fixDropdownWidth
     } = this.options;
 
     // containers (mostly for positioning)
@@ -385,6 +393,9 @@ class Iti {
     }
     if (showFlags) {
       parentClass += " iti--show-flags";
+    }
+    if (!fixDropdownWidth) {
+      parentClass += " iti--flexible-dropdown-width";
     }
     if (customContainer) {
       parentClass += ` ${customContainer}`;
@@ -802,6 +813,9 @@ class Iti {
 
   // show the dropdown
   _showDropdown() {
+    if (this.options.fixDropdownWidth) {
+      this.countryList.style.width = `${this.telInput.offsetWidth}px`;
+    }
     this.countryList.classList.remove("iti__hide");
     this.selectedFlag.setAttribute("aria-expanded", "true");
 
