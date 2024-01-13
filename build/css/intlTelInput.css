@@ -96,7 +96,7 @@
 .iti__country {
   display: flex;
   align-items: center;
-  padding: 5px 10px;
+  padding: 6px 8px;
   outline: none;
 }
 .iti__dial-code {
@@ -106,11 +106,11 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 .iti__flag-box, .iti__country-name {
-  margin-right: 6px;
+  margin-right: 8px;
 }
 [dir=rtl] .iti__flag-box, [dir=rtl] .iti__country-name {
   margin-right: 0;
-  margin-left: 6px;
+  margin-left: 8px;
 }
 .iti--allow-dropdown input.iti__tel-input,
 .iti--allow-dropdown input.iti__tel-input[type=text],

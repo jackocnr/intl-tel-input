@@ -10,9 +10,9 @@ $hoverColor: rgba(0, 0, 0, 0.05) !default;
 $greyText: #999 !default;
 $greyBorder: #ccc !default;
 
+$horizontalSpacer: 8px !default;
 $flagHeight: 15px !default;
 $flagWidth: 20px !default;
-$flagPadding: 8px !default;
 // this border width is used for the popup and divider, but it is also
 // assumed to be the border width of the input, which we do not control
 $borderWidth: 1px !default;
@@ -24,8 +24,8 @@ $arrowPadding: $arrowWidth !default;
 $arrowColor: #555 !default;
 
 $inputPadding: 6px !default;
-$selectedFlagWidth: $flagWidth + (2 * $flagPadding) !default;
-$selectedFlagArrowWidth: $flagWidth + $flagPadding + $arrowWidth +
+$rightHandSelectedFlagWidth: $flagWidth + (2 * $horizontalSpacer) !default;
+$selectedFlagArrowWidth: $flagWidth + $horizontalSpacer + $arrowWidth +
   (2 * $arrowPadding) !default;
 
 // image related variables
@@ -78,7 +78,7 @@ $mobilePopupMargin: 30px !default;
     // make space for the selected flag on right of input (if disabled allowDropdown)
     // Note: no !important here, as the user may want to tweak this so that the
     // perceived input padding matches their existing styles
-    padding-right: $selectedFlagWidth;
+    padding-right: $rightHandSelectedFlagWidth;
 
     // any margin-right here will push the selected-flag away
     margin-right: 0;
@@ -104,7 +104,7 @@ $mobilePopupMargin: 30px !default;
     // this must be full-height both for the hover highlight, and to push down the
     // dropdown so it appears below the input
     height: 100%;
-    padding: 0 $arrowPadding 0 $flagPadding;
+    padding: 0 $arrowPadding 0 $horizontalSpacer;
   }
 
   &__arrow {
@@ -194,7 +194,7 @@ $mobilePopupMargin: 30px !default;
     // Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines
     display: flex;
     align-items: center;
-    padding: 5px 10px;
+    padding: 6px $horizontalSpacer;
     outline: none;
   }
 
@@ -209,11 +209,11 @@ $mobilePopupMargin: 30px !default;
   // spacing between country flag, name and dial code
   &__flag-box,
   &__country-name {
-    margin-right: 6px;
+    margin-right: $horizontalSpacer;
 
     [dir="rtl"] & {
       margin-right: 0;
-      margin-left: 6px;
+      margin-left: $horizontalSpacer;
     }
   }
 
