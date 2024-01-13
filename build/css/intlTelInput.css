@@ -137,12 +137,12 @@
 .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.iti--allow-dropdown input[disabled] + .iti__flag-container:hover,
-.iti--allow-dropdown input[readonly] + .iti__flag-container:hover {
+.iti--allow-dropdown .iti__flag-container:has(+ input[disabled]):hover,
+.iti--allow-dropdown .iti__flag-container:has(+ input[readonly]):hover {
   cursor: default;
 }
-.iti--allow-dropdown input[disabled] + .iti__flag-container:hover .iti__selected-flag,
-.iti--allow-dropdown input[readonly] + .iti__flag-container:hover .iti__selected-flag {
+.iti--allow-dropdown .iti__flag-container:has(+ input[disabled]):hover .iti__selected-flag,
+.iti--allow-dropdown .iti__flag-container:has(+ input[readonly]):hover .iti__selected-flag {
   background-color: transparent;
 }
 .iti--separate-dial-code .iti__selected-flag {

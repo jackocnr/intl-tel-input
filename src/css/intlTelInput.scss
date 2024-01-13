@@ -247,8 +247,8 @@ $mobilePopupMargin: 30px !default;
       }
     }
     // disable hover state when input is disabled
-    input[disabled] + .iti__flag-container:hover,
-    input[readonly] + .iti__flag-container:hover {
+    .iti__flag-container:has(+ input[disabled]):hover,
+    .iti__flag-container:has(+ input[readonly]):hover {
       cursor: default;
       .iti__selected-flag {
         background-color: transparent;
