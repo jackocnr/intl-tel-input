@@ -58,10 +58,10 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false, autoInsertDi
       expect(getListElement()).not.toBeVisible();
     });
 
-    it("pressing up while on the top item does not change the highlighted item", function() {
+    it("pressing up while on the top item highlights the bottom item", function() {
       triggerKeyOnBody("ArrowUp");
-      var topItem = getListElement().find("li.iti__country:eq(0)");
-      expect(topItem).toHaveClass("iti__highlight");
+      var lastItem = getListElement().find("li.iti__country:last");
+      expect(lastItem).toHaveClass("iti__highlight");
     });
 
     it("pressing z highlights Zambia", function() {
@@ -82,23 +82,22 @@ describe("dropdown shortcuts: init plugin (with nationalMode=false, autoInsertDi
 
     describe("typing z then i then DOWN", function() {
 
-      var lastItem;
-
       beforeEach(function() {
-        lastItem = getListElement().find("li.iti__country:last");
         triggerKeyOnBody("z");
         triggerKeyOnBody("i");
         triggerKeyOnBody("ArrowDown");
       });
 
       it("highlights the last item, which is Åland Islands", function() {
+        var lastItem = getListElement().find("li.iti__country:last");
         expect(lastItem).toHaveClass("iti__highlight");
         expect(lastItem.attr("data-country-code")).toEqual("ax");
       });
 
-      it("pressing down while on the last item does not change the highlighted item", function() {
+      it("pressing down while on the last item highlights the first item", function() {
         triggerKeyOnBody("ArrowDown");
-        expect(lastItem).toHaveClass("iti__highlight");
+        var topItem = getListElement().find("li.iti__country:eq(0)");
+        expect(topItem).toHaveClass("iti__highlight");
       });
     });
 
