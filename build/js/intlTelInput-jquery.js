@@ -600,8 +600,9 @@
                 if (dialCode && !isRegionlessNanp) {
                     this._updateFlagFromNumber(val);
                 } else if (initialCountry !== "auto") {
+                    var isValidInitialCountry = initialCountry && this._getCountryData(initialCountry, false, true);
                     // see if we should select a flag
-                    if (initialCountry) {
+                    if (isValidInitialCountry) {
                         this._setFlag(initialCountry.toLowerCase());
                     } else {
                         if (dialCode && isRegionlessNanp) {
