@@ -400,9 +400,6 @@ class Iti {
     if (showFlags) {
       parentClass += " iti--show-flags";
     }
-    if (!fixDropdownWidth) {
-      parentClass += " iti--flexible-dropdown-width";
-    }
     if (customContainer) {
       parentClass += ` ${customContainer}`;
     }
@@ -471,8 +468,9 @@ class Iti {
         this.selectedFlag
       );
 
+      const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
       this.dropdownContent = this._createEl("div", {
-        class: "iti__dropdown-content iti__hide"
+        class: `iti__dropdown-content iti__hide ${extraClasses}`
       });
 
       if (countrySearch) {
