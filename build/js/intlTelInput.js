@@ -439,6 +439,9 @@
                     if (customContainer) {
                         parentClass += " ".concat(customContainer);
                     }
+                    if (!useFullscreenPopup) {
+                        parentClass += " iti--inline-dropdown";
+                    }
                     var wrapper = this._createEl("div", {
                         "class": parentClass
                     });
@@ -517,6 +520,8 @@
                             var dropdownClasses = "iti iti--container";
                             if (useFullscreenPopup) {
                                 dropdownClasses += " iti--fullscreen-popup";
+                            } else {
+                                dropdownClasses += " iti--inline-dropdown";
                             }
                             if (countrySearch) {
                                 dropdownClasses += " iti--country-search";

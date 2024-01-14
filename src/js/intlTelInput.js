@@ -403,6 +403,9 @@ class Iti {
     if (customContainer) {
       parentClass += ` ${customContainer}`;
     }
+    if (!useFullscreenPopup) {
+      parentClass += " iti--inline-dropdown";
+    }
 
     const wrapper = this._createEl("div", { class: parentClass });
     this.telInput.parentNode.insertBefore(wrapper, this.telInput);
@@ -514,6 +517,8 @@ class Iti {
         let dropdownClasses = "iti iti--container";
         if (useFullscreenPopup) {
           dropdownClasses += " iti--fullscreen-popup";
+        } else {
+          dropdownClasses += " iti--inline-dropdown";
         }
         if (countrySearch) {
           dropdownClasses += " iti--country-search";

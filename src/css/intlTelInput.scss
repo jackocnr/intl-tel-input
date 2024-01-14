@@ -130,26 +130,31 @@ $mobilePopupMargin: 30px !default;
 
   // the dropdown
   &__dropdown-content {
-    position: absolute;
-    // popup so render above everything else
-    z-index: 2;
-
+    .iti--inline-dropdown & {
+      position: absolute;
+      // popup so render above everything else
+      z-index: 2;
+      
+      // since (sometimes) adding a search input in the dropdown, better to make the dropdown look a bit more distinct from the tel input, to reduce confusion between the two inputs
+      margin-top: 3px;
+      
+      // margin-left to compensate for the padding on the parent
+      margin-left: (-$borderWidth);
+      
+      border: $borderWidth solid $greyBorder;
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+      max-height: 200px;
+    }
+    
     // place menu above the input element
     &--dropup {
       bottom: 100%;
-      margin-bottom: (-$borderWidth);
+      margin-bottom: 3px;
     }
-
-    // margin-left to compensate for the padding on the parent
-    margin-left: (-$borderWidth);
-
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    
+    border-radius: 3px;
     background-color: white;
-    border: $borderWidth solid $greyBorder;
-
-    max-height: 200px;
     overflow-y: scroll;
-
     // Fixes https://github.com/jackocnr/intl-tel-input/issues/765
     // Apple still hasn't fixed the issue where setting overflow: scroll on a div element does not use inertia scrolling
     // If this is not set, then the country list scroll stops moving after rasing a finger, and users report that scroll is slow
@@ -159,6 +164,7 @@ $mobilePopupMargin: 30px !default;
   &__search-input {
     width: 100%;
     border-width: 0;
+    border-radius: 3px;
   }
   &__country-list {
     // override default list styles
