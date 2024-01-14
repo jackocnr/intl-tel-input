@@ -911,13 +911,15 @@ class Iti {
         inputTop + this.telInput.offsetHeight + dropdownHeight <
         windowTop + window.innerHeight;
       const dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
+      // dont allow positioning above when country search enabled as the search box jumps around as you filter countries
+      const positionDropdownAboveInput = !this.options.countrySearch && !dropdownFitsBelow && dropdownFitsAbove;
 
       // by default, the dropdown will be below the input. If we want to position it above the
       // input, we add the dropup class.
       this._toggleClass(
         this.dropdownContent,
-        "iti__country-list--dropup",
-        !dropdownFitsBelow && dropdownFitsAbove
+        "iti__dropdown-content--dropup",
+        positionDropdownAboveInput
       );
 
       // if dropdownContainer is enabled, calculate postion
@@ -925,7 +927,7 @@ class Iti {
         // by default the dropdown will be directly over the input because it's not in the flow.
         // If we want to position it below, we need to add some extra top value.
         const extraTop =
-          !dropdownFitsBelow && dropdownFitsAbove
+          positionDropdownAboveInput
             ? 0
             : this.telInput.offsetHeight;
 

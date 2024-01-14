@@ -867,14 +867,16 @@
                         // dropdownFitsBelow = (dropdownBottom < windowBottom)
                         var dropdownFitsBelow = inputTop + this.telInput.offsetHeight + dropdownHeight < windowTop + window.innerHeight;
                         var dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
+                        // dont allow positioning above when country search enabled as the search box jumps around as you filter countries
+                        var positionDropdownAboveInput = !this.options.countrySearch && !dropdownFitsBelow && dropdownFitsAbove;
                         // by default, the dropdown will be below the input. If we want to position it above the
                         // input, we add the dropup class.
-                        this._toggleClass(this.dropdownContent, "iti__country-list--dropup", !dropdownFitsBelow && dropdownFitsAbove);
+                        this._toggleClass(this.dropdownContent, "iti__dropdown-content--dropup", positionDropdownAboveInput);
                         // if dropdownContainer is enabled, calculate postion
                         if (this.options.dropdownContainer) {
                             // by default the dropdown will be directly over the input because it's not in the flow.
                             // If we want to position it below, we need to add some extra top value.
-                            var extraTop = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.offsetHeight;
+                            var extraTop = positionDropdownAboveInput ? 0 : this.telInput.offsetHeight;
                             // calculate placement
                             this.dropdown.style.top = "".concat(inputTop + extraTop, "px");
                             this.dropdown.style.left = "".concat(pos.left + document.body.scrollLeft, "px");
