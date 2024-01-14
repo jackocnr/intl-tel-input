@@ -185,6 +185,9 @@
   flex-direction: column;
   justify-content: center;
 }
+.iti--fullscreen-popup.iti--container.iti--country-search {
+  justify-content: flex-start;
+}
 .iti--fullscreen-popup .iti__dropdown-content {
   max-height: 100%;
   position: relative;

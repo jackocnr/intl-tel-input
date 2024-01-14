@@ -133,11 +133,10 @@ class Iti {
     // if showing fullscreen popup, do not fix the width
     if (this.options.useFullscreenPopup) {
       this.options.fixDropdownWidth = false;
-      this.options.countrySearch = false;
     }
 
     // when search enabled, we must fix the width else it would change with different results
-    if (this.options.countrySearch) {
+    if (this.options.countrySearch && !this.options.useFullscreenPopup) {
       this.options.fixDropdownWidth = true;
     }
 
@@ -514,12 +513,14 @@ class Iti {
 
       // create dropdownContainer markup
       if (dropdownContainer) {
-        const fullscreenClass = useFullscreenPopup
-          ? "iti--fullscreen-popup"
-          : "";
-        this.dropdown = this._createEl("div", {
-          class: `iti iti--container ${fullscreenClass}`
-        });
+        let dropdownClasses = "iti iti--container";
+        if (useFullscreenPopup) {
+          dropdownClasses += " iti--fullscreen-popup";
+        }
+        if (countrySearch) {
+          dropdownClasses += " iti--country-search";
+        }
+        this.dropdown = this._createEl("div", { class: dropdownClasses });
         this.dropdown.appendChild(this.dropdownContent);
       } else {
         this.flagsContainer.appendChild(this.dropdownContent);

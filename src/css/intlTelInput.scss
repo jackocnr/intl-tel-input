@@ -306,6 +306,11 @@ $mobilePopupMargin: 30px !default;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    // when country search enabled, the search input auto-focuses, so mobile keyboard appears, so stick to top
+    // (also because when filter countries down, the height changes and the vertical centering would make it jump around)
+    &.iti--country-search {
+      justify-content: flex-start;
+    }
   }
   .iti__dropdown-content {
     max-height: 100%;
