@@ -1066,8 +1066,8 @@
                 }
             }, {
                 key: "_updateValFromNumber",
-                value: function _updateValFromNumber(originalNumber) {
-                    var number = originalNumber;
+                value: function _updateValFromNumber(fullNumber) {
+                    var number = fullNumber;
                     if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
                         var useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.separateDialCode;
                         var _intlTelInputUtils$nu = intlTelInputUtils.numberFormat, NATIONAL = _intlTelInputUtils$nu.NATIONAL, INTERNATIONAL = _intlTelInputUtils$nu.INTERNATIONAL;
@@ -1079,13 +1079,17 @@
                 }
             }, {
                 key: "_updateFlagFromNumber",
-                value: function _updateFlagFromNumber(originalNumber) {
+                value: function _updateFlagFromNumber(fullNumber) {
+                    var plusIndex = fullNumber.indexOf("+");
+                    // if it contains a plus, discard any chars before it e.g. accidental space char.
+                    // this keeps the selected country auto-updating correctly, which we want as
+                    // libphonenumber's validation/getNumber methods will ignore these chars anyway
+                    var number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
                     // if we already have US/Canada selected, make sure the number starts
                     // with a +1 so _getDialCode will be able to extract the area code
                     // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag
                     // from the number), that means we're initialising the plugin with a number that already has a
                     // dial code, so fine to ignore this bit
-                    var number = originalNumber;
                     var selectedDialCode = this.selectedCountryData.dialCode;
                     var isNanp = selectedDialCode === "1";
                     if (number && isNanp && number.charAt(0) !== "+") {
@@ -1425,8 +1429,8 @@
                 }
             }, {
                 key: "_beforeSetNumber",
-                value: function _beforeSetNumber(originalNumber) {
-                    var number = originalNumber;
+                value: function _beforeSetNumber(fullNumber) {
+                    var number = fullNumber;
                     if (this.options.separateDialCode) {
                         var dialCode = this._getDialCode(number);
                         // if there is a valid dial code

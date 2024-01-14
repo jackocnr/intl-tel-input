@@ -1150,8 +1150,8 @@ class Iti {
 
   // update the input's value to the given val (format first if possible)
   // NOTE: this is called from _setInitialState, handleUtils and setNumber
-  _updateValFromNumber(originalNumber) {
-    let number = originalNumber;
+  _updateValFromNumber(fullNumber) {
+    let number = fullNumber;
     if (
       this.options.formatOnDisplay &&
       window.intlTelInputUtils &&
@@ -1175,13 +1175,18 @@ class Iti {
 
   // check if need to select a new flag based on the given number
   // Note: called from _setInitialState, keyup handler, setNumber
-  _updateFlagFromNumber(originalNumber) {
+  _updateFlagFromNumber(fullNumber) {
+    const plusIndex = fullNumber.indexOf("+");
+    // if it contains a plus, discard any chars before it e.g. accidental space char.
+    // this keeps the selected country auto-updating correctly, which we want as
+    // libphonenumber's validation/getNumber methods will ignore these chars anyway
+    let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
+
     // if we already have US/Canada selected, make sure the number starts
     // with a +1 so _getDialCode will be able to extract the area code
     // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag
     // from the number), that means we're initialising the plugin with a number that already has a
     // dial code, so fine to ignore this bit
-    let number = originalNumber;
     const selectedDialCode = this.selectedCountryData.dialCode;
     const isNanp = selectedDialCode === "1";
     if (number && isNanp && number.charAt(0) !== "+") {
@@ -1613,8 +1618,8 @@ class Iti {
 
   // remove the dial code if separateDialCode is enabled
   // also cap the length if the input has a maxlength attribute
-  _beforeSetNumber(originalNumber) {
-    let number = originalNumber;
+  _beforeSetNumber(fullNumber) {
+    let number = fullNumber;
     if (this.options.separateDialCode) {
       let dialCode = this._getDialCode(number);
       // if there is a valid dial code
