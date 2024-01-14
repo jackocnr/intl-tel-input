@@ -151,14 +151,9 @@ class Iti {
       this.options.showFlags = true;
     }
 
-    if (this.options.useFullscreenPopup) {
-      // trigger the mobile dropdown css
-      document.body.classList.add("iti-fullscreen-popup");
-
-      // on mobile, we want a full screen dropdown, so we must append it to the body
-      if (!this.options.dropdownContainer) {
-        this.options.dropdownContainer = document.body;
-      }
+    // on mobile, we want a full screen dropdown, so we must append it to the body
+    if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
+      this.options.dropdownContainer = document.body;
     }
 
     // check if input has one parent with RTL
@@ -380,7 +375,8 @@ class Iti {
       customContainer,
       hiddenInput,
       dropdownContainer,
-      fixDropdownWidth
+      fixDropdownWidth,
+      useFullscreenPopup
     } = this.options;
 
     // containers (mostly for positioning)
@@ -487,7 +483,8 @@ class Iti {
 
       // create dropdownContainer markup
       if (dropdownContainer) {
-        this.dropdown = this._createEl("div", { class: "iti iti--container" });
+        const fullscreenClass = useFullscreenPopup ? "iti--fullscreen-popup" : "";
+        this.dropdown = this._createEl("div", { class: `iti iti--container ${fullscreenClass}` });
         this.dropdown.appendChild(this.countryList);
       } else {
         this.flagsContainer.appendChild(this.countryList);

@@ -228,13 +228,9 @@
                 if (!this.options.showFlags && forceShowFlags) {
                     this.options.showFlags = true;
                 }
-                if (this.options.useFullscreenPopup) {
-                    // trigger the mobile dropdown css
-                    document.body.classList.add("iti-fullscreen-popup");
-                    // on mobile, we want a full screen dropdown, so we must append it to the body
-                    if (!this.options.dropdownContainer) {
-                        this.options.dropdownContainer = document.body;
-                    }
+                // on mobile, we want a full screen dropdown, so we must append it to the body
+                if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
+                    this.options.dropdownContainer = document.body;
                 }
                 // check if input has one parent with RTL
                 this.isRTL = !!this.telInput.closest("[dir=rtl]");
@@ -426,7 +422,7 @@
                 if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
                     this.telInput.setAttribute("autocomplete", "off");
                 }
-                var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, customContainer = _this$options.customContainer, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth;
+                var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, customContainer = _this$options.customContainer, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth, useFullscreenPopup = _this$options.useFullscreenPopup;
                 // containers (mostly for positioning)
                 var parentClass = "iti";
                 if (allowDropdown) {
@@ -508,8 +504,9 @@
                     this._appendListItems(this.countries, "iti__standard");
                     // create dropdownContainer markup
                     if (dropdownContainer) {
+                        var fullscreenClass = useFullscreenPopup ? "iti--fullscreen-popup" : "";
                         this.dropdown = this._createEl("div", {
-                            "class": "iti iti--container"
+                            "class": "iti iti--container ".concat(fullscreenClass)
                         });
                         this.dropdown.appendChild(this.countryList);
                     } else {

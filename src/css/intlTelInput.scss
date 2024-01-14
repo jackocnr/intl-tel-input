@@ -286,9 +286,9 @@ $mobilePopupMargin: 30px !default;
   }
 }
 
-// overrides for mobile popup (note: .iti-fullscreen-popup class is applied on body)
-.iti-fullscreen-popup .iti {
-  &--container {
+// overrides for mobile popup
+.iti--fullscreen-popup {
+  &.iti--container {
     background-color: rgba(0, 0, 0, 0.5);
     top: 0;
     bottom: 0;
@@ -301,11 +301,11 @@ $mobilePopupMargin: 30px !default;
     flex-direction: column;
     justify-content: center;
   }
-  &__country-list {
+  .iti__country-list {
     max-height: 100%;
     position: relative; // override needed in order to get full-width working properly
   }
-  &__country {
+  .iti__country {
     padding: 10px 10px;
     // increase line height because dropdown copy is v likely to overflow on mobile and when it does it needs to be well spaced
     line-height: 1.5em;

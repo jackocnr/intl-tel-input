@@ -166,7 +166,7 @@
   cursor: pointer;
 }
 
-.iti-fullscreen-popup .iti--container {
+.iti--fullscreen-popup.iti--container {
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
   bottom: 0;
@@ -178,11 +178,11 @@
   flex-direction: column;
   justify-content: center;
 }
-.iti-fullscreen-popup .iti__country-list {
+.iti--fullscreen-popup .iti__country-list {
   max-height: 100%;
   position: relative;
 }
-.iti-fullscreen-popup .iti__country {
+.iti--fullscreen-popup .iti__country {
   padding: 10px 10px;
   line-height: 1.5em;
 }
