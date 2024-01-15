@@ -90,26 +90,16 @@ const regionlessNanpNumbers = [
   "889"
 ];
 
-// utility function to iterate over an object. can't use Object.entries or native forEach because
-// of IE11
-const forEachProp = (obj, callback) => {
-  const keys = Object.keys(obj);
-  for (let i = 0; i < keys.length; i++) {
-    callback(keys[i], obj[keys[i]]);
-  }
-};
-
 // run a method on each instance of the plugin
 const forEachInstance = (method) => {
-  forEachProp(window.intlTelInputGlobals.instances, (key) => {
-    window.intlTelInputGlobals.instances[key][method]();
-  });
+  const { instances } = window.intlTelInputGlobals;
+  Object.values(instances).forEach((instance) => instance[method]());
 };
 
 // this is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
 class Iti {
-  constructor(input, options) {
+  constructor(input, customOptions = {}) {
     this.id = id++;
     this.telInput = input;
 
@@ -117,15 +107,7 @@ class Iti {
     this.highlightedItem = null;
 
     // process specified options / defaults
-    // alternative to Object.assign, which isn't supported by IE11
-    const customOptions = options || {};
-    this.options = {};
-    forEachProp(defaults, (key, value) => {
-      this.options[key] = customOptions.hasOwnProperty(key)
-        ? customOptions[key]
-        : value;
-    });
-
+    this.options = Object.assign({}, defaults, customOptions);
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
   }
 
@@ -354,7 +336,7 @@ class Iti {
   _createEl(name, attrs, container) {
     const el = document.createElement(name);
     if (attrs) {
-      forEachProp(attrs, (key, value) => el.setAttribute(key, value));
+      Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
     }
     if (container) {
       container.appendChild(el);
@@ -844,9 +826,10 @@ class Iti {
 
   // trigger a custom event on the input
   _trigger(name) {
-    // have to use old school document.createEvent as IE11 doesn't support `new Event()` syntax
-    const e = document.createEvent("Event");
-    e.initEvent(name, true, true); // can bubble, and is cancellable
+    const e = new Event(name, {
+      bubbles: true,
+      cancelable: true
+    });
     this.telInput.dispatchEvent(e);
   }
 
@@ -888,7 +871,7 @@ class Iti {
     }
   }
 
-  // decide where to position dropdown (depends on position within viewport, and scroll)
+  // decide if should position dropdown above or below input (depends on position within viewport, and scroll)
   _setDropdownPosition() {
     if (this.options.dropdownContainer) {
       this.options.dropdownContainer.appendChild(this.dropdown);
@@ -897,8 +880,7 @@ class Iti {
     if (!this.options.useFullscreenPopup) {
       const pos = this.telInput.getBoundingClientRect();
       // windowTop from https://stackoverflow.com/a/14384091/217866
-      const windowTop =
-        window.pageYOffset || document.documentElement.scrollTop;
+      const windowTop = document.documentElement.scrollTop;
       const inputTop = pos.top + windowTop;
       const dropdownHeight = this.dropdownContent.offsetHeight;
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
@@ -1431,10 +1413,6 @@ class Iti {
 
     // focus the input
     this.telInput.focus();
-    // put cursor at end - this fix is required for FF and IE11 (with auto inserting dial code),
-    // who try to put the cursor at the beginning the first time
-    const len = this.telInput.value.length;
-    this.telInput.setSelectionRange(len, len);
 
     if (flagChanged) {
       this._triggerCountryChange();
@@ -1482,7 +1460,7 @@ class Iti {
   _scrollTo(element, middle) {
     const container = this.dropdownContent;
     // windowTop from https://stackoverflow.com/a/14384091/217866
-    const windowTop = window.pageYOffset || document.documentElement.scrollTop;
+    const windowTop = document.documentElement.scrollTop;
     const containerHeight = container.offsetHeight;
     const containerTop = container.getBoundingClientRect().top + windowTop;
     const containerBottom = containerTop + containerHeight;

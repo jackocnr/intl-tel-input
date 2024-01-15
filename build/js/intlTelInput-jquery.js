@@ -71,6 +71,52 @@
         }
         return obj;
     }
+    function _slicedToArray(arr, i) {
+        return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+    }
+    function _nonIterableRest() {
+        throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+    function _unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === "Object" && o.constructor) n = o.constructor.name;
+        if (n === "Map" || n === "Set") return Array.from(o);
+        if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    }
+    function _arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+            arr2[i] = arr[i];
+        }
+        return arr2;
+    }
+    function _iterableToArrayLimit(arr, i) {
+        var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+        if (null != _i) {
+            var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1;
+            try {
+                if (_x = (_i = _i.call(arr)).next, 0 === i) {
+                    if (Object(_i) !== _i) return;
+                    _n = !1;
+                } else for (;!(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) {
+                }
+            } catch (err) {
+                _d = !0, _e = err;
+            } finally {
+                try {
+                    if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return;
+                } finally {
+                    if (_d) throw _e;
+                }
+            }
+            return _arr;
+        }
+    }
+    function _arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
+    }
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -175,43 +221,31 @@
     };
     // https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
     var regionlessNanpNumbers = [ "800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889" ];
-    // utility function to iterate over an object. can't use Object.entries or native forEach because
-    // of IE11
-    var forEachProp = function forEachProp(obj, callback) {
-        var keys = Object.keys(obj);
-        for (var i = 0; i < keys.length; i++) {
-            callback(keys[i], obj[keys[i]]);
-        }
-    };
     // run a method on each instance of the plugin
     var forEachInstance = function forEachInstance(method) {
-        forEachProp(window.intlTelInputGlobals.instances, function(key) {
-            window.intlTelInputGlobals.instances[key][method]();
+        var instances = window.intlTelInputGlobals.instances;
+        Object.values(instances).forEach(function(instance) {
+            return instance[method]();
         });
     };
     // this is our plugin class that we will create an instance of
     // eslint-disable-next-line no-unused-vars
     var Iti = /*#__PURE__*/ function() {
-        function Iti(input, options) {
-            var _this = this;
+        function Iti(input) {
+            var customOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             _classCallCheck(this, Iti);
             this.id = id++;
             this.telInput = input;
             this.activeItem = null;
             this.highlightedItem = null;
             // process specified options / defaults
-            // alternative to Object.assign, which isn't supported by IE11
-            var customOptions = options || {};
-            this.options = {};
-            forEachProp(defaults, function(key, value) {
-                _this.options[key] = customOptions.hasOwnProperty(key) ? customOptions[key] : value;
-            });
+            this.options = Object.assign({}, defaults, customOptions);
             this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
         }
         _createClass(Iti, [ {
             key: "_init",
             value: function _init() {
-                var _this2 = this;
+                var _this = this;
                 // if showing fullscreen popup, do not fix the width
                 if (this.options.useFullscreenPopup) {
                     this.options.fixDropdownWidth = false;
@@ -245,12 +279,12 @@
                 // complete
                 if (typeof Promise !== "undefined") {
                     var autoCountryPromise = new Promise(function(resolve, reject) {
-                        _this2.resolveAutoCountryPromise = resolve;
-                        _this2.rejectAutoCountryPromise = reject;
+                        _this.resolveAutoCountryPromise = resolve;
+                        _this.rejectAutoCountryPromise = reject;
                     });
                     var utilsScriptPromise = new Promise(function(resolve, reject) {
-                        _this2.resolveUtilsScriptPromise = resolve;
-                        _this2.rejectUtilsScriptPromise = reject;
+                        _this.resolveUtilsScriptPromise = resolve;
+                        _this.rejectUtilsScriptPromise = reject;
                     });
                     this.promise = Promise.all([ autoCountryPromise, utilsScriptPromise ]);
                 } else {
@@ -409,7 +443,8 @@
             value: function _createEl(name, attrs, container) {
                 var el = document.createElement(name);
                 if (attrs) {
-                    forEachProp(attrs, function(key, value) {
+                    Object.entries(attrs).forEach(function(_ref) {
+                        var _ref2 = _slicedToArray(_ref, 2), key = _ref2[0], value = _ref2[1];
                         return el.setAttribute(key, value);
                     });
                 }
@@ -647,9 +682,9 @@
         }, {
             key: "_initHiddenInputListener",
             value: function _initHiddenInputListener() {
-                var _this3 = this;
+                var _this2 = this;
                 this._handleHiddenInputSubmit = function() {
-                    _this3.hiddenInput.value = _this3.getNumber();
+                    _this2.hiddenInput.value = _this2.getNumber();
                 };
                 if (this.telInput.form) {
                     this.telInput.form.addEventListener("submit", this._handleHiddenInputSubmit);
@@ -658,14 +693,14 @@
         }, {
             key: "_initDropdownListeners",
             value: function _initDropdownListeners() {
-                var _this4 = this;
+                var _this3 = this;
                 // hack for input nested inside label (which is valid markup): clicking the selected-flag to
                 // open the dropdown would then automatically trigger a 2nd click on the input which would
                 // close it again
                 this._handleLabelClick = function(e) {
                     // if the dropdown is closed, then focus the input, else ignore the click
-                    if (_this4.dropdownContent.classList.contains("iti__hide")) {
-                        _this4.telInput.focus();
+                    if (_this3.dropdownContent.classList.contains("iti__hide")) {
+                        _this3.telInput.focus();
                     } else {
                         e.preventDefault();
                     }
@@ -679,24 +714,24 @@
                     // only intercept this event if we're opening the dropdown
                     // else let it bubble up to the top ("click-off-to-close" listener)
                     // we cannot just stopPropagation as it may be needed to close another instance
-                    if (_this4.dropdownContent.classList.contains("iti__hide") && !_this4.telInput.disabled && !_this4.telInput.readOnly) {
-                        _this4._showDropdown();
+                    if (_this3.dropdownContent.classList.contains("iti__hide") && !_this3.telInput.disabled && !_this3.telInput.readOnly) {
+                        _this3._showDropdown();
                     }
                 };
                 this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
                 // open dropdown if selected flag is focused and they press up/down/space/enter
                 this._handleFlagsContainerKeydown = function(e) {
-                    var isDropdownHidden = _this4.dropdownContent.classList.contains("iti__hide");
+                    var isDropdownHidden = _this3.dropdownContent.classList.contains("iti__hide");
                     if (isDropdownHidden && [ "ArrowUp", "ArrowDown", " ", "Enter" ].includes(e.key)) {
                         // prevent form from being submitted if "ENTER" was pressed
                         e.preventDefault();
                         // prevent event from being handled again by document
                         e.stopPropagation();
-                        _this4._showDropdown();
+                        _this3._showDropdown();
                     }
                     // allow navigation from dropdown to input on TAB
                     if (e.key === "Tab") {
-                        _this4._closeDropdown();
+                        _this3._closeDropdown();
                     }
                 };
                 this.flagsContainer.addEventListener("keydown", this._handleFlagsContainerKeydown);
@@ -704,7 +739,7 @@
         }, {
             key: "_initRequests",
             value: function _initRequests() {
-                var _this5 = this;
+                var _this4 = this;
                 // if the user has specified the path to the utils script, fetch it on window.load, else resolve
                 if (this.options.utilsScript && !window.intlTelInputUtils) {
                     // if the plugin is being initialised after the window.load event has already been fired
@@ -713,7 +748,7 @@
                     } else {
                         // wait until the load event so we don't block any other requests e.g. the flags image
                         window.addEventListener("load", function() {
-                            window.intlTelInputGlobals.loadUtils(_this5.options.utilsScript);
+                            window.intlTelInputGlobals.loadUtils(_this4.options.utilsScript);
                         });
                     }
                 } else {
@@ -758,18 +793,18 @@
         }, {
             key: "_initKeyListeners",
             value: function _initKeyListeners() {
-                var _this6 = this;
+                var _this5 = this;
                 // update flag on keyup
                 this._handleKeyupEvent = function() {
-                    if (_this6._updateFlagFromNumber(_this6.telInput.value)) {
-                        _this6._triggerCountryChange();
+                    if (_this5._updateFlagFromNumber(_this5.telInput.value)) {
+                        _this5._triggerCountryChange();
                     }
                 };
                 this.telInput.addEventListener("keyup", this._handleKeyupEvent);
                 // update flag on cut/paste events (now supported in all major browsers)
                 this._handleClipboardEvent = function() {
                     // hack because "paste" event is fired before input is updated
-                    setTimeout(_this6._handleKeyupEvent);
+                    setTimeout(_this5._handleKeyupEvent);
                 };
                 this.telInput.addEventListener("cut", this._handleClipboardEvent);
                 this.telInput.addEventListener("paste", this._handleClipboardEvent);
@@ -783,10 +818,10 @@
         }, {
             key: "_initBlurListeners",
             value: function _initBlurListeners() {
-                var _this7 = this;
+                var _this6 = this;
                 // on blur or form submit: if just a dial code then remove it
                 this._handleSubmitOrBlurEvent = function() {
-                    _this7._removeEmptyDialCode();
+                    _this6._removeEmptyDialCode();
                 };
                 if (this.telInput.form) {
                     this.telInput.form.addEventListener("submit", this._handleSubmitOrBlurEvent);
@@ -812,10 +847,10 @@
         }, {
             key: "_trigger",
             value: function _trigger(name) {
-                // have to use old school document.createEvent as IE11 doesn't support `new Event()` syntax
-                var e = document.createEvent("Event");
-                e.initEvent(name, true, true);
-                // can bubble, and is cancellable
+                var e = new Event(name, {
+                    bubbles: true,
+                    cancelable: true
+                });
                 this.telInput.dispatchEvent(e);
             }
         }, {
@@ -854,14 +889,14 @@
         }, {
             key: "_setDropdownPosition",
             value: function _setDropdownPosition() {
-                var _this8 = this;
+                var _this7 = this;
                 if (this.options.dropdownContainer) {
                     this.options.dropdownContainer.appendChild(this.dropdown);
                 }
                 if (!this.options.useFullscreenPopup) {
                     var pos = this.telInput.getBoundingClientRect();
                     // windowTop from https://stackoverflow.com/a/14384091/217866
-                    var windowTop = window.pageYOffset || document.documentElement.scrollTop;
+                    var windowTop = document.documentElement.scrollTop;
                     var inputTop = pos.top + windowTop;
                     var dropdownHeight = this.dropdownContent.offsetHeight;
                     // dropdownFitsBelow = (dropdownBottom < windowBottom)
@@ -882,7 +917,7 @@
                         this.dropdown.style.left = "".concat(pos.left + document.body.scrollLeft, "px");
                         // close menu on window scroll
                         this._handleWindowScroll = function() {
-                            return _this8._closeDropdown();
+                            return _this7._closeDropdown();
                         };
                         window.addEventListener("scroll", this._handleWindowScroll);
                     }
@@ -891,14 +926,14 @@
         }, {
             key: "_bindDropdownListeners",
             value: function _bindDropdownListeners() {
-                var _this9 = this;
+                var _this8 = this;
                 // when mouse over a list item, just highlight that one
                 // we add the class "highlight", so if they hit "enter" we know which one to select
                 this._handleMouseoverCountryList = function(e) {
                     // handle event delegation, as we're listening for this event on the countryList
                     var listItem = e.target.closest(".iti__country");
                     if (listItem) {
-                        _this9._highlightListItem(listItem, false);
+                        _this8._highlightListItem(listItem, false);
                     }
                 };
                 this.countryList.addEventListener("mouseover", this._handleMouseoverCountryList);
@@ -906,7 +941,7 @@
                 this._handleClickCountryList = function(e) {
                     var listItem = e.target.closest(".iti__country");
                     if (listItem) {
-                        _this9._selectListItem(listItem);
+                        _this8._selectListItem(listItem);
                     }
                 };
                 this.countryList.addEventListener("click", this._handleClickCountryList);
@@ -916,7 +951,7 @@
                 var isOpening = true;
                 this._handleClickOffToClose = function() {
                     if (!isOpening) {
-                        _this9._closeDropdown();
+                        _this8._closeDropdown();
                     }
                     isOpening = false;
                 };
@@ -935,23 +970,23 @@
                         e.stopPropagation();
                         // up and down to navigate
                         if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-                            _this9._handleUpDownKey(e.key);
+                            _this8._handleUpDownKey(e.key);
                         } else if (e.key === "Enter") {
-                            _this9._handleEnterKey();
+                            _this8._handleEnterKey();
                         } else if (e.key === "Escape") {
-                            _this9._closeDropdown();
+                            _this8._closeDropdown();
                         }
                     }
                     // alpha chars to perform search
                     // regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866)
-                    if (!_this9.options.countrySearch && /^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
+                    if (!_this8.options.countrySearch && /^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
                         e.stopPropagation();
                         // jump to countries that start with the query string
                         if (queryTimer) {
                             clearTimeout(queryTimer);
                         }
                         query += e.key.toLowerCase();
-                        _this9._searchForCountry(query);
+                        _this8._searchForCountry(query);
                         // if the timer hits 1 second, reset the query
                         queryTimer = setTimeout(function() {
                             query = "";
@@ -961,11 +996,11 @@
                 document.addEventListener("keydown", this._handleKeydownOnDropdown);
                 if (this.options.countrySearch) {
                     var doFilter = function doFilter() {
-                        var inputQuery = _this9.searchInput.value.trim();
+                        var inputQuery = _this8.searchInput.value.trim();
                         if (inputQuery) {
-                            _this9._filterCountries(inputQuery.toLowerCase());
+                            _this8._filterCountries(inputQuery.toLowerCase());
                         } else {
-                            _this9._filterCountries(null, true);
+                            _this8._filterCountries(null, true);
                         }
                     };
                     var keyupTimer = null;
@@ -1273,10 +1308,6 @@
                 this._updateDialCode(listItem.getAttribute("data-dial-code"));
                 // focus the input
                 this.telInput.focus();
-                // put cursor at end - this fix is required for FF and IE11 (with auto inserting dial code),
-                // who try to put the cursor at the beginning the first time
-                var len = this.telInput.value.length;
-                this.telInput.setSelectionRange(len, len);
                 if (flagChanged) {
                     this._triggerCountryChange();
                 }
@@ -1313,7 +1344,7 @@
             value: function _scrollTo(element, middle) {
                 var container = this.dropdownContent;
                 // windowTop from https://stackoverflow.com/a/14384091/217866
-                var windowTop = window.pageYOffset || document.documentElement.scrollTop;
+                var windowTop = document.documentElement.scrollTop;
                 var containerHeight = container.offsetHeight;
                 var containerTop = container.getBoundingClientRect().top + windowTop;
                 var containerBottom = containerTop + containerHeight;
