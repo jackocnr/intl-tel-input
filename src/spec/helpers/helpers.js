@@ -51,6 +51,16 @@ var getParentElement = function(i) {
   return i.parent();
 };
 
+var getDropdownContent = function(i) {
+  i = i || input;
+  return i.parent().find(".iti__dropdown-content");
+};
+
+var getSearchInput = function(i) {
+  i = i || input;
+  return i.parent().find(".iti__search-input");
+};
+
 var getListElement = function(i) {
   i = i || input;
   return i.parent().find(".iti__country-list");
@@ -112,29 +122,31 @@ var selectInputChars = function(start, end) {
 
 // use this for focus/blur (instead of using .focus() and .blur() directly, which cause problems in IE11)
 var triggerInputEvent = function(type) {
-  var e = new CustomEvent(type);
+  var e = new Event(type);
   input[0].dispatchEvent(e);
 }
 
 var triggerKey = function(el, type, key) {
-  var e = new CustomEvent(type);
-  e.key = key;
+  var e = new KeyboardEvent(type, { key: key });
   el.dispatchEvent(e);
 };
 
 // trigger keydown, then keypress, then add the key, then keyup
-var triggerKeyOnInput = function(key) {
-  triggerKey(input[0], 'keydown', key);
-  triggerKey(input[0], 'keypress', key);
-  var val = input.val();
-  input.val(val + key);
-  triggerKey(input[0], 'keyup', key);
+var triggerKeyOnInput = function(key, customInput) {
+  const inputEl = customInput || input;
+  triggerKey(inputEl[0], 'keydown', key);
+  triggerKey(inputEl[0], 'keypress', key);
+  var previousVal = inputEl.val();
+  inputEl.val(previousVal + key);
+  triggerKey(inputEl[0], 'keyup', key);
+  triggerKey(inputEl[0], 'input', key);
 };
 
 var triggerKeyOnBody = function(key) {
   triggerKey(document, 'keydown', key);
   triggerKey(document, 'keypress', key);
   triggerKey(document, 'keyup', key);
+  triggerKey(document, 'input', key);
 };
 
 var triggerKeyOnFlagsContainerElement = function(key) {
