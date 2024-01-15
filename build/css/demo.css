@@ -41,7 +41,7 @@ button[disabled] {
 input,
 select {
   border: 1px solid #ccc;
-  width: 250px;
+  width: 220px;
 }
 
 ::placeholder,

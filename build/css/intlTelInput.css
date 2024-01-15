@@ -55,8 +55,6 @@
 .iti__dropdown-content {
   border-radius: 3px;
   background-color: white;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
 }
 .iti--inline-dropdown .iti__dropdown-content {
   position: absolute;
@@ -65,7 +63,6 @@
   margin-left: -1px;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-  max-height: 200px;
 }
 .iti__dropdown-content--dropup {
   bottom: 100%;
@@ -83,6 +80,9 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 185px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .iti--flexible-dropdown-width .iti__country-list {
   white-space: nowrap;
@@ -104,7 +104,7 @@
 .iti__country {
   display: flex;
   align-items: center;
-  padding: 6px 8px;
+  padding: 8px 8px;
   outline: none;
 }
 .iti__dial-code {
