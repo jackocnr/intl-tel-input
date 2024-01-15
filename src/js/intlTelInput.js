@@ -25,7 +25,7 @@ const defaults = {
   // add a country search input at the top of the dropdown
   countrySearch: true,
   // modify the parentClass
-  customContainer: "",
+  containerClass: "",
   // modify the auto placeholder
   customPlaceholder: null,
   // append menu to specified element
@@ -361,7 +361,7 @@ class Iti {
       allowDropdown,
       separateDialCode,
       showFlags,
-      customContainer,
+      containerClass,
       hiddenInput,
       dropdownContainer,
       fixDropdownWidth,
@@ -380,8 +380,8 @@ class Iti {
     if (showFlags) {
       parentClass += " iti--show-flags";
     }
-    if (customContainer) {
-      parentClass += ` ${customContainer}`;
+    if (containerClass) {
+      parentClass += ` ${containerClass}`;
     }
     if (!useFullscreenPopup) {
       parentClass += " iti--inline-dropdown";

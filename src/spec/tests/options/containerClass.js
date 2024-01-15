@@ -1,6 +1,6 @@
 "use strict";
 
-describe("customContainer option:", function() {
+describe("containerClass option:", function() {
 
   beforeEach(function() {
     intlSetup();
@@ -12,11 +12,11 @@ describe("customContainer option:", function() {
   });
 
 
-  describe("init plugin with customContainer", function() {
+  describe("init plugin with containerClass", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        customContainer: 'cpc',
+        containerClass: 'cpc',
       });
     });
 

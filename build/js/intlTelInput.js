@@ -175,7 +175,7 @@
             // add a country search input at the top of the dropdown
             countrySearch: true,
             // modify the parentClass
-            customContainer: "",
+            containerClass: "",
             // modify the auto placeholder
             customPlaceholder: null,
             // append menu to specified element
@@ -457,7 +457,7 @@
                     if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
                         this.telInput.setAttribute("autocomplete", "off");
                     }
-                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, customContainer = _this$options.customContainer, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth, useFullscreenPopup = _this$options.useFullscreenPopup, countrySearch = _this$options.countrySearch;
+                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, containerClass = _this$options.containerClass, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth, useFullscreenPopup = _this$options.useFullscreenPopup, countrySearch = _this$options.countrySearch;
                     // containers (mostly for positioning)
                     var parentClass = "iti";
                     if (allowDropdown) {
@@ -469,8 +469,8 @@
                     if (showFlags) {
                         parentClass += " iti--show-flags";
                     }
-                    if (customContainer) {
-                        parentClass += " ".concat(customContainer);
+                    if (containerClass) {
+                        parentClass += " ".concat(containerClass);
                     }
                     if (!useFullscreenPopup) {
                         parentClass += " iti--inline-dropdown";

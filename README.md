@@ -141,13 +141,13 @@ When enabled (requires `nationalMode` to be disabled), the international dial co
 Type: `String` Default: `"polite"`  
 Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the `placeholderNumberType` option. By default it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the `utilsScript` option.
 
+**containerClass**  
+Type: `String` Default: `""`  
+Additional classes to add to the (injected) wrapper `<div>`.
+
 **countrySearch**  
 Type: `Boolean` Default: `false`  
 Add a search input to the top of the dropdown, so users can filter the displayed countries.
-
-**customContainer**  
-Type: `String` Default: `""`  
-Additional classes to add to the parent div.
 
 **customPlaceholder**  
 Type: `Function` Default: `null`  
