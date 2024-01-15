@@ -1016,7 +1016,7 @@
                         var c = this.countries[i];
                         var nameLower = c.name.toLowerCase();
                         var fullDialCode = "+".concat(c.dialCode);
-                        if (isReset || nameLower.includes(query) || fullDialCode.includes(query)) {
+                        if (isReset || nameLower.includes(query) || fullDialCode.includes(query) || c.iso2.includes(query)) {
                             this.countryList.appendChild(c.node);
                             // highlight the first item
                             if (isFirst) {

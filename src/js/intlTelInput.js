@@ -1032,7 +1032,8 @@ class Iti {
       if (
         isReset ||
         nameLower.includes(query) ||
-        fullDialCode.includes(query)
+        fullDialCode.includes(query) ||
+        c.iso2.includes(query)
       ) {
         this.countryList.appendChild(c.node);
         // highlight the first item
