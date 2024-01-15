@@ -44,8 +44,7 @@ select {
   width: 220px;
 }
 
-::placeholder,
-:-ms-input-placeholder {
+input::placeholder {
   color: #bbb;
 }
 
