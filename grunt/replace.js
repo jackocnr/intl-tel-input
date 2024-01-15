@@ -20,7 +20,7 @@ module.exports = function(grunt) {
             match: /_processAllCountries/g,
             replacement: '_d'
           }, {
-            match: /_translateCountriesByLocale/g,
+            match: /_translateCountryNames/g,
             replacement: '_d0'
           }, {
             match: /_countryNameSort/g,
