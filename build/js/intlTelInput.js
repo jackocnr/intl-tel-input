@@ -173,7 +173,7 @@
             // add a placeholder in the input with an example number for the selected country
             autoPlaceholder: "polite",
             // add a country search input at the top of the dropdown
-            countrySearch: false,
+            countrySearch: true,
             // modify the parentClass
             customContainer: "",
             // modify the auto placeholder
@@ -183,7 +183,7 @@
             // don't display these countries
             excludeCountries: [],
             // fix the dropdown width to the input width (rather than being as wide as the longest country name)
-            fixDropdownWidth: false,
+            fixDropdownWidth: true,
             // format the input value during initialisation and on setNumber
             formatOnDisplay: true,
             // geoIp lookup function
@@ -200,8 +200,8 @@
             onlyCountries: [],
             // number type to use for placeholders
             placeholderNumberType: "MOBILE",
-            // the countries at the top of the list. defaults to united states and united kingdom
-            preferredCountries: [ "us", "gb" ],
+            // the countries at the top of the list
+            preferredCountries: [],
             // display the country dial code next to the selected flag
             separateDialCode: false,
             // option to hide the flags - must be used with separateDialCode, or allowDropdown=false

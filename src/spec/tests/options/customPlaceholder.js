@@ -18,7 +18,7 @@ describe("customPlaceholder: init plugin with autoPlaceholder=polite and customP
   });
 
   it("sets the placeholder to the customised US number", function() {
-    expect(input.attr("placeholder")).toEqual("e.g. (201) 555-0123");
+    expect(input.attr("placeholder")).toEqual("e.g. 070 123 4567");
   });
 
   it("selecting UK updates the placeholder", function() {

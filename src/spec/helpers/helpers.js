@@ -2,7 +2,8 @@ var input,
   iti,
   totalCountries = 244,
   totalDialCodes = 228,
-  defaultPreferredCountries = 2;
+  defaultPreferredCountries = 0,
+  afghanistanDialCode = "+93";
 
 var intlSetup = function(utilsScript) {
   // by default put us in desktop mode

@@ -51,7 +51,7 @@ describe("allowDropdown:", function() {
 
     it("shows selected dial code element", function() {
       expect(getSelectedDialCodeElement()).toExist();
-      expect(getSelectedDialCodeElement().text()).toEqual('+1');
+      expect(getSelectedDialCodeElement().text()).toEqual(afghanistanDialCode);
     });
 
   });

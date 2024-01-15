@@ -17,11 +17,12 @@ describe("preferredCountries option:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
+        countrySearch: false,
         preferredCountries: [],
       });
     });
 
-    it("defaults to the first country in the alphabet", function() {
+    it("defaults to the first country in the list", function() {
       // Afghanistan
       expect(getSelectedFlagElement()).toHaveClass("iti__af");
     });
@@ -42,6 +43,7 @@ describe("preferredCountries option:", function() {
       // United Kingdom
       preferredCountries = ['gb'];
       iti = window.intlTelInput(input[0], {
+        countrySearch: false,
         preferredCountries: preferredCountries,
       });
     });

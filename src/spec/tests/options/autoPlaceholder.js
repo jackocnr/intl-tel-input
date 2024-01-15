@@ -27,8 +27,8 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
       });
     });
 
-    it("sets the placeholder to an example national number for the US", function() {
-      expect(input.attr("placeholder")).toEqual("(201) 555-0123");
+    it("sets the placeholder to an example national number for Afghanistan", function() {
+      expect(input.attr("placeholder")).toEqual("070 123 4567");
     });
 
     describe("changing the country to the UK", function() {
@@ -54,8 +54,8 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
       });
     });
 
-    it("sets the placeholder to an example international number for the US", function() {
-      expect(input.attr("placeholder")).toEqual("+1 201-555-0123");
+    it("sets the placeholder to an example international number for Afghanistan", function() {
+      expect(input.attr("placeholder")).toEqual("+93 70 123 4567");
     });
 
     describe("changing the country to the UK", function() {
@@ -108,7 +108,7 @@ describe("autoPlaceholder: testing input with an initial placeholder", function(
     iti = window.intlTelInput(input[0], {
       autoPlaceholder: "aggressive"
     });
-    expect(input.attr("placeholder")).toEqual("(201) 555-0123");
+    expect(input.attr("placeholder")).toEqual("070 123 4567");
   });
 
 });

@@ -2,8 +2,6 @@
 
 describe("autoInsertDialCode option:", function() {
 
-  var defaultDialCode = "+1";
-
   beforeEach(function() {
     intlSetup();
 
@@ -26,7 +24,7 @@ describe("autoInsertDialCode option:", function() {
     });
 
     it("automatically inserts the default dial code", function() {
-      expect(getInputVal()).toEqual(defaultDialCode);
+      expect(getInputVal()).toEqual(afghanistanDialCode);
     });
 
     it("blurring the input removes it", function() {

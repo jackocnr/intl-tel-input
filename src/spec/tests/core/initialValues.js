@@ -25,14 +25,13 @@ describe("initial values:", function() {
 
     it("has the right number of list items", function() {
       expect(getListLength()).toEqual(totalCountries + defaultPreferredCountries);
-      expect(getPreferredCountriesLength()).toEqual(defaultPreferredCountries);
       // only 1 active list item
       expect(getActiveListItem().length).toEqual(1);
     });
 
     it("sets the state correctly: selected flag and active list item", function() {
-      expect(getSelectedFlagElement()).toHaveClass("iti__us");
-      expect(getActiveListItem().attr("data-country-code")).toEqual("us");
+      expect(getSelectedFlagElement()).toHaveClass("iti__af");
+      expect(getActiveListItem().attr("data-country-code")).toEqual("af");
     });
 
   });
