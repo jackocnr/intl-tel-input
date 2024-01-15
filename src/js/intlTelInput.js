@@ -668,15 +668,6 @@ class Iti {
     }
   }
 
-  // iterate through parent nodes to find the closest label ancestor, if it exists
-  _getClosestLabel() {
-    let el = this.telInput;
-    while (el && el.tagName !== "LABEL") {
-      el = el.parentNode;
-    }
-    return el;
-  }
-
   // initialise the dropdown listeners
   _initDropdownListeners() {
     // hack for input nested inside label (which is valid markup): clicking the selected-flag to
@@ -690,7 +681,7 @@ class Iti {
         e.preventDefault();
       }
     };
-    const label = this._getClosestLabel();
+    const label = this.telInput.closest("label");
     if (label) {
       label.addEventListener("click", this._handleLabelClick);
     }
@@ -946,27 +937,13 @@ class Iti {
     }
   }
 
-  // iterate through parent nodes to find the closest list item
-  _getClosestListItem(target) {
-    let el = target;
-    while (
-      el &&
-      el !== this.countryList &&
-      !el.classList.contains("iti__country")
-    ) {
-      el = el.parentNode;
-    }
-    // if we reached the countryList element, then return null
-    return el === this.countryList ? null : el;
-  }
-
   // we only bind dropdown listeners when the dropdown is open
   _bindDropdownListeners() {
     // when mouse over a list item, just highlight that one
     // we add the class "highlight", so if they hit "enter" we know which one to select
     this._handleMouseoverCountryList = (e) => {
       // handle event delegation, as we're listening for this event on the countryList
-      const listItem = this._getClosestListItem(e.target);
+      const listItem = e.target.closest(".iti__country");
       if (listItem) {
         this._highlightListItem(listItem, false);
       }
@@ -978,7 +955,7 @@ class Iti {
 
     // listen for country selection
     this._handleClickCountryList = (e) => {
-      const listItem = this._getClosestListItem(e.target);
+      const listItem = e.target.closest(".iti__country");
       if (listItem) {
         this._selectListItem(listItem);
       }
@@ -1700,7 +1677,7 @@ class Iti {
         this._handleFlagsContainerKeydown
       );
       // label click hack
-      const label = this._getClosestLabel();
+      const label = this.telInput.closest("label");
       if (label) {
         label.removeEventListener("click", this._handleLabelClick);
       }

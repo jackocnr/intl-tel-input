@@ -50,9 +50,6 @@ module.exports = function(grunt) {
             match: /_initHiddenInputListener/g,
             replacement: '_i0'
           }, {
-            match: /_getClosestLabel/g,
-            replacement: '_i1'
-          }, {
             match: /_initDropdownListeners/g,
             replacement: '_i2'
           }, {
@@ -88,9 +85,6 @@ module.exports = function(grunt) {
           }, {
             match: /_setDropdownPosition/g,
             replacement: '_o'
-          }, {
-            match: /_getClosestListItem/g,
-            replacement: '_o2'
           }, {
             match: /_bindDropdownListeners/g,
             replacement: '_p'

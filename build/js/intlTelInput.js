@@ -651,15 +651,6 @@
                     }
                 }
             }, {
-                key: "_getClosestLabel",
-                value: function _getClosestLabel() {
-                    var el = this.telInput;
-                    while (el && el.tagName !== "LABEL") {
-                        el = el.parentNode;
-                    }
-                    return el;
-                }
-            }, {
                 key: "_initDropdownListeners",
                 value: function _initDropdownListeners() {
                     var _this4 = this;
@@ -674,7 +665,7 @@
                             e.preventDefault();
                         }
                     };
-                    var label = this._getClosestLabel();
+                    var label = this.telInput.closest("label");
                     if (label) {
                         label.addEventListener("click", this._handleLabelClick);
                     }
@@ -893,16 +884,6 @@
                     }
                 }
             }, {
-                key: "_getClosestListItem",
-                value: function _getClosestListItem(target) {
-                    var el = target;
-                    while (el && el !== this.countryList && !el.classList.contains("iti__country")) {
-                        el = el.parentNode;
-                    }
-                    // if we reached the countryList element, then return null
-                    return el === this.countryList ? null : el;
-                }
-            }, {
                 key: "_bindDropdownListeners",
                 value: function _bindDropdownListeners() {
                     var _this9 = this;
@@ -910,7 +891,7 @@
                     // we add the class "highlight", so if they hit "enter" we know which one to select
                     this._handleMouseoverCountryList = function(e) {
                         // handle event delegation, as we're listening for this event on the countryList
-                        var listItem = _this9._getClosestListItem(e.target);
+                        var listItem = e.target.closest(".iti__country");
                         if (listItem) {
                             _this9._highlightListItem(listItem, false);
                         }
@@ -918,7 +899,7 @@
                     this.countryList.addEventListener("mouseover", this._handleMouseoverCountryList);
                     // listen for country selection
                     this._handleClickCountryList = function(e) {
-                        var listItem = _this9._getClosestListItem(e.target);
+                        var listItem = e.target.closest(".iti__country");
                         if (listItem) {
                             _this9._selectListItem(listItem);
                         }
@@ -1492,7 +1473,7 @@
                         this.selectedFlag.removeEventListener("click", this._handleClickSelectedFlag);
                         this.flagsContainer.removeEventListener("keydown", this._handleFlagsContainerKeydown);
                         // label click hack
-                        var label = this._getClosestLabel();
+                        var label = this.telInput.closest("label");
                         if (label) {
                             label.removeEventListener("click", this._handleLabelClick);
                         }
