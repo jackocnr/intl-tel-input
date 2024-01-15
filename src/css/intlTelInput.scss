@@ -165,6 +165,10 @@ $mobilePopupMargin: 30px !default;
     width: 100%;
     border-width: 0;
     border-radius: 3px;
+
+    & + .iti__country-list {
+      border-top: 1px solid $greyBorder;
+    }
   }
   &__country-list {
     // override default list styles

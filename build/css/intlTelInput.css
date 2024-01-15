@@ -76,6 +76,9 @@
   border-width: 0;
   border-radius: 3px;
 }
+.iti__search-input + .iti__country-list {
+  border-top: 1px solid #ccc;
+}
 .iti__country-list {
   list-style: none;
   padding: 0;
