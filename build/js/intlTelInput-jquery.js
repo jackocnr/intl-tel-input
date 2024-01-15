@@ -194,7 +194,7 @@
         // geoIp lookup function
         geoIpLookup: null,
         // inject a hidden input with this name, and on submit, populate it with the result of getNumber
-        hiddenInput: "",
+        hiddenInput: null,
         // initial country
         initialCountry: "",
         // localized country names e.g. { 'de': 'Deutschland' }
@@ -575,16 +575,8 @@
                     }
                 }
                 if (hiddenInput) {
-                    var hiddenInputName = hiddenInput;
-                    var name = this.telInput.getAttribute("name");
-                    if (name) {
-                        var i = name.lastIndexOf("[");
-                        // if input name contains square brackets, then give the hidden input the same name,
-                        // replacing the contents of the last set of brackets with the given hiddenInput name
-                        if (i !== -1) {
-                            hiddenInputName = "".concat(name.substr(0, i), "[").concat(hiddenInputName, "]");
-                        }
-                    }
+                    var telInputName = this.telInput.getAttribute("name");
+                    var hiddenInputName = hiddenInput(telInputName);
                     this.hiddenInput = this._createEl("input", {
                         type: "hidden",
                         name: hiddenInputName

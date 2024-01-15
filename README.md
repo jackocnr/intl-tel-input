@@ -191,13 +191,21 @@ intlTelInput(input, {
       .then(function(data) { callback(data.country_code); })
       .catch(function() { callback("us"); });
   }
-})
+});
 ```
 _Note that the callback must still be called in the event of an error, hence the use of `catch()` in this example. Tip: store the result in a cookie to avoid repeat lookups!_
 
 **hiddenInput**  
-Type: `String` Default: `""`  
-Add a hidden input with the given name. Alternatively, if your input name contains square brackets (e.g. `name="phone_number[main]"`) then it will give the hidden input the same name, replacing the contents of the brackets with the given name (e.g. if you init the plugin with `hiddenInput: "full"`, then in this case the hidden input would have `name="phone_number[full]"`). On submit, it will automatically populate the hidden input with the full international number (using `getNumber`). This is a quick way for people using non-Ajax forms to get the full international number, even when `nationalMode` is enabled. Avoid this option when using Ajax forms and instead just call `getNumber` to get the full international number to send in the request. _Note: requires the input to be inside a form element, as this feature works by listening for the submit event on the closest form element. Also note that since this uses `getNumber` internally, firstly it requires the `utilsScript` option, and secondly it expects a valid number and so will only work correctly if you have used `isValidNumber` to validate the number before allowing the form submit to go through._
+Type: `Function` Default: `null`  
+Creates a hidden input which gets populated with the full international number on submit. You must provide a function (which receives the main telephone input name as an argument, in case that's useful) and it must return the name to use for the hidden input. This is a quick way for people using non-Ajax forms to get the full international number, even when `nationalMode` is enabled. Avoid this option when using Ajax forms and instead just call `getNumber` to get the full international number to send in the request. _Note: requires the input to be inside a `<form>` element, as this feature works by listening for the `submit` event on the closest form element. Also note that since this uses `getNumber` internally, firstly it requires the `utilsScript` option, and secondly it expects a valid number and so will only work correctly if you have used `isValidNumber` to validate the number before allowing the form submit to go through._
+
+```js
+intlTelInput(input, {
+  hiddenInput: function(telInputName) {
+    return "phone_full"
+  }
+});
+```
 
 **initialCountry**  
 Type: `String` Default: `""`  
