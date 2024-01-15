@@ -207,19 +207,14 @@ intlTelInput(input, {
 });
 ```
 
-**initialCountry**  
-Type: `String` Default: `""`  
-Set the initial country selection by specifying its country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
-
-If you leave `initialCountry` blank, it will default to the first country in the list.
-
-**localizedCountries**  
+**i18n**  
 Type: `Object` Default: `{}`  
-Allow localisation of country names. For each country, the key should be the iso2 country code, and the value should be the localised country name. [See example](https://intl-tel-input.com/examples/localise-countries.html).
+Allow localisation/customisation of country names and other plugin text. To localise a country name, the key should be the iso2 country code, and the value should be the localised country name. [See example](https://intl-tel-input.com/examples/localise-countries.html).
 
 ```js
-// Country names in German
-{
+intlTelInput(input, {
+  i18n: {
+    // Country names
     fr: "Frankreich",
     de: "Deutschland",
     es: "Spanien",
@@ -228,8 +223,19 @@ Allow localisation of country names. For each country, the key should be the iso
     nl: "Niederlande",
     at: "Österreich",
     dk: "Dänemark",
+    // Other plugin text
+    selectedCountryAriaLabel: 'Ausgewähltes Land',
+    countryListAriaLabel: 'Liste der Länder',
+    searchPlaceholder: 'Suchen',
   }
+});
 ```
+
+**initialCountry**  
+Type: `String` Default: `""`  
+Set the initial country selection by specifying its country code. You can also set it to `"auto"`, which will lookup the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note that the `"auto"` option will not update the country selection if the input already contains a number.
+
+If you leave `initialCountry` blank, it will default to the first country in the list.
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  

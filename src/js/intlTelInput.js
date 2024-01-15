@@ -40,10 +40,10 @@ const defaults = {
   geoIpLookup: null,
   // inject a hidden input with this name, and on submit, populate it with the result of getNumber
   hiddenInput: null,
+  // internationalise the plugin text e.g. search input placeholder, country names
+  i18n: {},
   // initial country
   initialCountry: "",
-  // localized country names e.g. { 'de': 'Deutschland' }
-  localizedCountries: null,
   // national vs international formatting for numbers e.g. placeholders and displaying existing numbers
   nationalMode: true,
   // display only these countries
@@ -203,13 +203,11 @@ class Iti {
     // process the preferredCountries
     this._processPreferredCountries();
 
-    // translate countries according to localizedCountries option
-    if (this.options.localizedCountries) {
-      this._translateCountriesByLocale();
-    }
+    // translate country names according to i18n option
+    this._translateCountryNames();
 
     // sort countries by name
-    if (this.options.onlyCountries.length || this.options.localizedCountries) {
+    if (this.options.onlyCountries.length || this.options.i18n) {
       this.countries.sort(this._countryNameSort);
     }
   }
@@ -256,11 +254,11 @@ class Iti {
   }
 
   // Translate Countries by object literal provided on config
-  _translateCountriesByLocale() {
+  _translateCountryNames() {
     for (let i = 0; i < this.countries.length; i++) {
       const iso = this.countries[i].iso2.toLowerCase();
-      if (this.options.localizedCountries.hasOwnProperty(iso)) {
-        this.countries[i].name = this.options.localizedCountries[iso];
+      if (this.options.i18n.hasOwnProperty(iso)) {
+        this.countries[i].name = this.options.i18n[iso];
       }
     }
   }
@@ -415,7 +413,7 @@ class Iti {
             "aria-haspopup": "listbox",
             "aria-controls": `iti-${this.id}__country-listbox`,
             "aria-expanded": "false",
-            "aria-label": "Telephone country code"
+            "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country"
           })
         },
         this.flagsContainer
@@ -464,7 +462,7 @@ class Iti {
           {
             type: "text",
             class: "iti__search-input",
-            placeholder: "Search"
+            placeholder: this.options.i18n.searchPlaceholder || "Search"
           },
           this.dropdownContent
         );
@@ -477,7 +475,7 @@ class Iti {
           class: "iti__country-list",
           id: `iti-${this.id}__country-listbox`,
           role: "listbox",
-          "aria-label": "List of countries"
+          "aria-label": this.options.i18n.countryListAriaLabel || "List of countries"
         },
         this.dropdownContent
       );

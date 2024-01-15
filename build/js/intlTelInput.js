@@ -190,10 +190,10 @@
             geoIpLookup: null,
             // inject a hidden input with this name, and on submit, populate it with the result of getNumber
             hiddenInput: null,
+            // internationalise the plugin text e.g. search input placeholder, country names
+            i18n: {},
             // initial country
             initialCountry: "",
-            // localized country names e.g. { 'de': 'Deutschland' }
-            localizedCountries: null,
             // national vs international formatting for numbers e.g. placeholders and displaying existing numbers
             nationalMode: true,
             // display only these countries
@@ -310,12 +310,10 @@
                     this._processCountryCodes();
                     // process the preferredCountries
                     this._processPreferredCountries();
-                    // translate countries according to localizedCountries option
-                    if (this.options.localizedCountries) {
-                        this._translateCountriesByLocale();
-                    }
+                    // translate country names according to i18n option
+                    this._translateCountryNames();
                     // sort countries by name
-                    if (this.options.onlyCountries.length || this.options.localizedCountries) {
+                    if (this.options.onlyCountries.length || this.options.i18n) {
                         this.countries.sort(this._countryNameSort);
                     }
                 }
@@ -360,12 +358,12 @@
                     }
                 }
             }, {
-                key: "_translateCountriesByLocale",
-                value: function _translateCountriesByLocale() {
+                key: "_translateCountryNames",
+                value: function _translateCountryNames() {
                     for (var i = 0; i < this.countries.length; i++) {
                         var iso = this.countries[i].iso2.toLowerCase();
-                        if (this.options.localizedCountries.hasOwnProperty(iso)) {
-                            this.countries[i].name = this.options.localizedCountries[iso];
+                        if (this.options.i18n.hasOwnProperty(iso)) {
+                            this.countries[i].name = this.options.i18n[iso];
                         }
                     }
                 }
@@ -500,7 +498,7 @@
                             "aria-haspopup": "listbox",
                             "aria-controls": "iti-".concat(this.id, "__country-listbox"),
                             "aria-expanded": "false",
-                            "aria-label": "Telephone country code"
+                            "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country"
                         }), this.flagsContainer);
                     }
                     if (showFlags) {
@@ -532,7 +530,7 @@
                             this.searchInput = this._createEl("input", {
                                 type: "text",
                                 "class": "iti__search-input",
-                                placeholder: "Search"
+                                placeholder: this.options.i18n.searchPlaceholder || "Search"
                             }, this.dropdownContent);
                         }
                         // country list: preferred countries, then divider, then all countries
@@ -540,7 +538,7 @@
                             "class": "iti__country-list",
                             id: "iti-".concat(this.id, "__country-listbox"),
                             role: "listbox",
-                            "aria-label": "List of countries"
+                            "aria-label": this.options.i18n.countryListAriaLabel || "List of countries"
                         }, this.dropdownContent);
                         if (this.preferredCountries.length && !countrySearch) {
                             this._appendListItems(this.preferredCountries, "iti__preferred", true);
