@@ -1729,19 +1729,19 @@ class Iti {
     return -99;
   }
 
-  // validate the input val - assumes the global function isValidNumber (from utilsScript)
+  // validate the input val - assumes the global function isPossibleNumber (from utilsScript)
   isValidNumber() {
     const val = this._getFullNumber().trim();
     return window.intlTelInputUtils
-      ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)
+      ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2)
       : null;
   }
 
-  // check if input val is possible number (weaker validation, but more future-proof) - assumes the global function isPossibleNumber (from utilsScript)
-  isPossibleNumber() {
+  // validate the input val (precise) - assumes the global function isValidNumber (from utilsScript)
+  isValidNumberPrecise() {
     const val = this._getFullNumber().trim();
     return window.intlTelInputUtils
-      ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2)
+      ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)
       : null;
   }
 

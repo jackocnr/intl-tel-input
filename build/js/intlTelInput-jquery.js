@@ -1570,13 +1570,13 @@
             key: "isValidNumber",
             value: function isValidNumber() {
                 var val = this._getFullNumber().trim();
-                return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
+                return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2) : null;
             }
         }, {
-            key: "isPossibleNumber",
-            value: function isPossibleNumber() {
+            key: "isValidNumberPrecise",
+            value: function isValidNumberPrecise() {
                 var val = this._getFullNumber().trim();
-                return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2) : null;
+                return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
             }
         }, {
             key: "setCountry",
