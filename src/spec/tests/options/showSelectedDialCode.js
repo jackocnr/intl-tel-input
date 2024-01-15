@@ -1,6 +1,6 @@
 "use strict";
 
-describe("separateDialCode:", function() {
+describe("showSelectedDialCode:", function() {
 
   beforeEach(function() {
     intlSetup(true);
@@ -18,14 +18,14 @@ describe("separateDialCode:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        separateDialCode: true,
+        showSelectedDialCode: true,
         nationalMode: false,
         initialCountry: "gb",
       });
     });
 
     it("sets the classes properly", function() {
-      expect(getParentElement()).toHaveClass("iti--separate-dial-code");
+      expect(getParentElement()).toHaveClass("iti--show-selected-dial-code");
     });
 
     it("displays the dial code next to the selected flag", function() {
@@ -62,7 +62,7 @@ describe("separateDialCode:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        separateDialCode: true,
+        showSelectedDialCode: true,
         nationalMode: true,
         initialCountry: "gb",
       });
@@ -99,7 +99,7 @@ describe("separateDialCode:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        separateDialCode: true,
+        showSelectedDialCode: true,
         nationalMode: false,
         initialCountry: "ca",
       });
@@ -125,7 +125,7 @@ describe("separateDialCode:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        separateDialCode: true,
+        showSelectedDialCode: true,
         nationalMode: false,
         initialCountry: "as",
       });
@@ -150,7 +150,7 @@ describe("separateDialCode:", function() {
     beforeEach(function() {
       input.val("(922) 555-1234");
       iti = window.intlTelInput(input[0], {
-        separateDialCode: true,
+        showSelectedDialCode: true,
         nationalMode: false,
         initialCountry: "ru",
       });

@@ -36,12 +36,12 @@ describe("allowDropdown:", function() {
 
   });
 
-  describe("init plugin with allowDropdown=false and separateDialCode=true", function() {
+  describe("init plugin with allowDropdown=false and showSelectedDialCode=true", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         allowDropdown: false,
-        separateDialCode: true
+        showSelectedDialCode: true
       });
     });
 

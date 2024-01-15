@@ -207,10 +207,10 @@
         placeholderNumberType: "MOBILE",
         // the countries at the top of the list
         preferredCountries: [],
-        // display the country dial code next to the selected flag
-        separateDialCode: false,
-        // option to hide the flags - must be used with separateDialCode, or allowDropdown=false
+        // option to hide the flags - must be used with showSelectedDialCode, or allowDropdown=false
         showFlags: true,
+        // display the international dial code next to the selected flag
+        showSelectedDialCode: false,
         // use full screen popup instead of dropdown for country list
         useFullscreenPopup: typeof navigator !== "undefined" && typeof window !== "undefined" ? // we cannot just test screen size as some smartphones/website meta tags will report desktop
         // resolutions
@@ -258,13 +258,13 @@
                 if (this.options.nationalMode) {
                     this.options.autoInsertDialCode = false;
                 }
-                // if separateDialCode enabled, do not insert dial codes
-                if (this.options.separateDialCode) {
+                // if showSelectedDialCode enabled, do not insert dial codes
+                if (this.options.showSelectedDialCode) {
                     this.options.autoInsertDialCode = false;
                 }
                 // force showFlags=true if there's a dropdown and we're not displaying the dial code,
                 // as otherwise you just have a down arrow on it's own which doesn't make sense
-                var forceShowFlags = this.options.allowDropdown && !this.options.separateDialCode;
+                var forceShowFlags = this.options.allowDropdown && !this.options.showSelectedDialCode;
                 if (!this.options.showFlags && forceShowFlags) {
                     this.options.showFlags = true;
                 }
@@ -462,14 +462,14 @@
                 if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
                     this.telInput.setAttribute("autocomplete", "off");
                 }
-                var _this$options = this.options, allowDropdown = _this$options.allowDropdown, separateDialCode = _this$options.separateDialCode, showFlags = _this$options.showFlags, containerClass = _this$options.containerClass, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth, useFullscreenPopup = _this$options.useFullscreenPopup, countrySearch = _this$options.countrySearch;
+                var _this$options = this.options, allowDropdown = _this$options.allowDropdown, showSelectedDialCode = _this$options.showSelectedDialCode, showFlags = _this$options.showFlags, containerClass = _this$options.containerClass, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth, useFullscreenPopup = _this$options.useFullscreenPopup, countrySearch = _this$options.countrySearch;
                 // containers (mostly for positioning)
                 var parentClass = "iti";
                 if (allowDropdown) {
                     parentClass += " iti--allow-dropdown";
                 }
-                if (separateDialCode) {
-                    parentClass += " iti--separate-dial-code";
+                if (showSelectedDialCode) {
+                    parentClass += " iti--show-selected-dial-code";
                 }
                 if (showFlags) {
                     parentClass += " iti--show-flags";
@@ -484,8 +484,8 @@
                     "class": parentClass
                 });
                 this.telInput.parentNode.insertBefore(wrapper, this.telInput);
-                // only hide the flagsContainer if allowDropdown, showFlags and separateDialCode are all false
-                var showFlagsContainer = allowDropdown || showFlags || separateDialCode;
+                // only hide the flagsContainer if allowDropdown, showFlags and showSelectedDialCode are all false
+                var showFlagsContainer = allowDropdown || showFlags || showSelectedDialCode;
                 if (showFlagsContainer) {
                     this.flagsContainer = this._createEl("div", {
                         "class": "iti__flag-container"
@@ -514,7 +514,7 @@
                 if (this.selectedFlag && this.telInput.disabled) {
                     this.selectedFlag.setAttribute("aria-disabled", "true");
                 }
-                if (separateDialCode) {
+                if (showSelectedDialCode) {
                     this.selectedDialCode = this._createEl("div", {
                         "class": "iti__selected-dial-code"
                     }, this.selectedFlag);
@@ -1083,7 +1083,7 @@
             value: function _updateValFromNumber(fullNumber) {
                 var number = fullNumber;
                 if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
-                    var useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.separateDialCode;
+                    var useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.showSelectedDialCode;
                     var _intlTelInputUtils$nu = intlTelInputUtils.numberFormat, NATIONAL = _intlTelInputUtils$nu.NATIONAL, INTERNATIONAL = _intlTelInputUtils$nu.INTERNATIONAL;
                     var format = useNational ? NATIONAL : INTERNATIONAL;
                     number = intlTelInputUtils.formatNumber(number, this.selectedCountryData.iso2, format);
@@ -1112,8 +1112,8 @@
                     }
                     number = "+".concat(number);
                 }
-                // if separateDialCode enabled, then consider the selected dial code to be part of the number
-                if (this.options.separateDialCode && selectedDialCode && number.charAt(0) !== "+") {
+                // if showSelectedDialCode enabled, then consider the selected dial code to be part of the number
+                if (this.options.showSelectedDialCode && selectedDialCode && number.charAt(0) !== "+") {
                     number = "+".concat(selectedDialCode).concat(number);
                 }
                 // try and extract valid dial code from input
@@ -1197,7 +1197,7 @@
         }, {
             key: "_setFlag",
             value: function _setFlag(countryCode) {
-                var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, separateDialCode = _this$options3.separateDialCode, showFlags = _this$options3.showFlags;
+                var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, showSelectedDialCode = _this$options3.showSelectedDialCode, showFlags = _this$options3.showFlags;
                 var prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
                 // do this first as it will throw an error and stop if countryCode is invalid
                 this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
@@ -1208,8 +1208,8 @@
                 if (showFlags) {
                     this.selectedFlagInner.setAttribute("class", "iti__flag iti__".concat(countryCode));
                 }
-                this._setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode);
-                if (separateDialCode) {
+                this._setSelectedCountryFlagTitleAttribute(countryCode, showSelectedDialCode);
+                if (showSelectedDialCode) {
                     var dialCode = this.selectedCountryData.dialCode ? "+".concat(this.selectedCountryData.dialCode) : "";
                     this.selectedDialCode.innerHTML = dialCode;
                     // offsetWidth is zero if input is in a hidden container during initialisation
@@ -1243,12 +1243,12 @@
             }
         }, {
             key: "_setSelectedCountryFlagTitleAttribute",
-            value: function _setSelectedCountryFlagTitleAttribute(countryCode, separateDialCode) {
+            value: function _setSelectedCountryFlagTitleAttribute(countryCode, showSelectedDialCode) {
                 if (!this.selectedFlag) {
                     return;
                 }
                 var title;
-                if (countryCode && !separateDialCode) {
+                if (countryCode && !showSelectedDialCode) {
                     title = "".concat(this.selectedCountryData.name, ": +").concat(this.selectedCountryData.dialCode);
                 } else if (countryCode) {
                     // For screen reader output, we don't want to include the dial code in the reader output twice
@@ -1429,8 +1429,8 @@
                 var dialCode = this.selectedCountryData.dialCode;
                 var prefix;
                 var numericVal = this._getNumeric(val);
-                if (this.options.separateDialCode && val.charAt(0) !== "+" && dialCode && numericVal) {
-                    // when using separateDialCode, it is visible so is effectively part of the typed number
+                if (this.options.showSelectedDialCode && val.charAt(0) !== "+" && dialCode && numericVal) {
+                    // when using showSelectedDialCode, it is visible so is effectively part of the typed number
                     prefix = "+".concat(dialCode);
                 } else {
                     prefix = "";
@@ -1441,7 +1441,7 @@
             key: "_beforeSetNumber",
             value: function _beforeSetNumber(fullNumber) {
                 var number = fullNumber;
-                if (this.options.separateDialCode) {
+                if (this.options.showSelectedDialCode) {
                     var dialCode = this._getDialCode(number);
                     // if there is a valid dial code
                     if (dialCode) {

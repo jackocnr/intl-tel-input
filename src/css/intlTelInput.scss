@@ -225,7 +225,7 @@ $mobilePopupMargin: 30px !default;
 
   // these settings are independent of each other, but both move selected flag to left of input
   &--allow-dropdown,
-  &--separate-dial-code {
+  &--show-selected-dial-code {
     input.iti__tel-input,
     input.iti__tel-input[type="text"],
     input.iti__tel-input[type="tel"] {
@@ -268,7 +268,7 @@ $mobilePopupMargin: 30px !default;
     }
   }
 
-  &--separate-dial-code {
+  &--show-selected-dial-code {
     .iti__selected-flag {
       // now that we have digits in this section, it needs this visual separation
       background-color: $hoverColor;

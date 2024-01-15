@@ -119,7 +119,7 @@ _Note: We have now dropped support for all versions of Internet Explorer because
   ```
 
 ## Recommended Usage
-We highly recommend you (lazy) load the included utils.js using the `utilsScript` option. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information.
+We highly recommend you (lazy) load the included utils.js using the `utilsScript` option. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `showSelectedDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information.
 
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
@@ -253,15 +253,15 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 Type: `Array` Default: `["us", "gb"]`  
 Specify the countries to appear at the top of the list.
 
-**separateDialCode**  
+**showFlags**  
+Type: `Boolean` Default: `true`  
+Set this to false to hide the flags e.g. for political reasons. Must be used in combination with `showSelectedDialCode` option, or with setting `allowDropdown` to `false`. 
+
+**showSelectedDialCode**  
 Type: `Boolean` Default: `false`  
 Display the country dial code next to the selected flag.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px">
-
-**showFlags**  
-Type: `Boolean` Default: `true`  
-Set this to false to hide the flags e.g. for political reasons. Must be used in combination with `separateDialCode` option, or with setting `allowDropdown` to `false`. 
 
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  

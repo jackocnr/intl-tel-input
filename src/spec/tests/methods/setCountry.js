@@ -24,11 +24,11 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
   });
 
   describe("setting title attribute on flag container", function() {
-    describe("when separateDialCode is false", function() {
+    describe("when showSelectedDialCode is false", function() {
       beforeEach(function() {
         iti = window.intlTelInput(input[0], {
           showFlags: true,
-          separateDialCode: false,
+          showSelectedDialCode: false,
         });
         iti.setCountry(countryCode);
       });
@@ -38,11 +38,11 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
       });
     });
 
-    describe("when separateDialCode is true", function() {
+    describe("when showSelectedDialCode is true", function() {
       beforeEach(function() {
         iti = window.intlTelInput(input[0], {
           showFlags: true,
-          separateDialCode: true,
+          showSelectedDialCode: true,
         });
         iti.setCountry(countryCode);
       });

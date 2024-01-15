@@ -119,27 +119,27 @@
 }
 .iti--allow-dropdown input.iti__tel-input,
 .iti--allow-dropdown input.iti__tel-input[type=text],
-.iti--allow-dropdown input.iti__tel-input[type=tel], .iti--separate-dial-code input.iti__tel-input,
-.iti--separate-dial-code input.iti__tel-input[type=text],
-.iti--separate-dial-code input.iti__tel-input[type=tel] {
+.iti--allow-dropdown input.iti__tel-input[type=tel], .iti--show-selected-dial-code input.iti__tel-input,
+.iti--show-selected-dial-code input.iti__tel-input[type=text],
+.iti--show-selected-dial-code input.iti__tel-input[type=tel] {
   padding-right: 6px;
   padding-left: 52px;
   margin-left: 0;
 }
 [dir=rtl] .iti--allow-dropdown input.iti__tel-input,
 [dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=text],
-[dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=tel], [dir=rtl] .iti--separate-dial-code input.iti__tel-input,
-[dir=rtl] .iti--separate-dial-code input.iti__tel-input[type=text],
-[dir=rtl] .iti--separate-dial-code input.iti__tel-input[type=tel] {
+[dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=tel], [dir=rtl] .iti--show-selected-dial-code input.iti__tel-input,
+[dir=rtl] .iti--show-selected-dial-code input.iti__tel-input[type=text],
+[dir=rtl] .iti--show-selected-dial-code input.iti__tel-input[type=tel] {
   padding-right: 52px;
   padding-left: 6px;
   margin-right: 0;
 }
-.iti--allow-dropdown .iti__flag-container, .iti--separate-dial-code .iti__flag-container {
+.iti--allow-dropdown .iti__flag-container, .iti--show-selected-dial-code .iti__flag-container {
   right: auto;
   left: 0;
 }
-[dir=rtl] .iti--allow-dropdown .iti__flag-container, [dir=rtl] .iti--separate-dial-code .iti__flag-container {
+[dir=rtl] .iti--allow-dropdown .iti__flag-container, [dir=rtl] .iti--show-selected-dial-code .iti__flag-container {
   right: 0;
   left: auto;
 }
@@ -157,13 +157,13 @@
 .iti--allow-dropdown .iti__flag-container:has(+ input[readonly]):hover .iti__selected-flag {
   background-color: transparent;
 }
-.iti--separate-dial-code .iti__selected-flag {
+.iti--show-selected-dial-code .iti__selected-flag {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.iti--separate-dial-code.iti--show-flags .iti__selected-dial-code {
+.iti--show-selected-dial-code.iti--show-flags .iti__selected-dial-code {
   margin-left: 6px;
 }
-[dir=rtl] .iti--separate-dial-code.iti--show-flags .iti__selected-dial-code {
+[dir=rtl] .iti--show-selected-dial-code.iti--show-flags .iti__selected-dial-code {
   margin-left: 0;
   margin-right: 6px;
 }
