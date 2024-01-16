@@ -170,13 +170,16 @@ $mobilePopupMargin: 30px !default;
     padding: 0;
     margin: 0;
 
-    max-height: 185px;
     overflow-y: scroll;
     // Fixes https://github.com/jackocnr/intl-tel-input/issues/765
     // Apple still hasn't fixed the issue where setting overflow: scroll on a div element does not use inertia scrolling
     // If this is not set, then the country list scroll stops moving after rasing a finger, and users report that scroll is slow
     // Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll
     -webkit-overflow-scrolling: touch;
+
+    .iti--inline-dropdown & {
+      max-height: 185px;
+    }
   }
   &--flexible-dropdown-width &__country-list {
     // don't let the contents wrap AKA the container will be as wide as the contents
@@ -325,6 +328,8 @@ $mobilePopupMargin: 30px !default;
     }
   }
   .iti__dropdown-content {
+    display: flex;
+    flex-direction: column;
     max-height: 100%;
     position: relative; // override needed in order to get full-width working properly
   }

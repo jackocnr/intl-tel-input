@@ -81,9 +81,11 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 185px;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+}
+.iti--inline-dropdown .iti__country-list {
+  max-height: 185px;
 }
 .iti--flexible-dropdown-width .iti__country-list {
   white-space: nowrap;
@@ -198,6 +200,8 @@
   justify-content: flex-start;
 }
 .iti--fullscreen-popup .iti__dropdown-content {
+  display: flex;
+  flex-direction: column;
   max-height: 100%;
   position: relative;
 }
