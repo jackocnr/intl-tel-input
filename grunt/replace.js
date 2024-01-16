@@ -189,7 +189,7 @@ module.exports = function(grunt) {
             match: /_handleFlagsContainerKeydown/g,
             replacement: '_a11'
           }, {
-            match: /_handleKeyupEvent/g,
+            match: /_handleKeyEvent/g,
             replacement: '_a12'
           }, {
             match: /_handleClipboardEvent/g,
