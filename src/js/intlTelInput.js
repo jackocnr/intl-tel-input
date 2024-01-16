@@ -34,6 +34,8 @@ const defaults = {
   excludeCountries: [],
   // fix the dropdown width to the input width (rather than being as wide as the longest country name)
   fixDropdownWidth: true,
+  // format the number as the user types
+  formatAsYouType: true,
   // format the input value during initialisation and on setNumber
   formatOnDisplay: true,
   // geoIp lookup function
@@ -756,21 +758,70 @@ class Iti {
 
   // initialize any key listeners
   _initKeyListeners() {
-    // update flag on keyup
-    this._handleKeyupEvent = () => {
+    let userOverrideFormatting = false;
+    // update flag on input event
+    this._handleKeyEvent = (e) => {
       if (this._updateFlagFromNumber(this.telInput.value)) {
         this._triggerCountryChange();
       }
+
+      // if user types their own formatting char (not a plus or a numeric), then set the override
+      if (e && e.data && /[^+0-9]/.test(e.data)) {
+        userOverrideFormatting = true;
+      }
+      // if user removes all formatting chars, then reset the override
+      else if (!/[^+0-9]/.test(this.telInput.value)) {
+        userOverrideFormatting = false;
+      }
+
+      if (this.options.formatAsYouType && !userOverrideFormatting) {
+        // maintain caret position after reformatting
+        const currentCaretPos = this.telInput.selectionStart;
+        const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
+        const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
+        const isDeleteForwards = e && e.inputType === "deleteContentForward";
+        const formattedValue = this.formatNumberAsYouType();
+        const newCaretPos = this._translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
+        this.telInput.value = formattedValue
+        this.telInput.setSelectionRange(newCaretPos, newCaretPos);
+      }
     };
-    this.telInput.addEventListener("keyup", this._handleKeyupEvent);
+    this.telInput.addEventListener("input", this._handleKeyEvent);
 
     // update flag on cut/paste events (now supported in all major browsers)
     this._handleClipboardEvent = () => {
       // hack because "paste" event is fired before input is updated
-      setTimeout(this._handleKeyupEvent);
+      setTimeout(this._handleKeyEvent);
     };
     this.telInput.addEventListener("cut", this._handleClipboardEvent);
     this.telInput.addEventListener("paste", this._handleClipboardEvent);
+  }
+
+  // iterate through the formattedValue until hit the right number of relevant chars
+  _translateCursorPosition(relevantChars, formattedValue, prevCaretPos, isDeleteForwards) {
+    // if the first char is a formatting char, and they backspace delete it:
+    // cursor should stay at the start (pos 0), rather than stick to the first digit (pos 1)
+    if (prevCaretPos === 0 && !isDeleteForwards) {
+      return 0;
+    }
+    let count = 0;
+    for (let i = 0; i < formattedValue.length; i++) {
+      if (/[+0-9]/.test(formattedValue[i])) {
+        count++;
+      }
+      
+      // normal case: stop when you hit the right number of relevant chars
+      // (cursor will be just after the final relevant char)
+      if (count === relevantChars && !isDeleteForwards) {
+        return i + 1;
+      }
+      // spacial case: delete forwards (fn + delete on a mac):
+      // wait until hit one extra relevant char, and put the cursor just before it (after any formatting chars)
+      if (isDeleteForwards && count === relevantChars + 1) {
+        return i;
+      }
+    }
+    return formattedValue.length;
   }
 
   // adhere to the input's maxlength attr
@@ -1666,7 +1717,7 @@ class Iti {
     }
 
     // unbind key events, and cut/paste events
-    this.telInput.removeEventListener("keyup", this._handleKeyupEvent);
+    this.telInput.removeEventListener("input", this._handleKeyEvent);
     this.telInput.removeEventListener("cut", this._handleClipboardEvent);
     this.telInput.removeEventListener("paste", this._handleClipboardEvent);
 
@@ -1743,6 +1794,14 @@ class Iti {
     const val = this._getFullNumber().trim();
     return window.intlTelInputUtils
       ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)
+      : null;
+  }
+
+  // format the number as the user types
+  formatNumberAsYouType() {
+    const val = this._getFullNumber().trim();
+    return window.intlTelInputUtils
+      ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
       : null;
   }
 

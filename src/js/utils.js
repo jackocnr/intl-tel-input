@@ -3,6 +3,24 @@ goog.provide("i18n.phonenumbers.demo");
 goog.require("i18n.phonenumbers.PhoneNumberFormat");
 goog.require("i18n.phonenumbers.PhoneNumberUtil");
 goog.require("i18n.phonenumbers.Error");
+goog.require('i18n.phonenumbers.AsYouTypeFormatter');
+
+// format the number as the user types
+const formatNumberAsYouType = (number, countryCode) => {
+  try {
+    // have to clean it first, as AYTF stops formatting as soon as it hits any formatting char (even it's own)
+    // (it's designed to be fed one char at a time, as opposed to every char every time)
+    const clean = number.replace(/[^+0-9]/g, "");
+    const formatter = new i18n.phonenumbers.AsYouTypeFormatter(countryCode);
+    let result = "";
+    for (let i = 0; i < clean.length; i++) {
+      result = formatter.inputDigit(clean.charAt(i));
+    }
+    return result;
+  } catch (e) {
+    return number;
+  }
+};
 
 // format the given number to the given format
 const formatNumber = (number, countryCode, formatArg) => {
@@ -158,6 +176,7 @@ const validationError = {
 
 // exports
 goog.exportSymbol("intlTelInputUtils", {});
+goog.exportSymbol("intlTelInputUtils.formatNumberAsYouType", formatNumberAsYouType);
 goog.exportSymbol("intlTelInputUtils.formatNumber", formatNumber);
 goog.exportSymbol("intlTelInputUtils.getExampleNumber", getExampleNumber);
 goog.exportSymbol("intlTelInputUtils.getExtension", getExtension);

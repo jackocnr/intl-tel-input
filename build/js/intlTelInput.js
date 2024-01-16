@@ -184,6 +184,8 @@
             excludeCountries: [],
             // fix the dropdown width to the input width (rather than being as wide as the longest country name)
             fixDropdownWidth: true,
+            // format the number as the user types
+            formatAsYouType: true,
             // format the input value during initialisation and on setNumber
             formatOnDisplay: true,
             // geoIp lookup function
@@ -779,20 +781,64 @@
                 key: "_initKeyListeners",
                 value: function _initKeyListeners() {
                     var _this5 = this;
-                    // update flag on keyup
-                    this._handleKeyupEvent = function() {
+                    var userOverrideFormatting = false;
+                    // update flag on input event
+                    this._handleKeyEvent = function(e) {
                         if (_this5._updateFlagFromNumber(_this5.telInput.value)) {
                             _this5._triggerCountryChange();
                         }
+                        // if user types their own formatting char (not a plus or a numeric), then set the override
+                        if (e && e.data && /[^+0-9]/.test(e.data)) {
+                            userOverrideFormatting = true;
+                        } else if (!/[^+0-9]/.test(_this5.telInput.value)) {
+                            userOverrideFormatting = false;
+                        }
+                        if (_this5.options.formatAsYouType && !userOverrideFormatting) {
+                            // maintain caret position after reformatting
+                            var currentCaretPos = _this5.telInput.selectionStart;
+                            var valueBeforeCaret = _this5.telInput.value.substring(0, currentCaretPos);
+                            var relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
+                            var isDeleteForwards = e && e.inputType === "deleteContentForward";
+                            var formattedValue = _this5.formatNumberAsYouType();
+                            var newCaretPos = _this5._translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
+                            _this5.telInput.value = formattedValue;
+                            _this5.telInput.setSelectionRange(newCaretPos, newCaretPos);
+                        }
                     };
-                    this.telInput.addEventListener("keyup", this._handleKeyupEvent);
+                    this.telInput.addEventListener("input", this._handleKeyEvent);
                     // update flag on cut/paste events (now supported in all major browsers)
                     this._handleClipboardEvent = function() {
                         // hack because "paste" event is fired before input is updated
-                        setTimeout(_this5._handleKeyupEvent);
+                        setTimeout(_this5._handleKeyEvent);
                     };
                     this.telInput.addEventListener("cut", this._handleClipboardEvent);
                     this.telInput.addEventListener("paste", this._handleClipboardEvent);
+                }
+            }, {
+                key: "_translateCursorPosition",
+                value: function _translateCursorPosition(relevantChars, formattedValue, prevCaretPos, isDeleteForwards) {
+                    // if the first char is a formatting char, and they backspace delete it:
+                    // cursor should stay at the start (pos 0), rather than stick to the first digit (pos 1)
+                    if (prevCaretPos === 0 && !isDeleteForwards) {
+                        return 0;
+                    }
+                    var count = 0;
+                    for (var i = 0; i < formattedValue.length; i++) {
+                        if (/[+0-9]/.test(formattedValue[i])) {
+                            count++;
+                        }
+                        // normal case: stop when you hit the right number of relevant chars
+                        // (cursor will be just after the final relevant char)
+                        if (count === relevantChars && !isDeleteForwards) {
+                            return i + 1;
+                        }
+                        // spacial case: delete forwards (fn + delete on a mac):
+                        // wait until hit one extra relevant char, and put the cursor just before it (after any formatting chars)
+                        if (isDeleteForwards && count === relevantChars + 1) {
+                            return i;
+                        }
+                    }
+                    return formattedValue.length;
                 }
             }, {
                 key: "_cap",
@@ -1511,7 +1557,7 @@
                         this.telInput.removeEventListener("blur", this._handleSubmitOrBlurEvent);
                     }
                     // unbind key events, and cut/paste events
-                    this.telInput.removeEventListener("keyup", this._handleKeyupEvent);
+                    this.telInput.removeEventListener("input", this._handleKeyEvent);
                     this.telInput.removeEventListener("cut", this._handleClipboardEvent);
                     this.telInput.removeEventListener("paste", this._handleClipboardEvent);
                     // remove attribute of id instance: data-intl-tel-input-id
@@ -1572,6 +1618,12 @@
                 value: function isValidNumberPrecise() {
                     var val = this._getFullNumber().trim();
                     return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
+                }
+            }, {
+                key: "formatNumberAsYouType",
+                value: function formatNumberAsYouType() {
+                    var val = this._getFullNumber().trim();
+                    return window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : null;
                 }
             }, {
                 key: "setCountry",

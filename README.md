@@ -34,6 +34,7 @@ You can view [a live demo](https://intl-tel-input.com) and see some examples of 
 * Automatically select the user's current country using an IP lookup
 * Automatically set the input placeholder to an example number for the selected country
 * Navigate the country dropdown by typing a country's name, or using up/down keys
+* Automatic formatting as the user types
 * Handle phone number extensions
 * The user types their national number and the plugin gives you the full standardized international number
 * Full validation, including specific error types
@@ -172,6 +173,10 @@ In the dropdown, display all countries except the ones you specify here.
 **fixDropdownWidth**  
 Type: `Boolean` Default: `false`  
 Fix the dropdown width to the input width (rather than being as wide as the longest country name).
+
+**formatAsYouType**  
+Type: `Boolean` Default: `true`  
+Format the number as the user types. This will automatically be disabled if the user types their own formatting characters. Requires the `utilsScript` option.
 
 **formatOnDisplay**  
 Type: `Boolean` Default: `true`  
