@@ -780,7 +780,7 @@ class Iti {
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
         const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
         const isDeleteForwards = e && e.inputType === "deleteContentForward";
-        const formattedValue = this.formatNumberAsYouType();
+        const formattedValue = this._formatNumberAsYouType();
         const newCaretPos = this._translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
         this.telInput.value = formattedValue
         this.telInput.setSelectionRange(newCaretPos, newCaretPos);
@@ -1646,6 +1646,14 @@ class Iti {
     this._trigger("countrychange");
   }
 
+  // format the number as the user types
+  _formatNumberAsYouType() {
+    const val = this._getFullNumber().trim();
+    return window.intlTelInputUtils
+      ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
+      : val;
+  }
+
   /**************************
    *  SECRET PUBLIC METHODS
    **************************/
@@ -1795,14 +1803,6 @@ class Iti {
     return window.intlTelInputUtils
       ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)
       : null;
-  }
-
-  // format the number as the user types
-  formatNumberAsYouType() {
-    const val = this._getFullNumber().trim();
-    return window.intlTelInputUtils
-      ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
-      : val;
   }
 
   // update the selected flag, and update the input val accordingly

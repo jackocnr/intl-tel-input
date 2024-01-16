@@ -799,7 +799,7 @@
                             var valueBeforeCaret = _this5.telInput.value.substring(0, currentCaretPos);
                             var relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
                             var isDeleteForwards = e && e.inputType === "deleteContentForward";
-                            var formattedValue = _this5.formatNumberAsYouType();
+                            var formattedValue = _this5._formatNumberAsYouType();
                             var newCaretPos = _this5._translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
                             _this5.telInput.value = formattedValue;
                             _this5.telInput.setSelectionRange(newCaretPos, newCaretPos);
@@ -1504,6 +1504,12 @@
                     this._trigger("countrychange");
                 }
             }, {
+                key: "_formatNumberAsYouType",
+                value: function _formatNumberAsYouType() {
+                    var val = this._getFullNumber().trim();
+                    return window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
+                }
+            }, {
                 key: "handleAutoCountry",
                 value: function handleAutoCountry() {
                     if (this.options.initialCountry === "auto") {
@@ -1618,12 +1624,6 @@
                 value: function isValidNumberPrecise() {
                     var val = this._getFullNumber().trim();
                     return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
-                }
-            }, {
-                key: "formatNumberAsYouType",
-                value: function formatNumberAsYouType() {
-                    var val = this._getFullNumber().trim();
-                    return window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
                 }
             }, {
                 key: "setCountry",
