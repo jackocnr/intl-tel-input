@@ -1623,7 +1623,7 @@
                 key: "formatNumberAsYouType",
                 value: function formatNumberAsYouType() {
                     var val = this._getFullNumber().trim();
-                    return window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : null;
+                    return window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
                 }
             }, {
                 key: "setCountry",

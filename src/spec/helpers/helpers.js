@@ -127,7 +127,7 @@ var triggerInputEvent = function(type) {
 }
 
 var triggerKey = function(el, type, key) {
-  var e = new KeyboardEvent(type, { key: key });
+  var e = new KeyboardEvent(type, { key: key, data: key });
   el.dispatchEvent(e);
 };
 

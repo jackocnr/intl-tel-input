@@ -1802,7 +1802,7 @@ class Iti {
     const val = this._getFullNumber().trim();
     return window.intlTelInputUtils
       ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
-      : null;
+      : val;
   }
 
   // update the selected flag, and update the input val accordingly
