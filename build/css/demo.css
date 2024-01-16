@@ -9,20 +9,6 @@ body {
   color: #555;
 }
 
-pre {
-  margin: 0 !important;
-  display: inline-block;
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string,
-.token.variable {
-  background: none;
-}
-
 input,
 button {
   height: 35px;
