@@ -176,7 +176,7 @@ Fix the dropdown width to the input width (rather than being as wide as the long
 
 **formatAsYouType**  
 Type: `Boolean` Default: `true`  
-Format the number as the user types. This will automatically be disabled if the user types their own formatting characters. Requires the `utilsScript` option.
+Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the `utilsScript` option.
 
 **formatOnDisplay**  
 Type: `Boolean` Default: `true`  
