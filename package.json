@@ -27,8 +27,7 @@
     "@babel/core": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "babel-eslint": "^9.0.0",
-    "custom-event-polyfill": "^1.0.6",
-    "es6-promise": "^4.2.5",
+    "esbuild": "^0.19.11",
     "eslint": "^8.38.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^8.8.0",
@@ -76,7 +75,13 @@
     "build:utils": "grunt build:utils",
     "build:css": "grunt css",
     "build:img": "grunt img",
-    "watch": "grunt watch"
+    "watch": "grunt watch",
+    "build:react": "esbuild react/DemoApp.js --bundle --outfile=react/demo-bundle.js --loader:.js=jsx --format=cjs"
   },
-  "style": "build/css/intlTelInput.css"
+  "style": "build/css/intlTelInput.css",
+  "dependencies": {
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
 }

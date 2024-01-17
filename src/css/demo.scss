@@ -41,9 +41,15 @@ button {
   color: #fff;
   background-color: #428bca;
   border: 1px solid #357ebd;
+  margin-left: 5px;
   &:hover {
     background-color: #3276b1;
     border-color: #285e8e;
     cursor: pointer;
   }
+}
+
+// for react demo
+.notice {
+  margin-top: 15px;
 }
