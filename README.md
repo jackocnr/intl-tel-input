@@ -279,7 +279,10 @@ Enable formatting/validation etc. by specifying the URL of the included utils.js
 
 
 ## Public Methods
-In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g. `const iti = intlTelInput(input);`
+In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
+```js
+const iti = intlTelInput(input);
+```
 
 **destroy**  
 Remove the plugin from the input, and unbind any event listeners.  
