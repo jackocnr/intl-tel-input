@@ -24922,7 +24922,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   }
 });
 
-// react/demo/DemoApp.js
+// react/demo/ValidationApp.js
 var import_react = __toESM(require_react());
 var import_client = __toESM(require_client());
 var import_IntlTelInput = __toESM(require_IntlTelInput_cjs());

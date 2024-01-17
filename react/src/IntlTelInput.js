@@ -54,10 +54,10 @@ const IntlTelInput = ({
 
 IntlTelInput.propTypes = {
     initialValue: PropTypes.string,
-    setNumber: PropTypes.func.isRequired,
+    setNumber: PropTypes.func,
     setCountryIso: PropTypes.func,
-    setIsValid: PropTypes.func.isRequired,
-    setErrorCode: PropTypes.func.isRequired,
+    setIsValid: PropTypes.func,
+    setErrorCode: PropTypes.func,
     initOptions: PropTypes.shape({
         allowDropdown: PropTypes.bool,
         autoInsertDialCode: PropTypes.bool,
@@ -87,7 +87,10 @@ IntlTelInput.propTypes = {
 
 IntlTelInput.defaultProps = {
     initialValue: "",
+    setNumber: () => {},
     setCountryIso: () => {},
+    setIsValid: () => {},
+    setErrorCode: () => {},
     initOptions: {},
 };
 
