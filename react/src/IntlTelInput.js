@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import intlTelInput from "..";
+import intlTelInput from "../../build/js/intlTelInput";
 
 const IntlTelInput = ({
   initialValue,

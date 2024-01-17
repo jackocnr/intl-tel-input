@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import IntlTelInput from './IntlTelInput';
+import IntlTelInput from '../build/IntlTelInput.cjs';
 
 const errorMap = [
   "Invalid number",
@@ -36,7 +36,7 @@ const DemoApp = () => {
         setErrorCode={setErrorCode}
         initOptions={{
           initialCountry: "us",
-          utilsScript: "../build/js/utils.js",
+          utilsScript: "../../build/js/utils.js",
         }}
        />
       <button type="button" onClick={handleSubmit}>Validate</button>
