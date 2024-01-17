@@ -5,10 +5,10 @@ import intlTelInput from "../../build/js/intlTelInput";
 
 const IntlTelInput = ({
   initialValue,
-  setCountryIso,
-  setNumber,
-  setIsValid,
-  setErrorCode,
+  onChangeNumber,
+  onChangeCountry,
+  onChangeValidity,
+  onChangeErrorCode,
   initOptions,
 }) => {
   const inputRef = useRef(null);
@@ -20,16 +20,16 @@ const IntlTelInput = ({
     // note: this number will be in standard E164 format, but any container component can use
     // intlTelInputUtils.formatNumber() to convert this to another format
     // as well as intlTelInputUtils.getNumberType() etc. if need be
-    setNumber(num);
-    setCountryIso(countryIso);
+    onChangeNumber(num);
+    onChangeCountry(countryIso);
 
     if (itiRef.current.isValidNumber()) {
-      setIsValid(true);
-      setErrorCode(null);
+      onChangeValidity(true);
+      onChangeErrorCode(null);
     } else {
       const errorCode = itiRef.current.getValidationError();
-      setIsValid(false);
-      setErrorCode(errorCode);
+      onChangeValidity(false);
+      onChangeErrorCode(errorCode);
     }
   };
   
@@ -54,10 +54,10 @@ const IntlTelInput = ({
 
 IntlTelInput.propTypes = {
     initialValue: PropTypes.string,
-    setNumber: PropTypes.func,
-    setCountryIso: PropTypes.func,
-    setIsValid: PropTypes.func,
-    setErrorCode: PropTypes.func,
+    onChangeNumber: PropTypes.func,
+    onChangeCountry: PropTypes.func,
+    onChangeValidity: PropTypes.func,
+    onChangeErrorCode: PropTypes.func,
     initOptions: PropTypes.shape({
         allowDropdown: PropTypes.bool,
         autoInsertDialCode: PropTypes.bool,
@@ -87,10 +87,10 @@ IntlTelInput.propTypes = {
 
 IntlTelInput.defaultProps = {
     initialValue: "",
-    setNumber: () => {},
-    setCountryIso: () => {},
-    setIsValid: () => {},
-    setErrorCode: () => {},
+    onChangeNumber: () => {},
+    onChangeCountry: () => {},
+    onChangeValidity: () => {},
+    onChangeErrorCode: () => {},
     initOptions: {},
 };
 

@@ -31,9 +31,9 @@ const DemoApp = () => {
   return (
     <form>
       <IntlTelInput
-        setNumber={setNumber}
-        setIsValid={setIsValid}
-        setErrorCode={setErrorCode}
+        onChangeNumber={setNumber}
+        onChangeValidity={setIsValid}
+        onChangeErrorCode={setErrorCode}
         initOptions={{
           initialCountry: "us",
           utilsScript: "../../build/js/utils.js",
