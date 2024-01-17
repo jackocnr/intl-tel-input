@@ -1507,7 +1507,13 @@
                 key: "_formatNumberAsYouType",
                 value: function _formatNumberAsYouType() {
                     var val = this._getFullNumber().trim();
-                    return window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
+                    var result = window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
+                    // if showSelectedDialCode and they haven't (re)typed the dial code in the input as well, then remove the dial code
+                    if (this.options.showSelectedDialCode && this.telInput.value.charAt(0) !== "+") {
+                        var dialCode = this.selectedCountryData.dialCode;
+                        return result.split("+".concat(dialCode))[1].trim();
+                    }
+                    return result;
                 }
             }, {
                 key: "handleAutoCountry",

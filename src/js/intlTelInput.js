@@ -1649,9 +1649,15 @@ class Iti {
   // format the number as the user types
   _formatNumberAsYouType() {
     const val = this._getFullNumber().trim();
-    return window.intlTelInputUtils
+    const result = window.intlTelInputUtils
       ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
       : val;
+    // if showSelectedDialCode and they haven't (re)typed the dial code in the input as well, then remove the dial code
+    if (this.options.showSelectedDialCode && this.telInput.value.charAt(0) !== '+') {
+      const { dialCode } = this.selectedCountryData;
+      return result.split(`+${dialCode}`)[1].trim();
+    }
+    return result;
   }
 
   /**************************
