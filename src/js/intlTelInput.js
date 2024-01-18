@@ -1655,7 +1655,8 @@ class Iti {
     // if showSelectedDialCode and they haven't (re)typed the dial code in the input as well, then remove the dial code
     if (this.options.showSelectedDialCode && this.telInput.value.charAt(0) !== '+') {
       const { dialCode } = this.selectedCountryData;
-      return (result.split("+".concat(dialCode))[1] || "").trim();
+      const afterDialCode = result.split(`+${dialCode}`)[1] || "";
+      return afterDialCode.trim();
     }
     return result;
   }
