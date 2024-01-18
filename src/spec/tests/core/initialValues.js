@@ -24,14 +24,11 @@ describe("initial values:", function() {
     });
 
     it("has the right number of list items", function() {
-      expect(getListLength()).toEqual(totalCountries + defaultPreferredCountries);
-      // only 1 active list item
-      expect(getActiveListItem().length).toEqual(1);
+      expect(getListLength()).toEqual(totalCountries);
     });
 
-    it("sets the state correctly: selected flag and active list item", function() {
+    it("sets the state correctly: selected flag", function() {
       expect(getSelectedFlagElement()).toHaveClass("iti__af");
-      expect(getActiveListItem().attr("data-country-code")).toEqual("af");
     });
 
   });
@@ -45,9 +42,8 @@ describe("initial values:", function() {
       iti = window.intlTelInput(input[0]);
     });
 
-    it("sets the state correctly: selected flag and active list item", function() {
+    it("sets the state correctly: selected flag", function() {
       expect(getSelectedFlagElement()).toHaveClass("iti__gb");
-      expect(getActiveListItem().attr("data-country-code")).toEqual("gb");
     });
 
   });
@@ -115,9 +111,8 @@ describe("initial values:", function() {
       iti = window.intlTelInput(input[0]);
     });
 
-    it("does not set the selected flag or the active list item", function() {
+    it("does not set the selected flag", function() {
       expect(getSelectedFlagElement().attr("class")).toBe("iti__flag");
-      expect(getActiveListItem().length).toEqual(0);
     });
 
   });
@@ -131,9 +126,8 @@ describe("initial values:", function() {
       iti = window.intlTelInput(input[0]);
     });
 
-    it("does not set the selected flag or the active list item", function() {
+    it("does not set the selected flag", function() {
       expect(getSelectedFlagElement().attr("class")).toBe("iti__flag");
-      expect(getActiveListItem().length).toEqual(0);
     });
 
   });

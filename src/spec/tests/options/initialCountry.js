@@ -25,10 +25,6 @@ describe("initialCountry: ", function() {
       expect(getSelectedFlagElement()).toHaveClass(`iti__${initialCountry}`);
     });
 
-    it("sets the active list item correctly", function() {
-      expect(getActiveListItem().attr("data-country-code")).toEqual(initialCountry);
-    });
-
   });
 
 
@@ -44,9 +40,8 @@ describe("initialCountry: ", function() {
       });
     });
 
-    it("sets the state correctly: selected flag and active list item", function() {
+    it("sets the state correctly: selected flag", function() {
       expect(getSelectedFlagElement()).toHaveClass(`iti__${initialCountry}`);
-      expect(getActiveListItem().attr("data-country-code")).toEqual(initialCountry);
     });
 
   });

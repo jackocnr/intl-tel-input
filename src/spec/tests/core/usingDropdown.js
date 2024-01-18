@@ -35,7 +35,7 @@ describe("using dropdown: init plugin on normal input with nationalMode=false, a
     it("opens the dropdown with the top item marked as active and highlighted", function() {
       expect(getListElement()).toBeVisible();
       var topItem = getListElement().find("li.iti__country:first");
-      expect(topItem).toHaveClass("iti__active iti__highlight");
+      expect(topItem).toHaveClass("iti__highlight");
     });
 
     it("clicking it again closes the dropdown", function() {

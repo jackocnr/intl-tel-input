@@ -55,7 +55,7 @@ describe("countrySearch option:", function() {
       jasmine.clock().tick(100); // allow for the (intentional) 100ms delay on the search handler
       expect(getListLength()).toEqual(6);
       triggerKeyOnBody('Enter');
-      expect(getActiveListItem().attr("data-country-code")).toEqual("cx");
+      expect(getSelectedFlagElement()).toHaveClass("iti__cx");
     });
 
   });

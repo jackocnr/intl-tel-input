@@ -15,7 +15,7 @@ describe("excludeCountries option:", function() {
     iti = window.intlTelInput(input[0], {
       excludeCountries: [],
     });
-    expect(getListLength()).toEqual(totalCountries + defaultPreferredCountries);
+    expect(getListLength()).toEqual(totalCountries);
   });
 
   describe("init the plugin with excludeCountries=[us, ca]", function() {
