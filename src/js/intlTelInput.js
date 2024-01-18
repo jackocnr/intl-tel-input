@@ -1364,8 +1364,10 @@ class Iti {
           this.countryList.querySelector(
             `#iti-${this.id}__item-${countryCode}`
           );
-        nextItem.setAttribute("aria-selected", "true");
-        nextItem.classList.add("iti__active");
+        if(nextItem) {
+          nextItem.setAttribute("aria-selected", "true");
+          nextItem.classList.add("iti__active");
+        }
         this.activeItem = nextItem;
       }
     }
