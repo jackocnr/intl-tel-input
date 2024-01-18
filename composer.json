@@ -1,6 +1,6 @@
 {
   "name": "jackocnr/intl-tel-input",
-  "version": "19.2.3",
+  "version": "19.2.4",
   "description": "A JavaScript plugin for entering and validating international telephone numbers",
   "keywords": [
     "international",
