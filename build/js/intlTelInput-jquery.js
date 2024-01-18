@@ -1243,7 +1243,7 @@
         }, {
             key: "_setFlag",
             value: function _setFlag(countryCode) {
-                var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, showSelectedDialCode = _this$options3.showSelectedDialCode, showFlags = _this$options3.showFlags;
+                var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, showSelectedDialCode = _this$options3.showSelectedDialCode, showFlags = _this$options3.showFlags, countrySearch = _this$options3.countrySearch;
                 var prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
                 // do this first as it will throw an error and stop if countryCode is invalid
                 this.selectedCountryData = countryCode ? this._getCountryData(countryCode, false, false) : {};
@@ -1269,8 +1269,8 @@
                 }
                 // and the input's placeholder
                 this._updatePlaceholder();
-                // update the active list item
-                if (allowDropdown) {
+                // update the active list item (only if country search disabled, as country search doesn't store the active item)
+                if (allowDropdown && !countrySearch) {
                     var prevItem = this.activeItem;
                     if (prevItem) {
                         prevItem.classList.remove("iti__active");

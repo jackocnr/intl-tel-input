@@ -1304,7 +1304,7 @@ class Iti {
   // select the given flag, update the placeholder, title, and the active list item
   // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
   _setFlag(countryCode) {
-    const { allowDropdown, showSelectedDialCode, showFlags } = this.options;
+    const { allowDropdown, showSelectedDialCode, showFlags, countrySearch } = this.options;
 
     const prevCountry = this.selectedCountryData.iso2
       ? this.selectedCountryData
@@ -1348,8 +1348,8 @@ class Iti {
     // and the input's placeholder
     this._updatePlaceholder();
 
-    // update the active list item
-    if (allowDropdown) {
+    // update the active list item (only if country search disabled, as country search doesn't store the active item)
+    if (allowDropdown && !countrySearch) {
       const prevItem = this.activeItem;
       if (prevItem) {
         prevItem.classList.remove("iti__active");
