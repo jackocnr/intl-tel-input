@@ -1330,6 +1330,7 @@ for (var i = 0; i < allCountries.length; i++) {
     iso2: c[1],
     dialCode: c[2],
     priority: c[3] || 0,
-    areaCodes: c[4] || null
+    areaCodes: c[4] || null,
+    nodeById: {},
   };
 }

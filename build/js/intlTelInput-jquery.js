@@ -38,7 +38,8 @@
             iso2: c[1],
             dialCode: c[2],
             priority: c[3] || 0,
-            areaCodes: c[4] || null
+            areaCodes: c[4] || null,
+            nodeById: {}
         };
     }
     "use strict";
@@ -600,7 +601,7 @@
                         "aria-selected": "false"
                     }, this.countryList);
                     // store this for later use e.g. country search filtering
-                    c.node = listItem;
+                    c.nodeById[this.id] = listItem;
                     var content = "";
                     // add the flag
                     if (this.options.showFlags) {
@@ -1068,10 +1069,10 @@
                     var nameLower = c.name.toLowerCase();
                     var fullDialCode = "+".concat(c.dialCode);
                     if (isReset || nameLower.includes(query) || fullDialCode.includes(query) || c.iso2.includes(query)) {
-                        this.countryList.appendChild(c.node);
+                        this.countryList.appendChild(c.nodeById[this.id]);
                         // highlight the first item
                         if (isFirst) {
-                            this._highlightListItem(c.node, false);
+                            this._highlightListItem(c.nodeById[this.id], false);
                             isFirst = false;
                         }
                     }
@@ -1111,7 +1112,7 @@
             value: function _searchForCountry(query) {
                 for (var i = 0; i < this.countries.length; i++) {
                     if (this._startsWith(this.countries[i].name, query)) {
-                        var listItem = this.countries[i].node;
+                        var listItem = this.countries[i].nodeById[this.id];
                         // update highlighting and scroll
                         this._highlightListItem(listItem, false);
                         this._scrollTo(listItem, true);

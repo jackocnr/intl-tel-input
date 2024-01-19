@@ -543,7 +543,7 @@ class Iti {
         this.countryList
       );
       // store this for later use e.g. country search filtering
-      c.node = listItem;
+      c.nodeById[this.id] = listItem;
 
       let content = "";
       // add the flag
@@ -1086,10 +1086,10 @@ class Iti {
         fullDialCode.includes(query) ||
         c.iso2.includes(query)
       ) {
-        this.countryList.appendChild(c.node);
+        this.countryList.appendChild(c.nodeById[this.id]);
         // highlight the first item
         if (isFirst) {
-          this._highlightListItem(c.node, false);
+          this._highlightListItem(c.nodeById[this.id], false);
           isFirst = false;
         }
       }
@@ -1138,7 +1138,7 @@ class Iti {
   _searchForCountry(query) {
     for (let i = 0; i < this.countries.length; i++) {
       if (this._startsWith(this.countries[i].name, query)) {
-        const listItem = this.countries[i].node;
+        const listItem = this.countries[i].nodeById[this.id];
         // update highlighting and scroll
         this._highlightListItem(listItem, false);
         this._scrollTo(listItem, true);
