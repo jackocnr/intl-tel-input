@@ -24929,20 +24929,19 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
 var import_react = __toESM(require_react());
 var import_client = __toESM(require_client());
 var import_IntlTelInput = __toESM(require_IntlTelInput_cjs());
+var App = () => /* @__PURE__ */ import_react.default.createElement(
+  import_IntlTelInput.default,
+  {
+    initOptions: {
+      initialCountry: "us",
+      // use a CDN so it works on intl-tel-input.com
+      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.1.0/build/js/utils.js"
+    }
+  }
+);
 var container = document.getElementById("app");
 var root = (0, import_client.createRoot)(container);
-root.render(
-  /* @__PURE__ */ import_react.default.createElement(
-    import_IntlTelInput.default,
-    {
-      initOptions: {
-        initialCountry: "us",
-        // use a CDN so it works on intl-tel-input.com
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.1.0/build/js/utils.js"
-      }
-    }
-  )
-);
+root.render(/* @__PURE__ */ import_react.default.createElement(App, null));
 /*! Bundled license information:
 
 react/cjs/react.development.js:

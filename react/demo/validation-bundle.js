@@ -24936,7 +24936,7 @@ var errorMap = [
   "Too long",
   "Invalid number"
 ];
-var DemoApp = () => {
+var App = () => {
   const [isValid, setIsValid] = (0, import_react.useState)(null);
   const [number, setNumber] = (0, import_react.useState)(null);
   const [errorCode, setErrorCode] = (0, import_react.useState)(null);
@@ -24946,7 +24946,7 @@ var DemoApp = () => {
       setNotice(`Valid number: ${number}`);
     } else {
       const errorMessage = errorMap[errorCode] || "Invalid number";
-      setNotice(errorMessage);
+      setNotice(`Error: ${errorMessage}`);
     }
   };
   return /* @__PURE__ */ import_react.default.createElement("form", null, /* @__PURE__ */ import_react.default.createElement(
@@ -24964,7 +24964,7 @@ var DemoApp = () => {
 };
 var container = document.getElementById("app");
 var root = (0, import_client.createRoot)(container);
-root.render(/* @__PURE__ */ import_react.default.createElement(DemoApp, null));
+root.render(/* @__PURE__ */ import_react.default.createElement(App, null));
 /*! Bundled license information:
 
 react/cjs/react.development.js:

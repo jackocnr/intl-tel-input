@@ -5,9 +5,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import IntlTelInput from '../build/IntlTelInput.cjs';
 
-const container = document.getElementById("app");
-const root = createRoot(container);
-root.render(
+const App = () => (
   <IntlTelInput
     initOptions={{
       initialCountry: "us",
@@ -16,3 +14,7 @@ root.render(
     }}
   />
 );
+
+const container = document.getElementById("app");
+const root = createRoot(container);
+root.render(<App />);

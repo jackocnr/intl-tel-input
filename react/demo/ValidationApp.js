@@ -13,7 +13,7 @@ const errorMap = [
   "Invalid number",
 ];
 
-const DemoApp = () => {
+const App = () => {
   const [isValid, setIsValid] = useState(null);
   const [number, setNumber] = useState(null);
   const [errorCode, setErrorCode] = useState(null);
@@ -24,7 +24,7 @@ const DemoApp = () => {
       setNotice(`Valid number: ${number}`);
     } else {
       const errorMessage = errorMap[errorCode] || "Invalid number";
-      setNotice(errorMessage);
+      setNotice(`Error: ${errorMessage}`);
     }
   };
   
@@ -38,7 +38,7 @@ const DemoApp = () => {
           initialCountry: "us",
           utilsScript: "../../build/js/utils.js",
         }}
-       />
+      />
       <button type="button" onClick={handleSubmit}>Validate</button>
       {notice && <div className="notice">{notice}</div>}
     </form>
@@ -47,4 +47,4 @@ const DemoApp = () => {
 
 const container = document.getElementById("app");
 const root = createRoot(container);
-root.render(<DemoApp />);
+root.render(<App />);
