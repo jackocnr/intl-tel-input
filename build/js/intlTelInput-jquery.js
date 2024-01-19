@@ -1379,7 +1379,7 @@
         }, {
             key: "_scrollTo",
             value: function _scrollTo(element, middle) {
-                var container = this.dropdownContent;
+                var container = this.countryList;
                 // windowTop from https://stackoverflow.com/a/14384091/217866
                 var windowTop = document.documentElement.scrollTop;
                 var containerHeight = container.offsetHeight;

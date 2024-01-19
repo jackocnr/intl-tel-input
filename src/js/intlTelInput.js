@@ -1500,7 +1500,7 @@ class Iti {
 
   // check if an element is visible within it's container, else scroll until it is
   _scrollTo(element, middle) {
-    const container = this.dropdownContent;
+    const container = this.countryList;
     // windowTop from https://stackoverflow.com/a/14384091/217866
     const windowTop = document.documentElement.scrollTop;
     const containerHeight = container.offsetHeight;
