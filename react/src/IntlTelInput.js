@@ -10,6 +10,10 @@ const IntlTelInput = ({
   onChangeValidity,
   onChangeErrorCode,
   initOptions,
+  className,
+  disabled,
+  onFocus,
+  onBlur,
 }) => {
   const inputRef = useRef(null);
   const itiRef = useRef(null);
@@ -44,54 +48,66 @@ const IntlTelInput = ({
   
   return (
     <input
-      type="phone"
+      type="tel"
       ref={inputRef}
       onInput={update}
       defaultValue={initialValue}
-     />
+      className={className}
+      disabled={disabled}
+      onFocus={onFocus}
+      onBlur={onBlur}
+    />
   );
 };
 
 IntlTelInput.propTypes = {
-    initialValue: PropTypes.string,
-    onChangeNumber: PropTypes.func,
-    onChangeCountry: PropTypes.func,
-    onChangeValidity: PropTypes.func,
-    onChangeErrorCode: PropTypes.func,
-    initOptions: PropTypes.shape({
-        allowDropdown: PropTypes.bool,
-        autoInsertDialCode: PropTypes.bool,
-        autoPlaceholder: PropTypes.string,
-        containerClass: PropTypes.string,
-        countrySearch: PropTypes.bool,
-        customPlaceholder: PropTypes.func,
-        dropdownContainer: PropTypes.node,
-        excludeCountries: PropTypes.arrayOf(PropTypes.string),
-        fixDropdownWidth: PropTypes.bool,
-        formatAsYouType: PropTypes.bool,
-        formatOnDisplay: PropTypes.bool,
-        geoIpLookup: PropTypes.func,
-        hiddenInput: PropTypes.func,
-        i18n: PropTypes.objectOf(PropTypes.string),
-        initialCountry: PropTypes.string,
-        nationalMode: PropTypes.bool,
-        onlyCountries: PropTypes.arrayOf(PropTypes.string),
-        placeholderNumberType: PropTypes.string,
-        preferredCountries: PropTypes.arrayOf(PropTypes.string),
-        showFlags: PropTypes.bool,
-        showSelectedDialCode: PropTypes.bool,
-        useFullscreenPopup: PropTypes.bool,
-        utilsScript: PropTypes.string,
-    }),
+  initialValue: PropTypes.string,
+  onChangeNumber: PropTypes.func,
+  onChangeCountry: PropTypes.func,
+  onChangeValidity: PropTypes.func,
+  onChangeErrorCode: PropTypes.func,
+  initOptions: PropTypes.shape({
+    allowDropdown: PropTypes.bool,
+    autoInsertDialCode: PropTypes.bool,
+    autoPlaceholder: PropTypes.string,
+    containerClass: PropTypes.string,
+    countrySearch: PropTypes.bool,
+    customPlaceholder: PropTypes.func,
+    dropdownContainer: PropTypes.node,
+    excludeCountries: PropTypes.arrayOf(PropTypes.string),
+    fixDropdownWidth: PropTypes.bool,
+    formatAsYouType: PropTypes.bool,
+    formatOnDisplay: PropTypes.bool,
+    geoIpLookup: PropTypes.func,
+    hiddenInput: PropTypes.func,
+    i18n: PropTypes.objectOf(PropTypes.string),
+    initialCountry: PropTypes.string,
+    nationalMode: PropTypes.bool,
+    onlyCountries: PropTypes.arrayOf(PropTypes.string),
+    placeholderNumberType: PropTypes.string,
+    preferredCountries: PropTypes.arrayOf(PropTypes.string),
+    showFlags: PropTypes.bool,
+    showSelectedDialCode: PropTypes.bool,
+    useFullscreenPopup: PropTypes.bool,
+    utilsScript: PropTypes.string,
+  }),
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 IntlTelInput.defaultProps = {
-    initialValue: "",
-    onChangeNumber: () => {},
-    onChangeCountry: () => {},
-    onChangeValidity: () => {},
-    onChangeErrorCode: () => {},
-    initOptions: {},
+  initialValue: "",
+  onChangeNumber: () => {},
+  onChangeCountry: () => {},
+  onChangeValidity: () => {},
+  onChangeErrorCode: () => {},
+  initOptions: {},
+  className: "",
+  disabled: false,
+  onFocus: () => {},
+  onBlur: () => {},
 };
 
 export default IntlTelInput;
