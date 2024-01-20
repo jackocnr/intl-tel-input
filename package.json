@@ -51,6 +51,7 @@
     "grunt-replace": "^1.0.1",
     "grunt-responsive-images": "^1.10.1",
     "grunt-sass": "^3.0.0",
+    "grunt-shell": "^4.0.0",
     "grunt-spritesmith": "^6.10.0",
     "grunt-template": "^1.0.0",
     "jasmine-jquery": "^2.1.1",
