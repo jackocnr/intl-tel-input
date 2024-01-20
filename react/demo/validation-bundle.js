@@ -24614,7 +24614,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               var e = new Event(t, { bubbles: true, cancelable: true });
               this.telInput.dispatchEvent(e);
             } }, { key: "_showDropdown", value: function() {
-              this.options.fixDropdownWidth && (this.dropdownContent.style.width = "".concat(this.telInput.offsetWidth, "px")), this.dropdownContent.classList.remove("iti__hide"), this.selectedFlag.setAttribute("aria-expanded", "true"), this._setDropdownPosition(), this.options.countrySearch ? (this._highlightListItem(this.countryList.firstElementChild, false), this.searchInput.focus()) : this.activeItem && (this._highlightListItem(this.activeItem, false), this._scrollTo(this.activeItem, true)), this._bindDropdownListeners(), this.dropdownArrow.classList.add("iti__arrow--up"), this._trigger("open:countrydropdown");
+              if (this.options.fixDropdownWidth && (this.dropdownContent.style.width = "".concat(this.telInput.offsetWidth, "px")), this.dropdownContent.classList.remove("iti__hide"), this.selectedFlag.setAttribute("aria-expanded", "true"), this._setDropdownPosition(), this.options.countrySearch) {
+                var t = this.countryList.firstElementChild;
+                t && this._highlightListItem(t, false), this.searchInput.focus();
+              } else
+                this.activeItem && (this._highlightListItem(this.activeItem, false), this._scrollTo(this.activeItem, true));
+              this._bindDropdownListeners(), this.dropdownArrow.classList.add("iti__arrow--up"), this._trigger("open:countrydropdown");
             } }, { key: "_toggleClass", value: function(t, e, i) {
               i && !t.classList.contains(e) ? t.classList.add(e) : !i && t.classList.contains(e) && t.classList.remove(e);
             } }, { key: "_setDropdownPosition", value: function() {
@@ -24888,7 +24893,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               R(s);
             }
             return null;
-          }, L.defaults = G, L.version = "19.2.7", function(s, n) {
+          }, L.defaults = G, L.version = "19.2.8", function(s, n) {
             var t = new Y(s, n);
             return t._init(), s.setAttribute("data-intl-tel-input-id", t.id), window.intlTelInputGlobals.instances[t.id] = t, t;
           };
