@@ -886,7 +886,10 @@ class Iti {
 
     if (this.options.countrySearch) {
       // start by highlighting the first item in the list
-      this._highlightListItem(this.countryList.firstElementChild, false);
+      const { firstElementChild } = this.countryList;
+      if (firstElementChild) {
+        this._highlightListItem(firstElementChild, false);
+      }
       this.searchInput.focus();
     } else if (this.activeItem) {
       // update highlighting and scroll to active list item
