@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v19.2.7
+ * International Telephone Input v19.2.8
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -1722,7 +1722,7 @@
     // default options
     intlTelInputGlobals.defaults = defaults;
     // version
-    intlTelInputGlobals.version = "19.2.7";
+    intlTelInputGlobals.version = "19.2.8";
     var pluginName = "intlTelInput";
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
