@@ -38,12 +38,14 @@ const IntlTelInput = ({
   };
   
   useEffect(() => {
+    // store a reference to the current input ref, which otherwise is already lost in the cleanup function
+    const inputRefCurrent = inputRef.current;
     itiRef.current = intlTelInput(inputRef.current, initOptions);
-    inputRef.current.addEventListener("countrychange", update);
+    inputRefCurrent.addEventListener("countrychange", update);
     return () => {
-      inputRef.current.removeEventListener("countrychange", update);
+      inputRefCurrent.removeEventListener("countrychange", update);
       itiRef.current.destroy();
-    }
+    };
   }, []);
   
   return (
