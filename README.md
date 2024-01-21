@@ -36,7 +36,7 @@ You can view [a live demo](https://intl-tel-input.com) and see some examples of 
 ## Mobile
 By default, on mobile devices we show a fullscreen popup instead of the inline dropdown, to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option.
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile-fullscreen.jpg" alt="Mobile screenshot" width="540px" style="max-width: 100%" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile-fullscreen.jpg" alt="Mobile screenshot" width="270px" style="max-width: 100%" />
 
 
 ## Features
