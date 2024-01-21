@@ -30,7 +30,13 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 
 
 ## Demo and Examples
-You can view [a live demo](https://intl-tel-input.com) and see some examples of how to use the various options, or try it for yourself using the included demo.html.
+You can view [a live demo](https://intl-tel-input.com) and see some examples of how to use the various options. Alternatively, try it for yourself by downloading the project and opening demo.html in a browser.
+
+
+## Mobile
+By default, on mobile devices we show a fullscreen popup instead of the inline dropdown, to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option.
+
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile-fullscreen.jpg" alt="Mobile screenshot" width="540px" style="max-width: 100%" />
 
 
 ## Features
@@ -131,7 +137,7 @@ Finally, make sure you have `<meta charset="utf-8">` in the `<head>` section of 
 
 
 ## Initialisation Options
-When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes  
+When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
 
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
@@ -273,7 +279,7 @@ Display the country dial code next to the selected flag.
 
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
-Control when the country list appears as a fullscreen popup vs a dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), and as a dropdown on larger devices/screens.
+Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), to make better use of the limited space (similar to how a native `<select>` works), and as an inline dropdown on larger devices/screens.
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
