@@ -13947,11 +13947,11 @@ var require_react_dom_development = __commonJS({
         }
         function registerMutableSourceForHydration(root3, mutableSource) {
           var getVersion = mutableSource._getVersion;
-          var version = getVersion(mutableSource._source);
+          var version2 = getVersion(mutableSource._source);
           if (root3.mutableSourceEagerHydrationData == null) {
-            root3.mutableSourceEagerHydrationData = [mutableSource, version];
+            root3.mutableSourceEagerHydrationData = [mutableSource, version2];
           } else {
-            root3.mutableSourceEagerHydrationData.push(mutableSource, version);
+            root3.mutableSourceEagerHydrationData.push(mutableSource, version2);
           }
         }
         var ReactCurrentDispatcher$1 = ReactSharedInternals.ReactCurrentDispatcher, ReactCurrentBatchConfig$2 = ReactSharedInternals.ReactCurrentBatchConfig;
@@ -24939,13 +24939,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
 var import_react = __toESM(require_react());
 var import_client = __toESM(require_client());
 var import_IntlTelInput = __toESM(require_IntlTelInput_cjs());
+var version = "19.2.12";
 var App = () => /* @__PURE__ */ import_react.default.createElement(
   import_IntlTelInput.default,
   {
     initOptions: {
       initialCountry: "us",
-      // use a CDN so it works on intl-tel-input.com
-      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.1.0/build/js/utils.js"
+      // use a CDN so it also works on intl-tel-input.com
+      utilsScript: `https://cdn.jsdelivr.net/npm/intl-tel-input@${version}/build/js/utils.js`
     }
   }
 );

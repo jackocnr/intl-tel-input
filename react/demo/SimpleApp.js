@@ -5,12 +5,15 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import IntlTelInput from '../build/IntlTelInput.cjs';
 
+// defined in package.json scripts section
+const version = process.env.VERSION;
+
 const App = () => (
   <IntlTelInput
     initOptions={{
       initialCountry: "us",
-      // use a CDN so it works on intl-tel-input.com
-      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.1.0/build/js/utils.js",
+      // use a CDN so it also works on intl-tel-input.com
+      utilsScript: `https://cdn.jsdelivr.net/npm/intl-tel-input@${version}/build/js/utils.js`,
     }}
   />
 );
