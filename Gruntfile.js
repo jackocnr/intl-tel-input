@@ -25,5 +25,7 @@ module.exports = function(grunt) {
   grunt.registerTask('travis', ['jasmine']);
   // bump version number in 3 files, rebuild js to update headers, then commit, tag and push
   grunt.registerTask('version', ['bump-only', 'js', 'bump-commit']);
+  grunt.registerTask('version:minor', ['bump-only:minor', 'js', 'bump-commit']);
+  grunt.registerTask('version:major', ['bump-only:major', 'js', 'bump-commit']);
 
 };

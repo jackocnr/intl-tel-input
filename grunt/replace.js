@@ -6,7 +6,7 @@ module.exports = function(grunt) {
      * Ignore _init method, which is a subset of other method names, and is used in different ways
      * Note: can't do public methods, as they need to be called as is
      ***********/
-    one: {
+    privateMethods: {
       options: {
         patterns: [
           // Note: _a is now reserved for step two
@@ -158,7 +158,7 @@ module.exports = function(grunt) {
     /***********
      * INLINE PRIVATE METHODS
      ***********/
-    two: {
+    inlineMethods: {
       options: {
         patterns: [
           {
@@ -211,7 +211,7 @@ module.exports = function(grunt) {
      * INSTANCE FIELDS
      * Note: avoid option names as that will break things!
      ***********/
-    three: {
+    instanceFields: {
       options: {
         patterns: [
           {
@@ -274,6 +274,24 @@ module.exports = function(grunt) {
       files: {
         'build/js/intlTelInput.min.js': 'tmp/two.min.js',
         'build/js/intlTelInput-jquery.min.js': 'tmp/two-jquery.min.js',
+      }
+    },
+
+    /***********
+     * README file
+     * Update versions numbers in the Getting Started (CDN) section
+     ***********/
+    readme: {
+      options: {
+        patterns: [
+          {
+            match: /intl-tel-input@([0-9.]+)\/build/g,
+            replacement: 'intl-tel-input@<%= package.version %>/build'
+          }
+        ]
+      },
+      files: {
+        'README.md': 'README.md'
       }
     }
   };
