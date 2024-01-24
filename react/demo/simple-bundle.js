@@ -24893,7 +24893,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               R(s);
             }
             return null;
-          }, k.defaults = G, k.version = "19.2.12", function(s, n) {
+          }, k.defaults = G, k.version = "19.2.13", function(s, n) {
             var t = new Y(s, n);
             return t._init(), s.setAttribute("data-intl-tel-input-id", t.id), window.intlTelInputGlobals.instances[t.id] = t, t;
           };
@@ -24939,7 +24939,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
 var import_react = __toESM(require_react());
 var import_client = __toESM(require_client());
 var import_IntlTelInput = __toESM(require_IntlTelInput_cjs());
-var version = "19.2.12";
+var version = "19.2.13";
 var App = () => /* @__PURE__ */ import_react.default.createElement(
   import_IntlTelInput.default,
   {
