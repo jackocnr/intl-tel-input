@@ -1052,9 +1052,9 @@ class Iti {
       const doFilter = () => {
         const inputQuery = this.searchInput.value.trim();
         if (inputQuery) {
-          this._filterCountries(inputQuery.toLowerCase());
+          this._filterCountries(inputQuery);
         } else {
-          this._filterCountries(null, true);
+          this._filterCountries("", true);
         }
       };
 
@@ -1076,18 +1076,25 @@ class Iti {
     }
   }
 
+  // turns "Réunion" into "Reunion"
+  // from https://stackoverflow.com/a/37511463
+  _normaliseString(s = "") {
+    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
   _filterCountries(query, isReset = false) {
     let isFirst = true;
     this.countryList.innerHTML = "";
+    const normalisedQuery = this._normaliseString(query);
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
-      const nameLower = c.name.toLowerCase();
+      const normalisedCountryName = this._normaliseString(c.name);
       const fullDialCode = `+${c.dialCode}`;
       if (
         isReset ||
-        nameLower.includes(query) ||
-        fullDialCode.includes(query) ||
-        c.iso2.includes(query)
+        normalisedCountryName.includes(normalisedQuery) ||
+        fullDialCode.includes(normalisedQuery) ||
+        c.iso2.includes(normalisedQuery)
       ) {
         this.countryList.appendChild(c.nodeById[this.id]);
         // highlight the first item

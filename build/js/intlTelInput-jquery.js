@@ -1038,9 +1038,9 @@
                     var doFilter = function doFilter() {
                         var inputQuery = _this8.searchInput.value.trim();
                         if (inputQuery) {
-                            _this8._filterCountries(inputQuery.toLowerCase());
+                            _this8._filterCountries(inputQuery);
                         } else {
-                            _this8._filterCountries(null, true);
+                            _this8._filterCountries("", true);
                         }
                     };
                     var keyupTimer = null;
@@ -1062,16 +1062,23 @@
                 }
             }
         }, {
+            key: "_normaliseString",
+            value: function _normaliseString() {
+                var s = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+                return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            }
+        }, {
             key: "_filterCountries",
             value: function _filterCountries(query) {
                 var isReset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
                 var isFirst = true;
                 this.countryList.innerHTML = "";
+                var normalisedQuery = this._normaliseString(query);
                 for (var i = 0; i < this.countries.length; i++) {
                     var c = this.countries[i];
-                    var nameLower = c.name.toLowerCase();
+                    var normalisedCountryName = this._normaliseString(c.name);
                     var fullDialCode = "+".concat(c.dialCode);
-                    if (isReset || nameLower.includes(query) || fullDialCode.includes(query) || c.iso2.includes(query)) {
+                    if (isReset || normalisedCountryName.includes(normalisedQuery) || fullDialCode.includes(normalisedQuery) || c.iso2.includes(normalisedQuery)) {
                         this.countryList.appendChild(c.nodeById[this.id]);
                         // highlight the first item
                         if (isFirst) {
