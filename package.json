@@ -75,7 +75,7 @@
     "build:css": "grunt css",
     "build:img": "grunt img",
     "watch": "grunt watch",
-    "build:react": "node react/build.js && esbuild react/demo/SimpleApp.js --bundle --define:process.env.VERSION=\"'$npm_package_version'\" --outfile=react/demo/simple-bundle.js --loader:.js=jsx --format=cjs && esbuild react/demo/ValidationApp.js --bundle --outfile=react/demo/validation-bundle.js --loader:.js=jsx --format=cjs"
+    "build:react": "node react/build.js && esbuild react/demo/SimpleApp.js --bundle --outfile=react/demo/simple-bundle.js --loader:.js=jsx --format=cjs && esbuild react/demo/ValidationApp.js --bundle --outfile=react/demo/validation-bundle.js --loader:.js=jsx --format=cjs"
   },
   "style": "build/css/intlTelInput.css",
   "dependencies": {
