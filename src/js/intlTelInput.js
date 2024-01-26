@@ -1614,6 +1614,7 @@ class Iti {
 
     if (
       this.options.showSelectedDialCode &&
+      !this.options.nationalMode &&
       val.charAt(0) !== "+" &&
       dialCode &&
       numericVal
@@ -1658,13 +1659,18 @@ class Iti {
 
   // format the number as the user types
   _formatNumberAsYouType() {
-    const val = this._getFullNumber().trim();
+    const val = this._getFullNumber();
     const result = window.intlTelInputUtils
       ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
       : val;
     // if showSelectedDialCode and they haven't (re)typed the dial code in the input as well, then remove the dial code
-    if (this.options.showSelectedDialCode && this.telInput.value.charAt(0) !== '+') {
-      const { dialCode } = this.selectedCountryData;
+    const { dialCode } = this.selectedCountryData;
+    if (
+      this.options.showSelectedDialCode &&
+      !this.options.nationalMode &&
+      this.telInput.value.charAt(0) !== "+" &&
+      result.includes(`+${dialCode}`)
+    ) {
       const afterDialCode = result.split(`+${dialCode}`)[1] || "";
       return afterDialCode.trim();
     }
@@ -1808,7 +1814,7 @@ class Iti {
 
   // validate the input val - assumes the global function isPossibleNumber (from utilsScript)
   isValidNumber() {
-    const val = this._getFullNumber().trim();
+    const val = this._getFullNumber();
     return window.intlTelInputUtils
       ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2)
       : null;
@@ -1816,7 +1822,7 @@ class Iti {
 
   // validate the input val (precise) - assumes the global function isValidNumber (from utilsScript)
   isValidNumberPrecise() {
-    const val = this._getFullNumber().trim();
+    const val = this._getFullNumber();
     return window.intlTelInputUtils
       ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)
       : null;

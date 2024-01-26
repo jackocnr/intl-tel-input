@@ -24807,7 +24807,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               return i;
             } }, { key: "_getFullNumber", value: function() {
               var t = this.telInput.value.trim(), e = this.selectedCountryData.dialCode, i, o = this._getNumeric(t);
-              return this.options.showSelectedDialCode && t.charAt(0) !== "+" && e && o ? i = "+".concat(e) : i = "", i + t;
+              return this.options.showSelectedDialCode && !this.options.nationalMode && t.charAt(0) !== "+" && e && o ? i = "+".concat(e) : i = "", i + t;
             } }, { key: "_beforeSetNumber", value: function(t) {
               var e = t;
               if (this.options.showSelectedDialCode) {
@@ -24822,9 +24822,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             } }, { key: "_triggerCountryChange", value: function() {
               this._trigger("countrychange");
             } }, { key: "_formatNumberAsYouType", value: function() {
-              var t = this._getFullNumber().trim(), e = window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(t, this.selectedCountryData.iso2) : t;
-              if (this.options.showSelectedDialCode && this.telInput.value.charAt(0) !== "+") {
-                var i = this.selectedCountryData.dialCode, o = e.split("+".concat(i))[1] || "";
+              var t = this._getFullNumber(), e = window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(t, this.selectedCountryData.iso2) : t, i = this.selectedCountryData.dialCode;
+              if (this.options.showSelectedDialCode && !this.options.nationalMode && this.telInput.value.charAt(0) !== "+" && e.includes("+".concat(i))) {
+                var o = e.split("+".concat(i))[1] || "";
                 return o.trim();
               }
               return e;
@@ -24861,10 +24861,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               }
               return -99;
             } }, { key: "isValidNumber", value: function() {
-              var t = this._getFullNumber().trim();
+              var t = this._getFullNumber();
               return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(t, this.selectedCountryData.iso2) : null;
             } }, { key: "isValidNumberPrecise", value: function() {
-              var t = this._getFullNumber().trim();
+              var t = this._getFullNumber();
               return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(t, this.selectedCountryData.iso2) : null;
             } }, { key: "setCountry", value: function(t) {
               var e = t.toLowerCase();
