@@ -156,7 +156,7 @@ Type: `String` Default: `""`
 Additional classes to add to the (injected) wrapper `<div>`.
 
 **countrySearch**  
-Type: `Boolean` Default: `false`  
+Type: `Boolean` Default: `true`  
 Add a search input to the top of the dropdown, so users can filter the displayed countries.
 
 **customPlaceholder**  
@@ -180,8 +180,8 @@ Type: `Array` Default: `[]`
 In the dropdown, display all countries except the ones you specify here.
 
 **fixDropdownWidth**  
-Type: `Boolean` Default: `false`  
-Fix the dropdown width to the input width (rather than being as wide as the longest country name).
+Type: `Boolean` Default: `true`  
+Fix the dropdown width to the input width (rather than being as wide as the longest country name). This is automatically enabled when `countrySearch` is enabled for design reasons.
 
 **formatAsYouType**  
 Type: `Boolean` Default: `true`  
