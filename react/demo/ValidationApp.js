@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import IntlTelInput from '../build/IntlTelInput.cjs';
+import IntlTelInput from '../build/IntlTelInput.esm';
 
 const errorMap = [
   "Invalid number",
