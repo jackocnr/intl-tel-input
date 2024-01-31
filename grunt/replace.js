@@ -251,9 +251,6 @@ module.exports = function(grunt) {
             match: /\.selectedFlagInner/g,
             replacement: '.l'
           }, {
-            match: /\.countryList/g,
-            replacement: '.m'
-          }, {
             match: /\.countries/g,
             replacement: '.p'
           }, {
