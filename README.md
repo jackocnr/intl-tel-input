@@ -43,7 +43,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Automatically select the user's current country using an IP lookup
 * Automatically set the input placeholder to an example number for the selected country
 * Navigate the country dropdown by typing a country's name, or using up/down keys
-* Automatic formatting as the user types
+* Automatically format the number as the user types
 * Handle phone number extensions
 * The user types their national number and the plugin gives you the full standardized international number
 * Full validation, including specific error types
