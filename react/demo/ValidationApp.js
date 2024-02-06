@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 import IntlTelInput from '../build/IntlTelInput.esm';
 
 const errorMap = [
-  "Invalid number",
+  "Invalid (917) 998-4452",
   "Invalid country code",
   "Too short",
   "Too long",
