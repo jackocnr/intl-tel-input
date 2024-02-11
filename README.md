@@ -181,7 +181,7 @@ In the dropdown, display all countries except the ones you specify here. [See ex
 
 **fixDropdownWidth**  
 Type: `Boolean` Default: `true`  
-Fix the dropdown width to the input width (rather than being as wide as the longest country name). This is automatically enabled when `countrySearch` is enabled for design reasons. [See example](https://intl-tel-input.com/storybook/?path=/story/intltelinput--flexible-dropdown-width).
+Fix the dropdown width to the input width (rather than being as wide as the longest country name). This is automatically enabled when `countrySearch` is enabled for design reasons. [See example of it disabled](https://intl-tel-input.com/storybook/?path=/story/intltelinput--flexible-dropdown-width).
 
 **formatAsYouType**  
 Type: `Boolean` Default: `true`  
