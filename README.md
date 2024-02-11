@@ -141,7 +141,7 @@ When you initialise the plugin, the first argument is the input element, and the
 
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also we display the selected flag on the right instead because it is just a marker of state. [See example](https://intl-tel-input.com/storybook/?path=/story/intltelinput--disable-dropdown).
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also, we display the selected flag on the right instead because it is just a marker of state. [See example](https://intl-tel-input.com/storybook/?path=/story/intltelinput--disable-dropdown).
 
 **autoInsertDialCode**  
 Type: `Boolean` Default: `false`  
