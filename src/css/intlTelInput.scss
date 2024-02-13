@@ -135,20 +135,11 @@ $mobilePopupMargin: 30px !default;
       // popup so render above everything else
       z-index: 2;
       
-      // since (sometimes) adding a search input in the dropdown, better to make the dropdown look a bit more distinct from the tel input, to reduce confusion between the two inputs
-      margin-top: 3px;
-      
       // margin-left to compensate for the padding on the parent
       margin-left: (-$borderWidth);
       
       border: $borderWidth solid $greyBorder;
       box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-    }
-    
-    // place menu above the input element
-    &--dropup {
-      bottom: 100%;
-      margin-bottom: 3px;
     }
     
     border-radius: 3px;
@@ -338,6 +329,12 @@ $mobilePopupMargin: 30px !default;
     // increase line height because dropdown copy is v likely to overflow on mobile and when it does it needs to be well spaced
     line-height: 1.5em;
   }
+}
+
+// If the dropdown has a custom container, make this latter be positioned
+// in order to correctly use `top` and `bottom` on the dropdown.
+:has(> .iti__dropdown-custom-container) {
+  position: relative;
 }
 
 @import "sprite";
