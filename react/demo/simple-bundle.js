@@ -24624,13 +24624,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         } }, { key: "_setDropdownPosition", value: function() {
           var t = this;
           if (this.options.dropdownContainer && this.options.dropdownContainer.appendChild(this.dropdown), !this.options.useFullscreenPopup) {
-            var e = this.telInput.getBoundingClientRect(), i = document.documentElement.scrollTop, o = e.top + i, r = this.dropdownContent.offsetHeight, a = o + this.telInput.offsetHeight + r < i + window.innerHeight, l = o - r > i, u = !this.options.countrySearch && !a && l;
-            if (this._toggleClass(this.dropdownContent, "iti__dropdown-content--dropup", u), this.options.dropdownContainer) {
-              var h = u ? 0 : this.telInput.offsetHeight;
-              this.dropdown.style.top = "".concat(o + h, "px"), this.dropdown.style.left = "".concat(e.left + document.body.scrollLeft, "px"), this._handleWindowScroll = function() {
-                return t._closeDropdown();
-              }, window.addEventListener("scroll", this._handleWindowScroll);
-            }
+            var e = this.telInput.getBoundingClientRect(), i = document.documentElement.scrollTop, o = e.top + i, r = this.dropdownContent.offsetHeight, a = o + this.telInput.offsetHeight + r < i + window.innerHeight, l = o - r > i, u = !this.options.countrySearch && !a && l, h = 3;
+            this.options.dropdownContainer && (this._toggleClass(this.dropdown, "iti__dropdown-custom-container", true), u ? (this.dropdown.style.top = "unset", this.dropdown.style.bottom = "".concat(r + this.telInput.offsetHeight + h, "px"), this.dropdown.style.left = "0") : (this.dropdown.style.top = "".concat(this.telInput.offsetHeight + h, "px"), this.dropdown.style.left = "0"), this._handleWindowScroll = function() {
+              return t._closeDropdown();
+            }, window.addEventListener("scroll", this._handleWindowScroll));
           }
         } }, { key: "_bindDropdownListeners", value: function() {
           var t = this;

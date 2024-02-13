@@ -59,14 +59,9 @@
 .iti--inline-dropdown .iti__dropdown-content {
   position: absolute;
   z-index: 2;
-  margin-top: 3px;
   margin-left: -1px;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-}
-.iti__dropdown-content--dropup {
-  bottom: 100%;
-  margin-bottom: 3px;
 }
 .iti__search-input {
   width: 100%;
@@ -208,6 +203,10 @@
 .iti--fullscreen-popup .iti__country {
   padding: 10px 10px;
   line-height: 1.5em;
+}
+
+:has(> .iti__dropdown-custom-container) {
+  position: relative;
 }
 
 .iti__flag {

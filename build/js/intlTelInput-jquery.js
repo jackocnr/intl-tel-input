@@ -944,17 +944,20 @@
                     var dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
                     // dont allow positioning above when country search enabled as the search box jumps around as you filter countries
                     var positionDropdownAboveInput = !this.options.countrySearch && !dropdownFitsBelow && dropdownFitsAbove;
-                    // by default, the dropdown will be below the input. If we want to position it above the
-                    // input, we add the dropup class.
-                    this._toggleClass(this.dropdownContent, "iti__dropdown-content--dropup", positionDropdownAboveInput);
+                    var marginBetweenTelInputAndDropdownPx = 3;
                     // if dropdownContainer is enabled, calculate postion
                     if (this.options.dropdownContainer) {
-                        // by default the dropdown will be directly over the input because it's not in the flow.
-                        // If we want to position it below, we need to add some extra top value.
-                        var extraTop = positionDropdownAboveInput ? 0 : this.telInput.offsetHeight;
+                        // Make the parent have a relative position in order to use `top` and `bottom`     
+                        this._toggleClass(this.dropdown, "iti__dropdown-custom-container", true);
                         // calculate placement
-                        this.dropdown.style.top = "".concat(inputTop + extraTop, "px");
-                        this.dropdown.style.left = "".concat(pos.left + document.body.scrollLeft, "px");
+                        if (positionDropdownAboveInput) {
+                            this.dropdown.style.top = "unset";
+                            this.dropdown.style.bottom = "".concat(dropdownHeight + this.telInput.offsetHeight + marginBetweenTelInputAndDropdownPx, "px");
+                            this.dropdown.style.left = "0";
+                        } else {
+                            this.dropdown.style.top = "".concat(this.telInput.offsetHeight + marginBetweenTelInputAndDropdownPx, "px");
+                            this.dropdown.style.left = "0";
+                        }
                         // close menu on window scroll
                         this._handleWindowScroll = function() {
                             return _this7._closeDropdown();
