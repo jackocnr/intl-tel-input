@@ -24565,7 +24565,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var t = this;
           this.options.utilsScript && !window.intlTelInputUtils ? window.intlTelInputGlobals.documentReady() ? window.intlTelInputGlobals.loadUtils(this.options.utilsScript) : window.addEventListener("load", function() {
             window.intlTelInputGlobals.loadUtils(t.options.utilsScript);
-          }) : this.resolveUtilsScriptPromise(), this.options.initialCountry === "auto" ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
+          }) : this.resolveUtilsScriptPromise(), this.options.initialCountry === "auto" && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
         } }, { key: "_loadAutoCountry", value: function() {
           window.intlTelInputGlobals.autoCountry ? this.handleAutoCountry() : window.intlTelInputGlobals.startedLoadingAutoCountry || (window.intlTelInputGlobals.startedLoadingAutoCountry = true, typeof this.options.geoIpLookup == "function" && this.options.geoIpLookup(function(t) {
             window.intlTelInputGlobals.autoCountry = t.toLowerCase(), setTimeout(function() {

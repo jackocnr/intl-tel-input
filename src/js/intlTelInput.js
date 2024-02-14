@@ -719,7 +719,8 @@ class Iti {
       this.resolveUtilsScriptPromise();
     }
 
-    if (this.options.initialCountry === "auto") {
+    // dont bother with IP lookup if we already have a selected country
+    if (this.options.initialCountry === "auto" && !this.selectedCountryData.iso2) {
       this._loadAutoCountry();
     } else {
       this.resolveAutoCountryPromise();
