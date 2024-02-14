@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v19.2.16
+ * International Telephone Input v19.2.17
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -1723,7 +1723,7 @@
         // default options
         intlTelInputGlobals.defaults = defaults;
         // version
-        intlTelInputGlobals.version = "19.2.16";
+        intlTelInputGlobals.version = "19.2.17";
         // convenience wrapper
         return function(input, options) {
             var iti = new Iti(input, options);
