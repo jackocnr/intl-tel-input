@@ -34,7 +34,7 @@ You can view [a live demo](https://intl-tel-input.com) and see some examples of 
 
 
 ## Mobile
-By default, on mobile devices we show a fullscreen popup instead of the inline dropdown, to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area at the sides. [See example (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup).
+By default, on mobile devices we show a fullscreen popup instead of the inline dropdown, to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area at the sides. [See example](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile-fullscreen.jpg" alt="Mobile screenshot" width="270px" style="max-width: 100%" />
 
@@ -145,7 +145,7 @@ Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, a
 
 **autoInsertDialCode**  
 Type: `Boolean` Default: `false`  
-When enabled (requires `nationalMode` to be disabled), the international dial code will be automatically inserted into the input in 3 situations: (A) upon initialisation, and (B) when the user selects a country from the dropdown, and (C) upon calling `setCountry`. Additionally, the plugin will listen for blur/submit events, and if the input only contains a dial code, it will automatically be removed to avoid submitting just that. [See example (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--autoinsertdialcode).
+When enabled (requires `nationalMode` to be disabled), the international dial code will be automatically inserted into the input in 3 situations: (A) upon initialisation, and (B) when the user selects a country from the dropdown, and (C) upon calling `setCountry`. Additionally, the plugin will listen for blur/submit events, and if the input only contains a dial code, it will automatically be removed to avoid submitting just that. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--autoinsertdialcode) (using the React component).
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
@@ -177,11 +177,11 @@ Expects a node e.g. `document.body`. Instead of putting the country dropdown nex
 
 **excludeCountries**  
 Type: `Array` Default: `[]`  
-In the dropdown, display all countries except the ones you specify here. [See example (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--excludecountries).
+In the dropdown, display all countries except the ones you specify here. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--excludecountries) (using the React component).
 
 **fixDropdownWidth**  
 Type: `Boolean` Default: `true`  
-Fix the dropdown width to the input width (rather than being as wide as the longest country name). This is automatically enabled when `countrySearch` is enabled for design reasons. [See example with it disabled (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--fixdropdownwidth).
+Fix the dropdown width to the input width (rather than being as wide as the longest country name). This is automatically enabled when `countrySearch` is enabled for design reasons. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--fixdropdownwidth) (using the React component).
 
 **formatAsYouType**  
 Type: `Boolean` Default: `true`  
@@ -261,25 +261,25 @@ In the dropdown, display only the countries you specify - [see example](https://
 
 **placeholderNumberType**  
 Type: `String` Default: `"MOBILE"`  
-Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L119) from the global enum `intlTelInputUtils.numberType` e.g. `"FIXED_LINE"` to set the number type to use for the placeholder. [See example (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--placeholdernumbertype).
+Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L119) from the global enum `intlTelInputUtils.numberType` e.g. `"FIXED_LINE"` to set the number type to use for the placeholder. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--placeholdernumbertype) (using the React component).
 
 **preferredCountries**  
 Type: `Array` Default: `[]`  
-Specify the countries to appear at the top of the list. Note that this option is not compatible with the new country search feature, and as such will be phased out. [See example (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--preferredcountries).
+Specify the countries to appear at the top of the list. Note that this option is not compatible with the new country search feature, and as such will be phased out. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--preferredcountries) (using the React component).
 
 **showFlags**  
 Type: `Boolean` Default: `true`  
-Set this to false to hide the flags e.g. for political reasons. Must be used in combination with `showSelectedDialCode` option, or with setting `allowDropdown` to `false`. [See example with it disabled (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showflags).
+Set this to false to hide the flags e.g. for political reasons. Must be used in combination with `showSelectedDialCode` option, or with setting `allowDropdown` to `false`. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showflags) (using the React component).
 
 **showSelectedDialCode**  
 Type: `Boolean` Default: `false`  
-Display the country dial code next to the selected flag. [See example (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showselecteddialcode).
+Display the country dial code next to the selected flag. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showselecteddialcode) (using the React component).
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px">
 
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
-Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), to make better use of the limited space (similar to how a native `<select>` works), and as an inline dropdown on larger devices/screens. [See example (using React component)](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup).
+Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), to make better use of the limited space (similar to how a native `<select>` works), and as an inline dropdown on larger devices/screens. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
 
 **utilsScript**  
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
