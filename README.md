@@ -173,7 +173,7 @@ intlTelInput(input, {
 
 **dropdownContainer**  
 Type: `Node` Default: `null`  
-Expects a node e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned absolutely next to the input using JavaScript. This is useful when the input is inside a container with `overflow: hidden`. Note that the absolute positioning can be broken by scrolling, so it will automatically close on the `window` scroll event.
+Expects a node e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. Note that the positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event.
 
 **excludeCountries**  
 Type: `Array` Default: `[]`  
