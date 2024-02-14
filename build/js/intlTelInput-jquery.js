@@ -369,9 +369,9 @@
             key: "_translateCountryNames",
             value: function _translateCountryNames() {
                 for (var i = 0; i < this.countries.length; i++) {
-                    var iso = this.countries[i].iso2.toLowerCase();
-                    if (this.options.i18n.hasOwnProperty(iso)) {
-                        this.countries[i].name = this.options.i18n[iso];
+                    var iso2 = this.countries[i].iso2.toLowerCase();
+                    if (this.options.i18n.hasOwnProperty(iso2)) {
+                        this.countries[i].name = this.options.i18n[iso2];
                     }
                 }
             }

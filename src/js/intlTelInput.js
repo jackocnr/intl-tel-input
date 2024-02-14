@@ -258,9 +258,9 @@ class Iti {
   // Translate Countries by object literal provided on config
   _translateCountryNames() {
     for (let i = 0; i < this.countries.length; i++) {
-      const iso = this.countries[i].iso2.toLowerCase();
-      if (this.options.i18n.hasOwnProperty(iso)) {
-        this.countries[i].name = this.options.i18n[iso];
+      const iso2 = this.countries[i].iso2.toLowerCase();
+      if (this.options.i18n.hasOwnProperty(iso2)) {
+        this.countries[i].name = this.options.i18n[iso2];
       }
     }
   }
