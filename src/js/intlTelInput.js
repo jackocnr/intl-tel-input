@@ -520,6 +520,12 @@ class Iti {
         name: hiddenInputName
       });
       wrapper.appendChild(this.hiddenInput);
+      // add a 2nd hidden input for the selected country code - this is useful for handling invalid numbers with server-side validation, as getNumber does not always include the international dial code for invalid numbers
+      this.hiddenInputCountry = this._createEl("input", {
+        type: "hidden",
+        name: `${hiddenInputName}_country`
+      });
+      wrapper.appendChild(this.hiddenInputCountry);
     }
   }
 
@@ -633,6 +639,7 @@ class Iti {
   _initHiddenInputListener() {
     this._handleHiddenInputSubmit = () => {
       this.hiddenInput.value = this.getNumber();
+      this.hiddenInputCountry.value = this.getSelectedCountryData().iso2;
     };
     if (this.telInput.form) {
       this.telInput.form.addEventListener(
