@@ -193,7 +193,7 @@ Format the input value (according to the `nationalMode` option) during initialis
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
-When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that looks up the user's location, and then calls the success callback with the relevant country code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have completed.
+When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the callback with the relevant country code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have completed.
 
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service:  
 ```js
@@ -203,7 +203,7 @@ intlTelInput(input, {
     fetch("https://ipapi.co/json")
       .then(function(res) { return res.json(); })
       .then(function(data) { callback(data.country_code); })
-      .catch(function() { callback("us"); });
+      .catch(function() { callback(); });
   }
 });
 ```
