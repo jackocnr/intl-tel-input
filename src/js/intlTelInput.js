@@ -325,7 +325,7 @@ class Iti {
     this.preferredCountries = [];
     for (let i = 0; i < this.options.preferredCountries.length; i++) {
       const countryCode = this.options.preferredCountries[i].toLowerCase();
-      const countryData = this._getCountryData(countryCode, false, true);
+      const countryData = this._getCountryData(countryCode, true);
       if (countryData) {
         this.preferredCountries.push(countryData);
       }
@@ -563,7 +563,7 @@ class Iti {
   // 2. using explicit initialCountry
   // 3. picking the first preferred country
   // 4. picking the first country
-  _setInitialState() {
+  _setInitialState(overrideAutoCountry = false) {
     // fix firefox bug: when first load page (with input with value set to number with intl dial
     // code) and initialising plugin removes the dial code from the input, then refresh page,
     // and we try to init plugin again but this time on number without dial code so get grey flag
@@ -582,8 +582,8 @@ class Iti {
     // flag, else fall back to the default country
     if (dialCode && !isRegionlessNanp) {
       this._updateFlagFromNumber(val);
-    } else if (initialCountry !== "auto") {
-      const isValidInitialCountry = initialCountry && this._getCountryData(initialCountry, false, true);
+    } else if (initialCountry !== "auto" || overrideAutoCountry) {
+      const isValidInitialCountry = initialCountry && !!this._getCountryData(initialCountry, true);
       // see if we should select a flag
       if (isValidInitialCountry) {
         this._setFlag(initialCountry.toLowerCase());
@@ -741,15 +741,22 @@ class Iti {
 
       if (typeof this.options.geoIpLookup === "function") {
         this.options.geoIpLookup(
-          (countryCode) => {
-            window.intlTelInputGlobals.autoCountry = countryCode.toLowerCase();
-            // tell all instances the auto country is ready
-            // TODO: this should just be the current instances
-            // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
-            // away (e.g. if they have already done the geo ip lookup somewhere else). Using
-            // setTimeout means that the current thread of execution will finish before executing
-            // this, which allows the plugin to finish initialising.
-            setTimeout(() => forEachInstance("handleAutoCountry"));
+          (countryCode = "") => {
+            const lowerCountryCode = countryCode.toLowerCase();
+            const isValid = !!this._getCountryData(lowerCountryCode, true);
+            if (isValid) {
+              window.intlTelInputGlobals.autoCountry = lowerCountryCode;
+              // tell all instances the auto country is ready
+              // TODO: this should just be the current instances
+              // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
+              // away (e.g. if they have already done the geo ip lookup somewhere else). Using
+              // setTimeout means that the current thread of execution will finish before executing
+              // this, which allows the plugin to finish initialising.
+              setTimeout(() => forEachInstance("handleAutoCountry"));
+            } else {
+              this._setInitialState(true);
+              forEachInstance("rejectAutoCountryPromise");
+            }
           },
           () => forEachInstance("rejectAutoCountryPromise")
         );
@@ -1296,13 +1303,10 @@ class Iti {
 
   // find the country data for the given country code
   // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
-  _getCountryData(countryCode, ignoreOnlyCountriesOption, allowFail) {
-    const countryList = ignoreOnlyCountriesOption
-      ? allCountries
-      : this.countries;
-    for (let i = 0; i < countryList.length; i++) {
-      if (countryList[i].iso2 === countryCode) {
-        return countryList[i];
+  _getCountryData(countryCode, allowFail) {
+    for (let i = 0; i < this.countries.length; i++) {
+      if (this.countries[i].iso2 === countryCode) {
+        return this.countries[i];
       }
     }
     if (allowFail) {
@@ -1322,7 +1326,7 @@ class Iti {
 
     // do this first as it will throw an error and stop if countryCode is invalid
     this.selectedCountryData = countryCode
-      ? this._getCountryData(countryCode, false, false)
+      ? this._getCountryData(countryCode, false)
       : {};
     // update the defaultCountry - we only need the iso2 from now on, so just store that
     if (this.selectedCountryData.iso2) {
