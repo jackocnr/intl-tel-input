@@ -294,7 +294,7 @@ $mobilePopupMargin: 30px !default;
 
   // if dropdownContainer option is set, increase z-index to prevent display issues
   &--container {
-    position: absolute;
+    position: fixed;
     top: -1000px;
     left: -1000px;
     // higher than default Bootstrap modal z-index of 1050
