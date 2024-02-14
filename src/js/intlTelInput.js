@@ -945,8 +945,7 @@ class Iti {
 
       // if dropdownContainer is enabled, calculate postion
       if (this.options.dropdownContainer) {
-        // by default the dropdown will be directly over the input because it's not in the flow.
-        // If we want to position it below, we need to add some extra top value.
+        // if we want to position the dropdown below the input, we need to add the input height to the top value
         const extraTop =
           positionDropdownAboveInput
             ? 0
