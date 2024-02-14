@@ -24711,7 +24711,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                 }
             }
           } else
-            i.charAt(0) === "+" && l.length ? u = "" : (!i || i === "+") && (u = this.defaultCountry);
+            i.charAt(0) === "+" && l.length ? u = "" : (!i || i === "+") && !this.selectedCountryData.iso2 && (u = this.defaultCountry);
           return u !== null ? this._setFlag(u) : false;
         } }, { key: "_isRegionlessNanp", value: function(t) {
           var e = this._getNumeric(t);

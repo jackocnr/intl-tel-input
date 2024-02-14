@@ -1198,8 +1198,8 @@
                         // Note: use getNumeric here because the number has not been formatted yet, so could contain
                         // bad chars
                         countryCode = "";
-                    } else if (!number || number === "+") {
-                        // empty, or just a plus, so default
+                    } else if ((!number || number === "+") && !this.selectedCountryData.iso2) {
+                        // if no selected flag, and user either clears the input, or just types a plus, then show default
                         countryCode = this.defaultCountry;
                     }
                     if (countryCode !== null) {
