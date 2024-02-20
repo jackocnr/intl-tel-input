@@ -586,7 +586,9 @@
                     // add a 2nd hidden input for the selected country code - this is useful for handling invalid numbers with server-side validation, as getNumber does not always include the international dial code for invalid numbers
                     this.hiddenInputCountry = this._createEl("input", {
                         type: "hidden",
-                        name: "".concat(hiddenInputName, "_country")
+                        // If the `hiddenInputName` ends in a bracket, we need to add the suffix to the last item in the bracket array,
+                        // else we just append the suffix to the end of the `hiddenInputName`
+                        name: hiddenInputName.endsWith("]") ? hiddenInputName.replace(/\]$/, "_country]") : "".concat(hiddenInputName, "_country")
                     });
                     wrapper.appendChild(this.hiddenInputCountry);
                 }
