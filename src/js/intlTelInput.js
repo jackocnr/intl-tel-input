@@ -524,8 +524,7 @@ class Iti {
       this.hiddenInputCountry = this._createEl("input", {
         type: "hidden",
 
-        // If the `hiddenInputName` ends in a bracket, we need to add the suffix to the last item in the bracket array,
-        // else we just append the suffix to the end of the `hiddenInputName`
+        // If the `hiddenInputName` ends in a bracket, we need to add the suffix to the last item in the bracket array, else we just append the suffix to the end of the `hiddenInputName`
         name: hiddenInputName.endsWith("]")
           ? hiddenInputName.replace(/\]$/, "_country]")
           : `${hiddenInputName}_country`,
