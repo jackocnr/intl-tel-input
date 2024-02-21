@@ -638,10 +638,11 @@
                 if (dialCode && !isRegionlessNanp) {
                     this._updateFlagFromNumber(val);
                 } else if (initialCountry !== "auto" || overrideAutoCountry) {
-                    var isValidInitialCountry = initialCountry && !!this._getCountryData(initialCountry, true);
+                    var lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
+                    var isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
                     // see if we should select a flag
                     if (isValidInitialCountry) {
-                        this._setFlag(initialCountry.toLowerCase());
+                        this._setFlag(lowerInitialCountry);
                     } else {
                         if (dialCode && isRegionlessNanp) {
                             // has intl dial code, is regionless nanp, and no initialCountry, so default to US
@@ -779,8 +780,8 @@
                         this.options.geoIpLookup(function() {
                             var countryCode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
                             var lowerCountryCode = countryCode.toLowerCase();
-                            var isValid = !!_this5._getCountryData(lowerCountryCode, true);
-                            if (isValid) {
+                            var isValidCountryCode = lowerCountryCode && _this5._getCountryData(lowerCountryCode, true);
+                            if (isValidCountryCode) {
                                 window.intlTelInputGlobals.autoCountry = lowerCountryCode;
                                 // tell all instances the auto country is ready
                                 // TODO: this should just be the current instances

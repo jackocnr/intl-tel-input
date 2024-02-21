@@ -24508,23 +24508,23 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }), i && i.appendChild(o), o;
         } }, { key: "_generateMarkup", value: function() {
           this.telInput.classList.add("iti__tel-input"), !this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete")) && this.telInput.setAttribute("autocomplete", "off");
-          var t = this.options, e = t.allowDropdown, i = t.showSelectedDialCode, o = t.showFlags, r = t.containerClass, a = t.hiddenInput, l = t.dropdownContainer, u = t.fixDropdownWidth, h = t.useFullscreenPopup, v = t.countrySearch, f = "iti";
+          var t = this.options, e = t.allowDropdown, i = t.showSelectedDialCode, o = t.showFlags, r = t.containerClass, a = t.hiddenInput, l = t.dropdownContainer, u = t.fixDropdownWidth, h = t.useFullscreenPopup, g = t.countrySearch, f = "iti";
           e && (f += " iti--allow-dropdown"), i && (f += " iti--show-selected-dial-code"), o && (f += " iti--show-flags"), r && (f += " ".concat(r)), h || (f += " iti--inline-dropdown");
-          var g = this._createEl("div", { class: f });
-          this.telInput.parentNode.insertBefore(g, this.telInput);
+          var v = this._createEl("div", { class: f });
+          this.telInput.parentNode.insertBefore(v, this.telInput);
           var A = e || o || i;
-          if (A && (this.flagsContainer = this._createEl("div", { class: "iti__flag-container" }, g)), g.appendChild(this.telInput), A && (this.selectedFlag = this._createEl("div", C({ class: "iti__selected-flag" }, e && { role: "combobox", "aria-haspopup": "listbox", "aria-controls": "iti-".concat(this.id, "__country-listbox"), "aria-expanded": "false", "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country" }), this.flagsContainer)), o && (this.selectedFlagInner = this._createEl("div", { class: "iti__flag" }, this.selectedFlag)), this.selectedFlag && this.telInput.disabled && this.selectedFlag.setAttribute("aria-disabled", "true"), i && (this.selectedDialCode = this._createEl("div", { class: "iti__selected-dial-code" }, this.selectedFlag)), e) {
+          if (A && (this.flagsContainer = this._createEl("div", { class: "iti__flag-container" }, v)), v.appendChild(this.telInput), A && (this.selectedFlag = this._createEl("div", C({ class: "iti__selected-flag" }, e && { role: "combobox", "aria-haspopup": "listbox", "aria-controls": "iti-".concat(this.id, "__country-listbox"), "aria-expanded": "false", "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country" }), this.flagsContainer)), o && (this.selectedFlagInner = this._createEl("div", { class: "iti__flag" }, this.selectedFlag)), this.selectedFlag && this.telInput.disabled && this.selectedFlag.setAttribute("aria-disabled", "true"), i && (this.selectedDialCode = this._createEl("div", { class: "iti__selected-dial-code" }, this.selectedFlag)), e) {
             this.telInput.disabled || this.selectedFlag.setAttribute("tabindex", "0"), this.dropdownArrow = this._createEl("div", { class: "iti__arrow" }, this.selectedFlag);
             var Y = u ? "" : "iti--flexible-dropdown-width";
-            if (this.dropdownContent = this._createEl("div", { class: "iti__dropdown-content iti__hide ".concat(Y) }), v && (this.searchInput = this._createEl("input", { type: "text", class: "iti__search-input", placeholder: this.options.i18n.searchPlaceholder || "Search" }, this.dropdownContent)), this.countryList = this._createEl("ul", { class: "iti__country-list", id: "iti-".concat(this.id, "__country-listbox"), role: "listbox", "aria-label": this.options.i18n.countryListAriaLabel || "List of countries" }, this.dropdownContent), this.preferredCountries.length && !v && (this._appendListItems(this.preferredCountries, "iti__preferred", true), this._createEl("li", { class: "iti__divider", "aria-hidden": "true" }, this.countryList)), this._appendListItems(this.countries, "iti__standard"), l) {
+            if (this.dropdownContent = this._createEl("div", { class: "iti__dropdown-content iti__hide ".concat(Y) }), g && (this.searchInput = this._createEl("input", { type: "text", class: "iti__search-input", placeholder: this.options.i18n.searchPlaceholder || "Search" }, this.dropdownContent)), this.countryList = this._createEl("ul", { class: "iti__country-list", id: "iti-".concat(this.id, "__country-listbox"), role: "listbox", "aria-label": this.options.i18n.countryListAriaLabel || "List of countries" }, this.dropdownContent), this.preferredCountries.length && !g && (this._appendListItems(this.preferredCountries, "iti__preferred", true), this._createEl("li", { class: "iti__divider", "aria-hidden": "true" }, this.countryList)), this._appendListItems(this.countries, "iti__standard"), l) {
               var E = "iti iti--container";
-              h ? E += " iti--fullscreen-popup" : E += " iti--inline-dropdown", v && (E += " iti--country-search"), this.dropdown = this._createEl("div", { class: E }), this.dropdown.appendChild(this.dropdownContent);
+              h ? E += " iti--fullscreen-popup" : E += " iti--inline-dropdown", g && (E += " iti--country-search"), this.dropdown = this._createEl("div", { class: E }), this.dropdown.appendChild(this.dropdownContent);
             } else
               this.flagsContainer.appendChild(this.dropdownContent);
           }
           if (a) {
             var J = this.telInput.getAttribute("name"), j = a(J);
-            this.hiddenInput = this._createEl("input", { type: "hidden", name: j }), g.appendChild(this.hiddenInput), this.hiddenInputCountry = this._createEl("input", { type: "hidden", name: "".concat(j, "_country") }), g.appendChild(this.hiddenInputCountry);
+            this.hiddenInput = this._createEl("input", { type: "hidden", name: j }), v.appendChild(this.hiddenInput), this.hiddenInputCountry = this._createEl("input", { type: "hidden", name: "".concat(j, "_country") }), v.appendChild(this.hiddenInputCountry);
           }
         } }, { key: "_appendListItems", value: function(t, e, i) {
           for (var o = 0; o < t.length; o++) {
@@ -24534,12 +24534,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             this.options.showFlags && (u += "<div class='iti__flag-box'><div class='iti__flag iti__".concat(r.iso2, "'></div></div>")), u += "<span class='iti__country-name'>".concat(r.name, "</span>"), u += "<span class='iti__dial-code'>+".concat(r.dialCode, "</span>"), l.insertAdjacentHTML("beforeend", u);
           }
         } }, { key: "_setInitialState", value: function() {
-          var t = arguments.length > 0 && arguments[0] !== c ? arguments[0] : false, e = this.telInput.getAttribute("value"), i = this.telInput.value, o = e && e.charAt(0) === "+" && (!i || i.charAt(0) !== "+"), r = o ? e : i, a = this._getDialCode(r), l = this._isRegionlessNanp(r), u = this.options, h = u.initialCountry, v = u.autoInsertDialCode;
+          var t = arguments.length > 0 && arguments[0] !== c ? arguments[0] : false, e = this.telInput.getAttribute("value"), i = this.telInput.value, o = e && e.charAt(0) === "+" && (!i || i.charAt(0) !== "+"), r = o ? e : i, a = this._getDialCode(r), l = this._isRegionlessNanp(r), u = this.options, h = u.initialCountry, g = u.autoInsertDialCode;
           if (a && !l)
             this._updateFlagFromNumber(r);
           else if (h !== "auto" || t) {
-            var f = h && !!this._getCountryData(h, true);
-            f ? this._setFlag(h.toLowerCase()) : a && l ? this._setFlag("us") : (this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2, r || this._setFlag(this.defaultCountry)), !r && v && (this.telInput.value = "+".concat(this.selectedCountryData.dialCode));
+            var f = h ? h.toLowerCase() : "", v = f && this._getCountryData(f, true);
+            v ? this._setFlag(f) : a && l ? this._setFlag("us") : (this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2, r || this._setFlag(this.defaultCountry)), !r && g && (this.telInput.value = "+".concat(this.selectedCountryData.dialCode));
           }
           r && this._updateValFromNumber(r);
         } }, { key: "_initListeners", value: function() {
@@ -24569,7 +24569,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         } }, { key: "_loadAutoCountry", value: function() {
           var t = this;
           window.intlTelInputGlobals.autoCountry ? this.handleAutoCountry() : window.intlTelInputGlobals.startedLoadingAutoCountry || (window.intlTelInputGlobals.startedLoadingAutoCountry = true, typeof this.options.geoIpLookup == "function" && this.options.geoIpLookup(function() {
-            var e = arguments.length > 0 && arguments[0] !== c ? arguments[0] : "", i = e.toLowerCase(), o = !!t._getCountryData(i, true);
+            var e = arguments.length > 0 && arguments[0] !== c ? arguments[0] : "", i = e.toLowerCase(), o = i && t._getCountryData(i, true);
             o ? (window.intlTelInputGlobals.autoCountry = i, setTimeout(function() {
               return S("handleAutoCountry");
             })) : (t._setInitialState(true), S("rejectAutoCountryPromise"));
@@ -24704,11 +24704,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           i && r && i.charAt(0) !== "+" && (i.charAt(0) !== "1" && (i = "1".concat(i)), i = "+".concat(i)), this.options.showSelectedDialCode && o && i.charAt(0) !== "+" && (i = "+".concat(o).concat(i));
           var a = this._getDialCode(i, true), l = this._getNumeric(i), u = null;
           if (a) {
-            var h = this.countryCodes[this._getNumeric(a)], v = h.indexOf(this.selectedCountryData.iso2) !== -1 && l.length <= a.length - 1, f = o === "1" && this._isRegionlessNanp(l);
-            if (!f && !v) {
-              for (var g = 0; g < h.length; g++)
-                if (h[g]) {
-                  u = h[g];
+            var h = this.countryCodes[this._getNumeric(a)], g = h.indexOf(this.selectedCountryData.iso2) !== -1 && l.length <= a.length - 1, f = o === "1" && this._isRegionlessNanp(l);
+            if (!f && !g) {
+              for (var v = 0; v < h.length; v++)
+                if (h[v]) {
+                  u = h[v];
                   break;
                 }
             }
@@ -24741,8 +24741,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             this.isRTL ? this.telInput.style.paddingRight = "".concat(h + 6, "px") : this.telInput.style.paddingLeft = "".concat(h + 6, "px");
           }
           if (this._updatePlaceholder(), i && !a) {
-            var v = this.activeItem;
-            if (v && (v.classList.remove("iti__active"), v.setAttribute("aria-selected", "false")), t) {
+            var g = this.activeItem;
+            if (g && (g.classList.remove("iti__active"), g.setAttribute("aria-selected", "false")), t) {
               var f = this.countryList.querySelector("#iti-".concat(this.id, "__item-").concat(t, "-preferred")) || this.countryList.querySelector("#iti-".concat(this.id, "__item-").concat(t));
               f.setAttribute("aria-selected", "true"), f.classList.add("iti__active"), this.activeItem = f;
             }
@@ -24774,11 +24774,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         } }, { key: "_closeDropdown", value: function() {
           this.dropdownContent.classList.add("iti__hide"), this.selectedFlag.setAttribute("aria-expanded", "false"), this.selectedFlag.removeAttribute("aria-activedescendant"), this.dropdownArrow.classList.remove("iti__arrow--up"), document.removeEventListener("keydown", this._handleKeydownOnDropdown), this.options.countrySearch && this.searchInput.removeEventListener("input", this._handleSearchChange), document.documentElement.removeEventListener("click", this._handleClickOffToClose), this.countryList.removeEventListener("mouseover", this._handleMouseoverCountryList), this.countryList.removeEventListener("click", this._handleClickCountryList), this.options.dropdownContainer && (this.options.useFullscreenPopup || window.removeEventListener("scroll", this._handleWindowScroll), this.dropdown.parentNode && this.dropdown.parentNode.removeChild(this.dropdown)), this._trigger("close:countrydropdown");
         } }, { key: "_scrollTo", value: function(t, e) {
-          var i = this.countryList, o = document.documentElement.scrollTop, r = i.offsetHeight, a = i.getBoundingClientRect().top + o, l = a + r, u = t.offsetHeight, h = t.getBoundingClientRect().top + o, v = h + u, f = h - a + i.scrollTop, g = r / 2 - u / 2;
+          var i = this.countryList, o = document.documentElement.scrollTop, r = i.offsetHeight, a = i.getBoundingClientRect().top + o, l = a + r, u = t.offsetHeight, h = t.getBoundingClientRect().top + o, g = h + u, f = h - a + i.scrollTop, v = r / 2 - u / 2;
           if (h < a)
-            e && (f -= g), i.scrollTop = f;
-          else if (v > l) {
-            e && (f += g);
+            e && (f -= v), i.scrollTop = f;
+          else if (g > l) {
+            e && (f += v);
             var A = r - u;
             i.scrollTop = f - A;
           }
