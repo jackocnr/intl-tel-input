@@ -24897,7 +24897,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           B(s);
         }
         return null;
-      }, S.defaults = M, S.version = "19.2.20", function(s, n) {
+      }, S.defaults = M, S.version = "19.3.0", function(s, n) {
         var t = new q(s, n);
         return t._init(), s.setAttribute("data-intl-tel-input-id", t.id), window.intlTelInputGlobals.instances[t.id] = t, t;
       };
