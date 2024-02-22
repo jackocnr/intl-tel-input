@@ -18,7 +18,6 @@ const defaults = {
   // whether or not to allow the dropdown
   allowDropdown: true,
   // auto insert dial code (A) on init, (B) on user selecting a country, (C) on calling setCountry
-  // also listen for blur/submit and auto remove dial code if that's all there is
   autoInsertDialCode: false,
   // add a placeholder in the input with an example number for the selected country
   autoPlaceholder: "polite",
@@ -28,6 +27,8 @@ const defaults = {
   containerClass: "",
   // modify the auto placeholder
   customPlaceholder: null,
+  // by default, initialise with the first country in the list selected (if no country set via the initial value or initialCountry option)
+  defaultToFirstCountry: true,
   // append menu to specified element
   dropdownContainer: null,
   // don't display these countries
@@ -582,7 +583,7 @@ class Iti {
     const val = useAttribute ? attributeValue : inputValue;
     const dialCode = this._getDialCode(val);
     const isRegionlessNanp = this._isRegionlessNanp(val);
-    const { initialCountry, autoInsertDialCode } = this.options;
+    const { initialCountry, autoInsertDialCode, defaultToFirstCountry } = this.options;
 
     // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
     // flag, else fall back to the default country
@@ -598,7 +599,7 @@ class Iti {
         if (dialCode && isRegionlessNanp) {
           // has intl dial code, is regionless nanp, and no initialCountry, so default to US
           this._setFlag("us");
-        } else {
+        } else if (defaultToFirstCountry) {
           // no dial code and no initialCountry, so default to first in list
           this.defaultCountry = this.preferredCountries.length
             ? this.preferredCountries[0].iso2
