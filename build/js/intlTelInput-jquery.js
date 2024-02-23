@@ -578,17 +578,32 @@
                 }
                 if (hiddenInput) {
                     var telInputName = this.telInput.getAttribute("name");
-                    var hiddenInputName = hiddenInput(telInputName);
+                    var result = hiddenInput(telInputName);
+                    var isObject = result !== null && typeof result === "object";
+                    var hiddenInputPhoneName;
+                    var hiddenInputCountryName;
+                    if (isObject) {
+                        hiddenInputPhoneName = result.phone || telInputName;
+                        hiddenInputCountryName = result.country || "".concat(hiddenInputPhoneName, "_country");
+                    } else {
+                        hiddenInputPhoneName = result || telInputName;
+                        hiddenInputCountryName = "".concat(hiddenInputPhoneName, "_country");
+                    }
+                    // Check if a name has been determined for the phone input field after all conditions
+                    if (!hiddenInputPhoneName) {
+                        return;
+                    }
+                    // Create hidden input for the full international number
                     this.hiddenInput = this._createEl("input", {
                         type: "hidden",
-                        name: hiddenInputName
+                        name: hiddenInputPhoneName
                     });
-                    wrapper.appendChild(this.hiddenInput);
-                    // add a 2nd hidden input for the selected country code - this is useful for handling invalid numbers with server-side validation, as getNumber does not always include the international dial code for invalid numbers
+                    // Create hidden input for the selected country code
                     this.hiddenInputCountry = this._createEl("input", {
                         type: "hidden",
-                        name: "".concat(hiddenInputName, "_country")
+                        name: hiddenInputCountryName
                     });
+                    wrapper.appendChild(this.hiddenInput);
                     wrapper.appendChild(this.hiddenInputCountry);
                 }
             }
