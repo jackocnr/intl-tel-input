@@ -50,6 +50,11 @@ var getParentElement = function(i) {
   return i.parent();
 };
 
+var getHiddenInputs = function(i) {
+  i = i || input;
+  return i.parent().find("input[type=hidden]");
+};
+
 var getDropdownContent = function(i) {
   i = i || input;
   return i.parent().find(".iti__dropdown-content");

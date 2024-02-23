@@ -211,12 +211,20 @@ _Note that the callback must still be called in the event of an error, hence the
 
 **hiddenInput**  
 Type: `Function` Default: `null`  
-Creates a hidden input which gets populated with the full international number on submit. This option takes a function (which receives the main telephone input name as an argument, in case that's useful). The function should return the name you want to use for the hidden input. This is a quick way for people using non-Ajax forms to get the full international number, even when `nationalMode` is enabled. In addition, we now provide a 2nd hidden input (the name will be the same as the other hidden input, but with "_country" suffix) containing the selected country code, which can then be used when re-displaying the page and re-initialising the plugin by using the `initialCountry` option. _Note: requires the input to be inside a `<form>` element, as this feature works by listening for the `submit` event on the closest form element. Also note that since this uses `getNumber` internally, firstly it requires the `utilsScript` option, and secondly it expects a valid number and so will only work correctly if you have used `isValidNumber` to validate the number before allowing the form submit to go through._
+Allows the creation of hidden input fields within a form to store the full international telephone number and the selected country code. It accepts a function that receives the name of the main telephone input as an argument. This function can return either a string or an object:
+
+- **String:** The function returns a string to name the hidden input for the full phone number. A second hidden input for the country code is automatically generated, appending "_country" to the provided name.
+- **Object:** For more explicit naming, return an object with `phone` and `country` properties to specify the names of the hidden inputs for the phone number and country code, respectively.
+
+This is useful for non-Ajax form submissions to ensure the full international number and country code are captured, especially when `nationalMode` is enabled.
+
+***Note**: This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses `getNumber` internally, firstly it requires the `utilsScript` option, and secondly it expects a valid number and so will only work correctly if you have used `isValidNumber` to validate the number before allowing the form submit to go through.
 
 ```js
 intlTelInput(input, {
   hiddenInput: function(telInputName) {
-    return "phone_full"
+    // Return a string or an object with 'phone' and 'country' keys
+    return "phone_full"; // or { phone: "phone_full", country: "country_code" }
   }
 });
 ```
