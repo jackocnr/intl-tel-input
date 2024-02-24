@@ -425,7 +425,7 @@ class Iti {
     if (showFlags) {
       this.selectedFlagInner = this._createEl(
         "div",
-        { class: "iti__flag" },
+        { class: "iti__flag iti__globe" },
         this.selectedFlag
       );
     }
@@ -1364,9 +1364,10 @@ class Iti {
     }
 
     if (showFlags) {
+      const flagClass = countryCode ? `iti__${countryCode}` : 'iti__globe';
       this.selectedFlagInner.setAttribute(
         "class",
-        `iti__flag iti__${countryCode}`
+        `iti__flag ${flagClass}`
       );
     }
 

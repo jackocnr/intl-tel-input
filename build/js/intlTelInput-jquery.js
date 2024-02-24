@@ -512,7 +512,7 @@
                 }
                 if (showFlags) {
                     this.selectedFlagInner = this._createEl("div", {
-                        "class": "iti__flag"
+                        "class": "iti__flag iti__globe"
                     }, this.selectedFlag);
                 }
                 if (this.selectedFlag && this.telInput.disabled) {
@@ -1296,7 +1296,8 @@
                     this.defaultCountry = this.selectedCountryData.iso2;
                 }
                 if (showFlags) {
-                    this.selectedFlagInner.setAttribute("class", "iti__flag iti__".concat(countryCode));
+                    var flagClass = countryCode ? "iti__".concat(countryCode) : "iti__globe";
+                    this.selectedFlagInner.setAttribute("class", "iti__flag ".concat(flagClass));
                 }
                 this._setSelectedCountryFlagTitleAttribute(countryCode, showSelectedDialCode);
                 if (showSelectedDialCode) {
