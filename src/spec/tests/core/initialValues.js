@@ -112,7 +112,7 @@ describe("initial values:", function() {
     });
 
     it("does not set the selected flag", function() {
-      expect(getSelectedFlagElement().attr("class")).toBe("iti__flag");
+      expect(getSelectedFlagElement().attr("class")).toBe("iti__flag iti__globe");
     });
 
   });
@@ -127,7 +127,7 @@ describe("initial values:", function() {
     });
 
     it("does not set the selected flag", function() {
-      expect(getSelectedFlagElement().attr("class")).toBe("iti__flag");
+      expect(getSelectedFlagElement().attr("class")).toBe("iti__flag iti__globe");
     });
 
   });
