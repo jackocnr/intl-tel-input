@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { build } = require("esbuild");
 const { dependencies } = require("../package.json");
 
