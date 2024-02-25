@@ -273,7 +273,7 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 
 **preferredCountries**  
 Type: `Array` Default: `[]`  
-Specify the countries to appear at the top of the list. Note that this option is not compatible with the new country search feature, and as such will be phased out. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--preferredcountries) (using the React component).
+Specify the countries to appear at the top of the list. Note that this option is not compatible with the `countrySearch` feature, and so that needs to be disabled for this to work. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--preferredcountries) (using the React component).
 
 **showFlags**  
 Type: `Boolean` Default: `true`  
