@@ -171,6 +171,12 @@ intlTelInput(input, {
 });
 ```
 
+**defaultToFirstCountry**  
+Type: `Boolean` Default: `true`  
+Default to selecting the first country in the list upon initialisation, if it's not set another way e.g. via `initialCountry` or via an initial phone value containing an international dial code. If set to `false`, there will be no country selected to begin with, and it will show a generic globe icon (see below). Note that in some cases, setting an (incorrect) initial country for the user can result in them submitting phone numbers with the wrong dial code. This can happen if, for example, you set the `initialCountry` to Australia, and then a user from New Zealand autofills their (national) phone number without noticing the wrong country is selected, and submits the form. In this case, the number validates as true because the two countries share very similar number patterns, and it gets saved with an Australian dial code and so doesn't work. To avoid this issue, set `defaultToFirstCountry` to `false`. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--defaulttofirstcountry) (using the React component).
+
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/empty-country.png" width="240px" height="53px">
+
 **dropdownContainer**  
 Type: `Node` Default: `null`  
 Expects a node e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. Note that the positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event.
