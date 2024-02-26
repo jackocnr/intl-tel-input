@@ -343,7 +343,7 @@ const countryData = iti.getSelectedCountryData();
 Returns something like this:
 ```js
 {
-  name: "Afghanistan (‫افغانستان‬‎)",
+  name: "Afghanistan",
   iso2: "af",
   dialCode: "93"
 }
@@ -404,7 +404,7 @@ const countryData = window.intlTelInputGlobals.getCountryData();
 Returns an array of country objects:
 ```js
 [{
-  name: "Afghanistan (‫افغانستان‬‎)",
+  name: "Afghanistan",
   iso2: "af",
   dialCode: "93"
 }, ...]
