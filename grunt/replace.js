@@ -14,7 +14,7 @@ module.exports = function(grunt) {
             match: /_processCountryData/g,
             replacement: '_b'
           }, {
-            match: /_addCountryCode/g,
+            match: /_addToDialCodeMap/g,
             replacement: '_c'
           }, {
             match: /_processAllCountries/g,
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
             match: /_countryNameSort/g,
             replacement: '_d1'
           }, {
-            match: /_processCountryCodes/g,
+            match: /_processDialCodes/g,
             replacement: '_d2'
           }, {
             match: /_processPreferredCountries/g,
@@ -254,7 +254,7 @@ module.exports = function(grunt) {
             match: /\.countries/g,
             replacement: '.p'
           }, {
-            match: /\.countryCodes/g,
+            match: /\.dialCodeToIso2Map/g,
             replacement: '.q'
           }, {
             match: /\.selectedCountryData/g,

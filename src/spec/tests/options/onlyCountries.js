@@ -17,18 +17,18 @@ describe("onlyCountries option:", function() {
 
   describe("init plugin with onlyCountries set to japan, china and korea", function() {
 
-    var chinaCountryCode = "cn";
+    var chinaIso2Code = "cn";
 
     beforeEach(function() {
       // China and Japan (note that none of the default preferredCountries are included here, so wont be in the list)
-      onlyCountries = ['jp', chinaCountryCode, 'kr'];
+      onlyCountries = ['jp', chinaIso2Code, 'kr'];
       iti = window.intlTelInput(input[0], {
         onlyCountries: onlyCountries,
       });
     });
 
     it("defaults to the first onlyCountries alphabetically", function() {
-      expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaCountryCode}`);
+      expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaIso2Code}`);
     });
 
     it("has the right number of list items", function() {

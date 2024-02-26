@@ -200,8 +200,8 @@ class Iti {
     // process onlyCountries or excludeCountries array if present
     this._processAllCountries();
 
-    // process the countryCodes map
-    this._processCountryCodes();
+    // generate this.dialCodes and this.dialCodeToIso2Map
+    this._processDialCodes();
 
     // process the preferredCountries
     this._processPreferredCountries();
@@ -215,24 +215,24 @@ class Iti {
     }
   }
 
-  // add a country code to this.countryCodes
-  _addCountryCode(iso2, countryCode, priority) {
-    if (countryCode.length > this.countryCodeMaxLen) {
-      this.countryCodeMaxLen = countryCode.length;
+  // add a dial code to this.dialCodeToIso2Map
+  _addToDialCodeMap(iso2, dialCode, priority) {
+    if (dialCode.length > this.dialCodeMaxLen) {
+      this.dialCodeMaxLen = dialCode.length;
     }
-    if (!this.countryCodes.hasOwnProperty(countryCode)) {
-      this.countryCodes[countryCode] = [];
+    if (!this.dialCodeToIso2Map.hasOwnProperty(dialCode)) {
+      this.dialCodeToIso2Map[dialCode] = [];
     }
-    // bail if we already have this country for this countryCode
-    for (let i = 0; i < this.countryCodes[countryCode].length; i++) {
-      if (this.countryCodes[countryCode][i] === iso2) {
+    // bail if we already have this country for this dialCode
+    for (let i = 0; i < this.dialCodeToIso2Map[dialCode].length; i++) {
+      if (this.dialCodeToIso2Map[dialCode][i] === iso2) {
         return;
       }
     }
     // check for undefined as 0 is falsy
     const index =
-      priority !== undefined ? priority : this.countryCodes[countryCode].length;
-    this.countryCodes[countryCode][index] = iso2;
+      priority !== undefined ? priority : this.dialCodeToIso2Map[dialCode].length;
+    this.dialCodeToIso2Map[dialCode][index] = iso2;
   }
 
   // process onlyCountries or excludeCountries array if present
@@ -277,13 +277,24 @@ class Iti {
     return 0;
   }
 
-  // process the countryCodes map
-  _processCountryCodes() {
-    this.countryCodeMaxLen = 0;
-    // here we store just dial codes
+  // generate this.dialCodes and this.dialCodeToIso2Map
+  _processDialCodes() {
+    // here we store just dial codes, where the key is the dial code, and the value is true
+    // e.g. { 1: true, 7: true, 20: true, ... }
     this.dialCodes = {};
-    // here we store "country codes" (both dial codes and their area codes)
-    this.countryCodes = {};
+    this.dialCodeMaxLen = 0;
+
+    // here we map dialCodes (inc both dialCode and dialCode+areaCode) to iso2 codes
+    /* e.g.
+     * {
+     *   1: [ 'us', 'ca', ... ],    # all NANP countries
+     *   12: [ 'us', 'ca', ... ],   # subset of NANP countries
+     *   120: [ 'us', 'ca' ],       # just US and Canada
+     *   1204: [ 'ca' ],            # only Canada
+     *   ...
+     *  }
+     */
+    this.dialCodeToIso2Map = {};
 
     // first: add dial codes
     for (let i = 0; i < this.countries.length; i++) {
@@ -291,7 +302,7 @@ class Iti {
       if (!this.dialCodes[c.dialCode]) {
         this.dialCodes[c.dialCode] = true;
       }
-      this._addCountryCode(c.iso2, c.dialCode, c.priority);
+      this._addToDialCodeMap(c.iso2, c.dialCode, c.priority);
     }
 
     // next: add area codes
@@ -302,7 +313,7 @@ class Iti {
       const c = this.countries[i];
       // area codes
       if (c.areaCodes) {
-        const rootCountryCode = this.countryCodes[c.dialCode][0];
+        const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
         // for each area code
         for (let j = 0; j < c.areaCodes.length; j++) {
           const areaCode = c.areaCodes[j];
@@ -310,11 +321,11 @@ class Iti {
           for (let k = 1; k < areaCode.length; k++) {
             const partialDialCode = c.dialCode + areaCode.substr(0, k);
             // start with the root country, as that also matches this dial code
-            this._addCountryCode(rootCountryCode, partialDialCode);
-            this._addCountryCode(c.iso2, partialDialCode);
+            this._addToDialCodeMap(rootIso2Code, partialDialCode);
+            this._addToDialCodeMap(c.iso2, partialDialCode);
           }
           // add the full area code
-          this._addCountryCode(c.iso2, c.dialCode + areaCode);
+          this._addToDialCodeMap(c.iso2, c.dialCode + areaCode);
         }
       }
     }
@@ -325,8 +336,8 @@ class Iti {
   _processPreferredCountries() {
     this.preferredCountries = [];
     for (let i = 0; i < this.options.preferredCountries.length; i++) {
-      const countryCode = this.options.preferredCountries[i].toLowerCase();
-      const countryData = this._getCountryData(countryCode, true);
+      const iso2 = this.options.preferredCountries[i].toLowerCase();
+      const countryData = this._getCountryData(iso2, true);
       if (countryData) {
         this.preferredCountries.push(countryData);
       }
@@ -540,7 +551,7 @@ class Iti {
         name: hiddenInputPhoneName
       });
 
-      // Create hidden input for the selected country code
+      // Create hidden input for the selected country iso2 code
       this.hiddenInputCountry = this._createEl("input", {
         type: "hidden",
         name: hiddenInputCountryName
@@ -771,11 +782,11 @@ class Iti {
 
       if (typeof this.options.geoIpLookup === "function") {
         this.options.geoIpLookup(
-          (countryCode = "") => {
-            const lowerCountryCode = countryCode.toLowerCase();
-            const isValidCountryCode = lowerCountryCode && this._getCountryData(lowerCountryCode, true);
-            if (isValidCountryCode) {
-              window.intlTelInputGlobals.autoCountry = lowerCountryCode;
+          (iso2 = "") => {
+            const iso2Lower = iso2.toLowerCase();
+            const isValidIso2 = iso2Lower && this._getCountryData(iso2Lower, true);
+            if (isValidIso2) {
+              window.intlTelInputGlobals.autoCountry = iso2Lower;
               // tell all instances the auto country is ready
               // TODO: this should just be the current instances
               // UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
@@ -1259,15 +1270,15 @@ class Iti {
     // try and extract valid dial code from input
     const dialCode = this._getDialCode(number, true);
     const numeric = this._getNumeric(number);
-    let countryCode = null;
+    let iso2 = null;
     if (dialCode) {
-      const countryCodes = this.countryCodes[this._getNumeric(dialCode)];
+      const iso2Codes = this.dialCodeToIso2Map[this._getNumeric(dialCode)];
       // check if the right country is already selected. this should be false if the number is
       // longer than the matched dial code because in this case we need to make sure that if
       // there are multiple country matches, that the first one is selected (note: we could
       // just check that here, but it requires the same loop that we already have later)
       const alreadySelected =
-        countryCodes.indexOf(this.selectedCountryData.iso2) !== -1 &&
+        iso2Codes.indexOf(this.selectedCountryData.iso2) !== -1 &&
         numeric.length <= dialCode.length - 1;
       const isRegionlessNanpNumber =
         selectedDialCode === "1" && this._isRegionlessNanp(numeric);
@@ -1277,11 +1288,11 @@ class Iti {
       // AND
       // B) the right country is not already selected
       if (!isRegionlessNanpNumber && !alreadySelected) {
-        // if using onlyCountries option, countryCodes[0] may be empty, so we must find the first
+        // if using onlyCountries option, iso2Codes[0] may be empty, so we must find the first
         // non-empty index
-        for (let j = 0; j < countryCodes.length; j++) {
-          if (countryCodes[j]) {
-            countryCode = countryCodes[j];
+        for (let j = 0; j < iso2Codes.length; j++) {
+          if (iso2Codes[j]) {
+            iso2 = iso2Codes[j];
             break;
           }
         }
@@ -1290,14 +1301,14 @@ class Iti {
       // invalid dial code, so empty
       // Note: use getNumeric here because the number has not been formatted yet, so could contain
       // bad chars
-      countryCode = "";
+      iso2 = "";
     } else if ((!number || number === "+") && !this.selectedCountryData.iso2) {
       // if no selected flag, and user either clears the input, or just types a plus, then show default
-      countryCode = this.defaultCountry;
+      iso2 = this.defaultCountry;
     }
 
-    if (countryCode !== null) {
-      return this._setFlag(countryCode);
+    if (iso2 !== null) {
+      return this._setFlag(iso2);
     }
     return false;
   }
@@ -1331,32 +1342,32 @@ class Iti {
     }
   }
 
-  // find the country data for the given country code
+  // find the country data for the given iso2 code
   // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
-  _getCountryData(countryCode, allowFail) {
+  _getCountryData(iso2, allowFail) {
     for (let i = 0; i < this.countries.length; i++) {
-      if (this.countries[i].iso2 === countryCode) {
+      if (this.countries[i].iso2 === iso2) {
         return this.countries[i];
       }
     }
     if (allowFail) {
       return null;
     }
-    throw new Error(`No country data for '${countryCode}'`);
+    throw new Error(`No country data for '${iso2}'`);
   }
 
   // select the given flag, update the placeholder, title, and the active list item
   // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
-  _setFlag(countryCode) {
+  _setFlag(iso2) {
     const { allowDropdown, showSelectedDialCode, showFlags, countrySearch } = this.options;
 
     const prevCountry = this.selectedCountryData.iso2
       ? this.selectedCountryData
       : {};
 
-    // do this first as it will throw an error and stop if countryCode is invalid
-    this.selectedCountryData = countryCode
-      ? this._getCountryData(countryCode, false)
+    // do this first as it will throw an error and stop if iso2 is invalid
+    this.selectedCountryData = iso2
+      ? this._getCountryData(iso2, false)
       : {};
     // update the defaultCountry - we only need the iso2 from now on, so just store that
     if (this.selectedCountryData.iso2) {
@@ -1364,14 +1375,14 @@ class Iti {
     }
 
     if (showFlags) {
-      const flagClass = countryCode ? `iti__${countryCode}` : 'iti__globe';
+      const flagClass = iso2 ? `iti__${iso2}` : 'iti__globe';
       this.selectedFlagInner.setAttribute(
         "class",
         `iti__flag ${flagClass}`
       );
     }
 
-    this._setSelectedCountryFlagTitleAttribute(countryCode, showSelectedDialCode);
+    this._setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode);
 
     if (showSelectedDialCode) {
       const dialCode = this.selectedCountryData.dialCode
@@ -1400,14 +1411,14 @@ class Iti {
         prevItem.classList.remove("iti__active");
         prevItem.setAttribute("aria-selected", "false");
       }
-      if (countryCode) {
+      if (iso2) {
         // check if there is a preferred item first, else fall back to standard
         const nextItem =
           this.countryList.querySelector(
-            `#iti-${this.id}__item-${countryCode}-preferred`
+            `#iti-${this.id}__item-${iso2}-preferred`
           ) ||
           this.countryList.querySelector(
-            `#iti-${this.id}__item-${countryCode}`
+            `#iti-${this.id}__item-${iso2}`
           );
         nextItem.setAttribute("aria-selected", "true");
         nextItem.classList.add("iti__active");
@@ -1416,18 +1427,18 @@ class Iti {
     }
 
     // return if the flag has changed or not
-    return prevCountry.iso2 !== countryCode;
+    return prevCountry.iso2 !== iso2;
   }
 
-  _setSelectedCountryFlagTitleAttribute(countryCode, showSelectedDialCode) {
+  _setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode) {
     if (!this.selectedFlag) {
       return;
     }
 
     let title;
-    if (countryCode && !showSelectedDialCode) {
+    if (iso2 && !showSelectedDialCode) {
       title = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}`;
-    } else if (countryCode) {
+    } else if (iso2) {
       // For screen reader output, we don't want to include the dial code in the reader output twice
       // so just use the selected country name here:
       title = this.selectedCountryData.name;
@@ -1619,7 +1630,7 @@ class Iti {
           numericChars += c;
           // if current numericChars make a valid dial code
           if (includeAreaCode) {
-            if (this.countryCodes[numericChars]) {
+            if (this.dialCodeToIso2Map[numericChars]) {
               // store the actual raw string (useful for matching later)
               dialCode = number.substr(0, i + 1);
             }
@@ -1631,7 +1642,7 @@ class Iti {
             }
           }
           // stop searching as soon as we can - in this case when we hit max len
-          if (numericChars.length === this.countryCodeMaxLen) {
+          if (numericChars.length === this.dialCodeMaxLen) {
             break;
           }
         }
@@ -1864,11 +1875,11 @@ class Iti {
   }
 
   // update the selected flag, and update the input val accordingly
-  setCountry(originalCountryCode) {
-    const countryCode = originalCountryCode.toLowerCase();
+  setCountry(iso2) {
+    const iso2Lower = iso2.toLowerCase();
     // check if already selected
-    if (this.selectedCountryData.iso2 !== countryCode) {
-      this._setFlag(countryCode);
+    if (this.selectedCountryData.iso2 !== iso2Lower) {
+      this._setFlag(iso2Lower);
       this._updateDialCode(this.selectedCountryData.dialCode);
       this._triggerCountryChange();
     }

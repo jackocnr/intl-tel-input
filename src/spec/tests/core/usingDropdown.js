@@ -52,14 +52,14 @@ describe("using dropdown: init plugin on normal input with nationalMode=false, a
 
     describe("selecting a new country item", function() {
 
-      var countryCode = "ca";
+      var iso2Code = "ca";
 
       beforeEach(function() {
-        getListElement().find("li[data-country-code='" + countryCode + "']")[0].click();
+        getListElement().find("li[data-country-code='" + iso2Code + "']")[0].click();
       });
 
       it("updates the selected flag", function() {
-        expect(getSelectedFlagElement()).toHaveClass(`iti__${countryCode}`);
+        expect(getSelectedFlagElement()).toHaveClass(`iti__${iso2Code}`);
       });
 
       it("updates the dial code", function() {
@@ -69,7 +69,7 @@ describe("using dropdown: init plugin on normal input with nationalMode=false, a
       // this was a bug
       it("adding a space doesnt reset to the default country for that dial code", function() {
         triggerKeyOnInput(" ");
-        expect(getSelectedFlagElement()).toHaveClass(`iti__${countryCode}`);
+        expect(getSelectedFlagElement()).toHaveClass(`iti__${iso2Code}`);
       });
 
     });

@@ -22,7 +22,7 @@ describe("getValidationError:", function() {
     expect(iti.getValidationError()).toEqual(intlTelInputUtils.validationError.TOO_LONG);
   });
 
-  it("returns the right error for a number with an invalid country code", function() {
+  it("returns the right error for a number with an invalid iso2 code", function() {
     iti.setNumber("+969");
     expect(iti.getValidationError()).toEqual(intlTelInputUtils.validationError.INVALID_COUNTRY_CODE);
   });

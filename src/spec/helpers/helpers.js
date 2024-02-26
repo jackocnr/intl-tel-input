@@ -105,10 +105,10 @@ var getFlagsContainerElement = function(i) {
   return i.parent().find(".iti__flag-container");
 };
 
-var selectFlag = function(countryCode, i) {
+var selectFlag = function(iso2, i) {
   i = i || input;
   getSelectedFlagContainer(i)[0].click();
-  getListElement(i).find("li[data-country-code='" + countryCode + "']")[0].click();
+  getListElement(i).find("li[data-country-code='" + iso2 + "']")[0].click();
 };
 
 var openCountryDropDown = function() {

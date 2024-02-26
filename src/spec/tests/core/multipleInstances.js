@@ -4,12 +4,12 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
 
   var input2,
     iti2,
-    afghanistanCountryCode = "af",
-    albaniaCountryCode = "al",
-    chinaCountryCode = "cn",
+    afghanistanIso2Code = "af",
+    albaniaIso2Code = "al",
+    chinaIso2Code = "cn",
     chinaDialCode = "+86",
-    koreaCountryCode = 'kr',
-    russiaCountryCode = 'ru';
+    koreaIso2Code = 'kr',
+    russiaIso2Code = 'ru';
 
   beforeEach(function() {
     intlSetup();
@@ -17,11 +17,11 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
     input2 = $("<input>").wrap("div");
 
     iti = window.intlTelInput(input[0], {
-      onlyCountries: [afghanistanCountryCode, chinaCountryCode],
+      onlyCountries: [afghanistanIso2Code, chinaIso2Code],
       nationalMode: false,
     });
     iti2 = window.intlTelInput(input2[0], {
-      onlyCountries: [albaniaCountryCode, chinaCountryCode, koreaCountryCode, russiaCountryCode],
+      onlyCountries: [albaniaIso2Code, chinaIso2Code, koreaIso2Code, russiaIso2Code],
       nationalMode: false,
     });
     $("body").append(getParentElement(input)).append(getParentElement(input2));
@@ -40,21 +40,21 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
   });
 
   it("instances have different default countries selected", function() {
-    expect(getSelectedFlagElement()).toHaveClass(`iti__${afghanistanCountryCode}`);
-    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaCountryCode}`);
+    expect(getSelectedFlagElement()).toHaveClass(`iti__${afghanistanIso2Code}`);
+    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaIso2Code}`);
   });
 
   it("selecting an item from the first input dropdown only updates the flag on that input", function() {
-    selectFlag(chinaCountryCode);
-    expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaCountryCode}`);
-    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaCountryCode}`);
+    selectFlag(chinaIso2Code);
+    expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaIso2Code}`);
+    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaIso2Code}`);
   });
 
   it("updating the number on the first input only updates the flag on that input", function() {
     input.val(chinaDialCode + " 123456");
     triggerKeyOnInput(" ");
-    expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaCountryCode}`);
-    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaCountryCode}`);
+    expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaIso2Code}`);
+    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaIso2Code}`);
   });
 
 

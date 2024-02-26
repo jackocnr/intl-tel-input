@@ -2,13 +2,13 @@
 
 describe("setCountry: init plugin and calling public method setCountry()", function() {
 
-  var countryCode = "gb";
+  var iso2 = "gb";
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>").wrap("div");
     iti = window.intlTelInput(input[0]);
-    iti.setCountry(countryCode);
+    iti.setCountry(iso2);
   });
 
   afterEach(function() {
@@ -16,7 +16,7 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
   });
 
   it("updates the selected flag", function() {
-    expect(getSelectedFlagElement()).toHaveClass(`iti__${countryCode}`);
+    expect(getSelectedFlagElement()).toHaveClass(`iti__${iso2}`);
   });
 
   it("does not insert the dial code", function() {
@@ -30,7 +30,7 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
           showFlags: true,
           showSelectedDialCode: false,
         });
-        iti.setCountry(countryCode);
+        iti.setCountry(iso2);
       });
 
       it("has the country name and dial code in the flag's title", function() {
@@ -44,27 +44,12 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
           showFlags: true,
           showSelectedDialCode: true,
         });
-        iti.setCountry(countryCode);
+        iti.setCountry(iso2);
       });
 
       it("has the country name but not the dial code in the flag's title", function() {
         expect(getSelectedFlagContainer().attr("title")).toEqual("United Kingdom");
       });
     });
-
-
-    // setCountry errors out when country code is undefined, so we can likely remove this scenario and make country code a required param
-    describe("when countryCode is falsey", function() {
-      // beforeEach(function() {
-      //   iti = window.intlTelInput(input[0], {
-      //     showFlags: true,
-      //   });
-      //   iti.setCountry();
-      // });
-
-      it("sets the flag's title as Unknown", function() {
-        // expect(getSelectedFlagContainer().attr("title")).toEqual("Unknown");
-      });
-    })
   });
 });
