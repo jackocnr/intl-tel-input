@@ -24291,7 +24291,7 @@ var import_client = __toESM(require_client());
 var import_react = __toESM(require_react());
 var import_prop_types = __toESM(require_prop_types());
 var X = Object.create;
-var z = Object.defineProperty;
+var V = Object.defineProperty;
 var tt = Object.getOwnPropertyDescriptor;
 var et = Object.getOwnPropertyNames;
 var it = Object.getPrototypeOf;
@@ -24300,11 +24300,11 @@ var ot = (c, p) => () => (p || c((p = { exports: {} }).exports, p), p.exports);
 var rt = (c, p, g, m) => {
   if (p && typeof p == "object" || typeof p == "function")
     for (let _ of et(p))
-      !nt.call(c, _) && _ !== g && z(c, _, { get: () => p[_], enumerable: !(m = tt(p, _)) || m.enumerable });
+      !nt.call(c, _) && _ !== g && V(c, _, { get: () => p[_], enumerable: !(m = tt(p, _)) || m.enumerable });
   return c;
 };
-var at = (c, p, g) => (g = c != null ? X(it(c)) : {}, rt(p || !c || !c.__esModule ? z(g, "default", { value: c, enumerable: true }) : g, c));
-var V = ot((dt, F) => {
+var at = (c, p, g) => (g = c != null ? X(it(c)) : {}, rt(p || !c || !c.__esModule ? V(g, "default", { value: c, enumerable: true }) : g, c));
+var H = ot((dt, F) => {
   (function(c) {
     typeof F == "object" && F.exports ? F.exports = c() : window.intlTelInput = c();
   })(function(c) {
@@ -24329,7 +24329,7 @@ var V = ot((dt, F) => {
         return n = E(n), n in a ? Object.defineProperty(a, n, { value: t, enumerable: true, configurable: true, writable: true }) : a[n] = t, a;
       }
       function M(a, n) {
-        return C(a) || L(a, n) || O(a, n) || x();
+        return D(a) || U(a, n) || O(a, n) || x();
       }
       function x() {
         throw new TypeError(`Invalid attempt to destructure non-iterable instance.
@@ -24352,7 +24352,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           e[t] = a[t];
         return e;
       }
-      function L(a, n) {
+      function U(a, n) {
         var t = a == null ? null : typeof Symbol < "u" && a[Symbol.iterator] || a["@@iterator"];
         if (t != null) {
           var e, i, o, r, s = [], l = true, u = false;
@@ -24378,11 +24378,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           return s;
         }
       }
-      function C(a) {
+      function D(a) {
         if (Array.isArray(a))
           return a;
       }
-      function D(a, n) {
+      function C(a, n) {
         if (!(a instanceof n))
           throw new TypeError("Cannot call a class as a function");
       }
@@ -24392,14 +24392,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           e.enumerable = e.enumerable || false, e.configurable = true, "value" in e && (e.writable = true), Object.defineProperty(a, E(e.key), e);
         }
       }
-      function U(a, n, t) {
+      function w(a, n, t) {
         return n && b(a.prototype, n), t && b(a, t), Object.defineProperty(a, "prototype", { writable: false }), a;
       }
       function E(a) {
-        var n = q(a, "string");
+        var n = B(a, "string");
         return typeof n == "symbol" ? n : String(n);
       }
-      function q(a, n) {
+      function B(a, n) {
         if (typeof a != "object" || a === null)
           return a;
         var t = a[Symbol.toPrimitive];
@@ -24418,7 +24418,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return document.readyState === "complete";
       } };
       typeof window == "object" && (window.intlTelInputGlobals = S);
-      var Y = 0, R = { allowDropdown: true, autoInsertDialCode: false, autoPlaceholder: "polite", countrySearch: true, containerClass: "", customPlaceholder: null, defaultToFirstCountry: true, dropdownContainer: null, excludeCountries: [], fixDropdownWidth: true, formatAsYouType: true, formatOnDisplay: true, geoIpLookup: null, hiddenInput: null, i18n: {}, initialCountry: "", nationalMode: true, onlyCountries: [], placeholderNumberType: "MOBILE", preferredCountries: [], showFlags: true, showSelectedDialCode: false, useFullscreenPopup: typeof navigator < "u" && typeof window < "u" ? /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 500 : false, utilsScript: "" }, J = ["800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889"], k = function(n) {
+      var Y = 0, K = { allowDropdown: true, autoInsertDialCode: false, autoPlaceholder: "polite", countrySearch: true, containerClass: "", customPlaceholder: null, defaultToFirstCountry: true, dropdownContainer: null, excludeCountries: [], fixDropdownWidth: true, formatAsYouType: true, formatOnDisplay: true, geoIpLookup: null, hiddenInput: null, i18n: {}, initialCountry: "", nationalMode: true, onlyCountries: [], placeholderNumberType: "MOBILE", preferredCountries: [], showFlags: true, showSelectedDialCode: false, useFullscreenPopup: typeof navigator < "u" && typeof window < "u" ? /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 500 : false, utilsScript: "" }, J = ["800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889"], k = function(n) {
         var t = window.intlTelInputGlobals.instances;
         Object.values(t).forEach(function(e) {
           return e[n]();
@@ -24426,9 +24426,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       }, Z = function() {
         function a(n) {
           var t = arguments.length > 1 && arguments[1] !== c ? arguments[1] : {};
-          D(this, a), this.id = Y++, this.telInput = n, this.activeItem = null, this.highlightedItem = null, this.options = Object.assign({}, R, t), this.hadInitialPlaceholder = !!n.getAttribute("placeholder");
+          C(this, a), this.id = Y++, this.telInput = n, this.activeItem = null, this.highlightedItem = null, this.options = Object.assign({}, K, t), this.hadInitialPlaceholder = !!n.getAttribute("placeholder");
         }
-        return U(a, [{ key: "_init", value: function() {
+        return w(a, [{ key: "_init", value: function() {
           var t = this;
           this.options.useFullscreenPopup && (this.options.fixDropdownWidth = false), this.options.countrySearch && !this.options.useFullscreenPopup && (this.options.fixDropdownWidth = true), this.options.nationalMode && (this.options.autoInsertDialCode = false), this.options.showSelectedDialCode && (this.options.autoInsertDialCode = false);
           var e = this.options.allowDropdown && !this.options.showSelectedDialCode;
@@ -24512,8 +24512,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           e && (v += " iti--allow-dropdown"), i && (v += " iti--show-selected-dial-code"), o && (v += " iti--show-flags"), r && (v += " ".concat(r)), h || (v += " iti--inline-dropdown");
           var f = this._createEl("div", { class: v });
           this.telInput.parentNode.insertBefore(f, this.telInput);
-          var w = e || o || i;
-          if (w && (this.flagsContainer = this._createEl("div", { class: "iti__flag-container" }, f)), f.appendChild(this.telInput), w && (this.selectedFlag = this._createEl("div", _({ class: "iti__selected-flag" }, e && { role: "combobox", "aria-haspopup": "listbox", "aria-controls": "iti-".concat(this.id, "__country-listbox"), "aria-expanded": "false", "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country" }), this.flagsContainer)), o && (this.selectedFlagInner = this._createEl("div", { class: "iti__flag iti__globe" }, this.selectedFlag)), this.selectedFlag && this.telInput.disabled && this.selectedFlag.setAttribute("aria-disabled", "true"), i && (this.selectedDialCode = this._createEl("div", { class: "iti__selected-dial-code" }, this.selectedFlag)), e) {
+          var I = e || o || i;
+          if (I && (this.flagsContainer = this._createEl("div", { class: "iti__flag-container" }, f)), f.appendChild(this.telInput), I && (this.selectedFlag = this._createEl("div", _({ class: "iti__selected-flag" }, e && { role: "combobox", "aria-haspopup": "listbox", "aria-controls": "iti-".concat(this.id, "__country-listbox"), "aria-expanded": "false", "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country" }), this.flagsContainer)), o && (this.selectedFlagInner = this._createEl("div", { class: "iti__flag iti__globe" }, this.selectedFlag)), this.selectedFlag && this.telInput.disabled && this.selectedFlag.setAttribute("aria-disabled", "true"), i && (this.selectedDialCode = this._createEl("div", { class: "iti__selected-dial-code" }, this.selectedFlag)), e) {
             this.telInput.disabled || this.selectedFlag.setAttribute("tabindex", "0"), this.dropdownArrow = this._createEl("div", { class: "iti__arrow" }, this.selectedFlag);
             var $ = u ? "" : "iti--flexible-dropdown-width";
             if (this.dropdownContent = this._createEl("div", { class: "iti__dropdown-content iti__hide ".concat($) }), y && (this.searchInput = this._createEl("input", { type: "text", class: "iti__search-input", placeholder: this.options.i18n.searchPlaceholder || "Search" }, this.dropdownContent)), this.countryList = this._createEl("ul", { class: "iti__country-list", id: "iti-".concat(this.id, "__country-listbox"), role: "listbox", "aria-label": this.options.i18n.countryListAriaLabel || "List of countries" }, this.dropdownContent), this.preferredCountries.length && !y && (this._appendListItems(this.preferredCountries, "iti__preferred", true), this._createEl("li", { class: "iti__divider", "aria-hidden": "true" }, this.countryList)), this._appendListItems(this.countries, "iti__standard"), l) {
@@ -24523,10 +24523,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               this.flagsContainer.appendChild(this.dropdownContent);
           }
           if (s) {
-            var B = this.telInput.getAttribute("name"), T = s(B), Q = T !== null && typeof T == "object", I, j;
-            if (Q ? (I = T.phone || B, j = T.country || "".concat(I, "_country")) : (I = T || B, j = "".concat(I, "_country")), !I)
+            var j = this.telInput.getAttribute("name"), T = s(j), Q = T !== null && typeof T == "object", L, G;
+            if (Q ? (L = T.phone || j, G = T.country || "".concat(L, "_country")) : (L = T || j, G = "".concat(L, "_country")), !L)
               return;
-            this.hiddenInput = this._createEl("input", { type: "hidden", name: I }), this.hiddenInputCountry = this._createEl("input", { type: "hidden", name: j }), f.appendChild(this.hiddenInput), f.appendChild(this.hiddenInputCountry);
+            this.hiddenInput = this._createEl("input", { type: "hidden", name: L }), this.hiddenInputCountry = this._createEl("input", { type: "hidden", name: G }), f.appendChild(this.hiddenInput), f.appendChild(this.hiddenInputCountry);
           }
         } }, { key: "_appendListItems", value: function(t, e, i) {
           for (var o = 0; o < t.length; o++) {
@@ -24540,8 +24540,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           if (s && !l)
             this._updateFlagFromNumber(r);
           else if (h !== "auto" || t) {
-            var f = h ? h.toLowerCase() : "", w = f && this._getCountryData(f, true);
-            w ? this._setFlag(f) : s && l ? this._setFlag("us") : v && (this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2, r || this._setFlag(this.defaultCountry)), !r && y && (this.telInput.value = "+".concat(this.selectedCountryData.dialCode));
+            var f = h ? h.toLowerCase() : "", I = f && this._getCountryData(f, true);
+            I ? this._setFlag(f) : s && l ? this._setFlag("us") : v && (this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2, r || this._setFlag(this.defaultCountry)), !r && y && (this.telInput.value = "+".concat(this.selectedCountryData.dialCode));
           }
           r && this._updateValFromNumber(r);
         } }, { key: "_initListeners", value: function() {
@@ -24785,8 +24785,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             e && (v -= f), i.scrollTop = v;
           else if (y > l) {
             e && (v += f);
-            var w = r - u;
-            i.scrollTop = v - w;
+            var I = r - u;
+            i.scrollTop = v - I;
           }
         } }, { key: "_updateDialCode", value: function(t) {
           var e = this.telInput.value, i = "+".concat(t), o;
@@ -24886,7 +24886,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       S.getCountryData = function() {
         return p;
       };
-      var K = function(n, t, e) {
+      var z = function(n, t, e) {
         var i = document.createElement("script");
         i.onload = function() {
           k("handleUtils"), t && t();
@@ -24898,45 +24898,45 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
           if (window.intlTelInputGlobals.startedLoadingUtilsScript = true, typeof Promise < "u")
             return new Promise(function(n, t) {
-              return K(a, n, t);
+              return z(a, n, t);
             });
-          K(a);
+          z(a);
         }
         return null;
-      }, S.defaults = R, S.version = "19.5.2", function(a, n) {
+      }, S.defaults = K, S.version = "19.5.2", function(a, n) {
         var t = new Z(a, n);
         return t._init(), a.setAttribute("data-intl-tel-input-id", t.id), window.intlTelInputGlobals.instances[t.id] = t, t;
       };
     }();
   });
 });
-var W = at(V());
-var G = ({ initialValue: c, onChangeNumber: p, onChangeCountry: g, onChangeValidity: m, onChangeErrorCode: _, initOptions: P, className: M, disabled: x, onFocus: O, onBlur: A }) => {
-  let L = (0, import_react.useRef)(null), C = (0, import_react.useRef)(null), D = () => {
-    let b = C.current.getNumber(), U = C.current.getSelectedCountryData().iso2;
-    if (p(b), g(U), C.current.isValidNumber())
+var q = at(H());
+var R = ({ initialValue: c, onChangeNumber: p, onChangeCountry: g, onChangeValidity: m, onChangeErrorCode: _, initOptions: P, className: M, disabled: x, onFocus: O, onBlur: A, placeholder: U }) => {
+  let D = (0, import_react.useRef)(null), C = (0, import_react.useRef)(null), b = () => {
+    let w = C.current.getNumber(), E = C.current.getSelectedCountryData().iso2;
+    if (p(w), g(E), C.current.isValidNumber())
       m(true), _(null);
     else {
-      let E = C.current.getValidationError();
-      m(false), _(E);
+      let B = C.current.getValidationError();
+      m(false), _(B);
     }
   };
   return (0, import_react.useEffect)(() => {
-    let b = L.current;
-    return C.current = (0, W.default)(L.current, P), b.addEventListener("countrychange", D), () => {
-      b.removeEventListener("countrychange", D), C.current.destroy();
+    let w = D.current;
+    return C.current = (0, q.default)(D.current, P), w.addEventListener("countrychange", b), () => {
+      w.removeEventListener("countrychange", b), C.current.destroy();
     };
-  }, []), import_react.default.createElement("input", { type: "tel", ref: L, onInput: D, defaultValue: c, className: M, disabled: x, onFocus: O, onBlur: A });
+  }, []), import_react.default.createElement("input", { type: "tel", ref: D, onInput: b, defaultValue: c, className: M, disabled: x, onFocus: O, onBlur: A, placeholder: U });
 };
-G.propTypes = { initialValue: import_prop_types.default.string, onChangeNumber: import_prop_types.default.func, onChangeCountry: import_prop_types.default.func, onChangeValidity: import_prop_types.default.func, onChangeErrorCode: import_prop_types.default.func, initOptions: import_prop_types.default.shape({ allowDropdown: import_prop_types.default.bool, autoInsertDialCode: import_prop_types.default.bool, autoPlaceholder: import_prop_types.default.string, containerClass: import_prop_types.default.string, countrySearch: import_prop_types.default.bool, customPlaceholder: import_prop_types.default.func, dropdownContainer: import_prop_types.default.node, excludeCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), fixDropdownWidth: import_prop_types.default.bool, formatAsYouType: import_prop_types.default.bool, formatOnDisplay: import_prop_types.default.bool, geoIpLookup: import_prop_types.default.func, hiddenInput: import_prop_types.default.func, i18n: import_prop_types.default.objectOf(import_prop_types.default.string), initialCountry: import_prop_types.default.string, nationalMode: import_prop_types.default.bool, onlyCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), placeholderNumberType: import_prop_types.default.string, preferredCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), showFlags: import_prop_types.default.bool, showSelectedDialCode: import_prop_types.default.bool, useFullscreenPopup: import_prop_types.default.bool, utilsScript: import_prop_types.default.string }), className: import_prop_types.default.string, disabled: import_prop_types.default.bool, onFocus: import_prop_types.default.func, onBlur: import_prop_types.default.func };
-G.defaultProps = { initialValue: "", onChangeNumber: () => {
+R.propTypes = { initialValue: import_prop_types.default.string, placeholder: import_prop_types.default.string, onChangeNumber: import_prop_types.default.func, onChangeCountry: import_prop_types.default.func, onChangeValidity: import_prop_types.default.func, onChangeErrorCode: import_prop_types.default.func, initOptions: import_prop_types.default.shape({ allowDropdown: import_prop_types.default.bool, autoInsertDialCode: import_prop_types.default.bool, autoPlaceholder: import_prop_types.default.string, containerClass: import_prop_types.default.string, countrySearch: import_prop_types.default.bool, customPlaceholder: import_prop_types.default.func, dropdownContainer: import_prop_types.default.node, excludeCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), fixDropdownWidth: import_prop_types.default.bool, formatAsYouType: import_prop_types.default.bool, formatOnDisplay: import_prop_types.default.bool, geoIpLookup: import_prop_types.default.func, hiddenInput: import_prop_types.default.func, i18n: import_prop_types.default.objectOf(import_prop_types.default.string), initialCountry: import_prop_types.default.string, nationalMode: import_prop_types.default.bool, onlyCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), placeholderNumberType: import_prop_types.default.string, preferredCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), showFlags: import_prop_types.default.bool, showSelectedDialCode: import_prop_types.default.bool, useFullscreenPopup: import_prop_types.default.bool, utilsScript: import_prop_types.default.string }), className: import_prop_types.default.string, disabled: import_prop_types.default.bool, onFocus: import_prop_types.default.func, onBlur: import_prop_types.default.func };
+R.defaultProps = { initialValue: "", placeholder: "", onChangeNumber: () => {
 }, onChangeCountry: () => {
 }, onChangeValidity: () => {
 }, onChangeErrorCode: () => {
 }, initOptions: {}, className: "", disabled: false, onFocus: () => {
 }, onBlur: () => {
 } };
-var pt = G;
+var pt = R;
 
 // react/demo/SimpleApp.js
 var App = () => /* @__PURE__ */ import_react2.default.createElement(

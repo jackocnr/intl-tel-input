@@ -14,6 +14,7 @@ const IntlTelInput = ({
   disabled,
   onFocus,
   onBlur,
+  placeholder,
 }) => {
   const inputRef = useRef(null);
   const itiRef = useRef(null);
@@ -58,12 +59,14 @@ const IntlTelInput = ({
       disabled={disabled}
       onFocus={onFocus}
       onBlur={onBlur}
+      placeholder={placeholder}
     />
   );
 };
 
 IntlTelInput.propTypes = {
   initialValue: PropTypes.string,
+  placeholder: PropTypes.string,
   onChangeNumber: PropTypes.func,
   onChangeCountry: PropTypes.func,
   onChangeValidity: PropTypes.func,
@@ -101,6 +104,7 @@ IntlTelInput.propTypes = {
 
 IntlTelInput.defaultProps = {
   initialValue: "",
+  placeholder: "",
   onChangeNumber: () => {},
   onChangeCountry: () => {},
   onChangeValidity: () => {},
