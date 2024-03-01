@@ -24304,9 +24304,9 @@ var rt = (c, p, g, m) => {
   return c;
 };
 var at = (c, p, g) => (g = c != null ? X(it(c)) : {}, rt(p || !c || !c.__esModule ? V(g, "default", { value: c, enumerable: true }) : g, c));
-var H = ot((dt, F) => {
+var H = ot((dt, N) => {
   (function(c) {
-    typeof F == "object" && F.exports ? F.exports = c() : window.intlTelInput = c();
+    typeof N == "object" && N.exports ? N.exports = c() : window.intlTelInput = c();
   })(function(c) {
     "use strict";
     return function() {
@@ -24513,12 +24513,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var f = this._createEl("div", { class: v });
           this.telInput.parentNode.insertBefore(f, this.telInput);
           var I = e || o || i;
-          if (I && (this.flagsContainer = this._createEl("div", { class: "iti__flag-container" }, f)), f.appendChild(this.telInput), I && (this.selectedFlag = this._createEl("div", _({ class: "iti__selected-flag" }, e && { role: "combobox", "aria-haspopup": "listbox", "aria-controls": "iti-".concat(this.id, "__country-listbox"), "aria-expanded": "false", "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country" }), this.flagsContainer)), o && (this.selectedFlagInner = this._createEl("div", { class: "iti__flag iti__globe" }, this.selectedFlag)), this.selectedFlag && this.telInput.disabled && this.selectedFlag.setAttribute("aria-disabled", "true"), i && (this.selectedDialCode = this._createEl("div", { class: "iti__selected-dial-code" }, this.selectedFlag)), e) {
+          if (I && (this.flagsContainer = this._createEl("div", { class: "iti__flag-container" }, f)), f.appendChild(this.telInput), I && (this.selectedFlag = this._createEl("div", _({ class: "iti__selected-flag" }, e && { role: "combobox", "aria-haspopup": "listbox", "aria-controls": "iti-".concat(this.id, "__country-listbox"), "aria-expanded": "false", "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country" }), this.flagsContainer)), o && (this.selectedFlagInner = this._createEl("div", { class: "iti__flag" }, this.selectedFlag)), this.selectedFlag && this.telInput.disabled && this.selectedFlag.setAttribute("aria-disabled", "true"), i && (this.selectedDialCode = this._createEl("div", { class: "iti__selected-dial-code" }, this.selectedFlag)), e) {
             this.telInput.disabled || this.selectedFlag.setAttribute("tabindex", "0"), this.dropdownArrow = this._createEl("div", { class: "iti__arrow" }, this.selectedFlag);
             var $ = u ? "" : "iti--flexible-dropdown-width";
             if (this.dropdownContent = this._createEl("div", { class: "iti__dropdown-content iti__hide ".concat($) }), y && (this.searchInput = this._createEl("input", { type: "text", class: "iti__search-input", placeholder: this.options.i18n.searchPlaceholder || "Search" }, this.dropdownContent)), this.countryList = this._createEl("ul", { class: "iti__country-list", id: "iti-".concat(this.id, "__country-listbox"), role: "listbox", "aria-label": this.options.i18n.countryListAriaLabel || "List of countries" }, this.dropdownContent), this.preferredCountries.length && !y && (this._appendListItems(this.preferredCountries, "iti__preferred", true), this._createEl("li", { class: "iti__divider", "aria-hidden": "true" }, this.countryList)), this._appendListItems(this.countries, "iti__standard"), l) {
-              var N = "iti iti--container";
-              h ? N += " iti--fullscreen-popup" : N += " iti--inline-dropdown", y && (N += " iti--country-search"), this.dropdown = this._createEl("div", { class: N }), this.dropdown.appendChild(this.dropdownContent);
+              var F = "iti iti--container";
+              h ? F += " iti--fullscreen-popup" : F += " iti--inline-dropdown", y && (F += " iti--country-search"), this.dropdown = this._createEl("div", { class: F }), this.dropdown.appendChild(this.dropdownContent);
             } else
               this.flagsContainer.appendChild(this.dropdownContent);
           }
@@ -24541,7 +24541,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             this._updateFlagFromNumber(r);
           else if (h !== "auto" || t) {
             var f = h ? h.toLowerCase() : "", I = f && this._getCountryData(f, true);
-            I ? this._setFlag(f) : s && l ? this._setFlag("us") : v && (this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2, r || this._setFlag(this.defaultCountry)), !r && y && (this.telInput.value = "+".concat(this.selectedCountryData.dialCode));
+            I ? this._setFlag(f) : s && l ? this._setFlag("us") : v && !r ? (this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2, this._setFlag(this.defaultCountry)) : this._setFlag(), !r && y && (this.telInput.value = "+".concat(this.selectedCountryData.dialCode));
           }
           r && this._updateValFromNumber(r);
         } }, { key: "_initListeners", value: function() {

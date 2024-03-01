@@ -436,7 +436,7 @@ class Iti {
     if (showFlags) {
       this.selectedFlagInner = this._createEl(
         "div",
-        { class: "iti__flag iti__globe" },
+        { class: "iti__flag" },
         this.selectedFlag
       );
     }
@@ -631,14 +631,15 @@ class Iti {
         if (dialCode && isRegionlessNanp) {
           // has intl dial code, is regionless nanp, and no initialCountry, so default to US
           this._setFlag("us");
-        } else if (defaultToFirstCountry) {
+        } else if (defaultToFirstCountry && !val) {
           // no dial code and no initialCountry, so default to first in list
           this.defaultCountry = this.preferredCountries.length
             ? this.preferredCountries[0].iso2
             : this.countries[0].iso2;
-          if (!val) {
-            this._setFlag(this.defaultCountry);
-          }
+          this._setFlag(this.defaultCountry);
+        } else {
+          // display the empty state (globe icon)
+          this._setFlag();
         }
       }
 
