@@ -34,10 +34,9 @@ describe("isValidNumber:", function() {
       expect(iti.isValidNumber()).toBeFalsy();
     });
 
-    // guess this is a quirk of UK phone numbers that some valid ones are only 10 digits (e.g. 0773312345)
-    it("returns true for: invalid (too short by 1 digit) intl number", function() {
+    it("returns false for: invalid (too short by 1 digit) intl number", function() {
       iti.setNumber("+44 7733 12345");
-      expect(iti.isValidNumber()).toBeTruthy();
+      expect(iti.isValidNumber()).toBeFalsy();
     });
 
     it("returns false for: invalid (too long) intl number", function() {

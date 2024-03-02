@@ -129,7 +129,17 @@ const isPossibleNumber = (number, countryCode) => {
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
     // can't use phoneUtil.isPossibleNumber directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter
     const result = phoneUtil.isPossibleNumberWithReason(numberObj);
-    return result === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
+    const isPossible = result === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
+
+    // custom validation for UK mobile numbers
+    // because libphonenumber returns IS_POSSIBLE (rather than IS_POSSIBLE_LOCAL_ONLY) for 0740012 which is not possible
+    let customValidation = true;
+    const nationalNumber = numberObj.getNationalNumber().toString();
+    if (countryCode === 'gb' && nationalNumber.charAt(0) === '7') {
+      customValidation = nationalNumber.length === 10;
+    }
+
+    return isPossible && customValidation;
   } catch (e) {
     return false;
   }
