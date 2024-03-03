@@ -333,7 +333,7 @@ Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires t
 ```js
 const numberType = iti.getNumberType();
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L119) in the global enum `intlTelInputUtils.numberType` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L178) in the global enum `intlTelInputUtils.numberType` e.g.  
 ```js
 if (numberType === intlTelInputUtils.numberType.MOBILE) {
     // is a mobile number
