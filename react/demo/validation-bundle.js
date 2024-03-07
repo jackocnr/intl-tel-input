@@ -24867,9 +24867,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             return intlTelInputUtils.getValidationError(this._getFullNumber(), t);
           }
           return -99;
-        } }, { key: "isValidNumber", value: function() {
-          var t = this._getFullNumber();
-          return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(t, this.selectedCountryData.iso2) : null;
+        } }, { key: "isValidNumber", value: function(t) {
+          var e = this._getFullNumber();
+          return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(e, this.selectedCountryData.iso2, t) : null;
         } }, { key: "isValidNumberPrecise", value: function() {
           var t = this._getFullNumber();
           return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(t, this.selectedCountryData.iso2) : null;

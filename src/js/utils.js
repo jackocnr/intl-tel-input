@@ -123,10 +123,17 @@ const isValidNumber = (number, countryCode) => {
 };
 
 // check if given number is possible
-const isPossibleNumber = (number, countryCode) => {
+const isPossibleNumber = (number, countryCode, mobileOnly) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+
+    if (mobileOnly) {
+      const resultMobile = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, i18n.phonenumbers.PhoneNumberType.MOBILE);
+      const isPossibleMobile = resultMobile === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
+      return isPossibleMobile;
+    }
+
     // can't use phoneUtil.isPossibleNumber directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter
     const result = phoneUtil.isPossibleNumberWithReason(numberObj);
     const isPossible = result === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;

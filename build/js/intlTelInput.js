@@ -1678,9 +1678,9 @@
                 }
             }, {
                 key: "isValidNumber",
-                value: function isValidNumber() {
+                value: function isValidNumber(mobileOnly) {
                     var val = this._getFullNumber();
-                    return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2) : null;
+                    return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
                 }
             }, {
                 key: "isValidNumberPrecise",

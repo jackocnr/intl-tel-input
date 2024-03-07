@@ -1860,10 +1860,10 @@ class Iti {
   }
 
   // validate the input val - assumes the global function isPossibleNumber (from utilsScript)
-  isValidNumber() {
+  isValidNumber(mobileOnly) {
     const val = this._getFullNumber();
     return window.intlTelInputUtils
-      ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2)
+      ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly)
       : null;
   }
 
