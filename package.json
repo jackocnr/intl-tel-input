@@ -61,8 +61,20 @@
     "prettier": "^2.8.7",
     "region-flags": "https://github.com/fonttools/region-flags/archive/refs/tags/1.2.1.tar.gz",
     "sass": "^1.62.0",
-    "time-grunt": "^1.4.0"
+    "time-grunt": "^1.4.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
+  "files": [
+	  "build/*",
+	  "CHANGELOG.md",
+	  "LICENSE",
+	  "package.json",
+	  "package-lock.json",
+	  "README.md",
+	  "screenshots/*"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jackocnr/intl-tel-input.git"
@@ -78,10 +90,5 @@
     "watch": "grunt watch",
     "build:react": "node react/build.js && esbuild react/demo/SimpleApp.js --bundle --outfile=react/demo/simple-bundle.js --loader:.js=jsx --format=cjs && esbuild react/demo/ValidationApp.js --bundle --outfile=react/demo/validation-bundle.js --loader:.js=jsx --format=cjs"
   },
-  "style": "build/css/intlTelInput.css",
-  "dependencies": {
-    "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  }
+  "style": "build/css/intlTelInput.css"
 }
