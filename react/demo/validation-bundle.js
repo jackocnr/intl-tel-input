@@ -24304,9 +24304,9 @@ var rt = (c, p, g, m) => {
   return c;
 };
 var at = (c, p, g) => (g = c != null ? X(it(c)) : {}, rt(p || !c || !c.__esModule ? V(g, "default", { value: c, enumerable: true }) : g, c));
-var H = ot((dt, N) => {
+var H = ot((dt, F) => {
   (function(c) {
-    typeof N == "object" && N.exports ? N.exports = c() : window.intlTelInput = c();
+    typeof F == "object" && F.exports ? F.exports = c() : window.intlTelInput = c();
   })(function(c) {
     "use strict";
     return function() {
@@ -24423,7 +24423,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         Object.values(t).forEach(function(e) {
           return e[n]();
         });
-      }, Z = function() {
+      }, $ = function() {
         function a(n) {
           var t = arguments.length > 1 && arguments[1] !== c ? arguments[1] : {};
           C(this, a), this.id = Y++, this.telInput = n, this.activeItem = null, this.highlightedItem = null, this.options = Object.assign({}, K, t), this.hadInitialPlaceholder = !!n.getAttribute("placeholder");
@@ -24515,10 +24515,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var I = e || o || i;
           if (I && (this.flagsContainer = this._createEl("div", { class: "iti__flag-container" }, f)), f.appendChild(this.telInput), I && (this.selectedFlag = this._createEl("div", _({ class: "iti__selected-flag" }, e && { role: "combobox", "aria-haspopup": "listbox", "aria-controls": "iti-".concat(this.id, "__country-listbox"), "aria-expanded": "false", "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country" }), this.flagsContainer)), o && (this.selectedFlagInner = this._createEl("div", { class: "iti__flag" }, this.selectedFlag)), this.selectedFlag && this.telInput.disabled && this.selectedFlag.setAttribute("aria-disabled", "true"), i && (this.selectedDialCode = this._createEl("div", { class: "iti__selected-dial-code" }, this.selectedFlag)), e) {
             this.telInput.disabled || this.selectedFlag.setAttribute("tabindex", "0"), this.dropdownArrow = this._createEl("div", { class: "iti__arrow" }, this.selectedFlag);
-            var $ = u ? "" : "iti--flexible-dropdown-width";
-            if (this.dropdownContent = this._createEl("div", { class: "iti__dropdown-content iti__hide ".concat($) }), y && (this.searchInput = this._createEl("input", { type: "text", class: "iti__search-input", placeholder: this.options.i18n.searchPlaceholder || "Search" }, this.dropdownContent)), this.countryList = this._createEl("ul", { class: "iti__country-list", id: "iti-".concat(this.id, "__country-listbox"), role: "listbox", "aria-label": this.options.i18n.countryListAriaLabel || "List of countries" }, this.dropdownContent), this.preferredCountries.length && !y && (this._appendListItems(this.preferredCountries, "iti__preferred", true), this._createEl("li", { class: "iti__divider", "aria-hidden": "true" }, this.countryList)), this._appendListItems(this.countries, "iti__standard"), l) {
-              var F = "iti iti--container";
-              h ? F += " iti--fullscreen-popup" : F += " iti--inline-dropdown", y && (F += " iti--country-search"), this.dropdown = this._createEl("div", { class: F }), this.dropdown.appendChild(this.dropdownContent);
+            var Z = u ? "" : "iti--flexible-dropdown-width";
+            if (this.dropdownContent = this._createEl("div", { class: "iti__dropdown-content iti__hide ".concat(Z) }), y && (this.searchInput = this._createEl("input", { type: "text", class: "iti__search-input", placeholder: this.options.i18n.searchPlaceholder || "Search" }, this.dropdownContent)), this.countryList = this._createEl("ul", { class: "iti__country-list", id: "iti-".concat(this.id, "__country-listbox"), role: "listbox", "aria-label": this.options.i18n.countryListAriaLabel || "List of countries" }, this.dropdownContent), this.preferredCountries.length && !y && (this._appendListItems(this.preferredCountries, "iti__preferred", true), this._createEl("li", { class: "iti__divider", "aria-hidden": "true" }, this.countryList)), this._appendListItems(this.countries, "iti__standard"), l) {
+              var N = "iti iti--container";
+              h ? N += " iti--fullscreen-popup" : N += " iti--inline-dropdown", y && (N += " iti--country-search"), this.dropdown = this._createEl("div", { class: N }), this.dropdown.appendChild(this.dropdownContent);
             } else
               this.flagsContainer.appendChild(this.dropdownContent);
           }
@@ -24769,10 +24769,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           var o = i.offsetWidth;
           return t.parentNode.removeChild(t), o;
         } }, { key: "_updatePlaceholder", value: function() {
-          var t = this.options.autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && this.options.autoPlaceholder === "polite";
-          if (window.intlTelInputUtils && t) {
-            var e = intlTelInputUtils.numberType[this.options.placeholderNumberType], i = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, e) : "";
-            i = this._beforeSetNumber(i), typeof this.options.customPlaceholder == "function" && (i = this.options.customPlaceholder(i, this.selectedCountryData)), this.telInput.setAttribute("placeholder", i);
+          var t = this.options, e = t.autoPlaceholder, i = t.placeholderNumberType, o = t.nationalMode, r = t.customPlaceholder, s = e === "aggressive" || !this.hadInitialPlaceholder && e === "polite";
+          if (window.intlTelInputUtils && s) {
+            var l = intlTelInputUtils.numberType[i], u = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, o, l) : "";
+            u = this._beforeSetNumber(u), typeof r == "function" && (u = r(u, this.selectedCountryData)), this.telInput.setAttribute("placeholder", u);
           }
         } }, { key: "_selectListItem", value: function(t) {
           var e = this._setFlag(t.getAttribute("data-country-code"));
@@ -24904,7 +24904,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         }
         return null;
       }, S.defaults = K, S.version = "19.5.6", function(a, n) {
-        var t = new Z(a, n);
+        var t = new $(a, n);
         return t._init(), a.setAttribute("data-intl-tel-input-id", t.id), window.intlTelInputGlobals.instances[t.id] = t, t;
       };
     }();

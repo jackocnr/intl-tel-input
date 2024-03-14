@@ -1375,13 +1375,14 @@
             }, {
                 key: "_updatePlaceholder",
                 value: function _updatePlaceholder() {
-                    var shouldSetPlaceholder = this.options.autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && this.options.autoPlaceholder === "polite";
+                    var _this$options4 = this.options, autoPlaceholder = _this$options4.autoPlaceholder, placeholderNumberType = _this$options4.placeholderNumberType, nationalMode = _this$options4.nationalMode, customPlaceholder = _this$options4.customPlaceholder;
+                    var shouldSetPlaceholder = autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && autoPlaceholder === "polite";
                     if (window.intlTelInputUtils && shouldSetPlaceholder) {
-                        var numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType];
-                        var placeholder = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, this.options.nationalMode, numberType) : "";
+                        var numberType = intlTelInputUtils.numberType[placeholderNumberType];
+                        var placeholder = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, nationalMode, numberType) : "";
                         placeholder = this._beforeSetNumber(placeholder);
-                        if (typeof this.options.customPlaceholder === "function") {
-                            placeholder = this.options.customPlaceholder(placeholder, this.selectedCountryData);
+                        if (typeof customPlaceholder === "function") {
+                            placeholder = customPlaceholder(placeholder, this.selectedCountryData);
                         }
                         this.telInput.setAttribute("placeholder", placeholder);
                     }

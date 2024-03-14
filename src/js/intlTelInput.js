@@ -1474,27 +1474,29 @@ class Iti {
 
   // update the input placeholder to an example number from the currently selected country
   _updatePlaceholder() {
+    const {
+      autoPlaceholder,
+      placeholderNumberType,
+      nationalMode,
+      customPlaceholder
+    } = this.options;
     const shouldSetPlaceholder =
-      this.options.autoPlaceholder === "aggressive" ||
-      (!this.hadInitialPlaceholder &&
-        this.options.autoPlaceholder === "polite");
+      autoPlaceholder === "aggressive" ||
+      (!this.hadInitialPlaceholder && autoPlaceholder === "polite");
+      
     if (window.intlTelInputUtils && shouldSetPlaceholder) {
-      const numberType =
-        intlTelInputUtils.numberType[this.options.placeholderNumberType];
+      const numberType = intlTelInputUtils.numberType[placeholderNumberType];
       let placeholder = this.selectedCountryData.iso2
         ? intlTelInputUtils.getExampleNumber(
             this.selectedCountryData.iso2,
-            this.options.nationalMode,
+            nationalMode,
             numberType
           )
         : "";
 
       placeholder = this._beforeSetNumber(placeholder);
-      if (typeof this.options.customPlaceholder === "function") {
-        placeholder = this.options.customPlaceholder(
-          placeholder,
-          this.selectedCountryData
-        );
+      if (typeof customPlaceholder === "function") {
+        placeholder = customPlaceholder(placeholder, this.selectedCountryData);
       }
       this.telInput.setAttribute("placeholder", placeholder);
     }
