@@ -840,12 +840,15 @@
                         _this6._triggerCountryChange();
                     }
                     // if user types their own formatting char (not a plus or a numeric), then set the override
-                    if (e && e.data && /[^+0-9]/.test(e.data)) {
+                    var isFormattingChar = e && e.data && /[^+0-9]/.test(e.data);
+                    var isPaste = e && e.inputType === "insertFromPaste" && _this6.telInput.value;
+                    if (isFormattingChar || isPaste) {
                         userOverrideFormatting = true;
                     } else if (!/[^+0-9]/.test(_this6.telInput.value)) {
                         userOverrideFormatting = false;
                     }
-                    if (_this6.options.formatAsYouType && !userOverrideFormatting) {
+                    // handle FAYT, unless userOverrideFormatting or it's a paste event
+                    if (_this6.options.formatAsYouType && !userOverrideFormatting && e.inputType !== "insertFromPaste") {
                         // maintain caret position after reformatting
                         var currentCaretPos = _this6.telInput.selectionStart;
                         var valueBeforeCaret = _this6.telInput.value.substring(0, currentCaretPos);

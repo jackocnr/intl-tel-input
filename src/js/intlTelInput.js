@@ -816,7 +816,9 @@ class Iti {
       }
 
       // if user types their own formatting char (not a plus or a numeric), then set the override
-      if (e && e.data && /[^+0-9]/.test(e.data)) {
+      const isFormattingChar = e && e.data && /[^+0-9]/.test(e.data);
+      const isPaste = e && e.inputType === "insertFromPaste" && this.telInput.value;
+      if (isFormattingChar || isPaste) {
         userOverrideFormatting = true;
       }
       // if user removes all formatting chars, then reset the override
@@ -824,7 +826,8 @@ class Iti {
         userOverrideFormatting = false;
       }
 
-      if (this.options.formatAsYouType && !userOverrideFormatting) {
+      // handle FAYT, unless userOverrideFormatting or it's a paste event
+      if (this.options.formatAsYouType && !userOverrideFormatting && e.inputType !== "insertFromPaste") {
         // maintain caret position after reformatting
         const currentCaretPos = this.telInput.selectionStart;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
