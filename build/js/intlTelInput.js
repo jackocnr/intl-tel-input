@@ -1595,7 +1595,9 @@
                         if (this.telInput.value) {
                             this._updateValFromNumber(this.telInput.value);
                         }
-                        this._updatePlaceholder();
+                        if (this.selectedCountryData.iso2) {
+                            this._updatePlaceholder();
+                        }
                     }
                     this.resolveUtilsScriptPromise();
                 }
