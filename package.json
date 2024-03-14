@@ -68,12 +68,13 @@
   },
   "files": [
 	  "build/*",
+	  "react/build/*",
 	  "CHANGELOG.md",
 	  "LICENSE",
 	  "package.json",
 	  "package-lock.json",
 	  "README.md",
-	  "screenshots/*"
+    "index.js"
   ],
   "repository": {
     "type": "git",
