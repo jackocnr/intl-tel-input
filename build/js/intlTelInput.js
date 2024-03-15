@@ -471,7 +471,7 @@
                     if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
                         this.telInput.setAttribute("autocomplete", "off");
                     }
-                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, showSelectedDialCode = _this$options.showSelectedDialCode, showFlags = _this$options.showFlags, containerClass = _this$options.containerClass, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth, useFullscreenPopup = _this$options.useFullscreenPopup, countrySearch = _this$options.countrySearch;
+                    var _this$options = this.options, allowDropdown = _this$options.allowDropdown, showSelectedDialCode = _this$options.showSelectedDialCode, showFlags = _this$options.showFlags, containerClass = _this$options.containerClass, hiddenInput = _this$options.hiddenInput, dropdownContainer = _this$options.dropdownContainer, fixDropdownWidth = _this$options.fixDropdownWidth, useFullscreenPopup = _this$options.useFullscreenPopup, countrySearch = _this$options.countrySearch, i18n = _this$options.i18n;
                     // containers (mostly for positioning)
                     var parentClass = "iti";
                     if (allowDropdown) {
@@ -502,23 +502,27 @@
                     }
                     wrapper.appendChild(this.telInput);
                     // selected flag (displayed to left of input)
-                    // using Aria tags for "Select-Only Combobox Example"
+                    // when countrySearch disabled: using Aria tags for "Select-Only Combobox Example"
                     // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
                     if (showFlagsContainer) {
                         this.selectedFlag = this._createEl("div", _objectSpread({
                             "class": "iti__selected-flag"
-                        }, allowDropdown && {
-                            role: "combobox",
-                            "aria-haspopup": "listbox",
-                            "aria-controls": "iti-".concat(this.id, "__country-listbox"),
+                        }, allowDropdown && _objectSpread({
                             "aria-expanded": "false",
-                            "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country"
-                        }), this.flagsContainer);
+                            "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country",
+                            "aria-haspopup": countrySearch ? "true" : "listbox",
+                            "aria-controls": countrySearch ? "iti-".concat(this.id, "__dropdown-content") : "iti-".concat(this.id, "__country-listbox")
+                        }, countrySearch || {
+                            role: "combobox"
+                        })), this.flagsContainer);
                     }
                     if (showFlags) {
                         this.selectedFlagInner = this._createEl("div", {
                             "class": "iti__flag"
                         }, this.selectedFlag);
+                        this.selectedFlagA11yText = this._createEl("span", {
+                            "class": "iti__a11y-text"
+                        }, this.selectedFlagInner);
                     }
                     if (this.selectedFlag && this.telInput.disabled) {
                         this.selectedFlag.setAttribute("aria-disabled", "true");
@@ -534,17 +538,28 @@
                             this.selectedFlag.setAttribute("tabindex", "0");
                         }
                         this.dropdownArrow = this._createEl("div", {
-                            "class": "iti__arrow"
+                            "class": "iti__arrow",
+                            "aria-hidden": "true"
                         }, this.selectedFlag);
                         var extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
                         this.dropdownContent = this._createEl("div", {
+                            id: "iti-".concat(this.id, "__dropdown-content"),
                             "class": "iti__dropdown-content iti__hide ".concat(extraClasses)
                         });
                         if (countrySearch) {
                             this.searchInput = this._createEl("input", {
                                 type: "text",
                                 "class": "iti__search-input",
-                                placeholder: this.options.i18n.searchPlaceholder || "Search"
+                                placeholder: i18n.searchPlaceholder || "Search",
+                                role: "combobox",
+                                "aria-expanded": "true",
+                                "aria-label": i18n.searchPlaceholder || "Search",
+                                "aria-controls": "iti-".concat(this.id, "__country-listbox"),
+                                "aria-autocomplete": "list",
+                                autocomplete: "off"
+                            }, this.dropdownContent);
+                            this.searchResultsA11yText = this._createEl("span", {
+                                "class": "iti__a11y-text"
                             }, this.dropdownContent);
                         }
                         // country list: preferred countries, then divider, then all countries
@@ -552,7 +567,7 @@
                             "class": "iti__country-list",
                             id: "iti-".concat(this.id, "__country-listbox"),
                             role: "listbox",
-                            "aria-label": this.options.i18n.countryListAriaLabel || "List of countries"
+                            "aria-label": i18n.countryListAriaLabel || "List of countries"
                         }, this.dropdownContent);
                         if (this.preferredCountries.length && !countrySearch) {
                             this._appendListItems(this.preferredCountries, "iti__preferred", true);
@@ -562,6 +577,9 @@
                             }, this.countryList);
                         }
                         this._appendListItems(this.countries, "iti__standard");
+                        if (countrySearch) {
+                            this._updateSearchResultsText();
+                        }
                         // create dropdownContainer markup
                         if (dropdownContainer) {
                             var dropdownClasses = "iti iti--container";
@@ -1130,6 +1148,21 @@
                             }
                         }
                     }
+                    this._updateSearchResultsText();
+                }
+            }, {
+                key: "_updateSearchResultsText",
+                value: function _updateSearchResultsText() {
+                    var count = this.countryList.childElementCount;
+                    var searchText;
+                    if (count === 0) {
+                        searchText = "No results found";
+                    } else if (count === 1) {
+                        searchText = "1 result found";
+                    } else {
+                        searchText = "".concat(count, " results found");
+                    }
+                    this.searchResultsA11yText.textContent = searchText;
                 }
             }, {
                 key: "_handleUpDownKey",
@@ -1145,12 +1178,12 @@
                         next = key === "ArrowUp" ? this.countryList.lastElementChild : this.countryList.firstElementChild;
                     }
                     if (next) {
+                        // make sure the next item is visible
+                        // (before calling focus(), which can cause the next item to scroll to the middle of the dropdown, which is jarring)
+                        this._scrollTo(next, false);
                         // if country search enabled, dont lose focus from the search input on up/down
                         var doFocus = !this.options.countrySearch;
                         this._highlightListItem(next, doFocus);
-                        if (this.options.countrySearch) {
-                            this._scrollTo(next, false);
-                        }
                     }
                 }
             }, {
@@ -1272,10 +1305,15 @@
                     var prevItem = this.highlightedItem;
                     if (prevItem) {
                         prevItem.classList.remove("iti__highlight");
+                        prevItem.setAttribute("aria-selected", "false");
                     }
                     this.highlightedItem = listItem;
                     this.highlightedItem.classList.add("iti__highlight");
+                    this.highlightedItem.setAttribute("aria-selected", "true");
                     this.selectedFlag.setAttribute("aria-activedescendant", listItem.getAttribute("id"));
+                    if (this.options.countrySearch) {
+                        this.searchInput.setAttribute("aria-activedescendant", listItem.getAttribute("id"));
+                    }
                     if (shouldFocus) {
                         this.highlightedItem.focus();
                     }
@@ -1307,6 +1345,8 @@
                     if (showFlags) {
                         var flagClass = iso2 ? "iti__".concat(iso2) : "iti__globe";
                         this.selectedFlagInner.setAttribute("class", "iti__flag ".concat(flagClass));
+                        var a11yText = iso2 ? "".concat(this.selectedCountryData.name, " +").concat(this.selectedCountryData.dialCode) : "No country selected";
+                        this.selectedFlagA11yText.textContent = a11yText;
                     }
                     this._setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode);
                     if (showSelectedDialCode) {
@@ -1409,6 +1449,12 @@
                     this.dropdownContent.classList.add("iti__hide");
                     this.selectedFlag.setAttribute("aria-expanded", "false");
                     this.selectedFlag.removeAttribute("aria-activedescendant");
+                    if (this.highlightedItem) {
+                        this.highlightedItem.setAttribute("aria-selected", "false");
+                    }
+                    if (this.options.countrySearch) {
+                        this.searchInput.removeAttribute("aria-activedescendant");
+                    }
                     // update the arrow
                     this.dropdownArrow.classList.remove("iti__arrow--up");
                     // unbind key events

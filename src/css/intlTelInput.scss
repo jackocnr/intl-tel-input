@@ -58,6 +58,13 @@ $mobilePopupMargin: 30px !default;
   &__v-hide {
     visibility: hidden;
   }
+  &__a11y-text {
+    width: 1px;
+    height: 1px;
+    clip: rect(1px, 1px, 1px, 1px);
+    overflow: hidden;
+    position: absolute;
+  }
 
   // specify types to increase specificity e.g. to override bootstrap v2.3
   input.iti__tel-input,

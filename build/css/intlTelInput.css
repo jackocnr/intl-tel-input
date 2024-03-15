@@ -11,6 +11,13 @@
 .iti__v-hide {
   visibility: hidden;
 }
+.iti__a11y-text {
+  width: 1px;
+  height: 1px;
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  position: absolute;
+}
 .iti input.iti__tel-input,
 .iti input.iti__tel-input[type=text],
 .iti input.iti__tel-input[type=tel] {
