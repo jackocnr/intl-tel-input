@@ -37,7 +37,7 @@ const defaults = {
   formatOnDisplay: true,
   // geoIp lookup function
   geoIpLookup: null,
-  // inject a hidden input with this name, and on submit, populate it with the result of getNumber
+  // inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber
   hiddenInput: null,
   // internationalise the plugin text e.g. search input placeholder, country names
   i18n: {},
@@ -527,39 +527,25 @@ class Iti {
 
     if (hiddenInput) {
       const telInputName = this.telInput.getAttribute("name");
-      const result = hiddenInput(telInputName);
-      const isObject = result !== null && typeof result === "object";
+      const names = hiddenInput(telInputName);
 
-      let hiddenInputPhoneName;
-      let hiddenInputCountryName;
-
-      if (isObject) {
-        hiddenInputPhoneName = result.phone || telInputName;
-        hiddenInputCountryName = result.country || `${hiddenInputPhoneName}_country`;
-      } else {
-        hiddenInputPhoneName = result || telInputName;
-        hiddenInputCountryName = `${hiddenInputPhoneName}_country`;
+      if (names.phone) {
+        // Create hidden input for the full international number
+        this.hiddenInput = this._createEl("input", {
+          type: "hidden",
+          name: names.phone
+        });
+        wrapper.appendChild(this.hiddenInput);
       }
 
-      // Check if a name has been determined for the phone input field after all conditions
-      if (!hiddenInputPhoneName) {
-        return;
+      if (names.country) {
+        // Create hidden input for the selected country iso2 code
+        this.hiddenInputCountry = this._createEl("input", {
+          type: "hidden",
+          name: names.country
+        });
+        wrapper.appendChild(this.hiddenInputCountry);
       }
-
-      // Create hidden input for the full international number
-      this.hiddenInput = this._createEl("input", {
-        type: "hidden",
-        name: hiddenInputPhoneName
-      });
-
-      // Create hidden input for the selected country iso2 code
-      this.hiddenInputCountry = this._createEl("input", {
-        type: "hidden",
-        name: hiddenInputCountryName
-      });
-
-      wrapper.appendChild(this.hiddenInput);
-      wrapper.appendChild(this.hiddenInputCountry);
     }
   }
 
@@ -652,7 +638,7 @@ class Iti {
     if (this.options.allowDropdown) {
       this._initDropdownListeners();
     }
-    if (this.hiddenInput) {
+    if ((this.hiddenInput || this.hiddenInputCountry) && this.telInput.form) {
       this._initHiddenInputListener();
     }
   }
@@ -660,15 +646,17 @@ class Iti {
   // update hidden input on form submit
   _initHiddenInputListener() {
     this._handleHiddenInputSubmit = () => {
-      this.hiddenInput.value = this.getNumber();
-      this.hiddenInputCountry.value = this.getSelectedCountryData().iso2;
+      if (this.hiddenInput) {
+        this.hiddenInput.value = this.getNumber();
+      }
+      if (this.hiddenInputCountry) {
+        this.hiddenInputCountry.value = this.getSelectedCountryData().iso2;
+      }
     };
-    if (this.telInput.form) {
-      this.telInput.form.addEventListener(
-        "submit",
-        this._handleHiddenInputSubmit
-      );
-    }
+    this.telInput.form.addEventListener(
+      "submit",
+      this._handleHiddenInputSubmit
+    );
   }
 
   // initialise the dropdown listeners
@@ -1770,8 +1758,6 @@ class Iti {
 
   // remove plugin
   destroy() {
-    const { form } = this.telInput;
-
     if (this.options.allowDropdown) {
       // make sure the dropdown is closed (and unbind listeners)
       this._closeDropdown();
@@ -1791,7 +1777,8 @@ class Iti {
     }
 
     // unbind hiddenInput listeners
-    if (this.hiddenInput && form) {
+    const { form } = this.telInput;
+    if (this._handleHiddenInputSubmit && form) {
       form.removeEventListener("submit", this._handleHiddenInputSubmit);
     }
 
