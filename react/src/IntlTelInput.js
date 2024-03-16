@@ -73,7 +73,6 @@ IntlTelInput.propTypes = {
   onChangeErrorCode: PropTypes.func,
   initOptions: PropTypes.shape({
     allowDropdown: PropTypes.bool,
-    autoInsertDialCode: PropTypes.bool,
     autoPlaceholder: PropTypes.string,
     containerClass: PropTypes.string,
     countrySearch: PropTypes.bool,

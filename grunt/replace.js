@@ -62,21 +62,20 @@ module.exports = function(grunt) {
             match: /_initKeyListeners/g,
             replacement: '_j'
           }, {
+            match: /_translateCursorPosition/g,
+            replacement: '_j3'
+          }, {
             match: /_cap/g,
             replacement: '_j2'
-          }, {
-            match: /_initBlurListeners/g,
-            replacement: '_l'
           }, {
             match: /_removeEmptyDialCode/g,
             replacement: '_l2'
           }, {
             match: /_getNumeric/g,
             replacement: '_m'
-          }, {
-            match: /_trigger/g,
-            replacement: '_m2'
-          }, {
+          },
+          // NOTE: here we exclude _trigger which is a substring of _triggerCountryChange etc
+          {
             match: /_showDropdown/g,
             replacement: '_n'
           }, {
@@ -88,6 +87,15 @@ module.exports = function(grunt) {
           }, {
             match: /_bindDropdownListeners/g,
             replacement: '_p'
+          }, {
+            match: /_normaliseString/g,
+            replacement: '_p2'
+          }, {
+            match: /_filterCountries/g,
+            replacement: '_p3'
+          }, {
+            match: /_updateSearchResultsText/g,
+            replacement: '_p4'
           }, {
             match: /_handleUpDownKey/g,
             replacement: '_q'
@@ -119,6 +127,9 @@ module.exports = function(grunt) {
             match: /_setFlag/g,
             replacement: '_z'
           }, {
+            match: /_setSelectedCountryFlagTitleAttribute/g,
+            replacement: '_z3'
+          }, {
             match: /_getHiddenSelectedFlagWidth/g,
             replacement: '_z2'
           }, {
@@ -145,6 +156,12 @@ module.exports = function(grunt) {
           }, {
             match: /_beforeSetNumber/g,
             replacement: '_7'
+          }, {
+            match: /_triggerCountryChange/g,
+            replacement: '_8'
+          }, {
+            match: /_formatNumberAsYouType/g,
+            replacement: '_9'
           }
         ]
       },
@@ -177,8 +194,8 @@ module.exports = function(grunt) {
             match: /_handleWindowScroll/g,
             replacement: '_a4'
           }, {
-            match: /_handleSubmitOrBlurEvent/g,
-            replacement: '_a8'
+            match: /_handleSearchChange/g,
+            replacement: '_a7'
           }, {
             match: /_handleLabelClick/g,
             replacement: '_a9'
