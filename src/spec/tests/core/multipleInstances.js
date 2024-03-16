@@ -39,22 +39,17 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
     expect(getListLength(input2)).toEqual(4);
   });
 
-  it("instances have different default countries selected", function() {
-    expect(getSelectedFlagElement()).toHaveClass(`iti__${afghanistanIso2Code}`);
-    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaIso2Code}`);
-  });
-
   it("selecting an item from the first input dropdown only updates the flag on that input", function() {
     selectFlag(chinaIso2Code);
     expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaIso2Code}`);
-    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaIso2Code}`);
+    expect(getSelectedFlagElement(input2)).toHaveClass("iti__globe");
   });
 
   it("updating the number on the first input only updates the flag on that input", function() {
     input.val(chinaDialCode + " 123456");
     triggerKeyOnInput(" ");
     expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaIso2Code}`);
-    expect(getSelectedFlagElement(input2)).toHaveClass(`iti__${albaniaIso2Code}`);
+    expect(getSelectedFlagElement(input2)).toHaveClass("iti__globe");
   });
 
 

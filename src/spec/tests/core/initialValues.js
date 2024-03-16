@@ -27,8 +27,8 @@ describe("initial values:", function() {
       expect(getListLength()).toEqual(totalCountries);
     });
 
-    it("sets the state correctly: selected flag", function() {
-      expect(getSelectedFlagElement()).toHaveClass("iti__af");
+    it("sets the state correctly: no selected flag", function() {
+      expect(getSelectedFlagElement()).toHaveClass("iti__globe");
     });
 
   });

@@ -13,7 +13,7 @@ describe("getSelectedCountryData: init plugin to test public method getSelectedC
   });
 
   it("gets the right default country data", function() {
-    expect(iti.getSelectedCountryData().iso2).toEqual("af");
+    expect(iti.getSelectedCountryData().iso2).toBeUndefined();
   });
 
   it("change country by number gets the right country data", function() {

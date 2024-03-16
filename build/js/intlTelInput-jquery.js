@@ -183,8 +183,6 @@
         containerClass: "",
         // modify the auto placeholder
         customPlaceholder: null,
-        // by default, initialise with the first country in the list selected (if no country set via the initial value or initialCountry option)
-        defaultToFirstCountry: true,
         // append menu to specified element
         dropdownContainer: null,
         // don't display these countries
@@ -676,7 +674,7 @@
                 var val = useAttribute ? attributeValue : inputValue;
                 var dialCode = this._getDialCode(val);
                 var isRegionlessNanp = this._isRegionlessNanp(val);
-                var _this$options2 = this.options, initialCountry = _this$options2.initialCountry, autoInsertDialCode = _this$options2.autoInsertDialCode, defaultToFirstCountry = _this$options2.defaultToFirstCountry;
+                var _this$options2 = this.options, initialCountry = _this$options2.initialCountry, autoInsertDialCode = _this$options2.autoInsertDialCode;
                 // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
                 // flag, else fall back to the default country
                 if (dialCode && !isRegionlessNanp) {
@@ -691,10 +689,6 @@
                         if (dialCode && isRegionlessNanp) {
                             // has intl dial code, is regionless nanp, and no initialCountry, so default to US
                             this._setFlag("us");
-                        } else if (defaultToFirstCountry && !val) {
-                            // no dial code and no initialCountry, so default to first in list
-                            this.defaultCountry = this.preferredCountries.length ? this.preferredCountries[0].iso2 : this.countries[0].iso2;
-                            this._setFlag(this.defaultCountry);
                         } else {
                             // display the empty state (globe icon)
                             this._setFlag();
@@ -960,24 +954,29 @@
         }, {
             key: "_showDropdown",
             value: function _showDropdown() {
-                if (this.options.fixDropdownWidth) {
+                var _this$options3 = this.options, fixDropdownWidth = _this$options3.fixDropdownWidth, countrySearch = _this$options3.countrySearch;
+                if (fixDropdownWidth) {
                     this.dropdownContent.style.width = "".concat(this.telInput.offsetWidth, "px");
                 }
                 this.dropdownContent.classList.remove("iti__hide");
                 this.selectedFlag.setAttribute("aria-expanded", "true");
                 this._setDropdownPosition();
-                if (this.options.countrySearch) {
+                // if we have previously selected a country (and countrySearch is disabled), then highlight that item and scroll to it
+                // else highlight the first item and scroll to top (even if countrySearch is disabled e.g. on init, showing globe icon)
+                if (this.activeItem && !countrySearch) {
+                    // update highlighting and scroll to active list item
+                    this._highlightListItem(this.activeItem, false);
+                    this._scrollTo(this.activeItem, true);
+                } else {
                     // start by highlighting the first item in the list
                     var firstElementChild = this.countryList.firstElementChild;
                     if (firstElementChild) {
                         this._highlightListItem(firstElementChild, false);
                         this.countryList.scrollTop = 0;
                     }
-                    this.searchInput.focus();
-                } else if (this.activeItem) {
-                    // update highlighting and scroll to active list item
-                    this._highlightListItem(this.activeItem, false);
-                    this._scrollTo(this.activeItem, true);
+                    if (countrySearch) {
+                        this.searchInput.focus();
+                    }
                 }
                 // bind all the dropdown-related listeners: mouseover, click, click-off, keydown
                 this._bindDropdownListeners();
@@ -1344,7 +1343,7 @@
         }, {
             key: "_setFlag",
             value: function _setFlag(iso2) {
-                var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, showSelectedDialCode = _this$options3.showSelectedDialCode, showFlags = _this$options3.showFlags, countrySearch = _this$options3.countrySearch, i18n = _this$options3.i18n;
+                var _this$options4 = this.options, allowDropdown = _this$options4.allowDropdown, showSelectedDialCode = _this$options4.showSelectedDialCode, showFlags = _this$options4.showFlags, countrySearch = _this$options4.countrySearch, i18n = _this$options4.i18n;
                 var prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
                 // do this first as it will throw an error and stop if iso2 is invalid
                 this.selectedCountryData = iso2 ? this._getCountryData(iso2, false) : {};
@@ -1429,7 +1428,7 @@
         }, {
             key: "_updatePlaceholder",
             value: function _updatePlaceholder() {
-                var _this$options4 = this.options, autoPlaceholder = _this$options4.autoPlaceholder, placeholderNumberType = _this$options4.placeholderNumberType, nationalMode = _this$options4.nationalMode, customPlaceholder = _this$options4.customPlaceholder;
+                var _this$options5 = this.options, autoPlaceholder = _this$options5.autoPlaceholder, placeholderNumberType = _this$options5.placeholderNumberType, nationalMode = _this$options5.nationalMode, customPlaceholder = _this$options5.customPlaceholder;
                 var shouldSetPlaceholder = autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && autoPlaceholder === "polite";
                 if (window.intlTelInputUtils && shouldSetPlaceholder) {
                     var numberType = intlTelInputUtils.numberType[placeholderNumberType];

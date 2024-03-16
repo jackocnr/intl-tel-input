@@ -19,7 +19,8 @@ describe("autoInsertDialCode option:", function() {
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         autoInsertDialCode: true,
-        nationalMode: false
+        nationalMode: false,
+        initialCountry: "af",
       });
     });
 

@@ -27,8 +27,6 @@ const defaults = {
   containerClass: "",
   // modify the auto placeholder
   customPlaceholder: null,
-  // by default, initialise with the first country in the list selected (if no country set via the initial value or initialCountry option)
-  defaultToFirstCountry: true,
   // append menu to specified element
   dropdownContainer: null,
   // don't display these countries
@@ -636,7 +634,7 @@ class Iti {
     const val = useAttribute ? attributeValue : inputValue;
     const dialCode = this._getDialCode(val);
     const isRegionlessNanp = this._isRegionlessNanp(val);
-    const { initialCountry, autoInsertDialCode, defaultToFirstCountry } = this.options;
+    const { initialCountry, autoInsertDialCode } = this.options;
 
     // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
     // flag, else fall back to the default country
@@ -652,12 +650,6 @@ class Iti {
         if (dialCode && isRegionlessNanp) {
           // has intl dial code, is regionless nanp, and no initialCountry, so default to US
           this._setFlag("us");
-        } else if (defaultToFirstCountry && !val) {
-          // no dial code and no initialCountry, so default to first in list
-          this.defaultCountry = this.preferredCountries.length
-            ? this.preferredCountries[0].iso2
-            : this.countries[0].iso2;
-          this._setFlag(this.defaultCountry);
         } else {
           // display the empty state (globe icon)
           this._setFlag();
@@ -950,7 +942,8 @@ class Iti {
 
   // show the dropdown
   _showDropdown() {
-    if (this.options.fixDropdownWidth) {
+    const { fixDropdownWidth, countrySearch } = this.options;
+    if (fixDropdownWidth) {
       this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
     }
     this.dropdownContent.classList.remove("iti__hide");
@@ -958,18 +951,22 @@ class Iti {
 
     this._setDropdownPosition();
 
-    if (this.options.countrySearch) {
+    // if we have previously selected a country (and countrySearch is disabled), then highlight that item and scroll to it
+    // else highlight the first item and scroll to top (even if countrySearch is disabled e.g. on init, showing globe icon)
+    if (this.activeItem && !countrySearch) {
+      // update highlighting and scroll to active list item
+      this._highlightListItem(this.activeItem, false);
+      this._scrollTo(this.activeItem, true);
+    } else {
       // start by highlighting the first item in the list
       const { firstElementChild } = this.countryList;
       if (firstElementChild) {
         this._highlightListItem(firstElementChild, false);
         this.countryList.scrollTop = 0;
       }
-      this.searchInput.focus();
-    } else if (this.activeItem) {
-      // update highlighting and scroll to active list item
-      this._highlightListItem(this.activeItem, false);
-      this._scrollTo(this.activeItem, true);
+      if (countrySearch) {
+        this.searchInput.focus();
+      }
     }
 
     // bind all the dropdown-related listeners: mouseover, click, click-off, keydown

@@ -36,8 +36,8 @@ describe("excludeCountries option:", function() {
       expect(getListLength()).toEqual(totalCountries - excludeCountries.length);
     });
 
-    it("defaults to the next in the list", function() {
-      expect(getSelectedFlagElement()).toHaveClass("iti__af");
+    it("defaults to the globe icon", function() {
+      expect(getSelectedFlagElement()).toHaveClass("iti__globe");
     });
 
     it("typing +1 sets the flag to Dominican Republic", function() {

@@ -13,7 +13,8 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
 
   it("init plugin with autoPlaceholder=off leaves the placeholder empty", function() {
     iti = window.intlTelInput(input[0], {
-      autoPlaceholder: "off"
+      autoPlaceholder: "off",
+      initialCountry: "af",
     });
     expect(input.attr("placeholder")).toBeUndefined();
   });
@@ -23,7 +24,8 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         autoPlaceholder: "polite",
-        nationalMode: true
+        nationalMode: true,
+        initialCountry: "af",
       });
     });
 
@@ -50,7 +52,8 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         autoPlaceholder: "polite",
-        nationalMode: false
+        nationalMode: false,
+        initialCountry: "af",
       });
     });
 
@@ -92,21 +95,24 @@ describe("autoPlaceholder: testing input with an initial placeholder", function(
 
   it("init plugin with autoPlaceholder=off leaves the placeholder the same", function() {
     iti = window.intlTelInput(input[0], {
-      autoPlaceholder: "off"
+      autoPlaceholder: "off",
+      initialCountry: "af",
     });
     expect(input.attr("placeholder")).toEqual(placeholder);
   });
 
   it("init plugin with autoPlaceholder=polite leaves the placeholder the same", function() {
     iti = window.intlTelInput(input[0], {
-      autoPlaceholder: "polite"
+      autoPlaceholder: "polite",
+      initialCountry: "af",
     });
     expect(input.attr("placeholder")).toEqual(placeholder);
   });
 
   it("init plugin with autoPlaceholder=aggressive overwrites the placeholder", function() {
     iti = window.intlTelInput(input[0], {
-      autoPlaceholder: "aggressive"
+      autoPlaceholder: "aggressive",
+      initialCountry: "af",
     });
     expect(input.attr("placeholder")).toEqual("070 123 4567");
   });

@@ -41,7 +41,8 @@ describe("allowDropdown:", function() {
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         allowDropdown: false,
-        showSelectedDialCode: true
+        showSelectedDialCode: true,
+        initialCountry: "af",
       });
     });
 
