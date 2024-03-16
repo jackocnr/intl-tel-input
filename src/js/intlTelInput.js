@@ -1185,14 +1185,16 @@ class Iti {
 
   // update search results text (for a11y)
   _updateSearchResultsText() {
+    const { i18n } = this.options;
     const count = this.countryList.childElementCount;
     let searchText;
     if (count === 0) {
-      searchText = "No results found";
+      searchText = i18n.zeroSearchResults || "No results found";
     } else if (count === 1) {
-      searchText = "1 result found";
+      searchText = i18n.oneSearchResult || "1 result found";
     } else {
-      searchText = `${count} results found`;
+      // eslint-disable-next-line no-template-curly-in-string
+      searchText = i18n.multipleSearchResults ? i18n.multipleSearchResults.replace("${count}", count) : `${count} results found`;
     }
     this.searchResultsA11yText.textContent = searchText;
   }
@@ -1410,7 +1412,7 @@ class Iti {
   // select the given flag, update the placeholder, title, and the active list item
   // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
   _setFlag(iso2) {
-    const { allowDropdown, showSelectedDialCode, showFlags, countrySearch } = this.options;
+    const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
 
     const prevCountry = this.selectedCountryData.iso2
       ? this.selectedCountryData
@@ -1431,7 +1433,8 @@ class Iti {
         "class",
         `iti__flag ${flagClass}`
       );
-      const a11yText = iso2 ? `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}` : "No country selected";
+      const emptyText = i18n.noCountrySelected || "No country selected";
+      const a11yText = iso2 ? `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}` : emptyText;
       this.selectedFlagA11yText.textContent = a11yText;
     }
 

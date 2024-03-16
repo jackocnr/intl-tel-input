@@ -1156,14 +1156,16 @@
             }, {
                 key: "_updateSearchResultsText",
                 value: function _updateSearchResultsText() {
+                    var i18n = this.options.i18n;
                     var count = this.countryList.childElementCount;
                     var searchText;
                     if (count === 0) {
-                        searchText = "No results found";
+                        searchText = i18n.zeroSearchResults || "No results found";
                     } else if (count === 1) {
-                        searchText = "1 result found";
+                        searchText = i18n.oneSearchResult || "1 result found";
                     } else {
-                        searchText = "".concat(count, " results found");
+                        // eslint-disable-next-line no-template-curly-in-string
+                        searchText = i18n.multipleSearchResults ? i18n.multipleSearchResults.replace("${count}", count) : "".concat(count, " results found");
                     }
                     this.searchResultsA11yText.textContent = searchText;
                 }
@@ -1337,7 +1339,7 @@
             }, {
                 key: "_setFlag",
                 value: function _setFlag(iso2) {
-                    var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, showSelectedDialCode = _this$options3.showSelectedDialCode, showFlags = _this$options3.showFlags, countrySearch = _this$options3.countrySearch;
+                    var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, showSelectedDialCode = _this$options3.showSelectedDialCode, showFlags = _this$options3.showFlags, countrySearch = _this$options3.countrySearch, i18n = _this$options3.i18n;
                     var prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
                     // do this first as it will throw an error and stop if iso2 is invalid
                     this.selectedCountryData = iso2 ? this._getCountryData(iso2, false) : {};
@@ -1348,7 +1350,8 @@
                     if (showFlags) {
                         var flagClass = iso2 ? "iti__".concat(iso2) : "iti__globe";
                         this.selectedFlagInner.setAttribute("class", "iti__flag ".concat(flagClass));
-                        var a11yText = iso2 ? "".concat(this.selectedCountryData.name, " +").concat(this.selectedCountryData.dialCode) : "No country selected";
+                        var emptyText = i18n.noCountrySelected || "No country selected";
+                        var a11yText = iso2 ? "".concat(this.selectedCountryData.name, " +").concat(this.selectedCountryData.dialCode) : emptyText;
                         this.selectedFlagA11yText.textContent = a11yText;
                     }
                     this._setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode);
