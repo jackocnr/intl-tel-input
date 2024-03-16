@@ -49,7 +49,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Full validation, including specific error types
 * Retina flag icons
 * Lots of initialisation options for customisation, as well as public methods for interaction
-* Accessibility provided via ARIA tags based on [W3's Select-Only Combobox Example](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/)
+* Accessibility provided via ARIA tags
 
 
 ## Browser Compatibility
@@ -137,8 +137,6 @@ We highly recommend you (lazy) load the included utils.js using the `utilsScript
 
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
-Finally, make sure you have `<meta charset="utf-8">` in the `<head>` section of your page, else you will get an error as the JS contains some special unicode characters for localised country names.
-
 
 ## Initialisation Options
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
@@ -146,10 +144,6 @@ When you initialise the plugin, the first argument is the input element, and the
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also, we display the selected flag on the right instead because it is just a marker of state. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
-
-**autoInsertDialCode**  
-Type: `Boolean` Default: `false`  
-When enabled (requires `nationalMode` to be disabled), the international dial code will be automatically inserted into the input in 3 situations: (A) upon initialisation, and (B) when the user selects a country from the dropdown, and (C) upon calling `setCountry`. Additionally, the plugin will listen for blur/submit events, and if the input only contains a dial code, it will automatically be removed to avoid submitting just that. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--autoinsertdialcode) (using the React component).
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
@@ -174,12 +168,6 @@ intlTelInput(input, {
   },
 });
 ```
-
-**defaultToFirstCountry**  
-Type: `Boolean` Default: `true`  
-Upon initialisation, if no country is selected then default to the first country in the list (including `preferredCountries`). If set to `false`, there will be no country selected to begin with, and it will show a generic globe icon (see below). Note that in some cases, setting an (incorrect) initial country for the user can result in them successfully submitting phone numbers with the wrong dial code. This can happen if, for example, Australia is selected by default (e.g. because it's the first of the `preferredCountries`), and then a user from New Zealand autofills their (national) phone number without noticing the wrong country is selected, and submits the form. In this case, the number validates as true because the two countries share very similar number patterns, and it gets saved with an Australian dial code, thus making the phone number unusable. To avoid this issue, set `defaultToFirstCountry` to `false`. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--defaulttofirstcountry) (using the React component).
-
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/empty-country.png" width="240px" height="53px">
 
 **dropdownContainer**  
 Type: `Node` Default: `null`  
@@ -498,7 +486,7 @@ If your error handling code inserts an error message before the `<input>` it wil
 The dropdown should automatically appear above/below the input depending on the available space. For this to work properly, you must only initialise the plugin after the `<input>` has been added to the DOM.
 
 **Placeholders**  
-In order to get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`.
+In order to get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`, or set `autoPlaceholder` to `"aggressive"` to override any existing placeholder,
 
 **Bootstrap input groups**  
 A couple of CSS fixes are required to get the plugin to play nice with Bootstrap [input groups](https://getbootstrap.com/docs/3.3/components/#input-groups). You can see a Codepen [here](https://codepen.io/jackocnr/pen/EyPXed).  
