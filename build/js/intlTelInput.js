@@ -274,21 +274,15 @@
                     // these promises get resolved when their individual requests complete
                     // this way the dev can do something like iti.promise.then(...) to know when all requests are
                     // complete
-                    if (typeof Promise !== "undefined") {
-                        var autoCountryPromise = new Promise(function(resolve, reject) {
-                            _this.resolveAutoCountryPromise = resolve;
-                            _this.rejectAutoCountryPromise = reject;
-                        });
-                        var utilsScriptPromise = new Promise(function(resolve, reject) {
-                            _this.resolveUtilsScriptPromise = resolve;
-                            _this.rejectUtilsScriptPromise = reject;
-                        });
-                        this.promise = Promise.all([ autoCountryPromise, utilsScriptPromise ]);
-                    } else {
-                        // prevent errors when Promise doesn't exist
-                        this.resolveAutoCountryPromise = this.rejectAutoCountryPromise = function() {};
-                        this.resolveUtilsScriptPromise = this.rejectUtilsScriptPromise = function() {};
-                    }
+                    var autoCountryPromise = new Promise(function(resolve, reject) {
+                        _this.resolveAutoCountryPromise = resolve;
+                        _this.rejectAutoCountryPromise = reject;
+                    });
+                    var utilsScriptPromise = new Promise(function(resolve, reject) {
+                        _this.resolveUtilsScriptPromise = resolve;
+                        _this.rejectUtilsScriptPromise = reject;
+                    });
+                    this.promise = Promise.all([ autoCountryPromise, utilsScriptPromise ]);
                     // in various situations there could be no country selected initially, but we need to be able
                     // to assume this variable exists
                     this.selectedCountryData = {};
@@ -1814,13 +1808,9 @@
             if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
                 // only do this once
                 window.intlTelInputGlobals.startedLoadingUtilsScript = true;
-                // if we have promises, then return a promise
-                if (typeof Promise !== "undefined") {
-                    return new Promise(function(resolve, reject) {
-                        return injectScript(path, resolve, reject);
-                    });
-                }
-                injectScript(path);
+                return new Promise(function(resolve, reject) {
+                    return injectScript(path, resolve, reject);
+                });
             }
             return null;
         };

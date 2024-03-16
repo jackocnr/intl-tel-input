@@ -152,21 +152,15 @@ class Iti {
     // these promises get resolved when their individual requests complete
     // this way the dev can do something like iti.promise.then(...) to know when all requests are
     // complete
-    if (typeof Promise !== "undefined") {
-      const autoCountryPromise = new Promise((resolve, reject) => {
-        this.resolveAutoCountryPromise = resolve;
-        this.rejectAutoCountryPromise = reject;
-      });
-      const utilsScriptPromise = new Promise((resolve, reject) => {
-        this.resolveUtilsScriptPromise = resolve;
-        this.rejectUtilsScriptPromise = reject;
-      });
-      this.promise = Promise.all([autoCountryPromise, utilsScriptPromise]);
-    } else {
-      // prevent errors when Promise doesn't exist
-      this.resolveAutoCountryPromise = this.rejectAutoCountryPromise = () => {};
-      this.resolveUtilsScriptPromise = this.rejectUtilsScriptPromise = () => {};
-    }
+    const autoCountryPromise = new Promise((resolve, reject) => {
+      this.resolveAutoCountryPromise = resolve;
+      this.rejectAutoCountryPromise = reject;
+    });
+    const utilsScriptPromise = new Promise((resolve, reject) => {
+      this.resolveUtilsScriptPromise = resolve;
+      this.rejectUtilsScriptPromise = reject;
+    });
+    this.promise = Promise.all([autoCountryPromise, utilsScriptPromise]);
 
     // in various situations there could be no country selected initially, but we need to be able
     // to assume this variable exists
@@ -2008,13 +2002,9 @@ intlTelInputGlobals.loadUtils = (path) => {
     // only do this once
     window.intlTelInputGlobals.startedLoadingUtilsScript = true;
 
-    // if we have promises, then return a promise
-    if (typeof Promise !== "undefined") {
-      return new Promise((resolve, reject) =>
-        injectScript(path, resolve, reject)
-      );
-    }
-    injectScript(path);
+    return new Promise((resolve, reject) =>
+      injectScript(path, resolve, reject)
+    );
   }
   return null;
 };
