@@ -17,8 +17,6 @@ let id = 0;
 const defaults = {
   // whether or not to allow the dropdown
   allowDropdown: true,
-  // auto insert dial code (A) on init, (B) on user selecting a country, (C) on calling setCountry
-  autoInsertDialCode: false,
   // add a placeholder in the input with an example number for the selected country
   autoPlaceholder: "polite",
   // add a country search input at the top of the dropdown
@@ -123,16 +121,6 @@ class Iti {
       this.options.fixDropdownWidth = true;
     }
 
-    // if in nationalMode, do not insert dial codes
-    if (this.options.nationalMode) {
-      this.options.autoInsertDialCode = false;
-    }
-
-    // if showSelectedDialCode enabled, do not insert dial codes
-    if (this.options.showSelectedDialCode) {
-      this.options.autoInsertDialCode = false;
-    }
-
     // force showFlags=true if there's a dropdown and we're not displaying the dial code,
     // as otherwise you just have a down arrow on it's own which doesn't make sense
     const forceShowFlags =
@@ -175,7 +163,7 @@ class Iti {
     // set the initial state of the input value and the selected flag
     this._setInitialState();
 
-    // start all of the event listeners: autoInsertDialCode, input keydown, selectedFlag click
+    // start all of the event listeners: input keydown, selectedFlag click
     this._initListeners();
 
     // utils script, and auto country
@@ -628,7 +616,7 @@ class Iti {
     const val = useAttribute ? attributeValue : inputValue;
     const dialCode = this._getDialCode(val);
     const isRegionlessNanp = this._isRegionlessNanp(val);
-    const { initialCountry, autoInsertDialCode } = this.options;
+    const { initialCountry } = this.options;
 
     // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
     // flag, else fall back to the default country
@@ -649,11 +637,6 @@ class Iti {
           this._setFlag();
         }
       }
-
-      // if empty and autoInsertDialCode then insert the dial code
-      if (!val && autoInsertDialCode) {
-        this.telInput.value = `+${this.selectedCountryData.dialCode}`;
-      }
     }
     // NOTE: if initialCountry is set to auto, that will be handled separately
 
@@ -666,9 +649,6 @@ class Iti {
   // initialise the main event listeners: input keyup, and click selected flag
   _initListeners() {
     this._initKeyListeners();
-    if (this.options.autoInsertDialCode) {
-      this._initBlurListeners();
-    }
     if (this.options.allowDropdown) {
       this._initDropdownListeners();
     }
@@ -888,25 +868,6 @@ class Iti {
   _cap(number) {
     const max = this.telInput.getAttribute("maxlength");
     return max && number.length > max ? number.substr(0, max) : number;
-  }
-
-  // listen for blur/submit (for autoInsertDialCode feature)
-  _initBlurListeners() {
-    // on blur or form submit: if just a dial code then remove it
-    this._handleSubmitOrBlurEvent = () => {
-      this._removeEmptyDialCode();
-    };
-    if (this.telInput.form) {
-      this.telInput.form.addEventListener(
-        "submit",
-        this._handleSubmitOrBlurEvent
-      );
-    }
-    this.telInput.addEventListener("blur", this._handleSubmitOrBlurEvent);
-
-    // made the decision not to trigger blur() now, because would only do anything in the case
-    // where they manually set the initial value to just a dial code, in which case they probably
-    // want it to be displayed.
   }
 
   // clear the input if it just contains a dial code
@@ -1659,14 +1620,6 @@ class Iti {
         newNumber = newDialCode;
       }
       this.telInput.value = newNumber;
-    } else if (this.options.autoInsertDialCode) {
-      if (inputVal) {
-        // there is an existing value with no dial code: prefix the new dial code
-        newNumber = newDialCode + inputVal;
-      } else {
-        newNumber = newDialCode;
-      }
-      this.telInput.value = newNumber;
     }
   }
 
@@ -1840,14 +1793,6 @@ class Iti {
     // unbind hiddenInput listeners
     if (this.hiddenInput && form) {
       form.removeEventListener("submit", this._handleHiddenInputSubmit);
-    }
-
-    // unbind autoInsertDialCode listeners
-    if (this.options.autoInsertDialCode) {
-      if (form) {
-        form.removeEventListener("submit", this._handleSubmitOrBlurEvent);
-      }
-      this.telInput.removeEventListener("blur", this._handleSubmitOrBlurEvent);
     }
 
     // unbind key events, and cut/paste events

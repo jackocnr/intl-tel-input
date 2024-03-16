@@ -1,14 +1,13 @@
 "use strict";
 
-describe("using dropdown: init plugin on normal input with nationalMode=false, autoInsertDialCode=true", function() {
+describe("using dropdown: init plugin on normal input with nationalMode=false", function() {
 
   beforeEach(function() {
     intlSetup();
     input = $("<input>").appendTo("body");
-    // nationalMode=false and autoInsertDialCode=true because we're playing with dial codes
+    // nationalMode=false because we're playing with dial codes
     iti = window.intlTelInput(input[0], {
       nationalMode: false,
-      autoInsertDialCode: true,
     });
   });
 
@@ -60,10 +59,6 @@ describe("using dropdown: init plugin on normal input with nationalMode=false, a
 
       it("updates the selected flag", function() {
         expect(getSelectedFlagElement()).toHaveClass(`iti__${iso2Code}`);
-      });
-
-      it("updates the dial code", function() {
-        expect(getInputVal()).toEqual("+1");
       });
 
       // this was a bug

@@ -1,6 +1,6 @@
 "use strict";
 
-describe("dropdown shortcuts: init plugin (with countrySearch=false, nationalMode=false, autoInsertDialCode=true) to test keyboard shortcuts", function() {
+describe("dropdown shortcuts: init plugin (with countrySearch=false, nationalMode=false) to test keyboard shortcuts", function() {
 
   beforeEach(function() {
     intlSetup();
@@ -8,7 +8,6 @@ describe("dropdown shortcuts: init plugin (with countrySearch=false, nationalMod
     iti = window.intlTelInput(input[0], {
       countrySearch: false,
       nationalMode: false,
-      autoInsertDialCode: true,
     });
   });
 
@@ -138,8 +137,8 @@ describe("dropdown shortcuts: init plugin (with countrySearch=false, nationalMod
           expect(getListElement()).not.toBeVisible();
         });
 
-        it("updates the dial code", function() {
-          expect(getInputVal()).toEqual("+355");
+        it("updates the selected flag", function() {
+          expect(getSelectedFlagElement()).toHaveClass("iti__al");
         });
 
       });
