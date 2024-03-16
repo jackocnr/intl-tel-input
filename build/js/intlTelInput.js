@@ -1735,7 +1735,8 @@
                 }
             }, {
                 key: "isValidNumber",
-                value: function isValidNumber(mobileOnly) {
+                value: function isValidNumber() {
+                    var mobileOnly = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
                     var val = this._getFullNumber();
                     return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
                 }
