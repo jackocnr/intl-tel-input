@@ -234,19 +234,27 @@ Allow localisation/customisation of country names and other plugin text. To loca
 ```js
 intlTelInput(input, {
   i18n: {
-    // Country names
-    fr: "Frankreich",
-    de: "Deutschland",
-    es: "Spanien",
-    it: "Italien",
-    ch: "Schweiz",
-    nl: "Niederlande",
-    at: "Österreich",
-    dk: "Dänemark",
-    // Other plugin text
-    selectedCountryAriaLabel: 'Ausgewähltes Land',
-    countryListAriaLabel: 'Liste der Länder',
-    searchPlaceholder: 'Suchen',
+    // Country names (see full list here: https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.js)
+    af: "Afghanistan",
+    al: "Albania",
+    dz: "Algeria",
+    as: "American Samoa",
+    ad: "Andorra",
+    ...
+    // Aria label for the selected country element
+    selectedCountryAriaLabel: "Selected country",
+    // Screen reader text for when no country is selected
+    noCountrySelected: "No country selected",
+    // Aria label for the country list element
+    countryListAriaLabel: "List of countries",
+    // Placeholder for the search input in the dropdown (when countrySearch enabled)
+    searchPlaceholder: "Search",
+    // Screen reader text for when the search produces no results
+    zeroSearchResults: "No results found",
+    // Screen reader text for when the search produces 1 result
+    oneSearchResult: "1 result found",
+    // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
+    multipleSearchResults: "${count} results found",
   }
 });
 ```
