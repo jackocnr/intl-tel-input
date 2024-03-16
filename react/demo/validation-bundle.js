@@ -24418,7 +24418,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return document.readyState === "complete";
       } };
       typeof window == "object" && (window.intlTelInputGlobals = S);
-      var J = 0, K = { allowDropdown: true, autoInsertDialCode: false, autoPlaceholder: "polite", countrySearch: true, containerClass: "", customPlaceholder: null, defaultToFirstCountry: true, dropdownContainer: null, excludeCountries: [], fixDropdownWidth: true, formatAsYouType: true, formatOnDisplay: true, geoIpLookup: null, hiddenInput: null, i18n: {}, initialCountry: "", nationalMode: true, onlyCountries: [], placeholderNumberType: "MOBILE", preferredCountries: [], showFlags: true, showSelectedDialCode: false, useFullscreenPopup: typeof navigator < "u" && typeof window < "u" ? /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 500 : false, utilsScript: "" }, $ = ["800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889"], k = function(n) {
+      var J = 0, K = { allowDropdown: true, autoInsertDialCode: false, autoPlaceholder: "polite", countrySearch: true, containerClass: "", customPlaceholder: null, defaultToFirstCountry: true, dropdownContainer: null, excludeCountries: [], fixDropdownWidth: true, formatAsYouType: true, formatOnDisplay: true, geoIpLookup: null, hiddenInput: null, i18n: {}, initialCountry: "", nationalMode: true, onlyCountries: [], placeholderNumberType: "MOBILE", preferredCountries: [], showFlags: true, showSelectedDialCode: false, useFullscreenPopup: typeof navigator < "u" && typeof window < "u" ? /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 500 : false, utilsScript: "" }, $ = ["800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889"], T = function(n) {
         var t = window.intlTelInputGlobals.instances;
         Object.values(t).forEach(function(e) {
           return e[n]();
@@ -24523,8 +24523,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               this.flagsContainer.appendChild(this.dropdownContent);
           }
           if (s) {
-            var R = this.telInput.getAttribute("name"), T = s(R), X = T !== null && typeof T == "object", L, j;
-            if (X ? (L = T.phone || R, j = T.country || "".concat(L, "_country")) : (L = T || R, j = "".concat(L, "_country")), !L)
+            var R = this.telInput.getAttribute("name"), k = s(R), X = k !== null && typeof k == "object", L, j;
+            if (X ? (L = k.phone || R, j = k.country || "".concat(L, "_country")) : (L = k || R, j = "".concat(L, "_country")), !L)
               return;
             this.hiddenInput = this._createEl("input", { type: "hidden", name: L }), this.hiddenInputCountry = this._createEl("input", { type: "hidden", name: j }), y.appendChild(this.hiddenInput), y.appendChild(this.hiddenInputCountry);
           }
@@ -24573,10 +24573,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           window.intlTelInputGlobals.autoCountry ? this.handleAutoCountry() : window.intlTelInputGlobals.startedLoadingAutoCountry || (window.intlTelInputGlobals.startedLoadingAutoCountry = true, typeof this.options.geoIpLookup == "function" && this.options.geoIpLookup(function() {
             var e = arguments.length > 0 && arguments[0] !== c ? arguments[0] : "", i = e.toLowerCase(), a = i && t._getCountryData(i, true);
             a ? (window.intlTelInputGlobals.autoCountry = i, setTimeout(function() {
-              return k("handleAutoCountry");
-            })) : (t._setInitialState(true), k("rejectAutoCountryPromise"));
+              return T("handleAutoCountry");
+            })) : (t._setInitialState(true), T("rejectAutoCountryPromise"));
           }, function() {
-            return k("rejectAutoCountryPromise");
+            return T("rejectAutoCountryPromise");
           }));
         } }, { key: "_initKeyListeners", value: function() {
           var t = this, e = false;
@@ -24621,7 +24621,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         } }, { key: "_showDropdown", value: function() {
           if (this.options.fixDropdownWidth && (this.dropdownContent.style.width = "".concat(this.telInput.offsetWidth, "px")), this.dropdownContent.classList.remove("iti__hide"), this.selectedFlag.setAttribute("aria-expanded", "true"), this._setDropdownPosition(), this.options.countrySearch) {
             var t = this.countryList.firstElementChild;
-            t && this._highlightListItem(t, false), this.searchInput.focus();
+            t && (this._highlightListItem(t, false), this.countryList.scrollTop = 0), this.searchInput.focus();
           } else
             this.activeItem && (this._highlightListItem(this.activeItem, false), this._scrollTo(this.activeItem, true));
           this._bindDropdownListeners(), this.dropdownArrow.classList.add("iti__arrow--up"), this._trigger("open:countrydropdown");
@@ -24679,7 +24679,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             var s = this.countries[o], l = this._normaliseString(s.name), u = "+".concat(s.dialCode);
             (e || l.includes(a) || u.includes(a) || s.iso2.includes(a)) && (this.countryList.appendChild(s.nodeById[this.id]), i && (this._highlightListItem(s.nodeById[this.id], false), i = false));
           }
-          this._updateSearchResultsText();
+          this.countryList.scrollTop = 0, this._updateSearchResultsText();
         } }, { key: "_updateSearchResultsText", value: function() {
           var t = this.countryList.childElementCount, e;
           t === 0 ? e = "No results found" : t === 1 ? e = "1 result found" : e = "".concat(t, " results found"), this.searchResultsA11yText.textContent = e;
@@ -24898,9 +24898,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       var z = function(n, t, e) {
         var i = document.createElement("script");
         i.onload = function() {
-          k("handleUtils"), t && t();
+          T("handleUtils"), t && t();
         }, i.onerror = function() {
-          k("rejectUtilsScriptPromise"), e && e();
+          T("rejectUtilsScriptPromise"), e && e();
         }, i.className = "iti-load-utils", i.async = true, i.src = n, document.body.appendChild(i);
       };
       return S.loadUtils = function(r) {

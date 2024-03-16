@@ -963,6 +963,7 @@ class Iti {
       const { firstElementChild } = this.countryList;
       if (firstElementChild) {
         this._highlightListItem(firstElementChild, false);
+        this.countryList.scrollTop = 0;
       }
       this.searchInput.focus();
     } else if (this.activeItem) {
@@ -1177,6 +1178,8 @@ class Iti {
         }
       }
     }
+    // scroll to top (useful if user had previously scrolled down)
+    this.countryList.scrollTop = 0;
     this._updateSearchResultsText();
   }
 
