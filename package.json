@@ -24,8 +24,8 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/core": "^7.7.0",
+    "@babel/preset-env": "^7.7.0",
     "babel-eslint": "^9.0.0",
     "esbuild": "^0.19.11",
     "eslint": "^8.38.0",

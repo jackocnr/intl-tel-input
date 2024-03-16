@@ -1850,6 +1850,10 @@ class Iti {
   // validate the input val - assumes the global function isPossibleNumber (from utilsScript)
   isValidNumber(mobileOnly = true) {
     const val = this._getFullNumber();
+    // return false for any alpha chars
+    if (/\p{L}/u.test(val)) {
+      return false;
+    }
     return window.intlTelInputUtils
       ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly)
       : null;
@@ -1858,6 +1862,10 @@ class Iti {
   // validate the input val (precise) - assumes the global function isValidNumber (from utilsScript)
   isValidNumberPrecise() {
     const val = this._getFullNumber();
+    // return false for any alpha chars
+    if (/\p{L}/u.test(val)) {
+      return false;
+    }
     return window.intlTelInputUtils
       ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)
       : null;
