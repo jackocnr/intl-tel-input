@@ -384,21 +384,18 @@ class Iti {
 
     const wrapper = this._createEl("div", { class: parentClass });
     this.telInput.parentNode.insertBefore(wrapper, this.telInput);
-    // only hide the flagsContainer if allowDropdown, showFlags and showSelectedDialCode are all false
-    const showFlagsContainer = allowDropdown || showFlags || showSelectedDialCode;
-    if (showFlagsContainer) {
+    
+    // if we're showing flags or dial codes, we need the flags container etc
+    if (showFlags || showSelectedDialCode) {
       this.flagsContainer = this._createEl(
         "div",
         { class: "iti__flag-container" },
         wrapper
       );
-    }
-    wrapper.appendChild(this.telInput);
 
-    // selected flag (displayed to left of input)
+    // selected flag (displayed on left of input while allowDropdown is enabled, otherwise to right)
     // when countrySearch disabled: using Aria tags for "Select-Only Combobox Example"
     // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
-    if (showFlagsContainer) {
       this.selectedFlag = this._createEl(
         "div",
         {
@@ -413,19 +410,18 @@ class Iti {
         },
         this.flagsContainer
       );
-    }
-    if (showFlags) {
-      this.selectedFlagInner = this._createEl(
-        "div",
-        { class: "iti__flag" },
-        this.selectedFlag
-      );
+
+      // we now include the selected flag element even when showFlags is disabled,
+      // as need to show globe icon for showSelectedDialCode empty state
+      this.selectedFlagInner = this._createEl("div", null, this.selectedFlag);
       this.selectedFlagA11yText = this._createEl(
         "span",
         { class: "iti__a11y-text" },
         this.selectedFlagInner
       );
     }
+
+    wrapper.appendChild(this.telInput);
 
     if (this.selectedFlag && this.telInput.disabled) {
       this.selectedFlag.setAttribute("aria-disabled", "true");
@@ -1362,19 +1358,27 @@ class Iti {
       this.defaultCountry = this.selectedCountryData.iso2;
     }
 
-    if (showFlags) {
-      const flagClass = iso2 ? `iti__${iso2}` : 'iti__globe';
-      this.selectedFlagInner.setAttribute(
-        "class",
-        `iti__flag ${flagClass}`
-      );
-      const emptyText = i18n.noCountrySelected || "No country selected";
-      const a11yText = iso2 ? `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}` : emptyText;
+    // update the flag class and the a11y text
+    if (this.selectedFlagInner) {
+      let flagClass = "";
+      let a11yText = "";
+      if (iso2) {
+        if (showFlags) {
+          flagClass = `iti__flag iti__${iso2}`;
+          a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
+        }
+        // if showFlags disabled and showSelectedDialCode is enabled, we dont show a flag or have any a11y text, as the displayed dial code is enough
+      } else {
+        flagClass = 'iti__flag iti__globe';
+        a11yText = i18n.noCountrySelected || "No country selected";
+      }
+      this.selectedFlagInner.className = flagClass;
       this.selectedFlagA11yText.textContent = a11yText;
     }
 
     this._setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode);
 
+    // update the selected dial code
     if (showSelectedDialCode) {
       const dialCode = this.selectedCountryData.dialCode
         ? `+${this.selectedCountryData.dialCode}`
