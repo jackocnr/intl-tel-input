@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import intlTelInput from "../../build/js/intlTelInput";
@@ -9,6 +10,7 @@ const IntlTelInput = ({
   onChangeCountry,
   onChangeValidity,
   onChangeErrorCode,
+  usePreciseValidation,
   initOptions,
   className,
   disabled,
@@ -28,7 +30,8 @@ const IntlTelInput = ({
     onChangeNumber(num);
     onChangeCountry(countryIso);
 
-    if (itiRef.current.isValidNumber()) {
+    const isValid = usePreciseValidation ? itiRef.current.isValidNumberPrecise() : itiRef.current.isValidNumber();
+    if (isValid) {
       onChangeValidity(true);
       onChangeErrorCode(null);
     } else {
@@ -71,6 +74,7 @@ IntlTelInput.propTypes = {
   onChangeCountry: PropTypes.func,
   onChangeValidity: PropTypes.func,
   onChangeErrorCode: PropTypes.func,
+  usePreciseValidation: PropTypes.bool,
   initOptions: PropTypes.shape({
     allowDropdown: PropTypes.bool,
     autoPlaceholder: PropTypes.string,
@@ -108,6 +112,7 @@ IntlTelInput.defaultProps = {
   onChangeCountry: () => {},
   onChangeValidity: () => {},
   onChangeErrorCode: () => {},
+  usePreciseValidation: false,
   initOptions: {},
   className: "",
   disabled: false,
