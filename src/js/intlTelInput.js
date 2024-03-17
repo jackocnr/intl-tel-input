@@ -802,7 +802,7 @@ class Iti {
       }
 
       // handle FAYT, unless userOverrideFormatting or it's a paste event
-      if (this.options.formatAsYouType && !userOverrideFormatting && e.inputType !== "insertFromPaste") {
+      if (this.options.formatAsYouType && !userOverrideFormatting && !isPaste) {
         // maintain caret position after reformatting
         const currentCaretPos = this.telInput.selectionStart;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
@@ -814,15 +814,10 @@ class Iti {
         this.telInput.setSelectionRange(newCaretPos, newCaretPos);
       }
     };
+    // this handles individual key presses as well as cut/paste events
+    // the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
+    // whereas "keyup" fires even for arrow key presses etc
     this.telInput.addEventListener("input", this._handleKeyEvent);
-
-    // update flag on cut/paste events (now supported in all major browsers)
-    this._handleClipboardEvent = () => {
-      // hack because "paste" event is fired before input is updated
-      setTimeout(this._handleKeyEvent);
-    };
-    this.telInput.addEventListener("cut", this._handleClipboardEvent);
-    this.telInput.addEventListener("paste", this._handleClipboardEvent);
   }
 
   // iterate through the formattedValue until hit the right number of relevant chars

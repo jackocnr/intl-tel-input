@@ -827,7 +827,7 @@
                             userOverrideFormatting = false;
                         }
                         // handle FAYT, unless userOverrideFormatting or it's a paste event
-                        if (_this6.options.formatAsYouType && !userOverrideFormatting && e.inputType !== "insertFromPaste") {
+                        if (_this6.options.formatAsYouType && !userOverrideFormatting && !isPaste) {
                             // maintain caret position after reformatting
                             var currentCaretPos = _this6.telInput.selectionStart;
                             var valueBeforeCaret = _this6.telInput.value.substring(0, currentCaretPos);
@@ -839,14 +839,10 @@
                             _this6.telInput.setSelectionRange(newCaretPos, newCaretPos);
                         }
                     };
+                    // this handles individual key presses as well as cut/paste events
+                    // the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
+                    // whereas "keyup" fires even for arrow key presses etc
                     this.telInput.addEventListener("input", this._handleKeyEvent);
-                    // update flag on cut/paste events (now supported in all major browsers)
-                    this._handleClipboardEvent = function() {
-                        // hack because "paste" event is fired before input is updated
-                        setTimeout(_this6._handleKeyEvent);
-                    };
-                    this.telInput.addEventListener("cut", this._handleClipboardEvent);
-                    this.telInput.addEventListener("paste", this._handleClipboardEvent);
                 }
             }, {
                 key: "_translateCursorPosition",
