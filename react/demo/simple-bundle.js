@@ -24904,7 +24904,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         return !window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript ? (window.intlTelInputGlobals.startedLoadingUtilsScript = true, new Promise(function(i, u) {
           return $(D, i, u);
         })) : null;
-      }, v.defaults = V, v.version = "19.5.7", function(D, i) {
+      }, v.defaults = V, v.version = "20.0.0", function(D, i) {
         var u = new Z(D, i);
         return u._init(), D.setAttribute("data-intl-tel-input-id", u.id), window.intlTelInputGlobals.instances[u.id] = u, u;
       };
