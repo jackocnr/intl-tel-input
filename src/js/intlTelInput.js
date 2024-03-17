@@ -613,14 +613,14 @@ class Iti {
       const isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
       // see if we should select a flag
       if (isValidInitialCountry) {
-        this._setFlag(lowerInitialCountry);
+        this._setCountry(lowerInitialCountry);
       } else {
         if (dialCode && isRegionlessNanp) {
           // has intl dial code, is regionless nanp, and no initialCountry, so default to US
-          this._setFlag("us");
+          this._setCountry("us");
         } else {
           // display the empty state (globe icon)
-          this._setFlag();
+          this._setCountry();
         }
       }
     }
@@ -687,7 +687,7 @@ class Iti {
         !this.telInput.disabled &&
         !this.telInput.readOnly
       ) {
-        this._showDropdown();
+        this._openDropdown();
       }
     };
     this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
@@ -705,7 +705,7 @@ class Iti {
         e.preventDefault();
         // prevent event from being handled again by document
         e.stopPropagation();
-        this._showDropdown();
+        this._openDropdown();
       }
 
       // allow navigation from dropdown to input on TAB
@@ -878,8 +878,8 @@ class Iti {
     this.telInput.dispatchEvent(e);
   }
 
-  // show the dropdown
-  _showDropdown() {
+  // open the dropdown
+  _openDropdown() {
     const { fixDropdownWidth, countrySearch } = this.options;
     if (fixDropdownWidth) {
       this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
@@ -1288,7 +1288,7 @@ class Iti {
     }
 
     if (iso2 !== null) {
-      return this._setFlag(iso2);
+      return this._setCountry(iso2);
     }
     return false;
   }
@@ -1344,9 +1344,9 @@ class Iti {
     throw new Error(`No country data for '${iso2}'`);
   }
 
-  // select the given flag, update the placeholder, title, and the active list item
+  // update the selected flag, dial code (if showSelectedDialCode), placeholder, title, and active list item
   // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
-  _setFlag(iso2) {
+  _setCountry(iso2) {
     const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
 
     const prevCountry = this.selectedCountryData.iso2
@@ -1495,7 +1495,7 @@ class Iti {
   // called when the user selects a list item from the dropdown
   _selectListItem(listItem) {
     // update selected flag and active list item
-    const flagChanged = this._setFlag(
+    const flagChanged = this._setCountry(
       listItem.getAttribute("data-country-code")
     );
     this._closeDropdown();
@@ -1871,7 +1871,7 @@ class Iti {
     const iso2Lower = iso2.toLowerCase();
     // check if already selected
     if (this.selectedCountryData.iso2 !== iso2Lower) {
-      this._setFlag(iso2Lower);
+      this._setCountry(iso2Lower);
       this._updateDialCode(this.selectedCountryData.dialCode);
       this._triggerCountryChange();
     }

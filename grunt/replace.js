@@ -76,7 +76,7 @@ module.exports = function(grunt) {
           },
           // NOTE: here we exclude _trigger which is a substring of _triggerCountryChange etc
           {
-            match: /_showDropdown/g,
+            match: /_openDropdown/g,
             replacement: '_n'
           }, {
             match: /_toggleClass/g,
@@ -124,7 +124,7 @@ module.exports = function(grunt) {
             match: /_getCountryData/g,
             replacement: '_y'
           }, {
-            match: /_setFlag/g,
+            match: /_setCountry/g,
             replacement: '_z'
           }, {
             match: /_setSelectedCountryFlagTitleAttribute/g,

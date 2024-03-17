@@ -656,14 +656,14 @@
                         var isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
                         // see if we should select a flag
                         if (isValidInitialCountry) {
-                            this._setFlag(lowerInitialCountry);
+                            this._setCountry(lowerInitialCountry);
                         } else {
                             if (dialCode && isRegionlessNanp) {
                                 // has intl dial code, is regionless nanp, and no initialCountry, so default to US
-                                this._setFlag("us");
+                                this._setCountry("us");
                             } else {
                                 // display the empty state (globe icon)
-                                this._setFlag();
+                                this._setCountry();
                             }
                         }
                     }
@@ -723,7 +723,7 @@
                         // else let it bubble up to the top ("click-off-to-close" listener)
                         // we cannot just stopPropagation as it may be needed to close another instance
                         if (_this3.dropdownContent.classList.contains("iti__hide") && !_this3.telInput.disabled && !_this3.telInput.readOnly) {
-                            _this3._showDropdown();
+                            _this3._openDropdown();
                         }
                     };
                     this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
@@ -735,7 +735,7 @@
                             e.preventDefault();
                             // prevent event from being handled again by document
                             e.stopPropagation();
-                            _this3._showDropdown();
+                            _this3._openDropdown();
                         }
                         // allow navigation from dropdown to input on TAB
                         if (e.key === "Tab") {
@@ -902,8 +902,8 @@
                     this.telInput.dispatchEvent(e);
                 }
             }, {
-                key: "_showDropdown",
-                value: function _showDropdown() {
+                key: "_openDropdown",
+                value: function _openDropdown() {
                     var _this$options2 = this.options, fixDropdownWidth = _this$options2.fixDropdownWidth, countrySearch = _this$options2.countrySearch;
                     if (fixDropdownWidth) {
                         this.dropdownContent.style.width = "".concat(this.telInput.offsetWidth, "px");
@@ -1244,7 +1244,7 @@
                         iso2 = this.defaultCountry;
                     }
                     if (iso2 !== null) {
-                        return this._setFlag(iso2);
+                        return this._setCountry(iso2);
                     }
                     return false;
                 }
@@ -1291,8 +1291,8 @@
                     throw new Error("No country data for '".concat(iso2, "'"));
                 }
             }, {
-                key: "_setFlag",
-                value: function _setFlag(iso2) {
+                key: "_setCountry",
+                value: function _setCountry(iso2) {
                     var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, showSelectedDialCode = _this$options3.showSelectedDialCode, showFlags = _this$options3.showFlags, countrySearch = _this$options3.countrySearch, i18n = _this$options3.i18n;
                     var prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
                     // do this first as it will throw an error and stop if iso2 is invalid
@@ -1394,7 +1394,7 @@
                 key: "_selectListItem",
                 value: function _selectListItem(listItem) {
                     // update selected flag and active list item
-                    var flagChanged = this._setFlag(listItem.getAttribute("data-country-code"));
+                    var flagChanged = this._setCountry(listItem.getAttribute("data-country-code"));
                     this._closeDropdown();
                     this._updateDialCode(listItem.getAttribute("data-dial-code"));
                     // focus the input
@@ -1700,7 +1700,7 @@
                     var iso2Lower = iso2.toLowerCase();
                     // check if already selected
                     if (this.selectedCountryData.iso2 !== iso2Lower) {
-                        this._setFlag(iso2Lower);
+                        this._setCountry(iso2Lower);
                         this._updateDialCode(this.selectedCountryData.dialCode);
                         this._triggerCountryChange();
                     }
