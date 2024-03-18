@@ -1783,8 +1783,6 @@ class Iti {
 
     // unbind key events, and cut/paste events
     this.telInput.removeEventListener("input", this._handleKeyEvent);
-    this.telInput.removeEventListener("cut", this._handleClipboardEvent);
-    this.telInput.removeEventListener("paste", this._handleClipboardEvent);
 
     // remove attribute of id instance: data-intl-tel-input-id
     this.telInput.removeAttribute("data-intl-tel-input-id");
