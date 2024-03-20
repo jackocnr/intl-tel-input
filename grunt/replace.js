@@ -209,9 +209,6 @@ module.exports = function(grunt) {
             match: /_handleKeyEvent/g,
             replacement: '_a12'
           }, {
-            match: /_handleClipboardEvent/g,
-            replacement: '_a13'
-          }, {
             match: /_handleHiddenInputSubmit/g,
             replacement: '_a14'
           }
