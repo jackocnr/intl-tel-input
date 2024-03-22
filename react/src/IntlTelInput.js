@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useRef, useEffect } from 'react';
@@ -17,6 +18,7 @@ const IntlTelInput = ({
   onFocus,
   onBlur,
   placeholder,
+  inputProps,
 }) => {
   const inputRef = useRef(null);
   const itiRef = useRef(null);
@@ -63,6 +65,7 @@ const IntlTelInput = ({
       onFocus={onFocus}
       onBlur={onBlur}
       placeholder={placeholder}
+      {...inputProps}
     />
   );
 };
@@ -103,6 +106,7 @@ IntlTelInput.propTypes = {
   disabled: PropTypes.bool,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
+  inputProps: PropTypes.object,
 };
 
 IntlTelInput.defaultProps = {
@@ -118,6 +122,7 @@ IntlTelInput.defaultProps = {
   disabled: false,
   onFocus: () => {},
   onBlur: () => {},
+  inputProps: {},
 };
 
 export default IntlTelInput;
