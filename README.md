@@ -295,6 +295,10 @@ Display the country dial code next to the selected flag. Play with this option o
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px">
 
+**strictMode**  
+Type: `Boolean` Default: `false`  
+Ignore irrelevant characters (e.g. only allow a plus at the beginning, followed by numbers), and cap the length at the maximum valid number length. Requires the `utilsScript` option.
+
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
 Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), to make better use of the limited space (similar to how a native `<select>` works), and as an inline dropdown on larger devices/screens. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).

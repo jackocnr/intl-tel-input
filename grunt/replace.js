@@ -59,7 +59,7 @@ module.exports = function(grunt) {
             match: /_loadAutoCountry/g,
             replacement: '_i4'
           }, {
-            match: /_initKeyListeners/g,
+            match: /_initTelInputListeners/g,
             replacement: '_j'
           }, {
             match: /_translateCursorPosition/g,
@@ -206,7 +206,7 @@ module.exports = function(grunt) {
             match: /_handleFlagsContainerKeydown/g,
             replacement: '_a11'
           }, {
-            match: /_handleKeyEvent/g,
+            match: /_handleInputEvent/g,
             replacement: '_a12'
           }, {
             match: /_handleHiddenInputSubmit/g,

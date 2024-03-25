@@ -214,6 +214,8 @@
         showFlags: true,
         // display the international dial code next to the selected flag
         showSelectedDialCode: false,
+        // only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length
+        strictMode: false,
         // use full screen popup instead of dropdown for country list
         useFullscreenPopup: typeof navigator !== "undefined" && typeof window !== "undefined" ? // we cannot just test screen size as some smartphones/website meta tags will report desktop
         // resolutions
@@ -677,7 +679,7 @@
         }, {
             key: "_initListeners",
             value: function _initListeners() {
-                this._initKeyListeners();
+                this._initTelInputListeners();
                 if (this.options.allowDropdown) {
                     this._initDropdownListeners();
                 }
@@ -810,25 +812,26 @@
                 }
             }
         }, {
-            key: "_initKeyListeners",
-            value: function _initKeyListeners() {
+            key: "_initTelInputListeners",
+            value: function _initTelInputListeners() {
                 var _this6 = this;
+                var _this$options2 = this.options, strictMode = _this$options2.strictMode, formatAsYouType = _this$options2.formatAsYouType;
                 var userOverrideFormatting = false;
                 // update flag on input event
-                this._handleKeyEvent = function(e) {
+                this._handleInputEvent = function(e) {
                     if (_this6._updateFlagFromNumber(_this6.telInput.value)) {
                         _this6._triggerCountryChange();
                     }
-                    // if user types their own formatting char (not a plus or a numeric), then set the override
+                    // if user types their own formatting char (not a plus or a numeric), or they paste something, then set the override
                     var isFormattingChar = e && e.data && /[^+0-9]/.test(e.data);
                     var isPaste = e && e.inputType === "insertFromPaste" && _this6.telInput.value;
-                    if (isFormattingChar || isPaste) {
+                    if (isFormattingChar || isPaste && !strictMode) {
                         userOverrideFormatting = true;
                     } else if (!/[^+0-9]/.test(_this6.telInput.value)) {
                         userOverrideFormatting = false;
                     }
-                    // handle FAYT, unless userOverrideFormatting or it's a paste event
-                    if (_this6.options.formatAsYouType && !userOverrideFormatting && !isPaste) {
+                    // handle FAYT, unless userOverrideFormatting
+                    if (formatAsYouType && !userOverrideFormatting) {
                         // maintain caret position after reformatting
                         var currentCaretPos = _this6.telInput.selectionStart;
                         var valueBeforeCaret = _this6.telInput.value.substring(0, currentCaretPos);
@@ -842,8 +845,25 @@
                 };
                 // this handles individual key presses as well as cut/paste events
                 // the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
-                // whereas "keyup" fires even for arrow key presses etc
-                this.telInput.addEventListener("input", this._handleKeyEvent);
+                // whereas "keyup" fires even for shift key, arrow key presses etc
+                this.telInput.addEventListener("input", this._handleInputEvent);
+                if (strictMode) {
+                    this._handleKeydownEvent = function(e) {
+                        // only ignore actual character presses, rather than ctrl, alt, shift, command, arrow keys, delete/backspace, cut/copy/paste etc
+                        if (e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
+                            var isInitialPlus = _this6.telInput.selectionStart === 0 && e.key === "+";
+                            var isNumeric = /^[0-9]$/.test(e.key);
+                            var isAllowedChar = isInitialPlus || isNumeric;
+                            var fullNumber = _this6._getFullNumber();
+                            var coreNumber = intlTelInputUtils.getCoreNumber(fullNumber, _this6.selectedCountryData.iso2);
+                            var hasReachedMaxLength = _this6.maxCoreNumberLength && coreNumber.length >= _this6.maxCoreNumberLength;
+                            if (!isAllowedChar || hasReachedMaxLength) {
+                                e.preventDefault();
+                            }
+                        }
+                    };
+                    this.telInput.addEventListener("keydown", this._handleKeydownEvent);
+                }
             }
         }, {
             key: "_translateCursorPosition",
@@ -905,7 +925,7 @@
         }, {
             key: "_openDropdown",
             value: function _openDropdown() {
-                var _this$options2 = this.options, fixDropdownWidth = _this$options2.fixDropdownWidth, countrySearch = _this$options2.countrySearch;
+                var _this$options3 = this.options, fixDropdownWidth = _this$options3.fixDropdownWidth, countrySearch = _this$options3.countrySearch;
                 if (fixDropdownWidth) {
                     this.dropdownContent.style.width = "".concat(this.telInput.offsetWidth, "px");
                 }
@@ -1294,7 +1314,7 @@
         }, {
             key: "_setCountry",
             value: function _setCountry(iso2) {
-                var _this$options3 = this.options, allowDropdown = _this$options3.allowDropdown, showSelectedDialCode = _this$options3.showSelectedDialCode, showFlags = _this$options3.showFlags, countrySearch = _this$options3.countrySearch, i18n = _this$options3.i18n;
+                var _this$options4 = this.options, allowDropdown = _this$options4.allowDropdown, showSelectedDialCode = _this$options4.showSelectedDialCode, showFlags = _this$options4.showFlags, countrySearch = _this$options4.countrySearch, i18n = _this$options4.i18n;
                 var prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
                 // do this first as it will throw an error and stop if iso2 is invalid
                 this.selectedCountryData = iso2 ? this._getCountryData(iso2, false) : {};
@@ -1334,6 +1354,8 @@
                 }
                 // and the input's placeholder
                 this._updatePlaceholder();
+                // update the maximum valid number length
+                this._updateMaxLength();
                 // update the active list item (only if country search disabled, as country search doesn't store the active item)
                 if (allowDropdown && !countrySearch) {
                     var prevItem = this.activeItem;
@@ -1351,6 +1373,26 @@
                 }
                 // return if the flag has changed or not
                 return prevCountry.iso2 !== iso2;
+            }
+        }, {
+            key: "_updateMaxLength",
+            value: function _updateMaxLength() {
+                if (this.options.strictMode && window.intlTelInputUtils) {
+                    if (this.selectedCountryData.iso2) {
+                        var numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType];
+                        var exampleNumber = intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, null, numberType, true);
+                        // see if adding more digits is still valid to get the true maximum valid length
+                        var validNumber = exampleNumber;
+                        while (intlTelInputUtils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
+                            validNumber = exampleNumber;
+                            exampleNumber += "0";
+                        }
+                        var coreNumber = intlTelInputUtils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
+                        this.maxCoreNumberLength = coreNumber.length;
+                    } else {
+                        this.maxCoreNumberLength = null;
+                    }
+                }
             }
         }, {
             key: "_setSelectedCountryFlagTitleAttribute",
@@ -1389,10 +1431,11 @@
         }, {
             key: "_updatePlaceholder",
             value: function _updatePlaceholder() {
-                var _this$options4 = this.options, autoPlaceholder = _this$options4.autoPlaceholder, placeholderNumberType = _this$options4.placeholderNumberType, nationalMode = _this$options4.nationalMode, customPlaceholder = _this$options4.customPlaceholder;
+                var _this$options5 = this.options, autoPlaceholder = _this$options5.autoPlaceholder, placeholderNumberType = _this$options5.placeholderNumberType, nationalMode = _this$options5.nationalMode, customPlaceholder = _this$options5.customPlaceholder;
                 var shouldSetPlaceholder = autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && autoPlaceholder === "polite";
                 if (window.intlTelInputUtils && shouldSetPlaceholder) {
                     var numberType = intlTelInputUtils.numberType[placeholderNumberType];
+                    // note: must set placeholder to empty string if no country selected (globe icon showing)
                     var placeholder = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, nationalMode, numberType) : "";
                     placeholder = this._beforeSetNumber(placeholder);
                     if (typeof customPlaceholder === "function") {
@@ -1610,6 +1653,7 @@
                     }
                     if (this.selectedCountryData.iso2) {
                         this._updatePlaceholder();
+                        this._updateMaxLength();
                     }
                 }
                 this.resolveUtilsScriptPromise();
@@ -1634,7 +1678,10 @@
                     form.removeEventListener("submit", this._handleHiddenInputSubmit);
                 }
                 // unbind key events, and cut/paste events
-                this.telInput.removeEventListener("input", this._handleKeyEvent);
+                this.telInput.removeEventListener("input", this._handleInputEvent);
+                if (this._handleKeydownEvent) {
+                    this.telInput.removeEventListener("keydown", this._handleKeydownEvent);
+                }
                 // remove attribute of id instance: data-intl-tel-input-id
                 this.telInput.removeAttribute("data-intl-tel-input-id");
                 // remove markup (but leave the original input)

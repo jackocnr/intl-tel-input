@@ -41,17 +41,33 @@ const formatNumber = (number, countryCode, formatArg) => {
 };
 
 // get an example number for the given country code
-const getExampleNumber = (countryCode, national, numberType) => {
+const getExampleNumber = (countryCode, national, numberType, useE164) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.getExampleNumberForType(
       countryCode,
       numberType
     );
-    const format = national
-      ? i18n.phonenumbers.PhoneNumberFormat.NATIONAL
-      : i18n.phonenumbers.PhoneNumberFormat.INTERNATIONAL;
+    let format;
+    if (useE164) {
+      format = i18n.phonenumbers.PhoneNumberFormat.E164;
+    } else {
+      format = national
+        ? i18n.phonenumbers.PhoneNumberFormat.NATIONAL
+        : i18n.phonenumbers.PhoneNumberFormat.INTERNATIONAL;
+    }
     return phoneUtil.format(numberObj, format);
+  } catch (e) {
+    return "";
+  }
+};
+
+// get the core number, without any international dial code, or national prefix
+const getCoreNumber = (number, countryCode) => {
+  try {
+    const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    return numberObj.getNationalNumber().toString();
   } catch (e) {
     return "";
   }
@@ -192,6 +208,7 @@ goog.exportSymbol("intlTelInputUtils.getNumberType", getNumberType);
 goog.exportSymbol("intlTelInputUtils.getValidationError", getValidationError);
 goog.exportSymbol("intlTelInputUtils.isValidNumber", isValidNumber);
 goog.exportSymbol("intlTelInputUtils.isPossibleNumber", isPossibleNumber);
+goog.exportSymbol("intlTelInputUtils.getCoreNumber", getCoreNumber);
 // enums
 goog.exportSymbol("intlTelInputUtils.numberFormat", numberFormat);
 goog.exportSymbol("intlTelInputUtils.numberType", numberType);
