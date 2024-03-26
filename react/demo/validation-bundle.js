@@ -24838,7 +24838,7 @@ var E = $((K, v) => {
           w("rejectUtilsScriptPromise"), t && t();
         }, i.className = "iti-load-utils", i.async = true, i.src = g, document.body.appendChild(i);
       };
-      return f.loadUtils = (g) => !window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript ? (window.intlTelInputGlobals.startedLoadingUtilsScript = true, new Promise((e, t) => S(g, e, t))) : null, f.defaults = I, f.version = "20.2.0", function(g, e) {
+      return f.loadUtils = (g) => !window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript ? (window.intlTelInputGlobals.startedLoadingUtilsScript = true, new Promise((e, t) => S(g, e, t))) : null, f.defaults = I, f.version = "20.3.0", function(g, e) {
         var t = new D(g, e);
         return t._init(), g.setAttribute("data-intl-tel-input-id", t.id), window.intlTelInputGlobals.instances[t.id] = t, t;
       };
