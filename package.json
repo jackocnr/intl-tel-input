@@ -24,8 +24,6 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
-    "@babel/core": "^7.7.0",
-    "@babel/preset-env": "^7.7.0",
     "babel-eslint": "^9.0.0",
     "esbuild": "^0.19.11",
     "eslint": "^8.38.0",
@@ -38,7 +36,6 @@
     "google-closure-compiler": "^20230411.0.0",
     "google-closure-library": "^20230411.0.0",
     "grunt": "^1.0.3",
-    "grunt-babel": "^8.0.0",
     "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-concat": "^1.0.1",

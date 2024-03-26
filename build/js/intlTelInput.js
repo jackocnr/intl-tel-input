@@ -36,7 +36,6 @@
                 nodeById: {}
             };
         }
-        "use strict";
         const intlTelInputGlobals = {
             getInstance: input => {
                 const id = input.getAttribute("data-intl-tel-input-id");
@@ -95,8 +94,7 @@
             // only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length
             strictMode: false,
             // use full screen popup instead of dropdown for country list
-            useFullscreenPopup: typeof navigator !== "undefined" && typeof window !== "undefined" ? 
-            // we cannot just test screen size as some smartphones/website meta tags will report desktop
+            useFullscreenPopup: typeof navigator !== "undefined" && typeof window !== "undefined" ? // we cannot just test screen size as some smartphones/website meta tags will report desktop
             // resolutions
             // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
             /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 500 : false,
@@ -115,8 +113,7 @@
         // this is our plugin class that we will create an instance of
         // eslint-disable-next-line no-unused-vars
         class Iti {
-            constructor(input) {
-                let customOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+            constructor(input, customOptions = {}) {
                 this.id = id++;
                 this.telInput = input;
                 this.activeItem = null;
@@ -306,10 +303,7 @@
             _createEl(name, attrs, container) {
                 const el = document.createElement(name);
                 if (attrs) {
-                    Object.entries(attrs).forEach(_ref => {
-                        let [ key, value ] = _ref;
-                        return el.setAttribute(key, value);
-                    });
+                    Object.entries(attrs).forEach(([ key, value ]) => el.setAttribute(key, value));
                 }
                 if (container) {
                     container.appendChild(el);
@@ -516,8 +510,7 @@
             // 2. using explicit initialCountry
             // 3. picking the first preferred country
             // 4. picking the first country
-            _setInitialState() {
-                let overrideAutoCountry = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+            _setInitialState(overrideAutoCountry = false) {
                 // fix firefox bug: when first load page (with input with value set to number with intl dial
                 // code) and initialising plugin removes the dial code from the input, then refresh page,
                 // and we try to init plugin again but this time on number without dial code so get grey flag
@@ -647,7 +640,6 @@
             }
             // perform the geo ip lookup
             _loadAutoCountry() {
-                var _this = this;
                 // 3 options:
                 // 1) already loaded (we're done)
                 // 2) not already started loading (start)
@@ -658,10 +650,9 @@
                     // don't do this twice!
                     window.intlTelInputGlobals.startedLoadingAutoCountry = true;
                     if (typeof this.options.geoIpLookup === "function") {
-                        this.options.geoIpLookup(function() {
-                            let iso2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+                        this.options.geoIpLookup((iso2 = "") => {
                             const iso2Lower = iso2.toLowerCase();
-                            const isValidIso2 = iso2Lower && _this._getCountryData(iso2Lower, true);
+                            const isValidIso2 = iso2Lower && this._getCountryData(iso2Lower, true);
                             if (isValidIso2) {
                                 window.intlTelInputGlobals.autoCountry = iso2Lower;
                                 // tell all instances the auto country is ready
@@ -672,7 +663,7 @@
                                 // this, which allows the plugin to finish initialising.
                                 setTimeout(() => forEachInstance("handleAutoCountry"));
                             } else {
-                                _this._setInitialState(true);
+                                this._setInitialState(true);
                                 forEachInstance("rejectAutoCountryPromise");
                             }
                         }, () => forEachInstance("rejectAutoCountryPromise"));
@@ -965,12 +956,10 @@
             }
             // turns "Réunion" into "Reunion"
             // from https://stackoverflow.com/a/37511463
-            _normaliseString() {
-                let s = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+            _normaliseString(s = "") {
                 return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
             }
-            _filterCountries(query) {
-                let isReset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+            _filterCountries(query, isReset = false) {
                 let isFirst = true;
                 this.countryList.innerHTML = "";
                 const normalisedQuery = this._normaliseString(query);
@@ -1604,8 +1593,7 @@
                 return -99;
             }
             // validate the input val - assumes the global function isPossibleNumber (from utilsScript)
-            isValidNumber() {
-                let mobileOnly = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+            isValidNumber(mobileOnly = true) {
                 const val = this._getFullNumber();
                 // return false for any alpha chars
                 if (/\p{L}/u.test(val)) {
