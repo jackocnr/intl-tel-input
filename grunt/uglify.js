@@ -5,15 +5,15 @@ module.exports = function(grunt) {
         ' * International Telephone Input v<%= package.version %>\n' +
         ' * <%= package.repository.url %>\n' +
         ' * Licensed under the MIT license\n' +
-        ' */\n',
-      screwIE8: false
-    },
+        ' */\n'    },
     dev: {
       options: {
         beautify: true,
         compress: false,
         mangle: false,
-        preserveComments: true
+        output: {
+          comments: "all"
+        }
       },
       files: {
         'build/js/intlTelInput.js': 'tmp/wrapped.js',

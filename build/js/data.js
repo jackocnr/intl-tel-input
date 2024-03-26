@@ -3,7 +3,6 @@
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
-
 // wrap in UMD
 (function() {
     // Array of country objects for the flag dropdown.
