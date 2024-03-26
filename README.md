@@ -297,7 +297,7 @@ Display the country dial code next to the selected flag. Play with this option o
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
-Ignore irrelevant characters (e.g. only allow a plus at the beginning, followed by numbers), and cap the length at the maximum valid number length. Requires the `utilsScript` option.
+As the user types in the input, ignore any irrelevant characters. Basically, the user can only enter numeric characters, and an optional plus at the beginning. Cap the length at the maximum valid number length. Requires the `utilsScript` option. [See example](https://intl-tel-input.com/examples/strict-mode.html).
 
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
