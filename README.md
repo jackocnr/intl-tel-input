@@ -44,10 +44,10 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Automatically set the input placeholder to an example number for the selected country
 * Navigate the country dropdown by typing a country's name, or using up/down keys
 * Automatically format the number as the user types
-* Handle phone number extensions
+* Optionally only allow numeric characters and cap the number at the maximum valid length
 * The user types their national number and the plugin gives you the full standardized international number
 * Full validation, including specific error types
-* Retina flag icons
+* High-resolution flag images
 * Lots of initialisation options for customisation, as well as public methods for interaction
 * Accessibility provided via ARIA tags
 
