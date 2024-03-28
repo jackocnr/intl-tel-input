@@ -810,7 +810,7 @@ class Iti {
         const isDeleteForwards = e && e.inputType === "deleteContentForward";
         const formattedValue = this._formatNumberAsYouType();
         const newCaretPos = this._translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
-        this.telInput.value = formattedValue
+        this.telInput.value = formattedValue;
         this.telInput.setSelectionRange(newCaretPos, newCaretPos);
       }
     };

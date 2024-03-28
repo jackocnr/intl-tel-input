@@ -23,6 +23,7 @@
     "no-unused-vars": ["error", {
       "ignoreRestSiblings": true
     }],
+    "semi": ["error", "always"],
     "space-before-function-paren": "off",
     # airbnb's version, adding "*" to block.exceptions section to allow blocks wrapped in loads of asterisks
     "spaced-comment": ["error", "always", {
