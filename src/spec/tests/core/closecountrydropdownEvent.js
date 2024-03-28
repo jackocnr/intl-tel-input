@@ -7,10 +7,12 @@ describe("close:countrydropdown event:", function() {
   beforeEach(function() {
     intlSetup();
     input = $("<input>").appendTo("body");
-    spy = spyOnEvent(input, 'close:countrydropdown');
+    spy = jasmine.createSpy();
+    input[0].addEventListener('close:countrydropdown', spy);
   });
 
   afterEach(function() {
+    input[0].removeEventListener('close:countrydropdown', spy);
     intlTeardown();
   });
 
@@ -21,24 +23,24 @@ describe("close:countrydropdown event:", function() {
     });
 
     it("does not trigger the event", function() {
-      expect(spy).not.toHaveBeenTriggered();
+      expect(spy).not.toHaveBeenCalled();
     });
 
     it("clicking outside the dropdown to close it triggers the event", function() {
       openCountryDropDown();
       input[0].click();
-      expect(spy).toHaveBeenTriggered();
+      expect(spy).toHaveBeenCalled();
     });
 
     it("pressing esc triggers the event", function() {
       openCountryDropDown();
       triggerKeyOnBody("Escape");
-      expect(spy).toHaveBeenTriggered();
+      expect(spy).toHaveBeenCalled();
     });
 
     it("selecting another country triggers the event", function() {
       selectFlag("af");
-      expect(spy).toHaveBeenTriggered();
+      expect(spy).toHaveBeenCalled();
     });
 
   });
