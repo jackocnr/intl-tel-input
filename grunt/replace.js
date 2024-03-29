@@ -1,11 +1,11 @@
 module.exports = function(grunt) {
   return {
 
-    /***********
+    /******************
      * PRIVATE METHODS
      * Ignore _init method, which is a subset of other method names, and is used in different ways
      * Note: can't do public methods, as they need to be called as is
-     ***********/
+     ******************/
     privateMethods: {
       options: {
         patterns: [
@@ -23,17 +23,11 @@ module.exports = function(grunt) {
             match: /_translateCountryNames/g,
             replacement: '_d0'
           }, {
-            match: /_countryNameSort/g,
-            replacement: '_d1'
-          }, {
             match: /_processDialCodes/g,
             replacement: '_d2'
           }, {
             match: /_processPreferredCountries/g,
             replacement: '_e'
-          }, {
-            match: /_createEl/g,
-            replacement: '_e2'
           }, {
             match: /_generateMarkup/g,
             replacement: '_f'
@@ -62,34 +56,19 @@ module.exports = function(grunt) {
             match: /_initTelInputListeners/g,
             replacement: '_j'
           }, {
-            match: /_translateCursorPosition/g,
-            replacement: '_j3'
-          }, {
             match: /_cap/g,
             replacement: '_j2'
-          }, {
-            match: /_removeEmptyDialCode/g,
-            replacement: '_l2'
-          }, {
-            match: /_getNumeric/g,
-            replacement: '_m'
           },
           // NOTE: here we exclude _trigger which is a substring of _triggerCountryChange etc
           {
             match: /_openDropdown/g,
             replacement: '_n'
           }, {
-            match: /_toggleClass/g,
-            replacement: '_n2'
-          }, {
             match: /_setDropdownPosition/g,
             replacement: '_o'
           }, {
             match: /_bindDropdownListeners/g,
             replacement: '_p'
-          }, {
-            match: /_normaliseString/g,
-            replacement: '_p2'
           }, {
             match: /_filterCountries/g,
             replacement: '_p3'
@@ -106,17 +85,11 @@ module.exports = function(grunt) {
             match: /_searchForCountry/g,
             replacement: '_s'
           }, {
-            match: /_startsWith/g,
-            replacement: '_t'
-          }, {
             match: /_updateValFromNumber/g,
             replacement: '_u'
           }, {
             match: /_updateFlagFromNumber/g,
             replacement: '_v'
-          }, {
-            match: /_isRegionlessNanp/g,
-            replacement: '_w'
           }, {
             match: /_highlightListItem/g,
             replacement: '_x'
@@ -171,9 +144,9 @@ module.exports = function(grunt) {
     },
 
 
-    /***********
+    /*************************
      * INLINE PRIVATE METHODS
-     ***********/
+     *************************/
     inlineMethods: {
       options: {
         patterns: [
@@ -219,10 +192,10 @@ module.exports = function(grunt) {
     },
 
 
-    /***********
+    /*******************
      * INSTANCE FIELDS
      * Note: avoid option names as that will break things!
-     ***********/
+     *******************/
     instanceFields: {
       options: {
         patterns: [
@@ -285,10 +258,10 @@ module.exports = function(grunt) {
       }
     },
 
-    /***********
+    /**************
      * README file
      * Update versions numbers in the Getting Started (CDN) section
-     ***********/
+     **************/
     readme: {
       options: {
         patterns: [

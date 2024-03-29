@@ -24,24 +24,25 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
     "esbuild": "^0.19.11",
-    "eslint": "^8.38.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.11.1",
+    "eslint": "^8.57.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-react": "^7.34.1",
     "evenizer": "^0.1.17",
     "google-closure-compiler": "^20230411.0.0",
     "google-closure-library": "^20230411.0.0",
-    "grunt": "^1.0.3",
+    "grunt": "^1.6.1",
     "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-imagemin": "^4.0.0",
     "grunt-contrib-jasmine": "^4.0.0",
     "grunt-contrib-watch": "^1.1.0",
-    "grunt-eslint": "^21.0.0",
     "grunt-exec": "^1.0.1",
     "grunt-replace": "^1.0.1",
     "grunt-responsive-images": "^1.10.1",
@@ -57,7 +58,8 @@
     "react-dom": "^18.2.0",
     "region-flags": "https://github.com/fonttools/region-flags/archive/refs/tags/1.2.1.tar.gz",
     "sass": "^1.62.0",
-    "time-grunt": "^1.4.0"
+    "time-grunt": "^1.4.0",
+    "typescript": "^5.4.3"
   },
   "files": [
     "build/*",
@@ -85,5 +87,5 @@
     "build:react": "node react/build.js"
   },
   "style": "build/css/intlTelInput.css",
-  "exports": "./build/js/intlTelInput.esm.js"
+  "exports": "./build/js/intlTelInput.js"
 }

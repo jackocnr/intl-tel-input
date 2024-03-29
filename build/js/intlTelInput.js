@@ -32,14 +32,14 @@ var factoryOutput = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // src/js/intlTelInput.js
+  // src/js/intlTelInput.ts
   var intlTelInput_exports = {};
   __export(intlTelInput_exports, {
     default: () => intlTelInput_default
   });
 
-  // src/js/data.js
-  var allCountries = [
+  // src/js/data.ts
+  var rawCountryData = [
     [
       "Afghanistan",
       "af",
@@ -1346,8 +1346,9 @@ var factoryOutput = (() => {
       ["18"]
     ]
   ];
-  for (let i = 0; i < allCountries.length; i++) {
-    const c = allCountries[i];
+  var allCountries = [];
+  for (let i = 0; i < rawCountryData.length; i++) {
+    const c = rawCountryData[i];
     allCountries[i] = {
       name: c[0],
       iso2: c[1],
@@ -1359,19 +1360,7 @@ var factoryOutput = (() => {
   }
   var data_default = allCountries;
 
-  // src/js/intlTelInput.js
-  var intlTelInputGlobals = {
-    getInstance: (input) => {
-      const id2 = input.getAttribute("data-intl-tel-input-id");
-      return window.intlTelInputGlobals.instances[id2];
-    },
-    instances: {},
-    // using a global like this allows us to mock it in the tests
-    documentReady: () => document.readyState === "complete"
-  };
-  if (typeof window === "object") {
-    window.intlTelInputGlobals = intlTelInputGlobals;
-  }
+  // src/js/intlTelInput.ts
   var id = 0;
   var defaults = {
     // whether or not to allow the dropdown
@@ -1447,11 +1436,113 @@ var factoryOutput = (() => {
     "888",
     "889"
   ];
+  var getNumeric = (s) => s.replace(/\D/g, "");
+  var normaliseString = (s = "") => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  var toggleClass = (el, className, shouldHaveClass) => {
+    if (shouldHaveClass && !el.classList.contains(className)) {
+      el.classList.add(className);
+    } else if (!shouldHaveClass && el.classList.contains(className)) {
+      el.classList.remove(className);
+    }
+  };
+  var isRegionlessNanp = (number) => {
+    const numeric = getNumeric(number);
+    if (numeric.charAt(0) === "1") {
+      const areaCode = numeric.substr(1, 3);
+      return regionlessNanpNumbers.indexOf(areaCode) !== -1;
+    }
+    return false;
+  };
+  var countryNameSort = (a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  };
+  var translateCursorPosition = (relevantChars, formattedValue, prevCaretPos, isDeleteForwards) => {
+    if (prevCaretPos === 0 && !isDeleteForwards) {
+      return 0;
+    }
+    let count = 0;
+    for (let i = 0; i < formattedValue.length; i++) {
+      if (/[+0-9]/.test(formattedValue[i])) {
+        count++;
+      }
+      if (count === relevantChars && !isDeleteForwards) {
+        return i + 1;
+      }
+      if (isDeleteForwards && count === relevantChars + 1) {
+        return i;
+      }
+    }
+    return formattedValue.length;
+  };
+  var createEl = (name, attrs, container) => {
+    const el = document.createElement(name);
+    if (attrs) {
+      Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+    }
+    if (container) {
+      container.appendChild(el);
+    }
+    return el;
+  };
   var forEachInstance = (method) => {
     const { instances } = window.intlTelInputGlobals;
     Object.values(instances).forEach((instance) => instance[method]());
   };
   var Iti = class {
+    // can't be private as it's called from intlTelInput convenience wrapper
+    id;
+    // not private!
+    promise;
+    // private
+    telInput;
+    activeItem;
+    highlightedItem;
+    options;
+    hadInitialPlaceholder;
+    isRTL;
+    selectedCountryData;
+    countries;
+    dialCodeMaxLen;
+    dialCodeToIso2Map;
+    dialCodes;
+    preferredCountries;
+    flagsContainer;
+    selectedFlag;
+    selectedFlagInner;
+    selectedFlagA11yText;
+    selectedDialCode;
+    dropdownArrow;
+    dropdownContent;
+    searchInput;
+    searchResultsA11yText;
+    countryList;
+    dropdown;
+    hiddenInput;
+    hiddenInputCountry;
+    maxCoreNumberLength;
+    defaultCountry;
+    _handleHiddenInputSubmit;
+    _handleLabelClick;
+    _handleClickSelectedFlag;
+    _handleFlagsContainerKeydown;
+    _handleInputEvent;
+    _handleKeydownEvent;
+    _handleWindowScroll;
+    _handleMouseoverCountryList;
+    _handleClickCountryList;
+    _handleClickOffToClose;
+    _handleKeydownOnDropdown;
+    _handleSearchChange;
+    resolveAutoCountryPromise;
+    rejectAutoCountryPromise;
+    resolveUtilsScriptPromise;
+    rejectUtilsScriptPromise;
     constructor(input, customOptions = {}) {
       this.id = id++;
       this.telInput = input;
@@ -1460,6 +1551,7 @@ var factoryOutput = (() => {
       this.options = Object.assign({}, defaults, customOptions);
       this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
     }
+    // can't be private as it's called from intlTelInput convenience wrapper
     _init() {
       if (this.options.useFullscreenPopup) {
         this.options.fixDropdownWidth = false;
@@ -1491,9 +1583,9 @@ var factoryOutput = (() => {
       this._initListeners();
       this._initRequests();
     }
-    /********************
-     *  PRIVATE METHODS
-     ********************/
+    //********************
+    //*  PRIVATE METHODS
+    //********************
     // prepare all of the country data, including onlyCountries, excludeCountries and
     // preferredCountries options
     _processCountryData() {
@@ -1502,7 +1594,7 @@ var factoryOutput = (() => {
       this._processPreferredCountries();
       this._translateCountryNames();
       if (this.options.onlyCountries.length || this.options.i18n) {
-        this.countries.sort(this._countryNameSort);
+        this.countries.sort(countryNameSort);
       }
     }
     // add a dial code to this.dialCodeToIso2Map
@@ -1523,15 +1615,16 @@ var factoryOutput = (() => {
     }
     // process onlyCountries or excludeCountries array if present
     _processAllCountries() {
-      if (this.options.onlyCountries.length) {
-        const lowerCaseOnlyCountries = this.options.onlyCountries.map(
+      const { onlyCountries, excludeCountries } = this.options;
+      if (onlyCountries.length) {
+        const lowerCaseOnlyCountries = onlyCountries.map(
           (country) => country.toLowerCase()
         );
         this.countries = data_default.filter(
           (country) => lowerCaseOnlyCountries.indexOf(country.iso2) > -1
         );
-      } else if (this.options.excludeCountries.length) {
-        const lowerCaseExcludeCountries = this.options.excludeCountries.map(
+      } else if (excludeCountries.length) {
+        const lowerCaseExcludeCountries = excludeCountries.map(
           (country) => country.toLowerCase()
         );
         this.countries = data_default.filter(
@@ -1549,16 +1642,6 @@ var factoryOutput = (() => {
           this.countries[i].name = this.options.i18n[iso2];
         }
       }
-    }
-    // sort by country name
-    _countryNameSort(a, b) {
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
     }
     // generate this.dialCodes and this.dialCodeToIso2Map
     _processDialCodes() {
@@ -1600,17 +1683,6 @@ var factoryOutput = (() => {
         }
       }
     }
-    // create a DOM element
-    _createEl(name, attrs, container) {
-      const el = document.createElement(name);
-      if (attrs) {
-        Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
-      }
-      if (container) {
-        container.appendChild(el);
-      }
-      return el;
-    }
     // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
     _generateMarkup() {
       this.telInput.classList.add("iti__tel-input");
@@ -1645,15 +1717,15 @@ var factoryOutput = (() => {
       if (!useFullscreenPopup) {
         parentClass += " iti--inline-dropdown";
       }
-      const wrapper = this._createEl("div", { class: parentClass });
-      this.telInput.parentNode.insertBefore(wrapper, this.telInput);
+      const wrapper = createEl("div", { class: parentClass });
+      this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
       if (showFlags || showSelectedDialCode) {
-        this.flagsContainer = this._createEl(
+        this.flagsContainer = createEl(
           "div",
           { class: "iti__flag-container" },
           wrapper
         );
-        this.selectedFlag = this._createEl(
+        this.selectedFlag = createEl(
           "div",
           {
             class: "iti__selected-flag",
@@ -1663,13 +1735,13 @@ var factoryOutput = (() => {
               "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country",
               "aria-haspopup": countrySearch ? "true" : "listbox",
               "aria-controls": countrySearch ? `iti-${this.id}__dropdown-content` : `iti-${this.id}__country-listbox`,
-              ...countrySearch || { role: "combobox" }
+              ...countrySearch ? { role: "combobox" } : {}
             }
           },
           this.flagsContainer
         );
-        this.selectedFlagInner = this._createEl("div", null, this.selectedFlag);
-        this.selectedFlagA11yText = this._createEl(
+        this.selectedFlagInner = createEl("div", null, this.selectedFlag);
+        this.selectedFlagA11yText = createEl(
           "span",
           { class: "iti__a11y-text" },
           this.selectedFlagInner
@@ -1680,7 +1752,7 @@ var factoryOutput = (() => {
         this.selectedFlag.setAttribute("aria-disabled", "true");
       }
       if (showSelectedDialCode) {
-        this.selectedDialCode = this._createEl(
+        this.selectedDialCode = createEl(
           "div",
           { class: "iti__selected-dial-code" },
           this.selectedFlag
@@ -1690,18 +1762,18 @@ var factoryOutput = (() => {
         if (!this.telInput.disabled) {
           this.selectedFlag.setAttribute("tabindex", "0");
         }
-        this.dropdownArrow = this._createEl(
+        this.dropdownArrow = createEl(
           "div",
           { class: "iti__arrow", "aria-hidden": "true" },
           this.selectedFlag
         );
         const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
-        this.dropdownContent = this._createEl("div", {
+        this.dropdownContent = createEl("div", {
           id: `iti-${this.id}__dropdown-content`,
           class: `iti__dropdown-content iti__hide ${extraClasses}`
         });
         if (countrySearch) {
-          this.searchInput = this._createEl(
+          this.searchInput = createEl(
             "input",
             {
               type: "text",
@@ -1716,13 +1788,13 @@ var factoryOutput = (() => {
             },
             this.dropdownContent
           );
-          this.searchResultsA11yText = this._createEl(
+          this.searchResultsA11yText = createEl(
             "span",
             { class: "iti__a11y-text" },
             this.dropdownContent
           );
         }
-        this.countryList = this._createEl(
+        this.countryList = createEl(
           "ul",
           {
             class: "iti__country-list",
@@ -1734,7 +1806,7 @@ var factoryOutput = (() => {
         );
         if (this.preferredCountries.length && !countrySearch) {
           this._appendListItems(this.preferredCountries, "iti__preferred", true);
-          this._createEl(
+          createEl(
             "li",
             {
               class: "iti__divider",
@@ -1757,24 +1829,24 @@ var factoryOutput = (() => {
           if (countrySearch) {
             dropdownClasses += " iti--country-search";
           }
-          this.dropdown = this._createEl("div", { class: dropdownClasses });
+          this.dropdown = createEl("div", { class: dropdownClasses });
           this.dropdown.appendChild(this.dropdownContent);
         } else {
           this.flagsContainer.appendChild(this.dropdownContent);
         }
       }
       if (hiddenInput) {
-        const telInputName = this.telInput.getAttribute("name");
+        const telInputName = this.telInput.getAttribute("name") || "";
         const names = hiddenInput(telInputName);
         if (names.phone) {
-          this.hiddenInput = this._createEl("input", {
+          this.hiddenInput = createEl("input", {
             type: "hidden",
             name: names.phone
           });
           wrapper.appendChild(this.hiddenInput);
         }
         if (names.country) {
-          this.hiddenInputCountry = this._createEl("input", {
+          this.hiddenInputCountry = createEl("input", {
             type: "hidden",
             name: names.country
           });
@@ -1787,7 +1859,7 @@ var factoryOutput = (() => {
       for (let i = 0; i < countries.length; i++) {
         const c = countries[i];
         const idSuffix = preferred ? "-preferred" : "";
-        const listItem = this._createEl(
+        const listItem = createEl(
           "li",
           {
             id: `iti-${this.id}__item-${c.iso2}${idSuffix}`,
@@ -1821,9 +1893,9 @@ var factoryOutput = (() => {
       const useAttribute = attributeValue && attributeValue.charAt(0) === "+" && (!inputValue || inputValue.charAt(0) !== "+");
       const val = useAttribute ? attributeValue : inputValue;
       const dialCode = this._getDialCode(val);
-      const isRegionlessNanp = this._isRegionlessNanp(val);
+      const isRegionlessNanpNumber = isRegionlessNanp(val);
       const { initialCountry } = this.options;
-      if (dialCode && !isRegionlessNanp) {
+      if (dialCode && !isRegionlessNanpNumber) {
         this._updateFlagFromNumber(val);
       } else if (initialCountry !== "auto" || overrideAutoCountry) {
         const lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
@@ -1831,7 +1903,7 @@ var factoryOutput = (() => {
         if (isValidInitialCountry) {
           this._setCountry(lowerInitialCountry);
         } else {
-          if (dialCode && isRegionlessNanp) {
+          if (dialCode && isRegionlessNanpNumber) {
             this._setCountry("us");
           } else {
             this._setCountry();
@@ -1859,10 +1931,10 @@ var factoryOutput = (() => {
           this.hiddenInput.value = this.getNumber();
         }
         if (this.hiddenInputCountry) {
-          this.hiddenInputCountry.value = this.getSelectedCountryData().iso2;
+          this.hiddenInputCountry.value = this.getSelectedCountryData().iso2 || "";
         }
       };
-      this.telInput.form.addEventListener(
+      this.telInput.form?.addEventListener(
         "submit",
         this._handleHiddenInputSubmit
       );
@@ -1940,7 +2012,10 @@ var factoryOutput = (() => {
                 forEachInstance("rejectAutoCountryPromise");
               }
             },
-            () => forEachInstance("rejectAutoCountryPromise")
+            () => {
+              this._setInitialState(true);
+              forEachInstance("rejectAutoCountryPromise");
+            }
           );
         }
       }
@@ -1961,12 +2036,12 @@ var factoryOutput = (() => {
           userOverrideFormatting = false;
         }
         if (formatAsYouType && !userOverrideFormatting) {
-          const currentCaretPos = this.telInput.selectionStart;
+          const currentCaretPos = this.telInput.selectionStart || 0;
           const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
           const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
           const isDeleteForwards = e && e.inputType === "deleteContentForward";
           const formattedValue = this._formatNumberAsYouType();
-          const newCaretPos = this._translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
+          const newCaretPos = translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
           this.telInput.value = formattedValue;
           this.telInput.setSelectionRange(newCaretPos, newCaretPos);
         }
@@ -1979,7 +2054,7 @@ var factoryOutput = (() => {
             const isNumeric = /^[0-9]$/.test(e.key);
             const isAllowedChar = isInitialPlus || isNumeric;
             const fullNumber = this._getFullNumber();
-            const coreNumber = intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
+            const coreNumber = window.intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
             if (!isAllowedChar || hasReachedMaxLength) {
               e.preventDefault();
@@ -1989,42 +2064,10 @@ var factoryOutput = (() => {
         this.telInput.addEventListener("keydown", this._handleKeydownEvent);
       }
     }
-    // iterate through the formattedValue until hit the right number of relevant chars
-    _translateCursorPosition(relevantChars, formattedValue, prevCaretPos, isDeleteForwards) {
-      if (prevCaretPos === 0 && !isDeleteForwards) {
-        return 0;
-      }
-      let count = 0;
-      for (let i = 0; i < formattedValue.length; i++) {
-        if (/[+0-9]/.test(formattedValue[i])) {
-          count++;
-        }
-        if (count === relevantChars && !isDeleteForwards) {
-          return i + 1;
-        }
-        if (isDeleteForwards && count === relevantChars + 1) {
-          return i;
-        }
-      }
-      return formattedValue.length;
-    }
     // adhere to the input's maxlength attr
     _cap(number) {
-      const max = this.telInput.getAttribute("maxlength");
+      const max = parseInt(this.telInput.getAttribute("maxlength") || "", 10);
       return max && number.length > max ? number.substr(0, max) : number;
-    }
-    // clear the input if it just contains a dial code
-    _removeEmptyDialCode() {
-      if (this.telInput.value.charAt(0) === "+") {
-        const numeric = this._getNumeric(this.telInput.value);
-        if (!numeric || this.selectedCountryData.dialCode === numeric) {
-          this.telInput.value = "";
-        }
-      }
-    }
-    // extract the numeric digits from the given string
-    _getNumeric(s) {
-      return s.replace(/\D/g, "");
     }
     // trigger a custom event on the input
     _trigger(name) {
@@ -2047,9 +2090,9 @@ var factoryOutput = (() => {
         this._highlightListItem(this.activeItem, false);
         this._scrollTo(this.activeItem, true);
       } else {
-        const { firstElementChild } = this.countryList;
-        if (firstElementChild) {
-          this._highlightListItem(firstElementChild, false);
+        const firstCountryItem = this.countryList.firstElementChild;
+        if (firstCountryItem) {
+          this._highlightListItem(firstCountryItem, false);
           this.countryList.scrollTop = 0;
         }
         if (countrySearch) {
@@ -2059,14 +2102,6 @@ var factoryOutput = (() => {
       this._bindDropdownListeners();
       this.dropdownArrow.classList.add("iti__arrow--up");
       this._trigger("open:countrydropdown");
-    }
-    // make sure the el has the className or not, depending on the value of shouldHaveClass
-    _toggleClass(el, className, shouldHaveClass) {
-      if (shouldHaveClass && !el.classList.contains(className)) {
-        el.classList.add(className);
-      } else if (!shouldHaveClass && el.classList.contains(className)) {
-        el.classList.remove(className);
-      }
     }
     // decide if should position dropdown above or below input (depends on position within viewport, and scroll)
     _setDropdownPosition() {
@@ -2081,7 +2116,7 @@ var factoryOutput = (() => {
         const dropdownFitsBelow = inputTop + this.telInput.offsetHeight + dropdownHeight < windowTop + window.innerHeight;
         const dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
         const positionDropdownAboveInput = !this.options.countrySearch && !dropdownFitsBelow && dropdownFitsAbove;
-        this._toggleClass(
+        toggleClass(
           this.dropdownContent,
           "iti__dropdown-content--dropup",
           positionDropdownAboveInput
@@ -2098,7 +2133,7 @@ var factoryOutput = (() => {
     // we only bind dropdown listeners when the dropdown is open
     _bindDropdownListeners() {
       this._handleMouseoverCountryList = (e) => {
-        const listItem = e.target.closest(".iti__country");
+        const listItem = e.target?.closest(".iti__country");
         if (listItem) {
           this._highlightListItem(listItem, false);
         }
@@ -2108,7 +2143,7 @@ var factoryOutput = (() => {
         this._handleMouseoverCountryList
       );
       this._handleClickCountryList = (e) => {
-        const listItem = e.target.closest(".iti__country");
+        const listItem = e.target?.closest(".iti__country");
         if (listItem) {
           this._selectListItem(listItem);
         }
@@ -2175,23 +2210,21 @@ var factoryOutput = (() => {
         this.searchInput.addEventListener("click", (e) => e.stopPropagation());
       }
     }
-    // turns "Réunion" into "Reunion"
-    // from https://stackoverflow.com/a/37511463
-    _normaliseString(s = "") {
-      return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    }
     _filterCountries(query, isReset = false) {
       let isFirst = true;
       this.countryList.innerHTML = "";
-      const normalisedQuery = this._normaliseString(query);
+      const normalisedQuery = normaliseString(query);
       for (let i = 0; i < this.countries.length; i++) {
         const c = this.countries[i];
-        const normalisedCountryName = this._normaliseString(c.name);
+        const normalisedCountryName = normaliseString(c.name);
         const fullDialCode = `+${c.dialCode}`;
         if (isReset || normalisedCountryName.includes(normalisedQuery) || fullDialCode.includes(normalisedQuery) || c.iso2.includes(normalisedQuery)) {
-          this.countryList.appendChild(c.nodeById[this.id]);
+          const listItem = c.nodeById[this.id];
+          if (listItem) {
+            this.countryList.appendChild(listItem);
+          }
           if (isFirst) {
-            this._highlightListItem(c.nodeById[this.id], false);
+            this._highlightListItem(listItem, false);
             isFirst = false;
           }
         }
@@ -2209,13 +2242,13 @@ var factoryOutput = (() => {
       } else if (count === 1) {
         searchText = i18n.oneSearchResult || "1 result found";
       } else {
-        searchText = i18n.multipleSearchResults ? i18n.multipleSearchResults.replace("${count}", count) : `${count} results found`;
+        searchText = i18n.multipleSearchResults ? i18n.multipleSearchResults.replace("${count}", count.toString()) : `${count} results found`;
       }
       this.searchResultsA11yText.textContent = searchText;
     }
     // highlight the next/prev item in the list (and ensure it is visible)
     _handleUpDownKey(key) {
-      let next = key === "ArrowUp" ? this.highlightedItem.previousElementSibling : this.highlightedItem.nextElementSibling;
+      let next = key === "ArrowUp" ? this.highlightedItem?.previousElementSibling : this.highlightedItem?.nextElementSibling;
       if (next) {
         if (next.classList.contains("iti__divider")) {
           next = key === "ArrowUp" ? next.previousElementSibling : next.nextElementSibling;
@@ -2238,17 +2271,15 @@ var factoryOutput = (() => {
     // find the first list item whose name starts with the query string
     _searchForCountry(query) {
       for (let i = 0; i < this.countries.length; i++) {
-        if (this._startsWith(this.countries[i].name, query)) {
-          const listItem = this.countries[i].nodeById[this.id];
+        const c = this.countries[i];
+        const startsWith = c.name.substr(0, query.length).toLowerCase() === query;
+        if (startsWith) {
+          const listItem = c.nodeById[this.id];
           this._highlightListItem(listItem, false);
           this._scrollTo(listItem, true);
           break;
         }
       }
-    }
-    // check if string a starts with string b
-    _startsWith(a, b) {
-      return a.substr(0, b.length).toLowerCase() === b;
     }
     // update the input's value to the given val (format first if possible)
     // NOTE: this is called from _setInitialState, handleUtils and setNumber
@@ -2256,9 +2287,9 @@ var factoryOutput = (() => {
       let number = fullNumber;
       if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
         const useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.showSelectedDialCode;
-        const { NATIONAL, INTERNATIONAL } = intlTelInputUtils.numberFormat;
+        const { NATIONAL, INTERNATIONAL } = window.intlTelInputUtils.numberFormat;
         const format = useNational ? NATIONAL : INTERNATIONAL;
-        number = intlTelInputUtils.formatNumber(
+        number = window.intlTelInputUtils.formatNumber(
           number,
           this.selectedCountryData.iso2,
           format
@@ -2284,12 +2315,12 @@ var factoryOutput = (() => {
         number = `+${selectedDialCode}${number}`;
       }
       const dialCode = this._getDialCode(number, true);
-      const numeric = this._getNumeric(number);
+      const numeric = getNumeric(number);
       let iso2 = null;
       if (dialCode) {
-        const iso2Codes = this.dialCodeToIso2Map[this._getNumeric(dialCode)];
+        const iso2Codes = this.dialCodeToIso2Map[getNumeric(dialCode)];
         const alreadySelected = iso2Codes.indexOf(this.selectedCountryData.iso2) !== -1 && numeric.length <= dialCode.length - 1;
-        const isRegionlessNanpNumber = selectedDialCode === "1" && this._isRegionlessNanp(numeric);
+        const isRegionlessNanpNumber = selectedDialCode === "1" && isRegionlessNanp(numeric);
         if (!isRegionlessNanpNumber && !alreadySelected) {
           for (let j = 0; j < iso2Codes.length; j++) {
             if (iso2Codes[j]) {
@@ -2308,16 +2339,6 @@ var factoryOutput = (() => {
       }
       return false;
     }
-    // check if the given number is a regionless NANP number (expects the number to contain an
-    // international dial code)
-    _isRegionlessNanp(number) {
-      const numeric = this._getNumeric(number);
-      if (numeric.charAt(0) === "1") {
-        const areaCode = numeric.substr(1, 3);
-        return regionlessNanpNumbers.indexOf(areaCode) !== -1;
-      }
-      return false;
-    }
     // remove highlighting from other list items and highlight the given item
     _highlightListItem(listItem, shouldFocus) {
       const prevItem = this.highlightedItem;
@@ -2330,12 +2351,12 @@ var factoryOutput = (() => {
       this.highlightedItem.setAttribute("aria-selected", "true");
       this.selectedFlag.setAttribute(
         "aria-activedescendant",
-        listItem.getAttribute("id")
+        listItem.getAttribute("id") || ""
       );
       if (this.options.countrySearch) {
         this.searchInput.setAttribute(
           "aria-activedescendant",
-          listItem.getAttribute("id")
+          listItem.getAttribute("id") || ""
         );
       }
       if (shouldFocus) {
@@ -2360,7 +2381,7 @@ var factoryOutput = (() => {
     _setCountry(iso2) {
       const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
       const prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
-      this.selectedCountryData = iso2 ? this._getCountryData(iso2, false) : {};
+      this.selectedCountryData = iso2 ? this._getCountryData(iso2, false) || {} : {};
       if (this.selectedCountryData.iso2) {
         this.defaultCountry = this.selectedCountryData.iso2;
       }
@@ -2404,9 +2425,11 @@ var factoryOutput = (() => {
           ) || this.countryList.querySelector(
             `#iti-${this.id}__item-${iso2}`
           );
-          nextItem.setAttribute("aria-selected", "true");
-          nextItem.classList.add("iti__active");
-          this.activeItem = nextItem;
+          if (nextItem) {
+            nextItem.setAttribute("aria-selected", "true");
+            nextItem.classList.add("iti__active");
+            this.activeItem = nextItem;
+          }
         }
       }
       return prevCountry.iso2 !== iso2;
@@ -2415,26 +2438,26 @@ var factoryOutput = (() => {
     _updateMaxLength() {
       if (this.options.strictMode && window.intlTelInputUtils) {
         if (this.selectedCountryData.iso2) {
-          const numberType = intlTelInputUtils.numberType[this.options.placeholderNumberType];
-          let exampleNumber = intlTelInputUtils.getExampleNumber(
+          const numberType = window.intlTelInputUtils.numberType[this.options.placeholderNumberType];
+          let exampleNumber = window.intlTelInputUtils.getExampleNumber(
             this.selectedCountryData.iso2,
-            null,
+            false,
             numberType,
             true
           );
           let validNumber = exampleNumber;
-          while (intlTelInputUtils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
+          while (window.intlTelInputUtils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
             validNumber = exampleNumber;
             exampleNumber += "0";
           }
-          const coreNumber = intlTelInputUtils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
+          const coreNumber = window.intlTelInputUtils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
           this.maxCoreNumberLength = coreNumber.length;
         } else {
           this.maxCoreNumberLength = null;
         }
       }
     }
-    _setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode) {
+    _setSelectedCountryFlagTitleAttribute(iso2 = null, showSelectedDialCode) {
       if (!this.selectedFlag) {
         return;
       }
@@ -2453,16 +2476,19 @@ var factoryOutput = (() => {
     // NOTE: this is only used when showSelectedDialCode is enabled, so flagsContainer and selectedFlag
     // will definitely exist
     _getHiddenSelectedFlagWidth() {
-      const containerClone = this.telInput.parentNode.cloneNode();
-      containerClone.style.visibility = "hidden";
-      document.body.appendChild(containerClone);
-      const flagsContainerClone = this.flagsContainer.cloneNode();
-      containerClone.appendChild(flagsContainerClone);
-      const selectedFlagClone = this.selectedFlag.cloneNode(true);
-      flagsContainerClone.appendChild(selectedFlagClone);
-      const width = selectedFlagClone.offsetWidth;
-      containerClone.parentNode.removeChild(containerClone);
-      return width;
+      if (this.telInput.parentNode) {
+        const containerClone = this.telInput.parentNode.cloneNode(false);
+        containerClone.style.visibility = "hidden";
+        document.body.appendChild(containerClone);
+        const flagsContainerClone = this.flagsContainer.cloneNode();
+        containerClone.appendChild(flagsContainerClone);
+        const selectedFlagClone = this.selectedFlag.cloneNode(true);
+        flagsContainerClone.appendChild(selectedFlagClone);
+        const width = selectedFlagClone.offsetWidth;
+        document.body.removeChild(containerClone);
+        return width;
+      }
+      return 0;
     }
     // update the input placeholder to an example number from the currently selected country
     _updatePlaceholder() {
@@ -2474,8 +2500,8 @@ var factoryOutput = (() => {
       } = this.options;
       const shouldSetPlaceholder = autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && autoPlaceholder === "polite";
       if (window.intlTelInputUtils && shouldSetPlaceholder) {
-        const numberType = intlTelInputUtils.numberType[placeholderNumberType];
-        let placeholder = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(
+        const numberType = window.intlTelInputUtils.numberType[placeholderNumberType];
+        let placeholder = this.selectedCountryData.iso2 ? window.intlTelInputUtils.getExampleNumber(
           this.selectedCountryData.iso2,
           nationalMode,
           numberType
@@ -2608,7 +2634,7 @@ var factoryOutput = (() => {
       const val = this.telInput.value.trim();
       const { dialCode } = this.selectedCountryData;
       let prefix;
-      const numericVal = this._getNumeric(val);
+      const numericVal = getNumeric(val);
       if (this.options.showSelectedDialCode && !this.options.nationalMode && val.charAt(0) !== "+" && dialCode && numericVal) {
         prefix = `+${dialCode}`;
       } else {
@@ -2637,7 +2663,7 @@ var factoryOutput = (() => {
     // format the number as the user types
     _formatNumberAsYouType() {
       const val = this._getFullNumber();
-      const result = window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
+      const result = window.intlTelInputUtils ? window.intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
       const { dialCode } = this.selectedCountryData;
       if (this.options.showSelectedDialCode && !this.options.nationalMode && this.telInput.value.charAt(0) !== "+" && result.includes(`+${dialCode}`)) {
         const afterDialCode = result.split(`+${dialCode}`)[1] || "";
@@ -2645,12 +2671,12 @@ var factoryOutput = (() => {
       }
       return result;
     }
-    /**************************
-     *  SECRET PUBLIC METHODS
-     **************************/
+    //**************************
+    //*  SECRET PUBLIC METHODS
+    //**************************
     // this is called when the geoip call returns
     handleAutoCountry() {
-      if (this.options.initialCountry === "auto") {
+      if (this.options.initialCountry === "auto" && window.intlTelInputGlobals.autoCountry) {
         this.defaultCountry = window.intlTelInputGlobals.autoCountry;
         if (!this.telInput.value) {
           this.setCountry(this.defaultCountry);
@@ -2671,9 +2697,9 @@ var factoryOutput = (() => {
       }
       this.resolveUtilsScriptPromise();
     }
-    /********************
-     *  PUBLIC METHODS
-     ********************/
+    //********************
+    //*  PUBLIC METHODS
+    //********************
     // remove plugin
     destroy() {
       if (this.options.allowDropdown) {
@@ -2701,14 +2727,14 @@ var factoryOutput = (() => {
       }
       this.telInput.removeAttribute("data-intl-tel-input-id");
       const wrapper = this.telInput.parentNode;
-      wrapper.parentNode.insertBefore(this.telInput, wrapper);
-      wrapper.parentNode.removeChild(wrapper);
+      wrapper?.parentNode?.insertBefore(this.telInput, wrapper);
+      wrapper?.parentNode?.removeChild(wrapper);
       delete window.intlTelInputGlobals.instances[this.id];
     }
     // get the extension from the current number
     getExtension() {
       if (window.intlTelInputUtils) {
-        return intlTelInputUtils.getExtension(
+        return window.intlTelInputUtils.getExtension(
           this._getFullNumber(),
           this.selectedCountryData.iso2
         );
@@ -2719,7 +2745,7 @@ var factoryOutput = (() => {
     getNumber(format) {
       if (window.intlTelInputUtils) {
         const { iso2 } = this.selectedCountryData;
-        return intlTelInputUtils.formatNumber(
+        return window.intlTelInputUtils.formatNumber(
           this._getFullNumber(),
           iso2,
           format
@@ -2730,7 +2756,7 @@ var factoryOutput = (() => {
     // get the type of the entered number e.g. landline/mobile
     getNumberType() {
       if (window.intlTelInputUtils) {
-        return intlTelInputUtils.getNumberType(
+        return window.intlTelInputUtils.getNumberType(
           this._getFullNumber(),
           this.selectedCountryData.iso2
         );
@@ -2745,7 +2771,7 @@ var factoryOutput = (() => {
     getValidationError() {
       if (window.intlTelInputUtils) {
         const { iso2 } = this.selectedCountryData;
-        return intlTelInputUtils.getValidationError(this._getFullNumber(), iso2);
+        return window.intlTelInputUtils.getValidationError(this._getFullNumber(), iso2);
       }
       return -99;
     }
@@ -2755,7 +2781,7 @@ var factoryOutput = (() => {
       if (/\p{L}/u.test(val)) {
         return false;
       }
-      return window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
+      return window.intlTelInputUtils ? window.intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
     }
     // validate the input val (precise) - assumes the global function isValidNumber (from utilsScript)
     isValidNumberPrecise() {
@@ -2763,7 +2789,7 @@ var factoryOutput = (() => {
       if (/\p{L}/u.test(val)) {
         return false;
       }
-      return window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
+      return window.intlTelInputUtils ? window.intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
     }
     // update the selected flag, and update the input val accordingly
     setCountry(iso2) {
@@ -2788,7 +2814,6 @@ var factoryOutput = (() => {
       this._updatePlaceholder();
     }
   };
-  intlTelInputGlobals.getCountryData = () => data_default;
   var injectScript = (path, handleSuccess, handleFailure) => {
     const script = document.createElement("script");
     script.onload = () => {
@@ -2808,7 +2833,7 @@ var factoryOutput = (() => {
     script.src = path;
     document.body.appendChild(script);
   };
-  intlTelInputGlobals.loadUtils = (path) => {
+  var loadUtils = (path) => {
     if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
       window.intlTelInputGlobals.startedLoadingUtilsScript = true;
       return new Promise(
@@ -2817,12 +2842,29 @@ var factoryOutput = (() => {
     }
     return null;
   };
-  intlTelInputGlobals.defaults = defaults;
-  intlTelInputGlobals.version = "20.3.0";
+  if (typeof window === "object") {
+    const intlTelInputGlobals = {
+      defaults,
+      // using a global like this allows us to mock it in the tests
+      documentReady: () => document.readyState === "complete",
+      // get the country data object
+      getCountryData: () => data_default,
+      // a getter for the plugin instance
+      getInstance: (input) => {
+        const id2 = input.getAttribute("data-intl-tel-input-id");
+        return id2 ? intlTelInputGlobals.instances[id2] : null;
+      },
+      // a map from instance ID to instance object
+      instances: {},
+      loadUtils,
+      version: "20.3.0"
+    };
+    window.intlTelInputGlobals = intlTelInputGlobals;
+  }
   var intlTelInput = (input, options) => {
     const iti = new Iti(input, options);
     iti._init();
-    input.setAttribute("data-intl-tel-input-id", iti.id);
+    input.setAttribute("data-intl-tel-input-id", iti.id.toString());
     window.intlTelInputGlobals.instances[iti.id] = iti;
     return iti;
   };

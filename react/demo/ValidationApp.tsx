@@ -1,9 +1,6 @@
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable import/no-named-as-default */
-/* eslint-disable react/jsx-filename-extension */
-import React, { useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import IntlTelInput from '../build/IntlTelInput.esm';
+import React, { useState, ReactElement } from "react";
+import { createRoot } from "react-dom/client";
+import IntlTelInput from "../src/IntlTelInput";
 
 const errorMap = [
   "Invalid number",
@@ -13,17 +10,17 @@ const errorMap = [
   "Invalid number",
 ];
 
-const App = () => {
-  const [isValid, setIsValid] = useState(null);
-  const [number, setNumber] = useState(null);
-  const [errorCode, setErrorCode] = useState(null);
-  const [notice, setNotice] = useState(null);
+const App = (): ReactElement => {
+  const [isValid, setIsValid] = useState<string | null>(null);
+   const [number, setNumber] = useState<string | null>(null);
+   const [errorCode, setErrorCode] = useState<number | null>(null);
+   const [notice, setNotice] = useState<string | null>(null);
   
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     if (isValid) {
       setNotice(`Valid number: ${number}`);
     } else {
-      const errorMessage = errorMap[errorCode] || "Invalid number";
+      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
       setNotice(`Error: ${errorMessage}`);
     }
   };
@@ -46,5 +43,7 @@ const App = () => {
 };
 
 const container = document.getElementById("app");
-const root = createRoot(container);
-root.render(<App />);
+if (container) {
+  const root = createRoot(container);
+  root.render(<App />);
+}

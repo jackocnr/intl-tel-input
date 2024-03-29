@@ -3,7 +3,7 @@ goog.provide("i18n.phonenumbers.demo");
 goog.require("i18n.phonenumbers.PhoneNumberFormat");
 goog.require("i18n.phonenumbers.PhoneNumberUtil");
 goog.require("i18n.phonenumbers.Error");
-goog.require('i18n.phonenumbers.AsYouTypeFormatter');
+goog.require("i18n.phonenumbers.AsYouTypeFormatter");
 
 // format the number as the user types
 const formatNumberAsYouType = (number, countryCode) => {

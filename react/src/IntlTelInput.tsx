@@ -1,9 +1,6 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable import/no-extraneous-dependencies */
-import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import intlTelInput from "../../build/js/intlTelInput";
+import React, { useRef, useEffect, ReactElement } from "react";
+import PropTypes from "prop-types";
+import intlTelInput from "../../src/js/intlTelInput";
 
 const IntlTelInput = ({
   initialValue,
@@ -19,12 +16,26 @@ const IntlTelInput = ({
   onBlur,
   placeholder,
   inputProps,
-}) => {
-  const inputRef = useRef(null);
-  const itiRef = useRef(null);
+}: {
+  initialValue: string,
+  onChangeNumber: (number: string) => void,
+  onChangeCountry: (country: string) => void,
+  onChangeValidity: (valid: boolean) => void,
+  onChangeErrorCode: (errorCode: number | null) => void,
+  usePreciseValidation: boolean,
+  initOptions: object,
+  className: string,
+  disabled: boolean,
+  onFocus: () => void,
+  onBlur: () => void,
+  placeholder: string,
+  inputProps: object,
+}): ReactElement => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const itiRef = useRef<any>(null);
   
-  const update = () => {
-    const num = itiRef.current.getNumber();
+  const update = (): void => {
+    const num = itiRef.current?.getNumber();
     const countryIso = itiRef.current.getSelectedCountryData().iso2;
     // note: this number will be in standard E164 format, but any container component can use
     // intlTelInputUtils.formatNumber() to convert this to another format
@@ -32,7 +43,7 @@ const IntlTelInput = ({
     onChangeNumber(num);
     onChangeCountry(countryIso);
 
-    const isValid = usePreciseValidation ? itiRef.current.isValidNumberPrecise() : itiRef.current.isValidNumber();
+    const isValid = usePreciseValidation ? itiRef.current?.isValidNumberPrecise() : itiRef.current.isValidNumber();
     if (isValid) {
       onChangeValidity(true);
       onChangeErrorCode(null);
@@ -47,9 +58,13 @@ const IntlTelInput = ({
     // store a reference to the current input ref, which otherwise is already lost in the cleanup function
     const inputRefCurrent = inputRef.current;
     itiRef.current = intlTelInput(inputRef.current, initOptions);
-    inputRefCurrent.addEventListener("countrychange", update);
-    return () => {
-      inputRefCurrent.removeEventListener("countrychange", update);
+    if (inputRefCurrent) {
+      inputRefCurrent.addEventListener("countrychange", update);
+    }
+    return (): void => {
+      if (inputRefCurrent) {
+        inputRefCurrent.removeEventListener("countrychange", update);
+      }
       itiRef.current.destroy();
     };
   }, []);
@@ -112,16 +127,16 @@ IntlTelInput.propTypes = {
 IntlTelInput.defaultProps = {
   initialValue: "",
   placeholder: "",
-  onChangeNumber: () => {},
-  onChangeCountry: () => {},
-  onChangeValidity: () => {},
-  onChangeErrorCode: () => {},
+  onChangeNumber: (): void => {},
+  onChangeCountry: (): void => {},
+  onChangeValidity: (): void => {},
+  onChangeErrorCode: (): void => {},
   usePreciseValidation: false,
   initOptions: {},
   className: "",
   disabled: false,
-  onFocus: () => {},
-  onBlur: () => {},
+  onFocus: (): void => {},
+  onBlur: (): void => {},
   inputProps: {},
 };
 

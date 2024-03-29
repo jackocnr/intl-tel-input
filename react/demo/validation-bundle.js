@@ -296,8 +296,8 @@
             return refObject;
           }
           var isArrayImpl = Array.isArray;
-          function isArray(a2) {
-            return isArrayImpl(a2);
+          function isArray(a) {
+            return isArrayImpl(a);
           }
           function typeName(value) {
             {
@@ -471,7 +471,7 @@
               }
             }
           }
-          var ReactElement = function(type, key, ref, self, source, owner, props) {
+          var ReactElement3 = function(type, key, ref, self, source, owner, props) {
             var element = {
               // This tag allows us to uniquely identify this as a React Element
               $$typeof: REACT_ELEMENT_TYPE,
@@ -572,10 +572,10 @@
                 }
               }
             }
-            return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+            return ReactElement3(type, key, ref, self, source, ReactCurrentOwner.current, props);
           }
           function cloneAndReplaceKey(oldElement, newKey) {
-            var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
+            var newElement = ReactElement3(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
             return newElement;
           }
           function cloneElement(element, config, children) {
@@ -624,7 +624,7 @@
               }
               props.children = childArray;
             }
-            return ReactElement(element.type, key, ref, self, source, owner, props);
+            return ReactElement3(element.type, key, ref, self, source, owner, props);
           }
           function isValidElement(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
@@ -1092,11 +1092,11 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useReducer(reducer, initialArg, init);
           }
-          function useRef(initialValue) {
+          function useRef2(initialValue) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect(create, deps) {
+          function useEffect2(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1878,14 +1878,14 @@
           exports.useContext = useContext;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect;
+          exports.useEffect = useEffect2;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect;
           exports.useMemo = useMemo;
           exports.useReducer = useReducer;
-          exports.useRef = useRef;
+          exports.useRef = useRef2;
           exports.useState = useState2;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
@@ -1985,9 +1985,9 @@
               }
             }
           }
-          function compare(a2, b) {
-            var diff = a2.sortIndex - b.sortIndex;
-            return diff !== 0 ? diff : a2.id - b.id;
+          function compare(a, b) {
+            var diff = a.sortIndex - b.sortIndex;
+            return diff !== 0 ? diff : a.id - b.id;
           }
           var ImmediatePriority = 1;
           var UserBlockingPriority = 2;
@@ -2382,9 +2382,9 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React2 = require_react();
+          var React3 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React2.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React3.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -3989,7 +3989,7 @@
             {
               if (props.value == null) {
                 if (typeof props.children === "object" && props.children !== null) {
-                  React2.Children.forEach(props.children, function(child) {
+                  React3.Children.forEach(props.children, function(child) {
                     if (child == null) {
                       return;
                     }
@@ -4020,8 +4020,8 @@
             }
           }
           var isArrayImpl = Array.isArray;
-          function isArray(a2) {
-            return isArrayImpl(a2);
+          function isArray(a) {
+            return isArrayImpl(a);
           }
           var didWarnValueDefaultValue$1;
           {
@@ -5475,13 +5475,13 @@
               restoreStateIfNeeded();
             }
           }
-          function batchedUpdates(fn, a2, b) {
+          function batchedUpdates(fn, a, b) {
             if (isInsideEventHandler) {
-              return fn(a2, b);
+              return fn(a, b);
             }
             isInsideEventHandler = true;
             try {
-              return batchedUpdatesImpl(fn, a2, b);
+              return batchedUpdatesImpl(fn, a, b);
             } finally {
               isInsideEventHandler = false;
               finishEventHandler();
@@ -5545,7 +5545,7 @@
               passiveBrowserEventsSupported = false;
             }
           }
-          function invokeGuardedCallbackProd(name, func, context, a2, b, c, d, e, f) {
+          function invokeGuardedCallbackProd(name, func, context, a, b, c, d, e, f) {
             var funcArgs = Array.prototype.slice.call(arguments, 3);
             try {
               func.apply(context, funcArgs);
@@ -5557,7 +5557,7 @@
           {
             if (typeof window !== "undefined" && typeof window.dispatchEvent === "function" && typeof document !== "undefined" && typeof document.createEvent === "function") {
               var fakeNode = document.createElement("react");
-              invokeGuardedCallbackImpl = function invokeGuardedCallbackDev(name, func, context, a2, b, c, d, e, f) {
+              invokeGuardedCallbackImpl = function invokeGuardedCallbackDev(name, func, context, a, b, c, d, e, f) {
                 if (typeof document === "undefined" || document === null) {
                   throw new Error("The `document` global was defined when React was initialized, but is not defined anymore. This can happen in a test environment if a component schedules an update from an asynchronous callback, but the test has already finished running. To solve this, you can either unmount the component at the end of your test (and ensure that any asynchronous operations get canceled in `componentWillUnmount`), or you can change the test itself to be asynchronous.");
                 }
@@ -5632,12 +5632,12 @@
               caughtError = error2;
             }
           };
-          function invokeGuardedCallback(name, func, context, a2, b, c, d, e, f) {
+          function invokeGuardedCallback(name, func, context, a, b, c, d, e, f) {
             hasError = false;
             caughtError = null;
             invokeGuardedCallbackImpl$1.apply(reporter, arguments);
           }
-          function invokeGuardedCallbackAndCatchFirstError(name, func, context, a2, b, c, d, e, f) {
+          function invokeGuardedCallbackAndCatchFirstError(name, func, context, a, b, c, d, e, f) {
             invokeGuardedCallback.apply(this, arguments);
             if (hasError) {
               var error2 = clearCaughtError();
@@ -5866,10 +5866,10 @@
               }
               return fiber;
             }
-            var a2 = fiber;
+            var a = fiber;
             var b = alternate;
             while (true) {
-              var parentA = a2.return;
+              var parentA = a.return;
               if (parentA === null) {
                 break;
               }
@@ -5877,7 +5877,7 @@
               if (parentB === null) {
                 var nextParent = parentA.return;
                 if (nextParent !== null) {
-                  a2 = b = nextParent;
+                  a = b = nextParent;
                   continue;
                 }
                 break;
@@ -5885,7 +5885,7 @@
               if (parentA.child === parentB.child) {
                 var child = parentA.child;
                 while (child) {
-                  if (child === a2) {
+                  if (child === a) {
                     assertIsMounted(parentA);
                     return fiber;
                   }
@@ -5897,23 +5897,23 @@
                 }
                 throw new Error("Unable to find node on an unmounted component.");
               }
-              if (a2.return !== b.return) {
-                a2 = parentA;
+              if (a.return !== b.return) {
+                a = parentA;
                 b = parentB;
               } else {
                 var didFindChild = false;
                 var _child = parentA.child;
                 while (_child) {
-                  if (_child === a2) {
+                  if (_child === a) {
                     didFindChild = true;
-                    a2 = parentA;
+                    a = parentA;
                     b = parentB;
                     break;
                   }
                   if (_child === b) {
                     didFindChild = true;
                     b = parentA;
-                    a2 = parentB;
+                    a = parentB;
                     break;
                   }
                   _child = _child.sibling;
@@ -5921,16 +5921,16 @@
                 if (!didFindChild) {
                   _child = parentB.child;
                   while (_child) {
-                    if (_child === a2) {
+                    if (_child === a) {
                       didFindChild = true;
-                      a2 = parentB;
+                      a = parentB;
                       b = parentA;
                       break;
                     }
                     if (_child === b) {
                       didFindChild = true;
                       b = parentB;
-                      a2 = parentA;
+                      a = parentA;
                       break;
                     }
                     _child = _child.sibling;
@@ -5940,14 +5940,14 @@
                   }
                 }
               }
-              if (a2.alternate !== b) {
+              if (a.alternate !== b) {
                 throw new Error("Return fibers should always be each others' alternates. This error is likely caused by a bug in React. Please file an issue.");
               }
             }
-            if (a2.tag !== HostRoot) {
+            if (a.tag !== HostRoot) {
               throw new Error("Unable to find node on an unmounted component.");
             }
-            if (a2.stateNode.current === a2) {
+            if (a.stateNode.current === a) {
               return fiber;
             }
             return alternate;
@@ -6042,11 +6042,11 @@
               return false;
             }
           }
-          function onScheduleRoot(root3, children) {
+          function onScheduleRoot(root2, children) {
             {
               if (injectedHook && typeof injectedHook.onScheduleFiberRoot === "function") {
                 try {
-                  injectedHook.onScheduleFiberRoot(rendererID, root3, children);
+                  injectedHook.onScheduleFiberRoot(rendererID, root2, children);
                 } catch (err) {
                   if (!hasLoggedError) {
                     hasLoggedError = true;
@@ -6056,10 +6056,10 @@
               }
             }
           }
-          function onCommitRoot(root3, eventPriority) {
+          function onCommitRoot(root2, eventPriority) {
             if (injectedHook && typeof injectedHook.onCommitFiberRoot === "function") {
               try {
-                var didError = (root3.current.flags & DidCapture) === DidCapture;
+                var didError = (root2.current.flags & DidCapture) === DidCapture;
                 if (enableProfilerTimer) {
                   var schedulerPriority;
                   switch (eventPriority) {
@@ -6079,9 +6079,9 @@
                       schedulerPriority = NormalPriority;
                       break;
                   }
-                  injectedHook.onCommitFiberRoot(rendererID, root3, schedulerPriority, didError);
+                  injectedHook.onCommitFiberRoot(rendererID, root2, schedulerPriority, didError);
                 } else {
-                  injectedHook.onCommitFiberRoot(rendererID, root3, void 0, didError);
+                  injectedHook.onCommitFiberRoot(rendererID, root2, void 0, didError);
                 }
               } catch (err) {
                 {
@@ -6093,10 +6093,10 @@
               }
             }
           }
-          function onPostCommitRoot(root3) {
+          function onPostCommitRoot(root2) {
             if (injectedHook && typeof injectedHook.onPostCommitFiberRoot === "function") {
               try {
-                injectedHook.onPostCommitFiberRoot(rendererID, root3);
+                injectedHook.onPostCommitFiberRoot(rendererID, root2);
               } catch (err) {
                 {
                   if (!hasLoggedError) {
@@ -6595,14 +6595,14 @@
                 return lanes;
             }
           }
-          function getNextLanes(root3, wipLanes) {
-            var pendingLanes = root3.pendingLanes;
+          function getNextLanes(root2, wipLanes) {
+            var pendingLanes = root2.pendingLanes;
             if (pendingLanes === NoLanes) {
               return NoLanes;
             }
             var nextLanes = NoLanes;
-            var suspendedLanes = root3.suspendedLanes;
-            var pingedLanes = root3.pingedLanes;
+            var suspendedLanes = root2.suspendedLanes;
+            var pingedLanes = root2.pingedLanes;
             var nonIdlePendingLanes = pendingLanes & NonIdleLanes;
             if (nonIdlePendingLanes !== NoLanes) {
               var nonIdleUnblockedLanes = nonIdlePendingLanes & ~suspendedLanes;
@@ -6646,9 +6646,9 @@
             if ((nextLanes & InputContinuousLane) !== NoLanes) {
               nextLanes |= pendingLanes & DefaultLane;
             }
-            var entangledLanes = root3.entangledLanes;
+            var entangledLanes = root2.entangledLanes;
             if (entangledLanes !== NoLanes) {
-              var entanglements = root3.entanglements;
+              var entanglements = root2.entanglements;
               var lanes = nextLanes & entangledLanes;
               while (lanes > 0) {
                 var index2 = pickArbitraryLaneIndex(lanes);
@@ -6659,8 +6659,8 @@
             }
             return nextLanes;
           }
-          function getMostRecentEventTime(root3, lanes) {
-            var eventTimes = root3.eventTimes;
+          function getMostRecentEventTime(root2, lanes) {
+            var eventTimes = root2.eventTimes;
             var mostRecentEventTime = NoTimestamp;
             while (lanes > 0) {
               var index2 = pickArbitraryLaneIndex(lanes);
@@ -6717,11 +6717,11 @@
                 return NoTimestamp;
             }
           }
-          function markStarvedLanesAsExpired(root3, currentTime) {
-            var pendingLanes = root3.pendingLanes;
-            var suspendedLanes = root3.suspendedLanes;
-            var pingedLanes = root3.pingedLanes;
-            var expirationTimes = root3.expirationTimes;
+          function markStarvedLanesAsExpired(root2, currentTime) {
+            var pendingLanes = root2.pendingLanes;
+            var suspendedLanes = root2.suspendedLanes;
+            var pingedLanes = root2.pingedLanes;
+            var expirationTimes = root2.expirationTimes;
             var lanes = pendingLanes;
             while (lanes > 0) {
               var index2 = pickArbitraryLaneIndex(lanes);
@@ -6732,16 +6732,16 @@
                   expirationTimes[index2] = computeExpirationTime(lane, currentTime);
                 }
               } else if (expirationTime <= currentTime) {
-                root3.expiredLanes |= lane;
+                root2.expiredLanes |= lane;
               }
               lanes &= ~lane;
             }
           }
-          function getHighestPriorityPendingLanes(root3) {
-            return getHighestPriorityLanes(root3.pendingLanes);
+          function getHighestPriorityPendingLanes(root2) {
+            return getHighestPriorityLanes(root2.pendingLanes);
           }
-          function getLanesToRetrySynchronouslyOnError(root3) {
-            var everythingButOffscreen = root3.pendingLanes & ~OffscreenLane;
+          function getLanesToRetrySynchronouslyOnError(root2) {
+            var everythingButOffscreen = root2.pendingLanes & ~OffscreenLane;
             if (everythingButOffscreen !== NoLanes) {
               return everythingButOffscreen;
             }
@@ -6766,12 +6766,12 @@
           function includesOnlyTransitions(lanes) {
             return (lanes & TransitionLanes) === lanes;
           }
-          function includesBlockingLane(root3, lanes) {
+          function includesBlockingLane(root2, lanes) {
             var SyncDefaultLanes = InputContinuousHydrationLane | InputContinuousLane | DefaultHydrationLane | DefaultLane;
             return (lanes & SyncDefaultLanes) !== NoLanes;
           }
-          function includesExpiredLane(root3, lanes) {
-            return (lanes & root3.expiredLanes) !== NoLanes;
+          function includesExpiredLane(root2, lanes) {
+            return (lanes & root2.expiredLanes) !== NoLanes;
           }
           function isTransitionLane(lane) {
             return (lane & TransitionLanes) !== NoLanes;
@@ -6804,26 +6804,26 @@
           function laneToIndex(lane) {
             return pickArbitraryLaneIndex(lane);
           }
-          function includesSomeLane(a2, b) {
-            return (a2 & b) !== NoLanes;
+          function includesSomeLane(a, b) {
+            return (a & b) !== NoLanes;
           }
           function isSubsetOfLanes(set2, subset) {
             return (set2 & subset) === subset;
           }
-          function mergeLanes(a2, b) {
-            return a2 | b;
+          function mergeLanes(a, b) {
+            return a | b;
           }
           function removeLanes(set2, subset) {
             return set2 & ~subset;
           }
-          function intersectLanes(a2, b) {
-            return a2 & b;
+          function intersectLanes(a, b) {
+            return a & b;
           }
           function laneToLanes(lane) {
             return lane;
           }
-          function higherPriorityLane(a2, b) {
-            return a2 !== NoLane && a2 < b ? a2 : b;
+          function higherPriorityLane(a, b) {
+            return a !== NoLane && a < b ? a : b;
           }
           function createLaneMap(initial) {
             var laneMap = [];
@@ -6832,20 +6832,20 @@
             }
             return laneMap;
           }
-          function markRootUpdated(root3, updateLane, eventTime) {
-            root3.pendingLanes |= updateLane;
+          function markRootUpdated(root2, updateLane, eventTime) {
+            root2.pendingLanes |= updateLane;
             if (updateLane !== IdleLane) {
-              root3.suspendedLanes = NoLanes;
-              root3.pingedLanes = NoLanes;
+              root2.suspendedLanes = NoLanes;
+              root2.pingedLanes = NoLanes;
             }
-            var eventTimes = root3.eventTimes;
+            var eventTimes = root2.eventTimes;
             var index2 = laneToIndex(updateLane);
             eventTimes[index2] = eventTime;
           }
-          function markRootSuspended(root3, suspendedLanes) {
-            root3.suspendedLanes |= suspendedLanes;
-            root3.pingedLanes &= ~suspendedLanes;
-            var expirationTimes = root3.expirationTimes;
+          function markRootSuspended(root2, suspendedLanes) {
+            root2.suspendedLanes |= suspendedLanes;
+            root2.pingedLanes &= ~suspendedLanes;
+            var expirationTimes = root2.expirationTimes;
             var lanes = suspendedLanes;
             while (lanes > 0) {
               var index2 = pickArbitraryLaneIndex(lanes);
@@ -6854,20 +6854,20 @@
               lanes &= ~lane;
             }
           }
-          function markRootPinged(root3, pingedLanes, eventTime) {
-            root3.pingedLanes |= root3.suspendedLanes & pingedLanes;
+          function markRootPinged(root2, pingedLanes, eventTime) {
+            root2.pingedLanes |= root2.suspendedLanes & pingedLanes;
           }
-          function markRootFinished(root3, remainingLanes) {
-            var noLongerPendingLanes = root3.pendingLanes & ~remainingLanes;
-            root3.pendingLanes = remainingLanes;
-            root3.suspendedLanes = NoLanes;
-            root3.pingedLanes = NoLanes;
-            root3.expiredLanes &= remainingLanes;
-            root3.mutableReadLanes &= remainingLanes;
-            root3.entangledLanes &= remainingLanes;
-            var entanglements = root3.entanglements;
-            var eventTimes = root3.eventTimes;
-            var expirationTimes = root3.expirationTimes;
+          function markRootFinished(root2, remainingLanes) {
+            var noLongerPendingLanes = root2.pendingLanes & ~remainingLanes;
+            root2.pendingLanes = remainingLanes;
+            root2.suspendedLanes = NoLanes;
+            root2.pingedLanes = NoLanes;
+            root2.expiredLanes &= remainingLanes;
+            root2.mutableReadLanes &= remainingLanes;
+            root2.entangledLanes &= remainingLanes;
+            var entanglements = root2.entanglements;
+            var eventTimes = root2.eventTimes;
+            var expirationTimes = root2.expirationTimes;
             var lanes = noLongerPendingLanes;
             while (lanes > 0) {
               var index2 = pickArbitraryLaneIndex(lanes);
@@ -6878,9 +6878,9 @@
               lanes &= ~lane;
             }
           }
-          function markRootEntangled(root3, entangledLanes) {
-            var rootEntangledLanes = root3.entangledLanes |= entangledLanes;
-            var entanglements = root3.entanglements;
+          function markRootEntangled(root2, entangledLanes) {
+            var rootEntangledLanes = root2.entangledLanes |= entangledLanes;
+            var entanglements = root2.entanglements;
             var lanes = rootEntangledLanes;
             while (lanes) {
               var index2 = pickArbitraryLaneIndex(lanes);
@@ -6895,7 +6895,7 @@
               lanes &= ~lane;
             }
           }
-          function getBumpedLaneForHydration(root3, renderLanes2) {
+          function getBumpedLaneForHydration(root2, renderLanes2) {
             var renderLane = getHighestPriorityLane(renderLanes2);
             var lane;
             switch (renderLane) {
@@ -6935,16 +6935,16 @@
                 lane = NoLane;
                 break;
             }
-            if ((lane & (root3.suspendedLanes | renderLanes2)) !== NoLane) {
+            if ((lane & (root2.suspendedLanes | renderLanes2)) !== NoLane) {
               return NoLane;
             }
             return lane;
           }
-          function addFiberToLanesMap(root3, fiber, lanes) {
+          function addFiberToLanesMap(root2, fiber, lanes) {
             if (!isDevToolsPresent) {
               return;
             }
-            var pendingUpdatersLaneMap = root3.pendingUpdatersLaneMap;
+            var pendingUpdatersLaneMap = root2.pendingUpdatersLaneMap;
             while (lanes > 0) {
               var index2 = laneToIndex(lanes);
               var lane = 1 << index2;
@@ -6953,12 +6953,12 @@
               lanes &= ~lane;
             }
           }
-          function movePendingFibersToMemoized(root3, lanes) {
+          function movePendingFibersToMemoized(root2, lanes) {
             if (!isDevToolsPresent) {
               return;
             }
-            var pendingUpdatersLaneMap = root3.pendingUpdatersLaneMap;
-            var memoizedUpdaters = root3.memoizedUpdaters;
+            var pendingUpdatersLaneMap = root2.pendingUpdatersLaneMap;
+            var memoizedUpdaters = root2.memoizedUpdaters;
             while (lanes > 0) {
               var index2 = laneToIndex(lanes);
               var lane = 1 << index2;
@@ -6975,7 +6975,7 @@
               lanes &= ~lane;
             }
           }
-          function getTransitionsForLanes(root3, lanes) {
+          function getTransitionsForLanes(root2, lanes) {
             {
               return null;
             }
@@ -7000,14 +7000,14 @@
               currentUpdatePriority = previousPriority;
             }
           }
-          function higherEventPriority(a2, b) {
-            return a2 !== 0 && a2 < b ? a2 : b;
+          function higherEventPriority(a, b) {
+            return a !== 0 && a < b ? a : b;
           }
-          function lowerEventPriority(a2, b) {
-            return a2 === 0 || a2 > b ? a2 : b;
+          function lowerEventPriority(a, b) {
+            return a === 0 || a > b ? a : b;
           }
-          function isHigherEventPriority(a2, b) {
-            return a2 !== 0 && a2 < b;
+          function isHigherEventPriority(a, b) {
+            return a !== 0 && a < b;
           }
           function lanesToEventPriority(lanes) {
             var lane = getHighestPriorityLane(lanes);
@@ -7022,8 +7022,8 @@
             }
             return IdleEventPriority;
           }
-          function isRootDehydrated(root3) {
-            var currentState = root3.current.memoizedState;
+          function isRootDehydrated(root2) {
+            var currentState = root2.current.memoizedState;
             return currentState.isDehydrated;
           }
           var _attemptSynchronousHydration;
@@ -7194,8 +7194,8 @@
                     return;
                   }
                 } else if (tag === HostRoot) {
-                  var root3 = nearestMounted.stateNode;
-                  if (isRootDehydrated(root3)) {
+                  var root2 = nearestMounted.stateNode;
+                  if (isRootDehydrated(root2)) {
                     queuedTarget.blockedOn = getContainerFromFiber(nearestMounted);
                     return;
                   }
@@ -7429,8 +7429,8 @@
                   }
                   targetInst = null;
                 } else if (tag === HostRoot) {
-                  var root3 = nearestMounted.stateNode;
-                  if (isRootDehydrated(root3)) {
+                  var root2 = nearestMounted.stateNode;
+                  if (isRootDehydrated(root2)) {
                     return getContainerFromFiber(nearestMounted);
                   }
                   targetInst = null;
@@ -7557,16 +7557,16 @@
             });
             return listener;
           }
-          var root2 = null;
+          var root = null;
           var startText = null;
           var fallbackText = null;
           function initialize(nativeEventTarget) {
-            root2 = nativeEventTarget;
+            root = nativeEventTarget;
             startText = getText();
             return true;
           }
           function reset() {
-            root2 = null;
+            root = null;
             startText = null;
             fallbackText = null;
           }
@@ -7596,10 +7596,10 @@
             return fallbackText;
           }
           function getText() {
-            if ("value" in root2) {
-              return root2.value;
+            if ("value" in root) {
+              return root.value;
             }
-            return root2.textContent;
+            return root.textContent;
           }
           function getEventCharCode(nativeEvent) {
             var charCode;
@@ -8417,8 +8417,8 @@
               node = node.parentNode;
             }
           }
-          function getNodeForCharacterOffset(root3, offset) {
-            var node = getLeafNode(root3);
+          function getNodeForCharacterOffset(root2, offset) {
+            var node = getLeafNode(root2);
             var nodeStart = 0;
             var nodeEnd = 0;
             while (node) {
@@ -10189,8 +10189,8 @@
               case DOCUMENT_NODE:
               case DOCUMENT_FRAGMENT_NODE: {
                 type = nodeType === DOCUMENT_NODE ? "#document" : "#fragment";
-                var root3 = rootContainerInstance.documentElement;
-                namespace = root3 ? root3.namespaceURI : getChildNamespace(null, "");
+                var root2 = rootContainerInstance.documentElement;
+                namespace = root2 ? root2.namespaceURI : getChildNamespace(null, "");
                 break;
               }
               default: {
@@ -11075,8 +11075,8 @@
           function getTreeId() {
             var overflow = treeContextOverflow;
             var idWithLeadingBit = treeContextId;
-            var id = idWithLeadingBit & ~getLeadingBit(idWithLeadingBit);
-            return id.toString(32) + overflow;
+            var id2 = idWithLeadingBit & ~getLeadingBit(idWithLeadingBit);
+            return id2.toString(32) + overflow;
           }
           function pushTreeFork(workInProgress2, totalChildren) {
             warnIfNotHydrating();
@@ -11105,9 +11105,9 @@
               var restOfBaseLength = baseLength - numberOfOverflowBits;
               var restOfLength = getBitLength(totalChildren) + restOfBaseLength;
               var restOfNewBits = slot << restOfBaseLength;
-              var id = restOfNewBits | restOfBaseId;
+              var id2 = restOfNewBits | restOfBaseId;
               var overflow = newOverflow + baseOverflow;
-              treeContextId = 1 << restOfLength | id;
+              treeContextId = 1 << restOfLength | id2;
               treeContextOverflow = overflow;
             } else {
               var newBits = slot << baseLength;
@@ -11130,8 +11130,8 @@
           function getBitLength(number) {
             return 32 - clz32(number);
           }
-          function getLeadingBit(id) {
-            return 1 << getBitLength(id) - 1;
+          function getLeadingBit(id2) {
+            return 1 << getBitLength(id2) - 1;
           }
           function popTreeContext(workInProgress2) {
             while (workInProgress2 === treeForkProvider) {
@@ -12068,8 +12068,8 @@
               parent = parent.return;
             }
             if (node.tag === HostRoot) {
-              var root3 = node.stateNode;
-              return root3;
+              var root2 = node.stateNode;
+              return root2;
             } else {
               return null;
             }
@@ -12150,7 +12150,7 @@
               return enqueueConcurrentClassUpdate(fiber, sharedQueue, update, lane);
             }
           }
-          function entangleTransitions(root3, fiber, lane) {
+          function entangleTransitions(root2, fiber, lane) {
             var updateQueue = fiber.updateQueue;
             if (updateQueue === null) {
               return;
@@ -12158,10 +12158,10 @@
             var sharedQueue = updateQueue.shared;
             if (isTransitionLane(lane)) {
               var queueLanes = sharedQueue.lanes;
-              queueLanes = intersectLanes(queueLanes, root3.pendingLanes);
+              queueLanes = intersectLanes(queueLanes, root2.pendingLanes);
               var newQueueLanes = mergeLanes(queueLanes, lane);
               sharedQueue.lanes = newQueueLanes;
-              markRootEntangled(root3, newQueueLanes);
+              markRootEntangled(root2, newQueueLanes);
             }
           }
           function enqueueCapturedUpdate(workInProgress2, capturedUpdate) {
@@ -12436,7 +12436,7 @@
             }
           }
           var fakeInternalInstance = {};
-          var emptyRefsObject = new React2.Component().refs;
+          var emptyRefsObject = new React3.Component().refs;
           var didWarnAboutStateAssignmentForComponent;
           var didWarnAboutUninitializedState;
           var didWarnAboutGetSnapshotBeforeUpdateWithoutDidUpdate;
@@ -12519,10 +12519,10 @@
                 }
                 update.callback = callback;
               }
-              var root3 = enqueueUpdate(fiber, update, lane);
-              if (root3 !== null) {
-                scheduleUpdateOnFiber(root3, fiber, lane, eventTime);
-                entangleTransitions(root3, fiber, lane);
+              var root2 = enqueueUpdate(fiber, update, lane);
+              if (root2 !== null) {
+                scheduleUpdateOnFiber(root2, fiber, lane, eventTime);
+                entangleTransitions(root2, fiber, lane);
               }
               {
                 markStateUpdateScheduled(fiber, lane);
@@ -12541,10 +12541,10 @@
                 }
                 update.callback = callback;
               }
-              var root3 = enqueueUpdate(fiber, update, lane);
-              if (root3 !== null) {
-                scheduleUpdateOnFiber(root3, fiber, lane, eventTime);
-                entangleTransitions(root3, fiber, lane);
+              var root2 = enqueueUpdate(fiber, update, lane);
+              if (root2 !== null) {
+                scheduleUpdateOnFiber(root2, fiber, lane, eventTime);
+                entangleTransitions(root2, fiber, lane);
               }
               {
                 markStateUpdateScheduled(fiber, lane);
@@ -12562,10 +12562,10 @@
                 }
                 update.callback = callback;
               }
-              var root3 = enqueueUpdate(fiber, update, lane);
-              if (root3 !== null) {
-                scheduleUpdateOnFiber(root3, fiber, lane, eventTime);
-                entangleTransitions(root3, fiber, lane);
+              var root2 = enqueueUpdate(fiber, update, lane);
+              if (root2 !== null) {
+                scheduleUpdateOnFiber(root2, fiber, lane, eventTime);
+                entangleTransitions(root2, fiber, lane);
               }
               {
                 markForceUpdateScheduled(fiber, lane);
@@ -13946,13 +13946,13 @@
             }
             workInProgressSources.length = 0;
           }
-          function registerMutableSourceForHydration(root3, mutableSource) {
+          function registerMutableSourceForHydration(root2, mutableSource) {
             var getVersion = mutableSource._getVersion;
             var version = getVersion(mutableSource._source);
-            if (root3.mutableSourceEagerHydrationData == null) {
-              root3.mutableSourceEagerHydrationData = [mutableSource, version];
+            if (root2.mutableSourceEagerHydrationData == null) {
+              root2.mutableSourceEagerHydrationData = [mutableSource, version];
             } else {
-              root3.mutableSourceEagerHydrationData.push(mutableSource, version);
+              root2.mutableSourceEagerHydrationData.push(mutableSource, version);
             }
           }
           var ReactCurrentDispatcher$1 = ReactSharedInternals.ReactCurrentDispatcher, ReactCurrentBatchConfig$2 = ReactSharedInternals.ReactCurrentBatchConfig;
@@ -14421,11 +14421,11 @@
                   }
                 }
               }
-              var root3 = getWorkInProgressRoot();
-              if (root3 === null) {
+              var root2 = getWorkInProgressRoot();
+              if (root2 === null) {
                 throw new Error("Expected a work-in-progress root. This is a bug in React. Please file an issue.");
               }
-              if (!includesBlockingLane(root3, renderLanes)) {
+              if (!includesBlockingLane(root2, renderLanes)) {
                 pushStoreConsistencyCheck(fiber, getSnapshot, nextSnapshot);
               }
             }
@@ -14466,11 +14466,11 @@
             workInProgressHook !== null && workInProgressHook.memoizedState.tag & HasEffect) {
               fiber.flags |= Passive;
               pushEffect(HasEffect | Passive$1, updateStoreInstance.bind(null, fiber, inst, nextSnapshot, getSnapshot), void 0, null);
-              var root3 = getWorkInProgressRoot();
-              if (root3 === null) {
+              var root2 = getWorkInProgressRoot();
+              if (root2 === null) {
                 throw new Error("Expected a work-in-progress root. This is a bug in React. Please file an issue.");
               }
-              if (!includesBlockingLane(root3, renderLanes)) {
+              if (!includesBlockingLane(root2, renderLanes)) {
                 pushStoreConsistencyCheck(fiber, getSnapshot, nextSnapshot);
               }
             }
@@ -14522,9 +14522,9 @@
             }
           }
           function forceStoreRerender(fiber) {
-            var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-            if (root3 !== null) {
-              scheduleUpdateOnFiber(root3, fiber, SyncLane, NoTimestamp);
+            var root2 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+            if (root2 !== null) {
+              scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
             }
           }
           function mountState(initialState) {
@@ -14833,28 +14833,28 @@
           }
           function mountId() {
             var hook = mountWorkInProgressHook();
-            var root3 = getWorkInProgressRoot();
-            var identifierPrefix = root3.identifierPrefix;
-            var id;
+            var root2 = getWorkInProgressRoot();
+            var identifierPrefix = root2.identifierPrefix;
+            var id2;
             if (getIsHydrating()) {
               var treeId = getTreeId();
-              id = ":" + identifierPrefix + "R" + treeId;
+              id2 = ":" + identifierPrefix + "R" + treeId;
               var localId = localIdCounter++;
               if (localId > 0) {
-                id += "H" + localId.toString(32);
+                id2 += "H" + localId.toString(32);
               }
-              id += ":";
+              id2 += ":";
             } else {
               var globalClientId = globalClientIdCounter++;
-              id = ":" + identifierPrefix + "r" + globalClientId.toString(32) + ":";
+              id2 = ":" + identifierPrefix + "r" + globalClientId.toString(32) + ":";
             }
-            hook.memoizedState = id;
-            return id;
+            hook.memoizedState = id2;
+            return id2;
           }
           function updateId() {
             var hook = updateWorkInProgressHook();
-            var id = hook.memoizedState;
-            return id;
+            var id2 = hook.memoizedState;
+            return id2;
           }
           function dispatchReducerAction(fiber, queue, action) {
             {
@@ -14873,11 +14873,11 @@
             if (isRenderPhaseUpdate(fiber)) {
               enqueueRenderPhaseUpdate(queue, update);
             } else {
-              var root3 = enqueueConcurrentHookUpdate(fiber, queue, update, lane);
-              if (root3 !== null) {
+              var root2 = enqueueConcurrentHookUpdate(fiber, queue, update, lane);
+              if (root2 !== null) {
                 var eventTime = requestEventTime();
-                scheduleUpdateOnFiber(root3, fiber, lane, eventTime);
-                entangleTransitionUpdate(root3, queue, lane);
+                scheduleUpdateOnFiber(root2, fiber, lane, eventTime);
+                entangleTransitionUpdate(root2, queue, lane);
               }
             }
             markUpdateInDevTools(fiber, lane);
@@ -14925,11 +14925,11 @@
                   }
                 }
               }
-              var root3 = enqueueConcurrentHookUpdate(fiber, queue, update, lane);
-              if (root3 !== null) {
+              var root2 = enqueueConcurrentHookUpdate(fiber, queue, update, lane);
+              if (root2 !== null) {
                 var eventTime = requestEventTime();
-                scheduleUpdateOnFiber(root3, fiber, lane, eventTime);
-                entangleTransitionUpdate(root3, queue, lane);
+                scheduleUpdateOnFiber(root2, fiber, lane, eventTime);
+                entangleTransitionUpdate(root2, queue, lane);
               }
             }
             markUpdateInDevTools(fiber, lane);
@@ -14949,13 +14949,13 @@
             }
             queue.pending = update;
           }
-          function entangleTransitionUpdate(root3, queue, lane) {
+          function entangleTransitionUpdate(root2, queue, lane) {
             if (isTransitionLane(lane)) {
               var queueLanes = queue.lanes;
-              queueLanes = intersectLanes(queueLanes, root3.pendingLanes);
+              queueLanes = intersectLanes(queueLanes, root2.pendingLanes);
               var newQueueLanes = mergeLanes(queueLanes, lane);
               queue.lanes = newQueueLanes;
-              markRootEntangled(root3, newQueueLanes);
+              markRootEntangled(root2, newQueueLanes);
             }
           }
           function markUpdateInDevTools(fiber, lane, action) {
@@ -15843,8 +15843,8 @@
               while (parentFiber !== null) {
                 switch (parentFiber.tag) {
                   case HostRoot:
-                    var root3 = parentFiber.stateNode;
-                    root3.effectDuration += elapsedTime;
+                    var root2 = parentFiber.stateNode;
+                    root2.effectDuration += elapsedTime;
                     return;
                   case Profiler:
                     var parentStateNode = parentFiber.stateNode;
@@ -15863,9 +15863,9 @@
               while (parentFiber !== null) {
                 switch (parentFiber.tag) {
                   case HostRoot:
-                    var root3 = parentFiber.stateNode;
-                    if (root3 !== null) {
-                      root3.passiveEffectDuration += elapsedTime;
+                    var root2 = parentFiber.stateNode;
+                    if (root2 !== null) {
+                      root2.passiveEffectDuration += elapsedTime;
                     }
                     return;
                   case Profiler:
@@ -16004,11 +16004,11 @@
             }
             return update;
           }
-          function attachPingListener(root3, wakeable, lanes) {
-            var pingCache = root3.pingCache;
+          function attachPingListener(root2, wakeable, lanes) {
+            var pingCache = root2.pingCache;
             var threadIDs;
             if (pingCache === null) {
-              pingCache = root3.pingCache = new PossiblyWeakMap$1();
+              pingCache = root2.pingCache = new PossiblyWeakMap$1();
               threadIDs = /* @__PURE__ */ new Set();
               pingCache.set(wakeable, threadIDs);
             } else {
@@ -16020,16 +16020,16 @@
             }
             if (!threadIDs.has(lanes)) {
               threadIDs.add(lanes);
-              var ping = pingSuspendedRoot.bind(null, root3, wakeable, lanes);
+              var ping = pingSuspendedRoot.bind(null, root2, wakeable, lanes);
               {
                 if (isDevToolsPresent) {
-                  restorePendingUpdaters(root3, lanes);
+                  restorePendingUpdaters(root2, lanes);
                 }
               }
               wakeable.then(ping, ping);
             }
           }
-          function attachRetryListener(suspenseBoundary, root3, wakeable, lanes) {
+          function attachRetryListener(suspenseBoundary, root2, wakeable, lanes) {
             var wakeables = suspenseBoundary.updateQueue;
             if (wakeables === null) {
               var updateQueue = /* @__PURE__ */ new Set();
@@ -16063,7 +16063,7 @@
             } while (node !== null);
             return null;
           }
-          function markSuspenseBoundaryShouldCapture(suspenseBoundary, returnFiber, sourceFiber, root3, rootRenderLanes) {
+          function markSuspenseBoundaryShouldCapture(suspenseBoundary, returnFiber, sourceFiber, root2, rootRenderLanes) {
             if ((suspenseBoundary.mode & ConcurrentMode) === NoMode) {
               if (suspenseBoundary === returnFiber) {
                 suspenseBoundary.flags |= ShouldCapture;
@@ -16089,11 +16089,11 @@
             suspenseBoundary.lanes = rootRenderLanes;
             return suspenseBoundary;
           }
-          function throwException(root3, returnFiber, sourceFiber, value, rootRenderLanes) {
+          function throwException(root2, returnFiber, sourceFiber, value, rootRenderLanes) {
             sourceFiber.flags |= Incomplete;
             {
               if (isDevToolsPresent) {
-                restorePendingUpdaters(root3, rootRenderLanes);
+                restorePendingUpdaters(root2, rootRenderLanes);
               }
             }
             if (value !== null && typeof value === "object" && typeof value.then === "function") {
@@ -16107,15 +16107,15 @@
               var suspenseBoundary = getNearestSuspenseBoundaryToCapture(returnFiber);
               if (suspenseBoundary !== null) {
                 suspenseBoundary.flags &= ~ForceClientRender;
-                markSuspenseBoundaryShouldCapture(suspenseBoundary, returnFiber, sourceFiber, root3, rootRenderLanes);
+                markSuspenseBoundaryShouldCapture(suspenseBoundary, returnFiber, sourceFiber, root2, rootRenderLanes);
                 if (suspenseBoundary.mode & ConcurrentMode) {
-                  attachPingListener(root3, wakeable, rootRenderLanes);
+                  attachPingListener(root2, wakeable, rootRenderLanes);
                 }
-                attachRetryListener(suspenseBoundary, root3, wakeable);
+                attachRetryListener(suspenseBoundary, root2, wakeable);
                 return;
               } else {
                 if (!includesSyncLane(rootRenderLanes)) {
-                  attachPingListener(root3, wakeable, rootRenderLanes);
+                  attachPingListener(root2, wakeable, rootRenderLanes);
                   renderDidSuspendDelayIfPossible();
                   return;
                 }
@@ -16130,7 +16130,7 @@
                   if ((_suspenseBoundary.flags & ShouldCapture) === NoFlags) {
                     _suspenseBoundary.flags |= ForceClientRender;
                   }
-                  markSuspenseBoundaryShouldCapture(_suspenseBoundary, returnFiber, sourceFiber, root3, rootRenderLanes);
+                  markSuspenseBoundaryShouldCapture(_suspenseBoundary, returnFiber, sourceFiber, root2, rootRenderLanes);
                   queueHydrationError(createCapturedValueAtFiber(value, sourceFiber));
                   return;
                 }
@@ -16624,13 +16624,13 @@
             return workInProgress2.child;
           }
           function pushHostRootContext(workInProgress2) {
-            var root3 = workInProgress2.stateNode;
-            if (root3.pendingContext) {
-              pushTopLevelContextObject(workInProgress2, root3.pendingContext, root3.pendingContext !== root3.context);
-            } else if (root3.context) {
-              pushTopLevelContextObject(workInProgress2, root3.context, false);
+            var root2 = workInProgress2.stateNode;
+            if (root2.pendingContext) {
+              pushTopLevelContextObject(workInProgress2, root2.pendingContext, root2.pendingContext !== root2.context);
+            } else if (root2.context) {
+              pushTopLevelContextObject(workInProgress2, root2.context, false);
             }
-            pushHostContainer(workInProgress2, root3.containerInfo);
+            pushHostContainer(workInProgress2, root2.containerInfo);
           }
           function updateHostRoot(current2, workInProgress2, renderLanes2) {
             pushHostRootContext(workInProgress2);
@@ -16643,7 +16643,7 @@
             cloneUpdateQueue(current2, workInProgress2);
             processUpdateQueue(workInProgress2, nextProps, null, renderLanes2);
             var nextState = workInProgress2.memoizedState;
-            var root3 = workInProgress2.stateNode;
+            var root2 = workInProgress2.stateNode;
             var nextChildren = nextState.element;
             if (prevState.isDehydrated) {
               var overrideState = {
@@ -17224,14 +17224,14 @@
               }
               var hasContextChanged2 = includesSomeLane(renderLanes2, current2.childLanes);
               if (didReceiveUpdate || hasContextChanged2) {
-                var root3 = getWorkInProgressRoot();
-                if (root3 !== null) {
-                  var attemptHydrationAtLane = getBumpedLaneForHydration(root3, renderLanes2);
+                var root2 = getWorkInProgressRoot();
+                if (root2 !== null) {
+                  var attemptHydrationAtLane = getBumpedLaneForHydration(root2, renderLanes2);
                   if (attemptHydrationAtLane !== NoLane && attemptHydrationAtLane !== suspenseState.retryLane) {
                     suspenseState.retryLane = attemptHydrationAtLane;
                     var eventTime = NoTimestamp;
                     enqueueConcurrentRenderForLane(current2, attemptHydrationAtLane);
-                    scheduleUpdateOnFiber(root3, current2, attemptHydrationAtLane, eventTime);
+                    scheduleUpdateOnFiber(root2, current2, attemptHydrationAtLane, eventTime);
                   }
                 }
                 renderDidSuspendDelayIfPossible();
@@ -17676,7 +17676,7 @@
             switch (workInProgress2.tag) {
               case HostRoot:
                 pushHostRootContext(workInProgress2);
-                var root3 = workInProgress2.stateNode;
+                var root2 = workInProgress2.stateNode;
                 resetHydrationState();
                 break;
               case HostComponent:
@@ -18453,7 +18453,7 @@
                 return null;
               }
               case HostRoot: {
-                var root3 = workInProgress2.stateNode;
+                var root2 = workInProgress2.stateNode;
                 popHostContainer(workInProgress2);
                 popTopLevelContextObject(workInProgress2);
                 resetWorkInProgressVersions();
@@ -18519,7 +18519,7 @@
                 break;
               }
               case HostRoot: {
-                var root3 = interruptedWork.stateNode;
+                var root2 = interruptedWork.stateNode;
                 popHostContainer(interruptedWork);
                 popTopLevelContextObject(interruptedWork);
                 resetWorkInProgressVersions();
@@ -18646,8 +18646,8 @@
           }
           var focusedInstanceHandle = null;
           var shouldFireAfterActiveInstanceBlur = false;
-          function commitBeforeMutationEffects(root3, firstChild) {
-            focusedInstanceHandle = prepareForCommit(root3.containerInfo);
+          function commitBeforeMutationEffects(root2, firstChild) {
+            focusedInstanceHandle = prepareForCommit(root2.containerInfo);
             nextEffect = firstChild;
             commitBeforeMutationEffects_begin();
             var shouldFire = shouldFireAfterActiveInstanceBlur;
@@ -18726,8 +18726,8 @@
                 }
                 case HostRoot: {
                   {
-                    var root3 = finishedWork.stateNode;
-                    clearContainer(root3.containerInfo);
+                    var root2 = finishedWork.stateNode;
+                    clearContainer(root2.containerInfo);
                   }
                   break;
                 }
@@ -18852,7 +18852,7 @@
                 switch (finishedWork.tag) {
                   case Profiler: {
                     var passiveEffectDuration = finishedWork.stateNode.passiveEffectDuration;
-                    var _finishedWork$memoize = finishedWork.memoizedProps, id = _finishedWork$memoize.id, onPostCommit = _finishedWork$memoize.onPostCommit;
+                    var _finishedWork$memoize = finishedWork.memoizedProps, id2 = _finishedWork$memoize.id, onPostCommit = _finishedWork$memoize.onPostCommit;
                     var commitTime2 = getCommitTime();
                     var phase = finishedWork.alternate === null ? "mount" : "update";
                     {
@@ -18861,15 +18861,15 @@
                       }
                     }
                     if (typeof onPostCommit === "function") {
-                      onPostCommit(id, phase, passiveEffectDuration, commitTime2);
+                      onPostCommit(id2, phase, passiveEffectDuration, commitTime2);
                     }
                     var parentFiber = finishedWork.return;
                     outer:
                       while (parentFiber !== null) {
                         switch (parentFiber.tag) {
                           case HostRoot:
-                            var root3 = parentFiber.stateNode;
-                            root3.passiveEffectDuration += passiveEffectDuration;
+                            var root2 = parentFiber.stateNode;
+                            root2.passiveEffectDuration += passiveEffectDuration;
                             break outer;
                           case Profiler:
                             var parentStateNode = parentFiber.stateNode;
@@ -19028,8 +19028,8 @@
                         while (parentFiber !== null) {
                           switch (parentFiber.tag) {
                             case HostRoot:
-                              var root3 = parentFiber.stateNode;
-                              root3.effectDuration += effectDuration;
+                              var root2 = parentFiber.stateNode;
+                              root2.effectDuration += effectDuration;
                               break outer;
                             case Profiler:
                               var parentStateNode = parentFiber.stateNode;
@@ -19348,7 +19348,7 @@
           }
           var hostParent = null;
           var hostParentIsContainer = false;
-          function commitDeletionEffects(root3, returnFiber, deletedFiber) {
+          function commitDeletionEffects(root2, returnFiber, deletedFiber) {
             {
               var parent = returnFiber;
               findParent:
@@ -19375,7 +19375,7 @@
               if (hostParent === null) {
                 throw new Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue.");
               }
-              commitDeletionEffectsOnFiber(root3, returnFiber, deletedFiber);
+              commitDeletionEffectsOnFiber(root2, returnFiber, deletedFiber);
               hostParent = null;
               hostParentIsContainer = false;
             }
@@ -19557,22 +19557,22 @@
               });
             }
           }
-          function commitMutationEffects(root3, finishedWork, committedLanes) {
+          function commitMutationEffects(root2, finishedWork, committedLanes) {
             inProgressLanes = committedLanes;
-            inProgressRoot = root3;
+            inProgressRoot = root2;
             setCurrentFiber(finishedWork);
-            commitMutationEffectsOnFiber(finishedWork, root3);
+            commitMutationEffectsOnFiber(finishedWork, root2);
             setCurrentFiber(finishedWork);
             inProgressLanes = null;
             inProgressRoot = null;
           }
-          function recursivelyTraverseMutationEffects(root3, parentFiber, lanes) {
+          function recursivelyTraverseMutationEffects(root2, parentFiber, lanes) {
             var deletions = parentFiber.deletions;
             if (deletions !== null) {
               for (var i = 0; i < deletions.length; i++) {
                 var childToDelete = deletions[i];
                 try {
-                  commitDeletionEffects(root3, parentFiber, childToDelete);
+                  commitDeletionEffects(root2, parentFiber, childToDelete);
                 } catch (error2) {
                   captureCommitPhaseError(childToDelete, parentFiber, error2);
                 }
@@ -19583,13 +19583,13 @@
               var child = parentFiber.child;
               while (child !== null) {
                 setCurrentFiber(child);
-                commitMutationEffectsOnFiber(child, root3);
+                commitMutationEffectsOnFiber(child, root2);
                 child = child.sibling;
               }
             }
             setCurrentFiber(prevDebugFiber);
           }
-          function commitMutationEffectsOnFiber(finishedWork, root3, lanes) {
+          function commitMutationEffectsOnFiber(finishedWork, root2, lanes) {
             var current2 = finishedWork.alternate;
             var flags = finishedWork.flags;
             switch (finishedWork.tag) {
@@ -19597,7 +19597,7 @@
               case ForwardRef:
               case MemoComponent:
               case SimpleMemoComponent: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 if (flags & Update) {
                   try {
@@ -19625,7 +19625,7 @@
                 return;
               }
               case ClassComponent: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 if (flags & Ref) {
                   if (current2 !== null) {
@@ -19635,7 +19635,7 @@
                 return;
               }
               case HostComponent: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 if (flags & Ref) {
                   if (current2 !== null) {
@@ -19672,7 +19672,7 @@
                 return;
               }
               case HostText: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 if (flags & Update) {
                   {
@@ -19692,7 +19692,7 @@
                 return;
               }
               case HostRoot: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 if (flags & Update) {
                   {
@@ -19700,7 +19700,7 @@
                       var prevRootState = current2.memoizedState;
                       if (prevRootState.isDehydrated) {
                         try {
-                          commitHydratedContainer(root3.containerInfo);
+                          commitHydratedContainer(root2.containerInfo);
                         } catch (error2) {
                           captureCommitPhaseError(finishedWork, finishedWork.return, error2);
                         }
@@ -19711,12 +19711,12 @@
                 return;
               }
               case HostPortal: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 return;
               }
               case SuspenseComponent: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 var offscreenFiber = finishedWork.child;
                 if (offscreenFiber.flags & Visibility) {
@@ -19749,10 +19749,10 @@
                 ) {
                   var prevOffscreenSubtreeWasHidden = offscreenSubtreeWasHidden;
                   offscreenSubtreeWasHidden = prevOffscreenSubtreeWasHidden || _wasHidden;
-                  recursivelyTraverseMutationEffects(root3, finishedWork);
+                  recursivelyTraverseMutationEffects(root2, finishedWork);
                   offscreenSubtreeWasHidden = prevOffscreenSubtreeWasHidden;
                 } else {
-                  recursivelyTraverseMutationEffects(root3, finishedWork);
+                  recursivelyTraverseMutationEffects(root2, finishedWork);
                 }
                 commitReconciliationEffects(finishedWork);
                 if (flags & Visibility) {
@@ -19783,7 +19783,7 @@
                 return;
               }
               case SuspenseListComponent: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 if (flags & Update) {
                   attachSuspenseRetryListeners(finishedWork);
@@ -19794,7 +19794,7 @@
                 return;
               }
               default: {
-                recursivelyTraverseMutationEffects(root3, finishedWork);
+                recursivelyTraverseMutationEffects(root2, finishedWork);
                 commitReconciliationEffects(finishedWork);
                 return;
               }
@@ -19814,15 +19814,15 @@
               finishedWork.flags &= ~Hydrating;
             }
           }
-          function commitLayoutEffects(finishedWork, root3, committedLanes) {
+          function commitLayoutEffects(finishedWork, root2, committedLanes) {
             inProgressLanes = committedLanes;
-            inProgressRoot = root3;
+            inProgressRoot = root2;
             nextEffect = finishedWork;
-            commitLayoutEffects_begin(finishedWork, root3, committedLanes);
+            commitLayoutEffects_begin(finishedWork, root2, committedLanes);
             inProgressLanes = null;
             inProgressRoot = null;
           }
-          function commitLayoutEffects_begin(subtreeRoot, root3, committedLanes) {
+          function commitLayoutEffects_begin(subtreeRoot, root2, committedLanes) {
             var isModernRoot = (subtreeRoot.mode & ConcurrentMode) !== NoMode;
             while (nextEffect !== null) {
               var fiber = nextEffect;
@@ -19831,7 +19831,7 @@
                 var isHidden = fiber.memoizedState !== null;
                 var newOffscreenSubtreeIsHidden = isHidden || offscreenSubtreeIsHidden;
                 if (newOffscreenSubtreeIsHidden) {
-                  commitLayoutMountEffects_complete(subtreeRoot, root3, committedLanes);
+                  commitLayoutMountEffects_complete(subtreeRoot, root2, committedLanes);
                   continue;
                 } else {
                   var current2 = fiber.alternate;
@@ -19851,7 +19851,7 @@
                     commitLayoutEffects_begin(
                       child,
                       // New root; bubble back up to here and stop.
-                      root3,
+                      root2,
                       committedLanes
                     );
                     child = child.sibling;
@@ -19859,7 +19859,7 @@
                   nextEffect = fiber;
                   offscreenSubtreeIsHidden = prevOffscreenSubtreeIsHidden;
                   offscreenSubtreeWasHidden = prevOffscreenSubtreeWasHidden;
-                  commitLayoutMountEffects_complete(subtreeRoot, root3, committedLanes);
+                  commitLayoutMountEffects_complete(subtreeRoot, root2, committedLanes);
                   continue;
                 }
               }
@@ -19867,18 +19867,18 @@
                 firstChild.return = fiber;
                 nextEffect = firstChild;
               } else {
-                commitLayoutMountEffects_complete(subtreeRoot, root3, committedLanes);
+                commitLayoutMountEffects_complete(subtreeRoot, root2, committedLanes);
               }
             }
           }
-          function commitLayoutMountEffects_complete(subtreeRoot, root3, committedLanes) {
+          function commitLayoutMountEffects_complete(subtreeRoot, root2, committedLanes) {
             while (nextEffect !== null) {
               var fiber = nextEffect;
               if ((fiber.flags & LayoutMask) !== NoFlags) {
                 var current2 = fiber.alternate;
                 setCurrentFiber(fiber);
                 try {
-                  commitLayoutEffectOnFiber(root3, current2, fiber, committedLanes);
+                  commitLayoutEffectOnFiber(root2, current2, fiber, committedLanes);
                 } catch (error2) {
                   captureCommitPhaseError(fiber, fiber.return, error2);
                 }
@@ -20005,11 +20005,11 @@
               nextEffect = fiber.return;
             }
           }
-          function commitPassiveMountEffects(root3, finishedWork, committedLanes, committedTransitions) {
+          function commitPassiveMountEffects(root2, finishedWork, committedLanes, committedTransitions) {
             nextEffect = finishedWork;
-            commitPassiveMountEffects_begin(finishedWork, root3, committedLanes, committedTransitions);
+            commitPassiveMountEffects_begin(finishedWork, root2, committedLanes, committedTransitions);
           }
-          function commitPassiveMountEffects_begin(subtreeRoot, root3, committedLanes, committedTransitions) {
+          function commitPassiveMountEffects_begin(subtreeRoot, root2, committedLanes, committedTransitions) {
             while (nextEffect !== null) {
               var fiber = nextEffect;
               var firstChild = fiber.child;
@@ -20017,17 +20017,17 @@
                 firstChild.return = fiber;
                 nextEffect = firstChild;
               } else {
-                commitPassiveMountEffects_complete(subtreeRoot, root3, committedLanes, committedTransitions);
+                commitPassiveMountEffects_complete(subtreeRoot, root2, committedLanes, committedTransitions);
               }
             }
           }
-          function commitPassiveMountEffects_complete(subtreeRoot, root3, committedLanes, committedTransitions) {
+          function commitPassiveMountEffects_complete(subtreeRoot, root2, committedLanes, committedTransitions) {
             while (nextEffect !== null) {
               var fiber = nextEffect;
               if ((fiber.flags & Passive) !== NoFlags) {
                 setCurrentFiber(fiber);
                 try {
-                  commitPassiveMountOnFiber(root3, fiber, committedLanes, committedTransitions);
+                  commitPassiveMountOnFiber(root2, fiber, committedLanes, committedTransitions);
                 } catch (error2) {
                   captureCommitPhaseError(fiber, fiber.return, error2);
                 }
@@ -20430,7 +20430,7 @@
             }
             return claimNextRetryLane();
           }
-          function scheduleUpdateOnFiber(root3, fiber, lane, eventTime) {
+          function scheduleUpdateOnFiber(root2, fiber, lane, eventTime) {
             checkForNestedUpdates();
             {
               if (isRunningInsertionEffect) {
@@ -20442,25 +20442,25 @@
                 didScheduleUpdateDuringPassiveEffects = true;
               }
             }
-            markRootUpdated(root3, lane, eventTime);
-            if ((executionContext & RenderContext) !== NoLanes && root3 === workInProgressRoot) {
+            markRootUpdated(root2, lane, eventTime);
+            if ((executionContext & RenderContext) !== NoLanes && root2 === workInProgressRoot) {
               warnAboutRenderPhaseUpdatesInDEV(fiber);
             } else {
               {
                 if (isDevToolsPresent) {
-                  addFiberToLanesMap(root3, fiber, lane);
+                  addFiberToLanesMap(root2, fiber, lane);
                 }
               }
               warnIfUpdatesNotWrappedWithActDEV(fiber);
-              if (root3 === workInProgressRoot) {
+              if (root2 === workInProgressRoot) {
                 if ((executionContext & RenderContext) === NoContext) {
                   workInProgressRootInterleavedUpdatedLanes = mergeLanes(workInProgressRootInterleavedUpdatedLanes, lane);
                 }
                 if (workInProgressRootExitStatus === RootSuspendedWithDelay) {
-                  markRootSuspended$1(root3, workInProgressRootRenderLanes);
+                  markRootSuspended$1(root2, workInProgressRootRenderLanes);
                 }
               }
-              ensureRootIsScheduled(root3, eventTime);
+              ensureRootIsScheduled(root2, eventTime);
               if (lane === SyncLane && executionContext === NoContext && (fiber.mode & ConcurrentMode) === NoMode && // Treat `act` as if it's inside `batchedUpdates`, even in legacy mode.
               !ReactCurrentActQueue$1.isBatchingLegacy) {
                 resetRenderTimer();
@@ -20468,11 +20468,11 @@
               }
             }
           }
-          function scheduleInitialHydrationOnRoot(root3, lane, eventTime) {
-            var current2 = root3.current;
+          function scheduleInitialHydrationOnRoot(root2, lane, eventTime) {
+            var current2 = root2.current;
             current2.lanes = lane;
-            markRootUpdated(root3, lane, eventTime);
-            ensureRootIsScheduled(root3, eventTime);
+            markRootUpdated(root2, lane, eventTime);
+            ensureRootIsScheduled(root2, eventTime);
           }
           function isUnsafeClassRenderPhaseUpdate(fiber) {
             return (
@@ -20481,20 +20481,20 @@
               (executionContext & RenderContext) !== NoContext
             );
           }
-          function ensureRootIsScheduled(root3, currentTime) {
-            var existingCallbackNode = root3.callbackNode;
-            markStarvedLanesAsExpired(root3, currentTime);
-            var nextLanes = getNextLanes(root3, root3 === workInProgressRoot ? workInProgressRootRenderLanes : NoLanes);
+          function ensureRootIsScheduled(root2, currentTime) {
+            var existingCallbackNode = root2.callbackNode;
+            markStarvedLanesAsExpired(root2, currentTime);
+            var nextLanes = getNextLanes(root2, root2 === workInProgressRoot ? workInProgressRootRenderLanes : NoLanes);
             if (nextLanes === NoLanes) {
               if (existingCallbackNode !== null) {
                 cancelCallback$1(existingCallbackNode);
               }
-              root3.callbackNode = null;
-              root3.callbackPriority = NoLane;
+              root2.callbackNode = null;
+              root2.callbackPriority = NoLane;
               return;
             }
             var newCallbackPriority = getHighestPriorityLane(nextLanes);
-            var existingCallbackPriority = root3.callbackPriority;
+            var existingCallbackPriority = root2.callbackPriority;
             if (existingCallbackPriority === newCallbackPriority && // Special case related to `act`. If the currently scheduled task is a
             // Scheduler task, rather than an `act` task, cancel it and re-scheduled
             // on the `act` queue.
@@ -20511,13 +20511,13 @@
             }
             var newCallbackNode;
             if (newCallbackPriority === SyncLane) {
-              if (root3.tag === LegacyRoot) {
+              if (root2.tag === LegacyRoot) {
                 if (ReactCurrentActQueue$1.isBatchingLegacy !== null) {
                   ReactCurrentActQueue$1.didScheduleLegacyUpdate = true;
                 }
-                scheduleLegacySyncCallback(performSyncWorkOnRoot.bind(null, root3));
+                scheduleLegacySyncCallback(performSyncWorkOnRoot.bind(null, root2));
               } else {
-                scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root3));
+                scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root2));
               }
               {
                 if (ReactCurrentActQueue$1.current !== null) {
@@ -20550,12 +20550,12 @@
                   schedulerPriorityLevel = NormalPriority;
                   break;
               }
-              newCallbackNode = scheduleCallback$1(schedulerPriorityLevel, performConcurrentWorkOnRoot.bind(null, root3));
+              newCallbackNode = scheduleCallback$1(schedulerPriorityLevel, performConcurrentWorkOnRoot.bind(null, root2));
             }
-            root3.callbackPriority = newCallbackPriority;
-            root3.callbackNode = newCallbackNode;
+            root2.callbackPriority = newCallbackPriority;
+            root2.callbackNode = newCallbackNode;
           }
-          function performConcurrentWorkOnRoot(root3, didTimeout) {
+          function performConcurrentWorkOnRoot(root2, didTimeout) {
             {
               resetNestedUpdateFlag();
             }
@@ -20564,77 +20564,77 @@
             if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
               throw new Error("Should not already be working.");
             }
-            var originalCallbackNode = root3.callbackNode;
+            var originalCallbackNode = root2.callbackNode;
             var didFlushPassiveEffects = flushPassiveEffects();
             if (didFlushPassiveEffects) {
-              if (root3.callbackNode !== originalCallbackNode) {
+              if (root2.callbackNode !== originalCallbackNode) {
                 return null;
               }
             }
-            var lanes = getNextLanes(root3, root3 === workInProgressRoot ? workInProgressRootRenderLanes : NoLanes);
+            var lanes = getNextLanes(root2, root2 === workInProgressRoot ? workInProgressRootRenderLanes : NoLanes);
             if (lanes === NoLanes) {
               return null;
             }
-            var shouldTimeSlice = !includesBlockingLane(root3, lanes) && !includesExpiredLane(root3, lanes) && !didTimeout;
-            var exitStatus = shouldTimeSlice ? renderRootConcurrent(root3, lanes) : renderRootSync(root3, lanes);
+            var shouldTimeSlice = !includesBlockingLane(root2, lanes) && !includesExpiredLane(root2, lanes) && !didTimeout;
+            var exitStatus = shouldTimeSlice ? renderRootConcurrent(root2, lanes) : renderRootSync(root2, lanes);
             if (exitStatus !== RootInProgress) {
               if (exitStatus === RootErrored) {
-                var errorRetryLanes = getLanesToRetrySynchronouslyOnError(root3);
+                var errorRetryLanes = getLanesToRetrySynchronouslyOnError(root2);
                 if (errorRetryLanes !== NoLanes) {
                   lanes = errorRetryLanes;
-                  exitStatus = recoverFromConcurrentError(root3, errorRetryLanes);
+                  exitStatus = recoverFromConcurrentError(root2, errorRetryLanes);
                 }
               }
               if (exitStatus === RootFatalErrored) {
                 var fatalError = workInProgressRootFatalError;
-                prepareFreshStack(root3, NoLanes);
-                markRootSuspended$1(root3, lanes);
-                ensureRootIsScheduled(root3, now());
+                prepareFreshStack(root2, NoLanes);
+                markRootSuspended$1(root2, lanes);
+                ensureRootIsScheduled(root2, now());
                 throw fatalError;
               }
               if (exitStatus === RootDidNotComplete) {
-                markRootSuspended$1(root3, lanes);
+                markRootSuspended$1(root2, lanes);
               } else {
-                var renderWasConcurrent = !includesBlockingLane(root3, lanes);
-                var finishedWork = root3.current.alternate;
+                var renderWasConcurrent = !includesBlockingLane(root2, lanes);
+                var finishedWork = root2.current.alternate;
                 if (renderWasConcurrent && !isRenderConsistentWithExternalStores(finishedWork)) {
-                  exitStatus = renderRootSync(root3, lanes);
+                  exitStatus = renderRootSync(root2, lanes);
                   if (exitStatus === RootErrored) {
-                    var _errorRetryLanes = getLanesToRetrySynchronouslyOnError(root3);
+                    var _errorRetryLanes = getLanesToRetrySynchronouslyOnError(root2);
                     if (_errorRetryLanes !== NoLanes) {
                       lanes = _errorRetryLanes;
-                      exitStatus = recoverFromConcurrentError(root3, _errorRetryLanes);
+                      exitStatus = recoverFromConcurrentError(root2, _errorRetryLanes);
                     }
                   }
                   if (exitStatus === RootFatalErrored) {
                     var _fatalError = workInProgressRootFatalError;
-                    prepareFreshStack(root3, NoLanes);
-                    markRootSuspended$1(root3, lanes);
-                    ensureRootIsScheduled(root3, now());
+                    prepareFreshStack(root2, NoLanes);
+                    markRootSuspended$1(root2, lanes);
+                    ensureRootIsScheduled(root2, now());
                     throw _fatalError;
                   }
                 }
-                root3.finishedWork = finishedWork;
-                root3.finishedLanes = lanes;
-                finishConcurrentRender(root3, exitStatus, lanes);
+                root2.finishedWork = finishedWork;
+                root2.finishedLanes = lanes;
+                finishConcurrentRender(root2, exitStatus, lanes);
               }
             }
-            ensureRootIsScheduled(root3, now());
-            if (root3.callbackNode === originalCallbackNode) {
-              return performConcurrentWorkOnRoot.bind(null, root3);
+            ensureRootIsScheduled(root2, now());
+            if (root2.callbackNode === originalCallbackNode) {
+              return performConcurrentWorkOnRoot.bind(null, root2);
             }
             return null;
           }
-          function recoverFromConcurrentError(root3, errorRetryLanes) {
+          function recoverFromConcurrentError(root2, errorRetryLanes) {
             var errorsFromFirstAttempt = workInProgressRootConcurrentErrors;
-            if (isRootDehydrated(root3)) {
-              var rootWorkInProgress = prepareFreshStack(root3, errorRetryLanes);
+            if (isRootDehydrated(root2)) {
+              var rootWorkInProgress = prepareFreshStack(root2, errorRetryLanes);
               rootWorkInProgress.flags |= ForceClientRender;
               {
-                errorHydratingContainer(root3.containerInfo);
+                errorHydratingContainer(root2.containerInfo);
               }
             }
-            var exitStatus = renderRootSync(root3, errorRetryLanes);
+            var exitStatus = renderRootSync(root2, errorRetryLanes);
             if (exitStatus !== RootErrored) {
               var errorsFromSecondAttempt = workInProgressRootRecoverableErrors;
               workInProgressRootRecoverableErrors = errorsFromFirstAttempt;
@@ -20651,59 +20651,59 @@
               workInProgressRootRecoverableErrors.push.apply(workInProgressRootRecoverableErrors, errors);
             }
           }
-          function finishConcurrentRender(root3, exitStatus, lanes) {
+          function finishConcurrentRender(root2, exitStatus, lanes) {
             switch (exitStatus) {
               case RootInProgress:
               case RootFatalErrored: {
                 throw new Error("Root did not complete. This is a bug in React.");
               }
               case RootErrored: {
-                commitRoot(root3, workInProgressRootRecoverableErrors, workInProgressTransitions);
+                commitRoot(root2, workInProgressRootRecoverableErrors, workInProgressTransitions);
                 break;
               }
               case RootSuspended: {
-                markRootSuspended$1(root3, lanes);
+                markRootSuspended$1(root2, lanes);
                 if (includesOnlyRetries(lanes) && // do not delay if we're inside an act() scope
                 !shouldForceFlushFallbacksInDEV()) {
                   var msUntilTimeout = globalMostRecentFallbackTime + FALLBACK_THROTTLE_MS - now();
                   if (msUntilTimeout > 10) {
-                    var nextLanes = getNextLanes(root3, NoLanes);
+                    var nextLanes = getNextLanes(root2, NoLanes);
                     if (nextLanes !== NoLanes) {
                       break;
                     }
-                    var suspendedLanes = root3.suspendedLanes;
+                    var suspendedLanes = root2.suspendedLanes;
                     if (!isSubsetOfLanes(suspendedLanes, lanes)) {
                       var eventTime = requestEventTime();
-                      markRootPinged(root3, suspendedLanes);
+                      markRootPinged(root2, suspendedLanes);
                       break;
                     }
-                    root3.timeoutHandle = scheduleTimeout(commitRoot.bind(null, root3, workInProgressRootRecoverableErrors, workInProgressTransitions), msUntilTimeout);
+                    root2.timeoutHandle = scheduleTimeout(commitRoot.bind(null, root2, workInProgressRootRecoverableErrors, workInProgressTransitions), msUntilTimeout);
                     break;
                   }
                 }
-                commitRoot(root3, workInProgressRootRecoverableErrors, workInProgressTransitions);
+                commitRoot(root2, workInProgressRootRecoverableErrors, workInProgressTransitions);
                 break;
               }
               case RootSuspendedWithDelay: {
-                markRootSuspended$1(root3, lanes);
+                markRootSuspended$1(root2, lanes);
                 if (includesOnlyTransitions(lanes)) {
                   break;
                 }
                 if (!shouldForceFlushFallbacksInDEV()) {
-                  var mostRecentEventTime = getMostRecentEventTime(root3, lanes);
+                  var mostRecentEventTime = getMostRecentEventTime(root2, lanes);
                   var eventTimeMs = mostRecentEventTime;
                   var timeElapsedMs = now() - eventTimeMs;
                   var _msUntilTimeout = jnd(timeElapsedMs) - timeElapsedMs;
                   if (_msUntilTimeout > 10) {
-                    root3.timeoutHandle = scheduleTimeout(commitRoot.bind(null, root3, workInProgressRootRecoverableErrors, workInProgressTransitions), _msUntilTimeout);
+                    root2.timeoutHandle = scheduleTimeout(commitRoot.bind(null, root2, workInProgressRootRecoverableErrors, workInProgressTransitions), _msUntilTimeout);
                     break;
                   }
                 }
-                commitRoot(root3, workInProgressRootRecoverableErrors, workInProgressTransitions);
+                commitRoot(root2, workInProgressRootRecoverableErrors, workInProgressTransitions);
                 break;
               }
               case RootCompleted: {
-                commitRoot(root3, workInProgressRootRecoverableErrors, workInProgressTransitions);
+                commitRoot(root2, workInProgressRootRecoverableErrors, workInProgressTransitions);
                 break;
               }
               default: {
@@ -20754,12 +20754,12 @@
             }
             return true;
           }
-          function markRootSuspended$1(root3, suspendedLanes) {
+          function markRootSuspended$1(root2, suspendedLanes) {
             suspendedLanes = removeLanes(suspendedLanes, workInProgressRootPingedLanes);
             suspendedLanes = removeLanes(suspendedLanes, workInProgressRootInterleavedUpdatedLanes);
-            markRootSuspended(root3, suspendedLanes);
+            markRootSuspended(root2, suspendedLanes);
           }
-          function performSyncWorkOnRoot(root3) {
+          function performSyncWorkOnRoot(root2) {
             {
               syncNestedUpdateFlag();
             }
@@ -20767,51 +20767,51 @@
               throw new Error("Should not already be working.");
             }
             flushPassiveEffects();
-            var lanes = getNextLanes(root3, NoLanes);
+            var lanes = getNextLanes(root2, NoLanes);
             if (!includesSomeLane(lanes, SyncLane)) {
-              ensureRootIsScheduled(root3, now());
+              ensureRootIsScheduled(root2, now());
               return null;
             }
-            var exitStatus = renderRootSync(root3, lanes);
-            if (root3.tag !== LegacyRoot && exitStatus === RootErrored) {
-              var errorRetryLanes = getLanesToRetrySynchronouslyOnError(root3);
+            var exitStatus = renderRootSync(root2, lanes);
+            if (root2.tag !== LegacyRoot && exitStatus === RootErrored) {
+              var errorRetryLanes = getLanesToRetrySynchronouslyOnError(root2);
               if (errorRetryLanes !== NoLanes) {
                 lanes = errorRetryLanes;
-                exitStatus = recoverFromConcurrentError(root3, errorRetryLanes);
+                exitStatus = recoverFromConcurrentError(root2, errorRetryLanes);
               }
             }
             if (exitStatus === RootFatalErrored) {
               var fatalError = workInProgressRootFatalError;
-              prepareFreshStack(root3, NoLanes);
-              markRootSuspended$1(root3, lanes);
-              ensureRootIsScheduled(root3, now());
+              prepareFreshStack(root2, NoLanes);
+              markRootSuspended$1(root2, lanes);
+              ensureRootIsScheduled(root2, now());
               throw fatalError;
             }
             if (exitStatus === RootDidNotComplete) {
               throw new Error("Root did not complete. This is a bug in React.");
             }
-            var finishedWork = root3.current.alternate;
-            root3.finishedWork = finishedWork;
-            root3.finishedLanes = lanes;
-            commitRoot(root3, workInProgressRootRecoverableErrors, workInProgressTransitions);
-            ensureRootIsScheduled(root3, now());
+            var finishedWork = root2.current.alternate;
+            root2.finishedWork = finishedWork;
+            root2.finishedLanes = lanes;
+            commitRoot(root2, workInProgressRootRecoverableErrors, workInProgressTransitions);
+            ensureRootIsScheduled(root2, now());
             return null;
           }
-          function flushRoot(root3, lanes) {
+          function flushRoot(root2, lanes) {
             if (lanes !== NoLanes) {
-              markRootEntangled(root3, mergeLanes(lanes, SyncLane));
-              ensureRootIsScheduled(root3, now());
+              markRootEntangled(root2, mergeLanes(lanes, SyncLane));
+              ensureRootIsScheduled(root2, now());
               if ((executionContext & (RenderContext | CommitContext)) === NoContext) {
                 resetRenderTimer();
                 flushSyncCallbacks();
               }
             }
           }
-          function batchedUpdates$1(fn, a2) {
+          function batchedUpdates$1(fn, a) {
             var prevExecutionContext = executionContext;
             executionContext |= BatchedContext;
             try {
-              return fn(a2);
+              return fn(a);
             } finally {
               executionContext = prevExecutionContext;
               if (executionContext === NoContext && // Treat `act` as if it's inside `batchedUpdates`, even in legacy mode.
@@ -20821,13 +20821,13 @@
               }
             }
           }
-          function discreteUpdates(fn, a2, b, c, d) {
+          function discreteUpdates(fn, a, b, c, d) {
             var previousPriority = getCurrentUpdatePriority();
             var prevTransition = ReactCurrentBatchConfig$3.transition;
             try {
               ReactCurrentBatchConfig$3.transition = null;
               setCurrentUpdatePriority(DiscreteEventPriority);
-              return fn(a2, b, c, d);
+              return fn(a, b, c, d);
             } finally {
               setCurrentUpdatePriority(previousPriority);
               ReactCurrentBatchConfig$3.transition = prevTransition;
@@ -20873,12 +20873,12 @@
             subtreeRenderLanes = subtreeRenderLanesCursor.current;
             pop(subtreeRenderLanesCursor, fiber);
           }
-          function prepareFreshStack(root3, lanes) {
-            root3.finishedWork = null;
-            root3.finishedLanes = NoLanes;
-            var timeoutHandle = root3.timeoutHandle;
+          function prepareFreshStack(root2, lanes) {
+            root2.finishedWork = null;
+            root2.finishedLanes = NoLanes;
+            var timeoutHandle = root2.timeoutHandle;
             if (timeoutHandle !== noTimeout) {
-              root3.timeoutHandle = noTimeout;
+              root2.timeoutHandle = noTimeout;
               cancelTimeout(timeoutHandle);
             }
             if (workInProgress !== null) {
@@ -20889,8 +20889,8 @@
                 interruptedWork = interruptedWork.return;
               }
             }
-            workInProgressRoot = root3;
-            var rootWorkInProgress = createWorkInProgress(root3.current, null);
+            workInProgressRoot = root2;
+            var rootWorkInProgress = createWorkInProgress(root2.current, null);
             workInProgress = rootWorkInProgress;
             workInProgressRootRenderLanes = subtreeRenderLanes = workInProgressRootIncludedLanes = lanes;
             workInProgressRootExitStatus = RootInProgress;
@@ -20906,7 +20906,7 @@
             }
             return rootWorkInProgress;
           }
-          function handleError(root3, thrownValue) {
+          function handleError(root2, thrownValue) {
             do {
               var erroredWork = workInProgress;
               try {
@@ -20932,7 +20932,7 @@
                     markComponentErrored(erroredWork, thrownValue, workInProgressRootRenderLanes);
                   }
                 }
-                throwException(root3, erroredWork.return, erroredWork, thrownValue, workInProgressRootRenderLanes);
+                throwException(root2, erroredWork.return, erroredWork, thrownValue, workInProgressRootRenderLanes);
                 completeUnitOfWork(erroredWork);
               } catch (yetAnotherThrownValue) {
                 thrownValue = yetAnotherThrownValue;
@@ -20991,23 +20991,23 @@
           function renderHasNotSuspendedYet() {
             return workInProgressRootExitStatus === RootInProgress;
           }
-          function renderRootSync(root3, lanes) {
+          function renderRootSync(root2, lanes) {
             var prevExecutionContext = executionContext;
             executionContext |= RenderContext;
             var prevDispatcher = pushDispatcher();
-            if (workInProgressRoot !== root3 || workInProgressRootRenderLanes !== lanes) {
+            if (workInProgressRoot !== root2 || workInProgressRootRenderLanes !== lanes) {
               {
                 if (isDevToolsPresent) {
-                  var memoizedUpdaters = root3.memoizedUpdaters;
+                  var memoizedUpdaters = root2.memoizedUpdaters;
                   if (memoizedUpdaters.size > 0) {
-                    restorePendingUpdaters(root3, workInProgressRootRenderLanes);
+                    restorePendingUpdaters(root2, workInProgressRootRenderLanes);
                     memoizedUpdaters.clear();
                   }
-                  movePendingFibersToMemoized(root3, lanes);
+                  movePendingFibersToMemoized(root2, lanes);
                 }
               }
               workInProgressTransitions = getTransitionsForLanes();
-              prepareFreshStack(root3, lanes);
+              prepareFreshStack(root2, lanes);
             }
             {
               markRenderStarted(lanes);
@@ -21017,7 +21017,7 @@
                 workLoopSync();
                 break;
               } catch (thrownValue) {
-                handleError(root3, thrownValue);
+                handleError(root2, thrownValue);
               }
             } while (true);
             resetContextDependencies();
@@ -21038,24 +21038,24 @@
               performUnitOfWork(workInProgress);
             }
           }
-          function renderRootConcurrent(root3, lanes) {
+          function renderRootConcurrent(root2, lanes) {
             var prevExecutionContext = executionContext;
             executionContext |= RenderContext;
             var prevDispatcher = pushDispatcher();
-            if (workInProgressRoot !== root3 || workInProgressRootRenderLanes !== lanes) {
+            if (workInProgressRoot !== root2 || workInProgressRootRenderLanes !== lanes) {
               {
                 if (isDevToolsPresent) {
-                  var memoizedUpdaters = root3.memoizedUpdaters;
+                  var memoizedUpdaters = root2.memoizedUpdaters;
                   if (memoizedUpdaters.size > 0) {
-                    restorePendingUpdaters(root3, workInProgressRootRenderLanes);
+                    restorePendingUpdaters(root2, workInProgressRootRenderLanes);
                     memoizedUpdaters.clear();
                   }
-                  movePendingFibersToMemoized(root3, lanes);
+                  movePendingFibersToMemoized(root2, lanes);
                 }
               }
               workInProgressTransitions = getTransitionsForLanes();
               resetRenderTimer();
-              prepareFreshStack(root3, lanes);
+              prepareFreshStack(root2, lanes);
             }
             {
               markRenderStarted(lanes);
@@ -21065,7 +21065,7 @@
                 workLoopConcurrent();
                 break;
               } catch (thrownValue) {
-                handleError(root3, thrownValue);
+                handleError(root2, thrownValue);
               }
             } while (true);
             resetContextDependencies();
@@ -21169,20 +21169,20 @@
               workInProgressRootExitStatus = RootCompleted;
             }
           }
-          function commitRoot(root3, recoverableErrors, transitions) {
+          function commitRoot(root2, recoverableErrors, transitions) {
             var previousUpdateLanePriority = getCurrentUpdatePriority();
             var prevTransition = ReactCurrentBatchConfig$3.transition;
             try {
               ReactCurrentBatchConfig$3.transition = null;
               setCurrentUpdatePriority(DiscreteEventPriority);
-              commitRootImpl(root3, recoverableErrors, transitions, previousUpdateLanePriority);
+              commitRootImpl(root2, recoverableErrors, transitions, previousUpdateLanePriority);
             } finally {
               ReactCurrentBatchConfig$3.transition = prevTransition;
               setCurrentUpdatePriority(previousUpdateLanePriority);
             }
             return null;
           }
-          function commitRootImpl(root3, recoverableErrors, transitions, renderPriorityLevel) {
+          function commitRootImpl(root2, recoverableErrors, transitions, renderPriorityLevel) {
             do {
               flushPassiveEffects();
             } while (rootWithPendingPassiveEffects !== null);
@@ -21190,8 +21190,8 @@
             if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
               throw new Error("Should not already be working.");
             }
-            var finishedWork = root3.finishedWork;
-            var lanes = root3.finishedLanes;
+            var finishedWork = root2.finishedWork;
+            var lanes = root2.finishedLanes;
             {
               markCommitStarted(lanes);
             }
@@ -21207,16 +21207,16 @@
                 }
               }
             }
-            root3.finishedWork = null;
-            root3.finishedLanes = NoLanes;
-            if (finishedWork === root3.current) {
+            root2.finishedWork = null;
+            root2.finishedLanes = NoLanes;
+            if (finishedWork === root2.current) {
               throw new Error("Cannot commit the same tree as before. This error is likely caused by a bug in React. Please file an issue.");
             }
-            root3.callbackNode = null;
-            root3.callbackPriority = NoLane;
+            root2.callbackNode = null;
+            root2.callbackPriority = NoLane;
             var remainingLanes = mergeLanes(finishedWork.lanes, finishedWork.childLanes);
-            markRootFinished(root3, remainingLanes);
-            if (root3 === workInProgressRoot) {
+            markRootFinished(root2, remainingLanes);
+            if (root2 === workInProgressRoot) {
               workInProgressRoot = null;
               workInProgress = null;
               workInProgressRootRenderLanes = NoLanes;
@@ -21241,17 +21241,17 @@
               var prevExecutionContext = executionContext;
               executionContext |= CommitContext;
               ReactCurrentOwner$2.current = null;
-              var shouldFireAfterActiveInstanceBlur2 = commitBeforeMutationEffects(root3, finishedWork);
+              var shouldFireAfterActiveInstanceBlur2 = commitBeforeMutationEffects(root2, finishedWork);
               {
                 recordCommitTime();
               }
-              commitMutationEffects(root3, finishedWork, lanes);
-              resetAfterCommit(root3.containerInfo);
-              root3.current = finishedWork;
+              commitMutationEffects(root2, finishedWork, lanes);
+              resetAfterCommit(root2.containerInfo);
+              root2.current = finishedWork;
               {
                 markLayoutEffectsStarted(lanes);
               }
-              commitLayoutEffects(finishedWork, root3, lanes);
+              commitLayoutEffects(finishedWork, root2, lanes);
               {
                 markLayoutEffectsStopped();
               }
@@ -21260,7 +21260,7 @@
               setCurrentUpdatePriority(previousPriority);
               ReactCurrentBatchConfig$3.transition = prevTransition;
             } else {
-              root3.current = finishedWork;
+              root2.current = finishedWork;
               {
                 recordCommitTime();
               }
@@ -21268,7 +21268,7 @@
             var rootDidHavePassiveEffects = rootDoesHavePassiveEffects;
             if (rootDoesHavePassiveEffects) {
               rootDoesHavePassiveEffects = false;
-              rootWithPendingPassiveEffects = root3;
+              rootWithPendingPassiveEffects = root2;
               pendingPassiveEffectsLanes = lanes;
             } else {
               {
@@ -21276,27 +21276,27 @@
                 rootWithPassiveNestedUpdates = null;
               }
             }
-            remainingLanes = root3.pendingLanes;
+            remainingLanes = root2.pendingLanes;
             if (remainingLanes === NoLanes) {
               legacyErrorBoundariesThatAlreadyFailed = null;
             }
             {
               if (!rootDidHavePassiveEffects) {
-                commitDoubleInvokeEffectsInDEV(root3.current, false);
+                commitDoubleInvokeEffectsInDEV(root2.current, false);
               }
             }
             onCommitRoot(finishedWork.stateNode, renderPriorityLevel);
             {
               if (isDevToolsPresent) {
-                root3.memoizedUpdaters.clear();
+                root2.memoizedUpdaters.clear();
               }
             }
             {
               onCommitRoot$1();
             }
-            ensureRootIsScheduled(root3, now());
+            ensureRootIsScheduled(root2, now());
             if (recoverableErrors !== null) {
-              var onRecoverableError = root3.onRecoverableError;
+              var onRecoverableError = root2.onRecoverableError;
               for (var i = 0; i < recoverableErrors.length; i++) {
                 var recoverableError = recoverableErrors[i];
                 var componentStack = recoverableError.stack;
@@ -21313,19 +21313,19 @@
               firstUncaughtError = null;
               throw error$1;
             }
-            if (includesSomeLane(pendingPassiveEffectsLanes, SyncLane) && root3.tag !== LegacyRoot) {
+            if (includesSomeLane(pendingPassiveEffectsLanes, SyncLane) && root2.tag !== LegacyRoot) {
               flushPassiveEffects();
             }
-            remainingLanes = root3.pendingLanes;
+            remainingLanes = root2.pendingLanes;
             if (includesSomeLane(remainingLanes, SyncLane)) {
               {
                 markNestedUpdateScheduled();
               }
-              if (root3 === rootWithNestedUpdates) {
+              if (root2 === rootWithNestedUpdates) {
                 nestedUpdateCount++;
               } else {
                 nestedUpdateCount = 0;
-                rootWithNestedUpdates = root3;
+                rootWithNestedUpdates = root2;
               }
             } else {
               nestedUpdateCount = 0;
@@ -21371,7 +21371,7 @@
             }
             var transitions = pendingPassiveTransitions;
             pendingPassiveTransitions = null;
-            var root3 = rootWithPendingPassiveEffects;
+            var root2 = rootWithPendingPassiveEffects;
             var lanes = pendingPassiveEffectsLanes;
             rootWithPendingPassiveEffects = null;
             pendingPassiveEffectsLanes = NoLanes;
@@ -21387,31 +21387,31 @@
             }
             var prevExecutionContext = executionContext;
             executionContext |= CommitContext;
-            commitPassiveUnmountEffects(root3.current);
-            commitPassiveMountEffects(root3, root3.current, lanes, transitions);
+            commitPassiveUnmountEffects(root2.current);
+            commitPassiveMountEffects(root2, root2.current, lanes, transitions);
             {
               var profilerEffects = pendingPassiveProfilerEffects;
               pendingPassiveProfilerEffects = [];
               for (var i = 0; i < profilerEffects.length; i++) {
                 var _fiber = profilerEffects[i];
-                commitPassiveEffectDurations(root3, _fiber);
+                commitPassiveEffectDurations(root2, _fiber);
               }
             }
             {
               markPassiveEffectsStopped();
             }
             {
-              commitDoubleInvokeEffectsInDEV(root3.current, true);
+              commitDoubleInvokeEffectsInDEV(root2.current, true);
             }
             executionContext = prevExecutionContext;
             flushSyncCallbacks();
             {
               if (didScheduleUpdateDuringPassiveEffects) {
-                if (root3 === rootWithPassiveNestedUpdates) {
+                if (root2 === rootWithPassiveNestedUpdates) {
                   nestedPassiveUpdateCount++;
                 } else {
                   nestedPassiveUpdateCount = 0;
-                  rootWithPassiveNestedUpdates = root3;
+                  rootWithPassiveNestedUpdates = root2;
                 }
               } else {
                 nestedPassiveUpdateCount = 0;
@@ -21419,9 +21419,9 @@
               isFlushingPassiveEffects = false;
               didScheduleUpdateDuringPassiveEffects = false;
             }
-            onPostCommitRoot(root3);
+            onPostCommitRoot(root2);
             {
-              var stateNode = root3.current.stateNode;
+              var stateNode = root2.current.stateNode;
               stateNode.effectDuration = 0;
               stateNode.passiveEffectDuration = 0;
             }
@@ -21447,11 +21447,11 @@
           function captureCommitPhaseErrorOnRoot(rootFiber, sourceFiber, error2) {
             var errorInfo = createCapturedValueAtFiber(error2, sourceFiber);
             var update = createRootErrorUpdate(rootFiber, errorInfo, SyncLane);
-            var root3 = enqueueUpdate(rootFiber, update, SyncLane);
+            var root2 = enqueueUpdate(rootFiber, update, SyncLane);
             var eventTime = requestEventTime();
-            if (root3 !== null) {
-              markRootUpdated(root3, SyncLane, eventTime);
-              ensureRootIsScheduled(root3, eventTime);
+            if (root2 !== null) {
+              markRootUpdated(root2, SyncLane, eventTime);
+              ensureRootIsScheduled(root2, eventTime);
             }
           }
           function captureCommitPhaseError(sourceFiber, nearestMountedAncestor, error$1) {
@@ -21477,11 +21477,11 @@
                 if (typeof ctor.getDerivedStateFromError === "function" || typeof instance.componentDidCatch === "function" && !isAlreadyFailedLegacyErrorBoundary(instance)) {
                   var errorInfo = createCapturedValueAtFiber(error$1, sourceFiber);
                   var update = createClassErrorUpdate(fiber, errorInfo, SyncLane);
-                  var root3 = enqueueUpdate(fiber, update, SyncLane);
+                  var root2 = enqueueUpdate(fiber, update, SyncLane);
                   var eventTime = requestEventTime();
-                  if (root3 !== null) {
-                    markRootUpdated(root3, SyncLane, eventTime);
-                    ensureRootIsScheduled(root3, eventTime);
+                  if (root2 !== null) {
+                    markRootUpdated(root2, SyncLane, eventTime);
+                    ensureRootIsScheduled(root2, eventTime);
                   }
                   return;
                 }
@@ -21492,32 +21492,32 @@
               error("Internal React error: Attempted to capture a commit phase error inside a detached tree. This indicates a bug in React. Likely causes include deleting the same fiber more than once, committing an already-finished tree, or an inconsistent return pointer.\n\nError message:\n\n%s", error$1);
             }
           }
-          function pingSuspendedRoot(root3, wakeable, pingedLanes) {
-            var pingCache = root3.pingCache;
+          function pingSuspendedRoot(root2, wakeable, pingedLanes) {
+            var pingCache = root2.pingCache;
             if (pingCache !== null) {
               pingCache.delete(wakeable);
             }
             var eventTime = requestEventTime();
-            markRootPinged(root3, pingedLanes);
-            warnIfSuspenseResolutionNotWrappedWithActDEV(root3);
-            if (workInProgressRoot === root3 && isSubsetOfLanes(workInProgressRootRenderLanes, pingedLanes)) {
+            markRootPinged(root2, pingedLanes);
+            warnIfSuspenseResolutionNotWrappedWithActDEV(root2);
+            if (workInProgressRoot === root2 && isSubsetOfLanes(workInProgressRootRenderLanes, pingedLanes)) {
               if (workInProgressRootExitStatus === RootSuspendedWithDelay || workInProgressRootExitStatus === RootSuspended && includesOnlyRetries(workInProgressRootRenderLanes) && now() - globalMostRecentFallbackTime < FALLBACK_THROTTLE_MS) {
-                prepareFreshStack(root3, NoLanes);
+                prepareFreshStack(root2, NoLanes);
               } else {
                 workInProgressRootPingedLanes = mergeLanes(workInProgressRootPingedLanes, pingedLanes);
               }
             }
-            ensureRootIsScheduled(root3, eventTime);
+            ensureRootIsScheduled(root2, eventTime);
           }
           function retryTimedOutBoundary(boundaryFiber, retryLane) {
             if (retryLane === NoLane) {
               retryLane = requestRetryLane(boundaryFiber);
             }
             var eventTime = requestEventTime();
-            var root3 = enqueueConcurrentRenderForLane(boundaryFiber, retryLane);
-            if (root3 !== null) {
-              markRootUpdated(root3, retryLane, eventTime);
-              ensureRootIsScheduled(root3, eventTime);
+            var root2 = enqueueConcurrentRenderForLane(boundaryFiber, retryLane);
+            if (root2 !== null) {
+              markRootUpdated(root2, retryLane, eventTime);
+              ensureRootIsScheduled(root2, eventTime);
             }
           }
           function retryDehydratedSuspenseBoundary(boundaryFiber) {
@@ -21706,12 +21706,12 @@
               }
             }
           }
-          function restorePendingUpdaters(root3, lanes) {
+          function restorePendingUpdaters(root2, lanes) {
             {
               if (isDevToolsPresent) {
-                var memoizedUpdaters = root3.memoizedUpdaters;
+                var memoizedUpdaters = root2.memoizedUpdaters;
                 memoizedUpdaters.forEach(function(schedulingFiber) {
-                  addFiberToLanesMap(root3, schedulingFiber, lanes);
+                  addFiberToLanesMap(root2, schedulingFiber, lanes);
                 });
               }
             }
@@ -21769,9 +21769,9 @@
               }
             }
           }
-          function warnIfSuspenseResolutionNotWrappedWithActDEV(root3) {
+          function warnIfSuspenseResolutionNotWrappedWithActDEV(root2) {
             {
-              if (root3.tag !== LegacyRoot && isConcurrentActEnvironment() && ReactCurrentActQueue$1.current === null) {
+              if (root2.tag !== LegacyRoot && isConcurrentActEnvironment() && ReactCurrentActQueue$1.current === null) {
                 error("A suspended resource finished loading inside a test, but the event was not wrapped in act(...).\n\nWhen testing, code that resolves suspended data should be wrapped into act(...):\n\nact(() => {\n  /* finish loading suspended data */\n});\n/* assert on the output */\n\nThis ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act");
               }
             }
@@ -21895,7 +21895,7 @@
               failedBoundaries.add(fiber);
             }
           }
-          var scheduleRefresh = function(root3, update) {
+          var scheduleRefresh = function(root2, update) {
             {
               if (resolveFamily === null) {
                 return;
@@ -21903,18 +21903,18 @@
               var staleFamilies = update.staleFamilies, updatedFamilies = update.updatedFamilies;
               flushPassiveEffects();
               flushSync(function() {
-                scheduleFibersWithFamiliesRecursively(root3.current, updatedFamilies, staleFamilies);
+                scheduleFibersWithFamiliesRecursively(root2.current, updatedFamilies, staleFamilies);
               });
             }
           };
-          var scheduleRoot = function(root3, element) {
+          var scheduleRoot = function(root2, element) {
             {
-              if (root3.context !== emptyContextObject) {
+              if (root2.context !== emptyContextObject) {
                 return;
               }
               flushPassiveEffects();
               flushSync(function() {
-                updateContainer(element, root3, null, null);
+                updateContainer(element, root2, null, null);
               });
             }
           };
@@ -21973,13 +21973,13 @@
               }
             }
           }
-          var findHostInstancesForRefresh = function(root3, families) {
+          var findHostInstancesForRefresh = function(root2, families) {
             {
               var hostInstances = /* @__PURE__ */ new Set();
               var types = new Set(families.map(function(family) {
                 return family.current;
               }));
-              findHostInstancesForMatchingFibersRecursively(root3.current, types, hostInstances);
+              findHostInstancesForMatchingFibersRecursively(root2.current, types, hostInstances);
               return hostInstances;
             }
           };
@@ -22528,10 +22528,10 @@
             }
           }
           function createFiberRoot(containerInfo, tag, hydrate2, initialChildren, hydrationCallbacks, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError, transitionCallbacks) {
-            var root3 = new FiberRootNode(containerInfo, tag, hydrate2, identifierPrefix, onRecoverableError);
+            var root2 = new FiberRootNode(containerInfo, tag, hydrate2, identifierPrefix, onRecoverableError);
             var uninitializedFiber = createHostRootFiber(tag, isStrictMode);
-            root3.current = uninitializedFiber;
-            uninitializedFiber.stateNode = root3;
+            root2.current = uninitializedFiber;
+            uninitializedFiber.stateNode = root2;
             {
               var _initialState = {
                 element: initialChildren,
@@ -22544,7 +22544,7 @@
               uninitializedFiber.memoizedState = _initialState;
             }
             initializeUpdateQueue(uninitializedFiber);
-            return root3;
+            return root2;
           }
           var ReactVersion = "18.2.0";
           function createPortal(children, containerInfo, implementation) {
@@ -22627,16 +22627,16 @@
           }
           function createHydrationContainer(initialChildren, callback, containerInfo, tag, hydrationCallbacks, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError, transitionCallbacks) {
             var hydrate2 = true;
-            var root3 = createFiberRoot(containerInfo, tag, hydrate2, initialChildren, hydrationCallbacks, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError);
-            root3.context = getContextForSubtree(null);
-            var current2 = root3.current;
+            var root2 = createFiberRoot(containerInfo, tag, hydrate2, initialChildren, hydrationCallbacks, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError);
+            root2.context = getContextForSubtree(null);
+            var current2 = root2.current;
             var eventTime = requestEventTime();
             var lane = requestUpdateLane(current2);
             var update = createUpdate(eventTime, lane);
             update.callback = callback !== void 0 && callback !== null ? callback : null;
             enqueueUpdate(current2, update, lane);
-            scheduleInitialHydrationOnRoot(root3, lane, eventTime);
-            return root3;
+            scheduleInitialHydrationOnRoot(root2, lane, eventTime);
+            return root2;
           }
           function updateContainer(element, container2, parentComponent, callback) {
             {
@@ -22673,10 +22673,10 @@
               }
               update.callback = callback;
             }
-            var root3 = enqueueUpdate(current$1, update, lane);
-            if (root3 !== null) {
-              scheduleUpdateOnFiber(root3, current$1, lane, eventTime);
-              entangleTransitions(root3, current$1, lane);
+            var root2 = enqueueUpdate(current$1, update, lane);
+            if (root2 !== null) {
+              scheduleUpdateOnFiber(root2, current$1, lane, eventTime);
+              entangleTransitions(root2, current$1, lane);
             }
             return lane;
           }
@@ -22695,19 +22695,19 @@
           function attemptSynchronousHydration$1(fiber) {
             switch (fiber.tag) {
               case HostRoot: {
-                var root3 = fiber.stateNode;
-                if (isRootDehydrated(root3)) {
-                  var lanes = getHighestPriorityPendingLanes(root3);
-                  flushRoot(root3, lanes);
+                var root2 = fiber.stateNode;
+                if (isRootDehydrated(root2)) {
+                  var lanes = getHighestPriorityPendingLanes(root2);
+                  flushRoot(root2, lanes);
                 }
                 break;
               }
               case SuspenseComponent: {
                 flushSync(function() {
-                  var root4 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-                  if (root4 !== null) {
+                  var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+                  if (root3 !== null) {
                     var eventTime = requestEventTime();
-                    scheduleUpdateOnFiber(root4, fiber, SyncLane, eventTime);
+                    scheduleUpdateOnFiber(root3, fiber, SyncLane, eventTime);
                   }
                 });
                 var retryLane = SyncLane;
@@ -22734,10 +22734,10 @@
               return;
             }
             var lane = SelectiveHydrationLane;
-            var root3 = enqueueConcurrentRenderForLane(fiber, lane);
-            if (root3 !== null) {
+            var root2 = enqueueConcurrentRenderForLane(fiber, lane);
+            if (root2 !== null) {
               var eventTime = requestEventTime();
-              scheduleUpdateOnFiber(root3, fiber, lane, eventTime);
+              scheduleUpdateOnFiber(root2, fiber, lane, eventTime);
             }
             markRetryLaneIfNotHydrated(fiber, lane);
           }
@@ -22746,10 +22746,10 @@
               return;
             }
             var lane = requestUpdateLane(fiber);
-            var root3 = enqueueConcurrentRenderForLane(fiber, lane);
-            if (root3 !== null) {
+            var root2 = enqueueConcurrentRenderForLane(fiber, lane);
+            if (root2 !== null) {
               var eventTime = requestEventTime();
-              scheduleUpdateOnFiber(root3, fiber, lane, eventTime);
+              scheduleUpdateOnFiber(root2, fiber, lane, eventTime);
             }
             markRetryLaneIfNotHydrated(fiber, lane);
           }
@@ -22847,50 +22847,50 @@
             var copyWithSet = function(obj, path, value) {
               return copyWithSetImpl(obj, path, 0, value);
             };
-            var findHook = function(fiber, id) {
+            var findHook = function(fiber, id2) {
               var currentHook2 = fiber.memoizedState;
-              while (currentHook2 !== null && id > 0) {
+              while (currentHook2 !== null && id2 > 0) {
                 currentHook2 = currentHook2.next;
-                id--;
+                id2--;
               }
               return currentHook2;
             };
-            overrideHookState = function(fiber, id, path, value) {
-              var hook = findHook(fiber, id);
+            overrideHookState = function(fiber, id2, path, value) {
+              var hook = findHook(fiber, id2);
               if (hook !== null) {
                 var newState = copyWithSet(hook.memoizedState, path, value);
                 hook.memoizedState = newState;
                 hook.baseState = newState;
                 fiber.memoizedProps = assign({}, fiber.memoizedProps);
-                var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-                if (root3 !== null) {
-                  scheduleUpdateOnFiber(root3, fiber, SyncLane, NoTimestamp);
+                var root2 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+                if (root2 !== null) {
+                  scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
                 }
               }
             };
-            overrideHookStateDeletePath = function(fiber, id, path) {
-              var hook = findHook(fiber, id);
+            overrideHookStateDeletePath = function(fiber, id2, path) {
+              var hook = findHook(fiber, id2);
               if (hook !== null) {
                 var newState = copyWithDelete(hook.memoizedState, path);
                 hook.memoizedState = newState;
                 hook.baseState = newState;
                 fiber.memoizedProps = assign({}, fiber.memoizedProps);
-                var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-                if (root3 !== null) {
-                  scheduleUpdateOnFiber(root3, fiber, SyncLane, NoTimestamp);
+                var root2 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+                if (root2 !== null) {
+                  scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
                 }
               }
             };
-            overrideHookStateRenamePath = function(fiber, id, oldPath, newPath) {
-              var hook = findHook(fiber, id);
+            overrideHookStateRenamePath = function(fiber, id2, oldPath, newPath) {
+              var hook = findHook(fiber, id2);
               if (hook !== null) {
                 var newState = copyWithRename(hook.memoizedState, oldPath, newPath);
                 hook.memoizedState = newState;
                 hook.baseState = newState;
                 fiber.memoizedProps = assign({}, fiber.memoizedProps);
-                var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-                if (root3 !== null) {
-                  scheduleUpdateOnFiber(root3, fiber, SyncLane, NoTimestamp);
+                var root2 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+                if (root2 !== null) {
+                  scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
                 }
               }
             };
@@ -22899,9 +22899,9 @@
               if (fiber.alternate) {
                 fiber.alternate.pendingProps = fiber.pendingProps;
               }
-              var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-              if (root3 !== null) {
-                scheduleUpdateOnFiber(root3, fiber, SyncLane, NoTimestamp);
+              var root2 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+              if (root2 !== null) {
+                scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
               }
             };
             overridePropsDeletePath = function(fiber, path) {
@@ -22909,9 +22909,9 @@
               if (fiber.alternate) {
                 fiber.alternate.pendingProps = fiber.pendingProps;
               }
-              var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-              if (root3 !== null) {
-                scheduleUpdateOnFiber(root3, fiber, SyncLane, NoTimestamp);
+              var root2 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+              if (root2 !== null) {
+                scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
               }
             };
             overridePropsRenamePath = function(fiber, oldPath, newPath) {
@@ -22919,15 +22919,15 @@
               if (fiber.alternate) {
                 fiber.alternate.pendingProps = fiber.pendingProps;
               }
-              var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-              if (root3 !== null) {
-                scheduleUpdateOnFiber(root3, fiber, SyncLane, NoTimestamp);
+              var root2 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+              if (root2 !== null) {
+                scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
               }
             };
             scheduleUpdate = function(fiber) {
-              var root3 = enqueueConcurrentRenderForLane(fiber, SyncLane);
-              if (root3 !== null) {
-                scheduleUpdateOnFiber(root3, fiber, SyncLane, NoTimestamp);
+              var root2 = enqueueConcurrentRenderForLane(fiber, SyncLane);
+              if (root2 !== null) {
+                scheduleUpdateOnFiber(root2, fiber, SyncLane, NoTimestamp);
               }
             };
             setErrorHandler = function(newShouldErrorImpl) {
@@ -22993,8 +22993,8 @@
             this._internalRoot = internalRoot;
           }
           ReactDOMHydrationRoot.prototype.render = ReactDOMRoot.prototype.render = function(children) {
-            var root3 = this._internalRoot;
-            if (root3 === null) {
+            var root2 = this._internalRoot;
+            if (root2 === null) {
               throw new Error("Cannot update an unmounted root.");
             }
             {
@@ -23005,9 +23005,9 @@
               } else if (typeof arguments[1] !== "undefined") {
                 error("You passed a second argument to root.render(...) but it only accepts one argument.");
               }
-              var container2 = root3.containerInfo;
+              var container2 = root2.containerInfo;
               if (container2.nodeType !== COMMENT_NODE) {
-                var hostInstance = findHostInstanceWithNoPortals(root3.current);
+                var hostInstance = findHostInstanceWithNoPortals(root2.current);
                 if (hostInstance) {
                   if (hostInstance.parentNode !== container2) {
                     error("render(...): It looks like the React-rendered content of the root container was removed without using React. This is not supported and will cause errors. Instead, call root.unmount() to empty a root's container.");
@@ -23015,7 +23015,7 @@
                 }
               }
             }
-            updateContainer(children, root3, null, null);
+            updateContainer(children, root2, null, null);
           };
           ReactDOMHydrationRoot.prototype.unmount = ReactDOMRoot.prototype.unmount = function() {
             {
@@ -23023,17 +23023,17 @@
                 error("unmount(...): does not support a callback argument. To execute a side effect after rendering, declare it in a component body with useEffect().");
               }
             }
-            var root3 = this._internalRoot;
-            if (root3 !== null) {
+            var root2 = this._internalRoot;
+            if (root2 !== null) {
               this._internalRoot = null;
-              var container2 = root3.containerInfo;
+              var container2 = root2.containerInfo;
               {
                 if (isAlreadyRendering()) {
                   error("Attempted to synchronously unmount a root while React was already rendering. React cannot finish unmounting the root until the current render has completed, which may lead to a race condition.");
                 }
               }
               flushSync(function() {
-                updateContainer(null, root3, null, null);
+                updateContainer(null, root2, null, null);
               });
               unmarkContainerAsRoot(container2);
             }
@@ -23071,11 +23071,11 @@
                 transitionCallbacks = options2.transitionCallbacks;
               }
             }
-            var root3 = createContainer(container2, ConcurrentRoot, null, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError);
-            markContainerAsRoot(root3.current, container2);
+            var root2 = createContainer(container2, ConcurrentRoot, null, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError);
+            markContainerAsRoot(root2.current, container2);
             var rootContainerElement = container2.nodeType === COMMENT_NODE ? container2.parentNode : container2;
             listenToAllSupportedEvents(rootContainerElement);
-            return new ReactDOMRoot(root3);
+            return new ReactDOMRoot(root2);
           }
           function ReactDOMHydrationRoot(internalRoot) {
             this._internalRoot = internalRoot;
@@ -23113,16 +23113,16 @@
                 onRecoverableError = options2.onRecoverableError;
               }
             }
-            var root3 = createHydrationContainer(initialChildren, null, container2, ConcurrentRoot, hydrationCallbacks, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError);
-            markContainerAsRoot(root3.current, container2);
+            var root2 = createHydrationContainer(initialChildren, null, container2, ConcurrentRoot, hydrationCallbacks, isStrictMode, concurrentUpdatesByDefaultOverride, identifierPrefix, onRecoverableError);
+            markContainerAsRoot(root2.current, container2);
             listenToAllSupportedEvents(container2);
             if (mutableSources) {
               for (var i = 0; i < mutableSources.length; i++) {
                 var mutableSource = mutableSources[i];
-                registerMutableSourceForHydration(root3, mutableSource);
+                registerMutableSourceForHydration(root2, mutableSource);
               }
             }
-            return new ReactDOMHydrationRoot(root3);
+            return new ReactDOMHydrationRoot(root2);
           }
           function isValidContainer(node) {
             return !!(node && (node.nodeType === ELEMENT_NODE || node.nodeType === DOCUMENT_NODE || node.nodeType === DOCUMENT_FRAGMENT_NODE || !disableCommentsAsDOMContainers));
@@ -23184,11 +23184,11 @@
               if (typeof callback === "function") {
                 var originalCallback = callback;
                 callback = function() {
-                  var instance = getPublicRootInstance(root3);
+                  var instance = getPublicRootInstance(root2);
                   originalCallback.call(instance);
                 };
               }
-              var root3 = createHydrationContainer(
+              var root2 = createHydrationContainer(
                 initialChildren,
                 callback,
                 container2,
@@ -23203,12 +23203,12 @@
                 // identifierPrefix
                 noopOnRecoverableError
               );
-              container2._reactRootContainer = root3;
-              markContainerAsRoot(root3.current, container2);
+              container2._reactRootContainer = root2;
+              markContainerAsRoot(root2.current, container2);
               var rootContainerElement = container2.nodeType === COMMENT_NODE ? container2.parentNode : container2;
               listenToAllSupportedEvents(rootContainerElement);
               flushSync();
-              return root3;
+              return root2;
             } else {
               var rootSibling;
               while (rootSibling = container2.lastChild) {
@@ -23257,21 +23257,21 @@
               warnOnInvalidCallback$1(callback === void 0 ? null : callback, "render");
             }
             var maybeRoot = container2._reactRootContainer;
-            var root3;
+            var root2;
             if (!maybeRoot) {
-              root3 = legacyCreateRootFromDOMContainer(container2, children, parentComponent, callback, forceHydrate);
+              root2 = legacyCreateRootFromDOMContainer(container2, children, parentComponent, callback, forceHydrate);
             } else {
-              root3 = maybeRoot;
+              root2 = maybeRoot;
               if (typeof callback === "function") {
                 var originalCallback = callback;
                 callback = function() {
-                  var instance = getPublicRootInstance(root3);
+                  var instance = getPublicRootInstance(root2);
                   originalCallback.call(instance);
                 };
               }
-              updateContainer(children, root3, parentComponent, callback);
+              updateContainer(children, root2, parentComponent, callback);
             }
-            return getPublicRootInstance(root3);
+            return getPublicRootInstance(root2);
           }
           function findDOMNode(componentOrElement) {
             {
@@ -24284,609 +24284,2970 @@
     }
   });
 
-  // react/demo/ValidationApp.js
+  // react/demo/ValidationApp.tsx
   var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
-  // react/build/IntlTelInput.esm.js
+  // react/src/IntlTelInput.tsx
   var import_react = __toESM(require_react());
   var import_prop_types = __toESM(require_prop_types());
-  var G = Object.create;
-  var B = Object.defineProperty;
-  var V = Object.getOwnPropertyDescriptor;
-  var j = Object.getOwnPropertyNames;
-  var z = Object.getPrototypeOf;
-  var K = Object.prototype.hasOwnProperty;
-  var H = (u, h) => () => (h || u((h = { exports: {} }).exports, h), h.exports);
-  var W = (u, h, C, w) => {
-    if (h && typeof h == "object" || typeof h == "function")
-      for (let g of j(h))
-        !K.call(u, g) && g !== C && B(u, g, { get: () => h[g], enumerable: !(w = V(h, g)) || w.enumerable });
-    return u;
+
+  // src/js/data.ts
+  var rawCountryData = [
+    [
+      "Afghanistan",
+      "af",
+      "93"
+    ],
+    [
+      "Albania",
+      "al",
+      "355"
+    ],
+    [
+      "Algeria",
+      "dz",
+      "213"
+    ],
+    [
+      "American Samoa",
+      "as",
+      "1",
+      5,
+      ["684"]
+    ],
+    [
+      "Andorra",
+      "ad",
+      "376"
+    ],
+    [
+      "Angola",
+      "ao",
+      "244"
+    ],
+    [
+      "Anguilla",
+      "ai",
+      "1",
+      6,
+      ["264"]
+    ],
+    [
+      "Antigua & Barbuda",
+      "ag",
+      "1",
+      7,
+      ["268"]
+    ],
+    [
+      "Argentina",
+      "ar",
+      "54"
+    ],
+    [
+      "Armenia",
+      "am",
+      "374"
+    ],
+    [
+      "Aruba",
+      "aw",
+      "297"
+    ],
+    [
+      "Ascension Island",
+      "ac",
+      "247"
+    ],
+    [
+      "Australia",
+      "au",
+      "61",
+      0
+    ],
+    [
+      "Austria",
+      "at",
+      "43"
+    ],
+    [
+      "Azerbaijan",
+      "az",
+      "994"
+    ],
+    [
+      "Bahamas",
+      "bs",
+      "1",
+      8,
+      ["242"]
+    ],
+    [
+      "Bahrain",
+      "bh",
+      "973"
+    ],
+    [
+      "Bangladesh",
+      "bd",
+      "880"
+    ],
+    [
+      "Barbados",
+      "bb",
+      "1",
+      9,
+      ["246"]
+    ],
+    [
+      "Belarus",
+      "by",
+      "375"
+    ],
+    [
+      "Belgium",
+      "be",
+      "32"
+    ],
+    [
+      "Belize",
+      "bz",
+      "501"
+    ],
+    [
+      "Benin",
+      "bj",
+      "229"
+    ],
+    [
+      "Bermuda",
+      "bm",
+      "1",
+      10,
+      ["441"]
+    ],
+    [
+      "Bhutan",
+      "bt",
+      "975"
+    ],
+    [
+      "Bolivia",
+      "bo",
+      "591"
+    ],
+    [
+      "Bosnia & Herzegovina",
+      "ba",
+      "387"
+    ],
+    [
+      "Botswana",
+      "bw",
+      "267"
+    ],
+    [
+      "Brazil",
+      "br",
+      "55"
+    ],
+    [
+      "British Indian Ocean Territory",
+      "io",
+      "246"
+    ],
+    [
+      "British Virgin Islands",
+      "vg",
+      "1",
+      11,
+      ["284"]
+    ],
+    [
+      "Brunei",
+      "bn",
+      "673"
+    ],
+    [
+      "Bulgaria",
+      "bg",
+      "359"
+    ],
+    [
+      "Burkina Faso",
+      "bf",
+      "226"
+    ],
+    [
+      "Burundi",
+      "bi",
+      "257"
+    ],
+    [
+      "Cambodia",
+      "kh",
+      "855"
+    ],
+    [
+      "Cameroon",
+      "cm",
+      "237"
+    ],
+    [
+      "Canada",
+      "ca",
+      "1",
+      1,
+      ["204", "226", "236", "249", "250", "263", "289", "306", "343", "354", "365", "367", "368", "382", "387", "403", "416", "418", "428", "431", "437", "438", "450", "584", "468", "474", "506", "514", "519", "548", "579", "581", "584", "587", "604", "613", "639", "647", "672", "683", "705", "709", "742", "753", "778", "780", "782", "807", "819", "825", "867", "873", "902", "905"]
+    ],
+    [
+      "Cape Verde",
+      "cv",
+      "238"
+    ],
+    [
+      "Caribbean Netherlands",
+      "bq",
+      "599",
+      1,
+      ["3", "4", "7"]
+    ],
+    [
+      "Cayman Islands",
+      "ky",
+      "1",
+      12,
+      ["345"]
+    ],
+    [
+      "Central African Republic",
+      "cf",
+      "236"
+    ],
+    [
+      "Chad",
+      "td",
+      "235"
+    ],
+    [
+      "Chile",
+      "cl",
+      "56"
+    ],
+    [
+      "China",
+      "cn",
+      "86"
+    ],
+    [
+      "Christmas Island",
+      "cx",
+      "61",
+      2,
+      ["89164"]
+    ],
+    [
+      "Cocos (Keeling) Islands",
+      "cc",
+      "61",
+      1,
+      ["89162"]
+    ],
+    [
+      "Colombia",
+      "co",
+      "57"
+    ],
+    [
+      "Comoros",
+      "km",
+      "269"
+    ],
+    [
+      "Congo - Brazzaville",
+      "cg",
+      "242"
+    ],
+    [
+      "Congo - Kinshasa",
+      "cd",
+      "243"
+    ],
+    [
+      "Cook Islands",
+      "ck",
+      "682"
+    ],
+    [
+      "Costa Rica",
+      "cr",
+      "506"
+    ],
+    [
+      "C\xF4te d\u2019Ivoire",
+      "ci",
+      "225"
+    ],
+    [
+      "Croatia",
+      "hr",
+      "385"
+    ],
+    [
+      "Cuba",
+      "cu",
+      "53"
+    ],
+    [
+      "Cura\xE7ao",
+      "cw",
+      "599",
+      0
+    ],
+    [
+      "Cyprus",
+      "cy",
+      "357"
+    ],
+    [
+      "Czech Republic",
+      "cz",
+      "420"
+    ],
+    [
+      "Denmark",
+      "dk",
+      "45"
+    ],
+    [
+      "Djibouti",
+      "dj",
+      "253"
+    ],
+    [
+      "Dominica",
+      "dm",
+      "1",
+      13,
+      ["767"]
+    ],
+    [
+      "Dominican Republic",
+      "do",
+      "1",
+      2,
+      ["809", "829", "849"]
+    ],
+    [
+      "Ecuador",
+      "ec",
+      "593"
+    ],
+    [
+      "Egypt",
+      "eg",
+      "20"
+    ],
+    [
+      "El Salvador",
+      "sv",
+      "503"
+    ],
+    [
+      "Equatorial Guinea",
+      "gq",
+      "240"
+    ],
+    [
+      "Eritrea",
+      "er",
+      "291"
+    ],
+    [
+      "Estonia",
+      "ee",
+      "372"
+    ],
+    [
+      "Eswatini",
+      "sz",
+      "268"
+    ],
+    [
+      "Ethiopia",
+      "et",
+      "251"
+    ],
+    [
+      "Falkland Islands",
+      "fk",
+      "500"
+    ],
+    [
+      "Faroe Islands",
+      "fo",
+      "298"
+    ],
+    [
+      "Fiji",
+      "fj",
+      "679"
+    ],
+    [
+      "Finland",
+      "fi",
+      "358",
+      0
+    ],
+    [
+      "France",
+      "fr",
+      "33"
+    ],
+    [
+      "French Guiana",
+      "gf",
+      "594"
+    ],
+    [
+      "French Polynesia",
+      "pf",
+      "689"
+    ],
+    [
+      "Gabon",
+      "ga",
+      "241"
+    ],
+    [
+      "Gambia",
+      "gm",
+      "220"
+    ],
+    [
+      "Georgia",
+      "ge",
+      "995"
+    ],
+    [
+      "Germany",
+      "de",
+      "49"
+    ],
+    [
+      "Ghana",
+      "gh",
+      "233"
+    ],
+    [
+      "Gibraltar",
+      "gi",
+      "350"
+    ],
+    [
+      "Greece",
+      "gr",
+      "30"
+    ],
+    [
+      "Greenland",
+      "gl",
+      "299"
+    ],
+    [
+      "Grenada",
+      "gd",
+      "1",
+      14,
+      ["473"]
+    ],
+    [
+      "Guadeloupe",
+      "gp",
+      "590",
+      0
+    ],
+    [
+      "Guam",
+      "gu",
+      "1",
+      15,
+      ["671"]
+    ],
+    [
+      "Guatemala",
+      "gt",
+      "502"
+    ],
+    [
+      "Guernsey",
+      "gg",
+      "44",
+      1,
+      ["1481", "7781", "7839", "7911"]
+    ],
+    [
+      "Guinea",
+      "gn",
+      "224"
+    ],
+    [
+      "Guinea-Bissau",
+      "gw",
+      "245"
+    ],
+    [
+      "Guyana",
+      "gy",
+      "592"
+    ],
+    [
+      "Haiti",
+      "ht",
+      "509"
+    ],
+    [
+      "Honduras",
+      "hn",
+      "504"
+    ],
+    [
+      "Hong Kong",
+      "hk",
+      "852"
+    ],
+    [
+      "Hungary",
+      "hu",
+      "36"
+    ],
+    [
+      "Iceland",
+      "is",
+      "354"
+    ],
+    [
+      "India",
+      "in",
+      "91"
+    ],
+    [
+      "Indonesia",
+      "id",
+      "62"
+    ],
+    [
+      "Iran",
+      "ir",
+      "98"
+    ],
+    [
+      "Iraq",
+      "iq",
+      "964"
+    ],
+    [
+      "Ireland",
+      "ie",
+      "353"
+    ],
+    [
+      "Isle of Man",
+      "im",
+      "44",
+      2,
+      ["1624", "74576", "7524", "7924", "7624"]
+    ],
+    [
+      "Israel",
+      "il",
+      "972"
+    ],
+    [
+      "Italy",
+      "it",
+      "39",
+      0
+    ],
+    [
+      "Jamaica",
+      "jm",
+      "1",
+      4,
+      ["876", "658"]
+    ],
+    [
+      "Japan",
+      "jp",
+      "81"
+    ],
+    [
+      "Jersey",
+      "je",
+      "44",
+      3,
+      ["1534", "7509", "7700", "7797", "7829", "7937"]
+    ],
+    [
+      "Jordan",
+      "jo",
+      "962"
+    ],
+    [
+      "Kazakhstan",
+      "kz",
+      "7",
+      1,
+      ["33", "7"]
+    ],
+    [
+      "Kenya",
+      "ke",
+      "254"
+    ],
+    [
+      "Kiribati",
+      "ki",
+      "686"
+    ],
+    [
+      "Kosovo",
+      "xk",
+      "383"
+    ],
+    [
+      "Kuwait",
+      "kw",
+      "965"
+    ],
+    [
+      "Kyrgyzstan",
+      "kg",
+      "996"
+    ],
+    [
+      "Laos",
+      "la",
+      "856"
+    ],
+    [
+      "Latvia",
+      "lv",
+      "371"
+    ],
+    [
+      "Lebanon",
+      "lb",
+      "961"
+    ],
+    [
+      "Lesotho",
+      "ls",
+      "266"
+    ],
+    [
+      "Liberia",
+      "lr",
+      "231"
+    ],
+    [
+      "Libya",
+      "ly",
+      "218"
+    ],
+    [
+      "Liechtenstein",
+      "li",
+      "423"
+    ],
+    [
+      "Lithuania",
+      "lt",
+      "370"
+    ],
+    [
+      "Luxembourg",
+      "lu",
+      "352"
+    ],
+    [
+      "Macau",
+      "mo",
+      "853"
+    ],
+    [
+      "Madagascar",
+      "mg",
+      "261"
+    ],
+    [
+      "Malawi",
+      "mw",
+      "265"
+    ],
+    [
+      "Malaysia",
+      "my",
+      "60"
+    ],
+    [
+      "Maldives",
+      "mv",
+      "960"
+    ],
+    [
+      "Mali",
+      "ml",
+      "223"
+    ],
+    [
+      "Malta",
+      "mt",
+      "356"
+    ],
+    [
+      "Marshall Islands",
+      "mh",
+      "692"
+    ],
+    [
+      "Martinique",
+      "mq",
+      "596"
+    ],
+    [
+      "Mauritania",
+      "mr",
+      "222"
+    ],
+    [
+      "Mauritius",
+      "mu",
+      "230"
+    ],
+    [
+      "Mayotte",
+      "yt",
+      "262",
+      1,
+      ["269", "639"]
+    ],
+    [
+      "Mexico",
+      "mx",
+      "52"
+    ],
+    [
+      "Micronesia",
+      "fm",
+      "691"
+    ],
+    [
+      "Moldova",
+      "md",
+      "373"
+    ],
+    [
+      "Monaco",
+      "mc",
+      "377"
+    ],
+    [
+      "Mongolia",
+      "mn",
+      "976"
+    ],
+    [
+      "Montenegro",
+      "me",
+      "382"
+    ],
+    [
+      "Montserrat",
+      "ms",
+      "1",
+      16,
+      ["664"]
+    ],
+    [
+      "Morocco",
+      "ma",
+      "212",
+      0
+    ],
+    [
+      "Mozambique",
+      "mz",
+      "258"
+    ],
+    [
+      "Myanmar (Burma)",
+      "mm",
+      "95"
+    ],
+    [
+      "Namibia",
+      "na",
+      "264"
+    ],
+    [
+      "Nauru",
+      "nr",
+      "674"
+    ],
+    [
+      "Nepal",
+      "np",
+      "977"
+    ],
+    [
+      "Netherlands",
+      "nl",
+      "31"
+    ],
+    [
+      "New Caledonia",
+      "nc",
+      "687"
+    ],
+    [
+      "New Zealand",
+      "nz",
+      "64"
+    ],
+    [
+      "Nicaragua",
+      "ni",
+      "505"
+    ],
+    [
+      "Niger",
+      "ne",
+      "227"
+    ],
+    [
+      "Nigeria",
+      "ng",
+      "234"
+    ],
+    [
+      "Niue",
+      "nu",
+      "683"
+    ],
+    [
+      "Norfolk Island",
+      "nf",
+      "672"
+    ],
+    [
+      "North Korea",
+      "kp",
+      "850"
+    ],
+    [
+      "North Macedonia",
+      "mk",
+      "389"
+    ],
+    [
+      "Northern Mariana Islands",
+      "mp",
+      "1",
+      17,
+      ["670"]
+    ],
+    [
+      "Norway",
+      "no",
+      "47",
+      0
+    ],
+    [
+      "Oman",
+      "om",
+      "968"
+    ],
+    [
+      "Pakistan",
+      "pk",
+      "92"
+    ],
+    [
+      "Palau",
+      "pw",
+      "680"
+    ],
+    [
+      "Palestine",
+      "ps",
+      "970"
+    ],
+    [
+      "Panama",
+      "pa",
+      "507"
+    ],
+    [
+      "Papua New Guinea",
+      "pg",
+      "675"
+    ],
+    [
+      "Paraguay",
+      "py",
+      "595"
+    ],
+    [
+      "Peru",
+      "pe",
+      "51"
+    ],
+    [
+      "Philippines",
+      "ph",
+      "63"
+    ],
+    [
+      "Poland",
+      "pl",
+      "48"
+    ],
+    [
+      "Portugal",
+      "pt",
+      "351"
+    ],
+    [
+      "Puerto Rico",
+      "pr",
+      "1",
+      3,
+      ["787", "939"]
+    ],
+    [
+      "Qatar",
+      "qa",
+      "974"
+    ],
+    [
+      "R\xE9union",
+      "re",
+      "262",
+      0
+    ],
+    [
+      "Romania",
+      "ro",
+      "40"
+    ],
+    [
+      "Russia",
+      "ru",
+      "7",
+      0
+    ],
+    [
+      "Rwanda",
+      "rw",
+      "250"
+    ],
+    [
+      "Samoa",
+      "ws",
+      "685"
+    ],
+    [
+      "San Marino",
+      "sm",
+      "378"
+    ],
+    [
+      "S\xE3o Tom\xE9 & Pr\xEDncipe",
+      "st",
+      "239"
+    ],
+    [
+      "Saudi Arabia",
+      "sa",
+      "966"
+    ],
+    [
+      "Senegal",
+      "sn",
+      "221"
+    ],
+    [
+      "Serbia",
+      "rs",
+      "381"
+    ],
+    [
+      "Seychelles",
+      "sc",
+      "248"
+    ],
+    [
+      "Sierra Leone",
+      "sl",
+      "232"
+    ],
+    [
+      "Singapore",
+      "sg",
+      "65"
+    ],
+    [
+      "Sint Maarten",
+      "sx",
+      "1",
+      21,
+      ["721"]
+    ],
+    [
+      "Slovakia",
+      "sk",
+      "421"
+    ],
+    [
+      "Slovenia",
+      "si",
+      "386"
+    ],
+    [
+      "Solomon Islands",
+      "sb",
+      "677"
+    ],
+    [
+      "Somalia",
+      "so",
+      "252"
+    ],
+    [
+      "South Africa",
+      "za",
+      "27"
+    ],
+    [
+      "South Korea",
+      "kr",
+      "82"
+    ],
+    [
+      "South Sudan",
+      "ss",
+      "211"
+    ],
+    [
+      "Spain",
+      "es",
+      "34"
+    ],
+    [
+      "Sri Lanka",
+      "lk",
+      "94"
+    ],
+    [
+      "St Barth\xE9lemy",
+      "bl",
+      "590",
+      1
+    ],
+    [
+      "St Helena",
+      "sh",
+      "290"
+    ],
+    [
+      "St Kitts & Nevis",
+      "kn",
+      "1",
+      18,
+      ["869"]
+    ],
+    [
+      "St Lucia",
+      "lc",
+      "1",
+      19,
+      ["758"]
+    ],
+    [
+      "St Martin",
+      "mf",
+      "590",
+      2
+    ],
+    [
+      "St Pierre & Miquelon",
+      "pm",
+      "508"
+    ],
+    [
+      "St Vincent & Grenadines",
+      "vc",
+      "1",
+      20,
+      ["784"]
+    ],
+    [
+      "Sudan",
+      "sd",
+      "249"
+    ],
+    [
+      "Suriname",
+      "sr",
+      "597"
+    ],
+    [
+      "Svalbard & Jan Mayen",
+      "sj",
+      "47",
+      1,
+      ["79"]
+    ],
+    [
+      "Sweden",
+      "se",
+      "46"
+    ],
+    [
+      "Switzerland",
+      "ch",
+      "41"
+    ],
+    [
+      "Syria",
+      "sy",
+      "963"
+    ],
+    [
+      "Taiwan",
+      "tw",
+      "886"
+    ],
+    [
+      "Tajikistan",
+      "tj",
+      "992"
+    ],
+    [
+      "Tanzania",
+      "tz",
+      "255"
+    ],
+    [
+      "Thailand",
+      "th",
+      "66"
+    ],
+    [
+      "Timor-Leste",
+      "tl",
+      "670"
+    ],
+    [
+      "Togo",
+      "tg",
+      "228"
+    ],
+    [
+      "Tokelau",
+      "tk",
+      "690"
+    ],
+    [
+      "Tonga",
+      "to",
+      "676"
+    ],
+    [
+      "Trinidad & Tobago",
+      "tt",
+      "1",
+      22,
+      ["868"]
+    ],
+    [
+      "Tunisia",
+      "tn",
+      "216"
+    ],
+    [
+      "Turkey",
+      "tr",
+      "90"
+    ],
+    [
+      "Turkmenistan",
+      "tm",
+      "993"
+    ],
+    [
+      "Turks & Caicos Islands",
+      "tc",
+      "1",
+      23,
+      ["649"]
+    ],
+    [
+      "Tuvalu",
+      "tv",
+      "688"
+    ],
+    [
+      "Uganda",
+      "ug",
+      "256"
+    ],
+    [
+      "Ukraine",
+      "ua",
+      "380"
+    ],
+    [
+      "United Arab Emirates",
+      "ae",
+      "971"
+    ],
+    [
+      "United Kingdom",
+      "gb",
+      "44",
+      0
+    ],
+    [
+      "United States",
+      "us",
+      "1",
+      0
+    ],
+    [
+      "Uruguay",
+      "uy",
+      "598"
+    ],
+    [
+      "US Virgin Islands",
+      "vi",
+      "1",
+      24,
+      ["340"]
+    ],
+    [
+      "Uzbekistan",
+      "uz",
+      "998"
+    ],
+    [
+      "Vanuatu",
+      "vu",
+      "678"
+    ],
+    [
+      "Vatican City",
+      "va",
+      "39",
+      1,
+      ["06698"]
+    ],
+    [
+      "Venezuela",
+      "ve",
+      "58"
+    ],
+    [
+      "Vietnam",
+      "vn",
+      "84"
+    ],
+    [
+      "Wallis & Futuna",
+      "wf",
+      "681"
+    ],
+    [
+      "Western Sahara",
+      "eh",
+      "212",
+      1,
+      ["5288", "5289"]
+    ],
+    [
+      "Yemen",
+      "ye",
+      "967"
+    ],
+    [
+      "Zambia",
+      "zm",
+      "260"
+    ],
+    [
+      "Zimbabwe",
+      "zw",
+      "263"
+    ],
+    [
+      "\xC5land Islands",
+      "ax",
+      "358",
+      1,
+      ["18"]
+    ]
+  ];
+  var allCountries = [];
+  for (let i = 0; i < rawCountryData.length; i++) {
+    const c = rawCountryData[i];
+    allCountries[i] = {
+      name: c[0],
+      iso2: c[1],
+      dialCode: c[2],
+      priority: c[3] || 0,
+      areaCodes: c[4] || null,
+      nodeById: {}
+    };
+  }
+  var data_default = allCountries;
+
+  // src/js/intlTelInput.ts
+  var id = 0;
+  var defaults = {
+    // whether or not to allow the dropdown
+    allowDropdown: true,
+    // add a placeholder in the input with an example number for the selected country
+    autoPlaceholder: "polite",
+    // add a country search input at the top of the dropdown
+    countrySearch: true,
+    // modify the parentClass
+    containerClass: "",
+    // modify the auto placeholder
+    customPlaceholder: null,
+    // append menu to specified element
+    dropdownContainer: null,
+    // don't display these countries
+    excludeCountries: [],
+    // fix the dropdown width to the input width (rather than being as wide as the longest country name)
+    fixDropdownWidth: true,
+    // format the number as the user types
+    formatAsYouType: true,
+    // format the input value during initialisation and on setNumber
+    formatOnDisplay: true,
+    // geoIp lookup function
+    geoIpLookup: null,
+    // inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber
+    hiddenInput: null,
+    // internationalise the plugin text e.g. search input placeholder, country names
+    i18n: {},
+    // initial country
+    initialCountry: "",
+    // national vs international formatting for numbers e.g. placeholders and displaying existing numbers
+    nationalMode: true,
+    // display only these countries
+    onlyCountries: [],
+    // number type to use for placeholders
+    placeholderNumberType: "MOBILE",
+    // the countries at the top of the list
+    preferredCountries: [],
+    // option to hide the flags - must be used with showSelectedDialCode, or allowDropdown=false
+    showFlags: true,
+    // display the international dial code next to the selected flag
+    showSelectedDialCode: false,
+    // only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length
+    strictMode: false,
+    // use full screen popup instead of dropdown for country list
+    useFullscreenPopup: typeof navigator !== "undefined" && typeof window !== "undefined" ? (
+      // we cannot just test screen size as some smartphones/website meta tags will report desktop
+      // resolutions
+      // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
+      /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      ) || window.innerWidth <= 500
+    ) : false,
+    // specify the path to the libphonenumber script to enable validation/formatting
+    utilsScript: ""
   };
-  var q = (u, h, C) => (C = u != null ? G(z(u)) : {}, W(h || !u || !u.__esModule ? B(C, "default", { value: u, enumerable: true }) : C, u));
-  var O = H((Q, N) => {
-    (function(u) {
-      typeof N == "object" && N.exports ? N.exports = u() : window.intlTelInput = u();
-    })(() => {
-      var u = (() => {
-        var h = Object.defineProperty, C = Object.getOwnPropertyDescriptor, w = Object.getOwnPropertyNames, g = Object.prototype.hasOwnProperty, A = (e, t) => {
-          for (var i in t)
-            h(e, i, { get: t[i], enumerable: true });
-        }, E = (e, t, i, s) => {
-          if (t && typeof t == "object" || typeof t == "function")
-            for (let n of w(t))
-              !g.call(e, n) && n !== i && h(e, n, { get: () => t[n], enumerable: !(s = C(t, n)) || s.enumerable });
-          return e;
-        }, x = (e) => E(h({}, "__esModule", { value: true }), e), S = {};
-        A(S, { default: () => k });
-        var I = [["Afghanistan", "af", "93"], ["Albania", "al", "355"], ["Algeria", "dz", "213"], ["American Samoa", "as", "1", 5, ["684"]], ["Andorra", "ad", "376"], ["Angola", "ao", "244"], ["Anguilla", "ai", "1", 6, ["264"]], ["Antigua & Barbuda", "ag", "1", 7, ["268"]], ["Argentina", "ar", "54"], ["Armenia", "am", "374"], ["Aruba", "aw", "297"], ["Ascension Island", "ac", "247"], ["Australia", "au", "61", 0], ["Austria", "at", "43"], ["Azerbaijan", "az", "994"], ["Bahamas", "bs", "1", 8, ["242"]], ["Bahrain", "bh", "973"], ["Bangladesh", "bd", "880"], ["Barbados", "bb", "1", 9, ["246"]], ["Belarus", "by", "375"], ["Belgium", "be", "32"], ["Belize", "bz", "501"], ["Benin", "bj", "229"], ["Bermuda", "bm", "1", 10, ["441"]], ["Bhutan", "bt", "975"], ["Bolivia", "bo", "591"], ["Bosnia & Herzegovina", "ba", "387"], ["Botswana", "bw", "267"], ["Brazil", "br", "55"], ["British Indian Ocean Territory", "io", "246"], ["British Virgin Islands", "vg", "1", 11, ["284"]], ["Brunei", "bn", "673"], ["Bulgaria", "bg", "359"], ["Burkina Faso", "bf", "226"], ["Burundi", "bi", "257"], ["Cambodia", "kh", "855"], ["Cameroon", "cm", "237"], ["Canada", "ca", "1", 1, ["204", "226", "236", "249", "250", "263", "289", "306", "343", "354", "365", "367", "368", "382", "387", "403", "416", "418", "428", "431", "437", "438", "450", "584", "468", "474", "506", "514", "519", "548", "579", "581", "584", "587", "604", "613", "639", "647", "672", "683", "705", "709", "742", "753", "778", "780", "782", "807", "819", "825", "867", "873", "902", "905"]], ["Cape Verde", "cv", "238"], ["Caribbean Netherlands", "bq", "599", 1, ["3", "4", "7"]], ["Cayman Islands", "ky", "1", 12, ["345"]], ["Central African Republic", "cf", "236"], ["Chad", "td", "235"], ["Chile", "cl", "56"], ["China", "cn", "86"], ["Christmas Island", "cx", "61", 2, ["89164"]], ["Cocos (Keeling) Islands", "cc", "61", 1, ["89162"]], ["Colombia", "co", "57"], ["Comoros", "km", "269"], ["Congo - Brazzaville", "cg", "242"], ["Congo - Kinshasa", "cd", "243"], ["Cook Islands", "ck", "682"], ["Costa Rica", "cr", "506"], ["C\xF4te d\u2019Ivoire", "ci", "225"], ["Croatia", "hr", "385"], ["Cuba", "cu", "53"], ["Cura\xE7ao", "cw", "599", 0], ["Cyprus", "cy", "357"], ["Czech Republic", "cz", "420"], ["Denmark", "dk", "45"], ["Djibouti", "dj", "253"], ["Dominica", "dm", "1", 13, ["767"]], ["Dominican Republic", "do", "1", 2, ["809", "829", "849"]], ["Ecuador", "ec", "593"], ["Egypt", "eg", "20"], ["El Salvador", "sv", "503"], ["Equatorial Guinea", "gq", "240"], ["Eritrea", "er", "291"], ["Estonia", "ee", "372"], ["Eswatini", "sz", "268"], ["Ethiopia", "et", "251"], ["Falkland Islands", "fk", "500"], ["Faroe Islands", "fo", "298"], ["Fiji", "fj", "679"], ["Finland", "fi", "358", 0], ["France", "fr", "33"], ["French Guiana", "gf", "594"], ["French Polynesia", "pf", "689"], ["Gabon", "ga", "241"], ["Gambia", "gm", "220"], ["Georgia", "ge", "995"], ["Germany", "de", "49"], ["Ghana", "gh", "233"], ["Gibraltar", "gi", "350"], ["Greece", "gr", "30"], ["Greenland", "gl", "299"], ["Grenada", "gd", "1", 14, ["473"]], ["Guadeloupe", "gp", "590", 0], ["Guam", "gu", "1", 15, ["671"]], ["Guatemala", "gt", "502"], ["Guernsey", "gg", "44", 1, ["1481", "7781", "7839", "7911"]], ["Guinea", "gn", "224"], ["Guinea-Bissau", "gw", "245"], ["Guyana", "gy", "592"], ["Haiti", "ht", "509"], ["Honduras", "hn", "504"], ["Hong Kong", "hk", "852"], ["Hungary", "hu", "36"], ["Iceland", "is", "354"], ["India", "in", "91"], ["Indonesia", "id", "62"], ["Iran", "ir", "98"], ["Iraq", "iq", "964"], ["Ireland", "ie", "353"], ["Isle of Man", "im", "44", 2, ["1624", "74576", "7524", "7924", "7624"]], ["Israel", "il", "972"], ["Italy", "it", "39", 0], ["Jamaica", "jm", "1", 4, ["876", "658"]], ["Japan", "jp", "81"], ["Jersey", "je", "44", 3, ["1534", "7509", "7700", "7797", "7829", "7937"]], ["Jordan", "jo", "962"], ["Kazakhstan", "kz", "7", 1, ["33", "7"]], ["Kenya", "ke", "254"], ["Kiribati", "ki", "686"], ["Kosovo", "xk", "383"], ["Kuwait", "kw", "965"], ["Kyrgyzstan", "kg", "996"], ["Laos", "la", "856"], ["Latvia", "lv", "371"], ["Lebanon", "lb", "961"], ["Lesotho", "ls", "266"], ["Liberia", "lr", "231"], ["Libya", "ly", "218"], ["Liechtenstein", "li", "423"], ["Lithuania", "lt", "370"], ["Luxembourg", "lu", "352"], ["Macau", "mo", "853"], ["Madagascar", "mg", "261"], ["Malawi", "mw", "265"], ["Malaysia", "my", "60"], ["Maldives", "mv", "960"], ["Mali", "ml", "223"], ["Malta", "mt", "356"], ["Marshall Islands", "mh", "692"], ["Martinique", "mq", "596"], ["Mauritania", "mr", "222"], ["Mauritius", "mu", "230"], ["Mayotte", "yt", "262", 1, ["269", "639"]], ["Mexico", "mx", "52"], ["Micronesia", "fm", "691"], ["Moldova", "md", "373"], ["Monaco", "mc", "377"], ["Mongolia", "mn", "976"], ["Montenegro", "me", "382"], ["Montserrat", "ms", "1", 16, ["664"]], ["Morocco", "ma", "212", 0], ["Mozambique", "mz", "258"], ["Myanmar (Burma)", "mm", "95"], ["Namibia", "na", "264"], ["Nauru", "nr", "674"], ["Nepal", "np", "977"], ["Netherlands", "nl", "31"], ["New Caledonia", "nc", "687"], ["New Zealand", "nz", "64"], ["Nicaragua", "ni", "505"], ["Niger", "ne", "227"], ["Nigeria", "ng", "234"], ["Niue", "nu", "683"], ["Norfolk Island", "nf", "672"], ["North Korea", "kp", "850"], ["North Macedonia", "mk", "389"], ["Northern Mariana Islands", "mp", "1", 17, ["670"]], ["Norway", "no", "47", 0], ["Oman", "om", "968"], ["Pakistan", "pk", "92"], ["Palau", "pw", "680"], ["Palestine", "ps", "970"], ["Panama", "pa", "507"], ["Papua New Guinea", "pg", "675"], ["Paraguay", "py", "595"], ["Peru", "pe", "51"], ["Philippines", "ph", "63"], ["Poland", "pl", "48"], ["Portugal", "pt", "351"], ["Puerto Rico", "pr", "1", 3, ["787", "939"]], ["Qatar", "qa", "974"], ["R\xE9union", "re", "262", 0], ["Romania", "ro", "40"], ["Russia", "ru", "7", 0], ["Rwanda", "rw", "250"], ["Samoa", "ws", "685"], ["San Marino", "sm", "378"], ["S\xE3o Tom\xE9 & Pr\xEDncipe", "st", "239"], ["Saudi Arabia", "sa", "966"], ["Senegal", "sn", "221"], ["Serbia", "rs", "381"], ["Seychelles", "sc", "248"], ["Sierra Leone", "sl", "232"], ["Singapore", "sg", "65"], ["Sint Maarten", "sx", "1", 21, ["721"]], ["Slovakia", "sk", "421"], ["Slovenia", "si", "386"], ["Solomon Islands", "sb", "677"], ["Somalia", "so", "252"], ["South Africa", "za", "27"], ["South Korea", "kr", "82"], ["South Sudan", "ss", "211"], ["Spain", "es", "34"], ["Sri Lanka", "lk", "94"], ["St Barth\xE9lemy", "bl", "590", 1], ["St Helena", "sh", "290"], ["St Kitts & Nevis", "kn", "1", 18, ["869"]], ["St Lucia", "lc", "1", 19, ["758"]], ["St Martin", "mf", "590", 2], ["St Pierre & Miquelon", "pm", "508"], ["St Vincent & Grenadines", "vc", "1", 20, ["784"]], ["Sudan", "sd", "249"], ["Suriname", "sr", "597"], ["Svalbard & Jan Mayen", "sj", "47", 1, ["79"]], ["Sweden", "se", "46"], ["Switzerland", "ch", "41"], ["Syria", "sy", "963"], ["Taiwan", "tw", "886"], ["Tajikistan", "tj", "992"], ["Tanzania", "tz", "255"], ["Thailand", "th", "66"], ["Timor-Leste", "tl", "670"], ["Togo", "tg", "228"], ["Tokelau", "tk", "690"], ["Tonga", "to", "676"], ["Trinidad & Tobago", "tt", "1", 22, ["868"]], ["Tunisia", "tn", "216"], ["Turkey", "tr", "90"], ["Turkmenistan", "tm", "993"], ["Turks & Caicos Islands", "tc", "1", 23, ["649"]], ["Tuvalu", "tv", "688"], ["Uganda", "ug", "256"], ["Ukraine", "ua", "380"], ["United Arab Emirates", "ae", "971"], ["United Kingdom", "gb", "44", 0], ["United States", "us", "1", 0], ["Uruguay", "uy", "598"], ["US Virgin Islands", "vi", "1", 24, ["340"]], ["Uzbekistan", "uz", "998"], ["Vanuatu", "vu", "678"], ["Vatican City", "va", "39", 1, ["06698"]], ["Venezuela", "ve", "58"], ["Vietnam", "vn", "84"], ["Wallis & Futuna", "wf", "681"], ["Western Sahara", "eh", "212", 1, ["5288", "5289"]], ["Yemen", "ye", "967"], ["Zambia", "zm", "260"], ["Zimbabwe", "zw", "263"], ["\xC5land Islands", "ax", "358", 1, ["18"]]];
-        for (let e = 0; e < I.length; e++) {
-          let t = I[e];
-          I[e] = { name: t[0], iso2: t[1], dialCode: t[2], priority: t[3] || 0, areaCodes: t[4] || null, nodeById: {} };
+  var regionlessNanpNumbers = [
+    "800",
+    "822",
+    "833",
+    "844",
+    "855",
+    "866",
+    "877",
+    "880",
+    "881",
+    "882",
+    "883",
+    "884",
+    "885",
+    "886",
+    "887",
+    "888",
+    "889"
+  ];
+  var getNumeric = (s) => s.replace(/\D/g, "");
+  var normaliseString = (s = "") => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  var toggleClass = (el, className, shouldHaveClass) => {
+    if (shouldHaveClass && !el.classList.contains(className)) {
+      el.classList.add(className);
+    } else if (!shouldHaveClass && el.classList.contains(className)) {
+      el.classList.remove(className);
+    }
+  };
+  var isRegionlessNanp = (number) => {
+    const numeric = getNumeric(number);
+    if (numeric.charAt(0) === "1") {
+      const areaCode = numeric.substr(1, 3);
+      return regionlessNanpNumbers.indexOf(areaCode) !== -1;
+    }
+    return false;
+  };
+  var countryNameSort = (a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  };
+  var translateCursorPosition = (relevantChars, formattedValue, prevCaretPos, isDeleteForwards) => {
+    if (prevCaretPos === 0 && !isDeleteForwards) {
+      return 0;
+    }
+    let count = 0;
+    for (let i = 0; i < formattedValue.length; i++) {
+      if (/[+0-9]/.test(formattedValue[i])) {
+        count++;
+      }
+      if (count === relevantChars && !isDeleteForwards) {
+        return i + 1;
+      }
+      if (isDeleteForwards && count === relevantChars + 1) {
+        return i;
+      }
+    }
+    return formattedValue.length;
+  };
+  var createEl = (name, attrs, container2) => {
+    const el = document.createElement(name);
+    if (attrs) {
+      Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+    }
+    if (container2) {
+      container2.appendChild(el);
+    }
+    return el;
+  };
+  var forEachInstance = (method) => {
+    const { instances } = window.intlTelInputGlobals;
+    Object.values(instances).forEach((instance) => instance[method]());
+  };
+  var Iti = class {
+    // can't be private as it's called from intlTelInput convenience wrapper
+    id;
+    // not private!
+    promise;
+    // private
+    telInput;
+    activeItem;
+    highlightedItem;
+    options;
+    hadInitialPlaceholder;
+    isRTL;
+    selectedCountryData;
+    countries;
+    dialCodeMaxLen;
+    dialCodeToIso2Map;
+    dialCodes;
+    preferredCountries;
+    flagsContainer;
+    selectedFlag;
+    selectedFlagInner;
+    selectedFlagA11yText;
+    selectedDialCode;
+    dropdownArrow;
+    dropdownContent;
+    searchInput;
+    searchResultsA11yText;
+    countryList;
+    dropdown;
+    hiddenInput;
+    hiddenInputCountry;
+    maxCoreNumberLength;
+    defaultCountry;
+    _handleHiddenInputSubmit;
+    _handleLabelClick;
+    _handleClickSelectedFlag;
+    _handleFlagsContainerKeydown;
+    _handleInputEvent;
+    _handleKeydownEvent;
+    _handleWindowScroll;
+    _handleMouseoverCountryList;
+    _handleClickCountryList;
+    _handleClickOffToClose;
+    _handleKeydownOnDropdown;
+    _handleSearchChange;
+    resolveAutoCountryPromise;
+    rejectAutoCountryPromise;
+    resolveUtilsScriptPromise;
+    rejectUtilsScriptPromise;
+    constructor(input, customOptions = {}) {
+      this.id = id++;
+      this.telInput = input;
+      this.activeItem = null;
+      this.highlightedItem = null;
+      this.options = Object.assign({}, defaults, customOptions);
+      this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
+    }
+    // can't be private as it's called from intlTelInput convenience wrapper
+    _init() {
+      if (this.options.useFullscreenPopup) {
+        this.options.fixDropdownWidth = false;
+      }
+      if (this.options.countrySearch && !this.options.useFullscreenPopup) {
+        this.options.fixDropdownWidth = true;
+      }
+      const forceShowFlags = this.options.allowDropdown && !this.options.showSelectedDialCode;
+      if (!this.options.showFlags && forceShowFlags) {
+        this.options.showFlags = true;
+      }
+      if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
+        this.options.dropdownContainer = document.body;
+      }
+      this.isRTL = !!this.telInput.closest("[dir=rtl]");
+      const autoCountryPromise = new Promise((resolve, reject) => {
+        this.resolveAutoCountryPromise = resolve;
+        this.rejectAutoCountryPromise = reject;
+      });
+      const utilsScriptPromise = new Promise((resolve, reject) => {
+        this.resolveUtilsScriptPromise = resolve;
+        this.rejectUtilsScriptPromise = reject;
+      });
+      this.promise = Promise.all([autoCountryPromise, utilsScriptPromise]);
+      this.selectedCountryData = {};
+      this._processCountryData();
+      this._generateMarkup();
+      this._setInitialState();
+      this._initListeners();
+      this._initRequests();
+    }
+    //********************
+    //*  PRIVATE METHODS
+    //********************
+    // prepare all of the country data, including onlyCountries, excludeCountries and
+    // preferredCountries options
+    _processCountryData() {
+      this._processAllCountries();
+      this._processDialCodes();
+      this._processPreferredCountries();
+      this._translateCountryNames();
+      if (this.options.onlyCountries.length || this.options.i18n) {
+        this.countries.sort(countryNameSort);
+      }
+    }
+    // add a dial code to this.dialCodeToIso2Map
+    _addToDialCodeMap(iso2, dialCode, priority) {
+      if (dialCode.length > this.dialCodeMaxLen) {
+        this.dialCodeMaxLen = dialCode.length;
+      }
+      if (!this.dialCodeToIso2Map.hasOwnProperty(dialCode)) {
+        this.dialCodeToIso2Map[dialCode] = [];
+      }
+      for (let i = 0; i < this.dialCodeToIso2Map[dialCode].length; i++) {
+        if (this.dialCodeToIso2Map[dialCode][i] === iso2) {
+          return;
         }
-        var v = I, b = { getInstance: (e) => {
-          let t = e.getAttribute("data-intl-tel-input-id");
-          return window.intlTelInputGlobals.instances[t];
-        }, instances: {}, documentReady: () => document.readyState === "complete" };
-        typeof window == "object" && (window.intlTelInputGlobals = b);
-        var F = 0, L = { allowDropdown: true, autoPlaceholder: "polite", countrySearch: true, containerClass: "", customPlaceholder: null, dropdownContainer: null, excludeCountries: [], fixDropdownWidth: true, formatAsYouType: true, formatOnDisplay: true, geoIpLookup: null, hiddenInput: null, i18n: {}, initialCountry: "", nationalMode: true, onlyCountries: [], placeholderNumberType: "MOBILE", preferredCountries: [], showFlags: true, showSelectedDialCode: false, strictMode: false, useFullscreenPopup: typeof navigator < "u" && typeof window < "u" ? /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 500 : false, utilsScript: "" }, m = ["800", "822", "833", "844", "855", "866", "877", "880", "881", "882", "883", "884", "885", "886", "887", "888", "889"], y = (e) => {
-          let { instances: t } = window.intlTelInputGlobals;
-          Object.values(t).forEach((i) => i[e]());
-        }, T = class {
-          constructor(e, t = {}) {
-            this.id = F++, this.telInput = e, this.activeItem = null, this.highlightedItem = null, this.options = Object.assign({}, L, t), this.hadInitialPlaceholder = !!e.getAttribute("placeholder");
-          }
-          _init() {
-            this.options.useFullscreenPopup && (this.options.fixDropdownWidth = false), this.options.countrySearch && !this.options.useFullscreenPopup && (this.options.fixDropdownWidth = true);
-            let e = this.options.allowDropdown && !this.options.showSelectedDialCode;
-            !this.options.showFlags && e && (this.options.showFlags = true), this.options.useFullscreenPopup && !this.options.dropdownContainer && (this.options.dropdownContainer = document.body), this.isRTL = !!this.telInput.closest("[dir=rtl]");
-            let t = new Promise((s, n) => {
-              this.resolveAutoCountryPromise = s, this.rejectAutoCountryPromise = n;
-            }), i = new Promise((s, n) => {
-              this.resolveUtilsScriptPromise = s, this.rejectUtilsScriptPromise = n;
-            });
-            this.promise = Promise.all([t, i]), this.selectedCountryData = {}, this._processCountryData(), this._generateMarkup(), this._setInitialState(), this._initListeners(), this._initRequests();
-          }
-          _processCountryData() {
-            this._processAllCountries(), this._processDialCodes(), this._processPreferredCountries(), this._translateCountryNames(), (this.options.onlyCountries.length || this.options.i18n) && this.countries.sort(this._countryNameSort);
-          }
-          _addToDialCodeMap(e, t, i) {
-            t.length > this.dialCodeMaxLen && (this.dialCodeMaxLen = t.length), this.dialCodeToIso2Map.hasOwnProperty(t) || (this.dialCodeToIso2Map[t] = []);
-            for (let n = 0; n < this.dialCodeToIso2Map[t].length; n++)
-              if (this.dialCodeToIso2Map[t][n] === e)
-                return;
-            let s = i !== void 0 ? i : this.dialCodeToIso2Map[t].length;
-            this.dialCodeToIso2Map[t][s] = e;
-          }
-          _processAllCountries() {
-            if (this.options.onlyCountries.length) {
-              let e = this.options.onlyCountries.map((t) => t.toLowerCase());
-              this.countries = v.filter((t) => e.indexOf(t.iso2) > -1);
-            } else if (this.options.excludeCountries.length) {
-              let e = this.options.excludeCountries.map((t) => t.toLowerCase());
-              this.countries = v.filter((t) => e.indexOf(t.iso2) === -1);
-            } else
-              this.countries = v;
-          }
-          _translateCountryNames() {
-            for (let e = 0; e < this.countries.length; e++) {
-              let t = this.countries[e].iso2.toLowerCase();
-              this.options.i18n.hasOwnProperty(t) && (this.countries[e].name = this.options.i18n[t]);
+      }
+      const index = priority !== void 0 ? priority : this.dialCodeToIso2Map[dialCode].length;
+      this.dialCodeToIso2Map[dialCode][index] = iso2;
+    }
+    // process onlyCountries or excludeCountries array if present
+    _processAllCountries() {
+      const { onlyCountries, excludeCountries } = this.options;
+      if (onlyCountries.length) {
+        const lowerCaseOnlyCountries = onlyCountries.map(
+          (country) => country.toLowerCase()
+        );
+        this.countries = data_default.filter(
+          (country) => lowerCaseOnlyCountries.indexOf(country.iso2) > -1
+        );
+      } else if (excludeCountries.length) {
+        const lowerCaseExcludeCountries = excludeCountries.map(
+          (country) => country.toLowerCase()
+        );
+        this.countries = data_default.filter(
+          (country) => lowerCaseExcludeCountries.indexOf(country.iso2) === -1
+        );
+      } else {
+        this.countries = data_default;
+      }
+    }
+    // Translate Countries by object literal provided on config
+    _translateCountryNames() {
+      for (let i = 0; i < this.countries.length; i++) {
+        const iso2 = this.countries[i].iso2.toLowerCase();
+        if (this.options.i18n.hasOwnProperty(iso2)) {
+          this.countries[i].name = this.options.i18n[iso2];
+        }
+      }
+    }
+    // generate this.dialCodes and this.dialCodeToIso2Map
+    _processDialCodes() {
+      this.dialCodes = {};
+      this.dialCodeMaxLen = 0;
+      this.dialCodeToIso2Map = {};
+      for (let i = 0; i < this.countries.length; i++) {
+        const c = this.countries[i];
+        if (!this.dialCodes[c.dialCode]) {
+          this.dialCodes[c.dialCode] = true;
+        }
+        this._addToDialCodeMap(c.iso2, c.dialCode, c.priority);
+      }
+      for (let i = 0; i < this.countries.length; i++) {
+        const c = this.countries[i];
+        if (c.areaCodes) {
+          const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
+          for (let j = 0; j < c.areaCodes.length; j++) {
+            const areaCode = c.areaCodes[j];
+            for (let k = 1; k < areaCode.length; k++) {
+              const partialDialCode = c.dialCode + areaCode.substr(0, k);
+              this._addToDialCodeMap(rootIso2Code, partialDialCode);
+              this._addToDialCodeMap(c.iso2, partialDialCode);
             }
+            this._addToDialCodeMap(c.iso2, c.dialCode + areaCode);
           }
-          _countryNameSort(e, t) {
-            return e.name < t.name ? -1 : e.name > t.name ? 1 : 0;
-          }
-          _processDialCodes() {
-            this.dialCodes = {}, this.dialCodeMaxLen = 0, this.dialCodeToIso2Map = {};
-            for (let e = 0; e < this.countries.length; e++) {
-              let t = this.countries[e];
-              this.dialCodes[t.dialCode] || (this.dialCodes[t.dialCode] = true), this._addToDialCodeMap(t.iso2, t.dialCode, t.priority);
+        }
+      }
+    }
+    // process preferred countries - iterate through the preferences, fetching the country data for
+    // each one
+    _processPreferredCountries() {
+      this.preferredCountries = [];
+      for (let i = 0; i < this.options.preferredCountries.length; i++) {
+        const iso2 = this.options.preferredCountries[i].toLowerCase();
+        const countryData = this._getCountryData(iso2, true);
+        if (countryData) {
+          this.preferredCountries.push(countryData);
+        }
+      }
+    }
+    // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
+    _generateMarkup() {
+      this.telInput.classList.add("iti__tel-input");
+      if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
+        this.telInput.setAttribute("autocomplete", "off");
+      }
+      const {
+        allowDropdown,
+        showSelectedDialCode,
+        showFlags,
+        containerClass,
+        hiddenInput,
+        dropdownContainer,
+        fixDropdownWidth,
+        useFullscreenPopup,
+        countrySearch,
+        i18n
+      } = this.options;
+      let parentClass = "iti";
+      if (allowDropdown) {
+        parentClass += " iti--allow-dropdown";
+      }
+      if (showSelectedDialCode) {
+        parentClass += " iti--show-selected-dial-code";
+      }
+      if (showFlags) {
+        parentClass += " iti--show-flags";
+      }
+      if (containerClass) {
+        parentClass += ` ${containerClass}`;
+      }
+      if (!useFullscreenPopup) {
+        parentClass += " iti--inline-dropdown";
+      }
+      const wrapper = createEl("div", { class: parentClass });
+      this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
+      if (showFlags || showSelectedDialCode) {
+        this.flagsContainer = createEl(
+          "div",
+          { class: "iti__flag-container" },
+          wrapper
+        );
+        this.selectedFlag = createEl(
+          "div",
+          {
+            class: "iti__selected-flag",
+            ...allowDropdown && {
+              role: "button",
+              "aria-expanded": "false",
+              "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country",
+              "aria-haspopup": countrySearch ? "true" : "listbox",
+              "aria-controls": countrySearch ? `iti-${this.id}__dropdown-content` : `iti-${this.id}__country-listbox`,
+              ...countrySearch ? { role: "combobox" } : {}
             }
-            for (let e = 0; e < this.countries.length; e++) {
-              let t = this.countries[e];
-              if (t.areaCodes) {
-                let i = this.dialCodeToIso2Map[t.dialCode][0];
-                for (let s = 0; s < t.areaCodes.length; s++) {
-                  let n = t.areaCodes[s];
-                  for (let o = 1; o < n.length; o++) {
-                    let d = t.dialCode + n.substr(0, o);
-                    this._addToDialCodeMap(i, d), this._addToDialCodeMap(t.iso2, d);
-                  }
-                  this._addToDialCodeMap(t.iso2, t.dialCode + n);
-                }
+          },
+          this.flagsContainer
+        );
+        this.selectedFlagInner = createEl("div", null, this.selectedFlag);
+        this.selectedFlagA11yText = createEl(
+          "span",
+          { class: "iti__a11y-text" },
+          this.selectedFlagInner
+        );
+      }
+      wrapper.appendChild(this.telInput);
+      if (this.selectedFlag && this.telInput.disabled) {
+        this.selectedFlag.setAttribute("aria-disabled", "true");
+      }
+      if (showSelectedDialCode) {
+        this.selectedDialCode = createEl(
+          "div",
+          { class: "iti__selected-dial-code" },
+          this.selectedFlag
+        );
+      }
+      if (allowDropdown) {
+        if (!this.telInput.disabled) {
+          this.selectedFlag.setAttribute("tabindex", "0");
+        }
+        this.dropdownArrow = createEl(
+          "div",
+          { class: "iti__arrow", "aria-hidden": "true" },
+          this.selectedFlag
+        );
+        const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
+        this.dropdownContent = createEl("div", {
+          id: `iti-${this.id}__dropdown-content`,
+          class: `iti__dropdown-content iti__hide ${extraClasses}`
+        });
+        if (countrySearch) {
+          this.searchInput = createEl(
+            "input",
+            {
+              type: "text",
+              class: "iti__search-input",
+              placeholder: i18n.searchPlaceholder || "Search",
+              role: "combobox",
+              "aria-expanded": "true",
+              "aria-label": i18n.searchPlaceholder || "Search",
+              "aria-controls": `iti-${this.id}__country-listbox`,
+              "aria-autocomplete": "list",
+              "autocomplete": "off"
+            },
+            this.dropdownContent
+          );
+          this.searchResultsA11yText = createEl(
+            "span",
+            { class: "iti__a11y-text" },
+            this.dropdownContent
+          );
+        }
+        this.countryList = createEl(
+          "ul",
+          {
+            class: "iti__country-list",
+            id: `iti-${this.id}__country-listbox`,
+            role: "listbox",
+            "aria-label": i18n.countryListAriaLabel || "List of countries"
+          },
+          this.dropdownContent
+        );
+        if (this.preferredCountries.length && !countrySearch) {
+          this._appendListItems(this.preferredCountries, "iti__preferred", true);
+          createEl(
+            "li",
+            {
+              class: "iti__divider",
+              "aria-hidden": "true"
+            },
+            this.countryList
+          );
+        }
+        this._appendListItems(this.countries, "iti__standard");
+        if (countrySearch) {
+          this._updateSearchResultsText();
+        }
+        if (dropdownContainer) {
+          let dropdownClasses = "iti iti--container";
+          if (useFullscreenPopup) {
+            dropdownClasses += " iti--fullscreen-popup";
+          } else {
+            dropdownClasses += " iti--inline-dropdown";
+          }
+          if (countrySearch) {
+            dropdownClasses += " iti--country-search";
+          }
+          this.dropdown = createEl("div", { class: dropdownClasses });
+          this.dropdown.appendChild(this.dropdownContent);
+        } else {
+          this.flagsContainer.appendChild(this.dropdownContent);
+        }
+      }
+      if (hiddenInput) {
+        const telInputName = this.telInput.getAttribute("name") || "";
+        const names = hiddenInput(telInputName);
+        if (names.phone) {
+          this.hiddenInput = createEl("input", {
+            type: "hidden",
+            name: names.phone
+          });
+          wrapper.appendChild(this.hiddenInput);
+        }
+        if (names.country) {
+          this.hiddenInputCountry = createEl("input", {
+            type: "hidden",
+            name: names.country
+          });
+          wrapper.appendChild(this.hiddenInputCountry);
+        }
+      }
+    }
+    // for each of the passed countries: add a country <li> to the countryList <ul> container
+    _appendListItems(countries, className, preferred) {
+      for (let i = 0; i < countries.length; i++) {
+        const c = countries[i];
+        const idSuffix = preferred ? "-preferred" : "";
+        const listItem = createEl(
+          "li",
+          {
+            id: `iti-${this.id}__item-${c.iso2}${idSuffix}`,
+            class: `iti__country ${className}`,
+            tabindex: "-1",
+            role: "option",
+            "data-dial-code": c.dialCode,
+            "data-country-code": c.iso2,
+            "aria-selected": "false"
+          },
+          this.countryList
+        );
+        c.nodeById[this.id] = listItem;
+        let content = "";
+        if (this.options.showFlags) {
+          content += `<div class='iti__flag-box'><div class='iti__flag iti__${c.iso2}'></div></div>`;
+        }
+        content += `<span class='iti__country-name'>${c.name}</span>`;
+        content += `<span class='iti__dial-code'>+${c.dialCode}</span>`;
+        listItem.insertAdjacentHTML("beforeend", content);
+      }
+    }
+    // set the initial state of the input value and the selected flag by:
+    // 1. extracting a dial code from the given number
+    // 2. using explicit initialCountry
+    // 3. picking the first preferred country
+    // 4. picking the first country
+    _setInitialState(overrideAutoCountry = false) {
+      const attributeValue = this.telInput.getAttribute("value");
+      const inputValue = this.telInput.value;
+      const useAttribute = attributeValue && attributeValue.charAt(0) === "+" && (!inputValue || inputValue.charAt(0) !== "+");
+      const val = useAttribute ? attributeValue : inputValue;
+      const dialCode = this._getDialCode(val);
+      const isRegionlessNanpNumber = isRegionlessNanp(val);
+      const { initialCountry } = this.options;
+      if (dialCode && !isRegionlessNanpNumber) {
+        this._updateFlagFromNumber(val);
+      } else if (initialCountry !== "auto" || overrideAutoCountry) {
+        const lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
+        const isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
+        if (isValidInitialCountry) {
+          this._setCountry(lowerInitialCountry);
+        } else {
+          if (dialCode && isRegionlessNanpNumber) {
+            this._setCountry("us");
+          } else {
+            this._setCountry();
+          }
+        }
+      }
+      if (val) {
+        this._updateValFromNumber(val);
+      }
+    }
+    // initialise the main event listeners: input keyup, and click selected flag
+    _initListeners() {
+      this._initTelInputListeners();
+      if (this.options.allowDropdown) {
+        this._initDropdownListeners();
+      }
+      if ((this.hiddenInput || this.hiddenInputCountry) && this.telInput.form) {
+        this._initHiddenInputListener();
+      }
+    }
+    // update hidden input on form submit
+    _initHiddenInputListener() {
+      this._handleHiddenInputSubmit = () => {
+        if (this.hiddenInput) {
+          this.hiddenInput.value = this.getNumber();
+        }
+        if (this.hiddenInputCountry) {
+          this.hiddenInputCountry.value = this.getSelectedCountryData().iso2 || "";
+        }
+      };
+      this.telInput.form?.addEventListener(
+        "submit",
+        this._handleHiddenInputSubmit
+      );
+    }
+    // initialise the dropdown listeners
+    _initDropdownListeners() {
+      this._handleLabelClick = (e) => {
+        if (this.dropdownContent.classList.contains("iti__hide")) {
+          this.telInput.focus();
+        } else {
+          e.preventDefault();
+        }
+      };
+      const label = this.telInput.closest("label");
+      if (label) {
+        label.addEventListener("click", this._handleLabelClick);
+      }
+      this._handleClickSelectedFlag = () => {
+        if (this.dropdownContent.classList.contains("iti__hide") && !this.telInput.disabled && !this.telInput.readOnly) {
+          this._openDropdown();
+        }
+      };
+      this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
+      this._handleFlagsContainerKeydown = (e) => {
+        const isDropdownHidden = this.dropdownContent.classList.contains("iti__hide");
+        if (isDropdownHidden && ["ArrowUp", "ArrowDown", " ", "Enter"].includes(e.key)) {
+          e.preventDefault();
+          e.stopPropagation();
+          this._openDropdown();
+        }
+        if (e.key === "Tab") {
+          this._closeDropdown();
+        }
+      };
+      this.flagsContainer.addEventListener(
+        "keydown",
+        this._handleFlagsContainerKeydown
+      );
+    }
+    // init many requests: utils script / geo ip lookup
+    _initRequests() {
+      if (this.options.utilsScript && !window.intlTelInputUtils) {
+        if (window.intlTelInputGlobals.documentReady()) {
+          window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
+        } else {
+          window.addEventListener("load", () => {
+            window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
+          });
+        }
+      } else {
+        this.resolveUtilsScriptPromise();
+      }
+      if (this.options.initialCountry === "auto" && !this.selectedCountryData.iso2) {
+        this._loadAutoCountry();
+      } else {
+        this.resolveAutoCountryPromise();
+      }
+    }
+    // perform the geo ip lookup
+    _loadAutoCountry() {
+      if (window.intlTelInputGlobals.autoCountry) {
+        this.handleAutoCountry();
+      } else if (!window.intlTelInputGlobals.startedLoadingAutoCountry) {
+        window.intlTelInputGlobals.startedLoadingAutoCountry = true;
+        if (typeof this.options.geoIpLookup === "function") {
+          this.options.geoIpLookup(
+            (iso2 = "") => {
+              const iso2Lower = iso2.toLowerCase();
+              const isValidIso2 = iso2Lower && this._getCountryData(iso2Lower, true);
+              if (isValidIso2) {
+                window.intlTelInputGlobals.autoCountry = iso2Lower;
+                setTimeout(() => forEachInstance("handleAutoCountry"));
+              } else {
+                this._setInitialState(true);
+                forEachInstance("rejectAutoCountryPromise");
               }
+            },
+            () => {
+              this._setInitialState(true);
+              forEachInstance("rejectAutoCountryPromise");
+            }
+          );
+        }
+      }
+    }
+    // initialize the tel input listeners
+    _initTelInputListeners() {
+      const { strictMode, formatAsYouType } = this.options;
+      let userOverrideFormatting = false;
+      this._handleInputEvent = (e) => {
+        if (this._updateFlagFromNumber(this.telInput.value)) {
+          this._triggerCountryChange();
+        }
+        const isFormattingChar = e && e.data && /[^+0-9]/.test(e.data);
+        const isPaste = e && e.inputType === "insertFromPaste" && this.telInput.value;
+        if (isFormattingChar || isPaste && !strictMode) {
+          userOverrideFormatting = true;
+        } else if (!/[^+0-9]/.test(this.telInput.value)) {
+          userOverrideFormatting = false;
+        }
+        if (formatAsYouType && !userOverrideFormatting) {
+          const currentCaretPos = this.telInput.selectionStart || 0;
+          const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
+          const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
+          const isDeleteForwards = e && e.inputType === "deleteContentForward";
+          const formattedValue = this._formatNumberAsYouType();
+          const newCaretPos = translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
+          this.telInput.value = formattedValue;
+          this.telInput.setSelectionRange(newCaretPos, newCaretPos);
+        }
+      };
+      this.telInput.addEventListener("input", this._handleInputEvent);
+      if (strictMode) {
+        this._handleKeydownEvent = (e) => {
+          if (e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
+            const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
+            const isNumeric = /^[0-9]$/.test(e.key);
+            const isAllowedChar = isInitialPlus || isNumeric;
+            const fullNumber = this._getFullNumber();
+            const coreNumber = window.intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
+            const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
+            if (!isAllowedChar || hasReachedMaxLength) {
+              e.preventDefault();
             }
           }
-          _processPreferredCountries() {
-            this.preferredCountries = [];
-            for (let e = 0; e < this.options.preferredCountries.length; e++) {
-              let t = this.options.preferredCountries[e].toLowerCase(), i = this._getCountryData(t, true);
-              i && this.preferredCountries.push(i);
+        };
+        this.telInput.addEventListener("keydown", this._handleKeydownEvent);
+      }
+    }
+    // adhere to the input's maxlength attr
+    _cap(number) {
+      const max = parseInt(this.telInput.getAttribute("maxlength") || "", 10);
+      return max && number.length > max ? number.substr(0, max) : number;
+    }
+    // trigger a custom event on the input
+    _trigger(name) {
+      const e = new Event(name, {
+        bubbles: true,
+        cancelable: true
+      });
+      this.telInput.dispatchEvent(e);
+    }
+    // open the dropdown
+    _openDropdown() {
+      const { fixDropdownWidth, countrySearch } = this.options;
+      if (fixDropdownWidth) {
+        this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
+      }
+      this.dropdownContent.classList.remove("iti__hide");
+      this.selectedFlag.setAttribute("aria-expanded", "true");
+      this._setDropdownPosition();
+      if (this.activeItem && !countrySearch) {
+        this._highlightListItem(this.activeItem, false);
+        this._scrollTo(this.activeItem, true);
+      } else {
+        const firstCountryItem = this.countryList.firstElementChild;
+        if (firstCountryItem) {
+          this._highlightListItem(firstCountryItem, false);
+          this.countryList.scrollTop = 0;
+        }
+        if (countrySearch) {
+          this.searchInput.focus();
+        }
+      }
+      this._bindDropdownListeners();
+      this.dropdownArrow.classList.add("iti__arrow--up");
+      this._trigger("open:countrydropdown");
+    }
+    // decide if should position dropdown above or below input (depends on position within viewport, and scroll)
+    _setDropdownPosition() {
+      if (this.options.dropdownContainer) {
+        this.options.dropdownContainer.appendChild(this.dropdown);
+      }
+      if (!this.options.useFullscreenPopup) {
+        const pos = this.telInput.getBoundingClientRect();
+        const windowTop = document.documentElement.scrollTop;
+        const inputTop = pos.top + windowTop;
+        const dropdownHeight = this.dropdownContent.offsetHeight;
+        const dropdownFitsBelow = inputTop + this.telInput.offsetHeight + dropdownHeight < windowTop + window.innerHeight;
+        const dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
+        const positionDropdownAboveInput = !this.options.countrySearch && !dropdownFitsBelow && dropdownFitsAbove;
+        toggleClass(
+          this.dropdownContent,
+          "iti__dropdown-content--dropup",
+          positionDropdownAboveInput
+        );
+        if (this.options.dropdownContainer) {
+          const extraTop = positionDropdownAboveInput ? 0 : this.telInput.offsetHeight;
+          this.dropdown.style.top = `${inputTop + extraTop}px`;
+          this.dropdown.style.left = `${pos.left + document.body.scrollLeft}px`;
+          this._handleWindowScroll = () => this._closeDropdown();
+          window.addEventListener("scroll", this._handleWindowScroll);
+        }
+      }
+    }
+    // we only bind dropdown listeners when the dropdown is open
+    _bindDropdownListeners() {
+      this._handleMouseoverCountryList = (e) => {
+        const listItem = e.target?.closest(".iti__country");
+        if (listItem) {
+          this._highlightListItem(listItem, false);
+        }
+      };
+      this.countryList.addEventListener(
+        "mouseover",
+        this._handleMouseoverCountryList
+      );
+      this._handleClickCountryList = (e) => {
+        const listItem = e.target?.closest(".iti__country");
+        if (listItem) {
+          this._selectListItem(listItem);
+        }
+      };
+      this.countryList.addEventListener("click", this._handleClickCountryList);
+      let isOpening = true;
+      this._handleClickOffToClose = () => {
+        if (!isOpening) {
+          this._closeDropdown();
+        }
+        isOpening = false;
+      };
+      document.documentElement.addEventListener(
+        "click",
+        this._handleClickOffToClose
+      );
+      let query = "";
+      let queryTimer = null;
+      this._handleKeydownOnDropdown = (e) => {
+        if (["ArrowUp", "ArrowDown", "Enter", "Escape"].includes(e.key)) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            this._handleUpDownKey(e.key);
+          } else if (e.key === "Enter") {
+            this._handleEnterKey();
+          } else if (e.key === "Escape") {
+            this._closeDropdown();
+          }
+        }
+        if (!this.options.countrySearch && /^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
+          e.stopPropagation();
+          if (queryTimer) {
+            clearTimeout(queryTimer);
+          }
+          query += e.key.toLowerCase();
+          this._searchForCountry(query);
+          queryTimer = setTimeout(() => {
+            query = "";
+          }, 1e3);
+        }
+      };
+      document.addEventListener("keydown", this._handleKeydownOnDropdown);
+      if (this.options.countrySearch) {
+        const doFilter = () => {
+          const inputQuery = this.searchInput.value.trim();
+          if (inputQuery) {
+            this._filterCountries(inputQuery);
+          } else {
+            this._filterCountries("", true);
+          }
+        };
+        let keyupTimer = null;
+        this._handleSearchChange = () => {
+          if (keyupTimer) {
+            clearTimeout(keyupTimer);
+          }
+          keyupTimer = setTimeout(() => {
+            doFilter();
+            keyupTimer = null;
+          }, 100);
+        };
+        this.searchInput.addEventListener("input", this._handleSearchChange);
+        this.searchInput.addEventListener("click", (e) => e.stopPropagation());
+      }
+    }
+    _filterCountries(query, isReset = false) {
+      let isFirst = true;
+      this.countryList.innerHTML = "";
+      const normalisedQuery = normaliseString(query);
+      for (let i = 0; i < this.countries.length; i++) {
+        const c = this.countries[i];
+        const normalisedCountryName = normaliseString(c.name);
+        const fullDialCode = `+${c.dialCode}`;
+        if (isReset || normalisedCountryName.includes(normalisedQuery) || fullDialCode.includes(normalisedQuery) || c.iso2.includes(normalisedQuery)) {
+          const listItem = c.nodeById[this.id];
+          if (listItem) {
+            this.countryList.appendChild(listItem);
+          }
+          if (isFirst) {
+            this._highlightListItem(listItem, false);
+            isFirst = false;
+          }
+        }
+      }
+      this.countryList.scrollTop = 0;
+      this._updateSearchResultsText();
+    }
+    // update search results text (for a11y)
+    _updateSearchResultsText() {
+      const { i18n } = this.options;
+      const count = this.countryList.childElementCount;
+      let searchText;
+      if (count === 0) {
+        searchText = i18n.zeroSearchResults || "No results found";
+      } else if (count === 1) {
+        searchText = i18n.oneSearchResult || "1 result found";
+      } else {
+        searchText = i18n.multipleSearchResults ? i18n.multipleSearchResults.replace("${count}", count.toString()) : `${count} results found`;
+      }
+      this.searchResultsA11yText.textContent = searchText;
+    }
+    // highlight the next/prev item in the list (and ensure it is visible)
+    _handleUpDownKey(key) {
+      let next = key === "ArrowUp" ? this.highlightedItem?.previousElementSibling : this.highlightedItem?.nextElementSibling;
+      if (next) {
+        if (next.classList.contains("iti__divider")) {
+          next = key === "ArrowUp" ? next.previousElementSibling : next.nextElementSibling;
+        }
+      } else if (this.countryList.childElementCount > 1) {
+        next = key === "ArrowUp" ? this.countryList.lastElementChild : this.countryList.firstElementChild;
+      }
+      if (next) {
+        this._scrollTo(next, false);
+        const doFocus = !this.options.countrySearch;
+        this._highlightListItem(next, doFocus);
+      }
+    }
+    // select the currently highlighted item
+    _handleEnterKey() {
+      if (this.highlightedItem) {
+        this._selectListItem(this.highlightedItem);
+      }
+    }
+    // find the first list item whose name starts with the query string
+    _searchForCountry(query) {
+      for (let i = 0; i < this.countries.length; i++) {
+        const c = this.countries[i];
+        const startsWith = c.name.substr(0, query.length).toLowerCase() === query;
+        if (startsWith) {
+          const listItem = c.nodeById[this.id];
+          this._highlightListItem(listItem, false);
+          this._scrollTo(listItem, true);
+          break;
+        }
+      }
+    }
+    // update the input's value to the given val (format first if possible)
+    // NOTE: this is called from _setInitialState, handleUtils and setNumber
+    _updateValFromNumber(fullNumber) {
+      let number = fullNumber;
+      if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
+        const useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.showSelectedDialCode;
+        const { NATIONAL, INTERNATIONAL } = window.intlTelInputUtils.numberFormat;
+        const format = useNational ? NATIONAL : INTERNATIONAL;
+        number = window.intlTelInputUtils.formatNumber(
+          number,
+          this.selectedCountryData.iso2,
+          format
+        );
+      }
+      number = this._beforeSetNumber(number);
+      this.telInput.value = number;
+    }
+    // check if need to select a new flag based on the given number
+    // Note: called from _setInitialState, keyup handler, setNumber
+    _updateFlagFromNumber(fullNumber) {
+      const plusIndex = fullNumber.indexOf("+");
+      let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
+      const selectedDialCode = this.selectedCountryData.dialCode;
+      const isNanp = selectedDialCode === "1";
+      if (number && isNanp && number.charAt(0) !== "+") {
+        if (number.charAt(0) !== "1") {
+          number = `1${number}`;
+        }
+        number = `+${number}`;
+      }
+      if (this.options.showSelectedDialCode && selectedDialCode && number.charAt(0) !== "+") {
+        number = `+${selectedDialCode}${number}`;
+      }
+      const dialCode = this._getDialCode(number, true);
+      const numeric = getNumeric(number);
+      let iso2 = null;
+      if (dialCode) {
+        const iso2Codes = this.dialCodeToIso2Map[getNumeric(dialCode)];
+        const alreadySelected = iso2Codes.indexOf(this.selectedCountryData.iso2) !== -1 && numeric.length <= dialCode.length - 1;
+        const isRegionlessNanpNumber = selectedDialCode === "1" && isRegionlessNanp(numeric);
+        if (!isRegionlessNanpNumber && !alreadySelected) {
+          for (let j = 0; j < iso2Codes.length; j++) {
+            if (iso2Codes[j]) {
+              iso2 = iso2Codes[j];
+              break;
             }
           }
-          _createEl(e, t, i) {
-            let s = document.createElement(e);
-            return t && Object.entries(t).forEach(([n, o]) => s.setAttribute(n, o)), i && i.appendChild(s), s;
+        }
+      } else if (number.charAt(0) === "+" && numeric.length) {
+        iso2 = "";
+      } else if ((!number || number === "+") && !this.selectedCountryData.iso2) {
+        iso2 = this.defaultCountry;
+      }
+      if (iso2 !== null) {
+        return this._setCountry(iso2);
+      }
+      return false;
+    }
+    // remove highlighting from other list items and highlight the given item
+    _highlightListItem(listItem, shouldFocus) {
+      const prevItem = this.highlightedItem;
+      if (prevItem) {
+        prevItem.classList.remove("iti__highlight");
+        prevItem.setAttribute("aria-selected", "false");
+      }
+      this.highlightedItem = listItem;
+      this.highlightedItem.classList.add("iti__highlight");
+      this.highlightedItem.setAttribute("aria-selected", "true");
+      this.selectedFlag.setAttribute(
+        "aria-activedescendant",
+        listItem.getAttribute("id") || ""
+      );
+      if (this.options.countrySearch) {
+        this.searchInput.setAttribute(
+          "aria-activedescendant",
+          listItem.getAttribute("id") || ""
+        );
+      }
+      if (shouldFocus) {
+        this.highlightedItem.focus();
+      }
+    }
+    // find the country data for the given iso2 code
+    // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
+    _getCountryData(iso2, allowFail) {
+      for (let i = 0; i < this.countries.length; i++) {
+        if (this.countries[i].iso2 === iso2) {
+          return this.countries[i];
+        }
+      }
+      if (allowFail) {
+        return null;
+      }
+      throw new Error(`No country data for '${iso2}'`);
+    }
+    // update the selected flag, dial code (if showSelectedDialCode), placeholder, title, and active list item
+    // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
+    _setCountry(iso2) {
+      const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
+      const prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
+      this.selectedCountryData = iso2 ? this._getCountryData(iso2, false) || {} : {};
+      if (this.selectedCountryData.iso2) {
+        this.defaultCountry = this.selectedCountryData.iso2;
+      }
+      if (this.selectedFlagInner) {
+        let flagClass = "";
+        let a11yText = "";
+        if (iso2) {
+          if (showFlags) {
+            flagClass = `iti__flag iti__${iso2}`;
+            a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
           }
-          _generateMarkup() {
-            this.telInput.classList.add("iti__tel-input"), !this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete")) && this.telInput.setAttribute("autocomplete", "off");
-            let { allowDropdown: e, showSelectedDialCode: t, showFlags: i, containerClass: s, hiddenInput: n, dropdownContainer: o, fixDropdownWidth: d, useFullscreenPopup: r, countrySearch: l, i18n: f } = this.options, p = "iti";
-            e && (p += " iti--allow-dropdown"), t && (p += " iti--show-selected-dial-code"), i && (p += " iti--show-flags"), s && (p += ` ${s}`), r || (p += " iti--inline-dropdown");
-            let c = this._createEl("div", { class: p });
-            if (this.telInput.parentNode.insertBefore(c, this.telInput), (i || t) && (this.flagsContainer = this._createEl("div", { class: "iti__flag-container" }, c), this.selectedFlag = this._createEl("div", { class: "iti__selected-flag", ...e && { role: "button", "aria-expanded": "false", "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country", "aria-haspopup": l ? "true" : "listbox", "aria-controls": l ? `iti-${this.id}__dropdown-content` : `iti-${this.id}__country-listbox`, ...l || { role: "combobox" } } }, this.flagsContainer), this.selectedFlagInner = this._createEl("div", null, this.selectedFlag), this.selectedFlagA11yText = this._createEl("span", { class: "iti__a11y-text" }, this.selectedFlagInner)), c.appendChild(this.telInput), this.selectedFlag && this.telInput.disabled && this.selectedFlag.setAttribute("aria-disabled", "true"), t && (this.selectedDialCode = this._createEl("div", { class: "iti__selected-dial-code" }, this.selectedFlag)), e) {
-              this.telInput.disabled || this.selectedFlag.setAttribute("tabindex", "0"), this.dropdownArrow = this._createEl("div", { class: "iti__arrow", "aria-hidden": "true" }, this.selectedFlag);
-              let D = d ? "" : "iti--flexible-dropdown-width";
-              if (this.dropdownContent = this._createEl("div", { id: `iti-${this.id}__dropdown-content`, class: `iti__dropdown-content iti__hide ${D}` }), l && (this.searchInput = this._createEl("input", { type: "text", class: "iti__search-input", placeholder: f.searchPlaceholder || "Search", role: "combobox", "aria-expanded": "true", "aria-label": f.searchPlaceholder || "Search", "aria-controls": `iti-${this.id}__country-listbox`, "aria-autocomplete": "list", autocomplete: "off" }, this.dropdownContent), this.searchResultsA11yText = this._createEl("span", { class: "iti__a11y-text" }, this.dropdownContent)), this.countryList = this._createEl("ul", { class: "iti__country-list", id: `iti-${this.id}__country-listbox`, role: "listbox", "aria-label": f.countryListAriaLabel || "List of countries" }, this.dropdownContent), this.preferredCountries.length && !l && (this._appendListItems(this.preferredCountries, "iti__preferred", true), this._createEl("li", { class: "iti__divider", "aria-hidden": "true" }, this.countryList)), this._appendListItems(this.countries, "iti__standard"), l && this._updateSearchResultsText(), o) {
-                let _ = "iti iti--container";
-                r ? _ += " iti--fullscreen-popup" : _ += " iti--inline-dropdown", l && (_ += " iti--country-search"), this.dropdown = this._createEl("div", { class: _ }), this.dropdown.appendChild(this.dropdownContent);
-              } else
-                this.flagsContainer.appendChild(this.dropdownContent);
-            }
-            if (n) {
-              let D = this.telInput.getAttribute("name"), _ = n(D);
-              _.phone && (this.hiddenInput = this._createEl("input", { type: "hidden", name: _.phone }), c.appendChild(this.hiddenInput)), _.country && (this.hiddenInputCountry = this._createEl("input", { type: "hidden", name: _.country }), c.appendChild(this.hiddenInputCountry));
-            }
+        } else {
+          flagClass = "iti__flag iti__globe";
+          a11yText = i18n.noCountrySelected || "No country selected";
+        }
+        this.selectedFlagInner.className = flagClass;
+        this.selectedFlagA11yText.textContent = a11yText;
+      }
+      this._setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode);
+      if (showSelectedDialCode) {
+        const dialCode = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : "";
+        this.selectedDialCode.innerHTML = dialCode;
+        const selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
+        if (this.isRTL) {
+          this.telInput.style.paddingRight = `${selectedFlagWidth + 6}px`;
+        } else {
+          this.telInput.style.paddingLeft = `${selectedFlagWidth + 6}px`;
+        }
+      }
+      this._updatePlaceholder();
+      this._updateMaxLength();
+      if (allowDropdown && !countrySearch) {
+        const prevItem = this.activeItem;
+        if (prevItem) {
+          prevItem.classList.remove("iti__active");
+          prevItem.setAttribute("aria-selected", "false");
+        }
+        if (iso2) {
+          const nextItem = this.countryList.querySelector(
+            `#iti-${this.id}__item-${iso2}-preferred`
+          ) || this.countryList.querySelector(
+            `#iti-${this.id}__item-${iso2}`
+          );
+          if (nextItem) {
+            nextItem.setAttribute("aria-selected", "true");
+            nextItem.classList.add("iti__active");
+            this.activeItem = nextItem;
           }
-          _appendListItems(e, t, i) {
-            for (let s = 0; s < e.length; s++) {
-              let n = e[s], o = i ? "-preferred" : "", d = this._createEl("li", { id: `iti-${this.id}__item-${n.iso2}${o}`, class: `iti__country ${t}`, tabindex: "-1", role: "option", "data-dial-code": n.dialCode, "data-country-code": n.iso2, "aria-selected": "false" }, this.countryList);
-              n.nodeById[this.id] = d;
-              let r = "";
-              this.options.showFlags && (r += `<div class='iti__flag-box'><div class='iti__flag iti__${n.iso2}'></div></div>`), r += `<span class='iti__country-name'>${n.name}</span>`, r += `<span class='iti__dial-code'>+${n.dialCode}</span>`, d.insertAdjacentHTML("beforeend", r);
-            }
+        }
+      }
+      return prevCountry.iso2 !== iso2;
+    }
+    // update the maximum valid number length for the currently selected country
+    _updateMaxLength() {
+      if (this.options.strictMode && window.intlTelInputUtils) {
+        if (this.selectedCountryData.iso2) {
+          const numberType = window.intlTelInputUtils.numberType[this.options.placeholderNumberType];
+          let exampleNumber = window.intlTelInputUtils.getExampleNumber(
+            this.selectedCountryData.iso2,
+            false,
+            numberType,
+            true
+          );
+          let validNumber = exampleNumber;
+          while (window.intlTelInputUtils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
+            validNumber = exampleNumber;
+            exampleNumber += "0";
           }
-          _setInitialState(e = false) {
-            let t = this.telInput.getAttribute("value"), i = this.telInput.value, n = t && t.charAt(0) === "+" && (!i || i.charAt(0) !== "+") ? t : i, o = this._getDialCode(n), d = this._isRegionlessNanp(n), { initialCountry: r } = this.options;
-            if (o && !d)
-              this._updateFlagFromNumber(n);
-            else if (r !== "auto" || e) {
-              let l = r ? r.toLowerCase() : "";
-              l && this._getCountryData(l, true) ? this._setCountry(l) : o && d ? this._setCountry("us") : this._setCountry();
-            }
-            n && this._updateValFromNumber(n);
-          }
-          _initListeners() {
-            this._initTelInputListeners(), this.options.allowDropdown && this._initDropdownListeners(), (this.hiddenInput || this.hiddenInputCountry) && this.telInput.form && this._initHiddenInputListener();
-          }
-          _initHiddenInputListener() {
-            this._handleHiddenInputSubmit = () => {
-              this.hiddenInput && (this.hiddenInput.value = this.getNumber()), this.hiddenInputCountry && (this.hiddenInputCountry.value = this.getSelectedCountryData().iso2);
-            }, this.telInput.form.addEventListener("submit", this._handleHiddenInputSubmit);
-          }
-          _initDropdownListeners() {
-            this._handleLabelClick = (t) => {
-              this.dropdownContent.classList.contains("iti__hide") ? this.telInput.focus() : t.preventDefault();
-            };
-            let e = this.telInput.closest("label");
-            e && e.addEventListener("click", this._handleLabelClick), this._handleClickSelectedFlag = () => {
-              this.dropdownContent.classList.contains("iti__hide") && !this.telInput.disabled && !this.telInput.readOnly && this._openDropdown();
-            }, this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag), this._handleFlagsContainerKeydown = (t) => {
-              this.dropdownContent.classList.contains("iti__hide") && ["ArrowUp", "ArrowDown", " ", "Enter"].includes(t.key) && (t.preventDefault(), t.stopPropagation(), this._openDropdown()), t.key === "Tab" && this._closeDropdown();
-            }, this.flagsContainer.addEventListener("keydown", this._handleFlagsContainerKeydown);
-          }
-          _initRequests() {
-            this.options.utilsScript && !window.intlTelInputUtils ? window.intlTelInputGlobals.documentReady() ? window.intlTelInputGlobals.loadUtils(this.options.utilsScript) : window.addEventListener("load", () => {
-              window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
-            }) : this.resolveUtilsScriptPromise(), this.options.initialCountry === "auto" && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
-          }
-          _loadAutoCountry() {
-            window.intlTelInputGlobals.autoCountry ? this.handleAutoCountry() : window.intlTelInputGlobals.startedLoadingAutoCountry || (window.intlTelInputGlobals.startedLoadingAutoCountry = true, typeof this.options.geoIpLookup == "function" && this.options.geoIpLookup((e = "") => {
-              let t = e.toLowerCase();
-              t && this._getCountryData(t, true) ? (window.intlTelInputGlobals.autoCountry = t, setTimeout(() => y("handleAutoCountry"))) : (this._setInitialState(true), y("rejectAutoCountryPromise"));
-            }, () => y("rejectAutoCountryPromise")));
-          }
-          _initTelInputListeners() {
-            let { strictMode: e, formatAsYouType: t } = this.options, i = false;
-            this._handleInputEvent = (s) => {
-              this._updateFlagFromNumber(this.telInput.value) && this._triggerCountryChange();
-              let n = s && s.data && /[^+0-9]/.test(s.data), o = s && s.inputType === "insertFromPaste" && this.telInput.value;
-              if (n || o && !e ? i = true : /[^+0-9]/.test(this.telInput.value) || (i = false), t && !i) {
-                let d = this.telInput.selectionStart, l = this.telInput.value.substring(0, d).replace(/[^+0-9]/g, "").length, f = s && s.inputType === "deleteContentForward", p = this._formatNumberAsYouType(), c = this._translateCursorPosition(l, p, d, f);
-                this.telInput.value = p, this.telInput.setSelectionRange(c, c);
+          const coreNumber = window.intlTelInputUtils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
+          this.maxCoreNumberLength = coreNumber.length;
+        } else {
+          this.maxCoreNumberLength = null;
+        }
+      }
+    }
+    _setSelectedCountryFlagTitleAttribute(iso2 = null, showSelectedDialCode) {
+      if (!this.selectedFlag) {
+        return;
+      }
+      let title;
+      if (iso2 && !showSelectedDialCode) {
+        title = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}`;
+      } else if (iso2) {
+        title = this.selectedCountryData.name;
+      } else {
+        title = "Unknown";
+      }
+      this.selectedFlag.setAttribute("title", title);
+    }
+    // when the input is in a hidden container during initialisation, we must inject some markup
+    // into the end of the DOM to calculate the correct offsetWidth
+    // NOTE: this is only used when showSelectedDialCode is enabled, so flagsContainer and selectedFlag
+    // will definitely exist
+    _getHiddenSelectedFlagWidth() {
+      if (this.telInput.parentNode) {
+        const containerClone = this.telInput.parentNode.cloneNode(false);
+        containerClone.style.visibility = "hidden";
+        document.body.appendChild(containerClone);
+        const flagsContainerClone = this.flagsContainer.cloneNode();
+        containerClone.appendChild(flagsContainerClone);
+        const selectedFlagClone = this.selectedFlag.cloneNode(true);
+        flagsContainerClone.appendChild(selectedFlagClone);
+        const width = selectedFlagClone.offsetWidth;
+        document.body.removeChild(containerClone);
+        return width;
+      }
+      return 0;
+    }
+    // update the input placeholder to an example number from the currently selected country
+    _updatePlaceholder() {
+      const {
+        autoPlaceholder,
+        placeholderNumberType,
+        nationalMode,
+        customPlaceholder
+      } = this.options;
+      const shouldSetPlaceholder = autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && autoPlaceholder === "polite";
+      if (window.intlTelInputUtils && shouldSetPlaceholder) {
+        const numberType = window.intlTelInputUtils.numberType[placeholderNumberType];
+        let placeholder = this.selectedCountryData.iso2 ? window.intlTelInputUtils.getExampleNumber(
+          this.selectedCountryData.iso2,
+          nationalMode,
+          numberType
+        ) : "";
+        placeholder = this._beforeSetNumber(placeholder);
+        if (typeof customPlaceholder === "function") {
+          placeholder = customPlaceholder(placeholder, this.selectedCountryData);
+        }
+        this.telInput.setAttribute("placeholder", placeholder);
+      }
+    }
+    // called when the user selects a list item from the dropdown
+    _selectListItem(listItem) {
+      const flagChanged = this._setCountry(
+        listItem.getAttribute("data-country-code")
+      );
+      this._closeDropdown();
+      this._updateDialCode(listItem.getAttribute("data-dial-code"));
+      this.telInput.focus();
+      if (flagChanged) {
+        this._triggerCountryChange();
+      }
+    }
+    // close the dropdown and unbind any listeners
+    _closeDropdown() {
+      this.dropdownContent.classList.add("iti__hide");
+      this.selectedFlag.setAttribute("aria-expanded", "false");
+      this.selectedFlag.removeAttribute("aria-activedescendant");
+      if (this.highlightedItem) {
+        this.highlightedItem.setAttribute("aria-selected", "false");
+      }
+      if (this.options.countrySearch) {
+        this.searchInput.removeAttribute("aria-activedescendant");
+      }
+      this.dropdownArrow.classList.remove("iti__arrow--up");
+      document.removeEventListener("keydown", this._handleKeydownOnDropdown);
+      if (this.options.countrySearch) {
+        this.searchInput.removeEventListener("input", this._handleSearchChange);
+      }
+      document.documentElement.removeEventListener(
+        "click",
+        this._handleClickOffToClose
+      );
+      this.countryList.removeEventListener(
+        "mouseover",
+        this._handleMouseoverCountryList
+      );
+      this.countryList.removeEventListener("click", this._handleClickCountryList);
+      if (this.options.dropdownContainer) {
+        if (!this.options.useFullscreenPopup) {
+          window.removeEventListener("scroll", this._handleWindowScroll);
+        }
+        if (this.dropdown.parentNode) {
+          this.dropdown.parentNode.removeChild(this.dropdown);
+        }
+      }
+      this._trigger("close:countrydropdown");
+    }
+    // check if an element is visible within it's container, else scroll until it is
+    _scrollTo(element, middle) {
+      const container2 = this.countryList;
+      const windowTop = document.documentElement.scrollTop;
+      const containerHeight = container2.offsetHeight;
+      const containerTop = container2.getBoundingClientRect().top + windowTop;
+      const containerBottom = containerTop + containerHeight;
+      const elementHeight = element.offsetHeight;
+      const elementTop = element.getBoundingClientRect().top + windowTop;
+      const elementBottom = elementTop + elementHeight;
+      let newScrollTop = elementTop - containerTop + container2.scrollTop;
+      const middleOffset = containerHeight / 2 - elementHeight / 2;
+      if (elementTop < containerTop) {
+        if (middle) {
+          newScrollTop -= middleOffset;
+        }
+        container2.scrollTop = newScrollTop;
+      } else if (elementBottom > containerBottom) {
+        if (middle) {
+          newScrollTop += middleOffset;
+        }
+        const heightDifference = containerHeight - elementHeight;
+        container2.scrollTop = newScrollTop - heightDifference;
+      }
+    }
+    // replace any existing dial code with the new one
+    // Note: called from _selectListItem and setCountry
+    _updateDialCode(newDialCodeBare) {
+      const inputVal = this.telInput.value;
+      const newDialCode = `+${newDialCodeBare}`;
+      let newNumber;
+      if (inputVal.charAt(0) === "+") {
+        const prevDialCode = this._getDialCode(inputVal);
+        if (prevDialCode) {
+          newNumber = inputVal.replace(prevDialCode, newDialCode);
+        } else {
+          newNumber = newDialCode;
+        }
+        this.telInput.value = newNumber;
+      }
+    }
+    // try and extract a valid international dial code from a full telephone number
+    // Note: returns the raw string inc plus character and any whitespace/dots etc
+    _getDialCode(number, includeAreaCode) {
+      let dialCode = "";
+      if (number.charAt(0) === "+") {
+        let numericChars = "";
+        for (let i = 0; i < number.length; i++) {
+          const c = number.charAt(i);
+          if (!isNaN(parseInt(c, 10))) {
+            numericChars += c;
+            if (includeAreaCode) {
+              if (this.dialCodeToIso2Map[numericChars]) {
+                dialCode = number.substr(0, i + 1);
               }
-            }, this.telInput.addEventListener("input", this._handleInputEvent), e && (this._handleKeydownEvent = (s) => {
-              if (s.key.length === 1 && !s.altKey && !s.ctrlKey && !s.metaKey) {
-                let n = this.telInput.selectionStart === 0 && s.key === "+", o = /^[0-9]$/.test(s.key), d = n || o, r = this._getFullNumber(), l = intlTelInputUtils.getCoreNumber(r, this.selectedCountryData.iso2), f = this.maxCoreNumberLength && l.length >= this.maxCoreNumberLength;
-                (!d || f) && s.preventDefault();
-              }
-            }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
-          }
-          _translateCursorPosition(e, t, i, s) {
-            if (i === 0 && !s)
-              return 0;
-            let n = 0;
-            for (let o = 0; o < t.length; o++) {
-              if (/[+0-9]/.test(t[o]) && n++, n === e && !s)
-                return o + 1;
-              if (s && n === e + 1)
-                return o;
-            }
-            return t.length;
-          }
-          _cap(e) {
-            let t = this.telInput.getAttribute("maxlength");
-            return t && e.length > t ? e.substr(0, t) : e;
-          }
-          _removeEmptyDialCode() {
-            if (this.telInput.value.charAt(0) === "+") {
-              let e = this._getNumeric(this.telInput.value);
-              (!e || this.selectedCountryData.dialCode === e) && (this.telInput.value = "");
-            }
-          }
-          _getNumeric(e) {
-            return e.replace(/\D/g, "");
-          }
-          _trigger(e) {
-            let t = new Event(e, { bubbles: true, cancelable: true });
-            this.telInput.dispatchEvent(t);
-          }
-          _openDropdown() {
-            let { fixDropdownWidth: e, countrySearch: t } = this.options;
-            if (e && (this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`), this.dropdownContent.classList.remove("iti__hide"), this.selectedFlag.setAttribute("aria-expanded", "true"), this._setDropdownPosition(), this.activeItem && !t)
-              this._highlightListItem(this.activeItem, false), this._scrollTo(this.activeItem, true);
-            else {
-              let { firstElementChild: i } = this.countryList;
-              i && (this._highlightListItem(i, false), this.countryList.scrollTop = 0), t && this.searchInput.focus();
-            }
-            this._bindDropdownListeners(), this.dropdownArrow.classList.add("iti__arrow--up"), this._trigger("open:countrydropdown");
-          }
-          _toggleClass(e, t, i) {
-            i && !e.classList.contains(t) ? e.classList.add(t) : !i && e.classList.contains(t) && e.classList.remove(t);
-          }
-          _setDropdownPosition() {
-            if (this.options.dropdownContainer && this.options.dropdownContainer.appendChild(this.dropdown), !this.options.useFullscreenPopup) {
-              let e = this.telInput.getBoundingClientRect(), t = document.documentElement.scrollTop, i = e.top + t, s = this.dropdownContent.offsetHeight, n = i + this.telInput.offsetHeight + s < t + window.innerHeight, o = i - s > t, d = !this.options.countrySearch && !n && o;
-              if (this._toggleClass(this.dropdownContent, "iti__dropdown-content--dropup", d), this.options.dropdownContainer) {
-                let r = d ? 0 : this.telInput.offsetHeight;
-                this.dropdown.style.top = `${i + r}px`, this.dropdown.style.left = `${e.left + document.body.scrollLeft}px`, this._handleWindowScroll = () => this._closeDropdown(), window.addEventListener("scroll", this._handleWindowScroll);
-              }
-            }
-          }
-          _bindDropdownListeners() {
-            this._handleMouseoverCountryList = (s) => {
-              let n = s.target.closest(".iti__country");
-              n && this._highlightListItem(n, false);
-            }, this.countryList.addEventListener("mouseover", this._handleMouseoverCountryList), this._handleClickCountryList = (s) => {
-              let n = s.target.closest(".iti__country");
-              n && this._selectListItem(n);
-            }, this.countryList.addEventListener("click", this._handleClickCountryList);
-            let e = true;
-            this._handleClickOffToClose = () => {
-              e || this._closeDropdown(), e = false;
-            }, document.documentElement.addEventListener("click", this._handleClickOffToClose);
-            let t = "", i = null;
-            if (this._handleKeydownOnDropdown = (s) => {
-              ["ArrowUp", "ArrowDown", "Enter", "Escape"].includes(s.key) && (s.preventDefault(), s.stopPropagation(), s.key === "ArrowUp" || s.key === "ArrowDown" ? this._handleUpDownKey(s.key) : s.key === "Enter" ? this._handleEnterKey() : s.key === "Escape" && this._closeDropdown()), !this.options.countrySearch && /^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(s.key) && (s.stopPropagation(), i && clearTimeout(i), t += s.key.toLowerCase(), this._searchForCountry(t), i = setTimeout(() => {
-                t = "";
-              }, 1e3));
-            }, document.addEventListener("keydown", this._handleKeydownOnDropdown), this.options.countrySearch) {
-              let s = () => {
-                let o = this.searchInput.value.trim();
-                o ? this._filterCountries(o) : this._filterCountries("", true);
-              }, n = null;
-              this._handleSearchChange = () => {
-                n && clearTimeout(n), n = setTimeout(() => {
-                  s(), n = null;
-                }, 100);
-              }, this.searchInput.addEventListener("input", this._handleSearchChange), this.searchInput.addEventListener("click", (o) => o.stopPropagation());
-            }
-          }
-          _normaliseString(e = "") {
-            return e.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-          }
-          _filterCountries(e, t = false) {
-            let i = true;
-            this.countryList.innerHTML = "";
-            let s = this._normaliseString(e);
-            for (let n = 0; n < this.countries.length; n++) {
-              let o = this.countries[n], d = this._normaliseString(o.name), r = `+${o.dialCode}`;
-              (t || d.includes(s) || r.includes(s) || o.iso2.includes(s)) && (this.countryList.appendChild(o.nodeById[this.id]), i && (this._highlightListItem(o.nodeById[this.id], false), i = false));
-            }
-            this.countryList.scrollTop = 0, this._updateSearchResultsText();
-          }
-          _updateSearchResultsText() {
-            let { i18n: e } = this.options, t = this.countryList.childElementCount, i;
-            t === 0 ? i = e.zeroSearchResults || "No results found" : t === 1 ? i = e.oneSearchResult || "1 result found" : i = e.multipleSearchResults ? e.multipleSearchResults.replace("${count}", t) : `${t} results found`, this.searchResultsA11yText.textContent = i;
-          }
-          _handleUpDownKey(e) {
-            let t = e === "ArrowUp" ? this.highlightedItem.previousElementSibling : this.highlightedItem.nextElementSibling;
-            if (t ? t.classList.contains("iti__divider") && (t = e === "ArrowUp" ? t.previousElementSibling : t.nextElementSibling) : this.countryList.childElementCount > 1 && (t = e === "ArrowUp" ? this.countryList.lastElementChild : this.countryList.firstElementChild), t) {
-              this._scrollTo(t, false);
-              let i = !this.options.countrySearch;
-              this._highlightListItem(t, i);
-            }
-          }
-          _handleEnterKey() {
-            this.highlightedItem && this._selectListItem(this.highlightedItem);
-          }
-          _searchForCountry(e) {
-            for (let t = 0; t < this.countries.length; t++)
-              if (this._startsWith(this.countries[t].name, e)) {
-                let i = this.countries[t].nodeById[this.id];
-                this._highlightListItem(i, false), this._scrollTo(i, true);
+            } else {
+              if (this.dialCodes[numericChars]) {
+                dialCode = number.substr(0, i + 1);
                 break;
               }
-          }
-          _startsWith(e, t) {
-            return e.substr(0, t.length).toLowerCase() === t;
-          }
-          _updateValFromNumber(e) {
-            let t = e;
-            if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
-              let i = this.options.nationalMode || t.charAt(0) !== "+" && !this.options.showSelectedDialCode, { NATIONAL: s, INTERNATIONAL: n } = intlTelInputUtils.numberFormat, o = i ? s : n;
-              t = intlTelInputUtils.formatNumber(t, this.selectedCountryData.iso2, o);
             }
-            t = this._beforeSetNumber(t), this.telInput.value = t;
-          }
-          _updateFlagFromNumber(e) {
-            let t = e.indexOf("+"), i = t ? e.substring(t) : e, s = this.selectedCountryData.dialCode;
-            i && s === "1" && i.charAt(0) !== "+" && (i.charAt(0) !== "1" && (i = `1${i}`), i = `+${i}`), this.options.showSelectedDialCode && s && i.charAt(0) !== "+" && (i = `+${s}${i}`);
-            let o = this._getDialCode(i, true), d = this._getNumeric(i), r = null;
-            if (o) {
-              let l = this.dialCodeToIso2Map[this._getNumeric(o)], f = l.indexOf(this.selectedCountryData.iso2) !== -1 && d.length <= o.length - 1;
-              if (!(s === "1" && this._isRegionlessNanp(d)) && !f) {
-                for (let c = 0; c < l.length; c++)
-                  if (l[c]) {
-                    r = l[c];
-                    break;
-                  }
-              }
-            } else
-              i.charAt(0) === "+" && d.length ? r = "" : (!i || i === "+") && !this.selectedCountryData.iso2 && (r = this.defaultCountry);
-            return r !== null ? this._setCountry(r) : false;
-          }
-          _isRegionlessNanp(e) {
-            let t = this._getNumeric(e);
-            if (t.charAt(0) === "1") {
-              let i = t.substr(1, 3);
-              return m.indexOf(i) !== -1;
-            }
-            return false;
-          }
-          _highlightListItem(e, t) {
-            let i = this.highlightedItem;
-            i && (i.classList.remove("iti__highlight"), i.setAttribute("aria-selected", "false")), this.highlightedItem = e, this.highlightedItem.classList.add("iti__highlight"), this.highlightedItem.setAttribute("aria-selected", "true"), this.selectedFlag.setAttribute("aria-activedescendant", e.getAttribute("id")), this.options.countrySearch && this.searchInput.setAttribute("aria-activedescendant", e.getAttribute("id")), t && this.highlightedItem.focus();
-          }
-          _getCountryData(e, t) {
-            for (let i = 0; i < this.countries.length; i++)
-              if (this.countries[i].iso2 === e)
-                return this.countries[i];
-            if (t)
-              return null;
-            throw new Error(`No country data for '${e}'`);
-          }
-          _setCountry(e) {
-            let { allowDropdown: t, showSelectedDialCode: i, showFlags: s, countrySearch: n, i18n: o } = this.options, d = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
-            if (this.selectedCountryData = e ? this._getCountryData(e, false) : {}, this.selectedCountryData.iso2 && (this.defaultCountry = this.selectedCountryData.iso2), this.selectedFlagInner) {
-              let r = "", l = "";
-              e ? s && (r = `iti__flag iti__${e}`, l = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`) : (r = "iti__flag iti__globe", l = o.noCountrySelected || "No country selected"), this.selectedFlagInner.className = r, this.selectedFlagA11yText.textContent = l;
-            }
-            if (this._setSelectedCountryFlagTitleAttribute(e, i), i) {
-              let r = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : "";
-              this.selectedDialCode.innerHTML = r;
-              let l = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
-              this.isRTL ? this.telInput.style.paddingRight = `${l + 6}px` : this.telInput.style.paddingLeft = `${l + 6}px`;
-            }
-            if (this._updatePlaceholder(), this._updateMaxLength(), t && !n) {
-              let r = this.activeItem;
-              if (r && (r.classList.remove("iti__active"), r.setAttribute("aria-selected", "false")), e) {
-                let l = this.countryList.querySelector(`#iti-${this.id}__item-${e}-preferred`) || this.countryList.querySelector(`#iti-${this.id}__item-${e}`);
-                l.setAttribute("aria-selected", "true"), l.classList.add("iti__active"), this.activeItem = l;
-              }
-            }
-            return d.iso2 !== e;
-          }
-          _updateMaxLength() {
-            if (this.options.strictMode && window.intlTelInputUtils)
-              if (this.selectedCountryData.iso2) {
-                let e = intlTelInputUtils.numberType[this.options.placeholderNumberType], t = intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, null, e, true), i = t;
-                for (; intlTelInputUtils.isPossibleNumber(t, this.selectedCountryData.iso2); )
-                  i = t, t += "0";
-                let s = intlTelInputUtils.getCoreNumber(i, this.selectedCountryData.iso2);
-                this.maxCoreNumberLength = s.length;
-              } else
-                this.maxCoreNumberLength = null;
-          }
-          _setSelectedCountryFlagTitleAttribute(e, t) {
-            if (!this.selectedFlag)
-              return;
-            let i;
-            e && !t ? i = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}` : e ? i = this.selectedCountryData.name : i = "Unknown", this.selectedFlag.setAttribute("title", i);
-          }
-          _getHiddenSelectedFlagWidth() {
-            let e = this.telInput.parentNode.cloneNode();
-            e.style.visibility = "hidden", document.body.appendChild(e);
-            let t = this.flagsContainer.cloneNode();
-            e.appendChild(t);
-            let i = this.selectedFlag.cloneNode(true);
-            t.appendChild(i);
-            let s = i.offsetWidth;
-            return e.parentNode.removeChild(e), s;
-          }
-          _updatePlaceholder() {
-            let { autoPlaceholder: e, placeholderNumberType: t, nationalMode: i, customPlaceholder: s } = this.options, n = e === "aggressive" || !this.hadInitialPlaceholder && e === "polite";
-            if (window.intlTelInputUtils && n) {
-              let o = intlTelInputUtils.numberType[t], d = this.selectedCountryData.iso2 ? intlTelInputUtils.getExampleNumber(this.selectedCountryData.iso2, i, o) : "";
-              d = this._beforeSetNumber(d), typeof s == "function" && (d = s(d, this.selectedCountryData)), this.telInput.setAttribute("placeholder", d);
+            if (numericChars.length === this.dialCodeMaxLen) {
+              break;
             }
           }
-          _selectListItem(e) {
-            let t = this._setCountry(e.getAttribute("data-country-code"));
-            this._closeDropdown(), this._updateDialCode(e.getAttribute("data-dial-code")), this.telInput.focus(), t && this._triggerCountryChange();
-          }
-          _closeDropdown() {
-            this.dropdownContent.classList.add("iti__hide"), this.selectedFlag.setAttribute("aria-expanded", "false"), this.selectedFlag.removeAttribute("aria-activedescendant"), this.highlightedItem && this.highlightedItem.setAttribute("aria-selected", "false"), this.options.countrySearch && this.searchInput.removeAttribute("aria-activedescendant"), this.dropdownArrow.classList.remove("iti__arrow--up"), document.removeEventListener("keydown", this._handleKeydownOnDropdown), this.options.countrySearch && this.searchInput.removeEventListener("input", this._handleSearchChange), document.documentElement.removeEventListener("click", this._handleClickOffToClose), this.countryList.removeEventListener("mouseover", this._handleMouseoverCountryList), this.countryList.removeEventListener("click", this._handleClickCountryList), this.options.dropdownContainer && (this.options.useFullscreenPopup || window.removeEventListener("scroll", this._handleWindowScroll), this.dropdown.parentNode && this.dropdown.parentNode.removeChild(this.dropdown)), this._trigger("close:countrydropdown");
-          }
-          _scrollTo(e, t) {
-            let i = this.countryList, s = document.documentElement.scrollTop, n = i.offsetHeight, o = i.getBoundingClientRect().top + s, d = o + n, r = e.offsetHeight, l = e.getBoundingClientRect().top + s, f = l + r, p = l - o + i.scrollTop, c = n / 2 - r / 2;
-            if (l < o)
-              t && (p -= c), i.scrollTop = p;
-            else if (f > d) {
-              t && (p += c);
-              let D = n - r;
-              i.scrollTop = p - D;
-            }
-          }
-          _updateDialCode(e) {
-            let t = this.telInput.value, i = `+${e}`, s;
-            if (t.charAt(0) === "+") {
-              let n = this._getDialCode(t);
-              n ? s = t.replace(n, i) : s = i, this.telInput.value = s;
-            }
-          }
-          _getDialCode(e, t) {
-            let i = "";
-            if (e.charAt(0) === "+") {
-              let s = "";
-              for (let n = 0; n < e.length; n++) {
-                let o = e.charAt(n);
-                if (!isNaN(parseInt(o, 10))) {
-                  if (s += o, t)
-                    this.dialCodeToIso2Map[s] && (i = e.substr(0, n + 1));
-                  else if (this.dialCodes[s]) {
-                    i = e.substr(0, n + 1);
-                    break;
-                  }
-                  if (s.length === this.dialCodeMaxLen)
-                    break;
-                }
-              }
-            }
-            return i;
-          }
-          _getFullNumber() {
-            let e = this.telInput.value.trim(), { dialCode: t } = this.selectedCountryData, i, s = this._getNumeric(e);
-            return this.options.showSelectedDialCode && !this.options.nationalMode && e.charAt(0) !== "+" && t && s ? i = `+${t}` : i = "", i + e;
-          }
-          _beforeSetNumber(e) {
-            let t = e;
-            if (this.options.showSelectedDialCode) {
-              let i = this._getDialCode(t);
-              if (i) {
-                i = `+${this.selectedCountryData.dialCode}`;
-                let s = t[i.length] === " " || t[i.length] === "-" ? i.length + 1 : i.length;
-                t = t.substr(s);
-              }
-            }
-            return this._cap(t);
-          }
-          _triggerCountryChange() {
-            this._trigger("countrychange");
-          }
-          _formatNumberAsYouType() {
-            let e = this._getFullNumber(), t = window.intlTelInputUtils ? intlTelInputUtils.formatNumberAsYouType(e, this.selectedCountryData.iso2) : e, { dialCode: i } = this.selectedCountryData;
-            return this.options.showSelectedDialCode && !this.options.nationalMode && this.telInput.value.charAt(0) !== "+" && t.includes(`+${i}`) ? (t.split(`+${i}`)[1] || "").trim() : t;
-          }
-          handleAutoCountry() {
-            this.options.initialCountry === "auto" && (this.defaultCountry = window.intlTelInputGlobals.autoCountry, this.telInput.value || this.setCountry(this.defaultCountry), this.resolveAutoCountryPromise());
-          }
-          handleUtils() {
-            window.intlTelInputUtils && (this.telInput.value && this._updateValFromNumber(this.telInput.value), this.selectedCountryData.iso2 && (this._updatePlaceholder(), this._updateMaxLength())), this.resolveUtilsScriptPromise();
-          }
-          destroy() {
-            if (this.options.allowDropdown) {
-              this._closeDropdown(), this.selectedFlag.removeEventListener("click", this._handleClickSelectedFlag), this.flagsContainer.removeEventListener("keydown", this._handleFlagsContainerKeydown);
-              let i = this.telInput.closest("label");
-              i && i.removeEventListener("click", this._handleLabelClick);
-            }
-            let { form: e } = this.telInput;
-            this._handleHiddenInputSubmit && e && e.removeEventListener("submit", this._handleHiddenInputSubmit), this.telInput.removeEventListener("input", this._handleInputEvent), this._handleKeydownEvent && this.telInput.removeEventListener("keydown", this._handleKeydownEvent), this.telInput.removeAttribute("data-intl-tel-input-id");
-            let t = this.telInput.parentNode;
-            t.parentNode.insertBefore(this.telInput, t), t.parentNode.removeChild(t), delete window.intlTelInputGlobals.instances[this.id];
-          }
-          getExtension() {
-            return window.intlTelInputUtils ? intlTelInputUtils.getExtension(this._getFullNumber(), this.selectedCountryData.iso2) : "";
-          }
-          getNumber(e) {
-            if (window.intlTelInputUtils) {
-              let { iso2: t } = this.selectedCountryData;
-              return intlTelInputUtils.formatNumber(this._getFullNumber(), t, e);
-            }
-            return "";
-          }
-          getNumberType() {
-            return window.intlTelInputUtils ? intlTelInputUtils.getNumberType(this._getFullNumber(), this.selectedCountryData.iso2) : -99;
-          }
-          getSelectedCountryData() {
-            return this.selectedCountryData;
-          }
-          getValidationError() {
-            if (window.intlTelInputUtils) {
-              let { iso2: e } = this.selectedCountryData;
-              return intlTelInputUtils.getValidationError(this._getFullNumber(), e);
-            }
-            return -99;
-          }
-          isValidNumber(e = true) {
-            let t = this._getFullNumber();
-            return /\p{L}/u.test(t) ? false : window.intlTelInputUtils ? intlTelInputUtils.isPossibleNumber(t, this.selectedCountryData.iso2, e) : null;
-          }
-          isValidNumberPrecise() {
-            let e = this._getFullNumber();
-            return /\p{L}/u.test(e) ? false : window.intlTelInputUtils ? intlTelInputUtils.isValidNumber(e, this.selectedCountryData.iso2) : null;
-          }
-          setCountry(e) {
-            let t = e.toLowerCase();
-            this.selectedCountryData.iso2 !== t && (this._setCountry(t), this._updateDialCode(this.selectedCountryData.dialCode), this._triggerCountryChange());
-          }
-          setNumber(e) {
-            let t = this._updateFlagFromNumber(e);
-            this._updateValFromNumber(e), t && this._triggerCountryChange();
-          }
-          setPlaceholderNumberType(e) {
-            this.options.placeholderNumberType = e, this._updatePlaceholder();
-          }
-        };
-        b.getCountryData = () => v;
-        var P = (e, t, i) => {
-          let s = document.createElement("script");
-          s.onload = () => {
-            y("handleUtils"), t && t();
-          }, s.onerror = () => {
-            y("rejectUtilsScriptPromise"), i && i();
-          }, s.className = "iti-load-utils", s.async = true, s.src = e, document.body.appendChild(s);
-        };
-        b.loadUtils = (e) => !window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript ? (window.intlTelInputGlobals.startedLoadingUtilsScript = true, new Promise((t, i) => P(e, t, i))) : null, b.defaults = L, b.version = "20.3.999";
-        var U = (e, t) => {
-          let i = new T(e, t);
-          return i._init(), e.setAttribute("data-intl-tel-input-id", i.id), window.intlTelInputGlobals.instances[i.id] = i, i;
-        }, k = U;
-        return x(S);
-      })();
-      return u.default;
-    });
-  });
-  var R = q(O());
-  var M = ({ initialValue: u, onChangeNumber: h, onChangeCountry: C, onChangeValidity: w, onChangeErrorCode: g, usePreciseValidation: A, initOptions: E, className: x, disabled: S, onFocus: I, onBlur: v, placeholder: b, inputProps: F }) => {
-    let L = (0, import_react.useRef)(null), m = (0, import_react.useRef)(null), y = () => {
-      let T = m.current.getNumber(), P = m.current.getSelectedCountryData().iso2;
-      if (h(T), C(P), A ? m.current.isValidNumberPrecise() : m.current.isValidNumber())
-        w(true), g(null);
-      else {
-        let k = m.current.getValidationError();
-        w(false), g(k);
+        }
+      }
+      return dialCode;
+    }
+    // get the input val, adding the dial code if showSelectedDialCode is enabled
+    _getFullNumber() {
+      const val = this.telInput.value.trim();
+      const { dialCode } = this.selectedCountryData;
+      let prefix;
+      const numericVal = getNumeric(val);
+      if (this.options.showSelectedDialCode && !this.options.nationalMode && val.charAt(0) !== "+" && dialCode && numericVal) {
+        prefix = `+${dialCode}`;
+      } else {
+        prefix = "";
+      }
+      return prefix + val;
+    }
+    // remove the dial code if showSelectedDialCode is enabled
+    // also cap the length if the input has a maxlength attribute
+    _beforeSetNumber(fullNumber) {
+      let number = fullNumber;
+      if (this.options.showSelectedDialCode) {
+        let dialCode = this._getDialCode(number);
+        if (dialCode) {
+          dialCode = `+${this.selectedCountryData.dialCode}`;
+          const start = number[dialCode.length] === " " || number[dialCode.length] === "-" ? dialCode.length + 1 : dialCode.length;
+          number = number.substr(start);
+        }
+      }
+      return this._cap(number);
+    }
+    // trigger the 'countrychange' event
+    _triggerCountryChange() {
+      this._trigger("countrychange");
+    }
+    // format the number as the user types
+    _formatNumberAsYouType() {
+      const val = this._getFullNumber();
+      const result = window.intlTelInputUtils ? window.intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
+      const { dialCode } = this.selectedCountryData;
+      if (this.options.showSelectedDialCode && !this.options.nationalMode && this.telInput.value.charAt(0) !== "+" && result.includes(`+${dialCode}`)) {
+        const afterDialCode = result.split(`+${dialCode}`)[1] || "";
+        return afterDialCode.trim();
+      }
+      return result;
+    }
+    //**************************
+    //*  SECRET PUBLIC METHODS
+    //**************************
+    // this is called when the geoip call returns
+    handleAutoCountry() {
+      if (this.options.initialCountry === "auto" && window.intlTelInputGlobals.autoCountry) {
+        this.defaultCountry = window.intlTelInputGlobals.autoCountry;
+        if (!this.telInput.value) {
+          this.setCountry(this.defaultCountry);
+        }
+        this.resolveAutoCountryPromise();
+      }
+    }
+    // this is called when the utils request completes
+    handleUtils() {
+      if (window.intlTelInputUtils) {
+        if (this.telInput.value) {
+          this._updateValFromNumber(this.telInput.value);
+        }
+        if (this.selectedCountryData.iso2) {
+          this._updatePlaceholder();
+          this._updateMaxLength();
+        }
+      }
+      this.resolveUtilsScriptPromise();
+    }
+    //********************
+    //*  PUBLIC METHODS
+    //********************
+    // remove plugin
+    destroy() {
+      if (this.options.allowDropdown) {
+        this._closeDropdown();
+        this.selectedFlag.removeEventListener(
+          "click",
+          this._handleClickSelectedFlag
+        );
+        this.flagsContainer.removeEventListener(
+          "keydown",
+          this._handleFlagsContainerKeydown
+        );
+        const label = this.telInput.closest("label");
+        if (label) {
+          label.removeEventListener("click", this._handleLabelClick);
+        }
+      }
+      const { form } = this.telInput;
+      if (this._handleHiddenInputSubmit && form) {
+        form.removeEventListener("submit", this._handleHiddenInputSubmit);
+      }
+      this.telInput.removeEventListener("input", this._handleInputEvent);
+      if (this._handleKeydownEvent) {
+        this.telInput.removeEventListener("keydown", this._handleKeydownEvent);
+      }
+      this.telInput.removeAttribute("data-intl-tel-input-id");
+      const wrapper = this.telInput.parentNode;
+      wrapper?.parentNode?.insertBefore(this.telInput, wrapper);
+      wrapper?.parentNode?.removeChild(wrapper);
+      delete window.intlTelInputGlobals.instances[this.id];
+    }
+    // get the extension from the current number
+    getExtension() {
+      if (window.intlTelInputUtils) {
+        return window.intlTelInputUtils.getExtension(
+          this._getFullNumber(),
+          this.selectedCountryData.iso2
+        );
+      }
+      return "";
+    }
+    // format the number to the given format
+    getNumber(format) {
+      if (window.intlTelInputUtils) {
+        const { iso2 } = this.selectedCountryData;
+        return window.intlTelInputUtils.formatNumber(
+          this._getFullNumber(),
+          iso2,
+          format
+        );
+      }
+      return "";
+    }
+    // get the type of the entered number e.g. landline/mobile
+    getNumberType() {
+      if (window.intlTelInputUtils) {
+        return window.intlTelInputUtils.getNumberType(
+          this._getFullNumber(),
+          this.selectedCountryData.iso2
+        );
+      }
+      return -99;
+    }
+    // get the country data for the currently selected flag
+    getSelectedCountryData() {
+      return this.selectedCountryData;
+    }
+    // get the validation error
+    getValidationError() {
+      if (window.intlTelInputUtils) {
+        const { iso2 } = this.selectedCountryData;
+        return window.intlTelInputUtils.getValidationError(this._getFullNumber(), iso2);
+      }
+      return -99;
+    }
+    // validate the input val - assumes the global function isPossibleNumber (from utilsScript)
+    isValidNumber(mobileOnly = true) {
+      const val = this._getFullNumber();
+      if (/\p{L}/u.test(val)) {
+        return false;
+      }
+      return window.intlTelInputUtils ? window.intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
+    }
+    // validate the input val (precise) - assumes the global function isValidNumber (from utilsScript)
+    isValidNumberPrecise() {
+      const val = this._getFullNumber();
+      if (/\p{L}/u.test(val)) {
+        return false;
+      }
+      return window.intlTelInputUtils ? window.intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
+    }
+    // update the selected flag, and update the input val accordingly
+    setCountry(iso2) {
+      const iso2Lower = iso2.toLowerCase();
+      if (this.selectedCountryData.iso2 !== iso2Lower) {
+        this._setCountry(iso2Lower);
+        this._updateDialCode(this.selectedCountryData.dialCode);
+        this._triggerCountryChange();
+      }
+    }
+    // set the input value and update the flag
+    setNumber(number) {
+      const flagChanged = this._updateFlagFromNumber(number);
+      this._updateValFromNumber(number);
+      if (flagChanged) {
+        this._triggerCountryChange();
+      }
+    }
+    // set the placeholder number typ
+    setPlaceholderNumberType(type) {
+      this.options.placeholderNumberType = type;
+      this._updatePlaceholder();
+    }
+  };
+  var injectScript = (path, handleSuccess, handleFailure) => {
+    const script = document.createElement("script");
+    script.onload = () => {
+      forEachInstance("handleUtils");
+      if (handleSuccess) {
+        handleSuccess();
       }
     };
-    return (0, import_react.useEffect)(() => {
-      let T = L.current;
-      return m.current = (0, R.default)(L.current, E), T.addEventListener("countrychange", y), () => {
-        T.removeEventListener("countrychange", y), m.current.destroy();
-      };
-    }, []), import_react.default.createElement("input", { type: "tel", ref: L, onInput: y, defaultValue: u, className: x, disabled: S, onFocus: I, onBlur: v, placeholder: b, ...F });
+    script.onerror = () => {
+      forEachInstance("rejectUtilsScriptPromise");
+      if (handleFailure) {
+        handleFailure();
+      }
+    };
+    script.className = "iti-load-utils";
+    script.async = true;
+    script.src = path;
+    document.body.appendChild(script);
   };
-  M.propTypes = { initialValue: import_prop_types.default.string, placeholder: import_prop_types.default.string, onChangeNumber: import_prop_types.default.func, onChangeCountry: import_prop_types.default.func, onChangeValidity: import_prop_types.default.func, onChangeErrorCode: import_prop_types.default.func, usePreciseValidation: import_prop_types.default.bool, initOptions: import_prop_types.default.shape({ allowDropdown: import_prop_types.default.bool, autoPlaceholder: import_prop_types.default.string, containerClass: import_prop_types.default.string, countrySearch: import_prop_types.default.bool, customPlaceholder: import_prop_types.default.func, dropdownContainer: import_prop_types.default.node, excludeCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), fixDropdownWidth: import_prop_types.default.bool, formatAsYouType: import_prop_types.default.bool, formatOnDisplay: import_prop_types.default.bool, geoIpLookup: import_prop_types.default.func, hiddenInput: import_prop_types.default.func, i18n: import_prop_types.default.objectOf(import_prop_types.default.string), initialCountry: import_prop_types.default.string, nationalMode: import_prop_types.default.bool, onlyCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), placeholderNumberType: import_prop_types.default.string, preferredCountries: import_prop_types.default.arrayOf(import_prop_types.default.string), showFlags: import_prop_types.default.bool, showSelectedDialCode: import_prop_types.default.bool, useFullscreenPopup: import_prop_types.default.bool, utilsScript: import_prop_types.default.string }), className: import_prop_types.default.string, disabled: import_prop_types.default.bool, onFocus: import_prop_types.default.func, onBlur: import_prop_types.default.func, inputProps: import_prop_types.default.object };
-  M.defaultProps = { initialValue: "", placeholder: "", onChangeNumber: () => {
-  }, onChangeCountry: () => {
-  }, onChangeValidity: () => {
-  }, onChangeErrorCode: () => {
-  }, usePreciseValidation: false, initOptions: {}, className: "", disabled: false, onFocus: () => {
-  }, onBlur: () => {
-  }, inputProps: {} };
-  var it = M;
+  var loadUtils = (path) => {
+    if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
+      window.intlTelInputGlobals.startedLoadingUtilsScript = true;
+      return new Promise(
+        (resolve, reject) => injectScript(path, resolve, reject)
+      );
+    }
+    return null;
+  };
+  if (typeof window === "object") {
+    const intlTelInputGlobals = {
+      defaults,
+      // using a global like this allows us to mock it in the tests
+      documentReady: () => document.readyState === "complete",
+      // get the country data object
+      getCountryData: () => data_default,
+      // a getter for the plugin instance
+      getInstance: (input) => {
+        const id2 = input.getAttribute("data-intl-tel-input-id");
+        return id2 ? intlTelInputGlobals.instances[id2] : null;
+      },
+      // a map from instance ID to instance object
+      instances: {},
+      loadUtils,
+      version: process.env.VERSION
+    };
+    window.intlTelInputGlobals = intlTelInputGlobals;
+  }
+  var intlTelInput = (input, options) => {
+    const iti = new Iti(input, options);
+    iti._init();
+    input.setAttribute("data-intl-tel-input-id", iti.id.toString());
+    window.intlTelInputGlobals.instances[iti.id] = iti;
+    return iti;
+  };
+  var intlTelInput_default = intlTelInput;
 
-  // react/demo/ValidationApp.js
+  // react/src/IntlTelInput.tsx
+  var IntlTelInput = ({
+    initialValue,
+    onChangeNumber,
+    onChangeCountry,
+    onChangeValidity,
+    onChangeErrorCode,
+    usePreciseValidation,
+    initOptions,
+    className,
+    disabled,
+    onFocus,
+    onBlur,
+    placeholder,
+    inputProps
+  }) => {
+    const inputRef = (0, import_react.useRef)(null);
+    const itiRef = (0, import_react.useRef)(null);
+    const update = () => {
+      const num = itiRef.current?.getNumber();
+      const countryIso = itiRef.current.getSelectedCountryData().iso2;
+      onChangeNumber(num);
+      onChangeCountry(countryIso);
+      const isValid = usePreciseValidation ? itiRef.current?.isValidNumberPrecise() : itiRef.current.isValidNumber();
+      if (isValid) {
+        onChangeValidity(true);
+        onChangeErrorCode(null);
+      } else {
+        const errorCode = itiRef.current.getValidationError();
+        onChangeValidity(false);
+        onChangeErrorCode(errorCode);
+      }
+    };
+    (0, import_react.useEffect)(() => {
+      const inputRefCurrent = inputRef.current;
+      itiRef.current = intlTelInput_default(inputRef.current, initOptions);
+      if (inputRefCurrent) {
+        inputRefCurrent.addEventListener("countrychange", update);
+      }
+      return () => {
+        if (inputRefCurrent) {
+          inputRefCurrent.removeEventListener("countrychange", update);
+        }
+        itiRef.current.destroy();
+      };
+    }, []);
+    return /* @__PURE__ */ import_react.default.createElement(
+      "input",
+      {
+        type: "tel",
+        ref: inputRef,
+        onInput: update,
+        defaultValue: initialValue,
+        className,
+        disabled,
+        onFocus,
+        onBlur,
+        placeholder,
+        ...inputProps
+      }
+    );
+  };
+  IntlTelInput.propTypes = {
+    initialValue: import_prop_types.default.string,
+    placeholder: import_prop_types.default.string,
+    onChangeNumber: import_prop_types.default.func,
+    onChangeCountry: import_prop_types.default.func,
+    onChangeValidity: import_prop_types.default.func,
+    onChangeErrorCode: import_prop_types.default.func,
+    usePreciseValidation: import_prop_types.default.bool,
+    initOptions: import_prop_types.default.shape({
+      allowDropdown: import_prop_types.default.bool,
+      autoPlaceholder: import_prop_types.default.string,
+      containerClass: import_prop_types.default.string,
+      countrySearch: import_prop_types.default.bool,
+      customPlaceholder: import_prop_types.default.func,
+      dropdownContainer: import_prop_types.default.node,
+      excludeCountries: import_prop_types.default.arrayOf(import_prop_types.default.string),
+      fixDropdownWidth: import_prop_types.default.bool,
+      formatAsYouType: import_prop_types.default.bool,
+      formatOnDisplay: import_prop_types.default.bool,
+      geoIpLookup: import_prop_types.default.func,
+      hiddenInput: import_prop_types.default.func,
+      i18n: import_prop_types.default.objectOf(import_prop_types.default.string),
+      initialCountry: import_prop_types.default.string,
+      nationalMode: import_prop_types.default.bool,
+      onlyCountries: import_prop_types.default.arrayOf(import_prop_types.default.string),
+      placeholderNumberType: import_prop_types.default.string,
+      preferredCountries: import_prop_types.default.arrayOf(import_prop_types.default.string),
+      showFlags: import_prop_types.default.bool,
+      showSelectedDialCode: import_prop_types.default.bool,
+      useFullscreenPopup: import_prop_types.default.bool,
+      utilsScript: import_prop_types.default.string
+    }),
+    className: import_prop_types.default.string,
+    disabled: import_prop_types.default.bool,
+    onFocus: import_prop_types.default.func,
+    onBlur: import_prop_types.default.func,
+    inputProps: import_prop_types.default.object
+  };
+  IntlTelInput.defaultProps = {
+    initialValue: "",
+    placeholder: "",
+    onChangeNumber: () => {
+    },
+    onChangeCountry: () => {
+    },
+    onChangeValidity: () => {
+    },
+    onChangeErrorCode: () => {
+    },
+    usePreciseValidation: false,
+    initOptions: {},
+    className: "",
+    disabled: false,
+    onFocus: () => {
+    },
+    onBlur: () => {
+    },
+    inputProps: {}
+  };
+  var IntlTelInput_default = IntlTelInput;
+
+  // react/demo/ValidationApp.tsx
   var errorMap = [
     "Invalid number",
     "Invalid country code",
@@ -24903,12 +27264,12 @@
       if (isValid) {
         setNotice(`Valid number: ${number}`);
       } else {
-        const errorMessage = errorMap[errorCode] || "Invalid number";
+        const errorMessage = errorMap[errorCode || 0] || "Invalid number";
         setNotice(`Error: ${errorMessage}`);
       }
     };
     return /* @__PURE__ */ import_react2.default.createElement("form", null, /* @__PURE__ */ import_react2.default.createElement(
-      it,
+      IntlTelInput_default,
       {
         onChangeNumber: setNumber,
         onChangeValidity: setIsValid,
@@ -24921,8 +27282,10 @@
     ), /* @__PURE__ */ import_react2.default.createElement("button", { type: "button", onClick: handleSubmit }, "Validate"), notice && /* @__PURE__ */ import_react2.default.createElement("div", { className: "notice" }, notice));
   };
   var container = document.getElementById("app");
-  var root = (0, import_client.createRoot)(container);
-  root.render(/* @__PURE__ */ import_react2.default.createElement(App, null));
+  if (container) {
+    const root = (0, import_client.createRoot)(container);
+    root.render(/* @__PURE__ */ import_react2.default.createElement(App, null));
+  }
 })();
 /*! Bundled license information:
 

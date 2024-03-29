@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   require('time-grunt')(grunt);
   require('google-closure-compiler').grunt(grunt, {
     platfrom: 'native'
-  })
+  });
 
   /**
    * TASKS
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['responsive_images:retina', 'exec:evenizer', 'responsive_images:regular', 'sprite', 'imagemin']);
   // just javascript
-  grunt.registerTask('js', ['eslint', 'shell:buildJs', 'replace', 'shell:buildReact']);
+  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:buildJs', 'replace', 'shell:buildReact']);
 
   // Travis CI
   grunt.registerTask('travis', ['jasmine']);

@@ -32,12 +32,12 @@ var factoryOutput = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // src/js/data.js
+  // src/js/data.ts
   var data_exports = {};
   __export(data_exports, {
     default: () => data_default
   });
-  var allCountries = [
+  var rawCountryData = [
     [
       "Afghanistan",
       "af",
@@ -1344,8 +1344,9 @@ var factoryOutput = (() => {
       ["18"]
     ]
   ];
-  for (let i = 0; i < allCountries.length; i++) {
-    const c = allCountries[i];
+  var allCountries = [];
+  for (let i = 0; i < rawCountryData.length; i++) {
+    const c = rawCountryData[i];
     allCountries[i] = {
       name: c[0],
       iso2: c[1],

@@ -1,13 +1,12 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 const { build } = require("esbuild");
-const packageJson = require('./package.json');
+const packageJson = require("./package.json");
 
 const getBanner = (moduleName) =>
-  '/*\n' +
+  "/*\n" +
   ` * International Telephone Input v${packageJson.version}\n` +
   ` * ${packageJson.repository.url}\n` +
-  ' * Licensed under the MIT license\n' +
-  ' */\n\n' +
+  " * Licensed under the MIT license\n" +
+  " */\n\n" +
   // we can remove this UMD hack once it is supported by esbuild: https://github.com/evanw/esbuild/issues/507
   "// UMD\n" +
   "(function(factory) {\n" +
@@ -27,21 +26,21 @@ const shared = {
   bundle: true,
   logLevel: "info",
   format: "iife",
-  globalName: 'factoryOutput',
+  globalName: "factoryOutput",
   footer: {
     js: footer,
   },
   define: {
-    'process.env.VERSION': `"${packageJson.version}"`,
+    "process.env.VERSION": `"${packageJson.version}"`,
   },
 };
 
 build({
   ...shared,
   banner: {
-    js: getBanner('intlTelInput'),
+    js: getBanner("intlTelInput"),
   },
-  entryPoints: ["src/js/intlTelInput.js"],
+  entryPoints: ["src/js/intlTelInput.ts"],
   minify: false,
   outfile: "build/js/intlTelInput.js",
 });
@@ -49,9 +48,9 @@ build({
 build({
   ...shared,
   banner: {
-    js: getBanner('intlTelInput'),
+    js: getBanner("intlTelInput"),
   },
-  entryPoints: ["src/js/intlTelInput.js"],
+  entryPoints: ["src/js/intlTelInput.ts"],
   minify: true,
   outfile: "tmp/built.min.js",
 });
@@ -59,9 +58,9 @@ build({
 build({
   ...shared,
   banner: {
-    js: getBanner('allCountries'),
+    js: getBanner("allCountries"),
   },
-  entryPoints: ["src/js/data.js"],
+  entryPoints: ["src/js/data.ts"],
   minify: false,
   outfile: "build/js/data.js",
 });
@@ -69,9 +68,9 @@ build({
 build({
   ...shared,
   banner: {
-    js: getBanner('allCountries'),
+    js: getBanner("allCountries"),
   },
-  entryPoints: ["src/js/data.js"],
+  entryPoints: ["src/js/data.ts"],
   minify: true,
   outfile: "build/js/data.min.js",
 });
