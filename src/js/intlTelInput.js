@@ -1,3 +1,5 @@
+import allCountries from "./data";
+
 const intlTelInputGlobals = {
   getInstance: (input) => {
     const id = input.getAttribute("data-intl-tel-input-id");
@@ -2005,4 +2007,15 @@ intlTelInputGlobals.loadUtils = (path) => {
 intlTelInputGlobals.defaults = defaults;
 
 // version
-intlTelInputGlobals.version = "<%= version %>";
+intlTelInputGlobals.version = process.env.VERSION;
+
+// convenience wrapper
+const intlTelInput = (input, options) => {
+  const iti = new Iti(input, options);
+  iti._init();
+  input.setAttribute('data-intl-tel-input-id', iti.id);
+  window.intlTelInputGlobals.instances[iti.id] = iti;
+  return iti;
+};
+
+export default intlTelInput;

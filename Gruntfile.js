@@ -19,7 +19,7 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['responsive_images:retina', 'exec:evenizer', 'responsive_images:regular', 'sprite', 'imagemin']);
   // just javascript
-  grunt.registerTask('js', ['eslint', 'template:jsAddVersion', 'concat', 'uglify', 'replace', 'shell:buildReact']);
+  grunt.registerTask('js', ['eslint', 'shell:buildJs', 'replace', 'shell:buildReact']);
 
   // Travis CI
   grunt.registerTask('travis', ['jasmine']);

@@ -23,3 +23,25 @@ build({
   format: "cjs",
   outfile: "react/build/IntlTelInput.cjs.js",
 });
+
+
+
+
+// demo files
+const demoShared = {
+  bundle: true,
+  loader: { '.js': 'jsx' },
+  format: "iife",
+};
+
+build({
+  ...demoShared,
+  entryPoints: ["react/demo/SimpleApp.js"],
+  outfile: "react/demo/simple-bundle.js",
+});
+
+build({
+  ...demoShared,
+  entryPoints: ["react/demo/ValidationApp.js"],
+  outfile: "react/demo/validation-bundle.js",
+});

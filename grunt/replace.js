@@ -166,7 +166,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'tmp/one.min.js': 'tmp/wrapped.min.js',
+        'tmp/one.min.js': 'tmp/built.min.js',
       }
     },
 

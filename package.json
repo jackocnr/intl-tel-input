@@ -24,7 +24,6 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
-    "babel-eslint": "^9.0.0",
     "esbuild": "^0.19.11",
     "eslint": "^8.38.0",
     "eslint-config-airbnb": "^17.1.0",
@@ -38,11 +37,9 @@
     "grunt": "^1.0.3",
     "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.2.0",
-    "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-imagemin": "^4.0.0",
     "grunt-contrib-jasmine": "^4.0.0",
-    "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "^21.0.0",
     "grunt-exec": "^1.0.1",
@@ -51,7 +48,6 @@
     "grunt-sass": "^3.0.0",
     "grunt-shell": "^4.0.0",
     "grunt-spritesmith": "^6.10.0",
-    "grunt-template": "^1.0.0",
     "jasmine-jquery": "^2.1.1",
     "jquery": "^3.1.1",
     "load-grunt-config": "^0.19.2",
@@ -86,7 +82,8 @@
     "build:css": "grunt css",
     "build:img": "grunt img",
     "watch": "grunt watch",
-    "build:react": "node react/build.js && esbuild react/demo/SimpleApp.js --bundle --outfile=react/demo/simple-bundle.js --loader:.js=jsx --format=cjs && esbuild react/demo/ValidationApp.js --bundle --outfile=react/demo/validation-bundle.js --loader:.js=jsx --format=cjs"
+    "build:react": "node react/build.js"
   },
-  "style": "build/css/intlTelInput.css"
+  "style": "build/css/intlTelInput.css",
+  "exports": "./build/js/intlTelInput.esm.js"
 }

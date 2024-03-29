@@ -1,2 +1,0 @@
-// wrap in UMD
-(function() {

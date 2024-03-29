@@ -14,7 +14,7 @@
 //    Order (if >1 country with same dial code),
 //    Area codes
 // ]
-var allCountries = [
+const allCountries = [
   [
     "Afghanistan",
     "af",
@@ -1323,8 +1323,8 @@ var allCountries = [
 ];
 
 // loop over all of the countries above, restructuring the data to be objects with named keys
-for (var i = 0; i < allCountries.length; i++) {
-  var c = allCountries[i];
+for (let i = 0; i < allCountries.length; i++) {
+  const c = allCountries[i];
   allCountries[i] = {
     name: c[0],
     iso2: c[1],
@@ -1334,3 +1334,5 @@ for (var i = 0; i < allCountries.length; i++) {
     nodeById: {},
   };
 }
+
+export default allCountries;
