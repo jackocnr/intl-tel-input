@@ -1,3 +1,26 @@
+:root {
+  --iti-hover-color: rgba(0, 0, 0, 0.05);
+  --iti-text-gray: #999;
+  --iti-border-gray: #ccc;
+  --iti-spacer-horizontal: 8px;
+  --iti-flag-height: 15px;
+  --iti-flag-width: 20px;
+  --iti-border-width: 1px;
+  --iti-arrow-height: 4px;
+  --iti-arrow-width: 6px;
+  --iti-triangle-border: calc(var(--iti-arrow-width) / 2);
+  --iti-arrow-padding: 6px;
+  --iti-arrow-color: #555;
+  --iti-input-padding: 6px;
+  --iti-right-hand-selected-flag-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
+  --iti-selected-flag-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
+  --iti-path-flags-1x: url("../img/flags.png?1");
+  --iti-path-flags-2x: url("../img/flags@2x.png?1");
+  --iti-path-globe-1x: url("../img/globe.png");
+  --iti-path-globe-2x: url("../img/globe@2x.png");
+  --iti-mobile-popup-margin: 30px;
+}
+
 .iti {
   position: relative;
   display: inline-block;
@@ -25,7 +48,7 @@
   z-index: 0;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  padding-right: 36px;
+  padding-right: var(--iti-right-hand-selected-flag-padding);
   margin-right: 0;
 }
 .iti__flag-container {
@@ -33,7 +56,7 @@
   top: 0;
   bottom: 0;
   right: 0;
-  padding: 1px;
+  padding: var(--iti-border-width);
 }
 .iti__selected-flag {
   z-index: 1;
@@ -41,23 +64,23 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 6px 0 8px;
+  padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
 }
 .iti__arrow {
-  margin-left: 6px;
+  margin-left: var(--iti-arrow-padding);
   width: 0;
   height: 0;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
-  border-top: 4px solid #555;
+  border-left: var(--iti-triangle-border) solid transparent;
+  border-right: var(--iti-triangle-border) solid transparent;
+  border-top: var(--iti-arrow-height) solid var(--iti-arrow-color);
 }
 [dir=rtl] .iti__arrow {
-  margin-right: 6px;
+  margin-right: var(--iti-arrow-padding);
   margin-left: 0;
 }
 .iti__arrow--up {
   border-top: none;
-  border-bottom: 4px solid #555;
+  border-bottom: var(--iti-arrow-height) solid var(--iti-arrow-color);
 }
 .iti__dropdown-content {
   border-radius: 3px;
@@ -67,8 +90,8 @@
   position: absolute;
   z-index: 2;
   margin-top: 3px;
-  margin-left: -1px;
-  border: 1px solid #ccc;
+  margin-left: calc(var(--iti-border-width) * -1);
+  border: var(--iti-border-width) solid var(--iti-border-gray);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 .iti__dropdown-content--dropup {
@@ -82,7 +105,7 @@
   padding: 9px 12px;
 }
 .iti__search-input + .iti__country-list {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--iti-border-gray);
 }
 .iti__country-list {
   list-style: none;
@@ -104,39 +127,39 @@
 }
 .iti__flag-box {
   display: inline-block;
-  width: 20px;
+  width: var(--iti-flag-width);
 }
 .iti__divider {
   padding-bottom: 5px;
   margin-bottom: 5px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: var(--iti-border-width) solid var(--iti-border-gray);
 }
 .iti__country {
   display: flex;
   align-items: center;
-  padding: 8px 8px;
+  padding: 8px var(--iti-spacer-horizontal);
   outline: none;
 }
 .iti__dial-code {
-  color: #999;
+  color: var(--iti-text-gray);
 }
 .iti__country.iti__highlight {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--iti-hover-color);
 }
 .iti__flag-box, .iti__country-name {
-  margin-right: 8px;
+  margin-right: var(--iti-spacer-horizontal);
 }
 [dir=rtl] .iti__flag-box, [dir=rtl] .iti__country-name {
   margin-right: 0;
-  margin-left: 8px;
+  margin-left: var(--iti-spacer-horizontal);
 }
 .iti--allow-dropdown input.iti__tel-input,
 .iti--allow-dropdown input.iti__tel-input[type=text],
 .iti--allow-dropdown input.iti__tel-input[type=tel], .iti--show-selected-dial-code input.iti__tel-input,
 .iti--show-selected-dial-code input.iti__tel-input[type=text],
 .iti--show-selected-dial-code input.iti__tel-input[type=tel] {
-  padding-right: 6px;
-  padding-left: 52px;
+  padding-right: var(--iti-input-padding);
+  padding-left: var(--iti-selected-flag-arrow-padding);
   margin-left: 0;
 }
 [dir=rtl] .iti--allow-dropdown input.iti__tel-input,
@@ -144,8 +167,8 @@
 [dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=tel], [dir=rtl] .iti--show-selected-dial-code input.iti__tel-input,
 [dir=rtl] .iti--show-selected-dial-code input.iti__tel-input[type=text],
 [dir=rtl] .iti--show-selected-dial-code input.iti__tel-input[type=tel] {
-  padding-right: 52px;
-  padding-left: 6px;
+  padding-right: var(--iti-selected-flag-arrow-padding);
+  padding-left: var(--iti-input-padding);
   margin-right: 0;
 }
 .iti--allow-dropdown .iti__flag-container, .iti--show-selected-dial-code .iti__flag-container {
@@ -160,7 +183,7 @@
   cursor: pointer;
 }
 .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--iti-hover-color);
 }
 .iti--allow-dropdown .iti__flag-container:has(+ input[disabled]):hover,
 .iti--allow-dropdown .iti__flag-container:has(+ input[readonly]):hover {
@@ -171,21 +194,21 @@
   background-color: transparent;
 }
 .iti--show-selected-dial-code .iti__selected-flag {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--iti-hover-color);
 }
 .iti--show-selected-dial-code.iti--show-flags .iti__selected-dial-code {
-  margin-left: 6px;
+  margin-left: var(--iti-arrow-padding);
 }
 [dir=rtl] .iti--show-selected-dial-code.iti--show-flags .iti__selected-dial-code {
   margin-left: 0;
-  margin-right: 6px;
+  margin-right: var(--iti-arrow-padding);
 }
 .iti--container {
   position: fixed;
   top: -1000px;
   left: -1000px;
   z-index: 1060;
-  padding: 1px;
+  padding: var(--iti-border-width);
 }
 .iti--container:hover {
   cursor: pointer;
@@ -198,7 +221,7 @@
   left: 0;
   right: 0;
   position: fixed;
-  padding: 30px;
+  padding: var(--iti-mobile-popup-margin);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1297,20 +1320,20 @@
 }
 
 .iti__flag {
-  height: 15px;
+  height: var(--iti-flag-height);
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: url("../img/flags.png?1");
+  background-image: var(--iti-path-flags-1x);
   background-repeat: no-repeat;
-  background-position: 20px 0;
+  background-position: var(--iti-flag-width) 0;
 }
 @media (min-resolution: 2x) {
   .iti__flag {
-    background-image: url("../img/flags@2x.png?1");
+    background-image: var(--iti-path-flags-2x);
   }
 }
 
 .iti__globe {
-  background-image: url("../img/globe.png");
+  background-image: var(--iti-path-globe-1x);
   background-size: contain;
   background-position: right;
   box-shadow: none;
@@ -1318,6 +1341,6 @@
 }
 @media (min-resolution: 2x) {
   .iti__globe {
-    background-image: url("../img/globe@2x.png");
+    background-image: var(--iti-path-globe-2x);
   }
 }
