@@ -1,73 +1,35 @@
-@use "sass:math";
-
-// NOTE: by using !default on all variables, we're saying only declare the variable if it doesn't
-// already exist, which allows devs to declare these variables themselves and assign them any value
-// they want before importing this file
-
-$prefix: iti- !default;
-// rgba is needed for the selected flag hover state to blend in with
-// the border-highlighting some browsers give the input on focus
-$hoverColor: rgba(0, 0, 0, 0.05) !default;
-$greyText: #999 !default;
-$greyBorder: #ccc !default;
-
-$horizontalSpacer: 8px !default;
-$flagHeight: 15px !default;
-$flagWidth: 20px !default;
-// this border width is used for the popup and divider, but it is also
-// assumed to be the border width of the input, which we do not control
-$borderWidth: 1px !default;
-
-$arrowHeight: 4px !default;
-$arrowWidth: 6px !default;
-$triangleBorder: calc(var(--#{$prefix}arrow-width) / 2) !default;
-$arrowPadding: $arrowWidth !default;
-$arrowColor: #555 !default;
-
-$inputPadding: 6px !default;
-$rightHandSelectedFlagWidth: calc(var(--#{$prefix}spacer-horizontal) + var(--#{$prefix}spacer-horizontal) + var(--#{$prefix}flag-width)) !default;
-$selectedFlagArrowWidth: calc(var(--#{$prefix}arrow-padding) + var(--#{$prefix}arrow-padding) + var(--#{$prefix}flag-width) + var(--#{$prefix}spacer-horizontal) + var(--#{$prefix}arrow-width) + var(--#{$prefix}input-padding)) !default;
-
-// image related variables
-$flagsImagePath: "../img/" !default;
-$flagsImageName: "flags" !default;
-$flagsImageExtension: "png" !default;
-// cache busting when we update the sprite
-$flagsImageQuery: "?1" !default;
-
-// enough space for them to click off to close
-$mobilePopupMargin: 30px !default;
-
-
 :root {
-  --#{$prefix}hover-color: #{$hoverColor};
-  --#{$prefix}text-gray: #{$greyText};
-  --#{$prefix}border-gray: #{$greyBorder};
+  // rgba is needed for the selected flag hover state to blend in with
+  // the border-highlighting some browsers give the input on focus
+  --iti-hover-color: rgba(0, 0, 0, 0.05);
+  --iti-text-gray: #999;
+  --iti-border-gray: #ccc;
 
-  --#{$prefix}spacer-horizontal: #{$horizontalSpacer};
-  --#{$prefix}flag-height: #{$flagHeight};
-  --#{$prefix}flag-width: #{$flagWidth};
+  --iti-spacer-horizontal: 8px;
+  --iti-flag-height: 15px;
+  --iti-flag-width: 20px;
+  // this border width is used for the popup and divider, but it is also
+  // assumed to be the border width of the input, which we do not control
+  --iti-border-width: 1px;
 
-  --#{$prefix}border-width: #{$borderWidth};
+  --iti-arrow-height: 4px;
+  --iti-arrow-width: 6px;
+  --iti-triangle-border: calc(var(--iti-arrow-width) / 2);
+  --iti-arrow-padding: 6px;
+  --iti-arrow-color: #555;
 
-  --#{$prefix}arrow-height: #{$arrowHeight};
-  --#{$prefix}arrow-width: #{$arrowWidth};
-  --#{$prefix}triangle-border: #{$triangleBorder};
-  --#{$prefix}arrow-padding: #{$arrowPadding};
-  --#{$prefix}arrow-color: #{$arrowColor};
-
-  --#{$prefix}input-padding: #{$inputPadding};
-  --#{$prefix}right-hand-selected-flag-padding: #{$rightHandSelectedFlagWidth};
-  --#{$prefix}selected-flag-arrow-padding: #{$selectedFlagArrowWidth};
+  --iti-input-padding: 6px;
+  --iti-right-hand-selected-flag-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
+  --iti-selected-flag-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
 
   // image related variables
-  --#{$prefix}path-flags-1x: url('#{$flagsImagePath}#{$flagsImageName}.#{$flagsImageExtension}#{$flagsImageQuery}');
-  --#{$prefix}path-flags-2x: url('#{$flagsImagePath}#{$flagsImageName}@2x.#{$flagsImageExtension}#{$flagsImageQuery}');
-  --#{$prefix}path-globe-1x: url('#{$flagsImagePath}globe.png');
-  --#{$prefix}path-globe-2x: url('#{$flagsImagePath}globe@2x.png');
+  --iti-path-flags-1x: url('../img/flags.png?1');
+  --iti-path-flags-2x: url('../img/flags@2x.png?1');
+  --iti-path-globe-1x: url('../img/globe.png');
+  --iti-path-globe-2x: url('../img/globe@2x.png');
 
   // enough space for them to click off to close
-  --#{$prefix}mobile-popup-margin: #{$mobilePopupMargin};
+  --iti-mobile-popup-margin: 30px;
 }
 
 .iti {
@@ -117,7 +79,7 @@ $mobilePopupMargin: 30px !default;
     // make space for the selected flag on right of input (if disabled allowDropdown)
     // Note: no !important here, as the user may want to tweak this so that the
     // perceived input padding matches their existing styles
-    padding-right: var(--#{$prefix}right-hand-selected-flag-padding);
+    padding-right: var(--iti-right-hand-selected-flag-padding);
 
     // any margin-right here will push the selected-flag away
     margin-right: 0;
@@ -131,7 +93,7 @@ $mobilePopupMargin: 30px !default;
     bottom: 0;
     right: 0;
     // prevent the highlighted child from overlapping the input border
-    padding: var(--#{$prefix}border-width);
+    padding: var(--iti-border-width);
   }
 
   &__selected-flag {
@@ -143,27 +105,27 @@ $mobilePopupMargin: 30px !default;
     // this must be full-height both for the hover highlight, and to push down the
     // dropdown so it appears below the input
     height: 100%;
-    padding: 0 var(--#{$prefix}arrow-padding) 0 var(--#{$prefix}spacer-horizontal);
+    padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
   }
 
   &__arrow {
-    margin-left: var(--#{$prefix}arrow-padding);
+    margin-left: var(--iti-arrow-padding);
 
     // css triangle
     width: 0;
     height: 0;
-    border-left: var(--#{$prefix}triangle-border) solid transparent;
-    border-right: var(--#{$prefix}triangle-border) solid transparent;
-    border-top: var(--#{$prefix}arrow-height) solid var(--#{$prefix}arrow-color);
+    border-left: var(--iti-triangle-border) solid transparent;
+    border-right: var(--iti-triangle-border) solid transparent;
+    border-top: var(--iti-arrow-height) solid var(--iti-arrow-color);
 
     [dir="rtl"] & {
-      margin-right: var(--#{$prefix}arrow-padding);
+      margin-right: var(--iti-arrow-padding);
       margin-left: 0;
     }
 
     &--up {
       border-top: none;
-      border-bottom: var(--#{$prefix}arrow-height) solid var(--#{$prefix}arrow-color);
+      border-bottom: var(--iti-arrow-height) solid var(--iti-arrow-color);
     }
   }
 
@@ -178,9 +140,9 @@ $mobilePopupMargin: 30px !default;
       margin-top: 3px;
 
       // margin-left to compensate for the padding on the parent
-      margin-left: calc(var(--#{$prefix}border-width) * -1);
+      margin-left: calc(var(--iti-border-width) * -1);
 
-      border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-gray);
+      border: var(--iti-border-width) solid var(--iti-border-gray);
       box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     }
 
@@ -200,7 +162,7 @@ $mobilePopupMargin: 30px !default;
     padding: 9px 12px;
 
     & + .iti__country-list {
-      border-top: 1px solid var(--#{$prefix}border-gray);
+      border-top: 1px solid var(--iti-border-gray);
     }
   }
   &__country-list {
@@ -233,14 +195,14 @@ $mobilePopupMargin: 30px !default;
   // dropdown flags need consistent width, so wrap in a container
   &__flag-box {
     display: inline-block;
-    width: var(--#{$prefix}flag-width);
+    width: var(--iti-flag-width);
   }
 
   // the divider below the preferred countries
   &__divider {
     padding-bottom: 5px;
     margin-bottom: 5px;
-    border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-gray);
+    border-bottom: var(--iti-border-width) solid var(--iti-border-gray);
   }
 
   // each country item in dropdown (we must have separate class to differentiate from dividers)
@@ -248,26 +210,26 @@ $mobilePopupMargin: 30px !default;
     // Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines
     display: flex;
     align-items: center;
-    padding: 8px var(--#{$prefix}spacer-horizontal);
+    padding: 8px var(--iti-spacer-horizontal);
     outline: none;
   }
 
   // the dial codes after the country names are greyed out
   &__dial-code {
-    color: var(--#{$prefix}text-gray);
+    color: var(--iti-text-gray);
   }
   &__country.iti__highlight {
-    background-color: var(--#{$prefix}hover-color);
+    background-color: var(--iti-hover-color);
   }
 
   // spacing between country flag, name and dial code
   &__flag-box,
   &__country-name {
-    margin-right: var(--#{$prefix}spacer-horizontal);
+    margin-right: var(--iti-spacer-horizontal);
 
     [dir="rtl"] & {
       margin-right: 0;
-      margin-left: var(--#{$prefix}spacer-horizontal);
+      margin-left: var(--iti-spacer-horizontal);
     }
   }
 
@@ -277,13 +239,13 @@ $mobilePopupMargin: 30px !default;
     input.iti__tel-input,
     input.iti__tel-input[type="text"],
     input.iti__tel-input[type="tel"] {
-      padding-right: var(--#{$prefix}input-padding);
-      padding-left: var(--#{$prefix}selected-flag-arrow-padding);
+      padding-right: var(--iti-input-padding);
+      padding-left: var(--iti-selected-flag-arrow-padding);
       margin-left: 0;
 
       [dir="rtl"] & {
-        padding-right: var(--#{$prefix}selected-flag-arrow-padding);
-        padding-left: var(--#{$prefix}input-padding);
+        padding-right: var(--iti-selected-flag-arrow-padding);
+        padding-left: var(--iti-input-padding);
         margin-right: 0;
       }
     }
@@ -303,7 +265,7 @@ $mobilePopupMargin: 30px !default;
     .iti__flag-container:hover {
       cursor: pointer;
       .iti__selected-flag {
-        background-color: var(--#{$prefix}hover-color);
+        background-color: var(--iti-hover-color);
       }
     }
     // disable hover state when input is disabled
@@ -319,14 +281,14 @@ $mobilePopupMargin: 30px !default;
   &--show-selected-dial-code {
     .iti__selected-flag {
       // now that we have digits in this section, it needs this visual separation
-      background-color: var(--#{$prefix}hover-color);
+      background-color: var(--iti-hover-color);
     }
     &.iti--show-flags .iti__selected-dial-code {
-      margin-left: var(--#{$prefix}arrow-padding);
+      margin-left: var(--iti-arrow-padding);
 
       [dir="rtl"] & {
         margin-left: 0;
-        margin-right: var(--#{$prefix}arrow-padding);
+        margin-right: var(--iti-arrow-padding);
       }
     }
   }
@@ -339,7 +301,7 @@ $mobilePopupMargin: 30px !default;
     // higher than default Bootstrap modal z-index of 1050
     z-index: 1060;
     // to keep styling consistent with .flag-container
-    padding: var(--#{$prefix}border-width);
+    padding: var(--iti-border-width);
     &:hover {
       cursor: pointer;
     }
@@ -355,7 +317,7 @@ $mobilePopupMargin: 30px !default;
     left: 0;
     right: 0;
     position: fixed;
-    padding: var(--#{$prefix}mobile-popup-margin);
+    padding: var(--iti-mobile-popup-margin);
     // short country lists should be vertically centered
     display: flex;
     flex-direction: column;
@@ -382,26 +344,26 @@ $mobilePopupMargin: 30px !default;
 @import "sprite";
 
 .iti__flag {
-  height: var(--#{$prefix}flag-height);
+  height: var(--iti-flag-height);
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: var(--#{$prefix}path-flags-1x);
+  background-image: var(--iti-path-flags-1x);
   background-repeat: no-repeat;
-  background-position: var(--#{$prefix}flag-width) 0;
+  background-position: var(--iti-flag-width) 0;
 
   @media (min-resolution: 2x) {
-    background-image: var(--#{$prefix}path-flags-2x);
+    background-image: var(--iti-path-flags-2x);
   }
 }
 
 // empty state
 .iti__globe {
-  background-image: var(--#{$prefix}path-globe-1x);
+  background-image: var(--iti-path-globe-1x);
   background-size: contain;
   background-position: right;
   box-shadow: none;
   height: 19px;
 
   @media (min-resolution: 2x) {
-    background-image: var(--#{$prefix}path-globe-2x);
+    background-image: var(--iti-path-globe-2x);
   }
 }
