@@ -50,6 +50,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * High-resolution flag images
 * Lots of initialisation options for customisation, as well as public methods for interaction
 * Accessibility provided via ARIA tags
+* Typescript declaration files provided
 
 
 ## Browser Compatibility
@@ -193,21 +194,21 @@ Format the input value (according to the `nationalMode` option) during initialis
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
-When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the callback with the relevant country code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have completed.
+When setting `initialCountry` to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant country code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(...)` to know when initialisation requests like this have completed.
 
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service:  
 ```js
 intlTelInput(input, {
   initialCountry: "auto",
-  geoIpLookup: function(callback) {
+  geoIpLookup: function(success, failure) {
     fetch("https://ipapi.co/json")
       .then(function(res) { return res.json(); })
-      .then(function(data) { callback(data.country_code); })
-      .catch(function() { callback(); });
+      .then(function(data) { success(data.country_code); })
+      .catch(function() { failure(); });
   }
 });
 ```
-_Note that the callback must still be called in the event of an error, hence the use of `catch()` in this example. Tip: store the result in a cookie to avoid repeat lookups!_
+_Note that the `failure` callback must be called in the event of an error, hence the use of `catch()` in this example. Tip: store the result in a cookie to avoid repeat lookups!_
 
 **hiddenInput**  
 Type: `Function` Default: `null`  
@@ -526,7 +527,6 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 
 ## Links
 * List of [integrations with intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Integrations)
-* Typescript type definitions are available in the [DefinitelyTyped repo](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/intl-tel-input/index.d.ts) (more info [here](https://github.com/jackocnr/intl-tel-input/issues/433#issuecomment-228517623))
 
 <img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" /><br />
 Testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
