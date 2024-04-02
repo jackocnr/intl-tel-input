@@ -338,7 +338,7 @@ declare module "src/js/intlTelInput" {
         utilsScript: string;
     }
     type SomeOptions = Partial<AllOptions>;
-    class Iti {
+    export class Iti {
         id: number;
         promise: Promise<[unknown, unknown]>;
         private telInput;
@@ -450,7 +450,7 @@ declare module "react/src/IntlTelInput" {
     import { ReactElement } from "react";
     import PropTypes from "prop-types";
     const IntlTelInput: {
-        ({ initialValue, onChangeNumber, onChangeCountry, onChangeValidity, onChangeErrorCode, usePreciseValidation, initOptions, className, disabled, onFocus, onBlur, placeholder, inputProps, }: {
+        ({ initialValue, onChangeNumber, onChangeCountry, onChangeValidity, onChangeErrorCode, usePreciseValidation, initOptions, inputProps, }: {
             initialValue: string;
             onChangeNumber: (number: string) => void;
             onChangeCountry: (country: string) => void;
@@ -458,16 +458,10 @@ declare module "react/src/IntlTelInput" {
             onChangeErrorCode: (errorCode: number | null) => void;
             usePreciseValidation: boolean;
             initOptions: object;
-            className: string;
-            disabled: boolean;
-            onFocus: () => void;
-            onBlur: () => void;
-            placeholder: string;
             inputProps: object;
         }): ReactElement;
         propTypes: {
             initialValue: PropTypes.Requireable<string>;
-            placeholder: PropTypes.Requireable<string>;
             onChangeNumber: PropTypes.Requireable<(...args: any[]) => any>;
             onChangeCountry: PropTypes.Requireable<(...args: any[]) => any>;
             onChangeValidity: PropTypes.Requireable<(...args: any[]) => any>;
@@ -499,25 +493,16 @@ declare module "react/src/IntlTelInput" {
                 useFullscreenPopup: PropTypes.Requireable<boolean>;
                 utilsScript: PropTypes.Requireable<string>;
             }>>;
-            className: PropTypes.Requireable<string>;
-            disabled: PropTypes.Requireable<boolean>;
-            onFocus: PropTypes.Requireable<(...args: any[]) => any>;
-            onBlur: PropTypes.Requireable<(...args: any[]) => any>;
             inputProps: PropTypes.Requireable<object>;
         };
         defaultProps: {
             initialValue: string;
-            placeholder: string;
             onChangeNumber: () => void;
             onChangeCountry: () => void;
             onChangeValidity: () => void;
             onChangeErrorCode: () => void;
             usePreciseValidation: boolean;
             initOptions: {};
-            className: string;
-            disabled: boolean;
-            onFocus: () => void;
-            onBlur: () => void;
             inputProps: {};
         };
     };

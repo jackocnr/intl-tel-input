@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, ReactElement } from "react";
 import PropTypes from "prop-types";
-import intlTelInput from "../../src/js/intlTelInput";
+import intlTelInput, { Iti } from "../../src/js/intlTelInput";
 
 const IntlTelInput = ({
   initialValue,
@@ -10,11 +10,6 @@ const IntlTelInput = ({
   onChangeErrorCode,
   usePreciseValidation,
   initOptions,
-  className,
-  disabled,
-  onFocus,
-  onBlur,
-  placeholder,
   inputProps,
 }: {
   initialValue: string,
@@ -24,18 +19,13 @@ const IntlTelInput = ({
   onChangeErrorCode: (errorCode: number | null) => void,
   usePreciseValidation: boolean,
   initOptions: object,
-  className: string,
-  disabled: boolean,
-  onFocus: () => void,
-  onBlur: () => void,
-  placeholder: string,
   inputProps: object,
 }): ReactElement => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const itiRef = useRef<any>(null);
+  const itiRef = useRef<Iti>(null);
   
   const update = (): void => {
-    const num = itiRef.current?.getNumber();
+    const num = itiRef.current.getNumber();
     const countryIso = itiRef.current.getSelectedCountryData().iso2;
     // note: this number will be in standard E164 format, but any container component can use
     // intlTelInputUtils.formatNumber() to convert this to another format
@@ -75,11 +65,6 @@ const IntlTelInput = ({
       ref={inputRef}
       onInput={update}
       defaultValue={initialValue}
-      className={className}
-      disabled={disabled}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      placeholder={placeholder}
       {...inputProps}
     />
   );
@@ -87,7 +72,6 @@ const IntlTelInput = ({
 
 IntlTelInput.propTypes = {
   initialValue: PropTypes.string,
-  placeholder: PropTypes.string,
   onChangeNumber: PropTypes.func,
   onChangeCountry: PropTypes.func,
   onChangeValidity: PropTypes.func,
@@ -117,26 +101,17 @@ IntlTelInput.propTypes = {
     useFullscreenPopup: PropTypes.bool,
     utilsScript: PropTypes.string,
   }),
-  className: PropTypes.string,
-  disabled: PropTypes.bool,
-  onFocus: PropTypes.func,
-  onBlur: PropTypes.func,
   inputProps: PropTypes.object,
 };
 
 IntlTelInput.defaultProps = {
   initialValue: "",
-  placeholder: "",
   onChangeNumber: (): void => {},
   onChangeCountry: (): void => {},
   onChangeValidity: (): void => {},
   onChangeErrorCode: (): void => {},
   usePreciseValidation: false,
   initOptions: {},
-  className: "",
-  disabled: false,
-  onFocus: (): void => {},
-  onBlur: (): void => {},
   inputProps: {},
 };
 

@@ -35,6 +35,7 @@ var factoryOutput = (() => {
   // src/js/intlTelInput.ts
   var intlTelInput_exports = {};
   __export(intlTelInput_exports, {
+    Iti: () => Iti,
     default: () => intlTelInput_default
   });
 

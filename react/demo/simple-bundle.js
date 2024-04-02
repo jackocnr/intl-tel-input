@@ -27133,17 +27133,12 @@
     onChangeErrorCode,
     usePreciseValidation,
     initOptions,
-    className,
-    disabled,
-    onFocus,
-    onBlur,
-    placeholder,
     inputProps
   }) => {
     const inputRef = (0, import_react.useRef)(null);
     const itiRef = (0, import_react.useRef)(null);
     const update = () => {
-      const num = itiRef.current?.getNumber();
+      const num = itiRef.current.getNumber();
       const countryIso = itiRef.current.getSelectedCountryData().iso2;
       onChangeNumber(num);
       onChangeCountry(countryIso);
@@ -27177,18 +27172,12 @@
         ref: inputRef,
         onInput: update,
         defaultValue: initialValue,
-        className,
-        disabled,
-        onFocus,
-        onBlur,
-        placeholder,
         ...inputProps
       }
     );
   };
   IntlTelInput.propTypes = {
     initialValue: import_prop_types.default.string,
-    placeholder: import_prop_types.default.string,
     onChangeNumber: import_prop_types.default.func,
     onChangeCountry: import_prop_types.default.func,
     onChangeValidity: import_prop_types.default.func,
@@ -27218,15 +27207,10 @@
       useFullscreenPopup: import_prop_types.default.bool,
       utilsScript: import_prop_types.default.string
     }),
-    className: import_prop_types.default.string,
-    disabled: import_prop_types.default.bool,
-    onFocus: import_prop_types.default.func,
-    onBlur: import_prop_types.default.func,
     inputProps: import_prop_types.default.object
   };
   IntlTelInput.defaultProps = {
     initialValue: "",
-    placeholder: "",
     onChangeNumber: () => {
     },
     onChangeCountry: () => {
@@ -27237,12 +27221,6 @@
     },
     usePreciseValidation: false,
     initOptions: {},
-    className: "",
-    disabled: false,
-    onFocus: () => {
-    },
-    onBlur: () => {
-    },
     inputProps: {}
   };
   var IntlTelInput_default = IntlTelInput;

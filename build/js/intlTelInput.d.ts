@@ -338,7 +338,7 @@ declare module "intlTelInput" {
         utilsScript: string;
     }
     type SomeOptions = Partial<AllOptions>;
-    class Iti {
+    export class Iti {
         id: number;
         promise: Promise<[unknown, unknown]>;
         private telInput;

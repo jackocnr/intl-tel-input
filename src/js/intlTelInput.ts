@@ -494,7 +494,7 @@ const forEachInstance = (method: string): void => {
 
 // this is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
-class Iti {
+export class Iti {
   // can't be private as it's called from intlTelInput convenience wrapper
   id: number;
   // not private!
