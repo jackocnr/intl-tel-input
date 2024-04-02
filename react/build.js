@@ -1,25 +1,21 @@
 const { build } = require("esbuild");
+const packageJson = require("../package.json");
 
-const entryFile = "react/src/IntlTelInput.tsx";
-const shared = {
+build({
   bundle: true,
-  entryPoints: [entryFile],
+  entryPoints: ["react/src/IntlTelInput.tsx"],
   external: ["react", "react-dom", "prop-types"],
   logLevel: "info",
   minify: true,
-};
-
-build({
-  ...shared,
+  define: { "process.env.VERSION": `"${packageJson.version}"` },
   format: "esm",
   outfile: "react/build/IntlTelInput.js",
 });
 
-
-
 // demo files
 const demoShared = {
   bundle: true,
+  define: { "process.env.VERSION": `"${packageJson.version}"` },
   format: "iife",
 };
 
