@@ -45,7 +45,7 @@ describe("getNumber: ", function() {
     describe("selecting American Samoa and then typing a national number", function() {
 
       beforeEach(function() {
-        selectFlag("as");
+        selectCountry("as");
         input.val("6847331234").keyup();
       });
 

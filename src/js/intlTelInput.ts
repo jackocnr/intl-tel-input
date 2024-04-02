@@ -512,10 +512,10 @@ export class Iti {
   private dialCodeToIso2Map: object;
   private dialCodes: object;
   private preferredCountries: Country[];
-  private flagsContainer: HTMLElement;
-  private selectedFlag: HTMLElement;
-  private selectedFlagInner: HTMLElement;
-  private selectedFlagA11yText: HTMLElement;
+  private countryContainer: HTMLElement;
+  private selectedCountry: HTMLElement;
+  private selectedCountryInner: HTMLElement;
+  private selectedCountryA11yText: HTMLElement;
   private selectedDialCode: HTMLElement;
   private dropdownArrow: HTMLElement;
   private dropdownContent: HTMLElement;
@@ -530,8 +530,8 @@ export class Iti {
 
   private _handleHiddenInputSubmit: () => void;
   private _handleLabelClick: (e: Event) => void;
-  private _handleClickSelectedFlag: () => void;
-  private _handleFlagsContainerKeydown: (e: KeyboardEvent) => void;
+  private _handleClickSelectedCountry: () => void;
+  private _handleCountryContainerKeydown: (e: KeyboardEvent) => void;
   private _handleInputEvent: (e: InputEvent) => void;
   private _handleKeydownEvent: (e: KeyboardEvent) => void;
   private _handleWindowScroll: () => void;
@@ -609,10 +609,10 @@ export class Iti {
     // generate the markup
     this._generateMarkup();
 
-    // set the initial state of the input value and the selected flag
+    // set the initial state of the input value and the selected country
     this._setInitialState();
 
-    // start all of the event listeners: input keydown, selectedFlag click
+    // start all of the event listeners: input keydown, selectedCountry click
     this._initListeners();
 
     // utils script, and auto country
@@ -763,7 +763,7 @@ export class Iti {
     }
   }
 
-  // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
+  // generate all of the markup for the plugin: the selected country overlay, and the dropdown
   private _generateMarkup(): void {
     this.telInput.classList.add("iti__tel-input");
 
@@ -812,22 +812,22 @@ export class Iti {
     const wrapper = createEl("div", { class: parentClass });
     this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
     
-    // if we're showing flags or dial codes, we need the flags container etc
+    // if we're showing flags or dial codes, we need the country container etc
     if (showFlags || showSelectedDialCode) {
-      this.flagsContainer = createEl(
+      this.countryContainer = createEl(
         "div",
-        { class: "iti__flag-container" },
+        { class: "iti__country-container" },
         wrapper,
       );
 
-    // selected flag (displayed on left of input while allowDropdown is enabled, otherwise to right)
+    // selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
     // when countrySearch disabled: using Aria tags for "Select-Only Combobox Example"
     // https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/
-      this.selectedFlag = createEl(
+      this.selectedCountry = createEl(
         "button",
         {
           type: "button",
-          class: "iti__selected-flag",
+          class: "iti__selected-country",
           ...(allowDropdown && {
             "aria-expanded": "false",
             "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country",
@@ -836,43 +836,43 @@ export class Iti {
             ...(countrySearch ? { role: "combobox" } : {}),
           }),
         },
-        this.flagsContainer,
+        this.countryContainer,
       );
 
-      // we now include the selected flag element even when showFlags is disabled,
+      // we now include the selected country element even when showFlags is disabled,
       // as need to show globe icon for showSelectedDialCode empty state
-      this.selectedFlagInner = createEl("div", null, this.selectedFlag);
-      this.selectedFlagA11yText = createEl(
+      this.selectedCountryInner = createEl("div", null, this.selectedCountry);
+      this.selectedCountryA11yText = createEl(
         "span",
         { class: "iti__a11y-text" },
-        this.selectedFlagInner,
+        this.selectedCountryInner,
       );
     }
 
     wrapper.appendChild(this.telInput);
 
-    if (this.selectedFlag && this.telInput.disabled) {
-      this.selectedFlag.setAttribute("aria-disabled", "true");
+    if (this.selectedCountry && this.telInput.disabled) {
+      this.selectedCountry.setAttribute("aria-disabled", "true");
     }
 
     if (showSelectedDialCode) {
       this.selectedDialCode = createEl(
         "div",
         { class: "iti__selected-dial-code" },
-        this.selectedFlag,
+        this.selectedCountry,
       );
     }
 
     if (allowDropdown) {
       if (!this.telInput.disabled) {
         // make element focusable and tab navigable
-        this.selectedFlag.setAttribute("tabindex", "0");
+        this.selectedCountry.setAttribute("tabindex", "0");
       }
 
       this.dropdownArrow = createEl(
         "div",
         { class: "iti__arrow", "aria-hidden": "true" },
-        this.selectedFlag,
+        this.selectedCountry,
       );
 
       const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
@@ -945,7 +945,7 @@ export class Iti {
         this.dropdown = createEl("div", { class: dropdownClasses });
         this.dropdown.appendChild(this.dropdownContent);
       } else {
-        this.flagsContainer.appendChild(this.dropdownContent);
+        this.countryContainer.appendChild(this.dropdownContent);
       }
     }
 
@@ -1008,7 +1008,7 @@ export class Iti {
     }
   }
 
-  // set the initial state of the input value and the selected flag by:
+  // set the initial state of the input value and the selected country by:
   // 1. extracting a dial code from the given number
   // 2. using explicit initialCountry
   // 3. picking the first preferred country
@@ -1016,7 +1016,7 @@ export class Iti {
   private _setInitialState(overrideAutoCountry: boolean = false): void {
     // fix firefox bug: when first load page (with input with value set to number with intl dial
     // code) and initialising plugin removes the dial code from the input, then refresh page,
-    // and we try to init plugin again but this time on number without dial code so get grey flag
+    // and we try to init plugin again but this time on number without dial code so show globe icon
     const attributeValue = this.telInput.getAttribute("value");
     const inputValue = this.telInput.value;
     const useAttribute =
@@ -1029,13 +1029,13 @@ export class Iti {
     const { initialCountry } = this.options;
 
     // if we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
-    // flag, else fall back to the default country
+    // country, else fall back to the default country
     if (dialCode && !isRegionlessNanpNumber) {
-      this._updateFlagFromNumber(val);
+      this._updateCountryFromNumber(val);
     } else if (initialCountry !== "auto" || overrideAutoCountry) {
       const lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
       const isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
-      // see if we should select a flag
+      // see if we should select a country
       if (isValidInitialCountry) {
         this._setCountry(lowerInitialCountry);
       } else {
@@ -1056,7 +1056,7 @@ export class Iti {
     }
   }
 
-  // initialise the main event listeners: input keyup, and click selected flag
+  // initialise the main event listeners: input keyup, and click selected country
   private _initListeners(): void {
     this._initTelInputListeners();
     if (this.options.allowDropdown) {
@@ -1085,7 +1085,7 @@ export class Iti {
 
   // initialise the dropdown listeners
   private _initDropdownListeners(): void {
-    // hack for input nested inside label (which is valid markup): clicking the selected-flag to
+    // hack for input nested inside label (which is valid markup): clicking the selected country to
     // open the dropdown would then automatically trigger a 2nd click on the input which would
     // close it again
     this._handleLabelClick = (e: Event): void => {
@@ -1102,7 +1102,7 @@ export class Iti {
     }
 
     // toggle country dropdown on click
-    this._handleClickSelectedFlag = (): void => {
+    this._handleClickSelectedCountry = (): void => {
       // only intercept this event if we're opening the dropdown
       // else let it bubble up to the top ("click-off-to-close" listener)
       // we cannot just stopPropagation as it may be needed to close another instance
@@ -1114,10 +1114,10 @@ export class Iti {
         this._openDropdown();
       }
     };
-    this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
+    this.selectedCountry.addEventListener("click", this._handleClickSelectedCountry);
 
-    // open dropdown if selected flag is focused and they press up/down/space/enter
-    this._handleFlagsContainerKeydown = (e: KeyboardEvent): void => {
+    // open dropdown if selected country is focused and they press up/down/space/enter
+    this._handleCountryContainerKeydown = (e: KeyboardEvent): void => {
       const isDropdownHidden =
         this.dropdownContent.classList.contains("iti__hide");
 
@@ -1137,9 +1137,9 @@ export class Iti {
         this._closeDropdown();
       }
     };
-    this.flagsContainer.addEventListener(
+    this.countryContainer.addEventListener(
       "keydown",
-      this._handleFlagsContainerKeydown,
+      this._handleCountryContainerKeydown,
     );
   }
 
@@ -1212,9 +1212,9 @@ export class Iti {
   private _initTelInputListeners(): void {
     const { strictMode, formatAsYouType } = this.options;
     let userOverrideFormatting = false;
-    // update flag on input event
+    // update country on input event
     this._handleInputEvent = (e: InputEvent): void => {
-      if (this._updateFlagFromNumber(this.telInput.value)) {
+      if (this._updateCountryFromNumber(this.telInput.value)) {
         this._triggerCountryChange();
       }
 
@@ -1288,7 +1288,7 @@ export class Iti {
       this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
     }
     this.dropdownContent.classList.remove("iti__hide");
-    this.selectedFlag.setAttribute("aria-expanded", "true");
+    this.selectedCountry.setAttribute("aria-expanded", "true");
 
     this._setDropdownPosition();
 
@@ -1603,9 +1603,9 @@ export class Iti {
     this.telInput.value = number;
   }
 
-  // check if need to select a new flag based on the given number
+  // check if need to select a new country based on the given number
   // Note: called from _setInitialState, keyup handler, setNumber
-  private _updateFlagFromNumber(fullNumber: string): boolean {
+  private _updateCountryFromNumber(fullNumber: string): boolean {
     const plusIndex = fullNumber.indexOf("+");
     // if it contains a plus, discard any chars before it e.g. accidental space char.
     // this keeps the selected country auto-updating correctly, which we want as
@@ -1614,7 +1614,7 @@ export class Iti {
 
     // if we already have US/Canada selected, make sure the number starts
     // with a +1 so _getDialCode will be able to extract the area code
-    // update: if we dont yet have selectedCountryData, but we're here (trying to update the flag
+    // update: if we dont yet have selectedCountryData, but we're here (trying to update the country
     // from the number), that means we're initialising the plugin with a number that already has a
     // dial code, so fine to ignore this bit
     const selectedDialCode = this.selectedCountryData.dialCode;
@@ -1651,8 +1651,8 @@ export class Iti {
       const isRegionlessNanpNumber =
         selectedDialCode === "1" && isRegionlessNanp(numeric);
 
-      // only update the flag if:
-      // A) NOT (we currently have a NANP flag selected, and the number is a regionlessNanp)
+      // only update the country if:
+      // A) NOT (we currently have a NANP country selected, and the number is a regionlessNanp)
       // AND
       // B) the right country is not already selected
       if (!isRegionlessNanpNumber && !alreadySelected) {
@@ -1671,7 +1671,7 @@ export class Iti {
       // bad chars
       iso2 = "";
     } else if ((!number || number === "+") && !this.selectedCountryData.iso2) {
-      // if no selected flag, and user either clears the input, or just types a plus, then show default
+      // if no selected country, and user either clears the input, or just types a plus, then show default
       iso2 = this.defaultCountry;
     }
 
@@ -1691,7 +1691,7 @@ export class Iti {
     this.highlightedItem = listItem;
     this.highlightedItem.classList.add("iti__highlight");
     this.highlightedItem.setAttribute("aria-selected", "true");
-    this.selectedFlag.setAttribute(
+    this.selectedCountry.setAttribute(
       "aria-activedescendant",
       listItem.getAttribute("id") || "",
     );
@@ -1721,8 +1721,8 @@ export class Iti {
     throw new Error(`No country data for '${iso2}'`);
   }
 
-  // update the selected flag, dial code (if showSelectedDialCode), placeholder, title, and active list item
-  // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
+  // update the selected country, dial code (if showSelectedDialCode), placeholder, title, and active list item
+  // Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry
   private _setCountry(iso2?: string | null): boolean {
     const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
 
@@ -1740,7 +1740,7 @@ export class Iti {
     }
 
     // update the flag class and the a11y text
-    if (this.selectedFlagInner) {
+    if (this.selectedCountryInner) {
       let flagClass = "";
       let a11yText = "";
       if (iso2) {
@@ -1753,11 +1753,11 @@ export class Iti {
         flagClass = "iti__flag iti__globe";
         a11yText = i18n.noCountrySelected || "No country selected";
       }
-      this.selectedFlagInner.className = flagClass;
-      this.selectedFlagA11yText.textContent = a11yText;
+      this.selectedCountryInner.className = flagClass;
+      this.selectedCountryA11yText.textContent = a11yText;
     }
 
-    this._setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode);
+    this._setSelectedCountryTitleAttribute(iso2, showSelectedDialCode);
 
     // update the selected dial code
     if (showSelectedDialCode) {
@@ -1766,14 +1766,14 @@ export class Iti {
         : "";
       this.selectedDialCode.innerHTML = dialCode;
       // offsetWidth is zero if input is in a hidden container during initialisation
-      const selectedFlagWidth =
-        this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
+      const selectedCountryWidth =
+        this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
 
       // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
       if (this.isRTL) {
-        this.telInput.style.paddingRight = `${selectedFlagWidth + 6}px`;
+        this.telInput.style.paddingRight = `${selectedCountryWidth + 6}px`;
       } else {
-        this.telInput.style.paddingLeft = `${selectedFlagWidth + 6}px`;
+        this.telInput.style.paddingLeft = `${selectedCountryWidth + 6}px`;
       }
     }
 
@@ -1807,7 +1807,7 @@ export class Iti {
       }
     }
 
-    // return if the flag has changed or not
+    // return if the country has changed or not
     return prevCountry.iso2 !== iso2;
   }
 
@@ -1836,8 +1836,8 @@ export class Iti {
     }
   }
 
-  private _setSelectedCountryFlagTitleAttribute(iso2: string | null = null, showSelectedDialCode: boolean): void {
-    if (!this.selectedFlag) {
+  private _setSelectedCountryTitleAttribute(iso2: string | null = null, showSelectedDialCode: boolean): void {
+    if (!this.selectedCountry) {
       return;
     }
 
@@ -1852,28 +1852,28 @@ export class Iti {
       title = "Unknown";
     }
 
-    this.selectedFlag.setAttribute("title", title);
+    this.selectedCountry.setAttribute("title", title);
   }
 
   // when the input is in a hidden container during initialisation, we must inject some markup
   // into the end of the DOM to calculate the correct offsetWidth
-  // NOTE: this is only used when showSelectedDialCode is enabled, so flagsContainer and selectedFlag
+  // NOTE: this is only used when showSelectedDialCode is enabled, so countryContainer and selectedCountry
   // will definitely exist
-  private _getHiddenSelectedFlagWidth(): number {
+  private _getHiddenSelectedCountryWidth(): number {
     // to get the right styling to apply, all we need is a shallow clone of the container,
-    // and then to inject a deep clone of the selectedFlag element
+    // and then to inject a deep clone of the selectedCountry element
     if (this.telInput.parentNode) {
       const containerClone = this.telInput.parentNode.cloneNode(false) as HTMLElement;
       containerClone.style.visibility = "hidden";
       document.body.appendChild(containerClone);
   
-      const flagsContainerClone = this.flagsContainer.cloneNode() as HTMLElement;
-      containerClone.appendChild(flagsContainerClone);
+      const countryContainerClone = this.countryContainer.cloneNode() as HTMLElement;
+      containerClone.appendChild(countryContainerClone);
   
-      const selectedFlagClone = this.selectedFlag.cloneNode(true) as HTMLElement;
-      flagsContainerClone.appendChild(selectedFlagClone);
+      const selectedCountryClone = this.selectedCountry.cloneNode(true) as HTMLElement;
+      countryContainerClone.appendChild(selectedCountryClone);
   
-      const width = selectedFlagClone.offsetWidth;
+      const width = selectedCountryClone.offsetWidth;
       document.body.removeChild(containerClone);
       return width;
     }
@@ -1913,8 +1913,8 @@ export class Iti {
 
   // called when the user selects a list item from the dropdown
   private _selectListItem(listItem: HTMLElement): void {
-    // update selected flag and active list item
-    const flagChanged = this._setCountry(
+    // update selected country and active list item
+    const countryChanged = this._setCountry(
       listItem.getAttribute("data-country-code"),
     );
     this._closeDropdown();
@@ -1924,7 +1924,7 @@ export class Iti {
     // focus the input
     this.telInput.focus();
 
-    if (flagChanged) {
+    if (countryChanged) {
       this._triggerCountryChange();
     }
   }
@@ -1932,8 +1932,8 @@ export class Iti {
   // close the dropdown and unbind any listeners
   private _closeDropdown(): void {
     this.dropdownContent.classList.add("iti__hide");
-    this.selectedFlag.setAttribute("aria-expanded", "false");
-    this.selectedFlag.removeAttribute("aria-activedescendant");
+    this.selectedCountry.setAttribute("aria-expanded", "false");
+    this.selectedCountry.removeAttribute("aria-activedescendant");
     if (this.highlightedItem) {
       this.highlightedItem.setAttribute("aria-selected", "false");
     }
@@ -2143,7 +2143,7 @@ export class Iti {
       // we must set this even if there is an initial val in the input: in case the initial val is
       // invalid and they delete it - they should see their auto country
       this.defaultCountry = window.intlTelInputGlobals.autoCountry;
-      // if there's no initial value in the input, then update the flag
+      // if there's no initial value in the input, then update the country
       if (!this.telInput.value) {
         this.setCountry(this.defaultCountry);
       }
@@ -2176,13 +2176,13 @@ export class Iti {
     if (this.options.allowDropdown) {
       // make sure the dropdown is closed (and unbind listeners)
       this._closeDropdown();
-      this.selectedFlag.removeEventListener(
+      this.selectedCountry.removeEventListener(
         "click",
-        this._handleClickSelectedFlag,
+        this._handleClickSelectedCountry,
       );
-      this.flagsContainer.removeEventListener(
+      this.countryContainer.removeEventListener(
         "keydown",
-        this._handleFlagsContainerKeydown,
+        this._handleCountryContainerKeydown,
       );
       // label click hack
       const label = this.telInput.closest("label");
@@ -2249,7 +2249,7 @@ export class Iti {
     return -99;
   }
 
-  // get the country data for the currently selected flag
+  // get the country data for the currently selected country
   getSelectedCountryData(): SelectedCountryData {
     return this.selectedCountryData;
   }
@@ -2287,7 +2287,7 @@ export class Iti {
       : null;
   }
 
-  // update the selected flag, and update the input val accordingly
+  // update the selected country, and update the input val accordingly
   setCountry(iso2: string): void {
     const iso2Lower = iso2.toLowerCase();
     // check if already selected
@@ -2298,13 +2298,13 @@ export class Iti {
     }
   }
 
-  // set the input value and update the flag
+  // set the input value and update the country
   setNumber(number: string): void {
-    // we must update the flag first, which updates this.selectedCountryData, which is used for
+    // we must update the country first, which updates this.selectedCountryData, which is used for
     // formatting the number before displaying it
-    const flagChanged = this._updateFlagFromNumber(number);
+    const countryChanged = this._updateCountryFromNumber(number);
     this._updateValFromNumber(number);
-    if (flagChanged) {
+    if (countryChanged) {
       this._triggerCountryChange();
     }
   }

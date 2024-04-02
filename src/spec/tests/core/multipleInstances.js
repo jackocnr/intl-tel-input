@@ -40,16 +40,16 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
   });
 
   it("selecting an item from the first input dropdown only updates the flag on that input", function() {
-    selectFlag(chinaIso2Code);
-    expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaIso2Code}`);
-    expect(getSelectedFlagElement(input2)).toHaveClass("iti__globe");
+    selectCountry(chinaIso2Code);
+    expect(getSelectedCountryElement()).toHaveClass(`iti__${chinaIso2Code}`);
+    expect(getSelectedCountryElement(input2)).toHaveClass("iti__globe");
   });
 
   it("updating the number on the first input only updates the flag on that input", function() {
     input.val(chinaDialCode + " 123456");
     triggerKeyOnInput(" ");
-    expect(getSelectedFlagElement()).toHaveClass(`iti__${chinaIso2Code}`);
-    expect(getSelectedFlagElement(input2)).toHaveClass("iti__globe");
+    expect(getSelectedCountryElement()).toHaveClass(`iti__${chinaIso2Code}`);
+    expect(getSelectedCountryElement(input2)).toHaveClass("iti__globe");
   });
 
 
@@ -57,7 +57,7 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
   describe("clicking open dropdown on the first input", function() {
 
     beforeEach(function() {
-      getSelectedFlagContainer()[0].click();
+      getSelectedCountryContainer()[0].click();
     });
 
     it("only opens the dropdown on that input", function() {
@@ -66,7 +66,7 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
     });
 
     it("then clicking open dropdown on the second will close the first and open the second", function() {
-      getSelectedFlagContainer(input2)[0].click();
+      getSelectedCountryContainer(input2)[0].click();
       expect(getListElement()).not.toBeVisible();
       expect(getListElement(input2)).toBeVisible();
     });

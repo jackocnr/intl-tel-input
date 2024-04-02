@@ -22,7 +22,7 @@ describe("initialCountry: ", function() {
     });
 
     it("sets the selected flag correctly", function() {
-      expect(getSelectedFlagElement()).toHaveClass(`iti__${initialCountry}`);
+      expect(getSelectedCountryElement()).toHaveClass(`iti__${initialCountry}`);
     });
 
   });
@@ -41,7 +41,7 @@ describe("initialCountry: ", function() {
     });
 
     it("sets the state correctly: selected flag", function() {
-      expect(getSelectedFlagElement()).toHaveClass(`iti__${initialCountry}`);
+      expect(getSelectedCountryElement()).toHaveClass(`iti__${initialCountry}`);
     });
 
   });

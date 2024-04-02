@@ -23,7 +23,7 @@ describe("getSelectedCountryData: init plugin to test public method getSelectedC
   });
 
   it("change country by selecting a flag gets the right country data", function() {
-    selectFlag("ch");
+    selectCountry("ch");
     expect(iti.getSelectedCountryData().iso2).toEqual("ch");
   });
 

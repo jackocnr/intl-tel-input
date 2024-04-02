@@ -36,7 +36,7 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
     describe("changing the country to the UK", function() {
 
       beforeEach(function() {
-        selectFlag("gb");
+        selectCountry("gb");
       });
 
       it("updates the placeholder to an example national number for the UK", function() {
@@ -64,7 +64,7 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
     describe("changing the country to the UK", function() {
 
       beforeEach(function() {
-        selectFlag("gb");
+        selectCountry("gb");
       });
 
       it("updates the placeholder to an example national number for the UK", function() {

@@ -16,7 +16,7 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
   });
 
   it("updates the selected flag", function() {
-    expect(getSelectedFlagElement()).toHaveClass(`iti__${iso2}`);
+    expect(getSelectedCountryElement()).toHaveClass(`iti__${iso2}`);
   });
 
   it("does not insert the dial code", function() {
@@ -34,7 +34,7 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
       });
 
       it("has the country name and dial code in the flag's title", function() {
-        expect(getSelectedFlagContainer().attr("title")).toEqual("United Kingdom: +44");
+        expect(getSelectedCountryContainer().attr("title")).toEqual("United Kingdom: +44");
       });
     });
 
@@ -48,7 +48,7 @@ describe("setCountry: init plugin and calling public method setCountry()", funct
       });
 
       it("has the country name but not the dial code in the flag's title", function() {
-        expect(getSelectedFlagContainer().attr("title")).toEqual("United Kingdom");
+        expect(getSelectedCountryContainer().attr("title")).toEqual("United Kingdom");
       });
     });
   });

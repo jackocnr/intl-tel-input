@@ -37,7 +37,7 @@ describe("countrychange event:", function() {
     });
 
     it("selecting another country triggers the event", function() {
-      selectFlag("gb");
+      selectCountry("gb");
       expect(spy).toHaveBeenCalled();
     });
 

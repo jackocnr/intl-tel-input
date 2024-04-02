@@ -88,7 +88,7 @@ module.exports = function(grunt) {
             match: /_updateValFromNumber/g,
             replacement: '_u'
           }, {
-            match: /_updateFlagFromNumber/g,
+            match: /_updateCountryFromNumber/g,
             replacement: '_v'
           }, {
             match: /_highlightListItem/g,
@@ -100,10 +100,10 @@ module.exports = function(grunt) {
             match: /_setCountry/g,
             replacement: '_z'
           }, {
-            match: /_setSelectedCountryFlagTitleAttribute/g,
+            match: /_setSelectedCountryTitleAttribute/g,
             replacement: '_z3'
           }, {
-            match: /_getHiddenSelectedFlagWidth/g,
+            match: /_getHiddenSelectedCountryWidth/g,
             replacement: '_z2'
           }, {
             match: /_updatePlaceholder/g,
@@ -172,10 +172,10 @@ module.exports = function(grunt) {
             match: /_handleLabelClick/g,
             replacement: '_a9'
           }, {
-            match: /_handleClickSelectedFlag/g,
+            match: /_handleClickSelectedCountry/g,
             replacement: '_a10'
           }, {
-            match: /_handleFlagsContainerKeydown/g,
+            match: /_handleCountryContainerKeydown/g,
             replacement: '_a11'
           }, {
             match: /_handleInputEvent/g,
@@ -230,10 +230,10 @@ module.exports = function(grunt) {
             match: /\.defaultCountry/g,
             replacement: '.j'
           }, {
-            match: /\.flagsContainer/g,
+            match: /\.countryContainer/g,
             replacement: '.k'
           }, {
-            match: /\.selectedFlagInner/g,
+            match: /\.selectedCountryInner/g,
             replacement: '.l'
           }, {
             match: /\.countries/g,

@@ -85,34 +85,34 @@ var getPreferredCountriesLength = function(i) {
   return getListElement(i).find("li.iti__preferred").length;
 };
 
-var getSelectedFlagContainer = function(i) {
+var getSelectedCountryContainer = function(i) {
   i = i || input;
-  return i.parent().find(".iti__selected-flag");
+  return i.parent().find(".iti__selected-country");
 };
 
-var getSelectedFlagElement = function(i) {
+var getSelectedCountryElement = function(i) {
   i = i || input;
-  return getSelectedFlagContainer(i).find(".iti__flag");
+  return getSelectedCountryContainer(i).find(".iti__flag");
 };
 
 var getSelectedDialCodeElement = function(i) {
   i = i || input;
-  return getSelectedFlagContainer(i).find(".iti__selected-dial-code");
+  return getSelectedCountryContainer(i).find(".iti__selected-dial-code");
 };
 
-var getFlagsContainerElement = function(i) {
+var getCountryContainerElement = function(i) {
   i = i || input;
-  return i.parent().find(".iti__flag-container");
+  return i.parent().find(".iti__country-container");
 };
 
-var selectFlag = function(iso2, i) {
+var selectCountry = function(iso2, i) {
   i = i || input;
-  getSelectedFlagContainer(i)[0].click();
+  getSelectedCountryContainer(i)[0].click();
   getListElement(i).find("li[data-country-code='" + iso2 + "']")[0].click();
 };
 
 var openCountryDropDown = function() {
-  getSelectedFlagContainer()[0].click();
+  getSelectedCountryContainer()[0].click();
 };
 
 var putCursorAtEnd = function() {
@@ -153,6 +153,6 @@ var triggerKeyOnBody = function(key) {
   triggerKey(document, 'input', key);
 };
 
-var triggerKeyOnFlagsContainerElement = function(key) {
-  triggerKey(getFlagsContainerElement()[0], 'keydown', key);
+var triggerKeyOnCountryContainerElement = function(key) {
+  triggerKey(getCountryContainerElement()[0], 'keydown', key);
 };

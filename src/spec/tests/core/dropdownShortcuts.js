@@ -20,26 +20,26 @@ describe("dropdown shortcuts: init plugin (with countrySearch=false, nationalMod
   describe("when selected flag element has focus", function() {
 
     beforeEach(function() {
-      getFlagsContainerElement().focus();
+      getCountryContainerElement().focus();
     });
 
     it("pressing UP opens the dropdown", function() {
-      triggerKeyOnFlagsContainerElement("ArrowUp");
+      triggerKeyOnCountryContainerElement("ArrowUp");
       expect(getListElement()).toBeVisible();
     });
 
     it("pressing DOWN opens the dropdown", function() {
-      triggerKeyOnFlagsContainerElement("ArrowDown");
+      triggerKeyOnCountryContainerElement("ArrowDown");
       expect(getListElement()).toBeVisible();
     });
 
     it("pressing SPACE opens the dropdown", function() {
-      triggerKeyOnFlagsContainerElement(" ");
+      triggerKeyOnCountryContainerElement(" ");
       expect(getListElement()).toBeVisible();
     });
 
     it("pressing ENTER opens the dropdown", function() {
-      triggerKeyOnFlagsContainerElement("Enter");
+      triggerKeyOnCountryContainerElement("Enter");
       expect(getListElement()).toBeVisible();
     });
 
@@ -50,7 +50,7 @@ describe("dropdown shortcuts: init plugin (with countrySearch=false, nationalMod
   describe("when dropdown is opened", function() {
 
     beforeEach(function() {
-      getSelectedFlagContainer()[0].click();
+      getSelectedCountryContainer()[0].click();
     });
 
     it("pressing esc closes the popup", function() {
@@ -138,7 +138,7 @@ describe("dropdown shortcuts: init plugin (with countrySearch=false, nationalMod
         });
 
         it("updates the selected flag", function() {
-          expect(getSelectedFlagElement()).toHaveClass("iti__al");
+          expect(getSelectedCountryElement()).toHaveClass("iti__al");
         });
 
       });

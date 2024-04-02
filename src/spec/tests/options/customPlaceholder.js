@@ -23,7 +23,7 @@ describe("customPlaceholder: init plugin with autoPlaceholder=polite and customP
   });
 
   it("selecting UK updates the placeholder", function() {
-    selectFlag("gb");
+    selectCountry("gb");
     expect(input.attr("placeholder")).toEqual("e.g. 07400 123456");
   });
 

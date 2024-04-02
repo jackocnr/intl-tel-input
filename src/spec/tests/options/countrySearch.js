@@ -21,7 +21,7 @@ describe("countrySearch option:", function() {
       iti = window.intlTelInput(input[0], {
         countrySearch: false,
       });
-      getSelectedFlagContainer().click();
+      getSelectedCountryContainer().click();
     });
 
     it("does not insert the search input", function() {
@@ -38,7 +38,7 @@ describe("countrySearch option:", function() {
       iti = window.intlTelInput(input[0], {
         countrySearch: true,
       });
-      getSelectedFlagContainer().click();
+      getSelectedCountryContainer().click();
     });
 
     it("inserts the search input", function() {
@@ -55,7 +55,7 @@ describe("countrySearch option:", function() {
       jasmine.clock().tick(100); // allow for the (intentional) 100ms delay on the search handler
       expect(getListLength()).toEqual(6);
       triggerKeyOnBody('Enter');
-      expect(getSelectedFlagElement()).toHaveClass("iti__cx");
+      expect(getSelectedCountryElement()).toHaveClass("iti__cx");
     });
 
   });

@@ -1513,10 +1513,10 @@ var factoryOutput = (() => {
     dialCodeToIso2Map;
     dialCodes;
     preferredCountries;
-    flagsContainer;
-    selectedFlag;
-    selectedFlagInner;
-    selectedFlagA11yText;
+    countryContainer;
+    selectedCountry;
+    selectedCountryInner;
+    selectedCountryA11yText;
     selectedDialCode;
     dropdownArrow;
     dropdownContent;
@@ -1530,8 +1530,8 @@ var factoryOutput = (() => {
     defaultCountry;
     _handleHiddenInputSubmit;
     _handleLabelClick;
-    _handleClickSelectedFlag;
-    _handleFlagsContainerKeydown;
+    _handleClickSelectedCountry;
+    _handleCountryContainerKeydown;
     _handleInputEvent;
     _handleKeydownEvent;
     _handleWindowScroll;
@@ -1684,7 +1684,7 @@ var factoryOutput = (() => {
         }
       }
     }
-    // generate all of the markup for the plugin: the selected flag overlay, and the dropdown
+    // generate all of the markup for the plugin: the selected country overlay, and the dropdown
     _generateMarkup() {
       this.telInput.classList.add("iti__tel-input");
       if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
@@ -1721,16 +1721,16 @@ var factoryOutput = (() => {
       const wrapper = createEl("div", { class: parentClass });
       this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
       if (showFlags || showSelectedDialCode) {
-        this.flagsContainer = createEl(
+        this.countryContainer = createEl(
           "div",
-          { class: "iti__flag-container" },
+          { class: "iti__country-container" },
           wrapper
         );
-        this.selectedFlag = createEl(
+        this.selectedCountry = createEl(
           "button",
           {
             type: "button",
-            class: "iti__selected-flag",
+            class: "iti__selected-country",
             ...allowDropdown && {
               "aria-expanded": "false",
               "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country",
@@ -1739,34 +1739,34 @@ var factoryOutput = (() => {
               ...countrySearch ? { role: "combobox" } : {}
             }
           },
-          this.flagsContainer
+          this.countryContainer
         );
-        this.selectedFlagInner = createEl("div", null, this.selectedFlag);
-        this.selectedFlagA11yText = createEl(
+        this.selectedCountryInner = createEl("div", null, this.selectedCountry);
+        this.selectedCountryA11yText = createEl(
           "span",
           { class: "iti__a11y-text" },
-          this.selectedFlagInner
+          this.selectedCountryInner
         );
       }
       wrapper.appendChild(this.telInput);
-      if (this.selectedFlag && this.telInput.disabled) {
-        this.selectedFlag.setAttribute("aria-disabled", "true");
+      if (this.selectedCountry && this.telInput.disabled) {
+        this.selectedCountry.setAttribute("aria-disabled", "true");
       }
       if (showSelectedDialCode) {
         this.selectedDialCode = createEl(
           "div",
           { class: "iti__selected-dial-code" },
-          this.selectedFlag
+          this.selectedCountry
         );
       }
       if (allowDropdown) {
         if (!this.telInput.disabled) {
-          this.selectedFlag.setAttribute("tabindex", "0");
+          this.selectedCountry.setAttribute("tabindex", "0");
         }
         this.dropdownArrow = createEl(
           "div",
           { class: "iti__arrow", "aria-hidden": "true" },
-          this.selectedFlag
+          this.selectedCountry
         );
         const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
         this.dropdownContent = createEl("div", {
@@ -1833,7 +1833,7 @@ var factoryOutput = (() => {
           this.dropdown = createEl("div", { class: dropdownClasses });
           this.dropdown.appendChild(this.dropdownContent);
         } else {
-          this.flagsContainer.appendChild(this.dropdownContent);
+          this.countryContainer.appendChild(this.dropdownContent);
         }
       }
       if (hiddenInput) {
@@ -1883,7 +1883,7 @@ var factoryOutput = (() => {
         listItem.insertAdjacentHTML("beforeend", content);
       }
     }
-    // set the initial state of the input value and the selected flag by:
+    // set the initial state of the input value and the selected country by:
     // 1. extracting a dial code from the given number
     // 2. using explicit initialCountry
     // 3. picking the first preferred country
@@ -1897,7 +1897,7 @@ var factoryOutput = (() => {
       const isRegionlessNanpNumber = isRegionlessNanp(val);
       const { initialCountry } = this.options;
       if (dialCode && !isRegionlessNanpNumber) {
-        this._updateFlagFromNumber(val);
+        this._updateCountryFromNumber(val);
       } else if (initialCountry !== "auto" || overrideAutoCountry) {
         const lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
         const isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
@@ -1915,7 +1915,7 @@ var factoryOutput = (() => {
         this._updateValFromNumber(val);
       }
     }
-    // initialise the main event listeners: input keyup, and click selected flag
+    // initialise the main event listeners: input keyup, and click selected country
     _initListeners() {
       this._initTelInputListeners();
       if (this.options.allowDropdown) {
@@ -1953,13 +1953,13 @@ var factoryOutput = (() => {
       if (label) {
         label.addEventListener("click", this._handleLabelClick);
       }
-      this._handleClickSelectedFlag = () => {
+      this._handleClickSelectedCountry = () => {
         if (this.dropdownContent.classList.contains("iti__hide") && !this.telInput.disabled && !this.telInput.readOnly) {
           this._openDropdown();
         }
       };
-      this.selectedFlag.addEventListener("click", this._handleClickSelectedFlag);
-      this._handleFlagsContainerKeydown = (e) => {
+      this.selectedCountry.addEventListener("click", this._handleClickSelectedCountry);
+      this._handleCountryContainerKeydown = (e) => {
         const isDropdownHidden = this.dropdownContent.classList.contains("iti__hide");
         if (isDropdownHidden && ["ArrowUp", "ArrowDown", " ", "Enter"].includes(e.key)) {
           e.preventDefault();
@@ -1970,9 +1970,9 @@ var factoryOutput = (() => {
           this._closeDropdown();
         }
       };
-      this.flagsContainer.addEventListener(
+      this.countryContainer.addEventListener(
         "keydown",
-        this._handleFlagsContainerKeydown
+        this._handleCountryContainerKeydown
       );
     }
     // init many requests: utils script / geo ip lookup
@@ -2026,7 +2026,7 @@ var factoryOutput = (() => {
       const { strictMode, formatAsYouType } = this.options;
       let userOverrideFormatting = false;
       this._handleInputEvent = (e) => {
-        if (this._updateFlagFromNumber(this.telInput.value)) {
+        if (this._updateCountryFromNumber(this.telInput.value)) {
           this._triggerCountryChange();
         }
         const isFormattingChar = e && e.data && /[^+0-9]/.test(e.data);
@@ -2085,7 +2085,7 @@ var factoryOutput = (() => {
         this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
       }
       this.dropdownContent.classList.remove("iti__hide");
-      this.selectedFlag.setAttribute("aria-expanded", "true");
+      this.selectedCountry.setAttribute("aria-expanded", "true");
       this._setDropdownPosition();
       if (this.activeItem && !countrySearch) {
         this._highlightListItem(this.activeItem, false);
@@ -2299,9 +2299,9 @@ var factoryOutput = (() => {
       number = this._beforeSetNumber(number);
       this.telInput.value = number;
     }
-    // check if need to select a new flag based on the given number
+    // check if need to select a new country based on the given number
     // Note: called from _setInitialState, keyup handler, setNumber
-    _updateFlagFromNumber(fullNumber) {
+    _updateCountryFromNumber(fullNumber) {
       const plusIndex = fullNumber.indexOf("+");
       let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
       const selectedDialCode = this.selectedCountryData.dialCode;
@@ -2350,7 +2350,7 @@ var factoryOutput = (() => {
       this.highlightedItem = listItem;
       this.highlightedItem.classList.add("iti__highlight");
       this.highlightedItem.setAttribute("aria-selected", "true");
-      this.selectedFlag.setAttribute(
+      this.selectedCountry.setAttribute(
         "aria-activedescendant",
         listItem.getAttribute("id") || ""
       );
@@ -2377,8 +2377,8 @@ var factoryOutput = (() => {
       }
       throw new Error(`No country data for '${iso2}'`);
     }
-    // update the selected flag, dial code (if showSelectedDialCode), placeholder, title, and active list item
-    // Note: called from _setInitialState, _updateFlagFromNumber, _selectListItem, setCountry
+    // update the selected country, dial code (if showSelectedDialCode), placeholder, title, and active list item
+    // Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry
     _setCountry(iso2) {
       const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
       const prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
@@ -2386,7 +2386,7 @@ var factoryOutput = (() => {
       if (this.selectedCountryData.iso2) {
         this.defaultCountry = this.selectedCountryData.iso2;
       }
-      if (this.selectedFlagInner) {
+      if (this.selectedCountryInner) {
         let flagClass = "";
         let a11yText = "";
         if (iso2) {
@@ -2398,18 +2398,18 @@ var factoryOutput = (() => {
           flagClass = "iti__flag iti__globe";
           a11yText = i18n.noCountrySelected || "No country selected";
         }
-        this.selectedFlagInner.className = flagClass;
-        this.selectedFlagA11yText.textContent = a11yText;
+        this.selectedCountryInner.className = flagClass;
+        this.selectedCountryA11yText.textContent = a11yText;
       }
-      this._setSelectedCountryFlagTitleAttribute(iso2, showSelectedDialCode);
+      this._setSelectedCountryTitleAttribute(iso2, showSelectedDialCode);
       if (showSelectedDialCode) {
         const dialCode = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : "";
         this.selectedDialCode.innerHTML = dialCode;
-        const selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
+        const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
         if (this.isRTL) {
-          this.telInput.style.paddingRight = `${selectedFlagWidth + 6}px`;
+          this.telInput.style.paddingRight = `${selectedCountryWidth + 6}px`;
         } else {
-          this.telInput.style.paddingLeft = `${selectedFlagWidth + 6}px`;
+          this.telInput.style.paddingLeft = `${selectedCountryWidth + 6}px`;
         }
       }
       this._updatePlaceholder();
@@ -2458,8 +2458,8 @@ var factoryOutput = (() => {
         }
       }
     }
-    _setSelectedCountryFlagTitleAttribute(iso2 = null, showSelectedDialCode) {
-      if (!this.selectedFlag) {
+    _setSelectedCountryTitleAttribute(iso2 = null, showSelectedDialCode) {
+      if (!this.selectedCountry) {
         return;
       }
       let title;
@@ -2470,22 +2470,22 @@ var factoryOutput = (() => {
       } else {
         title = "Unknown";
       }
-      this.selectedFlag.setAttribute("title", title);
+      this.selectedCountry.setAttribute("title", title);
     }
     // when the input is in a hidden container during initialisation, we must inject some markup
     // into the end of the DOM to calculate the correct offsetWidth
-    // NOTE: this is only used when showSelectedDialCode is enabled, so flagsContainer and selectedFlag
+    // NOTE: this is only used when showSelectedDialCode is enabled, so countryContainer and selectedCountry
     // will definitely exist
-    _getHiddenSelectedFlagWidth() {
+    _getHiddenSelectedCountryWidth() {
       if (this.telInput.parentNode) {
         const containerClone = this.telInput.parentNode.cloneNode(false);
         containerClone.style.visibility = "hidden";
         document.body.appendChild(containerClone);
-        const flagsContainerClone = this.flagsContainer.cloneNode();
-        containerClone.appendChild(flagsContainerClone);
-        const selectedFlagClone = this.selectedFlag.cloneNode(true);
-        flagsContainerClone.appendChild(selectedFlagClone);
-        const width = selectedFlagClone.offsetWidth;
+        const countryContainerClone = this.countryContainer.cloneNode();
+        containerClone.appendChild(countryContainerClone);
+        const selectedCountryClone = this.selectedCountry.cloneNode(true);
+        countryContainerClone.appendChild(selectedCountryClone);
+        const width = selectedCountryClone.offsetWidth;
         document.body.removeChild(containerClone);
         return width;
       }
@@ -2516,21 +2516,21 @@ var factoryOutput = (() => {
     }
     // called when the user selects a list item from the dropdown
     _selectListItem(listItem) {
-      const flagChanged = this._setCountry(
+      const countryChanged = this._setCountry(
         listItem.getAttribute("data-country-code")
       );
       this._closeDropdown();
       this._updateDialCode(listItem.getAttribute("data-dial-code"));
       this.telInput.focus();
-      if (flagChanged) {
+      if (countryChanged) {
         this._triggerCountryChange();
       }
     }
     // close the dropdown and unbind any listeners
     _closeDropdown() {
       this.dropdownContent.classList.add("iti__hide");
-      this.selectedFlag.setAttribute("aria-expanded", "false");
-      this.selectedFlag.removeAttribute("aria-activedescendant");
+      this.selectedCountry.setAttribute("aria-expanded", "false");
+      this.selectedCountry.removeAttribute("aria-activedescendant");
       if (this.highlightedItem) {
         this.highlightedItem.setAttribute("aria-selected", "false");
       }
@@ -2705,13 +2705,13 @@ var factoryOutput = (() => {
     destroy() {
       if (this.options.allowDropdown) {
         this._closeDropdown();
-        this.selectedFlag.removeEventListener(
+        this.selectedCountry.removeEventListener(
           "click",
-          this._handleClickSelectedFlag
+          this._handleClickSelectedCountry
         );
-        this.flagsContainer.removeEventListener(
+        this.countryContainer.removeEventListener(
           "keydown",
-          this._handleFlagsContainerKeydown
+          this._handleCountryContainerKeydown
         );
         const label = this.telInput.closest("label");
         if (label) {
@@ -2764,7 +2764,7 @@ var factoryOutput = (() => {
       }
       return -99;
     }
-    // get the country data for the currently selected flag
+    // get the country data for the currently selected country
     getSelectedCountryData() {
       return this.selectedCountryData;
     }
@@ -2792,7 +2792,7 @@ var factoryOutput = (() => {
       }
       return window.intlTelInputUtils ? window.intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
     }
-    // update the selected flag, and update the input val accordingly
+    // update the selected country, and update the input val accordingly
     setCountry(iso2) {
       const iso2Lower = iso2.toLowerCase();
       if (this.selectedCountryData.iso2 !== iso2Lower) {
@@ -2801,11 +2801,11 @@ var factoryOutput = (() => {
         this._triggerCountryChange();
       }
     }
-    // set the input value and update the flag
+    // set the input value and update the country
     setNumber(number) {
-      const flagChanged = this._updateFlagFromNumber(number);
+      const countryChanged = this._updateCountryFromNumber(number);
       this._updateValFromNumber(number);
-      if (flagChanged) {
+      if (countryChanged) {
         this._triggerCountryChange();
       }
     }

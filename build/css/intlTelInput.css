@@ -12,8 +12,8 @@
   --iti-arrow-padding: 6px;
   --iti-arrow-color: #555;
   --iti-input-padding: 6px;
-  --iti-right-hand-selected-flag-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
-  --iti-selected-flag-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
+  --iti-right-hand-selected-country-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
+  --iti-selected-country-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
   --iti-path-flags-1x: url("../img/flags.png?1");
   --iti-path-flags-2x: url("../img/flags@2x.png?1");
   --iti-path-globe-1x: url("../img/globe.png");
@@ -48,17 +48,17 @@
   z-index: 0;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  padding-right: var(--iti-right-hand-selected-flag-padding);
+  padding-right: var(--iti-right-hand-selected-country-padding);
   margin-right: 0;
 }
-.iti__flag-container {
+.iti__country-container {
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
   padding: var(--iti-border-width);
 }
-.iti__selected-flag {
+.iti__selected-country {
   z-index: 1;
   position: relative;
   display: flex;
@@ -168,7 +168,7 @@
 .iti--show-selected-dial-code input.iti__tel-input[type=text],
 .iti--show-selected-dial-code input.iti__tel-input[type=tel] {
   padding-right: var(--iti-input-padding);
-  padding-left: var(--iti-selected-flag-arrow-padding);
+  padding-left: var(--iti-selected-country-arrow-padding);
   margin-left: 0;
 }
 [dir=rtl] .iti--allow-dropdown input.iti__tel-input,
@@ -176,33 +176,33 @@
 [dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=tel], [dir=rtl] .iti--show-selected-dial-code input.iti__tel-input,
 [dir=rtl] .iti--show-selected-dial-code input.iti__tel-input[type=text],
 [dir=rtl] .iti--show-selected-dial-code input.iti__tel-input[type=tel] {
-  padding-right: var(--iti-selected-flag-arrow-padding);
+  padding-right: var(--iti-selected-country-arrow-padding);
   padding-left: var(--iti-input-padding);
   margin-right: 0;
 }
-.iti--allow-dropdown .iti__flag-container, .iti--show-selected-dial-code .iti__flag-container {
+.iti--allow-dropdown .iti__country-container, .iti--show-selected-dial-code .iti__country-container {
   right: auto;
   left: 0;
 }
-[dir=rtl] .iti--allow-dropdown .iti__flag-container, [dir=rtl] .iti--show-selected-dial-code .iti__flag-container {
+[dir=rtl] .iti--allow-dropdown .iti__country-container, [dir=rtl] .iti--show-selected-dial-code .iti__country-container {
   right: 0;
   left: auto;
 }
-.iti--allow-dropdown .iti__flag-container:hover, .iti--allow-dropdown .iti__flag-container:hover button {
+.iti--allow-dropdown .iti__country-container:hover, .iti--allow-dropdown .iti__country-container:hover button {
   cursor: pointer;
 }
-.iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
+.iti--allow-dropdown .iti__country-container:hover .iti__selected-country {
   background-color: var(--iti-hover-color);
 }
-.iti--allow-dropdown .iti__flag-container:has(+ input[disabled]):hover,
-.iti--allow-dropdown .iti__flag-container:has(+ input[readonly]):hover {
+.iti--allow-dropdown .iti__country-container:has(+ input[disabled]):hover,
+.iti--allow-dropdown .iti__country-container:has(+ input[readonly]):hover {
   cursor: default;
 }
-.iti--allow-dropdown .iti__flag-container:has(+ input[disabled]):hover .iti__selected-flag,
-.iti--allow-dropdown .iti__flag-container:has(+ input[readonly]):hover .iti__selected-flag {
+.iti--allow-dropdown .iti__country-container:has(+ input[disabled]):hover .iti__selected-country,
+.iti--allow-dropdown .iti__country-container:has(+ input[readonly]):hover .iti__selected-country {
   background-color: transparent;
 }
-.iti--show-selected-dial-code .iti__selected-flag {
+.iti--show-selected-dial-code .iti__selected-country {
   background-color: var(--iti-hover-color);
 }
 .iti--show-selected-dial-code.iti--show-flags .iti__selected-dial-code {

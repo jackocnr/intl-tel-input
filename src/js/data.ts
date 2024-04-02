@@ -1,4 +1,4 @@
-// Array of country objects for the flag dropdown.
+// Array of country objects for the country dropdown.
 
 // Here is the criteria for the plugin to support a given country/territory
 // - It has an iso2 code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2

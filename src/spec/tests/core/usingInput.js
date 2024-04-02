@@ -32,14 +32,14 @@ describe("using input: ", function() {
       });
 
       it("updates the selected flag", function() {
-        expect(getSelectedFlagElement()).toHaveClass("iti__gb");
+        expect(getSelectedCountryElement()).toHaveClass("iti__gb");
       });
 
       // this was a bug
       it("clearing the input again does not change the selected flag", function() {
         input.val("");
         triggerKeyOnInput(" ");
-        expect(getSelectedFlagElement()).toHaveClass("iti__gb");
+        expect(getSelectedCountryElement()).toHaveClass("iti__gb");
       });
 
     });
@@ -57,11 +57,11 @@ describe("using input: ", function() {
       });
 
       it("still updates the flag correctly", function() {
-        expect(getSelectedFlagElement()).toHaveClass("iti__gb");
+        expect(getSelectedCountryElement()).toHaveClass("iti__gb");
       });
 
       it("then changing the flag updates the number correctly", function() {
-        selectFlag("zw");
+        selectCountry("zw");
         expect(getInputVal()).toEqual("+263 " + telNo + key);
       });
 
@@ -80,11 +80,11 @@ describe("using input: ", function() {
       });
 
       it("still updates the flag correctly", function() {
-        expect(getSelectedFlagElement()).toHaveClass("iti__gb");
+        expect(getSelectedCountryElement()).toHaveClass("iti__gb");
       });
 
       it("then changing the flag updates the number correctly", function() {
-        selectFlag("zw");
+        selectCountry("zw");
         expect(getInputVal()).toEqual("+263 " + telNo + key);
       });
 
@@ -100,7 +100,7 @@ describe("using input: ", function() {
       });
 
       it("selects the bangladesh flag", function() {
-        expect(getSelectedFlagElement()).toHaveClass("iti__bd");
+        expect(getSelectedCountryElement()).toHaveClass("iti__bd");
       });
 
       // this was a bug: https://github.com/jackocnr/intl-tel-input/issues/533
@@ -112,7 +112,7 @@ describe("using input: ", function() {
         });
 
         it("changes to US flag", function() {
-          expect(getSelectedFlagElement()).toHaveClass("iti__us");
+          expect(getSelectedCountryElement()).toHaveClass("iti__us");
         });
 
       });
@@ -134,12 +134,12 @@ describe("using input: ", function() {
     describe("selecting Canada and then typing a regionless number", function() {
 
       beforeEach(function() {
-        selectFlag("ca");
+        selectCountry("ca");
         input.val("8005551212").keyup();
       });
 
       it("leaves canada selected", function() {
-        expect(getSelectedFlagElement()).toHaveClass("iti__ca");
+        expect(getSelectedCountryElement()).toHaveClass("iti__ca");
       });
 
     });

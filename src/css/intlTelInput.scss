@@ -1,5 +1,5 @@
 :root {
-  // rgba is needed for the selected flag hover state to blend in with
+  // rgba is needed for the selected country hover state to blend in with
   // the border-highlighting some browsers give the input on focus
   --iti-hover-color: rgba(0, 0, 0, 0.05);
   --iti-text-gray: #999;
@@ -19,8 +19,8 @@
   --iti-arrow-color: #555;
 
   --iti-input-padding: 6px;
-  --iti-right-hand-selected-flag-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
-  --iti-selected-flag-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
+  --iti-right-hand-selected-country-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
+  --iti-selected-country-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
 
   // image related variables
   --iti-path-flags-1x: url('../img/flags.png?1');
@@ -33,7 +33,7 @@
 }
 
 .iti {
-  // need position on the container so the selected flag can be
+  // need position on the container so the selected country can be
   // absolutely positioned over the input
   position: relative;
   // keep the input's default inline properties
@@ -65,7 +65,7 @@
   input.iti__tel-input[type="text"],
   input.iti__tel-input[type="tel"] {
     position: relative;
-    // input is bottom level, below selected flag and dropdown
+    // input is bottom level, below selected country and dropdown
     z-index: 0;
 
     // any vertical margin the user has on their inputs would no longer work as expected
@@ -76,16 +76,16 @@
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 
-    // make space for the selected flag on right of input (if disabled allowDropdown)
+    // make space for the selected country on right of input (if disabled allowDropdown)
     // Note: no !important here, as the user may want to tweak this so that the
     // perceived input padding matches their existing styles
-    padding-right: var(--iti-right-hand-selected-flag-padding);
+    padding-right: var(--iti-right-hand-selected-country-padding);
 
-    // any margin-right here will push the selected-flag away
+    // any margin-right here will push the selected-country away
     margin-right: 0;
   }
 
-  &__flag-container {
+  &__country-container {
     // positioned over the top of the input
     position: absolute;
     // full height
@@ -96,7 +96,7 @@
     padding: var(--iti-border-width);
   }
 
-  &__selected-flag {
+  &__selected-country {
     // render above the input
     z-index: 1;
     position: relative;
@@ -243,23 +243,23 @@
     }
   }
 
-  // these settings are independent of each other, but both move selected flag to left of input
+  // these settings are independent of each other, but both move selected country to left of input
   &--allow-dropdown,
   &--show-selected-dial-code {
     input.iti__tel-input,
     input.iti__tel-input[type="text"],
     input.iti__tel-input[type="tel"] {
       padding-right: var(--iti-input-padding);
-      padding-left: var(--iti-selected-flag-arrow-padding);
+      padding-left: var(--iti-selected-country-arrow-padding);
       margin-left: 0;
 
       [dir="rtl"] & {
-        padding-right: var(--iti-selected-flag-arrow-padding);
+        padding-right: var(--iti-selected-country-arrow-padding);
         padding-left: var(--iti-input-padding);
         margin-right: 0;
       }
     }
-    .iti__flag-container {
+    .iti__country-container {
       right: auto;
       left: 0;
 
@@ -271,28 +271,28 @@
   }
 
   &--allow-dropdown {
-    // hover state - show flag is clickable
-    .iti__flag-container:hover {
+    // hover state - show country is clickable
+    .iti__country-container:hover {
       // add specificity to override default browser button cursor styling
       &, & button {
         cursor: pointer;
       }
-      .iti__selected-flag {
+      .iti__selected-country {
         background-color: var(--iti-hover-color);
       }
     }
     // disable hover state when input is disabled
-    .iti__flag-container:has(+ input[disabled]):hover,
-    .iti__flag-container:has(+ input[readonly]):hover {
+    .iti__country-container:has(+ input[disabled]):hover,
+    .iti__country-container:has(+ input[readonly]):hover {
       cursor: default;
-      .iti__selected-flag {
+      .iti__selected-country {
         background-color: transparent;
       }
     }
   }
 
   &--show-selected-dial-code {
-    .iti__selected-flag {
+    .iti__selected-country {
       // now that we have digits in this section, it needs this visual separation
       background-color: var(--iti-hover-color);
     }
@@ -313,7 +313,7 @@
     left: -1000px;
     // higher than default Bootstrap modal z-index of 1050
     z-index: 1060;
-    // to keep styling consistent with .flag-container
+    // to keep styling consistent with .country-container
     padding: var(--iti-border-width);
     &:hover {
       cursor: pointer;

@@ -44,7 +44,7 @@ describe("onlyCountries option:", function() {
     it("entering +7 defaults to the top priority country (Russia)", function() {
       input.val("+");
       triggerKeyOnInput("7");
-      expect(getSelectedFlagElement()).toHaveClass("iti__ru");
+      expect(getSelectedCountryElement()).toHaveClass("iti__ru");
     });
 
   });

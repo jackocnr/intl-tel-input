@@ -27,7 +27,7 @@ describe("dropdownContainer:", function() {
     describe("clicking the selected flag", function() {
 
       beforeEach(function() {
-        getSelectedFlagContainer().click();
+        getSelectedCountryContainer().click();
       });
 
       it("shows the dropdown", function() {
@@ -58,7 +58,7 @@ describe("dropdownContainer:", function() {
     describe("triggering the dropdown", function() {
 
       beforeEach(function() {
-        getSelectedFlagContainer().click();
+        getSelectedCountryContainer().click();
       });
 
       it("adds the markup to that element and makes it visible in the document", function() {

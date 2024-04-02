@@ -14,7 +14,7 @@ describe("destroy: init plugin to test public method destroy", function() {
 
   it("adds the markup", function() {
     expect(getParentElement()).toHaveClass("iti");
-    expect(getSelectedFlagContainer()).toExist();
+    expect(getSelectedCountryContainer()).toExist();
     expect(getListElement()).toExist();
   });
 
@@ -35,7 +35,7 @@ describe("destroy: init plugin to test public method destroy", function() {
 
     it("removes the markup", function() {
       expect(getParentElement()).not.toHaveClass("iti");
-      expect(getSelectedFlagContainer()).not.toExist();
+      expect(getSelectedCountryContainer()).not.toExist();
       expect(getListElement()).not.toExist();
     });
 

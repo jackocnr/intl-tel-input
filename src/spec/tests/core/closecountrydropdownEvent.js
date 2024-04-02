@@ -39,7 +39,7 @@ describe("close:countrydropdown event:", function() {
     });
 
     it("selecting another country triggers the event", function() {
-      selectFlag("af");
+      selectCountry("af");
       expect(spy).toHaveBeenCalled();
     });
 
