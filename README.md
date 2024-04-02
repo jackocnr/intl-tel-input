@@ -83,14 +83,13 @@ _Note: We have now dropped support for all versions of Internet Explorer because
 
 2. Import the CSS: `import 'intl-tel-input/build/css/intlTelInput.css';`
 
-3. Override the path to globe.png and flags.png in your CSS
+3. Set the path to flags.png and globe.png in your CSS, by overriding the CSS variables
   ```css
-  .iti__globe { background-image: url("path/to/globe.png"); }
-  .iti__flag { background-image: url("path/to/flags.png"); }
-
-  @media (min-resolution: 2x) {
-    .iti__globe { background-image: url("path/to/globe@2x.png"); }
-    .iti__flag { background-image: url("path/to/flags@2x.png"); }
+  .iti {
+    --iti-path-flags-1x: url('path/to/flags.png');
+    --iti-path-flags-2x: url('path/to/flags@2x.png');
+    --iti-path-globe-1x: url('path/to/globe.png');
+    --iti-path-globe-2x: url('path/to/globe@2x.png');
   }
   ```
 
@@ -112,14 +111,13 @@ _Note: We have now dropped support for all versions of Internet Explorer because
   <link rel="stylesheet" href="path/to/intlTelInput.css">
   ```
 
-3. Override the path to globe.png and flags.png in your CSS
+3. Set the path to flags.png and globe.png in your CSS, by overriding the CSS variables
   ```css
-  .iti__globe { background-image: url("path/to/globe.png"); }
-  .iti__flag { background-image: url("path/to/flags.png"); }
-
-  @media (min-resolution: 2x) {
-    .iti__globe { background-image: url("path/to/globe@2x.png"); }
-    .iti__flag { background-image: url("path/to/flags@2x.png"); }
+  .iti {
+    --iti-path-flags-1x: url('path/to/flags.png');
+    --iti-path-flags-2x: url('path/to/flags@2x.png');
+    --iti-path-globe-1x: url('path/to/globe.png');
+    --iti-path-globe-2x: url('path/to/globe@2x.png');
   }
   ```
 
