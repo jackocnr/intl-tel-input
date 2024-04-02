@@ -18,7 +18,7 @@ const IntlTelInput = ({
   onChangeValidity: (valid: boolean) => void,
   onChangeErrorCode: (errorCode: number | null) => void,
   usePreciseValidation: boolean,
-  initOptions: object,
+  initOptions: SomeOptions,
   inputProps: object,
 }): ReactElement => {
   const inputRef = useRef<HTMLInputElement | null>(null);

@@ -320,7 +320,10 @@ interface AllOptions {
   useFullscreenPopup: boolean;
   utilsScript: string;
 }
-type SomeOptions = Partial<AllOptions>;
+// globalise this as useful in react component too
+declare global {
+  type SomeOptions = Partial<AllOptions>;
+}
 
 import allCountries from "./data";
 

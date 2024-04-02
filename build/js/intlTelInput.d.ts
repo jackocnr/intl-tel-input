@@ -337,7 +337,9 @@ declare module "intlTelInput" {
         useFullscreenPopup: boolean;
         utilsScript: string;
     }
-    type SomeOptions = Partial<AllOptions>;
+    global {
+        type SomeOptions = Partial<AllOptions>;
+    }
     export class Iti {
         id: number;
         promise: Promise<[unknown, unknown]>;

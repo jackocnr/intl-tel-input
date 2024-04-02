@@ -337,7 +337,9 @@ declare module "src/js/intlTelInput" {
         useFullscreenPopup: boolean;
         utilsScript: string;
     }
-    type SomeOptions = Partial<AllOptions>;
+    global {
+        type SomeOptions = Partial<AllOptions>;
+    }
     export class Iti {
         id: number;
         promise: Promise<[unknown, unknown]>;
@@ -457,7 +459,7 @@ declare module "react/src/IntlTelInput" {
             onChangeValidity: (valid: boolean) => void;
             onChangeErrorCode: (errorCode: number | null) => void;
             usePreciseValidation: boolean;
-            initOptions: object;
+            initOptions: SomeOptions;
             inputProps: object;
         }): ReactElement;
         propTypes: {
