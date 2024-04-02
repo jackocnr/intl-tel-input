@@ -46,7 +46,7 @@ const getExampleNumber = (countryCode, national, numberType, useE164) => {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.getExampleNumberForType(
       countryCode,
-      numberType
+      numberType,
     );
     let format;
     if (useE164) {
@@ -168,7 +168,7 @@ const numberFormat = {
   "E164": 0,
   "INTERNATIONAL": 1,
   "NATIONAL": 2,
-  "RFC3966": 3
+  "RFC3966": 3,
 };
 
 // copied this from i18n.phonenumbers.PhoneNumberType in https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js and put the keys in quotes to force closure compiler to preserve the keys
@@ -185,7 +185,7 @@ const numberType = {
   "PAGER": 8,
   "UAN": 9,
   "VOICEMAIL": 10,
-  "UNKNOWN": -1
+  "UNKNOWN": -1,
 };
 
 // copied this from i18n.phonenumbers.PhoneNumberUtil.ValidationResult in https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js and again put the keys in quotes.

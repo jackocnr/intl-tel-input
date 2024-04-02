@@ -51,6 +51,7 @@ declare module "intlTelInput" {
             intlTelInputUtils: Utils;
         }
     }
+    type NumberType = "FIXED_LINE_OR_MOBILE" | "FIXED_LINE" | "MOBILE" | "PAGER" | "PERSONAL_NUMBER" | "PREMIUM_RATE" | "SHARED_COST" | "TOLL_FREE" | "UAN" | "UNKNOWN" | "VOICEMAIL" | "VOIP";
     type SelectedCountryData = Country | {
         name?: string;
         iso2?: string;
@@ -328,7 +329,7 @@ declare module "intlTelInput" {
         initialCountry: string;
         nationalMode: boolean;
         onlyCountries: string[];
-        placeholderNumberType: string;
+        placeholderNumberType: NumberType;
         preferredCountries: string[];
         showFlags: boolean;
         showSelectedDialCode: boolean;
@@ -440,8 +441,8 @@ declare module "intlTelInput" {
         isValidNumberPrecise(): boolean | null;
         setCountry(iso2: string): void;
         setNumber(number: string): void;
-        setPlaceholderNumberType(type: string): void;
+        setPlaceholderNumberType(type: NumberType): void;
     }
-    const intlTelInput: (input: HTMLInputElement, options: SomeOptions) => Iti;
+    const intlTelInput: (input: HTMLInputElement, options?: SomeOptions) => Iti;
     export default intlTelInput;
 }

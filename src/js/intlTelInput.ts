@@ -29,6 +29,19 @@ declare global {
     intlTelInputUtils: Utils;
   }
 }
+type NumberType =
+  "FIXED_LINE_OR_MOBILE"
+  | "FIXED_LINE"
+  | "MOBILE"
+  | "PAGER"
+  | "PERSONAL_NUMBER"
+  | "PREMIUM_RATE"
+  | "SHARED_COST"
+  | "TOLL_FREE"
+  | "UAN"
+  | "UNKNOWN"
+  | "VOICEMAIL"
+  | "VOIP";
 type SelectedCountryData = Country | { name?: string, iso2?: string, dialCode?: string };
 interface AllOptions {
   allowDropdown: boolean;
@@ -299,7 +312,7 @@ interface AllOptions {
   initialCountry: string;
   nationalMode: boolean;
   onlyCountries: string[];
-  placeholderNumberType: string;
+  placeholderNumberType: NumberType;
   preferredCountries: string[];
   showFlags: boolean;
   showSelectedDialCode: boolean;
@@ -2297,7 +2310,7 @@ class Iti {
   }
 
   // set the placeholder number typ
-  setPlaceholderNumberType(type: string): void {
+  setPlaceholderNumberType(type: NumberType): void {
     this.options.placeholderNumberType = type;
     this._updatePlaceholder();
   }
@@ -2374,7 +2387,7 @@ if (typeof window === "object") {
 }
 
 // convenience wrapper
-const intlTelInput = (input: HTMLInputElement, options: SomeOptions): Iti => {
+const intlTelInput = (input: HTMLInputElement, options?: SomeOptions): Iti => {
   const iti = new Iti(input, options);
   iti._init();
   input.setAttribute("data-intl-tel-input-id", iti.id.toString());
