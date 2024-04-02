@@ -27142,7 +27142,7 @@
       const countryIso = itiRef.current.getSelectedCountryData().iso2;
       onChangeNumber(num);
       onChangeCountry(countryIso);
-      const isValid = usePreciseValidation ? itiRef.current?.isValidNumberPrecise() : itiRef.current.isValidNumber();
+      const isValid = usePreciseValidation ? itiRef.current.isValidNumberPrecise() : itiRef.current.isValidNumber();
       if (isValid) {
         onChangeValidity(true);
         onChangeErrorCode(null);
