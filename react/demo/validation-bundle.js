@@ -25980,11 +25980,11 @@
           wrapper
         );
         this.selectedFlag = createEl(
-          "div",
+          "button",
           {
+            type: "button",
             class: "iti__selected-flag",
             ...allowDropdown && {
-              role: "button",
               "aria-expanded": "false",
               "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country",
               "aria-haspopup": countrySearch ? "true" : "listbox",

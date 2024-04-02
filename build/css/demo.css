@@ -10,7 +10,7 @@ body {
 }
 
 input,
-button {
+.button {
   height: 35px;
   margin: 0;
   padding: 6px 12px;
@@ -20,7 +20,7 @@ button {
   color: inherit;
 }
 input[disabled],
-button[disabled] {
+.button[disabled] {
   background-color: #eee;
 }
 
@@ -34,13 +34,13 @@ input::placeholder {
   color: #bbb;
 }
 
-button {
+.button {
   color: #fff;
   background-color: #428bca;
   border: 1px solid #357ebd;
   margin-left: 5px;
 }
-button:hover {
+.button:hover {
   background-color: #3276b1;
   border-color: #285e8e;
   cursor: pointer;

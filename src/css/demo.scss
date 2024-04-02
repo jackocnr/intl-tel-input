@@ -10,7 +10,7 @@ body {
 
 // general form styling
 input,
-button {
+.button {
   height: 35px;
   margin: 0;
   padding: 6px 12px;
@@ -37,7 +37,7 @@ input::placeholder {
 }
 
 // borrowed from bootstrap
-button {
+.button {
   color: #fff;
   background-color: #428bca;
   border: 1px solid #357ebd;
