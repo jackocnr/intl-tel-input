@@ -45,12 +45,13 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Navigate the country dropdown by typing a country's name, or using up/down keys
 * Automatically format the number as the user types
 * Optionally only allow numeric characters and cap the number at the maximum valid length
-* The user types their national number and the plugin gives you the full standardized international number
-* Full validation, including specific error types
+* The user types their national number and the plugin gives you the full standardised international number
+* Number validation, including specific error types
 * High-resolution flag images
-* Lots of initialisation options for customisation, as well as public methods for interaction
+* Lots of initialisation options for customisation, as well as public methods/events for interaction
 * Accessibility provided via ARIA tags
 * Typescript declaration files provided
+* Easily customise styles by overriding the provided CSS variables
 
 
 ## Browser Compatibility
@@ -146,7 +147,7 @@ When you initialise the plugin, the first argument is the input element, and the
 
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected flag is not clickable. Also, we display the selected flag on the right instead because it is just a marker of state. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled and showSelectedDialCode is disabled, we display the selected flag on the right instead because it is just a marker of state. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
@@ -351,7 +352,7 @@ if (numberType === intlTelInputUtils.numberType.MOBILE) {
 _Note that in the US there's no way to differentiate between fixed-line and mobile numbers, so instead it will return `FIXED_LINE_OR_MOBILE`._
 
 **getSelectedCountryData**  
-Get the country data for the currently selected flag.  
+Get the country data for the currently selected country.  
 ```js
 const countryData = iti.getSelectedCountryData();
 ```
@@ -399,7 +400,7 @@ iti.setCountry("gb");
 ```
 
 **setNumber**  
-Insert a number, and update the selected flag accordingly. _Note that if `formatOnDisplay` is enabled, this will attempt to format the number to either national or international format according to the `nationalMode` option._  
+Insert a number, and update the selected country accordingly. _Note that if `formatOnDisplay` is enabled, this will attempt to format the number to either national or international format according to the `nationalMode` option._  
 ```js
 iti.setNumber("+447733123456");
 ```
@@ -445,7 +446,7 @@ window.intlTelInputGlobals.loadUtils("build/js/utils.js");
 You can listen for the following events on the input.
 
 **countrychange**  
-This is triggered when the selected flag is updated e.g. if the user selects a country from the dropdown, or they type a different dial code into the input, or you call `setCountry` etc.
+This is triggered when the selected country is updated e.g. if the user selects a country from the dropdown, or they type a different dial code into the input, or you call `setCountry` etc.
 ```js
 input.addEventListener("countrychange", function() {
   // do something with iti.getSelectedCountryData()
