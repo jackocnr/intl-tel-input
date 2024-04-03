@@ -7,10 +7,7 @@ module.exports = function(grunt) {
       command: 'node build.js'
     },
     genTsDeclaration: {
-      command: 'tsc src/js/intlTelInput.ts --declaration --emitDeclarationOnly --outfile build/js/intlTelInput.d.ts'
-    },
-    genReactTsDeclaration: {
-      command: 'tsc --p react/tsconfig.json --declaration --emitDeclarationOnly --outfile react/build/IntlTelInput.d.ts'
+      command: 'tsc --p tsconfig.json'
     },
     eslint: {
       command: 'eslint src/js/intlTelInput.ts'
