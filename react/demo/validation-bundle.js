@@ -26333,7 +26333,7 @@
       // a map from instance ID to instance object
       instances: {},
       loadUtils,
-      version: "21.0.2"
+      version: "21.0.3"
     };
     window.intlTelInputGlobals = intlTelInputGlobals;
   }
