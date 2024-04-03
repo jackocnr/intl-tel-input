@@ -89,6 +89,7 @@
   "style": "build/css/intlTelInput.css",
   "exports": {
     ".": "./build/js/intlTelInput.js",
+    "./react": "./react/build/IntlTelInput.js",
     "./*": "./*"
   }
 }
