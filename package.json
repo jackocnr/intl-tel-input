@@ -63,6 +63,7 @@
   "files": [
     "build/*",
     "react/build/*",
+    "types/*",
     "CHANGELOG.md",
     "LICENSE",
     "package.json",
