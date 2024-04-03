@@ -4,10 +4,8 @@
   "description": "A JavaScript plugin for entering and validating international telephone numbers",
   "keywords": [
     "international",
-    "i18n",
     "country",
-    "dial",
-    "code",
+    "dial code",
     "telephone",
     "phone",
     "mobile",
@@ -19,7 +17,9 @@
     "css",
     "html",
     "validation",
-    "formatting"
+    "formatting",
+    "react",
+    "typescript"
   ],
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
