@@ -26448,7 +26448,7 @@
           utilsScript: "../../build/js/utils.js"
         }
       }
-    ), /* @__PURE__ */ import_react2.default.createElement("button", { type: "button", onClick: handleSubmit }, "Validate"), notice && /* @__PURE__ */ import_react2.default.createElement("div", { className: "notice" }, notice));
+    ), /* @__PURE__ */ import_react2.default.createElement("button", { className: "button", type: "button", onClick: handleSubmit }, "Validate"), notice && /* @__PURE__ */ import_react2.default.createElement("div", { className: "notice" }, notice));
   };
   var container = document.getElementById("app");
   if (container) {

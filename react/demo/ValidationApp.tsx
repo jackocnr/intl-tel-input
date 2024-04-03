@@ -11,7 +11,7 @@ const errorMap = [
 ];
 
 const App = (): ReactElement => {
-  const [isValid, setIsValid] = useState<string | null>(null);
+  const [isValid, setIsValid] = useState<boolean | null>(null);
    const [number, setNumber] = useState<string | null>(null);
    const [errorCode, setErrorCode] = useState<number | null>(null);
    const [notice, setNotice] = useState<string | null>(null);
@@ -36,7 +36,7 @@ const App = (): ReactElement => {
           utilsScript: "../../build/js/utils.js",
         }}
       />
-      <button type="button" onClick={handleSubmit}>Validate</button>
+      <button className="button" type="button" onClick={handleSubmit}>Validate</button>
       {notice && <div className="notice">{notice}</div>}
     </form>
   );
