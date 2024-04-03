@@ -52,6 +52,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Accessibility provided via ARIA tags
 * Typescript declaration files provided
 * Easily customise styles by overriding the provided CSS variables
+* React component included
 
 
 ## Browser Compatibility
