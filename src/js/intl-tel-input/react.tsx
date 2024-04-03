@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, ReactElement } from "react";
-import intlTelInput, { Iti } from "../../src/js/intlTelInput";
+import intlTelInput, { Iti, SomeOptions } from "../intl-tel-input";
 
 const IntlTelInput = ({
   initialValue,

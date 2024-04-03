@@ -1,4 +1,6 @@
-type Globals = {
+import allCountries, { Country } from "./intl-tel-input/data";
+
+type ItiGlobals = {
   autoCountry?: string;
   defaults: AllOptions;
   documentReady: () => boolean;
@@ -10,7 +12,7 @@ type Globals = {
   startedLoadingUtilsScript?: boolean;
   version: string | undefined;
 };
-type Utils = {
+type ItiUtils = {
   formatNumber(number: string, iso2: string | undefined, format?: number): string;
   formatNumberAsYouType(number: string, iso2: string | undefined): string;
   getCoreNumber(number: string, iso2: string | undefined): string;
@@ -25,8 +27,8 @@ type Utils = {
 };
 declare global {
   interface Window {
-    intlTelInputGlobals: Globals;
-    intlTelInputUtils: Utils;
+    intlTelInputGlobals: ItiGlobals;
+    intlTelInputUtils: ItiUtils;
   }
 }
 type NumberType =
@@ -320,12 +322,8 @@ interface AllOptions {
   useFullscreenPopup: boolean;
   utilsScript: string;
 }
-// globalise this as useful in react component too
-declare global {
-  type SomeOptions = Partial<AllOptions>;
-}
-
-import allCountries from "./data";
+// export this as useful in react component too
+export type SomeOptions = Partial<AllOptions>;
 
 // these vars persist through all instances of the plugin
 let id = 0;
@@ -2370,7 +2368,7 @@ const loadUtils = (path: string): Promise<unknown> | null => {
 };
 
 if (typeof window === "object") {
-  const intlTelInputGlobals: Globals = {
+  const intlTelInputGlobals: ItiGlobals = {
     defaults,
     // using a global like this allows us to mock it in the tests
     documentReady: (): boolean => document.readyState === "complete",

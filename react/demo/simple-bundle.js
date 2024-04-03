@@ -23511,10 +23511,10 @@
   var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
-  // react/src/IntlTelInput.tsx
+  // src/js/intl-tel-input/react.tsx
   var import_react = __toESM(require_react());
 
-  // src/js/data.ts
+  // src/js/intl-tel-input/data.ts
   var rawCountryData = [
     [
       "Afghanistan",
@@ -24836,7 +24836,7 @@
   }
   var data_default = allCountries;
 
-  // src/js/intlTelInput.ts
+  // src/js/intl-tel-input.ts
   var id = 0;
   var defaults = {
     // whether or not to allow the dropdown
@@ -26344,9 +26344,9 @@
     window.intlTelInputGlobals.instances[iti.id] = iti;
     return iti;
   };
-  var intlTelInput_default = intlTelInput;
+  var intl_tel_input_default = intlTelInput;
 
-  // react/src/IntlTelInput.tsx
+  // src/js/intl-tel-input/react.tsx
   var IntlTelInput = ({
     initialValue,
     onChangeNumber,
@@ -26379,7 +26379,7 @@
     (0, import_react.useEffect)(() => {
       const inputRefCurrent = inputRef.current;
       if (inputRefCurrent) {
-        itiRef.current = intlTelInput_default(inputRefCurrent, initOptions);
+        itiRef.current = intl_tel_input_default(inputRefCurrent, initOptions);
         inputRefCurrent.addEventListener("countrychange", update);
       }
       return () => {
@@ -26414,11 +26414,11 @@
     initOptions: {},
     inputProps: {}
   };
-  var IntlTelInput_default = IntlTelInput;
+  var react_default = IntlTelInput;
 
   // react/demo/SimpleApp.tsx
   var App = () => /* @__PURE__ */ import_react2.default.createElement(
-    IntlTelInput_default,
+    react_default,
     {
       initOptions: {
         initialCountry: "us",

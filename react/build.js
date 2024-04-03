@@ -3,7 +3,7 @@ const packageJson = require("../package.json");
 
 build({
   bundle: true,
-  entryPoints: ["react/src/IntlTelInput.tsx"],
+  entryPoints: ["src/js/intl-tel-input/react.tsx"],
   external: ["react", "react-dom", "prop-types"],
   logLevel: "info",
   minify: true,

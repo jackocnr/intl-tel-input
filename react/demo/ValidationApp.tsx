@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput from "../src/IntlTelInput";
+import IntlTelInput from "../../src/js/intl-tel-input/react";
 
 const errorMap = [
   "Invalid number",

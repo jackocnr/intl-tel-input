@@ -1325,16 +1325,14 @@ const rawCountryData: RawCountry[] = [
   ],
 ];
 
-declare global {
-  type Country = {
-    name: string;
-    iso2: string;
-    dialCode: string;
-    priority: number;
-    areaCodes: string[] | null;
-    nodeById: object;
-  };
-}
+export type Country = {
+  name: string;
+  iso2: string;
+  dialCode: string;
+  priority: number;
+  areaCodes: string[] | null;
+  nodeById: object;
+};
 
 const allCountries: Country[] = [];
 // loop over all of the countries above, restructuring the data to be objects with named keys

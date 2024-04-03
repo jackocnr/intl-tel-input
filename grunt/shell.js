@@ -10,7 +10,7 @@ module.exports = function(grunt) {
       command: 'tsc --p tsconfig.json'
     },
     eslint: {
-      command: 'eslint src/js/intlTelInput.ts'
+      command: 'eslint src/js/intl-tel-input.ts'
     },
   };
 };

@@ -32,14 +32,14 @@ var factoryOutput = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // src/js/intlTelInput.ts
-  var intlTelInput_exports = {};
-  __export(intlTelInput_exports, {
+  // src/js/intl-tel-input.ts
+  var intl_tel_input_exports = {};
+  __export(intl_tel_input_exports, {
     Iti: () => Iti,
-    default: () => intlTelInput_default
+    default: () => intl_tel_input_default
   });
 
-  // src/js/data.ts
+  // src/js/intl-tel-input/data.ts
   var rawCountryData = [
     [
       "Afghanistan",
@@ -1361,7 +1361,7 @@ var factoryOutput = (() => {
   }
   var data_default = allCountries;
 
-  // src/js/intlTelInput.ts
+  // src/js/intl-tel-input.ts
   var id = 0;
   var defaults = {
     // whether or not to allow the dropdown
@@ -2869,8 +2869,8 @@ var factoryOutput = (() => {
     window.intlTelInputGlobals.instances[iti.id] = iti;
     return iti;
   };
-  var intlTelInput_default = intlTelInput;
-  return __toCommonJS(intlTelInput_exports);
+  var intl_tel_input_default = intlTelInput;
+  return __toCommonJS(intl_tel_input_exports);
 })();
 
 // UMD

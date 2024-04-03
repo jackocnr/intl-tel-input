@@ -40,7 +40,7 @@ build({
   banner: {
     js: getBanner("intlTelInput"),
   },
-  entryPoints: ["src/js/intlTelInput.ts"],
+  entryPoints: ["src/js/intl-tel-input.ts"],
   minify: false,
   outfile: "build/js/intlTelInput.js",
 });
@@ -50,7 +50,7 @@ build({
   banner: {
     js: getBanner("intlTelInput"),
   },
-  entryPoints: ["src/js/intlTelInput.ts"],
+  entryPoints: ["src/js/intl-tel-input.ts"],
   minify: true,
   outfile: "tmp/built.min.js",
 });
@@ -60,7 +60,7 @@ build({
   banner: {
     js: getBanner("allCountries"),
   },
-  entryPoints: ["src/js/data.ts"],
+  entryPoints: ["src/js/intl-tel-input/data.ts"],
   minify: false,
   outfile: "build/js/data.js",
 });
@@ -70,7 +70,7 @@ build({
   banner: {
     js: getBanner("allCountries"),
   },
-  entryPoints: ["src/js/data.ts"],
+  entryPoints: ["src/js/intl-tel-input/data.ts"],
   minify: true,
   outfile: "build/js/data.min.js",
 });

@@ -4,11 +4,12 @@
         "esModuleInterop": true, // required for react (etc) default imports
         "declaration": true, // generate .d.ts files
         "emitDeclarationOnly": true, // ONLY generate .d.ts files (we use esbuild for the actual bundling)
-        "declarationDir": "./types"
+        "outFile": "./types.d.ts",
+        "rootDir": "./src/js",
     },
     "include": [
-        "react/src/IntlTelInput.tsx",
-        "src/js/intlTelInput.ts",
-        "src/js/data.ts",
-    ]
+        "src/js/intl-tel-input.ts",
+        "src/js/intl-tel-input/data.ts",
+        "src/js/intl-tel-input/react.tsx",
+    ],
 }

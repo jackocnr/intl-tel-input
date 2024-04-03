@@ -32,7 +32,7 @@ var factoryOutput = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // src/js/data.ts
+  // src/js/intl-tel-input/data.ts
   var data_exports = {};
   __export(data_exports, {
     default: () => data_default
