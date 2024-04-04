@@ -1,9 +1,11 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { build } = require("esbuild");
 const packageJson = require("../package.json");
 
 build({
   bundle: true,
-  entryPoints: ["src/js/intl-tel-input/react.tsx"],
+  entryPoints: ["react/src/intl-tel-input/react.tsx"],
   external: ["react", "react-dom", "prop-types"],
   logLevel: "info",
   minify: true,

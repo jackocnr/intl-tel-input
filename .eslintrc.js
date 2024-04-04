@@ -28,17 +28,11 @@ module.exports = {
     quotes: ["error", "double"],
     "no-prototype-builtins": "off",
     "class-methods-use-this": "error",
-    "@typescript-eslint/explicit-function-return-type": "off",
   },
   overrides: [{
     files: [".eslintrc.{js,cjs}"],
     env: { "node": true },
     parserOptions: { "sourceType": "script" },
-  }, {
-    files: ["*.ts", "*.tsx"],
-    rules: {
-      "@typescript-eslint/explicit-function-return-type": "error",
-    },
   }],
   settings: {
     "import/resolver": {

@@ -471,7 +471,7 @@
               }
             }
           }
-          var ReactElement3 = function(type, key, ref, self, source, owner, props) {
+          var ReactElement2 = function(type, key, ref, self, source, owner, props) {
             var element = {
               // This tag allows us to uniquely identify this as a React Element
               $$typeof: REACT_ELEMENT_TYPE,
@@ -572,10 +572,10 @@
                 }
               }
             }
-            return ReactElement3(type, key, ref, self, source, ReactCurrentOwner.current, props);
+            return ReactElement2(type, key, ref, self, source, ReactCurrentOwner.current, props);
           }
           function cloneAndReplaceKey(oldElement, newKey) {
-            var newElement = ReactElement3(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
+            var newElement = ReactElement2(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
             return newElement;
           }
           function cloneElement(element, config, children) {
@@ -624,7 +624,7 @@
               }
               props.children = childArray;
             }
-            return ReactElement3(element.type, key, ref, self, source, owner, props);
+            return ReactElement2(element.type, key, ref, self, source, owner, props);
           }
           function isValidElement(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
@@ -23511,7 +23511,7 @@
   var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
-  // src/js/intl-tel-input/react.tsx
+  // react/src/intl-tel-input/react.tsx
   var import_react = __toESM(require_react());
 
   // src/js/intl-tel-input/data.ts
@@ -26346,7 +26346,7 @@
   };
   var intl_tel_input_default = intlTelInput;
 
-  // src/js/intl-tel-input/react.tsx
+  // react/src/intl-tel-input/react.tsx
   var IntlTelInput = ({
     initialValue,
     onChangeNumber,

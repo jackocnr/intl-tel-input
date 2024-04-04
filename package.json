@@ -63,7 +63,6 @@
   "files": [
     "build/*",
     "react/build/*",
-    "types.d.ts",
     "CHANGELOG.md",
     "LICENSE",
     "package.json",
@@ -93,5 +92,5 @@
     "./react": "./react/build/IntlTelInput.js",
     "./*": "./*"
   },
-  "types": "./types.d.ts"
+  "types": "./build/js/types.d.ts"
 }

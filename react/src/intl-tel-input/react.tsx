@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, ReactElement } from "react";
+import React, { useRef, useEffect } from "react";
 import intlTelInput, { Iti, SomeOptions } from "../intl-tel-input";
 
 const IntlTelInput = ({
@@ -19,7 +19,7 @@ const IntlTelInput = ({
   usePreciseValidation: boolean,
   initOptions: SomeOptions,
   inputProps: object,
-}): ReactElement => {
+}) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
   
