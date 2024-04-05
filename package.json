@@ -80,12 +80,12 @@
   "scripts": {
     "test": "grunt travis",
     "lint": "eslint .",
+    "watch": "grunt watch",
     "build": "grunt build",
     "build:js": "grunt js",
     "build:utils": "grunt build:utils",
     "build:css": "grunt css",
     "build:img": "grunt img",
-    "watch": "grunt watch",
     "build:react": "node react/build.js"
   },
   "style": "build/css/intlTelInput.css",
