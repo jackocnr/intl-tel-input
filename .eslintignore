@@ -1,3 +1,6 @@
-/grunt
-/build
-/Gruntfile.js
+**/demo/**
+**/grunt/**
+**/build/**
+**/third_party/**
+**/tmp/**
+Gruntfile.js

@@ -18,7 +18,7 @@ describe("destroy: init plugin to test public method destroy", function() {
     expect(getListElement()).toExist();
   });
 
-  // this is currently impossible in pure JS, until getEventListeners becomes standard
+  //* This is currently impossible in pure JS, until getEventListeners becomes standard.
   // it("binds the event listeners", function() {
   //   var listeners = getEventListeners(input[0]);
   //   expect("cut" in listeners).toBeTruthy();
@@ -39,7 +39,7 @@ describe("destroy: init plugin to test public method destroy", function() {
       expect(getListElement()).not.toExist();
     });
 
-    // this is currently impossible in pure JS, until getEventListeners becomes standard
+    //* This is currently impossible in pure JS, until getEventListeners becomes standard.
     // it("unbinds the event listeners", function() {
     //   var listeners = getEventListeners(input[0]);
     //   expect(listeners).toBeUndefined();
@@ -66,7 +66,7 @@ describe("destroy: init plugin with nationalMode=false", function() {
     intlTeardown();
   });
 
-  // this is currently impossible in pure JS, until getEventListeners becomes standard
+  //* This is currently impossible in pure JS, until getEventListeners becomes standard.
   // it("binds the events listeners", function() {
   //   var listeners = getEventListeners(input[0]);
   //   expect("blur" in listeners).toBeTruthy();
@@ -81,7 +81,7 @@ describe("destroy: init plugin with nationalMode=false", function() {
       input.intlTelInput("destroy");
     });
 
-    // this is currently impossible in pure JS, until getEventListeners becomes standard
+    //* this is currently impossible in pure JS, until getEventListeners becomes standard.
     // it("unbinds the event listeners", function() {
     //   var listeners = getEventListeners(input[0]);
     //   expect(listeners).toBeUndefined();

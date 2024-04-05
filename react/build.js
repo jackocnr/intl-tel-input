@@ -14,7 +14,7 @@ build({
   outfile: "react/build/IntlTelInput.js",
 });
 
-// demo files
+//* Demo Files
 const demoShared = {
   bundle: true,
   define: { "process.env.VERSION": `"${packageJson.version}"` },

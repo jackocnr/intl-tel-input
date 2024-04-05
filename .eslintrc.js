@@ -21,6 +21,7 @@ module.exports = {
   globals: {
     goog: true,
     i18n: true,
+    require: true,
   },
   rules: {
     semi: ["error", "always"],
@@ -28,6 +29,9 @@ module.exports = {
     quotes: ["error", "double"],
     "no-prototype-builtins": "off",
     "class-methods-use-this": "error",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-explicit-any": "off",
   },
   overrides: [{
     files: [".eslintrc.{js,cjs}"],

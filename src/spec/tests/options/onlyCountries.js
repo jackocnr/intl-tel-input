@@ -18,8 +18,8 @@ describe("onlyCountries option:", function() {
   describe("init plugin with onlyCountries set to japan, china and korea", function() {
 
     beforeEach(function() {
-      // China and Japan (note that none of the default preferredCountries are included here, so wont be in the list)
-      onlyCountries = ['jp', 'cn', 'kr'];
+      //* China and Japan (note that none of the default preferredCountries are included here, so wont be in the list).
+      onlyCountries = ["jp", "cn", "kr"];
       iti = window.intlTelInput(input[0], {
         onlyCountries: onlyCountries,
       });
@@ -44,6 +44,7 @@ describe("onlyCountries option:", function() {
     it("entering +7 defaults to the top priority country (Russia)", function() {
       input.val("+");
       triggerKeyOnInput("7");
+
       expect(getSelectedCountryElement()).toHaveClass("iti__ru");
     });
 
@@ -58,14 +59,14 @@ describe("onlyCountries option:", function() {
 
     beforeEach(function() {
       input2 = $("<input>").wrap("div");
-      // japan
+      //* Japan
       iti = window.intlTelInput(input[0], {
-        onlyCountries: ['jp'],
+        onlyCountries: ["jp"],
         nationalMode: false,
       });
-      // korea
+      //* Korea
       iti2 = window.intlTelInput(input2[0], {
-        onlyCountries: ['kr'],
+        onlyCountries: ["kr"],
         nationalMode: false,
       });
       $("body").append(getParentElement(input)).append(getParentElement(input2));

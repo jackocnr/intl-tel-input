@@ -5,7 +5,7 @@ describe("using dropdown: init plugin on normal input with nationalMode=false", 
   beforeEach(function() {
     intlSetup();
     input = $("<input>").appendTo("body");
-    // nationalMode=false because we're playing with dial codes
+    //* nationalMode=false because we're playing with dial codes.
     iti = window.intlTelInput(input[0], {
       nationalMode: false,
     });
@@ -17,12 +17,13 @@ describe("using dropdown: init plugin on normal input with nationalMode=false", 
 
   it("clicking the selected flag opens the dropdown", function() {
     getSelectedCountryContainer()[0].click();
+
     expect(getListElement()).toBeVisible();
   });
 
   it("allows focusing the dropdown using the keyboard", function() {
-    expect(getSelectedCountryContainer().attr('tabindex')).toEqual('0');
-    expect(getSelectedCountryContainer()).not.toHaveAttr('aria-disabled');
+    expect(getSelectedCountryContainer().attr("tabindex")).toEqual("0");
+    expect(getSelectedCountryContainer()).not.toHaveAttr("aria-disabled");
   });
 
   describe("clicking the selected flag to open the dropdown", function() {
@@ -34,16 +35,19 @@ describe("using dropdown: init plugin on normal input with nationalMode=false", 
     it("opens the dropdown with the top item marked as active and highlighted", function() {
       expect(getListElement()).toBeVisible();
       var topItem = getListElement().find("li.iti__country:first");
+
       expect(topItem).toHaveClass("iti__highlight");
     });
 
     it("clicking it again closes the dropdown", function() {
       getSelectedCountryContainer()[0].click();
+
       expect(getListElement()).not.toBeVisible();
     });
 
     it("clicking off closes the dropdown", function() {
       $("body")[0].click();
+
       expect(getListElement()).not.toBeVisible();
     });
 
@@ -61,9 +65,10 @@ describe("using dropdown: init plugin on normal input with nationalMode=false", 
         expect(getSelectedCountryElement()).toHaveClass(`iti__${iso2Code}`);
       });
 
-      // this was a bug
-      it("adding a space doesnt reset to the default country for that dial code", function() {
+      //* This was a bug.
+      it("adding a space doesn't reset to the default country for that dial code", function() {
         triggerKeyOnInput(" ");
+
         expect(getSelectedCountryElement()).toHaveClass(`iti__${iso2Code}`);
       });
 
@@ -85,12 +90,13 @@ describe("using dropdown: disabled input", () => {
   });
 
   it("prevents the user from opening the dropdown using the keyboard", function() {
-    expect(getSelectedCountryContainer()).not.toHaveAttr('tabindex');
-    expect(getSelectedCountryContainer().attr('aria-disabled')).toEqual('true');
+    expect(getSelectedCountryContainer()).not.toHaveAttr("tabindex");
+    expect(getSelectedCountryContainer().attr("aria-disabled")).toEqual("true");
   });
 
   it("clicking the selected flag does not open the dropdown", function() {
     getSelectedCountryContainer()[0].click();
+
     expect(getListElement()).not.toBeVisible();
   });
-})
+});

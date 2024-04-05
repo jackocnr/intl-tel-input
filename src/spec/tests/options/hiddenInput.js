@@ -17,8 +17,8 @@ describe("hiddenInput: ", function() {
       iti = window.intlTelInput(input[0], {
         hiddenInput: () => ({
           phone: "phone_full",
-          country: "phone_country"
-        })
+          country: "phone_country",
+        }),
       });
     });
 
@@ -42,8 +42,8 @@ describe("hiddenInput: ", function() {
       iti = window.intlTelInput(input[0], {
         hiddenInput: () => ({
           test: "test",
-          data: "data"
-        })
+          data: "data",
+        }),
       });
     });
 

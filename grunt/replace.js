@@ -9,7 +9,7 @@ module.exports = function(grunt) {
     privateMethods: {
       options: {
         patterns: [
-          // Note: _a is now reserved for step two
+          //* Note: _a is now reserved for step two.
           {
             match: /_processCountryData/g,
             replacement: '_b'
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
             match: /_cap/g,
             replacement: '_j2'
           },
-          // NOTE: here we exclude _trigger which is a substring of _triggerCountryChange etc
+          //* NOTE: here we exclude _trigger which is a substring of _triggerCountryChange etc.
           {
             match: /_openDropdown/g,
             replacement: '_n'

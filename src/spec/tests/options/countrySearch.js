@@ -51,10 +51,13 @@ describe("countrySearch option:", function() {
 
     it("typing 'x' shows 6 results, and hitting Enter selects Christmas Islands", function() {
       const searchInput = getSearchInput();
-      triggerKeyOnInput('x', searchInput);
-      jasmine.clock().tick(100); // allow for the (intentional) 100ms delay on the search handler
+      triggerKeyOnInput("x", searchInput);
+      jasmine.clock().tick(100); //* Allow for the (intentional) 100ms delay on the search handler.
+
       expect(getListLength()).toEqual(6);
-      triggerKeyOnBody('Enter');
+
+      triggerKeyOnBody("Enter");
+
       expect(getSelectedCountryElement()).toHaveClass("iti__cx");
     });
 

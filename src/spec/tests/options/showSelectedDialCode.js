@@ -13,7 +13,7 @@ describe("showSelectedDialCode:", function() {
 
 
 
-  // we test with "gb" because the ntl number is different to the intl number (aside from the dial code)
+  //* We test with "gb" because the ntl number is different to the intl number (aside from the dial code).
   describe("init plugin with initialCountry=gb and nationalMode=false", function() {
 
     beforeEach(function() {
@@ -33,7 +33,7 @@ describe("showSelectedDialCode:", function() {
     });
 
     it("formats the placeholder correctly", function() {
-      // international format minus the dial code
+      //* International format minus the dial code.
       expect(input.attr("placeholder")).toEqual("7400 123456");
     });
 
@@ -45,7 +45,7 @@ describe("showSelectedDialCode:", function() {
       });
 
       it("formats the number correctly", function() {
-        // international format minus the dial code
+        //* international format minus the dial code.
         expect(getInputVal()).toEqual("7400 123456");
       });
 
@@ -69,7 +69,7 @@ describe("showSelectedDialCode:", function() {
     });
 
     it("formats the placeholder correctly", function() {
-      // national format
+      //* National format.
       expect(input.attr("placeholder")).toEqual("07400 123456");
     });
 
@@ -94,7 +94,7 @@ describe("showSelectedDialCode:", function() {
   });
 
 
-  // we test with "ca" (Canada) because we had some bugs with area codes
+  //* We test with "ca" (Canada) because we had some bugs with area codes.
   describe("init plugin with initialCountry=ca", function() {
 
     beforeEach(function() {
@@ -106,13 +106,13 @@ describe("showSelectedDialCode:", function() {
     });
 
     it("sets the placeholder correctly", function() {
-      // used to be '234-5678'
+      //* Used to be '234-5678'.
       expect(input.attr("placeholder")).toEqual("506-234-5678");
     });
 
     it("calling setNumber will set the number correctly", function() {
       iti.setNumber("+15194971234");
-      // used to be '497-1234'
+      //* Used to be '497-1234'.
       expect(getInputVal()).toEqual("519-497-1234");
     });
 
@@ -120,7 +120,7 @@ describe("showSelectedDialCode:", function() {
 
 
 
-  // we test with "as" because we had a bug
+  //* We test with "as" because we had a bug.
   describe("init plugin with initialCountry=as", function() {
 
     beforeEach(function() {
@@ -137,6 +137,7 @@ describe("showSelectedDialCode:", function() {
 
     it("calling setNumber will set the number correctly", function() {
       iti.setNumber("+16847331234");
+
       expect(getInputVal()).toEqual("684-733-1234");
     });
 
@@ -144,7 +145,7 @@ describe("showSelectedDialCode:", function() {
 
 
 
-  // we test with "ru" because we had a bug
+  //* We test with "ru" because we had a bug.
   describe("init plugin with initialCountry=ru and valid ntl number", function() {
 
     beforeEach(function() {
@@ -157,7 +158,7 @@ describe("showSelectedDialCode:", function() {
     });
 
     it("formats the number correctly", function() {
-      // used to be '8 (922) 555-12-34'
+      //* Used to be '8 (922) 555-12-34'.
       expect(input.val()).toEqual("922 555-12-34");
     });
 

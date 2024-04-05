@@ -35,8 +35,8 @@ describe("preferredCountries option:", function() {
     var preferredCountries;
 
     beforeEach(function() {
-      // United Kingdom
-      preferredCountries = ['gb'];
+      //* United Kingdom
+      preferredCountries = ["gb"];
       iti = window.intlTelInput(input[0], {
         countrySearch: false,
         preferredCountries: preferredCountries,

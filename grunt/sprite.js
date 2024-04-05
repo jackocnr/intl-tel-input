@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     retina: {
       src: 'src/img/flags/@2x/*.png',
       dest: 'build/img/flags@2x.png',
-      destCss: 'tmp/sprite@2x.scss', // ignore - we just use the @1x styles for both
+      destCss: 'tmp/sprite@2x.scss', //* Ignore - we just use the @1x styles for both.
       padding: 4,
       algorithm: 'left-right',
       algorithmOpts: {
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
       dest: 'build/img/flags.png',
       cssTemplate: 'grunt/tmpl/sprite.scss.mustache',
       destCss: 'src/css/sprite.scss',
-      padding: 2, // this is currently just for chrome, otherwise flags seem to leak into each other
+      padding: 2, //* This is currently just for chrome, otherwise flags seem to leak into each other.
       algorithm: 'left-right',
       algorithmOpts: {
         sort: false

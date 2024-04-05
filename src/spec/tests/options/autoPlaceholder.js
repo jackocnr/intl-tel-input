@@ -16,6 +16,7 @@ describe("autoPlaceholder: testing input with no placeholder", function() {
       autoPlaceholder: "off",
       initialCountry: "af",
     });
+
     expect(input.attr("placeholder")).toBeUndefined();
   });
 
@@ -98,6 +99,7 @@ describe("autoPlaceholder: testing input with an initial placeholder", function(
       autoPlaceholder: "off",
       initialCountry: "af",
     });
+
     expect(input.attr("placeholder")).toEqual(placeholder);
   });
 
@@ -106,6 +108,7 @@ describe("autoPlaceholder: testing input with an initial placeholder", function(
       autoPlaceholder: "polite",
       initialCountry: "af",
     });
+
     expect(input.attr("placeholder")).toEqual(placeholder);
   });
 
@@ -114,6 +117,7 @@ describe("autoPlaceholder: testing input with an initial placeholder", function(
       autoPlaceholder: "aggressive",
       initialCountry: "af",
     });
+
     expect(input.attr("placeholder")).toEqual("070 123 4567");
   });
 

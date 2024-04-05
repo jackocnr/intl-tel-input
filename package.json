@@ -77,6 +77,7 @@
   "homepage": "https://intl-tel-input.com",
   "scripts": {
     "test": "grunt travis",
+    "lint": "eslint .",
     "build": "grunt build",
     "build:js": "grunt js",
     "build:utils": "grunt build:utils",
