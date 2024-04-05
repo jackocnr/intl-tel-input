@@ -6,7 +6,7 @@ describe("geoIpLookup:", function() {
 
   beforeEach(function() {
     intlSetup();
-    // must be in DOM for geoIpLookup callback to work - it looks for $(".intl-tel-input input")
+    //* Must be in DOM for geoIpLookup callback to work - it looks for $(".intl-tel-input input").
     input = $("<input>").appendTo("body");
   });
 
@@ -47,7 +47,7 @@ describe("geoIpLookup:", function() {
     });
   });
 
-  describe('init plugin with geoIpLookup, and wait for it to finish', function() {
+  describe("init plugin with geoIpLookup, and wait for it to finish", function() {
     beforeEach(function(done) {
       iti = window.intlTelInput(input[0], {
         initialCountry: "auto",
@@ -65,7 +65,7 @@ describe("geoIpLookup:", function() {
       expect(resolved).toEqual(true);
     });
 
-    describe('init a second instance with geoIpLookup', function() {
+    describe("init a second instance with geoIpLookup", function() {
       var input2,
         iti2,
         resolved2 = false;
@@ -88,7 +88,7 @@ describe("geoIpLookup:", function() {
         iti2.destroy();
         input2.remove();
         input2 = iti2 = null;
-        resolved2 = false
+        resolved2 = false;
       });
 
       it("does resolve straight away", function() {

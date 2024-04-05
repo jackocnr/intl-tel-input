@@ -10,8 +10,8 @@ describe("customPlaceholder: init plugin with autoPlaceholder=polite and customP
       initialCountry: "af",
       customPlaceholder: function(placeholder) {
         return "e.g. " + placeholder;
-      }
-    })
+      },
+    });
   });
 
   afterEach(function() {
@@ -24,6 +24,7 @@ describe("customPlaceholder: init plugin with autoPlaceholder=polite and customP
 
   it("selecting UK updates the placeholder", function() {
     selectCountry("gb");
+
     expect(input.attr("placeholder")).toEqual("e.g. 07400 123456");
   });
 

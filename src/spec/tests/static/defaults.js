@@ -11,7 +11,7 @@ describe("defaults: change default plugin options", function() {
 		intlTeardown();
 	});
 
-	describe('setting the default option initialCountry=ru and initialising the plugin', function() {
+	describe("setting the default option initialCountry=ru and initialising the plugin", function() {
 		beforeEach(function() {
 			window.intlTelInputGlobals.defaults.initialCountry = "ru";
 			iti = window.intlTelInput(input[0]);

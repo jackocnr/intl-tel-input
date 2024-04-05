@@ -24839,58 +24839,57 @@
   // src/js/intl-tel-input.ts
   var id = 0;
   var defaults = {
-    // whether or not to allow the dropdown
+    //* Whether or not to allow the dropdown.
     allowDropdown: true,
-    // add a placeholder in the input with an example number for the selected country
+    //* Add a placeholder in the input with an example number for the selected country.
     autoPlaceholder: "polite",
-    // add a country search input at the top of the dropdown
+    //* Add a country search input at the top of the dropdown.
     countrySearch: true,
-    // modify the parentClass
+    //* Modify the parentClass.
     containerClass: "",
-    // modify the auto placeholder
+    //* Modify the auto placeholder.
     customPlaceholder: null,
-    // append menu to specified element
+    //* Append menu to specified element.
     dropdownContainer: null,
-    // don't display these countries
+    //* Don't display these countries.
     excludeCountries: [],
-    // fix the dropdown width to the input width (rather than being as wide as the longest country name)
+    //* Fix the dropdown width to the input width (rather than being as wide as the longest country name).
     fixDropdownWidth: true,
-    // format the number as the user types
+    //* Format the number as the user types
     formatAsYouType: true,
-    // format the input value during initialisation and on setNumber
+    //* Format the input value during initialisation and on setNumber.
     formatOnDisplay: true,
-    // geoIp lookup function
+    //* geoIp lookup function.
     geoIpLookup: null,
-    // inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber
+    //* Inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber.
     hiddenInput: null,
-    // internationalise the plugin text e.g. search input placeholder, country names
+    //* Internationalise the plugin text e.g. search input placeholder, country names.
     i18n: {},
-    // initial country
+    //* Initial country.
     initialCountry: "",
-    // national vs international formatting for numbers e.g. placeholders and displaying existing numbers
+    //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
     nationalMode: true,
-    // display only these countries
+    //* Display only these countries.
     onlyCountries: [],
-    // number type to use for placeholders
+    //* Number type to use for placeholders.
     placeholderNumberType: "MOBILE",
-    // the countries at the top of the list
+    //* The countries at the top of the list.
     preferredCountries: [],
-    // option to hide the flags - must be used with showSelectedDialCode, or allowDropdown=false
+    //* Option to hide the flags - must be used with showSelectedDialCode, or allowDropdown=false.
     showFlags: true,
-    // display the international dial code next to the selected flag
+    //* Display the international dial code next to the selected flag.
     showSelectedDialCode: false,
-    // only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length
+    //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
     strictMode: false,
-    // use full screen popup instead of dropdown for country list
+    //* Use full screen popup instead of dropdown for country list.
     useFullscreenPopup: typeof navigator !== "undefined" && typeof window !== "undefined" ? (
-      // we cannot just test screen size as some smartphones/website meta tags will report desktop
-      // resolutions
-      // Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
+      //* We cannot just test screen size as some smartphones/website meta tags will report desktop resolutions.
+      //* Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
       /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent
       ) || window.innerWidth <= 500
     ) : false,
-    // specify the path to the libphonenumber script to enable validation/formatting
+    //* Specify the path to the libphonenumber script to enable validation/formatting.
     utilsScript: ""
   };
   var regionlessNanpNumbers = [
@@ -24971,11 +24970,11 @@
     Object.values(instances).forEach((instance) => instance[method]());
   };
   var Iti = class {
-    // can't be private as it's called from intlTelInput convenience wrapper
+    //* Can't be private as it's called from intlTelInput convenience wrapper.
     id;
-    // not private!
+    //* NOT Private
     promise;
-    // private
+    //* Private
     telInput;
     activeItem;
     highlightedItem;
@@ -25027,7 +25026,7 @@
       this.options = Object.assign({}, defaults, customOptions);
       this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
     }
-    // can't be private as it's called from intlTelInput convenience wrapper
+    //* Can't be private as it's called from intlTelInput convenience wrapper.
     _init() {
       if (this.options.useFullscreenPopup) {
         this.options.fixDropdownWidth = false;
@@ -25062,8 +25061,7 @@
     //********************
     //*  PRIVATE METHODS
     //********************
-    // prepare all of the country data, including onlyCountries, excludeCountries and
-    // preferredCountries options
+    //* Prepare all of the country data, including onlyCountries, excludeCountries and preferredCountries options.
     _processCountryData() {
       this._processAllCountries();
       this._processDialCodes();
@@ -25073,7 +25071,7 @@
         this.countries.sort(countryNameSort);
       }
     }
-    // add a dial code to this.dialCodeToIso2Map
+    //* Add a dial code to this.dialCodeToIso2Map.
     _addToDialCodeMap(iso2, dialCode, priority) {
       if (dialCode.length > this.dialCodeMaxLen) {
         this.dialCodeMaxLen = dialCode.length;
@@ -25089,7 +25087,7 @@
       const index = priority !== void 0 ? priority : this.dialCodeToIso2Map[dialCode].length;
       this.dialCodeToIso2Map[dialCode][index] = iso2;
     }
-    // process onlyCountries or excludeCountries array if present
+    //* Process onlyCountries or excludeCountries array if present.
     _processAllCountries() {
       const { onlyCountries, excludeCountries } = this.options;
       if (onlyCountries.length) {
@@ -25110,7 +25108,7 @@
         this.countries = data_default;
       }
     }
-    // Translate Countries by object literal provided on config
+    //* Translate Countries by object literal provided on config.
     _translateCountryNames() {
       for (let i = 0; i < this.countries.length; i++) {
         const iso2 = this.countries[i].iso2.toLowerCase();
@@ -25119,7 +25117,7 @@
         }
       }
     }
-    // generate this.dialCodes and this.dialCodeToIso2Map
+    //* Generate this.dialCodes and this.dialCodeToIso2Map.
     _processDialCodes() {
       this.dialCodes = {};
       this.dialCodeMaxLen = 0;
@@ -25147,8 +25145,7 @@
         }
       }
     }
-    // process preferred countries - iterate through the preferences, fetching the country data for
-    // each one
+    //* Process preferred countries - iterate through the preferences, fetching the country data for each one.
     _processPreferredCountries() {
       this.preferredCountries = [];
       for (let i = 0; i < this.options.preferredCountries.length; i++) {
@@ -25159,7 +25156,7 @@
         }
       }
     }
-    // generate all of the markup for the plugin: the selected country overlay, and the dropdown
+    //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
     _generateMarkup() {
       this.telInput.classList.add("iti__tel-input");
       if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
@@ -25330,7 +25327,7 @@
         }
       }
     }
-    // for each of the passed countries: add a country <li> to the countryList <ul> container
+    //* For each of the passed countries: add a country <li> to the countryList <ul> container.
     _appendListItems(countries, className, preferred) {
       for (let i = 0; i < countries.length; i++) {
         const c = countries[i];
@@ -25358,11 +25355,11 @@
         listItem.insertAdjacentHTML("beforeend", content);
       }
     }
-    // set the initial state of the input value and the selected country by:
-    // 1. extracting a dial code from the given number
-    // 2. using explicit initialCountry
-    // 3. picking the first preferred country
-    // 4. picking the first country
+    //* Set the initial state of the input value and the selected country by:
+    //* 1. Extracting a dial code from the given number
+    //* 2. Using explicit initialCountry
+    //* 3. Picking the first preferred country
+    //* 4. Picking the first country
     _setInitialState(overrideAutoCountry = false) {
       const attributeValue = this.telInput.getAttribute("value");
       const inputValue = this.telInput.value;
@@ -25390,7 +25387,7 @@
         this._updateValFromNumber(val);
       }
     }
-    // initialise the main event listeners: input keyup, and click selected country
+    //* Initialise the main event listeners: input keyup, and click selected country.
     _initListeners() {
       this._initTelInputListeners();
       if (this.options.allowDropdown) {
@@ -25400,7 +25397,7 @@
         this._initHiddenInputListener();
       }
     }
-    // update hidden input on form submit
+    //* Update hidden input on form submit.
     _initHiddenInputListener() {
       this._handleHiddenInputSubmit = () => {
         if (this.hiddenInput) {
@@ -25415,7 +25412,7 @@
         this._handleHiddenInputSubmit
       );
     }
-    // initialise the dropdown listeners
+    //* initialise the dropdown listeners.
     _initDropdownListeners() {
       this._handleLabelClick = (e) => {
         if (this.dropdownContent.classList.contains("iti__hide")) {
@@ -25450,7 +25447,7 @@
         this._handleCountryContainerKeydown
       );
     }
-    // init many requests: utils script / geo ip lookup
+    //* Init many requests: utils script / geo ip lookup.
     _initRequests() {
       if (this.options.utilsScript && !window.intlTelInputUtils) {
         if (window.intlTelInputGlobals.documentReady()) {
@@ -25469,7 +25466,7 @@
         this.resolveAutoCountryPromise();
       }
     }
-    // perform the geo ip lookup
+    //* Perform the geo ip lookup.
     _loadAutoCountry() {
       if (window.intlTelInputGlobals.autoCountry) {
         this.handleAutoCountry();
@@ -25496,7 +25493,7 @@
         }
       }
     }
-    // initialize the tel input listeners
+    //* Initialize the tel input listeners.
     _initTelInputListeners() {
       const { strictMode, formatAsYouType } = this.options;
       let userOverrideFormatting = false;
@@ -25540,12 +25537,12 @@
         this.telInput.addEventListener("keydown", this._handleKeydownEvent);
       }
     }
-    // adhere to the input's maxlength attr
+    //* Adhere to the input's maxlength attr.
     _cap(number) {
       const max = parseInt(this.telInput.getAttribute("maxlength") || "", 10);
       return max && number.length > max ? number.substr(0, max) : number;
     }
-    // trigger a custom event on the input
+    //* Trigger a custom event on the input.
     _trigger(name) {
       const e = new Event(name, {
         bubbles: true,
@@ -25553,7 +25550,7 @@
       });
       this.telInput.dispatchEvent(e);
     }
-    // open the dropdown
+    //* Open the dropdown.
     _openDropdown() {
       const { fixDropdownWidth, countrySearch } = this.options;
       if (fixDropdownWidth) {
@@ -25579,7 +25576,7 @@
       this.dropdownArrow.classList.add("iti__arrow--up");
       this._trigger("open:countrydropdown");
     }
-    // decide if should position dropdown above or below input (depends on position within viewport, and scroll)
+    //* Decide if should position dropdown above or below input (depends on position within viewport, and scroll).
     _setDropdownPosition() {
       if (this.options.dropdownContainer) {
         this.options.dropdownContainer.appendChild(this.dropdown);
@@ -25606,7 +25603,7 @@
         }
       }
     }
-    // we only bind dropdown listeners when the dropdown is open
+    //* We only bind dropdown listeners when the dropdown is open.
     _bindDropdownListeners() {
       this._handleMouseoverCountryList = (e) => {
         const listItem = e.target?.closest(".iti__country");
@@ -25708,7 +25705,7 @@
       this.countryList.scrollTop = 0;
       this._updateSearchResultsText();
     }
-    // update search results text (for a11y)
+    //* Update search results text (for a11y).
     _updateSearchResultsText() {
       const { i18n } = this.options;
       const count = this.countryList.childElementCount;
@@ -25722,7 +25719,7 @@
       }
       this.searchResultsA11yText.textContent = searchText;
     }
-    // highlight the next/prev item in the list (and ensure it is visible)
+    //* Highlight the next/prev item in the list (and ensure it is visible).
     _handleUpDownKey(key) {
       let next = key === "ArrowUp" ? this.highlightedItem?.previousElementSibling : this.highlightedItem?.nextElementSibling;
       if (next) {
@@ -25738,13 +25735,13 @@
         this._highlightListItem(next, doFocus);
       }
     }
-    // select the currently highlighted item
+    //* Select the currently highlighted item.
     _handleEnterKey() {
       if (this.highlightedItem) {
         this._selectListItem(this.highlightedItem);
       }
     }
-    // find the first list item whose name starts with the query string
+    //* Find the first list item whose name starts with the query string.
     _searchForCountry(query) {
       for (let i = 0; i < this.countries.length; i++) {
         const c = this.countries[i];
@@ -25757,8 +25754,8 @@
         }
       }
     }
-    // update the input's value to the given val (format first if possible)
-    // NOTE: this is called from _setInitialState, handleUtils and setNumber
+    //* Update the input's value to the given val (format first if possible)
+    //* NOTE: this is called from _setInitialState, handleUtils and setNumber.
     _updateValFromNumber(fullNumber) {
       let number = fullNumber;
       if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
@@ -25774,8 +25771,8 @@
       number = this._beforeSetNumber(number);
       this.telInput.value = number;
     }
-    // check if need to select a new country based on the given number
-    // Note: called from _setInitialState, keyup handler, setNumber
+    //* Check if need to select a new country based on the given number
+    //* Note: called from _setInitialState, keyup handler, setNumber.
     _updateCountryFromNumber(fullNumber) {
       const plusIndex = fullNumber.indexOf("+");
       let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
@@ -25815,7 +25812,7 @@
       }
       return false;
     }
-    // remove highlighting from other list items and highlight the given item
+    //* Remove highlighting from other list items and highlight the given item.
     _highlightListItem(listItem, shouldFocus) {
       const prevItem = this.highlightedItem;
       if (prevItem) {
@@ -25839,8 +25836,8 @@
         this.highlightedItem.focus();
       }
     }
-    // find the country data for the given iso2 code
-    // the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
+    //* Find the country data for the given iso2 code
+    //* the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
     _getCountryData(iso2, allowFail) {
       for (let i = 0; i < this.countries.length; i++) {
         if (this.countries[i].iso2 === iso2) {
@@ -25852,8 +25849,8 @@
       }
       throw new Error(`No country data for '${iso2}'`);
     }
-    // update the selected country, dial code (if showSelectedDialCode), placeholder, title, and active list item
-    // Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry
+    //* Update the selected country, dial code (if showSelectedDialCode), placeholder, title, and active list item.
+    //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
     _setCountry(iso2) {
       const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
       const prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
@@ -25910,7 +25907,7 @@
       }
       return prevCountry.iso2 !== iso2;
     }
-    // update the maximum valid number length for the currently selected country
+    //* Update the maximum valid number length for the currently selected country.
     _updateMaxLength() {
       if (this.options.strictMode && window.intlTelInputUtils) {
         if (this.selectedCountryData.iso2) {
@@ -25947,10 +25944,10 @@
       }
       this.selectedCountry.setAttribute("title", title);
     }
-    // when the input is in a hidden container during initialisation, we must inject some markup
-    // into the end of the DOM to calculate the correct offsetWidth
-    // NOTE: this is only used when showSelectedDialCode is enabled, so countryContainer and selectedCountry
-    // will definitely exist
+    //* When the input is in a hidden container during initialisation, we must inject some markup
+    //* into the end of the DOM to calculate the correct offsetWidth.
+    //* NOTE: this is only used when showSelectedDialCode is enabled, so countryContainer and selectedCountry
+    //* will definitely exist.
     _getHiddenSelectedCountryWidth() {
       if (this.telInput.parentNode) {
         const containerClone = this.telInput.parentNode.cloneNode(false);
@@ -25966,7 +25963,7 @@
       }
       return 0;
     }
-    // update the input placeholder to an example number from the currently selected country
+    //* Update the input placeholder to an example number from the currently selected country.
     _updatePlaceholder() {
       const {
         autoPlaceholder,
@@ -25989,7 +25986,7 @@
         this.telInput.setAttribute("placeholder", placeholder);
       }
     }
-    // called when the user selects a list item from the dropdown
+    //* Called when the user selects a list item from the dropdown.
     _selectListItem(listItem) {
       const countryChanged = this._setCountry(
         listItem.getAttribute("data-country-code")
@@ -26001,7 +25998,7 @@
         this._triggerCountryChange();
       }
     }
-    // close the dropdown and unbind any listeners
+    //* Close the dropdown and unbind any listeners.
     _closeDropdown() {
       this.dropdownContent.classList.add("iti__hide");
       this.selectedCountry.setAttribute("aria-expanded", "false");
@@ -26036,7 +26033,7 @@
       }
       this._trigger("close:countrydropdown");
     }
-    // check if an element is visible within it's container, else scroll until it is
+    //* Check if an element is visible within it's container, else scroll until it is.
     _scrollTo(element, middle) {
       const container2 = this.countryList;
       const windowTop = document.documentElement.scrollTop;
@@ -26061,8 +26058,8 @@
         container2.scrollTop = newScrollTop - heightDifference;
       }
     }
-    // replace any existing dial code with the new one
-    // Note: called from _selectListItem and setCountry
+    //* Replace any existing dial code with the new one
+    //* Note: called from _selectListItem and setCountry
     _updateDialCode(newDialCodeBare) {
       const inputVal = this.telInput.value;
       const newDialCode = `+${newDialCodeBare}`;
@@ -26077,8 +26074,8 @@
         this.telInput.value = newNumber;
       }
     }
-    // try and extract a valid international dial code from a full telephone number
-    // Note: returns the raw string inc plus character and any whitespace/dots etc
+    //* Try and extract a valid international dial code from a full telephone number.
+    //* Note: returns the raw string inc plus character and any whitespace/dots etc.
     _getDialCode(number, includeAreaCode) {
       let dialCode = "";
       if (number.charAt(0) === "+") {
@@ -26105,7 +26102,7 @@
       }
       return dialCode;
     }
-    // get the input val, adding the dial code if showSelectedDialCode is enabled
+    //* Get the input val, adding the dial code if showSelectedDialCode is enabled.
     _getFullNumber() {
       const val = this.telInput.value.trim();
       const { dialCode } = this.selectedCountryData;
@@ -26118,8 +26115,7 @@
       }
       return prefix + val;
     }
-    // remove the dial code if showSelectedDialCode is enabled
-    // also cap the length if the input has a maxlength attribute
+    //* Remove the dial code if showSelectedDialCode is enabled also cap the length if the input has a maxlength attribute
     _beforeSetNumber(fullNumber) {
       let number = fullNumber;
       if (this.options.showSelectedDialCode) {
@@ -26132,11 +26128,11 @@
       }
       return this._cap(number);
     }
-    // trigger the 'countrychange' event
+    //* Trigger the 'countrychange' event.
     _triggerCountryChange() {
       this._trigger("countrychange");
     }
-    // format the number as the user types
+    //* Format the number as the user types.
     _formatNumberAsYouType() {
       const val = this._getFullNumber();
       const result = window.intlTelInputUtils ? window.intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
@@ -26150,7 +26146,7 @@
     //**************************
     //*  SECRET PUBLIC METHODS
     //**************************
-    // this is called when the geoip call returns
+    //* This is called when the geoip call returns.
     handleAutoCountry() {
       if (this.options.initialCountry === "auto" && window.intlTelInputGlobals.autoCountry) {
         this.defaultCountry = window.intlTelInputGlobals.autoCountry;
@@ -26160,7 +26156,7 @@
         this.resolveAutoCountryPromise();
       }
     }
-    // this is called when the utils request completes
+    //* This is called when the utils request completes.
     handleUtils() {
       if (window.intlTelInputUtils) {
         if (this.telInput.value) {
@@ -26176,7 +26172,7 @@
     //********************
     //*  PUBLIC METHODS
     //********************
-    // remove plugin
+    //* Remove plugin.
     destroy() {
       if (this.options.allowDropdown) {
         this._closeDropdown();
@@ -26207,7 +26203,7 @@
       wrapper?.parentNode?.removeChild(wrapper);
       delete window.intlTelInputGlobals.instances[this.id];
     }
-    // get the extension from the current number
+    //* Get the extension from the current number.
     getExtension() {
       if (window.intlTelInputUtils) {
         return window.intlTelInputUtils.getExtension(
@@ -26217,7 +26213,7 @@
       }
       return "";
     }
-    // format the number to the given format
+    //* Format the number to the given format.
     getNumber(format) {
       if (window.intlTelInputUtils) {
         const { iso2 } = this.selectedCountryData;
@@ -26229,7 +26225,7 @@
       }
       return "";
     }
-    // get the type of the entered number e.g. landline/mobile
+    //* Get the type of the entered number e.g. landline/mobile.
     getNumberType() {
       if (window.intlTelInputUtils) {
         return window.intlTelInputUtils.getNumberType(
@@ -26239,11 +26235,11 @@
       }
       return -99;
     }
-    // get the country data for the currently selected country
+    //* Get the country data for the currently selected country.
     getSelectedCountryData() {
       return this.selectedCountryData;
     }
-    // get the validation error
+    //* Get the validation error.
     getValidationError() {
       if (window.intlTelInputUtils) {
         const { iso2 } = this.selectedCountryData;
@@ -26251,7 +26247,7 @@
       }
       return -99;
     }
-    // validate the input val - assumes the global function isPossibleNumber (from utilsScript)
+    //* Validate the input val - assumes the global function isPossibleNumber (from utilsScript).
     isValidNumber(mobileOnly = true) {
       const val = this._getFullNumber();
       if (/\p{L}/u.test(val)) {
@@ -26259,7 +26255,7 @@
       }
       return window.intlTelInputUtils ? window.intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
     }
-    // validate the input val (precise) - assumes the global function isValidNumber (from utilsScript)
+    //* Validate the input val (precise) - assumes the global function isValidNumber (from utilsScript).
     isValidNumberPrecise() {
       const val = this._getFullNumber();
       if (/\p{L}/u.test(val)) {
@@ -26267,7 +26263,7 @@
       }
       return window.intlTelInputUtils ? window.intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
     }
-    // update the selected country, and update the input val accordingly
+    //* Update the selected country, and update the input val accordingly.
     setCountry(iso2) {
       const iso2Lower = iso2.toLowerCase();
       if (this.selectedCountryData.iso2 !== iso2Lower) {
@@ -26276,7 +26272,7 @@
         this._triggerCountryChange();
       }
     }
-    // set the input value and update the country
+    //* Set the input value and update the country.
     setNumber(number) {
       const countryChanged = this._updateCountryFromNumber(number);
       this._updateValFromNumber(number);
@@ -26284,7 +26280,7 @@
         this._triggerCountryChange();
       }
     }
-    // set the placeholder number typ
+    //* Set the placeholder number typ
     setPlaceholderNumberType(type) {
       this.options.placeholderNumberType = type;
       this._updatePlaceholder();
@@ -26321,16 +26317,16 @@
   if (typeof window === "object") {
     const intlTelInputGlobals = {
       defaults,
-      // using a global like this allows us to mock it in the tests
+      //* Using a global like this allows us to mock it in the tests.
       documentReady: () => document.readyState === "complete",
-      // get the country data object
+      //* Get the country data object.
       getCountryData: () => data_default,
-      // a getter for the plugin instance
+      //* A getter for the plugin instance.
       getInstance: (input) => {
         const id2 = input.getAttribute("data-intl-tel-input-id");
         return id2 ? intlTelInputGlobals.instances[id2] : null;
       },
-      // a map from instance ID to instance object
+      //* A map from instance ID to instance object.
       instances: {},
       loadUtils,
       version: "21.0.9"

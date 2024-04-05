@@ -15,7 +15,7 @@ describe("allowDropdown:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        allowDropdown: false
+        allowDropdown: false,
       });
     });
 
@@ -31,6 +31,7 @@ describe("allowDropdown:", function() {
     it("typing a different dial code updates the flag", function() {
       input.val("+4");
       triggerKeyOnInput("4");
+
       expect(getSelectedCountryElement()).toHaveClass("iti__gb");
     });
 
@@ -61,7 +62,7 @@ describe("allowDropdown:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        allowDropdown: true
+        allowDropdown: true,
       });
     });
 
@@ -77,11 +78,13 @@ describe("allowDropdown:", function() {
     it("typing a different dial code updates the flag", function() {
       input.val("+4");
       triggerKeyOnInput("4");
+
       expect(getSelectedCountryElement()).toHaveClass("iti__gb");
     });
 
     it("clicking the selected flag shows the dropdown", function() {
       getSelectedCountryContainer().click();
+
       expect(getListElement()).toBeVisible();
     });
 

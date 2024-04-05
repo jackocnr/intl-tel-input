@@ -16,7 +16,7 @@ describe("containerClass option:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        containerClass: 'cpc',
+        containerClass: "cpc",
       });
     });
 

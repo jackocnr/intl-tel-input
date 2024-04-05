@@ -8,8 +8,8 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
     albaniaIso2Code = "al",
     chinaIso2Code = "cn",
     chinaDialCode = "+86",
-    koreaIso2Code = 'kr',
-    russiaIso2Code = 'ru';
+    koreaIso2Code = "kr",
+    russiaIso2Code = "ru";
 
   beforeEach(function() {
     intlSetup();
@@ -41,6 +41,7 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
 
   it("selecting an item from the first input dropdown only updates the flag on that input", function() {
     selectCountry(chinaIso2Code);
+
     expect(getSelectedCountryElement()).toHaveClass(`iti__${chinaIso2Code}`);
     expect(getSelectedCountryElement(input2)).toHaveClass("iti__globe");
   });
@@ -48,6 +49,7 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
   it("updating the number on the first input only updates the flag on that input", function() {
     input.val(chinaDialCode + " 123456");
     triggerKeyOnInput(" ");
+
     expect(getSelectedCountryElement()).toHaveClass(`iti__${chinaIso2Code}`);
     expect(getSelectedCountryElement(input2)).toHaveClass("iti__globe");
   });
@@ -67,6 +69,7 @@ describe("multiple instances: init plugin (with nationalMode=false) to test mult
 
     it("then clicking open dropdown on the second will close the first and open the second", function() {
       getSelectedCountryContainer(input2)[0].click();
+
       expect(getListElement()).not.toBeVisible();
       expect(getListElement(input2)).toBeVisible();
     });

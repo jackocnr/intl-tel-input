@@ -11,7 +11,7 @@ module.exports = function(grunt) {
       ],
       helpers: 'src/spec/helpers/**/*.js',
       specs: 'src/spec/tests/**/*.js',
-      styles: "build/css/intlTelInput.css", // required so adding "hide" class actually works etc.
+      styles: "build/css/intlTelInput.css", //* Required so adding "hide" class actually works etc.
       outfile: 'spec.html',
       keepRunner: true
     }

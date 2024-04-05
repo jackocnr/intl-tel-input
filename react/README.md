@@ -1,3 +1,5 @@
+# Props
+
 Here's a list of all of the current props you can pass to the IntlTelInput react component.
 
 **initialValue**  

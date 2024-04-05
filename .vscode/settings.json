@@ -1,8 +1,54 @@
 {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
-    "editor.formatOnPaste": false, // required 
-    "editor.formatOnType": false, // required
-    "editor.formatOnSaveMode": "file", // required to format on save
-    "vs-code-prettier-eslint.prettierLast": "false",
-    "typescript.tsdk": "node_modules/typescript/lib" // set as "true" to run 'prettier' last not first
+    "editor.formatOnPaste": false, //* required
+    "editor.formatOnType": false, //* required
+    "editor.formatOnSaveMode": "file", //* required to format on save
+    "vs-code-prettier-eslint.prettierLast": false, //* set as "true" to run 'prettier' last not first
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "cSpell.enabledLanguageIds": [
+      "css",
+      "en",
+      "html",
+      "ignore",
+      "javascript",
+      "javascriptreact",
+      "json",
+      "jsonc",
+      "markdown",
+      "plaintext",
+      "scss",
+      "text",
+      "typescript",
+      "typescriptreact",
+      "COBOL",
+      "ACUCOBOL"
+    ],
+    "cSpell.words": [
+      "AYTF",
+      "dropup",
+      "evenizer",
+      "FAYT",
+      "geoip",
+      "iife",
+      "ipapi",
+      "jackocnr",
+      "librsvg",
+      "mledoze's",
+      "NANP",
+      "normalised",
+      "optipng",
+      "tmpl"
+    ],
+    "files.associations": {
+      "LICENSE": "text",
+    },
+    "markdownlint.config": {
+      "blanks-around-headings": false,
+      "blanks-around-lists": false,
+      "ul-style": false,
+      "blanks-around-fences": false,
+      "ol-prefix": false,
+      "no-inline-html": false,
+    },
+    "cSpell.language": "en-GB"
 }

@@ -24,10 +24,12 @@ describe("getExtension: init plugin with utils", function() {
     }
   });
 
-  it("doesnt work for a space, or no delimiter", function() {
+  it("doesn't work for a space, or no delimiter", function() {
     input.val(number + " " + extension);
+
     expect(iti.getExtension()).toEqual(null);
     input.val(number + extension);
+
     expect(iti.getExtension()).toEqual(null);
   });
 

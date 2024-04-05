@@ -53,7 +53,7 @@ describe("setNumber: with utils", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        nationalMode: false
+        nationalMode: false,
       });
       iti.setNumber("+447733123456");
     });

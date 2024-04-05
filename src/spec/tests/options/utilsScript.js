@@ -15,6 +15,7 @@ describe("utilsScript:", function() {
 
   it("init vanilla plugin does not inject the script", function() {
     iti = window.intlTelInput(input[0]);
+
     expect($("script.iti-load-utils")).not.toExist();
   });
 
@@ -23,6 +24,7 @@ describe("utilsScript:", function() {
     iti = window.intlTelInput(input[0], {
       utilsScript: url,
     });
+
     expect($("script.iti-load-utils")).not.toExist();
   });
 
@@ -31,6 +33,7 @@ describe("utilsScript:", function() {
     iti = window.intlTelInput(input[0], {
       utilsScript: url,
     });
+
     expect($("script.iti-load-utils")).toExist();
   });
 

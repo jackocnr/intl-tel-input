@@ -17,7 +17,7 @@ describe("initialCountry: ", function() {
     beforeEach(function() {
       input = $("<input>").wrap("div");
       iti = window.intlTelInput(input[0], {
-        initialCountry: initialCountry
+        initialCountry: initialCountry,
       });
     });
 
@@ -36,7 +36,7 @@ describe("initialCountry: ", function() {
     beforeEach(function() {
       input = $("<input value='+1 800 123 1234'>");
       iti = window.intlTelInput(input[0], {
-        initialCountry: initialCountry
+        initialCountry: initialCountry,
       });
     });
 

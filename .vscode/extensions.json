@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "rvest.vs-code-prettier-eslint",
+    "davidanson.vscode-markdownlint",
+    "aaron-bond.better-comments"
+  ]
+}

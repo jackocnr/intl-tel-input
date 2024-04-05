@@ -74,7 +74,7 @@ describe("initial values:", function() {
 
       beforeEach(function() {
         iti = window.intlTelInput(input[0], {
-          initialCountry: initialCountry
+          initialCountry: initialCountry,
         });
       });
 
@@ -95,7 +95,7 @@ describe("initial values:", function() {
       iti = window.intlTelInput(input[0]);
     });
 
-    // issue 520
+    //* Issue 520.
     it("sets the selected flag correctly", function() {
       expect(getSelectedCountryElement()).toHaveClass("iti__ck");
     });

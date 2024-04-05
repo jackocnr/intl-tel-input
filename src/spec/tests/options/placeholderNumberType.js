@@ -16,6 +16,7 @@ describe("placeholderNumberType:", function() {
       nationalMode: true,
       initialCountry: "gb",
     });
+
     expect(input.attr("placeholder")).toEqual("07400 123456");
   });
 
@@ -25,6 +26,7 @@ describe("placeholderNumberType:", function() {
       initialCountry: "gb",
       placeholderNumberType: "FIXED_LINE",
     });
+
     expect(input.attr("placeholder")).toEqual("0121 234 5678");
   });
 

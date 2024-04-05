@@ -4,7 +4,7 @@ describe("loadUtils:", function() {
 
   beforeEach(function() {
     intlSetup();
-    // must be in markup for utils loaded handler to work
+    //* Must be in markup for utils loaded handler to work.
     input = $("<input>").appendTo("body");
   });
 
@@ -171,7 +171,7 @@ describe("loadUtils:", function() {
       iti = window.intlTelInput(input[0], {
         utilsScript: url3,
       });
-      // wait for the request to finish so we dont interfere with other tests
+      //* Wait for the request to finish so we don't interfere with other tests.
       iti.promise.finally(done);
     });
 
@@ -181,6 +181,7 @@ describe("loadUtils:", function() {
 
     it("then calling loadUtils does not inject another script", function() {
       window.intlTelInputGlobals.loadUtils("this/is/a/test");
+
       expect($("script.iti-load-utils").length).toEqual(1);
       expect($("script.iti-load-utils").attr("src")).toEqual(url3);
     });

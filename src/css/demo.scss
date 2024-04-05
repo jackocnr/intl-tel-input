@@ -8,7 +8,7 @@ body {
   color: #555;
 }
 
-// general form styling
+//* General form styling.
 input,
 .button {
   height: 35px;
@@ -16,7 +16,7 @@ input,
   padding: 6px 12px;
   border-radius: 2px;
 
-  // same font style, size and color as rest of site
+  //* Same font style, size and color as rest of site.
   font-family: inherit;
   font-size: 100%;
   color: inherit;
@@ -26,7 +26,7 @@ input,
   }
 }
 
-// select useful for examples
+//* select useful for examples.
 input,
 select {
   border: 1px solid #ccc;
@@ -36,7 +36,7 @@ input::placeholder {
   color: #bbb;
 }
 
-// borrowed from bootstrap
+//* Borrowed from bootstrap.
 .button {
   color: #fff;
   background-color: #428bca;
@@ -49,7 +49,7 @@ input::placeholder {
   }
 }
 
-// for react demo
+//* For react demo.
 .notice {
   margin-top: 15px;
 }

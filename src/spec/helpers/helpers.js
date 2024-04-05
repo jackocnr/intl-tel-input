@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 var input,
   iti,
   totalCountries = 244,
@@ -128,7 +129,7 @@ var selectInputChars = function(start, end) {
 var triggerInputEvent = function(type) {
   var e = new Event(type);
   input[0].dispatchEvent(e);
-}
+};
 
 var triggerKey = function(el, type, key) {
   var e = new KeyboardEvent(type, { key: key, data: key });
@@ -138,21 +139,22 @@ var triggerKey = function(el, type, key) {
 // trigger keydown, then keypress, then add the key, then keyup
 var triggerKeyOnInput = function(key, customInput) {
   const inputEl = customInput || input;
-  triggerKey(inputEl[0], 'keydown', key);
-  triggerKey(inputEl[0], 'keypress', key);
+  triggerKey(inputEl[0], "keydown", key);
+  triggerKey(inputEl[0], "keypress", key);
   var previousVal = inputEl.val();
   inputEl.val(previousVal + key);
-  triggerKey(inputEl[0], 'keyup', key);
-  triggerKey(inputEl[0], 'input', key);
+  triggerKey(inputEl[0], "keyup", key);
+  triggerKey(inputEl[0], "input", key);
 };
 
 var triggerKeyOnBody = function(key) {
-  triggerKey(document, 'keydown', key);
-  triggerKey(document, 'keypress', key);
-  triggerKey(document, 'keyup', key);
-  triggerKey(document, 'input', key);
+  triggerKey(document, "keydown", key);
+  triggerKey(document, "keypress", key);
+  triggerKey(document, "keyup", key);
+  triggerKey(document, "input", key);
 };
 
 var triggerKeyOnCountryContainerElement = function(key) {
-  triggerKey(getCountryContainerElement()[0], 'keydown', key);
+  triggerKey(getCountryContainerElement()[0], "keydown", key);
 };
+/* eslint-enable @typescript-eslint/no-unused-vars */
