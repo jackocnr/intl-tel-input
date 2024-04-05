@@ -15,7 +15,7 @@ module.exports = function(grunt) {
   // build utils
   grunt.registerTask('build:utils', ['closure-compiler:utils']);
   // just CSS
-  grunt.registerTask('css', ['sass', 'cssmin']);
+  grunt.registerTask('css', ['generate-scss-metadata', 'sass', 'cssmin']);
   // just images
   grunt.registerTask('img', ['responsive_images:retina', 'exec:evenizer', 'responsive_images:regular', 'sprite', 'imagemin']);
   // just javascript

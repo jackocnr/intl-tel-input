@@ -1,3 +1,5 @@
+@import "metadata";
+
 :root {
   //* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus.
   --iti-hover-color: rgba(0, 0, 0, 0.05);
@@ -25,6 +27,9 @@
   --iti-path-flags-2x: url('../img/flags@2x.png?1');
   --iti-path-globe-1x: url('../img/globe.png');
   --iti-path-globe-2x: url('../img/globe@2x.png');
+
+  --iti-flag-sprite-width: #{map-get($flags-sprite-1x, width)};
+  --iti-flag-sprite-height: #{map-get($flags-sprite-1x, height)};
 
   //* Enough space for them to click off to close.
   --iti-mobile-popup-margin: 30px;
@@ -351,17 +356,47 @@
   }
 }
 
-@import "sprite";
-
 .iti__flag {
+  --iti-flag-offset: 0px;
+  --iti-flag-width: #{$most-common-flag-width};
+  --iti-flag-height: #{$most-common-flag-height};
+
   height: var(--iti-flag-height);
+  width: var(--iti-flag-width);
   box-shadow: 0px 0px 1px 0px #888;
   background-image: var(--iti-path-flags-1x);
   background-repeat: no-repeat;
-  background-position: var(--iti-flag-width) 0;
+  background-position: var(--iti-flag-offset) 0;
+  background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
+}
 
-  @media (min-resolution: 2x) {
-    background-image: var(--iti-path-flags-2x);
+//* Creates placeholders for flag widths.
+@each $width in $unique-flag-widths {
+  %flag-width-#{$width} {
+    --iti-flag-width: #{$width};
+  }
+}
+
+//* Creates placeholders for flag heights.
+@each $height in $unique-flag-heights {
+  %flag-height-#{$height} {
+    --iti-flag-height: #{$height};
+  }
+}
+
+@each $country-code, $values in $flags {
+  $flag-width: map-get($values, width);
+  $flag-height: map-get($values, height);
+  $flag-offset: map-get($values, offset);
+
+  .iti__#{$country-code} {
+    @if $flag-width != $most-common-flag-width {
+      @extend %flag-width-#{$flag-width};
+    }
+    @if $flag-height != $most-common-flag-height {
+      @extend %flag-height-#{$flag-height};
+    }
+    --iti-flag-offset: #{$flag-offset};
   }
 }
 
@@ -372,8 +407,10 @@
   background-position: right;
   box-shadow: none;
   height: 19px;
+}
 
-  @media (min-resolution: 2x) {
-    background-image: var(--iti-path-globe-2x);
-  }
+//* Media query for high PPI/Retina Displays.
+@media (min-resolution: 2x) {
+  .iti__globe { background-image: var(--iti-path-globe-2x); }
+  .iti__flag { background-image: var(--iti-path-flags-2x); }
 }
