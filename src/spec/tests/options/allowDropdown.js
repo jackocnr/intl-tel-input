@@ -24,7 +24,7 @@ describe("allowDropdown:", function() {
       expect(getListElement()).not.toExist();
     });
 
-    if("Should not add role[combox]", function() {
+    it("Should not add role[combox]", function() {
       expect(getSelectedCountryContainer()).not.toHaveAttr("role", "combobox");
     });
 
@@ -66,7 +66,7 @@ describe("allowDropdown:", function() {
       });
     });
 
-    if("Should have role[combox]", function() {
+    it("Should have role[combox]", function() {
       expect(getSelectedCountryContainer()).toHaveAttr("role", "combobox");
     });
 

@@ -15,11 +15,11 @@ describe("useFullscreenPopup: testing fullscreen behavior can be controlled", fu
       useFullscreenPopup: true,
     });
     //* No country list in markup initially.
-    expect(getSelectedCountryContainer().find(".iti__country-list")).not.toExist();
+    expect(getDropdownContent().find(".iti__country-list")).not.toExist();
     getSelectedCountryContainer().click();
     //* After opening the dropdown, the dropdown container should be injected, with the right class, containing the country list.
     expect($(".iti--container")).toHaveClass("iti--fullscreen-popup");
-    expect($(".iti--container")).find(".iti__country-list").toExist();
+    expect($(".iti--container").find(".iti__country-list")).toExist();
   });
 
   it("can disable fullscreen popup", function() {
@@ -27,9 +27,10 @@ describe("useFullscreenPopup: testing fullscreen behavior can be controlled", fu
       useFullscreenPopup: false,
     });
 
-    expect(getSelectedCountryContainer().find(".iti__country-list")).toExist();
+    expect(getDropdownContent().find(".iti__country-list")).toExist();
     getSelectedCountryContainer().click();
 
     expect($(".iti--container")).not.toExist();
     expect($(".iti--fullscreen-popup")).not.toExist();
-  })
+  });
+});
