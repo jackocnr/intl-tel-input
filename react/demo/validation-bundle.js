@@ -26348,14 +26348,18 @@
 
   // react/src/intl-tel-input/react.tsx
   var IntlTelInput = ({
-    initialValue,
-    onChangeNumber,
-    onChangeCountry,
-    onChangeValidity,
-    onChangeErrorCode,
-    usePreciseValidation,
-    initOptions,
-    inputProps
+    initialValue = "",
+    onChangeNumber = () => {
+    },
+    onChangeCountry = () => {
+    },
+    onChangeValidity = () => {
+    },
+    onChangeErrorCode = () => {
+    },
+    usePreciseValidation = false,
+    initOptions = {},
+    inputProps = {}
   }) => {
     const inputRef = (0, import_react.useRef)(null);
     const itiRef = (0, import_react.useRef)(null);
@@ -26399,20 +26403,6 @@
         ...inputProps
       }
     );
-  };
-  IntlTelInput.defaultProps = {
-    initialValue: "",
-    onChangeNumber: () => {
-    },
-    onChangeCountry: () => {
-    },
-    onChangeValidity: () => {
-    },
-    onChangeErrorCode: () => {
-    },
-    usePreciseValidation: false,
-    initOptions: {},
-    inputProps: {}
   };
   var react_default = IntlTelInput;
 

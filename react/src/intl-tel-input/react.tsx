@@ -2,23 +2,23 @@ import React, { useRef, useEffect } from "react";
 import intlTelInput, { Iti, SomeOptions } from "../intl-tel-input";
 
 const IntlTelInput = ({
-  initialValue,
-  onChangeNumber,
-  onChangeCountry,
-  onChangeValidity,
-  onChangeErrorCode,
-  usePreciseValidation,
-  initOptions,
-  inputProps,
+  initialValue = "",
+  onChangeNumber = (): void => {},
+  onChangeCountry = (): void => {},
+  onChangeValidity = (): void => {},
+  onChangeErrorCode = (): void => {},
+  usePreciseValidation = false,
+  initOptions = {},
+  inputProps = {},
 }: {
-  initialValue: string,
-  onChangeNumber: (number: string) => void,
-  onChangeCountry: (country: string) => void,
-  onChangeValidity: (valid: boolean) => void,
-  onChangeErrorCode: (errorCode: number | null) => void,
-  usePreciseValidation: boolean,
-  initOptions: SomeOptions,
-  inputProps: object,
+  initialValue?: string,
+  onChangeNumber?: (number: string) => void,
+  onChangeCountry?: (country: string) => void,
+  onChangeValidity?: (valid: boolean) => void,
+  onChangeErrorCode?: (errorCode: number | null) => void,
+  usePreciseValidation?: boolean,
+  initOptions?: SomeOptions,
+  inputProps?: object,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
@@ -69,17 +69,6 @@ const IntlTelInput = ({
       {...inputProps}
     />
   );
-};
-
-IntlTelInput.defaultProps = {
-  initialValue: "",
-  onChangeNumber: (): void => {},
-  onChangeCountry: (): void => {},
-  onChangeValidity: (): void => {},
-  onChangeErrorCode: (): void => {},
-  usePreciseValidation: false,
-  initOptions: {},
-  inputProps: {},
 };
 
 export default IntlTelInput;

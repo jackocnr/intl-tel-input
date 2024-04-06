@@ -449,27 +449,15 @@ declare module "intl-tel-input" {
 declare module "intl-tel-input/react" {
     import React from "react";
     import { SomeOptions } from "intl-tel-input";
-    const IntlTelInput: {
-        ({ initialValue, onChangeNumber, onChangeCountry, onChangeValidity, onChangeErrorCode, usePreciseValidation, initOptions, inputProps, }: {
-            initialValue: string;
-            onChangeNumber: (number: string) => void;
-            onChangeCountry: (country: string) => void;
-            onChangeValidity: (valid: boolean) => void;
-            onChangeErrorCode: (errorCode: number | null) => void;
-            usePreciseValidation: boolean;
-            initOptions: SomeOptions;
-            inputProps: object;
-        }): React.JSX.Element;
-        defaultProps: {
-            initialValue: string;
-            onChangeNumber: () => void;
-            onChangeCountry: () => void;
-            onChangeValidity: () => void;
-            onChangeErrorCode: () => void;
-            usePreciseValidation: boolean;
-            initOptions: {};
-            inputProps: {};
-        };
-    };
+    const IntlTelInput: ({ initialValue, onChangeNumber, onChangeCountry, onChangeValidity, onChangeErrorCode, usePreciseValidation, initOptions, inputProps, }: {
+        initialValue?: string;
+        onChangeNumber?: (number: string) => void;
+        onChangeCountry?: (country: string) => void;
+        onChangeValidity?: (valid: boolean) => void;
+        onChangeErrorCode?: (errorCode: number | null) => void;
+        usePreciseValidation?: boolean;
+        initOptions?: SomeOptions;
+        inputProps?: object;
+    }) => React.JSX.Element;
     export default IntlTelInput;
 }
