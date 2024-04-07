@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v21.0.7
+ * International Telephone Input v21.0.8
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -2858,7 +2858,7 @@ var factoryOutput = (() => {
       // a map from instance ID to instance object
       instances: {},
       loadUtils,
-      version: "21.0.7"
+      version: "21.0.8"
     };
     window.intlTelInputGlobals = intlTelInputGlobals;
   }
