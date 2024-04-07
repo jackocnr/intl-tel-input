@@ -2,6 +2,8 @@
 
 🎉 NEWS: we now have our own <a href="https://intl-tel-input.com/examples/react-component.html">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/">Storybook</a>! 🎉  
 
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.png" alt="Typescript logo" width="64px" /> ANNOUNCEMENT: since v21.0.6 we have our own Typescript type definitions (for both the pure JavaScript and the React plugin), so no need to use `@types/intl-tel-input` any more!
+
 A JavaScript plugin for entering and validating international telephone numbers. It adds a (searchable) country dropdown to any input, detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-search.png" alt="Screenshot" width="238px" style="max-width: 100%" />
@@ -50,7 +52,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * High-resolution flag images
 * Lots of initialisation options for customisation, as well as public methods/events for interaction
 * Accessibility provided via ARIA tags
-* Typescript declaration files provided
+* Typescript type definitions provided
 * Easily customise styles by overriding the provided CSS variables
 * React component included
 
