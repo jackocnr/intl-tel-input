@@ -91,5 +91,6 @@
     "./data": "./build/js/data.js",
     "./react": "./react/build/IntlTelInput.js",
     "./*": "./*"
-  }
+  },
+  "types": "./build/js/intlTelInput.d.ts"
 }
