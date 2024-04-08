@@ -1,0 +1,74 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "allowCompoundWords": true,
+  "maxNumberOfProblems": 1000,
+  // "checkLimit": 5000, //! Setting that is in the vscode eextension not in the cli
+  // "diagnosticLevel": "Warning", //! Setting that is in the vscode eextension not in the cli
+  "language": "en_GB",
+  "useGitignore": true,
+  "minWordLength": 4,
+  "dictionaries": [
+    "css",
+    "en_GB",
+    "html",
+    "ignore",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "jsonc",
+    "markdown",
+    "plaintext",
+    "scss",
+    "text",
+    "typescript",
+    "typescriptreact",
+    "COBOL",
+    "ACUCOBOL"
+  ],
+  "dictionaryDefinitions": [],
+  "import": [],
+  "ignorePaths": [
+    //* Directories
+    "**/.git/**",
+    "**/build/**",
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.vscode/**",
+    "**/.scraps/**",
+    "**/third_party/**",
+    //* Files
+    "**/package-lock.json",
+    "**/yarn.lock",
+    "**/Gemfile",
+    "**/cspell.json",
+    "**/.env",
+    //* File Extensions
+    "**/*.svg",
+    //* Specific files and folders
+    "src/js/intl-tel-input/data.ts",
+    "react/demo/validation-bundle.js",
+    "react/demo/simple-bundle.js"
+  ],
+  "ignoreWords": [],
+  "flagWords": [],
+  "words": [
+    "Åland",
+    "AYTF",
+    "dropup",
+    "evenizer",
+    "FAYT",
+    "geoip",
+    "iife",
+    "ipapi",
+    "jackocnr",
+    "librsvg",
+    "mledoze's",
+    "NANP",
+    "normalised",
+    "optipng",
+    "sass",
+    "tmpl",
+    "vars"
+  ]
+}
