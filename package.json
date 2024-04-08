@@ -86,11 +86,24 @@
     "build:react": "node react/build.js"
   },
   "style": "build/css/intlTelInput.css",
+  "main": "./build/js/intlTelInput.js",
+  "types": "./build/js/intlTelInput.d.ts",
   "exports": {
-    ".": "./build/js/intlTelInput.js",
+    ".": {
+      "default": "./build/js/intlTelInput.js",
+      "types": "./build/js/intlTelInput.d.ts"
+    },
     "./data": "./build/js/data.js",
-    "./react": "./react/build/IntlTelInput.js",
+    "./react": {
+      "default": "./react/build/IntlTelInput.js",
+      "types": "./react/build/IntlTelInput.d.ts"
+    },
     "./*": "./*"
   },
-  "types": "./build/js/intlTelInput.d.ts"
+  "typesVersions": {
+    "*": {
+      ".": ["build/js/intlTelInput.d.ts"],
+      "react": ["react/build/IntlTelInput.d.ts"]
+    }
+  }
 }
