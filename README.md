@@ -1,4 +1,4 @@
-# International Telephone Input [![Build Status](https://app.travis-ci.com/jackocnr/intl-tel-input.svg?branch=master)](https://app.travis-ci.com/jackocnr/intl-tel-input) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" /> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg" />
+# International Telephone Input [![Build Status](https://app.travis-ci.com/jackocnr/intl-tel-input.svg?branch=master)](https://app.travis-ci.com/jackocnr/intl-tel-input) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
 🎉 NEWS: we now have our own <a href="https://intl-tel-input.com/examples/react-component.html">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/">Storybook</a>! 🎉  
 
@@ -11,7 +11,7 @@ A JavaScript plugin for entering and validating international telephone numbers.
 If you find the plugin helpful, please consider [supporting the project](https://github.com/sponsors/jackocnr).
 
 ## Sponsored by
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.png" height="100" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.png" height="100" alt="Twilio"/>
 Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input">Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more</a>. We can't wait to see what you build.
 
 ## Table of Contents
@@ -296,7 +296,7 @@ Set this to false to hide the flags e.g. for political reasons. Must be used in 
 Type: `Boolean` Default: `false`  
 Display the country dial code next to the selected flag. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showselecteddialcode) (using the React component).
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px" alt="Separate Dial Code">
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
@@ -530,6 +530,6 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 ## Links
 * List of [integrations with intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Integrations)
 
-<img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" /><br />
+<img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" alt="BrowserStack"/><br />
 Testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
 
