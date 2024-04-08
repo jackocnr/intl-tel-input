@@ -187,7 +187,7 @@
     overflow-y: scroll;
     //* Fixes https://github.com/jackocnr/intl-tel-input/issues/765
     //* Apple still hasn't fixed the issue where setting overflow: scroll on a div element does not use inertia scrolling
-    //* If this is not set, then the country list scroll stops moving after rasing a finger, and users report that scroll is slow
+    //* If this is not set, then the country list scroll stops moving after raising a finger, and users report that scroll is slow
     //* Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll
     -webkit-overflow-scrolling: touch;
 
@@ -334,11 +334,11 @@
     right: 0;
     position: fixed;
     padding: var(--iti-mobile-popup-margin);
-    //* Short country lists should be vertically centered.
+    //* Short country lists should be vertically centred.
     display: flex;
     flex-direction: column;
     justify-content: center;
-    //* When country search enabled, the search input auto-focuses, so mobile keyboard appears, so stick to top (also because when filter countries down, the height changes and the vertical centering would make it jump around).
+    //* When country search enabled, the search input auto-focuses, so mobile keyboard appears, so stick to top (also because when filter countries down, the height changes and the vertical centring would make it jump around).
     &.iti--country-search {
       justify-content: flex-start;
     }
