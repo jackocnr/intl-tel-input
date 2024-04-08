@@ -28,6 +28,7 @@
     "@types/react-dom": "^18.2.24",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
+    "cspell": "^8.6.1",
     "esbuild": "^0.20.2",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -79,7 +80,8 @@
   "homepage": "https://intl-tel-input.com",
   "scripts": {
     "test": "grunt travis",
-    "lint": "eslint .",
+    "lint:js": "eslint .",
+    "lint:spelling": "cspell --dot --gitignore --no-progress '**'",
     "watch": "grunt watch",
     "build": "grunt build",
     "build:js": "grunt js",
