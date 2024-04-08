@@ -52,5 +52,6 @@
       "yml",
       "COBOL",
       "ACUCOBOL"
-    ]
+    ],
+    "files.trimTrailingWhitespace": false
 }
