@@ -4,11 +4,6 @@ node_js:
 
 dist: jammy
 
-cache:
-  npm: true
-  directories:
-    - node_modules
-
 install:
   - npm install
 
