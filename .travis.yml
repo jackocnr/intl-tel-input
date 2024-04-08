@@ -1,16 +1,4 @@
 language: node_js
 node_js:
   - 20
-
-dist: jammy
-
-cache:
-  npm: true
-  directories:
-    - node_modules
-
-install:
-  - npm install
-
-script:
-  - npm test
+install: npm install
