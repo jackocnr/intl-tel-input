@@ -30,16 +30,13 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Contributing](#contributing)
 - [Attributions](#attributions)
 
-
 ## Demo and Examples
 You can view [a live demo](https://intl-tel-input.com) and see some examples of how to use the various options. Alternatively, try it for yourself by downloading the project and opening demo.html in a browser.
-
 
 ## Mobile
 By default, on mobile devices we show a fullscreen popup instead of the inline dropdown, to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area at the sides. [See example](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile-fullscreen.jpg" alt="Mobile screenshot" width="270px" style="max-width: 100%" />
-
 
 ## Features
 * Automatically select the user's current country using an IP lookup
@@ -55,7 +52,6 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Typescript type definitions provided
 * Easily customise styles by overriding the provided CSS variables
 * React component included
-
 
 ## Browser Compatibility
 | Chrome |  Firefox  | Safari | Edge |
@@ -141,7 +137,6 @@ We highly recommend you (lazy) load the included utils.js using the `utilsScript
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
 If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States), and if you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address.
-
 
 ## Initialisation Options
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
@@ -310,7 +305,6 @@ Control when the country list appears as a fullscreen popup vs an inline dropdow
 Type: `String` Default: `""` Example: `"build/js/utils.js"`  
 Enable formatting/validation etc. by specifying the URL of the included utils.js script (or alternatively just point it to the file on [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)). The script is fetched only when the page has finished loading (on the window load event) to prevent blocking (the script is ~215KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information.
 
-
 ## Public Methods
 In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
 ```js
@@ -412,7 +406,6 @@ Change the placeholderNumberType option.
 iti.setPlaceholderNumberType("FIXED_LINE");
 ```
 
-
 ## Static Methods
 
 **getCountryData**  
@@ -461,7 +454,6 @@ This is triggered when the user opens the dropdown.
 **close:countrydropdown**  
 This is triggered when the user closes the dropdown.  
 
-
 ## Utilities Script
 The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
 
@@ -473,7 +465,6 @@ The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build 
 International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution I have found is libphonenumber, from which I have precompiled the relevant parts into a single JavaScript file and included in the build directory. Unfortunately even after minification it is still ~215KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking). If size is not a concern, then you can manually include the script yourself however you like, and as long as it has loaded before you initialise the plugin then it should work fine.
 
 To recompile the utils script yourself (e.g. to update the version of libphonenumber it is built from), see the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#updating-to-a-new-version-of-libphonenumber).
-
 
 ## Troubleshooting
 
@@ -515,10 +506,8 @@ _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822
 .iti__arrow { border: none; }
 ```
 
-
 ## Contributing
 See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also for how to update to a new version of libphonenumber, or how to update the flag images.
-
 
 ## Attributions
 * Flag images from [region-flags](https://github.com/behdad/region-flags)
@@ -526,10 +515,8 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * Formatting/validation/example number code from [libphonenumber](https://github.com/googlei18n/libphonenumber)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/jackocnr/intl-tel-input/wiki/Contributions)
 
-
 ## Links
 * List of [integrations with intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Integrations)
 
 <img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" alt="BrowserStack"/><br />
 Testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
-
