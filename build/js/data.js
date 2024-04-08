@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v21.0.8
+ * International Telephone Input v21.0.9
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
