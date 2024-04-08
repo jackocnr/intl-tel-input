@@ -95,13 +95,13 @@
   "types": "./build/js/intlTelInput.d.ts",
   "exports": {
     ".": {
-      "default": "./build/js/intlTelInput.js",
-      "types": "./build/js/intlTelInput.d.ts"
+      "types": "./build/js/intlTelInput.d.ts",
+      "default": "./build/js/intlTelInput.js"
     },
     "./data": "./build/js/data.js",
     "./react": {
-      "default": "./react/build/IntlTelInput.js",
-      "types": "./react/build/IntlTelInput.d.ts"
+      "types": "./react/build/IntlTelInput.d.ts",
+      "default": "./react/build/IntlTelInput.js"
     },
     "./*": "./*"
   },
