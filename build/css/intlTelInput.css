@@ -1365,10 +1365,10 @@
 }
 
 @media (min-resolution: 2x) {
-  .iti__globe {
-    background-image: var(--iti-path-globe-2x);
-  }
   .iti__flag {
     background-image: var(--iti-path-flags-2x);
+  }
+  .iti__globe {
+    background-image: var(--iti-path-globe-2x);
   }
 }
