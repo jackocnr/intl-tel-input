@@ -101,6 +101,7 @@
     "./data": "./build/js/data.js",
     "./react": {
       "types": "./react/build/IntlTelInput.d.ts",
+      "require": "./react/build/IntlTelInput.cjs",
       "default": "./react/build/IntlTelInput.js"
     },
     "./*": "./*"
