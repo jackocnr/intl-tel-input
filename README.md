@@ -17,11 +17,12 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 ## Table of Contents
 
 - [Demo and Examples](#demo-and-examples)
+- [Mobile](#mobile)
 - [Features](#features)
 - [Browser Compatibility](#browser-compatibility)
 - [Getting Started](#getting-started-using-a-cdn)
 - [Recommended Usage](#recommended-usage)
-- [Options](#initialisation-options)
+- [Initialisation Options](#initialisation-options)
 - [Public Methods](#public-methods)
 - [Static Methods](#static-methods)
 - [Events](#events)
