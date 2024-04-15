@@ -3,8 +3,16 @@ const path = require('path');
 
 module.exports = function(grunt) {
   grunt.registerTask('build:translations', 'Generate country translations', function() {
+    const defaultCountryCode = "en";
     const sourceDir = 'third_party/country-list/data';
     const destinationRootDir = 'build/i18n';
+
+    const compress = (string) => {
+      return string
+        .replace(/\s+/g, '')
+        .replace('exportdefault{', 'export default {')
+        .replace(',};', '};');
+    }
 
     //* Ensure destination directory exists.
     if (!fs.existsSync(destinationRootDir)) {
@@ -17,7 +25,7 @@ module.exports = function(grunt) {
       .map(dir => dir.name);
 
 
-    const suportedCountries = fs.readdirSync("src/i18n")
+    const suportedCountries = fs.readdirSync("src/i18n/interface")
       .filter(file => path.extname(file) === '.mjs')
       .map(file => path.basename(file, '.mjs'));
 
@@ -31,7 +39,7 @@ module.exports = function(grunt) {
     countryDirs.forEach(country => {
       const lowerCaseCountry = country.toLowerCase()
 
-      if(!suportedCountries.includes(lowerCaseCountry)) return;
+      const interfaceTranslationExists = suportedCountries.includes(lowerCaseCountry)
 
       rootIndexFileContent += `export { default as ${lowerCaseCountry} } from "./${lowerCaseCountry}/index.mjs";\n`;
 
@@ -43,13 +51,13 @@ module.exports = function(grunt) {
       //* Ensure country directory exists.
       if (!fs.existsSync(destinationDir)) fs.mkdirSync(destinationDir, { recursive: true });
 
-
-      //* Copy the interface translations to the dist folder.
-      const InterfaceTranslationSourceFilePath = path.join('src/i18n', `${lowerCaseCountry}.mjs`);
-      const InterfaceTranslationDestinationFilePath = path.join(destinationDir, 'interface.mjs')
-      fs.copyFileSync(InterfaceTranslationSourceFilePath, InterfaceTranslationDestinationFilePath);
-      console.log(`Copied ${InterfaceTranslationSourceFilePath} to ${InterfaceTranslationDestinationFilePath}`);
-
+      if(interfaceTranslationExists){
+        //* Copy the interface translations to the dist folder if it exists.
+        const InterfaceTranslationSourceFilePath = path.join('src/i18n/interface', `${lowerCaseCountry}.mjs`);
+        const InterfaceTranslationDestinationFilePath = path.join(destinationDir, 'interface.mjs')
+        fs.copyFileSync(InterfaceTranslationSourceFilePath, InterfaceTranslationDestinationFilePath);
+        console.log(`Copied ${InterfaceTranslationSourceFilePath} to ${InterfaceTranslationDestinationFilePath}`);
+      }
 
       if (fs.existsSync(countryJsonPath)) {
         const jsonData = fs.readFileSync(countryJsonPath, 'utf8'); //* Read the JSON file.
@@ -63,7 +71,12 @@ module.exports = function(grunt) {
 
           exportData += '};\n';
 
-          fs.writeFileSync(destinationFilePath, exportData); //* Write to new file.
+          if(lowerCaseCountry == defaultCountryCode) {
+            fs.writeFileSync(destinationFilePath, "export default {};\n");
+          }
+          else {
+            fs.writeFileSync(destinationFilePath, compress(exportData)); //* Write to new file.
+          }
           grunt.log.writeln(`Generated ${destinationFilePath} from ${countryJsonPath}`);
 
         } catch (err) {
@@ -72,9 +85,16 @@ module.exports = function(grunt) {
 
         try {
           let indexFileContent = ''
-          indexFileContent += 'import countryTranslations from "./countries.mjs";\n';
-          indexFileContent += 'import interfaceTranslations from "./interface.mjs";\n\n';
-          indexFileContent += 'export default {...countryTranslations, ...interfaceTranslations};\n';
+
+          if(interfaceTranslationExists) {
+            indexFileContent += 'import countryTranslations from "./countries.mjs";\n';
+            indexFileContent += 'import interfaceTranslations from "./interface.mjs";\n\n';
+            indexFileContent += 'export default {...countryTranslations, ...interfaceTranslations};\n';
+          } else {
+            indexFileContent += 'import countryTranslations from "./countries.mjs";\n';
+            indexFileContent += `import interfaceTranslations from "../${defaultCountryCode}/interface.mjs";\n\n`;
+            indexFileContent += 'export default {...countryTranslations, ...interfaceTranslations};\n';
+          }
 
           fs.writeFileSync(indexFilePath, indexFileContent);
           grunt.log.writeln(`Generated ${indexFilePath}`);

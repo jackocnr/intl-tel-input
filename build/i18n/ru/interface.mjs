@@ -1,0 +1,10 @@
+//* Translated by: Google Translate.
+export default {
+  selectedCountryAriaLabel: "Выбранная страна",
+  noCountrySelected: "Страна не выбрана",
+  countryListAriaLabel: "Список стран",
+  searchPlaceholder: "Поиск",
+  zeroSearchResults: "результатов не найдено",
+  oneSearchResult: "найден 1 результат",
+  multipleSearchResults: "Найдено ${count} результатов",
+};
