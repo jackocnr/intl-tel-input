@@ -4,6 +4,10 @@ module.exports = function(grunt) {
       files: "src/js/**/*",
       tasks: "shell:buildJs"
     },
+    translations: {
+      files: "src/i18n/**/*",
+      tasks: "build:translations",
+    },
     react: {
       files: ["react/src/IntlTelInput.js", "react/demo/ValidationApp.js", "react/demo/SimpleApp.js"],
       tasks: "shell:buildReact"
