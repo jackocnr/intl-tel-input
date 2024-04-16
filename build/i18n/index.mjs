@@ -1,5 +1,6 @@
 export { default as ar } from "./ar/index.mjs";
 export { default as bg } from "./bg/index.mjs";
+export { default as bn } from "./bn/index.mjs";
 export { default as de } from "./de/index.mjs";
 export { default as el } from "./el/index.mjs";
 export { default as en } from "./en/index.mjs";
