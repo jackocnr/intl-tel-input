@@ -7,12 +7,12 @@ module.exports = function(grunt) {
     const defaultLanguageCode = "en";
     const countryTranslationSourceDirectory = 'third_party/country-list/data';
     const interfaceTranslationSourceDirectory = "src/i18n/interface";
-    const OutputDirectory = 'build/i18n';
-    const RootIndexFilePath = path.join(OutputDirectory, 'index.mjs');
+    const outputDirectory = 'build/i18n';
+    const rootIndexFilePath = path.join(outputDirectory, 'index.mjs');
     let rootIndexFileContent = "";
 
     //* Ensure destination directory exists and create it recursively.
-    if(!fs.existsSync(OutputDirectory)) fs.mkdirSync(OutputDirectory, true);
+    if(!fs.existsSync(outputDirectory)) fs.mkdirSync(outputDirectory, true);
 
     //* Get list of country translation directories.
     const countryTranslationDirectories = fs.readdirSync(countryTranslationSourceDirectory, { withFileTypes: true })
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
       const lowerCaseCountry = country.toLowerCase();
       const countryTranslationFilePath = path.join(countryTranslationSourceDirectory, country, 'country.json');
       const countryTranslationFileExists = fs.existsSync(countryTranslationFilePath);
-      const destinationDir = path.join(OutputDirectory, lowerCaseCountry);
+      const destinationDir = path.join(outputDirectory, lowerCaseCountry);
       const destinationFilePath = path.join(destinationDir, 'countries.mjs');
       const indexFilePath = path.join(destinationDir, 'index.mjs');
       const interfaceTranslationExists = interfaceAvailableLocales.includes(lowerCaseCountry);
@@ -101,6 +101,6 @@ module.exports = function(grunt) {
       }
       grunt.log.writeln("");
     });
-    fs.writeFileSync(RootIndexFilePath, rootIndexFileContent);
+    fs.writeFileSync(rootIndexFilePath, rootIndexFileContent);
   });
 };
