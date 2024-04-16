@@ -1,4 +1,4 @@
-
+//* Translated by: Anthony Veaudry (anthony0030).
 export default {
   selectedCountryAriaLabel: "Επιλεγμένη χώρα",
   noCountrySelected: "Δεν έχει επιλεγεί χώρα",

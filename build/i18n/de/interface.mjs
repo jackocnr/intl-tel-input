@@ -1,3 +1,4 @@
+//* Translated by: Jack O'Connor (jackocnr).
 export default {
   selectedCountryAriaLabel: "Ausgewähltes Land",
   noCountrySelected: "Kein Land ausgewählt",
