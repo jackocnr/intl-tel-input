@@ -7,13 +7,6 @@ module.exports = function(grunt) {
     const sourceDir = 'third_party/country-list/data';
     const destinationRootDir = 'build/i18n';
 
-    const compress = (string) => {
-      return string
-        .replace(/\s+/g, '')
-        .replace('exportdefault{', 'export default {')
-        .replace(',};', '};');
-    }
-
     //* Ensure destination directory exists.
     if (!fs.existsSync(destinationRootDir)) {
       fs.mkdirSync(destinationRootDir, { recursive: true });
@@ -75,7 +68,7 @@ module.exports = function(grunt) {
             fs.writeFileSync(destinationFilePath, "export default {};\n");
           }
           else {
-            fs.writeFileSync(destinationFilePath, compress(exportData)); //* Write to new file.
+            fs.writeFileSync(destinationFilePath, exportData); //* Write to new file.
           }
           grunt.log.writeln(`Generated ${destinationFilePath} from ${countryJsonPath}`);
 
