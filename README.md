@@ -1,8 +1,10 @@
 # International Telephone Input [![Build Status](https://app.travis-ci.com/jackocnr/intl-tel-input.svg?branch=master)](https://app.travis-ci.com/jackocnr/intl-tel-input) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
-🎉 NEWS: we now have our own <a href="https://intl-tel-input.com/examples/react-component.html">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/">Storybook</a>! 🎉  
+⚛️ NEWS: we now have our own <a href="https://intl-tel-input.com/examples/react-component.html">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/">Storybook</a>. 
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.png" alt="Typescript logo" width="18px" /> ANNOUNCEMENT: we now have our own Typescript type definitions (for both the JavaScript plugin and the React component), so no need to use `@types/intl-tel-input` any more!
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.png" alt="Typescript logo" width="18px" /> NEWS: we now have our own Typescript type definitions (for both [the JavaScript plugin](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/intlTelInput.d.ts) and [the React component](https://github.com/jackocnr/intl-tel-input/blob/master/react/build/IntlTelInput.d.ts)), so no need to use `@types/intl-tel-input` any more!
+
+🗣️ NEWS: we now provide [translation files](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for several common languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
@@ -53,6 +55,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Typescript type definitions provided
 * Easily customise styles by overriding the provided CSS variables
 * React component included
+* Translations for all country names (etc) provided in many different languages
 
 ## Browser Compatibility
 | Chrome |  Firefox  | Safari | Edge |
@@ -138,6 +141,8 @@ We highly recommend you (lazy) load the included utils.js using the `utilsScript
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
 If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States), and if you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address.
+
+If you know the user's language, you can utilise the included translations to localise the country names (etc) - [see example](https://intl-tel-input.com/examples/localise-countries.html).
 
 ## Initialisation Options
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
@@ -234,9 +239,16 @@ Which will generate the following (hidden) elements, which will be automatically
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allow localisation/customisation of country names and other plugin text. To localise a country name, the key should be the iso2 country code, and the value should be the localised country name. [See example](https://intl-tel-input.com/examples/localise-countries.html).
+Allow localisation/customisation of country names and other plugin text. There are two options: either import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) (see option 1 below), or define your own custom translations (see option 2 below). If defining your own, you will need to specify all country names (over 200 at last count - [see full list](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/data.ts)) using their 2-character iso2 name, as well as the 7 interface keys listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html).
 
 ```js
+// OPTION 1: import one of the provided translation modules
+import fr from "intl-tel-input/i18n/fr";
+
+intlTelInput(input, { i18n: fr });
+
+
+// OPTION 2: define your own custom translations
 intlTelInput(input, {
   i18n: {
     // Country names (see full list here: https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.js)
