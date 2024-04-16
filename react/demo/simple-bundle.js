@@ -23831,7 +23831,7 @@
       "297"
     ],
     [
-      countries_default["ac"],
+      "Ascension Island",
       "ac",
       "247"
     ],
@@ -24387,7 +24387,7 @@
       "686"
     ],
     [
-      countries_default["xk"],
+      "Kosovo",
       "xk",
       "383"
     ],

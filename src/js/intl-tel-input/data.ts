@@ -82,7 +82,7 @@ const rawCountryData: RawCountry[] = [
     "297",
   ],
   [
-    countriesEnglish["ac"],
+    "Ascension Island",
     "ac",
     "247",
   ],
@@ -638,7 +638,7 @@ const rawCountryData: RawCountry[] = [
     "686",
   ],
   [
-    countriesEnglish["xk"],
+    "Kosovo",
     "xk",
     "383",
   ],
