@@ -106,7 +106,7 @@
       "require": "./react/build/IntlTelInput.cjs",
       "default": "./react/build/IntlTelInput.js"
     },
-    "./i18n/*": "./build/i18n/*",
+    "./i18n/*": "./build/js/i18n/*/index.mjs",
     "./*": "./*"
   },
   "typesVersions": {
