@@ -32,6 +32,8 @@ module.exports = function(grunt) {
     countryDirs.forEach(country => {
       const lowerCaseCountry = country.toLowerCase()
 
+      if(!suportedCountries.includes(lowerCaseCountry)) return;
+
       const interfaceTranslationExists = suportedCountries.includes(lowerCaseCountry)
 
       rootIndexFileContent += `export { default as ${lowerCaseCountry} } from "./${lowerCaseCountry}/index.mjs";\n`;
