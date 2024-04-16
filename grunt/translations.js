@@ -3,104 +3,80 @@ const path = require('path');
 
 module.exports = function(grunt) {
   grunt.registerTask('build:translations', 'Generate country translations', function() {
-    const skipUnsupportedCountries = true;
-    const defaultLanguageCode = "en";
     const countryTranslationSourceDirectory = 'third_party/country-list/data';
-    const interfaceTranslationSourceDirectory = "src/i18n/interface";
-    const outputDirectory = 'build/i18n';
-    const rootIndexFilePath = path.join(outputDirectory, 'index.mjs');
+    const supportedLocalesDirectory = "src/js/i18n";
+    const buildDirectory = 'build/js/i18n';
+    const rootIndexFilePath = path.join(supportedLocalesDirectory, 'index.mjs');
     let rootIndexFileContent = "";
 
-    //* Ensure destination directory exists and create it recursively.
-    if(!fs.existsSync(outputDirectory)) fs.mkdirSync(outputDirectory, true);
-
-    //* Get list of country translation directories.
+    //* Get list of country translation locales in the country-list submodule.
     const countryTranslationDirectories = fs.readdirSync(countryTranslationSourceDirectory, { withFileTypes: true })
       .filter(dir => dir.isDirectory())
       .map(dir => dir.name);
 
-    grunt.log.writeln(`Available country translations: ${countryTranslationDirectories.join(", ")}.\n`);
+    grunt.log.writeln(`Available country name translations: ${countryTranslationDirectories.join(", ")}.\n`);
 
-    //* Get the list of translations that exist for the interface
-    const interfaceAvailableLocales = fs.readdirSync(interfaceTranslationSourceDirectory)
-      .filter(file => path.extname(file) === '.mjs')
-      .map(file => path.basename(file, '.mjs'));
+    //* Get list of interface translation locales that exist in this project.
+    const supportedLocales = fs.readdirSync(supportedLocalesDirectory, { withFileTypes: true })
+      .filter(dir => dir.isDirectory())
+      .map(dir => dir.name);
 
-    grunt.log.writeln(`Supported countries: ${interfaceAvailableLocales.join(", ")}.\n`);
+    grunt.log.writeln(`Supported locales: ${supportedLocales.join(", ")}.\n`);
 
-    //* Loop over country directories.
-    countryTranslationDirectories.forEach(country => {
-      const lowerCaseCountry = country.toLowerCase();
-      const countryTranslationFilePath = path.join(countryTranslationSourceDirectory, country, 'country.json');
-      const countryTranslationFileExists = fs.existsSync(countryTranslationFilePath);
-      const destinationDir = path.join(outputDirectory, lowerCaseCountry);
-      const destinationFilePath = path.join(destinationDir, 'countries.mjs');
+    //* STEP 1: For each supported locale: pull in the country name translations and generate the index file.
+    supportedLocales.forEach(locale => {
+      const countryTranslationFilePath = path.join(countryTranslationSourceDirectory, locale, 'country.json');
+      const countryTranslationExists = fs.existsSync(countryTranslationFilePath);
+      const destinationDir = path.join(supportedLocalesDirectory, locale);
+      const countriesDestinationFilePath = path.join(destinationDir, 'countries.mjs');
       const indexFilePath = path.join(destinationDir, 'index.mjs');
-      const interfaceTranslationExists = interfaceAvailableLocales.includes(lowerCaseCountry);
-      const interfaceTranslationSourceFilePath = path.join(interfaceTranslationSourceDirectory, `${lowerCaseCountry}.mjs`);
-      const interfaceTranslationDestinationFilePath = path.join(destinationDir, 'interface.mjs')
+      const interfaceTranslationFilePath = path.join(supportedLocalesDirectory, locale, 'interface.mjs');
+      const interfaceTranslationExists = fs.existsSync(interfaceTranslationFilePath);
 
-      let indexFileContent = '';
-      let countryTranslationFileContent = '';
 
-      //* If the interface file does not exist and skip unsupported country is enabled don't skip the itteration.
-      if(!interfaceTranslationExists && skipUnsupportedCountries) return;
-
-      //* Ensure country directory exists.
-      if (!fs.existsSync(destinationDir)) fs.mkdirSync(destinationDir, { recursive: true });
+      //* If the interface file does not exist, skip the iteration.
+      if (!interfaceTranslationExists) {
+        grunt.log.writeln(`Missing interface file: ${interfaceTranslationFilePath} - SKIPPING.\n`);
+        return;
+      }
+      //* If the interface file does not exist, skip the iteration.
+      if (!countryTranslationExists) {
+        grunt.log.writeln(`Missing country file: ${countryTranslationFilePath} - SKIPPING.\n`);
+        return;
+      }
 
       //* Add the locale export to the content of the root index.mjs file
-      rootIndexFileContent += `export { default as ${lowerCaseCountry} } from "./${lowerCaseCountry}/index.mjs";\n`;
+      rootIndexFileContent += `export { default as ${locale} } from "./${locale}/index.mjs";\n`;
 
-      //* Copy the interface translations to the dist folder if it exists.
-      if(interfaceTranslationExists){
-        fs.copyFileSync(interfaceTranslationSourceFilePath, interfaceTranslationDestinationFilePath);
-        console.log(`Copied ${interfaceTranslationSourceFilePath} to ${interfaceTranslationDestinationFilePath}`);
-      } else {
-        console.log(`No interface translation found for ${lowerCaseCountry}`);
-      }
-
-      //* Cereate the Locale Index file Start
-      if(countryTranslationFileExists) {
-        indexFileContent += `import countryTranslations from "./countries.mjs";\n`;
-      } else {
-        indexFileContent += `import countryTranslations from "../${defaultLanguageCode}/countries.mjs";\n`;
-      }
-
-      if(interfaceTranslationExists){
-        indexFileContent += `import interfaceTranslations from "./interface.mjs";\n\n`;
-      } else {
-        indexFileContent += `import interfaceTranslations from "../${defaultLanguageCode}/interface.mjs";\n\n`;
-      }
-
+      //* Create the Locale Index file Start
+      let indexFileContent = '';
+      indexFileContent += `import countryTranslations from "./countries.mjs";\n`;
+      indexFileContent += `import interfaceTranslations from "./interface.mjs";\n\n`;
       indexFileContent += `export default {...countryTranslations, ...interfaceTranslations};\n`;
-
       fs.writeFileSync(indexFilePath, indexFileContent);
       grunt.log.writeln(`Generated ${indexFilePath}`);
-      //* Cereate the Locale Index file End
 
-      if (countryTranslationFileExists) {
-        const jsonData = fs.readFileSync(countryTranslationFilePath, 'utf8'); //* Read the JSON file.
-        try {
-          const parsedData = JSON.parse(jsonData); //* Parse JSON data.
-          countryTranslationFileContent += 'export default {\n';
+      //* Create the countries.mjs file
+      const jsonData = fs.readFileSync(countryTranslationFilePath, 'utf8'); //* Read the JSON file.
+      try {
+        const parsedData = JSON.parse(jsonData); //* Parse JSON data.
+        let countryTranslationFileContent = 'export default {\n';
 
-          Object.keys(parsedData).forEach(key => {
-            countryTranslationFileContent += `  ${key.toLowerCase()}: "${parsedData[key]}",\n`;
-          });
+        Object.keys(parsedData).forEach(key => {
+          countryTranslationFileContent += `  ${key.toLowerCase()}: "${parsedData[key]}",\n`;
+        });
 
-          countryTranslationFileContent += '};\n';
-          fs.writeFileSync(destinationFilePath, countryTranslationFileContent); //* Write to new file.
-          grunt.log.writeln(`Generated ${destinationFilePath} from ${countryTranslationFilePath}`);
-
-        } catch (error) {
-          grunt.log.error(`Error parsing JSON file ${countryTranslationFilePath}: ${error.message}`);
-        }
-      } else {
-        grunt.log.error(`Country.json file not found in directory ${path.join(countryTranslationSourceDirectory, country)}`);
+        countryTranslationFileContent += '};\n';
+        fs.writeFileSync(countriesDestinationFilePath, countryTranslationFileContent); //* Write to new file.
+        grunt.log.writeln(`Generated ${countriesDestinationFilePath} from ${countryTranslationFilePath}`);
+      } catch (error) {
+        grunt.log.error(`Error parsing JSON file ${countryTranslationFilePath}: ${error.message}`);
       }
       grunt.log.writeln("");
     });
     fs.writeFileSync(rootIndexFilePath, rootIndexFileContent);
+
+    //* STEP 2: Copy the whole i18n dir to the build folder.
+    fs.cpSync(supportedLocalesDirectory, buildDirectory, {recursive: true});
   });
 };

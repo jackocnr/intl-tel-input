@@ -5,6 +5,7 @@
         "emitDeclarationOnly": true, // ONLY generate .d.ts files (we use esbuild for the actual bundling)
         "outFile": "build/js/intlTelInput.d.ts",
         "rootDir": "./src/js",
+        "allowJs": true, // allow importing .mjs files e.g. i18n files
     },
     "include": [
         "src/js/intl-tel-input.ts",

@@ -37,1307 +37,1562 @@ var factoryOutput = (() => {
   __export(data_exports, {
     default: () => data_default
   });
+
+  // src/js/i18n/en/countries.mjs
+  var countries_default = {
+    af: "Afghanistan",
+    ax: "\xC5land Islands",
+    al: "Albania",
+    dz: "Algeria",
+    as: "American Samoa",
+    ad: "Andorra",
+    ao: "Angola",
+    ai: "Anguilla",
+    aq: "Antarctica",
+    ag: "Antigua & Barbuda",
+    ar: "Argentina",
+    am: "Armenia",
+    aw: "Aruba",
+    au: "Australia",
+    at: "Austria",
+    az: "Azerbaijan",
+    bs: "Bahamas",
+    bh: "Bahrain",
+    bd: "Bangladesh",
+    bb: "Barbados",
+    by: "Belarus",
+    be: "Belgium",
+    bz: "Belize",
+    bj: "Benin",
+    bm: "Bermuda",
+    bt: "Bhutan",
+    bo: "Bolivia",
+    ba: "Bosnia & Herzegovina",
+    bw: "Botswana",
+    bv: "Bouvet Island",
+    br: "Brazil",
+    io: "British Indian Ocean Territory",
+    vg: "British Virgin Islands",
+    bn: "Brunei",
+    bg: "Bulgaria",
+    bf: "Burkina Faso",
+    bi: "Burundi",
+    kh: "Cambodia",
+    cm: "Cameroon",
+    ca: "Canada",
+    cv: "Cape Verde",
+    bq: "Caribbean Netherlands",
+    ky: "Cayman Islands",
+    cf: "Central African Republic",
+    td: "Chad",
+    cl: "Chile",
+    cn: "China",
+    cx: "Christmas Island",
+    cc: "Cocos (Keeling) Islands",
+    co: "Colombia",
+    km: "Comoros",
+    cg: "Congo - Brazzaville",
+    cd: "Congo - Kinshasa",
+    ck: "Cook Islands",
+    cr: "Costa Rica",
+    ci: "C\xF4te d\u2019Ivoire",
+    hr: "Croatia",
+    cu: "Cuba",
+    cw: "Cura\xE7ao",
+    cy: "Cyprus",
+    cz: "Czechia",
+    dk: "Denmark",
+    dj: "Djibouti",
+    dm: "Dominica",
+    do: "Dominican Republic",
+    ec: "Ecuador",
+    eg: "Egypt",
+    sv: "El Salvador",
+    gq: "Equatorial Guinea",
+    er: "Eritrea",
+    ee: "Estonia",
+    sz: "Eswatini",
+    et: "Ethiopia",
+    fk: "Falkland Islands",
+    fo: "Faroe Islands",
+    fj: "Fiji",
+    fi: "Finland",
+    fr: "France",
+    gf: "French Guiana",
+    pf: "French Polynesia",
+    tf: "French Southern Territories",
+    ga: "Gabon",
+    gm: "Gambia",
+    ge: "Georgia",
+    de: "Germany",
+    gh: "Ghana",
+    gi: "Gibraltar",
+    gr: "Greece",
+    gl: "Greenland",
+    gd: "Grenada",
+    gp: "Guadeloupe",
+    gu: "Guam",
+    gt: "Guatemala",
+    gg: "Guernsey",
+    gn: "Guinea",
+    gw: "Guinea-Bissau",
+    gy: "Guyana",
+    ht: "Haiti",
+    hm: "Heard & McDonald Islands",
+    hn: "Honduras",
+    hk: "Hong Kong SAR China",
+    hu: "Hungary",
+    is: "Iceland",
+    in: "India",
+    id: "Indonesia",
+    ir: "Iran",
+    iq: "Iraq",
+    ie: "Ireland",
+    im: "Isle of Man",
+    il: "Israel",
+    it: "Italy",
+    jm: "Jamaica",
+    jp: "Japan",
+    je: "Jersey",
+    jo: "Jordan",
+    kz: "Kazakhstan",
+    ke: "Kenya",
+    ki: "Kiribati",
+    kw: "Kuwait",
+    kg: "Kyrgyzstan",
+    la: "Laos",
+    lv: "Latvia",
+    lb: "Lebanon",
+    ls: "Lesotho",
+    lr: "Liberia",
+    ly: "Libya",
+    li: "Liechtenstein",
+    lt: "Lithuania",
+    lu: "Luxembourg",
+    mo: "Macao SAR China",
+    mg: "Madagascar",
+    mw: "Malawi",
+    my: "Malaysia",
+    mv: "Maldives",
+    ml: "Mali",
+    mt: "Malta",
+    mh: "Marshall Islands",
+    mq: "Martinique",
+    mr: "Mauritania",
+    mu: "Mauritius",
+    yt: "Mayotte",
+    mx: "Mexico",
+    fm: "Micronesia",
+    md: "Moldova",
+    mc: "Monaco",
+    mn: "Mongolia",
+    me: "Montenegro",
+    ms: "Montserrat",
+    ma: "Morocco",
+    mz: "Mozambique",
+    mm: "Myanmar (Burma)",
+    na: "Namibia",
+    nr: "Nauru",
+    np: "Nepal",
+    nl: "Netherlands",
+    nc: "New Caledonia",
+    nz: "New Zealand",
+    ni: "Nicaragua",
+    ne: "Niger",
+    ng: "Nigeria",
+    nu: "Niue",
+    nf: "Norfolk Island",
+    kp: "North Korea",
+    mk: "North Macedonia",
+    mp: "Northern Mariana Islands",
+    no: "Norway",
+    om: "Oman",
+    pk: "Pakistan",
+    pw: "Palau",
+    ps: "Palestinian Territories",
+    pa: "Panama",
+    pg: "Papua New Guinea",
+    py: "Paraguay",
+    pe: "Peru",
+    ph: "Philippines",
+    pn: "Pitcairn Islands",
+    pl: "Poland",
+    pt: "Portugal",
+    pr: "Puerto Rico",
+    qa: "Qatar",
+    re: "R\xE9union",
+    ro: "Romania",
+    ru: "Russia",
+    rw: "Rwanda",
+    ws: "Samoa",
+    sm: "San Marino",
+    st: "S\xE3o Tom\xE9 & Pr\xEDncipe",
+    sa: "Saudi Arabia",
+    sn: "Senegal",
+    rs: "Serbia",
+    sc: "Seychelles",
+    sl: "Sierra Leone",
+    sg: "Singapore",
+    sx: "Sint Maarten",
+    sk: "Slovakia",
+    si: "Slovenia",
+    sb: "Solomon Islands",
+    so: "Somalia",
+    za: "South Africa",
+    gs: "South Georgia & South Sandwich Islands",
+    kr: "South Korea",
+    ss: "South Sudan",
+    es: "Spain",
+    lk: "Sri Lanka",
+    bl: "St. Barth\xE9lemy",
+    sh: "St. Helena",
+    kn: "St. Kitts & Nevis",
+    lc: "St. Lucia",
+    mf: "St. Martin",
+    pm: "St. Pierre & Miquelon",
+    vc: "St. Vincent & Grenadines",
+    sd: "Sudan",
+    sr: "Suriname",
+    sj: "Svalbard & Jan Mayen",
+    se: "Sweden",
+    ch: "Switzerland",
+    sy: "Syria",
+    tw: "Taiwan",
+    tj: "Tajikistan",
+    tz: "Tanzania",
+    th: "Thailand",
+    tl: "Timor-Leste",
+    tg: "Togo",
+    tk: "Tokelau",
+    to: "Tonga",
+    tt: "Trinidad & Tobago",
+    tn: "Tunisia",
+    tr: "Turkey",
+    tm: "Turkmenistan",
+    tc: "Turks & Caicos Islands",
+    tv: "Tuvalu",
+    um: "U.S. Outlying Islands",
+    vi: "U.S. Virgin Islands",
+    ug: "Uganda",
+    ua: "Ukraine",
+    ae: "United Arab Emirates",
+    gb: "United Kingdom",
+    us: "United States",
+    uy: "Uruguay",
+    uz: "Uzbekistan",
+    vu: "Vanuatu",
+    va: "Vatican City",
+    ve: "Venezuela",
+    vn: "Vietnam",
+    wf: "Wallis & Futuna",
+    eh: "Western Sahara",
+    ye: "Yemen",
+    zm: "Zambia",
+    zw: "Zimbabwe"
+  };
+
+  // src/js/intl-tel-input/data.ts
   var rawCountryData = [
     [
-      "Afghanistan",
+      countries_default["af"],
       "af",
       "93"
     ],
     [
-      "Albania",
+      countries_default["al"],
       "al",
       "355"
     ],
     [
-      "Algeria",
+      countries_default["dz"],
       "dz",
       "213"
     ],
     [
-      "American Samoa",
+      countries_default["as"],
       "as",
       "1",
       5,
       ["684"]
     ],
     [
-      "Andorra",
+      countries_default["ad"],
       "ad",
       "376"
     ],
     [
-      "Angola",
+      countries_default["ao"],
       "ao",
       "244"
     ],
     [
-      "Anguilla",
+      countries_default["ai"],
       "ai",
       "1",
       6,
       ["264"]
     ],
     [
-      "Antigua & Barbuda",
+      countries_default["ag"],
       "ag",
       "1",
       7,
       ["268"]
     ],
     [
-      "Argentina",
+      countries_default["ar"],
       "ar",
       "54"
     ],
     [
-      "Armenia",
+      countries_default["am"],
       "am",
       "374"
     ],
     [
-      "Aruba",
+      countries_default["aw"],
       "aw",
       "297"
     ],
     [
-      "Ascension Island",
+      countries_default["ac"],
       "ac",
       "247"
     ],
     [
-      "Australia",
+      countries_default["au"],
       "au",
       "61",
       0
     ],
     [
-      "Austria",
+      countries_default["at"],
       "at",
       "43"
     ],
     [
-      "Azerbaijan",
+      countries_default["az"],
       "az",
       "994"
     ],
     [
-      "Bahamas",
+      countries_default["bs"],
       "bs",
       "1",
       8,
       ["242"]
     ],
     [
-      "Bahrain",
+      countries_default["bh"],
       "bh",
       "973"
     ],
     [
-      "Bangladesh",
+      countries_default["bd"],
       "bd",
       "880"
     ],
     [
-      "Barbados",
+      countries_default["bb"],
       "bb",
       "1",
       9,
       ["246"]
     ],
     [
-      "Belarus",
+      countries_default["by"],
       "by",
       "375"
     ],
     [
-      "Belgium",
+      countries_default["be"],
       "be",
       "32"
     ],
     [
-      "Belize",
+      countries_default["bz"],
       "bz",
       "501"
     ],
     [
-      "Benin",
+      countries_default["bj"],
       "bj",
       "229"
     ],
     [
-      "Bermuda",
+      countries_default["bm"],
       "bm",
       "1",
       10,
       ["441"]
     ],
     [
-      "Bhutan",
+      countries_default["bt"],
       "bt",
       "975"
     ],
     [
-      "Bolivia",
+      countries_default["bo"],
       "bo",
       "591"
     ],
     [
-      "Bosnia & Herzegovina",
+      countries_default["ba"],
       "ba",
       "387"
     ],
     [
-      "Botswana",
+      countries_default["bw"],
       "bw",
       "267"
     ],
     [
-      "Brazil",
+      countries_default["br"],
       "br",
       "55"
     ],
     [
-      "British Indian Ocean Territory",
+      countries_default["io"],
       "io",
       "246"
     ],
     [
-      "British Virgin Islands",
+      countries_default["vg"],
       "vg",
       "1",
       11,
       ["284"]
     ],
     [
-      "Brunei",
+      countries_default["bn"],
       "bn",
       "673"
     ],
     [
-      "Bulgaria",
+      countries_default["bg"],
       "bg",
       "359"
     ],
     [
-      "Burkina Faso",
+      countries_default["bf"],
       "bf",
       "226"
     ],
     [
-      "Burundi",
+      countries_default["bi"],
       "bi",
       "257"
     ],
     [
-      "Cambodia",
+      countries_default["kh"],
       "kh",
       "855"
     ],
     [
-      "Cameroon",
+      countries_default["cm"],
       "cm",
       "237"
     ],
     [
-      "Canada",
+      countries_default["ca"],
       "ca",
       "1",
       1,
       ["204", "226", "236", "249", "250", "263", "289", "306", "343", "354", "365", "367", "368", "382", "387", "403", "416", "418", "428", "431", "437", "438", "450", "584", "468", "474", "506", "514", "519", "548", "579", "581", "584", "587", "604", "613", "639", "647", "672", "683", "705", "709", "742", "753", "778", "780", "782", "807", "819", "825", "867", "873", "879", "902", "905"]
     ],
     [
-      "Cape Verde",
+      countries_default["cv"],
       "cv",
       "238"
     ],
     [
-      "Caribbean Netherlands",
+      countries_default["bq"],
       "bq",
       "599",
       1,
       ["3", "4", "7"]
     ],
     [
-      "Cayman Islands",
+      countries_default["ky"],
       "ky",
       "1",
       12,
       ["345"]
     ],
     [
-      "Central African Republic",
+      countries_default["cf"],
       "cf",
       "236"
     ],
     [
-      "Chad",
+      countries_default["td"],
       "td",
       "235"
     ],
     [
-      "Chile",
+      countries_default["cl"],
       "cl",
       "56"
     ],
     [
-      "China",
+      countries_default["cn"],
       "cn",
       "86"
     ],
     [
-      "Christmas Island",
+      countries_default["cx"],
       "cx",
       "61",
       2,
       ["89164"]
     ],
     [
-      "Cocos (Keeling) Islands",
+      countries_default["cc"],
       "cc",
       "61",
       1,
       ["89162"]
     ],
     [
-      "Colombia",
+      countries_default["co"],
       "co",
       "57"
     ],
     [
-      "Comoros",
+      countries_default["km"],
       "km",
       "269"
     ],
     [
-      "Congo - Brazzaville",
+      countries_default["cg"],
       "cg",
       "242"
     ],
     [
-      "Congo - Kinshasa",
+      countries_default["cd"],
       "cd",
       "243"
     ],
     [
-      "Cook Islands",
+      countries_default["ck"],
       "ck",
       "682"
     ],
     [
-      "Costa Rica",
+      countries_default["cr"],
       "cr",
       "506"
     ],
     [
-      "C\xF4te d\u2019Ivoire",
+      countries_default["ci"],
       "ci",
       "225"
     ],
     [
-      "Croatia",
+      countries_default["hr"],
       "hr",
       "385"
     ],
     [
-      "Cuba",
+      countries_default["cu"],
       "cu",
       "53"
     ],
     [
-      "Cura\xE7ao",
+      countries_default["cw"],
       "cw",
       "599",
       0
     ],
     [
-      "Cyprus",
+      countries_default["cy"],
       "cy",
       "357"
     ],
     [
-      "Czech Republic",
+      countries_default["cz"],
       "cz",
       "420"
     ],
     [
-      "Denmark",
+      countries_default["dk"],
       "dk",
       "45"
     ],
     [
-      "Djibouti",
+      countries_default["dj"],
       "dj",
       "253"
     ],
     [
-      "Dominica",
+      countries_default["dm"],
       "dm",
       "1",
       13,
       ["767"]
     ],
     [
-      "Dominican Republic",
+      countries_default["do"],
       "do",
       "1",
       2,
       ["809", "829", "849"]
     ],
     [
-      "Ecuador",
+      countries_default["ec"],
       "ec",
       "593"
     ],
     [
-      "Egypt",
+      countries_default["eg"],
       "eg",
       "20"
     ],
     [
-      "El Salvador",
+      countries_default["sv"],
       "sv",
       "503"
     ],
     [
-      "Equatorial Guinea",
+      countries_default["gq"],
       "gq",
       "240"
     ],
     [
-      "Eritrea",
+      countries_default["er"],
       "er",
       "291"
     ],
     [
-      "Estonia",
+      countries_default["ee"],
       "ee",
       "372"
     ],
     [
-      "Eswatini",
+      countries_default["sz"],
       "sz",
       "268"
     ],
     [
-      "Ethiopia",
+      countries_default["et"],
       "et",
       "251"
     ],
     [
-      "Falkland Islands",
+      countries_default["fk"],
       "fk",
       "500"
     ],
     [
-      "Faroe Islands",
+      countries_default["fo"],
       "fo",
       "298"
     ],
     [
-      "Fiji",
+      countries_default["fj"],
       "fj",
       "679"
     ],
     [
-      "Finland",
+      countries_default["fi"],
       "fi",
       "358",
       0
     ],
     [
-      "France",
+      countries_default["fr"],
       "fr",
       "33"
     ],
     [
-      "French Guiana",
+      countries_default["gf"],
       "gf",
       "594"
     ],
     [
-      "French Polynesia",
+      countries_default["pf"],
       "pf",
       "689"
     ],
     [
-      "Gabon",
+      countries_default["ga"],
       "ga",
       "241"
     ],
     [
-      "Gambia",
+      countries_default["gm"],
       "gm",
       "220"
     ],
     [
-      "Georgia",
+      countries_default["ge"],
       "ge",
       "995"
     ],
     [
-      "Germany",
+      countries_default["de"],
       "de",
       "49"
     ],
     [
-      "Ghana",
+      countries_default["gh"],
       "gh",
       "233"
     ],
     [
-      "Gibraltar",
+      countries_default["gi"],
       "gi",
       "350"
     ],
     [
-      "Greece",
+      countries_default["gr"],
       "gr",
       "30"
     ],
     [
-      "Greenland",
+      countries_default["gl"],
       "gl",
       "299"
     ],
     [
-      "Grenada",
+      countries_default["gd"],
       "gd",
       "1",
       14,
       ["473"]
     ],
     [
-      "Guadeloupe",
+      countries_default["gp"],
       "gp",
       "590",
       0
     ],
     [
-      "Guam",
+      countries_default["gu"],
       "gu",
       "1",
       15,
       ["671"]
     ],
     [
-      "Guatemala",
+      countries_default["gt"],
       "gt",
       "502"
     ],
     [
-      "Guernsey",
+      countries_default["gg"],
       "gg",
       "44",
       1,
       ["1481", "7781", "7839", "7911"]
     ],
     [
-      "Guinea",
+      countries_default["gn"],
       "gn",
       "224"
     ],
     [
-      "Guinea-Bissau",
+      countries_default["gw"],
       "gw",
       "245"
     ],
     [
-      "Guyana",
+      countries_default["gy"],
       "gy",
       "592"
     ],
     [
-      "Haiti",
+      countries_default["ht"],
       "ht",
       "509"
     ],
     [
-      "Honduras",
+      countries_default["hn"],
       "hn",
       "504"
     ],
     [
-      "Hong Kong",
+      countries_default["hk"],
       "hk",
       "852"
     ],
     [
-      "Hungary",
+      countries_default["hu"],
       "hu",
       "36"
     ],
     [
-      "Iceland",
+      countries_default["is"],
       "is",
       "354"
     ],
     [
-      "India",
+      countries_default["in"],
       "in",
       "91"
     ],
     [
-      "Indonesia",
+      countries_default["id"],
       "id",
       "62"
     ],
     [
-      "Iran",
+      countries_default["ir"],
       "ir",
       "98"
     ],
     [
-      "Iraq",
+      countries_default["iq"],
       "iq",
       "964"
     ],
     [
-      "Ireland",
+      countries_default["ie"],
       "ie",
       "353"
     ],
     [
-      "Isle of Man",
+      countries_default["im"],
       "im",
       "44",
       2,
       ["1624", "74576", "7524", "7924", "7624"]
     ],
     [
-      "Israel",
+      countries_default["il"],
       "il",
       "972"
     ],
     [
-      "Italy",
+      countries_default["it"],
       "it",
       "39",
       0
     ],
     [
-      "Jamaica",
+      countries_default["jm"],
       "jm",
       "1",
       4,
       ["876", "658"]
     ],
     [
-      "Japan",
+      countries_default["jp"],
       "jp",
       "81"
     ],
     [
-      "Jersey",
+      countries_default["je"],
       "je",
       "44",
       3,
       ["1534", "7509", "7700", "7797", "7829", "7937"]
     ],
     [
-      "Jordan",
+      countries_default["jo"],
       "jo",
       "962"
     ],
     [
-      "Kazakhstan",
+      countries_default["kz"],
       "kz",
       "7",
       1,
       ["33", "7"]
     ],
     [
-      "Kenya",
+      countries_default["ke"],
       "ke",
       "254"
     ],
     [
-      "Kiribati",
+      countries_default["ki"],
       "ki",
       "686"
     ],
     [
-      "Kosovo",
+      countries_default["xk"],
       "xk",
       "383"
     ],
     [
-      "Kuwait",
+      countries_default["kw"],
       "kw",
       "965"
     ],
     [
-      "Kyrgyzstan",
+      countries_default["kg"],
       "kg",
       "996"
     ],
     [
-      "Laos",
+      countries_default["la"],
       "la",
       "856"
     ],
     [
-      "Latvia",
+      countries_default["lv"],
       "lv",
       "371"
     ],
     [
-      "Lebanon",
+      countries_default["lb"],
       "lb",
       "961"
     ],
     [
-      "Lesotho",
+      countries_default["ls"],
       "ls",
       "266"
     ],
     [
-      "Liberia",
+      countries_default["lr"],
       "lr",
       "231"
     ],
     [
-      "Libya",
+      countries_default["ly"],
       "ly",
       "218"
     ],
     [
-      "Liechtenstein",
+      countries_default["li"],
       "li",
       "423"
     ],
     [
-      "Lithuania",
+      countries_default["lt"],
       "lt",
       "370"
     ],
     [
-      "Luxembourg",
+      countries_default["lu"],
       "lu",
       "352"
     ],
     [
-      "Macau",
+      countries_default["mo"],
       "mo",
       "853"
     ],
     [
-      "Madagascar",
+      countries_default["mg"],
       "mg",
       "261"
     ],
     [
-      "Malawi",
+      countries_default["mw"],
       "mw",
       "265"
     ],
     [
-      "Malaysia",
+      countries_default["my"],
       "my",
       "60"
     ],
     [
-      "Maldives",
+      countries_default["mv"],
       "mv",
       "960"
     ],
     [
-      "Mali",
+      countries_default["ml"],
       "ml",
       "223"
     ],
     [
-      "Malta",
+      countries_default["mt"],
       "mt",
       "356"
     ],
     [
-      "Marshall Islands",
+      countries_default["mh"],
       "mh",
       "692"
     ],
     [
-      "Martinique",
+      countries_default["mq"],
       "mq",
       "596"
     ],
     [
-      "Mauritania",
+      countries_default["mr"],
       "mr",
       "222"
     ],
     [
-      "Mauritius",
+      countries_default["mu"],
       "mu",
       "230"
     ],
     [
-      "Mayotte",
+      countries_default["yt"],
       "yt",
       "262",
       1,
       ["269", "639"]
     ],
     [
-      "Mexico",
+      countries_default["mx"],
       "mx",
       "52"
     ],
     [
-      "Micronesia",
+      countries_default["fm"],
       "fm",
       "691"
     ],
     [
-      "Moldova",
+      countries_default["md"],
       "md",
       "373"
     ],
     [
-      "Monaco",
+      countries_default["mc"],
       "mc",
       "377"
     ],
     [
-      "Mongolia",
+      countries_default["mn"],
       "mn",
       "976"
     ],
     [
-      "Montenegro",
+      countries_default["me"],
       "me",
       "382"
     ],
     [
-      "Montserrat",
+      countries_default["ms"],
       "ms",
       "1",
       16,
       ["664"]
     ],
     [
-      "Morocco",
+      countries_default["ma"],
       "ma",
       "212",
       0
     ],
     [
-      "Mozambique",
+      countries_default["mz"],
       "mz",
       "258"
     ],
     [
-      "Myanmar (Burma)",
+      countries_default["mm"],
       "mm",
       "95"
     ],
     [
-      "Namibia",
+      countries_default["na"],
       "na",
       "264"
     ],
     [
-      "Nauru",
+      countries_default["nr"],
       "nr",
       "674"
     ],
     [
-      "Nepal",
+      countries_default["np"],
       "np",
       "977"
     ],
     [
-      "Netherlands",
+      countries_default["nl"],
       "nl",
       "31"
     ],
     [
-      "New Caledonia",
+      countries_default["nc"],
       "nc",
       "687"
     ],
     [
-      "New Zealand",
+      countries_default["nz"],
       "nz",
       "64"
     ],
     [
-      "Nicaragua",
+      countries_default["ni"],
       "ni",
       "505"
     ],
     [
-      "Niger",
+      countries_default["ne"],
       "ne",
       "227"
     ],
     [
-      "Nigeria",
+      countries_default["ng"],
       "ng",
       "234"
     ],
     [
-      "Niue",
+      countries_default["nu"],
       "nu",
       "683"
     ],
     [
-      "Norfolk Island",
+      countries_default["nf"],
       "nf",
       "672"
     ],
     [
-      "North Korea",
+      countries_default["kp"],
       "kp",
       "850"
     ],
     [
-      "North Macedonia",
+      countries_default["mk"],
       "mk",
       "389"
     ],
     [
-      "Northern Mariana Islands",
+      countries_default["mp"],
       "mp",
       "1",
       17,
       ["670"]
     ],
     [
-      "Norway",
+      countries_default["no"],
       "no",
       "47",
       0
     ],
     [
-      "Oman",
+      countries_default["om"],
       "om",
       "968"
     ],
     [
-      "Pakistan",
+      countries_default["pk"],
       "pk",
       "92"
     ],
     [
-      "Palau",
+      countries_default["pw"],
       "pw",
       "680"
     ],
     [
-      "Palestine",
+      countries_default["ps"],
       "ps",
       "970"
     ],
     [
-      "Panama",
+      countries_default["pa"],
       "pa",
       "507"
     ],
     [
-      "Papua New Guinea",
+      countries_default["pg"],
       "pg",
       "675"
     ],
     [
-      "Paraguay",
+      countries_default["py"],
       "py",
       "595"
     ],
     [
-      "Peru",
+      countries_default["pe"],
       "pe",
       "51"
     ],
     [
-      "Philippines",
+      countries_default["ph"],
       "ph",
       "63"
     ],
     [
-      "Poland",
+      countries_default["pl"],
       "pl",
       "48"
     ],
     [
-      "Portugal",
+      countries_default["pt"],
       "pt",
       "351"
     ],
     [
-      "Puerto Rico",
+      countries_default["pr"],
       "pr",
       "1",
       3,
       ["787", "939"]
     ],
     [
-      "Qatar",
+      countries_default["qa"],
       "qa",
       "974"
     ],
     [
-      "R\xE9union",
+      countries_default["re"],
       "re",
       "262",
       0
     ],
     [
-      "Romania",
+      countries_default["ro"],
       "ro",
       "40"
     ],
     [
-      "Russia",
+      countries_default["ru"],
       "ru",
       "7",
       0
     ],
     [
-      "Rwanda",
+      countries_default["rw"],
       "rw",
       "250"
     ],
     [
-      "Samoa",
+      countries_default["ws"],
       "ws",
       "685"
     ],
     [
-      "San Marino",
+      countries_default["sm"],
       "sm",
       "378"
     ],
     [
-      "S\xE3o Tom\xE9 & Pr\xEDncipe",
+      countries_default["st"],
       "st",
       "239"
     ],
     [
-      "Saudi Arabia",
+      countries_default["sa"],
       "sa",
       "966"
     ],
     [
-      "Senegal",
+      countries_default["sn"],
       "sn",
       "221"
     ],
     [
-      "Serbia",
+      countries_default["rs"],
       "rs",
       "381"
     ],
     [
-      "Seychelles",
+      countries_default["sc"],
       "sc",
       "248"
     ],
     [
-      "Sierra Leone",
+      countries_default["sl"],
       "sl",
       "232"
     ],
     [
-      "Singapore",
+      countries_default["sg"],
       "sg",
       "65"
     ],
     [
-      "Sint Maarten",
+      countries_default["sx"],
       "sx",
       "1",
       21,
       ["721"]
     ],
     [
-      "Slovakia",
+      countries_default["sk"],
       "sk",
       "421"
     ],
     [
-      "Slovenia",
+      countries_default["si"],
       "si",
       "386"
     ],
     [
-      "Solomon Islands",
+      countries_default["sb"],
       "sb",
       "677"
     ],
     [
-      "Somalia",
+      countries_default["so"],
       "so",
       "252"
     ],
     [
-      "South Africa",
+      countries_default["za"],
       "za",
       "27"
     ],
     [
-      "South Korea",
+      countries_default["kr"],
       "kr",
       "82"
     ],
     [
-      "South Sudan",
+      countries_default["ss"],
       "ss",
       "211"
     ],
     [
-      "Spain",
+      countries_default["es"],
       "es",
       "34"
     ],
     [
-      "Sri Lanka",
+      countries_default["lk"],
       "lk",
       "94"
     ],
     [
-      "St Barth\xE9lemy",
+      countries_default["bl"],
       "bl",
       "590",
       1
     ],
     [
-      "St Helena",
+      countries_default["sh"],
       "sh",
       "290"
     ],
     [
-      "St Kitts & Nevis",
+      countries_default["kn"],
       "kn",
       "1",
       18,
       ["869"]
     ],
     [
-      "St Lucia",
+      countries_default["lc"],
       "lc",
       "1",
       19,
       ["758"]
     ],
     [
-      "St Martin",
+      countries_default["mf"],
       "mf",
       "590",
       2
     ],
     [
-      "St Pierre & Miquelon",
+      countries_default["pm"],
       "pm",
       "508"
     ],
     [
-      "St Vincent & Grenadines",
+      countries_default["vc"],
       "vc",
       "1",
       20,
       ["784"]
     ],
     [
-      "Sudan",
+      countries_default["sd"],
       "sd",
       "249"
     ],
     [
-      "Suriname",
+      countries_default["sr"],
       "sr",
       "597"
     ],
     [
-      "Svalbard & Jan Mayen",
+      countries_default["sj"],
       "sj",
       "47",
       1,
       ["79"]
     ],
     [
-      "Sweden",
+      countries_default["se"],
       "se",
       "46"
     ],
     [
-      "Switzerland",
+      countries_default["ch"],
       "ch",
       "41"
     ],
     [
-      "Syria",
+      countries_default["sy"],
       "sy",
       "963"
     ],
     [
-      "Taiwan",
+      countries_default["tw"],
       "tw",
       "886"
     ],
     [
-      "Tajikistan",
+      countries_default["tj"],
       "tj",
       "992"
     ],
     [
-      "Tanzania",
+      countries_default["tz"],
       "tz",
       "255"
     ],
     [
-      "Thailand",
+      countries_default["th"],
       "th",
       "66"
     ],
     [
-      "Timor-Leste",
+      countries_default["tl"],
       "tl",
       "670"
     ],
     [
-      "Togo",
+      countries_default["tg"],
       "tg",
       "228"
     ],
     [
-      "Tokelau",
+      countries_default["tk"],
       "tk",
       "690"
     ],
     [
-      "Tonga",
+      countries_default["to"],
       "to",
       "676"
     ],
     [
-      "Trinidad & Tobago",
+      countries_default["tt"],
       "tt",
       "1",
       22,
       ["868"]
     ],
     [
-      "Tunisia",
+      countries_default["tn"],
       "tn",
       "216"
     ],
     [
-      "Turkey",
+      countries_default["tr"],
       "tr",
       "90"
     ],
     [
-      "Turkmenistan",
+      countries_default["tm"],
       "tm",
       "993"
     ],
     [
-      "Turks & Caicos Islands",
+      countries_default["tc"],
       "tc",
       "1",
       23,
       ["649"]
     ],
     [
-      "Tuvalu",
+      countries_default["tv"],
       "tv",
       "688"
     ],
     [
-      "Uganda",
+      countries_default["ug"],
       "ug",
       "256"
     ],
     [
-      "Ukraine",
+      countries_default["ua"],
       "ua",
       "380"
     ],
     [
-      "United Arab Emirates",
+      countries_default["ae"],
       "ae",
       "971"
     ],
     [
-      "United Kingdom",
+      countries_default["gb"],
       "gb",
       "44",
       0
     ],
     [
-      "United States",
+      countries_default["us"],
       "us",
       "1",
       0
     ],
     [
-      "Uruguay",
+      countries_default["uy"],
       "uy",
       "598"
     ],
     [
-      "US Virgin Islands",
+      countries_default["vi"],
       "vi",
       "1",
       24,
       ["340"]
     ],
     [
-      "Uzbekistan",
+      countries_default["uz"],
       "uz",
       "998"
     ],
     [
-      "Vanuatu",
+      countries_default["vu"],
       "vu",
       "678"
     ],
     [
-      "Vatican City",
+      countries_default["va"],
       "va",
       "39",
       1,
       ["06698"]
     ],
     [
-      "Venezuela",
+      countries_default["ve"],
       "ve",
       "58"
     ],
     [
-      "Vietnam",
+      countries_default["vn"],
       "vn",
       "84"
     ],
     [
-      "Wallis & Futuna",
+      countries_default["wf"],
       "wf",
       "681"
     ],
     [
-      "Western Sahara",
+      countries_default["eh"],
       "eh",
       "212",
       1,
       ["5288", "5289"]
     ],
     [
-      "Yemen",
+      countries_default["ye"],
       "ye",
       "967"
     ],
     [
-      "Zambia",
+      countries_default["zm"],
       "zm",
       "260"
     ],
     [
-      "Zimbabwe",
+      countries_default["zw"],
       "zw",
       "263"
     ],
     [
-      "\xC5land Islands",
+      countries_default["ax"],
       "ax",
       "358",
       1,

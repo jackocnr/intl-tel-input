@@ -1,4 +1,5 @@
 import allCountries, { Country } from "./intl-tel-input/data";
+import defaultInterfaceStrings from "./i18n/en/interface.mjs";
 
 type ItiGlobals = {
   autoCountry?: string;
@@ -586,6 +587,9 @@ export class Iti {
     //* Check if input has one parent with RTL.
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
 
+    //* Allow overriding the default interface strings.
+    this.options.i18n = { ...defaultInterfaceStrings, ...this.options.i18n };
+
     //* these promises get resolved when their individual requests complete
     //* this way the dev can do something like iti.promise.then(...) to know when all requests are complete.
     const autoCountryPromise = new Promise((resolve, reject) => {
@@ -827,7 +831,7 @@ export class Iti {
           class: "iti__selected-country",
           ...(allowDropdown && {
             "aria-expanded": "false",
-            "aria-label": this.options.i18n.selectedCountryAriaLabel || "Selected country",
+            "aria-label": this.options.i18n.selectedCountryAriaLabel,
             "aria-haspopup": countrySearch ? "true" : "listbox",
             "aria-controls": countrySearch ? `iti-${this.id}__dropdown-content` : `iti-${this.id}__country-listbox`,
             ...(countrySearch ? { role: "combobox" } : {}),
@@ -884,10 +888,10 @@ export class Iti {
           {
             type: "text",
             class: "iti__search-input",
-            placeholder: i18n.searchPlaceholder || "Search",
+            placeholder: i18n.searchPlaceholder,
             role: "combobox",
             "aria-expanded": "true",
-            "aria-label": i18n.searchPlaceholder || "Search",
+            "aria-label": i18n.searchPlaceholder,
             "aria-controls": `iti-${this.id}__country-listbox`,
             "aria-autocomplete": "list",
             "autocomplete": "off",
@@ -908,7 +912,7 @@ export class Iti {
           class: "iti__country-list",
           id: `iti-${this.id}__country-listbox`,
           role: "listbox",
-          "aria-label": i18n.countryListAriaLabel || "List of countries",
+          "aria-label": i18n.countryListAriaLabel,
         },
         this.dropdownContent,
       );
@@ -1510,12 +1514,12 @@ export class Iti {
     const count = this.countryList.childElementCount;
     let searchText;
     if (count === 0) {
-      searchText = i18n.zeroSearchResults || "No results found";
+      searchText = i18n.zeroSearchResults;
     } else if (count === 1) {
-      searchText = i18n.oneSearchResult || "1 result found";
+      searchText = i18n.oneSearchResult;
     } else {
       // eslint-disable-next-line no-template-curly-in-string
-      searchText = i18n.multipleSearchResults ? i18n.multipleSearchResults.replace("${count}", count.toString()) : `${count} results found`;
+      searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
     }
     this.searchResultsA11yText.textContent = searchText;
   }
@@ -1745,7 +1749,7 @@ export class Iti {
         //* we don't show a flag or have any a11y text, as the displayed dial code is enough
       } else {
         flagClass = "iti__flag iti__globe";
-        a11yText = i18n.noCountrySelected || "No country selected";
+        a11yText = i18n.noCountrySelected;
       }
       this.selectedCountryInner.className = flagClass;
       this.selectedCountryA11yText.textContent = a11yText;
