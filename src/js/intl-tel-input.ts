@@ -1,5 +1,5 @@
 import allCountries, { Country } from "./intl-tel-input/data";
-import defaultInterfaceStrings from "./i18n/en/interface.mjs";
+import defaultEnglishStrings from "./i18n/en/index.mjs";
 
 type ItiGlobals = {
   autoCountry?: string;
@@ -588,7 +588,7 @@ export class Iti {
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
 
     //* Allow overriding the default interface strings.
-    this.options.i18n = { ...defaultInterfaceStrings, ...this.options.i18n };
+    this.options.i18n = { ...defaultEnglishStrings, ...this.options.i18n };
 
     //* these promises get resolved when their individual requests complete
     //* this way the dev can do something like iti.promise.then(...) to know when all requests are complete.
