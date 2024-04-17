@@ -1,6 +1,6 @@
 # International Telephone Input [![Build Status](https://app.travis-ci.com/jackocnr/intl-tel-input.svg?branch=master)](https://app.travis-ci.com/jackocnr/intl-tel-input) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.png" alt="React logo" width="16px" />  NEWS: we now have our own <a href="https://intl-tel-input.com/examples/react-component.html">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/">Storybook</a>. 
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.png" alt="React logo" width="16px" />  NEWS: we now have our own <a href="https://intl-tel-input.com/examples/react-component.html">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla">Storybook</a>. 
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.png" alt="Typescript logo" width="16px" /> NEWS: we now have our own Typescript type definitions (for both [the JavaScript plugin](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/intlTelInput.d.ts) and [the React component](https://github.com/jackocnr/intl-tel-input/blob/master/react/build/IntlTelInput.d.ts)), so no need to use `@types/intl-tel-input` any more!
 
