@@ -356,7 +356,7 @@ var factoryOutput = (() => {
       "297"
     ],
     [
-      "Ascension Island",
+      countries_default["ac"],
       "ac",
       "247"
     ],
@@ -912,7 +912,7 @@ var factoryOutput = (() => {
       "686"
     ],
     [
-      "Kosovo",
+      countries_default["xk"],
       "xk",
       "383"
     ],
@@ -1622,7 +1622,10 @@ var factoryOutput = (() => {
     searchPlaceholder: "Search",
     zeroSearchResults: "No results found",
     oneSearchResult: "1 result found",
-    multipleSearchResults: "${count} results found"
+    multipleSearchResults: "${count} results found",
+    // additional countries (not supported by country-list library)
+    ac: "Ascension Island",
+    xk: "Kosovo"
   };
 
   // src/js/intl-tel-input.ts

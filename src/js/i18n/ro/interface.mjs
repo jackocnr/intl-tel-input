@@ -1,4 +1,4 @@
-//* Translated by: Google Translate.
+//* Romanian. Translated by: Google Translate.
 export default {
   selectedCountryAriaLabel: "Țara selectată",
   noCountrySelected: "Nicio țară selectată",
@@ -7,4 +7,8 @@ export default {
   zeroSearchResults: "Nici un rezultat gasit",
   oneSearchResult: "1 rezultat găsit",
   multipleSearchResults: "${count} rezultate găsite",
+  
+  // additional countries (not supported by country-list library)
+  ac: "Insula Ascensiunii",
+  xk: "Kosovo",
 };

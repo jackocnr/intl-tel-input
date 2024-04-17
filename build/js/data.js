@@ -355,7 +355,7 @@ var factoryOutput = (() => {
       "297"
     ],
     [
-      "Ascension Island",
+      countries_default["ac"],
       "ac",
       "247"
     ],
@@ -911,7 +911,7 @@ var factoryOutput = (() => {
       "686"
     ],
     [
-      "Kosovo",
+      countries_default["xk"],
       "xk",
       "383"
     ],

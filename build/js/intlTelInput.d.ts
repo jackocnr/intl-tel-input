@@ -275,6 +275,8 @@ declare module "i18n/en/interface" {
         let zeroSearchResults: string;
         let oneSearchResult: string;
         let multipleSearchResults: string;
+        let ac: string;
+        let xk: string;
     }
     export default _default;
 }

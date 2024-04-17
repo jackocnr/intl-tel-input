@@ -1,4 +1,4 @@
-//* Translated by: Google Translate.
+//* Marathi. Translated by: Google Translate.
 export default {
   selectedCountryAriaLabel: "निवडलेला देश",
   noCountrySelected: "कोणताही देश निवडलेला नाही",
@@ -7,4 +7,8 @@ export default {
   zeroSearchResults: "कोणतेही परिणाम आढळले नाहीत",
   oneSearchResult: "1 परिणाम आढळला",
   multipleSearchResults: "${count} परिणाम आढळले",
+  
+  // additional countries (not supported by country-list library)
+  ac: "असेन्शन बेट",
+  xk: "कोसोवो",
 };

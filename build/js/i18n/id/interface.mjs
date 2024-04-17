@@ -1,4 +1,4 @@
-//* Translated by: Google Translate.
+//* Indonesian. Translated by: Google Translate.
 export default {
   selectedCountryAriaLabel: "Negara yang dipilih",
   noCountrySelected: "Tidak ada negara yang dipilih",
@@ -7,4 +7,8 @@ export default {
   zeroSearchResults: "Tidak ada hasil yang ditemukan",
   oneSearchResult: "1 hasil ditemukan",
   multipleSearchResults: "${count} hasil ditemukan",
+  
+  // additional countries (not supported by country-list library)
+  ac: "Pulau Kenaikan",
+  xk: "Kosovo",
 };
