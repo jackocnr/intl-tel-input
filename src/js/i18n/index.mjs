@@ -20,3 +20,4 @@ export { default as te } from "./te/index.mjs";
 export { default as th } from "./th/index.mjs";
 export { default as tr } from "./tr/index.mjs";
 export { default as ur } from "./ur/index.mjs";
+export { default as zh } from "./zh/index.mjs";
