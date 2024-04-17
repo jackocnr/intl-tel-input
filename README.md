@@ -50,12 +50,12 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * The user types their national number and the plugin gives you the full standardised international number
 * Number validation, including specific error types
 * High-resolution flag images
-* Lots of initialisation options for customisation, as well as public methods/events for interaction
 * Accessibility provided via ARIA tags
-* Typescript type definitions provided
-* Easily customise styles by overriding the provided CSS variables
+* Typescript type definitions included
+* Easily customise styles by overriding CSS variables
 * React component included
-* Translations for all country names (etc) provided in many different languages
+* Translations for country names (etc) provided in many different languages
+* Lots of initialisation options for customisation, as well as public methods/events for interaction
 
 ## Browser Compatibility
 | Chrome |  Firefox  | Safari | Edge |
