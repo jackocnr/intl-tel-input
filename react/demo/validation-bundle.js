@@ -25610,12 +25610,13 @@
         this.options.dropdownContainer.appendChild(this.dropdown);
       }
       if (!this.options.useFullscreenPopup) {
-        const pos = this.telInput.getBoundingClientRect();
-        const windowTop = document.documentElement.scrollTop;
-        const inputTop = pos.top + windowTop;
+        const inputPosRelativeToVP = this.telInput.getBoundingClientRect();
+        const scrollTop = document.documentElement.scrollTop;
+        const inputTopAbsolute = inputPosRelativeToVP.top + scrollTop;
+        const inputHeight = this.telInput.offsetHeight;
         const dropdownHeight = this.dropdownContent.offsetHeight;
-        const dropdownFitsBelow = inputTop + this.telInput.offsetHeight + dropdownHeight < windowTop + window.innerHeight;
-        const dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
+        const dropdownFitsBelow = inputTopAbsolute + inputHeight + dropdownHeight < scrollTop + window.innerHeight;
+        const dropdownFitsAbove = inputTopAbsolute - dropdownHeight > scrollTop;
         const positionDropdownAboveInput = !this.options.countrySearch && !dropdownFitsBelow && dropdownFitsAbove;
         toggleClass(
           this.dropdownContent,
@@ -25623,9 +25624,9 @@
           positionDropdownAboveInput
         );
         if (this.options.dropdownContainer) {
-          const extraTop = positionDropdownAboveInput ? 0 : this.telInput.offsetHeight;
-          this.dropdown.style.top = `${inputTop + extraTop}px`;
-          this.dropdown.style.left = `${pos.left + document.body.scrollLeft}px`;
+          const extraTop = positionDropdownAboveInput ? 0 : inputHeight;
+          this.dropdown.style.top = `${inputPosRelativeToVP.top + extraTop}px`;
+          this.dropdown.style.left = `${inputPosRelativeToVP.left}px`;
           this._handleWindowScroll = () => this._closeDropdown();
           window.addEventListener("scroll", this._handleWindowScroll);
         }
@@ -26064,12 +26065,12 @@
     //* Check if an element is visible within it's container, else scroll until it is.
     _scrollTo(element, middle) {
       const container2 = this.countryList;
-      const windowTop = document.documentElement.scrollTop;
+      const scrollTop = document.documentElement.scrollTop;
       const containerHeight = container2.offsetHeight;
-      const containerTop = container2.getBoundingClientRect().top + windowTop;
+      const containerTop = container2.getBoundingClientRect().top + scrollTop;
       const containerBottom = containerTop + containerHeight;
       const elementHeight = element.offsetHeight;
-      const elementTop = element.getBoundingClientRect().top + windowTop;
+      const elementTop = element.getBoundingClientRect().top + scrollTop;
       const elementBottom = elementTop + elementHeight;
       let newScrollTop = elementTop - containerTop + container2.scrollTop;
       const middleOffset = containerHeight / 2 - elementHeight / 2;

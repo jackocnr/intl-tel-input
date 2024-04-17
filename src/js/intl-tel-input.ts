@@ -1327,16 +1327,17 @@ export class Iti {
     }
 
     if (!this.options.useFullscreenPopup) {
-      const pos = this.telInput.getBoundingClientRect();
-      //* windowTop from https://stackoverflow.com/a/14384091/217866.
-      const windowTop = document.documentElement.scrollTop;
-      const inputTop = pos.top + windowTop;
+      // getBoundingClientRect is relative to the viewport, so when you scroll down, pos.top goes down, hence needing to add on scrollTop below
+      const inputPosRelativeToVP = this.telInput.getBoundingClientRect();
+      const scrollTop = document.documentElement.scrollTop;
+      const inputTopAbsolute = inputPosRelativeToVP.top + scrollTop;
+      const inputHeight = this.telInput.offsetHeight;
       const dropdownHeight = this.dropdownContent.offsetHeight;
       // dropdownFitsBelow = (dropdownBottom < windowBottom)
       const dropdownFitsBelow =
-        inputTop + this.telInput.offsetHeight + dropdownHeight <
-        windowTop + window.innerHeight;
-      const dropdownFitsAbove = inputTop - dropdownHeight > windowTop;
+      inputTopAbsolute + inputHeight + dropdownHeight <
+        scrollTop + window.innerHeight;
+      const dropdownFitsAbove = inputTopAbsolute - dropdownHeight > scrollTop;
       //* Don't allow positioning above when country search enabled as the search box jumps around as you filter countries.
       const positionDropdownAboveInput = !this.options.countrySearch && !dropdownFitsBelow && dropdownFitsAbove;
 
@@ -1350,15 +1351,16 @@ export class Iti {
 
       //* If dropdownContainer is enabled, calculate postion.
       if (this.options.dropdownContainer) {
-        //* If we want to position the dropdown below the input, we need to add the input height to the top value.
+        //* If positionDropdownAboveInput, we just want the input (relative) top value, as the dropdown container div is 0px tall and the inner content div is absolutely positioned above it.
+        //* If !positionDropdownAboveInput, we want the bottom of the input, so we add the input height.
         const extraTop =
           positionDropdownAboveInput
             ? 0
-            : this.telInput.offsetHeight;
+            : inputHeight;
 
-        //* Calculate Placement.
-        this.dropdown.style.top = `${inputTop + extraTop}px`;
-        this.dropdown.style.left = `${pos.left + document.body.scrollLeft}px`;
+        //* Calculate position.
+        this.dropdown.style.top = `${inputPosRelativeToVP.top + extraTop}px`;
+        this.dropdown.style.left = `${inputPosRelativeToVP.left}px`;
 
         //* Close menu on window scroll.
         this._handleWindowScroll = (): void => this._closeDropdown();
@@ -1973,13 +1975,12 @@ export class Iti {
   //* Check if an element is visible within it's container, else scroll until it is.
   private _scrollTo(element: HTMLElement, middle: boolean): void {
     const container = this.countryList;
-    //* windowTop from https://stackoverflow.com/a/14384091/217866.
-    const windowTop = document.documentElement.scrollTop;
+    const scrollTop = document.documentElement.scrollTop;
     const containerHeight = container.offsetHeight;
-    const containerTop = container.getBoundingClientRect().top + windowTop;
+    const containerTop = container.getBoundingClientRect().top + scrollTop;
     const containerBottom = containerTop + containerHeight;
     const elementHeight = element.offsetHeight;
-    const elementTop = element.getBoundingClientRect().top + windowTop;
+    const elementTop = element.getBoundingClientRect().top + scrollTop;
     const elementBottom = elementTop + elementHeight;
     let newScrollTop = elementTop - containerTop + container.scrollTop;
     const middleOffset = containerHeight / 2 - elementHeight / 2;
