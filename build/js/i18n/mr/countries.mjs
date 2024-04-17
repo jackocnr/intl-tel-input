@@ -1,3 +1,4 @@
+//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
 export default {
   ao: "अंगोला",
   ai: "अँग्विला",

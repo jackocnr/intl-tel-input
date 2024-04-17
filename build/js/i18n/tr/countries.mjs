@@ -1,3 +1,4 @@
+//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
 export default {
   um: "ABD Küçük Harici Adaları",
   vi: "ABD Virjin Adaları",

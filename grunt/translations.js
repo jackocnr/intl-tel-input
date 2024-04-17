@@ -36,12 +36,12 @@ module.exports = function(grunt) {
 
       //* If the interface file does not exist, skip the iteration.
       if (!interfaceTranslationExists) {
-        grunt.log.writeln(`Missing interface file: ${interfaceTranslationFilePath} - SKIPPING.\n`);
+        grunt.log.writeln(`WARNING: Missing interface file: ${interfaceTranslationFilePath} - skipping this locale.\n`);
         return;
       }
       //* If the interface file does not exist, skip the iteration.
       if (!countryTranslationExists) {
-        grunt.log.writeln(`Missing country file: ${countryTranslationFilePath} - SKIPPING.\n`);
+        grunt.log.writeln(`WARNING: Missing country file: ${countryTranslationFilePath} - skipping this locale.\n`);
         return;
       }
 
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
       let indexFileContent = '';
       indexFileContent += `import countryTranslations from "./countries.mjs";\n`;
       indexFileContent += `import interfaceTranslations from "./interface.mjs";\n\n`;
-      indexFileContent += `export default {...countryTranslations, ...interfaceTranslations};\n`;
+      indexFileContent += `export default { ...countryTranslations, ...interfaceTranslations };\n`;
       fs.writeFileSync(indexFilePath, indexFileContent);
       grunt.log.writeln(`Generated ${indexFilePath}`);
 
@@ -60,7 +60,8 @@ module.exports = function(grunt) {
       const jsonData = fs.readFileSync(countryTranslationFilePath, 'utf8'); //* Read the JSON file.
       try {
         const parsedData = JSON.parse(jsonData); //* Parse JSON data.
-        let countryTranslationFileContent = 'export default {\n';
+        let countryTranslationFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
+        countryTranslationFileContent += 'export default {\n';
 
         Object.keys(parsedData).forEach(key => {
           countryTranslationFileContent += `  ${key.toLowerCase()}: "${parsedData[key]}",\n`;

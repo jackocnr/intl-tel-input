@@ -1,3 +1,4 @@
+//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
 export default {
   at: "অস্ট্রিয়া",
   au: "অস্ট্রেলিয়া",
