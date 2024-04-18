@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = function(grunt) {
-  grunt.registerTask('build:translations', 'Generate country translations', function() {
+  grunt.registerTask('translations', 'Generate country translations', function() {
     const countryTranslationSourceDirectory = 'third_party/country-list/data';
     const supportedLocalesDirectory = "src/js/i18n";
     const buildDirectory = 'build/js/i18n';
