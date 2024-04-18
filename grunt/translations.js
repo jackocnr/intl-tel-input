@@ -52,6 +52,8 @@ module.exports = function(grunt) {
       let indexFileContent = '';
       indexFileContent += `import countryTranslations from "./countries.mjs";\n`;
       indexFileContent += `import interfaceTranslations from "./interface.mjs";\n\n`;
+      indexFileContent += `export { default as countryTranslations } from "./countries.mjs";\n`;
+      indexFileContent += `export { default as interfaceTranslations } from "./interface.mjs";\n\n`;
       indexFileContent += `export default { ...countryTranslations, ...interfaceTranslations };\n`;
       fs.writeFileSync(indexFilePath, indexFileContent);
       grunt.log.writeln(`Generated ${indexFilePath}`);
