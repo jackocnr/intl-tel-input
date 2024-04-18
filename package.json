@@ -86,7 +86,7 @@
     "build": "grunt build",
     "build:js": "grunt js",
     "build:jsfast": "node build.js",
-    "build:translations": "grunt build:translations",
+    "build:translations": "grunt translations",
     "build:utils": "grunt build:utils",
     "build:css": "grunt css",
     "build:img": "grunt img",
