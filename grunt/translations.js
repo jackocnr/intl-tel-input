@@ -46,7 +46,7 @@ module.exports = function(grunt) {
       }
 
       //* Add the locale export to the content of the root index.mjs file
-      rootIndexFileContent += `export { default as ${locale} } from "./${locale}/index.mjs";\n`;
+      rootIndexFileContent += `export { default as ${locale}, countryTranslations as ${locale}CountryTranslations, interfaceTranslations as ${locale}InterfaceTranslations } from "./${locale}/index.mjs";\n`;
 
       //* Create the Locale Index file Start
       let indexFileContent = '';
