@@ -198,6 +198,11 @@ const validationError = {
   "INVALID_LENGTH": 5,
 };
 
+//* noConflict mode: if another version of utils has already been loaded, back it up before overriding it
+if (typeof window === "object" && window["intlTelInputUtils"]) {
+  window["intlTelInputUtilsBackup"] = window["intlTelInputUtils"];
+}
+
 //* Exports
 goog.exportSymbol("intlTelInputUtils", {});
 goog.exportSymbol("intlTelInputUtils.formatNumberAsYouType", formatNumberAsYouType);
