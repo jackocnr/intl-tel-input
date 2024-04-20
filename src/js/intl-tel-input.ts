@@ -2365,7 +2365,8 @@ const loadUtils = (path: string): Promise<unknown> | null => {
   return null;
 };
 
-if (typeof window === "object") {
+//* Temp workaround to support the plugin being loaded onto the same page twice (e.g. you use it, and one of your bundled dependencies happens to use it as well) - basically, just don't override window.intlTelInputGlobals if it already exists. Then everything should work fine as long as both plugin scripts are using the same version (meaning the utils and globals APIs are compatible).
+if (typeof window === "object" && !window.intlTelInputGlobals) {
   const intlTelInputGlobals: ItiGlobals = {
     defaults,
     //* Using a global like this allows us to mock it in the tests.

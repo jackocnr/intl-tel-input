@@ -2868,7 +2868,7 @@ var factoryOutput = (() => {
     }
     return null;
   };
-  if (typeof window === "object") {
+  if (typeof window === "object" && !window.intlTelInputGlobals) {
     const intlTelInputGlobals = {
       defaults,
       //* Using a global like this allows us to mock it in the tests.
