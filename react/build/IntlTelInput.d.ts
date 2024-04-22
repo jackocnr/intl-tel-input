@@ -282,6 +282,8 @@ declare module "i18n/en/interface" {
     export default _default;
 }
 declare module "i18n/en/index" {
+    export { default as countryTranslations } from "./countries.mjs";
+    export { default as interfaceTranslations } from "./interface.mjs";
     const _default: {
         selectedCountryAriaLabel: string;
         noCountrySelected: string;
