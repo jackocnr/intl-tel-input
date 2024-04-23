@@ -1,8 +1,6 @@
-/bower_components/
 /node_modules/
 /lib/*
 !/lib/libphonenumber
-/.bower_cache/
 /.sass-cache/
 /.grunt/
 /tmp/
