@@ -1,7 +1,0 @@
-{
-  "name": "intl-tel-input",
-  "main": [
-    "./build/js/intlTelInput.js",
-    "./build/css/intlTelInput.css"
-  ]
-}
