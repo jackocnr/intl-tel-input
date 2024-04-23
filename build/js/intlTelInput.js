@@ -2075,7 +2075,7 @@ var factoryOutput = (() => {
       this.telInput.addEventListener("input", this._handleInputEvent);
       if (strictMode) {
         this._handleKeydownEvent = (e) => {
-          if (e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
+          if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
             const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
             const isNumeric = /^[0-9]$/.test(e.key);
             const isAllowedChar = isInitialPlus || isNumeric;

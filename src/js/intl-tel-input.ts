@@ -1251,7 +1251,7 @@ export class Iti {
     if (strictMode) {
       this._handleKeydownEvent = (e: KeyboardEvent): void => {
         //* Only ignore actual character presses, rather than ctrl, alt, shift, command, arrow keys, delete/backspace, cut/copy/paste etc.
-        if (e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
+        if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
           const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
           const isNumeric = /^[0-9]$/.test(e.key);
           const isAllowedChar = isInitialPlus || isNumeric;
