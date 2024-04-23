@@ -281,8 +281,6 @@ declare module "i18n/en/interface" {
     export default _default;
 }
 declare module "i18n/en/index" {
-    export { default as countryTranslations } from "./countries.mjs";
-    export { default as interfaceTranslations } from "./interface.mjs";
     const _default: {
         selectedCountryAriaLabel: string;
         noCountrySelected: string;
@@ -544,6 +542,9 @@ declare module "i18n/en/index" {
         zw: string;
     };
     export default _default;
+    import countryTranslations from "i18n/en/countries.mjs";
+    import interfaceTranslations from "i18n/en/interface.mjs";
+    export { countryTranslations, interfaceTranslations };
 }
 declare module "intl-tel-input" {
     import { Country } from "intl-tel-input/data";
