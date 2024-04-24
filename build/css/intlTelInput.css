@@ -66,16 +66,23 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
   background: none;
   border: 0;
   margin: 0;
+  padding: 0;
+  font-family: inherit;
   font-size: inherit;
   color: inherit;
   border-radius: 0;
   font-weight: inherit;
   line-height: inherit;
   text-decoration: none;
+}
+.iti__selected-country-primary {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
 }
 .iti__arrow {
   margin-left: var(--iti-arrow-padding);
@@ -190,29 +197,19 @@
   right: 0;
   left: auto;
 }
-.iti--allow-dropdown .iti__country-container:hover, .iti--allow-dropdown .iti__country-container:hover button {
+.iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])):hover, .iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])):hover button {
   cursor: pointer;
 }
-.iti--allow-dropdown .iti__country-container:hover .iti__selected-country {
+.iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country-primary:hover,
+.iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country:has(+ .iti__dropdown-content:hover) .iti__selected-country-primary {
   background-color: var(--iti-hover-color);
 }
-.iti--allow-dropdown .iti__country-container:has(+ input[disabled]):hover,
-.iti--allow-dropdown .iti__country-container:has(+ input[readonly]):hover {
-  cursor: default;
+.iti .iti__selected-dial-code {
+  margin-left: 4px;
 }
-.iti--allow-dropdown .iti__country-container:has(+ input[disabled]):hover .iti__selected-country,
-.iti--allow-dropdown .iti__country-container:has(+ input[readonly]):hover .iti__selected-country {
-  background-color: transparent;
-}
-.iti--show-selected-dial-code .iti__selected-country {
-  background-color: var(--iti-hover-color);
-}
-.iti--show-selected-dial-code.iti--show-flags .iti__selected-dial-code {
-  margin-left: var(--iti-arrow-padding);
-}
-[dir=rtl] .iti--show-selected-dial-code.iti--show-flags .iti__selected-dial-code {
+[dir=rtl] .iti .iti__selected-dial-code {
   margin-left: 0;
-  margin-right: var(--iti-arrow-padding);
+  margin-right: 4px;
 }
 .iti--container {
   position: fixed;

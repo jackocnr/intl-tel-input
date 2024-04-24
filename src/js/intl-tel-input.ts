@@ -318,7 +318,7 @@ interface AllOptions {
   placeholderNumberType: NumberType;
   preferredCountries: string[];
   showFlags: boolean;
-  showSelectedDialCode: boolean;
+  separateDialCode: boolean;
   strictMode: boolean;
   useFullscreenPopup: boolean;
   utilsScript: string;
@@ -366,10 +366,10 @@ const defaults: AllOptions = {
   placeholderNumberType: "MOBILE",
   //* The countries at the top of the list.
   preferredCountries: [],
-  //* Option to hide the flags - must be used with showSelectedDialCode, or allowDropdown=false.
+  //* Show flags - for both the selected country, and in the country dropdown
   showFlags: true,
   //* Display the international dial code next to the selected flag.
-  showSelectedDialCode: false,
+  separateDialCode: false,
   //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
   strictMode: false,
   //* Use full screen popup instead of dropdown for country list.
@@ -571,10 +571,15 @@ export class Iti {
       this.options.fixDropdownWidth = true;
     }
 
+    //* When separateDialCode enabled, we force nationalMode to false.
+    if (this.options.separateDialCode) {
+      this.options.nationalMode = false;
+    }
+
     //* Force showFlags=true if there's a dropdown and we're not displaying the dial code,
     //* as otherwise you just have a down arrow on it's own which doesn't make sense.
     const forceShowFlags =
-      this.options.allowDropdown && !this.options.showSelectedDialCode;
+      this.options.allowDropdown && !this.options.separateDialCode;
     if (!this.options.showFlags && forceShowFlags) {
       this.options.showFlags = true;
     }
@@ -781,7 +786,7 @@ export class Iti {
 
     const {
       allowDropdown,
-      showSelectedDialCode,
+      separateDialCode,
       showFlags,
       containerClass,
       hiddenInput,
@@ -797,7 +802,7 @@ export class Iti {
     if (allowDropdown) {
       parentClass += " iti--allow-dropdown";
     }
-    if (showSelectedDialCode) {
+    if (separateDialCode) {
       parentClass += " iti--show-selected-dial-code";
     }
     if (showFlags) {
@@ -813,8 +818,11 @@ export class Iti {
     const wrapper = createEl("div", { class: parentClass });
     this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
 
-    //* If we're showing flags or dial codes, we need the country container etc.
-    if (showFlags || showSelectedDialCode) {
+    const showSelectedCountry = showFlags || separateDialCode;
+    let selectedCountryPrimary;
+
+    //* If we're showing flags or dial codes, we need the selected country container etc.
+    if (showSelectedCountry) {
       this.countryContainer = createEl(
         "div",
         { class: "iti__country-container" },
@@ -840,9 +848,12 @@ export class Iti {
         this.countryContainer,
       );
 
+      // gre area (if allowdropdown enabled)
+      selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
+
       //* We now include the selected country element even when showFlags is disabled,
-      //* as need to show globe icon for showSelectedDialCode empty state.
-      this.selectedCountryInner = createEl("div", null, this.selectedCountry);
+      //* as need to show globe icon for separateDialCode empty state.
+      this.selectedCountryInner = createEl("div", null, selectedCountryPrimary);
       this.selectedCountryA11yText = createEl(
         "span",
         { class: "iti__a11y-text" },
@@ -856,15 +867,7 @@ export class Iti {
       this.selectedCountry.setAttribute("aria-disabled", "true");
     }
 
-    if (showSelectedDialCode) {
-      this.selectedDialCode = createEl(
-        "div",
-        { class: "iti__selected-dial-code" },
-        this.selectedCountry,
-      );
-    }
-
-    if (allowDropdown) {
+    if (showSelectedCountry && allowDropdown) {
       if (!this.telInput.disabled) {
         //* Make element focusable and tab navigable.
         this.selectedCountry.setAttribute("tabindex", "0");
@@ -873,8 +876,16 @@ export class Iti {
       this.dropdownArrow = createEl(
         "div",
         { class: "iti__arrow", "aria-hidden": "true" },
-        this.selectedCountry,
+        selectedCountryPrimary,
       );
+
+      if (separateDialCode) {
+        this.selectedDialCode = createEl(
+          "div",
+          { class: "iti__selected-dial-code" },
+          this.selectedCountry,
+        );
+      }
 
       const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
       this.dropdownContent = createEl("div", {
@@ -1211,9 +1222,11 @@ export class Iti {
 
   //* Initialize the tel input listeners.
   private _initTelInputListeners(): void {
-    const { strictMode, formatAsYouType } = this.options;
+    const { strictMode, formatAsYouType, separateDialCode } = this.options;
     let userOverrideFormatting = false;
-    //* Update country on input event.
+
+    //* On input event: (1) Update selected country, (2) Format as you type.
+    //* Note that this fires AFTER the input is updated.
     this._handleInputEvent = (e: InputEvent): void => {
       if (this._updateCountryFromNumber(this.telInput.value)) {
         this._triggerCountryChange();
@@ -1248,18 +1261,31 @@ export class Iti {
     //* whereas "keyup" fires even for shift key, arrow key presses etc.
     this.telInput.addEventListener("input", this._handleInputEvent as EventListener);
 
-    if (strictMode) {
+    if (strictMode || separateDialCode) {
+      //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
+      //* Note that this fires BEFORE the input is updated.
       this._handleKeydownEvent = (e: KeyboardEvent): void => {
-        //* Only ignore actual character presses, rather than ctrl, alt, shift, command, arrow keys, delete/backspace, cut/copy/paste etc.
+        //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
         if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
-          const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
-          const isNumeric = /^[0-9]$/.test(e.key);
-          const isAllowedChar = isInitialPlus || isNumeric;
-          const fullNumber = this._getFullNumber();
-          const coreNumber = window.intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
-          const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
-          if (!isAllowedChar || hasReachedMaxLength) {
+          //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
+          if (separateDialCode && e.key === "+") {
             e.preventDefault();
+            this._openDropdown();
+            this.searchInput.value = "+";
+            this._filterCountries("", true);
+            return;
+          }
+          //* If strictMode, prevent invalid characters.
+          if (strictMode) {
+            const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
+            const isNumeric = /^[0-9]$/.test(e.key);
+            const isAllowedChar = isInitialPlus || isNumeric;
+            const fullNumber = this._getFullNumber();
+            const coreNumber = window.intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
+            const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
+            if (!isAllowedChar || hasReachedMaxLength) {
+              e.preventDefault();
+            }
           }
         }
       };
@@ -1590,7 +1616,7 @@ export class Iti {
     ) {
       const useNational =
         this.options.nationalMode ||
-        (number.charAt(0) !== "+" && !this.options.showSelectedDialCode);
+        (number.charAt(0) !== "+" && !this.options.separateDialCode);
       const { NATIONAL, INTERNATIONAL } = window.intlTelInputUtils.numberFormat;
       const format = useNational ? NATIONAL : INTERNATIONAL;
       number = window.intlTelInputUtils.formatNumber(
@@ -1627,9 +1653,9 @@ export class Iti {
       number = `+${number}`;
     }
 
-    //* If showSelectedDialCode enabled, then consider the selected dial code to be part of the number.
+    //* If separateDialCode enabled, then consider the selected dial code to be part of the number.
     if (
-      this.options.showSelectedDialCode &&
+      this.options.separateDialCode &&
       selectedDialCode &&
       number.charAt(0) !== "+"
     ) {
@@ -1720,10 +1746,10 @@ export class Iti {
     throw new Error(`No country data for '${iso2}'`);
   }
 
-  //* Update the selected country, dial code (if showSelectedDialCode), placeholder, title, and active list item.
+  //* Update the selected country, dial code (if separateDialCode), placeholder, title, and active list item.
   //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
   private _setCountry(iso2?: string | null): boolean {
-    const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
+    const { allowDropdown, separateDialCode, showFlags, countrySearch, i18n } = this.options;
 
     const prevCountry = this.selectedCountryData.iso2
       ? this.selectedCountryData
@@ -1747,7 +1773,7 @@ export class Iti {
           flagClass = `iti__flag iti__${iso2}`;
           a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
         }
-        //* If showFlags disabled and showSelectedDialCode is enabled,
+        //* If showFlags disabled and separateDialCode is enabled,
         //* we don't show a flag or have any a11y text, as the displayed dial code is enough
       } else {
         flagClass = "iti__flag iti__globe";
@@ -1757,10 +1783,10 @@ export class Iti {
       this.selectedCountryA11yText.textContent = a11yText;
     }
 
-    this._setSelectedCountryTitleAttribute(iso2, showSelectedDialCode);
+    this._setSelectedCountryTitleAttribute(iso2, separateDialCode);
 
     //* Update the selected dial code.
-    if (showSelectedDialCode) {
+    if (separateDialCode) {
       const dialCode = this.selectedCountryData.dialCode
         ? `+${this.selectedCountryData.dialCode}`
         : "";
@@ -1769,11 +1795,11 @@ export class Iti {
       const selectedCountryWidth =
         this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
 
-      //* Add 6px of padding after the grey selected-dial-code box, as this is what we use in the css.
+      const inputPadding = selectedCountryWidth + 8;
       if (this.isRTL) {
-        this.telInput.style.paddingRight = `${selectedCountryWidth + 6}px`;
+        this.telInput.style.paddingRight = `${inputPadding}px`;
       } else {
-        this.telInput.style.paddingLeft = `${selectedCountryWidth + 6}px`;
+        this.telInput.style.paddingLeft = `${inputPadding}px`;
       }
     }
 
@@ -1836,13 +1862,13 @@ export class Iti {
     }
   }
 
-  private _setSelectedCountryTitleAttribute(iso2: string | null = null, showSelectedDialCode: boolean): void {
+  private _setSelectedCountryTitleAttribute(iso2: string | null = null, separateDialCode: boolean): void {
     if (!this.selectedCountry) {
       return;
     }
 
     let title;
-    if (iso2 && !showSelectedDialCode) {
+    if (iso2 && !separateDialCode) {
       title = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}`;
     } else if (iso2) {
       //* For screen reader output, we don't want to include the dial code in the reader output twice
@@ -1857,7 +1883,7 @@ export class Iti {
 
   //* When the input is in a hidden container during initialisation, we must inject some markup
   //* into the end of the DOM to calculate the correct offsetWidth.
-  //* NOTE: this is only used when showSelectedDialCode is enabled, so countryContainer and selectedCountry
+  //* NOTE: this is only used when separateDialCode is enabled, so countryContainer and selectedCountry
   //* will definitely exist.
   private _getHiddenSelectedCountryWidth(): number {
     //* To get the right styling to apply, all we need is a shallow clone of the container,
@@ -2061,7 +2087,7 @@ export class Iti {
     return dialCode;
   }
 
-  //* Get the input val, adding the dial code if showSelectedDialCode is enabled.
+  //* Get the input val, adding the dial code if separateDialCode is enabled.
   private _getFullNumber(): string {
     const val = this.telInput.value.trim();
     const { dialCode } = this.selectedCountryData;
@@ -2069,13 +2095,12 @@ export class Iti {
     const numericVal = getNumeric(val);
 
     if (
-      this.options.showSelectedDialCode &&
-      !this.options.nationalMode &&
+      this.options.separateDialCode &&
       val.charAt(0) !== "+" &&
       dialCode &&
       numericVal
     ) {
-      //* When using showSelectedDialCode, it is visible so is effectively part of the typed number.
+      //* When using separateDialCode, it is visible so is effectively part of the typed number.
       prefix = `+${dialCode}`;
     } else {
       prefix = "";
@@ -2083,10 +2108,10 @@ export class Iti {
     return prefix + val;
   }
 
-  //* Remove the dial code if showSelectedDialCode is enabled also cap the length if the input has a maxlength attribute
+  //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
   private _beforeSetNumber(fullNumber: string): string {
     let number = fullNumber;
-    if (this.options.showSelectedDialCode) {
+    if (this.options.separateDialCode) {
       let dialCode = this._getDialCode(number);
       //* If there is a valid dial code.
       if (dialCode) {
@@ -2117,12 +2142,11 @@ export class Iti {
     const result = window.intlTelInputUtils
       ? window.intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
       : val;
-    //* If showSelectedDialCode and they haven't (re)typed the dial code in the input as well,
+    //* If separateDialCode and they haven't (re)typed the dial code in the input as well,
     //* then remove the dial code.
     const { dialCode } = this.selectedCountryData;
     if (
-      this.options.showSelectedDialCode &&
-      !this.options.nationalMode &&
+      this.options.separateDialCode &&
       this.telInput.value.charAt(0) !== "+" &&
       result.includes(`+${dialCode}`)
     ) {

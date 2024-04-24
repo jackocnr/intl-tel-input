@@ -100,6 +100,7 @@
     padding: var(--iti-border-width);
   }
 
+  //* Now a button element.
   &__selected-country {
     //* Render above the input.
     z-index: 1;
@@ -108,17 +109,27 @@
     align-items: center;
     //* This must be full-height both for the hover highlight, and to push down the dropdown so it appears below the input.
     height: 100%;
-    padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
+
     //* Reset button styles (can't use all:unset as lose browser default focus outline styles).
     background: none;
     border: 0;
     margin: 0;
+    padding: 0;
+    font-family: inherit;
     font-size: inherit;
     color: inherit;
     border-radius: 0;
     font-weight: inherit;
     line-height: inherit;
     text-decoration: none;
+  }
+
+  &__selected-country-primary {
+    display: flex;
+    align-items: center;
+    //* This must be full-height for the hover highlight.
+    height: 100%;
+    padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
   }
 
   &__arrow {
@@ -274,38 +285,29 @@
   }
 
   &--allow-dropdown {
-    //* Hover state - show country is clickable.
-    .iti__country-container:hover {
-      //* Adds specificity to override default browser button cursor styling.
-      &, & button {
-        cursor: pointer;
+    //* Hover state - show country is clickable (unless the input is disabled or readonly)
+    .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
+      //* When you hover anything in the container, use cursor:pointer.
+      &:hover {
+        //* Adds specificity to override default browser button cursor styling.
+        &, & button {
+          cursor: pointer;
+        }
       }
-      .iti__selected-country {
+      //* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
+      .iti__selected-country-primary:hover,
+      .iti__selected-country:has(+ .iti__dropdown-content:hover) .iti__selected-country-primary {
         background-color: var(--iti-hover-color);
-      }
-    }
-    //* Disables hover state when input is disabled.
-    .iti__country-container:has(+ input[disabled]):hover,
-    .iti__country-container:has(+ input[readonly]):hover {
-      cursor: default;
-      .iti__selected-country {
-        background-color: transparent;
       }
     }
   }
 
-  &--show-selected-dial-code {
-    .iti__selected-country {
-      //* Now that we have digits in this section, it needs this visual separation.
-      background-color: var(--iti-hover-color);
-    }
-    &.iti--show-flags .iti__selected-dial-code {
-      margin-left: var(--iti-arrow-padding);
+  .iti__selected-dial-code {
+    margin-left: 4px;
 
-      [dir="rtl"] & {
-        margin-left: 0;
-        margin-right: var(--iti-arrow-padding);
-      }
+    [dir="rtl"] & {
+      margin-left: 0;
+      margin-right: 4px;
     }
   }
 
