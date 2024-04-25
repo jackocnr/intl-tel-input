@@ -866,7 +866,7 @@ declare module "intl-tel-input" {
         placeholderNumberType: NumberType;
         preferredCountries: string[];
         showFlags: boolean;
-        showSelectedDialCode: boolean;
+        separateDialCode: boolean;
         strictMode: boolean;
         useFullscreenPopup: boolean;
         utilsScript: string;

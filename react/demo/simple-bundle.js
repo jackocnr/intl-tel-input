@@ -24902,10 +24902,10 @@
     placeholderNumberType: "MOBILE",
     //* The countries at the top of the list.
     preferredCountries: [],
-    //* Option to hide the flags - must be used with showSelectedDialCode, or allowDropdown=false.
+    //* Show flags - for both the selected country, and in the country dropdown
     showFlags: true,
     //* Display the international dial code next to the selected flag.
-    showSelectedDialCode: false,
+    separateDialCode: false,
     //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
     strictMode: false,
     //* Use full screen popup instead of dropdown for country list.
@@ -25061,9 +25061,8 @@
       if (this.options.countrySearch && !this.options.useFullscreenPopup) {
         this.options.fixDropdownWidth = true;
       }
-      const forceShowFlags = this.options.allowDropdown && !this.options.showSelectedDialCode;
-      if (!this.options.showFlags && forceShowFlags) {
-        this.options.showFlags = true;
+      if (this.options.separateDialCode) {
+        this.options.nationalMode = false;
       }
       if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
         this.options.dropdownContainer = document.body;
@@ -25192,7 +25191,7 @@
       }
       const {
         allowDropdown,
-        showSelectedDialCode,
+        separateDialCode,
         showFlags,
         containerClass,
         hiddenInput,
@@ -25206,7 +25205,7 @@
       if (allowDropdown) {
         parentClass += " iti--allow-dropdown";
       }
-      if (showSelectedDialCode) {
+      if (separateDialCode) {
         parentClass += " iti--show-selected-dial-code";
       }
       if (showFlags) {
@@ -25220,7 +25219,7 @@
       }
       const wrapper = createEl("div", { class: parentClass });
       this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
-      if (showFlags || showSelectedDialCode) {
+      if (allowDropdown) {
         this.countryContainer = createEl(
           "div",
           { class: "iti__country-container" },
@@ -25241,33 +25240,30 @@
           },
           this.countryContainer
         );
-        this.selectedCountryInner = createEl("div", null, this.selectedCountry);
+        const selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
+        this.selectedCountryInner = createEl("div", null, selectedCountryPrimary);
         this.selectedCountryA11yText = createEl(
           "span",
           { class: "iti__a11y-text" },
           this.selectedCountryInner
         );
-      }
-      wrapper.appendChild(this.telInput);
-      if (this.selectedCountry && this.telInput.disabled) {
-        this.selectedCountry.setAttribute("aria-disabled", "true");
-      }
-      if (showSelectedDialCode) {
-        this.selectedDialCode = createEl(
-          "div",
-          { class: "iti__selected-dial-code" },
-          this.selectedCountry
-        );
-      }
-      if (allowDropdown) {
-        if (!this.telInput.disabled) {
+        if (this.telInput.disabled) {
+          this.selectedCountry.setAttribute("aria-disabled", "true");
+        } else {
           this.selectedCountry.setAttribute("tabindex", "0");
         }
         this.dropdownArrow = createEl(
           "div",
           { class: "iti__arrow", "aria-hidden": "true" },
-          this.selectedCountry
+          selectedCountryPrimary
         );
+        if (separateDialCode) {
+          this.selectedDialCode = createEl(
+            "div",
+            { class: "iti__selected-dial-code" },
+            this.selectedCountry
+          );
+        }
         const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
         this.dropdownContent = createEl("div", {
           id: `iti-${this.id}__dropdown-content`,
@@ -25336,6 +25332,7 @@
           this.countryContainer.appendChild(this.dropdownContent);
         }
       }
+      wrapper.appendChild(this.telInput);
       if (hiddenInput) {
         const telInputName = this.telInput.getAttribute("name") || "";
         const names = hiddenInput(telInputName);
@@ -25523,7 +25520,7 @@
     }
     //* Initialize the tel input listeners.
     _initTelInputListeners() {
-      const { strictMode, formatAsYouType } = this.options;
+      const { strictMode, formatAsYouType, separateDialCode } = this.options;
       let userOverrideFormatting = false;
       this._handleInputEvent = (e) => {
         if (this._updateCountryFromNumber(this.telInput.value)) {
@@ -25548,17 +25545,26 @@
         }
       };
       this.telInput.addEventListener("input", this._handleInputEvent);
-      if (strictMode) {
+      if (strictMode || separateDialCode) {
         this._handleKeydownEvent = (e) => {
           if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
-            const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
-            const isNumeric = /^[0-9]$/.test(e.key);
-            const isAllowedChar = isInitialPlus || isNumeric;
-            const fullNumber = this._getFullNumber();
-            const coreNumber = window.intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
-            const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
-            if (!isAllowedChar || hasReachedMaxLength) {
+            if (separateDialCode && e.key === "+") {
               e.preventDefault();
+              this._openDropdown();
+              this.searchInput.value = "+";
+              this._filterCountries("", true);
+              return;
+            }
+            if (strictMode) {
+              const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
+              const isNumeric = /^[0-9]$/.test(e.key);
+              const isAllowedChar = isInitialPlus || isNumeric;
+              const fullNumber = this._getFullNumber();
+              const coreNumber = window.intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
+              const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
+              if (!isAllowedChar || hasReachedMaxLength) {
+                e.preventDefault();
+              }
             }
           }
         };
@@ -25788,7 +25794,7 @@
     _updateValFromNumber(fullNumber) {
       let number = fullNumber;
       if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
-        const useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.showSelectedDialCode;
+        const useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.separateDialCode;
         const { NATIONAL, INTERNATIONAL } = window.intlTelInputUtils.numberFormat;
         const format = useNational ? NATIONAL : INTERNATIONAL;
         number = window.intlTelInputUtils.formatNumber(
@@ -25813,7 +25819,7 @@
         }
         number = `+${number}`;
       }
-      if (this.options.showSelectedDialCode && selectedDialCode && number.charAt(0) !== "+") {
+      if (this.options.separateDialCode && selectedDialCode && number.charAt(0) !== "+") {
         number = `+${selectedDialCode}${number}`;
       }
       const dialCode = this._getDialCode(number, true);
@@ -25878,10 +25884,10 @@
       }
       throw new Error(`No country data for '${iso2}'`);
     }
-    //* Update the selected country, dial code (if showSelectedDialCode), placeholder, title, and active list item.
+    //* Update the selected country, dial code (if separateDialCode), placeholder, title, and active list item.
     //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
     _setCountry(iso2) {
-      const { allowDropdown, showSelectedDialCode, showFlags, countrySearch, i18n } = this.options;
+      const { allowDropdown, separateDialCode, showFlags, countrySearch, i18n } = this.options;
       const prevCountry = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
       this.selectedCountryData = iso2 ? this._getCountryData(iso2, false) || {} : {};
       if (this.selectedCountryData.iso2) {
@@ -25890,11 +25896,9 @@
       if (this.selectedCountryInner) {
         let flagClass = "";
         let a11yText = "";
-        if (iso2) {
-          if (showFlags) {
-            flagClass = `iti__flag iti__${iso2}`;
-            a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
-          }
+        if (iso2 && showFlags) {
+          flagClass = `iti__flag iti__${iso2}`;
+          a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
         } else {
           flagClass = "iti__flag iti__globe";
           a11yText = i18n.noCountrySelected;
@@ -25902,15 +25906,16 @@
         this.selectedCountryInner.className = flagClass;
         this.selectedCountryA11yText.textContent = a11yText;
       }
-      this._setSelectedCountryTitleAttribute(iso2, showSelectedDialCode);
-      if (showSelectedDialCode) {
+      this._setSelectedCountryTitleAttribute(iso2, separateDialCode);
+      if (separateDialCode) {
         const dialCode = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : "";
         this.selectedDialCode.innerHTML = dialCode;
         const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
+        const inputPadding = selectedCountryWidth + 8;
         if (this.isRTL) {
-          this.telInput.style.paddingRight = `${selectedCountryWidth + 6}px`;
+          this.telInput.style.paddingRight = `${inputPadding}px`;
         } else {
-          this.telInput.style.paddingLeft = `${selectedCountryWidth + 6}px`;
+          this.telInput.style.paddingLeft = `${inputPadding}px`;
         }
       }
       this._updatePlaceholder();
@@ -25959,12 +25964,12 @@
         }
       }
     }
-    _setSelectedCountryTitleAttribute(iso2 = null, showSelectedDialCode) {
+    _setSelectedCountryTitleAttribute(iso2 = null, separateDialCode) {
       if (!this.selectedCountry) {
         return;
       }
       let title;
-      if (iso2 && !showSelectedDialCode) {
+      if (iso2 && !separateDialCode) {
         title = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}`;
       } else if (iso2) {
         title = this.selectedCountryData.name;
@@ -25975,7 +25980,7 @@
     }
     //* When the input is in a hidden container during initialisation, we must inject some markup
     //* into the end of the DOM to calculate the correct offsetWidth.
-    //* NOTE: this is only used when showSelectedDialCode is enabled, so countryContainer and selectedCountry
+    //* NOTE: this is only used when separateDialCode is enabled, so countryContainer and selectedCountry
     //* will definitely exist.
     _getHiddenSelectedCountryWidth() {
       if (this.telInput.parentNode) {
@@ -26131,23 +26136,23 @@
       }
       return dialCode;
     }
-    //* Get the input val, adding the dial code if showSelectedDialCode is enabled.
+    //* Get the input val, adding the dial code if separateDialCode is enabled.
     _getFullNumber() {
       const val = this.telInput.value.trim();
       const { dialCode } = this.selectedCountryData;
       let prefix;
       const numericVal = getNumeric(val);
-      if (this.options.showSelectedDialCode && !this.options.nationalMode && val.charAt(0) !== "+" && dialCode && numericVal) {
+      if (this.options.separateDialCode && val.charAt(0) !== "+" && dialCode && numericVal) {
         prefix = `+${dialCode}`;
       } else {
         prefix = "";
       }
       return prefix + val;
     }
-    //* Remove the dial code if showSelectedDialCode is enabled also cap the length if the input has a maxlength attribute
+    //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
     _beforeSetNumber(fullNumber) {
       let number = fullNumber;
-      if (this.options.showSelectedDialCode) {
+      if (this.options.separateDialCode) {
         let dialCode = this._getDialCode(number);
         if (dialCode) {
           dialCode = `+${this.selectedCountryData.dialCode}`;
@@ -26166,7 +26171,7 @@
       const val = this._getFullNumber();
       const result = window.intlTelInputUtils ? window.intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
       const { dialCode } = this.selectedCountryData;
-      if (this.options.showSelectedDialCode && !this.options.nationalMode && this.telInput.value.charAt(0) !== "+" && result.includes(`+${dialCode}`)) {
+      if (this.options.separateDialCode && this.telInput.value.charAt(0) !== "+" && result.includes(`+${dialCode}`)) {
         const afterDialCode = result.split(`+${dialCode}`)[1] || "";
         return afterDialCode.trim();
       }
