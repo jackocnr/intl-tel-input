@@ -37,27 +37,6 @@ describe("allowDropdown:", function() {
 
   });
 
-  describe("init plugin with allowDropdown=false and showSelectedDialCode=true", function() {
-
-    beforeEach(function() {
-      iti = window.intlTelInput(input[0], {
-        allowDropdown: false,
-        showSelectedDialCode: true,
-        initialCountry: "af",
-      });
-    });
-
-    it("doesn't show the arrow or generate the dropdown markup", function() {
-      expect(getSelectedCountryContainer().find(".iti__arrow")).not.toExist();
-    });
-
-    it("shows selected dial code element", function() {
-      expect(getSelectedDialCodeElement()).toExist();
-      expect(getSelectedDialCodeElement().text()).toEqual(afghanistanDialCode);
-    });
-
-  });
-
   describe("init plugin with allowDropdown=true", function() {
 
     beforeEach(function() {

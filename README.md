@@ -136,7 +136,7 @@ _Note: We have now dropped support for all versions of Internet Explorer because
   ```
 
 ## Recommended Usage
-We highly recommend you (lazy) load the included utils.js using the `utilsScript` option, which enables formatting and validation etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `showSelectedDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information.
+We highly recommend you (lazy) load the included utils.js using the `utilsScript` option, which enables formatting and validation etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information.
 
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
@@ -149,7 +149,7 @@ When you initialise the plugin, the first argument is the input element, and the
 
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled and showSelectedDialCode is disabled, we display the selected flag on the right instead because it is just a marker of state. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled we display the selected flag on the right instead because it is just a marker of state. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
@@ -298,13 +298,13 @@ Specify the countries to appear at the top of the list. Note that this option is
 
 **showFlags**  
 Type: `Boolean` Default: `true`  
-Set this to false to hide the flags e.g. for political reasons. Must be used in combination with `showSelectedDialCode` option, or with setting `allowDropdown` to `false`. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showflags) (using the React component).
+Set this to false to hide the flags e.g. for political reasons. Instead it will show a generic globe icon. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showflags) (using the React component).
 
-**showSelectedDialCode**  
+**separateDialCode**  
 Type: `Boolean` Default: `false`  
-Display the country dial code next to the selected flag. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showselecteddialcode) (using the React component).
+Display the selected country dial code next to the input, so it looks like it's part of the typed number, except it is uneditable. When enabled, typing a plus in the telephone input will open the country dropdown and enter the plus in the search input instead, to force the user to select a country from the list rather than typing their dial code in the telephone input. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode.png" width="257px" height="46px" alt="Separate Dial Code">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode2.png" width="257px" height="46px" alt="Separate Dial Code">
 
 **strictMode**  
 Type: `Boolean` Default: `false`  

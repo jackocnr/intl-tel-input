@@ -1,6 +1,6 @@
 "use strict";
 
-describe("showSelectedDialCode:", function() {
+describe("separateDialCode:", function() {
 
   beforeEach(function() {
     intlSetup(true);
@@ -14,21 +14,16 @@ describe("showSelectedDialCode:", function() {
 
 
   //* We test with "gb" because the ntl number is different to the intl number (aside from the dial code).
-  describe("init plugin with initialCountry=gb and nationalMode=false", function() {
+  describe("init plugin with initialCountry=gb", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        showSelectedDialCode: true,
-        nationalMode: false,
+        separateDialCode: true,
         initialCountry: "gb",
       });
     });
 
-    it("sets the classes properly", function() {
-      expect(getParentElement()).toHaveClass("iti--show-selected-dial-code");
-    });
-
-    it("displays the dial code next to the selected flag", function() {
+    it("displays the dial code next to the input", function() {
       expect(getSelectedDialCodeElement().text()).toEqual("+44");
     });
 
@@ -58,49 +53,12 @@ describe("showSelectedDialCode:", function() {
   });
 
 
-  describe("init plugin with initialCountry=gb and nationalMode=true", function() {
-
-    beforeEach(function() {
-      iti = window.intlTelInput(input[0], {
-        showSelectedDialCode: true,
-        nationalMode: true,
-        initialCountry: "gb",
-      });
-    });
-
-    it("formats the placeholder correctly", function() {
-      //* National format.
-      expect(input.attr("placeholder")).toEqual("07400 123456");
-    });
-
-
-    describe("calling setNumber to a valid intl number", function() {
-
-      beforeEach(function() {
-        iti.setNumber("+447400123456");
-      });
-
-      it("formats the number correctly", function() {
-        // national format
-        expect(getInputVal()).toEqual("07400 123456");
-      });
-
-      it("calling getNumber returns the full intl number", function() {
-        expect(iti.getNumber()).toEqual("+447400123456");
-      });
-
-    });
-
-  });
-
-
   //* We test with "ca" (Canada) because we had some bugs with area codes.
   describe("init plugin with initialCountry=ca", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        showSelectedDialCode: true,
-        nationalMode: false,
+        separateDialCode: true,
         initialCountry: "ca",
       });
     });
@@ -125,8 +83,7 @@ describe("showSelectedDialCode:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        showSelectedDialCode: true,
-        nationalMode: false,
+        separateDialCode: true,
         initialCountry: "as",
       });
     });
@@ -151,8 +108,7 @@ describe("showSelectedDialCode:", function() {
     beforeEach(function() {
       input.val("(922) 555-1234");
       iti = window.intlTelInput(input[0], {
-        showSelectedDialCode: true,
-        nationalMode: false,
+        separateDialCode: true,
         initialCountry: "ru",
       });
     });
