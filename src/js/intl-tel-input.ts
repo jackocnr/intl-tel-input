@@ -576,14 +576,6 @@ export class Iti {
       this.options.nationalMode = false;
     }
 
-    //* Force showFlags=true if there's a dropdown and we're not displaying the dial code,
-    //* as otherwise you just have a down arrow on it's own which doesn't make sense.
-    const forceShowFlags =
-      this.options.allowDropdown && !this.options.separateDialCode;
-    if (!this.options.showFlags && forceShowFlags) {
-      this.options.showFlags = true;
-    }
-
     //* On mobile, we want a full screen dropdown, so we must append it to the body.
     if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
       this.options.dropdownContainer = document.body;
@@ -818,11 +810,7 @@ export class Iti {
     const wrapper = createEl("div", { class: parentClass });
     this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
 
-    const showSelectedCountry = showFlags || separateDialCode;
-    let selectedCountryPrimary;
-
-    //* If we're showing flags or dial codes, we need the selected country container etc.
-    if (showSelectedCountry) {
+    if (allowDropdown) {
       this.countryContainer = createEl(
         "div",
         { class: "iti__country-container" },
@@ -848,27 +836,20 @@ export class Iti {
         this.countryContainer,
       );
 
-      // gre area (if allowdropdown enabled)
-      selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
+      // The element that gets a grey background on hover (if allowDropdown enabled)
+      const selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
 
-      //* We now include the selected country element even when showFlags is disabled,
-      //* as need to show globe icon for separateDialCode empty state.
+      //* This is where we will add the selected flag (or globe) class later
       this.selectedCountryInner = createEl("div", null, selectedCountryPrimary);
       this.selectedCountryA11yText = createEl(
         "span",
         { class: "iti__a11y-text" },
         this.selectedCountryInner,
       );
-    }
 
-    wrapper.appendChild(this.telInput);
-
-    if (this.selectedCountry && this.telInput.disabled) {
-      this.selectedCountry.setAttribute("aria-disabled", "true");
-    }
-
-    if (showSelectedCountry && allowDropdown) {
-      if (!this.telInput.disabled) {
+      if (this.telInput.disabled) {
+        this.selectedCountry.setAttribute("aria-disabled", "true");
+      } else {
         //* Make element focusable and tab navigable.
         this.selectedCountry.setAttribute("tabindex", "0");
       }
@@ -960,6 +941,8 @@ export class Iti {
         this.countryContainer.appendChild(this.dropdownContent);
       }
     }
+
+    wrapper.appendChild(this.telInput);
 
     if (hiddenInput) {
       const telInputName = this.telInput.getAttribute("name") || "";
@@ -1768,13 +1751,9 @@ export class Iti {
     if (this.selectedCountryInner) {
       let flagClass = "";
       let a11yText = "";
-      if (iso2) {
-        if (showFlags) {
-          flagClass = `iti__flag iti__${iso2}`;
-          a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
-        }
-        //* If showFlags disabled and separateDialCode is enabled,
-        //* we don't show a flag or have any a11y text, as the displayed dial code is enough
+      if (iso2 && showFlags) {
+        flagClass = `iti__flag iti__${iso2}`;
+        a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
       } else {
         flagClass = "iti__flag iti__globe";
         a11yText = i18n.noCountrySelected;

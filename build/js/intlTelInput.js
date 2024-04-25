@@ -1589,10 +1589,6 @@ var factoryOutput = (() => {
       if (this.options.separateDialCode) {
         this.options.nationalMode = false;
       }
-      const forceShowFlags = this.options.allowDropdown && !this.options.separateDialCode;
-      if (!this.options.showFlags && forceShowFlags) {
-        this.options.showFlags = true;
-      }
       if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
         this.options.dropdownContainer = document.body;
       }
@@ -1748,9 +1744,7 @@ var factoryOutput = (() => {
       }
       const wrapper = createEl("div", { class: parentClass });
       this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
-      const showSelectedCountry = showFlags || separateDialCode;
-      let selectedCountryPrimary;
-      if (showSelectedCountry) {
+      if (allowDropdown) {
         this.countryContainer = createEl(
           "div",
           { class: "iti__country-container" },
@@ -1771,20 +1765,16 @@ var factoryOutput = (() => {
           },
           this.countryContainer
         );
-        selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
+        const selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
         this.selectedCountryInner = createEl("div", null, selectedCountryPrimary);
         this.selectedCountryA11yText = createEl(
           "span",
           { class: "iti__a11y-text" },
           this.selectedCountryInner
         );
-      }
-      wrapper.appendChild(this.telInput);
-      if (this.selectedCountry && this.telInput.disabled) {
-        this.selectedCountry.setAttribute("aria-disabled", "true");
-      }
-      if (showSelectedCountry && allowDropdown) {
-        if (!this.telInput.disabled) {
+        if (this.telInput.disabled) {
+          this.selectedCountry.setAttribute("aria-disabled", "true");
+        } else {
           this.selectedCountry.setAttribute("tabindex", "0");
         }
         this.dropdownArrow = createEl(
@@ -1867,6 +1857,7 @@ var factoryOutput = (() => {
           this.countryContainer.appendChild(this.dropdownContent);
         }
       }
+      wrapper.appendChild(this.telInput);
       if (hiddenInput) {
         const telInputName = this.telInput.getAttribute("name") || "";
         const names = hiddenInput(telInputName);
@@ -2430,11 +2421,9 @@ var factoryOutput = (() => {
       if (this.selectedCountryInner) {
         let flagClass = "";
         let a11yText = "";
-        if (iso2) {
-          if (showFlags) {
-            flagClass = `iti__flag iti__${iso2}`;
-            a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
-          }
+        if (iso2 && showFlags) {
+          flagClass = `iti__flag iti__${iso2}`;
+          a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
         } else {
           flagClass = "iti__flag iti__globe";
           a11yText = i18n.noCountrySelected;
