@@ -25062,6 +25062,7 @@
         this.options.fixDropdownWidth = true;
       }
       if (this.options.separateDialCode) {
+        this.options.allowDropdown = true;
         this.options.nationalMode = false;
       }
       if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
@@ -25205,9 +25206,6 @@
       if (allowDropdown) {
         parentClass += " iti--allow-dropdown";
       }
-      if (separateDialCode) {
-        parentClass += " iti--show-selected-dial-code";
-      }
       if (showFlags) {
         parentClass += " iti--show-flags";
       }
@@ -25219,7 +25217,7 @@
       }
       const wrapper = createEl("div", { class: parentClass });
       this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
-      if (allowDropdown) {
+      if (allowDropdown || showFlags) {
         this.countryContainer = createEl(
           "div",
           { class: "iti__country-container" },
@@ -25252,11 +25250,13 @@
         } else {
           this.selectedCountry.setAttribute("tabindex", "0");
         }
-        this.dropdownArrow = createEl(
-          "div",
-          { class: "iti__arrow", "aria-hidden": "true" },
-          selectedCountryPrimary
-        );
+        if (allowDropdown) {
+          this.dropdownArrow = createEl(
+            "div",
+            { class: "iti__arrow", "aria-hidden": "true" },
+            selectedCountryPrimary
+          );
+        }
         if (separateDialCode) {
           this.selectedDialCode = createEl(
             "div",
@@ -25264,72 +25264,74 @@
             this.selectedCountry
           );
         }
-        const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
-        this.dropdownContent = createEl("div", {
-          id: `iti-${this.id}__dropdown-content`,
-          class: `iti__dropdown-content iti__hide ${extraClasses}`
-        });
-        if (countrySearch) {
-          this.searchInput = createEl(
-            "input",
-            {
-              type: "text",
-              class: "iti__search-input",
-              placeholder: i18n.searchPlaceholder,
-              role: "combobox",
-              "aria-expanded": "true",
-              "aria-label": i18n.searchPlaceholder,
-              "aria-controls": `iti-${this.id}__country-listbox`,
-              "aria-autocomplete": "list",
-              "autocomplete": "off"
-            },
-            this.dropdownContent
-          );
-          this.searchResultsA11yText = createEl(
-            "span",
-            { class: "iti__a11y-text" },
-            this.dropdownContent
-          );
-        }
-        this.countryList = createEl(
-          "ul",
-          {
-            class: "iti__country-list",
-            id: `iti-${this.id}__country-listbox`,
-            role: "listbox",
-            "aria-label": i18n.countryListAriaLabel
-          },
-          this.dropdownContent
-        );
-        if (this.preferredCountries.length && !countrySearch) {
-          this._appendListItems(this.preferredCountries, "iti__preferred", true);
-          createEl(
-            "li",
-            {
-              class: "iti__divider",
-              "aria-hidden": "true"
-            },
-            this.countryList
-          );
-        }
-        this._appendListItems(this.countries, "iti__standard");
-        if (countrySearch) {
-          this._updateSearchResultsText();
-        }
-        if (dropdownContainer) {
-          let dropdownClasses = "iti iti--container";
-          if (useFullscreenPopup) {
-            dropdownClasses += " iti--fullscreen-popup";
-          } else {
-            dropdownClasses += " iti--inline-dropdown";
-          }
+        if (allowDropdown) {
+          const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
+          this.dropdownContent = createEl("div", {
+            id: `iti-${this.id}__dropdown-content`,
+            class: `iti__dropdown-content iti__hide ${extraClasses}`
+          });
           if (countrySearch) {
-            dropdownClasses += " iti--country-search";
+            this.searchInput = createEl(
+              "input",
+              {
+                type: "text",
+                class: "iti__search-input",
+                placeholder: i18n.searchPlaceholder,
+                role: "combobox",
+                "aria-expanded": "true",
+                "aria-label": i18n.searchPlaceholder,
+                "aria-controls": `iti-${this.id}__country-listbox`,
+                "aria-autocomplete": "list",
+                "autocomplete": "off"
+              },
+              this.dropdownContent
+            );
+            this.searchResultsA11yText = createEl(
+              "span",
+              { class: "iti__a11y-text" },
+              this.dropdownContent
+            );
           }
-          this.dropdown = createEl("div", { class: dropdownClasses });
-          this.dropdown.appendChild(this.dropdownContent);
-        } else {
-          this.countryContainer.appendChild(this.dropdownContent);
+          this.countryList = createEl(
+            "ul",
+            {
+              class: "iti__country-list",
+              id: `iti-${this.id}__country-listbox`,
+              role: "listbox",
+              "aria-label": i18n.countryListAriaLabel
+            },
+            this.dropdownContent
+          );
+          if (this.preferredCountries.length && !countrySearch) {
+            this._appendListItems(this.preferredCountries, "iti__preferred", true);
+            createEl(
+              "li",
+              {
+                class: "iti__divider",
+                "aria-hidden": "true"
+              },
+              this.countryList
+            );
+          }
+          this._appendListItems(this.countries, "iti__standard");
+          if (countrySearch) {
+            this._updateSearchResultsText();
+          }
+          if (dropdownContainer) {
+            let dropdownClasses = "iti iti--container";
+            if (useFullscreenPopup) {
+              dropdownClasses += " iti--fullscreen-popup";
+            } else {
+              dropdownClasses += " iti--inline-dropdown";
+            }
+            if (countrySearch) {
+              dropdownClasses += " iti--country-search";
+            }
+            this.dropdown = createEl("div", { class: dropdownClasses });
+            this.dropdown.appendChild(this.dropdownContent);
+          } else {
+            this.countryContainer.appendChild(this.dropdownContent);
+          }
         }
       }
       wrapper.appendChild(this.telInput);

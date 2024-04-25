@@ -257,9 +257,8 @@
     }
   }
 
-  //* These settings are independent of each other, but both move selected country to left of input.
-  &--allow-dropdown,
-  &--show-selected-dial-code {
+  //* This setting moves the selected country to left of input.
+  &--allow-dropdown {
     input.iti__tel-input,
     input.iti__tel-input[type="text"],
     input.iti__tel-input[type="tel"] {

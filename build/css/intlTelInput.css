@@ -173,27 +173,23 @@
 }
 .iti--allow-dropdown input.iti__tel-input,
 .iti--allow-dropdown input.iti__tel-input[type=text],
-.iti--allow-dropdown input.iti__tel-input[type=tel], .iti--show-selected-dial-code input.iti__tel-input,
-.iti--show-selected-dial-code input.iti__tel-input[type=text],
-.iti--show-selected-dial-code input.iti__tel-input[type=tel] {
+.iti--allow-dropdown input.iti__tel-input[type=tel] {
   padding-right: var(--iti-input-padding);
   padding-left: var(--iti-selected-country-arrow-padding);
   margin-left: 0;
 }
 [dir=rtl] .iti--allow-dropdown input.iti__tel-input,
 [dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=text],
-[dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=tel], [dir=rtl] .iti--show-selected-dial-code input.iti__tel-input,
-[dir=rtl] .iti--show-selected-dial-code input.iti__tel-input[type=text],
-[dir=rtl] .iti--show-selected-dial-code input.iti__tel-input[type=tel] {
+[dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=tel] {
   padding-right: var(--iti-selected-country-arrow-padding);
   padding-left: var(--iti-input-padding);
   margin-right: 0;
 }
-.iti--allow-dropdown .iti__country-container, .iti--show-selected-dial-code .iti__country-container {
+.iti--allow-dropdown .iti__country-container {
   right: auto;
   left: 0;
 }
-[dir=rtl] .iti--allow-dropdown .iti__country-container, [dir=rtl] .iti--show-selected-dial-code .iti__country-container {
+[dir=rtl] .iti--allow-dropdown .iti__country-container {
   right: 0;
   left: auto;
 }
