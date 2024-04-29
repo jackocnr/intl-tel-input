@@ -49,7 +49,12 @@ const IntlTelInput = ({
     // store a reference to the current input ref, which otherwise is already lost in the cleanup function
     const inputRefCurrent = inputRef.current;
     if (inputRefCurrent) {
-    itiRef.current = intlTelInput(inputRefCurrent, initOptions);
+      itiRef.current = intlTelInput(inputRefCurrent, initOptions);
+      if (initialValue) {
+        const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
+        onChangeCountry(countryIso);
+        onChangeNumber(initialValue);
+      }
       inputRefCurrent.addEventListener("countrychange", update);
     }
     return (): void => {
