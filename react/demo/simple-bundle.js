@@ -26458,6 +26458,8 @@
           const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
           onChangeCountry(countryIso);
           onChangeNumber(initialValue);
+        } else if (initOptions?.initialCountry) {
+          onChangeCountry(initOptions.initialCountry);
         }
         inputRefCurrent.addEventListener("countrychange", update);
       }
