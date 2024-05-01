@@ -1,5 +1,5 @@
 import allCountries, { Country } from "./intl-tel-input/data";
-import defaultEnglishStrings from "./i18n/en/index.mjs";
+import defaultEnglishStrings from "./i18n/en";
 
 type ItiGlobals = {
   autoCountry?: string;

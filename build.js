@@ -37,6 +37,7 @@ const shared = {
   },
 };
 
+//* build/js/intlTelInput.js
 build({
   ...shared,
   banner: {
@@ -47,6 +48,7 @@ build({
   outfile: "build/js/intlTelInput.js",
 });
 
+//* build/js/intlTelInput.min.js
 build({
   ...shared,
   banner: {
@@ -57,6 +59,7 @@ build({
   outfile: "tmp/built.min.js",
 });
 
+//* build/js/data.js
 build({
   ...shared,
   banner: {
@@ -67,6 +70,7 @@ build({
   outfile: "build/js/data.js",
 });
 
+//* build/js/data.min.js
 build({
   ...shared,
   banner: {
