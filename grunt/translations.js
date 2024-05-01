@@ -50,8 +50,8 @@ module.exports = function(grunt) {
 
       //* Create the Locale Index file Start
       let indexFileContent = '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n';
-      indexFileContent += `import countryTranslations from "./countries";\n`;
-      indexFileContent += `import interfaceTranslations from "./interface";\n\n`;
+      indexFileContent += `import countryTranslations from "./countries.js";\n`;
+      indexFileContent += `import interfaceTranslations from "./interface.js";\n\n`;
       indexFileContent += `export { countryTranslations, interfaceTranslations };\n`;
       indexFileContent += `export default { ...countryTranslations, ...interfaceTranslations };\n`;
       fs.writeFileSync(indexFilePath, indexFileContent);
@@ -80,9 +80,9 @@ module.exports = function(grunt) {
 
     //* STEP 2: Copy the whole i18n dir to the build folder.
     fs.cpSync(supportedLocalesDirectory, buildDirectory, { recursive: true });
-    //* Then rename all .ts files to .mjs - first the root index, then the locale folders.
+    //* Then rename all .ts files to .js - first the root index, then the locale folders.
     const rootIndexFile = path.join(buildDirectory, "index.ts");
-    fs.renameSync(rootIndexFile, rootIndexFile.replace('.ts', '.mjs'));
+    fs.renameSync(rootIndexFile, rootIndexFile.replace('.ts', '.js'));
     //* For each locale dir.
     fs.readdirSync(buildDirectory, { withFileTypes: true })
       .filter(dir => dir.isDirectory())
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
         //* For each translation file within that dir.
         fs.readdirSync(dirPath).forEach(fileName => {
           const filePath = path.join(dirPath, fileName);
-          fs.renameSync(filePath, filePath.replace('.ts', '.mjs'));
+          fs.renameSync(filePath, filePath.replace('.ts', '.js'));
         });
     });
   });
