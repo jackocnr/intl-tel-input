@@ -26410,6 +26410,7 @@
       if (inputRefCurrent) {
         itiRef.current = intl_tel_input_default(inputRefCurrent, initOptions);
         inputRefCurrent.addEventListener("countrychange", update);
+        itiRef.current.promise.then(update);
       }
       return () => {
         if (inputRefCurrent) {

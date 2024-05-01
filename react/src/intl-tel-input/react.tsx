@@ -49,8 +49,10 @@ const IntlTelInput = ({
     // store a reference to the current input ref, which otherwise is already lost in the cleanup function
     const inputRefCurrent = inputRef.current;
     if (inputRefCurrent) {
-    itiRef.current = intlTelInput(inputRefCurrent, initOptions);
+      itiRef.current = intlTelInput(inputRefCurrent, initOptions);
       inputRefCurrent.addEventListener("countrychange", update);
+      // when plugin initialisation has finished (e.g. loaded utils script), update all the state values
+      itiRef.current.promise.then(update);
     }
     return (): void => {
       if (inputRefCurrent) {
