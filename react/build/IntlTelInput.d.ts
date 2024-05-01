@@ -595,7 +595,6 @@ declare module "intl-tel-input" {
         allowDropdown: boolean;
         autoPlaceholder: string;
         containerClass: string;
-        countrySearch: boolean;
         customPlaceholder: ((selectedCountryPlaceholder: string, selectedCountryData: object) => string) | null;
         dropdownContainer: HTMLElement | null;
         excludeCountries: string[];
@@ -864,7 +863,6 @@ declare module "intl-tel-input" {
         nationalMode: boolean;
         onlyCountries: string[];
         placeholderNumberType: NumberType;
-        preferredCountries: string[];
         showFlags: boolean;
         separateDialCode: boolean;
         strictMode: boolean;
@@ -876,7 +874,6 @@ declare module "intl-tel-input" {
         id: number;
         promise: Promise<[unknown, unknown]>;
         private telInput;
-        private activeItem;
         private highlightedItem;
         private options;
         private hadInitialPlaceholder;
@@ -886,7 +883,6 @@ declare module "intl-tel-input" {
         private dialCodeMaxLen;
         private dialCodeToIso2Map;
         private dialCodes;
-        private preferredCountries;
         private countryContainer;
         private selectedCountry;
         private selectedCountryInner;
@@ -925,7 +921,6 @@ declare module "intl-tel-input" {
         private _processAllCountries;
         private _translateCountryNames;
         private _processDialCodes;
-        private _processPreferredCountries;
         private _generateMarkup;
         private _appendListItems;
         private _setInitialState;
@@ -944,7 +939,6 @@ declare module "intl-tel-input" {
         private _updateSearchResultsText;
         private _handleUpDownKey;
         private _handleEnterKey;
-        private _searchForCountry;
         private _updateValFromNumber;
         private _updateCountryFromNumber;
         private _highlightListItem;

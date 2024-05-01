@@ -14,30 +14,10 @@ describe("countrySearch option:", function() {
   });
 
 
-
-  describe("init plugin with countrySearch disabled, and open dropdown", function() {
-
-    beforeEach(function() {
-      iti = window.intlTelInput(input[0], {
-        countrySearch: false,
-      });
-      getSelectedCountryContainer().click();
-    });
-
-    it("does not insert the search input", function() {
-      expect(getDropdownContent().find("input.iti__search-input")).not.toExist();
-    });
-
-  });
-
-
-
   describe("init plugin with countrySearch enabled, and open dropdown", function() {
 
     beforeEach(function() {
-      iti = window.intlTelInput(input[0], {
-        countrySearch: true,
-      });
+      iti = window.intlTelInput(input[0]);
       getSelectedCountryContainer().click();
     });
 

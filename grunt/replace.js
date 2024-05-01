@@ -26,9 +26,6 @@ module.exports = function(grunt) {
             match: /_processDialCodes/g,
             replacement: '_d2'
           }, {
-            match: /_processPreferredCountries/g,
-            replacement: '_e'
-          }, {
             match: /_generateMarkup/g,
             replacement: '_f'
           }, {
@@ -81,9 +78,6 @@ module.exports = function(grunt) {
           }, {
             match: /_handleEnterKey/g,
             replacement: '_r'
-          }, {
-            match: /_searchForCountry/g,
-            replacement: '_s'
           }, {
             match: /_updateValFromNumber/g,
             replacement: '_u'
@@ -202,9 +196,6 @@ module.exports = function(grunt) {
           {
             match: /\.telInput/g,
             replacement: '.a'
-          }, {
-            match: /\.activeItem/g,
-            replacement: '.b'
           }, {
             match: /\.highlightedItem/g,
             replacement: '.c'

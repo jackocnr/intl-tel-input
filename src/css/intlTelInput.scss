@@ -170,12 +170,6 @@
       box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     }
 
-    //* Place menu above the input element.
-    &--dropup {
-      bottom: 100%;
-      margin-bottom: 3px;
-    }
-
     border-radius: 3px;
     background-color: white;
   }
@@ -220,13 +214,6 @@
   &__flag-box {
     display: inline-block;
     width: var(--iti-flag-width);
-  }
-
-  //* The divider below the preferred countries.
-  &__divider {
-    padding-bottom: 5px;
-    margin-bottom: 5px;
-    border-bottom: var(--iti-border-width) solid var(--iti-border-gray);
   }
 
   //* Each country item in dropdown (we must have separate class to differentiate from dividers).
@@ -338,11 +325,8 @@
     //* Short country lists should be vertically centred.
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    //* When country search enabled, the search input auto-focuses, so mobile keyboard appears, so stick to top (also because when filter countries down, the height changes and the vertical centring would make it jump around).
-    &.iti--country-search {
-      justify-content: flex-start;
-    }
+    //* The country search input auto-focuses, so mobile keyboard appears, so stick to top (also because when filter countries down, the height changes and the vertical centring would make it jump around).
+    justify-content: flex-start;
   }
   .iti__dropdown-content {
     display: flex;

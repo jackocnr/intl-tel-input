@@ -112,10 +112,6 @@
   border: var(--iti-border-width) solid var(--iti-border-gray);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
-.iti__dropdown-content--dropup {
-  bottom: 100%;
-  margin-bottom: 3px;
-}
 .iti__search-input {
   width: 100%;
   border-width: 0;
@@ -146,11 +142,6 @@
 .iti__flag-box {
   display: inline-block;
   width: var(--iti-flag-width);
-}
-.iti__divider {
-  padding-bottom: 5px;
-  margin-bottom: 5px;
-  border-bottom: var(--iti-border-width) solid var(--iti-border-gray);
 }
 .iti__country {
   display: flex;
@@ -228,9 +219,6 @@
   padding: var(--iti-mobile-popup-margin);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-.iti--fullscreen-popup.iti--container.iti--country-search {
   justify-content: flex-start;
 }
 .iti--fullscreen-popup .iti__dropdown-content {
