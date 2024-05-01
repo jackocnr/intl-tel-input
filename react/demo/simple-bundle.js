@@ -25041,6 +25041,9 @@
         this.options.allowDropdown = true;
         this.options.nationalMode = false;
       }
+      if (!this.options.showFlags && !this.options.separateDialCode) {
+        this.options.nationalMode = false;
+      }
       if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
         this.options.dropdownContainer = document.body;
       }

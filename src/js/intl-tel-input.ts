@@ -548,6 +548,11 @@ export class Iti {
       this.options.nationalMode = false;
     }
 
+    // if no flags, and no dial code, force nationalMode to false, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
+    if (!this.options.showFlags && !this.options.separateDialCode) {
+      this.options.nationalMode = false;
+    }
+
     //* On mobile, we want a full screen dropdown, so we must append it to the body.
     if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
       this.options.dropdownContainer = document.body;
