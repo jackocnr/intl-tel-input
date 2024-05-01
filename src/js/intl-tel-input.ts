@@ -50,6 +50,7 @@ interface AllOptions {
   allowDropdown: boolean;
   autoPlaceholder: string;
   containerClass: string;
+  countryOrder: string[];
   customPlaceholder: ((selectedCountryPlaceholder: string, selectedCountryData: object) => string) | null;
   dropdownContainer: HTMLElement | null;
   excludeCountries: string[];
@@ -334,6 +335,8 @@ const defaults: AllOptions = {
   autoPlaceholder: "polite",
   //* Modify the parentClass.
   containerClass: "",
+  //* The order of the countries in the dropdown. Defaults to alphabetical.
+  countryOrder: null,
   //* Modify the auto placeholder.
   customPlaceholder: null,
   //* Append menu to specified element.
@@ -415,17 +418,6 @@ const isRegionlessNanp = (number: string): boolean => {
     return regionlessNanpNumbers.indexOf(areaCode) !== -1;
   }
   return false;
-};
-
-//* Sort by country name.
-const countryNameSort = (a: Country, b: Country): number => {
-  if (a.name < b.name) {
-    return -1;
-  }
-  if (a.name > b.name) {
-    return 1;
-  }
-  return 0;
 };
 
 //* Iterate through the formattedValue until hit the right number of relevant chars.
@@ -581,7 +573,7 @@ export class Iti {
     //* to assume this variable exists.
     this.selectedCountryData = {};
 
-    //* Process all the data: onlyCountries, excludeCountries etc.
+    //* Process all the data: onlyCountries, excludeCountries, countryOrder etc.
     this._processCountryData();
 
     //* generate the markup.
@@ -601,7 +593,7 @@ export class Iti {
   //*  PRIVATE METHODS
   //********************
 
-  //* Prepare all of the country data, including onlyCountries, excludeCountries options.
+  //* Prepare all of the country data, including onlyCountries, excludeCountries, countryOrder options.
   private _processCountryData(): void {
     //* Process onlyCountries or excludeCountries array if present.
     this._processAllCountries();
@@ -612,10 +604,39 @@ export class Iti {
     //* Translate country names according to i18n option.
     this._translateCountryNames();
 
-    //* Sort countries by name.
-    if (this.options.onlyCountries.length || this.options.i18n) {
-      this.countries.sort(countryNameSort);
+    //* Sort countries by countryOrder option (if present), then name.
+    if (this.options.countryOrder) {
+      this.options.countryOrder = this.options.countryOrder.map((country) => country.toLowerCase());
     }
+    this._sortCountries();
+  }
+
+  private _sortCountries() {
+    this.countries.sort((a: Country, b: Country): number => {
+      //* Primary sort: countryOrder option.
+      const { countryOrder } = this.options;
+      if (countryOrder) {
+        const aIndex = countryOrder.indexOf(a.iso2);
+        const bIndex = countryOrder.indexOf(b.iso2);
+        const aIndexExists = aIndex > -1;
+        const bIndexExists = bIndex > -1;
+        if (aIndexExists || bIndexExists) {
+          if (aIndexExists && bIndexExists) {
+            return aIndex - bIndex;
+          }
+          return aIndexExists ? -1 : 1;
+        }
+      }
+      
+      //* Secondary sort: country name.
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   //* Add a dial code to this.dialCodeToIso2Map.

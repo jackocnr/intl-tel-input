@@ -24872,6 +24872,8 @@
     autoPlaceholder: "polite",
     //* Modify the parentClass.
     containerClass: "",
+    //* The order of the countries in the dropdown. Defaults to alphabetical.
+    countryOrder: null,
     //* Modify the auto placeholder.
     customPlaceholder: null,
     //* Append menu to specified element.
@@ -24943,15 +24945,6 @@
       return regionlessNanpNumbers.indexOf(areaCode) !== -1;
     }
     return false;
-  };
-  var countryNameSort = (a, b) => {
-    if (a.name < b.name) {
-      return -1;
-    }
-    if (a.name > b.name) {
-      return 1;
-    }
-    return 0;
   };
   var translateCursorPosition = (relevantChars, formattedValue, prevCaretPos, isDeleteForwards) => {
     if (prevCaretPos === 0 && !isDeleteForwards) {
@@ -25072,14 +25065,39 @@
     //********************
     //*  PRIVATE METHODS
     //********************
-    //* Prepare all of the country data, including onlyCountries, excludeCountries options.
+    //* Prepare all of the country data, including onlyCountries, excludeCountries, countryOrder options.
     _processCountryData() {
       this._processAllCountries();
       this._processDialCodes();
       this._translateCountryNames();
-      if (this.options.onlyCountries.length || this.options.i18n) {
-        this.countries.sort(countryNameSort);
+      if (this.options.countryOrder) {
+        this.options.countryOrder = this.options.countryOrder.map((country) => country.toLowerCase());
       }
+      this._sortCountries();
+    }
+    _sortCountries() {
+      this.countries.sort((a, b) => {
+        const { countryOrder } = this.options;
+        if (countryOrder) {
+          const aIndex = countryOrder.indexOf(a.iso2);
+          const bIndex = countryOrder.indexOf(b.iso2);
+          const aIndexExists = aIndex > -1;
+          const bIndexExists = bIndex > -1;
+          if (aIndexExists || bIndexExists) {
+            if (aIndexExists && bIndexExists) {
+              return aIndex - bIndex;
+            }
+            return aIndexExists ? -1 : 1;
+          }
+        }
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
     }
     //* Add a dial code to this.dialCodeToIso2Map.
     _addToDialCodeMap(iso2, dialCode, priority) {

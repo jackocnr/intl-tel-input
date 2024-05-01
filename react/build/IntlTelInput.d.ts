@@ -595,6 +595,7 @@ declare module "intl-tel-input" {
         allowDropdown: boolean;
         autoPlaceholder: string;
         containerClass: string;
+        countryOrder: string[];
         customPlaceholder: ((selectedCountryPlaceholder: string, selectedCountryData: object) => string) | null;
         dropdownContainer: HTMLElement | null;
         excludeCountries: string[];
@@ -917,6 +918,7 @@ declare module "intl-tel-input" {
         constructor(input: HTMLInputElement, customOptions?: SomeOptions);
         _init(): void;
         private _processCountryData;
+        private _sortCountries;
         private _addToDialCodeMap;
         private _processAllCountries;
         private _translateCountryNames;
