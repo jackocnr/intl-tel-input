@@ -20,7 +20,7 @@ describe("utilsScript:", function() {
   });
 
   it("init plugin with utilsScript before window.load event does not inject the script", function() {
-    window.intlTelInputGlobals.documentReady = () => false;
+    window.intlTelInput.documentReady = () => false;
     iti = window.intlTelInput(input[0], {
       utilsScript: url,
     });
@@ -29,7 +29,7 @@ describe("utilsScript:", function() {
   });
 
   it("faking window.load then init plugin with utilsScript does inject the script", function() {
-    window.intlTelInputGlobals.documentReady = () => true;
+    window.intlTelInput.documentReady = () => true;
     iti = window.intlTelInput(input[0], {
       utilsScript: url,
     });

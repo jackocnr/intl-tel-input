@@ -1,7 +1,8 @@
 import allCountries, { Country } from "./intl-tel-input/data";
 import defaultEnglishStrings from "./i18n/en";
 
-type ItiGlobals = {
+interface IntlTelInputInterface {
+  (input: HTMLInputElement, options?: SomeOptions): Iti;
   autoCountry?: string;
   defaults: AllOptions;
   documentReady: () => boolean;
@@ -12,7 +13,8 @@ type ItiGlobals = {
   startedLoadingAutoCountry?: boolean;
   startedLoadingUtilsScript?: boolean;
   version: string | undefined;
-};
+  utils?: ItiUtils;
+}
 type ItiUtils = {
   formatNumber(number: string, iso2: string | undefined, format?: number): string;
   formatNumberAsYouType(number: string, iso2: string | undefined): string;
@@ -28,8 +30,8 @@ type ItiUtils = {
 };
 declare global {
   interface Window {
-    intlTelInputGlobals: ItiGlobals;
     intlTelInputUtils: ItiUtils;
+    intlTelInputUtilsBackup: ItiUtils;
   }
 }
 type NumberType =
@@ -466,7 +468,7 @@ const createEl = (name: string, attrs: object | null, container?: HTMLElement): 
 
 //* Run a method on each instance of the plugin.
 const forEachInstance = (method: string): void => {
-  const { instances } = window.intlTelInputGlobals;
+  const { instances } = intlTelInput;
   Object.values(instances).forEach((instance) => instance[method]());
 };
 
@@ -1103,14 +1105,14 @@ export class Iti {
   //* Init many requests: utils script / geo ip lookup.
   private _initRequests(): void {
     //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
-    if (this.options.utilsScript && !window.intlTelInputUtils) {
+    if (this.options.utilsScript && !intlTelInput.utils) {
       //* If the plugin is being initialised after the window.load event has already been fired.
-      if (window.intlTelInputGlobals.documentReady()) {
-        window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
+      if (intlTelInput.documentReady()) {
+        intlTelInput.loadUtils(this.options.utilsScript);
       } else {
         //* Wait until the load event so we don't block any other requests e.g. the flags image.
         window.addEventListener("load", () => {
-          window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
+          intlTelInput.loadUtils(this.options.utilsScript);
         });
       }
     } else {
@@ -1131,11 +1133,11 @@ export class Iti {
     //* 1) Already loaded (we're done)
     //* 2) Not already started loading (start)
     //* 3) Already started loading (do nothing - just wait for loading callback to fire)
-    if (window.intlTelInputGlobals.autoCountry) {
+    if (intlTelInput.autoCountry) {
       this.handleAutoCountry();
-    } else if (!window.intlTelInputGlobals.startedLoadingAutoCountry) {
+    } else if (!intlTelInput.startedLoadingAutoCountry) {
       //* Don't do this twice!
-      window.intlTelInputGlobals.startedLoadingAutoCountry = true;
+      intlTelInput.startedLoadingAutoCountry = true;
 
       if (typeof this.options.geoIpLookup === "function") {
         this.options.geoIpLookup(
@@ -1143,7 +1145,7 @@ export class Iti {
             const iso2Lower = iso2.toLowerCase();
             const isValidIso2 = iso2Lower && this._getCountryData(iso2Lower, true);
             if (isValidIso2) {
-              window.intlTelInputGlobals.autoCountry = iso2Lower;
+              intlTelInput.autoCountry = iso2Lower;
               //* Tell all instances the auto country is ready.
               //TODO: this should just be the current instances
               //* UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
@@ -1226,7 +1228,7 @@ export class Iti {
             const isNumeric = /^[0-9]$/.test(e.key);
             const isAllowedChar = isInitialPlus || isNumeric;
             const fullNumber = this._getFullNumber();
-            const coreNumber = window.intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
+            const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
             if (!isAllowedChar || hasReachedMaxLength) {
               e.preventDefault();
@@ -1477,15 +1479,15 @@ export class Iti {
     let number = fullNumber;
     if (
       this.options.formatOnDisplay &&
-      window.intlTelInputUtils &&
+      intlTelInput.utils &&
       this.selectedCountryData
     ) {
       const useNational =
         this.options.nationalMode ||
         (number.charAt(0) !== "+" && !this.options.separateDialCode);
-      const { NATIONAL, INTERNATIONAL } = window.intlTelInputUtils.numberFormat;
+      const { NATIONAL, INTERNATIONAL } = intlTelInput.utils.numberFormat;
       const format = useNational ? NATIONAL : INTERNATIONAL;
-      number = window.intlTelInputUtils.formatNumber(
+      number = intlTelInput.utils.formatNumber(
         number,
         this.selectedCountryData.iso2,
         format,
@@ -1675,10 +1677,10 @@ export class Iti {
 
   //* Update the maximum valid number length for the currently selected country.
   private _updateMaxLength(): void {
-    if (this.options.strictMode && window.intlTelInputUtils) {
+    if (this.options.strictMode && intlTelInput.utils) {
       if (this.selectedCountryData.iso2) {
-        const numberType = window.intlTelInputUtils.numberType[this.options.placeholderNumberType];
-        let exampleNumber = window.intlTelInputUtils.getExampleNumber(
+        const numberType = intlTelInput.utils.numberType[this.options.placeholderNumberType];
+        let exampleNumber = intlTelInput.utils.getExampleNumber(
           this.selectedCountryData.iso2,
           false,
           numberType,
@@ -1686,11 +1688,11 @@ export class Iti {
         );
         //* See if adding more digits is still valid to get the true maximum valid length.
         let validNumber = exampleNumber;
-        while (window.intlTelInputUtils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
+        while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
           validNumber = exampleNumber;
           exampleNumber += "0";
         }
-        const coreNumber = window.intlTelInputUtils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
+        const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
         this.maxCoreNumberLength = coreNumber.length;
       } else {
         this.maxCoreNumberLength = null;
@@ -1754,11 +1756,11 @@ export class Iti {
       autoPlaceholder === "aggressive" ||
       (!this.hadInitialPlaceholder && autoPlaceholder === "polite");
 
-    if (window.intlTelInputUtils && shouldSetPlaceholder) {
-      const numberType = window.intlTelInputUtils.numberType[placeholderNumberType];
+    if (intlTelInput.utils && shouldSetPlaceholder) {
+      const numberType = intlTelInput.utils.numberType[placeholderNumberType];
       //* Note: Must set placeholder to empty string if no country selected (globe icon showing).
       let placeholder = this.selectedCountryData.iso2
-        ? window.intlTelInputUtils.getExampleNumber(
+        ? intlTelInput.utils.getExampleNumber(
             this.selectedCountryData.iso2,
             nationalMode,
             numberType,
@@ -1964,8 +1966,8 @@ export class Iti {
   //* Format the number as the user types.
   private _formatNumberAsYouType(): string {
     const val = this._getFullNumber();
-    const result = window.intlTelInputUtils
-      ? window.intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
+    const result = intlTelInput.utils
+      ? intlTelInput.utils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
       : val;
     //* If separateDialCode and they haven't (re)typed the dial code in the input as well,
     //* then remove the dial code.
@@ -1987,10 +1989,10 @@ export class Iti {
 
   //* This is called when the geoip call returns.
   handleAutoCountry(): void {
-    if (this.options.initialCountry === "auto" && window.intlTelInputGlobals.autoCountry) {
+    if (this.options.initialCountry === "auto" && intlTelInput.autoCountry) {
       //* We must set this even if there is an initial val in the input: in case the initial val is
       //* invalid and they delete it - they should see their auto country.
-      this.defaultCountry = window.intlTelInputGlobals.autoCountry;
+      this.defaultCountry = intlTelInput.autoCountry;
       //* If there's no initial value in the input, then update the country.
       if (!this.telInput.value) {
         this.setCountry(this.defaultCountry);
@@ -2002,7 +2004,7 @@ export class Iti {
   //* This is called when the utils request completes.
   handleUtils(): void {
     //* If the request was successful
-    if (window.intlTelInputUtils) {
+    if (intlTelInput.utils) {
       //* If there's an initial value in the input, then format it.
       if (this.telInput.value) {
         this._updateValFromNumber(this.telInput.value);
@@ -2059,13 +2061,13 @@ export class Iti {
     wrapper?.parentNode?.insertBefore(this.telInput, wrapper);
     wrapper?.parentNode?.removeChild(wrapper);
 
-    delete window.intlTelInputGlobals.instances[this.id];
+    delete intlTelInput.instances[this.id];
   }
 
   //* Get the extension from the current number.
   getExtension(): string {
-    if (window.intlTelInputUtils) {
-      return window.intlTelInputUtils.getExtension(
+    if (intlTelInput.utils) {
+      return intlTelInput.utils.getExtension(
         this._getFullNumber(),
         this.selectedCountryData.iso2,
       );
@@ -2075,9 +2077,9 @@ export class Iti {
 
   //* Format the number to the given format.
   getNumber(format?: number): string {
-    if (window.intlTelInputUtils) {
+    if (intlTelInput.utils) {
       const { iso2 } = this.selectedCountryData;
-      return window.intlTelInputUtils.formatNumber(
+      return intlTelInput.utils.formatNumber(
         this._getFullNumber(),
         iso2,
         format,
@@ -2088,8 +2090,8 @@ export class Iti {
 
   //* Get the type of the entered number e.g. landline/mobile.
   getNumberType(): number {
-    if (window.intlTelInputUtils) {
-      return window.intlTelInputUtils.getNumberType(
+    if (intlTelInput.utils) {
+      return intlTelInput.utils.getNumberType(
         this._getFullNumber(),
         this.selectedCountryData.iso2,
       );
@@ -2104,34 +2106,34 @@ export class Iti {
 
   //* Get the validation error.
   getValidationError(): number {
-    if (window.intlTelInputUtils) {
+    if (intlTelInput.utils) {
       const { iso2 } = this.selectedCountryData;
-      return window.intlTelInputUtils.getValidationError(this._getFullNumber(), iso2);
+      return intlTelInput.utils.getValidationError(this._getFullNumber(), iso2);
     }
     return -99;
   }
 
-  //* Validate the input val - assumes the global function isPossibleNumber (from utilsScript).
+  //* Validate the input val
   isValidNumber(mobileOnly: boolean = true): boolean | null {
     const val = this._getFullNumber();
     //* Return false for any alpha chars.
     if (/\p{L}/u.test(val)) {
       return false;
     }
-    return window.intlTelInputUtils
-      ? window.intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly)
+    return intlTelInput.utils
+      ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly)
       : null;
   }
 
-  //* Validate the input val (precise) - assumes the global function isValidNumber (from utilsScript).
+  //* Validate the input val (precise)
   isValidNumberPrecise(): boolean | null {
     const val = this._getFullNumber();
     //* Return false for any alpha chars.
     if (/\p{L}/u.test(val)) {
       return false;
     }
-    return window.intlTelInputUtils
-      ? window.intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2)
+    return intlTelInput.utils
+      ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2)
       : null;
   }
 
@@ -2169,7 +2171,7 @@ export class Iti {
  ********************/
 
 //* Inject a <script> element to load utils.js.
-const injectScript = (
+const injectUtilsScriptTag = (
   path: string,
   handleSuccess: (value?: unknown) => void,
   handleFailure: (reason?: unknown) => void,
@@ -2177,6 +2179,16 @@ const injectScript = (
   //* Inject a new script element into the page.
   const script = document.createElement("script");
   script.onload = (): void => {
+    //* Utils script defines this global - here we move it to a static var.
+    if (window.intlTelInputUtils) {
+      intlTelInput.utils = window.intlTelInputUtils;
+      delete window.intlTelInputUtils;
+      //* If there is another version of the plugin already loaded on this page (which still uses a utils global var), restore it's global so it doesn't break.
+      if (window.intlTelInputUtilsBackup) {
+        window.intlTelInputUtils = window.intlTelInputUtilsBackup;
+        delete window.intlTelInputUtilsBackup;
+      }
+    }
     forEachInstance("handleUtils");
     if (handleSuccess) {
       handleSuccess();
@@ -2201,47 +2213,43 @@ const loadUtils = (path: string): Promise<unknown> | null => {
   //* 2) Already started loading (do nothing - just wait for the onload callback to fire, which will
   //* trigger handleUtils on all instances, invoking their resolveUtilsScriptPromise functions)
   if (
-    !window.intlTelInputUtils &&
-    !window.intlTelInputGlobals.startedLoadingUtilsScript
+    !intlTelInput.utils &&
+    !intlTelInput.startedLoadingUtilsScript
   ) {
     //* Only do this once.
-    window.intlTelInputGlobals.startedLoadingUtilsScript = true;
+    intlTelInput.startedLoadingUtilsScript = true;
 
     return new Promise((resolve, reject) =>
-      injectScript(path, resolve, reject),
+      injectUtilsScriptTag(path, resolve, reject),
     );
   }
   return null;
 };
 
-//* Temp workaround to support the plugin being loaded onto the same page twice (e.g. you use it, and one of your bundled dependencies happens to use it as well) - basically, just don't override window.intlTelInputGlobals if it already exists. Then everything should work fine as long as both plugin scripts are using the same version (meaning the utils and globals APIs are compatible).
-if (typeof window === "object" && !window.intlTelInputGlobals) {
-  const intlTelInputGlobals: ItiGlobals = {
+//* Convenience wrapper.
+const intlTelInput: IntlTelInputInterface = Object.assign(
+  (input: HTMLInputElement, options?: SomeOptions): Iti => {
+    const iti = new Iti(input, options);
+    iti._init();
+    input.setAttribute("data-intl-tel-input-id", iti.id.toString());
+    intlTelInput.instances[iti.id] = iti;
+    return iti;
+  },
+  {
     defaults,
-    //* Using a global like this allows us to mock it in the tests.
+    //* Using a static var like this allows us to mock it in the tests.
     documentReady: (): boolean => document.readyState === "complete",
     //* Get the country data object.
     getCountryData: (): Country[] => allCountries,
     //* A getter for the plugin instance.
     getInstance: (input: HTMLInputElement): Iti | null => {
       const id = input.getAttribute("data-intl-tel-input-id");
-      return id ? intlTelInputGlobals.instances[id] : null;
+      return id ? intlTelInput.instances[id] : null;
     },
     //* A map from instance ID to instance object.
     instances: {},
     loadUtils,
     version: process.env.VERSION,
-  };
-  window.intlTelInputGlobals = intlTelInputGlobals;
-}
-
-//* Convenience wrapper.
-const intlTelInput = (input: HTMLInputElement, options?: SomeOptions): Iti => {
-  const iti = new Iti(input, options);
-  iti._init();
-  input.setAttribute("data-intl-tel-input-id", iti.id.toString());
-  window.intlTelInputGlobals.instances[iti.id] = iti;
-  return iti;
-};
+  });
 
 export default intlTelInput;

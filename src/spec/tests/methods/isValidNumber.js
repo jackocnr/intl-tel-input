@@ -50,7 +50,7 @@ describe("isValidNumber:", function() {
     });
 
     it("returns null when utils script is not available", function() {
-      delete window.intlTelInputUtils;
+      window.intlTelInput.utils = null;
       iti.setNumber("+44 7733 123456");
 
       expect(iti.isValidNumber()).toBeNull();

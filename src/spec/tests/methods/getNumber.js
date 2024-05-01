@@ -19,11 +19,11 @@ describe("getNumber: ", function() {
     });
 
     it("calling getNumber with format=INTERNATIONAL", function() {
-      expect(iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL)).toEqual("+1 702-418-1234");
+      expect(iti.getNumber(window.intlTelInput.utils.numberFormat.INTERNATIONAL)).toEqual("+1 702-418-1234");
     });
 
     it("calling getNumber with format=NATIONAL", function() {
-      expect(iti.getNumber(intlTelInputUtils.numberFormat.NATIONAL)).toEqual("(702) 418-1234");
+      expect(iti.getNumber(window.intlTelInput.utils.numberFormat.NATIONAL)).toEqual("(702) 418-1234");
     });
 
   });

@@ -20,7 +20,7 @@ describe("loadUtils:", function() {
       resolved = false;
 
     beforeEach(function(done) {
-      var promise = window.intlTelInputGlobals.loadUtils(url);
+      var promise = window.intlTelInput.loadUtils(url);
       promise.then(function() {
         resolved = true;
         done();
@@ -81,7 +81,7 @@ describe("loadUtils:", function() {
       resolved = false;
 
     beforeEach(function(done) {
-      window.intlTelInputGlobals.documentReady = () => false;
+      window.intlTelInput.documentReady = () => false;
       iti = window.intlTelInput(input[0], {
         utilsScript: "some/other/url/ok",
       });
@@ -108,7 +108,7 @@ describe("loadUtils:", function() {
     describe("calling loadUtils", function() {
 
       beforeEach(function(done) {
-        window.intlTelInputGlobals.loadUtils(url2);
+        window.intlTelInput.loadUtils(url2);
         waitForUtilsRequest(done);
       });
 
@@ -167,7 +167,7 @@ describe("loadUtils:", function() {
     var url3 = "build/js/utils.js?v=3";
 
     beforeEach(function(done) {
-      window.intlTelInputGlobals.documentReady = () => true;
+      window.intlTelInput.documentReady = () => true;
       iti = window.intlTelInput(input[0], {
         utilsScript: url3,
       });
@@ -180,7 +180,7 @@ describe("loadUtils:", function() {
     });
 
     it("then calling loadUtils does not inject another script", function() {
-      window.intlTelInputGlobals.loadUtils("this/is/a/test");
+      window.intlTelInput.loadUtils("this/is/a/test");
 
       expect($("script.iti-load-utils").length).toEqual(1);
       expect($("script.iti-load-utils").attr("src")).toEqual(url3);

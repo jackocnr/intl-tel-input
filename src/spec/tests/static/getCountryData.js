@@ -6,7 +6,7 @@ describe("getCountryData: use static method getCountryData", function() {
 
   beforeEach(function() {
     intlSetup();
-    countryData = window.intlTelInputGlobals.getCountryData();
+    countryData = window.intlTelInput.getCountryData();
   });
 
   afterEach(function() {

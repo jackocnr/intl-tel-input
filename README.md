@@ -290,7 +290,7 @@ In the dropdown, display only the countries you specify - [see example](https://
 
 **placeholderNumberType**  
 Type: `String` Default: `"MOBILE"`  
-Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the global enum `intlTelInputUtils.numberType` e.g. `"FIXED_LINE"` to set the number type to use for the placeholder. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--placeholdernumbertype) (using the React component).
+Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` e.g. `"FIXED_LINE"` to set the number type to use for the placeholder. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--placeholdernumbertype) (using the React component).
 
 **showFlags**  
 Type: `Boolean` Default: `true`  
@@ -334,11 +334,11 @@ const extension = iti.getExtension();
 Returns a string e.g. if the input value was `"(702) 555-5555 ext. 1234"`, this would return `"1234"`
 
 **getNumber**  
-Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInputUtils.numberFormat` - which you can see [here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L153). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
+Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInput.utils.numberFormat` - which you can see [here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L153). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
 ```js
 const number = iti.getNumber();
 // or
-const number = iti.getNumber(intlTelInputUtils.numberFormat.E164);
+const number = iti.getNumber(intlTelInput.utils.numberFormat.E164);
 ```
 Returns a string e.g. `"+17024181234"`
 
@@ -347,9 +347,9 @@ Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires t
 ```js
 const numberType = iti.getNumberType();
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) in the global enum `intlTelInputUtils.numberType` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) in the enum `intlTelInput.utils.numberType` e.g.  
 ```js
-if (numberType === intlTelInputUtils.numberType.MOBILE) {
+if (numberType === intlTelInput.utils.numberType.MOBILE) {
     // is a mobile number
 }
 ```
@@ -374,9 +374,9 @@ Get more information about a validation error. Requires the `utilsScript` option
 ```js
 const error = iti.getValidationError();
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L178) in the global enum `intlTelInputUtils.validationError` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L178) in the enum `intlTelInput.utils.validationError` e.g.  
 ```js
-if (error === intlTelInputUtils.validationError.TOO_SHORT) {
+if (error === intlTelInput.utils.validationError.TOO_SHORT) {
     // the number is too short
 }
 ```
@@ -420,7 +420,7 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 **getCountryData**  
 Retrieve the plugin's country data - either to re-use elsewhere e.g. to generate your own country dropdown - [see example](https://intl-tel-input.com/examples/country-sync.html), or alternatively, you could use it to modify the country data. Note that any modifications must be done before initialising the plugin.  
 ```js
-const countryData = window.intlTelInputGlobals.getCountryData();
+const countryData = intlTelInput.getCountryData();
 ```
 Returns an array of country objects:
 ```js
@@ -435,14 +435,14 @@ Returns an array of country objects:
 After initialising the plugin, you can always access the instance again using this method, by just passing in the relevant input element.
 ```js
 const input = document.querySelector('#phone');
-const iti = window.intlTelInputGlobals.getInstance(input);
+const iti = intlTelInput.getInstance(input);
 iti.isValidNumber(); // etc
 ```
 
 **loadUtils**  
 An alternative to the `utilsScript` option, this method lets you manually load the utils.js script on demand, to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `loadUtils().then(callback)` to know when it's finished.
 ```js
-window.intlTelInputGlobals.loadUtils("build/js/utils.js");
+intlTelInput.loadUtils("build/js/utils.js");
 ```
 
 ## Events

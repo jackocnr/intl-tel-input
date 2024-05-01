@@ -547,7 +547,8 @@ declare module "i18n/en/index" {
 }
 declare module "intl-tel-input" {
     import { Country } from "intl-tel-input/data";
-    type ItiGlobals = {
+    interface IntlTelInputInterface {
+        (input: HTMLInputElement, options?: SomeOptions): Iti;
         autoCountry?: string;
         defaults: AllOptions;
         documentReady: () => boolean;
@@ -560,7 +561,8 @@ declare module "intl-tel-input" {
         startedLoadingAutoCountry?: boolean;
         startedLoadingUtilsScript?: boolean;
         version: string | undefined;
-    };
+        utils?: ItiUtils;
+    }
     type ItiUtils = {
         formatNumber(number: string, iso2: string | undefined, format?: number): string;
         formatNumberAsYouType(number: string, iso2: string | undefined): string;
@@ -581,8 +583,8 @@ declare module "intl-tel-input" {
     };
     global {
         interface Window {
-            intlTelInputGlobals: ItiGlobals;
             intlTelInputUtils: ItiUtils;
+            intlTelInputUtilsBackup: ItiUtils;
         }
     }
     type NumberType = "FIXED_LINE_OR_MOBILE" | "FIXED_LINE" | "MOBILE" | "PAGER" | "PERSONAL_NUMBER" | "PREMIUM_RATE" | "SHARED_COST" | "TOLL_FREE" | "UAN" | "UNKNOWN" | "VOICEMAIL" | "VOIP";
@@ -973,7 +975,7 @@ declare module "intl-tel-input" {
         setNumber(number: string): void;
         setPlaceholderNumberType(type: NumberType): void;
     }
-    const intlTelInput: (input: HTMLInputElement, options?: SomeOptions) => Iti;
+    const intlTelInput: IntlTelInputInterface;
     export default intlTelInput;
 }
 declare module "intl-tel-input/react" {

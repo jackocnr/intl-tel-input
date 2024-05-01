@@ -15,19 +15,19 @@ describe("getNumberType:", function() {
   it("returns the right type for a UK mobile number", function() {
     iti.setNumber("+447733123456");
 
-    expect(iti.getNumberType()).toEqual(intlTelInputUtils.numberType.MOBILE);
+    expect(iti.getNumberType()).toEqual(window.intlTelInput.utils.numberType.MOBILE);
   });
 
   it("returns the right type for a UK landline number", function() {
     iti.setNumber("+441531123456");
 
-    expect(iti.getNumberType()).toEqual(intlTelInputUtils.numberType.FIXED_LINE);
+    expect(iti.getNumberType()).toEqual(window.intlTelInput.utils.numberType.FIXED_LINE);
   });
 
   it("returns the right type for a UK toll-free number", function() {
     iti.setNumber("+448000123456");
 
-    expect(iti.getNumberType()).toEqual(intlTelInputUtils.numberType.TOLL_FREE);
+    expect(iti.getNumberType()).toEqual(window.intlTelInput.utils.numberType.TOLL_FREE);
   });
 
 });

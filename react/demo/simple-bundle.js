@@ -24975,7 +24975,7 @@
     return el;
   };
   var forEachInstance = (method) => {
-    const { instances } = window.intlTelInputGlobals;
+    const { instances } = intlTelInput;
     Object.values(instances).forEach((instance) => instance[method]());
   };
   var Iti = class {
@@ -25443,12 +25443,12 @@
     }
     //* Init many requests: utils script / geo ip lookup.
     _initRequests() {
-      if (this.options.utilsScript && !window.intlTelInputUtils) {
-        if (window.intlTelInputGlobals.documentReady()) {
-          window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
+      if (this.options.utilsScript && !intlTelInput.utils) {
+        if (intlTelInput.documentReady()) {
+          intlTelInput.loadUtils(this.options.utilsScript);
         } else {
           window.addEventListener("load", () => {
-            window.intlTelInputGlobals.loadUtils(this.options.utilsScript);
+            intlTelInput.loadUtils(this.options.utilsScript);
           });
         }
       } else {
@@ -25462,17 +25462,17 @@
     }
     //* Perform the geo ip lookup.
     _loadAutoCountry() {
-      if (window.intlTelInputGlobals.autoCountry) {
+      if (intlTelInput.autoCountry) {
         this.handleAutoCountry();
-      } else if (!window.intlTelInputGlobals.startedLoadingAutoCountry) {
-        window.intlTelInputGlobals.startedLoadingAutoCountry = true;
+      } else if (!intlTelInput.startedLoadingAutoCountry) {
+        intlTelInput.startedLoadingAutoCountry = true;
         if (typeof this.options.geoIpLookup === "function") {
           this.options.geoIpLookup(
             (iso2 = "") => {
               const iso2Lower = iso2.toLowerCase();
               const isValidIso2 = iso2Lower && this._getCountryData(iso2Lower, true);
               if (isValidIso2) {
-                window.intlTelInputGlobals.autoCountry = iso2Lower;
+                intlTelInput.autoCountry = iso2Lower;
                 setTimeout(() => forEachInstance("handleAutoCountry"));
               } else {
                 this._setInitialState(true);
@@ -25529,7 +25529,7 @@
               const isNumeric = /^[0-9]$/.test(e.key);
               const isAllowedChar = isInitialPlus || isNumeric;
               const fullNumber = this._getFullNumber();
-              const coreNumber = window.intlTelInputUtils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
+              const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
               const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
               if (!isAllowedChar || hasReachedMaxLength) {
                 e.preventDefault();
@@ -25710,11 +25710,11 @@
     //* NOTE: this is called from _setInitialState, handleUtils and setNumber.
     _updateValFromNumber(fullNumber) {
       let number = fullNumber;
-      if (this.options.formatOnDisplay && window.intlTelInputUtils && this.selectedCountryData) {
+      if (this.options.formatOnDisplay && intlTelInput.utils && this.selectedCountryData) {
         const useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.separateDialCode;
-        const { NATIONAL, INTERNATIONAL } = window.intlTelInputUtils.numberFormat;
+        const { NATIONAL, INTERNATIONAL } = intlTelInput.utils.numberFormat;
         const format = useNational ? NATIONAL : INTERNATIONAL;
-        number = window.intlTelInputUtils.formatNumber(
+        number = intlTelInput.utils.formatNumber(
           number,
           this.selectedCountryData.iso2,
           format
@@ -25839,21 +25839,21 @@
     }
     //* Update the maximum valid number length for the currently selected country.
     _updateMaxLength() {
-      if (this.options.strictMode && window.intlTelInputUtils) {
+      if (this.options.strictMode && intlTelInput.utils) {
         if (this.selectedCountryData.iso2) {
-          const numberType = window.intlTelInputUtils.numberType[this.options.placeholderNumberType];
-          let exampleNumber = window.intlTelInputUtils.getExampleNumber(
+          const numberType = intlTelInput.utils.numberType[this.options.placeholderNumberType];
+          let exampleNumber = intlTelInput.utils.getExampleNumber(
             this.selectedCountryData.iso2,
             false,
             numberType,
             true
           );
           let validNumber = exampleNumber;
-          while (window.intlTelInputUtils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
+          while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
             validNumber = exampleNumber;
             exampleNumber += "0";
           }
-          const coreNumber = window.intlTelInputUtils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
+          const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
           this.maxCoreNumberLength = coreNumber.length;
         } else {
           this.maxCoreNumberLength = null;
@@ -25902,9 +25902,9 @@
         customPlaceholder
       } = this.options;
       const shouldSetPlaceholder = autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && autoPlaceholder === "polite";
-      if (window.intlTelInputUtils && shouldSetPlaceholder) {
-        const numberType = window.intlTelInputUtils.numberType[placeholderNumberType];
-        let placeholder = this.selectedCountryData.iso2 ? window.intlTelInputUtils.getExampleNumber(
+      if (intlTelInput.utils && shouldSetPlaceholder) {
+        const numberType = intlTelInput.utils.numberType[placeholderNumberType];
+        let placeholder = this.selectedCountryData.iso2 ? intlTelInput.utils.getExampleNumber(
           this.selectedCountryData.iso2,
           nationalMode,
           numberType
@@ -26054,7 +26054,7 @@
     //* Format the number as the user types.
     _formatNumberAsYouType() {
       const val = this._getFullNumber();
-      const result = window.intlTelInputUtils ? window.intlTelInputUtils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
+      const result = intlTelInput.utils ? intlTelInput.utils.formatNumberAsYouType(val, this.selectedCountryData.iso2) : val;
       const { dialCode } = this.selectedCountryData;
       if (this.options.separateDialCode && this.telInput.value.charAt(0) !== "+" && result.includes(`+${dialCode}`)) {
         const afterDialCode = result.split(`+${dialCode}`)[1] || "";
@@ -26067,8 +26067,8 @@
     //**************************
     //* This is called when the geoip call returns.
     handleAutoCountry() {
-      if (this.options.initialCountry === "auto" && window.intlTelInputGlobals.autoCountry) {
-        this.defaultCountry = window.intlTelInputGlobals.autoCountry;
+      if (this.options.initialCountry === "auto" && intlTelInput.autoCountry) {
+        this.defaultCountry = intlTelInput.autoCountry;
         if (!this.telInput.value) {
           this.setCountry(this.defaultCountry);
         }
@@ -26077,7 +26077,7 @@
     }
     //* This is called when the utils request completes.
     handleUtils() {
-      if (window.intlTelInputUtils) {
+      if (intlTelInput.utils) {
         if (this.telInput.value) {
           this._updateValFromNumber(this.telInput.value);
         }
@@ -26120,12 +26120,12 @@
       const wrapper = this.telInput.parentNode;
       wrapper?.parentNode?.insertBefore(this.telInput, wrapper);
       wrapper?.parentNode?.removeChild(wrapper);
-      delete window.intlTelInputGlobals.instances[this.id];
+      delete intlTelInput.instances[this.id];
     }
     //* Get the extension from the current number.
     getExtension() {
-      if (window.intlTelInputUtils) {
-        return window.intlTelInputUtils.getExtension(
+      if (intlTelInput.utils) {
+        return intlTelInput.utils.getExtension(
           this._getFullNumber(),
           this.selectedCountryData.iso2
         );
@@ -26134,9 +26134,9 @@
     }
     //* Format the number to the given format.
     getNumber(format) {
-      if (window.intlTelInputUtils) {
+      if (intlTelInput.utils) {
         const { iso2 } = this.selectedCountryData;
-        return window.intlTelInputUtils.formatNumber(
+        return intlTelInput.utils.formatNumber(
           this._getFullNumber(),
           iso2,
           format
@@ -26146,8 +26146,8 @@
     }
     //* Get the type of the entered number e.g. landline/mobile.
     getNumberType() {
-      if (window.intlTelInputUtils) {
-        return window.intlTelInputUtils.getNumberType(
+      if (intlTelInput.utils) {
+        return intlTelInput.utils.getNumberType(
           this._getFullNumber(),
           this.selectedCountryData.iso2
         );
@@ -26160,27 +26160,27 @@
     }
     //* Get the validation error.
     getValidationError() {
-      if (window.intlTelInputUtils) {
+      if (intlTelInput.utils) {
         const { iso2 } = this.selectedCountryData;
-        return window.intlTelInputUtils.getValidationError(this._getFullNumber(), iso2);
+        return intlTelInput.utils.getValidationError(this._getFullNumber(), iso2);
       }
       return -99;
     }
-    //* Validate the input val - assumes the global function isPossibleNumber (from utilsScript).
+    //* Validate the input val
     isValidNumber(mobileOnly = true) {
       const val = this._getFullNumber();
       if (/\p{L}/u.test(val)) {
         return false;
       }
-      return window.intlTelInputUtils ? window.intlTelInputUtils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
+      return intlTelInput.utils ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
     }
-    //* Validate the input val (precise) - assumes the global function isValidNumber (from utilsScript).
+    //* Validate the input val (precise)
     isValidNumberPrecise() {
       const val = this._getFullNumber();
       if (/\p{L}/u.test(val)) {
         return false;
       }
-      return window.intlTelInputUtils ? window.intlTelInputUtils.isValidNumber(val, this.selectedCountryData.iso2) : null;
+      return intlTelInput.utils ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2) : null;
     }
     //* Update the selected country, and update the input val accordingly.
     setCountry(iso2) {
@@ -26205,9 +26205,17 @@
       this._updatePlaceholder();
     }
   };
-  var injectScript = (path, handleSuccess, handleFailure) => {
+  var injectUtilsScriptTag = (path, handleSuccess, handleFailure) => {
     const script = document.createElement("script");
     script.onload = () => {
+      if (window.intlTelInputUtils) {
+        intlTelInput.utils = window.intlTelInputUtils;
+        delete window.intlTelInputUtils;
+        if (window.intlTelInputUtilsBackup) {
+          window.intlTelInputUtils = window.intlTelInputUtilsBackup;
+          delete window.intlTelInputUtilsBackup;
+        }
+      }
       forEachInstance("handleUtils");
       if (handleSuccess) {
         handleSuccess();
@@ -26225,40 +26233,39 @@
     document.body.appendChild(script);
   };
   var loadUtils = (path) => {
-    if (!window.intlTelInputUtils && !window.intlTelInputGlobals.startedLoadingUtilsScript) {
-      window.intlTelInputGlobals.startedLoadingUtilsScript = true;
+    if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
+      intlTelInput.startedLoadingUtilsScript = true;
       return new Promise(
-        (resolve, reject) => injectScript(path, resolve, reject)
+        (resolve, reject) => injectUtilsScriptTag(path, resolve, reject)
       );
     }
     return null;
   };
-  if (typeof window === "object" && !window.intlTelInputGlobals) {
-    const intlTelInputGlobals = {
+  var intlTelInput = Object.assign(
+    (input, options) => {
+      const iti = new Iti(input, options);
+      iti._init();
+      input.setAttribute("data-intl-tel-input-id", iti.id.toString());
+      intlTelInput.instances[iti.id] = iti;
+      return iti;
+    },
+    {
       defaults,
-      //* Using a global like this allows us to mock it in the tests.
+      //* Using a static var like this allows us to mock it in the tests.
       documentReady: () => document.readyState === "complete",
       //* Get the country data object.
       getCountryData: () => data_default,
       //* A getter for the plugin instance.
       getInstance: (input) => {
         const id2 = input.getAttribute("data-intl-tel-input-id");
-        return id2 ? intlTelInputGlobals.instances[id2] : null;
+        return id2 ? intlTelInput.instances[id2] : null;
       },
       //* A map from instance ID to instance object.
       instances: {},
       loadUtils,
       version: "21.2.8"
-    };
-    window.intlTelInputGlobals = intlTelInputGlobals;
-  }
-  var intlTelInput = (input, options) => {
-    const iti = new Iti(input, options);
-    iti._init();
-    input.setAttribute("data-intl-tel-input-id", iti.id.toString());
-    window.intlTelInputGlobals.instances[iti.id] = iti;
-    return iti;
-  };
+    }
+  );
   var intl_tel_input_default = intlTelInput;
 
   // react/src/intl-tel-input/react.tsx

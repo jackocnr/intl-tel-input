@@ -27,8 +27,8 @@ const IntlTelInput = ({
     const num = itiRef.current?.getNumber() || "";
     const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
     // note: this number will be in standard E164 format, but any container component can use
-    // intlTelInputUtils.formatNumber() to convert this to another format
-    // as well as intlTelInputUtils.getNumberType() etc. if need be
+    // intlTelInput.utils.formatNumber() to convert this to another format
+    // as well as intlTelInput.utils.getNumberType() etc. if need be
     onChangeNumber(num);
     onChangeCountry(countryIso);
 

@@ -9,28 +9,20 @@ var intlSetup = function(utilsScript) {
   // by default put us in desktop mode
   window.innerWidth = 1024;
 
-  // this should only run the first time
-  if (!window.intlTelInputUtilsBackup) {
-    window.intlTelInputUtilsBackup = window.intlTelInputUtils;
-  }
   if (utilsScript) {
-    window.intlTelInputUtils = window.intlTelInputUtilsBackup;
+    window.intlTelInput.utils = window.intlTelInputUtils;
   } else {
-    window.intlTelInputUtils = null;
+    window.intlTelInput.utils = null;
   }
 };
 
 var intlTeardown = function() {
   $("script.iti-load-utils").remove();
-  window.intlTelInputGlobals.startedLoadingUtilsScript = false;
-  window.intlTelInputGlobals.documentReady = () => false;
-  window.intlTelInputGlobals.autoCountry = null;
-  window.intlTelInputGlobals.startedLoadingAutoCountry = false;
-  // just make sure before we change the ref
-  if (!window.intlTelInputUtilsBackup) {
-    window.intlTelInputUtilsBackup = window.intlTelInputUtils;
-  }
-  window.intlTelInputUtils = null;
+  window.intlTelInput.startedLoadingUtilsScript = false;
+  window.intlTelInput.documentReady = () => false;
+  window.intlTelInput.autoCountry = null;
+  window.intlTelInput.startedLoadingAutoCountry = false;
+  window.intlTelInput.utils = null;
   if (iti) iti.destroy();
   if (input) input.remove();
   input = iti = null;

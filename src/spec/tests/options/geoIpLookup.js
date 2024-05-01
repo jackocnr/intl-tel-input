@@ -92,7 +92,7 @@ describe("geoIpLookup:", function() {
       });
 
       it("does resolve straight away", function() {
-        expect(window.intlTelInputGlobals.autoCountry).toEqual(country);
+        expect(window.intlTelInput.autoCountry).toEqual(country);
         expect(resolved2).toEqual(true);
       });
     });
