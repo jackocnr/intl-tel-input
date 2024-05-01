@@ -300,7 +300,7 @@ Set this to false to hide the flags e.g. for political reasons. Instead it will 
 Type: `Boolean` Default: `false`  
 Display the selected country dial code next to the input, so it looks like it's part of the typed number, except it is uneditable. When enabled, typing a plus in the telephone input will open the country dropdown and enter the plus in the search input instead, to force the user to select a country from the list rather than typing their dial code in the telephone input. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode2.png" width="257px" height="46px" alt="Separate Dial Code">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode2.png" width="232px" height="47px" alt="Separate Dial Code">
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
