@@ -142,7 +142,7 @@ You can always get the full international number (including country code) using 
 
 If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States), and if you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address.
 
-If you know the user's language, you can utilise the included translations to localise the country names (etc) - [see example](https://intl-tel-input.com/examples/localise-countries.html).
+If you know the user's language, you can use the included translations to localise the country names (etc) - [see example](https://intl-tel-input.com/examples/localise-countries.html).
 
 ## Initialisation Options
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
