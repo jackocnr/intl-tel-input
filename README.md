@@ -140,7 +140,7 @@ We highly recommend you (lazy) load the included utils.js using the `utilsScript
 
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
-If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States), and if you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address.
+If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States), and if you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address - [see example](https://intl-tel-input.com/examples/lookup-country.html).
 
 If you know the user's language, you can use the included translations to localise the country names (etc) - [see example](https://intl-tel-input.com/examples/localise-countries.html).
 
