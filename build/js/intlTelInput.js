@@ -2182,7 +2182,7 @@ var factoryOutput = (() => {
       this.searchInput.addEventListener("click", (e) => e.stopPropagation());
     }
     _filterCountries(query, isReset = false) {
-      let isFirst = true;
+      let noCountriesAddedYet = true;
       this.countryList.innerHTML = "";
       const normalisedQuery = normaliseString(query);
       for (let i = 0; i < this.countries.length; i++) {
@@ -2194,11 +2194,14 @@ var factoryOutput = (() => {
           if (listItem) {
             this.countryList.appendChild(listItem);
           }
-          if (isFirst) {
+          if (noCountriesAddedYet) {
             this._highlightListItem(listItem, false);
-            isFirst = false;
+            noCountriesAddedYet = false;
           }
         }
+      }
+      if (noCountriesAddedYet) {
+        this._highlightListItem(null, false);
       }
       this.countryList.scrollTop = 0;
       this._updateSearchResultsText();
@@ -2300,16 +2303,13 @@ var factoryOutput = (() => {
         prevItem.setAttribute("aria-selected", "false");
       }
       this.highlightedItem = listItem;
-      this.highlightedItem.classList.add("iti__highlight");
-      this.highlightedItem.setAttribute("aria-selected", "true");
-      this.selectedCountry.setAttribute(
-        "aria-activedescendant",
-        listItem.getAttribute("id") || ""
-      );
-      this.searchInput.setAttribute(
-        "aria-activedescendant",
-        listItem.getAttribute("id") || ""
-      );
+      if (this.highlightedItem) {
+        this.highlightedItem.classList.add("iti__highlight");
+        this.highlightedItem.setAttribute("aria-selected", "true");
+        const activeDescendant = this.highlightedItem.getAttribute("id") || "";
+        this.selectedCountry.setAttribute("aria-activedescendant", activeDescendant);
+        this.searchInput.setAttribute("aria-activedescendant", activeDescendant);
+      }
       if (shouldFocus) {
         this.highlightedItem.focus();
       }

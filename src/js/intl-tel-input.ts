@@ -1404,7 +1404,7 @@ export class Iti {
   }
 
   private _filterCountries(query: string, isReset: boolean = false): void {
-    let isFirst = true;
+    let noCountriesAddedYet = true;
     this.countryList.innerHTML = "";
     const normalisedQuery = normaliseString(query);
     for (let i = 0; i < this.countries.length; i++) {
@@ -1422,11 +1422,15 @@ export class Iti {
           this.countryList.appendChild(listItem);
         }
         //* Highlight the first item.
-        if (isFirst) {
+        if (noCountriesAddedYet) {
           this._highlightListItem(listItem, false);
-          isFirst = false;
+          noCountriesAddedYet = false;
         }
       }
+    }
+    //* If no countries are shown, unhighlight the previously highlighted item.
+    if (noCountriesAddedYet) {
+      this._highlightListItem(null, false);
     }
     //* Scroll to top (useful if user had previously scrolled down).
     this.countryList.scrollTop = 0;
@@ -1580,23 +1584,21 @@ export class Iti {
   }
 
   //* Remove highlighting from other list items and highlight the given item.
-  private _highlightListItem(listItem: HTMLElement, shouldFocus: boolean): void {
+  private _highlightListItem(listItem: HTMLElement | null, shouldFocus: boolean): void {
     const prevItem = this.highlightedItem;
     if (prevItem) {
       prevItem.classList.remove("iti__highlight");
       prevItem.setAttribute("aria-selected", "false");
     }
+    //* Set this, even if it's null, as it will clear the highlight.
     this.highlightedItem = listItem;
-    this.highlightedItem.classList.add("iti__highlight");
-    this.highlightedItem.setAttribute("aria-selected", "true");
-    this.selectedCountry.setAttribute(
-      "aria-activedescendant",
-      listItem.getAttribute("id") || "",
-    );
-    this.searchInput.setAttribute(
-      "aria-activedescendant",
-      listItem.getAttribute("id") || "",
-    );
+    if (this.highlightedItem) {
+      this.highlightedItem.classList.add("iti__highlight");
+      this.highlightedItem.setAttribute("aria-selected", "true");
+      const activeDescendant = this.highlightedItem.getAttribute("id") || "";
+      this.selectedCountry.setAttribute("aria-activedescendant", activeDescendant);
+      this.searchInput.setAttribute("aria-activedescendant", activeDescendant);
+    }
 
     if (shouldFocus) {
       this.highlightedItem.focus();
