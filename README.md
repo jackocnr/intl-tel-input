@@ -2,7 +2,7 @@
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.png" alt="React logo" width="16px" />  NEWS: we now have our own <a href="https://intl-tel-input.com/examples/react-component.html">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla">Storybook</a>. 
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.png" alt="Typescript logo" width="16px" /> NEWS: we now have our own Typescript type definitions (for both [the JavaScript plugin](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/intlTelInput.d.ts) and [the React component](https://github.com/jackocnr/intl-tel-input/blob/master/react/build/IntlTelInput.d.ts)), so no need to use `@types/intl-tel-input` any more!
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.png" alt="Typescript logo" width="16px" /> NEWS: we now have our own Typescript type definitions, so no need to use `@types/intl-tel-input` anymore!
 
 🗣️ NEWS: we now provide [translation files](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for several common languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
 
