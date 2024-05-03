@@ -385,8 +385,6 @@ if (error === intlTelInput.utils.validationError.TOO_SHORT) {
 Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. By default, `mobileOnly` mode is enabled, meaning it will only return `true` for a valid mobile number length, but you can pass `false` as the first argument (e.g. `isValidNumber(false)`) if you need to support other kinds of numbers. If this method returns `false`, you can use `getValidationError` to get more information. Requires the `utilsScript` option.
 ```js
 const isValid = iti.isValidNumber();
-// or for mobile only:
-const isValidMobile = iti.isValidNumber(true);
 ```
 Returns: `true`/`false`
 
