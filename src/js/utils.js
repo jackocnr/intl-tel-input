@@ -198,23 +198,19 @@ const validationError = {
   "INVALID_LENGTH": 5,
 };
 
-//* noConflict mode: if another version of utils has already been loaded, back it up before overriding it
-if (typeof window === "object" && window["intlTelInputUtils"]) {
-  window["intlTelInputUtilsBackup"] = window["intlTelInputUtils"];
-}
-
 //* Exports
-goog.exportSymbol("intlTelInputUtils", {});
-goog.exportSymbol("intlTelInputUtils.formatNumberAsYouType", formatNumberAsYouType);
-goog.exportSymbol("intlTelInputUtils.formatNumber", formatNumber);
-goog.exportSymbol("intlTelInputUtils.getExampleNumber", getExampleNumber);
-goog.exportSymbol("intlTelInputUtils.getExtension", getExtension);
-goog.exportSymbol("intlTelInputUtils.getNumberType", getNumberType);
-goog.exportSymbol("intlTelInputUtils.getValidationError", getValidationError);
-goog.exportSymbol("intlTelInputUtils.isValidNumber", isValidNumber);
-goog.exportSymbol("intlTelInputUtils.isPossibleNumber", isPossibleNumber);
-goog.exportSymbol("intlTelInputUtils.getCoreNumber", getCoreNumber);
+//* Note: the below code defines window.intlTelInputUtilsTemp, which is so-called because it will be exported (as an ES Module) and then deleted at the end of this file (see output_wrapper in grunt/closure-compiler.js).
+goog.exportSymbol("intlTelInputUtilsTemp", {});
+goog.exportSymbol("intlTelInputUtilsTemp.formatNumberAsYouType", formatNumberAsYouType);
+goog.exportSymbol("intlTelInputUtilsTemp.formatNumber", formatNumber);
+goog.exportSymbol("intlTelInputUtilsTemp.getExampleNumber", getExampleNumber);
+goog.exportSymbol("intlTelInputUtilsTemp.getExtension", getExtension);
+goog.exportSymbol("intlTelInputUtilsTemp.getNumberType", getNumberType);
+goog.exportSymbol("intlTelInputUtilsTemp.getValidationError", getValidationError);
+goog.exportSymbol("intlTelInputUtilsTemp.isValidNumber", isValidNumber);
+goog.exportSymbol("intlTelInputUtilsTemp.isPossibleNumber", isPossibleNumber);
+goog.exportSymbol("intlTelInputUtilsTemp.getCoreNumber", getCoreNumber);
 //* Enums
-goog.exportSymbol("intlTelInputUtils.numberFormat", numberFormat);
-goog.exportSymbol("intlTelInputUtils.numberType", numberType);
-goog.exportSymbol("intlTelInputUtils.validationError", validationError);
+goog.exportSymbol("intlTelInputUtilsTemp.numberFormat", numberFormat);
+goog.exportSymbol("intlTelInputUtilsTemp.numberType", numberType);
+goog.exportSymbol("intlTelInputUtilsTemp.validationError", validationError);

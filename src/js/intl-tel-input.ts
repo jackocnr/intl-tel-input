@@ -2177,42 +2177,6 @@ export class Iti {
  *  STATIC METHODS
  ********************/
 
-//* Inject a <script> element to load utils.js.
-const injectUtilsScriptTag = (
-  path: string,
-  handleSuccess: (value?: unknown) => void,
-  handleFailure: (reason?: unknown) => void,
-): void => {
-  //* Inject a new script element into the page.
-  const script = document.createElement("script");
-  script.onload = (): void => {
-    //* Utils script defines this global - here we move it to a static var.
-    if (window.intlTelInputUtils) {
-      intlTelInput.utils = window.intlTelInputUtils;
-      delete window.intlTelInputUtils;
-      //* If there is another version of the plugin already loaded on this page (which still uses a utils global var), restore it's global so it doesn't break.
-      if (window.intlTelInputUtilsBackup) {
-        window.intlTelInputUtils = window.intlTelInputUtilsBackup;
-        delete window.intlTelInputUtilsBackup;
-      }
-    }
-    forEachInstance("handleUtils");
-    if (handleSuccess) {
-      handleSuccess();
-    }
-  };
-  script.onerror = (): void => {
-    forEachInstance("rejectUtilsScriptPromise");
-    if (handleFailure) {
-      handleFailure();
-    }
-  };
-  script.className = "iti-load-utils";
-  script.async = true;
-  script.src = path;
-  document.body.appendChild(script);
-};
-
 //* Load the utils script.
 const loadUtils = (path: string): Promise<unknown> | null => {
   //* 2 Options:
@@ -2226,9 +2190,18 @@ const loadUtils = (path: string): Promise<unknown> | null => {
     //* Only do this once.
     intlTelInput.startedLoadingUtilsScript = true;
 
-    return new Promise((resolve, reject) =>
-      injectUtilsScriptTag(path, resolve, reject),
-    );
+    return new Promise((resolve, reject) => {
+      import(path)
+        .then(({ default: utils }) => {
+          intlTelInput.utils = utils;
+          forEachInstance("handleUtils");
+          resolve(true);
+        })
+        .catch(() => {
+          forEachInstance("rejectUtilsScriptPromise");
+          reject();
+        });
+    });
   }
   return null;
 };

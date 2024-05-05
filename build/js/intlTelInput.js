@@ -2733,39 +2733,19 @@ var factoryOutput = (() => {
       this._updatePlaceholder();
     }
   };
-  var injectUtilsScriptTag = (path, handleSuccess, handleFailure) => {
-    const script = document.createElement("script");
-    script.onload = () => {
-      if (window.intlTelInputUtils) {
-        intlTelInput.utils = window.intlTelInputUtils;
-        delete window.intlTelInputUtils;
-        if (window.intlTelInputUtilsBackup) {
-          window.intlTelInputUtils = window.intlTelInputUtilsBackup;
-          delete window.intlTelInputUtilsBackup;
-        }
-      }
-      forEachInstance("handleUtils");
-      if (handleSuccess) {
-        handleSuccess();
-      }
-    };
-    script.onerror = () => {
-      forEachInstance("rejectUtilsScriptPromise");
-      if (handleFailure) {
-        handleFailure();
-      }
-    };
-    script.className = "iti-load-utils";
-    script.async = true;
-    script.src = path;
-    document.body.appendChild(script);
-  };
   var loadUtils = (path) => {
     if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
       intlTelInput.startedLoadingUtilsScript = true;
-      return new Promise(
-        (resolve, reject) => injectUtilsScriptTag(path, resolve, reject)
-      );
+      return new Promise((resolve, reject) => {
+        import(path).then(({ default: utils }) => {
+          intlTelInput.utils = utils;
+          forEachInstance("handleUtils");
+          resolve(true);
+        }).catch(() => {
+          forEachInstance("rejectUtilsScriptPromise");
+          reject();
+        });
+      });
     }
     return null;
   };
