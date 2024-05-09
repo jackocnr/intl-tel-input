@@ -80,3 +80,25 @@ build({
   minify: true,
   outfile: "build/js/data.min.js",
 });
+
+//* build/js/intlTelInputWithUtils.js
+build({
+  ...shared,
+  banner: {
+    js: getBanner("intlTelInput"),
+  },
+  entryPoints: ["src/js/intlTelInputWithUtils.js"],
+  minify: false,
+  outfile: "build/js/intlTelInputWithUtils.js",
+});
+
+//* build/js/intlTelInputWithUtils.min.js
+build({
+  ...shared,
+  banner: {
+    js: getBanner("intlTelInput"),
+  },
+  entryPoints: ["src/js/intlTelInputWithUtils.js"],
+  minify: true,
+  outfile: "build/js/intlTelInputWithUtils.min.js",
+});
