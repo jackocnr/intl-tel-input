@@ -8,7 +8,6 @@
 
 //* Each country array has the following information:
 //* [
-//*   Country name,
 //*   iso2 code,
 //*   International dial code,
 //*   Order (if >1 country with same dial code),
