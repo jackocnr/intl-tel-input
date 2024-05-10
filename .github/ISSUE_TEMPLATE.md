@@ -1,5 +1,8 @@
 <!-- IMPORTANT: please read the New Issue Checklist before creating a new issue: https://github.com/jackocnr/intl-tel-input/wiki/New-Issue-Checklist -->
 
+### Plugin version
+e.g. v22.0.2
+
 ### Steps to reproduce
 1.  
 2.  
@@ -12,4 +15,4 @@ Tell us what should happen
 Tell us what actually happens
 
 ### Initialisation options
-List any options you're using e.g. utilsScript or preferredCountries
+List any options you're using e.g. utilsScript or onlyCountries
