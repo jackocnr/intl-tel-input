@@ -19,7 +19,6 @@ module.exports = {
     "afghanistanDialCode": true,
     "intlSetup": true,
     "intlTeardown": true,
-    "waitForUtilsRequest": true,
     "getInputVal": true,
     "getParentElement": true,
     "getHiddenInputs": true,

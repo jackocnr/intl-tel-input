@@ -1,8 +1,7 @@
 module.exports = function(grunt) {
   return {
     src: [
-      'build/js/intlTelInput.min.js',
-      'build/js/utils.js'
+      'build/js/intlTelInputWithUtils.min.js',
     ],
     options: {
       vendor: [

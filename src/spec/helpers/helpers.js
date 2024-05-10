@@ -3,21 +3,25 @@ var input,
   iti,
   totalCountries = 244,
   totalDialCodes = 228,
-  afghanistanDialCode = "+93";
+  afghanistanDialCode = "+93",
+  utilsBackup = null;
 
 var intlSetup = function(utilsScript) {
   // by default put us in desktop mode
   window.innerWidth = 1024;
 
+  // first run: backup utils, so we can remove it and then restore it later when needed
+  if (!utilsBackup) {
+    utilsBackup = window.intlTelInput.utils;
+  }
   if (utilsScript) {
-    window.intlTelInput.utils = window.intlTelInputUtils;
+    window.intlTelInput.utils = utilsBackup;
   } else {
     window.intlTelInput.utils = null;
   }
 };
 
 var intlTeardown = function() {
-  $("script.iti-load-utils").remove();
   window.intlTelInput.startedLoadingUtilsScript = false;
   window.intlTelInput.documentReady = () => false;
   window.intlTelInput.autoCountry = null;
@@ -26,11 +30,6 @@ var intlTeardown = function() {
   if (iti) iti.destroy();
   if (input) input.remove();
   input = iti = null;
-};
-
-var waitForUtilsRequest = function(done) {
-  // this wait is needed while jasmine actually does the request to load utils.js
-  setTimeout(done, 100);
 };
 
 var getInputVal = function(i) {

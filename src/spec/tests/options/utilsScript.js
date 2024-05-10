@@ -13,28 +13,28 @@ describe("utilsScript:", function() {
     intlTeardown();
   });
 
-  it("init vanilla plugin does not inject the script", function() {
+  it("init vanilla plugin does not start loading the utils script", function() {
     iti = window.intlTelInput(input[0]);
 
-    expect($("script.iti-load-utils")).not.toExist();
+    expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(false);
   });
 
-  it("init plugin with utilsScript before window.load event does not inject the script", function() {
+  it("init plugin with utilsScript before documentReady event does not inject the script", function() {
     window.intlTelInput.documentReady = () => false;
     iti = window.intlTelInput(input[0], {
       utilsScript: url,
     });
 
-    expect($("script.iti-load-utils")).not.toExist();
+    expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(false);
   });
 
-  it("faking window.load then init plugin with utilsScript does inject the script", function() {
+  it("faking documentReady then init plugin with utilsScript does inject the script", function() {
     window.intlTelInput.documentReady = () => true;
     iti = window.intlTelInput(input[0], {
       utilsScript: url,
     });
 
-    expect($("script.iti-load-utils")).toExist();
+    expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(true);
   });
 
 });
