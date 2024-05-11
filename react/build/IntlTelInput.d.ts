@@ -571,7 +571,7 @@ declare module "intl-tel-input" {
         getExtension(number: string, iso2: string | undefined): string;
         getNumberType: (number: string, iso2: string | undefined) => number;
         getValidationError(number: string, iso2: string | undefined): number;
-        isPossibleNumber(number: string, iso2: string | undefined, mobileOnly?: boolean): boolean;
+        isPossibleNumber(number: string, iso2: string | undefined, numberType?: string): boolean;
         isValidNumber: (number: string, iso2: string | undefined) => boolean;
         numberFormat: {
             NATIONAL: number;
@@ -865,6 +865,7 @@ declare module "intl-tel-input" {
         strictMode: boolean;
         useFullscreenPopup: boolean;
         utilsScript: string;
+        validationNumberType: NumberType | null;
     }
     export type SomeOptions = Partial<AllOptions>;
     export class Iti {
@@ -963,7 +964,7 @@ declare module "intl-tel-input" {
         getNumberType(): number;
         getSelectedCountryData(): SelectedCountryData;
         getValidationError(): number;
-        isValidNumber(mobileOnly?: boolean): boolean | null;
+        isValidNumber(): boolean | null;
         isValidNumberPrecise(): boolean | null;
         setCountry(iso2: string): void;
         setNumber(number: string): void;

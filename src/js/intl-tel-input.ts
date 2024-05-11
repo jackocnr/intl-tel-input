@@ -23,7 +23,7 @@ type ItiUtils = {
   getExtension(number: string, iso2: string | undefined): string;
   getNumberType: (number: string, iso2: string | undefined) => number;
   getValidationError(number: string, iso2: string | undefined): number;
-  isPossibleNumber(number: string, iso2: string | undefined, mobileOnly?: boolean): boolean;
+  isPossibleNumber(number: string, iso2: string | undefined, numberType?: string): boolean;
   isValidNumber: (number: string, iso2: string | undefined) => boolean;
   numberFormat: { NATIONAL: number, INTERNATIONAL: number, E164: number, RFC3966: number };
   numberType: object;
@@ -317,6 +317,7 @@ interface AllOptions {
   strictMode: boolean;
   useFullscreenPopup: boolean;
   utilsScript: string;
+  validationNumberType: NumberType | null;
 }
 
 //* Export this as useful in react component too.
@@ -376,6 +377,8 @@ const defaults: AllOptions = {
       : false,
   //* Specify the path to the libphonenumber script to enable validation/formatting.
   utilsScript: "",
+  //* The number type to enforce during validation.
+  validationNumberType: "MOBILE",
 };
 //* https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
 const regionlessNanpNumbers = [
@@ -1678,9 +1681,10 @@ export class Iti {
 
   //* Update the maximum valid number length for the currently selected country.
   private _updateMaxLength(): void {
-    if (this.options.strictMode && intlTelInput.utils) {
+    const { strictMode, placeholderNumberType, validationNumberType } = this.options;
+    if (strictMode && intlTelInput.utils) {
       if (this.selectedCountryData.iso2) {
-        const numberType = intlTelInput.utils.numberType[this.options.placeholderNumberType];
+        const numberType = intlTelInput.utils.numberType[placeholderNumberType];
         let exampleNumber = intlTelInput.utils.getExampleNumber(
           this.selectedCountryData.iso2,
           false,
@@ -1689,7 +1693,7 @@ export class Iti {
         );
         //* See if adding more digits is still valid to get the true maximum valid length.
         let validNumber = exampleNumber;
-        while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
+        while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2, validationNumberType)) {
           validNumber = exampleNumber;
           exampleNumber += "0";
         }
@@ -2115,14 +2119,14 @@ export class Iti {
   }
 
   //* Validate the input val
-  isValidNumber(mobileOnly: boolean = true): boolean | null {
+  isValidNumber(): boolean | null {
     const val = this._getFullNumber();
     //* Return false for any alpha chars.
     if (/\p{L}/u.test(val)) {
       return false;
     }
     return intlTelInput.utils
-      ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly)
+      ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType)
       : null;
   }
 

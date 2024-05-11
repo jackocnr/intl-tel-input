@@ -1440,7 +1440,9 @@ var factoryOutput = (() => {
       ) || window.innerWidth <= 500
     ) : false,
     //* Specify the path to the libphonenumber script to enable validation/formatting.
-    utilsScript: ""
+    utilsScript: "",
+    //* The number type to enforce during validation.
+    validationNumberType: "MOBILE"
   };
   var regionlessNanpNumbers = [
     "800",
@@ -2367,9 +2369,10 @@ var factoryOutput = (() => {
     }
     //* Update the maximum valid number length for the currently selected country.
     _updateMaxLength() {
-      if (this.options.strictMode && intlTelInput.utils) {
+      const { strictMode, placeholderNumberType, validationNumberType } = this.options;
+      if (strictMode && intlTelInput.utils) {
         if (this.selectedCountryData.iso2) {
-          const numberType = intlTelInput.utils.numberType[this.options.placeholderNumberType];
+          const numberType = intlTelInput.utils.numberType[placeholderNumberType];
           let exampleNumber = intlTelInput.utils.getExampleNumber(
             this.selectedCountryData.iso2,
             false,
@@ -2377,7 +2380,7 @@ var factoryOutput = (() => {
             true
           );
           let validNumber = exampleNumber;
-          while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
+          while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2, validationNumberType)) {
             validNumber = exampleNumber;
             exampleNumber += "0";
           }
@@ -2695,12 +2698,12 @@ var factoryOutput = (() => {
       return -99;
     }
     //* Validate the input val
-    isValidNumber(mobileOnly = true) {
+    isValidNumber() {
       const val = this._getFullNumber();
       if (/\p{L}/u.test(val)) {
         return false;
       }
-      return intlTelInput.utils ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
+      return intlTelInput.utils ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
     }
     //* Validate the input val (precise)
     isValidNumberPrecise() {

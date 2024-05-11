@@ -139,15 +139,15 @@ const isValidNumber = (number, countryCode) => {
 };
 
 //* Check if given number is possible.
-const isPossibleNumber = (number, countryCode, mobileOnly) => {
+const isPossibleNumber = (number, countryCode, numberTypeName) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
 
-    if (mobileOnly) {
-      const resultMobile = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, i18n.phonenumbers.PhoneNumberType.MOBILE);
-      const isPossibleMobile = resultMobile === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
-      return isPossibleMobile;
+    if (numberTypeName) {
+      const resultForType = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, numberType[numberTypeName]);
+      const isPossibleForType = resultForType === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
+      return isPossibleForType;
     }
 
     //* Can't use phoneUtil.isPossibleNumber directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter.

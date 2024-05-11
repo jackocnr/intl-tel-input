@@ -1439,7 +1439,9 @@ var factoryOutput = (() => {
       ) || window.innerWidth <= 500
     ) : false,
     //* Specify the path to the libphonenumber script to enable validation/formatting.
-    utilsScript: ""
+    utilsScript: "",
+    //* The number type to enforce during validation.
+    validationNumberType: "MOBILE"
   };
   var regionlessNanpNumbers = [
     "800",
@@ -2366,9 +2368,10 @@ var factoryOutput = (() => {
     }
     //* Update the maximum valid number length for the currently selected country.
     _updateMaxLength() {
-      if (this.options.strictMode && intlTelInput.utils) {
+      const { strictMode, placeholderNumberType, validationNumberType } = this.options;
+      if (strictMode && intlTelInput.utils) {
         if (this.selectedCountryData.iso2) {
-          const numberType = intlTelInput.utils.numberType[this.options.placeholderNumberType];
+          const numberType = intlTelInput.utils.numberType[placeholderNumberType];
           let exampleNumber = intlTelInput.utils.getExampleNumber(
             this.selectedCountryData.iso2,
             false,
@@ -2376,7 +2379,7 @@ var factoryOutput = (() => {
             true
           );
           let validNumber = exampleNumber;
-          while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2)) {
+          while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2, validationNumberType)) {
             validNumber = exampleNumber;
             exampleNumber += "0";
           }
@@ -2694,12 +2697,12 @@ var factoryOutput = (() => {
       return -99;
     }
     //* Validate the input val
-    isValidNumber(mobileOnly = true) {
+    isValidNumber() {
       const val = this._getFullNumber();
       if (/\p{L}/u.test(val)) {
         return false;
       }
-      return intlTelInput.utils ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, mobileOnly) : null;
+      return intlTelInput.utils ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
     }
     //* Validate the input val (precise)
     isValidNumberPrecise() {
@@ -9037,6 +9040,7 @@ var factoryOutput = (() => {
       return a.s.toString();
     }
     ;
+    const wb = { FIXED_LINE: 0, MOBILE: 1, FIXED_LINE_OR_MOBILE: 2, TOLL_FREE: 3, PREMIUM_RATE: 4, SHARED_COST: 5, VOIP: 6, PERSONAL_NUMBER: 7, PAGER: 8, UAN: 9, VOICEMAIL: 10, UNKNOWN: -1 };
     m("intlTelInputUtilsTemp", {});
     m("intlTelInputUtilsTemp.formatNumberAsYouType", (a, b) => {
       try {
@@ -9131,7 +9135,7 @@ var factoryOutput = (() => {
     m("intlTelInputUtilsTemp.isPossibleNumber", (a, b, c) => {
       try {
         const d = K.g(), e = Y(d, a, b);
-        return c ? 0 === X(d, e, 1) : 0 === X(d, e, -1);
+        return c ? 0 === X(d, e, wb[c]) : 0 === X(d, e, -1);
       } catch (d) {
         return false;
       }
@@ -9144,7 +9148,7 @@ var factoryOutput = (() => {
       }
     });
     m("intlTelInputUtilsTemp.numberFormat", { E164: 0, INTERNATIONAL: 1, NATIONAL: 2, RFC3966: 3 });
-    m("intlTelInputUtilsTemp.numberType", { FIXED_LINE: 0, MOBILE: 1, FIXED_LINE_OR_MOBILE: 2, TOLL_FREE: 3, PREMIUM_RATE: 4, SHARED_COST: 5, VOIP: 6, PERSONAL_NUMBER: 7, PAGER: 8, UAN: 9, VOICEMAIL: 10, UNKNOWN: -1 });
+    m("intlTelInputUtilsTemp.numberType", wb);
     m("intlTelInputUtilsTemp.validationError", { IS_POSSIBLE: 0, INVALID_COUNTRY_CODE: 1, TOO_SHORT: 2, TOO_LONG: 3, IS_POSSIBLE_LOCAL_ONLY: 4, INVALID_LENGTH: 5 });
   })();
   var utils = window.intlTelInputUtilsTemp;

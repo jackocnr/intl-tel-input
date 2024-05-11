@@ -290,7 +290,7 @@ In the dropdown, display only the countries you specify - [see example](https://
 
 **placeholderNumberType**  
 Type: `String` Default: `"MOBILE"`  
-Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` e.g. `"FIXED_LINE"` to set the number type to use for the placeholder. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--placeholdernumbertype) (using the React component).
+Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to use for the placeholder. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--placeholdernumbertype) (using the React component).
 
 **showFlags**  
 Type: `Boolean` Default: `true`  
@@ -313,6 +313,10 @@ Control when the country list appears as a fullscreen popup vs an inline dropdow
 **utilsScript**  
 Type: `String` Default: `""` Example: `"/build/js/utils.js"`  
 Enable formatting/validation etc. by specifying the URL of the included utils.js script (or alternatively just point it to the file on [cdnjs.com](https://cdnjs.com/libraries/intl-tel-input)). The script is loaded via a [dynamic import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) statement, which means the URL cannot be relative - it must be absolute. The script is fetched only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information.
+
+**validationNumberType**  
+Type: `String` Default: `"MOBILE"`  
+Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to enforce during validation with `isValidNumber`, or set it to `null` to not enforce any particular type.
 
 ## Public Methods
 In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
@@ -382,7 +386,7 @@ if (error === intlTelInput.utils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. By default, `mobileOnly` mode is enabled, meaning it will only return `true` for a valid mobile number length, but you can pass `false` as the first argument (e.g. `isValidNumber(false)`) if you need to support other kinds of numbers. If this method returns `false`, you can use `getValidationError` to get more information. Requires the `utilsScript` option.
+Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. If this method returns `false`, you can use `getValidationError` to get more information. Requires the `utilsScript` option.
 ```js
 const isValid = iti.isValidNumber();
 ```
