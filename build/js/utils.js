@@ -1,4 +1,4 @@
-/*
+(function () {/*
 
  Copyright The Closure Library Authors.
  SPDX-License-Identifier: Apache-2.0
@@ -517,7 +517,7 @@ function tb(a,b){var c=a.v.toString();if(0<=c.substring(a.$).search(a.fa)){var d
 m("intlTelInputUtilsTemp.getExampleNumber",(a,b,c,d)=>{try{const l=K.g();a:{var e=l;if(P(a)){var f=U(T(e,a),c);try{if(q(f,6)){var g=r(f,6);var h=fb(e,g,a,!1);break a}}catch(A){}}h=null}return l.format(h,d?0:b?2:1)}catch(l){return""}});m("intlTelInputUtilsTemp.getExtension",(a,b)=>{try{return r(Y(K.g(),a,b),3)}catch(c){return""}});m("intlTelInputUtilsTemp.getNumberType",(a,b)=>{try{const g=K.g(),h=Y(g,a,b);var c=ab(g,h),d=R(g,w(h,1),c);if(null==d)var e=-1;else{var f=Q(h);e=$a(f,d)}return e}catch(g){return-99}});
 m("intlTelInputUtilsTemp.getValidationError",(a,b)=>{try{const c=K.g(),d=Y(c,a,b);return X(c,d,-1)}catch(c){return"Invalid country calling code"===c.message?1:3>=a.length||"Phone number too short after IDD"===c.message||"The string supplied is too short to be a phone number"===c.message?2:"The string supplied is too long to be a phone number"===c.message?3:-99}});
 m("intlTelInputUtilsTemp.isValidNumber",(a,b)=>{try{const l=K.g();var c=Y(l,a,b),d=ab(l,c);a=l;var e=w(c,1),f=R(a,e,d);if(null==f||"001"!=d&&e!=bb(a,d))var g=!1;else{var h=Q(c);g=-1!=$a(h,f)}return g}catch(l){return!1}});m("intlTelInputUtilsTemp.isPossibleNumber",(a,b,c)=>{try{const d=K.g(),e=Y(d,a,b);return c?0===X(d,e,1):0===X(d,e,-1)}catch(d){return!1}});m("intlTelInputUtilsTemp.getCoreNumber",(a,b)=>{try{return r(Y(K.g(),a,b),2).toString()}catch(c){return""}});
-m("intlTelInputUtilsTemp.numberFormat",{E164:0,INTERNATIONAL:1,NATIONAL:2,RFC3966:3});m("intlTelInputUtilsTemp.numberType",{FIXED_LINE:0,MOBILE:1,FIXED_LINE_OR_MOBILE:2,TOLL_FREE:3,PREMIUM_RATE:4,SHARED_COST:5,VOIP:6,PERSONAL_NUMBER:7,PAGER:8,UAN:9,VOICEMAIL:10,UNKNOWN:-1});m("intlTelInputUtilsTemp.validationError",{IS_POSSIBLE:0,INVALID_COUNTRY_CODE:1,TOO_SHORT:2,TOO_LONG:3,IS_POSSIBLE_LOCAL_ONLY:4,INVALID_LENGTH:5});
+m("intlTelInputUtilsTemp.numberFormat",{E164:0,INTERNATIONAL:1,NATIONAL:2,RFC3966:3});m("intlTelInputUtilsTemp.numberType",{FIXED_LINE:0,MOBILE:1,FIXED_LINE_OR_MOBILE:2,TOLL_FREE:3,PREMIUM_RATE:4,SHARED_COST:5,VOIP:6,PERSONAL_NUMBER:7,PAGER:8,UAN:9,VOICEMAIL:10,UNKNOWN:-1});m("intlTelInputUtilsTemp.validationError",{IS_POSSIBLE:0,INVALID_COUNTRY_CODE:1,TOO_SHORT:2,TOO_LONG:3,IS_POSSIBLE_LOCAL_ONLY:4,INVALID_LENGTH:5});})();
 const utils = window.intlTelInputUtilsTemp;
 delete window.intlTelInputUtilsTemp;
 export default utils;
