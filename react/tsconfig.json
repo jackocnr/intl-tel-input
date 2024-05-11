@@ -10,5 +10,6 @@
   },
   "include": [
     "src/intl-tel-input/react.tsx",
+    "src/intl-tel-input/reactWithUtils.tsx",
   ],
 }

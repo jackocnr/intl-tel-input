@@ -32,7 +32,7 @@ var factoryOutput = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // src/js/intlTelInputWithUtils.js
+  // src/js/intl-tel-input/intlTelInputWithUtils.ts
   var intlTelInputWithUtils_exports = {};
   __export(intlTelInputWithUtils_exports, {
     default: () => intlTelInputWithUtils_default
@@ -9151,7 +9151,7 @@ var factoryOutput = (() => {
   delete window.intlTelInputUtilsTemp;
   var utils_default = utils;
 
-  // src/js/intlTelInputWithUtils.js
+  // src/js/intl-tel-input/intlTelInputWithUtils.ts
   intl_tel_input_default.utils = utils_default;
   var intlTelInputWithUtils_default = intl_tel_input_default;
   return __toCommonJS(intlTelInputWithUtils_exports);

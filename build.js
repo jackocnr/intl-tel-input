@@ -87,7 +87,7 @@ build({
   banner: {
     js: getBanner("intlTelInput"),
   },
-  entryPoints: ["src/js/intlTelInputWithUtils.js"],
+  entryPoints: ["src/js/intl-tel-input/intlTelInputWithUtils.ts"],
   minify: false,
   outfile: "build/js/intlTelInputWithUtils.js",
 });
@@ -98,7 +98,7 @@ build({
   banner: {
     js: getBanner("intlTelInput"),
   },
-  entryPoints: ["src/js/intlTelInputWithUtils.js"],
+  entryPoints: ["src/js/intl-tel-input/intlTelInputWithUtils.ts"],
   minify: true,
   outfile: "build/js/intlTelInputWithUtils.min.js",
 });

@@ -32669,7 +32669,7 @@
   delete window.intlTelInputUtilsTemp;
   var utils_default = utils;
 
-  // src/js/intlTelInputWithUtils.js
+  // src/js/intl-tel-input/intlTelInputWithUtils.ts
   intl_tel_input_default.utils = utils_default;
   var intlTelInputWithUtils_default = intl_tel_input_default;
 

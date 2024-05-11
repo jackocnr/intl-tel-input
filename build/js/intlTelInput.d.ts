@@ -580,12 +580,6 @@ declare module "intl-tel-input" {
         };
         numberType: object;
     };
-    global {
-        interface Window {
-            intlTelInputUtils: ItiUtils;
-            intlTelInputUtilsBackup: ItiUtils;
-        }
-    }
     type NumberType = "FIXED_LINE_OR_MOBILE" | "FIXED_LINE" | "MOBILE" | "PAGER" | "PERSONAL_NUMBER" | "PREMIUM_RATE" | "SHARED_COST" | "TOLL_FREE" | "UAN" | "UNKNOWN" | "VOICEMAIL" | "VOIP";
     type SelectedCountryData = Country | {
         name?: string;
@@ -975,5 +969,13 @@ declare module "intl-tel-input" {
         setPlaceholderNumberType(type: NumberType): void;
     }
     const intlTelInput: IntlTelInputInterface;
+    export default intlTelInput;
+}
+declare module "intl-tel-input/utils-compiled" {
+    export default utils;
+    const utils: any;
+}
+declare module "intl-tel-input/intlTelInputWithUtils" {
+    import intlTelInput from "intl-tel-input";
     export default intlTelInput;
 }

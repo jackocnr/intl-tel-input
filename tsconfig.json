@@ -9,5 +9,6 @@
     },
     "include": [
         "src/js/intl-tel-input.ts",
+        "src/js/intl-tel-input/intlTelInputWithUtils.ts",
     ],
 }

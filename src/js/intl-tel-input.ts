@@ -28,12 +28,6 @@ type ItiUtils = {
   numberFormat: { NATIONAL: number, INTERNATIONAL: number, E164: number, RFC3966: number };
   numberType: object;
 };
-declare global {
-  interface Window {
-    intlTelInputUtils: ItiUtils;
-    intlTelInputUtilsBackup: ItiUtils;
-  }
-}
 type NumberType =
   "FIXED_LINE_OR_MOBILE"
   | "FIXED_LINE"
