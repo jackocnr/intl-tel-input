@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput from "../src/intl-tel-input/react";
+import IntlTelInput from "../src/intl-tel-input/reactWithUtils";
 
 const errorMap = [
   "Invalid number",
@@ -33,7 +33,6 @@ const App = (): ReactElement => {
         onChangeErrorCode={setErrorCode}
         initOptions={{
           initialCountry: "us",
-          utilsScript: "../../build/js/utils.js",
         }}
       />
       <button className="button" type="button" onClick={handleSubmit}>Validate</button>

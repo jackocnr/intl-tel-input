@@ -1,12 +1,11 @@
 import React, { ReactElement } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput from "../src/intl-tel-input/react";
+import IntlTelInput from "../src/intl-tel-input/reactWithUtils";
 
 const App = (): ReactElement => (
   <IntlTelInput
     initOptions={{
       initialCountry: "us",
-      utilsScript: "../../build/js/utils.js",
     }}
   />
 );

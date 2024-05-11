@@ -979,8 +979,8 @@ declare module "intl-tel-input" {
     export default intlTelInput;
 }
 declare module "intl-tel-input/react" {
-    import React from "react";
     import { SomeOptions } from "intl-tel-input";
+    import React from "react";
     const IntlTelInput: ({ initialValue, onChangeNumber, onChangeCountry, onChangeValidity, onChangeErrorCode, usePreciseValidation, initOptions, inputProps, }: {
         initialValue?: string;
         onChangeNumber?: (number: string) => void;

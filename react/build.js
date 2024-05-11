@@ -5,7 +5,6 @@ const packageJson = require("../package.json");
 
 const mainShared = {
   bundle: true,
-  entryPoints: ["react/src/intl-tel-input/react.tsx"],
   external: ["react", "react-dom", "prop-types"],
   logLevel: "info",
   minify: true,
@@ -15,6 +14,7 @@ const mainShared = {
 //* React Component - CommonJS
 build({
   ...mainShared,
+  entryPoints: ["react/src/intl-tel-input/react.tsx"],
   format: "cjs",
   outfile: "react/build/IntlTelInput.cjs",
 });
@@ -22,10 +22,28 @@ build({
 //* React Component - Default (ES Modules)
 build({
   ...mainShared,
+  entryPoints: ["react/src/intl-tel-input/react.tsx"],
   format: "esm",
   outfile: "react/build/IntlTelInput.js",
 });
 
+//* React Component With Utils - CommonJS
+build({
+  ...mainShared,
+  entryPoints: ["react/src/intl-tel-input/reactWithUtils.tsx"],
+  format: "cjs",
+  outfile: "react/build/IntlTelInputWithUtils.cjs",
+});
+
+//* React Component With Utils - Default (ES Modules)
+build({
+  ...mainShared,
+  entryPoints: ["react/src/intl-tel-input/reactWithUtils.tsx"],
+  format: "esm",
+  outfile: "react/build/IntlTelInputWithUtils.js",
+});
+
+//* Demo shared config
 const demoShared = {
   bundle: true,
   define: { "process.env.VERSION": `"${packageJson.version}"` },

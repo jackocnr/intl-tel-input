@@ -90,7 +90,7 @@
     "build:utils": "grunt build:utils",
     "build:css": "grunt css",
     "build:img": "grunt img",
-    "build:react": "node react/build.js"
+    "build:react": "grunt react"
   },
   "style": "build/css/intlTelInput.css",
   "main": "./build/js/intlTelInput.js",

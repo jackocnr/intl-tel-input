@@ -1,5 +1,5 @@
-import intlTelInput from "../intl-tel-input";
-//* Keep the TS imports separate, as the above line gets substituted in the reactWithUtils build process.
+//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+import intlTelInput from "../intlTelInputWithUtils";
 import { Iti, SomeOptions } from "../intl-tel-input";
 import React, { useRef, useEffect } from "react";
 
