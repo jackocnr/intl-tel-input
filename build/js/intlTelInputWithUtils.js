@@ -2060,7 +2060,9 @@ var factoryOutput = (() => {
               const fullNumber = this._getFullNumber();
               const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
               const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
-              if (!isAllowedChar || hasReachedMaxLength) {
+              const selectedText = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
+              const hasSelectedDigit = /\d/.test(selectedText);
+              if (!isAllowedChar || hasReachedMaxLength && !hasSelectedDigit) {
                 e.preventDefault();
               }
             }

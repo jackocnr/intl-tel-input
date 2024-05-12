@@ -1232,7 +1232,10 @@ export class Iti {
             const fullNumber = this._getFullNumber();
             const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
-            if (!isAllowedChar || hasReachedMaxLength) {
+            const selectedText = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
+            const hasSelectedDigit = /\d/.test(selectedText);
+            // ignore the char if (1) it's not an allowed char, or (2) the input has reached max length and no digit is selected (which will be replaced by the new char)
+            if (!isAllowedChar || (hasReachedMaxLength && !hasSelectedDigit)) {
               e.preventDefault();
             }
           }
