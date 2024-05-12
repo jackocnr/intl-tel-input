@@ -304,7 +304,7 @@ Display the selected country dial code next to the input, so it looks like it's 
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
-As the user types in the input, ignore any irrelevant characters. Basically, the user can only enter numeric characters, and an optional plus at the beginning. Cap the length at the maximum valid number length. Requires the `utilsScript` option. [See example](https://intl-tel-input.com/examples/strict-mode.html).
+As the user types in the input, ignore any irrelevant characters. Basically, the user can only enter numeric characters, and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects `validationNumberType`). Requires the `utilsScript` option. [See example](https://intl-tel-input.com/examples/strict-mode.html).
 
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
@@ -316,7 +316,7 @@ Enable formatting/validation etc. by specifying the URL of the included utils.js
 
 **validationNumberType**  
 Type: `String` Default: `"MOBILE"`  
-Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to enforce during validation with `isValidNumber`, or set it to `null` to not enforce any particular type.
+Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to enforce during validation with `isValidNumber`, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. 
 
 ## Public Methods
 In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
