@@ -105,6 +105,7 @@
       "default": "./build/js/intlTelInputWithUtils.js"
     },
     "./data": "./build/js/data.js",
+    "./utils": "./build/js/utils.js",
     "./react": {
       "types": "./react/build/IntlTelInput.d.ts",
       "require": "./react/build/IntlTelInput.cjs",
@@ -115,6 +116,7 @@
       "require": "./react/build/IntlTelInputWithUtils.cjs",
       "default": "./react/build/IntlTelInputWithUtils.js"
     },
+    "./i18n": "./build/js/i18n/index.js",
     "./i18n/*": "./build/js/i18n/*/index.js",
     "./*": "./*"
   },
