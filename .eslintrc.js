@@ -3,6 +3,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    "jest/globals": true,
   },
   extends: [
     "eslint:recommended",
@@ -17,6 +18,7 @@ module.exports = {
   plugins: [
     "@typescript-eslint",
     "react",
+    "jest",
   ],
   globals: {
     goog: true,
