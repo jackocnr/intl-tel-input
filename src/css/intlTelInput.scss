@@ -105,13 +105,7 @@
     color: var(--iti-input-color);
     background-color: var(--iti-input-bg);
 
-    //* ::placeholder and ::-ms-input-placeholder are seperate as the built css won't run when combined.
     &::placeholder {
-      color: var(--iti-input-placeholder-color);
-      opacity: var(--iti-input-placeholder-opacity)
-    }
-
-    &::-ms-input-placeholder {
       color: var(--iti-input-placeholder-color);
       opacity: var(--iti-input-placeholder-opacity)
     }
@@ -209,13 +203,7 @@
     border: none;
     border-bottom: var(--iti-border-width) solid var(--iti-border-color);
 
-    //* ::placeholder and ::-ms-input-placeholder are seperate as the built css won't run when combined.
     &::placeholder {
-      color: var(--iti-search-placeholder-color);
-      opacity: var(--iti-search-placeholder-opacity)
-    }
-
-    &::-ms-input-placeholder {
       color: var(--iti-search-placeholder-color);
       opacity: var(--iti-search-placeholder-opacity)
     }

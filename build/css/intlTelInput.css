@@ -71,12 +71,6 @@
   color: var(--iti-input-placeholder-color);
   opacity: var(--iti-input-placeholder-opacity);
 }
-.iti input.iti__tel-input::-ms-input-placeholder,
-.iti input.iti__tel-input[type=text]::-ms-input-placeholder,
-.iti input.iti__tel-input[type=tel]::-ms-input-placeholder {
-  color: var(--iti-input-placeholder-color);
-  opacity: var(--iti-input-placeholder-opacity);
-}
 .iti__country-container {
   position: absolute;
   top: 0;
@@ -145,10 +139,6 @@
   border-bottom: var(--iti-border-width) solid var(--iti-border-color);
 }
 .iti__search-input::placeholder {
-  color: var(--iti-search-placeholder-color);
-  opacity: var(--iti-search-placeholder-opacity);
-}
-.iti__search-input::-ms-input-placeholder {
   color: var(--iti-search-placeholder-color);
   opacity: var(--iti-search-placeholder-opacity);
 }
