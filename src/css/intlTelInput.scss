@@ -3,17 +3,21 @@
 :root {
   //* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus.
   --iti-hover-color: rgba(0, 0, 0, 0.05);
+
   --iti-border-gray: #ccc; //! DEPRECATED, will be removed in v24
   --iti-border-color: var(--iti-border-gray);
 
-  --iti-countryname-color: inherit;
   --iti-text-gray: #999; //! DEPRECATED, will be removed in v24
   --iti-dialcode-color: var(--iti-text-gray);
-  --iti-input-color: inherit;
-  --iti-search-color: inherit;
 
-  --iti-input-placeholder-color: inherit;
-  --iti-search-placeholder-color: var(--iti-input-placeholder-color);
+  --iti-color: inherit;
+  --iti-countryname-color: var(--iti-color);
+  --iti-input-color: var(--iti-color);
+  --iti-search-color: var(--iti-color);
+
+  --iti-placeholder-color: inherit;
+  --iti-input-placeholder-color: var(--iti-placeholder-color);
+  --iti-search-placeholder-color: var(--iti-placeholder-color);
 
   --iti-input-placeholder-opacity: 1;
   --iti-search-placeholder-opacity: var(--iti-input-placeholder-opacity);
