@@ -436,3 +436,18 @@
   .iti__flag { background-image: var(--iti-path-flags-2x); }
   .iti__globe { background-image: var(--iti-path-globe-2x); }
 }
+
+@media (prefers-color-scheme: dark) {
+  .iti {
+    --iti-border-color: var(--iti-border-gray);
+    --iti-dialcode-color: var(--iti-text-gray);
+    --iti-input-placeholder-color: var(--iti-placeholder-color);
+    --iti-search-placeholder-color: var(--iti-placeholder-color);
+    --iti-search-placeholder-opacity: var(--iti-input-placeholder-opacity);
+    --iti-countryname-color: var(--iti-color);
+    --iti-input-color: var(--iti-color);
+    --iti-search-color: var(--iti-color);
+    --iti-search-bg: var(--iti-input-bg);
+    --iti-dropdown-bg: var(--iti-input-bg);
+  }
+}
