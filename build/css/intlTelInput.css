@@ -138,11 +138,11 @@
 }
 .iti__search-input {
   width: 100%;
-  border-width: 0;
-  border-radius: 3px;
   padding: 9px 12px;
   color: var(--iti-search-color);
   background-color: var(--iti-search-bg);
+  border: none;
+  border-bottom: var(--iti-border-width) solid var(--iti-border-color);
 }
 .iti__search-input::placeholder {
   color: var(--iti-search-placeholder-color);
