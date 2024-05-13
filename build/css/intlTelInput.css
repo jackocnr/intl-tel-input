@@ -1,15 +1,17 @@
 :root {
   --iti-hover-color: rgba(0, 0, 0, 0.05);
-  --iti-border-color: #ccc;
-  --iti-countryname-color: #555;
-  --iti-dialcode-color: #999;
-  --iti-input-color: #555;
-  --iti-search-color: #555;
-  --iti-input-placeholder-color: #bababa;
+  --iti-border-gray: #ccc;
+  --iti-border-color: var(--iti-border-gray);
+  --iti-countryname-color: inherit;
+  --iti-text-gray: #999;
+  --iti-dialcode-color: var(--iti-text-gray);
+  --iti-input-color: inherit;
+  --iti-search-color: inherit;
+  --iti-input-placeholder-color: inherit;
   --iti-search-placeholder-color: var(--iti-input-placeholder-color);
   --iti-input-placeholder-opacity: 1;
   --iti-search-placeholder-opacity: var(--iti-input-placeholder-opacity);
-  --iti-input-bg: #fff;
+  --iti-input-bg: inherit;
   --iti-search-bg: var(--iti-input-bg);
   --iti-dropdown-bg: var(--iti-input-bg);
   --iti-spacer-horizontal: 8px;
