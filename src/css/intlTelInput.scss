@@ -3,8 +3,28 @@
 :root {
   //* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus.
   --iti-hover-color: rgba(0, 0, 0, 0.05);
-  --iti-text-gray: #999;
-  --iti-border-gray: #ccc;
+
+  --iti-border-gray: #ccc; //! DEPRECATED, will be removed in v24
+  --iti-border-color: var(--iti-border-gray);
+
+  --iti-text-gray: #999; //! DEPRECATED, will be removed in v24
+  --iti-dialcode-color: var(--iti-text-gray);
+
+  --iti-color: inherit;
+  --iti-countryname-color: var(--iti-color);
+  --iti-input-color: var(--iti-color);
+  --iti-search-color: var(--iti-color);
+
+  --iti-placeholder-color: #a9a9a9;
+  --iti-input-placeholder-color: var(--iti-placeholder-color);
+  --iti-search-placeholder-color: var(--iti-placeholder-color);
+
+  --iti-input-placeholder-opacity: 1;
+  --iti-search-placeholder-opacity: var(--iti-input-placeholder-opacity);
+
+  --iti-input-bg: field;
+  --iti-search-bg: var(--iti-input-bg);
+  --iti-dropdown-bg: var(--iti-input-bg);
 
   --iti-spacer-horizontal: 8px;
   --iti-flag-height: 15px;
@@ -87,6 +107,14 @@
 
     //* Any margin-right here will push the selected-country away.
     margin-right: 0;
+
+    color: var(--iti-input-color);
+    background-color: var(--iti-input-bg);
+
+    &::placeholder {
+      color: var(--iti-input-placeholder-color);
+      opacity: var(--iti-input-placeholder-opacity)
+    }
   }
 
   &__country-container {
@@ -166,21 +194,29 @@
       //* margin-left to compensate for the padding on the parent.
       margin-left: calc(var(--iti-border-width) * -1);
 
-      border: var(--iti-border-width) solid var(--iti-border-gray);
+      border: var(--iti-border-width) solid var(--iti-border-color);
       box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     }
 
     border-radius: 3px;
-    background-color: white;
+    background-color: var(--iti-dropdown-bg);
   }
   &__search-input {
     width: 100%;
-    border-width: 0;
-    border-radius: 3px;
+    border-radius: 3px 3px 0 0; //* top-left | top-right | bottom-right | bottom-left
     padding: 9px 12px;
+    color: var(--iti-search-color);
+    background-color: var(--iti-search-bg);
+    border: none;
+    border-bottom: var(--iti-border-width) solid var(--iti-border-color);
+
+    &::placeholder {
+      color: var(--iti-search-placeholder-color);
+      opacity: var(--iti-search-placeholder-opacity)
+    }
 
     & + .iti__country-list {
-      border-top: 1px solid var(--iti-border-gray);
+      border-top: 1px solid var(--iti-border-color);
     }
   }
   &__country-list {
@@ -227,7 +263,7 @@
 
   //* The dial codes after the country names are greyed out.
   &__dial-code {
-    color: var(--iti-text-gray);
+    color: var(--iti-dialcode-color);
   }
   &__country.iti__highlight {
     background-color: var(--iti-hover-color);
@@ -237,6 +273,7 @@
   &__flag-box,
   &__country-name {
     margin-right: var(--iti-spacer-horizontal);
+    color: var(--iti-countryname-color);
 
     [dir="rtl"] & {
       margin-right: 0;
@@ -398,4 +435,19 @@
 @media (min-resolution: 2x) {
   .iti__flag { background-image: var(--iti-path-flags-2x); }
   .iti__globe { background-image: var(--iti-path-globe-2x); }
+}
+
+@media (prefers-color-scheme: dark) {
+  .iti {
+    --iti-border-color: var(--iti-border-gray);
+    --iti-dialcode-color: var(--iti-text-gray);
+    --iti-input-placeholder-color: var(--iti-placeholder-color);
+    --iti-search-placeholder-color: var(--iti-placeholder-color);
+    --iti-search-placeholder-opacity: var(--iti-input-placeholder-opacity);
+    --iti-countryname-color: var(--iti-color);
+    --iti-input-color: var(--iti-color);
+    --iti-search-color: var(--iti-color);
+    --iti-search-bg: var(--iti-input-bg);
+    --iti-dropdown-bg: var(--iti-input-bg);
+  }
 }
