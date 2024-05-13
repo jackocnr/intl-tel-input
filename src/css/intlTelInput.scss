@@ -199,6 +199,7 @@
   }
   &__search-input {
     width: 100%;
+    border-radius: 3px 3px 0 0; //* top-left | top-right | bottom-right | bottom-left
     padding: 9px 12px;
     color: var(--iti-search-color);
     background-color: var(--iti-search-bg);
