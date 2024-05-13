@@ -1,7 +1,17 @@
 :root {
   --iti-hover-color: rgba(0, 0, 0, 0.05);
-  --iti-text-gray: #999;
-  --iti-border-gray: #ccc;
+  --iti-border-color: #ccc;
+  --iti-countryname-color: #555;
+  --iti-dialcode-color: #999;
+  --iti-input-color: #555;
+  --iti-search-color: #555;
+  --iti-input-placeholder-color: #bababa;
+  --iti-search-placeholder-color: var(--iti-input-placeholder-color);
+  --iti-input-placeholder-opacity: 1;
+  --iti-search-placeholder-opacity: var(--iti-input-placeholder-opacity);
+  --iti-input-bg: #fff;
+  --iti-search-bg: var(--iti-input-bg);
+  --iti-dropdown-bg: var(--iti-input-bg);
   --iti-spacer-horizontal: 8px;
   --iti-flag-height: 15px;
   --iti-flag-width: 20px;
@@ -52,6 +62,20 @@
   margin-bottom: 0 !important;
   padding-right: var(--iti-right-hand-selected-country-padding);
   margin-right: 0;
+  color: var(--iti-input-color);
+  background-color: var(--iti-input-bg);
+}
+.iti input.iti__tel-input::placeholder,
+.iti input.iti__tel-input[type=text]::placeholder,
+.iti input.iti__tel-input[type=tel]::placeholder {
+  color: var(--iti-input-placeholder-color);
+  opacity: var(--iti-input-placeholder-opacity);
+}
+.iti input.iti__tel-input::-ms-input-placeholder,
+.iti input.iti__tel-input[type=text]::-ms-input-placeholder,
+.iti input.iti__tel-input[type=tel]::-ms-input-placeholder {
+  color: var(--iti-input-placeholder-color);
+  opacity: var(--iti-input-placeholder-opacity);
 }
 .iti__country-container {
   position: absolute;
@@ -102,14 +126,14 @@
 }
 .iti__dropdown-content {
   border-radius: 3px;
-  background-color: white;
+  background-color: var(--iti-dropdown-bg);
 }
 .iti--inline-dropdown .iti__dropdown-content {
   position: absolute;
   z-index: 2;
   margin-top: 3px;
   margin-left: calc(var(--iti-border-width) * -1);
-  border: var(--iti-border-width) solid var(--iti-border-gray);
+  border: var(--iti-border-width) solid var(--iti-border-color);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 .iti__search-input {
@@ -117,9 +141,19 @@
   border-width: 0;
   border-radius: 3px;
   padding: 9px 12px;
+  color: var(--iti-search-color);
+  background-color: var(--iti-search-bg);
+}
+.iti__search-input::placeholder {
+  color: var(--iti-search-placeholder-color);
+  opacity: var(--iti-search-placeholder-opacity);
+}
+.iti__search-input::-ms-input-placeholder {
+  color: var(--iti-search-placeholder-color);
+  opacity: var(--iti-search-placeholder-opacity);
 }
 .iti__search-input + .iti__country-list {
-  border-top: 1px solid var(--iti-border-gray);
+  border-top: 1px solid var(--iti-border-color);
 }
 .iti__country-list {
   list-style: none;
@@ -150,13 +184,14 @@
   outline: none;
 }
 .iti__dial-code {
-  color: var(--iti-text-gray);
+  color: var(--iti-dialcode-color);
 }
 .iti__country.iti__highlight {
   background-color: var(--iti-hover-color);
 }
 .iti__flag-box, .iti__country-name {
   margin-right: var(--iti-spacer-horizontal);
+  color: var(--iti-countryname-color);
 }
 [dir=rtl] .iti__flag-box, [dir=rtl] .iti__country-name {
   margin-right: 0;
