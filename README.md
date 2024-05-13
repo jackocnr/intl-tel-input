@@ -6,6 +6,8 @@
 
 🗣️ NEWS: we now provide [translation files](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for several common languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
 
+🌙 NEWS: It is now easier than ever to get darkmode working. please see [Theming (Dark Mode)](#theming)
+
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-search.png" alt="Screenshot" width="238px" style="max-width: 100%" />
@@ -25,6 +27,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Getting Started](#getting-started-using-a-cdn)
 - [Recommended Usage](#recommended-usage)
 - [Initialisation Options](#initialisation-options)
+- [Theming (Dark Mode)](#theming)
 - [Instance Methods](#instance-methods)
 - [Static Methods](#static-methods)
 - [Events](#events)
@@ -318,6 +321,22 @@ This is one way to (lazy) load the included utils.js (to enable formatting/valid
 **validationNumberType**  
 Type: `String` Default: `"MOBILE"`  
 Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to enforce during validation with `isValidNumber`, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. 
+
+## Theming (Dark Mode)
+Please see ```src/css/intlTelInput.scss``` for all options.
+
+For dark mode:
+``` CSS
+@media (prefers-color-scheme: dark) {
+  .iti {
+    --iti-input-bg: #262a2d;
+    --iti-color: #ffffff;
+    --iti-arrow-color: #ffffff;
+    --iti-placeholder-color: #909090;
+    --iti-hover-color: rgba(255, 255, 255, 0.1);
+  }
+}
+```
 
 ## Instance Methods
 In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
