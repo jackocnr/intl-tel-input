@@ -1,7 +1,7 @@
 <!-- IMPORTANT: please read the New Issue Checklist before creating a new issue: https://github.com/jackocnr/intl-tel-input/wiki/New-Issue-Checklist -->
 
 ### Plugin version
-e.g. v22.0.2
+e.g. v23.0.4 (please try latest version)
 
 ### Steps to reproduce
 1.  
