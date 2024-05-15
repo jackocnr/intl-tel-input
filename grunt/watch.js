@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       tasks: "build:translations",
     },
     react: {
-      files: ["react/src/IntlTelInput.js", "react/demo/ValidationApp.js", "react/demo/SimpleApp.js"],
+      files: ["react/src/intl-tel-input/react.tsx", "react/demo/ValidationApp.tsx", "react/demo/SimpleApp.tsx"],
       tasks: "shell:buildReact"
     },
     pluginCss: {
