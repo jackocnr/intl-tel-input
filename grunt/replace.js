@@ -284,6 +284,19 @@ module.exports = function(grunt) {
       files: {
         'README.md': 'README.md'
       }
+    },
+    issueTemplate: {
+      options: {
+        patterns: [
+          {
+            match: /e\.g\. v[0-9]+\.[0-9]+\.[0-9] \(please try latest version\)/,
+            replacement: 'e.g. v<%= package.version %> (please try latest version)'
+          }
+        ]
+      },
+      files: {
+        '.github/ISSUE_TEMPLATE.md': '.github/ISSUE_TEMPLATE.md'
+      }
     }
   };
 };
