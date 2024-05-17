@@ -12,9 +12,9 @@ const errorMap = [
 
 const App = (): ReactElement => {
   const [isValid, setIsValid] = useState<boolean | null>(null);
-   const [number, setNumber] = useState<string | null>(null);
-   const [errorCode, setErrorCode] = useState<number | null>(null);
-   const [notice, setNotice] = useState<string | null>(null);
+  const [number, setNumber] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<number | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   
   const handleSubmit = (): void => {
     if (isValid) {

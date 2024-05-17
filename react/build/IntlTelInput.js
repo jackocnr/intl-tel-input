@@ -2762,7 +2762,14 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
   const inputRef = useRef(null);
   const itiRef = useRef(null);
   useImperativeHandle(ref, () => ({
-    getInstance: () => itiRef.current,
+    getInstance: () => ({
+      ...itiRef.current,
+      // override setNumber to also call update, to trigger onChangeNumber etc
+      setNumber: (num) => {
+        itiRef.current?.setNumber(num);
+        update();
+      }
+    }),
     getInput: () => inputRef.current
   }));
   const update = () => {

@@ -32489,7 +32489,14 @@
     const inputRef = (0, import_react.useRef)(null);
     const itiRef = (0, import_react.useRef)(null);
     (0, import_react.useImperativeHandle)(ref, () => ({
-      getInstance: () => itiRef.current,
+      getInstance: () => ({
+        ...itiRef.current,
+        // override setNumber to also call update, to trigger onChangeNumber etc
+        setNumber: (num) => {
+          itiRef.current?.setNumber(num);
+          update();
+        }
+      }),
       getInput: () => inputRef.current
     }));
     const update = () => {
