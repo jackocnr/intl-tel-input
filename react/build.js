@@ -7,7 +7,7 @@ const mainShared = {
   bundle: true,
   external: ["react", "react-dom", "prop-types"],
   logLevel: "info",
-  minify: true,
+  minify: false, //* Don't minify as (1) esbuild minify removes comments that we need to keep e.g. webpack import fix, (2) these files will be imported into other projects that will have their own minification process
   define: { "process.env.VERSION": `"${packageJson.version}"` },
 };
 

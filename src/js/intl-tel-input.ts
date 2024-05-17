@@ -2192,7 +2192,7 @@ const loadUtils = (path: string): Promise<unknown> | null => {
     intlTelInput.startedLoadingUtilsScript = true;
 
     return new Promise((resolve, reject) => {
-      import(path)
+      import(/* webpackIgnore: true */ path)
         .then(({ default: utils }) => {
           intlTelInput.utils = utils;
           forEachInstance("handleUtils");

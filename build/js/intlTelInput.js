@@ -2742,7 +2742,10 @@ var factoryOutput = (() => {
     if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
       intlTelInput.startedLoadingUtilsScript = true;
       return new Promise((resolve, reject) => {
-        import(path).then(({ default: utils }) => {
+        import(
+          /* webpackIgnore: true */
+          path
+        ).then(({ default: utils }) => {
           intlTelInput.utils = utils;
           forEachInstance("handleUtils");
           resolve(true);
