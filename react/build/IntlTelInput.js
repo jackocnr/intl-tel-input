@@ -2744,8 +2744,8 @@ var intlTelInput = Object.assign(
 var intl_tel_input_default = intlTelInput;
 
 // react/src/intl-tel-input/react.tsx
-import React, { useRef, useEffect } from "react";
-var IntlTelInput = ({
+import React, { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+var IntlTelInput = forwardRef(function IntlTelInput2({
   initialValue = "",
   onChangeNumber = () => {
   },
@@ -2758,9 +2758,13 @@ var IntlTelInput = ({
   usePreciseValidation = false,
   initOptions = {},
   inputProps = {}
-}) => {
+}, ref) {
   const inputRef = useRef(null);
   const itiRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    getInstance: () => itiRef.current,
+    getInput: () => inputRef.current
+  }));
   const update = () => {
     const num = itiRef.current?.getNumber() || "";
     const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
@@ -2802,7 +2806,7 @@ var IntlTelInput = ({
       ...inputProps
     }
   );
-};
+});
 var react_default = IntlTelInput;
 export {
   react_default as default

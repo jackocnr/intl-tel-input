@@ -971,7 +971,7 @@
             }
             return lazyType;
           }
-          function forwardRef(render) {
+          function forwardRef2(render) {
             {
               if (render != null && render.$$typeof === REACT_MEMO_TYPE) {
                 error("forwardRef requires a render function but received a `memo` component. Instead of forwardRef(memo(...)), use memo(forwardRef(...)).");
@@ -1116,7 +1116,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create, deps);
           }
-          function useImperativeHandle(ref, create, deps) {
+          function useImperativeHandle2(ref, create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useImperativeHandle(ref, create, deps);
           }
@@ -1869,7 +1869,7 @@
           exports.createElement = createElement$1;
           exports.createFactory = createFactory;
           exports.createRef = createRef;
-          exports.forwardRef = forwardRef;
+          exports.forwardRef = forwardRef2;
           exports.isValidElement = isValidElement;
           exports.lazy = lazy;
           exports.memo = memo;
@@ -1881,7 +1881,7 @@
           exports.useDeferredValue = useDeferredValue;
           exports.useEffect = useEffect2;
           exports.useId = useId;
-          exports.useImperativeHandle = useImperativeHandle;
+          exports.useImperativeHandle = useImperativeHandle2;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect;
           exports.useMemo = useMemo;
@@ -7743,8 +7743,7 @@
             button: 0,
             buttons: 0,
             relatedTarget: function(event) {
-              if (event.relatedTarget === void 0)
-                return event.fromElement === event.srcElement ? event.toElement : event.fromElement;
+              if (event.relatedTarget === void 0) return event.fromElement === event.srcElement ? event.toElement : event.fromElement;
               return event.relatedTarget;
             },
             movementX: function(event) {
@@ -8460,43 +8459,42 @@
             var indexWithinFocus = 0;
             var node = outerNode;
             var parentNode = null;
-            outer:
+            outer: while (true) {
+              var next = null;
               while (true) {
-                var next = null;
-                while (true) {
-                  if (node === anchorNode && (anchorOffset === 0 || node.nodeType === TEXT_NODE)) {
-                    start = length + anchorOffset;
-                  }
-                  if (node === focusNode && (focusOffset === 0 || node.nodeType === TEXT_NODE)) {
-                    end = length + focusOffset;
-                  }
-                  if (node.nodeType === TEXT_NODE) {
-                    length += node.nodeValue.length;
-                  }
-                  if ((next = node.firstChild) === null) {
-                    break;
-                  }
-                  parentNode = node;
-                  node = next;
+                if (node === anchorNode && (anchorOffset === 0 || node.nodeType === TEXT_NODE)) {
+                  start = length + anchorOffset;
                 }
-                while (true) {
-                  if (node === outerNode) {
-                    break outer;
-                  }
-                  if (parentNode === anchorNode && ++indexWithinAnchor === anchorOffset) {
-                    start = length;
-                  }
-                  if (parentNode === focusNode && ++indexWithinFocus === focusOffset) {
-                    end = length;
-                  }
-                  if ((next = node.nextSibling) !== null) {
-                    break;
-                  }
-                  node = parentNode;
-                  parentNode = node.parentNode;
+                if (node === focusNode && (focusOffset === 0 || node.nodeType === TEXT_NODE)) {
+                  end = length + focusOffset;
                 }
+                if (node.nodeType === TEXT_NODE) {
+                  length += node.nodeValue.length;
+                }
+                if ((next = node.firstChild) === null) {
+                  break;
+                }
+                parentNode = node;
                 node = next;
               }
+              while (true) {
+                if (node === outerNode) {
+                  break outer;
+                }
+                if (parentNode === anchorNode && ++indexWithinAnchor === anchorOffset) {
+                  start = length;
+                }
+                if (parentNode === focusNode && ++indexWithinFocus === focusOffset) {
+                  end = length;
+                }
+                if ((next = node.nextSibling) !== null) {
+                  break;
+                }
+                node = parentNode;
+                parentNode = node.parentNode;
+              }
+              node = next;
+            }
             if (start === -1 || end === -1) {
               return null;
             }
@@ -9038,45 +9036,44 @@
               var targetContainerNode = targetContainer;
               if (targetInst !== null) {
                 var node = targetInst;
-                mainLoop:
-                  while (true) {
-                    if (node === null) {
-                      return;
-                    }
-                    var nodeTag = node.tag;
-                    if (nodeTag === HostRoot || nodeTag === HostPortal) {
-                      var container2 = node.stateNode.containerInfo;
-                      if (isMatchingRootContainer(container2, targetContainerNode)) {
-                        break;
-                      }
-                      if (nodeTag === HostPortal) {
-                        var grandNode = node.return;
-                        while (grandNode !== null) {
-                          var grandTag = grandNode.tag;
-                          if (grandTag === HostRoot || grandTag === HostPortal) {
-                            var grandContainer = grandNode.stateNode.containerInfo;
-                            if (isMatchingRootContainer(grandContainer, targetContainerNode)) {
-                              return;
-                            }
-                          }
-                          grandNode = grandNode.return;
-                        }
-                      }
-                      while (container2 !== null) {
-                        var parentNode = getClosestInstanceFromNode(container2);
-                        if (parentNode === null) {
-                          return;
-                        }
-                        var parentTag = parentNode.tag;
-                        if (parentTag === HostComponent || parentTag === HostText) {
-                          node = ancestorInst = parentNode;
-                          continue mainLoop;
-                        }
-                        container2 = container2.parentNode;
-                      }
-                    }
-                    node = node.return;
+                mainLoop: while (true) {
+                  if (node === null) {
+                    return;
                   }
+                  var nodeTag = node.tag;
+                  if (nodeTag === HostRoot || nodeTag === HostPortal) {
+                    var container2 = node.stateNode.containerInfo;
+                    if (isMatchingRootContainer(container2, targetContainerNode)) {
+                      break;
+                    }
+                    if (nodeTag === HostPortal) {
+                      var grandNode = node.return;
+                      while (grandNode !== null) {
+                        var grandTag = grandNode.tag;
+                        if (grandTag === HostRoot || grandTag === HostPortal) {
+                          var grandContainer = grandNode.stateNode.containerInfo;
+                          if (isMatchingRootContainer(grandContainer, targetContainerNode)) {
+                            return;
+                          }
+                        }
+                        grandNode = grandNode.return;
+                      }
+                    }
+                    while (container2 !== null) {
+                      var parentNode = getClosestInstanceFromNode(container2);
+                      if (parentNode === null) {
+                        return;
+                      }
+                      var parentTag = parentNode.tag;
+                      if (parentTag === HostComponent || parentTag === HostText) {
+                        node = ancestorInst = parentNode;
+                        continue mainLoop;
+                      }
+                      container2 = container2.parentNode;
+                    }
+                  }
+                  node = node.return;
+                }
               }
             }
             batchedUpdates(function() {
@@ -9356,10 +9353,8 @@
                 } else if (typeof nextProp === "number") {
                   setTextContent(domElement, "" + nextProp);
                 }
-              } else if (propKey === SUPPRESS_CONTENT_EDITABLE_WARNING || propKey === SUPPRESS_HYDRATION_WARNING)
-                ;
-              else if (propKey === AUTOFOCUS)
-                ;
+              } else if (propKey === SUPPRESS_CONTENT_EDITABLE_WARNING || propKey === SUPPRESS_HYDRATION_WARNING) ;
+              else if (propKey === AUTOFOCUS) ;
               else if (registrationNameDependencies.hasOwnProperty(propKey)) {
                 if (nextProp != null) {
                   if (typeof nextProp !== "function") {
@@ -9575,12 +9570,9 @@
                     styleUpdates[styleName] = "";
                   }
                 }
-              } else if (propKey === DANGEROUSLY_SET_INNER_HTML || propKey === CHILDREN)
-                ;
-              else if (propKey === SUPPRESS_CONTENT_EDITABLE_WARNING || propKey === SUPPRESS_HYDRATION_WARNING)
-                ;
-              else if (propKey === AUTOFOCUS)
-                ;
+              } else if (propKey === DANGEROUSLY_SET_INNER_HTML || propKey === CHILDREN) ;
+              else if (propKey === SUPPRESS_CONTENT_EDITABLE_WARNING || propKey === SUPPRESS_HYDRATION_WARNING) ;
+              else if (propKey === AUTOFOCUS) ;
               else if (registrationNameDependencies.hasOwnProperty(propKey)) {
                 if (!updatePayload) {
                   updatePayload = [];
@@ -9639,8 +9631,7 @@
                 if (typeof nextProp === "string" || typeof nextProp === "number") {
                   (updatePayload = updatePayload || []).push(propKey, "" + nextProp);
                 }
-              } else if (propKey === SUPPRESS_CONTENT_EDITABLE_WARNING || propKey === SUPPRESS_HYDRATION_WARNING)
-                ;
+              } else if (propKey === SUPPRESS_CONTENT_EDITABLE_WARNING || propKey === SUPPRESS_HYDRATION_WARNING) ;
               else if (registrationNameDependencies.hasOwnProperty(propKey)) {
                 if (nextProp != null) {
                   if (typeof nextProp !== "function") {
@@ -9797,12 +9788,10 @@
               typeof isCustomComponentTag === "boolean") {
                 var serverValue = void 0;
                 var propertyInfo = isCustomComponentTag && enableCustomElementPropertySupport ? null : getPropertyInfo(propKey);
-                if (rawProps[SUPPRESS_HYDRATION_WARNING] === true)
-                  ;
+                if (rawProps[SUPPRESS_HYDRATION_WARNING] === true) ;
                 else if (propKey === SUPPRESS_CONTENT_EDITABLE_WARNING || propKey === SUPPRESS_HYDRATION_WARNING || // Controlled attributes are not validated
                 // TODO: Only ignore them on controlled tags.
-                propKey === "value" || propKey === "checked" || propKey === "selected")
-                  ;
+                propKey === "value" || propKey === "checked" || propKey === "selected") ;
                 else if (propKey === DANGEROUSLY_SET_INNER_HTML) {
                   var serverHTML = domElement.innerHTML;
                   var nextHtml = nextProp ? nextProp[HTML$1] : void 0;
@@ -10598,8 +10587,7 @@
             {
               if (instance.nodeType === ELEMENT_NODE) {
                 warnForDeletedHydratableElement(parentContainer, instance);
-              } else if (instance.nodeType === COMMENT_NODE)
-                ;
+              } else if (instance.nodeType === COMMENT_NODE) ;
               else {
                 warnForDeletedHydratableText(parentContainer, instance);
               }
@@ -10611,8 +10599,7 @@
               if (parentNode !== null) {
                 if (instance.nodeType === ELEMENT_NODE) {
                   warnForDeletedHydratableElement(parentNode, instance);
-                } else if (instance.nodeType === COMMENT_NODE)
-                  ;
+                } else if (instance.nodeType === COMMENT_NODE) ;
                 else {
                   warnForDeletedHydratableText(parentNode, instance);
                 }
@@ -10624,8 +10611,7 @@
               if (isConcurrentMode || parentProps[SUPPRESS_HYDRATION_WARNING$1] !== true) {
                 if (instance.nodeType === ELEMENT_NODE) {
                   warnForDeletedHydratableElement(parentInstance, instance);
-                } else if (instance.nodeType === COMMENT_NODE)
-                  ;
+                } else if (instance.nodeType === COMMENT_NODE) ;
                 else {
                   warnForDeletedHydratableText(parentInstance, instance);
                 }
@@ -10645,15 +10631,13 @@
           function didNotFindHydratableInstanceWithinSuspenseInstance(parentInstance, type, props) {
             {
               var parentNode = parentInstance.parentNode;
-              if (parentNode !== null)
-                warnForInsertedHydratedElement(parentNode, type);
+              if (parentNode !== null) warnForInsertedHydratedElement(parentNode, type);
             }
           }
           function didNotFindHydratableTextInstanceWithinSuspenseInstance(parentInstance, text) {
             {
               var parentNode = parentInstance.parentNode;
-              if (parentNode !== null)
-                warnForInsertedHydratedText(parentNode, text);
+              if (parentNode !== null) warnForInsertedHydratedText(parentNode, text);
             }
           }
           function didNotFindHydratableInstance(parentType, parentProps, parentInstance, type, props, isConcurrentMode) {
@@ -11240,8 +11224,7 @@
                 }
                 case SuspenseComponent: {
                   var suspenseState = returnFiber.memoizedState;
-                  if (suspenseState.dehydrated !== null)
-                    didNotHydrateInstanceWithinSuspenseInstance(suspenseState.dehydrated, instance);
+                  if (suspenseState.dehydrated !== null) didNotHydrateInstanceWithinSuspenseInstance(suspenseState.dehydrated, instance);
                   break;
                 }
               }
@@ -11320,18 +11303,17 @@
                 case SuspenseComponent: {
                   var suspenseState = returnFiber.memoizedState;
                   var _parentInstance = suspenseState.dehydrated;
-                  if (_parentInstance !== null)
-                    switch (fiber.tag) {
-                      case HostComponent:
-                        var _type2 = fiber.type;
-                        var _props2 = fiber.pendingProps;
-                        didNotFindHydratableInstanceWithinSuspenseInstance(_parentInstance, _type2);
-                        break;
-                      case HostText:
-                        var _text2 = fiber.pendingProps;
-                        didNotFindHydratableTextInstanceWithinSuspenseInstance(_parentInstance, _text2);
-                        break;
-                    }
+                  if (_parentInstance !== null) switch (fiber.tag) {
+                    case HostComponent:
+                      var _type2 = fiber.type;
+                      var _props2 = fiber.pendingProps;
+                      didNotFindHydratableInstanceWithinSuspenseInstance(_parentInstance, _type2);
+                      break;
+                    case HostText:
+                      var _text2 = fiber.pendingProps;
+                      didNotFindHydratableTextInstanceWithinSuspenseInstance(_parentInstance, _text2);
+                      break;
+                  }
                   break;
                 }
                 default:
@@ -12620,8 +12602,7 @@
                       var update = createUpdate(NoTimestamp, lane);
                       update.tag = ForceUpdate;
                       var updateQueue = fiber.updateQueue;
-                      if (updateQueue === null)
-                        ;
+                      if (updateQueue === null) ;
                       else {
                         var sharedQueue = updateQueue.shared;
                         var pending = sharedQueue.pending;
@@ -12707,8 +12688,7 @@
               }
             }
             var value = context._currentValue;
-            if (lastFullyObservedContext === context)
-              ;
+            if (lastFullyObservedContext === context) ;
             else {
               var contextItem = {
                 context,
@@ -17942,8 +17922,7 @@
               while (node !== null) {
                 if (node.tag === HostComponent || node.tag === HostText) {
                   appendInitialChild(parent, node.stateNode);
-                } else if (node.tag === HostPortal)
-                  ;
+                } else if (node.tag === HostPortal) ;
                 else if (node.child !== null) {
                   node.child.return = node;
                   node = node.child;
@@ -18897,20 +18876,19 @@
                       onPostCommit(id2, phase, passiveEffectDuration, commitTime2);
                     }
                     var parentFiber = finishedWork.return;
-                    outer:
-                      while (parentFiber !== null) {
-                        switch (parentFiber.tag) {
-                          case HostRoot:
-                            var root2 = parentFiber.stateNode;
-                            root2.passiveEffectDuration += passiveEffectDuration;
-                            break outer;
-                          case Profiler:
-                            var parentStateNode = parentFiber.stateNode;
-                            parentStateNode.passiveEffectDuration += passiveEffectDuration;
-                            break outer;
-                        }
-                        parentFiber = parentFiber.return;
+                    outer: while (parentFiber !== null) {
+                      switch (parentFiber.tag) {
+                        case HostRoot:
+                          var root2 = parentFiber.stateNode;
+                          root2.passiveEffectDuration += passiveEffectDuration;
+                          break outer;
+                        case Profiler:
+                          var parentStateNode = parentFiber.stateNode;
+                          parentStateNode.passiveEffectDuration += passiveEffectDuration;
+                          break outer;
                       }
+                      parentFiber = parentFiber.return;
+                    }
                     break;
                   }
                 }
@@ -19057,20 +19035,19 @@
                       }
                       enqueuePendingPassiveProfilerEffect(finishedWork);
                       var parentFiber = finishedWork.return;
-                      outer:
-                        while (parentFiber !== null) {
-                          switch (parentFiber.tag) {
-                            case HostRoot:
-                              var root2 = parentFiber.stateNode;
-                              root2.effectDuration += effectDuration;
-                              break outer;
-                            case Profiler:
-                              var parentStateNode = parentFiber.stateNode;
-                              parentStateNode.effectDuration += effectDuration;
-                              break outer;
-                          }
-                          parentFiber = parentFiber.return;
+                      outer: while (parentFiber !== null) {
+                        switch (parentFiber.tag) {
+                          case HostRoot:
+                            var root2 = parentFiber.stateNode;
+                            root2.effectDuration += effectDuration;
+                            break outer;
+                          case Profiler:
+                            var parentStateNode = parentFiber.stateNode;
+                            parentStateNode.effectDuration += effectDuration;
+                            break outer;
                         }
+                        parentFiber = parentFiber.return;
+                      }
                     }
                   }
                   break;
@@ -19162,8 +19139,7 @@
                       captureCommitPhaseError(finishedWork, finishedWork.return, error2);
                     }
                   }
-                } else if ((node.tag === OffscreenComponent || node.tag === LegacyHiddenComponent) && node.memoizedState !== null && node !== finishedWork)
-                  ;
+                } else if ((node.tag === OffscreenComponent || node.tag === LegacyHiddenComponent) && node.memoizedState !== null && node !== finishedWork) ;
                 else if (node.child !== null) {
                   node.child.return = node;
                   node = node.child;
@@ -19281,31 +19257,30 @@
           }
           function getHostSibling(fiber) {
             var node = fiber;
-            siblings:
-              while (true) {
-                while (node.sibling === null) {
-                  if (node.return === null || isHostParent(node.return)) {
-                    return null;
-                  }
-                  node = node.return;
+            siblings: while (true) {
+              while (node.sibling === null) {
+                if (node.return === null || isHostParent(node.return)) {
+                  return null;
                 }
-                node.sibling.return = node.return;
-                node = node.sibling;
-                while (node.tag !== HostComponent && node.tag !== HostText && node.tag !== DehydratedFragment) {
-                  if (node.flags & Placement) {
-                    continue siblings;
-                  }
-                  if (node.child === null || node.tag === HostPortal) {
-                    continue siblings;
-                  } else {
-                    node.child.return = node;
-                    node = node.child;
-                  }
+                node = node.return;
+              }
+              node.sibling.return = node.return;
+              node = node.sibling;
+              while (node.tag !== HostComponent && node.tag !== HostText && node.tag !== DehydratedFragment) {
+                if (node.flags & Placement) {
+                  continue siblings;
                 }
-                if (!(node.flags & Placement)) {
-                  return node.stateNode;
+                if (node.child === null || node.tag === HostPortal) {
+                  continue siblings;
+                } else {
+                  node.child.return = node;
+                  node = node.child;
                 }
               }
+              if (!(node.flags & Placement)) {
+                return node.stateNode;
+              }
+            }
           }
           function commitPlacement(finishedWork) {
             var parentFiber = getHostParentFiber(finishedWork);
@@ -19341,8 +19316,7 @@
               } else {
                 appendChildToContainer(parent, stateNode);
               }
-            } else if (tag === HostPortal)
-              ;
+            } else if (tag === HostPortal) ;
             else {
               var child = node.child;
               if (child !== null) {
@@ -19365,8 +19339,7 @@
               } else {
                 appendChild(parent, stateNode);
               }
-            } else if (tag === HostPortal)
-              ;
+            } else if (tag === HostPortal) ;
             else {
               var child = node.child;
               if (child !== null) {
@@ -19384,27 +19357,26 @@
           function commitDeletionEffects(root2, returnFiber, deletedFiber) {
             {
               var parent = returnFiber;
-              findParent:
-                while (parent !== null) {
-                  switch (parent.tag) {
-                    case HostComponent: {
-                      hostParent = parent.stateNode;
-                      hostParentIsContainer = false;
-                      break findParent;
-                    }
-                    case HostRoot: {
-                      hostParent = parent.stateNode.containerInfo;
-                      hostParentIsContainer = true;
-                      break findParent;
-                    }
-                    case HostPortal: {
-                      hostParent = parent.stateNode.containerInfo;
-                      hostParentIsContainer = true;
-                      break findParent;
-                    }
+              findParent: while (parent !== null) {
+                switch (parent.tag) {
+                  case HostComponent: {
+                    hostParent = parent.stateNode;
+                    hostParentIsContainer = false;
+                    break findParent;
                   }
-                  parent = parent.return;
+                  case HostRoot: {
+                    hostParent = parent.stateNode.containerInfo;
+                    hostParentIsContainer = true;
+                    break findParent;
+                  }
+                  case HostPortal: {
+                    hostParent = parent.stateNode.containerInfo;
+                    hostParentIsContainer = true;
+                    break findParent;
+                  }
                 }
+                parent = parent.return;
+              }
               if (hostParent === null) {
                 throw new Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue.");
               }
@@ -22316,67 +22288,66 @@
             } else if (typeof type === "string") {
               fiberTag = HostComponent;
             } else {
-              getTag:
-                switch (type) {
-                  case REACT_FRAGMENT_TYPE:
-                    return createFiberFromFragment(pendingProps.children, mode, lanes, key);
-                  case REACT_STRICT_MODE_TYPE:
-                    fiberTag = Mode;
-                    mode |= StrictLegacyMode;
-                    if ((mode & ConcurrentMode) !== NoMode) {
-                      mode |= StrictEffectsMode;
-                    }
-                    break;
-                  case REACT_PROFILER_TYPE:
-                    return createFiberFromProfiler(pendingProps, mode, lanes, key);
-                  case REACT_SUSPENSE_TYPE:
-                    return createFiberFromSuspense(pendingProps, mode, lanes, key);
-                  case REACT_SUSPENSE_LIST_TYPE:
-                    return createFiberFromSuspenseList(pendingProps, mode, lanes, key);
-                  case REACT_OFFSCREEN_TYPE:
-                    return createFiberFromOffscreen(pendingProps, mode, lanes, key);
-                  case REACT_LEGACY_HIDDEN_TYPE:
-                  case REACT_SCOPE_TYPE:
-                  case REACT_CACHE_TYPE:
-                  case REACT_TRACING_MARKER_TYPE:
-                  case REACT_DEBUG_TRACING_MODE_TYPE:
-                  default: {
-                    if (typeof type === "object" && type !== null) {
-                      switch (type.$$typeof) {
-                        case REACT_PROVIDER_TYPE:
-                          fiberTag = ContextProvider;
-                          break getTag;
-                        case REACT_CONTEXT_TYPE:
-                          fiberTag = ContextConsumer;
-                          break getTag;
-                        case REACT_FORWARD_REF_TYPE:
-                          fiberTag = ForwardRef;
-                          {
-                            resolvedType = resolveForwardRefForHotReloading(resolvedType);
-                          }
-                          break getTag;
-                        case REACT_MEMO_TYPE:
-                          fiberTag = MemoComponent;
-                          break getTag;
-                        case REACT_LAZY_TYPE:
-                          fiberTag = LazyComponent;
-                          resolvedType = null;
-                          break getTag;
-                      }
-                    }
-                    var info = "";
-                    {
-                      if (type === void 0 || typeof type === "object" && type !== null && Object.keys(type).length === 0) {
-                        info += " You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.";
-                      }
-                      var ownerName = owner ? getComponentNameFromFiber(owner) : null;
-                      if (ownerName) {
-                        info += "\n\nCheck the render method of `" + ownerName + "`.";
-                      }
-                    }
-                    throw new Error("Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) " + ("but got: " + (type == null ? type : typeof type) + "." + info));
+              getTag: switch (type) {
+                case REACT_FRAGMENT_TYPE:
+                  return createFiberFromFragment(pendingProps.children, mode, lanes, key);
+                case REACT_STRICT_MODE_TYPE:
+                  fiberTag = Mode;
+                  mode |= StrictLegacyMode;
+                  if ((mode & ConcurrentMode) !== NoMode) {
+                    mode |= StrictEffectsMode;
                   }
+                  break;
+                case REACT_PROFILER_TYPE:
+                  return createFiberFromProfiler(pendingProps, mode, lanes, key);
+                case REACT_SUSPENSE_TYPE:
+                  return createFiberFromSuspense(pendingProps, mode, lanes, key);
+                case REACT_SUSPENSE_LIST_TYPE:
+                  return createFiberFromSuspenseList(pendingProps, mode, lanes, key);
+                case REACT_OFFSCREEN_TYPE:
+                  return createFiberFromOffscreen(pendingProps, mode, lanes, key);
+                case REACT_LEGACY_HIDDEN_TYPE:
+                case REACT_SCOPE_TYPE:
+                case REACT_CACHE_TYPE:
+                case REACT_TRACING_MARKER_TYPE:
+                case REACT_DEBUG_TRACING_MODE_TYPE:
+                default: {
+                  if (typeof type === "object" && type !== null) {
+                    switch (type.$$typeof) {
+                      case REACT_PROVIDER_TYPE:
+                        fiberTag = ContextProvider;
+                        break getTag;
+                      case REACT_CONTEXT_TYPE:
+                        fiberTag = ContextConsumer;
+                        break getTag;
+                      case REACT_FORWARD_REF_TYPE:
+                        fiberTag = ForwardRef;
+                        {
+                          resolvedType = resolveForwardRefForHotReloading(resolvedType);
+                        }
+                        break getTag;
+                      case REACT_MEMO_TYPE:
+                        fiberTag = MemoComponent;
+                        break getTag;
+                      case REACT_LAZY_TYPE:
+                        fiberTag = LazyComponent;
+                        resolvedType = null;
+                        break getTag;
+                    }
+                  }
+                  var info = "";
+                  {
+                    if (type === void 0 || typeof type === "object" && type !== null && Object.keys(type).length === 0) {
+                      info += " You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.";
+                    }
+                    var ownerName = owner ? getComponentNameFromFiber(owner) : null;
+                    if (ownerName) {
+                      info += "\n\nCheck the render method of `" + ownerName + "`.";
+                    }
+                  }
+                  throw new Error("Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) " + ("but got: " + (type == null ? type : typeof type) + "." + info));
                 }
+              }
             }
             var fiber = createFiber(fiberTag, pendingProps, key, mode);
             fiber.elementType = type;
@@ -26308,8 +26279,7 @@
       a = a.split(".");
       var c = k;
       a[0] in c || "undefined" == typeof c.execScript || c.execScript("var " + a[0]);
-      for (var d; a.length && (d = a.shift()); )
-        a.length || void 0 === b ? c[d] && c[d] !== Object.prototype[d] ? c = c[d] : c = c[d] = {} : c[d] = b;
+      for (var d; a.length && (d = a.shift()); ) a.length || void 0 === b ? c[d] && c[d] !== Object.prototype[d] ? c = c[d] : c = c[d] = {} : c[d] = b;
     }
     function n(a, b) {
       function c() {
@@ -26319,8 +26289,7 @@
       a.prototype = new c();
       a.prototype.constructor = a;
       a.sa = function(d, e, f) {
-        for (var g = Array(arguments.length - 2), h = 2; h < arguments.length; h++)
-          g[h - 2] = arguments[h];
+        for (var g = Array(arguments.length - 2), h = 2; h < arguments.length; h++) g[h - 2] = arguments[h];
         return b.prototype[e].apply(d, g);
       };
     }
@@ -26328,15 +26297,13 @@
     function aa(a) {
       const b = [];
       let c = 0;
-      for (const d in a)
-        b[c++] = a[d];
+      for (const d in a) b[c++] = a[d];
       return b;
     }
     ;
     var da = class {
       constructor(a) {
-        if (ba !== ba)
-          throw Error("SafeUrl is not meant to be built directly");
+        if (ba !== ba) throw Error("SafeUrl is not meant to be built directly");
         this.g = a;
       }
       toString() {
@@ -26348,8 +26315,7 @@
     const ea = {};
     class fa {
       constructor() {
-        if (ea !== ea)
-          throw Error("SafeStyle is not meant to be built directly");
+        if (ea !== ea) throw Error("SafeStyle is not meant to be built directly");
       }
       toString() {
         return "".toString();
@@ -26359,8 +26325,7 @@
     const ha = {};
     class ia {
       constructor() {
-        if (ha !== ha)
-          throw Error("SafeStyleSheet is not meant to be built directly");
+        if (ha !== ha) throw Error("SafeStyleSheet is not meant to be built directly");
       }
       toString() {
         return "".toString();
@@ -26371,8 +26336,7 @@
     class ka {
       constructor() {
         var a = k.trustedTypes && k.trustedTypes.emptyHTML || "";
-        if (ja !== ja)
-          throw Error("SafeHtml is not meant to be built directly");
+        if (ja !== ja) throw Error("SafeHtml is not meant to be built directly");
         this.g = a;
       }
       toString() {
@@ -26440,10 +26404,8 @@
           var g = 11 == e.h || 10 == e.h;
           if (e.l) {
             e = u(b, f);
-            for (var h = 0; h < e.length; h++)
-              va(a, f, g ? e[h].clone() : e[h]);
-          } else
-            e = v(b, f), g ? (g = v(a, f)) ? wa(g, e) : t(a, f, e.clone()) : t(a, f, e);
+            for (var h = 0; h < e.length; h++) va(a, f, g ? e[h].clone() : e[h]);
+          } else e = v(b, f), g ? (g = v(a, f)) ? wa(g, e) : t(a, f, e.clone()) : t(a, f, e);
         }
       }
     }
@@ -26457,18 +26419,14 @@
     }
     function v(a, b) {
       var c = a.h[b];
-      if (null == c)
-        return null;
+      if (null == c) return null;
       if (a.l) {
         if (!(b in a.g)) {
           var d = a.l, e = a.j[b];
-          if (null != c)
-            if (e.l) {
-              for (var f = [], g = 0; g < c.length; g++)
-                f[g] = d.h(e, c[g]);
-              c = f;
-            } else
-              c = d.h(e, c);
+          if (null != c) if (e.l) {
+            for (var f = [], g = 0; g < c.length; g++) f[g] = d.h(e, c[g]);
+            c = f;
+          } else c = d.h(e, c);
           return a.g[b] = c;
         }
         return a.g[b];
@@ -26480,24 +26438,18 @@
       return a.j[b].l ? d[c || 0] : d;
     }
     function w(a, b) {
-      if (q(a, b))
-        a = r(a, b);
-      else
-        a: {
-          a = a.j[b];
-          if (void 0 === a.j)
-            if (b = a.s, b === Boolean)
-              a.j = false;
-            else if (b === Number)
-              a.j = 0;
-            else if (b === String)
-              a.j = a.o ? "0" : "";
-            else {
-              a = new b();
-              break a;
-            }
-          a = a.j;
+      if (q(a, b)) a = r(a, b);
+      else a: {
+        a = a.j[b];
+        if (void 0 === a.j) if (b = a.s, b === Boolean) a.j = false;
+        else if (b === Number) a.j = 0;
+        else if (b === String) a.j = a.o ? "0" : "";
+        else {
+          a = new b();
+          break a;
         }
+        a = a.j;
+      }
       return a;
     }
     function u(a, b) {
@@ -26517,8 +26469,7 @@
     }
     function y(a, b) {
       var c = [], d;
-      for (d in b)
-        0 != d && c.push(new la(d, b[d]));
+      for (d in b) 0 != d && c.push(new la(d, b[d]));
       return new ta(a, c);
     }
     ;
@@ -26529,18 +26480,13 @@
       throw Error("Unimplemented");
     };
     z.prototype.h = function(a, b) {
-      if (11 == a.h || 10 == a.h)
-        return b instanceof p ? b : this.g(a.s.prototype.m(), b);
-      if (14 == a.h)
-        return "string" === typeof b && xa.test(b) && (a = Number(b), 0 < a) ? a : b;
-      if (!a.o)
-        return b;
+      if (11 == a.h || 10 == a.h) return b instanceof p ? b : this.g(a.s.prototype.m(), b);
+      if (14 == a.h) return "string" === typeof b && xa.test(b) && (a = Number(b), 0 < a) ? a : b;
+      if (!a.o) return b;
       a = a.s;
       if (a === String) {
-        if ("number" === typeof b)
-          return String(b);
-      } else if (a === Number && "string" === typeof b && ("Infinity" === b || "-Infinity" === b || "NaN" === b || xa.test(b)))
-        return Number(b);
+        if ("number" === typeof b) return String(b);
+      } else if (a === Number && "string" === typeof b && ("Infinity" === b || "-Infinity" === b || "NaN" === b || xa.test(b))) return Number(b);
       return b;
     };
     var xa = /^-?[0-9]+$/;
@@ -26572,9 +26518,7 @@
     };
     D.prototype.g = function(a, b, c) {
       this.h += String(a);
-      if (null != b)
-        for (let d = 1; d < arguments.length; d++)
-          this.h += arguments[d];
+      if (null != b) for (let d = 1; d < arguments.length; d++) this.h += arguments[d];
       return this;
     };
     function E(a) {
@@ -31960,8 +31904,7 @@
       return null != a && (1 != x(a, 9) || -1 != u(a, 9)[0]);
     }
     function O(a, b) {
-      for (var c = new D(), d, e = a.length, f = 0; f < e; ++f)
-        d = a.charAt(f), d = b[d.toUpperCase()], null != d && c.g(d);
+      for (var c = new D(), d, e = a.length, f = 0; f < e; ++f) d = a.charAt(f), d = b[d.toUpperCase()], null != d && c.g(d);
       return c.toString();
     }
     function Ya(a) {
@@ -31973,15 +31916,12 @@
     K.prototype.format = function(a, b) {
       if (0 == r(a, 2) && q(a, 5)) {
         var c = w(a, 5);
-        if (0 < c.length)
-          return c;
+        if (0 < c.length) return c;
       }
       c = w(a, 1);
       var d = Q(a);
-      if (0 == b)
-        return Za(c, 0, d, "");
-      if (!(c in J))
-        return d;
+      if (0 == b) return Za(c, 0, d, "");
+      if (!(c in J)) return d;
       var e = R(this, c, S(c));
       a = q(a, 3) && 0 != r(a, 3).length ? 3 == b ? ";ext=" + r(a, 3) : q(e, 13) ? r(e, 13) + w(a, 3) : " ext. " + w(a, 3) : "";
       a: {
@@ -32008,8 +31948,7 @@
       return "001" == c ? T(a, "" + b) : T(a, c);
     }
     function Q(a) {
-      if (!q(a, 2))
-        return "";
+      if (!q(a, 2)) return "";
       var b = "" + r(a, 2);
       return q(a, 4) && r(a, 4) && 0 < w(a, 8) ? Array(w(a, 8) + 1).join("0") + b : b;
     }
@@ -32056,14 +31995,12 @@
       return V(a, r(b, 1)) ? V(a, r(b, 5)) ? 4 : V(a, r(b, 4)) ? 3 : V(a, r(b, 6)) ? 5 : V(a, r(b, 8)) ? 6 : V(a, r(b, 7)) ? 7 : V(a, r(b, 21)) ? 8 : V(a, r(b, 25)) ? 9 : V(a, r(b, 28)) ? 10 : V(a, r(b, 2)) ? r(b, 18) || V(a, r(b, 3)) ? 2 : 0 : !r(b, 18) && V(a, r(b, 3)) ? 1 : -1 : -1;
     }
     function T(a, b) {
-      if (null == b)
-        return null;
+      if (null == b) return null;
       b = b.toUpperCase();
       var c = a.g[b];
       if (null == c) {
         c = Da[b];
-        if (null == c)
-          return null;
+        if (null == c) return null;
         c = new C().g(H.m(), c);
         a.g[b] = c;
       }
@@ -32074,32 +32011,28 @@
       return 0 < x(b, 9) && -1 == u(b, 9).indexOf(c) ? false : N(w(b, 2), a);
     }
     function ab(a, b) {
-      if (null == b)
-        return null;
+      if (null == b) return null;
       var c = w(b, 1);
       c = J[c];
-      if (null == c)
-        a = null;
-      else if (1 == c.length)
-        a = c[0];
-      else
-        a: {
-          b = Q(b);
-          for (var d, e = c.length, f = 0; f < e; f++) {
-            d = c[f];
-            var g = T(a, d);
-            if (q(g, 23)) {
-              if (0 == b.search(r(g, 23))) {
-                a = d;
-                break a;
-              }
-            } else if (-1 != $a(b, g)) {
+      if (null == c) a = null;
+      else if (1 == c.length) a = c[0];
+      else a: {
+        b = Q(b);
+        for (var d, e = c.length, f = 0; f < e; f++) {
+          d = c[f];
+          var g = T(a, d);
+          if (q(g, 23)) {
+            if (0 == b.search(r(g, 23))) {
               a = d;
               break a;
             }
+          } else if (-1 != $a(b, g)) {
+            a = d;
+            break a;
           }
-          a = null;
         }
+        a = null;
+      }
       return a;
     }
     function S(a) {
@@ -32108,55 +32041,42 @@
     }
     function bb(a, b) {
       a = T(a, b);
-      if (null == a)
-        throw Error("Invalid region code: " + b);
+      if (null == a) throw Error("Invalid region code: " + b);
       return w(a, 10);
     }
     function W(a, b, c, d) {
       var e = U(c, d), f = 0 == x(e, 9) ? u(r(c, 1), 9) : u(e, 9);
       e = u(e, 10);
-      if (2 == d)
-        if (Xa(U(c, 0)))
-          a = U(c, 1), Xa(a) && (f = f.concat(0 == x(a, 9) ? u(r(c, 1), 9) : u(a, 9)), f.sort(), 0 == e.length ? e = u(a, 10) : (e = e.concat(u(a, 10)), e.sort()));
-        else
-          return W(a, b, c, 1);
-      if (-1 == f[0])
-        return 5;
+      if (2 == d) if (Xa(U(c, 0))) a = U(c, 1), Xa(a) && (f = f.concat(0 == x(a, 9) ? u(r(c, 1), 9) : u(a, 9)), f.sort(), 0 == e.length ? e = u(a, 10) : (e = e.concat(u(a, 10)), e.sort()));
+      else return W(a, b, c, 1);
+      if (-1 == f[0]) return 5;
       b = b.length;
-      if (-1 < e.indexOf(b))
-        return 4;
+      if (-1 < e.indexOf(b)) return 4;
       c = f[0];
       return c == b ? 0 : c > b ? 2 : f[f.length - 1] < b ? 3 : -1 < f.indexOf(b, 1) ? 0 : 5;
     }
     function X(a, b, c) {
       var d = Q(b);
       b = w(b, 1);
-      if (!(b in J))
-        return 1;
+      if (!(b in J)) return 1;
       b = R(a, b, S(b));
       return W(a, d, b, c);
     }
     function cb(a, b) {
       a = a.toString();
-      if (0 == a.length || "0" == a.charAt(0))
-        return 0;
-      for (var c, d = a.length, e = 1; 3 >= e && e <= d; ++e)
-        if (c = parseInt(a.substring(0, e), 10), c in J)
-          return b.g(a.substring(e)), c;
+      if (0 == a.length || "0" == a.charAt(0)) return 0;
+      for (var c, d = a.length, e = 1; 3 >= e && e <= d; ++e) if (c = parseInt(a.substring(0, e), 10), c in J) return b.g(a.substring(e)), c;
       return 0;
     }
     function db(a, b, c, d, e, f) {
-      if (0 == b.length)
-        return 0;
+      if (0 == b.length) return 0;
       b = new D(b);
       var g;
       null != c && (g = r(c, 11));
       null == g && (g = "NonMatch");
       var h = b.toString();
-      if (0 == h.length)
-        g = 20;
-      else if (L.test(h))
-        h = h.replace(L, ""), E(b), b.g(Va(h)), g = 1;
+      if (0 == h.length) g = 20;
+      else if (L.test(h)) h = h.replace(L, ""), E(b), b.g(Va(h)), g = 1;
       else {
         h = new RegExp(g);
         Wa(b);
@@ -32165,21 +32085,17 @@
           h = g.match(h)[0].length;
           var l = g.substring(h).match(Ia);
           l && null != l[1] && 0 < l[1].length && "0" == O(l[1], Ea) ? g = false : (E(b), b.g(g.substring(h)), g = true);
-        } else
-          g = false;
+        } else g = false;
         g = g ? 5 : 20;
       }
       e && t(f, 6, g);
       if (20 != g) {
-        if (2 >= b.h.length)
-          throw Error("Phone number too short after IDD");
+        if (2 >= b.h.length) throw Error("Phone number too short after IDD");
         a = cb(b, d);
-        if (0 != a)
-          return t(f, 1, a), a;
+        if (0 != a) return t(f, 1, a), a;
         throw Error("Invalid country calling code");
       }
-      if (null != c && (g = w(c, 10), h = "" + g, l = b.toString(), 0 == l.lastIndexOf(h, 0) && (h = new D(l.substring(h.length)), l = r(c, 1), l = new RegExp(w(l, 2)), eb(h, c, null), h = h.toString(), !N(l, b.toString()) && N(l, h) || 3 == W(a, b.toString(), c, -1))))
-        return d.g(h), e && t(f, 6, 10), t(f, 1, g), g;
+      if (null != c && (g = w(c, 10), h = "" + g, l = b.toString(), 0 == l.lastIndexOf(h, 0) && (h = new D(l.substring(h.length)), l = r(c, 1), l = new RegExp(w(l, 2)), eb(h, c, null), h = h.toString(), !N(l, b.toString()) && N(l, h) || 3 == W(a, b.toString(), c, -1)))) return d.g(h), e && t(f, 6, 10), t(f, 1, g), g;
       t(f, 1, 0);
       return 0;
     }
@@ -32192,46 +32108,36 @@
           var h = N(f, d), l = e.length - 1;
           b = r(b, 16);
           if (null == b || 0 == b.length || null == e[l] || 0 == e[l].length) {
-            if (!h || N(f, d.substring(e[0].length)))
-              null != c && 0 < l && null != e[l] && c.g(e[1]), a.set(d.substring(e[0].length));
-          } else if (d = d.replace(g, b), !h || N(f, d))
-            null != c && 0 < l && c.g(e[1]), a.set(d);
+            if (!h || N(f, d.substring(e[0].length))) null != c && 0 < l && null != e[l] && c.g(e[1]), a.set(d.substring(e[0].length));
+          } else if (d = d.replace(g, b), !h || N(f, d)) null != c && 0 < l && c.g(e[1]), a.set(d);
         }
       }
     }
     function Y(a, b, c) {
-      if (!P(c) && 0 < b.length && "+" != b.charAt(0))
-        throw Error("Invalid country calling code");
+      if (!P(c) && 0 < b.length && "+" != b.charAt(0)) throw Error("Invalid country calling code");
       return fb(a, b, c, true);
     }
     function fb(a, b, c, d) {
-      if (null == b)
-        throw Error("The string supplied did not seem to be a phone number");
-      if (250 < b.length)
-        throw Error("The string supplied is too long to be a phone number");
+      if (null == b) throw Error("The string supplied did not seem to be a phone number");
+      if (250 < b.length) throw Error("The string supplied is too long to be a phone number");
       var e = new D();
       var f = b.indexOf(";phone-context=");
-      if (-1 === f)
-        f = null;
-      else if (f += 15, f >= b.length)
-        f = "";
+      if (-1 === f) f = null;
+      else if (f += 15, f >= b.length) f = "";
       else {
         var g = b.indexOf(";", f);
         f = -1 !== g ? b.substring(f, g) : b.substring(f);
       }
       var h = f;
       null == h ? g = true : 0 === h.length ? g = false : (g = Na.exec(h), h = Oa.exec(h), g = null !== g || null !== h);
-      if (!g)
-        throw Error("The string supplied did not seem to be a phone number");
+      if (!g) throw Error("The string supplied did not seem to be a phone number");
       null != f ? ("+" === f.charAt(0) && e.g(f), f = b.indexOf("tel:"), e.g(b.substring(0 <= f ? f + 4 : 0, b.indexOf(";phone-context=")))) : (f = e.g, g = b ?? "", h = g.search(Ja), 0 <= h ? (g = g.substring(h), g = g.replace(La, ""), h = g.search(Ka), 0 <= h && (g = g.substring(0, h))) : g = "", f.call(e, g));
       f = e.toString();
       g = f.indexOf(";isub=");
       0 < g && (E(e), e.g(f.substring(0, g)));
-      if (!Ua(e.toString()))
-        throw Error("The string supplied did not seem to be a phone number");
+      if (!Ua(e.toString())) throw Error("The string supplied did not seem to be a phone number");
       f = e.toString();
-      if (!(P(c) || null != f && 0 < f.length && L.test(f)))
-        throw Error("Invalid country calling code");
+      if (!(P(c) || null != f && 0 < f.length && L.test(f))) throw Error("Invalid country calling code");
       f = new I();
       d && t(f, 5, b);
       a: {
@@ -32239,13 +32145,12 @@
         g = b.search(Qa);
         if (0 <= g && Ua(b.substring(0, g))) {
           h = b.match(Qa);
-          for (var l = h.length, A = 1; A < l; ++A)
-            if (null != h[A] && 0 < h[A].length) {
-              E(e);
-              e.g(b.substring(0, g));
-              b = h[A];
-              break a;
-            }
+          for (var l = h.length, A = 1; A < l; ++A) if (null != h[A] && 0 < h[A].length) {
+            E(e);
+            e.g(b.substring(0, g));
+            b = h[A];
+            break a;
+          }
         }
         b = "";
       }
@@ -32258,29 +32163,23 @@
         h = db(a, l, g, b, d, f);
       } catch (ca) {
         if ("Invalid country calling code" == ca.message && L.test(l)) {
-          if (l = l.replace(L, ""), h = db(a, l, g, b, d, f), 0 == h)
-            throw ca;
-        } else
-          throw ca;
+          if (l = l.replace(L, ""), h = db(a, l, g, b, d, f), 0 == h) throw ca;
+        } else throw ca;
       }
       0 != h ? (e = S(h), e != c && (g = R(a, h, e))) : (Wa(e), b.g(e.toString()), null != c ? (h = w(g, 10), t(
         f,
         1,
         h
       )) : d && (delete f.h[6], f.g && delete f.g[6]));
-      if (2 > b.h.length)
-        throw Error("The string supplied is too short to be a phone number");
+      if (2 > b.h.length) throw Error("The string supplied is too short to be a phone number");
       null != g && (c = new D(), e = new D(b.toString()), eb(e, g, c), a = W(a, e.toString(), g, -1), 2 != a && 4 != a && 5 != a && (b = e, d && 0 < c.toString().length && t(f, 7, c.toString())));
       d = b.toString();
       a = d.length;
-      if (2 > a)
-        throw Error("The string supplied is too short to be a phone number");
-      if (17 < a)
-        throw Error("The string supplied is too long to be a phone number");
+      if (2 > a) throw Error("The string supplied is too short to be a phone number");
+      if (17 < a) throw Error("The string supplied is too long to be a phone number");
       if (1 < d.length && "0" == d.charAt(0)) {
         t(f, 4, true);
-        for (a = 1; a < d.length - 1 && "0" == d.charAt(a); )
-          a++;
+        for (a = 1; a < d.length - 1 && "0" == d.charAt(a); ) a++;
         1 != a && t(f, 8, a);
       }
       t(f, 2, parseInt(d, 10));
@@ -32321,8 +32220,7 @@
     function lb(a) {
       for (var b = a.j.length, c = 0; c < b; ++c) {
         var d = a.j[c], e = w(d, 1);
-        if (a.da == e)
-          return false;
+        if (a.da == e) return false;
         var f = a;
         var g = d, h = w(g, 1);
         E(f.v);
@@ -32331,8 +32229,7 @@
         var A = "999999999999999".match(h)[0];
         A.length < l.g.h.length ? l = "" : (l = A.replace(new RegExp(h, "g"), g), l = l.replace(RegExp("9", "g"), "\u2008"));
         0 < l.length ? (f.v.g(l), f = true) : f = false;
-        if (f)
-          return a.da = e, a.ha = kb.test(r(d, 4)), a.$ = 0, true;
+        if (f) return a.da = e, a.ha = kb.test(r(d, 4)), a.$ = 0, true;
       }
       return a.u = false;
     }
@@ -32350,10 +32247,8 @@
       if (!a.u) {
         if (!a.la) {
           if (ob(a)) {
-            if (pb(a))
-              return qb(a);
-          } else if (0 < a.o.length && (b = a.g.toString(), E(a.g), a.g.g(a.o), a.g.g(b), b = a.h.toString(), c = b.lastIndexOf(a.o), E(a.h), a.h.g(b.substring(0, c))), a.o != rb(a))
-            return a.h.g(" "), qb(a);
+            if (pb(a)) return qb(a);
+          } else if (0 < a.o.length && (b = a.g.toString(), E(a.g), a.g.g(a.o), a.g.g(b), b = a.h.toString(), c = b.lastIndexOf(a.o), E(a.h), a.h.g(b.substring(0, c))), a.o != rb(a)) return a.h.g(" "), qb(a);
         }
         return a.s.toString();
       }
@@ -32363,18 +32258,14 @@
         case 2:
           return a.s.toString();
         case 3:
-          if (ob(a))
-            a.ea = true;
-          else
-            return a.o = rb(a), sb(a);
+          if (ob(a)) a.ea = true;
+          else return a.o = rb(a), sb(a);
         default:
-          if (a.ea)
-            return pb(a) && (a.ea = false), a.h.toString() + a.g.toString();
+          if (a.ea) return pb(a) && (a.ea = false), a.h.toString() + a.g.toString();
           if (0 < a.j.length) {
             b = tb(a, b);
             c = ub(a);
-            if (0 < c.length)
-              return c;
+            if (0 < c.length) return c;
             mb(a, a.g.toString());
             return lb(a) ? vb(a) : a.u ? Z(a, b) : a.s.toString();
           }
@@ -32393,8 +32284,7 @@
     function ub(a) {
       for (var b = a.g.toString(), c = a.j.length, d = 0; d < c; ++d) {
         var e = a.j[d], f = w(e, 1);
-        if (new RegExp("^(?:" + f + ")$").test(b) && (a.ha = kb.test(r(e, 4)), e = b.replace(new RegExp(f, "g"), r(e, 2)), e = Z(a, e), O(e, Fa) == a.ba))
-          return e;
+        if (new RegExp("^(?:" + f + ")$").test(b) && (a.ha = kb.test(r(e, 4)), e = b.replace(new RegExp(f, "g"), r(e, 2)), e = Z(a, e), O(e, Fa) == a.ba)) return e;
       }
       return "";
     }
@@ -32418,18 +32308,15 @@
     function vb(a) {
       var b = a.g.toString(), c = b.length;
       if (0 < c) {
-        for (var d = "", e = 0; e < c; e++)
-          d = tb(a, b.charAt(e));
+        for (var d = "", e = 0; e < c; e++) d = tb(a, b.charAt(e));
         return a.u ? Z(a, d) : a.s.toString();
       }
       return a.h.toString();
     }
     function rb(a) {
       var b = a.g.toString(), c = 0;
-      if (1 != r(a.l, 10))
-        var d = false;
-      else
-        d = a.g.toString(), d = "1" == d.charAt(0) && "0" != d.charAt(1) && "1" != d.charAt(1);
+      if (1 != r(a.l, 10)) var d = false;
+      else d = a.g.toString(), d = "1" == d.charAt(0) && "0" != d.charAt(1) && "1" != d.charAt(1);
       d ? (c = 1, a.h.g("1").g(" "), a.ca = true) : q(a.l, 15) && (d = new RegExp("^(?:" + r(a.l, 15) + ")"), d = b.match(d), null != d && null != d[0] && 0 < d[0].length && (a.ca = true, c = d[0].length, a.h.g(b.substring(0, c))));
       E(a.g);
       a.g.g(b.substring(c));
@@ -32441,11 +32328,9 @@
       return null != c && null != c[0] && 0 < c[0].length ? (a.ca = true, c = c[0].length, E(a.g), a.g.g(b.substring(c)), E(a.h), a.h.g(b.substring(0, c)), "+" != b.charAt(0) && a.h.g(" "), true) : false;
     }
     function pb(a) {
-      if (0 == a.g.h.length)
-        return false;
+      if (0 == a.g.h.length) return false;
       var b = new D(), c = cb(a.g, b);
-      if (0 == c)
-        return false;
+      if (0 == c) return false;
       E(a.g);
       a.g.g(b.toString());
       b = S(c);
@@ -32475,8 +32360,7 @@
       try {
         const c = a.replace(/[^+0-9]/g, ""), d = new gb(b);
         b = "";
-        for (let e = 0; e < c.length; e++)
-          d.ja = nb(d, c.charAt(e)), b = d.ja;
+        for (let e = 0; e < c.length; e++) d.ja = nb(d, c.charAt(e)), b = d.ja;
         return b;
       } catch (c) {
         return a;
@@ -32525,8 +32409,7 @@
       try {
         const g = K.g(), h = Y(g, a, b);
         var c = ab(g, h), d = R(g, w(h, 1), c);
-        if (null == d)
-          var e = -1;
+        if (null == d) var e = -1;
         else {
           var f = Q(h);
           e = $a(f, d);
@@ -32550,8 +32433,7 @@
         var c = Y(l, a, b), d = ab(l, c);
         a = l;
         var e = w(c, 1), f = R(a, e, d);
-        if (null == f || "001" != d && e != bb(a, d))
-          var g = false;
+        if (null == f || "001" != d && e != bb(a, d)) var g = false;
         else {
           var h = Q(c);
           g = -1 != $a(h, f);
@@ -32590,7 +32472,7 @@
 
   // react/src/intl-tel-input/reactWithUtils.tsx
   var import_react = __toESM(require_react());
-  var IntlTelInput = ({
+  var IntlTelInput = (0, import_react.forwardRef)(function IntlTelInput2({
     initialValue = "",
     onChangeNumber = () => {
     },
@@ -32603,9 +32485,13 @@
     usePreciseValidation = false,
     initOptions = {},
     inputProps = {}
-  }) => {
+  }, ref) {
     const inputRef = (0, import_react.useRef)(null);
     const itiRef = (0, import_react.useRef)(null);
+    (0, import_react.useImperativeHandle)(ref, () => ({
+      getInstance: () => itiRef.current,
+      getInput: () => inputRef.current
+    }));
     const update = () => {
       const num = itiRef.current?.getNumber() || "";
       const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
@@ -32647,7 +32533,7 @@
         ...inputProps
       }
     );
-  };
+  });
   var reactWithUtils_default = IntlTelInput;
 
   // react/demo/ValidationApp.tsx

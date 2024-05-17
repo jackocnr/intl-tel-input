@@ -2,29 +2,37 @@
 import intlTelInput from "./intlTelInputWithUtils";
 //* Keep the TS imports separate, as the above line gets substituted in the reactWithUtils build process.
 import { Iti, SomeOptions } from "../intl-tel-input";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 
-const IntlTelInput = ({
+type ItiProps = {
+  initialValue?: string;
+  onChangeNumber?: (number: string) => void;
+  onChangeCountry?: (country: string) => void;
+  onChangeValidity?: (valid: boolean) => void;
+  onChangeErrorCode?: (errorCode: number | null) => void;
+  usePreciseValidation?: boolean;
+  initOptions?: SomeOptions;
+  inputProps?: object;
+};
+
+const IntlTelInput = forwardRef(function IntlTelInput({
   initialValue = "",
-  onChangeNumber = (): void => {},
-  onChangeCountry = (): void => {},
-  onChangeValidity = (): void => {},
-  onChangeErrorCode = (): void => {},
+  onChangeNumber = () => {},
+  onChangeCountry = () => {},
+  onChangeValidity = () => {},
+  onChangeErrorCode = () => {},
   usePreciseValidation = false,
   initOptions = {},
   inputProps = {},
-}: {
-  initialValue?: string,
-  onChangeNumber?: (number: string) => void,
-  onChangeCountry?: (country: string) => void,
-  onChangeValidity?: (valid: boolean) => void,
-  onChangeErrorCode?: (errorCode: number | null) => void,
-  usePreciseValidation?: boolean,
-  initOptions?: SomeOptions,
-  inputProps?: object,
-}) => {
+}: ItiProps, ref) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
+
+  // expose the instance and input ref to the parent component
+  useImperativeHandle(ref, () => ({
+    getInstance: () => itiRef.current,
+    getInput: () => inputRef.current,
+  }));
   
   const update = (): void => {
     const num = itiRef.current?.getNumber() || "";
@@ -74,6 +82,6 @@ const IntlTelInput = ({
       {...inputProps}
     />
   );
-};
+});
 
 export default IntlTelInput;

@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     },
     react: {
       files: ["react/src/intl-tel-input/react.tsx", "react/demo/ValidationApp.tsx", "react/demo/SimpleApp.tsx"],
-      tasks: "shell:buildReact"
+      tasks: "react"
     },
     pluginCss: {
       files: ["src/css/flags.scss", "src/css/intlTelInput.scss"],

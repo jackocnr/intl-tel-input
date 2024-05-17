@@ -976,7 +976,7 @@ declare module "intl-tel-input" {
 declare module "intl-tel-input/react" {
     import { SomeOptions } from "intl-tel-input";
     import React from "react";
-    const IntlTelInput: ({ initialValue, onChangeNumber, onChangeCountry, onChangeValidity, onChangeErrorCode, usePreciseValidation, initOptions, inputProps, }: {
+    type ItiProps = {
         initialValue?: string;
         onChangeNumber?: (number: string) => void;
         onChangeCountry?: (country: string) => void;
@@ -985,7 +985,8 @@ declare module "intl-tel-input/react" {
         usePreciseValidation?: boolean;
         initOptions?: SomeOptions;
         inputProps?: object;
-    }) => React.JSX.Element;
+    };
+    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<unknown>>;
     export default IntlTelInput;
 }
 declare module "intl-tel-input/utils-compiled" {
@@ -999,7 +1000,7 @@ declare module "intl-tel-input/intlTelInputWithUtils" {
 declare module "intl-tel-input/reactWithUtils" {
     import { SomeOptions } from "intl-tel-input";
     import React from "react";
-    const IntlTelInput: ({ initialValue, onChangeNumber, onChangeCountry, onChangeValidity, onChangeErrorCode, usePreciseValidation, initOptions, inputProps, }: {
+    type ItiProps = {
         initialValue?: string;
         onChangeNumber?: (number: string) => void;
         onChangeCountry?: (country: string) => void;
@@ -1008,6 +1009,7 @@ declare module "intl-tel-input/reactWithUtils" {
         usePreciseValidation?: boolean;
         initOptions?: SomeOptions;
         inputProps?: object;
-    }) => React.JSX.Element;
+    };
+    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<unknown>>;
     export default IntlTelInput;
 }
