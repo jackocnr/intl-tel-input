@@ -8961,7 +8961,7 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
   const itiRef = useRef(null);
   useImperativeHandle(ref, () => ({
     getInstance: () => ({
-      ...itiRef.current,
+      setCountry: (country) => itiRef.current?.setCountry(country),
       // override setNumber to also call update, to trigger onChangeNumber etc
       setNumber: (num) => {
         itiRef.current?.setNumber(num);
@@ -9014,5 +9014,6 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
 });
 var reactWithUtils_default = IntlTelInput;
 export {
-  reactWithUtils_default as default
+  reactWithUtils_default as default,
+  intlTelInputWithUtils_default as intlTelInput
 };

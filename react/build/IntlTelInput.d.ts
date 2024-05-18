@@ -974,8 +974,10 @@ declare module "intl-tel-input" {
     export default intlTelInput;
 }
 declare module "intl-tel-input/react" {
+    import intlTelInput from "intl-tel-input";
     import { SomeOptions } from "intl-tel-input";
     import React from "react";
+    export { intlTelInput };
     type ItiProps = {
         initialValue?: string;
         onChangeNumber?: (number: string) => void;
@@ -998,8 +1000,10 @@ declare module "intl-tel-input/intlTelInputWithUtils" {
     export default intlTelInput;
 }
 declare module "intl-tel-input/reactWithUtils" {
+    import intlTelInput from "intl-tel-input/intlTelInputWithUtils";
     import { SomeOptions } from "intl-tel-input";
     import React from "react";
+    export { intlTelInput };
     type ItiProps = {
         initialValue?: string;
         onChangeNumber?: (number: string) => void;

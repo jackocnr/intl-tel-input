@@ -29,7 +29,8 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // react/src/intl-tel-input/reactWithUtils.tsx
 var reactWithUtils_exports = {};
 __export(reactWithUtils_exports, {
-  default: () => reactWithUtils_default
+  default: () => reactWithUtils_default,
+  intlTelInput: () => intlTelInputWithUtils_default
 });
 module.exports = __toCommonJS(reactWithUtils_exports);
 
@@ -8996,7 +8997,7 @@ var IntlTelInput = (0, import_react.forwardRef)(function IntlTelInput2({
   const itiRef = (0, import_react.useRef)(null);
   (0, import_react.useImperativeHandle)(ref, () => ({
     getInstance: () => ({
-      ...itiRef.current,
+      setCountry: (country) => itiRef.current?.setCountry(country),
       // override setNumber to also call update, to trigger onChangeNumber etc
       setNumber: (num) => {
         itiRef.current?.setNumber(num);

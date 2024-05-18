@@ -4,6 +4,9 @@ import intlTelInput from "./intlTelInputWithUtils";
 import { Iti, SomeOptions } from "../intl-tel-input";
 import React, { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 
+// make this available as a named export, so react users can access globals like intlTelInput.utils
+export { intlTelInput };
+
 type ItiProps = {
   initialValue?: string;
   onChangeNumber?: (number: string) => void;
@@ -31,9 +34,9 @@ const IntlTelInput = forwardRef(function IntlTelInput({
   // expose the instance and input ref to the parent component
   useImperativeHandle(ref, () => ({
     getInstance: () => ({
-      ...itiRef.current,
+      setCountry: (country: string) => itiRef.current?.setCountry(country),
       // override setNumber to also call update, to trigger onChangeNumber etc
-      setNumber: (num) => {
+      setNumber: (num: string) => {
         itiRef.current?.setNumber(num);
         update();
       },
