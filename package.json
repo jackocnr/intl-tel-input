@@ -83,7 +83,7 @@
   },
   "homepage": "https://intl-tel-input.com",
   "scripts": {
-    "test": "grunt travis",
+    "test": "grunt travis && jest",
     "jest": "jest",
     "lint:js": "eslint .",
     "lint:spelling": "cspell --dot --gitignore --no-progress '**'",
