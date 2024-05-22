@@ -1389,6 +1389,9 @@ var factoryOutput = (() => {
   var en_default = { ...countries_default, ...interface_default };
 
   // src/js/intl-tel-input.ts
+  for (let i = 0; i < data_default.length; i++) {
+    data_default[i].name = en_default[data_default[i].iso2];
+  }
   var id = 0;
   var defaults = {
     //* Whether or not to allow the dropdown.

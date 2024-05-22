@@ -1,6 +1,11 @@
 import allCountries, { Country } from "./intl-tel-input/data";
 import defaultEnglishStrings from "./i18n/en";
 
+//* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
+for (let i = 0; i < allCountries.length; i++) {
+  allCountries[i].name = defaultEnglishStrings[allCountries[i].iso2];
+}
+
 interface IntlTelInputInterface {
   (input: HTMLInputElement, options?: SomeOptions): Iti;
   autoCountry?: string;
