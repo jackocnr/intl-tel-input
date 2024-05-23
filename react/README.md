@@ -1,5 +1,36 @@
-# Props
+# IntlTelInput React Component
+A React component wrapper for the [intl-tel-input](https://github.com/jackocnr/intl-tel-input) JavaScript plugin. View the source [here](https://github.com/jackocnr/intl-tel-input/blob/master/react/src/intl-tel-input/react.tsx).
 
+## Table of Contents
+- [Demo and Examples](#demo-and-examples)
+- [Getting Started](#getting-started)
+- [Props](#props)
+- [Accessing Instance Methods](#accessing-instance-methods)
+- [Troubleshooting](#troubleshooting)
+
+## Demo and Examples
+Check out [Storybook](https://intl-tel-input.com/storybook) where you can play with the various options. Alternatively, try it for yourself by downloading the project and opening /react/demo/validation.html (etc) in a browser.
+
+## Getting Started
+```js
+import IntlTelInput from "intl-tel-input/react";
+import "intl-tel-input/styles";
+
+<IntlTelInput
+    onChangeNumber={setNumber}
+    onChangeValidity={setIsValid}
+    initOptions={{
+        initialCountry: "us",
+        utilsScript: "path/to/utils.js",
+    }}
+/>
+```
+
+See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/ValidationApp.tsx) for a more fleshed out example of how to handle validation.
+
+A note on the utils script (~250kb): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import `"intl-tel-input/reactWithUtils"` to include the utils script. Alternatively, if you use the main `"intl-tel-input/react"` import, then you should couple this with the `utilsScript` initialisation option, and point that to your hosted [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file (or just point it to a CDN e.g. "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.9/build/js/utils.js").
+
+## Props
 Here's a list of all of the current props you can pass to the IntlTelInput react component.
 
 **initialValue**  
@@ -33,3 +64,23 @@ An object containing all of the [initialisation options](https://github.com/jack
 **inputProps**  
 Type: `Object`  
 The props to pass to the input element e.g. `className`, `placeholder`, `required`, `disabled`, `onBlur` etc.
+
+## Accessing Instance Methods
+
+You can access the instance methods (`setNumber`, `setCountry`, `setPlaceholderNumberType` etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()` e.g. `ref.current.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/SetNumberApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
+
+## Troubleshooting
+
+**Error when toggle presence of IntlTelInput component**  
+
+Error message: `Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.`
+
+Solution: wrap the component in a div e.g.
+
+```js
+{showIntlTelInput && (
+    <div>
+        <IntlTelInput />
+    </div>
+)}
+```
