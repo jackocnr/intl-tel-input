@@ -32,14 +32,7 @@ const IntlTelInput = forwardRef(function IntlTelInput({
 
   // expose the instance and input ref to the parent component
   useImperativeHandle(ref, () => ({
-    getInstance: () => ({
-      setCountry: (country: string) => itiRef.current?.setCountry(country),
-      // override setNumber to also call update, to trigger onChangeNumber etc
-      setNumber: (num: string) => {
-        itiRef.current?.setNumber(num);
-        update();
-      },
-    }),
+    getInstance: () => itiRef.current,
     getInput: () => inputRef.current,
   }));
   

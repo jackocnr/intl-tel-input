@@ -1092,7 +1092,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useReducer(reducer, initialArg, init);
           }
-          function useRef2(initialValue) {
+          function useRef3(initialValue) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
@@ -1886,7 +1886,7 @@
           exports.useLayoutEffect = useLayoutEffect;
           exports.useMemo = useMemo;
           exports.useReducer = useReducer;
-          exports.useRef = useRef2;
+          exports.useRef = useRef3;
           exports.useState = useState2;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
@@ -23523,7 +23523,7 @@
     }
   });
 
-  // react/demo/ValidationApp.tsx
+  // react/demo/SetNumberApp.tsx
   var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
@@ -32540,7 +32540,7 @@
   });
   var reactWithUtils_default = IntlTelInput;
 
-  // react/demo/ValidationApp.tsx
+  // react/demo/SetNumberApp.tsx
   var errorMap = [
     "Invalid number",
     "Invalid country code",
@@ -32549,10 +32549,14 @@
     "Invalid number"
   ];
   var App = () => {
+    const ref = (0, import_react2.useRef)(null);
     const [isValid, setIsValid] = (0, import_react2.useState)(null);
     const [number, setNumber] = (0, import_react2.useState)(null);
     const [errorCode, setErrorCode] = (0, import_react2.useState)(null);
     const [notice, setNotice] = (0, import_react2.useState)(null);
+    const handleSetNumber = () => {
+      ref.current?.getInstance().setNumber("+14155552671");
+    };
     const handleSubmit = () => {
       if (isValid) {
         setNotice(`Valid number: ${number}`);
@@ -32564,6 +32568,7 @@
     return /* @__PURE__ */ import_react2.default.createElement("form", null, /* @__PURE__ */ import_react2.default.createElement(
       reactWithUtils_default,
       {
+        ref,
         onChangeNumber: setNumber,
         onChangeValidity: setIsValid,
         onChangeErrorCode: setErrorCode,
@@ -32571,7 +32576,7 @@
           initialCountry: "us"
         }
       }
-    ), /* @__PURE__ */ import_react2.default.createElement("button", { className: "button", type: "button", onClick: handleSubmit }, "Validate"), notice && /* @__PURE__ */ import_react2.default.createElement("div", { className: "notice" }, notice));
+    ), /* @__PURE__ */ import_react2.default.createElement("button", { className: "button", type: "button", onClick: handleSetNumber }, "Set Number"), /* @__PURE__ */ import_react2.default.createElement("button", { className: "button", type: "button", onClick: handleSubmit }, "Validate"), notice && /* @__PURE__ */ import_react2.default.createElement("div", { className: "notice" }, notice));
   };
   var container = document.getElementById("app");
   if (container) {

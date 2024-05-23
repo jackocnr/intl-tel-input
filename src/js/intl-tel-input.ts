@@ -2170,6 +2170,8 @@ export class Iti {
     if (countryChanged) {
       this._triggerCountryChange();
     }
+    //* This is required for the React cmp to update its state correctly.
+    this._trigger("input");
   }
 
   //* Set the placeholder number typ

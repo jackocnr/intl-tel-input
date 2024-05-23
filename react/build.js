@@ -63,3 +63,10 @@ build({
   entryPoints: ["react/demo/ValidationApp.tsx"],
   outfile: "react/demo/validation-bundle.js",
 });
+
+//* Set Number demo app
+build({
+  ...demoShared,
+  entryPoints: ["react/demo/SetNumberApp.tsx"],
+  outfile: "react/demo/set-number-bundle.js",
+});

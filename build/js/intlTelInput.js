@@ -2734,6 +2734,7 @@ var factoryOutput = (() => {
       if (countryChanged) {
         this._triggerCountryChange();
       }
+      this._trigger("input");
     }
     //* Set the placeholder number typ
     setPlaceholderNumberType(type) {

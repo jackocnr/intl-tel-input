@@ -2693,6 +2693,7 @@ var Iti = class {
     if (countryChanged) {
       this._triggerCountryChange();
     }
+    this._trigger("input");
   }
   //* Set the placeholder number typ
   setPlaceholderNumberType(type) {
@@ -8963,14 +8964,7 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
   const inputRef = useRef(null);
   const itiRef = useRef(null);
   useImperativeHandle(ref, () => ({
-    getInstance: () => ({
-      setCountry: (country) => itiRef.current?.setCountry(country),
-      // override setNumber to also call update, to trigger onChangeNumber etc
-      setNumber: (num) => {
-        itiRef.current?.setNumber(num);
-        update();
-      }
-    }),
+    getInstance: () => itiRef.current,
     getInput: () => inputRef.current
   }));
   const update = () => {
