@@ -18,7 +18,7 @@
     <script src="build/js/intlTelInputWithUtils.js"></script>
     <script>
       const input = document.querySelector("#phone");
-      window.intlTelInput(input, {
+      const iti = window.intlTelInput(input, {
         // allowDropdown: false,
         // autoPlaceholder: "off",
         // containerClass: "test",
@@ -49,7 +49,8 @@
         // useFullscreenPopup: true,
         // utilsScript: "/build/js/utils.js", // leading slash (and http-server) required for this to work in chrome
         // validationNumberType: null,
-      }); 
+      });
+      window.iti = iti; // useful for testing
     </script>
   </body>
 </html>

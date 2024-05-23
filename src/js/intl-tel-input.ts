@@ -1176,19 +1176,20 @@ export class Iti {
 
   //* Initialize the tel input listeners.
   private _initTelInputListeners(): void {
-    const { strictMode, formatAsYouType, separateDialCode } = this.options;
+    const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay } = this.options;
     let userOverrideFormatting = false;
 
-    //* On input event: (1) Update selected country, (2) Format as you type.
+    //* On input event: (1) Update selected country, (2) Format-as-you-type.
     //* Note that this fires AFTER the input is updated.
     this._handleInputEvent = (e: InputEvent): void => {
+      //* Update selected country.
       if (this._updateCountryFromNumber(this.telInput.value)) {
         this._triggerCountryChange();
       }
 
       //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
-      const isFormattingChar = e && e.data && /[^+0-9]/.test(e.data);
-      const isPaste = e && e.inputType === "insertFromPaste" && this.telInput.value;
+      const isFormattingChar = e?.data && /[^+0-9]/.test(e.data);
+      const isPaste = e?.inputType === "insertFromPaste" && this.telInput.value;
       if (isFormattingChar || (isPaste && !strictMode)) {
         userOverrideFormatting = true;
       }
@@ -1197,13 +1198,14 @@ export class Iti {
         userOverrideFormatting = false;
       }
 
-      //* handle FAYT, unless userOverrideFormatting.
-      if (formatAsYouType && !userOverrideFormatting) {
+      const disableFormatOnSetNumber = e?.detail && e.detail["isSetNumber"] && !formatOnDisplay;
+      //* Handle format-as-you-type, unless userOverrideFormatting, or disableFormatOnSetNumber.
+      if (formatAsYouType && !userOverrideFormatting && !disableFormatOnSetNumber) {
         //* Maintain caret position after reformatting.
         const currentCaretPos = this.telInput.selectionStart || 0;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
         const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
-        const isDeleteForwards = e && e.inputType === "deleteContentForward";
+        const isDeleteForwards = e?.inputType === "deleteContentForward";
         const formattedValue = this._formatNumberAsYouType();
         const newCaretPos = translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
         this.telInput.value = formattedValue;
@@ -1257,10 +1259,11 @@ export class Iti {
   }
 
   //* Trigger a custom event on the input.
-  private _trigger(name: string): void {
-    const e = new Event(name, {
+  private _trigger(name: string, detailProps: object = {}): void {
+    const e = new CustomEvent(name, {
       bubbles: true,
       cancelable: true,
+      detail: detailProps,
     });
     this.telInput.dispatchEvent(e);
   }
@@ -2171,7 +2174,7 @@ export class Iti {
       this._triggerCountryChange();
     }
     //* This is required for the React cmp to update its state correctly.
-    this._trigger("input");
+    this._trigger("input", { isSetNumber: true });
   }
 
   //* Set the placeholder number typ

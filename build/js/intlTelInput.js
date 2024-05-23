@@ -2022,24 +2022,25 @@ var factoryOutput = (() => {
     }
     //* Initialize the tel input listeners.
     _initTelInputListeners() {
-      const { strictMode, formatAsYouType, separateDialCode } = this.options;
+      const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay } = this.options;
       let userOverrideFormatting = false;
       this._handleInputEvent = (e) => {
         if (this._updateCountryFromNumber(this.telInput.value)) {
           this._triggerCountryChange();
         }
-        const isFormattingChar = e && e.data && /[^+0-9]/.test(e.data);
-        const isPaste = e && e.inputType === "insertFromPaste" && this.telInput.value;
+        const isFormattingChar = e?.data && /[^+0-9]/.test(e.data);
+        const isPaste = e?.inputType === "insertFromPaste" && this.telInput.value;
         if (isFormattingChar || isPaste && !strictMode) {
           userOverrideFormatting = true;
         } else if (!/[^+0-9]/.test(this.telInput.value)) {
           userOverrideFormatting = false;
         }
-        if (formatAsYouType && !userOverrideFormatting) {
+        const disableFormatOnSetNumber = e?.detail && e.detail["isSetNumber"] && !formatOnDisplay;
+        if (formatAsYouType && !userOverrideFormatting && !disableFormatOnSetNumber) {
           const currentCaretPos = this.telInput.selectionStart || 0;
           const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
           const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
-          const isDeleteForwards = e && e.inputType === "deleteContentForward";
+          const isDeleteForwards = e?.inputType === "deleteContentForward";
           const formattedValue = this._formatNumberAsYouType();
           const newCaretPos = translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
           this.telInput.value = formattedValue;
@@ -2081,10 +2082,11 @@ var factoryOutput = (() => {
       return max && number.length > max ? number.substr(0, max) : number;
     }
     //* Trigger a custom event on the input.
-    _trigger(name) {
-      const e = new Event(name, {
+    _trigger(name, detailProps = {}) {
+      const e = new CustomEvent(name, {
         bubbles: true,
-        cancelable: true
+        cancelable: true,
+        detail: detailProps
       });
       this.telInput.dispatchEvent(e);
     }
@@ -2734,7 +2736,7 @@ var factoryOutput = (() => {
       if (countryChanged) {
         this._triggerCountryChange();
       }
-      this._trigger("input");
+      this._trigger("input", { isSetNumber: true });
     }
     //* Set the placeholder number typ
     setPlaceholderNumberType(type) {
