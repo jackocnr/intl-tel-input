@@ -2750,7 +2750,7 @@ var intlTelInput = Object.assign(
 var intl_tel_input_default = intlTelInput;
 
 // react/src/intl-tel-input/react.tsx
-import React, { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from "react";
 var IntlTelInput = forwardRef(function IntlTelInput2({
   initialValue = "",
   onChangeNumber = () => {
@@ -2771,7 +2771,7 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
     getInstance: () => itiRef.current,
     getInput: () => inputRef.current
   }));
-  const update = () => {
+  const update = useCallback(() => {
     const num = itiRef.current?.getNumber() || "";
     const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
     onChangeNumber(num);
@@ -2787,11 +2787,18 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
         onChangeErrorCode(errorCode);
       }
     }
-  };
+  }, [onChangeCountry, onChangeErrorCode, onChangeNumber, onChangeValidity, usePreciseValidation]);
+  useEffect(() => {
+    if (inputRef.current) {
+      itiRef.current = intl_tel_input_default(inputRef.current, initOptions);
+    }
+    return () => {
+      itiRef.current?.destroy();
+    };
+  }, []);
   useEffect(() => {
     const inputRefCurrent = inputRef.current;
     if (inputRefCurrent) {
-      itiRef.current = intl_tel_input_default(inputRefCurrent, initOptions);
       inputRefCurrent.addEventListener("countrychange", update);
       itiRef.current.promise.then(update);
     }
@@ -2799,9 +2806,8 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
       if (inputRefCurrent) {
         inputRefCurrent.removeEventListener("countrychange", update);
       }
-      itiRef.current?.destroy();
     };
-  }, []);
+  }, [update]);
   return /* @__PURE__ */ React.createElement(
     "input",
     {

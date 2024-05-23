@@ -2807,7 +2807,7 @@ var IntlTelInput = (0, import_react.forwardRef)(function IntlTelInput2({
     getInstance: () => itiRef.current,
     getInput: () => inputRef.current
   }));
-  const update = () => {
+  const update = (0, import_react.useCallback)(() => {
     const num = itiRef.current?.getNumber() || "";
     const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
     onChangeNumber(num);
@@ -2823,11 +2823,18 @@ var IntlTelInput = (0, import_react.forwardRef)(function IntlTelInput2({
         onChangeErrorCode(errorCode);
       }
     }
-  };
+  }, [onChangeCountry, onChangeErrorCode, onChangeNumber, onChangeValidity, usePreciseValidation]);
+  (0, import_react.useEffect)(() => {
+    if (inputRef.current) {
+      itiRef.current = intl_tel_input_default(inputRef.current, initOptions);
+    }
+    return () => {
+      itiRef.current?.destroy();
+    };
+  }, []);
   (0, import_react.useEffect)(() => {
     const inputRefCurrent = inputRef.current;
     if (inputRefCurrent) {
-      itiRef.current = intl_tel_input_default(inputRefCurrent, initOptions);
       inputRefCurrent.addEventListener("countrychange", update);
       itiRef.current.promise.then(update);
     }
@@ -2835,9 +2842,8 @@ var IntlTelInput = (0, import_react.forwardRef)(function IntlTelInput2({
       if (inputRefCurrent) {
         inputRefCurrent.removeEventListener("countrychange", update);
       }
-      itiRef.current?.destroy();
     };
-  }, []);
+  }, [update]);
   return /* @__PURE__ */ import_react.default.createElement(
     "input",
     {

@@ -1,7 +1,7 @@
 import intlTelInput from "../intl-tel-input";
 //* Keep the TS imports separate, as the above line gets substituted in the reactWithUtils build process.
 import { Iti, SomeOptions } from "../intl-tel-input";
-import React, { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from "react";
 
 // make this available as a named export, so react users can access globals like intlTelInput.utils
 export { intlTelInput };
@@ -36,7 +36,7 @@ const IntlTelInput = forwardRef(function IntlTelInput({
     getInput: () => inputRef.current,
   }));
   
-  const update = (): void => {
+  const update = useCallback((): void => {
     const num = itiRef.current?.getNumber() || "";
     const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
     // note: this number will be in standard E164 format, but any container component can use
@@ -56,13 +56,22 @@ const IntlTelInput = forwardRef(function IntlTelInput({
         onChangeErrorCode(errorCode);
       }
     }
-  };
+  }, [onChangeCountry, onChangeErrorCode, onChangeNumber, onChangeValidity, usePreciseValidation]);
   
+  useEffect(() => {
+    if (inputRef.current) {
+      itiRef.current = intlTelInput(inputRef.current, initOptions);
+    }
+    return (): void => {
+      itiRef.current?.destroy();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     // store a reference to the current input ref, which otherwise is already lost in the cleanup function
     const inputRefCurrent = inputRef.current;
     if (inputRefCurrent) {
-      itiRef.current = intlTelInput(inputRefCurrent, initOptions);
       inputRefCurrent.addEventListener("countrychange", update);
       // when plugin initialisation has finished (e.g. loaded utils script), update all the state values
       itiRef.current.promise.then(update);
@@ -71,9 +80,8 @@ const IntlTelInput = forwardRef(function IntlTelInput({
       if (inputRefCurrent) {
         inputRefCurrent.removeEventListener("countrychange", update);
       }
-      itiRef.current?.destroy();
     };
-  }, []);
+  }, [update]);
   
   return (
     <input

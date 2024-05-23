@@ -1108,7 +1108,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useLayoutEffect(create, deps);
           }
-          function useCallback(callback, deps) {
+          function useCallback2(callback, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
@@ -1875,7 +1875,7 @@
           exports.memo = memo;
           exports.startTransition = startTransition;
           exports.unstable_act = act;
-          exports.useCallback = useCallback;
+          exports.useCallback = useCallback2;
           exports.useContext = useContext;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
@@ -32498,7 +32498,7 @@
       getInstance: () => itiRef.current,
       getInput: () => inputRef.current
     }));
-    const update = () => {
+    const update = (0, import_react.useCallback)(() => {
       const num = itiRef.current?.getNumber() || "";
       const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
       onChangeNumber(num);
@@ -32514,11 +32514,18 @@
           onChangeErrorCode(errorCode);
         }
       }
-    };
+    }, [onChangeCountry, onChangeErrorCode, onChangeNumber, onChangeValidity, usePreciseValidation]);
+    (0, import_react.useEffect)(() => {
+      if (inputRef.current) {
+        itiRef.current = intlTelInputWithUtils_default(inputRef.current, initOptions);
+      }
+      return () => {
+        itiRef.current?.destroy();
+      };
+    }, []);
     (0, import_react.useEffect)(() => {
       const inputRefCurrent = inputRef.current;
       if (inputRefCurrent) {
-        itiRef.current = intlTelInputWithUtils_default(inputRefCurrent, initOptions);
         inputRefCurrent.addEventListener("countrychange", update);
         itiRef.current.promise.then(update);
       }
@@ -32526,9 +32533,8 @@
         if (inputRefCurrent) {
           inputRefCurrent.removeEventListener("countrychange", update);
         }
-        itiRef.current?.destroy();
       };
-    }, []);
+    }, [update]);
     return /* @__PURE__ */ import_react.default.createElement(
       "input",
       {
