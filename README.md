@@ -25,7 +25,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Getting Started](#getting-started-using-a-cdn)
 - [Recommended Usage](#recommended-usage)
 - [Initialisation Options](#initialisation-options)
-- [Public Methods](#public-methods)
+- [Instance Methods](#instance-methods)
 - [Static Methods](#static-methods)
 - [Events](#events)
 - [Utilities Script](#utilities-script)
@@ -55,7 +55,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Easily customise styles by overriding CSS variables
 * React component included
 * Translations for country names (etc) provided in many different languages
-* Lots of initialisation options for customisation, as well as public methods/events for interaction
+* Lots of initialisation options for customisation, as well as instance methods/events for interaction
 
 ## Browser Compatibility
 | Chrome |  Firefox  | Safari | Edge |
@@ -318,7 +318,7 @@ Enable formatting/validation etc. by specifying the URL of the included utils.js
 Type: `String` Default: `"MOBILE"`  
 Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to enforce during validation with `isValidNumber`, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. 
 
-## Public Methods
+## Instance Methods
 In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
 ```js
 const iti = intlTelInput(input);
