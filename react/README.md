@@ -6,6 +6,7 @@ A React component wrapper for the [intl-tel-input](https://github.com/jackocnr/i
 - [Getting Started](#getting-started)
 - [Props](#props)
 - [Accessing Instance Methods](#accessing-instance-methods)
+- [Accessing Static Methods](#accessing-static-methods)
 - [Troubleshooting](#troubleshooting)
 
 ## Demo and Examples
@@ -67,7 +68,11 @@ The props to pass to the input element e.g. `className`, `placeholder`, `require
 
 ## Accessing Instance Methods
 
-You can access the instance methods (`setNumber`, `setCountry`, `setPlaceholderNumberType` etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()` e.g. `ref.current.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/SetNumberApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
+You can access all of the plugin's [instance methods](https://github.com/jackocnr/intl-tel-input/blob/master/README.md#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType` etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()` e.g. `ref.current.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/SetNumberApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
+
+## Accessing Static Methods
+
+You can access all of the plugin's [static methods](https://github.com/jackocnr/intl-tel-input/blob/master/README.md#static-methods) by importing the regular plugin `import intlTelInput from "intl-tel-input"` (note the lower case "i" in "intlTelInput") and accessing them like normal e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
 
 ## Troubleshooting
 
