@@ -473,9 +473,18 @@ The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build 
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `placeholderNumberType` option
 * Extract the standardised (E.164) international number with `getNumber` even when using the `nationalMode` option
 
-International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution we have found is libphonenumber, from which we have precompiled the relevant parts into a single JavaScript file and included in the build directory. Unfortunately, even after modification, it is still ~260KB, but if you use the `utilsScript` option then it will only fetch the script when the page has finished loading (to prevent blocking). If size is not a concern and you're happy to bundle the utils script with the main plugin script, you can just use the included build/js/intlTelInputWithUtils.js.
+International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution we have found is libphonenumber, from which we have precompiled the relevant parts into a single JavaScript file and included in the build directory. Unfortunately, even after modification, it is still ~260KB. See the section below on the best way to load it.
 
 To recompile the utils script yourself (e.g. to update the version of libphonenumber it is built from), see the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#updating-to-a-new-version-of-libphonenumber).
+
+## Loading The Utilities Script
+The utils script provides lots of great functionality (see above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
+
+**Option 1: intlTelInputWithUtils**  
+If you're not concerned about filesize, the easiest thing to do is to just use the full bundle /build/js/intlTelInputWithUtils.js, which comes with the utils script included. You can load this directly into your page with a `<script>` tag (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
+
+**Option 2: utilsScript**  
+If you *are* concerned about filesize, you can lazy load the utils script when the plugin intitialises, using the `utilsScript` initialisation option. Simply point this to your hosted [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, or alternatively use a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js"`.
 
 ## Troubleshooting
 
