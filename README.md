@@ -29,6 +29,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Static Methods](#static-methods)
 - [Events](#events)
 - [Utilities Script](#utilities-script)
+- [Loading The Utilities Script](#loading-the-utilities-script)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [Attributions](#attributions)
