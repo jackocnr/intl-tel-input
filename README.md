@@ -485,7 +485,7 @@ The utils script provides lots of great functionality (see above section), but c
 If you're not concerned about filesize, the easiest thing to do is to just use the full bundle /build/js/intlTelInputWithUtils.js, which comes with the utils script included. You can load this directly into your page with a `<script>` tag (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
 
 **Option 2: utilsScript**  
-If you *are* concerned about filesize, you can lazy load the utils script when the plugin intitialises, using the `utilsScript` initialisation option. Simply point this to your hosted [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, or alternatively use a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js"`.
+If you *are* concerned about filesize, you can lazy load the utils script when the plugin intitialises, using the `utilsScript` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js"`.
 
 ## Troubleshooting
 
