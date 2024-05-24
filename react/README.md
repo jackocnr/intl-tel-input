@@ -9,7 +9,7 @@ A React component wrapper for the [intl-tel-input](https://github.com/jackocnr/i
 - [Troubleshooting](#troubleshooting)
 
 ## Demo and Examples
-Check out [Storybook](https://intl-tel-input.com/storybook) where you can play with the various options. Alternatively, try it for yourself by downloading the project and opening /react/demo/validation.html (etc) in a browser.
+Check out [Storybook](https://intl-tel-input.com/storybook) where you can play with the various props. Alternatively, try it for yourself by downloading the project and opening /react/demo/validation.html (etc) in a browser.
 
 ## Getting Started
 ```js
