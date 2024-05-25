@@ -154,7 +154,7 @@ Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, a
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
-Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the `placeholderNumberType` option. By default it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the `utilsScript` option.
+Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the `placeholderNumberType` option. By default it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](#loading-the-utilities-script).
 
 **containerClass**  
 Type: `String` Default: `""`  
@@ -190,11 +190,11 @@ Fix the dropdown width to the input width (rather than being as wide as the long
 
 **formatAsYouType**  
 Type: `Boolean` Default: `true`  
-Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the `utilsScript` option.
+Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](#loading-the-utilities-script).
 
 **formatOnDisplay**  
 Type: `Boolean` Default: `true`  
-Format the input value (according to the `nationalMode` option) during initialisation, and on `setNumber`. Requires the `utilsScript` option.
+Format the input value (according to the `nationalMode` option) during initialisation, and on `setNumber`. Requires the [utils script to be loaded](#loading-the-utilities-script).
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
@@ -218,7 +218,7 @@ _Note that the `failure` callback must be called in the event of an error, hence
 Type: `Function` Default: `null`  
 Allows the creation of hidden input fields within a form to store the full international telephone number and the selected country code. It accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and country code, respectively. This is useful for non-Ajax form submissions to ensure the full international number and country code are captured, especially when `nationalMode` is enabled.
 
-***Note**: This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses `getNumber` internally, firstly it requires the `utilsScript` option, and secondly it expects a valid number and so will only work correctly if you have used `isValidNumber` to validate the number before allowing the form submit to go through.
+***Note**: This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses `getNumber` internally, firstly it requires the [utils script to be loaded](#loading-the-utilities-script), and secondly it expects a valid number and so will only work correctly if you have used `isValidNumber` to validate the number before allowing the form submit to go through.
 
 ```js
 intlTelInput(input, {
@@ -305,7 +305,7 @@ Display the selected country dial code next to the input, so it looks like it's 
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
-As the user types in the input, ignore any irrelevant characters. Basically, the user can only enter numeric characters, and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects `validationNumberType`). Requires the `utilsScript` option. [See example](https://intl-tel-input.com/examples/strict-mode.html).
+As the user types in the input, ignore any irrelevant characters. Basically, the user can only enter numeric characters, and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects `validationNumberType`). Requires the [utils script to be loaded](#loading-the-utilities-script). [See example](https://intl-tel-input.com/examples/strict-mode.html).
 
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
@@ -332,14 +332,14 @@ iti.destroy();
 ```
 
 **getExtension**  
-Get the extension from the current number. Requires the `utilsScript` option.
+Get the extension from the current number. Requires the [utils script to be loaded](#loading-the-utilities-script).
 ```js
 const extension = iti.getExtension();
 ```
 Returns a string e.g. if the input value was `"(702) 555-5555 ext. 1234"`, this would return `"1234"`
 
 **getNumber**  
-Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInput.utils.numberFormat` - which you can see [here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L153). Requires the `utilsScript` option. _Note that even if `nationalMode` is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
+Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInput.utils.numberFormat` - which you can see [here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L153). Requires the [utils script to be loaded](#loading-the-utilities-script). _Note that even if `nationalMode` is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
 ```js
 const number = iti.getNumber();
 // or
@@ -348,7 +348,7 @@ const number = iti.getNumber(intlTelInput.utils.numberFormat.E164);
 Returns a string e.g. `"+17024181234"`
 
 **getNumberType**  
-Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the `utilsScript` option.  
+Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the [utils script to be loaded](#loading-the-utilities-script).  
 ```js
 const numberType = iti.getNumberType();
 ```
@@ -375,7 +375,7 @@ Returns something like this:
 ```
 
 **getValidationError**  
-Get more information about a validation error. Requires the `utilsScript` option.  
+Get more information about a validation error. Requires the [utils script to be loaded](#loading-the-utilities-script).  
 ```js
 const error = iti.getValidationError();
 ```
@@ -387,14 +387,14 @@ if (error === intlTelInput.utils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. If this method returns `false`, you can use `getValidationError` to get more information. Respects the `validationNumberType` option (which is set to "MOBILE" by default). Requires the `utilsScript` option.
+Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they very rarely change their number lengths. If this method returns `false`, you can use `getValidationError` to get more information. Respects the `validationNumberType` option (which is set to "MOBILE" by default). Requires the [utils script to be loaded](#loading-the-utilities-script).
 ```js
 const isValid = iti.isValidNumber();
 ```
 Returns: `true`/`false`
 
 **isValidNumberPrecise**  
-Check if the current number is valid using precise matching rules for each country/area code etc - [see example](https://intl-tel-input.com/examples/validation.html). Note that these rules change each month for various countries around the world, so you need to be careful to keep the plugin up-to-date else you will start rejecting valid numbers. For a simpler and more future-proof form of validation, see `isValidNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the `utilsScript` option.  
+Check if the current number is valid using precise matching rules for each country/area code etc - [see example](https://intl-tel-input.com/examples/validation.html). Note that these rules change each month for various countries around the world, so you need to be careful to keep the plugin up-to-date else you will start rejecting valid numbers. For a simpler and more future-proof form of validation, see `isValidNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the [utils script to be loaded](#loading-the-utilities-script).  
 ```js
 const isValid = iti.isValidNumberPrecise();
 ```
@@ -443,7 +443,7 @@ iti.isValidNumber(); // etc
 ```
 
 **loadUtils**  
-An alternative to the `utilsScript` option, this method lets you manually load the utils.js script on demand, to enable formatting/validation etc. See [Utilities Script](#utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `loadUtils().then(callback)` to know when it's finished.
+An alternative to the `utilsScript` option, this method lets you manually load the utils.js script on demand, to enable formatting/validation etc. See [Loading The Utilities Script](#loading-the-utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `loadUtils().then(callback)` to know when it's finished.
 ```js
 intlTelInput.loadUtils("/build/js/utils.js");
 ```
@@ -482,10 +482,10 @@ To recompile the utils script yourself (e.g. to update the version of libphonenu
 The utils script provides lots of great functionality (see above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
 
 **Option 1: intlTelInputWithUtils**  
-If you're not concerned about filesize, the easiest thing to do is to just use the full bundle /build/js/intlTelInputWithUtils.js, which comes with the utils script included. You can load this directly into your page with a `<script>` tag (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
+If you're not concerned about filesize, the easiest thing to do is to just use the full bundle /build/js/intlTelInputWithUtils.js, which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
 
 **Option 2: utilsScript**  
-If you *are* concerned about filesize, you can lazy load the utils script when the plugin intitialises, using the `utilsScript` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js"`.
+If you *are* concerned about filesize, you can lazy load the utils script when the plugin intitialises, using the `utilsScript` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js"`. If you want more control over when this file is lazy loaded, you can instead use the `loadUtils` static method directly.
 
 ## Troubleshooting
 
