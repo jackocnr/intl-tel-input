@@ -72,7 +72,7 @@ You can access all of the plugin's [instance methods](https://github.com/jackocn
 
 ## Accessing Static Methods
 
-You can access all of the plugin's [static methods](https://github.com/jackocnr/intl-tel-input/blob/master/README.md#static-methods) by importing the regular plugin `import intlTelInput from "intl-tel-input"` (note the lower case "i" in "intlTelInput") and accessing them like normal e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
+You can access all of the plugin's [static methods](https://github.com/jackocnr/intl-tel-input/blob/master/README.md#static-methods) by importing `intlTelInput` from the same file as the react component e.g. `import { intlTelInput } from "intl-tel-input/react"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
 
 ## Troubleshooting
 
