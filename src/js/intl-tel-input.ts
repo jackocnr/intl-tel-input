@@ -992,13 +992,14 @@ export class Iti {
     const val = useAttribute ? attributeValue : inputValue;
     const dialCode = this._getDialCode(val);
     const isRegionlessNanpNumber = isRegionlessNanp(val);
-    const { initialCountry } = this.options;
+    const { initialCountry, geoIpLookup } = this.options;
+    const isAutoCountry = initialCountry === "auto" && geoIpLookup;
 
     //* If we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
     //* country, else fall back to the default country.
     if (dialCode && !isRegionlessNanpNumber) {
       this._updateCountryFromNumber(val);
-    } else if (initialCountry !== "auto" || overrideAutoCountry) {
+    } else if (!isAutoCountry || overrideAutoCountry) {
       const lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
       const isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
       //* See if we should select a country.
@@ -1111,15 +1112,16 @@ export class Iti {
 
   //* Init many requests: utils script / geo ip lookup.
   private _initRequests(): void {
+    const { utilsScript, initialCountry, geoIpLookup } = this.options;
     //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
-    if (this.options.utilsScript && !intlTelInput.utils) {
+    if (utilsScript && !intlTelInput.utils) {
       //* If the plugin is being initialised after the window.load event has already been fired.
       if (intlTelInput.documentReady()) {
-        intlTelInput.loadUtils(this.options.utilsScript);
+        intlTelInput.loadUtils(utilsScript);
       } else {
         //* Wait until the load event so we don't block any other requests e.g. the flags image.
         window.addEventListener("load", () => {
-          intlTelInput.loadUtils(this.options.utilsScript);
+          intlTelInput.loadUtils(utilsScript);
         });
       }
     } else {
@@ -1127,7 +1129,8 @@ export class Iti {
     }
 
     //* Don't bother with IP lookup if we already have a selected country.
-    if (this.options.initialCountry === "auto" && !this.selectedCountryData.iso2) {
+    const isAutoCountry = initialCountry === "auto" && geoIpLookup;
+    if (isAutoCountry && !this.selectedCountryData.iso2) {
       this._loadAutoCountry();
     } else {
       this.resolveAutoCountryPromise();
@@ -2009,8 +2012,9 @@ export class Iti {
       //* We must set this even if there is an initial val in the input: in case the initial val is
       //* invalid and they delete it - they should see their auto country.
       this.defaultCountry = intlTelInput.autoCountry;
-      //* If there's no initial value in the input, then update the country.
-      if (!this.telInput.value) {
+      const hasSelectedCountryOrGlobe = this.selectedCountryData.iso2 || this.selectedCountryInner.classList.contains("iti__globe");
+      //* If no country/globe currently selected, then update the country.
+      if (!hasSelectedCountryOrGlobe) {
         this.setCountry(this.defaultCountry);
       }
       this.resolveAutoCountryPromise();

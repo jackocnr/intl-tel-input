@@ -1889,10 +1889,11 @@ var Iti = class {
     const val = useAttribute ? attributeValue : inputValue;
     const dialCode = this._getDialCode(val);
     const isRegionlessNanpNumber = isRegionlessNanp(val);
-    const { initialCountry } = this.options;
+    const { initialCountry, geoIpLookup } = this.options;
+    const isAutoCountry = initialCountry === "auto" && geoIpLookup;
     if (dialCode && !isRegionlessNanpNumber) {
       this._updateCountryFromNumber(val);
-    } else if (initialCountry !== "auto" || overrideAutoCountry) {
+    } else if (!isAutoCountry || overrideAutoCountry) {
       const lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
       const isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
       if (isValidInitialCountry) {
@@ -1971,18 +1972,20 @@ var Iti = class {
   }
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
-    if (this.options.utilsScript && !intlTelInput.utils) {
+    const { utilsScript, initialCountry, geoIpLookup } = this.options;
+    if (utilsScript && !intlTelInput.utils) {
       if (intlTelInput.documentReady()) {
-        intlTelInput.loadUtils(this.options.utilsScript);
+        intlTelInput.loadUtils(utilsScript);
       } else {
         window.addEventListener("load", () => {
-          intlTelInput.loadUtils(this.options.utilsScript);
+          intlTelInput.loadUtils(utilsScript);
         });
       }
     } else {
       this.resolveUtilsScriptPromise();
     }
-    if (this.options.initialCountry === "auto" && !this.selectedCountryData.iso2) {
+    const isAutoCountry = initialCountry === "auto" && geoIpLookup;
+    if (isAutoCountry && !this.selectedCountryData.iso2) {
       this._loadAutoCountry();
     } else {
       this.resolveAutoCountryPromise();
@@ -2602,7 +2605,8 @@ var Iti = class {
   handleAutoCountry() {
     if (this.options.initialCountry === "auto" && intlTelInput.autoCountry) {
       this.defaultCountry = intlTelInput.autoCountry;
-      if (!this.telInput.value) {
+      const hasSelectedCountryOrGlobe = this.selectedCountryData.iso2 || this.selectedCountryInner.classList.contains("iti__globe");
+      if (!hasSelectedCountryOrGlobe) {
         this.setCountry(this.defaultCountry);
       }
       this.resolveAutoCountryPromise();
