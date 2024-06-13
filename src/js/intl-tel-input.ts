@@ -2159,9 +2159,11 @@ export class Iti {
 
   //* Update the selected country, and update the input val accordingly.
   setCountry(iso2: string): void {
-    const iso2Lower = iso2.toLowerCase();
-    //* Check if already selected.
-    if (this.selectedCountryData.iso2 !== iso2Lower) {
+    const iso2Lower = iso2?.toLowerCase();
+    const currentCountry = this.selectedCountryData.iso2;
+    //* There is a country change IF: either there is a new country and it's different to the current one, OR there is no new country (i.e. globe state) and there is a current country
+    const isCountryChange = (iso2 && (iso2Lower !== currentCountry) || (!iso2 && currentCountry));
+    if (isCountryChange) {
       this._setCountry(iso2Lower);
       this._updateDialCode(this.selectedCountryData.dialCode);
       this._triggerCountryChange();

@@ -26214,8 +26214,10 @@
     }
     //* Update the selected country, and update the input val accordingly.
     setCountry(iso2) {
-      const iso2Lower = iso2.toLowerCase();
-      if (this.selectedCountryData.iso2 !== iso2Lower) {
+      const iso2Lower = iso2?.toLowerCase();
+      const currentCountry = this.selectedCountryData.iso2;
+      const isCountryChange = iso2 && iso2Lower !== currentCountry || !iso2 && currentCountry;
+      if (isCountryChange) {
         this._setCountry(iso2Lower);
         this._updateDialCode(this.selectedCountryData.dialCode);
         this._triggerCountryChange();
