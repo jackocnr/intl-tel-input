@@ -29,7 +29,7 @@ import "intl-tel-input/styles";
 
 See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/ValidationApp.tsx) for a more fleshed out example of how to handle validation.
 
-A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import IntlTelInput from `"intl-tel-input/reactWithUtils"` instead, to include the utils script. Alternatively, if you use the main `"intl-tel-input/react"` import, then you should couple this with the `utilsScript` initialisation option - you will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.11/build/js/utils.js"`.
+A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import IntlTelInput from `"intl-tel-input/reactWithUtils"` instead, to include the utils script. Alternatively, if you use the main `"intl-tel-input/react"` import, then you should couple this with the `utilsScript` initialisation option - you will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/js/utils.js"`.
 
 ## Props
 Here's a list of all of the current props you can pass to the IntlTelInput react component.
