@@ -401,7 +401,7 @@ const isValid = iti.isValidNumberPrecise();
 Returns: `true`/`false`
 
 **setCountry**  
-Change the country selection (e.g. when the user is entering their address).  
+Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling `setNumber` and passing a number including an international dial code, which is the recommended usage. Note you can omit the country code argument to set the country to the default empty (globe) state.
 ```js
 iti.setCountry("gb");
 ```
