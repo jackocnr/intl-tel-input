@@ -875,6 +875,7 @@ declare module "intl-tel-input" {
         private options;
         private hadInitialPlaceholder;
         private isRTL;
+        private isAndroid;
         private selectedCountryData;
         private countries;
         private dialCodeMaxLen;

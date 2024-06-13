@@ -1514,6 +1514,7 @@ var Iti = class {
   options;
   hadInitialPlaceholder;
   isRTL;
+  isAndroid;
   selectedCountryData;
   countries;
   dialCodeMaxLen;
@@ -1572,6 +1573,7 @@ var Iti = class {
     if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
       this.options.dropdownContainer = document.body;
     }
+    this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
     this.options.i18n = { ...en_default, ...this.options.i18n };
     const autoCountryPromise = new Promise((resolve, reject) => {
@@ -2022,7 +2024,20 @@ var Iti = class {
   _initTelInputListeners() {
     const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay } = this.options;
     let userOverrideFormatting = false;
+    const openDropdownWithPlus = () => {
+      this._openDropdown();
+      this.searchInput.value = "+";
+      this._filterCountries("", true);
+    };
     this._handleInputEvent = (e) => {
+      if (this.isAndroid && e?.data === "+" && separateDialCode) {
+        const currentCaretPos = this.telInput.selectionStart || 0;
+        const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos - 1);
+        const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
+        this.telInput.value = valueBeforeCaret + valueAfterCaret;
+        openDropdownWithPlus();
+        return;
+      }
       if (this._updateCountryFromNumber(this.telInput.value)) {
         this._triggerCountryChange();
       }
@@ -2051,9 +2066,7 @@ var Iti = class {
         if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
           if (separateDialCode && e.key === "+") {
             e.preventDefault();
-            this._openDropdown();
-            this.searchInput.value = "+";
-            this._filterCountries("", true);
+            openDropdownWithPlus();
             return;
           }
           if (strictMode) {

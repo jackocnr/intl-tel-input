@@ -487,6 +487,7 @@ export class Iti {
   private options: AllOptions;
   private hadInitialPlaceholder: boolean;
   private isRTL: boolean;
+  private isAndroid: boolean;
   private selectedCountryData: SelectedCountryData;
   private countries: Country[];
   private dialCodeMaxLen: number;
@@ -559,6 +560,8 @@ export class Iti {
     if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
       this.options.dropdownContainer = document.body;
     }
+
+    this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
 
     //* Check if input has one parent with RTL.
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
@@ -1182,9 +1185,25 @@ export class Iti {
     const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay } = this.options;
     let userOverrideFormatting = false;
 
+    const openDropdownWithPlus = () => {
+      this._openDropdown();
+      this.searchInput.value = "+";
+      this._filterCountries("", true);
+    };
+
     //* On input event: (1) Update selected country, (2) Format-as-you-type.
     //* Note that this fires AFTER the input is updated.
     this._handleInputEvent = (e: InputEvent): void => {
+      //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
+      if (this.isAndroid && e?.data === "+" && separateDialCode) {
+        const currentCaretPos = this.telInput.selectionStart || 0;
+        const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos - 1);
+        const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
+        this.telInput.value = valueBeforeCaret + valueAfterCaret;
+        openDropdownWithPlus();
+        return;
+      }
+
       //* Update selected country.
       if (this._updateCountryFromNumber(this.telInput.value)) {
         this._triggerCountryChange();
@@ -1229,9 +1248,7 @@ export class Iti {
           //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
           if (separateDialCode && e.key === "+") {
             e.preventDefault();
-            this._openDropdown();
-            this.searchInput.value = "+";
-            this._filterCountries("", true);
+            openDropdownWithPlus();
             return;
           }
           //* If strictMode, prevent invalid characters.
