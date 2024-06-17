@@ -6,6 +6,7 @@ export { default as de, countryTranslations as deCountryTranslations, interfaceT
 export { default as el, countryTranslations as elCountryTranslations, interfaceTranslations as elInterfaceTranslations } from "./el";
 export { default as en, countryTranslations as enCountryTranslations, interfaceTranslations as enInterfaceTranslations } from "./en";
 export { default as es, countryTranslations as esCountryTranslations, interfaceTranslations as esInterfaceTranslations } from "./es";
+export { default as fi, countryTranslations as fiCountryTranslations, interfaceTranslations as fiInterfaceTranslations } from "./fi";
 export { default as fr, countryTranslations as frCountryTranslations, interfaceTranslations as frInterfaceTranslations } from "./fr";
 export { default as hi, countryTranslations as hiCountryTranslations, interfaceTranslations as hiInterfaceTranslations } from "./hi";
 export { default as hu, countryTranslations as huCountryTranslations, interfaceTranslations as huInterfaceTranslations } from "./hu";
