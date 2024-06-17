@@ -17,6 +17,7 @@ export { default as nl, countryTranslations as nlCountryTranslations, interfaceT
 export { default as pt, countryTranslations as ptCountryTranslations, interfaceTranslations as ptInterfaceTranslations } from "./pt";
 export { default as ro, countryTranslations as roCountryTranslations, interfaceTranslations as roInterfaceTranslations } from "./ro";
 export { default as ru, countryTranslations as ruCountryTranslations, interfaceTranslations as ruInterfaceTranslations } from "./ru";
+export { default as sv, countryTranslations as svCountryTranslations, interfaceTranslations as svInterfaceTranslations } from "./sv";
 export { default as te, countryTranslations as teCountryTranslations, interfaceTranslations as teInterfaceTranslations } from "./te";
 export { default as th, countryTranslations as thCountryTranslations, interfaceTranslations as thInterfaceTranslations } from "./th";
 export { default as tr, countryTranslations as trCountryTranslations, interfaceTranslations as trInterfaceTranslations } from "./tr";
