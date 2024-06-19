@@ -76,8 +76,6 @@ module.exports = function(grunt) {
 
       const flagsMostCommonWidth = `$most-common-flag-width: ${findMostFrequentNumber(allFlagWidths)};`
       const flagsMostCommonHeight = `$most-common-flag-height: ${findMostFrequentNumber(allFlagHeights)};`
-      const flagsUniqueWidthsMetadata = `$unique-flag-widths: (${uniqueFlagWidths.sort().join(', ')});`;
-      const flagsUniqueHeightsMetadata = `$unique-flag-heights: (${uniqueFlagHeights.sort().join(', ')});`;
 
       outputFileContent += fileWarning
       outputFileContent += "\n\n"
@@ -88,10 +86,6 @@ module.exports = function(grunt) {
       outputFileContent += flagsMostCommonWidth
       outputFileContent += "\n\n"
       outputFileContent += flagsMostCommonHeight
-      outputFileContent += "\n\n"
-      outputFileContent += flagsUniqueWidthsMetadata
-      outputFileContent += "\n\n"
-      outputFileContent += flagsUniqueHeightsMetadata
       outputFileContent += "\n\n"
       outputFileContent += flagsMetadata
       outputFileContent += "\n\n"

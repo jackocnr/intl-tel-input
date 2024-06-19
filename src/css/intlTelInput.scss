@@ -28,7 +28,8 @@
   --iti-path-globe-1x: url('../img/globe.png');
   --iti-path-globe-2x: url('../img/globe@2x.png');
 
-  --iti-flag-sprite-width: #{map-get($flags-sprite-1x, width)};
+  // TODO: Wrongly reads width from avif file. It needs to be set to a fixed width.
+  --iti-flag-sprite-width: 5160px;
   --iti-flag-sprite-height: #{map-get($flags-sprite-1x, height)};
 
   //* Enough space for them to click off to close.
@@ -353,20 +354,6 @@
   background-repeat: no-repeat;
   background-position: var(--iti-flag-offset) 0;
   background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
-}
-
-//* Creates placeholders for flag widths.
-@each $width in $unique-flag-widths {
-  %flag-width-#{$width} {
-    --iti-flag-width: #{$width};
-  }
-}
-
-//* Creates placeholders for flag heights.
-@each $height in $unique-flag-heights {
-  %flag-height-#{$height} {
-    --iti-flag-height: #{$height};
-  }
 }
 
 @each $country-code, $values in $flags {
