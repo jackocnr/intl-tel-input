@@ -989,11 +989,11 @@ declare module "intl-tel-input/react" {
         initOptions?: SomeOptions;
         inputProps?: object;
     };
-    type ItiRef = {
+    export type IntlTelInputRef = {
         getInstance: () => Iti | null;
         getInput: () => HTMLInputElement | null;
     };
-    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<ItiRef>>;
+    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<IntlTelInputRef>>;
     export default IntlTelInput;
 }
 declare module "intl-tel-input/utils-compiled" {
@@ -1019,10 +1019,10 @@ declare module "intl-tel-input/reactWithUtils" {
         initOptions?: SomeOptions;
         inputProps?: object;
     };
-    type ItiRef = {
+    export type IntlTelInputRef = {
         getInstance: () => Iti | null;
         getInput: () => HTMLInputElement | null;
     };
-    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<ItiRef>>;
+    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<IntlTelInputRef>>;
     export default IntlTelInput;
 }
