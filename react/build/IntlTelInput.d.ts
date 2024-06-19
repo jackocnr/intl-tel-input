@@ -976,7 +976,7 @@ declare module "intl-tel-input" {
 }
 declare module "intl-tel-input/react" {
     import intlTelInput from "intl-tel-input";
-    import { SomeOptions } from "intl-tel-input";
+    import { Iti, SomeOptions } from "intl-tel-input";
     import React from "react";
     export { intlTelInput };
     type ItiProps = {
@@ -989,7 +989,11 @@ declare module "intl-tel-input/react" {
         initOptions?: SomeOptions;
         inputProps?: object;
     };
-    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<unknown>>;
+    type ItiRef = {
+        getInstance: () => Iti | null;
+        getInput: () => HTMLInputElement | null;
+    };
+    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<ItiRef>>;
     export default IntlTelInput;
 }
 declare module "intl-tel-input/utils-compiled" {
@@ -1002,7 +1006,7 @@ declare module "intl-tel-input/intlTelInputWithUtils" {
 }
 declare module "intl-tel-input/reactWithUtils" {
     import intlTelInput from "intl-tel-input/intlTelInputWithUtils";
-    import { SomeOptions } from "intl-tel-input";
+    import { Iti, SomeOptions } from "intl-tel-input";
     import React from "react";
     export { intlTelInput };
     type ItiProps = {
@@ -1015,6 +1019,10 @@ declare module "intl-tel-input/reactWithUtils" {
         initOptions?: SomeOptions;
         inputProps?: object;
     };
-    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<unknown>>;
+    type ItiRef = {
+        getInstance: () => Iti | null;
+        getInput: () => HTMLInputElement | null;
+    };
+    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<ItiRef>>;
     export default IntlTelInput;
 }

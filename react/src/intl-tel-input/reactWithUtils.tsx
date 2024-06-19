@@ -18,6 +18,11 @@ type ItiProps = {
   inputProps?: object;
 };
 
+type ItiRef = {
+  getInstance: () => Iti | null;
+  getInput: () => HTMLInputElement | null;
+}
+
 const IntlTelInput = forwardRef(function IntlTelInput({
   initialValue = "",
   onChangeNumber = () => {},
@@ -27,7 +32,7 @@ const IntlTelInput = forwardRef(function IntlTelInput({
   usePreciseValidation = false,
   initOptions = {},
   inputProps = {},
-}: ItiProps, ref) {
+}: ItiProps, ref: React.ForwardedRef<ItiRef>) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
 
