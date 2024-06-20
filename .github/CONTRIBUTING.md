@@ -2,6 +2,11 @@
 
 I'm very open to contributions, big and small! For general instructions on submitting a pull request on GitHub, see these guides: [Fork A Repo](https://help.github.com/articles/fork-a-repo), and [Creating a pull request from a fork](https://help.github.com/articles/creating-a-pull-request-from-a-fork/).
 
+## Table of Contents
+- [Changes to the plugin](#changes-to-the-plugin)
+- [Updating to a new version of libphonenumber](#updating-to-a-new-version-of-libphonenumber)
+- [Updating the flag images](#updating-the-flag-images)
+
 ## Changes to the plugin
 
 In order to build the project, you will first need to install [npm](https://www.npmjs.org), and then run `npm install` to install the project's dependencies . At this point, the included `demo.html` should be working, if you open it in your browser. Then you should make your changes in the `src` directory, and be sure to run the build script before committing your changes - see below for more information on this.
