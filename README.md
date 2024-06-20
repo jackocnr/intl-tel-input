@@ -252,7 +252,7 @@ intlTelInput(input, { i18n: fr });
 // OPTION 2: define your own custom translations
 intlTelInput(input, {
   i18n: {
-    // Country names (see full list here: https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.js)
+    // Country names (see full list here: https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/data.ts)
     af: "Afghanistan",
     al: "Albania",
     dz: "Algeria",
