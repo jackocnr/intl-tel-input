@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         grunt.log.writeln(`WARNING: Missing interface file: ${interfaceTranslationFilePath} - skipping this locale.\n`);
         return;
       }
-      //* If the interface file does not exist, skip the iteration.
+      //* If the countries file does not exist, skip the iteration.
       if (!countryTranslationExists) {
         grunt.log.writeln(`WARNING: Missing country file: ${countryTranslationFilePath} - skipping this locale.\n`);
         return;
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
         let countryTranslationFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
         countryTranslationFileContent += 'export default {\n';
 
-        Object.keys(parsedData).forEach(key => {
+        Object.keys(parsedData).sort().forEach(key => {
           countryTranslationFileContent += `  ${key.toLowerCase()}: "${parsedData[key]}",\n`;
         });
 
