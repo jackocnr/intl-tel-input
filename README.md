@@ -4,7 +4,7 @@
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.png" alt="Typescript logo" width="16px" /> NEWS: we now have our own Typescript type definitions, so no need to use `@types/intl-tel-input` anymore!
 
-🗣️ NEWS: we now provide [translation files](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for several common languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
+🗣️ NEWS: we now provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) in several common languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
@@ -240,7 +240,7 @@ Which will generate the following (hidden) elements, which will be automatically
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allow localisation/customisation of country names and other plugin text. There are two options: either import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) (see option 1 below), or define your own custom translations (see option 2 below). If defining your own, you will need to specify all country names (over 200 at last count - [see full list](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/data.ts)) using their 2-character iso2 name, as well as the 7 interface keys listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html).
+Allow localisation/customisation of country names and other plugin text. There are two options: either import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) (see option 1 below), or define your own custom translations (see option 2 below). If defining your own, you will need to specify all country names (over 200 at last count - [see full list](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/data.ts)) using their 2-character iso2 name, as well as the 7 interface keys listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html). See the [Contributing Guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) for instructions on how to add a missing translation to the project.
 
 ```js
 // OPTION 1: import one of the provided translation modules
