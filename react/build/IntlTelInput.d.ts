@@ -1,4 +1,3 @@
-/// <reference types="react" />
 declare module "intl-tel-input/data" {
     export type Country = {
         name: string;

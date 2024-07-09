@@ -1504,53 +1504,6 @@ var forEachInstance = (method) => {
   Object.values(instances).forEach((instance) => instance[method]());
 };
 var Iti = class {
-  //* Can't be private as it's called from intlTelInput convenience wrapper.
-  id;
-  //* NOT Private
-  promise;
-  //* Private
-  telInput;
-  highlightedItem;
-  options;
-  hadInitialPlaceholder;
-  isRTL;
-  isAndroid;
-  selectedCountryData;
-  countries;
-  dialCodeMaxLen;
-  dialCodeToIso2Map;
-  dialCodes;
-  countryContainer;
-  selectedCountry;
-  selectedCountryInner;
-  selectedCountryA11yText;
-  selectedDialCode;
-  dropdownArrow;
-  dropdownContent;
-  searchInput;
-  searchResultsA11yText;
-  countryList;
-  dropdown;
-  hiddenInput;
-  hiddenInputCountry;
-  maxCoreNumberLength;
-  defaultCountry;
-  _handleHiddenInputSubmit;
-  _handleLabelClick;
-  _handleClickSelectedCountry;
-  _handleCountryContainerKeydown;
-  _handleInputEvent;
-  _handleKeydownEvent;
-  _handleWindowScroll;
-  _handleMouseoverCountryList;
-  _handleClickCountryList;
-  _handleClickOffToClose;
-  _handleKeydownOnDropdown;
-  _handleSearchChange;
-  resolveAutoCountryPromise;
-  rejectAutoCountryPromise;
-  resolveUtilsScriptPromise;
-  rejectUtilsScriptPromise;
   constructor(input, customOptions = {}) {
     this.id = id++;
     this.telInput = input;

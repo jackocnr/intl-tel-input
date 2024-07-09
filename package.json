@@ -30,7 +30,7 @@
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
     "cspell": "^8.6.1",
-    "esbuild": "^0.21.2",
+    "esbuild": "^0.23.0",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
@@ -66,7 +66,7 @@
     "region-flags": "https://github.com/fonttools/region-flags/archive/refs/tags/1.2.1.tar.gz",
     "sass": "^1.74.1",
     "time-grunt": "^2.0.0",
-    "typescript": "^5.4.3"
+    "typescript": "^5.5.3"
   },
   "files": [
     "build/*",

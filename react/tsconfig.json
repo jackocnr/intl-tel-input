@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "target": "es6",
     "jsx": "react",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true, //* Required for react (etc) default imports.
     "declaration": true, //* Generate .d.ts files.
     "emitDeclarationOnly": true, //* ONLY generate .d.ts files (we use esbuild for the actual bundling).
