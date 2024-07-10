@@ -26245,7 +26245,7 @@
       //* A map from instance ID to instance object.
       instances: {},
       loadUtils,
-      version: "23.2.0"
+      version: "23.2.1"
     }
   );
   var intl_tel_input_default = intlTelInput;
