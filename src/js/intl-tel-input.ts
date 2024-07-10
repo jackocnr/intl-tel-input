@@ -810,23 +810,36 @@ export class Iti {
         wrapper,
       );
 
-    //* Selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
-    //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
-      this.selectedCountry = createEl(
-        "button",
-        {
-          type: "button",
-          class: "iti__selected-country",
-          ...(allowDropdown && {
+      //* Selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
+      //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
+      if (allowDropdown) {
+        this.selectedCountry = createEl(
+          "button",
+          {
+            type: "button",
+            class: "iti__selected-country",
             "aria-expanded": "false",
             "aria-label": this.options.i18n.selectedCountryAriaLabel,
             "aria-haspopup": "true",
             "aria-controls": `iti-${this.id}__dropdown-content`,
             "role": "combobox",
-          }),
-        },
-        this.countryContainer,
-      );
+          },
+          this.countryContainer,
+        );
+
+        if (this.telInput.disabled) {
+          this.selectedCountry.setAttribute("aria-disabled", "true");
+        } else {
+          //* Make element focusable and tab navigable.
+          this.selectedCountry.setAttribute("tabindex", "0");
+        }
+      } else {
+        this.selectedCountry = createEl(
+          "div",
+          { class: "iti__selected-country" },
+          this.countryContainer,
+        );
+      }
 
       // The element that gets a grey background on hover (if allowDropdown enabled)
       const selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
@@ -838,13 +851,6 @@ export class Iti {
         { class: "iti__a11y-text" },
         this.selectedCountryInner,
       );
-
-      if (this.telInput.disabled) {
-        this.selectedCountry.setAttribute("aria-disabled", "true");
-      } else {
-        //* Make element focusable and tab navigable.
-        this.selectedCountry.setAttribute("tabindex", "0");
-      }
 
       if (allowDropdown) {
         this.dropdownArrow = createEl(
