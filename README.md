@@ -18,6 +18,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 
 ## Table of Contents
 
+- [JavaScript Plugin vs React Component](#javascript-plugin-vs-react-component)
 - [Demo and Examples](#demo-and-examples)
 - [Mobile](#mobile)
 - [Features](#features)
@@ -33,6 +34,9 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [Attributions](#attributions)
+
+## JavaScript Plugin vs React Component
+We now provide both a JavaScript plugin and a React Component. This readme is for the JavaScript plugin. View the [React Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md).
 
 ## Demo and Examples
 You can view [a live demo](https://intl-tel-input.com) and see some examples of how to use the various options. Alternatively, try it for yourself by downloading the project and opening demo.html in a browser.
@@ -489,10 +493,10 @@ To recompile the utils script yourself (e.g. to update the version of libphonenu
 The utils script provides lots of great functionality (see above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
 
 **Option 1: intlTelInputWithUtils**  
-If you're not concerned about filesize, the easiest thing to do is to just use the full bundle /build/js/intlTelInputWithUtils.js, which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
+If you're not concerned about filesize (e.g. you're lazy loading this script), the easiest thing to do is to just use the full bundle /build/js/intlTelInputWithUtils.js, which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
 
 **Option 2: utilsScript**  
-If you *are* concerned about filesize, you can lazy load the utils script when the plugin intitialises, using the `utilsScript` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.2.0/build/js/utils.js"`. If you want more control over when this file is lazy loaded, you can instead use the `loadUtils` static method directly.
+If you *are* concerned about filesize, you can lazy load the utils script when the plugin intitialises, using the `utilsScript` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.2.0/build/js/utils.js"`. If you want more control over when this file is lazy loaded, you can manually invoke the `loadUtils` static method, instead of using `utilsScript`.
 
 ## Troubleshooting
 
