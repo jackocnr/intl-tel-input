@@ -240,7 +240,9 @@ Which will generate the following (hidden) elements, which will be automatically
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allow localisation/customisation of country names and other plugin text. There are two options: either import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) (see option 1 below), or define your own custom translations (see option 2 below). If defining your own, you will need to specify all country names (over 200 at last count - [see full list](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/data.ts)) using their 2-character iso2 name, as well as the 7 interface keys listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html). See the [Contributing Guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) for instructions on how to add a missing translation to the project.
+Allow localisation/customisation of the 200+ country names, as well as other user interface text (e.g. the country search input placeholder text). The easiest way to do this is to simply import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) and set `i18n` to that (see option 1 below). You can also override one or more individual keys this way if you want (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, you will need to specify all the country names (which can be copied from the country-list project e.g. here are the [country names in French](https://github.com/umpirsky/country-list/blob/master/data/fr/country.json)), as well as a few UI strings (listed below). [See example](https://intl-tel-input.com/examples/localise-countries.html).
+
+If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings, as we automatically pull in the country names from the country-list project.
 
 ```js
 // OPTION 1: import one of the provided translation modules
@@ -248,11 +250,16 @@ import fr from "intl-tel-input/i18n/fr";
 
 intlTelInput(input, { i18n: fr });
 
+// or to override one or more keys, you could do something like this
+intlTelInput(input, {
+  i18n: { ...fr, searchPlaceholder: "Search", },
+});
+
 
 // OPTION 2: define your own custom translations
 intlTelInput(input, {
   i18n: {
-    // Country names (see full list here: https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/data.ts)
+    // Country names
     af: "Afghanistan",
     al: "Albania",
     dz: "Algeria",
