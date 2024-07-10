@@ -2715,7 +2715,7 @@ var loadUtils = (path) => {
   if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
     intlTelInput.startedLoadingUtilsScript = true;
     return new Promise((resolve, reject) => {
-      import(
+      import_INTENTIONALLY_BROKEN(
         /* webpackIgnore: true */
         path
       ).then(({ default: utils2 }) => {

@@ -298,6 +298,46 @@ module.exports = function(grunt) {
       files: {
         '.github/ISSUE_TEMPLATE.md': '.github/ISSUE_TEMPLATE.md'
       }
+    },
+
+
+    /**************
+     * Generate reactWithUtils.tsx
+     **************/
+    reactWithUtils: {
+      options: {
+        patterns: [
+          {
+            match: /import intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
+            replacement: '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\nimport intlTelInput from "./intlTelInputWithUtils";'
+          }
+        ]
+      },
+      files: {
+        'react/src/intl-tel-input/reactWithUtils.tsx': 'react/src/intl-tel-input/react.tsx',
+      }
+    },
+
+
+    /**************
+     * Remove (break) the dynamic import statement
+     * in the 4 bundles that already include utils as it will never be used, and sometimes causes problems with bundlers
+     **************/
+    removeImport: {
+      options: {
+        patterns: [
+          {
+            match: /import\(/,
+            replacement: 'import_INTENTIONALLY_BROKEN('
+          }
+        ]
+      },
+      files: {
+        'build/js/intlTelInputWithUtils.js': 'build/js/intlTelInputWithUtils.js',
+        'build/js/intlTelInputWithUtils.min.js': 'build/js/intlTelInputWithUtils.min.js',
+        'react/build/IntlTelInputWithUtils.js': 'react/build/IntlTelInputWithUtils.js',
+        'react/build/IntlTelInputWithUtils.cjs': 'react/build/IntlTelInputWithUtils.cjs',
+      }
     }
   };
 };
