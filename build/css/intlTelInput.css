@@ -1,21 +1,10 @@
 :root {
-  --iti-hover-color: rgba(0, 0, 0, 0.05);
   --iti-border-gray: #ccc;
-  --iti-border-color: var(--iti-border-gray);
   --iti-text-gray: #999;
+  --iti-hover-color: rgba(0, 0, 0, 0.05);
+  --iti-border-color: var(--iti-border-gray);
   --iti-dialcode-color: var(--iti-text-gray);
-  --iti-color: inherit;
-  --iti-countryname-color: var(--iti-color);
-  --iti-input-color: var(--iti-color);
-  --iti-search-color: var(--iti-color);
-  --iti-placeholder-color: #a9a9a9;
-  --iti-input-placeholder-color: var(--iti-placeholder-color);
-  --iti-search-placeholder-color: var(--iti-placeholder-color);
-  --iti-input-placeholder-opacity: 1;
-  --iti-search-placeholder-opacity: var(--iti-input-placeholder-opacity);
-  --iti-input-bg: field;
-  --iti-search-bg: var(--iti-input-bg);
-  --iti-dropdown-bg: var(--iti-input-bg);
+  --iti-dropdown-bg: white;
   --iti-spacer-horizontal: 8px;
   --iti-flag-height: 15px;
   --iti-flag-width: 20px;
@@ -66,14 +55,6 @@
   margin-bottom: 0 !important;
   padding-right: var(--iti-right-hand-selected-country-padding);
   margin-right: 0;
-  color: var(--iti-input-color);
-  background-color: var(--iti-input-bg);
-}
-.iti input.iti__tel-input::placeholder,
-.iti input.iti__tel-input[type=text]::placeholder,
-.iti input.iti__tel-input[type=tel]::placeholder {
-  color: var(--iti-input-placeholder-color);
-  opacity: var(--iti-input-placeholder-opacity);
 }
 .iti__country-container {
   position: absolute;
@@ -136,16 +117,9 @@
 }
 .iti__search-input {
   width: 100%;
-  border-radius: 3px 3px 0 0;
+  border-width: 0;
+  border-radius: 3px;
   padding: 9px 12px;
-  color: var(--iti-search-color);
-  background-color: var(--iti-search-bg);
-  border: none;
-  border-bottom: var(--iti-border-width) solid var(--iti-border-color);
-}
-.iti__search-input::placeholder {
-  color: var(--iti-search-placeholder-color);
-  opacity: var(--iti-search-placeholder-opacity);
 }
 .iti__search-input + .iti__country-list {
   border-top: 1px solid var(--iti-border-color);
@@ -186,7 +160,6 @@
 }
 .iti__flag-box, .iti__country-name {
   margin-right: var(--iti-spacer-horizontal);
-  color: var(--iti-countryname-color);
 }
 [dir=rtl] .iti__flag-box, [dir=rtl] .iti__country-name {
   margin-right: 0;
@@ -1381,19 +1354,5 @@
   }
   .iti__globe {
     background-image: var(--iti-path-globe-2x);
-  }
-}
-@media (prefers-color-scheme: dark) {
-  .iti {
-    --iti-border-color: var(--iti-border-gray);
-    --iti-dialcode-color: var(--iti-text-gray);
-    --iti-input-placeholder-color: var(--iti-placeholder-color);
-    --iti-search-placeholder-color: var(--iti-placeholder-color);
-    --iti-search-placeholder-opacity: var(--iti-input-placeholder-opacity);
-    --iti-countryname-color: var(--iti-color);
-    --iti-input-color: var(--iti-color);
-    --iti-search-color: var(--iti-color);
-    --iti-search-bg: var(--iti-input-bg);
-    --iti-dropdown-bg: var(--iti-input-bg);
   }
 }

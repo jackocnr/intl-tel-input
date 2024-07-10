@@ -49,3 +49,23 @@ input::placeholder {
 .notice {
   margin-top: 15px;
 }
+
+@media (prefers-color-scheme: dark) {
+  body, input {
+    color: white;
+    background-color: #0d1117;
+  }
+  input {
+    border-color: #30363d;
+  }
+  input::placeholder {
+    color: #8d96a0;
+  }
+  :root {
+    --iti-border-color: #30363d;
+    --iti-dialcode-color: #999999;
+    --iti-dropdown-bg: #0d1117;
+    --iti-arrow-color: #aaaaaa;
+    --iti-hover-color: #30363d;
+  }
+}

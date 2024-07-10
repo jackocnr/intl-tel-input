@@ -6,8 +6,6 @@
 
 🗣️ NEWS: we now provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) in several common languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
 
-🌙 NEWS: It is now easier than ever to get darkmode working. please see [Theming (Dark Mode)](#theming)
-
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-search.png" alt="Screenshot" width="238px" style="max-width: 100%" />
@@ -28,7 +26,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Getting Started](#getting-started-using-a-cdn)
 - [Recommended Usage](#recommended-usage)
 - [Initialisation Options](#initialisation-options)
-- [Theming (Dark Mode)](#theming)
+- [Theming / Dark Mode](#theming-dark-mode)
 - [Instance Methods](#instance-methods)
 - [Static Methods](#static-methods)
 - [Events](#events)
@@ -333,18 +331,35 @@ This is one way to (lazy) load the included utils.js (to enable formatting/valid
 Type: `String` Default: `"MOBILE"`  
 Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to enforce during validation with `isValidNumber`, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. 
 
-## Theming (Dark Mode)
-Please see ```src/css/intlTelInput.scss``` for all options.
+## Theming / Dark Mode
+There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for a list.
 
-For dark mode:
-``` CSS
+Dark mode example:
+```css
 @media (prefers-color-scheme: dark) {
   .iti {
-    --iti-input-bg: #262a2d;
-    --iti-color: #ffffff;
-    --iti-arrow-color: #ffffff;
-    --iti-placeholder-color: #909090;
-    --iti-hover-color: rgba(255, 255, 255, 0.1);
+    --iti-border-color: #30363d;
+    --iti-dialcode-color: #999999;
+    --iti-dropdown-bg: #0d1117;
+    --iti-arrow-color: #aaaaaa;
+    --iti-hover-color: #30363d;
+  }
+}
+```
+
+NOTE: this assumes you already have your own dark mode styling in place for general body/input styling e.g. something like this:
+
+```css
+@media (prefers-color-scheme: dark) {
+  body, input {
+    color: white;
+    background-color: #0d1117;
+  }
+  input {
+    border-color: #30363d;
+  }
+  input::placeholder {
+    color: #8d96a0;
   }
 }
 ```
