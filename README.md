@@ -26,7 +26,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Getting Started](#getting-started-using-a-cdn)
 - [Recommended Usage](#recommended-usage)
 - [Initialisation Options](#initialisation-options)
-- [Theming / Dark Mode](#theming-dark-mode)
+- [Theming / Dark Mode](#theming--dark-mode)
 - [Instance Methods](#instance-methods)
 - [Static Methods](#static-methods)
 - [Events](#events)
