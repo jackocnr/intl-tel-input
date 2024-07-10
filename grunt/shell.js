@@ -9,9 +9,6 @@ module.exports = function(grunt) {
     genTsDeclaration: {
       command: 'tsc --p tsconfig.json'
     },
-    genReactTsDeclaration: {
-      command: 'tsc --p react/tsconfig.json'
-    },
     eslint: {
       command: 'eslint src/js/intl-tel-input.ts'
     },
