@@ -973,6 +973,28 @@ declare module "intl-tel-input" {
     const intlTelInput: IntlTelInputInterface;
     export default intlTelInput;
 }
+declare module "intl-tel-input/react" {
+    import intlTelInput from "intl-tel-input";
+    import { Iti, SomeOptions } from "intl-tel-input";
+    import React from "react";
+    export { intlTelInput };
+    type ItiProps = {
+        initialValue?: string;
+        onChangeNumber?: (number: string) => void;
+        onChangeCountry?: (country: string) => void;
+        onChangeValidity?: (valid: boolean) => void;
+        onChangeErrorCode?: (errorCode: number | null) => void;
+        usePreciseValidation?: boolean;
+        initOptions?: SomeOptions;
+        inputProps?: object;
+    };
+    export type IntlTelInputRef = {
+        getInstance: () => Iti | null;
+        getInput: () => HTMLInputElement | null;
+    };
+    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<IntlTelInputRef>>;
+    export default IntlTelInput;
+}
 declare module "intl-tel-input/utils-compiled" {
     export default utils;
     const utils: any;
@@ -980,4 +1002,26 @@ declare module "intl-tel-input/utils-compiled" {
 declare module "intl-tel-input/intlTelInputWithUtils" {
     import intlTelInput from "intl-tel-input";
     export default intlTelInput;
+}
+declare module "intl-tel-input/reactWithUtils" {
+    import intlTelInput from "intl-tel-input/intlTelInputWithUtils";
+    import { Iti, SomeOptions } from "intl-tel-input";
+    import React from "react";
+    export { intlTelInput };
+    type ItiProps = {
+        initialValue?: string;
+        onChangeNumber?: (number: string) => void;
+        onChangeCountry?: (country: string) => void;
+        onChangeValidity?: (valid: boolean) => void;
+        onChangeErrorCode?: (errorCode: number | null) => void;
+        usePreciseValidation?: boolean;
+        initOptions?: SomeOptions;
+        inputProps?: object;
+    };
+    export type IntlTelInputRef = {
+        getInstance: () => Iti | null;
+        getInput: () => HTMLInputElement | null;
+    };
+    const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<IntlTelInputRef>>;
+    export default IntlTelInput;
 }

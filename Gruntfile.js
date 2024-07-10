@@ -19,7 +19,7 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['responsive_images:retina', 'exec:evenizer', 'responsive_images:regular', 'sprite', 'imagemin', 'generate-scss-metadata']);
   // just javascript
-  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:buildJs', 'replace', 'shell:buildReact', 'replace:removeImport']);
+  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:buildJs', 'replace', 'shell:buildReact', 'replace:removeImport']);
   // just react
   grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact', 'replace:removeImport']);
 

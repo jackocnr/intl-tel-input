@@ -113,12 +113,12 @@
     "./data": "./build/js/data.js",
     "./utils": "./build/js/utils.js",
     "./react": {
-      "types": "./build/js/intlTelInput.d.ts",
+      "types": "./react/build/IntlTelInput.d.ts",
       "require": "./react/build/IntlTelInput.cjs",
       "default": "./react/build/IntlTelInput.js"
     },
     "./reactWithUtils": {
-      "types": "./build/js/intlTelInput.d.ts",
+      "types": "./react/build/IntlTelInput.d.ts",
       "require": "./react/build/IntlTelInputWithUtils.cjs",
       "default": "./react/build/IntlTelInputWithUtils.js"
     },
@@ -133,7 +133,7 @@
         "build/js/intlTelInput.d.ts"
       ],
       "react": [
-        "./build/js/intlTelInput.d.ts"
+        "react/build/IntlTelInput.d.ts"
       ]
     }
   },

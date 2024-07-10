@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "jsx": "react", // required for react code
     "target": "es6",
     "module": "nodenext",
     "moduleResolution": "nodenext",
@@ -8,11 +7,11 @@
     "declaration": true, // generate .d.ts files
     "emitDeclarationOnly": true, // ONLY generate .d.ts files (we use esbuild for the actual bundling)
     "outFile": "build/js/intlTelInput.d.ts",
-    "rootDir": "./react/src",
+    "rootDir": "./src/js",
     "allowJs": true, // allow importing .mjs files e.g. i18n files
   },
   "include": [
-    "react/src/intl-tel-input/react.tsx",
-    "react/src/intl-tel-input/reactWithUtils.tsx",
+    "src/js/intl-tel-input.ts",
+    "src/js/intl-tel-input/intlTelInputWithUtils.ts",
   ],
 }
