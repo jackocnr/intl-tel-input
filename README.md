@@ -338,11 +338,13 @@ Dark mode example:
 ```css
 @media (prefers-color-scheme: dark) {
   .iti {
-    --iti-border-color: #30363d;
+    --iti-border-color: #5b5b5b;
     --iti-dialcode-color: #999999;
     --iti-dropdown-bg: #0d1117;
     --iti-arrow-color: #aaaaaa;
     --iti-hover-color: #30363d;
+    --iti-path-globe-1x: url("path/to/globe_light.png");
+    --iti-path-globe-2x: url("path/to/globe_light@2x.png");
   }
 }
 ```
@@ -356,7 +358,7 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
     background-color: #0d1117;
   }
   input {
-    border-color: #30363d;
+    border-color: #5b5b5b;
   }
   input::placeholder {
     color: #8d96a0;
