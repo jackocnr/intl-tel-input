@@ -4,7 +4,7 @@
 
 const { userEvent } = require("@testing-library/user-event");
 const {
-  setup,
+  initPlugin,
   teardown,
   getCountryListLength,
   totalCountries,
@@ -16,11 +16,12 @@ const {
 //* Without the advanceTimers bit, the (time related) tests just hang, see https://github.com/jestjs/jest/issues/12056#issuecomment-1090189268
 jest.useFakeTimers({advanceTimers: true});
 
-let iti, container;
+let iti, container, user;
 
 describe("countrySearch", () => {
   beforeEach(() => {
-    ({ container, iti } = setup());
+    user = userEvent.setup();
+    ({ container, iti } = initPlugin());
   });
       
   afterEach(() => {
@@ -39,7 +40,6 @@ describe("countrySearch", () => {
 
   describe("opening the dropdown and typing 'x' in the search input", () => {
     beforeEach(async () => {
-      const user = userEvent.setup();
       const selectedCountryButton = getSelectedCountryButton(container);
       const searchInput = getSearchInput(container);
 
@@ -56,7 +56,6 @@ describe("countrySearch", () => {
     });
       
     test("hitting Enter selects Christmas Islands", async () => {
-      const user = userEvent.setup();
       const searchInput = getSearchInput(container);
       await user.type(searchInput, "{enter}");
       expect(checkFlagSelected(container, "cx")).toBeTruthy();
