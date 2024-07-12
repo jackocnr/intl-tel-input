@@ -334,6 +334,8 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 ## Theming / Dark Mode
 There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for a list.
 
+Note that it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. I recommend you download it in the highest resolution, and then scale the image down to the required sizes (20px wide for globe.png and 40px wide for globe@2x.png).
+
 Dark mode example:
 ```css
 @media (prefers-color-scheme: dark) {
