@@ -31,7 +31,7 @@ describe("dropdown shortcuts", () => {
       selectedCountry.focus();
     });
 
-    test("dropdown is not already open", async () => {
+    test("dropdown is not already open", () => {
       expect(getDropdownDiv(container)).toHaveClass("iti__hide");
     });
 
@@ -61,7 +61,7 @@ describe("dropdown shortcuts", () => {
       await clickSelectedCountry(container, user);
     });
 
-    test("shows the dropdown and highlights the first country in the list", async () => {
+    test("shows the dropdown and highlights the first country in the list", () => {
       expect(getDropdownDiv(container)).not.toHaveClass("iti__hide");
       expect(getHighlightedItemCode(container)).toEqual("af");
     });
@@ -93,7 +93,7 @@ describe("dropdown shortcuts", () => {
         await user.keyboard("{ArrowDown}");
       });
 
-      test("highlights the next country in the list", async () => {
+      test("highlights the next country in the list", () => {
         expect(getHighlightedItemCode(container)).toEqual("al");
       });
 

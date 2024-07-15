@@ -30,12 +30,12 @@ describe("countrychange event", () => {
     expect(mockEventHandler).not.toHaveBeenCalled();
   });
     
-  test("calling setCountry triggers the event", async () => {
+  test("calling setCountry triggers the event", () => {
     iti.setCountry("fr");
     expect(mockEventHandler).toHaveBeenCalled();
   });
     
-  test("calling setNumber triggers the event", async () => {
+  test("calling setNumber triggers the event", () => {
     iti.setNumber("+34");
     expect(mockEventHandler).toHaveBeenCalled();
   });
