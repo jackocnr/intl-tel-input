@@ -1,3 +1,4 @@
+require("@testing-library/jest-dom");
 const intlTelInput = require("intlTelInputWithUtils.js");
 
 exports.totalCountries = 244;
@@ -30,8 +31,16 @@ exports.getCountryListLength = (container) => {
   return countryList.querySelectorAll("li.iti__country").length;
 };
 
+exports.getHighlightedItemCode = (container) => {
+  return container.querySelector(".iti__country-list .iti__highlight").getAttribute("data-country-code");
+};
+
 exports.getSelectedCountryButton = (container) => {
   return container.querySelector(".iti__selected-country");
+};
+
+exports.getDropdownDiv = (container) => {
+  return container.querySelector(".iti__dropdown-content");
 };
 
 exports.getSearchInput = (container) => {
