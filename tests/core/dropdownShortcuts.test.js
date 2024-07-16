@@ -7,8 +7,8 @@ const {
   initPlugin,
   teardown,
   getSelectedCountryButton,
-  getDropdownDiv,
-  clickSelectedCountry,
+  isDropdownOpen,
+  clickSelectedCountryAsync,
   checkFlagSelected,
   getHighlightedItemCode,
 } = require("../helpers/helpers");
@@ -32,55 +32,55 @@ describe("dropdown shortcuts", () => {
     });
 
     test("dropdown is not already open", () => {
-      expect(getDropdownDiv(container)).toHaveClass("iti__hide");
+      expect(isDropdownOpen(container)).toBe(false);
     });
 
     test("pressing UP opens the dropdown", async () => {
       await user.keyboard("{ArrowUp}");
-      expect(getDropdownDiv(container)).not.toHaveClass("iti__hide");
+      expect(isDropdownOpen(container)).toBe(true);
     });
 
     test("pressing DOWN opens the dropdown", async () => {
       await user.keyboard("{ArrowDown}");
-      expect(getDropdownDiv(container)).not.toHaveClass("iti__hide");
+      expect(isDropdownOpen(container)).toBe(true);
     });
 
     test("pressing SPACE opens the dropdown", async () => {
       await user.keyboard(" ");
-      expect(getDropdownDiv(container)).not.toHaveClass("iti__hide");
+      expect(isDropdownOpen(container)).toBe(true);
     });
 
     test("pressing ENTER opens the dropdown", async () => {
       await user.keyboard("{Enter}");
-      expect(getDropdownDiv(container)).not.toHaveClass("iti__hide");
+      expect(isDropdownOpen(container)).toBe(true);
     });
   });
 
   describe("clicking the selected country", () => {
     beforeEach(async () => {
-      await clickSelectedCountry(container, user);
+      await clickSelectedCountryAsync(container, user);
     });
 
     test("shows the dropdown and highlights the first country in the list", () => {
-      expect(getDropdownDiv(container)).not.toHaveClass("iti__hide");
+      expect(isDropdownOpen(container)).toBe(true);
       expect(getHighlightedItemCode(container)).toEqual("af");
     });
 
     test("pressing ESCAPE closes the dropdown", async () => {
       await user.keyboard("{Escape}");
-      expect(getDropdownDiv(container)).toHaveClass("iti__hide");
+      expect(isDropdownOpen(container)).toBe(false);
     });
 
     test("pressing TAB closes the dropdown and focuses the input", async () => {
       await user.keyboard("{Tab}");
-      expect(getDropdownDiv(container)).toHaveClass("iti__hide");
+      expect(isDropdownOpen(container)).toBe(false);
       expect(input).toHaveFocus();
     });
 
     test("pressing ENTER closes the dropdown and updates the selected country", async () => {
       await user.keyboard("{Enter}");
-      expect(getDropdownDiv(container)).toHaveClass("iti__hide");
-      expect(checkFlagSelected(container, "af")).toBeTruthy();
+      expect(isDropdownOpen(container)).toBe(false);
+      expect(checkFlagSelected(container, "af")).toBe(true);
     });
 
     test("pressing UP highlights the country at the very end of the list", async () => {
@@ -99,8 +99,8 @@ describe("dropdown shortcuts", () => {
 
       test("pressing ENTER closes the dropdown and updates the selected country", async () => {
         await user.keyboard("{Enter}");
-        expect(getDropdownDiv(container)).toHaveClass("iti__hide");
-        expect(checkFlagSelected(container, "al")).toBeTruthy();
+        expect(isDropdownOpen(container)).toBe(false);
+        expect(checkFlagSelected(container, "al")).toBe(true);
       });
     });
   });

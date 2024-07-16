@@ -27,7 +27,7 @@ describe("initial values", () => {
     });
     
     test("leaves the selected country empty", () => {
-      expect(checkFlagSelected(container, "")).toBeTruthy();
+      expect(checkFlagSelected(container, "")).toBe(true);
     });
   });
 
@@ -43,7 +43,7 @@ describe("initial values", () => {
     });
     
     test("updates the selected country", () => {
-      expect(checkFlagSelected(container, "gb")).toBeTruthy();
+      expect(checkFlagSelected(container, "gb")).toBe(true);
     });
   });
 
@@ -59,7 +59,7 @@ describe("initial values", () => {
     });
     
     test("updates the selected country", () => {
-      expect(checkFlagSelected(container, "us")).toBeTruthy();
+      expect(checkFlagSelected(container, "us")).toBe(true);
     });
   });
 
@@ -76,7 +76,7 @@ describe("initial values", () => {
     
     //* Issue 520.
     test("updates the selected country", () => {
-      expect(checkFlagSelected(container, "ck")).toBeTruthy();
+      expect(checkFlagSelected(container, "ck")).toBe(true);
     });
   });
 
@@ -92,7 +92,7 @@ describe("initial values", () => {
     });
     
     test("leaves the selected country empty", () => {
-      expect(checkFlagSelected(container, "")).toBeTruthy();
+      expect(checkFlagSelected(container, "")).toBe(true);
     });
   });
 
@@ -109,7 +109,7 @@ describe("initial values", () => {
     });
     
     test("updates the selected country", () => {
-      expect(checkFlagSelected(container, "gb")).toBeTruthy();
+      expect(checkFlagSelected(container, "gb")).toBe(true);
     });
   });
 });

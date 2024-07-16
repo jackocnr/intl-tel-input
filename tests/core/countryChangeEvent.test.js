@@ -7,7 +7,7 @@ const {
   injectInput,
   initPlugin,
   teardown,
-  openDropdownSelectCountry,
+  openDropdownSelectCountryAsync,
 } = require("../helpers/helpers");
 
 let input, iti, mockEventHandler, container, user;
@@ -41,7 +41,7 @@ describe("countrychange event", () => {
   });
 
   test("selecting Afghanistan triggers the event", async () => {
-    await openDropdownSelectCountry(container, "af", user);
+    await openDropdownSelectCountryAsync(container, "af", user);
     expect(mockEventHandler).toHaveBeenCalled();
   });
 

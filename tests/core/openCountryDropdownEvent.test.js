@@ -7,7 +7,7 @@ const {
   injectInput,
   initPlugin,
   teardown,
-  clickSelectedCountry,
+  clickSelectedCountryAsync,
   getSelectedCountryButton,
 } = require("../helpers/helpers");
 
@@ -32,7 +32,7 @@ describe("open:countrydropdown event", () => {
   });
     
   test("clicking the selected country triggers the event", async () => {
-    await clickSelectedCountry(container, user);
+    await clickSelectedCountryAsync(container, user);
     expect(mockEventHandler).toHaveBeenCalled();
   });
   

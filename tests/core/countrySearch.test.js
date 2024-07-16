@@ -58,7 +58,7 @@ describe("countrySearch", () => {
     test("hitting Enter selects Christmas Islands", async () => {
       const searchInput = getSearchInput(container);
       await user.type(searchInput, "{enter}");
-      expect(checkFlagSelected(container, "cx")).toBeTruthy();
+      expect(checkFlagSelected(container, "cx")).toBe(true);
     });
   });
 });

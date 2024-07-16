@@ -13,12 +13,10 @@ exports.injectInput = (inputValue = "") => {
 const initPluginDefaults = { input: null, options: {} };
 
 exports.initPlugin = ({ input, options, inputValue } = initPluginDefaults) => {
-  if (!input) {
-    input = exports.injectInput(inputValue);
-  }
-  const iti = intlTelInput(input, options);
-  const container = input.parentElement;
-  return { input, iti, container };
+  const inputToUse = input || exports.injectInput(inputValue);
+  const iti = intlTelInput(inputToUse, options);
+  const container = inputToUse.parentElement;
+  return { input: inputToUse, iti, container };
 };
 
 exports.teardown = (iti) => {
@@ -40,8 +38,8 @@ exports.getSelectedCountryButton = (container) => {
   return container.querySelector(".iti__selected-country");
 };
 
-exports.getDropdownDiv = (container) => {
-  return container.querySelector(".iti__dropdown-content");
+exports.isDropdownOpen = (container) => {
+  return !container.querySelector(".iti__dropdown-content").classList.contains("iti__hide");
 };
 
 exports.getSearchInput = (container) => {
@@ -59,17 +57,17 @@ exports.checkFlagSelected = (container, countryCode = "") => {
   throw new Error("Invalid country code");
 };
 
-exports.clickSelectedCountry = async (container, user) => {
+exports.clickSelectedCountryAsync = async (container, user) => {
   const selectedCountryButton = exports.getSelectedCountryButton(container);
   await user.click(selectedCountryButton);
 };
 
-exports.selectCountry = async (container, iso2, user) => {
+exports.selectCountryAsync = async (container, iso2, user) => {
   const countryItem = container.querySelector(`li[data-country-code='${iso2}']`);
   await user.click(countryItem);
 };
 
-exports.openDropdownSelectCountry = async (container, iso2, user) => {
-  await exports.clickSelectedCountry(container, user);
-  await exports.selectCountry(container, iso2, user);
+exports.openDropdownSelectCountryAsync = async (container, iso2, user) => {
+  await exports.clickSelectedCountryAsync(container, user);
+  await exports.selectCountryAsync(container, iso2, user);
 };
