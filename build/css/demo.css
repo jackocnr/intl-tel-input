@@ -67,7 +67,7 @@ input::placeholder {
     --iti-dropdown-bg: #0d1117;
     --iti-arrow-color: #aaaaaa;
     --iti-hover-color: #30363d;
-    --iti-path-globe-1x: url("../img/globe_light.png");
-    --iti-path-globe-2x: url("../img/globe_light@2x.png");
+    --iti-path-globe-1x: url("../img/globe_light.webp");
+    --iti-path-globe-2x: url("../img/globe_light@2x.webp");
   }
 }

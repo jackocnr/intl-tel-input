@@ -27,10 +27,10 @@
   --iti-selected-country-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
 
   //* Image related variables.
-  --iti-path-flags-1x: url('../img/flags.png?1');
-  --iti-path-flags-2x: url('../img/flags@2x.png?1');
-  --iti-path-globe-1x: url('../img/globe.png');
-  --iti-path-globe-2x: url('../img/globe@2x.png');
+  --iti-path-flags-1x: url('../img/flags.webp');
+  --iti-path-flags-2x: url('../img/flags@2x.webp');
+  --iti-path-globe-1x: url('../img/globe.webp');
+  --iti-path-globe-2x: url('../img/globe@2x.webp');
 
   --iti-flag-sprite-width: #{map-get($flags-sprite-1x, width)};
   --iti-flag-sprite-height: #{map-get($flags-sprite-1x, height)};
@@ -159,6 +159,9 @@
 
   //* The dropdown.
   &__dropdown-content {
+    border-radius: 3px;
+    background-color: var(--iti-dropdown-bg);
+    
     .iti--inline-dropdown & {
       position: absolute;
       //* Popup so render above everything else.
@@ -173,9 +176,6 @@
       border: var(--iti-border-width) solid var(--iti-border-color);
       box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     }
-
-    border-radius: 3px;
-    background-color: var(--iti-dropdown-bg);
   }
   &__search-input {
     width: 100%;

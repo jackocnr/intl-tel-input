@@ -45,7 +45,7 @@ Then run the tests to make sure nothing has broken: `npm test`, commit the updat
 
 We get our flags from the region-flags project, which in turn pulls them in from Wikipedia. So cd into intl-tel-input/node_modules/region-flags and then do the following:
 
-1. Install some dependencies. On MacOS use brew: `brew install wget dos2unix librsvg optipng`
+1. Install some dependencies. On MacOS use brew: `brew install wget dos2unix librsvg optipng webp`
 2. Run the make-aliases command: `./make-aliases.sh` (Note: I got some "No such file or directory" warnings)
 3. Run the update command: `./update.sh` (Note: this kept freezing for me, so I had to keep doing ctrl+c and then re-running it)
 

@@ -1,19 +1,19 @@
 # International Telephone Input [![Build Status](https://app.travis-ci.com/jackocnr/intl-tel-input.svg?branch=master)](https://app.travis-ci.com/jackocnr/intl-tel-input) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.png" alt="React logo" width="16px" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/react">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla">Storybook</a>. 
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.webp" alt="React logo" width="16px" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/react">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla">Storybook</a>. 
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.png" alt="Typescript logo" width="16px" /> NEWS: we now have our own Typescript type definitions, so no need to use `@types/intl-tel-input` anymore!
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.webp" alt="Typescript logo" width="16px" /> NEWS: we now have our own Typescript type definitions, so no need to use `@types/intl-tel-input` anymore!
 
 🗣️ NEWS: we now provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) in several common languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-search.png" alt="Screenshot" width="238px" style="max-width: 100%" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-search.webp" alt="Screenshot" width="238px" style="max-width: 100%" />
   
 If you find the plugin helpful, please consider [supporting the project](https://github.com/sponsors/jackocnr).
 
 ## Sponsored by
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.png" height="100" alt="Twilio"/>
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.webp" height="100" alt="Twilio"/>
 Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input">Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more</a>. We can't wait to see what you build.
 
 ## Table of Contents
@@ -92,13 +92,13 @@ _Note: We have now dropped support for all versions of Internet Explorer because
 
 2. Import the CSS: `import 'intl-tel-input/build/css/intlTelInput.css';`
 
-3. Set the path to flags.png and globe.png in your CSS, by overriding the CSS variables
+3. Set the path to flags.webp and globe.webp in your CSS, by overriding the CSS variables
   ```css
   .iti {
-    --iti-path-flags-1x: url('path/to/flags.png');
-    --iti-path-flags-2x: url('path/to/flags@2x.png');
-    --iti-path-globe-1x: url('path/to/globe.png');
-    --iti-path-globe-2x: url('path/to/globe@2x.png');
+    --iti-path-flags-1x: url('path/to/flags.webp');
+    --iti-path-flags-2x: url('path/to/flags@2x.webp');
+    --iti-path-globe-1x: url('path/to/globe.webp');
+    --iti-path-globe-2x: url('path/to/globe@2x.webp');
   }
   ```
 
@@ -120,13 +120,13 @@ _Note: We have now dropped support for all versions of Internet Explorer because
   <link rel="stylesheet" href="path/to/intlTelInput.css">
   ```
 
-3. Set the path to flags.png and globe.png in your CSS, by overriding the CSS variables
+3. Set the path to flags.webp and globe.webp in your CSS, by overriding the CSS variables
   ```css
   .iti {
-    --iti-path-flags-1x: url('path/to/flags.png');
-    --iti-path-flags-2x: url('path/to/flags@2x.png');
-    --iti-path-globe-1x: url('path/to/globe.png');
-    --iti-path-globe-2x: url('path/to/globe@2x.png');
+    --iti-path-flags-1x: url('path/to/flags.webp');
+    --iti-path-flags-2x: url('path/to/flags@2x.webp');
+    --iti-path-globe-1x: url('path/to/globe.webp');
+    --iti-path-globe-2x: url('path/to/globe@2x.webp');
   }
   ```
 
@@ -317,7 +317,7 @@ Set this to false to hide the flags e.g. for political reasons. Instead it will 
 Type: `Boolean` Default: `false`  
 Display the selected country dial code next to the input, so it looks like it's part of the typed number, except it is uneditable. When enabled, typing a plus in the telephone input will open the country dropdown and enter the plus in the search input instead, to force the user to select a country from the list rather than typing their dial code in the telephone input. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode2.png" width="232px" height="47px" alt="Separate Dial Code">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separateDialCode2.webp" width="232px" height="47px" alt="Separate Dial Code">
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
@@ -338,7 +338,7 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 ## Theming / Dark Mode
 There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for a list.
 
-Note that it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. I recommend you download it in the highest resolution, and then scale the image down to the required sizes (20px wide for globe.png and 40px wide for globe@2x.png).
+Note that it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. I recommend you download it in the highest resolution, and then scale the image down to the required sizes (20px wide for globe.webp and 40px wide for globe@2x.webp).
 
 Dark mode example:
 ```css
@@ -349,8 +349,8 @@ Dark mode example:
     --iti-dropdown-bg: #0d1117;
     --iti-arrow-color: #aaaaaa;
     --iti-hover-color: #30363d;
-    --iti-path-globe-1x: url("path/to/globe_light.png");
-    --iti-path-globe-2x: url("path/to/globe_light@2x.png");
+    --iti-path-globe-1x: url("path/to/globe_light.webp");
+    --iti-path-globe-2x: url("path/to/globe_light@2x.webp");
   }
 }
 ```
