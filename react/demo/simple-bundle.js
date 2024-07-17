@@ -25024,6 +25024,13 @@
       }
       this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
       this.isRTL = !!this.telInput.closest("[dir=rtl]");
+      if (this.options.separateDialCode) {
+        if (this.isRTL) {
+          this.originalPaddingRight = this.telInput.style.paddingRight;
+        } else {
+          this.originalPaddingLeft = this.telInput.style.paddingLeft;
+        }
+      }
       this.options.i18n = { ...en_default, ...this.options.i18n };
       const autoCountryPromise = new Promise((resolve, reject) => {
         this.resolveAutoCountryPromise = resolve;
@@ -26141,7 +26148,8 @@
     //********************
     //* Remove plugin.
     destroy() {
-      if (this.options.allowDropdown) {
+      const { allowDropdown, separateDialCode } = this.options;
+      if (allowDropdown) {
         this._closeDropdown();
         this.selectedCountry.removeEventListener(
           "click",
@@ -26165,6 +26173,13 @@
         this.telInput.removeEventListener("keydown", this._handleKeydownEvent);
       }
       this.telInput.removeAttribute("data-intl-tel-input-id");
+      if (separateDialCode) {
+        if (this.isRTL) {
+          this.telInput.style.paddingRight = this.originalPaddingRight;
+        } else {
+          this.telInput.style.paddingLeft = this.originalPaddingLeft;
+        }
+      }
       const wrapper = this.telInput.parentNode;
       wrapper?.parentNode?.insertBefore(this.telInput, wrapper);
       wrapper?.parentNode?.removeChild(wrapper);

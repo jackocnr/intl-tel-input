@@ -511,6 +511,8 @@ export class Iti {
   private hiddenInputCountry: HTMLInputElement;
   private maxCoreNumberLength: number | null;
   private defaultCountry: string | null;
+  private originalPaddingRight: string;
+  private originalPaddingLeft: string;
 
   private _handleHiddenInputSubmit: () => void;
   private _handleLabelClick: (e: Event) => void;
@@ -569,6 +571,14 @@ export class Iti {
 
     //* Check if input has one parent with RTL.
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
+    //* Store original styling before we override it.
+    if (this.options.separateDialCode) {
+      if (this.isRTL) {
+        this.originalPaddingRight = this.telInput.style.paddingRight;
+      } else {
+        this.originalPaddingLeft = this.telInput.style.paddingLeft;
+      }
+    }
 
     //* Allow overriding the default interface strings.
     this.options.i18n = { ...defaultEnglishStrings, ...this.options.i18n };
@@ -2121,7 +2131,8 @@ export class Iti {
 
   //* Remove plugin.
   destroy(): void {
-    if (this.options.allowDropdown) {
+    const { allowDropdown, separateDialCode } = this.options;
+    if (allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
       this._closeDropdown();
       this.selectedCountry.removeEventListener(
@@ -2153,6 +2164,15 @@ export class Iti {
 
     //* Remove attribute of id instance: data-intl-tel-input-id.
     this.telInput.removeAttribute("data-intl-tel-input-id");
+
+    //* Restore original styling
+    if (separateDialCode) {
+      if (this.isRTL) {
+        this.telInput.style.paddingRight = this.originalPaddingRight;
+      } else {
+        this.telInput.style.paddingLeft = this.originalPaddingLeft;
+      }
+    }
 
     //* Remove markup (but leave the original input).
     const wrapper = this.telInput.parentNode;

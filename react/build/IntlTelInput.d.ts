@@ -897,6 +897,8 @@ declare module "intl-tel-input" {
         private hiddenInputCountry;
         private maxCoreNumberLength;
         private defaultCountry;
+        private originalPaddingRight;
+        private originalPaddingLeft;
         private _handleHiddenInputSubmit;
         private _handleLabelClick;
         private _handleClickSelectedCountry;
