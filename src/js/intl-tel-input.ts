@@ -52,6 +52,7 @@ interface AllOptions {
   autoPlaceholder: string;
   containerClass: string;
   countryOrder: string[];
+  countrySearch: boolean;
   customPlaceholder: ((selectedCountryPlaceholder: string, selectedCountryData: object) => string) | null;
   dropdownContainer: HTMLElement | null;
   excludeCountries: string[];
@@ -339,6 +340,8 @@ const defaults: AllOptions = {
   containerClass: "",
   //* The order of the countries in the dropdown. Defaults to alphabetical.
   countryOrder: null,
+  //* Add a country search input at the top of the dropdown.
+  countrySearch: true,
   //* Modify the auto placeholder.
   customPlaceholder: null,
   //* Append menu to specified element.
@@ -545,10 +548,11 @@ export class Iti {
       this.options.fixDropdownWidth = false;
     }
 
-    //* When separateDialCode enabled, we force nationalMode to false (because the displayed dial code is supposed to be thought of as part of the typed number), AND we force allowDropdown to true as we need the dropdown to select the dial code.
+    //* When separateDialCode enabled, we force nationalMode to false (because the displayed dial code is supposed to be thought of as part of the typed number), AND we force allowDropdown to true as we need the dropdown to select the dial code, AND we force countrySearch to true because that is used when the user types a plus in the tel input.
     if (this.options.separateDialCode) {
       this.options.allowDropdown = true;
       this.options.nationalMode = false;
+      this.options.countrySearch = true;
     }
 
     // if no flags, and no dial code, force nationalMode to false, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
@@ -781,6 +785,7 @@ export class Iti {
       dropdownContainer,
       fixDropdownWidth,
       useFullscreenPopup,
+      countrySearch,
       i18n,
     } = this.options;
 
@@ -875,26 +880,28 @@ export class Iti {
           class: `iti__dropdown-content iti__hide ${extraClasses}`,
         });
   
-        this.searchInput = createEl(
-          "input",
-          {
-            type: "text",
-            class: "iti__search-input",
-            placeholder: i18n.searchPlaceholder,
-            role: "combobox",
-            "aria-expanded": "true",
-            "aria-label": i18n.searchPlaceholder,
-            "aria-controls": `iti-${this.id}__country-listbox`,
-            "aria-autocomplete": "list",
-            "autocomplete": "off",
-          },
-          this.dropdownContent,
-        ) as HTMLInputElement;
-        this.searchResultsA11yText = createEl(
-          "span",
-          { class: "iti__a11y-text" },
-          this.dropdownContent,
-        );
+        if (countrySearch) {
+          this.searchInput = createEl(
+            "input",
+            {
+              type: "text",
+              class: "iti__search-input",
+              placeholder: i18n.searchPlaceholder,
+              role: "combobox",
+              "aria-expanded": "true",
+              "aria-label": i18n.searchPlaceholder,
+              "aria-controls": `iti-${this.id}__country-listbox`,
+              "aria-autocomplete": "list",
+              "autocomplete": "off",
+            },
+            this.dropdownContent,
+          ) as HTMLInputElement;
+          this.searchResultsA11yText = createEl(
+            "span",
+            { class: "iti__a11y-text" },
+            this.dropdownContent,
+          );
+        }
   
         this.countryList = createEl(
           "ul",
@@ -906,8 +913,10 @@ export class Iti {
           },
           this.dropdownContent,
         );
-        this._appendListItems(this.countries, "iti__standard");
-        this._updateSearchResultsText();
+        this._appendListItems();
+        if (countrySearch) {
+          this._updateSearchResultsText();
+        }
   
         //* Create dropdownContainer markup.
         if (dropdownContainer) {
@@ -951,16 +960,18 @@ export class Iti {
     }
   }
 
-  //* For each of the passed countries: add a country <li> to the countryList <ul> container.
-  private _appendListItems(countries: Country[], className: string): void {
-    for (let i = 0; i < countries.length; i++) {
-      const c = countries[i];
+  //* For each country: add a country list item <li> to the countryList <ul> container.
+  private _appendListItems(): void {
+    for (let i = 0; i < this.countries.length; i++) {
+      const c = this.countries[i];
+      //* Start by highlighting the first item (useful when countrySearch disabled).
+      const extraClass = i === 0 ? "iti__highlight" : "";
 
       const listItem = createEl(
         "li",
         {
           id: `iti-${this.id}__item-${c.iso2}`,
-          class: `iti__country ${className}`,
+          class: `iti__country ${extraClass}`,
           tabindex: "-1",
           role: "option",
           "data-dial-code": c.dialCode,
@@ -1296,7 +1307,7 @@ export class Iti {
 
   //* Open the dropdown.
   private _openDropdown(): void {
-    const { fixDropdownWidth } = this.options;
+    const { fixDropdownWidth, countrySearch } = this.options;
     if (fixDropdownWidth) {
       this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
     }
@@ -1305,13 +1316,15 @@ export class Iti {
 
     this._setDropdownPosition();
 
-    //* Highlight the first item and scroll to top.
-    const firstCountryItem = this.countryList.firstElementChild as HTMLElement;
-    if (firstCountryItem) {
-      this._highlightListItem(firstCountryItem, false);
-      this.countryList.scrollTop = 0;
+    if (countrySearch) {
+      //* When countrySearch enabled, every time the dropdown is opened we reset by highlighting the first item and scrolling to top.
+      const firstCountryItem = this.countryList.firstElementChild as HTMLElement;
+      if (firstCountryItem) {
+        this._highlightListItem(firstCountryItem, false);
+        this.countryList.scrollTop = 0;
+      }
+      this.searchInput.focus();
     }
-    this.searchInput.focus();
 
     //* Bind all the dropdown-related listeners: mouseover, click, click-off, keydown.
     this._bindDropdownListeners();
@@ -1322,7 +1335,7 @@ export class Iti {
     this._trigger("open:countrydropdown");
   }
 
-  //* Decide if should position dropdown above or below input (depends on position within viewport, and scroll).
+  //* Set the dropdown position
   private _setDropdownPosition(): void {
     if (this.options.dropdownContainer) {
       this.options.dropdownContainer.appendChild(this.dropdown);
@@ -1385,10 +1398,12 @@ export class Iti {
       this._handleClickOffToClose,
     );
 
-    //* Listen for up/down scrolling, enter to select, or escape to close
-    //* use keydown as keypress doesn't fire for non-char keys and we want to catch if they
+    //* Listen for up/down scrolling, enter to select, or escape to close.
+    //* Use keydown as keypress doesn't fire for non-char keys and we want to catch if they
     //* just hit down and hold it to scroll down (no keyup event).
-    //* listen on the document because that's where key events are triggered if no input has focus.
+    //* Listen on the document because that's where key events are triggered if no input has focus.
+    let query = "";
+    let queryTimer: NodeJS.Timeout | null = null;
     this._handleKeydownOnDropdown = (e: KeyboardEvent): void => {
       //* prevent down key from scrolling the whole page, and enter key from submitting a form etc.
       if (["ArrowUp", "ArrowDown", "Enter", "Escape"].includes(e.key)) {
@@ -1408,35 +1423,69 @@ export class Iti {
           this._closeDropdown();
         }
       }
+
+      //* When countrySearch disabled: Listen for alpha chars to perform hidden search.
+      //* Regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866.
+      if (!this.options.countrySearch && /^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
+        e.stopPropagation();
+        //* Jump to countries that start with the query string.
+        if (queryTimer) {
+          clearTimeout(queryTimer);
+        }
+        query += e.key.toLowerCase();
+        this._searchForCountry(query);
+        //* If the timer hits 1 second, reset the query.
+        queryTimer = setTimeout(() => {
+          query = "";
+        }, 1000);
+      }
     };
     document.addEventListener("keydown", this._handleKeydownOnDropdown);
 
-    const doFilter = (): void => {
-      const inputQuery = this.searchInput.value.trim();
-      if (inputQuery) {
-        this._filterCountries(inputQuery);
-      } else {
-        this._filterCountries("", true);
-      }
-    };
-
-    let keyupTimer: NodeJS.Timeout | null = null;
-    this._handleSearchChange = (): void => {
-      //* Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
-      if (keyupTimer) {
-        clearTimeout(keyupTimer);
-      }
-      keyupTimer = setTimeout(() => {
-        doFilter();
-        keyupTimer = null;
-      }, 100);
-    };
-    this.searchInput.addEventListener("input", this._handleSearchChange);
-
-    //* Stop propagation on search input click, so doesn't trigger click-off-to-close listener.
-    this.searchInput.addEventListener("click", (e) => e.stopPropagation());
+    if (this.options.countrySearch) {
+      const doFilter = (): void => {
+        const inputQuery = this.searchInput.value.trim();
+        if (inputQuery) {
+          this._filterCountries(inputQuery);
+        } else {
+          this._filterCountries("", true);
+        }
+      };
+  
+      let keyupTimer: NodeJS.Timeout | null = null;
+      this._handleSearchChange = (): void => {
+        //* Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
+        if (keyupTimer) {
+          clearTimeout(keyupTimer);
+        }
+        keyupTimer = setTimeout(() => {
+          doFilter();
+          keyupTimer = null;
+        }, 100);
+      };
+      this.searchInput.addEventListener("input", this._handleSearchChange);
+  
+      //* Stop propagation on search input click, so doesn't trigger click-off-to-close listener.
+      this.searchInput.addEventListener("click", (e) => e.stopPropagation());
+    }
   }
 
+  //* Hidden search (countrySearch disabled): Find the first list item whose name starts with the query string.
+  private _searchForCountry(query: string): void {
+    for (let i = 0; i < this.countries.length; i++) {
+      const c = this.countries[i];
+      const startsWith = c.name.substr(0, query.length).toLowerCase() === query;
+      if (startsWith) {
+        const listItem = c.nodeById[this.id];
+        //* Update highlighting and scroll.
+        this._highlightListItem(listItem, false);
+        this._scrollTo(listItem);
+        break;
+      }
+    }
+  }
+
+  //* Country search enabled: Filter the countries according to the search query.
   private _filterCountries(query: string, isReset: boolean = false): void {
     let noCountriesAddedYet = true;
     this.countryList.innerHTML = "";
@@ -1631,7 +1680,9 @@ export class Iti {
       this.highlightedItem.setAttribute("aria-selected", "true");
       const activeDescendant = this.highlightedItem.getAttribute("id") || "";
       this.selectedCountry.setAttribute("aria-activedescendant", activeDescendant);
-      this.searchInput.setAttribute("aria-activedescendant", activeDescendant);
+      if (this.options.countrySearch) {
+        this.searchInput.setAttribute("aria-activedescendant", activeDescendant);
+      }
     }
 
     if (shouldFocus) {
@@ -1843,14 +1894,18 @@ export class Iti {
     if (this.highlightedItem) {
       this.highlightedItem.setAttribute("aria-selected", "false");
     }
-    this.searchInput.removeAttribute("aria-activedescendant");
+    if (this.options.countrySearch) {
+      this.searchInput.removeAttribute("aria-activedescendant");
+    }
 
     //* Update the arrow.
     this.dropdownArrow.classList.remove("iti__arrow--up");
 
     //* Unbind key events.
     document.removeEventListener("keydown", this._handleKeydownOnDropdown);
-    this.searchInput.removeEventListener("input", this._handleSearchChange);
+    if (this.options.countrySearch) {
+      this.searchInput.removeEventListener("input", this._handleSearchChange);
+    }
     document.documentElement.removeEventListener(
       "click",
       this._handleClickOffToClose,
