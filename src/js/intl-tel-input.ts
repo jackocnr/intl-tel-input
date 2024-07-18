@@ -844,9 +844,6 @@ export class Iti {
 
         if (this.telInput.disabled) {
           this.selectedCountry.setAttribute("aria-disabled", "true");
-        } else {
-          //* Make element focusable and tab navigable.
-          this.selectedCountry.setAttribute("tabindex", "0");
         }
       } else {
         this.selectedCountry = createEl(

@@ -1726,8 +1726,6 @@ var factoryOutput = (() => {
           );
           if (this.telInput.disabled) {
             this.selectedCountry.setAttribute("aria-disabled", "true");
-          } else {
-            this.selectedCountry.setAttribute("tabindex", "0");
           }
         } else {
           this.selectedCountry = createEl(
