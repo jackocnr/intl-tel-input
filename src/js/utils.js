@@ -138,6 +138,13 @@ const isValidNumber = (number, countryCode) => {
   }
 };
 
+//* For internal use only - see isPossibleNumber.
+const isPossibleNumberForType = (phoneUtil, numberObj, numberTypeName) => {
+  const resultForType = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, numberType[numberTypeName]);
+  const isPossibleForType = resultForType === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
+  return isPossibleForType;
+};
+
 //* Check if given number is possible.
 const isPossibleNumber = (number, countryCode, numberTypeName) => {
   try {
@@ -145,9 +152,14 @@ const isPossibleNumber = (number, countryCode, numberTypeName) => {
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
 
     if (numberTypeName) {
-      const resultForType = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, numberType[numberTypeName]);
-      const isPossibleForType = resultForType === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
-      return isPossibleForType;
+      const isPossible = isPossibleNumberForType(phoneUtil, numberObj, numberTypeName);
+      //* FIXED_LINE_OR_MOBILE does not behave how you would expect - it is its own category that is different to either MOBILE or FIXED_LINE (e.g. for US numbers which could be used for either purpose - it should really be called something like FIXED_LINE_SLASH_MOBILE). So here we make it more user friendly by checking if it's a possible number for any of those three categories. NOTE: this is actually in-line with how it behaves in other situations e.g. if you call isPossibleNumberForType with type="MOBILE" and the number set to a US number, it returns VALID even though it's type is technically FIXED_LINE_OR_MOBILE.
+      if (numberTypeName === "FIXED_LINE_OR_MOBILE") {
+        const isMobile = isPossibleNumberForType(phoneUtil, numberObj, "MOBILE");
+        const isFixedLine = isPossibleNumberForType(phoneUtil, numberObj, "FIXED_LINE");
+        return isMobile || isFixedLine || isPossible;
+      }
+      return isPossible;
     }
 
     //* Can't use phoneUtil.isPossibleNumber directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter.
