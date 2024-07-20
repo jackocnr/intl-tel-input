@@ -3,17 +3,24 @@ const intlTelInput = require("intlTelInputWithUtils.js");
 
 exports.totalCountries = 244;
 
-exports.injectInput = (inputValue = "") => {
+const injectInputDefaults = { inputValue: "", disabled: false };
+
+exports.injectInput = ({ inputValue = "", disabled = false } = injectInputDefaults) => {
   const input = document.createElement("input");
-  input.value = inputValue;
+  if (inputValue) {
+    input.value = inputValue;
+  }
+  if (disabled) {
+    input.disabled = true;
+  }
   document.body.appendChild(input);
   return input;
 };
 
-const initPluginDefaults = { input: null, options: {} };
+const initPluginDefaults = { input: null, options: {}, inputValue: "" };
 
-exports.initPlugin = ({ input, options, inputValue } = initPluginDefaults) => {
-  const inputToUse = input || exports.injectInput(inputValue);
+exports.initPlugin = ({ input = null, options = {}, inputValue = "" } = initPluginDefaults) => {
+  const inputToUse = input || exports.injectInput({ inputValue });
   const iti = intlTelInput(inputToUse, options);
   const container = inputToUse.parentElement;
   return { input: inputToUse, iti, container };
