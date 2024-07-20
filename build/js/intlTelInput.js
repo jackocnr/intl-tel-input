@@ -1725,7 +1725,7 @@ var factoryOutput = (() => {
             this.countryContainer
           );
           if (this.telInput.disabled) {
-            this.selectedCountry.setAttribute("aria-disabled", "true");
+            this.selectedCountry.setAttribute("disabled", "true");
           }
         } else {
           this.selectedCountry = createEl(

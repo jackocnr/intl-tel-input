@@ -843,7 +843,7 @@ export class Iti {
         );
 
         if (this.telInput.disabled) {
-          this.selectedCountry.setAttribute("aria-disabled", "true");
+          this.selectedCountry.setAttribute("disabled", "true");
         }
       } else {
         this.selectedCountry = createEl(
