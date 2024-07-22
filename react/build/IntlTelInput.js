@@ -2781,7 +2781,7 @@ var intlTelInput = Object.assign(
     //* A map from instance ID to instance object.
     instances: {},
     loadUtils,
-    version: "23.6.0"
+    version: "23.6.1"
   }
 );
 var intl_tel_input_default = intlTelInput;
