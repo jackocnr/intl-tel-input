@@ -2,6 +2,7 @@
 export { default as ar, countryTranslations as arCountryTranslations, interfaceTranslations as arInterfaceTranslations } from "./ar";
 export { default as bg, countryTranslations as bgCountryTranslations, interfaceTranslations as bgInterfaceTranslations } from "./bg";
 export { default as bn, countryTranslations as bnCountryTranslations, interfaceTranslations as bnInterfaceTranslations } from "./bn";
+export { default as bs, countryTranslations as bsCountryTranslations, interfaceTranslations as bsInterfaceTranslations } from "./bs";
 export { default as ca, countryTranslations as caCountryTranslations, interfaceTranslations as caInterfaceTranslations } from "./ca";
 export { default as cs, countryTranslations as csCountryTranslations, interfaceTranslations as csInterfaceTranslations } from "./cs";
 export { default as de, countryTranslations as deCountryTranslations, interfaceTranslations as deInterfaceTranslations } from "./de";
@@ -12,6 +13,7 @@ export { default as fa, countryTranslations as faCountryTranslations, interfaceT
 export { default as fi, countryTranslations as fiCountryTranslations, interfaceTranslations as fiInterfaceTranslations } from "./fi";
 export { default as fr, countryTranslations as frCountryTranslations, interfaceTranslations as frInterfaceTranslations } from "./fr";
 export { default as hi, countryTranslations as hiCountryTranslations, interfaceTranslations as hiInterfaceTranslations } from "./hi";
+export { default as hr, countryTranslations as hrCountryTranslations, interfaceTranslations as hrInterfaceTranslations } from "./hr";
 export { default as hu, countryTranslations as huCountryTranslations, interfaceTranslations as huInterfaceTranslations } from "./hu";
 export { default as id, countryTranslations as idCountryTranslations, interfaceTranslations as idInterfaceTranslations } from "./id";
 export { default as it, countryTranslations as itCountryTranslations, interfaceTranslations as itInterfaceTranslations } from "./it";
