@@ -85,7 +85,7 @@ describe("dropdown shortcuts", () => {
 
     test("pressing UP highlights the country at the very end of the list", async () => {
       await user.keyboard("{ArrowUp}");
-      expect(getHighlightedItemCode(container)).toEqual("ax");
+      expect(getHighlightedItemCode(container)).toEqual("zw");
     });
 
     describe("pressing DOWN", () => {
@@ -94,13 +94,13 @@ describe("dropdown shortcuts", () => {
       });
 
       test("highlights the next country in the list", () => {
-        expect(getHighlightedItemCode(container)).toEqual("al");
+        expect(getHighlightedItemCode(container)).toEqual("ax");
       });
 
       test("pressing ENTER closes the dropdown and updates the selected country", async () => {
         await user.keyboard("{Enter}");
         expect(isDropdownOpen(container)).toBe(false);
-        expect(checkFlagSelected(container, "al")).toBe(true);
+        expect(checkFlagSelected(container, "ax")).toBe(true);
       });
     });
   });

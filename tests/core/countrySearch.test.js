@@ -55,10 +55,10 @@ describe("countrySearch", () => {
       expect(getCountryListLength(container)).toBe(6);
     });
       
-    test("hitting Enter selects Christmas Islands", async () => {
+    test("hitting Enter selects Aland Islands", async () => {
       const searchInput = getSearchInput(container);
       await user.type(searchInput, "{enter}");
-      expect(checkFlagSelected(container, "cx")).toBe(true);
+      expect(checkFlagSelected(container, "ax")).toBe(true);
     });
   });
 });
