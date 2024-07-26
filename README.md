@@ -4,7 +4,7 @@
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.webp" alt="Typescript logo" width="16px" /> NEWS: we now have our own Typescript type definitions, so no need to use `@types/intl-tel-input` anymore!
 
-🗣️ NEWS: we now provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) in several common languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
+🗣️ NEWS: we now provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) in over 30 languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
