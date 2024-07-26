@@ -1527,12 +1527,13 @@ var Iti = class {
     this._processAllCountries();
     this._processDialCodes();
     this._translateCountryNames();
+    this._sortCountries();
+  }
+  //* Sort countries by countryOrder option (if present), then name.
+  _sortCountries() {
     if (this.options.countryOrder) {
       this.options.countryOrder = this.options.countryOrder.map((country) => country.toLowerCase());
     }
-    this._sortCountries();
-  }
-  _sortCountries() {
     this.countries.sort((a, b) => {
       const { countryOrder } = this.options;
       if (countryOrder) {
@@ -1547,13 +1548,7 @@ var Iti = class {
           return aIndexExists ? -1 : 1;
         }
       }
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
+      return a.name.localeCompare(b.name);
     });
   }
   //* Add a dial code to this.dialCodeToIso2Map.

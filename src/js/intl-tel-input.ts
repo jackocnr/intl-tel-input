@@ -631,13 +631,14 @@ export class Iti {
     this._translateCountryNames();
 
     //* Sort countries by countryOrder option (if present), then name.
+    this._sortCountries();
+  }
+  
+  //* Sort countries by countryOrder option (if present), then name.
+  private _sortCountries() {
     if (this.options.countryOrder) {
       this.options.countryOrder = this.options.countryOrder.map((country) => country.toLowerCase());
     }
-    this._sortCountries();
-  }
-
-  private _sortCountries() {
     this.countries.sort((a: Country, b: Country): number => {
       //* Primary sort: countryOrder option.
       const { countryOrder } = this.options;
@@ -655,13 +656,7 @@ export class Iti {
       }
       
       //* Secondary sort: country name.
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
+      return a.name.localeCompare(b.name);
     });
   }
 
