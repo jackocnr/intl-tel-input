@@ -16,6 +16,7 @@ type ItiProps = {
   usePreciseValidation?: boolean;
   initOptions?: SomeOptions;
   inputProps?: object;
+  disabled?: boolean | undefined;
 };
 
 export type IntlTelInputRef = {
@@ -32,6 +33,7 @@ const IntlTelInput = forwardRef(function IntlTelInput({
   usePreciseValidation = false,
   initOptions = {},
   inputProps = {},
+  disabled = undefined,
 }: ItiProps, ref: React.ForwardedRef<IntlTelInputRef>) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
@@ -88,6 +90,12 @@ const IntlTelInput = forwardRef(function IntlTelInput({
       }
     };
   }, [update]);
+
+  useEffect(() => {
+    if (itiRef.current && disabled !== undefined) {
+      itiRef.current.setDisabled(disabled);
+    }
+  }, [disabled]);
   
   return (
     <input
