@@ -2278,6 +2278,15 @@ export class Iti {
     this.options.placeholderNumberType = type;
     this._updatePlaceholder();
   }
+
+  setDisabled(disabled: boolean): void {
+    this.telInput.disabled = disabled;
+    if (disabled) {
+      this.selectedCountry.setAttribute("disabled", "true");
+    } else {
+      this.selectedCountry.removeAttribute("disabled");
+    }
+  }
 }
 
 /********************
