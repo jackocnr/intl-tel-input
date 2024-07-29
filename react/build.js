@@ -70,3 +70,10 @@ build({
   entryPoints: ["react/demo/SetNumberApp.tsx"],
   outfile: "react/demo/set-number-bundle.js",
 });
+
+//* Toggle Disabled demo app
+build({
+  ...demoShared,
+  entryPoints: ["react/demo/ToggleDisabledApp.tsx"],
+  outfile: "react/demo/toggle-disabled-bundle.js",
+});
