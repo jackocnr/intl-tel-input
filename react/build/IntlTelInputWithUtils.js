@@ -2741,6 +2741,7 @@ var loadUtils = (path) => {
     return new Promise((resolve, reject) => {
       import_INTENTIONALLY_BROKEN(
         /* webpackIgnore: true */
+        /* @vite-ignore */
         path
       ).then(({ default: utils2 }) => {
         intlTelInput.utils = utils2;

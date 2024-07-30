@@ -2782,6 +2782,7 @@ var factoryOutput = (() => {
       return new Promise((resolve, reject) => {
         import(
           /* webpackIgnore: true */
+          /* @vite-ignore */
           path
         ).then(({ default: utils }) => {
           intlTelInput.utils = utils;
