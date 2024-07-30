@@ -1084,7 +1084,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState(initialState) {
+          function useState2(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1887,7 +1887,7 @@
           exports.useMemo = useMemo;
           exports.useReducer = useReducer;
           exports.useRef = useRef2;
-          exports.useState = useState;
+          exports.useState = useState2;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -23523,7 +23523,7 @@
     }
   });
 
-  // react/demo/SimpleApp.tsx
+  // react/demo/ToggleDisabledApp.tsx
   var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
@@ -32613,15 +32613,17 @@
   });
   var reactWithUtils_default = IntlTelInput;
 
-  // react/demo/SimpleApp.tsx
-  var App = () => /* @__PURE__ */ import_react2.default.createElement(
-    reactWithUtils_default,
-    {
-      initOptions: {
-        initialCountry: "us"
+  // react/demo/ToggleDisabledApp.tsx
+  var App = () => {
+    const [isDisabled, setIsDisabled] = (0, import_react2.useState)(true);
+    const toggleDisabled = () => setIsDisabled(!isDisabled);
+    return /* @__PURE__ */ import_react2.default.createElement("form", null, /* @__PURE__ */ import_react2.default.createElement(
+      reactWithUtils_default,
+      {
+        disabled: isDisabled
       }
-    }
-  );
+    ), /* @__PURE__ */ import_react2.default.createElement("button", { className: "button", type: "button", onClick: toggleDisabled }, "Toggle"));
+  };
   var container = document.getElementById("app");
   if (container) {
     const root = (0, import_client.createRoot)(container);

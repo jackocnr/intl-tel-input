@@ -2734,6 +2734,14 @@ var Iti = class {
     this.options.placeholderNumberType = type;
     this._updatePlaceholder();
   }
+  setDisabled(disabled) {
+    this.telInput.disabled = disabled;
+    if (disabled) {
+      this.selectedCountry.setAttribute("disabled", "true");
+    } else {
+      this.selectedCountry.removeAttribute("disabled");
+    }
+  }
 };
 var loadUtils = (path) => {
   if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
@@ -9012,7 +9020,8 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
   },
   usePreciseValidation = false,
   initOptions = {},
-  inputProps = {}
+  inputProps = {},
+  disabled = void 0
 }, ref) {
   const inputRef = useRef(null);
   const itiRef = useRef(null);
@@ -9057,6 +9066,11 @@ var IntlTelInput = forwardRef(function IntlTelInput2({
       }
     };
   }, [update]);
+  useEffect(() => {
+    if (itiRef.current && disabled !== void 0) {
+      itiRef.current.setDisabled(disabled);
+    }
+  }, [disabled]);
   return /* @__PURE__ */ React.createElement(
     "input",
     {

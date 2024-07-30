@@ -973,6 +973,7 @@ declare module "intl-tel-input" {
         setCountry(iso2: string): void;
         setNumber(number: string): void;
         setPlaceholderNumberType(type: NumberType): void;
+        setDisabled(disabled: boolean): void;
     }
     const intlTelInput: IntlTelInputInterface;
     export default intlTelInput;
@@ -991,6 +992,7 @@ declare module "intl-tel-input/react" {
         usePreciseValidation?: boolean;
         initOptions?: SomeOptions;
         inputProps?: object;
+        disabled?: boolean | undefined;
     };
     export type IntlTelInputRef = {
         getInstance: () => Iti | null;
@@ -1021,6 +1023,7 @@ declare module "intl-tel-input/reactWithUtils" {
         usePreciseValidation?: boolean;
         initOptions?: SomeOptions;
         inputProps?: object;
+        disabled?: boolean | undefined;
     };
     export type IntlTelInputRef = {
         getInstance: () => Iti | null;
