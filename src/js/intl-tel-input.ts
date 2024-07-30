@@ -2298,7 +2298,7 @@ const loadUtils = (path: string): Promise<unknown> | null => {
     intlTelInput.startedLoadingUtilsScript = true;
 
     return new Promise((resolve, reject) => {
-      import(/* webpackIgnore: true */ path)
+      import(/* webpackIgnore: true */ /* @vite-ignore */ path)
         .then(({ default: utils }) => {
           intlTelInput.utils = utils;
           forEachInstance("handleUtils");
