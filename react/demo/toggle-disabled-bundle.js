@@ -23523,7 +23523,7 @@
     }
   });
 
-  // react/demo/ValidationApp.tsx
+  // react/demo/ToggleDisabledApp.tsx
   var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
@@ -32612,38 +32612,16 @@
   });
   var reactWithUtils_default = IntlTelInput;
 
-  // react/demo/ValidationApp.tsx
-  var errorMap = [
-    "Invalid number",
-    "Invalid country code",
-    "Too short",
-    "Too long",
-    "Invalid number"
-  ];
+  // react/demo/ToggleDisabledApp.tsx
   var App = () => {
-    const [isValid, setIsValid] = (0, import_react2.useState)(null);
-    const [number, setNumber] = (0, import_react2.useState)(null);
-    const [errorCode, setErrorCode] = (0, import_react2.useState)(null);
-    const [notice, setNotice] = (0, import_react2.useState)(null);
-    const handleSubmit = () => {
-      if (isValid) {
-        setNotice(`Valid number: ${number}`);
-      } else {
-        const errorMessage = errorMap[errorCode || 0] || "Invalid number";
-        setNotice(`Error: ${errorMessage}`);
-      }
-    };
+    const [isDisabled, setIsDisabled] = (0, import_react2.useState)(true);
+    const toggleDisabled = () => setIsDisabled(!isDisabled);
     return /* @__PURE__ */ import_react2.default.createElement("form", null, /* @__PURE__ */ import_react2.default.createElement(
       reactWithUtils_default,
       {
-        onChangeNumber: setNumber,
-        onChangeValidity: setIsValid,
-        onChangeErrorCode: setErrorCode,
-        initOptions: {
-          initialCountry: "us"
-        }
+        disabled: isDisabled
       }
-    ), /* @__PURE__ */ import_react2.default.createElement("button", { className: "button", type: "button", onClick: handleSubmit }, "Validate"), notice && /* @__PURE__ */ import_react2.default.createElement("div", { className: "notice" }, notice));
+    ), /* @__PURE__ */ import_react2.default.createElement("button", { className: "button", type: "button", onClick: toggleDisabled }, "Toggle"));
   };
   var container = document.getElementById("app");
   if (container) {

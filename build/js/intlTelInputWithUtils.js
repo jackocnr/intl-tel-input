@@ -2774,6 +2774,14 @@ var factoryOutput = (() => {
       this.options.placeholderNumberType = type;
       this._updatePlaceholder();
     }
+    setDisabled(disabled) {
+      this.telInput.disabled = disabled;
+      if (disabled) {
+        this.selectedCountry.setAttribute("disabled", "true");
+      } else {
+        this.selectedCountry.removeAttribute("disabled");
+      }
+    }
   };
   var loadUtils = (path) => {
     if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {

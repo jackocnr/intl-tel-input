@@ -26263,6 +26263,14 @@
       this.options.placeholderNumberType = type;
       this._updatePlaceholder();
     }
+    setDisabled(disabled) {
+      this.telInput.disabled = disabled;
+      if (disabled) {
+        this.selectedCountry.setAttribute("disabled", "true");
+      } else {
+        this.selectedCountry.removeAttribute("disabled");
+      }
+    }
   };
   var loadUtils = (path) => {
     if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
@@ -32540,7 +32548,8 @@
     },
     usePreciseValidation = false,
     initOptions = {},
-    inputProps = {}
+    inputProps = {},
+    disabled = void 0
   }, ref) {
     const inputRef = (0, import_react.useRef)(null);
     const itiRef = (0, import_react.useRef)(null);
@@ -32585,6 +32594,11 @@
         }
       };
     }, [update]);
+    (0, import_react.useEffect)(() => {
+      if (itiRef.current && disabled !== void 0) {
+        itiRef.current.setDisabled(disabled);
+      }
+    }, [disabled]);
     return /* @__PURE__ */ import_react.default.createElement(
       "input",
       {
