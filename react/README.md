@@ -27,36 +27,20 @@ import "intl-tel-input/styles";
 />
 ```
 
-See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/ValidationApp.tsx) for a more fleshed out example of how to handle validation.
+See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/ValidationApp.tsx) for a more fleshed-out example of how to handle validation.
 
 A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import IntlTelInput from `"intl-tel-input/reactWithUtils"` instead, to include the utils script. Alternatively, if you use the main `"intl-tel-input/react"` import, then you should couple this with the `utilsScript` initialisation option - you will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@23.8.0/build/js/utils.js"`.
 
 ## Props
 Here's a list of all of the current props you can pass to the IntlTelInput react component.
 
+**disabled**    
+Type: `Boolean`, Default: `false`   
+Sets the disabled attribute of both the telephone input and selected country button. _Note: we recommend using this instead of `inputProps.disabled`._
+
 **initialValue**  
 Type: `String`
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
-
-**onChangeNumber**  
-Type: `Function`  
-A handler to be called when the number changes. It will be passed the new number.
-
-**onChangeCountry**  
-Type: `Function`  
-A handler to be called when the selected country changes. It will be passed the new country iso2 code e.g. "gb" for UK.
-
-**onChangeValidity**  
-Type: `Function`  
-A handler to be called when the number validity changes e.g. to true/false. It will be passed the new isValid boolean.
-
-**onChangeErrorCode**  
-Type: `Function`  
-A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
-
-**usePreciseValidation**  
-Type: `Boolean`, Default: `false`  
-By default we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise` you can set this to `true`.
 
 **initOptions**  
 Type: `Object`  
@@ -66,9 +50,25 @@ An object containing all of the [initialisation options](https://github.com/jack
 Type: `Object`  
 The props to pass to the input element e.g. `className`, `placeholder`, `required`, `onBlur` etc. _Note: we recommend using the separate `disabled` prop instead of `inputProps.disabled`._
 
-**disabled**    
-Type: `Boolean`, Default: `false`   
-Sets the disabled attribute of both the telephone input and selected country button. _Note: we recommend using this instead of `inputProps.disabled`._
+**onChangeCountry**  
+Type: `Function`  
+A handler to be called when the selected country changes. It will be passed the new country iso2 code e.g. "gb" for UK.
+
+**onChangeErrorCode**  
+Type: `Function`  
+A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
+
+**onChangeNumber**  
+Type: `Function`  
+A handler to be called when the number changes. It will be passed the new number.
+
+**onChangeValidity**  
+Type: `Function`  
+A handler to be called when the number validity changes e.g. to true/false. It will be passed the new isValid boolean.
+
+**usePreciseValidation**  
+Type: `Boolean`, Default: `false`  
+By default we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise` you can set this to `true`.
 
 ## Accessing Instance Methods
 
