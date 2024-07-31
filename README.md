@@ -471,6 +471,13 @@ Change the placeholderNumberType option.
 iti.setPlaceholderNumberType("FIXED_LINE");
 ```
 
+**setDisabled**  
+Disables input and selecting country. Note that if you want to disable both input and selecting country, we recommend using this.
+```js
+iti.setDisabled(true);
+iti.setDisabled(false); // to enable
+```
+
 ## Static Methods
 
 **getCountryData**  
