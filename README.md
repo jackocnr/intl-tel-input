@@ -26,10 +26,10 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Getting Started](#getting-started-using-a-cdn)
 - [Recommended Usage](#recommended-usage)
 - [Initialisation Options](#initialisation-options)
-- [Theming / Dark Mode](#theming--dark-mode)
 - [Instance Methods](#instance-methods)
 - [Static Methods](#static-methods)
 - [Events](#events)
+- [Theming / Dark Mode](#theming--dark-mode)
 - [Utilities Script](#utilities-script)
 - [Loading The Utilities Script](#loading-the-utilities-script)
 - [Troubleshooting](#troubleshooting)
@@ -335,43 +335,6 @@ This is one way to (lazy) load the included utils.js (to enable formatting/valid
 Type: `String` Default: `"MOBILE"`  
 Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to enforce during validation with `isValidNumber`, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. 
 
-## Theming / Dark Mode
-There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for a list.
-
-Note that it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. I recommend you download it in the highest resolution, and then scale the image down to the required sizes (20px wide for globe.webp and 40px wide for globe@2x.webp).
-
-Dark mode example:
-```css
-@media (prefers-color-scheme: dark) {
-  .iti {
-    --iti-border-color: #5b5b5b;
-    --iti-dialcode-color: #999999;
-    --iti-dropdown-bg: #0d1117;
-    --iti-arrow-color: #aaaaaa;
-    --iti-hover-color: #30363d;
-    --iti-path-globe-1x: url("path/to/globe_light.webp");
-    --iti-path-globe-2x: url("path/to/globe_light@2x.webp");
-  }
-}
-```
-
-NOTE: this assumes you already have your own dark mode styling in place for general body/input styling e.g. something like this:
-
-```css
-@media (prefers-color-scheme: dark) {
-  body, input {
-    color: white;
-    background-color: #0d1117;
-  }
-  input {
-    border-color: #5b5b5b;
-  }
-  input::placeholder {
-    color: #8d96a0;
-  }
-}
-```
-
 ## Instance Methods
 In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
 ```js
@@ -524,6 +487,43 @@ This is triggered when the user opens the dropdown.
 
 **close:countrydropdown**  
 This is triggered when the user closes the dropdown.  
+
+## Theming / Dark Mode
+There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for a list.
+
+Note that it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. I recommend you download it in the highest resolution, and then scale the image down to the required sizes (20px wide for globe.webp and 40px wide for globe@2x.webp).
+
+Dark mode example:
+```css
+@media (prefers-color-scheme: dark) {
+  .iti {
+    --iti-border-color: #5b5b5b;
+    --iti-dialcode-color: #999999;
+    --iti-dropdown-bg: #0d1117;
+    --iti-arrow-color: #aaaaaa;
+    --iti-hover-color: #30363d;
+    --iti-path-globe-1x: url("path/to/globe_light.webp");
+    --iti-path-globe-2x: url("path/to/globe_light@2x.webp");
+  }
+}
+```
+
+NOTE: this assumes you already have your own dark mode styling in place for general body/input styling e.g. something like this:
+
+```css
+@media (prefers-color-scheme: dark) {
+  body, input {
+    color: white;
+    background-color: #0d1117;
+  }
+  input {
+    border-color: #5b5b5b;
+  }
+  input::placeholder {
+    color: #8d96a0;
+  }
+}
+```
 
 ## Utilities Script
 The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
