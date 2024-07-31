@@ -64,11 +64,11 @@ An object containing all of the [initialisation options](https://github.com/jack
 
 **inputProps**  
 Type: `Object`  
-The props to pass to the input element e.g. `className`, `placeholder`, `required`, `disabled`, `onBlur` etc.
+The props to pass to the input element e.g. `className`, `placeholder`, `required`, `onBlur` etc. _Note: we recommend using the separate `disabled` prop instead of `inputProps.disabled`._
 
 **disabled**    
 Type: `Boolean`, Default: `false`   
-Disables input and selecting country. _Note that if you want to disable both input and selecting country, we recommend using this._
+Sets the disabled attribute of both the telephone input and selected country button. _Note: we recommend using this instead of `inputProps.disabled`._
 
 ## Accessing Instance Methods
 

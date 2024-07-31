@@ -472,10 +472,9 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 ```
 
 **setDisabled**  
-Disables input and selecting country. _Note that if you want to disable both input and selecting country, we recommend using this._
+Updates the disabled attribute of both the telephone input and selected country button. Accepts a boolean value. _Note: we recommend using this instead of updating the disabled attribute of the input directly._
 ```js
 iti.setDisabled(true);
-iti.setDisabled(false); // to enable
 ```
 
 ## Static Methods
