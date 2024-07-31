@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v23.7.3
+ * International Telephone Input v23.7.4
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -2789,6 +2789,7 @@ var factoryOutput = (() => {
       return new Promise((resolve, reject) => {
         import_INTENTIONALLY_BROKEN(
           /* webpackIgnore: true */
+          /* @vite-ignore */
           path
         ).then(({ default: utils2 }) => {
           intlTelInput.utils = utils2;
@@ -2824,7 +2825,7 @@ var factoryOutput = (() => {
       //* A map from instance ID to instance object.
       instances: {},
       loadUtils,
-      version: "23.7.3"
+      version: "23.7.4"
     }
   );
   var intl_tel_input_default = intlTelInput;

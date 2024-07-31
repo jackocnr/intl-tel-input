@@ -26278,6 +26278,7 @@
       return new Promise((resolve, reject) => {
         import(
           /* webpackIgnore: true */
+          /* @vite-ignore */
           path
         ).then(({ default: utils2 }) => {
           intlTelInput.utils = utils2;
@@ -26313,7 +26314,7 @@
       //* A map from instance ID to instance object.
       instances: {},
       loadUtils,
-      version: "23.7.3"
+      version: "23.7.4"
     }
   );
   var intl_tel_input_default = intlTelInput;
