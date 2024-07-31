@@ -472,7 +472,7 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 ```
 
 **setDisabled**  
-Disables input and selecting country. Note that if you want to disable both input and selecting country, we recommend using this.
+Disables input and selecting country. _Note that if you want to disable both input and selecting country, we recommend using this._
 ```js
 iti.setDisabled(true);
 iti.setDisabled(false); // to enable
