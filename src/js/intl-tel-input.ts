@@ -988,7 +988,7 @@ export class Iti {
       let content = "";
       //* Add the flag.
       if (this.options.showFlags) {
-        content += `<div class='iti__flag-box'><div class='iti__flag iti__${c.iso2}'></div></div>`;
+        content += `<div class='iti__flag-box'><div class='fi fi-${c.iso2}'></div></div>`;
       }
       //* And the country name and dial code.
       content += `<span class='iti__country-name'>${c.name}</span>`;
@@ -1729,7 +1729,7 @@ export class Iti {
       let flagClass = "";
       let a11yText = "";
       if (iso2 && showFlags) {
-        flagClass = `iti__flag iti__${iso2}`;
+        flagClass = `fi fi-${iso2}`;
         a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
       } else {
         flagClass = "iti__flag iti__globe";
