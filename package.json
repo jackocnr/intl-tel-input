@@ -96,7 +96,7 @@
     "build:jsfast": "node build.js",
     "build:translations": "grunt translations",
     "build:utils": "grunt build:utils",
-    "build:flags": "copyfiles -u 3 node_modules/flag-icons/flags/**/* build/flags && copyfiles -u 1 node_modules/flag-icons/css/flag-icons.min.css build/css",
+    "build:flags": "copyfiles -u 3 node_modules/flag-icons/flags/**/* build/flags && copyfiles -u 3 node_modules/flag-icons/css/flag-icons.min.css build/css",
     "build:css": "grunt css",
     "build:img": "grunt img",
     "build:react": "grunt react"
