@@ -143,5 +143,8 @@
       "node_modules",
       "build/js"
     ]
+  },
+  "dependencies": {
+    "flag-icons": "^7.2.3"
   }
 }
