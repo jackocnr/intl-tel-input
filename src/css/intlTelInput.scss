@@ -346,17 +346,7 @@
 }
 
 .iti__flag {
-  --iti-flag-offset: 0px;
-  --iti-flag-width: #{$most-common-flag-width};
-  --iti-flag-height: #{$most-common-flag-height};
-
-  height: var(--iti-flag-height);
-  width: var(--iti-flag-width);
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: var(--iti-path-flags-1x);
-  background-repeat: no-repeat;
-  background-position: var(--iti-flag-offset) 0;
-  background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
 }
 
 //* Creates placeholders for flag widths.
