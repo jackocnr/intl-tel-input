@@ -30,6 +30,7 @@
     "@types/react-dom": "^18.2.24",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
+    "copyfiles": "^2.4.1",
     "cspell": "^8.6.1",
     "esbuild": "^0.23.0",
     "eslint": "^8.57.0",
@@ -95,6 +96,7 @@
     "build:jsfast": "node build.js",
     "build:translations": "grunt translations",
     "build:utils": "grunt build:utils",
+    "build:flags": "copyfiles -u 3 node_modules/flag-icons/flags/**/* build/flags && copyfiles -u 3 node_modules/flag-icons/css/flag-icons.min.css build/css",
     "build:css": "grunt css",
     "build:img": "grunt img",
     "build:react": "grunt react"
@@ -143,5 +145,8 @@
       "node_modules",
       "build/js"
     ]
+  },
+  "dependencies": {
+    "flag-icons": "^7.2.3"
   }
 }

@@ -25335,7 +25335,7 @@
         c.nodeById[this.id] = listItem;
         let content = "";
         if (this.options.showFlags) {
-          content += `<div class='iti__flag-box'><div class='iti__flag iti__${c.iso2}'></div></div>`;
+          content += `<div class='iti__flag-box'><div class='iti__flag iti__${c.iso2} fi fi-${c.iso2}'></div></div>`;
         }
         content += `<span class='iti__country-name'>${c.name}</span>`;
         content += `<span class='iti__dial-code'>+${c.dialCode}</span>`;
@@ -25854,7 +25854,7 @@
         let flagClass = "";
         let a11yText = "";
         if (iso2 && showFlags) {
-          flagClass = `iti__flag iti__${iso2}`;
+          flagClass = `iti__flag iti__${iso2} fi fi-${iso2}`;
           a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
         } else {
           flagClass = "iti__flag iti__globe";
