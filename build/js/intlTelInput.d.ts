@@ -969,7 +969,9 @@ declare module "intl-tel-input" {
         getSelectedCountryData(): SelectedCountryData;
         getValidationError(): number;
         isValidNumber(): boolean | null;
+        private _utilsIsPossibleNumber;
         isValidNumberPrecise(): boolean | null;
+        private _utilsIsValidNumber;
         setCountry(iso2: string): void;
         setNumber(number: string): void;
         setPlaceholderNumberType(type: NumberType): void;

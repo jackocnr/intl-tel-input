@@ -2230,10 +2230,18 @@ export class Iti {
   //* Validate the input val
   isValidNumber(): boolean | null {
     const val = this._getFullNumber();
-    //* Return false for any alpha chars.
-    if (/\p{L}/u.test(val)) {
-      return false;
+    const alphaCharPosition = val.search(/\p{L}/u);
+    if (alphaCharPosition > -1) {
+      const beforeAlphaChar = val.substring(0, alphaCharPosition);
+      //* Workaround to allow some alpha chars e.g. "+1 (444) 444-4444 ext. 1234" while rejecting others e.g. "+1 (444) 444-FAST". The only legit use of alpha chars is as an extension separator, in which case, the number before it must be valid on its own.
+      const beforeAlphaIsValid = this._utilsIsPossibleNumber(beforeAlphaChar);
+      const isValid = this._utilsIsPossibleNumber(val);
+      return beforeAlphaIsValid && isValid;
     }
+    return this._utilsIsPossibleNumber(val);
+  }
+
+  private _utilsIsPossibleNumber(val: string): boolean | null {
     return intlTelInput.utils
       ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType)
       : null;
@@ -2242,10 +2250,18 @@ export class Iti {
   //* Validate the input val (precise)
   isValidNumberPrecise(): boolean | null {
     const val = this._getFullNumber();
-    //* Return false for any alpha chars.
-    if (/\p{L}/u.test(val)) {
-      return false;
+    const alphaCharPosition = val.search(/\p{L}/u);
+    if (alphaCharPosition > -1) {
+      const beforeAlphaChar = val.substring(0, alphaCharPosition);
+      //* Workaround to allow some alpha chars e.g. "+1 (444) 444-4444 ext. 1234" while rejecting others e.g. "+1 (444) 444-FAST". The only legit use of alpha chars is as an extension separator, in which case, the number before it must be valid on its own.
+      const beforeAlphaIsValid = this._utilsIsValidNumber(beforeAlphaChar);
+      const isValid = this._utilsIsValidNumber(val);
+      return beforeAlphaIsValid && isValid;
     }
+    return this._utilsIsValidNumber(val);
+  }
+
+  private _utilsIsValidNumber(val: string): boolean | null {
     return intlTelInput.utils
       ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2)
       : null;

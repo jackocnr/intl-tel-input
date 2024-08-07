@@ -2740,17 +2740,31 @@ var factoryOutput = (() => {
     //* Validate the input val
     isValidNumber() {
       const val = this._getFullNumber();
-      if (/\p{L}/u.test(val)) {
-        return false;
+      const alphaCharPosition = val.search(/\p{L}/u);
+      if (alphaCharPosition > -1) {
+        const beforeAlphaChar = val.substring(0, alphaCharPosition);
+        const beforeAlphaIsValid = this._utilsIsPossibleNumber(beforeAlphaChar);
+        const isValid = this._utilsIsPossibleNumber(val);
+        return beforeAlphaIsValid && isValid;
       }
+      return this._utilsIsPossibleNumber(val);
+    }
+    _utilsIsPossibleNumber(val) {
       return intlTelInput.utils ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
     }
     //* Validate the input val (precise)
     isValidNumberPrecise() {
       const val = this._getFullNumber();
-      if (/\p{L}/u.test(val)) {
-        return false;
+      const alphaCharPosition = val.search(/\p{L}/u);
+      if (alphaCharPosition > -1) {
+        const beforeAlphaChar = val.substring(0, alphaCharPosition);
+        const beforeAlphaIsValid = this._utilsIsValidNumber(beforeAlphaChar);
+        const isValid = this._utilsIsValidNumber(val);
+        return beforeAlphaIsValid && isValid;
       }
+      return this._utilsIsValidNumber(val);
+    }
+    _utilsIsValidNumber(val) {
       return intlTelInput.utils ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2) : null;
     }
     //* Update the selected country, and update the input val accordingly.
