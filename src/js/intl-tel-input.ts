@@ -1203,6 +1203,10 @@ export class Iti {
   private _initTelInputListeners(): void {
     const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay } = this.options;
     let userOverrideFormatting = false;
+    //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
+    if (/\p{L}/u.test(this.telInput.value)) {
+      userOverrideFormatting = true;
+    }
 
     const openDropdownWithPlus = () => {
       this._openDropdown();

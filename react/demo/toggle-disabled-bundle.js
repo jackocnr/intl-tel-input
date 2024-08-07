@@ -25485,6 +25485,9 @@
     _initTelInputListeners() {
       const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay } = this.options;
       let userOverrideFormatting = false;
+      if (/\p{L}/u.test(this.telInput.value)) {
+        userOverrideFormatting = true;
+      }
       const openDropdownWithPlus = () => {
         this._openDropdown();
         this.searchInput.value = "+";
