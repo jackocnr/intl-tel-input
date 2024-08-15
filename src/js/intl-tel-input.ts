@@ -852,7 +852,7 @@ export class Iti {
       const selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
 
       //* This is where we will add the selected flag (or globe) class later
-      this.selectedCountryInner = createEl("div", null, selectedCountryPrimary);
+      this.selectedCountryInner = createEl("div", { class: "iti__flag" }, selectedCountryPrimary);
       this.selectedCountryA11yText = createEl(
         "span",
         { class: "iti__a11y-text" },

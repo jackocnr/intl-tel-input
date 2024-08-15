@@ -236,7 +236,7 @@
 }
 
 .iti__flag {
-  --iti-flag-offset: 0px;
+  --iti-flag-offset: 100px;
   --iti-flag-width: 20px;
   --iti-flag-height: 14px;
   height: var(--iti-flag-height);

@@ -346,7 +346,8 @@
 }
 
 .iti__flag {
-  --iti-flag-offset: 0px;
+  //* Start with an offset to hide any flags. This is useful to show an empty state (with correct dimensions) while geoIpLookup is loading.
+  --iti-flag-offset: 100px;
   --iti-flag-width: #{$most-common-flag-width};
   --iti-flag-height: #{$most-common-flag-height};
 

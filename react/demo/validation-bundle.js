@@ -25218,7 +25218,7 @@
           );
         }
         const selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
-        this.selectedCountryInner = createEl("div", null, selectedCountryPrimary);
+        this.selectedCountryInner = createEl("div", { class: "iti__flag" }, selectedCountryPrimary);
         this.selectedCountryA11yText = createEl(
           "span",
           { class: "iti__a11y-text" },
