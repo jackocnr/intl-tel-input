@@ -14,5 +14,6 @@
   "include": [
     "src/intl-tel-input/react.tsx",
     "src/intl-tel-input/reactWithUtils.tsx",
+    "src/intl-tel-input/i18n/index.ts",
   ],
 }

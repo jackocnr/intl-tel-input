@@ -13,5 +13,6 @@
   "include": [
     "src/js/intl-tel-input.ts",
     "src/js/intl-tel-input/intlTelInputWithUtils.ts",
+    "src/js/intl-tel-input/i18n/index.ts",
   ],
 }
