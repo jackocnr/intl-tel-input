@@ -1,5 +1,7 @@
 //* Chinese (Simplified). Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "所选国家",
   noCountrySelected: "未选择国家/地区",
   countryListAriaLabel: "国家名单",
@@ -12,4 +14,5 @@ export default {
   ac: "阿森松岛",
   xk: "科索沃",
 };
-  
+
+export default interfaceTranslations;

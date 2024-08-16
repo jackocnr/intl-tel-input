@@ -1,5 +1,7 @@
 //* Greek. Translated by: Anthony Veaudry (anthony0030).
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Επιλεγμένη χώρα",
   noCountrySelected: "Δεν έχει επιλεγεί χώρα",
   countryListAriaLabel: "Κατάλογος χωρών",
@@ -12,3 +14,5 @@ export default {
   ac: "Νησί της Ανάληψης",
   xk: "Κοσσυφοπέδιο",
 };
+
+export default interfaceTranslations;

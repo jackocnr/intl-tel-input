@@ -102,3 +102,10 @@ build({
   minify: true,
   outfile: "build/js/intlTelInputWithUtils.min.js",
 });
+
+//* build/js/i18n
+build({
+  charset: "utf8",
+  entryPoints: ["src/js/intl-tel-input/i18n/**/*.ts"],
+  outdir: "build/js/i18n",
+});

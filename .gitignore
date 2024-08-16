@@ -8,6 +8,7 @@
 /.idea/
 *.iml
 .DS_Store
+/build/js/i18n/types.js
 
 # these files are now auto-generated
 /src/img/

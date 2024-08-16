@@ -1,5 +1,4 @@
-//* Czech. Translated by: Google Translate.
-export default {
+const interfaceTranslations = {
   selectedCountryAriaLabel: "Vybraná země",
   noCountrySelected: "Není vybrána žádná země",
   countryListAriaLabel: "Seznam zemí",
@@ -7,8 +6,8 @@ export default {
   zeroSearchResults: "Nebyly nalezeny žádné výsledky",
   oneSearchResult: "1 výsledek nalezen",
   multipleSearchResults: "${count} výsledků nalezeno",
-  
   // additional countries (not supported by country-list library)
   ac: "Ascension",
-  xk: "Kosovo",
+  xk: "Kosovo"
 };
+export default interfaceTranslations;

@@ -1,5 +1,7 @@
 //* Hungarian. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Kiválasztott ország",
   noCountrySelected: "Nincs ország kiválasztva",
   countryListAriaLabel: "Országok listája",
@@ -12,3 +14,5 @@ export default {
   ac: "Ascension-sziget",
   xk: "Koszovó",
 };
+
+export default interfaceTranslations;

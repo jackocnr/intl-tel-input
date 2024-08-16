@@ -5,7 +5,6 @@ module.exports = function(grunt) {
   grunt.registerTask('translations', 'Generate country translations', function() {
     const countryTranslationSourceDirectory = 'third_party/country-list/data';
     const supportedLocalesDirectory = "src/js/intl-tel-input/i18n";
-    const buildDirectory = 'build/js/i18n';
     const rootIndexFilePath = path.join(supportedLocalesDirectory, 'index.ts');
     let rootIndexFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
 
@@ -23,7 +22,7 @@ module.exports = function(grunt) {
 
     grunt.log.writeln(`Supported locales: ${supportedLocales.join(", ")}.\n`);
 
-    //* STEP 1: For each supported locale: pull in the country name translations and generate the index file.
+    //* For each supported locale: pull in the country name translations and generate the index file.
     supportedLocales.forEach(locale => {
       const countryTranslationFilePath = path.join(countryTranslationSourceDirectory, locale, 'country.json');
       const countryTranslationExists = fs.existsSync(countryTranslationFilePath);
@@ -49,12 +48,14 @@ module.exports = function(grunt) {
       rootIndexFileContent += `export { default as ${locale}, countryTranslations as ${locale}CountryTranslations, interfaceTranslations as ${locale}InterfaceTranslations } from "./${locale}";\n`;
 
       //* Create the Locale Index file Start
-      let indexFileContent = '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n';
-      indexFileContent += `import countryTranslations from "./countries.js";\n`;
-      indexFileContent += `import interfaceTranslations from "./interface.js";\n\n`;
-      indexFileContent += `export { countryTranslations, interfaceTranslations };\n`;
-      indexFileContent += `export default { ...countryTranslations, ...interfaceTranslations };\n`;
-      fs.writeFileSync(indexFilePath, indexFileContent);
+      let localeIndexFileContent = `//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n`;
+      localeIndexFileContent += `import { I18n } from "../types";\n`;
+      localeIndexFileContent += `import countryTranslations from "./countries.js";\n`;
+      localeIndexFileContent += `import interfaceTranslations from "./interface.js";\n\n`;
+      localeIndexFileContent += `export { countryTranslations, interfaceTranslations };\n\n`;
+      localeIndexFileContent += `const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };\n`;
+      localeIndexFileContent += `export default allTranslations;\n`;
+      fs.writeFileSync(indexFilePath, localeIndexFileContent);
       grunt.log.writeln(`Generated ${indexFilePath}`);
 
       //* Create the countries.ts file
@@ -62,13 +63,15 @@ module.exports = function(grunt) {
       try {
         const parsedData = JSON.parse(jsonData); //* Parse JSON data.
         let countryTranslationFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
-        countryTranslationFileContent += 'export default {\n';
+        countryTranslationFileContent += 'import { I18n } from "../types";\n\n';
+        countryTranslationFileContent += 'const countryTranslations: I18n = {\n';
 
         Object.keys(parsedData).sort().forEach(key => {
           countryTranslationFileContent += `  ${key.toLowerCase()}: "${parsedData[key]}",\n`;
         });
 
-        countryTranslationFileContent += '};\n';
+        countryTranslationFileContent += '};\n\n';
+        countryTranslationFileContent += 'export default countryTranslations;\n';
         fs.writeFileSync(countriesDestinationFilePath, countryTranslationFileContent); //* Write to new file.
         grunt.log.writeln(`Generated ${countriesDestinationFilePath} from ${countryTranslationFilePath}`);
       } catch (error) {
@@ -77,23 +80,5 @@ module.exports = function(grunt) {
       grunt.log.writeln("");
     });
     fs.writeFileSync(rootIndexFilePath, rootIndexFileContent);
-
-    //* STEP 2: Copy the whole i18n dir to the build folder.
-    fs.cpSync(supportedLocalesDirectory, buildDirectory, { recursive: true });
-    //* Then rename all .ts files to .js - first the root index, then the locale folders.
-    const rootIndexFile = path.join(buildDirectory, "index.ts");
-    fs.renameSync(rootIndexFile, rootIndexFile.replace('.ts', '.js'));
-    //* For each locale dir.
-    fs.readdirSync(buildDirectory, { withFileTypes: true })
-      .filter(dir => dir.isDirectory())
-      .map(dir => dir.name)
-      .forEach(dirName => {
-        const dirPath = path.join(buildDirectory, dirName);
-        //* For each translation file within that dir.
-        fs.readdirSync(dirPath).forEach(fileName => {
-          const filePath = path.join(dirPath, fileName);
-          fs.renameSync(filePath, filePath.replace('.ts', '.js'));
-        });
-    });
   });
 };

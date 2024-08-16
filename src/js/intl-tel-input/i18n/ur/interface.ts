@@ -1,5 +1,7 @@
 //* Urdu. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "منتخب ملک",
   noCountrySelected: "کوئی ملک منتخب نہیں کیا گیا۔",
   countryListAriaLabel: "ممالک کی فہرست",
@@ -12,3 +14,5 @@ export default {
   ac: "ایسنشن جزیرہ",
   xk: "کوسوو",
 };
+
+export default interfaceTranslations;

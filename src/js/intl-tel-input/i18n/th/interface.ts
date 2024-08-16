@@ -1,5 +1,7 @@
 //* Thai. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "ประเทศที่เลือก",
   noCountrySelected: "ไม่ได้เลือกประเทศ",
   countryListAriaLabel: "รายชื่อประเทศ",
@@ -12,3 +14,5 @@ export default {
   ac: "เกาะแอสเซนชัน",
   xk: "โคโซโว",
 };
+
+export default interfaceTranslations;

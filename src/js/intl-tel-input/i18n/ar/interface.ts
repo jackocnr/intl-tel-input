@@ -1,5 +1,7 @@
 //* Arabic. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "البلد المحدد",
   noCountrySelected: "لم يتم تحديد أي بلد",
   countryListAriaLabel: "قائمة الدول",
@@ -12,3 +14,5 @@ export default {
   ac: "جزيرة الصعود",
   xk: "كوسوفو",
 };
+
+export default interfaceTranslations;

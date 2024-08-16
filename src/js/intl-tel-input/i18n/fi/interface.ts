@@ -1,5 +1,7 @@
 //* Finnish. Translated by: Michael Winton (mrwinton).
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   "selectedCountryAriaLabel": "Valittu maa",
   "noCountrySelected": "Maata ei ole valittu",
   "countryListAriaLabel": "Luettelo maista",
@@ -12,3 +14,5 @@ export default {
   "ac": "Ascension",
   "xk": "Kosovo",
 };
+
+export default interfaceTranslations;

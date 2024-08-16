@@ -1,5 +1,7 @@
 //* Russian. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Выбранная страна",
   noCountrySelected: "Страна не выбрана",
   countryListAriaLabel: "Список стран",
@@ -12,3 +14,5 @@ export default {
   ac: "Остров Вознесения",
   xk: "Косово",
 };
+
+export default interfaceTranslations;

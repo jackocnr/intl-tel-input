@@ -1,5 +1,7 @@
 //* Korean. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "선택한 국가",
   noCountrySelected: "선택한 국가가 없습니다.",
   countryListAriaLabel: "국가 목록",
@@ -12,3 +14,5 @@ export default {
   ac: "승천섬",
   xk: "코소보",
 };
+
+export default interfaceTranslations;

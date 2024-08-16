@@ -1,5 +1,4 @@
-//* Russian. Translated by: Google Translate.
-export default {
+const interfaceTranslations = {
   selectedCountryAriaLabel: "Выбранная страна",
   noCountrySelected: "Страна не выбрана",
   countryListAriaLabel: "Список стран",
@@ -7,8 +6,8 @@ export default {
   zeroSearchResults: "результатов не найдено",
   oneSearchResult: "найден 1 результат",
   multipleSearchResults: "Найдено ${count} результатов",
-  
   // additional countries (not supported by country-list library)
   ac: "Остров Вознесения",
-  xk: "Косово",
+  xk: "Косово"
 };
+export default interfaceTranslations;

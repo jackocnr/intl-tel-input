@@ -1,5 +1,7 @@
 //* Slovak. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Vybraná krajina",
   noCountrySelected: "Nie je vybratá žiadna krajina",
   countryListAriaLabel: "Zoznam krajín",
@@ -12,3 +14,5 @@ export default {
   ac: "Ascension",
   xk: "Kosovo",
 };
+
+export default interfaceTranslations;

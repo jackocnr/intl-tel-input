@@ -1,5 +1,7 @@
 //* Bulgarian. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Избрана държава",
   noCountrySelected: "Няма избрана държава",
   countryListAriaLabel: "Списък на страните",
@@ -12,3 +14,5 @@ export default {
   ac: "Остров Възнесение",
   xk: "Косово",
 };
+
+export default interfaceTranslations;

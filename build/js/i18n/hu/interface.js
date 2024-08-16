@@ -1,5 +1,4 @@
-//* Hungarian. Translated by: Google Translate.
-export default {
+const interfaceTranslations = {
   selectedCountryAriaLabel: "Kiválasztott ország",
   noCountrySelected: "Nincs ország kiválasztva",
   countryListAriaLabel: "Országok listája",
@@ -7,8 +6,8 @@ export default {
   zeroSearchResults: "Nincs találat",
   oneSearchResult: "1 találat",
   multipleSearchResults: "${count} találat",
-  
   // additional countries (not supported by country-list library)
   ac: "Ascension-sziget",
-  xk: "Koszovó",
+  xk: "Koszovó"
 };
+export default interfaceTranslations;

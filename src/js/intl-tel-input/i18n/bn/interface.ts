@@ -1,5 +1,7 @@
 //* Bengali. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "নির্বাচিত দেশ",
   noCountrySelected: "কোনো দেশ নির্বাচন করা হয়নি",
   countryListAriaLabel: "দেশের তালিকা",
@@ -12,3 +14,5 @@ export default {
   ac: "অ্যাসেনশন দ্বীপ",
   xk: "কসোভো",
 };
+
+export default interfaceTranslations;

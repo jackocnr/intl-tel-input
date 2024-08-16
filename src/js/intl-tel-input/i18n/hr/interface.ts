@@ -1,5 +1,7 @@
 //* Croatian. Translated by: Harun Sabljaković (sabljak) */
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Odabrana zemlja",
   noCountrySelected: "Zemlja nije odabrana",
   countryListAriaLabel: "Lista zemalja",
@@ -12,3 +14,5 @@ export default {
   ac: "Ascension",
   xk: "Kosovo",
 };
+
+export default interfaceTranslations;

@@ -1,5 +1,7 @@
 //* English. Translated by: Jack O'Connor (jackocnr).
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Selected country",
   noCountrySelected: "No country selected",
   countryListAriaLabel: "List of countries",
@@ -12,3 +14,5 @@ export default {
   ac: "Ascension Island",
   xk: "Kosovo",
 };
+
+export default interfaceTranslations;

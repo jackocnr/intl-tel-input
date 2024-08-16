@@ -1,5 +1,4 @@
-//* Hindi. Translated by: Google Translate.
-export default {
+const interfaceTranslations = {
   selectedCountryAriaLabel: "चयनित देश",
   noCountrySelected: "कोई देश चयनित नहीं",
   countryListAriaLabel: "देशों की सूची",
@@ -7,8 +6,8 @@ export default {
   zeroSearchResults: "कोई परिणाम नहीं मिला",
   oneSearchResult: "1 परिणाम मिला",
   multipleSearchResults: "${count} परिणाम मिले",
-  
   // additional countries (not supported by country-list library)
   ac: "असेंशन द्वीप",
-  xk: "कोसोवो",
+  xk: "कोसोवो"
 };
+export default interfaceTranslations;

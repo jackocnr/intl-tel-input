@@ -1,5 +1,7 @@
 //* Hindi. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "चयनित देश",
   noCountrySelected: "कोई देश चयनित नहीं",
   countryListAriaLabel: "देशों की सूची",
@@ -12,3 +14,5 @@ export default {
   ac: "असेंशन द्वीप",
   xk: "कोसोवो",
 };
+
+export default interfaceTranslations;

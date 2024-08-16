@@ -1,5 +1,4 @@
-//* German. Translated by: Jack O'Connor (jackocnr).
-export default {
+const interfaceTranslations = {
   selectedCountryAriaLabel: "Ausgewähltes Land",
   noCountrySelected: "Kein Land ausgewählt",
   countryListAriaLabel: "Liste der Länder",
@@ -7,8 +6,8 @@ export default {
   zeroSearchResults: "Keine Suchergebnisse",
   oneSearchResult: "1 Suchergebnis",
   multipleSearchResults: "${count} Suchergebnisse",
-  
   // additional countries (not supported by country-list library)
   ac: "Ascension-Insel",
-  xk: "Kosovo",
+  xk: "Kosovo"
 };
+export default interfaceTranslations;

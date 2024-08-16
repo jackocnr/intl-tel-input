@@ -1,5 +1,4 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
-export default {
+const countryTranslations = {
   ad: "एंडोरा",
   ae: "संयुक्त अरब अमीरात",
   af: "अफ़गानिस्तान",
@@ -248,5 +247,6 @@ export default {
   yt: "मायोते",
   za: "दक्षिण अफ़्रीका",
   zm: "ज़ाम्बिया",
-  zw: "ज़िम्बाब्वे",
+  zw: "ज़िम्बाब्वे"
 };
+export default countryTranslations;

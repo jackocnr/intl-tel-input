@@ -11,7 +11,9 @@ module.exports = function(grunt) {
    * TASKS
    */
   // build everything ready for a commit
-  grunt.registerTask('build', ['css', 'js', 'translations']);
+  grunt.registerTask('build', ['css', 'translations', 'js']);
+  // build translations
+  grunt.registerTask('build:translations', ['translations', 'js']);
   // build utils
   grunt.registerTask('build:utils', ['closure-compiler:utils']);
   // just CSS

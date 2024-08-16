@@ -1,5 +1,7 @@
 //* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
-export default {
+import { I18n } from "../types";
+
+const countryTranslations: I18n = {
   ad: "ఆండోరా",
   ae: "యునైటెడ్ అరబ్ ఎమిరేట్స్",
   af: "ఆఫ్ఘనిస్తాన్",
@@ -250,3 +252,5 @@ export default {
   zm: "జాంబియా",
   zw: "జింబాబ్వే",
 };
+
+export default countryTranslations;

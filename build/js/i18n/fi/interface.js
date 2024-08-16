@@ -1,5 +1,4 @@
-//* Finnish. Translated by: Michael Winton (mrwinton).
-export default {
+const interfaceTranslations = {
   "selectedCountryAriaLabel": "Valittu maa",
   "noCountrySelected": "Maata ei ole valittu",
   "countryListAriaLabel": "Luettelo maista",
@@ -7,8 +6,8 @@ export default {
   "zeroSearchResults": "Ei tuloksia",
   "oneSearchResult": "1 tulos löytyi",
   "multipleSearchResults": "${count} tulosta löytyi",
-
   // additional countries (not supported by country-list library)
   "ac": "Ascension",
-  "xk": "Kosovo",
+  "xk": "Kosovo"
 };
+export default interfaceTranslations;

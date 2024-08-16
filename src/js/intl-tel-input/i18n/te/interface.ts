@@ -1,5 +1,7 @@
 //* Telugu. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "ఎంచుకున్న దేశం",
   noCountrySelected: "ఏ దేశం ఎంచుకోబడలేదు",
   countryListAriaLabel: "దేశాల జాబితా",
@@ -12,3 +14,5 @@ export default {
   ac: "అసెన్షన్ ద్వీపం",
   xk: "కొసోవో",
 };
+
+export default interfaceTranslations;

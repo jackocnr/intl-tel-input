@@ -1,5 +1,7 @@
 //* Swedish. Translated by: Nhi Tran.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   "selectedCountryAriaLabel": "Valt land",
   "noCountrySelected": "Inget land valt",
   "countryListAriaLabel": "Lista över länder",
@@ -12,3 +14,5 @@ export default {
   "ac": "Ascension",
   "xk": "Kosovo",
 };
+
+export default interfaceTranslations;

@@ -1,5 +1,7 @@
 //* Marathi. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "निवडलेला देश",
   noCountrySelected: "कोणताही देश निवडलेला नाही",
   countryListAriaLabel: "देशांची यादी",
@@ -12,3 +14,5 @@ export default {
   ac: "असेन्शन बेट",
   xk: "कोसोवो",
 };
+
+export default interfaceTranslations;

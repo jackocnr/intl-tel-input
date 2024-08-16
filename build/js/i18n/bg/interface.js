@@ -1,5 +1,4 @@
-//* Bulgarian. Translated by: Google Translate.
-export default {
+const interfaceTranslations = {
   selectedCountryAriaLabel: "Избрана държава",
   noCountrySelected: "Няма избрана държава",
   countryListAriaLabel: "Списък на страните",
@@ -7,8 +6,8 @@ export default {
   zeroSearchResults: "Няма намерени резултати",
   oneSearchResult: "Намерен е 1 резултат",
   multipleSearchResults: "${count} намерени резултата",
-  
   // additional countries (not supported by country-list library)
   ac: "Остров Възнесение",
-  xk: "Косово",
+  xk: "Косово"
 };
+export default interfaceTranslations;

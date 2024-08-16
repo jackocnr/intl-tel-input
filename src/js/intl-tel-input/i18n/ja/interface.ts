@@ -1,5 +1,7 @@
 //* Japanese. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "選択した国",
   noCountrySelected: "国が選択されていません",
   countryListAriaLabel: "国のリスト",
@@ -12,3 +14,5 @@ export default {
   ac: "アセンション島",
   xk: "コソボ",
 };
+
+export default interfaceTranslations;

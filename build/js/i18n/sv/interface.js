@@ -1,5 +1,4 @@
-//* Swedish. Translated by: Nhi Tran.
-export default {
+const interfaceTranslations = {
   "selectedCountryAriaLabel": "Valt land",
   "noCountrySelected": "Inget land valt",
   "countryListAriaLabel": "Lista över länder",
@@ -7,8 +6,8 @@ export default {
   "zeroSearchResults": "Inga resultat hittades",
   "oneSearchResult": "1 resultat hittades",
   "multipleSearchResults": "${count} resultat hittades",
-
   // additional countries (not supported by country-list library)
   "ac": "Ascension",
-  "xk": "Kosovo",
+  "xk": "Kosovo"
 };
+export default interfaceTranslations;

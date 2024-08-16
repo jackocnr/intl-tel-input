@@ -1,5 +1,7 @@
 //* Turkish. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Seçilen ülke",
   noCountrySelected: "Hiçbir ülke seçilmedi",
   countryListAriaLabel: "Ülke listesi",
@@ -12,3 +14,5 @@ export default {
   ac: "Yükselme adası",
   xk: "Kosova",
 };
+
+export default interfaceTranslations;

@@ -1119,7 +1119,7 @@ var factoryOutput = (() => {
   var data_default = allCountries;
 
   // src/js/intl-tel-input/i18n/en/countries.ts
-  var countries_default = {
+  var countryTranslations = {
     ad: "Andorra",
     ae: "United Arab Emirates",
     af: "Afghanistan",
@@ -1370,9 +1370,10 @@ var factoryOutput = (() => {
     zm: "Zambia",
     zw: "Zimbabwe"
   };
+  var countries_default = countryTranslations;
 
   // src/js/intl-tel-input/i18n/en/interface.ts
-  var interface_default = {
+  var interfaceTranslations = {
     selectedCountryAriaLabel: "Selected country",
     noCountrySelected: "No country selected",
     countryListAriaLabel: "List of countries",
@@ -1384,9 +1385,11 @@ var factoryOutput = (() => {
     ac: "Ascension Island",
     xk: "Kosovo"
   };
+  var interface_default = interfaceTranslations;
 
   // src/js/intl-tel-input/i18n/en/index.ts
-  var en_default = { ...countries_default, ...interface_default };
+  var allTranslations = { ...countries_default, ...interface_default };
+  var en_default = allTranslations;
 
   // src/js/intl-tel-input.ts
   for (let i = 0; i < data_default.length; i++) {

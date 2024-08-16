@@ -1,5 +1,4 @@
-//* Dutch. Translated by: Google Translate.
-export default {
+const interfaceTranslations = {
   selectedCountryAriaLabel: "Geselecteerd land",
   noCountrySelected: "Geen land geselecteerd",
   countryListAriaLabel: "Lijst met landen",
@@ -7,8 +6,8 @@ export default {
   zeroSearchResults: "Geen resultaten gevonden",
   oneSearchResult: "1 resultaat gevonden",
   multipleSearchResults: "${count} resultaten gevonden",
-  
   // additional countries (not supported by country-list library)
   ac: "Ascension-eiland",
-  xk: "Kosovo",
+  xk: "Kosovo"
 };
+export default interfaceTranslations;

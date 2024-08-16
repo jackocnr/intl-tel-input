@@ -1,5 +1,7 @@
 //* Romanian. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Țara selectată",
   noCountrySelected: "Nicio țară selectată",
   countryListAriaLabel: "Lista țărilor",
@@ -12,3 +14,5 @@ export default {
   ac: "Insula Ascensiunii",
   xk: "Kosovo",
 };
+
+export default interfaceTranslations;

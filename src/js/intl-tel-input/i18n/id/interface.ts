@@ -1,5 +1,7 @@
 //* Indonesian. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Negara yang dipilih",
   noCountrySelected: "Tidak ada negara yang dipilih",
   countryListAriaLabel: "Daftar negara",
@@ -12,3 +14,5 @@ export default {
   ac: "Pulau Kenaikan",
   xk: "Kosovo",
 };
+
+export default interfaceTranslations;

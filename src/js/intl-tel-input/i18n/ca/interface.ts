@@ -1,5 +1,7 @@
 //* Catalan. Translated by: Google Translate.
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "País seleccionat",
   noCountrySelected: "No s'ha seleccionat cap país",
   countryListAriaLabel: "Llista de països",
@@ -12,3 +14,6 @@ export default {
   ac: "Illa de l'Ascensió",
   xk: "Kosovo",
 };
+
+export default interfaceTranslations;
+

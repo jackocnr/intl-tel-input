@@ -1,5 +1,4 @@
-//* Italian. Translated by: Google Translate.
-export default {
+const interfaceTranslations = {
   selectedCountryAriaLabel: "Paese selezionato",
   noCountrySelected: "Nessun paese selezionato",
   countryListAriaLabel: "Elenco dei paesi",
@@ -7,8 +6,8 @@ export default {
   zeroSearchResults: "Nessun risultato trovato",
   oneSearchResult: "1 risultato trovato",
   multipleSearchResults: "${count} risultati trovati",
-  
   // additional countries (not supported by country-list library)
   ac: "Isola di Ascensione",
-  xk: "Kosovo",
+  xk: "Kosovo"
 };
+export default interfaceTranslations;

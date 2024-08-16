@@ -1,5 +1,7 @@
 //* Farsi/Persian. Translated by: Mahyar SBT (mahyarsbt).
-export default {
+import { I18n } from "../types";
+
+const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "کشور انتخاب شده",
   noCountrySelected: "هیچ کشوری انتخاب نشده است",
   countryListAriaLabel: "لیست کشورها",
@@ -12,3 +14,5 @@ export default {
   ac: "جزیره اسنشن",
   xk: "کوزوو",
 };
+
+export default interfaceTranslations;

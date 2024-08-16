@@ -1,4 +1,3 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
 export { default as ar, countryTranslations as arCountryTranslations, interfaceTranslations as arInterfaceTranslations } from "./ar";
 export { default as bg, countryTranslations as bgCountryTranslations, interfaceTranslations as bgInterfaceTranslations } from "./bg";
 export { default as bn, countryTranslations as bnCountryTranslations, interfaceTranslations as bnInterfaceTranslations } from "./bn";
