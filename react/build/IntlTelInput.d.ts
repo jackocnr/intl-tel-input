@@ -10,7 +10,7 @@ declare module "intl-tel-input/data" {
     const allCountries: Country[];
     export default allCountries;
 }
-declare module "i18n/en/countries" {
+declare module "intl-tel-input/i18n/en/countries" {
     const _default: {
         ad: string;
         ae: string;
@@ -264,7 +264,7 @@ declare module "i18n/en/countries" {
     };
     export default _default;
 }
-declare module "i18n/en/interface" {
+declare module "intl-tel-input/i18n/en/interface" {
     const _default_1: {
         selectedCountryAriaLabel: string;
         noCountrySelected: string;
@@ -278,9 +278,9 @@ declare module "i18n/en/interface" {
     };
     export default _default_1;
 }
-declare module "i18n/en/index" {
-    import countryTranslations from "i18n/en/countries";
-    import interfaceTranslations from "i18n/en/interface";
+declare module "intl-tel-input/i18n/en/index" {
+    import countryTranslations from "intl-tel-input/i18n/en/countries";
+    import interfaceTranslations from "intl-tel-input/i18n/en/interface";
     export { countryTranslations, interfaceTranslations };
     const _default_2: {
         selectedCountryAriaLabel: string;

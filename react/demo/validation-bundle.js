@@ -24606,7 +24606,7 @@
   }
   var data_default = allCountries;
 
-  // src/js/i18n/en/countries.ts
+  // src/js/intl-tel-input/i18n/en/countries.ts
   var countries_default = {
     ad: "Andorra",
     ae: "United Arab Emirates",
@@ -24859,7 +24859,7 @@
     zw: "Zimbabwe"
   };
 
-  // src/js/i18n/en/interface.ts
+  // src/js/intl-tel-input/i18n/en/interface.ts
   var interface_default = {
     selectedCountryAriaLabel: "Selected country",
     noCountrySelected: "No country selected",
@@ -24873,7 +24873,7 @@
     xk: "Kosovo"
   };
 
-  // src/js/i18n/en/index.ts
+  // src/js/intl-tel-input/i18n/en/index.ts
   var en_default = { ...countries_default, ...interface_default };
 
   // src/js/intl-tel-input.ts
