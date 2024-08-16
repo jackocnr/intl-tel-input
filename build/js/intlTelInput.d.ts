@@ -12,13 +12,6 @@ declare module "intl-tel-input/data" {
 }
 declare module "intl-tel-input/i18n/types" {
     export type I18n = {
-        aq?: string;
-        bv?: string;
-        gs?: string;
-        hm?: string;
-        pn?: string;
-        tf?: string;
-        um?: string;
         af?: string;
         al?: string;
         dz?: string;

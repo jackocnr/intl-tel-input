@@ -1,13 +1,4 @@
 export type I18n = {
-  //* START: unsupported countries from country-list library
-  aq?: string;
-  bv?: string;
-  gs?: string;
-  hm?: string;
-  pn?: string;
-  tf?: string;
-  um?: string;
-  //* END: unsupported countries
   af?: string;
   al?: string;
   dz?: string;

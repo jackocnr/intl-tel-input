@@ -1,8 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const supportedCountries = require('../build/js/data.js');
 
 module.exports = function(grunt) {
   grunt.registerTask('translations', 'Generate country translations', function() {
+    //* Upper case to match the country codes in the country-list lib.
+    const supportedCountryCodes = supportedCountries.map(country => country.iso2.toUpperCase());
     const countryTranslationSourceDirectory = 'third_party/country-list/data';
     const supportedLocalesDirectory = "src/js/intl-tel-input/i18n";
     const rootIndexFilePath = path.join(supportedLocalesDirectory, 'index.ts');
@@ -65,8 +68,10 @@ module.exports = function(grunt) {
         let countryTranslationFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
         countryTranslationFileContent += 'import { I18n } from "../types";\n\n';
         countryTranslationFileContent += 'const countryTranslations: I18n = {\n';
-
-        Object.keys(parsedData).sort().forEach(key => {
+        
+        //* Filter out any country codes that we do not support.
+        const keys = Object.keys(parsedData).filter(iso => supportedCountryCodes.includes(iso)).sort();
+        keys.forEach(key => {
           countryTranslationFileContent += `  ${key.toLowerCase()}: "${parsedData[key]}",\n`;
         });
 
