@@ -123,8 +123,14 @@
       "require": "./react/build/IntlTelInputWithUtils.cjs",
       "default": "./react/build/IntlTelInputWithUtils.js"
     },
-    "./i18n": "./build/js/i18n/index.js",
-    "./i18n/*": "./build/js/i18n/*/index.js",
+    "./i18n": {
+      "types": "./build/js/intlTelInput.d.ts",
+      "default": "./build/js/i18n/index.js"
+    },
+    "./i18n/*": {
+      "types": "./build/js/intlTelInput.d.ts",
+      "default": "./build/js/i18n/*/index.js"
+    },
     "./styles": "./build/css/intlTelInput.css",
     "./*": "./*"
   },
