@@ -255,20 +255,23 @@ If we don't currently support a language you need, it's easy to [contribute this
 
 ```js
 // OPTION 1: import one of the provided translation modules
-import fr from "intl-tel-input/i18n/fr";
+import { fr } from "intl-tel-input/i18n";
 
 intlTelInput(input, { i18n: fr });
 
 // or to override one or more keys, you could do something like this
 intlTelInput(input, {
-  i18n: { ...fr, searchPlaceholder: "Search", },
+  i18n: {
+    ...fr,
+    searchPlaceholder: "Recherche de pays",
+  },
 });
 
 
 // OPTION 2: define your own custom translations
 intlTelInput(input, {
   i18n: {
-    // Country names
+    // Country names - see full list in src/js/intl-tel-input/i18n/en/countries.ts
     af: "Afghanistan",
     al: "Albania",
     dz: "Algeria",
@@ -287,7 +290,7 @@ intlTelInput(input, {
     zeroSearchResults: "No results found",
     // Screen reader text for when the search produces 1 result
     oneSearchResult: "1 result found",
-    // Screen reader text for when the search produces multiple results, where ${count} will be replaced by the count
+    // Screen reader text for when the search produces multiple results
     multipleSearchResults: "${count} results found",
   }
 });
