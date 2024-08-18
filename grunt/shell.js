@@ -17,9 +17,6 @@ module.exports = function(grunt) {
     eslint: {
       command: 'eslint src/js/intl-tel-input.ts'
     },
-    webp: {
-      command: 'cwebp build/img/flags.png -lossless -o build/img/flags.webp && cwebp build/img/flags@2x.png -lossless -o build/img/flags@2x.webp'
-    },
     test: {
       command: 'npm run test'
     }
