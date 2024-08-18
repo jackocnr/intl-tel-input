@@ -7,10 +7,12 @@ module.exports = function(grunt) {
       command: 'node build.js'
     },
     genTsDeclaration: {
-      command: 'tsc --p tsconfig.json'
+      //* Clean up the module names by removing the /index suffix as this is how they will be used.
+      command: 'tsc --p tsconfig.json && sed -i "" -e "s/\\/index\\"/\\"/g" build/js/intlTelInput.d.ts'
     },
     genReactTsDeclaration: {
-      command: 'tsc --p react/tsconfig.json'
+      //* Clean up the module names by removing the /index suffix as this is how they will be used.
+      command: 'tsc --p react/tsconfig.json && sed -i "" -e "s/\\/index\\"/\\"/g" react/build/IntlTelInput.d.ts'
     },
     eslint: {
       command: 'eslint src/js/intl-tel-input.ts'
