@@ -39,6 +39,7 @@
     "eslint-plugin-jest": "^28.5.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "flag-icons": "^7.2.3",
     "google-closure-compiler": "^20240317.0.0",
     "google-closure-library": "^20230802.0.0",
     "grunt": "^1.6.1",
@@ -60,6 +61,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sass": "^1.74.1",
+    "sharp": "^0.33.5",
     "time-grunt": "^2.0.0",
     "typescript": "^5.5.3"
   },
@@ -143,9 +145,5 @@
       "node_modules",
       "build/js"
     ]
-  },
-  "dependencies": {
-    "flag-icons": "^7.2.3",
-    "sharp": "^0.33.5"
   }
 }
