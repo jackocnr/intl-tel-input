@@ -149,5 +149,9 @@
       "node_modules",
       "build/js"
     ]
+  },
+  "dependencies": {
+    "flag-icons": "^7.2.3",
+    "sharp": "^0.33.5"
   }
 }
