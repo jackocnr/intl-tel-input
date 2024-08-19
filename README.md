@@ -593,7 +593,7 @@ _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822
 See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also for how to update to a new version of libphonenumber, how to update the flag images, or how to add a new translation.
 
 ## Attributions
-* Flag images from [region-flags](https://github.com/behdad/region-flags)
+* Flag images from [flag-icons](https://github.com/lipis/flag-icons)
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](https://github.com/googlei18n/libphonenumber)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/jackocnr/intl-tel-input/wiki/Contributions)
