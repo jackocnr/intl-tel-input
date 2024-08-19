@@ -2211,8 +2211,9 @@ var factoryOutput = (() => {
       for (let i = 0; i < this.countries.length; i++) {
         const c = this.countries[i];
         const normalisedCountryName = normaliseString(c.name);
+        const countryInitials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map((word) => word[0]).join("").toLowerCase();
         const fullDialCode = `+${c.dialCode}`;
-        if (isReset || normalisedCountryName.includes(normalisedQuery) || fullDialCode.includes(normalisedQuery) || c.iso2.includes(normalisedQuery)) {
+        if (isReset || normalisedCountryName.includes(normalisedQuery) || fullDialCode.includes(normalisedQuery) || c.iso2.includes(normalisedQuery) || countryInitials.includes(normalisedQuery)) {
           const listItem = c.nodeById[this.id];
           if (listItem) {
             this.countryList.appendChild(listItem);

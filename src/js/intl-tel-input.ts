@@ -1248,12 +1248,15 @@ export class Iti {
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
       const normalisedCountryName = normaliseString(c.name);
+      //* Initials: split on non-alpha chars (ignore ampersand, hyphen, dot etc) and take the first letter of each part.
+      const countryInitials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map(word => word[0]).join("").toLowerCase();
       const fullDialCode = `+${c.dialCode}`;
       if (
         isReset ||
         normalisedCountryName.includes(normalisedQuery) ||
         fullDialCode.includes(normalisedQuery) ||
-        c.iso2.includes(normalisedQuery)
+        c.iso2.includes(normalisedQuery) ||
+        countryInitials.includes(normalisedQuery)
       ) {
         const listItem = c.nodeById[this.id];
         if (listItem) {
