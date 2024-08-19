@@ -8,7 +8,7 @@ const {
   teardown,
   clickSelectedCountryAsync,
   isDropdownOpen,
-  getSelectedCountryButton
+  getSelectedCountryButton,
 } = require("../helpers/helpers");
 
 let iti, user, container, input;

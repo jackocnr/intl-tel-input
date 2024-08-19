@@ -15,7 +15,7 @@ module.exports = function(grunt) {
       command: 'tsc --p react/tsconfig.json && sed -i "" -e "s/\\/index\\"/\\"/g" react/build/IntlTelInput.d.ts'
     },
     eslint: {
-      command: 'eslint src/js/intl-tel-input.ts'
+      command: 'eslint .'
     },
     test: {
       command: 'npm run test'

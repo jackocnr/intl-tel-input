@@ -17,7 +17,7 @@ const formatNumberAsYouType = (number, countryCode) => {
       result = formatter.inputDigit(clean.charAt(i));
     }
     return result;
-  } catch (e) {
+  } catch {
     return number;
   }
 };
@@ -35,7 +35,7 @@ const formatNumber = (number, countryCode, formatArg) => {
       return phoneUtil.format(numberObj, format);
     }
     return number;
-  } catch (e) {
+  } catch {
     return number;
   }
 };
@@ -57,7 +57,7 @@ const getExampleNumber = (countryCode, national, numberType, useE164) => {
         : i18n.phonenumbers.PhoneNumberFormat.INTERNATIONAL;
     }
     return phoneUtil.format(numberObj, format);
-  } catch (e) {
+  } catch {
     return "";
   }
 };
@@ -68,7 +68,7 @@ const getCoreNumber = (number, countryCode) => {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
     return numberObj.getNationalNumber().toString();
-  } catch (e) {
+  } catch {
     return "";
   }
 };
@@ -79,7 +79,7 @@ const getExtension = (number, countryCode) => {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
     return numberObj.getExtension();
-  } catch (e) {
+  } catch {
     return "";
   }
 };
@@ -90,7 +90,7 @@ const getNumberType = (number, countryCode) => {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
     return phoneUtil.getNumberType(numberObj);
-  } catch (e) {
+  } catch {
     //* Broken
     return -99;
   }
@@ -133,7 +133,7 @@ const isValidNumber = (number, countryCode) => {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
     return phoneUtil.isValidNumber(numberObj);
-  } catch (e) {
+  } catch {
     return false;
   }
 };
@@ -166,7 +166,7 @@ const isPossibleNumber = (number, countryCode, numberTypeName) => {
     const result = phoneUtil.isPossibleNumberWithReason(numberObj);
     const isPossible = result === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
     return isPossible;
-  } catch (e) {
+  } catch {
     return false;
   }
 };
