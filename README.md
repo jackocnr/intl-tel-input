@@ -492,11 +492,11 @@ This is triggered when the user opens the dropdown.
 This is triggered when the user closes the dropdown.  
 
 ## Theming / Dark Mode
-There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for a list.
+There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for the full list.
 
-Note that it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. I recommend you download it in the highest resolution, and then scale the image down to the required sizes (20px wide for globe.webp and 40px wide for globe@2x.webp).
+As for the empty state (globe icon), the default version is dark grey, and we also provide a "light" version, that should work better with a dark theme. Alternatively, it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. We recommend you download it in the highest resolution possible, and then scale the image down to the required sizes (20px wide for globe.webp and 40px wide for globe@2x.webp).
 
-Dark mode example:
+Dark mode example (with screenshot below):
 ```css
 @media (prefers-color-scheme: dark) {
   .iti {
@@ -527,6 +527,8 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
   }
 }
 ```
+
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/dark-mode.png" alt="Screenshot" width="269px" height="284px" />
 
 ## Utilities Script
 The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
