@@ -1,13 +1,10 @@
 @import "metadata";
 
 :root {
-  --iti-border-gray: #ccc; //! DEPRECATED, will be removed in v24
-  --iti-text-gray: #999; //! DEPRECATED, will be removed in v24
-
   //* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus.
   --iti-hover-color: rgba(0, 0, 0, 0.05); //* Used as the bg color for both the selected country and the dropdown items, on hover.
-  --iti-border-color: var(--iti-border-gray); //* Used for both the dropdown border, and the divider under the country search input.
-  --iti-dialcode-color: var(--iti-text-gray);
+  --iti-border-color: #ccc; //* Used for both the dropdown border, and the divider under the country search input.
+  --iti-dialcode-color: #999;
   --iti-dropdown-bg: white;
 
   --iti-spacer-horizontal: 8px;

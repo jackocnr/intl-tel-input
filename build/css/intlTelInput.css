@@ -1,9 +1,7 @@
 :root {
-  --iti-border-gray: #ccc;
-  --iti-text-gray: #999;
   --iti-hover-color: rgba(0, 0, 0, 0.05);
-  --iti-border-color: var(--iti-border-gray);
-  --iti-dialcode-color: var(--iti-text-gray);
+  --iti-border-color: #ccc;
+  --iti-dialcode-color: #999;
   --iti-dropdown-bg: white;
   --iti-spacer-horizontal: 8px;
   --iti-flag-height: 15px;
