@@ -4,7 +4,7 @@ const sharp = require('sharp');
 const supportedCountries = require('../build/js/data.js');
 
 module.exports = function(grunt) {
-  grunt.registerTask('generate-scss-metadata', async function() {
+  grunt.registerTask('generate-sprite', async function() {
     const supportedFilenames = supportedCountries.map(country => `${country.iso2}.svg`).sort();
     const done = this.async();
 

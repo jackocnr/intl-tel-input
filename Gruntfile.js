@@ -19,7 +19,7 @@ module.exports = function(grunt) {
   // just CSS
   grunt.registerTask('css', ['sass', 'cssmin']);
   // just images
-  grunt.registerTask('img', ['generate-scss-metadata', 'css']);
+  grunt.registerTask('img', ['generate-sprite', 'css']);
   // just javascript
   grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:buildJs', 'replace', 'shell:buildReact', 'replace:removeImport']);
   // just react
