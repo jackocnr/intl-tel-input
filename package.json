@@ -30,6 +30,7 @@
     "@types/react-dom": "^18.2.24",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
+    "@vitejs/plugin-vue": "^5.1.2",
     "cspell": "^8.6.1",
     "esbuild": "^0.23.0",
     "eslint": "^8.57.0",
@@ -62,7 +63,9 @@
     "sass": "^1.74.1",
     "sharp": "^0.33.5",
     "time-grunt": "^2.0.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "vite": "^5.4.2",
+    "vue": "^3.4.38"
   },
   "files": [
     "build/*",
@@ -92,7 +95,9 @@
     "build:utils": "grunt build:utils",
     "build:css": "grunt css",
     "build:img": "grunt img",
-    "build:react": "grunt react"
+    "build:react": "grunt react",
+    "build:vue": "vite build --config vue/vite.config.js",
+    "vue:demo": "vite --config vue/demo/vite.config.js"
   },
   "style": "build/css/intlTelInput.css",
   "main": "./build/js/intlTelInput.js",
@@ -112,6 +117,10 @@
       "types": "./react/build/IntlTelInput.d.ts",
       "require": "./react/build/IntlTelInput.cjs",
       "default": "./react/build/IntlTelInput.js"
+    },
+    "./vue": {
+      "import": "./vue/build/IntlTelInputWithUtils.mjs",
+      "default": "./vue/build/IntlTelInputWithUtils.umd.js"
     },
     "./reactWithUtils": {
       "types": "./react/build/IntlTelInput.d.ts",
