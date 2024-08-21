@@ -8,8 +8,8 @@
   --iti-dropdown-bg: white;
 
   --iti-spacer-horizontal: 8px;
-  --iti-flag-height: 15px;
-  --iti-flag-width: 20px;
+  --iti-flag-height: #{$flag-height};
+  --iti-flag-width: #{$flag-width};
   //* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control.
   --iti-border-width: 1px;
 
@@ -345,9 +345,6 @@
 .iti__flag {
   //* Start with an offset to hide any flags. This is useful to show an empty state (with correct dimensions) while geoIpLookup is loading.
   --iti-flag-offset: 100px;
-  --iti-flag-width: #{$flag-width};
-  --iti-flag-height: #{$flag-height};
-
   height: var(--iti-flag-height);
   width: var(--iti-flag-width);
   box-shadow: 0px 0px 1px 0px #888;

@@ -235,8 +235,6 @@
 
 .iti__flag {
   --iti-flag-offset: 100px;
-  --iti-flag-width: 20px;
-  --iti-flag-height: 15px;
   height: var(--iti-flag-height);
   width: var(--iti-flag-width);
   box-shadow: 0px 0px 1px 0px #888;
