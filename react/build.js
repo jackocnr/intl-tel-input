@@ -53,27 +53,27 @@ const demoShared = {
 //* Simple demo app
 build({
   ...demoShared,
-  entryPoints: ["react/demo/SimpleApp.tsx"],
-  outfile: "react/demo/simple-bundle.js",
+  entryPoints: ["react/demo/simple/SimpleApp.tsx"],
+  outfile: "react/demo/simple/simple-bundle.js",
 });
 
 //* Validation demo app
 build({
   ...demoShared,
-  entryPoints: ["react/demo/ValidationApp.tsx"],
-  outfile: "react/demo/validation-bundle.js",
+  entryPoints: ["react/demo/validation/ValidationApp.tsx"],
+  outfile: "react/demo/validation/validation-bundle.js",
 });
 
 //* Set Number demo app
 build({
   ...demoShared,
-  entryPoints: ["react/demo/SetNumberApp.tsx"],
-  outfile: "react/demo/set-number-bundle.js",
+  entryPoints: ["react/demo/set-number/SetNumberApp.tsx"],
+  outfile: "react/demo/set-number/set-number-bundle.js",
 });
 
 //* Toggle Disabled demo app
 build({
   ...demoShared,
-  entryPoints: ["react/demo/ToggleDisabledApp.tsx"],
-  outfile: "react/demo/toggle-disabled-bundle.js",
+  entryPoints: ["react/demo/toggle-disabled/ToggleDisabledApp.tsx"],
+  outfile: "react/demo/toggle-disabled/toggle-disabled-bundle.js",
 });

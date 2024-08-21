@@ -23581,7 +23581,7 @@
     }
   });
 
-  // react/demo/ToggleDisabledApp.tsx
+  // react/demo/toggle-disabled/ToggleDisabledApp.tsx
   var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
@@ -32723,7 +32723,7 @@
   });
   var reactWithUtils_default = IntlTelInput;
 
-  // react/demo/ToggleDisabledApp.tsx
+  // react/demo/toggle-disabled/ToggleDisabledApp.tsx
   var App = () => {
     const [isDisabled, setIsDisabled] = (0, import_react2.useState)(true);
     const toggleDisabled = () => setIsDisabled(!isDisabled);

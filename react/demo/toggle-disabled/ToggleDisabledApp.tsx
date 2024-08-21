@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput from "../src/intl-tel-input/reactWithUtils";
+import IntlTelInput from "../../src/intl-tel-input/reactWithUtils";
 
 const App = (): ReactElement => {
   const [isDisabled, setIsDisabled] = useState(true);

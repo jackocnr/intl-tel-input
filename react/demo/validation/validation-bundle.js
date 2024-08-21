@@ -1084,7 +1084,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState(initialState) {
+          function useState2(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1887,7 +1887,7 @@
           exports.useMemo = useMemo;
           exports.useReducer = useReducer;
           exports.useRef = useRef2;
-          exports.useState = useState;
+          exports.useState = useState2;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -23581,7 +23581,7 @@
     }
   });
 
-  // react/demo/SimpleApp.tsx
+  // react/demo/validation/ValidationApp.tsx
   var import_react2 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
@@ -32723,15 +32723,39 @@
   });
   var reactWithUtils_default = IntlTelInput;
 
-  // react/demo/SimpleApp.tsx
-  var App = () => /* @__PURE__ */ import_react2.default.createElement(
-    reactWithUtils_default,
-    {
-      initOptions: {
-        initialCountry: "us"
+  // react/demo/validation/ValidationApp.tsx
+  var errorMap = [
+    "Invalid number",
+    "Invalid country code",
+    "Too short",
+    "Too long",
+    "Invalid number"
+  ];
+  var App = () => {
+    const [isValid, setIsValid] = (0, import_react2.useState)(null);
+    const [number, setNumber] = (0, import_react2.useState)(null);
+    const [errorCode, setErrorCode] = (0, import_react2.useState)(null);
+    const [notice, setNotice] = (0, import_react2.useState)(null);
+    const handleSubmit = () => {
+      if (isValid) {
+        setNotice(`Valid number: ${number}`);
+      } else {
+        const errorMessage = errorMap[errorCode || 0] || "Invalid number";
+        setNotice(`Error: ${errorMessage}`);
       }
-    }
-  );
+    };
+    return /* @__PURE__ */ import_react2.default.createElement("form", null, /* @__PURE__ */ import_react2.default.createElement(
+      reactWithUtils_default,
+      {
+        onChangeNumber: setNumber,
+        onChangeValidity: setIsValid,
+        onChangeErrorCode: setErrorCode,
+        initOptions: {
+          initialCountry: "us"
+        }
+      }
+    ), /* @__PURE__ */ import_react2.default.createElement("button", { className: "button", type: "button", onClick: handleSubmit }, "Validate"), notice && /* @__PURE__ */ import_react2.default.createElement("div", { className: "notice" }, notice));
+  };
   var container = document.getElementById("app");
   if (container) {
     const root = (0, import_client.createRoot)(container);

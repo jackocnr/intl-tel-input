@@ -1,6 +1,6 @@
-import React, { useState, ReactElement, useRef } from "react";
+import React, { useState, ReactElement } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput from "../src/intl-tel-input/reactWithUtils";
+import IntlTelInput from "../../src/intl-tel-input/reactWithUtils";
 
 const errorMap = [
   "Invalid number",
@@ -11,15 +11,10 @@ const errorMap = [
 ];
 
 const App = (): ReactElement => {
-  const ref = useRef(null);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [number, setNumber] = useState<string | null>(null);
   const [errorCode, setErrorCode] = useState<number | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  
-  const handleSetNumber = (): void => {
-    ref.current?.getInstance().setNumber("+14155552671");
-  };
   
   const handleSubmit = (): void => {
     if (isValid) {
@@ -33,7 +28,6 @@ const App = (): ReactElement => {
   return (
     <form>
       <IntlTelInput
-        ref={ref}
         onChangeNumber={setNumber}
         onChangeValidity={setIsValid}
         onChangeErrorCode={setErrorCode}
@@ -41,7 +35,6 @@ const App = (): ReactElement => {
           initialCountry: "us",
         }}
       />
-      <button className="button" type="button" onClick={handleSetNumber}>Set Number</button>
       <button className="button" type="button" onClick={handleSubmit}>Validate</button>
       {notice && <div className="notice">{notice}</div>}
     </form>
