@@ -320,6 +320,24 @@ module.exports = function(grunt) {
 
 
     /**************
+     * Generate vue/src/IntlTelInputWithUtils.tsx
+     **************/
+    vueWithUtils: {
+      options: {
+        patterns: [
+          {
+            match: /\<script setup\>\simport intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
+            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script setup>\nimport intlTelInput from "./intlTelInputWithUtils";'
+          }
+        ]
+      },
+      files: {
+        'vue/src/intl-tel-input/IntlTelInputWithUtils.vue': 'vue/src/intl-tel-input/IntlTelInput.vue',
+      }
+    },
+
+
+    /**************
      * Remove (break) the dynamic import statement
      * in the 4 bundles that already include utils as it will never be used, and sometimes causes problems with bundlers
      **************/
@@ -337,6 +355,7 @@ module.exports = function(grunt) {
         'build/js/intlTelInputWithUtils.min.js': 'build/js/intlTelInputWithUtils.min.js',
         'react/build/IntlTelInputWithUtils.js': 'react/build/IntlTelInputWithUtils.js',
         'react/build/IntlTelInputWithUtils.cjs': 'react/build/IntlTelInputWithUtils.cjs',
+        'vue/build/IntlTelInputWithUtils.mjs': 'vue/build/IntlTelInputWithUtils.mjs',
       }
     }
   };

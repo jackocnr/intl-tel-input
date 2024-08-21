@@ -118,14 +118,16 @@
       "require": "./react/build/IntlTelInput.cjs",
       "default": "./react/build/IntlTelInput.js"
     },
-    "./vue": {
-      "import": "./vue/build/IntlTelInputWithUtils.mjs",
-      "default": "./vue/build/IntlTelInputWithUtils.umd.js"
-    },
     "./reactWithUtils": {
       "types": "./react/build/IntlTelInput.d.ts",
       "require": "./react/build/IntlTelInputWithUtils.cjs",
       "default": "./react/build/IntlTelInputWithUtils.js"
+    },
+    "./vue": {
+      "import": "./vue/build/IntlTelInput.mjs"
+    },
+    "./vueWithUtils": {
+      "import": "./vue/build/IntlTelInputWithUtils.mjs"
     },
     "./i18n": {
       "types": "./build/js/intlTelInput.d.ts",

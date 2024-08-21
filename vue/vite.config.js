@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -7,9 +6,12 @@ export default defineConfig({
   build: {
     outDir: "build",
     lib: {
-      entry: resolve(__dirname, "src/intl-tel-input/IntlTelInputWithUtils.vue"),
-      name: "IntlTelInput",
-      fileName: "IntlTelInputWithUtils",
+      entry: [
+        "src/intl-tel-input/IntlTelInput.vue",
+        "src/intl-tel-input/IntlTelInputWithUtils.vue",
+      ],
+      formats: ["es"],
+      fileName: "[name]",
     },
     rollupOptions: {
       external: ["vue"],

@@ -1,6 +1,5 @@
-<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->
 <script setup>
-import intlTelInput from "./intlTelInputWithUtils";
+import intlTelInput from "../intl-tel-input";
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 const model = defineModel({
