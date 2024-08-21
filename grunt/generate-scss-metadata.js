@@ -8,9 +8,9 @@ module.exports = function(grunt) {
     const supportedFilenames = supportedCountries.map(country => `${country.iso2}.svg`).sort();
     const done = this.async();
 
-    const TARGET_WIDTH = 20;
-    const TARGET_HEIGHT = 15;
-    const FLAG_MARGIN = 2;
+    const TARGET_WIDTH = 16;
+    const TARGET_HEIGHT = 12;
+    const FLAG_MARGIN = 0;
 
     const specialCases = {
       'ac.svg': 'sh-ac.svg', // Ascension Island
