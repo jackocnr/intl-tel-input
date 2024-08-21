@@ -107,11 +107,6 @@ module.exports = function(grunt) {
         outputFileContent += `  width: ${totalWidth}px,\n`;
         outputFileContent += ");\n\n";
 
-        outputFileContent += `$flags-sprite-2x: (\n`;
-        outputFileContent += `  height: ${maxHeight * 2}px,\n`;
-        outputFileContent += `  width: ${totalWidth * 2}px,\n`;
-        outputFileContent += ");\n\n";
-
         outputFileContent += `$flag-width: ${TARGET_WIDTH}px;\n\n`;
         outputFileContent += `$flag-height: ${TARGET_HEIGHT}px;\n\n`;
         
