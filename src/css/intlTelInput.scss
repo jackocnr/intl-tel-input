@@ -345,8 +345,8 @@
 .iti__flag {
   //* Start with an offset to hide any flags. This is useful to show an empty state (with correct dimensions) while geoIpLookup is loading.
   --iti-flag-offset: 100px;
-  --iti-flag-width: #{$most-common-flag-width};
-  --iti-flag-height: #{$most-common-flag-height};
+  --iti-flag-width: #{$flag-width};
+  --iti-flag-height: #{$flag-height};
 
   height: var(--iti-flag-height);
   width: var(--iti-flag-width);
@@ -357,32 +357,10 @@
   background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
 }
 
-//* Creates placeholders for flag widths.
-@each $width in $unique-flag-widths {
-  %flag-width-#{$width} {
-    --iti-flag-width: #{$width};
-  }
-}
-
-//* Creates placeholders for flag heights.
-@each $height in $unique-flag-heights {
-  %flag-height-#{$height} {
-    --iti-flag-height: #{$height};
-  }
-}
-
 @each $country-code, $values in $flags {
-  $flag-width: map-get($values, width);
-  $flag-height: map-get($values, height);
   $flag-offset: map-get($values, offset);
 
   .iti__#{$country-code} {
-    @if $flag-width != $most-common-flag-width {
-      @extend %flag-width-#{$flag-width};
-    }
-    @if $flag-height != $most-common-flag-height {
-      @extend %flag-height-#{$flag-height};
-    }
     --iti-flag-offset: #{$flag-offset};
   }
 }
