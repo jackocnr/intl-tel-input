@@ -1,25 +1,25 @@
+const fs = require('fs');
+const path = require('path');
+const sharp = require('sharp');
+const supportedCountries = require('../build/js/data.js');
+
 module.exports = function(grunt) {
   grunt.registerTask('generate-scss-metadata', async function() {
-    const fs = require('fs').promises;
-    const path = require('path');
-    const sharp = require('sharp');
+    const supportedFilenames = supportedCountries.map(country => `${country.iso2}.svg`).sort();
     const done = this.async();
 
     const TARGET_WIDTH = 20;
     const TARGET_HEIGHT = 15;
     const FLAG_MARGIN = 2;
 
-    // Function to handle special cases
-    function handleSpecialCases(filename) {
-      const specialCases = {
-        'sh-ac.svg': 'ac'
-        // Add more special cases here if needed
-      };
-      
-      return specialCases[filename] || path.parse(filename).name.toLowerCase();
-    }
+    const specialCases = {
+      'ac.svg': 'sh-ac.svg', // Ascension Island
+      // Add more special cases here if needed
+    };
 
-    async function generateFlagMetadataAndSprite() {
+    const handleSpecialCases = (filename) => specialCases[filename] || filename;
+
+    const generateFlagMetadataAndSprite = async () => {
       try {
         const fileWarning = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.";
         const flagsPath = 'node_modules/flag-icons/flags/4x3';
@@ -30,10 +30,7 @@ module.exports = function(grunt) {
         const spriteFile2xPNG = "build/img/flags@2x.png";
         let outputFileContent = '';
 
-        const files = await fs.readdir(flagsPath);
-        const svgFiles = files.filter(file => file.endsWith('.svg')).sort();
-
-        let totalWidth = svgFiles.length * (TARGET_WIDTH + FLAG_MARGIN) - FLAG_MARGIN;
+        let totalWidth = supportedFilenames.length * (TARGET_WIDTH + FLAG_MARGIN) - FLAG_MARGIN;
         const maxHeight = TARGET_HEIGHT;
 
         let flagsMetadata = "$flags: (\n";
@@ -42,10 +39,18 @@ module.exports = function(grunt) {
         const scaledImages1x = [];
         const scaledImages2x = [];
 
-        for (const file of svgFiles) {
-          const name = handleSpecialCases(file);
-          const imagePath = path.join(flagsPath, file);
-          const svgBuffer = await fs.readFile(imagePath);
+        for (const filename of supportedFilenames) {
+          const countryCode = filename.split('.')[0];
+          const processedFilename = handleSpecialCases(filename);
+          const imagePath = path.join(flagsPath, processedFilename);
+          const imagePathExists = fs.existsSync(imagePath);
+
+          if (!imagePathExists) {
+            console.log(`WARNING: Missing flag image: ${imagePath} - skipping this flag.`);
+            break;
+          }
+
+          const svgBuffer = fs.readFileSync(imagePath);
 
           const pngBuffer1x = await sharp(svgBuffer)
             .resize({
@@ -71,17 +76,15 @@ module.exports = function(grunt) {
 
           scaledImages1x.push({
             buffer: pngBuffer1x,
-            name: name,
             offset: currentOffset
           });
 
           scaledImages2x.push({
             buffer: pngBuffer2x,
-            name: name,
             offset: currentOffset * 2
           });
 
-          flagsMetadata += `  ${name}: (\n`;
+          flagsMetadata += `  ${countryCode}: (\n`;
           flagsMetadata += `    offset: ${-currentOffset}px,\n`;
           flagsMetadata += "  ),\n";
 
@@ -113,16 +116,16 @@ module.exports = function(grunt) {
         outputFileContent += flagsMetadata + "\n\n";
         outputFileContent += fileWarning + "\n";
 
-        await fs.writeFile(outputFile, outputFileContent);
+        fs.writeFileSync(outputFile, outputFileContent);
         console.log('SCSS file generated successfully.');
         done();
       } catch (error) {
         console.error('Error:', error);
         done(error);
       }
-    }
+    };
 
-    async function createSprite(images, width, height, outputFile, format) {
+    const createSprite = async (images, width, height, outputFile, format) => {
       const combinedImage = sharp({
         create: {
           width: width,
@@ -155,7 +158,7 @@ module.exports = function(grunt) {
       }
 
       await processedImage.toFile(outputFile);
-    }
+    };
 
     generateFlagMetadataAndSprite();
   });
