@@ -737,7 +737,7 @@ export class Iti {
       let content = "";
       //* Add the flag.
       if (this.options.showFlags) {
-        content += `<div class='iti__flag-box'><div class='iti__flag iti__${c.iso2}'></div></div>`;
+        content += `<div class='iti__flag iti__${c.iso2}'></div>`;
       }
       //* And the country name and dial code.
       content += `<span class='iti__country-name'>${c.name}</span>`;

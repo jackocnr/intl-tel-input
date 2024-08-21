@@ -211,12 +211,6 @@
     }
   }
 
-  //* Dropdown flags need consistent width, so wrap in a container.
-  &__flag-box {
-    display: inline-block;
-    width: var(--iti-flag-width);
-  }
-
   //* Each country item in dropdown (we must have separate class to differentiate from dividers).
   &__country {
     //* Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines.
@@ -235,7 +229,7 @@
   }
 
   //* Spacing between country flag, name and dial code.
-  &__flag-box,
+  &__country-list .iti__flag,
   &__country-name {
     margin-right: var(--iti-spacer-horizontal);
 
