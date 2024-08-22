@@ -96,7 +96,7 @@
     "build:css": "grunt css",
     "build:img": "grunt img",
     "build:react": "grunt react",
-    "build:vue": "vite build --config vue/vite.config.js",
+    "build:vue": "grunt vue",
     "vue:demo": "vite --config vue/demo/validation/vite.config.js"
   },
   "style": "build/css/intlTelInput.css",

@@ -21,9 +21,11 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['generate-sprite', 'css']);
   // just javascript
-  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:buildJs', 'replace', 'shell:buildReact', 'replace:removeImport']);
+  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:buildJs', 'replace', 'react', 'vue']);
   // just react
   grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact', 'replace:removeImport']);
+  // just vue
+  grunt.registerTask('vue', ['replace:vueWithUtils', 'shell:buildVue', 'replace:removeImport']);
 
   // Travis CI
   grunt.registerTask('travis', ['jasmine']);

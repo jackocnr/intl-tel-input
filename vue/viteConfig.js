@@ -1,15 +1,13 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
-export default defineConfig({
+export const getConfig = (filename) => defineConfig({
   root: "vue",
   build: {
     outDir: "build",
+    emptyOutDir: false,
     lib: {
-      entry: [
-        "src/intl-tel-input/IntlTelInput.vue",
-        "src/intl-tel-input/IntlTelInputWithUtils.vue",
-      ],
+      entry: `src/intl-tel-input/${filename}`,
       formats: ["es"],
       fileName: "[name]",
     },
@@ -24,3 +22,5 @@ export default defineConfig({
   },
   plugins: [vue()],
 });
+
+export default getConfig("IntlTelInput.vue");
