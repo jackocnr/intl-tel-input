@@ -8,7 +8,7 @@
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-search2.png" alt="Screenshot" width="237px" height="280px" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla2.png" alt="Screenshot" width="265px" height="273px" />
   
 If you find the plugin helpful, please consider [supporting the project](https://github.com/sponsors/jackocnr).
 
@@ -45,7 +45,7 @@ You can view [a live demo](https://intl-tel-input.com) and see some examples of 
 ## Mobile
 By default, on mobile devices we show a fullscreen popup instead of the inline dropdown, to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area at the sides. [See example](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile.png" alt="Mobile screenshot" width="270px" style="max-width: 100%" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile2.png" alt="Mobile screenshot" width="270px" height="512px" />
 
 ## Features
 * Automatically select the user's current country using an IP lookup
@@ -320,7 +320,7 @@ Set this to false to hide the flags e.g. for political reasons. Instead it will 
 Type: `Boolean` Default: `false`  
 Display the selected country dial code next to the input, so it looks like it's part of the typed number, except it is uneditable. When enabled, typing a plus in the telephone input will open the country dropdown and enter the plus in the search input instead, to force the user to select a country from the list rather than typing their dial code in the telephone input. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code3.png" width="234px" height="49px" alt="Separate Dial Code">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267px" height="51px" alt="Separate Dial Code">
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
@@ -529,7 +529,7 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 ```
 
 Example:  
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/dark-mode.png" alt="Screenshot" width="269px" height="284px" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/dark-mode2.png" alt="Screenshot" width="264px" height="272px" />
 
 ## Utilities Script
 The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
