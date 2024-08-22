@@ -4,7 +4,7 @@
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/typescript.webp" alt="Typescript logo" width="16px" /> NEWS: we now have our own Typescript type definitions, so no need to use `@types/intl-tel-input` anymore!
 
-🗣️ NEWS: we now provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) in over 30 languages! [See them in action](https://intl-tel-input.com/examples/localise-countries.html).
+🗣️ NEWS: we now provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) in over 30 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods.
 
@@ -253,11 +253,13 @@ Allow localisation/customisation of the 200+ country names, as well as other use
 
 If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings, as we automatically pull in the country names from the country-list project.
 
+Option 1: import one of the provided translation modules
 ```js
-// OPTION 1: import one of the provided translation modules
 import { fr } from "intl-tel-input/i18n";
 
-intlTelInput(input, { i18n: fr });
+intlTelInput(input, {
+  i18n: fr,
+});
 
 // or to override one or more keys, you could do something like this
 intlTelInput(input, {
@@ -266,9 +268,10 @@ intlTelInput(input, {
     searchPlaceholder: "Recherche de pays",
   },
 });
+```
 
-
-// OPTION 2: define your own custom translations
+Option 2: define your own custom translations
+```js
 intlTelInput(input, {
   i18n: {
     // Country names - see full list in src/js/intl-tel-input/i18n/en/countries.ts
