@@ -529,7 +529,7 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 ```
 
 Example:  
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/dark-mode2.png" alt="Screenshot" width="264px" height="272px" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/dark-mode3.png" alt="Screenshot" width="258px" height="272px" />
 
 ## Utilities Script
 The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
