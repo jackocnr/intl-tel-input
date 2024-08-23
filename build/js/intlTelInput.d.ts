@@ -420,6 +420,7 @@ declare module "intl-tel-input" {
         private _initDropdownListeners;
         private _initRequests;
         private _loadAutoCountry;
+        private _openDropdownWithPlus;
         private _initTelInputListeners;
         private _cap;
         private _trigger;

@@ -305,9 +305,8 @@ export class Iti {
       this.options.initialCountry = this.options.onlyCountries[0];
     }
 
-    //* When separateDialCode enabled, we force nationalMode to false (because the displayed dial code is supposed to be thought of as part of the typed number), AND we force allowDropdown to true as we need the dropdown to select the dial code, AND we force countrySearch to true because that is used when the user types a plus in the tel input.
+    //* When separateDialCode enabled, we force nationalMode to false (because the displayed dial code is supposed to be thought of as part of the typed number), AND we force countrySearch to true because that is used when the user types a plus in the tel input.
     if (this.options.separateDialCode) {
-      this.options.allowDropdown = true;
       this.options.nationalMode = false;
       this.options.countrySearch = true;
     }
@@ -326,6 +325,10 @@ export class Iti {
 
     //* Check if input has one parent with RTL.
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
+
+    const showOnDefaultSide = this.options.allowDropdown || this.options.separateDialCode;
+    this.showSelectedCountryOnLeft = this.isRTL ? !showOnDefaultSide : showOnDefaultSide;
+
     //* Store original styling before we override it.
     if (this.options.separateDialCode) {
       if (this.isRTL) {
@@ -563,13 +566,12 @@ export class Iti {
     if (!useFullscreenPopup) {
       parentClass += " iti--inline-dropdown";
     }
-    this.showSelectedCountryOnLeft = (allowDropdown && !this.isRTL) || (!allowDropdown && this.isRTL);
 
     const wrapper = createEl("div", { class: parentClass });
     this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
 
-    //* Even if allowDropdown is disabled, we still want to show the flag for the currently typed number.
-    if (allowDropdown || showFlags) {
+    //* If we need a countryContainer
+    if (allowDropdown || showFlags || separateDialCode) {
       this.countryContainer = createEl(
         "div",
         {
@@ -959,31 +961,31 @@ export class Iti {
     }
   }
 
+  private _openDropdownWithPlus(): void {
+    this._openDropdown();
+    this.searchInput.value = "+";
+    this._filterCountries("", true);
+  }
+
   //* Initialize the tel input listeners.
   private _initTelInputListeners(): void {
-    const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay } = this.options;
+    const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay, allowDropdown } = this.options;
     let userOverrideFormatting = false;
     //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
     if (/\p{L}/u.test(this.telInput.value)) {
       userOverrideFormatting = true;
     }
 
-    const openDropdownWithPlus = () => {
-      this._openDropdown();
-      this.searchInput.value = "+";
-      this._filterCountries("", true);
-    };
-
     //* On input event: (1) Update selected country, (2) Format-as-you-type.
     //* Note that this fires AFTER the input is updated.
     this._handleInputEvent = (e: InputEvent): void => {
       //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
-      if (this.isAndroid && e?.data === "+" && separateDialCode) {
+      if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown) {
         const currentCaretPos = this.telInput.selectionStart || 0;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos - 1);
         const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
         this.telInput.value = valueBeforeCaret + valueAfterCaret;
-        openDropdownWithPlus();
+        this._openDropdownWithPlus();
         return;
       }
 
@@ -1029,16 +1031,16 @@ export class Iti {
         //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
         if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
           //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
-          if (separateDialCode && e.key === "+") {
+          if (separateDialCode && allowDropdown && e.key === "+") {
             e.preventDefault();
-            openDropdownWithPlus();
+            this._openDropdownWithPlus();
             return;
           }
           //* If strictMode, prevent invalid characters.
           if (strictMode) {
             const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
             const isNumeric = /^[0-9]$/.test(e.key);
-            const isAllowedChar = isInitialPlus || isNumeric;
+            const isAllowedChar = separateDialCode ? isNumeric : isInitialPlus || isNumeric;
             const fullNumber = this._getFullNumber();
             const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;

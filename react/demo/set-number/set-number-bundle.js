@@ -25313,7 +25313,6 @@
         this.options.initialCountry = this.options.onlyCountries[0];
       }
       if (this.options.separateDialCode) {
-        this.options.allowDropdown = true;
         this.options.nationalMode = false;
         this.options.countrySearch = true;
       }
@@ -25325,6 +25324,8 @@
       }
       this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
       this.isRTL = !!this.telInput.closest("[dir=rtl]");
+      const showOnDefaultSide = this.options.allowDropdown || this.options.separateDialCode;
+      this.showSelectedCountryOnLeft = this.isRTL ? !showOnDefaultSide : showOnDefaultSide;
       if (this.options.separateDialCode) {
         if (this.isRTL) {
           this.originalPaddingRight = this.telInput.style.paddingRight;
@@ -25486,10 +25487,9 @@
       if (!useFullscreenPopup) {
         parentClass += " iti--inline-dropdown";
       }
-      this.showSelectedCountryOnLeft = allowDropdown && !this.isRTL || !allowDropdown && this.isRTL;
       const wrapper = createEl("div", { class: parentClass });
       this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
-      if (allowDropdown || showFlags) {
+      if (allowDropdown || showFlags || separateDialCode) {
         this.countryContainer = createEl(
           "div",
           {
@@ -25787,25 +25787,25 @@
         }
       }
     }
+    _openDropdownWithPlus() {
+      this._openDropdown();
+      this.searchInput.value = "+";
+      this._filterCountries("", true);
+    }
     //* Initialize the tel input listeners.
     _initTelInputListeners() {
-      const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay } = this.options;
+      const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay, allowDropdown } = this.options;
       let userOverrideFormatting = false;
       if (/\p{L}/u.test(this.telInput.value)) {
         userOverrideFormatting = true;
       }
-      const openDropdownWithPlus = () => {
-        this._openDropdown();
-        this.searchInput.value = "+";
-        this._filterCountries("", true);
-      };
       this._handleInputEvent = (e) => {
-        if (this.isAndroid && e?.data === "+" && separateDialCode) {
+        if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown) {
           const currentCaretPos = this.telInput.selectionStart || 0;
           const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos - 1);
           const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
           this.telInput.value = valueBeforeCaret + valueAfterCaret;
-          openDropdownWithPlus();
+          this._openDropdownWithPlus();
           return;
         }
         if (this._updateCountryFromNumber(this.telInput.value)) {
@@ -25834,15 +25834,15 @@
       if (strictMode || separateDialCode) {
         this._handleKeydownEvent = (e) => {
           if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
-            if (separateDialCode && e.key === "+") {
+            if (separateDialCode && allowDropdown && e.key === "+") {
               e.preventDefault();
-              openDropdownWithPlus();
+              this._openDropdownWithPlus();
               return;
             }
             if (strictMode) {
               const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
               const isNumeric = /^[0-9]$/.test(e.key);
-              const isAllowedChar = isInitialPlus || isNumeric;
+              const isAllowedChar = separateDialCode ? isNumeric : isInitialPlus || isNumeric;
               const fullNumber = this._getFullNumber();
               const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
               const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
