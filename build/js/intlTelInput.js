@@ -2639,12 +2639,14 @@ var factoryOutput = (() => {
     }
     //* Update the input padding to make space for the selected country/dial code.
     _updateInputPadding() {
-      const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
-      const inputPadding = selectedCountryWidth + 6;
-      if (this.showSelectedCountryOnLeft) {
-        this.telInput.style.paddingLeft = `${inputPadding}px`;
-      } else {
-        this.telInput.style.paddingRight = `${inputPadding}px`;
+      if (this.selectedCountry) {
+        const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
+        const inputPadding = selectedCountryWidth + 6;
+        if (this.showSelectedCountryOnLeft) {
+          this.telInput.style.paddingLeft = `${inputPadding}px`;
+        } else {
+          this.telInput.style.paddingRight = `${inputPadding}px`;
+        }
       }
     }
     //* Update the maximum valid number length for the currently selected country.

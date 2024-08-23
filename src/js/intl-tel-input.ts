@@ -1531,13 +1531,15 @@ export class Iti {
 
   //* Update the input padding to make space for the selected country/dial code.
   private _updateInputPadding(): void {
-    //* offsetWidth is zero if input is in a hidden container during initialisation.
-    const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
-    const inputPadding = selectedCountryWidth + 6;
-    if (this.showSelectedCountryOnLeft) {
-      this.telInput.style.paddingLeft = `${inputPadding}px`;
-    } else {
-      this.telInput.style.paddingRight = `${inputPadding}px`;
+    if (this.selectedCountry) {
+      //* offsetWidth is zero if input is in a hidden container during initialisation.
+      const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
+      const inputPadding = selectedCountryWidth + 6;
+      if (this.showSelectedCountryOnLeft) {
+        this.telInput.style.paddingLeft = `${inputPadding}px`;
+      } else {
+        this.telInput.style.paddingRight = `${inputPadding}px`;
+      }
     }
   }
 

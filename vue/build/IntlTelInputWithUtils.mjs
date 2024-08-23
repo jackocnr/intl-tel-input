@@ -2171,8 +2171,10 @@ class U2 {
   }
   //* Update the input padding to make space for the selected country/dial code.
   _updateInputPadding() {
-    const i = (this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth()) + 6;
-    this.showSelectedCountryOnLeft ? this.telInput.style.paddingLeft = `${i}px` : this.telInput.style.paddingRight = `${i}px`;
+    if (this.selectedCountry) {
+      const i = (this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth()) + 6;
+      this.showSelectedCountryOnLeft ? this.telInput.style.paddingLeft = `${i}px` : this.telInput.style.paddingRight = `${i}px`;
+    }
   }
   //* Update the maximum valid number length for the currently selected country.
   _updateMaxLength() {
