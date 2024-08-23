@@ -97,6 +97,7 @@
     //* Full height.
     top: 0;
     bottom: 0;
+    //* Default to right-hand-side, unless overridden later by allow-dropdown class.
     right: 0;
     //* Prevent the highlighted child from overlapping the input border.
     padding: var(--iti-border-width);
@@ -263,9 +264,7 @@
         left: auto;
       }
     }
-  }
 
-  &--allow-dropdown {
     //* Hover state - show country is clickable (unless the input is disabled or readonly)
     .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
       //* When you hover anything in the container, use cursor:pointer.
