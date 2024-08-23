@@ -321,13 +321,13 @@ Set this to false to hide the flags e.g. for political reasons. Instead, it will
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
-Display the selected country dial code next to the input, so it looks like it's part of the typed number (but it is uneditable). When this option is enabled, typing a plus in the telephone input will open the country dropdown and enter the plus in the search input instead, forcing the user to select a country from the list rather than typing their dial code in the telephone input. For this reason, `allowDropdown` is forced to `true`. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
+Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the new dial code in the search input instead. So if they type +54 for Argentina, then that country will be selected in the dropdown and they can simply press Enter to select it, updating the displayed dial code. For this reason, we force `allowDropdown` to `true`. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267px" height="51px" alt="Separate Dial Code">
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
-As the user types in the input, ignore any irrelevant characters. Basically, the user can only enter numeric characters, and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects `validationNumberType`). Requires the [utils script to be loaded](#loading-the-utilities-script). [See example](https://intl-tel-input.com/examples/strict-mode.html).
+As the user types in the input, ignore any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects `validationNumberType`). Requires the [utils script to be loaded](#loading-the-utilities-script). [See example](https://intl-tel-input.com/examples/strict-mode.html).
 
 **useFullscreenPopup**  
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
