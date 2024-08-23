@@ -50,7 +50,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 ## Features
 * Automatically select the user's current country using an IP lookup
 * Automatically set the input placeholder to an example number for the selected country
-* Navigate the country dropdown by typing a country's name, or using up/down keys
+* Navigate the country dropdown by typing a country's name, or using the up/down keys
 * Automatically format the number as the user types
 * Optionally only allow numeric characters and cap the number at the maximum valid length
 * The user types their national number and the plugin gives you the full standardised international number
@@ -159,7 +159,7 @@ Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, a
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
-Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the `placeholderNumberType` option. By default it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](#loading-the-utilities-script).
+Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the `placeholderNumberType` option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](#loading-the-utilities-script).
 
 **containerClass**  
 Type: `String` Default: `""`  
@@ -167,7 +167,7 @@ Additional classes to add to the (injected) wrapper `<div>`.
 
 **countryOrder**  
 Type: `Array` Default: `null`  
-Specify the ordering for the country list with an array of iso2 country codes. Any ommitted countries will appear after those specified e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albanbia, Algeria etc...
+Specify the ordering for the country list with an array of iso2 country codes. Any omitted countries will appear after those specified e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria etc...
 
 **countrySearch**  
 Type: `Boolean` Default: `true`  
@@ -240,7 +240,7 @@ intlTelInput(input, {
 });
 ```
 
-Which will generate the following (hidden) elements, which will be automatically populated on submit:
+This will generate the following (hidden) elements, which will be automatically populated on submit:
 
 ```html
 <input type="hidden" name="phone_full">
@@ -249,7 +249,7 @@ Which will generate the following (hidden) elements, which will be automatically
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allow localisation/customisation of the 200+ country names, as well as other user interface text (e.g. the country search input placeholder text). The easiest way to do this is to simply import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) and set `i18n` to that (see option 1 below). You can also override one or more individual keys this way if you want (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, you will need to specify all the country names (which can be copied from the country-list project e.g. here are the [country names in French](https://github.com/umpirsky/country-list/blob/master/data/fr/country.json)), as well as a few UI strings (listed below). [See example](https://intl-tel-input.com/examples/localise-countries.html).
+Allow localisation/customisation of the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input). The easiest way to do this is to simply import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) and set `i18n` to that value (see option 1 below). You can also override one or more individual keys this way (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, you will need to specify all the country names (which can be copied from the country-list project e.g. here are the [country names in French](https://github.com/umpirsky/country-list/blob/master/data/fr/country.json)), as well as a few UI strings (listed below). [See example](https://intl-tel-input.com/examples/localise-countries.html).
 
 If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings, as we automatically pull in the country names from the country-list project.
 
@@ -274,7 +274,7 @@ Option 2: define your own custom translations
 ```js
 intlTelInput(input, {
   i18n: {
-    // Country names - see full list in src/js/intl-tel-input/i18n/en/countries.ts
+    // Country names - see the full list in src/js/intl-tel-input/i18n/en/countries.ts
     af: "Afghanistan",
     al: "Albania",
     dz: "Algeria",
@@ -301,11 +301,11 @@ intlTelInput(input, {
 
 **initialCountry**  
 Type: `String` Default: `""`  
-Set the initial country selection by specifying its country code e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user autofills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note that however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
+Set the initial country selection by specifying its country code e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note that however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
-Format numbers in the national format, rather than the international format. This applies to placeholder numbers, and when displaying user's existing numbers. Note that it's fine for user's to type their numbers in national format - as long as they have selected the right country, you can use `getNumber` to extract a full international number - [see example](https://intl-tel-input.com/examples/national-mode.html). It is recommended to leave this option enabled, to encourage users to enter their numbers in national format as this is usually more familiar to them and so it creates a better user experience.
+Format numbers in the national format, rather than the international format. This applies to placeholder numbers, and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use `getNumber` to extract a full international number - [see example](https://intl-tel-input.com/examples/national-mode.html). It is recommended to leave this option enabled, to encourage users to enter their numbers in national format as this is usually more familiar to them and so it creates a better user experience.
 
 **onlyCountries**  
 Type: `Array` Default: `[]`  
@@ -317,11 +317,11 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 
 **showFlags**  
 Type: `Boolean` Default: `true`  
-Set this to false to hide the flags e.g. for political reasons. Instead it will show a generic globe icon. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showflags) (using the React component).
+Set this to false to hide the flags e.g. for political reasons. Instead, it will show a generic globe icon. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showflags) (using the React component).
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
-Display the selected country dial code next to the input, so it looks like it's part of the typed number, except it is uneditable. When enabled, typing a plus in the telephone input will open the country dropdown and enter the plus in the search input instead, to force the user to select a country from the list rather than typing their dial code in the telephone input. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
+Display the selected country dial code next to the input, so it looks like it's part of the typed number (but it is uneditable). When this option is enabled, typing a plus in the telephone input will open the country dropdown and enter the plus in the search input instead, forcing the user to select a country from the list rather than typing their dial code in the telephone input. For this reason, `allowDropdown` is forced to `true`. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267px" height="51px" alt="Separate Dial Code">
 
@@ -441,7 +441,7 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 ```
 
 **setDisabled**  
-Updates the disabled attribute of both the telephone input and selected country button. Accepts a boolean value. _Note: we recommend using this instead of updating the disabled attribute of the input directly._
+Updates the disabled attribute of both the telephone input and the selected country button. Accepts a boolean value. _Note: we recommend using this instead of updating the disabled attribute of the input directly._
 ```js
 iti.setDisabled(true);
 ```
@@ -477,7 +477,7 @@ intlTelInput.loadUtils("/build/js/utils.js");
 ```
 
 ## Events
-You can listen for the following events on the input.
+You can listen for the following events triggered on the input element.
 
 **countrychange**  
 This is triggered when the selected country is updated e.g. if the user selects a country from the dropdown, or they type a different dial code into the input, or you call `setCountry` etc.
@@ -542,7 +542,7 @@ The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build 
 * Placeholder set to an example number for the selected country - even specify the type of number (e.g. mobile) using the `placeholderNumberType` option
 * Extract the standardised (E.164) international number with `getNumber` even when using the `nationalMode` option
 
-International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution we have found is libphonenumber, from which we have precompiled the relevant parts into a single JavaScript file and included in the build directory. Unfortunately, even after modification, it is still ~260KB. See the section below on the best way to load it.
+International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution we have found is libphonenumber, from which we have precompiled the relevant parts into a single JavaScript file, included in the build directory. Unfortunately, even after modification, it is still ~260KB. See the section below on the best way to load it.
 
 To recompile the utils script yourself (e.g. to update the version of libphonenumber it is built from), see the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#updating-to-a-new-version-of-libphonenumber).
 
@@ -553,11 +553,11 @@ The utils script provides lots of great functionality (see above section), but c
 If you're not concerned about filesize (e.g. you're lazy loading this script), the easiest thing to do is to just use the full bundle /build/js/intlTelInputWithUtils.js, which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
 
 **Option 2: utilsScript**  
-If you *are* concerned about filesize, you can lazy load the utils script when the plugin intitialises, using the `utilsScript` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/js/utils.js"`. If you want more control over when this file is lazy loaded, you can manually invoke the `loadUtils` static method, instead of using `utilsScript`.
+If you *are* concerned about filesize, you can lazy load the utils script when the plugin initialises, using the `utilsScript` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/js/utils.js"`. If you want more control over when this file is lazy loaded, you can manually invoke the `loadUtils` static method, instead of using `utilsScript`.
 
 ## Troubleshooting
 
-**Full width input**  
+**Full-width input**  
 If you want your input to be full-width, you need to set the container to be the same i.e.
 
 ```css
@@ -579,13 +579,13 @@ scrollingElement.addEventListener("scroll", function() {
 For the sake of alignment, the default CSS forces the input's vertical margin to `0px`. If you want vertical margin, you should add it to the container (with class `iti`).
 
 **Displaying error messages**  
-If your error handling code inserts an error message before the `<input>` it will break the layout. Instead you must insert it before the container (with class `iti`).
+If your error handling code inserts an error message before the `<input>` it will break the layout. Instead, you must insert it before the container (with class `iti`).
 
 **Dropdown position**  
 The dropdown should automatically appear above/below the input depending on the available space. For this to work properly, you must only initialise the plugin after the `<input>` has been added to the DOM.
 
 **Placeholders**  
-In order to get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`, or set `autoPlaceholder` to `"aggressive"` to override any existing placeholder,
+To get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`, or set `autoPlaceholder` to `"aggressive"` to override any existing placeholder,
 
 **Bootstrap input groups**  
 A couple of CSS fixes are required to get the plugin to play nice with Bootstrap [input groups](https://getbootstrap.com/docs/3.3/components/#input-groups). You can see a Codepen [here](https://codepen.io/jackocnr/pen/EyPXed).  
@@ -596,7 +596,7 @@ _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822
 ```
 
 ## Contributing
-See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also for how to update to a new version of libphonenumber, how to update the flag images, or how to add a new translation.
+See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also on how to update to a new version of libphonenumber, how to update the flag images, or how to add a new translation.
 
 ## Attributions
 * Flag images from [flag-icons](https://github.com/lipis/flag-icons)
