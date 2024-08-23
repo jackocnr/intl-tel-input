@@ -2994,6 +2994,9 @@ var factoryOutput = (() => {
     }
     //* Validate the input val
     isValidNumber() {
+      if (!this.selectedCountryData.iso2) {
+        return false;
+      }
       const val = this._getFullNumber();
       const alphaCharPosition = val.search(/\p{L}/u);
       if (alphaCharPosition > -1) {
@@ -3009,6 +3012,9 @@ var factoryOutput = (() => {
     }
     //* Validate the input val (precise)
     isValidNumberPrecise() {
+      if (!this.selectedCountryData.iso2) {
+        return false;
+      }
       const val = this._getFullNumber();
       const alphaCharPosition = val.search(/\p{L}/u);
       if (alphaCharPosition > -1) {

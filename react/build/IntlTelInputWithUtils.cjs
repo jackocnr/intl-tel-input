@@ -2989,6 +2989,9 @@ var Iti = class {
   }
   //* Validate the input val
   isValidNumber() {
+    if (!this.selectedCountryData.iso2) {
+      return false;
+    }
     const val = this._getFullNumber();
     const alphaCharPosition = val.search(/\p{L}/u);
     if (alphaCharPosition > -1) {
@@ -3004,6 +3007,9 @@ var Iti = class {
   }
   //* Validate the input val (precise)
   isValidNumberPrecise() {
+    if (!this.selectedCountryData.iso2) {
+      return false;
+    }
     const val = this._getFullNumber();
     const alphaCharPosition = val.search(/\p{L}/u);
     if (alphaCharPosition > -1) {
@@ -9236,7 +9242,7 @@ var intl_tel_input_default = intlTelInput;
       b = "";
       for (let e = 0; e < c.length; e++) d.ja = ob(d, c.charAt(e)), b = d.ja;
       return b;
-    } catch (c) {
+    } catch {
       return a;
     }
   });
@@ -9245,7 +9251,7 @@ var intl_tel_input_default = intlTelInput;
       const e = J.g(), f = X(e, a, b);
       var d = W(e, f, -1);
       return 0 == d || 4 == d ? e.format(f, "undefined" === typeof c ? 0 : c) : a;
-    } catch (e) {
+    } catch {
       return a;
     }
   });
@@ -9268,14 +9274,14 @@ var intl_tel_input_default = intlTelInput;
         h = null;
       }
       return l.format(h, d ? 0 : b ? 2 : 1);
-    } catch (l) {
+    } catch {
       return "";
     }
   });
   m("intlTelInputUtilsTemp.getExtension", (a, b) => {
     try {
       return r(X(J.g(), a, b), 3);
-    } catch (c) {
+    } catch {
       return "";
     }
   });
@@ -9289,11 +9295,12 @@ var intl_tel_input_default = intlTelInput;
         e = ab(f, d);
       }
       return e;
-    } catch (g) {
+    } catch {
       return -99;
     }
   });
   m("intlTelInputUtilsTemp.getValidationError", (a, b) => {
+    if (!b) return 1;
     try {
       const c = J.g(), d = X(c, a, b);
       return W(c, d, -1);
@@ -9313,7 +9320,7 @@ var intl_tel_input_default = intlTelInput;
         g = -1 != ab(h, f);
       }
       return g;
-    } catch (l) {
+    } catch {
       return false;
     }
   });
@@ -9329,14 +9336,14 @@ var intl_tel_input_default = intlTelInput;
         return f;
       }
       return 0 === W(d, e, -1);
-    } catch (d) {
+    } catch {
       return false;
     }
   });
   m("intlTelInputUtilsTemp.getCoreNumber", (a, b) => {
     try {
       return r(X(J.g(), a, b), 2).toString();
-    } catch (c) {
+    } catch {
       return "";
     }
   });

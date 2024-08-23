@@ -99,6 +99,9 @@ const getNumberType = (number, countryCode) => {
 //* Get more info if the validation has failed e.g. too long/too short.
 //* NOTE that isPossibleNumberWithReason returns a i18n.phonenumbers.PhoneNumberUtil.ValidationResult.
 const getValidationError = (number, countryCode) => {
+  if (!countryCode) {
+    return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.INVALID_COUNTRY_CODE;
+  }
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);

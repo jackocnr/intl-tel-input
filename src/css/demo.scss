@@ -78,3 +78,17 @@ input::placeholder {
     --iti-path-globe-2x: url("../img/globe_light@2x.webp");
   }
 }
+
+// validation demo
+#error-msg {
+  color: red;
+}
+#valid-msg {
+  color: #00c900;
+}
+input.error {
+  border: 1px solid #ff7c7c;
+}
+.hide {
+  display: none;
+}

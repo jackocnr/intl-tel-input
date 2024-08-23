@@ -1671,7 +1671,7 @@ const n2 = {
   const s = document.createElement(m);
   return e && Object.entries(e).forEach(([u, a]) => s.setAttribute(u, a)), i && i.appendChild(s), s;
 }, e1 = (m) => {
-  const { instances: e } = C;
+  const { instances: e } = g;
   Object.values(e).forEach((i) => i[m]());
 };
 class U2 {
@@ -1940,16 +1940,16 @@ class U2 {
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
     const { utilsScript: e, initialCountry: i, geoIpLookup: s } = this.options;
-    e && !C.utils ? C.documentReady() ? C.loadUtils(e) : window.addEventListener("load", () => {
-      C.loadUtils(e);
+    e && !g.utils ? g.documentReady() ? g.loadUtils(e) : window.addEventListener("load", () => {
+      g.loadUtils(e);
     }) : this.resolveUtilsScriptPromise(), i === "auto" && s && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
   }
   //* Perform the geo ip lookup.
   _loadAutoCountry() {
-    C.autoCountry ? this.handleAutoCountry() : C.startedLoadingAutoCountry || (C.startedLoadingAutoCountry = !0, typeof this.options.geoIpLookup == "function" && this.options.geoIpLookup(
+    g.autoCountry ? this.handleAutoCountry() : g.startedLoadingAutoCountry || (g.startedLoadingAutoCountry = !0, typeof this.options.geoIpLookup == "function" && this.options.geoIpLookup(
       (e = "") => {
         const i = e.toLowerCase();
-        i && this._getCountryData(i, !0) ? (C.autoCountry = i, setTimeout(() => e1("handleAutoCountry"))) : (this._setInitialState(!0), e1("rejectAutoCountryPromise"));
+        i && this._getCountryData(i, !0) ? (g.autoCountry = i, setTimeout(() => e1("handleAutoCountry"))) : (this._setInitialState(!0), e1("rejectAutoCountryPromise"));
       },
       () => {
         this._setInitialState(!0), e1("rejectAutoCountryPromise");
@@ -1984,7 +1984,7 @@ class U2 {
           return;
         }
         if (e) {
-          const y = this.telInput.selectionStart === 0 && h.key === "+", w = /^[0-9]$/.test(h.key), I = s ? w : y || w, S = this._getFullNumber(), T = C.utils.getCoreNumber(S, this.selectedCountryData.iso2), _ = this.maxCoreNumberLength && T.length >= this.maxCoreNumberLength, L = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd), M = /\d/.test(L);
+          const y = this.telInput.selectionStart === 0 && h.key === "+", w = /^[0-9]$/.test(h.key), I = s ? w : y || w, S = this._getFullNumber(), T = g.utils.getCoreNumber(S, this.selectedCountryData.iso2), _ = this.maxCoreNumberLength && T.length >= this.maxCoreNumberLength, L = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd), M = /\d/.test(L);
           (!I || _ && !M) && h.preventDefault();
         }
       }
@@ -2104,9 +2104,9 @@ class U2 {
   //* NOTE: this is called from _setInitialState, handleUtils and setNumber.
   _updateValFromNumber(e) {
     let i = e;
-    if (this.options.formatOnDisplay && C.utils && this.selectedCountryData) {
-      const s = this.options.nationalMode || i.charAt(0) !== "+" && !this.options.separateDialCode, { NATIONAL: u, INTERNATIONAL: a } = C.utils.numberFormat, f = s ? u : a;
-      i = C.utils.formatNumber(
+    if (this.options.formatOnDisplay && g.utils && this.selectedCountryData) {
+      const s = this.options.nationalMode || i.charAt(0) !== "+" && !this.options.separateDialCode, { NATIONAL: u, INTERNATIONAL: a } = g.utils.numberFormat, f = s ? u : a;
+      i = g.utils.formatNumber(
         i,
         this.selectedCountryData.iso2,
         f
@@ -2179,18 +2179,18 @@ class U2 {
   //* Update the maximum valid number length for the currently selected country.
   _updateMaxLength() {
     const { strictMode: e, placeholderNumberType: i, validationNumberType: s } = this.options;
-    if (e && C.utils)
+    if (e && g.utils)
       if (this.selectedCountryData.iso2) {
-        const u = C.utils.numberType[i];
-        let a = C.utils.getExampleNumber(
+        const u = g.utils.numberType[i];
+        let a = g.utils.getExampleNumber(
           this.selectedCountryData.iso2,
           !1,
           u,
           !0
         ), f = a;
-        for (; C.utils.isPossibleNumber(a, this.selectedCountryData.iso2, s); )
+        for (; g.utils.isPossibleNumber(a, this.selectedCountryData.iso2, s); )
           f = a, a += "0";
-        const h = C.utils.getCoreNumber(f, this.selectedCountryData.iso2);
+        const h = g.utils.getCoreNumber(f, this.selectedCountryData.iso2);
         this.maxCoreNumberLength = h.length;
       } else
         this.maxCoreNumberLength = null;
@@ -2226,9 +2226,9 @@ class U2 {
       nationalMode: s,
       customPlaceholder: u
     } = this.options, a = e === "aggressive" || !this.hadInitialPlaceholder && e === "polite";
-    if (C.utils && a) {
-      const f = C.utils.numberType[i];
-      let h = this.selectedCountryData.iso2 ? C.utils.getExampleNumber(
+    if (g.utils && a) {
+      const f = g.utils.numberType[i];
+      let h = this.selectedCountryData.iso2 ? g.utils.getExampleNumber(
         this.selectedCountryData.iso2,
         s,
         f
@@ -2321,7 +2321,7 @@ class U2 {
   }
   //* Format the number as the user types.
   _formatNumberAsYouType() {
-    const e = this._getFullNumber(), i = C.utils ? C.utils.formatNumberAsYouType(e, this.selectedCountryData.iso2) : e, { dialCode: s } = this.selectedCountryData;
+    const e = this._getFullNumber(), i = g.utils ? g.utils.formatNumberAsYouType(e, this.selectedCountryData.iso2) : e, { dialCode: s } = this.selectedCountryData;
     return this.options.separateDialCode && this.telInput.value.charAt(0) !== "+" && i.includes(`+${s}`) ? (i.split(`+${s}`)[1] || "").trim() : i;
   }
   //**************************
@@ -2329,11 +2329,11 @@ class U2 {
   //**************************
   //* This is called when the geoip call returns.
   handleAutoCountry() {
-    this.options.initialCountry === "auto" && C.autoCountry && (this.defaultCountry = C.autoCountry, this.selectedCountryData.iso2 || this.selectedCountryInner.classList.contains("iti__globe") || this.setCountry(this.defaultCountry), this.resolveAutoCountryPromise());
+    this.options.initialCountry === "auto" && g.autoCountry && (this.defaultCountry = g.autoCountry, this.selectedCountryData.iso2 || this.selectedCountryInner.classList.contains("iti__globe") || this.setCountry(this.defaultCountry), this.resolveAutoCountryPromise());
   }
   //* This is called when the utils request completes.
   handleUtils() {
-    C.utils && (this.telInput.value && this._updateValFromNumber(this.telInput.value), this.selectedCountryData.iso2 && (this._updatePlaceholder(), this._updateMaxLength())), this.resolveUtilsScriptPromise();
+    g.utils && (this.telInput.value && this._updateValFromNumber(this.telInput.value), this.selectedCountryData.iso2 && (this._updatePlaceholder(), this._updateMaxLength())), this.resolveUtilsScriptPromise();
   }
   //********************
   //*  PUBLIC METHODS
@@ -2356,20 +2356,20 @@ class U2 {
     const { form: s } = this.telInput;
     this._handleHiddenInputSubmit && s && s.removeEventListener("submit", this._handleHiddenInputSubmit), this.telInput.removeEventListener("input", this._handleInputEvent), this._handleKeydownEvent && this.telInput.removeEventListener("keydown", this._handleKeydownEvent), this.telInput.removeAttribute("data-intl-tel-input-id"), i && (this.isRTL ? this.telInput.style.paddingRight = this.originalPaddingRight : this.telInput.style.paddingLeft = this.originalPaddingLeft);
     const u = this.telInput.parentNode;
-    (a = u == null ? void 0 : u.parentNode) == null || a.insertBefore(this.telInput, u), (f = u == null ? void 0 : u.parentNode) == null || f.removeChild(u), delete C.instances[this.id];
+    (a = u == null ? void 0 : u.parentNode) == null || a.insertBefore(this.telInput, u), (f = u == null ? void 0 : u.parentNode) == null || f.removeChild(u), delete g.instances[this.id];
   }
   //* Get the extension from the current number.
   getExtension() {
-    return C.utils ? C.utils.getExtension(
+    return g.utils ? g.utils.getExtension(
       this._getFullNumber(),
       this.selectedCountryData.iso2
     ) : "";
   }
   //* Format the number to the given format.
   getNumber(e) {
-    if (C.utils) {
+    if (g.utils) {
       const { iso2: i } = this.selectedCountryData;
-      return C.utils.formatNumber(
+      return g.utils.formatNumber(
         this._getFullNumber(),
         i,
         e
@@ -2379,7 +2379,7 @@ class U2 {
   }
   //* Get the type of the entered number e.g. landline/mobile.
   getNumberType() {
-    return C.utils ? C.utils.getNumberType(
+    return g.utils ? g.utils.getNumberType(
       this._getFullNumber(),
       this.selectedCountryData.iso2
     ) : -99;
@@ -2390,14 +2390,16 @@ class U2 {
   }
   //* Get the validation error.
   getValidationError() {
-    if (C.utils) {
+    if (g.utils) {
       const { iso2: e } = this.selectedCountryData;
-      return C.utils.getValidationError(this._getFullNumber(), e);
+      return g.utils.getValidationError(this._getFullNumber(), e);
     }
     return -99;
   }
   //* Validate the input val
   isValidNumber() {
+    if (!this.selectedCountryData.iso2)
+      return !1;
     const e = this._getFullNumber(), i = e.search(new RegExp("\\p{L}", "u"));
     if (i > -1) {
       const s = e.substring(0, i), u = this._utilsIsPossibleNumber(s), a = this._utilsIsPossibleNumber(e);
@@ -2406,10 +2408,12 @@ class U2 {
     return this._utilsIsPossibleNumber(e);
   }
   _utilsIsPossibleNumber(e) {
-    return C.utils ? C.utils.isPossibleNumber(e, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
+    return g.utils ? g.utils.isPossibleNumber(e, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
   }
   //* Validate the input val (precise)
   isValidNumberPrecise() {
+    if (!this.selectedCountryData.iso2)
+      return !1;
     const e = this._getFullNumber(), i = e.search(new RegExp("\\p{L}", "u"));
     if (i > -1) {
       const s = e.substring(0, i), u = this._utilsIsValidNumber(s), a = this._utilsIsValidNumber(e);
@@ -2418,7 +2422,7 @@ class U2 {
     return this._utilsIsValidNumber(e);
   }
   _utilsIsValidNumber(e) {
-    return C.utils ? C.utils.isValidNumber(e, this.selectedCountryData.iso2) : null;
+    return g.utils ? g.utils.isValidNumber(e, this.selectedCountryData.iso2) : null;
   }
   //* Update the selected country, and update the input val accordingly.
   setCountry(e) {
@@ -2438,20 +2442,20 @@ class U2 {
     this.telInput.disabled = e, e ? this.selectedCountry.setAttribute("disabled", "true") : this.selectedCountry.removeAttribute("disabled");
   }
 }
-const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUtilsScript = !0, new Promise((e, i) => {
+const F2 = (m) => !g.utils && !g.startedLoadingUtilsScript ? (g.startedLoadingUtilsScript = !0, new Promise((e, i) => {
   import_INTENTIONALLY_BROKEN(
     /* webpackIgnore: true */
     /* @vite-ignore */
     m
   ).then(({ default: s }) => {
-    C.utils = s, e1("handleUtils"), e(!0);
+    g.utils = s, e1("handleUtils"), e(!0);
   }).catch(() => {
     e1("rejectUtilsScriptPromise"), i();
   });
-})) : null, C = Object.assign(
+})) : null, g = Object.assign(
   (m, e) => {
     const i = new U2(m, e);
-    return i._init(), m.setAttribute("data-intl-tel-input-id", i.id.toString()), C.instances[i.id] = i, i;
+    return i._init(), m.setAttribute("data-intl-tel-input-id", i.id.toString()), g.instances[i.id] = i, i;
   },
   {
     defaults: n2,
@@ -2462,7 +2466,7 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     //* A getter for the plugin instance.
     getInstance: (m) => {
       const e = m.getAttribute("data-intl-tel-input-id");
-      return e ? C.instances[e] : null;
+      return e ? g.instances[e] : null;
     },
     //* A map from instance ID to instance object.
     instances: {},
@@ -8119,8 +8123,8 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
       r = x(r, 20).length == 0 || t == 2 ? x(r, 19) : x(r, 20);
       for (var o, l = r.length, c = 0; c < l; ++c) {
         o = r[c];
-        var g = F(o, 3);
-        if ((g == 0 || n.search(p(o, 3, g - 1)) == 0) && (g = new RegExp(p(o, 1)), O(g, n))) {
+        var C = F(o, 3);
+        if ((C == 0 || n.search(p(o, 3, C - 1)) == 0) && (C = new RegExp(p(o, 1)), O(C, n))) {
           r = o;
           break d;
         }
@@ -8253,8 +8257,8 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     else {
       if (c = new RegExp(l), M1(t), l = t.toString(), l.search(c) == 0) {
         c = l.match(c)[0].length;
-        var g = l.substring(c).match(A1);
-        g && g[1] != null && 0 < g[1].length && s1(g[1], f1) == "0" ? l = !1 : (B(t), t.g(l.substring(c)), l = !0);
+        var C = l.substring(c).match(A1);
+        C && C[1] != null && 0 < C[1].length && s1(C[1], f1) == "0" ? l = !1 : (B(t), t.g(l.substring(c)), l = !0);
       } else l = !1;
       l = l ? 5 : 20;
     }
@@ -8263,7 +8267,7 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
       if (d = O1(t, n), d != 0) return E(o, 1, d), d;
       throw Error("Invalid country calling code");
     }
-    return $ != null && (l = v($, 10), c = "" + l, g = t.toString(), g.lastIndexOf(c, 0) == 0 && (c = new A(g.substring(c.length)), g = p($, 1), g = new RegExp(v(g, 2)), U1(c, $, null), c = c.toString(), !O(g, t.toString()) && O(g, c) || u1(d, t.toString(), $, -1) == 3)) ? (n.g(c), r && E(o, 6, 10), E(o, 1, l), l) : (E(o, 1, 0), 0);
+    return $ != null && (l = v($, 10), c = "" + l, C = t.toString(), C.lastIndexOf(c, 0) == 0 && (c = new A(C.substring(c.length)), C = p($, 1), C = new RegExp(v(C, 2)), U1(c, $, null), c = c.toString(), !O(C, t.toString()) && O(C, c) || u1(d, t.toString(), $, -1) == 3)) ? (n.g(c), r && E(o, 6, 10), E(o, 1, l), l) : (E(o, 1, 0), 0);
   }
   function U1(d, t, $) {
     var n = d.toString(), r = n.length, o = p(t, 15);
@@ -8271,8 +8275,8 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
       var l = new RegExp("^(?:" + o + ")");
       if (r = l.exec(n)) {
         o = new RegExp(v(p(t, 1), 2));
-        var c = O(o, n), g = r.length - 1;
-        t = p(t, 16), t == null || t.length == 0 || r[g] == null || r[g].length == 0 ? (!c || O(o, n.substring(r[0].length))) && ($ != null && 0 < g && r[g] != null && $.g(r[1]), d.set(n.substring(r[0].length))) : (n = n.replace(l, t), (!c || O(o, n)) && ($ != null && 0 < g && $.g(r[1]), d.set(n)));
+        var c = O(o, n), C = r.length - 1;
+        t = p(t, 16), t == null || t.length == 0 || r[C] == null || r[C].length == 0 ? (!c || O(o, n.substring(r[0].length))) && ($ != null && 0 < C && r[C] != null && $.g(r[1]), d.set(n.substring(r[0].length))) : (n = n.replace(l, t), (!c || O(o, n)) && ($ != null && 0 < C && $.g(r[1]), d.set(n)));
       }
     }
   }
@@ -8297,19 +8301,19 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     d: {
       if (t = r.toString(), l = t.search(L1), 0 <= l && E1(t.substring(0, l))) {
         c = t.match(L1);
-        for (var g = c.length, G = 1; G < g; ++G) if (c[G] != null && 0 < c[G].length) {
+        for (var C = c.length, G = 1; G < C; ++G) if (c[G] != null && 0 < c[G].length) {
           B(r), r.g(t.substring(0, l)), t = c[G];
           break d;
         }
       }
       t = "";
     }
-    0 < t.length && E(o, 3, t), l = K(d, $), t = new A(), c = 0, g = r.toString();
+    0 < t.length && E(o, 3, t), l = K(d, $), t = new A(), c = 0, C = r.toString();
     try {
-      c = G1(d, g, l, t, n, o);
+      c = G1(d, C, l, t, n, o);
     } catch (C1) {
-      if (C1.message == "Invalid country calling code" && X.test(g)) {
-        if (g = g.replace(X, ""), c = G1(d, g, l, t, n, o), c == 0) throw C1;
+      if (C1.message == "Invalid country calling code" && X.test(C)) {
+        if (C = C.replace(X, ""), c = G1(d, C, l, t, n, o), c == 0) throw C1;
       } else throw C1;
     }
     if (c != 0 ? (r = t1(c), r != $ && (l = Q(d, c, r))) : (M1(r), t.g(r.toString()), $ != null ? (c = v(l, 10), E(
@@ -8343,10 +8347,10 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
       if (d.da == r) return !1;
       var o = d, l = n, c = v(l, 1);
       B(o.v);
-      var g = o;
+      var C = o;
       l = v(l, 2);
       var G = "999999999999999".match(c)[0];
-      if (G.length < g.g.h.length ? g = "" : (g = G.replace(new RegExp(c, "g"), l), g = g.replace(RegExp("9", "g"), " ")), 0 < g.length ? (o.v.g(g), o = !0) : o = !1, o) return d.da = r, d.ha = K1.test(p(n, 4)), d.$ = 0, !0;
+      if (G.length < C.g.h.length ? C = "" : (C = G.replace(new RegExp(c, "g"), l), C = C.replace(RegExp("9", "g"), " ")), 0 < C.length ? (o.v.g(C), o = !0) : o = !1, o) return d.da = r, d.ha = K1.test(p(n, 4)), d.$ = 0, !0;
     }
     return d.u = !1;
   }
@@ -8456,9 +8460,9 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     }
   }), e("intlTelInputUtilsTemp.getExampleNumber", (d, t, $, n) => {
     try {
-      const g = D.g();
+      const C = D.g();
       d: {
-        var r = g;
+        var r = C;
         if (r1(d)) {
           var o = o1(K(r, d), $);
           try {
@@ -8471,7 +8475,7 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
         }
         c = null;
       }
-      return g.format(c, n ? 0 : t ? 2 : 1);
+      return C.format(c, n ? 0 : t ? 2 : 1);
     } catch {
       return "";
     }
@@ -8495,6 +8499,7 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
       return -99;
     }
   }), e("intlTelInputUtilsTemp.getValidationError", (d, t) => {
+    if (!t) return 1;
     try {
       const $ = D.g(), n = z($, d, t);
       return Y($, n, -1);
@@ -8503,9 +8508,9 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     }
   }), e("intlTelInputUtilsTemp.isValidNumber", (d, t) => {
     try {
-      const g = D.g();
-      var $ = z(g, d, t), n = B1(g, $);
-      d = g;
+      const C = D.g();
+      var $ = z(C, d, t), n = B1(C, $);
+      d = C;
       var r = v($, 1), o = Q(d, r, n);
       if (o == null || n != "001" && r != k1(d, n)) var l = !1;
       else {
@@ -8541,7 +8546,7 @@ const F2 = (m) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
 })();
 const V2 = window.intlTelInputUtilsTemp;
 delete window.intlTelInputUtilsTemp;
-C.utils = V2;
+g.utils = V2;
 const H2 = {
   __name: "IntlTelInputWithUtils",
   props: /* @__PURE__ */ d2({
@@ -8576,7 +8581,7 @@ const H2 = {
       a("changeCountry", ((_ = h.value) == null ? void 0 : _.getSelectedCountryData().iso2) ?? ""), S(), I();
     };
     return N2(() => {
-      f.value && (h.value = C(f.value, u.options), u.value && h.value.setNumber(u.value), u.disabled && h.value.setDisabled(u.disabled));
+      f.value && (h.value = g(f.value, u.options), u.value && h.value.setNumber(u.value), u.disabled && h.value.setDisabled(u.disabled));
     }), L2(
       () => u.disabled,
       (_) => {

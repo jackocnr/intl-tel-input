@@ -12,7 +12,9 @@
     <h1>International Telephone Input</h1>
     <form>
       <input id="phone" name="phone" type="tel" value="" />
-      <button class="button" type="submit">Submit</button>
+      <button class="button" id="btn" type="button">Validate</button>
+      <span id="valid-msg" class="hide"></span>
+      <span id="error-msg" class="hide"></span>
     </form>
 
     <script src="build/js/intlTelInputWithUtils.js"></script>
@@ -52,6 +54,44 @@
         // validationNumberType: null,
       });
       window.iti = iti; // useful for testing
+
+      const button = document.querySelector("#btn");
+      const errorMsg = document.querySelector("#error-msg");
+      const validMsg = document.querySelector("#valid-msg");
+      const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+      const reset = () => {
+        input.classList.remove("error");
+        errorMsg.innerHTML = "";
+        validMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+        validMsg.classList.add("hide");
+      };
+
+      const showError = (msg) => {
+        input.classList.add("error");
+        errorMsg.innerHTML = msg;
+        errorMsg.classList.remove("hide");
+      };
+
+      // on click button: validate
+      button.addEventListener('click', () => {
+        reset();
+        if (!input.value.trim()) {
+          showError("Required");
+        } else if (iti.isValidNumber()) {
+          validMsg.innerHTML = "Valid number: " + iti.getNumber();
+          validMsg.classList.remove("hide");
+        } else {
+          const errorCode = iti.getValidationError();
+          const msg = errorMap[errorCode] || "Invalid number";
+          showError(msg);
+        }
+      });
+
+      // on keyup / change flag: reset
+      input.addEventListener('change', reset);
+      input.addEventListener('keyup', reset);
     </script>
   </body>
 </html>

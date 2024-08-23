@@ -1999,6 +1999,10 @@ export class Iti {
 
   //* Validate the input val
   isValidNumber(): boolean | null {
+    //* If there isn't a valid country selected, then it's not a valid number.
+    if (!this.selectedCountryData.iso2) {
+      return false;
+    }
     const val = this._getFullNumber();
     const alphaCharPosition = val.search(/\p{L}/u);
     if (alphaCharPosition > -1) {
@@ -2019,6 +2023,10 @@ export class Iti {
 
   //* Validate the input val (precise)
   isValidNumberPrecise(): boolean | null {
+    //* If there isn't a valid country selected, then it's not a valid number.
+    if (!this.selectedCountryData.iso2) {
+      return false;
+    }
     const val = this._getFullNumber();
     const alphaCharPosition = val.search(/\p{L}/u);
     if (alphaCharPosition > -1) {

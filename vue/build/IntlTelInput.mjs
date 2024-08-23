@@ -2398,6 +2398,8 @@ class j {
   }
   //* Validate the input val
   isValidNumber() {
+    if (!this.selectedCountryData.iso2)
+      return !1;
     const t = this._getFullNumber(), e = t.search(new RegExp("\\p{L}", "u"));
     if (e > -1) {
       const i = t.substring(0, e), s = this._utilsIsPossibleNumber(i), n = this._utilsIsPossibleNumber(t);
@@ -2410,6 +2412,8 @@ class j {
   }
   //* Validate the input val (precise)
   isValidNumberPrecise() {
+    if (!this.selectedCountryData.iso2)
+      return !1;
     const t = this._getFullNumber(), e = t.search(new RegExp("\\p{L}", "u"));
     if (e > -1) {
       const i = t.substring(0, e), s = this._utilsIsValidNumber(i), n = this._utilsIsValidNumber(t);
