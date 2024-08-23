@@ -306,8 +306,8 @@ export class Iti {
       this.options.countrySearch = true;
     }
 
-    // if no flags, and no dial code, force nationalMode to false, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
-    if (!this.options.showFlags && !this.options.separateDialCode) {
+    // if there is a country dropdown, but no flags and no separate dial code, then there are multiple countries to choose from, but no way to see which one is selected, so we force nationalMode to false, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
+    if (this.options.allowDropdown && !this.options.showFlags && !this.options.separateDialCode) {
       this.options.nationalMode = false;
     }
 

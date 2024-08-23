@@ -25314,7 +25314,7 @@
         this.options.nationalMode = false;
         this.options.countrySearch = true;
       }
-      if (!this.options.showFlags && !this.options.separateDialCode) {
+      if (this.options.allowDropdown && !this.options.showFlags && !this.options.separateDialCode) {
         this.options.nationalMode = false;
       }
       if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
