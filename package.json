@@ -70,6 +70,7 @@
   "files": [
     "build/*",
     "react/build/*",
+    "vue/build/*",
     "CHANGELOG.md",
     "LICENSE",
     "package.json",
