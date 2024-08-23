@@ -1936,12 +1936,16 @@ var factoryOutput = (() => {
       if (!useFullscreenPopup) {
         parentClass += " iti--inline-dropdown";
       }
+      this.showSelectedCountryOnLeft = allowDropdown && !this.isRTL || !allowDropdown && this.isRTL;
       const wrapper = createEl("div", { class: parentClass });
       this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
       if (allowDropdown || showFlags) {
         this.countryContainer = createEl(
           "div",
-          { class: "iti__country-container" },
+          {
+            class: "iti__country-container",
+            style: this.showSelectedCountryOnLeft ? "left: 0" : "right: 0"
+          },
           wrapper
         );
         if (allowDropdown) {
@@ -2046,6 +2050,7 @@ var factoryOutput = (() => {
         }
       }
       wrapper.appendChild(this.telInput);
+      this._updateInputPadding();
       if (hiddenInput) {
         const telInputName = this.telInput.getAttribute("name") || "";
         const names = hiddenInput(telInputName);
@@ -2622,17 +2627,21 @@ var factoryOutput = (() => {
       if (separateDialCode) {
         const dialCode = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : "";
         this.selectedDialCode.innerHTML = dialCode;
-        const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
-        const inputPadding = selectedCountryWidth + 8;
-        if (this.isRTL) {
-          this.telInput.style.paddingRight = `${inputPadding}px`;
-        } else {
-          this.telInput.style.paddingLeft = `${inputPadding}px`;
-        }
+        this._updateInputPadding();
       }
       this._updatePlaceholder();
       this._updateMaxLength();
       return prevCountry.iso2 !== iso2;
+    }
+    //* Update the input padding to make space for the selected country/dial code.
+    _updateInputPadding() {
+      const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
+      const inputPadding = selectedCountryWidth + 6;
+      if (this.showSelectedCountryOnLeft) {
+        this.telInput.style.paddingLeft = `${inputPadding}px`;
+      } else {
+        this.telInput.style.paddingRight = `${inputPadding}px`;
+      }
     }
     //* Update the maximum valid number length for the currently selected country.
     _updateMaxLength() {
@@ -3045,7 +3054,7 @@ var factoryOutput = (() => {
     if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
       intlTelInput.startedLoadingUtilsScript = true;
       return new Promise((resolve, reject) => {
-        import_INTENTIONALLY_BROKEN(
+        import(
           /* webpackIgnore: true */
           /* @vite-ignore */
           path

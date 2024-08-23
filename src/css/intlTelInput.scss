@@ -19,11 +19,6 @@
   --iti-arrow-padding: 6px;
   --iti-arrow-color: #555;
 
-  //* We have to control the horizontal padding, to make space for the selected country on the left/right.
-  --iti-input-padding: 6px;
-  --iti-right-hand-selected-country-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
-  --iti-selected-country-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
-
   //* Image related variables.
   --iti-path-flags-1x: url('../img/flags.webp');
   --iti-path-flags-2x: url('../img/flags@2x.webp');
@@ -74,21 +69,8 @@
     //* Input is bottom level, below selected country and dropdown.
     z-index: 0;
 
-    //* Any vertical margin the user has on their inputs would no longer work as expected,
-    //* because we wrap everything in a container div. I justify the use of !important
-    //* here because i don't think the user should ever have vertical margin here - when
-    //* the input is wrapped in a container, vertical margin messes up alignment with other
-    //* inline elements (e.g. an adjacent button) in firefox, and probably other browsers.
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-
-    //* Makes space for the selected country on right of input (if disabled allowDropdown)
-    //* Note: no !important here, as the user may want to tweak this so that the
-    //* perceived input padding matches their existing styles.
-    padding-right: var(--iti-right-hand-selected-country-padding);
-
-    //* Any margin-right here will push the selected-country away.
-    margin-right: 0;
+    //* Since we wrap the input in a container div, any margin here would interfere with the positioning of the selected country.
+    margin: 0 !important;
   }
 
   &__country-container {
@@ -97,8 +79,6 @@
     //* Full height.
     top: 0;
     bottom: 0;
-    //* Default to right-hand-side, unless overridden later by allow-dropdown class.
-    right: 0;
     //* Prevent the highlighted child from overlapping the input border.
     padding: var(--iti-border-width);
   }
@@ -240,31 +220,7 @@
     }
   }
 
-  //* This setting moves the selected country to left of input.
   &--allow-dropdown {
-    input.iti__tel-input,
-    input.iti__tel-input[type="text"],
-    input.iti__tel-input[type="tel"] {
-      padding-right: var(--iti-input-padding);
-      padding-left: var(--iti-selected-country-arrow-padding);
-      margin-left: 0;
-
-      [dir="rtl"] & {
-        padding-right: var(--iti-selected-country-arrow-padding);
-        padding-left: var(--iti-input-padding);
-        margin-right: 0;
-      }
-    }
-    .iti__country-container {
-      right: auto;
-      left: 0;
-
-      [dir="rtl"] & {
-        right: 0;
-        left: auto;
-      }
-    }
-
     //* Hover state - show country is clickable (unless the input is disabled or readonly)
     .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
       //* When you hover anything in the container, use cursor:pointer.

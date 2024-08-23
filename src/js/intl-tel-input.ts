@@ -239,6 +239,7 @@ export class Iti {
   private options: AllOptions;
   private hadInitialPlaceholder: boolean;
   private isRTL: boolean;
+  private showSelectedCountryOnLeft: boolean;
   private isAndroid: boolean;
   private selectedCountryData: SelectedCountryData;
   private countries: Country[];
@@ -557,6 +558,7 @@ export class Iti {
     if (!useFullscreenPopup) {
       parentClass += " iti--inline-dropdown";
     }
+    this.showSelectedCountryOnLeft = (allowDropdown && !this.isRTL) || (!allowDropdown && this.isRTL);
 
     const wrapper = createEl("div", { class: parentClass });
     this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
@@ -565,7 +567,10 @@ export class Iti {
     if (allowDropdown || showFlags) {
       this.countryContainer = createEl(
         "div",
-        { class: "iti__country-container" },
+        {
+          class: "iti__country-container",
+          style: this.showSelectedCountryOnLeft ? "left: 0" : "right: 0",
+        },
         wrapper,
       );
 
@@ -686,6 +691,7 @@ export class Iti {
     }
 
     wrapper.appendChild(this.telInput);
+    this._updateInputPadding();
 
     if (hiddenInput) {
       const telInputName = this.telInput.getAttribute("name") || "";
@@ -1503,16 +1509,7 @@ export class Iti {
         ? `+${this.selectedCountryData.dialCode}`
         : "";
       this.selectedDialCode.innerHTML = dialCode;
-      //* offsetWidth is zero if input is in a hidden container during initialisation.
-      const selectedCountryWidth =
-        this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
-
-      const inputPadding = selectedCountryWidth + 8;
-      if (this.isRTL) {
-        this.telInput.style.paddingRight = `${inputPadding}px`;
-      } else {
-        this.telInput.style.paddingLeft = `${inputPadding}px`;
-      }
+      this._updateInputPadding();
     }
 
     //* And the input's placeholder.
@@ -1523,6 +1520,18 @@ export class Iti {
 
     //* Return if the country has changed or not.
     return prevCountry.iso2 !== iso2;
+  }
+
+  //* Update the input padding to make space for the selected country/dial code.
+  private _updateInputPadding(): void {
+    //* offsetWidth is zero if input is in a hidden container during initialisation.
+    const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
+    const inputPadding = selectedCountryWidth + 6;
+    if (this.showSelectedCountryOnLeft) {
+      this.telInput.style.paddingLeft = `${inputPadding}px`;
+    } else {
+      this.telInput.style.paddingRight = `${inputPadding}px`;
+    }
   }
 
   //* Update the maximum valid number length for the currently selected country.

@@ -12,9 +12,6 @@
   --iti-triangle-border: calc(var(--iti-arrow-width) / 2);
   --iti-arrow-padding: 6px;
   --iti-arrow-color: #555;
-  --iti-input-padding: 6px;
-  --iti-right-hand-selected-country-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
-  --iti-selected-country-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
   --iti-path-flags-1x: url("../img/flags.webp");
   --iti-path-flags-2x: url("../img/flags@2x.webp");
   --iti-path-globe-1x: url("../img/globe.webp");
@@ -49,16 +46,12 @@
 .iti input.iti__tel-input[type=tel] {
   position: relative;
   z-index: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-right: var(--iti-right-hand-selected-country-padding);
-  margin-right: 0;
+  margin: 0 !important;
 }
 .iti__country-container {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 0;
   padding: var(--iti-border-width);
 }
 .iti__selected-country {
@@ -157,28 +150,6 @@
 [dir=rtl] .iti__country-list .iti__flag, [dir=rtl] .iti__country-name {
   margin-right: 0;
   margin-left: var(--iti-spacer-horizontal);
-}
-.iti--allow-dropdown input.iti__tel-input,
-.iti--allow-dropdown input.iti__tel-input[type=text],
-.iti--allow-dropdown input.iti__tel-input[type=tel] {
-  padding-right: var(--iti-input-padding);
-  padding-left: var(--iti-selected-country-arrow-padding);
-  margin-left: 0;
-}
-[dir=rtl] .iti--allow-dropdown input.iti__tel-input,
-[dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=text],
-[dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=tel] {
-  padding-right: var(--iti-selected-country-arrow-padding);
-  padding-left: var(--iti-input-padding);
-  margin-right: 0;
-}
-.iti--allow-dropdown .iti__country-container {
-  right: auto;
-  left: 0;
-}
-[dir=rtl] .iti--allow-dropdown .iti__country-container {
-  right: 0;
-  left: auto;
 }
 .iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])):hover, .iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])):hover button {
   cursor: pointer;

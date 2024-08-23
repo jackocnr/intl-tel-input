@@ -364,6 +364,7 @@ declare module "intl-tel-input" {
         private options;
         private hadInitialPlaceholder;
         private isRTL;
+        private showSelectedCountryOnLeft;
         private isAndroid;
         private selectedCountryData;
         private countries;
@@ -435,6 +436,7 @@ declare module "intl-tel-input" {
         private _highlightListItem;
         private _getCountryData;
         private _setCountry;
+        private _updateInputPadding;
         private _updateMaxLength;
         private _setSelectedCountryTitleAttribute;
         private _getHiddenSelectedCountryWidth;
