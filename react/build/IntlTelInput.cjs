@@ -1758,6 +1758,9 @@ var Iti = class {
     if (this.options.useFullscreenPopup) {
       this.options.fixDropdownWidth = false;
     }
+    if (this.options.onlyCountries.length === 1) {
+      this.options.initialCountry = this.options.onlyCountries[0];
+    }
     if (this.options.separateDialCode) {
       this.options.allowDropdown = true;
       this.options.nationalMode = false;
@@ -2632,7 +2635,7 @@ var Iti = class {
   //* Update the input padding to make space for the selected country/dial code.
   _updateInputPadding() {
     const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
-    const inputPadding = selectedCountryWidth + 8;
+    const inputPadding = selectedCountryWidth + 6;
     if (this.showSelectedCountryOnLeft) {
       this.telInput.style.paddingLeft = `${inputPadding}px`;
     } else {

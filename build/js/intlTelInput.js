@@ -1763,6 +1763,9 @@ var factoryOutput = (() => {
       if (this.options.useFullscreenPopup) {
         this.options.fixDropdownWidth = false;
       }
+      if (this.options.onlyCountries.length === 1) {
+        this.options.initialCountry = this.options.onlyCountries[0];
+      }
       if (this.options.separateDialCode) {
         this.options.allowDropdown = true;
         this.options.nationalMode = false;

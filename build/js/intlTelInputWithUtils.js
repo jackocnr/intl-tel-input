@@ -1762,6 +1762,9 @@ var factoryOutput = (() => {
       if (this.options.useFullscreenPopup) {
         this.options.fixDropdownWidth = false;
       }
+      if (this.options.onlyCountries.length === 1) {
+        this.options.initialCountry = this.options.onlyCountries[0];
+      }
       if (this.options.separateDialCode) {
         this.options.allowDropdown = true;
         this.options.nationalMode = false;
@@ -3054,7 +3057,7 @@ var factoryOutput = (() => {
     if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
       intlTelInput.startedLoadingUtilsScript = true;
       return new Promise((resolve, reject) => {
-        import(
+        import_INTENTIONALLY_BROKEN(
           /* webpackIgnore: true */
           /* @vite-ignore */
           path

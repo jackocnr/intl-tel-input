@@ -300,6 +300,11 @@ export class Iti {
       this.options.fixDropdownWidth = false;
     }
 
+    //* If theres only one country, then use it!
+    if (this.options.onlyCountries.length === 1) {
+      this.options.initialCountry = this.options.onlyCountries[0];
+    }
+
     //* When separateDialCode enabled, we force nationalMode to false (because the displayed dial code is supposed to be thought of as part of the typed number), AND we force allowDropdown to true as we need the dropdown to select the dial code, AND we force countrySearch to true because that is used when the user types a plus in the tel input.
     if (this.options.separateDialCode) {
       this.options.allowDropdown = true;
