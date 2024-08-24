@@ -1727,7 +1727,6 @@ var Iti = class {
     }
     if (this.options.separateDialCode) {
       this.options.nationalMode = false;
-      this.options.countrySearch = true;
     }
     if (this.options.allowDropdown && !this.options.showFlags && !this.options.separateDialCode) {
       this.options.nationalMode = false;
@@ -2207,13 +2206,13 @@ var Iti = class {
   }
   //* Initialize the tel input listeners.
   _initTelInputListeners() {
-    const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay, allowDropdown } = this.options;
+    const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay, allowDropdown, countrySearch } = this.options;
     let userOverrideFormatting = false;
     if (/\p{L}/u.test(this.telInput.value)) {
       userOverrideFormatting = true;
     }
     this._handleInputEvent = (e) => {
-      if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown) {
+      if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown && countrySearch) {
         const currentCaretPos = this.telInput.selectionStart || 0;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos - 1);
         const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
@@ -2247,7 +2246,7 @@ var Iti = class {
     if (strictMode || separateDialCode) {
       this._handleKeydownEvent = (e) => {
         if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
-          if (separateDialCode && allowDropdown && e.key === "+") {
+          if (separateDialCode && allowDropdown && countrySearch && e.key === "+") {
             e.preventDefault();
             this._openDropdownWithPlus();
             return;

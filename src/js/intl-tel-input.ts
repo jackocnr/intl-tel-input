@@ -305,13 +305,12 @@ export class Iti {
       this.options.initialCountry = this.options.onlyCountries[0];
     }
 
-    //* When separateDialCode enabled, we force nationalMode to false (because the displayed dial code is supposed to be thought of as part of the typed number), AND we force countrySearch to true because that is used when the user types a plus in the tel input.
+    //* When separateDialCode enabled, we force nationalMode to false (because the displayed dial code is supposed to be thought of as part of the typed number).
     if (this.options.separateDialCode) {
       this.options.nationalMode = false;
-      this.options.countrySearch = true;
     }
 
-    // if there is a country dropdown, but no flags and no separate dial code, then there are multiple countries to choose from, but no way to see which one is selected, so we force nationalMode to false, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
+    // if there is a country dropdown, but no flags and no separate dial code, then it suggests that there are multiple countries to choose from, but no way to see which one is currently selected, so we force nationalMode to false, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
     if (this.options.allowDropdown && !this.options.showFlags && !this.options.separateDialCode) {
       this.options.nationalMode = false;
     }
@@ -969,7 +968,7 @@ export class Iti {
 
   //* Initialize the tel input listeners.
   private _initTelInputListeners(): void {
-    const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay, allowDropdown } = this.options;
+    const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay, allowDropdown, countrySearch } = this.options;
     let userOverrideFormatting = false;
     //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
     if (/\p{L}/u.test(this.telInput.value)) {
@@ -980,7 +979,7 @@ export class Iti {
     //* Note that this fires AFTER the input is updated.
     this._handleInputEvent = (e: InputEvent): void => {
       //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
-      if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown) {
+      if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown && countrySearch) {
         const currentCaretPos = this.telInput.selectionStart || 0;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos - 1);
         const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
@@ -1031,7 +1030,7 @@ export class Iti {
         //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
         if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
           //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
-          if (separateDialCode && allowDropdown && e.key === "+") {
+          if (separateDialCode && allowDropdown && countrySearch && e.key === "+") {
             e.preventDefault();
             this._openDropdownWithPlus();
             return;
