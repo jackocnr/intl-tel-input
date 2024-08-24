@@ -2,14 +2,11 @@
 A Vue component wrapper for the [intl-tel-input](https://github.com/jackocnr/intl-tel-input) JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/vue/src/intl-tel-input/IntlTelInput.vue).
 
 ## Table of Contents
-- [Demo and Examples](#demo-and-examples)
+- [Demo](#demo)
 - [Getting Started](#getting-started)
 - [Props](#props)
-- [Accessing Instance Methods](#accessing-instance-methods)
-- [Accessing Static Methods](#accessing-static-methods)
-- [Troubleshooting](#troubleshooting)
 
-## Demo and Examples
+## Demo
 Try it for yourself by downloading the project and running `npm install` and then `npm run vue:demo` and then copying the given URL into your browser.
 
 ## Getting Started
