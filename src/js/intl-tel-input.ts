@@ -315,7 +315,7 @@ export class Iti {
       this.options.nationalMode = false;
     }
 
-    //* On mobile, we want a full screen dropdown, so we must append it to the body.
+    //* If we want a full screen dropdown, we must append it to the body.
     if (this.options.useFullscreenPopup && !this.options.dropdownContainer) {
       this.options.dropdownContainer = document.body;
     }
