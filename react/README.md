@@ -43,7 +43,7 @@ The initial value to put in the input. This will get auto-formatted on init (acc
 
 **initOptions**  
 Type: `Object`  
-An object containing all of the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same as when using the plugin with pure JavaScript.
+An object containing the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
 
 **inputProps**  
 Type: `Object`  

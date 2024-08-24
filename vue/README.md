@@ -33,6 +33,6 @@ Here's a list of all of the current props you can pass to the IntlTelInput Vue c
 
 **options**  
 Type: `Object`  
-An object containing all of the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same as when using the plugin with pure JavaScript.
+An object containing the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
 
 [MORE COMING SOON]
