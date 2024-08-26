@@ -12,7 +12,8 @@ Try it for yourself by downloading the project and running `npm install` and the
 ## Getting Started
 ```vue
 <script setup>
-  import IntlTelInput from "../../src/intl-tel-input/IntlTelInputWithUtils.vue";
+  import IntlTelInput from "intl-tel-input/vueWithUtils";
+  import "intl-tel-input/styles";
 </script>
 
 <template>
