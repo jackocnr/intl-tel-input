@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v24.3.5
+ * International Telephone Input v24.3.6
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -3102,7 +3102,7 @@ var factoryOutput = (() => {
       //* A map from instance ID to instance object.
       instances: {},
       loadUtils,
-      version: "24.3.5"
+      version: "24.3.6"
     }
   );
   var intl_tel_input_default = intlTelInput;

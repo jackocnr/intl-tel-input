@@ -2471,7 +2471,7 @@ const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     //* A map from instance ID to instance object.
     instances: {},
     loadUtils: U,
-    version: "24.3.5"
+    version: "24.3.6"
   }
 ), G = {
   __name: "IntlTelInput",
