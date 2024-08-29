@@ -1561,7 +1561,7 @@ const F = {
   za: "South Africa",
   zm: "Zambia",
   zw: "Zimbabwe"
-}, R = {
+}, z = {
   selectedCountryAriaLabel: "Selected country",
   noCountrySelected: "No country selected",
   countryListAriaLabel: "List of countries",
@@ -1572,10 +1572,10 @@ const F = {
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo"
-}, S = { ...F, ...R };
+}, S = { ...F, ...z };
 for (let u = 0; u < b.length; u++)
   b[u].name = S[b[u].iso2];
-let z = 0;
+let R = 0;
 const k = {
   //* Whether or not to allow the dropdown.
   allowDropdown: !0,
@@ -1676,7 +1676,7 @@ const k = {
 };
 class K {
   constructor(t, e = {}) {
-    this.id = z++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
+    this.id = R++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
@@ -2471,7 +2471,7 @@ const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     //* A map from instance ID to instance object.
     instances: {},
     loadUtils: U,
-    version: process.env.VERSION
+    version: "24.3.4"
   }
 ), G = {
   __name: "IntlTelInput",
