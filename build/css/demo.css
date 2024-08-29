@@ -19,13 +19,8 @@ input,
   font-size: 100%;
   color: inherit;
 }
-input[disabled],
-.button[disabled] {
-  background-color: #eee;
-}
 
-input,
-select {
+input {
   border: 1px solid #ccc;
   width: 220px;
 }
@@ -54,6 +49,9 @@ input::placeholder {
   body, input {
     color: white;
     background-color: #0d1117;
+  }
+  input[disabled] {
+    background-color: #3c3c3c;
   }
   input {
     border-color: #5b5b5b;

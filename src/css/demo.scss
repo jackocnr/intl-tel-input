@@ -8,7 +8,6 @@ body {
   color: #555;
 }
 
-//* General form styling.
 input,
 .button {
   height: 35px;
@@ -20,18 +19,13 @@ input,
   font-family: inherit;
   font-size: 100%;
   color: inherit;
-
-  &[disabled] {
-    background-color: #eee;
-  }
 }
 
-//* select useful for examples.
-input,
-select {
+input {
   border: 1px solid #ccc;
   width: 220px;
 }
+
 input::placeholder {
   color: #bbb;
 }
@@ -60,6 +54,9 @@ input::placeholder {
   body, input {
     color: white;
     background-color: #0d1117;
+  }
+  input[disabled] {
+    background-color: #3c3c3c;
   }
   input {
     border-color: #5b5b5b;
