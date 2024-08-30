@@ -7,7 +7,7 @@ A Vue component wrapper for the [intl-tel-input](https://github.com/jackocnr/int
 - [Props](#props)
 
 ## Demo
-Try it for yourself by downloading the project and running `npm install` and then `npm run vue:demo` and then copying the given URL into your browser.
+Try it for yourself by downloading the project and running `npm install` and then `npm run vue:demo` and then copy the given URL into your browser. NOTE: the component is rendering the plugin correctly, but we still need help hooking up the [validation functionality](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/validation/App.vue)!
 
 ## Getting Started
 ```vue
