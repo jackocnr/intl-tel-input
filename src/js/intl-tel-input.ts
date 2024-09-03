@@ -1047,8 +1047,10 @@ export class Iti {
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
             const selectedText = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
             const hasSelectedDigit = /\d/.test(selectedText);
-            // ignore the char if (1) it's not an allowed char, or (2) the input has reached max length and no digit is selected (which will be replaced by the new char)
-            if (!isAllowedChar || (hasReachedMaxLength && !hasSelectedDigit)) {
+            const currentCaretPos = this.telInput.selectionStart || 0;
+            const cursorAtEnd = currentCaretPos === this.telInput.value.length;
+            // ignore the char if (1) it's not an allowed char, or (2) the input has reached max length and no digit is selected (which will be replaced by the new char) and the cursor is at the end (so they're not trying to change the dial code)
+            if (!isAllowedChar || (hasReachedMaxLength && !hasSelectedDigit && cursorAtEnd)) {
               e.preventDefault();
             }
           }

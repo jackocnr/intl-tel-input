@@ -1,4 +1,4 @@
-import { mergeModels as L, useModel as T, ref as w, onMounted as x, watch as P, onUnmounted as E, withDirectives as M, openBlock as B, createElementBlock as O, vModelText as V } from "vue";
+import { mergeModels as L, useModel as P, ref as v, onMounted as x, watch as E, onUnmounted as M, withDirectives as B, openBlock as O, createElementBlock as V, vModelText as F } from "vue";
 const D = [
   [
     "af",
@@ -1318,7 +1318,7 @@ for (let u = 0; u < D.length; u++) {
     nodeById: {}
   };
 }
-const F = {
+const z = {
   ad: "Andorra",
   ae: "United Arab Emirates",
   af: "Afghanistan",
@@ -1561,7 +1561,7 @@ const F = {
   za: "South Africa",
   zm: "Zambia",
   zw: "Zimbabwe"
-}, z = {
+}, R = {
   selectedCountryAriaLabel: "Selected country",
   noCountrySelected: "No country selected",
   countryListAriaLabel: "List of countries",
@@ -1572,10 +1572,10 @@ const F = {
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo"
-}, S = { ...F, ...z };
+}, S = { ...z, ...R };
 for (let u = 0; u < b.length; u++)
   b[u].name = S[b[u].iso2];
-let R = 0;
+let $ = 0;
 const k = {
   //* Whether or not to allow the dropdown.
   allowDropdown: !0,
@@ -1631,7 +1631,7 @@ const k = {
   utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberType: "MOBILE"
-}, $ = [
+}, j = [
   "800",
   "822",
   "833",
@@ -1653,10 +1653,10 @@ const k = {
   const t = I(u);
   if (t.charAt(0) === "1") {
     const e = t.substr(1, 3);
-    return $.indexOf(e) !== -1;
+    return j.indexOf(e) !== -1;
   }
   return !1;
-}, j = (u, t, e, i) => {
+}, K = (u, t, e, i) => {
   if (e === 0 && !i)
     return 0;
   let s = 0;
@@ -1674,9 +1674,9 @@ const k = {
   const { instances: t } = l;
   Object.values(t).forEach((e) => e[u]());
 };
-class K {
+class U {
   constructor(t, e = {}) {
-    this.id = R++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
+    this.id = $++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
@@ -1971,8 +1971,8 @@ class K {
       p || d && !t ? a = !0 : /[^+0-9]/.test(this.telInput.value) || (a = !1);
       const C = (r == null ? void 0 : r.detail) && r.detail.isSetNumber && !s;
       if (e && !a && !C) {
-        const c = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, c).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), v = j(m, g, c, f);
-        this.telInput.value = g, this.telInput.setSelectionRange(v, v);
+        const c = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, c).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), w = K(m, g, c, f);
+        this.telInput.value = g, this.telInput.setSelectionRange(w, w);
       }
     }, this.telInput.addEventListener("input", this._handleInputEvent), (t || i) && (this._handleKeydownEvent = (r) => {
       if (r.key && r.key.length === 1 && !r.altKey && !r.ctrlKey && !r.metaKey) {
@@ -1981,8 +1981,8 @@ class K {
           return;
         }
         if (t) {
-          const p = this.telInput.selectionStart === 0 && r.key === "+", d = /^[0-9]$/.test(r.key), C = i ? d : p || d, c = this._getFullNumber(), h = l.utils.getCoreNumber(c, this.selectedCountryData.iso2), m = this.maxCoreNumberLength && h.length >= this.maxCoreNumberLength, f = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd), g = /\d/.test(f);
-          (!C || m && !g) && r.preventDefault();
+          const p = this.telInput.selectionStart === 0 && r.key === "+", d = /^[0-9]$/.test(r.key), C = i ? d : p || d, c = this._getFullNumber(), h = l.utils.getCoreNumber(c, this.selectedCountryData.iso2), m = this.maxCoreNumberLength && h.length >= this.maxCoreNumberLength, f = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd), g = /\d/.test(f), T = (this.telInput.selectionStart || 0) === this.telInput.value.length;
+          (!C || m && !g && T) && r.preventDefault();
         }
       }
     }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
@@ -2439,7 +2439,7 @@ class K {
     this.telInput.disabled = t, t ? this.selectedCountry.setAttribute("disabled", "true") : this.selectedCountry.removeAttribute("disabled");
   }
 }
-const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUtilsScript = !0, new Promise((t, e) => {
+const H = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUtilsScript = !0, new Promise((t, e) => {
   import(
     /* webpackIgnore: true */
     /* @vite-ignore */
@@ -2451,7 +2451,7 @@ const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
   });
 })) : null, l = Object.assign(
   (u, t) => {
-    const e = new K(u, t);
+    const e = new U(u, t);
     return e._init(), u.setAttribute("data-intl-tel-input-id", e.id.toString()), l.instances[e.id] = e, e;
   },
   {
@@ -2467,10 +2467,10 @@ const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     },
     //* A map from instance ID to instance object.
     instances: {},
-    loadUtils: U,
+    loadUtils: H,
     version: "24.3.6"
   }
-), G = {
+), W = {
   __name: "IntlTelInput",
   props: /* @__PURE__ */ L({
     options: {
@@ -2493,7 +2493,7 @@ const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
   }),
   emits: /* @__PURE__ */ L(["changeNumber", "changeCountry", "changeValidity", "changeErrorCode"], ["update:modelValue"]),
   setup(u, { expose: t, emit: e }) {
-    const i = T(u, "modelValue"), s = u, n = e, o = w(), a = w(), r = w(!1), p = () => a.value ? s.options.strictMode ? a.value.isValidNumberPrecise() : a.value.isValidNumber() : null, d = () => {
+    const i = P(u, "modelValue"), s = u, n = e, o = v(), a = v(), r = v(!1), p = () => a.value ? s.options.strictMode ? a.value.isValidNumberPrecise() : a.value.isValidNumber() : null, d = () => {
       let h = p();
       r.value !== h && (r.value = h, n("changeValidity", !!h), n("changeErrorCode", h ? null : a.value.getValidationError()));
     }, C = () => {
@@ -2505,16 +2505,16 @@ const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     };
     return x(() => {
       o.value && (a.value = l(o.value, s.options), s.value && a.value.setNumber(s.value), s.disabled && a.value.setDisabled(s.disabled));
-    }), P(
+    }), E(
       () => s.disabled,
       (h) => {
         var m;
         return (m = a.value) == null ? void 0 : m.setDisabled(h);
       }
-    ), E(() => {
+    ), M(() => {
       var h;
       return (h = a.value) == null ? void 0 : h.destroy();
-    }), t({ instance: a, input: o }), (h, m) => M((B(), O("input", {
+    }), t({ instance: a, input: o }), (h, m) => B((O(), V("input", {
       ref_key: "input",
       ref: o,
       "onUpdate:modelValue": m[0] || (m[0] = (f) => i.value = f),
@@ -2522,10 +2522,10 @@ const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
       onCountrychange: c,
       onInput: C
     }, null, 544)), [
-      [V, i.value]
+      [F, i.value]
     ]);
   }
 };
 export {
-  G as default
+  W as default
 };

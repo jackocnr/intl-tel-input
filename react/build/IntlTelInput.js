@@ -2262,7 +2262,9 @@ var Iti = class {
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
             const selectedText = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
             const hasSelectedDigit = /\d/.test(selectedText);
-            if (!isAllowedChar || hasReachedMaxLength && !hasSelectedDigit) {
+            const currentCaretPos = this.telInput.selectionStart || 0;
+            const cursorAtEnd = currentCaretPos === this.telInput.value.length;
+            if (!isAllowedChar || hasReachedMaxLength && !hasSelectedDigit && cursorAtEnd) {
               e.preventDefault();
             }
           }
