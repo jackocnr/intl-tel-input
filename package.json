@@ -91,7 +91,7 @@
     "watch": "grunt watch",
     "build": "grunt build",
     "build:js": "grunt js",
-    "build:jsfast": "node build.js",
+    "build:jsfast": "grunt jsfast",
     "build:translations": "grunt build:translations",
     "build:utils": "grunt build:utils",
     "build:css": "grunt css",
