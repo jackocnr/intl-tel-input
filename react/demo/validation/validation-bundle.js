@@ -25491,12 +25491,14 @@
       if (allowDropdown || showFlags || separateDialCode) {
         this.countryContainer = createEl(
           "div",
-          {
-            class: "iti__country-container",
-            style: this.showSelectedCountryOnLeft ? "left: 0" : "right: 0"
-          },
+          { class: "iti__country-container" },
           wrapper
         );
+        if (this.showSelectedCountryOnLeft) {
+          this.countryContainer.style.left = "0px";
+        } else {
+          this.countryContainer.style.right = "0px";
+        }
         if (allowDropdown) {
           this.selectedCountry = createEl(
             "button",

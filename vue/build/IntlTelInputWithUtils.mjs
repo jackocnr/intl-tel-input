@@ -1789,12 +1789,9 @@ class U2 {
     if ((I = this.telInput.parentNode) == null || I.insertBefore(S, this.telInput), e || s || i) {
       this.countryContainer = N(
         "div",
-        {
-          class: "iti__country-container",
-          style: this.showSelectedCountryOnLeft ? "left: 0" : "right: 0"
-        },
+        { class: "iti__country-container" },
         S
-      ), e ? (this.selectedCountry = N(
+      ), this.showSelectedCountryOnLeft ? this.countryContainer.style.left = "0px" : this.countryContainer.style.right = "0px", e ? (this.selectedCountry = N(
         "button",
         {
           type: "button",

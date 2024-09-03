@@ -1,4 +1,4 @@
-import { mergeModels as L, useModel as T, ref as w, onMounted as P, watch as x, onUnmounted as E, withDirectives as M, openBlock as B, createElementBlock as O, vModelText as V } from "vue";
+import { mergeModels as L, useModel as T, ref as w, onMounted as x, watch as P, onUnmounted as E, withDirectives as M, openBlock as B, createElementBlock as O, vModelText as V } from "vue";
 const D = [
   [
     "af",
@@ -1667,7 +1667,7 @@ const k = {
       return n;
   }
   return t.length;
-}, m = (u, t, e) => {
+}, y = (u, t, e) => {
   const i = document.createElement(u);
   return t && Object.entries(t).forEach(([s, n]) => i.setAttribute(s, n)), e && e.appendChild(i), i;
 }, _ = (u) => {
@@ -1785,16 +1785,13 @@ class K {
     } = this.options;
     let C = "iti";
     t && (C += " iti--allow-dropdown"), i && (C += " iti--show-flags"), s && (C += ` ${s}`), r || (C += " iti--inline-dropdown");
-    const c = m("div", { class: C });
+    const c = y("div", { class: C });
     if ((h = this.telInput.parentNode) == null || h.insertBefore(c, this.telInput), t || i || e) {
-      this.countryContainer = m(
+      this.countryContainer = y(
         "div",
-        {
-          class: "iti__country-container",
-          style: this.showSelectedCountryOnLeft ? "left: 0" : "right: 0"
-        },
+        { class: "iti__country-container" },
         c
-      ), t ? (this.selectedCountry = m(
+      ), this.showSelectedCountryOnLeft ? this.countryContainer.style.left = "0px" : this.countryContainer.style.right = "0px", t ? (this.selectedCountry = y(
         "button",
         {
           type: "button",
@@ -1806,30 +1803,30 @@ class K {
           role: "combobox"
         },
         this.countryContainer
-      ), this.telInput.disabled && this.selectedCountry.setAttribute("disabled", "true")) : this.selectedCountry = m(
+      ), this.telInput.disabled && this.selectedCountry.setAttribute("disabled", "true")) : this.selectedCountry = y(
         "div",
         { class: "iti__selected-country" },
         this.countryContainer
       );
-      const y = m("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
-      if (this.selectedCountryInner = m("div", { class: "iti__flag" }, y), this.selectedCountryA11yText = m(
+      const m = y("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
+      if (this.selectedCountryInner = y("div", { class: "iti__flag" }, m), this.selectedCountryA11yText = y(
         "span",
         { class: "iti__a11y-text" },
         this.selectedCountryInner
-      ), t && (this.dropdownArrow = m(
+      ), t && (this.dropdownArrow = y(
         "div",
         { class: "iti__arrow", "aria-hidden": "true" },
-        y
-      )), e && (this.selectedDialCode = m(
+        m
+      )), e && (this.selectedDialCode = y(
         "div",
         { class: "iti__selected-dial-code" },
         this.selectedCountry
       )), t) {
         const f = a ? "" : "iti--flexible-dropdown-width";
-        if (this.dropdownContent = m("div", {
+        if (this.dropdownContent = y("div", {
           id: `iti-${this.id}__dropdown-content`,
           class: `iti__dropdown-content iti__hide ${f}`
-        }), p && (this.searchInput = m(
+        }), p && (this.searchInput = y(
           "input",
           {
             type: "text",
@@ -1843,11 +1840,11 @@ class K {
             autocomplete: "off"
           },
           this.dropdownContent
-        ), this.searchResultsA11yText = m(
+        ), this.searchResultsA11yText = y(
           "span",
           { class: "iti__a11y-text" },
           this.dropdownContent
-        )), this.countryList = m(
+        )), this.countryList = y(
           "ul",
           {
             class: "iti__country-list",
@@ -1858,17 +1855,17 @@ class K {
           this.dropdownContent
         ), this._appendListItems(), p && this._updateSearchResultsText(), o) {
           let g = "iti iti--container";
-          r ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = m("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
+          r ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = y("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
         } else
           this.countryContainer.appendChild(this.dropdownContent);
       }
     }
     if (c.appendChild(this.telInput), this._updateInputPadding(), n) {
-      const y = this.telInput.getAttribute("name") || "", f = n(y);
-      f.phone && (this.hiddenInput = m("input", {
+      const m = this.telInput.getAttribute("name") || "", f = n(m);
+      f.phone && (this.hiddenInput = y("input", {
         type: "hidden",
         name: f.phone
-      }), c.appendChild(this.hiddenInput)), f.country && (this.hiddenInputCountry = m("input", {
+      }), c.appendChild(this.hiddenInput)), f.country && (this.hiddenInputCountry = y("input", {
         type: "hidden",
         name: f.country
       }), c.appendChild(this.hiddenInputCountry));
@@ -1877,7 +1874,7 @@ class K {
   //* For each country: add a country list item <li> to the countryList <ul> container.
   _appendListItems() {
     for (let t = 0; t < this.countries.length; t++) {
-      const e = this.countries[t], i = t === 0 ? "iti__highlight" : "", s = m(
+      const e = this.countries[t], i = t === 0 ? "iti__highlight" : "", s = y(
         "li",
         {
           id: `iti-${this.id}__item-${e.iso2}`,
@@ -1965,8 +1962,8 @@ class K {
     let a = !1;
     new RegExp("\\p{L}", "u").test(this.telInput.value) && (a = !0), this._handleInputEvent = (r) => {
       if (this.isAndroid && (r == null ? void 0 : r.data) === "+" && i && n && o) {
-        const c = this.telInput.selectionStart || 0, h = this.telInput.value.substring(0, c - 1), y = this.telInput.value.substring(c);
-        this.telInput.value = h + y, this._openDropdownWithPlus();
+        const c = this.telInput.selectionStart || 0, h = this.telInput.value.substring(0, c - 1), m = this.telInput.value.substring(c);
+        this.telInput.value = h + m, this._openDropdownWithPlus();
         return;
       }
       this._updateCountryFromNumber(this.telInput.value) && this._triggerCountryChange();
@@ -1974,7 +1971,7 @@ class K {
       p || d && !t ? a = !0 : /[^+0-9]/.test(this.telInput.value) || (a = !1);
       const C = (r == null ? void 0 : r.detail) && r.detail.isSetNumber && !s;
       if (e && !a && !C) {
-        const c = this.telInput.selectionStart || 0, y = this.telInput.value.substring(0, c).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), v = j(y, g, c, f);
+        const c = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, c).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), v = j(m, g, c, f);
         this.telInput.value = g, this.telInput.setSelectionRange(v, v);
       }
     }, this.telInput.addEventListener("input", this._handleInputEvent), (t || i) && (this._handleKeydownEvent = (r) => {
@@ -1984,8 +1981,8 @@ class K {
           return;
         }
         if (t) {
-          const p = this.telInput.selectionStart === 0 && r.key === "+", d = /^[0-9]$/.test(r.key), C = i ? d : p || d, c = this._getFullNumber(), h = l.utils.getCoreNumber(c, this.selectedCountryData.iso2), y = this.maxCoreNumberLength && h.length >= this.maxCoreNumberLength, f = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd), g = /\d/.test(f);
-          (!C || y && !g) && r.preventDefault();
+          const p = this.telInput.selectionStart === 0 && r.key === "+", d = /^[0-9]$/.test(r.key), C = i ? d : p || d, c = this._getFullNumber(), h = l.utils.getCoreNumber(c, this.selectedCountryData.iso2), m = this.maxCoreNumberLength && h.length >= this.maxCoreNumberLength, f = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd), g = /\d/.test(f);
+          (!C || m && !g) && r.preventDefault();
         }
       }
     }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
@@ -2506,21 +2503,21 @@ const U = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
       var h;
       n("changeCountry", ((h = a.value) == null ? void 0 : h.getSelectedCountryData().iso2) ?? ""), C(), d();
     };
-    return P(() => {
+    return x(() => {
       o.value && (a.value = l(o.value, s.options), s.value && a.value.setNumber(s.value), s.disabled && a.value.setDisabled(s.disabled));
-    }), x(
+    }), P(
       () => s.disabled,
       (h) => {
-        var y;
-        return (y = a.value) == null ? void 0 : y.setDisabled(h);
+        var m;
+        return (m = a.value) == null ? void 0 : m.setDisabled(h);
       }
     ), E(() => {
       var h;
       return (h = a.value) == null ? void 0 : h.destroy();
-    }), t({ instance: a, input: o }), (h, y) => M((B(), O("input", {
+    }), t({ instance: a, input: o }), (h, m) => M((B(), O("input", {
       ref_key: "input",
       ref: o,
-      "onUpdate:modelValue": y[0] || (y[0] = (f) => i.value = f),
+      "onUpdate:modelValue": m[0] || (m[0] = (f) => i.value = f),
       type: "tel",
       onCountrychange: c,
       onInput: C
