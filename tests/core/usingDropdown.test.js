@@ -27,7 +27,7 @@ describe("using dropdown", () => {
     teardown(iti);
   });
 
-  test("shows selected flag on left by default", async() => {
+  test("shows selected flag on left by default", () => {
     const countryContainer = container.querySelector(".iti__country-container");
     expect(countryContainer.style.left).toEqual("0px");
     expect(countryContainer.style.right).toEqual("");
@@ -47,7 +47,7 @@ describe("using dropdown", () => {
       container.ownerDocument.documentElement.dir = originalDir;
     });
 
-    test("shows selected flag on right", async() => {
+    test("shows selected flag on right", () => {
       const countryContainer = container.querySelector(".iti__country-container");
       expect(countryContainer.style.left).toEqual("");
       expect(countryContainer.style.right).toEqual("0px");
