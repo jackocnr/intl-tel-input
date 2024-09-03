@@ -26,6 +26,33 @@ describe("using dropdown", () => {
   afterEach(() => {
     teardown(iti);
   });
+
+  test("shows selected flag on left by default", async() => {
+    const countryContainer = container.querySelector(".iti__country-container");
+    expect(countryContainer.style.left).toEqual("0px");
+    expect(countryContainer.style.right).toEqual("");
+  });
+
+  describe("with rtl context", () => {
+    let originalDir;
+
+    beforeEach(() => {
+      originalDir = container.ownerDocument.documentElement.dir;
+      container.ownerDocument.documentElement.dir = "rtl";
+      ({ iti, container, input } = initPlugin());
+    });
+        
+    afterEach(() => {
+      teardown(iti);
+      container.ownerDocument.documentElement.dir = originalDir;
+    });
+
+    test("shows selected flag on right", async() => {
+      const countryContainer = container.querySelector(".iti__country-container");
+      expect(countryContainer.style.left).toEqual("");
+      expect(countryContainer.style.right).toEqual("0px");
+    });
+  });
   
   test("clicking the selected flag opens the dropdown", async () => {
     await clickSelectedCountryAsync(container, user);

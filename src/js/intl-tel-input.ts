@@ -573,12 +573,14 @@ export class Iti {
     if (allowDropdown || showFlags || separateDialCode) {
       this.countryContainer = createEl(
         "div",
-        {
-          class: "iti__country-container",
-          style: this.showSelectedCountryOnLeft ? "left: 0" : "right: 0",
-        },
+        { class: "iti__country-container" },
         wrapper,
       );
+      if (this.showSelectedCountryOnLeft) {
+        this.countryContainer.style.left = "0px";
+      } else {
+        this.countryContainer.style.right = "0px";
+      }
 
       //* Selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
       //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
