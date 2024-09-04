@@ -15,6 +15,12 @@ const number = ref(null);
 const errorCode = ref(null);
 const notice = ref(null);
 
+const intlTelInputRef = ref(null);
+
+const handleSetNumber = () => {
+  intlTelInputRef.value?.instance?.setNumber("+14155552671");
+};
+
 const handleSubmit = () => {
   if (isValid.value) {
     notice.value = `Valid number: ${number.value}`;
@@ -28,6 +34,7 @@ const handleSubmit = () => {
 <template>
   <form>
     <IntlTelInput
+      ref="intlTelInputRef"
       @changeNumber="number = $event"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
@@ -35,6 +42,9 @@ const handleSubmit = () => {
         initialCountry: 'us',
       }"
     />
+    <button class="button" type="button" @click="handleSetNumber">
+      Set Number
+    </button>
     <button class="button" type="button" @click="handleSubmit">Validate</button>
     <div v-if="notice" class="notice">{{ notice }}</div>
   </form>
