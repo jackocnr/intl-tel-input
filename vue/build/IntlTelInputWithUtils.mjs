@@ -1,4 +1,4 @@
-import { mergeModels as e2, useModel as T2, ref as _1, onMounted as L2, watch as N2, onUnmounted as E2, withDirectives as D2, openBlock as M2, createElementBlock as x2, vModelText as P2 } from "vue";
+import { mergeModels as e2, useModel as T2, ref as _1, onMounted as L2, watch as N2, onUnmounted as E2, withDirectives as D2, openBlock as M2, createElementBlock as P2, mergeProps as x2, vModelText as R2 } from "vue";
 const $2 = [
   [
     "af",
@@ -1318,7 +1318,7 @@ for (let y = 0; y < $2.length; y++) {
     nodeById: {}
   };
 }
-const R2 = {
+const B2 = {
   ad: "Andorra",
   ae: "United Arab Emirates",
   af: "Afghanistan",
@@ -1561,7 +1561,7 @@ const R2 = {
   za: "South Africa",
   zm: "Zambia",
   zw: "Zimbabwe"
-}, B2 = {
+}, k2 = {
   selectedCountryAriaLabel: "Selected country",
   noCountrySelected: "No country selected",
   countryListAriaLabel: "List of countries",
@@ -1572,10 +1572,10 @@ const R2 = {
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo"
-}, s2 = { ...R2, ...B2 };
+}, s2 = { ...B2, ...k2 };
 for (let y = 0; y < H.length; y++)
   H[y].name = s2[H[y].iso2];
-let k2 = 0;
+let O2 = 0;
 const r2 = {
   //* Whether or not to allow the dropdown.
   allowDropdown: !0,
@@ -1631,7 +1631,7 @@ const r2 = {
   utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberType: "MOBILE"
-}, O2 = [
+}, G2 = [
   "800",
   "822",
   "833",
@@ -1653,10 +1653,10 @@ const r2 = {
   const e = c1(y);
   if (e.charAt(0) === "1") {
     const i = e.substr(1, 3);
-    return O2.indexOf(i) !== -1;
+    return G2.indexOf(i) !== -1;
   }
   return !1;
-}, G2 = (y, e, i, s) => {
+}, U2 = (y, e, i, s) => {
   if (i === 0 && !s)
     return 0;
   let u = 0;
@@ -1674,9 +1674,9 @@ const r2 = {
   const { instances: e } = C;
   Object.values(e).forEach((i) => i[y]());
 };
-class U2 {
+class F2 {
   constructor(e, i = {}) {
-    this.id = k2++, this.telInput = e, this.highlightedItem = null, this.options = Object.assign({}, r2, i), this.hadInitialPlaceholder = !!e.getAttribute("placeholder");
+    this.id = O2++, this.telInput = e, this.highlightedItem = null, this.options = Object.assign({}, r2, i), this.hadInitialPlaceholder = !!e.getAttribute("placeholder");
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
@@ -1822,10 +1822,10 @@ class U2 {
         { class: "iti__selected-dial-code" },
         this.selectedCountry
       )), e) {
-        const x = p ? "" : "iti--flexible-dropdown-width";
+        const P = p ? "" : "iti--flexible-dropdown-width";
         if (this.dropdownContent = N("div", {
           id: `iti-${this.id}__dropdown-content`,
-          class: `iti__dropdown-content iti__hide ${x}`
+          class: `iti__dropdown-content iti__hide ${P}`
         }), b && (this.searchInput = N(
           "input",
           {
@@ -1861,13 +1861,13 @@ class U2 {
       }
     }
     if (S.appendChild(this.telInput), this._updateInputPadding(), a) {
-      const T = this.telInput.getAttribute("name") || "", x = a(T);
-      x.phone && (this.hiddenInput = N("input", {
+      const T = this.telInput.getAttribute("name") || "", P = a(T);
+      P.phone && (this.hiddenInput = N("input", {
         type: "hidden",
-        name: x.phone
-      }), S.appendChild(this.hiddenInput)), x.country && (this.hiddenInputCountry = N("input", {
+        name: P.phone
+      }), S.appendChild(this.hiddenInput)), P.country && (this.hiddenInputCountry = N("input", {
         type: "hidden",
-        name: x.country
+        name: P.country
       }), S.appendChild(this.hiddenInputCountry));
     }
   }
@@ -1971,7 +1971,7 @@ class U2 {
       b || _ && !e ? p = !0 : /[^+0-9]/.test(this.telInput.value) || (p = !1);
       const A = (g == null ? void 0 : g.detail) && g.detail.isSetNumber && !u;
       if (i && !p && !A) {
-        const S = this.telInput.selectionStart || 0, T = this.telInput.value.substring(0, S).replace(/[^+0-9]/g, "").length, x = (g == null ? void 0 : g.inputType) === "deleteContentForward", O = this._formatNumberAsYouType(), J = G2(T, O, S, x);
+        const S = this.telInput.selectionStart || 0, T = this.telInput.value.substring(0, S).replace(/[^+0-9]/g, "").length, P = (g == null ? void 0 : g.inputType) === "deleteContentForward", O = this._formatNumberAsYouType(), J = U2(T, O, S, P);
         this.telInput.value = O, this.telInput.setSelectionRange(J, J);
       }
     }, this.telInput.addEventListener("input", this._handleInputEvent), (e || s) && (this._handleKeydownEvent = (g) => {
@@ -1981,7 +1981,7 @@ class U2 {
           return;
         }
         if (e) {
-          const b = this.telInput.selectionStart === 0 && g.key === "+", _ = /^[0-9]$/.test(g.key), A = s ? _ : b || _, S = this._getFullNumber(), I = C.utils.getCoreNumber(S, this.selectedCountryData.iso2), T = this.maxCoreNumberLength && I.length >= this.maxCoreNumberLength, x = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd), O = /\d/.test(x), f1 = (this.telInput.selectionStart || 0) === this.telInput.value.length;
+          const b = this.telInput.selectionStart === 0 && g.key === "+", _ = /^[0-9]$/.test(g.key), A = s ? _ : b || _, S = this._getFullNumber(), I = C.utils.getCoreNumber(S, this.selectedCountryData.iso2), T = this.maxCoreNumberLength && I.length >= this.maxCoreNumberLength, P = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd), O = /\d/.test(P), f1 = (this.telInput.selectionStart || 0) === this.telInput.value.length;
           (!A || T && !O && f1) && g.preventDefault();
         }
       }
@@ -2439,7 +2439,7 @@ class U2 {
     this.telInput.disabled = e, e ? this.selectedCountry.setAttribute("disabled", "true") : this.selectedCountry.removeAttribute("disabled");
   }
 }
-const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUtilsScript = !0, new Promise((e, i) => {
+const V2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUtilsScript = !0, new Promise((e, i) => {
   import_INTENTIONALLY_BROKEN(
     /* webpackIgnore: true */
     /* @vite-ignore */
@@ -2451,7 +2451,7 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
   });
 })) : null, C = Object.assign(
   (y, e) => {
-    const i = new U2(y, e);
+    const i = new F2(y, e);
     return i._init(), y.setAttribute("data-intl-tel-input-id", i.id.toString()), C.instances[i.id] = i, i;
   },
   {
@@ -2467,7 +2467,7 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     },
     //* A map from instance ID to instance object.
     instances: {},
-    loadUtils: F2,
+    loadUtils: V2,
     version: "24.3.7"
   }
 );
@@ -2537,7 +2537,7 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
   new A();
   function S(d, t) {
     switch (this.g = d, this.l = !!t.aa, this.h = t.i, this.s = t.type, this.o = !1, this.h) {
-      case x:
+      case P:
       case O:
       case J:
       case f1:
@@ -2548,7 +2548,7 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     }
     this.j = t.defaultValue;
   }
-  var I = 1, T = 2, x = 3, O = 4, J = 6, f1 = 16, o2 = 18;
+  var I = 1, T = 2, P = 3, O = 4, J = 6, f1 = 16, o2 = 18;
   function u2(d, t) {
     for (this.h = d, this.g = {}, d = 0; d < t.length; d++) {
       var $ = t[d];
@@ -2560,16 +2560,16 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
       return t.g - $.g;
     }), d;
   }
-  function P() {
+  function x() {
     this.h = {}, this.j = this.m().g, this.g = this.l = null;
   }
-  P.prototype.has = function(d) {
+  x.prototype.has = function(d) {
     return R(this, d.g);
-  }, P.prototype.get = function(d, t) {
+  }, x.prototype.get = function(d, t) {
     return f(this, d.g, t);
-  }, P.prototype.set = function(d, t) {
+  }, x.prototype.set = function(d, t) {
     E(this, d.g, t);
-  }, P.prototype.add = function(d, t) {
+  }, x.prototype.add = function(d, t) {
     v1(this, d.g, t);
   };
   function I1(d, t) {
@@ -2585,7 +2585,7 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
       }
     }
   }
-  P.prototype.clone = function() {
+  x.prototype.clone = function() {
     var d = new this.constructor();
     return d != this && (d.h = {}, d.g && (d.g = {}), I1(d, this)), d;
   };
@@ -2648,7 +2648,7 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
   s1.prototype.g = function(d) {
     throw new d.h(), Error("Unimplemented");
   }, s1.prototype.h = function(d, t) {
-    if (d.h == 11 || d.h == 10) return t instanceof P ? t : this.g(d.s.prototype.m(), t);
+    if (d.h == 11 || d.h == 10) return t instanceof x ? t : this.g(d.s.prototype.m(), t);
     if (d.h == 14) return typeof t == "string" && S1.test(t) && (d = Number(t), 0 < d) ? d : t;
     if (!d.o) return t;
     if (d = d.s, d === String) {
@@ -2685,19 +2685,19 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     return this.h;
   };
   function j() {
-    P.call(this);
+    x.call(this);
   }
-  i(j, P);
+  i(j, x);
   var w1 = null;
   function w() {
-    P.call(this);
+    x.call(this);
   }
-  i(w, P);
+  i(w, x);
   var b1 = null;
   function W() {
-    P.call(this);
+    x.call(this);
   }
-  i(W, P);
+  i(W, x);
   var A1 = null;
   j.prototype.m = function() {
     var d = w1;
@@ -2746,9 +2746,9 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     })), d;
   }, W.m = W.prototype.m;
   function V() {
-    P.call(this);
+    x.call(this);
   }
-  i(V, P);
+  i(V, x);
   var T1 = null, a2 = { ra: 0, qa: 1, pa: 5, oa: 10, na: 20 };
   V.prototype.m = function() {
     var d = T1;
@@ -8060,11 +8060,11 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
   function M1(d) {
     return 2 > d.length ? !1 : G(I2, d);
   }
-  function x1(d) {
+  function P1(d) {
     return G(m2, d) ? r1(d, c2) : r1(d, g1);
   }
-  function P1(d) {
-    var t = x1(d.toString());
+  function x1(d) {
+    var t = P1(d.toString());
     B(d), d.g(t);
   }
   function R1(d) {
@@ -8225,9 +8225,9 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     $ != null && (l = f($, 11)), l == null && (l = "NonMatch");
     var h = t.toString();
     if (h.length == 0) l = 20;
-    else if (Q.test(h)) h = h.replace(Q, ""), B(t), t.g(x1(h)), l = 1;
+    else if (Q.test(h)) h = h.replace(Q, ""), B(t), t.g(P1(h)), l = 1;
     else {
-      if (h = new RegExp(l), P1(t), l = t.toString(), l.search(h) == 0) {
+      if (h = new RegExp(l), x1(t), l = t.toString(), l.search(h) == 0) {
         h = l.match(h)[0].length;
         var m = l.substring(h).match(N1);
         m && m[1] != null && 0 < m[1].length && r1(m[1], g1) == "0" ? l = !1 : (B(t), t.g(l.substring(h)), l = !0);
@@ -8288,7 +8288,7 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
         if (m = m.replace(Q, ""), h = F1(d, m, l, t, n, o), h == 0) throw y1;
       } else throw y1;
     }
-    if (h != 0 ? (r = e1(h), r != $ && (l = d1(d, h, r))) : (P1(r), t.g(r.toString()), $ != null ? (h = v(l, 10), E(
+    if (h != 0 ? (r = e1(h), r != $ && (l = d1(d, h, r))) : (x1(r), t.g(r.toString()), $ != null ? (h = v(l, 10), E(
       o,
       1,
       h
@@ -8516,12 +8516,20 @@ const F2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     }
   }), e("intlTelInputUtilsTemp.numberFormat", { E164: 0, INTERNATIONAL: 1, NATIONAL: 2, RFC3966: 3 }), e("intlTelInputUtilsTemp.numberType", h1), e("intlTelInputUtilsTemp.validationError", { IS_POSSIBLE: 0, INVALID_COUNTRY_CODE: 1, TOO_SHORT: 2, TOO_LONG: 3, IS_POSSIBLE_LOCAL_ONLY: 4, INVALID_LENGTH: 5 });
 })();
-const V2 = window.intlTelInputUtilsTemp;
+const K2 = window.intlTelInputUtilsTemp;
 delete window.intlTelInputUtilsTemp;
-C.utils = V2;
-const H2 = {
+C.utils = K2;
+const j2 = {
   __name: "IntlTelInputWithUtils",
   props: /* @__PURE__ */ e2({
+    disabled: {
+      type: Boolean,
+      default: !1
+    },
+    inputProps: {
+      type: Object,
+      default: () => ({})
+    },
     options: {
       type: Object,
       default: () => ({})
@@ -8529,9 +8537,6 @@ const H2 = {
     value: {
       type: String,
       default: ""
-    },
-    disabled: {
-      type: Boolean
     }
   }, {
     modelValue: {
@@ -8540,11 +8545,19 @@ const H2 = {
     },
     modelModifiers: {}
   }),
-  emits: /* @__PURE__ */ e2(["changeNumber", "changeCountry", "changeValidity", "changeErrorCode"], ["update:modelValue"]),
+  emits: /* @__PURE__ */ e2([
+    "changeNumber",
+    "changeCountry",
+    "changeValidity",
+    "changeErrorCode"
+  ], ["update:modelValue"]),
   setup(y, { expose: e, emit: i }) {
     const s = T2(y, "modelValue"), u = y, a = i, c = _1(), p = _1(), g = _1(!1), b = () => p.value ? u.options.strictMode ? p.value.isValidNumberPrecise() : p.value.isValidNumber() : null, _ = () => {
       let I = b();
-      g.value !== I && (g.value = I, a("changeValidity", !!I), a("changeErrorCode", I ? null : p.value.getValidationError()));
+      g.value !== I && (g.value = I, a("changeValidity", !!I), a(
+        "changeErrorCode",
+        I ? null : p.value.getValidationError()
+      ));
     }, A = () => {
       var I;
       a("changeNumber", ((I = p.value) == null ? void 0 : I.getNumber()) ?? ""), _();
@@ -8563,18 +8576,18 @@ const H2 = {
     ), E2(() => {
       var I;
       return (I = p.value) == null ? void 0 : I.destroy();
-    }), e({ instance: p, input: c }), (I, T) => D2((M2(), x2("input", {
+    }), e({ instance: p, input: c }), (I, T) => D2((M2(), P2("input", x2({
       ref_key: "input",
       ref: c,
-      "onUpdate:modelValue": T[0] || (T[0] = (x) => s.value = x),
+      "onUpdate:modelValue": T[0] || (T[0] = (P) => s.value = P),
       type: "tel",
       onCountrychange: S,
       onInput: A
-    }, null, 544)), [
-      [P2, s.value]
+    }, y.inputProps), null, 16)), [
+      [R2, s.value]
     ]);
   }
 };
 export {
-  H2 as default
+  j2 as default
 };

@@ -1,4 +1,4 @@
-import { mergeModels as L, useModel as P, ref as v, onMounted as x, watch as E, onUnmounted as M, withDirectives as B, openBlock as O, createElementBlock as V, vModelText as F } from "vue";
+import { mergeModels as L, useModel as P, ref as v, onMounted as x, watch as E, onUnmounted as M, withDirectives as B, openBlock as O, createElementBlock as V, mergeProps as F, vModelText as z } from "vue";
 const D = [
   [
     "af",
@@ -1318,7 +1318,7 @@ for (let u = 0; u < D.length; u++) {
     nodeById: {}
   };
 }
-const z = {
+const R = {
   ad: "Andorra",
   ae: "United Arab Emirates",
   af: "Afghanistan",
@@ -1561,7 +1561,7 @@ const z = {
   za: "South Africa",
   zm: "Zambia",
   zw: "Zimbabwe"
-}, R = {
+}, $ = {
   selectedCountryAriaLabel: "Selected country",
   noCountrySelected: "No country selected",
   countryListAriaLabel: "List of countries",
@@ -1572,10 +1572,10 @@ const z = {
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo"
-}, S = { ...z, ...R };
+}, S = { ...R, ...$ };
 for (let u = 0; u < b.length; u++)
   b[u].name = S[b[u].iso2];
-let $ = 0;
+let j = 0;
 const k = {
   //* Whether or not to allow the dropdown.
   allowDropdown: !0,
@@ -1631,7 +1631,7 @@ const k = {
   utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberType: "MOBILE"
-}, j = [
+}, K = [
   "800",
   "822",
   "833",
@@ -1653,10 +1653,10 @@ const k = {
   const t = I(u);
   if (t.charAt(0) === "1") {
     const e = t.substr(1, 3);
-    return j.indexOf(e) !== -1;
+    return K.indexOf(e) !== -1;
   }
   return !1;
-}, K = (u, t, e, i) => {
+}, U = (u, t, e, i) => {
   if (e === 0 && !i)
     return 0;
   let s = 0;
@@ -1674,9 +1674,9 @@ const k = {
   const { instances: t } = l;
   Object.values(t).forEach((e) => e[u]());
 };
-class U {
+class H {
   constructor(t, e = {}) {
-    this.id = $++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
+    this.id = j++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
@@ -1971,7 +1971,7 @@ class U {
       p || d && !t ? a = !0 : /[^+0-9]/.test(this.telInput.value) || (a = !1);
       const C = (r == null ? void 0 : r.detail) && r.detail.isSetNumber && !s;
       if (e && !a && !C) {
-        const c = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, c).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), w = K(m, g, c, f);
+        const c = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, c).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), w = U(m, g, c, f);
         this.telInput.value = g, this.telInput.setSelectionRange(w, w);
       }
     }, this.telInput.addEventListener("input", this._handleInputEvent), (t || i) && (this._handleKeydownEvent = (r) => {
@@ -2439,7 +2439,7 @@ class U {
     this.telInput.disabled = t, t ? this.selectedCountry.setAttribute("disabled", "true") : this.selectedCountry.removeAttribute("disabled");
   }
 }
-const H = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUtilsScript = !0, new Promise((t, e) => {
+const G = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUtilsScript = !0, new Promise((t, e) => {
   import(
     /* webpackIgnore: true */
     /* @vite-ignore */
@@ -2451,7 +2451,7 @@ const H = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
   });
 })) : null, l = Object.assign(
   (u, t) => {
-    const e = new U(u, t);
+    const e = new H(u, t);
     return e._init(), u.setAttribute("data-intl-tel-input-id", e.id.toString()), l.instances[e.id] = e, e;
   },
   {
@@ -2467,12 +2467,20 @@ const H = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     },
     //* A map from instance ID to instance object.
     instances: {},
-    loadUtils: H,
+    loadUtils: G,
     version: "24.3.7"
   }
-), W = {
+), q = {
   __name: "IntlTelInput",
   props: /* @__PURE__ */ L({
+    disabled: {
+      type: Boolean,
+      default: !1
+    },
+    inputProps: {
+      type: Object,
+      default: () => ({})
+    },
     options: {
       type: Object,
       default: () => ({})
@@ -2480,9 +2488,6 @@ const H = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     value: {
       type: String,
       default: ""
-    },
-    disabled: {
-      type: Boolean
     }
   }, {
     modelValue: {
@@ -2491,11 +2496,19 @@ const H = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     },
     modelModifiers: {}
   }),
-  emits: /* @__PURE__ */ L(["changeNumber", "changeCountry", "changeValidity", "changeErrorCode"], ["update:modelValue"]),
+  emits: /* @__PURE__ */ L([
+    "changeNumber",
+    "changeCountry",
+    "changeValidity",
+    "changeErrorCode"
+  ], ["update:modelValue"]),
   setup(u, { expose: t, emit: e }) {
     const i = P(u, "modelValue"), s = u, n = e, o = v(), a = v(), r = v(!1), p = () => a.value ? s.options.strictMode ? a.value.isValidNumberPrecise() : a.value.isValidNumber() : null, d = () => {
       let h = p();
-      r.value !== h && (r.value = h, n("changeValidity", !!h), n("changeErrorCode", h ? null : a.value.getValidationError()));
+      r.value !== h && (r.value = h, n("changeValidity", !!h), n(
+        "changeErrorCode",
+        h ? null : a.value.getValidationError()
+      ));
     }, C = () => {
       var h;
       n("changeNumber", ((h = a.value) == null ? void 0 : h.getNumber()) ?? ""), d();
@@ -2514,18 +2527,18 @@ const H = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     ), M(() => {
       var h;
       return (h = a.value) == null ? void 0 : h.destroy();
-    }), t({ instance: a, input: o }), (h, m) => B((O(), V("input", {
+    }), t({ instance: a, input: o }), (h, m) => B((O(), V("input", F({
       ref_key: "input",
       ref: o,
       "onUpdate:modelValue": m[0] || (m[0] = (f) => i.value = f),
       type: "tel",
       onCountrychange: c,
       onInput: C
-    }, null, 544)), [
-      [F, i.value]
+    }, u.inputProps), null, 16)), [
+      [z, i.value]
     ]);
   }
 };
 export {
-  W as default
+  q as default
 };
