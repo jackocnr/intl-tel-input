@@ -39,39 +39,39 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 ## Props
 Here's a list of all of the current props you can pass to the IntlTelInput Vue component.
 
-**disabled**
-Type: `Boolean`, Default: `false`
+**disabled**  
+Type: `Boolean`, Default: `false`  
 Sets the disabled attribute of both the telephone input and selected country button. *Note: we recommend using this instead of `inputProps.disabled`.*
 
-**inputProps**
-Type: `Object`
+**inputProps**  
+Type: `Object`  
 The props to pass to the input element e.g. `id`, `class`, `placeholder`, `required`, `onBlur` etc. *Note: we recommend using the separate `disabled` prop instead of `inputProps.disabled`.*
 
-**options**
-Type: `Object`
+**options**  
+Type: `Object`  
 An object containing the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
 
-**value**
-Type: `String`
+**value**  
+Type: `String`  
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
 
 ## Events
 Here's a list of all of the current events you can listen to on the IntlTelInput Vue component.
 
-**changeCountry**
-Type: `Function`
+**changeCountry**  
+Type: `Function`  
 A handler to be called when the selected country changes. It will be passed the new country iso2 code e.g. "gb" for UK.
 
-**changeErrorCode**
-Type: `Function`
+**changeErrorCode**  
+Type: `Function`  
 A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
 
-**changeNumber**
-Type: `Function`
+**changeNumber**  
+Type: `Function`  
 A handler to be called when the number changes. It will be passed the new number.
 
-**changeValidity**
-Type: `Function`
+**changeValidity**  
+Type: `Function`  
 A handler to be called when the number validity changes e.g. to true/false. It will be passed the new isValid boolean.
 
 ## Accessing Instance Methods
