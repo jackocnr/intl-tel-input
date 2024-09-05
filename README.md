@@ -59,7 +59,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Accessibility provided via ARIA tags
 * Typescript type definitions included
 * Easily customise styles by overriding CSS variables
-* React component included
+* React and Vue components included
 * Translations for country names (etc) provided for over 30 different languages
 * Lots of initialisation options for customisation, as well as instance methods/events for interaction
 
