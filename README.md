@@ -36,7 +36,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 - [Contributing](#contributing)
 - [Attributions](#attributions)
 
-## JavaScript Plugin vs React Component vs Vue Component
+## React and Vue Components
 We now provide both React and Vue components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) or the [Vue Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md).
 
 ## Demo and Examples
