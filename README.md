@@ -18,7 +18,7 @@ Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?ut
 
 ## Table of Contents
 
-- [JavaScript Plugin vs React Component vs Vue Component](#javascript-plugin-vs-react-component-vs-vue-component)
+- [React and Vue Components](#react-and-vue-components)
 - [Demo and Examples](#demo-and-examples)
 - [Mobile](#mobile)
 - [Features](#features)
