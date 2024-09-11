@@ -14,7 +14,7 @@ If you find the plugin helpful, please consider [supporting the project](https:/
 
 ## Sponsored by
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.webp" height="100" alt="Twilio"/>
-Use <a href="https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input">Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more</a>. We can't wait to see what you build.
+Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more](https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input). We can't wait to see what you build.
 
 ## Table of Contents
 
