@@ -857,6 +857,24 @@ declare module "intl-tel-input/i18n/nl" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/no/countries" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const countryTranslations: I18n;
+    export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/no/interface" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const interfaceTranslations: I18n;
+    export default interfaceTranslations;
+}
+declare module "intl-tel-input/i18n/no" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    import countryTranslations from "intl-tel-input/i18n/no/countries";
+    import interfaceTranslations from "intl-tel-input/i18n/no/interface";
+    export { countryTranslations, interfaceTranslations };
+    const allTranslations: I18n;
+    export default allTranslations;
+}
 declare module "intl-tel-input/i18n/pl/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
@@ -1037,6 +1055,24 @@ declare module "intl-tel-input/i18n/ur" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/vi/countries" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const countryTranslations: I18n;
+    export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/vi/interface" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const interfaceTranslations: I18n;
+    export default interfaceTranslations;
+}
+declare module "intl-tel-input/i18n/vi" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    import countryTranslations from "intl-tel-input/i18n/vi/countries";
+    import interfaceTranslations from "intl-tel-input/i18n/vi/interface";
+    export { countryTranslations, interfaceTranslations };
+    const allTranslations: I18n;
+    export default allTranslations;
+}
 declare module "intl-tel-input/i18n/zh/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
@@ -1078,6 +1114,7 @@ declare module "intl-tel-input/i18n" {
     export { default as ko, countryTranslations as koCountryTranslations, interfaceTranslations as koInterfaceTranslations } from "intl-tel-input/i18n/ko";
     export { default as mr, countryTranslations as mrCountryTranslations, interfaceTranslations as mrInterfaceTranslations } from "intl-tel-input/i18n/mr";
     export { default as nl, countryTranslations as nlCountryTranslations, interfaceTranslations as nlInterfaceTranslations } from "intl-tel-input/i18n/nl";
+    export { default as no, countryTranslations as noCountryTranslations, interfaceTranslations as noInterfaceTranslations } from "intl-tel-input/i18n/no";
     export { default as pl, countryTranslations as plCountryTranslations, interfaceTranslations as plInterfaceTranslations } from "intl-tel-input/i18n/pl";
     export { default as pt, countryTranslations as ptCountryTranslations, interfaceTranslations as ptInterfaceTranslations } from "intl-tel-input/i18n/pt";
     export { default as ro, countryTranslations as roCountryTranslations, interfaceTranslations as roInterfaceTranslations } from "intl-tel-input/i18n/ro";
@@ -1088,5 +1125,6 @@ declare module "intl-tel-input/i18n" {
     export { default as th, countryTranslations as thCountryTranslations, interfaceTranslations as thInterfaceTranslations } from "intl-tel-input/i18n/th";
     export { default as tr, countryTranslations as trCountryTranslations, interfaceTranslations as trInterfaceTranslations } from "intl-tel-input/i18n/tr";
     export { default as ur, countryTranslations as urCountryTranslations, interfaceTranslations as urInterfaceTranslations } from "intl-tel-input/i18n/ur";
+    export { default as vi, countryTranslations as viCountryTranslations, interfaceTranslations as viInterfaceTranslations } from "intl-tel-input/i18n/vi";
     export { default as zh, countryTranslations as zhCountryTranslations, interfaceTranslations as zhInterfaceTranslations } from "intl-tel-input/i18n/zh";
 }
