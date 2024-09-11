@@ -605,8 +605,4 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * Formatting/validation/example number code from [libphonenumber](https://github.com/googlei18n/libphonenumber)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/jackocnr/intl-tel-input/wiki/Contributions)
 
-## Links
-* List of [integrations with intl-tel-input](https://github.com/jackocnr/intl-tel-input/wiki/Integrations)
-
-<img width="200" src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" alt="BrowserStack"/><br />
 Testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
