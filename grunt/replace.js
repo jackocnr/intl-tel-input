@@ -327,13 +327,13 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /\<script setup\>\simport intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
-            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script setup>\nimport intlTelInput from "./intlTelInputWithUtils";'
+            match: /\<script setup\>\s*import intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
+            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script setup>\nimport intlTelInput from "../intl-tel-input/intlTelInputWithUtils";'
           }
         ]
       },
       files: {
-        'vue/src/intl-tel-input/IntlTelInputWithUtils.vue': 'vue/src/intl-tel-input/IntlTelInput.vue',
+        'vue/src/js/IntlTelInputWithUtils.vue': 'vue/src/js/IntlTelInput.vue',
       }
     },
 

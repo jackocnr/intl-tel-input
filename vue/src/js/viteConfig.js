@@ -1,17 +1,17 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { version } from "../package.json";
+import { version } from "../../../package.json";
 
 export const getConfig = (filename) => defineConfig({
-  root: "vue",
+  root: "vue/src/js",
   define: {
     "process.env.VERSION": `"${version}"`,
   },
   build: {
-    outDir: "build",
+    outDir: "../../build/",
     emptyOutDir: false,
     lib: {
-      entry: `src/intl-tel-input/${filename}`,
+      entry: `./${filename}`,
       formats: ["es"],
       fileName: "[name]",
     },
