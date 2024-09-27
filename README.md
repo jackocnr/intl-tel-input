@@ -67,7 +67,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 ## Browser Compatibility
 | Chrome |  Firefox  | Safari | Edge |
 | :----: | :-------: | :----: | :--: |
-|    ✓   |     ✓     |    ✓   |   ✓  |
+|    ✓   |     ✓     |  v14+  |   ✓  |
 
 _Note: We have now dropped support for all versions of Internet Explorer because it is [no longer supported](https://blogs.windows.com/windowsexperience/2022/06/15/internet-explorer-11-has-retired-and-is-officially-out-of-support-what-you-need-to-know/) by any version of Windows._
 
