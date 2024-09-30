@@ -605,4 +605,6 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 * Formatting/validation/example number code from [libphonenumber](https://github.com/googlei18n/libphonenumber)
 * Feature contributions are listed in the wiki: [Contributions](https://github.com/jackocnr/intl-tel-input/wiki/Contributions)
 
-Testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)
+User testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)  
+
+Browser testing via <a href="https://www.lambdatest.com/" target="_blank"><img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/lambda-test-white-logo.svg" style="vertical-align: middle;margin-left:5px" width="147" height="26" /></a>
