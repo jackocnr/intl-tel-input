@@ -260,7 +260,7 @@ export class Iti {
   private hiddenInput: HTMLInputElement;
   private hiddenInputCountry: HTMLInputElement;
   private maxCoreNumberLength: number | null;
-  private defaultCountry: string | null;
+  private defaultCountry: string;
   private originalPaddingRight: string;
   private originalPaddingLeft: string;
 
@@ -1039,18 +1039,24 @@ export class Iti {
           }
           //* If strictMode, prevent invalid characters.
           if (strictMode) {
-            const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
+            const value = this.telInput.value;
+            const alreadyHasPlus = value.charAt(0) === "+";
+            const isInitialPlus = !alreadyHasPlus && this.telInput.selectionStart === 0 && e.key === "+";
             const isNumeric = /^[0-9]$/.test(e.key);
             const isAllowedChar = separateDialCode ? isNumeric : isInitialPlus || isNumeric;
             const fullNumber = this._getFullNumber();
             const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
-            const selectedText = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
+            const selectedText = value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
             const hasSelectedDigit = /\d/.test(selectedText);
-            const currentCaretPos = this.telInput.selectionStart || 0;
-            const cursorAtEnd = currentCaretPos === this.telInput.value.length;
-            // ignore the char if (1) it's not an allowed char, or (2) the input has reached max length and no digit is selected (which will be replaced by the new char) and the cursor is at the end (so they're not trying to change the dial code)
-            if (!isAllowedChar || (hasReachedMaxLength && !hasSelectedDigit && cursorAtEnd)) {
+            const currentCountry = this.selectedCountryData.iso2;
+            // insert the new character in the right place, in order to see if it changes the selected country
+            const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
+            const newFullNumber = this._getFullNumber(newValue);
+            const newCountry = this._getCountryFromNumber(newFullNumber);
+            const isChangingDialCode = newCountry !== currentCountry || isInitialPlus;
+            // ignore the char if (1) it's not an allowed char, or (2) the input has reached max length and no digit is selected (which will be replaced by the new char) and this char will not change the selected country
+            if (!isAllowedChar || (hasReachedMaxLength && !hasSelectedDigit && !isChangingDialCode)) {
               e.preventDefault();
             }
           }
@@ -1367,6 +1373,14 @@ export class Iti {
   //* Check if need to select a new country based on the given number
   //* Note: called from _setInitialState, keyup handler, setNumber.
   private _updateCountryFromNumber(fullNumber: string): boolean {
+    const iso2 = this._getCountryFromNumber(fullNumber);
+    if (iso2 !== null) {
+      return this._setCountry(iso2);
+    }
+    return false;
+  }
+
+  private _getCountryFromNumber(fullNumber: string): string | null {
     const plusIndex = fullNumber.indexOf("+");
     //* If it contains a plus, discard any chars before it e.g. accidental space char.
     //* This keeps the selected country auto-updating correctly, which we want as
@@ -1399,7 +1413,6 @@ export class Iti {
     //* Try and extract valid dial code from input.
     const dialCode = this._getDialCode(number, true);
     const numeric = getNumeric(number);
-    let iso2: string | null = null;
     if (dialCode) {
       const iso2Codes = this.dialCodeToIso2Map[getNumeric(dialCode)];
       //* Check if the right country is already selected. this should be false if the number is
@@ -1420,24 +1433,19 @@ export class Iti {
         //* If using onlyCountries option, iso2Codes[0] may be empty, so we must find the first non-empty index.
         for (let j = 0; j < iso2Codes.length; j++) {
           if (iso2Codes[j]) {
-            iso2 = iso2Codes[j];
-            break;
+            return iso2Codes[j];
           }
         }
       }
     } else if (number.charAt(0) === "+" && numeric.length) {
       //* Invalid dial code, so empty.
       //* Note: use getNumeric here because the number has not been formatted yet, so could contain bad chars.
-      iso2 = "";
+      return "";
     } else if ((!number || number === "+") && !this.selectedCountryData.iso2) {
       //* If no selected country, and user either clears the input, or just types a plus, then show default.
-      iso2 = this.defaultCountry;
+      return this.defaultCountry;
     }
-
-    if (iso2 !== null) {
-      return this._setCountry(iso2);
-    }
-    return false;
+    return null;
   }
 
   //* Remove highlighting from other list items and highlight the given item.
@@ -1791,8 +1799,8 @@ export class Iti {
   }
 
   //* Get the input val, adding the dial code if separateDialCode is enabled.
-  private _getFullNumber(): string {
-    const val = this.telInput.value.trim();
+  private _getFullNumber(overrideVal?: string): string {
+    const val = overrideVal || this.telInput.value.trim();
     const { dialCode } = this.selectedCountryData;
     let prefix;
     const numericVal = getNumeric(val);

@@ -434,6 +434,7 @@ declare module "intl-tel-input" {
         private _handleEnterKey;
         private _updateValFromNumber;
         private _updateCountryFromNumber;
+        private _getCountryFromNumber;
         private _highlightListItem;
         private _getCountryData;
         private _setCountry;

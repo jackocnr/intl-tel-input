@@ -2254,17 +2254,22 @@ var Iti = class {
             return;
           }
           if (strictMode) {
-            const isInitialPlus = this.telInput.selectionStart === 0 && e.key === "+";
+            const value = this.telInput.value;
+            const alreadyHasPlus = value.charAt(0) === "+";
+            const isInitialPlus = !alreadyHasPlus && this.telInput.selectionStart === 0 && e.key === "+";
             const isNumeric = /^[0-9]$/.test(e.key);
             const isAllowedChar = separateDialCode ? isNumeric : isInitialPlus || isNumeric;
             const fullNumber = this._getFullNumber();
             const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
-            const selectedText = this.telInput.value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
+            const selectedText = value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
             const hasSelectedDigit = /\d/.test(selectedText);
-            const currentCaretPos = this.telInput.selectionStart || 0;
-            const cursorAtEnd = currentCaretPos === this.telInput.value.length;
-            if (!isAllowedChar || hasReachedMaxLength && !hasSelectedDigit && cursorAtEnd) {
+            const currentCountry = this.selectedCountryData.iso2;
+            const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
+            const newFullNumber = this._getFullNumber(newValue);
+            const newCountry = this._getCountryFromNumber(newFullNumber);
+            const isChangingDialCode = newCountry !== currentCountry || isInitialPlus;
+            if (!isAllowedChar || hasReachedMaxLength && !hasSelectedDigit && !isChangingDialCode) {
               e.preventDefault();
             }
           }
@@ -2495,6 +2500,13 @@ var Iti = class {
   //* Check if need to select a new country based on the given number
   //* Note: called from _setInitialState, keyup handler, setNumber.
   _updateCountryFromNumber(fullNumber) {
+    const iso2 = this._getCountryFromNumber(fullNumber);
+    if (iso2 !== null) {
+      return this._setCountry(iso2);
+    }
+    return false;
+  }
+  _getCountryFromNumber(fullNumber) {
     const plusIndex = fullNumber.indexOf("+");
     let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
     const selectedDialCode = this.selectedCountryData.dialCode;
@@ -2510,7 +2522,6 @@ var Iti = class {
     }
     const dialCode = this._getDialCode(number, true);
     const numeric = getNumeric(number);
-    let iso2 = null;
     if (dialCode) {
       const iso2Codes = this.dialCodeToIso2Map[getNumeric(dialCode)];
       const alreadySelected = iso2Codes.indexOf(this.selectedCountryData.iso2) !== -1 && numeric.length <= dialCode.length - 1;
@@ -2518,20 +2529,16 @@ var Iti = class {
       if (!isRegionlessNanpNumber && !alreadySelected) {
         for (let j = 0; j < iso2Codes.length; j++) {
           if (iso2Codes[j]) {
-            iso2 = iso2Codes[j];
-            break;
+            return iso2Codes[j];
           }
         }
       }
     } else if (number.charAt(0) === "+" && numeric.length) {
-      iso2 = "";
+      return "";
     } else if ((!number || number === "+") && !this.selectedCountryData.iso2) {
-      iso2 = this.defaultCountry;
+      return this.defaultCountry;
     }
-    if (iso2 !== null) {
-      return this._setCountry(iso2);
-    }
-    return false;
+    return null;
   }
   //* Remove highlighting from other list items and highlight the given item.
   _highlightListItem(listItem, shouldFocus) {
@@ -2801,8 +2808,8 @@ var Iti = class {
     return dialCode;
   }
   //* Get the input val, adding the dial code if separateDialCode is enabled.
-  _getFullNumber() {
-    const val = this.telInput.value.trim();
+  _getFullNumber(overrideVal) {
+    const val = overrideVal || this.telInput.value.trim();
     const { dialCode } = this.selectedCountryData;
     let prefix;
     const numericVal = getNumeric(val);
