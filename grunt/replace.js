@@ -346,8 +346,8 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /import\(/,
-            replacement: 'import_INTENTIONALLY_BROKEN('
+            match: /import\([^)]*\)/,
+            replacement: 'Promise.reject(new Error("INTENTIONALLY BROKEN: this build of intl-tel-input includes the utilities module inline, but it has incorrectly attempted to load the utilities separately. If you are seeing this message, something is broken!"))'
           }
         ]
       },

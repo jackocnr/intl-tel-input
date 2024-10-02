@@ -297,8 +297,8 @@ declare module "intl-tel-input" {
             [key: string]: Iti;
         };
         loadUtils: (path: string) => Promise<unknown> | null;
-        startedLoadingAutoCountry?: boolean;
-        startedLoadingUtilsScript?: boolean;
+        startedLoadingAutoCountry: boolean;
+        startedLoadingUtilsScript: boolean;
         version: string | undefined;
         utils?: ItiUtils;
     }
@@ -400,6 +400,7 @@ declare module "intl-tel-input" {
         private _handleClickOffToClose;
         private _handleKeydownOnDropdown;
         private _handleSearchChange;
+        private _handlePageLoad;
         private resolveAutoCountryPromise;
         private rejectAutoCountryPromise;
         private resolveUtilsScriptPromise;
