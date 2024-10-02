@@ -16,8 +16,8 @@ interface IntlTelInputInterface {
   getInstance: (input: HTMLInputElement) => Iti | null;
   instances: { [key: string]: Iti };
   loadUtils: (path: string) => Promise<unknown> | null;
-  startedLoadingAutoCountry?: boolean;
-  startedLoadingUtilsScript?: boolean;
+  startedLoadingAutoCountry: boolean;
+  startedLoadingUtilsScript: boolean;
   version: string | undefined;
   utils?: ItiUtils;
 }
@@ -221,9 +221,9 @@ const createEl = (name: string, attrs: object | null, container?: HTMLElement): 
 };
 
 //* Run a method on each instance of the plugin.
-const forEachInstance = (method: string): void => {
+const forEachInstance = (method: string, ...args: any[]): void => {
   const { instances } = intlTelInput;
-  Object.values(instances).forEach((instance) => instance[method]());
+  Object.values(instances).forEach((instance) => instance[method](...args));
 };
 
 //* This is our plugin class that we will create an instance of
@@ -276,6 +276,7 @@ export class Iti {
   private _handleClickOffToClose: () => void;
   private _handleKeydownOnDropdown: (e: KeyboardEvent) => void;
   private _handleSearchChange: () => void;
+  private _handlePageLoad: () => void;
 
   private resolveAutoCountryPromise: (value?: unknown) => void;
   private rejectAutoCountryPromise: (reason?: unknown) => void;
@@ -900,14 +901,20 @@ export class Iti {
     const { utilsScript, initialCountry, geoIpLookup } = this.options;
     //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
     if (utilsScript && !intlTelInput.utils) {
+      this._handlePageLoad = () => {
+        window.removeEventListener("load", this._handlePageLoad);
+        //* Catch and ignore any errors to prevent unhandled-promise failures.
+        //* The error from `loadUtils()` is also surfaced in each instance's
+        //* `promise` property, so it's not getting lost by being ignored here.
+        intlTelInput.loadUtils(utilsScript)?.catch(() => {});
+      };
+
       //* If the plugin is being initialised after the window.load event has already been fired.
       if (intlTelInput.documentReady()) {
-        intlTelInput.loadUtils(utilsScript);
+        this._handlePageLoad();
       } else {
         //* Wait until the load event so we don't block any other requests e.g. the flags image.
-        window.addEventListener("load", () => {
-          intlTelInput.loadUtils(utilsScript);
-        });
+        window.addEventListener("load", this._handlePageLoad);
       }
     } else {
       this.resolveUtilsScriptPromise();
@@ -1722,6 +1729,11 @@ export class Iti {
       }
     }
 
+    //* Unhook any deferred resource loads.
+    if (this._handlePageLoad) {
+      window.removeEventListener("load", this._handlePageLoad);
+    }
+
     this._trigger("close:countrydropdown");
   }
 
@@ -2131,9 +2143,9 @@ const loadUtils = (path: string): Promise<unknown> | null => {
           forEachInstance("handleUtils");
           resolve(true);
         })
-        .catch(() => {
-          forEachInstance("rejectUtilsScriptPromise");
-          reject();
+        .catch((error) => {
+          forEachInstance("rejectUtilsScriptPromise", error);
+          reject(error);
         });
     });
   }
@@ -2163,6 +2175,8 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     //* A map from instance ID to instance object.
     instances: {},
     loadUtils,
+    startedLoadingUtilsScript: false,
+    startedLoadingAutoCountry: false,
     version: process.env.VERSION,
   });
 

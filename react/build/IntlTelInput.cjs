@@ -1741,9 +1741,9 @@ var createEl = (name, attrs, container) => {
   }
   return el;
 };
-var forEachInstance = (method) => {
+var forEachInstance = (method, ...args) => {
   const { instances } = intlTelInput;
-  Object.values(instances).forEach((instance) => instance[method]());
+  Object.values(instances).forEach((instance) => instance[method](...args));
 };
 var Iti = class {
   constructor(input, customOptions = {}) {
@@ -2193,12 +2193,15 @@ var Iti = class {
   _initRequests() {
     const { utilsScript, initialCountry, geoIpLookup } = this.options;
     if (utilsScript && !intlTelInput.utils) {
-      if (intlTelInput.documentReady()) {
-        intlTelInput.loadUtils(utilsScript);
-      } else {
-        window.addEventListener("load", () => {
-          intlTelInput.loadUtils(utilsScript);
+      this._handlePageLoad = () => {
+        window.removeEventListener("load", this._handlePageLoad);
+        intlTelInput.loadUtils(utilsScript)?.catch(() => {
         });
+      };
+      if (intlTelInput.documentReady()) {
+        this._handlePageLoad();
+      } else {
+        window.addEventListener("load", this._handlePageLoad);
       }
     } else {
       this.resolveUtilsScriptPromise();
@@ -2783,6 +2786,9 @@ var Iti = class {
         this.dropdown.parentNode.removeChild(this.dropdown);
       }
     }
+    if (this._handlePageLoad) {
+      window.removeEventListener("load", this._handlePageLoad);
+    }
     this._trigger("close:countrydropdown");
   }
   //* Check if an element is visible within it's container, else scroll until it is.
@@ -3083,9 +3089,9 @@ var loadUtils = (path) => {
         intlTelInput.utils = utils;
         forEachInstance("handleUtils");
         resolve(true);
-      }).catch(() => {
-        forEachInstance("rejectUtilsScriptPromise");
-        reject();
+      }).catch((error) => {
+        forEachInstance("rejectUtilsScriptPromise", error);
+        reject(error);
       });
     });
   }
@@ -3113,6 +3119,8 @@ var intlTelInput = Object.assign(
     //* A map from instance ID to instance object.
     instances: {},
     loadUtils,
+    startedLoadingUtilsScript: false,
+    startedLoadingAutoCountry: false,
     version: "24.5.2"
   }
 );

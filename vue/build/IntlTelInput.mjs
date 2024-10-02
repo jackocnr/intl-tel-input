@@ -1667,12 +1667,12 @@ const T = {
       return n;
   }
   return t.length;
-}, y = (u, t, e) => {
+}, m = (u, t, e) => {
   const i = document.createElement(u);
   return t && Object.entries(t).forEach(([s, n]) => i.setAttribute(s, n)), e && e.appendChild(i), i;
-}, _ = (u) => {
-  const { instances: t } = l;
-  Object.values(t).forEach((e) => e[u]());
+}, _ = (u, ...t) => {
+  const { instances: e } = l;
+  Object.values(e).forEach((i) => i[u](...t));
 };
 class G {
   constructor(t, e = {}) {
@@ -1785,13 +1785,13 @@ class G {
     } = this.options;
     let d = "iti";
     t && (d += " iti--allow-dropdown"), i && (d += " iti--show-flags"), s && (d += ` ${s}`), r || (d += " iti--inline-dropdown");
-    const C = y("div", { class: d });
+    const C = m("div", { class: d });
     if ((h = this.telInput.parentNode) == null || h.insertBefore(C, this.telInput), t || i || e) {
-      this.countryContainer = y(
+      this.countryContainer = m(
         "div",
         { class: "iti__country-container" },
         C
-      ), this.showSelectedCountryOnLeft ? this.countryContainer.style.left = "0px" : this.countryContainer.style.right = "0px", t ? (this.selectedCountry = y(
+      ), this.showSelectedCountryOnLeft ? this.countryContainer.style.left = "0px" : this.countryContainer.style.right = "0px", t ? (this.selectedCountry = m(
         "button",
         {
           type: "button",
@@ -1803,30 +1803,30 @@ class G {
           role: "combobox"
         },
         this.countryContainer
-      ), this.telInput.disabled && this.selectedCountry.setAttribute("disabled", "true")) : this.selectedCountry = y(
+      ), this.telInput.disabled && this.selectedCountry.setAttribute("disabled", "true")) : this.selectedCountry = m(
         "div",
         { class: "iti__selected-country" },
         this.countryContainer
       );
-      const m = y("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
-      if (this.selectedCountryInner = y("div", { class: "iti__flag" }, m), this.selectedCountryA11yText = y(
+      const y = m("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
+      if (this.selectedCountryInner = m("div", { class: "iti__flag" }, y), this.selectedCountryA11yText = m(
         "span",
         { class: "iti__a11y-text" },
         this.selectedCountryInner
-      ), t && (this.dropdownArrow = y(
+      ), t && (this.dropdownArrow = m(
         "div",
         { class: "iti__arrow", "aria-hidden": "true" },
-        m
-      )), e && (this.selectedDialCode = y(
+        y
+      )), e && (this.selectedDialCode = m(
         "div",
         { class: "iti__selected-dial-code" },
         this.selectedCountry
       )), t) {
         const f = a ? "" : "iti--flexible-dropdown-width";
-        if (this.dropdownContent = y("div", {
+        if (this.dropdownContent = m("div", {
           id: `iti-${this.id}__dropdown-content`,
           class: `iti__dropdown-content iti__hide ${f}`
-        }), p && (this.searchInput = y(
+        }), p && (this.searchInput = m(
           "input",
           {
             type: "text",
@@ -1840,11 +1840,11 @@ class G {
             autocomplete: "off"
           },
           this.dropdownContent
-        ), this.searchResultsA11yText = y(
+        ), this.searchResultsA11yText = m(
           "span",
           { class: "iti__a11y-text" },
           this.dropdownContent
-        )), this.countryList = y(
+        )), this.countryList = m(
           "ul",
           {
             class: "iti__country-list",
@@ -1855,17 +1855,17 @@ class G {
           this.dropdownContent
         ), this._appendListItems(), p && this._updateSearchResultsText(), o) {
           let g = "iti iti--container";
-          r ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = y("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
+          r ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = m("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
         } else
           this.countryContainer.appendChild(this.dropdownContent);
       }
     }
     if (C.appendChild(this.telInput), this._updateInputPadding(), n) {
-      const m = this.telInput.getAttribute("name") || "", f = n(m);
-      f.phone && (this.hiddenInput = y("input", {
+      const y = this.telInput.getAttribute("name") || "", f = n(y);
+      f.phone && (this.hiddenInput = m("input", {
         type: "hidden",
         name: f.phone
-      }), C.appendChild(this.hiddenInput)), f.country && (this.hiddenInputCountry = y("input", {
+      }), C.appendChild(this.hiddenInput)), f.country && (this.hiddenInputCountry = m("input", {
         type: "hidden",
         name: f.country
       }), C.appendChild(this.hiddenInputCountry));
@@ -1874,7 +1874,7 @@ class G {
   //* For each country: add a country list item <li> to the countryList <ul> container.
   _appendListItems() {
     for (let t = 0; t < this.countries.length; t++) {
-      const e = this.countries[t], i = t === 0 ? "iti__highlight" : "", s = y(
+      const e = this.countries[t], i = t === 0 ? "iti__highlight" : "", s = m(
         "li",
         {
           id: `iti-${this.id}__item-${e.iso2}`,
@@ -1937,9 +1937,11 @@ class G {
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
     const { utilsScript: t, initialCountry: e, geoIpLookup: i } = this.options;
-    t && !l.utils ? l.documentReady() ? l.loadUtils(t) : window.addEventListener("load", () => {
-      l.loadUtils(t);
-    }) : this.resolveUtilsScriptPromise(), e === "auto" && i && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
+    t && !l.utils ? (this._handlePageLoad = () => {
+      var n;
+      window.removeEventListener("load", this._handlePageLoad), (n = l.loadUtils(t)) == null || n.catch(() => {
+      });
+    }, l.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), e === "auto" && i && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
   }
   //* Perform the geo ip lookup.
   _loadAutoCountry() {
@@ -1962,8 +1964,8 @@ class G {
     let a = !1;
     new RegExp("\\p{L}", "u").test(this.telInput.value) && (a = !0), this._handleInputEvent = (r) => {
       if (this.isAndroid && (r == null ? void 0 : r.data) === "+" && i && n && o) {
-        const C = this.telInput.selectionStart || 0, h = this.telInput.value.substring(0, C - 1), m = this.telInput.value.substring(C);
-        this.telInput.value = h + m, this._openDropdownWithPlus();
+        const C = this.telInput.selectionStart || 0, h = this.telInput.value.substring(0, C - 1), y = this.telInput.value.substring(C);
+        this.telInput.value = h + y, this._openDropdownWithPlus();
         return;
       }
       this._updateCountryFromNumber(this.telInput.value) && this._triggerCountryChange();
@@ -1971,7 +1973,7 @@ class G {
       p || c && !t ? a = !0 : /[^+0-9]/.test(this.telInput.value) || (a = !1);
       const d = (r == null ? void 0 : r.detail) && r.detail.isSetNumber && !s;
       if (e && !a && !d) {
-        const C = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, C).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), I = H(m, g, C, f);
+        const C = this.telInput.selectionStart || 0, y = this.telInput.value.substring(0, C).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), I = H(y, g, C, f);
         this.telInput.value = g, this.telInput.setSelectionRange(I, I);
       }
     }, this.telInput.addEventListener("input", this._handleInputEvent), (t || i) && (this._handleKeydownEvent = (r) => {
@@ -1981,7 +1983,7 @@ class G {
           return;
         }
         if (t) {
-          const p = this.telInput.value, c = p.charAt(0) === "+", d = !c && this.telInput.selectionStart === 0 && r.key === "+", C = /^[0-9]$/.test(r.key), h = i ? C : d || C, m = p.slice(0, this.telInput.selectionStart) + r.key + p.slice(this.telInput.selectionEnd), f = this._getFullNumber(m), g = l.utils.getCoreNumber(f, this.selectedCountryData.iso2), I = this.maxCoreNumberLength && g.length > this.maxCoreNumberLength;
+          const p = this.telInput.value, c = p.charAt(0) === "+", d = !c && this.telInput.selectionStart === 0 && r.key === "+", C = /^[0-9]$/.test(r.key), h = i ? C : d || C, y = p.slice(0, this.telInput.selectionStart) + r.key + p.slice(this.telInput.selectionEnd), f = this._getFullNumber(y), g = l.utils.getCoreNumber(f, this.selectedCountryData.iso2), I = this.maxCoreNumberLength && g.length > this.maxCoreNumberLength;
           let L = !1;
           if (c) {
             const P = this.selectedCountryData.iso2;
@@ -2259,7 +2261,7 @@ class G {
     ), this.countryList.removeEventListener(
       "mouseover",
       this._handleMouseoverCountryList
-    ), this.countryList.removeEventListener("click", this._handleClickCountryList), this.options.dropdownContainer && (this.options.useFullscreenPopup || window.removeEventListener("scroll", this._handleWindowScroll), this.dropdown.parentNode && this.dropdown.parentNode.removeChild(this.dropdown)), this._trigger("close:countrydropdown");
+    ), this.countryList.removeEventListener("click", this._handleClickCountryList), this.options.dropdownContainer && (this.options.useFullscreenPopup || window.removeEventListener("scroll", this._handleWindowScroll), this.dropdown.parentNode && this.dropdown.parentNode.removeChild(this.dropdown)), this._handlePageLoad && window.removeEventListener("load", this._handlePageLoad), this._trigger("close:countrydropdown");
   }
   //* Check if an element is visible within it's container, else scroll until it is.
   _scrollTo(t) {
@@ -2457,8 +2459,8 @@ const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     u
   ).then(({ default: i }) => {
     l.utils = i, _("handleUtils"), t(!0);
-  }).catch(() => {
-    _("rejectUtilsScriptPromise"), e();
+  }).catch((i) => {
+    _("rejectUtilsScriptPromise", i), e(i);
   });
 })) : null, l = Object.assign(
   (u, t) => {
@@ -2479,6 +2481,8 @@ const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     //* A map from instance ID to instance object.
     instances: {},
     loadUtils: W,
+    startedLoadingUtilsScript: !1,
+    startedLoadingAutoCountry: !1,
     version: "24.5.2"
   }
 ), J = {
@@ -2532,16 +2536,16 @@ const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     }), M(
       () => s.disabled,
       (h) => {
-        var m;
-        return (m = a.value) == null ? void 0 : m.setDisabled(h);
+        var y;
+        return (y = a.value) == null ? void 0 : y.setDisabled(h);
       }
     ), F(() => {
       var h;
       return (h = a.value) == null ? void 0 : h.destroy();
-    }), t({ instance: a, input: o }), (h, m) => B((O(), V("input", z({
+    }), t({ instance: a, input: o }), (h, y) => B((O(), V("input", z({
       ref_key: "input",
       ref: o,
-      "onUpdate:modelValue": m[0] || (m[0] = (f) => i.value = f),
+      "onUpdate:modelValue": y[0] || (y[0] = (f) => i.value = f),
       type: "tel",
       onCountrychange: C,
       onInput: d
