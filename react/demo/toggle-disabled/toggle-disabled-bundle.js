@@ -25851,11 +25851,7 @@
               const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
               const selectedText = value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
               const hasSelectedDigit = /\d/.test(selectedText);
-              const currentCountry = this.selectedCountryData.iso2;
-              const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
-              const newFullNumber = this._getFullNumber(newValue);
-              const newCountry = this._getCountryFromNumber(newFullNumber);
-              const isChangingDialCode = newCountry !== currentCountry || isInitialPlus;
+              const isChangingDialCode = isInitialPlus ? true : this._isChangingDialCode(e.key);
               if (!isAllowedChar || hasReachedMaxLength && !hasSelectedDigit && !isChangingDialCode) {
                 e.preventDefault();
               }
@@ -25864,6 +25860,17 @@
         };
         this.telInput.addEventListener("keydown", this._handleKeydownEvent);
       }
+    }
+    _isChangingDialCode(char) {
+      const value = this.telInput.value;
+      if (value.charAt(0) === "+") {
+        const currentCountry = this.selectedCountryData.iso2;
+        const newValue = value.slice(0, this.telInput.selectionStart) + char + value.slice(this.telInput.selectionEnd);
+        const newFullNumber = this._getFullNumber(newValue);
+        const newCountry = this._getCountryFromNumber(newFullNumber);
+        return newCountry !== currentCountry;
+      }
+      return false;
     }
     //* Adhere to the input's maxlength attr.
     _cap(number) {

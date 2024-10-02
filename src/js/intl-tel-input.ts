@@ -1049,12 +1049,7 @@ export class Iti {
             const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
             const selectedText = value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
             const hasSelectedDigit = /\d/.test(selectedText);
-            const currentCountry = this.selectedCountryData.iso2;
-            // insert the new character in the right place, in order to see if it changes the selected country
-            const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
-            const newFullNumber = this._getFullNumber(newValue);
-            const newCountry = this._getCountryFromNumber(newFullNumber);
-            const isChangingDialCode = newCountry !== currentCountry || isInitialPlus;
+            const isChangingDialCode = isInitialPlus ? true : this._isChangingDialCode(e.key);
             // ignore the char if (1) it's not an allowed char, or (2) the input has reached max length and no digit is selected (which will be replaced by the new char) and this char will not change the selected country
             if (!isAllowedChar || (hasReachedMaxLength && !hasSelectedDigit && !isChangingDialCode)) {
               e.preventDefault();
@@ -1064,6 +1059,20 @@ export class Iti {
       };
       this.telInput.addEventListener("keydown", this._handleKeydownEvent);
     }
+  }
+
+  private _isChangingDialCode(char: string): boolean {
+    const value = this.telInput.value;
+    // we need a plus in order to be changing a dial code!
+    if (value.charAt(0) === "+") {
+      const currentCountry = this.selectedCountryData.iso2;
+      // insert the new character in the right place, in order to see if it changes the selected country
+      const newValue = value.slice(0, this.telInput.selectionStart) + char + value.slice(this.telInput.selectionEnd);
+      const newFullNumber = this._getFullNumber(newValue);
+      const newCountry = this._getCountryFromNumber(newFullNumber);
+      return newCountry !== currentCountry;
+    }
+    return false;
   }
 
   //* Adhere to the input's maxlength attr.

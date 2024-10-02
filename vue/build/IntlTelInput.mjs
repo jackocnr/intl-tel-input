@@ -1,4 +1,4 @@
-import { mergeModels as L, useModel as F, ref as v, onMounted as B, watch as O, onUnmounted as V, withDirectives as z, openBlock as R, createElementBlock as $, mergeProps as j, vModelText as K } from "vue";
+import { mergeModels as L, useModel as x, ref as v, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as O, createElementBlock as V, mergeProps as z, vModelText as R } from "vue";
 const D = [
   [
     "af",
@@ -1318,7 +1318,7 @@ for (let u = 0; u < D.length; u++) {
     nodeById: {}
   };
 }
-const U = {
+const $ = {
   ad: "Andorra",
   ae: "United Arab Emirates",
   af: "Afghanistan",
@@ -1561,7 +1561,7 @@ const U = {
   za: "South Africa",
   zm: "Zambia",
   zw: "Zimbabwe"
-}, H = {
+}, j = {
   selectedCountryAriaLabel: "Selected country",
   noCountrySelected: "No country selected",
   countryListAriaLabel: "List of countries",
@@ -1572,10 +1572,10 @@ const U = {
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo"
-}, S = { ...U, ...H };
+}, S = { ...$, ...j };
 for (let u = 0; u < b.length; u++)
   b[u].name = S[b[u].iso2];
-let G = 0;
+let K = 0;
 const k = {
   //* Whether or not to allow the dropdown.
   allowDropdown: !0,
@@ -1631,7 +1631,7 @@ const k = {
   utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberType: "MOBILE"
-}, W = [
+}, U = [
   "800",
   "822",
   "833",
@@ -1653,10 +1653,10 @@ const k = {
   const t = w(u);
   if (t.charAt(0) === "1") {
     const e = t.substr(1, 3);
-    return W.indexOf(e) !== -1;
+    return U.indexOf(e) !== -1;
   }
   return !1;
-}, q = (u, t, e, i) => {
+}, H = (u, t, e, i) => {
   if (e === 0 && !i)
     return 0;
   let s = 0;
@@ -1674,9 +1674,9 @@ const k = {
   const { instances: t } = l;
   Object.values(t).forEach((e) => e[u]());
 };
-class Y {
+class G {
   constructor(t, e = {}) {
-    this.id = G++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
+    this.id = K++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
@@ -1971,7 +1971,7 @@ class Y {
       p || c && !t ? a = !0 : /[^+0-9]/.test(this.telInput.value) || (a = !1);
       const d = (r == null ? void 0 : r.detail) && r.detail.isSetNumber && !s;
       if (e && !a && !d) {
-        const C = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, C).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), I = q(m, g, C, f);
+        const C = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, C).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), I = H(m, g, C, f);
         this.telInput.value = g, this.telInput.setSelectionRange(I, I);
       }
     }, this.telInput.addEventListener("input", this._handleInputEvent), (t || i) && (this._handleKeydownEvent = (r) => {
@@ -1981,11 +1981,19 @@ class Y {
           return;
         }
         if (t) {
-          const p = this.telInput.value, d = !(p.charAt(0) === "+") && this.telInput.selectionStart === 0 && r.key === "+", C = /^[0-9]$/.test(r.key), h = i ? C : d || C, m = this._getFullNumber(), f = l.utils.getCoreNumber(m, this.selectedCountryData.iso2), g = this.maxCoreNumberLength && f.length >= this.maxCoreNumberLength, I = p.substring(this.telInput.selectionStart, this.telInput.selectionEnd), T = /\d/.test(I), P = this.selectedCountryData.iso2, x = p.slice(0, this.telInput.selectionStart) + r.key + p.slice(this.telInput.selectionEnd), E = this._getFullNumber(x), M = this._getCountryFromNumber(E) !== P || d;
-          (!h || g && !T && !M) && r.preventDefault();
+          const p = this.telInput.value, d = !(p.charAt(0) === "+") && this.telInput.selectionStart === 0 && r.key === "+", C = /^[0-9]$/.test(r.key), h = i ? C : d || C, m = this._getFullNumber(), f = l.utils.getCoreNumber(m, this.selectedCountryData.iso2), g = this.maxCoreNumberLength && f.length >= this.maxCoreNumberLength, I = p.substring(this.telInput.selectionStart, this.telInput.selectionEnd), T = /\d/.test(I), P = d ? !0 : this._isChangingDialCode(r.key);
+          (!h || g && !T && !P) && r.preventDefault();
         }
       }
     }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
+  }
+  _isChangingDialCode(t) {
+    const e = this.telInput.value;
+    if (e.charAt(0) === "+") {
+      const i = this.selectedCountryData.iso2, s = e.slice(0, this.telInput.selectionStart) + t + e.slice(this.telInput.selectionEnd), n = this._getFullNumber(s);
+      return this._getCountryFromNumber(n) !== i;
+    }
+    return !1;
   }
   //* Adhere to the input's maxlength attr.
   _cap(t) {
@@ -2445,7 +2453,7 @@ class Y {
     this.telInput.disabled = t, t ? this.selectedCountry.setAttribute("disabled", "true") : this.selectedCountry.removeAttribute("disabled");
   }
 }
-const J = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUtilsScript = !0, new Promise((t, e) => {
+const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUtilsScript = !0, new Promise((t, e) => {
   import(
     /* webpackIgnore: true */
     /* @vite-ignore */
@@ -2457,7 +2465,7 @@ const J = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
   });
 })) : null, l = Object.assign(
   (u, t) => {
-    const e = new Y(u, t);
+    const e = new G(u, t);
     return e._init(), u.setAttribute("data-intl-tel-input-id", e.id.toString()), l.instances[e.id] = e, e;
   },
   {
@@ -2473,10 +2481,10 @@ const J = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     },
     //* A map from instance ID to instance object.
     instances: {},
-    loadUtils: J,
+    loadUtils: W,
     version: "24.5.0"
   }
-), X = {
+), Y = {
   __name: "IntlTelInput",
   props: /* @__PURE__ */ L({
     disabled: {
@@ -2509,7 +2517,7 @@ const J = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     "changeErrorCode"
   ], ["update:modelValue"]),
   setup(u, { expose: t, emit: e }) {
-    const i = F(u, "modelValue"), s = u, n = e, o = v(), a = v(), r = v(!1), p = () => a.value ? s.options.strictMode ? a.value.isValidNumberPrecise() : a.value.isValidNumber() : null, c = () => {
+    const i = x(u, "modelValue"), s = u, n = e, o = v(), a = v(), r = v(!1), p = () => a.value ? s.options.strictMode ? a.value.isValidNumberPrecise() : a.value.isValidNumber() : null, c = () => {
       let h = p();
       r.value !== h && (r.value = h, n("changeValidity", !!h), n(
         "changeErrorCode",
@@ -2522,18 +2530,18 @@ const J = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
       var h;
       n("changeCountry", ((h = a.value) == null ? void 0 : h.getSelectedCountryData().iso2) ?? ""), d(), c();
     };
-    return B(() => {
+    return E(() => {
       o.value && (a.value = l(o.value, s.options), s.value && a.value.setNumber(s.value), s.disabled && a.value.setDisabled(s.disabled));
-    }), O(
+    }), M(
       () => s.disabled,
       (h) => {
         var m;
         return (m = a.value) == null ? void 0 : m.setDisabled(h);
       }
-    ), V(() => {
+    ), F(() => {
       var h;
       return (h = a.value) == null ? void 0 : h.destroy();
-    }), t({ instance: a, input: o }), (h, m) => z((R(), $("input", j({
+    }), t({ instance: a, input: o }), (h, m) => B((O(), V("input", z({
       ref_key: "input",
       ref: o,
       "onUpdate:modelValue": m[0] || (m[0] = (f) => i.value = f),
@@ -2541,10 +2549,10 @@ const J = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
       onCountrychange: C,
       onInput: d
     }, u.inputProps), null, 16)), [
-      [K, i.value]
+      [R, i.value]
     ]);
   }
 };
 export {
-  X as default
+  Y as default
 };

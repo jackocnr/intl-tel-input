@@ -422,6 +422,7 @@ declare module "intl-tel-input" {
         private _loadAutoCountry;
         private _openDropdownWithPlus;
         private _initTelInputListeners;
+        private _isChangingDialCode;
         private _cap;
         private _trigger;
         private _openDropdown;
