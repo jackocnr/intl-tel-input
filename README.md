@@ -83,7 +83,7 @@ _Note: We have now dropped support for all versions of Internet Explorer because
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.2/build/js/utils.js",
+      loadUtilsOnInit: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.2/build/js/utils.js",
     });
   </script>
   ```
@@ -109,18 +109,18 @@ _Note: We have now dropped support for all versions of Internet Explorer because
 
   const input = document.querySelector("#phone");
   intlTelInput(input, {
-      utilsScript: () => import("intl-tel-input/utils")
+      loadUtilsOnInit: () => import("intl-tel-input/utils")
   });
   ```
 
-Most bundlers (such as Webpack, Vite, or Parcel) will see this and place the [utilities script](#utilities-script) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN) you can set the `utilsScript` option to the URL to load from as a string. For example:
+Most bundlers (such as Webpack, Vite, or Parcel) will see this and place the [utilities script](#utilities-script) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN) you can set the `loadUtilsOnInit` option to the URL to load from as a string. For example:
 
 ```js
 import intlTelInput from 'intl-tel-input';
 
 const input = document.querySelector("#phone");
 intlTelInput(input, {
-    utilsScript: `https://cdn.jsdelivr.net/npm/intl-tel-input@${intlTelInput.version}/build/js/utils.js`;
+    loadUtilsOnInit: `https://cdn.jsdelivr.net/npm/intl-tel-input@${intlTelInput.version}/build/js/utils.js`;
 });
 ```
 
@@ -148,7 +148,7 @@ intlTelInput(input, {
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      utilsScript: "path/to/utils.js"
+      loadUtilsOnInit: "path/to/utils.js"
     });
   </script>
   ```
@@ -315,6 +315,15 @@ intlTelInput(input, {
 Type: `String` Default: `""`  
 Set the initial country selection by specifying its country code e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note that however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
 
+**loadUtilsOnInit**  
+Type: `String` or `() => Promise<module>` Default: `""` Example: `"/build/js/utils.js"`
+
+This is one way to (lazy) load the included utils.js (to enable formatting/validation etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtilsOnInit` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.2/build/js/utils.js"`. The script is loaded via a [dynamic import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) statement, which means the URL cannot be relative - it must be absolute.
+
+Alternatively, this can be a function that returns a promise for the utils module. When using a bundler like Webpack, this can be used to tell the bundler that the utils script should be kept in a separate file from the rest of your code. For example: `{ loadUtilsOnInit: () => import("intl-tel-input/utils") }`.
+
+The script is only fetched when you initialise the plugin, and additionally, only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information.
+
 **nationalMode**  
 Type: `Boolean` Default: `true`  
 Format numbers in the national format, rather than the international format. This applies to placeholder numbers, and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use `getNumber` to extract a full international number - [see example](https://intl-tel-input.com/examples/national-mode.html). It is recommended to leave this option enabled, to encourage users to enter their numbers in national format as this is usually more familiar to them and so it creates a better user experience.
@@ -345,14 +354,10 @@ As the user types in the input, ignore any irrelevant characters. The user can o
 Type: `Boolean` Default: `true on mobile devices, false otherwise`  
 Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), to make better use of the limited space (similar to how a native `<select>` works), and as an inline dropdown on larger devices/screens. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
 
-**utilsScript**  
+**utilsScript** ⚠️ DEPRECATED  
 Type: `String` or `() => Promise<module>` Default: `""` Example: `"/build/js/utils.js"`
 
-This is one way to (lazy) load the included utils.js (to enable formatting/validation etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.2/build/js/utils.js"`. The script is loaded via a [dynamic import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) statement, which means the URL cannot be relative - it must be absolute.
-
-Alternatively, this can be a function that returns a promise for the utils module. When using a bundler like Webpack, this can be used to tell the bundler that the utils script should be kept in a separate file from the rest of your code. For example: `{ utilsScript: () => import("intl-tel-input/utils") }`.
-
-The script is only fetched when you initialise the plugin, and additionally, only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information.
+This option is deprecated and has been renamed to `loadUtilsOnInit`. Please see the deatails for that option and use it instead.
 
 **validationNumberType**  
 Type: `String` Default: `"MOBILE"`  
@@ -488,7 +493,7 @@ iti.isValidNumber(); // etc
 ```
 
 **loadUtils**  
-An alternative to the `utilsScript` option, this method lets you manually load the utils.js script on demand, to enable formatting/validation etc. See [Loading The Utilities Script](#loading-the-utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `loadUtils().then(callback)` to know when it's finished.
+An alternative to the `loadUtilsOnInit` option, this method lets you manually load the utils.js script on demand, to enable formatting/validation etc. See [Loading The Utilities Script](#loading-the-utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `loadUtils().then(callback)` to know when it's finished.
 ```js
 // Load from a URL:
 intlTelInput.loadUtils("/build/js/utils.js");
@@ -577,18 +582,18 @@ The utils script provides lots of great functionality (see above section), but c
 **Option 1: intlTelInputWithUtils**  
 If you're not concerned about filesize (e.g. you're lazy loading this script), the easiest thing to do is to just use the full bundle (`/build/js/intlTelInputWithUtils.js`), which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
 
-**Option 2: utilsScript**  
-If you *are* concerned about filesize, you can lazy load the utils script when the plugin initialises, using the `utilsScript` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `utilsScript` option to that URL, or just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.2/build/js/utils.js"`.
+**Option 2: loadUtilsOnInit**  
+If you *are* concerned about filesize, you can lazy load the utils script when the plugin initialises, using the `loadUtilsOnInit` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtilsOnInit` option to that URL, or just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.5.2/build/js/utils.js"`.
 
-Alternatively, you can set the `utilsScript` option to a function that returns a promise for the utils script as a JS module object. If you use a bundler like Webpack, Vite, or Parcel to build your app, you can use it like this automatically separate the utils into a different bundle:
+Alternatively, you can set the `loadUtilsOnInit` option to a function that returns a promise for the utils script as a JS module object. If you use a bundler like Webpack, Vite, or Parcel to build your app, you can use it like this automatically separate the utils into a different bundle:
 
 ```js
 intlTelInput(htmlInputElement, {
-  utilsScript: () => import("intl-tel-input/utils)
+  loadUtilsOnInit: () => import("intl-tel-input/utils)
 });
 ```
 
-If you want more control over when this file is lazy loaded, you can manually invoke the `loadUtils` static method, instead of using `utilsScript`.
+If you want more control over when this file is lazy loaded, you can manually invoke the `loadUtils` static method, instead of using `loadUtilsOnInit`.
 
 ## Troubleshooting
 

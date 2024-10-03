@@ -348,6 +348,7 @@ declare module "intl-tel-input" {
         }) | null;
         i18n: I18n;
         initialCountry: string;
+        loadUtilsOnInit: string | UtilsLoader;
         nationalMode: boolean;
         onlyCountries: string[];
         placeholderNumberType: NumberType;
@@ -355,6 +356,7 @@ declare module "intl-tel-input" {
         separateDialCode: boolean;
         strictMode: boolean;
         useFullscreenPopup: boolean;
+        /** @deprecated Please use the `loadUtilsOnInit` option. */
         utilsScript: string | UtilsLoader;
         validationNumberType: NumberType | null;
     }

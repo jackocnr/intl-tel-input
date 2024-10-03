@@ -66,6 +66,7 @@ interface AllOptions {
   hiddenInput: ((telInputName: string) => {phone: string, country?: string}) | null;
   i18n: I18n,
   initialCountry: string;
+  loadUtilsOnInit: string|UtilsLoader;
   nationalMode: boolean;
   onlyCountries: string[];
   placeholderNumberType: NumberType;
@@ -73,6 +74,7 @@ interface AllOptions {
   separateDialCode: boolean;
   strictMode: boolean;
   useFullscreenPopup: boolean;
+  /** @deprecated Please use the `loadUtilsOnInit` option. */
   utilsScript: string|UtilsLoader;
   validationNumberType: NumberType | null;
 }
@@ -113,6 +115,8 @@ const defaults: AllOptions = {
   i18n: {},
   //* Initial country.
   initialCountry: "",
+  //* Specify the path to the libphonenumber script to enable validation/formatting.
+  loadUtilsOnInit: "",
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
   nationalMode: true,
   //* Display only these countries.
@@ -134,7 +138,7 @@ const defaults: AllOptions = {
           navigator.userAgent,
         ) || window.innerWidth <= 500
       : false,
-  //* Specify the path to the libphonenumber script to enable validation/formatting.
+  //* Deprecated! Use `loadUtilsOnInit` instead.
   utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberType: "MOBILE",
@@ -900,15 +904,22 @@ export class Iti {
 
   //* Init many requests: utils script / geo ip lookup.
   private _initRequests(): void {
-    const { utilsScript, initialCountry, geoIpLookup } = this.options;
+    // eslint-disable-next-line prefer-const
+    let { loadUtilsOnInit, utilsScript, initialCountry, geoIpLookup } = this.options;
+
+    if (!loadUtilsOnInit && utilsScript) {
+      console.warn("intl-tel-input: The `utilsScript` option is deprecated and will be removed in a future release! Please use the `loadUtilsOnInit` option instead.");
+      loadUtilsOnInit = utilsScript;
+    }
+
     //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
-    if (utilsScript && !intlTelInput.utils) {
+    if (loadUtilsOnInit && !intlTelInput.utils) {
       this._handlePageLoad = () => {
         window.removeEventListener("load", this._handlePageLoad);
         //* Catch and ignore any errors to prevent unhandled-promise failures.
         //* The error from `loadUtils()` is also surfaced in each instance's
         //* `promise` property, so it's not getting lost by being ignored here.
-        intlTelInput.loadUtils(utilsScript)?.catch(() => {});
+        intlTelInput.loadUtils(loadUtilsOnInit)?.catch(() => {});
       };
 
       //* If the plugin is being initialised after the window.load event has already been fired.

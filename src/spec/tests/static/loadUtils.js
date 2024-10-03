@@ -35,11 +35,11 @@ describe("loadUtils:", function() {
       await expectAsync(loadResult).toBeResolvedTo(true);
     });
 
-    describe("then init plugin with utilsScript option", function() {
+    describe("then init plugin with loadUtilsOnInit option", function() {
 
       beforeEach(async function() {
         iti = window.intlTelInput(input[0], {
-          utilsScript: "some/other/url/ok",
+          loadUtilsOnInit: "some/other/url/ok",
         });
       });
 
@@ -53,7 +53,7 @@ describe("loadUtils:", function() {
 
 
 
-  describe("init plugin with utilsScript option, but force documentReady=false so it wont fire", function() {
+  describe("init plugin with loadUtilsOnInit option, but force documentReady=false so it wont fire", function() {
 
     let url2 = "/build/js/utils.js?v=2";
     let loadUtilsSpy;
@@ -64,7 +64,7 @@ describe("loadUtils:", function() {
       window.intlTelInput.documentReady = () => false;
 
       iti = window.intlTelInput(input[0], {
-        utilsScript: "some/other/url/ok",
+        loadUtilsOnInit: "some/other/url/ok",
       });
     });
 
@@ -96,7 +96,7 @@ describe("loadUtils:", function() {
 
 
 
-      describe("then init another plugin instance with utilsScript option", function() {
+      describe("then init another plugin instance with loadUtilsOnInit option", function() {
 
         var iti2,
           input2;
@@ -107,7 +107,7 @@ describe("loadUtils:", function() {
 
           input2 = $("<input>").appendTo("body");
           iti2 = window.intlTelInput(input2[0], {
-            utilsScript: "test/url/three/utils.js",
+            loadUtilsOnInit: "test/url/three/utils.js",
           });
         });
 
@@ -136,14 +136,14 @@ describe("loadUtils:", function() {
 
 
 
-  describe("force documentReady=true then init plugin with utilsScript", function() {
+  describe("force documentReady=true then init plugin with loadUtilsOnInit", function() {
 
     var url3 = "/build/js/utils.js?v=3";
 
     beforeEach(function() {
       window.intlTelInput.documentReady = () => true;
       iti = window.intlTelInput(input[0], {
-        utilsScript: url3,
+        loadUtilsOnInit: url3,
       });
     });
 
