@@ -78,3 +78,13 @@ exports.openDropdownSelectCountryAsync = async (container, iso2, user) => {
   await exports.clickSelectedCountryAsync(container, user);
   await exports.selectCountryAsync(container, iso2, user);
 };
+
+exports.selectCountryAndTypePlaceholderNumberAsync = async (container, iso2, user, input) => {
+  await exports.openDropdownSelectCountryAsync(container, iso2, user);
+  const placeholderNumberClean = exports.stripFormattingChars(input.getAttribute("placeholder"));
+  await user.type(input, placeholderNumberClean);
+  return placeholderNumberClean;
+};
+
+// strip formatting chars like space, dash, brackets (leaving just numerics and optional plus)
+exports.stripFormattingChars = (str) => str.replace(/[^0-9+]/g, "");

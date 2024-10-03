@@ -1,5 +1,5 @@
-import { mergeModels as L, useModel as x, ref as v, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as O, createElementBlock as V, mergeProps as z, vModelText as R } from "vue";
-const D = [
+import { mergeModels as D, useModel as x, ref as v, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as O, createElementBlock as V, mergeProps as z, vModelText as R } from "vue";
+const N = [
   [
     "af",
     // Afghanistan
@@ -1306,8 +1306,8 @@ const D = [
     "263"
   ]
 ], b = [];
-for (let u = 0; u < D.length; u++) {
-  const t = D[u];
+for (let u = 0; u < N.length; u++) {
+  const t = N[u];
   b[u] = {
     name: "",
     // this is now populated in the plugin
@@ -1572,11 +1572,11 @@ const $ = {
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo"
-}, S = { ...$, ...j };
+}, k = { ...$, ...j };
 for (let u = 0; u < b.length; u++)
-  b[u].name = S[b[u].iso2];
+  b[u].name = k[b[u].iso2];
 let K = 0;
-const k = {
+const T = {
   //* Whether or not to allow the dropdown.
   allowDropdown: !0,
   //* Add a placeholder in the input with an example number for the selected country.
@@ -1649,7 +1649,7 @@ const k = {
   "887",
   "888",
   "889"
-], w = (u) => u.replace(/\D/g, ""), N = (u = "") => u.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), A = (u) => {
+], w = (u) => u.replace(/\D/g, ""), A = (u = "") => u.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), S = (u) => {
   const t = w(u);
   if (t.charAt(0) === "1") {
     const e = t.substr(1, 3);
@@ -1676,13 +1676,13 @@ const k = {
 };
 class G {
   constructor(t, e = {}) {
-    this.id = K++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, k, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
+    this.id = K++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, T, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
     this.options.useFullscreenPopup && (this.options.fixDropdownWidth = !1), this.options.onlyCountries.length === 1 && (this.options.initialCountry = this.options.onlyCountries[0]), this.options.separateDialCode && (this.options.nationalMode = !1), this.options.allowDropdown && !this.options.showFlags && !this.options.separateDialCode && (this.options.nationalMode = !1), this.options.useFullscreenPopup && !this.options.dropdownContainer && (this.options.dropdownContainer = document.body), this.isAndroid = typeof navigator < "u" ? /Android/i.test(navigator.userAgent) : !1, this.isRTL = !!this.telInput.closest("[dir=rtl]");
     const t = this.options.allowDropdown || this.options.separateDialCode;
-    this.showSelectedCountryOnLeft = this.isRTL ? !t : t, this.options.separateDialCode && (this.isRTL ? this.originalPaddingRight = this.telInput.style.paddingRight : this.originalPaddingLeft = this.telInput.style.paddingLeft), this.options.i18n = { ...S, ...this.options.i18n };
+    this.showSelectedCountryOnLeft = this.isRTL ? !t : t, this.options.separateDialCode && (this.isRTL ? this.originalPaddingRight = this.telInput.style.paddingRight : this.originalPaddingLeft = this.telInput.style.paddingLeft), this.options.i18n = { ...k, ...this.options.i18n };
     const e = new Promise((s, n) => {
       this.resolveAutoCountryPromise = s, this.rejectAutoCountryPromise = n;
     }), i = new Promise((s, n) => {
@@ -1896,7 +1896,7 @@ class G {
   //* 1. Extracting a dial code from the given number
   //* 2. Using explicit initialCountry
   _setInitialState(t = !1) {
-    const e = this.telInput.getAttribute("value"), i = this.telInput.value, n = e && e.charAt(0) === "+" && (!i || i.charAt(0) !== "+") ? e : i, o = this._getDialCode(n), a = A(n), { initialCountry: r, geoIpLookup: p } = this.options, c = r === "auto" && p;
+    const e = this.telInput.getAttribute("value"), i = this.telInput.value, n = e && e.charAt(0) === "+" && (!i || i.charAt(0) !== "+") ? e : i, o = this._getDialCode(n), a = S(n), { initialCountry: r, geoIpLookup: p } = this.options, c = r === "auto" && p;
     if (o && !a)
       this._updateCountryFromNumber(n);
     else if (!c || t) {
@@ -1981,19 +1981,16 @@ class G {
           return;
         }
         if (t) {
-          const p = this.telInput.value, d = !(p.charAt(0) === "+") && this.telInput.selectionStart === 0 && r.key === "+", C = /^[0-9]$/.test(r.key), h = i ? C : d || C, m = this._getFullNumber(), f = l.utils.getCoreNumber(m, this.selectedCountryData.iso2), g = this.maxCoreNumberLength && f.length >= this.maxCoreNumberLength, I = p.substring(this.telInput.selectionStart, this.telInput.selectionEnd), T = /\d/.test(I), P = d ? !0 : this._isChangingDialCode(r.key);
-          (!h || g && !T && !P) && r.preventDefault();
+          const p = this.telInput.value, c = p.charAt(0) === "+", d = !c && this.telInput.selectionStart === 0 && r.key === "+", C = /^[0-9]$/.test(r.key), h = i ? C : d || C, m = p.slice(0, this.telInput.selectionStart) + r.key + p.slice(this.telInput.selectionEnd), f = this._getFullNumber(m), g = l.utils.getCoreNumber(f, this.selectedCountryData.iso2), I = this.maxCoreNumberLength && g.length > this.maxCoreNumberLength;
+          let L = !1;
+          if (c) {
+            const P = this.selectedCountryData.iso2;
+            L = this._getCountryFromNumber(f) !== P;
+          }
+          (!h || I && !L && !d) && r.preventDefault();
         }
       }
     }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
-  }
-  _isChangingDialCode(t) {
-    const e = this.telInput.value;
-    if (e.charAt(0) === "+") {
-      const i = this.selectedCountryData.iso2, s = e.slice(0, this.telInput.selectionStart) + t + e.slice(this.telInput.selectionEnd), n = this._getFullNumber(s);
-      return this._getCountryFromNumber(n) !== i;
-    }
-    return !1;
   }
   //* Adhere to the input's maxlength attr.
   _cap(t) {
@@ -2079,9 +2076,9 @@ class G {
   _filterCountries(t, e = !1) {
     let i = !0;
     this.countryList.innerHTML = "";
-    const s = N(t);
+    const s = A(t);
     for (let n = 0; n < this.countries.length; n++) {
-      const o = this.countries[n], a = N(o.name), r = o.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map((c) => c[0]).join("").toLowerCase(), p = `+${o.dialCode}`;
+      const o = this.countries[n], a = A(o.name), r = o.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map((c) => c[0]).join("").toLowerCase(), p = `+${o.dialCode}`;
       if (e || a.includes(s) || p.includes(s) || o.iso2.includes(s) || r.includes(s)) {
         const c = o.nodeById[this.id];
         c && this.countryList.appendChild(c), i && (this._highlightListItem(c, !1), i = !1);
@@ -2133,7 +2130,7 @@ class G {
     const o = this._getDialCode(i, !0), a = w(i);
     if (o) {
       const r = this.dialCodeToIso2Map[w(o)], p = r.indexOf(this.selectedCountryData.iso2) !== -1 && a.length <= o.length - 1;
-      if (!(s === "1" && A(a)) && !p) {
+      if (!(s === "1" && S(a)) && !p) {
         for (let d = 0; d < r.length; d++)
           if (r[d])
             return r[d];
@@ -2189,20 +2186,20 @@ class G {
   }
   //* Update the maximum valid number length for the currently selected country.
   _updateMaxLength() {
-    const { strictMode: t, placeholderNumberType: e, validationNumberType: i } = this.options;
+    const { strictMode: t, placeholderNumberType: e, validationNumberType: i } = this.options, { iso2: s } = this.selectedCountryData;
     if (t && l.utils)
-      if (this.selectedCountryData.iso2) {
-        const s = l.utils.numberType[e];
-        let n = l.utils.getExampleNumber(
-          this.selectedCountryData.iso2,
-          !1,
+      if (s) {
+        const n = l.utils.numberType[e];
+        let o = l.utils.getExampleNumber(
           s,
+          !1,
+          n,
           !0
-        ), o = n;
-        for (; l.utils.isPossibleNumber(n, this.selectedCountryData.iso2, i); )
-          o = n, n += "0";
-        const a = l.utils.getCoreNumber(o, this.selectedCountryData.iso2);
-        this.maxCoreNumberLength = a.length;
+        ), a = o;
+        for (; l.utils.isPossibleNumber(o, s, i); )
+          a = o, o += "0";
+        const r = l.utils.getCoreNumber(a, s);
+        this.maxCoreNumberLength = r.length, s === "by" && (this.maxCoreNumberLength = r.length + 1);
       } else
         this.maxCoreNumberLength = null;
   }
@@ -2469,7 +2466,7 @@ const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     return e._init(), u.setAttribute("data-intl-tel-input-id", e.id.toString()), l.instances[e.id] = e, e;
   },
   {
-    defaults: k,
+    defaults: T,
     //* Using a static var like this allows us to mock it in the tests.
     documentReady: () => document.readyState === "complete",
     //* Get the country data object.
@@ -2484,9 +2481,9 @@ const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     loadUtils: W,
     version: "24.5.1"
   }
-), Y = {
+), J = {
   __name: "IntlTelInput",
-  props: /* @__PURE__ */ L({
+  props: /* @__PURE__ */ D({
     disabled: {
       type: Boolean,
       default: !1
@@ -2510,7 +2507,7 @@ const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     },
     modelModifiers: {}
   }),
-  emits: /* @__PURE__ */ L([
+  emits: /* @__PURE__ */ D([
     "changeNumber",
     "changeCountry",
     "changeValidity",
@@ -2554,5 +2551,5 @@ const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
   }
 };
 export {
-  Y as default
+  J as default
 };

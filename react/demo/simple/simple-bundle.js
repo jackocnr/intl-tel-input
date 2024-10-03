@@ -25846,13 +25846,17 @@
               const isInitialPlus = !alreadyHasPlus && this.telInput.selectionStart === 0 && e.key === "+";
               const isNumeric = /^[0-9]$/.test(e.key);
               const isAllowedChar = separateDialCode ? isNumeric : isInitialPlus || isNumeric;
-              const fullNumber = this._getFullNumber();
-              const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
-              const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
-              const selectedText = value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
-              const hasSelectedDigit = /\d/.test(selectedText);
-              const isChangingDialCode = isInitialPlus ? true : this._isChangingDialCode(e.key);
-              if (!isAllowedChar || hasReachedMaxLength && !hasSelectedDigit && !isChangingDialCode) {
+              const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
+              const newFullNumber = this._getFullNumber(newValue);
+              const coreNumber = intlTelInput.utils.getCoreNumber(newFullNumber, this.selectedCountryData.iso2);
+              const hasExceededMaxLength = this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength;
+              let isChangingDialCode = false;
+              if (alreadyHasPlus) {
+                const currentCountry = this.selectedCountryData.iso2;
+                const newCountry = this._getCountryFromNumber(newFullNumber);
+                isChangingDialCode = newCountry !== currentCountry;
+              }
+              if (!isAllowedChar || hasExceededMaxLength && !isChangingDialCode && !isInitialPlus) {
                 e.preventDefault();
               }
             }
@@ -25860,17 +25864,6 @@
         };
         this.telInput.addEventListener("keydown", this._handleKeydownEvent);
       }
-    }
-    _isChangingDialCode(char) {
-      const value = this.telInput.value;
-      if (value.charAt(0) === "+") {
-        const currentCountry = this.selectedCountryData.iso2;
-        const newValue = value.slice(0, this.telInput.selectionStart) + char + value.slice(this.telInput.selectionEnd);
-        const newFullNumber = this._getFullNumber(newValue);
-        const newCountry = this._getCountryFromNumber(newFullNumber);
-        return newCountry !== currentCountry;
-      }
-      return false;
     }
     //* Adhere to the input's maxlength attr.
     _cap(number) {
@@ -26215,22 +26208,26 @@
     //* Update the maximum valid number length for the currently selected country.
     _updateMaxLength() {
       const { strictMode, placeholderNumberType, validationNumberType } = this.options;
+      const { iso2 } = this.selectedCountryData;
       if (strictMode && intlTelInput.utils) {
-        if (this.selectedCountryData.iso2) {
+        if (iso2) {
           const numberType = intlTelInput.utils.numberType[placeholderNumberType];
           let exampleNumber = intlTelInput.utils.getExampleNumber(
-            this.selectedCountryData.iso2,
+            iso2,
             false,
             numberType,
             true
           );
           let validNumber = exampleNumber;
-          while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2, validationNumberType)) {
+          while (intlTelInput.utils.isPossibleNumber(exampleNumber, iso2, validationNumberType)) {
             validNumber = exampleNumber;
             exampleNumber += "0";
           }
-          const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
+          const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, iso2);
           this.maxCoreNumberLength = coreNumber.length;
+          if (iso2 === "by") {
+            this.maxCoreNumberLength = coreNumber.length + 1;
+          }
         } else {
           this.maxCoreNumberLength = null;
         }

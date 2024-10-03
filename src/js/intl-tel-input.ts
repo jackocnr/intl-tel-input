@@ -1044,14 +1044,22 @@ export class Iti {
             const isInitialPlus = !alreadyHasPlus && this.telInput.selectionStart === 0 && e.key === "+";
             const isNumeric = /^[0-9]$/.test(e.key);
             const isAllowedChar = separateDialCode ? isNumeric : isInitialPlus || isNumeric;
-            const fullNumber = this._getFullNumber();
-            const coreNumber = intlTelInput.utils.getCoreNumber(fullNumber, this.selectedCountryData.iso2);
-            const hasReachedMaxLength = this.maxCoreNumberLength && coreNumber.length >= this.maxCoreNumberLength;
-            const selectedText = value.substring(this.telInput.selectionStart, this.telInput.selectionEnd);
-            const hasSelectedDigit = /\d/.test(selectedText);
-            const isChangingDialCode = isInitialPlus ? true : this._isChangingDialCode(e.key);
-            // ignore the char if (1) it's not an allowed char, or (2) the input has reached max length and no digit is selected (which will be replaced by the new char) and this char will not change the selected country
-            if (!isAllowedChar || (hasReachedMaxLength && !hasSelectedDigit && !isChangingDialCode)) {
+
+            // insert the new character in the right place
+            const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
+            const newFullNumber = this._getFullNumber(newValue);
+            const coreNumber = intlTelInput.utils.getCoreNumber(newFullNumber, this.selectedCountryData.iso2);
+            const hasExceededMaxLength = this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength;
+
+            let isChangingDialCode = false;
+            if (alreadyHasPlus) {
+              const currentCountry = this.selectedCountryData.iso2;
+              const newCountry = this._getCountryFromNumber(newFullNumber);
+              isChangingDialCode = newCountry !== currentCountry;
+            }
+
+            // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
+            if (!isAllowedChar || (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)) {
               e.preventDefault();
             }
           }
@@ -1059,20 +1067,6 @@ export class Iti {
       };
       this.telInput.addEventListener("keydown", this._handleKeydownEvent);
     }
-  }
-
-  private _isChangingDialCode(char: string): boolean {
-    const value = this.telInput.value;
-    // we need a plus in order to be changing a dial code!
-    if (value.charAt(0) === "+") {
-      const currentCountry = this.selectedCountryData.iso2;
-      // insert the new character in the right place, in order to see if it changes the selected country
-      const newValue = value.slice(0, this.telInput.selectionStart) + char + value.slice(this.telInput.selectionEnd);
-      const newFullNumber = this._getFullNumber(newValue);
-      const newCountry = this._getCountryFromNumber(newFullNumber);
-      return newCountry !== currentCountry;
-    }
-    return false;
   }
 
   //* Adhere to the input's maxlength attr.
@@ -1566,23 +1560,29 @@ export class Iti {
   //* Update the maximum valid number length for the currently selected country.
   private _updateMaxLength(): void {
     const { strictMode, placeholderNumberType, validationNumberType } = this.options;
+    const { iso2 } = this.selectedCountryData;
     if (strictMode && intlTelInput.utils) {
-      if (this.selectedCountryData.iso2) {
+      if (iso2) {
         const numberType = intlTelInput.utils.numberType[placeholderNumberType];
         let exampleNumber = intlTelInput.utils.getExampleNumber(
-          this.selectedCountryData.iso2,
+          iso2,
           false,
           numberType,
           true,
         );
         //* See if adding more digits is still valid to get the true maximum valid length.
         let validNumber = exampleNumber;
-        while (intlTelInput.utils.isPossibleNumber(exampleNumber, this.selectedCountryData.iso2, validationNumberType)) {
+        while (intlTelInput.utils.isPossibleNumber(exampleNumber, iso2, validationNumberType)) {
           validNumber = exampleNumber;
           exampleNumber += "0";
         }
-        const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, this.selectedCountryData.iso2);
+        const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, iso2);
         this.maxCoreNumberLength = coreNumber.length;
+
+        // hack for Belarus, because for some reason, getCoreNumber("80294911911"), aka the placeholder number, returns "294911911" (9 digits), but getCoreNumber("8029491191"), aka you're typing the penultimate digit of the placeholder number, returns "8029491191" (10 digits) and so strictMode blocks it. so we increase the max length to 10 digits to allow this penultimate digit, and then when they type the final digit, getCoreNumber will return 9 digits again, so it will be fine.
+        if (iso2 === "by") {
+          this.maxCoreNumberLength = coreNumber.length + 1;
+        }
       } else {
         this.maxCoreNumberLength = null;
       }
