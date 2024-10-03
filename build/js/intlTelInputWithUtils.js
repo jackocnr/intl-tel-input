@@ -3081,18 +3081,39 @@ var factoryOutput = (() => {
       }
     }
   };
-  var loadUtils = (path) => {
+  var loadUtils = (source) => {
     if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
+      let loadCall;
+      if (typeof source === "string") {
+        loadCall = Promise.reject(new Error("INTENTIONALLY BROKEN: this build of intl-tel-input includes the utilities module inline, but it has incorrectly attempted to load the utilities separately. If you are seeing this message, something is broken!"));
+      } else if (typeof source === "function") {
+        try {
+          loadCall = source();
+          if (!(loadCall instanceof Promise)) {
+            throw new TypeError(`The function passed to loadUtils must return a promise for the utilities module, not ${typeof loadCall}`);
+          }
+        } catch (error) {
+          return Promise.reject(error);
+        }
+      } else {
+        return Promise.reject(new TypeError(`The argument passed to loadUtils must be a URL string or a function that returns a promise for the utilities module, not ${typeof source}`));
+      }
       intlTelInput.startedLoadingUtilsScript = true;
-      return new Promise((resolve, reject) => {
-        Promise.reject(new Error("INTENTIONALLY BROKEN: this build of intl-tel-input includes the utilities module inline, but it has incorrectly attempted to load the utilities separately. If you are seeing this message, something is broken!")).then(({ default: utils2 }) => {
-          intlTelInput.utils = utils2;
-          forEachInstance("handleUtils");
-          resolve(true);
-        }).catch((error) => {
-          forEachInstance("rejectUtilsScriptPromise", error);
-          reject(error);
-        });
+      return loadCall.then((module) => {
+        const utils2 = module?.default;
+        if (!utils2 || typeof utils2 !== "object") {
+          if (typeof source === "string") {
+            throw new TypeError(`The module loaded from ${source} did not set utils as its default export.`);
+          } else {
+            throw new TypeError("The loader function passed to loadUtils did not resolve to a module object with utils as its default export.");
+          }
+        }
+        intlTelInput.utils = utils2;
+        forEachInstance("handleUtils");
+        return true;
+      }).catch((error) => {
+        forEachInstance("rejectUtilsScriptPromise", error);
+        throw error;
       });
     }
     return null;

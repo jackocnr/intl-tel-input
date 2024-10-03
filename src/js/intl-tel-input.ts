@@ -7,6 +7,8 @@ for (let i = 0; i < allCountries.length; i++) {
   allCountries[i].name = defaultEnglishStrings[allCountries[i].iso2];
 }
 
+type UtilsLoader = () => Promise<{default: ItiUtils}>;
+
 interface IntlTelInputInterface {
   (input: HTMLInputElement, options?: SomeOptions): Iti;
   autoCountry?: string;
@@ -15,7 +17,7 @@ interface IntlTelInputInterface {
   getCountryData: () => Country[];
   getInstance: (input: HTMLInputElement) => Iti | null;
   instances: { [key: string]: Iti };
-  loadUtils: (path: string) => Promise<unknown> | null;
+  loadUtils: (source: string|UtilsLoader) => Promise<unknown> | null;
   startedLoadingAutoCountry: boolean;
   startedLoadingUtilsScript: boolean;
   version: string | undefined;
@@ -71,7 +73,7 @@ interface AllOptions {
   separateDialCode: boolean;
   strictMode: boolean;
   useFullscreenPopup: boolean;
-  utilsScript: string;
+  utilsScript: string|UtilsLoader;
   validationNumberType: NumberType | null;
 }
 
@@ -2124,7 +2126,7 @@ export class Iti {
  ********************/
 
 //* Load the utils script.
-const loadUtils = (path: string): Promise<unknown> | null => {
+const loadUtils = (source: string|UtilsLoader): Promise<unknown> | null => {
   //* 2 Options:
   //* 1) Not already started loading (start)
   //* 2) Already started loading (do nothing - just wait for the onload callback to fire, which will
@@ -2133,21 +2135,44 @@ const loadUtils = (path: string): Promise<unknown> | null => {
     !intlTelInput.utils &&
     !intlTelInput.startedLoadingUtilsScript
   ) {
+    let loadCall;
+    if (typeof source === "string") {
+      loadCall = import(/* webpackIgnore: true */ /* @vite-ignore */ source);
+    } else if (typeof source === "function") {
+      try {
+        loadCall = source();
+        if (!(loadCall instanceof Promise)) {
+          throw new TypeError(`The function passed to loadUtils must return a promise for the utilities module, not ${typeof loadCall}`);
+        }
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    } else {
+      return Promise.reject(new TypeError(`The argument passed to loadUtils must be a URL string or a function that returns a promise for the utilities module, not ${typeof source}`));
+    }
+
     //* Only do this once.
     intlTelInput.startedLoadingUtilsScript = true;
 
-    return new Promise((resolve, reject) => {
-      import(/* webpackIgnore: true */ /* @vite-ignore */ path)
-        .then(({ default: utils }) => {
-          intlTelInput.utils = utils;
-          forEachInstance("handleUtils");
-          resolve(true);
-        })
-        .catch((error) => {
-          forEachInstance("rejectUtilsScriptPromise", error);
-          reject(error);
-        });
-    });
+    return loadCall
+      .then((module) => {
+        const utils = module?.default;
+        if (!utils || typeof utils !== "object") {
+          if (typeof source === "string") {
+            throw new TypeError(`The module loaded from ${source} did not set utils as its default export.`);
+          } else {
+            throw new TypeError("The loader function passed to loadUtils did not resolve to a module object with utils as its default export.");
+          }
+        }
+
+        intlTelInput.utils = utils;
+        forEachInstance("handleUtils");
+        return true;
+      })
+      .catch((error: Error) => {
+        forEachInstance("rejectUtilsScriptPromise", error);
+        throw error;
+      });
   }
   return null;
 };

@@ -3041,22 +3041,43 @@ var Iti = class {
     }
   }
 };
-var loadUtils = (path) => {
+var loadUtils = (source) => {
   if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
-    intlTelInput.startedLoadingUtilsScript = true;
-    return new Promise((resolve, reject) => {
-      import(
+    let loadCall;
+    if (typeof source === "string") {
+      loadCall = import(
         /* webpackIgnore: true */
         /* @vite-ignore */
-        path
-      ).then(({ default: utils }) => {
-        intlTelInput.utils = utils;
-        forEachInstance("handleUtils");
-        resolve(true);
-      }).catch((error) => {
-        forEachInstance("rejectUtilsScriptPromise", error);
-        reject(error);
-      });
+        source
+      );
+    } else if (typeof source === "function") {
+      try {
+        loadCall = source();
+        if (!(loadCall instanceof Promise)) {
+          throw new TypeError(`The function passed to loadUtils must return a promise for the utilities module, not ${typeof loadCall}`);
+        }
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    } else {
+      return Promise.reject(new TypeError(`The argument passed to loadUtils must be a URL string or a function that returns a promise for the utilities module, not ${typeof source}`));
+    }
+    intlTelInput.startedLoadingUtilsScript = true;
+    return loadCall.then((module) => {
+      const utils = module?.default;
+      if (!utils || typeof utils !== "object") {
+        if (typeof source === "string") {
+          throw new TypeError(`The module loaded from ${source} did not set utils as its default export.`);
+        } else {
+          throw new TypeError("The loader function passed to loadUtils did not resolve to a module object with utils as its default export.");
+        }
+      }
+      intlTelInput.utils = utils;
+      forEachInstance("handleUtils");
+      return true;
+    }).catch((error) => {
+      forEachInstance("rejectUtilsScriptPromise", error);
+      throw error;
     });
   }
   return null;

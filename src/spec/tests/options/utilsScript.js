@@ -60,6 +60,22 @@ describe("utilsScript:", function() {
     await expectAsync(iti.promise).toBeRejectedWithError();
   });
 
+  it("works if utilsScript is a function", async function() {
+    const mockUtils = { default: { mockUtils: true } };
+    spyOn(window.intlTelInput, "documentReady").and.returnValue(true);
+
+    iti = window.intlTelInput(input[0], {
+      async utilsScript () {
+        return mockUtils;
+      },
+    });
+
+    expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(true);
+    await expectAsync(iti.promise).toBeResolved();
+    
+    expect(window.intlTelInput.utils).toBe(mockUtils.default);
+  });
+
   describe("in 'withUtils' builds", () => {
     useIntlTelInputBuild("build/js/intlTelInputWithUtils.js");
 

@@ -286,6 +286,9 @@ declare module "intl-tel-input/i18n/en" {
 declare module "intl-tel-input" {
     import { Country } from "intl-tel-input/data";
     import { I18n } from "intl-tel-input/i18n/types";
+    type UtilsLoader = () => Promise<{
+        default: ItiUtils;
+    }>;
     interface IntlTelInputInterface {
         (input: HTMLInputElement, options?: SomeOptions): Iti;
         autoCountry?: string;
@@ -296,7 +299,7 @@ declare module "intl-tel-input" {
         instances: {
             [key: string]: Iti;
         };
-        loadUtils: (path: string) => Promise<unknown> | null;
+        loadUtils: (source: string | UtilsLoader) => Promise<unknown> | null;
         startedLoadingAutoCountry: boolean;
         startedLoadingUtilsScript: boolean;
         version: string | undefined;
@@ -352,7 +355,7 @@ declare module "intl-tel-input" {
         separateDialCode: boolean;
         strictMode: boolean;
         useFullscreenPopup: boolean;
-        utilsScript: string;
+        utilsScript: string | UtilsLoader;
         validationNumberType: NumberType | null;
     }
     export type SomeOptions = Partial<AllOptions>;
