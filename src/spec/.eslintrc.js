@@ -42,6 +42,7 @@ module.exports = {
     "triggerKeyOnBody": true,
     "triggerKeyOnCountryContainerElement": true,
     "intlTelInputUtils": true,
+    "useIntlTelInputBuild": true,
   },
   rules: {
     "@typescript-eslint/no-unused-vars": "off",

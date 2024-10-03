@@ -10,7 +10,24 @@ I'm very open to contributions, big and small! For general instructions on submi
 
 ## Changes to the plugin
 
-In order to build the project, you will first need to install [npm](https://www.npmjs.org), and then run `npm install` to install the project's dependencies. At this point, the included `demo.html` should be working, if you open it in your browser. Then you should make your changes in the `src` directory, and be sure to run the relevant build script before committing your changes - if you've modified the JS, you'll need to run `npm run build:js`, or if you've modified the CSS, it's `npm run build:css`.
+In order to build the project, you will first need to install [npm](https://www.npmjs.org), and then run `npm install` to install the project's dependencies.
+
+If you want to try out a demo playground for the component:
+1. Start the server by running `npm run server`.
+2. Open the demo page in your browser at the address printed to your console.
+
+**Tests** are broken up into two parts. We are currently porting the existing test suite from Grunt & Jasmine to Jest.
+- To run all tests, run `npm test`.
+- To only run the new tests, run `npm run jest`.
+- To only run the old tests, run `npx grunt jasmine:test`.
+- To run & debug the old tests interactively in your browser, run: `npx grunt jasmine:interactive` and load the URL it prints out in your browser.
+
+**Any time you make changes, you’ll need to re-build the plugin.** Most tests run against the builds, so after making changes, you’ll need to do a build before running tests.
+- To do a complete build, run `npm run build`
+- To build just the JS:
+    - `npm run build:js` runs various checks (linting, etc.) and then builds.
+    - `npm run build:jsfast` *just* builds the JS. This is useful when iterating and testing small changes. Make sure you eventually do a full build with all the checks, though!
+- To build just the CSS, run `npm run build:css`.
 
 ## Updating to a new version of libphonenumber
 

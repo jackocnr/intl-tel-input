@@ -46,6 +46,7 @@
     "grunt": "^1.6.1",
     "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.2.0",
+    "grunt-contrib-connect": "^5.0.0",
     "grunt-contrib-cssmin": "^5.0.0",
     "grunt-contrib-jasmine": "^4.0.0",
     "grunt-contrib-watch": "^1.1.0",
@@ -98,7 +99,8 @@
     "build:img": "grunt img",
     "build:react": "grunt react",
     "build:vue": "grunt vue",
-    "vue:demo": "vite --config vue/demo/validation/vite.config.js"
+    "vue:demo": "vite --config vue/demo/validation/vite.config.js",
+    "server": "grunt test:interactive"
   },
   "style": "build/css/intlTelInput.css",
   "main": "./build/js/intlTelInput.js",
