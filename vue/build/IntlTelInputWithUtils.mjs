@@ -2479,7 +2479,7 @@ const V2 = (y) => !C.utils && !C.startedLoadingUtilsScript ? (C.startedLoadingUt
     //* A map from instance ID to instance object.
     instances: {},
     loadUtils: V2,
-    version: "24.5.1"
+    version: "24.5.2"
   }
 );
 (function() {
