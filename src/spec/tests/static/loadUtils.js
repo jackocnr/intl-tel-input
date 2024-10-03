@@ -161,4 +161,57 @@ describe("loadUtils:", function() {
 
   });
 
+
+
+  describe("calling with a function", function() {
+    const mockUtils = { default: { mymodule: "fakeutils" } };
+
+    it("uses the object the function resolves with", async () => {
+      const result = await window.intlTelInput.loadUtils(async () => mockUtils);
+
+      expect(result).toEqual(true);
+      expect(window.intlTelInput.utils).toBe(mockUtils.default);
+    });
+
+    it("rejects if the function rejects", async () => {
+      const loadPromise = window.intlTelInput.loadUtils(async () => {
+        throw new Error("Uhoh!");
+      });
+
+      await expectAsync(loadPromise).toBeRejectedWithError("Uhoh!");
+    });
+
+    it("rejects if the function throws", async () => {
+      const loadPromise = window.intlTelInput.loadUtils(() => {
+        throw new Error("Uhoh!");
+      });
+
+      await expectAsync(loadPromise).toBeRejectedWithError("Uhoh!");
+    });
+
+    it("rejects if the function returns a non-promise", async () => {
+      const loadPromise = window.intlTelInput.loadUtils(() => ({
+        anObject: "That is not a promise",
+      }));
+
+      await expectAsync(loadPromise).toBeRejectedWithError();
+    });
+
+    it("rejects if the function resolves to a non-object", async () => {
+      const loadPromise = window.intlTelInput.loadUtils(async () => "Hello!");
+
+      await expectAsync(loadPromise).toBeRejectedWithError();
+    });
+
+    it("does not call the function a second time", async () => {
+      const loader = jasmine.createSpy("mockLoader").and.resolveTo(mockUtils);
+
+      await window.intlTelInput.loadUtils(loader);
+      await window.intlTelInput.loadUtils(loader);
+
+      expect(loader).toHaveBeenCalledTimes(1);
+    });
+
+  });
+
 });

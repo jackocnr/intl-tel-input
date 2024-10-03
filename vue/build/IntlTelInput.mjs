@@ -1318,7 +1318,7 @@ for (let u = 0; u < N.length; u++) {
     nodeById: {}
   };
 }
-const $ = {
+const j = {
   ad: "Andorra",
   ae: "United Arab Emirates",
   af: "Afghanistan",
@@ -1561,7 +1561,7 @@ const $ = {
   za: "South Africa",
   zm: "Zambia",
   zw: "Zimbabwe"
-}, j = {
+}, $ = {
   selectedCountryAriaLabel: "Selected country",
   noCountrySelected: "No country selected",
   countryListAriaLabel: "List of countries",
@@ -1572,10 +1572,10 @@ const $ = {
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo"
-}, k = { ...$, ...j };
+}, k = { ...j, ...$ };
 for (let u = 0; u < b.length; u++)
   b[u].name = k[b[u].iso2];
-let K = 0;
+let U = 0;
 const T = {
   //* Whether or not to allow the dropdown.
   allowDropdown: !0,
@@ -1631,7 +1631,7 @@ const T = {
   utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberType: "MOBILE"
-}, U = [
+}, K = [
   "800",
   "822",
   "833",
@@ -1649,11 +1649,11 @@ const T = {
   "887",
   "888",
   "889"
-], w = (u) => u.replace(/\D/g, ""), A = (u = "") => u.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), S = (u) => {
-  const t = w(u);
+], I = (u) => u.replace(/\D/g, ""), A = (u = "") => u.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), S = (u) => {
+  const t = I(u);
   if (t.charAt(0) === "1") {
     const e = t.substr(1, 3);
-    return U.indexOf(e) !== -1;
+    return K.indexOf(e) !== -1;
   }
   return !1;
 }, H = (u, t, e, i) => {
@@ -1667,7 +1667,7 @@ const T = {
       return n;
   }
   return t.length;
-}, m = (u, t, e) => {
+}, y = (u, t, e) => {
   const i = document.createElement(u);
   return t && Object.entries(t).forEach(([s, n]) => i.setAttribute(s, n)), e && e.appendChild(i), i;
 }, _ = (u, ...t) => {
@@ -1676,7 +1676,7 @@ const T = {
 };
 class G {
   constructor(t, e = {}) {
-    this.id = K++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, T, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
+    this.id = U++, this.telInput = t, this.highlightedItem = null, this.options = Object.assign({}, T, e), this.hadInitialPlaceholder = !!t.getAttribute("placeholder");
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
@@ -1785,13 +1785,13 @@ class G {
     } = this.options;
     let d = "iti";
     t && (d += " iti--allow-dropdown"), i && (d += " iti--show-flags"), s && (d += ` ${s}`), r || (d += " iti--inline-dropdown");
-    const C = m("div", { class: d });
+    const C = y("div", { class: d });
     if ((h = this.telInput.parentNode) == null || h.insertBefore(C, this.telInput), t || i || e) {
-      this.countryContainer = m(
+      this.countryContainer = y(
         "div",
         { class: "iti__country-container" },
         C
-      ), this.showSelectedCountryOnLeft ? this.countryContainer.style.left = "0px" : this.countryContainer.style.right = "0px", t ? (this.selectedCountry = m(
+      ), this.showSelectedCountryOnLeft ? this.countryContainer.style.left = "0px" : this.countryContainer.style.right = "0px", t ? (this.selectedCountry = y(
         "button",
         {
           type: "button",
@@ -1803,30 +1803,30 @@ class G {
           role: "combobox"
         },
         this.countryContainer
-      ), this.telInput.disabled && this.selectedCountry.setAttribute("disabled", "true")) : this.selectedCountry = m(
+      ), this.telInput.disabled && this.selectedCountry.setAttribute("disabled", "true")) : this.selectedCountry = y(
         "div",
         { class: "iti__selected-country" },
         this.countryContainer
       );
-      const y = m("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
-      if (this.selectedCountryInner = m("div", { class: "iti__flag" }, y), this.selectedCountryA11yText = m(
+      const m = y("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
+      if (this.selectedCountryInner = y("div", { class: "iti__flag" }, m), this.selectedCountryA11yText = y(
         "span",
         { class: "iti__a11y-text" },
         this.selectedCountryInner
-      ), t && (this.dropdownArrow = m(
+      ), t && (this.dropdownArrow = y(
         "div",
         { class: "iti__arrow", "aria-hidden": "true" },
-        y
-      )), e && (this.selectedDialCode = m(
+        m
+      )), e && (this.selectedDialCode = y(
         "div",
         { class: "iti__selected-dial-code" },
         this.selectedCountry
       )), t) {
         const f = a ? "" : "iti--flexible-dropdown-width";
-        if (this.dropdownContent = m("div", {
+        if (this.dropdownContent = y("div", {
           id: `iti-${this.id}__dropdown-content`,
           class: `iti__dropdown-content iti__hide ${f}`
-        }), p && (this.searchInput = m(
+        }), p && (this.searchInput = y(
           "input",
           {
             type: "text",
@@ -1840,11 +1840,11 @@ class G {
             autocomplete: "off"
           },
           this.dropdownContent
-        ), this.searchResultsA11yText = m(
+        ), this.searchResultsA11yText = y(
           "span",
           { class: "iti__a11y-text" },
           this.dropdownContent
-        )), this.countryList = m(
+        )), this.countryList = y(
           "ul",
           {
             class: "iti__country-list",
@@ -1855,17 +1855,17 @@ class G {
           this.dropdownContent
         ), this._appendListItems(), p && this._updateSearchResultsText(), o) {
           let g = "iti iti--container";
-          r ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = m("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
+          r ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = y("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
         } else
           this.countryContainer.appendChild(this.dropdownContent);
       }
     }
     if (C.appendChild(this.telInput), this._updateInputPadding(), n) {
-      const y = this.telInput.getAttribute("name") || "", f = n(y);
-      f.phone && (this.hiddenInput = m("input", {
+      const m = this.telInput.getAttribute("name") || "", f = n(m);
+      f.phone && (this.hiddenInput = y("input", {
         type: "hidden",
         name: f.phone
-      }), C.appendChild(this.hiddenInput)), f.country && (this.hiddenInputCountry = m("input", {
+      }), C.appendChild(this.hiddenInput)), f.country && (this.hiddenInputCountry = y("input", {
         type: "hidden",
         name: f.country
       }), C.appendChild(this.hiddenInputCountry));
@@ -1874,7 +1874,7 @@ class G {
   //* For each country: add a country list item <li> to the countryList <ul> container.
   _appendListItems() {
     for (let t = 0; t < this.countries.length; t++) {
-      const e = this.countries[t], i = t === 0 ? "iti__highlight" : "", s = m(
+      const e = this.countries[t], i = t === 0 ? "iti__highlight" : "", s = y(
         "li",
         {
           id: `iti-${this.id}__item-${e.iso2}`,
@@ -1964,8 +1964,8 @@ class G {
     let a = !1;
     new RegExp("\\p{L}", "u").test(this.telInput.value) && (a = !0), this._handleInputEvent = (r) => {
       if (this.isAndroid && (r == null ? void 0 : r.data) === "+" && i && n && o) {
-        const C = this.telInput.selectionStart || 0, h = this.telInput.value.substring(0, C - 1), y = this.telInput.value.substring(C);
-        this.telInput.value = h + y, this._openDropdownWithPlus();
+        const C = this.telInput.selectionStart || 0, h = this.telInput.value.substring(0, C - 1), m = this.telInput.value.substring(C);
+        this.telInput.value = h + m, this._openDropdownWithPlus();
         return;
       }
       this._updateCountryFromNumber(this.telInput.value) && this._triggerCountryChange();
@@ -1973,8 +1973,8 @@ class G {
       p || c && !t ? a = !0 : /[^+0-9]/.test(this.telInput.value) || (a = !1);
       const d = (r == null ? void 0 : r.detail) && r.detail.isSetNumber && !s;
       if (e && !a && !d) {
-        const C = this.telInput.selectionStart || 0, y = this.telInput.value.substring(0, C).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), I = H(y, g, C, f);
-        this.telInput.value = g, this.telInput.setSelectionRange(I, I);
+        const C = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, C).replace(/[^+0-9]/g, "").length, f = (r == null ? void 0 : r.inputType) === "deleteContentForward", g = this._formatNumberAsYouType(), w = H(m, g, C, f);
+        this.telInput.value = g, this.telInput.setSelectionRange(w, w);
       }
     }, this.telInput.addEventListener("input", this._handleInputEvent), (t || i) && (this._handleKeydownEvent = (r) => {
       if (r.key && r.key.length === 1 && !r.altKey && !r.ctrlKey && !r.metaKey) {
@@ -1983,13 +1983,13 @@ class G {
           return;
         }
         if (t) {
-          const p = this.telInput.value, c = p.charAt(0) === "+", d = !c && this.telInput.selectionStart === 0 && r.key === "+", C = /^[0-9]$/.test(r.key), h = i ? C : d || C, y = p.slice(0, this.telInput.selectionStart) + r.key + p.slice(this.telInput.selectionEnd), f = this._getFullNumber(y), g = l.utils.getCoreNumber(f, this.selectedCountryData.iso2), I = this.maxCoreNumberLength && g.length > this.maxCoreNumberLength;
+          const p = this.telInput.value, c = p.charAt(0) === "+", d = !c && this.telInput.selectionStart === 0 && r.key === "+", C = /^[0-9]$/.test(r.key), h = i ? C : d || C, m = p.slice(0, this.telInput.selectionStart) + r.key + p.slice(this.telInput.selectionEnd), f = this._getFullNumber(m), g = l.utils.getCoreNumber(f, this.selectedCountryData.iso2), w = this.maxCoreNumberLength && g.length > this.maxCoreNumberLength;
           let L = !1;
           if (c) {
             const P = this.selectedCountryData.iso2;
             L = this._getCountryFromNumber(f) !== P;
           }
-          (!h || I && !L && !d) && r.preventDefault();
+          (!h || w && !L && !d) && r.preventDefault();
         }
       }
     }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
@@ -2129,9 +2129,9 @@ class G {
     let i = e ? t.substring(e) : t;
     const s = this.selectedCountryData.dialCode;
     i && s === "1" && i.charAt(0) !== "+" && (i.charAt(0) !== "1" && (i = `1${i}`), i = `+${i}`), this.options.separateDialCode && s && i.charAt(0) !== "+" && (i = `+${s}${i}`);
-    const o = this._getDialCode(i, !0), a = w(i);
+    const o = this._getDialCode(i, !0), a = I(i);
     if (o) {
-      const r = this.dialCodeToIso2Map[w(o)], p = r.indexOf(this.selectedCountryData.iso2) !== -1 && a.length <= o.length - 1;
+      const r = this.dialCodeToIso2Map[I(o)], p = r.indexOf(this.selectedCountryData.iso2) !== -1 && a.length <= o.length - 1;
       if (!(s === "1" && S(a)) && !p) {
         for (let d = 0; d < r.length; d++)
           if (r[d])
@@ -2309,7 +2309,7 @@ class G {
   _getFullNumber(t) {
     const e = t || this.telInput.value.trim(), { dialCode: i } = this.selectedCountryData;
     let s;
-    const n = w(e);
+    const n = I(e);
     return this.options.separateDialCode && e.charAt(0) !== "+" && i && n ? s = `+${i}` : s = "", s + e;
   }
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
@@ -2452,17 +2452,35 @@ class G {
     this.telInput.disabled = t, t ? this.selectedCountry.setAttribute("disabled", "true") : this.selectedCountry.removeAttribute("disabled");
   }
 }
-const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUtilsScript = !0, new Promise((t, e) => {
-  import(
-    /* webpackIgnore: true */
-    /* @vite-ignore */
-    u
-  ).then(({ default: i }) => {
-    l.utils = i, _("handleUtils"), t(!0);
-  }).catch((i) => {
-    _("rejectUtilsScriptPromise", i), e(i);
-  });
-})) : null, l = Object.assign(
+const W = (u) => {
+  if (!l.utils && !l.startedLoadingUtilsScript) {
+    let t;
+    if (typeof u == "string")
+      t = import(
+        /* webpackIgnore: true */
+        /* @vite-ignore */
+        u
+      );
+    else if (typeof u == "function")
+      try {
+        if (t = u(), !(t instanceof Promise))
+          throw new TypeError(`The function passed to loadUtils must return a promise for the utilities module, not ${typeof t}`);
+      } catch (e) {
+        return Promise.reject(e);
+      }
+    else
+      return Promise.reject(new TypeError(`The argument passed to loadUtils must be a URL string or a function that returns a promise for the utilities module, not ${typeof u}`));
+    return l.startedLoadingUtilsScript = !0, t.then((e) => {
+      const i = e == null ? void 0 : e.default;
+      if (!i || typeof i != "object")
+        throw typeof u == "string" ? new TypeError(`The module loaded from ${u} did not set utils as its default export.`) : new TypeError("The loader function passed to loadUtils did not resolve to a module object with utils as its default export.");
+      return l.utils = i, _("handleUtils"), !0;
+    }).catch((e) => {
+      throw _("rejectUtilsScriptPromise", e), e;
+    });
+  }
+  return null;
+}, l = Object.assign(
   (u, t) => {
     const e = new G(u, t);
     return e._init(), u.setAttribute("data-intl-tel-input-id", e.id.toString()), l.instances[e.id] = e, e;
@@ -2536,16 +2554,16 @@ const W = (u) => !l.utils && !l.startedLoadingUtilsScript ? (l.startedLoadingUti
     }), M(
       () => s.disabled,
       (h) => {
-        var y;
-        return (y = a.value) == null ? void 0 : y.setDisabled(h);
+        var m;
+        return (m = a.value) == null ? void 0 : m.setDisabled(h);
       }
     ), F(() => {
       var h;
       return (h = a.value) == null ? void 0 : h.destroy();
-    }), t({ instance: a, input: o }), (h, y) => B((O(), V("input", z({
+    }), t({ instance: a, input: o }), (h, m) => B((O(), V("input", z({
       ref_key: "input",
       ref: o,
-      "onUpdate:modelValue": y[0] || (y[0] = (f) => i.value = f),
+      "onUpdate:modelValue": m[0] || (m[0] = (f) => i.value = f),
       type: "tel",
       onCountrychange: C,
       onInput: d
