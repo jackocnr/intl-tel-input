@@ -149,3 +149,77 @@ var triggerKeyOnCountryContainerElement = function(key) {
   triggerKey(getCountryContainerElement()[0], "keydown", key);
 };
 /* eslint-enable @typescript-eslint/no-unused-vars */
+
+const moduleCache = new Map();
+
+/**
+ * A very simplistic module loader.
+ * @param {string} path 
+ * @returns {Promise<{exports: any, hasUtils: boolean}>}
+ */
+async function loadCommonJsModule (path) {
+  const url = new URL(path, window.location.href);
+
+  let module = moduleCache.get(url);
+
+  if (!module) {
+    const response = await fetch(url);
+    if (response.status !== 200) {
+      throw new TypeError(`error loading dynamically imported module: ${url}`);
+    }
+
+    const source = await response.text();
+    module = eval?.(`
+      (function() {
+        const module = { exports: {} };
+        ${source}
+        return module;
+      })()
+    `);
+    module.hasUtils = !!module.exports.utils;
+
+    moduleCache.set(moduleCache, module);
+  }
+
+  return module;
+}
+
+/**
+ * Configure a test suite to use a specific build of intl-tel-input.
+ * @param {string} path
+ * 
+ * @example
+ * describe("my suite", function () {
+ *   useIntlTelInputBuild("build/intlTelInputWithUtils.js");
+ *
+ *   it("should do something", () => {
+ *     // In this test, window.intlTelInput will be the version from
+ *     // "build/intlTelInputWithUtils.js"
+ *   })
+ * })
+ */
+function useIntlTelInputBuild(path) {
+  let defaultBuild;
+
+  beforeEach(async function() {
+    defaultBuild = window.intlTelInput;
+
+    const usedBuild = await loadCommonJsModule(path);
+    if (!usedBuild.hasUtils) {
+      usedBuild.exports.utils = undefined;
+      usedBuild.exports.startedLoadingUtilsScript = false;
+    }
+
+    window.intlTelInput = usedBuild.exports;
+  });
+
+  afterEach(function() {
+    try {
+      for (const instance of Object.values(window.intlTelInput?.instances ?? {})) {
+        instance.destroy();
+      }
+    } finally {
+      window.intlTelInput = defaultBuild;
+    }
+  });
+}
