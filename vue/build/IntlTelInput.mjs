@@ -1,4 +1,4 @@
-import { mergeModels as D, useModel as x, ref as v, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as O, createElementBlock as V, mergeProps as z, vModelText as R } from "vue";
+import { mergeModels as D, useModel as x, ref as v, onMounted as E, watch as M, onUnmounted as O, withDirectives as F, openBlock as B, createElementBlock as V, mergeProps as z, vModelText as R } from "vue";
 const N = [
   [
     "af",
@@ -1607,6 +1607,8 @@ const T = {
   i18n: {},
   //* Initial country.
   initialCountry: "",
+  //* Specify the path to the libphonenumber script to enable validation/formatting.
+  loadUtilsOnInit: "",
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
   nationalMode: !0,
   //* Display only these countries.
@@ -1627,7 +1629,7 @@ const T = {
       navigator.userAgent
     ) || window.innerWidth <= 500
   ) : !1,
-  //* Specify the path to the libphonenumber script to enable validation/formatting.
+  //* Deprecated! Use `loadUtilsOnInit` instead.
   utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberType: "MOBILE"
@@ -1936,12 +1938,12 @@ class G {
   }
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
-    const { utilsScript: t, initialCountry: e, geoIpLookup: i } = this.options;
-    t && !l.utils ? (this._handlePageLoad = () => {
-      var n;
-      window.removeEventListener("load", this._handlePageLoad), (n = l.loadUtils(t)) == null || n.catch(() => {
+    let { loadUtilsOnInit: t, utilsScript: e, initialCountry: i, geoIpLookup: s } = this.options;
+    !t && e && (console.warn("intl-tel-input: The `utilsScript` option is deprecated and will be removed in a future release! Please use the `loadUtilsOnInit` option instead."), t = e), t && !l.utils ? (this._handlePageLoad = () => {
+      var o;
+      window.removeEventListener("load", this._handlePageLoad), (o = l.loadUtils(t)) == null || o.catch(() => {
       });
-    }, l.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), e === "auto" && i && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
+    }, l.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), i === "auto" && s && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
   }
   //* Perform the geo ip lookup.
   _loadAutoCountry() {
@@ -2557,10 +2559,10 @@ const W = (u) => {
         var m;
         return (m = a.value) == null ? void 0 : m.setDisabled(h);
       }
-    ), F(() => {
+    ), O(() => {
       var h;
       return (h = a.value) == null ? void 0 : h.destroy();
-    }), t({ instance: a, input: o }), (h, m) => B((O(), V("input", z({
+    }), t({ instance: a, input: o }), (h, m) => F((B(), V("input", z({
       ref_key: "input",
       ref: o,
       "onUpdate:modelValue": m[0] || (m[0] = (f) => i.value = f),

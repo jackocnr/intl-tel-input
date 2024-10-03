@@ -1607,6 +1607,8 @@ const u2 = {
   i18n: {},
   //* Initial country.
   initialCountry: "",
+  //* Specify the path to the libphonenumber script to enable validation/formatting.
+  loadUtilsOnInit: "",
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
   nationalMode: !0,
   //* Display only these countries.
@@ -1627,7 +1629,7 @@ const u2 = {
       navigator.userAgent
     ) || window.innerWidth <= 500
   ) : !1,
-  //* Specify the path to the libphonenumber script to enable validation/formatting.
+  //* Deprecated! Use `loadUtilsOnInit` instead.
   utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberType: "MOBILE"
@@ -1936,12 +1938,12 @@ class F2 {
   }
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
-    const { utilsScript: e, initialCountry: i, geoIpLookup: n } = this.options;
-    e && !m.utils ? (this._handlePageLoad = () => {
-      var a;
-      window.removeEventListener("load", this._handlePageLoad), (a = m.loadUtils(e)) == null || a.catch(() => {
+    let { loadUtilsOnInit: e, utilsScript: i, initialCountry: n, geoIpLookup: o } = this.options;
+    !e && i && (console.warn("intl-tel-input: The `utilsScript` option is deprecated and will be removed in a future release! Please use the `loadUtilsOnInit` option instead."), e = i), e && !m.utils ? (this._handlePageLoad = () => {
+      var c;
+      window.removeEventListener("load", this._handlePageLoad), (c = m.loadUtils(e)) == null || c.catch(() => {
       });
-    }, m.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), i === "auto" && n && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
+    }, m.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), n === "auto" && o && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
   }
   //* Perform the geo ip lookup.
   _loadAutoCountry() {

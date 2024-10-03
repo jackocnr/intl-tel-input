@@ -1664,6 +1664,8 @@ var factoryOutput = (() => {
     i18n: {},
     //* Initial country.
     initialCountry: "",
+    //* Specify the path to the libphonenumber script to enable validation/formatting.
+    loadUtilsOnInit: "",
     //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
     nationalMode: true,
     //* Display only these countries.
@@ -1684,7 +1686,7 @@ var factoryOutput = (() => {
         navigator.userAgent
       ) || window.innerWidth <= 500
     ) : false,
-    //* Specify the path to the libphonenumber script to enable validation/formatting.
+    //* Deprecated! Use `loadUtilsOnInit` instead.
     utilsScript: "",
     //* The number type to enforce during validation.
     validationNumberType: "MOBILE"
@@ -2196,11 +2198,15 @@ var factoryOutput = (() => {
     }
     //* Init many requests: utils script / geo ip lookup.
     _initRequests() {
-      const { utilsScript, initialCountry, geoIpLookup } = this.options;
-      if (utilsScript && !intlTelInput.utils) {
+      let { loadUtilsOnInit, utilsScript, initialCountry, geoIpLookup } = this.options;
+      if (!loadUtilsOnInit && utilsScript) {
+        console.warn("intl-tel-input: The `utilsScript` option is deprecated and will be removed in a future release! Please use the `loadUtilsOnInit` option instead.");
+        loadUtilsOnInit = utilsScript;
+      }
+      if (loadUtilsOnInit && !intlTelInput.utils) {
         this._handlePageLoad = () => {
           window.removeEventListener("load", this._handlePageLoad);
-          intlTelInput.loadUtils(utilsScript)?.catch(() => {
+          intlTelInput.loadUtils(loadUtilsOnInit)?.catch(() => {
           });
         };
         if (intlTelInput.documentReady()) {

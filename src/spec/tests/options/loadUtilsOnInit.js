@@ -1,9 +1,9 @@
 "use strict";
 
-describe("utilsScript:", function() {
+describe("loadUtilsOnInit:", function() {
   useIntlTelInputBuild("build/js/intlTelInput.js");
 
-  const utilsScript = "/build/js/utils.js";
+  const loadUtilsOnInit = "/build/js/utils.js";
 
   beforeEach(function() {
     intlSetup();
@@ -14,7 +14,7 @@ describe("utilsScript:", function() {
     intlTeardown();
   });
 
-  it("does not load the utils script if `utilsScript` option is not set", async () => {
+  it("does not load the utils script if `loadUtilsOnInit` option is not set", async () => {
     iti = window.intlTelInput(input[0]);
 
     expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(false);
@@ -27,7 +27,7 @@ describe("utilsScript:", function() {
   it("waits until the page is loaded before loading utils", async () => {
     spyOn(window.intlTelInput, "documentReady").and.returnValue(false);
     iti = window.intlTelInput(input[0], {
-      utilsScript,
+      loadUtilsOnInit,
     });
 
     expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(false);
@@ -43,45 +43,45 @@ describe("utilsScript:", function() {
   it("loads utils immediately if page is already finished loading", async function() {
     spyOn(window.intlTelInput, "documentReady").and.returnValue(true);
     iti = window.intlTelInput(input[0], {
-      utilsScript,
+      loadUtilsOnInit,
     });
 
     expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(true);
     await expectAsync(iti.promise).toBeResolved();
   });
 
-  it("rejects with an error if the utilsScript cannot load", async function() {
+  it("rejects with an error if the utils script cannot load", async function() {
     spyOn(window.intlTelInput, "documentReady").and.returnValue(true);
     iti = window.intlTelInput(input[0], {
-      utilsScript: "/some/incorrect/url",
+      loadUtilsOnInit: "/some/incorrect/url",
     });
 
     expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(true);
     await expectAsync(iti.promise).toBeRejectedWithError();
   });
 
-  it("works if utilsScript is a function", async function() {
+  it("works if loadUtilsOnInit is a function", async function() {
     const mockUtils = { default: { mockUtils: true } };
     spyOn(window.intlTelInput, "documentReady").and.returnValue(true);
 
     iti = window.intlTelInput(input[0], {
-      async utilsScript () {
+      async loadUtilsOnInit () {
         return mockUtils;
       },
     });
 
     expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(true);
     await expectAsync(iti.promise).toBeResolved();
-    
+
     expect(window.intlTelInput.utils).toBe(mockUtils.default);
   });
 
   describe("in 'withUtils' builds", () => {
     useIntlTelInputBuild("build/js/intlTelInputWithUtils.js");
 
-    it("ignores the `utilsScript` option and does not load", async () => {
+    it("ignores the `loadUtilsOnInit` option and does not load", async () => {
       iti = window.intlTelInput(input[0], {
-        utilsScript,
+        loadUtilsOnInit,
       });
 
       expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(false);
@@ -94,7 +94,7 @@ describe("utilsScript:", function() {
     it("Raises an informative error when `utils` is missing", async () => {
       delete window.intlTelInput.utils;
       iti = window.intlTelInput(input[0], {
-        utilsScript,
+        loadUtilsOnInit,
       });
 
       expect(window.intlTelInput.startedLoadingUtilsScript).toEqual(true);
