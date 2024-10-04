@@ -1,5 +1,9 @@
 require("@testing-library/jest-dom");
-const intlTelInput = require("intlTelInputWithUtils.js");
+const intlTelInputWithUtils = require("intlTelInputWithUtils.js");
+
+/** @typedef {typeof import("intl-tel-input").default} IntlTelInputInterface */
+/** @typedef {import("intl-tel-input").Iti} Iti */
+/** @typedef {import("intl-tel-input").SomeOptions} SomeOptions */
 
 exports.totalCountries = 244;
 
@@ -17,19 +21,61 @@ exports.injectInput = ({ inputValue = "", disabled = false } = injectInputDefaul
   return input;
 };
 
-const initPluginDefaults = { input: null, options: {}, inputValue: "" };
-
-exports.initPlugin = ({ input = null, options = {}, inputValue = "" } = initPluginDefaults) => {
+/**
+ * Create an intl-tel-input instance to test.
+ * @param {{intlTelInput?: IntlTelInputInterface, input?: any, inputValue?: string, options?: SomeOptions}} options 
+ * @returns {{input: HTMLInputElement, iti: Iti, container: HTMLElement}}
+ */
+exports.initPlugin = ({ intlTelInput = intlTelInputWithUtils, input = null, inputValue = "", options = {} } = {}) => {
   const inputToUse = input || exports.injectInput({ inputValue });
   const iti = intlTelInput(inputToUse, options);
   const container = inputToUse.parentElement;
   return { input: inputToUse, iti, container };
 };
 
+/**
+ * Tear down a standard test environment. Optionally takes an intl-tel-input
+ * instance to tear down, or a copy of the whole library in which to tear down
+ * all instances.
+ * @param {Iti|IntlTelInputInterface} iti
+ */
 exports.teardown = (iti) => {
-  iti.destroy();
+  let toDestroy = [];
+  if (iti?.instances) {
+    toDestroy = Object.values(iti.instances);
+  } else if (iti) {
+    toDestroy = [iti];
+  }
+
+  for (const instance of toDestroy) {
+    // Tests might intentionally set up an instance wrong, so ignore any
+    // rejections of the instance's promise (otherwise the unhandled
+    // rejection causes the test to fail). But don't *wait*, since the test
+    // may also create a state where the promise will never fulfill.
+    instance.promise.catch(() => {});
+
+    instance.destroy();
+  }
+
   document.body.innerHTML = "";
-  jest.clearAllMocks();
+  jest.restoreAllMocks();
+};
+
+/**
+ * @param {IntlTelInputInterface} intlTelInput 
+ */
+exports.resetPackageAfterEach = (intlTelInput = intlTelInputWithUtils) => {
+  const originalUtils = intlTelInput.utils;
+
+  afterEach(function() {
+    try {
+      exports.teardown(intlTelInput);
+    } finally {
+      // Reset package-wide state.
+      intlTelInput.utils = originalUtils;
+      intlTelInput.startedLoadingUtilsScript = false;
+    }
+  });
 };
 
 exports.getCountryListLength = (container) => {

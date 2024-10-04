@@ -24,6 +24,7 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.25.7",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.2.74",
@@ -31,6 +32,7 @@
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
     "@vitejs/plugin-vue": "^5.1.2",
+    "babel-plugin-add-module-exports": "^1.0.4",
     "cspell": "^8.6.1",
     "esbuild": "^0.23.0",
     "eslint": "^8.57.0",
@@ -152,11 +154,5 @@
         "react/build/IntlTelInput.d.ts"
       ]
     }
-  },
-  "jest": {
-    "moduleDirectories": [
-      "node_modules",
-      "build/js"
-    ]
   }
 }
