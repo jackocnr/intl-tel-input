@@ -39,7 +39,7 @@ describe("loadUtils", function() {
       it("resolves the instance's promise", async () => {
         const { iti } = initPlugin({
           intlTelInput,
-          options: { loadUtilsOnInit: "some/other/url/ok" }
+          options: { loadUtilsOnInit: "some/other/url/ok" },
         });
         await iti.promise;
       });
