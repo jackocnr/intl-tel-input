@@ -26699,7 +26699,7 @@
       loadUtils,
       startedLoadingUtilsScript: false,
       startedLoadingAutoCountry: false,
-      version: "24.5.2"
+      version: "24.6.0"
     }
   );
   var intl_tel_input_default = intlTelInput;
