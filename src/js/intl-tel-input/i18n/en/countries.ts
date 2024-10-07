@@ -220,7 +220,7 @@ const countryTranslations: I18n = {
   tm: "Turkmenistan",
   tn: "Tunisia",
   to: "Tonga",
-  tr: "Turkey",
+  tr: "Turkiye",
   tt: "Trinidad & Tobago",
   tv: "Tuvalu",
   tw: "Taiwan",
