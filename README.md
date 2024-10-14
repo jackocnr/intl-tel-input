@@ -437,7 +437,7 @@ const isValid = iti.isValidNumber();
 ```
 Returns: `true`/`false`
 
-**isValidNumberPrecise**  
+**isValidNumberPrecise** ⚠️ DEPRECATED - see [discussion](https://github.com/jackocnr/intl-tel-input/discussions/1840)  
 Check if the current number is valid using precise matching rules for each country/area code etc - [see example](https://intl-tel-input.com/examples/validation.html). Note that these rules change each month for various countries around the world, so you need to be careful to keep the plugin up-to-date else you will start rejecting valid numbers. For a simpler and more future-proof form of validation, see `isValidNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the [utils script to be loaded](#loading-the-utilities-script).  
 ```js
 const isValid = iti.isValidNumberPrecise();
