@@ -315,7 +315,7 @@ intlTelInput(input, {
 Type: `String` Default: `""`  
 Set the initial country selection by specifying its country code e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note that however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
 
-**loadUtilsOnInit**  
+**loadUtilsOnInit** (see [v25 discussion](https://github.com/jackocnr/intl-tel-input/discussions/1842))  
 Type: `String` or `() => Promise<module>` Default: `""` Example: `"/build/js/utils.js"`
 
 This is one way to (lazy) load the included utils.js (to enable formatting/validation etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtilsOnInit` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/utils.js"`. The script is loaded via a [dynamic import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) statement, which means the URL cannot be relative - it must be absolute.
@@ -492,7 +492,7 @@ const iti = intlTelInput.getInstance(input);
 iti.isValidNumber(); // etc
 ```
 
-**loadUtils**  
+**loadUtils** (see [v25 discussion](https://github.com/jackocnr/intl-tel-input/discussions/1842))  
 An alternative to the `loadUtilsOnInit` option, this method lets you manually load the utils.js script on demand, to enable formatting/validation etc. See [Loading The Utilities Script](#loading-the-utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `loadUtils().then(callback)` to know when it's finished.
 ```js
 // Load from a URL:
@@ -576,7 +576,9 @@ International number formatting/validation is hard (it varies by country/distric
 
 To recompile the utils script yourself (e.g. to update the version of libphonenumber it is built from), see the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#updating-to-a-new-version-of-libphonenumber).
 
-## Loading The Utilities Script
+## Loading The Utilities Script 
+See [v25 discussion](https://github.com/jackocnr/intl-tel-input/discussions/1842).  
+
 The utils script provides lots of great functionality (see above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
 
 **Option 1: intlTelInputWithUtils**  
