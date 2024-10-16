@@ -713,21 +713,31 @@ export class Iti {
       const names = hiddenInput(telInputName);
 
       if (names.phone) {
-        //* Create hidden input for the full international number.
-        this.hiddenInput = createEl("input", {
-          type: "hidden",
-          name: names.phone,
-        }) as HTMLInputElement;
-        wrapper.appendChild(this.hiddenInput);
+        // Check if the hidden input for the phone number already exists
+        this.hiddenInput = wrapper.querySelector(`input[name="${names.phone}"]`) as HTMLInputElement;
+    
+        if (!this.hiddenInput) {
+          //* Create hidden input for the full international number if it doesn't exist
+          this.hiddenInput = createEl("input", {
+            type: "hidden",
+            name: names.phone,
+          }) as HTMLInputElement;
+          wrapper.appendChild(this.hiddenInput);
+        }
       }
 
       if (names.country) {
-        //* Create hidden input for the selected country iso2 code.
-        this.hiddenInputCountry = createEl("input", {
-          type: "hidden",
-          name: names.country,
-        }) as HTMLInputElement;
-        wrapper.appendChild(this.hiddenInputCountry);
+        // Check if the hidden input for the country code already exists
+        this.hiddenInputCountry = wrapper.querySelector(`input[name="${names.country}"]`) as HTMLInputElement;
+    
+        if (!this.hiddenInputCountry) {
+          //* Create hidden input for the selected country iso2 code if it doesn't exist
+          this.hiddenInputCountry = createEl("input", {
+            type: "hidden",
+            name: names.country,
+          }) as HTMLInputElement;
+          wrapper.appendChild(this.hiddenInputCountry);
+        }
       }
     }
   }
