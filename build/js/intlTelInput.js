@@ -1,5 +1,5 @@
 /*
- * International Telephone Input v24.6.0
+ * International Telephone Input v24.6.1
  * https://github.com/jackocnr/intl-tel-input.git
  * Licensed under the MIT license
  */
@@ -3153,7 +3153,7 @@ var factoryOutput = (() => {
       loadUtils,
       startedLoadingUtilsScript: false,
       startedLoadingAutoCountry: false,
-      version: "24.6.0"
+      version: "24.6.1"
     }
   );
   var intl_tel_input_default = intlTelInput;
