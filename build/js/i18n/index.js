@@ -4,6 +4,7 @@ export { default as bn, countryTranslations as bnCountryTranslations, interfaceT
 export { default as bs, countryTranslations as bsCountryTranslations, interfaceTranslations as bsInterfaceTranslations } from "./bs";
 export { default as ca, countryTranslations as caCountryTranslations, interfaceTranslations as caInterfaceTranslations } from "./ca";
 export { default as cs, countryTranslations as csCountryTranslations, interfaceTranslations as csInterfaceTranslations } from "./cs";
+export { default as da, countryTranslations as daCountryTranslations, interfaceTranslations as daInterfaceTranslations } from "./da";
 export { default as de, countryTranslations as deCountryTranslations, interfaceTranslations as deInterfaceTranslations } from "./de";
 export { default as el, countryTranslations as elCountryTranslations, interfaceTranslations as elInterfaceTranslations } from "./el";
 export { default as en, countryTranslations as enCountryTranslations, interfaceTranslations as enInterfaceTranslations } from "./en";
