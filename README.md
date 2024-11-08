@@ -4,7 +4,7 @@
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.webp" alt="React logo" width="16px" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/react">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla">Storybook</a>. 
 
-🗣️ NEWS: we now provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) in over 30 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
+🗣️ NEWS: we now provide [translations](#translations) in over 30 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React and Vue components are also included.
 
@@ -31,6 +31,7 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 - [Static Methods](#static-methods)
 - [Events](#events)
 - [Theming / Dark Mode](#theming--dark-mode)
+- [Translations](#translations)
 - [Utilities Script](#utilities-script)
 - [Loading The Utilities Script](#loading-the-utilities-script)
 - [Troubleshooting](#troubleshooting)
@@ -563,6 +564,13 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 
 Example:  
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/dark-mode2.png" alt="Screenshot" width="264px" height="272px" />
+
+## Translations
+[Translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) are currently provided in several languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
+
+Supported languages: Arabic, Bengali, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, Norwegian, English, Farsi, Finnish, French, German, Greek, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Marathi, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Swedish, Telugu, Thai, Turkish, Urdu, Vietnamese. 
+
+If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings, as we automatically pull in the country names from the country-list project.
 
 ## Utilities Script
 The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
