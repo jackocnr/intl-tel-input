@@ -566,7 +566,7 @@ Example:
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/dark-mode2.png" alt="Screenshot" width="264px" height="272px" />
 
 ## Translations
-Translation [modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) are currently provided in over 30 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
+We provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input) in over 30 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
 Supported languages: Arabic, Bengali, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, Norwegian, English, Farsi, Finnish, French, German, Greek, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Marathi, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Swedish, Telugu, Thai, Turkish, Urdu, Vietnamese. 
 
