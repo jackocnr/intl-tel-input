@@ -2151,10 +2151,7 @@ const loadUtils = (source: string|UtilsLoader): Promise<unknown> | null => {
       loadCall = import(/* webpackIgnore: true */ /* @vite-ignore */ source);
     } else if (typeof source === "function") {
       try {
-        loadCall = source();
-        if (!(loadCall instanceof Promise)) {
-          throw new TypeError(`The function passed to loadUtils must return a promise for the utilities module, not ${typeof loadCall}`);
-        }
+        loadCall = Promise.resolve(source());
       } catch (error) {
         return Promise.reject(error);
       }

@@ -95,6 +95,25 @@ describe("loadUtilsOnInit", () => {
     expect(intlTelInput.utils).toBe(mockUtils.default);
   });
 
+  it("works if loadUtilsOnInit returns a custom promise", async function() {
+    const mockUtils = { default: { mockUtils: true } };
+
+    const { iti } = initPlugin({
+      intlTelInput,
+      options: {
+        loadUtilsOnInit:  () => ({
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          then: (resolve, reject) => resolve(mockUtils),
+        }),
+      },
+    });
+
+    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+    await iti.promise;
+
+    expect(intlTelInput.utils).toBe(mockUtils.default);
+  });
+
   describe("in 'withUtils' builds", () => {
     const intlTelInput = require("intl-tel-input/intlTelInputWithUtils");
     resetPackageAfterEach(intlTelInput);
