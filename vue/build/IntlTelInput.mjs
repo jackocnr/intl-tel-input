@@ -2465,8 +2465,7 @@ const W = (u) => {
       );
     else if (typeof u == "function")
       try {
-        if (t = u(), !(t instanceof Promise))
-          throw new TypeError(`The function passed to loadUtils must return a promise for the utilities module, not ${typeof t}`);
+        t = Promise.resolve(u());
       } catch (e) {
         return Promise.reject(e);
       }

@@ -3090,10 +3090,7 @@ var loadUtils = (source) => {
       loadCall = Promise.reject(new Error("INTENTIONALLY BROKEN: this build of intl-tel-input includes the utilities module inline, but it has incorrectly attempted to load the utilities separately. If you are seeing this message, something is broken!"));
     } else if (typeof source === "function") {
       try {
-        loadCall = source();
-        if (!(loadCall instanceof Promise)) {
-          throw new TypeError(`The function passed to loadUtils must return a promise for the utilities module, not ${typeof loadCall}`);
-        }
+        loadCall = Promise.resolve(source());
       } catch (error) {
         return Promise.reject(error);
       }
