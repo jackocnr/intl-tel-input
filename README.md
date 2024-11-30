@@ -75,16 +75,16 @@ _Note: We have now dropped support for all versions of Internet Explorer because
 ## Getting Started (Using a CDN)
 1. Add the CSS
   ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.7.0/build/css/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.8.0/build/css/intlTelInput.css">
   ```
 
 2. Add the plugin script and initialise it on your input element
   ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.7.0/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.8.0/build/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtilsOnInit: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.7.0/build/js/utils.js",
+      loadUtilsOnInit: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.8.0/build/js/utils.js",
     });
   </script>
   ```
@@ -319,7 +319,7 @@ Set the initial country selection by specifying its country code e.g. `"us"` for
 **loadUtilsOnInit** (see [v25 discussion](https://github.com/jackocnr/intl-tel-input/discussions/1842))  
 Type: `String` or `() => Promise<module>` Default: `""` Example: `"/build/js/utils.js"`
 
-This is one way to (lazy) load the included utils.js (to enable formatting/validation etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtilsOnInit` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.7.0/build/js/utils.js"`. The script is loaded via a [dynamic import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) statement, which means the URL cannot be relative - it must be absolute.
+This is one way to (lazy) load the included utils.js (to enable formatting/validation etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtilsOnInit` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.8.0/build/js/utils.js"`. The script is loaded via a [dynamic import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) statement, which means the URL cannot be relative - it must be absolute.
 
 Alternatively, this can be a function that returns a promise for the utils module. When using a bundler like Webpack, this can be used to tell the bundler that the utils script should be kept in a separate file from the rest of your code. For example: `{ loadUtilsOnInit: () => import("intl-tel-input/utils") }`.
 
@@ -593,7 +593,7 @@ The utils script provides lots of great functionality (see above section), but c
 If you're not concerned about filesize (e.g. you're lazy loading this script), the easiest thing to do is to just use the full bundle (`/build/js/intlTelInputWithUtils.js`), which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
 
 **Option 2: loadUtilsOnInit**  
-If you *are* concerned about filesize, you can lazy load the utils script when the plugin initialises, using the `loadUtilsOnInit` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtilsOnInit` option to that URL, or just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.7.0/build/js/utils.js"`.
+If you *are* concerned about filesize, you can lazy load the utils script when the plugin initialises, using the `loadUtilsOnInit` initialisation option. You will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtilsOnInit` option to that URL, or just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@24.8.0/build/js/utils.js"`.
 
 Alternatively, you can set the `loadUtilsOnInit` option to a function that returns a promise for the utils script as a JS module object. If you use a bundler like Webpack, Vite, or Parcel to build your app, you can use it like this automatically separate the utils into a different bundle:
 
