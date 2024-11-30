@@ -33,7 +33,7 @@ If you want to try out a demo playground for the component:
 
 ### Step 1: Setup
 
-We now include libphonenumber as a submodule within this repository. The first time you update your local intl-tel-input repo to include this change, you need to run `npm install` in the root intl-tel-input directory to install the new closure-compiler dependencies, and then run `git pull --recurse-submodules` to initialise the submodule (this will populate the third_party/libphonenumber directory).
+We now include libphonenumber as a submodule within this repository. The first time you update your local intl-tel-input repo to include this change, you need to run `npm install` in the root intl-tel-input directory to install the new closure-compiler dependencies, and then run `git submodule init` and `git pull --recurse-submodules` to download the submodules (this will populate the third_party/libphonenumber directory).
 
 ### Step 2: Updating libphonenumber
 
