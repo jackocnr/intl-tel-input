@@ -24,9 +24,9 @@ module.exports = function(grunt) {
   grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:buildJs', 'replace', 'react', 'vue']);
   grunt.registerTask('jsfast', ['shell:buildJs', 'replace']);
   // just react
-  grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact', 'replace:removeImport']);
+  grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact']);
   // just vue
-  grunt.registerTask('vue', ['replace:vueWithUtils', 'shell:buildVue', 'replace:removeImport']);
+  grunt.registerTask('vue', ['replace:vueWithUtils', 'shell:buildVue']);
 
   // Run tests with a server so that async imports/fetches work.
   grunt.registerTask('jasmine:test', ['connect:test', 'jasmine']);

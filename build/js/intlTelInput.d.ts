@@ -299,7 +299,7 @@ declare module "intl-tel-input" {
         instances: {
             [key: string]: Iti;
         };
-        loadUtils: (source: string | UtilsLoader) => Promise<unknown> | null;
+        attachUtils: (source: UtilsLoader) => Promise<unknown> | null;
         startedLoadingAutoCountry: boolean;
         startedLoadingUtilsScript: boolean;
         version: string | undefined;
@@ -348,7 +348,7 @@ declare module "intl-tel-input" {
         }) | null;
         i18n: I18n;
         initialCountry: string;
-        loadUtilsOnInit: string | UtilsLoader;
+        loadUtils: UtilsLoader;
         nationalMode: boolean;
         onlyCountries: string[];
         placeholderNumberType: NumberType;
@@ -356,8 +356,6 @@ declare module "intl-tel-input" {
         separateDialCode: boolean;
         strictMode: boolean;
         useFullscreenPopup: boolean;
-        /** @deprecated Please use the `loadUtilsOnInit` option. */
-        utilsScript: string | UtilsLoader;
         validationNumberTypes: NumberType[] | null;
     }
     export type SomeOptions = Partial<AllOptions>;

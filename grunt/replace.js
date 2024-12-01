@@ -336,28 +336,5 @@ module.exports = function(grunt) {
         'vue/src/intl-tel-input/IntlTelInputWithUtils.vue': 'vue/src/intl-tel-input/IntlTelInput.vue',
       }
     },
-
-
-    /**************
-     * Remove (break) the dynamic import statement
-     * in the 4 bundles that already include utils as it will never be used, and sometimes causes problems with bundlers
-     **************/
-    removeImport: {
-      options: {
-        patterns: [
-          {
-            match: /import\([^)]*\)/,
-            replacement: 'Promise.reject(new Error("INTENTIONALLY BROKEN: this build of intl-tel-input includes the utilities module inline, but it has incorrectly attempted to load the utilities separately. If you are seeing this message, something is broken!"))'
-          }
-        ]
-      },
-      files: {
-        'build/js/intlTelInputWithUtils.js': 'build/js/intlTelInputWithUtils.js',
-        'build/js/intlTelInputWithUtils.min.js': 'build/js/intlTelInputWithUtils.min.js',
-        'react/build/IntlTelInputWithUtils.js': 'react/build/IntlTelInputWithUtils.js',
-        'react/build/IntlTelInputWithUtils.cjs': 'react/build/IntlTelInputWithUtils.cjs',
-        'vue/build/IntlTelInputWithUtils.mjs': 'vue/build/IntlTelInputWithUtils.mjs',
-      }
-    }
   };
 };

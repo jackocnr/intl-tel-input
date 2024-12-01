@@ -1,4 +1,4 @@
-import { mergeModels as D, useModel as x, ref as v, onMounted as E, watch as M, onUnmounted as O, withDirectives as F, openBlock as B, createElementBlock as V, mergeProps as z, vModelText as R } from "vue";
+import { mergeModels as D, useModel as x, ref as v, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as O, createElementBlock as V, mergeProps as z, vModelText as R } from "vue";
 const N = [
   [
     "af",
@@ -1607,8 +1607,8 @@ const T = {
   i18n: {},
   //* Initial country.
   initialCountry: "",
-  //* Specify the path to the libphonenumber script to enable validation/formatting.
-  loadUtilsOnInit: "",
+  //* A function to load the utils script.
+  loadUtils: null,
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
   nationalMode: !0,
   //* Display only these countries.
@@ -1629,8 +1629,6 @@ const T = {
       navigator.userAgent
     ) || window.innerWidth <= 500
   ) : !1,
-  //* Deprecated! Use `loadUtilsOnInit` instead.
-  utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"]
 }, K = [
@@ -1938,12 +1936,12 @@ class G {
   }
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
-    let { loadUtilsOnInit: t, utilsScript: e, initialCountry: i, geoIpLookup: s } = this.options;
-    !t && e && (console.warn("intl-tel-input: The `utilsScript` option is deprecated and will be removed in a future release! Please use the `loadUtilsOnInit` option instead."), t = e), t && !l.utils ? (this._handlePageLoad = () => {
-      var o;
-      window.removeEventListener("load", this._handlePageLoad), (o = l.loadUtils(t)) == null || o.catch(() => {
+    let { loadUtils: t, initialCountry: e, geoIpLookup: i } = this.options;
+    t && !l.utils ? (this._handlePageLoad = () => {
+      var n;
+      window.removeEventListener("load", this._handlePageLoad), (n = l.attachUtils(t)) == null || n.catch(() => {
       });
-    }, l.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), i === "auto" && s && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
+    }, l.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), e === "auto" && i && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
   }
   //* Perform the geo ip lookup.
   _loadAutoCountry() {
@@ -2457,24 +2455,18 @@ class G {
 const W = (u) => {
   if (!l.utils && !l.startedLoadingUtilsScript) {
     let t;
-    if (typeof u == "string")
-      t = import(
-        /* webpackIgnore: true */
-        /* @vite-ignore */
-        u
-      );
-    else if (typeof u == "function")
+    if (typeof u == "function")
       try {
         t = Promise.resolve(u());
       } catch (e) {
         return Promise.reject(e);
       }
     else
-      return Promise.reject(new TypeError(`The argument passed to loadUtils must be a URL string or a function that returns a promise for the utilities module, not ${typeof u}`));
+      return Promise.reject(new TypeError(`The argument passed to attachUtils must be a function that returns a promise for the utilities module, not ${typeof u}`));
     return l.startedLoadingUtilsScript = !0, t.then((e) => {
       const i = e == null ? void 0 : e.default;
       if (!i || typeof i != "object")
-        throw typeof u == "string" ? new TypeError(`The module loaded from ${u} did not set utils as its default export.`) : new TypeError("The loader function passed to loadUtils did not resolve to a module object with utils as its default export.");
+        throw new TypeError("The loader function passed to attachUtils did not resolve to a module object with utils as its default export.");
       return l.utils = i, _("handleUtils"), !0;
     }).catch((e) => {
       throw _("rejectUtilsScriptPromise", e), e;
@@ -2499,7 +2491,7 @@ const W = (u) => {
     },
     //* A map from instance ID to instance object.
     instances: {},
-    loadUtils: W,
+    attachUtils: W,
     startedLoadingUtilsScript: !1,
     startedLoadingAutoCountry: !1,
     version: "24.8.2"
@@ -2558,10 +2550,10 @@ const W = (u) => {
         var m;
         return (m = a.value) == null ? void 0 : m.setDisabled(h);
       }
-    ), O(() => {
+    ), F(() => {
       var h;
       return (h = a.value) == null ? void 0 : h.destroy();
-    }), t({ instance: a, input: o }), (h, m) => F((B(), V("input", z({
+    }), t({ instance: a, input: o }), (h, m) => B((O(), V("input", z({
       ref_key: "input",
       ref: o,
       "onUpdate:modelValue": m[0] || (m[0] = (f) => i.value = f),

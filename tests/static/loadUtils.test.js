@@ -6,17 +6,16 @@ const intlTelInput = require("intl-tel-input");
 const { initPlugin, resetPackageAfterEach } = require("../helpers/helpers");
 require("../helpers/matchers");
 
-describe("loadUtils", function() {
+describe("attachUtils", function() {
   resetPackageAfterEach(intlTelInput);
 
-  describe("calling loadUtils before init plugin", () => {
+  describe("calling attachUtils before init plugin", () => {
 
-    let url = "./utils.js?v=1";
+    const utilsLoader = () => import("intl-tel-input/utils");
     let loadResult;
 
     beforeEach(() => {
-      loadResult = intlTelInput.loadUtils(url);
-      loadResult.catch(() => {});
+      loadResult = intlTelInput.attachUtils(utilsLoader);
     });
 
     it("starts loading the utils", () => {
@@ -34,12 +33,14 @@ describe("loadUtils", function() {
       expect(intlTelInput).toHaveProperty("utils.isValidNumber");
     });
 
-    describe("then init plugin with loadUtilsOnInit option", () => {
+    describe("then init plugin with loadUtils option", () => {
 
       it("resolves the instance's promise", async () => {
         const { iti } = initPlugin({
           intlTelInput,
-          options: { loadUtilsOnInit: "some/other/url/ok" },
+          options: {
+            loadUtils: () => import("some/other/url/ok"),
+          },
         });
         await iti.promise;
       });
@@ -50,7 +51,7 @@ describe("loadUtils", function() {
 
 
 
-  describe("init plugin with loadUtilsOnInit option, but force documentReady=false so it wont fire", function() {
+  describe("init plugin with loadUtils option, but force documentReady=false so it wont fire", function() {
     /** @type {jest.Mock<() => Promise<any>>} */
     let utilsLoader;
     /** @type {intlTelInput.Iti} */
@@ -62,7 +63,7 @@ describe("loadUtils", function() {
 
       ({ iti } = initPlugin({
         intlTelInput,
-        options: { loadUtilsOnInit: utilsLoader },
+        options: { loadUtils: utilsLoader },
       }));
     });
 
@@ -76,12 +77,12 @@ describe("loadUtils", function() {
 
 
 
-    describe("calling loadUtils", function() {
+    describe("calling attachUtils", function() {
       /** @type {Promise<any>} */
-      let loadUtilsPromise;
+      let attachUtilsPromise;
 
       beforeEach(async function() {
-        loadUtilsPromise = intlTelInput.loadUtils(utilsLoader);
+        attachUtilsPromise = intlTelInput.attachUtils(utilsLoader);
       });
 
       it("starts loading the utils", function() {
@@ -89,20 +90,20 @@ describe("loadUtils", function() {
       });
 
       it("resolves the promise", async function() {
-        await expect(loadUtilsPromise).resolves.toBe(true);
+        await expect(attachUtilsPromise).resolves.toBe(true);
       });
 
 
 
-      describe("then init another plugin instance with loadUtilsOnInit option", function() {
+      describe("then init another plugin instance with loadUtils option", function() {
 
         beforeEach(async function() {
           // Wait for previous load to finish.
-          await loadUtilsPromise;
+          await attachUtilsPromise;
 
           initPlugin({
             intlTelInput,
-            options: { loadUtilsOnInit: utilsLoader },
+            options: { loadUtils: utilsLoader },
           });
         });
 
@@ -118,9 +119,9 @@ describe("loadUtils", function() {
 
 
 
-  describe("force documentReady=true then init plugin with loadUtilsOnInit", function() {
+  describe("force documentReady=true then init plugin with loadUtils", function() {
 
-    const url3 = "./utils.js?v=3";
+    const utilsLoader = () => import("intl-tel-input/utils");
     /** @type {intlTelInput.Iti} */
     let iti;
 
@@ -128,7 +129,7 @@ describe("loadUtils", function() {
       jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
       ({ iti } = initPlugin({
         intlTelInput,
-        options: { loadUtilsOnInit: url3 },
+        options: { loadUtils: utilsLoader },
       }));
     });
 
@@ -148,14 +149,14 @@ describe("loadUtils", function() {
     const mockUtils = { default: { mymodule: "fakeutils" } };
 
     it("uses the object the function resolves with", async () => {
-      const result = await intlTelInput.loadUtils(async () => mockUtils);
+      const result = await intlTelInput.attachUtils(async () => mockUtils);
 
       expect(result).toEqual(true);
       expect(intlTelInput.utils).toBe(mockUtils.default);
     });
 
     it("rejects if the function rejects", async () => {
-      const loadPromise = intlTelInput.loadUtils(async () => {
+      const loadPromise = intlTelInput.attachUtils(async () => {
         throw new Error("Uhoh!");
       });
 
@@ -163,7 +164,7 @@ describe("loadUtils", function() {
     });
 
     it("rejects if the function throws", async () => {
-      const loadPromise = intlTelInput.loadUtils(() => {
+      const loadPromise = intlTelInput.attachUtils(() => {
         throw new Error("Uhoh!");
       });
 
@@ -171,7 +172,7 @@ describe("loadUtils", function() {
     });
 
     it("rejects if the function returns a non-promise", async () => {
-      const loadPromise = intlTelInput.loadUtils(() => ({
+      const loadPromise = intlTelInput.attachUtils(() => ({
         anObject: "That is not a promise",
       }));
 
@@ -179,7 +180,7 @@ describe("loadUtils", function() {
     });
 
     it("rejects if the function resolves to a non-object", async () => {
-      const loadPromise = intlTelInput.loadUtils(async () => "Hello!");
+      const loadPromise = intlTelInput.attachUtils(async () => "Hello!");
 
       await expect(loadPromise).rejects.toThrow();
     });
@@ -187,8 +188,8 @@ describe("loadUtils", function() {
     it("does not call the function a second time", async () => {
       const loader = jest.fn(async () => mockUtils);
 
-      await intlTelInput.loadUtils(loader);
-      await intlTelInput.loadUtils(loader);
+      await intlTelInput.attachUtils(loader);
+      await intlTelInput.attachUtils(loader);
 
       expect(loader).toHaveBeenCalledTimes(1);
     });

@@ -17,7 +17,7 @@ interface IntlTelInputInterface {
   getCountryData: () => Country[];
   getInstance: (input: HTMLInputElement) => Iti | null;
   instances: { [key: string]: Iti };
-  loadUtils: (source: string|UtilsLoader) => Promise<unknown> | null;
+  attachUtils: (source: UtilsLoader) => Promise<unknown> | null;
   startedLoadingAutoCountry: boolean;
   startedLoadingUtilsScript: boolean;
   version: string | undefined;
@@ -66,7 +66,7 @@ interface AllOptions {
   hiddenInput: ((telInputName: string) => {phone: string, country?: string}) | null;
   i18n: I18n,
   initialCountry: string;
-  loadUtilsOnInit: string|UtilsLoader;
+  loadUtils: UtilsLoader;
   nationalMode: boolean;
   onlyCountries: string[];
   placeholderNumberType: NumberType;
@@ -74,8 +74,6 @@ interface AllOptions {
   separateDialCode: boolean;
   strictMode: boolean;
   useFullscreenPopup: boolean;
-  /** @deprecated Please use the `loadUtilsOnInit` option. */
-  utilsScript: string|UtilsLoader;
   validationNumberTypes: NumberType[] | null;
 }
 
@@ -115,8 +113,8 @@ const defaults: AllOptions = {
   i18n: {},
   //* Initial country.
   initialCountry: "",
-  //* Specify the path to the libphonenumber script to enable validation/formatting.
-  loadUtilsOnInit: "",
+  //* A function to load the utils script.
+  loadUtils: null,
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
   nationalMode: true,
   //* Display only these countries.
@@ -138,8 +136,6 @@ const defaults: AllOptions = {
           navigator.userAgent,
         ) || window.innerWidth <= 500
       : false,
-  //* Deprecated! Use `loadUtilsOnInit` instead.
-  utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"],
 };
@@ -905,21 +901,16 @@ export class Iti {
   //* Init many requests: utils script / geo ip lookup.
   private _initRequests(): void {
     // eslint-disable-next-line prefer-const
-    let { loadUtilsOnInit, utilsScript, initialCountry, geoIpLookup } = this.options;
-
-    if (!loadUtilsOnInit && utilsScript) {
-      console.warn("intl-tel-input: The `utilsScript` option is deprecated and will be removed in a future release! Please use the `loadUtilsOnInit` option instead.");
-      loadUtilsOnInit = utilsScript;
-    }
+    let { loadUtils, initialCountry, geoIpLookup } = this.options;
 
     //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
-    if (loadUtilsOnInit && !intlTelInput.utils) {
+    if (loadUtils && !intlTelInput.utils) {
       this._handlePageLoad = () => {
         window.removeEventListener("load", this._handlePageLoad);
         //* Catch and ignore any errors to prevent unhandled-promise failures.
-        //* The error from `loadUtils()` is also surfaced in each instance's
+        //* The error from `attachUtils()` is also surfaced in each instance's
         //* `promise` property, so it's not getting lost by being ignored here.
-        intlTelInput.loadUtils(loadUtilsOnInit)?.catch(() => {});
+        intlTelInput.attachUtils(loadUtils)?.catch(() => {});
       };
 
       //* If the plugin is being initialised after the window.load event has already been fired.
@@ -2137,7 +2128,7 @@ export class Iti {
  ********************/
 
 //* Load the utils script.
-const loadUtils = (source: string|UtilsLoader): Promise<unknown> | null => {
+const attachUtils = (source: UtilsLoader): Promise<unknown> | null => {
   //* 2 Options:
   //* 1) Not already started loading (start)
   //* 2) Already started loading (do nothing - just wait for the onload callback to fire, which will
@@ -2147,16 +2138,14 @@ const loadUtils = (source: string|UtilsLoader): Promise<unknown> | null => {
     !intlTelInput.startedLoadingUtilsScript
   ) {
     let loadCall;
-    if (typeof source === "string") {
-      loadCall = import(/* webpackIgnore: true */ /* @vite-ignore */ source);
-    } else if (typeof source === "function") {
+    if (typeof source === "function") {
       try {
         loadCall = Promise.resolve(source());
       } catch (error) {
         return Promise.reject(error);
       }
     } else {
-      return Promise.reject(new TypeError(`The argument passed to loadUtils must be a URL string or a function that returns a promise for the utilities module, not ${typeof source}`));
+      return Promise.reject(new TypeError(`The argument passed to attachUtils must be a function that returns a promise for the utilities module, not ${typeof source}`));
     }
 
     //* Only do this once.
@@ -2166,11 +2155,7 @@ const loadUtils = (source: string|UtilsLoader): Promise<unknown> | null => {
       .then((module) => {
         const utils = module?.default;
         if (!utils || typeof utils !== "object") {
-          if (typeof source === "string") {
-            throw new TypeError(`The module loaded from ${source} did not set utils as its default export.`);
-          } else {
-            throw new TypeError("The loader function passed to loadUtils did not resolve to a module object with utils as its default export.");
-          }
+          throw new TypeError("The loader function passed to attachUtils did not resolve to a module object with utils as its default export.");
         }
 
         intlTelInput.utils = utils;
@@ -2207,7 +2192,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     },
     //* A map from instance ID to instance object.
     instances: {},
-    loadUtils,
+    attachUtils,
     startedLoadingUtilsScript: false,
     startedLoadingAutoCountry: false,
     version: process.env.VERSION,

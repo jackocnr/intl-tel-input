@@ -5,12 +5,12 @@
 const intlTelInput = require("intl-tel-input");
 const { initPlugin, resetPackageAfterEach } = require("../helpers/helpers");
 
-describe("loadUtilsOnInit", () => {
+describe("loadUtils", () => {
   resetPackageAfterEach(intlTelInput);
 
-  const loadUtilsOnInit = "intl-tel-input/utils";
+  const loadUtils = () => import("intl-tel-input/utils");
 
-  it("does not load the utils script if `loadUtilsOnInit` option is not set", async () => {
+  it("does not load the utils script if `loadUtils` option is not set", async () => {
     const { iti } = initPlugin({ intlTelInput });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
@@ -25,7 +25,7 @@ describe("loadUtilsOnInit", () => {
 
     const { iti } = initPlugin({
       intlTelInput,
-      options: { loadUtilsOnInit },
+      options: { loadUtils },
     });
 
     await iti.promise;
@@ -37,7 +37,7 @@ describe("loadUtilsOnInit", () => {
 
     const { iti } = initPlugin({
       intlTelInput,
-      options: { loadUtilsOnInit },
+      options: { loadUtils },
     });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
@@ -55,7 +55,7 @@ describe("loadUtilsOnInit", () => {
 
     const { iti } = initPlugin({
       intlTelInput,
-      options: { loadUtilsOnInit },
+      options: { loadUtils },
     });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
@@ -68,7 +68,7 @@ describe("loadUtilsOnInit", () => {
 
     const { iti } = initPlugin({
       intlTelInput,
-      options: { loadUtilsOnInit: "/some/incorrect/url" },
+      options: { loadUtils: () => import("/some/incorrect/url") },
     });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
@@ -76,14 +76,14 @@ describe("loadUtilsOnInit", () => {
     await expect(iti.promise).rejects.toThrow();
   });
 
-  it("works if loadUtilsOnInit is a function", async function() {
+  it("works if loadUtils is a function", async function() {
     const mockUtils = { default: { mockUtils: true } };
     jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
     const { iti } = initPlugin({
       intlTelInput,
       options: {
-        async loadUtilsOnInit () {
+        async loadUtils () {
           return mockUtils;
         },
       },
@@ -95,13 +95,13 @@ describe("loadUtilsOnInit", () => {
     expect(intlTelInput.utils).toBe(mockUtils.default);
   });
 
-  it("works if loadUtilsOnInit returns a custom promise", async function() {
+  it("works if loadUtils returns a custom promise", async function() {
     const mockUtils = { default: { mockUtils: true } };
 
     const { iti } = initPlugin({
       intlTelInput,
       options: {
-        loadUtilsOnInit:  () => ({
+        loadUtils:  () => ({
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           then: (resolve, reject) => resolve(mockUtils),
         }),
@@ -118,10 +118,10 @@ describe("loadUtilsOnInit", () => {
     const intlTelInput = require("intl-tel-input/intlTelInputWithUtils");
     resetPackageAfterEach(intlTelInput);
 
-    it("ignores the `loadUtilsOnInit` option and does not load", async () => {
+    it("ignores the `loadUtils` option and does not load", async () => {
       const { iti } = initPlugin({
         intlTelInput,
-        options: { loadUtilsOnInit },
+        options: { loadUtils },
       });
 
       expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
@@ -129,17 +129,6 @@ describe("loadUtilsOnInit", () => {
       await iti.promise;
 
       expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
-    });
-
-    it("Raises an informative error when `utils` is missing", async () => {
-      delete intlTelInput.utils;
-      const { iti } = initPlugin({
-        intlTelInput,
-        options: { loadUtilsOnInit },
-      });
-
-      expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
-      await expect(iti.promise).rejects.toThrow("INTENTIONALLY BROKEN");
     });
   });
 

@@ -1623,8 +1623,8 @@ var defaults = {
   i18n: {},
   //* Initial country.
   initialCountry: "",
-  //* Specify the path to the libphonenumber script to enable validation/formatting.
-  loadUtilsOnInit: "",
+  //* A function to load the utils script.
+  loadUtils: null,
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
   nationalMode: true,
   //* Display only these countries.
@@ -1645,8 +1645,6 @@ var defaults = {
       navigator.userAgent
     ) || window.innerWidth <= 500
   ) : false,
-  //* Deprecated! Use `loadUtilsOnInit` instead.
-  utilsScript: "",
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"]
 };
@@ -2157,15 +2155,11 @@ var Iti = class {
   }
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
-    let { loadUtilsOnInit, utilsScript, initialCountry, geoIpLookup } = this.options;
-    if (!loadUtilsOnInit && utilsScript) {
-      console.warn("intl-tel-input: The `utilsScript` option is deprecated and will be removed in a future release! Please use the `loadUtilsOnInit` option instead.");
-      loadUtilsOnInit = utilsScript;
-    }
-    if (loadUtilsOnInit && !intlTelInput.utils) {
+    let { loadUtils, initialCountry, geoIpLookup } = this.options;
+    if (loadUtils && !intlTelInput.utils) {
       this._handlePageLoad = () => {
         window.removeEventListener("load", this._handlePageLoad);
-        intlTelInput.loadUtils(loadUtilsOnInit)?.catch(() => {
+        intlTelInput.attachUtils(loadUtils)?.catch(() => {
         });
       };
       if (intlTelInput.documentReady()) {
@@ -3047,33 +3041,23 @@ var Iti = class {
     }
   }
 };
-var loadUtils = (source) => {
+var attachUtils = (source) => {
   if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
     let loadCall;
-    if (typeof source === "string") {
-      loadCall = import(
-        /* webpackIgnore: true */
-        /* @vite-ignore */
-        source
-      );
-    } else if (typeof source === "function") {
+    if (typeof source === "function") {
       try {
         loadCall = Promise.resolve(source());
       } catch (error) {
         return Promise.reject(error);
       }
     } else {
-      return Promise.reject(new TypeError(`The argument passed to loadUtils must be a URL string or a function that returns a promise for the utilities module, not ${typeof source}`));
+      return Promise.reject(new TypeError(`The argument passed to attachUtils must be a function that returns a promise for the utilities module, not ${typeof source}`));
     }
     intlTelInput.startedLoadingUtilsScript = true;
     return loadCall.then((module) => {
       const utils = module?.default;
       if (!utils || typeof utils !== "object") {
-        if (typeof source === "string") {
-          throw new TypeError(`The module loaded from ${source} did not set utils as its default export.`);
-        } else {
-          throw new TypeError("The loader function passed to loadUtils did not resolve to a module object with utils as its default export.");
-        }
+        throw new TypeError("The loader function passed to attachUtils did not resolve to a module object with utils as its default export.");
       }
       intlTelInput.utils = utils;
       forEachInstance("handleUtils");
@@ -3106,7 +3090,7 @@ var intlTelInput = Object.assign(
     },
     //* A map from instance ID to instance object.
     instances: {},
-    loadUtils,
+    attachUtils,
     startedLoadingUtilsScript: false,
     startedLoadingAutoCountry: false,
     version: "24.8.2"

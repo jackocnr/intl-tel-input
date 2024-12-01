@@ -43,6 +43,7 @@
         // hiddenInput: () => "phone_full",
         // i18n: { 'de': 'Deutschland' },
         initialCountry: "us",
+        // loadUtils: () => import("/build/js/utils.js"), // leading slash (and http-server) required for this to work in chrome
         // nationalMode: false,
         // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
         // placeholderNumberType: "MOBILE",
@@ -50,7 +51,6 @@
         // separateDialCode: true,
         // strictMode: true,
         // useFullscreenPopup: true,
-        // loadUtilsOnInit: "/build/js/utils.js", // leading slash (and http-server) required for this to work in chrome
         // validationNumberTypes: null,
       });
       window.iti = iti; // useful for testing
