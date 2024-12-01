@@ -2498,7 +2498,7 @@ const V2 = (y) => {
     loadUtils: V2,
     startedLoadingUtilsScript: !1,
     startedLoadingAutoCountry: !1,
-    version: "24.8.0"
+    version: "24.8.1"
   }
 );
 (function() {
