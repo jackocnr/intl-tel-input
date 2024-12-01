@@ -29,10 +29,10 @@ type ItiUtils = {
   getCoreNumber(number: string, iso2: string | undefined): string;
   getExampleNumber(iso2: string | undefined, nationalMode: boolean, numberType: number, useE164?: boolean): string;
   getExtension(number: string, iso2: string | undefined): string;
-  getNumberType: (number: string, iso2: string | undefined) => number;
+  getNumberType(number: string, iso2: string | undefined): number;
   getValidationError(number: string, iso2: string | undefined): number;
-  isPossibleNumber(number: string, iso2: string | undefined, numberType?: string | null): boolean;
-  isValidNumber: (number: string, iso2: string | undefined, numberType?: string | null) => boolean;
+  isPossibleNumber(number: string, iso2: string | undefined, numberType?: NumberType[] | null): boolean;
+  isValidNumber(number: string, iso2: string | undefined, numberType?: NumberType[] | null): boolean;
   numberFormat: { NATIONAL: number, INTERNATIONAL: number, E164: number, RFC3966: number };
   numberType: object;
 };
@@ -76,7 +76,7 @@ interface AllOptions {
   useFullscreenPopup: boolean;
   /** @deprecated Please use the `loadUtilsOnInit` option. */
   utilsScript: string|UtilsLoader;
-  validationNumberType: NumberType | null;
+  validationNumberTypes: NumberType[] | null;
 }
 
 //* Export this as useful in react component too.
@@ -141,7 +141,7 @@ const defaults: AllOptions = {
   //* Deprecated! Use `loadUtilsOnInit` instead.
   utilsScript: "",
   //* The number type to enforce during validation.
-  validationNumberType: "MOBILE",
+  validationNumberTypes: ["MOBILE"],
 };
 //* https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
 const regionlessNanpNumbers = [
@@ -1579,7 +1579,7 @@ export class Iti {
 
   //* Update the maximum valid number length for the currently selected country.
   private _updateMaxLength(): void {
-    const { strictMode, placeholderNumberType, validationNumberType } = this.options;
+    const { strictMode, placeholderNumberType, validationNumberTypes } = this.options;
     const { iso2 } = this.selectedCountryData;
     if (strictMode && intlTelInput.utils) {
       if (iso2) {
@@ -1592,7 +1592,7 @@ export class Iti {
         );
         //* See if adding more digits is still valid to get the true maximum valid length.
         let validNumber = exampleNumber;
-        while (intlTelInput.utils.isPossibleNumber(exampleNumber, iso2, validationNumberType)) {
+        while (intlTelInput.utils.isPossibleNumber(exampleNumber, iso2, validationNumberTypes)) {
           validNumber = exampleNumber;
           exampleNumber += "0";
         }
@@ -2062,7 +2062,7 @@ export class Iti {
 
   private _utilsIsPossibleNumber(val: string): boolean | null {
     return intlTelInput.utils
-      ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType)
+      ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberTypes)
       : null;
   }
 
@@ -2086,7 +2086,7 @@ export class Iti {
 
   private _utilsIsValidNumber(val: string): boolean | null {
     return intlTelInput.utils
-      ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType)
+      ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2, this.options.validationNumberTypes)
       : null;
   }
 

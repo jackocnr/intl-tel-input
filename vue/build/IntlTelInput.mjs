@@ -1632,7 +1632,7 @@ const T = {
   //* Deprecated! Use `loadUtilsOnInit` instead.
   utilsScript: "",
   //* The number type to enforce during validation.
-  validationNumberType: "MOBILE"
+  validationNumberTypes: ["MOBILE"]
 }, K = [
   "800",
   "822",
@@ -2190,7 +2190,7 @@ class G {
   }
   //* Update the maximum valid number length for the currently selected country.
   _updateMaxLength() {
-    const { strictMode: t, placeholderNumberType: e, validationNumberType: i } = this.options, { iso2: s } = this.selectedCountryData;
+    const { strictMode: t, placeholderNumberType: e, validationNumberTypes: i } = this.options, { iso2: s } = this.selectedCountryData;
     if (t && l.utils)
       if (s) {
         const n = l.utils.numberType[e];
@@ -2420,7 +2420,7 @@ class G {
     return this._utilsIsPossibleNumber(t);
   }
   _utilsIsPossibleNumber(t) {
-    return l.utils ? l.utils.isPossibleNumber(t, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
+    return l.utils ? l.utils.isPossibleNumber(t, this.selectedCountryData.iso2, this.options.validationNumberTypes) : null;
   }
   //* Validate the input val (precise)
   isValidNumberPrecise() {
@@ -2434,7 +2434,7 @@ class G {
     return this._utilsIsValidNumber(t);
   }
   _utilsIsValidNumber(t) {
-    return l.utils ? l.utils.isValidNumber(t, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
+    return l.utils ? l.utils.isValidNumber(t, this.selectedCountryData.iso2, this.options.validationNumberTypes) : null;
   }
   //* Update the selected country, and update the input val accordingly.
   setCountry(t) {

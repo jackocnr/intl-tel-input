@@ -131,13 +131,14 @@ const getValidationError = (number, countryCode) => {
 };
 
 //* Check if given number is valid.
-const isValidNumber = (number, countryCode, numberTypeName) => {
+const isValidNumber = (number, countryCode, numberTypeNames) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
     const isValidNumber = phoneUtil.isValidNumber(numberObj);
-    if (numberTypeName) {
-      return isValidNumber && phoneUtil.getNumberType(numberObj) === numberType[numberTypeName];
+    if (numberTypeNames) {
+      const numberTypes = numberTypeNames.map((typeName) => numberType[typeName]);
+      return isValidNumber && numberTypes.includes(phoneUtil.getNumberType(numberObj));
     }
     return isValidNumber;
   } catch {
@@ -145,29 +146,30 @@ const isValidNumber = (number, countryCode, numberTypeName) => {
   }
 };
 
-//* For internal use only - see isPossibleNumber.
-const isPossibleNumberForType = (phoneUtil, numberObj, numberTypeName) => {
-  //* Can't use phoneUtil.isPossibleNumberForType directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter.
-  const resultForType = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, numberType[numberTypeName]);
-  const isPossibleForType = resultForType === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
-  return isPossibleForType;
-};
-
 //* Check if given number is possible.
-const isPossibleNumber = (number, countryCode, numberTypeName) => {
+const isPossibleNumber = (number, countryCode, numberTypeNames) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
 
-    if (numberTypeName) {
-      const isPossible = isPossibleNumberForType(phoneUtil, numberObj, numberTypeName);
-      //* FIXED_LINE_OR_MOBILE does not behave how you would expect - it is its own category that is different to either MOBILE or FIXED_LINE (e.g. for US numbers which could be used for either purpose - it should really be called something like FIXED_LINE_SLASH_MOBILE). So here we make it more user friendly by checking if it's a possible number for any of those three categories. NOTE: this is actually in-line with how it behaves in other situations e.g. if you call isPossibleNumberForType with type="MOBILE" and the number set to a US number, it returns VALID even though it's type is technically FIXED_LINE_OR_MOBILE.
-      if (numberTypeName === "FIXED_LINE_OR_MOBILE") {
-        const isMobile = isPossibleNumberForType(phoneUtil, numberObj, "MOBILE");
-        const isFixedLine = isPossibleNumberForType(phoneUtil, numberObj, "FIXED_LINE");
-        return isMobile || isFixedLine || isPossible;
+    if (numberTypeNames) {
+      //* FIXED_LINE_OR_MOBILE does not behave how you would expect (e.g. in the UK, calling isPossibleNumberForType() with a mobile number and numberType=FIXED_LINE_OR_MOBILE will return false). This is because it is its own category that is different to either MOBILE or FIXED_LINE (e.g. it is used for US numbers which could be used for either purpose - it should really be called something like FIXED_LINE_SLASH_MOBILE). So here we make it more user friendly by checking if it's a possible number for any of those three categories. NOTE: this is actually in-line with how it behaves in other situations e.g. if you call isPossibleNumberForType with type="MOBILE" and the number set to a US number, it returns VALID even though it's type is technically FIXED_LINE_OR_MOBILE.
+      if (numberTypeNames.includes("FIXED_LINE_OR_MOBILE")) {
+        if (!numberTypeNames.includes("MOBILE")) {
+          numberTypeNames.push("MOBILE");
+        }
+        if (!numberTypeNames.includes("FIXED_LINE")) {
+          numberTypeNames.push("FIXED_LINE");
+        }
       }
-      return isPossible;
+      for (let typeName of numberTypeNames) {
+        //* Can't use phoneUtil.isPossibleNumberForType directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter.
+        const resultForType = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, numberType[typeName]);
+        if (resultForType === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE) {
+          return true;
+        }
+      }
+      return false;
     }
 
     //* Can't use phoneUtil.isPossibleNumber directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter.

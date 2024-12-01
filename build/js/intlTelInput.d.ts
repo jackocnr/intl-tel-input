@@ -311,10 +311,10 @@ declare module "intl-tel-input" {
         getCoreNumber(number: string, iso2: string | undefined): string;
         getExampleNumber(iso2: string | undefined, nationalMode: boolean, numberType: number, useE164?: boolean): string;
         getExtension(number: string, iso2: string | undefined): string;
-        getNumberType: (number: string, iso2: string | undefined) => number;
+        getNumberType(number: string, iso2: string | undefined): number;
         getValidationError(number: string, iso2: string | undefined): number;
-        isPossibleNumber(number: string, iso2: string | undefined, numberType?: string | null): boolean;
-        isValidNumber: (number: string, iso2: string | undefined, numberType?: string | null) => boolean;
+        isPossibleNumber(number: string, iso2: string | undefined, numberType?: NumberType[] | null): boolean;
+        isValidNumber(number: string, iso2: string | undefined, numberType?: NumberType[] | null): boolean;
         numberFormat: {
             NATIONAL: number;
             INTERNATIONAL: number;
@@ -358,7 +358,7 @@ declare module "intl-tel-input" {
         useFullscreenPopup: boolean;
         /** @deprecated Please use the `loadUtilsOnInit` option. */
         utilsScript: string | UtilsLoader;
-        validationNumberType: NumberType | null;
+        validationNumberTypes: NumberType[] | null;
     }
     export type SomeOptions = Partial<AllOptions>;
     export class Iti {

@@ -1684,7 +1684,7 @@ var defaults = {
   //* Deprecated! Use `loadUtilsOnInit` instead.
   utilsScript: "",
   //* The number type to enforce during validation.
-  validationNumberType: "MOBILE"
+  validationNumberTypes: ["MOBILE"]
 };
 var regionlessNanpNumbers = [
   "800",
@@ -2665,7 +2665,7 @@ var Iti = class {
   }
   //* Update the maximum valid number length for the currently selected country.
   _updateMaxLength() {
-    const { strictMode, placeholderNumberType, validationNumberType } = this.options;
+    const { strictMode, placeholderNumberType, validationNumberTypes } = this.options;
     const { iso2 } = this.selectedCountryData;
     if (strictMode && intlTelInput.utils) {
       if (iso2) {
@@ -2677,7 +2677,7 @@ var Iti = class {
           true
         );
         let validNumber = exampleNumber;
-        while (intlTelInput.utils.isPossibleNumber(exampleNumber, iso2, validationNumberType)) {
+        while (intlTelInput.utils.isPossibleNumber(exampleNumber, iso2, validationNumberTypes)) {
           validNumber = exampleNumber;
           exampleNumber += "0";
         }
@@ -3029,7 +3029,7 @@ var Iti = class {
     return this._utilsIsPossibleNumber(val);
   }
   _utilsIsPossibleNumber(val) {
-    return intlTelInput.utils ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
+    return intlTelInput.utils ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberTypes) : null;
   }
   //* Validate the input val (precise)
   isValidNumberPrecise() {
@@ -3047,7 +3047,7 @@ var Iti = class {
     return this._utilsIsValidNumber(val);
   }
   _utilsIsValidNumber(val) {
-    return intlTelInput.utils ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
+    return intlTelInput.utils ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2, this.options.validationNumberTypes) : null;
   }
   //* Update the selected country, and update the input val accordingly.
   setCountry(iso2) {
