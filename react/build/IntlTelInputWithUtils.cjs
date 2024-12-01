@@ -3047,7 +3047,7 @@ var Iti = class {
     return this._utilsIsValidNumber(val);
   }
   _utilsIsValidNumber(val) {
-    return intlTelInput.utils ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2) : null;
+    return intlTelInput.utils ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
   }
   //* Update the selected country, and update the input val accordingly.
   setCountry(iso2) {
@@ -3341,19 +3341,19 @@ var intl_tel_input_default = intlTelInput;
     a.h[b].push(c);
     a.g && delete a.g[b];
   }
-  function y(a, b) {
+  function z(a, b) {
     var c = [], d;
     for (d in b) 0 != d && c.push(new la(d, b[d]));
     return new ta(a, c);
   }
   ;
-  function z() {
+  function A() {
   }
-  z.prototype.g = function(a) {
+  A.prototype.g = function(a) {
     new a.h();
     throw Error("Unimplemented");
   };
-  z.prototype.h = function(a, b) {
+  A.prototype.h = function(a, b) {
     if (11 == a.h || 10 == a.h) return b instanceof p ? b : this.g(a.s.prototype.m(), b);
     if (14 == a.h) return "string" === typeof b && xa.test(b) && (a = Number(b), 0 < a) ? a : b;
     if (!a.o) return b;
@@ -3366,7 +3366,7 @@ var intl_tel_input_default = intlTelInput;
   var xa = /^-?[0-9]+$/;
   function ya() {
   }
-  n(ya, z);
+  n(ya, A);
   ya.prototype.g = function(a, b) {
     a = new a.h();
     a.l = this;
@@ -3378,7 +3378,7 @@ var intl_tel_input_default = intlTelInput;
   }
   n(B, ya);
   B.prototype.h = function(a, b) {
-    return 8 == a.h ? !!b : z.prototype.h.apply(this, arguments);
+    return 8 == a.h ? !!b : A.prototype.h.apply(this, arguments);
   };
   B.prototype.g = function(a, b) {
     return B.ma.g.call(this, a, b);
@@ -3418,19 +3418,19 @@ var intl_tel_input_default = intlTelInput;
   var Ba = null;
   E.prototype.m = function() {
     var a = za;
-    a || (za = a = y(E, { 0: { name: "NumberFormat", ia: "i18n.phonenumbers.NumberFormat" }, 1: { name: "pattern", required: true, i: 9, type: String }, 2: { name: "format", required: true, i: 9, type: String }, 3: { name: "leading_digits_pattern", aa: true, i: 9, type: String }, 4: { name: "national_prefix_formatting_rule", i: 9, type: String }, 6: { name: "national_prefix_optional_when_formatting", i: 8, defaultValue: false, type: Boolean }, 5: { name: "domestic_carrier_code_formatting_rule", i: 9, type: String } }));
+    a || (za = a = z(E, { 0: { name: "NumberFormat", ia: "i18n.phonenumbers.NumberFormat" }, 1: { name: "pattern", required: true, i: 9, type: String }, 2: { name: "format", required: true, i: 9, type: String }, 3: { name: "leading_digits_pattern", aa: true, i: 9, type: String }, 4: { name: "national_prefix_formatting_rule", i: 9, type: String }, 6: { name: "national_prefix_optional_when_formatting", i: 8, defaultValue: false, type: Boolean }, 5: { name: "domestic_carrier_code_formatting_rule", i: 9, type: String } }));
     return a;
   };
   E.m = E.prototype.m;
   F.prototype.m = function() {
     var a = Aa;
-    a || (Aa = a = y(F, { 0: { name: "PhoneNumberDesc", ia: "i18n.phonenumbers.PhoneNumberDesc" }, 2: { name: "national_number_pattern", i: 9, type: String }, 9: { name: "possible_length", aa: true, i: 5, type: Number }, 10: { name: "possible_length_local_only", aa: true, i: 5, type: Number }, 6: { name: "example_number", i: 9, type: String } }));
+    a || (Aa = a = z(F, { 0: { name: "PhoneNumberDesc", ia: "i18n.phonenumbers.PhoneNumberDesc" }, 2: { name: "national_number_pattern", i: 9, type: String }, 9: { name: "possible_length", aa: true, i: 5, type: Number }, 10: { name: "possible_length_local_only", aa: true, i: 5, type: Number }, 6: { name: "example_number", i: 9, type: String } }));
     return a;
   };
   F.m = F.prototype.m;
   G.prototype.m = function() {
     var a = Ba;
-    a || (Ba = a = y(G, {
+    a || (Ba = a = z(G, {
       0: { name: "PhoneMetadata", ia: "i18n.phonenumbers.PhoneMetadata" },
       1: { name: "general_desc", i: 11, type: F },
       2: { name: "fixed_line", i: 11, type: F },
@@ -3477,7 +3477,7 @@ var intl_tel_input_default = intlTelInput;
   var Ca = null, Da = { ra: 0, qa: 1, pa: 5, oa: 10, na: 20 };
   H.prototype.m = function() {
     var a = Ca;
-    a || (Ca = a = y(H, { 0: { name: "PhoneNumber", ia: "i18n.phonenumbers.PhoneNumber" }, 1: { name: "country_code", required: true, i: 5, type: Number }, 2: { name: "national_number", required: true, i: 4, type: Number }, 3: { name: "extension", i: 9, type: String }, 4: { name: "italian_leading_zero", i: 8, type: Boolean }, 8: { name: "number_of_leading_zeros", i: 5, defaultValue: 1, type: Number }, 5: { name: "raw_input", i: 9, type: String }, 6: { name: "country_code_source", i: 14, defaultValue: 0, type: Da }, 7: {
+    a || (Ca = a = z(H, { 0: { name: "PhoneNumber", ia: "i18n.phonenumbers.PhoneNumber" }, 1: { name: "country_code", required: true, i: 5, type: Number }, 2: { name: "national_number", required: true, i: 4, type: Number }, 3: { name: "extension", i: 9, type: String }, 4: { name: "italian_leading_zero", i: 8, type: Boolean }, 8: { name: "number_of_leading_zeros", i: 5, defaultValue: 1, type: Number }, 5: { name: "raw_input", i: 9, type: String }, 6: { name: "country_code_source", i: 14, defaultValue: 0, type: Da }, 7: {
       name: "preferred_domestic_carrier_code",
       i: 9,
       type: String
@@ -8766,6 +8766,13 @@ var intl_tel_input_default = intlTelInput;
     }
   }
   function ab(a, b) {
+    var c = bb(a, b);
+    a = Q(a, w(b, 1), c);
+    if (null == a) return -1;
+    b = P(b);
+    return cb(b, a);
+  }
+  function cb(a, b) {
     return U(a, r(b, 1)) ? U(a, r(b, 5)) ? 4 : U(a, r(b, 4)) ? 3 : U(a, r(b, 6)) ? 5 : U(a, r(b, 8)) ? 6 : U(a, r(b, 7)) ? 7 : U(a, r(b, 21)) ? 8 : U(a, r(b, 25)) ? 9 : U(a, r(b, 28)) ? 10 : U(a, r(b, 2)) ? r(b, 18) || U(a, r(b, 3)) ? 2 : 0 : !r(b, 18) && U(a, r(b, 3)) ? 1 : -1 : -1;
   }
   function S(a, b) {
@@ -8800,7 +8807,7 @@ var intl_tel_input_default = intlTelInput;
             a = d;
             break a;
           }
-        } else if (-1 != ab(b, g)) {
+        } else if (-1 != cb(b, g)) {
           a = d;
           break a;
         }
@@ -8813,7 +8820,7 @@ var intl_tel_input_default = intlTelInput;
     a = I[a];
     return null == a ? "ZZ" : a[0];
   }
-  function cb(a, b) {
+  function db(a, b) {
     a = S(a, b);
     if (null == a) throw Error("Invalid region code: " + b);
     return w(a, 10);
@@ -8836,13 +8843,13 @@ var intl_tel_input_default = intlTelInput;
     b = Q(a, b, R(b));
     return V(a, d, b, c);
   }
-  function db(a, b) {
+  function eb(a, b) {
     a = a.toString();
     if (0 == a.length || "0" == a.charAt(0)) return 0;
     for (var c, d = a.length, e = 1; 3 >= e && e <= d; ++e) if (c = parseInt(a.substring(0, e), 10), c in I) return b.g(a.substring(e)), c;
     return 0;
   }
-  function eb(a, b, c, d, e, f) {
+  function fb(a, b, c, d, e, f) {
     if (0 == b.length) return 0;
     b = new C(b);
     var g;
@@ -8865,15 +8872,15 @@ var intl_tel_input_default = intlTelInput;
     e && t(f, 6, g);
     if (20 != g) {
       if (2 >= b.h.length) throw Error("Phone number too short after IDD");
-      a = db(b, d);
+      a = eb(b, d);
       if (0 != a) return t(f, 1, a), a;
       throw Error("Invalid country calling code");
     }
-    if (null != c && (g = w(c, 10), h = "" + g, l = b.toString(), 0 == l.lastIndexOf(h, 0) && (h = new C(l.substring(h.length)), l = r(c, 1), l = new RegExp(w(l, 2)), fb(h, c, null), h = h.toString(), !M(l, b.toString()) && M(l, h) || 3 == V(a, b.toString(), c, -1)))) return d.g(h), e && t(f, 6, 10), t(f, 1, g), g;
+    if (null != c && (g = w(c, 10), h = "" + g, l = b.toString(), 0 == l.lastIndexOf(h, 0) && (h = new C(l.substring(h.length)), l = r(c, 1), l = new RegExp(w(l, 2)), gb(h, c, null), h = h.toString(), !M(l, b.toString()) && M(l, h) || 3 == V(a, b.toString(), c, -1)))) return d.g(h), e && t(f, 6, 10), t(f, 1, g), g;
     t(f, 1, 0);
     return 0;
   }
-  function fb(a, b, c) {
+  function gb(a, b, c) {
     var d = a.toString(), e = d.length, f = r(b, 15);
     if (0 != e && null != f && 0 != f.length) {
       var g = new RegExp("^(?:" + f + ")");
@@ -8889,9 +8896,9 @@ var intl_tel_input_default = intlTelInput;
   }
   function X(a, b, c) {
     if (!O(c) && 0 < b.length && "+" != b.charAt(0)) throw Error("Invalid country calling code");
-    return gb(a, b, c, true);
+    return hb(a, b, c, true);
   }
-  function gb(a, b, c, d) {
+  function hb(a, b, c, d) {
     if (null == b) throw Error("The string supplied did not seem to be a phone number");
     if (250 < b.length) throw Error("The string supplied is too long to be a phone number");
     var e = new C();
@@ -8919,10 +8926,10 @@ var intl_tel_input_default = intlTelInput;
       g = b.search(Ra);
       if (0 <= g && Va(b.substring(0, g))) {
         h = b.match(Ra);
-        for (var l = h.length, A = 1; A < l; ++A) if (null != h[A] && 0 < h[A].length) {
+        for (var l = h.length, y = 1; y < l; ++y) if (null != h[y] && 0 < h[y].length) {
           D(e);
           e.g(b.substring(0, g));
-          b = h[A];
+          b = h[y];
           break a;
         }
       }
@@ -8934,10 +8941,10 @@ var intl_tel_input_default = intlTelInput;
     h = 0;
     l = e.toString();
     try {
-      h = eb(a, l, g, b, d, f);
+      h = fb(a, l, g, b, d, f);
     } catch (da) {
       if ("Invalid country calling code" == da.message && K.test(l)) {
-        if (l = l.replace(K, ""), h = eb(a, l, g, b, d, f), 0 == h) throw da;
+        if (l = l.replace(K, ""), h = fb(a, l, g, b, d, f), 0 == h) throw da;
       } else throw da;
     }
     0 != h ? (e = R(h), e != c && (g = Q(a, h, e))) : (Xa(e), b.g(e.toString()), null != c ? (h = w(g, 10), t(
@@ -8946,7 +8953,7 @@ var intl_tel_input_default = intlTelInput;
       h
     )) : d && (delete f.h[6], f.g && delete f.g[6]));
     if (2 > b.h.length) throw Error("The string supplied is too short to be a phone number");
-    null != g && (c = new C(), e = new C(b.toString()), fb(e, g, c), a = V(a, e.toString(), g, -1), 2 != a && 4 != a && 5 != a && (b = e, d && 0 < c.toString().length && t(f, 7, c.toString())));
+    null != g && (c = new C(), e = new C(b.toString()), gb(e, g, c), a = V(a, e.toString(), g, -1), 2 != a && 4 != a && 5 != a && (b = e, d && 0 < c.toString().length && t(f, 7, c.toString())));
     d = b.toString();
     a = d.length;
     if (2 > a) throw Error("The string supplied is too short to be a phone number");
@@ -8963,7 +8970,7 @@ var intl_tel_input_default = intlTelInput;
     return (a = "string" == typeof a ? b.match("^(?:" + a + ")$") : b.match(a)) && a[0].length == b.length ? true : false;
   }
   ;
-  function hb(a) {
+  function ib(a) {
     this.fa = RegExp("\u2008");
     this.ja = "";
     this.v = new C();
@@ -8980,18 +8987,18 @@ var intl_tel_input_default = intlTelInput;
     this.g = new C();
     this.j = [];
     this.ka = a;
-    this.l = ib(this, this.ka);
+    this.l = jb(this, this.ka);
   }
-  var jb = new G();
-  t(jb, 11, "NA");
-  var kb = RegExp("^[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]*\\$1[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]*(\\$\\d[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]*)*$"), lb = /[- ]/;
-  function ib(a, b) {
+  var kb = new G();
+  t(kb, 11, "NA");
+  var lb = RegExp("^[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]*\\$1[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]*(\\$\\d[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]*)*$"), mb = /[- ]/;
+  function jb(a, b) {
     var c = a.ga;
-    b = O(b) ? cb(c, b) : 0;
+    b = O(b) ? db(c, b) : 0;
     a = S(a.ga, R(b));
-    return null != a ? a : jb;
+    return null != a ? a : kb;
   }
-  function mb(a) {
+  function nb(a) {
     for (var b = a.j.length, c = 0; c < b; ++c) {
       var d = a.j[c], e = w(d, 1);
       if (a.da == e) return false;
@@ -9000,29 +9007,29 @@ var intl_tel_input_default = intlTelInput;
       D(f.v);
       var l = f;
       g = w(g, 2);
-      var A = "999999999999999".match(h)[0];
-      A.length < l.g.h.length ? l = "" : (l = A.replace(new RegExp(h, "g"), g), l = l.replace(RegExp("9", "g"), "\u2008"));
+      var y = "999999999999999".match(h)[0];
+      y.length < l.g.h.length ? l = "" : (l = y.replace(new RegExp(h, "g"), g), l = l.replace(RegExp("9", "g"), "\u2008"));
       0 < l.length ? (f.v.g(l), f = true) : f = false;
-      if (f) return a.da = e, a.ha = lb.test(r(d, 4)), a.$ = 0, true;
+      if (f) return a.da = e, a.ha = mb.test(r(d, 4)), a.$ = 0, true;
     }
     return a.u = false;
   }
-  function nb(a, b) {
+  function ob(a, b) {
     for (var c = [], d = b.length - 3, e = a.j.length, f = 0; f < e; ++f) {
       var g = a.j[f];
       0 == x(g, 3) ? c.push(a.j[f]) : (g = r(g, 3, Math.min(d, x(g, 3) - 1)), 0 == b.search(g) && c.push(a.j[f]));
     }
     a.j = c;
   }
-  function ob(a, b) {
+  function pb(a, b) {
     a.s.g(b);
     var c = b;
     Ja.test(c) || 1 == a.s.h.length && Ia.test(c) ? ("+" == b ? (c = b, a.ba.g(b)) : (c = Fa[b], a.ba.g(c), a.g.g(c)), b = c) : (a.u = false, a.la = true);
     if (!a.u) {
       if (!a.la) {
-        if (pb(a)) {
-          if (qb(a)) return rb(a);
-        } else if (0 < a.o.length && (b = a.g.toString(), D(a.g), a.g.g(a.o), a.g.g(b), b = a.h.toString(), c = b.lastIndexOf(a.o), D(a.h), a.h.g(b.substring(0, c))), a.o != sb(a)) return a.h.g(" "), rb(a);
+        if (qb(a)) {
+          if (rb(a)) return sb(a);
+        } else if (0 < a.o.length && (b = a.g.toString(), D(a.g), a.g.g(a.o), a.g.g(b), b = a.h.toString(), c = b.lastIndexOf(a.o), D(a.h), a.h.g(b.substring(0, c))), a.o != tb(a)) return a.h.g(" "), sb(a);
       }
       return a.s.toString();
     }
@@ -9032,33 +9039,33 @@ var intl_tel_input_default = intlTelInput;
       case 2:
         return a.s.toString();
       case 3:
-        if (pb(a)) a.ea = true;
-        else return a.o = sb(a), tb(a);
+        if (qb(a)) a.ea = true;
+        else return a.o = tb(a), ub(a);
       default:
-        if (a.ea) return qb(a) && (a.ea = false), a.h.toString() + a.g.toString();
+        if (a.ea) return rb(a) && (a.ea = false), a.h.toString() + a.g.toString();
         if (0 < a.j.length) {
-          b = ub(a, b);
-          c = vb(a);
+          b = vb(a, b);
+          c = wb(a);
           if (0 < c.length) return c;
-          nb(a, a.g.toString());
-          return mb(a) ? wb(a) : a.u ? Y(a, b) : a.s.toString();
+          ob(a, a.g.toString());
+          return nb(a) ? xb(a) : a.u ? Y(a, b) : a.s.toString();
         }
-        return tb(a);
+        return ub(a);
     }
   }
-  function rb(a) {
+  function sb(a) {
     a.u = true;
     a.ea = false;
     a.j = [];
     a.$ = 0;
     D(a.v);
     a.da = "";
-    return tb(a);
+    return ub(a);
   }
-  function vb(a) {
+  function wb(a) {
     for (var b = a.g.toString(), c = a.j.length, d = 0; d < c; ++d) {
       var e = a.j[d], f = w(e, 1);
-      if (new RegExp("^(?:" + f + ")$").test(b) && (a.ha = lb.test(r(e, 4)), e = b.replace(new RegExp(f, "g"), r(e, 2)), e = Y(a, e), N(e, Ga) == a.ba)) return e;
+      if (new RegExp("^(?:" + f + ")$").test(b) && (a.ha = mb.test(r(e, 4)), e = b.replace(new RegExp(f, "g"), r(e, 2)), e = Y(a, e), N(e, Ga) == a.ba)) return e;
     }
     return "";
   }
@@ -9066,28 +9073,28 @@ var intl_tel_input_default = intlTelInput;
     var c = a.h.h.length;
     return a.ha && 0 < c && " " != a.h.toString().charAt(c - 1) ? a.h + " " + b : a.h + b;
   }
-  function tb(a) {
+  function ub(a) {
     var b = a.g.toString();
     if (3 <= b.length) {
       for (var c = a.ca && 0 == a.o.length && 0 < x(a.l, 20) ? u(a.l, 20) : u(a.l, 19), d = c.length, e = 0; e < d; ++e) {
         var f = c[e];
-        0 < a.o.length && Za(w(f, 4)) && !r(f, 6) && !q(f, 5) || (0 != a.o.length || a.ca || Za(w(f, 4)) || r(f, 6)) && kb.test(w(f, 2)) && a.j.push(f);
+        0 < a.o.length && Za(w(f, 4)) && !r(f, 6) && !q(f, 5) || (0 != a.o.length || a.ca || Za(w(f, 4)) || r(f, 6)) && lb.test(w(f, 2)) && a.j.push(f);
       }
-      nb(a, b);
-      b = vb(a);
-      return 0 < b.length ? b : mb(a) ? wb(a) : a.s.toString();
+      ob(a, b);
+      b = wb(a);
+      return 0 < b.length ? b : nb(a) ? xb(a) : a.s.toString();
     }
     return Y(a, b);
   }
-  function wb(a) {
+  function xb(a) {
     var b = a.g.toString(), c = b.length;
     if (0 < c) {
-      for (var d = "", e = 0; e < c; e++) d = ub(a, b.charAt(e));
+      for (var d = "", e = 0; e < c; e++) d = vb(a, b.charAt(e));
       return a.u ? Y(a, d) : a.s.toString();
     }
     return a.h.toString();
   }
-  function sb(a) {
+  function tb(a) {
     var b = a.g.toString(), c = 0;
     if (1 != r(a.l, 10)) var d = false;
     else d = a.g.toString(), d = "1" == d.charAt(0) && "0" != d.charAt(1) && "1" != d.charAt(1);
@@ -9096,24 +9103,24 @@ var intl_tel_input_default = intlTelInput;
     a.g.g(b.substring(c));
     return b.substring(0, c);
   }
-  function pb(a) {
+  function qb(a) {
     var b = a.ba.toString(), c = new RegExp("^(?:\\+|" + r(a.l, 11) + ")");
     c = b.match(c);
     return null != c && null != c[0] && 0 < c[0].length ? (a.ca = true, c = c[0].length, D(a.g), a.g.g(b.substring(c)), D(a.h), a.h.g(b.substring(0, c)), "+" != b.charAt(0) && a.h.g(" "), true) : false;
   }
-  function qb(a) {
+  function rb(a) {
     if (0 == a.g.h.length) return false;
-    var b = new C(), c = db(a.g, b);
+    var b = new C(), c = eb(a.g, b);
     if (0 == c) return false;
     D(a.g);
     a.g.g(b.toString());
     b = R(c);
-    "001" == b ? a.l = S(a.ga, "" + c) : b != a.ka && (a.l = ib(a, b));
+    "001" == b ? a.l = S(a.ga, "" + c) : b != a.ka && (a.l = jb(a, b));
     a.h.g("" + c).g(" ");
     a.o = "";
     return true;
   }
-  function ub(a, b) {
+  function vb(a, b) {
     var c = a.v.toString();
     if (0 <= c.substring(a.$).search(a.fa)) {
       var d = c.search(a.fa);
@@ -9132,9 +9139,9 @@ var intl_tel_input_default = intlTelInput;
   m("intlTelInputUtilsTemp", {});
   m("intlTelInputUtilsTemp.formatNumberAsYouType", (a, b) => {
     try {
-      const c = a.replace(/[^+0-9]/g, ""), d = new hb(b);
+      const c = a.replace(/[^+0-9]/g, ""), d = new ib(b);
       b = "";
-      for (let e = 0; e < c.length; e++) d.ja = ob(d, c.charAt(e)), b = d.ja;
+      for (let e = 0; e < c.length; e++) d.ja = pb(d, c.charAt(e)), b = d.ja;
       return b;
     } catch {
       return a;
@@ -9159,10 +9166,10 @@ var intl_tel_input_default = intlTelInput;
           try {
             if (q(f, 6)) {
               var g = r(f, 6);
-              var h = gb(e, g, a, false);
+              var h = hb(e, g, a, false);
               break a;
             }
-          } catch (A) {
+          } catch (y) {
           }
         }
         h = null;
@@ -9181,14 +9188,8 @@ var intl_tel_input_default = intlTelInput;
   });
   m("intlTelInputUtilsTemp.getNumberType", (a, b) => {
     try {
-      const g = J.g(), h = X(g, a, b);
-      var c = bb(g, h), d = Q(g, w(h, 1), c);
-      if (null == d) var e = -1;
-      else {
-        var f = P(h);
-        e = ab(f, d);
-      }
-      return e;
+      const c = J.g(), d = X(c, a, b);
+      return ab(c, d);
     } catch {
       return -99;
     }
@@ -9202,18 +9203,19 @@ var intl_tel_input_default = intlTelInput;
       return "Invalid country calling code" === c.message ? 1 : 3 >= a.length || "Phone number too short after IDD" === c.message || "The string supplied is too short to be a phone number" === c.message ? 2 : "The string supplied is too long to be a phone number" === c.message ? 3 : -99;
     }
   });
-  m("intlTelInputUtilsTemp.isValidNumber", (a, b) => {
+  m("intlTelInputUtilsTemp.isValidNumber", (a, b, c) => {
     try {
-      const l = J.g();
-      var c = X(l, a, b), d = bb(l, c);
+      const l = J.g(), y = X(l, a, b);
+      var d = bb(l, y);
       a = l;
-      var e = w(c, 1), f = Q(a, e, d);
-      if (null == f || "001" != d && e != cb(a, d)) var g = false;
+      b = y;
+      var e = w(b, 1), f = Q(a, e, d);
+      if (null == f || "001" != d && e != db(a, d)) var g = false;
       else {
-        var h = P(c);
-        g = -1 != ab(h, f);
+        var h = P(b);
+        g = -1 != cb(h, f);
       }
-      return g;
+      return c ? g && ab(l, y) === Z[c] : g;
     } catch {
       return false;
     }

@@ -131,11 +131,15 @@ const getValidationError = (number, countryCode) => {
 };
 
 //* Check if given number is valid.
-const isValidNumber = (number, countryCode) => {
+const isValidNumber = (number, countryCode, numberTypeName) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
-    return phoneUtil.isValidNumber(numberObj);
+    const isValidNumber = phoneUtil.isValidNumber(numberObj);
+    if (numberTypeName) {
+      return isValidNumber && phoneUtil.getNumberType(numberObj) === numberType[numberTypeName];
+    }
+    return isValidNumber;
   } catch {
     return false;
   }
@@ -143,6 +147,7 @@ const isValidNumber = (number, countryCode) => {
 
 //* For internal use only - see isPossibleNumber.
 const isPossibleNumberForType = (phoneUtil, numberObj, numberTypeName) => {
+  //* Can't use phoneUtil.isPossibleNumberForType directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter.
   const resultForType = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, numberType[numberTypeName]);
   const isPossibleForType = resultForType === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE;
   return isPossibleForType;

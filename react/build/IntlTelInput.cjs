@@ -3047,7 +3047,7 @@ var Iti = class {
     return this._utilsIsValidNumber(val);
   }
   _utilsIsValidNumber(val) {
-    return intlTelInput.utils ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2) : null;
+    return intlTelInput.utils ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
   }
   //* Update the selected country, and update the input val accordingly.
   setCountry(iso2) {

@@ -2434,7 +2434,7 @@ class G {
     return this._utilsIsValidNumber(t);
   }
   _utilsIsValidNumber(t) {
-    return l.utils ? l.utils.isValidNumber(t, this.selectedCountryData.iso2) : null;
+    return l.utils ? l.utils.isValidNumber(t, this.selectedCountryData.iso2, this.options.validationNumberType) : null;
   }
   //* Update the selected country, and update the input val accordingly.
   setCountry(t) {

@@ -31,8 +31,8 @@ type ItiUtils = {
   getExtension(number: string, iso2: string | undefined): string;
   getNumberType: (number: string, iso2: string | undefined) => number;
   getValidationError(number: string, iso2: string | undefined): number;
-  isPossibleNumber(number: string, iso2: string | undefined, numberType?: string): boolean;
-  isValidNumber: (number: string, iso2: string | undefined) => boolean;
+  isPossibleNumber(number: string, iso2: string | undefined, numberType?: string | null): boolean;
+  isValidNumber: (number: string, iso2: string | undefined, numberType?: string | null) => boolean;
   numberFormat: { NATIONAL: number, INTERNATIONAL: number, E164: number, RFC3966: number };
   numberType: object;
 };
@@ -2086,7 +2086,7 @@ export class Iti {
 
   private _utilsIsValidNumber(val: string): boolean | null {
     return intlTelInput.utils
-      ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2)
+      ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2, this.options.validationNumberType)
       : null;
   }
 

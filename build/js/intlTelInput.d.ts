@@ -313,8 +313,8 @@ declare module "intl-tel-input" {
         getExtension(number: string, iso2: string | undefined): string;
         getNumberType: (number: string, iso2: string | undefined) => number;
         getValidationError(number: string, iso2: string | undefined): number;
-        isPossibleNumber(number: string, iso2: string | undefined, numberType?: string): boolean;
-        isValidNumber: (number: string, iso2: string | undefined) => boolean;
+        isPossibleNumber(number: string, iso2: string | undefined, numberType?: string | null): boolean;
+        isValidNumber: (number: string, iso2: string | undefined, numberType?: string | null) => boolean;
         numberFormat: {
             NATIONAL: number;
             INTERNATIONAL: number;
