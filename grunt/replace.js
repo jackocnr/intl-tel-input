@@ -249,24 +249,6 @@ module.exports = function(grunt) {
       }
     },
 
-    /**************
-     * MINIFIED FILES
-     * Need to re-inject the webpack comment fix, which gets lost during esbuild minification
-     **************/
-    minifiedWebpackFix: {
-      options: {
-        patterns: [
-          {
-            match: /import\(/g,
-            replacement: 'import(/* webpackIgnore: true */ '
-          },
-        ],
-      },
-      files: {
-        'build/js/intlTelInput.min.js': 'build/js/intlTelInput.min.js',
-        'build/js/intlTelInputWithUtils.min.js': 'build/js/intlTelInputWithUtils.min.js',
-      },
-    },
 
     /**************
      * README file
