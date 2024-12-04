@@ -15,4 +15,4 @@ Tell us what should happen
 Tell us what actually happens
 
 ### Initialisation options
-List any options you're using e.g. utilsScript or onlyCountries
+List any options you're using e.g. loadUtils or onlyCountries
