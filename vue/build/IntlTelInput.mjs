@@ -2501,7 +2501,7 @@ const W = (u) => {
     attachUtils: W,
     startedLoadingUtilsScript: !1,
     startedLoadingAutoCountry: !1,
-    version: "25.0.0"
+    version: "25.0.1"
   }
 ), J = {
   __name: "IntlTelInput",
