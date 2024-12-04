@@ -40,7 +40,7 @@
         //     .then(function(data) { callback(data.country_code); })
         //     .catch(function() { callback(); });
         // },
-        // hiddenInput: () => "phone_full",
+        // hiddenInput: () => ({ phone: "phone_full", country: "country_code" }),
         // i18n: { 'de': 'Deutschland' },
         initialCountry: "us",
         // loadUtils: () => import("/build/js/utils.js"), // leading slash (and http-server) required for this to work in chrome

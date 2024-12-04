@@ -709,21 +709,31 @@ export class Iti {
       const names = hiddenInput(telInputName);
 
       if (names.phone) {
-        //* Create hidden input for the full international number.
-        this.hiddenInput = createEl("input", {
-          type: "hidden",
-          name: names.phone,
-        }) as HTMLInputElement;
-        wrapper.appendChild(this.hiddenInput);
+        const existingInput = this.telInput.form?.querySelector(`input[name="${names.phone}"]`);
+        if (existingInput) {
+          this.hiddenInput = existingInput as HTMLInputElement;
+        } else {
+          //* Create hidden input for the full international number.
+          this.hiddenInput = createEl("input", {
+            type: "hidden",
+            name: names.phone,
+          }) as HTMLInputElement;
+          wrapper.appendChild(this.hiddenInput);
+        }
       }
 
       if (names.country) {
-        //* Create hidden input for the selected country iso2 code.
-        this.hiddenInputCountry = createEl("input", {
-          type: "hidden",
-          name: names.country,
-        }) as HTMLInputElement;
-        wrapper.appendChild(this.hiddenInputCountry);
+        const existingInput = this.telInput.form?.querySelector(`input[name="${names.country}"]`);
+        if (existingInput) {
+          this.hiddenInputCountry = existingInput as HTMLInputElement;
+        } else {
+          //* Create hidden input for the selected country iso2 code.
+          this.hiddenInputCountry = createEl("input", {
+            type: "hidden",
+            name: names.country,
+          }) as HTMLInputElement;
+          wrapper.appendChild(this.hiddenInputCountry);
+        }
       }
     }
   }

@@ -2055,18 +2055,28 @@ var Iti = class {
       const telInputName = this.telInput.getAttribute("name") || "";
       const names = hiddenInput(telInputName);
       if (names.phone) {
-        this.hiddenInput = createEl("input", {
-          type: "hidden",
-          name: names.phone
-        });
-        wrapper.appendChild(this.hiddenInput);
+        const existingInput = this.telInput.form?.querySelector(`input[name="${names.phone}"]`);
+        if (existingInput) {
+          this.hiddenInput = existingInput;
+        } else {
+          this.hiddenInput = createEl("input", {
+            type: "hidden",
+            name: names.phone
+          });
+          wrapper.appendChild(this.hiddenInput);
+        }
       }
       if (names.country) {
-        this.hiddenInputCountry = createEl("input", {
-          type: "hidden",
-          name: names.country
-        });
-        wrapper.appendChild(this.hiddenInputCountry);
+        const existingInput = this.telInput.form?.querySelector(`input[name="${names.country}"]`);
+        if (existingInput) {
+          this.hiddenInputCountry = existingInput;
+        } else {
+          this.hiddenInputCountry = createEl("input", {
+            type: "hidden",
+            name: names.country
+          });
+          wrapper.appendChild(this.hiddenInputCountry);
+        }
       }
     }
   }
