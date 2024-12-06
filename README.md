@@ -366,7 +366,7 @@ Type: `Boolean` Default: `true on mobile devices, false otherwise`
 Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), to make better use of the limited space (similar to how a native `<select>` works), and as an inline dropdown on larger devices/screens. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
 
 **validationNumberTypes**  
-Type: `String` Default: `["MOBILE"]`  
+Type: `String[]` Default: `["MOBILE"]`  
 Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation with `isValidNumber`, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE"]` so `isValidNumber` will only return `true` for mobile numbers. Alternatively, you could set it to `["TOLL_FREE", "PREMIUM_RATE"]` to get `isValidNumber` to return `true` for only those kinds of numbers.
 
 ## Instance Methods
