@@ -367,7 +367,7 @@ Control when the country list appears as a fullscreen popup vs an inline dropdow
 
 **validationNumberTypes**  
 Type: `String[]` Default: `["MOBILE"]`  
-Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation with `isValidNumber`, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE"]` so `isValidNumber` will only return `true` for mobile numbers. Alternatively, you could set it to `["TOLL_FREE", "PREMIUM_RATE"]` to get `isValidNumber` to return `true` for only those kinds of numbers.
+Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE"]` so `isValidNumber` will only return `true` for mobile numbers. Alternatively, you could set it to, for example, `["TOLL_FREE", "PREMIUM_RATE"]` to get `isValidNumber` to return `true` for only those kinds of numbers.
 
 ## Instance Methods
 In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
