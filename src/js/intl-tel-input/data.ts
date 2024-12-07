@@ -6,7 +6,7 @@
 //* - It is supported by libphonenumber (it must be listed on this page): https://github.com/googlei18n/libphonenumber/blob/master/resources/ShortNumberMetadata.xml
 
 //* Criteria for the plugin to support area codes for a given country/territory:
-//* - The area codes cover all valid numbers for that territory
+//* - The area codes cover all valid numbers for that territory (there are no valid numbers outside of those area codes)
 //* - The area codes are exclusive to that territory (i.e. they are not shared with another territory)
 
 //* Each country array has the following information:
