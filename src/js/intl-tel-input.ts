@@ -1477,8 +1477,8 @@ export class Iti {
     if (dialCode) {
       const dialCodeNumerics = getNumeric(dialCode);
       const iso2Codes = this.dialCodeToIso2Map[dialCodeNumerics];
-      //* Check if the right country is already selected
-      const alreadySelected = iso2Codes.includes(this.selectedCountryData.iso2);
+      //* Check if the right country is already selected (note: might be empty state - globe icon).
+      const alreadySelected = this.selectedCountryData.iso2 && iso2Codes.includes(this.selectedCountryData.iso2);
       let areaCodeMatch = false;
       if (alreadySelected) {
         //* If this country has area codes, and the user has typed something after the dial code, then see if it matches.

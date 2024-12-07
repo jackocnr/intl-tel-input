@@ -26145,7 +26145,7 @@
       if (dialCode) {
         const dialCodeNumerics = getNumeric(dialCode);
         const iso2Codes = this.dialCodeToIso2Map[dialCodeNumerics];
-        const alreadySelected = iso2Codes.includes(this.selectedCountryData.iso2);
+        const alreadySelected = this.selectedCountryData.iso2 && iso2Codes.includes(this.selectedCountryData.iso2);
         let areaCodeMatch = false;
         if (alreadySelected) {
           if (this.selectedCountryData.areaCodes && numeric.length > selectedDialCode.length) {

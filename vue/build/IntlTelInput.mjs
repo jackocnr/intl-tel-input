@@ -2143,7 +2143,7 @@ class G {
     i && s === "1" && i.charAt(0) !== "+" && (i.charAt(0) !== "1" && (i = `1${i}`), i = `+${i}`), this.options.separateDialCode && s && i.charAt(0) !== "+" && (i = `+${s}${i}`);
     const o = this._getDialCode(i, !0), a = v(i);
     if (o) {
-      const r = v(o), p = this.dialCodeToIso2Map[r], h = p.includes(this.selectedCountryData.iso2);
+      const r = v(o), p = this.dialCodeToIso2Map[r], h = this.selectedCountryData.iso2 && p.includes(this.selectedCountryData.iso2);
       let c = !1;
       if (h && (this.selectedCountryData.areaCodes && a.length > s.length ? c = this._isAreaCodeMatch(a, r) : c = !0), !(s === "1" && S(a)) && (!h || !c)) {
         for (let d = 0; d < p.length; d++)
