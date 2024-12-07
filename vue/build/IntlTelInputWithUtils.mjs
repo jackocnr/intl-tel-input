@@ -1755,12 +1755,13 @@ class K2 {
     for (let $ = 0; $ < this.countries.length; $++) {
       const n = this.countries[$];
       if (n.areaCodes) {
+        n.partialAreaCodes || (n.partialAreaCodes = []);
         const i = this.dialCodeToIso2Map[n.dialCode][0];
         for (let o = 0; o < n.areaCodes.length; o++) {
           const l = n.areaCodes[o];
           for (let c = 1; c < l.length; c++) {
             const f = l.substr(0, c), p = n.dialCode + f;
-            this._addToDialCodeMap(i, p), this._addToDialCodeMap(n.iso2, p), n.partialAreaCodes || (n.partialAreaCodes = []), n.partialAreaCodes.includes(f) || n.partialAreaCodes.push(f);
+            this._addToDialCodeMap(i, p), this._addToDialCodeMap(n.iso2, p), n.partialAreaCodes.includes(f) || n.partialAreaCodes.push(f);
           }
           this._addToDialCodeMap(n.iso2, n.dialCode + l);
         }

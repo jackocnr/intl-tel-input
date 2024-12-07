@@ -1896,6 +1896,9 @@ var factoryOutput = (() => {
       for (let i = 0; i < this.countries.length; i++) {
         const c = this.countries[i];
         if (c.areaCodes) {
+          if (!c.partialAreaCodes) {
+            c.partialAreaCodes = [];
+          }
           const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
           for (let j = 0; j < c.areaCodes.length; j++) {
             const areaCode = c.areaCodes[j];
@@ -1904,9 +1907,6 @@ var factoryOutput = (() => {
               const partialDialCode = c.dialCode + partialAreaCode;
               this._addToDialCodeMap(rootIso2Code, partialDialCode);
               this._addToDialCodeMap(c.iso2, partialDialCode);
-              if (!c.partialAreaCodes) {
-                c.partialAreaCodes = [];
-              }
               if (!c.partialAreaCodes.includes(partialAreaCode)) {
                 c.partialAreaCodes.push(partialAreaCode);
               }

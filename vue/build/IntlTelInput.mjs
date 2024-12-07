@@ -1755,12 +1755,13 @@ class G {
     for (let e = 0; e < this.countries.length; e++) {
       const t = this.countries[e];
       if (t.areaCodes) {
+        t.partialAreaCodes || (t.partialAreaCodes = []);
         const i = this.dialCodeToIso2Map[t.dialCode][0];
         for (let s = 0; s < t.areaCodes.length; s++) {
           const n = t.areaCodes[s];
           for (let o = 1; o < n.length; o++) {
             const a = n.substr(0, o), r = t.dialCode + a;
-            this._addToDialCodeMap(i, r), this._addToDialCodeMap(t.iso2, r), t.partialAreaCodes || (t.partialAreaCodes = []), t.partialAreaCodes.includes(a) || t.partialAreaCodes.push(a);
+            this._addToDialCodeMap(i, r), this._addToDialCodeMap(t.iso2, r), t.partialAreaCodes.includes(a) || t.partialAreaCodes.push(a);
           }
           this._addToDialCodeMap(t.iso2, t.dialCode + n);
         }

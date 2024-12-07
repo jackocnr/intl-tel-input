@@ -517,6 +517,9 @@ export class Iti {
       const c = this.countries[i];
       //* Area codes
       if (c.areaCodes) {
+        if (!c.partialAreaCodes) {
+          c.partialAreaCodes = [];
+        }
         const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
         //* For each area code.
         for (let j = 0; j < c.areaCodes.length; j++) {
@@ -529,10 +532,7 @@ export class Iti {
             this._addToDialCodeMap(rootIso2Code, partialDialCode);
             this._addToDialCodeMap(c.iso2, partialDialCode);
 
-            //* Separately: populate this country's partialAreaCodes array.
-            if (!c.partialAreaCodes) {
-              c.partialAreaCodes = [];
-            }
+            //* Populate this country's partialAreaCodes array.
             if (!c.partialAreaCodes.includes(partialAreaCode)) {
               c.partialAreaCodes.push(partialAreaCode);
             }
