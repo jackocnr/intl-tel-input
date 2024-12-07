@@ -76,7 +76,9 @@ var rawCountryData = [
     "au",
     // Australia
     "61",
-    0
+    0,
+    null,
+    "0"
   ],
   [
     "at",
@@ -257,14 +259,16 @@ var rawCountryData = [
     // Christmas Island
     "61",
     2,
-    ["89164"]
+    ["89164"],
+    "0"
   ],
   [
     "cc",
     // Cocos (Keeling) Islands
     "61",
     1,
-    ["89162"]
+    ["89162"],
+    "0"
   ],
   [
     "co",
@@ -497,7 +501,8 @@ var rawCountryData = [
     // Guernsey
     "44",
     1,
-    ["1481", "7781", "7839", "7911"]
+    ["1481", "7781", "7839", "7911"],
+    "0"
   ],
   [
     "gn",
@@ -569,7 +574,8 @@ var rawCountryData = [
     // Isle of Man
     "44",
     2,
-    ["1624", "74576", "7524", "7924", "7624"]
+    ["1624", "74576", "7524", "7924", "7624"],
+    "0"
   ],
   [
     "il",
@@ -599,7 +605,8 @@ var rawCountryData = [
     // Jersey
     "44",
     3,
-    ["1534", "7509", "7700", "7797", "7829", "7937"]
+    ["1534", "7509", "7700", "7797", "7829", "7937"],
+    "0"
   ],
   [
     "jo",
@@ -611,7 +618,8 @@ var rawCountryData = [
     // Kazakhstan
     "7",
     1,
-    ["33", "7"]
+    ["33", "7"],
+    "8"
   ],
   [
     "ke",
@@ -743,7 +751,8 @@ var rawCountryData = [
     // Mayotte
     "262",
     1,
-    ["269", "639"]
+    ["269", "639"],
+    "0"
   ],
   [
     "mx",
@@ -786,7 +795,9 @@ var rawCountryData = [
     "ma",
     // Morocco
     "212",
-    0
+    0,
+    null,
+    "0"
   ],
   [
     "mz",
@@ -947,7 +958,9 @@ var rawCountryData = [
     "re",
     // Réunion
     "262",
-    0
+    0,
+    null,
+    "0"
   ],
   [
     "ro",
@@ -958,7 +971,9 @@ var rawCountryData = [
     "ru",
     // Russia
     "7",
-    0
+    0,
+    null,
+    "8"
   ],
   [
     "rw",
@@ -1230,7 +1245,9 @@ var rawCountryData = [
     "gb",
     // United Kingdom
     "44",
-    0
+    0,
+    null,
+    "0"
   ],
   [
     "us",
@@ -1287,7 +1304,8 @@ var rawCountryData = [
     // Western Sahara
     "212",
     1,
-    ["5288", "5289"]
+    ["5288", "5289"],
+    "0"
   ],
   [
     "ye",
@@ -1316,7 +1334,8 @@ for (let i = 0; i < rawCountryData.length; i++) {
     priority: c[2] || 0,
     areaCodes: c[3] || null,
     partialAreaCodes: null,
-    nodeById: {}
+    nodeById: {},
+    nationalPrefix: c[4] || null
   };
 }
 var data_default = allCountries;
@@ -2539,20 +2558,21 @@ var Iti = class {
     }
     return false;
   }
+  _ensureHasDialCode(number) {
+    const { dialCode, nationalPrefix } = this.selectedCountryData;
+    const alreadyHasPlus = number.charAt(0) === "+";
+    if (alreadyHasPlus || !dialCode) {
+      return number;
+    }
+    const hasPrefix = nationalPrefix && number.charAt(0) === nationalPrefix;
+    const cleanNumber = hasPrefix ? number.substring(1) : number;
+    return `+${dialCode}${cleanNumber}`;
+  }
   _getCountryFromNumber(fullNumber) {
     const plusIndex = fullNumber.indexOf("+");
     let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
     const selectedDialCode = this.selectedCountryData.dialCode;
-    const isNanp = selectedDialCode === "1";
-    if (number && isNanp && number.charAt(0) !== "+") {
-      if (number.charAt(0) !== "1") {
-        number = `1${number}`;
-      }
-      number = `+${number}`;
-    }
-    if (this.options.separateDialCode && selectedDialCode && number.charAt(0) !== "+") {
-      number = `+${selectedDialCode}${number}`;
-    }
+    number = this._ensureHasDialCode(number);
     const dialCode = this._getDialCode(number, true);
     const numeric = getNumeric(number);
     if (dialCode) {

@@ -56,6 +56,7 @@ type SelectedCountryData = {
   dialCode?: string,
   areaCodes?: string[],
   partialAreaCodes?: string[],
+  nationalPrefix?: string,
 };
 interface AllOptions {
   allowDropdown: boolean;
@@ -1441,35 +1442,27 @@ export class Iti {
     return false;
   }
 
+  private _ensureHasDialCode(number: string): string {
+    const { dialCode, nationalPrefix } = this.selectedCountryData;
+    const alreadyHasPlus = number.charAt(0) === "+";
+    if (alreadyHasPlus || !dialCode) {
+      return number;
+    }
+    const hasPrefix = nationalPrefix && number.charAt(0) === nationalPrefix;
+    const cleanNumber = hasPrefix ? number.substring(1) : number;
+    return `+${dialCode}${cleanNumber}`;
+  }
+
   private _getCountryFromNumber(fullNumber: string): string | null {
     const plusIndex = fullNumber.indexOf("+");
     //* If it contains a plus, discard any chars before it e.g. accidental space char.
     //* This keeps the selected country auto-updating correctly, which we want as
     //* libphonenumber's validation/getNumber methods will ignore these chars anyway.
     let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
-
-    //* If we already have US/Canada selected, make sure the number starts
-    //* with a +1 so _getDialCode will be able to extract the area code
-    //* update: if we don't yet have selectedCountryData, but we're here (trying to update the country
-    //* from the number), that means we're initialising the plugin with a number that already has a
-    //* dial code, so fine to ignore this bit
     const selectedDialCode = this.selectedCountryData.dialCode;
-    const isNanp = selectedDialCode === "1";
-    if (number && isNanp && number.charAt(0) !== "+") {
-      if (number.charAt(0) !== "1") {
-        number = `1${number}`;
-      }
-      number = `+${number}`;
-    }
 
-    //* If separateDialCode enabled, then consider the selected dial code to be part of the number.
-    if (
-      this.options.separateDialCode &&
-      selectedDialCode &&
-      number.charAt(0) !== "+"
-    ) {
-      number = `+${selectedDialCode}${number}`;
-    }
+    //* Ensure the number starts with the dial code, for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
+    number = this._ensureHasDialCode(number);
 
     //* Try and extract valid dial code from input.
     const dialCode = this._getDialCode(number, true);

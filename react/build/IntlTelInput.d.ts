@@ -7,6 +7,7 @@ declare module "intl-tel-input/data" {
         areaCodes: string[] | null;
         partialAreaCodes: string[] | null;
         nodeById: object;
+        nationalPrefix: string | null;
     };
     const allCountries: Country[];
     export default allCountries;
@@ -331,6 +332,7 @@ declare module "intl-tel-input" {
         dialCode?: string;
         areaCodes?: string[];
         partialAreaCodes?: string[];
+        nationalPrefix?: string;
     };
     interface AllOptions {
         allowDropdown: boolean;
@@ -442,6 +444,7 @@ declare module "intl-tel-input" {
         private _updateValFromNumber;
         private _updateCountryFromNumber;
         private _isAreaCodeMatch;
+        private _ensureHasDialCode;
         private _getCountryFromNumber;
         private _highlightListItem;
         private _getCountryData;

@@ -76,7 +76,9 @@ const r2 = [
     "au",
     // Australia
     "61",
-    0
+    0,
+    null,
+    "0"
   ],
   [
     "at",
@@ -257,14 +259,16 @@ const r2 = [
     // Christmas Island
     "61",
     2,
-    ["89164"]
+    ["89164"],
+    "0"
   ],
   [
     "cc",
     // Cocos (Keeling) Islands
     "61",
     1,
-    ["89162"]
+    ["89162"],
+    "0"
   ],
   [
     "co",
@@ -497,7 +501,8 @@ const r2 = [
     // Guernsey
     "44",
     1,
-    ["1481", "7781", "7839", "7911"]
+    ["1481", "7781", "7839", "7911"],
+    "0"
   ],
   [
     "gn",
@@ -569,7 +574,8 @@ const r2 = [
     // Isle of Man
     "44",
     2,
-    ["1624", "74576", "7524", "7924", "7624"]
+    ["1624", "74576", "7524", "7924", "7624"],
+    "0"
   ],
   [
     "il",
@@ -599,7 +605,8 @@ const r2 = [
     // Jersey
     "44",
     3,
-    ["1534", "7509", "7700", "7797", "7829", "7937"]
+    ["1534", "7509", "7700", "7797", "7829", "7937"],
+    "0"
   ],
   [
     "jo",
@@ -611,7 +618,8 @@ const r2 = [
     // Kazakhstan
     "7",
     1,
-    ["33", "7"]
+    ["33", "7"],
+    "8"
   ],
   [
     "ke",
@@ -743,7 +751,8 @@ const r2 = [
     // Mayotte
     "262",
     1,
-    ["269", "639"]
+    ["269", "639"],
+    "0"
   ],
   [
     "mx",
@@ -786,7 +795,9 @@ const r2 = [
     "ma",
     // Morocco
     "212",
-    0
+    0,
+    null,
+    "0"
   ],
   [
     "mz",
@@ -947,7 +958,9 @@ const r2 = [
     "re",
     // Réunion
     "262",
-    0
+    0,
+    null,
+    "0"
   ],
   [
     "ro",
@@ -958,7 +971,9 @@ const r2 = [
     "ru",
     // Russia
     "7",
-    0
+    0,
+    null,
+    "8"
   ],
   [
     "rw",
@@ -1230,7 +1245,9 @@ const r2 = [
     "gb",
     // United Kingdom
     "44",
-    0
+    0,
+    null,
+    "0"
   ],
   [
     "us",
@@ -1287,7 +1304,8 @@ const r2 = [
     // Western Sahara
     "212",
     1,
-    ["5288", "5289"]
+    ["5288", "5289"],
+    "0"
   ],
   [
     "ye",
@@ -1306,16 +1324,17 @@ const r2 = [
   ]
 ], W = [];
 for (let y = 0; y < r2.length; y++) {
-  const $ = r2[y];
+  const e = r2[y];
   W[y] = {
     name: "",
     // this is now populated in the plugin
-    iso2: $[0],
-    dialCode: $[1],
-    priority: $[2] || 0,
-    areaCodes: $[3] || null,
+    iso2: e[0],
+    dialCode: e[1],
+    priority: e[2] || 0,
+    areaCodes: e[3] || null,
     partialAreaCodes: null,
-    nodeById: {}
+    nodeById: {},
+    nationalPrefix: e[4] || null
   };
 }
 const O2 = {
@@ -1650,45 +1669,45 @@ const a2 = {
   "888",
   "889"
 ], c1 = (y) => y.replace(/\D/g, ""), s2 = (y = "") => y.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), o2 = (y) => {
-  const $ = c1(y);
-  if ($.charAt(0) === "1") {
-    const n = $.substr(1, 3);
+  const e = c1(y);
+  if (e.charAt(0) === "1") {
+    const n = e.substr(1, 3);
     return U2.indexOf(n) !== -1;
   }
   return !1;
-}, V2 = (y, $, n, i) => {
-  if (n === 0 && !i)
+}, V2 = (y, e, n, r) => {
+  if (n === 0 && !r)
     return 0;
   let o = 0;
-  for (let l = 0; l < $.length; l++) {
-    if (/[+0-9]/.test($[l]) && o++, o === y && !i)
-      return l + 1;
-    if (i && o === y + 1)
-      return l;
+  for (let a = 0; a < e.length; a++) {
+    if (/[+0-9]/.test(e[a]) && o++, o === y && !r)
+      return a + 1;
+    if (r && o === y + 1)
+      return a;
   }
-  return $.length;
-}, N = (y, $, n) => {
-  const i = document.createElement(y);
-  return $ && Object.entries($).forEach(([o, l]) => i.setAttribute(o, l)), n && n.appendChild(i), i;
-}, $1 = (y, ...$) => {
+  return e.length;
+}, N = (y, e, n) => {
+  const r = document.createElement(y);
+  return e && Object.entries(e).forEach(([o, a]) => r.setAttribute(o, a)), n && n.appendChild(r), r;
+}, $1 = (y, ...e) => {
   const { instances: n } = C;
-  Object.values(n).forEach((i) => i[y](...$));
+  Object.values(n).forEach((r) => r[y](...e));
 };
 class K2 {
-  constructor($, n = {}) {
-    this.id = F2++, this.telInput = $, this.highlightedItem = null, this.options = Object.assign({}, a2, n), this.hadInitialPlaceholder = !!$.getAttribute("placeholder");
+  constructor(e, n = {}) {
+    this.id = F2++, this.telInput = e, this.highlightedItem = null, this.options = Object.assign({}, a2, n), this.hadInitialPlaceholder = !!e.getAttribute("placeholder");
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
     this.options.useFullscreenPopup && (this.options.fixDropdownWidth = !1), this.options.onlyCountries.length === 1 && (this.options.initialCountry = this.options.onlyCountries[0]), this.options.separateDialCode && (this.options.nationalMode = !1), this.options.allowDropdown && !this.options.showFlags && !this.options.separateDialCode && (this.options.nationalMode = !1), this.options.useFullscreenPopup && !this.options.dropdownContainer && (this.options.dropdownContainer = document.body), this.isAndroid = typeof navigator < "u" ? /Android/i.test(navigator.userAgent) : !1, this.isRTL = !!this.telInput.closest("[dir=rtl]");
-    const $ = this.options.allowDropdown || this.options.separateDialCode;
-    this.showSelectedCountryOnLeft = this.isRTL ? !$ : $, this.options.separateDialCode && (this.isRTL ? this.originalPaddingRight = this.telInput.style.paddingRight : this.originalPaddingLeft = this.telInput.style.paddingLeft), this.options.i18n = { ...u2, ...this.options.i18n };
-    const n = new Promise((o, l) => {
-      this.resolveAutoCountryPromise = o, this.rejectAutoCountryPromise = l;
-    }), i = new Promise((o, l) => {
-      this.resolveUtilsScriptPromise = o, this.rejectUtilsScriptPromise = l;
+    const e = this.options.allowDropdown || this.options.separateDialCode;
+    this.showSelectedCountryOnLeft = this.isRTL ? !e : e, this.options.separateDialCode && (this.isRTL ? this.originalPaddingRight = this.telInput.style.paddingRight : this.originalPaddingLeft = this.telInput.style.paddingLeft), this.options.i18n = { ...u2, ...this.options.i18n };
+    const n = new Promise((o, a) => {
+      this.resolveAutoCountryPromise = o, this.rejectAutoCountryPromise = a;
+    }), r = new Promise((o, a) => {
+      this.resolveUtilsScriptPromise = o, this.rejectUtilsScriptPromise = a;
     });
-    this.promise = Promise.all([n, i]), this.selectedCountryData = {}, this._processCountryData(), this._generateMarkup(), this._setInitialState(), this._initListeners(), this._initRequests();
+    this.promise = Promise.all([n, r]), this.selectedCountryData = {}, this._processCountryData(), this._generateMarkup(), this._setInitialState(), this._initListeners(), this._initRequests();
   }
   //********************
   //*  PRIVATE METHODS
@@ -1699,100 +1718,100 @@ class K2 {
   }
   //* Sort countries by countryOrder option (if present), then name.
   _sortCountries() {
-    this.options.countryOrder && (this.options.countryOrder = this.options.countryOrder.map(($) => $.toLowerCase())), this.countries.sort(($, n) => {
-      const { countryOrder: i } = this.options;
-      if (i) {
-        const o = i.indexOf($.iso2), l = i.indexOf(n.iso2), c = o > -1, f = l > -1;
-        if (c || f)
-          return c && f ? o - l : c ? -1 : 1;
+    this.options.countryOrder && (this.options.countryOrder = this.options.countryOrder.map((e) => e.toLowerCase())), this.countries.sort((e, n) => {
+      const { countryOrder: r } = this.options;
+      if (r) {
+        const o = r.indexOf(e.iso2), a = r.indexOf(n.iso2), h = o > -1, p = a > -1;
+        if (h || p)
+          return h && p ? o - a : h ? -1 : 1;
       }
-      return $.name.localeCompare(n.name);
+      return e.name.localeCompare(n.name);
     });
   }
   //* Add a dial code to this.dialCodeToIso2Map.
-  _addToDialCodeMap($, n, i) {
+  _addToDialCodeMap(e, n, r) {
     n.length > this.dialCodeMaxLen && (this.dialCodeMaxLen = n.length), this.dialCodeToIso2Map.hasOwnProperty(n) || (this.dialCodeToIso2Map[n] = []);
-    for (let l = 0; l < this.dialCodeToIso2Map[n].length; l++)
-      if (this.dialCodeToIso2Map[n][l] === $)
+    for (let a = 0; a < this.dialCodeToIso2Map[n].length; a++)
+      if (this.dialCodeToIso2Map[n][a] === e)
         return;
-    const o = i !== void 0 ? i : this.dialCodeToIso2Map[n].length;
-    this.dialCodeToIso2Map[n][o] = $;
+    const o = r !== void 0 ? r : this.dialCodeToIso2Map[n].length;
+    this.dialCodeToIso2Map[n][o] = e;
   }
   //* Process onlyCountries or excludeCountries array if present.
   _processAllCountries() {
-    const { onlyCountries: $, excludeCountries: n } = this.options;
-    if ($.length) {
-      const i = $.map(
+    const { onlyCountries: e, excludeCountries: n } = this.options;
+    if (e.length) {
+      const r = e.map(
         (o) => o.toLowerCase()
       );
       this.countries = W.filter(
-        (o) => i.indexOf(o.iso2) > -1
+        (o) => r.indexOf(o.iso2) > -1
       );
     } else if (n.length) {
-      const i = n.map(
+      const r = n.map(
         (o) => o.toLowerCase()
       );
       this.countries = W.filter(
-        (o) => i.indexOf(o.iso2) === -1
+        (o) => r.indexOf(o.iso2) === -1
       );
     } else
       this.countries = W;
   }
   //* Translate Countries by object literal provided on config.
   _translateCountryNames() {
-    for (let $ = 0; $ < this.countries.length; $++) {
-      const n = this.countries[$].iso2.toLowerCase();
-      this.options.i18n.hasOwnProperty(n) && (this.countries[$].name = this.options.i18n[n]);
+    for (let e = 0; e < this.countries.length; e++) {
+      const n = this.countries[e].iso2.toLowerCase();
+      this.options.i18n.hasOwnProperty(n) && (this.countries[e].name = this.options.i18n[n]);
     }
   }
   //* Generate this.dialCodes and this.dialCodeToIso2Map and country.partialAreaCodes.
   _processDialCodes() {
     this.dialCodes = {}, this.dialCodeMaxLen = 0, this.dialCodeToIso2Map = {};
-    for (let $ = 0; $ < this.countries.length; $++) {
-      const n = this.countries[$];
+    for (let e = 0; e < this.countries.length; e++) {
+      const n = this.countries[e];
       this.dialCodes[n.dialCode] || (this.dialCodes[n.dialCode] = !0), this._addToDialCodeMap(n.iso2, n.dialCode, n.priority);
     }
-    for (let $ = 0; $ < this.countries.length; $++) {
-      const n = this.countries[$];
+    for (let e = 0; e < this.countries.length; e++) {
+      const n = this.countries[e];
       if (n.areaCodes) {
         n.partialAreaCodes || (n.partialAreaCodes = []);
-        const i = this.dialCodeToIso2Map[n.dialCode][0];
+        const r = this.dialCodeToIso2Map[n.dialCode][0];
         for (let o = 0; o < n.areaCodes.length; o++) {
-          const l = n.areaCodes[o];
-          for (let c = 1; c < l.length; c++) {
-            const f = l.substr(0, c), p = n.dialCode + f;
-            this._addToDialCodeMap(i, p), this._addToDialCodeMap(n.iso2, p), n.partialAreaCodes.includes(f) || n.partialAreaCodes.push(f);
+          const a = n.areaCodes[o];
+          for (let h = 1; h < a.length; h++) {
+            const p = a.substr(0, h), f = n.dialCode + p;
+            this._addToDialCodeMap(r, f), this._addToDialCodeMap(n.iso2, f), n.partialAreaCodes.includes(p) || n.partialAreaCodes.push(p);
           }
-          this._addToDialCodeMap(n.iso2, n.dialCode + l);
+          this._addToDialCodeMap(n.iso2, n.dialCode + a);
         }
       }
     }
   }
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
   _generateMarkup() {
-    var _, T, G;
+    var I, T, G;
     this.telInput.classList.add("iti__tel-input"), !this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete")) && this.telInput.setAttribute("autocomplete", "off");
     const {
-      allowDropdown: $,
+      allowDropdown: e,
       separateDialCode: n,
-      showFlags: i,
+      showFlags: r,
       containerClass: o,
-      hiddenInput: l,
-      dropdownContainer: c,
-      fixDropdownWidth: f,
-      useFullscreenPopup: p,
-      countrySearch: w,
-      i18n: I
+      hiddenInput: a,
+      dropdownContainer: h,
+      fixDropdownWidth: p,
+      useFullscreenPopup: f,
+      countrySearch: L,
+      i18n: _
     } = this.options;
-    let S = "iti";
-    $ && (S += " iti--allow-dropdown"), i && (S += " iti--show-flags"), o && (S += ` ${o}`), p || (S += " iti--inline-dropdown");
-    const A = N("div", { class: S });
-    if ((_ = this.telInput.parentNode) == null || _.insertBefore(A, this.telInput), $ || i || n) {
+    let w = "iti";
+    e && (w += " iti--allow-dropdown"), r && (w += " iti--show-flags"), o && (w += ` ${o}`), f || (w += " iti--inline-dropdown");
+    const S = N("div", { class: w });
+    if ((I = this.telInput.parentNode) == null || I.insertBefore(S, this.telInput), e || r || n) {
       this.countryContainer = N(
         "div",
         { class: "iti__country-container" },
-        A
-      ), this.showSelectedCountryOnLeft ? this.countryContainer.style.left = "0px" : this.countryContainer.style.right = "0px", $ ? (this.selectedCountry = N(
+        S
+      ), this.showSelectedCountryOnLeft ? this.countryContainer.style.left = "0px" : this.countryContainer.style.right = "0px", e ? (this.selectedCountry = N(
         "button",
         {
           type: "button",
@@ -1814,7 +1833,7 @@ class K2 {
         "span",
         { class: "iti__a11y-text" },
         this.selectedCountryInner
-      ), $ && (this.dropdownArrow = N(
+      ), e && (this.dropdownArrow = N(
         "div",
         { class: "iti__arrow", "aria-hidden": "true" },
         F
@@ -1822,20 +1841,20 @@ class K2 {
         "div",
         { class: "iti__selected-dial-code" },
         this.selectedCountry
-      )), $) {
-        const M = f ? "" : "iti--flexible-dropdown-width";
+      )), e) {
+        const M = p ? "" : "iti--flexible-dropdown-width";
         if (this.dropdownContent = N("div", {
           id: `iti-${this.id}__dropdown-content`,
           class: `iti__dropdown-content iti__hide ${M}`
-        }), w && (this.searchInput = N(
+        }), L && (this.searchInput = N(
           "input",
           {
             type: "text",
             class: "iti__search-input",
-            placeholder: I.searchPlaceholder,
+            placeholder: _.searchPlaceholder,
             role: "combobox",
             "aria-expanded": "true",
-            "aria-label": I.searchPlaceholder,
+            "aria-label": _.searchPlaceholder,
             "aria-controls": `iti-${this.id}__country-listbox`,
             "aria-autocomplete": "list",
             autocomplete: "off"
@@ -1851,42 +1870,42 @@ class K2 {
             class: "iti__country-list",
             id: `iti-${this.id}__country-listbox`,
             role: "listbox",
-            "aria-label": I.countryListAriaLabel
+            "aria-label": _.countryListAriaLabel
           },
           this.dropdownContent
-        ), this._appendListItems(), w && this._updateSearchResultsText(), c) {
+        ), this._appendListItems(), L && this._updateSearchResultsText(), h) {
           let x = "iti iti--container";
-          p ? x += " iti--fullscreen-popup" : x += " iti--inline-dropdown", this.dropdown = N("div", { class: x }), this.dropdown.appendChild(this.dropdownContent);
+          f ? x += " iti--fullscreen-popup" : x += " iti--inline-dropdown", this.dropdown = N("div", { class: x }), this.dropdown.appendChild(this.dropdownContent);
         } else
           this.countryContainer.appendChild(this.dropdownContent);
       }
     }
-    if (A.appendChild(this.telInput), this._updateInputPadding(), l) {
-      const F = this.telInput.getAttribute("name") || "", M = l(F);
+    if (S.appendChild(this.telInput), this._updateInputPadding(), a) {
+      const F = this.telInput.getAttribute("name") || "", M = a(F);
       if (M.phone) {
         const x = (T = this.telInput.form) == null ? void 0 : T.querySelector(`input[name="${M.phone}"]`);
         x ? this.hiddenInput = x : (this.hiddenInput = N("input", {
           type: "hidden",
           name: M.phone
-        }), A.appendChild(this.hiddenInput));
+        }), S.appendChild(this.hiddenInput));
       }
       if (M.country) {
         const x = (G = this.telInput.form) == null ? void 0 : G.querySelector(`input[name="${M.country}"]`);
         x ? this.hiddenInputCountry = x : (this.hiddenInputCountry = N("input", {
           type: "hidden",
           name: M.country
-        }), A.appendChild(this.hiddenInputCountry));
+        }), S.appendChild(this.hiddenInputCountry));
       }
     }
   }
   //* For each country: add a country list item <li> to the countryList <ul> container.
   _appendListItems() {
-    for (let $ = 0; $ < this.countries.length; $++) {
-      const n = this.countries[$], i = $ === 0 ? "iti__highlight" : "", o = N(
+    for (let e = 0; e < this.countries.length; e++) {
+      const n = this.countries[e], r = e === 0 ? "iti__highlight" : "", o = N(
         "li",
         {
           id: `iti-${this.id}__item-${n.iso2}`,
-          class: `iti__country ${i}`,
+          class: `iti__country ${r}`,
           tabindex: "-1",
           role: "option",
           "data-dial-code": n.dialCode,
@@ -1896,22 +1915,22 @@ class K2 {
         this.countryList
       );
       n.nodeById[this.id] = o;
-      let l = "";
-      this.options.showFlags && (l += `<div class='iti__flag iti__${n.iso2}'></div>`), l += `<span class='iti__country-name'>${n.name}</span>`, l += `<span class='iti__dial-code'>+${n.dialCode}</span>`, o.insertAdjacentHTML("beforeend", l);
+      let a = "";
+      this.options.showFlags && (a += `<div class='iti__flag iti__${n.iso2}'></div>`), a += `<span class='iti__country-name'>${n.name}</span>`, a += `<span class='iti__dial-code'>+${n.dialCode}</span>`, o.insertAdjacentHTML("beforeend", a);
     }
   }
   //* Set the initial state of the input value and the selected country by:
   //* 1. Extracting a dial code from the given number
   //* 2. Using explicit initialCountry
-  _setInitialState($ = !1) {
-    const n = this.telInput.getAttribute("value"), i = this.telInput.value, l = n && n.charAt(0) === "+" && (!i || i.charAt(0) !== "+") ? n : i, c = this._getDialCode(l), f = o2(l), { initialCountry: p, geoIpLookup: w } = this.options, I = p === "auto" && w;
-    if (c && !f)
-      this._updateCountryFromNumber(l);
-    else if (!I || $) {
-      const S = p ? p.toLowerCase() : "";
-      S && this._getCountryData(S, !0) ? this._setCountry(S) : c && f ? this._setCountry("us") : this._setCountry();
+  _setInitialState(e = !1) {
+    const n = this.telInput.getAttribute("value"), r = this.telInput.value, a = n && n.charAt(0) === "+" && (!r || r.charAt(0) !== "+") ? n : r, h = this._getDialCode(a), p = o2(a), { initialCountry: f, geoIpLookup: L } = this.options, _ = f === "auto" && L;
+    if (h && !p)
+      this._updateCountryFromNumber(a);
+    else if (!_ || e) {
+      const w = f ? f.toLowerCase() : "";
+      w && this._getCountryData(w, !0) ? this._setCountry(w) : h && p ? this._setCountry("us") : this._setCountry();
     }
-    l && this._updateValFromNumber(l);
+    a && this._updateValFromNumber(a);
   }
   //* Initialise the main event listeners: input keyup, and click selected country.
   _initListeners() {
@@ -1919,10 +1938,10 @@ class K2 {
   }
   //* Update hidden input on form submit.
   _initHiddenInputListener() {
-    var $;
+    var e;
     this._handleHiddenInputSubmit = () => {
       this.hiddenInput && (this.hiddenInput.value = this.getNumber()), this.hiddenInputCountry && (this.hiddenInputCountry.value = this.getSelectedCountryData().iso2 || "");
-    }, ($ = this.telInput.form) == null || $.addEventListener(
+    }, (e = this.telInput.form) == null || e.addEventListener(
       "submit",
       this._handleHiddenInputSubmit
     );
@@ -1932,8 +1951,8 @@ class K2 {
     this._handleLabelClick = (n) => {
       this.dropdownContent.classList.contains("iti__hide") ? this.telInput.focus() : n.preventDefault();
     };
-    const $ = this.telInput.closest("label");
-    $ && $.addEventListener("click", this._handleLabelClick), this._handleClickSelectedCountry = () => {
+    const e = this.telInput.closest("label");
+    e && e.addEventListener("click", this._handleLabelClick), this._handleClickSelectedCountry = () => {
       this.dropdownContent.classList.contains("iti__hide") && !this.telInput.disabled && !this.telInput.readOnly && this._openDropdown();
     }, this.selectedCountry.addEventListener("click", this._handleClickSelectedCountry), this._handleCountryContainerKeydown = (n) => {
       this.dropdownContent.classList.contains("iti__hide") && ["ArrowUp", "ArrowDown", " ", "Enter"].includes(n.key) && (n.preventDefault(), n.stopPropagation(), this._openDropdown()), n.key === "Tab" && this._closeDropdown();
@@ -1944,18 +1963,18 @@ class K2 {
   }
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
-    let { loadUtils: $, initialCountry: n, geoIpLookup: i } = this.options;
-    $ && !C.utils ? (this._handlePageLoad = () => {
-      var l;
-      window.removeEventListener("load", this._handlePageLoad), (l = C.attachUtils($)) == null || l.catch(() => {
+    let { loadUtils: e, initialCountry: n, geoIpLookup: r } = this.options;
+    e && !C.utils ? (this._handlePageLoad = () => {
+      var a;
+      window.removeEventListener("load", this._handlePageLoad), (a = C.attachUtils(e)) == null || a.catch(() => {
       });
-    }, C.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), n === "auto" && i && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
+    }, C.documentReady() ? this._handlePageLoad() : window.addEventListener("load", this._handlePageLoad)) : this.resolveUtilsScriptPromise(), n === "auto" && r && !this.selectedCountryData.iso2 ? this._loadAutoCountry() : this.resolveAutoCountryPromise();
   }
   //* Perform the geo ip lookup.
   _loadAutoCountry() {
     C.autoCountry ? this.handleAutoCountry() : C.startedLoadingAutoCountry || (C.startedLoadingAutoCountry = !0, typeof this.options.geoIpLookup == "function" && this.options.geoIpLookup(
-      ($ = "") => {
-        const n = $.toLowerCase();
+      (e = "") => {
+        const n = e.toLowerCase();
         n && this._getCountryData(n, !0) ? (C.autoCountry = n, setTimeout(() => $1("handleAutoCountry"))) : (this._setInitialState(!0), $1("rejectAutoCountryPromise"));
       },
       () => {
@@ -1968,145 +1987,145 @@ class K2 {
   }
   //* Initialize the tel input listeners.
   _initTelInputListeners() {
-    const { strictMode: $, formatAsYouType: n, separateDialCode: i, formatOnDisplay: o, allowDropdown: l, countrySearch: c } = this.options;
-    let f = !1;
-    new RegExp("\\p{L}", "u").test(this.telInput.value) && (f = !0), this._handleInputEvent = (p) => {
-      if (this.isAndroid && (p == null ? void 0 : p.data) === "+" && i && l && c) {
-        const A = this.telInput.selectionStart || 0, _ = this.telInput.value.substring(0, A - 1), T = this.telInput.value.substring(A);
-        this.telInput.value = _ + T, this._openDropdownWithPlus();
+    const { strictMode: e, formatAsYouType: n, separateDialCode: r, formatOnDisplay: o, allowDropdown: a, countrySearch: h } = this.options;
+    let p = !1;
+    new RegExp("\\p{L}", "u").test(this.telInput.value) && (p = !0), this._handleInputEvent = (f) => {
+      if (this.isAndroid && (f == null ? void 0 : f.data) === "+" && r && a && h) {
+        const S = this.telInput.selectionStart || 0, I = this.telInput.value.substring(0, S - 1), T = this.telInput.value.substring(S);
+        this.telInput.value = I + T, this._openDropdownWithPlus();
         return;
       }
       this._updateCountryFromNumber(this.telInput.value) && this._triggerCountryChange();
-      const w = (p == null ? void 0 : p.data) && /[^+0-9]/.test(p.data), I = (p == null ? void 0 : p.inputType) === "insertFromPaste" && this.telInput.value;
-      w || I && !$ ? f = !0 : /[^+0-9]/.test(this.telInput.value) || (f = !1);
-      const S = (p == null ? void 0 : p.detail) && p.detail.isSetNumber && !o;
-      if (n && !f && !S) {
-        const A = this.telInput.selectionStart || 0, T = this.telInput.value.substring(0, A).replace(/[^+0-9]/g, "").length, G = (p == null ? void 0 : p.inputType) === "deleteContentForward", F = this._formatNumberAsYouType(), M = V2(T, F, A, G);
+      const L = (f == null ? void 0 : f.data) && /[^+0-9]/.test(f.data), _ = (f == null ? void 0 : f.inputType) === "insertFromPaste" && this.telInput.value;
+      L || _ && !e ? p = !0 : /[^+0-9]/.test(this.telInput.value) || (p = !1);
+      const w = (f == null ? void 0 : f.detail) && f.detail.isSetNumber && !o;
+      if (n && !p && !w) {
+        const S = this.telInput.selectionStart || 0, T = this.telInput.value.substring(0, S).replace(/[^+0-9]/g, "").length, G = (f == null ? void 0 : f.inputType) === "deleteContentForward", F = this._formatNumberAsYouType(), M = V2(T, F, S, G);
         this.telInput.value = F, this.telInput.setSelectionRange(M, M);
       }
-    }, this.telInput.addEventListener("input", this._handleInputEvent), ($ || i) && (this._handleKeydownEvent = (p) => {
-      if (p.key && p.key.length === 1 && !p.altKey && !p.ctrlKey && !p.metaKey) {
-        if (i && l && c && p.key === "+") {
-          p.preventDefault(), this._openDropdownWithPlus();
+    }, this.telInput.addEventListener("input", this._handleInputEvent), (e || r) && (this._handleKeydownEvent = (f) => {
+      if (f.key && f.key.length === 1 && !f.altKey && !f.ctrlKey && !f.metaKey) {
+        if (r && a && h && f.key === "+") {
+          f.preventDefault(), this._openDropdownWithPlus();
           return;
         }
-        if ($) {
-          const w = this.telInput.value, I = w.charAt(0) === "+", S = !I && this.telInput.selectionStart === 0 && p.key === "+", A = /^[0-9]$/.test(p.key), _ = i ? A : S || A, T = w.slice(0, this.telInput.selectionStart) + p.key + w.slice(this.telInput.selectionEnd), G = this._getFullNumber(T), F = C.utils.getCoreNumber(G, this.selectedCountryData.iso2), M = this.maxCoreNumberLength && F.length > this.maxCoreNumberLength;
+        if (e) {
+          const L = this.telInput.value, _ = L.charAt(0) === "+", w = !_ && this.telInput.selectionStart === 0 && f.key === "+", S = /^[0-9]$/.test(f.key), I = r ? S : w || S, T = L.slice(0, this.telInput.selectionStart) + f.key + L.slice(this.telInput.selectionEnd), G = this._getFullNumber(T), F = C.utils.getCoreNumber(G, this.selectedCountryData.iso2), M = this.maxCoreNumberLength && F.length > this.maxCoreNumberLength;
           let x = !1;
-          if (I) {
+          if (_) {
             const f1 = this.selectedCountryData.iso2;
             x = this._getCountryFromNumber(G) !== f1;
           }
-          (!_ || M && !x && !S) && p.preventDefault();
+          (!I || M && !x && !w) && f.preventDefault();
         }
       }
     }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
   }
   //* Adhere to the input's maxlength attr.
-  _cap($) {
+  _cap(e) {
     const n = parseInt(this.telInput.getAttribute("maxlength") || "", 10);
-    return n && $.length > n ? $.substr(0, n) : $;
+    return n && e.length > n ? e.substr(0, n) : e;
   }
   //* Trigger a custom event on the input.
-  _trigger($, n = {}) {
-    const i = new CustomEvent($, {
+  _trigger(e, n = {}) {
+    const r = new CustomEvent(e, {
       bubbles: !0,
       cancelable: !0,
       detail: n
     });
-    this.telInput.dispatchEvent(i);
+    this.telInput.dispatchEvent(r);
   }
   //* Open the dropdown.
   _openDropdown() {
-    const { fixDropdownWidth: $, countrySearch: n } = this.options;
-    if ($ && (this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`), this.dropdownContent.classList.remove("iti__hide"), this.selectedCountry.setAttribute("aria-expanded", "true"), this._setDropdownPosition(), n) {
-      const i = this.countryList.firstElementChild;
-      i && (this._highlightListItem(i, !1), this.countryList.scrollTop = 0), this.searchInput.focus();
+    const { fixDropdownWidth: e, countrySearch: n } = this.options;
+    if (e && (this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`), this.dropdownContent.classList.remove("iti__hide"), this.selectedCountry.setAttribute("aria-expanded", "true"), this._setDropdownPosition(), n) {
+      const r = this.countryList.firstElementChild;
+      r && (this._highlightListItem(r, !1), this.countryList.scrollTop = 0), this.searchInput.focus();
     }
     this._bindDropdownListeners(), this.dropdownArrow.classList.add("iti__arrow--up"), this._trigger("open:countrydropdown");
   }
   //* Set the dropdown position
   _setDropdownPosition() {
     if (this.options.dropdownContainer && this.options.dropdownContainer.appendChild(this.dropdown), !this.options.useFullscreenPopup) {
-      const $ = this.telInput.getBoundingClientRect(), n = this.telInput.offsetHeight;
-      this.options.dropdownContainer && (this.dropdown.style.top = `${$.top + n}px`, this.dropdown.style.left = `${$.left}px`, this._handleWindowScroll = () => this._closeDropdown(), window.addEventListener("scroll", this._handleWindowScroll));
+      const e = this.telInput.getBoundingClientRect(), n = this.telInput.offsetHeight;
+      this.options.dropdownContainer && (this.dropdown.style.top = `${e.top + n}px`, this.dropdown.style.left = `${e.left}px`, this._handleWindowScroll = () => this._closeDropdown(), window.addEventListener("scroll", this._handleWindowScroll));
     }
   }
   //* We only bind dropdown listeners when the dropdown is open.
   _bindDropdownListeners() {
     this._handleMouseoverCountryList = (o) => {
-      var c;
-      const l = (c = o.target) == null ? void 0 : c.closest(".iti__country");
-      l && this._highlightListItem(l, !1);
+      var h;
+      const a = (h = o.target) == null ? void 0 : h.closest(".iti__country");
+      a && this._highlightListItem(a, !1);
     }, this.countryList.addEventListener(
       "mouseover",
       this._handleMouseoverCountryList
     ), this._handleClickCountryList = (o) => {
-      var c;
-      const l = (c = o.target) == null ? void 0 : c.closest(".iti__country");
-      l && this._selectListItem(l);
+      var h;
+      const a = (h = o.target) == null ? void 0 : h.closest(".iti__country");
+      a && this._selectListItem(a);
     }, this.countryList.addEventListener("click", this._handleClickCountryList);
-    let $ = !0;
+    let e = !0;
     this._handleClickOffToClose = () => {
-      $ || this._closeDropdown(), $ = !1;
+      e || this._closeDropdown(), e = !1;
     }, document.documentElement.addEventListener(
       "click",
       this._handleClickOffToClose
     );
-    let n = "", i = null;
+    let n = "", r = null;
     if (this._handleKeydownOnDropdown = (o) => {
-      ["ArrowUp", "ArrowDown", "Enter", "Escape"].includes(o.key) && (o.preventDefault(), o.stopPropagation(), o.key === "ArrowUp" || o.key === "ArrowDown" ? this._handleUpDownKey(o.key) : o.key === "Enter" ? this._handleEnterKey() : o.key === "Escape" && this._closeDropdown()), !this.options.countrySearch && /^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(o.key) && (o.stopPropagation(), i && clearTimeout(i), n += o.key.toLowerCase(), this._searchForCountry(n), i = setTimeout(() => {
+      ["ArrowUp", "ArrowDown", "Enter", "Escape"].includes(o.key) && (o.preventDefault(), o.stopPropagation(), o.key === "ArrowUp" || o.key === "ArrowDown" ? this._handleUpDownKey(o.key) : o.key === "Enter" ? this._handleEnterKey() : o.key === "Escape" && this._closeDropdown()), !this.options.countrySearch && /^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(o.key) && (o.stopPropagation(), r && clearTimeout(r), n += o.key.toLowerCase(), this._searchForCountry(n), r = setTimeout(() => {
         n = "";
       }, 1e3));
     }, document.addEventListener("keydown", this._handleKeydownOnDropdown), this.options.countrySearch) {
       const o = () => {
-        const c = this.searchInput.value.trim();
-        c ? this._filterCountries(c) : this._filterCountries("", !0);
+        const h = this.searchInput.value.trim();
+        h ? this._filterCountries(h) : this._filterCountries("", !0);
       };
-      let l = null;
+      let a = null;
       this._handleSearchChange = () => {
-        l && clearTimeout(l), l = setTimeout(() => {
-          o(), l = null;
+        a && clearTimeout(a), a = setTimeout(() => {
+          o(), a = null;
         }, 100);
-      }, this.searchInput.addEventListener("input", this._handleSearchChange), this.searchInput.addEventListener("click", (c) => c.stopPropagation());
+      }, this.searchInput.addEventListener("input", this._handleSearchChange), this.searchInput.addEventListener("click", (h) => h.stopPropagation());
     }
   }
   //* Hidden search (countrySearch disabled): Find the first list item whose name starts with the query string.
-  _searchForCountry($) {
+  _searchForCountry(e) {
     for (let n = 0; n < this.countries.length; n++) {
-      const i = this.countries[n];
-      if (i.name.substr(0, $.length).toLowerCase() === $) {
-        const l = i.nodeById[this.id];
-        this._highlightListItem(l, !1), this._scrollTo(l);
+      const r = this.countries[n];
+      if (r.name.substr(0, e.length).toLowerCase() === e) {
+        const a = r.nodeById[this.id];
+        this._highlightListItem(a, !1), this._scrollTo(a);
         break;
       }
     }
   }
   //* Country search enabled: Filter the countries according to the search query.
-  _filterCountries($, n = !1) {
-    let i = !0;
+  _filterCountries(e, n = !1) {
+    let r = !0;
     this.countryList.innerHTML = "";
-    const o = s2($);
-    for (let l = 0; l < this.countries.length; l++) {
-      const c = this.countries[l], f = s2(c.name), p = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map((I) => I[0]).join("").toLowerCase(), w = `+${c.dialCode}`;
-      if (n || f.includes(o) || w.includes(o) || c.iso2.includes(o) || p.includes(o)) {
-        const I = c.nodeById[this.id];
-        I && this.countryList.appendChild(I), i && (this._highlightListItem(I, !1), i = !1);
+    const o = s2(e);
+    for (let a = 0; a < this.countries.length; a++) {
+      const h = this.countries[a], p = s2(h.name), f = h.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map((_) => _[0]).join("").toLowerCase(), L = `+${h.dialCode}`;
+      if (n || p.includes(o) || L.includes(o) || h.iso2.includes(o) || f.includes(o)) {
+        const _ = h.nodeById[this.id];
+        _ && this.countryList.appendChild(_), r && (this._highlightListItem(_, !1), r = !1);
       }
     }
-    i && this._highlightListItem(null, !1), this.countryList.scrollTop = 0, this._updateSearchResultsText();
+    r && this._highlightListItem(null, !1), this.countryList.scrollTop = 0, this._updateSearchResultsText();
   }
   //* Update search results text (for a11y).
   _updateSearchResultsText() {
-    const { i18n: $ } = this.options, n = this.countryList.childElementCount;
-    let i;
-    n === 0 ? i = $.zeroSearchResults : n === 1 ? i = $.oneSearchResult : i = $.multipleSearchResults.replace("${count}", n.toString()), this.searchResultsA11yText.textContent = i;
+    const { i18n: e } = this.options, n = this.countryList.childElementCount;
+    let r;
+    n === 0 ? r = e.zeroSearchResults : n === 1 ? r = e.oneSearchResult : r = e.multipleSearchResults.replace("${count}", n.toString()), this.searchResultsA11yText.textContent = r;
   }
   //* Highlight the next/prev item in the list (and ensure it is visible).
-  _handleUpDownKey($) {
-    var i, o;
-    let n = $ === "ArrowUp" ? (i = this.highlightedItem) == null ? void 0 : i.previousElementSibling : (o = this.highlightedItem) == null ? void 0 : o.nextElementSibling;
-    !n && this.countryList.childElementCount > 1 && (n = $ === "ArrowUp" ? this.countryList.lastElementChild : this.countryList.firstElementChild), n && (this._scrollTo(n), this._highlightListItem(n, !1));
+  _handleUpDownKey(e) {
+    var r, o;
+    let n = e === "ArrowUp" ? (r = this.highlightedItem) == null ? void 0 : r.previousElementSibling : (o = this.highlightedItem) == null ? void 0 : o.nextElementSibling;
+    !n && this.countryList.childElementCount > 1 && (n = e === "ArrowUp" ? this.countryList.lastElementChild : this.countryList.firstElementChild), n && (this._scrollTo(n), this._highlightListItem(n, !1));
   }
   //* Select the currently highlighted item.
   _handleEnterKey() {
@@ -2114,55 +2133,62 @@ class K2 {
   }
   //* Update the input's value to the given val (format first if possible)
   //* NOTE: this is called from _setInitialState, handleUtils and setNumber.
-  _updateValFromNumber($) {
-    let n = $;
+  _updateValFromNumber(e) {
+    let n = e;
     if (this.options.formatOnDisplay && C.utils && this.selectedCountryData) {
-      const i = this.options.nationalMode || n.charAt(0) !== "+" && !this.options.separateDialCode, { NATIONAL: o, INTERNATIONAL: l } = C.utils.numberFormat, c = i ? o : l;
+      const r = this.options.nationalMode || n.charAt(0) !== "+" && !this.options.separateDialCode, { NATIONAL: o, INTERNATIONAL: a } = C.utils.numberFormat, h = r ? o : a;
       n = C.utils.formatNumber(
         n,
         this.selectedCountryData.iso2,
-        c
+        h
       );
     }
     n = this._beforeSetNumber(n), this.telInput.value = n;
   }
   //* Check if need to select a new country based on the given number
   //* Note: called from _setInitialState, keyup handler, setNumber.
-  _updateCountryFromNumber($) {
-    const n = this._getCountryFromNumber($);
+  _updateCountryFromNumber(e) {
+    const n = this._getCountryFromNumber(e);
     return n !== null ? this._setCountry(n) : !1;
   }
   //* Check if the given number matches an area code from the selected country.
-  _isAreaCodeMatch($, n) {
-    const { areaCodes: i, partialAreaCodes: o, dialCode: l } = this.selectedCountryData, c = $.substring(l.length), f = n.substring(l.length);
-    return !!(i.includes(f) || o.includes(c));
+  _isAreaCodeMatch(e, n) {
+    const { areaCodes: r, partialAreaCodes: o, dialCode: a } = this.selectedCountryData, h = e.substring(a.length), p = n.substring(a.length);
+    return !!(r.includes(p) || o.includes(h));
   }
-  _getCountryFromNumber($) {
-    const n = $.indexOf("+");
-    let i = n ? $.substring(n) : $;
+  _ensureHasDialCode(e) {
+    const { dialCode: n, nationalPrefix: r } = this.selectedCountryData;
+    if (e.charAt(0) === "+" || !n)
+      return e;
+    const h = r && e.charAt(0) === r ? e.substring(1) : e;
+    return `+${n}${h}`;
+  }
+  _getCountryFromNumber(e) {
+    const n = e.indexOf("+");
+    let r = n ? e.substring(n) : e;
     const o = this.selectedCountryData.dialCode;
-    i && o === "1" && i.charAt(0) !== "+" && (i.charAt(0) !== "1" && (i = `1${i}`), i = `+${i}`), this.options.separateDialCode && o && i.charAt(0) !== "+" && (i = `+${o}${i}`);
-    const c = this._getDialCode(i, !0), f = c1(i);
-    if (c) {
-      const p = c1(c), w = this.dialCodeToIso2Map[p], I = this.selectedCountryData.iso2 && w.includes(this.selectedCountryData.iso2);
-      let S = !1;
-      if (I && (this.selectedCountryData.areaCodes && f.length > o.length ? S = this._isAreaCodeMatch(f, p) : S = !0), !(o === "1" && o2(f)) && (!I || !S)) {
-        for (let _ = 0; _ < w.length; _++)
-          if (w[_])
-            return w[_];
+    r = this._ensureHasDialCode(r);
+    const a = this._getDialCode(r, !0), h = c1(r);
+    if (a) {
+      const p = c1(a), f = this.dialCodeToIso2Map[p], L = this.selectedCountryData.iso2 && f.includes(this.selectedCountryData.iso2);
+      let _ = !1;
+      if (L && (this.selectedCountryData.areaCodes && h.length > o.length ? _ = this._isAreaCodeMatch(h, p) : _ = !0), !(o === "1" && o2(h)) && (!L || !_)) {
+        for (let S = 0; S < f.length; S++)
+          if (f[S])
+            return f[S];
       }
     } else {
-      if (i.charAt(0) === "+" && f.length)
+      if (r.charAt(0) === "+" && h.length)
         return "";
-      if ((!i || i === "+") && !this.selectedCountryData.iso2)
+      if ((!r || r === "+") && !this.selectedCountryData.iso2)
         return this.defaultCountry;
     }
     return null;
   }
   //* Remove highlighting from other list items and highlight the given item.
-  _highlightListItem($, n) {
-    const i = this.highlightedItem;
-    if (i && (i.classList.remove("iti__highlight"), i.setAttribute("aria-selected", "false")), this.highlightedItem = $, this.highlightedItem) {
+  _highlightListItem(e, n) {
+    const r = this.highlightedItem;
+    if (r && (r.classList.remove("iti__highlight"), r.setAttribute("aria-selected", "false")), this.highlightedItem = e, this.highlightedItem) {
       this.highlightedItem.classList.add("iti__highlight"), this.highlightedItem.setAttribute("aria-selected", "true");
       const o = this.highlightedItem.getAttribute("id") || "";
       this.selectedCountry.setAttribute("aria-activedescendant", o), this.options.countrySearch && this.searchInput.setAttribute("aria-activedescendant", o);
@@ -2171,27 +2197,27 @@ class K2 {
   }
   //* Find the country data for the given iso2 code
   //* the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
-  _getCountryData($, n) {
-    for (let i = 0; i < this.countries.length; i++)
-      if (this.countries[i].iso2 === $)
-        return this.countries[i];
+  _getCountryData(e, n) {
+    for (let r = 0; r < this.countries.length; r++)
+      if (this.countries[r].iso2 === e)
+        return this.countries[r];
     if (n)
       return null;
-    throw new Error(`No country data for '${$}'`);
+    throw new Error(`No country data for '${e}'`);
   }
   //* Update the selected country, dial code (if separateDialCode), placeholder, title, and active list item.
   //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
-  _setCountry($) {
-    const { separateDialCode: n, showFlags: i, i18n: o } = this.options, l = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
-    if (this.selectedCountryData = $ ? this._getCountryData($, !1) || {} : {}, this.selectedCountryData.iso2 && (this.defaultCountry = this.selectedCountryData.iso2), this.selectedCountryInner) {
-      let c = "", f = "";
-      $ && i ? (c = `iti__flag iti__${$}`, f = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`) : (c = "iti__flag iti__globe", f = o.noCountrySelected), this.selectedCountryInner.className = c, this.selectedCountryA11yText.textContent = f;
+  _setCountry(e) {
+    const { separateDialCode: n, showFlags: r, i18n: o } = this.options, a = this.selectedCountryData.iso2 ? this.selectedCountryData : {};
+    if (this.selectedCountryData = e ? this._getCountryData(e, !1) || {} : {}, this.selectedCountryData.iso2 && (this.defaultCountry = this.selectedCountryData.iso2), this.selectedCountryInner) {
+      let h = "", p = "";
+      e && r ? (h = `iti__flag iti__${e}`, p = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`) : (h = "iti__flag iti__globe", p = o.noCountrySelected), this.selectedCountryInner.className = h, this.selectedCountryA11yText.textContent = p;
     }
-    if (this._setSelectedCountryTitleAttribute($, n), n) {
-      const c = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : "";
-      this.selectedDialCode.innerHTML = c, this._updateInputPadding();
+    if (this._setSelectedCountryTitleAttribute(e, n), n) {
+      const h = this.selectedCountryData.dialCode ? `+${this.selectedCountryData.dialCode}` : "";
+      this.selectedDialCode.innerHTML = h, this._updateInputPadding();
     }
-    return this._updatePlaceholder(), this._updateMaxLength(), l.iso2 !== $;
+    return this._updatePlaceholder(), this._updateMaxLength(), a.iso2 !== e;
   }
   //* Update the input padding to make space for the selected country/dial code.
   _updateInputPadding() {
@@ -2202,28 +2228,28 @@ class K2 {
   }
   //* Update the maximum valid number length for the currently selected country.
   _updateMaxLength() {
-    const { strictMode: $, placeholderNumberType: n, validationNumberTypes: i } = this.options, { iso2: o } = this.selectedCountryData;
-    if ($ && C.utils)
+    const { strictMode: e, placeholderNumberType: n, validationNumberTypes: r } = this.options, { iso2: o } = this.selectedCountryData;
+    if (e && C.utils)
       if (o) {
-        const l = C.utils.numberType[n];
-        let c = C.utils.getExampleNumber(
+        const a = C.utils.numberType[n];
+        let h = C.utils.getExampleNumber(
           o,
           !1,
-          l,
+          a,
           !0
-        ), f = c;
-        for (; C.utils.isPossibleNumber(c, o, i); )
-          f = c, c += "0";
-        const p = C.utils.getCoreNumber(f, o);
-        this.maxCoreNumberLength = p.length, o === "by" && (this.maxCoreNumberLength = p.length + 1);
+        ), p = h;
+        for (; C.utils.isPossibleNumber(h, o, r); )
+          p = h, h += "0";
+        const f = C.utils.getCoreNumber(p, o);
+        this.maxCoreNumberLength = f.length, o === "by" && (this.maxCoreNumberLength = f.length + 1);
       } else
         this.maxCoreNumberLength = null;
   }
-  _setSelectedCountryTitleAttribute($ = null, n) {
+  _setSelectedCountryTitleAttribute(e = null, n) {
     if (!this.selectedCountry)
       return;
-    let i;
-    $ && !n ? i = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}` : $ ? i = this.selectedCountryData.name : i = "Unknown", this.selectedCountry.setAttribute("title", i);
+    let r;
+    e && !n ? r = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}` : e ? r = this.selectedCountryData.name : r = "Unknown", this.selectedCountry.setAttribute("title", r);
   }
   //* When the input is in a hidden container during initialisation, we must inject some markup
   //* into the end of the DOM to calculate the correct offsetWidth.
@@ -2231,41 +2257,41 @@ class K2 {
   //* will definitely exist.
   _getHiddenSelectedCountryWidth() {
     if (this.telInput.parentNode) {
-      const $ = this.telInput.parentNode.cloneNode(!1);
-      $.style.visibility = "hidden", document.body.appendChild($);
+      const e = this.telInput.parentNode.cloneNode(!1);
+      e.style.visibility = "hidden", document.body.appendChild(e);
       const n = this.countryContainer.cloneNode();
-      $.appendChild(n);
-      const i = this.selectedCountry.cloneNode(!0);
-      n.appendChild(i);
-      const o = i.offsetWidth;
-      return document.body.removeChild($), o;
+      e.appendChild(n);
+      const r = this.selectedCountry.cloneNode(!0);
+      n.appendChild(r);
+      const o = r.offsetWidth;
+      return document.body.removeChild(e), o;
     }
     return 0;
   }
   //* Update the input placeholder to an example number from the currently selected country.
   _updatePlaceholder() {
     const {
-      autoPlaceholder: $,
+      autoPlaceholder: e,
       placeholderNumberType: n,
-      nationalMode: i,
+      nationalMode: r,
       customPlaceholder: o
-    } = this.options, l = $ === "aggressive" || !this.hadInitialPlaceholder && $ === "polite";
-    if (C.utils && l) {
-      const c = C.utils.numberType[n];
-      let f = this.selectedCountryData.iso2 ? C.utils.getExampleNumber(
+    } = this.options, a = e === "aggressive" || !this.hadInitialPlaceholder && e === "polite";
+    if (C.utils && a) {
+      const h = C.utils.numberType[n];
+      let p = this.selectedCountryData.iso2 ? C.utils.getExampleNumber(
         this.selectedCountryData.iso2,
-        i,
-        c
+        r,
+        h
       ) : "";
-      f = this._beforeSetNumber(f), typeof o == "function" && (f = o(f, this.selectedCountryData)), this.telInput.setAttribute("placeholder", f);
+      p = this._beforeSetNumber(p), typeof o == "function" && (p = o(p, this.selectedCountryData)), this.telInput.setAttribute("placeholder", p);
     }
   }
   //* Called when the user selects a list item from the dropdown.
-  _selectListItem($) {
+  _selectListItem(e) {
     const n = this._setCountry(
-      $.getAttribute("data-country-code")
+      e.getAttribute("data-country-code")
     );
-    this._closeDropdown(), this._updateDialCode($.getAttribute("data-dial-code")), this.telInput.focus(), n && this._triggerCountryChange();
+    this._closeDropdown(), this._updateDialCode(e.getAttribute("data-dial-code")), this.telInput.focus(), n && this._triggerCountryChange();
   }
   //* Close the dropdown and unbind any listeners.
   _closeDropdown() {
@@ -2278,38 +2304,38 @@ class K2 {
     ), this.countryList.removeEventListener("click", this._handleClickCountryList), this.options.dropdownContainer && (this.options.useFullscreenPopup || window.removeEventListener("scroll", this._handleWindowScroll), this.dropdown.parentNode && this.dropdown.parentNode.removeChild(this.dropdown)), this._handlePageLoad && window.removeEventListener("load", this._handlePageLoad), this._trigger("close:countrydropdown");
   }
   //* Check if an element is visible within it's container, else scroll until it is.
-  _scrollTo($) {
-    const n = this.countryList, i = document.documentElement.scrollTop, o = n.offsetHeight, l = n.getBoundingClientRect().top + i, c = l + o, f = $.offsetHeight, p = $.getBoundingClientRect().top + i, w = p + f, I = p - l + n.scrollTop;
-    if (p < l)
-      n.scrollTop = I;
-    else if (w > c) {
-      const S = o - f;
-      n.scrollTop = I - S;
+  _scrollTo(e) {
+    const n = this.countryList, r = document.documentElement.scrollTop, o = n.offsetHeight, a = n.getBoundingClientRect().top + r, h = a + o, p = e.offsetHeight, f = e.getBoundingClientRect().top + r, L = f + p, _ = f - a + n.scrollTop;
+    if (f < a)
+      n.scrollTop = _;
+    else if (L > h) {
+      const w = o - p;
+      n.scrollTop = _ - w;
     }
   }
   //* Replace any existing dial code with the new one
   //* Note: called from _selectListItem and setCountry
-  _updateDialCode($) {
-    const n = this.telInput.value, i = `+${$}`;
+  _updateDialCode(e) {
+    const n = this.telInput.value, r = `+${e}`;
     let o;
     if (n.charAt(0) === "+") {
-      const l = this._getDialCode(n);
-      l ? o = n.replace(l, i) : o = i, this.telInput.value = o;
+      const a = this._getDialCode(n);
+      a ? o = n.replace(a, r) : o = r, this.telInput.value = o;
     }
   }
   //* Try and extract a valid international dial code from a full telephone number.
   //* Note: returns the raw string inc plus character and any whitespace/dots etc.
-  _getDialCode($, n) {
-    let i = "";
-    if ($.charAt(0) === "+") {
+  _getDialCode(e, n) {
+    let r = "";
+    if (e.charAt(0) === "+") {
       let o = "";
-      for (let l = 0; l < $.length; l++) {
-        const c = $.charAt(l);
-        if (!isNaN(parseInt(c, 10))) {
-          if (o += c, n)
-            this.dialCodeToIso2Map[o] && (i = $.substr(0, l + 1));
+      for (let a = 0; a < e.length; a++) {
+        const h = e.charAt(a);
+        if (!isNaN(parseInt(h, 10))) {
+          if (o += h, n)
+            this.dialCodeToIso2Map[o] && (r = e.substr(0, a + 1));
           else if (this.dialCodes[o]) {
-            i = $.substr(0, l + 1);
+            r = e.substr(0, a + 1);
             break;
           }
           if (o.length === this.dialCodeMaxLen)
@@ -2317,23 +2343,23 @@ class K2 {
         }
       }
     }
-    return i;
+    return r;
   }
   //* Get the input val, adding the dial code if separateDialCode is enabled.
-  _getFullNumber($) {
-    const n = $ || this.telInput.value.trim(), { dialCode: i } = this.selectedCountryData;
+  _getFullNumber(e) {
+    const n = e || this.telInput.value.trim(), { dialCode: r } = this.selectedCountryData;
     let o;
-    const l = c1(n);
-    return this.options.separateDialCode && n.charAt(0) !== "+" && i && l ? o = `+${i}` : o = "", o + n;
+    const a = c1(n);
+    return this.options.separateDialCode && n.charAt(0) !== "+" && r && a ? o = `+${r}` : o = "", o + n;
   }
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
-  _beforeSetNumber($) {
-    let n = $;
+  _beforeSetNumber(e) {
+    let n = e;
     if (this.options.separateDialCode) {
-      let i = this._getDialCode(n);
-      if (i) {
-        i = `+${this.selectedCountryData.dialCode}`;
-        const o = n[i.length] === " " || n[i.length] === "-" ? i.length + 1 : i.length;
+      let r = this._getDialCode(n);
+      if (r) {
+        r = `+${this.selectedCountryData.dialCode}`;
+        const o = n[r.length] === " " || n[r.length] === "-" ? r.length + 1 : r.length;
         n = n.substr(o);
       }
     }
@@ -2345,8 +2371,8 @@ class K2 {
   }
   //* Format the number as the user types.
   _formatNumberAsYouType() {
-    const $ = this._getFullNumber(), n = C.utils ? C.utils.formatNumberAsYouType($, this.selectedCountryData.iso2) : $, { dialCode: i } = this.selectedCountryData;
-    return this.options.separateDialCode && this.telInput.value.charAt(0) !== "+" && n.includes(`+${i}`) ? (n.split(`+${i}`)[1] || "").trim() : n;
+    const e = this._getFullNumber(), n = C.utils ? C.utils.formatNumberAsYouType(e, this.selectedCountryData.iso2) : e, { dialCode: r } = this.selectedCountryData;
+    return this.options.separateDialCode && this.telInput.value.charAt(0) !== "+" && n.includes(`+${r}`) ? (n.split(`+${r}`)[1] || "").trim() : n;
   }
   //**************************
   //*  SECRET PUBLIC METHODS
@@ -2364,9 +2390,9 @@ class K2 {
   //********************
   //* Remove plugin.
   destroy() {
-    var l, c;
-    const { allowDropdown: $, separateDialCode: n } = this.options;
-    if ($) {
+    var a, h;
+    const { allowDropdown: e, separateDialCode: n } = this.options;
+    if (e) {
       this._closeDropdown(), this.selectedCountry.removeEventListener(
         "click",
         this._handleClickSelectedCountry
@@ -2374,13 +2400,13 @@ class K2 {
         "keydown",
         this._handleCountryContainerKeydown
       );
-      const f = this.telInput.closest("label");
-      f && f.removeEventListener("click", this._handleLabelClick);
+      const p = this.telInput.closest("label");
+      p && p.removeEventListener("click", this._handleLabelClick);
     }
-    const { form: i } = this.telInput;
-    this._handleHiddenInputSubmit && i && i.removeEventListener("submit", this._handleHiddenInputSubmit), this.telInput.removeEventListener("input", this._handleInputEvent), this._handleKeydownEvent && this.telInput.removeEventListener("keydown", this._handleKeydownEvent), this.telInput.removeAttribute("data-intl-tel-input-id"), n && (this.isRTL ? this.telInput.style.paddingRight = this.originalPaddingRight : this.telInput.style.paddingLeft = this.originalPaddingLeft);
+    const { form: r } = this.telInput;
+    this._handleHiddenInputSubmit && r && r.removeEventListener("submit", this._handleHiddenInputSubmit), this.telInput.removeEventListener("input", this._handleInputEvent), this._handleKeydownEvent && this.telInput.removeEventListener("keydown", this._handleKeydownEvent), this.telInput.removeAttribute("data-intl-tel-input-id"), n && (this.isRTL ? this.telInput.style.paddingRight = this.originalPaddingRight : this.telInput.style.paddingLeft = this.originalPaddingLeft);
     const o = this.telInput.parentNode;
-    (l = o == null ? void 0 : o.parentNode) == null || l.insertBefore(this.telInput, o), (c = o == null ? void 0 : o.parentNode) == null || c.removeChild(o), delete C.instances[this.id];
+    (a = o == null ? void 0 : o.parentNode) == null || a.insertBefore(this.telInput, o), (h = o == null ? void 0 : o.parentNode) == null || h.removeChild(o), delete C.instances[this.id];
   }
   //* Get the extension from the current number.
   getExtension() {
@@ -2390,13 +2416,13 @@ class K2 {
     ) : "";
   }
   //* Format the number to the given format.
-  getNumber($) {
+  getNumber(e) {
     if (C.utils) {
       const { iso2: n } = this.selectedCountryData;
       return C.utils.formatNumber(
         this._getFullNumber(),
         n,
-        $
+        e
       );
     }
     return "";
@@ -2415,8 +2441,8 @@ class K2 {
   //* Get the validation error.
   getValidationError() {
     if (C.utils) {
-      const { iso2: $ } = this.selectedCountryData;
-      return C.utils.getValidationError(this._getFullNumber(), $);
+      const { iso2: e } = this.selectedCountryData;
+      return C.utils.getValidationError(this._getFullNumber(), e);
     }
     return -99;
   }
@@ -2424,72 +2450,72 @@ class K2 {
   isValidNumber() {
     if (!this.selectedCountryData.iso2)
       return !1;
-    const $ = this._getFullNumber(), n = $.search(new RegExp("\\p{L}", "u"));
+    const e = this._getFullNumber(), n = e.search(new RegExp("\\p{L}", "u"));
     if (n > -1) {
-      const i = $.substring(0, n), o = this._utilsIsPossibleNumber(i), l = this._utilsIsPossibleNumber($);
-      return o && l;
+      const r = e.substring(0, n), o = this._utilsIsPossibleNumber(r), a = this._utilsIsPossibleNumber(e);
+      return o && a;
     }
-    return this._utilsIsPossibleNumber($);
+    return this._utilsIsPossibleNumber(e);
   }
-  _utilsIsPossibleNumber($) {
-    return C.utils ? C.utils.isPossibleNumber($, this.selectedCountryData.iso2, this.options.validationNumberTypes) : null;
+  _utilsIsPossibleNumber(e) {
+    return C.utils ? C.utils.isPossibleNumber(e, this.selectedCountryData.iso2, this.options.validationNumberTypes) : null;
   }
   //* Validate the input val (precise)
   isValidNumberPrecise() {
     if (!this.selectedCountryData.iso2)
       return !1;
-    const $ = this._getFullNumber(), n = $.search(new RegExp("\\p{L}", "u"));
+    const e = this._getFullNumber(), n = e.search(new RegExp("\\p{L}", "u"));
     if (n > -1) {
-      const i = $.substring(0, n), o = this._utilsIsValidNumber(i), l = this._utilsIsValidNumber($);
-      return o && l;
+      const r = e.substring(0, n), o = this._utilsIsValidNumber(r), a = this._utilsIsValidNumber(e);
+      return o && a;
     }
-    return this._utilsIsValidNumber($);
+    return this._utilsIsValidNumber(e);
   }
-  _utilsIsValidNumber($) {
-    return C.utils ? C.utils.isValidNumber($, this.selectedCountryData.iso2, this.options.validationNumberTypes) : null;
+  _utilsIsValidNumber(e) {
+    return C.utils ? C.utils.isValidNumber(e, this.selectedCountryData.iso2, this.options.validationNumberTypes) : null;
   }
   //* Update the selected country, and update the input val accordingly.
-  setCountry($) {
-    const n = $ == null ? void 0 : $.toLowerCase(), i = this.selectedCountryData.iso2;
-    ($ && n !== i || !$ && i) && (this._setCountry(n), this._updateDialCode(this.selectedCountryData.dialCode), this._triggerCountryChange());
+  setCountry(e) {
+    const n = e == null ? void 0 : e.toLowerCase(), r = this.selectedCountryData.iso2;
+    (e && n !== r || !e && r) && (this._setCountry(n), this._updateDialCode(this.selectedCountryData.dialCode), this._triggerCountryChange());
   }
   //* Set the input value and update the country.
-  setNumber($) {
-    const n = this._updateCountryFromNumber($);
-    this._updateValFromNumber($), n && this._triggerCountryChange(), this._trigger("input", { isSetNumber: !0 });
+  setNumber(e) {
+    const n = this._updateCountryFromNumber(e);
+    this._updateValFromNumber(e), n && this._triggerCountryChange(), this._trigger("input", { isSetNumber: !0 });
   }
   //* Set the placeholder number typ
-  setPlaceholderNumberType($) {
-    this.options.placeholderNumberType = $, this._updatePlaceholder();
+  setPlaceholderNumberType(e) {
+    this.options.placeholderNumberType = e, this._updatePlaceholder();
   }
-  setDisabled($) {
-    this.telInput.disabled = $, $ ? this.selectedCountry.setAttribute("disabled", "true") : this.selectedCountry.removeAttribute("disabled");
+  setDisabled(e) {
+    this.telInput.disabled = e, e ? this.selectedCountry.setAttribute("disabled", "true") : this.selectedCountry.removeAttribute("disabled");
   }
 }
 const H2 = (y) => {
   if (!C.utils && !C.startedLoadingUtilsScript) {
-    let $;
+    let e;
     if (typeof y == "function")
       try {
-        $ = Promise.resolve(y());
+        e = Promise.resolve(y());
       } catch (n) {
         return Promise.reject(n);
       }
     else
       return Promise.reject(new TypeError(`The argument passed to attachUtils must be a function that returns a promise for the utilities module, not ${typeof y}`));
-    return C.startedLoadingUtilsScript = !0, $.then((n) => {
-      const i = n == null ? void 0 : n.default;
-      if (!i || typeof i != "object")
+    return C.startedLoadingUtilsScript = !0, e.then((n) => {
+      const r = n == null ? void 0 : n.default;
+      if (!r || typeof r != "object")
         throw new TypeError("The loader function passed to attachUtils did not resolve to a module object with utils as its default export.");
-      return C.utils = i, $1("handleUtils"), !0;
+      return C.utils = r, $1("handleUtils"), !0;
     }).catch((n) => {
       throw $1("rejectUtilsScriptPromise", n), n;
     });
   }
   return null;
 }, C = Object.assign(
-  (y, $) => {
-    const n = new K2(y, $);
+  (y, e) => {
+    const n = new K2(y, e);
     return n._init(), y.setAttribute("data-intl-tel-input-id", n.id.toString()), C.instances[n.id] = n, n;
   },
   {
@@ -2500,8 +2526,8 @@ const H2 = (y) => {
     getCountryData: () => W,
     //* A getter for the plugin instance.
     getInstance: (y) => {
-      const $ = y.getAttribute("data-intl-tel-input-id");
-      return $ ? C.instances[$] : null;
+      const e = y.getAttribute("data-intl-tel-input-id");
+      return e ? C.instances[e] : null;
     },
     //* A map from instance ID to instance object.
     instances: {},
@@ -2513,69 +2539,69 @@ const H2 = (y) => {
 );
 (function() {
   var y = this || self;
-  function $(d, t) {
+  function e(d, t) {
     d = d.split(".");
-    var e = y;
-    d[0] in e || typeof e.execScript > "u" || e.execScript("var " + d[0]);
-    for (var r; d.length && (r = d.shift()); ) d.length || t === void 0 ? e[r] && e[r] !== Object.prototype[r] ? e = e[r] : e = e[r] = {} : e[r] = t;
+    var $ = y;
+    d[0] in $ || typeof $.execScript > "u" || $.execScript("var " + d[0]);
+    for (var i; d.length && (i = d.shift()); ) d.length || t === void 0 ? $[i] && $[i] !== Object.prototype[i] ? $ = $[i] : $ = $[i] = {} : $[i] = t;
   }
   function n(d, t) {
-    function e() {
+    function $() {
     }
-    e.prototype = t.prototype, d.ma = t.prototype, d.prototype = new e(), d.prototype.constructor = d, d.sa = function(r, s, u) {
-      for (var a = Array(arguments.length - 2), h = 2; h < arguments.length; h++) a[h - 2] = arguments[h];
-      return t.prototype[s].apply(r, a);
+    $.prototype = t.prototype, d.ma = t.prototype, d.prototype = new $(), d.prototype.constructor = d, d.sa = function(i, s, u) {
+      for (var l = Array(arguments.length - 2), c = 2; c < arguments.length; c++) l[c - 2] = arguments[c];
+      return t.prototype[s].apply(i, l);
     };
   }
-  function i(d) {
+  function r(d) {
     const t = [];
-    let e = 0;
-    for (const r in d) t[e++] = d[r];
+    let $ = 0;
+    for (const i in d) t[$++] = d[i];
     return t;
   }
   var o = class {
     constructor(d) {
-      if (l !== l) throw Error("SafeUrl is not meant to be built directly");
+      if (a !== a) throw Error("SafeUrl is not meant to be built directly");
       this.g = d;
     }
     toString() {
       return this.g.toString();
     }
-  }, l = {};
+  }, a = {};
   new o("about:invalid#zClosurez"), new o("about:blank");
-  const c = {};
-  class f {
+  const h = {};
+  class p {
     constructor() {
-      if (c !== c) throw Error("SafeStyle is not meant to be built directly");
+      if (h !== h) throw Error("SafeStyle is not meant to be built directly");
     }
     toString() {
       return "";
     }
   }
-  new f();
-  const p = {};
+  new p();
+  const f = {};
+  class L {
+    constructor() {
+      if (f !== f) throw Error("SafeStyleSheet is not meant to be built directly");
+    }
+    toString() {
+      return "";
+    }
+  }
+  new L();
+  const _ = {};
   class w {
     constructor() {
-      if (p !== p) throw Error("SafeStyleSheet is not meant to be built directly");
-    }
-    toString() {
-      return "";
-    }
-  }
-  new w();
-  const I = {};
-  class S {
-    constructor() {
       var t = y.trustedTypes && y.trustedTypes.emptyHTML || "";
-      if (I !== I) throw Error("SafeHtml is not meant to be built directly");
+      if (_ !== _) throw Error("SafeHtml is not meant to be built directly");
       this.g = t;
     }
     toString() {
       return this.g.toString();
     }
   }
-  new S();
-  function A(d, t) {
+  new w();
+  function S(d, t) {
     switch (this.g = d, this.l = !!t.aa, this.h = t.i, this.s = t.type, this.o = !1, this.h) {
       case G:
       case F:
@@ -2583,21 +2609,21 @@ const H2 = (y) => {
       case x:
       case f1:
       case T:
-      case _:
+      case I:
         this.o = !0;
     }
     this.j = t.defaultValue;
   }
-  var _ = 1, T = 2, G = 3, F = 4, M = 6, x = 16, f1 = 18;
+  var I = 1, T = 2, G = 3, F = 4, M = 6, x = 16, f1 = 18;
   function v1(d, t) {
     for (this.h = d, this.g = {}, d = 0; d < t.length; d++) {
-      var e = t[d];
-      this.g[e.g] = e;
+      var $ = t[d];
+      this.g[$.g] = $;
     }
   }
   function l2(d) {
-    return d = i(d.g), d.sort(function(t, e) {
-      return t.g - e.g;
+    return d = r(d.g), d.sort(function(t, $) {
+      return t.g - $.g;
     }), d;
   }
   function R() {
@@ -2613,15 +2639,15 @@ const H2 = (y) => {
     w1(this, d.g, t);
   };
   function S1(d, t) {
-    for (var e = l2(d.m()), r = 0; r < e.length; r++) {
-      var s = e[r], u = s.g;
+    for (var $ = l2(d.m()), i = 0; i < $.length; i++) {
+      var s = $[i], u = s.g;
       if (B(t, u)) {
         d.g && delete d.g[s.g];
-        var a = s.h == 11 || s.h == 10;
+        var l = s.h == 11 || s.h == 10;
         if (s.l) {
           s = P(t, u);
-          for (var h = 0; h < s.length; h++) w1(d, u, a ? s[h].clone() : s[h]);
-        } else s = n1(t, u), a ? (a = n1(d, u)) ? S1(a, s) : E(d, u, s.clone()) : E(d, u, s);
+          for (var c = 0; c < s.length; c++) w1(d, u, l ? s[c].clone() : s[c]);
+        } else s = n1(t, u), l ? (l = n1(d, u)) ? S1(l, s) : E(d, u, s.clone()) : E(d, u, s);
       }
     }
   }
@@ -2633,24 +2659,24 @@ const H2 = (y) => {
     return d.h[t] != null;
   }
   function n1(d, t) {
-    var e = d.h[t];
-    if (e == null) return null;
+    var $ = d.h[t];
+    if ($ == null) return null;
     if (d.l) {
       if (!(t in d.g)) {
-        var r = d.l, s = d.j[t];
-        if (e != null) if (s.l) {
-          for (var u = [], a = 0; a < e.length; a++) u[a] = r.h(s, e[a]);
-          e = u;
-        } else e = r.h(s, e);
-        return d.g[t] = e;
+        var i = d.l, s = d.j[t];
+        if ($ != null) if (s.l) {
+          for (var u = [], l = 0; l < $.length; l++) u[l] = i.h(s, $[l]);
+          $ = u;
+        } else $ = i.h(s, $);
+        return d.g[t] = $;
       }
       return d.g[t];
     }
-    return e;
+    return $;
   }
-  function g(d, t, e) {
-    var r = n1(d, t);
-    return d.j[t].l ? r[e || 0] : r;
+  function g(d, t, $) {
+    var i = n1(d, t);
+    return d.j[t].l ? i[$ || 0] : i;
   }
   function v(d, t) {
     if (B(d, t)) d = g(d, t);
@@ -2672,16 +2698,16 @@ const H2 = (y) => {
   function K(d, t) {
     return d.j[t].l ? B(d, t) ? d.h[t].length : 0 : B(d, t) ? 1 : 0;
   }
-  function E(d, t, e) {
-    d.h[t] = e, d.g && (d.g[t] = e);
+  function E(d, t, $) {
+    d.h[t] = $, d.g && (d.g[t] = $);
   }
-  function w1(d, t, e) {
-    d.h[t] || (d.h[t] = []), d.h[t].push(e), d.g && delete d.g[t];
+  function w1(d, t, $) {
+    d.h[t] || (d.h[t] = []), d.h[t].push($), d.g && delete d.g[t];
   }
   function i1(d, t) {
-    var e = [], r;
-    for (r in t) r != 0 && e.push(new A(r, t[r]));
-    return new v1(d, e);
+    var $ = [], i;
+    for (i in t) i != 0 && $.push(new S(i, t[i]));
+    return new v1(d, $);
   }
   function r1() {
   }
@@ -2709,42 +2735,42 @@ const H2 = (y) => {
   }, q.prototype.g = function(d, t) {
     return q.ma.g.call(this, d, t);
   };
-  function L(d, t) {
+  function A(d, t) {
     d != null && this.g.apply(this, arguments);
   }
-  L.prototype.h = "", L.prototype.set = function(d) {
+  A.prototype.h = "", A.prototype.set = function(d) {
     this.h = "" + d;
-  }, L.prototype.g = function(d, t, e) {
-    if (this.h += String(d), t != null) for (let r = 1; r < arguments.length; r++) this.h += arguments[r];
+  }, A.prototype.g = function(d, t, $) {
+    if (this.h += String(d), t != null) for (let i = 1; i < arguments.length; i++) this.h += arguments[i];
     return this;
   };
   function k(d) {
     d.h = "";
   }
-  L.prototype.toString = function() {
+  A.prototype.toString = function() {
     return this.h;
   };
   function z() {
     R.call(this);
   }
   n(z, R);
-  var A1 = null;
+  var L1 = null;
   function b() {
     R.call(this);
   }
   n(b, R);
-  var L1 = null;
+  var A1 = null;
   function Z() {
     R.call(this);
   }
   n(Z, R);
   var N1 = null;
   z.prototype.m = function() {
-    var d = A1;
-    return d || (A1 = d = i1(z, { 0: { name: "NumberFormat", ia: "i18n.phonenumbers.NumberFormat" }, 1: { name: "pattern", required: !0, i: 9, type: String }, 2: { name: "format", required: !0, i: 9, type: String }, 3: { name: "leading_digits_pattern", aa: !0, i: 9, type: String }, 4: { name: "national_prefix_formatting_rule", i: 9, type: String }, 6: { name: "national_prefix_optional_when_formatting", i: 8, defaultValue: !1, type: Boolean }, 5: { name: "domestic_carrier_code_formatting_rule", i: 9, type: String } })), d;
-  }, z.m = z.prototype.m, b.prototype.m = function() {
     var d = L1;
-    return d || (L1 = d = i1(b, { 0: { name: "PhoneNumberDesc", ia: "i18n.phonenumbers.PhoneNumberDesc" }, 2: { name: "national_number_pattern", i: 9, type: String }, 9: { name: "possible_length", aa: !0, i: 5, type: Number }, 10: { name: "possible_length_local_only", aa: !0, i: 5, type: Number }, 6: { name: "example_number", i: 9, type: String } })), d;
+    return d || (L1 = d = i1(z, { 0: { name: "NumberFormat", ia: "i18n.phonenumbers.NumberFormat" }, 1: { name: "pattern", required: !0, i: 9, type: String }, 2: { name: "format", required: !0, i: 9, type: String }, 3: { name: "leading_digits_pattern", aa: !0, i: 9, type: String }, 4: { name: "national_prefix_formatting_rule", i: 9, type: String }, 6: { name: "national_prefix_optional_when_formatting", i: 8, defaultValue: !1, type: Boolean }, 5: { name: "domestic_carrier_code_formatting_rule", i: 9, type: String } })), d;
+  }, z.m = z.prototype.m, b.prototype.m = function() {
+    var d = A1;
+    return d || (A1 = d = i1(b, { 0: { name: "PhoneNumberDesc", ia: "i18n.phonenumbers.PhoneNumberDesc" }, 2: { name: "national_number_pattern", i: 9, type: String }, 9: { name: "possible_length", aa: !0, i: 5, type: Number }, 10: { name: "possible_length_local_only", aa: !0, i: 5, type: Number }, 6: { name: "example_number", i: 9, type: String } })), d;
   }, b.m = b.prototype.m, Z.prototype.m = function() {
     var d = N1;
     return d || (N1 = d = i1(Z, {
@@ -7988,8 +8014,8 @@ const H2 = (y) => {
     return d != null && (K(d, 9) != 1 || P(d, 9)[0] != -1);
   }
   function s1(d, t) {
-    for (var e = new L(), r, s = d.length, u = 0; u < s; ++u) r = d.charAt(u), r = t[r.toUpperCase()], r != null && e.g(r);
-    return e.toString();
+    for (var $ = new A(), i, s = d.length, u = 0; u < s; ++u) i = d.charAt(u), i = t[i.toUpperCase()], i != null && $.g(i);
+    return $.toString();
   }
   function O1(d) {
     return d.length == 0 || w2.test(d);
@@ -7999,50 +8025,50 @@ const H2 = (y) => {
   }
   D.prototype.format = function(d, t) {
     if (g(d, 2) == 0 && B(d, 5)) {
-      var e = v(d, 5);
-      if (0 < e.length) return e;
+      var $ = v(d, 5);
+      if (0 < $.length) return $;
     }
-    e = v(d, 1);
-    var r = t1(d);
-    if (t == 0) return G1(e, 0, r, "");
-    if (!(e in X)) return r;
-    var s = d1(this, e, e1(e));
+    $ = v(d, 1);
+    var i = t1(d);
+    if (t == 0) return G1($, 0, i, "");
+    if (!($ in X)) return i;
+    var s = d1(this, $, e1($));
     d = B(d, 3) && g(d, 3).length != 0 ? t == 3 ? ";ext=" + g(d, 3) : B(s, 13) ? g(s, 13) + v(d, 3) : " ext. " + v(d, 3) : "";
     d: {
       s = P(s, 20).length == 0 || t == 2 ? P(s, 19) : P(s, 20);
-      for (var u, a = s.length, h = 0; h < a; ++h) {
-        u = s[h];
+      for (var u, l = s.length, c = 0; c < l; ++c) {
+        u = s[c];
         var m = K(u, 3);
-        if ((m == 0 || r.search(g(u, 3, m - 1)) == 0) && (m = new RegExp(g(u, 1)), U(m, r))) {
+        if ((m == 0 || i.search(g(u, 3, m - 1)) == 0) && (m = new RegExp(g(u, 1)), U(m, i))) {
           s = u;
           break d;
         }
       }
       s = null;
     }
-    return s != null && (a = s, s = v(a, 2), u = new RegExp(g(a, 1)), v(
-      a,
+    return s != null && (l = s, s = v(l, 2), u = new RegExp(g(l, 1)), v(
+      l,
       5
-    ), a = v(a, 4), r = t == 2 && a != null && 0 < a.length ? r.replace(u, s.replace(S2, a)) : r.replace(u, s), t == 3 && (r = r.replace(RegExp("^[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]+"), ""), r = r.replace(RegExp("[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]+", "g"), "-"))), G1(e, t, r, d);
+    ), l = v(l, 4), i = t == 2 && l != null && 0 < l.length ? i.replace(u, s.replace(S2, l)) : i.replace(u, s), t == 3 && (i = i.replace(RegExp("^[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]+"), ""), i = i.replace(RegExp("[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]+", "g"), "-"))), G1($, t, i, d);
   };
-  function d1(d, t, e) {
-    return e == "001" ? j(d, "" + t) : j(d, e);
+  function d1(d, t, $) {
+    return $ == "001" ? j(d, "" + t) : j(d, $);
   }
   function t1(d) {
     if (!B(d, 2)) return "";
     var t = "" + g(d, 2);
     return B(d, 4) && g(d, 4) && 0 < v(d, 8) ? Array(v(d, 8) + 1).join("0") + t : t;
   }
-  function G1(d, t, e, r) {
+  function G1(d, t, $, i) {
     switch (t) {
       case 0:
-        return "+" + d + e + r;
+        return "+" + d + $ + i;
       case 1:
-        return "+" + d + " " + e + r;
+        return "+" + d + " " + $ + i;
       case 3:
-        return "tel:+" + d + "-" + e + r;
+        return "tel:+" + d + "-" + $ + i;
       default:
-        return e + r;
+        return $ + i;
     }
   }
   function u1(d, t) {
@@ -8073,8 +8099,8 @@ const H2 = (y) => {
     }
   }
   function F1(d, t) {
-    var e = U1(d, t);
-    return d = d1(d, v(t, 1), e), d == null ? -1 : (t = t1(t), C1(t, d));
+    var $ = U1(d, t);
+    return d = d1(d, v(t, 1), $), d == null ? -1 : (t = t1(t), C1(t, d));
   }
   function C1(d, t) {
     return O(d, g(t, 1)) ? O(d, g(t, 5)) ? 4 : O(d, g(t, 4)) ? 3 : O(d, g(t, 6)) ? 5 : O(d, g(t, 8)) ? 6 : O(d, g(t, 7)) ? 7 : O(d, g(t, 21)) ? 8 : O(d, g(t, 25)) ? 9 : O(d, g(t, 28)) ? 10 : O(d, g(t, 2)) ? g(t, 18) || O(d, g(t, 3)) ? 2 : 0 : !g(t, 18) && O(d, g(t, 3)) ? 1 : -1 : -1;
@@ -8082,38 +8108,38 @@ const H2 = (y) => {
   function j(d, t) {
     if (t == null) return null;
     t = t.toUpperCase();
-    var e = d.g[t];
-    if (e == null) {
-      if (e = E1[t], e == null) return null;
-      e = new q().g(Z.m(), e), d.g[t] = e;
+    var $ = d.g[t];
+    if ($ == null) {
+      if ($ = E1[t], $ == null) return null;
+      $ = new q().g(Z.m(), $), d.g[t] = $;
     }
-    return e;
+    return $;
   }
   function O(d, t) {
-    var e = d.length;
-    return 0 < K(t, 9) && P(t, 9).indexOf(e) == -1 ? !1 : U(v(t, 2), d);
+    var $ = d.length;
+    return 0 < K(t, 9) && P(t, 9).indexOf($) == -1 ? !1 : U(v(t, 2), d);
   }
   function b2(d, t) {
-    var e = U1(d, t), r = v(t, 1), s = d1(d, r, e);
-    return s == null || e != "001" && r != V1(d, e) ? s = !1 : (d = t1(t), s = C1(d, s) != -1), s;
+    var $ = U1(d, t), i = v(t, 1), s = d1(d, i, $);
+    return s == null || $ != "001" && i != V1(d, $) ? s = !1 : (d = t1(t), s = C1(d, s) != -1), s;
   }
   function U1(d, t) {
     if (t == null) return null;
-    var e = v(t, 1);
-    if (e = X[e], e == null) d = null;
-    else if (e.length == 1) d = e[0];
+    var $ = v(t, 1);
+    if ($ = X[$], $ == null) d = null;
+    else if ($.length == 1) d = $[0];
     else d: {
       t = t1(t);
-      for (var r, s = e.length, u = 0; u < s; u++) {
-        r = e[u];
-        var a = j(d, r);
-        if (B(a, 23)) {
-          if (t.search(g(a, 23)) == 0) {
-            d = r;
+      for (var i, s = $.length, u = 0; u < s; u++) {
+        i = $[u];
+        var l = j(d, i);
+        if (B(l, 23)) {
+          if (t.search(g(l, 23)) == 0) {
+            d = i;
             break d;
           }
-        } else if (C1(t, a) != -1) {
-          d = r;
+        } else if (C1(t, l) != -1) {
+          d = i;
           break d;
         }
       }
@@ -8128,144 +8154,144 @@ const H2 = (y) => {
     if (d = j(d, t), d == null) throw Error("Invalid region code: " + t);
     return v(d, 10);
   }
-  function a1(d, t, e, r) {
-    var s = u1(e, r), u = K(s, 9) == 0 ? P(g(e, 1), 9) : P(s, 9);
-    if (s = P(s, 10), r == 2) if (k1(u1(e, 0))) d = u1(e, 1), k1(d) && (u = u.concat(K(d, 9) == 0 ? P(g(e, 1), 9) : P(d, 9)), u.sort(), s.length == 0 ? s = P(d, 10) : (s = s.concat(P(d, 10)), s.sort()));
-    else return a1(d, t, e, 1);
-    return u[0] == -1 ? 5 : (t = t.length, -1 < s.indexOf(t) ? 4 : (e = u[0], e == t ? 0 : e > t ? 2 : u[u.length - 1] < t ? 3 : -1 < u.indexOf(t, 1) ? 0 : 5));
+  function a1(d, t, $, i) {
+    var s = u1($, i), u = K(s, 9) == 0 ? P(g($, 1), 9) : P(s, 9);
+    if (s = P(s, 10), i == 2) if (k1(u1($, 0))) d = u1($, 1), k1(d) && (u = u.concat(K(d, 9) == 0 ? P(g($, 1), 9) : P(d, 9)), u.sort(), s.length == 0 ? s = P(d, 10) : (s = s.concat(P(d, 10)), s.sort()));
+    else return a1(d, t, $, 1);
+    return u[0] == -1 ? 5 : (t = t.length, -1 < s.indexOf(t) ? 4 : ($ = u[0], $ == t ? 0 : $ > t ? 2 : u[u.length - 1] < t ? 3 : -1 < u.indexOf(t, 1) ? 0 : 5));
   }
-  function l1(d, t, e) {
-    var r = t1(t);
-    return t = v(t, 1), t in X ? (t = d1(d, t, e1(t)), a1(d, r, t, e)) : 1;
+  function l1(d, t, $) {
+    var i = t1(t);
+    return t = v(t, 1), t in X ? (t = d1(d, t, e1(t)), a1(d, i, t, $)) : 1;
   }
   function K1(d, t) {
     if (d = d.toString(), d.length == 0 || d.charAt(0) == "0") return 0;
-    for (var e, r = d.length, s = 1; 3 >= s && s <= r; ++s) if (e = parseInt(d.substring(0, s), 10), e in X) return t.g(d.substring(s)), e;
+    for (var $, i = d.length, s = 1; 3 >= s && s <= i; ++s) if ($ = parseInt(d.substring(0, s), 10), $ in X) return t.g(d.substring(s)), $;
     return 0;
   }
-  function H1(d, t, e, r, s, u) {
+  function H1(d, t, $, i, s, u) {
     if (t.length == 0) return 0;
-    t = new L(t);
-    var a;
-    e != null && (a = g(e, 11)), a == null && (a = "NonMatch");
-    var h = t.toString();
-    if (h.length == 0) a = 20;
-    else if (Q.test(h)) h = h.replace(Q, ""), k(t), t.g(R1(h)), a = 1;
+    t = new A(t);
+    var l;
+    $ != null && (l = g($, 11)), l == null && (l = "NonMatch");
+    var c = t.toString();
+    if (c.length == 0) l = 20;
+    else if (Q.test(c)) c = c.replace(Q, ""), k(t), t.g(R1(c)), l = 1;
     else {
-      if (h = new RegExp(a), B1(t), a = t.toString(), a.search(h) == 0) {
-        h = a.match(h)[0].length;
-        var m = a.substring(h).match(D1);
-        m && m[1] != null && 0 < m[1].length && s1(m[1], g1) == "0" ? a = !1 : (k(t), t.g(a.substring(h)), a = !0);
-      } else a = !1;
-      a = a ? 5 : 20;
+      if (c = new RegExp(l), B1(t), l = t.toString(), l.search(c) == 0) {
+        c = l.match(c)[0].length;
+        var m = l.substring(c).match(D1);
+        m && m[1] != null && 0 < m[1].length && s1(m[1], g1) == "0" ? l = !1 : (k(t), t.g(l.substring(c)), l = !0);
+      } else l = !1;
+      l = l ? 5 : 20;
     }
-    if (s && E(u, 6, a), a != 20) {
+    if (s && E(u, 6, l), l != 20) {
       if (2 >= t.h.length) throw Error("Phone number too short after IDD");
-      if (d = K1(t, r), d != 0) return E(u, 1, d), d;
+      if (d = K1(t, i), d != 0) return E(u, 1, d), d;
       throw Error("Invalid country calling code");
     }
-    return e != null && (a = v(e, 10), h = "" + a, m = t.toString(), m.lastIndexOf(h, 0) == 0 && (h = new L(m.substring(h.length)), m = g(e, 1), m = new RegExp(v(m, 2)), j1(h, e, null), h = h.toString(), !U(m, t.toString()) && U(m, h) || a1(d, t.toString(), e, -1) == 3)) ? (r.g(h), s && E(u, 6, 10), E(u, 1, a), a) : (E(u, 1, 0), 0);
+    return $ != null && (l = v($, 10), c = "" + l, m = t.toString(), m.lastIndexOf(c, 0) == 0 && (c = new A(m.substring(c.length)), m = g($, 1), m = new RegExp(v(m, 2)), j1(c, $, null), c = c.toString(), !U(m, t.toString()) && U(m, c) || a1(d, t.toString(), $, -1) == 3)) ? (i.g(c), s && E(u, 6, 10), E(u, 1, l), l) : (E(u, 1, 0), 0);
   }
-  function j1(d, t, e) {
-    var r = d.toString(), s = r.length, u = g(t, 15);
+  function j1(d, t, $) {
+    var i = d.toString(), s = i.length, u = g(t, 15);
     if (s != 0 && u != null && u.length != 0) {
-      var a = new RegExp("^(?:" + u + ")");
-      if (s = a.exec(r)) {
+      var l = new RegExp("^(?:" + u + ")");
+      if (s = l.exec(i)) {
         u = new RegExp(v(g(t, 1), 2));
-        var h = U(u, r), m = s.length - 1;
-        t = g(t, 16), t == null || t.length == 0 || s[m] == null || s[m].length == 0 ? (!h || U(u, r.substring(s[0].length))) && (e != null && 0 < m && s[m] != null && e.g(s[1]), d.set(r.substring(s[0].length))) : (r = r.replace(a, t), (!h || U(u, r)) && (e != null && 0 < m && e.g(s[1]), d.set(r)));
+        var c = U(u, i), m = s.length - 1;
+        t = g(t, 16), t == null || t.length == 0 || s[m] == null || s[m].length == 0 ? (!c || U(u, i.substring(s[0].length))) && ($ != null && 0 < m && s[m] != null && $.g(s[1]), d.set(i.substring(s[0].length))) : (i = i.replace(l, t), (!c || U(u, i)) && ($ != null && 0 < m && $.g(s[1]), d.set(i)));
       }
     }
   }
-  function Y(d, t, e) {
-    if (!o1(e) && 0 < t.length && t.charAt(0) != "+") throw Error("Invalid country calling code");
-    return W1(d, t, e, !0);
+  function Y(d, t, $) {
+    if (!o1($) && 0 < t.length && t.charAt(0) != "+") throw Error("Invalid country calling code");
+    return W1(d, t, $, !0);
   }
-  function W1(d, t, e, r) {
+  function W1(d, t, $, i) {
     if (t == null) throw Error("The string supplied did not seem to be a phone number");
     if (250 < t.length) throw Error("The string supplied is too long to be a phone number");
-    var s = new L(), u = t.indexOf(";phone-context=");
+    var s = new A(), u = t.indexOf(";phone-context=");
     if (u === -1) u = null;
     else if (u += 15, u >= t.length) u = "";
     else {
-      var a = t.indexOf(";", u);
-      u = a !== -1 ? t.substring(u, a) : t.substring(u);
+      var l = t.indexOf(";", u);
+      u = l !== -1 ? t.substring(u, l) : t.substring(u);
     }
-    var h = u;
-    if (h == null ? a = !0 : h.length === 0 ? a = !1 : (a = _2.exec(h), h = I2.exec(h), a = a !== null || h !== null), !a || (u != null ? (u.charAt(0) === "+" && s.g(u), u = t.indexOf("tel:"), s.g(t.substring(0 <= u ? u + 4 : 0, t.indexOf(";phone-context=")))) : (u = s.g, a = t ?? "", h = a.search(g2), 0 <= h ? (a = a.substring(h), a = a.replace(m2, ""), h = a.search(C2), 0 <= h && (a = a.substring(0, h))) : a = "", u.call(s, a)), u = s.toString(), a = u.indexOf(";isub="), 0 < a && (k(s), s.g(u.substring(0, a))), !x1(s.toString()))) throw Error("The string supplied did not seem to be a phone number");
-    if (u = s.toString(), !(o1(e) || u != null && 0 < u.length && Q.test(u))) throw Error("Invalid country calling code");
-    u = new H(), r && E(u, 5, t);
+    var c = u;
+    if (c == null ? l = !0 : c.length === 0 ? l = !1 : (l = _2.exec(c), c = I2.exec(c), l = l !== null || c !== null), !l || (u != null ? (u.charAt(0) === "+" && s.g(u), u = t.indexOf("tel:"), s.g(t.substring(0 <= u ? u + 4 : 0, t.indexOf(";phone-context=")))) : (u = s.g, l = t ?? "", c = l.search(g2), 0 <= c ? (l = l.substring(c), l = l.replace(m2, ""), c = l.search(C2), 0 <= c && (l = l.substring(0, c))) : l = "", u.call(s, l)), u = s.toString(), l = u.indexOf(";isub="), 0 < l && (k(s), s.g(u.substring(0, l))), !x1(s.toString()))) throw Error("The string supplied did not seem to be a phone number");
+    if (u = s.toString(), !(o1($) || u != null && 0 < u.length && Q.test(u))) throw Error("Invalid country calling code");
+    u = new H(), i && E(u, 5, t);
     d: {
-      if (t = s.toString(), a = t.search(P1), 0 <= a && x1(t.substring(0, a))) {
-        h = t.match(P1);
-        for (var m = h.length, V = 1; V < m; ++V) if (h[V] != null && 0 < h[V].length) {
-          k(s), s.g(t.substring(0, a)), t = h[V];
+      if (t = s.toString(), l = t.search(P1), 0 <= l && x1(t.substring(0, l))) {
+        c = t.match(P1);
+        for (var m = c.length, V = 1; V < m; ++V) if (c[V] != null && 0 < c[V].length) {
+          k(s), s.g(t.substring(0, l)), t = c[V];
           break d;
         }
       }
       t = "";
     }
-    0 < t.length && E(u, 3, t), a = j(d, e), t = new L(), h = 0, m = s.toString();
+    0 < t.length && E(u, 3, t), l = j(d, $), t = new A(), c = 0, m = s.toString();
     try {
-      h = H1(d, m, a, t, r, u);
+      c = H1(d, m, l, t, i, u);
     } catch (_1) {
       if (_1.message == "Invalid country calling code" && Q.test(m)) {
-        if (m = m.replace(Q, ""), h = H1(d, m, a, t, r, u), h == 0) throw _1;
+        if (m = m.replace(Q, ""), c = H1(d, m, l, t, i, u), c == 0) throw _1;
       } else throw _1;
     }
-    if (h != 0 ? (s = e1(h), s != e && (a = d1(d, h, s))) : (B1(s), t.g(s.toString()), e != null ? (h = v(a, 10), E(
+    if (c != 0 ? (s = e1(c), s != $ && (l = d1(d, c, s))) : (B1(s), t.g(s.toString()), $ != null ? (c = v(l, 10), E(
       u,
       1,
-      h
-    )) : r && (delete u.h[6], u.g && delete u.g[6])), 2 > t.h.length || (a != null && (e = new L(), s = new L(t.toString()), j1(s, a, e), d = a1(d, s.toString(), a, -1), d != 2 && d != 4 && d != 5 && (t = s, r && 0 < e.toString().length && E(u, 7, e.toString()))), r = t.toString(), d = r.length, 2 > d)) throw Error("The string supplied is too short to be a phone number");
+      c
+    )) : i && (delete u.h[6], u.g && delete u.g[6])), 2 > t.h.length || (l != null && ($ = new A(), s = new A(t.toString()), j1(s, l, $), d = a1(d, s.toString(), l, -1), d != 2 && d != 4 && d != 5 && (t = s, i && 0 < $.toString().length && E(u, 7, $.toString()))), i = t.toString(), d = i.length, 2 > d)) throw Error("The string supplied is too short to be a phone number");
     if (17 < d) throw Error("The string supplied is too long to be a phone number");
-    if (1 < r.length && r.charAt(0) == "0") {
-      for (E(u, 4, !0), d = 1; d < r.length - 1 && r.charAt(d) == "0"; ) d++;
+    if (1 < i.length && i.charAt(0) == "0") {
+      for (E(u, 4, !0), d = 1; d < i.length - 1 && i.charAt(d) == "0"; ) d++;
       d != 1 && E(u, 8, d);
     }
-    return E(u, 2, parseInt(r, 10)), u;
+    return E(u, 2, parseInt(i, 10)), u;
   }
   function U(d, t) {
     return !!((d = typeof d == "string" ? t.match("^(?:" + d + ")$") : t.match(d)) && d[0].length == t.length);
   }
-  function A2(d) {
-    this.fa = RegExp(" "), this.ja = "", this.v = new L(), this.da = "", this.s = new L(), this.ba = new L(), this.u = !0, this.ea = this.ca = this.la = !1, this.ga = D.g(), this.$ = 0, this.h = new L(), this.ha = !1, this.o = "", this.g = new L(), this.j = [], this.ka = d, this.l = Y1(this, this.ka);
+  function L2(d) {
+    this.fa = RegExp(" "), this.ja = "", this.v = new A(), this.da = "", this.s = new A(), this.ba = new A(), this.u = !0, this.ea = this.ca = this.la = !1, this.ga = D.g(), this.$ = 0, this.h = new A(), this.ha = !1, this.o = "", this.g = new A(), this.j = [], this.ka = d, this.l = Y1(this, this.ka);
   }
   var z1 = new Z();
   E(z1, 11, "NA");
-  var L2 = RegExp("^[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]*\\$1[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]*(\\$\\d[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]*)*$"), Z1 = /[- ]/;
+  var A2 = RegExp("^[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]*\\$1[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]*(\\$\\d[-x‐-―−ー－-／  ­​⁠　()（）［］.\\[\\]/~⁓∼～]*)*$"), Z1 = /[- ]/;
   function Y1(d, t) {
-    var e = d.ga;
-    return t = o1(t) ? V1(e, t) : 0, d = j(d.ga, e1(t)), d ?? z1;
+    var $ = d.ga;
+    return t = o1(t) ? V1($, t) : 0, d = j(d.ga, e1(t)), d ?? z1;
   }
   function J1(d) {
-    for (var t = d.j.length, e = 0; e < t; ++e) {
-      var r = d.j[e], s = v(r, 1);
+    for (var t = d.j.length, $ = 0; $ < t; ++$) {
+      var i = d.j[$], s = v(i, 1);
       if (d.da == s) return !1;
-      var u = d, a = r, h = v(a, 1);
+      var u = d, l = i, c = v(l, 1);
       k(u.v);
       var m = u;
-      a = v(a, 2);
-      var V = "999999999999999".match(h)[0];
-      if (V.length < m.g.h.length ? m = "" : (m = V.replace(new RegExp(h, "g"), a), m = m.replace(RegExp("9", "g"), " ")), 0 < m.length ? (u.v.g(m), u = !0) : u = !1, u) return d.da = s, d.ha = Z1.test(g(r, 4)), d.$ = 0, !0;
+      l = v(l, 2);
+      var V = "999999999999999".match(c)[0];
+      if (V.length < m.g.h.length ? m = "" : (m = V.replace(new RegExp(c, "g"), l), m = m.replace(RegExp("9", "g"), " ")), 0 < m.length ? (u.v.g(m), u = !0) : u = !1, u) return d.da = s, d.ha = Z1.test(g(i, 4)), d.$ = 0, !0;
     }
     return d.u = !1;
   }
   function q1(d, t) {
-    for (var e = [], r = t.length - 3, s = d.j.length, u = 0; u < s; ++u) {
-      var a = d.j[u];
-      K(a, 3) == 0 ? e.push(d.j[u]) : (a = g(a, 3, Math.min(r, K(a, 3) - 1)), t.search(a) == 0 && e.push(d.j[u]));
+    for (var $ = [], i = t.length - 3, s = d.j.length, u = 0; u < s; ++u) {
+      var l = d.j[u];
+      K(l, 3) == 0 ? $.push(d.j[u]) : (l = g(l, 3, Math.min(i, K(l, 3) - 1)), t.search(l) == 0 && $.push(d.j[u]));
     }
-    d.j = e;
+    d.j = $;
   }
   function N2(d, t) {
     d.s.g(t);
-    var e = t;
-    if (D1.test(e) || d.s.h.length == 1 && p2.test(e) ? (t == "+" ? (e = t, d.ba.g(t)) : (e = g1[t], d.ba.g(e), d.g.g(e)), t = e) : (d.u = !1, d.la = !0), !d.u) {
+    var $ = t;
+    if (D1.test($) || d.s.h.length == 1 && p2.test($) ? (t == "+" ? ($ = t, d.ba.g(t)) : ($ = g1[t], d.ba.g($), d.g.g($)), t = $) : (d.u = !1, d.la = !0), !d.u) {
       if (!d.la) {
         if (e2(d)) {
           if ($2(d)) return X1(d);
-        } else if (0 < d.o.length && (t = d.g.toString(), k(d.g), d.g.g(d.o), d.g.g(t), t = d.h.toString(), e = t.lastIndexOf(d.o), k(d.h), d.h.g(t.substring(0, e))), d.o != t2(d)) return d.h.g(" "), X1(d);
+        } else if (0 < d.o.length && (t = d.g.toString(), k(d.g), d.g.g(d.o), d.g.g(t), t = d.h.toString(), $ = t.lastIndexOf(d.o), k(d.h), d.h.g(t.substring(0, $))), d.o != t2(d)) return d.h.g(" "), X1(d);
       }
       return d.s.toString();
     }
@@ -8278,155 +8304,155 @@ const H2 = (y) => {
         if (e2(d)) d.ea = !0;
         else return d.o = t2(d), m1(d);
       default:
-        return d.ea ? ($2(d) && (d.ea = !1), d.h.toString() + d.g.toString()) : 0 < d.j.length ? (t = n2(d, t), e = Q1(d), 0 < e.length ? e : (q1(d, d.g.toString()), J1(d) ? d2(d) : d.u ? h1(d, t) : d.s.toString())) : m1(d);
+        return d.ea ? ($2(d) && (d.ea = !1), d.h.toString() + d.g.toString()) : 0 < d.j.length ? (t = n2(d, t), $ = Q1(d), 0 < $.length ? $ : (q1(d, d.g.toString()), J1(d) ? d2(d) : d.u ? h1(d, t) : d.s.toString())) : m1(d);
     }
   }
   function X1(d) {
     return d.u = !0, d.ea = !1, d.j = [], d.$ = 0, k(d.v), d.da = "", m1(d);
   }
   function Q1(d) {
-    for (var t = d.g.toString(), e = d.j.length, r = 0; r < e; ++r) {
-      var s = d.j[r], u = v(s, 1);
+    for (var t = d.g.toString(), $ = d.j.length, i = 0; i < $; ++i) {
+      var s = d.j[i], u = v(s, 1);
       if (new RegExp("^(?:" + u + ")$").test(t) && (d.ha = Z1.test(g(s, 4)), s = t.replace(new RegExp(u, "g"), g(s, 2)), s = h1(d, s), s1(s, c2) == d.ba)) return s;
     }
     return "";
   }
   function h1(d, t) {
-    var e = d.h.h.length;
-    return d.ha && 0 < e && d.h.toString().charAt(e - 1) != " " ? d.h + " " + t : d.h + t;
+    var $ = d.h.h.length;
+    return d.ha && 0 < $ && d.h.toString().charAt($ - 1) != " " ? d.h + " " + t : d.h + t;
   }
   function m1(d) {
     var t = d.g.toString();
     if (3 <= t.length) {
-      for (var e = d.ca && d.o.length == 0 && 0 < K(d.l, 20) ? P(d.l, 20) : P(d.l, 19), r = e.length, s = 0; s < r; ++s) {
-        var u = e[s];
-        0 < d.o.length && O1(v(u, 4)) && !g(u, 6) && !B(u, 5) || (d.o.length != 0 || d.ca || O1(v(u, 4)) || g(u, 6)) && L2.test(v(u, 2)) && d.j.push(u);
+      for (var $ = d.ca && d.o.length == 0 && 0 < K(d.l, 20) ? P(d.l, 20) : P(d.l, 19), i = $.length, s = 0; s < i; ++s) {
+        var u = $[s];
+        0 < d.o.length && O1(v(u, 4)) && !g(u, 6) && !B(u, 5) || (d.o.length != 0 || d.ca || O1(v(u, 4)) || g(u, 6)) && A2.test(v(u, 2)) && d.j.push(u);
       }
       return q1(d, t), t = Q1(d), 0 < t.length ? t : J1(d) ? d2(d) : d.s.toString();
     }
     return h1(d, t);
   }
   function d2(d) {
-    var t = d.g.toString(), e = t.length;
-    if (0 < e) {
-      for (var r = "", s = 0; s < e; s++) r = n2(d, t.charAt(s));
-      return d.u ? h1(d, r) : d.s.toString();
+    var t = d.g.toString(), $ = t.length;
+    if (0 < $) {
+      for (var i = "", s = 0; s < $; s++) i = n2(d, t.charAt(s));
+      return d.u ? h1(d, i) : d.s.toString();
     }
     return d.h.toString();
   }
   function t2(d) {
-    var t = d.g.toString(), e = 0;
-    if (g(d.l, 10) != 1) var r = !1;
-    else r = d.g.toString(), r = r.charAt(0) == "1" && r.charAt(1) != "0" && r.charAt(1) != "1";
-    return r ? (e = 1, d.h.g("1").g(" "), d.ca = !0) : B(d.l, 15) && (r = new RegExp("^(?:" + g(d.l, 15) + ")"), r = t.match(r), r != null && r[0] != null && 0 < r[0].length && (d.ca = !0, e = r[0].length, d.h.g(t.substring(0, e)))), k(d.g), d.g.g(t.substring(e)), t.substring(0, e);
+    var t = d.g.toString(), $ = 0;
+    if (g(d.l, 10) != 1) var i = !1;
+    else i = d.g.toString(), i = i.charAt(0) == "1" && i.charAt(1) != "0" && i.charAt(1) != "1";
+    return i ? ($ = 1, d.h.g("1").g(" "), d.ca = !0) : B(d.l, 15) && (i = new RegExp("^(?:" + g(d.l, 15) + ")"), i = t.match(i), i != null && i[0] != null && 0 < i[0].length && (d.ca = !0, $ = i[0].length, d.h.g(t.substring(0, $)))), k(d.g), d.g.g(t.substring($)), t.substring(0, $);
   }
   function e2(d) {
-    var t = d.ba.toString(), e = new RegExp("^(?:\\+|" + g(d.l, 11) + ")");
-    return e = t.match(e), e != null && e[0] != null && 0 < e[0].length ? (d.ca = !0, e = e[0].length, k(d.g), d.g.g(t.substring(e)), k(d.h), d.h.g(t.substring(0, e)), t.charAt(0) != "+" && d.h.g(" "), !0) : !1;
+    var t = d.ba.toString(), $ = new RegExp("^(?:\\+|" + g(d.l, 11) + ")");
+    return $ = t.match($), $ != null && $[0] != null && 0 < $[0].length ? (d.ca = !0, $ = $[0].length, k(d.g), d.g.g(t.substring($)), k(d.h), d.h.g(t.substring(0, $)), t.charAt(0) != "+" && d.h.g(" "), !0) : !1;
   }
   function $2(d) {
     if (d.g.h.length == 0) return !1;
-    var t = new L(), e = K1(d.g, t);
-    return e == 0 ? !1 : (k(d.g), d.g.g(t.toString()), t = e1(e), t == "001" ? d.l = j(d.ga, "" + e) : t != d.ka && (d.l = Y1(d, t)), d.h.g("" + e).g(" "), d.o = "", !0);
+    var t = new A(), $ = K1(d.g, t);
+    return $ == 0 ? !1 : (k(d.g), d.g.g(t.toString()), t = e1($), t == "001" ? d.l = j(d.ga, "" + $) : t != d.ka && (d.l = Y1(d, t)), d.h.g("" + $).g(" "), d.o = "", !0);
   }
   function n2(d, t) {
-    var e = d.v.toString();
-    if (0 <= e.substring(d.$).search(d.fa)) {
-      var r = e.search(d.fa);
-      return t = e.replace(d.fa, t), k(d.v), d.v.g(t), d.$ = r, t.substring(0, d.$ + 1);
+    var $ = d.v.toString();
+    if (0 <= $.substring(d.$).search(d.fa)) {
+      var i = $.search(d.fa);
+      return t = $.replace(d.fa, t), k(d.v), d.v.g(t), d.$ = i, t.substring(0, d.$ + 1);
     }
     return d.j.length == 1 && (d.u = !1), d.da = "", d.s.toString();
   }
   const y1 = { FIXED_LINE: 0, MOBILE: 1, FIXED_LINE_OR_MOBILE: 2, TOLL_FREE: 3, PREMIUM_RATE: 4, SHARED_COST: 5, VOIP: 6, PERSONAL_NUMBER: 7, PAGER: 8, UAN: 9, VOICEMAIL: 10, UNKNOWN: -1 };
-  $("intlTelInputUtilsTemp", {}), $("intlTelInputUtilsTemp.formatNumberAsYouType", (d, t) => {
+  e("intlTelInputUtilsTemp", {}), e("intlTelInputUtilsTemp.formatNumberAsYouType", (d, t) => {
     try {
-      const e = d.replace(/[^+0-9]/g, ""), r = new A2(t);
+      const $ = d.replace(/[^+0-9]/g, ""), i = new L2(t);
       t = "";
-      for (let s = 0; s < e.length; s++) r.ja = N2(r, e.charAt(s)), t = r.ja;
+      for (let s = 0; s < $.length; s++) i.ja = N2(i, $.charAt(s)), t = i.ja;
       return t;
     } catch {
       return d;
     }
-  }), $("intlTelInputUtilsTemp.formatNumber", (d, t, e) => {
+  }), e("intlTelInputUtilsTemp.formatNumber", (d, t, $) => {
     try {
       const s = D.g(), u = Y(s, d, t);
-      var r = l1(s, u, -1);
-      return r == 0 || r == 4 ? s.format(u, typeof e > "u" ? 0 : e) : d;
+      var i = l1(s, u, -1);
+      return i == 0 || i == 4 ? s.format(u, typeof $ > "u" ? 0 : $) : d;
     } catch {
       return d;
     }
-  }), $("intlTelInputUtilsTemp.getExampleNumber", (d, t, e, r) => {
+  }), e("intlTelInputUtilsTemp.getExampleNumber", (d, t, $, i) => {
     try {
       const m = D.g();
       d: {
         var s = m;
         if (o1(d)) {
-          var u = u1(j(s, d), e);
+          var u = u1(j(s, d), $);
           try {
             if (B(u, 6)) {
-              var a = g(u, 6), h = W1(s, a, d, !1);
+              var l = g(u, 6), c = W1(s, l, d, !1);
               break d;
             }
           } catch {
           }
         }
-        h = null;
+        c = null;
       }
-      return m.format(h, r ? 0 : t ? 2 : 1);
+      return m.format(c, i ? 0 : t ? 2 : 1);
     } catch {
       return "";
     }
-  }), $("intlTelInputUtilsTemp.getExtension", (d, t) => {
+  }), e("intlTelInputUtilsTemp.getExtension", (d, t) => {
     try {
       return g(Y(D.g(), d, t), 3);
     } catch {
       return "";
     }
-  }), $("intlTelInputUtilsTemp.getNumberType", (d, t) => {
+  }), e("intlTelInputUtilsTemp.getNumberType", (d, t) => {
     try {
-      const e = D.g(), r = Y(e, d, t);
-      return F1(e, r);
+      const $ = D.g(), i = Y($, d, t);
+      return F1($, i);
     } catch {
       return -99;
     }
-  }), $("intlTelInputUtilsTemp.getValidationError", (d, t) => {
+  }), e("intlTelInputUtilsTemp.getValidationError", (d, t) => {
     if (!t) return 1;
     try {
-      const e = D.g(), r = Y(e, d, t);
-      return l1(e, r, -1);
-    } catch (e) {
-      return e.message === "Invalid country calling code" ? 1 : 3 >= d.length || e.message === "Phone number too short after IDD" || e.message === "The string supplied is too short to be a phone number" ? 2 : e.message === "The string supplied is too long to be a phone number" ? 3 : -99;
+      const $ = D.g(), i = Y($, d, t);
+      return l1($, i, -1);
+    } catch ($) {
+      return $.message === "Invalid country calling code" ? 1 : 3 >= d.length || $.message === "Phone number too short after IDD" || $.message === "The string supplied is too short to be a phone number" ? 2 : $.message === "The string supplied is too long to be a phone number" ? 3 : -99;
     }
-  }), $("intlTelInputUtilsTemp.isValidNumber", (d, t, e) => {
+  }), e("intlTelInputUtilsTemp.isValidNumber", (d, t, $) => {
     try {
-      const r = D.g(), s = Y(r, d, t), u = b2(r, s);
-      if (e) {
-        const a = e.map((h) => y1[h]);
-        return u && a.includes(F1(r, s));
+      const i = D.g(), s = Y(i, d, t), u = b2(i, s);
+      if ($) {
+        const l = $.map((c) => y1[c]);
+        return u && l.includes(F1(i, s));
       }
       return u;
     } catch {
       return !1;
     }
-  }), $("intlTelInputUtilsTemp.isPossibleNumber", (d, t, e) => {
+  }), e("intlTelInputUtilsTemp.isPossibleNumber", (d, t, $) => {
     try {
-      const r = D.g(), s = Y(r, d, t);
-      if (e) {
-        e.includes("FIXED_LINE_OR_MOBILE") && (e.includes("MOBILE") || e.push("MOBILE"), e.includes("FIXED_LINE") || e.push("FIXED_LINE"));
-        for (let u of e) if (l1(r, s, y1[u]) === 0) return !0;
+      const i = D.g(), s = Y(i, d, t);
+      if ($) {
+        $.includes("FIXED_LINE_OR_MOBILE") && ($.includes("MOBILE") || $.push("MOBILE"), $.includes("FIXED_LINE") || $.push("FIXED_LINE"));
+        for (let u of $) if (l1(i, s, y1[u]) === 0) return !0;
         return !1;
       }
-      return l1(r, s, -1) === 0;
+      return l1(i, s, -1) === 0;
     } catch {
       return !1;
     }
-  }), $("intlTelInputUtilsTemp.getCoreNumber", (d, t) => {
+  }), e("intlTelInputUtilsTemp.getCoreNumber", (d, t) => {
     try {
       return g(Y(D.g(), d, t), 2).toString();
     } catch {
       return "";
     }
-  }), $("intlTelInputUtilsTemp.numberFormat", { E164: 0, INTERNATIONAL: 1, NATIONAL: 2, RFC3966: 3 }), $("intlTelInputUtilsTemp.numberType", y1), $("intlTelInputUtilsTemp.validationError", { IS_POSSIBLE: 0, INVALID_COUNTRY_CODE: 1, TOO_SHORT: 2, TOO_LONG: 3, IS_POSSIBLE_LOCAL_ONLY: 4, INVALID_LENGTH: 5 });
+  }), e("intlTelInputUtilsTemp.numberFormat", { E164: 0, INTERNATIONAL: 1, NATIONAL: 2, RFC3966: 3 }), e("intlTelInputUtilsTemp.numberType", y1), e("intlTelInputUtilsTemp.validationError", { IS_POSSIBLE: 0, INVALID_COUNTRY_CODE: 1, TOO_SHORT: 2, TOO_LONG: 3, IS_POSSIBLE_LOCAL_ONLY: 4, INVALID_LENGTH: 5 });
 })();
 const j2 = window.intlTelInputUtilsTemp;
 delete window.intlTelInputUtilsTemp;
@@ -8463,40 +8489,40 @@ const z2 = {
     "changeValidity",
     "changeErrorCode"
   ], ["update:modelValue"]),
-  setup(y, { expose: $, emit: n }) {
-    const i = T2(y, "modelValue"), o = y, l = n, c = I1(), f = I1(), p = I1(!1), w = () => f.value ? o.options.strictMode ? f.value.isValidNumberPrecise() : f.value.isValidNumber() : null, I = () => {
-      let _ = w();
-      p.value !== _ && (p.value = _, l("changeValidity", !!_), l(
+  setup(y, { expose: e, emit: n }) {
+    const r = T2(y, "modelValue"), o = y, a = n, h = I1(), p = I1(), f = I1(!1), L = () => p.value ? o.options.strictMode ? p.value.isValidNumberPrecise() : p.value.isValidNumber() : null, _ = () => {
+      let I = L();
+      f.value !== I && (f.value = I, a("changeValidity", !!I), a(
         "changeErrorCode",
-        _ ? null : f.value.getValidationError()
+        I ? null : p.value.getValidationError()
       ));
+    }, w = () => {
+      var I;
+      a("changeNumber", ((I = p.value) == null ? void 0 : I.getNumber()) ?? ""), _();
     }, S = () => {
-      var _;
-      l("changeNumber", ((_ = f.value) == null ? void 0 : _.getNumber()) ?? ""), I();
-    }, A = () => {
-      var _;
-      l("changeCountry", ((_ = f.value) == null ? void 0 : _.getSelectedCountryData().iso2) ?? ""), S(), I();
+      var I;
+      a("changeCountry", ((I = p.value) == null ? void 0 : I.getSelectedCountryData().iso2) ?? ""), w(), _();
     };
     return E2(() => {
-      c.value && (f.value = C(c.value, o.options), o.value && f.value.setNumber(o.value), o.disabled && f.value.setDisabled(o.disabled));
+      h.value && (p.value = C(h.value, o.options), o.value && p.value.setNumber(o.value), o.disabled && p.value.setDisabled(o.disabled));
     }), D2(
       () => o.disabled,
-      (_) => {
+      (I) => {
         var T;
-        return (T = f.value) == null ? void 0 : T.setDisabled(_);
+        return (T = p.value) == null ? void 0 : T.setDisabled(I);
       }
     ), M2(() => {
-      var _;
-      return (_ = f.value) == null ? void 0 : _.destroy();
-    }), $({ instance: f, input: c }), (_, T) => P2((x2(), R2("input", B2({
+      var I;
+      return (I = p.value) == null ? void 0 : I.destroy();
+    }), e({ instance: p, input: h }), (I, T) => P2((x2(), R2("input", B2({
       ref_key: "input",
-      ref: c,
-      "onUpdate:modelValue": T[0] || (T[0] = (G) => i.value = G),
+      ref: h,
+      "onUpdate:modelValue": T[0] || (T[0] = (G) => r.value = G),
       type: "tel",
-      onCountrychange: A,
-      onInput: S
+      onCountrychange: S,
+      onInput: w
     }, y.inputProps), null, 16)), [
-      [k2, i.value]
+      [k2, r.value]
     ]);
   }
 };

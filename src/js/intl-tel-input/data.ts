@@ -14,10 +14,11 @@
 //*   iso2 code,
 //*   International dial code,
 //*   Order (if >1 country with same dial code),
-//*   Area codes (string array)
+//*   Area codes (string array), [OPTIONAL]
+//*   National prefix, [OPTIONAL - only required if using area codes]
 //* ]
 
-type RawCountry = [string, string, number?, string[]?];
+type RawCountry = [string, string, number?, string[]?, string?];
 const rawCountryData: RawCountry[] = [
   [
     "af", // Afghanistan
@@ -82,6 +83,8 @@ const rawCountryData: RawCountry[] = [
     "au", // Australia
     "61",
     0,
+    null,
+    "0",
   ],
   [
     "at", // Austria
@@ -230,12 +233,14 @@ const rawCountryData: RawCountry[] = [
     "61",
     2,
     ["89164"],
+    "0",
   ],
   [
     "cc", // Cocos (Keeling) Islands
     "61",
     1,
     ["89162"],
+    "0",
   ],
   [
     "co", // Colombia
@@ -425,6 +430,7 @@ const rawCountryData: RawCountry[] = [
     "44",
     1,
     ["1481", "7781", "7839", "7911"],
+    "0",
   ],
   [
     "gn", // Guinea
@@ -483,6 +489,7 @@ const rawCountryData: RawCountry[] = [
     "44",
     2,
     ["1624", "74576", "7524", "7924", "7624"],
+    "0",
   ],
   [
     "il", // Israel
@@ -508,6 +515,7 @@ const rawCountryData: RawCountry[] = [
     "44",
     3,
     ["1534", "7509", "7700", "7797", "7829", "7937"],
+    "0",
   ],
   [
     "jo", // Jordan
@@ -518,6 +526,7 @@ const rawCountryData: RawCountry[] = [
     "7",
     1,
     ["33", "7"],
+    "8",
   ],
   [
     "ke", // Kenya
@@ -624,6 +633,7 @@ const rawCountryData: RawCountry[] = [
     "262",
     1,
     ["269", "639"],
+    "0",
   ],
   [
     "mx", // Mexico
@@ -659,6 +669,8 @@ const rawCountryData: RawCountry[] = [
     "ma", // Morocco
     "212",
     0,
+    null,
+    "0",
   ],
   [
     "mz", // Mozambique
@@ -789,6 +801,8 @@ const rawCountryData: RawCountry[] = [
     "re", // Réunion
     "262",
     0,
+    null,
+    "0",
   ],
   [
     "ro", // Romania
@@ -798,6 +812,8 @@ const rawCountryData: RawCountry[] = [
     "ru", // Russia
     "7",
     0,
+    null,
+    "8",
   ],
   [
     "rw", // Rwanda
@@ -1019,6 +1035,8 @@ const rawCountryData: RawCountry[] = [
     "gb", // United Kingdom
     "44",
     0,
+    null,
+    "0",
   ],
   [
     "us", // United States
@@ -1066,6 +1084,7 @@ const rawCountryData: RawCountry[] = [
     "212",
     1,
     ["5288", "5289"],
+    "0",
   ],
   [
     "ye", // Yemen
@@ -1089,6 +1108,7 @@ export type Country = {
   areaCodes: string[] | null;
   partialAreaCodes: string[] | null;
   nodeById: object;
+  nationalPrefix: string | null;
 };
 
 const allCountries: Country[] = [];
@@ -1103,6 +1123,7 @@ for (let i = 0; i < rawCountryData.length; i++) {
     areaCodes: c[3] || null,
     partialAreaCodes: null,
     nodeById: {},
+    nationalPrefix: c[4] || null,
   };
 }
 
