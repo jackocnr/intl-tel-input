@@ -27,7 +27,6 @@ module.exports = {
     "getListElement": true,
     "getListLength": true,
     "getActiveListItem": true,
-    "getPreferredCountriesLength": true,
     "getSelectedCountryContainer": true,
     "getSelectedCountryElement": true,
     "getSelectedDialCodeElement": true,

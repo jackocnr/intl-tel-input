@@ -72,11 +72,6 @@ var getActiveListItem = function(i) {
   return getListElement(i).find("li.iti__active");
 };
 
-var getPreferredCountriesLength = function(i) {
-  i = i || input;
-  return getListElement(i).find("li.iti__preferred").length;
-};
-
 var getSelectedCountryContainer = function(i) {
   i = i || input;
   return i.parent().find(".iti__selected-country");

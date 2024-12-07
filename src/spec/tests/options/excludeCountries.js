@@ -26,7 +26,6 @@ describe("excludeCountries option:", function() {
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
         excludeCountries: excludeCountries,
-        preferredCountries: [],
       });
     });
 

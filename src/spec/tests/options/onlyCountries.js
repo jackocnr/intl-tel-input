@@ -18,7 +18,7 @@ describe("onlyCountries option:", function() {
   describe("init plugin with onlyCountries set to japan, china and korea", function() {
 
     beforeEach(function() {
-      //* China and Japan (note that none of the default preferredCountries are included here, so wont be in the list).
+      //* China and Japan.
       onlyCountries = ["jp", "cn", "kr"];
       iti = window.intlTelInput(input[0], {
         onlyCountries: onlyCountries,
@@ -36,7 +36,6 @@ describe("onlyCountries option:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-        preferredCountries: [],
         onlyCountries: ["af", "kz", "ru"],
       });
     });
