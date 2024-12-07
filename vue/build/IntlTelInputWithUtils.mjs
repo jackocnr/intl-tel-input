@@ -9,8 +9,7 @@ const r2 = [
     "ax",
     // Åland Islands
     "358",
-    1,
-    ["18"]
+    1
   ],
   [
     "al",

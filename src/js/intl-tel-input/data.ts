@@ -23,7 +23,6 @@ const rawCountryData: RawCountry[] = [
     "ax", // Åland Islands
     "358",
     1,
-    ["18"],
   ],
   [
     "al", // Albania

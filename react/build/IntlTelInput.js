@@ -9,8 +9,7 @@ var rawCountryData = [
     "ax",
     // Åland Islands
     "358",
-    1,
-    ["18"]
+    1
   ],
   [
     "al",
