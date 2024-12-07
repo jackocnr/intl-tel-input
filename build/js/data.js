@@ -1354,6 +1354,7 @@ var factoryOutput = (() => {
       dialCode: c[1],
       priority: c[2] || 0,
       areaCodes: c[3] || null,
+      partialAreaCodes: null,
       nodeById: {}
     };
   }

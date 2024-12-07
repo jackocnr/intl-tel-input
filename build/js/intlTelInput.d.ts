@@ -5,6 +5,7 @@ declare module "intl-tel-input/data" {
         dialCode: string;
         priority: number;
         areaCodes: string[] | null;
+        partialAreaCodes: string[] | null;
         nodeById: object;
     };
     const allCountries: Country[];
@@ -324,10 +325,12 @@ declare module "intl-tel-input" {
         numberType: object;
     };
     type NumberType = "FIXED_LINE_OR_MOBILE" | "FIXED_LINE" | "MOBILE" | "PAGER" | "PERSONAL_NUMBER" | "PREMIUM_RATE" | "SHARED_COST" | "TOLL_FREE" | "UAN" | "UNKNOWN" | "VOICEMAIL" | "VOIP";
-    type SelectedCountryData = Country | {
+    type SelectedCountryData = {
         name?: string;
         iso2?: string;
         dialCode?: string;
+        areaCodes?: string[];
+        partialAreaCodes?: string[];
     };
     interface AllOptions {
         allowDropdown: boolean;
@@ -438,6 +441,7 @@ declare module "intl-tel-input" {
         private _handleEnterKey;
         private _updateValFromNumber;
         private _updateCountryFromNumber;
+        private _isAreaCodeMatch;
         private _getCountryFromNumber;
         private _highlightListItem;
         private _getCountryData;
