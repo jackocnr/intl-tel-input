@@ -26715,7 +26715,7 @@
       attachUtils,
       startedLoadingUtilsScript: false,
       startedLoadingAutoCountry: false,
-      version: "25.1.1"
+      version: "25.2.0"
     }
   );
   var intl_tel_input_default = intlTelInput;
