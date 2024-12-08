@@ -2529,7 +2529,7 @@ const H2 = (y) => {
     attachUtils: H2,
     startedLoadingUtilsScript: !1,
     startedLoadingAutoCountry: !1,
-    version: "25.1.1"
+    version: "25.2.0"
   }
 );
 (function() {
