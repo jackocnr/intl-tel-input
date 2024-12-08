@@ -2166,7 +2166,7 @@ class K2 {
       const f = c1(c), S = this.dialCodeToIso2Map[f];
       if (!o && this.defaultCountry && S.includes(this.defaultCountry))
         return this.defaultCountry;
-      const _ = o && S.includes(o) && g.length === f.length;
+      const _ = o && S.includes(o) && (g.length === f.length || !this.selectedCountryData.areaCodes);
       if (!(a === "1" && o2(g)) && !_) {
         for (let w = 0; w < S.length; w++)
           if (S[w])

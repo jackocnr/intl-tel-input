@@ -2166,7 +2166,7 @@ class G {
       const a = v(o), c = this.dialCodeToIso2Map[a];
       if (!s && this.defaultCountry && c.includes(this.defaultCountry))
         return this.defaultCountry;
-      const d = s && c.includes(s) && r.length === a.length;
+      const d = s && c.includes(s) && (r.length === a.length || !this.selectedCountryData.areaCodes);
       if (!(n === "1" && S(r)) && !d) {
         for (let p = 0; p < c.length; p++)
           if (c[p])

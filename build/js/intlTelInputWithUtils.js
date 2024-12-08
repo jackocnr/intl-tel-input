@@ -2602,7 +2602,7 @@ var factoryOutput = (() => {
         if (!selectedIso2 && this.defaultCountry && iso2Codes.includes(this.defaultCountry)) {
           return this.defaultCountry;
         }
-        const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && numeric.length === dialCodeMatchNumeric.length;
+        const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && (numeric.length === dialCodeMatchNumeric.length || !this.selectedCountryData.areaCodes);
         const isRegionlessNanpNumber = selectedDialCode === "1" && isRegionlessNanp(numeric);
         if (!isRegionlessNanpNumber && !alreadySelected) {
           for (let j = 0; j < iso2Codes.length; j++) {

@@ -1453,8 +1453,8 @@ export class Iti {
 
       //* Check if the right country is already selected (note: might be empty state - globe icon).
       //* NOTE: the number of digits typed can only be the same as or more than the matched dial code (plus area code) digits
-      //* If they're the same length, that's a perfect match. Otherwise, they've typed more digits than the best match, in which case we should default to the first country that fits the matched dial code.
-      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && numeric.length === dialCodeMatchNumeric.length;
+      //* If they're the same length, that's a perfect match. Otherwise, they've typed more digits than the best match, in which case, if this country supports area codes, we should default to the first country that fits the matched dial code.
+      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && (numeric.length === dialCodeMatchNumeric.length || !this.selectedCountryData.areaCodes);
       
       const isRegionlessNanpNumber =
         selectedDialCode === "1" && isRegionlessNanp(numeric);
