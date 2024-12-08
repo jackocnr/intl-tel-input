@@ -5,7 +5,6 @@ declare module "intl-tel-input/data" {
         dialCode: string;
         priority: number;
         areaCodes: string[] | null;
-        partialAreaCodes: string[] | null;
         nodeById: object;
         nationalPrefix: string | null;
     };
@@ -331,7 +330,6 @@ declare module "intl-tel-input" {
         iso2?: string;
         dialCode?: string;
         areaCodes?: string[];
-        partialAreaCodes?: string[];
         nationalPrefix?: string;
     };
     interface AllOptions {
@@ -396,6 +394,7 @@ declare module "intl-tel-input" {
         private defaultCountry;
         private originalPaddingRight;
         private originalPaddingLeft;
+        private prevDialCodeMatch;
         private _handleHiddenInputSubmit;
         private _handleLabelClick;
         private _handleClickSelectedCountry;
@@ -443,7 +442,6 @@ declare module "intl-tel-input" {
         private _handleEnterKey;
         private _updateValFromNumber;
         private _updateCountryFromNumber;
-        private _isAreaCodeMatch;
         private _ensureHasDialCode;
         private _getCountryFromNumber;
         private _highlightListItem;

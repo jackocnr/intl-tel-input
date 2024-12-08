@@ -55,7 +55,6 @@ type SelectedCountryData = {
   iso2?: string,
   dialCode?: string,
   areaCodes?: string[],
-  partialAreaCodes?: string[],
   nationalPrefix?: string,
 };
 interface AllOptions {
@@ -273,6 +272,7 @@ export class Iti {
   private defaultCountry: string;
   private originalPaddingRight: string;
   private originalPaddingLeft: string;
+  private prevDialCodeMatch: string;
 
   private _handleHiddenInputSubmit: () => void;
   private _handleLabelClick: (e: Event) => void;
@@ -482,7 +482,7 @@ export class Iti {
     }
   }
 
-  //* Generate this.dialCodes and this.dialCodeToIso2Map and country.partialAreaCodes.
+  //* Generate this.dialCodes and this.dialCodeToIso2Map.
   private _processDialCodes(): void {
     //* Here we store just dial codes, where the key is the dial code, and the value is true
     //* e.g. { 1: true, 7: true, 20: true, ... }.
@@ -518,9 +518,6 @@ export class Iti {
       const c = this.countries[i];
       //* Area codes
       if (c.areaCodes) {
-        if (!c.partialAreaCodes) {
-          c.partialAreaCodes = [];
-        }
         const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
         //* For each area code.
         for (let j = 0; j < c.areaCodes.length; j++) {
@@ -532,11 +529,6 @@ export class Iti {
             //* Start with the root country, as that also matches this partial dial code.
             this._addToDialCodeMap(rootIso2Code, partialDialCode);
             this._addToDialCodeMap(c.iso2, partialDialCode);
-
-            //* Populate this country's partialAreaCodes array.
-            if (!c.partialAreaCodes.includes(partialAreaCode)) {
-              c.partialAreaCodes.push(partialAreaCode);
-            }
           }
           //* Add the full area code.
           this._addToDialCodeMap(c.iso2, c.dialCode + areaCode);
@@ -1423,25 +1415,6 @@ export class Iti {
     return false;
   }
 
-  //* Check if the given number matches an area code from the selected country.
-  private _isAreaCodeMatch(numeric: string, dialCodeNumerics: string): boolean {
-    const { areaCodes, partialAreaCodes, dialCode } = this.selectedCountryData;
-    const typedNumber = numeric.substring(dialCode.length);
-    const typedAreaCode = dialCodeNumerics.substring(dialCode.length);
-
-    //* If they've typed a full area code, then it's a match.
-    if (areaCodes.includes(typedAreaCode)) {
-      return true;
-    }
-
-    //* If, so far, the whole of what they've typed matches a partial area code, then it's a match.
-    if (partialAreaCodes.includes(typedNumber)) {
-      return true;
-    }
-
-    return false;
-  }
-
   private _ensureHasDialCode(number: string): string {
     const { dialCode, nationalPrefix } = this.selectedCountryData;
     const alreadyHasPlus = number.charAt(0) === "+";
@@ -1459,29 +1432,27 @@ export class Iti {
     //* This keeps the selected country auto-updating correctly, which we want as
     //* libphonenumber's validation/getNumber methods will ignore these chars anyway.
     let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
+    const selectedIso2 = this.selectedCountryData.iso2;
     const selectedDialCode = this.selectedCountryData.dialCode;
 
     //* Ensure the number starts with the dial code, for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
     number = this._ensureHasDialCode(number);
 
-    //* Try and extract valid dial code from input.
-    const dialCode = this._getDialCode(number, true);
+    //* Try and extract valid dial code (plus area code digits) from input.
+    const dialCodeMatch = this._getDialCode(number, true);
     const numeric = getNumeric(number);
-    if (dialCode) {
-      const dialCodeNumerics = getNumeric(dialCode);
-      const iso2Codes = this.dialCodeToIso2Map[dialCodeNumerics];
-      //* Check if the right country is already selected (note: might be empty state - globe icon).
-      const alreadySelected = this.selectedCountryData.iso2 && iso2Codes.includes(this.selectedCountryData.iso2);
-      let areaCodeMatch = false;
-      if (alreadySelected) {
-        //* If this country has area codes, and the user has typed something after the dial code, then see if it matches.
-        if (this.selectedCountryData.areaCodes && numeric.length > selectedDialCode.length) {
-          areaCodeMatch = this._isAreaCodeMatch(numeric, dialCodeNumerics);
-        } else {
-          //* This region doesn't have specific area codes.
-          areaCodeMatch = true;
-        }
+    if (dialCodeMatch) {
+      if (this.prevDialCodeMatch === dialCodeMatch) {
+        //* Optimisation: if dialCodeMatch is same, no need to do anything.
+        return null;
       }
+      this.prevDialCodeMatch = dialCodeMatch;
+      const dialCodeMatchNumeric = getNumeric(dialCodeMatch);
+      const iso2Codes = this.dialCodeToIso2Map[dialCodeMatchNumeric];
+      //* Check if the right country is already selected (note: might be empty state - globe icon).
+      //* NOTE: the number of digits typed can only be the same as or more than the matched dial code (plus area code) digits
+      //* If they're the same length, that's a perfect match. Otherwise, they've typed more digits than the best match, in which case we should default to the first country that fits the matched dial code.
+      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && numeric.length === dialCodeMatchNumeric.length;
       
       const isRegionlessNanpNumber =
         selectedDialCode === "1" && isRegionlessNanp(numeric);
@@ -1490,7 +1461,7 @@ export class Iti {
       //* A) NOT (we currently have a NANP country selected, and the number is a regionlessNanp)
       //* AND
       //* B) the right country is not already selected
-      if (!isRegionlessNanpNumber && (!alreadySelected || !areaCodeMatch)) {
+      if (!isRegionlessNanpNumber && !alreadySelected) {
         //* If using onlyCountries option, iso2Codes[0] may be empty, so we must find the first non-empty index.
         for (let j = 0; j < iso2Codes.length; j++) {
           if (iso2Codes[j]) {

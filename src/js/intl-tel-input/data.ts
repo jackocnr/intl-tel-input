@@ -1106,7 +1106,6 @@ export type Country = {
   dialCode: string;
   priority: number;
   areaCodes: string[] | null;
-  partialAreaCodes: string[] | null;
   nodeById: object;
   nationalPrefix: string | null;
 };
@@ -1121,7 +1120,6 @@ for (let i = 0; i < rawCountryData.length; i++) {
     dialCode: c[1],
     priority: c[2] || 0,
     areaCodes: c[3] || null,
-    partialAreaCodes: null,
     nodeById: {},
     nationalPrefix: c[4] || null,
   };

@@ -24920,7 +24920,6 @@
       dialCode: c[1],
       priority: c[2] || 0,
       areaCodes: c[3] || null,
-      partialAreaCodes: null,
       nodeById: {},
       nationalPrefix: c[4] || null
     };
@@ -25446,7 +25445,7 @@
         }
       }
     }
-    //* Generate this.dialCodes and this.dialCodeToIso2Map and country.partialAreaCodes.
+    //* Generate this.dialCodes and this.dialCodeToIso2Map.
     _processDialCodes() {
       this.dialCodes = {};
       this.dialCodeMaxLen = 0;
@@ -25461,9 +25460,6 @@
       for (let i = 0; i < this.countries.length; i++) {
         const c = this.countries[i];
         if (c.areaCodes) {
-          if (!c.partialAreaCodes) {
-            c.partialAreaCodes = [];
-          }
           const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
           for (let j = 0; j < c.areaCodes.length; j++) {
             const areaCode = c.areaCodes[j];
@@ -25472,9 +25468,6 @@
               const partialDialCode = c.dialCode + partialAreaCode;
               this._addToDialCodeMap(rootIso2Code, partialDialCode);
               this._addToDialCodeMap(c.iso2, partialDialCode);
-              if (!c.partialAreaCodes.includes(partialAreaCode)) {
-                c.partialAreaCodes.push(partialAreaCode);
-              }
             }
             this._addToDialCodeMap(c.iso2, c.dialCode + areaCode);
           }
@@ -26132,19 +26125,6 @@
       }
       return false;
     }
-    //* Check if the given number matches an area code from the selected country.
-    _isAreaCodeMatch(numeric, dialCodeNumerics) {
-      const { areaCodes, partialAreaCodes, dialCode } = this.selectedCountryData;
-      const typedNumber = numeric.substring(dialCode.length);
-      const typedAreaCode = dialCodeNumerics.substring(dialCode.length);
-      if (areaCodes.includes(typedAreaCode)) {
-        return true;
-      }
-      if (partialAreaCodes.includes(typedNumber)) {
-        return true;
-      }
-      return false;
-    }
     _ensureHasDialCode(number) {
       const { dialCode, nationalPrefix } = this.selectedCountryData;
       const alreadyHasPlus = number.charAt(0) === "+";
@@ -26158,24 +26138,21 @@
     _getCountryFromNumber(fullNumber) {
       const plusIndex = fullNumber.indexOf("+");
       let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
+      const selectedIso2 = this.selectedCountryData.iso2;
       const selectedDialCode = this.selectedCountryData.dialCode;
       number = this._ensureHasDialCode(number);
-      const dialCode = this._getDialCode(number, true);
+      const dialCodeMatch = this._getDialCode(number, true);
       const numeric = getNumeric(number);
-      if (dialCode) {
-        const dialCodeNumerics = getNumeric(dialCode);
-        const iso2Codes = this.dialCodeToIso2Map[dialCodeNumerics];
-        const alreadySelected = this.selectedCountryData.iso2 && iso2Codes.includes(this.selectedCountryData.iso2);
-        let areaCodeMatch = false;
-        if (alreadySelected) {
-          if (this.selectedCountryData.areaCodes && numeric.length > selectedDialCode.length) {
-            areaCodeMatch = this._isAreaCodeMatch(numeric, dialCodeNumerics);
-          } else {
-            areaCodeMatch = true;
-          }
+      if (dialCodeMatch) {
+        if (this.prevDialCodeMatch === dialCodeMatch) {
+          return null;
         }
+        this.prevDialCodeMatch = dialCodeMatch;
+        const dialCodeMatchNumeric = getNumeric(dialCodeMatch);
+        const iso2Codes = this.dialCodeToIso2Map[dialCodeMatchNumeric];
+        const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && numeric.length === dialCodeMatchNumeric.length;
         const isRegionlessNanpNumber = selectedDialCode === "1" && isRegionlessNanp(numeric);
-        if (!isRegionlessNanpNumber && (!alreadySelected || !areaCodeMatch)) {
+        if (!isRegionlessNanpNumber && !alreadySelected) {
           for (let j = 0; j < iso2Codes.length; j++) {
             if (iso2Codes[j]) {
               return iso2Codes[j];

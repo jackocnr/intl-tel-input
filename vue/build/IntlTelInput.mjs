@@ -1,5 +1,5 @@
 import { mergeModels as D, useModel as x, ref as L, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as V, createElementBlock as O, mergeProps as z, vModelText as R } from "vue";
-const A = [
+const N = [
   [
     "af",
     // Afghanistan
@@ -1323,8 +1323,8 @@ const A = [
     "263"
   ]
 ], I = [];
-for (let u = 0; u < A.length; u++) {
-  const t = A[u];
+for (let u = 0; u < N.length; u++) {
+  const t = N[u];
   I[u] = {
     name: "",
     // this is now populated in the plugin
@@ -1332,7 +1332,6 @@ for (let u = 0; u < A.length; u++) {
     dialCode: t[1],
     priority: t[2] || 0,
     areaCodes: t[3] || null,
-    partialAreaCodes: null,
     nodeById: {},
     nationalPrefix: t[4] || null
   };
@@ -1668,7 +1667,7 @@ const T = {
   "887",
   "888",
   "889"
-], v = (u) => u.replace(/\D/g, ""), N = (u = "") => u.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), S = (u) => {
+], v = (u) => u.replace(/\D/g, ""), A = (u = "") => u.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(), S = (u) => {
   const t = v(u);
   if (t.charAt(0) === "1") {
     const e = t.substr(1, 3);
@@ -1764,7 +1763,7 @@ class G {
       this.options.i18n.hasOwnProperty(e) && (this.countries[t].name = this.options.i18n[e]);
     }
   }
-  //* Generate this.dialCodes and this.dialCodeToIso2Map and country.partialAreaCodes.
+  //* Generate this.dialCodes and this.dialCodeToIso2Map.
   _processDialCodes() {
     this.dialCodes = {}, this.dialCodeMaxLen = 0, this.dialCodeToIso2Map = {};
     for (let t = 0; t < this.countries.length; t++) {
@@ -1774,13 +1773,12 @@ class G {
     for (let t = 0; t < this.countries.length; t++) {
       const e = this.countries[t];
       if (e.areaCodes) {
-        e.partialAreaCodes || (e.partialAreaCodes = []);
         const i = this.dialCodeToIso2Map[e.dialCode][0];
         for (let s = 0; s < e.areaCodes.length; s++) {
           const n = e.areaCodes[s];
           for (let o = 1; o < n.length; o++) {
             const r = n.substr(0, o), a = e.dialCode + r;
-            this._addToDialCodeMap(i, a), this._addToDialCodeMap(e.iso2, a), e.partialAreaCodes.includes(r) || e.partialAreaCodes.push(r);
+            this._addToDialCodeMap(i, a), this._addToDialCodeMap(e.iso2, a);
           }
           this._addToDialCodeMap(e.iso2, e.dialCode + n);
         }
@@ -1800,12 +1798,12 @@ class G {
       dropdownContainer: o,
       fixDropdownWidth: r,
       useFullscreenPopup: a,
-      countrySearch: C,
+      countrySearch: p,
       i18n: d
     } = this.options;
-    let p = "iti";
-    t && (p += " iti--allow-dropdown"), i && (p += " iti--show-flags"), s && (p += ` ${s}`), a || (p += " iti--inline-dropdown");
-    const c = y("div", { class: p });
+    let C = "iti";
+    t && (C += " iti--allow-dropdown"), i && (C += " iti--show-flags"), s && (C += ` ${s}`), a || (C += " iti--inline-dropdown");
+    const c = y("div", { class: C });
     if ((h = this.telInput.parentNode) == null || h.insertBefore(c, this.telInput), t || i || e) {
       this.countryContainer = y(
         "div",
@@ -1846,7 +1844,7 @@ class G {
         if (this.dropdownContent = y("div", {
           id: `iti-${this.id}__dropdown-content`,
           class: `iti__dropdown-content iti__hide ${f}`
-        }), C && (this.searchInput = y(
+        }), p && (this.searchInput = y(
           "input",
           {
             type: "text",
@@ -1873,7 +1871,7 @@ class G {
             "aria-label": d.countryListAriaLabel
           },
           this.dropdownContent
-        ), this._appendListItems(), C && this._updateSearchResultsText(), o) {
+        ), this._appendListItems(), p && this._updateSearchResultsText(), o) {
           let g = "iti iti--container";
           a ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = y("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
         } else
@@ -1923,12 +1921,12 @@ class G {
   //* 1. Extracting a dial code from the given number
   //* 2. Using explicit initialCountry
   _setInitialState(t = !1) {
-    const e = this.telInput.getAttribute("value"), i = this.telInput.value, n = e && e.charAt(0) === "+" && (!i || i.charAt(0) !== "+") ? e : i, o = this._getDialCode(n), r = S(n), { initialCountry: a, geoIpLookup: C } = this.options, d = a === "auto" && C;
+    const e = this.telInput.getAttribute("value"), i = this.telInput.value, n = e && e.charAt(0) === "+" && (!i || i.charAt(0) !== "+") ? e : i, o = this._getDialCode(n), r = S(n), { initialCountry: a, geoIpLookup: p } = this.options, d = a === "auto" && p;
     if (o && !r)
       this._updateCountryFromNumber(n);
     else if (!d || t) {
-      const p = a ? a.toLowerCase() : "";
-      p && this._getCountryData(p, !0) ? this._setCountry(p) : o && r ? this._setCountry("us") : this._setCountry();
+      const C = a ? a.toLowerCase() : "";
+      C && this._getCountryData(C, !0) ? this._setCountry(C) : o && r ? this._setCountry("us") : this._setCountry();
     }
     n && this._updateValFromNumber(n);
   }
@@ -1996,10 +1994,10 @@ class G {
         return;
       }
       this._updateCountryFromNumber(this.telInput.value) && this._triggerCountryChange();
-      const C = (a == null ? void 0 : a.data) && /[^+0-9]/.test(a.data), d = (a == null ? void 0 : a.inputType) === "insertFromPaste" && this.telInput.value;
-      C || d && !t ? r = !0 : /[^+0-9]/.test(this.telInput.value) || (r = !1);
-      const p = (a == null ? void 0 : a.detail) && a.detail.isSetNumber && !s;
-      if (e && !r && !p) {
+      const p = (a == null ? void 0 : a.data) && /[^+0-9]/.test(a.data), d = (a == null ? void 0 : a.inputType) === "insertFromPaste" && this.telInput.value;
+      p || d && !t ? r = !0 : /[^+0-9]/.test(this.telInput.value) || (r = !1);
+      const C = (a == null ? void 0 : a.detail) && a.detail.isSetNumber && !s;
+      if (e && !r && !C) {
         const c = this.telInput.selectionStart || 0, m = this.telInput.value.substring(0, c).replace(/[^+0-9]/g, "").length, b = (a == null ? void 0 : a.inputType) === "deleteContentForward", _ = this._formatNumberAsYouType(), f = K(m, _, c, b);
         this.telInput.value = _, this.telInput.setSelectionRange(f, f);
       }
@@ -2010,13 +2008,13 @@ class G {
           return;
         }
         if (t) {
-          const C = this.telInput.value, d = C.charAt(0) === "+", p = !d && this.telInput.selectionStart === 0 && a.key === "+", c = /^[0-9]$/.test(a.key), h = i ? c : p || c, m = C.slice(0, this.telInput.selectionStart) + a.key + C.slice(this.telInput.selectionEnd), b = this._getFullNumber(m), _ = l.utils.getCoreNumber(b, this.selectedCountryData.iso2), f = this.maxCoreNumberLength && _.length > this.maxCoreNumberLength;
+          const p = this.telInput.value, d = p.charAt(0) === "+", C = !d && this.telInput.selectionStart === 0 && a.key === "+", c = /^[0-9]$/.test(a.key), h = i ? c : C || c, m = p.slice(0, this.telInput.selectionStart) + a.key + p.slice(this.telInput.selectionEnd), b = this._getFullNumber(m), _ = l.utils.getCoreNumber(b, this.selectedCountryData.iso2), f = this.maxCoreNumberLength && _.length > this.maxCoreNumberLength;
           let g = !1;
           if (d) {
             const P = this.selectedCountryData.iso2;
             g = this._getCountryFromNumber(b) !== P;
           }
-          (!h || f && !g && !p) && a.preventDefault();
+          (!h || f && !g && !C) && a.preventDefault();
         }
       }
     }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
@@ -2105,10 +2103,10 @@ class G {
   _filterCountries(t, e = !1) {
     let i = !0;
     this.countryList.innerHTML = "";
-    const s = N(t);
+    const s = A(t);
     for (let n = 0; n < this.countries.length; n++) {
-      const o = this.countries[n], r = N(o.name), a = o.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map((d) => d[0]).join("").toLowerCase(), C = `+${o.dialCode}`;
-      if (e || r.includes(s) || C.includes(s) || o.iso2.includes(s) || a.includes(s)) {
+      const o = this.countries[n], r = A(o.name), a = o.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map((d) => d[0]).join("").toLowerCase(), p = `+${o.dialCode}`;
+      if (e || r.includes(s) || p.includes(s) || o.iso2.includes(s) || a.includes(s)) {
         const d = o.nodeById[this.id];
         d && this.countryList.appendChild(d), i && (this._highlightListItem(d, !1), i = !1);
       }
@@ -2151,11 +2149,6 @@ class G {
     const e = this._getCountryFromNumber(t);
     return e !== null ? this._setCountry(e) : !1;
   }
-  //* Check if the given number matches an area code from the selected country.
-  _isAreaCodeMatch(t, e) {
-    const { areaCodes: i, partialAreaCodes: s, dialCode: n } = this.selectedCountryData, o = t.substring(n.length), r = e.substring(n.length);
-    return !!(i.includes(r) || s.includes(o));
-  }
   _ensureHasDialCode(t) {
     const { dialCode: e, nationalPrefix: i } = this.selectedCountryData;
     if (t.charAt(0) === "+" || !e)
@@ -2166,19 +2159,21 @@ class G {
   _getCountryFromNumber(t) {
     const e = t.indexOf("+");
     let i = e ? t.substring(e) : t;
-    const s = this.selectedCountryData.dialCode;
+    const s = this.selectedCountryData.iso2, n = this.selectedCountryData.dialCode;
     i = this._ensureHasDialCode(i);
-    const n = this._getDialCode(i, !0), o = v(i);
-    if (n) {
-      const r = v(n), a = this.dialCodeToIso2Map[r], C = this.selectedCountryData.iso2 && a.includes(this.selectedCountryData.iso2);
-      let d = !1;
-      if (C && (this.selectedCountryData.areaCodes && o.length > s.length ? d = this._isAreaCodeMatch(o, r) : d = !0), !(s === "1" && S(o)) && (!C || !d)) {
-        for (let c = 0; c < a.length; c++)
-          if (a[c])
-            return a[c];
+    const o = this._getDialCode(i, !0), r = v(i);
+    if (o) {
+      if (this.prevDialCodeMatch === o)
+        return null;
+      this.prevDialCodeMatch = o;
+      const a = v(o), p = this.dialCodeToIso2Map[a], d = s && p.includes(s) && r.length === a.length;
+      if (!(n === "1" && S(r)) && !d) {
+        for (let c = 0; c < p.length; c++)
+          if (p[c])
+            return p[c];
       }
     } else {
-      if (i.charAt(0) === "+" && o.length)
+      if (i.charAt(0) === "+" && r.length)
         return "";
       if ((!i || i === "+") && !this.selectedCountryData.iso2)
         return this.defaultCountry;
@@ -2305,12 +2300,12 @@ class G {
   }
   //* Check if an element is visible within it's container, else scroll until it is.
   _scrollTo(t) {
-    const e = this.countryList, i = document.documentElement.scrollTop, s = e.offsetHeight, n = e.getBoundingClientRect().top + i, o = n + s, r = t.offsetHeight, a = t.getBoundingClientRect().top + i, C = a + r, d = a - n + e.scrollTop;
+    const e = this.countryList, i = document.documentElement.scrollTop, s = e.offsetHeight, n = e.getBoundingClientRect().top + i, o = n + s, r = t.offsetHeight, a = t.getBoundingClientRect().top + i, p = a + r, d = a - n + e.scrollTop;
     if (a < n)
       e.scrollTop = d;
-    else if (C > o) {
-      const p = s - r;
-      e.scrollTop = d - p;
+    else if (p > o) {
+      const C = s - r;
+      e.scrollTop = d - C;
     }
   }
   //* Replace any existing dial code with the new one
@@ -2569,18 +2564,18 @@ const W = (u) => {
     "changeErrorCode"
   ], ["update:modelValue"]),
   setup(u, { expose: t, emit: e }) {
-    const i = x(u, "modelValue"), s = u, n = e, o = L(), r = L(), a = L(!1), C = () => r.value ? s.options.strictMode ? r.value.isValidNumberPrecise() : r.value.isValidNumber() : null, d = () => {
-      let h = C();
+    const i = x(u, "modelValue"), s = u, n = e, o = L(), r = L(), a = L(!1), p = () => r.value ? s.options.strictMode ? r.value.isValidNumberPrecise() : r.value.isValidNumber() : null, d = () => {
+      let h = p();
       a.value !== h && (a.value = h, n("changeValidity", !!h), n(
         "changeErrorCode",
         h ? null : r.value.getValidationError()
       ));
-    }, p = () => {
+    }, C = () => {
       var h;
       n("changeNumber", ((h = r.value) == null ? void 0 : h.getNumber()) ?? ""), d();
     }, c = () => {
       var h;
-      n("changeCountry", ((h = r.value) == null ? void 0 : h.getSelectedCountryData().iso2) ?? ""), p(), d();
+      n("changeCountry", ((h = r.value) == null ? void 0 : h.getSelectedCountryData().iso2) ?? ""), C(), d();
     };
     return E(() => {
       o.value && (r.value = l(o.value, s.options), s.value && r.value.setNumber(s.value), s.disabled && r.value.setDisabled(s.disabled));
@@ -2599,7 +2594,7 @@ const W = (u) => {
       "onUpdate:modelValue": m[0] || (m[0] = (b) => i.value = b),
       type: "tel",
       onCountrychange: c,
-      onInput: p
+      onInput: C
     }, u.inputProps), null, 16)), [
       [R, i.value]
     ]);
