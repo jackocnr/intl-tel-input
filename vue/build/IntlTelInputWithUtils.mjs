@@ -2153,7 +2153,7 @@ class K2 {
     const { dialCode: n, nationalPrefix: r } = this.selectedCountryData;
     if (e.charAt(0) === "+" || !n)
       return e;
-    const c = r && e.charAt(0) === r ? e.substring(1) : e;
+    const c = r && e.charAt(0) === r && !this.options.separateDialCode ? e.substring(1) : e;
     return `+${n}${c}`;
   }
   _getCountryFromNumber(e) {

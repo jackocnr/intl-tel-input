@@ -1421,7 +1421,8 @@ export class Iti {
     if (alreadyHasPlus || !dialCode) {
       return number;
     }
-    const hasPrefix = nationalPrefix && number.charAt(0) === nationalPrefix;
+    //* Don't remove "nationalPrefix" digit if separateDialCode is enabled, as it can be part of a valid area code e.g. in Russia then have area codes starting with 8, which is also the national prefix digit.
+    const hasPrefix = nationalPrefix && number.charAt(0) === nationalPrefix && !this.options.separateDialCode;
     const cleanNumber = hasPrefix ? number.substring(1) : number;
     return `+${dialCode}${cleanNumber}`;
   }

@@ -2544,7 +2544,7 @@ var Iti = class {
     if (alreadyHasPlus || !dialCode) {
       return number;
     }
-    const hasPrefix = nationalPrefix && number.charAt(0) === nationalPrefix;
+    const hasPrefix = nationalPrefix && number.charAt(0) === nationalPrefix && !this.options.separateDialCode;
     const cleanNumber = hasPrefix ? number.substring(1) : number;
     return `+${dialCode}${cleanNumber}`;
   }
