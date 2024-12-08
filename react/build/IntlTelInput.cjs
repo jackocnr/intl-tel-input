@@ -2591,14 +2591,17 @@ var Iti = class {
     const selectedDialCode = this.selectedCountryData.dialCode;
     number = this._ensureHasDialCode(number);
     const dialCodeMatch = this._getDialCode(number, true);
+    if (dialCodeMatch && dialCodeMatch === this.prevDialCodeMatch) {
+      return null;
+    }
+    this.prevDialCodeMatch = dialCodeMatch;
     const numeric = getNumeric(number);
     if (dialCodeMatch) {
-      if (this.prevDialCodeMatch === dialCodeMatch) {
-        return null;
-      }
-      this.prevDialCodeMatch = dialCodeMatch;
       const dialCodeMatchNumeric = getNumeric(dialCodeMatch);
       const iso2Codes = this.dialCodeToIso2Map[dialCodeMatchNumeric];
+      if (!selectedIso2 && this.defaultCountry && iso2Codes.includes(this.defaultCountry)) {
+        return this.defaultCountry;
+      }
       const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && numeric.length === dialCodeMatchNumeric.length;
       const isRegionlessNanpNumber = selectedDialCode === "1" && isRegionlessNanp(numeric);
       if (!isRegionlessNanpNumber && !alreadySelected) {

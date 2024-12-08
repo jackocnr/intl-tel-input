@@ -1441,15 +1441,23 @@ export class Iti {
 
     //* Try and extract valid dial code (plus area code digits) from input.
     const dialCodeMatch = this._getDialCode(number, true);
+    if (dialCodeMatch && dialCodeMatch === this.prevDialCodeMatch) {
+      //* Optimisation: if there is a dial code match and it's the same as last time, no need to do anything.
+      return null;
+    }
+    this.prevDialCodeMatch = dialCodeMatch;
+
     const numeric = getNumeric(number);
     if (dialCodeMatch) {
-      if (this.prevDialCodeMatch === dialCodeMatch) {
-        //* Optimisation: if dialCodeMatch is same, no need to do anything.
-        return null;
-      }
-      this.prevDialCodeMatch = dialCodeMatch;
       const dialCodeMatchNumeric = getNumeric(dialCodeMatch);
       const iso2Codes = this.dialCodeToIso2Map[dialCodeMatchNumeric];
+
+      //* If they've just typed a dial code (from empty state), and it matches the last selected country, then stick to that country.
+      //* e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
+      if (!selectedIso2 && this.defaultCountry && iso2Codes.includes(this.defaultCountry)) {
+        return this.defaultCountry;
+      }
+
       //* Check if the right country is already selected (note: might be empty state - globe icon).
       //* NOTE: the number of digits typed can only be the same as or more than the matched dial code (plus area code) digits
       //* If they're the same length, that's a perfect match. Otherwise, they've typed more digits than the best match, in which case we should default to the first country that fits the matched dial code.
