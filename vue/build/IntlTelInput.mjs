@@ -2161,11 +2161,7 @@ class G {
     let i = e ? t.substring(e) : t;
     const s = this.selectedCountryData.iso2, n = this.selectedCountryData.dialCode;
     i = this._ensureHasDialCode(i);
-    const o = this._getDialCode(i, !0);
-    if (o && o === this.prevDialCodeMatch)
-      return null;
-    this.prevDialCodeMatch = o;
-    const r = v(i);
+    const o = this._getDialCode(i, !0), r = v(i);
     if (o) {
       const a = v(o), c = this.dialCodeToIso2Map[a];
       if (!s && this.defaultCountry && c.includes(this.defaultCountry))

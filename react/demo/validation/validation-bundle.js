@@ -26142,10 +26142,6 @@
       const selectedDialCode = this.selectedCountryData.dialCode;
       number = this._ensureHasDialCode(number);
       const dialCodeMatch = this._getDialCode(number, true);
-      if (dialCodeMatch && dialCodeMatch === this.prevDialCodeMatch) {
-        return null;
-      }
-      this.prevDialCodeMatch = dialCodeMatch;
       const numeric = getNumeric(number);
       if (dialCodeMatch) {
         const dialCodeMatchNumeric = getNumeric(dialCodeMatch);

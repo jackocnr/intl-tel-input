@@ -272,7 +272,6 @@ export class Iti {
   private defaultCountry: string;
   private originalPaddingRight: string;
   private originalPaddingLeft: string;
-  private prevDialCodeMatch: string;
 
   private _handleHiddenInputSubmit: () => void;
   private _handleLabelClick: (e: Event) => void;
@@ -1441,12 +1440,6 @@ export class Iti {
 
     //* Try and extract valid dial code (plus area code digits) from input.
     const dialCodeMatch = this._getDialCode(number, true);
-    if (dialCodeMatch && dialCodeMatch === this.prevDialCodeMatch) {
-      //* Optimisation: if there is a dial code match and it's the same as last time, no need to do anything.
-      return null;
-    }
-    this.prevDialCodeMatch = dialCodeMatch;
-
     const numeric = getNumeric(number);
     if (dialCodeMatch) {
       const dialCodeMatchNumeric = getNumeric(dialCodeMatch);

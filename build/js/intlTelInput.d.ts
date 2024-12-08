@@ -394,7 +394,6 @@ declare module "intl-tel-input" {
         private defaultCountry;
         private originalPaddingRight;
         private originalPaddingLeft;
-        private prevDialCodeMatch;
         private _handleHiddenInputSubmit;
         private _handleLabelClick;
         private _handleClickSelectedCountry;
