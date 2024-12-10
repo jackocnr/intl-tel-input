@@ -2,13 +2,15 @@
  * @jest-environment jsdom
  */
 
-const { initPlugin, teardown, getSelectedDialCodeText } = require("../helpers/helpers");
+const { userEvent } = require("@testing-library/user-event");
+const { initPlugin, teardown, getSelectedDialCodeText, typePlaceholderNumberAsync, checkFlagSelected } = require("../helpers/helpers");
 
-let input, iti, container;
+let input, iti, container, user;
 
-//* We test with "gb" because the ntl number is different to the intl number (aside from the dial code).
+//* We test with UK because the ntl number is different to the intl number (aside from the dial code).
 describe("separateDialCode and initialCountry=GB", () => {
   beforeEach(() => {
+    user = userEvent.setup();
     const options = {
       initialCountry: "gb",
       separateDialCode: true,
@@ -45,7 +47,7 @@ describe("separateDialCode and initialCountry=GB", () => {
   });
 });
 
-//* We test with "ca" (Canada) because we had some bugs with area codes.
+//* We test with Canada because we had some bugs with area codes.
 describe("separateDialCode and initialCountry=CA", () => {
   beforeEach(() => {
     const options = {
@@ -69,7 +71,7 @@ describe("separateDialCode and initialCountry=CA", () => {
   });
 });
 
-//* We test with "as" because we had a bug.
+//* We test with America Samoa because we had a bug.
 describe("separateDialCode and initialCountry=AS", () => {
   beforeEach(() => {
     const options = {
@@ -93,7 +95,7 @@ describe("separateDialCode and initialCountry=AS", () => {
   });
 });
 
-//* We test with "ru" because we had a bug.
+//* We test with Russia because we had a bug.
 describe("separateDialCode and initialCountry=RU", () => {
   beforeEach(() => {
     const options = {
@@ -110,5 +112,59 @@ describe("separateDialCode and initialCountry=RU", () => {
   test("formats the number correctly", () => {
     //* Used to be '8 (922) 555-12-34'.
     expect(input.value).toBe("922 555-12-34");
+  });
+});
+
+//* We test with Aland Islands because we had a bug.
+describe("separateDialCode and initialCountry=AX", () => {
+  beforeEach(() => {
+    const options = {
+      initialCountry: "ax",
+      separateDialCode: true,
+    };
+    ({ input, iti, container } = initPlugin({ options }));
+  });
+
+  afterEach(() => {
+    teardown(iti);
+  });
+
+  test("when you type the placeholder number it maintains the country selection", async () => {
+    await typePlaceholderNumberAsync(user, input);
+    // it previously changed to Finland!
+    expect(checkFlagSelected(container, "ax")).toBe(true);
+  });
+});
+
+//* We test with Kazakhstan because we had a bug.
+describe("separateDialCode and initialCountry=KZ", () => {
+  beforeEach(() => {
+    const options = {
+      initialCountry: "kz",
+      separateDialCode: true,
+    };
+    ({ input, iti, container } = initPlugin({ options }));
+  });
+
+  afterEach(() => {
+    teardown(iti);
+  });
+
+  test("typing/deleting different area codes should update the selected country", async () => {
+    // typing area code starting with 1 changes to Russia
+    await user.type(input, "1");
+    expect(checkFlagSelected(container, "ru")).toBe(true);
+
+    // deleting area code keeps Russia selected
+    await user.type(input, "{backspace}");
+    expect(checkFlagSelected(container, "ru")).toBe(true);
+
+    // typing area code starting with 7 changes to Kazakhstan
+    await user.type(input, "7");
+    expect(checkFlagSelected(container, "kz")).toBe(true);
+
+    // deleting area code keeps Kazakhstan selected
+    await user.type(input, "{backspace}");
+    expect(checkFlagSelected(container, "kz")).toBe(true);
   });
 });

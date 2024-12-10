@@ -104,4 +104,50 @@ describe("nationalMode:", function() {
 
   });
 
+
+
+  // new feature: area codes now update selected flag even in national mode, with countries that use a national prefix digit!
+  describe("init plugin with nationalMode=true and initialCountry=GB", function() {
+
+    beforeEach(function() {
+      input = $("<input>").appendTo("body");
+      iti = window.intlTelInput(input[0], {
+        nationalMode: true,
+        initialCountry: "gb",
+      });
+    });
+
+    it("typing Jersey area code changes flag to Jersey", function() {
+      triggerKeyOnInput("0");
+      triggerKeyOnInput("1");
+      triggerKeyOnInput("5");
+      triggerKeyOnInput("3");
+      triggerKeyOnInput("4");
+      expect(getSelectedCountryElement()).toHaveClass("iti__je");
+    });
+
+  });
+
+
+  describe("init plugin with nationalMode=false and initialCountry=AX", function() {
+
+    beforeEach(function() {
+      input = $("<input>").appendTo("body");
+      iti = window.intlTelInput(input[0], {
+        nationalMode: false,
+        initialCountry: "ax",
+      });
+    });
+
+    it("typing the selected country's intl dial code maintains the selected country", function() {
+      triggerKeyOnInput("+");
+      triggerKeyOnInput("3");
+      triggerKeyOnInput("5");
+      triggerKeyOnInput("8");
+      // it previously changed to finland! (typing +3 gave globe icon, then 58 gave primary country for that dial code which is Finland)
+      expect(getSelectedCountryElement()).toHaveClass("iti__ax");
+    });
+
+  });
+
 });

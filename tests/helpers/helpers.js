@@ -23,7 +23,7 @@ exports.injectInput = ({ inputValue = "", disabled = false } = injectInputDefaul
 
 /**
  * Create an intl-tel-input instance to test.
- * @param {{intlTelInput?: IntlTelInputInterface, input?: any, inputValue?: string, options?: SomeOptions}} options 
+ * @param {{intlTelInput?: IntlTelInputInterface, input?: any, inputValue?: string, options?: SomeOptions}} options
  * @returns {{input: HTMLInputElement, iti: Iti, container: HTMLElement}}
  */
 exports.initPlugin = ({ intlTelInput = intlTelInputWithUtils, input = null, inputValue = "", options = {} } = {}) => {
@@ -62,7 +62,7 @@ exports.teardown = (iti) => {
 };
 
 /**
- * @param {IntlTelInputInterface} intlTelInput 
+ * @param {IntlTelInputInterface} intlTelInput
  */
 exports.resetPackageAfterEach = (intlTelInput = intlTelInputWithUtils) => {
   const originalUtils = intlTelInput.utils;
@@ -131,6 +131,11 @@ exports.openDropdownSelectCountryAsync = async (container, iso2, user) => {
 
 exports.selectCountryAndTypePlaceholderNumberAsync = async (container, iso2, user, input) => {
   await exports.openDropdownSelectCountryAsync(container, iso2, user);
+  const placeholderNumberClean = await exports.typePlaceholderNumberAsync(user, input);
+  return placeholderNumberClean;
+};
+
+exports.typePlaceholderNumberAsync = async (user, input) => {
   const placeholderNumberClean = exports.stripFormattingChars(input.getAttribute("placeholder"));
   await user.type(input, placeholderNumberClean);
   return placeholderNumberClean;
