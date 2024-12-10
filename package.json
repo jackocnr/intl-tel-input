@@ -102,7 +102,7 @@
     "build:react": "grunt react",
     "build:vue": "grunt vue",
     "vue:demo": "vite --config vue/demo/validation/vite.config.js",
-    "server": "grunt test:interactive"
+    "server": "grunt jasmine:interactive"
   },
   "style": "build/css/intlTelInput.css",
   "main": "./build/js/intlTelInput.js",
