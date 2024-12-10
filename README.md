@@ -171,7 +171,7 @@ Additional classes to add to the (injected) wrapper `<div>`.
 
 **countryOrder**  
 Type: `Array` Default: `null`  
-Specify the ordering for the country list with an array of iso2 country codes. Any omitted countries will appear after those specified e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria etc...
+Specify the ordering for the country list with an array of iso2 country codes. Any omitted countries will appear after those specified, in alphabetical order e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria etc...
 
 **countrySearch**  
 Type: `Boolean` Default: `true`  
