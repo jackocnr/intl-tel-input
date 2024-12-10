@@ -53,5 +53,5 @@
       "COBOL",
       "ACUCOBOL"
     ],
-    "files.trimTrailingWhitespace": false
+    "files.trimTrailingWhitespace": true
 }

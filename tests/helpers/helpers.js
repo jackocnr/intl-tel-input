@@ -91,6 +91,10 @@ exports.getSelectedCountryButton = (container) => {
   return container.querySelector(".iti__selected-country");
 };
 
+exports.getSelectedDialCodeText = (container) => {
+  return container.querySelector(".iti__selected-dial-code").textContent;
+};
+
 exports.isDropdownOpen = (container) => {
   return !container.querySelector(".iti__dropdown-content").classList.contains("iti__hide");
 };
