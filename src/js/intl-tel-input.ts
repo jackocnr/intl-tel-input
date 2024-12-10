@@ -400,7 +400,7 @@ export class Iti {
     //* Sort countries by countryOrder option (if present), then name.
     this._sortCountries();
   }
-  
+
   //* Sort countries by countryOrder option (if present), then name.
   private _sortCountries() {
     if (this.options.countryOrder) {
@@ -421,7 +421,7 @@ export class Iti {
           return aIndexExists ? -1 : 1;
         }
       }
-      
+
       //* Secondary sort: country name.
       return a.name.localeCompare(b.name);
     });
@@ -656,7 +656,7 @@ export class Iti {
           id: `iti-${this.id}__dropdown-content`,
           class: `iti__dropdown-content iti__hide ${extraClasses}`,
         });
-  
+
         if (countrySearch) {
           this.searchInput = createEl(
             "input",
@@ -679,7 +679,7 @@ export class Iti {
             this.dropdownContent,
           );
         }
-  
+
         this.countryList = createEl(
           "ul",
           {
@@ -694,7 +694,7 @@ export class Iti {
         if (countrySearch) {
           this._updateSearchResultsText();
         }
-  
+
         //* Create dropdownContainer markup.
         if (dropdownContainer) {
           let dropdownClasses = "iti iti--container";
@@ -1262,7 +1262,7 @@ export class Iti {
           this._filterCountries("", true);
         }
       };
-  
+
       let keyupTimer: NodeJS.Timeout | null = null;
       this._handleSearchChange = (): void => {
         //* Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
@@ -1275,7 +1275,7 @@ export class Iti {
         }, 100);
       };
       this.searchInput.addEventListener("input", this._handleSearchChange);
-  
+
       //* Stop propagation on search input click, so doesn't trigger click-off-to-close listener.
       this.searchInput.addEventListener("click", (e) => e.stopPropagation());
     }
@@ -1455,7 +1455,7 @@ export class Iti {
       //* NOTE: the number of digits typed can only be the same as or more than the matched dial code (plus area code) digits
       //* If they're the same length, that's a perfect match. Otherwise, they've typed more digits than the best match, in which case, if this country supports area codes, we should default to the first country that fits the matched dial code.
       const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && (numeric.length === dialCodeMatchNumeric.length || !this.selectedCountryData.areaCodes);
-      
+
       const isRegionlessNanpNumber =
         selectedDialCode === "1" && isRegionlessNanp(numeric);
 

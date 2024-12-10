@@ -53,5 +53,8 @@
       "COBOL",
       "ACUCOBOL"
     ],
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "[markdown]": {
+      "files.trimTrailingWhitespace": false
+    }
 }

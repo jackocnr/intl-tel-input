@@ -123,6 +123,7 @@ describe("nationalMode:", function() {
       triggerKeyOnInput("5");
       triggerKeyOnInput("3");
       triggerKeyOnInput("4");
+
       expect(getSelectedCountryElement()).toHaveClass("iti__je");
     });
 
