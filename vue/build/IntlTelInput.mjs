@@ -1,4 +1,4 @@
-import { mergeModels as D, useModel as x, ref as L, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as V, createElementBlock as O, mergeProps as z, vModelText as R } from "vue";
+import { mergeModels as D, useModel as x, ref as L, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as V, createElementBlock as z, mergeProps as O, vModelText as R } from "vue";
 const N = [
   [
     "af",
@@ -1671,7 +1671,7 @@ const T = {
   const t = v(u);
   if (t.charAt(0) === "1") {
     const e = t.substr(1, 3);
-    return H.indexOf(e) !== -1;
+    return H.includes(e);
   }
   return !1;
 }, K = (u, t, e, i) => {
@@ -1744,14 +1744,14 @@ class G {
         (s) => s.toLowerCase()
       );
       this.countries = I.filter(
-        (s) => i.indexOf(s.iso2) > -1
+        (s) => i.includes(s.iso2)
       );
     } else if (e.length) {
       const i = e.map(
         (s) => s.toLowerCase()
       );
       this.countries = I.filter(
-        (s) => i.indexOf(s.iso2) === -1
+        (s) => !i.includes(s.iso2)
       );
     } else
       this.countries = I;
@@ -2588,7 +2588,7 @@ const W = (u) => {
     ), F(() => {
       var h;
       return (h = r.value) == null ? void 0 : h.destroy();
-    }), t({ instance: r, input: o }), (h, m) => B((V(), O("input", z({
+    }), t({ instance: r, input: o }), (h, m) => B((V(), z("input", O({
       ref_key: "input",
       ref: o,
       "onUpdate:modelValue": m[0] || (m[0] = (b) => i.value = b),

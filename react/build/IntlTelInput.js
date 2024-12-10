@@ -1691,7 +1691,7 @@ var isRegionlessNanp = (number) => {
   const numeric = getNumeric(number);
   if (numeric.charAt(0) === "1") {
     const areaCode = numeric.substr(1, 3);
-    return regionlessNanpNumbers.indexOf(areaCode) !== -1;
+    return regionlessNanpNumbers.includes(areaCode);
   }
   return false;
 };
@@ -1836,14 +1836,14 @@ var Iti = class {
         (country) => country.toLowerCase()
       );
       this.countries = data_default.filter(
-        (country) => lowerCaseOnlyCountries.indexOf(country.iso2) > -1
+        (country) => lowerCaseOnlyCountries.includes(country.iso2)
       );
     } else if (excludeCountries.length) {
       const lowerCaseExcludeCountries = excludeCountries.map(
         (country) => country.toLowerCase()
       );
       this.countries = data_default.filter(
-        (country) => lowerCaseExcludeCountries.indexOf(country.iso2) === -1
+        (country) => !lowerCaseExcludeCountries.includes(country.iso2)
       );
     } else {
       this.countries = data_default;
