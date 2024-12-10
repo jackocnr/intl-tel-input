@@ -8,8 +8,10 @@ module.exports = function(grunt) {
     const supportedFilenames = supportedCountries.map(country => `${country.iso2}.svg`).sort();
     const done = this.async();
 
-    const TARGET_WIDTH = 16;
+    // customise this number to change the size of the flags (NOTE: flags are 4x3 ratio)
     const TARGET_HEIGHT = 12;
+
+    const TARGET_WIDTH = (TARGET_HEIGHT / 3) * 4;
     const FLAG_MARGIN = 0;
 
     const specialCases = {
@@ -104,7 +106,7 @@ module.exports = function(grunt) {
 
         // Generate SCSS content
         outputFileContent += fileWarning + "\n\n";
-        
+
         outputFileContent += `$flags-sprite-1x: (\n`;
         outputFileContent += `  height: ${maxHeight}px,\n`;
         outputFileContent += `  width: ${totalWidth}px,\n`;
@@ -112,7 +114,7 @@ module.exports = function(grunt) {
 
         outputFileContent += `$flag-width: ${TARGET_WIDTH}px;\n\n`;
         outputFileContent += `$flag-height: ${TARGET_HEIGHT}px;\n\n`;
-        
+
         outputFileContent += flagsMetadata + "\n\n";
         outputFileContent += fileWarning + "\n";
 
