@@ -4,8 +4,6 @@
 
 const { userEvent } = require("@testing-library/user-event");
 const { initPlugin, teardown, stripFormattingChars, selectCountryAndTypePlaceholderNumberAsync } = require("../helpers/helpers");
-const allCountries = require("../../build/js/data");
-const countryCodes = allCountries.map((country) => country.iso2);
 
 let input, iti, user, container;
 
@@ -33,14 +31,44 @@ describe("strictMode", () => {
     expect(input.value).toBe("(702) 123-4567");
   });
   
-  test.each(countryCodes)("can type ntl placeholder number: %s", async (iso2) => {
-    const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, iso2, user, input);
+  test("can type Russian ntl placeholder number", async () => {
+    const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "ru", user, input);
     // sometimes AYT formatting is slightly different, so strip formatting chars
     expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
   });
 });
 
-// COMMENT THESE FOR NOW AS THEY ARE CRASHING TRAVIS CI
+
+
+// LONG RUNNING TESTS - RUN MANUALLY FROM TIME TO TIME
+// NOTE: these take so long they crash travis
+
+// const allCountries = require("../../build/js/data");
+// const countryCodes = allCountries.map((country) => country.iso2);
+
+// // NATIONAL MODE ENABLED
+// describe("strictMode, with nationalMode=true", () => {
+//   beforeEach(() => {
+//     user = userEvent.setup();
+//     const options = {
+//       strictMode: true,
+//       nationalMode: true,
+//     };
+//     ({ input, iti, container } = initPlugin({ options }));
+//   });
+      
+//   afterEach(() => {
+//     teardown(iti);
+//   });
+  
+//   test.each(countryCodes)("can type intl placeholder number: %s", async (iso2) => {
+//     const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, iso2, user, input);
+//     // sometimes AYT formatting is slightly different, so strip formatting chars
+//     expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
+//   });
+// });
+
+// // NATIONAL MODE DISABLED
 // describe("strictMode, with nationalMode=false", () => {
 //   beforeEach(() => {
 //     user = userEvent.setup();
@@ -62,6 +90,7 @@ describe("strictMode", () => {
 //   });
 // });
 
+// // SEPARATE DIAL CODE ENABLED
 // describe("strictMode, with separateDialCode=true", () => {
 //   beforeEach(() => {
 //     user = userEvent.setup();
