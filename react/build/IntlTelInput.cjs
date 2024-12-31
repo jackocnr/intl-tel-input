@@ -3164,7 +3164,7 @@ var intlTelInput = Object.assign(
     attachUtils,
     startedLoadingUtilsScript: false,
     startedLoadingAutoCountry: false,
-    version: "25.2.0"
+    version: "25.2.1"
   }
 );
 var intl_tel_input_default = intlTelInput;
