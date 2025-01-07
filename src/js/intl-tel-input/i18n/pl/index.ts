@@ -1,5 +1,5 @@
 //* Polish. Translated by: Mateusz Bronis (bronisMateusz) https://github.com/bronisMateusz.
-import { I18n } from "../types";
+import type { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Wybrany kraj",

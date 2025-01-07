@@ -1,5 +1,5 @@
 //* German. Translated by: Jack O'Connor (jackocnr).
-import { I18n } from "../types";
+import type { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Ausgewähltes Land",

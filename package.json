@@ -39,11 +39,13 @@
     "@playwright/test": "^1.47.2",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^22.10.5",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.24",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "cspell": "^8.6.1",
     "esbuild": "^0.25.0",
@@ -83,7 +85,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3",
     "vite": "^6.1.0",
-    "vue": "^3.4.38",
+    "vite-plugin-dts": "^4.4.0",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.0",
     "zone.js": "^0.15.0"
   },
   "files": [
@@ -156,10 +160,12 @@
       "default": "./react/build/IntlTelInputWithUtils.js"
     },
     "./vue": {
-      "import": "./vue/build/IntlTelInput.mjs"
+      "types": "./vue/build/exports/IntlTelInput.d.ts",
+      "import": "./vue/build/exports/IntlTelInput.mjs"
     },
     "./vueWithUtils": {
-      "import": "./vue/build/IntlTelInputWithUtils.mjs"
+      "types": "./vue/build/exports/IntlTelInputWithUtils.d.ts",
+      "import": "./vue/build/exports/IntlTelInputWithUtils.mjs"
     },
     "./angular": {
       "types": "./angular/build/types/intl-tel-input/angular.d.ts",
