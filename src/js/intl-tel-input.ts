@@ -1,4 +1,4 @@
-import allCountries, { Country, Iso2 } from "./intl-tel-input/data";
+import allCountries, { type Country, type Iso2 } from "./intl-tel-input/data";
 import { defaults, applyOptionSideEffects } from "./modules/core/options";
 import type {
   UtilsLoader,
@@ -873,7 +873,7 @@ export class Iti {
   //* Listen on the document because that's where key events are triggered if no input has focus.
   private _bindDropdownKeydownListener(signal: AbortSignal): void {
     let query = "";
-    let queryTimer: NodeJS.Timeout | null = null;
+    let queryTimer: ReturnType<typeof setTimeout> | null = null;
     const handleKeydownOnDropdown = (e: KeyboardEvent): void => {
       //* prevent down key from scrolling the whole page, and enter key from submitting a form etc.
       const allowedKeys = [
@@ -934,7 +934,7 @@ export class Iti {
       }
     };
 
-    let keyupTimer: NodeJS.Timeout | null = null;
+    let keyupTimer: ReturnType<typeof setTimeout> | null = null;
     const handleSearchChange = (): void => {
       //* Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
       if (keyupTimer) {

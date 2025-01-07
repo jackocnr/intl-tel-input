@@ -1,5 +1,5 @@
-import { Country, Iso2 } from "../../intl-tel-input/data";
-import { AllOptions } from "../types/public-api";
+import type { Country, Iso2 } from "../../intl-tel-input/data";
+import type { AllOptions } from "../types/public-api";
 import { buildClassNames, createEl } from "../utils/dom";
 import { buildSearchIcon, buildClearIcon } from "./icons";
 import { CLASSES, ARIA, LAYOUT } from "../constants";

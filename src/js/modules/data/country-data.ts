@@ -1,4 +1,4 @@
-import allCountries, { Country, Iso2 } from "../../intl-tel-input/data";
+import allCountries, { type Country, type Iso2 } from "../../intl-tel-input/data";
 import { normaliseString } from "../utils/string";
 import type { AllOptions } from "../types/public-api";
 

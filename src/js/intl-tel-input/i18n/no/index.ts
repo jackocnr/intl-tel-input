@@ -1,5 +1,5 @@
 //* Norwegian. Translated by: Eric Pastoor (epastoor) with help of google translate.
-import { I18n } from "../types";
+import type { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Valgt land",

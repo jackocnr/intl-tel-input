@@ -1,7 +1,6 @@
 // Shared constants extracted from intl-tel-input logic to avoid magic strings/numbers
-// Keep this file dependency-free (no imports) so all builds (vanilla/react/angular/vue) can mirror it easily.
 
-import { Iso2 } from "../intl-tel-input/data";
+import type { Iso2 } from "../intl-tel-input/data";
 
 export const EVENTS = {
   OPEN_COUNTRY_DROPDOWN: "open:countrydropdown",

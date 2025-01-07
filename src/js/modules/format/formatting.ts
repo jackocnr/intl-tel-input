@@ -1,4 +1,4 @@
-import { SelectedCountryData } from "../types/public-api";
+import type { SelectedCountryData } from "../types/public-api";
 
 //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
 export const beforeSetNumber = (

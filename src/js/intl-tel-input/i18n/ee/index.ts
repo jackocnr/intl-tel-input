@@ -1,5 +1,5 @@
 //* Estonian. Translated by: Maksim Maksimov (4matic).
-import { I18n } from "../types";
+import type { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Valitud riik",

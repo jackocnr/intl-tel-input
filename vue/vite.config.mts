@@ -1,19 +1,24 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { version } from "../package.json";
+import dts from "vite-plugin-dts";
+import {resolve} from "node:path";
 
-export const getConfig = (filename) => defineConfig({
+export default defineConfig({
   root: "vue",
   define: {
     "process.env.VERSION": `"${version}"`,
   },
   build: {
     outDir: "build",
-    emptyOutDir: false,
+    emptyOutDir: true,
     lib: {
-      entry: `src/intl-tel-input/${filename}`,
+      entry: [
+        resolve(__dirname, "src/exports/IntlTelInput.ts"),
+        resolve(__dirname, "src/exports/IntlTelInputWithUtils.ts"),
+      ],
       formats: ["es"],
-      fileName: "[name]",
+      fileName: "exports/[name]",
     },
     rollupOptions: {
       external: ["vue"],
@@ -24,7 +29,5 @@ export const getConfig = (filename) => defineConfig({
       },
     },
   },
-  plugins: [vue()],
+  plugins: [vue(), dts({ tsconfigPath: "./tsconfig.app.json" })],
 });
-
-export default getConfig("IntlTelInput.vue");

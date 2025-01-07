@@ -1,5 +1,5 @@
 //* Indonesian. Translated by: Google Translate.
-import { I18n } from "../types";
+import type { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Negara yang dipilih",

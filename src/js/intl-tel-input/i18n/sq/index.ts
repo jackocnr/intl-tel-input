@@ -1,5 +1,5 @@
 //* Shqip (Albanian). Translated by: ChatGPT 5.
-import { I18n } from "../types";
+import type { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Ndrysho vendin, i zgjedhur ${countryName} (${dialCode})",
