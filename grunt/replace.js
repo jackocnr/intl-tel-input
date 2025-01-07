@@ -303,19 +303,19 @@ module.exports = function(grunt) {
 
 
     /**************
-     * Generate vue/src/IntlTelInputWithUtils.tsx
+     * Generate vue/src/IntlTelInputWithUtils.ts
      **************/
     vueWithUtils: {
       options: {
         patterns: [
           {
-            match: /\<script setup\>\simport intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
-            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script setup>\nimport intlTelInput from "./intlTelInputWithUtils";'
+            match: /\<script setup lang=\"ts\"\>\simport intlTelInput from \"\.\/intl\-tel\-input\"\;/,
+            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script setup lang="ts">\nimport intlTelInput from "./intl-tel-input/intlTelInputWithUtils";'
           }
         ]
       },
       files: {
-        'vue/src/intl-tel-input/IntlTelInputWithUtils.vue': 'vue/src/intl-tel-input/IntlTelInput.vue',
+        'vue/src/IntlTelInputWithUtils.vue': 'vue/src/IntlTelInput.vue',
       }
     },
   };

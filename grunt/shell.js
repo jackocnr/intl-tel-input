@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       command: 'node react/build.js'
     },
     buildVue: {
-      command: 'vite build --config vue/viteConfig.js && vite build --config vue/viteConfigWithUtils.js'
+      command: 'vite build --config vue/vite.config.mts'
     },
     buildJs: {
       command: 'node build.js'

@@ -12,3 +12,4 @@
 
 # these files are now auto-generated
 /src/img/
+vue/build
