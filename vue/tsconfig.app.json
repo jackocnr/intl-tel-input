@@ -1,0 +1,22 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    /* Linting */
+    "strict": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+
+
+    // exclude symlink
+  "exclude": [
+    "src/index.ts",
+    "src/intl-tel-input/i18n/**/*.ts",
+    "src/intl-tel-input/utils-compiled.js",
+    "src/intl-tel-input/intlTelInputWithUtils.ts",
+    "src/intl-tel-input/data.ts",
+  ]
+}
