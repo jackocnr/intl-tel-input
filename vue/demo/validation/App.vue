@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import IntlTelInput from "../../src/intl-tel-input/IntlTelInputWithUtils.vue";
+import IntlTelInput from "../../build/exports/IntlTelInputWithUtils";
+//import IntlTelInput from "../../src/intl-tel-input/IntlTelInputWithUtils.vue";
 
 const errorMap = [
   "Invalid number",
