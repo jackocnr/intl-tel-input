@@ -82,6 +82,7 @@ interface AllOptions {
   strictMode: boolean;
   useFullscreenPopup: boolean;
   validationNumberTypes: NumberType[] | null;
+  popupContainerClass: string;
 }
 
 //* Export this as useful in react component too.
@@ -145,6 +146,8 @@ const defaults: AllOptions = {
       : false,
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"],
+  //* Modify the popupContainerClass.
+  popupContainerClass: "",
 };
 //* https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
 const regionlessNanpNumbers = [
@@ -560,6 +563,7 @@ export class Iti {
       dropdownContainer,
       fixDropdownWidth,
       useFullscreenPopup,
+      popupContainerClass,
       countrySearch,
       i18n,
     } = this.options;
@@ -698,6 +702,9 @@ export class Iti {
         //* Create dropdownContainer markup.
         if (dropdownContainer) {
           let dropdownClasses = "iti iti--container";
+          if (popupContainerClass) {
+			dropdownClasses += ` ${popupContainerClass}`;
+          }
           if (useFullscreenPopup) {
             dropdownClasses += " iti--fullscreen-popup";
           } else {
