@@ -146,7 +146,7 @@ const defaults: AllOptions = {
       : false,
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"],
-  //* Modify the popupContainerClass.
+  //* Modify the fullscreen popupContainerClass.
   popupContainerClass: "",
 };
 //* https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
@@ -703,7 +703,7 @@ export class Iti {
         if (dropdownContainer) {
           let dropdownClasses = "iti iti--container";
           if (popupContainerClass) {
-			dropdownClasses += ` ${popupContainerClass}`;
+            dropdownClasses += ` ${popupContainerClass}`;
           }
           if (useFullscreenPopup) {
             dropdownClasses += " iti--fullscreen-popup";

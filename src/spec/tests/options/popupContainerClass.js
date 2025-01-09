@@ -16,7 +16,7 @@ describe("popupContainerClass option:", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-		useFullscreenPopup: true,
+        useFullscreenPopup: true,
         popupContainerClass: "cpc",
       });
     });
