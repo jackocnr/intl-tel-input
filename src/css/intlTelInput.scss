@@ -1,4 +1,5 @@
-@import "metadata";
+@use "sass:map";
+@use "metadata" as *;
 
 :root {
   //* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus.
@@ -25,8 +26,8 @@
   --iti-path-globe-1x: url('../img/globe.webp');
   --iti-path-globe-2x: url('../img/globe@2x.webp');
 
-  --iti-flag-sprite-width: #{map-get($flags-sprite-1x, width)};
-  --iti-flag-sprite-height: #{map-get($flags-sprite-1x, height)};
+  --iti-flag-sprite-width: #{map.get($flags-sprite-1x, width)};
+  --iti-flag-sprite-height: #{map.get($flags-sprite-1x, height)};
 
   //* Enough space for them to click off to close.
   --iti-mobile-popup-margin: 30px;
@@ -140,7 +141,7 @@
   &__dropdown-content {
     border-radius: 3px;
     background-color: var(--iti-dropdown-bg);
-    
+
     .iti--inline-dropdown & {
       position: absolute;
       //* Popup so render above everything else.
@@ -305,7 +306,7 @@
 }
 
 @each $country-code, $values in $flags {
-  $flag-offset: map-get($values, offset);
+  $flag-offset: map.get($values, offset);
 
   .iti__#{$country-code} {
     --iti-flag-offset: #{$flag-offset};
