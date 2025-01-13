@@ -1345,16 +1345,17 @@ export class Iti {
     const { i18n } = this.options;
     const count = this.countryList.childElementCount;
     let searchText: string;
-    if (count === 0) {
-      searchText = i18n.zeroSearchResults;
-    } else if (count === 1) {
-      searchText = i18n.oneSearchResult;
-    } else {
-      // eslint-disable-next-line no-template-curly-in-string
-      searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
-      // Added to handle special cases (e.g. Polish language)
-      if (searchText.includes("{") && searchText.includes("}")) {
-          searchText = new Function("count", `return \`${searchText.replace(/`/g, "\\`")}\`;`)(count);
+    if ("searchResultsText" in i18n) {
+      searchText = i18n.searchResultsText(count);
+    }
+    else {
+      if (count === 0) {
+        searchText = i18n.zeroSearchResults;
+      } else if (count === 1) {
+        searchText = i18n.oneSearchResult;
+      } else {
+        // eslint-disable-next-line no-template-curly-in-string
+        searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
       }
     }
     this.searchResultsA11yText.textContent = searchText;
