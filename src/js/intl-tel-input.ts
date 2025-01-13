@@ -1338,7 +1338,7 @@ export class Iti {
   private _updateSearchResultsText(): void {
     const { i18n } = this.options;
     const count = this.countryList.childElementCount;
-    let searchText;
+    let searchText: string;
     if (count === 0) {
       searchText = i18n.zeroSearchResults;
     } else if (count === 1) {
@@ -1346,6 +1346,10 @@ export class Iti {
     } else {
       // eslint-disable-next-line no-template-curly-in-string
       searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
+      // Added to handle special cases (e.g. Polish language)
+      if (searchText.includes("{") && searchText.includes("}")) {
+          searchText = new Function("count", `return \`${searchText.replace(/`/g, "\\`")}\`;`)(count);
+      }
     }
     this.searchResultsA11yText.textContent = searchText;
   }

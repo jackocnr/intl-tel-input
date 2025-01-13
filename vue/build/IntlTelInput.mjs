@@ -2117,7 +2117,7 @@ class G {
   _updateSearchResultsText() {
     const { i18n: t } = this.options, e = this.countryList.childElementCount;
     let i;
-    e === 0 ? i = t.zeroSearchResults : e === 1 ? i = t.oneSearchResult : i = t.multipleSearchResults.replace("${count}", e.toString()), this.searchResultsA11yText.textContent = i;
+    e === 0 ? i = t.zeroSearchResults : e === 1 ? i = t.oneSearchResult : (i = t.multipleSearchResults.replace("${count}", e.toString()), i.includes("{") && i.includes("}") && (i = new Function("count", `return \`${i.replace(/`/g, "\\`")}\`;`)(e))), this.searchResultsA11yText.textContent = i;
   }
   //* Highlight the next/prev item in the list (and ensure it is visible).
   _handleUpDownKey(t) {

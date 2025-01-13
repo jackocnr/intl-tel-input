@@ -2532,6 +2532,9 @@ var factoryOutput = (() => {
         searchText = i18n.oneSearchResult;
       } else {
         searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
+        if (searchText.includes("{") && searchText.includes("}")) {
+          searchText = new Function("count", `return \`${searchText.replace(/`/g, "\\`")}\`;`)(count);
+        }
       }
       this.searchResultsA11yText.textContent = searchText;
     }
