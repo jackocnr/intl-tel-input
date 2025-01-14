@@ -2386,6 +2386,7 @@ class K2 {
   //* Remove plugin.
   destroy() {
     var a, c;
+    this.telInput.iti = void 0;
     const { allowDropdown: e, separateDialCode: n } = this.options;
     if (e) {
       this._closeDropdown(), this.selectedCountry.removeEventListener(
@@ -2511,7 +2512,7 @@ const H2 = (y) => {
 }, C = Object.assign(
   (y, e) => {
     const n = new K2(y, e);
-    return n._init(), y.setAttribute("data-intl-tel-input-id", n.id.toString()), C.instances[n.id] = n, n;
+    return n._init(), y.setAttribute("data-intl-tel-input-id", n.id.toString()), C.instances[n.id] = n, y.iti = n, n;
   },
   {
     defaults: l2,

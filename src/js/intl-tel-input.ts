@@ -1957,6 +1957,7 @@ export class Iti {
 
   //* Remove plugin.
   destroy(): void {
+    this.telInput.iti = undefined;
     const { allowDropdown, separateDialCode } = this.options;
     if (allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
@@ -2201,6 +2202,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     iti._init();
     input.setAttribute("data-intl-tel-input-id", iti.id.toString());
     intlTelInput.instances[iti.id] = iti;
+    input.iti = iti;
     return iti;
   },
   {

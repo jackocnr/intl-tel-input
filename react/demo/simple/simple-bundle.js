@@ -26515,6 +26515,7 @@
     //********************
     //* Remove plugin.
     destroy() {
+      this.telInput.iti = void 0;
       const { allowDropdown, separateDialCode } = this.options;
       if (allowDropdown) {
         this._closeDropdown();
@@ -26700,6 +26701,7 @@
       iti._init();
       input.setAttribute("data-intl-tel-input-id", iti.id.toString());
       intlTelInput.instances[iti.id] = iti;
+      input.iti = iti;
       return iti;
     },
     {
