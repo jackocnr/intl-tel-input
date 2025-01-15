@@ -1078,10 +1078,10 @@ export class Iti {
 
             // insert the new character in the right place
             const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
-            const newFullNumber = this._getFullNumber(newValue).replace(/\D/g, "");
+            const newFullNumber = this._getFullNumber(newValue);
 			const countryCode = this.selectedCountryData.dialCode || "";
             const coreNumber = newFullNumber.startsWith(`+${countryCode}`)
-								? newFullNumber.slice(countryCode.length + 1) // Exclude "+" and country code
+								? newFullNumber.slice(countryCode.length + 1).replace(/\D/g, "") // Exclude "+" and country code
 								: intlTelInput.utils.getCoreNumber(newFullNumber, this.selectedCountryData.iso2);
             const hasExceededMaxLength = this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength;
 
