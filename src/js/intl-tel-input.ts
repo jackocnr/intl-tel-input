@@ -1078,19 +1078,15 @@ export class Iti {
 
             // insert the new character in the right place
             const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
-            const newFullNumber = this._getFullNumber(newValue);
-            const coreNumber = intlTelInput.utils.getCoreNumber(newFullNumber, this.selectedCountryData.iso2);
+            const newFullNumber = this._getFullNumber(newValue).replace(/\D/g, "");
+			const countryCode = this.selectedCountryData.dialCode || "";
+            const coreNumber = newFullNumber.startsWith(`+${countryCode}`)
+								? newFullNumber.slice(countryCode.length + 1) // Exclude "+" and country code
+								: intlTelInput.utils.getCoreNumber(newFullNumber, this.selectedCountryData.iso2);
             const hasExceededMaxLength = this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength;
 
-            let isChangingDialCode = false;
-            if (alreadyHasPlus) {
-              const currentCountry = this.selectedCountryData.iso2;
-              const newCountry = this._getCountryFromNumber(newFullNumber);
-              isChangingDialCode = newCountry !== currentCountry;
-            }
-
-            // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
-            if (!isAllowedChar || (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)) {
+            // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country.
+            if (!isAllowedChar || hasExceededMaxLength ) {
               e.preventDefault();
             }
           }
