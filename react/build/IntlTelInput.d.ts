@@ -503,7 +503,7 @@ declare module "intl-tel-input/react" {
     const IntlTelInput: React.ForwardRefExoticComponent<ItiProps & React.RefAttributes<IntlTelInputRef>>;
     export default IntlTelInput;
 }
-declare module "intl-tel-input/utils-compiled" {
+declare module "intl-tel-input/utils" {
     export default utils;
     const utils: any;
 }

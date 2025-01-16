@@ -480,7 +480,7 @@ declare module "intl-tel-input" {
     const intlTelInput: IntlTelInputInterface;
     export default intlTelInput;
 }
-declare module "intl-tel-input/utils-compiled" {
+declare module "intl-tel-input/utils" {
     export default utils;
     const utils: any;
 }
