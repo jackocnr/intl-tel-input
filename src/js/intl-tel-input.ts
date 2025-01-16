@@ -1957,6 +1957,7 @@ export class Iti {
 
   //* Remove plugin.
   destroy(): void {
+    // @ts-expect-error Ignore iti not exist on HTMLElement
     this.telInput.iti = undefined;
     const { allowDropdown, separateDialCode } = this.options;
     if (allowDropdown) {
@@ -2202,6 +2203,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     iti._init();
     input.setAttribute("data-intl-tel-input-id", iti.id.toString());
     intlTelInput.instances[iti.id] = iti;
+    // @ts-expect-error Ignore iti not exist on HTMLElement
     input.iti = iti;
     return iti;
   },
