@@ -21,13 +21,14 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['generate-sprite', 'css']);
   // just javascript
-  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:buildJs', 'replace', 'react', 'vue']);
+  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genAngularTsDeclaration', 'shell:buildJs', 'replace', 'react', 'vue', 'angular']);
   grunt.registerTask('jsfast', ['shell:buildJs', 'replace']);
   // just react
   grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact']);
   // just vue
   grunt.registerTask('vue', ['replace:vueWithUtils', 'shell:buildVue']);
-
+  // just angular
+  grunt.registerTask('angular', ['replace:angularWithUtils', 'shell:buildAngular']);
   // Run tests with a server so that async imports/fetches work.
   grunt.registerTask('jasmine:test', ['connect:test', 'jasmine']);
   grunt.registerTask('jasmine:interactive', () => {

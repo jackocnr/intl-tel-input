@@ -10,6 +10,9 @@ module.exports = function(grunt) {
     buildVue: {
       command: 'vite build --config vue/viteConfig.js && vite build --config vue/viteConfigWithUtils.js'
     },
+    buildAngular: {
+      command: 'node angular/build.js'
+    },
     buildJs: {
       command: 'node build.js'
     },
@@ -20,6 +23,10 @@ module.exports = function(grunt) {
     genReactTsDeclaration: {
       //* Clean up the module names by removing the /index suffix as this is how they will be used.
       command: `tsc --p react/tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" react/build/IntlTelInput.d.ts`
+    },
+    genAngularTsDeclaration: {
+      //* Clean up the module names by removing the /index suffix as this is how they will be used.
+      command: `tsc --p angular/tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" angular/build/IntlTelInput.d.ts`
     },
     eslint: {
       command: 'eslint .'
