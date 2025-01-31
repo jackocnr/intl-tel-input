@@ -1,0 +1,1 @@
+../../../src/js/intl-tel-input/data.ts
