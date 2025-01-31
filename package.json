@@ -24,6 +24,9 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
+    "@angular/compiler": "^19.1.4",
+    "@angular/core": "^19.1.4",
+    "@angular/platform-browser": "^19.1.4",
     "@babel/plugin-transform-modules-commonjs": "^7.25.7",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/user-event": "^14.5.2",
@@ -68,7 +71,8 @@
     "time-grunt": "^2.0.0",
     "typescript": "^5.5.3",
     "vite": "^6.1.0",
-    "vue": "^3.4.38"
+    "vue": "^3.4.38",
+    "zone.js": "^0.15.0"
   },
   "files": [
     "build/*",
