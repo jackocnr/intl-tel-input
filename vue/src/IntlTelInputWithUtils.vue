@@ -1,34 +1,29 @@
 <!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->
-<script setup>
-import intlTelInput from "./intlTelInputWithUtils";
+<script setup lang="ts">
+import intlTelInput from "./intl-tel-input/intlTelInputWithUtils";
+import { type SomeOptions } from "./intl-tel-input";
 import { onMounted, onUnmounted, ref, watch } from "vue";
+import type { InputHTMLAttributes } from "vue";
 
-const model = defineModel({
-  type: String,
-  default: "",
+const modelValue = defineModel<string>({
+  default: ''
 });
 
-const props = defineProps({
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
+interface Props {
+  options?: SomeOptions,
+  disabled?: boolean,
+  inputProps?: InputHTMLAttributes
+}
 
-  inputProps: {
-    type: Object,
-    default: () => ({}),
-  },
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
+  inputProps: () => ({}),
+  options: () => ({}),
+})
 
-  options: {
-    type: Object,
-    default: () => ({}),
-  },
-
-  value: {
-    type: String,
-    default: "",
-  },
-});
+defineOptions({
+  inheritAttrs: false
+})
 
 const emit = defineEmits([
   "changeNumber",
@@ -80,8 +75,8 @@ onMounted(() => {
   if (input.value) {
     instance.value = intlTelInput(input.value, props.options);
 
-    if (props.value) {
-      instance.value.setNumber(props.value);
+    if (modelValue.value) {
+      instance.value.setNumber(modelValue.value);
     }
 
     if (props.disabled) {
@@ -103,7 +98,7 @@ defineExpose({ instance, input });
 <template>
   <input
     ref="input"
-    v-model="model"
+    v-model="modelValue"
     type="tel"
     @countrychange="updateCountry"
     @input="updateValue"
