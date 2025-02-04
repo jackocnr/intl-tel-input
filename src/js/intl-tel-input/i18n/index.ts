@@ -7,6 +7,7 @@ export { default as ca, countryTranslations as caCountryTranslations, interfaceT
 export { default as cs, countryTranslations as csCountryTranslations, interfaceTranslations as csInterfaceTranslations } from "./cs";
 export { default as da, countryTranslations as daCountryTranslations, interfaceTranslations as daInterfaceTranslations } from "./da";
 export { default as de, countryTranslations as deCountryTranslations, interfaceTranslations as deInterfaceTranslations } from "./de";
+export { default as ee, countryTranslations as eeCountryTranslations, interfaceTranslations as eeInterfaceTranslations } from "./ee";
 export { default as el, countryTranslations as elCountryTranslations, interfaceTranslations as elInterfaceTranslations } from "./el";
 export { default as en, countryTranslations as enCountryTranslations, interfaceTranslations as enInterfaceTranslations } from "./en";
 export { default as es, countryTranslations as esCountryTranslations, interfaceTranslations as esInterfaceTranslations } from "./es";
