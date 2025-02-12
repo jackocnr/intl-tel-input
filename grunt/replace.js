@@ -303,7 +303,7 @@ module.exports = function(grunt) {
 
 
     /**************
-     * Generate vue/src/IntlTelInputWithUtils.tsx
+     * Generate vue/src/IntlTelInputWithUtils.vue
      **************/
     vueWithUtils: {
       options: {
@@ -316,6 +316,23 @@ module.exports = function(grunt) {
       },
       files: {
         'vue/src/intl-tel-input/IntlTelInputWithUtils.vue': 'vue/src/intl-tel-input/IntlTelInput.vue',
+      }
+    },
+
+    /**************
+     * Generate angular/src/angularWithUtils.component.ts
+     **************/
+    angularWithUtils: {
+      options: {
+        patterns: [
+          {
+            match: /import intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
+            replacement: '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\nimport intlTelInput from "./intlTelInputWithUtils";'
+          }
+        ]
+      },
+      files: {
+        'angular/src/intl-tel-input/angularWithUtils.component.ts': 'angular/src/intl-tel-input/angular.component.ts',
       }
     },
   };
