@@ -1649,7 +1649,7 @@ export class Iti {
     if (this.telInput.parentNode) {
       const containerClone = this.telInput.parentNode.cloneNode(false) as HTMLElement;
       containerClone.style.visibility = "hidden";
-      document.body.appendChild(containerClone);
+      window.top.document.body.appendChild(containerClone);
 
       const countryContainerClone = this.countryContainer.cloneNode() as HTMLElement;
       containerClone.appendChild(countryContainerClone);
@@ -1658,7 +1658,7 @@ export class Iti {
       countryContainerClone.appendChild(selectedCountryClone);
 
       const width = selectedCountryClone.offsetWidth;
-      document.body.removeChild(containerClone);
+      window.top.document.body.removeChild(containerClone);
       return width;
     }
     return 0;
