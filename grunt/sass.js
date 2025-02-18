@@ -6,7 +6,6 @@ module.exports = function(grunt) {
       options: {
         implementation: sass,
         sourcemap: "none",
-        style: "compressed"
       },
       files: {
         'build/css/intlTelInput.css': 'src/css/intlTelInput.scss'
@@ -15,7 +14,7 @@ module.exports = function(grunt) {
     demo: {
       options: {
         implementation: sass,
-        sourcemap: "none"
+        sourcemap: "none",
       },
       files: {
         'build/css/demo.css': 'src/css/demo.scss'

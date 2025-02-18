@@ -2533,6 +2533,9 @@ var factoryOutput = (() => {
         searchText = i18n.oneSearchResult;
       } else {
         searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
+        if (searchText.includes("{") && searchText.includes("}")) {
+          searchText = new Function("count", `return \`${searchText.replace(/`/g, "\\`")}\`;`)(count);
+        }
       }
       this.searchResultsA11yText.textContent = searchText;
     }
@@ -2966,6 +2969,7 @@ var factoryOutput = (() => {
     //********************
     //* Remove plugin.
     destroy() {
+      this.telInput.iti = void 0;
       const { allowDropdown, separateDialCode } = this.options;
       if (allowDropdown) {
         this._closeDropdown();
@@ -3151,6 +3155,7 @@ var factoryOutput = (() => {
       iti._init();
       input.setAttribute("data-intl-tel-input-id", iti.id.toString());
       intlTelInput.instances[iti.id] = iti;
+      input.iti = iti;
       return iti;
     },
     {

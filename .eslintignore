@@ -4,4 +4,4 @@
 **/third_party/**
 **/tmp/**
 Gruntfile.js
-**/utils-compiled.js
+**/utils.js

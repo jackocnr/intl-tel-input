@@ -287,6 +287,11 @@ declare module "intl-tel-input/i18n/en" {
 declare module "intl-tel-input" {
     import { Country } from "intl-tel-input/data";
     import { I18n } from "intl-tel-input/i18n/types";
+    global {
+        interface HTMLInputElement {
+            iti?: Iti;
+        }
+    }
     type UtilsLoader = () => Promise<{
         default: ItiUtils;
     }>;
@@ -480,7 +485,7 @@ declare module "intl-tel-input" {
     const intlTelInput: IntlTelInputInterface;
     export default intlTelInput;
 }
-declare module "intl-tel-input/utils-compiled" {
+declare module "intl-tel-input/utils" {
     export default utils;
     const utils: any;
 }
