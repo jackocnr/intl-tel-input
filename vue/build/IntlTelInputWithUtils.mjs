@@ -2253,13 +2253,13 @@ class K2 {
   _getHiddenSelectedCountryWidth() {
     if (this.telInput.parentNode) {
       const e = this.telInput.parentNode.cloneNode(!1);
-      e.style.visibility = "hidden", document.body.appendChild(e);
+      e.style.visibility = "hidden", window.top.document.body.appendChild(e);
       const n = this.countryContainer.cloneNode();
       e.appendChild(n);
       const s = this.selectedCountry.cloneNode(!0);
       n.appendChild(s);
       const o = s.offsetWidth;
-      return document.body.removeChild(e), o;
+      return window.top.document.body.removeChild(e), o;
     }
     return 0;
   }

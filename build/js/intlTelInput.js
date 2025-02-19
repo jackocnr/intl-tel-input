@@ -2747,13 +2747,13 @@ var factoryOutput = (() => {
       if (this.telInput.parentNode) {
         const containerClone = this.telInput.parentNode.cloneNode(false);
         containerClone.style.visibility = "hidden";
-        document.body.appendChild(containerClone);
+        window.top.document.body.appendChild(containerClone);
         const countryContainerClone = this.countryContainer.cloneNode();
         containerClone.appendChild(countryContainerClone);
         const selectedCountryClone = this.selectedCountry.cloneNode(true);
         countryContainerClone.appendChild(selectedCountryClone);
         const width = selectedCountryClone.offsetWidth;
-        document.body.removeChild(containerClone);
+        window.top.document.body.removeChild(containerClone);
         return width;
       }
       return 0;
