@@ -645,7 +645,7 @@ export class Iti {
       if (separateDialCode) {
         this.selectedDialCode = createEl(
           "div",
-          { class: "iti__selected-dial-code" },
+          { class: "iti__selected-dial-code", "aria-hidden": "true" },
           this.selectedCountry,
         );
       }
