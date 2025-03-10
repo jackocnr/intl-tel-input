@@ -1837,7 +1837,7 @@ class j2 {
         O
       )), i && (this.selectedDialCode = E(
         "div",
-        { class: "iti__selected-dial-code" },
+        { class: "iti__selected-dial-code", "aria-hidden": "true" },
         this.selectedCountry
       )), e) {
         const T = g ? "" : "iti--flexible-dropdown-width";

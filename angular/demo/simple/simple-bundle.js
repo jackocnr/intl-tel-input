@@ -63378,7 +63378,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         if (separateDialCode) {
           this.selectedDialCode = createEl(
             "div",
-            { class: "iti__selected-dial-code" },
+            { class: "iti__selected-dial-code", "aria-hidden": "true" },
             this.selectedCountry
           );
         }

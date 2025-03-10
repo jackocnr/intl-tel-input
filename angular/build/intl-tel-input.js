@@ -408,7 +408,7 @@ export class Iti {
                 this.dropdownArrow = createEl("div", { class: "iti__arrow", "aria-hidden": "true" }, selectedCountryPrimary);
             }
             if (separateDialCode) {
-                this.selectedDialCode = createEl("div", { class: "iti__selected-dial-code" }, this.selectedCountry);
+                this.selectedDialCode = createEl("div", { class: "iti__selected-dial-code", "aria-hidden": "true" }, this.selectedCountry);
             }
             if (allowDropdown) {
                 const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
