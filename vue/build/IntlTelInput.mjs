@@ -1,4 +1,4 @@
-import { mergeModels as D, useModel as x, ref as L, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, createElementBlock as V, openBlock as R, mergeProps as z, vModelText as O } from "vue";
+import { mergeModels as D, useModel as x, ref as L, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, createElementBlock as V, openBlock as z, mergeProps as R, vModelText as O } from "vue";
 const N = [
   [
     "af",
@@ -2589,7 +2589,7 @@ const W = (u) => {
     ), F(() => {
       var h;
       return (h = r.value) == null ? void 0 : h.destroy();
-    }), t({ instance: r, input: o }), (h, m) => B((R(), V("input", z({
+    }), t({ instance: r, input: o }), (h, m) => B((z(), V("input", R({
       ref_key: "input",
       ref: o,
       "onUpdate:modelValue": m[0] || (m[0] = (b) => i.value = b),
@@ -2597,7 +2597,12 @@ const W = (u) => {
       onCountrychange: p,
       onInput: C
     }, u.inputProps), null, 16)), [
-      [O, i.value]
+      [
+        O,
+        i.value,
+        void 0,
+        { lazy: !0 }
+      ]
     ]);
   }
 };

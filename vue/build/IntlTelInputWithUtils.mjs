@@ -8783,7 +8783,12 @@ const Y2 = {
       onCountrychange: w,
       onInput: b
     }, y.inputProps), null, 16)), [
-      [G2, s.value]
+      [
+        G2,
+        s.value,
+        void 0,
+        { lazy: !0 }
+      ]
     ]);
   }
 };
