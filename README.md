@@ -433,14 +433,16 @@ if (error === intlTelInput.utils.validationError.TOO_SHORT) {
 ```
 
 **isValidNumber**  
-Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` (DANGEROUS) for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use `getValidationError` to get more information. Respects the `validationNumberTypes` option (which is set to `["MOBILE"]` by default, meaning `isValidNumber` will only return `true` for mobile numbers). Requires the [utils script to be loaded](#loading-the-utilities-script).  
+(Note: only returns `true` for valid mobile numbers by default - see `validationNumberTypes`)  
+Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` (DANGEROUS) for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use `getValidationError` to get more information. Requires the [utils script to be loaded](#loading-the-utilities-script).  
 ```js
 const isValid = iti.isValidNumber();
 ```
 Returns: `true`/`false`
 
 **isValidNumberPrecise** ⚠️ DANGEROUS  
-Check if the current number is valid using precise matching rules for each country/area code etc - [see example](https://intl-tel-input.com/examples/validation.html). Note that these rules change each month for various countries around the world, so you need to be careful to constantly keep the plugin up-to-date (e.g. via an automated script) else <ins>you will start rejecting valid numbers</ins>. For a simpler and more future-proof form of validation, see `isValidNumber` above. If validation fails, you can use `getValidationError` to get more information. Respects the `validationNumberTypes` option (which is set to `["MOBILE"]` by default, meaning `isValidNumberPrecise` will only return `true` for mobile numbers). Requires the [utils script to be loaded](#loading-the-utilities-script).  
+(Note: only returns `true` for valid mobile numbers by default - see `validationNumberTypes`)  
+Check if the current number is valid using precise matching rules for each country/area code etc - [see example](https://intl-tel-input.com/examples/validation.html). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else <ins>you will start rejecting valid numbers</ins>. For a simpler and more future-proof form of validation, see `isValidNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the [utils script to be loaded](#loading-the-utilities-script).  
 ```js
 const isValid = iti.isValidNumberPrecise();
 ```
