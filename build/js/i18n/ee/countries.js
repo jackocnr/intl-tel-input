@@ -240,6 +240,6 @@ const countryTranslations = {
   yt: "Mayotte",
   za: "Lõuna-Aafrika",
   zm: "Sambia",
-  zw: "Zimbabwe",
+  zw: "Zimbabwe"
 };
 export default countryTranslations;
