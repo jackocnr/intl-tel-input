@@ -37,6 +37,8 @@
   position: relative;
   //* Keep the input's default inline properties.
   display: inline-block;
+  // * Prevent the input from changing direction to rtl (ex: in Arabic) .
+  direction: ltr !important;
 
   //* Paul Irish (paulirish) says this is ok.
   //* http://www.paulirish.com/2012/box-sizing-border-box-ftw/
@@ -140,7 +142,7 @@
   &__dropdown-content {
     border-radius: 3px;
     background-color: var(--iti-dropdown-bg);
-    
+
     .iti--inline-dropdown & {
       position: absolute;
       //* Popup so render above everything else.

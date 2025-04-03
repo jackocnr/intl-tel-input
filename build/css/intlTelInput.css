@@ -24,6 +24,7 @@
 .iti {
   position: relative;
   display: inline-block;
+  direction: ltr !important;
 }
 .iti * {
   box-sizing: border-box;
