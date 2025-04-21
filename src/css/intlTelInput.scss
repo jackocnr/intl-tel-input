@@ -125,7 +125,7 @@
     border-right: var(--iti-triangle-border) solid transparent;
     border-top: var(--iti-arrow-height) solid var(--iti-arrow-color);
 
-    [dir="rtl"] & {
+    [dir="rtl"] &:not([dir="ltr"]) {
       margin-right: var(--iti-arrow-padding);
       margin-left: 0;
     }
