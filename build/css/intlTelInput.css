@@ -41,9 +41,7 @@
   overflow: hidden;
   position: absolute;
 }
-.iti input.iti__tel-input,
-.iti input.iti__tel-input[type=text],
-.iti input.iti__tel-input[type=tel] {
+.iti input.iti__tel-input {
   position: relative;
   z-index: 0;
   margin: 0 !important;
@@ -119,6 +117,7 @@
   padding: 0;
   margin: 0;
   overflow-y: scroll;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 .iti--inline-dropdown .iti__country-list {
@@ -195,7 +194,7 @@
   position: relative;
 }
 .iti--fullscreen-popup .iti__country {
-  padding: 10px 10px;
+  padding: 10px;
   line-height: 1.5em;
 }
 
@@ -205,7 +204,10 @@
   width: var(--iti-flag-width);
   border-radius: 1px;
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: var(--iti-path-flags-1x);
+  background-image: image-set(
+    var(--iti-path-flags-1x) 1x,
+    var(--iti-path-flags-2x) 2x
+  );
   background-repeat: no-repeat;
   background-position: var(--iti-flag-offset) 0;
   background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
@@ -1188,18 +1190,12 @@
 }
 
 .iti__globe {
-  background-image: var(--iti-path-globe-1x);
+  background-image: image-set(
+    var(--iti-path-globe-1x) 1x,
+    var(--iti-path-globe-2x) 2x
+  );
   background-size: contain;
   background-position: right;
   box-shadow: none;
   height: 19px;
-}
-
-@media (min-resolution: 2x) {
-  .iti__flag {
-    background-image: var(--iti-path-flags-2x);
-  }
-  .iti__globe {
-    background-image: var(--iti-path-globe-2x);
-  }
 }
