@@ -6,7 +6,7 @@ import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback 
 // make this available as a named export, so react users can access globals like intlTelInput.utils
 export { intlTelInput };
 
-type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "type" | "onInput" | "defaultValue">;
+type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
 
 type ItiProps = {
   initialValue?: string;
