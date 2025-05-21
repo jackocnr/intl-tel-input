@@ -86,6 +86,7 @@ onMounted(() => {
     if (props.disabled) {
       instance.value.setDisabled(props.disabled);
     }
+    wasPreviouslyValid.value = isValid();
   }
 });
 
