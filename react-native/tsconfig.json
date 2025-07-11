@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es2017"], //* Include ES2017 for Array.includes
+    "jsx": "react-native",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true, //* Required for react (etc) default imports.
+    "declaration": true, //* Generate .d.ts files.
+    "emitDeclarationOnly": true, //* ONLY generate .d.ts files (we use esbuild for the actual bundling).
+    "outFile": "build/IntlTelInput.d.ts",
+    "rootDir": "./src",
+    "allowJs": true, // allow importing .mjs files e.g. i18n files
+    "skipLibCheck": true, //* Skip type checking of declaration files
+    "types": ["node"] //* Include node types for process global
+  },
+  "include": [
+    "src/intl-tel-input/react-native.tsx",
+    "src/intl-tel-input/reactNativeWithUtils.tsx",
+    "src/intl-tel-input/i18n/index.ts",
+  ],
+}
