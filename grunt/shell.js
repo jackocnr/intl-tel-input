@@ -3,6 +3,9 @@ module.exports = function(grunt) {
     buildReact: {
       command: 'node react/build.js'
     },
+    buildReactNative: {
+      command: 'node react-native/build.js'
+    },
     buildVue: {
       command: 'vite build --config vue/viteConfig.js && vite build --config vue/viteConfigWithUtils.js'
     },
@@ -16,6 +19,10 @@ module.exports = function(grunt) {
     genReactTsDeclaration: {
       //* Clean up the module names by removing the /index suffix as this is how they will be used.
       command: 'tsc --p react/tsconfig.json && sed -i "" -e "s/\\/index\\"/\\"/g" react/build/IntlTelInput.d.ts'
+    },
+    genReactNativeTsDeclaration: {
+      //* Clean up the module names by removing the /index suffix as this is how they will be used.
+      command: 'tsc --p react-native/tsconfig.json && sed -i "" -e "s/\\/index\\"/\\"/g" react-native/build/IntlTelInput.d.ts'
     },
     eslint: {
       command: 'eslint .'

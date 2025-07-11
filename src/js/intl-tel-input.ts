@@ -61,7 +61,7 @@ interface AllOptions {
   allowDropdown: boolean;
   autoPlaceholder: string;
   containerClass: string;
-  countryOrder: string[];
+  countryOrder: string[] | null;
   countrySearch: boolean;
   customPlaceholder: ((selectedCountryPlaceholder: string, selectedCountryData: object) => string) | null;
   dropdownContainer: HTMLElement | null;

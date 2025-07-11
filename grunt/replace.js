@@ -303,6 +303,24 @@ module.exports = function(grunt) {
 
 
     /**************
+     * Generate reactNativeWithUtils.tsx
+     **************/
+    reactNativeWithUtils: {
+      options: {
+        patterns: [
+          {
+            match: /import intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
+            replacement: '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\nimport intlTelInput from "./intlTelInputWithUtils";'
+          }
+        ]
+      },
+      files: {
+        'react-native/src/intl-tel-input/reactNativeWithUtils.tsx': 'react-native/src/intl-tel-input/react-native.tsx',
+      }
+    },
+
+
+    /**************
      * Generate vue/src/IntlTelInputWithUtils.tsx
      **************/
     vueWithUtils: {
