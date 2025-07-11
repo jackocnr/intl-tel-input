@@ -11,5 +11,7 @@
 /build/js/i18n/types.js
 
 /react-native/node_modules/
+/react-native/__tests__/node_modules/
+
 # these files are now auto-generated
 /src/img/
