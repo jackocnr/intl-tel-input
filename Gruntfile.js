@@ -21,10 +21,12 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['generate-sprite', 'css']);
   // just javascript
-  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:buildJs', 'replace', 'react', 'vue']);
+  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genReactNativeTsDeclaration', 'shell:buildJs', 'replace', 'react', 'react-native', 'vue']);
   grunt.registerTask('jsfast', ['shell:buildJs', 'replace']);
   // just react
   grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact']);
+  // just react-native
+  grunt.registerTask('react-native', ['replace:reactNativeWithUtils', 'shell:buildReactNative']);
   // just vue
   grunt.registerTask('vue', ['replace:vueWithUtils', 'shell:buildVue']);
 

@@ -19,6 +19,7 @@
     "validation",
     "formatting",
     "react",
+    "react-native",
     "typescript"
   ],
   "license": "MIT",
@@ -70,9 +71,22 @@
     "vite": "^5.4.2",
     "vue": "^3.4.38"
   },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-native": ">=0.76.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
+  },
   "files": [
     "build/*",
     "react/build/*",
+    "react-native/build/*",
     "vue/build/*",
     "CHANGELOG.md",
     "LICENSE",
@@ -100,6 +114,7 @@
     "build:css": "grunt css",
     "build:img": "grunt img",
     "build:react": "grunt react",
+    "build:react-native": "grunt react-native",
     "build:vue": "grunt vue",
     "vue:demo": "vite --config vue/demo/validation/vite.config.js",
     "server": "grunt jasmine:interactive"
@@ -128,6 +143,16 @@
       "require": "./react/build/IntlTelInputWithUtils.cjs",
       "default": "./react/build/IntlTelInputWithUtils.js"
     },
+    "./react-native": {
+      "types": "./react-native/build/IntlTelInput.d.ts",
+      "require": "./react-native/build/IntlTelInput.cjs",
+      "default": "./react-native/build/IntlTelInput.js"
+    },
+    "./reactNativeWithUtils": {
+      "types": "./react-native/build/IntlTelInput.d.ts",
+      "require": "./react-native/build/IntlTelInputWithUtils.cjs",
+      "default": "./react-native/build/IntlTelInputWithUtils.js"
+    },
     "./vue": {
       "import": "./vue/build/IntlTelInput.mjs"
     },
@@ -152,6 +177,9 @@
       ],
       "react": [
         "react/build/IntlTelInput.d.ts"
+      ],
+      "react-native": [
+        "react-native/build/IntlTelInput.d.ts"
       ]
     }
   }

@@ -16,7 +16,7 @@ module.exports = function (grunt) {
         ],
         entry_point: "goog:i18n.phonenumbers.demo",
         compilation_level: "ADVANCED_OPTIMIZATIONS",
-        output_wrapper: "(function () {%output%})();\nconst utils = window.intlTelInputUtilsTemp;\ndelete window.intlTelInputUtilsTemp;\nexport default utils;",
+        output_wrapper: "(function () {%output%})();\n// React Native compatibility: use global context instead of window\nconst globalContext = (typeof window !== 'undefined') ? window :\n                     (typeof global !== 'undefined') ? global :\n                     (typeof self !== 'undefined') ? self : this;\nconst utils = globalContext.intlTelInputUtilsTemp;\ndelete globalContext.intlTelInputUtilsTemp;\nexport default utils;",
       },
     },
   };
