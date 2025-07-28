@@ -2,6 +2,7 @@
 import { I18n } from "../types";
 
 const countryTranslations: I18n = {
+  ac: "جزيرة أسينشين",
   ad: "أندورا",
   ae: "الإمارات العربية المتحدة",
   af: "أفغانستان",
@@ -239,6 +240,7 @@ const countryTranslations: I18n = {
   vu: "فانواتو",
   wf: "جزر والس وفوتونا",
   ws: "ساموا",
+  xk: "كوسوفو",
   ye: "اليمن",
   yt: "مايوت",
   za: "جنوب أفريقيا",
