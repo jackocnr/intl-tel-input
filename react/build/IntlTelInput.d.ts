@@ -1169,6 +1169,24 @@ declare module "intl-tel-input/i18n/ur" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/uz/countries" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const countryTranslations: I18n;
+    export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/uz/interface" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const interfaceTranslations: I18n;
+    export default interfaceTranslations;
+}
+declare module "intl-tel-input/i18n/uz" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    import countryTranslations from "intl-tel-input/i18n/uz/countries";
+    import interfaceTranslations from "intl-tel-input/i18n/uz/interface";
+    export { countryTranslations, interfaceTranslations };
+    const allTranslations: I18n;
+    export default allTranslations;
+}
 declare module "intl-tel-input/i18n/vi/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
@@ -1242,6 +1260,7 @@ declare module "intl-tel-input/i18n" {
     export { default as tr, countryTranslations as trCountryTranslations, interfaceTranslations as trInterfaceTranslations } from "intl-tel-input/i18n/tr";
     export { default as uk, countryTranslations as ukCountryTranslations, interfaceTranslations as ukInterfaceTranslations } from "intl-tel-input/i18n/uk";
     export { default as ur, countryTranslations as urCountryTranslations, interfaceTranslations as urInterfaceTranslations } from "intl-tel-input/i18n/ur";
+    export { default as uz, countryTranslations as uzCountryTranslations, interfaceTranslations as uzInterfaceTranslations } from "intl-tel-input/i18n/uz";
     export { default as vi, countryTranslations as viCountryTranslations, interfaceTranslations as viInterfaceTranslations } from "intl-tel-input/i18n/vi";
     export { default as zh, countryTranslations as zhCountryTranslations, interfaceTranslations as zhInterfaceTranslations } from "intl-tel-input/i18n/zh";
 }
