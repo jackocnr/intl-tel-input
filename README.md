@@ -349,7 +349,8 @@ Set this to false to hide the flags e.g. for political reasons. Instead, it will
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
-Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the new dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).
+Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the new dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).  
+__Note: if the user enters their number with autocomplete or by copying and pasting it, and their number includes the international dial code, then this will be shown twice__
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267px" height="51px" alt="Separate Dial Code">
 
