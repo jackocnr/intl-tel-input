@@ -82,6 +82,7 @@ interface AllOptions {
   strictMode: boolean;
   useFullscreenPopup: boolean;
   validationNumberTypes: NumberType[] | null;
+  direction?: string|null;
 }
 
 //* Export this as useful in react component too.
@@ -333,7 +334,11 @@ export class Iti {
     this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
 
     //* Check if input has one parent with RTL.
-    this.isRTL = !!this.telInput.closest("[dir=rtl]");
+    if (this.options.direction == null) {
+      this.isRTL = !!this.telInput.closest("[dir=rtl]");
+    } else {
+      this.isRTL = this.options.direction == 'rtl';
+    }
 
     const showOnDefaultSide = this.options.allowDropdown || this.options.separateDialCode;
     this.showSelectedCountryOnLeft = this.isRTL ? !showOnDefaultSide : showOnDefaultSide;
@@ -608,6 +613,7 @@ export class Iti {
             "aria-haspopup": "true",
             "aria-controls": `iti-${this.id}__dropdown-content`,
             "role": "combobox",
+            dir: this.isRTL ? "rtl" : "ltr",
           },
           this.countryContainer,
         );
@@ -637,7 +643,7 @@ export class Iti {
       if (allowDropdown) {
         this.dropdownArrow = createEl(
           "div",
-          { class: "iti__arrow", "aria-hidden": "true" },
+          { class: "iti__arrow", "aria-hidden": "true", dir: this.isRTL ? "rtl" : "ltr", },
           selectedCountryPrimary,
         );
       }
@@ -645,7 +651,7 @@ export class Iti {
       if (separateDialCode) {
         this.selectedDialCode = createEl(
           "div",
-          { class: "iti__selected-dial-code" },
+          { class: "iti__selected-dial-code", dir: this.isRTL ? "rtl" : "ltr", },
           this.selectedCountry,
         );
       }
@@ -778,7 +784,7 @@ export class Iti {
       }
       //* And the country name and dial code.
       content += `<span class='iti__country-name'>${c.name}</span>`;
-      content += `<span class='iti__dial-code'>+${c.dialCode}</span>`;
+      content += `<span class='iti__dial-code' ${this.isRTL ? "dir='rtl'" : "dir='ltr'"}>+${c.dialCode}</span>`;
 
       listItem.insertAdjacentHTML("beforeend", content);
     }
