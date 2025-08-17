@@ -2486,14 +2486,15 @@ var Iti = class {
     const { i18n } = this.options;
     const count = this.countryList.childElementCount;
     let searchText;
-    if (count === 0) {
-      searchText = i18n.zeroSearchResults;
-    } else if (count === 1) {
-      searchText = i18n.oneSearchResult;
+    if ("searchResultsText" in i18n) {
+      searchText = i18n.searchResultsText(count);
     } else {
-      searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
-      if (searchText.includes("{") && searchText.includes("}")) {
-        searchText = new Function("count", `return \`${searchText.replace(/`/g, "\\`")}\`;`)(count);
+      if (count === 0) {
+        searchText = i18n.zeroSearchResults;
+      } else if (count === 1) {
+        searchText = i18n.oneSearchResult;
+      } else {
+        searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
       }
     }
     this.searchResultsA11yText.textContent = searchText;

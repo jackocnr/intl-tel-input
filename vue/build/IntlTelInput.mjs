@@ -1,4 +1,4 @@
-import { mergeModels as D, useModel as x, ref as L, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as V, createElementBlock as z, mergeProps as O, vModelText as R } from "vue";
+import { mergeModels as D, useModel as x, ref as L, onMounted as E, watch as M, onUnmounted as F, withDirectives as B, openBlock as V, createElementBlock as R, mergeProps as z, vModelText as O } from "vue";
 const N = [
   [
     "af",
@@ -2117,7 +2117,7 @@ class G {
   _updateSearchResultsText() {
     const { i18n: t } = this.options, e = this.countryList.childElementCount;
     let i;
-    e === 0 ? i = t.zeroSearchResults : e === 1 ? i = t.oneSearchResult : (i = t.multipleSearchResults.replace("${count}", e.toString()), i.includes("{") && i.includes("}") && (i = new Function("count", `return \`${i.replace(/`/g, "\\`")}\`;`)(e))), this.searchResultsA11yText.textContent = i;
+    "searchResultsText" in t ? i = t.searchResultsText(e) : e === 0 ? i = t.zeroSearchResults : e === 1 ? i = t.oneSearchResult : i = t.multipleSearchResults.replace("${count}", e.toString()), this.searchResultsA11yText.textContent = i;
   }
   //* Highlight the next/prev item in the list (and ensure it is visible).
   _handleUpDownKey(t) {
@@ -2589,7 +2589,7 @@ const W = (u) => {
     ), F(() => {
       var h;
       return (h = r.value) == null ? void 0 : h.destroy();
-    }), t({ instance: r, input: o }), (h, m) => B((V(), z("input", O({
+    }), t({ instance: r, input: o }), (h, m) => B((V(), R("input", z({
       ref_key: "input",
       ref: o,
       "onUpdate:modelValue": m[0] || (m[0] = (b) => i.value = b),
@@ -2597,7 +2597,7 @@ const W = (u) => {
       onCountrychange: p,
       onInput: C
     }, u.inputProps), null, 16)), [
-      [R, i.value]
+      [O, i.value]
     ]);
   }
 };
