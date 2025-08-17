@@ -15,11 +15,11 @@ module.exports = function(grunt) {
     },
     genTsDeclaration: {
       //* Clean up the module names by removing the /index suffix as this is how they will be used.
-      command: 'tsc --p tsconfig.json && sed -i -e "s/\\/index\\"/\\"/g" build/js/intlTelInput.d.ts'
+      command: `tsc --p tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" build/js/intlTelInput.d.ts`
     },
     genReactTsDeclaration: {
       //* Clean up the module names by removing the /index suffix as this is how they will be used.
-      command: 'tsc --p react/tsconfig.json && sed -i -e "s/\\/index\\"/\\"/g" react/build/IntlTelInput.d.ts'
+      command: `tsc --p react/tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" react/build/IntlTelInput.d.ts`
     },
     eslint: {
       command: 'eslint .'
