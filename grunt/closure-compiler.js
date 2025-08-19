@@ -16,7 +16,7 @@ module.exports = function (grunt) {
         ],
         entry_point: "goog:i18n.phonenumbers.demo",
         compilation_level: "ADVANCED_OPTIMIZATIONS",
-        output_wrapper: "(function () {%output%})();\nconst utils = window.intlTelInputUtilsTemp;\ndelete window.intlTelInputUtilsTemp;\nexport default utils;",
+        output_wrapper: "(function () {%output%})();\nconst globalObject = typeof window !== 'undefined' ? window : global;\nconst utils = globalObject.intlTelInputUtilsTemp;\ndelete globalObject.intlTelInputUtilsTemp;\nexport default utils;",
       },
     },
   };

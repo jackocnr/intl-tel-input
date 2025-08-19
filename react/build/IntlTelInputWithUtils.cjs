@@ -9528,8 +9528,9 @@ var intl_tel_input_default = intlTelInput;
   m("intlTelInputUtilsTemp.numberType", yb);
   m("intlTelInputUtilsTemp.validationError", { IS_POSSIBLE: 0, INVALID_COUNTRY_CODE: 1, TOO_SHORT: 2, TOO_LONG: 3, IS_POSSIBLE_LOCAL_ONLY: 4, INVALID_LENGTH: 5 });
 })();
-var utils = window.intlTelInputUtilsTemp;
-delete window.intlTelInputUtilsTemp;
+var globalObject = typeof window !== "undefined" ? window : global;
+var utils = globalObject.intlTelInputUtilsTemp;
+delete globalObject.intlTelInputUtilsTemp;
 var utils_default = utils;
 
 // src/js/intl-tel-input/intlTelInputWithUtils.ts
