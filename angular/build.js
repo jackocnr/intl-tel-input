@@ -30,7 +30,7 @@ build({
   ...mainShared,
   entryPoints: ["angular/src/intl-tel-input/angularWithUtils.component.ts"],
   format: "cjs",
-  outfile: "angular/build/angularWithUtils.cjs",
+  outfile: "angular/build/IntlTelInputWithUtils.cjs",
 });
 
 //* Angular Component With Utils - Default (ES Modules)
@@ -38,7 +38,7 @@ build({
   ...mainShared,
   entryPoints: ["angular/src/intl-tel-input/angularWithUtils.component.ts"],
   format: "esm",
-  outfile: "angular/build/angularWithUtils.js",
+  outfile: "angular/build/IntlTelInputWithUtils.js",
 });
 
 const demoShared = {

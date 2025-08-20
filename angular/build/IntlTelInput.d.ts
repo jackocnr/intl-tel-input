@@ -264,6 +264,7 @@ declare module "intl-tel-input/i18n/types" {
         multipleSearchResults?: string;
         noCountrySelected?: string;
         zeroSearchResults?: string;
+        searchResultsText?: (count: number) => string;
     };
 }
 declare module "intl-tel-input/i18n/en/countries" {
@@ -287,6 +288,11 @@ declare module "intl-tel-input/i18n/en" {
 declare module "intl-tel-input" {
     import { Country } from "intl-tel-input/data";
     import { I18n } from "intl-tel-input/i18n/types";
+    global {
+        interface HTMLInputElement {
+            iti?: Iti;
+        }
+    }
     type UtilsLoader = () => Promise<{
         default: ItiUtils;
     }>;
@@ -504,7 +510,7 @@ declare module "intl-tel-input/angular.component" {
         ngOnDestroy(): void;
     }
 }
-declare module "intl-tel-input/utils-compiled" {
+declare module "intl-tel-input/utils" {
     export default utils;
     const utils: any;
 }
@@ -676,6 +682,24 @@ declare module "intl-tel-input/i18n/de" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/de/countries";
     import interfaceTranslations from "intl-tel-input/i18n/de/interface";
+    export { countryTranslations, interfaceTranslations };
+    const allTranslations: I18n;
+    export default allTranslations;
+}
+declare module "intl-tel-input/i18n/ee/countries" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const countryTranslations: I18n;
+    export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ee/interface" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const interfaceTranslations: I18n;
+    export default interfaceTranslations;
+}
+declare module "intl-tel-input/i18n/ee" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    import countryTranslations from "intl-tel-input/i18n/ee/countries";
+    import interfaceTranslations from "intl-tel-input/i18n/ee/interface";
     export { countryTranslations, interfaceTranslations };
     const allTranslations: I18n;
     export default allTranslations;
@@ -1148,6 +1172,24 @@ declare module "intl-tel-input/i18n/ur" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/uz/countries" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const countryTranslations: I18n;
+    export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/uz/interface" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    const interfaceTranslations: I18n;
+    export default interfaceTranslations;
+}
+declare module "intl-tel-input/i18n/uz" {
+    import { I18n } from "intl-tel-input/i18n/types";
+    import countryTranslations from "intl-tel-input/i18n/uz/countries";
+    import interfaceTranslations from "intl-tel-input/i18n/uz/interface";
+    export { countryTranslations, interfaceTranslations };
+    const allTranslations: I18n;
+    export default allTranslations;
+}
 declare module "intl-tel-input/i18n/vi/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
@@ -1193,6 +1235,7 @@ declare module "intl-tel-input/i18n" {
     export { default as cs, countryTranslations as csCountryTranslations, interfaceTranslations as csInterfaceTranslations } from "intl-tel-input/i18n/cs";
     export { default as da, countryTranslations as daCountryTranslations, interfaceTranslations as daInterfaceTranslations } from "intl-tel-input/i18n/da";
     export { default as de, countryTranslations as deCountryTranslations, interfaceTranslations as deInterfaceTranslations } from "intl-tel-input/i18n/de";
+    export { default as ee, countryTranslations as eeCountryTranslations, interfaceTranslations as eeInterfaceTranslations } from "intl-tel-input/i18n/ee";
     export { default as el, countryTranslations as elCountryTranslations, interfaceTranslations as elInterfaceTranslations } from "intl-tel-input/i18n/el";
     export { default as en, countryTranslations as enCountryTranslations, interfaceTranslations as enInterfaceTranslations } from "intl-tel-input/i18n/en";
     export { default as es, countryTranslations as esCountryTranslations, interfaceTranslations as esInterfaceTranslations } from "intl-tel-input/i18n/es";
@@ -1220,6 +1263,7 @@ declare module "intl-tel-input/i18n" {
     export { default as tr, countryTranslations as trCountryTranslations, interfaceTranslations as trInterfaceTranslations } from "intl-tel-input/i18n/tr";
     export { default as uk, countryTranslations as ukCountryTranslations, interfaceTranslations as ukInterfaceTranslations } from "intl-tel-input/i18n/uk";
     export { default as ur, countryTranslations as urCountryTranslations, interfaceTranslations as urInterfaceTranslations } from "intl-tel-input/i18n/ur";
+    export { default as uz, countryTranslations as uzCountryTranslations, interfaceTranslations as uzInterfaceTranslations } from "intl-tel-input/i18n/uz";
     export { default as vi, countryTranslations as viCountryTranslations, interfaceTranslations as viInterfaceTranslations } from "intl-tel-input/i18n/vi";
     export { default as zh, countryTranslations as zhCountryTranslations, interfaceTranslations as zhInterfaceTranslations } from "intl-tel-input/i18n/zh";
 }

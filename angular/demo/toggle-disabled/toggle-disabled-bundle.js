@@ -30,9 +30,7 @@
     }
     mark("Zone");
     class ZoneImpl {
-      static {
-        this.__symbol__ = __symbol__;
-      }
+      static __symbol__ = __symbol__;
       static assertZonePatched() {
         if (global["Promise"] !== patches["ZoneAwarePromise"]) {
           throw new Error("Zone.js has detected that ZoneAwarePromise `(window|global).Promise` has been overwritten.\nMost likely cause is that a Promise polyfill has been loaded after Zone.js (Polyfilling Promise api is not necessary when zone.js is loaded. If you must load one, do so before loading zone.js.)");
@@ -51,7 +49,6 @@
       static get currentTask() {
         return _currentTask;
       }
-      // tslint:disable-next-line:require-internal-with-underscore
       static __load_patch(name, fn2, ignoreDuplicate = false) {
         if (patches.hasOwnProperty(name)) {
           const checkDuplicate = global[__symbol__("forceDuplicateZoneCheck")] === true;
@@ -71,6 +68,10 @@
       get name() {
         return this._name;
       }
+      _parent;
+      _name;
+      _properties;
+      _zoneDelegate;
       constructor(parent, zoneSpec) {
         this._parent = parent;
         this._name = zoneSpec ? zoneSpec.name || "unnamed" : "<root>";
@@ -250,12 +251,39 @@
       get zone() {
         return this._zone;
       }
+      _zone;
+      _taskCounts = {
+        "microTask": 0,
+        "macroTask": 0,
+        "eventTask": 0
+      };
+      _parentDelegate;
+      _forkDlgt;
+      _forkZS;
+      _forkCurrZone;
+      _interceptDlgt;
+      _interceptZS;
+      _interceptCurrZone;
+      _invokeDlgt;
+      _invokeZS;
+      _invokeCurrZone;
+      _handleErrorDlgt;
+      _handleErrorZS;
+      _handleErrorCurrZone;
+      _scheduleTaskDlgt;
+      _scheduleTaskZS;
+      _scheduleTaskCurrZone;
+      _invokeTaskDlgt;
+      _invokeTaskZS;
+      _invokeTaskCurrZone;
+      _cancelTaskDlgt;
+      _cancelTaskZS;
+      _cancelTaskCurrZone;
+      _hasTaskDlgt;
+      _hasTaskDlgtOwner;
+      _hasTaskZS;
+      _hasTaskCurrZone;
       constructor(zone, parentDelegate, zoneSpec) {
-        this._taskCounts = {
-          "microTask": 0,
-          "macroTask": 0,
-          "eventTask": 0
-        };
         this._zone = zone;
         this._parentDelegate = parentDelegate;
         this._forkZS = zoneSpec && (zoneSpec && zoneSpec.onFork ? zoneSpec : parentDelegate._forkZS);
@@ -361,7 +389,6 @@
           this.handleError(targetZone, err);
         }
       }
-      // tslint:disable-next-line:require-internal-with-underscore
       _updateTaskCount(type, count) {
         const counts = this._taskCounts;
         const prev = counts[type];
@@ -381,11 +408,18 @@
       }
     }
     class ZoneTask {
+      type;
+      source;
+      invoke;
+      callback;
+      data;
+      scheduleFn;
+      cancelFn;
+      _zone = null;
+      runCount = 0;
+      _zoneDelegates = null;
+      _state = "notScheduled";
       constructor(type, source, callback, options, scheduleFn, cancelFn) {
-        this._zone = null;
-        this.runCount = 0;
-        this._zoneDelegates = null;
-        this._state = "notScheduled";
         this.type = type;
         this.source = source;
         this.data = options;
@@ -428,7 +462,6 @@
       cancelScheduleRequest() {
         this._transitionTo(notScheduled, scheduling);
       }
-      // tslint:disable-next-line:require-internal-with-underscore
       _transitionTo(toState, fromState1, fromState2) {
         if (this._state === fromState1 || this._state === fromState2) {
           this._state = toState;
@@ -698,7 +731,7 @@
       if (typeof previousValue === "function") {
         target.removeEventListener(eventName, wrapFn);
       }
-      originalDescSet && originalDescSet.call(target, null);
+      originalDescSet?.call(target, null);
       target[eventNameSymbol] = newValue;
       if (typeof newValue === "function") {
         target.addEventListener(eventName, wrapFn, false);
@@ -857,16 +890,6 @@
   }
   var isDetectedIEOrEdge = false;
   var ieOrEdge = false;
-  function isIE() {
-    try {
-      const ua = internalWindow.navigator.userAgent;
-      if (ua.indexOf("MSIE ") !== -1 || ua.indexOf("Trident/") !== -1) {
-        return true;
-      }
-    } catch (error) {
-    }
-    return false;
-  }
   function isIEOrEdge() {
     if (isDetectedIEOrEdge) {
       return ieOrEdge;
@@ -886,20 +909,6 @@
   }
   function isNumber(value) {
     return typeof value === "number";
-  }
-  var passiveSupported = false;
-  if (typeof window !== "undefined") {
-    try {
-      const options = Object.defineProperty({}, "passive", {
-        get: function() {
-          passiveSupported = true;
-        }
-      });
-      window.addEventListener("test", options, options);
-      window.removeEventListener("test", options, options);
-    } catch (err) {
-      passiveSupported = false;
-    }
   }
   var OPTIMIZED_ZONE_EVENT_TASK_DATA = {
     useG: true
@@ -1029,10 +1038,7 @@
         nativePrependEventListener = proto[zoneSymbol(patchOptions2.prepend)] = proto[patchOptions2.prepend];
       }
       function buildEventListenerOptions(options, passive) {
-        if (!passiveSupported && typeof options === "object" && options) {
-          return !!options.capture;
-        }
-        if (!passiveSupported || !passive) {
+        if (!passive) {
           return options;
         }
         if (typeof options === "boolean") {
@@ -1099,7 +1105,7 @@
         const typeOfDelegate = typeof delegate;
         return typeOfDelegate === "function" && task.callback === delegate || typeOfDelegate === "object" && task.originalDelegate === delegate;
       };
-      const compare = patchOptions2 && patchOptions2.diff ? patchOptions2.diff : compareTaskCallbackVsDelegate;
+      const compare = patchOptions2?.diff || compareTaskCallbackVsDelegate;
       const unpatchedEvents = Zone[zoneSymbol("UNPATCHED_EVENTS")];
       const passiveEvents = _global4[zoneSymbol("PASSIVE_EVENTS")];
       function copyEventListenerOptions(options) {
@@ -1126,17 +1132,17 @@
           if (isNode && eventName === "uncaughtException") {
             return nativeListener.apply(this, arguments);
           }
-          let isHandleEvent = false;
+          let isEventListenerObject = false;
           if (typeof delegate !== "function") {
             if (!delegate.handleEvent) {
               return nativeListener.apply(this, arguments);
             }
-            isHandleEvent = true;
+            isEventListenerObject = true;
           }
           if (validateHandler && !validateHandler(nativeListener, delegate, target, arguments)) {
             return;
           }
-          const passive = passiveSupported && !!passiveEvents && passiveEvents.indexOf(eventName) !== -1;
+          const passive = !!passiveEvents && passiveEvents.indexOf(eventName) !== -1;
           const options = copyEventListenerOptions(buildEventListenerOptions(arguments[2], passive));
           const signal2 = options?.signal;
           if (signal2?.aborted) {
@@ -1214,13 +1220,13 @@
           if (once) {
             taskData.options.once = true;
           }
-          if (!(!passiveSupported && typeof task.options === "boolean")) {
+          if (typeof task.options !== "boolean") {
             task.options = options;
           }
           task.target = target;
           task.capture = capture;
           task.eventName = eventName;
-          if (isHandleEvent) {
+          if (isEventListenerObject) {
             task.originalDelegate = delegate;
           }
           if (!prepend) {
@@ -1551,7 +1557,7 @@
       return onProperties;
     }
     const tip = ignoreProperties.filter((ip) => ip.target === target);
-    if (!tip || tip.length === 0) {
+    if (tip.length === 0) {
       return onProperties;
     }
     const targetIgnoreProperties = tip[0].ignoreProperties;
@@ -1591,7 +1597,7 @@
         "HTMLMarqueeElement",
         "Worker"
       ]);
-      const ignoreErrorProperties = isIE() ? [{ target: internalWindow2, ignoreProperties: ["error"] }] : [];
+      const ignoreErrorProperties = [];
       patchFilteredProperties(internalWindow2, getOnEventNames(internalWindow2), ignoreProperties ? ignoreProperties.concat(ignoreErrorProperties) : ignoreProperties, ObjectGetPrototypeOf(internalWindow2));
     }
     patchTargets = patchTargets.concat([
@@ -1607,7 +1613,7 @@
     ]);
     for (let i = 0; i < patchTargets.length; i++) {
       const target = _global4[patchTargets[i]];
-      target && target.prototype && patchFilteredProperties(target.prototype, getOnEventNames(target.prototype), ignoreProperties);
+      target?.prototype && patchFilteredProperties(target.prototype, getOnEventNames(target.prototype), ignoreProperties);
     }
   }
   function patchBrowser(Zone2) {
@@ -1873,7 +1879,7 @@
         }
       }
       function isThenable(value) {
-        return value && value.then;
+        return value && typeof value.then === "function";
       }
       function forwardResolution(value) {
         return value;
@@ -2763,12 +2769,12 @@
       return result;
     }
   };
-  var ViewEncapsulation;
+  var ViewEncapsulation$1;
   (function(ViewEncapsulation3) {
     ViewEncapsulation3[ViewEncapsulation3["Emulated"] = 0] = "Emulated";
     ViewEncapsulation3[ViewEncapsulation3["None"] = 2] = "None";
     ViewEncapsulation3[ViewEncapsulation3["ShadowDom"] = 3] = "ShadowDom";
-  })(ViewEncapsulation || (ViewEncapsulation = {}));
+  })(ViewEncapsulation$1 || (ViewEncapsulation$1 = {}));
   var ChangeDetectionStrategy;
   (function(ChangeDetectionStrategy3) {
     ChangeDetectionStrategy3[ChangeDetectionStrategy3["OnPush"] = 0] = "OnPush";
@@ -2829,6 +2835,26 @@
   function parseSelectorToR3Selector(selector) {
     return selector ? CssSelector.parse(selector).map(parserSelectorToR3Selector) : [];
   }
+  var FactoryTarget;
+  (function(FactoryTarget3) {
+    FactoryTarget3[FactoryTarget3["Directive"] = 0] = "Directive";
+    FactoryTarget3[FactoryTarget3["Component"] = 1] = "Component";
+    FactoryTarget3[FactoryTarget3["Injectable"] = 2] = "Injectable";
+    FactoryTarget3[FactoryTarget3["Pipe"] = 3] = "Pipe";
+    FactoryTarget3[FactoryTarget3["NgModule"] = 4] = "NgModule";
+  })(FactoryTarget || (FactoryTarget = {}));
+  var R3TemplateDependencyKind$1;
+  (function(R3TemplateDependencyKind3) {
+    R3TemplateDependencyKind3[R3TemplateDependencyKind3["Directive"] = 0] = "Directive";
+    R3TemplateDependencyKind3[R3TemplateDependencyKind3["Pipe"] = 1] = "Pipe";
+    R3TemplateDependencyKind3[R3TemplateDependencyKind3["NgModule"] = 2] = "NgModule";
+  })(R3TemplateDependencyKind$1 || (R3TemplateDependencyKind$1 = {}));
+  var ViewEncapsulation;
+  (function(ViewEncapsulation3) {
+    ViewEncapsulation3[ViewEncapsulation3["Emulated"] = 0] = "Emulated";
+    ViewEncapsulation3[ViewEncapsulation3["None"] = 2] = "None";
+    ViewEncapsulation3[ViewEncapsulation3["ShadowDom"] = 3] = "ShadowDom";
+  })(ViewEncapsulation || (ViewEncapsulation = {}));
   var textEncoder;
   function computeDigest(message) {
     return sha1(serializeNodes(message.nodes).join("") + `[${message.meaning}]`);
@@ -3412,7 +3438,7 @@
       return new _InvokeFunctionExpr(this.fn.clone(), this.args.map((arg) => arg.clone()), this.type, this.sourceSpan, this.pure);
     }
   };
-  var TaggedTemplateExpr = class _TaggedTemplateExpr extends Expression {
+  var TaggedTemplateLiteralExpr = class _TaggedTemplateLiteralExpr extends Expression {
     tag;
     template;
     constructor(tag, template2, type, sourceSpan) {
@@ -3421,16 +3447,16 @@
       this.template = template2;
     }
     isEquivalent(e) {
-      return e instanceof _TaggedTemplateExpr && this.tag.isEquivalent(e.tag) && areAllEquivalentPredicate(this.template.elements, e.template.elements, (a, b) => a.text === b.text) && areAllEquivalent(this.template.expressions, e.template.expressions);
+      return e instanceof _TaggedTemplateLiteralExpr && this.tag.isEquivalent(e.tag) && this.template.isEquivalent(e.template);
     }
     isConstant() {
       return false;
     }
     visitExpression(visitor, context2) {
-      return visitor.visitTaggedTemplateExpr(this, context2);
+      return visitor.visitTaggedTemplateLiteralExpr(this, context2);
     }
     clone() {
-      return new _TaggedTemplateExpr(this.tag.clone(), this.template.clone(), this.type, this.sourceSpan);
+      return new _TaggedTemplateLiteralExpr(this.tag.clone(), this.template.clone(), this.type, this.sourceSpan);
     }
   };
   var InstantiateExpr = class _InstantiateExpr extends Expression {
@@ -3473,28 +3499,46 @@
       return new _LiteralExpr(this.value, this.type, this.sourceSpan);
     }
   };
-  var TemplateLiteral = class _TemplateLiteral {
+  var TemplateLiteralExpr = class _TemplateLiteralExpr extends Expression {
     elements;
     expressions;
-    constructor(elements, expressions) {
+    constructor(elements, expressions, sourceSpan) {
+      super(null, sourceSpan);
       this.elements = elements;
       this.expressions = expressions;
     }
+    isEquivalent(e) {
+      return e instanceof _TemplateLiteralExpr && areAllEquivalentPredicate(this.elements, e.elements, (a, b) => a.text === b.text) && areAllEquivalent(this.expressions, e.expressions);
+    }
+    isConstant() {
+      return false;
+    }
+    visitExpression(visitor, context2) {
+      return visitor.visitTemplateLiteralExpr(this, context2);
+    }
     clone() {
-      return new _TemplateLiteral(this.elements.map((el) => el.clone()), this.expressions.map((expr) => expr.clone()));
+      return new _TemplateLiteralExpr(this.elements.map((el) => el.clone()), this.expressions.map((expr) => expr.clone()));
     }
   };
-  var TemplateLiteralElement = class _TemplateLiteralElement {
+  var TemplateLiteralElementExpr = class _TemplateLiteralElementExpr extends Expression {
     text;
-    sourceSpan;
     rawText;
     constructor(text2, sourceSpan, rawText) {
+      super(STRING_TYPE, sourceSpan);
       this.text = text2;
-      this.sourceSpan = sourceSpan;
-      this.rawText = rawText ?? sourceSpan?.toString() ?? escapeForTemplateLiteral(escapeSlashes(text2));
+      this.rawText = rawText ?? escapeForTemplateLiteral(escapeSlashes(text2));
+    }
+    visitExpression(visitor, context2) {
+      return visitor.visitTemplateLiteralElementExpr(this, context2);
+    }
+    isEquivalent(e) {
+      return e instanceof _TemplateLiteralElementExpr && e.text === this.text && e.rawText === this.rawText;
+    }
+    isConstant() {
+      return true;
     }
     clone() {
-      return new _TemplateLiteralElement(this.text, this.sourceSpan, this.rawText);
+      return new _TemplateLiteralElementExpr(this.text, this.sourceSpan, this.rawText);
     }
   };
   var LiteralPiece = class {
@@ -4086,7 +4130,7 @@
     return new IfStmt(condition, thenClause, elseClause, sourceSpan, leadingComments);
   }
   function taggedTemplate(tag, template2, type, sourceSpan) {
-    return new TaggedTemplateExpr(tag, template2, type, sourceSpan);
+    return new TaggedTemplateLiteralExpr(tag, template2, type, sourceSpan);
   }
   function literal(value, type, sourceSpan) {
     return new LiteralExpr(value, type, sourceSpan);
@@ -4677,6 +4721,10 @@
     static forwardRef = { name: "forwardRef", moduleName: CORE };
     static resolveForwardRef = { name: "resolveForwardRef", moduleName: CORE };
     static replaceMetadata = { name: "\u0275\u0275replaceMetadata", moduleName: CORE };
+    static getReplaceMetadataURL = {
+      name: "\u0275\u0275getReplaceMetadataURL",
+      moduleName: CORE
+    };
     static \u0275\u0275defineInjectable = { name: "\u0275\u0275defineInjectable", moduleName: CORE };
     static declareInjectable = { name: "\u0275\u0275ngDeclareInjectable", moduleName: CORE };
     static InjectableDeclaration = {
@@ -4789,10 +4837,6 @@
       name: "\u0275\u0275HostDirectivesFeature",
       moduleName: CORE
     };
-    static InputTransformsFeatureFeature = {
-      name: "\u0275\u0275InputTransformsFeature",
-      moduleName: CORE
-    };
     static ExternalStylesFeature = {
       name: "\u0275\u0275ExternalStylesFeature",
       moduleName: CORE
@@ -4873,26 +4917,24 @@
       return token;
     }
     if (Array.isArray(token)) {
-      return "[" + token.map(stringify).join(", ") + "]";
+      return `[${token.map(stringify).join(", ")}]`;
     }
     if (token == null) {
       return "" + token;
     }
-    if (token.overriddenName) {
-      return `${token.overriddenName}`;
-    }
-    if (token.name) {
-      return `${token.name}`;
+    const name = token.overriddenName || token.name;
+    if (name) {
+      return `${name}`;
     }
     if (!token.toString) {
       return "object";
     }
-    const res = token.toString();
-    if (res == null) {
-      return "" + res;
+    const result = token.toString();
+    if (result == null) {
+      return "" + result;
     }
-    const newLineIndex = res.indexOf("\n");
-    return newLineIndex === -1 ? res : res.substring(0, newLineIndex);
+    const newLineIndex = result.indexOf("\n");
+    return newLineIndex >= 0 ? result.slice(0, newLineIndex) : result;
   }
   var Version = class {
     full;
@@ -5304,16 +5346,26 @@
       ctx.print(expr, `)`);
       return null;
     }
-    visitTaggedTemplateExpr(expr, ctx) {
+    visitTaggedTemplateLiteralExpr(expr, ctx) {
       expr.tag.visitExpression(this, ctx);
-      ctx.print(expr, "`" + expr.template.elements[0].rawText);
-      for (let i = 1; i < expr.template.elements.length; i++) {
-        ctx.print(expr, "${");
-        expr.template.expressions[i - 1].visitExpression(this, ctx);
-        ctx.print(expr, `}${expr.template.elements[i].rawText}`);
+      expr.template.visitExpression(this, ctx);
+      return null;
+    }
+    visitTemplateLiteralExpr(expr, ctx) {
+      ctx.print(expr, "`");
+      for (let i = 0; i < expr.elements.length; i++) {
+        expr.elements[i].visitExpression(this, ctx);
+        const expression = i < expr.expressions.length ? expr.expressions[i] : null;
+        if (expression !== null) {
+          ctx.print(expression, "${");
+          expression.visitExpression(this, ctx);
+          ctx.print(expression, "}");
+        }
       }
       ctx.print(expr, "`");
-      return null;
+    }
+    visitTemplateLiteralElementExpr(expr, ctx) {
+      ctx.print(expr, expr.rawText);
     }
     visitWrappedNodeExpr(ast, ctx) {
       throw new Error("Abstract emitter cannot visit WrappedNodeExpr.");
@@ -5609,14 +5661,6 @@
     R3FactoryDelegateType2[R3FactoryDelegateType2["Class"] = 0] = "Class";
     R3FactoryDelegateType2[R3FactoryDelegateType2["Function"] = 1] = "Function";
   })(R3FactoryDelegateType || (R3FactoryDelegateType = {}));
-  var FactoryTarget$1;
-  (function(FactoryTarget3) {
-    FactoryTarget3[FactoryTarget3["Directive"] = 0] = "Directive";
-    FactoryTarget3[FactoryTarget3["Component"] = 1] = "Component";
-    FactoryTarget3[FactoryTarget3["Injectable"] = 2] = "Injectable";
-    FactoryTarget3[FactoryTarget3["Pipe"] = 3] = "Pipe";
-    FactoryTarget3[FactoryTarget3["NgModule"] = 4] = "NgModule";
-  })(FactoryTarget$1 || (FactoryTarget$1 = {}));
   function compileFactoryFunction(meta) {
     const t = variable("__ngFactoryType__");
     let baseFactoryVar = null;
@@ -5687,7 +5731,7 @@
     if (dep.token === null) {
       return importExpr(Identifiers.invalidFactoryDep).callFn([literal(index)]);
     } else if (dep.attributeNameType === null) {
-      const flags = 0 | (dep.self ? 2 : 0) | (dep.skipSelf ? 4 : 0) | (dep.host ? 1 : 0) | (dep.optional ? 8 : 0) | (target === FactoryTarget$1.Pipe ? 16 : 0);
+      const flags = 0 | (dep.self ? 2 : 0) | (dep.skipSelf ? 4 : 0) | (dep.host ? 1 : 0) | (dep.optional ? 8 : 0) | (target === FactoryTarget.Pipe ? 16 : 0);
       let flagsParam = flags !== 0 || dep.optional ? literal(flags) : null;
       const injectArgs2 = [dep.token];
       if (flagsParam) {
@@ -5743,12 +5787,12 @@
   }
   function getInjectFn(target) {
     switch (target) {
-      case FactoryTarget$1.Component:
-      case FactoryTarget$1.Directive:
-      case FactoryTarget$1.Pipe:
+      case FactoryTarget.Component:
+      case FactoryTarget.Directive:
+      case FactoryTarget.Pipe:
         return Identifiers.directiveInject;
-      case FactoryTarget$1.NgModule:
-      case FactoryTarget$1.Injectable:
+      case FactoryTarget.NgModule:
+      case FactoryTarget.Injectable:
       default:
         return Identifiers.inject;
     }
@@ -5794,7 +5838,7 @@
       this.nameSpan = nameSpan;
     }
   };
-  var EmptyExpr$1 = class extends AST {
+  var EmptyExpr$1 = class EmptyExpr extends AST {
     visit(visitor, context2 = null) {
     }
   };
@@ -5954,7 +5998,7 @@
       return visitor.visitLiteralMap(this, context2);
     }
   };
-  var Interpolation$1 = class extends AST {
+  var Interpolation$1 = class Interpolation extends AST {
     strings;
     expressions;
     constructor(span, sourceSpan, strings, expressions) {
@@ -6072,6 +6116,28 @@
     }
     visit(visitor, context2 = null) {
       return visitor.visitSafeCall(this, context2);
+    }
+  };
+  var TemplateLiteral = class extends AST {
+    elements;
+    expressions;
+    constructor(span, sourceSpan, elements, expressions) {
+      super(span, sourceSpan);
+      this.elements = elements;
+      this.expressions = expressions;
+    }
+    visit(visitor, context2) {
+      return visitor.visitTemplateLiteral(this, context2);
+    }
+  };
+  var TemplateLiteralElement = class extends AST {
+    text;
+    constructor(span, sourceSpan, text2) {
+      super(span, sourceSpan);
+      this.text = text2;
+    }
+    visit(visitor, context2) {
+      return visitor.visitTemplateLiteralElement(this, context2);
     }
   };
   var AbsoluteSourceSpan = class {
@@ -6217,6 +6283,17 @@
       this.visit(ast.receiver, context2);
       this.visitAll(ast.args, context2);
     }
+    visitTemplateLiteral(ast, context2) {
+      for (let i = 0; i < ast.elements.length; i++) {
+        this.visit(ast.elements[i], context2);
+        const expression = i < ast.expressions.length ? ast.expressions[i] : null;
+        if (expression !== null) {
+          this.visit(expression, context2);
+        }
+      }
+    }
+    visitTemplateLiteralElement(ast, context2) {
+    }
     // This is not part of the AstVisitor interface, just a helper method
     visitAll(asts, context2) {
       for (const ast of asts) {
@@ -6353,7 +6430,7 @@
   function mergeNsAndName(prefix, localName) {
     return prefix ? `:${prefix}:${localName}` : localName;
   }
-  var Comment$1 = class {
+  var Comment$1 = class Comment {
     value;
     sourceSpan;
     constructor(value, sourceSpan) {
@@ -6364,7 +6441,7 @@
       throw new Error("visit() not implemented for Comment");
     }
   };
-  var Text$3 = class {
+  var Text$3 = class Text2 {
     value;
     sourceSpan;
     constructor(value, sourceSpan) {
@@ -6469,7 +6546,7 @@
       return visitor.visitBoundEvent(this);
     }
   };
-  var Element$1 = class {
+  var Element$1 = class Element2 {
     name;
     attributes;
     inputs;
@@ -6763,7 +6840,7 @@
       return visitor.visitUnknownBlock(this);
     }
   };
-  var LetDeclaration$1 = class {
+  var LetDeclaration$1 = class LetDeclaration {
     name;
     value;
     sourceSpan;
@@ -6863,7 +6940,7 @@
       return visitor.visitReference(this);
     }
   };
-  var Icu$1 = class {
+  var Icu$1 = class Icu {
     vars;
     placeholders;
     sourceSpan;
@@ -6938,7 +7015,7 @@
       }
     }
   };
-  var Text$2 = class {
+  var Text$2 = class Text3 {
     value;
     sourceSpan;
     constructor(value, sourceSpan) {
@@ -6960,7 +7037,7 @@
       return visitor.visitContainer(this, context2);
     }
   };
-  var Icu = class {
+  var Icu2 = class {
     expression;
     type;
     cases;
@@ -7084,7 +7161,7 @@
       return `{$${ph.startName}}${children}{$${ph.closeName}}`;
     }
   };
-  var _Visitor$2 = class {
+  var _Visitor$2 = class _Visitor {
     visitTag(tag) {
       const strAttrs = this._serializeAttributes(tag.attrs);
       if (tag.children.length == 0) {
@@ -7282,7 +7359,7 @@ ${doctype.dtd}
       type: meta.type,
       typeArgumentCount: meta.typeArgumentCount,
       deps: [],
-      target: FactoryTarget$1.Injectable
+      target: FactoryTarget.Injectable
     };
     if (meta.useClass !== void 0) {
       const useClassOnSelf = meta.useClass.expression.isEquivalent(meta.type.value);
@@ -7691,7 +7768,7 @@ ${doctype.dtd}
       ctx.println(stmt, `;`);
       return null;
     }
-    visitTaggedTemplateExpr(ast, ctx) {
+    visitTaggedTemplateLiteralExpr(ast, ctx) {
       const elements = ast.template.elements;
       ast.tag.visitExpression(this, ctx);
       ctx.print(ast, `(${makeTemplateObjectPolyfill}(`);
@@ -7702,6 +7779,23 @@ ${doctype.dtd}
         expression.visitExpression(this, ctx);
       });
       ctx.print(ast, ")");
+      return null;
+    }
+    visitTemplateLiteralExpr(expr, ctx) {
+      ctx.print(expr, "`");
+      for (let i = 0; i < expr.elements.length; i++) {
+        expr.elements[i].visitExpression(this, ctx);
+        const expression = i < expr.expressions.length ? expr.expressions[i] : null;
+        if (expression !== null) {
+          ctx.print(expression, "${");
+          expression.visitExpression(this, ctx);
+          ctx.print(expression, "}");
+        }
+      }
+      ctx.print(expr, "`");
+    }
+    visitTemplateLiteralElementExpr(expr, ctx) {
+      ctx.print(expr, expr.rawText);
       return null;
     }
     visitFunctionExpr(ast, ctx) {
@@ -7979,8 +8073,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       if (setNgModuleScopeCall !== null) {
         statements.push(setNgModuleScopeCall);
       }
-    } else {
-    }
+    } else ;
     if (meta.schemas !== null && meta.schemas.length > 0) {
       definitionMap.set("schemas", literalArr(meta.schemas.map((ref) => ref.value)));
     }
@@ -9146,7 +9239,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       ...NEW_OP
     };
   }
-  var Interpolation = class {
+  var Interpolation2 = class {
     strings;
     expressions;
     i18nPlaceholders;
@@ -9930,7 +10023,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       return new _SafeTernaryExpr(this.guard.clone(), this.expr.clone());
     }
   };
-  var EmptyExpr = class _EmptyExpr extends ExpressionBase {
+  var EmptyExpr2 = class _EmptyExpr extends ExpressionBase {
     kind = ExpressionKind.EmptyExpr;
     visitExpression(visitor, context2) {
     }
@@ -10106,7 +10199,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       case OpKind.ClassProp:
       case OpKind.ClassMap:
       case OpKind.Binding:
-        if (op.expression instanceof Interpolation) {
+        if (op.expression instanceof Interpolation2) {
           transformExpressionsInInterpolation(op.expression, transform2, flags);
         } else {
           op.expression = transformExpressionsInExpression(op.expression, transform2, flags);
@@ -10115,7 +10208,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       case OpKind.Property:
       case OpKind.HostProperty:
       case OpKind.Attribute:
-        if (op.expression instanceof Interpolation) {
+        if (op.expression instanceof Interpolation2) {
           transformExpressionsInInterpolation(op.expression, transform2, flags);
         } else {
           op.expression = transformExpressionsInExpression(op.expression, transform2, flags);
@@ -10163,7 +10256,13 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
         op.trustedValueFn = op.trustedValueFn && transformExpressionsInExpression(op.trustedValueFn, transform2, flags);
         break;
       case OpKind.RepeaterCreate:
-        op.track = transformExpressionsInExpression(op.track, transform2, flags);
+        if (op.trackByOps === null) {
+          op.track = transformExpressionsInExpression(op.track, transform2, flags);
+        } else {
+          for (const innerOp of op.trackByOps) {
+            transformExpressionsInOp(innerOp, transform2, flags | VisitorContextFlag.InChildOperation);
+          }
+        }
         if (op.trackByFn !== null) {
           op.trackByFn = transformExpressionsInExpression(op.trackByFn, transform2, flags);
         }
@@ -10277,7 +10376,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       }
     } else if (expr instanceof NotExpr) {
       expr.condition = transformExpressionsInExpression(expr.condition, transform2, flags);
-    } else if (expr instanceof TaggedTemplateExpr) {
+    } else if (expr instanceof TaggedTemplateLiteralExpr) {
       expr.tag = transformExpressionsInExpression(expr.tag, transform2, flags);
       expr.template.expressions = expr.template.expressions.map((e) => transformExpressionsInExpression(e, transform2, flags));
     } else if (expr instanceof ArrowFunctionExpr) {
@@ -10288,9 +10387,13 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       } else {
         expr.body = transformExpressionsInExpression(expr.body, transform2, flags);
       }
-    } else if (expr instanceof WrappedNodeExpr) {
-    } else if (expr instanceof ReadVarExpr || expr instanceof ExternalExpr || expr instanceof LiteralExpr) {
-    } else {
+    } else if (expr instanceof WrappedNodeExpr) ;
+    else if (expr instanceof TemplateLiteralExpr) {
+      for (let i = 0; i < expr.expressions.length; i++) {
+        expr.expressions[i] = transformExpressionsInExpression(expr.expressions[i], transform2, flags);
+      }
+    } else if (expr instanceof ReadVarExpr || expr instanceof ExternalExpr || expr instanceof LiteralExpr) ;
+    else {
       throw new Error(`Unhandled expression kind: ${expr.constructor.name}`);
     }
     return transform2(expr, flags);
@@ -10610,6 +10713,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       emptyView,
       track,
       trackByFn: null,
+      trackByOps: null,
       tag,
       emptyTag,
       emptyAttributes: null,
@@ -11053,6 +11157,10 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
           for (const listenerOp of op.handlerOps) {
             yield listenerOp;
           }
+        } else if (op.kind === OpKind.RepeaterCreate && op.trackByOps !== null) {
+          for (const trackOp of op.trackByOps) {
+            yield trackOp;
+          }
         }
       }
       for (const op of this.update) {
@@ -11273,7 +11381,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
             break;
           case OpKind.StyleProp:
           case OpKind.ClassProp:
-            if (unit.job.compatibility === CompatibilityMode.TemplateDefinitionBuilder && op.expression instanceof EmptyExpr) {
+            if (unit.job.compatibility === CompatibilityMode.TemplateDefinitionBuilder && op.expression instanceof EmptyExpr2) {
               OpList.insertBefore(createExtractedAttributeOp(
                 op.target,
                 BindingKind.Property,
@@ -11344,7 +11452,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     return el;
   }
   function extractAttributeOp(unit, op, elements) {
-    if (op.expression instanceof Interpolation) {
+    if (op.expression instanceof Interpolation2) {
       return;
     }
     let extractable = op.isTextAttribute || op.expression.isConstant();
@@ -11491,7 +11599,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     for (const unit of job.units) {
       for (const op of unit.update) {
         const eligibleOpKind = op.kind === OpKind.Attribute;
-        if (eligibleOpKind && op.expression instanceof Interpolation && op.expression.strings.length === 2 && op.expression.strings.every((s) => s === "")) {
+        if (eligibleOpKind && op.expression instanceof Interpolation2 && op.expression.strings.length === 2 && op.expression.strings.every((s) => s === "")) {
           op.expression = op.expression.expressions[0];
         }
       }
@@ -11697,7 +11805,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
           if (!isStringLiteral(value)) {
             throw Error("AssertionError: extracted attribute value should be string literal");
           }
-          array.push(taggedTemplate(trustedValueFn, new TemplateLiteral([new TemplateLiteralElement(value.value)], []), void 0, value.sourceSpan));
+          array.push(taggedTemplate(trustedValueFn, new TemplateLiteralExpr([new TemplateLiteralElementExpr(value.value)], []), void 0, value.sourceSpan));
         } else {
           array.push(value);
         }
@@ -11781,7 +11889,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
             if (op.i18nContext === null) {
               continue;
             }
-            if (!(op.expression instanceof Interpolation)) {
+            if (!(op.expression instanceof Interpolation2)) {
               continue;
             }
             const i18nAttributesForElem = i18nAttributesByElem.get(op.target);
@@ -11915,7 +12023,6 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
               if (op.name === "style" || op.name === "class") {
                 OpList.remove(op);
               }
-            } else {
             }
           }
           seenForElement.add(op.name);
@@ -12027,7 +12134,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       }
     }
   }
-  var Scope$1 = class {
+  var Scope$1 = class Scope {
     targets = /* @__PURE__ */ new Map();
   };
   var REPLACEMENTS = /* @__PURE__ */ new Map([
@@ -12063,13 +12170,6 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       }
     }
   }
-  var requiresTemporary = [
-    InvokeFunctionExpr,
-    LiteralArrayExpr,
-    LiteralMapExpr,
-    SafeInvokeFunctionExpr,
-    PipeBindingExpr
-  ].map((e) => e.constructor.name);
   function needsTemporaryInSafeAccess(e) {
     if (e instanceof UnaryOperatorExpr) {
       return needsTemporaryInSafeAccess(e.expr);
@@ -12260,7 +12360,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     let formattedParams = formatParams(context2.params);
     const formattedPostprocessingParams = formatParams(context2.postprocessingParams);
     let needsPostprocessing = [...context2.params.values()].some((v) => v.length > 1);
-    return createI18nMessageOp(job.allocateXrefId(), context2.xref, context2.i18nBlock, context2.message, messagePlaceholder ?? null, formattedParams, formattedPostprocessingParams, needsPostprocessing);
+    return createI18nMessageOp(job.allocateXrefId(), context2.xref, context2.i18nBlock, context2.message, null, formattedParams, formattedPostprocessingParams, needsPostprocessing);
   }
   function formatIcuPlaceholder(op) {
     if (op.strings.length !== op.expressionPlaceholders.length + 1) {
@@ -12414,6 +12514,9 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
           recursivelyProcessView(view.job.views.get(op.xref), scope);
           if (op.emptyView) {
             recursivelyProcessView(view.job.views.get(op.emptyView), scope);
+          }
+          if (op.trackByOps !== null) {
+            op.trackByOps.prepend(generateVariablesInScopeForView(view, scope, false));
           }
           break;
         case OpKind.Listener:
@@ -12630,7 +12733,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       this.i18n = i18n2;
     }
   };
-  var Text2 = class extends NodeWithI18n {
+  var Text4 = class extends NodeWithI18n {
     value;
     tokens;
     constructor(value, sourceSpan, tokens, i18n2) {
@@ -12693,7 +12796,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       return visitor.visitAttribute(this, context2);
     }
   };
-  var Element2 = class extends NodeWithI18n {
+  var Element3 = class extends NodeWithI18n {
     name;
     attrs;
     children;
@@ -12711,7 +12814,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       return visitor.visitElement(this, context2);
     }
   };
-  var Comment = class {
+  var Comment2 = class {
     value;
     sourceSpan;
     constructor(value, sourceSpan) {
@@ -12753,7 +12856,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       return visitor.visitBlockParameter(this, context2);
     }
   };
-  var LetDeclaration = class {
+  var LetDeclaration2 = class {
     name;
     value;
     sourceSpan;
@@ -15353,7 +15456,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
         } else {
           const name = this._cursor.getChars(nameStart);
           this._cursor.advance();
-          const char = NAMED_ENTITIES[name];
+          const char = NAMED_ENTITIES.hasOwnProperty(name) && NAMED_ENTITIES[name];
           if (!char) {
             throw this._createError(_unknownEntityErrorMsg(name), this._cursor.getSpan(start));
           }
@@ -16045,7 +16148,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       this.errors = errors;
     }
   };
-  var Parser$1 = class {
+  var Parser$1 = class Parser {
     getTagDefinition;
     constructor(getTagDefinition) {
       this.getTagDefinition = getTagDefinition;
@@ -16145,7 +16248,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       );
       const value = text2 != null ? text2.parts[0].trim() : null;
       const sourceSpan = endToken == null ? token.sourceSpan : new ParseSourceSpan(token.sourceSpan.start, endToken.sourceSpan.end, token.sourceSpan.fullStart);
-      this._addToParent(new Comment(value, sourceSpan));
+      this._addToParent(new Comment2(value, sourceSpan));
     }
     _consumeExpansion(token) {
       const switchValue = this._advance();
@@ -16254,12 +16357,12 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       }
       if (text2.length > 0) {
         const endSpan = token.sourceSpan;
-        this._addToParent(new Text2(text2, new ParseSourceSpan(startSpan.start, endSpan.end, startSpan.fullStart, startSpan.details), tokens));
+        this._addToParent(new Text4(text2, new ParseSourceSpan(startSpan.start, endSpan.end, startSpan.fullStart, startSpan.details), tokens));
       }
     }
     _closeVoidElement() {
       const el = this._getContainer();
-      if (el instanceof Element2 && this.getTagDefinition(el.name).isVoid) {
+      if (el instanceof Element3 && this.getTagDefinition(el.name).isVoid) {
         this._containerStack.pop();
       }
     }
@@ -16285,13 +16388,13 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       const end = this._peek.sourceSpan.fullStart;
       const span = new ParseSourceSpan(startTagToken.sourceSpan.start, end, startTagToken.sourceSpan.fullStart);
       const startSpan = new ParseSourceSpan(startTagToken.sourceSpan.start, end, startTagToken.sourceSpan.fullStart);
-      const el = new Element2(fullName, attrs, [], span, startSpan, void 0);
+      const el = new Element3(fullName, attrs, [], span, startSpan, void 0);
       const parentEl = this._getContainer();
-      this._pushContainer(el, parentEl instanceof Element2 && this.getTagDefinition(parentEl.name).isClosedByChild(el.name));
+      this._pushContainer(el, parentEl instanceof Element3 && this.getTagDefinition(parentEl.name).isClosedByChild(el.name));
       if (selfClosing) {
-        this._popContainer(fullName, Element2, span);
+        this._popContainer(fullName, Element3, span);
       } else if (startTagToken.type === 4) {
-        this._popContainer(fullName, Element2, null);
+        this._popContainer(fullName, Element3, null);
         this.errors.push(TreeError.create(fullName, span, `Opening tag "${fullName}" not terminated.`));
       }
     }
@@ -16306,7 +16409,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       const fullName = this._getElementFullName(endTagToken.parts[0], endTagToken.parts[1], this._getClosestParentElement());
       if (this.getTagDefinition(fullName).isVoid) {
         this.errors.push(TreeError.create(fullName, endTagToken.sourceSpan, `Void elements do not have end tags "${endTagToken.parts[1]}"`));
-      } else if (!this._popContainer(fullName, Element2, endTagToken.sourceSpan)) {
+      } else if (!this._popContainer(fullName, Element3, endTagToken.sourceSpan)) {
         const errMsg = `Unexpected closing tag "${fullName}". It may happen when the tag has already been closed by another tag. For more info see https://www.w3.org/TR/html5/syntax.html#closing-elements-that-have-implied-end-tags`;
         this.errors.push(TreeError.create(fullName, endTagToken.sourceSpan, errMsg));
       }
@@ -16327,7 +16430,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
           this._containerStack.splice(stackIndex, this._containerStack.length - stackIndex);
           return !unexpectedCloseTagDetected;
         }
-        if (node instanceof Block || node instanceof Element2 && !this.getTagDefinition(node.name).closedByParent) {
+        if (node instanceof Block || node instanceof Element3 && !this.getTagDefinition(node.name).closedByParent) {
           unexpectedCloseTagDetected = true;
         }
       }
@@ -16422,7 +16525,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       const startOffset = startToken.sourceSpan.toString().lastIndexOf(name);
       const nameStart = startToken.sourceSpan.start.moveBy(startOffset);
       const nameSpan = new ParseSourceSpan(nameStart, startToken.sourceSpan.end);
-      const node = new LetDeclaration(name, valueToken.parts[0], span, nameSpan, valueToken.sourceSpan);
+      const node = new LetDeclaration2(name, valueToken.parts[0], span, nameSpan, valueToken.sourceSpan);
       this._addToParent(node);
     }
     _consumeIncompleteLet(token) {
@@ -16433,7 +16536,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
         const nameStart = token.sourceSpan.start.moveBy(startOffset);
         const nameSpan = new ParseSourceSpan(nameStart, token.sourceSpan.end);
         const valueSpan = new ParseSourceSpan(token.sourceSpan.start, token.sourceSpan.start.moveBy(0));
-        const node = new LetDeclaration(name, "", token.sourceSpan, nameSpan, valueSpan);
+        const node = new LetDeclaration2(name, "", token.sourceSpan, nameSpan, valueSpan);
         this._addToParent(node);
       }
       this.errors.push(TreeError.create(token.parts[0], token.sourceSpan, `Incomplete @let declaration${nameString}. @let declarations must be written as \`@let <name> = <value>;\``));
@@ -16443,7 +16546,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     }
     _getClosestParentElement() {
       for (let i = this._containerStack.length - 1; i > -1; i--) {
-        if (this._containerStack[i] instanceof Element2) {
+        if (this._containerStack[i] instanceof Element3) {
           return this._containerStack[i];
         }
       }
@@ -16512,11 +16615,11 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     }
     visitElement(element2, context2) {
       if (SKIP_WS_TRIM_TAGS.has(element2.name) || hasPreserveWhitespacesAttr(element2.attrs)) {
-        const newElement2 = new Element2(element2.name, visitAllWithSiblings(this, element2.attrs), element2.children, element2.sourceSpan, element2.startSourceSpan, element2.endSourceSpan, element2.i18n);
+        const newElement2 = new Element3(element2.name, visitAllWithSiblings(this, element2.attrs), element2.children, element2.sourceSpan, element2.startSourceSpan, element2.endSourceSpan, element2.i18n);
         this.originalNodeMap?.set(newElement2, element2);
         return newElement2;
       }
-      const newElement = new Element2(element2.name, element2.attrs, visitAllWithSiblings(this, element2.children), element2.sourceSpan, element2.startSourceSpan, element2.endSourceSpan, element2.i18n);
+      const newElement = new Element3(element2.name, element2.attrs, visitAllWithSiblings(this, element2.children), element2.sourceSpan, element2.startSourceSpan, element2.endSourceSpan, element2.i18n);
       this.originalNodeMap?.set(newElement, element2);
       return newElement;
     }
@@ -16539,7 +16642,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
         }
         const processed = processWhitespace(text2.value);
         const value = this.preserveSignificantWhitespace ? processed : trimLeadingAndTrailingWhitespace(processed, context2);
-        const result = new Text2(value, text2.sourceSpan, tokens, text2.i18n);
+        const result = new Text4(value, text2.sourceSpan, tokens, text2.i18n);
         this.originalNodeMap?.set(result, text2);
         return result;
       }
@@ -16636,6 +16739,12 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     TokenType2[TokenType2["Number"] = 6] = "Number";
     TokenType2[TokenType2["Error"] = 7] = "Error";
   })(TokenType || (TokenType = {}));
+  var StringTokenKind;
+  (function(StringTokenKind2) {
+    StringTokenKind2[StringTokenKind2["Plain"] = 0] = "Plain";
+    StringTokenKind2[StringTokenKind2["TemplateLiteralPart"] = 1] = "TemplateLiteralPart";
+    StringTokenKind2[StringTokenKind2["TemplateLiteralEnd"] = 2] = "TemplateLiteralEnd";
+  })(StringTokenKind || (StringTokenKind = {}));
   var KEYWORDS = [
     "var",
     "let",
@@ -16651,14 +16760,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
   ];
   var Lexer = class {
     tokenize(text2) {
-      const scanner = new _Scanner(text2);
-      const tokens = [];
-      let token = scanner.scanToken();
-      while (token != null) {
-        tokens.push(token);
-        token = scanner.scanToken();
-      }
-      return tokens;
+      return new _Scanner(text2).scan();
     }
   };
   var Token = class {
@@ -16675,55 +16777,67 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       this.strValue = strValue;
     }
     isCharacter(code) {
-      return this.type == TokenType.Character && this.numValue == code;
+      return this.type === TokenType.Character && this.numValue === code;
     }
     isNumber() {
-      return this.type == TokenType.Number;
+      return this.type === TokenType.Number;
     }
     isString() {
-      return this.type == TokenType.String;
+      return this.type === TokenType.String;
     }
     isOperator(operator) {
-      return this.type == TokenType.Operator && this.strValue == operator;
+      return this.type === TokenType.Operator && this.strValue === operator;
     }
     isIdentifier() {
-      return this.type == TokenType.Identifier;
+      return this.type === TokenType.Identifier;
     }
     isPrivateIdentifier() {
-      return this.type == TokenType.PrivateIdentifier;
+      return this.type === TokenType.PrivateIdentifier;
     }
     isKeyword() {
-      return this.type == TokenType.Keyword;
+      return this.type === TokenType.Keyword;
     }
     isKeywordLet() {
-      return this.type == TokenType.Keyword && this.strValue == "let";
+      return this.type === TokenType.Keyword && this.strValue === "let";
     }
     isKeywordAs() {
-      return this.type == TokenType.Keyword && this.strValue == "as";
+      return this.type === TokenType.Keyword && this.strValue === "as";
     }
     isKeywordNull() {
-      return this.type == TokenType.Keyword && this.strValue == "null";
+      return this.type === TokenType.Keyword && this.strValue === "null";
     }
     isKeywordUndefined() {
-      return this.type == TokenType.Keyword && this.strValue == "undefined";
+      return this.type === TokenType.Keyword && this.strValue === "undefined";
     }
     isKeywordTrue() {
-      return this.type == TokenType.Keyword && this.strValue == "true";
+      return this.type === TokenType.Keyword && this.strValue === "true";
     }
     isKeywordFalse() {
-      return this.type == TokenType.Keyword && this.strValue == "false";
+      return this.type === TokenType.Keyword && this.strValue === "false";
     }
     isKeywordThis() {
-      return this.type == TokenType.Keyword && this.strValue == "this";
+      return this.type === TokenType.Keyword && this.strValue === "this";
     }
     isKeywordTypeof() {
       return this.type === TokenType.Keyword && this.strValue === "typeof";
     }
     isError() {
-      return this.type == TokenType.Error;
+      return this.type === TokenType.Error;
     }
     toNumber() {
-      return this.type == TokenType.Number ? this.numValue : -1;
+      return this.type === TokenType.Number ? this.numValue : -1;
+    }
+    isTemplateLiteralPart() {
+      return this.isString() && this.kind === StringTokenKind.TemplateLiteralPart;
+    }
+    isTemplateLiteralEnd() {
+      return this.isString() && this.kind === StringTokenKind.TemplateLiteralEnd;
+    }
+    isTemplateLiteralInterpolationStart() {
+      return this.isOperator("${");
+    }
+    isTemplateLiteralInterpolationEnd() {
+      return this.isOperator("}");
     }
     toString() {
       switch (this.type) {
@@ -16742,6 +16856,13 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       }
     }
   };
+  var StringToken = class extends Token {
+    kind;
+    constructor(index, end, strValue, kind) {
+      super(index, end, TokenType.String, 0, strValue);
+      this.kind = kind;
+    }
+  };
   function newCharacterToken(index, end, code) {
     return new Token(index, end, TokenType.Character, code, String.fromCharCode(code));
   }
@@ -16757,9 +16878,6 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
   function newOperatorToken(index, end, text2) {
     return new Token(index, end, TokenType.Operator, 0, text2);
   }
-  function newStringToken(index, end, text2) {
-    return new Token(index, end, TokenType.String, 0, text2);
-  }
   function newNumberToken(index, end, n) {
     return new Token(index, end, TokenType.Number, n, "");
   }
@@ -16769,20 +16887,32 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
   var EOF = new Token(-1, -1, TokenType.Character, 0, "");
   var _Scanner = class {
     input;
+    tokens = [];
     length;
     peek = 0;
     index = -1;
+    braceStack = [];
     constructor(input2) {
       this.input = input2;
       this.length = input2.length;
       this.advance();
     }
+    scan() {
+      let token = this.scanToken();
+      while (token !== null) {
+        this.tokens.push(token);
+        token = this.scanToken();
+      }
+      return this.tokens;
+    }
     advance() {
       this.peek = ++this.index >= this.length ? $EOF : this.input.charCodeAt(this.index);
     }
     scanToken() {
-      const input2 = this.input, length = this.length;
-      let peek = this.peek, index = this.index;
+      const input2 = this.input;
+      const length = this.length;
+      let peek = this.peek;
+      let index = this.index;
       while (peek <= $SPACE) {
         if (++index >= length) {
           peek = $EOF;
@@ -16796,10 +16926,12 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       if (index >= length) {
         return null;
       }
-      if (isIdentifierStart(peek))
+      if (isIdentifierStart(peek)) {
         return this.scanIdentifier();
-      if (isDigit(peek))
+      }
+      if (isDigit(peek)) {
         return this.scanNumber(index);
+      }
       const start = index;
       switch (peek) {
         case $PERIOD:
@@ -16807,17 +16939,22 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
           return isDigit(this.peek) ? this.scanNumber(start) : newCharacterToken(start, this.index, $PERIOD);
         case $LPAREN:
         case $RPAREN:
-        case $LBRACE:
-        case $RBRACE:
         case $LBRACKET:
         case $RBRACKET:
         case $COMMA:
         case $COLON:
         case $SEMICOLON:
           return this.scanCharacter(start, peek);
+        case $LBRACE:
+          return this.scanOpenBrace(start, peek);
+        case $RBRACE:
+          return this.scanCloseBrace(start, peek);
         case $SQ:
         case $DQ:
           return this.scanString();
+        case $BT:
+          this.advance();
+          return this.scanTemplateLiteralPart(start);
         case $HASH:
           return this.scanPrivateIdentifier();
         case $PLUS:
@@ -16854,6 +16991,20 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     scanOperator(start, str) {
       this.advance();
       return newOperatorToken(start, this.index, str);
+    }
+    scanOpenBrace(start, code) {
+      this.braceStack.push("expression");
+      this.advance();
+      return newCharacterToken(start, this.index, code);
+    }
+    scanCloseBrace(start, code) {
+      this.advance();
+      const currentBrace = this.braceStack.pop();
+      if (currentBrace === "interpolation") {
+        this.tokens.push(newOperatorToken(start, this.index, "}"));
+        return this.scanTemplateLiteralPart(this.index);
+      }
+      return newCharacterToken(start, this.index, code);
     }
     /**
      * Tokenize a 2/3 char long operator
@@ -16903,8 +17054,8 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       let hasSeparators = false;
       this.advance();
       while (true) {
-        if (isDigit(this.peek)) {
-        } else if (this.peek === $_) {
+        if (isDigit(this.peek)) ;
+        else if (this.peek === $_) {
           if (!isDigit(this.input.charCodeAt(this.index - 1)) || !isDigit(this.input.charCodeAt(this.index + 1))) {
             return this.error("Invalid numeric separator", 0);
           }
@@ -16939,24 +17090,11 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       const input2 = this.input;
       while (this.peek != quote) {
         if (this.peek == $BACKSLASH) {
-          buffer += input2.substring(marker, this.index);
-          let unescapedCode;
-          this.advance();
-          if (this.peek == $u) {
-            const hex = input2.substring(this.index + 1, this.index + 5);
-            if (/^[0-9a-f]+$/i.test(hex)) {
-              unescapedCode = parseInt(hex, 16);
-            } else {
-              return this.error(`Invalid unicode escape [\\u${hex}]`, 0);
-            }
-            for (let i = 0; i < 5; i++) {
-              this.advance();
-            }
-          } else {
-            unescapedCode = unescape(this.peek);
-            this.advance();
+          const result = this.scanStringBackslash(buffer, marker);
+          if (typeof result !== "string") {
+            return result;
           }
-          buffer += String.fromCharCode(unescapedCode);
+          buffer = result;
           marker = this.index;
         } else if (this.peek == $EOF) {
           return this.error("Unterminated quote", 0);
@@ -16966,7 +17104,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       }
       const last = input2.substring(marker, this.index);
       this.advance();
-      return newStringToken(start, this.index, buffer + last);
+      return new StringToken(start, this.index, buffer + last, StringTokenKind.Plain);
     }
     scanQuestion(start) {
       this.advance();
@@ -16977,9 +17115,60 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       }
       return newOperatorToken(start, this.index, str);
     }
+    scanTemplateLiteralPart(start) {
+      let buffer = "";
+      let marker = this.index;
+      while (this.peek !== $BT) {
+        if (this.peek === $BACKSLASH) {
+          const result = this.scanStringBackslash(buffer, marker);
+          if (typeof result !== "string") {
+            return result;
+          }
+          buffer = result;
+          marker = this.index;
+        } else if (this.peek === $$) {
+          const dollar = this.index;
+          this.advance();
+          if (this.peek === $LBRACE) {
+            this.braceStack.push("interpolation");
+            this.tokens.push(new StringToken(start, dollar, buffer + this.input.substring(marker, dollar), StringTokenKind.TemplateLiteralPart));
+            this.advance();
+            return newOperatorToken(dollar, this.index, this.input.substring(dollar, this.index));
+          }
+        } else if (this.peek === $EOF) {
+          return this.error("Unterminated template literal", 0);
+        } else {
+          this.advance();
+        }
+      }
+      const last = this.input.substring(marker, this.index);
+      this.advance();
+      return new StringToken(start, this.index, buffer + last, StringTokenKind.TemplateLiteralEnd);
+    }
     error(message, offset) {
       const position = this.index + offset;
       return newErrorToken(position, this.index, `Lexer Error: ${message} at column ${position} in expression [${this.input}]`);
+    }
+    scanStringBackslash(buffer, marker) {
+      buffer += this.input.substring(marker, this.index);
+      let unescapedCode;
+      this.advance();
+      if (this.peek === $u) {
+        const hex = this.input.substring(this.index + 1, this.index + 5);
+        if (/^[0-9a-f]+$/i.test(hex)) {
+          unescapedCode = parseInt(hex, 16);
+        } else {
+          return this.error(`Invalid unicode escape [\\u${hex}]`, 0);
+        }
+        for (let i = 0; i < 5; i++) {
+          this.advance();
+        }
+      } else {
+        unescapedCode = unescape(this.peek);
+        this.advance();
+      }
+      buffer += String.fromCharCode(unescapedCode);
+      return buffer;
     }
   };
   function isIdentifierStart(code) {
@@ -17037,7 +17226,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       this.errors = errors;
     }
   };
-  var Parser = class {
+  var Parser2 = class {
     _lexer;
     errors = [];
     constructor(_lexer) {
@@ -17728,7 +17917,11 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
         const value = this.next.toNumber();
         this.advance();
         return new LiteralPrimitive(this.span(start), this.sourceSpan(start), value);
-      } else if (this.next.isString()) {
+      } else if (this.next.isTemplateLiteralEnd()) {
+        return this.parseNoInterpolationTemplateLiteral();
+      } else if (this.next.isTemplateLiteralPart()) {
+        return this.parseTemplateLiteral();
+      } else if (this.next.isString() && this.next.kind === StringTokenKind.Plain) {
         const literalValue = this.next.toString();
         this.advance();
         return new LiteralPrimitive(this.span(start), this.sourceSpan(start), literalValue);
@@ -18017,6 +18210,41 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
       const sourceSpan = new AbsoluteSourceSpan(spanStart, this.currentAbsoluteOffset);
       return new VariableBinding(sourceSpan, key, value);
     }
+    parseNoInterpolationTemplateLiteral() {
+      const text2 = this.next.strValue;
+      const start = this.inputIndex;
+      this.advance();
+      const span = this.span(start);
+      const sourceSpan = this.sourceSpan(start);
+      return new TemplateLiteral(span, sourceSpan, [new TemplateLiteralElement(span, sourceSpan, text2)], []);
+    }
+    parseTemplateLiteral() {
+      const start = this.inputIndex;
+      const elements = [];
+      const expressions = [];
+      while (this.next !== EOF) {
+        const token = this.next;
+        if (token.isTemplateLiteralPart() || token.isTemplateLiteralEnd()) {
+          const partStart = this.inputIndex;
+          this.advance();
+          elements.push(new TemplateLiteralElement(this.span(partStart), this.sourceSpan(partStart), token.strValue));
+          if (token.isTemplateLiteralEnd()) {
+            break;
+          }
+        } else if (token.isTemplateLiteralInterpolationStart()) {
+          this.advance();
+          const expression = this.parsePipe();
+          if (expression instanceof EmptyExpr$1) {
+            this.error("Template literal interpolation cannot be empty");
+          } else {
+            expressions.push(expression);
+          }
+        } else {
+          this.advance();
+        }
+      }
+      return new TemplateLiteral(this.span(start), this.sourceSpan(start), elements, expressions);
+    }
     /**
      * Consume the optional statement terminator: semicolon or comma.
      */
@@ -18203,6 +18431,20 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     visitASTWithSource(ast, context2) {
       return ast.ast.visit(this, context2);
     }
+    visitTemplateLiteral(ast, context2) {
+      let result = "";
+      for (let i = 0; i < ast.elements.length; i++) {
+        result += ast.elements[i].visit(this, context2);
+        const expression = i < ast.expressions.length ? ast.expressions[i] : null;
+        if (expression !== null) {
+          result += "${" + expression.visit(this, context2) + "}";
+        }
+      }
+      return "`" + result + "`";
+    }
+    visitTemplateLiteralElement(ast, context2) {
+      return ast.text;
+    }
   };
   function zip(left, right) {
     if (left.length !== right.length)
@@ -18287,7 +18529,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
   var SCHEMA = [
     "[Element]|textContent,%ariaAtomic,%ariaAutoComplete,%ariaBusy,%ariaChecked,%ariaColCount,%ariaColIndex,%ariaColSpan,%ariaCurrent,%ariaDescription,%ariaDisabled,%ariaExpanded,%ariaHasPopup,%ariaHidden,%ariaKeyShortcuts,%ariaLabel,%ariaLevel,%ariaLive,%ariaModal,%ariaMultiLine,%ariaMultiSelectable,%ariaOrientation,%ariaPlaceholder,%ariaPosInSet,%ariaPressed,%ariaReadOnly,%ariaRelevant,%ariaRequired,%ariaRoleDescription,%ariaRowCount,%ariaRowIndex,%ariaRowSpan,%ariaSelected,%ariaSetSize,%ariaSort,%ariaValueMax,%ariaValueMin,%ariaValueNow,%ariaValueText,%classList,className,elementTiming,id,innerHTML,*beforecopy,*beforecut,*beforepaste,*fullscreenchange,*fullscreenerror,*search,*webkitfullscreenchange,*webkitfullscreenerror,outerHTML,%part,#scrollLeft,#scrollTop,slot,*message,*mozfullscreenchange,*mozfullscreenerror,*mozpointerlockchange,*mozpointerlockerror,*webglcontextcreationerror,*webglcontextlost,*webglcontextrestored",
     "[HTMLElement]^[Element]|accessKey,autocapitalize,!autofocus,contentEditable,dir,!draggable,enterKeyHint,!hidden,!inert,innerText,inputMode,lang,nonce,*abort,*animationend,*animationiteration,*animationstart,*auxclick,*beforexrselect,*blur,*cancel,*canplay,*canplaythrough,*change,*click,*close,*contextmenu,*copy,*cuechange,*cut,*dblclick,*drag,*dragend,*dragenter,*dragleave,*dragover,*dragstart,*drop,*durationchange,*emptied,*ended,*error,*focus,*formdata,*gotpointercapture,*input,*invalid,*keydown,*keypress,*keyup,*load,*loadeddata,*loadedmetadata,*loadstart,*lostpointercapture,*mousedown,*mouseenter,*mouseleave,*mousemove,*mouseout,*mouseover,*mouseup,*mousewheel,*paste,*pause,*play,*playing,*pointercancel,*pointerdown,*pointerenter,*pointerleave,*pointermove,*pointerout,*pointerover,*pointerrawupdate,*pointerup,*progress,*ratechange,*reset,*resize,*scroll,*securitypolicyviolation,*seeked,*seeking,*select,*selectionchange,*selectstart,*slotchange,*stalled,*submit,*suspend,*timeupdate,*toggle,*transitioncancel,*transitionend,*transitionrun,*transitionstart,*volumechange,*waiting,*webkitanimationend,*webkitanimationiteration,*webkitanimationstart,*webkittransitionend,*wheel,outerText,!spellcheck,%style,#tabIndex,title,!translate,virtualKeyboardPolicy",
-    "abbr,address,article,aside,b,bdi,bdo,cite,content,code,dd,dfn,dt,em,figcaption,figure,footer,header,hgroup,i,kbd,main,mark,nav,noscript,rb,rp,rt,rtc,ruby,s,samp,section,small,strong,sub,sup,u,var,wbr^[HTMLElement]|accessKey,autocapitalize,!autofocus,contentEditable,dir,!draggable,enterKeyHint,!hidden,innerText,inputMode,lang,nonce,*abort,*animationend,*animationiteration,*animationstart,*auxclick,*beforexrselect,*blur,*cancel,*canplay,*canplaythrough,*change,*click,*close,*contextmenu,*copy,*cuechange,*cut,*dblclick,*drag,*dragend,*dragenter,*dragleave,*dragover,*dragstart,*drop,*durationchange,*emptied,*ended,*error,*focus,*formdata,*gotpointercapture,*input,*invalid,*keydown,*keypress,*keyup,*load,*loadeddata,*loadedmetadata,*loadstart,*lostpointercapture,*mousedown,*mouseenter,*mouseleave,*mousemove,*mouseout,*mouseover,*mouseup,*mousewheel,*paste,*pause,*play,*playing,*pointercancel,*pointerdown,*pointerenter,*pointerleave,*pointermove,*pointerout,*pointerover,*pointerrawupdate,*pointerup,*progress,*ratechange,*reset,*resize,*scroll,*securitypolicyviolation,*seeked,*seeking,*select,*selectionchange,*selectstart,*slotchange,*stalled,*submit,*suspend,*timeupdate,*toggle,*transitioncancel,*transitionend,*transitionrun,*transitionstart,*volumechange,*waiting,*webkitanimationend,*webkitanimationiteration,*webkitanimationstart,*webkittransitionend,*wheel,outerText,!spellcheck,%style,#tabIndex,title,!translate,virtualKeyboardPolicy",
+    "abbr,address,article,aside,b,bdi,bdo,cite,content,code,dd,dfn,dt,em,figcaption,figure,footer,header,hgroup,i,kbd,main,mark,nav,noscript,rb,rp,rt,rtc,ruby,s,samp,search,section,small,strong,sub,sup,u,var,wbr^[HTMLElement]|accessKey,autocapitalize,!autofocus,contentEditable,dir,!draggable,enterKeyHint,!hidden,innerText,inputMode,lang,nonce,*abort,*animationend,*animationiteration,*animationstart,*auxclick,*beforexrselect,*blur,*cancel,*canplay,*canplaythrough,*change,*click,*close,*contextmenu,*copy,*cuechange,*cut,*dblclick,*drag,*dragend,*dragenter,*dragleave,*dragover,*dragstart,*drop,*durationchange,*emptied,*ended,*error,*focus,*formdata,*gotpointercapture,*input,*invalid,*keydown,*keypress,*keyup,*load,*loadeddata,*loadedmetadata,*loadstart,*lostpointercapture,*mousedown,*mouseenter,*mouseleave,*mousemove,*mouseout,*mouseover,*mouseup,*mousewheel,*paste,*pause,*play,*playing,*pointercancel,*pointerdown,*pointerenter,*pointerleave,*pointermove,*pointerout,*pointerover,*pointerrawupdate,*pointerup,*progress,*ratechange,*reset,*resize,*scroll,*securitypolicyviolation,*seeked,*seeking,*select,*selectionchange,*selectstart,*slotchange,*stalled,*submit,*suspend,*timeupdate,*toggle,*transitioncancel,*transitionend,*transitionrun,*transitionstart,*volumechange,*waiting,*webkitanimationend,*webkitanimationiteration,*webkitanimationstart,*webkittransitionend,*wheel,outerText,!spellcheck,%style,#tabIndex,title,!translate,virtualKeyboardPolicy",
     "media^[HTMLElement]|!autoplay,!controls,%controlsList,%crossOrigin,#currentTime,!defaultMuted,#defaultPlaybackRate,!disableRemotePlayback,!loop,!muted,*encrypted,*waitingforkey,#playbackRate,preload,!preservesPitch,src,%srcObject,#volume",
     ":svg:^[HTMLElement]|!autofocus,nonce,*abort,*animationend,*animationiteration,*animationstart,*auxclick,*beforexrselect,*blur,*cancel,*canplay,*canplaythrough,*change,*click,*close,*contextmenu,*copy,*cuechange,*cut,*dblclick,*drag,*dragend,*dragenter,*dragleave,*dragover,*dragstart,*drop,*durationchange,*emptied,*ended,*error,*focus,*formdata,*gotpointercapture,*input,*invalid,*keydown,*keypress,*keyup,*load,*loadeddata,*loadedmetadata,*loadstart,*lostpointercapture,*mousedown,*mouseenter,*mouseleave,*mousemove,*mouseout,*mouseover,*mouseup,*mousewheel,*paste,*pause,*play,*playing,*pointercancel,*pointerdown,*pointerenter,*pointerleave,*pointermove,*pointerout,*pointerover,*pointerrawupdate,*pointerup,*progress,*ratechange,*reset,*resize,*scroll,*securitypolicyviolation,*seeked,*seeking,*select,*selectionchange,*selectstart,*slotchange,*stalled,*submit,*suspend,*timeupdate,*toggle,*transitioncancel,*transitionend,*transitionrun,*transitionstart,*volumechange,*waiting,*webkitanimationend,*webkitanimationiteration,*webkitanimationstart,*webkittransitionend,*wheel,%style,#tabIndex",
     ":svg:graphics^:svg:|",
@@ -18353,6 +18595,7 @@ ${ctx.toSourceMapGenerator(sourceUrl, headerLines).toJsComment()}`;
     "source^[HTMLElement]|#height,media,sizes,src,srcset,type,#width",
     "span^[HTMLElement]|",
     "style^[HTMLElement]|!disabled,media,type",
+    "search^[HTMLELement]|",
     "caption^[HTMLElement]|align",
     "th,td^[HTMLElement]|abbr,align,axis,bgColor,ch,chOff,#colSpan,headers,height,!noWrap,#rowSpan,scope,vAlign,width",
     "col,colgroup^[HTMLElement]|align,ch,chOff,#span,vAlign,width",
@@ -18937,7 +19180,7 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
       return `${base}_${id2}`;
     }
   };
-  var _expParser = new Parser(new Lexer());
+  var _expParser = new Parser2(new Lexer());
   function createI18nMessageFactory(interpolationConfig, containerBlocks, retainEmptyTokens, preserveExpressionWhitespace) {
     const visitor = new _I18nVisitor(_expParser, interpolationConfig, containerBlocks, retainEmptyTokens, preserveExpressionWhitespace);
     return (nodes, meaning, description, customId, visitNodeFn) => visitor.toI18nMessage(nodes, meaning, description, customId, visitNodeFn);
@@ -19007,7 +19250,7 @@ If '${name}' is a directive input, make sure the directive is imported by the cu
     visitExpansion(icu, context2) {
       context2.icuDepth++;
       const i18nIcuCases = {};
-      const i18nIcu = new Icu(icu.switchValue, icu.type, i18nIcuCases, icu.sourceSpan);
+      const i18nIcu = new Icu2(icu.switchValue, icu.type, i18nIcuCases, icu.sourceSpan);
       icu.cases.forEach((caze) => {
         i18nIcuCases[caze.value] = new Container(caze.expression.map((node2) => node2.visit(this, context2)), caze.expSourceSpan);
       });
@@ -20167,14 +20410,14 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
   function kindWithInterpolationTest(kind, interpolation) {
     return (op) => {
-      return op.kind === kind && interpolation === op.expression instanceof Interpolation;
+      return op.kind === kind && interpolation === op.expression instanceof Interpolation2;
     };
   }
   function basicListenerKindTest(op) {
     return op.kind === OpKind.Listener && !(op.hostListener && op.isAnimationListener) || op.kind === OpKind.TwoWayListener;
   }
   function nonInterpolationPropertyKindTest(op) {
-    return (op.kind === OpKind.Property || op.kind === OpKind.TwoWayProperty) && !(op.expression instanceof Interpolation);
+    return (op.kind === OpKind.Property || op.kind === OpKind.TwoWayProperty) && !(op.expression instanceof Interpolation2);
   }
   var CREATE_ORDERING = [
     { test: (op) => op.kind === OpKind.Listener && op.hostListener && op.isAnimationListener },
@@ -21310,7 +21553,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
             emptyDecls = emptyView.decls;
             emptyVars = emptyView.vars;
           }
-          OpList.replace(op, repeaterCreate(op.handle.slot, repeaterView.fnName, op.decls, op.vars, op.tag, op.attributes, op.trackByFn, op.usesComponentInstance, emptyViewFnName, emptyDecls, emptyVars, op.emptyTag, op.emptyAttributes, op.wholeSourceSpan));
+          OpList.replace(op, repeaterCreate(op.handle.slot, repeaterView.fnName, op.decls, op.vars, op.tag, op.attributes, reifyTrackBy(unit, op), op.usesComponentInstance, emptyViewFnName, emptyDecls, emptyVars, op.emptyTag, op.emptyAttributes, op.wholeSourceSpan));
           break;
         case OpKind.SourceLocation:
           const locationsLiteral = literalArr(op.locations.map(({ targetSlot, offset, line, column }) => {
@@ -21341,7 +21584,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
           OpList.replace(op, advance(op.delta, op.sourceSpan));
           break;
         case OpKind.Property:
-          if (op.expression instanceof Interpolation) {
+          if (op.expression instanceof Interpolation2) {
             OpList.replace(op, propertyInterpolate(op.name, op.expression.strings, op.expression.expressions, op.sanitizer, op.sourceSpan));
           } else {
             OpList.replace(op, property(op.name, op.expression, op.sanitizer, op.sourceSpan));
@@ -21351,7 +21594,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
           OpList.replace(op, twoWayProperty(op.name, op.expression, op.sanitizer, op.sourceSpan));
           break;
         case OpKind.StyleProp:
-          if (op.expression instanceof Interpolation) {
+          if (op.expression instanceof Interpolation2) {
             OpList.replace(op, stylePropInterpolate(op.name, op.expression.strings, op.expression.expressions, op.unit, op.sourceSpan));
           } else {
             OpList.replace(op, styleProp(op.name, op.expression, op.unit, op.sourceSpan));
@@ -21361,14 +21604,14 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
           OpList.replace(op, classProp(op.name, op.expression, op.sourceSpan));
           break;
         case OpKind.StyleMap:
-          if (op.expression instanceof Interpolation) {
+          if (op.expression instanceof Interpolation2) {
             OpList.replace(op, styleMapInterpolate(op.expression.strings, op.expression.expressions, op.sourceSpan));
           } else {
             OpList.replace(op, styleMap(op.expression, op.sourceSpan));
           }
           break;
         case OpKind.ClassMap:
-          if (op.expression instanceof Interpolation) {
+          if (op.expression instanceof Interpolation2) {
             OpList.replace(op, classMapInterpolate(op.expression.strings, op.expression.expressions, op.sourceSpan));
           } else {
             OpList.replace(op, classMap(op.expression, op.sourceSpan));
@@ -21384,14 +21627,14 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
           OpList.replace(op, textInterpolate(op.interpolation.strings, op.interpolation.expressions, op.sourceSpan));
           break;
         case OpKind.Attribute:
-          if (op.expression instanceof Interpolation) {
+          if (op.expression instanceof Interpolation2) {
             OpList.replace(op, attributeInterpolate(op.name, op.expression.strings, op.expression.expressions, op.sanitizer, op.sourceSpan));
           } else {
             OpList.replace(op, attribute(op.name, op.expression, op.sanitizer, op.namespace));
           }
           break;
         case OpKind.HostProperty:
-          if (op.expression instanceof Interpolation) {
+          if (op.expression instanceof Interpolation2) {
             throw new Error("not yet handled");
           } else {
             if (op.isAnimationTrigger) {
@@ -21482,6 +21725,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
         return readContextLet(expr.targetSlot.slot);
       case ExpressionKind.StoreLet:
         return storeLet(expr.value, expr.sourceSpan);
+      case ExpressionKind.TrackContext:
+        return variable("this");
       default:
         throw new Error(`AssertionError: Unsupported reification of ir.Expression kind: ${ExpressionKind[expr.kind]}`);
     }
@@ -21501,6 +21746,28 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     }
     return fn(params, handlerStmts, void 0, void 0, name);
   }
+  function reifyTrackBy(unit, op) {
+    if (op.trackByFn !== null) {
+      return op.trackByFn;
+    }
+    const params = [new FnParam("$index"), new FnParam("$item")];
+    let fn$1;
+    if (op.trackByOps === null) {
+      fn$1 = op.usesComponentInstance ? fn(params, [new ReturnStatement(op.track)]) : arrowFn(params, op.track);
+    } else {
+      reifyUpdateOperations(unit, op.trackByOps);
+      const statements = [];
+      for (const trackOp of op.trackByOps) {
+        if (trackOp.kind !== OpKind.Statement) {
+          throw new Error(`AssertionError: expected reified statements, but found op ${OpKind[trackOp.kind]}`);
+        }
+        statements.push(trackOp.statement);
+      }
+      fn$1 = op.usesComponentInstance || statements.length !== 1 || !(statements[0] instanceof ReturnStatement) ? fn(params, statements) : arrowFn(params, statements[0].value);
+    }
+    op.trackByFn = unit.job.pool.getSharedFunctionReference(fn$1, "_forTrack");
+    return op.trackByFn;
+  }
   function removeEmptyBindings(job) {
     for (const unit of job.units) {
       for (const op of unit.update) {
@@ -21512,7 +21779,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
           case OpKind.Property:
           case OpKind.StyleProp:
           case OpKind.StyleMap:
-            if (op.expression instanceof EmptyExpr) {
+            if (op.expression instanceof EmptyExpr2) {
               OpList.remove(op);
             }
             break;
@@ -21575,6 +21842,11 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
         case OpKind.Listener:
         case OpKind.TwoWayListener:
           processLexicalScope$1(view, op.handlerOps);
+          break;
+        case OpKind.RepeaterCreate:
+          if (op.trackByOps !== null) {
+            processLexicalScope$1(view, op.trackByOps);
+          }
           break;
       }
     }
@@ -21883,6 +22155,11 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
         case OpKind.TwoWayListener:
           processLexicalScope(unit, op.handlerOps, savedView);
           break;
+        case OpKind.RepeaterCreate:
+          if (op.trackByOps !== null) {
+            processLexicalScope(unit, op.trackByOps, savedView);
+          }
+          break;
       }
     }
     for (const op of ops) {
@@ -22078,7 +22355,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
         }
         switch (op.bindingKind) {
           case BindingKind.ClassName:
-            if (op.expression instanceof Interpolation) {
+            if (op.expression instanceof Interpolation2) {
               throw new Error(`Unexpected interpolation in ClassName binding`);
             }
             OpList.replace(op, createClassPropOp(op.target, op.name, op.expression, op.sourceSpan));
@@ -22143,6 +22420,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       opCount++;
       if (op.kind === OpKind.Listener || op.kind === OpKind.TwoWayListener) {
         op.handlerOps.prepend(generateTemporaries(op.handlerOps));
+      } else if (op.kind === OpKind.RepeaterCreate && op.trackByOps !== null) {
+        op.trackByOps.prepend(generateTemporaries(op.trackByOps));
       }
     }
     return generatedStatements;
@@ -22153,37 +22432,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       throw new Error(`Found xref with unassigned name: ${expr.xref}`);
     }
     expr.name = name;
-  }
-  function generateTrackFns(job) {
-    for (const unit of job.units) {
-      for (const op of unit.create) {
-        if (op.kind !== OpKind.RepeaterCreate) {
-          continue;
-        }
-        if (op.trackByFn !== null) {
-          continue;
-        }
-        let usesComponentContext = false;
-        op.track = transformExpressionsInExpression(op.track, (expr) => {
-          if (expr instanceof PipeBindingExpr || expr instanceof PipeBindingVariadicExpr) {
-            throw new Error(`Illegal State: Pipes are not allowed in this context`);
-          }
-          if (expr instanceof TrackContextExpr) {
-            usesComponentContext = true;
-            return variable("this");
-          }
-          return expr;
-        }, VisitorContextFlag.None);
-        let fn2;
-        const fnParams = [new FnParam("$index"), new FnParam("$item")];
-        if (usesComponentContext) {
-          fn2 = new FunctionExpr(fnParams, [new ReturnStatement(op.track)]);
-        } else {
-          fn2 = arrowFn(fnParams, op.track);
-        }
-        op.trackByFn = job.pool.getSharedFunctionReference(fn2, "_forTrack");
-      }
-    }
   }
   function optimizeTrackFns(job) {
     for (const unit of job.units) {
@@ -22205,12 +22453,17 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
           }
         } else {
           op.track = transformExpressionsInExpression(op.track, (expr) => {
-            if (expr instanceof ContextExpr) {
+            if (expr instanceof PipeBindingExpr || expr instanceof PipeBindingVariadicExpr) {
+              throw new Error(`Illegal State: Pipes are not allowed in this context`);
+            } else if (expr instanceof ContextExpr) {
               op.usesComponentInstance = true;
               return new TrackContextExpr(expr.view);
             }
             return expr;
           }, VisitorContextFlag.None);
+          const trackOpList = new OpList();
+          trackOpList.push(createStatementOp(new ReturnStatement(op.track, op.track.sourceSpan)));
+          op.trackByOps = trackOpList;
         }
       }
     }
@@ -22312,7 +22565,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       case OpKind.HostProperty:
       case OpKind.Attribute:
         slots = 1;
-        if (op.expression instanceof Interpolation && !isSingletonInterpolation(op.expression)) {
+        if (op.expression instanceof Interpolation2 && !isSingletonInterpolation(op.expression)) {
           slots += op.expression.expressions.length;
         }
         return slots;
@@ -22323,7 +22576,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       case OpKind.StyleMap:
       case OpKind.ClassMap:
         slots = 2;
-        if (op.expression instanceof Interpolation) {
+        if (op.expression instanceof Interpolation2) {
           slots += op.expression.expressions.length;
         }
         return slots;
@@ -22370,6 +22623,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       for (const op of unit.create) {
         if (op.kind === OpKind.Listener || op.kind === OpKind.TwoWayListener) {
           inlineAlwaysInlineVariables(op.handlerOps);
+        } else if (op.kind === OpKind.RepeaterCreate && op.trackByOps !== null) {
+          inlineAlwaysInlineVariables(op.trackByOps);
         }
       }
       optimizeVariablesInOpList(unit.create, job.compatibility);
@@ -22377,6 +22632,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       for (const op of unit.create) {
         if (op.kind === OpKind.Listener || op.kind === OpKind.TwoWayListener) {
           optimizeVariablesInOpList(op.handlerOps, job.compatibility);
+        } else if (op.kind === OpKind.RepeaterCreate && op.trackByOps !== null) {
+          optimizeVariablesInOpList(op.trackByOps, job.compatibility);
         }
       }
     }
@@ -22760,7 +23017,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     { kind: CompilationJobKind.Tmpl, fn: resolveI18nElementPlaceholders },
     { kind: CompilationJobKind.Tmpl, fn: resolveI18nExpressionPlaceholders },
     { kind: CompilationJobKind.Tmpl, fn: extractI18nMessages },
-    { kind: CompilationJobKind.Tmpl, fn: generateTrackFns },
     { kind: CompilationJobKind.Tmpl, fn: collectI18nConsts },
     { kind: CompilationJobKind.Tmpl, fn: collectConstExpressions },
     { kind: CompilationJobKind.Both, fn: collectElementConsts },
@@ -22878,7 +23134,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     return meta instanceof Message;
   }
   function isSingleI18nIcu(meta) {
-    return isI18nRootNode(meta) && meta.nodes.length === 1 && meta.nodes[0] instanceof Icu;
+    return isI18nRootNode(meta) && meta.nodes.length === 1 && meta.nodes[0] instanceof Icu2;
   }
   function ingestComponent(componentName, template2, constantPool, relativeContextFilePath, i18nUseExternalIds, deferMeta, allDeferrableDepsFn, relativeTemplatePath, enableDebugLocations) {
     const job = new ComponentCompilationJob(componentName, constantPool, compatibilityMode, relativeContextFilePath, i18nUseExternalIds, deferMeta, allDeferrableDepsFn, relativeTemplatePath, enableDebugLocations);
@@ -22912,7 +23168,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     let expression;
     const ast = property2.expression.ast;
     if (ast instanceof Interpolation$1) {
-      expression = new Interpolation(ast.strings, ast.expressions.map((expr) => convertAst(expr, job, property2.sourceSpan)), []);
+      expression = new Interpolation2(ast.strings, ast.expressions.map((expr) => convertAst(expr, job, property2.sourceSpan)), []);
     } else {
       expression = convertAst(ast, job, property2.sourceSpan);
     }
@@ -23073,7 +23329,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     const textXref = unit.job.allocateXrefId();
     unit.create.push(createTextOp(textXref, "", icuPlaceholder, text2.sourceSpan));
     const baseSourceSpan = unit.job.compatibility ? null : text2.sourceSpan;
-    unit.update.push(createInterpolateTextOp(textXref, new Interpolation(value.strings, value.expressions.map((expr) => convertAst(expr, unit.job, baseSourceSpan)), i18nPlaceholders), text2.sourceSpan));
+    unit.update.push(createInterpolateTextOp(textXref, new Interpolation2(value.strings, value.expressions.map((expr) => convertAst(expr, unit.job, baseSourceSpan)), i18nPlaceholders), text2.sourceSpan));
   }
   function ingestIfBlock(unit, ifBlock) {
     let firstXref = null;
@@ -23418,11 +23674,15 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     } else if (ast instanceof SafeCall) {
       return new SafeInvokeFunctionExpr(convertAst(ast.receiver, job, baseSourceSpan), ast.args.map((a) => convertAst(a, job, baseSourceSpan)));
     } else if (ast instanceof EmptyExpr$1) {
-      return new EmptyExpr(convertSourceSpan(ast.span, baseSourceSpan));
+      return new EmptyExpr2(convertSourceSpan(ast.span, baseSourceSpan));
     } else if (ast instanceof PrefixNot) {
       return not(convertAst(ast.expression, job, baseSourceSpan), convertSourceSpan(ast.span, baseSourceSpan));
     } else if (ast instanceof TypeofExpression) {
       return typeofExpr(convertAst(ast.expression, job, baseSourceSpan));
+    } else if (ast instanceof TemplateLiteral) {
+      return new TemplateLiteralExpr(ast.elements.map((el) => {
+        return new TemplateLiteralElementExpr(el.text, convertSourceSpan(el.span, baseSourceSpan));
+      }), ast.expressions.map((expr) => convertAst(expr, job, baseSourceSpan)), convertSourceSpan(ast.span, baseSourceSpan));
     } else {
       throw new Error(`Unhandled expression type "${ast.constructor.name}" in file "${baseSourceSpan?.start.file.url}"`);
     }
@@ -23430,9 +23690,9 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   function convertAstWithInterpolation(job, value, i18nMeta, sourceSpan) {
     let expression;
     if (value instanceof Interpolation$1) {
-      expression = new Interpolation(value.strings, value.expressions.map((e) => convertAst(e, job, sourceSpan ?? null)), Object.keys(asMessage(i18nMeta)?.placeholders ?? {}));
+      expression = new Interpolation2(value.strings, value.expressions.map((e) => convertAst(e, job, null)), Object.keys(asMessage(i18nMeta)?.placeholders ?? {}));
     } else if (value instanceof AST) {
-      expression = convertAst(value, job, sourceSpan ?? null);
+      expression = convertAst(value, job, null);
     } else {
       expression = literal(value);
     }
@@ -24256,9 +24516,10 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
   var FOR_LOOP_EXPRESSION_PATTERN = /^\s*([0-9A-Za-z_$]*)\s+of\s+([\S\s]*)/;
   var FOR_LOOP_TRACK_PATTERN = /^track\s+([\S\s]*)/;
-  var CONDITIONAL_ALIAS_PATTERN = /^(as\s)+(.*)/;
+  var CONDITIONAL_ALIAS_PATTERN = /^(as\s+)(.*)/;
   var ELSE_IF_PATTERN = /^else[^\S\r\n]+if/;
   var FOR_LOOP_LET_PATTERN = /^let\s+([\S\s]*)/;
+  var IDENTIFIER_PATTERN = /^[$A-Z_][0-9A-Z_$]*$/i;
   var CHARACTERS_IN_SURROUNDING_WHITESPACE_PATTERN = /(\s*)(\S+)(\s*)/;
   var ALLOWED_FOR_LOOP_LET_VARIABLES = /* @__PURE__ */ new Set([
     "$index",
@@ -24480,7 +24741,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       return errors;
     }
     for (const node of ast.children) {
-      if (node instanceof Comment || node instanceof Text2 && node.value.trim().length === 0) {
+      if (node instanceof Comment2 || node instanceof Text4 && node.value.trim().length === 0) {
         continue;
       }
       if (!(node instanceof Block) || node.name !== "case" && node.name !== "default") {
@@ -24530,9 +24791,13 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
         errors.push(new ParseError(param.sourceSpan, 'Conditional can only have one "as" expression'));
       } else {
         const name = aliasMatch[2].trim();
-        const variableStart = param.sourceSpan.start.moveBy(aliasMatch[1].length);
-        const variableSpan = new ParseSourceSpan(variableStart, variableStart.moveBy(name.length));
-        expressionAlias = new Variable(name, name, variableSpan, variableSpan);
+        if (IDENTIFIER_PATTERN.test(name)) {
+          const variableStart = param.sourceSpan.start.moveBy(aliasMatch[1].length);
+          const variableSpan = new ParseSourceSpan(variableStart, variableStart.moveBy(name.length));
+          expressionAlias = new Variable(name, name, variableSpan, variableSpan);
+        } else {
+          errors.push(new ParseError(param.sourceSpan, '"as" expression must be a valid JavaScript identifier'));
+        }
       }
     }
     return { expression, expressionAlias };
@@ -25284,10 +25549,10 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       const relatedBlocks = [];
       for (let i = primaryBlockIndex + 1; i < siblings.length; i++) {
         const node = siblings[i];
-        if (node instanceof Comment) {
+        if (node instanceof Comment2) {
           continue;
         }
-        if (node instanceof Text2 && node.value.trim().length === 0) {
+        if (node instanceof Text4 && node.value.trim().length === 0) {
           this.processedNodes.add(node);
           continue;
         }
@@ -25524,7 +25789,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     boundEvents.push(...events.map((e) => BoundEvent.fromParsedEvent(e)));
   }
   function textContents(node) {
-    if (node.children.length !== 1 || !(node.children[0] instanceof Text2)) {
+    if (node.children.length !== 1 || !(node.children[0] instanceof Text4)) {
       return null;
     } else {
       return node.children[0].value;
@@ -25628,7 +25893,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
   var elementRegistry = new DomElementSchemaRegistry();
   function makeBindingParser(interpolationConfig = DEFAULT_INTERPOLATION_CONFIG) {
-    return new BindingParser(new Parser(new Lexer()), interpolationConfig, elementRegistry, []);
+    return new BindingParser(new Parser2(new Lexer()), interpolationConfig, elementRegistry, []);
   }
   var COMPONENT_VARIABLE = "%COMP%";
   var HOST_ATTR = `_nghost-${COMPONENT_VARIABLE}`;
@@ -25664,19 +25929,12 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     const features = [];
     const providers = meta.providers;
     const viewProviders = meta.viewProviders;
-    const inputKeys = Object.keys(meta.inputs);
     if (providers || viewProviders) {
       const args = [providers || new LiteralArrayExpr([])];
       if (viewProviders) {
         args.push(viewProviders);
       }
       features.push(importExpr(Identifiers.ProvidersFeature).callFn(args));
-    }
-    for (const key of inputKeys) {
-      if (meta.inputs[key].transformFunction !== null) {
-        features.push(importExpr(Identifiers.InputTransformsFeatureFeature));
-        break;
-      }
     }
     if (meta.hostDirectives?.length) {
       features.push(importExpr(Identifiers.HostDirectivesFeature).callFn([createHostDirectivesFeatureArg(meta.hostDirectives)]));
@@ -25753,11 +26011,11 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       definitionMap.set("dependencies", importExpr(Identifiers.getComponentDepsFactory).callFn(args));
     }
     if (meta.encapsulation === null) {
-      meta.encapsulation = ViewEncapsulation.Emulated;
+      meta.encapsulation = ViewEncapsulation$1.Emulated;
     }
     let hasStyles = !!meta.externalStyles?.length;
     if (meta.styles && meta.styles.length) {
-      const styleValues = meta.encapsulation == ViewEncapsulation.Emulated ? compileStyles(meta.styles, CONTENT_ATTR, HOST_ATTR) : meta.styles;
+      const styleValues = meta.encapsulation == ViewEncapsulation$1.Emulated ? compileStyles(meta.styles, CONTENT_ATTR, HOST_ATTR) : meta.styles;
       const styleNodes = styleValues.reduce((result, style) => {
         if (style.trim().length > 0) {
           result.push(constantPool.getConstLiteral(literal(style)));
@@ -25769,10 +26027,10 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
         definitionMap.set("styles", literalArr(styleNodes));
       }
     }
-    if (!hasStyles && meta.encapsulation === ViewEncapsulation.Emulated) {
-      meta.encapsulation = ViewEncapsulation.None;
+    if (!hasStyles && meta.encapsulation === ViewEncapsulation$1.Emulated) {
+      meta.encapsulation = ViewEncapsulation$1.None;
     }
-    if (meta.encapsulation !== ViewEncapsulation.Emulated) {
+    if (meta.encapsulation !== ViewEncapsulation$1.Emulated) {
       definitionMap.set("encapsulation", literal(meta.encapsulation));
     }
     if (meta.animations !== null) {
@@ -26021,16 +26279,29 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      */
     bind(target) {
       if (!target.template) {
-        throw new Error("Binding without a template not yet supported");
+        throw new Error("Empty bound targets are not supported");
       }
-      const scope = Scope.apply(target.template);
-      const scopedNodeEntities = extractScopedNodeEntities(scope);
-      const { directives, eagerDirectives, bindings, references } = DirectiveBinder.apply(target.template, this.directiveMatcher);
-      const { expressions, symbols, nestingLevel, usedPipes, eagerPipes, deferBlocks } = TemplateBinder.applyWithScope(target.template, scope);
+      const directives = /* @__PURE__ */ new Map();
+      const eagerDirectives = [];
+      const bindings = /* @__PURE__ */ new Map();
+      const references = /* @__PURE__ */ new Map();
+      const scopedNodeEntities = /* @__PURE__ */ new Map();
+      const expressions = /* @__PURE__ */ new Map();
+      const symbols = /* @__PURE__ */ new Map();
+      const nestingLevel = /* @__PURE__ */ new Map();
+      const usedPipes = /* @__PURE__ */ new Set();
+      const eagerPipes = /* @__PURE__ */ new Set();
+      const deferBlocks = [];
+      if (target.template) {
+        const scope = Scope2.apply(target.template);
+        extractScopedNodeEntities(scope, scopedNodeEntities);
+        DirectiveBinder.apply(target.template, this.directiveMatcher, directives, eagerDirectives, bindings, references);
+        TemplateBinder.applyWithScope(target.template, scope, expressions, symbols, nestingLevel, usedPipes, eagerPipes, deferBlocks);
+      }
       return new R3BoundTarget(target, directives, eagerDirectives, bindings, references, expressions, symbols, nestingLevel, scopedNodeEntities, usedPipes, eagerPipes, deferBlocks);
     }
   };
-  var Scope = class _Scope {
+  var Scope2 = class _Scope {
     parentScope;
     rootNode;
     /**
@@ -26222,14 +26493,9 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      * map which resolves #references (`Reference`s) within the template to the named directive or
      * template node.
      */
-    static apply(template2, selectorMatcher) {
-      const directives = /* @__PURE__ */ new Map();
-      const bindings = /* @__PURE__ */ new Map();
-      const references = /* @__PURE__ */ new Map();
-      const eagerDirectives = [];
+    static apply(template2, selectorMatcher, directives, eagerDirectives, bindings, references) {
       const matcher = new _DirectiveBinder(selectorMatcher, directives, eagerDirectives, bindings, references);
       matcher.ingest(template2);
-      return { directives, eagerDirectives, bindings, references };
     }
     ingest(template2) {
       template2.forEach((node) => node.visit(this));
@@ -26394,17 +26660,10 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      * nesting level (how many levels deep within the template structure the `Template` is), starting
      * at 1.
      */
-    static applyWithScope(nodes, scope) {
-      const expressions = /* @__PURE__ */ new Map();
-      const symbols = /* @__PURE__ */ new Map();
-      const nestingLevel = /* @__PURE__ */ new Map();
-      const usedPipes = /* @__PURE__ */ new Set();
-      const eagerPipes = /* @__PURE__ */ new Set();
+    static applyWithScope(nodes, scope, expressions, symbols, nestingLevel, usedPipes, eagerPipes, deferBlocks) {
       const template2 = nodes instanceof Template ? nodes : null;
-      const deferBlocks = [];
       const binder = new _TemplateBinder(expressions, symbols, usedPipes, eagerPipes, deferBlocks, nestingLevel, scope, template2, 0);
       binder.ingest(nodes);
-      return { expressions, symbols, nestingLevel, usedPipes, eagerPipes, deferBlocks };
     }
     ingest(nodeOrNodes) {
       if (nodeOrNodes instanceof Template) {
@@ -26719,7 +26978,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       return this.referenceTargetToElement(target.node);
     }
   };
-  function extractScopedNodeEntities(rootScope) {
+  function extractScopedNodeEntities(rootScope, templateEntities) {
     const entityMap = /* @__PURE__ */ new Map();
     function extractScopeEntities(scope) {
       if (entityMap.has(scope.rootNode)) {
@@ -26743,17 +27002,15 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       }
       extractScopeEntities(scope);
     }
-    const templateEntities = /* @__PURE__ */ new Map();
     for (const [template2, entities] of entityMap) {
       templateEntities.set(template2, new Set(entities.values()));
     }
-    return templateEntities;
   }
   var ResourceLoader = class {
   };
   var CompilerFacadeImpl = class {
     jitEvaluator;
-    FactoryTarget = FactoryTarget$1;
+    FactoryTarget = FactoryTarget;
     ResourceLoader = ResourceLoader;
     elementSchemaRegistry = new DomElementSchemaRegistry();
     constructor(jitEvaluator = new JitEvaluator()) {
@@ -26761,10 +27018,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     }
     compilePipe(angularCoreEnv2, sourceMapUrl, facade) {
       const metadata = {
-        name: facade.name,
         type: wrapReference(facade.type),
         typeArgumentCount: 0,
-        deps: null,
         pipeName: facade.pipeName,
         pure: facade.pure,
         isStandalone: facade.isStandalone
@@ -26815,7 +27070,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     }
     compileInjector(angularCoreEnv2, sourceMapUrl, facade) {
       const meta = {
-        name: facade.name,
         type: wrapReference(facade.type),
         providers: facade.providers && facade.providers.length > 0 ? new WrappedNodeExpr(facade.providers) : null,
         imports: facade.imports.map((i) => new WrappedNodeExpr(i))
@@ -27127,7 +27381,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       animations: decl.animations !== void 0 ? new WrappedNodeExpr(decl.animations) : null,
       defer: defer2,
       changeDetection: decl.changeDetection ?? ChangeDetectionStrategy.Default,
-      encapsulation: decl.encapsulation ?? ViewEncapsulation.Emulated,
+      encapsulation: decl.encapsulation ?? ViewEncapsulation$1.Emulated,
       interpolation,
       declarationListEmitMode: 2,
       relativeContextFilePath: "",
@@ -27369,7 +27623,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     const ng = global2.ng || (global2.ng = {});
     ng.\u0275compilerFacade = new CompilerFacadeImpl();
   }
-  var VERSION = new Version("19.1.4");
+  var VERSION = new Version("19.2.14");
   var _VisitorMode;
   (function(_VisitorMode2) {
     _VisitorMode2[_VisitorMode2["Extract"] = 0] = "Extract";
@@ -27393,14 +27647,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     }
   };
   var _TAG_DEFINITION = new XmlTagDefinition();
-  var FactoryTarget;
-  (function(FactoryTarget3) {
-    FactoryTarget3[FactoryTarget3["Directive"] = 0] = "Directive";
-    FactoryTarget3[FactoryTarget3["Component"] = 1] = "Component";
-    FactoryTarget3[FactoryTarget3["Injectable"] = 2] = "Injectable";
-    FactoryTarget3[FactoryTarget3["Pipe"] = 3] = "Pipe";
-    FactoryTarget3[FactoryTarget3["NgModule"] = 4] = "NgModule";
-  })(FactoryTarget || (FactoryTarget = {}));
   publishFacade(_global2);
 
   // node_modules/@angular/core/fesm2022/core.mjs
@@ -27500,7 +27746,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     ViewChildren: () => ViewChildren,
     ViewContainerRef: () => ViewContainerRef,
     ViewEncapsulation: () => ViewEncapsulation2,
-    ViewRef: () => ViewRef,
+    ViewRef: () => ViewRef2,
     afterNextRender: () => afterNextRender,
     afterRender: () => afterRender,
     afterRenderEffect: () => afterRenderEffect,
@@ -27553,11 +27799,12 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     runInInjectionContext: () => runInInjectionContext,
     setTestabilityGetter: () => setTestabilityGetter,
     signal: () => signal,
-    untracked: () => untracked,
+    untracked: () => untracked2,
     viewChild: () => viewChild,
     viewChildren: () => viewChildren,
     \u0275ALLOW_MULTIPLE_PLATFORMS: () => ALLOW_MULTIPLE_PLATFORMS,
     \u0275AfterRenderManager: () => AfterRenderManager,
+    \u0275CLIENT_RENDER_MODE_FLAG: () => CLIENT_RENDER_MODE_FLAG,
     \u0275CONTAINER_HEADER_OFFSET: () => CONTAINER_HEADER_OFFSET,
     \u0275ChangeDetectionScheduler: () => ChangeDetectionScheduler,
     \u0275ChangeDetectionSchedulerImpl: () => ChangeDetectionSchedulerImpl,
@@ -27566,10 +27813,12 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275DEFAULT_LOCALE_ID: () => DEFAULT_LOCALE_ID,
     \u0275DEFER_BLOCK_CONFIG: () => DEFER_BLOCK_CONFIG,
     \u0275DEFER_BLOCK_DEPENDENCY_INTERCEPTOR: () => DEFER_BLOCK_DEPENDENCY_INTERCEPTOR,
+    \u0275DEHYDRATED_BLOCK_REGISTRY: () => DEHYDRATED_BLOCK_REGISTRY,
     \u0275DeferBlockBehavior: () => DeferBlockBehavior,
     \u0275DeferBlockState: () => DeferBlockState,
     \u0275ENABLE_ROOT_COMPONENT_BOOTSTRAP: () => ENABLE_ROOT_COMPONENT_BOOTSTRAP,
     \u0275EffectScheduler: () => EffectScheduler,
+    \u0275HydrationStatus: () => HydrationStatus,
     \u0275IMAGE_CONFIG: () => IMAGE_CONFIG,
     \u0275IMAGE_CONFIG_DEFAULTS: () => IMAGE_CONFIG_DEFAULTS,
     \u0275INJECTOR_SCOPE: () => INJECTOR_SCOPE,
@@ -27577,6 +27826,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275INTERNAL_APPLICATION_ERROR_HANDLER: () => INTERNAL_APPLICATION_ERROR_HANDLER,
     \u0275IS_HYDRATION_DOM_REUSE_ENABLED: () => IS_HYDRATION_DOM_REUSE_ENABLED,
     \u0275IS_INCREMENTAL_HYDRATION_ENABLED: () => IS_INCREMENTAL_HYDRATION_ENABLED,
+    \u0275JSACTION_BLOCK_ELEMENT_MAP: () => JSACTION_BLOCK_ELEMENT_MAP,
     \u0275JSACTION_EVENT_CONTRACT: () => JSACTION_EVENT_CONTRACT,
     \u0275LContext: () => LContext,
     \u0275LocaleDataIndex: () => LocaleDataIndex,
@@ -27590,20 +27840,23 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275NG_PROV_DEF: () => NG_PROV_DEF,
     \u0275NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR: () => NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR,
     \u0275NO_CHANGE: () => NO_CHANGE,
-    \u0275NgModuleFactory: () => NgModuleFactory,
+    \u0275NgModuleFactory: () => NgModuleFactory2,
     \u0275NoopNgZone: () => NoopNgZone,
     \u0275PERFORMANCE_MARK_PREFIX: () => PERFORMANCE_MARK_PREFIX,
     \u0275PROVIDED_NG_ZONE: () => PROVIDED_NG_ZONE,
     \u0275PendingTasksInternal: () => PendingTasksInternal,
+    \u0275R3Injector: () => R3Injector,
     \u0275ReflectionCapabilities: () => ReflectionCapabilities,
-    \u0275Render3ComponentFactory: () => ComponentFactory,
-    \u0275Render3ComponentRef: () => ComponentRef,
-    \u0275Render3NgModuleRef: () => NgModuleRef,
+    \u0275Render3ComponentFactory: () => ComponentFactory2,
+    \u0275Render3ComponentRef: () => ComponentRef2,
+    \u0275Render3NgModuleRef: () => NgModuleRef2,
+    \u0275ResourceImpl: () => ResourceImpl,
     \u0275RuntimeError: () => RuntimeError,
     \u0275SIGNAL: () => SIGNAL,
     \u0275SSR_CONTENT_INTEGRITY_MARKER: () => SSR_CONTENT_INTEGRITY_MARKER,
     \u0275TESTABILITY: () => TESTABILITY,
     \u0275TESTABILITY_GETTER: () => TESTABILITY_GETTER,
+    \u0275TimerScheduler: () => TimerScheduler,
     \u0275TracingAction: () => TracingAction,
     \u0275TracingService: () => TracingService,
     \u0275USE_RUNTIME_DEPS_TRACKER_FOR_JIT: () => USE_RUNTIME_DEPS_TRACKER_FOR_JIT,
@@ -27628,6 +27881,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275compilePipe: () => compilePipe,
     \u0275convertToBitFlags: () => convertToBitFlags,
     \u0275createInjector: () => createInjector,
+    \u0275createOrReusePlatformInjector: () => createOrReusePlatformInjector,
     \u0275defaultIterableDiffers: () => defaultIterableDiffers,
     \u0275defaultKeyValueDiffers: () => defaultKeyValueDiffers,
     \u0275depsTracker: () => depsTracker,
@@ -27641,9 +27895,11 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275generateStandaloneInDeclarationsError: () => generateStandaloneInDeclarationsError,
     \u0275getAsyncClassMetadataFn: () => getAsyncClassMetadataFn,
     \u0275getClosestComponentName: () => getClosestComponentName,
+    \u0275getComponentDef: () => getComponentDef,
     \u0275getDebugNode: () => getDebugNode,
     \u0275getDeferBlocks: () => getDeferBlocks$1,
     \u0275getDirectives: () => getDirectives,
+    \u0275getDocument: () => getDocument,
     \u0275getHostElement: () => getHostElement,
     \u0275getInjectableDef: () => getInjectableDef,
     \u0275getLContext: () => getLContext,
@@ -27664,6 +27920,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275isNgModule: () => isNgModule,
     \u0275isPromise: () => isPromise,
     \u0275isSubscribable: () => isSubscribable,
+    \u0275isViewDirty: () => isViewDirty,
+    \u0275markForRefresh: () => markForRefresh,
     \u0275microtaskEffect: () => microtaskEffect,
     \u0275noSideEffects: () => noSideEffects,
     \u0275patchComponentDefWithScope: () => patchComponentDefWithScope,
@@ -27706,7 +27964,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275\u0275FactoryTarget: () => FactoryTarget2,
     \u0275\u0275HostDirectivesFeature: () => \u0275\u0275HostDirectivesFeature,
     \u0275\u0275InheritDefinitionFeature: () => \u0275\u0275InheritDefinitionFeature,
-    \u0275\u0275InputTransformsFeature: () => \u0275\u0275InputTransformsFeature,
     \u0275\u0275NgOnChangesFeature: () => \u0275\u0275NgOnChangesFeature,
     \u0275\u0275ProvidersFeature: () => \u0275\u0275ProvidersFeature,
     \u0275\u0275advance: () => \u0275\u0275advance,
@@ -27779,6 +28036,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275\u0275getComponentDepsFactory: () => \u0275\u0275getComponentDepsFactory,
     \u0275\u0275getCurrentView: () => \u0275\u0275getCurrentView,
     \u0275\u0275getInheritedFactory: () => \u0275\u0275getInheritedFactory,
+    \u0275\u0275getReplaceMetadataURL: () => \u0275\u0275getReplaceMetadataURL,
     \u0275\u0275hostProperty: () => \u0275\u0275hostProperty,
     \u0275\u0275i18n: () => \u0275\u0275i18n,
     \u0275\u0275i18nApply: () => \u0275\u0275i18nApply,
@@ -27904,7 +28162,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     \u0275\u0275viewQuerySignal: () => \u0275\u0275viewQuerySignal
   });
 
-  // node_modules/@angular/core/fesm2022/primitives/signals.mjs
+  // node_modules/@angular/core/fesm2022/untracked-BKcld_ew.mjs
   function defaultEquals(a, b) {
     return Object.is(a, b);
   }
@@ -28105,9 +28363,12 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   function isConsumerNode(node) {
     return node.producerNode !== void 0;
   }
-  function createComputed(computation) {
+  function createComputed(computation, equal) {
     const node = Object.create(COMPUTED_NODE);
     node.computation = computation;
+    if (equal !== void 0) {
+      node.equal = equal;
+    }
     const computed2 = () => {
       producerUpdateValueVersion(node);
       producerAccessed(node);
@@ -28165,26 +28426,29 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     throw new Error();
   }
   var throwInvalidWriteToSignalErrorFn = defaultThrowError;
-  function throwInvalidWriteToSignalError() {
-    throwInvalidWriteToSignalErrorFn();
+  function throwInvalidWriteToSignalError(node) {
+    throwInvalidWriteToSignalErrorFn(node);
   }
   function setThrowInvalidWriteToSignalError(fn2) {
     throwInvalidWriteToSignalErrorFn = fn2;
   }
   var postSignalSetFn = null;
-  function createSignal(initialValue) {
+  function createSignal(initialValue, equal) {
     const node = Object.create(SIGNAL_NODE);
     node.value = initialValue;
-    const getter = () => {
+    if (equal !== void 0) {
+      node.equal = equal;
+    }
+    const getter = (() => {
       producerAccessed(node);
       return node.value;
-    };
+    });
     getter[SIGNAL] = node;
     return getter;
   }
   function signalSetFn(node, newValue) {
     if (!producerUpdatesAllowed()) {
-      throwInvalidWriteToSignalError();
+      throwInvalidWriteToSignalError(node);
     }
     if (!node.equal(node.value, newValue)) {
       node.value = newValue;
@@ -28193,7 +28457,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
   function signalUpdateFn(node, updater) {
     if (!producerUpdatesAllowed()) {
-      throwInvalidWriteToSignalError();
+      throwInvalidWriteToSignalError(node);
     }
     signalSetFn(node, updater(node.value));
   }
@@ -28247,6 +28511,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       dirty: true,
       error: null,
       equal: defaultEquals,
+      kind: "linkedSignal",
       producerMustRecompute(node) {
         return node.value === UNSET || node.value === COMPUTING;
       },
@@ -28281,6 +28546,30 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       }
     };
   })();
+  function setAlternateWeakRefImpl(impl) {
+  }
+  function untracked(nonReactiveReadsFn) {
+    const prevConsumer = setActiveConsumer(null);
+    try {
+      return nonReactiveReadsFn();
+    } finally {
+      setActiveConsumer(prevConsumer);
+    }
+  }
+
+  // node_modules/@angular/core/fesm2022/primitives/di.mjs
+  var _currentInjector = void 0;
+  function getCurrentInjector() {
+    return _currentInjector;
+  }
+  function setCurrentInjector(injector) {
+    const former = _currentInjector;
+    _currentInjector = injector;
+    return former;
+  }
+  var NOT_FOUND = Symbol("NotFound");
+
+  // node_modules/@angular/core/fesm2022/primitives/signals.mjs
   function createWatch(fn2, schedule, allowSignalWrites) {
     const node = Object.create(WATCH_NODE);
     if (allowSignalWrites) {
@@ -28444,7 +28733,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
 
   // node_modules/rxjs/dist/esm5/internal/Subscription.js
-  var Subscription = function() {
+  var Subscription = (function() {
     function Subscription2(initialTeardown) {
       this.initialTeardown = initialTeardown;
       this.closed = false;
@@ -28557,13 +28846,13 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
         teardown._removeParent(this);
       }
     };
-    Subscription2.EMPTY = function() {
+    Subscription2.EMPTY = (function() {
       var empty = new Subscription2();
       empty.closed = true;
       return empty;
-    }();
+    })();
     return Subscription2;
-  }();
+  })();
   var EMPTY_SUBSCRIPTION = Subscription.EMPTY;
   function isSubscription(value) {
     return value instanceof Subscription || value && "closed" in value && isFunction2(value.remove) && isFunction2(value.add) && isFunction2(value.unsubscribe);
@@ -28622,9 +28911,9 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
 
   // node_modules/rxjs/dist/esm5/internal/NotificationFactories.js
-  var COMPLETE_NOTIFICATION = function() {
+  var COMPLETE_NOTIFICATION = (function() {
     return createNotification("C", void 0, void 0);
-  }();
+  })();
   function errorNotification(error) {
     return createNotification("E", void 0, error);
   }
@@ -28667,7 +28956,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
 
   // node_modules/rxjs/dist/esm5/internal/Subscriber.js
-  var Subscriber = function(_super) {
+  var Subscriber = (function(_super) {
     __extends(Subscriber2, _super);
     function Subscriber2(destination) {
       var _this = _super.call(this) || this;
@@ -28733,12 +29022,12 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       }
     };
     return Subscriber2;
-  }(Subscription);
+  })(Subscription);
   var _bind = Function.prototype.bind;
   function bind(fn2, thisArg) {
     return _bind.call(fn2, thisArg);
   }
-  var ConsumerObserver = function() {
+  var ConsumerObserver = (function() {
     function ConsumerObserver2(partialObserver) {
       this.partialObserver = partialObserver;
     }
@@ -28775,8 +29064,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       }
     };
     return ConsumerObserver2;
-  }();
-  var SafeSubscriber = function(_super) {
+  })();
+  var SafeSubscriber = (function(_super) {
     __extends(SafeSubscriber2, _super);
     function SafeSubscriber2(observerOrNext, error, complete) {
       var _this = _super.call(this) || this;
@@ -28807,7 +29096,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       return _this;
     }
     return SafeSubscriber2;
-  }(Subscriber);
+  })(Subscriber);
   function handleUnhandledError(error) {
     if (config.useDeprecatedSynchronousErrorHandling) {
       captureError(error);
@@ -28832,9 +29121,9 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   };
 
   // node_modules/rxjs/dist/esm5/internal/symbol/observable.js
-  var observable = function() {
+  var observable = (function() {
     return typeof Symbol === "function" && Symbol.observable || "@@observable";
-  }();
+  })();
 
   // node_modules/rxjs/dist/esm5/internal/util/identity.js
   function identity(x) {
@@ -28857,7 +29146,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
 
   // node_modules/rxjs/dist/esm5/internal/Observable.js
-  var Observable = function() {
+  var Observable = (function() {
     function Observable2(subscribe) {
       if (subscribe) {
         this._subscribe = subscribe;
@@ -28936,7 +29225,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       return new Observable2(subscribe);
     };
     return Observable2;
-  }();
+  })();
   function getPromiseCtor(promiseCtor) {
     var _a;
     return (_a = promiseCtor !== null && promiseCtor !== void 0 ? promiseCtor : config.Promise) !== null && _a !== void 0 ? _a : Promise;
@@ -28971,7 +29260,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   function createOperatorSubscriber(destination, onNext, onComplete, onError, onFinalize) {
     return new OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize);
   }
-  var OperatorSubscriber = function(_super) {
+  var OperatorSubscriber = (function(_super) {
     __extends(OperatorSubscriber2, _super);
     function OperatorSubscriber2(destination, onNext, onComplete, onError, onFinalize, shouldUnsubscribe) {
       var _this = _super.call(this, destination) || this;
@@ -29013,7 +29302,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       }
     };
     return OperatorSubscriber2;
-  }(Subscriber);
+  })(Subscriber);
 
   // node_modules/rxjs/dist/esm5/internal/util/ObjectUnsubscribedError.js
   var ObjectUnsubscribedError = createErrorClass(function(_super) {
@@ -29025,7 +29314,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   });
 
   // node_modules/rxjs/dist/esm5/internal/Subject.js
-  var Subject = function(_super) {
+  var Subject = (function(_super) {
     __extends(Subject2, _super);
     function Subject2() {
       var _this = _super.call(this) || this;
@@ -29151,8 +29440,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       return new AnonymousSubject(destination, source);
     };
     return Subject2;
-  }(Observable);
-  var AnonymousSubject = function(_super) {
+  })(Observable);
+  var AnonymousSubject = (function(_super) {
     __extends(AnonymousSubject2, _super);
     function AnonymousSubject2(destination, source) {
       var _this = _super.call(this) || this;
@@ -29177,10 +29466,10 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       return (_b = (_a = this.source) === null || _a === void 0 ? void 0 : _a.subscribe(subscriber)) !== null && _b !== void 0 ? _b : EMPTY_SUBSCRIPTION;
     };
     return AnonymousSubject2;
-  }(Subject);
+  })(Subject);
 
   // node_modules/rxjs/dist/esm5/internal/BehaviorSubject.js
-  var BehaviorSubject = function(_super) {
+  var BehaviorSubject = (function(_super) {
     __extends(BehaviorSubject2, _super);
     function BehaviorSubject2(_value) {
       var _this = _super.call(this) || this;
@@ -29211,7 +29500,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       _super.prototype.next.call(this, this._value = value);
     };
     return BehaviorSubject2;
-  }(Subject);
+  })(Subject);
 
   // node_modules/rxjs/dist/esm5/internal/operators/map.js
   function map(project, thisArg) {
@@ -29272,16 +29561,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   }
   var EventType = {
     /**
-     * Mouse middle click, introduced in Chrome 55 and not yet supported on
-     * other browsers.
-     */
-    AUXCLICK: "auxclick",
-    /**
-     * The change event fired by browsers when the `value` attribute of input,
-     * select, and textarea elements are changed.
-     */
-    CHANGE: "change",
-    /**
      * The click event. In addEvent() refers to all click events, in the
      * jsaction attribute it refers to the unmodified click and Enter/Space
      * keypress events.  In the latter case, a jsaction click will be triggered,
@@ -29295,12 +29574,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      * click event.
      */
     CLICKMOD: "clickmod",
-    /**
-     * Specifies the jsaction for a click-only event.  Click-only doesn't take
-     * into account the case where an element with focus receives an Enter/Space
-     * keypress.  This event isn't separately enabled in addEvent().
-     */
-    CLICKONLY: "clickonly",
     /**
      * The dblclick event.
      */
@@ -29351,18 +29624,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      */
     KEYUP: "keyup",
     /**
-     * The mouseup event. Can either be used directly or used implicitly to
-     * capture mouseup events. In addEvent(), it represents a regular DOM
-     * mouseup event.
-     */
-    MOUSEUP: "mouseup",
-    /**
-     * The mousedown event. Can either be used directly or used implicitly to
-     * capture mouseenter events. In addEvent(), it represents a regular DOM
-     * mouseover event.
-     */
-    MOUSEDOWN: "mousedown",
-    /**
      * The mouseover event. Can either be used directly or used implicitly to
      * capture mouseenter events. In addEvent(), it represents a regular DOM
      * mouseover event.
@@ -29384,22 +29645,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      * element being entered within a DOM tree.
      */
     MOUSELEAVE: "mouseleave",
-    /**
-     * The mousemove event.
-     */
-    MOUSEMOVE: "mousemove",
-    /**
-     * The pointerup event. Can either be used directly or used implicitly to
-     * capture pointerup events. In addEvent(), it represents a regular DOM
-     * pointerup event.
-     */
-    POINTERUP: "pointerup",
-    /**
-     * The pointerdown event. Can either be used directly or used implicitly to
-     * capture pointerenter events. In addEvent(), it represents a regular DOM
-     * mouseover event.
-     */
-    POINTERDOWN: "pointerdown",
     /**
      * The pointerover event. Can either be used directly or used implicitly to
      * capture pointerenter events. In addEvent(), it represents a regular DOM
@@ -29423,26 +29668,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      */
     POINTERLEAVE: "pointerleave",
     /**
-     * The pointermove event.
-     */
-    POINTERMOVE: "pointermove",
-    /**
-     * The pointercancel event.
-     */
-    POINTERCANCEL: "pointercancel",
-    /**
-     * The gotpointercapture event is fired when
-     * Element.setPointerCapture(pointerId) is called on a mouse input, or
-     * implicitly when a touch input begins.
-     */
-    GOTPOINTERCAPTURE: "gotpointercapture",
-    /**
-     * The lostpointercapture event is fired when
-     * Element.releasePointerCapture(pointerId) is called, or implicitly after a
-     * touch input ends.
-     */
-    LOSTPOINTERCAPTURE: "lostpointercapture",
-    /**
      * The error event. The error event doesn't bubble, but you can use it in
      * addEvent() and jsaction anyway. EventContract does the right thing under
      * the hood (except in IE8 which does not use error events).
@@ -29454,10 +29679,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      * under the hood.
      */
     LOAD: "load",
-    /**
-     * The unload event.
-     */
-    UNLOAD: "unload",
     /**
      * The touchstart event. Bubbles, will only ever fire in browsers with
      * touch support.
@@ -29474,28 +29695,11 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
      */
     TOUCHMOVE: "touchmove",
     /**
-     * The input event.
-     */
-    INPUT: "input",
-    /**
-     * The scroll event.
-     */
-    SCROLL: "scroll",
-    /**
      * The toggle event. The toggle event doesn't bubble, but you can use it in
      * addEvent() and jsaction anyway. EventContract does the right thing
      * under the hood.
      */
-    TOGGLE: "toggle",
-    /**
-     * A custom event. The actual custom event type is declared as the 'type'
-     * field in the event details. Supported in Firefox 6+, IE 9+, and all Chrome
-     * versions.
-     *
-     * This is an internal name. Users should use jsaction's fireCustomEvent to
-     * fire custom events instead of relying on this type to create them.
-     */
-    CUSTOM: "_custom"
+    TOGGLE: "toggle"
   };
   var MOUSE_SPECIAL_EVENT_TYPES = [
     EventType.MOUSEENTER,
@@ -29567,10 +29771,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   var isCaptureEventType = (eventType) => CAPTURE_EVENT_TYPES.indexOf(eventType) >= 0;
   var EARLY_EVENT_TYPES = BUBBLE_EVENT_TYPES.concat(CAPTURE_EVENT_TYPES);
   var isEarlyEventType = (eventType) => EARLY_EVENT_TYPES.indexOf(eventType) >= 0;
-  var MAC_ENTER = 3;
-  var ENTER = 13;
-  var SPACE = 32;
-  var KeyCode = { MAC_ENTER, ENTER, SPACE };
   function getBrowserEventType(eventType) {
     if (eventType === EventType.MOUSEENTER) {
       return EventType.MOUSEOVER;
@@ -29620,9 +29820,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       e.shiftKey
     );
   }
-  var isWebKit = typeof navigator !== "undefined" && !/Opera/.test(navigator.userAgent) && /WebKit/.test(navigator.userAgent);
-  var isIe = typeof navigator !== "undefined" && (/MSIE/.test(navigator.userAgent) || /Trident/.test(navigator.userAgent));
-  var isGecko = typeof navigator !== "undefined" && !/Opera|WebKit/.test(navigator.userAgent) && /Gecko/.test(navigator.product);
   function isMouseSpecialEvent(e, type, element2) {
     const related = e.relatedTarget;
     return (e.type === EventType.MOUSEOVER && type === EventType.MOUSEENTER || e.type === EventType.MOUSEOUT && type === EventType.MOUSELEAVE || e.type === EventType.POINTEROVER && type === EventType.POINTERENTER || e.type === EventType.POINTEROUT && type === EventType.POINTERLEAVE) && (!related || related !== element2 && !element2.contains(related));
@@ -29654,34 +29851,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     copy["_originalEvent"] = e;
     return copy;
   }
-  var ACTION_KEY_TO_KEYCODE = {
-    "Enter": KeyCode.ENTER,
-    " ": KeyCode.SPACE
-  };
-  var IDENTIFIER_TO_KEY_TRIGGER_MAPPING = {
-    "A": KeyCode.ENTER,
-    "BUTTON": 0,
-    "CHECKBOX": KeyCode.SPACE,
-    "COMBOBOX": KeyCode.ENTER,
-    "FILE": 0,
-    "GRIDCELL": KeyCode.ENTER,
-    "LINK": KeyCode.ENTER,
-    "LISTBOX": KeyCode.ENTER,
-    "MENU": 0,
-    "MENUBAR": 0,
-    "MENUITEM": 0,
-    "MENUITEMCHECKBOX": 0,
-    "MENUITEMRADIO": 0,
-    "OPTION": 0,
-    "RADIO": KeyCode.SPACE,
-    "RADIOGROUP": KeyCode.SPACE,
-    "RESET": 0,
-    "SUBMIT": 0,
-    "SWITCH": KeyCode.SPACE,
-    "TAB": 0,
-    "TREE": KeyCode.ENTER,
-    "TREEITEM": KeyCode.ENTER
-  };
   var isIos = typeof navigator !== "undefined" && /iPhone|iPad|iPod/.test(navigator.userAgent);
   var EventContractContainer = class {
     element;
@@ -29719,11 +29888,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     }
   };
   var Char = {
-    /**
-     * The separator between the namespace and the action name in the
-     * jsaction attribute value.
-     */
-    NAMESPACE_ACTION_SEPARATOR: ".",
     /**
      * The separator between the event name and action in the jsaction
      * attribute value.
@@ -30118,7 +30282,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
   function shouldPreventDefaultBeforeDispatching(actionElement, eventInfoWrapper) {
     return actionElement.tagName === "A" && (eventInfoWrapper.getEventType() === EventType.CLICK || eventInfoWrapper.getEventType() === EventType.CLICKMOD);
   }
-  var PROPAGATION_STOPPED_SYMBOL = Symbol.for("propagationStopped");
+  var PROPAGATION_STOPPED_SYMBOL = /* @__PURE__ */ Symbol.for("propagationStopped");
   var EventPhase = {
     REPLAY: 101
   };
@@ -30426,7 +30590,7 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
 
   // node_modules/@angular/core/fesm2022/core.mjs
   var ERROR_DETAILS_PAGE_BASE_URL = "https://angular.dev/errors";
-  var XSS_SECURITY_URL = "https://g.co/ng/security#xss";
+  var XSS_SECURITY_URL = "https://angular.dev/best-practices/security#preventing-cross-site-scripting-xss";
   var RuntimeError = class extends Error {
     code;
     constructor(code, message) {
@@ -30434,8 +30598,11 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       this.code = code;
     }
   };
+  function formatRuntimeErrorCode(code) {
+    return `NG0${Math.abs(code)}`;
+  }
   function formatRuntimeError(code, message) {
-    const fullCode = `NG0${Math.abs(code)}`;
+    const fullCode = formatRuntimeErrorCode(code);
     let errorMessage = `${fullCode}${message ? ": " + message : ""}`;
     if (ngDevMode && code < 0) {
       const addPeriodSeparator = !errorMessage.match(/[.,;!?\n]$/);
@@ -30462,7 +30629,12 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
     function inputValueFn() {
       producerAccessed(node);
       if (node.value === REQUIRED_UNSET_VALUE) {
-        throw new RuntimeError(-950, ngDevMode && "Input is required but no value is available yet.");
+        let message = null;
+        if (ngDevMode) {
+          const name = options?.debugName ?? options?.alias;
+          message = `Input${name ? ` "${name}"` : ""} is required but no value is available yet.`;
+        }
+        throw new RuntimeError(-950, message);
       }
       return node.value;
     }
@@ -30493,8 +30665,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
             typeFn(cls, ...args);
           const annotations = cls.hasOwnProperty(ANNOTATIONS) ? cls[ANNOTATIONS] : Object.defineProperty(cls, ANNOTATIONS, { value: [] })[ANNOTATIONS];
           annotations.push(annotationInstance);
-          if (additionalProcessing)
-            additionalProcessing(cls);
           return cls;
         };
       }
@@ -30536,9 +30706,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
           return cls;
         }
       }
-      if (parentClass) {
-        ParamDecoratorFactory.prototype = Object.create(parentClass.prototype);
-      }
       ParamDecoratorFactory.prototype.ngMetadataName = name;
       ParamDecoratorFactory.annotationCls = ParamDecoratorFactory;
       return ParamDecoratorFactory;
@@ -30561,8 +30728,6 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
           const meta = constructor.hasOwnProperty(PROP_METADATA) ? constructor[PROP_METADATA] : Object.defineProperty(constructor, PROP_METADATA, { value: {} })[PROP_METADATA];
           meta[name2] = meta.hasOwnProperty(name2) && meta[name2] || [];
           meta[name2].unshift(decoratorInstance);
-          if (additionalProcessing)
-            additionalProcessing(target, name2, ...args);
         }
         return PropDecorator;
       }
@@ -30648,26 +30813,28 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       return token;
     }
     if (Array.isArray(token)) {
-      return "[" + token.map(stringify2).join(", ") + "]";
+      return `[${token.map(stringify2).join(", ")}]`;
     }
     if (token == null) {
       return "" + token;
     }
-    if (token.overriddenName) {
-      return `${token.overriddenName}`;
+    const name = token.overriddenName || token.name;
+    if (name) {
+      return `${name}`;
     }
-    if (token.name) {
-      return `${token.name}`;
+    const result = token.toString();
+    if (result == null) {
+      return "" + result;
     }
-    const res = token.toString();
-    if (res == null) {
-      return "" + res;
-    }
-    const newLineIndex = res.indexOf("\n");
-    return newLineIndex === -1 ? res : res.substring(0, newLineIndex);
+    const newLineIndex = result.indexOf("\n");
+    return newLineIndex >= 0 ? result.slice(0, newLineIndex) : result;
   }
   function concatStringsWithSpace(before, after) {
-    return before == null || before === "" ? after === null ? "" : after : after == null || after === "" ? before : before + " " + after;
+    if (!before)
+      return after || "";
+    if (!after)
+      return before;
+    return `${before} ${after}`;
   }
   function truncateMiddle(str, maxLength = 100) {
     if (!str || maxLength < 1 || str.length <= maxLength)
@@ -30822,8 +30989,12 @@ This will become an error in a future version of Angular. Please add @Injectable
   }
   var NG_PROV_DEF = getClosureSafeProperty({ \u0275prov: getClosureSafeProperty });
   var NG_INJ_DEF = getClosureSafeProperty({ \u0275inj: getClosureSafeProperty });
-  var NG_INJECTABLE_DEF = getClosureSafeProperty({ ngInjectableDef: getClosureSafeProperty });
-  var NG_INJECTOR_DEF = getClosureSafeProperty({ ngInjectorDef: getClosureSafeProperty });
+  var NG_INJECTABLE_DEF = getClosureSafeProperty({
+    ngInjectableDef: getClosureSafeProperty
+  });
+  var NG_INJECTOR_DEF = getClosureSafeProperty({
+    ngInjectorDef: getClosureSafeProperty
+  });
   var InjectionToken = class {
     _desc;
     /** @internal */
@@ -30942,7 +31113,9 @@ This will become an error in a future version of Angular. Please add @Injectable
   var NG_PIPE_DEF = getClosureSafeProperty({ \u0275pipe: getClosureSafeProperty });
   var NG_MOD_DEF = getClosureSafeProperty({ \u0275mod: getClosureSafeProperty });
   var NG_FACTORY_DEF = getClosureSafeProperty({ \u0275fac: getClosureSafeProperty });
-  var NG_ELEMENT_ID = getClosureSafeProperty({ __NG_ELEMENT_ID__: getClosureSafeProperty });
+  var NG_ELEMENT_ID = getClosureSafeProperty({
+    __NG_ELEMENT_ID__: getClosureSafeProperty
+  });
   var NG_ENV_ID = getClosureSafeProperty({ __NG_ENV_ID__: getClosureSafeProperty });
   function renderStringify(value) {
     if (typeof value === "string")
@@ -30974,8 +31147,7 @@ This will become an error in a future version of Angular. Please add @Injectable
     }
   }
   function throwCyclicDependencyError(token, path) {
-    const depPath = path ? `. Dependency path: ${path.join(" > ")} > ${token}` : "";
-    throw new RuntimeError(-200, ngDevMode ? `Circular dependency in DI detected for ${token}${depPath}` : token);
+    throw new RuntimeError(-200, ngDevMode ? `Circular dependency in DI detected for ${token}${path ? `. Dependency path: ${path.join(" > ")} > ${token}` : ""}` : token);
   }
   function throwMixedMultiProviderError() {
     throw new Error(`Cannot mix multi providers and regular providers`);
@@ -31032,27 +31204,35 @@ This will become an error in a future version of Angular. Please add @Injectable
   var _THROW_IF_NOT_FOUND = {};
   var THROW_IF_NOT_FOUND = _THROW_IF_NOT_FOUND;
   var DI_DECORATOR_FLAG = "__NG_DI_FLAG__";
+  var RetrievingInjector = class {
+    injector;
+    constructor(injector) {
+      this.injector = injector;
+    }
+    retrieve(token, options) {
+      const ngOptions = options;
+      return this.injector.get(token, ngOptions.optional ? NOT_FOUND : THROW_IF_NOT_FOUND, ngOptions);
+    }
+  };
   var NG_TEMP_TOKEN_PATH = "ngTempTokenPath";
   var NG_TOKEN_PATH = "ngTokenPath";
   var NEW_LINE = /\n/gm;
   var NO_NEW_LINE = "\u0275";
   var SOURCE = "__source";
-  var _currentInjector = void 0;
-  function getCurrentInjector() {
-    return _currentInjector;
-  }
-  function setCurrentInjector(injector) {
-    const former = _currentInjector;
-    _currentInjector = injector;
-    return former;
-  }
   function injectInjectorOnly(token, flags = InjectFlags.Default) {
-    if (_currentInjector === void 0) {
-      throw new RuntimeError(-203, ngDevMode && `inject() must be called from an injection context such as a constructor, a factory function, a field initializer, or a function used with \`runInInjectionContext\`.`);
-    } else if (_currentInjector === null) {
+    if (getCurrentInjector() === void 0) {
+      throw new RuntimeError(-203, ngDevMode && `The \`${stringify2(token)}\` token injection failed. \`inject()\` function must be called from an injection context such as a constructor, a factory function, a field initializer, or a function used with \`runInInjectionContext\`.`);
+    } else if (getCurrentInjector() === null) {
       return injectRootLimpMode(token, void 0, flags);
     } else {
-      const value = _currentInjector.get(token, flags & InjectFlags.Optional ? null : void 0, flags);
+      const currentInjector = getCurrentInjector();
+      let injector;
+      if (currentInjector instanceof RetrievingInjector) {
+        injector = currentInjector.injector;
+      } else {
+        injector = currentInjector;
+      }
+      const value = injector.get(token, flags & InjectFlags.Optional ? null : void 0, flags);
       ngDevMode && emitInjectEvent(token, value, flags);
       return value;
     }
@@ -31565,6 +31745,10 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       }
       this.injectorDefTypes = new Set(this.get(INJECTOR_DEF_TYPES, EMPTY_ARRAY, InjectFlags.Self));
     }
+    retrieve(token, options) {
+      const ngOptions = options;
+      return this.get(token, ngOptions.optional ? NOT_FOUND : THROW_IF_NOT_FOUND, ngOptions);
+    }
     /**
      * Destroy the injector and release references to every instance or provider associated with it.
      *
@@ -31642,7 +31826,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
             this.records.set(token, record);
           }
           if (record != null) {
-            return this.hydrate(token, record);
+            return this.hydrate(token, record, flags);
           }
         }
         const nextInjector = !(flags & InjectFlags.Self) ? this.parent : getNullInjector();
@@ -31736,20 +31920,20 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       }
       this.records.set(token, record);
     }
-    hydrate(token, record) {
+    hydrate(token, record, flags) {
       const prevConsumer = setActiveConsumer(null);
       try {
-        if (ngDevMode && record.value === CIRCULAR) {
+        if (record.value === CIRCULAR) {
           throwCyclicDependencyError(stringify2(token));
         } else if (record.value === NOT_YET) {
           record.value = CIRCULAR;
           if (ngDevMode) {
             runInInjectorProfilerContext(this, token, () => {
-              record.value = record.factory();
+              record.value = record.factory(void 0, flags);
               emitInstanceCreatedByInjectorEvent(record.value);
             });
           } else {
-            record.value = record.factory();
+            record.value = record.factory(void 0, flags);
           }
         }
         if (typeof record.value === "object" && record.value && hasOnDestroy(record.value)) {
@@ -31826,7 +32010,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       } else if (isFactoryProvider(provider)) {
         factory = () => provider.useFactory(...injectArgs(provider.deps || []));
       } else if (isExistingProvider(provider)) {
-        factory = () => \u0275\u0275inject(resolveForwardRef(provider.useExisting));
+        factory = (_, flags) => \u0275\u0275inject(resolveForwardRef(provider.useExisting), flags !== void 0 && flags & InjectFlags.Optional ? InjectFlags.Optional : void 0);
       } else {
         const classRef = resolveForwardRef(provider && (provider.useClass || provider.provide));
         if (ngDevMode && !classRef) {
@@ -31874,14 +32058,18 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     }
   }
   function runInInjectionContext(injector, fn2) {
+    let internalInjector;
     if (injector instanceof R3Injector) {
       assertNotDestroyed(injector);
+      internalInjector = injector;
+    } else {
+      internalInjector = new RetrievingInjector(injector);
     }
     let prevInjectorProfilerContext;
     if (ngDevMode) {
       prevInjectorProfilerContext = setInjectorProfilerContext({ injector, token: null });
     }
-    const prevInjector = setCurrentInjector(injector);
+    const prevInjector = setCurrentInjector(internalInjector);
     const previousInjectImplementation = setInjectImplementation(void 0);
     try {
       return fn2();
@@ -31913,12 +32101,12 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     R3TemplateDependencyKind3[R3TemplateDependencyKind3["Pipe"] = 1] = "Pipe";
     R3TemplateDependencyKind3[R3TemplateDependencyKind3["NgModule"] = 2] = "NgModule";
   })(R3TemplateDependencyKind2 || (R3TemplateDependencyKind2 = {}));
-  var ViewEncapsulation$1;
+  var ViewEncapsulation$12;
   (function(ViewEncapsulation3) {
     ViewEncapsulation3[ViewEncapsulation3["Emulated"] = 0] = "Emulated";
     ViewEncapsulation3[ViewEncapsulation3["None"] = 2] = "None";
     ViewEncapsulation3[ViewEncapsulation3["ShadowDom"] = 3] = "ShadowDom";
-  })(ViewEncapsulation$1 || (ViewEncapsulation$1 = {}));
+  })(ViewEncapsulation$12 || (ViewEncapsulation$12 = {}));
   function getCompilerFacade(request) {
     const globalNg = _global3["ng"];
     if (globalNg && globalNg.\u0275compilerFacade) {
@@ -32152,7 +32340,8 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   var EFFECTS_TO_SCHEDULE = 22;
   var EFFECTS = 23;
   var REACTIVE_TEMPLATE_CONSUMER = 24;
-  var HEADER_OFFSET = 25;
+  var AFTER_RENDER_SEQUENCES_TO_ADD = 25;
+  var HEADER_OFFSET = 26;
   var TYPE = 1;
   var DEHYDRATED_VIEWS = 6;
   var NATIVE = 7;
@@ -32243,7 +32432,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     assertEqual(tView.firstCreatePass, true, errMessage || "Should only be called in first create pass.");
   }
   function assertFirstUpdatePass(tView, errMessage) {
-    assertEqual(tView.firstUpdatePass, true, errMessage || "Should only be called in first update pass.");
+    assertEqual(tView.firstUpdatePass, true, "Should only be called in first update pass.");
   }
   function assertDirectiveDef(obj) {
     if (obj.type === void 0 || obj.selectors == void 0 || obj.inputs === void 0) {
@@ -32264,22 +32453,10 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   }
   function assertProjectionSlots(lView, errMessage) {
     assertDefined(lView[DECLARATION_COMPONENT_VIEW], "Component views should exist.");
-    assertDefined(lView[DECLARATION_COMPONENT_VIEW][T_HOST].projection, errMessage || "Components with projection nodes (<ng-content>) must have projection slots defined.");
+    assertDefined(lView[DECLARATION_COMPONENT_VIEW][T_HOST].projection, "Components with projection nodes (<ng-content>) must have projection slots defined.");
   }
   function assertParentView(lView, errMessage) {
-    assertDefined(lView, errMessage || "Component views should always have a parent view (component's host view)");
-  }
-  function assertNoDuplicateDirectives(directives) {
-    if (directives.length < 2) {
-      return;
-    }
-    const seenDirectives = /* @__PURE__ */ new Set();
-    for (const current of directives) {
-      if (seenDirectives.has(current)) {
-        throw new RuntimeError(309, `Directive ${current.type.name} matches multiple times on the same element. Directives can only match an element once.`);
-      }
-      seenDirectives.add(current);
-    }
+    assertDefined(lView, "Component views should always have a parent view (component's host view)");
   }
   function assertNodeInjector(lView, injectorIndex) {
     assertIndexInExpandoRange(lView, injectorIndex);
@@ -32372,7 +32549,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   var setProfiler = (profiler2) => {
     profilerCallback = profiler2;
   };
-  var profiler = function(event, instance, hookOrListener) {
+  var profiler = function(event, instance = null, hookOrListener) {
     if (profilerCallback != null) {
       profilerCallback(event, instance, hookOrListener);
     }
@@ -32424,6 +32601,13 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     ngDevMode && assertIndexInRange(view, index);
     return view[index];
   }
+  function store(tView, lView, index, value) {
+    if (index >= tView.data.length) {
+      tView.data[index] = null;
+      tView.blueprint[index] = null;
+    }
+    lView[index] = value;
+  }
   function getComponentLViewByIndex(nodeIndex, hostView) {
     ngDevMode && assertIndexInRange(hostView, nodeIndex);
     const slotValue = hostView[nodeIndex];
@@ -32470,7 +32654,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   }
   function updateAncestorTraversalFlagsOnAttach(lView) {
     lView[ENVIRONMENT].changeDetectionScheduler?.notify(
-      9
+      8
       /* NotificationSource.ViewAttached */
     );
     if (lView[FLAGS] & 64) {
@@ -32843,7 +33027,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   function namespaceHTMLInternal() {
     instructionState.lFrame.currentNamespace = null;
   }
-  function getNamespace$1() {
+  function getNamespace() {
     return instructionState.lFrame.currentNamespace;
   }
   var _wasLastNodeCreated = true;
@@ -33049,9 +33233,6 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       this.injectImpl = injectImplementation;
     }
   };
-  function isFactory(obj) {
-    return obj instanceof NodeInjectorFactory;
-  }
   function toTNodeTypeAsString(tNodeType) {
     let text2 = "";
     tNodeType & 1 && (text2 += "|Text");
@@ -33122,8 +33303,8 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     return name.charCodeAt(0) === 64;
   }
   function mergeHostAttrs(dst, src) {
-    if (src === null || src.length === 0) {
-    } else if (dst === null || dst.length === 0) {
+    if (src === null || src.length === 0) ;
+    else if (dst === null || dst.length === 0) {
       dst = src.slice();
     } else {
       let srcMarker = -1;
@@ -33132,8 +33313,8 @@ Please check that 1) the type for the parameter at index ${index} is correct and
         if (typeof item === "number") {
           srcMarker = item;
         } else {
-          if (srcMarker === 0) {
-          } else if (srcMarker === -1 || srcMarker === 2) {
+          if (srcMarker === 0) ;
+          else if (srcMarker === -1 || srcMarker === 2) {
             mergeHostAttribute(dst, srcMarker, item, null, src[++i]);
           } else {
             mergeHostAttribute(dst, srcMarker, item, null, null);
@@ -33167,19 +33348,14 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       if (typeof item === "number") {
         break;
       } else if (item === key1) {
-        if (key2 === null) {
+        {
           if (value !== null) {
             dst[i + 1] = value;
           }
           return;
-        } else if (key2 === dst[i + 1]) {
-          dst[i + 2] = value;
-          return;
         }
       }
       i++;
-      if (key2 !== null)
-        i++;
       if (value !== null)
         i++;
     }
@@ -33188,30 +33364,10 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       i = markerInsertPosition + 1;
     }
     dst.splice(i++, 0, key1);
-    if (key2 !== null) {
-      dst.splice(i++, 0, key2);
-    }
     if (value !== null) {
       dst.splice(i++, 0, value);
     }
   }
-  var NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR = {};
-  var ChainedInjector = class {
-    injector;
-    parentInjector;
-    constructor(injector, parentInjector) {
-      this.injector = injector;
-      this.parentInjector = parentInjector;
-    }
-    get(token, notFoundValue, flags) {
-      flags = convertToBitFlags(flags);
-      const value = this.injector.get(token, NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR, flags);
-      if (value !== NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR || notFoundValue === NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR) {
-        return value;
-      }
-      return this.parentInjector.get(token, notFoundValue, flags);
-    }
-  };
   function hasParentInjector(parentLocation) {
     return parentLocation !== NO_PARENT_INJECTOR;
   }
@@ -33236,9 +33392,6 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     }
     return parentView;
   }
-  function isRouterOutletInjector(currentInjector) {
-    return currentInjector instanceof ChainedInjector && typeof currentInjector.injector.__ngOutletInjector === "function";
-  }
   var includeViewProviders = true;
   function setIncludeViewProviders(v) {
     const oldValue = includeViewProviders;
@@ -33249,7 +33402,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   var BLOOM_MASK = BLOOM_SIZE - 1;
   var BLOOM_BUCKET_BITS = 5;
   var nextNgElementId = 0;
-  var NOT_FOUND = {};
+  var NOT_FOUND2 = {};
   function bloomAdd(injectorIndex, tView, type) {
     ngDevMode && assertEqual(tView.firstCreatePass, true, "expected firstCreatePass to be true");
     let id2;
@@ -33403,13 +33556,13 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       if (lView[FLAGS] & 2048 && // The token must be present on the current node injector when the `Self`
       // flag is set, so the lookup on embedded view injector(s) can be skipped.
       !(flags & InjectFlags.Self)) {
-        const embeddedInjectorValue = lookupTokenUsingEmbeddedInjector(tNode, lView, token, flags, NOT_FOUND);
-        if (embeddedInjectorValue !== NOT_FOUND) {
+        const embeddedInjectorValue = lookupTokenUsingEmbeddedInjector(tNode, lView, token, flags, NOT_FOUND2);
+        if (embeddedInjectorValue !== NOT_FOUND2) {
           return embeddedInjectorValue;
         }
       }
-      const value = lookupTokenUsingNodeInjector(tNode, lView, token, flags, NOT_FOUND);
-      if (value !== NOT_FOUND) {
+      const value = lookupTokenUsingNodeInjector(tNode, lView, token, flags, NOT_FOUND2);
+      if (value !== NOT_FOUND2) {
         return value;
       }
     }
@@ -33468,7 +33621,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
         ], lView);
         if (bloomHasToken(bloomHash, injectorIndex, tView.data)) {
           const instance = searchTokensOnInjector(injectorIndex, lView, token, previousTView, flags, hostTElementNode);
-          if (instance !== NOT_FOUND) {
+          if (instance !== NOT_FOUND2) {
             return instance;
           }
         }
@@ -33517,9 +33670,9 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     const isHostSpecialCase = flags & InjectFlags.Host && hostTElementNode === tNode;
     const injectableIdx = locateDirectiveOrProvider(tNode, currentTView, token, canAccessViewProviders, isHostSpecialCase);
     if (injectableIdx !== null) {
-      return getNodeInjectable(lView, currentTView, injectableIdx, tNode);
+      return getNodeInjectable(lView, currentTView, injectableIdx, tNode, flags);
     } else {
-      return NOT_FOUND;
+      return NOT_FOUND2;
     }
   }
   function locateDirectiveOrProvider(tNode, tView, token, canAccessViewProviders, isHostSpecialCase) {
@@ -33545,10 +33698,10 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     }
     return null;
   }
-  function getNodeInjectable(lView, tView, index, tNode) {
+  function getNodeInjectable(lView, tView, index, tNode, flags) {
     let value = lView[index];
     const tData = tView.data;
-    if (isFactory(value)) {
+    if (value instanceof NodeInjectorFactory) {
       const factory = value;
       if (factory.resolving) {
         throwCyclicDependencyError(stringifyForError(tData[index]));
@@ -33565,7 +33718,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       const success = enterDI(lView, tNode, InjectFlags.Default);
       ngDevMode && assertEqual(success, true, "Because flags do not contain `SkipSelf' we expect this to always succeed.");
       try {
-        value = lView[index] = factory.factory(void 0, tData, lView, tNode);
+        value = lView[index] = factory.factory(void 0, flags, tData, lView, tNode);
         ngDevMode && emitInstanceCreatedByInjectorEvent(value);
         if (tView.firstCreatePass && index >= tNode.directiveStart) {
           ngDevMode && assertDirectiveDef(tData[index]);
@@ -33659,16 +33812,16 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     let currentLView = lView;
     while (currentTNode !== null && currentLView !== null && currentLView[FLAGS] & 2048 && !isRootView(currentLView)) {
       ngDevMode && assertTNodeForLView(currentTNode, currentLView);
-      const nodeInjectorValue = lookupTokenUsingNodeInjector(currentTNode, currentLView, token, flags | InjectFlags.Self, NOT_FOUND);
-      if (nodeInjectorValue !== NOT_FOUND) {
+      const nodeInjectorValue = lookupTokenUsingNodeInjector(currentTNode, currentLView, token, flags | InjectFlags.Self, NOT_FOUND2);
+      if (nodeInjectorValue !== NOT_FOUND2) {
         return nodeInjectorValue;
       }
       let parentTNode = currentTNode.parent;
       if (!parentTNode) {
         const embeddedViewInjector = currentLView[EMBEDDED_VIEW_INJECTOR];
         if (embeddedViewInjector) {
-          const embeddedViewInjectorValue = embeddedViewInjector.get(token, NOT_FOUND, flags);
-          if (embeddedViewInjectorValue !== NOT_FOUND) {
+          const embeddedViewInjectorValue = embeddedViewInjector.get(token, NOT_FOUND2, flags);
+          if (embeddedViewInjectorValue !== NOT_FOUND2) {
             return embeddedViewInjectorValue;
           }
         }
@@ -33923,8 +34076,14 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       this._lView = _lView;
     }
     onDestroy(callback) {
-      storeLViewOnDestroy(this._lView, callback);
-      return () => removeLViewOnDestroy(this._lView, callback);
+      const lView = this._lView;
+      if (isDestroyed(lView)) {
+        callback();
+        return () => {
+        };
+      }
+      storeLViewOnDestroy(lView, callback);
+      return () => removeLViewOnDestroy(lView, callback);
     }
   };
   function injectDestroyRef() {
@@ -33990,7 +34149,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
           return;
         }
         this.scheduler.notify(
-          12
+          11
           /* NotificationSource.PendingTaskRemoved */
         );
         this.internalPendingTasks.remove(taskId);
@@ -34084,9 +34243,12 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       return (value) => {
         const taskId = this.pendingTasks?.add();
         setTimeout(() => {
-          fn2(value);
-          if (taskId !== void 0) {
-            this.pendingTasks?.remove(taskId);
+          try {
+            fn2(value);
+          } finally {
+            if (taskId !== void 0) {
+              this.pendingTasks?.remove(taskId);
+            }
           }
         });
       };
@@ -34503,7 +34665,8 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     /** Emits a new value to the output. */
     emit(value) {
       if (this.destroyed) {
-        throw new RuntimeError(953, ngDevMode && "Unexpected emit for destroyed `OutputRef`. The owning directive/component is destroyed.");
+        console.warn(formatRuntimeError(953, ngDevMode && "Unexpected emit for destroyed `OutputRef`. The owning directive/component is destroyed."));
+        return;
       }
       if (this.listeners === null) {
         return;
@@ -34549,12 +34712,13 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   }
   var ElementRef = class {
     /**
-     * <div class="callout is-critical">
+     * <div class="docs-alert docs-alert-important">
      *   <header>Use with caution</header>
      *   <p>
      *    Use this API as the last resort when direct access to DOM is needed. Use templating and
-     *    data-binding provided by Angular instead. Alternatively you can take a look at
-     *    {@link Renderer2} which provides an API that can be safely used.
+     *    data-binding provided by Angular instead. If used, it is recommended in combination with
+     *    {@link /best-practices/security#direct-use-of-the-dom-apis-and-explicit-sanitization-calls DomSanitizer}
+     *    for maxiumum security;
      *   </p>
      * </div>
      */
@@ -34571,14 +34735,6 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   function unwrapElementRef(value) {
     return value instanceof ElementRef ? value.nativeElement : value;
   }
-  var markedFeatures = /* @__PURE__ */ new Set();
-  function performanceMarkFeature(feature) {
-    if (markedFeatures.has(feature)) {
-      return;
-    }
-    markedFeatures.add(feature);
-    performance?.mark?.("mark_feature_usage", { detail: { feature } });
-  }
   function isSignal(value) {
     return typeof value === "function" && value[SIGNAL] !== void 0;
   }
@@ -34586,12 +34742,8 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     return null;
   }
   function signal(initialValue, options) {
-    performanceMarkFeature("NgSignals");
-    const signalFn = createSignal(initialValue);
+    const signalFn = createSignal(initialValue, options?.equal);
     const node = signalFn[SIGNAL];
-    if (options?.equal) {
-      node.equal = options.equal;
-    }
     signalFn.set = (newValue) => signalSetFn(node, newValue);
     signalFn.update = (updateFn) => signalUpdateFn(node, updateFn);
     signalFn.asReadonly = signalAsReadonlyFn.bind(signalFn);
@@ -35221,20 +35373,12 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   function extractInputDebugMetadata(inputs) {
     const res = {};
     for (const key in inputs) {
-      if (!inputs.hasOwnProperty(key)) {
-        continue;
+      if (inputs.hasOwnProperty(key)) {
+        const value = inputs[key];
+        if (value !== void 0) {
+          res[key] = value[0];
+        }
       }
-      const value = inputs[key];
-      if (value === void 0) {
-        continue;
-      }
-      let minifiedName;
-      if (Array.isArray(value)) {
-        minifiedName = value[0];
-      } else {
-        minifiedName = value;
-      }
-      res[key] = minifiedName;
     }
     return res;
   }
@@ -35284,7 +35428,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   }
   function initTransferState() {
     const transferState = new TransferState();
-    if (inject(PLATFORM_ID) === "browser") {
+    if (typeof ngServerMode === "undefined" || !ngServerMode) {
       transferState.store = retrieveTransferredState(getDocument(), inject(APP_ID));
     }
     return transferState;
@@ -35402,10 +35546,34 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     TracingAction2[TracingAction2["AFTER_NEXT_RENDER"] = 1] = "AFTER_NEXT_RENDER";
   })(TracingAction || (TracingAction = {}));
   var TracingService = new InjectionToken(ngDevMode ? "TracingService" : "");
+  var markedFeatures = /* @__PURE__ */ new Set();
+  function performanceMarkFeature(feature) {
+    if (markedFeatures.has(feature)) {
+      return;
+    }
+    markedFeatures.add(feature);
+    performance?.mark?.("mark_feature_usage", { detail: { feature } });
+  }
   function assertNotInReactiveContext(debugFn, extraContext) {
     if (getActiveConsumer() !== null) {
       throw new RuntimeError(-602, ngDevMode && `${debugFn.name}() cannot be called from within a reactive context.${extraContext ? ` ${extraContext}` : ""}`);
     }
+  }
+  var ViewContext = class {
+    view;
+    node;
+    constructor(view, node) {
+      this.view = view;
+      this.node = node;
+    }
+    /**
+     * @internal
+     * @nocollapse
+     */
+    static __NG_ELEMENT_ID__ = injectViewContext;
+  };
+  function injectViewContext() {
+    return new ViewContext(getLView(), getCurrentTNode());
   }
   var AfterRenderPhase;
   (function(AfterRenderPhase2) {
@@ -35453,6 +35621,13 @@ Please check that 1) the type for the parameter at index ${index} is correct and
      * might be scheduled.
      */
     execute() {
+      const hasSequencesToExecute = this.sequences.size > 0;
+      if (hasSequencesToExecute) {
+        profiler(
+          16
+          /* ProfilerEvent.AfterRenderHooksStart */
+        );
+      }
       this.executing = true;
       for (const phase of AFTER_RENDER_PHASES) {
         for (const sequence of this.sequences) {
@@ -35460,7 +35635,11 @@ Please check that 1) the type for the parameter at index ${index} is correct and
             continue;
           }
           try {
-            sequence.pipelinedValue = this.ngZone.runOutsideAngular(() => this.maybeTrace(() => sequence.hooks[phase](sequence.pipelinedValue), sequence.snapshot));
+            sequence.pipelinedValue = this.ngZone.runOutsideAngular(() => this.maybeTrace(() => {
+              const hookFn = sequence.hooks[phase];
+              const value = hookFn(sequence.pipelinedValue);
+              return value;
+            }, sequence.snapshot));
           } catch (err) {
             sequence.erroredOrDestroyed = true;
             this.errorHandler?.handleError(err);
@@ -35480,22 +35659,36 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       }
       if (this.deferredRegistrations.size > 0) {
         this.scheduler.notify(
-          8
-          /* NotificationSource.DeferredRenderHook */
-        );
-      }
-      this.deferredRegistrations.clear();
-    }
-    register(sequence) {
-      if (!this.executing) {
-        this.sequences.add(sequence);
-        this.scheduler.notify(
           7
           /* NotificationSource.RenderHook */
         );
+      }
+      this.deferredRegistrations.clear();
+      if (hasSequencesToExecute) {
+        profiler(
+          17
+          /* ProfilerEvent.AfterRenderHooksEnd */
+        );
+      }
+    }
+    register(sequence) {
+      const { view } = sequence;
+      if (view !== void 0) {
+        (view[AFTER_RENDER_SEQUENCES_TO_ADD] ??= []).push(sequence);
+        markAncestorsForTraversal(view);
+        view[FLAGS] |= 8192;
+      } else if (!this.executing) {
+        this.addSequence(sequence);
       } else {
         this.deferredRegistrations.add(sequence);
       }
+    }
+    addSequence(sequence) {
+      this.sequences.add(sequence);
+      this.scheduler.notify(
+        7
+        /* NotificationSource.RenderHook */
+      );
     }
     unregister(sequence) {
       if (this.executing && this.sequences.has(sequence)) {
@@ -35523,6 +35716,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   var AfterRenderSequence = class {
     impl;
     hooks;
+    view;
     once;
     snapshot;
     /**
@@ -35536,9 +35730,10 @@ Please check that 1) the type for the parameter at index ${index} is correct and
      */
     pipelinedValue = void 0;
     unregisterOnDestroy;
-    constructor(impl, hooks, once, destroyRef, snapshot = null) {
+    constructor(impl, hooks, view, once, destroyRef, snapshot = null) {
       this.impl = impl;
       this.hooks = hooks;
+      this.view = view;
       this.once = once;
       this.snapshot = snapshot;
       this.unregisterOnDestroy = destroyRef?.onDestroy(() => this.destroy());
@@ -35552,6 +35747,10 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     destroy() {
       this.impl.unregister(this);
       this.unregisterOnDestroy?.();
+      const scheduled = this.view?.[AFTER_RENDER_SEQUENCES_TO_ADD];
+      if (scheduled) {
+        this.view[AFTER_RENDER_SEQUENCES_TO_ADD] = scheduled.filter((s) => s !== this);
+      }
     }
   };
   function afterRender(callbackOrSpec, options) {
@@ -35605,7 +35804,8 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     const tracing = injector.get(TracingService, null, { optional: true });
     const hooks = options?.phase ?? AfterRenderPhase.MixedReadWrite;
     const destroyRef = options?.manualCleanup !== true ? injector.get(DestroyRef) : null;
-    const sequence = new AfterRenderSequence(manager.impl, getHooks(callbackOrSpec, hooks), once, destroyRef, tracing?.snapshot(null));
+    const viewContext = injector.get(ViewContext, null, { optional: true });
+    const sequence = new AfterRenderSequence(manager.impl, getHooks(callbackOrSpec, hooks), viewContext?.view, once, destroyRef, tracing?.snapshot(null));
     manager.impl.register(sequence);
     return sequence;
   }
@@ -35888,20 +36088,23 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   function registerDomTrigger(initialLView, tNode, triggerIndex, walkUpTimes, registerFn, callback, type) {
     const injector = initialLView[INJECTOR];
     const zone = injector.get(NgZone);
+    let poll;
     function pollDomTrigger() {
       if (isDestroyed(initialLView)) {
+        poll.destroy();
         return;
       }
       const lDetails = getLDeferBlockDetails(initialLView, tNode);
       const renderedState = lDetails[DEFER_BLOCK_STATE];
       if (renderedState !== DeferBlockInternalState.Initial && renderedState !== DeferBlockState.Placeholder) {
+        poll.destroy();
         return;
       }
       const triggerLView = getTriggerLView(initialLView, tNode, walkUpTimes);
       if (!triggerLView) {
-        afterNextRender({ read: pollDomTrigger }, { injector });
         return;
       }
+      poll.destroy();
       if (isDestroyed(triggerLView)) {
         return;
       }
@@ -35919,7 +36122,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       }
       storeTriggerCleanupFn(type, lDetails, cleanup);
     }
-    afterNextRender({ read: pollDomTrigger }, { injector });
+    poll = afterRender({ read: pollDomTrigger }, { injector });
   }
   var DEFER_BLOCK_SSR_ID_ATTRIBUTE = "ngb";
   function setJSActionAttributes(nativeElement, eventTypes, parentDeferBlockId = null) {
@@ -35945,8 +36148,8 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     el.__jsaction_fns = eventListenerMap;
   };
   var sharedMapFunction = (rEl, jsActionMap) => {
-    let blockName = rEl.getAttribute(DEFER_BLOCK_SSR_ID_ATTRIBUTE) ?? "";
     const el = rEl;
+    let blockName = el.getAttribute(DEFER_BLOCK_SSR_ID_ATTRIBUTE) ?? "";
     const blockSet = jsActionMap.get(blockName) ?? /* @__PURE__ */ new Set();
     if (!blockSet.has(el)) {
       blockSet.add(el);
@@ -35976,11 +36179,32 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   });
   function invokeListeners(event, currentTarget) {
     const handlerFns = currentTarget?.__jsaction_fns?.get(event.type);
-    if (!handlerFns) {
+    if (!handlerFns || !currentTarget?.isConnected) {
       return;
     }
     for (const handler of handlerFns) {
       handler(event);
+    }
+  }
+  var stashEventListeners = /* @__PURE__ */ new Map();
+  function setStashFn(appId, fn2) {
+    stashEventListeners.set(appId, fn2);
+    return () => stashEventListeners.delete(appId);
+  }
+  var isStashEventListenerImplEnabled = false;
+  var _stashEventListenerImpl = (lView, target, eventName, listenerFn) => {
+  };
+  function stashEventListenerImpl(lView, target, eventName, listenerFn) {
+    _stashEventListenerImpl(lView, target, eventName, listenerFn);
+  }
+  function enableStashEventListenerImpl() {
+    if (!isStashEventListenerImplEnabled) {
+      _stashEventListenerImpl = (lView, target, eventName, listenerFn) => {
+        const appId = lView[INJECTOR].get(APP_ID);
+        const stashEventListener = stashEventListeners.get(appId);
+        stashEventListener?.(target, eventName, listenerFn);
+      };
+      isStashEventListenerImplEnabled = true;
     }
   }
   var DEHYDRATED_BLOCK_REGISTRY = new InjectionToken(ngDevMode ? "DEHYDRATED_BLOCK_REGISTRY" : "");
@@ -35991,6 +36215,12 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     contract = inject(JSACTION_EVENT_CONTRACT);
     add(blockId, info) {
       this.registry.set(blockId, info);
+      if (this.awaitingCallbacks.has(blockId)) {
+        const awaitingCallbacks = this.awaitingCallbacks.get(blockId);
+        for (const cb of awaitingCallbacks) {
+          cb();
+        }
+      }
     }
     get(blockId) {
       return this.registry.get(blockId) ?? null;
@@ -36005,6 +36235,7 @@ Please check that 1) the type for the parameter at index ${index} is correct and
         this.jsActionMap.delete(blockId);
         this.invokeTriggerCleanupFns(blockId);
         this.hydrating.delete(blockId);
+        this.awaitingCallbacks.delete(blockId);
       }
       if (this.size === 0) {
         this.contract.instance?.cleanUp();
@@ -36032,6 +36263,13 @@ Please check that 1) the type for the parameter at index ${index} is correct and
     }
     // Blocks that are being hydrated.
     hydrating = /* @__PURE__ */ new Map();
+    // Blocks that are awaiting a defer instruction finish.
+    awaitingCallbacks = /* @__PURE__ */ new Map();
+    awaitParentBlock(topmostParentBlock, callback) {
+      const parentBlockAwaitCallbacks = this.awaitingCallbacks.get(topmostParentBlock) ?? [];
+      parentBlockAwaitCallbacks.push(callback);
+      this.awaitingCallbacks.set(topmostParentBlock, parentBlockAwaitCallbacks);
+    }
     /** @nocollapse */
     static \u0275prov = (
       /** @pureOrBreakMyCode */
@@ -36301,10 +36539,10 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   function gatherDeferBlocksByJSActionAttribute(doc) {
     const jsactionNodes = doc.body.querySelectorAll("[jsaction]");
     const blockMap = /* @__PURE__ */ new Set();
+    const eventTypes = [hoverEventNames.join(":;"), interactionEventNames.join(":;")].join("|");
     for (let node of jsactionNodes) {
       const attr = node.getAttribute("jsaction");
       const blockId = node.getAttribute("ngb");
-      const eventTypes = [...hoverEventNames.join(":;"), ...interactionEventNames.join(":;")].join("|");
       if (attr?.match(eventTypes) && blockId !== null) {
         blockMap.add(node);
       }
@@ -36313,8 +36551,8 @@ Please check that 1) the type for the parameter at index ${index} is correct and
   }
   function appendDeferBlocksToJSActionMap(doc, injector) {
     const blockMap = gatherDeferBlocksByJSActionAttribute(doc);
+    const jsActionMap = injector.get(JSACTION_BLOCK_ELEMENT_MAP);
     for (let rNode of blockMap) {
-      const jsActionMap = injector.get(JSACTION_BLOCK_ELEMENT_MAP);
       sharedMapFunction(rNode, jsActionMap);
     }
   }
@@ -36376,6 +36614,31 @@ Please check that 1) the type for the parameter at index ${index} is correct and
       blockDetails.set(blockId, createBlockSummary(blockData[blockId]));
     }
     return blockDetails;
+  }
+  function isSsrContentsIntegrity(node) {
+    return !!node && node.nodeType === Node.COMMENT_NODE && node.textContent?.trim() === SSR_CONTENT_INTEGRITY_MARKER;
+  }
+  function skipTextNodes(node) {
+    while (node && node.nodeType === Node.TEXT_NODE) {
+      node = node.previousSibling;
+    }
+    return node;
+  }
+  function verifySsrContentsIntegrity(doc) {
+    for (const node of doc.body.childNodes) {
+      if (isSsrContentsIntegrity(node)) {
+        return;
+      }
+    }
+    const beforeBody = skipTextNodes(doc.body.previousSibling);
+    if (isSsrContentsIntegrity(beforeBody)) {
+      return;
+    }
+    let endOfHead = skipTextNodes(doc.head.lastChild);
+    if (isSsrContentsIntegrity(endOfHead)) {
+      return;
+    }
+    throw new RuntimeError(-507, typeof ngDevMode !== "undefined" && ngDevMode && "Angular hydration logic detected that HTML content of this page was modified after it was produced during server side rendering. Make sure that there are no optimizations that remove comment nodes from HTML enabled on your CDN. Angular hydration relies on HTML produced by the server, including whitespaces and comment nodes.");
   }
   function refreshContentQueries(tView, lView) {
     const contentQueries = tView.contentQueries;
@@ -37136,12 +37399,6 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     }
     return { propName: void 0, oldValue, newValue };
   }
-  var InputFlags2;
-  (function(InputFlags3) {
-    InputFlags3[InputFlags3["None"] = 0] = "None";
-    InputFlags3[InputFlags3["SignalBased"] = 1] = "SignalBased";
-    InputFlags3[InputFlags3["HasDecoratorInputTransform"] = 2] = "HasDecoratorInputTransform";
-  })(InputFlags2 || (InputFlags2 = {}));
   function classIndexOf(className, classToSearch, startingIndex) {
     ngDevMode && assertNotEqual(classToSearch, "", 'can not look for "" string.');
     let end = className.length;
@@ -37478,156 +37735,6 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       writeDirectStyle(renderer, element2, styles);
     }
   }
-  function \u0275\u0275advance(delta = 1) {
-    ngDevMode && assertGreaterThan(delta, 0, "Can only advance forward");
-    selectIndexInternal(getTView(), getLView(), getSelectedIndex() + delta, !!ngDevMode && isInCheckNoChangesMode());
-  }
-  function selectIndexInternal(tView, lView, index, checkNoChangesMode) {
-    ngDevMode && assertIndexInDeclRange(lView[TVIEW], index);
-    if (!checkNoChangesMode) {
-      const hooksInitPhaseCompleted = (lView[FLAGS] & 3) === 3;
-      if (hooksInitPhaseCompleted) {
-        const preOrderCheckHooks = tView.preOrderCheckHooks;
-        if (preOrderCheckHooks !== null) {
-          executeCheckHooks(lView, preOrderCheckHooks, index);
-        }
-      } else {
-        const preOrderHooks = tView.preOrderHooks;
-        if (preOrderHooks !== null) {
-          executeInitAndCheckHooks(lView, preOrderHooks, 0, index);
-        }
-      }
-    }
-    setSelectedIndex(index);
-  }
-  function \u0275\u0275directiveInject(token, flags = InjectFlags.Default) {
-    const lView = getLView();
-    if (lView === null) {
-      ngDevMode && assertInjectImplementationNotEqual(\u0275\u0275directiveInject);
-      return \u0275\u0275inject(token, flags);
-    }
-    const tNode = getCurrentTNode();
-    const value = getOrCreateInjectable(tNode, lView, resolveForwardRef(token), flags);
-    ngDevMode && emitInjectEvent(token, value, flags);
-    return value;
-  }
-  function \u0275\u0275invalidFactory() {
-    const msg = ngDevMode ? `This constructor was not compatible with Dependency Injection.` : "invalid";
-    throw new Error(msg);
-  }
-  function writeToDirectiveInput(def, instance, publicName, privateName, flags, value) {
-    const prevConsumer = setActiveConsumer(null);
-    try {
-      let inputSignalNode = null;
-      if ((flags & InputFlags2.SignalBased) !== 0) {
-        const field = instance[privateName];
-        inputSignalNode = field[SIGNAL];
-      }
-      if (inputSignalNode !== null && inputSignalNode.transformFn !== void 0) {
-        value = inputSignalNode.transformFn(value);
-      }
-      if ((flags & InputFlags2.HasDecoratorInputTransform) !== 0) {
-        value = def.inputTransforms[privateName].call(instance, value);
-      }
-      if (def.setInput !== null) {
-        def.setInput(instance, inputSignalNode, value, publicName, privateName);
-      } else {
-        applyValueToInputField(instance, inputSignalNode, privateName, value);
-      }
-    } finally {
-      setActiveConsumer(prevConsumer);
-    }
-  }
-  function createLView(parentLView, tView, context2, flags, host, tHostNode, environment, renderer, injector, embeddedViewInjector, hydrationInfo) {
-    const lView = tView.blueprint.slice();
-    lView[HOST] = host;
-    lView[FLAGS] = flags | 4 | 128 | 8 | 64 | 1024;
-    if (embeddedViewInjector !== null || parentLView && parentLView[FLAGS] & 2048) {
-      lView[FLAGS] |= 2048;
-    }
-    resetPreOrderHookFlags(lView);
-    ngDevMode && tView.declTNode && parentLView && assertTNodeForLView(tView.declTNode, parentLView);
-    lView[PARENT] = lView[DECLARATION_VIEW] = parentLView;
-    lView[CONTEXT] = context2;
-    lView[ENVIRONMENT] = environment || parentLView && parentLView[ENVIRONMENT];
-    ngDevMode && assertDefined(lView[ENVIRONMENT], "LViewEnvironment is required");
-    lView[RENDERER] = renderer || parentLView && parentLView[RENDERER];
-    ngDevMode && assertDefined(lView[RENDERER], "Renderer is required");
-    lView[INJECTOR] = injector || parentLView && parentLView[INJECTOR] || null;
-    lView[T_HOST] = tHostNode;
-    lView[ID] = getUniqueLViewId();
-    lView[HYDRATION] = hydrationInfo;
-    lView[EMBEDDED_VIEW_INJECTOR] = embeddedViewInjector;
-    ngDevMode && assertEqual(tView.type == 2 ? parentLView !== null : true, true, "Embedded views must have parentLView");
-    lView[DECLARATION_COMPONENT_VIEW] = tView.type == 2 ? parentLView[DECLARATION_COMPONENT_VIEW] : lView;
-    return lView;
-  }
-  function allocExpando(tView, lView, numSlotsToAlloc, initialValue) {
-    if (numSlotsToAlloc === 0)
-      return -1;
-    if (ngDevMode) {
-      assertFirstCreatePass(tView);
-      assertSame(tView, lView[TVIEW], "`LView` must be associated with `TView`!");
-      assertEqual(tView.data.length, lView.length, "Expecting LView to be same size as TView");
-      assertEqual(tView.data.length, tView.blueprint.length, "Expecting Blueprint to be same size as TView");
-      assertFirstUpdatePass(tView);
-    }
-    const allocIdx = lView.length;
-    for (let i = 0; i < numSlotsToAlloc; i++) {
-      lView.push(initialValue);
-      tView.blueprint.push(initialValue);
-      tView.data.push(null);
-    }
-    return allocIdx;
-  }
-  function executeTemplate(tView, lView, templateFn, rf, context2) {
-    const prevSelectedIndex = getSelectedIndex();
-    const isUpdatePhase = rf & 2;
-    try {
-      setSelectedIndex(-1);
-      if (isUpdatePhase && lView.length > HEADER_OFFSET) {
-        selectIndexInternal(tView, lView, HEADER_OFFSET, !!ngDevMode && isInCheckNoChangesMode());
-      }
-      const preHookType = isUpdatePhase ? 2 : 0;
-      profiler(preHookType, context2);
-      templateFn(rf, context2);
-    } finally {
-      setSelectedIndex(prevSelectedIndex);
-      const postHookType = isUpdatePhase ? 3 : 1;
-      profiler(postHookType, context2);
-    }
-  }
-  function createDirectivesInstancesInInstruction(tView, lView, tNode) {
-    if (!getBindingsEnabled())
-      return;
-    attachPatchData(getNativeByTNode(tNode, lView), lView);
-    createDirectivesInstances(tView, lView, tNode);
-  }
-  function createDirectivesInstances(tView, lView, tNode) {
-    instantiateAllDirectives(tView, lView, tNode);
-    if ((tNode.flags & 64) === 64) {
-      invokeDirectivesHostBindings(tView, lView, tNode);
-    }
-  }
-  function saveResolvedLocalsInData(viewData, tNode, localRefExtractor = getNativeByTNode) {
-    const localNames = tNode.localNames;
-    if (localNames !== null) {
-      let localIndex = tNode.index + 1;
-      for (let i = 0; i < localNames.length; i += 2) {
-        const index = localNames[i + 1];
-        const value = index === -1 ? localRefExtractor(tNode, viewData) : viewData[index];
-        viewData[localIndex++] = value;
-      }
-    }
-  }
-  function getOrCreateComponentTView(def) {
-    const tView = def.tView;
-    if (tView === null || tView.incompleteFirstPass) {
-      const declTNode = null;
-      return def.tView = createTView(1, declTNode, def.template, def.decls, def.vars, def.directiveDefs, def.pipeDefs, def.viewQuery, def.schemas, def.consts, def.id);
-    }
-    return tView;
-  }
   function createTView(type, declTNode, templateFn, decls, vars, directives, pipes, viewQuery, schemas, constsOrFactory, ssrId) {
     ngDevMode && ngDevMode.tView++;
     const bindingStartIndex = HEADER_OFFSET + decls;
@@ -37679,6 +37786,174 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     }
     return blueprint;
   }
+  function getOrCreateComponentTView(def) {
+    const tView = def.tView;
+    if (tView === null || tView.incompleteFirstPass) {
+      const declTNode = null;
+      return def.tView = createTView(1, declTNode, def.template, def.decls, def.vars, def.directiveDefs, def.pipeDefs, def.viewQuery, def.schemas, def.consts, def.id);
+    }
+    return tView;
+  }
+  function createLView(parentLView, tView, context2, flags, host, tHostNode, environment, renderer, injector, embeddedViewInjector, hydrationInfo) {
+    const lView = tView.blueprint.slice();
+    lView[HOST] = host;
+    lView[FLAGS] = flags | 4 | 128 | 8 | 64 | 1024;
+    if (embeddedViewInjector !== null || parentLView && parentLView[FLAGS] & 2048) {
+      lView[FLAGS] |= 2048;
+    }
+    resetPreOrderHookFlags(lView);
+    ngDevMode && tView.declTNode && parentLView && assertTNodeForLView(tView.declTNode, parentLView);
+    lView[PARENT] = lView[DECLARATION_VIEW] = parentLView;
+    lView[CONTEXT] = context2;
+    lView[ENVIRONMENT] = environment || parentLView && parentLView[ENVIRONMENT];
+    ngDevMode && assertDefined(lView[ENVIRONMENT], "LViewEnvironment is required");
+    lView[RENDERER] = renderer || parentLView && parentLView[RENDERER];
+    ngDevMode && assertDefined(lView[RENDERER], "Renderer is required");
+    lView[INJECTOR] = injector || parentLView && parentLView[INJECTOR] || null;
+    lView[T_HOST] = tHostNode;
+    lView[ID] = getUniqueLViewId();
+    lView[HYDRATION] = hydrationInfo;
+    lView[EMBEDDED_VIEW_INJECTOR] = embeddedViewInjector;
+    ngDevMode && assertEqual(tView.type == 2 ? parentLView !== null : true, true, "Embedded views must have parentLView");
+    lView[DECLARATION_COMPONENT_VIEW] = tView.type == 2 ? parentLView[DECLARATION_COMPONENT_VIEW] : lView;
+    return lView;
+  }
+  function createComponentLView(lView, hostTNode, def) {
+    const native = getNativeByTNode(hostTNode, lView);
+    const tView = getOrCreateComponentTView(def);
+    const rendererFactory = lView[ENVIRONMENT].rendererFactory;
+    const componentView = addToEndOfViewTree(lView, createLView(lView, tView, null, getInitialLViewFlagsFromDef(def), native, hostTNode, null, rendererFactory.createRenderer(native, def), null, null, null));
+    return lView[hostTNode.index] = componentView;
+  }
+  function getInitialLViewFlagsFromDef(def) {
+    let flags = 16;
+    if (def.signals) {
+      flags = 4096;
+    } else if (def.onPush) {
+      flags = 64;
+    }
+    return flags;
+  }
+  function allocExpando(tView, lView, numSlotsToAlloc, initialValue) {
+    if (numSlotsToAlloc === 0)
+      return -1;
+    if (ngDevMode) {
+      assertFirstCreatePass(tView);
+      assertSame(tView, lView[TVIEW], "`LView` must be associated with `TView`!");
+      assertEqual(tView.data.length, lView.length, "Expecting LView to be same size as TView");
+      assertEqual(tView.data.length, tView.blueprint.length, "Expecting Blueprint to be same size as TView");
+      assertFirstUpdatePass(tView);
+    }
+    const allocIdx = lView.length;
+    for (let i = 0; i < numSlotsToAlloc; i++) {
+      lView.push(initialValue);
+      tView.blueprint.push(initialValue);
+      tView.data.push(null);
+    }
+    return allocIdx;
+  }
+  function addToEndOfViewTree(lView, lViewOrLContainer) {
+    if (lView[CHILD_HEAD]) {
+      lView[CHILD_TAIL][NEXT] = lViewOrLContainer;
+    } else {
+      lView[CHILD_HEAD] = lViewOrLContainer;
+    }
+    lView[CHILD_TAIL] = lViewOrLContainer;
+    return lViewOrLContainer;
+  }
+  function \u0275\u0275advance(delta = 1) {
+    ngDevMode && assertGreaterThan(delta, 0, "Can only advance forward");
+    selectIndexInternal(getTView(), getLView(), getSelectedIndex() + delta, !!ngDevMode && isInCheckNoChangesMode());
+  }
+  function selectIndexInternal(tView, lView, index, checkNoChangesMode) {
+    ngDevMode && assertIndexInDeclRange(lView[TVIEW], index);
+    if (!checkNoChangesMode) {
+      const hooksInitPhaseCompleted = (lView[FLAGS] & 3) === 3;
+      if (hooksInitPhaseCompleted) {
+        const preOrderCheckHooks = tView.preOrderCheckHooks;
+        if (preOrderCheckHooks !== null) {
+          executeCheckHooks(lView, preOrderCheckHooks, index);
+        }
+      } else {
+        const preOrderHooks = tView.preOrderHooks;
+        if (preOrderHooks !== null) {
+          executeInitAndCheckHooks(lView, preOrderHooks, 0, index);
+        }
+      }
+    }
+    setSelectedIndex(index);
+  }
+  var InputFlags2;
+  (function(InputFlags3) {
+    InputFlags3[InputFlags3["None"] = 0] = "None";
+    InputFlags3[InputFlags3["SignalBased"] = 1] = "SignalBased";
+    InputFlags3[InputFlags3["HasDecoratorInputTransform"] = 2] = "HasDecoratorInputTransform";
+  })(InputFlags2 || (InputFlags2 = {}));
+  function writeToDirectiveInput(def, instance, publicName, value) {
+    const prevConsumer = setActiveConsumer(null);
+    try {
+      if (ngDevMode) {
+        if (!def.inputs.hasOwnProperty(publicName)) {
+          throw new Error(`ASSERTION ERROR: Directive ${def.type.name} does not have an input with a public name of "${publicName}"`);
+        }
+        if (instance instanceof NodeInjectorFactory) {
+          throw new Error(`ASSERTION ERROR: Cannot write input to factory for type ${def.type.name}. Directive has not been created yet.`);
+        }
+      }
+      const [privateName, flags, transform2] = def.inputs[publicName];
+      let inputSignalNode = null;
+      if ((flags & InputFlags2.SignalBased) !== 0) {
+        const field = instance[privateName];
+        inputSignalNode = field[SIGNAL];
+      }
+      if (inputSignalNode !== null && inputSignalNode.transformFn !== void 0) {
+        value = inputSignalNode.transformFn(value);
+      } else if (transform2 !== null) {
+        value = transform2.call(instance, value);
+      }
+      if (def.setInput !== null) {
+        def.setInput(instance, inputSignalNode, value, publicName, privateName);
+      } else {
+        applyValueToInputField(instance, inputSignalNode, privateName, value);
+      }
+    } finally {
+      setActiveConsumer(prevConsumer);
+    }
+  }
+  function executeTemplate(tView, lView, templateFn, rf, context2) {
+    const prevSelectedIndex = getSelectedIndex();
+    const isUpdatePhase = rf & 2;
+    try {
+      setSelectedIndex(-1);
+      if (isUpdatePhase && lView.length > HEADER_OFFSET) {
+        selectIndexInternal(tView, lView, HEADER_OFFSET, !!ngDevMode && isInCheckNoChangesMode());
+      }
+      const preHookType = isUpdatePhase ? 2 : 0;
+      profiler(preHookType, context2);
+      templateFn(rf, context2);
+    } finally {
+      setSelectedIndex(prevSelectedIndex);
+      const postHookType = isUpdatePhase ? 3 : 1;
+      profiler(postHookType, context2);
+    }
+  }
+  function createDirectivesInstances(tView, lView, tNode) {
+    instantiateAllDirectives(tView, lView, tNode);
+    if ((tNode.flags & 64) === 64) {
+      invokeDirectivesHostBindings(tView, lView, tNode);
+    }
+  }
+  function saveResolvedLocalsInData(viewData, tNode, localRefExtractor = getNativeByTNode) {
+    const localNames = tNode.localNames;
+    if (localNames !== null) {
+      let localIndex = tNode.index + 1;
+      for (let i = 0; i < localNames.length; i += 2) {
+        const index = localNames[i + 1];
+        const value = index === -1 ? localRefExtractor(tNode, viewData) : viewData[index];
+        viewData[localIndex++] = value;
+      }
+    }
+  }
   function locateHostElement(renderer, elementOrSelector, encapsulation, injector) {
     const preserveHostContent = injector.get(PRESERVE_HOST_CONTENT, PRESERVE_HOST_CONTENT_DEFAULT);
     const preserveContent = preserveHostContent || encapsulation === ViewEncapsulation2.ShadowDom;
@@ -37700,81 +37975,6 @@ If the '${propName}' is an Angular control flow directive, please make sure that
   function enableApplyRootElementTransformImpl() {
     _applyRootElementTransformImpl = applyRootElementTransformImpl;
   }
-  function captureNodeBindings(mode, aliasMap, directiveIndex, bindingsResult, hostDirectiveAliasMap) {
-    for (let publicName in aliasMap) {
-      if (!aliasMap.hasOwnProperty(publicName)) {
-        continue;
-      }
-      const value = aliasMap[publicName];
-      if (value === void 0) {
-        continue;
-      }
-      bindingsResult ??= {};
-      let internalName;
-      let inputFlags = InputFlags2.None;
-      if (Array.isArray(value)) {
-        internalName = value[0];
-        inputFlags = value[1];
-      } else {
-        internalName = value;
-      }
-      let finalPublicName = publicName;
-      if (hostDirectiveAliasMap !== null) {
-        if (!hostDirectiveAliasMap.hasOwnProperty(publicName)) {
-          continue;
-        }
-        finalPublicName = hostDirectiveAliasMap[publicName];
-      }
-      if (mode === 0) {
-        addPropertyBinding(bindingsResult, directiveIndex, finalPublicName, internalName, inputFlags);
-      } else {
-        addPropertyBinding(bindingsResult, directiveIndex, finalPublicName, internalName);
-      }
-    }
-    return bindingsResult;
-  }
-  function addPropertyBinding(bindings, directiveIndex, publicName, internalName, inputFlags) {
-    let values;
-    if (bindings.hasOwnProperty(publicName)) {
-      (values = bindings[publicName]).push(directiveIndex, internalName);
-    } else {
-      values = bindings[publicName] = [directiveIndex, internalName];
-    }
-    if (inputFlags !== void 0) {
-      values.push(inputFlags);
-    }
-  }
-  function initializeInputAndOutputAliases(tView, tNode, hostDirectiveDefinitionMap) {
-    ngDevMode && assertFirstCreatePass(tView);
-    const start = tNode.directiveStart;
-    const end = tNode.directiveEnd;
-    const tViewData = tView.data;
-    const tNodeAttrs = tNode.attrs;
-    const inputsFromAttrs = [];
-    let inputsStore = null;
-    let outputsStore = null;
-    for (let directiveIndex = start; directiveIndex < end; directiveIndex++) {
-      const directiveDef = tViewData[directiveIndex];
-      const aliasData = hostDirectiveDefinitionMap ? hostDirectiveDefinitionMap.get(directiveDef) : null;
-      const aliasedInputs = aliasData ? aliasData.inputs : null;
-      const aliasedOutputs = aliasData ? aliasData.outputs : null;
-      inputsStore = captureNodeBindings(0, directiveDef.inputs, directiveIndex, inputsStore, aliasedInputs);
-      outputsStore = captureNodeBindings(1, directiveDef.outputs, directiveIndex, outputsStore, aliasedOutputs);
-      const initialInputs = inputsStore !== null && tNodeAttrs !== null && !isInlineTemplate(tNode) ? generateInitialInputs(inputsStore, directiveIndex, tNodeAttrs) : null;
-      inputsFromAttrs.push(initialInputs);
-    }
-    if (inputsStore !== null) {
-      if (inputsStore.hasOwnProperty("class")) {
-        tNode.flags |= 8;
-      }
-      if (inputsStore.hasOwnProperty("style")) {
-        tNode.flags |= 16;
-      }
-    }
-    tNode.initialInputs = inputsFromAttrs;
-    tNode.inputs = inputsStore;
-    tNode.outputs = outputsStore;
-  }
   function mapPropName(name) {
     if (name === "class")
       return "className";
@@ -37792,17 +37992,16 @@ If the '${propName}' is an Angular control flow directive, please make sure that
   }
   function elementPropertyInternal(tView, tNode, lView, propName, value, renderer, sanitizer, nativeOnly) {
     ngDevMode && assertNotSame(value, NO_CHANGE, "Incoming value should never be NO_CHANGE.");
-    const element2 = getNativeByTNode(tNode, lView);
-    let inputData = tNode.inputs;
-    let dataValue;
-    if (!nativeOnly && inputData != null && (dataValue = inputData[propName])) {
-      setInputsForProperty(tView, lView, dataValue, propName, value);
-      if (isComponentHost(tNode))
-        markDirtyIfOnPush(lView, tNode.index);
-      if (ngDevMode) {
-        setNgReflectProperties(lView, element2, tNode.type, dataValue, value);
+    if (!nativeOnly) {
+      const hasSetInput = setAllInputsForProperty(tNode, tView, lView, propName, value);
+      if (hasSetInput) {
+        isComponentHost(tNode) && markDirtyIfOnPush(lView, tNode.index);
+        ngDevMode && setNgReflectProperties(lView, tView, tNode, propName, value);
+        return;
       }
-    } else if (tNode.type & 3) {
+    }
+    if (tNode.type & 3) {
+      const element2 = getNativeByTNode(tNode, lView);
       propName = mapPropName(propName);
       if (ngDevMode) {
         validateAgainstEventProperties(propName);
@@ -37826,11 +38025,12 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       childComponentLView[FLAGS] |= 64;
     }
   }
-  function setNgReflectProperty(lView, element2, type, attrName, value) {
+  function setNgReflectProperty(lView, tNode, attrName, value) {
+    const element2 = getNativeByTNode(tNode, lView);
     const renderer = lView[RENDERER];
     attrName = normalizeDebugBindingName(attrName);
     const debugValue = normalizeDebugBindingValue(value);
-    if (type & 3) {
+    if (tNode.type & 3) {
       if (value == null) {
         renderer.removeAttribute(element2, attrName);
       } else {
@@ -37841,88 +38041,26 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       renderer.setValue(element2, textContent);
     }
   }
-  function setNgReflectProperties(lView, element2, type, dataValue, value) {
-    if (type & (3 | 4)) {
-      for (let i = 0; i < dataValue.length; i += 3) {
-        setNgReflectProperty(lView, element2, type, dataValue[i + 1], value);
+  function setNgReflectProperties(lView, tView, tNode, publicName, value) {
+    if (!(tNode.type & (3 | 4))) {
+      return;
+    }
+    const inputConfig = tNode.inputs?.[publicName];
+    const hostInputConfig = tNode.hostDirectiveInputs?.[publicName];
+    if (hostInputConfig) {
+      for (let i = 0; i < hostInputConfig.length; i += 2) {
+        const index = hostInputConfig[i];
+        const publicName2 = hostInputConfig[i + 1];
+        const def = tView.data[index];
+        setNgReflectProperty(lView, tNode, def.inputs[publicName2][0], value);
       }
     }
-  }
-  function resolveDirectives(tView, lView, tNode, localRefs) {
-    ngDevMode && assertFirstCreatePass(tView);
-    if (getBindingsEnabled()) {
-      const exportsMap = localRefs === null ? null : { "": -1 };
-      const matchedDirectiveDefs = findDirectiveDefMatches(tView, tNode);
-      if (matchedDirectiveDefs !== null) {
-        const [directiveDefs, hostDirectiveDefs] = resolveHostDirectives(tView, tNode, matchedDirectiveDefs);
-        initializeDirectives(tView, lView, tNode, directiveDefs, exportsMap, hostDirectiveDefs);
-      }
-      if (exportsMap)
-        cacheMatchingLocalNames(tNode, localRefs, exportsMap);
-    }
-    tNode.mergedAttrs = mergeHostAttrs(tNode.mergedAttrs, tNode.attrs);
-  }
-  function initializeDirectives(tView, lView, tNode, directives, exportsMap, hostDirectiveDefs) {
-    ngDevMode && assertFirstCreatePass(tView);
-    for (let i = 0; i < directives.length; i++) {
-      diPublicInInjector(getOrCreateNodeInjectorForNode(tNode, lView), tView, directives[i].type);
-    }
-    initTNodeFlags(tNode, tView.data.length, directives.length);
-    for (let i = 0; i < directives.length; i++) {
-      const def = directives[i];
-      if (def.providersResolver)
-        def.providersResolver(def);
-    }
-    let preOrderHooksFound = false;
-    let preOrderCheckHooksFound = false;
-    let directiveIdx = allocExpando(tView, lView, directives.length, null);
-    ngDevMode && assertSame(directiveIdx, tNode.directiveStart, "TNode.directiveStart should point to just allocated space");
-    for (let i = 0; i < directives.length; i++) {
-      const def = directives[i];
-      tNode.mergedAttrs = mergeHostAttrs(tNode.mergedAttrs, def.hostAttrs);
-      configureViewWithDirective(tView, tNode, lView, directiveIdx, def);
-      saveNameToExportMap(directiveIdx, def, exportsMap);
-      if (def.contentQueries !== null)
-        tNode.flags |= 4;
-      if (def.hostBindings !== null || def.hostAttrs !== null || def.hostVars !== 0)
-        tNode.flags |= 64;
-      const lifeCycleHooks = def.type.prototype;
-      if (!preOrderHooksFound && (lifeCycleHooks.ngOnChanges || lifeCycleHooks.ngOnInit || lifeCycleHooks.ngDoCheck)) {
-        (tView.preOrderHooks ??= []).push(tNode.index);
-        preOrderHooksFound = true;
-      }
-      if (!preOrderCheckHooksFound && (lifeCycleHooks.ngOnChanges || lifeCycleHooks.ngDoCheck)) {
-        (tView.preOrderCheckHooks ??= []).push(tNode.index);
-        preOrderCheckHooksFound = true;
-      }
-      directiveIdx++;
-    }
-    initializeInputAndOutputAliases(tView, tNode, hostDirectiveDefs);
-  }
-  function registerHostBindingOpCodes(tView, tNode, directiveIdx, directiveVarsIdx, def) {
-    ngDevMode && assertFirstCreatePass(tView);
-    const hostBindings = def.hostBindings;
-    if (hostBindings) {
-      let hostBindingOpCodes = tView.hostBindingOpCodes;
-      if (hostBindingOpCodes === null) {
-        hostBindingOpCodes = tView.hostBindingOpCodes = [];
-      }
-      const elementIndx = ~tNode.index;
-      if (lastSelectedElementIdx(hostBindingOpCodes) != elementIndx) {
-        hostBindingOpCodes.push(elementIndx);
-      }
-      hostBindingOpCodes.push(directiveIdx, directiveVarsIdx, hostBindings);
-    }
-  }
-  function lastSelectedElementIdx(hostBindingOpCodes) {
-    let i = hostBindingOpCodes.length;
-    while (i > 0) {
-      const value = hostBindingOpCodes[--i];
-      if (typeof value === "number" && value < 0) {
-        return value;
+    if (inputConfig) {
+      for (const index of inputConfig) {
+        const def = tView.data[index];
+        setNgReflectProperty(lView, tNode, def.inputs[publicName][0], value);
       }
     }
-    return 0;
   }
   function instantiateAllDirectives(tView, lView, tNode) {
     const start = tNode.directiveStart;
@@ -38012,89 +38150,6 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     }
     return matches;
   }
-  function resolveHostDirectives(tView, tNode, matches) {
-    const allDirectiveDefs = [];
-    let hostDirectiveDefs = null;
-    for (const def of matches) {
-      if (def.findHostDirectiveDefs !== null) {
-        hostDirectiveDefs ??= /* @__PURE__ */ new Map();
-        def.findHostDirectiveDefs(def, allDirectiveDefs, hostDirectiveDefs);
-      }
-      if (isComponentDef(def)) {
-        allDirectiveDefs.push(def);
-        markAsComponentHost(tView, tNode, allDirectiveDefs.length - 1);
-      }
-    }
-    if (isComponentHost(tNode)) {
-      allDirectiveDefs.push(...matches.slice(1));
-    } else {
-      allDirectiveDefs.push(...matches);
-    }
-    if (ngDevMode) {
-      assertNoDuplicateDirectives(allDirectiveDefs);
-    }
-    return [allDirectiveDefs, hostDirectiveDefs];
-  }
-  function markAsComponentHost(tView, hostTNode, componentOffset) {
-    ngDevMode && assertFirstCreatePass(tView);
-    ngDevMode && assertGreaterThan(componentOffset, -1, "componentOffset must be great than -1");
-    hostTNode.componentOffset = componentOffset;
-    (tView.components ??= []).push(hostTNode.index);
-  }
-  function cacheMatchingLocalNames(tNode, localRefs, exportsMap) {
-    if (localRefs) {
-      const localNames = tNode.localNames = [];
-      for (let i = 0; i < localRefs.length; i += 2) {
-        const index = exportsMap[localRefs[i + 1]];
-        if (index == null)
-          throw new RuntimeError(-301, ngDevMode && `Export of name '${localRefs[i + 1]}' not found!`);
-        localNames.push(localRefs[i], index);
-      }
-    }
-  }
-  function saveNameToExportMap(directiveIdx, def, exportsMap) {
-    if (exportsMap) {
-      if (def.exportAs) {
-        for (let i = 0; i < def.exportAs.length; i++) {
-          exportsMap[def.exportAs[i]] = directiveIdx;
-        }
-      }
-      if (isComponentDef(def))
-        exportsMap[""] = directiveIdx;
-    }
-  }
-  function initTNodeFlags(tNode, index, numberOfDirectives) {
-    ngDevMode && assertNotEqual(numberOfDirectives, tNode.directiveEnd - tNode.directiveStart, "Reached the max number of directives");
-    tNode.flags |= 1;
-    tNode.directiveStart = index;
-    tNode.directiveEnd = index + numberOfDirectives;
-    tNode.providerIndexes = index;
-  }
-  function configureViewWithDirective(tView, tNode, lView, directiveIndex, def) {
-    ngDevMode && assertGreaterThanOrEqual(directiveIndex, HEADER_OFFSET, "Must be in Expando section");
-    tView.data[directiveIndex] = def;
-    const directiveFactory = def.factory || (def.factory = getFactoryDef(def.type, true));
-    const nodeInjectorFactory = new NodeInjectorFactory(directiveFactory, isComponentDef(def), \u0275\u0275directiveInject);
-    tView.blueprint[directiveIndex] = nodeInjectorFactory;
-    lView[directiveIndex] = nodeInjectorFactory;
-    registerHostBindingOpCodes(tView, tNode, directiveIndex, allocExpando(tView, lView, def.hostVars, NO_CHANGE), def);
-  }
-  function getInitialLViewFlagsFromDef(def) {
-    let flags = 16;
-    if (def.signals) {
-      flags = 4096;
-    } else if (def.onPush) {
-      flags = 64;
-    }
-    return flags;
-  }
-  function createComponentLView(lView, hostTNode, def) {
-    const native = getNativeByTNode(hostTNode, lView);
-    const tView = getOrCreateComponentTView(def);
-    const rendererFactory = lView[ENVIRONMENT].rendererFactory;
-    const componentView = addToEndOfViewTree(lView, createLView(lView, tView, null, getInitialLViewFlagsFromDef(def), native, hostTNode, null, rendererFactory.createRenderer(native, def), null, null, null));
-    return lView[hostTNode.index] = componentView;
-  }
   function elementAttributeInternal(tNode, lView, name, value, sanitizer, namespace) {
     if (ngDevMode) {
       assertNotSame(value, NO_CHANGE, "Incoming value should never be NO_CHANGE.");
@@ -38117,87 +38172,19 @@ If the '${propName}' is an Angular control flow directive, please make sure that
   function setInputsFromAttrs(lView, directiveIndex, instance, def, tNode, initialInputData) {
     const initialInputs = initialInputData[directiveIndex];
     if (initialInputs !== null) {
-      for (let i = 0; i < initialInputs.length; ) {
-        const publicName = initialInputs[i++];
-        const privateName = initialInputs[i++];
-        const flags = initialInputs[i++];
-        const value = initialInputs[i++];
-        writeToDirectiveInput(def, instance, publicName, privateName, flags, value);
+      for (let i = 0; i < initialInputs.length; i += 2) {
+        const lookupName = initialInputs[i];
+        const value = initialInputs[i + 1];
+        writeToDirectiveInput(def, instance, lookupName, value);
         if (ngDevMode) {
-          const nativeElement = getNativeByTNode(tNode, lView);
-          setNgReflectProperty(lView, nativeElement, tNode.type, privateName, value);
+          setNgReflectProperty(lView, tNode, def.inputs[lookupName][0], value);
         }
       }
     }
-  }
-  function generateInitialInputs(inputs, directiveIndex, attrs) {
-    let inputsToStore = null;
-    let i = 0;
-    while (i < attrs.length) {
-      const attrName = attrs[i];
-      if (attrName === 0) {
-        i += 4;
-        continue;
-      } else if (attrName === 5) {
-        i += 2;
-        continue;
-      }
-      if (typeof attrName === "number")
-        break;
-      if (inputs.hasOwnProperty(attrName)) {
-        if (inputsToStore === null)
-          inputsToStore = [];
-        const inputConfig = inputs[attrName];
-        for (let j = 0; j < inputConfig.length; j += 3) {
-          if (inputConfig[j] === directiveIndex) {
-            inputsToStore.push(attrName, inputConfig[j + 1], inputConfig[j + 2], attrs[i + 1]);
-            break;
-          }
-        }
-      }
-      i += 2;
-    }
-    return inputsToStore;
-  }
-  function createLContainer(hostNative, currentView, native, tNode) {
-    ngDevMode && assertLView(currentView);
-    const lContainer = [
-      hostNative,
-      // host native
-      true,
-      // Boolean `true` in this position signifies that this is an `LContainer`
-      0,
-      // flags
-      currentView,
-      // parent
-      null,
-      // next
-      tNode,
-      // t_host
-      null,
-      // dehydrated views
-      native,
-      // native,
-      null,
-      // view refs
-      null
-      // moved views
-    ];
-    ngDevMode && assertEqual(lContainer.length, CONTAINER_HEADER_OFFSET, "Should allocate correct number of slots for LContainer header.");
-    return lContainer;
-  }
-  function addToEndOfViewTree(lView, lViewOrLContainer) {
-    if (lView[CHILD_HEAD]) {
-      lView[CHILD_TAIL][NEXT] = lViewOrLContainer;
-    } else {
-      lView[CHILD_HEAD] = lViewOrLContainer;
-    }
-    lView[CHILD_TAIL] = lViewOrLContainer;
-    return lViewOrLContainer;
   }
   function storePropertyBindingMetadata(tData, tNode, propertyName, bindingIndex, ...interpolationParts) {
     if (tData[bindingIndex] === null) {
-      if (tNode.inputs == null || !tNode.inputs[propertyName]) {
+      if (!tNode.inputs?.[propertyName] && !tNode.hostDirectiveInputs?.[propertyName]) {
         const propBindingIdxs = tNode.propertyBindings || (tNode.propertyBindings = []);
         propBindingIdxs.push(bindingIndex);
         let bindingMetadata = propertyName;
@@ -38214,21 +38201,35 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     }
     return lView[RENDERER];
   }
-  function handleError(lView, error) {
+  function handleError$1(lView, error) {
     const injector = lView[INJECTOR];
     const errorHandler2 = injector ? injector.get(ErrorHandler, null) : null;
     errorHandler2 && errorHandler2.handleError(error);
   }
-  function setInputsForProperty(tView, lView, inputs, publicName, value) {
-    for (let i = 0; i < inputs.length; ) {
-      const index = inputs[i++];
-      const privateName = inputs[i++];
-      const flags = inputs[i++];
-      const instance = lView[index];
-      ngDevMode && assertIndexInRange(lView, index);
-      const def = tView.data[index];
-      writeToDirectiveInput(def, instance, publicName, privateName, flags, value);
+  function setAllInputsForProperty(tNode, tView, lView, publicName, value) {
+    const inputs = tNode.inputs?.[publicName];
+    const hostDirectiveInputs = tNode.hostDirectiveInputs?.[publicName];
+    let hasMatch = false;
+    if (hostDirectiveInputs) {
+      for (let i = 0; i < hostDirectiveInputs.length; i += 2) {
+        const index = hostDirectiveInputs[i];
+        ngDevMode && assertIndexInRange(lView, index);
+        const publicName2 = hostDirectiveInputs[i + 1];
+        const def = tView.data[index];
+        writeToDirectiveInput(def, lView[index], publicName2, value);
+        hasMatch = true;
+      }
     }
+    if (inputs) {
+      for (const index of inputs) {
+        ngDevMode && assertIndexInRange(lView, index);
+        const instance = lView[index];
+        const def = tView.data[index];
+        writeToDirectiveInput(def, instance, publicName, value);
+        hasMatch = true;
+      }
+    }
+    return hasMatch;
   }
   function renderComponent(hostLView, componentHostIdx) {
     ngDevMode && assertEqual(isCreationMode(hostLView), true, "Should be run in creation mode");
@@ -38239,7 +38240,12 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     if (hostRNode !== null && componentView[HYDRATION] === null) {
       componentView[HYDRATION] = retrieveHydrationInfo(hostRNode, componentView[INJECTOR]);
     }
+    profiler(
+      18
+      /* ProfilerEvent.ComponentStart */
+    );
     renderView(componentTView, componentView, componentView[CONTEXT]);
+    profiler(19, componentView[CONTEXT]);
   }
   function syncViewWithBlueprint(tView, lView) {
     for (let i = lView.length; i < tView.blueprint.length; i++) {
@@ -38280,7 +38286,7 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       }
       throw error;
     } finally {
-      lView[FLAGS] &= ~4;
+      lView[FLAGS] &= -5;
       leaveView();
     }
   }
@@ -38289,11 +38295,31 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       renderComponent(hostLView, components[i]);
     }
   }
-  var RendererStyleFlags2;
-  (function(RendererStyleFlags22) {
-    RendererStyleFlags22[RendererStyleFlags22["Important"] = 1] = "Important";
-    RendererStyleFlags22[RendererStyleFlags22["DashCase"] = 2] = "DashCase";
-  })(RendererStyleFlags2 || (RendererStyleFlags2 = {}));
+  function createAndRenderEmbeddedLView(declarationLView, templateTNode, context2, options) {
+    const prevConsumer = setActiveConsumer(null);
+    try {
+      const embeddedTView = templateTNode.tView;
+      ngDevMode && assertDefined(embeddedTView, "TView must be defined for a template node.");
+      ngDevMode && assertTNodeForLView(templateTNode, declarationLView);
+      const isSignalView = declarationLView[FLAGS] & 4096;
+      const viewFlags = isSignalView ? 4096 : 16;
+      const embeddedLView = createLView(declarationLView, embeddedTView, context2, viewFlags, null, templateTNode, null, null, options?.injector ?? null, options?.embeddedViewInjector ?? null, options?.dehydratedView ?? null);
+      const declarationLContainer = declarationLView[templateTNode.index];
+      ngDevMode && assertLContainer(declarationLContainer);
+      embeddedLView[DECLARATION_LCONTAINER] = declarationLContainer;
+      const declarationViewLQueries = declarationLView[QUERIES];
+      if (declarationViewLQueries !== null) {
+        embeddedLView[QUERIES] = declarationViewLQueries.createEmbeddedView(embeddedTView);
+      }
+      renderView(embeddedTView, embeddedLView, context2);
+      return embeddedLView;
+    } finally {
+      setActiveConsumer(prevConsumer);
+    }
+  }
+  function shouldAddViewToDom(tNode, dehydratedView) {
+    return !dehydratedView || dehydratedView.firstChild === null || hasInSkipHydrationBlockFlag(tNode);
+  }
   var _icuContainerIterate;
   function icuContainerIterate(tIcuContainerNode, lView) {
     return _icuContainerIterate(tIcuContainerNode, lView);
@@ -38303,6 +38329,11 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       _icuContainerIterate = loader();
     }
   }
+  var RendererStyleFlags2;
+  (function(RendererStyleFlags22) {
+    RendererStyleFlags22[RendererStyleFlags22["Important"] = 1] = "Important";
+    RendererStyleFlags22[RendererStyleFlags22["DashCase"] = 2] = "DashCase";
+  })(RendererStyleFlags2 || (RendererStyleFlags2 = {}));
   function isDetachedByI18n(tNode) {
     return (tNode.flags & 32) === 32;
   }
@@ -38349,7 +38380,7 @@ If the '${propName}' is an Angular control flow directive, please make sure that
   }
   function detachViewFromDOM(tView, lView) {
     lView[ENVIRONMENT].changeDetectionScheduler?.notify(
-      10
+      9
       /* NotificationSource.ViewDetachedFromDOM */
     );
     applyView(tView, lView, lView[RENDERER], 2, null, null);
@@ -38386,87 +38417,12 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       lViewOrLContainer = next;
     }
   }
-  function insertView(tView, lView, lContainer, index) {
-    ngDevMode && assertLView(lView);
-    ngDevMode && assertLContainer(lContainer);
-    const indexInContainer = CONTAINER_HEADER_OFFSET + index;
-    const containerLength = lContainer.length;
-    if (index > 0) {
-      lContainer[indexInContainer - 1][NEXT] = lView;
-    }
-    if (index < containerLength - CONTAINER_HEADER_OFFSET) {
-      lView[NEXT] = lContainer[indexInContainer];
-      addToArray(lContainer, CONTAINER_HEADER_OFFSET + index, lView);
-    } else {
-      lContainer.push(lView);
-      lView[NEXT] = null;
-    }
-    lView[PARENT] = lContainer;
-    const declarationLContainer = lView[DECLARATION_LCONTAINER];
-    if (declarationLContainer !== null && lContainer !== declarationLContainer) {
-      trackMovedView(declarationLContainer, lView);
-    }
-    const lQueries = lView[QUERIES];
-    if (lQueries !== null) {
-      lQueries.insertView(tView);
-    }
-    updateAncestorTraversalFlagsOnAttach(lView);
-    lView[FLAGS] |= 128;
-  }
-  function trackMovedView(declarationContainer, lView) {
-    ngDevMode && assertDefined(lView, "LView required");
-    ngDevMode && assertLContainer(declarationContainer);
-    const movedViews = declarationContainer[MOVED_VIEWS];
-    const parent = lView[PARENT];
-    ngDevMode && assertDefined(parent, "missing parent");
-    if (isLView(parent)) {
-      declarationContainer[FLAGS] |= 2;
-    } else {
-      const insertedComponentLView = parent[PARENT][DECLARATION_COMPONENT_VIEW];
-      ngDevMode && assertDefined(insertedComponentLView, "Missing insertedComponentLView");
-      const declaredComponentLView = lView[DECLARATION_COMPONENT_VIEW];
-      ngDevMode && assertDefined(declaredComponentLView, "Missing declaredComponentLView");
-      if (declaredComponentLView !== insertedComponentLView) {
-        declarationContainer[FLAGS] |= 2;
-      }
-    }
-    if (movedViews === null) {
-      declarationContainer[MOVED_VIEWS] = [lView];
-    } else {
-      movedViews.push(lView);
-    }
-  }
   function detachMovedView(declarationContainer, lView) {
     ngDevMode && assertLContainer(declarationContainer);
     ngDevMode && assertDefined(declarationContainer[MOVED_VIEWS], "A projected view should belong to a non-empty projected views collection");
     const movedViews = declarationContainer[MOVED_VIEWS];
     const declarationViewIndex = movedViews.indexOf(lView);
     movedViews.splice(declarationViewIndex, 1);
-  }
-  function detachView(lContainer, removeIndex) {
-    if (lContainer.length <= CONTAINER_HEADER_OFFSET)
-      return;
-    const indexInContainer = CONTAINER_HEADER_OFFSET + removeIndex;
-    const viewToDetach = lContainer[indexInContainer];
-    if (viewToDetach) {
-      const declarationLContainer = viewToDetach[DECLARATION_LCONTAINER];
-      if (declarationLContainer !== null && declarationLContainer !== lContainer) {
-        detachMovedView(declarationLContainer, viewToDetach);
-      }
-      if (removeIndex > 0) {
-        lContainer[indexInContainer - 1][NEXT] = viewToDetach[NEXT];
-      }
-      const removedLView = removeFromArray(lContainer, CONTAINER_HEADER_OFFSET + removeIndex);
-      removeViewFromDOM(viewToDetach[TVIEW], viewToDetach);
-      const lQueries = removedLView[QUERIES];
-      if (lQueries !== null) {
-        lQueries.detachView(removedLView[TVIEW]);
-      }
-      viewToDetach[PARENT] = null;
-      viewToDetach[NEXT] = null;
-      viewToDetach[FLAGS] &= ~128;
-    }
-    return viewToDetach;
   }
   function destroyLView(tView, lView) {
     if (isDestroyed(lView)) {
@@ -38816,63 +38772,6 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       }
     }
   }
-  function createAndRenderEmbeddedLView(declarationLView, templateTNode, context2, options) {
-    const prevConsumer = setActiveConsumer(null);
-    try {
-      const embeddedTView = templateTNode.tView;
-      ngDevMode && assertDefined(embeddedTView, "TView must be defined for a template node.");
-      ngDevMode && assertTNodeForLView(templateTNode, declarationLView);
-      const isSignalView = declarationLView[FLAGS] & 4096;
-      const viewFlags = isSignalView ? 4096 : 16;
-      const embeddedLView = createLView(declarationLView, embeddedTView, context2, viewFlags, null, templateTNode, null, null, options?.injector ?? null, options?.embeddedViewInjector ?? null, options?.dehydratedView ?? null);
-      const declarationLContainer = declarationLView[templateTNode.index];
-      ngDevMode && assertLContainer(declarationLContainer);
-      embeddedLView[DECLARATION_LCONTAINER] = declarationLContainer;
-      const declarationViewLQueries = declarationLView[QUERIES];
-      if (declarationViewLQueries !== null) {
-        embeddedLView[QUERIES] = declarationViewLQueries.createEmbeddedView(embeddedTView);
-      }
-      renderView(embeddedTView, embeddedLView, context2);
-      return embeddedLView;
-    } finally {
-      setActiveConsumer(prevConsumer);
-    }
-  }
-  function getLViewFromLContainer(lContainer, index) {
-    const adjustedIndex = CONTAINER_HEADER_OFFSET + index;
-    if (adjustedIndex < lContainer.length) {
-      const lView = lContainer[adjustedIndex];
-      ngDevMode && assertLView(lView);
-      return lView;
-    }
-    return void 0;
-  }
-  function shouldAddViewToDom(tNode, dehydratedView) {
-    return !dehydratedView || dehydratedView.firstChild === null || hasInSkipHydrationBlockFlag(tNode);
-  }
-  function addLViewToLContainer(lContainer, lView, index, addToDOM = true) {
-    const tView = lView[TVIEW];
-    insertView(tView, lView, lContainer, index);
-    if (addToDOM) {
-      const beforeNode = getBeforeNodeForView(index, lContainer);
-      const renderer = lView[RENDERER];
-      const parentRNode = renderer.parentNode(lContainer[NATIVE]);
-      if (parentRNode !== null) {
-        addViewToDOM(tView, lContainer[T_HOST], renderer, lView, parentRNode, beforeNode);
-      }
-    }
-    const hydrationInfo = lView[HYDRATION];
-    if (hydrationInfo !== null && hydrationInfo.firstChild !== null) {
-      hydrationInfo.firstChild = null;
-    }
-  }
-  function removeLViewFromLContainer(lContainer, index) {
-    const lView = detachView(lContainer, index);
-    if (lView !== void 0) {
-      destroyLView(lView[TVIEW], lView);
-    }
-    return lView;
-  }
   function collectNativeNodes(tView, lView, tNode, result, isProjection = false) {
     while (tNode !== null) {
       if (tNode.type === 128) {
@@ -38924,6 +38823,14 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     }
     if (lContainer[NATIVE] !== lContainer[HOST]) {
       result.push(lContainer[NATIVE]);
+    }
+  }
+  function addAfterRenderSequencesForView(lView) {
+    if (lView[AFTER_RENDER_SEQUENCES_TO_ADD] !== null) {
+      for (const sequence of lView[AFTER_RENDER_SEQUENCES_TO_ADD]) {
+        sequence.impl.addSequence(sequence);
+      }
+      lView[AFTER_RENDER_SEQUENCES_TO_ADD].length = 0;
     }
   }
   var freeConsumers = [];
@@ -39012,7 +38919,7 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       detectChangesInViewWhileDirty(lView, mode);
     } catch (error) {
       if (notifyErrorHandler) {
-        handleError(lView, error);
+        handleError$1(lView, error);
       }
       throw error;
     } finally {
@@ -39184,6 +39091,7 @@ If the '${propName}' is an Angular control flow directive, please make sure that
         lView[EFFECTS_TO_SCHEDULE] = null;
       }
       if (!isInCheckNoChangesPass) {
+        addAfterRenderSequencesForView(lView);
         lView[FLAGS] &= ~(64 | 8);
       }
     } catch (e) {
@@ -39223,8 +39131,13 @@ If the '${propName}' is an Angular control flow directive, please make sure that
   }
   function detectChangesInComponent(hostLView, componentHostIdx, mode) {
     ngDevMode && assertEqual(isCreationMode(hostLView), false, "Should be run in update mode");
+    profiler(
+      18
+      /* ProfilerEvent.ComponentStart */
+    );
     const componentView = getComponentLViewByIndex(componentHostIdx, hostLView);
     detectChangesInViewIfAttached(componentView, mode);
+    profiler(19, componentView[CONTEXT]);
   }
   function detectChangesInViewIfAttached(lView, mode) {
     if (!viewAttachedToChangeDetector(lView)) {
@@ -39245,11 +39158,13 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     if (consumer) {
       consumer.dirty = false;
     }
-    lView[FLAGS] &= ~(8192 | 1024);
+    lView[FLAGS] &= -9217;
     if (shouldRefreshView) {
       refreshView(tView, lView, tView.template, lView[CONTEXT]);
     } else if (flags & 8192) {
-      runEffectsInView(lView);
+      if (!isInCheckNoChangesPass) {
+        runEffectsInView(lView);
+      }
       detectChangesInEmbeddedViews(
         lView,
         1
@@ -39263,6 +39178,9 @@ If the '${propName}' is an Angular control flow directive, please make sure that
           1
           /* ChangeDetectionMode.Targeted */
         );
+      }
+      if (!isInCheckNoChangesPass) {
+        addAfterRenderSequencesForView(lView);
       }
     }
   }
@@ -39318,7 +39236,141 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     }
     return null;
   }
-  var ViewRef$1 = class {
+  function createLContainer(hostNative, currentView, native, tNode) {
+    ngDevMode && assertLView(currentView);
+    const lContainer = [
+      hostNative,
+      // host native
+      true,
+      // Boolean `true` in this position signifies that this is an `LContainer`
+      0,
+      // flags
+      currentView,
+      // parent
+      null,
+      // next
+      tNode,
+      // t_host
+      null,
+      // dehydrated views
+      native,
+      // native,
+      null,
+      // view refs
+      null
+      // moved views
+    ];
+    ngDevMode && assertEqual(lContainer.length, CONTAINER_HEADER_OFFSET, "Should allocate correct number of slots for LContainer header.");
+    return lContainer;
+  }
+  function getLViewFromLContainer(lContainer, index) {
+    const adjustedIndex = CONTAINER_HEADER_OFFSET + index;
+    if (adjustedIndex < lContainer.length) {
+      const lView = lContainer[adjustedIndex];
+      ngDevMode && assertLView(lView);
+      return lView;
+    }
+    return void 0;
+  }
+  function addLViewToLContainer(lContainer, lView, index, addToDOM = true) {
+    const tView = lView[TVIEW];
+    insertView(tView, lView, lContainer, index);
+    if (addToDOM) {
+      const beforeNode = getBeforeNodeForView(index, lContainer);
+      const renderer = lView[RENDERER];
+      const parentRNode = renderer.parentNode(lContainer[NATIVE]);
+      if (parentRNode !== null) {
+        addViewToDOM(tView, lContainer[T_HOST], renderer, lView, parentRNode, beforeNode);
+      }
+    }
+    const hydrationInfo = lView[HYDRATION];
+    if (hydrationInfo !== null && hydrationInfo.firstChild !== null) {
+      hydrationInfo.firstChild = null;
+    }
+  }
+  function removeLViewFromLContainer(lContainer, index) {
+    const lView = detachView(lContainer, index);
+    if (lView !== void 0) {
+      destroyLView(lView[TVIEW], lView);
+    }
+    return lView;
+  }
+  function detachView(lContainer, removeIndex) {
+    if (lContainer.length <= CONTAINER_HEADER_OFFSET)
+      return;
+    const indexInContainer = CONTAINER_HEADER_OFFSET + removeIndex;
+    const viewToDetach = lContainer[indexInContainer];
+    if (viewToDetach) {
+      const declarationLContainer = viewToDetach[DECLARATION_LCONTAINER];
+      if (declarationLContainer !== null && declarationLContainer !== lContainer) {
+        detachMovedView(declarationLContainer, viewToDetach);
+      }
+      if (removeIndex > 0) {
+        lContainer[indexInContainer - 1][NEXT] = viewToDetach[NEXT];
+      }
+      const removedLView = removeFromArray(lContainer, CONTAINER_HEADER_OFFSET + removeIndex);
+      removeViewFromDOM(viewToDetach[TVIEW], viewToDetach);
+      const lQueries = removedLView[QUERIES];
+      if (lQueries !== null) {
+        lQueries.detachView(removedLView[TVIEW]);
+      }
+      viewToDetach[PARENT] = null;
+      viewToDetach[NEXT] = null;
+      viewToDetach[FLAGS] &= -129;
+    }
+    return viewToDetach;
+  }
+  function insertView(tView, lView, lContainer, index) {
+    ngDevMode && assertLView(lView);
+    ngDevMode && assertLContainer(lContainer);
+    const indexInContainer = CONTAINER_HEADER_OFFSET + index;
+    const containerLength = lContainer.length;
+    if (index > 0) {
+      lContainer[indexInContainer - 1][NEXT] = lView;
+    }
+    if (index < containerLength - CONTAINER_HEADER_OFFSET) {
+      lView[NEXT] = lContainer[indexInContainer];
+      addToArray(lContainer, CONTAINER_HEADER_OFFSET + index, lView);
+    } else {
+      lContainer.push(lView);
+      lView[NEXT] = null;
+    }
+    lView[PARENT] = lContainer;
+    const declarationLContainer = lView[DECLARATION_LCONTAINER];
+    if (declarationLContainer !== null && lContainer !== declarationLContainer) {
+      trackMovedView(declarationLContainer, lView);
+    }
+    const lQueries = lView[QUERIES];
+    if (lQueries !== null) {
+      lQueries.insertView(tView);
+    }
+    updateAncestorTraversalFlagsOnAttach(lView);
+    lView[FLAGS] |= 128;
+  }
+  function trackMovedView(declarationContainer, lView) {
+    ngDevMode && assertDefined(lView, "LView required");
+    ngDevMode && assertLContainer(declarationContainer);
+    const movedViews = declarationContainer[MOVED_VIEWS];
+    const parent = lView[PARENT];
+    ngDevMode && assertDefined(parent, "missing parent");
+    if (isLView(parent)) {
+      declarationContainer[FLAGS] |= 2;
+    } else {
+      const insertedComponentLView = parent[PARENT][DECLARATION_COMPONENT_VIEW];
+      ngDevMode && assertDefined(insertedComponentLView, "Missing insertedComponentLView");
+      const declaredComponentLView = lView[DECLARATION_COMPONENT_VIEW];
+      ngDevMode && assertDefined(declaredComponentLView, "Missing declaredComponentLView");
+      if (declaredComponentLView !== insertedComponentLView) {
+        declarationContainer[FLAGS] |= 2;
+      }
+    }
+    if (movedViews === null) {
+      declarationContainer[MOVED_VIEWS] = [lView];
+    } else {
+      movedViews.push(lView);
+    }
+  }
+  var ViewRef$1 = class ViewRef {
     _lView;
     _cdRefInjectingView;
     notifyErrorHandler;
@@ -39336,12 +39388,6 @@ If the '${propName}' is an Angular control flow directive, please make sure that
     }
     get context() {
       return this._lView[CONTEXT];
-    }
-    /**
-     * Reports whether the given view is considered dirty according to the different marking mechanisms.
-     */
-    get dirty() {
-      return !!(this._lView[FLAGS] & (64 | 1024 | 8192)) || !!this._lView[REACTIVE_TEMPLATE_CONSUMER]?.dirty;
     }
     /**
      * @deprecated Replacing the full context object is not supported. Modify the context
@@ -39416,9 +39462,6 @@ If the '${propName}' is an Angular control flow directive, please make sure that
         /* NotificationSource.MarkForCheck */
       );
     }
-    markForRefresh() {
-      markViewForRefresh(this._cdRefInjectingView || this._lView);
-    }
     /**
      * Detaches the view from the change detection tree.
      *
@@ -39473,7 +39516,7 @@ If the '${propName}' is an Angular control flow directive, please make sure that
      * ```
      */
     detach() {
-      this._lView[FLAGS] &= ~128;
+      this._lView[FLAGS] &= -129;
     }
     /**
      * Re-attaches a view to the change detection tree.
@@ -39599,6 +39642,12 @@ If the '${propName}' is an Angular control flow directive, please make sure that
       updateAncestorTraversalFlagsOnAttach(this._lView);
     }
   };
+  function isViewDirty(view) {
+    return requiresRefreshOrTraversal(view._lView) || !!(view._lView[FLAGS] & 64);
+  }
+  function markForRefresh(view) {
+    markViewForRefresh(view["_cdRefInjectingView"] || view._lView);
+  }
   var TemplateRef = class {
     /**
      * @internal
@@ -40010,9 +40059,12 @@ ${footer}`);
       attrs,
       mergedAttrs: null,
       localNames: null,
-      initialInputs: void 0,
+      initialInputs: null,
       inputs: null,
+      hostDirectiveInputs: null,
       outputs: null,
+      hostDirectiveOutputs: null,
+      directiveToIndex: null,
       tView: null,
       next: null,
       prev: null,
@@ -40193,7 +40245,7 @@ ${footer}`);
     enterIcu(state, tIcu, lView);
     return icuContainerIteratorNext.bind(null, state);
   }
-  var REF_EXTRACTOR_REGEXP = new RegExp(`^(\\d+)*(${REFERENCE_NODE_BODY}|${REFERENCE_NODE_HOST})*(.*)`);
+  var REF_EXTRACTOR_REGEXP = /* @__PURE__ */ new RegExp(`^(\\d+)*(${REFERENCE_NODE_BODY}|${REFERENCE_NODE_HOST})*(.*)`);
   function compressNodeLocation(referenceNode, path) {
     const result = [referenceNode];
     for (const segment of path) {
@@ -40743,6 +40795,18 @@ ${footer}`);
     }
     lContainer[DEHYDRATED_VIEWS] = retainedViews;
   }
+  function removeDehydratedViewList(deferBlock) {
+    const { lContainer } = deferBlock;
+    const dehydratedViews = lContainer[DEHYDRATED_VIEWS];
+    if (dehydratedViews === null)
+      return;
+    const parentLView = lContainer[PARENT];
+    const renderer = parentLView[RENDERER];
+    for (const view of dehydratedViews) {
+      removeDehydratedView(view, renderer);
+      ngDevMode && ngDevMode.dehydratedViewsRemoved++;
+    }
+  }
   function removeDehydratedView(dehydratedView, renderer) {
     let nodesRemoved = 0;
     let currentRNode = dehydratedView.firstChild;
@@ -40837,16 +40901,16 @@ ${footer}`);
   function findMatchingDehydratedView(lContainer, template2) {
     return _findMatchingDehydratedViewImpl(lContainer, template2);
   }
-  var ComponentRef$1 = class {
+  var ComponentRef$1 = class ComponentRef {
   };
-  var ComponentFactory$1 = class {
+  var ComponentFactory$1 = class ComponentFactory {
   };
   var _NullComponentFactoryResolver = class {
     resolveComponentFactory(component) {
       throw Error(`No component factory found for ${stringify2(component)}.`);
     }
   };
-  var ComponentFactoryResolver$1 = class {
+  var ComponentFactoryResolver$1 = class ComponentFactoryResolver {
     static NULL = new _NullComponentFactoryResolver();
   };
   var RendererFactory2 = class {
@@ -41125,6 +41189,23 @@ ${footer}`);
     }
   }
   var depsTracker = new DepsTracker();
+  var NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR = {};
+  var ChainedInjector = class {
+    injector;
+    parentInjector;
+    constructor(injector, parentInjector) {
+      this.injector = injector;
+      this.parentInjector = parentInjector;
+    }
+    get(token, notFoundValue, flags) {
+      flags = convertToBitFlags(flags);
+      const value = this.injector.get(token, NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR, flags);
+      if (value !== NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR || notFoundValue === NOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR) {
+        return value;
+      }
+      return this.parentInjector.get(token, notFoundValue, flags);
+    }
+  };
   function computeStaticStyling(tNode, attrs, writeToHost) {
     ngDevMode && assertFirstCreatePass(getTView(), "Expecting to be called in first template pass only");
     let styles = writeToHost ? tNode.styles : null;
@@ -41147,7 +41228,352 @@ ${footer}`);
     writeToHost ? tNode.styles = styles : tNode.stylesWithoutHost = styles;
     writeToHost ? tNode.classes = classes : tNode.classesWithoutHost = classes;
   }
-  var ComponentFactoryResolver = class extends ComponentFactoryResolver$1 {
+  function \u0275\u0275directiveInject(token, flags = InjectFlags.Default) {
+    const lView = getLView();
+    if (lView === null) {
+      ngDevMode && assertInjectImplementationNotEqual(\u0275\u0275directiveInject);
+      return \u0275\u0275inject(token, flags);
+    }
+    const tNode = getCurrentTNode();
+    const value = getOrCreateInjectable(tNode, lView, resolveForwardRef(token), flags);
+    ngDevMode && emitInjectEvent(token, value, flags);
+    return value;
+  }
+  function \u0275\u0275invalidFactory() {
+    const msg = ngDevMode ? `This constructor was not compatible with Dependency Injection.` : "invalid";
+    throw new Error(msg);
+  }
+  function resolveDirectives(tView, lView, tNode, localRefs, directiveMatcher) {
+    ngDevMode && assertFirstCreatePass(tView);
+    const exportsMap = localRefs === null ? null : { "": -1 };
+    const matchedDirectiveDefs = directiveMatcher(tView, tNode);
+    if (matchedDirectiveDefs !== null) {
+      let directiveDefs;
+      let hostDirectiveDefs = null;
+      let hostDirectiveRanges = null;
+      const hostDirectiveResolution = resolveHostDirectives(matchedDirectiveDefs);
+      if (hostDirectiveResolution === null) {
+        directiveDefs = matchedDirectiveDefs;
+      } else {
+        [directiveDefs, hostDirectiveDefs, hostDirectiveRanges] = hostDirectiveResolution;
+      }
+      initializeDirectives(tView, lView, tNode, directiveDefs, exportsMap, hostDirectiveDefs, hostDirectiveRanges);
+    }
+    if (exportsMap !== null && localRefs !== null) {
+      cacheMatchingLocalNames(tNode, localRefs, exportsMap);
+    }
+  }
+  function cacheMatchingLocalNames(tNode, localRefs, exportsMap) {
+    const localNames = tNode.localNames = [];
+    for (let i = 0; i < localRefs.length; i += 2) {
+      const index = exportsMap[localRefs[i + 1]];
+      if (index == null)
+        throw new RuntimeError(-301, ngDevMode && `Export of name '${localRefs[i + 1]}' not found!`);
+      localNames.push(localRefs[i], index);
+    }
+  }
+  function resolveHostDirectives(matches) {
+    let componentDef = null;
+    let hasHostDirectives = false;
+    for (let i = 0; i < matches.length; i++) {
+      const def = matches[i];
+      if (i === 0 && isComponentDef(def)) {
+        componentDef = def;
+      }
+      if (def.findHostDirectiveDefs !== null) {
+        hasHostDirectives = true;
+        break;
+      }
+    }
+    if (!hasHostDirectives) {
+      return null;
+    }
+    let allDirectiveDefs = null;
+    let hostDirectiveDefs = null;
+    let hostDirectiveRanges = null;
+    for (const def of matches) {
+      if (def.findHostDirectiveDefs !== null) {
+        allDirectiveDefs ??= [];
+        hostDirectiveDefs ??= /* @__PURE__ */ new Map();
+        hostDirectiveRanges ??= /* @__PURE__ */ new Map();
+        resolveHostDirectivesForDef(def, allDirectiveDefs, hostDirectiveRanges, hostDirectiveDefs);
+      }
+      if (def === componentDef) {
+        allDirectiveDefs ??= [];
+        allDirectiveDefs.push(def);
+      }
+    }
+    if (allDirectiveDefs !== null) {
+      allDirectiveDefs.push(...componentDef === null ? matches : matches.slice(1));
+      ngDevMode && assertNoDuplicateDirectives(allDirectiveDefs);
+      return [allDirectiveDefs, hostDirectiveDefs, hostDirectiveRanges];
+    }
+    return null;
+  }
+  function resolveHostDirectivesForDef(def, allDirectiveDefs, hostDirectiveRanges, hostDirectiveDefs) {
+    ngDevMode && assertDefined(def.findHostDirectiveDefs, "Expected host directive resolve function");
+    const start = allDirectiveDefs.length;
+    def.findHostDirectiveDefs(def, allDirectiveDefs, hostDirectiveDefs);
+    hostDirectiveRanges.set(def, [start, allDirectiveDefs.length - 1]);
+  }
+  function markAsComponentHost(tView, hostTNode, componentOffset) {
+    ngDevMode && assertFirstCreatePass(tView);
+    ngDevMode && assertGreaterThan(componentOffset, -1, "componentOffset must be great than -1");
+    hostTNode.componentOffset = componentOffset;
+    (tView.components ??= []).push(hostTNode.index);
+  }
+  function initializeDirectives(tView, lView, tNode, directives, exportsMap, hostDirectiveDefs, hostDirectiveRanges) {
+    ngDevMode && assertFirstCreatePass(tView);
+    const directivesLength = directives.length;
+    let hasSeenComponent = false;
+    for (let i = 0; i < directivesLength; i++) {
+      const def = directives[i];
+      if (!hasSeenComponent && isComponentDef(def)) {
+        hasSeenComponent = true;
+        markAsComponentHost(tView, tNode, i);
+      }
+      diPublicInInjector(getOrCreateNodeInjectorForNode(tNode, lView), tView, def.type);
+    }
+    initTNodeFlags(tNode, tView.data.length, directivesLength);
+    for (let i = 0; i < directivesLength; i++) {
+      const def = directives[i];
+      if (def.providersResolver)
+        def.providersResolver(def);
+    }
+    let preOrderHooksFound = false;
+    let preOrderCheckHooksFound = false;
+    let directiveIdx = allocExpando(tView, lView, directivesLength, null);
+    ngDevMode && assertSame(directiveIdx, tNode.directiveStart, "TNode.directiveStart should point to just allocated space");
+    if (directivesLength > 0) {
+      tNode.directiveToIndex = /* @__PURE__ */ new Map();
+    }
+    for (let i = 0; i < directivesLength; i++) {
+      const def = directives[i];
+      tNode.mergedAttrs = mergeHostAttrs(tNode.mergedAttrs, def.hostAttrs);
+      configureViewWithDirective(tView, tNode, lView, directiveIdx, def);
+      saveNameToExportMap(directiveIdx, def, exportsMap);
+      if (hostDirectiveRanges !== null && hostDirectiveRanges.has(def)) {
+        const [start, end] = hostDirectiveRanges.get(def);
+        tNode.directiveToIndex.set(def.type, [
+          directiveIdx,
+          start + tNode.directiveStart,
+          end + tNode.directiveStart
+        ]);
+      } else if (hostDirectiveDefs === null || !hostDirectiveDefs.has(def)) {
+        tNode.directiveToIndex.set(def.type, directiveIdx);
+      }
+      if (def.contentQueries !== null)
+        tNode.flags |= 4;
+      if (def.hostBindings !== null || def.hostAttrs !== null || def.hostVars !== 0)
+        tNode.flags |= 64;
+      const lifeCycleHooks = def.type.prototype;
+      if (!preOrderHooksFound && (lifeCycleHooks.ngOnChanges || lifeCycleHooks.ngOnInit || lifeCycleHooks.ngDoCheck)) {
+        (tView.preOrderHooks ??= []).push(tNode.index);
+        preOrderHooksFound = true;
+      }
+      if (!preOrderCheckHooksFound && (lifeCycleHooks.ngOnChanges || lifeCycleHooks.ngDoCheck)) {
+        (tView.preOrderCheckHooks ??= []).push(tNode.index);
+        preOrderCheckHooksFound = true;
+      }
+      directiveIdx++;
+    }
+    initializeInputAndOutputAliases(tView, tNode, hostDirectiveDefs);
+  }
+  function initializeInputAndOutputAliases(tView, tNode, hostDirectiveDefs) {
+    ngDevMode && assertFirstCreatePass(tView);
+    for (let index = tNode.directiveStart; index < tNode.directiveEnd; index++) {
+      const directiveDef = tView.data[index];
+      if (hostDirectiveDefs === null || !hostDirectiveDefs.has(directiveDef)) {
+        setupSelectorMatchedInputsOrOutputs(0, tNode, directiveDef, index);
+        setupSelectorMatchedInputsOrOutputs(1, tNode, directiveDef, index);
+        setupInitialInputs(tNode, index, false);
+      } else {
+        const hostDirectiveDef = hostDirectiveDefs.get(directiveDef);
+        setupHostDirectiveInputsOrOutputs(0, tNode, hostDirectiveDef, index);
+        setupHostDirectiveInputsOrOutputs(1, tNode, hostDirectiveDef, index);
+        setupInitialInputs(tNode, index, true);
+      }
+    }
+  }
+  function setupSelectorMatchedInputsOrOutputs(mode, tNode, def, directiveIndex) {
+    const aliasMap = mode === 0 ? def.inputs : def.outputs;
+    for (const publicName in aliasMap) {
+      if (aliasMap.hasOwnProperty(publicName)) {
+        let bindings;
+        if (mode === 0) {
+          bindings = tNode.inputs ??= {};
+        } else {
+          bindings = tNode.outputs ??= {};
+        }
+        bindings[publicName] ??= [];
+        bindings[publicName].push(directiveIndex);
+        setShadowStylingInputFlags(tNode, publicName);
+      }
+    }
+  }
+  function setupHostDirectiveInputsOrOutputs(mode, tNode, config2, directiveIndex) {
+    const aliasMap = mode === 0 ? config2.inputs : config2.outputs;
+    for (const initialName in aliasMap) {
+      if (aliasMap.hasOwnProperty(initialName)) {
+        const publicName = aliasMap[initialName];
+        let bindings;
+        if (mode === 0) {
+          bindings = tNode.hostDirectiveInputs ??= {};
+        } else {
+          bindings = tNode.hostDirectiveOutputs ??= {};
+        }
+        bindings[publicName] ??= [];
+        bindings[publicName].push(directiveIndex, initialName);
+        setShadowStylingInputFlags(tNode, publicName);
+      }
+    }
+  }
+  function setShadowStylingInputFlags(tNode, publicName) {
+    if (publicName === "class") {
+      tNode.flags |= 8;
+    } else if (publicName === "style") {
+      tNode.flags |= 16;
+    }
+  }
+  function setupInitialInputs(tNode, directiveIndex, isHostDirective) {
+    const { attrs, inputs, hostDirectiveInputs } = tNode;
+    if (attrs === null || !isHostDirective && inputs === null || isHostDirective && hostDirectiveInputs === null || // Do not use unbound attributes as inputs to structural directives, since structural
+    // directive inputs can only be set using microsyntax (e.g. `<div *dir="exp">`).
+    isInlineTemplate(tNode)) {
+      tNode.initialInputs ??= [];
+      tNode.initialInputs.push(null);
+      return;
+    }
+    let inputsToStore = null;
+    let i = 0;
+    while (i < attrs.length) {
+      const attrName = attrs[i];
+      if (attrName === 0) {
+        i += 4;
+        continue;
+      } else if (attrName === 5) {
+        i += 2;
+        continue;
+      } else if (typeof attrName === "number") {
+        break;
+      }
+      if (!isHostDirective && inputs.hasOwnProperty(attrName)) {
+        const inputConfig = inputs[attrName];
+        for (const index of inputConfig) {
+          if (index === directiveIndex) {
+            inputsToStore ??= [];
+            inputsToStore.push(attrName, attrs[i + 1]);
+            break;
+          }
+        }
+      } else if (isHostDirective && hostDirectiveInputs.hasOwnProperty(attrName)) {
+        const config2 = hostDirectiveInputs[attrName];
+        for (let j = 0; j < config2.length; j += 2) {
+          if (config2[j] === directiveIndex) {
+            inputsToStore ??= [];
+            inputsToStore.push(config2[j + 1], attrs[i + 1]);
+            break;
+          }
+        }
+      }
+      i += 2;
+    }
+    tNode.initialInputs ??= [];
+    tNode.initialInputs.push(inputsToStore);
+  }
+  function configureViewWithDirective(tView, tNode, lView, directiveIndex, def) {
+    ngDevMode && assertGreaterThanOrEqual(directiveIndex, HEADER_OFFSET, "Must be in Expando section");
+    tView.data[directiveIndex] = def;
+    const directiveFactory = def.factory || (def.factory = getFactoryDef(def.type, true));
+    const nodeInjectorFactory = new NodeInjectorFactory(directiveFactory, isComponentDef(def), \u0275\u0275directiveInject);
+    tView.blueprint[directiveIndex] = nodeInjectorFactory;
+    lView[directiveIndex] = nodeInjectorFactory;
+    registerHostBindingOpCodes(tView, tNode, directiveIndex, allocExpando(tView, lView, def.hostVars, NO_CHANGE), def);
+  }
+  function registerHostBindingOpCodes(tView, tNode, directiveIdx, directiveVarsIdx, def) {
+    ngDevMode && assertFirstCreatePass(tView);
+    const hostBindings = def.hostBindings;
+    if (hostBindings) {
+      let hostBindingOpCodes = tView.hostBindingOpCodes;
+      if (hostBindingOpCodes === null) {
+        hostBindingOpCodes = tView.hostBindingOpCodes = [];
+      }
+      const elementIndx = ~tNode.index;
+      if (lastSelectedElementIdx(hostBindingOpCodes) != elementIndx) {
+        hostBindingOpCodes.push(elementIndx);
+      }
+      hostBindingOpCodes.push(directiveIdx, directiveVarsIdx, hostBindings);
+    }
+  }
+  function lastSelectedElementIdx(hostBindingOpCodes) {
+    let i = hostBindingOpCodes.length;
+    while (i > 0) {
+      const value = hostBindingOpCodes[--i];
+      if (typeof value === "number" && value < 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+  function saveNameToExportMap(directiveIdx, def, exportsMap) {
+    if (exportsMap) {
+      if (def.exportAs) {
+        for (let i = 0; i < def.exportAs.length; i++) {
+          exportsMap[def.exportAs[i]] = directiveIdx;
+        }
+      }
+      if (isComponentDef(def))
+        exportsMap[""] = directiveIdx;
+    }
+  }
+  function initTNodeFlags(tNode, index, numberOfDirectives) {
+    ngDevMode && assertNotEqual(numberOfDirectives, tNode.directiveEnd - tNode.directiveStart, "Reached the max number of directives");
+    tNode.flags |= 1;
+    tNode.directiveStart = index;
+    tNode.directiveEnd = index + numberOfDirectives;
+    tNode.providerIndexes = index;
+  }
+  function assertNoDuplicateDirectives(directives) {
+    if (directives.length < 2) {
+      return;
+    }
+    const seenDirectives = /* @__PURE__ */ new Set();
+    for (const current of directives) {
+      if (seenDirectives.has(current)) {
+        throw new RuntimeError(309, `Directive ${current.type.name} matches multiple times on the same element. Directives can only match an element once.`);
+      }
+      seenDirectives.add(current);
+    }
+  }
+  function elementStartFirstCreatePass(index, tView, lView, name, directiveMatcher, bindingsEnabled, attrsIndex, localRefsIndex) {
+    ngDevMode && assertFirstCreatePass(tView);
+    ngDevMode && ngDevMode.firstCreatePass++;
+    const tViewConsts = tView.consts;
+    const attrs = getConstant(tViewConsts, attrsIndex);
+    const tNode = getOrCreateTNode(tView, index, 2, name, attrs);
+    if (bindingsEnabled) {
+      resolveDirectives(tView, lView, tNode, getConstant(tViewConsts, localRefsIndex), directiveMatcher);
+    }
+    tNode.mergedAttrs = mergeHostAttrs(tNode.mergedAttrs, tNode.attrs);
+    if (tNode.attrs !== null) {
+      computeStaticStyling(tNode, tNode.attrs, false);
+    }
+    if (tNode.mergedAttrs !== null) {
+      computeStaticStyling(tNode, tNode.mergedAttrs, true);
+    }
+    if (tView.queries !== null) {
+      tView.queries.elementStart(tView, tNode);
+    }
+    return tNode;
+  }
+  function elementEndFirstCreatePass(tView, tNode) {
+    ngDevMode && assertFirstCreatePass(tView);
+    registerPostOrderHooks(tView, tNode);
+    if (isContentQueryHost(tNode)) {
+      tView.queries.elementEnd(tNode);
+    }
+  }
+  var ComponentFactoryResolver2 = class extends ComponentFactoryResolver$1 {
     ngModule;
     /**
      * @param ngModule The NgModuleRef to which all resolved factories are bound.
@@ -41159,63 +41585,75 @@ ${footer}`);
     resolveComponentFactory(component) {
       ngDevMode && assertComponentType(component);
       const componentDef = getComponentDef(component);
-      return new ComponentFactory(componentDef, this.ngModule);
+      return new ComponentFactory2(componentDef, this.ngModule);
     }
   };
-  function toRefArray(map2, isInputMap) {
-    const array = [];
-    for (const publicName in map2) {
-      if (!map2.hasOwnProperty(publicName)) {
-        continue;
+  function toInputRefArray(map2) {
+    return Object.keys(map2).map((name) => {
+      const [propName, flags, transform2] = map2[name];
+      const inputData = {
+        propName,
+        templateName: name,
+        isSignal: (flags & InputFlags2.SignalBased) !== 0
+      };
+      if (transform2) {
+        inputData.transform = transform2;
       }
-      const value = map2[publicName];
-      if (value === void 0) {
-        continue;
-      }
-      const isArray = Array.isArray(value);
-      const propName = isArray ? value[0] : value;
-      const flags = isArray ? value[1] : InputFlags2.None;
-      if (isInputMap) {
-        array.push({
-          propName,
-          templateName: publicName,
-          isSignal: (flags & InputFlags2.SignalBased) !== 0
-        });
-      } else {
-        array.push({
-          propName,
-          templateName: publicName
-        });
+      return inputData;
+    });
+  }
+  function toOutputRefArray(map2) {
+    return Object.keys(map2).map((name) => ({ propName: map2[name], templateName: name }));
+  }
+  function verifyNotAnOrphanComponent(componentDef) {
+    if ((typeof ngJitMode === "undefined" || ngJitMode) && componentDef.debugInfo?.forbidOrphanRendering) {
+      if (depsTracker.isOrphanComponent(componentDef.type)) {
+        throw new RuntimeError(981, `Orphan component found! Trying to render the component ${debugStringifyTypeForError(componentDef.type)} without first loading the NgModule that declares it. It is recommended to make this component standalone in order to avoid this error. If this is not possible now, import the component's NgModule in the appropriate NgModule, or the standalone component in which you are trying to render this component. If this is a lazy import, load the NgModule lazily as well and use its module injector.`);
       }
     }
-    return array;
   }
-  function getNamespace(elementName) {
-    const name = elementName.toLowerCase();
-    return name === "svg" ? SVG_NAMESPACE : name === "math" ? MATH_ML_NAMESPACE : null;
+  function createRootViewInjector(componentDef, environmentInjector, injector) {
+    let realEnvironmentInjector = environmentInjector instanceof EnvironmentInjector ? environmentInjector : environmentInjector?.injector;
+    if (realEnvironmentInjector && componentDef.getStandaloneInjector !== null) {
+      realEnvironmentInjector = componentDef.getStandaloneInjector(realEnvironmentInjector) || realEnvironmentInjector;
+    }
+    const rootViewInjector = realEnvironmentInjector ? new ChainedInjector(injector, realEnvironmentInjector) : injector;
+    return rootViewInjector;
   }
-  var ComponentFactory = class extends ComponentFactory$1 {
+  function createRootLViewEnvironment(rootLViewInjector) {
+    const rendererFactory = rootLViewInjector.get(RendererFactory2, null);
+    if (rendererFactory === null) {
+      throw new RuntimeError(407, ngDevMode && "Angular was not able to inject a renderer (RendererFactory2). Likely this is due to a broken DI hierarchy. Make sure that any injector used to create this component has a correct parent.");
+    }
+    const sanitizer = rootLViewInjector.get(Sanitizer, null);
+    const changeDetectionScheduler = rootLViewInjector.get(ChangeDetectionScheduler, null);
+    return {
+      rendererFactory,
+      sanitizer,
+      changeDetectionScheduler
+    };
+  }
+  function createHostElement(componentDef, render) {
+    const tagName = (componentDef.selectors[0][0] || "div").toLowerCase();
+    const namespace = tagName === "svg" ? SVG_NAMESPACE : tagName === "math" ? MATH_ML_NAMESPACE : null;
+    return createElementNode(render, tagName, namespace);
+  }
+  var ComponentFactory2 = class extends ComponentFactory$1 {
     componentDef;
     ngModule;
     selector;
     componentType;
     ngContentSelectors;
     isBoundToModule;
+    cachedInputs = null;
+    cachedOutputs = null;
     get inputs() {
-      const componentDef = this.componentDef;
-      const inputTransforms = componentDef.inputTransforms;
-      const refArray = toRefArray(componentDef.inputs, true);
-      if (inputTransforms !== null) {
-        for (const input2 of refArray) {
-          if (inputTransforms.hasOwnProperty(input2.propName)) {
-            input2.transform = inputTransforms[input2.propName];
-          }
-        }
-      }
-      return refArray;
+      this.cachedInputs ??= toInputRefArray(this.componentDef.inputs);
+      return this.cachedInputs;
     }
     get outputs() {
-      return toRefArray(this.componentDef.outputs, false);
+      this.cachedOutputs ??= toOutputRefArray(this.componentDef.outputs);
+      return this.cachedOutputs;
     }
     /**
      * @param componentDef The component definition.
@@ -41231,78 +41669,44 @@ ${footer}`);
       this.isBoundToModule = !!ngModule;
     }
     create(injector, projectableNodes, rootSelectorOrNode, environmentInjector) {
+      profiler(
+        22
+        /* ProfilerEvent.DynamicComponentStart */
+      );
       const prevConsumer = setActiveConsumer(null);
       try {
-        if (ngDevMode && (typeof ngJitMode === "undefined" || ngJitMode) && this.componentDef.debugInfo?.forbidOrphanRendering) {
-          if (depsTracker.isOrphanComponent(this.componentType)) {
-            throw new RuntimeError(981, `Orphan component found! Trying to render the component ${debugStringifyTypeForError(this.componentType)} without first loading the NgModule that declares it. It is recommended to make this component standalone in order to avoid this error. If this is not possible now, import the component's NgModule in the appropriate NgModule, or the standalone component in which you are trying to render this component. If this is a lazy import, load the NgModule lazily as well and use its module injector.`);
-          }
-        }
-        environmentInjector = environmentInjector || this.ngModule;
-        let realEnvironmentInjector = environmentInjector instanceof EnvironmentInjector ? environmentInjector : environmentInjector?.injector;
-        if (realEnvironmentInjector && this.componentDef.getStandaloneInjector !== null) {
-          realEnvironmentInjector = this.componentDef.getStandaloneInjector(realEnvironmentInjector) || realEnvironmentInjector;
-        }
-        const rootViewInjector = realEnvironmentInjector ? new ChainedInjector(injector, realEnvironmentInjector) : injector;
-        const rendererFactory = rootViewInjector.get(RendererFactory2, null);
-        if (rendererFactory === null) {
-          throw new RuntimeError(407, ngDevMode && "Angular was not able to inject a renderer (RendererFactory2). Likely this is due to a broken DI hierarchy. Make sure that any injector used to create this component has a correct parent.");
-        }
-        const sanitizer = rootViewInjector.get(Sanitizer, null);
-        const changeDetectionScheduler = rootViewInjector.get(ChangeDetectionScheduler, null);
-        const environment = {
-          rendererFactory,
-          sanitizer,
-          changeDetectionScheduler
-        };
-        const hostRenderer = rendererFactory.createRenderer(null, this.componentDef);
-        const elementName = this.componentDef.selectors[0][0] || "div";
-        const hostRNode = rootSelectorOrNode ? locateHostElement(hostRenderer, rootSelectorOrNode, this.componentDef.encapsulation, rootViewInjector) : createElementNode(hostRenderer, elementName, getNamespace(elementName));
-        let rootFlags = 512;
-        if (this.componentDef.signals) {
-          rootFlags |= 4096;
-        } else if (!this.componentDef.onPush) {
-          rootFlags |= 16;
-        }
-        let hydrationInfo = null;
-        if (hostRNode !== null) {
-          hydrationInfo = retrieveHydrationInfo(
-            hostRNode,
-            rootViewInjector,
-            true
-            /* isRootView */
-          );
-        }
-        const rootTView = createTView(0, null, null, 1, 0, null, null, null, null, null, null);
-        const rootLView = createLView(null, rootTView, null, rootFlags, null, null, environment, hostRenderer, rootViewInjector, null, hydrationInfo);
-        rootLView[HEADER_OFFSET] = hostRNode;
+        const cmpDef = this.componentDef;
+        ngDevMode && verifyNotAnOrphanComponent(cmpDef);
+        const tAttributes = rootSelectorOrNode ? ["ng-version", "19.2.14"] : (
+          // Extract attributes and classes from the first selector only to match VE behavior.
+          extractAttrsAndClassesFromSelector(this.componentDef.selectors[0])
+        );
+        const rootTView = createTView(0, null, null, 1, 0, null, null, null, null, [tAttributes], null);
+        const rootViewInjector = createRootViewInjector(cmpDef, environmentInjector || this.ngModule, injector);
+        const environment = createRootLViewEnvironment(rootViewInjector);
+        const hostRenderer = environment.rendererFactory.createRenderer(null, cmpDef);
+        const hostElement = rootSelectorOrNode ? locateHostElement(hostRenderer, rootSelectorOrNode, cmpDef.encapsulation, rootViewInjector) : createHostElement(cmpDef, hostRenderer);
+        const rootLView = createLView(null, rootTView, null, 512 | getInitialLViewFlagsFromDef(cmpDef), null, null, environment, hostRenderer, rootViewInjector, null, retrieveHydrationInfo(
+          hostElement,
+          rootViewInjector,
+          true
+          /* isRootView */
+        ));
+        rootLView[HEADER_OFFSET] = hostElement;
         enterView(rootLView);
         let componentView = null;
         try {
-          const tAttributes = rootSelectorOrNode ? ["ng-version", "19.1.4"] : (
-            // Extract attributes and classes from the first selector only to match VE behavior.
-            extractAttrsAndClassesFromSelector(this.componentDef.selectors[0])
-          );
-          const hostTNode = getOrCreateTNode(rootTView, HEADER_OFFSET, 2, "#host", tAttributes);
-          const [directiveDefs, hostDirectiveDefs] = resolveHostDirectives(rootTView, hostTNode, [
-            this.componentDef
-          ]);
-          initializeDirectives(rootTView, rootLView, hostTNode, directiveDefs, {}, hostDirectiveDefs);
-          for (const def of directiveDefs) {
-            hostTNode.mergedAttrs = mergeHostAttrs(hostTNode.mergedAttrs, def.hostAttrs);
-          }
-          hostTNode.mergedAttrs = mergeHostAttrs(hostTNode.mergedAttrs, tAttributes);
-          computeStaticStyling(hostTNode, hostTNode.mergedAttrs, true);
-          if (hostRNode) {
-            setupStaticAttributes(hostRenderer, hostRNode, hostTNode);
-            attachPatchData(hostRNode, rootLView);
-          }
-          if (projectableNodes !== void 0) {
-            projectNodes(hostTNode, this.ngContentSelectors, projectableNodes);
+          const hostTNode = elementStartFirstCreatePass(HEADER_OFFSET, rootTView, rootLView, "#host", () => [this.componentDef], true, 0);
+          if (hostElement) {
+            setupStaticAttributes(hostRenderer, hostElement, hostTNode);
+            attachPatchData(hostElement, rootLView);
           }
           createDirectivesInstances(rootTView, rootLView, hostTNode);
           executeContentQueries(rootTView, hostTNode, rootLView);
-          registerPostOrderHooks(rootTView, hostTNode);
+          elementEndFirstCreatePass(rootTView, hostTNode);
+          if (projectableNodes !== void 0) {
+            projectNodes(hostTNode, this.ngContentSelectors, projectableNodes);
+          }
           componentView = getComponentLViewByIndex(hostTNode.index, rootLView);
           rootLView[CONTEXT] = componentView[CONTEXT];
           renderView(rootTView, rootLView, null);
@@ -41313,15 +41717,19 @@ ${footer}`);
           unregisterLView(rootLView);
           throw e;
         } finally {
+          profiler(
+            23
+            /* ProfilerEvent.DynamicComponentEnd */
+          );
           leaveView();
         }
-        return new ComponentRef(this.componentType, rootLView);
+        return new ComponentRef2(this.componentType, rootLView);
       } finally {
         setActiveConsumer(prevConsumer);
       }
     }
   };
-  var ComponentRef = class extends ComponentRef$1 {
+  var ComponentRef2 = class extends ComponentRef$1 {
     _rootLView;
     instance;
     hostView;
@@ -41345,29 +41753,25 @@ ${footer}`);
       this.componentType = componentType;
     }
     setInput(name, value) {
-      const inputData = this._tNode.inputs;
-      let dataValue;
-      if (inputData !== null && (dataValue = inputData[name])) {
-        this.previousInputValues ??= /* @__PURE__ */ new Map();
-        if (this.previousInputValues.has(name) && Object.is(this.previousInputValues.get(name), value)) {
-          return;
-        }
-        const lView = this._rootLView;
-        setInputsForProperty(lView[TVIEW], lView, dataValue, name, value);
-        this.previousInputValues.set(name, value);
-        const childComponentLView = getComponentLViewByIndex(this._tNode.index, lView);
-        markViewDirty(
-          childComponentLView,
-          1
-          /* NotificationSource.SetInput */
-        );
-      } else {
-        if (ngDevMode) {
-          const cmpNameForError = stringifyForError(this.componentType);
-          let message = `Can't set value of the '${name}' input on the '${cmpNameForError}' component. `;
-          message += `Make sure that the '${name}' property is annotated with @Input() or a mapped @Input('${name}') exists.`;
-          reportUnknownPropertyError(message);
-        }
+      const tNode = this._tNode;
+      this.previousInputValues ??= /* @__PURE__ */ new Map();
+      if (this.previousInputValues.has(name) && Object.is(this.previousInputValues.get(name), value)) {
+        return;
+      }
+      const lView = this._rootLView;
+      const hasSetInput = setAllInputsForProperty(tNode, lView[TVIEW], lView, name, value);
+      this.previousInputValues.set(name, value);
+      const childComponentLView = getComponentLViewByIndex(tNode.index, lView);
+      markViewDirty(
+        childComponentLView,
+        1
+        /* NotificationSource.SetInput */
+      );
+      if (ngDevMode && !hasSetInput) {
+        const cmpNameForError = stringifyForError(this.componentType);
+        let message = `Can't set value of the '${name}' input on the '${cmpNameForError}' component. `;
+        message += `Make sure that the '${name}' property is annotated with @Input() or a mapped @Input('${name}') exists.`;
+        reportUnknownPropertyError(message);
       }
     }
     get injector() {
@@ -41479,7 +41883,7 @@ ${footer}`);
         projectableNodes = options.projectableNodes;
         environmentInjector = options.environmentInjector || options.ngModuleRef;
       }
-      const componentFactory = isComponentFactory ? componentFactoryOrType : new ComponentFactory(getComponentDef(componentFactoryOrType));
+      const componentFactory = isComponentFactory ? componentFactoryOrType : new ComponentFactory2(getComponentDef(componentFactoryOrType));
       const contextInjector = injector || this.parentInjector;
       if (!environmentInjector && componentFactory.ngModule == null) {
         const _injector = isComponentFactory ? contextInjector : this.parentInjector;
@@ -42296,15 +42700,15 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     return attrValue;
   }
-  var NgModuleRef$1 = class {
+  var NgModuleRef$1 = class NgModuleRef {
   };
-  var NgModuleFactory$1 = class {
+  var NgModuleFactory$1 = class NgModuleFactory {
   };
   function createNgModule(ngModule, parentInjector) {
-    return new NgModuleRef(ngModule, parentInjector ?? null, []);
+    return new NgModuleRef2(ngModule, parentInjector ?? null, []);
   }
   var createNgModuleRef = createNgModule;
-  var NgModuleRef = class extends NgModuleRef$1 {
+  var NgModuleRef2 = class extends NgModuleRef$1 {
     ngModuleType;
     _parent;
     // tslint:disable-next-line:require-internal-with-underscore
@@ -42318,7 +42722,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     // circular dependency which will result in a runtime error, because the injector doesn't
     // exist yet. We work around the issue by creating the ComponentFactoryResolver ourselves
     // and providing it, rather than letting the injector resolve it.
-    componentFactoryResolver = new ComponentFactoryResolver(this);
+    componentFactoryResolver = new ComponentFactoryResolver2(this);
     constructor(ngModuleType, _parent, additionalProviders, runInjectorInitializers = true) {
       super();
       this.ngModuleType = ngModuleType;
@@ -42357,22 +42761,22 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       this.destroyCbs.push(callback);
     }
   };
-  var NgModuleFactory = class extends NgModuleFactory$1 {
+  var NgModuleFactory2 = class extends NgModuleFactory$1 {
     moduleType;
     constructor(moduleType) {
       super();
       this.moduleType = moduleType;
     }
     create(parentInjector) {
-      return new NgModuleRef(this.moduleType, parentInjector, []);
+      return new NgModuleRef2(this.moduleType, parentInjector, []);
     }
   };
   function createNgModuleRefWithProviders(moduleType, parentInjector, additionalProviders) {
-    return new NgModuleRef(moduleType, parentInjector, additionalProviders, false);
+    return new NgModuleRef2(moduleType, parentInjector, additionalProviders, false);
   }
   var EnvironmentNgModuleRefAdapter = class extends NgModuleRef$1 {
     injector;
-    componentFactoryResolver = new ComponentFactoryResolver(this);
+    componentFactoryResolver = new ComponentFactoryResolver2(this);
     instance = null;
     constructor(config2) {
       super();
@@ -42510,7 +42914,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       return res;
     });
   }
-  function parseAndConvertBindingsForDefinition(obj, declaredInputs) {
+  function parseAndConvertInputsForDefinition(obj, declaredInputs) {
     if (obj == null)
       return EMPTY_OBJ;
     const newLookup = {};
@@ -42519,21 +42923,32 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         const value = obj[minifiedKey];
         let publicName;
         let declaredName;
-        let inputFlags = InputFlags2.None;
+        let inputFlags;
+        let transform2;
         if (Array.isArray(value)) {
           inputFlags = value[0];
           publicName = value[1];
           declaredName = value[2] ?? publicName;
+          transform2 = value[3] || null;
         } else {
           publicName = value;
           declaredName = value;
+          inputFlags = InputFlags2.None;
+          transform2 = null;
         }
-        if (declaredInputs) {
-          newLookup[publicName] = inputFlags !== InputFlags2.None ? [minifiedKey, inputFlags] : minifiedKey;
-          declaredInputs[publicName] = declaredName;
-        } else {
-          newLookup[publicName] = minifiedKey;
-        }
+        newLookup[publicName] = [minifiedKey, inputFlags, transform2];
+        declaredInputs[publicName] = declaredName;
+      }
+    }
+    return newLookup;
+  }
+  function parseAndConvertOutputsForDefinition(obj) {
+    if (obj == null)
+      return EMPTY_OBJ;
+    const newLookup = {};
+    for (const minifiedKey in obj) {
+      if (obj.hasOwnProperty(minifiedKey)) {
+        newLookup[obj[minifiedKey]] = minifiedKey;
       }
     }
     return newLookup;
@@ -42566,7 +42981,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       hostAttrs: directiveDefinition.hostAttrs || null,
       contentQueries: directiveDefinition.contentQueries || null,
       declaredInputs,
-      inputTransforms: null,
       inputConfig: directiveDefinition.inputs || EMPTY_OBJ,
       exportAs: directiveDefinition.exportAs || null,
       standalone: directiveDefinition.standalone ?? true,
@@ -42577,8 +42991,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       setInput: null,
       findHostDirectiveDefs: null,
       hostDirectives: null,
-      inputs: parseAndConvertBindingsForDefinition(directiveDefinition.inputs, declaredInputs),
-      outputs: parseAndConvertBindingsForDefinition(directiveDefinition.outputs),
+      inputs: parseAndConvertInputsForDefinition(directiveDefinition.inputs, declaredInputs),
+      outputs: parseAndConvertOutputsForDefinition(directiveDefinition.outputs),
       debugInfo: null
     };
   }
@@ -42663,7 +43077,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           inheritanceChain.push(superDef);
           const writeableDef = definition;
           writeableDef.inputs = maybeUnwrapEmpty(definition.inputs);
-          writeableDef.inputTransforms = maybeUnwrapEmpty(definition.inputTransforms);
           writeableDef.declaredInputs = maybeUnwrapEmpty(definition.declaredInputs);
           writeableDef.outputs = maybeUnwrapEmpty(definition.outputs);
           const superHostBindings = superDef.hostBindings;
@@ -42705,18 +43118,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         continue;
       }
       const value = source.inputs[key];
-      if (value === void 0) {
-        continue;
-      }
-      target.inputs[key] = value;
-      target.declaredInputs[key] = source.declaredInputs[key];
-      if (source.inputTransforms !== null) {
-        const minifiedName = Array.isArray(value) ? value[0] : value;
-        if (!source.inputTransforms.hasOwnProperty(minifiedName)) {
-          continue;
-        }
-        target.inputTransforms ??= {};
-        target.inputTransforms[minifiedName] = source.inputTransforms[minifiedName];
+      if (value !== void 0) {
+        target.inputs[key] = value;
+        target.declaredInputs[key] = source.declaredInputs[key];
       }
     }
   }
@@ -42907,19 +43311,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
     }
   }
-  function \u0275\u0275InputTransformsFeature(definition) {
-    const inputs = definition.inputConfig;
-    const inputTransforms = {};
-    for (const minifiedKey in inputs) {
-      if (inputs.hasOwnProperty(minifiedKey)) {
-        const value = inputs[minifiedKey];
-        if (Array.isArray(value) && value[3]) {
-          inputTransforms[minifiedKey] = value[3];
-        }
-      }
-    }
-    definition.inputTransforms = inputTransforms;
-  }
   function isListLikeIterable(obj) {
     if (!isJsObject(obj))
       return false;
@@ -43015,7 +43406,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     ngDevMode && ngDevMode.firstCreatePass++;
     const tViewConsts = tView.consts;
     const tNode = getOrCreateTNode(tView, index, 4, tagName || null, attrs || null);
-    resolveDirectives(tView, lView, tNode, getConstant(tViewConsts, localRefsIndex));
+    if (getBindingsEnabled()) {
+      resolveDirectives(tView, lView, tNode, getConstant(tViewConsts, localRefsIndex), findDirectiveDefMatches);
+    }
+    tNode.mergedAttrs = mergeHostAttrs(tNode.mergedAttrs, tNode.attrs);
     registerPostOrderHooks(tView, tNode);
     const embeddedTView = tNode.tView = createTView(
       2,
@@ -43051,7 +43445,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     addToEndOfViewTree(declarationLView, lContainer);
     populateDehydratedViewsInLContainer(lContainer, tNode, declarationLView);
     if (isDirectiveHost(tNode)) {
-      createDirectivesInstancesInInstruction(declarationTView, declarationLView, tNode);
+      createDirectivesInstances(declarationTView, declarationLView, tNode);
     }
     if (localRefsIndex != null) {
       saveResolvedLocalsInData(declarationLView, tNode, localRefExtractor);
@@ -43075,7 +43469,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     const isNodeCreationMode = !hydrationInfo || isInSkipHydrationBlock$1() || isDetachedByI18n(tNode) || isDisconnectedNode$1(hydrationInfo, index);
     lastNodeWasCreated(isNodeCreationMode);
     if (isNodeCreationMode) {
-      return createContainerAnchorImpl(tView, lView, tNode, index);
+      return createContainerAnchorImpl(tView, lView);
     }
     const ssrId = hydrationInfo.data[TEMPLATES]?.[index] ?? null;
     if (ssrId !== null && tNode.tView !== null) {
@@ -43180,8 +43574,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   function scheduleTimerTrigger(delay, callback, injector) {
     const scheduler = injector.get(TimerScheduler);
+    const ngZone = injector.get(NgZone);
     const cleanupFn = () => scheduler.remove(callback);
-    scheduler.add(delay, callback);
+    scheduler.add(delay, callback, ngZone);
     return cleanupFn;
   }
   var TimerScheduler = class _TimerScheduler {
@@ -43202,10 +43597,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     // the current callback invocation. The shape of this list is the same
     // as the shape of the `current` list.
     deferred = [];
-    add(delay, callback) {
+    add(delay, callback, ngZone) {
       const target = this.executingCallbacks ? this.deferred : this.current;
       this.addToQueue(target, Date.now() + delay, callback);
-      this.scheduleTimer();
+      this.scheduleTimer(ngZone);
     }
     remove(callback) {
       const { current, deferred } = this;
@@ -43242,7 +43637,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
       return index;
     }
-    scheduleTimer() {
+    scheduleTimer(ngZone) {
       const callback = () => {
         this.clearTimeout();
         this.executingCallbacks = true;
@@ -43278,7 +43673,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           }
           this.deferred.length = 0;
         }
-        this.scheduleTimer();
+        this.scheduleTimer(ngZone);
       };
       const FRAME_DURATION_MS = 16;
       if (this.current.length > 0) {
@@ -43291,7 +43686,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           this.clearTimeout();
           const timeout = Math.max(invokeAt - now, FRAME_DURATION_MS);
           this.invokeTimerAt = invokeAt;
-          this.timeoutId = setTimeout(callback, timeout);
+          this.timeoutId = ngZone.runOutsideAngular(() => {
+            return setTimeout(() => ngZone.run(callback), timeout);
+          });
         }
       }
     }
@@ -43388,14 +43785,20 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       try {
         applyStateFn(newState, lDetails, lContainer, tNode, hostLView);
       } catch (error) {
-        handleError(hostLView, error);
+        handleError$1(hostLView, error);
       }
     }
   }
   function findMatchingDehydratedViewForDeferBlock(lContainer, lDetails) {
-    return lContainer[DEHYDRATED_VIEWS]?.find((view) => view.data[DEFER_BLOCK_STATE$1] === lDetails[DEFER_BLOCK_STATE]) ?? null;
+    const dehydratedViewIx = lContainer[DEHYDRATED_VIEWS]?.findIndex((view) => view.data[DEFER_BLOCK_STATE$1] === lDetails[DEFER_BLOCK_STATE]) ?? -1;
+    const dehydratedView = dehydratedViewIx > -1 ? lContainer[DEHYDRATED_VIEWS][dehydratedViewIx] : null;
+    return { dehydratedView, dehydratedViewIx };
   }
   function applyDeferBlockState(newState, lDetails, lContainer, tNode, hostLView) {
+    profiler(
+      20
+      /* ProfilerEvent.DeferBlockStateStart */
+    );
     const stateTmplIndex = getTemplateIndexForState(newState, hostLView, tNode);
     if (stateTmplIndex !== null) {
       lDetails[DEFER_BLOCK_STATE] = newState;
@@ -43412,8 +43815,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           injector = createDeferBlockInjector(hostLView[INJECTOR], tDetails, providers);
         }
       }
-      const dehydratedView = findMatchingDehydratedViewForDeferBlock(lContainer, lDetails);
-      lContainer[DEHYDRATED_VIEWS] = null;
+      const { dehydratedView, dehydratedViewIx } = findMatchingDehydratedViewForDeferBlock(lContainer, lDetails);
       const embeddedLView = createAndRenderEmbeddedLView(hostLView, activeBlockTNode, null, {
         injector,
         dehydratedView
@@ -43424,6 +43826,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         2
         /* NotificationSource.DeferBlockStateUpdate */
       );
+      if (dehydratedViewIx > -1) {
+        lContainer[DEHYDRATED_VIEWS]?.splice(dehydratedViewIx, 1);
+      }
       if ((newState === DeferBlockState.Complete || newState === DeferBlockState.Error) && Array.isArray(lDetails[ON_COMPLETE_FNS])) {
         for (const callback of lDetails[ON_COMPLETE_FNS]) {
           callback();
@@ -43431,6 +43836,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         lDetails[ON_COMPLETE_FNS] = null;
       }
     }
+    profiler(
+      21
+      /* ProfilerEvent.DeferBlockStateEnd */
+    );
   }
   function applyDeferBlockStateWithScheduling(newState, lDetails, lContainer, tNode, hostLView) {
     const now = Date.now();
@@ -44024,11 +44433,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   function getInjectorParent(injector) {
     if (injector instanceof R3Injector) {
-      const parent = injector.parent;
-      if (isRouterOutletInjector(parent)) {
-        return parent.parentInjector;
-      }
-      return parent;
+      return injector.parent;
     }
     let tNode;
     let lView;
@@ -44223,35 +44628,41 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     registry;
     _isZoneStable = true;
     _callbacks = [];
-    taskTrackingZone = null;
+    _taskTrackingZone = null;
+    _destroyRef;
     constructor(_ngZone, registry, testabilityGetter) {
       this._ngZone = _ngZone;
       this.registry = registry;
+      if (isInInjectionContext()) {
+        this._destroyRef = inject(DestroyRef, { optional: true }) ?? void 0;
+      }
       if (!_testabilityGetter) {
         setTestabilityGetter(testabilityGetter);
         testabilityGetter.addToWindow(registry);
       }
       this._watchAngularEvents();
       _ngZone.run(() => {
-        this.taskTrackingZone = typeof Zone == "undefined" ? null : Zone.current.get("TaskTrackingZone");
+        this._taskTrackingZone = typeof Zone == "undefined" ? null : Zone.current.get("TaskTrackingZone");
       });
     }
     _watchAngularEvents() {
-      this._ngZone.onUnstable.subscribe({
+      const onUnstableSubscription = this._ngZone.onUnstable.subscribe({
         next: () => {
           this._isZoneStable = false;
         }
       });
-      this._ngZone.runOutsideAngular(() => {
-        this._ngZone.onStable.subscribe({
-          next: () => {
-            NgZone.assertNotInAngularZone();
-            queueMicrotask(() => {
-              this._isZoneStable = true;
-              this._runCallbacksIfReady();
-            });
-          }
-        });
+      const onStableSubscription = this._ngZone.runOutsideAngular(() => this._ngZone.onStable.subscribe({
+        next: () => {
+          NgZone.assertNotInAngularZone();
+          queueMicrotask(() => {
+            this._isZoneStable = true;
+            this._runCallbacksIfReady();
+          });
+        }
+      }));
+      this._destroyRef?.onDestroy(() => {
+        onUnstableSubscription.unsubscribe();
+        onStableSubscription.unsubscribe();
       });
     }
     /**
@@ -44281,10 +44692,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
     }
     getPendingTasks() {
-      if (!this.taskTrackingZone) {
+      if (!this._taskTrackingZone) {
         return [];
       }
-      return this.taskTrackingZone.macroTasks.map((t) => {
+      return this._taskTrackingZone.macroTasks.map((t) => {
         return {
           source: t.source,
           // From TaskTrackingZone:
@@ -44317,7 +44728,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      *    and no further updates will be issued.
      */
     whenStable(doneCb, timeout, updateCb) {
-      if (updateCb && !this.taskTrackingZone) {
+      if (updateCb && !this._taskTrackingZone) {
         throw new Error('Task tracking zone is required when passing an update callback to whenStable(). Is "zone.js/plugins/task-tracking" loaded?');
       }
       this.addCallback(doneCb, timeout, updateCb);
@@ -44430,6 +44841,69 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     _testabilityGetter = getter;
   }
   var _testabilityGetter;
+  var EffectScheduler = class _EffectScheduler {
+    /** @nocollapse */
+    static \u0275prov = (
+      /** @pureOrBreakMyCode */
+      /* @__PURE__ */ \u0275\u0275defineInjectable({
+        token: _EffectScheduler,
+        providedIn: "root",
+        factory: () => new ZoneAwareEffectScheduler()
+      })
+    );
+  };
+  var ZoneAwareEffectScheduler = class {
+    queuedEffectCount = 0;
+    queues = /* @__PURE__ */ new Map();
+    schedule(handle) {
+      this.enqueue(handle);
+    }
+    remove(handle) {
+      const zone = handle.zone;
+      const queue = this.queues.get(zone);
+      if (!queue.has(handle)) {
+        return;
+      }
+      queue.delete(handle);
+      this.queuedEffectCount--;
+    }
+    enqueue(handle) {
+      const zone = handle.zone;
+      if (!this.queues.has(zone)) {
+        this.queues.set(zone, /* @__PURE__ */ new Set());
+      }
+      const queue = this.queues.get(zone);
+      if (queue.has(handle)) {
+        return;
+      }
+      this.queuedEffectCount++;
+      queue.add(handle);
+    }
+    /**
+     * Run all scheduled effects.
+     *
+     * Execution order of effects within the same zone is guaranteed to be FIFO, but there is no
+     * ordering guarantee between effects scheduled in different zones.
+     */
+    flush() {
+      while (this.queuedEffectCount > 0) {
+        for (const [zone, queue] of this.queues) {
+          if (zone === null) {
+            this.flushQueue(queue);
+          } else {
+            zone.run(() => this.flushQueue(queue));
+          }
+        }
+      }
+    }
+    flushQueue(queue) {
+      for (const handle of queue) {
+        queue.delete(handle);
+        this.queuedEffectCount--;
+        handle.run();
+      }
+    }
+  };
   function isPromise(obj) {
     return !!obj && typeof obj.then === "function";
   }
@@ -44506,69 +44980,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       args: [{ providedIn: "root" }]
     }], () => [], null);
   })();
-  var EffectScheduler = class _EffectScheduler {
-    /** @nocollapse */
-    static \u0275prov = (
-      /** @pureOrBreakMyCode */
-      /* @__PURE__ */ \u0275\u0275defineInjectable({
-        token: _EffectScheduler,
-        providedIn: "root",
-        factory: () => new ZoneAwareEffectScheduler()
-      })
-    );
-  };
-  var ZoneAwareEffectScheduler = class {
-    queuedEffectCount = 0;
-    queues = /* @__PURE__ */ new Map();
-    schedule(handle) {
-      this.enqueue(handle);
-    }
-    remove(handle) {
-      const zone = handle.zone;
-      const queue = this.queues.get(zone);
-      if (!queue.has(handle)) {
-        return;
-      }
-      queue.delete(handle);
-      this.queuedEffectCount--;
-    }
-    enqueue(handle) {
-      const zone = handle.zone;
-      if (!this.queues.has(zone)) {
-        this.queues.set(zone, /* @__PURE__ */ new Set());
-      }
-      const queue = this.queues.get(zone);
-      if (queue.has(handle)) {
-        return;
-      }
-      this.queuedEffectCount++;
-      queue.add(handle);
-    }
-    /**
-     * Run all scheduled effects.
-     *
-     * Execution order of effects within the same zone is guaranteed to be FIFO, but there is no
-     * ordering guarantee between effects scheduled in different zones.
-     */
-    flush() {
-      while (this.queuedEffectCount > 0) {
-        for (const [zone, queue] of this.queues) {
-          if (zone === null) {
-            this.flushQueue(queue);
-          } else {
-            zone.run(() => this.flushQueue(queue));
-          }
-        }
-      }
-    }
-    flushQueue(queue) {
-      for (const handle of queue) {
-        queue.delete(handle);
-        this.queuedEffectCount--;
-        handle.run();
-      }
-    }
-  };
   var APP_BOOTSTRAP_LISTENER = new InjectionToken(ngDevMode ? "appBootstrapListener" : "");
   function publishDefaultGlobalUtils() {
     ngDevMode && publishDefaultGlobalUtils$1();
@@ -44590,21 +45001,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
   };
   var MAXIMUM_REFRESH_RERUNS = 10;
-  function _callAndReportToErrorHandler(errorHandler2, ngZone, callback) {
-    try {
-      const result = callback();
-      if (isPromise(result)) {
-        return result.catch((e) => {
-          ngZone.runOutsideAngular(() => errorHandler2.handleError(e));
-          throw e;
-        });
-      }
-      return result;
-    } catch (e) {
-      ngZone.runOutsideAngular(() => errorHandler2.handleError(e));
-      throw e;
-    }
-  }
   function optionsReducer(dst, objs) {
     if (Array.isArray(objs)) {
       return objs.reduce(optionsReducer, dst);
@@ -44631,12 +45027,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * @internal
      */
     dirtyFlags = 0;
-    /**
-     * Like `dirtyFlags` but don't cause `tick()` to loop.
-     *
-     * @internal
-     */
-    deferredDirtyFlags = 0;
     /**
      * Most recent snapshot from the `TracingService`, if any.
      *
@@ -44740,12 +45130,22 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * {@example core/ts/platform/platform.ts region='domNode'}
      */
     bootstrap(componentOrFactory, rootSelectorOrNode) {
+      return this.bootstrapImpl(componentOrFactory, rootSelectorOrNode);
+    }
+    bootstrapImpl(componentOrFactory, rootSelectorOrNode, injector = Injector.NULL) {
+      profiler(
+        10
+        /* ProfilerEvent.BootstrapComponentStart */
+      );
       (typeof ngDevMode === "undefined" || ngDevMode) && warnIfDestroyed(this._destroyed);
       const isComponentFactory = componentOrFactory instanceof ComponentFactory$1;
       const initStatus = this._injector.get(ApplicationInitStatus);
       if (!initStatus.done) {
-        const standalone = !isComponentFactory && isStandalone(componentOrFactory);
-        const errorMessage = (typeof ngDevMode === "undefined" || ngDevMode) && "Cannot bootstrap as there are still asynchronous initializers running." + (standalone ? "" : " Bootstrap components in the `ngDoBootstrap` method of the root module.");
+        let errorMessage = "";
+        if (typeof ngDevMode === "undefined" || ngDevMode) {
+          const standalone = !isComponentFactory && isStandalone(componentOrFactory);
+          errorMessage = "Cannot bootstrap as there are still asynchronous initializers running." + (standalone ? "" : " Bootstrap components in the `ngDoBootstrap` method of the root module.");
+        }
         throw new RuntimeError(405, errorMessage);
       }
       let componentFactory;
@@ -44758,7 +45158,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       this.componentTypes.push(componentFactory.componentType);
       const ngModule = isBoundToModule(componentFactory) ? void 0 : this._injector.get(NgModuleRef$1);
       const selectorOrNode = rootSelectorOrNode || componentFactory.selector;
-      const compRef = componentFactory.create(Injector.NULL, [], selectorOrNode, ngModule);
+      const compRef = componentFactory.create(injector, [], selectorOrNode, ngModule);
       const nativeElement = compRef.location.nativeElement;
       const testability = compRef.injector.get(TESTABILITY, null);
       testability?.registerApplication(nativeElement);
@@ -44772,6 +45172,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         const _console = this._injector.get(Console);
         _console.log(`Angular is running in development mode.`);
       }
+      profiler(11, compRef);
       return compRef;
     }
     /**
@@ -44791,14 +45192,18 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       this._tick();
     }
     /** @internal */
-    _tick = () => {
+    _tick() {
+      profiler(
+        12
+        /* ProfilerEvent.ChangeDetectionStart */
+      );
       if (this.tracingSnapshot !== null) {
-        const snapshot = this.tracingSnapshot;
-        this.tracingSnapshot = null;
-        snapshot.run(TracingAction.CHANGE_DETECTION, this._tick);
-        snapshot.dispose();
-        return;
+        this.tracingSnapshot.run(TracingAction.CHANGE_DETECTION, this.tickImpl);
+      } else {
+        this.tickImpl();
       }
+    }
+    tickImpl = () => {
       (typeof ngDevMode === "undefined" || ngDevMode) && warnIfDestroyed(this._destroyed);
       if (this._runningTick) {
         throw new RuntimeError(101, ngDevMode && "ApplicationRef.tick is called recursively");
@@ -44816,8 +45221,14 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         this.internalErrorHandler(e);
       } finally {
         this._runningTick = false;
+        this.tracingSnapshot?.dispose();
+        this.tracingSnapshot = null;
         setActiveConsumer(prevConsumer);
         this.afterTick.next();
+        profiler(
+          13
+          /* ProfilerEvent.ChangeDetectionEnd */
+        );
       }
     };
     /**
@@ -44828,11 +45239,17 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       if (this._rendererFactory === null && !this._injector.destroyed) {
         this._rendererFactory = this._injector.get(RendererFactory2, null, { optional: true });
       }
-      this.dirtyFlags |= this.deferredDirtyFlags;
-      this.deferredDirtyFlags = 0;
       let runs = 0;
       while (this.dirtyFlags !== 0 && runs++ < MAXIMUM_REFRESH_RERUNS) {
+        profiler(
+          14
+          /* ProfilerEvent.ChangeDetectionSyncStart */
+        );
         this.synchronizeOnce();
+        profiler(
+          15
+          /* ProfilerEvent.ChangeDetectionSyncEnd */
+        );
       }
       if ((typeof ngDevMode === "undefined" || ngDevMode) && runs >= MAXIMUM_REFRESH_RERUNS) {
         throw new RuntimeError(103, ngDevMode && "Infinite change detection while refreshing application views. Ensure views are not calling `markForCheck` on every template execution or that afterRender hooks always mark views for check.");
@@ -44842,10 +45259,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * Perform a single synchronization pass.
      */
     synchronizeOnce() {
-      this.dirtyFlags |= this.deferredDirtyFlags;
-      this.deferredDirtyFlags = 0;
       if (this.dirtyFlags & 16) {
-        this.dirtyFlags &= ~16;
+        this.dirtyFlags &= -17;
         this.rootEffectScheduler.flush();
       }
       if (this.dirtyFlags & 7) {
@@ -44853,12 +45268,12 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           this.dirtyFlags & 1
           /* ApplicationRefDirtyFlags.ViewTreeGlobal */
         );
-        this.dirtyFlags &= ~7;
+        this.dirtyFlags &= -8;
         this.dirtyFlags |= 8;
         for (let { _lView, notifyErrorHandler } of this.allViews) {
           detectChangesInViewIfRequired(_lView, notifyErrorHandler, useGlobalCheck, this.zonelessEnabled);
         }
-        this.dirtyFlags &= ~4;
+        this.dirtyFlags &= -5;
         this.syncDirtyFlagsWithViews();
         if (this.dirtyFlags & (7 | 16)) {
           return;
@@ -44868,7 +45283,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         this._rendererFactory?.end?.();
       }
       if (this.dirtyFlags & 8) {
-        this.dirtyFlags &= ~8;
+        this.dirtyFlags &= -9;
         this.afterRenderManager.execute();
       }
       this.syncDirtyFlagsWithViews();
@@ -44892,7 +45307,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         this.dirtyFlags |= 2;
         return;
       } else {
-        this.dirtyFlags &= ~7;
+        this.dirtyFlags &= -8;
       }
     }
     /**
@@ -45062,13 +45477,12 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         dependenciesFn = deferDependencyInterceptor.intercept(dependenciesFn);
       }
     }
-    const pendingTasks = injector.get(PendingTasksInternal);
-    const taskId = pendingTasks.add();
+    const removeTask = injector.get(PendingTasks).add();
     if (!dependenciesFn) {
       tDetails.loadingPromise = Promise.resolve().then(() => {
         tDetails.loadingPromise = null;
         tDetails.loadingState = DeferDependenciesLoadingState.COMPLETE;
-        pendingTasks.remove(taskId);
+        removeTask();
       });
       return tDetails.loadingPromise;
     }
@@ -45093,14 +45507,12 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           break;
         }
       }
-      tDetails.loadingPromise = null;
-      pendingTasks.remove(taskId);
       if (failed) {
         tDetails.loadingState = DeferDependenciesLoadingState.FAILED;
         if (tDetails.errorTmplIndex === null) {
           const templateLocation = ngDevMode ? getTemplateLocationDetails(lView) : "";
           const error = new RuntimeError(-750, ngDevMode && `Loading dependencies for \`@defer\` block failed, but no \`@error\` block was configured${templateLocation}. Consider using the \`@error\` block to render an error state.`);
-          handleError(lView, error);
+          handleError$1(lView, error);
         }
       } else {
         tDetails.loadingState = DeferDependenciesLoadingState.COMPLETE;
@@ -45116,7 +45528,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         }
       }
     });
-    return tDetails.loadingPromise;
+    return tDetails.loadingPromise.finally(() => {
+      tDetails.loadingPromise = null;
+      removeTask();
+    });
   }
   function shouldTriggerDeferBlock(triggerType, lView) {
     if (triggerType === 0 && typeof ngServerMode !== "undefined" && ngServerMode) {
@@ -45170,23 +45585,69 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       return;
     }
     const { parentBlockPromise, hydrationQueue } = getParentBlockHydrationQueue(blockName, injector);
+    if (hydrationQueue.length === 0)
+      return;
+    if (parentBlockPromise !== null) {
+      hydrationQueue.shift();
+    }
     populateHydratingStateForQueue(dehydratedBlockRegistry, hydrationQueue);
-    const pendingTasks = injector.get(PendingTasksInternal);
-    const taskId = pendingTasks.add();
     if (parentBlockPromise !== null) {
       await parentBlockPromise;
     }
-    for (const dehydratedBlockId of hydrationQueue) {
-      await triggerResourceLoadingForHydration(dehydratedBlockId, dehydratedBlockRegistry);
-      await nextRender(injector);
-      blocksBeingHydrated.get(dehydratedBlockId).resolve();
+    const topmostParentBlock = hydrationQueue[0];
+    if (dehydratedBlockRegistry.has(topmostParentBlock)) {
+      await triggerHydrationForBlockQueue(injector, hydrationQueue, replayQueuedEventsFn);
+    } else {
+      dehydratedBlockRegistry.awaitParentBlock(topmostParentBlock, async () => await triggerHydrationForBlockQueue(injector, hydrationQueue, replayQueuedEventsFn));
     }
-    await blocksBeingHydrated.get(blockName)?.promise;
+  }
+  async function triggerHydrationForBlockQueue(injector, hydrationQueue, replayQueuedEventsFn) {
+    const dehydratedBlockRegistry = injector.get(DEHYDRATED_BLOCK_REGISTRY);
+    const blocksBeingHydrated = dehydratedBlockRegistry.hydrating;
+    const pendingTasks = injector.get(PendingTasksInternal);
+    const taskId = pendingTasks.add();
+    for (let blockQueueIdx = 0; blockQueueIdx < hydrationQueue.length; blockQueueIdx++) {
+      const dehydratedBlockId = hydrationQueue[blockQueueIdx];
+      const dehydratedDeferBlock = dehydratedBlockRegistry.get(dehydratedBlockId);
+      if (dehydratedDeferBlock != null) {
+        await triggerResourceLoadingForHydration(dehydratedDeferBlock);
+        await nextRender(injector);
+        if (deferBlockHasErrored(dehydratedDeferBlock)) {
+          removeDehydratedViewList(dehydratedDeferBlock);
+          cleanupRemainingHydrationQueue(hydrationQueue.slice(blockQueueIdx), dehydratedBlockRegistry);
+          break;
+        }
+        blocksBeingHydrated.get(dehydratedBlockId).resolve();
+      } else {
+        cleanupParentContainer(blockQueueIdx, hydrationQueue, dehydratedBlockRegistry);
+        cleanupRemainingHydrationQueue(hydrationQueue.slice(blockQueueIdx), dehydratedBlockRegistry);
+        break;
+      }
+    }
+    const lastBlockName = hydrationQueue[hydrationQueue.length - 1];
+    await blocksBeingHydrated.get(lastBlockName)?.promise;
     pendingTasks.remove(taskId);
     if (replayQueuedEventsFn) {
       replayQueuedEventsFn(hydrationQueue);
     }
-    cleanupHydratedDeferBlocks(dehydratedBlockRegistry.get(blockName), hydrationQueue, dehydratedBlockRegistry, injector.get(ApplicationRef));
+    cleanupHydratedDeferBlocks(dehydratedBlockRegistry.get(lastBlockName), hydrationQueue, dehydratedBlockRegistry, injector.get(ApplicationRef));
+  }
+  function deferBlockHasErrored(deferBlock) {
+    return getLDeferBlockDetails(deferBlock.lView, deferBlock.tNode)[DEFER_BLOCK_STATE] === DeferBlockState.Error;
+  }
+  function cleanupParentContainer(currentBlockIdx, hydrationQueue, dehydratedBlockRegistry) {
+    const parentDeferBlockIdx = currentBlockIdx - 1;
+    const parentDeferBlock = parentDeferBlockIdx > -1 ? dehydratedBlockRegistry.get(hydrationQueue[parentDeferBlockIdx]) : null;
+    if (parentDeferBlock) {
+      cleanupLContainer(parentDeferBlock.lContainer);
+    }
+  }
+  function cleanupRemainingHydrationQueue(hydrationQueue, dehydratedBlockRegistry) {
+    const blocksBeingHydrated = dehydratedBlockRegistry.hydrating;
+    for (const dehydratedBlockId in hydrationQueue) {
+      blocksBeingHydrated.get(dehydratedBlockId)?.reject();
+    }
+    dehydratedBlockRegistry.cleanup(hydrationQueue);
   }
   function populateHydratingStateForQueue(registry, queue) {
     for (let blockId of queue) {
@@ -45196,12 +45657,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   function nextRender(injector) {
     return new Promise((resolveFn) => afterNextRender(resolveFn, { injector }));
   }
-  async function triggerResourceLoadingForHydration(dehydratedBlockId, dehydratedBlockRegistry) {
-    const deferBlock = dehydratedBlockRegistry.get(dehydratedBlockId);
-    if (deferBlock === null) {
-      return;
-    }
-    const { tNode, lView } = deferBlock;
+  async function triggerResourceLoadingForHydration(dehydratedBlock) {
+    const { tNode, lView } = dehydratedBlock;
     const lDetails = getLDeferBlockDetails(lView, tNode);
     return new Promise((resolve) => {
       onDeferBlockCompletion(lDetails, resolve);
@@ -45309,6 +45766,14 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       triggerHydrationFromBlockName(injector, elementTrigger.blockName);
     }
   }
+  var _hmrWarningProduced = false;
+  function logHmrWarning(injector) {
+    if (!_hmrWarningProduced) {
+      _hmrWarningProduced = true;
+      const console2 = injector.get(Console);
+      console2.log(formatRuntimeError(-751, "Angular has detected that this application contains `@defer` blocks and the hot module replacement (HMR) mode is enabled. All `@defer` block dependencies will be loaded eagerly."));
+    }
+  }
   function \u0275\u0275defer(index, primaryTmplIndex, dependencyResolverFn, loadingTmplIndex, placeholderTmplIndex, errorTmplIndex, loadingConfigIndex, placeholderConfigIndex, enableTimerScheduling, flags) {
     const lView = getLView();
     const tView = getTView();
@@ -45317,6 +45782,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     const injector = lView[INJECTOR];
     if (tView.firstCreatePass) {
       performanceMarkFeature("NgDefer");
+      if (ngDevMode && typeof ngHmrMode !== "undefined" && ngHmrMode) {
+        logHmrWarning(injector);
+      }
       const tDetails = {
         primaryTmplIndex,
         loadingTmplIndex: loadingTmplIndex ?? null,
@@ -45495,11 +45963,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     if (!shouldAttachTrigger(1, lView, tNode))
       return;
-    scheduleDelayedPrefetching(
-      onIdle,
-      0
-      /* DeferBlockTrigger.Idle */
-    );
+    scheduleDelayedPrefetching(onIdle);
   }
   function \u0275\u0275deferHydrateOnIdle() {
     const lView = getLView();
@@ -45583,11 +46047,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     if (!shouldAttachTrigger(1, lView, tNode))
       return;
-    scheduleDelayedPrefetching(
-      onTimer(delay),
-      5
-      /* DeferBlockTrigger.Timer */
-    );
+    scheduleDelayedPrefetching(onTimer(delay));
   }
   function \u0275\u0275deferHydrateOnTimer(delay) {
     const lView = getLView();
@@ -45988,7 +46448,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       32767
       /* StylingRange.UNSIGNED_MASK */
     );
-    return tStylingRange & ~4294836224 | previous << 17;
+    return tStylingRange & 131071 | previous << 17;
   }
   function setTStylingRangePrevDuplicate(tStylingRange) {
     ngDevMode && assertNumber(tStylingRange, "expected number");
@@ -46006,7 +46466,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       32767
       /* StylingRange.UNSIGNED_MASK */
     );
-    return tStylingRange & ~131068 | //
+    return tStylingRange & -131069 | //
     next << 2;
   }
   function getTStylingRangeNextDuplicate(tStylingRange) {
@@ -46256,9 +46716,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     return \u0275\u0275property;
   }
   function setDirectiveInputsWhichShadowsStyling(tView, tNode, lView, value, isClassBased) {
-    const inputs = tNode.inputs;
-    const property2 = isClassBased ? "class" : "style";
-    setInputsForProperty(tView, lView, inputs[property2], property2, value);
+    setAllInputsForProperty(tNode, tView, lView, isClassBased ? "class" : "style", value);
   }
   function \u0275\u0275styleProp(prop, value, suffix) {
     checkStylingProperty(prop, value, suffix, false);
@@ -46452,7 +46910,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     } else if (typeof unwrappedValue === "string") {
       stringParser(styleKeyValueArray, unwrappedValue);
     } else {
-      ngDevMode && throwError("Unsupported styling type " + typeof unwrappedValue + ": " + unwrappedValue);
+      ngDevMode && throwError("Unsupported styling type: " + typeof unwrappedValue + " (" + unwrappedValue + ")");
     }
     return styleKeyValueArray;
   }
@@ -46557,8 +47015,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     return value !== void 0;
   }
   function normalizeSuffix(value, suffix) {
-    if (value == null || value === "") {
-    } else if (typeof suffix === "string") {
+    if (value == null || value === "") ;
+    else if (typeof suffix === "string") {
       value = value + suffix;
     } else if (typeof value === "object") {
       value = stringify2(unwrapSafeValue(value));
@@ -47106,24 +47564,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     ngDevMode && assertTNode(tNode);
     return tNode;
   }
-  function elementStartFirstCreatePass(index, tView, lView, name, attrsIndex, localRefsIndex) {
-    ngDevMode && assertFirstCreatePass(tView);
-    ngDevMode && ngDevMode.firstCreatePass++;
-    const tViewConsts = tView.consts;
-    const attrs = getConstant(tViewConsts, attrsIndex);
-    const tNode = getOrCreateTNode(tView, index, 2, name, attrs);
-    resolveDirectives(tView, lView, tNode, getConstant(tViewConsts, localRefsIndex));
-    if (tNode.attrs !== null) {
-      computeStaticStyling(tNode, tNode.attrs, false);
-    }
-    if (tNode.mergedAttrs !== null) {
-      computeStaticStyling(tNode, tNode.mergedAttrs, true);
-    }
-    if (tView.queries !== null) {
-      tView.queries.elementStart(tView, tNode);
-    }
-    return tNode;
-  }
   function \u0275\u0275elementStart(index, name, attrsIndex, localRefsIndex) {
     const lView = getLView();
     const tView = getTView();
@@ -47131,7 +47571,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     ngDevMode && assertEqual(getBindingIndex(), tView.bindingStartIndex, "elements should be created before any bindings");
     ngDevMode && assertIndexInRange(lView, adjustedIndex);
     const renderer = lView[RENDERER];
-    const tNode = tView.firstCreatePass ? elementStartFirstCreatePass(adjustedIndex, tView, lView, name, attrsIndex, localRefsIndex) : tView.data[adjustedIndex];
+    const tNode = tView.firstCreatePass ? elementStartFirstCreatePass(adjustedIndex, tView, lView, name, findDirectiveDefMatches, getBindingsEnabled(), attrsIndex, localRefsIndex) : tView.data[adjustedIndex];
     const native = _locateOrCreateElementNode(tView, lView, tNode, renderer, name, index);
     lView[adjustedIndex] = native;
     const hasDirectives = isDirectiveHost(tNode);
@@ -47143,12 +47583,12 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     if (!isDetachedByI18n(tNode) && wasLastNodeCreated()) {
       appendChild(tView, lView, native, tNode);
     }
-    if (getElementDepthCount() === 0) {
+    if (getElementDepthCount() === 0 || hasDirectives) {
       attachPatchData(native, lView);
     }
     increaseElementDepthCount();
     if (hasDirectives) {
-      createDirectivesInstancesInInstruction(tView, lView, tNode);
+      createDirectivesInstances(tView, lView, tNode);
       executeContentQueries(tView, tNode, lView);
     }
     if (localRefsIndex !== null) {
@@ -47178,10 +47618,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     decreaseElementDepthCount();
     const tView = getTView();
     if (tView.firstCreatePass) {
-      registerPostOrderHooks(tView, currentTNode);
-      if (isContentQueryHost(currentTNode)) {
-        tView.queries.elementEnd(currentTNode);
-      }
+      elementEndFirstCreatePass(tView, tNode);
     }
     if (tNode.classesWithoutHost != null && hasClassInput(tNode)) {
       setDirectiveInputsWhichShadowsStyling(tView, tNode, getLView(), tNode.classesWithoutHost, true);
@@ -47198,14 +47635,14 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   var _locateOrCreateElementNode = (tView, lView, tNode, renderer, name, index) => {
     lastNodeWasCreated(true);
-    return createElementNode(renderer, name, getNamespace$1());
+    return createElementNode(renderer, name, getNamespace());
   };
   function locateOrCreateElementNodeImpl(tView, lView, tNode, renderer, name, index) {
     const hydrationInfo = lView[HYDRATION];
     const isNodeCreationMode = !hydrationInfo || isInSkipHydrationBlock$1() || isDetachedByI18n(tNode) || isDisconnectedNode$1(hydrationInfo, index);
     lastNodeWasCreated(isNodeCreationMode);
     if (isNodeCreationMode) {
-      return createElementNode(renderer, name, getNamespace$1());
+      return createElementNode(renderer, name, getNamespace());
     }
     const native = locateNextRNode(hydrationInfo, tView, lView, tNode);
     ngDevMode && validateMatchingNode(native, Node.ELEMENT_NODE, name, lView, tNode);
@@ -47237,7 +47674,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       computeStaticStyling(tNode, attrs, true);
     }
     const localRefs = getConstant(tViewConsts, localRefsIndex);
-    resolveDirectives(tView, lView, tNode, localRefs);
+    if (getBindingsEnabled()) {
+      resolveDirectives(tView, lView, tNode, localRefs, findDirectiveDefMatches);
+    }
+    tNode.mergedAttrs = mergeHostAttrs(tNode.mergedAttrs, tNode.attrs);
     if (tView.queries !== null) {
       tView.queries.elementStart(tView, tNode);
     }
@@ -47258,7 +47698,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     attachPatchData(comment, lView);
     if (isDirectiveHost(tNode)) {
-      createDirectivesInstancesInInstruction(tView, lView, tNode);
+      createDirectivesInstances(tView, lView, tNode);
       executeContentQueries(tView, tNode, lView);
     }
     if (localRefsIndex != null) {
@@ -47348,15 +47788,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     return \u0275\u0275syntheticHostProperty;
   }
-  if (typeof ngI18nClosureMode === "undefined") {
-    (function() {
-      _global3["ngI18nClosureMode"] = // TODO(FW-1250): validate that this actually, you know, works.
-      typeof goog !== "undefined" && typeof goog.getMsg === "function";
-    })();
-  }
   var u = void 0;
   function plural(val) {
-    const n = val, i = Math.floor(Math.abs(val)), v = val.toString().replace(/^[^.]*\.?/, "").length;
+    const i = Math.floor(Math.abs(val)), v = val.toString().replace(/^[^.]*\.?/, "").length;
     if (i === 1 && v === 0)
       return 1;
     return 5;
@@ -48465,10 +48899,64 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   function \u0275\u0275i18nPostprocess(message, replacements = {}) {
     return i18nPostprocess(message, replacements);
   }
-  var stashEventListener = (el, eventName, listenerFn) => {
-  };
-  function setStashFn(fn2) {
-    stashEventListener = fn2;
+  function wrapListener(tNode, lView, listenerFn) {
+    return function wrapListenerIn_markDirtyAndPreventDefault(e) {
+      if (e === Function) {
+        return listenerFn;
+      }
+      const startView = isComponentHost(tNode) ? getComponentLViewByIndex(tNode.index, lView) : lView;
+      markViewDirty(
+        startView,
+        5
+        /* NotificationSource.Listener */
+      );
+      const context2 = lView[CONTEXT];
+      let result = executeListenerWithErrorHandling(lView, context2, listenerFn, e);
+      let nextListenerFn = wrapListenerIn_markDirtyAndPreventDefault.__ngNextListenerFn__;
+      while (nextListenerFn) {
+        result = executeListenerWithErrorHandling(lView, context2, nextListenerFn, e) && result;
+        nextListenerFn = nextListenerFn.__ngNextListenerFn__;
+      }
+      return result;
+    };
+  }
+  function executeListenerWithErrorHandling(lView, context2, listenerFn, e) {
+    const prevConsumer = setActiveConsumer(null);
+    try {
+      profiler(6, context2, listenerFn);
+      return listenerFn(e) !== false;
+    } catch (error) {
+      handleError(lView, error);
+      return false;
+    } finally {
+      profiler(7, context2, listenerFn);
+      setActiveConsumer(prevConsumer);
+    }
+  }
+  function handleError(lView, error) {
+    const injector = lView[INJECTOR];
+    const errorHandler2 = injector ? injector.get(ErrorHandler, null) : null;
+    errorHandler2 && errorHandler2.handleError(error);
+  }
+  function listenToOutput(tNode, lView, directiveIndex, lookupName, eventName, listenerFn) {
+    ngDevMode && assertIndexInRange(lView, directiveIndex);
+    const instance = lView[directiveIndex];
+    const tView = lView[TVIEW];
+    const def = tView.data[directiveIndex];
+    const propertyName = def.outputs[lookupName];
+    const output2 = instance[propertyName];
+    if (ngDevMode && !isOutputSubscribable(output2)) {
+      throw new Error(`@Output ${propertyName} not initialized in '${instance.constructor.name}'.`);
+    }
+    const tCleanup = tView.firstCreatePass ? getOrCreateTViewCleanup(tView) : null;
+    const lCleanup = getOrCreateLViewCleanup(lView);
+    const subscription = output2.subscribe(listenerFn);
+    const idx = lCleanup.length;
+    lCleanup.push(listenerFn, subscription);
+    tCleanup && tCleanup.push(eventName, tNode.index, idx, -(idx + 1));
+  }
+  function isOutputSubscribable(value) {
+    return value != null && typeof value.subscribe === "function";
   }
   function \u0275\u0275listener(eventName, listenerFn, useCapture, eventTargetResolver) {
     const lView = getLView();
@@ -48506,8 +48994,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   function listenerInternal(tView, lView, renderer, tNode, eventName, listenerFn, eventTargetResolver) {
     const isTNodeDirectiveHost = isDirectiveHost(tNode);
     const firstCreatePass = tView.firstCreatePass;
-    const tCleanup = firstCreatePass && getOrCreateTViewCleanup(tView);
-    const context2 = lView[CONTEXT];
+    const tCleanup = firstCreatePass ? getOrCreateTViewCleanup(tView) : null;
     const lCleanup = getOrCreateLViewCleanup(lView);
     ngDevMode && assertTNodeType(
       tNode,
@@ -48530,73 +49017,32 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         existingListener.__ngLastListenerFn__ = listenerFn;
         processOutputs = false;
       } else {
-        listenerFn = wrapListener(tNode, lView, context2, listenerFn);
-        stashEventListener(native, eventName, listenerFn);
+        listenerFn = wrapListener(tNode, lView, listenerFn);
+        stashEventListenerImpl(lView, target, eventName, listenerFn);
         const cleanupFn = renderer.listen(target, eventName, listenerFn);
         ngDevMode && ngDevMode.rendererAddEventListener++;
         lCleanup.push(listenerFn, cleanupFn);
         tCleanup && tCleanup.push(eventName, idxOrTargetGetter, lCleanupIndex, lCleanupIndex + 1);
       }
     } else {
-      listenerFn = wrapListener(tNode, lView, context2, listenerFn);
+      listenerFn = wrapListener(tNode, lView, listenerFn);
     }
-    const outputs = tNode.outputs;
-    let props;
-    if (processOutputs && outputs !== null && (props = outputs[eventName])) {
-      const propsLength = props.length;
-      if (propsLength) {
-        for (let i = 0; i < propsLength; i += 2) {
-          const index = props[i];
-          ngDevMode && assertIndexInRange(lView, index);
-          const minifiedName = props[i + 1];
-          const directiveInstance = lView[index];
-          const output2 = directiveInstance[minifiedName];
-          if (ngDevMode && !isOutputSubscribable(output2)) {
-            throw new Error(`@Output ${minifiedName} not initialized in '${directiveInstance.constructor.name}'.`);
-          }
-          const subscription = output2.subscribe(listenerFn);
-          const idx = lCleanup.length;
-          lCleanup.push(listenerFn, subscription);
-          tCleanup && tCleanup.push(eventName, tNode.index, idx, -(idx + 1));
+    if (processOutputs) {
+      const outputConfig = tNode.outputs?.[eventName];
+      const hostDirectiveOutputConfig = tNode.hostDirectiveOutputs?.[eventName];
+      if (hostDirectiveOutputConfig && hostDirectiveOutputConfig.length) {
+        for (let i = 0; i < hostDirectiveOutputConfig.length; i += 2) {
+          const index = hostDirectiveOutputConfig[i];
+          const lookupName = hostDirectiveOutputConfig[i + 1];
+          listenToOutput(tNode, lView, index, lookupName, eventName, listenerFn);
+        }
+      }
+      if (outputConfig && outputConfig.length) {
+        for (const index of outputConfig) {
+          listenToOutput(tNode, lView, index, eventName, eventName, listenerFn);
         }
       }
     }
-  }
-  function executeListenerWithErrorHandling(lView, context2, listenerFn, e) {
-    const prevConsumer = setActiveConsumer(null);
-    try {
-      profiler(6, context2, listenerFn);
-      return listenerFn(e) !== false;
-    } catch (error) {
-      handleError(lView, error);
-      return false;
-    } finally {
-      profiler(7, context2, listenerFn);
-      setActiveConsumer(prevConsumer);
-    }
-  }
-  function wrapListener(tNode, lView, context2, listenerFn) {
-    return function wrapListenerIn_markDirtyAndPreventDefault(e) {
-      if (e === Function) {
-        return listenerFn;
-      }
-      const startView = isComponentHost(tNode) ? getComponentLViewByIndex(tNode.index, lView) : lView;
-      markViewDirty(
-        startView,
-        5
-        /* NotificationSource.Listener */
-      );
-      let result = executeListenerWithErrorHandling(lView, context2, listenerFn, e);
-      let nextListenerFn = wrapListenerIn_markDirtyAndPreventDefault.__ngNextListenerFn__;
-      while (nextListenerFn) {
-        result = executeListenerWithErrorHandling(lView, context2, nextListenerFn, e) && result;
-        nextListenerFn = nextListenerFn.__ngNextListenerFn__;
-      }
-      return result;
-    };
-  }
-  function isOutputSubscribable(value) {
-    return value != null && typeof value.subscribe === "function";
   }
   function \u0275\u0275nextContext(level = 1) {
     return nextContextImpl(level);
@@ -48822,13 +49268,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   function \u0275\u0275queryAdvance(indexOffset = 1) {
     setCurrentQueryIndex(getCurrentQueryIndex() + indexOffset);
-  }
-  function store(tView, lView, index, value) {
-    if (index >= tView.data.length) {
-      tView.data[index] = null;
-      tView.blueprint[index] = null;
-    }
-    lView[index] = value;
   }
   function \u0275\u0275reference(index) {
     const contextLView = getContextLView();
@@ -49234,10 +49673,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     return -1;
   }
-  function multiProvidersFactoryResolver(_, tData, lData, tNode) {
+  function multiProvidersFactoryResolver(_, flags, tData, lData, tNode) {
     return multiResolve(this.multi, []);
   }
-  function multiViewProvidersFactoryResolver(_, tData, lView, tNode) {
+  function multiViewProvidersFactoryResolver(_, _flags, _tData, lView, tNode) {
     const factories = this.multi;
     let result;
     if (this.providerFactory) {
@@ -49530,7 +49969,11 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       def.debugInfo = debugInfo;
     }
   }
-  function \u0275\u0275replaceMetadata(type, applyMetadata, namespaces, locals) {
+  function \u0275\u0275getReplaceMetadataURL(id2, timestamp, base) {
+    const url = `./@ng/component?c=${id2}&t=${encodeURIComponent(timestamp)}`;
+    return new URL(url, base).href;
+  }
+  function \u0275\u0275replaceMetadata(type, applyMetadata, namespaces, locals, importMeta = null, id2 = null) {
     ngDevMode && assertComponentDef(type);
     const currentDef = getComponentDef(type);
     applyMetadata.apply(null, [type, namespaces, ...locals]);
@@ -49540,7 +49983,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       const trackedViews = getTrackedLViews().values();
       for (const root of trackedViews) {
         if (isRootView(root) && root[PARENT] === null) {
-          recreateMatchingLViews(newDef, oldDef, root);
+          recreateMatchingLViews(importMeta, id2, newDef, oldDef, root);
         }
       }
     }
@@ -49564,32 +50007,32 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     ngDevMode && assertEqual(replacement, currentDef, "Expected definition to be merged in place");
     return { newDef: replacement, oldDef: clone };
   }
-  function recreateMatchingLViews(newDef, oldDef, rootLView) {
+  function recreateMatchingLViews(importMeta, id2, newDef, oldDef, rootLView) {
     ngDevMode && assertDefined(oldDef.tView, "Expected a component definition that has been instantiated at least once");
     const tView = rootLView[TVIEW];
     if (tView === oldDef.tView) {
       ngDevMode && assertComponentDef(oldDef.type);
-      recreateLView(newDef, oldDef, rootLView);
+      recreateLView(importMeta, id2, newDef, oldDef, rootLView);
       return;
     }
     for (let i = HEADER_OFFSET; i < tView.bindingStartIndex; i++) {
       const current = rootLView[i];
       if (isLContainer(current)) {
         if (isLView(current[HOST])) {
-          recreateMatchingLViews(newDef, oldDef, current[HOST]);
+          recreateMatchingLViews(importMeta, id2, newDef, oldDef, current[HOST]);
         }
         for (let j = CONTAINER_HEADER_OFFSET; j < current.length; j++) {
-          recreateMatchingLViews(newDef, oldDef, current[j]);
+          recreateMatchingLViews(importMeta, id2, newDef, oldDef, current[j]);
         }
       } else if (isLView(current)) {
-        recreateMatchingLViews(newDef, oldDef, current);
+        recreateMatchingLViews(importMeta, id2, newDef, oldDef, current);
       }
     }
   }
   function clearRendererCache(factory, def) {
     factory.componentReplaced?.(def.id);
   }
-  function recreateLView(newDef, oldDef, lView) {
+  function recreateLView(importMeta, id2, newDef, oldDef, lView) {
     const instance = lView[CONTEXT];
     let host = lView[HOST];
     const parentLView = lView[PARENT];
@@ -49634,9 +50077,21 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       refreshView(newTView, newLView, newTView.template, instance);
     };
     if (zone === null) {
-      recreate();
+      executeWithInvalidateFallback(importMeta, id2, recreate);
     } else {
-      zone.run(recreate);
+      zone.run(() => executeWithInvalidateFallback(importMeta, id2, recreate));
+    }
+  }
+  function executeWithInvalidateFallback(importMeta, id2, callback) {
+    try {
+      callback();
+    } catch (e) {
+      const error = e;
+      if (id2 !== null && error.message) {
+        const toLog = error.message + (error.stack ? "\n" + error.stack : "");
+        importMeta?.hot?.send?.("angular:invalidate", { id: id2, message: toLog, error: true });
+      }
+      throw e;
     }
   }
   function replaceLViewInTree(parentLView, oldLView, newLView, index) {
@@ -49662,7 +50117,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       for (const current of tNode.projection) {
         if (isTNodeShape(current)) {
           current.projectionNext = null;
-          current.flags &= ~2;
+          current.flags &= -3;
         }
       }
       tNode.projection = null;
@@ -49698,7 +50153,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     "\u0275\u0275ProvidersFeature": \u0275\u0275ProvidersFeature,
     "\u0275\u0275CopyDefinitionFeature": \u0275\u0275CopyDefinitionFeature,
     "\u0275\u0275InheritDefinitionFeature": \u0275\u0275InheritDefinitionFeature,
-    "\u0275\u0275InputTransformsFeature": \u0275\u0275InputTransformsFeature,
     "\u0275\u0275ExternalStylesFeature": \u0275\u0275ExternalStylesFeature,
     "\u0275\u0275nextContext": \u0275\u0275nextContext,
     "\u0275\u0275namespaceHTML": \u0275\u0275namespaceHTML,
@@ -49862,7 +50316,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     "\u0275\u0275twoWayProperty": \u0275\u0275twoWayProperty,
     "\u0275\u0275twoWayBindingSet": \u0275\u0275twoWayBindingSet,
     "\u0275\u0275twoWayListener": \u0275\u0275twoWayListener,
-    "\u0275\u0275replaceMetadata": \u0275\u0275replaceMetadata
+    "\u0275\u0275replaceMetadata": \u0275\u0275replaceMetadata,
+    "\u0275\u0275getReplaceMetadataURL": \u0275\u0275getReplaceMetadataURL
   }))();
   var jitOptions = null;
   function setJitOptions(options) {
@@ -49883,8 +50338,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   function resetJitOptions() {
     jitOptions = null;
-  }
-  function patchModuleCompilation() {
   }
   var moduleQueue = [];
   function enqueueModuleForDelayedScoping(moduleType, ngModule) {
@@ -49914,7 +50367,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     return !!resolveForwardRef(declaration);
   }
   function compileNgModule2(moduleType, ngModule = {}) {
-    patchModuleCompilation();
     compileNgModuleDefs(moduleType, ngModule);
     if (ngModule.id !== void 0) {
       registerNgModuleType(moduleType, ngModule.id);
@@ -50198,15 +50650,13 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   function transitiveScopesFor(type) {
     if (isNgModule(type)) {
-      if (USE_RUNTIME_DEPS_TRACKER_FOR_JIT) {
+      {
         const scope = depsTracker.getNgModuleScope(type);
         const def = getNgModuleDef(type, true);
         return {
           schemas: def.schemas || null,
           ...scope
         };
-      } else {
-        return transitiveScopesForNgModule(type);
       }
     } else if (isStandalone(type)) {
       const directiveDef = getComponentDef(type) || getDirectiveDef(type);
@@ -50239,56 +50689,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
     }
     throw new Error(`${type.name} does not have a module def (\u0275mod property)`);
-  }
-  function transitiveScopesForNgModule(moduleType) {
-    const def = getNgModuleDef(moduleType, true);
-    if (def.transitiveCompileScopes !== null) {
-      return def.transitiveCompileScopes;
-    }
-    const scopes = {
-      schemas: def.schemas || null,
-      compilation: {
-        directives: /* @__PURE__ */ new Set(),
-        pipes: /* @__PURE__ */ new Set()
-      },
-      exported: {
-        directives: /* @__PURE__ */ new Set(),
-        pipes: /* @__PURE__ */ new Set()
-      }
-    };
-    maybeUnwrapFn(def.imports).forEach((imported) => {
-      const importedScope = transitiveScopesFor(imported);
-      importedScope.exported.directives.forEach((entry) => scopes.compilation.directives.add(entry));
-      importedScope.exported.pipes.forEach((entry) => scopes.compilation.pipes.add(entry));
-    });
-    maybeUnwrapFn(def.declarations).forEach((declared) => {
-      const declaredWithDefs = declared;
-      if (getPipeDef$1(declaredWithDefs)) {
-        scopes.compilation.pipes.add(declared);
-      } else {
-        scopes.compilation.directives.add(declared);
-      }
-    });
-    maybeUnwrapFn(def.exports).forEach((exported) => {
-      const exportedType = exported;
-      if (isNgModule(exportedType)) {
-        const exportedScope = transitiveScopesFor(exportedType);
-        exportedScope.exported.directives.forEach((entry) => {
-          scopes.compilation.directives.add(entry);
-          scopes.exported.directives.add(entry);
-        });
-        exportedScope.exported.pipes.forEach((entry) => {
-          scopes.compilation.pipes.add(entry);
-          scopes.exported.pipes.add(entry);
-        });
-      } else if (getPipeDef$1(exportedType)) {
-        scopes.exported.pipes.add(exportedType);
-      } else {
-        scopes.exported.directives.add(exportedType);
-      }
-    });
-    def.transitiveCompileScopes = scopes;
-    return scopes;
   }
   function expandModuleWithProviders(value) {
     if (isModuleWithProviders(value)) {
@@ -50403,39 +50803,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     });
   }
   function getStandaloneDefFunctions(type, imports) {
-    let cachedDirectiveDefs = null;
-    let cachedPipeDefs = null;
     const directiveDefs = () => {
-      if (!USE_RUNTIME_DEPS_TRACKER_FOR_JIT) {
-        if (cachedDirectiveDefs === null) {
-          cachedDirectiveDefs = [getComponentDef(type)];
-          const seen = /* @__PURE__ */ new Set([type]);
-          for (const rawDep of imports) {
-            ngDevMode && verifyStandaloneImport(rawDep, type);
-            const dep = resolveForwardRef(rawDep);
-            if (seen.has(dep)) {
-              continue;
-            }
-            seen.add(dep);
-            if (!!getNgModuleDef(dep)) {
-              const scope = transitiveScopesFor(dep);
-              for (const dir of scope.exported.directives) {
-                const def = getComponentDef(dir) || getDirectiveDef(dir);
-                if (def && !seen.has(dir)) {
-                  seen.add(dir);
-                  cachedDirectiveDefs.push(def);
-                }
-              }
-            } else {
-              const def = getComponentDef(dep) || getDirectiveDef(dep);
-              if (def) {
-                cachedDirectiveDefs.push(def);
-              }
-            }
-          }
-        }
-        return cachedDirectiveDefs;
-      } else {
+      {
         if (ngDevMode) {
           for (const rawDep of imports) {
             verifyStandaloneImport(rawDep, type);
@@ -50449,35 +50818,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
     };
     const pipeDefs = () => {
-      if (!USE_RUNTIME_DEPS_TRACKER_FOR_JIT) {
-        if (cachedPipeDefs === null) {
-          cachedPipeDefs = [];
-          const seen = /* @__PURE__ */ new Set();
-          for (const rawDep of imports) {
-            const dep = resolveForwardRef(rawDep);
-            if (seen.has(dep)) {
-              continue;
-            }
-            seen.add(dep);
-            if (!!getNgModuleDef(dep)) {
-              const scope = transitiveScopesFor(dep);
-              for (const pipe2 of scope.exported.pipes) {
-                const def = getPipeDef$1(pipe2);
-                if (def && !seen.has(pipe2)) {
-                  seen.add(pipe2);
-                  cachedPipeDefs.push(def);
-                }
-              }
-            } else {
-              const def = getPipeDef$1(dep);
-              if (def) {
-                cachedPipeDefs.push(def);
-              }
-            }
-          }
-        }
-        return cachedPipeDefs;
-      } else {
+      {
         if (ngDevMode) {
           for (const rawDep of imports) {
             verifyStandaloneImport(rawDep, type);
@@ -50764,7 +51105,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       this.patch = parts.slice(2).join(".");
     }
   };
-  var VERSION2 = new Version2("19.1.4");
+  var VERSION2 = new Version2("19.2.14");
   var ModuleWithComponentFactories = class {
     ngModuleFactory;
     componentFactories;
@@ -50779,7 +51120,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * have to be inlined.
      */
     compileModuleSync(moduleType) {
-      return new NgModuleFactory(moduleType);
+      return new NgModuleFactory2(moduleType);
     }
     /**
      * Compiles the given NgModule and all of its components
@@ -50795,7 +51136,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       const moduleDef = getNgModuleDef(moduleType);
       const componentFactories = maybeUnwrapFn(moduleDef.declarations).reduce((factories, declaration) => {
         const componentDef = getComponentDef(declaration);
-        componentDef && factories.push(new ComponentFactory(componentDef));
+        componentDef && factories.push(new ComponentFactory2(componentDef));
         return factories;
       }, []);
       return new ModuleWithComponentFactories(ngModuleFactory, componentFactories);
@@ -50838,7 +51179,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   };
   function compileNgModuleFactory(injector, options, moduleType) {
     ngDevMode && assertNgModuleType(moduleType);
-    const moduleFactory = new NgModuleFactory(moduleType);
+    const moduleFactory = new NgModuleFactory2(moduleType);
     if (typeof ngJitMode !== "undefined" && !ngJitMode) {
       return Promise.resolve(moduleFactory);
     }
@@ -51078,33 +51419,29 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           this.appRef.dirtyFlags |= 4;
           break;
         }
-        case 8: {
-          this.appRef.deferredDirtyFlags |= 8;
-          break;
-        }
         case 6: {
           this.appRef.dirtyFlags |= 2;
           force = true;
           break;
         }
-        case 13: {
+        case 12: {
           this.appRef.dirtyFlags |= 16;
           force = true;
           break;
         }
-        case 14: {
+        case 13: {
           this.appRef.dirtyFlags |= 2;
           force = true;
           break;
         }
-        case 12: {
+        case 11: {
           force = true;
           break;
         }
-        case 10:
         case 9:
+        case 8:
         case 7:
-        case 11:
+        case 10:
         default: {
           this.appRef.dirtyFlags |= 8;
         }
@@ -51248,16 +51585,15 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     window = null;
     observer = null;
     options = inject(IMAGE_CONFIG);
-    isBrowser = inject(PLATFORM_ID) === "browser";
     lcpImageUrl;
     start() {
-      if (!this.isBrowser || typeof PerformanceObserver === "undefined" || this.options?.disableImageSizeWarning && this.options?.disableImageLazyLoadWarning) {
+      if (typeof ngServerMode !== "undefined" && ngServerMode || typeof PerformanceObserver === "undefined" || this.options?.disableImageSizeWarning && this.options?.disableImageLazyLoadWarning) {
         return;
       }
       this.observer = this.initPerformanceObserver();
       const doc = getDocument();
       const win = doc.defaultView;
-      if (typeof win !== "undefined") {
+      if (win) {
         this.window = win;
         const waitToScan = () => {
           setTimeout(this.scanImages.bind(this), SCAN_DELAY);
@@ -51464,6 +51800,21 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       throw new RuntimeError(-403, ngDevMode && `The module ${stringify2(moduleRef.instance.constructor)} was bootstrapped, but it does not declare "@NgModule.bootstrap" components nor a "ngDoBootstrap" method. Please define one of these.`);
     }
     allPlatformModules.push(moduleRef);
+  }
+  function _callAndReportToErrorHandler(errorHandler2, ngZone, callback) {
+    try {
+      const result = callback();
+      if (isPromise(result)) {
+        return result.catch((e) => {
+          ngZone.runOutsideAngular(() => errorHandler2.handleError(e));
+          throw e;
+        });
+      }
+      return result;
+    } catch (e) {
+      ngZone.runOutsideAngular(() => errorHandler2.handleError(e));
+      throw e;
+    }
   }
   var PlatformRef = class _PlatformRef {
     _injector;
@@ -51771,7 +52122,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     const type = getRegisteredNgModuleType(id2);
     if (!type)
       throw noModuleError(id2);
-    return new NgModuleFactory(type);
+    return new NgModuleFactory2(type);
   }
   function getNgModuleById(id2) {
     const type = getRegisteredNgModuleType(id2);
@@ -51807,9 +52158,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     return null;
   }
-  var ViewRef = class extends ChangeDetectorRef {
+  var ViewRef2 = class extends ChangeDetectorRef {
   };
-  var EmbeddedViewRef = class extends ViewRef {
+  var EmbeddedViewRef = class extends ViewRef2 {
   };
   var DebugEventListener = class {
     name;
@@ -53171,9 +53522,11 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       type: NgModule
     }], () => [{ type: ApplicationRef }], null);
   })();
-  function setAlternateWeakRefImpl(impl) {
-  }
   function internalCreateApplication(config2) {
+    profiler(
+      8
+      /* ProfilerEvent.BootstrapApplicationStart */
+    );
     try {
       const { rootComponent, appProviders, platformProviders } = config2;
       if ((typeof ngDevMode === "undefined" || ngDevMode) && rootComponent !== void 0) {
@@ -53200,6 +53553,11 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       });
     } catch (e) {
       return Promise.reject(e);
+    } finally {
+      profiler(
+        9
+        /* ProfilerEvent.BootstrapApplicationEnd */
+      );
     }
   }
   var appsWithEventReplay = /* @__PURE__ */ new WeakSet();
@@ -53229,15 +53587,20 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       providers.push({
         provide: ENVIRONMENT_INITIALIZER,
         useValue: () => {
-          const injector = inject(Injector);
-          const appRef = injector.get(ApplicationRef);
+          const appRef = inject(ApplicationRef);
+          const { injector } = appRef;
           if (!appsWithEventReplay.has(appRef)) {
             const jsActionMap = inject(JSACTION_BLOCK_ELEMENT_MAP);
             if (shouldEnableEventReplay(injector)) {
-              setStashFn((rEl, eventName, listenerFn) => {
+              enableStashEventListenerImpl();
+              const appId = injector.get(APP_ID);
+              const clearStashFn = setStashFn(appId, (rEl, eventName, listenerFn) => {
+                if (rEl.nodeType !== Node.ELEMENT_NODE)
+                  return;
                 sharedStashFunction(rEl, eventName, listenerFn);
                 sharedMapFunction(rEl, jsActionMap);
               });
+              appRef.onDestroy(clearStashFn);
             }
           }
         },
@@ -53245,9 +53608,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }, {
         provide: APP_BOOTSTRAP_LISTENER,
         useFactory: () => {
-          const appId = inject(APP_ID);
-          const injector = inject(Injector);
           const appRef = inject(ApplicationRef);
+          const { injector } = appRef;
           return () => {
             if (!shouldEnableEventReplay(injector) || appsWithEventReplay.has(appRef)) {
               return;
@@ -53256,12 +53618,14 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
             appRef.onDestroy(() => {
               appsWithEventReplay.delete(appRef);
               if (typeof ngServerMode !== "undefined" && !ngServerMode) {
+                const appId = injector.get(APP_ID);
                 clearAppScopedEarlyEventContract(appId);
-                setStashFn(() => {
-                });
               }
             });
             appRef.whenStable().then(() => {
+              if (appRef.destroyed) {
+                return;
+              }
               const eventContractDetails = injector.get(JSACTION_EVENT_CONTRACT);
               initEventReplay(eventContractDetails, injector);
               const jsActionMap = injector.get(JSACTION_BLOCK_ELEMENT_MAP);
@@ -53404,7 +53768,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   function annotateLContainerForHydration(lContainer, context2, injector) {
     const componentLView = unwrapLView(lContainer[HOST]);
-    const componentLViewNghIndex = annotateComponentLViewForHydration(componentLView, context2, injector);
+    const componentLViewNghIndex = annotateComponentLViewForHydration(componentLView, context2);
     if (componentLViewNghIndex === null) {
       return;
     }
@@ -53428,7 +53792,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       capture: /* @__PURE__ */ new Set()
     };
     const deferBlocks = /* @__PURE__ */ new Map();
-    const appId = appRef.injector.get(APP_ID);
+    appRef.injector.get(APP_ID);
     for (const viewRef of viewRefs) {
       const lNode = getLNodeForHydration(viewRef);
       if (lNode !== null) {
@@ -53440,13 +53804,12 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           i18nChildren: /* @__PURE__ */ new Map(),
           eventTypesToReplay,
           shouldReplayEvents,
-          appId,
           deferBlocks
         };
         if (isLContainer(lNode)) {
-          annotateLContainerForHydration(lNode, context2, injector);
+          annotateLContainerForHydration(lNode, context2);
         } else {
-          annotateComponentLViewForHydration(lNode, context2, injector);
+          annotateComponentLViewForHydration(lNode, context2);
         }
         insertCorruptedTextNodeMarkers(corruptedTextNodes, doc);
       }
@@ -53475,7 +53838,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         childLView = childLView[HEADER_OFFSET];
         if (isLContainer(childLView)) {
           numRootNodes = calcNumRootNodesInLContainer(childLView) + 1;
-          annotateLContainerForHydration(childLView, context2, lView[INJECTOR]);
+          annotateLContainerForHydration(childLView, context2);
           const componentLView = unwrapLView(childLView[HOST]);
           serializedView = {
             [TEMPLATE_ID]: componentLView[TVIEW].ssrId,
@@ -53818,7 +54181,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
             return;
           }
           if (inject(IS_HYDRATION_DOM_REUSE_ENABLED)) {
-            verifySsrContentsIntegrity();
+            verifySsrContentsIntegrity(getDocument());
             enableHydrationRuntimeSupport();
           } else if (typeof ngDevMode !== "undefined" && ngDevMode && !isClientRenderModeEnabled()) {
             const console2 = inject(Console);
@@ -53922,19 +54285,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     const message = `Angular hydration expected the ApplicationRef.isStable() to emit \`true\`, but it didn't happen within ${time}ms. Angular hydration logic depends on the application becoming stable as a signal to complete hydration process.`;
     console2.warn(formatRuntimeError(-506, message));
   }
-  function verifySsrContentsIntegrity() {
-    const doc = getDocument();
-    let hydrationMarker;
-    for (const node of doc.body.childNodes) {
-      if (node.nodeType === Node.COMMENT_NODE && node.textContent?.trim() === SSR_CONTENT_INTEGRITY_MARKER) {
-        hydrationMarker = node;
-        break;
-      }
-    }
-    if (!hydrationMarker) {
-      throw new RuntimeError(-507, typeof ngDevMode !== "undefined" && ngDevMode && "Angular hydration logic detected that HTML content of this page was modified after it was produced during server side rendering. Make sure that there are no optimizations that remove comment nodes from HTML enabled on your CDN. Angular hydration relies on HTML produced by the server, including whitespaces and comment nodes.");
-    }
-  }
   function booleanAttribute(value) {
     return typeof value === "boolean" ? value : value != null && value !== "false";
   }
@@ -53980,6 +54330,487 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   function disableProfiling() {
     enablePerfLogging = false;
+  }
+  function untracked2(nonReactiveReadsFn) {
+    return untracked(nonReactiveReadsFn);
+  }
+  function computed(computation, options) {
+    const getter = createComputed(computation, options?.equal);
+    if (ngDevMode) {
+      getter.toString = () => `[Computed: ${getter()}]`;
+      getter[SIGNAL].debugName = options?.debugName;
+    }
+    return getter;
+  }
+  var MicrotaskEffectScheduler = class _MicrotaskEffectScheduler extends ZoneAwareEffectScheduler {
+    pendingTasks = inject(PendingTasksInternal);
+    taskId = null;
+    schedule(effect2) {
+      super.schedule(effect2);
+      if (this.taskId === null) {
+        this.taskId = this.pendingTasks.add();
+        queueMicrotask(() => this.flush());
+      }
+    }
+    flush() {
+      try {
+        super.flush();
+      } finally {
+        if (this.taskId !== null) {
+          this.pendingTasks.remove(this.taskId);
+          this.taskId = null;
+        }
+      }
+    }
+    /** @nocollapse */
+    static \u0275prov = (
+      /** @pureOrBreakMyCode */
+      /* @__PURE__ */ \u0275\u0275defineInjectable({
+        token: _MicrotaskEffectScheduler,
+        providedIn: "root",
+        factory: () => new _MicrotaskEffectScheduler()
+      })
+    );
+  };
+  var EffectHandle = class {
+    scheduler;
+    effectFn;
+    zone;
+    injector;
+    unregisterOnDestroy;
+    watcher;
+    constructor(scheduler, effectFn, zone, destroyRef, injector, allowSignalWrites) {
+      this.scheduler = scheduler;
+      this.effectFn = effectFn;
+      this.zone = zone;
+      this.injector = injector;
+      this.watcher = createWatch((onCleanup) => this.runEffect(onCleanup), () => this.schedule(), allowSignalWrites);
+      this.unregisterOnDestroy = destroyRef?.onDestroy(() => this.destroy());
+    }
+    runEffect(onCleanup) {
+      try {
+        this.effectFn(onCleanup);
+      } catch (err) {
+        const errorHandler2 = this.injector.get(ErrorHandler, null, { optional: true });
+        errorHandler2?.handleError(err);
+      }
+    }
+    run() {
+      this.watcher.run();
+    }
+    schedule() {
+      this.scheduler.schedule(this);
+    }
+    destroy() {
+      this.watcher.destroy();
+      this.unregisterOnDestroy?.();
+    }
+  };
+  function effect$1() {
+  }
+  function microtaskEffect(effectFn, options) {
+    ngDevMode && assertNotInReactiveContext(effect$1, "Call `effect` outside of a reactive context. For example, schedule the effect inside the component constructor.");
+    !options?.injector && assertInInjectionContext(effect$1);
+    const injector = options?.injector ?? inject(Injector);
+    const destroyRef = options?.manualCleanup !== true ? injector.get(DestroyRef) : null;
+    const handle = new EffectHandle(injector.get(MicrotaskEffectScheduler), effectFn, typeof Zone === "undefined" ? null : Zone.current, destroyRef, injector, options?.allowSignalWrites ?? false);
+    const cdr = injector.get(ChangeDetectorRef, null, { optional: true });
+    if (!cdr || !(cdr._lView[FLAGS] & 8)) {
+      handle.watcher.notify();
+    } else {
+      (cdr._lView[EFFECTS_TO_SCHEDULE] ??= []).push(handle.watcher.notify);
+    }
+    return handle;
+  }
+  var EffectRefImpl = class {
+    [SIGNAL];
+    constructor(node) {
+      this[SIGNAL] = node;
+    }
+    destroy() {
+      this[SIGNAL].destroy();
+    }
+  };
+  function effect(effectFn, options) {
+    ngDevMode && assertNotInReactiveContext(effect, "Call `effect` outside of a reactive context. For example, schedule the effect inside the component constructor.");
+    !options?.injector && assertInInjectionContext(effect);
+    if (ngDevMode && options?.allowSignalWrites !== void 0) {
+      console.warn(`The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)`);
+    }
+    const injector = options?.injector ?? inject(Injector);
+    let destroyRef = options?.manualCleanup !== true ? injector.get(DestroyRef) : null;
+    let node;
+    const viewContext = injector.get(ViewContext, null, { optional: true });
+    const notifier = injector.get(ChangeDetectionScheduler);
+    if (viewContext !== null && !options?.forceRoot) {
+      node = createViewEffect(viewContext.view, notifier, effectFn);
+      if (destroyRef instanceof NodeInjectorDestroyRef && destroyRef._lView === viewContext.view) {
+        destroyRef = null;
+      }
+    } else {
+      node = createRootEffect(effectFn, injector.get(EffectScheduler), notifier);
+    }
+    node.injector = injector;
+    if (destroyRef !== null) {
+      node.onDestroyFn = destroyRef.onDestroy(() => node.destroy());
+    }
+    const effectRef = new EffectRefImpl(node);
+    if (ngDevMode) {
+      node.debugName = options?.debugName ?? "";
+      const prevInjectorProfilerContext = setInjectorProfilerContext({ injector, token: null });
+      try {
+        emitEffectCreatedEvent(effectRef);
+      } finally {
+        setInjectorProfilerContext(prevInjectorProfilerContext);
+      }
+    }
+    return effectRef;
+  }
+  var BASE_EFFECT_NODE = /* @__PURE__ */ (() => ({
+    ...REACTIVE_NODE,
+    consumerIsAlwaysLive: true,
+    consumerAllowSignalWrites: true,
+    dirty: true,
+    hasRun: false,
+    cleanupFns: void 0,
+    zone: null,
+    kind: "effect",
+    onDestroyFn: noop2,
+    run() {
+      this.dirty = false;
+      if (ngDevMode && isInNotificationPhase()) {
+        throw new Error(`Schedulers cannot synchronously execute watches while scheduling.`);
+      }
+      if (this.hasRun && !consumerPollProducersForChange(this)) {
+        return;
+      }
+      this.hasRun = true;
+      const registerCleanupFn = (cleanupFn) => (this.cleanupFns ??= []).push(cleanupFn);
+      const prevNode = consumerBeforeComputation(this);
+      const prevRefreshingViews = setIsRefreshingViews(false);
+      try {
+        this.maybeCleanup();
+        this.fn(registerCleanupFn);
+      } finally {
+        setIsRefreshingViews(prevRefreshingViews);
+        consumerAfterComputation(this, prevNode);
+      }
+    },
+    maybeCleanup() {
+      if (!this.cleanupFns?.length) {
+        return;
+      }
+      try {
+        while (this.cleanupFns.length) {
+          this.cleanupFns.pop()();
+        }
+      } finally {
+        this.cleanupFns = [];
+      }
+    }
+  }))();
+  var ROOT_EFFECT_NODE = /* @__PURE__ */ (() => ({
+    ...BASE_EFFECT_NODE,
+    consumerMarkedDirty() {
+      this.scheduler.schedule(this);
+      this.notifier.notify(
+        12
+        /* NotificationSource.RootEffect */
+      );
+    },
+    destroy() {
+      consumerDestroy(this);
+      this.onDestroyFn();
+      this.maybeCleanup();
+      this.scheduler.remove(this);
+    }
+  }))();
+  var VIEW_EFFECT_NODE = /* @__PURE__ */ (() => ({
+    ...BASE_EFFECT_NODE,
+    consumerMarkedDirty() {
+      this.view[FLAGS] |= 8192;
+      markAncestorsForTraversal(this.view);
+      this.notifier.notify(
+        13
+        /* NotificationSource.ViewEffect */
+      );
+    },
+    destroy() {
+      consumerDestroy(this);
+      this.onDestroyFn();
+      this.maybeCleanup();
+      this.view[EFFECTS]?.delete(this);
+    }
+  }))();
+  function createViewEffect(view, notifier, fn2) {
+    const node = Object.create(VIEW_EFFECT_NODE);
+    node.view = view;
+    node.zone = typeof Zone !== "undefined" ? Zone.current : null;
+    node.notifier = notifier;
+    node.fn = fn2;
+    view[EFFECTS] ??= /* @__PURE__ */ new Set();
+    view[EFFECTS].add(node);
+    node.consumerMarkedDirty(node);
+    return node;
+  }
+  function createRootEffect(fn2, scheduler, notifier) {
+    const node = Object.create(ROOT_EFFECT_NODE);
+    node.fn = fn2;
+    node.scheduler = scheduler;
+    node.notifier = notifier;
+    node.zone = typeof Zone !== "undefined" ? Zone.current : null;
+    node.scheduler.schedule(node);
+    node.notifier.notify(
+      12
+      /* NotificationSource.RootEffect */
+    );
+    return node;
+  }
+  var ResourceStatus;
+  (function(ResourceStatus2) {
+    ResourceStatus2[ResourceStatus2["Idle"] = 0] = "Idle";
+    ResourceStatus2[ResourceStatus2["Error"] = 1] = "Error";
+    ResourceStatus2[ResourceStatus2["Loading"] = 2] = "Loading";
+    ResourceStatus2[ResourceStatus2["Reloading"] = 3] = "Reloading";
+    ResourceStatus2[ResourceStatus2["Resolved"] = 4] = "Resolved";
+    ResourceStatus2[ResourceStatus2["Local"] = 5] = "Local";
+  })(ResourceStatus || (ResourceStatus = {}));
+  var identityFn = (v) => v;
+  function linkedSignal(optionsOrComputation, options) {
+    if (typeof optionsOrComputation === "function") {
+      const getter = createLinkedSignal(optionsOrComputation, identityFn, options?.equal);
+      return upgradeLinkedSignalGetter(getter);
+    } else {
+      const getter = createLinkedSignal(optionsOrComputation.source, optionsOrComputation.computation, optionsOrComputation.equal);
+      return upgradeLinkedSignalGetter(getter);
+    }
+  }
+  function upgradeLinkedSignalGetter(getter) {
+    if (ngDevMode) {
+      getter.toString = () => `[LinkedSignal: ${getter()}]`;
+    }
+    const node = getter[SIGNAL];
+    const upgradedGetter = getter;
+    upgradedGetter.set = (newValue) => linkedSignalSetFn(node, newValue);
+    upgradedGetter.update = (updateFn) => linkedSignalUpdateFn(node, updateFn);
+    upgradedGetter.asReadonly = signalAsReadonlyFn.bind(getter);
+    return upgradedGetter;
+  }
+  function resource(options) {
+    options?.injector || assertInInjectionContext(resource);
+    const request = options.request ?? (() => null);
+    return new ResourceImpl(request, getLoader(options), options.defaultValue, options.equal ? wrapEqualityFn(options.equal) : void 0, options.injector ?? inject(Injector));
+  }
+  var BaseWritableResource = class {
+    value;
+    constructor(value) {
+      this.value = value;
+      this.value.set = this.set.bind(this);
+      this.value.update = this.update.bind(this);
+      this.value.asReadonly = signalAsReadonlyFn;
+    }
+    update(updateFn) {
+      this.set(updateFn(untracked2(this.value)));
+    }
+    isLoading = computed(() => this.status() === ResourceStatus.Loading || this.status() === ResourceStatus.Reloading);
+    hasValue() {
+      return this.value() !== void 0;
+    }
+    asReadonly() {
+      return this;
+    }
+  };
+  var ResourceImpl = class extends BaseWritableResource {
+    loaderFn;
+    defaultValue;
+    equal;
+    pendingTasks;
+    /**
+     * The current state of the resource. Status, value, and error are derived from this.
+     */
+    state;
+    /**
+     * Combines the current request with a reload counter which allows the resource to be reloaded on
+     * imperative command.
+     */
+    extRequest;
+    effectRef;
+    pendingController;
+    resolvePendingTask = void 0;
+    destroyed = false;
+    constructor(request, loaderFn, defaultValue, equal, injector) {
+      super(
+        // Feed a computed signal for the value to `BaseWritableResource`, which will upgrade it to a
+        // `WritableSignal` that delegates to `ResourceImpl.set`.
+        computed(() => {
+          const streamValue = this.state().stream?.();
+          return streamValue && isResolved(streamValue) ? streamValue.value : this.defaultValue;
+        }, { equal })
+      );
+      this.loaderFn = loaderFn;
+      this.defaultValue = defaultValue;
+      this.equal = equal;
+      this.extRequest = linkedSignal({
+        source: request,
+        computation: (request2) => ({ request: request2, reload: 0 })
+      });
+      this.state = linkedSignal({
+        // Whenever the request changes,
+        source: this.extRequest,
+        // Compute the state of the resource given a change in status.
+        computation: (extRequest, previous) => {
+          const status = extRequest.request === void 0 ? ResourceStatus.Idle : ResourceStatus.Loading;
+          if (!previous) {
+            return {
+              extRequest,
+              status,
+              previousStatus: ResourceStatus.Idle,
+              stream: void 0
+            };
+          } else {
+            return {
+              extRequest,
+              status,
+              previousStatus: projectStatusOfState(previous.value),
+              // If the request hasn't changed, keep the previous stream.
+              stream: previous.value.extRequest.request === extRequest.request ? previous.value.stream : void 0
+            };
+          }
+        }
+      });
+      this.effectRef = effect(this.loadEffect.bind(this), {
+        injector,
+        manualCleanup: true
+      });
+      this.pendingTasks = injector.get(PendingTasks);
+      injector.get(DestroyRef).onDestroy(() => this.destroy());
+    }
+    status = computed(() => projectStatusOfState(this.state()));
+    error = computed(() => {
+      const stream = this.state().stream?.();
+      return stream && !isResolved(stream) ? stream.error : void 0;
+    });
+    /**
+     * Called either directly via `WritableResource.set` or via `.value.set()`.
+     */
+    set(value) {
+      if (this.destroyed) {
+        return;
+      }
+      const current = untracked2(this.value);
+      const state = untracked2(this.state);
+      if (state.status === ResourceStatus.Local && (this.equal ? this.equal(current, value) : current === value)) {
+        return;
+      }
+      this.state.set({
+        extRequest: state.extRequest,
+        status: ResourceStatus.Local,
+        previousStatus: ResourceStatus.Local,
+        stream: signal({ value })
+      });
+      this.abortInProgressLoad();
+    }
+    reload() {
+      const { status } = untracked2(this.state);
+      if (status === ResourceStatus.Idle || status === ResourceStatus.Loading) {
+        return false;
+      }
+      this.extRequest.update(({ request, reload }) => ({ request, reload: reload + 1 }));
+      return true;
+    }
+    destroy() {
+      this.destroyed = true;
+      this.effectRef.destroy();
+      this.abortInProgressLoad();
+      this.state.set({
+        extRequest: { request: void 0, reload: 0 },
+        status: ResourceStatus.Idle,
+        previousStatus: ResourceStatus.Idle,
+        stream: void 0
+      });
+    }
+    async loadEffect() {
+      const extRequest = this.extRequest();
+      const { status: currentStatus, previousStatus } = untracked2(this.state);
+      if (extRequest.request === void 0) {
+        return;
+      } else if (currentStatus !== ResourceStatus.Loading) {
+        return;
+      }
+      this.abortInProgressLoad();
+      let resolvePendingTask = this.resolvePendingTask = this.pendingTasks.add();
+      const { signal: abortSignal } = this.pendingController = new AbortController();
+      try {
+        const stream = await untracked2(() => {
+          return this.loaderFn({
+            request: extRequest.request,
+            abortSignal,
+            previous: {
+              status: previousStatus
+            }
+          });
+        });
+        if (abortSignal.aborted || untracked2(this.extRequest) !== extRequest) {
+          return;
+        }
+        this.state.set({
+          extRequest,
+          status: ResourceStatus.Resolved,
+          previousStatus: ResourceStatus.Resolved,
+          stream
+        });
+      } catch (err) {
+        if (abortSignal.aborted || untracked2(this.extRequest) !== extRequest) {
+          return;
+        }
+        this.state.set({
+          extRequest,
+          status: ResourceStatus.Resolved,
+          previousStatus: ResourceStatus.Error,
+          stream: signal({ error: err })
+        });
+      } finally {
+        resolvePendingTask?.();
+        resolvePendingTask = void 0;
+      }
+    }
+    abortInProgressLoad() {
+      untracked2(() => this.pendingController?.abort());
+      this.pendingController = void 0;
+      this.resolvePendingTask?.();
+      this.resolvePendingTask = void 0;
+    }
+  };
+  function wrapEqualityFn(equal) {
+    return (a, b) => a === void 0 || b === void 0 ? a === b : equal(a, b);
+  }
+  function getLoader(options) {
+    if (isStreamingResourceOptions(options)) {
+      return options.stream;
+    }
+    return async (params) => {
+      try {
+        return signal({ value: await options.loader(params) });
+      } catch (err) {
+        return signal({ error: err });
+      }
+    };
+  }
+  function isStreamingResourceOptions(options) {
+    return !!options.stream;
+  }
+  function projectStatusOfState(state) {
+    switch (state.status) {
+      case ResourceStatus.Loading:
+        return state.extRequest.reload === 0 ? ResourceStatus.Loading : ResourceStatus.Reloading;
+      case ResourceStatus.Resolved:
+        return isResolved(untracked2(state.stream)) ? ResourceStatus.Resolved : ResourceStatus.Error;
+      default:
+        return state.status;
+    }
+  }
+  function isResolved(state) {
+    return state.error === void 0;
   }
   function getClosestComponentName(node) {
     let currentNode = node;
@@ -54087,299 +54918,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     });
     return compiler.compilePipeDeclaration(angularCoreEnv, `ng:///${decl.type.name}/\u0275pipe.js`, decl);
   }
-  function computed(computation, options) {
-    performanceMarkFeature("NgSignals");
-    const getter = createComputed(computation);
-    if (options?.equal) {
-      getter[SIGNAL].equal = options.equal;
-    }
-    if (ngDevMode) {
-      getter.toString = () => `[Computed: ${getter()}]`;
-      getter[SIGNAL].debugName = options?.debugName;
-    }
-    return getter;
-  }
-  var identityFn = (v) => v;
-  function linkedSignal(optionsOrComputation, options) {
-    performanceMarkFeature("NgSignals");
-    if (typeof optionsOrComputation === "function") {
-      const getter = createLinkedSignal(optionsOrComputation, identityFn, options?.equal);
-      return upgradeLinkedSignalGetter(getter);
-    } else {
-      const getter = createLinkedSignal(optionsOrComputation.source, optionsOrComputation.computation, optionsOrComputation.equal);
-      return upgradeLinkedSignalGetter(getter);
-    }
-  }
-  function upgradeLinkedSignalGetter(getter) {
-    if (ngDevMode) {
-      getter.toString = () => `[LinkedSignal: ${getter()}]`;
-    }
-    const node = getter[SIGNAL];
-    const upgradedGetter = getter;
-    upgradedGetter.set = (newValue) => linkedSignalSetFn(node, newValue);
-    upgradedGetter.update = (updateFn) => linkedSignalUpdateFn(node, updateFn);
-    upgradedGetter.asReadonly = signalAsReadonlyFn.bind(getter);
-    return upgradedGetter;
-  }
-  function untracked(nonReactiveReadsFn) {
-    const prevConsumer = setActiveConsumer(null);
-    try {
-      return nonReactiveReadsFn();
-    } finally {
-      setActiveConsumer(prevConsumer);
-    }
-  }
-  var ViewContext = class {
-    view;
-    node;
-    constructor(view, node) {
-      this.view = view;
-      this.node = node;
-    }
-    /**
-     * @internal
-     * @nocollapse
-     */
-    static __NG_ELEMENT_ID__ = injectViewContext;
-  };
-  function injectViewContext() {
-    return new ViewContext(getLView(), getCurrentTNode());
-  }
-  var USE_MICROTASK_EFFECT_BY_DEFAULT = false;
-  var MicrotaskEffectScheduler = class _MicrotaskEffectScheduler extends ZoneAwareEffectScheduler {
-    pendingTasks = inject(PendingTasksInternal);
-    taskId = null;
-    schedule(effect2) {
-      super.schedule(effect2);
-      if (this.taskId === null) {
-        this.taskId = this.pendingTasks.add();
-        queueMicrotask(() => this.flush());
-      }
-    }
-    flush() {
-      try {
-        super.flush();
-      } finally {
-        if (this.taskId !== null) {
-          this.pendingTasks.remove(this.taskId);
-          this.taskId = null;
-        }
-      }
-    }
-    /** @nocollapse */
-    static \u0275prov = (
-      /** @pureOrBreakMyCode */
-      /* @__PURE__ */ \u0275\u0275defineInjectable({
-        token: _MicrotaskEffectScheduler,
-        providedIn: "root",
-        factory: () => new _MicrotaskEffectScheduler()
-      })
-    );
-  };
-  var EffectHandle = class {
-    scheduler;
-    effectFn;
-    zone;
-    injector;
-    unregisterOnDestroy;
-    watcher;
-    constructor(scheduler, effectFn, zone, destroyRef, injector, allowSignalWrites) {
-      this.scheduler = scheduler;
-      this.effectFn = effectFn;
-      this.zone = zone;
-      this.injector = injector;
-      this.watcher = createWatch((onCleanup) => this.runEffect(onCleanup), () => this.schedule(), allowSignalWrites);
-      this.unregisterOnDestroy = destroyRef?.onDestroy(() => this.destroy());
-    }
-    runEffect(onCleanup) {
-      try {
-        this.effectFn(onCleanup);
-      } catch (err) {
-        const errorHandler2 = this.injector.get(ErrorHandler, null, { optional: true });
-        errorHandler2?.handleError(err);
-      }
-    }
-    run() {
-      this.watcher.run();
-    }
-    schedule() {
-      this.scheduler.schedule(this);
-    }
-    destroy() {
-      this.watcher.destroy();
-      this.unregisterOnDestroy?.();
-    }
-  };
-  function effect$1() {
-  }
-  function microtaskEffect(effectFn, options) {
-    performanceMarkFeature("NgSignals");
-    ngDevMode && assertNotInReactiveContext(effect$1, "Call `effect` outside of a reactive context. For example, schedule the effect inside the component constructor.");
-    !options?.injector && assertInInjectionContext(effect$1);
-    const injector = options?.injector ?? inject(Injector);
-    const destroyRef = options?.manualCleanup !== true ? injector.get(DestroyRef) : null;
-    const handle = new EffectHandle(injector.get(MicrotaskEffectScheduler), effectFn, typeof Zone === "undefined" ? null : Zone.current, destroyRef, injector, options?.allowSignalWrites ?? false);
-    const cdr = injector.get(ChangeDetectorRef, null, { optional: true });
-    if (!cdr || !(cdr._lView[FLAGS] & 8)) {
-      handle.watcher.notify();
-    } else {
-      (cdr._lView[EFFECTS_TO_SCHEDULE] ??= []).push(handle.watcher.notify);
-    }
-    return handle;
-  }
-  var useMicrotaskEffectsByDefault = USE_MICROTASK_EFFECT_BY_DEFAULT;
-  var EffectRefImpl = class {
-    [SIGNAL];
-    constructor(node) {
-      this[SIGNAL] = node;
-    }
-    destroy() {
-      this[SIGNAL].destroy();
-    }
-  };
-  function effect(effectFn, options) {
-    if (useMicrotaskEffectsByDefault) {
-      if (ngDevMode && options?.forceRoot) {
-        throw new Error(`Cannot use 'forceRoot' option with microtask effects on`);
-      }
-      return microtaskEffect(effectFn, options);
-    }
-    performanceMarkFeature("NgSignals");
-    ngDevMode && assertNotInReactiveContext(effect, "Call `effect` outside of a reactive context. For example, schedule the effect inside the component constructor.");
-    !options?.injector && assertInInjectionContext(effect);
-    if (ngDevMode && options?.allowSignalWrites !== void 0) {
-      console.warn(`The 'allowSignalWrites' flag is deprecated and no longer impacts effect() (writes are always allowed)`);
-    }
-    const injector = options?.injector ?? inject(Injector);
-    let destroyRef = options?.manualCleanup !== true ? injector.get(DestroyRef) : null;
-    let node;
-    const viewContext = injector.get(ViewContext, null, { optional: true });
-    const notifier = injector.get(ChangeDetectionScheduler);
-    if (viewContext !== null && !options?.forceRoot) {
-      node = createViewEffect(viewContext.view, notifier, effectFn);
-      if (destroyRef instanceof NodeInjectorDestroyRef && destroyRef._lView === viewContext.view) {
-        destroyRef = null;
-      }
-    } else {
-      node = createRootEffect(effectFn, injector.get(EffectScheduler), notifier);
-    }
-    node.injector = injector;
-    if (destroyRef !== null) {
-      node.onDestroyFn = destroyRef.onDestroy(() => node.destroy());
-    }
-    const effectRef = new EffectRefImpl(node);
-    if (ngDevMode) {
-      node.debugName = options?.debugName ?? "";
-      const prevInjectorProfilerContext = setInjectorProfilerContext({ injector, token: null });
-      try {
-        emitEffectCreatedEvent(effectRef);
-      } finally {
-        setInjectorProfilerContext(prevInjectorProfilerContext);
-      }
-    }
-    return effectRef;
-  }
-  var BASE_EFFECT_NODE = /* @__PURE__ */ (() => ({
-    ...REACTIVE_NODE,
-    consumerIsAlwaysLive: true,
-    consumerAllowSignalWrites: true,
-    dirty: true,
-    hasRun: false,
-    cleanupFns: void 0,
-    zone: null,
-    kind: "effect",
-    onDestroyFn: noop2,
-    run() {
-      this.dirty = false;
-      if (ngDevMode && isInNotificationPhase()) {
-        throw new Error(`Schedulers cannot synchronously execute watches while scheduling.`);
-      }
-      if (this.hasRun && !consumerPollProducersForChange(this)) {
-        return;
-      }
-      this.hasRun = true;
-      const registerCleanupFn = (cleanupFn) => (this.cleanupFns ??= []).push(cleanupFn);
-      const prevNode = consumerBeforeComputation(this);
-      const prevRefreshingViews = setIsRefreshingViews(false);
-      try {
-        this.maybeCleanup();
-        this.fn(registerCleanupFn);
-      } finally {
-        setIsRefreshingViews(prevRefreshingViews);
-        consumerAfterComputation(this, prevNode);
-      }
-    },
-    maybeCleanup() {
-      if (!this.cleanupFns?.length) {
-        return;
-      }
-      try {
-        while (this.cleanupFns.length) {
-          this.cleanupFns.pop()();
-        }
-      } finally {
-        this.cleanupFns = [];
-      }
-    }
-  }))();
-  var ROOT_EFFECT_NODE = /* @__PURE__ */ (() => ({
-    ...BASE_EFFECT_NODE,
-    consumerMarkedDirty() {
-      this.scheduler.schedule(this);
-      this.notifier.notify(
-        13
-        /* NotificationSource.RootEffect */
-      );
-    },
-    destroy() {
-      consumerDestroy(this);
-      this.onDestroyFn();
-      this.maybeCleanup();
-      this.scheduler.remove(this);
-    }
-  }))();
-  var VIEW_EFFECT_NODE = /* @__PURE__ */ (() => ({
-    ...BASE_EFFECT_NODE,
-    consumerMarkedDirty() {
-      this.view[FLAGS] |= 8192;
-      markAncestorsForTraversal(this.view);
-      this.notifier.notify(
-        14
-        /* NotificationSource.ViewEffect */
-      );
-    },
-    destroy() {
-      consumerDestroy(this);
-      this.onDestroyFn();
-      this.maybeCleanup();
-      this.view[EFFECTS]?.delete(this);
-    }
-  }))();
-  function createViewEffect(view, notifier, fn2) {
-    const node = Object.create(VIEW_EFFECT_NODE);
-    node.view = view;
-    node.zone = typeof Zone !== "undefined" ? Zone.current : null;
-    node.notifier = notifier;
-    node.fn = fn2;
-    view[EFFECTS] ??= /* @__PURE__ */ new Set();
-    view[EFFECTS].add(node);
-    node.consumerMarkedDirty(node);
-    return node;
-  }
-  function createRootEffect(fn2, scheduler, notifier) {
-    const node = Object.create(ROOT_EFFECT_NODE);
-    node.fn = fn2;
-    node.scheduler = scheduler;
-    node.notifier = notifier;
-    node.zone = typeof Zone !== "undefined" ? Zone.current : null;
-    node.scheduler.schedule(node);
-    node.notifier.notify(
-      13
-      /* NotificationSource.RootEffect */
-    );
-    return node;
-  }
-  var NOT_SET = Symbol("NOT_SET");
+  var NOT_SET = /* @__PURE__ */ Symbol("NOT_SET");
   var EMPTY_CLEANUP_SET = /* @__PURE__ */ new Set();
   var AFTER_RENDER_PHASE_EFFECT_NODE = /* @__PURE__ */ (() => ({
     ...SIGNAL_NODE,
@@ -54450,8 +54989,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * These are initialized to `undefined` but set in the constructor.
      */
     nodes = [void 0, void 0, void 0, void 0];
-    constructor(impl, effectHooks, scheduler, destroyRef, snapshot = null) {
-      super(impl, [void 0, void 0, void 0, void 0], false, destroyRef, snapshot);
+    constructor(impl, effectHooks, view, scheduler, destroyRef, snapshot = null) {
+      super(impl, [void 0, void 0, void 0, void 0], view, false, destroyRef, snapshot);
       this.scheduler = scheduler;
       for (const phase of AFTER_RENDER_PHASES) {
         const effectHook = effectHooks[phase];
@@ -54463,10 +55002,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         node.phase = phase;
         node.userFn = effectHook;
         node.dirty = true;
-        node.signal = () => {
+        node.signal = (() => {
           producerAccessed(node);
           return node.value;
-        };
+        });
         node.signal[SIGNAL] = node;
         node.registerCleanupFn = (fn2) => (node.cleanup ??= /* @__PURE__ */ new Set()).add(fn2);
         this.nodes[phase] = node;
@@ -54501,207 +55040,23 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     if (typeof spec === "function") {
       spec = { mixedReadWrite: callbackOrSpec };
     }
-    const sequence = new AfterRenderEffectSequence(manager.impl, [spec.earlyRead, spec.write, spec.mixedReadWrite, spec.read], scheduler, injector.get(DestroyRef), tracing?.snapshot(null));
+    const viewContext = injector.get(ViewContext, null, { optional: true });
+    const sequence = new AfterRenderEffectSequence(manager.impl, [spec.earlyRead, spec.write, spec.mixedReadWrite, spec.read], viewContext?.view, scheduler, injector.get(DestroyRef), tracing?.snapshot(null));
     manager.impl.register(sequence);
     return sequence;
-  }
-  var ResourceStatus;
-  (function(ResourceStatus2) {
-    ResourceStatus2[ResourceStatus2["Idle"] = 0] = "Idle";
-    ResourceStatus2[ResourceStatus2["Error"] = 1] = "Error";
-    ResourceStatus2[ResourceStatus2["Loading"] = 2] = "Loading";
-    ResourceStatus2[ResourceStatus2["Reloading"] = 3] = "Reloading";
-    ResourceStatus2[ResourceStatus2["Resolved"] = 4] = "Resolved";
-    ResourceStatus2[ResourceStatus2["Local"] = 5] = "Local";
-  })(ResourceStatus || (ResourceStatus = {}));
-  function resource(options) {
-    options?.injector || assertInInjectionContext(resource);
-    const request = options.request ?? (() => null);
-    return new ResourceImpl(request, options.loader, void 0, options.equal ? wrapEqualityFn(options.equal) : void 0, options.injector ?? inject(Injector));
-  }
-  var BaseWritableResource = class {
-    value;
-    constructor(value) {
-      this.value = value;
-      this.value.set = this.set.bind(this);
-      this.value.update = this.update.bind(this);
-      this.value.asReadonly = signalAsReadonlyFn;
-    }
-    update(updateFn) {
-      this.set(updateFn(untracked(this.value)));
-    }
-    isLoading = computed(() => this.status() === ResourceStatus.Loading || this.status() === ResourceStatus.Reloading);
-    hasValue() {
-      return this.value() !== void 0;
-    }
-    asReadonly() {
-      return this;
-    }
-  };
-  var ResourceImpl = class extends BaseWritableResource {
-    loaderFn;
-    defaultValue;
-    equal;
-    /**
-     * The current state of the resource. Status, value, and error are derived from this.
-     */
-    state;
-    /**
-     * Signal of both the request value `R` and a writable `reload` signal that's linked/associated
-     * to the given request. Changing the value of the `reload` signal causes the resource to reload.
-     */
-    extendedRequest;
-    pendingTasks;
-    effectRef;
-    pendingController;
-    resolvePendingTask = void 0;
-    destroyed = false;
-    constructor(request, loaderFn, defaultValue, equal, injector) {
-      super(computed(() => this.state().value, { equal }));
-      this.loaderFn = loaderFn;
-      this.defaultValue = defaultValue;
-      this.equal = equal;
-      this.pendingTasks = injector.get(PendingTasks);
-      this.extendedRequest = computed(() => ({
-        request: request(),
-        reload: signal(0)
-      }));
-      this.state = linkedSignal({
-        // We use the request (as well as its reload signal) to derive the initial status of the
-        // resource (Idle, Loading, or Reloading) in response to request changes. From this initial
-        // status, the resource's effect will then trigger the loader and update to a Resolved or
-        // Error state as appropriate.
-        source: () => {
-          const { request: request2, reload } = this.extendedRequest();
-          if (request2 === void 0 || this.destroyed) {
-            return ResourceStatus.Idle;
-          }
-          return reload() === 0 ? ResourceStatus.Loading : ResourceStatus.Reloading;
-        },
-        // Compute the state of the resource given a change in status.
-        computation: (status, previous) => ({
-          status,
-          // When the state of the resource changes due to the request, remember the previous status
-          // for the loader to consider.
-          previousStatus: previous?.value.status ?? ResourceStatus.Idle,
-          // In `Reloading` state, we keep the previous value if there is one, since the identity of
-          // the request hasn't changed. Otherwise, we switch back to the default value.
-          value: previous && status === ResourceStatus.Reloading ? previous.value.value : this.defaultValue,
-          error: void 0
-        })
-      });
-      this.effectRef = effect(this.loadEffect.bind(this), {
-        injector,
-        manualCleanup: true
-      });
-      injector.get(DestroyRef).onDestroy(() => this.destroy());
-    }
-    status = computed(() => this.state().status);
-    error = computed(() => this.state().error);
-    /**
-     * Called either directly via `WritableResource.set` or via `.value.set()`.
-     */
-    set(value) {
-      if (this.destroyed) {
-        return;
-      }
-      const currentState = untracked(this.state);
-      if (this.equal ? this.equal(currentState.value, value) : currentState.value === value) {
-        return;
-      }
-      this.state.set({
-        status: ResourceStatus.Local,
-        previousStatus: ResourceStatus.Local,
-        value,
-        error: void 0
-      });
-      this.abortInProgressLoad();
-    }
-    reload() {
-      const status = untracked(this.status);
-      if (status === ResourceStatus.Idle || status === ResourceStatus.Loading || status === ResourceStatus.Reloading) {
-        return false;
-      }
-      untracked(this.extendedRequest).reload.update((v) => v + 1);
-      return true;
-    }
-    destroy() {
-      this.destroyed = true;
-      this.effectRef.destroy();
-      this.abortInProgressLoad();
-      this.state.set({
-        status: ResourceStatus.Idle,
-        previousStatus: ResourceStatus.Idle,
-        value: this.defaultValue,
-        error: void 0
-      });
-    }
-    async loadEffect() {
-      const { status: previousStatus } = untracked(this.state);
-      const { request, reload: reloadCounter } = this.extendedRequest();
-      reloadCounter();
-      if (request === void 0) {
-        return;
-      } else if (previousStatus !== ResourceStatus.Loading && previousStatus !== ResourceStatus.Reloading) {
-        return;
-      }
-      this.abortInProgressLoad();
-      const resolvePendingTask = this.resolvePendingTask = this.pendingTasks.add();
-      const { signal: abortSignal } = this.pendingController = new AbortController();
-      try {
-        const result = await untracked(() => this.loaderFn({
-          abortSignal,
-          request,
-          previous: {
-            status: previousStatus
-          }
-        }));
-        if (abortSignal.aborted) {
-          return;
-        }
-        this.state.set({
-          status: ResourceStatus.Resolved,
-          previousStatus: ResourceStatus.Resolved,
-          value: result,
-          error: void 0
-        });
-      } catch (err) {
-        if (abortSignal.aborted) {
-          return;
-        }
-        this.state.set({
-          status: ResourceStatus.Error,
-          previousStatus: ResourceStatus.Error,
-          value: this.defaultValue,
-          error: err
-        });
-      } finally {
-        resolvePendingTask();
-        this.pendingController = void 0;
-      }
-    }
-    abortInProgressLoad() {
-      untracked(() => this.pendingController?.abort());
-      this.pendingController = void 0;
-      this.resolvePendingTask?.();
-      this.resolvePendingTask = void 0;
-    }
-  };
-  function wrapEqualityFn(equal) {
-    return (a, b) => a === void 0 || b === void 0 ? a === b : equal(a, b);
   }
   function createComponent(component, options) {
     ngDevMode && assertComponentDef(component);
     const componentDef = getComponentDef(component);
     const elementInjector = options.elementInjector || getNullInjector();
-    const factory = new ComponentFactory(componentDef);
+    const factory = new ComponentFactory2(componentDef);
     return factory.create(elementInjector, options.projectableNodes, options.hostElement, options.environmentInjector);
   }
   function reflectComponentType(component) {
     const componentDef = getComponentDef(component);
     if (!componentDef)
       return null;
-    const factory = new ComponentFactory(componentDef);
+    const factory = new ComponentFactory2(componentDef);
     return {
       get selector() {
         return factory.selector;
@@ -54743,13 +55098,11 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     providedIn: "platform",
     factory: () => null
   });
-  if (typeof ngDevMode !== "undefined" && ngDevMode) {
-    _global3.$localize ??= function() {
-      throw new Error("It looks like your application or one of its dependencies is using i18n.\nAngular 9 introduced a global `$localize()` function that needs to be loaded.\nPlease run `ng add @angular/localize` from the Angular CLI.\n(For non-CLI projects, add `import '@angular/localize/init';` to your `polyfills.ts` file.\nFor server-side rendering applications add the import to your `main.server.ts` file.)");
-    };
-  }
 
-  // node_modules/@angular/common/fesm2022/common.mjs
+  // node_modules/@angular/common/fesm2022/dom_tokens-rA0ACyx7.mjs
+  var DOCUMENT2 = new InjectionToken(ngDevMode ? "DocumentToken" : "");
+
+  // node_modules/@angular/common/fesm2022/location-Dq4mJT-A.mjs
   var _DOM = null;
   function getDOM() {
     return _DOM;
@@ -54759,23 +55112,14 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   var DomAdapter = class {
   };
-  var PlatformNavigation = class _PlatformNavigation {
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PlatformNavigation, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PlatformNavigation, providedIn: "platform", useFactory: () => window.navigation });
-  };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: PlatformNavigation, decorators: [{
-    type: Injectable,
-    args: [{ providedIn: "platform", useFactory: () => window.navigation }]
-  }] });
-  var DOCUMENT2 = new InjectionToken(ngDevMode ? "DocumentToken" : "");
   var PlatformLocation = class _PlatformLocation {
     historyGo(relativePosition) {
       throw new Error(ngDevMode ? "Not implemented" : "");
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PlatformLocation, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PlatformLocation, providedIn: "platform", useFactory: () => inject(BrowserPlatformLocation) });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PlatformLocation, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PlatformLocation, providedIn: "platform", useFactory: () => inject(BrowserPlatformLocation) });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: PlatformLocation, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: PlatformLocation, decorators: [{
     type: Injectable,
     args: [{ providedIn: "platform", useFactory: () => inject(BrowserPlatformLocation) }]
   }] });
@@ -54844,10 +55188,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     getState() {
       return this._history.state;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _BrowserPlatformLocation, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _BrowserPlatformLocation, providedIn: "platform", useFactory: () => new _BrowserPlatformLocation() });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _BrowserPlatformLocation, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _BrowserPlatformLocation, providedIn: "platform", useFactory: () => new _BrowserPlatformLocation() });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: BrowserPlatformLocation, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: BrowserPlatformLocation, decorators: [{
     type: Injectable,
     args: [{
       providedIn: "platform",
@@ -54865,22 +55209,20 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     return end.startsWith("/") ? start + end : `${start}/${end}`;
   }
   function stripTrailingSlash(url) {
-    const match = url.match(/#|\?|$/);
-    const pathEndIdx = match && match.index || url.length;
-    const droppedSlashIdx = pathEndIdx - (url[pathEndIdx - 1] === "/" ? 1 : 0);
-    return url.slice(0, droppedSlashIdx) + url.slice(pathEndIdx);
+    const pathEndIdx = url.search(/#|\?|$/);
+    return url[pathEndIdx - 1] === "/" ? url.slice(0, pathEndIdx - 1) + url.slice(pathEndIdx) : url;
   }
   function normalizeQueryParams(params) {
-    return params && params[0] !== "?" ? "?" + params : params;
+    return params && params[0] !== "?" ? `?${params}` : params;
   }
   var LocationStrategy = class _LocationStrategy {
     historyGo(relativePosition) {
       throw new Error(ngDevMode ? "Not implemented" : "");
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _LocationStrategy, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _LocationStrategy, providedIn: "root", useFactory: () => inject(PathLocationStrategy) });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _LocationStrategy, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _LocationStrategy, providedIn: "root", useFactory: () => inject(PathLocationStrategy) });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: LocationStrategy, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: LocationStrategy, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root", useFactory: () => inject(PathLocationStrategy) }]
   }] });
@@ -54894,7 +55236,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       this._platformLocation = _platformLocation;
       this._baseHref = href ?? this._platformLocation.getBaseHrefFromDOM() ?? inject(DOCUMENT2).location?.origin ?? "";
     }
-    /** @nodoc */
+    /** @docs-private */
     ngOnDestroy() {
       while (this._removeListenerFns.length) {
         this._removeListenerFns.pop()();
@@ -54934,80 +55276,12 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     historyGo(relativePosition = 0) {
       this._platformLocation.historyGo?.(relativePosition);
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PathLocationStrategy, deps: [{ token: PlatformLocation }, { token: APP_BASE_HREF, optional: true }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PathLocationStrategy, providedIn: "root" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PathLocationStrategy, deps: [{ token: PlatformLocation }, { token: APP_BASE_HREF, optional: true }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PathLocationStrategy, providedIn: "root" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: PathLocationStrategy, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: PathLocationStrategy, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root" }]
-  }], ctorParameters: () => [{ type: PlatformLocation }, { type: void 0, decorators: [{
-    type: Optional
-  }, {
-    type: Inject,
-    args: [APP_BASE_HREF]
-  }] }] });
-  var HashLocationStrategy = class _HashLocationStrategy extends LocationStrategy {
-    _platformLocation;
-    _baseHref = "";
-    _removeListenerFns = [];
-    constructor(_platformLocation, _baseHref) {
-      super();
-      this._platformLocation = _platformLocation;
-      if (_baseHref != null) {
-        this._baseHref = _baseHref;
-      }
-    }
-    /** @nodoc */
-    ngOnDestroy() {
-      while (this._removeListenerFns.length) {
-        this._removeListenerFns.pop()();
-      }
-    }
-    onPopState(fn2) {
-      this._removeListenerFns.push(this._platformLocation.onPopState(fn2), this._platformLocation.onHashChange(fn2));
-    }
-    getBaseHref() {
-      return this._baseHref;
-    }
-    path(includeHash = false) {
-      const path = this._platformLocation.hash ?? "#";
-      return path.length > 0 ? path.substring(1) : path;
-    }
-    prepareExternalUrl(internal) {
-      const url = joinWithSlash(this._baseHref, internal);
-      return url.length > 0 ? "#" + url : url;
-    }
-    pushState(state, title, path, queryParams) {
-      let url = this.prepareExternalUrl(path + normalizeQueryParams(queryParams));
-      if (url.length == 0) {
-        url = this._platformLocation.pathname;
-      }
-      this._platformLocation.pushState(state, title, url);
-    }
-    replaceState(state, title, path, queryParams) {
-      let url = this.prepareExternalUrl(path + normalizeQueryParams(queryParams));
-      if (url.length == 0) {
-        url = this._platformLocation.pathname;
-      }
-      this._platformLocation.replaceState(state, title, url);
-    }
-    forward() {
-      this._platformLocation.forward();
-    }
-    back() {
-      this._platformLocation.back();
-    }
-    getState() {
-      return this._platformLocation.getState();
-    }
-    historyGo(relativePosition = 0) {
-      this._platformLocation.historyGo?.(relativePosition);
-    }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _HashLocationStrategy, deps: [{ token: PlatformLocation }, { token: APP_BASE_HREF, optional: true }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _HashLocationStrategy });
-  };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: HashLocationStrategy, decorators: [{
-    type: Injectable
   }], ctorParameters: () => [{ type: PlatformLocation }, { type: void 0, decorators: [{
     type: Optional
   }, {
@@ -55038,7 +55312,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         });
       });
     }
-    /** @nodoc */
+    /** @docs-private */
     ngOnDestroy() {
       this._urlChangeSubscription?.unsubscribe();
       this._urlChangeListeners = [];
@@ -55226,10 +55500,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * @returns The URL string, modified if needed.
      */
     static stripTrailingSlash = stripTrailingSlash;
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _Location, deps: [{ token: LocationStrategy }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _Location, providedIn: "root", useFactory: createLocation });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _Location, deps: [{ token: LocationStrategy }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _Location, providedIn: "root", useFactory: createLocation });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: Location, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: Location, decorators: [{
     type: Injectable,
     args: [{
       providedIn: "root",
@@ -55261,6 +55535,70 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     return baseHref;
   }
+
+  // node_modules/@angular/common/fesm2022/common_module-Dx7dWex5.mjs
+  var HashLocationStrategy = class _HashLocationStrategy extends LocationStrategy {
+    _platformLocation;
+    _baseHref = "";
+    _removeListenerFns = [];
+    constructor(_platformLocation, _baseHref) {
+      super();
+      this._platformLocation = _platformLocation;
+      if (_baseHref != null) {
+        this._baseHref = _baseHref;
+      }
+    }
+    /** @docs-private */
+    ngOnDestroy() {
+      while (this._removeListenerFns.length) {
+        this._removeListenerFns.pop()();
+      }
+    }
+    onPopState(fn2) {
+      this._removeListenerFns.push(this._platformLocation.onPopState(fn2), this._platformLocation.onHashChange(fn2));
+    }
+    getBaseHref() {
+      return this._baseHref;
+    }
+    path(includeHash = false) {
+      const path = this._platformLocation.hash ?? "#";
+      return path.length > 0 ? path.substring(1) : path;
+    }
+    prepareExternalUrl(internal) {
+      const url = joinWithSlash(this._baseHref, internal);
+      return url.length > 0 ? "#" + url : url;
+    }
+    pushState(state, title, path, queryParams) {
+      const url = this.prepareExternalUrl(path + normalizeQueryParams(queryParams)) || this._platformLocation.pathname;
+      this._platformLocation.pushState(state, title, url);
+    }
+    replaceState(state, title, path, queryParams) {
+      const url = this.prepareExternalUrl(path + normalizeQueryParams(queryParams)) || this._platformLocation.pathname;
+      this._platformLocation.replaceState(state, title, url);
+    }
+    forward() {
+      this._platformLocation.forward();
+    }
+    back() {
+      this._platformLocation.back();
+    }
+    getState() {
+      return this._platformLocation.getState();
+    }
+    historyGo(relativePosition = 0) {
+      this._platformLocation.historyGo?.(relativePosition);
+    }
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _HashLocationStrategy, deps: [{ token: PlatformLocation }, { token: APP_BASE_HREF, optional: true }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _HashLocationStrategy });
+  };
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: HashLocationStrategy, decorators: [{
+    type: Injectable
+  }], ctorParameters: () => [{ type: PlatformLocation }, { type: void 0, decorators: [{
+    type: Optional
+  }, {
+    type: Inject,
+    args: [APP_BASE_HREF]
+  }] }] });
   var CURRENCIES_EN = { "ADP": [void 0, void 0, 0], "AFN": [void 0, "\u060B", 0], "ALL": [void 0, void 0, 0], "AMD": [void 0, "\u058F", 2], "AOA": [void 0, "Kz"], "ARS": [void 0, "$"], "AUD": ["A$", "$"], "AZN": [void 0, "\u20BC"], "BAM": [void 0, "KM"], "BBD": [void 0, "$"], "BDT": [void 0, "\u09F3"], "BHD": [void 0, void 0, 3], "BIF": [void 0, void 0, 0], "BMD": [void 0, "$"], "BND": [void 0, "$"], "BOB": [void 0, "Bs"], "BRL": ["R$"], "BSD": [void 0, "$"], "BWP": [void 0, "P"], "BYN": [void 0, void 0, 2], "BYR": [void 0, void 0, 0], "BZD": [void 0, "$"], "CAD": ["CA$", "$", 2], "CHF": [void 0, void 0, 2], "CLF": [void 0, void 0, 4], "CLP": [void 0, "$", 0], "CNY": ["CN\xA5", "\xA5"], "COP": [void 0, "$", 2], "CRC": [void 0, "\u20A1", 2], "CUC": [void 0, "$"], "CUP": [void 0, "$"], "CZK": [void 0, "K\u010D", 2], "DJF": [void 0, void 0, 0], "DKK": [void 0, "kr", 2], "DOP": [void 0, "$"], "EGP": [void 0, "E\xA3"], "ESP": [void 0, "\u20A7", 0], "EUR": ["\u20AC"], "FJD": [void 0, "$"], "FKP": [void 0, "\xA3"], "GBP": ["\xA3"], "GEL": [void 0, "\u20BE"], "GHS": [void 0, "GH\u20B5"], "GIP": [void 0, "\xA3"], "GNF": [void 0, "FG", 0], "GTQ": [void 0, "Q"], "GYD": [void 0, "$", 2], "HKD": ["HK$", "$"], "HNL": [void 0, "L"], "HRK": [void 0, "kn"], "HUF": [void 0, "Ft", 2], "IDR": [void 0, "Rp", 2], "ILS": ["\u20AA"], "INR": ["\u20B9"], "IQD": [void 0, void 0, 0], "IRR": [void 0, void 0, 0], "ISK": [void 0, "kr", 0], "ITL": [void 0, void 0, 0], "JMD": [void 0, "$"], "JOD": [void 0, void 0, 3], "JPY": ["\xA5", void 0, 0], "KHR": [void 0, "\u17DB"], "KMF": [void 0, "CF", 0], "KPW": [void 0, "\u20A9", 0], "KRW": ["\u20A9", void 0, 0], "KWD": [void 0, void 0, 3], "KYD": [void 0, "$"], "KZT": [void 0, "\u20B8"], "LAK": [void 0, "\u20AD", 0], "LBP": [void 0, "L\xA3", 0], "LKR": [void 0, "Rs"], "LRD": [void 0, "$"], "LTL": [void 0, "Lt"], "LUF": [void 0, void 0, 0], "LVL": [void 0, "Ls"], "LYD": [void 0, void 0, 3], "MGA": [void 0, "Ar", 0], "MGF": [void 0, void 0, 0], "MMK": [void 0, "K", 0], "MNT": [void 0, "\u20AE", 2], "MRO": [void 0, void 0, 0], "MUR": [void 0, "Rs", 2], "MXN": ["MX$", "$"], "MYR": [void 0, "RM"], "NAD": [void 0, "$"], "NGN": [void 0, "\u20A6"], "NIO": [void 0, "C$"], "NOK": [void 0, "kr", 2], "NPR": [void 0, "Rs"], "NZD": ["NZ$", "$"], "OMR": [void 0, void 0, 3], "PHP": ["\u20B1"], "PKR": [void 0, "Rs", 2], "PLN": [void 0, "z\u0142"], "PYG": [void 0, "\u20B2", 0], "RON": [void 0, "lei"], "RSD": [void 0, void 0, 0], "RUB": [void 0, "\u20BD"], "RWF": [void 0, "RF", 0], "SBD": [void 0, "$"], "SEK": [void 0, "kr", 2], "SGD": [void 0, "$"], "SHP": [void 0, "\xA3"], "SLE": [void 0, void 0, 2], "SLL": [void 0, void 0, 0], "SOS": [void 0, void 0, 0], "SRD": [void 0, "$"], "SSP": [void 0, "\xA3"], "STD": [void 0, void 0, 0], "STN": [void 0, "Db"], "SYP": [void 0, "\xA3", 0], "THB": [void 0, "\u0E3F"], "TMM": [void 0, void 0, 0], "TND": [void 0, void 0, 3], "TOP": [void 0, "T$"], "TRL": [void 0, void 0, 0], "TRY": [void 0, "\u20BA"], "TTD": [void 0, "$"], "TWD": ["NT$", "$", 2], "TZS": [void 0, void 0, 2], "UAH": [void 0, "\u20B4"], "UGX": [void 0, void 0, 0], "USD": ["$"], "UYI": [void 0, void 0, 0], "UYU": [void 0, "$"], "UYW": [void 0, void 0, 4], "UZS": [void 0, void 0, 2], "VEF": [void 0, "Bs", 2], "VND": ["\u20AB", void 0, 0], "VUV": [void 0, void 0, 0], "XAF": ["FCFA", void 0, 0], "XCD": ["EC$", "$"], "XOF": ["F\u202FCFA", void 0, 0], "XPF": ["CFPF", void 0, 0], "XXX": ["\xA4"], "YER": [void 0, void 0, 0], "ZAR": [void 0, "R"], "ZMK": [void 0, void 0, 0], "ZMW": [void 0, "ZK"], "ZWD": [void 0, void 0, 0] };
   var NumberFormatStyle;
   (function(NumberFormatStyle2) {
@@ -55549,7 +55887,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     let dateTimezoneOffset = date.getTimezoneOffset();
     if (timezone) {
       dateTimezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
-      date = convertTimezoneToLocal(date, timezone, true);
+      date = convertTimezoneToLocal(date, timezone);
     }
     let text2 = "";
     parts.forEach((value2) => {
@@ -56072,7 +56410,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     return date;
   }
   function convertTimezoneToLocal(date, timezone, reverse) {
-    const reverseValue = reverse ? -1 : 1;
+    const reverseValue = -1;
     const dateTimezoneOffset = date.getTimezoneOffset();
     const timezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
     return addDateMinutes(date, reverseValue * (timezoneOffset - dateTimezoneOffset));
@@ -56390,10 +56728,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     return result;
   }
   var NgLocalization = class _NgLocalization {
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgLocalization, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgLocalization, providedIn: "root", useFactory: (locale) => new NgLocaleLocalization(locale), deps: [{ token: LOCALE_ID }] });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgLocalization, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgLocalization, providedIn: "root", useFactory: (locale) => new NgLocaleLocalization(locale), deps: [{ token: LOCALE_ID }] });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgLocalization, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgLocalization, decorators: [{
     type: Injectable,
     args: [{
       providedIn: "root",
@@ -56438,26 +56776,15 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
           return "other";
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgLocaleLocalization, deps: [{ token: LOCALE_ID }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgLocaleLocalization });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgLocaleLocalization, deps: [{ token: LOCALE_ID }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgLocaleLocalization });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgLocaleLocalization, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgLocaleLocalization, decorators: [{
     type: Injectable
   }], ctorParameters: () => [{ type: void 0, decorators: [{
     type: Inject,
     args: [LOCALE_ID]
   }] }] });
-  function parseCookieValue(cookieStr, name) {
-    name = encodeURIComponent(name);
-    for (const cookie of cookieStr.split(";")) {
-      const eqIndex = cookie.indexOf("=");
-      const [cookieName, cookieValue] = eqIndex == -1 ? [cookie, ""] : [cookie.slice(0, eqIndex), cookie.slice(eqIndex + 1)];
-      if (cookieName.trim() === name) {
-        return decodeURIComponent(cookieValue);
-      }
-    }
-    return null;
-  }
   var WS_REGEXP = /\s+/;
   var EMPTY_ARRAY2 = [];
   var NgClass = class _NgClass {
@@ -56562,10 +56889,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         });
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgClass, deps: [{ token: ElementRef }, { token: Renderer2 }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgClass, isStandalone: true, selector: "[ngClass]", inputs: { klass: ["class", "klass"], ngClass: "ngClass" }, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgClass, deps: [{ token: ElementRef }, { token: Renderer2 }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgClass, isStandalone: true, selector: "[ngClass]", inputs: { klass: ["class", "klass"], ngClass: "ngClass" }, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgClass, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgClass, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngClass]"
@@ -56615,7 +56942,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     _needToReCreateComponentInstance(changes) {
       return changes["ngComponentOutlet"] !== void 0 || changes["ngComponentOutletContent"] !== void 0 || changes["ngComponentOutletInjector"] !== void 0 || this._needToReCreateNgModuleInstance(changes);
     }
-    /** @nodoc */
+    /** @docs-private */
     ngOnChanges(changes) {
       if (this._needToReCreateComponentInstance(changes)) {
         this._viewContainerRef.clear();
@@ -56641,7 +56968,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         }
       }
     }
-    /** @nodoc */
+    /** @docs-private */
     ngDoCheck() {
       if (this._componentRef) {
         if (this.ngComponentOutletInputs) {
@@ -56652,7 +56979,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         this._applyInputStateDiff(this._componentRef);
       }
     }
-    /** @nodoc */
+    /** @docs-private */
     ngOnDestroy() {
       this._moduleRef?.destroy();
     }
@@ -56667,10 +56994,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         }
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgComponentOutlet, deps: [{ token: ViewContainerRef }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgComponentOutlet, isStandalone: true, selector: "[ngComponentOutlet]", inputs: { ngComponentOutlet: "ngComponentOutlet", ngComponentOutletInputs: "ngComponentOutletInputs", ngComponentOutletInjector: "ngComponentOutletInjector", ngComponentOutletContent: "ngComponentOutletContent", ngComponentOutletNgModule: "ngComponentOutletNgModule", ngComponentOutletNgModuleFactory: "ngComponentOutletNgModuleFactory" }, exportAs: ["ngComponentOutlet"], usesOnChanges: true, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgComponentOutlet, deps: [{ token: ViewContainerRef }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgComponentOutlet, isStandalone: true, selector: "[ngComponentOutlet]", inputs: { ngComponentOutlet: "ngComponentOutlet", ngComponentOutletInputs: "ngComponentOutletInputs", ngComponentOutletInjector: "ngComponentOutletInjector", ngComponentOutletContent: "ngComponentOutletContent", ngComponentOutletNgModule: "ngComponentOutletNgModule", ngComponentOutletNgModuleFactory: "ngComponentOutletNgModuleFactory" }, exportAs: ["ngComponentOutlet"], usesOnChanges: true, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgComponentOutlet, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgComponentOutlet, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngComponentOutlet]",
@@ -56763,7 +57090,6 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     _ngForOf = null;
     _ngForOfDirty = true;
     _differ = null;
-    // TODO(issue/24571): remove '!'
     // waiting for microsoft/typescript#43662 to allow the return type `TrackByFunction|undefined` for
     // the getter
     _trackByFn;
@@ -56783,7 +57109,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     /**
      * Applies the changes when needed.
-     * @nodoc
+     * @docs-private
      */
     ngDoCheck() {
       if (this._ngForOfDirty) {
@@ -56845,10 +57171,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     static ngTemplateContextGuard(dir, ctx) {
       return true;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgForOf, deps: [{ token: ViewContainerRef }, { token: TemplateRef }, { token: IterableDiffers }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgForOf, isStandalone: true, selector: "[ngFor][ngForOf]", inputs: { ngForOf: "ngForOf", ngForTrackBy: "ngForTrackBy", ngForTemplate: "ngForTemplate" }, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgForOf, deps: [{ token: ViewContainerRef }, { token: TemplateRef }, { token: IterableDiffers }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgForOf, isStandalone: true, selector: "[ngFor][ngForOf]", inputs: { ngForOf: "ngForOf", ngForTrackBy: "ngForTrackBy", ngForTemplate: "ngForTemplate" }, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgForOf, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgForOf, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngFor][ngForOf]"
@@ -56888,7 +57214,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * A template to show if the condition expression evaluates to true.
      */
     set ngIfThen(templateRef) {
-      assertTemplate("ngIfThen", templateRef);
+      assertTemplate(templateRef, (typeof ngDevMode === "undefined" || ngDevMode) && "ngIfThen");
       this._thenTemplateRef = templateRef;
       this._thenViewRef = null;
       this._updateView();
@@ -56897,7 +57223,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * A template to show if the condition expression evaluates to false.
      */
     set ngIfElse(templateRef) {
-      assertTemplate("ngIfElse", templateRef);
+      assertTemplate(templateRef, (typeof ngDevMode === "undefined" || ngDevMode) && "ngIfElse");
       this._elseTemplateRef = templateRef;
       this._elseViewRef = null;
       this._updateView();
@@ -56941,10 +57267,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     static ngTemplateContextGuard(dir, ctx) {
       return true;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgIf, deps: [{ token: ViewContainerRef }, { token: TemplateRef }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgIf, isStandalone: true, selector: "[ngIf]", inputs: { ngIf: "ngIf", ngIfThen: "ngIfThen", ngIfElse: "ngIfElse" }, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgIf, deps: [{ token: ViewContainerRef }, { token: TemplateRef }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgIf, isStandalone: true, selector: "[ngIf]", inputs: { ngIf: "ngIf", ngIfThen: "ngIfThen", ngIfElse: "ngIfElse" }, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgIf, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgIf, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngIf]"
@@ -56960,10 +57286,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     $implicit = null;
     ngIf = null;
   };
-  function assertTemplate(property2, templateRef) {
-    const isTemplateRefOrNull = !!(!templateRef || templateRef.createEmbeddedView);
-    if (!isTemplateRefOrNull) {
-      throw new Error(`${property2} must be a TemplateRef, but received '${stringify2(templateRef)}'.`);
+  function assertTemplate(templateRef, property2) {
+    if (templateRef && !templateRef.createEmbeddedView) {
+      throw new RuntimeError(2020, (typeof ngDevMode === "undefined" || ngDevMode) && `${property2} must be a TemplateRef, but received '${stringify2(templateRef)}'.`);
     }
   }
   var SwitchView = class {
@@ -57031,10 +57356,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         }
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgSwitch, deps: [], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgSwitch, isStandalone: true, selector: "[ngSwitch]", inputs: { ngSwitch: "ngSwitch" }, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgSwitch, deps: [], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgSwitch, isStandalone: true, selector: "[ngSwitch]", inputs: { ngSwitch: "ngSwitch" }, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgSwitch, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgSwitch, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngSwitch]"
@@ -57059,15 +57384,15 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     /**
      * Performs case matching. For internal use only.
-     * @nodoc
+     * @docs-private
      */
     ngDoCheck() {
       this._view.enforceState(this.ngSwitch._matchCase(this.ngSwitchCase));
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgSwitchCase, deps: [{ token: ViewContainerRef }, { token: TemplateRef }, { token: NgSwitch, host: true, optional: true }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgSwitchCase, isStandalone: true, selector: "[ngSwitchCase]", inputs: { ngSwitchCase: "ngSwitchCase" }, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgSwitchCase, deps: [{ token: ViewContainerRef }, { token: TemplateRef }, { token: NgSwitch, host: true, optional: true }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgSwitchCase, isStandalone: true, selector: "[ngSwitchCase]", inputs: { ngSwitchCase: "ngSwitchCase" }, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgSwitchCase, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgSwitchCase, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngSwitchCase]"
@@ -57086,10 +57411,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
       ngSwitch._addDefault(new SwitchView(viewContainer, templateRef));
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgSwitchDefault, deps: [{ token: ViewContainerRef }, { token: TemplateRef }, { token: NgSwitch, host: true, optional: true }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgSwitchDefault, isStandalone: true, selector: "[ngSwitchDefault]", ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgSwitchDefault, deps: [{ token: ViewContainerRef }, { token: TemplateRef }, { token: NgSwitch, host: true, optional: true }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgSwitchDefault, isStandalone: true, selector: "[ngSwitchDefault]", ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgSwitchDefault, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgSwitchDefault, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngSwitchDefault]"
@@ -57131,10 +57456,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         this._activeView.create();
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgPlural, deps: [{ token: NgLocalization }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgPlural, isStandalone: true, selector: "[ngPlural]", inputs: { ngPlural: "ngPlural" }, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgPlural, deps: [{ token: NgLocalization }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgPlural, isStandalone: true, selector: "[ngPlural]", inputs: { ngPlural: "ngPlural" }, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgPlural, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgPlural, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngPlural]"
@@ -57149,10 +57474,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       const isANumber = !isNaN(Number(value));
       ngPlural.addCase(isANumber ? `=${value}` : value, new SwitchView(viewContainer, template2));
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgPluralCase, deps: [{ token: "ngPluralCase", attribute: true }, { token: TemplateRef }, { token: ViewContainerRef }, { token: NgPlural, host: true }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgPluralCase, isStandalone: true, selector: "[ngPluralCase]", ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgPluralCase, deps: [{ token: "ngPluralCase", attribute: true }, { token: TemplateRef }, { token: ViewContainerRef }, { token: NgPlural, host: true }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgPluralCase, isStandalone: true, selector: "[ngPluralCase]", ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgPluralCase, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgPluralCase, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngPluralCase]"
@@ -57202,10 +57527,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       changes.forEachAddedItem((record) => this._setStyle(record.key, record.currentValue));
       changes.forEachChangedItem((record) => this._setStyle(record.key, record.currentValue));
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgStyle, deps: [{ token: ElementRef }, { token: KeyValueDiffers }, { token: Renderer2 }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgStyle, isStandalone: true, selector: "[ngStyle]", inputs: { ngStyle: "ngStyle" }, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgStyle, deps: [{ token: ElementRef }, { token: KeyValueDiffers }, { token: Renderer2 }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgStyle, isStandalone: true, selector: "[ngStyle]", inputs: { ngStyle: "ngStyle" }, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgStyle, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgStyle, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngStyle]"
@@ -57278,10 +57603,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         }
       });
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgTemplateOutlet, deps: [{ token: ViewContainerRef }], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.1.4", type: _NgTemplateOutlet, isStandalone: true, selector: "[ngTemplateOutlet]", inputs: { ngTemplateOutletContext: "ngTemplateOutletContext", ngTemplateOutlet: "ngTemplateOutlet", ngTemplateOutletInjector: "ngTemplateOutletInjector" }, usesOnChanges: true, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgTemplateOutlet, deps: [{ token: ViewContainerRef }], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "14.0.0", version: "19.2.14", type: _NgTemplateOutlet, isStandalone: true, selector: "[ngTemplateOutlet]", inputs: { ngTemplateOutletContext: "ngTemplateOutletContext", ngTemplateOutlet: "ngTemplateOutlet", ngTemplateOutletInjector: "ngTemplateOutletInjector" }, usesOnChanges: true, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgTemplateOutlet, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgTemplateOutlet, decorators: [{
     type: Directive,
     args: [{
       selector: "[ngTemplateOutlet]"
@@ -57311,7 +57636,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   }
   var SubscribableStrategy = class {
     createSubscription(async, updateLatestValue) {
-      return untracked(() => async.subscribe({
+      return untracked2(() => async.subscribe({
         next: updateLatestValue,
         error: (e) => {
           throw e;
@@ -57319,16 +57644,27 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }));
     }
     dispose(subscription) {
-      untracked(() => subscription.unsubscribe());
+      untracked2(() => subscription.unsubscribe());
     }
   };
   var PromiseStrategy = class {
     createSubscription(async, updateLatestValue) {
-      return async.then(updateLatestValue, (e) => {
-        throw e;
-      });
+      async.then(
+        // Using optional chaining because we may have set it to `null`; since the promise
+        // is async, the view might be destroyed by the time the promise resolves.
+        (v) => updateLatestValue?.(v),
+        (e) => {
+          throw e;
+        }
+      );
+      return {
+        unsubscribe: () => {
+          updateLatestValue = null;
+        }
+      };
     }
     dispose(subscription) {
+      subscription.unsubscribe();
     }
   };
   var _promiseStrategy = new PromiseStrategy();
@@ -57395,10 +57731,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         }
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _AsyncPipe, deps: [{ token: ChangeDetectorRef }], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _AsyncPipe, isStandalone: true, name: "async", pure: false });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _AsyncPipe, deps: [{ token: ChangeDetectorRef }], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _AsyncPipe, isStandalone: true, name: "async", pure: false });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: AsyncPipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: AsyncPipe, decorators: [{
     type: Pipe,
     args: [{
       name: "async",
@@ -57414,10 +57750,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
       return value.toLowerCase();
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _LowerCasePipe, deps: [], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _LowerCasePipe, isStandalone: true, name: "lowercase" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _LowerCasePipe, deps: [], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _LowerCasePipe, isStandalone: true, name: "lowercase" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: LowerCasePipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: LowerCasePipe, decorators: [{
     type: Pipe,
     args: [{
       name: "lowercase"
@@ -57433,10 +57769,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
       return value.replace(unicodeWordMatch, (txt) => txt[0].toUpperCase() + txt.slice(1).toLowerCase());
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _TitleCasePipe, deps: [], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _TitleCasePipe, isStandalone: true, name: "titlecase" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _TitleCasePipe, deps: [], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _TitleCasePipe, isStandalone: true, name: "titlecase" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: TitleCasePipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: TitleCasePipe, decorators: [{
     type: Pipe,
     args: [{
       name: "titlecase"
@@ -57451,10 +57787,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
       return value.toUpperCase();
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _UpperCasePipe, deps: [], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _UpperCasePipe, isStandalone: true, name: "uppercase" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _UpperCasePipe, deps: [], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _UpperCasePipe, isStandalone: true, name: "uppercase" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: UpperCasePipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: UpperCasePipe, decorators: [{
     type: Pipe,
     args: [{
       name: "uppercase"
@@ -57483,10 +57819,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         throw invalidPipeArgumentError(_DatePipe, error.message);
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DatePipe, deps: [{ token: LOCALE_ID }, { token: DATE_PIPE_DEFAULT_TIMEZONE, optional: true }, { token: DATE_PIPE_DEFAULT_OPTIONS, optional: true }], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _DatePipe, isStandalone: true, name: "date" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DatePipe, deps: [{ token: LOCALE_ID }, { token: DATE_PIPE_DEFAULT_TIMEZONE, optional: true }, { token: DATE_PIPE_DEFAULT_OPTIONS, optional: true }], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _DatePipe, isStandalone: true, name: "date" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: DatePipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: DatePipe, decorators: [{
     type: Pipe,
     args: [{
       name: "date"
@@ -57527,10 +57863,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       const key = getPluralCategory(value, Object.keys(pluralMap), this._localization, locale);
       return pluralMap[key].replace(_INTERPOLATION_REGEXP, value.toString());
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _I18nPluralPipe, deps: [{ token: NgLocalization }], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _I18nPluralPipe, isStandalone: true, name: "i18nPlural" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _I18nPluralPipe, deps: [{ token: NgLocalization }], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _I18nPluralPipe, isStandalone: true, name: "i18nPlural" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: I18nPluralPipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: I18nPluralPipe, decorators: [{
     type: Pipe,
     args: [{
       name: "i18nPlural"
@@ -57556,10 +57892,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
       return "";
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _I18nSelectPipe, deps: [], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _I18nSelectPipe, isStandalone: true, name: "i18nSelect" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _I18nSelectPipe, deps: [], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _I18nSelectPipe, isStandalone: true, name: "i18nSelect" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: I18nSelectPipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: I18nSelectPipe, decorators: [{
     type: Pipe,
     args: [{
       name: "i18nSelect"
@@ -57572,10 +57908,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     transform(value) {
       return JSON.stringify(value, null, 2);
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _JsonPipe, deps: [], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _JsonPipe, isStandalone: true, name: "json", pure: false });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _JsonPipe, deps: [], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _JsonPipe, isStandalone: true, name: "json", pure: false });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: JsonPipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: JsonPipe, decorators: [{
     type: Pipe,
     args: [{
       name: "json",
@@ -57614,10 +57950,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
       return this.keyValues;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _KeyValuePipe, deps: [{ token: KeyValueDiffers }], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _KeyValuePipe, isStandalone: true, name: "keyvalue", pure: false });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _KeyValuePipe, deps: [{ token: KeyValueDiffers }], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _KeyValuePipe, isStandalone: true, name: "keyvalue", pure: false });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: KeyValuePipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: KeyValuePipe, decorators: [{
     type: Pipe,
     args: [{
       name: "keyvalue",
@@ -57662,10 +57998,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         throw invalidPipeArgumentError(_DecimalPipe, error.message);
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DecimalPipe, deps: [{ token: LOCALE_ID }], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _DecimalPipe, isStandalone: true, name: "number" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DecimalPipe, deps: [{ token: LOCALE_ID }], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _DecimalPipe, isStandalone: true, name: "number" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: DecimalPipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: DecimalPipe, decorators: [{
     type: Pipe,
     args: [{
       name: "number"
@@ -57706,10 +58042,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         throw invalidPipeArgumentError(_PercentPipe, error.message);
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PercentPipe, deps: [{ token: LOCALE_ID }], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _PercentPipe, isStandalone: true, name: "percent" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PercentPipe, deps: [{ token: LOCALE_ID }], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _PercentPipe, isStandalone: true, name: "percent" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: PercentPipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: PercentPipe, decorators: [{
     type: Pipe,
     args: [{
       name: "percent"
@@ -57750,10 +58086,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         throw invalidPipeArgumentError(_CurrencyPipe, error.message);
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _CurrencyPipe, deps: [{ token: LOCALE_ID }, { token: DEFAULT_CURRENCY_CODE }], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _CurrencyPipe, isStandalone: true, name: "currency" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _CurrencyPipe, deps: [{ token: LOCALE_ID }, { token: DEFAULT_CURRENCY_CODE }], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _CurrencyPipe, isStandalone: true, name: "currency" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: CurrencyPipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: CurrencyPipe, decorators: [{
     type: Pipe,
     args: [{
       name: "currency"
@@ -57781,18 +58117,16 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     transform(value, start, end) {
       if (value == null)
         return null;
-      if (!this.supports(value)) {
+      const supports = typeof value === "string" || Array.isArray(value);
+      if (!supports) {
         throw invalidPipeArgumentError(_SlicePipe, value);
       }
       return value.slice(start, end);
     }
-    supports(obj) {
-      return typeof obj === "string" || Array.isArray(obj);
-    }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _SlicePipe, deps: [], target: FactoryTarget2.Pipe });
-    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _SlicePipe, isStandalone: true, name: "slice", pure: false });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _SlicePipe, deps: [], target: FactoryTarget2.Pipe });
+    static \u0275pipe = \u0275\u0275ngDeclarePipe({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _SlicePipe, isStandalone: true, name: "slice", pure: false });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: SlicePipe, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: SlicePipe, decorators: [{
     type: Pipe,
     args: [{
       name: "slice",
@@ -57815,17 +58149,30 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     KeyValuePipe
   ];
   var CommonModule = class _CommonModule {
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _CommonModule, deps: [], target: FactoryTarget2.NgModule });
-    static \u0275mod = \u0275\u0275ngDeclareNgModule({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _CommonModule, imports: [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe], exports: [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe] });
-    static \u0275inj = \u0275\u0275ngDeclareInjector({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _CommonModule });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _CommonModule, deps: [], target: FactoryTarget2.NgModule });
+    static \u0275mod = \u0275\u0275ngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _CommonModule, imports: [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe], exports: [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe] });
+    static \u0275inj = \u0275\u0275ngDeclareInjector({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _CommonModule });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: CommonModule, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: CommonModule, decorators: [{
     type: NgModule,
     args: [{
       imports: [COMMON_DIRECTIVES, COMMON_PIPES],
       exports: [COMMON_DIRECTIVES, COMMON_PIPES]
     }]
   }] });
+
+  // node_modules/@angular/common/fesm2022/xhr-BfNfxNDv.mjs
+  function parseCookieValue(cookieStr, name) {
+    name = encodeURIComponent(name);
+    for (const cookie of cookieStr.split(";")) {
+      const eqIndex = cookie.indexOf("=");
+      const [cookieName, cookieValue] = eqIndex == -1 ? [cookie, ""] : [cookie.slice(0, eqIndex), cookie.slice(eqIndex + 1)];
+      if (cookieName.trim() === name) {
+        return decodeURIComponent(cookieValue);
+      }
+    }
+    return null;
+  }
   var PLATFORM_BROWSER_ID = "browser";
   var PLATFORM_SERVER_ID = "server";
   function isPlatformBrowser(platformId) {
@@ -57834,9 +58181,11 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   function isPlatformServer(platformId) {
     return platformId === PLATFORM_SERVER_ID;
   }
-  var VERSION3 = new Version2("19.1.4");
   var XhrFactory = class {
   };
+
+  // node_modules/@angular/common/fesm2022/common.mjs
+  var VERSION3 = new Version2("19.2.14");
   var PLACEHOLDER_QUALITY = "20";
   function getUrl(src, win) {
     return isAbsoluteUrl(src) ? new URL(src) : new URL(src, win.location.href);
@@ -58061,10 +58410,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       this.observer.disconnect();
       this.images.clear();
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _LCPImageObserver, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _LCPImageObserver, providedIn: "root" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _LCPImageObserver, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _LCPImageObserver, providedIn: "root" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: LCPImageObserver, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: LCPImageObserver, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root" }]
   }], ctorParameters: () => [] });
@@ -58129,9 +58478,8 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     }
     queryPreconnectLinks() {
       const preconnectUrls = /* @__PURE__ */ new Set();
-      const selector = "link[rel=preconnect]";
-      const links = Array.from(this.document.querySelectorAll(selector));
-      for (let link of links) {
+      const links = this.document.querySelectorAll("link[rel=preconnect]");
+      for (const link of links) {
         const url = getUrl(link.href, this.window);
         preconnectUrls.add(url.origin);
       }
@@ -58141,10 +58489,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       this.preconnectLinks?.clear();
       this.alreadySeen.clear();
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PreconnectLinkChecker, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PreconnectLinkChecker, providedIn: "root" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PreconnectLinkChecker, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PreconnectLinkChecker, providedIn: "root" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: PreconnectLinkChecker, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: PreconnectLinkChecker, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root" }]
   }], ctorParameters: () => [] });
@@ -58161,6 +58509,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
   var PreloadLinkCreator = class _PreloadLinkCreator {
     preloadedImages = inject(PRELOADED_IMAGES);
     document = inject(DOCUMENT2);
+    errorShown = false;
     /**
      * @description Add a preload `<link>` to the `<head>` of the `index.html` that is served from the
      * server while using Angular Universal and SSR to kick off image loads for high priority images.
@@ -58178,10 +58527,9 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
      * @param sizes The value of the `sizes` attribute passed in to the `<img>` tag
      */
     createPreloadLinkTag(renderer, src, srcset, sizes) {
-      if (ngDevMode) {
-        if (this.preloadedImages.size >= DEFAULT_PRELOADED_IMAGES_LIMIT) {
-          throw new RuntimeError(2961, ngDevMode && `The \`NgOptimizedImage\` directive has detected that more than ${DEFAULT_PRELOADED_IMAGES_LIMIT} images were marked as priority. This might negatively affect an overall performance of the page. To fix this, remove the "priority" attribute from images with less priority.`);
-        }
+      if (ngDevMode && !this.errorShown && this.preloadedImages.size >= DEFAULT_PRELOADED_IMAGES_LIMIT) {
+        this.errorShown = true;
+        console.warn(formatRuntimeError(2961, `The \`NgOptimizedImage\` directive has detected that more than ${DEFAULT_PRELOADED_IMAGES_LIMIT} images were marked as priority. This might negatively affect an overall performance of the page. To fix this, remove the "priority" attribute from images with less priority.`));
       }
       if (this.preloadedImages.has(src)) {
         return;
@@ -58200,10 +58548,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
       }
       renderer.appendChild(this.document.head, preload);
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PreloadLinkCreator, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _PreloadLinkCreator, providedIn: "root" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PreloadLinkCreator, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _PreloadLinkCreator, providedIn: "root" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: PreloadLinkCreator, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: PreloadLinkCreator, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root" }]
   }] });
@@ -58339,7 +58687,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         });
       }
     }
-    /** @nodoc */
+    /** @docs-private */
     ngOnInit() {
       performanceMarkFeature("NgOptimizedImage");
       if (ngDevMode) {
@@ -58417,7 +58765,7 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
         preloadLinkCreator.createPreloadLinkTag(this.renderer, this.getRewrittenSrc(), rewrittenSrcset, this.sizes);
       }
     }
-    /** @nodoc */
+    /** @docs-private */
     ngOnChanges(changes) {
       if (ngDevMode) {
         assertNoPostInitInputChange(this, changes, [
@@ -58571,10 +58919,10 @@ To fix this, switch the \`${attrName}\` binding to a static attribute in a templ
     setHostAttribute(name, value) {
       this.renderer.setAttribute(this.imgElement, name, value);
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _NgOptimizedImage, deps: [], target: FactoryTarget2.Directive });
-    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "16.1.0", version: "19.1.4", type: _NgOptimizedImage, isStandalone: true, selector: "img[ngSrc]", inputs: { ngSrc: ["ngSrc", "ngSrc", unwrapSafeUrl], ngSrcset: "ngSrcset", sizes: "sizes", width: ["width", "width", numberAttribute], height: ["height", "height", numberAttribute], loading: "loading", priority: ["priority", "priority", booleanAttribute], loaderParams: "loaderParams", disableOptimizedSrcset: ["disableOptimizedSrcset", "disableOptimizedSrcset", booleanAttribute], fill: ["fill", "fill", booleanAttribute], placeholder: ["placeholder", "placeholder", booleanOrUrlAttribute], placeholderConfig: "placeholderConfig", src: "src", srcset: "srcset" }, host: { properties: { "style.position": 'fill ? "absolute" : null', "style.width": 'fill ? "100%" : null', "style.height": 'fill ? "100%" : null', "style.inset": 'fill ? "0" : null', "style.background-size": 'placeholder ? "cover" : null', "style.background-position": 'placeholder ? "50% 50%" : null', "style.background-repeat": 'placeholder ? "no-repeat" : null', "style.background-image": "placeholder ? generatePlaceholder(placeholder) : null", "style.filter": 'placeholder && shouldBlurPlaceholder(placeholderConfig) ? "blur(15px)" : null' } }, usesOnChanges: true, ngImport: core_exports });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _NgOptimizedImage, deps: [], target: FactoryTarget2.Directive });
+    static \u0275dir = \u0275\u0275ngDeclareDirective({ minVersion: "16.1.0", version: "19.2.14", type: _NgOptimizedImage, isStandalone: true, selector: "img[ngSrc]", inputs: { ngSrc: ["ngSrc", "ngSrc", unwrapSafeUrl], ngSrcset: "ngSrcset", sizes: "sizes", width: ["width", "width", numberAttribute], height: ["height", "height", numberAttribute], loading: "loading", priority: ["priority", "priority", booleanAttribute], loaderParams: "loaderParams", disableOptimizedSrcset: ["disableOptimizedSrcset", "disableOptimizedSrcset", booleanAttribute], fill: ["fill", "fill", booleanAttribute], placeholder: ["placeholder", "placeholder", booleanOrUrlAttribute], placeholderConfig: "placeholderConfig", src: "src", srcset: "srcset" }, host: { properties: { "style.position": 'fill ? "absolute" : null', "style.width": 'fill ? "100%" : null', "style.height": 'fill ? "100%" : null', "style.inset": 'fill ? "0" : null', "style.background-size": 'placeholder ? "cover" : null', "style.background-position": 'placeholder ? "50% 50%" : null', "style.background-repeat": 'placeholder ? "no-repeat" : null', "style.background-image": "placeholder ? generatePlaceholder(placeholder) : null", "style.filter": 'placeholder && shouldBlurPlaceholder(placeholderConfig) ? "blur(15px)" : null' } }, usesOnChanges: true, ngImport: core_exports });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: NgOptimizedImage, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: NgOptimizedImage, decorators: [{
     type: Directive,
     args: [{
       selector: "img[ngSrc]",
@@ -58905,132 +59253,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     return booleanAttribute(value);
   }
 
-  // node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs
-  var GenericBrowserDomAdapter = class extends DomAdapter {
-    supportsDOMEvents = true;
-  };
-  var BrowserDomAdapter = class _BrowserDomAdapter extends GenericBrowserDomAdapter {
-    static makeCurrent() {
-      setRootDomAdapter(new _BrowserDomAdapter());
-    }
-    onAndCancel(el, evt, listener2, options) {
-      el.addEventListener(evt, listener2, options);
-      return () => {
-        el.removeEventListener(evt, listener2, options);
-      };
-    }
-    dispatchEvent(el, evt) {
-      el.dispatchEvent(evt);
-    }
-    remove(node) {
-      node.remove();
-    }
-    createElement(tagName, doc) {
-      doc = doc || this.getDefaultDocument();
-      return doc.createElement(tagName);
-    }
-    createHtmlDocument() {
-      return document.implementation.createHTMLDocument("fakeTitle");
-    }
-    getDefaultDocument() {
-      return document;
-    }
-    isElementNode(node) {
-      return node.nodeType === Node.ELEMENT_NODE;
-    }
-    isShadowRoot(node) {
-      return node instanceof DocumentFragment;
-    }
-    /** @deprecated No longer being used in Ivy code. To be removed in version 14. */
-    getGlobalEventTarget(doc, target) {
-      if (target === "window") {
-        return window;
-      }
-      if (target === "document") {
-        return doc;
-      }
-      if (target === "body") {
-        return doc.body;
-      }
-      return null;
-    }
-    getBaseHref(doc) {
-      const href = getBaseElementHref();
-      return href == null ? null : relativePath(href);
-    }
-    resetBaseElement() {
-      baseElement = null;
-    }
-    getUserAgent() {
-      return window.navigator.userAgent;
-    }
-    getCookie(name) {
-      return parseCookieValue(document.cookie, name);
-    }
-  };
-  var baseElement = null;
-  function getBaseElementHref() {
-    baseElement = baseElement || document.querySelector("base");
-    return baseElement ? baseElement.getAttribute("href") : null;
-  }
-  function relativePath(url) {
-    return new URL(url, document.baseURI).pathname;
-  }
-  var BrowserGetTestability = class {
-    addToWindow(registry) {
-      _global3["getAngularTestability"] = (elem, findInAncestors = true) => {
-        const testability = registry.findTestabilityInTree(elem, findInAncestors);
-        if (testability == null) {
-          throw new RuntimeError(5103, (typeof ngDevMode === "undefined" || ngDevMode) && "Could not find testability for element.");
-        }
-        return testability;
-      };
-      _global3["getAllAngularTestabilities"] = () => registry.getAllTestabilities();
-      _global3["getAllAngularRootElements"] = () => registry.getAllRootElements();
-      const whenAllStable = (callback) => {
-        const testabilities = _global3["getAllAngularTestabilities"]();
-        let count = testabilities.length;
-        const decrement = function() {
-          count--;
-          if (count == 0) {
-            callback();
-          }
-        };
-        testabilities.forEach((testability) => {
-          testability.whenStable(decrement);
-        });
-      };
-      if (!_global3["frameworkStabilizers"]) {
-        _global3["frameworkStabilizers"] = [];
-      }
-      _global3["frameworkStabilizers"].push(whenAllStable);
-    }
-    findTestabilityInTree(registry, elem, findInAncestors) {
-      if (elem == null) {
-        return null;
-      }
-      const t = registry.getTestability(elem);
-      if (t != null) {
-        return t;
-      } else if (!findInAncestors) {
-        return null;
-      }
-      if (getDOM().isShadowRoot(elem)) {
-        return this.findTestabilityInTree(registry, elem.host, true);
-      }
-      return this.findTestabilityInTree(registry, elem.parentElement, true);
-    }
-  };
-  var BrowserXhr = class _BrowserXhr {
-    build() {
-      return new XMLHttpRequest();
-    }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _BrowserXhr, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _BrowserXhr });
-  };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: BrowserXhr, decorators: [{
-    type: Injectable
-  }] });
+  // node_modules/@angular/platform-browser/fesm2022/dom_renderer-DGKzginR.mjs
   var EVENT_MANAGER_PLUGINS = new InjectionToken(ngDevMode ? "EventManagerPlugins" : "");
   var EventManager = class _EventManager {
     _zone;
@@ -59080,10 +59303,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       this._eventNameToPlugin.set(eventName, plugin);
       return plugin;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _EventManager, deps: [{ token: EVENT_MANAGER_PLUGINS }, { token: NgZone }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _EventManager });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _EventManager, deps: [{ token: EVENT_MANAGER_PLUGINS }, { token: NgZone }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _EventManager });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: EventManager, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: EventManager, decorators: [{
     type: Injectable
   }], ctorParameters: () => [{ type: void 0, decorators: [{
     type: Inject,
@@ -59238,10 +59461,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       }
       return host.appendChild(element2);
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _SharedStylesHost, deps: [{ token: DOCUMENT2 }, { token: APP_ID }, { token: CSP_NONCE, optional: true }, { token: PLATFORM_ID }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _SharedStylesHost });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _SharedStylesHost, deps: [{ token: DOCUMENT2 }, { token: APP_ID }, { token: CSP_NONCE, optional: true }, { token: PLATFORM_ID }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _SharedStylesHost });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: SharedStylesHost, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: SharedStylesHost, decorators: [{
     type: Injectable
   }], ctorParameters: () => [{ type: Document, decorators: [{
     type: Inject,
@@ -59380,10 +59603,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     componentReplaced(componentId) {
       this.rendererByCompId.delete(componentId);
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DomRendererFactory2, deps: [{ token: EventManager }, { token: SharedStylesHost }, { token: APP_ID }, { token: REMOVE_STYLES_ON_COMPONENT_DESTROY }, { token: DOCUMENT2 }, { token: PLATFORM_ID }, { token: NgZone }, { token: CSP_NONCE }, { token: TracingService, optional: true }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DomRendererFactory2 });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DomRendererFactory2, deps: [{ token: EventManager }, { token: SharedStylesHost }, { token: APP_ID }, { token: REMOVE_STYLES_ON_COMPONENT_DESTROY }, { token: DOCUMENT2 }, { token: PLATFORM_ID }, { token: NgZone }, { token: CSP_NONCE }, { token: TracingService, optional: true }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DomRendererFactory2 });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: DomRendererFactory2, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: DomRendererFactory2, decorators: [{
     type: Injectable
   }], ctorParameters: () => [{ type: EventManager }, { type: SharedStylesHost }, { type: void 0, decorators: [{
     type: Inject,
@@ -59529,11 +59752,11 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       if (typeof target === "string") {
         target = getDOM().getGlobalEventTarget(this.doc, target);
         if (!target) {
-          throw new Error(`Unsupported event target ${target} for event ${event}`);
+          throw new RuntimeError(5102, (typeof ngDevMode === "undefined" || ngDevMode) && `Unsupported event target ${target} for event ${event}`);
         }
       }
       let wrappedCallback = this.decoratePreventDefault(callback);
-      if (this.tracingService !== null && this.tracingService.wrapEventListener) {
+      if (this.tracingService?.wrapEventListener) {
         wrappedCallback = this.tracingService.wrapEventListener(target, event, wrappedCallback);
       }
       return this.eventManager.addEventListener(target, event, wrappedCallback, options);
@@ -59662,6 +59885,131 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       return el;
     }
   };
+
+  // node_modules/@angular/platform-browser/fesm2022/browser-D-u-fknz.mjs
+  var BrowserDomAdapter = class _BrowserDomAdapter extends DomAdapter {
+    supportsDOMEvents = true;
+    static makeCurrent() {
+      setRootDomAdapter(new _BrowserDomAdapter());
+    }
+    onAndCancel(el, evt, listener2, options) {
+      el.addEventListener(evt, listener2, options);
+      return () => {
+        el.removeEventListener(evt, listener2, options);
+      };
+    }
+    dispatchEvent(el, evt) {
+      el.dispatchEvent(evt);
+    }
+    remove(node) {
+      node.remove();
+    }
+    createElement(tagName, doc) {
+      doc = doc || this.getDefaultDocument();
+      return doc.createElement(tagName);
+    }
+    createHtmlDocument() {
+      return document.implementation.createHTMLDocument("fakeTitle");
+    }
+    getDefaultDocument() {
+      return document;
+    }
+    isElementNode(node) {
+      return node.nodeType === Node.ELEMENT_NODE;
+    }
+    isShadowRoot(node) {
+      return node instanceof DocumentFragment;
+    }
+    /** @deprecated No longer being used in Ivy code. To be removed in version 14. */
+    getGlobalEventTarget(doc, target) {
+      if (target === "window") {
+        return window;
+      }
+      if (target === "document") {
+        return doc;
+      }
+      if (target === "body") {
+        return doc.body;
+      }
+      return null;
+    }
+    getBaseHref(doc) {
+      const href = getBaseElementHref();
+      return href == null ? null : relativePath(href);
+    }
+    resetBaseElement() {
+      baseElement = null;
+    }
+    getUserAgent() {
+      return window.navigator.userAgent;
+    }
+    getCookie(name) {
+      return parseCookieValue(document.cookie, name);
+    }
+  };
+  var baseElement = null;
+  function getBaseElementHref() {
+    baseElement = baseElement || document.head.querySelector("base");
+    return baseElement ? baseElement.getAttribute("href") : null;
+  }
+  function relativePath(url) {
+    return new URL(url, document.baseURI).pathname;
+  }
+  var BrowserGetTestability = class {
+    addToWindow(registry) {
+      _global3["getAngularTestability"] = (elem, findInAncestors = true) => {
+        const testability = registry.findTestabilityInTree(elem, findInAncestors);
+        if (testability == null) {
+          throw new RuntimeError(5103, (typeof ngDevMode === "undefined" || ngDevMode) && "Could not find testability for element.");
+        }
+        return testability;
+      };
+      _global3["getAllAngularTestabilities"] = () => registry.getAllTestabilities();
+      _global3["getAllAngularRootElements"] = () => registry.getAllRootElements();
+      const whenAllStable = (callback) => {
+        const testabilities = _global3["getAllAngularTestabilities"]();
+        let count = testabilities.length;
+        const decrement = function() {
+          count--;
+          if (count == 0) {
+            callback();
+          }
+        };
+        testabilities.forEach((testability) => {
+          testability.whenStable(decrement);
+        });
+      };
+      if (!_global3["frameworkStabilizers"]) {
+        _global3["frameworkStabilizers"] = [];
+      }
+      _global3["frameworkStabilizers"].push(whenAllStable);
+    }
+    findTestabilityInTree(registry, elem, findInAncestors) {
+      if (elem == null) {
+        return null;
+      }
+      const t = registry.getTestability(elem);
+      if (t != null) {
+        return t;
+      } else if (!findInAncestors) {
+        return null;
+      }
+      if (getDOM().isShadowRoot(elem)) {
+        return this.findTestabilityInTree(registry, elem.host, true);
+      }
+      return this.findTestabilityInTree(registry, elem.parentElement, true);
+    }
+  };
+  var BrowserXhr = class _BrowserXhr {
+    build() {
+      return new XMLHttpRequest();
+    }
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _BrowserXhr, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _BrowserXhr });
+  };
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: BrowserXhr, decorators: [{
+    type: Injectable
+  }] });
   var DomEventsPlugin = class _DomEventsPlugin extends EventManagerPlugin {
     constructor(doc) {
       super(doc);
@@ -59678,10 +60026,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     removeEventListener(target, eventName, callback, options) {
       return target.removeEventListener(eventName, callback, options);
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DomEventsPlugin, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DomEventsPlugin });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DomEventsPlugin, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DomEventsPlugin });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: DomEventsPlugin, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: DomEventsPlugin, decorators: [{
     type: Injectable
   }], ctorParameters: () => [{ type: void 0, decorators: [{
     type: Inject,
@@ -59832,10 +60180,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     static _normalizeKey(keyName) {
       return keyName === "esc" ? "escape" : keyName;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _KeyEventsPlugin, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _KeyEventsPlugin });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _KeyEventsPlugin, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _KeyEventsPlugin });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: KeyEventsPlugin, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: KeyEventsPlugin, decorators: [{
     type: Injectable
   }], ctorParameters: () => [{ type: void 0, decorators: [{
     type: Inject,
@@ -59863,15 +60211,14 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
   var INTERNAL_BROWSER_PLATFORM_PROVIDERS = [
     { provide: PLATFORM_ID, useValue: PLATFORM_BROWSER_ID },
     { provide: PLATFORM_INITIALIZER, useValue: initDomAdapter, multi: true },
-    { provide: DOCUMENT2, useFactory: _document, deps: [] }
+    { provide: DOCUMENT2, useFactory: _document }
   ];
   var platformBrowser = createPlatformFactory(platformCore, "browser", INTERNAL_BROWSER_PLATFORM_PROVIDERS);
   var BROWSER_MODULE_PROVIDERS_MARKER = new InjectionToken(typeof ngDevMode === "undefined" || ngDevMode ? "BrowserModule Providers Marker" : "");
   var TESTABILITY_PROVIDERS = [
     {
       provide: TESTABILITY_GETTER,
-      useClass: BrowserGetTestability,
-      deps: []
+      useClass: BrowserGetTestability
     },
     {
       provide: TESTABILITY,
@@ -59887,19 +60234,19 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
   ];
   var BROWSER_MODULE_PROVIDERS = [
     { provide: INJECTOR_SCOPE, useValue: "root" },
-    { provide: ErrorHandler, useFactory: errorHandler, deps: [] },
+    { provide: ErrorHandler, useFactory: errorHandler },
     {
       provide: EVENT_MANAGER_PLUGINS,
       useClass: DomEventsPlugin,
       multi: true,
-      deps: [DOCUMENT2, NgZone, PLATFORM_ID]
+      deps: [DOCUMENT2]
     },
     { provide: EVENT_MANAGER_PLUGINS, useClass: KeyEventsPlugin, multi: true, deps: [DOCUMENT2] },
     DomRendererFactory2,
     SharedStylesHost,
     EventManager,
     { provide: RendererFactory2, useExisting: DomRendererFactory2 },
-    { provide: XhrFactory, useClass: BrowserXhr, deps: [] },
+    { provide: XhrFactory, useClass: BrowserXhr },
     typeof ngDevMode === "undefined" || ngDevMode ? { provide: BROWSER_MODULE_PROVIDERS_MARKER, useValue: true } : []
   ];
   var BrowserModule = class _BrowserModule {
@@ -59914,17 +60261,19 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         }
       }
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _BrowserModule, deps: [], target: FactoryTarget2.NgModule });
-    static \u0275mod = \u0275\u0275ngDeclareNgModule({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _BrowserModule, exports: [CommonModule, ApplicationModule] });
-    static \u0275inj = \u0275\u0275ngDeclareInjector({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _BrowserModule, providers: [...BROWSER_MODULE_PROVIDERS, ...TESTABILITY_PROVIDERS], imports: [CommonModule, ApplicationModule] });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _BrowserModule, deps: [], target: FactoryTarget2.NgModule });
+    static \u0275mod = \u0275\u0275ngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _BrowserModule, exports: [CommonModule, ApplicationModule] });
+    static \u0275inj = \u0275\u0275ngDeclareInjector({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _BrowserModule, providers: [...BROWSER_MODULE_PROVIDERS, ...TESTABILITY_PROVIDERS], imports: [CommonModule, ApplicationModule] });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: BrowserModule, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: BrowserModule, decorators: [{
     type: NgModule,
     args: [{
       providers: [...BROWSER_MODULE_PROVIDERS, ...TESTABILITY_PROVIDERS],
       exports: [CommonModule, ApplicationModule]
     }]
   }], ctorParameters: () => [] });
+
+  // node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs
   var Meta = class _Meta {
     _doc;
     _dom;
@@ -60051,10 +60400,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     _getMetaKeyMap(prop) {
       return META_KEYS_MAP[prop] || prop;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _Meta, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _Meta, providedIn: "root" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _Meta, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _Meta, providedIn: "root" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: Meta, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: Meta, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root" }]
   }], ctorParameters: () => [{ type: void 0, decorators: [{
@@ -60082,10 +60431,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     setTitle(newTitle) {
       this._doc.title = newTitle || "";
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _Title, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _Title, providedIn: "root" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _Title, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _Title, providedIn: "root" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: Title, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: Title, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root" }]
   }], ctorParameters: () => [{ type: void 0, decorators: [{
@@ -60179,10 +60528,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       }
       return mc;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _HammerGestureConfig, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _HammerGestureConfig });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _HammerGestureConfig, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _HammerGestureConfig });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: HammerGestureConfig, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: HammerGestureConfig, decorators: [{
     type: Injectable
   }] });
   var HammerGesturesPlugin = class _HammerGesturesPlugin extends EventManagerPlugin {
@@ -60262,10 +60611,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     isCustomEvent(eventName) {
       return this._config.events.indexOf(eventName) > -1;
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _HammerGesturesPlugin, deps: [{ token: DOCUMENT2 }, { token: HAMMER_GESTURE_CONFIG }, { token: Injector }, { token: HAMMER_LOADER, optional: true }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _HammerGesturesPlugin });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _HammerGesturesPlugin, deps: [{ token: DOCUMENT2 }, { token: HAMMER_GESTURE_CONFIG }, { token: Injector }, { token: HAMMER_LOADER, optional: true }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _HammerGesturesPlugin });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: HammerGesturesPlugin, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: HammerGesturesPlugin, decorators: [{
     type: Injectable
   }], ctorParameters: () => [{ type: void 0, decorators: [{
     type: Inject,
@@ -60280,19 +60629,19 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     args: [HAMMER_LOADER]
   }] }] });
   var HammerModule = class _HammerModule {
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _HammerModule, deps: [], target: FactoryTarget2.NgModule });
-    static \u0275mod = \u0275\u0275ngDeclareNgModule({ minVersion: "14.0.0", version: "19.1.4", ngImport: core_exports, type: _HammerModule });
-    static \u0275inj = \u0275\u0275ngDeclareInjector({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _HammerModule, providers: [
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _HammerModule, deps: [], target: FactoryTarget2.NgModule });
+    static \u0275mod = \u0275\u0275ngDeclareNgModule({ minVersion: "14.0.0", version: "19.2.14", ngImport: core_exports, type: _HammerModule });
+    static \u0275inj = \u0275\u0275ngDeclareInjector({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _HammerModule, providers: [
       {
         provide: EVENT_MANAGER_PLUGINS,
         useClass: HammerGesturesPlugin,
         multi: true,
         deps: [DOCUMENT2, HAMMER_GESTURE_CONFIG, Injector, [new Optional(), HAMMER_LOADER]]
       },
-      { provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig, deps: [] }
+      { provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
     ] });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: HammerModule, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: HammerModule, decorators: [{
     type: NgModule,
     args: [{
       providers: [
@@ -60302,15 +60651,15 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
           multi: true,
           deps: [DOCUMENT2, HAMMER_GESTURE_CONFIG, Injector, [new Optional(), HAMMER_LOADER]]
         },
-        { provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig, deps: [] }
+        { provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig }
       ]
     }]
   }] });
   var DomSanitizer = class _DomSanitizer {
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DomSanitizer, deps: [], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DomSanitizer, providedIn: "root", useExisting: forwardRef(() => DomSanitizerImpl) });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DomSanitizer, deps: [], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DomSanitizer, providedIn: "root", useExisting: forwardRef(() => DomSanitizerImpl) });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: DomSanitizer, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: DomSanitizer, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root", useExisting: forwardRef(() => DomSanitizerImpl) }]
   }] });
@@ -60390,10 +60739,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     bypassSecurityTrustResourceUrl(value) {
       return bypassSanitizationTrustResourceUrl(value);
     }
-    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DomSanitizerImpl, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
-    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: _DomSanitizerImpl, providedIn: "root" });
+    static \u0275fac = \u0275\u0275ngDeclareFactory({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DomSanitizerImpl, deps: [{ token: DOCUMENT2 }], target: FactoryTarget2.Injectable });
+    static \u0275prov = \u0275\u0275ngDeclareInjectable({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: _DomSanitizerImpl, providedIn: "root" });
   };
-  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.1.4", ngImport: core_exports, type: DomSanitizerImpl, decorators: [{
+  \u0275\u0275ngDeclareClassMetadata({ minVersion: "12.0.0", version: "19.2.14", ngImport: core_exports, type: DomSanitizerImpl, decorators: [{
     type: Injectable,
     args: [{ providedIn: "root" }]
   }], ctorParameters: () => [{ type: void 0, decorators: [{
@@ -60408,7 +60757,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     HydrationFeatureKind2[HydrationFeatureKind2["EventReplay"] = 3] = "EventReplay";
     HydrationFeatureKind2[HydrationFeatureKind2["IncrementalHydration"] = 4] = "IncrementalHydration";
   })(HydrationFeatureKind || (HydrationFeatureKind = {}));
-  var VERSION4 = new Version2("19.1.4");
+  var VERSION4 = new Version2("19.2.14");
 
   // src/js/intl-tel-input/data.ts
   var rawCountryData = [
@@ -62898,12 +63247,16 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       const { i18n: i18n2 } = this.options;
       const count = this.countryList.childElementCount;
       let searchText;
-      if (count === 0) {
-        searchText = i18n2.zeroSearchResults;
-      } else if (count === 1) {
-        searchText = i18n2.oneSearchResult;
+      if ("searchResultsText" in i18n2) {
+        searchText = i18n2.searchResultsText(count);
       } else {
-        searchText = i18n2.multipleSearchResults.replace("${count}", count.toString());
+        if (count === 0) {
+          searchText = i18n2.zeroSearchResults;
+        } else if (count === 1) {
+          searchText = i18n2.oneSearchResult;
+        } else {
+          searchText = i18n2.multipleSearchResults.replace("${count}", count.toString());
+        }
       }
       this.searchResultsA11yText.textContent = searchText;
     }
@@ -63337,6 +63690,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     //********************
     //* Remove plugin.
     destroy() {
+      this.telInput.iti = void 0;
       const { allowDropdown, separateDialCode } = this.options;
       if (allowDropdown) {
         this._closeDropdown();
@@ -63522,6 +63876,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       iti._init();
       input2.setAttribute("data-intl-tel-input-id", iti.id.toString());
       intlTelInput.instances[iti.id] = iti;
+      input2.iti = iti;
       return iti;
     },
     {
@@ -63540,7 +63895,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       attachUtils,
       startedLoadingUtilsScript: false,
       startedLoadingAutoCountry: false,
-      version: "25.2.1"
+      version: "25.3.2"
     }
   );
   var intl_tel_input_default = intlTelInput;
@@ -64309,7 +64664,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         [
           ,
           ,
-          "3(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|(?:(?:11[1-8]|670)\\d|2(?:21[2-6]|(?:3[06]|49)4|6(?:04|1[2-8])|9[17][4-6])|3(?:(?:36|64)4|4(?:1[2-8]|[25][4-6]|84)|5(?:1[2-9]|[38][4-6])|8(?:[17][2-6]|3[4-6]|8[3-68])))\\d{6}|(?:2(?:23|64|99)|3(?:43|85))[3-6]\\d{6}|(?:2(?:657|9(?:54|66))|3(?:487|7(?:55|77)|865))[2-8]\\d{5}|(?:2(?:[28]0|37|6[36]|9[48])|3(?:62|7[069]|80))[45]\\d{6}|(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|47[35]|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|(?:2(?:2(?:62|81)|320|622|9(?:42|83))|3(?:329|4(?:62|76|89)|564))[2-6]\\d{5}|(?:2(?:284|3(?:02|23)|477|920)|3(?:4(?:46|[89]2)|541|878))[2-7]\\d{5}|2(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|(?:2(?:257|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|71)|5(?:25|37|4[347]|71)|7(?:18|35|5[17])))[3-6]\\d{5}|(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[03-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[14]|4[13]|5[468]|7[2-5]|8[26])|8(?:2[5-7]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}",
+          "3(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|47[35]|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|(?:2(?:657|9(?:54|66))|3(?:48[27]|7(?:55|77)|8(?:65|78)))[2-8]\\d{5}|(?:2(?:284|3(?:02|23)|477|622|920)|3(?:4(?:46|89|92)|541))[2-7]\\d{5}|(?:(?:11[1-8]|670)\\d|2(?:2(?:0[45]|1[2-6]|3[3-6])|3(?:[06]4|7[45])|494|6(?:04|1[2-8]|[36][45]|4[3-6])|80[45]|9(?:[17][4-6]|[48][45]|9[3-6]))|3(?:364|4(?:1[2-8]|[25][4-6]|3[3-6]|84)|5(?:1[2-9]|[38][4-6])|6(?:2[45]|44)|7[069][45]|8(?:0[45]|1[2-7]|3[4-6]|5[3-6]|7[2-6]|8[3-68])))\\d{6}|(?:2(?:2(?:62|81)|320|9(?:42|83))|3(?:329|4(?:62|7[16])|5(?:43|64)|7(?:18|5[17])))[2-6]\\d{5}|2(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|(?:2(?:257|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|64)|5(?:25|37|4[47]|71)|7(?:35|72)|825))[3-6]\\d{5}|(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[035-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[14]|4[13]|5[468]|7[3-5]|8[26])|8(?:2[67]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}",
           ,
           ,
           ,
@@ -64322,7 +64677,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         [
           ,
           ,
-          "93(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|(?:675\\d|9(?:11[1-8]\\d|2(?:21[2-6]|(?:3[06]|49)4|6(?:04|1[2-8])|9[17][4-6])|3(?:(?:36|64)4|4(?:1[2-8]|[25][4-6]|84)|5(?:1[2-9]|[38][4-6])|8(?:[17][2-6]|3[4-6]|8[3-68]))))\\d{6}|9(?:2(?:23|64|99)|3(?:43|85))[3-6]\\d{6}|9(?:2(?:657|9(?:54|66))|3(?:487|7(?:55|77)|865))[2-8]\\d{5}|9(?:2(?:[28]0|37|6[36]|9[48])|3(?:62|7[069]|80))[45]\\d{6}|9(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|47[35]|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|9(?:2(?:2(?:62|81)|320|622|9(?:42|83))|3(?:329|4(?:62|76|89)|564))[2-6]\\d{5}|9(?:2(?:284|3(?:02|23)|477|920)|3(?:4(?:46|[89]2)|541|878))[2-7]\\d{5}|92(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|9(?:2(?:257|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|71)|5(?:25|37|4[347]|71)|7(?:18|35|5[17])))[3-6]\\d{5}|9(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[03-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[14]|4[13]|5[468]|7[2-5]|8[26])|8(?:2[5-7]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}",
+          "93(?:7(?:1[15]|81)|8(?:21|4[16]|69|9[12]))[46]\\d{5}|9(?:2(?:2(?:2[59]|44|52)|3(?:26|44)|47[35]|9(?:[07]2|2[26]|34|46))|3327)[45]\\d{5}|9(?:2(?:657|9(?:54|66))|3(?:48[27]|7(?:55|77)|8(?:65|78)))[2-8]\\d{5}|9(?:2(?:284|3(?:02|23)|477|622|920)|3(?:4(?:46|89|92)|541))[2-7]\\d{5}|(?:675\\d|9(?:11[1-8]\\d|2(?:2(?:0[45]|1[2-6]|3[3-6])|3(?:[06]4|7[45])|494|6(?:04|1[2-8]|[36][45]|4[3-6])|80[45]|9(?:[17][4-6]|[48][45]|9[3-6]))|3(?:364|4(?:1[2-8]|[25][4-6]|3[3-6]|84)|5(?:1[2-9]|[38][4-6])|6(?:2[45]|44)|7[069][45]|8(?:0[45]|1[2-7]|3[4-6]|5[3-6]|7[2-6]|8[3-68]))))\\d{6}|9(?:2(?:2(?:62|81)|320|9(?:42|83))|3(?:329|4(?:62|7[16])|5(?:43|64)|7(?:18|5[17])))[2-6]\\d{5}|92(?:2(?:21|4[23]|6[145]|7[1-4]|8[356]|9[267])|3(?:16|3[13-8]|43|5[346-8]|9[3-5])|6(?:2[46]|4[78]|5[1568])|9(?:03|2[1457-9]|3[1356]|4[08]|[56][23]|82))4\\d{5}|9(?:2(?:257|3(?:24|46|92)|9(?:01|23|64))|3(?:4(?:42|64)|5(?:25|37|4[47]|71)|7(?:35|72)|825))[3-6]\\d{5}|9(?:2(?:2(?:02|2[3467]|4[156]|5[45]|6[6-8]|91)|3(?:1[47]|25|[45][25]|96)|47[48]|625|932)|3(?:38[2578]|4(?:0[0-24-9]|3[78]|4[457]|58|6[035-9]|72|83|9[136-8])|5(?:2[124]|[368][23]|4[2689]|7[2-6])|7(?:16|2[15]|3[14]|4[13]|5[468]|7[3-5]|8[26])|8(?:2[67]|3[278]|4[3-5]|5[78]|6[1-378]|[78]7|94)))[4-6]\\d{5}",
           ,
           ,
           ,
@@ -64432,41 +64787,48 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         [3]
-      ], [, , "1(?:11\\d|[2-9]\\d{3,11})|(?:316|463|(?:51|66|73)2)\\d{3,10}|(?:2(?:1[467]|2[13-8]|5[2357]|6[1-46-8]|7[1-8]|8[124-7]|9[1458])|3(?:1[1-578]|3[23568]|4[5-7]|5[1378]|6[1-38]|8[3-68])|4(?:2[1-8]|35|7[1368]|8[2457])|5(?:2[1-8]|3[357]|4[147]|5[12578]|6[37])|6(?:13|2[1-47]|4[135-8]|5[468])|7(?:2[1-8]|35|4[13478]|5[68]|6[16-8]|7[1-6]|9[45]))\\d{4,10}", , , , "1234567890", , , , [3]], [, , "6(?:5[0-3579]|6[013-9]|[7-9]\\d)\\d{4,10}", , , , "664123456", , , [7, 8, 9, 10, 11, 12, 13]], [
+      ], [, , "1(?:11\\d|[2-9]\\d{3,11})|(?:316|463)\\d{3,10}|648[34]\\d{3,9}|(?:51|66|73)2\\d{3,10}|(?:2(?:1[467]|2[13-8]|5[2357]|6[1-46-8]|7[1-8]|8[124-7]|9[1458])|3(?:1[1-578]|3[23568]|4[5-7]|5[1378]|6[1-38]|8[3-68])|4(?:2[1-8]|35|7[1368]|8[2457])|5(?:2[1-8]|3[357]|4[147]|5[12578]|6[37])|6(?:13|2[1-47]|4[135-7]|5[468])|7(?:2[1-8]|35|4[13478]|5[68]|6[16-8]|7[1-6]|9[45]))\\d{4,10}", , , , "1234567890", , , , [3]], [
         ,
         ,
-        "800\\d{6,10}",
+        "6(?:485|(?:5[0-3579]|6[013-9]|[7-9]\\d)\\d)\\d{3,9}",
         ,
         ,
         ,
-        "800123456",
+        "664123456",
         ,
         ,
-        [9, 10, 11, 12, 13]
-      ], [, , "(?:8[69][2-68]|9(?:0[01]|3[019]))\\d{6,10}", , , , "900123456", , , [9, 10, 11, 12, 13]], [, , "8(?:10|2[018])\\d{6,10}|828\\d{5}", , , , "810123456", , , [8, 9, 10, 11, 12, 13]], [, , , , , , , , , [-1]], [, , "5(?:0[1-9]|17|[79]\\d)\\d{2,10}|7[28]0\\d{6,10}", , , , "780123456", , , [5, 6, 7, 8, 9, 10, 11, 12, 13]], "AT", 43, "00", "0", , , "0", , , , [
-        [, "(\\d{4})", "$1", ["14"]],
-        [, "(\\d)(\\d{3,12})", "$1 $2", ["1(?:11|[2-9])"], "0$1"],
-        [, "(\\d{3})(\\d{2})", "$1 $2", ["517"], "0$1"],
-        [, "(\\d{2})(\\d{3,5})", "$1 $2", ["5[079]"], "0$1"],
-        [, "(\\d{6})", "$1", ["[18]"]],
-        [, "(\\d{3})(\\d{3,10})", "$1 $2", ["(?:31|4)6|51|6(?:5[0-3579]|[6-9])|7(?:20|32|8)|[89]"], "0$1"],
-        [, "(\\d{4})(\\d{3,9})", "$1 $2", ["[2-467]|5[2-6]"], "0$1"],
-        [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["5"], "0$1"],
-        [, "(\\d{2})(\\d{4})(\\d{4,7})", "$1 $2 $3", ["5"], "0$1"]
-      ], [[, "(\\d)(\\d{3,12})", "$1 $2", ["1(?:11|[2-9])"], "0$1"], [, "(\\d{3})(\\d{2})", "$1 $2", ["517"], "0$1"], [, "(\\d{2})(\\d{3,5})", "$1 $2", ["5[079]"], "0$1"], [
+        [7, 8, 9, 10, 11, 12, 13]
+      ], [, , "800\\d{6,10}", , , , "800123456", , , [9, 10, 11, 12, 13]], [, , "(?:8[69][2-68]|9(?:0[01]|3[019]))\\d{6,10}", , , , "900123456", , , [9, 10, 11, 12, 13]], [, , "8(?:10|2[018])\\d{6,10}|828\\d{5}", , , , "810123456", , , [8, 9, 10, 11, 12, 13]], [, , , , , , , , , [-1]], [, , "5(?:0[1-9]|17|[79]\\d)\\d{2,10}|7[28]0\\d{6,10}", , , , "780123456", , , [5, 6, 7, 8, 9, 10, 11, 12, 13]], "AT", 43, "00", "0", , , "0", , , , [[, "(\\d{4})", "$1", ["14"]], [, "(\\d)(\\d{3,12})", "$1 $2", ["1(?:11|[2-9])"], "0$1"], [, "(\\d{3})(\\d{2})", "$1 $2", ["517"], "0$1"], [
         ,
-        "(\\d{3})(\\d{3,10})",
+        "(\\d{2})(\\d{3,5})",
         "$1 $2",
-        ["(?:31|4)6|51|6(?:5[0-3579]|[6-9])|7(?:20|32|8)|[89]"],
+        ["5[079]"],
         "0$1"
-      ], [, "(\\d{4})(\\d{3,9})", "$1 $2", ["[2-467]|5[2-6]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["5"], "0$1"], [, "(\\d{2})(\\d{4})(\\d{4,7})", "$1 $2 $3", ["5"], "0$1"]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, "(\\d{6})", "$1", ["[18]"]], [, "(\\d{3})(\\d{3,10})", "$1 $2", ["(?:31|4)6|51|6(?:48|5[0-3579]|[6-9])|7(?:20|32|8)|[89]", "(?:31|4)6|51|6(?:485|5[0-3579]|[6-9])|7(?:20|32|8)|[89]"], "0$1"], [, "(\\d{4})(\\d{3,9})", "$1 $2", ["[2-467]|5[2-6]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["5"], "0$1"], [, "(\\d{2})(\\d{4})(\\d{4,7})", "$1 $2 $3", ["5"], "0$1"]], [[, "(\\d)(\\d{3,12})", "$1 $2", ["1(?:11|[2-9])"], "0$1"], [, "(\\d{3})(\\d{2})", "$1 $2", ["517"], "0$1"], [
+        ,
+        "(\\d{2})(\\d{3,5})",
+        "$1 $2",
+        ["5[079]"],
+        "0$1"
+      ], [, "(\\d{3})(\\d{3,10})", "$1 $2", ["(?:31|4)6|51|6(?:48|5[0-3579]|[6-9])|7(?:20|32|8)|[89]", "(?:31|4)6|51|6(?:485|5[0-3579]|[6-9])|7(?:20|32|8)|[89]"], "0$1"], [, "(\\d{4})(\\d{3,9})", "$1 $2", ["[2-467]|5[2-6]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["5"], "0$1"], [, "(\\d{2})(\\d{4})(\\d{4,7})", "$1 $2 $3", ["5"], "0$1"]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       AU: [
         ,
-        [, , "1(?:[0-79]\\d{7}(?:\\d(?:\\d{2})?)?|8[0-24-9]\\d{7})|[2-478]\\d{8}|1\\d{4,7}", , , , , , , [5, 6, 7, 8, 9, 10, 12]],
         [
           ,
           ,
-          "(?:(?:(?:2(?:[0-26-9]\\d|3[0-8]|4[02-9]|5[0135-9])|7(?:[013-57-9]\\d|2[0-8]))\\d|3(?:(?:[0-3589]\\d|6[1-9]|7[0-35-9])\\d|4(?:[0-578]\\d|90)))\\d\\d|8(?:51(?:0(?:0[03-9]|[12479]\\d|3[2-9]|5[0-8]|6[1-9]|8[0-7])|1(?:[0235689]\\d|1[0-69]|4[0-589]|7[0-47-9])|2(?:0[0-79]|[18][13579]|2[14-9]|3[0-46-9]|[4-6]\\d|7[89]|9[0-4])|3\\d\\d)|(?:6[0-8]|[78]\\d)\\d{3}|9(?:[02-9]\\d{3}|1(?:(?:[0-58]\\d|6[0135-9])\\d|7(?:0[0-24-9]|[1-9]\\d)|9(?:[0-46-9]\\d|5[0-79])))))\\d{3}",
+          "1(?:[0-79]\\d{7}(?:\\d(?:\\d{2})?)?|8[0-24-9]\\d{7})|[2-478]\\d{8}|1\\d{4,7}",
+          ,
+          ,
+          ,
+          ,
+          ,
+          ,
+          [5, 6, 7, 8, 9, 10, 12]
+        ],
+        [
+          ,
+          ,
+          "(?:(?:2(?:(?:[0-26-9]\\d|3[0-8]|5[0135-9])\\d|4(?:[02-9]\\d|10))|3(?:(?:[0-3589]\\d|6[1-9]|7[0-35-9])\\d|4(?:[0-578]\\d|90))|7(?:[013-57-9]\\d|2[0-8])\\d)\\d\\d|8(?:51(?:0(?:0[03-9]|[12479]\\d|3[2-9]|5[0-8]|6[1-9]|8[0-7])|1(?:[0235689]\\d|1[0-69]|4[0-589]|7[0-47-9])|2(?:0[0-79]|[18][13579]|2[14-9]|3[0-46-9]|[4-6]\\d|7[89]|9[0-4])|[34]\\d\\d)|(?:6[0-8]|[78]\\d)\\d{3}|9(?:[02-9]\\d{3}|1(?:(?:[0-58]\\d|6[0135-9])\\d|7(?:0[0-24-9]|[1-9]\\d)|9(?:[0-46-9]\\d|5[0-79])))))\\d{3}",
           ,
           ,
           ,
@@ -64476,7 +64838,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
           [9],
           [8]
         ],
-        [, , "4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}", , , , "412345678", , , [9]],
+        [, , "4(?:79[01]|83[0-389]|94[0-478])\\d{5}|4(?:[0-36]\\d|4[047-9]|[58][0-24-9]|7[02-8]|9[0-37-9])\\d{6}", , , , "412345678", , , [9]],
         [, , "180(?:0\\d{3}|2)\\d{3}", , , , "1800123456", , , [7, 10]],
         [, , "190[0-26]\\d{6}", , , , "1900123456", , , [10]],
         [, , "13(?:00\\d{6}(?:\\d{2})?|45[0-4]\\d{3})|13\\d{4}", , , , "1300123456", , , [6, 8, 10, 12]],
@@ -64620,7 +64982,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ["3(?:[67]|8[013-9])|4(?:6[168]|7|[89][18])|5(?:6[128]|9)|6(?:[15]|28|4[14])|7[2-589]|8(?:0[014-9]|[12])|9[358]|(?:3[2-5]|4[235]|5[2-578]|6[0389]|76|8[3-7]|9[24])1|(?:44|66)[01346-9]"],
         "0$1"
       ], [, "(\\d{4})(\\d{3,6})", "$1-$2", ["[13-9]|2[23]"], "0$1"], [, "(\\d)(\\d{7,8})", "$1-$2", ["2"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BE: [, [, , "4\\d{8}|[1-9]\\d{7}", , , , , , , [8, 9]], [, , "80[2-8]\\d{5}|(?:1[0-69]|[23][2-8]|4[23]|5\\d|6[013-57-9]|71|8[1-79]|9[2-4])\\d{6}", , , , "12345678", , , [8]], [, , "4[5-9]\\d{7}", , , , "470123456", , , [9]], [, , "800[1-9]\\d{4}", , , , "80012345", , , [8]], [, , "(?:70(?:2[0-57]|3[04-7]|44|6[4-69]|7[0579])|90\\d\\d)\\d{4}", , , , "90012345", , , [8]], [
+      BE: [, [, , "4\\d{8}|[1-9]\\d{7}", , , , , , , [8, 9]], [, , "80[2-8]\\d{5}|(?:1[0-69]|[23][2-8]|4[23]|5\\d|6[013-57-9]|71|8[1-79]|9[2-4])\\d{6}", , , , "12345678", , , [8]], [, , "4[5-9]\\d{7}", , , , "470123456", , , [9]], [, , "800[1-9]\\d{4}", , , , "80012345", , , [8]], [, , "(?:70(?:2[0-57]|3[04-7]|44|6[04-69]|7[0579])|90\\d\\d)\\d{4}", , , , "90012345", , , [8]], [
         ,
         ,
         "7879\\d{4}",
@@ -64631,11 +64993,11 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [8]
-      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BE", 32, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:80|9)0"], "0$1"], [, "(\\d)(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[239]|4[23]"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[15-8]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["4"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "78(?:0[57]|1[014-8]|2[25]|3[15-8]|48|[56]0|7[06-8]|9\\d)\\d{4}", , , , "78102345", , , [8]], , , [, , , , , , , , , [-1]]],
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BE", 32, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:80|9)0"], "0$1"], [, "(\\d)(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[239]|4[23]"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[15-8]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["4"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "78(?:0[578]|1[014-8]|2[25]|3[15-8]|48|5[05]|60|7[06-8]|9\\d)\\d{4}", , , , "78102345", , , [8]], , , [, , , , , , , , , [-1]]],
       BF: [, [
         ,
         ,
-        "[025-7]\\d{7}",
+        "(?:[025-7]\\d|44)\\d{6}",
         ,
         ,
         ,
@@ -64643,41 +65005,65 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [8]
-      ], [, , "2(?:0(?:49|5[23]|6[5-7]|9[016-9])|4(?:4[569]|5[4-6]|6[5-7]|7[0179])|5(?:[34]\\d|50|6[5-7]))\\d{4}", , , , "20491234"], [, , "(?:0[1-7]|5[0-8]|[67]\\d)\\d{6}", , , , "70123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BF", 226, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[025-7]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BG: [
+      ], [, , "2(?:0(?:49|5[23]|6[5-7]|9[016-9])|4(?:4[569]|5[4-6]|6[5-7]|7[0179])|5(?:[34]\\d|50|6[5-7]))\\d{4}", , , , "20491234"], [, , "(?:0[1-7]|44|5[0-8]|[67]\\d)\\d{6}", , , , "70123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BF", 226, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[024-7]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      BG: [, [
         ,
-        [, , "00800\\d{7}|[2-7]\\d{6,7}|[89]\\d{6,8}|2\\d{5}", , , , , , , [6, 7, 8, 9, 12], [4, 5]],
-        [, , "2\\d{5,7}|(?:43[1-6]|70[1-9])\\d{4,5}|(?:[36]\\d|4[124-7]|[57][1-9]|8[1-6]|9[1-7])\\d{5,6}", , , , "2123456", , , [6, 7, 8], [4, 5]],
-        [, , "(?:43[07-9]|99[69]\\d)\\d{5}|(?:8[7-9]|98)\\d{7}", , , , "43012345", , , [8, 9]],
-        [, , "(?:00800\\d\\d|800)\\d{5}", , , , "80012345", , , [8, 12]],
-        [, , "90\\d{6}", , , , "90123456", , , [8]],
-        [, , "700\\d{5}", , , , "70012345", , , [8]],
+        ,
+        "00800\\d{7}|[2-7]\\d{6,7}|[89]\\d{6,8}|2\\d{5}",
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [6, 7, 8, 9, 12],
+        [4, 5]
+      ], [, , "2\\d{5,7}|(?:43[1-6]|70[1-9])\\d{4,5}|(?:[36]\\d|4[124-7]|[57][1-9]|8[1-6]|9[1-7])\\d{5,6}", , , , "2123456", , , [6, 7, 8], [4, 5]], [, , "(?:43[07-9]|99[69]\\d)\\d{5}|(?:8[7-9]|98)\\d{7}", , , , "43012345", , , [8, 9]], [, , "(?:00800\\d\\d|800)\\d{5}", , , , "80012345", , , [8, 12]], [, , "90\\d{6}", , , , "90123456", , , [8]], [, , "700\\d{5}", , , , "70012345", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BG", 359, "00", "0", , , "0", , , , [[, "(\\d{6})", "$1", ["1"]], [, "(\\d)(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["2"], "0$1"], [
+        ,
+        "(\\d{3})(\\d{4})",
+        "$1 $2",
+        ["43[1-6]|70[1-9]"],
+        "0$1"
+      ], [, "(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["[356]|4[124-7]|7[1-9]|8[1-6]|9[1-7]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:70|8)0"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["43[1-7]|7"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[48]|9[08]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"]], [[, "(\\d)(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["2"], "0$1"], [
+        ,
+        "(\\d{3})(\\d{4})",
+        "$1 $2",
+        ["43[1-6]|70[1-9]"],
+        "0$1"
+      ], [, "(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["[356]|4[124-7]|7[1-9]|8[1-6]|9[1-7]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:70|8)0"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["43[1-7]|7"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[48]|9[08]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      BH: [
+        ,
+        [
+          ,
+          ,
+          "[136-9]\\d{7}",
+          ,
+          ,
+          ,
+          ,
+          ,
+          ,
+          [8]
+        ],
+        [, , "(?:1(?:3[1356]|6[0156]|7\\d)\\d|6(?:1[16]\\d|500|6(?:0\\d|3[12]|44|55|7[7-9]|88)|9[69][69])|7(?:[07]\\d\\d|1(?:11|78)))\\d{4}", , , , "17001234"],
+        [, , "(?:3(?:[0-79]\\d|8[0-57-9])\\d|6(?:3(?:00|33|6[16])|441|6(?:3[03-9]|[69]\\d|7[0-689])))\\d{4}", , , , "36001234"],
+        [, , "8[02369]\\d{6}", , , , "80123456"],
+        [, , "(?:87|9[0-8])\\d{6}", , , , "90123456"],
+        [, , "84\\d{6}", , , , "84123456"],
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
-        "BG",
-        359,
+        "BH",
+        973,
         "00",
-        "0",
-        ,
-        ,
-        "0",
         ,
         ,
         ,
-        [[, "(\\d{6})", "$1", ["1"]], [, "(\\d)(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["2"], "0$1"], [
-          ,
-          "(\\d{3})(\\d{4})",
-          "$1 $2",
-          ["43[1-6]|70[1-9]"],
-          "0$1"
-        ], [, "(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["[356]|4[124-7]|7[1-9]|8[1-6]|9[1-7]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:70|8)0"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["43[1-7]|7"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[48]|9[08]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"]],
-        [[, "(\\d)(\\d)(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["2"], "0$1"], [
-          ,
-          "(\\d{3})(\\d{4})",
-          "$1 $2",
-          ["43[1-6]|70[1-9]"],
-          "0$1"
-        ], [, "(\\d)(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["[356]|4[124-7]|7[1-9]|8[1-6]|9[1-7]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["(?:70|8)0"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["43[1-7]|7"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[48]|9[08]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["9"], "0$1"]],
+        ,
+        ,
+        ,
+        ,
+        [[, "(\\d{4})(\\d{4})", "$1 $2", ["[13679]|8[02-4679]"]]],
+        ,
         [, , , , , , , , , [-1]],
         ,
         ,
@@ -64687,49 +65073,44 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      BH: [, [, , "[136-9]\\d{7}", , , , , , , [8]], [
+      BI: [, [, , "(?:[267]\\d|31)\\d{6}", , , , , , , [8]], [, , "(?:22|31)\\d{6}", , , , "22201234"], [, , "(?:29|6[124-9]|7[125-9])\\d{6}", , , , "79561234"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BI", 257, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2367]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      BJ: [, [, , "(?:01\\d|[24-689])\\d{7}", , , , , , , [8, 10]], [
         ,
         ,
-        "(?:1(?:3[1356]|6[0156]|7\\d)\\d|6(?:1[16]\\d|500|6(?:0\\d|3[12]|44|55|7[7-9]|88)|9[69][69])|7(?:[07]\\d\\d|1(?:11|78)))\\d{4}",
-        ,
-        ,
-        ,
-        "17001234"
-      ], [, , "(?:3(?:[0-79]\\d|8[0-57-9])\\d|6(?:3(?:00|33|6[16])|441|6(?:3[03-9]|[69]\\d|7[0-689])))\\d{4}", , , , "36001234"], [, , "8[02369]\\d{6}", , , , "80123456"], [, , "(?:87|9[0-8])\\d{6}", , , , "90123456"], [, , "84\\d{6}", , , , "84123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BH", 973, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["[13679]|8[02-4679]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BI: [, [, , "(?:[267]\\d|31)\\d{6}", , , , , , , [8]], [, , "(?:22|31)\\d{6}", , , , "22201234"], [
-        ,
-        ,
-        "(?:29|[67][125-9])\\d{6}",
+        "2090\\d{4}|(?:012\\d\\d|2(?:02|1[037]|2[45]|3[68]|4\\d))\\d{5}",
         ,
         ,
         ,
-        "79561234"
-      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BI", 257, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[2367]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BJ: [, [, , "(?:01\\d|[24-689])\\d{7}", , , , , , , [8, 10]], [, , "2090\\d{4}|(?:012\\d\\d|2(?:02|1[037]|2[45]|3[68]|4\\d))\\d{5}", , , , "0120211234"], [, , "(?:01(?:2[5-9]|[4-69]\\d)|4[0-8]|[56]\\d|9[013-9])\\d{6}", , , , "0195123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [
+        "0120211234"
+      ], [, , "(?:01(?:2[5-9]|[4-69]\\d)|4[0-8]|[56]\\d|9[013-9])\\d{6}", , , , "0195123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "857[58]\\d{4}", , , , "85751234", , , [8]], "BJ", 229, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-689]"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["0"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "81\\d{6}", , , , "81123456", , , [8]], , , [, , , , , , , , , [-1]]],
+      BL: [, [
+        ,
+        ,
+        "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}",
         ,
         ,
         ,
         ,
         ,
         ,
-        ,
-        ,
-        ,
-        [-1]
-      ], [, , , , , , , , , [-1]], [, , "857[58]\\d{4}", , , , "85751234", , , [8]], "BJ", 229, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-689]"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["0"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "81\\d{6}", , , , "81123456", , , [8]], , , [, , , , , , , , , [-1]]],
-      BL: [, [, , "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", , , , , , , [9]], [, , "590(?:2[7-9]|3[3-7]|5[12]|87)\\d{4}", , , , "590271234"], [
-        ,
-        ,
-        "(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}",
-        ,
-        ,
-        ,
-        "690001234"
-      ], [, , "80[0-5]\\d{6}", , , , "800012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}", , , , "976012345"], "BL", 590, "00", "0", , , "0", , , , , , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        [9]
+      ], [, , "590(?:2[7-9]|3[3-7]|5[12]|87)\\d{4}", , , , "590271234"], [, , "(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}", , , , "690001234"], [, , "80[0-5]\\d{6}", , , , "800012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:(?:39[5-7]|76[018])\\d|475[0-6])\\d{4}", , , , "976012345"], "BL", 590, "00", "0", , , "0", , , , , , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       BM: [
         ,
         [, , "(?:441|[58]\\d\\d|900)\\d{7}", , , , , , , [10], [7]],
-        [, , "441(?:[46]\\d\\d|5(?:4\\d|60|89))\\d{4}", , , , "4414123456", , , , [7]],
+        [
+          ,
+          ,
+          "441(?:[46]\\d\\d|5(?:4\\d|60|89))\\d{4}",
+          ,
+          ,
+          ,
+          "4414123456",
+          ,
+          ,
+          ,
+          [7]
+        ],
         [, , "441(?:[2378]\\d|5[0-39]|9[02])\\d{5}", , , , "4413701234", , , , [7]],
         [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456"],
         [, , "900[2-9]\\d{6}", , , , "9002123456"],
@@ -64757,142 +65138,192 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      BN: [, [, , "[2-578]\\d{6}", , , , , , , [7]], [
+      BN: [, [, , "[2-578]\\d{6}", , , , , , , [7]], [, , "22[0-7]\\d{4}|(?:2[013-9]|[34]\\d|5[0-25-9])\\d{5}", , , , "2345678"], [, , "(?:22[89]|[78]\\d\\d)\\d{4}", , , , "7123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "5[34]\\d{5}", , , , "5345678"], "BN", 673, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[2-578]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      BO: [, [
         ,
         ,
-        "22[0-7]\\d{4}|(?:2[013-9]|[34]\\d|5[0-25-9])\\d{5}",
-        ,
-        ,
-        ,
-        "2345678"
-      ], [, , "(?:22[89]|[78]\\d\\d)\\d{4}", , , , "7123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "5[34]\\d{5}", , , , "5345678"], "BN", 673, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[2-578]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BO: [, [, , "8001\\d{5}|(?:[2-467]\\d|50)\\d{6}", , , , , , , [8, 9], [7]], [
-        ,
-        ,
-        "(?:2(?:2\\d\\d|5(?:11|[258]\\d|9[67])|6(?:12|2\\d|9[34])|8(?:2[34]|39|62))|3(?:3\\d\\d|4(?:6\\d|8[24])|8(?:25|42|5[257]|86|9[25])|9(?:[27]\\d|3[2-4]|4[248]|5[24]|6[2-6]))|4(?:4\\d\\d|6(?:11|[24689]\\d|72)))\\d{4}",
+        "8001\\d{5}|(?:[2-467]\\d|50)\\d{6}",
         ,
         ,
         ,
-        "22123456",
         ,
         ,
-        [8],
+        ,
+        [8, 9],
         [7]
-      ], [, , "[67]\\d{7}", , , , "71234567", , , [8]], [, , "8001[07]\\d{4}", , , , "800171234", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "50\\d{6}", , , , "50123456", , , [8], [7]], "BO", 591, "00(?:1\\d)?", "0", , , "0(1\\d)?", , , , [[, "(\\d)(\\d{7})", "$1 $2", ["[235]|4[46]"], , "0$CC $1"], [, "(\\d{8})", "$1", ["[67]"], , "0$CC $1"], [, "(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["8"], , "0$CC $1"]], , [, , , , , , , , , [-1]], , , [, , "8001[07]\\d{4}", , , , , , , [9]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BQ: [, [
+      ], [, , "(?:2(?:2\\d\\d|5(?:11|[258]\\d|9[67])|6(?:12|2\\d|9[34])|8(?:2[34]|39|62))|3(?:3\\d\\d|4(?:6\\d|8[24])|8(?:25|42|5[257]|86|9[25])|9(?:[27]\\d|3[2-4]|4[248]|5[24]|6[2-6]))|4(?:4\\d\\d|6(?:11|[24689]\\d|72)))\\d{4}", , , , "22123456", , , [8], [7]], [, , "[67]\\d{7}", , , , "71234567", , , [8]], [, , "8001[07]\\d{4}", , , , "800171234", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "50\\d{6}", , , , "50123456", , , [8], [7]], "BO", 591, "00(?:1\\d)?", "0", , , "0(1\\d)?", , , , [[
         ,
+        "(\\d)(\\d{7})",
+        "$1 $2",
+        ["[235]|4[46]"],
         ,
-        "(?:[34]1|7\\d)\\d{5}",
+        "0$CC $1"
+      ], [, "(\\d{8})", "$1", ["[67]"], , "0$CC $1"], [, "(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["8"], , "0$CC $1"]], , [, , , , , , , , , [-1]], , , [, , "8001[07]\\d{4}", , , , , , , [9]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      BQ: [
         ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        [7]
-      ], [, , "(?:318[023]|41(?:6[023]|70)|7(?:1[578]|2[05]|50)\\d)\\d{3}", , , , "7151234"], [, , "(?:31(?:8[14-8]|9[14578])|416[14-9]|7(?:0[01]|7[07]|8\\d|9[056])\\d)\\d{3}", , , , "3181234"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BQ", 599, "00", , , , , , , , , , [, , , , , , , , , [-1]], , "[347]", [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BR: [, [, , "(?:[1-46-9]\\d\\d|5(?:[0-46-9]\\d|5[0-46-9]))\\d{8}|[1-9]\\d{9}|[3589]\\d{8}|[34]\\d{7}", , , , , , , [8, 9, 10, 11]], [
-        ,
-        ,
-        "(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-5]\\d{7}",
-        ,
-        ,
-        ,
-        "1123456789",
-        ,
-        ,
-        [10],
-        [8]
-      ], [, , "(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])(?:7|9\\d)\\d{7}", , , , "11961234567", , , [10, 11], [8, 9]], [, , "800\\d{6,7}", , , , "800123456", , , [9, 10]], [, , "300\\d{6}|[59]00\\d{6,7}", , , , "300123456", , , [9, 10]], [, , "(?:30[03]\\d{3}|4(?:0(?:0\\d|20)|370))\\d{4}|300\\d{5}", , , , "40041234", , , [8, 10]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BR", 55, "00(?:1[245]|2[1-35]|31|4[13]|[56]5|99)", "0", , , "(?:0|90)(?:(1[245]|2[1-35]|31|4[13]|[56]5|99)(\\d{10,11}))?", "$2", , , [
-        [, "(\\d{3,6})", "$1", ["1(?:1[25-8]|2[357-9]|3[02-68]|4[12568]|5|6[0-8]|8[015]|9[0-47-9])|321|610"]],
-        [, "(\\d{4})(\\d{4})", "$1-$2", ["300|4(?:0[02]|37)", "4(?:02|37)0|[34]00"]],
-        [, "(\\d{4})(\\d{4})", "$1-$2", ["[2-57]", "[2357]|4(?:[0-24-9]|3(?:[0-689]|7[1-9]))"]],
-        [, "(\\d{3})(\\d{2,3})(\\d{4})", "$1 $2 $3", ["(?:[358]|90)0"], "0$1"],
-        [, "(\\d{5})(\\d{4})", "$1-$2", ["9"]],
-        [, "(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-57]"], "($1)", "0 $CC ($1)"],
-        [, "(\\d{2})(\\d{5})(\\d{4})", "$1 $2-$3", ["[16][1-9]|[2-57-9]"], "($1)", "0 $CC ($1)"]
-      ], [[, "(\\d{4})(\\d{4})", "$1-$2", [
-        "300|4(?:0[02]|37)",
-        "4(?:02|37)0|[34]00"
-      ]], [, "(\\d{3})(\\d{2,3})(\\d{4})", "$1 $2 $3", ["(?:[358]|90)0"], "0$1"], [, "(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-57]"], "($1)", "0 $CC ($1)"], [, "(\\d{2})(\\d{5})(\\d{4})", "$1 $2-$3", ["[16][1-9]|[2-57-9]"], "($1)", "0 $CC ($1)"]], [, , , , , , , , , [-1]], , , [, , "30(?:0\\d{5,7}|3\\d{7})|40(?:0\\d|20)\\d{4}|800\\d{6,7}", , , , , , , [8, 9, 10]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BS: [, [, , "(?:242|[58]\\d\\d|900)\\d{7}", , , , , , , [10], [7]], [
-        ,
-        ,
-        "242(?:3(?:02|[236][1-9]|4[0-24-9]|5[0-68]|7[347]|8[0-4]|9[2-467])|461|502|6(?:0[1-5]|12|2[013]|[45]0|7[67]|8[78]|9[89])|7(?:02|88))\\d{4}",
+        [, , "(?:[34]1|7\\d)\\d{5}", , , , , , , [7]],
+        [, , "(?:318[023]|41(?:6[023]|70)|7(?:1[578]|2[05]|50)\\d)\\d{3}", , , , "7151234"],
+        [, , "(?:31(?:8[14-8]|9[14578])|416[14-9]|7(?:0[01]|7[07]|8\\d|9[056])\\d)\\d{3}", , , , "3181234"],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        "BQ",
+        599,
+        "00",
         ,
         ,
         ,
-        "2423456789",
         ,
         ,
         ,
-        [7]
-      ], [, , "242(?:3(?:5[79]|7[56]|95)|4(?:[23][1-9]|4[1-35-9]|5[1-8]|6[2-8]|7\\d|81)|5(?:2[45]|3[35]|44|5[1-46-9]|65|77)|6[34]6|7(?:27|38)|8(?:0[1-9]|1[02-9]|2\\d|3[0-4]|[89]9))\\d{4}", , , , "2423591234", , , , [7]], [, , "242300\\d{4}|8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456", , , , [7]], [, , "900[2-9]\\d{6}", , , , "9002123456"], [, , , , , , , , , [-1]], [
-        ,
-        ,
-        "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}",
         ,
         ,
         ,
-        "5002345678"
-      ], [, , , , , , , , , [-1]], "BS", 1, "011", "1", , , "([3-8]\\d{6})$|1", "242$1", , , , , [, , , , , , , , , [-1]], , "242", [, , , , , , , , , [-1]], [, , "242225\\d{4}", , , , "2422250123"], , , [, , , , , , , , , [-1]]],
-      BT: [, [, , "[17]\\d{7}|[2-8]\\d{6}", , , , , , , [7, 8], [6]], [, , "(?:2[3-6]|[34][5-7]|5[236]|6[2-46]|7[246]|8[2-4])\\d{5}", , , , "2345678", , , [7], [6]], [, , "(?:1[67]|77)\\d{6}", , , , "17123456", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BT", 975, "00", , , , , , , , [[, "(\\d{3})(\\d{3})", "$1 $2", ["[2-7]"]], [
+        [, , , , , , , , , [-1]],
         ,
-        "(\\d)(\\d{3})(\\d{3})",
+        "[347]",
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]]
+      ],
+      BR: [, [, , "[1-467]\\d{9,10}|55[0-46-9]\\d{8}|[34]\\d{7}|55\\d{7,8}|(?:5[0-46-9]|[89]\\d)\\d{7,9}", , , , , , , [8, 9, 10, 11]], [, , "(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-5]\\d{7}", , , , "1123456789", , , [10], [8]], [, , "(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])(?:7|9\\d)\\d{7}", , , , "11961234567", , , [10, 11], [8, 9]], [, , "800\\d{6,7}", , , , "800123456", , , [9, 10]], [, , "[59]00\\d{6,7}", , , , "500123456", , , [9, 10]], [
+        ,
+        ,
+        "(?:30[03]\\d{3}|4(?:0(?:0\\d|20)|370|864))\\d{4}|300\\d{5}",
+        ,
+        ,
+        ,
+        "40041234",
+        ,
+        ,
+        [8, 10]
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BR", 55, "00(?:1[245]|2[1-35]|31|4[13]|[56]5|99)", "0", , , "(?:0|90)(?:(1[245]|2[1-35]|31|4[13]|[56]5|99)(\\d{10,11}))?", "$2", , , [[, "(\\d{3,6})", "$1", ["1(?:1[25-8]|2[357-9]|3[02-68]|4[12568]|5|6[0-8]|8[015]|9[0-47-9])|321|610"]], [, "(\\d{4})(\\d{4})", "$1-$2", ["300|4(?:0[02]|37|86)", "300|4(?:0(?:0|20)|370|864)"]], [, "(\\d{4})(\\d{4})", "$1-$2", ["[2-57]", "[2357]|4(?:[0-24-9]|3(?:[0-689]|7[1-9]))"]], [
+        ,
+        "(\\d{3})(\\d{2,3})(\\d{4})",
         "$1 $2 $3",
-        ["[2-68]|7[246]"]
-      ], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[67]|7"]]], [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-68]|7[246]"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[67]|7"]]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BW: [, [, , "(?:0800|(?:[37]|800)\\d)\\d{6}|(?:[2-6]\\d|90)\\d{5}", , , , , , , [7, 8, 10]], [
+        ["(?:[358]|90)0"],
+        "0$1"
+      ], [, "(\\d{5})(\\d{4})", "$1-$2", ["9"]], [, "(\\d{2})(\\d{4})(\\d{4})", "$1 $2-$3", ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-57]"], "($1)", "0 $CC ($1)"], [, "(\\d{2})(\\d{5})(\\d{4})", "$1 $2-$3", ["[16][1-9]|[2-57-9]"], "($1)", "0 $CC ($1)"]], [[, "(\\d{4})(\\d{4})", "$1-$2", ["300|4(?:0[02]|37|86)", "300|4(?:0(?:0|20)|370|864)"]], [, "(\\d{3})(\\d{2,3})(\\d{4})", "$1 $2 $3", ["(?:[358]|90)0"], "0$1"], [
         ,
-        ,
-        "(?:2(?:4[0-48]|6[0-24]|9[0578])|3(?:1[0-35-9]|55|[69]\\d|7[013]|81)|4(?:6[03]|7[1267]|9[0-5])|5(?:3[03489]|4[0489]|7[1-47]|88|9[0-49])|6(?:2[1-35]|5[149]|8[013467]))\\d{4}",
-        ,
-        ,
-        ,
-        "2401234",
-        ,
-        ,
-        [7]
-      ], [, , "(?:321|7[1-8]\\d)\\d{5}", , , , "71123456", , , [8]], [, , "(?:0800|800\\d)\\d{6}", , , , "0800012345", , , [10]], [, , "90\\d{5}", , , , "9012345", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "79(?:1(?:[0-2]\\d|3[0-3])|2[0-7]\\d)\\d{3}", , , , "79101234", , , [8]], "BW", 267, "00", , , , , , , , [[, "(\\d{2})(\\d{5})", "$1 $2", ["90"]], [, "(\\d{3})(\\d{4})", "$1 $2", ["[24-6]|3[15-9]"]], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[37]"]], [, "(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["0"]], [
-        ,
-        "(\\d{3})(\\d{4})(\\d{3})",
-        "$1 $2 $3",
-        ["8"]
-      ]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BY: [, [, , "(?:[12]\\d|33|44|902)\\d{7}|8(?:0[0-79]\\d{5,7}|[1-7]\\d{9})|8(?:1[0-489]|[5-79]\\d)\\d{7}|8[1-79]\\d{6,7}|8[0-79]\\d{5}|8\\d{5}", , , , , , , [6, 7, 8, 9, 10, 11], [5]], [, , "(?:1(?:5(?:1[1-5]|[24]\\d|6[2-4]|9[1-7])|6(?:[235]\\d|4[1-7])|7\\d\\d)|2(?:1(?:[246]\\d|3[0-35-9]|5[1-9])|2(?:[235]\\d|4[0-8])|3(?:[26]\\d|3[02-79]|4[024-7]|5[03-7])))\\d{5}", , , , "152450911", , , [9], [5, 6, 7]], [
-        ,
-        ,
-        "(?:2(?:5[5-79]|9[1-9])|(?:33|44)\\d)\\d{6}",
-        ,
-        ,
-        ,
-        "294911911",
-        ,
-        ,
-        [9]
-      ], [, , "800\\d{3,7}|8(?:0[13]|20\\d)\\d{7}", , , , "8011234567"], [, , "(?:810|902)\\d{7}", , , , "9021234567", , , [10]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "249\\d{6}", , , , "249123456", , , [9]], "BY", 375, "810", "8", , , "0|80?", , "8~10", , [[, "(\\d{3})(\\d{3})", "$1 $2", ["800"], "8 $1"], [, "(\\d{3})(\\d{2})(\\d{2,4})", "$1 $2 $3", ["800"], "8 $1"], [
-        ,
-        "(\\d{4})(\\d{2})(\\d{3})",
+        "(\\d{2})(\\d{4})(\\d{4})",
         "$1 $2-$3",
-        ["1(?:5[169]|6[3-5]|7[179])|2(?:1[35]|2[34]|3[3-5])", "1(?:5[169]|6(?:3[1-3]|4|5[125])|7(?:1[3-9]|7[0-24-6]|9[2-7]))|2(?:1[35]|2[34]|3[3-5])"],
-        "8 0$1"
-      ], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["1(?:[56]|7[467])|2[1-3]"], "8 0$1"], [, "(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[1-4]"], "8 0$1"], [, "(\\d{3})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["[89]"], "8 $1"]], , [, , , , , , , , , [-1]], , , [, , "800\\d{3,7}|(?:8(?:0[13]|10|20\\d)|902)\\d{7}"], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      BZ: [, [, , "(?:0800\\d|[2-8])\\d{6}", , , , , , , [7, 11]], [, , "(?:2(?:[02]\\d|36|[68]0)|[3-58](?:[02]\\d|[68]0)|7(?:[02]\\d|32|[68]0))\\d{4}", , , , "2221234", , , [7]], [
+        ["(?:[14689][1-9]|2[12478]|3[1-578]|5[13-5]|7[13-579])[2-57]"],
+        "($1)",
+        "0 $CC ($1)"
+      ], [, "(\\d{2})(\\d{5})(\\d{4})", "$1 $2-$3", ["[16][1-9]|[2-57-9]"], "($1)", "0 $CC ($1)"]], [, , , , , , , , , [-1]], , , [, , "(?:30[03]\\d{3}|4(?:0(?:0\\d|20)|864))\\d{4}|800\\d{6,7}|300\\d{5}", , , , , , , [8, 9, 10]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      BS: [, [, , "(?:242|[58]\\d\\d|900)\\d{7}", , , , , , , [10], [7]], [, , "242(?:3(?:02|[236][1-9]|4[0-24-9]|5[0-68]|7[347]|8[0-4]|9[2-467])|461|502|6(?:0[1-5]|12|2[013]|[45]0|7[67]|8[78]|9[89])|7(?:02|88))\\d{4}", , , , "2423456789", , , , [7]], [
         ,
         ,
-        "6[0-35-7]\\d{5}",
+        "242(?:3(?:5[79]|7[56]|95)|4(?:[23][1-9]|4[1-35-9]|5[1-8]|6[2-8]|7\\d|81)|5(?:2[45]|3[35]|44|5[1-46-9]|65|77)|6[34]6|7(?:27|38)|8(?:0[1-9]|1[02-9]|2\\d|3[0-4]|[89]9))\\d{4}",
         ,
         ,
         ,
-        "6221234",
+        "2423591234",
+        ,
         ,
         ,
         [7]
-      ], [, , "0800\\d{7}", , , , "08001234123", , , [11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BZ", 501, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1-$2", ["[2-8]"]], [, "(\\d)(\\d{3})(\\d{4})(\\d{3})", "$1-$2-$3-$4", ["0"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, , "242300\\d{4}|8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456", , , , [7]], [, , "900[2-9]\\d{6}", , , , "9002123456"], [, , , , , , , , , [-1]], [, , "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}", , , , "5002345678"], [, , , , , , , , , [-1]], "BS", 1, "011", "1", , , "([3-8]\\d{6})$|1", "242$1", , , , , [, , , , , , , , , [-1]], , "242", [
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [-1]
+      ], [, , "242225\\d{4}", , , , "2422250123"], , , [, , , , , , , , , [-1]]],
+      BT: [
+        ,
+        [, , "[17]\\d{7}|[2-8]\\d{6}", , , , , , , [7, 8], [6]],
+        [, , "(?:2[3-6]|[34][5-7]|5[236]|6[2-46]|7[246]|8[2-4])\\d{5}", , , , "2345678", , , [7], [6]],
+        [, , "(?:1[67]|77)\\d{6}", , , , "17123456", , , [8]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        "BT",
+        975,
+        "00",
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [[, "(\\d{3})(\\d{3})", "$1 $2", ["[2-7]"]], [, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-68]|7[246]"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[67]|7"]]],
+        [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-68]|7[246]"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["1[67]|7"]]],
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]]
+      ],
+      BW: [, [, , "(?:0800|(?:[37]|800)\\d)\\d{6}|(?:[2-6]\\d|90)\\d{5}", , , , , , , [7, 8, 10]], [, , "(?:2(?:4[0-48]|6[0-24]|9[0578])|3(?:1[0-35-9]|55|[69]\\d|7[013]|81)|4(?:6[03]|7[1267]|9[0-5])|5(?:3[03489]|4[0489]|7[1-47]|88|9[0-49])|6(?:2[1-35]|5[149]|8[013467]))\\d{4}", , , , "2401234", , , [7]], [
+        ,
+        ,
+        "(?:321|7[1-8]\\d)\\d{5}",
+        ,
+        ,
+        ,
+        "71123456",
+        ,
+        ,
+        [8]
+      ], [, , "(?:0800|800\\d)\\d{6}", , , , "0800012345", , , [10]], [, , "90\\d{5}", , , , "9012345", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "79(?:1(?:[0-2]\\d|3[0-8])|2[0-7]\\d)\\d{3}", , , , "79101234", , , [8]], "BW", 267, "00", , , , , , , , [[, "(\\d{2})(\\d{5})", "$1 $2", ["90"]], [, "(\\d{3})(\\d{4})", "$1 $2", ["[24-6]|3[15-9]"]], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[37]"]], [, "(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["0"]], [, "(\\d{3})(\\d{4})(\\d{3})", "$1 $2 $3", ["8"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [-1]
+      ]],
+      BY: [, [, , "(?:[12]\\d|33|44|902)\\d{7}|8(?:0[0-79]\\d{5,7}|[1-7]\\d{9})|8(?:1[0-489]|[5-79]\\d)\\d{7}|8[1-79]\\d{6,7}|8[0-79]\\d{5}|8\\d{5}", , , , , , , [6, 7, 8, 9, 10, 11], [5]], [, , "(?:1(?:5(?:1[1-5]|[24]\\d|6[2-4]|9[1-7])|6(?:[235]\\d|4[1-7])|7\\d\\d)|2(?:1(?:[246]\\d|3[0-35-9]|5[1-9])|2(?:[235]\\d|4[0-8])|3(?:[26]\\d|3[02-79]|4[024-7]|5[03-7])))\\d{5}", , , , "152450911", , , [9], [5, 6, 7]], [, , "(?:2(?:5[5-79]|9[1-9])|(?:33|44)\\d)\\d{6}", , , , "294911911", , , [9]], [
+        ,
+        ,
+        "800\\d{3,7}|8(?:0[13]|20\\d)\\d{7}",
+        ,
+        ,
+        ,
+        "8011234567"
+      ], [, , "(?:810|902)\\d{7}", , , , "9021234567", , , [10]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "249\\d{6}", , , , "249123456", , , [9]], "BY", 375, "810", "8", , , "0|80?", , "8~10", , [[, "(\\d{3})(\\d{3})", "$1 $2", ["800"], "8 $1"], [, "(\\d{3})(\\d{2})(\\d{2,4})", "$1 $2 $3", ["800"], "8 $1"], [, "(\\d{4})(\\d{2})(\\d{3})", "$1 $2-$3", ["1(?:5[169]|6[3-5]|7[179])|2(?:1[35]|2[34]|3[3-5])", "1(?:5[169]|6(?:3[1-3]|4|5[125])|7(?:1[3-9]|7[0-24-6]|9[2-7]))|2(?:1[35]|2[34]|3[3-5])"], "8 0$1"], [
+        ,
+        "(\\d{3})(\\d{2})(\\d{2})(\\d{2})",
+        "$1 $2-$3-$4",
+        ["1(?:[56]|7[467])|2[1-3]"],
+        "8 0$1"
+      ], [, "(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[1-4]"], "8 0$1"], [, "(\\d{3})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["[89]"], "8 $1"]], , [, , , , , , , , , [-1]], , , [, , "800\\d{3,7}|(?:8(?:0[13]|10|20\\d)|902)\\d{7}"], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      BZ: [, [, , "(?:0800\\d|[2-8])\\d{6}", , , , , , , [7, 11]], [, , "(?:2(?:[02]\\d|36|[68]0)|[3-58](?:[02]\\d|[68]0)|7(?:[02]\\d|32|[68]0))\\d{4}", , , , "2221234", , , [7]], [, , "6[0-35-7]\\d{5}", , , , "6221234", , , [7]], [
+        ,
+        ,
+        "0800\\d{7}",
+        ,
+        ,
+        ,
+        "08001234123",
+        ,
+        ,
+        [11]
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "BZ", 501, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1-$2", ["[2-8]"]], [, "(\\d)(\\d{3})(\\d{4})(\\d{3})", "$1-$2-$3-$4", ["0"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       CA: [, [, , "[2-9]\\d{9}|3\\d{6}", , , , , , , [7, 10]], [
         ,
         ,
-        "(?:2(?:04|[23]6|[48]9|50|63)|3(?:06|43|54|6[578]|82)|4(?:03|1[68]|[26]8|3[178]|50|74)|5(?:06|1[49]|48|79|8[147])|6(?:04|[18]3|39|47|72)|7(?:0[59]|42|53|78|8[02])|8(?:[06]7|19|25|7[39])|9(?:0[25]|42))[2-9]\\d{6}",
+        "(?:2(?:04|[23]6|[48]9|5[07]|63)|3(?:06|43|54|6[578]|82)|4(?:03|1[68]|[26]8|3[178]|50|74)|5(?:06|1[49]|48|79|8[147])|6(?:04|[18]3|39|47|72)|7(?:0[59]|42|53|78|8[02])|8(?:[06]7|19|25|7[39])|9(?:0[25]|42))[2-9]\\d{6}",
         ,
         ,
         ,
@@ -64901,7 +65332,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [10],
         [7]
-      ], [, , "(?:2(?:04|[23]6|[48]9|50|63)|3(?:06|43|54|6[578]|82)|4(?:03|1[68]|[26]8|3[178]|50|74)|5(?:06|1[49]|48|79|8[147])|6(?:04|[18]3|39|47|72)|7(?:0[59]|42|53|78|8[02])|8(?:[06]7|19|25|7[39])|9(?:0[25]|42))[2-9]\\d{6}", , , , "5062345678", , , [10], [7]], [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456", , , [10]], [, , "900[2-9]\\d{6}", , , , "9002123456", , , [10]], [, , , , , , , , , [-1]], [
+      ], [, , "(?:2(?:04|[23]6|[48]9|5[07]|63)|3(?:06|43|54|6[578]|82)|4(?:03|1[68]|[26]8|3[178]|50|74)|5(?:06|1[49]|48|79|8[147])|6(?:04|[18]3|39|47|72)|7(?:0[59]|42|53|78|8[02])|8(?:[06]7|19|25|7[39])|9(?:0[25]|42))[2-9]\\d{6}", , , , "5062345678", , , [10], [7]], [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456", , , [10]], [, , "900[2-9]\\d{6}", , , , "9002123456", , , [10]], [, , , , , , , , , [-1]], [
         ,
         ,
         "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|(?:5(?:2[125-9]|33|44|66|77|88)|6(?:22|33))[2-9]\\d{6}",
@@ -64916,7 +65347,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       CC: [, [, , "1(?:[0-79]\\d{8}(?:\\d{2})?|8[0-24-9]\\d{7})|[148]\\d{8}|1\\d{5,7}", , , , , , , [6, 7, 8, 9, 10, 12]], [, , "8(?:51(?:0(?:02|31|60|89)|1(?:18|76)|223)|91(?:0(?:1[0-2]|29)|1(?:[28]2|50|79)|2(?:10|64)|3(?:[06]8|22)|4[29]8|62\\d|70[23]|959))\\d{3}", , , , "891621234", , , [9], [8]], [
         ,
         ,
-        "4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}",
+        "4(?:79[01]|83[0-389]|94[0-478])\\d{5}|4(?:[0-36]\\d|4[047-9]|[58][0-24-9]|7[02-8]|9[0-37-9])\\d{6}",
         ,
         ,
         ,
@@ -64981,10 +65412,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [9, 10, 11]
-      ], [, , "2(?:1982[0-6]|3314[05-9])\\d{3}|(?:2(?:1(?:160|962)|3(?:2\\d\\d|3(?:[03467]\\d|1[0-35-9]|2[1-9]|5[0-24-9]|8[0-3])|600)|646[59])|80[1-9]\\d\\d|9(?:3(?:[0-57-9]\\d\\d|6(?:0[02-9]|[1-9]\\d))|6(?:[0-8]\\d\\d|9(?:[02-79]\\d|1[05-9]))|7[1-9]\\d\\d|9(?:[03-9]\\d\\d|1(?:[0235-9]\\d|4[0-24-9])|2(?:[0-79]\\d|8[0-46-9]))))\\d{4}|(?:22|3[2-5]|[47][1-35]|5[1-3578]|6[13-57]|8[1-9]|9[2458])\\d{7}", , , , "221234567", , , [9]], [
+      ], [, , "2(?:1982[0-6]|3314[05-9])\\d{3}|(?:2(?:1(?:160|962)|2\\d{3}|3(?:(?:2\\d|50)\\d|3(?:[03467]\\d|1[0-35-9]|2[1-9]|5[0-24-9]|8[0-389]|9[0-8])|600)|646[59])|(?:(?:3[2-5]|[47][1-35]|5[1-3578])\\d|6(?:00|[13-57]\\d)|8(?:0[1-9]|[1-9]\\d))\\d\\d|9(?:(?:10[01]|(?:[2458]\\d|7[1-9])\\d)\\d|3(?:[0-57-9]\\d\\d|6(?:0[02-9]|[1-9]\\d))|6(?:[0-8]\\d\\d|9(?:[02-79]\\d|1[05-9]))|9(?:[03-9]\\d\\d|1(?:[0235-9]\\d|4[0-24-9])|2(?:[0-79]\\d|8[0-46-9]))))\\d{4}", , , , "600123456", , , [9]], [
         ,
         ,
-        "2(?:1982[0-6]|3314[05-9])\\d{3}|(?:2(?:1(?:160|962)|3(?:2\\d\\d|3(?:[03467]\\d|1[0-35-9]|2[1-9]|5[0-24-9]|8[0-3])|600)|646[59])|80[1-9]\\d\\d|9(?:3(?:[0-57-9]\\d\\d|6(?:0[02-9]|[1-9]\\d))|6(?:[0-8]\\d\\d|9(?:[02-79]\\d|1[05-9]))|7[1-9]\\d\\d|9(?:[03-9]\\d\\d|1(?:[0235-9]\\d|4[0-24-9])|2(?:[0-79]\\d|8[0-46-9]))))\\d{4}|(?:22|3[2-5]|[47][1-35]|5[1-3578]|6[13-57]|8[1-9]|9[2458])\\d{7}",
+        "2(?:1982[0-6]|3314[05-9])\\d{3}|(?:2(?:1(?:160|962)|2\\d{3}|3(?:(?:2\\d|50)\\d|3(?:[03467]\\d|1[0-35-9]|2[1-9]|5[0-24-9]|8[0-389]|9[0-8])|600)|646[59])|(?:(?:3[2-5]|[47][1-35]|5[1-3578]|6[13-57])\\d|8(?:0[1-8]|[1-9]\\d))\\d\\d|9(?:(?:10[01]|(?:[2458]\\d|7[1-9])\\d)\\d|3(?:[0-57-9]\\d\\d|6(?:0[02-9]|[1-9]\\d))|6(?:[0-8]\\d\\d|9(?:[02-79]\\d|1[05-9]))|9(?:[03-9]\\d\\d|1(?:[0235-9]\\d|4[0-24-9])|2(?:[0-79]\\d|8[0-46-9]))))\\d{4}",
         ,
         ,
         ,
@@ -64992,55 +65423,44 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [9]
-      ], [, , "(?:123|8)00\\d{6}", , , , "800123456", , , [9, 11]], [, , , , , , , , , [-1]], [, , "600\\d{7,8}", , , , "6001234567", , , [10, 11]], [, , , , , , , , , [-1]], [, , "44\\d{7}", , , , "441234567", , , [9]], "CL", 56, "(?:0|1(?:1[0-69]|2[02-5]|5[13-58]|69|7[0167]|8[018]))0", , , , , , , 1, [
-        [, "(\\d{4})", "$1", ["1(?:[03-589]|21)|[29]0|78"]],
-        [, "(\\d{5})(\\d{4})", "$1 $2", ["219", "2196"], "($1)"],
-        [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["44"]],
-        [, "(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2[1-36]"], "($1)"],
-        [, "(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["9[2-9]"]],
-        [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["3[2-5]|[47]|5[1-3578]|6[13-57]|8(?:0[1-9]|[1-9])"], "($1)"],
-        [, "(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["60|8"]],
-        [, "(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]],
-        [, "(\\d{3})(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["60"]]
-      ], [[, "(\\d{5})(\\d{4})", "$1 $2", ["219", "2196"], "($1)"], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["44"]], [, "(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["2[1-36]"], "($1)"], [, "(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["9[2-9]"]], [
+      ], [, , "(?:123|8)00\\d{6}", , , , "800123456", , , [9, 11]], [, , , , , , , , , [-1]], [, , "600\\d{7,8}", , , , "6001234567", , , [10, 11]], [, , , , , , , , , [-1]], [, , "44\\d{7}", , , , "441234567", , , [9]], "CL", 56, "(?:0|1(?:1[0-69]|2[02-5]|5[13-58]|69|7[0167]|8[018]))0", , , , , , , , [[, "(\\d{4})", "$1", ["1(?:[03-589]|21)|[29]0|78"]], [, "(\\d{5})(\\d{4})", "$1 $2", ["219", "2196"], "($1)"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["60|809"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["44"]], [
         ,
-        "(\\d{2})(\\d{3})(\\d{4})",
+        "(\\d)(\\d{4})(\\d{4})",
         "$1 $2 $3",
-        ["3[2-5]|[47]|5[1-3578]|6[13-57]|8(?:0[1-9]|[1-9])"],
+        ["2[1-36]"],
         "($1)"
-      ], [, "(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["60|8"]], [, "(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], [, "(\\d{3})(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["60"]]], [, , , , , , , , , [-1]], , , [, , "600\\d{7,8}", , , , , , , [10, 11]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      CM: [
+      ], [, "(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["9(?:10|[2-9])"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["3[2-5]|[47]|5[1-3578]|6[13-57]|8(?:0[1-8]|[1-9])"], "($1)"], [, "(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["60|8"]], [, "(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], [, "(\\d{3})(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["60"]]], [[, "(\\d{5})(\\d{4})", "$1 $2", ["219", "2196"], "($1)"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["60|809"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["44"]], [
         ,
-        [, , "[26]\\d{8}|88\\d{6,7}", , , , , , , [8, 9]],
-        [, , "2(?:22|33)\\d{6}", , , , "222123456", , , [9]],
-        [, , "(?:24[23]|6(?:[25-9]\\d|40))\\d{6}", , , , "671234567", , , [9]],
-        [, , "88\\d{6,7}", , , , "88012345"],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        "CM",
-        237,
-        "00",
+        "(\\d)(\\d{4})(\\d{4})",
+        "$1 $2 $3",
+        ["2[1-36]"],
+        "($1)"
+      ], [, "(\\d)(\\d{4})(\\d{4})", "$1 $2 $3", ["9(?:10|[2-9])"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["3[2-5]|[47]|5[1-3578]|6[13-57]|8(?:0[1-8]|[1-9])"], "($1)"], [, "(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["60|8"]], [, "(\\d{4})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"]], [, "(\\d{3})(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["60"]]], [, , , , , , , , , [-1]], , , [, , "600\\d{7,8}", , , , , , , [10, 11]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      CM: [, [, , "[26]\\d{8}|88\\d{6,7}", , , , , , , [8, 9]], [
+        ,
+        ,
+        "2(?:22|33)\\d{6}",
         ,
         ,
         ,
+        "222123456",
+        ,
+        ,
+        [9]
+      ], [, , "(?:24[23]|6(?:[25-9]\\d|40))\\d{6}", , , , "671234567", , , [9]], [, , "88\\d{6,7}", , , , "88012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "CM", 237, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["88"]], [, "(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["[26]|88"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      CN: [, [
+        ,
+        ,
+        "(?:(?:1[03-689]|2\\d)\\d\\d|6)\\d{8}|1\\d{10}|[126]\\d{6}(?:\\d(?:\\d{2})?)?|86\\d{5,6}|(?:[3-579]\\d|8[0-57-9])\\d{5,9}",
         ,
         ,
         ,
         ,
-        [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["88"]], [, "(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["[26]|88"]]],
-        ,
-        [, , , , , , , , , [-1]],
         ,
         ,
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        ,
-        ,
-        [, , , , , , , , , [-1]]
-      ],
-      CN: [, [, , "(?:(?:1[03-689]|2\\d)\\d\\d|6)\\d{8}|1\\d{10}|[126]\\d{6}(?:\\d(?:\\d{2})?)?|86\\d{5,6}|(?:[3-579]\\d|8[0-57-9])\\d{5,9}", , , , , , , [7, 8, 9, 10, 11, 12], [5, 6]], [
+        [7, 8, 9, 10, 11, 12],
+        [5, 6]
+      ], [
         ,
         ,
         "(?:10(?:[02-79]\\d\\d|[18](?:0[1-9]|[1-9]\\d))|2(?:[02-57-9]\\d{3}|1(?:[18](?:0[1-9]|[1-9]\\d)|[2-79]\\d\\d))|(?:41[03]|8078|9(?:78|94))\\d\\d)\\d{5}|(?:10|2[0-57-9])(?:1(?:00|23)\\d\\d|95\\d{3,4})|(?:41[03]|9(?:78|94))(?:100\\d\\d|95\\d{3,4})|8078123|(?:43[35]|754|851)\\d{7,8}|(?:43[35]|754|851)(?:1(?:00\\d|23)\\d|95\\d{3,4})|(?:3(?:11|7[179])|4(?:[15]1|3[12])|5(?:1\\d|2[37]|3[12]|51|7[13-79]|9[15])|7(?:[39]1|5[57]|6[09])|8(?:71|98))(?:[02-8]\\d{7}|1(?:0(?:0\\d\\d(?:\\d{3})?|[1-9]\\d{5})|[13-9]\\d{6}|2(?:[0-24-9]\\d{5}|3\\d(?:\\d{4})?))|9(?:[0-46-9]\\d{6}|5\\d{3}(?:\\d(?:\\d{2})?)?))|(?:3(?:1[02-9]|35|49|5\\d|7[02-68]|9[1-68])|4(?:1[24-9]|2[179]|3[46-9]|5[2-9]|6[47-9]|7\\d|8[23])|5(?:3[03-9]|4[36]|5[02-9]|6[1-46]|7[028]|80|9[2-46-9])|6(?:3[1-5]|6[0238]|9[12])|7(?:01|[17]\\d|2[248]|3[04-9]|4[3-6]|5[0-3689]|6[2368]|9[02-9])|8(?:1[236-8]|2[5-7]|3\\d|5[2-9]|7[02-9]|8[36-8]|9[1-7])|9(?:0[1-3689]|1[1-79]|3\\d|4[13]|5[1-5]|7[0-79]|9[0-35-9]))(?:[02-8]\\d{6}|1(?:0(?:0\\d\\d(?:\\d{2})?|[1-9]\\d{4})|[13-9]\\d{5}|2(?:[0-24-9]\\d{4}|3\\d(?:\\d{3})?))|9(?:[0-46-9]\\d{5}|5\\d{3,5}))",
@@ -65155,7 +65575,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       CO: [, [, , "(?:46|60\\d\\d)\\d{6}|(?:1\\d|[39])\\d{9}", , , , , , , [8, 10, 11], [4, 7]], [
         ,
         ,
-        "601055(?:[0-4]\\d|50)\\d\\d|6010(?:[0-4]\\d|5[0-4])\\d{4}|(?:46|60(?:[124-7][2-9]|8[1-9]))\\d{6}",
+        "601055(?:[0-4]\\d|50)\\d\\d|6010(?:[0-4]\\d|5[0-4])\\d{4}|(?:46|60(?:[18][1-9]|[24-7][2-9]))\\d{6}",
         ,
         ,
         ,
@@ -65164,14 +65584,14 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [8, 10],
         [4, 7]
-      ], [, , "333301[0-5]\\d{3}|3333(?:00|2[5-9]|[3-9]\\d)\\d{4}|(?:3(?:24[1-9]|3(?:00|3[0-24-9]))|9101)\\d{6}|3(?:0[0-5]|1\\d|2[0-3]|5[01]|70)\\d{7}", , , , "3211234567", , , [10]], [, , "1800\\d{7}", , , , "18001234567", , , [11]], [, , "(?:19(?:0[01]|4[78])|901)\\d{7}", , , , "19001234567", , , [10, 11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "CO", 57, "00(?:4(?:[14]4|56)|[579])", "0", , , "0([3579]|4(?:[14]4|56))?", , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["46"]], [
+      ], [, , "333301[0-5]\\d{3}|3333(?:00|2[5-9]|[3-9]\\d)\\d{4}|(?:3(?:(?:0[0-5]|1\\d|5[01]|70)\\d|2(?:[0-3]\\d|4[1-9])|3(?:00|3[0-24-9]))|9(?:101|408))\\d{6}", , , , "3211234567", , , [10]], [, , "1800\\d{7}", , , , "18001234567", , , [11]], [, , "(?:19(?:0[01]|4[78])|901)\\d{7}", , , , "19001234567", , , [10, 11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "CO", 57, "00(?:4(?:[14]4|56)|[579])", "0", , , "0([3579]|4(?:[14]4|56))?", , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["46"]], [
         ,
         "(\\d{3})(\\d{7})",
         "$1 $2",
         ["6|90"],
         "($1)",
         "0$CC $1"
-      ], [, "(\\d{3})(\\d{7})", "$1 $2", ["3[0-357]|91"], , "0$CC $1"], [, "(\\d)(\\d{3})(\\d{7})", "$1-$2-$3", ["1"], "0$1"]], [[, "(\\d{4})(\\d{4})", "$1 $2", ["46"]], [, "(\\d{3})(\\d{7})", "$1 $2", ["6|90"], "($1)", "0$CC $1"], [, "(\\d{3})(\\d{7})", "$1 $2", ["3[0-357]|91"], , "0$CC $1"], [, "(\\d)(\\d{3})(\\d{7})", "$1 $2 $3", ["1"]]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, "(\\d{3})(\\d{7})", "$1 $2", ["3[0-357]|9[14]"], , "0$CC $1"], [, "(\\d)(\\d{3})(\\d{7})", "$1-$2-$3", ["1"], "0$1"]], [[, "(\\d{4})(\\d{4})", "$1 $2", ["46"]], [, "(\\d{3})(\\d{7})", "$1 $2", ["6|90"], "($1)", "0$CC $1"], [, "(\\d{3})(\\d{7})", "$1 $2", ["3[0-357]|9[14]"], , "0$CC $1"], [, "(\\d)(\\d{3})(\\d{7})", "$1 $2 $3", ["1"]]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       CR: [, [, , "(?:8\\d|90)\\d{8}|(?:[24-8]\\d{3}|3005)\\d{4}", , , , , , , [8, 10]], [
         ,
         ,
@@ -65217,7 +65637,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       CX: [, [, , "1(?:[0-79]\\d{8}(?:\\d{2})?|8[0-24-9]\\d{7})|[148]\\d{8}|1\\d{5,7}", , , , , , , [6, 7, 8, 9, 10, 12]], [, , "8(?:51(?:0(?:01|30|59|88)|1(?:17|46|75)|2(?:22|35))|91(?:00[6-9]|1(?:[28]1|49|78)|2(?:09|63)|3(?:12|26|75)|4(?:56|97)|64\\d|7(?:0[01]|1[0-2])|958))\\d{3}", , , , "891641234", , , [9], [8]], [
         ,
         ,
-        "4(?:79[01]|83[0-389]|94[0-4])\\d{5}|4(?:[0-36]\\d|4[047-9]|5[0-25-9]|7[02-8]|8[0-24-9]|9[0-37-9])\\d{6}",
+        "4(?:79[01]|83[0-389]|94[0-478])\\d{5}|4(?:[0-36]\\d|4[047-9]|[58][0-24-9]|7[02-8]|9[0-37-9])\\d{6}",
         ,
         ,
         ,
@@ -65249,7 +65669,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [9]
-      ], [, , "(?:60[1-8]\\d|7(?:0(?:[2-5]\\d|60)|19[01]|[2379]\\d\\d))\\d{5}", , , , "601123456", , , [9]], [, , "800\\d{6}", , , , "800123456", , , [9]], [, , "9(?:0[05689]|76)\\d{6}", , , , "900123456", , , [9]], [, , "8[134]\\d{7}", , , , "811234567", , , [9]], [, , "70[01]\\d{6}", , , , "700123456", , , [9]], [, , "9[17]0\\d{6}", , , , "910123456", , , [9]], "CZ", 420, "00", , , , , , , , [
+      ], [, , "(?:60[1-8]\\d|7(?:0(?:[2-5]\\d|60)|19[0-4]|[2379]\\d\\d))\\d{5}", , , , "601123456", , , [9]], [, , "800\\d{6}", , , , "800123456", , , [9]], [, , "9(?:0[05689]|76)\\d{6}", , , , "900123456", , , [9]], [, , "8[134]\\d{7}", , , , "811234567", , , [9]], [, , "70[01]\\d{6}", , , , "700123456", , , [9]], [, , "9[17]0\\d{6}", , , , "910123456", , , [9]], "CZ", 420, "00", , , , , , , , [
         [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[2-8]|9[015-7]"]],
         [, "(\\d{2})(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["96"]],
         [, "(\\d{2})(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["9"]],
@@ -65267,7 +65687,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         [2, 3, 4]
-      ], [, , "1(?:(?:5(?:[0-25-9]\\d\\d|310)|76\\d\\d)\\d{6}|6[023]\\d{7,8})|17\\d{8}", , , , "15123456789", , , [10, 11]], [, , "800\\d{7,12}", , , , "8001234567890", , , [10, 11, 12, 13, 14, 15]], [, , "(?:137[7-9]|900(?:[135]|9\\d))\\d{6}", , , , "9001234567", , , [10, 11]], [, , "180\\d{5,11}|13(?:7[1-6]\\d\\d|8)\\d{4}", , , , "18012345", , , [7, 8, 9, 10, 11, 12, 13, 14]], [, , "700\\d{8}", , , , "70012345678", , , [11]], [, , , , , , , , , [-1]], "DE", 49, "00", "0", , , "0", , , , [
+      ], [, , "15310\\d{6}|1(?:5[0-25-9]\\d|7[013-5])\\d{7}|1(?:6[023]|7[26-9])\\d{7,8}", , , , "15123456789", , , [10, 11]], [, , "800\\d{7,12}", , , , "8001234567890", , , [10, 11, 12, 13, 14, 15]], [, , "(?:137[7-9]|900(?:[135]|9\\d))\\d{6}", , , , "9001234567", , , [10, 11]], [, , "180\\d{5,11}|13(?:7[1-6]\\d\\d|8)\\d{4}", , , , "18012345", , , [7, 8, 9, 10, 11, 12, 13, 14]], [, , "700\\d{8}", , , , "70012345678", , , [11]], [, , , , , , , , , [-1]], "DE", 49, "00", "0", , , "0", , , , [
         [
           ,
           "(\\d{2})(\\d{3,13})",
@@ -65380,7 +65800,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
           [7]
         ],
         [, , "8[024]9[2-9]\\d{6}", , , , "8092345678", , , , [7]],
-        [, , "8(?:00(?:14|[2-9]\\d)|(?:33|44|55|66|77|88)[2-9]\\d)\\d{5}", , , , "8002123456"],
+        [, , "800(?:14|[2-9]\\d)\\d{5}|8[024]9[01]\\d{6}|8(?:33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456"],
         [, , "900[2-9]\\d{6}", , , , "9002123456"],
         [, , , , , , , , , [-1]],
         [, , "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}", , , , "5002345678"],
@@ -65512,7 +65932,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , "[5-8]\\d{8}", , , , , , , [9]],
         [, , "528[89]\\d{5}", , , , "528812345"],
-        [, , "(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[0167]\\d|2[0-4]|5[01]|8[0-3]))\\d{6}", , , , "650123456"],
+        [, , "(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[0167]\\d|2[0-8]|5[0-5]|8[0-7]))\\d{6}", , , , "650123456"],
         [, , "80[0-7]\\d{6}", , , , "801234567"],
         [, , "89\\d{7}", , , , "891234567"],
         [, , , , , , , , , [-1]],
@@ -65592,7 +66012,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ], [
         ,
         ,
-        "11667[01]\\d{3}|(?:11(?:1(?:1[124]|2[2-7]|3[1-5]|5[5-8]|8[6-8])|2(?:13|3[6-8]|5[89]|7[05-9]|8[2-6])|3(?:2[01]|3[0-289]|4[1289]|7[1-4]|87)|4(?:1[69]|3[2-49]|4[0-3]|6[5-8]|7\\d)|5(?:1[578]|44|5[0-4])|6(?:1[578]|2[69]|39|4[5-7]|5[0-5]|6[0-59]|8[015-8]))|2(?:2(?:11[1-9]|22[0-7]|33\\d|44[1467]|66[1-68])|5(?:11[124-6]|33[2-8]|44[1467]|55[14]|66[1-3679]|77[124-79]|880))|3(?:3(?:11[0-46-8]|(?:22|55)[0-6]|33[0134689]|44[04]|66[01467])|4(?:44[0-8]|55[0-69]|66[0-3]|77[1-5]))|4(?:6(?:119|22[0-24-7]|33[1-5]|44[13-69]|55[14-689]|660|88[1-4])|7(?:(?:11|22)[1-9]|33[13-7]|44[13-6]|55[1-689]))|5(?:7(?:227|55[05]|(?:66|77)[14-8])|8(?:11[149]|22[013-79]|33[0-68]|44[013-8]|550|66[1-5]|77\\d)))\\d{4}",
+        "11667[01]\\d{3}|(?:11(?:1(?:1[1-468]|2[2-7]|3[1-5]|5[5-8]|8[6-8])|2(?:13|3[6-8]|5[89]|7[05-9]|8[2-6])|3(?:2[01]|3[0-289]|4[1289]|7[1-4]|87)|4(?:1[69]|3[2-49]|4[0-3]|6[5-8]|7\\d)|5(?:1[578]|44|5[0-4])|6(?:1[578]|2[69]|39|4[5-7]|5[0-5]|6[0-59]|8[015-8]))|2(?:2(?:11[1-9]|22[0-7]|33\\d|44[1467]|66[1-68])|5(?:11[124-6]|33[2-8]|44[1467]|55[14]|66[1-3679]|77[124-79]|880))|3(?:3(?:11[0-46-8]|(?:22|55)[0-6]|33[0134689]|44[04]|66[01467])|4(?:44[0-8]|55[0-69]|66[0-3]|77[1-5]))|4(?:6(?:119|22[0-24-7]|33[1-5]|44[13-69]|55[14-689]|660|88[1-4])|7(?:(?:11|22)[1-9]|33[13-7]|44[13-6]|55[1-689]))|5(?:7(?:227|55[05]|(?:66|77)[14-8])|8(?:11[149]|22[013-79]|33[0-68]|44[013-8]|550|66[1-5]|77\\d)))\\d{4}",
         ,
         ,
         ,
@@ -65756,7 +66176,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       GD: [, [, , "(?:473|[58]\\d\\d|900)\\d{7}", , , , , , , [10], [7]], [
         ,
         ,
-        "473(?:2(?:3[0-2]|69)|3(?:2[89]|86)|4(?:[06]8|3[5-9]|4[0-4]|5[579]|73|90)|63[68]|7(?:58|84)|800|938)\\d{4}",
+        "473(?:2(?:3[0-2]|69)|3(?:2[89]|86)|4(?:[06]8|3[5-9]|4[0-4]|5[59]|73|90)|63[68]|7(?:58|84)|800|938)\\d{4}",
         ,
         ,
         ,
@@ -65765,7 +66185,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [7]
-      ], [, , "473(?:4(?:0[2-79]|1[04-9]|2[0-5]|49|5[68])|5(?:2[01]|3[3-8])|901)\\d{4}", , , , "4734031234", , , , [7]], [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456"], [, , "900[2-9]\\d{6}", , , , "9002123456"], [, , , , , , , , , [-1]], [, , "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}", , , , "5002345678"], [
+      ], [, , "473(?:4(?:0[2-79]|1[04-9]|2[0-5]|49|5[6-8])|5(?:2[01]|3[3-8])|901)\\d{4}", , , , "4734031234", , , , [7]], [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456"], [, , "900[2-9]\\d{6}", , , , "9002123456"], [, , , , , , , , , [-1]], [, , "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}", , , , "5002345678"], [
         ,
         ,
         ,
@@ -65797,7 +66217,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [9]
-      ], [, , "594(?:[02-49]\\d|1[0-5]|5[6-9]|6[0-3]|80)\\d{4}", , , , "594101234"], [, , "(?:694(?:[0-249]\\d|3[0-8])|7093[0-3])\\d{4}", , , , "694201234"], [, , "80[0-5]\\d{6}", , , , "800012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:(?:396|76\\d)\\d|476[0-5])\\d{4}", , , , "976012345"], "GF", 594, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-7]|9[47]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[89]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [
+      ], [, , "594(?:[02-49]\\d|1[0-5]|5[6-9]|6[0-3]|80)\\d{4}", , , , "594101234"], [, , "(?:694(?:[0-249]\\d|3[0-8])|7093[0-3])\\d{4}", , , , "694201234"], [, , "80[0-5]\\d{6}", , , , "800012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:(?:396|76\\d)\\d|476[0-6])\\d{4}", , , , "976012345"], "GF", 594, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-7]|9[47]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[89]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [
         ,
         ,
         ,
@@ -65873,19 +66293,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         "221234"
       ], [, , "80\\d{4}", , , , "801234"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "3[89]\\d{4}", , , , "381234"], "GL", 299, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["19|[2-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      GM: [
-        ,
-        [, , "[2-9]\\d{6}", , , , , , , [7]],
-        [, , "(?:4(?:[23]\\d\\d|4(?:1[024679]|[6-9]\\d))|5(?:5(?:3\\d|4[0-7])|6[67]\\d|7(?:1[04]|2[035]|3[58]|48))|8\\d{3})\\d{3}", , , , "5661234"],
-        [, , "(?:[23679]\\d|4[015]|5[0-489])\\d{5}", , , , "3012345"],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        "GM",
-        220,
-        "00",
+      GM: [, [, , "[2-9]\\d{6}", , , , , , , [7]], [, , "(?:4(?:[23]\\d\\d|4(?:1[024679]|[6-9]\\d))|5(?:5(?:3\\d|4[0-7])|6[67]\\d|7(?:1[04]|2[035]|3[58]|48))|8\\d{3})\\d{3}", , , , "5661234"], [, , "556\\d{4}|(?:[23679]\\d|4[015]|5[0-489])\\d{5}", , , , "3012345"], [
         ,
         ,
         ,
@@ -65893,17 +66301,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         ,
-        [[, "(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]],
-        ,
-        [, , , , , , , , , [-1]],
         ,
         ,
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        ,
-        ,
-        [, , , , , , , , , [-1]]
-      ],
+        [-1]
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "GM", 220, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       GN: [
         ,
         [, , "722\\d{6}|(?:3|6\\d)\\d{7}", , , , , , , [8, 9]],
@@ -65943,16 +66344,38 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         "800012345"
-      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}", , , , "976012345"], "GP", 590, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-79]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], , [, , , , , , , , , [-1]], 1, , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      GQ: [, [, , "222\\d{6}|(?:3\\d|55|[89]0)\\d{7}", , , , , , , [9]], [, , "33[0-24-9]\\d[46]\\d{4}|3(?:33|5\\d)\\d[7-9]\\d{4}", , , , "333091234"], [
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:(?:39[5-7]|76[018])\\d|475[0-6])\\d{4}", , , , "976012345"], "GP", 590, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[5-79]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["8"], "0$1"]], , [, , , , , , , , , [-1]], 1, , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      GQ: [
+        ,
+        [, , "222\\d{6}|(?:3\\d|55|[89]0)\\d{7}", , , , , , , [9]],
+        [, , "33[0-24-9]\\d[46]\\d{4}|3(?:33|5\\d)\\d[7-9]\\d{4}", , , , "333091234"],
+        [, , "(?:222|55\\d)\\d{6}", , , , "222123456"],
+        [, , "80\\d[1-9]\\d{5}", , , , "800123456"],
+        [, , "90\\d[1-9]\\d{5}", , , , "900123456"],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        "GQ",
+        240,
+        "00",
         ,
         ,
-        "(?:222|55\\d)\\d{6}",
         ,
         ,
         ,
-        "222123456"
-      ], [, , "80\\d[1-9]\\d{5}", , , , "800123456"], [, , "90\\d[1-9]\\d{5}", , , , "900123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "GQ", 240, "00", , , , , , , , [[, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235]"]], [, "(\\d{3})(\\d{6})", "$1 $2", ["[89]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        ,
+        ,
+        [[, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[235]"]], [, "(\\d{3})(\\d{6})", "$1 $2", ["[89]"]]],
+        ,
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]]
+      ],
       GR: [, [, , "5005000\\d{3}|8\\d{9,11}|(?:[269]\\d|70)\\d{8}", , , , , , , [10, 11, 12]], [
         ,
         ,
@@ -66009,11 +66432,11 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         "2201234"
-      ], [, , "510\\d{4}|(?:6\\d|7[0-5])\\d{5}", , , , "6091234"], [, , "(?:289|8(?:00|6[28]|88|99))\\d{4}", , , , "2891234"], [, , "9008\\d{3}", , , , "9008123"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "515\\d{4}", , , , "5151234"], "GY", 592, "001", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, , "(?:510|6\\d\\d|7(?:[0-5]\\d|6[019]|70))\\d{4}", , , , "6091234"], [, , "(?:289|8(?:00|6[28]|88|99))\\d{4}", , , , "2891234"], [, , "9008\\d{3}", , , , "9008123"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "515\\d{4}", , , , "5151234"], "GY", 592, "001", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[2-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       HK: [, [, , "8[0-46-9]\\d{6,7}|9\\d{4,7}|(?:[2-7]|9\\d{3})\\d{7}", , , , , , , [5, 6, 7, 8, 9, 11]], [
         ,
         ,
-        "(?:2(?:[13-9]\\d|2[013-9])\\d|3(?:(?:[1569][0-24-9]|4[0-246-9]|7[0-24-69])\\d|8(?:4[0-8]|[579]\\d|6[0-2]))|58(?:0[1-9]|1[2-9]))\\d{4}",
+        "(?:2(?:[13-9]\\d|2[013-9])\\d|3(?:(?:[1569][0-24-9]|4[0-246-9]|7[0-24-69])\\d|8(?:4[0-8]|[579]\\d|6[0-5]))|58(?:0[1-9]|1[2-9]))\\d{4}",
         ,
         ,
         ,
@@ -66021,7 +66444,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [8]
-      ], [, , "(?:4(?:44[0-25-9]|6(?:1[0-7]|4[0-57-9]|6[0-4])|7(?:4[0-2]|6[0-5]))|5(?:73[0-6]|95[0-8])|6(?:26[013-8]|66[0-3])|70(?:7[1-8]|8[0-4])|84(?:4[0-2]|8[0-35-9])|9(?:29[013-9]|39[014-9]|59[0-4]|899))\\d{4}|(?:4(?:4[0-35-9]|6[02357-9]|7[05])|5(?:[1-59][0-46-9]|6[0-4689]|7[0-246-9])|6(?:0[1-9]|[13-59]\\d|[268][0-57-9]|7[0-79])|70[1-49]|84[0-39]|9(?:0[1-9]|1[02-9]|[2358][0-8]|[467]\\d))\\d{5}", , , , "51234567", , , [8]], [, , "800\\d{6}", , , , "800123456", , , [9]], [
+      ], [, , "(?:4(?:44[0-35-9]|6(?:4[0-57-9]|6[0-4])|7(?:3[0-4]|4[0-48]|6[0-5]))|5(?:35[4-8]|73[0-6]|95[0-8])|6(?:26[013-8]|(?:66|78)[0-5])|70(?:7[1-8]|8[0-8])|84(?:4[0-2]|8[0-35-9])|9(?:29[013-9]|39[014-9]|59[0-4]|899))\\d{4}|(?:4(?:4[0-35-9]|6[0-357-9]|7[0-25])|5(?:[1-59][0-46-9]|6[0-4689]|7[0-246-9])|6(?:0[1-9]|[13-59]\\d|[268][0-57-9]|7[0-79])|70[1-59]|84[0-39]|9(?:0[1-9]|1[02-9]|[2358][0-8]|[467]\\d))\\d{5}", , , , "51234567", , , [8]], [, , "800\\d{6}", , , , "800123456", , , [9]], [
         ,
         ,
         "900(?:[0-24-9]\\d{7}|3\\d{1,4})",
@@ -66056,7 +66479,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [8]
       ], [, , "[37-9]\\d{7}", , , , "91234567", , , [8]], [, , "8002\\d{7}", , , , "80021234567", , , [11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "HN", 504, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1-$2", ["[237-9]"]], [, "(\\d{3})(\\d{4})(\\d{4})", "$1 $2 $3", ["8"]]], [[, "(\\d{4})(\\d{4})", "$1-$2", ["[237-9]"]]], [, , , , , , , , , [-1]], , , [, , "8002\\d{7}", , , , , , , [11]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      HR: [, [, , "(?:[24-69]\\d|3[0-79])\\d{7}|80\\d{5,7}|[1-79]\\d{7}|6\\d{5,6}", , , , , , , [6, 7, 8, 9]], [
+      HR: [, [, , "[2-69]\\d{8}|80\\d{5,7}|[1-79]\\d{7}|6\\d{6}", , , , , , , [7, 8, 9], [6]], [
         ,
         ,
         "1\\d{7}|(?:2[0-3]|3[1-5]|4[02-47-9]|5[1-3])\\d{6,7}",
@@ -66068,31 +66491,37 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [8, 9],
         [6, 7]
-      ], [, , "9(?:(?:0[1-9]|[12589]\\d)\\d\\d|7(?:[0679]\\d\\d|5(?:[01]\\d|44|55|77|9[5-79])))\\d{4}|98\\d{6}", , , , "921234567", , , [8, 9]], [, , "80\\d{5,7}", , , , "800123456", , , [7, 8, 9]], [, , "6[01459]\\d{6}|6[01]\\d{4,5}", , , , "611234", , , [6, 7, 8]], [, , , , , , , , , [-1]], [, , "7[45]\\d{6}", , , , "74123456", , , [8]], [, , , , , , , , , [-1]], "HR", 385, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["6[01]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["8"], "0$1"], [
+      ], [, , "9(?:(?:0[1-9]|[12589]\\d)\\d\\d|7(?:[0679]\\d\\d|5(?:[01]\\d|44|55|77|9[5-79])))\\d{4}|98\\d{6}", , , , "921234567", , , [8, 9]], [, , "80\\d{5,7}", , , , "800123456"], [, , "6[01459]\\d{6}|6[01]\\d{5}", , , , "6001234", , , [7, 8]], [, , , , , , , , , [-1]], [, , "7[45]\\d{6}", , , , "74123456", , , [8]], [, , , , , , , , , [-1]], "HR", 385, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["6[01]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["8"], "0$1"], [, "(\\d)(\\d{4})(\\d{3})", "$1 $2 $3", ["1"], "0$1"], [
         ,
-        "(\\d)(\\d{4})(\\d{3})",
+        "(\\d{2})(\\d{3})(\\d{3,4})",
         "$1 $2 $3",
-        ["1"],
+        ["6|7[245]"],
         "0$1"
-      ], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["6|7[245]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["9"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-57]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "62\\d{6,7}|72\\d{6}", , , , "62123456", , , [8, 9]], , , [, , , , , , , , , [-1]]],
-      HT: [, [, , "(?:[2-489]\\d|55)\\d{6}", , , , , , , [8]], [, , "2(?:2\\d|5[1-5]|81|9[149])\\d{5}", , , , "22453300"], [, , "(?:[34]\\d|55)\\d{6}", , , , "34101234"], [
-        ,
-        ,
-        "8\\d{7}",
+      ], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["9"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-57]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "62\\d{6,7}|72\\d{6}", , , , "62123456", , , [8, 9]], , , [, , , , , , , , , [-1]]],
+      HT: [, [, , "[2-589]\\d{7}", , , , , , , [8]], [, , "2(?:2\\d|5[1-5]|81|9[149])\\d{5}", , , , "22453300"], [, , "(?:[34]\\d|5[56])\\d{6}", , , , "34101234"], [, , "8\\d{7}", , , , "80012345"], [
         ,
         ,
         ,
-        "80012345"
-      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:[67][0-4]|8[0-3589]|9\\d)\\d{5}", , , , "98901234"], "HT", 509, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[2-589]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      HU: [, [, , "[235-7]\\d{8}|[1-9]\\d{7}", , , , , , , [8, 9], [6, 7]], [, , "(?:1\\d|[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6[23689]|8[2-57-9]|9[2-69])\\d{6}", , , , "12345678", , , [8], [6, 7]], [, , "(?:[257]0|3[01])\\d{7}", , , , "201234567", , , [9]], [
-        ,
-        ,
-        "(?:[48]0\\d|680[29])\\d{5}",
         ,
         ,
         ,
-        "80123456"
-      ], [, , "9[01]\\d{6}", , , , "90123456", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "21\\d{7}", , , , "211234567", , , [9]], "HU", 36, "00", "06", , , "06", , , , [[, "(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "(06 $1)"], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6|8[2-57-9]|9[2-69]"], "(06 $1)"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "06 $1"]], , [, , , , , , , , , [-1]], , , [, , "(?:[48]0\\d|680[29])\\d{5}"], [, , "38\\d{7}", , , , "381234567", , , [9]], , , [, , , , , , , , , [-1]]],
+        ,
+        ,
+        ,
+        [-1]
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:[67][0-4]|8[0-3589]|9\\d)\\d{5}", , , , "98901234"], "HT", 509, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[2-589]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      HU: [, [, , "[235-7]\\d{8}|[1-9]\\d{7}", , , , , , , [8, 9], [6, 7]], [, , "(?:1\\d|[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6[23689]|8[2-57-9]|9[2-69])\\d{6}", , , , "12345678", , , [8], [6, 7]], [, , "(?:[257]0|3[01])\\d{7}", , , , "201234567", , , [9]], [, , "(?:[48]0\\d|680[29])\\d{5}", , , , "80123456"], [
+        ,
+        ,
+        "9[01]\\d{6}",
+        ,
+        ,
+        ,
+        "90123456",
+        ,
+        ,
+        [8]
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "21\\d{7}", , , , "211234567", , , [9]], "HU", 36, "00", "06", , , "06", , , , [[, "(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "(06 $1)"], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27][2-9]|3[2-7]|4[24-9]|5[2-79]|6|8[2-57-9]|9[2-69]"], "(06 $1)"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "06 $1"]], , [, , , , , , , , , [-1]], , , [, , "(?:[48]0\\d|680[29])\\d{5}"], [, , "38\\d{7}", , , , "381234567", , , [9]], , , [, , , , , , , , , [-1]]],
       ID: [, [
         ,
         ,
@@ -66166,10 +66595,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         10,
         11,
         12
-      ]], [, , "153\\d{8,9}|29[1-9]\\d{5}|(?:2[0-8]|[3489]\\d)\\d{6}", , , , "21234567", , , [8, 11, 12], [7]], [, , "55(?:4(?:[01]0|5[0-2])|57[0-289])\\d{4}|5(?:(?:[0-2][02-9]|[36]\\d|[49][2-9]|8[3-7])\\d|5(?:01|2\\d|3[0-3]|4[34]|5[0-25689]|6[6-8]|7[0-267]|8[7-9]|9[1-9]))\\d{5}", , , , "502345678", , , [9]], [, , "1(?:255|80[019]\\d{3})\\d{3}", , , , "1800123456", , , [7, 10]], [, , "1212\\d{4}|1(?:200|9(?:0[0-2]|19))\\d{6}", , , , "1919123456", , , [8, 10]], [, , "1700\\d{6}", , , , "1700123456", , , [10]], [, , , , , , , , , [-1]], [
+      ]], [, , "153\\d{8,9}|29[1-9]\\d{5}|(?:2[0-8]|[3489]\\d)\\d{6}", , , , "21234567", , , [8, 11, 12], [7]], [, , "55(?:4(?:[01]0|5[0-5])|57[0-289])\\d{4}|5(?:(?:[0-2][02-9]|[36]\\d|[49][2-9]|8[3-7])\\d|5(?:01|2\\d|3[0-3]|4[34]|5[0-25689]|6[6-8]|7[0-267]|8[7-9]|9[1-9]))\\d{5}", , , , "502345678", , , [9]], [, , "1(?:255|80[019]\\d{3})\\d{3}", , , , "1800123456", , , [7, 10]], [, , "1212\\d{4}|1(?:200|9(?:0[0-2]|19))\\d{6}", , , , "1919123456", , , [8, 10]], [, , "1700\\d{6}", , , , "1700123456", , , [10]], [, , , , , , , , , [-1]], [
         ,
         ,
-        "7(?:38(?:0\\d|5[0-2569]|88)|8(?:33|55|77|81)\\d)\\d{4}|7(?:18|2[23]|3[237]|47|6[258]|7\\d|82|9[2-9])\\d{6}",
+        "7(?:38(?:[05]\\d|8[018])|8(?:33|55|77|81)\\d)\\d{4}|7(?:18|2[23]|3[237]|47|6[258]|7\\d|82|9[2-9])\\d{6}",
         ,
         ,
         ,
@@ -66323,9 +66752,20 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , "[1-9]\\d{9}|(?:[1-8]\\d\\d|9)\\d{3,4}", , , , , , , [4, 5, 6, 7, 10], [8]],
         [, , "(?:1[137]|2[13-68]|3[1458]|4[145]|5[1468]|6[16]|7[1467]|8[13467])(?:[03-57]\\d{7}|[16]\\d{3}(?:\\d{4})?|[289]\\d{3}(?:\\d(?:\\d{3})?)?)|94(?:000[09]|(?:12\\d|30[0-2])\\d|2(?:121|[2689]0\\d)|4(?:111|40\\d))\\d{4}", , , , "2123456789", , , [6, 7, 10], [4, 5, 8]],
-        [, , "9(?:(?:0(?:[0-35]\\d|4[4-6])|(?:[13]\\d|2[0-3])\\d)\\d|9(?:[0-46]\\d\\d|5[15]0|8(?:[12]\\d|88)|9(?:0[0-3]|[19]\\d|21|69|77|8[7-9])))\\d{5}", , , , "9123456789", , , [10]],
+        [, , "9(?:(?:0[0-5]|[13]\\d|2[0-3])\\d\\d|9(?:[0-46]\\d\\d|5(?:10|5\\d)|8(?:[12]\\d|88)|9(?:0[0-3]|[19]\\d|21|69|77|8[7-9])))\\d{5}", , , , "9123456789", , , [10]],
         [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
+        [
+          ,
+          ,
+          ,
+          ,
+          ,
+          ,
+          ,
+          ,
+          ,
+          [-1]
+        ],
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
@@ -66474,7 +66914,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         [
           ,
           ,
-          "(?:60\\d|[7-9]0[1-9])\\d{7}",
+          "(?:601[0-4]0|[7-9]0[1-9]\\d\\d)\\d{5}",
           ,
           ,
           ,
@@ -66494,17 +66934,17 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         "0",
         ,
         ,
-        "(000[259]\\d{6})$|(?:(?:003768)0?)|0",
+        "(000[2569]\\d{4,6})$|(?:(?:003768)0?)|0",
         "$1",
         ,
         ,
-        [[, "(\\d{4})(\\d{4})", "$1-$2", ["007", "0077", "00777", "00777[01]"]], [, "(\\d{3})(\\d{3})(\\d{3})", "$1-$2-$3", ["(?:12|57|99)0"], "0$1"], [
+        [[, "(\\d{4})(\\d{4})", "$1-$2", ["007", "0077", "00777", "00777[01]"]], [, "(\\d{8,10})", "$1", ["000"]], [
           ,
-          "(\\d{4})(\\d)(\\d{4})",
+          "(\\d{3})(\\d{3})(\\d{3})",
           "$1-$2-$3",
-          ["1(?:26|3[79]|4[56]|5[4-68]|6[3-5])|499|5(?:76|97)|746|8(?:3[89]|47|51)|9(?:80|9[16])", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:76|97)9|7468|8(?:3(?:8[7-9]|96)|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:769|979[2-69])|7468|8(?:3(?:8[7-9]|96[2457-9])|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]"],
+          ["(?:12|57|99)0"],
           "0$1"
-        ], [
+        ], [, "(\\d{4})(\\d)(\\d{4})", "$1-$2-$3", ["1(?:26|3[79]|4[56]|5[4-68]|6[3-5])|499|5(?:76|97)|746|8(?:3[89]|47|51)|9(?:80|9[16])", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:76|97)9|7468|8(?:3(?:8[7-9]|96)|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]", "1(?:267|3(?:7[247]|9[278])|466|5(?:47|58|64)|6(?:3[245]|48|5[4-68]))|499[2468]|5(?:769|979[2-69])|7468|8(?:3(?:8[7-9]|96[2457-9])|477|51[2-9])|9(?:802|9(?:1[23]|69))|1(?:45|58)[67]"], "0$1"], [
           ,
           "(\\d{2})(\\d{3})(\\d{4})",
           "$1-$2-$3",
@@ -66697,7 +67137,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       KW: [, [, , "18\\d{5}|(?:[2569]\\d|41)\\d{6}", , , , , , , [7, 8]], [, , "2(?:[23]\\d\\d|4(?:[1-35-9]\\d|44)|5(?:0[034]|[2-46]\\d|5[1-3]|7[1-7]))\\d{4}", , , , "22345678", , , [8]], [
         ,
         ,
-        "(?:41\\d\\d|5(?:(?:[05]\\d|1[0-7]|6[56])\\d|2(?:22|5[25])|7(?:55|77)|88[58])|6(?:(?:0[034679]|5[015-9]|6\\d)\\d|1(?:00|11|6[16])|2[26]2|3[36]3|4[46]4|7(?:0[013-9]|[67]\\d)|8[68]8|9(?:[069]\\d|3[039]))|9(?:(?:[04679]\\d|8[057-9])\\d|1(?:1[01]|99)|2(?:00|2\\d)|3(?:00|3[03])|5(?:00|5\\d)))\\d{4}",
+        "(?:41\\d\\d|5(?:(?:[05]\\d|1[0-7]|6[56])\\d|2(?:22|5[25])|7(?:55|77)|88[58])|6(?:(?:0[034679]|5[015-9]|6\\d)\\d|1(?:00|11|6[16])|2[26]2|3[36]3|4[46]4|7(?:0[013-9]|[67]\\d)|8[68]8|9(?:[069]\\d|3[039]))|9(?:(?:[04679]\\d|8[057-9])\\d|1(?:00|1[01]|99)|2(?:00|2\\d)|3(?:00|3[03])|5(?:00|5\\d)))\\d{4}",
         ,
         ,
         ,
@@ -66739,7 +67179,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [10],
         [5, 6, 7]
-      ], [, , "7(?:0[0-25-8]|47|6[0-4]|7[15-8]|85)\\d{7}", , , , "7710009998", , , [10]], [, , "8(?:00|108\\d{3})\\d{7}", , , , "8001234567"], [, , "809\\d{7}", , , , "8091234567", , , [10]], [, , , , , , , , , [-1]], [, , "808\\d{7}", , , , "8081234567", , , [10]], [, , "751\\d{7}", , , , "7511234567", , , [10]], "KZ", 7, "810", "8", , , "8", , "8~10", , , , [, , , , , , , , , [-1]], , "33|7", [, , "751\\d{7}", , , , , , , [10]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, , "7(?:0[0-25-8]|47|6[0-4]|7[15-8]|85)\\d{7}", , , , "7710009998", , , [10]], [, , "8(?:00|108\\d{3})\\d{7}", , , , "8001234567"], [, , "809\\d{7}", , , , "8091234567", , , [10]], [, , , , , , , , , [-1]], [, , "808\\d{7}", , , , "8081234567", , , [10]], [, , "751\\d{7}", , , , "7511234567", , , [10]], "KZ", 7, "810", "8", , , "8", , "8~10", , , , [, , , , , , , , , [-1]], , "33622|7", [, , "751\\d{7}", , , , , , , [10]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       LA: [, [, , "[23]\\d{9}|3\\d{8}|(?:[235-8]\\d|41)\\d{6}", , , , , , , [8, 9, 10], [6]], [
         ,
         ,
@@ -66752,7 +67192,19 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [8],
         [6]
-      ], [, , "208[78]\\d{6}|(?:20[23579]|30[24])\\d{7}", , , , "2023123456", , , [10]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LA", 856, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2[13]|3[14]|[4-8]"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["30[0135-9]"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[23]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "30[0135-9]\\d{6}", , , , "301234567", , , [9]], , , [
+      ], [, , "(?:20(?:[23579]\\d|8[78])|30[24]\\d)\\d{6}|30\\d{7}", , , , "2023123456", , , [9, 10]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LA", 856, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2[13]|3[14]|[4-8]"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["3"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["[23]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      LB: [, [
+        ,
+        ,
+        "[27-9]\\d{7}|[13-9]\\d{6}",
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [7, 8]
+      ], [, , "7(?:62|8[0-6]|9[04-9])\\d{4}|(?:[14-69]\\d|2(?:[14-69]\\d|[78][1-9])|7[2-57]|8[02-9])\\d{5}", , , , "1123456"], [, , "(?:(?:3|81)\\d|7(?:[01]\\d|6[013-9]|8[7-9]|9[1-3]))\\d{5}", , , , "71123456"], [, , , , , , , , , [-1]], [, , "9[01]\\d{6}", , , , "90123456", , , [8]], [, , "80\\d{6}", , , , "80123456", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LB", 961, "00", "0", , , "0", , , , [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[13-69]|7(?:[2-57]|62|8[0-6]|9[04-9])|8[02-9]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27-9]"]]], , [
         ,
         ,
         ,
@@ -66763,104 +67215,79 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [-1]
-      ]],
-      LB: [, [, , "[27-9]\\d{7}|[13-9]\\d{6}", , , , , , , [7, 8]], [, , "7(?:62|8[0-7]|9[04-9])\\d{4}|(?:[14-69]\\d|2(?:[14-69]\\d|[78][1-9])|7[2-57]|8[02-9])\\d{5}", , , , "1123456"], [, , "793(?:[01]\\d|2[0-4])\\d{3}|(?:(?:3|81)\\d|7(?:[01]\\d|6[013-9]|8[89]|9[12]))\\d{5}", , , , "71123456"], [, , , , , , , , , [-1]], [, , "9[01]\\d{6}", , , , "90123456", , , [8]], [, , "80\\d{6}", , , , "80123456", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LB", 961, "00", "0", , , "0", , , , [[
-        ,
-        "(\\d)(\\d{3})(\\d{3})",
-        "$1 $2 $3",
-        ["[13-69]|7(?:[2-57]|62|8[0-7]|9[04-9])|8[02-9]"],
-        "0$1"
-      ], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[27-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      LC: [
-        ,
-        [, , "(?:[58]\\d\\d|758|900)\\d{7}", , , , , , , [10], [7]],
-        [, , "758(?:234|4(?:30|5\\d|6[2-9]|8[0-2])|57[0-2]|(?:63|75)8)\\d{4}", , , , "7584305678", , , , [7]],
-        [, , "758(?:28[4-7]|384|4(?:6[01]|8[4-9])|5(?:1[89]|20|84)|7(?:1[2-9]|2\\d|3[0-3])|812)\\d{4}", , , , "7582845678", , , , [7]],
-        [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456"],
-        [, , "900[2-9]\\d{6}", , , , "9002123456"],
-        [, , , , , , , , , [-1]],
-        [, , "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}", , , , "5002345678"],
-        [, , , , , , , , , [-1]],
-        "LC",
-        1,
-        "011",
-        "1",
+      ], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      LC: [, [, , "(?:[58]\\d\\d|758|900)\\d{7}", , , , , , , [10], [7]], [, , "758(?:234|4(?:30|5\\d|6[2-9]|8[0-2])|57[0-2]|(?:63|75)8)\\d{4}", , , , "7584305678", , , , [7]], [, , "758(?:28[4-7]|384|4(?:6[01]|8[4-9])|5(?:1[89]|20|84)|7(?:1[2-9]|2\\d|3[0-3])|812)\\d{4}", , , , "7582845678", , , , [7]], [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456"], [, , "900[2-9]\\d{6}", , , , "9002123456"], [, , , , , , , , , [-1]], [
         ,
         ,
-        "([2-8]\\d{6})$|1",
-        "758$1",
+        "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}",
         ,
         ,
         ,
+        "5002345678"
+      ], [, , , , , , , , , [-1]], "LC", 1, "011", "1", , , "([2-8]\\d{6})$|1", "758$1", , , , , [, , , , , , , , , [-1]], , "758", [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      LI: [, [, , "[68]\\d{8}|(?:[2378]\\d|90)\\d{5}", , , , , , , [7, 9]], [, , "(?:2(?:01|1[27]|2[024]|3\\d|6[02-578]|96)|3(?:[24]0|33|7[0135-7]|8[048]|9[0269]))\\d{4}", , , , "2345678", , , [7]], [, , "(?:6(?:(?:4[5-9]|5[0-46-9])\\d|6(?:[024-6]\\d|[17]0|3[7-9]))\\d|7(?:[37-9]\\d|42|56))\\d{4}", , , , "660234567"], [, , "8002[28]\\d\\d|80(?:05\\d|9)\\d{4}", , , , "8002222"], [
         ,
-        [, , , , , , , , , [-1]],
         ,
-        "758",
+        "90(?:02[258]|1(?:23|3[14])|66[136])\\d\\d",
+        ,
+        ,
+        ,
+        "9002222",
+        ,
+        ,
+        [7]
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LI", 423, "00", "0", , , "(1001)|0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[2379]|8(?:0[09]|7)", "[2379]|8(?:0(?:02|9)|7)"], , "$CC $1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["69"], , "$CC $1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"], , "$CC $1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "870(?:28|87)\\d\\d", , , , "8702812", , , [7]], , , [, , "697(?:42|56|[78]\\d)\\d{4}", , , , "697861234", , , [9]]],
+      LK: [
+        ,
+        [, , "[1-9]\\d{8}", , , , , , , [9], [7]],
+        [, , "(?:12[2-9]|602|8[12]\\d|9(?:1\\d|22|9[245]))\\d{6}|(?:11|2[13-7]|3[1-8]|4[157]|5[12457]|6[35-7])[2-57]\\d{6}", , , , "112345678", , , , [7]],
+        [, , "7(?:[0-25-8]\\d|4[0-4])\\d{6}", , , , "712345678"],
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        "LK",
+        94,
+        "00",
+        "0",
+        ,
+        ,
+        "0",
+        ,
+        ,
+        ,
+        [[, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[1-689]"], "0$1"]],
+        ,
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]],
+        [, , "1973\\d{5}", , , , "197312345"],
         ,
         ,
         [, , , , , , , , , [-1]]
       ],
-      LI: [, [, , "[68]\\d{8}|(?:[2378]\\d|90)\\d{5}", , , , , , , [7, 9]], [
-        ,
-        ,
-        "(?:2(?:01|1[27]|2[02]|3\\d|6[02-578]|96)|3(?:[24]0|33|7[0135-7]|8[048]|9[0269]))\\d{4}",
-        ,
-        ,
-        ,
-        "2345678",
-        ,
-        ,
-        [7]
-      ], [, , "(?:6(?:(?:4[5-9]|5[0-469])\\d|6(?:[024-6]\\d|[17]0|3[7-9]))\\d|7(?:[37-9]\\d|42|56))\\d{4}", , , , "660234567"], [, , "8002[28]\\d\\d|80(?:05\\d|9)\\d{4}", , , , "8002222"], [, , "90(?:02[258]|1(?:23|3[14])|66[136])\\d\\d", , , , "9002222", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LI", 423, "00", "0", , , "(1001)|0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})", "$1 $2 $3", ["[2379]|8(?:0[09]|7)", "[2379]|8(?:0(?:02|9)|7)"], , "$CC $1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["8"]], [
+      LR: [, [, , "(?:[2457]\\d|33|88)\\d{7}|(?:2\\d|[4-6])\\d{6}", , , , , , , [7, 8, 9]], [, , "2\\d{7}", , , , "21234567", , , [8]], [, , "(?:(?:(?:22|33)0|555|7(?:6[01]|7\\d)|88\\d)\\d|4(?:240|[67]))\\d{5}|[56]\\d{6}", , , , "770123456", , , [7, 9]], [, , , , , , , , , [-1]], [, , "332(?:02|[34]\\d)\\d{4}", , , , "332021234", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LR", 231, "00", "0", , , "0", , , , [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["4[67]|[56]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], [
         ,
         "(\\d{2})(\\d{3})(\\d{4})",
         "$1 $2 $3",
-        ["69"],
-        ,
-        "$CC $1"
-      ], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"], , "$CC $1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "870(?:28|87)\\d\\d", , , , "8702812", , , [7]], , , [, , "697(?:42|56|[78]\\d)\\d{4}", , , , "697861234", , , [9]]],
-      LK: [, [, , "[1-9]\\d{8}", , , , , , , [9], [7]], [, , "(?:12[2-9]|602|8[12]\\d|9(?:1\\d|22|9[245]))\\d{6}|(?:11|2[13-7]|3[1-8]|4[157]|5[12457]|6[35-7])[2-57]\\d{6}", , , , "112345678", , , , [7]], [, , "7(?:[0-25-8]\\d|4[0-4])\\d{6}", , , , "712345678"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        [-1]
-      ], [, , , , , , , , , [-1]], "LK", 94, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[1-689]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "1973\\d{5}", , , , "197312345"], , , [, , , , , , , , , [-1]]],
-      LR: [, [, , "(?:[245]\\d|33|77|88)\\d{7}|(?:2\\d|[4-6])\\d{6}", , , , , , , [7, 8, 9]], [, , "2\\d{7}", , , , "21234567", , , [8]], [, , "(?:(?:(?:22|33)0|555|(?:77|88)\\d)\\d|4(?:240|[67]))\\d{5}|[56]\\d{6}", , , , "770123456", , , [7, 9]], [, , , , , , , , , [-1]], [
-        ,
-        ,
-        "332(?:02|[34]\\d)\\d{4}",
-        ,
-        ,
-        ,
-        "332021234",
-        ,
-        ,
-        [9]
-      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LR", 231, "00", "0", , , "0", , , , [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["4[67]|[56]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-578]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      LS: [, [, , "(?:[256]\\d\\d|800)\\d{5}", , , , , , , [8]], [, , "2\\d{7}", , , , "22123456"], [, , "[56]\\d{7}", , , , "50123456"], [, , "800[1256]\\d{4}", , , , "80021234"], [, , , , , , , , , [-1]], [
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        [-1]
-      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LS", 266, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["[2568]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        ["[2-578]"],
+        "0$1"
+      ]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      LS: [, [, , "(?:[256]\\d\\d|800)\\d{5}", , , , , , , [8]], [, , "2\\d{7}", , , , "22123456"], [, , "[56]\\d{7}", , , , "50123456"], [, , "800[1256]\\d{4}", , , , "80021234"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LS", 266, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["[2568]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       LT: [
         ,
         [, , "(?:[3469]\\d|52|[78]0)\\d{6}", , , , , , , [8]],
-        [, , "(?:3[1478]|4[124-6]|52)\\d{6}", , , , "31234567"],
+        [
+          ,
+          ,
+          "(?:3[1478]|4[124-6]|52)\\d{6}",
+          ,
+          ,
+          ,
+          "31234567"
+        ],
         [, , "6\\d{7}", , , , "61234567"],
         [, , "80[02]\\d{5}", , , , "80012345"],
         [, , "9(?:0[0239]|10)\\d{5}", , , , "90012345"],
@@ -66888,161 +67315,117 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      LU: [, [, , "35[013-9]\\d{4,8}|6\\d{8}|35\\d{2,4}|(?:[2457-9]\\d|3[0-46-9])\\d{2,9}", , , , , , , [4, 5, 6, 7, 8, 9, 10, 11]], [
+      LU: [, [, , "35[013-9]\\d{4,8}|6\\d{8}|35\\d{2,4}|(?:[2457-9]\\d|3[0-46-9])\\d{2,9}", , , , , , , [4, 5, 6, 7, 8, 9, 10, 11]], [, , "(?:35[013-9]|80[2-9]|90[89])\\d{1,8}|(?:2[2-9]|3[0-46-9]|[457]\\d|8[13-9]|9[2-579])\\d{2,9}", , , , "27123456"], [, , "6(?:[269][18]|5[1568]|7[189]|81)\\d{6}", , , , "628123456", , , [9]], [, , "800\\d{5}", , , , "80012345", , , [8]], [, , "90[015]\\d{5}", , , , "90012345", , , [8]], [, , "801\\d{5}", , , , "80112345", , , [8]], [, , , , , , , , , [-1]], [
         ,
         ,
-        "(?:35[013-9]|80[2-9]|90[89])\\d{1,8}|(?:2[2-9]|3[0-46-9]|[457]\\d|8[13-9]|9[2-579])\\d{2,9}",
+        "20(?:1\\d{5}|[2-689]\\d{1,7})",
         ,
         ,
         ,
-        "27123456"
-      ], [, , "6(?:[269][18]|5[1568]|7[189]|81)\\d{6}", , , , "628123456", , , [9]], [, , "800\\d{5}", , , , "80012345", , , [8]], [, , "90[015]\\d{5}", , , , "90012345", , , [8]], [, , "801\\d{5}", , , , "80112345", , , [8]], [, , , , , , , , , [-1]], [, , "20(?:1\\d{5}|[2-689]\\d{1,7})", , , , "20201234", , , [4, 5, 6, 7, 8, 9, 10]], "LU", 352, "00", , , , "(15(?:0[06]|1[12]|[35]5|4[04]|6[26]|77|88|99)\\d)", , , , [[, "(\\d{2})(\\d{3})", "$1 $2", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"], , "$CC $1"], [
+        "20201234",
         ,
-        "(\\d{2})(\\d{2})(\\d{2})",
+        ,
+        [4, 5, 6, 7, 8, 9, 10]
+      ], "LU", 352, "00", , , , "(15(?:0[06]|1[12]|[35]5|4[04]|6[26]|77|88|99)\\d)", , , , [[, "(\\d{2})(\\d{3})", "$1 $2", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"], , "$CC $1"], [, "(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3", ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"], , "$CC $1"], [, "(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["20[2-689]"], , "$CC $1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4", ["2(?:[0367]|4[3-8])"], , "$CC $1"], [
+        ,
+        "(\\d{3})(\\d{2})(\\d{3})",
         "$1 $2 $3",
-        ["2(?:0[2-689]|[2-9])|[3-57]|8(?:0[2-9]|[13-9])|9(?:0[89]|[2-579])"],
+        ["80[01]|90[015]"],
         ,
         "$CC $1"
-      ], [, "(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3", ["20[2-689]"], , "$CC $1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4", ["2(?:[0367]|4[3-8])"], , "$CC $1"], [, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["80[01]|90[015]"], , "$CC $1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["20"], , "$CC $1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"], , "$CC $1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4 $5", ["2(?:[0367]|4[3-8])"], , "$CC $1"], [
-        ,
-        "(\\d{2})(\\d{2})(\\d{2})(\\d{1,5})",
-        "$1 $2 $3 $4",
-        ["[3-57]|8[13-9]|9(?:0[89]|[2-579])|(?:2|80)[2-9]"],
-        ,
-        "$CC $1"
-      ]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      LV: [, [, , "(?:[268]\\d|90)\\d{6}", , , , , , , [8]], [, , "6\\d{7}", , , , "63123456"], [, , "23(?:23[0-57-9]|33[0238])\\d{3}|2(?:[0-24-9]\\d\\d|3(?:0[07]|[14-9]\\d|2[024-9]|3[0-24-9]))\\d{4}", , , , "21234567"], [, , "80\\d{6}", , , , "80123456"], [, , "90\\d{6}", , , , "90123456"], [, , "81\\d{6}", , , , "81123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LV", 371, "00", , , , , , , , [[
-        ,
-        "(\\d{2})(\\d{3})(\\d{3})",
-        "$1 $2 $3",
-        ["[269]|8[01]"]
-      ]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      LY: [
-        ,
-        [, , "[2-9]\\d{8}", , , , , , , [9], [7]],
-        [, , "(?:2(?:0[56]|[1-6]\\d|7[124579]|8[124])|3(?:1\\d|2[2356])|4(?:[17]\\d|2[1-357]|5[2-4]|8[124])|5(?:[1347]\\d|2[1-469]|5[13-5]|8[1-4])|6(?:[1-479]\\d|5[2-57]|8[1-5])|7(?:[13]\\d|2[13-79])|8(?:[124]\\d|5[124]|84))\\d{6}", , , , "212345678", , , , [7]],
-        [, , "9[1-6]\\d{7}", , , , "912345678"],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        "LY",
-        218,
-        "00",
-        "0",
+      ], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{3})", "$1 $2 $3 $4", ["20"], , "$CC $1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["6"], , "$CC $1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{1,2})", "$1 $2 $3 $4 $5", ["2(?:[0367]|4[3-8])"], , "$CC $1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{1,5})", "$1 $2 $3 $4", ["[3-57]|8[13-9]|9(?:0[89]|[2-579])|(?:2|80)[2-9]"], , "$CC $1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      LV: [, [, , "(?:[268]\\d|90)\\d{6}", , , , , , , [8]], [
         ,
         ,
-        "0",
+        "6\\d{7}",
         ,
         ,
         ,
-        [[, "(\\d{2})(\\d{7})", "$1-$2", ["[2-9]"], "0$1"]],
-        ,
-        [, , , , , , , , , [-1]],
-        ,
-        ,
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
+        "63123456"
+      ], [, , "2333[0-8]\\d{3}|2(?:[0-24-9]\\d\\d|3(?:0[07]|[14-9]\\d|2[02-9]|3[0-24-9]))\\d{4}", , , , "21234567"], [, , "80\\d{6}", , , , "80123456"], [, , "90\\d{6}", , , , "90123456"], [, , "81\\d{6}", , , , "81123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LV", 371, "00", , , , , , , , [[, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["[269]|8[01]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      LY: [, [, , "[2-9]\\d{8}", , , , , , , [9], [7]], [
         ,
         ,
-        [, , , , , , , , , [-1]]
-      ],
-      MA: [, [, , "[5-8]\\d{8}", , , , , , , [9]], [, , "5(?:2(?:[0-25-79]\\d|3[1-578]|4[02-46-8]|8[0235-7])|3(?:[0-47]\\d|5[02-9]|6[02-8]|8[014-9]|9[3-9])|(?:4[067]|5[03])\\d)\\d{5}", , , , "520123456"], [, , "(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[0167]\\d|2[0-4]|5[01]|8[0-3]))\\d{6}", , , , "650123456"], [, , "80[0-7]\\d{6}", , , , "801234567"], [, , "89\\d{7}", , , , "891234567"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [
-        ,
-        ,
-        "(?:592(?:4[0-2]|93)|80[89]\\d\\d)\\d{4}",
+        "(?:2(?:0[56]|[1-6]\\d|7[124579]|8[124])|3(?:1\\d|2[2356])|4(?:[17]\\d|2[1-357]|5[2-4]|8[124])|5(?:[1347]\\d|2[1-469]|5[13-5]|8[1-4])|6(?:[1-479]\\d|5[2-57]|8[1-5])|7(?:[13]\\d|2[13-79])|8(?:[124]\\d|5[124]|84))\\d{6}",
         ,
         ,
         ,
-        "592401234"
-      ], "MA", 212, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["5[45]"], "0$1"], [, "(\\d{4})(\\d{5})", "$1-$2", ["5(?:2[2-46-9]|3[3-9]|9)|8(?:0[89]|92)"], "0$1"], [, "(\\d{2})(\\d{7})", "$1-$2", ["8"], "0$1"], [, "(\\d{3})(\\d{6})", "$1-$2", ["[5-7]"], "0$1"]], , [, , , , , , , , , [-1]], 1, , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      MC: [
-        ,
-        [, , "(?:[3489]|6\\d)\\d{7}", , , , , , , [8, 9]],
-        [, , "(?:870|9[2-47-9]\\d)\\d{5}", , , , "99123456", , , [8]],
-        [, , "4(?:[469]\\d|5[1-9])\\d{5}|(?:3|6\\d)\\d{7}", , , , "612345678"],
-        [, , "(?:800|90\\d)\\d{5}", , , , "90123456", , , [8]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        "MC",
-        377,
-        "00",
-        "0",
-        ,
-        ,
-        "0",
+        "212345678",
         ,
         ,
         ,
-        [[, "(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["87"]], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["4"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[389]"]], [, "(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["6"], "0$1"]],
-        [[, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["4"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[389]"]], [
-          ,
-          "(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})",
-          "$1 $2 $3 $4 $5",
-          ["6"],
-          "0$1"
-        ]],
-        [, , , , , , , , , [-1]],
+        [7]
+      ], [, , "9[1-6]\\d{7}", , , , "912345678"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "LY", 218, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{7})", "$1-$2", ["[2-9]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      MA: [, [, , "[5-8]\\d{8}", , , , , , , [9]], [, , "5(?:2(?:[0-25-79]\\d|3[1-578]|4[02-46-8]|8[0235-7])|3(?:[0-47]\\d|5[02-9]|6[02-8]|8[014-9]|9[3-9])|(?:4[067]|5[03])\\d)\\d{5}", , , , "520123456"], [
         ,
         ,
-        [, , "8[07]0\\d{5}", , , , , , , [8]],
-        [, , , , , , , , , [-1]],
+        "(?:6(?:[0-79]\\d|8[0-247-9])|7(?:[0167]\\d|2[0-8]|5[0-5]|8[0-7]))\\d{6}",
         ,
         ,
-        [, , , , , , , , , [-1]]
-      ],
-      MD: [, [, , "(?:[235-7]\\d|[89]0)\\d{6}", , , , , , , [8]], [, , "(?:(?:2[1-9]|3[1-79])\\d|5(?:33|5[257]))\\d{5}", , , , "22212345"], [, , "562\\d{5}|(?:6\\d|7[16-9])\\d{6}", , , , "62112345"], [, , "800\\d{5}", , , , "80012345"], [, , "90[056]\\d{5}", , , , "90012345"], [, , "808\\d{5}", , , , "80812345"], [, , , , , , , , , [-1]], [, , "3[08]\\d{6}", , , , "30123456"], "MD", 373, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{5})", "$1 $2", ["[89]"], "0$1"], [
         ,
-        "(\\d{2})(\\d{3})(\\d{3})",
-        "$1 $2 $3",
-        ["22|3"],
+        "650123456"
+      ], [, , "80[0-7]\\d{6}", , , , "801234567"], [, , "89\\d{7}", , , , "891234567"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "(?:592(?:4[0-2]|93)|80[89]\\d\\d)\\d{4}", , , , "592401234"], "MA", 212, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["5[45]"], "0$1"], [, "(\\d{4})(\\d{5})", "$1-$2", ["5(?:2[2-46-9]|3[3-9]|9)|8(?:0[89]|92)"], "0$1"], [, "(\\d{2})(\\d{7})", "$1-$2", ["8"], "0$1"], [, "(\\d{3})(\\d{6})", "$1-$2", ["[5-7]"], "0$1"]], , [, , , , , , , , , [-1]], 1, , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [-1]
+      ]],
+      MC: [, [, , "(?:[3489]|6\\d)\\d{7}", , , , , , , [8, 9]], [, , "(?:870|9[2-47-9]\\d)\\d{5}", , , , "99123456", , , [8]], [, , "4(?:[469]\\d|5[1-9])\\d{5}|(?:3|6\\d)\\d{7}", , , , "612345678"], [, , "(?:800|90\\d)\\d{5}", , , , "90123456", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "MC", 377, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{3})(\\d{2})", "$1 $2 $3", ["87"]], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["4"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[389]"]], [
+        ,
+        "(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})",
+        "$1 $2 $3 $4 $5",
+        ["6"],
         "0$1"
-      ], [, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[25-7]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "803\\d{5}", , , , "80312345"], , , [, , , , , , , , , [-1]]],
-      ME: [, [, , "(?:20|[3-79]\\d)\\d{6}|80\\d{6,7}", , , , , , , [8, 9], [6]], [, , "(?:20[2-8]|3(?:[0-2][2-7]|3[24-7])|4(?:0[2-467]|1[2467])|5(?:0[2467]|1[24-7]|2[2-467]))\\d{5}", , , , "30234567", , , [8], [6]], [, , "6(?:[07-9]\\d|3[024]|6[0-25])\\d{5}", , , , "67622901", , , [8]], [, , "80(?:[0-2578]|9\\d)\\d{5}", , , , "80080002"], [
+      ]], [[, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["4"], "0$1"], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[389]"]], [, "(\\d)(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4 $5", ["6"], "0$1"]], [, , , , , , , , , [-1]], , , [, , "8[07]0\\d{5}", , , , , , , [8]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      MD: [, [, , "(?:[235-7]\\d|[89]0)\\d{6}", , , , , , , [8]], [, , "(?:(?:2[1-9]|3[1-79])\\d|5(?:33|5[257]))\\d{5}", , , , "22212345"], [, , "562\\d{5}|(?:6\\d|7[16-9])\\d{6}", , , , "62112345"], [, , "800\\d{5}", , , , "80012345"], [
         ,
         ,
-        "9(?:4[1568]|5[178])\\d{5}",
-        ,
-        ,
-        ,
-        "94515151",
-        ,
-        ,
-        [8]
-      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "78[1-49]\\d{5}", , , , "78108780", , , [8]], "ME", 382, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "77[1-9]\\d{5}", , , , "77273012", , , [8]], , , [, , , , , , , , , [-1]]],
-      MF: [, [, , "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", , , , , , , [9]], [, , "590(?:0[079]|[14]3|[27][79]|3[03-7]|5[0-268]|87)\\d{4}", , , , "590271234"], [
-        ,
-        ,
-        "(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}",
+        "90[056]\\d{5}",
         ,
         ,
         ,
-        "690001234"
-      ], [, , "80[0-5]\\d{6}", , , , "800012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "9(?:(?:39[5-7]|76[018])\\d|475[0-5])\\d{4}", , , , "976012345"], "MF", 590, "00", "0", , , "0", , , , , , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      MG: [
+        "90012345"
+      ], [, , "808\\d{5}", , , , "80812345"], [, , , , , , , , , [-1]], [, , "3[08]\\d{6}", , , , "30123456"], "MD", 373, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{5})", "$1 $2", ["[89]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["22|3"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{3})", "$1 $2 $3", ["[25-7]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "803\\d{5}", , , , "80312345"], , , [, , , , , , , , , [-1]]],
+      ME: [, [, , "(?:20|[3-79]\\d)\\d{6}|80\\d{6,7}", , , , , , , [8, 9], [6]], [
         ,
-        [, , "[23]\\d{8}", , , , , , , [9], [7]],
-        [, , "2072[29]\\d{4}|20(?:2\\d|4[47]|5[3467]|6[279]|7[356]|8[268]|9[2457])\\d{5}", , , , "202123456", , , , [7]],
-        [, , "3[2-47-9]\\d{7}", , , , "321234567"],
+        ,
+        "(?:20[2-8]|3(?:[0-2][2-7]|3[24-7])|4(?:0[2-467]|1[2467])|5(?:0[2467]|1[24-7]|2[2-467]))\\d{5}",
+        ,
+        ,
+        ,
+        "30234567",
+        ,
+        ,
+        [8],
+        [6]
+      ], [, , "6(?:[07-9]\\d|3[024]|6[0-25])\\d{5}", , , , "67622901", , , [8]], [, , "80(?:[0-2578]|9\\d)\\d{5}", , , , "80080002"], [, , "9(?:4[1568]|5[178])\\d{5}", , , , "94515151", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "78[1-49]\\d{5}", , , , "78108780", , , [8]], "ME", 382, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[2-9]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "77[1-9]\\d{5}", , , , "77273012", , , [8]], , , [, , , , , , , , , [-1]]],
+      MF: [
+        ,
+        [, , "(?:590\\d|7090)\\d{5}|(?:69|80|9\\d)\\d{7}", , , , , , , [9]],
+        [, , "590(?:0[079]|[14]3|[27][79]|3[03-7]|5[0-268]|87)\\d{4}", , , , "590271234"],
+        [, , "(?:69(?:0\\d\\d|1(?:2[2-9]|3[0-5])|4(?:0[89]|1[2-6]|9\\d)|6(?:1[016-9]|5[0-4]|[67]\\d))|7090[0-4])\\d{4}", , , , "690001234"],
+        [, , "80[0-5]\\d{6}", , , , "800012345"],
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , "22\\d{7}", , , , "221234567"],
-        "MG",
-        261,
+        [, , "9(?:(?:39[5-7]|76[018])\\d|475[0-6])\\d{4}", , , , "976012345"],
+        "MF",
+        590,
         "00",
         "0",
         ,
         ,
-        "([24-9]\\d{6})$|0",
-        "20$1",
+        "0",
         ,
         ,
-        [[, "(\\d{2})(\\d{2})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["[23]"], "0$1"]],
+        ,
+        ,
         ,
         [, , , , , , , , , [-1]],
         ,
@@ -67053,16 +67436,54 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      MH: [, [, , "329\\d{4}|(?:[256]\\d|45)\\d{5}", , , , , , , [7]], [, , "(?:247|528|625)\\d{4}", , , , "2471234"], [, , "(?:(?:23|54)5|329|45[35-8])\\d{4}", , , , "2351234"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "635\\d{4}", , , , "6351234"], "MH", 692, "011", "1", , , "1", , , , [[
+      MG: [, [, , "[23]\\d{8}", , , , , , , [9], [7]], [
         ,
-        "(\\d{3})(\\d{4})",
-        "$1-$2",
-        ["[2-6]"]
-      ]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        ,
+        "2072[29]\\d{4}|20(?:2\\d|4[47]|5[3467]|6[279]|7[356]|8[268]|9[2457])\\d{5}",
+        ,
+        ,
+        ,
+        "202123456",
+        ,
+        ,
+        ,
+        [7]
+      ], [, , "3[2-47-9]\\d{7}", , , , "321234567"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "22\\d{7}", , , , "221234567"], "MG", 261, "00", "0", , , "([24-9]\\d{6})$|0", "20$1", , , [[, "(\\d{2})(\\d{2})(\\d{3})(\\d{2})", "$1 $2 $3 $4", ["[23]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      MH: [
+        ,
+        [, , "329\\d{4}|(?:[256]\\d|45)\\d{5}", , , , , , , [7]],
+        [, , "(?:247|528|625)\\d{4}", , , , "2471234"],
+        [, , "(?:(?:23|54)5|329|45[35-8])\\d{4}", , , , "2351234"],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , "635\\d{4}", , , , "6351234"],
+        "MH",
+        692,
+        "011",
+        "1",
+        ,
+        ,
+        "1",
+        ,
+        ,
+        ,
+        [[, "(\\d{3})(\\d{4})", "$1-$2", ["[2-6]"]]],
+        ,
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]]
+      ],
       MK: [, [, , "[2-578]\\d{7}", , , , , , , [8], [6, 7]], [, , "(?:(?:2(?:62|77)0|3444)\\d|4[56]440)\\d{3}|(?:34|4[357])700\\d{3}|(?:2(?:[0-3]\\d|5[0-578]|6[01]|82)|3(?:1[3-68]|[23][2-68]|4[23568])|4(?:[23][2-68]|4[3-68]|5[2568]|6[25-8]|7[24-68]|8[4-68]))\\d{5}", , , , "22012345", , , , [6, 7]], [
         ,
         ,
-        "7(?:3555|(?:474|9[019]7)7)\\d{3}|7(?:[0-25-8]\\d\\d|3(?:[1-48]\\d|6[01]|7[01578])|4(?:2\\d|60|7[01578])|9(?:[2-4]\\d|5[01]|7[015]))\\d{4}",
+        "7(?:3555|(?:474|9[019]7)7)\\d{3}|7(?:[0-25-8]\\d\\d|3(?:[1-478]\\d|6[01])|4(?:2\\d|60|7[01578])|9(?:[2-4]\\d|5[01]|7[015]))\\d{4}",
         ,
         ,
         ,
@@ -67071,19 +67492,19 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ML: [, [, , "[24-9]\\d{7}", , , , , , , [8]], [
         ,
         ,
-        "2(?:07[0-8]|12[67])\\d{4}|(?:2(?:02|1[4-689])|4(?:0[0-4]|4[1-39]))\\d{5}",
+        "2(?:07[0-8]|12[67])\\d{4}|(?:2(?:02|1[4-689])|4(?:0[0-4]|4[1-59]))\\d{5}",
         ,
         ,
         ,
         "20212345"
-      ], [, , "2(?:0(?:01|79)|17\\d)\\d{4}|(?:5[01]|[679]\\d|8[2-49])\\d{6}", , , , "65012345"], [, , "80\\d{6}", , , , "80012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "ML", 223, "00", , , , , , , , [[, "(\\d{4})", "$1", ["67[057-9]|74[045]", "67(?:0[09]|[59]9|77|8[89])|74(?:0[02]|44|55)"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-9]"]]], [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-9]"]]], [, , , , , , , , , [-1]], , , [, , "80\\d{6}"], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, , "2(?:0(?:01|79)|17\\d)\\d{4}|(?:5[0-3]|[679]\\d|8[2-59])\\d{6}", , , , "65012345"], [, , "80\\d{6}", , , , "80012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "ML", 223, "00", , , , , , , , [[, "(\\d{4})", "$1", ["67[057-9]|74[045]", "67(?:0[09]|[59]9|77|8[89])|74(?:0[02]|44|55)"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-9]"]]], [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[24-9]"]]], [, , , , , , , , , [-1]], , , [, , "80\\d{6}"], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       MM: [
         ,
         [, , "1\\d{5,7}|95\\d{6}|(?:[4-7]|9[0-46-9])\\d{6,8}|(?:2|8\\d)\\d{5,8}", , , , , , , [6, 7, 8, 9, 10], [5]],
         [
           ,
           ,
-          "(?:1(?:(?:12|[28]\\d|3[56]|7[3-6]|9[0-6])\\d|4(?:2[29]|62|7[0-2]|83)|6)|2(?:2(?:00|8[34])|4(?:0\\d|[26]2|7[0-2]|83)|51\\d\\d)|4(?:2(?:2\\d\\d|48[013])|3(?:20\\d|4(?:70|83)|56)|420\\d|5(?:2\\d|470))|6(?:0(?:[23]|88\\d)|(?:124|[56]2\\d)\\d|2472|3(?:20\\d|470)|4(?:2[04]\\d|472)|7(?:3\\d\\d|4[67]0|8(?:[01459]\\d|8))))\\d{4}|5(?:2(?:2\\d{5,6}|47[02]\\d{4})|(?:3472|4(?:2(?:1|86)|470)|522\\d|6(?:20\\d|483)|7(?:20\\d|48[01])|8(?:20\\d|47[02])|9(?:20\\d|470))\\d{4})|7(?:(?:0470|4(?:25\\d|470)|5(?:202|470|96\\d))\\d{4}|1(?:20\\d{4,5}|4(?:70|83)\\d{4}))|8(?:1(?:2\\d{5,6}|4(?:10|7[01]\\d)\\d{3})|2(?:2\\d{5,6}|(?:320|490\\d)\\d{3})|(?:3(?:2\\d\\d|470)|4[24-7]|5(?:(?:2\\d|51)\\d|4(?:[1-35-9]\\d|4[0-57-9]))|6[23])\\d{4})|(?:1[2-6]\\d|4(?:2[24-8]|3[2-7]|[46][2-6]|5[3-5])|5(?:[27][2-8]|3[2-68]|4[24-8]|5[23]|6[2-4]|8[24-7]|9[2-7])|6(?:[19]20|42[03-6]|(?:52|7[45])\\d)|7(?:[04][24-8]|[15][2-7]|22|3[2-4])|8(?:1[2-689]|2[2-8]|(?:[35]2|64)\\d))\\d{4}|25\\d{5,6}|(?:2[2-9]|6(?:1[2356]|[24][2-6]|3[24-6]|5[2-4]|6[2-8]|7[235-7]|8[245]|9[24])|8(?:3[24]|5[245]))\\d{4}",
+          "(?:1(?:(?:12|[28]\\d|3[56]|7[3-6]|9[0-6])\\d|4(?:2[29]|7[0-2]|83)|6)|2(?:2(?:00|8[34])|4(?:0\\d|22|7[0-2]|83)|51\\d\\d)|4(?:2(?:2\\d\\d|48[013])|3(?:20\\d|4(?:70|83)|56)|420\\d|5(?:2\\d|470))|6(?:0(?:[23]|88\\d)|(?:124|[56]2\\d)\\d|2472|3(?:20\\d|470)|4(?:2[04]\\d|472)|7(?:3\\d\\d|4[67]0|8(?:[01459]\\d|8))))\\d{4}|5(?:2(?:2\\d{5,6}|47[02]\\d{4})|(?:3472|4(?:2(?:1|86)|470)|522\\d|6(?:20\\d|483)|7(?:20\\d|48[01])|8(?:20\\d|47[02])|9(?:20\\d|470))\\d{4})|7(?:(?:0470|4(?:25\\d|470)|5(?:202|470|96\\d))\\d{4}|1(?:20\\d{4,5}|4(?:70|83)\\d{4}))|8(?:1(?:2\\d{5,6}|4(?:10|7[01]\\d)\\d{3})|2(?:2\\d{5,6}|(?:320|490\\d)\\d{3})|(?:3(?:2\\d\\d|470)|4[24-7]|5(?:(?:2\\d|51)\\d|4(?:[1-35-9]\\d|4[0-57-9]))|6[23])\\d{4})|(?:1[2-6]\\d|4(?:2[24-8]|3[2-7]|[46][2-6]|5[3-5])|5(?:[27][2-8]|3[2-68]|4[24-8]|5[23]|6[2-4]|8[24-7]|9[2-7])|6(?:[19]20|42[03-6]|(?:52|7[45])\\d)|7(?:[04][24-8]|[15][2-7]|22|3[2-4])|8(?:1[2-689]|2[2-8]|(?:[35]2|64)\\d))\\d{4}|25\\d{5,6}|(?:2[2-9]|6(?:1[2356]|[24][2-6]|3[24-6]|5[2-4]|6[2-8]|7[235-7]|8[245]|9[24])|8(?:3[24]|5[245]))\\d{4}",
           ,
           ,
           ,
@@ -67098,7 +67519,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
-        [, , "1333\\d{4}|[12]468\\d{4}", , , , "13331234", , , [8]],
+        [, , "1333\\d{4}", , , , "13331234", , , [8]],
         "MM",
         95,
         "00",
@@ -67132,62 +67553,43 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      MN: [
-        ,
-        [, , "[12]\\d{7,9}|[5-9]\\d{7}", , , , , , , [8, 9, 10], [4, 5, 6]],
-        [, , "[12]2[1-3]\\d{5,6}|(?:(?:[12](?:1|27)|5[368])\\d\\d|7(?:0(?:[0-5]\\d|7[078]|80)|128))\\d{4}|[12](?:3[2-8]|4[2-68]|5[1-4689])\\d{6,7}", , , , "53123456", , , , [4, 5, 6]],
-        [, , "(?:83[01]|92[039])\\d{5}|(?:5[05]|6[069]|72|8[015689]|9[013-9])\\d{6}", , , , "88123456", , , [8]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , "712[0-79]\\d{4}|7(?:1[013-9]|[5-9]\\d)\\d{5}", , , , "75123456", , , [8]],
-        "MN",
-        976,
-        "001",
-        "0",
+      MN: [, [, , "[12]\\d{7,9}|[5-9]\\d{7}", , , , , , , [8, 9, 10], [4, 5, 6]], [, , "[12]2[1-3]\\d{5,6}|(?:(?:[12](?:1|27)|5[368])\\d\\d|7(?:0(?:[0-5]\\d|7[078]|80)|128))\\d{4}|[12](?:3[2-8]|4[2-68]|5[1-4689])\\d{6,7}", , , , "53123456", , , , [4, 5, 6]], [, , "92[0139]\\d{5}|(?:5[05]|6[069]|7[28]|8[0135689]|9[013-9])\\d{6}", , , , "88123456", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [
         ,
         ,
-        "0",
+        "712[0-79]\\d{4}|7(?:1[013-9]|[5-79]\\d)\\d{5}",
         ,
         ,
         ,
-        [[, "(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[12]1"], "0$1"], [, "(\\d{4})(\\d{4})", "$1 $2", ["[5-9]"]], [, "(\\d{3})(\\d{5,6})", "$1 $2", ["[12]2[1-3]"], "0$1"], [, "(\\d{4})(\\d{5,6})", "$1 $2", ["[12](?:27|3[2-8]|4[2-68]|5[1-4689])", "[12](?:27|3[2-8]|4[2-68]|5[1-4689])[0-3]"], "0$1"], [, "(\\d{5})(\\d{4,5})", "$1 $2", ["[12]"], "0$1"]],
-        ,
-        [, , , , , , , , , [-1]],
+        "75123456",
         ,
         ,
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
+        [8]
+      ], "MN", 976, "001", "0", , , "0", , , , [[, "(\\d{2})(\\d{2})(\\d{4})", "$1 $2 $3", ["[12]1"], "0$1"], [, "(\\d{4})(\\d{4})", "$1 $2", ["[5-9]"]], [, "(\\d{3})(\\d{5,6})", "$1 $2", ["[12]2[1-3]"], "0$1"], [, "(\\d{4})(\\d{5,6})", "$1 $2", ["[12](?:27|3[2-8]|4[2-68]|5[1-4689])", "[12](?:27|3[2-8]|4[2-68]|5[1-4689])[0-3]"], "0$1"], [, "(\\d{5})(\\d{4,5})", "$1 $2", ["[12]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      MO: [, [, , "0800\\d{3}|(?:28|[68]\\d)\\d{6}", , , , , , , [7, 8]], [
         ,
         ,
-        [, , , , , , , , , [-1]]
-      ],
-      MO: [, [
-        ,
-        ,
-        "0800\\d{3}|(?:28|[68]\\d)\\d{6}",
+        "(?:28[2-9]|8(?:11|[2-57-9]\\d))\\d{5}",
         ,
         ,
         ,
+        "28212345",
+        ,
+        ,
+        [8]
+      ], [, , "6800[0-79]\\d{3}|6(?:[235]\\d\\d|6(?:0[0-5]|[1-9]\\d)|8(?:0[1-9]|[14-8]\\d|2[5-9]|[39][0-4]))\\d{4}", , , , "66123456", , , [8]], [, , "0800\\d{3}", , , , "0800501", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "MO", 853, "00", , , , , , , , [[, "(\\d{4})(\\d{3})", "$1 $2", ["0"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[268]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      MP: [, [, , "[58]\\d{9}|(?:67|90)0\\d{7}", , , , , , , [10], [7]], [
+        ,
+        ,
+        "670(?:2(?:3[3-7]|56|8[4-8])|32[1-38]|4(?:33|8[348])|5(?:32|55|88)|6(?:64|70|82)|78[3589]|8[3-9]8|989)\\d{4}",
         ,
         ,
         ,
-        [7, 8]
-      ], [, , "(?:28[2-9]|8(?:11|[2-57-9]\\d))\\d{5}", , , , "28212345", , , [8]], [, , "6800[0-79]\\d{3}|6(?:[235]\\d\\d|6(?:0[0-5]|[1-9]\\d)|8(?:0[1-9]|[14-8]\\d|2[5-9]|[39][0-4]))\\d{4}", , , , "66123456", , , [8]], [, , "0800\\d{3}", , , , "0800501", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "MO", 853, "00", , , , , , , , [[, "(\\d{4})(\\d{3})", "$1 $2", ["0"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[268]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      MP: [, [
-        ,
-        ,
-        "[58]\\d{9}|(?:67|90)0\\d{7}",
+        "6702345678",
         ,
         ,
         ,
-        ,
-        ,
-        ,
-        [10],
         [7]
-      ], [, , "670(?:2(?:3[3-7]|56|8[4-8])|32[1-38]|4(?:33|8[348])|5(?:32|55|88)|6(?:64|70|82)|78[3589]|8[3-9]8|989)\\d{4}", , , , "6702345678", , , , [7]], [, , "670(?:2(?:3[3-7]|56|8[4-8])|32[1-38]|4(?:33|8[348])|5(?:32|55|88)|6(?:64|70|82)|78[3589]|8[3-9]8|989)\\d{4}", , , , "6702345678", , , , [7]], [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456"], [, , "900[2-9]\\d{6}", , , , "9002123456"], [, , , , , , , , , [-1]], [
+      ], [, , "670(?:2(?:3[3-7]|56|8[4-8])|32[1-38]|4(?:33|8[348])|5(?:32|55|88)|6(?:64|70|82)|78[3589]|8[3-9]8|989)\\d{4}", , , , "6702345678", , , , [7]], [, , "8(?:00|33|44|55|66|77|88)[2-9]\\d{6}", , , , "8002123456"], [, , "900[2-9]\\d{6}", , , , "9002123456"], [, , , , , , , , , [-1]], [
         ,
         ,
         "52(?:3(?:[2-46-9][02-9]\\d|5(?:[02-46-9]\\d|5[0-46-9]))|4(?:[2-478][02-9]\\d|5(?:[034]\\d|2[024-9]|5[0-46-9])|6(?:0[1-9]|[2-9]\\d)|9(?:[05-9]\\d|2[0-5]|49)))\\d{4}|52[34][2-9]1[02-9]\\d{4}|5(?:00|2[125-9]|33|44|66|77|88)[2-9]\\d{6}",
@@ -67254,10 +67656,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         "50037123"
       ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "3550\\d{4}", , , , "35501234"], "MT", 356, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["[2357-9]"]]], , [, , "7117\\d{4}", , , , "71171234"], , , [, , , , , , , , , [-1]], [, , "501\\d{5}", , , , "50112345"], , , [, , , , , , , , , [-1]]],
-      MU: [, [, , "(?:[57]|8\\d\\d)\\d{7}|[2-468]\\d{6}", , , , , , , [7, 8, 10]], [, , "(?:2(?:[0346-8]\\d|1[0-7])|4(?:[013568]\\d|2[4-8]|71)|54(?:[3-5]\\d|71)|6\\d\\d|8(?:14|3[129]))\\d{4}", , , , "54480123", , , [7, 8]], [
+      MU: [, [, , "(?:[57]|8\\d\\d)\\d{7}|[2-468]\\d{6}", , , , , , , [7, 8, 10]], [, , "(?:2(?:[0346-8]\\d|1[0-8])|4(?:[013568]\\d|2[4-8]|71|90)|54(?:[3-5]\\d|71)|6\\d\\d|8(?:14|3[129]))\\d{4}", , , , "54480123", , , [7, 8]], [
         ,
         ,
-        "5(?:4(?:2[1-389]|7[1-9])|87[15-8])\\d{4}|(?:5(?:2[5-9]|4[3-689]|[57]\\d|8[0-689]|9[0-8])|7(?:0[0-4]|3[013]))\\d{5}",
+        "5(?:4(?:2[1-389]|7[1-9])|87[15-8])\\d{4}|(?:5(?:2[5-9]|4[3-689]|[57]\\d|8[0-689]|9[0-8])|7(?:0[0-6]|3[013]))\\d{5}",
         ,
         ,
         ,
@@ -67265,49 +67667,85 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [8]
-      ], [, , "802\\d{7}|80[0-2]\\d{4}", , , , "8001234", , , [7, 10]], [, , "30\\d{5}", , , , "3012345", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "3(?:20|9\\d)\\d{4}", , , , "3201234", , , [7]], "MU", 230, "0(?:0|[24-7]0|3[03])", , , , , , "020", , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[2-46]|8[013]"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[57]"]], [, "(\\d{5})(\\d{5})", "$1 $2", ["8"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      MV: [, [, , "(?:800|9[0-57-9]\\d)\\d{7}|[34679]\\d{6}", , , , , , , [7, 10]], [
+      ], [, , "802\\d{7}|80[0-2]\\d{4}", , , , "8001234", , , [7, 10]], [, , "30\\d{5}", , , , "3012345", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "3(?:20|9\\d)\\d{4}", , , , "3201234", , , [7]], "MU", 230, "0(?:0|[24-7]0|3[03])", , , , , , "020", , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[2-46]|8[013]"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[57]"]], [, "(\\d{5})(\\d{5})", "$1 $2", ["8"]]], , [, , "219\\d{4}", , , , "2190123", , , [7]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      MV: [, [, , "(?:800|9[0-57-9]\\d)\\d{7}|[34679]\\d{6}", , , , , , , [
+        7,
+        10
+      ]], [, , "(?:3(?:0[0-4]|3[0-59])|6(?:[58][024689]|6[024-68]|7[02468]))\\d{4}", , , , "6701234", , , [7]], [, , "(?:46[46]|[79]\\d\\d)\\d{4}", , , , "7712345", , , [7]], [, , "800\\d{7}", , , , "8001234567", , , [10]], [, , "900\\d{7}", , , , "9001234567", , , [10]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "MV", 960, "0(?:0|19)", , , , , , "00", , [[, "(\\d{3})(\\d{4})", "$1-$2", ["[34679]"]], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "4(?:0[01]|50)\\d{4}", , , , "4001234", , , [7]], , , [, , , , , , , , , [-1]]],
+      MW: [
+        ,
+        [, , "(?:[1289]\\d|31|77)\\d{7}|1\\d{6}", , , , , , , [7, 9]],
+        [, , "(?:1[2-9]|2[12]\\d\\d)\\d{5}", , , , "1234567"],
+        [, , "111\\d{6}|(?:31|77|[89][89])\\d{7}", , , , "991234567", , , [9]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        "MW",
+        265,
+        "00",
+        "0",
         ,
         ,
-        "(?:3(?:0[0-4]|3[0-59])|6(?:[58][024689]|6[024-68]|7[02468]))\\d{4}",
-        ,
-        ,
-        ,
-        "6701234",
-        ,
-        ,
-        [7]
-      ], [, , "(?:46[46]|[79]\\d\\d)\\d{4}", , , , "7712345", , , [7]], [, , "800\\d{7}", , , , "8001234567", , , [10]], [, , "900\\d{7}", , , , "9001234567", , , [10]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "MV", 960, "0(?:0|19)", , , , , , "00", , [[, "(\\d{3})(\\d{4})", "$1-$2", ["[34679]"]], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[89]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "4(?:0[01]|50)\\d{4}", , , , "4001234", , , [7]], , , [, , , , , , , , , [-1]]],
-      MW: [, [, , "(?:[1289]\\d|31|77)\\d{7}|1\\d{6}", , , , , , , [7, 9]], [
-        ,
-        ,
-        "(?:1[2-9]|2[12]\\d\\d)\\d{5}",
-        ,
-        ,
-        ,
-        "1234567"
-      ], [, , "111\\d{6}|(?:31|77|[89][89])\\d{7}", , , , "991234567", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "MW", 265, "00", "0", , , "0", , , , [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["1[2-9]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[137-9]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      MX: [, [, , "[2-9]\\d{9}", , , , , , , [10], [7, 8]], [
-        ,
-        ,
-        "657[12]\\d{6}|(?:2(?:0[01]|2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[267][1-9]|3[1-8]|[45]\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[0-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1346][1-9]|[27]\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69]\\d|7[12]|8[1-8]))\\d{7}",
+        "0",
         ,
         ,
         ,
-        "2001234567",
+        [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["1[2-9]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[137-9]"], "0$1"]],
+        ,
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]]
+      ],
+      MX: [
+        ,
+        [, , "[2-9]\\d{9}", , , , , , , [10], [7, 8]],
+        [
+          ,
+          ,
+          "(?:2(?:0[01]|2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[267][1-9]|3[1-8]|[45]\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-36-9]|6[0-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1346][1-9]|[27]\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69]\\d|7[12]|8[1-8]))\\d{7}",
+          ,
+          ,
+          ,
+          "2001234567",
+          ,
+          ,
+          ,
+          [7, 8]
+        ],
+        [, , "(?:2(?:2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[267][1-9]|3[1-8]|[45]\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-36-9]|6[0-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1346][1-9]|[27]\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69]\\d|7[12]|8[1-8]))\\d{7}", , , , "2221234567", , , , [7, 8]],
+        [, , "8(?:00|88)\\d{7}", , , , "8001234567"],
+        [, , "900\\d{7}", , , , "9001234567"],
+        [, , "300\\d{7}", , , , "3001234567"],
+        [, , "500\\d{7}", , , , "5001234567"],
+        [, , , , , , , , , [-1]],
+        "MX",
+        52,
+        "0[09]",
         ,
         ,
         ,
-        [7, 8]
-      ], [, , "657[12]\\d{6}|(?:2(?:2\\d|3[1-35-8]|4[13-9]|7[1-689]|8[1-578]|9[467])|3(?:1[1-79]|[2458][1-9]|3\\d|7[1-8]|9[1-5])|4(?:1[1-57-9]|[267][1-9]|3[1-8]|[45]\\d|8[1-35-9]|9[2-689])|5(?:[56]\\d|88|9[1-79])|6(?:1[2-68]|[2-4][1-9]|5[1-3689]|6[0-57-9]|7[1-7]|8[67]|9[4-8])|7(?:[1346][1-9]|[27]\\d|5[13-9]|8[1-69]|9[17])|8(?:1\\d|2[13-689]|3[1-6]|4[124-6]|6[1246-9]|7[0-378]|9[12479])|9(?:1[346-9]|2[1-4]|3[2-46-8]|5[1348]|[69]\\d|7[12]|8[1-8]))\\d{7}", , , , "2221234567", , , , [7, 8]], [
         ,
         ,
-        "8(?:00|88)\\d{7}",
+        "00",
+        ,
+        [[, "(\\d{5})", "$1", ["53"]], [, "(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["33|5[56]|81"]], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-9]"]]],
+        [[, "(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["33|5[56]|81"]], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-9]"]]],
+        [, , , , , , , , , [-1]],
         ,
         ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
         ,
-        "8001234567"
-      ], [, , "900\\d{7}", , , , "9001234567"], [, , "300\\d{7}", , , , "3001234567"], [, , "500\\d{7}", , , , "5001234567"], [, , , , , , , , , [-1]], "MX", 52, "0[09]", , , , , , "00", , [[, "(\\d{5})", "$1", ["53"]], [, "(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["33|5[56]|81"]], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-9]"]]], [[, "(\\d{2})(\\d{4})(\\d{4})", "$1 $2 $3", ["33|5[56]|81"]], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["[2-9]"]]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        ,
+        [, , , , , , , , , [-1]]
+      ],
       MY: [, [
         ,
         ,
@@ -67320,7 +67758,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [8, 9, 10],
         [6, 7]
-      ], [, , "4270\\d{4}|(?:3(?:2[0-36-9]|3[0-368]|4[0-278]|5[0-24-8]|6[0-467]|7[1246-9]|8\\d|9[0-57])\\d|4(?:2[0-689]|[3-79]\\d|8[1-35689])|5(?:2[0-589]|[3468]\\d|5[0-489]|7[1-9]|9[23])|6(?:2[2-9]|3[1357-9]|[46]\\d|5[0-6]|7[0-35-9]|85|9[015-8])|7(?:[2579]\\d|3[03-68]|4[0-8]|6[5-9]|8[0-35-9])|8(?:[24][2-8]|3[2-5]|5[2-7]|6[2-589]|7[2-578]|[89][2-9])|9(?:0[57]|13|[25-7]\\d|[3489][0-8]))\\d{5}", , , , "323856789", , , [8, 9], [6, 7]], [
+      ], [, , "427[01]\\d{4}|(?:3(?:2[0-36-9]|3[0-368]|4[0-278]|5[0-24-8]|6[0-467]|7[1246-9]|8\\d|9[0-57])\\d|4(?:2[0-689]|[3-79]\\d|8[1-35689])|5(?:2[0-589]|[3468]\\d|5[0-489]|7[1-9]|9[23])|6(?:2[2-9]|3[1357-9]|[46]\\d|5[0-6]|7[0-35-9]|85|9[015-8])|7(?:[2579]\\d|3[03-68]|4[0-8]|6[5-9]|8[0-35-9])|8(?:[24][2-8]|3[2-5]|5[2-7]|6[2-589]|7[2-578]|[89][2-9])|9(?:0[57]|13|[25-7]\\d|[3489][0-8]))\\d{5}", , , , "323856789", , , [8, 9], [6, 7]], [
         ,
         ,
         "1(?:1888[689]|4400|8(?:47|8[27])[0-4])\\d{4}|1(?:0(?:[23568]\\d|4[0-6]|7[016-9]|9[0-8])|1(?:[1-5]\\d\\d|6(?:0[5-9]|[1-9]\\d)|7(?:[0-4]\\d|5[0-7]))|(?:[269]\\d|[37][1-9]|4[235-9])\\d|5(?:31|9\\d\\d)|8(?:1[23]|[236]\\d|4[06]|5(?:46|[7-9])|7[016-9]|8[01]|9[0-8]))\\d{5}",
@@ -67389,7 +67827,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [-1]
       ], , , [, , , , , , , , , [-1]]],
-      NC: [, [, , "(?:050|[2-57-9]\\d\\d)\\d{3}", , , , , , , [6]], [, , "(?:2[03-9]|3[0-5]|4[1-7]|88)\\d{4}", , , , "201234"], [, , "(?:5[0-4]|[79]\\d|8[0-79])\\d{4}", , , , "751234"], [, , "050\\d{3}", , , , "050012"], [, , "36\\d{4}", , , , "366711"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NC", 687, "00", , , , , , , , [[, "(\\d{3})", "$1", ["5[6-8]"]], [, "(\\d{2})(\\d{2})(\\d{2})", "$1.$2.$3", ["[02-57-9]"]]], [[, "(\\d{2})(\\d{2})(\\d{2})", "$1.$2.$3", ["[02-57-9]"]]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [
+      NC: [, [, , "(?:050|[2-57-9]\\d\\d)\\d{3}", , , , , , , [6]], [, , "(?:2[03-9]|3[0-5]|4[1-7]|88)\\d{4}", , , , "201234"], [, , "(?:[579]\\d|8[0-79])\\d{4}", , , , "751234"], [, , "050\\d{3}", , , , "050012"], [, , "36\\d{4}", , , , "366711"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NC", 687, "00", , , , , , , , [[, "(\\d{3})", "$1", ["5[6-8]"]], [, "(\\d{2})(\\d{2})(\\d{2})", "$1.$2.$3", ["[02-57-9]"]]], [[, "(\\d{2})(\\d{2})(\\d{2})", "$1.$2.$3", ["[02-57-9]"]]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [
         ,
         ,
         ,
@@ -67401,19 +67839,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [-1]
       ]],
-      NE: [
-        ,
-        [, , "[027-9]\\d{7}", , , , , , , [8]],
-        [, , "2(?:0(?:20|3[1-8]|4[13-5]|5[14]|6[14578]|7[1-578])|1(?:4[145]|5[14]|6[14-68]|7[169]|88))\\d{4}", , , , "20201234"],
-        [, , "(?:23|7[0467]|[89]\\d)\\d{6}", , , , "93123456"],
-        [, , "08\\d{6}", , , , "08123456"],
-        [, , "09\\d{6}", , , , "09123456"],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        "NE",
-        227,
-        "00",
+      NE: [, [, , "[027-9]\\d{7}", , , , , , , [8]], [, , "2(?:0(?:20|3[1-8]|4[13-5]|5[14]|6[14578]|7[1-578])|1(?:4[145]|5[14]|6[14-68]|7[169]|88))\\d{4}", , , , "20201234"], [, , "(?:23|7[0467]|[89]\\d)\\d{6}", , , , "93123456"], [, , "08\\d{6}", , , , "08123456"], [, , "09\\d{6}", , , , "09123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NE", 227, "00", , , , , , , , [[, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["08"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[089]|2[013]|7[0467]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [
         ,
         ,
         ,
@@ -67421,46 +67847,36 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         ,
-        [[, "(\\d{2})(\\d{3})(\\d{3})", "$1 $2 $3", ["08"]], [, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[089]|2[013]|7[0467]"]]],
-        ,
-        [, , , , , , , , , [-1]],
         ,
         ,
-        [, , , , , , , , , [-1]],
-        [, , , , , , , , , [-1]],
-        ,
-        ,
-        [, , , , , , , , , [-1]]
-      ],
+        [-1]
+      ], , , [, , , , , , , , , [-1]]],
       NF: [, [, , "[13]\\d{5}", , , , , , , [6], [5]], [, , "(?:1(?:06|17|28|39)|3[0-2]\\d)\\d{3}", , , , "106609", , , , [5]], [, , "(?:14|3[58])\\d{4}", , , , "381234", , , , [5]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NF", 672, "00", , , , "([0-258]\\d{4})$", "3$1", , , [[, "(\\d{2})(\\d{4})", "$1 $2", ["1[0-3]"]], [, "(\\d)(\\d{5})", "$1 $2", ["[13]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      NG: [, [
+      NG: [, [, , "(?:20|9\\d)\\d{8}|[78]\\d{9,13}", , , , , , , [
+        10,
+        11,
+        12,
+        13,
+        14
+      ], [6, 7]], [, , "20(?:[1259]\\d|3[013-9]|4[1-8]|6[024-689]|7[1-79]|8[2-9])\\d{6}", , , , "2033123456", , , [10], [6, 7]], [, , "(?:702[0-24-9]|819[01])\\d{6}|(?:7(?:0[13-9]|[12]\\d)|8(?:0[1-9]|1[0-8])|9(?:0[1-9]|1[1-6]))\\d{7}", , , , "8021234567", , , [10]], [, , "800\\d{7,11}", , , , "80017591759"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NG", 234, "009", "0", , , "0", , , , [[, "(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[7-9]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["20[129]"], "0$1"], [
         ,
-        ,
-        "38\\d{6}|[78]\\d{9,13}|(?:20|9\\d)\\d{8}",
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        [8, 10, 11, 12, 13, 14],
-        [6, 7]
-      ], [, , "(?:20(?:[1259]\\d|3[013-9]|4[1-8]|6[024-689]|7[1-79]|8[2-9])|38)\\d{6}", , , , "2033123456", , , [8, 10], [6, 7]], [, , "(?:702[0-24-9]|819[01])\\d{6}|(?:7(?:0[13-9]|[12]\\d)|8(?:0[1-9]|1[0-8])|9(?:0[1-9]|1[1-6]))\\d{7}", , , , "8021234567", , , [10]], [, , "800\\d{7,11}", , , , "80017591759", , , [10, 11, 12, 13, 14]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NG", 234, "009", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{2,3})", "$1 $2 $3", ["3"], "0$1"], [
-        ,
-        "(\\d{3})(\\d{3})(\\d{3,4})",
+        "(\\d{4})(\\d{2})(\\d{4})",
         "$1 $2 $3",
-        ["[7-9]"],
+        ["2"],
         "0$1"
-      ], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["20[129]"], "0$1"], [, "(\\d{4})(\\d{2})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{3})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["[78]"], "0$1"], [, "(\\d{3})(\\d{5})(\\d{5,6})", "$1 $2 $3", ["[78]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "700\\d{7,11}", , , , "7001234567", , , [10, 11, 12, 13, 14]], , , [, , , , , , , , , [-1]]],
-      NI: [, [, , "(?:1800|[25-8]\\d{3})\\d{4}", , , , , , , [8]], [, , "2\\d{7}", , , , "21234567"], [
-        ,
-        ,
-        "(?:5(?:5[0-7]|[78]\\d)|6(?:20|3[035]|4[045]|5[05]|77|8[1-9]|9[059])|(?:7[5-8]|8\\d)\\d)\\d{5}",
+      ], [, "(\\d{3})(\\d{4})(\\d{4,5})", "$1 $2 $3", ["[78]"], "0$1"], [, "(\\d{3})(\\d{5})(\\d{5,6})", "$1 $2 $3", ["[78]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "700\\d{7,11}", , , , "7001234567"], , , [, , , , , , , , , [-1]]],
+      NI: [, [, , "(?:1800|[25-8]\\d{3})\\d{4}", , , , , , , [8]], [, , "2\\d{7}", , , , "21234567"], [, , "(?:5(?:5[0-7]|[78]\\d)|6(?:20|3[035]|4[045]|5[05]|77|8[1-9]|9[059])|(?:7[5-8]|8\\d)\\d)\\d{5}", , , , "81234567"], [, , "1800\\d{4}", , , , "18001234"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [
         ,
         ,
         ,
-        "81234567"
-      ], [, , "1800\\d{4}", , , , "18001234"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NI", 505, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["[125-8]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [-1]
+      ], "NI", 505, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["[125-8]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       NL: [, [, , "(?:[124-7]\\d\\d|3(?:[02-9]\\d|1[0-8]))\\d{6}|8\\d{6,9}|9\\d{6,10}|1\\d{4,5}", , , , , , , [5, 6, 7, 8, 9, 10, 11]], [
         ,
         ,
@@ -67508,25 +67924,22 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [8]
       ]],
-      NP: [, [, , "(?:1\\d|9)\\d{9}|[1-9]\\d{7}", , , , , , , [8, 10, 11], [6, 7]], [, , "(?:1[0-6]\\d|99[02-6])\\d{5}|(?:2[13-79]|3[135-8]|4[146-9]|5[135-7]|6[13-9]|7[15-9]|8[1-46-9]|9[1-7])[2-6]\\d{5}", , , , "14567890", , , [8], [6, 7]], [, , "9(?:00|6[0-3]|7[024-6]|8[0-24-68])\\d{7}", , , , "9841234567", , , [10]], [, , "1(?:66001|800\\d\\d)\\d{5}", , , , "16600101234", , , [11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NP", 977, "00", "0", , , "0", , , , [[, "(\\d)(\\d{7})", "$1-$2", ["1[2-6]"], "0$1"], [
+      NP: [, [, , "(?:1\\d|9)\\d{9}|[1-9]\\d{7}", , , , , , , [8, 10, 11], [6, 7]], [, , "(?:1[0-6]\\d|99[02-6])\\d{5}|(?:2[13-79]|3[135-8]|4[146-9]|5[135-7]|6[13-9]|7[15-9]|8[1-46-9]|9[1-7])[2-6]\\d{5}", , , , "14567890", , , [8], [6, 7]], [, , "9(?:00|6[0-3]|7[0-24-6]|8[0-24-68])\\d{7}", , , , "9841234567", , , [10]], [, , "1(?:66001|800\\d\\d)\\d{5}", , , , "16600101234", , , [11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NP", 977, "00", "0", , , "0", , , , [[, "(\\d)(\\d{7})", "$1-$2", ["1[2-6]"], "0$1"], [
         ,
         "(\\d{2})(\\d{6})",
         "$1-$2",
         ["1[01]|[2-8]|9(?:[1-59]|[67][2-6])"],
         "0$1"
       ], [, "(\\d{3})(\\d{7})", "$1-$2", ["9"]], [, "(\\d{4})(\\d{2})(\\d{5})", "$1-$2-$3", ["1"]]], [[, "(\\d)(\\d{7})", "$1-$2", ["1[2-6]"], "0$1"], [, "(\\d{2})(\\d{6})", "$1-$2", ["1[01]|[2-8]|9(?:[1-59]|[67][2-6])"], "0$1"], [, "(\\d{3})(\\d{7})", "$1-$2", ["9"]]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      NR: [, [, , "(?:444|(?:55|8\\d)\\d|666)\\d{4}", , , , , , , [7]], [, , "444\\d{4}", , , , "4441234"], [, , "(?:55[3-9]|666|8\\d\\d)\\d{4}", , , , "5551234"], [
+      NR: [, [, , "(?:222|444|(?:55|8\\d)\\d|666|777|999)\\d{4}", , , , , , , [7]], [, , "444\\d{4}", , , , "4441234"], [
+        ,
+        ,
+        "(?:222|55[3-9]|666|777|8\\d\\d|999)\\d{4}",
         ,
         ,
         ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        [-1]
-      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NR", 674, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[4-68]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        "5551234"
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "NR", 674, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[24-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       NU: [
         ,
         [, , "(?:[4-7]|888\\d)\\d{3}", , , , , , , [4, 7]],
@@ -67566,18 +67979,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         [, , "508\\d{6,7}|80\\d{6,8}", , , , "800123456", , , [8, 9, 10]],
         [, , "(?:1[13-57-9]\\d{5}|50(?:0[08]|30|66|77|88))\\d{3}|90\\d{6,8}", , , , "900123456", , , [7, 8, 9, 10]],
         [, , , , , , , , , [-1]],
-        [
-          ,
-          ,
-          "70\\d{7}",
-          ,
-          ,
-          ,
-          "701234567",
-          ,
-          ,
-          [9]
-        ],
+        [, , "70\\d{7}", , , , "701234567", , , [9]],
         [, , , , , , , , , [-1]],
         "NZ",
         64,
@@ -67589,7 +67991,13 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         "00",
         ,
-        [[, "(\\d{2})(\\d{3,8})", "$1 $2", ["8[1-79]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["50[036-8]|8|90", "50(?:[0367]|88)|8|90"], "0$1"], [, "(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["24|[346]|7[2-57-9]|9[2-9]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2(?:10|74)|[589]"], "0$1"], [, "(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["1|2[028]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,5})", "$1 $2 $3", ["2(?:[169]|7[0-35-9])|7"], "0$1"]],
+        [[, "(\\d{2})(\\d{3,8})", "$1 $2", ["8[1-79]"], "0$1"], [, "(\\d{3})(\\d{2})(\\d{2,3})", "$1 $2 $3", ["50[036-8]|8|90", "50(?:[0367]|88)|8|90"], "0$1"], [, "(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["24|[346]|7[2-57-9]|9[2-9]"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["2(?:10|74)|[589]"], "0$1"], [, "(\\d{2})(\\d{3,4})(\\d{4})", "$1 $2 $3", ["1|2[028]"], "0$1"], [
+          ,
+          "(\\d{2})(\\d{3})(\\d{3,5})",
+          "$1 $2 $3",
+          ["2(?:[169]|7[0-35-9])|7"],
+          "0$1"
+        ]],
         ,
         [, , , , , , , , , [-1]],
         ,
@@ -67600,16 +68008,41 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      OM: [, [, , "(?:1505|[279]\\d{3}|500)\\d{4}|800\\d{5,6}", , , , , , , [7, 8, 9]], [, , "2[1-6]\\d{6}", , , , "23123456", , , [8]], [, , "(?:1505|90[1-9]\\d)\\d{4}|(?:7[126-9]|9[1-9])\\d{6}", , , , "92123456", , , [8]], [, , "8007\\d{4,5}|(?:500|800[05])\\d{4}", , , , "80071234"], [, , "900\\d{5}", , , , "90012345", , , [8]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "OM", 968, "00", , , , , , , , [[
+      OM: [
         ,
-        "(\\d{3})(\\d{4,6})",
-        "$1 $2",
-        ["[58]"]
-      ], [, "(\\d{2})(\\d{6})", "$1 $2", ["2"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[179]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        [, , "(?:1505|[279]\\d{3}|500)\\d{4}|800\\d{5,6}", , , , , , , [7, 8, 9]],
+        [, , "2[1-6]\\d{6}", , , , "23123456", , , [8]],
+        [, , "1505\\d{4}|(?:7(?:[126-9]\\d|41)|9(?:0[1-9]|[1-9]\\d))\\d{5}", , , , "92123456", , , [8]],
+        [, , "8007\\d{4,5}|(?:500|800[05])\\d{4}", , , , "80071234"],
+        [, , "900\\d{5}", , , , "90012345", , , [8]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        "OM",
+        968,
+        "00",
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [[, "(\\d{3})(\\d{4,6})", "$1 $2", ["[58]"]], [, "(\\d{2})(\\d{6})", "$1 $2", ["2"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[179]"]]],
+        ,
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]]
+      ],
       PA: [, [, , "(?:00800|8\\d{3})\\d{6}|[68]\\d{7}|[1-57-9]\\d{6}", , , , , , , [7, 8, 10, 11]], [
         ,
         ,
-        "(?:1(?:0\\d|1[479]|2[37]|3[0137]|4[17]|5[05]|6[058]|7[0167]|8[2358]|9[1389])|2(?:[0235-79]\\d|1[0-7]|4[013-9]|8[02-9])|3(?:[07-9]\\d|1[0-7]|2[0-5]|33|4[0-79]|5[0-35]|6[068])|4(?:00|3[0-579]|4\\d|7[0-57-9])|5(?:[01]\\d|2[0-7]|[56]0|79)|7(?:0[09]|2[0-26-8]|3[03]|4[04]|5[05-9]|6[0156]|7[0-24-9]|8[5-9]|90)|8(?:09|2[89]|3\\d|4[0-24-689]|5[014]|8[02])|9(?:0[5-9]|1[0135-8]|2[036-9]|3[35-79]|40|5[0457-9]|6[05-9]|7[04-9]|8[35-8]|9\\d))\\d{4}",
+        "(?:1(?:0\\d|1[479]|2[37]|3[0137]|4[17]|5[05]|6[058]|7[0167]|8[2358]|9[1389])|2(?:[0235-79]\\d|1[0-7]|4[013-9]|8[02-9])|3(?:[047-9]\\d|1[0-8]|2[0-5]|33|5[0-35]|6[068])|4(?:00|3[0-579]|4\\d|7[0-57-9])|5(?:[01]\\d|2[0-7]|[56]0|79)|7(?:0[09]|2[0-26-8]|3[03]|4[04]|5[05-9]|6[0156]|7[0-24-9]|8[4-9]|90)|8(?:09|2[89]|3\\d|4[0-24-689]|5[014]|8[02])|9(?:0[5-9]|1[0135-8]|2[036-9]|3[35-79]|40|5[0457-9]|6[05-9]|7[04-9]|8[35-8]|9\\d))\\d{4}",
         ,
         ,
         ,
@@ -67668,7 +68101,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      PG: [, [, , "(?:180|[78]\\d{3})\\d{4}|(?:[2-589]\\d|64)\\d{5}", , , , , , , [7, 8]], [, , "(?:(?:3[0-2]|4[257]|5[34]|9[78])\\d|64[1-9]|85[02-46-9])\\d{4}", , , , "3123456", , , [7]], [, , "(?:7\\d|8[1-38])\\d{6}", , , , "70123456", , , [8]], [
+      PG: [, [, , "(?:180|[78]\\d{3})\\d{4}|(?:[2-589]\\d|64)\\d{5}", , , , , , , [7, 8]], [, , "(?:(?:3[0-2]|4[257]|5[34]|9[78])\\d|64[1-9]|85[02-46-9])\\d{4}", , , , "3123456", , , [7]], [, , "(?:7\\d|8[1-48])\\d{6}", , , , "70123456", , , [8]], [
         ,
         ,
         "180\\d{4}",
@@ -67740,7 +68173,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [11, 12]
       ], , , [, , , , , , , , , [-1]]],
-      PL: [, [, , "(?:6|8\\d\\d)\\d{7}|[1-9]\\d{6}(?:\\d{2})?|[26]\\d{5}", , , , , , , [6, 7, 8, 9, 10]], [, , "47\\d{7}|(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])(?:[02-9]\\d{6}|1(?:[0-8]\\d{5}|9\\d{3}(?:\\d{2})?))", , , , "123456789", , , [7, 9]], [, , "21(?:1[013-5]|2\\d|3[4-9])\\d{5}|(?:45|5[0137]|6[069]|7[2389]|88)\\d{7}", , , , "512345678", , , [9]], [, , "800\\d{6,7}", , , , "800123456", , , [9, 10]], [, , "70[01346-8]\\d{6}", , , , "701234567", , , [9]], [
+      PL: [, [, , "(?:6|8\\d\\d)\\d{7}|[1-9]\\d{6}(?:\\d{2})?|[26]\\d{5}", , , , , , , [6, 7, 8, 9, 10]], [, , "47\\d{7}|(?:1[2-8]|2[2-69]|3[2-4]|4[1-468]|5[24-689]|6[1-3578]|7[14-7]|8[1-79]|9[145])(?:[02-9]\\d{6}|1(?:[0-8]\\d{5}|9\\d{3}(?:\\d{2})?))", , , , "123456789", , , [7, 9]], [, , "2131[89]\\d{4}|21(?:1[013-5]|2\\d|3[2-9])\\d{5}|(?:45|5[0137]|6[069]|7[2389]|88)\\d{7}", , , , "512345678", , , [9]], [, , "800\\d{6,7}", , , , "800123456", , , [9, 10]], [, , "70[01346-8]\\d{6}", , , , "701234567", , , [9]], [
         ,
         ,
         "801\\d{6}",
@@ -67816,7 +68249,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [[, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["2[12]"]], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["16|[236-9]"]]],
         ,
-        [, , "6(?:222\\d|8988)\\d{4}", , , , "622212345"],
+        [, , "6(?:222\\d|89(?:00|88|99))\\d{4}", , , , "622212345"],
         ,
         ,
         [, , , , , , , , , [-1]],
@@ -67828,7 +68261,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       PW: [, [, , "(?:[24-8]\\d\\d|345|900)\\d{4}", , , , , , , [7]], [, , "(?:2(?:55|77)|345|488|5(?:35|44|87)|6(?:22|54|79)|7(?:33|47)|8(?:24|55|76)|900)\\d{4}", , , , "2771234"], [
         ,
         ,
-        "(?:(?:46|83)[0-5]|6[2-4689]0)\\d{4}|(?:45|77|88)\\d{5}",
+        "(?:(?:46|83)[0-5]|(?:6[2-4689]|78)0)\\d{4}|(?:45|77|88)\\d{5}",
         ,
         ,
         ,
@@ -67864,16 +68297,16 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [8]
-      ], [, , "[35-7]\\d{7}", , , , "33123456", , , [8]], [, , "800\\d{4}|(?:0080[01]|800)\\d{6}", , , , "8001234", , , [7, 9, 11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "QA", 974, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["2[16]|8"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[3-7]"]]], , [, , "2[16]\\d{5}", , , , "2123456", , , [7]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, , "[35-7]\\d{7}", , , , "33123456", , , [8]], [, , "800\\d{4}|(?:0080[01]|800)\\d{6}", , , , "8001234", , , [7, 9, 11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "QA", 974, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["2[136]|8"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[3-7]"]]], , [, , "2[136]\\d{5}", , , , "2123456", , , [7]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       RE: [, [, , "709\\d{6}|(?:26|[689]\\d)\\d{7}", , , , , , , [9]], [, , "26(?:2\\d\\d|3(?:0\\d|1[0-6]))\\d{4}", , , , "262161234"], [
         ,
         ,
-        "(?:69(?:2\\d\\d|3(?:[06][0-6]|1[013]|2[0-2]|3[0-39]|4\\d|5[0-5]|7[0-37]|8[0-8]|9[0-479]))|7092[0-3])\\d{4}",
+        "(?:69(?:2\\d\\d|3(?:[06][0-6]|1[0-3]|2[0-2]|3[0-39]|4\\d|5[0-5]|7[0-37]|8[0-8]|9[0-479]))|7092[0-3])\\d{4}",
         ,
         ,
         ,
         "692123456"
-      ], [, , "80\\d{7}", , , , "801234567"], [, , "89[1-37-9]\\d{6}", , , , "891123456"], [, , "8(?:1[019]|2[0156]|84|90)\\d{6}", , , , "810123456"], [, , , , , , , , , [-1]], [, , "9(?:399[0-3]|479[0-5]|76(?:2[278]|3[0-37]))\\d{4}", , , , "939901234"], "RE", 262, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[26-9]"], "0$1"]], , [, , , , , , , , , [-1]], 1, , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, , "80\\d{7}", , , , "801234567"], [, , "89[1-37-9]\\d{6}", , , , "891123456"], [, , "8(?:1[019]|2[0156]|84|90)\\d{6}", , , , "810123456"], [, , , , , , , , , [-1]], [, , "9(?:399[0-3]|479[0-6]|76(?:2[278]|3[0-37]))\\d{4}", , , , "939901234"], "RE", 262, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[26-9]"], "0$1"]], , [, , , , , , , , , [-1]], 1, , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       RO: [, [, , "(?:[236-8]\\d|90)\\d{7}|[23]\\d{5}", , , , , , , [6, 9]], [
         ,
         ,
@@ -67901,7 +68334,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       RU: [, [, , "8\\d{13}|[347-9]\\d{9}", , , , , , , [10, 14], [7]], [
         ,
         ,
-        "(?:3(?:0[12]|4[1-35-79]|5[1-3]|65|8[1-58]|9[0145])|4(?:01|1[1356]|2[13467]|7[1-5]|8[1-7]|9[1-689])|8(?:1[1-8]|2[01]|3[13-6]|4[0-8]|5[15]|6[1-35-79]|7[1-37-9]))\\d{7}",
+        "336(?:[013-9]\\d|2[013-9])\\d{5}|(?:3(?:0[12]|4[1-35-79]|5[1-3]|65|8[1-58]|9[0145])|4(?:01|1[1356]|2[13467]|7[1-5]|8[1-7]|9[1-689])|8(?:1[1-8]|2[01]|3[13-6]|4[0-8]|5[15-7]|6[0-35-79]|7[1-37-9]))\\d{7}",
         ,
         ,
         ,
@@ -67934,7 +68367,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         "8 ($1)",
         ,
         1
-      ], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "8 ($1)", , 1], [, "(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[349]|8(?:[02-7]|1[1-8])"], "8 ($1)", , 1], [, "(\\d{4})(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["8"], "8 ($1)"]], [, , , , , , , , , [-1]], 1, "3[04-689]|[489]", [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["7"], "8 ($1)", , 1], [, "(\\d{3})(\\d{3})(\\d{2})(\\d{2})", "$1 $2-$3-$4", ["[349]|8(?:[02-7]|1[1-8])"], "8 ($1)", , 1], [, "(\\d{4})(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3 $4", ["8"], "8 ($1)"]], [, , , , , , , , , [-1]], 1, , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       RW: [, [, , "(?:06|[27]\\d\\d|[89]00)\\d{6}", , , , , , , [8, 9]], [, , "(?:06|2[23568]\\d)\\d{6}", , , , "250123456"], [, , "7[237-9]\\d{7}", , , , "720123456", , , [9]], [, , "800\\d{6}", , , , "800123456", , , [9]], [
         ,
         ,
@@ -67947,7 +68380,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [9]
       ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "RW", 250, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["0"]], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["2"]], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[7-9]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      SA: [, [, , "92\\d{7}|(?:[15]|8\\d)\\d{8}", , , , , , , [9, 10], [7]], [, , "1(?:1\\d|2[24-8]|3[35-8]|4[3-68]|6[2-5]|7[235-7])\\d{6}", , , , "112345678", , , [9], [7]], [
+      SA: [, [, , "(?:[15]\\d|800|92)\\d{7}", , , , , , , [9, 10], [7]], [, , "1(?:1\\d|2[24-8]|3[35-8]|4[3-68]|6[2-5]|7[235-7])\\d{6}", , , , "112345678", , , [9], [7]], [
         ,
         ,
         "579[01]\\d{5}|5(?:[013-689]\\d|7[0-8])\\d{6}",
@@ -67958,19 +68391,51 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [9]
-      ], [, , "800\\d{7}", , , , "8001234567", , , [10]], [, , "925\\d{6}", , , , "925012345", , , [9]], [, , "920\\d{6}", , , , "920012345", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SA", 966, "00", "0", , , "0", , , , [[, "(\\d{4})(\\d{5})", "$1 $2", ["9"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["5"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["81"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [
+      ], [, , "800\\d{7}", , , , "8001234567", , , [10]], [, , "925\\d{6}", , , , "925012345", , , [9]], [, , "920\\d{6}", , , , "920012345", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SA", 966, "00", "0", , , "0", , , , [[, "(\\d{4})(\\d{5})", "$1 $2", ["9"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["1"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["5"], "0$1"], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      SB: [
+        ,
+        [, , "[6-9]\\d{6}|[1-6]\\d{4}", , , , , , , [5, 7]],
+        [, , "(?:1[4-79]|[23]\\d|4[0-2]|5[03]|6[0-37])\\d{3}", , , , "40123", , , [5]],
+        [, , "48\\d{3}|(?:(?:6[89]|7[1-9]|8[4-9])\\d|9(?:1[2-9]|2[013-9]|3[0-2]|[46]\\d|5[0-46-9]|7[0-689]|8[0-79]|9[0-8]))\\d{4}", , , , "7421234"],
+        [, , "1[38]\\d{3}", , , , "18123", , , [5]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , "5[12]\\d{3}", , , , "51123", , , [5]],
+        "SB",
+        677,
+        "0[01]",
         ,
         ,
-        "811\\d{7}",
         ,
         ,
         ,
-        "8110123456",
         ,
         ,
-        [10]
-      ], , , [, , , , , , , , , [-1]]],
-      SB: [, [, , "[6-9]\\d{6}|[1-6]\\d{4}", , , , , , , [5, 7]], [, , "(?:1[4-79]|[23]\\d|4[0-2]|5[03]|6[0-37])\\d{3}", , , , "40123", , , [5]], [, , "48\\d{3}|(?:(?:6[89]|7[1-9]|8[4-9])\\d|9(?:1[2-9]|2[013-9]|3[0-2]|[46]\\d|5[0-46-9]|7[0-689]|8[0-79]|9[0-8]))\\d{4}", , , , "7421234"], [, , "1[38]\\d{3}", , , , "18123", , , [5]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "5[12]\\d{3}", , , , "51123", , , [5]], "SB", 677, "0[01]", , , , , , , , [[, "(\\d{2})(\\d{5})", "$1 $2", ["6[89]|7|8[4-9]|9(?:[1-8]|9[0-8])"]]], , [
+        [[, "(\\d{2})(\\d{5})", "$1 $2", ["6[89]|7|8[4-9]|9(?:[1-8]|9[0-8])"]]],
+        ,
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        ,
+        ,
+        [, , , , , , , , , [-1]]
+      ],
+      SC: [, [
+        ,
+        ,
+        "(?:[2489]\\d|64)\\d{5}",
+        ,
+        ,
+        ,
+        ,
+        ,
+        ,
+        [7]
+      ], [, , "4[2-46]\\d{5}", , , , "4217123"], [, , "2[125-8]\\d{5}", , , , "2510123"], [, , "800[08]\\d{3}", , , , "8000000"], [, , "85\\d{5}", , , , "8512345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "971\\d{4}|(?:64|95)\\d{5}", , , , "6412345"], "SC", 248, "010|0[0-2]", , , , , , "00", , [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[246]|9[57]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      SD: [, [, , "[19]\\d{8}", , , , , , , [9]], [, , "1(?:5\\d|8[35-7])\\d{6}", , , , "153123456"], [, , "(?:1[0-2]|9[0-3569])\\d{7}", , , , "911231234"], [
         ,
         ,
         ,
@@ -67981,17 +68446,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [-1]
-      ], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      SC: [, [, , "(?:[2489]\\d|64)\\d{5}", , , , , , , [7]], [, , "4[2-46]\\d{5}", , , , "4217123"], [, , "2[125-8]\\d{5}", , , , "2510123"], [, , "800[08]\\d{3}", , , , "8000000"], [, , "85\\d{5}", , , , "8512345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "971\\d{4}|(?:64|95)\\d{5}", , , , "6412345"], "SC", 248, "010|0[0-2]", , , , , , "00", , [[, "(\\d)(\\d{3})(\\d{3})", "$1 $2 $3", ["[246]|9[57]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      SD: [, [, , "[19]\\d{8}", , , , , , , [9]], [
-        ,
-        ,
-        "1(?:5\\d|8[35-7])\\d{6}",
-        ,
-        ,
-        ,
-        "153123456"
-      ], [, , "(?:1[0-2]|9[0-3569])\\d{7}", , , , "911231234"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SD", 249, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[19]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SD", 249, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[19]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       SE: [, [, , "(?:[26]\\d\\d|9)\\d{9}|[1-9]\\d{8}|[1-689]\\d{7}|[1-4689]\\d{6}|2\\d{5}", , , , , , , [6, 7, 8, 9, 10, 12]], [
         ,
         ,
@@ -68037,7 +68492,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [8]
-      ], [, , "896[0-4]\\d{4}|(?:8(?:0[1-9]|[1-8]\\d|9[0-5])|9[0-8]\\d)\\d{5}", , , , "81234567", , , [8]], [, , "(?:18|8)00\\d{7}", , , , "18001234567", , , [10, 11]], [, , "1900\\d{7}", , , , "19001234567", , , [11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "(?:3[12]\\d|666)\\d{5}", , , , "31234567", , , [8]], "SG", 65, "0[0-3]\\d", , , , , , , , [[, "(\\d{4,5})", "$1", ["1[013-9]|77", "1(?:[013-8]|9(?:0[1-9]|[1-9]))|77"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[369]|8(?:0[1-9]|[1-9])"]], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]], [
+      ], [, , "89(?:7[0-689]|80)\\d{4}|(?:8(?:0[1-9]|[1-8]\\d|9[0-6])|9[0-8]\\d)\\d{5}", , , , "81234567", , , [8]], [, , "(?:18|8)00\\d{7}", , , , "18001234567", , , [10, 11]], [, , "1900\\d{7}", , , , "19001234567", , , [11]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "(?:3[12]\\d|666)\\d{5}", , , , "31234567", , , [8]], "SG", 65, "0[0-3]\\d", , , , , , , , [[, "(\\d{4,5})", "$1", ["1[013-9]|77", "1(?:[013-8]|9(?:0[1-9]|[1-9]))|77"]], [, "(\\d{4})(\\d{4})", "$1 $2", ["[369]|8(?:0[1-9]|[1-9])"]], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"]], [
         ,
         "(\\d{4})(\\d{4})(\\d{3})",
         "$1 $2 $3",
@@ -68141,7 +68596,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ["2"],
         "0$1"
       ], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[689]"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{2})(\\d{2})", "$1/$2 $3 $4", ["[3-5]"], "0$1"]], [, , "9090\\d{3}", , , , "9090123", , , [7]], , , [, , "9090\\d{3}|(?:602|8(?:00|[5-9]\\d)|9(?:00|[78]\\d))\\d{6}", , , , , , , [7, 9]], [, , "96\\d{7}", , , , "961234567", , , [9]], , , [, , , , , , , , , [-1]]],
-      SL: [, [, , "(?:[237-9]\\d|66)\\d{6}", , , , , , , [8], [6]], [, , "22[2-4][2-9]\\d{4}", , , , "22221234", , , , [6]], [, , "(?:25|3[0-5]|66|7[2-9]|8[08]|9[09])\\d{6}", , , , "25123456"], [, , , , , , , , , [-1]], [
+      SL: [, [, , "(?:[237-9]\\d|66)\\d{6}", , , , , , , [8], [6]], [, , "22[2-4][2-9]\\d{4}", , , , "22221234", , , , [6]], [, , "(?:25|3[0-5]|66|7[1-9]|8[08]|9[09])\\d{6}", , , , "25123456"], [, , , , , , , , , [-1]], [
         ,
         ,
         ,
@@ -68187,7 +68642,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       SN: [, [, , "(?:[378]\\d|93)\\d{7}", , , , , , , [9]], [, , "3(?:0(?:1[0-2]|80)|282|3(?:8[1-9]|9[3-9])|611)\\d{5}", , , , "301012345"], [
         ,
         ,
-        "7(?:(?:[06-8]\\d|[19]0|21)\\d|5(?:0[01]|[19]0|2[25]|3[36]|[4-7]\\d|8[35]))\\d{5}",
+        "7(?:(?:[06-8]\\d|[19]0|21)\\d|5(?:0[01]|[19]0|2[25]|3[356]|[4-7]\\d|8[35]))\\d{5}",
         ,
         ,
         ,
@@ -68204,30 +68659,55 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [6, 7]
-      ], [, , "(?:(?:15|(?:3[59]|4[89]|6\\d|7[79]|8[08])\\d|9(?:0\\d|[2-9]))\\d|2(?:4\\d|8))\\d{5}|(?:[67]\\d\\d|904)\\d{5}", , , , "71123456", , , [7, 8, 9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SO", 252, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{4})", "$1 $2", ["8[125]"]], [, "(\\d{6})", "$1", ["[134]"]], [, "(\\d)(\\d{6})", "$1 $2", ["[15]|2[0-79]|3[0-46-8]|4[0-7]"]], [
+      ], [, , "(?:(?:15|(?:3[59]|4[89]|6\\d|7[679]|8[08])\\d|9(?:0\\d|[2-9]))\\d|2(?:4\\d|8))\\d{5}|(?:[67]\\d\\d|904)\\d{5}", , , , "71123456", , , [7, 8, 9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SO", 252, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{4})", "$1 $2", ["8[125]"]], [, "(\\d{6})", "$1", ["[134]"]], [, "(\\d)(\\d{6})", "$1 $2", ["[15]|2[0-79]|3[0-46-8]|4[0-7]"]], [
         ,
         "(\\d)(\\d{7})",
         "$1 $2",
         ["(?:2|90)4|[67]"]
-      ], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[348]|64|79|90"]], [, "(\\d{2})(\\d{5,7})", "$1 $2", ["1|28|6[0-35-9]|77|9[2-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      SR: [, [, , "(?:[2-5]|68|[78]\\d)\\d{5}", , , , , , , [6, 7]], [, , "(?:2[1-3]|3[0-7]|(?:4|68)\\d|5[2-58])\\d{4}", , , , "211234"], [, , "(?:7[124-7]|8[124-9])\\d{5}", , , , "7412345", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "56\\d{4}", , , , "561234", , , [6]], "SR", 597, "00", , , , , , , , [[
+      ], [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[348]|64|79|90"]], [, "(\\d{2})(\\d{5,7})", "$1 $2", ["1|28|6[0-35-9]|7[67]|9[2-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      SR: [, [, , "(?:[2-5]|68|[78]\\d|90)\\d{5}", , , , , , , [6, 7]], [, , "(?:2[1-3]|3[0-7]|(?:4|68)\\d|5[2-58])\\d{4}", , , , "211234"], [, , "(?:7[124-7]|8[1-9])\\d{5}", , , , "7412345", , , [7]], [, , "80\\d{5}", , , , "8012345", , , [7]], [, , "90\\d{5}", , , , "9012345", , , [7]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [
         ,
-        "(\\d{2})(\\d{2})(\\d{2})",
-        "$1-$2-$3",
-        ["56"]
-      ], [, "(\\d{3})(\\d{3})", "$1-$2", ["[2-5]"]], [, "(\\d{3})(\\d{4})", "$1-$2", ["[6-8]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      SS: [, [, , "[19]\\d{8}", , , , , , , [9]], [, , "1[89]\\d{7}", , , , "181234567"], [, , "(?:12|9[1257-9])\\d{7}", , , , "977123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SS", 211, "00", "0", , , "0", , , , [[, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[19]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [
+        ,
+        "56\\d{4}",
         ,
         ,
         ,
+        "561234",
+        ,
+        ,
+        [6]
+      ], "SR", 597, "00", , , , , , , , [[, "(\\d{2})(\\d{2})(\\d{2})", "$1-$2-$3", ["56"]], [, "(\\d{3})(\\d{3})", "$1-$2", ["[2-5]"]], [, "(\\d{3})(\\d{4})", "$1-$2", ["[6-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      SS: [
+        ,
+        [, , "[19]\\d{8}", , , , , , , [9]],
+        [, , "1[89]\\d{7}", , , , "181234567"],
+        [, , "(?:12|9[1257-9])\\d{7}", , , , "977123456"],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        "SS",
+        211,
+        "00",
+        "0",
+        ,
+        ,
+        "0",
         ,
         ,
         ,
+        [[, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[19]"], "0$1"]],
+        ,
+        [, , , , , , , , , [-1]],
         ,
         ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
         ,
-        [-1]
-      ]],
+        ,
+        [, , , , , , , , , [-1]]
+      ],
       ST: [, [, , "(?:22|9\\d)\\d{5}", , , , , , , [7]], [, , "22\\d{5}", , , , "2221234"], [, , "900[5-9]\\d{3}|9(?:0[1-9]|[89]\\d)\\d{4}", , , , "9812345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "ST", 239, "00", , , , , , , , [[, "(\\d{3})(\\d{4})", "$1 $2", ["[29]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       SV: [, [, , "[267]\\d{7}|(?:80\\d|900)\\d{4}(?:\\d{4})?", , , , , , , [7, 8, 11]], [
         ,
@@ -68284,7 +68764,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      SY: [, [, , "[1-359]\\d{8}|[1-5]\\d{7}", , , , , , , [8, 9], [6, 7]], [, , "21\\d{6,7}|(?:1(?:[14]\\d|[2356])|2[235]|3(?:[13]\\d|4)|4[134]|5[1-3])\\d{6}", , , , "112345678", , , , [6, 7]], [, , "(?:50|9[1-689])\\d{7}", , , , "944567890", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SY", 963, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-4]|5[1-3]"], "0$1", , 1], [
+      SY: [, [, , "[1-359]\\d{8}|[1-5]\\d{7}", , , , , , , [8, 9], [6, 7]], [, , "21\\d{6,7}|(?:1(?:[14]\\d|[2356])|2[235]|3(?:[13]\\d|4)|4[134]|5[1-3])\\d{6}", , , , "112345678", , , , [6, 7]], [, , "(?:50|9[1-9])\\d{7}", , , , "944567890", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "SY", 963, "00", "0", , , "0", , , , [[, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[1-4]|5[1-3]"], "0$1", , 1], [
         ,
         "(\\d{3})(\\d{3})(\\d{3})",
         "$1 $2 $3",
@@ -68293,7 +68773,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         1
       ]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      SZ: [, [, , "0800\\d{4}|(?:[237]\\d|900)\\d{6}", , , , , , , [8, 9]], [, , "[23][2-5]\\d{6}", , , , "22171234", , , [8]], [, , "7[6-9]\\d{6}", , , , "76123456", , , [8]], [, , "0800\\d{4}", , , , "08001234", , , [8]], [, , "900\\d{6}", , , , "900012345", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "70\\d{6}", , , , "70012345", , , [8]], "SZ", 268, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["[0237]"]], [, "(\\d{5})(\\d{4})", "$1 $2", ["9"]]], , [, , , , , , , , , [-1]], , , [
+      SZ: [, [, , "0800\\d{4}|(?:[237]\\d|900)\\d{6}", , , , , , , [8, 9]], [, , "[23][2-5]\\d{6}", , , , "22171234", , , [8]], [, , "7[5-9]\\d{6}", , , , "76123456", , , [8]], [, , "0800\\d{4}", , , , "08001234", , , [8]], [, , "900\\d{6}", , , , "900012345", , , [9]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "70\\d{6}", , , , "70012345", , , [8]], "SZ", 268, "00", , , , , , , , [[, "(\\d{4})(\\d{4})", "$1 $2", ["[0237]"]], [, "(\\d{5})(\\d{4})", "$1 $2", ["9"]]], , [, , , , , , , , , [-1]], , , [
         ,
         ,
         "0800\\d{4}",
@@ -68348,7 +68828,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , , , , , , , , [-1]]
       ],
-      TD: [, [, , "(?:22|[689]\\d|77)\\d{6}", , , , , , , [8]], [, , "22(?:[37-9]0|5[0-5]|6[89])\\d{4}", , , , "22501234"], [, , "(?:[69]\\d|77|8[56])\\d{6}", , , , "63012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "TD", 235, "00|16", , , , , , "00", , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[26-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      TD: [, [, , "(?:22|30|[689]\\d|77)\\d{6}", , , , , , , [8]], [, , "22(?:[37-9]0|5[0-5]|6[89])\\d{4}", , , , "22501234"], [, , "(?:30|[69]\\d|77|8[56])\\d{6}", , , , "63012345"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "TD", 235, "00|16", , , , , , "00", , [[, "(\\d{2})(\\d{2})(\\d{2})(\\d{2})", "$1 $2 $3 $4", ["[236-9]"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       TG: [, [, , "[279]\\d{7}", , , , , , , [8]], [
         ,
         ,
@@ -68370,30 +68850,49 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [9]
       ], [, , "(?:001800\\d|1800)\\d{6}", , , , "1800123456", , , [10, 13]], [, , "1900\\d{6}", , , , "1900123456", , , [10]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "6[08]\\d{7}", , , , "601234567", , , [9]], "TH", 66, "00[1-9]", "0", , , "0", , , , [[, "(\\d)(\\d{3})(\\d{4})", "$1 $2 $3", ["2"], "0$1"], [, "(\\d{2})(\\d{3})(\\d{3,4})", "$1 $2 $3", ["[13-9]"], "0$1"], [, "(\\d{4})(\\d{3})(\\d{3})", "$1 $2 $3", ["1"]]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
-      TJ: [, [, , "[0-57-9]\\d{8}", , , , , , , [9], [3, 5, 6, 7]], [
+      TJ: [
+        ,
+        [, , "[0-57-9]\\d{8}", , , , , , , [9], [3, 5, 6, 7]],
+        [
+          ,
+          ,
+          "(?:3(?:1[3-5]|2[245]|3[12]|4[24-7]|5[25]|72)|4(?:46|74|87))\\d{6}",
+          ,
+          ,
+          ,
+          "372123456",
+          ,
+          ,
+          ,
+          [3, 5, 6, 7]
+        ],
+        [, , "(?:33[03-9]|4(?:1[18]|4[02-479])|81[1-9])\\d{6}|(?:[09]\\d|1[0-27-9]|2[0-27]|[34]0|5[05]|7[01578]|8[078])\\d{7}", , , , "917123456"],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
+        "TJ",
+        992,
+        "810",
         ,
         ,
-        "(?:3(?:1[3-5]|2[245]|3[12]|4[24-7]|5[25]|72)|4(?:46|74|87))\\d{6}",
         ,
         ,
         ,
-        "372123456",
+        "8~10",
+        ,
+        [[, "(\\d{6})(\\d)(\\d{2})", "$1 $2 $3", ["331", "3317"]], [, "(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["44[02-479]|[34]7"]], [, "(\\d{4})(\\d)(\\d{4})", "$1 $2 $3", ["3(?:[1245]|3[12])"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[0-57-9]"]]],
+        ,
+        [, , , , , , , , , [-1]],
         ,
         ,
-        ,
-        [3, 5, 6, 7]
-      ], [, , "(?:33[03-9]|4(?:1[18]|4[02-479])|81[1-9])\\d{6}|(?:[09]\\d|1[0178]|2[02]|[34]0|5[05]|7[01578]|8[078])\\d{7}", , , , "917123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "TJ", 992, "810", , , , , , "8~10", , [[, "(\\d{6})(\\d)(\\d{2})", "$1 $2 $3", ["331", "3317"]], [, "(\\d{3})(\\d{2})(\\d{4})", "$1 $2 $3", ["44[02-479]|[34]7"]], [, "(\\d{4})(\\d)(\\d{4})", "$1 $2 $3", ["3(?:[1245]|3[12])"]], [, "(\\d{2})(\\d{3})(\\d{4})", "$1 $2 $3", ["[0-57-9]"]]], , [
-        ,
+        [, , , , , , , , , [-1]],
+        [, , , , , , , , , [-1]],
         ,
         ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        ,
-        [-1]
-      ], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        [, , , , , , , , , [-1]]
+      ],
       TK: [, [, , "[2-47]\\d{3,6}", , , , , , , [4, 5, 6, 7]], [, , "(?:2[2-4]|[34]\\d)\\d{2,5}", , , , "3101"], [, , "7[2-4]\\d{2,5}", , , , "7290"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "TK", 690, "00", , , , , , , , , , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       TL: [, [, , "7\\d{7}|(?:[2-47]\\d|[89]0)\\d{5}", , , , , , , [7, 8]], [, , "(?:2[1-5]|3[1-9]|4[1-4])\\d{5}", , , , "2112345", , , [7]], [
         ,
@@ -68579,7 +69078,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         ,
         [5, 6, 7]
-      ], [, , "72[48]0\\d{5}|7(?:[015-8]\\d|2[067]|36|4[0-7]|9[89])\\d{6}", , , , "712345678"], [, , "800[1-3]\\d{5}", , , , "800123456"], [, , "90[1-3]\\d{6}", , , , "901123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "UG", 256, "00[057]", "0", , , "0", , , , [[, "(\\d{4})(\\d{5})", "$1 $2", ["202", "2024"], "0$1"], [, "(\\d{3})(\\d{6})", "$1 $2", ["[27-9]|4(?:6[45]|[7-9])"], "0$1"], [, "(\\d{2})(\\d{7})", "$1 $2", ["[34]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+      ], [, , "72[48]0\\d{5}|7(?:[014-8]\\d|2[067]|36|9[0189])\\d{6}", , , , "712345678"], [, , "800[1-3]\\d{5}", , , , "800123456"], [, , "90[1-3]\\d{6}", , , , "901123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], "UG", 256, "00[057]", "0", , , "0", , , , [[, "(\\d{4})(\\d{5})", "$1 $2", ["202", "2024"], "0$1"], [, "(\\d{3})(\\d{6})", "$1 $2", ["[27-9]|4(?:6[45]|[7-9])"], "0$1"], [, "(\\d{2})(\\d{7})", "$1 $2", ["[34]"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       US: [, [
         ,
         ,
@@ -68595,7 +69094,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ], [
         ,
         ,
-        "(?:3052(?:0[0-8]|[1-9]\\d)|5056(?:[0-35-9]\\d|4[468]))\\d{4}|(?:305[3-9]|472[24]|505[2-57-9]|983[2-47-9])\\d{6}|(?:2(?:0[1-35-9]|1[02-9]|2[03-57-9]|3[1459]|4[08]|5[1-46]|6[0279]|7[0269]|8[13])|3(?:0[1-47-9]|1[02-9]|2[0135-79]|3[0-24679]|4[167]|5[0-2]|6[01349]|8[056])|4(?:0[124-9]|1[02-579]|2[3-5]|3[0245]|4[023578]|58|6[349]|7[0589]|8[04])|5(?:0[1-47-9]|1[0235-8]|20|3[0149]|4[01]|5[179]|6[1-47]|7[0-5]|8[0256])|6(?:0[1-35-9]|1[024-9]|2[03689]|3[016]|4[0156]|5[01679]|6[0-279]|78|8[0-29])|7(?:0[1-46-8]|1[2-9]|2[04-8]|3[0-247]|4[037]|5[47]|6[02359]|7[0-59]|8[156])|8(?:0[1-68]|1[02-8]|2[068]|3[0-2589]|4[03578]|5[046-9]|6[02-5]|7[028])|9(?:0[1346-9]|1[02-9]|2[0589]|3[0146-8]|4[01357-9]|5[12469]|7[0-389]|8[04-69]))[2-9]\\d{6}",
+        "(?:3052(?:0[0-8]|[1-9]\\d)|5056(?:[0-35-9]\\d|4[0-68]))\\d{4}|(?:2742|305[3-9]|(?:472|983)[2-47-9]|505[2-57-9])\\d{6}|(?:2(?:0[1-35-9]|1[02-9]|2[03-57-9]|3[1459]|4[08]|5[1-46]|6[0279]|7[0269]|8[13])|3(?:0[1-47-9]|1[02-9]|2[0135-79]|3[0-24679]|4[167]|5[0-2]|6[01349]|8[056])|4(?:0[124-9]|1[02-579]|2[3-5]|3[0245]|4[023578]|58|6[349]|7[0589]|8[04])|5(?:0[1-47-9]|1[0235-8]|20|3[0149]|4[01]|5[179]|6[1-47]|7[0-5]|8[0256])|6(?:0[1-35-9]|1[024-9]|2[03689]|3[016]|4[0156]|5[01679]|6[0-279]|78|8[0-29])|7(?:0[1-46-8]|1[2-9]|2[04-8]|3[0-247]|4[0378]|5[47]|6[02359]|7[0-59]|8[156])|8(?:0[1-68]|1[02-8]|2[0168]|3[0-2589]|4[03578]|5[046-9]|6[02-5]|7[028])|9(?:0[1346-9]|1[02-9]|2[0589]|3[0146-8]|4[01357-9]|5[12469]|7[0-3589]|8[04-69]))[2-9]\\d{6}",
         ,
         ,
         ,
@@ -68607,7 +69106,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ], [
         ,
         ,
-        "(?:3052(?:0[0-8]|[1-9]\\d)|5056(?:[0-35-9]\\d|4[468]))\\d{4}|(?:305[3-9]|472[24]|505[2-57-9]|983[2-47-9])\\d{6}|(?:2(?:0[1-35-9]|1[02-9]|2[03-57-9]|3[1459]|4[08]|5[1-46]|6[0279]|7[0269]|8[13])|3(?:0[1-47-9]|1[02-9]|2[0135-79]|3[0-24679]|4[167]|5[0-2]|6[01349]|8[056])|4(?:0[124-9]|1[02-579]|2[3-5]|3[0245]|4[023578]|58|6[349]|7[0589]|8[04])|5(?:0[1-47-9]|1[0235-8]|20|3[0149]|4[01]|5[179]|6[1-47]|7[0-5]|8[0256])|6(?:0[1-35-9]|1[024-9]|2[03689]|3[016]|4[0156]|5[01679]|6[0-279]|78|8[0-29])|7(?:0[1-46-8]|1[2-9]|2[04-8]|3[0-247]|4[037]|5[47]|6[02359]|7[0-59]|8[156])|8(?:0[1-68]|1[02-8]|2[068]|3[0-2589]|4[03578]|5[046-9]|6[02-5]|7[028])|9(?:0[1346-9]|1[02-9]|2[0589]|3[0146-8]|4[01357-9]|5[12469]|7[0-389]|8[04-69]))[2-9]\\d{6}",
+        "(?:3052(?:0[0-8]|[1-9]\\d)|5056(?:[0-35-9]\\d|4[0-68]))\\d{4}|(?:2742|305[3-9]|(?:472|983)[2-47-9]|505[2-57-9])\\d{6}|(?:2(?:0[1-35-9]|1[02-9]|2[03-57-9]|3[1459]|4[08]|5[1-46]|6[0279]|7[0269]|8[13])|3(?:0[1-47-9]|1[02-9]|2[0135-79]|3[0-24679]|4[167]|5[0-2]|6[01349]|8[056])|4(?:0[124-9]|1[02-579]|2[3-5]|3[0245]|4[023578]|58|6[349]|7[0589]|8[04])|5(?:0[1-47-9]|1[0235-8]|20|3[0149]|4[01]|5[179]|6[1-47]|7[0-5]|8[0256])|6(?:0[1-35-9]|1[024-9]|2[03689]|3[016]|4[0156]|5[01679]|6[0-279]|78|8[0-29])|7(?:0[1-46-8]|1[2-9]|2[04-8]|3[0-247]|4[0378]|5[47]|6[02359]|7[0-59]|8[156])|8(?:0[1-68]|1[02-8]|2[0168]|3[0-2589]|4[03578]|5[046-9]|6[02-5]|7[028])|9(?:0[1346-9]|1[02-9]|2[0589]|3[0146-8]|4[01357-9]|5[12469]|7[0-3589]|8[04-69]))[2-9]\\d{6}",
         ,
         ,
         ,
@@ -68641,10 +69140,10 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [-1]
       ]],
-      UZ: [, [, , "(?:20|33|[5-9]\\d)\\d{7}", , , , , , , [9]], [, , "(?:55\\d\\d|6(?:1(?:22|3[124]|4[1-4]|5[1-3578]|64)|2(?:22|3[0-57-9]|41)|5(?:22|3[3-7]|5[024-8])|[69]\\d\\d|7(?:[23]\\d|7[69]))|7(?:0(?:5[4-9]|6[0146]|7[124-6]|9[135-8])|(?:1[12]|[68]\\d)\\d|2(?:22|3[13-57-9]|4[1-3579]|5[14])|3(?:2\\d|3[1578]|4[1-35-7]|5[1-57]|61)|4(?:2\\d|3[1-579]|7[1-79])|5(?:22|5[1-9]|6[1457])|9(?:22|5[1-9])))\\d{5}", , , , "669050123"], [
+      UZ: [, [, , "(?:20|33|[5-9]\\d)\\d{7}", , , , , , , [9]], [, , "(?:55\\d\\d|6(?:1(?:22|3[124]|4[1-4]|5[1-3578]|64)|2(?:22|3[0-57-9]|41)|5(?:22|3[3-7]|5[024-8])|[69]\\d\\d|7(?:[23]\\d|7[69]))|7(?:0(?:5[4-9]|6[0146]|7[124-6]|9[135-8])|[168]\\d\\d|2(?:22|3[13-57-9]|4[1-3579]|5[14])|3(?:2\\d|3[1578]|4[1-35-7]|5[1-57]|61)|4(?:2\\d|3[1-579]|7[1-79])|5(?:22|5[1-9]|6[1457])|9(?:22|5[1-9])))\\d{5}", , , , "669050123"], [
         ,
         ,
-        "(?:(?:[25]0|33|8[78]|9[0-57-9])\\d{3}|6(?:1(?:2(?:2[01]|98)|35[0-4]|50\\d|61[23]|7(?:[01][017]|4\\d|55|9[5-9]))|2(?:(?:11|7\\d)\\d|2(?:[12]1|9[01379])|5(?:[126]\\d|3[0-4]))|5(?:19[01]|2(?:27|9[26])|(?:30|59|7\\d)\\d)|6(?:2(?:1[5-9]|2[0367]|38|41|52|60)|(?:3[79]|9[0-3])\\d|4(?:56|83)|7(?:[07]\\d|1[017]|3[07]|4[047]|5[057]|67|8[0178]|9[79]))|7(?:2(?:24|3[237]|4[5-9]|7[15-8])|5(?:7[12]|8[0589])|7(?:0\\d|[39][07])|9(?:0\\d|7[079])))|7(?:[07]\\d{3}|1(?:13[01]|6(?:0[47]|1[67]|66)|71[3-69]|98\\d)|2(?:2(?:2[79]|95)|3(?:2[5-9]|6[0-6])|57\\d|7(?:0\\d|1[17]|2[27]|3[37]|44|5[057]|66|88))|3(?:2(?:1[0-6]|21|3[469]|7[159])|(?:33|9[4-6])\\d|5(?:0[0-4]|5[579]|9\\d)|7(?:[0-3579]\\d|4[0467]|6[67]|8[078]))|4(?:2(?:29|5[0257]|6[0-7]|7[1-57])|5(?:1[0-4]|8\\d|9[5-9])|7(?:0\\d|1[024589]|2[0-27]|3[0137]|[46][07]|5[01]|7[5-9]|9[079])|9(?:7[015-9]|[89]\\d))|5(?:112|2(?:0\\d|2[29]|[49]4)|3[1568]\\d|52[6-9]|7(?:0[01578]|1[017]|[23]7|4[047]|[5-7]\\d|8[78]|9[079]))|9(?:22[128]|3(?:2[0-4]|7\\d)|57[02569]|7(?:2[05-9]|3[37]|4\\d|60|7[2579]|87|9[07]))))\\d{4}",
+        "(?:(?:[25]0|33|8[78]|9[0-57-9])\\d{3}|6(?:1(?:2(?:2[01]|98)|35[0-4]|50\\d|61[23]|7(?:[01][017]|4\\d|55|9[5-9]))|2(?:(?:11|7\\d)\\d|2(?:[12]1|9[01379])|5(?:[126]\\d|3[0-4]))|5(?:19[01]|2(?:27|9[26])|(?:30|59|7\\d)\\d)|6(?:2(?:1[5-9]|2[0367]|38|41|52|60)|(?:3[79]|9[0-3])\\d|4(?:56|83)|7(?:[07]\\d|1[017]|3[07]|4[047]|5[057]|67|8[0178]|9[79]))|7(?:2(?:24|3[237]|4[5-9]|7[15-8])|5(?:7[12]|8[0589])|7(?:0\\d|[39][07])|9(?:0\\d|7[079])))|7(?:[07]\\d{3}|2(?:2(?:2[79]|95)|3(?:2[5-9]|6[0-6])|57\\d|7(?:0\\d|1[17]|2[27]|3[37]|44|5[057]|66|88))|3(?:2(?:1[0-6]|21|3[469]|7[159])|(?:33|9[4-6])\\d|5(?:0[0-4]|5[579]|9\\d)|7(?:[0-3579]\\d|4[0467]|6[67]|8[078]))|4(?:2(?:29|5[0257]|6[0-7]|7[1-57])|5(?:1[0-4]|8\\d|9[5-9])|7(?:0\\d|1[024589]|2[0-27]|3[0137]|[46][07]|5[01]|7[5-9]|9[079])|9(?:7[015-9]|[89]\\d))|5(?:112|2(?:0\\d|2[29]|[49]4)|3[1568]\\d|52[6-9]|7(?:0[01578]|1[017]|[23]7|4[047]|[5-7]\\d|8[78]|9[079]))|9(?:22[128]|3(?:2[0-4]|7\\d)|57[02569]|7(?:2[05-9]|3[37]|4\\d|60|7[2579]|87|9[07]))))\\d{4}",
         ,
         ,
         ,
@@ -68705,7 +69204,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , "[68]00\\d{7}|(?:[24]\\d|[59]0)\\d{8}", , , , , , , [10], [7]],
         [, , "(?:2(?:12|3[457-9]|[467]\\d|[58][1-9]|9[1-6])|[4-6]00)\\d{7}", , , , "2121234567", , , , [7]],
-        [, , "4(?:1[24-8]|2[46])\\d{7}", , , , "4121234567"],
+        [, , "4(?:1[24-8]|2[246])\\d{7}", , , , "4121234567"],
         [, , "800\\d{7}", , , , "8001234567"],
         [, , "90[01]\\d{7}", , , , "9001234567"],
         [, , , , , , , , , [-1]],
@@ -68829,7 +69328,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ,
         [, , "(?:[2-6]|8\\d{5})\\d{4}|[78]\\d{6}|[68]\\d{5}", , , , , , , [5, 6, 7, 10]],
         [, , "6[1-9]\\d{3}|(?:[2-5]|60)\\d{4}", , , , "22123", , , [5, 6]],
-        [, , "(?:7[1-35-7]|8(?:[3-7]|9\\d{3}))\\d{5}", , , , "7212345", , , [7, 10]],
+        [, , "(?:7[1-35-8]|8(?:[3-7]|9\\d{3}))\\d{5}", , , , "7212345", , , [7, 10]],
         [, , "800\\d{3}", , , , "800123", , , [6]],
         [, , , , , , , , , [-1]],
         [, , , , , , , , , [-1]],
@@ -68934,7 +69433,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ZA: [, [, , "[1-79]\\d{8}|8\\d{4,9}", , , , , , , [5, 6, 7, 8, 9, 10]], [, , "(?:2(?:0330|4302)|52087)0\\d{3}|(?:1[0-8]|2[1-378]|3[1-69]|4\\d|5[1346-8])\\d{7}", , , , "101234567", , , [9]], [
         ,
         ,
-        "(?:1(?:3492[0-25]|4495[0235]|549(?:20|5[01]))|4[34]492[01])\\d{3}|8[1-4]\\d{3,7}|(?:2[27]|47|54)4950\\d{3}|(?:1(?:049[2-4]|9[12]\\d\\d)|(?:6\\d\\d|7(?:[0-46-9]\\d|5[0-4]))\\d\\d|8(?:5\\d{3}|7(?:08[67]|158|28[5-9]|310)))\\d{4}|(?:1[6-8]|28|3[2-69]|4[025689]|5[36-8])4920\\d{3}|(?:12|[2-5]1)492\\d{4}",
+        "(?:1(?:3492[0-25]|4495[0235]|549(?:20|5[01]))|4[34]492[01])\\d{3}|8[1-4]\\d{3,7}|(?:2[27]|47|54)4950\\d{3}|(?:1(?:049[2-4]|9[12]\\d\\d)|(?:50[0-2]|6\\d\\d|7(?:[0-46-9]\\d|5[0-4]))\\d\\d|8(?:5\\d{3}|7(?:08[67]|158|28[5-9]|310)))\\d{4}|(?:1[6-8]|28|3[2-69]|4[025689]|5[36-8])4920\\d{3}|(?:12|[2-5]1)492\\d{4}",
         ,
         ,
         ,
@@ -68949,11 +69448,11 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         ["[1-9]"],
         "0$1"
       ], [, "(\\d{3})(\\d{3})(\\d{4})", "$1 $2 $3", ["8"], "0$1"]], , [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , "861\\d{6,7}", , , , "861123456", , , [9, 10]], , , [, , , , , , , , , [-1]]],
-      ZM: [, [, , "800\\d{6}|(?:21|63|[79]\\d)\\d{7}", , , , , , , [9], [6]], [, , "21[1-8]\\d{6}", , , , "211234567", , , , [6]], [, , "(?:7[5-79]|9[5-8])\\d{7}", , , , "955123456"], [, , "800\\d{6}", , , , "800123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "63\\d{7}", , , , "630123456"], "ZM", 260, "00", "0", , , "0", , , , [
+      ZM: [, [, , "800\\d{6}|(?:21|[579]\\d|63)\\d{7}", , , , , , , [9], [6]], [, , "21[1-8]\\d{6}", , , , "211234567", , , , [6]], [, , "(?:[59][5-8]|7[5-9])\\d{7}", , , , "955123456"], [, , "800\\d{6}", , , , "800123456"], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], [, , "63\\d{7}", , , , "630123456"], "ZM", 260, "00", "0", , , "0", , , , [
         [, "(\\d{3})(\\d{3})", "$1 $2", ["[1-9]"]],
         [, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[28]"], "0$1"],
-        [, "(\\d{2})(\\d{7})", "$1 $2", ["[79]"], "0$1"]
-      ], [[, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[28]"], "0$1"], [, "(\\d{2})(\\d{7})", "$1 $2", ["[79]"], "0$1"]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
+        [, "(\\d{2})(\\d{7})", "$1 $2", ["[579]"], "0$1"]
+      ], [[, "(\\d{3})(\\d{3})(\\d{3})", "$1 $2 $3", ["[28]"], "0$1"], [, "(\\d{2})(\\d{7})", "$1 $2", ["[579]"], "0$1"]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]], [, , , , , , , , , [-1]], , , [, , , , , , , , , [-1]]],
       ZW: [, [, , "2(?:[0-57-9]\\d{6,8}|6[0-24-9]\\d{6,7})|[38]\\d{9}|[35-8]\\d{8}|[3-6]\\d{7}|[1-689]\\d{6}|[1-3569]\\d{5}|[1356]\\d{4}", , , , , , , [5, 6, 7, 8, 9, 10], [3, 4]], [
         ,
         ,
@@ -69488,7 +69987,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       return f;
     }
     function N(a, b) {
-      return (a = "string" == typeof a ? b.match("^(?:" + a + ")$") : b.match(a)) && a[0].length == b.length ? true : false;
+      return (a = b.match(new RegExp("^(?:" + ("string" == typeof a ? a : a.source) + ")$", "i"))) && a[0].length == b.length ? true : false;
     }
     ;
     function ib(a) {
@@ -69896,120 +70395,66 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
 zone.js/fesm2015/zone.js:
   (**
    * @license Angular v<unknown>
-   * (c) 2010-2024 Google LLC. https://angular.io/
+   * (c) 2010-2025 Google LLC. https://angular.io/
    * License: MIT
    *)
 
 @angular/compiler/fesm2022/compiler.mjs:
-  (**
-   * @license Angular v19.1.4
-   * (c) 2010-2024 Google LLC. https://angular.io/
-   * License: MIT
-   *)
-
-@angular/compiler/fesm2022/compiler.mjs:
-  (*!
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-  (**
-   *
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-
-@angular/compiler/fesm2022/compiler.mjs:
-  (*!
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-
+@angular/core/fesm2022/untracked-BKcld_ew.mjs:
+@angular/core/fesm2022/primitives/di.mjs:
 @angular/core/fesm2022/primitives/signals.mjs:
-  (**
-   * @license Angular v19.1.4
-   * (c) 2010-2024 Google LLC. https://angular.io/
-   * License: MIT
-   *)
-
 @angular/core/fesm2022/primitives/event-dispatch.mjs:
-  (**
-   * @license Angular v19.1.4
-   * (c) 2010-2024 Google LLC. https://angular.io/
-   * License: MIT
-   *)
-
-@angular/core/fesm2022/core.mjs:
-  (**
-   * @license Angular v19.1.4
-   * (c) 2010-2024 Google LLC. https://angular.io/
-   * License: MIT
-   *)
-
-@angular/core/fesm2022/core.mjs:
-  (*!
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-
-@angular/core/fesm2022/core.mjs:
-  (*!
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-
-@angular/core/fesm2022/core.mjs:
-  (*!
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-
-@angular/core/fesm2022/core.mjs:
-  (*!
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-
-@angular/core/fesm2022/core.mjs:
-  (*!
-   * @license
-   * Copyright Google LLC All Rights Reserved.
-   *
-   * Use of this source code is governed by an MIT-style license that can be
-   * found in the LICENSE file at https://angular.dev/license
-   *)
-
+@angular/common/fesm2022/dom_tokens-rA0ACyx7.mjs:
+@angular/common/fesm2022/location-Dq4mJT-A.mjs:
+@angular/common/fesm2022/common_module-Dx7dWex5.mjs:
+@angular/common/fesm2022/xhr-BfNfxNDv.mjs:
 @angular/common/fesm2022/common.mjs:
-  (**
-   * @license Angular v19.1.4
-   * (c) 2010-2024 Google LLC. https://angular.io/
-   * License: MIT
-   *)
-
+@angular/platform-browser/fesm2022/dom_renderer-DGKzginR.mjs:
+@angular/platform-browser/fesm2022/browser-D-u-fknz.mjs:
 @angular/platform-browser/fesm2022/platform-browser.mjs:
   (**
-   * @license Angular v19.1.4
-   * (c) 2010-2024 Google LLC. https://angular.io/
+   * @license Angular v19.2.14
+   * (c) 2010-2025 Google LLC. https://angular.io/
    * License: MIT
+   *)
+
+@angular/compiler/fesm2022/compiler.mjs:
+  (*!
+   * @license
+   * Copyright Google LLC All Rights Reserved.
+   *
+   * Use of this source code is governed by an MIT-style license that can be
+   * found in the LICENSE file at https://angular.dev/license
+   *)
+  (**
+   *
+   * @license
+   * Copyright Google LLC All Rights Reserved.
+   *
+   * Use of this source code is governed by an MIT-style license that can be
+   * found in the LICENSE file at https://angular.dev/license
+   *)
+
+@angular/compiler/fesm2022/compiler.mjs:
+  (*!
+   * @license
+   * Copyright Google LLC All Rights Reserved.
+   *
+   * Use of this source code is governed by an MIT-style license that can be
+   * found in the LICENSE file at https://angular.dev/license
+   *)
+
+@angular/core/fesm2022/core.mjs:
+  (**
+   * @license Angular v19.2.14
+   * (c) 2010-2025 Google LLC. https://angular.io/
+   * License: MIT
+   *)
+  (*!
+   * @license
+   * Copyright Google LLC All Rights Reserved.
+   *
+   * Use of this source code is governed by an MIT-style license that can be
+   * found in the LICENSE file at https://angular.dev/license
    *)
 */

@@ -1,5 +1,5 @@
 # IntlTelInput Angular Component
-A Angular component wrapper for the [intl-tel-input](https://github.com/jackocnr/intl-tel-input) JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/vue/src/intl-tel-input/IntlTelInput.vue).
+An Angular component wrapper for the [intl-tel-input](https://github.com/jackocnr/intl-tel-input) JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/angular/src/intl-tel-input/angular.component.ts).
 
 ## Table of Contents
 - [Demo](#demo)
@@ -10,7 +10,7 @@ A Angular component wrapper for the [intl-tel-input](https://github.com/jackocnr
 - [Accessing Static Methods](#accessing-static-methods)
 
 ## Demo
-try it for yourself by downloading the project and opening /angular/demo/validation/index.html (etc) in a browser.
+Try it for yourself by downloading the project and opening /angular/demo/validation/index.html (etc) in a browser.
 
 ## Getting Started
 ```html

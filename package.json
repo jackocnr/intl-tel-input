@@ -105,6 +105,7 @@
     "build:img": "grunt img",
     "build:react": "grunt react",
     "build:vue": "grunt vue",
+    "build:angular": "grunt angular",
     "vue:demo": "vite --config vue/demo/validation/vite.config.js",
     "server": "grunt jasmine:interactive"
   },
@@ -137,6 +138,16 @@
     },
     "./vueWithUtils": {
       "import": "./vue/build/IntlTelInputWithUtils.mjs"
+    },
+    "./angular": {
+      "types": "./angular/build/IntlTelInput.d.ts",
+      "require": "./angular/build/IntlTelInput.cjs",
+      "default": "./angular/build/IntlTelInput.js"
+    },
+    "./angularWithUtils": {
+      "types": "./angular/build/IntlTelInput.d.ts",
+      "require": "./angular/build/IntlTelInputWithUtils.cjs",
+      "default": "./angular/build/IntlTelInputWithUtils.js"
     },
     "./i18n": {
       "types": "./build/js/intlTelInput.d.ts",
