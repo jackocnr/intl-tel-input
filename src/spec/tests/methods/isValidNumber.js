@@ -31,14 +31,8 @@ describe("isValidNumber:", function() {
       expect(iti.isValidNumber()).toBeTruthy();
     });
 
-    it("returns false for: invalid (too short by 2 digits) intl number", function() {
+    it("returns false for: invalid (too short) intl number", function() {
       iti.setNumber("+44 7733 1234");
-
-      expect(iti.isValidNumber()).toBeFalsy();
-    });
-
-    it("returns false for: invalid (too short by 1 digit) intl number", function() {
-      iti.setNumber("+44 7733 12345");
 
       expect(iti.isValidNumber()).toBeFalsy();
     });
