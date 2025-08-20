@@ -250,4 +250,5 @@ export type I18n = {
   multipleSearchResults?: string;
   noCountrySelected?: string;
   zeroSearchResults?: string;
+  searchResultsText?: (count: number) => string;
 };

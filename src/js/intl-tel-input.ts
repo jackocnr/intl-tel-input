@@ -7,6 +7,12 @@ for (let i = 0; i < allCountries.length; i++) {
   allCountries[i].name = defaultEnglishStrings[allCountries[i].iso2];
 }
 
+declare global {
+  interface HTMLInputElement {
+    iti?: Iti;
+  }
+}
+
 type UtilsLoader = () => Promise<{default: ItiUtils}>;
 
 interface IntlTelInputInterface {
@@ -1338,14 +1344,19 @@ export class Iti {
   private _updateSearchResultsText(): void {
     const { i18n } = this.options;
     const count = this.countryList.childElementCount;
-    let searchText;
-    if (count === 0) {
-      searchText = i18n.zeroSearchResults;
-    } else if (count === 1) {
-      searchText = i18n.oneSearchResult;
-    } else {
-      // eslint-disable-next-line no-template-curly-in-string
-      searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
+    let searchText: string;
+    if ("searchResultsText" in i18n) {
+      searchText = i18n.searchResultsText(count);
+    }
+    else {
+      if (count === 0) {
+        searchText = i18n.zeroSearchResults;
+      } else if (count === 1) {
+        searchText = i18n.oneSearchResult;
+      } else {
+        // eslint-disable-next-line no-template-curly-in-string
+        searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
+      }
     }
     this.searchResultsA11yText.textContent = searchText;
   }
@@ -1953,6 +1964,7 @@ export class Iti {
 
   //* Remove plugin.
   destroy(): void {
+    this.telInput.iti = undefined;
     const { allowDropdown, separateDialCode } = this.options;
     if (allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
@@ -2197,6 +2209,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     iti._init();
     input.setAttribute("data-intl-tel-input-id", iti.id.toString());
     intlTelInput.instances[iti.id] = iti;
+    input.iti = iti;
     return iti;
   },
   {

@@ -4,4 +4,4 @@
 **/third_party/**
 **/tmp/**
 Gruntfile.js
-**/utils-compiled.js
+**/intl-tel-input/utils.js
