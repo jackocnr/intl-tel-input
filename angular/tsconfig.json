@@ -1,10 +1,8 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    // "module": "nodenext",
-    // "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true, //* Required for react (etc) default imports.
     "experimentalDecorators": true, //* Required for angular decorators.
     "emitDecoratorMetadata": true, //* Required for angular decorators.

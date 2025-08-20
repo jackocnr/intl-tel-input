@@ -4,12 +4,12 @@ import { IntlTelInputComponent } from '../../src/intl-tel-input/angularWithUtils
 @Component({
   selector: "app-root",
   template: `
-    <form>
+    <div>
       <intl-tel-input
         [disabled]="isDisabled"
       />
       <button class="button" type="button" (click)="toggleDisabled()">Toggle</button>
-    </form>
+    </div>
   `,
   standalone: true,
   imports: [IntlTelInputComponent]
