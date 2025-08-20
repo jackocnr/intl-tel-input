@@ -1,18 +1,10 @@
 import { Component } from '@angular/core';
-import { IntlTelInputComponent } from '../../src/intl-tel-input/angularWithUtils.component';
-
-const errorMap = [
-  "Invalid number",
-  "Invalid country code",
-  "Too short",
-  "Too long",
-  "Invalid number",
-];
+import { IntlTelInputComponent, PHONE_ERROR_MESSAGES } from '../../src/intl-tel-input/angularWithUtils.component';
 
 @Component({
   selector: "app-root",
   template: `
-    <form>
+    <div>
       <intl-tel-input
         (numberChange)="handleNumberChange($event)"
         (validityChange)="handleValidityChange($event)"
@@ -27,7 +19,7 @@ const errorMap = [
       @if (notice) {
         <div class="notice">{{ notice }}</div>
       }
-    </form>
+    </div>
   `,
   standalone: true,
   imports: [IntlTelInputComponent]
@@ -54,7 +46,7 @@ export class AppComponent {
     if (this.isValid) {
       this.notice = `Valid number: ${this.number}`;
     } else {
-      const errorMessage = errorMap[this.errorCode || 0] || "Invalid number";
+      const errorMessage = PHONE_ERROR_MESSAGES[this.errorCode || 0] || "Invalid number";
       this.notice = `Error: ${errorMessage}`;
     }
   }

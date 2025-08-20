@@ -70,3 +70,9 @@ build({
   entryPoints: ["angular/demo/toggle-disabled/main.ts"],
   outfile: "angular/demo/toggle-disabled/toggle-disabled-bundle.js",
 });
+
+build({
+  ...demoShared,
+  entryPoints: ["angular/demo/form/main.ts"],
+  outfile: "angular/demo/form/form-bundle.js",
+});
