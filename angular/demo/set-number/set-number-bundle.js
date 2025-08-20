@@ -15,13 +15,13 @@
   };
 
   // node_modules/zone.js/fesm2015/zone.js
-  var global = globalThis;
+  var global2 = globalThis;
   function __symbol__(name) {
-    const symbolPrefix = global["__Zone_symbol_prefix"] || "__zone_symbol__";
+    const symbolPrefix = global2["__Zone_symbol_prefix"] || "__zone_symbol__";
     return symbolPrefix + name;
   }
   function initZone() {
-    const performance2 = global["performance"];
+    const performance2 = global2["performance"];
     function mark(name) {
       performance2 && performance2["mark"] && performance2["mark"](name);
     }
@@ -32,7 +32,7 @@
     class ZoneImpl {
       static __symbol__ = __symbol__;
       static assertZonePatched() {
-        if (global["Promise"] !== patches["ZoneAwarePromise"]) {
+        if (global2["Promise"] !== patches["ZoneAwarePromise"]) {
           throw new Error("Zone.js has detected that ZoneAwarePromise `(window|global).Promise` has been overwritten.\nMost likely cause is that a Promise polyfill has been loaded after Zone.js (Polyfilling Promise api is not necessary when zone.js is loaded. If you must load one, do so before loading zone.js.)");
         }
       }
@@ -51,14 +51,14 @@
       }
       static __load_patch(name, fn2, ignoreDuplicate = false) {
         if (patches.hasOwnProperty(name)) {
-          const checkDuplicate = global[__symbol__("forceDuplicateZoneCheck")] === true;
+          const checkDuplicate = global2[__symbol__("forceDuplicateZoneCheck")] === true;
           if (!ignoreDuplicate && checkDuplicate) {
             throw Error("Already loaded patch: " + name);
           }
-        } else if (!global["__Zone_disable_" + name]) {
+        } else if (!global2["__Zone_disable_" + name]) {
           const perfName = "Zone:" + name;
           mark(perfName);
-          patches[name] = fn2(global, ZoneImpl, _api);
+          patches[name] = fn2(global2, ZoneImpl, _api);
           performanceMeasure(perfName, perfName);
         }
       }
@@ -434,7 +434,7 @@
           this.invoke = ZoneTask.invokeTask;
         } else {
           this.invoke = function() {
-            return ZoneTask.invokeTask.call(global, self2, this, arguments);
+            return ZoneTask.invokeTask.call(global2, self2, this, arguments);
           };
         }
       }
@@ -499,8 +499,8 @@
     let nativeMicroTaskQueuePromise;
     function nativeScheduleMicroTask(func) {
       if (!nativeMicroTaskQueuePromise) {
-        if (global[symbolPromise]) {
-          nativeMicroTaskQueuePromise = global[symbolPromise].resolve(0);
+        if (global2[symbolPromise]) {
+          nativeMicroTaskQueuePromise = global2[symbolPromise].resolve(0);
         }
       }
       if (nativeMicroTaskQueuePromise) {
@@ -510,7 +510,7 @@
         }
         nativeThen.call(nativeMicroTaskQueuePromise, func);
       } else {
-        global[symbolSetTimeout](func, 0);
+        global2[symbolSetTimeout](func, 0);
       }
     }
     function scheduleMicroTask(task) {
@@ -579,13 +579,13 @@
     return ZoneImpl;
   }
   function loadZone() {
-    const global2 = globalThis;
-    const checkDuplicate = global2[__symbol__("forceDuplicateZoneCheck")] === true;
-    if (global2["Zone"] && (checkDuplicate || typeof global2["Zone"].__symbol__ !== "function")) {
+    const global3 = globalThis;
+    const checkDuplicate = global3[__symbol__("forceDuplicateZoneCheck")] === true;
+    if (global3["Zone"] && (checkDuplicate || typeof global3["Zone"].__symbol__ !== "function")) {
       throw new Error("Zone already loaded.");
     }
-    global2["Zone"] ??= initZone();
-    return global2["Zone"];
+    global3["Zone"] ??= initZone();
+    return global3["Zone"];
   }
   var ObjectGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
   var ObjectDefineProperty = Object.defineProperty;
@@ -1395,8 +1395,8 @@
       return captureTrueTasks ? captureFalseTasks.concat(captureTrueTasks) : captureFalseTasks.slice();
     }
   }
-  function patchEventPrototype(global2, api) {
-    const Event = global2["Event"];
+  function patchEventPrototype(global3, api) {
+    const Event = global3["Event"];
     if (Event && Event.prototype) {
       api.patchMethod(Event.prototype, "stopImmediatePropagation", (delegate) => function(self2, args) {
         self2[IMMEDIATE_PROPAGATION_SYMBOL] = true;
@@ -1404,8 +1404,8 @@
       });
     }
   }
-  function patchQueueMicrotask(global2, api) {
-    api.patchMethod(global2, "queueMicrotask", (delegate) => {
+  function patchQueueMicrotask(global3, api) {
+    api.patchMethod(global3, "queueMicrotask", (delegate) => {
       return function(self2, args) {
         Zone.current.scheduleMicroTask("queueMicrotask", args[0]);
       };
@@ -1549,8 +1549,8 @@
     api.patchEventTarget(_global4, api, [EVENT_TARGET && EVENT_TARGET.prototype]);
     return true;
   }
-  function patchEvent(global2, api) {
-    api.patchEventPrototype(global2, api);
+  function patchEvent(global3, api) {
+    api.patchEventPrototype(global3, api);
   }
   function filterProperties(target, onProperties, ignoreProperties) {
     if (!ignoreProperties || ignoreProperties.length === 0) {
@@ -1617,61 +1617,61 @@
     }
   }
   function patchBrowser(Zone2) {
-    Zone2.__load_patch("legacy", (global2) => {
-      const legacyPatch = global2[Zone2.__symbol__("legacyPatch")];
+    Zone2.__load_patch("legacy", (global3) => {
+      const legacyPatch = global3[Zone2.__symbol__("legacyPatch")];
       if (legacyPatch) {
         legacyPatch();
       }
     });
-    Zone2.__load_patch("timers", (global2) => {
+    Zone2.__load_patch("timers", (global3) => {
       const set2 = "set";
       const clear = "clear";
-      patchTimer(global2, set2, clear, "Timeout");
-      patchTimer(global2, set2, clear, "Interval");
-      patchTimer(global2, set2, clear, "Immediate");
+      patchTimer(global3, set2, clear, "Timeout");
+      patchTimer(global3, set2, clear, "Interval");
+      patchTimer(global3, set2, clear, "Immediate");
     });
-    Zone2.__load_patch("requestAnimationFrame", (global2) => {
-      patchTimer(global2, "request", "cancel", "AnimationFrame");
-      patchTimer(global2, "mozRequest", "mozCancel", "AnimationFrame");
-      patchTimer(global2, "webkitRequest", "webkitCancel", "AnimationFrame");
+    Zone2.__load_patch("requestAnimationFrame", (global3) => {
+      patchTimer(global3, "request", "cancel", "AnimationFrame");
+      patchTimer(global3, "mozRequest", "mozCancel", "AnimationFrame");
+      patchTimer(global3, "webkitRequest", "webkitCancel", "AnimationFrame");
     });
-    Zone2.__load_patch("blocking", (global2, Zone3) => {
+    Zone2.__load_patch("blocking", (global3, Zone3) => {
       const blockingMethods = ["alert", "prompt", "confirm"];
       for (let i = 0; i < blockingMethods.length; i++) {
         const name = blockingMethods[i];
-        patchMethod(global2, name, (delegate, symbol, name2) => {
+        patchMethod(global3, name, (delegate, symbol, name2) => {
           return function(s, args) {
-            return Zone3.current.run(delegate, global2, args, name2);
+            return Zone3.current.run(delegate, global3, args, name2);
           };
         });
       }
     });
-    Zone2.__load_patch("EventTarget", (global2, Zone3, api) => {
-      patchEvent(global2, api);
-      eventTargetPatch(global2, api);
-      const XMLHttpRequestEventTarget = global2["XMLHttpRequestEventTarget"];
+    Zone2.__load_patch("EventTarget", (global3, Zone3, api) => {
+      patchEvent(global3, api);
+      eventTargetPatch(global3, api);
+      const XMLHttpRequestEventTarget = global3["XMLHttpRequestEventTarget"];
       if (XMLHttpRequestEventTarget && XMLHttpRequestEventTarget.prototype) {
-        api.patchEventTarget(global2, api, [XMLHttpRequestEventTarget.prototype]);
+        api.patchEventTarget(global3, api, [XMLHttpRequestEventTarget.prototype]);
       }
     });
-    Zone2.__load_patch("MutationObserver", (global2, Zone3, api) => {
+    Zone2.__load_patch("MutationObserver", (global3, Zone3, api) => {
       patchClass("MutationObserver");
       patchClass("WebKitMutationObserver");
     });
-    Zone2.__load_patch("IntersectionObserver", (global2, Zone3, api) => {
+    Zone2.__load_patch("IntersectionObserver", (global3, Zone3, api) => {
       patchClass("IntersectionObserver");
     });
-    Zone2.__load_patch("FileReader", (global2, Zone3, api) => {
+    Zone2.__load_patch("FileReader", (global3, Zone3, api) => {
       patchClass("FileReader");
     });
-    Zone2.__load_patch("on_property", (global2, Zone3, api) => {
-      propertyDescriptorPatch(api, global2);
+    Zone2.__load_patch("on_property", (global3, Zone3, api) => {
+      propertyDescriptorPatch(api, global3);
     });
-    Zone2.__load_patch("customElements", (global2, Zone3, api) => {
-      patchCustomElements(global2, api);
+    Zone2.__load_patch("customElements", (global3, Zone3, api) => {
+      patchCustomElements(global3, api);
     });
-    Zone2.__load_patch("XHR", (global2, Zone3) => {
-      patchXHR(global2);
+    Zone2.__load_patch("XHR", (global3, Zone3) => {
+      patchXHR(global3);
       const XHR_TASK = zoneSymbol("xhrTask");
       const XHR_SYNC = zoneSymbol("xhrSync");
       const XHR_LISTENER = zoneSymbol("xhrListener");
@@ -1795,17 +1795,17 @@
         });
       }
     });
-    Zone2.__load_patch("geolocation", (global2) => {
-      if (global2["navigator"] && global2["navigator"].geolocation) {
-        patchPrototype(global2["navigator"].geolocation, ["getCurrentPosition", "watchPosition"]);
+    Zone2.__load_patch("geolocation", (global3) => {
+      if (global3["navigator"] && global3["navigator"].geolocation) {
+        patchPrototype(global3["navigator"].geolocation, ["getCurrentPosition", "watchPosition"]);
       }
     });
-    Zone2.__load_patch("PromiseRejectionEvent", (global2, Zone3) => {
+    Zone2.__load_patch("PromiseRejectionEvent", (global3, Zone3) => {
       function findPromiseRejectionHandler(evtName) {
         return function(e) {
-          const eventTasks = findEventTasks(global2, evtName);
+          const eventTasks = findEventTasks(global3, evtName);
           eventTasks.forEach((eventTask) => {
-            const PromiseRejectionEvent = global2["PromiseRejectionEvent"];
+            const PromiseRejectionEvent = global3["PromiseRejectionEvent"];
             if (PromiseRejectionEvent) {
               const evt = new PromiseRejectionEvent(evtName, {
                 promise: e.promise,
@@ -1816,17 +1816,17 @@
           });
         };
       }
-      if (global2["PromiseRejectionEvent"]) {
+      if (global3["PromiseRejectionEvent"]) {
         Zone3[zoneSymbol("unhandledPromiseRejectionHandler")] = findPromiseRejectionHandler("unhandledrejection");
         Zone3[zoneSymbol("rejectionHandledHandler")] = findPromiseRejectionHandler("rejectionhandled");
       }
     });
-    Zone2.__load_patch("queueMicrotask", (global2, Zone3, api) => {
-      patchQueueMicrotask(global2, api);
+    Zone2.__load_patch("queueMicrotask", (global3, Zone3, api) => {
+      patchQueueMicrotask(global3, api);
     });
   }
   function patchPromise(Zone2) {
-    Zone2.__load_patch("ZoneAwarePromise", (global2, Zone3, api) => {
+    Zone2.__load_patch("ZoneAwarePromise", (global3, Zone3, api) => {
       const ObjectGetOwnPropertyDescriptor2 = Object.getOwnPropertyDescriptor;
       const ObjectDefineProperty2 = Object.defineProperty;
       function readableObjectToString(obj) {
@@ -1838,7 +1838,7 @@
       }
       const __symbol__2 = api.symbol;
       const _uncaughtPromiseErrors = [];
-      const isDisableWrappingUncaughtPromiseRejection = global2[__symbol__2("DISABLE_WRAPPING_UNCAUGHT_PROMISE_REJECTION")] !== false;
+      const isDisableWrappingUncaughtPromiseRejection = global3[__symbol__2("DISABLE_WRAPPING_UNCAUGHT_PROMISE_REJECTION")] !== false;
       const symbolPromise = __symbol__2("Promise");
       const symbolThen = __symbol__2("then");
       const creationTrace = "__creationTrace__";
@@ -2034,7 +2034,7 @@
       const ZONE_AWARE_PROMISE_TO_STRING = "function ZoneAwarePromise() { [native code] }";
       const noop3 = function() {
       };
-      const AggregateError = global2.AggregateError;
+      const AggregateError = global3.AggregateError;
       class ZoneAwarePromise {
         static toString() {
           return ZONE_AWARE_PROMISE_TO_STRING;
@@ -2227,8 +2227,8 @@
       ZoneAwarePromise["reject"] = ZoneAwarePromise.reject;
       ZoneAwarePromise["race"] = ZoneAwarePromise.race;
       ZoneAwarePromise["all"] = ZoneAwarePromise.all;
-      const NativePromise = global2[symbolPromise] = global2["Promise"];
-      global2["Promise"] = ZoneAwarePromise;
+      const NativePromise = global3[symbolPromise] = global3["Promise"];
+      global3["Promise"] = ZoneAwarePromise;
       const symbolThenPatched = __symbol__2("thenPatched");
       function patchThen(Ctor) {
         const proto = Ctor.prototype;
@@ -2262,14 +2262,14 @@
       }
       if (NativePromise) {
         patchThen(NativePromise);
-        patchMethod(global2, "fetch", (delegate) => zoneify(delegate));
+        patchMethod(global3, "fetch", (delegate) => zoneify(delegate));
       }
       Promise[Zone3.__symbol__("uncaughtPromiseErrors")] = _uncaughtPromiseErrors;
       return ZoneAwarePromise;
     });
   }
   function patchToString(Zone2) {
-    Zone2.__load_patch("toString", (global2) => {
+    Zone2.__load_patch("toString", (global3) => {
       const originalFunctionToString = Function.prototype.toString;
       const ORIGINAL_DELEGATE_SYMBOL = zoneSymbol("OriginalDelegate");
       const PROMISE_SYMBOL = zoneSymbol("Promise");
@@ -2285,13 +2285,13 @@
             }
           }
           if (this === Promise) {
-            const nativePromise = global2[PROMISE_SYMBOL];
+            const nativePromise = global3[PROMISE_SYMBOL];
             if (nativePromise) {
               return originalFunctionToString.call(nativePromise);
             }
           }
           if (this === Error) {
-            const nativeError = global2[ERROR_SYMBOL];
+            const nativeError = global3[ERROR_SYMBOL];
             if (nativeError) {
               return originalFunctionToString.call(nativeError);
             }
@@ -2343,19 +2343,19 @@
     api.attachOriginToPatched(target[method], nativeDelegate);
   }
   function patchUtil(Zone2) {
-    Zone2.__load_patch("util", (global2, Zone3, api) => {
-      const eventNames = getOnEventNames(global2);
+    Zone2.__load_patch("util", (global3, Zone3, api) => {
+      const eventNames = getOnEventNames(global3);
       api.patchOnProperties = patchOnProperties;
       api.patchMethod = patchMethod;
       api.bindArguments = bindArguments;
       api.patchMacroTask = patchMacroTask;
       const SYMBOL_BLACK_LISTED_EVENTS = Zone3.__symbol__("BLACK_LISTED_EVENTS");
       const SYMBOL_UNPATCHED_EVENTS = Zone3.__symbol__("UNPATCHED_EVENTS");
-      if (global2[SYMBOL_UNPATCHED_EVENTS]) {
-        global2[SYMBOL_BLACK_LISTED_EVENTS] = global2[SYMBOL_UNPATCHED_EVENTS];
+      if (global3[SYMBOL_UNPATCHED_EVENTS]) {
+        global3[SYMBOL_BLACK_LISTED_EVENTS] = global3[SYMBOL_UNPATCHED_EVENTS];
       }
-      if (global2[SYMBOL_BLACK_LISTED_EVENTS]) {
-        Zone3[SYMBOL_BLACK_LISTED_EVENTS] = Zone3[SYMBOL_UNPATCHED_EVENTS] = global2[SYMBOL_BLACK_LISTED_EVENTS];
+      if (global3[SYMBOL_BLACK_LISTED_EVENTS]) {
+        Zone3[SYMBOL_BLACK_LISTED_EVENTS] = Zone3[SYMBOL_UNPATCHED_EVENTS] = global3[SYMBOL_BLACK_LISTED_EVENTS];
       }
       api.patchEventPrototype = patchEventPrototype;
       api.patchEventTarget = patchEventTarget;
@@ -27619,8 +27619,8 @@ ${nodes.map((node) => `"${node.sourceSpan.toString()}"`).join("\n")}
       imports: declaration.imports !== void 0 ? declaration.imports.map((i) => new WrappedNodeExpr(i)) : []
     };
   }
-  function publishFacade(global2) {
-    const ng = global2.ng || (global2.ng = {});
+  function publishFacade(global3) {
+    const ng = global3.ng || (global3.ng = {});
     ng.\u0275compilerFacade = new CompilerFacadeImpl();
   }
   var VERSION = new Version("19.2.14");
@@ -70259,8 +70259,9 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     m("intlTelInputUtilsTemp.numberType", yb);
     m("intlTelInputUtilsTemp.validationError", { IS_POSSIBLE: 0, INVALID_COUNTRY_CODE: 1, TOO_SHORT: 2, TOO_LONG: 3, IS_POSSIBLE_LOCAL_ONLY: 4, INVALID_LENGTH: 5 });
   })();
-  var utils = window.intlTelInputUtilsTemp;
-  delete window.intlTelInputUtilsTemp;
+  var globalContext = typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : void 0;
+  var utils = globalContext.intlTelInputUtilsTemp;
+  delete globalContext.intlTelInputUtilsTemp;
   var utils_default = utils;
 
   // src/js/intl-tel-input/intlTelInputWithUtils.ts

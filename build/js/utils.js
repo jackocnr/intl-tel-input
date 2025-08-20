@@ -525,6 +525,7 @@ m("intlTelInputUtilsTemp.formatNumber",(a,b,c)=>{try{const e=K.g(),f=Y(e,a,b);va
 m("intlTelInputUtilsTemp.getNumberType",(a,b)=>{try{const c=K.g(),d=Y(c,a,b);return $a(c,d)}catch{return-99}});m("intlTelInputUtilsTemp.getValidationError",(a,b)=>{if(!b)return 1;try{const c=K.g(),d=Y(c,a,b);return X(c,d,-1)}catch(c){return"Invalid country calling code"===c.message?1:3>=a.length||"Phone number too short after IDD"===c.message||"The string supplied is too short to be a phone number"===c.message?2:"The string supplied is too long to be a phone number"===c.message?3:-99}});
 m("intlTelInputUtilsTemp.isValidNumber",(a,b,c)=>{try{const d=K.g(),e=Y(d,a,b),f=cb(d,e);if(c){const g=c.map(h=>yb[h]);return f&&g.includes($a(d,e))}return f}catch{return!1}});m("intlTelInputUtilsTemp.isPossibleNumber",(a,b,c)=>{try{const d=K.g(),e=Y(d,a,b);if(c){c.includes("FIXED_LINE_OR_MOBILE")&&(c.includes("MOBILE")||c.push("MOBILE"),c.includes("FIXED_LINE")||c.push("FIXED_LINE"));for(let f of c)if(0===X(d,e,yb[f]))return!0;return!1}return 0===X(d,e,-1)}catch{return!1}});
 m("intlTelInputUtilsTemp.getCoreNumber",(a,b)=>{try{return r(Y(K.g(),a,b),2).toString()}catch{return""}});m("intlTelInputUtilsTemp.numberFormat",{E164:0,INTERNATIONAL:1,NATIONAL:2,RFC3966:3});m("intlTelInputUtilsTemp.numberType",yb);m("intlTelInputUtilsTemp.validationError",{IS_POSSIBLE:0,INVALID_COUNTRY_CODE:1,TOO_SHORT:2,TOO_LONG:3,IS_POSSIBLE_LOCAL_ONLY:4,INVALID_LENGTH:5});})();
-const utils = window.intlTelInputUtilsTemp;
-delete window.intlTelInputUtilsTemp;
+const globalContext = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this;
+const utils = globalContext.intlTelInputUtilsTemp;
+delete globalContext.intlTelInputUtilsTemp;
 export default utils;
