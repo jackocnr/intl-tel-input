@@ -40,6 +40,12 @@ input::placeholder {
   border-color: #285e8e;
   cursor: pointer;
 }
+.button:disabled {
+  background-color: #ccc;
+  border-color: #999;
+  color: #666;
+  cursor: not-allowed;
+}
 
 .notice {
   margin-top: 15px;
