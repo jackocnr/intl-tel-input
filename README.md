@@ -295,6 +295,13 @@ intlTelInput(input, {
     oneSearchResult: "1 result found",
     // Screen reader text for when the search produces multiple results
     multipleSearchResults: "${count} results found",
+    // For more complex pluralisation cases e.g. Polish or Arabic, you can implement your own logic
+    // Note that if this function is defined, the plugin will ignore the "zero", "one" and "multiple" keys listed above
+    searchResultsText(count) {
+      if (count === 0) return "No results found";
+      if (count === 1) return "1 result found";
+      return `${count} results found`;
+    }
   }
 });
 ```
