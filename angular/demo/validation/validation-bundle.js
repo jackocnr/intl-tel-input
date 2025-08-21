@@ -76530,7 +76530,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     }]
   }] });
 
-  // angular/src/intl-tel-input/angularWithUtils.component.ts
+  // angular/src/intl-tel-input/angularWithUtils.ts
   var PHONE_ERROR_MESSAGES = [
     "invalid",
     "invalid-country-code",
@@ -76575,7 +76575,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     }
     ngAfterViewInit() {
       if (this.initialValue) {
-        this.iti.setNumber(this.initialValue);
+        this.iti?.setNumber(this.initialValue);
       }
     }
     handleInput() {
@@ -76602,10 +76602,11 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       return this.iti;
     }
     getInput() {
-      return this.inputRef?.nativeElement;
+      return this.inputRef.nativeElement;
     }
     ngOnDestroy() {
-      this.iti.destroy();
+      this.iti?.destroy();
+      this.inputRef.nativeElement.removeEventListener("countrychange", this.countryChangeHandler);
     }
     applyInputProps() {
       const props = this.inputProps;
@@ -76706,6 +76707,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ]
     })
   ], IntlTelInputComponent);
+  var angularWithUtils_default = IntlTelInputComponent;
 
   // angular/demo/validation/validation.component.ts
   var AppComponent = class {
@@ -76755,7 +76757,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     </div>
   `,
       standalone: true,
-      imports: [IntlTelInputComponent]
+      imports: [angularWithUtils_default]
     })
   ], AppComponent);
 

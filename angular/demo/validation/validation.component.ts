@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IntlTelInputComponent, PHONE_ERROR_MESSAGES } from '../../src/intl-tel-input/angularWithUtils.component';
+import IntlTelInputComponent, { PHONE_ERROR_MESSAGES } from '../../src/intl-tel-input/angularWithUtils';
 
 @Component({
   selector: "app-root",

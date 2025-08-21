@@ -320,7 +320,7 @@ module.exports = function(grunt) {
     },
 
     /**************
-     * Generate angular/src/angularWithUtils.component.ts
+     * Generate angular/src/angularWithUtils.ts
      **************/
     angularWithUtils: {
       options: {
@@ -332,7 +332,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'angular/src/intl-tel-input/angularWithUtils.component.ts': 'angular/src/intl-tel-input/angular.component.ts',
+        'angular/src/intl-tel-input/angularWithUtils.ts': 'angular/src/intl-tel-input/angular.ts',
       }
     },
   };

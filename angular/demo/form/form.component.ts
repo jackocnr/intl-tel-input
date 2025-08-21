@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { IntlTelInputComponent } from '../../src/intl-tel-input/angularWithUtils.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import IntlTelInputComponent from '../../src/intl-tel-input/angularWithUtils';
 
 @Component({
   selector: "app-root",
@@ -39,6 +39,10 @@ export class AppComponent {
   });
 
   notice: string | null = null;
+
+  get phone() {
+    return this.fg.get('phone');
+  }
 
   handleSubmit(): void {
     if (this.fg.valid) {

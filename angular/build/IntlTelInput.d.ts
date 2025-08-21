@@ -486,14 +486,14 @@ declare module "intl-tel-input" {
     const intlTelInput: IntlTelInputInterface;
     export default intlTelInput;
 }
-declare module "intl-tel-input/angular.component" {
+declare module "intl-tel-input/angular" {
     import intlTelInput from "intl-tel-input";
     import { Iti, SomeOptions } from "intl-tel-input";
-    import { OnInit, OnDestroy, ElementRef, EventEmitter } from "@angular/core";
+    import { OnInit, OnDestroy, ElementRef, EventEmitter, AfterViewInit } from "@angular/core";
     import { ControlValueAccessor, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
     export { intlTelInput };
     export const PHONE_ERROR_MESSAGES: string[];
-    export class IntlTelInputComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
+    class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor, Validator {
         inputRef: ElementRef<HTMLInputElement>;
         initialValue: string;
         usePreciseValidation: boolean;
@@ -524,6 +524,7 @@ declare module "intl-tel-input/angular.component" {
         validate(control: AbstractControl): ValidationErrors | null;
         registerOnValidatorChange(fn: () => void): void;
     }
+    export default IntlTelInputComponent;
 }
 declare module "intl-tel-input/utils" {
     export default utils;
@@ -533,14 +534,14 @@ declare module "intl-tel-input/intlTelInputWithUtils" {
     import intlTelInput from "intl-tel-input";
     export default intlTelInput;
 }
-declare module "intl-tel-input/angularWithUtils.component" {
+declare module "intl-tel-input/angularWithUtils" {
     import intlTelInput from "intl-tel-input/intlTelInputWithUtils";
     import { Iti, SomeOptions } from "intl-tel-input";
-    import { OnInit, OnDestroy, ElementRef, EventEmitter } from "@angular/core";
+    import { OnInit, OnDestroy, ElementRef, EventEmitter, AfterViewInit } from "@angular/core";
     import { ControlValueAccessor, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
     export { intlTelInput };
     export const PHONE_ERROR_MESSAGES: string[];
-    export class IntlTelInputComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
+    class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor, Validator {
         inputRef: ElementRef<HTMLInputElement>;
         initialValue: string;
         usePreciseValidation: boolean;
@@ -571,6 +572,7 @@ declare module "intl-tel-input/angularWithUtils.component" {
         validate(control: AbstractControl): ValidationErrors | null;
         registerOnValidatorChange(fn: () => void): void;
     }
+    export default IntlTelInputComponent;
 }
 declare module "intl-tel-input/i18n/ar/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
