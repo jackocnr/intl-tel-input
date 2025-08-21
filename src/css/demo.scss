@@ -41,6 +41,12 @@ input::placeholder {
     border-color: #285e8e;
     cursor: pointer;
   }
+  &:disabled {
+    background-color: #ccc;
+    border-color: #999;
+    color: #666;
+    cursor: not-allowed;
+}
 }
 
 //* For react demo.
