@@ -8,7 +8,7 @@
 
 🗣️ NEWS: we now provide [translations](#translations) in over 30 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
-International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React and Vue components are also included.
+International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React, Vue and Angular components are also included.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla2.png" alt="Screenshot" width="265px" height="273px" />
   
@@ -21,7 +21,7 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 
 ## Table of Contents
 
-- [React and Vue Components](#react-and-vue-components)
+- [React, Vue and Angular Components](#react-vue-and-angular-components)
 - [Demo and Examples](#demo-and-examples)
 - [Mobile](#mobile)
 - [Features](#features)
@@ -40,8 +40,8 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 - [Contributing](#contributing)
 - [Attributions](#attributions)
 
-## React and Vue Components
-We now provide both React and Vue components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) or the [Vue Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md).
+## React, Vue and Angular Components
+We now provide React, Vue and Angular components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), the [Vue Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) or the [Angular Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md).
 
 ## Demo and Examples
 You can view [a live demo](https://intl-tel-input.com) and see some examples of how to use the various options. Alternatively, try it for yourself by downloading the project and opening demo.html in a browser.
