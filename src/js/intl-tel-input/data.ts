@@ -13,7 +13,7 @@
 //* [
 //*   iso2 code,
 //*   International dial code,
-//*   Order (if >1 country with same dial code),
+//*   Priority (if >1 country with same dial code),
 //*   Area codes (string array), [OPTIONAL]
 //*   National prefix, [OPTIONAL - only required if using area codes]
 //* ]
