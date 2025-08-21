@@ -1,7 +1,7 @@
 import intlTelInput from "../intl-tel-input";
 //* Keep the TS imports separate, as the above line gets substituted in the angularWithUtils build process.
 import { Iti, SomeOptions } from "../intl-tel-input";
-import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, forwardRef } from "@angular/core";
+import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, forwardRef, AfterViewInit } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
 
 export { intlTelInput };
@@ -39,7 +39,7 @@ export const PHONE_ERROR_MESSAGES: string[] = [
     },
   ],
 })
-export class IntlTelInputComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
+class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor, Validator {
   @ViewChild("inputRef", { static: true }) inputRef!: ElementRef<HTMLInputElement>;
 
   @Input() initialValue: string = "";
@@ -80,7 +80,7 @@ export class IntlTelInputComponent implements OnInit, OnDestroy, ControlValueAcc
 
   ngAfterViewInit() {
     if (this.initialValue) {
-      this.iti.setNumber(this.initialValue);
+      this.iti?.setNumber(this.initialValue);
     }
   }
 
@@ -118,11 +118,13 @@ export class IntlTelInputComponent implements OnInit, OnDestroy, ControlValueAcc
   }
 
   getInput(): HTMLInputElement | null {
-    return this.inputRef?.nativeElement;
+    return this.inputRef.nativeElement;
   }
 
   ngOnDestroy() {
-    this.iti.destroy();
+    this.iti?.destroy();
+
+    this.inputRef.nativeElement.removeEventListener("countrychange", this.countryChangeHandler);
   }
 
   private applyInputProps(): void {
@@ -180,3 +182,5 @@ export class IntlTelInputComponent implements OnInit, OnDestroy, ControlValueAcc
     this.onValidatorChange = fn;
   }
 }
+
+export default IntlTelInputComponent;

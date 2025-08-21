@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true, //* Required for react (etc) default imports.
     "experimentalDecorators": true, //* Required for angular decorators.
@@ -16,8 +16,8 @@
     "strictTemplates": true,
   },
   "include": [
-    "src/intl-tel-input/angular.component.ts",
-    "src/intl-tel-input/angularWithUtils.component.ts",
+    "src/intl-tel-input/angular.ts",
+    "src/intl-tel-input/angularWithUtils.ts",
     "src/intl-tel-input/i18n/index.ts",
   ],
 }

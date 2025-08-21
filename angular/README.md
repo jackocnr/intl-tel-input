@@ -1,5 +1,5 @@
 # IntlTelInput Angular Component
-An Angular component wrapper for the [intl-tel-input](https://github.com/jackocnr/intl-tel-input) JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/angular/src/intl-tel-input/angular.component.ts).
+An Angular component wrapper for the [intl-tel-input](https://github.com/jackocnr/intl-tel-input) JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/angular/src/intl-tel-input/angular.ts).
 
 ## Table of Contents
 - [Demo](#demo)

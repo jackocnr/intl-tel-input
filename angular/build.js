@@ -3,7 +3,7 @@ const packageJson = require("../package.json");
 
 const mainShared = {
   bundle: true,
-  external: ["@angular/core"],
+  external: ["@angular/core", "@angular/forms"],
   logLevel: "info",
   minify: false,
   define: { "process.env.VERSION": `"${packageJson.version}"` },
@@ -12,7 +12,7 @@ const mainShared = {
 //* Angular Component - CommonJS
 build({
   ...mainShared,
-  entryPoints: ["angular/src/intl-tel-input/angular.component.ts"],
+  entryPoints: ["angular/src/intl-tel-input/angular.ts"],
   format: "cjs",
   outfile: "angular/build/IntlTelInput.cjs",
 });
@@ -20,7 +20,7 @@ build({
 //* Angular Component - Default (ES Modules)
 build({
   ...mainShared,
-  entryPoints: ["angular/src/intl-tel-input/angular.component.ts"],
+  entryPoints: ["angular/src/intl-tel-input/angular.ts"],
   format: "esm",
   outfile: "angular/build/IntlTelInput.js",
 });
@@ -28,7 +28,7 @@ build({
 //* Angular Component With Utils - CommonJS
 build({
   ...mainShared,
-  entryPoints: ["angular/src/intl-tel-input/angularWithUtils.component.ts"],
+  entryPoints: ["angular/src/intl-tel-input/angularWithUtils.ts"],
   format: "cjs",
   outfile: "angular/build/IntlTelInputWithUtils.cjs",
 });
@@ -36,7 +36,7 @@ build({
 //* Angular Component With Utils - Default (ES Modules)
 build({
   ...mainShared,
-  entryPoints: ["angular/src/intl-tel-input/angularWithUtils.component.ts"],
+  entryPoints: ["angular/src/intl-tel-input/angularWithUtils.ts"],
   format: "esm",
   outfile: "angular/build/IntlTelInputWithUtils.js",
 });
