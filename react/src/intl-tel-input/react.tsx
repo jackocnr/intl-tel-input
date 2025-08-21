@@ -6,6 +6,8 @@ import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback 
 // make this available as a named export, so react users can access globals like intlTelInput.utils
 export { intlTelInput };
 
+type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
+
 type ItiProps = {
   initialValue?: string;
   onChangeNumber?: (number: string) => void;
@@ -14,7 +16,7 @@ type ItiProps = {
   onChangeErrorCode?: (errorCode: number | null) => void;
   usePreciseValidation?: boolean;
   initOptions?: SomeOptions;
-  inputProps?: object;
+  inputProps?: InputProps;
   disabled?: boolean | undefined;
 };
 

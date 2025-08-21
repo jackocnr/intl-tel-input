@@ -8,7 +8,7 @@
 
 🗣️ NEWS: we now provide [translations](#translations) in over 30 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
-International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React and Vue components are also included.
+International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React, Vue and Angular components are also included.
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla2.png" alt="Screenshot" width="265px" height="273px" />
   
@@ -21,7 +21,7 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 
 ## Table of Contents
 
-- [React and Vue Components](#react-and-vue-components)
+- [React, Vue and Angular Components](#react-vue-and-angular-components)
 - [Demo and Examples](#demo-and-examples)
 - [Mobile](#mobile)
 - [Features](#features)
@@ -40,8 +40,8 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 - [Contributing](#contributing)
 - [Attributions](#attributions)
 
-## React and Vue Components
-We now provide both React and Vue components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) or the [Vue Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md).
+## React, Vue and Angular Components
+We now provide React, Vue and Angular components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), the [Vue Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) or the [Angular Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md).
 
 ## Demo and Examples
 You can view [a live demo](https://intl-tel-input.com) and see some examples of how to use the various options. Alternatively, try it for yourself by downloading the project and opening demo.html in a browser.
@@ -63,7 +63,7 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Accessibility provided via ARIA tags
 * Typescript type definitions included
 * Easily customise styles by overriding CSS variables
-* React and Vue components also included
+* React, Vue and Angular components also included
 * Translations for country names (etc) provided in many different languages
 * Lots of initialisation options for customisation, as well as instance methods/events for interaction
 
@@ -77,16 +77,16 @@ _Note: We have now dropped support for all versions of Internet Explorer because
 ## Getting Started (Using a CDN)
 1. Add the CSS
   ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.0/build/css/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.2/build/css/intlTelInput.css">
   ```
 
 2. Add the plugin script and initialise it on your input element
   ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.0/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.2/build/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.0/build/js/utils.js"),
+      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.2/build/js/utils.js"),
     });
   </script>
   ```
@@ -322,7 +322,7 @@ The `loadUtils` option takes a function which returns a Promise which resolves t
 ```js
 // (A) import utils module from a CDN
 intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.0/build/js/utils.js"),
+  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.2/build/js/utils.js"),
 });
 
 // (B) import utils module from your own hosted version of utils.js
@@ -574,7 +574,7 @@ Example:
 ## Translations
 We provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input) in over 30 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
-Supported languages: Arabic, Bengali, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, Norwegian, English, Farsi, Finnish, French, German, Greek, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Marathi, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Swedish, Telugu, Thai, Turkish, Ukrainian, Urdu, Vietnamese. 
+Supported languages: Arabic, Bengali, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, English, Estonian, Finnish, French, German, Greek, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Marathi, Norwegian, Persian, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Swedish, Telugu, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese.
 
 If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings, as we automatically pull in the country names from the country-list project.
 
@@ -606,7 +606,7 @@ The `loadUtils` option takes a function which returns a Promise which resolves t
 ```js
 // (A) import utils module from a CDN
 intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.0/build/js/utils.js"),
+  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.4.2/build/js/utils.js"),
 });
 
 // (B) import utils module from your own hosted version of utils.js

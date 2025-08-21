@@ -491,6 +491,7 @@ declare module "intl-tel-input/react" {
     import { Iti, SomeOptions } from "intl-tel-input";
     import React from "react";
     export { intlTelInput };
+    type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
     type ItiProps = {
         initialValue?: string;
         onChangeNumber?: (number: string) => void;
@@ -499,7 +500,7 @@ declare module "intl-tel-input/react" {
         onChangeErrorCode?: (errorCode: number | null) => void;
         usePreciseValidation?: boolean;
         initOptions?: SomeOptions;
-        inputProps?: object;
+        inputProps?: InputProps;
         disabled?: boolean | undefined;
     };
     export type IntlTelInputRef = {
@@ -522,6 +523,7 @@ declare module "intl-tel-input/reactWithUtils" {
     import { Iti, SomeOptions } from "intl-tel-input";
     import React from "react";
     export { intlTelInput };
+    type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
     type ItiProps = {
         initialValue?: string;
         onChangeNumber?: (number: string) => void;
@@ -530,7 +532,7 @@ declare module "intl-tel-input/reactWithUtils" {
         onChangeErrorCode?: (errorCode: number | null) => void;
         usePreciseValidation?: boolean;
         initOptions?: SomeOptions;
-        inputProps?: object;
+        inputProps?: InputProps;
         disabled?: boolean | undefined;
     };
     export type IntlTelInputRef = {

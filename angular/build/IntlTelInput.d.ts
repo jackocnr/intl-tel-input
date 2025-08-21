@@ -277,7 +277,7 @@ declare module "intl-tel-input/i18n/en/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/en/index" {
+declare module "intl-tel-input/i18n/en" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/en/countries";
     import interfaceTranslations from "intl-tel-input/i18n/en/interface";
@@ -582,7 +582,7 @@ declare module "intl-tel-input/i18n/ar/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/ar/index" {
+declare module "intl-tel-input/i18n/ar" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/ar/countries";
     import interfaceTranslations from "intl-tel-input/i18n/ar/interface";
@@ -600,7 +600,7 @@ declare module "intl-tel-input/i18n/bg/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/bg/index" {
+declare module "intl-tel-input/i18n/bg" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/bg/countries";
     import interfaceTranslations from "intl-tel-input/i18n/bg/interface";
@@ -618,7 +618,7 @@ declare module "intl-tel-input/i18n/bn/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/bn/index" {
+declare module "intl-tel-input/i18n/bn" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/bn/countries";
     import interfaceTranslations from "intl-tel-input/i18n/bn/interface";
@@ -636,7 +636,7 @@ declare module "intl-tel-input/i18n/bs/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/bs/index" {
+declare module "intl-tel-input/i18n/bs" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/bs/countries";
     import interfaceTranslations from "intl-tel-input/i18n/bs/interface";
@@ -654,7 +654,7 @@ declare module "intl-tel-input/i18n/ca/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/ca/index" {
+declare module "intl-tel-input/i18n/ca" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/ca/countries";
     import interfaceTranslations from "intl-tel-input/i18n/ca/interface";
@@ -672,7 +672,7 @@ declare module "intl-tel-input/i18n/cs/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/cs/index" {
+declare module "intl-tel-input/i18n/cs" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/cs/countries";
     import interfaceTranslations from "intl-tel-input/i18n/cs/interface";
@@ -690,7 +690,7 @@ declare module "intl-tel-input/i18n/da/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/da/index" {
+declare module "intl-tel-input/i18n/da" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/da/countries";
     import interfaceTranslations from "intl-tel-input/i18n/da/interface";
@@ -708,7 +708,7 @@ declare module "intl-tel-input/i18n/de/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/de/index" {
+declare module "intl-tel-input/i18n/de" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/de/countries";
     import interfaceTranslations from "intl-tel-input/i18n/de/interface";
@@ -726,7 +726,7 @@ declare module "intl-tel-input/i18n/ee/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/ee/index" {
+declare module "intl-tel-input/i18n/ee" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/ee/countries";
     import interfaceTranslations from "intl-tel-input/i18n/ee/interface";
@@ -744,7 +744,7 @@ declare module "intl-tel-input/i18n/el/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/el/index" {
+declare module "intl-tel-input/i18n/el" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/el/countries";
     import interfaceTranslations from "intl-tel-input/i18n/el/interface";
@@ -762,7 +762,7 @@ declare module "intl-tel-input/i18n/es/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/es/index" {
+declare module "intl-tel-input/i18n/es" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/es/countries";
     import interfaceTranslations from "intl-tel-input/i18n/es/interface";
@@ -780,7 +780,7 @@ declare module "intl-tel-input/i18n/fa/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/fa/index" {
+declare module "intl-tel-input/i18n/fa" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/fa/countries";
     import interfaceTranslations from "intl-tel-input/i18n/fa/interface";
@@ -798,7 +798,7 @@ declare module "intl-tel-input/i18n/fi/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/fi/index" {
+declare module "intl-tel-input/i18n/fi" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/fi/countries";
     import interfaceTranslations from "intl-tel-input/i18n/fi/interface";
@@ -816,7 +816,7 @@ declare module "intl-tel-input/i18n/fr/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/fr/index" {
+declare module "intl-tel-input/i18n/fr" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/fr/countries";
     import interfaceTranslations from "intl-tel-input/i18n/fr/interface";
@@ -834,7 +834,7 @@ declare module "intl-tel-input/i18n/hi/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/hi/index" {
+declare module "intl-tel-input/i18n/hi" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/hi/countries";
     import interfaceTranslations from "intl-tel-input/i18n/hi/interface";
@@ -852,7 +852,7 @@ declare module "intl-tel-input/i18n/hr/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/hr/index" {
+declare module "intl-tel-input/i18n/hr" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/hr/countries";
     import interfaceTranslations from "intl-tel-input/i18n/hr/interface";
@@ -870,7 +870,7 @@ declare module "intl-tel-input/i18n/hu/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/hu/index" {
+declare module "intl-tel-input/i18n/hu" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/hu/countries";
     import interfaceTranslations from "intl-tel-input/i18n/hu/interface";
@@ -888,7 +888,7 @@ declare module "intl-tel-input/i18n/id/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/id/index" {
+declare module "intl-tel-input/i18n/id" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/id/countries";
     import interfaceTranslations from "intl-tel-input/i18n/id/interface";
@@ -906,7 +906,7 @@ declare module "intl-tel-input/i18n/it/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/it/index" {
+declare module "intl-tel-input/i18n/it" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/it/countries";
     import interfaceTranslations from "intl-tel-input/i18n/it/interface";
@@ -924,7 +924,7 @@ declare module "intl-tel-input/i18n/ja/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/ja/index" {
+declare module "intl-tel-input/i18n/ja" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/ja/countries";
     import interfaceTranslations from "intl-tel-input/i18n/ja/interface";
@@ -942,7 +942,7 @@ declare module "intl-tel-input/i18n/ko/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/ko/index" {
+declare module "intl-tel-input/i18n/ko" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/ko/countries";
     import interfaceTranslations from "intl-tel-input/i18n/ko/interface";
@@ -960,7 +960,7 @@ declare module "intl-tel-input/i18n/mr/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/mr/index" {
+declare module "intl-tel-input/i18n/mr" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/mr/countries";
     import interfaceTranslations from "intl-tel-input/i18n/mr/interface";
@@ -978,7 +978,7 @@ declare module "intl-tel-input/i18n/nl/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/nl/index" {
+declare module "intl-tel-input/i18n/nl" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/nl/countries";
     import interfaceTranslations from "intl-tel-input/i18n/nl/interface";
@@ -996,7 +996,7 @@ declare module "intl-tel-input/i18n/no/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/no/index" {
+declare module "intl-tel-input/i18n/no" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/no/countries";
     import interfaceTranslations from "intl-tel-input/i18n/no/interface";
@@ -1014,7 +1014,7 @@ declare module "intl-tel-input/i18n/pl/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/pl/index" {
+declare module "intl-tel-input/i18n/pl" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/pl/countries";
     import interfaceTranslations from "intl-tel-input/i18n/pl/interface";
@@ -1032,7 +1032,7 @@ declare module "intl-tel-input/i18n/pt/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/pt/index" {
+declare module "intl-tel-input/i18n/pt" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/pt/countries";
     import interfaceTranslations from "intl-tel-input/i18n/pt/interface";
@@ -1050,7 +1050,7 @@ declare module "intl-tel-input/i18n/ro/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/ro/index" {
+declare module "intl-tel-input/i18n/ro" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/ro/countries";
     import interfaceTranslations from "intl-tel-input/i18n/ro/interface";
@@ -1068,7 +1068,7 @@ declare module "intl-tel-input/i18n/ru/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/ru/index" {
+declare module "intl-tel-input/i18n/ru" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/ru/countries";
     import interfaceTranslations from "intl-tel-input/i18n/ru/interface";
@@ -1086,7 +1086,7 @@ declare module "intl-tel-input/i18n/sk/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/sk/index" {
+declare module "intl-tel-input/i18n/sk" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/sk/countries";
     import interfaceTranslations from "intl-tel-input/i18n/sk/interface";
@@ -1104,7 +1104,7 @@ declare module "intl-tel-input/i18n/sv/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/sv/index" {
+declare module "intl-tel-input/i18n/sv" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/sv/countries";
     import interfaceTranslations from "intl-tel-input/i18n/sv/interface";
@@ -1122,7 +1122,7 @@ declare module "intl-tel-input/i18n/te/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/te/index" {
+declare module "intl-tel-input/i18n/te" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/te/countries";
     import interfaceTranslations from "intl-tel-input/i18n/te/interface";
@@ -1140,7 +1140,7 @@ declare module "intl-tel-input/i18n/th/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/th/index" {
+declare module "intl-tel-input/i18n/th" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/th/countries";
     import interfaceTranslations from "intl-tel-input/i18n/th/interface";
@@ -1158,7 +1158,7 @@ declare module "intl-tel-input/i18n/tr/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/tr/index" {
+declare module "intl-tel-input/i18n/tr" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/tr/countries";
     import interfaceTranslations from "intl-tel-input/i18n/tr/interface";
@@ -1176,7 +1176,7 @@ declare module "intl-tel-input/i18n/uk/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/uk/index" {
+declare module "intl-tel-input/i18n/uk" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/uk/countries";
     import interfaceTranslations from "intl-tel-input/i18n/uk/interface";
@@ -1194,7 +1194,7 @@ declare module "intl-tel-input/i18n/ur/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/ur/index" {
+declare module "intl-tel-input/i18n/ur" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/ur/countries";
     import interfaceTranslations from "intl-tel-input/i18n/ur/interface";
@@ -1212,7 +1212,7 @@ declare module "intl-tel-input/i18n/uz/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/uz/index" {
+declare module "intl-tel-input/i18n/uz" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/uz/countries";
     import interfaceTranslations from "intl-tel-input/i18n/uz/interface";
@@ -1230,7 +1230,7 @@ declare module "intl-tel-input/i18n/vi/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/vi/index" {
+declare module "intl-tel-input/i18n/vi" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/vi/countries";
     import interfaceTranslations from "intl-tel-input/i18n/vi/interface";
@@ -1248,7 +1248,7 @@ declare module "intl-tel-input/i18n/zh/interface" {
     const interfaceTranslations: I18n;
     export default interfaceTranslations;
 }
-declare module "intl-tel-input/i18n/zh/index" {
+declare module "intl-tel-input/i18n/zh" {
     import { I18n } from "intl-tel-input/i18n/types";
     import countryTranslations from "intl-tel-input/i18n/zh/countries";
     import interfaceTranslations from "intl-tel-input/i18n/zh/interface";
@@ -1256,44 +1256,44 @@ declare module "intl-tel-input/i18n/zh/index" {
     const allTranslations: I18n;
     export default allTranslations;
 }
-declare module "intl-tel-input/i18n/index" {
-    export { default as ar, countryTranslations as arCountryTranslations, interfaceTranslations as arInterfaceTranslations } from "intl-tel-input/i18n/ar/index";
-    export { default as bg, countryTranslations as bgCountryTranslations, interfaceTranslations as bgInterfaceTranslations } from "intl-tel-input/i18n/bg/index";
-    export { default as bn, countryTranslations as bnCountryTranslations, interfaceTranslations as bnInterfaceTranslations } from "intl-tel-input/i18n/bn/index";
-    export { default as bs, countryTranslations as bsCountryTranslations, interfaceTranslations as bsInterfaceTranslations } from "intl-tel-input/i18n/bs/index";
-    export { default as ca, countryTranslations as caCountryTranslations, interfaceTranslations as caInterfaceTranslations } from "intl-tel-input/i18n/ca/index";
-    export { default as cs, countryTranslations as csCountryTranslations, interfaceTranslations as csInterfaceTranslations } from "intl-tel-input/i18n/cs/index";
-    export { default as da, countryTranslations as daCountryTranslations, interfaceTranslations as daInterfaceTranslations } from "intl-tel-input/i18n/da/index";
-    export { default as de, countryTranslations as deCountryTranslations, interfaceTranslations as deInterfaceTranslations } from "intl-tel-input/i18n/de/index";
-    export { default as ee, countryTranslations as eeCountryTranslations, interfaceTranslations as eeInterfaceTranslations } from "intl-tel-input/i18n/ee/index";
-    export { default as el, countryTranslations as elCountryTranslations, interfaceTranslations as elInterfaceTranslations } from "intl-tel-input/i18n/el/index";
-    export { default as en, countryTranslations as enCountryTranslations, interfaceTranslations as enInterfaceTranslations } from "intl-tel-input/i18n/en/index";
-    export { default as es, countryTranslations as esCountryTranslations, interfaceTranslations as esInterfaceTranslations } from "intl-tel-input/i18n/es/index";
-    export { default as fa, countryTranslations as faCountryTranslations, interfaceTranslations as faInterfaceTranslations } from "intl-tel-input/i18n/fa/index";
-    export { default as fi, countryTranslations as fiCountryTranslations, interfaceTranslations as fiInterfaceTranslations } from "intl-tel-input/i18n/fi/index";
-    export { default as fr, countryTranslations as frCountryTranslations, interfaceTranslations as frInterfaceTranslations } from "intl-tel-input/i18n/fr/index";
-    export { default as hi, countryTranslations as hiCountryTranslations, interfaceTranslations as hiInterfaceTranslations } from "intl-tel-input/i18n/hi/index";
-    export { default as hr, countryTranslations as hrCountryTranslations, interfaceTranslations as hrInterfaceTranslations } from "intl-tel-input/i18n/hr/index";
-    export { default as hu, countryTranslations as huCountryTranslations, interfaceTranslations as huInterfaceTranslations } from "intl-tel-input/i18n/hu/index";
-    export { default as id, countryTranslations as idCountryTranslations, interfaceTranslations as idInterfaceTranslations } from "intl-tel-input/i18n/id/index";
-    export { default as it, countryTranslations as itCountryTranslations, interfaceTranslations as itInterfaceTranslations } from "intl-tel-input/i18n/it/index";
-    export { default as ja, countryTranslations as jaCountryTranslations, interfaceTranslations as jaInterfaceTranslations } from "intl-tel-input/i18n/ja/index";
-    export { default as ko, countryTranslations as koCountryTranslations, interfaceTranslations as koInterfaceTranslations } from "intl-tel-input/i18n/ko/index";
-    export { default as mr, countryTranslations as mrCountryTranslations, interfaceTranslations as mrInterfaceTranslations } from "intl-tel-input/i18n/mr/index";
-    export { default as nl, countryTranslations as nlCountryTranslations, interfaceTranslations as nlInterfaceTranslations } from "intl-tel-input/i18n/nl/index";
-    export { default as no, countryTranslations as noCountryTranslations, interfaceTranslations as noInterfaceTranslations } from "intl-tel-input/i18n/no/index";
-    export { default as pl, countryTranslations as plCountryTranslations, interfaceTranslations as plInterfaceTranslations } from "intl-tel-input/i18n/pl/index";
-    export { default as pt, countryTranslations as ptCountryTranslations, interfaceTranslations as ptInterfaceTranslations } from "intl-tel-input/i18n/pt/index";
-    export { default as ro, countryTranslations as roCountryTranslations, interfaceTranslations as roInterfaceTranslations } from "intl-tel-input/i18n/ro/index";
-    export { default as ru, countryTranslations as ruCountryTranslations, interfaceTranslations as ruInterfaceTranslations } from "intl-tel-input/i18n/ru/index";
-    export { default as sk, countryTranslations as skCountryTranslations, interfaceTranslations as skInterfaceTranslations } from "intl-tel-input/i18n/sk/index";
-    export { default as sv, countryTranslations as svCountryTranslations, interfaceTranslations as svInterfaceTranslations } from "intl-tel-input/i18n/sv/index";
-    export { default as te, countryTranslations as teCountryTranslations, interfaceTranslations as teInterfaceTranslations } from "intl-tel-input/i18n/te/index";
-    export { default as th, countryTranslations as thCountryTranslations, interfaceTranslations as thInterfaceTranslations } from "intl-tel-input/i18n/th/index";
-    export { default as tr, countryTranslations as trCountryTranslations, interfaceTranslations as trInterfaceTranslations } from "intl-tel-input/i18n/tr/index";
-    export { default as uk, countryTranslations as ukCountryTranslations, interfaceTranslations as ukInterfaceTranslations } from "intl-tel-input/i18n/uk/index";
-    export { default as ur, countryTranslations as urCountryTranslations, interfaceTranslations as urInterfaceTranslations } from "intl-tel-input/i18n/ur/index";
-    export { default as uz, countryTranslations as uzCountryTranslations, interfaceTranslations as uzInterfaceTranslations } from "intl-tel-input/i18n/uz/index";
-    export { default as vi, countryTranslations as viCountryTranslations, interfaceTranslations as viInterfaceTranslations } from "intl-tel-input/i18n/vi/index";
-    export { default as zh, countryTranslations as zhCountryTranslations, interfaceTranslations as zhInterfaceTranslations } from "intl-tel-input/i18n/zh/index";
+declare module "intl-tel-input/i18n" {
+    export { default as ar, countryTranslations as arCountryTranslations, interfaceTranslations as arInterfaceTranslations } from "intl-tel-input/i18n/ar";
+    export { default as bg, countryTranslations as bgCountryTranslations, interfaceTranslations as bgInterfaceTranslations } from "intl-tel-input/i18n/bg";
+    export { default as bn, countryTranslations as bnCountryTranslations, interfaceTranslations as bnInterfaceTranslations } from "intl-tel-input/i18n/bn";
+    export { default as bs, countryTranslations as bsCountryTranslations, interfaceTranslations as bsInterfaceTranslations } from "intl-tel-input/i18n/bs";
+    export { default as ca, countryTranslations as caCountryTranslations, interfaceTranslations as caInterfaceTranslations } from "intl-tel-input/i18n/ca";
+    export { default as cs, countryTranslations as csCountryTranslations, interfaceTranslations as csInterfaceTranslations } from "intl-tel-input/i18n/cs";
+    export { default as da, countryTranslations as daCountryTranslations, interfaceTranslations as daInterfaceTranslations } from "intl-tel-input/i18n/da";
+    export { default as de, countryTranslations as deCountryTranslations, interfaceTranslations as deInterfaceTranslations } from "intl-tel-input/i18n/de";
+    export { default as ee, countryTranslations as eeCountryTranslations, interfaceTranslations as eeInterfaceTranslations } from "intl-tel-input/i18n/ee";
+    export { default as el, countryTranslations as elCountryTranslations, interfaceTranslations as elInterfaceTranslations } from "intl-tel-input/i18n/el";
+    export { default as en, countryTranslations as enCountryTranslations, interfaceTranslations as enInterfaceTranslations } from "intl-tel-input/i18n/en";
+    export { default as es, countryTranslations as esCountryTranslations, interfaceTranslations as esInterfaceTranslations } from "intl-tel-input/i18n/es";
+    export { default as fa, countryTranslations as faCountryTranslations, interfaceTranslations as faInterfaceTranslations } from "intl-tel-input/i18n/fa";
+    export { default as fi, countryTranslations as fiCountryTranslations, interfaceTranslations as fiInterfaceTranslations } from "intl-tel-input/i18n/fi";
+    export { default as fr, countryTranslations as frCountryTranslations, interfaceTranslations as frInterfaceTranslations } from "intl-tel-input/i18n/fr";
+    export { default as hi, countryTranslations as hiCountryTranslations, interfaceTranslations as hiInterfaceTranslations } from "intl-tel-input/i18n/hi";
+    export { default as hr, countryTranslations as hrCountryTranslations, interfaceTranslations as hrInterfaceTranslations } from "intl-tel-input/i18n/hr";
+    export { default as hu, countryTranslations as huCountryTranslations, interfaceTranslations as huInterfaceTranslations } from "intl-tel-input/i18n/hu";
+    export { default as id, countryTranslations as idCountryTranslations, interfaceTranslations as idInterfaceTranslations } from "intl-tel-input/i18n/id";
+    export { default as it, countryTranslations as itCountryTranslations, interfaceTranslations as itInterfaceTranslations } from "intl-tel-input/i18n/it";
+    export { default as ja, countryTranslations as jaCountryTranslations, interfaceTranslations as jaInterfaceTranslations } from "intl-tel-input/i18n/ja";
+    export { default as ko, countryTranslations as koCountryTranslations, interfaceTranslations as koInterfaceTranslations } from "intl-tel-input/i18n/ko";
+    export { default as mr, countryTranslations as mrCountryTranslations, interfaceTranslations as mrInterfaceTranslations } from "intl-tel-input/i18n/mr";
+    export { default as nl, countryTranslations as nlCountryTranslations, interfaceTranslations as nlInterfaceTranslations } from "intl-tel-input/i18n/nl";
+    export { default as no, countryTranslations as noCountryTranslations, interfaceTranslations as noInterfaceTranslations } from "intl-tel-input/i18n/no";
+    export { default as pl, countryTranslations as plCountryTranslations, interfaceTranslations as plInterfaceTranslations } from "intl-tel-input/i18n/pl";
+    export { default as pt, countryTranslations as ptCountryTranslations, interfaceTranslations as ptInterfaceTranslations } from "intl-tel-input/i18n/pt";
+    export { default as ro, countryTranslations as roCountryTranslations, interfaceTranslations as roInterfaceTranslations } from "intl-tel-input/i18n/ro";
+    export { default as ru, countryTranslations as ruCountryTranslations, interfaceTranslations as ruInterfaceTranslations } from "intl-tel-input/i18n/ru";
+    export { default as sk, countryTranslations as skCountryTranslations, interfaceTranslations as skInterfaceTranslations } from "intl-tel-input/i18n/sk";
+    export { default as sv, countryTranslations as svCountryTranslations, interfaceTranslations as svInterfaceTranslations } from "intl-tel-input/i18n/sv";
+    export { default as te, countryTranslations as teCountryTranslations, interfaceTranslations as teInterfaceTranslations } from "intl-tel-input/i18n/te";
+    export { default as th, countryTranslations as thCountryTranslations, interfaceTranslations as thInterfaceTranslations } from "intl-tel-input/i18n/th";
+    export { default as tr, countryTranslations as trCountryTranslations, interfaceTranslations as trInterfaceTranslations } from "intl-tel-input/i18n/tr";
+    export { default as uk, countryTranslations as ukCountryTranslations, interfaceTranslations as ukInterfaceTranslations } from "intl-tel-input/i18n/uk";
+    export { default as ur, countryTranslations as urCountryTranslations, interfaceTranslations as urInterfaceTranslations } from "intl-tel-input/i18n/ur";
+    export { default as uz, countryTranslations as uzCountryTranslations, interfaceTranslations as uzInterfaceTranslations } from "intl-tel-input/i18n/uz";
+    export { default as vi, countryTranslations as viCountryTranslations, interfaceTranslations as viInterfaceTranslations } from "intl-tel-input/i18n/vi";
+    export { default as zh, countryTranslations as zhCountryTranslations, interfaceTranslations as zhInterfaceTranslations } from "intl-tel-input/i18n/zh";
 }
