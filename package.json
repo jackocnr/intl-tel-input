@@ -19,6 +19,9 @@
     "validation",
     "formatting",
     "react",
+    "vue",
+    "angular",
+    "component",
     "typescript"
   ],
   "license": "MIT",
@@ -79,6 +82,7 @@
     "build/*",
     "react/build/*",
     "vue/build/*",
+    "angular/build/*",
     "CHANGELOG.md",
     "LICENSE",
     "package.json",
@@ -168,6 +172,9 @@
       ],
       "react": [
         "react/build/IntlTelInput.d.ts"
+      ],
+      "angular": [
+        "angular/build/IntlTelInput.d.ts"
       ]
     }
   }
