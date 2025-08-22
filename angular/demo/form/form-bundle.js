@@ -70429,7 +70429,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       attachUtils,
       startedLoadingUtilsScript: false,
       startedLoadingAutoCountry: false,
-      version: "25.4.3"
+      version: "25.4.4"
     }
   );
   var intl_tel_input_default = intlTelInput;
