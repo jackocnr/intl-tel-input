@@ -366,6 +366,7 @@ declare module "intl-tel-input" {
         strictMode: boolean;
         useFullscreenPopup: boolean;
         validationNumberTypes: NumberType[] | null;
+        wrapper: HTMLElement | null;
     }
     export type SomeOptions = Partial<AllOptions>;
     export class Iti {

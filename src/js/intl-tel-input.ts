@@ -88,6 +88,7 @@ interface AllOptions {
   strictMode: boolean;
   useFullscreenPopup: boolean;
   validationNumberTypes: NumberType[] | null;
+  wrapper: HTMLElement | null;
 }
 
 //* Export this as useful in react component too.
@@ -151,6 +152,8 @@ const defaults: AllOptions = {
       : false,
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"],
+  //* Custom wrapper for the input field
+  wrapper: null,
 };
 //* https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
 const regionlessNanpNumbers = [
@@ -585,8 +588,18 @@ export class Iti {
       parentClass += " iti--inline-dropdown";
     }
 
-    const wrapper = createEl("div", { class: parentClass });
-    this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
+    let wrapper: HTMLElement;
+
+    alert(this.options.wrapper);
+    if (null === this.options.wrapper) {
+      wrapper = createEl("div", { class: parentClass });
+      this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
+    } else {
+      wrapper = this.options.wrapper;
+      wrapper.classList.add("iti");
+    }
+
+    console.log(wrapper);
 
     //* If we need a countryContainer
     if (allowDropdown || showFlags || separateDialCode) {

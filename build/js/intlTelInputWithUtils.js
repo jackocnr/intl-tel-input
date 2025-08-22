@@ -1704,7 +1704,9 @@ var factoryOutput = (() => {
       ) || window.innerWidth <= 500
     ) : false,
     //* The number type to enforce during validation.
-    validationNumberTypes: ["MOBILE"]
+    validationNumberTypes: ["MOBILE"],
+    //* Custom wrapper for the input field
+    wrapper: null
   };
   var regionlessNanpNumbers = [
     "800",
@@ -1958,8 +1960,16 @@ var factoryOutput = (() => {
       if (!useFullscreenPopup) {
         parentClass += " iti--inline-dropdown";
       }
-      const wrapper = createEl("div", { class: parentClass });
-      this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
+      let wrapper;
+      alert(this.options.wrapper);
+      if (null === this.options.wrapper) {
+        wrapper = createEl("div", { class: parentClass });
+        this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
+      } else {
+        wrapper = this.options.wrapper;
+        wrapper.classList.add("iti");
+      }
+      console.log(wrapper);
       if (allowDropdown || showFlags || separateDialCode) {
         this.countryContainer = createEl(
           "div",
