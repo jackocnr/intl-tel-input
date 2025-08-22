@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import IntlTelInputComponent from '../../src/intl-tel-input/angularWithUtils';
+import { IntlTelInputComponent } from '../../src/intl-tel-input/angularWithUtils';
 
 @Component({
   selector: "app-root",

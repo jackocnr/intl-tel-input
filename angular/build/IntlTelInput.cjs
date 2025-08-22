@@ -27,8 +27,8 @@ var __decorateClass = (decorators, target, key, kind) => {
 // angular/src/intl-tel-input/angular.ts
 var angular_exports = {};
 __export(angular_exports, {
+  IntlTelInputComponent: () => IntlTelInputComponent,
   PHONE_ERROR_MESSAGES: () => PHONE_ERROR_MESSAGES,
-  default: () => angular_default,
   intlTelInput: () => intl_tel_input_default
 });
 module.exports = __toCommonJS(angular_exports);
@@ -3353,4 +3353,3 @@ IntlTelInputComponent = __decorateClass([
     ]
   })
 ], IntlTelInputComponent);
-var angular_default = IntlTelInputComponent;

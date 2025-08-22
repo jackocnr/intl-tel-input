@@ -9703,9 +9703,8 @@ IntlTelInputComponent = __decorateClass([
     ]
   })
 ], IntlTelInputComponent);
-var angularWithUtils_default = IntlTelInputComponent;
 export {
+  IntlTelInputComponent,
   PHONE_ERROR_MESSAGES,
-  angularWithUtils_default as default,
   intlTelInputWithUtils_default as intlTelInput
 };
