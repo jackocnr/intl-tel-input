@@ -39,7 +39,7 @@ export const PHONE_ERROR_MESSAGES: string[] = [
     },
   ],
 })
-class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor, Validator {
+export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor, Validator {
   @ViewChild("inputRef", { static: true }) inputRef!: ElementRef<HTMLInputElement>;
 
   @Input() initialValue: string = "";
@@ -182,5 +182,3 @@ class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, Control
     this.onValidatorChange = fn;
   }
 }
-
-export default IntlTelInputComponent;

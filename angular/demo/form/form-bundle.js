@@ -76985,7 +76985,6 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ]
     })
   ], IntlTelInputComponent);
-  var angularWithUtils_default = IntlTelInputComponent;
 
   // angular/demo/form/form.component.ts
   var AppComponent = class {
@@ -77035,7 +77034,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     </form>
   `,
       standalone: true,
-      imports: [angularWithUtils_default, ReactiveFormsModule]
+      imports: [IntlTelInputComponent, ReactiveFormsModule]
     })
   ], AppComponent);
 

@@ -76707,7 +76707,6 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ]
     })
   ], IntlTelInputComponent);
-  var angularWithUtils_default = IntlTelInputComponent;
 
   // angular/demo/simple/simple.component.ts
   var AppComponent = class {
@@ -76723,7 +76722,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     />
   `,
       standalone: true,
-      imports: [angularWithUtils_default]
+      imports: [IntlTelInputComponent]
     })
   ], AppComponent);
 

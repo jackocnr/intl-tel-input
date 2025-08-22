@@ -76707,7 +76707,6 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       ]
     })
   ], IntlTelInputComponent);
-  var angularWithUtils_default = IntlTelInputComponent;
 
   // angular/demo/set-number/set-number.component.ts
   var AppComponent = class {
@@ -76770,7 +76769,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     </div>
   `,
       standalone: true,
-      imports: [angularWithUtils_default]
+      imports: [IntlTelInputComponent]
     })
   ], AppComponent);
 
