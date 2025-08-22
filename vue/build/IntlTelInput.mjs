@@ -2579,7 +2579,7 @@ const W = (u) => {
       n("changeCountry", ((h = r.value) == null ? void 0 : h.getSelectedCountryData().iso2) ?? ""), C(), d();
     };
     return E(() => {
-      o.value && (r.value = l(o.value, s.options), s.value && r.value.setNumber(s.value), s.disabled && r.value.setDisabled(s.disabled));
+      o.value && (r.value = l(o.value, s.options), s.value && r.value.setNumber(s.value), s.disabled && r.value.setDisabled(s.disabled), a.value = c());
     }), M(
       () => s.disabled,
       (h) => {

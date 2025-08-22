@@ -8765,7 +8765,7 @@ const Y2 = {
       a("changeCountry", ((I = g.value) == null ? void 0 : I.getSelectedCountryData().iso2) ?? ""), b(), _();
     };
     return M2(() => {
-      c.value && (g.value = C(c.value, o.options), o.value && g.value.setNumber(o.value), o.disabled && g.value.setDisabled(o.disabled));
+      c.value && (g.value = C(c.value, o.options), o.value && g.value.setNumber(o.value), o.disabled && g.value.setDisabled(o.disabled), f.value = S());
     }), P2(
       () => o.disabled,
       (I) => {
