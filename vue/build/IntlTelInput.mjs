@@ -1873,7 +1873,7 @@ class G {
           this.dropdownContent
         ), this._appendListItems(), c && this._updateSearchResultsText(), o) {
           let g = "iti iti--container";
-          a ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = y("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
+          s && (g += ` ${s}`), a ? g += " iti--fullscreen-popup" : g += " iti--inline-dropdown", this.dropdown = y("div", { class: g }), this.dropdown.appendChild(this.dropdownContent);
         } else
           this.countryContainer.appendChild(this.dropdownContent);
       }

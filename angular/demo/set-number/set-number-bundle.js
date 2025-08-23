@@ -63426,6 +63426,9 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
           }
           if (dropdownContainer) {
             let dropdownClasses = "iti iti--container";
+            if (containerClass) {
+              dropdownClasses += ` ${containerClass}`;
+            }
             if (useFullscreenPopup) {
               dropdownClasses += " iti--fullscreen-popup";
             } else {

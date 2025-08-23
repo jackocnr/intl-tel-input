@@ -25607,6 +25607,9 @@
           }
           if (dropdownContainer) {
             let dropdownClasses = "iti iti--container";
+            if (containerClass) {
+              dropdownClasses += ` ${containerClass}`;
+            }
             if (useFullscreenPopup) {
               dropdownClasses += " iti--fullscreen-popup";
             } else {

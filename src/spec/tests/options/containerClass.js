@@ -26,11 +26,11 @@ describe("containerClass option:", function() {
 
   });
 
-  describe("init plugin with containerClass in popup", function() {
+  describe("init plugin with containerClass and useFullscreenPopup enabled", function() {
 
     beforeEach(function() {
       iti = window.intlTelInput(input[0], {
-		useFullscreenPopup: true,
+        useFullscreenPopup: true,
         containerClass: "cpc",
       });
     });

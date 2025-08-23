@@ -1872,8 +1872,8 @@ class j2 {
           },
           this.dropdownContent
         ), this._appendListItems(), S && this._updateSearchResultsText(), c) {
-          let x = "iti iti--container";
-          f ? x += " iti--fullscreen-popup" : x += " iti--inline-dropdown", this.dropdown = T("div", { class: x }), this.dropdown.appendChild(this.dropdownContent);
+          let P = "iti iti--container";
+          o && (P += ` ${o}`), f ? P += " iti--fullscreen-popup" : P += " iti--inline-dropdown", this.dropdown = T("div", { class: P }), this.dropdown.appendChild(this.dropdownContent);
         } else
           this.countryContainer.appendChild(this.dropdownContent);
       }
@@ -1881,15 +1881,15 @@ class j2 {
     if (w.appendChild(this.telInput), this._updateInputPadding(), a) {
       const F = this.telInput.getAttribute("name") || "", M = a(F);
       if (M.phone) {
-        const x = (A = this.telInput.form) == null ? void 0 : A.querySelector(`input[name="${M.phone}"]`);
-        x ? this.hiddenInput = x : (this.hiddenInput = T("input", {
+        const P = (A = this.telInput.form) == null ? void 0 : A.querySelector(`input[name="${M.phone}"]`);
+        P ? this.hiddenInput = P : (this.hiddenInput = T("input", {
           type: "hidden",
           name: M.phone
         }), w.appendChild(this.hiddenInput));
       }
       if (M.country) {
-        const x = (G = this.telInput.form) == null ? void 0 : G.querySelector(`input[name="${M.country}"]`);
-        x ? this.hiddenInputCountry = x : (this.hiddenInputCountry = T("input", {
+        const P = (G = this.telInput.form) == null ? void 0 : G.querySelector(`input[name="${M.country}"]`);
+        P ? this.hiddenInputCountry = P : (this.hiddenInputCountry = T("input", {
           type: "hidden",
           name: M.country
         }), w.appendChild(this.hiddenInputCountry));
@@ -2009,12 +2009,12 @@ class j2 {
         }
         if (e) {
           const S = this.telInput.value, _ = S.charAt(0) === "+", b = !_ && this.telInput.selectionStart === 0 && f.key === "+", w = /^[0-9]$/.test(f.key), I = s ? w : b || w, A = S.slice(0, this.telInput.selectionStart) + f.key + S.slice(this.telInput.selectionEnd), G = this._getFullNumber(A), F = C.utils.getCoreNumber(G, this.selectedCountryData.iso2), M = this.maxCoreNumberLength && F.length > this.maxCoreNumberLength;
-          let x = !1;
+          let P = !1;
           if (_) {
             const f1 = this.selectedCountryData.iso2;
-            x = this._getCountryFromNumber(G) !== f1;
+            P = this._getCountryFromNumber(G) !== f1;
           }
-          (!I || M && !x && !b) && f.preventDefault();
+          (!I || M && !P && !b) && f.preventDefault();
         }
       }
     }, this.telInput.addEventListener("keydown", this._handleKeydownEvent));
@@ -2602,7 +2602,7 @@ const W2 = (y) => {
       case G:
       case F:
       case M:
-      case x:
+      case P:
       case f1:
       case A:
       case I:
@@ -2610,7 +2610,7 @@ const W2 = (y) => {
     }
     this.j = t.defaultValue;
   }
-  var I = 1, A = 2, G = 3, F = 4, M = 6, x = 16, f1 = 18;
+  var I = 1, A = 2, G = 3, F = 4, M = 6, P = 16, f1 = 18;
   function v1(d, t) {
     for (this.h = d, this.g = {}, d = 0; d < t.length; d++) {
       var $ = t[d];
@@ -2641,7 +2641,7 @@ const W2 = (y) => {
         d.g && delete d.g[r.g];
         var l = r.h == 11 || r.h == 10;
         if (r.l) {
-          r = P(t, u);
+          r = x(t, u);
           for (var h = 0; h < r.length; h++) w1(d, u, l ? r[h].clone() : r[h]);
         } else r = n1(t, u), l ? (l = n1(d, u)) ? S1(l, r) : E(d, u, r.clone()) : E(d, u, r);
       }
@@ -2688,7 +2688,7 @@ const W2 = (y) => {
     }
     return d;
   }
-  function P(d, t) {
+  function x(d, t) {
     return n1(d, t) || [];
   }
   function K(d, t) {
@@ -8269,7 +8269,7 @@ const W2 = (y) => {
     k(d), d.g(t);
   }
   function k1(d) {
-    return d != null && (K(d, 9) != 1 || P(d, 9)[0] != -1);
+    return d != null && (K(d, 9) != 1 || x(d, 9)[0] != -1);
   }
   function r1(d, t) {
     for (var $ = new N(), i, r = d.length, u = 0; u < r; ++u) i = d.charAt(u), i = t[i.toUpperCase()], i != null && $.g(i);
@@ -8293,7 +8293,7 @@ const W2 = (y) => {
     var r = d1(this, $, e1($));
     d = B(d, 3) && p(d, 3).length != 0 ? t == 3 ? ";ext=" + p(d, 3) : B(r, 13) ? p(r, 13) + v(d, 3) : " ext. " + v(d, 3) : "";
     d: {
-      r = P(r, 20).length == 0 || t == 2 ? P(r, 19) : P(r, 20);
+      r = x(r, 20).length == 0 || t == 2 ? x(r, 19) : x(r, 20);
       for (var u, l = r.length, h = 0; h < l; ++h) {
         u = r[h];
         var m = K(u, 3);
@@ -8375,7 +8375,7 @@ const W2 = (y) => {
   }
   function O(d, t) {
     var $ = d.length;
-    return 0 < K(t, 9) && P(t, 9).indexOf($) == -1 ? !1 : U(v(t, 2), d);
+    return 0 < K(t, 9) && x(t, 9).indexOf($) == -1 ? !1 : U(v(t, 2), d);
   }
   function N2(d, t) {
     var $ = U1(d, t), i = v(t, 1), r = d1(d, i, $);
@@ -8413,8 +8413,8 @@ const W2 = (y) => {
     return v(d, 10);
   }
   function l1(d, t, $, i) {
-    var r = u1($, i), u = K(r, 9) == 0 ? P(p($, 1), 9) : P(r, 9);
-    if (r = P(r, 10), i == 2) if (k1(u1($, 0))) d = u1($, 1), k1(d) && (u = u.concat(K(d, 9) == 0 ? P(p($, 1), 9) : P(d, 9)), u.sort(), r.length == 0 ? r = P(d, 10) : (r = r.concat(P(d, 10)), r.sort()));
+    var r = u1($, i), u = K(r, 9) == 0 ? x(p($, 1), 9) : x(r, 9);
+    if (r = x(r, 10), i == 2) if (k1(u1($, 0))) d = u1($, 1), k1(d) && (u = u.concat(K(d, 9) == 0 ? x(p($, 1), 9) : x(d, 9)), u.sort(), r.length == 0 ? r = x(d, 10) : (r = r.concat(x(d, 10)), r.sort()));
     else return l1(d, t, $, 1);
     return u[0] == -1 ? 5 : (t = t.length, -1 < r.indexOf(t) ? 4 : ($ = u[0], $ == t ? 0 : $ > t ? 2 : u[u.length - 1] < t ? 3 : -1 < u.indexOf(t, 1) ? 0 : 5));
   }
@@ -8582,7 +8582,7 @@ const W2 = (y) => {
   function m1(d) {
     var t = d.g.toString();
     if (3 <= t.length) {
-      for (var $ = d.ca && d.o.length == 0 && 0 < K(d.l, 20) ? P(d.l, 20) : P(d.l, 19), i = $.length, r = 0; r < i; ++r) {
+      for (var $ = d.ca && d.o.length == 0 && 0 < K(d.l, 20) ? x(d.l, 20) : x(d.l, 19), i = $.length, r = 0; r < i; ++r) {
         var u = $[r];
         0 < d.o.length && O1(v(u, 4)) && !p(u, 6) && !B(u, 5) || (d.o.length != 0 || d.ca || O1(v(u, 4)) || p(u, 6)) && A2.test(v(u, 2)) && d.j.push(u);
       }
