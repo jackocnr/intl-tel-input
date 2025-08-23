@@ -1,3 +1,12 @@
+declare module "intl-tel-input/angular.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/data.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/data" {
     export type Country = {
         name: string;
@@ -10,6 +19,9 @@ declare module "intl-tel-input/data" {
     };
     const allCountries: Country[];
     export default allCountries;
+}
+declare module "intl-tel-input/i18n/types.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/types" {
     export type I18n = {
@@ -267,10 +279,19 @@ declare module "intl-tel-input/i18n/types" {
         searchResultsText?: (count: number) => string;
     };
 }
+declare module "intl-tel-input/i18n/en/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/en/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/en/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/en/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/en/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -525,6 +546,12 @@ declare module "intl-tel-input/angular" {
         registerOnValidatorChange(fn: () => void): void;
     }
 }
+declare module "intl-tel-input/angularWithUtils.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/intlTelInputWithUtils.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/utils" {
     export default utils;
     const utils: any;
@@ -572,10 +599,22 @@ declare module "intl-tel-input/angularWithUtils" {
         registerOnValidatorChange(fn: () => void): void;
     }
 }
+declare module "intl-tel-input/i18n/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ar/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ar/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/ar/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ar/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/ar/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -590,10 +629,19 @@ declare module "intl-tel-input/i18n/ar" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/bg/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/bg/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/bg/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/bg/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/bg/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -608,10 +656,19 @@ declare module "intl-tel-input/i18n/bg" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/bn/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/bn/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/bn/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/bn/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/bn/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -626,10 +683,19 @@ declare module "intl-tel-input/i18n/bn" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/bs/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/bs/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/bs/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/bs/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/bs/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -644,10 +710,19 @@ declare module "intl-tel-input/i18n/bs" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/ca/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ca/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/ca/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ca/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/ca/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -662,10 +737,19 @@ declare module "intl-tel-input/i18n/ca" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/cs/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/cs/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/cs/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/cs/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/cs/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -680,10 +764,19 @@ declare module "intl-tel-input/i18n/cs" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/da/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/da/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/da/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/da/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/da/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -698,10 +791,19 @@ declare module "intl-tel-input/i18n/da" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/de/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/de/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/de/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/de/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/de/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -716,10 +818,19 @@ declare module "intl-tel-input/i18n/de" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/ee/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ee/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/ee/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ee/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/ee/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -734,10 +845,19 @@ declare module "intl-tel-input/i18n/ee" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/el/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/el/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/el/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/el/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/el/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -752,10 +872,19 @@ declare module "intl-tel-input/i18n/el" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/es/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/es/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/es/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/es/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/es/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -770,10 +899,19 @@ declare module "intl-tel-input/i18n/es" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/fa/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/fa/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/fa/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/fa/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/fa/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -788,10 +926,19 @@ declare module "intl-tel-input/i18n/fa" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/fi/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/fi/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/fi/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/fi/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/fi/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -806,10 +953,19 @@ declare module "intl-tel-input/i18n/fi" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/fr/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/fr/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/fr/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/fr/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/fr/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -824,10 +980,19 @@ declare module "intl-tel-input/i18n/fr" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/hi/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/hi/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/hi/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/hi/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/hi/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -842,10 +1007,19 @@ declare module "intl-tel-input/i18n/hi" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/hr/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/hr/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/hr/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/hr/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/hr/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -860,10 +1034,19 @@ declare module "intl-tel-input/i18n/hr" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/hu/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/hu/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/hu/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/hu/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/hu/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -878,10 +1061,19 @@ declare module "intl-tel-input/i18n/hu" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/id/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/id/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/id/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/id/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/id/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -896,10 +1088,19 @@ declare module "intl-tel-input/i18n/id" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/it/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/it/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/it/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/it/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/it/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -914,10 +1115,19 @@ declare module "intl-tel-input/i18n/it" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/ja/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ja/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/ja/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ja/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/ja/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -932,10 +1142,19 @@ declare module "intl-tel-input/i18n/ja" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/ko/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ko/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/ko/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ko/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/ko/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -950,10 +1169,19 @@ declare module "intl-tel-input/i18n/ko" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/mr/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/mr/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/mr/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/mr/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/mr/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -968,10 +1196,19 @@ declare module "intl-tel-input/i18n/mr" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/nl/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/nl/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/nl/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/nl/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/nl/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -986,10 +1223,19 @@ declare module "intl-tel-input/i18n/nl" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/no/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/no/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/no/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/no/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/no/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1004,10 +1250,19 @@ declare module "intl-tel-input/i18n/no" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/pl/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/pl/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/pl/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/pl/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/pl/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1022,10 +1277,19 @@ declare module "intl-tel-input/i18n/pl" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/pt/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/pt/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/pt/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/pt/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/pt/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1040,10 +1304,19 @@ declare module "intl-tel-input/i18n/pt" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/ro/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ro/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/ro/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ro/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/ro/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1058,10 +1331,19 @@ declare module "intl-tel-input/i18n/ro" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/ru/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ru/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/ru/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ru/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/ru/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1076,10 +1358,19 @@ declare module "intl-tel-input/i18n/ru" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/sk/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/sk/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/sk/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/sk/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/sk/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1094,10 +1385,19 @@ declare module "intl-tel-input/i18n/sk" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/sv/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/sv/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/sv/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/sv/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/sv/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1112,10 +1412,19 @@ declare module "intl-tel-input/i18n/sv" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/te/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/te/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/te/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/te/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/te/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1130,10 +1439,19 @@ declare module "intl-tel-input/i18n/te" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/th/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/th/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/th/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/th/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/th/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1148,10 +1466,19 @@ declare module "intl-tel-input/i18n/th" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/tr/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/tr/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/tr/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/tr/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/tr/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1166,10 +1493,19 @@ declare module "intl-tel-input/i18n/tr" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/uk/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/uk/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/uk/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/uk/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/uk/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1184,10 +1520,19 @@ declare module "intl-tel-input/i18n/uk" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/ur/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/ur/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/ur/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/ur/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/ur/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1202,10 +1547,19 @@ declare module "intl-tel-input/i18n/ur" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/uz/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/uz/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/uz/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/uz/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/uz/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1220,10 +1574,19 @@ declare module "intl-tel-input/i18n/uz" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/vi/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/vi/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/vi/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/vi/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/vi/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
@@ -1238,10 +1601,19 @@ declare module "intl-tel-input/i18n/vi" {
     const allTranslations: I18n;
     export default allTranslations;
 }
+declare module "intl-tel-input/i18n/zh/index.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
+declare module "intl-tel-input/i18n/zh/countries.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
+}
 declare module "intl-tel-input/i18n/zh/countries" {
     import { I18n } from "intl-tel-input/i18n/types";
     const countryTranslations: I18n;
     export default countryTranslations;
+}
+declare module "intl-tel-input/i18n/zh/interface.ngtypecheck" {
+    export const USED_FOR_NG_TYPE_CHECKING = true;
 }
 declare module "intl-tel-input/i18n/zh/interface" {
     import { I18n } from "intl-tel-input/i18n/types";
