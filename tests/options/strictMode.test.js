@@ -35,8 +35,9 @@ describe("strictMode, with nationalMode=true", () => {
   });
 
   // PREV BUG
-  test("typing digits in middle of incomplete ntl number", async () => {
+  test("allows typing digit in middle of incomplete ntl number", async () => {
     await user.type(input, "702123567");
+    expect(input.value).toBe("(702) 123-567");
     // put cursor before the 5 and type a 4 - should be allowed
     input.setSelectionRange(10, 10);
     await user.type(input, "4", {
@@ -44,9 +45,31 @@ describe("strictMode, with nationalMode=true", () => {
       initialSelectionEnd: 10,
     });
     expect(input.value).toBe("(702) 123-4567");
-    // type another digit in middle - should now be capped
-    await user.type(input, "9");
+  });
+
+  test("prevents typing digit in middle of complete ntl number", async () => {
+    await user.type(input, "7021234567");
     expect(input.value).toBe("(702) 123-4567");
+    // put cursor before the 4 and type a 1 - should NOT be allowed
+    input.setSelectionRange(10, 10);
+    await user.type(input, "1", {
+      initialSelectionStart: 10,
+      initialSelectionEnd: 10,
+    });
+    expect(input.value).toBe("(702) 123-4567");
+  });
+
+  // PREV BUG: https://github.com/jackocnr/intl-tel-input/issues/1777
+  test("user can add dial code to national number", async () => {
+    await user.type(input, "79554053");
+    expect(input.value).toBe("(795) 540-53");
+    // put cursor at the beginning and type dial code - should be allowed
+    input.setSelectionRange(0, 0);
+    await user.type(input, "+591", {
+      initialSelectionStart: 0,
+      initialSelectionEnd: 0,
+    });
+    expect(input.value).toBe("+591 79554053");
   });
 
   // PREV BUG
