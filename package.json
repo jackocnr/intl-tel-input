@@ -27,7 +27,8 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "devDependencies": {
-    "@angular/compiler": "^19.1.4",
+    "@angular/compiler": "^19.2.14",
+    "@angular/compiler-cli": "^19.2.14",
     "@angular/core": "^19.1.4",
     "@angular/forms": "^19.1.4",
     "@angular/platform-browser": "^19.1.4",
