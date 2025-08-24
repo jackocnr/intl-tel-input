@@ -1,5 +1,37 @@
 const { build } = require("esbuild");
+const fs = require("fs");
 const packageJson = require("../package.json");
+
+const mainShared = {
+  bundle: true,
+  external: ["@angular/core", "@angular/forms"],
+  logLevel: "info",
+  minify: false,
+  define: { "process.env.VERSION": `"${packageJson.version}"` },
+};
+
+async function buildMain() {
+  //* Angular Component - Default (ES Modules)
+  await build({
+    ...mainShared,
+    entryPoints: ["angular/build/temp/intl-tel-input/angular.js"],
+    format: "esm",
+    outfile: "angular/build/IntlTelInput.js",
+  });
+
+  //* Angular Component With Utils - Default (ES Modules)
+  await build({
+    ...mainShared,
+    entryPoints: ["angular/build/temp/intl-tel-input/angularWithUtils.js"],
+    format: "esm",
+    outfile: "angular/build/IntlTelInputWithUtils.js",
+  });
+
+  // remove temp folder after builds are complete
+  fs.rmSync("angular/build/temp", { recursive: true, force: true });
+}
+
+buildMain().catch(console.error);
 
 const demoShared = {
   bundle: true,

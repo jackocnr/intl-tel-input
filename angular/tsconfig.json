@@ -7,7 +7,7 @@
     "experimentalDecorators": true, //* Required for angular decorators.
     "emitDecoratorMetadata": true, //* Required for angular decorators.
     "declaration": true, //* Generate .d.ts files.
-    "outDir": "build",
+    "outDir": "build/temp",
     "declarationDir": "build/types",
     "rootDir": "./src",
     "allowJs": true, // allow importing .mjs files e.g. i18n files

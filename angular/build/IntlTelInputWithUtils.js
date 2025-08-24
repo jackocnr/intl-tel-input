@@ -1,15 +1,4 @@
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __decorateClass = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
-  for (var i = decorators.length - 1, decorator; i >= 0; i--)
-    if (decorator = decorators[i])
-      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result) __defProp(target, key, result);
-  return result;
-};
-
-// src/js/intl-tel-input/data.ts
+// angular/build/temp/intl-tel-input/data.js
 var rawCountryData = [
   [
     "af",
@@ -1350,7 +1339,7 @@ for (let i = 0; i < rawCountryData.length; i++) {
 }
 var data_default = allCountries;
 
-// src/js/intl-tel-input/i18n/en/countries.ts
+// angular/build/temp/intl-tel-input/i18n/en/countries.js
 var countryTranslations = {
   ad: "Andorra",
   ae: "United Arab Emirates",
@@ -1597,7 +1586,7 @@ var countryTranslations = {
 };
 var countries_default = countryTranslations;
 
-// src/js/intl-tel-input/i18n/en/interface.ts
+// angular/build/temp/intl-tel-input/i18n/en/interface.js
 var interfaceTranslations = {
   selectedCountryAriaLabel: "Selected country",
   noCountrySelected: "No country selected",
@@ -1612,11 +1601,11 @@ var interfaceTranslations = {
 };
 var interface_default = interfaceTranslations;
 
-// src/js/intl-tel-input/i18n/en/index.ts
-var allTranslations = { ...countries_default, ...interface_default };
+// angular/build/temp/intl-tel-input/i18n/en/index.js
+var allTranslations = Object.assign(Object.assign({}, countries_default), interface_default);
 var en_default = allTranslations;
 
-// src/js/intl-tel-input.ts
+// angular/build/temp/intl-tel-input.js
 for (let i = 0; i < data_default.length; i++) {
   data_default[i].name = en_default[data_default[i].iso2];
 }
@@ -1670,9 +1659,7 @@ var defaults = {
   useFullscreenPopup: typeof navigator !== "undefined" && typeof window !== "undefined" ? (
     //* We cannot just test screen size as some smartphones/website meta tags will report desktop resolutions.
     //* Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
-    /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    ) || window.innerWidth <= 500
+    /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 500
   ) : false,
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"]
@@ -1774,7 +1761,7 @@ var Iti = class {
         this.originalPaddingLeft = this.telInput.style.paddingLeft;
       }
     }
-    this.options.i18n = { ...en_default, ...this.options.i18n };
+    this.options.i18n = Object.assign(Object.assign({}, en_default), this.options.i18n);
     const autoCountryPromise = new Promise((resolve, reject) => {
       this.resolveAutoCountryPromise = resolve;
       this.rejectAutoCountryPromise = reject;
@@ -1843,19 +1830,11 @@ var Iti = class {
   _processAllCountries() {
     const { onlyCountries, excludeCountries } = this.options;
     if (onlyCountries.length) {
-      const lowerCaseOnlyCountries = onlyCountries.map(
-        (country) => country.toLowerCase()
-      );
-      this.countries = data_default.filter(
-        (country) => lowerCaseOnlyCountries.includes(country.iso2)
-      );
+      const lowerCaseOnlyCountries = onlyCountries.map((country) => country.toLowerCase());
+      this.countries = data_default.filter((country) => lowerCaseOnlyCountries.includes(country.iso2));
     } else if (excludeCountries.length) {
-      const lowerCaseExcludeCountries = excludeCountries.map(
-        (country) => country.toLowerCase()
-      );
-      this.countries = data_default.filter(
-        (country) => !lowerCaseExcludeCountries.includes(country.iso2)
-      );
+      const lowerCaseExcludeCountries = excludeCountries.map((country) => country.toLowerCase());
+      this.countries = data_default.filter((country) => !lowerCaseExcludeCountries.includes(country.iso2));
     } else {
       this.countries = data_default;
     }
@@ -1900,22 +1879,12 @@ var Iti = class {
   }
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
   _generateMarkup() {
+    var _a, _b, _c;
     this.telInput.classList.add("iti__tel-input");
     if (!this.telInput.hasAttribute("autocomplete") && !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))) {
       this.telInput.setAttribute("autocomplete", "off");
     }
-    const {
-      allowDropdown,
-      separateDialCode,
-      showFlags,
-      containerClass,
-      hiddenInput,
-      dropdownContainer,
-      fixDropdownWidth,
-      useFullscreenPopup,
-      countrySearch,
-      i18n
-    } = this.options;
+    const { allowDropdown, separateDialCode, showFlags, containerClass, hiddenInput, dropdownContainer, fixDropdownWidth, useFullscreenPopup, countrySearch, i18n } = this.options;
     let parentClass = "iti";
     if (allowDropdown) {
       parentClass += " iti--allow-dropdown";
@@ -1930,62 +1899,38 @@ var Iti = class {
       parentClass += " iti--inline-dropdown";
     }
     const wrapper = createEl("div", { class: parentClass });
-    this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
+    (_a = this.telInput.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(wrapper, this.telInput);
     if (allowDropdown || showFlags || separateDialCode) {
-      this.countryContainer = createEl(
-        "div",
-        { class: "iti__country-container" },
-        wrapper
-      );
+      this.countryContainer = createEl("div", { class: "iti__country-container" }, wrapper);
       if (this.showSelectedCountryOnLeft) {
         this.countryContainer.style.left = "0px";
       } else {
         this.countryContainer.style.right = "0px";
       }
       if (allowDropdown) {
-        this.selectedCountry = createEl(
-          "button",
-          {
-            type: "button",
-            class: "iti__selected-country",
-            "aria-expanded": "false",
-            "aria-label": this.options.i18n.selectedCountryAriaLabel,
-            "aria-haspopup": "true",
-            "aria-controls": `iti-${this.id}__dropdown-content`,
-            "role": "combobox"
-          },
-          this.countryContainer
-        );
+        this.selectedCountry = createEl("button", {
+          type: "button",
+          class: "iti__selected-country",
+          "aria-expanded": "false",
+          "aria-label": this.options.i18n.selectedCountryAriaLabel,
+          "aria-haspopup": "true",
+          "aria-controls": `iti-${this.id}__dropdown-content`,
+          "role": "combobox"
+        }, this.countryContainer);
         if (this.telInput.disabled) {
           this.selectedCountry.setAttribute("disabled", "true");
         }
       } else {
-        this.selectedCountry = createEl(
-          "div",
-          { class: "iti__selected-country" },
-          this.countryContainer
-        );
+        this.selectedCountry = createEl("div", { class: "iti__selected-country" }, this.countryContainer);
       }
       const selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
       this.selectedCountryInner = createEl("div", { class: "iti__flag" }, selectedCountryPrimary);
-      this.selectedCountryA11yText = createEl(
-        "span",
-        { class: "iti__a11y-text" },
-        this.selectedCountryInner
-      );
+      this.selectedCountryA11yText = createEl("span", { class: "iti__a11y-text" }, this.selectedCountryInner);
       if (allowDropdown) {
-        this.dropdownArrow = createEl(
-          "div",
-          { class: "iti__arrow", "aria-hidden": "true" },
-          selectedCountryPrimary
-        );
+        this.dropdownArrow = createEl("div", { class: "iti__arrow", "aria-hidden": "true" }, selectedCountryPrimary);
       }
       if (separateDialCode) {
-        this.selectedDialCode = createEl(
-          "div",
-          { class: "iti__selected-dial-code" },
-          this.selectedCountry
-        );
+        this.selectedDialCode = createEl("div", { class: "iti__selected-dial-code", "aria-hidden": "true" }, this.selectedCountry);
       }
       if (allowDropdown) {
         const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
@@ -1994,37 +1939,25 @@ var Iti = class {
           class: `iti__dropdown-content iti__hide ${extraClasses}`
         });
         if (countrySearch) {
-          this.searchInput = createEl(
-            "input",
-            {
-              type: "text",
-              class: "iti__search-input",
-              placeholder: i18n.searchPlaceholder,
-              role: "combobox",
-              "aria-expanded": "true",
-              "aria-label": i18n.searchPlaceholder,
-              "aria-controls": `iti-${this.id}__country-listbox`,
-              "aria-autocomplete": "list",
-              "autocomplete": "off"
-            },
-            this.dropdownContent
-          );
-          this.searchResultsA11yText = createEl(
-            "span",
-            { class: "iti__a11y-text" },
-            this.dropdownContent
-          );
+          this.searchInput = createEl("input", {
+            type: "text",
+            class: "iti__search-input",
+            placeholder: i18n.searchPlaceholder,
+            role: "combobox",
+            "aria-expanded": "true",
+            "aria-label": i18n.searchPlaceholder,
+            "aria-controls": `iti-${this.id}__country-listbox`,
+            "aria-autocomplete": "list",
+            "autocomplete": "off"
+          }, this.dropdownContent);
+          this.searchResultsA11yText = createEl("span", { class: "iti__a11y-text" }, this.dropdownContent);
         }
-        this.countryList = createEl(
-          "ul",
-          {
-            class: "iti__country-list",
-            id: `iti-${this.id}__country-listbox`,
-            role: "listbox",
-            "aria-label": i18n.countryListAriaLabel
-          },
-          this.dropdownContent
-        );
+        this.countryList = createEl("ul", {
+          class: "iti__country-list",
+          id: `iti-${this.id}__country-listbox`,
+          role: "listbox",
+          "aria-label": i18n.countryListAriaLabel
+        }, this.dropdownContent);
         this._appendListItems();
         if (countrySearch) {
           this._updateSearchResultsText();
@@ -2052,7 +1985,7 @@ var Iti = class {
       const telInputName = this.telInput.getAttribute("name") || "";
       const names = hiddenInput(telInputName);
       if (names.phone) {
-        const existingInput = this.telInput.form?.querySelector(`input[name="${names.phone}"]`);
+        const existingInput = (_b = this.telInput.form) === null || _b === void 0 ? void 0 : _b.querySelector(`input[name="${names.phone}"]`);
         if (existingInput) {
           this.hiddenInput = existingInput;
         } else {
@@ -2064,7 +1997,7 @@ var Iti = class {
         }
       }
       if (names.country) {
-        const existingInput = this.telInput.form?.querySelector(`input[name="${names.country}"]`);
+        const existingInput = (_c = this.telInput.form) === null || _c === void 0 ? void 0 : _c.querySelector(`input[name="${names.country}"]`);
         if (existingInput) {
           this.hiddenInputCountry = existingInput;
         } else {
@@ -2082,19 +2015,15 @@ var Iti = class {
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
       const extraClass = i === 0 ? "iti__highlight" : "";
-      const listItem = createEl(
-        "li",
-        {
-          id: `iti-${this.id}__item-${c.iso2}`,
-          class: `iti__country ${extraClass}`,
-          tabindex: "-1",
-          role: "option",
-          "data-dial-code": c.dialCode,
-          "data-country-code": c.iso2,
-          "aria-selected": "false"
-        },
-        this.countryList
-      );
+      const listItem = createEl("li", {
+        id: `iti-${this.id}__item-${c.iso2}`,
+        class: `iti__country ${extraClass}`,
+        tabindex: "-1",
+        role: "option",
+        "data-dial-code": c.dialCode,
+        "data-country-code": c.iso2,
+        "aria-selected": "false"
+      }, this.countryList);
       c.nodeById[this.id] = listItem;
       let content = "";
       if (this.options.showFlags) {
@@ -2148,6 +2077,7 @@ var Iti = class {
   }
   //* Update hidden input on form submit.
   _initHiddenInputListener() {
+    var _a;
     this._handleHiddenInputSubmit = () => {
       if (this.hiddenInput) {
         this.hiddenInput.value = this.getNumber();
@@ -2156,10 +2086,7 @@ var Iti = class {
         this.hiddenInputCountry.value = this.getSelectedCountryData().iso2 || "";
       }
     };
-    this.telInput.form?.addEventListener(
-      "submit",
-      this._handleHiddenInputSubmit
-    );
+    (_a = this.telInput.form) === null || _a === void 0 ? void 0 : _a.addEventListener("submit", this._handleHiddenInputSubmit);
   }
   //* initialise the dropdown listeners.
   _initDropdownListeners() {
@@ -2191,18 +2118,16 @@ var Iti = class {
         this._closeDropdown();
       }
     };
-    this.countryContainer.addEventListener(
-      "keydown",
-      this._handleCountryContainerKeydown
-    );
+    this.countryContainer.addEventListener("keydown", this._handleCountryContainerKeydown);
   }
   //* Init many requests: utils script / geo ip lookup.
   _initRequests() {
     let { loadUtils, initialCountry, geoIpLookup } = this.options;
     if (loadUtils && !intlTelInput.utils) {
       this._handlePageLoad = () => {
+        var _a;
         window.removeEventListener("load", this._handlePageLoad);
-        intlTelInput.attachUtils(loadUtils)?.catch(() => {
+        (_a = intlTelInput.attachUtils(loadUtils)) === null || _a === void 0 ? void 0 : _a.catch(() => {
         });
       };
       if (intlTelInput.documentReady()) {
@@ -2227,23 +2152,20 @@ var Iti = class {
     } else if (!intlTelInput.startedLoadingAutoCountry) {
       intlTelInput.startedLoadingAutoCountry = true;
       if (typeof this.options.geoIpLookup === "function") {
-        this.options.geoIpLookup(
-          (iso2 = "") => {
-            const iso2Lower = iso2.toLowerCase();
-            const isValidIso2 = iso2Lower && this._getCountryData(iso2Lower, true);
-            if (isValidIso2) {
-              intlTelInput.autoCountry = iso2Lower;
-              setTimeout(() => forEachInstance("handleAutoCountry"));
-            } else {
-              this._setInitialState(true);
-              forEachInstance("rejectAutoCountryPromise");
-            }
-          },
-          () => {
+        this.options.geoIpLookup((iso2 = "") => {
+          const iso2Lower = iso2.toLowerCase();
+          const isValidIso2 = iso2Lower && this._getCountryData(iso2Lower, true);
+          if (isValidIso2) {
+            intlTelInput.autoCountry = iso2Lower;
+            setTimeout(() => forEachInstance("handleAutoCountry"));
+          } else {
             this._setInitialState(true);
             forEachInstance("rejectAutoCountryPromise");
           }
-        );
+        }, () => {
+          this._setInitialState(true);
+          forEachInstance("rejectAutoCountryPromise");
+        });
       }
     }
   }
@@ -2260,7 +2182,7 @@ var Iti = class {
       userOverrideFormatting = true;
     }
     this._handleInputEvent = (e) => {
-      if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown && countrySearch) {
+      if (this.isAndroid && (e === null || e === void 0 ? void 0 : e.data) === "+" && separateDialCode && allowDropdown && countrySearch) {
         const currentCaretPos = this.telInput.selectionStart || 0;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos - 1);
         const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
@@ -2271,19 +2193,19 @@ var Iti = class {
       if (this._updateCountryFromNumber(this.telInput.value)) {
         this._triggerCountryChange();
       }
-      const isFormattingChar = e?.data && /[^+0-9]/.test(e.data);
-      const isPaste = e?.inputType === "insertFromPaste" && this.telInput.value;
+      const isFormattingChar = (e === null || e === void 0 ? void 0 : e.data) && /[^+0-9]/.test(e.data);
+      const isPaste = (e === null || e === void 0 ? void 0 : e.inputType) === "insertFromPaste" && this.telInput.value;
       if (isFormattingChar || isPaste && !strictMode) {
         userOverrideFormatting = true;
       } else if (!/[^+0-9]/.test(this.telInput.value)) {
         userOverrideFormatting = false;
       }
-      const disableFormatOnSetNumber = e?.detail && e.detail["isSetNumber"] && !formatOnDisplay;
+      const disableFormatOnSetNumber = (e === null || e === void 0 ? void 0 : e.detail) && e.detail["isSetNumber"] && !formatOnDisplay;
       if (formatAsYouType && !userOverrideFormatting && !disableFormatOnSetNumber) {
         const currentCaretPos = this.telInput.selectionStart || 0;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
         const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
-        const isDeleteForwards = e?.inputType === "deleteContentForward";
+        const isDeleteForwards = (e === null || e === void 0 ? void 0 : e.inputType) === "deleteContentForward";
         const formattedValue = this._formatNumberAsYouType();
         const newCaretPos = translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
         this.telInput.value = formattedValue;
@@ -2374,17 +2296,16 @@ var Iti = class {
   //* We only bind dropdown listeners when the dropdown is open.
   _bindDropdownListeners() {
     this._handleMouseoverCountryList = (e) => {
-      const listItem = e.target?.closest(".iti__country");
+      var _a;
+      const listItem = (_a = e.target) === null || _a === void 0 ? void 0 : _a.closest(".iti__country");
       if (listItem) {
         this._highlightListItem(listItem, false);
       }
     };
-    this.countryList.addEventListener(
-      "mouseover",
-      this._handleMouseoverCountryList
-    );
+    this.countryList.addEventListener("mouseover", this._handleMouseoverCountryList);
     this._handleClickCountryList = (e) => {
-      const listItem = e.target?.closest(".iti__country");
+      var _a;
+      const listItem = (_a = e.target) === null || _a === void 0 ? void 0 : _a.closest(".iti__country");
       if (listItem) {
         this._selectListItem(listItem);
       }
@@ -2397,10 +2318,7 @@ var Iti = class {
       }
       isOpening = false;
     };
-    document.documentElement.addEventListener(
-      "click",
-      this._handleClickOffToClose
-    );
+    document.documentElement.addEventListener("click", this._handleClickOffToClose);
     let query = "";
     let queryTimer = null;
     this._handleKeydownOnDropdown = (e) => {
@@ -2469,16 +2387,45 @@ var Iti = class {
     let noCountriesAddedYet = true;
     this.countryList.innerHTML = "";
     const normalisedQuery = normaliseString(query);
+    const queryLength = normalisedQuery.length;
+    const iso2Matches = [];
+    const nameStartWith = [];
+    const nameContains = [];
+    const dialCodeMatches = [];
+    const dialCodeContains = [];
+    const initialsMatches = [];
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
       const normalisedCountryName = normaliseString(c.name);
       const countryInitials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map((word) => word[0]).join("").toLowerCase();
-      const fullDialCode = `+${c.dialCode}`;
-      if (isReset || normalisedCountryName.includes(normalisedQuery) || fullDialCode.includes(normalisedQuery) || c.iso2.includes(normalisedQuery) || countryInitials.includes(normalisedQuery)) {
-        const listItem = c.nodeById[this.id];
-        if (listItem) {
-          this.countryList.appendChild(listItem);
-        }
+      if (isReset || queryLength === 0) {
+        nameContains.push(c);
+      } else if (c.iso2.toLowerCase() === normalisedQuery) {
+        iso2Matches.push(c);
+      } else if (normalisedCountryName.startsWith(normalisedQuery)) {
+        nameStartWith.push(c);
+      } else if (normalisedCountryName.includes(normalisedQuery)) {
+        nameContains.push(c);
+      } else if (normalisedQuery === c.dialCode || normalisedQuery === `+${c.dialCode}`) {
+        dialCodeMatches.push(c);
+      } else if (`+${c.dialCode}`.includes(normalisedQuery)) {
+        dialCodeContains.push(c);
+      } else if (countryInitials.includes(normalisedQuery)) {
+        initialsMatches.push(c);
+      }
+    }
+    const matchedCountries = [
+      ...iso2Matches.sort((a, b) => a.priority - b.priority),
+      ...nameStartWith.sort((a, b) => a.priority - b.priority),
+      ...nameContains.sort((a, b) => a.priority - b.priority),
+      ...dialCodeMatches.sort((a, b) => a.priority - b.priority),
+      ...dialCodeContains.sort((a, b) => a.priority - b.priority),
+      ...initialsMatches.sort((a, b) => a.priority - b.priority)
+    ];
+    for (const c of matchedCountries) {
+      const listItem = c.nodeById[this.id];
+      if (listItem) {
+        this.countryList.appendChild(listItem);
         if (noCountriesAddedYet) {
           this._highlightListItem(listItem, false);
           noCountriesAddedYet = false;
@@ -2511,7 +2458,8 @@ var Iti = class {
   }
   //* Highlight the next/prev item in the list (and ensure it is visible).
   _handleUpDownKey(key) {
-    let next = key === "ArrowUp" ? this.highlightedItem?.previousElementSibling : this.highlightedItem?.nextElementSibling;
+    var _a, _b;
+    let next = key === "ArrowUp" ? (_a = this.highlightedItem) === null || _a === void 0 ? void 0 : _a.previousElementSibling : (_b = this.highlightedItem) === null || _b === void 0 ? void 0 : _b.nextElementSibling;
     if (!next && this.countryList.childElementCount > 1) {
       next = key === "ArrowUp" ? this.countryList.lastElementChild : this.countryList.firstElementChild;
     }
@@ -2534,11 +2482,7 @@ var Iti = class {
       const useNational = this.options.nationalMode || number.charAt(0) !== "+" && !this.options.separateDialCode;
       const { NATIONAL, INTERNATIONAL } = intlTelInput.utils.numberFormat;
       const format = useNational ? NATIONAL : INTERNATIONAL;
-      number = intlTelInput.utils.formatNumber(
-        number,
-        this.selectedCountryData.iso2,
-        format
-      );
+      number = intlTelInput.utils.formatNumber(number, this.selectedCountryData.iso2, format);
     }
     number = this._beforeSetNumber(number);
     this.telInput.value = number;
@@ -2681,12 +2625,7 @@ var Iti = class {
     if (strictMode && intlTelInput.utils) {
       if (iso2) {
         const numberType = intlTelInput.utils.numberType[placeholderNumberType];
-        let exampleNumber = intlTelInput.utils.getExampleNumber(
-          iso2,
-          false,
-          numberType,
-          true
-        );
+        let exampleNumber = intlTelInput.utils.getExampleNumber(iso2, false, numberType, true);
         let validNumber = exampleNumber;
         while (intlTelInput.utils.isPossibleNumber(exampleNumber, iso2, validationNumberTypes)) {
           validNumber = exampleNumber;
@@ -2737,20 +2676,11 @@ var Iti = class {
   }
   //* Update the input placeholder to an example number from the currently selected country.
   _updatePlaceholder() {
-    const {
-      autoPlaceholder,
-      placeholderNumberType,
-      nationalMode,
-      customPlaceholder
-    } = this.options;
+    const { autoPlaceholder, placeholderNumberType, nationalMode, customPlaceholder } = this.options;
     const shouldSetPlaceholder = autoPlaceholder === "aggressive" || !this.hadInitialPlaceholder && autoPlaceholder === "polite";
     if (intlTelInput.utils && shouldSetPlaceholder) {
       const numberType = intlTelInput.utils.numberType[placeholderNumberType];
-      let placeholder = this.selectedCountryData.iso2 ? intlTelInput.utils.getExampleNumber(
-        this.selectedCountryData.iso2,
-        nationalMode,
-        numberType
-      ) : "";
+      let placeholder = this.selectedCountryData.iso2 ? intlTelInput.utils.getExampleNumber(this.selectedCountryData.iso2, nationalMode, numberType) : "";
       placeholder = this._beforeSetNumber(placeholder);
       if (typeof customPlaceholder === "function") {
         placeholder = customPlaceholder(placeholder, this.selectedCountryData);
@@ -2760,9 +2690,7 @@ var Iti = class {
   }
   //* Called when the user selects a list item from the dropdown.
   _selectListItem(listItem) {
-    const countryChanged = this._setCountry(
-      listItem.getAttribute("data-country-code")
-    );
+    const countryChanged = this._setCountry(listItem.getAttribute("data-country-code"));
     this._closeDropdown();
     this._updateDialCode(listItem.getAttribute("data-dial-code"));
     this.telInput.focus();
@@ -2786,14 +2714,8 @@ var Iti = class {
     if (this.options.countrySearch) {
       this.searchInput.removeEventListener("input", this._handleSearchChange);
     }
-    document.documentElement.removeEventListener(
-      "click",
-      this._handleClickOffToClose
-    );
-    this.countryList.removeEventListener(
-      "mouseover",
-      this._handleMouseoverCountryList
-    );
+    document.documentElement.removeEventListener("click", this._handleClickOffToClose);
+    this.countryList.removeEventListener("mouseover", this._handleMouseoverCountryList);
     this.countryList.removeEventListener("click", this._handleClickCountryList);
     if (this.options.dropdownContainer) {
       if (!this.options.useFullscreenPopup) {
@@ -2943,18 +2865,13 @@ var Iti = class {
   //********************
   //* Remove plugin.
   destroy() {
+    var _a, _b;
     this.telInput.iti = void 0;
     const { allowDropdown, separateDialCode } = this.options;
     if (allowDropdown) {
       this._closeDropdown();
-      this.selectedCountry.removeEventListener(
-        "click",
-        this._handleClickSelectedCountry
-      );
-      this.countryContainer.removeEventListener(
-        "keydown",
-        this._handleCountryContainerKeydown
-      );
+      this.selectedCountry.removeEventListener("click", this._handleClickSelectedCountry);
+      this.countryContainer.removeEventListener("keydown", this._handleCountryContainerKeydown);
       const label = this.telInput.closest("label");
       if (label) {
         label.removeEventListener("click", this._handleLabelClick);
@@ -2977,17 +2894,14 @@ var Iti = class {
       }
     }
     const wrapper = this.telInput.parentNode;
-    wrapper?.parentNode?.insertBefore(this.telInput, wrapper);
-    wrapper?.parentNode?.removeChild(wrapper);
+    (_a = wrapper === null || wrapper === void 0 ? void 0 : wrapper.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(this.telInput, wrapper);
+    (_b = wrapper === null || wrapper === void 0 ? void 0 : wrapper.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(wrapper);
     delete intlTelInput.instances[this.id];
   }
   //* Get the extension from the current number.
   getExtension() {
     if (intlTelInput.utils) {
-      return intlTelInput.utils.getExtension(
-        this._getFullNumber(),
-        this.selectedCountryData.iso2
-      );
+      return intlTelInput.utils.getExtension(this._getFullNumber(), this.selectedCountryData.iso2);
     }
     return "";
   }
@@ -2995,21 +2909,14 @@ var Iti = class {
   getNumber(format) {
     if (intlTelInput.utils) {
       const { iso2 } = this.selectedCountryData;
-      return intlTelInput.utils.formatNumber(
-        this._getFullNumber(),
-        iso2,
-        format
-      );
+      return intlTelInput.utils.formatNumber(this._getFullNumber(), iso2, format);
     }
     return "";
   }
   //* Get the type of the entered number e.g. landline/mobile.
   getNumberType() {
     if (intlTelInput.utils) {
-      return intlTelInput.utils.getNumberType(
-        this._getFullNumber(),
-        this.selectedCountryData.iso2
-      );
+      return intlTelInput.utils.getNumberType(this._getFullNumber(), this.selectedCountryData.iso2);
     }
     return -99;
   }
@@ -3063,7 +2970,7 @@ var Iti = class {
   }
   //* Update the selected country, and update the input val accordingly.
   setCountry(iso2) {
-    const iso2Lower = iso2?.toLowerCase();
+    const iso2Lower = iso2 === null || iso2 === void 0 ? void 0 : iso2.toLowerCase();
     const currentCountry = this.selectedCountryData.iso2;
     const isCountryChange = iso2 && iso2Lower !== currentCountry || !iso2 && currentCountry;
     if (isCountryChange) {
@@ -3109,7 +3016,7 @@ var attachUtils = (source) => {
     }
     intlTelInput.startedLoadingUtilsScript = true;
     return loadCall.then((module) => {
-      const utils2 = module?.default;
+      const utils2 = module === null || module === void 0 ? void 0 : module.default;
       if (!utils2 || typeof utils2 !== "object") {
         throw new TypeError("The loader function passed to attachUtils did not resolve to a module object with utils as its default export.");
       }
@@ -3123,44 +3030,42 @@ var attachUtils = (source) => {
   }
   return null;
 };
-var intlTelInput = Object.assign(
-  (input, options) => {
-    const iti = new Iti(input, options);
-    iti._init();
-    input.setAttribute("data-intl-tel-input-id", iti.id.toString());
-    intlTelInput.instances[iti.id] = iti;
-    input.iti = iti;
-    return iti;
+var intlTelInput = Object.assign((input, options) => {
+  const iti = new Iti(input, options);
+  iti._init();
+  input.setAttribute("data-intl-tel-input-id", iti.id.toString());
+  intlTelInput.instances[iti.id] = iti;
+  input.iti = iti;
+  return iti;
+}, {
+  defaults,
+  //* Using a static var like this allows us to mock it in the tests.
+  documentReady: () => document.readyState === "complete",
+  //* Get the country data object.
+  getCountryData: () => data_default,
+  //* A getter for the plugin instance.
+  getInstance: (input) => {
+    const id2 = input.getAttribute("data-intl-tel-input-id");
+    return id2 ? intlTelInput.instances[id2] : null;
   },
-  {
-    defaults,
-    //* Using a static var like this allows us to mock it in the tests.
-    documentReady: () => document.readyState === "complete",
-    //* Get the country data object.
-    getCountryData: () => data_default,
-    //* A getter for the plugin instance.
-    getInstance: (input) => {
-      const id2 = input.getAttribute("data-intl-tel-input-id");
-      return id2 ? intlTelInput.instances[id2] : null;
-    },
-    //* A map from instance ID to instance object.
-    instances: {},
-    attachUtils,
-    startedLoadingUtilsScript: false,
-    startedLoadingAutoCountry: false,
-    version: "25.4.7"
-  }
-);
+  //* A map from instance ID to instance object.
+  instances: {},
+  attachUtils,
+  startedLoadingUtilsScript: false,
+  startedLoadingAutoCountry: false,
+  version: "25.5.0"
+});
 var intl_tel_input_default = intlTelInput;
 
-// build/js/utils.js
+// angular/build/temp/intl-tel-input/utils.js
 (function() {
   var k = this || self;
   function m(a, b) {
     a = a.split(".");
     var c = k;
     a[0] in c || "undefined" == typeof c.execScript || c.execScript("var " + a[0]);
-    for (var d; a.length && (d = a.shift()); ) a.length || void 0 === b ? c[d] && c[d] !== Object.prototype[d] ? c = c[d] : c = c[d] = {} : c[d] = b;
+    for (var d; a.length && (d = a.shift()); )
+      a.length || void 0 === b ? c[d] && c[d] !== Object.prototype[d] ? c = c[d] : c = c[d] = {} : c[d] = b;
   }
   function n(a, b) {
     function c() {
@@ -3170,7 +3075,8 @@ var intl_tel_input_default = intlTelInput;
     a.prototype = new c();
     a.prototype.constructor = a;
     a.sa = function(d, e, f) {
-      for (var g = Array(arguments.length - 2), h = 2; h < arguments.length; h++) g[h - 2] = arguments[h];
+      for (var g = Array(arguments.length - 2), h = 2; h < arguments.length; h++)
+        g[h - 2] = arguments[h];
       return b.prototype[e].apply(d, g);
     };
   }
@@ -3178,13 +3084,15 @@ var intl_tel_input_default = intlTelInput;
   function aa(a) {
     const b = [];
     let c = 0;
-    for (const d in a) b[c++] = a[d];
+    for (const d in a)
+      b[c++] = a[d];
     return b;
   }
   ;
   var da = class {
     constructor(a) {
-      if (ba !== ba) throw Error("SafeUrl is not meant to be built directly");
+      if (ba !== ba)
+        throw Error("SafeUrl is not meant to be built directly");
       this.g = a;
     }
     toString() {
@@ -3196,7 +3104,8 @@ var intl_tel_input_default = intlTelInput;
   const ea = {};
   class fa {
     constructor() {
-      if (ea !== ea) throw Error("SafeStyle is not meant to be built directly");
+      if (ea !== ea)
+        throw Error("SafeStyle is not meant to be built directly");
     }
     toString() {
       return "".toString();
@@ -3206,7 +3115,8 @@ var intl_tel_input_default = intlTelInput;
   const ha = {};
   class ia {
     constructor() {
-      if (ha !== ha) throw Error("SafeStyleSheet is not meant to be built directly");
+      if (ha !== ha)
+        throw Error("SafeStyleSheet is not meant to be built directly");
     }
     toString() {
       return "".toString();
@@ -3217,7 +3127,8 @@ var intl_tel_input_default = intlTelInput;
   class ka {
     constructor() {
       var a = k.trustedTypes && k.trustedTypes.emptyHTML || "";
-      if (ja !== ja) throw Error("SafeHtml is not meant to be built directly");
+      if (ja !== ja)
+        throw Error("SafeHtml is not meant to be built directly");
       this.g = a;
     }
     toString() {
@@ -3285,8 +3196,10 @@ var intl_tel_input_default = intlTelInput;
         var g = 11 == e.h || 10 == e.h;
         if (e.l) {
           e = u(b, f);
-          for (var h = 0; h < e.length; h++) va(a, f, g ? e[h].clone() : e[h]);
-        } else e = v(b, f), g ? (g = v(a, f)) ? wa(g, e) : t(a, f, e.clone()) : t(a, f, e);
+          for (var h = 0; h < e.length; h++)
+            va(a, f, g ? e[h].clone() : e[h]);
+        } else
+          e = v(b, f), g ? (g = v(a, f)) ? wa(g, e) : t(a, f, e.clone()) : t(a, f, e);
       }
     }
   }
@@ -3300,14 +3213,18 @@ var intl_tel_input_default = intlTelInput;
   }
   function v(a, b) {
     var c = a.h[b];
-    if (null == c) return null;
+    if (null == c)
+      return null;
     if (a.l) {
       if (!(b in a.g)) {
         var d = a.l, e = a.j[b];
-        if (null != c) if (e.l) {
-          for (var f = [], g = 0; g < c.length; g++) f[g] = d.h(e, c[g]);
-          c = f;
-        } else c = d.h(e, c);
+        if (null != c)
+          if (e.l) {
+            for (var f = [], g = 0; g < c.length; g++)
+              f[g] = d.h(e, c[g]);
+            c = f;
+          } else
+            c = d.h(e, c);
         return a.g[b] = c;
       }
       return a.g[b];
@@ -3319,18 +3236,24 @@ var intl_tel_input_default = intlTelInput;
     return a.j[b].l ? d[c || 0] : d;
   }
   function w(a, b) {
-    if (q(a, b)) a = r(a, b);
-    else a: {
-      a = a.j[b];
-      if (void 0 === a.j) if (b = a.s, b === Boolean) a.j = false;
-      else if (b === Number) a.j = 0;
-      else if (b === String) a.j = a.o ? "0" : "";
-      else {
-        a = new b();
-        break a;
+    if (q(a, b))
+      a = r(a, b);
+    else
+      a: {
+        a = a.j[b];
+        if (void 0 === a.j)
+          if (b = a.s, b === Boolean)
+            a.j = false;
+          else if (b === Number)
+            a.j = 0;
+          else if (b === String)
+            a.j = a.o ? "0" : "";
+          else {
+            a = new b();
+            break a;
+          }
+        a = a.j;
       }
-      a = a.j;
-    }
     return a;
   }
   function u(a, b) {
@@ -3350,7 +3273,8 @@ var intl_tel_input_default = intlTelInput;
   }
   function y(a, b) {
     var c = [], d;
-    for (d in b) 0 != d && c.push(new la(d, b[d]));
+    for (d in b)
+      0 != d && c.push(new la(d, b[d]));
     return new ta(a, c);
   }
   ;
@@ -3361,13 +3285,18 @@ var intl_tel_input_default = intlTelInput;
     throw Error("Unimplemented");
   };
   z.prototype.h = function(a, b) {
-    if (11 == a.h || 10 == a.h) return b instanceof p ? b : this.g(a.s.prototype.m(), b);
-    if (14 == a.h) return "string" === typeof b && xa.test(b) && (a = Number(b), 0 < a) ? a : b;
-    if (!a.o) return b;
+    if (11 == a.h || 10 == a.h)
+      return b instanceof p ? b : this.g(a.s.prototype.m(), b);
+    if (14 == a.h)
+      return "string" === typeof b && xa.test(b) && (a = Number(b), 0 < a) ? a : b;
+    if (!a.o)
+      return b;
     a = a.s;
     if (a === String) {
-      if ("number" === typeof b) return String(b);
-    } else if (a === Number && "string" === typeof b && ("Infinity" === b || "-Infinity" === b || "NaN" === b || xa.test(b))) return Number(b);
+      if ("number" === typeof b)
+        return String(b);
+    } else if (a === Number && "string" === typeof b && ("Infinity" === b || "-Infinity" === b || "NaN" === b || xa.test(b)))
+      return Number(b);
     return b;
   };
   var xa = /^-?[0-9]+$/;
@@ -3399,7 +3328,9 @@ var intl_tel_input_default = intlTelInput;
   };
   D.prototype.g = function(a, b, c) {
     this.h += String(a);
-    if (null != b) for (let d = 1; d < arguments.length; d++) this.h += arguments[d];
+    if (null != b)
+      for (let d = 1; d < arguments.length; d++)
+        this.h += arguments[d];
     return this;
   };
   function E(a) {
@@ -8947,7 +8878,8 @@ var intl_tel_input_default = intlTelInput;
     return null != a && (1 != x(a, 9) || -1 != u(a, 9)[0]);
   }
   function O(a, b) {
-    for (var c = new D(), d, e = a.length, f = 0; f < e; ++f) d = a.charAt(f), d = b[d.toUpperCase()], null != d && c.g(d);
+    for (var c = new D(), d, e = a.length, f = 0; f < e; ++f)
+      d = a.charAt(f), d = b[d.toUpperCase()], null != d && c.g(d);
     return c.toString();
   }
   function Ya(a) {
@@ -8959,12 +8891,15 @@ var intl_tel_input_default = intlTelInput;
   K.prototype.format = function(a, b) {
     if (0 == r(a, 2) && q(a, 5)) {
       var c = w(a, 5);
-      if (0 < c.length) return c;
+      if (0 < c.length)
+        return c;
     }
     c = w(a, 1);
     var d = Q(a);
-    if (0 == b) return Za(c, 0, d, "");
-    if (!(c in J)) return d;
+    if (0 == b)
+      return Za(c, 0, d, "");
+    if (!(c in J))
+      return d;
     var e = R(this, c, S(c));
     a = q(a, 3) && 0 != r(a, 3).length ? 3 == b ? ";ext=" + r(a, 3) : q(e, 13) ? r(e, 13) + w(a, 3) : " ext. " + w(a, 3) : "";
     a: {
@@ -8981,17 +8916,15 @@ var intl_tel_input_default = intlTelInput;
       }
       e = null;
     }
-    null != e && (g = e, e = w(g, 2), f = new RegExp(r(g, 1)), w(
-      g,
-      5
-    ), g = w(g, 4), d = 2 == b && null != g && 0 < g.length ? d.replace(f, e.replace(Sa, g)) : d.replace(f, e), 3 == b && (d = d.replace(RegExp("^[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]+"), ""), d = d.replace(RegExp("[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]+", "g"), "-")));
+    null != e && (g = e, e = w(g, 2), f = new RegExp(r(g, 1)), w(g, 5), g = w(g, 4), d = 2 == b && null != g && 0 < g.length ? d.replace(f, e.replace(Sa, g)) : d.replace(f, e), 3 == b && (d = d.replace(RegExp("^[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]+"), ""), d = d.replace(RegExp("[-x\u2010-\u2015\u2212\u30FC\uFF0D-\uFF0F \xA0\xAD\u200B\u2060\u3000()\uFF08\uFF09\uFF3B\uFF3D.\\[\\]/~\u2053\u223C\uFF5E]+", "g"), "-")));
     return Za(c, b, d, a);
   };
   function R(a, b, c) {
     return "001" == c ? T(a, "" + b) : T(a, c);
   }
   function Q(a) {
-    if (!q(a, 2)) return "";
+    if (!q(a, 2))
+      return "";
     var b = "" + r(a, 2);
     return q(a, 4) && r(a, 4) && 0 < w(a, 8) ? Array(w(a, 8) + 1).join("0") + b : b;
   }
@@ -9037,7 +8970,8 @@ var intl_tel_input_default = intlTelInput;
   function $a(a, b) {
     var c = ab(a, b);
     a = R(a, w(b, 1), c);
-    if (null == a) return -1;
+    if (null == a)
+      return -1;
     b = Q(b);
     return bb(b, a);
   }
@@ -9045,12 +8979,14 @@ var intl_tel_input_default = intlTelInput;
     return V(a, r(b, 1)) ? V(a, r(b, 5)) ? 4 : V(a, r(b, 4)) ? 3 : V(a, r(b, 6)) ? 5 : V(a, r(b, 8)) ? 6 : V(a, r(b, 7)) ? 7 : V(a, r(b, 21)) ? 8 : V(a, r(b, 25)) ? 9 : V(a, r(b, 28)) ? 10 : V(a, r(b, 2)) ? r(b, 18) || V(a, r(b, 3)) ? 2 : 0 : !r(b, 18) && V(a, r(b, 3)) ? 1 : -1 : -1;
   }
   function T(a, b) {
-    if (null == b) return null;
+    if (null == b)
+      return null;
     b = b.toUpperCase();
     var c = a.g[b];
     if (null == c) {
       c = Da[b];
-      if (null == c) return null;
+      if (null == c)
+        return null;
       c = new C().g(H.m(), c);
       a.g[b] = c;
     }
@@ -9068,28 +9004,32 @@ var intl_tel_input_default = intlTelInput;
     return e;
   }
   function ab(a, b) {
-    if (null == b) return null;
+    if (null == b)
+      return null;
     var c = w(b, 1);
     c = J[c];
-    if (null == c) a = null;
-    else if (1 == c.length) a = c[0];
-    else a: {
-      b = Q(b);
-      for (var d, e = c.length, f = 0; f < e; f++) {
-        d = c[f];
-        var g = T(a, d);
-        if (q(g, 23)) {
-          if (0 == b.search(r(g, 23))) {
+    if (null == c)
+      a = null;
+    else if (1 == c.length)
+      a = c[0];
+    else
+      a: {
+        b = Q(b);
+        for (var d, e = c.length, f = 0; f < e; f++) {
+          d = c[f];
+          var g = T(a, d);
+          if (q(g, 23)) {
+            if (0 == b.search(r(g, 23))) {
+              a = d;
+              break a;
+            }
+          } else if (-1 != bb(b, g)) {
             a = d;
             break a;
           }
-        } else if (-1 != bb(b, g)) {
-          a = d;
-          break a;
         }
+        a = null;
       }
-      a = null;
-    }
     return a;
   }
   function S(a) {
@@ -9098,42 +9038,55 @@ var intl_tel_input_default = intlTelInput;
   }
   function db(a, b) {
     a = T(a, b);
-    if (null == a) throw Error("Invalid region code: " + b);
+    if (null == a)
+      throw Error("Invalid region code: " + b);
     return w(a, 10);
   }
   function W(a, b, c, d) {
     var e = U(c, d), f = 0 == x(e, 9) ? u(r(c, 1), 9) : u(e, 9);
     e = u(e, 10);
-    if (2 == d) if (Xa(U(c, 0))) a = U(c, 1), Xa(a) && (f = f.concat(0 == x(a, 9) ? u(r(c, 1), 9) : u(a, 9)), f.sort(), 0 == e.length ? e = u(a, 10) : (e = e.concat(u(a, 10)), e.sort()));
-    else return W(a, b, c, 1);
-    if (-1 == f[0]) return 5;
+    if (2 == d)
+      if (Xa(U(c, 0)))
+        a = U(c, 1), Xa(a) && (f = f.concat(0 == x(a, 9) ? u(r(c, 1), 9) : u(a, 9)), f.sort(), 0 == e.length ? e = u(a, 10) : (e = e.concat(u(a, 10)), e.sort()));
+      else
+        return W(a, b, c, 1);
+    if (-1 == f[0])
+      return 5;
     b = b.length;
-    if (-1 < e.indexOf(b)) return 4;
+    if (-1 < e.indexOf(b))
+      return 4;
     c = f[0];
     return c == b ? 0 : c > b ? 2 : f[f.length - 1] < b ? 3 : -1 < f.indexOf(b, 1) ? 0 : 5;
   }
   function X(a, b, c) {
     var d = Q(b);
     b = w(b, 1);
-    if (!(b in J)) return 1;
+    if (!(b in J))
+      return 1;
     b = R(a, b, S(b));
     return W(a, d, b, c);
   }
   function eb(a, b) {
     a = a.toString();
-    if (0 == a.length || "0" == a.charAt(0)) return 0;
-    for (var c, d = a.length, e = 1; 3 >= e && e <= d; ++e) if (c = parseInt(a.substring(0, e), 10), c in J) return b.g(a.substring(e)), c;
+    if (0 == a.length || "0" == a.charAt(0))
+      return 0;
+    for (var c, d = a.length, e = 1; 3 >= e && e <= d; ++e)
+      if (c = parseInt(a.substring(0, e), 10), c in J)
+        return b.g(a.substring(e)), c;
     return 0;
   }
   function fb(a, b, c, d, e, f) {
-    if (0 == b.length) return 0;
+    if (0 == b.length)
+      return 0;
     b = new D(b);
     var g;
     null != c && (g = r(c, 11));
     null == g && (g = "NonMatch");
     var h = b.toString();
-    if (0 == h.length) g = 20;
-    else if (L.test(h)) h = h.replace(L, ""), E(b), b.g(Va(h)), g = 1;
+    if (0 == h.length)
+      g = 20;
+    else if (L.test(h))
+      h = h.replace(L, ""), E(b), b.g(Va(h)), g = 1;
     else {
       h = new RegExp(g);
       Wa(b);
@@ -9142,17 +9095,21 @@ var intl_tel_input_default = intlTelInput;
         h = g.match(h)[0].length;
         var l = g.substring(h).match(Ia);
         l && null != l[1] && 0 < l[1].length && "0" == O(l[1], Ea) ? g = false : (E(b), b.g(g.substring(h)), g = true);
-      } else g = false;
+      } else
+        g = false;
       g = g ? 5 : 20;
     }
     e && t(f, 6, g);
     if (20 != g) {
-      if (2 >= b.h.length) throw Error("Phone number too short after IDD");
+      if (2 >= b.h.length)
+        throw Error("Phone number too short after IDD");
       a = eb(b, d);
-      if (0 != a) return t(f, 1, a), a;
+      if (0 != a)
+        return t(f, 1, a), a;
       throw Error("Invalid country calling code");
     }
-    if (null != c && (g = w(c, 10), h = "" + g, l = b.toString(), 0 == l.lastIndexOf(h, 0) && (h = new D(l.substring(h.length)), l = r(c, 1), l = new RegExp(w(l, 2)), gb(h, c, null), h = h.toString(), !N(l, b.toString()) && N(l, h) || 3 == W(a, b.toString(), c, -1)))) return d.g(h), e && t(f, 6, 10), t(f, 1, g), g;
+    if (null != c && (g = w(c, 10), h = "" + g, l = b.toString(), 0 == l.lastIndexOf(h, 0) && (h = new D(l.substring(h.length)), l = r(c, 1), l = new RegExp(w(l, 2)), gb(h, c, null), h = h.toString(), !N(l, b.toString()) && N(l, h) || 3 == W(a, b.toString(), c, -1))))
+      return d.g(h), e && t(f, 6, 10), t(f, 1, g), g;
     t(f, 1, 0);
     return 0;
   }
@@ -9165,36 +9122,46 @@ var intl_tel_input_default = intlTelInput;
         var h = N(f, d), l = e.length - 1;
         b = r(b, 16);
         if (null == b || 0 == b.length || null == e[l] || 0 == e[l].length) {
-          if (!h || N(f, d.substring(e[0].length))) null != c && 0 < l && null != e[l] && c.g(e[1]), a.set(d.substring(e[0].length));
-        } else if (d = d.replace(g, b), !h || N(f, d)) null != c && 0 < l && c.g(e[1]), a.set(d);
+          if (!h || N(f, d.substring(e[0].length)))
+            null != c && 0 < l && null != e[l] && c.g(e[1]), a.set(d.substring(e[0].length));
+        } else if (d = d.replace(g, b), !h || N(f, d))
+          null != c && 0 < l && c.g(e[1]), a.set(d);
       }
     }
   }
   function Y(a, b, c) {
-    if (!P(c) && 0 < b.length && "+" != b.charAt(0)) throw Error("Invalid country calling code");
+    if (!P(c) && 0 < b.length && "+" != b.charAt(0))
+      throw Error("Invalid country calling code");
     return hb(a, b, c, true);
   }
   function hb(a, b, c, d) {
-    if (null == b) throw Error("The string supplied did not seem to be a phone number");
-    if (250 < b.length) throw Error("The string supplied is too long to be a phone number");
+    if (null == b)
+      throw Error("The string supplied did not seem to be a phone number");
+    if (250 < b.length)
+      throw Error("The string supplied is too long to be a phone number");
     var e = new D();
     var f = b.indexOf(";phone-context=");
-    if (-1 === f) f = null;
-    else if (f += 15, f >= b.length) f = "";
+    if (-1 === f)
+      f = null;
+    else if (f += 15, f >= b.length)
+      f = "";
     else {
       var g = b.indexOf(";", f);
       f = -1 !== g ? b.substring(f, g) : b.substring(f);
     }
     var h = f;
     null == h ? g = true : 0 === h.length ? g = false : (g = Na.exec(h), h = Oa.exec(h), g = null !== g || null !== h);
-    if (!g) throw Error("The string supplied did not seem to be a phone number");
-    null != f ? ("+" === f.charAt(0) && e.g(f), f = b.indexOf("tel:"), e.g(b.substring(0 <= f ? f + 4 : 0, b.indexOf(";phone-context=")))) : (f = e.g, g = b ?? "", h = g.search(Ja), 0 <= h ? (g = g.substring(h), g = g.replace(La, ""), h = g.search(Ka), 0 <= h && (g = g.substring(0, h))) : g = "", f.call(e, g));
+    if (!g)
+      throw Error("The string supplied did not seem to be a phone number");
+    null != f ? ("+" === f.charAt(0) && e.g(f), f = b.indexOf("tel:"), e.g(b.substring(0 <= f ? f + 4 : 0, b.indexOf(";phone-context=")))) : (f = e.g, g = b !== null && b !== void 0 ? b : "", h = g.search(Ja), 0 <= h ? (g = g.substring(h), g = g.replace(La, ""), h = g.search(Ka), 0 <= h && (g = g.substring(0, h))) : g = "", f.call(e, g));
     f = e.toString();
     g = f.indexOf(";isub=");
     0 < g && (E(e), e.g(f.substring(0, g)));
-    if (!Ua(e.toString())) throw Error("The string supplied did not seem to be a phone number");
+    if (!Ua(e.toString()))
+      throw Error("The string supplied did not seem to be a phone number");
     f = e.toString();
-    if (!(P(c) || null != f && 0 < f.length && L.test(f))) throw Error("Invalid country calling code");
+    if (!(P(c) || null != f && 0 < f.length && L.test(f)))
+      throw Error("Invalid country calling code");
     f = new I();
     d && t(f, 5, b);
     a: {
@@ -9202,12 +9169,13 @@ var intl_tel_input_default = intlTelInput;
       g = b.search(Qa);
       if (0 <= g && Ua(b.substring(0, g))) {
         h = b.match(Qa);
-        for (var l = h.length, A = 1; A < l; ++A) if (null != h[A] && 0 < h[A].length) {
-          E(e);
-          e.g(b.substring(0, g));
-          b = h[A];
-          break a;
-        }
+        for (var l = h.length, A = 1; A < l; ++A)
+          if (null != h[A] && 0 < h[A].length) {
+            E(e);
+            e.g(b.substring(0, g));
+            b = h[A];
+            break a;
+          }
       }
       b = "";
     }
@@ -9220,23 +9188,25 @@ var intl_tel_input_default = intlTelInput;
       h = fb(a, l, g, b, d, f);
     } catch (ca) {
       if ("Invalid country calling code" == ca.message && L.test(l)) {
-        if (l = l.replace(L, ""), h = fb(a, l, g, b, d, f), 0 == h) throw ca;
-      } else throw ca;
+        if (l = l.replace(L, ""), h = fb(a, l, g, b, d, f), 0 == h)
+          throw ca;
+      } else
+        throw ca;
     }
-    0 != h ? (e = S(h), e != c && (g = R(a, h, e))) : (Wa(e), b.g(e.toString()), null != c ? (h = w(g, 10), t(
-      f,
-      1,
-      h
-    )) : d && (delete f.h[6], f.g && delete f.g[6]));
-    if (2 > b.h.length) throw Error("The string supplied is too short to be a phone number");
+    0 != h ? (e = S(h), e != c && (g = R(a, h, e))) : (Wa(e), b.g(e.toString()), null != c ? (h = w(g, 10), t(f, 1, h)) : d && (delete f.h[6], f.g && delete f.g[6]));
+    if (2 > b.h.length)
+      throw Error("The string supplied is too short to be a phone number");
     null != g && (c = new D(), e = new D(b.toString()), gb(e, g, c), a = W(a, e.toString(), g, -1), 2 != a && 4 != a && 5 != a && (b = e, d && 0 < c.toString().length && t(f, 7, c.toString())));
     d = b.toString();
     a = d.length;
-    if (2 > a) throw Error("The string supplied is too short to be a phone number");
-    if (17 < a) throw Error("The string supplied is too long to be a phone number");
+    if (2 > a)
+      throw Error("The string supplied is too short to be a phone number");
+    if (17 < a)
+      throw Error("The string supplied is too long to be a phone number");
     if (1 < d.length && "0" == d.charAt(0)) {
       t(f, 4, true);
-      for (a = 1; a < d.length - 1 && "0" == d.charAt(a); ) a++;
+      for (a = 1; a < d.length - 1 && "0" == d.charAt(a); )
+        a++;
       1 != a && t(f, 8, a);
     }
     t(f, 2, parseInt(d, 10));
@@ -9277,7 +9247,8 @@ var intl_tel_input_default = intlTelInput;
   function nb(a) {
     for (var b = a.j.length, c = 0; c < b; ++c) {
       var d = a.j[c], e = w(d, 1);
-      if (a.da == e) return false;
+      if (a.da == e)
+        return false;
       var f = a;
       var g = d, h = w(g, 1);
       E(f.v);
@@ -9286,7 +9257,8 @@ var intl_tel_input_default = intlTelInput;
       var A = "999999999999999".match(h)[0];
       A.length < l.g.h.length ? l = "" : (l = A.replace(new RegExp(h, "g"), g), l = l.replace(RegExp("9", "g"), "\u2008"));
       0 < l.length ? (f.v.g(l), f = true) : f = false;
-      if (f) return a.da = e, a.ha = mb.test(r(d, 4)), a.$ = 0, true;
+      if (f)
+        return a.da = e, a.ha = mb.test(r(d, 4)), a.$ = 0, true;
     }
     return a.u = false;
   }
@@ -9304,8 +9276,10 @@ var intl_tel_input_default = intlTelInput;
     if (!a.u) {
       if (!a.la) {
         if (qb(a)) {
-          if (rb(a)) return sb(a);
-        } else if (0 < a.o.length && (b = a.g.toString(), E(a.g), a.g.g(a.o), a.g.g(b), b = a.h.toString(), c = b.lastIndexOf(a.o), E(a.h), a.h.g(b.substring(0, c))), a.o != tb(a)) return a.h.g(" "), sb(a);
+          if (rb(a))
+            return sb(a);
+        } else if (0 < a.o.length && (b = a.g.toString(), E(a.g), a.g.g(a.o), a.g.g(b), b = a.h.toString(), c = b.lastIndexOf(a.o), E(a.h), a.h.g(b.substring(0, c))), a.o != tb(a))
+          return a.h.g(" "), sb(a);
       }
       return a.s.toString();
     }
@@ -9315,14 +9289,18 @@ var intl_tel_input_default = intlTelInput;
       case 2:
         return a.s.toString();
       case 3:
-        if (qb(a)) a.ea = true;
-        else return a.o = tb(a), ub(a);
+        if (qb(a))
+          a.ea = true;
+        else
+          return a.o = tb(a), ub(a);
       default:
-        if (a.ea) return rb(a) && (a.ea = false), a.h.toString() + a.g.toString();
+        if (a.ea)
+          return rb(a) && (a.ea = false), a.h.toString() + a.g.toString();
         if (0 < a.j.length) {
           b = vb(a, b);
           c = wb(a);
-          if (0 < c.length) return c;
+          if (0 < c.length)
+            return c;
           ob(a, a.g.toString());
           return nb(a) ? xb(a) : a.u ? Z(a, b) : a.s.toString();
         }
@@ -9341,7 +9319,8 @@ var intl_tel_input_default = intlTelInput;
   function wb(a) {
     for (var b = a.g.toString(), c = a.j.length, d = 0; d < c; ++d) {
       var e = a.j[d], f = w(e, 1);
-      if (new RegExp("^(?:" + f + ")$").test(b) && (a.ha = mb.test(r(e, 4)), e = b.replace(new RegExp(f, "g"), r(e, 2)), e = Z(a, e), O(e, Fa) == a.ba)) return e;
+      if (new RegExp("^(?:" + f + ")$").test(b) && (a.ha = mb.test(r(e, 4)), e = b.replace(new RegExp(f, "g"), r(e, 2)), e = Z(a, e), O(e, Fa) == a.ba))
+        return e;
     }
     return "";
   }
@@ -9365,15 +9344,18 @@ var intl_tel_input_default = intlTelInput;
   function xb(a) {
     var b = a.g.toString(), c = b.length;
     if (0 < c) {
-      for (var d = "", e = 0; e < c; e++) d = vb(a, b.charAt(e));
+      for (var d = "", e = 0; e < c; e++)
+        d = vb(a, b.charAt(e));
       return a.u ? Z(a, d) : a.s.toString();
     }
     return a.h.toString();
   }
   function tb(a) {
     var b = a.g.toString(), c = 0;
-    if (1 != r(a.l, 10)) var d = false;
-    else d = a.g.toString(), d = "1" == d.charAt(0) && "0" != d.charAt(1) && "1" != d.charAt(1);
+    if (1 != r(a.l, 10))
+      var d = false;
+    else
+      d = a.g.toString(), d = "1" == d.charAt(0) && "0" != d.charAt(1) && "1" != d.charAt(1);
     d ? (c = 1, a.h.g("1").g(" "), a.ca = true) : q(a.l, 15) && (d = new RegExp("^(?:" + r(a.l, 15) + ")"), d = b.match(d), null != d && null != d[0] && 0 < d[0].length && (a.ca = true, c = d[0].length, a.h.g(b.substring(0, c))));
     E(a.g);
     a.g.g(b.substring(c));
@@ -9385,9 +9367,11 @@ var intl_tel_input_default = intlTelInput;
     return null != c && null != c[0] && 0 < c[0].length ? (a.ca = true, c = c[0].length, E(a.g), a.g.g(b.substring(c)), E(a.h), a.h.g(b.substring(0, c)), "+" != b.charAt(0) && a.h.g(" "), true) : false;
   }
   function rb(a) {
-    if (0 == a.g.h.length) return false;
+    if (0 == a.g.h.length)
+      return false;
     var b = new D(), c = eb(a.g, b);
-    if (0 == c) return false;
+    if (0 == c)
+      return false;
     E(a.g);
     a.g.g(b.toString());
     b = S(c);
@@ -9419,9 +9403,10 @@ var intl_tel_input_default = intlTelInput;
     try {
       const c = a.replace(/[^+0-9]/g, ""), d = new ib(b);
       b = "";
-      for (let e = 0; e < c.length; e++) d.ja = pb(d, c.charAt(e)), b = d.ja;
+      for (let e = 0; e < c.length; e++)
+        d.ja = pb(d, c.charAt(e)), b = d.ja;
       return b;
-    } catch {
+    } catch (_a) {
       return a;
     }
   });
@@ -9430,7 +9415,7 @@ var intl_tel_input_default = intlTelInput;
       const e = K.g(), f = Y(e, a, b);
       var d = X(e, f, -1);
       return 0 == d || 4 == d ? e.format(f, "undefined" === typeof c ? 0 : c) : a;
-    } catch {
+    } catch (_a) {
       return a;
     }
   });
@@ -9453,14 +9438,14 @@ var intl_tel_input_default = intlTelInput;
         h = null;
       }
       return l.format(h, d ? 0 : b ? 2 : 1);
-    } catch {
+    } catch (_a) {
       return "";
     }
   });
   m("intlTelInputUtilsTemp.getExtension", (a, b) => {
     try {
       return r(Y(K.g(), a, b), 3);
-    } catch {
+    } catch (_a) {
       return "";
     }
   });
@@ -9468,12 +9453,13 @@ var intl_tel_input_default = intlTelInput;
     try {
       const c = K.g(), d = Y(c, a, b);
       return $a(c, d);
-    } catch {
+    } catch (_a) {
       return -99;
     }
   });
   m("intlTelInputUtilsTemp.getValidationError", (a, b) => {
-    if (!b) return 1;
+    if (!b)
+      return 1;
     try {
       const c = K.g(), d = Y(c, a, b);
       return X(c, d, -1);
@@ -9490,7 +9476,7 @@ var intl_tel_input_default = intlTelInput;
         return f && g.includes($a(d, e));
       }
       return f;
-    } catch {
+    } catch (_a) {
       return false;
     }
   });
@@ -9499,18 +9485,20 @@ var intl_tel_input_default = intlTelInput;
       const d = K.g(), e = Y(d, a, b);
       if (c) {
         yb(c);
-        for (let f of c) if (0 === X(d, e, zb[f])) return true;
+        for (let f of c)
+          if (0 === X(d, e, zb[f]))
+            return true;
         return false;
       }
       return 0 === X(d, e, -1);
-    } catch {
+    } catch (_a) {
       return false;
     }
   });
   m("intlTelInputUtilsTemp.getCoreNumber", (a, b) => {
     try {
       return r(Y(K.g(), a, b), 2).toString();
-    } catch {
+    } catch (_a) {
       return "";
     }
   });
@@ -9523,13 +9511,15 @@ var utils = globalContext.intlTelInputUtilsTemp;
 delete globalContext.intlTelInputUtilsTemp;
 var utils_default = utils;
 
-// src/js/intl-tel-input/intlTelInputWithUtils.ts
+// angular/build/temp/intl-tel-input/intlTelInputWithUtils.js
 intl_tel_input_default.utils = utils_default;
 var intlTelInputWithUtils_default = intl_tel_input_default;
 
-// angular/src/intl-tel-input/angularWithUtils.ts
-import { Component, Input, ViewChild, Output, EventEmitter, forwardRef } from "@angular/core";
+// angular/build/temp/intl-tel-input/angularWithUtils.js
+import { Component, Input, ViewChild, ElementRef, Output, EventEmitter, forwardRef } from "@angular/core";
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from "@angular/forms";
+import * as i0 from "@angular/core";
+var _c0 = ["inputRef"];
 var PHONE_ERROR_MESSAGES = [
   "invalid",
   "invalid-country-code",
@@ -9550,13 +9540,10 @@ var IntlTelInputComponent = class {
     this.errorCodeChange = new EventEmitter();
     this.iti = null;
     this.countryChangeHandler = () => this.handleInput();
-    // eslint-disable-next-line class-methods-use-this
     this.onChange = () => {
     };
-    // eslint-disable-next-line class-methods-use-this
     this.onTouched = () => {
     };
-    // eslint-disable-next-line class-methods-use-this
     this.onValidatorChange = () => {
     };
   }
@@ -9573,12 +9560,14 @@ var IntlTelInputComponent = class {
     }
   }
   ngAfterViewInit() {
+    var _a;
     if (this.initialValue) {
-      this.iti?.setNumber(this.initialValue);
+      (_a = this.iti) === null || _a === void 0 ? void 0 : _a.setNumber(this.initialValue);
     }
   }
   handleInput() {
-    if (!this.iti) return;
+    if (!this.iti)
+      return;
     const num = this.iti.getNumber() || "";
     const countryIso = this.iti.getSelectedCountryData().iso2 || "";
     this.numberChange.emit(num);
@@ -9604,7 +9593,8 @@ var IntlTelInputComponent = class {
     return this.inputRef.nativeElement;
   }
   ngOnDestroy() {
-    this.iti?.destroy();
+    var _a;
+    (_a = this.iti) === null || _a === void 0 ? void 0 : _a.destroy();
     this.inputRef.nativeElement.removeEventListener("countrychange", this.countryChangeHandler);
   }
   applyInputProps() {
@@ -9649,41 +9639,52 @@ var IntlTelInputComponent = class {
     this.onValidatorChange = fn;
   }
 };
-__decorateClass([
-  ViewChild("inputRef", { static: true })
-], IntlTelInputComponent.prototype, "inputRef", 2);
-__decorateClass([
-  Input()
-], IntlTelInputComponent.prototype, "initialValue", 2);
-__decorateClass([
-  Input()
-], IntlTelInputComponent.prototype, "usePreciseValidation", 2);
-__decorateClass([
-  Input()
-], IntlTelInputComponent.prototype, "inputProps", 2);
-__decorateClass([
-  Input()
-], IntlTelInputComponent.prototype, "disabled", 2);
-__decorateClass([
-  Input()
-], IntlTelInputComponent.prototype, "initOptions", 2);
-__decorateClass([
-  Output()
-], IntlTelInputComponent.prototype, "numberChange", 2);
-__decorateClass([
-  Output()
-], IntlTelInputComponent.prototype, "countryChange", 2);
-__decorateClass([
-  Output()
-], IntlTelInputComponent.prototype, "validityChange", 2);
-__decorateClass([
-  Output()
-], IntlTelInputComponent.prototype, "errorCodeChange", 2);
-IntlTelInputComponent = __decorateClass([
-  Component({
-    selector: "intl-tel-input",
-    standalone: true,
-    template: `
+IntlTelInputComponent.\u0275fac = function IntlTelInputComponent_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || IntlTelInputComponent)();
+};
+IntlTelInputComponent.\u0275cmp = /* @__PURE__ */ i0.\u0275\u0275defineComponent({ type: IntlTelInputComponent, selectors: [["intl-tel-input"]], viewQuery: function IntlTelInputComponent_Query(rf, ctx) {
+  if (rf & 1) {
+    i0.\u0275\u0275viewQuery(_c0, 7);
+  }
+  if (rf & 2) {
+    let _t;
+    i0.\u0275\u0275queryRefresh(_t = i0.\u0275\u0275loadQuery()) && (ctx.inputRef = _t.first);
+  }
+}, inputs: { initialValue: "initialValue", usePreciseValidation: "usePreciseValidation", inputProps: "inputProps", disabled: "disabled", initOptions: "initOptions" }, outputs: { numberChange: "numberChange", countryChange: "countryChange", validityChange: "validityChange", errorCodeChange: "errorCodeChange" }, features: [i0.\u0275\u0275ProvidersFeature([
+  {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => IntlTelInputComponent),
+    multi: true
+  },
+  {
+    provide: NG_VALIDATORS,
+    useExisting: forwardRef(() => IntlTelInputComponent),
+    multi: true
+  }
+])], decls: 2, vars: 1, consts: [["inputRef", ""], ["type", "tel", 3, "input", "blur", "disabled"]], template: function IntlTelInputComponent_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = i0.\u0275\u0275getCurrentView();
+    i0.\u0275\u0275elementStart(0, "input", 1, 0);
+    i0.\u0275\u0275listener("input", function IntlTelInputComponent_Template_input_input_0_listener() {
+      i0.\u0275\u0275restoreView(_r1);
+      return i0.\u0275\u0275resetView(ctx.handleInput());
+    })("blur", function IntlTelInputComponent_Template_input_blur_0_listener() {
+      i0.\u0275\u0275restoreView(_r1);
+      return i0.\u0275\u0275resetView(ctx.handleBlur());
+    });
+    i0.\u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    i0.\u0275\u0275property("disabled", ctx.disabled);
+  }
+}, encapsulation: 2 });
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && i0.\u0275setClassMetadata(IntlTelInputComponent, [{
+    type: Component,
+    args: [{
+      selector: "intl-tel-input",
+      standalone: true,
+      template: `
     <input
       type="tel"
       #inputRef
@@ -9692,20 +9693,45 @@ IntlTelInputComponent = __decorateClass([
       [disabled]="disabled"
     />
   `,
-    providers: [
-      {
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => IntlTelInputComponent),
-        multi: true
-      },
-      {
-        provide: NG_VALIDATORS,
-        useExisting: forwardRef(() => IntlTelInputComponent),
-        multi: true
-      }
-    ]
-  })
-], IntlTelInputComponent);
+      providers: [
+        {
+          provide: NG_VALUE_ACCESSOR,
+          useExisting: forwardRef(() => IntlTelInputComponent),
+          multi: true
+        },
+        {
+          provide: NG_VALIDATORS,
+          useExisting: forwardRef(() => IntlTelInputComponent),
+          multi: true
+        }
+      ]
+    }]
+  }], null, { inputRef: [{
+    type: ViewChild,
+    args: ["inputRef", { static: true }]
+  }], initialValue: [{
+    type: Input
+  }], usePreciseValidation: [{
+    type: Input
+  }], inputProps: [{
+    type: Input
+  }], disabled: [{
+    type: Input
+  }], initOptions: [{
+    type: Input
+  }], numberChange: [{
+    type: Output
+  }], countryChange: [{
+    type: Output
+  }], validityChange: [{
+    type: Output
+  }], errorCodeChange: [{
+    type: Output
+  }] });
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && i0.\u0275setClassDebugInfo(IntlTelInputComponent, { className: "IntlTelInputComponent", filePath: "intl-tel-input/angularwithutils.ts", lineNumber: 43 });
+})();
 export {
   IntlTelInputComponent,
   PHONE_ERROR_MESSAGES,
