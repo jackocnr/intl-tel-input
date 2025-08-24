@@ -982,6 +982,8 @@ export class Iti {
         this.countryList.innerHTML = "";
         const normalisedQuery = normaliseString(query);
         const queryLength = normalisedQuery.length;
+        // search result groups, in order of priority
+        // first, exact ISO2 matches, then name starts with, then name contains, dial code match etc.
         const iso2Matches = [];
         const nameStartWith = [];
         const nameContains = [];
@@ -1015,7 +1017,7 @@ export class Iti {
                 initialsMatches.push(c);
             }
         }
-        // Combine results in correct order (and respect priority order within each group)
+        // Combine result groups in correct order (and respect country priority order within each group e.g. if search +44, then UK appears first above Guernsey etc)
         const matchedCountries = [
             ...iso2Matches.sort((a, b) => a.priority - b.priority),
             ...nameStartWith.sort((a, b) => a.priority - b.priority),
