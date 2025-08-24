@@ -1338,14 +1338,14 @@ export class Iti {
       }
     }
 
-    // Combine results in correct order
+    // Combine results in correct order (and respect priority order within each group)
     const matchedCountries = [
-      ...iso2Matches,
-      ...nameStartWith,
-      ...nameContains,
-      ...dialCodeMatches,
-      ...dialCodeContains,
-      ...initialsMatches,
+      ...iso2Matches.sort((a, b) => a.priority - b.priority),
+      ...nameStartWith.sort((a, b) => a.priority - b.priority),
+      ...nameContains.sort((a, b) => a.priority - b.priority),
+      ...dialCodeMatches.sort((a, b) => a.priority - b.priority),
+      ...dialCodeContains.sort((a, b) => a.priority - b.priority),
+      ...initialsMatches.sort((a, b) => a.priority - b.priority),
     ];
 
     for (const c of matchedCountries) {

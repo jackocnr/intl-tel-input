@@ -93,7 +93,7 @@ describe("countrySearch", () => {
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(4);
     expect(countriesInList[0]).toBe("bb"); // Barbados first as name-starts-with
-    expect(countriesInList[1]).toBe("ag"); // Antigua and Barbuda second as name-contains
+    expect(countriesInList[1]).toBe("bl"); // St. Barthélemy second as name-contains
   });
 
   test("typing '44', filters countries correctly", async () => {
@@ -103,7 +103,7 @@ describe("countrySearch", () => {
 
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(5);
-    expect(countriesInList[0]).toBe("gg"); // Guernsey (dial code matches)
+    expect(countriesInList[0]).toBe("gb"); // UK (dial code matches, and highest priority)
     expect(countriesInList[4]).toBe("ao"); // Angola +244 (dial code contains)
   });
 
@@ -114,6 +114,6 @@ describe("countrySearch", () => {
 
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(4);
-    expect(countriesInList[0]).toBe("gg"); // Guernsey (dial code matches)
+    expect(countriesInList[0]).toBe("gb"); // UK (dial code matches, and highest priority)
   });
 });
