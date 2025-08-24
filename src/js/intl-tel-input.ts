@@ -1091,12 +1091,8 @@ export class Iti {
             const coreNumber = intlTelInput.utils.getCoreNumber(newFullNumber, this.selectedCountryData.iso2);
             const hasExceededMaxLength = this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength;
 
-            let isChangingDialCode = false;
-            if (alreadyHasPlus) {
-              const currentCountry = this.selectedCountryData.iso2;
-              const newCountry = this._getCountryFromNumber(newFullNumber);
-              isChangingDialCode = newCountry !== currentCountry;
-            }
+            const newCountry = this._getNewCountryFromNumber(newFullNumber);
+            const isChangingDialCode = newCountry !== null;
 
             // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
             if (!isAllowedChar || (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)) {
@@ -1421,7 +1417,7 @@ export class Iti {
   //* Check if need to select a new country based on the given number
   //* Note: called from _setInitialState, keyup handler, setNumber.
   private _updateCountryFromNumber(fullNumber: string): boolean {
-    const iso2 = this._getCountryFromNumber(fullNumber);
+    const iso2 = this._getNewCountryFromNumber(fullNumber);
     if (iso2 !== null) {
       return this._setCountry(iso2);
     }
@@ -1440,7 +1436,10 @@ export class Iti {
     return `+${dialCode}${cleanNumber}`;
   }
 
-  private _getCountryFromNumber(fullNumber: string): string | null {
+  // Get the country ISO2 code from the given number
+  // BUT ONLY IF ITS CHANGED FROM THE CURRENTLY SELECTED COUNTRY
+  // NOTE: consider refactoring this to be more clear
+  private _getNewCountryFromNumber(fullNumber: string): string | null {
     const plusIndex = fullNumber.indexOf("+");
     //* If it contains a plus, discard any chars before it e.g. accidental space char.
     //* This keeps the selected country auto-updating correctly, which we want as
@@ -1466,9 +1465,9 @@ export class Iti {
       }
 
       //* Check if the right country is already selected (note: might be empty state - globe icon).
-      //* NOTE: the number of digits typed can only be the same as or more than the matched dial code (plus area code) digits
-      //* If they're the same length, that's a perfect match. Otherwise, they've typed more digits than the best match, in which case, if this country supports area codes, we should default to the first country that fits the matched dial code.
-      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && (numeric.length === dialCodeMatchNumeric.length || !this.selectedCountryData.areaCodes);
+      // If the currently selected country has area codes, but none of them even partially matched the input number, then we need to switch to the default country for this dial code, so alreadySelected should be false
+      const hasAreaCodesButNoneMatched = this.selectedCountryData.areaCodes && numeric.length > dialCodeMatchNumeric.length;
+      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
 
       const isRegionlessNanpNumber =
         selectedDialCode === "1" && isRegionlessNanp(numeric);

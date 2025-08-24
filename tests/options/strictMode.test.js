@@ -96,26 +96,25 @@ describe("strictMode, with nationalMode=true", () => {
     expect(checkFlagSelected(container, "ru")).toBe(true);
   });
 
-  // CURRENTLY FAILING ON MASTER
-  // test("type full US ntl number, can still insert digit in area code if it changes country", async () => {
-  //   await user.type(input, "4151234567");
-  //   expect(input.value).toBe("(415) 123-4567");
-  //   // put cursor at pos 3 and type a 6 to change to canadian area code 416, which should change flag to canada
-  //   input.setSelectionRange(3, 3);
-  //   await user.type(input, "6", {
-  //     initialSelectionStart: 3,
-  //     initialSelectionEnd: 3,
-  //   });
-  //   expect(input.value).toBe("41651234567"); // guess it should remove all formatting as now invalid canadian number?
-  //   expect(checkFlagSelected(container, "ca")).toBe(true);
-  //   // remove digit again to return to US number and format
-  //   await user.type(input, "{backspace}", {
-  //     initialSelectionStart: 3,
-  //     initialSelectionEnd: 3,
-  //   });
-  //   expect(checkFlagSelected(container, "us")).toBe(true);
-  //   expect(input.value).toBe("(415) 123-4567");
-  // });
+  test("type full US ntl number, can still insert digit in area code if it changes country", async () => {
+    await user.type(input, "4151234567");
+    expect(input.value).toBe("(415) 123-4567");
+    // put cursor at pos 3 and type a 6 to change to canadian area code 416, which should change flag to canada
+    input.setSelectionRange(3, 3);
+    await user.type(input, "6", {
+      initialSelectionStart: 3,
+      initialSelectionEnd: 3,
+    });
+    expect(input.value).toBe("41651234567"); // guess it should remove all formatting as now invalid canadian number?
+    expect(checkFlagSelected(container, "ca")).toBe(true);
+    // remove digit again to return to US number and format
+    await user.type(input, "{backspace}", {
+      initialSelectionStart: 3,
+      initialSelectionEnd: 3,
+    });
+    expect(checkFlagSelected(container, "us")).toBe(true);
+    expect(input.value).toBe("(415) 123-4567");
+  });
 
   test("type full US ntl number, cannot insert digit in middle of number", async () => {
     await user.type(input, "4151234567");
@@ -167,46 +166,45 @@ describe("strictMode, with nationalMode=true", () => {
   });
 });
 
-// CURRENTLY FAILING ON MASTER
-// // NATIONAL MODE DISABLED
-// describe("strictMode, with nationalMode=false", () => {
-//   beforeEach(() => {
-//     user = userEvent.setup();
-//     const options = {
-//       strictMode: true,
-//       nationalMode: false,
-//     };
-//     ({ input, iti, container } = initPlugin({ options }));
-//   });
+// NATIONAL MODE DISABLED
+describe("strictMode, with nationalMode=false", () => {
+  beforeEach(() => {
+    user = userEvent.setup();
+    const options = {
+      strictMode: true,
+      nationalMode: false,
+    };
+    ({ input, iti, container } = initPlugin({ options }));
+  });
 
-//   afterEach(() => {
-//     teardown(iti);
-//   });
+  afterEach(() => {
+    teardown(iti);
+  });
 
-//   test("can type US intl placeholder number and no more", async () => {
-//     const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "us", user, input);
-//     // try typing extra digit, which should be ignored
-//     await user.type(input, "1");
-//     // sometimes AYT formatting is slightly different, so strip formatting chars
-//     expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
-//   });
+  test("can type US intl placeholder number and no more", async () => {
+    const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "us", user, input);
+    // try typing extra digit, which should be ignored
+    await user.type(input, "1");
+    // sometimes AYT formatting is slightly different, so strip formatting chars
+    expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
+  });
 
-//   test("can type UK intl placeholder number and no more", async () => {
-//     const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "gb", user, input);
-//     // try typing extra digit, which should be ignored
-//     await user.type(input, "1");
-//     // sometimes AYT formatting is slightly different, so strip formatting chars
-//     expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
-//   });
+  test("can type UK intl placeholder number and no more", async () => {
+    const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "gb", user, input);
+    // try typing extra digit, which should be ignored
+    await user.type(input, "1");
+    // sometimes AYT formatting is slightly different, so strip formatting chars
+    expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
+  });
 
-//   test("can type Russian intl placeholder number and no more", async () => {
-//     const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "ru", user, input);
-//     // try typing extra digit, which should be ignored
-//     await user.type(input, "1");
-//     // sometimes AYT formatting is slightly different, so strip formatting chars
-//     expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
-//   });
-// });
+  test("can type Russian intl placeholder number and no more", async () => {
+    const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "ru", user, input);
+    // try typing extra digit, which should be ignored
+    await user.type(input, "1");
+    // sometimes AYT formatting is slightly different, so strip formatting chars
+    expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
+  });
+});
 
 // SEPARATE DIAL CODE ENABLED
 describe("strictMode, with separateDialCode=true", () => {

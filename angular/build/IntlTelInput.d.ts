@@ -469,7 +469,7 @@ declare module "intl-tel-input" {
         private _updateValFromNumber;
         private _updateCountryFromNumber;
         private _ensureHasDialCode;
-        private _getCountryFromNumber;
+        private _getNewCountryFromNumber;
         private _highlightListItem;
         private _getCountryData;
         private _setCountry;

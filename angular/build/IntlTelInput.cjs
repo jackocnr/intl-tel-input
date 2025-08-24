@@ -2333,12 +2333,8 @@ var Iti = class {
             const newFullNumber = this._getFullNumber(newValue);
             const coreNumber = intlTelInput.utils.getCoreNumber(newFullNumber, this.selectedCountryData.iso2);
             const hasExceededMaxLength = this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength;
-            let isChangingDialCode = false;
-            if (alreadyHasPlus) {
-              const currentCountry = this.selectedCountryData.iso2;
-              const newCountry = this._getCountryFromNumber(newFullNumber);
-              isChangingDialCode = newCountry !== currentCountry;
-            }
+            const newCountry = this._getNewCountryFromNumber(newFullNumber);
+            const isChangingDialCode = newCountry !== null;
             if (!isAllowedChar || hasExceededMaxLength && !isChangingDialCode && !isInitialPlus) {
               e.preventDefault();
             }
@@ -2574,7 +2570,7 @@ var Iti = class {
   //* Check if need to select a new country based on the given number
   //* Note: called from _setInitialState, keyup handler, setNumber.
   _updateCountryFromNumber(fullNumber) {
-    const iso2 = this._getCountryFromNumber(fullNumber);
+    const iso2 = this._getNewCountryFromNumber(fullNumber);
     if (iso2 !== null) {
       return this._setCountry(iso2);
     }
@@ -2590,7 +2586,10 @@ var Iti = class {
     const cleanNumber = hasPrefix ? number.substring(1) : number;
     return `+${dialCode}${cleanNumber}`;
   }
-  _getCountryFromNumber(fullNumber) {
+  // Get the country ISO2 code from the given number
+  // BUT ONLY IF ITS CHANGED FROM THE CURRENTLY SELECTED COUNTRY
+  // NOTE: consider refactoring this to be more clear
+  _getNewCountryFromNumber(fullNumber) {
     const plusIndex = fullNumber.indexOf("+");
     let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
     const selectedIso2 = this.selectedCountryData.iso2;
@@ -2604,7 +2603,8 @@ var Iti = class {
       if (!selectedIso2 && this.defaultCountry && iso2Codes.includes(this.defaultCountry)) {
         return this.defaultCountry;
       }
-      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && (numeric.length === dialCodeMatchNumeric.length || !this.selectedCountryData.areaCodes);
+      const hasAreaCodesButNoneMatched = this.selectedCountryData.areaCodes && numeric.length > dialCodeMatchNumeric.length;
+      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
       const isRegionlessNanpNumber = selectedDialCode === "1" && isRegionlessNanp(numeric);
       if (!isRegionlessNanpNumber && !alreadySelected) {
         for (let j = 0; j < iso2Codes.length; j++) {
