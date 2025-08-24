@@ -173,7 +173,7 @@
         "react/build/IntlTelInput.d.ts"
       ],
       "angular": [
-        "angular/build/IntlTelInput.d.ts"
+        "angular/build/types/intl-tel-input/angular.d.ts"
       ]
     }
   }
