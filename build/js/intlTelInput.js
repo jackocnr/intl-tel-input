@@ -1795,6 +1795,7 @@ var factoryOutput = (() => {
       }
       this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
       this.isRTL = !!this.telInput.closest("[dir=rtl]");
+      this.telInput.dir = "ltr";
       const showOnDefaultSide = this.options.allowDropdown || this.options.separateDialCode;
       this.showSelectedCountryOnLeft = this.isRTL ? !showOnDefaultSide : showOnDefaultSide;
       if (this.options.separateDialCode) {
@@ -2013,7 +2014,7 @@ var factoryOutput = (() => {
         if (separateDialCode) {
           this.selectedDialCode = createEl(
             "div",
-            { class: "iti__selected-dial-code", "aria-hidden": "true" },
+            { class: "iti__selected-dial-code", "aria-hidden": "true", dir: "ltr" },
             this.selectedCountry
           );
         }
@@ -2131,7 +2132,7 @@ var factoryOutput = (() => {
           content += `<div class='iti__flag iti__${c.iso2}'></div>`;
         }
         content += `<span class='iti__country-name'>${c.name}</span>`;
-        content += `<span class='iti__dial-code'>+${c.dialCode}</span>`;
+        content += `<span class='iti__dial-code' dir='ltr'>+${c.dialCode}</span>`;
         listItem.insertAdjacentHTML("beforeend", content);
       }
     }

@@ -48,6 +48,11 @@
   z-index: 0;
   margin: 0 !important;
 }
+[dir=rtl] .iti input.iti__tel-input,
+[dir=rtl] .iti input.iti__tel-input[type=text],
+[dir=rtl] .iti input.iti__tel-input[type=tel] {
+  text-align: right;
+}
 .iti__country-container {
   position: absolute;
   top: 0;

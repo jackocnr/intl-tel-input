@@ -338,8 +338,10 @@ export class Iti {
 
     this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
 
-    //* Check if input has one parent with RTL.
+    //* Check if input has an ancestor with RTL.
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
+    // force the input direction to LTR as numbers are always written LTR, even in RTL languages
+    this.telInput.dir = "ltr";
 
     const showOnDefaultSide = this.options.allowDropdown || this.options.separateDialCode;
     this.showSelectedCountryOnLeft = this.isRTL ? !showOnDefaultSide : showOnDefaultSide;
@@ -651,7 +653,7 @@ export class Iti {
       if (separateDialCode) {
         this.selectedDialCode = createEl(
           "div",
-          { class: "iti__selected-dial-code", "aria-hidden": "true" },
+          { class: "iti__selected-dial-code", "aria-hidden": "true", dir: "ltr" },
           this.selectedCountry,
         );
       }
@@ -787,7 +789,7 @@ export class Iti {
       }
       //* And the country name and dial code.
       content += `<span class='iti__country-name'>${c.name}</span>`;
-      content += `<span class='iti__dial-code'>+${c.dialCode}</span>`;
+      content += `<span class='iti__dial-code' dir='ltr'>+${c.dialCode}</span>`;
 
       listItem.insertAdjacentHTML("beforeend", content);
     }

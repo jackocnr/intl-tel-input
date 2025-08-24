@@ -72,6 +72,10 @@
 
     //* Since we wrap the input in a container div, any margin here would interfere with the positioning of the selected country.
     margin: 0 !important;
+
+    [dir="rtl"] & {
+      text-align: right;
+    }
   }
 
   &__country-container {

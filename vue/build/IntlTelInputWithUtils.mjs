@@ -1698,7 +1698,7 @@ class j2 {
   }
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init() {
-    this.options.useFullscreenPopup && (this.options.fixDropdownWidth = !1), this.options.onlyCountries.length === 1 && (this.options.initialCountry = this.options.onlyCountries[0]), this.options.separateDialCode && (this.options.nationalMode = !1), this.options.allowDropdown && !this.options.showFlags && !this.options.separateDialCode && (this.options.nationalMode = !1), this.options.useFullscreenPopup && !this.options.dropdownContainer && (this.options.dropdownContainer = document.body), this.isAndroid = typeof navigator < "u" ? /Android/i.test(navigator.userAgent) : !1, this.isRTL = !!this.telInput.closest("[dir=rtl]");
+    this.options.useFullscreenPopup && (this.options.fixDropdownWidth = !1), this.options.onlyCountries.length === 1 && (this.options.initialCountry = this.options.onlyCountries[0]), this.options.separateDialCode && (this.options.nationalMode = !1), this.options.allowDropdown && !this.options.showFlags && !this.options.separateDialCode && (this.options.nationalMode = !1), this.options.useFullscreenPopup && !this.options.dropdownContainer && (this.options.dropdownContainer = document.body), this.isAndroid = typeof navigator < "u" ? /Android/i.test(navigator.userAgent) : !1, this.isRTL = !!this.telInput.closest("[dir=rtl]"), this.telInput.dir = "ltr";
     const e = this.options.allowDropdown || this.options.separateDialCode;
     this.showSelectedCountryOnLeft = this.isRTL ? !e : e, this.options.separateDialCode && (this.isRTL ? this.originalPaddingRight = this.telInput.style.paddingRight : this.originalPaddingLeft = this.telInput.style.paddingLeft), this.options.i18n = { ...u2, ...this.options.i18n };
     const i = new Promise((o, a) => {
@@ -1837,7 +1837,7 @@ class j2 {
         O
       )), i && (this.selectedDialCode = E(
         "div",
-        { class: "iti__selected-dial-code", "aria-hidden": "true" },
+        { class: "iti__selected-dial-code", "aria-hidden": "true", dir: "ltr" },
         this.selectedCountry
       )), e) {
         const T = g ? "" : "iti--flexible-dropdown-width";
@@ -1914,7 +1914,7 @@ class j2 {
       );
       i.nodeById[this.id] = o;
       let a = "";
-      this.options.showFlags && (a += `<div class='iti__flag iti__${i.iso2}'></div>`), a += `<span class='iti__country-name'>${i.name}</span>`, a += `<span class='iti__dial-code'>+${i.dialCode}</span>`, o.insertAdjacentHTML("beforeend", a);
+      this.options.showFlags && (a += `<div class='iti__flag iti__${i.iso2}'></div>`), a += `<span class='iti__country-name'>${i.name}</span>`, a += `<span class='iti__dial-code' dir='ltr'>+${i.dialCode}</span>`, o.insertAdjacentHTML("beforeend", a);
     }
   }
   //* Set the initial state of the input value and the selected country by:
