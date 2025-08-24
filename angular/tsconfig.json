@@ -7,8 +7,8 @@
     "experimentalDecorators": true, //* Required for angular decorators.
     "emitDecoratorMetadata": true, //* Required for angular decorators.
     "declaration": true, //* Generate .d.ts files.
-    "emitDeclarationOnly": true, //* ONLY generate .d.ts files (we use esbuild for the actual bundling).
-    "outFile": "build/IntlTelInput.d.ts",
+    "outDir": "build",
+    "declarationDir": "build/types",
     "rootDir": "./src",
     "allowJs": true, // allow importing .mjs files e.g. i18n files
   },

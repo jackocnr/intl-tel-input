@@ -24,9 +24,8 @@ module.exports = function(grunt) {
       //* Clean up the module names by removing the /index suffix as this is how they will be used.
       command: `tsc --p react/tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" react/build/IntlTelInput.d.ts`
     },
-    genAngularTsDeclaration: {
-      //* Clean up the module names by removing the /index suffix as this is how they will be used.
-      command: `ngc --p angular/tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" angular/build/IntlTelInput.d.ts`
+    genAngularTsDeclarationAndJs: {
+      command: 'ngc --p angular/tsconfig.json'
     },
     eslint: {
       command: 'eslint .'
