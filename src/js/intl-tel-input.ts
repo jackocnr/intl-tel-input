@@ -1308,38 +1308,45 @@ export class Iti {
     const normalisedQuery = normaliseString(query);
     const queryLength = normalisedQuery.length;
 
-    let iso2Matches = [];
-    let nameStartWith = [];
-    let nameContains = [];
-    let dialCodeMatches = [];
-    let initialsMatches = [];
+    const iso2Matches = [];
+    const nameStartWith = [];
+    const nameContains = [];
+    const dialCodeMatches = [];
+    const dialCodeContains = [];
+    const initialsMatches = [];
 
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
       const normalisedCountryName = normaliseString(c.name);
       //* Initials: split on non-alpha chars (ignore ampersand, hyphen, dot etc) and take the first letter of each part.
       const countryInitials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map(word => word[0]).join("").toLowerCase();
-      const fullDialCode = `+${c.dialCode}`;
 
-      if(isReset || queryLength === 0) {
+      if (isReset || queryLength === 0) {
         nameContains.push(c);
-      } else {
-        if(c.iso2.toLowerCase() === normalisedQuery) {
-          iso2Matches.push(c);
-        } else if (normalisedCountryName.startsWith(normalisedQuery)) {
-          nameStartWith.push(c);
-        } else if (normalisedCountryName.includes(normalisedQuery)) {
-          nameContains.push(c);
-        } else if (fullDialCode.includes(normalisedQuery)) {
-          dialCodeMatches.push(c);
-        } else if (countryInitials.includes(normalisedQuery)) {
-          initialsMatches.push(c);
-        }
+      } else if (c.iso2.toLowerCase() === normalisedQuery) {
+        iso2Matches.push(c);
+      } else if (normalisedCountryName.startsWith(normalisedQuery)) {
+        nameStartWith.push(c);
+      } else if (normalisedCountryName.includes(normalisedQuery)) {
+        nameContains.push(c);
+      } else if (normalisedQuery === c.dialCode || normalisedQuery === `+${c.dialCode}`) {
+        dialCodeMatches.push(c);
+      } else if (`+${c.dialCode}`.includes(normalisedQuery)) {
+        dialCodeContains.push(c);
+      } else if (countryInitials.includes(normalisedQuery)) {
+        initialsMatches.push(c);
       }
     }
 
     // Combine results in correct order
-    let matchedCountries = [...iso2Matches, ...nameStartWith, ...nameContains, ...dialCodeMatches, ...initialsMatches];
+    const matchedCountries = [
+      ...iso2Matches,
+      ...nameStartWith,
+      ...nameContains,
+      ...dialCodeMatches,
+      ...dialCodeContains,
+      ...initialsMatches,
+    ];
 
     for (const c of matchedCountries) {
       const listItem = c.nodeById[this.id];

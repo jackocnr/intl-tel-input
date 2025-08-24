@@ -103,6 +103,11 @@ exports.getSearchInput = (container) => {
   return container.querySelector(".iti__search-input");
 };
 
+exports.getCountriesInList = (container) => {
+  const countryListItems = container.querySelectorAll(".iti__country-list .iti__country");
+  return [...countryListItems].map(c => c.getAttribute("data-country-code"));
+};
+
 exports.checkFlagSelected = (container, countryCode = "") => {
   const flag = container.querySelector(".iti__selected-country .iti__flag");
   if (countryCode.length === 2) {
