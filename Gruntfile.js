@@ -21,7 +21,7 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['generate-sprite', 'css']);
   // just javascript
-  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genAngularTsDeclaration', 'shell:buildJs', 'replace', 'react', 'vue', 'angular']);
+  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genAngularTsDeclarationAndJs', 'shell:buildJs', 'replace', 'react', 'vue', 'angular']);
   grunt.registerTask('jsfast', ['shell:buildJs', 'replace']);
   // just react
   grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact']);
