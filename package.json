@@ -147,11 +147,11 @@
     },
     "./angular": {
       "types": "./angular/build/types/intl-tel-input/angular.d.ts",
-      "default": "./angular/build/intl-tel-input/angular.js"
+      "default": "./angular/build/IntlTelInput.js"
     },
     "./angularWithUtils": {
       "types": "./angular/build/types/intl-tel-input/angularWithUtils.d.ts",
-      "default": "./angular/build/intl-tel-input/angularWithUtils.js"
+      "default": "./angular/build/IntlTelInputWithUtils.js"
     },
     "./i18n": {
       "types": "./build/js/intlTelInput.d.ts",
