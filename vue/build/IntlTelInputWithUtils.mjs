@@ -2537,7 +2537,7 @@ const W2 = (I) => {
     attachUtils: W2,
     startedLoadingUtilsScript: !1,
     startedLoadingAutoCountry: !1,
-    version: "25.5.1"
+    version: "25.5.2"
   }
 );
 (function() {
