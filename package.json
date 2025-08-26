@@ -103,6 +103,7 @@
     "lint:spelling": "cspell --dot --gitignore --no-progress '**'",
     "watch": "grunt watch",
     "build": "grunt build",
+    "prepublishOnly": "grunt build",
     "build:js": "grunt js",
     "build:jsfast": "grunt jsfast",
     "build:translations": "grunt build:translations",
