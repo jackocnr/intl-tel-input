@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const supportedCountries = require('../build/js/data.js');
+// ts-node allows us to require TypeScript files
+require("ts-node").register();
+const supportedCountries = require('../src/js/intl-tel-input/data.ts').default;
 
 module.exports = function(grunt) {
   grunt.registerTask('translations', 'Generate country translations', function() {
@@ -68,7 +70,7 @@ module.exports = function(grunt) {
         let countryTranslationFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
         countryTranslationFileContent += 'import { I18n } from "../types";\n\n';
         countryTranslationFileContent += 'const countryTranslations: I18n = {\n';
-        
+
         //* Filter out any country codes that we do not support.
         const keys = Object.keys(parsedData).filter(iso => supportedCountryCodes.includes(iso)).sort();
         keys.forEach(key => {

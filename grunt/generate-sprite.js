@@ -1,10 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
-const supportedCountries = require('../build/js/data.js');
+// ts-node allows us to require TypeScript files
+require("ts-node").register();
+const supportedCountries = require('../src/js/intl-tel-input/data.ts').default;
 
 module.exports = function(grunt) {
   grunt.registerTask('generate-sprite', async function() {
+    // ensure /build/img/ dir exists before trying to write to it
+    const buildImgDir = path.join(__dirname, '..', 'build', 'img');
+    if (!fs.existsSync(buildImgDir)) {
+      fs.mkdirSync(buildImgDir, { recursive: true });
+    }
+
     const supportedFilenames = supportedCountries.map(country => `${country.iso2}.svg`).sort();
     const done = this.async();
 

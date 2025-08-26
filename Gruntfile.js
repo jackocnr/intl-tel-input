@@ -11,7 +11,7 @@ module.exports = function(grunt) {
    * TASKS
    */
   // build everything ready for a commit
-  grunt.registerTask('build', ['css', 'translations', 'js']);
+  grunt.registerTask('build', ['img', 'translations', 'js']);
   // build translations
   grunt.registerTask('build:translations', ['translations', 'js']);
   // build utils
@@ -21,7 +21,8 @@ module.exports = function(grunt) {
   // just images
   grunt.registerTask('img', ['generate-sprite', 'css']);
   // just javascript
-  grunt.registerTask('js', ['shell:eslint', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genAngularTsDeclarationAndJs', 'shell:buildJs', 'replace', 'react', 'vue', 'angular']);
+  grunt.registerTask('js', ['shell:eslint', 'closure-compiler:utils', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genAngularTsDeclarationAndJs', 'shell:buildJs', 'replace', 'react', 'vue', 'angular']);
+  // fast version which only does the core plugin, not eslint, or TS declarations, or any of the wrapper components e.g. react
   grunt.registerTask('jsfast', ['shell:buildJs', 'replace']);
   // just react
   grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact']);
