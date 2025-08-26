@@ -266,7 +266,8 @@ module.exports = function(grunt) {
       files: {
         'README.md': 'README.md',
         'react/README.md': 'react/README.md',
-        'vue/README.md': 'vue/README.md'
+        'vue/README.md': 'vue/README.md',
+        'angular/README.md': 'angular/README.md'
       }
     },
     issueTemplate: {
