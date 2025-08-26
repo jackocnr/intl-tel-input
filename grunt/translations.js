@@ -54,7 +54,7 @@ module.exports = function(grunt) {
 
       //* Create the Locale Index file Start
       let localeIndexFileContent = `//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n`;
-      localeIndexFileContent += `import { I18n } from "../types";\n`;
+      localeIndexFileContent += `import { type I18n } from "../types";\n`;
       localeIndexFileContent += `import countryTranslations from "./countries.js";\n`;
       localeIndexFileContent += `import interfaceTranslations from "./interface.js";\n\n`;
       localeIndexFileContent += `export { countryTranslations, interfaceTranslations };\n\n`;
@@ -68,7 +68,7 @@ module.exports = function(grunt) {
       try {
         const parsedData = JSON.parse(jsonData); //* Parse JSON data.
         let countryTranslationFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
-        countryTranslationFileContent += 'import { I18n } from "../types";\n\n';
+        countryTranslationFileContent += 'import { type I18n } from "../types";\n\n';
         countryTranslationFileContent += 'const countryTranslations: I18n = {\n';
 
         //* Filter out any country codes that we do not support.

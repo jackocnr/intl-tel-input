@@ -1,5 +1,5 @@
-import allCountries, { Country } from "./intl-tel-input/data";
-import { I18n } from "./intl-tel-input/i18n/types";
+import allCountries, { type Country } from "./intl-tel-input/data";
+import { type I18n } from "./intl-tel-input/i18n/types";
 import defaultEnglishStrings from "./intl-tel-input/i18n/en";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
@@ -318,8 +318,10 @@ export class Iti {
   private _handlePageLoad: () => void;
 
   private resolveAutoCountryPromise: (value?: unknown) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private rejectAutoCountryPromise: (reason?: unknown) => void;
   private resolveUtilsScriptPromise: (value?: unknown) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private rejectUtilsScriptPromise: (reason?: unknown) => void;
 
   /**
@@ -1307,7 +1309,7 @@ export class Iti {
     //* just hit down and hold it to scroll down (no keyup event).
     //* Listen on the document because that's where key events are triggered if no input has focus.
     let query = "";
-    let queryTimer: NodeJS.Timeout | null = null;
+    let queryTimer: ReturnType<typeof setTimeout> | null = null;
     this._handleKeydownOnDropdown = (e: KeyboardEvent): void => {
       //* prevent down key from scrolling the whole page, and enter key from submitting a form etc.
       if (["ArrowUp", "ArrowDown", "Enter", "Escape"].includes(e.key)) {
@@ -1362,7 +1364,7 @@ export class Iti {
         }
       };
 
-      let keyupTimer: NodeJS.Timeout | null = null;
+      let keyupTimer: ReturnType<typeof setTimeout> | null = null;
       this._handleSearchChange = (): void => {
         //* Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
         if (keyupTimer) {
