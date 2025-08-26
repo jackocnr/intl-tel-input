@@ -177,5 +177,10 @@
         "angular/build/IntlTelInput.d.ts"
       ]
     }
+  },
+  "dependencies": {
+    "core-js": "^3.45.1",
+    "corejs": "^1.0.0",
+    "intl-tel-input": "^25.4.5"
   }
 }

@@ -1947,29 +1947,26 @@ var factoryOutput = (() => {
         countrySearch,
         i18n
       } = this.options;
-      let parentClass = "iti";
-      if (allowDropdown) {
-        parentClass += " iti--allow-dropdown";
-      }
-      if (showFlags) {
-        parentClass += " iti--show-flags";
-      }
-      if (containerClass) {
-        parentClass += ` ${containerClass}`;
-      }
-      if (!useFullscreenPopup) {
-        parentClass += " iti--inline-dropdown";
-      }
       let wrapper;
-      alert(this.options.wrapper);
       if (null === this.options.wrapper) {
-        wrapper = createEl("div", { class: parentClass });
+        wrapper = createEl("div", {});
         this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
       } else {
         wrapper = this.options.wrapper;
-        wrapper.classList.add("iti");
       }
-      console.log(wrapper);
+      wrapper.classList.add("iti");
+      if (allowDropdown) {
+        wrapper.classList.add("iti--allow-dropdown");
+      }
+      if (showFlags) {
+        wrapper.classList.add("iti--show-flags");
+      }
+      if (containerClass) {
+        wrapper.classList.add(`${containerClass}`);
+      }
+      if (!useFullscreenPopup) {
+        wrapper.classList.add("iti--inline-dropdown");
+      }
       if (allowDropdown || showFlags || separateDialCode) {
         this.countryContainer = createEl(
           "div",
