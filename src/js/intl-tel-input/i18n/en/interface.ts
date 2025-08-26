@@ -1,5 +1,5 @@
 //* English. Translated by: Jack O'Connor (jackocnr).
-import { I18n } from "../types";
+import { type I18n } from "../types";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Selected country",
@@ -9,7 +9,7 @@ const interfaceTranslations: I18n = {
   zeroSearchResults: "No results found",
   oneSearchResult: "1 result found",
   multipleSearchResults: "${count} results found",
-  
+
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo",
