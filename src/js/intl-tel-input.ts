@@ -260,7 +260,7 @@ export class Iti {
   private countries: Country[];
   private dialCodeMaxLen: number;
   private dialCodeToIso2Map: Record<string, string[]>;
-  private dialCodes: Record<string, true>;
+  private dialCodes: Set<string>;
   private countryByIso2: Map<string, Country>;
   private countryContainer: HTMLElement;
   private selectedCountry: HTMLElement;
@@ -495,7 +495,7 @@ export class Iti {
   private _processDialCodes(): void {
     //* Here we store just dial codes, where the key is the dial code, and the value is true
     //* e.g. { 1: true, 7: true, 20: true, ... }.
-    this.dialCodes = {};
+    this.dialCodes = new Set();
     this.dialCodeMaxLen = 0;
 
     //* Here we map dialCodes (inc both dialCode and dialCode+areaCode) to iso2 codes e.g.
@@ -513,8 +513,8 @@ export class Iti {
     //* First: add dial codes.
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
-      if (!this.dialCodes[c.dialCode]) {
-        this.dialCodes[c.dialCode] = true;
+      if (!this.dialCodes.has(c.dialCode)) {
+        this.dialCodes.add(c.dialCode);
       }
       this._addToDialCodeMap(c.iso2, c.dialCode, c.priority);
     }
@@ -1875,7 +1875,7 @@ export class Iti {
               dialCode = number.substring(0, i + 1);
             }
           } else {
-            if (this.dialCodes[numericChars]) {
+            if (this.dialCodes.has(numericChars)) {
               dialCode = number.substring(0, i + 1);
               //* If we're just looking for a dial code, we can break as soon as we find one.
               break;
