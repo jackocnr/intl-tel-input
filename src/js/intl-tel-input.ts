@@ -261,6 +261,7 @@ export class Iti {
   private dialCodeMaxLen: number;
   private dialCodeToIso2Map: Record<string, string[]>;
   private dialCodes: Record<string, true>;
+  private countryByIso2: Map<string, Country>;
   private countryContainer: HTMLElement;
   private selectedCountry: HTMLElement;
   private selectedCountryInner: HTMLElement;
@@ -407,6 +408,9 @@ export class Iti {
 
     //* Sort countries by countryOrder option (if present), then name.
     this._sortCountries();
+
+    //* Build fast iso2 -> country map for O(1) lookups (used by _getCountryData).
+    this.countryByIso2 = new Map(this.countries.map((c) => [c.iso2, c]));
   }
 
   //* Sort countries by countryOrder option (if present), then name.
@@ -1552,12 +1556,11 @@ export class Iti {
   }
 
   //* Find the country data for the given iso2 code
-  //* the ignoreOnlyCountriesOption is only used during init() while parsing the onlyCountries array
+  //* the allowFail option is only used during init() for the initialCountry option, and for the iso2 returned from geoIpLookup - in these 2 cases we don't want to error out
   private _getCountryData(iso2: string, allowFail: boolean): Country | null {
-    for (let i = 0; i < this.countries.length; i++) {
-      if (this.countries[i].iso2 === iso2) {
-        return this.countries[i];
-      }
+    const country = this.countryByIso2.get(iso2);
+    if (country) {
+      return country;
     }
     if (allowFail) {
       return null;
