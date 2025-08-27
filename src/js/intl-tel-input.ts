@@ -185,7 +185,7 @@ const normaliseString = (s: string = ""): string =>
 const isRegionlessNanp = (number: string): boolean => {
   const numeric = getNumeric(number);
   if (numeric.charAt(0) === "1") {
-    const areaCode = numeric.substr(1, 3);
+    const areaCode = numeric.substring(1, 4);
     return regionlessNanpNumbers.includes(areaCode);
   }
   return false;
@@ -529,7 +529,7 @@ export class Iti {
           const areaCode = c.areaCodes[j];
           //* For each digit in the area code to add all partial matches as well.
           for (let k = 1; k < areaCode.length; k++) {
-            const partialAreaCode = areaCode.substr(0, k);
+            const partialAreaCode = areaCode.substring(0, k);
             const partialDialCode = c.dialCode + partialAreaCode;
             //* Start with the root country, as that also matches this partial dial code.
             this._addToDialCodeMap(rootIso2Code, partialDialCode);
@@ -1108,7 +1108,7 @@ export class Iti {
   //* Adhere to the input's maxlength attr.
   private _cap(number: string): string {
     const max = parseInt(this.telInput.getAttribute("maxlength") || "", 10);
-    return max && number.length > max ? number.substr(0, max) : number;
+  return max && number.length > max ? number.substring(0, max) : number;
   }
 
   //* Trigger a custom event on the input.
@@ -1290,7 +1290,7 @@ export class Iti {
   private _searchForCountry(query: string): void {
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
-      const startsWith = c.name.substr(0, query.length).toLowerCase() === query;
+      const startsWith = c.name.substring(0, query.length).toLowerCase() === query;
       if (startsWith) {
         const listItem = c.nodeById[this.id];
         //* Update highlighting and scroll.
@@ -1869,11 +1869,11 @@ export class Iti {
           if (includeAreaCode) {
             if (this.dialCodeToIso2Map[numericChars]) {
               //* Store the actual raw string (useful for matching later).
-              dialCode = number.substr(0, i + 1);
+              dialCode = number.substring(0, i + 1);
             }
           } else {
             if (this.dialCodes[numericChars]) {
-              dialCode = number.substr(0, i + 1);
+              dialCode = number.substring(0, i + 1);
               //* If we're just looking for a dial code, we can break as soon as we find one.
               break;
             }
@@ -1925,7 +1925,7 @@ export class Iti {
           number[dialCode.length] === " " || number[dialCode.length] === "-"
             ? dialCode.length + 1
             : dialCode.length;
-        number = number.substr(start);
+          number = number.substring(start);
       }
     }
 
