@@ -2099,22 +2099,14 @@ export class Iti {
     return -99;
   }
 
-  //* Validate the input val
+  //* Validate the input val (with precise=false)
   isValidNumber(): boolean | null {
-    //* If there isn't a valid country selected, then it's not a valid number.
-    if (!this.selectedCountryData.iso2) {
-      return false;
-    }
-    const val = this._getFullNumber();
-    const alphaCharPosition = val.search(/\p{L}/u);
-    if (alphaCharPosition > -1) {
-      const beforeAlphaChar = val.substring(0, alphaCharPosition);
-      //* Workaround to allow some alpha chars e.g. "+1 (444) 444-4444 ext. 1234" while rejecting others e.g. "+1 (444) 444-FAST". The only legit use of alpha chars is as an extension separator, in which case, the number before it must be valid on its own.
-      const beforeAlphaIsValid = this._utilsIsPossibleNumber(beforeAlphaChar);
-      const isValid = this._utilsIsPossibleNumber(val);
-      return beforeAlphaIsValid && isValid;
-    }
-    return this._utilsIsPossibleNumber(val);
+    return this._validateNumber(false);
+  }
+
+  //* Validate the input val (with precise=true)
+  isValidNumberPrecise(): boolean | null {
+    return this._validateNumber(true);
   }
 
   private _utilsIsPossibleNumber(val: string): boolean | null {
@@ -2123,22 +2115,24 @@ export class Iti {
       : null;
   }
 
-  //* Validate the input val (precise)
-  isValidNumberPrecise(): boolean | null {
-    //* If there isn't a valid country selected, then it's not a valid number.
+  //* Shared internal validation logic to handle alpha character extension rules.
+  private _validateNumber(precise: boolean): boolean | null {
     if (!this.selectedCountryData.iso2) {
       return false;
     }
     const val = this._getFullNumber();
     const alphaCharPosition = val.search(/\p{L}/u);
+    const testValidity = (s: string) => precise
+      ? this._utilsIsValidNumber(s)
+      : this._utilsIsPossibleNumber(s);
     if (alphaCharPosition > -1) {
       const beforeAlphaChar = val.substring(0, alphaCharPosition);
       //* Workaround to allow some alpha chars e.g. "+1 (444) 444-4444 ext. 1234" while rejecting others e.g. "+1 (444) 444-FAST". The only legit use of alpha chars is as an extension separator, in which case, the number before it must be valid on its own.
-      const beforeAlphaIsValid = this._utilsIsValidNumber(beforeAlphaChar);
-      const isValid = this._utilsIsValidNumber(val);
+      const beforeAlphaIsValid = testValidity(beforeAlphaChar);
+      const isValid = testValidity(val);
       return beforeAlphaIsValid && isValid;
     }
-    return this._utilsIsValidNumber(val);
+    return testValidity(val);
   }
 
   private _utilsIsValidNumber(val: string): boolean | null {
