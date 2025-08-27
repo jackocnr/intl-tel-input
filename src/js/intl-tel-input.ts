@@ -259,8 +259,8 @@ export class Iti {
   private selectedCountryData: SelectedCountryData;
   private countries: Country[];
   private dialCodeMaxLen: number;
-  private dialCodeToIso2Map: object;
-  private dialCodes: object;
+  private dialCodeToIso2Map: Record<string, string[]>;
+  private dialCodes: Record<string, true>;
   private countryContainer: HTMLElement;
   private selectedCountry: HTMLElement;
   private selectedCountryInner: HTMLElement;
@@ -445,7 +445,7 @@ export class Iti {
     if (!this.dialCodeToIso2Map.hasOwnProperty(dialCode)) {
       this.dialCodeToIso2Map[dialCode] = [];
     }
-    const iso2List = this.dialCodeToIso2Map[dialCode] as string[];
+    const iso2List = this.dialCodeToIso2Map[dialCode];
     //* Bail if we already have this country for this dialCode.
     if (iso2List.includes(iso2)) {
       return;
