@@ -1,5 +1,5 @@
 //* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
-import { I18n } from "../types";
+import { type I18n } from "../types";
 
 const countryTranslations: I18n = {
   ad: "アンドラ",

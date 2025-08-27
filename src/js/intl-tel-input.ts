@@ -2266,7 +2266,6 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     attachUtils,
     startedLoadingUtilsScript: false,
     startedLoadingAutoCountry: false,
-    // @ts-ignore
     version: process.env.VERSION,
   });
 
