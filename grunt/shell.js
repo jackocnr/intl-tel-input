@@ -32,6 +32,9 @@ module.exports = function(grunt) {
     },
     test: {
       command: 'npm run test'
+    },
+    globeImages: {
+      command: 'mkdir -p build/img && cp src/img/globe* build/img/'
     }
   };
 };

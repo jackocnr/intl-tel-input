@@ -13,6 +13,3 @@
 /vue/build/
 /angular/build/
 /*/demo/*/*-bundle.js
-
-# these files are now auto-generated
-/src/img/

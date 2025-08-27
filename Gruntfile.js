@@ -19,7 +19,7 @@ module.exports = function(grunt) {
   // just CSS
   grunt.registerTask('css', ['sass', 'cssmin']);
   // just images
-  grunt.registerTask('img', ['generate-sprite', 'css']);
+  grunt.registerTask('img', ['shell:globeImages', 'generate-sprite', 'css']);
   // just javascript
   grunt.registerTask('js', ['shell:eslint', 'closure-compiler:utils', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genAngularTsDeclarationAndJs', 'shell:buildJs', 'replace', 'react', 'vue', 'angular']);
   // fast version which only does the core plugin, not eslint, or TS declarations, or any of the wrapper components e.g. react
