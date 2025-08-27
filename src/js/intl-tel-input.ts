@@ -445,16 +445,14 @@ export class Iti {
     if (!this.dialCodeToIso2Map.hasOwnProperty(dialCode)) {
       this.dialCodeToIso2Map[dialCode] = [];
     }
+    const iso2List = this.dialCodeToIso2Map[dialCode] as string[];
     //* Bail if we already have this country for this dialCode.
-    for (let i = 0; i < this.dialCodeToIso2Map[dialCode].length; i++) {
-      if (this.dialCodeToIso2Map[dialCode][i] === iso2) {
-        return;
-      }
+    if (iso2List.includes(iso2)) {
+      return;
     }
-    //* Check for undefined as 0 is falsy.
-    const index =
-      priority !== undefined ? priority : this.dialCodeToIso2Map[dialCode].length;
-    this.dialCodeToIso2Map[dialCode][index] = iso2;
+    //* Use provided priority index (can be 0), else append.
+    const index = priority !== undefined ? priority : iso2List.length;
+    iso2List[index] = iso2;
   }
 
   //* Process onlyCountries or excludeCountries array if present.
