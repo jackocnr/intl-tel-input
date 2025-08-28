@@ -95,6 +95,18 @@ export type SomeOptions = Partial<AllOptions>;
 
 //* These vars persist through all instances of the plugin.
 let id = 0;
+
+//* Helper to decide whether to use fullscreen popup by default
+const computeDefaultUseFullscreenPopup = (): boolean => {
+  if (typeof navigator !== "undefined" && typeof window !== "undefined") {
+    //* We cannot just test screen size as some smartphones/website meta tags will report desktop resolutions.
+    //* Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
+    const isMobileUserAgent = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    return isMobileUserAgent || window.innerWidth <= 500;
+  }
+  return false;
+};
+
 const defaults: AllOptions = {
   //* Whether or not to allow the dropdown.
   allowDropdown: true,
@@ -141,14 +153,7 @@ const defaults: AllOptions = {
   //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
   strictMode: false,
   //* Use full screen popup instead of dropdown for country list.
-  useFullscreenPopup:
-    typeof navigator !== "undefined" && typeof window !== "undefined"
-      ? //* We cannot just test screen size as some smartphones/website meta tags will report desktop resolutions.
-        //* Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
-        /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent,
-        ) || window.innerWidth <= 500
-      : false,
+  useFullscreenPopup: computeDefaultUseFullscreenPopup(),
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"],
 };
