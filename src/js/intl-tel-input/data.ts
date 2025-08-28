@@ -1101,13 +1101,17 @@ const rawCountryData: RawCountry[] = [
 ];
 
 export type Country = {
-  name: string;
+  // these fields are outlined above
   iso2: string;
   dialCode: string;
   priority: number;
   areaCodes: string[] | null;
-  nodeById: object;
   nationalPrefix: string | null;
+
+  // the following fields are populated by the plugin
+  name: string;
+  // Map instance id to corresponding country dropdown <li> element
+  nodeById: { [instanceId: number]: HTMLElement };
   // derived fields, cached for country search efficiency
   normalisedName?: string;
   initials?: string;
@@ -1118,12 +1122,12 @@ const allCountries: Country[] = [];
 //* Loop over all of the countries above, restructuring the data to be objects with named keys.
 for (const c of rawCountryData) {
   allCountries.push({
-    name: "", // this is now populated in the plugin
+    name: "", // populated in the plugin
     iso2: c[0],
     dialCode: c[1],
     priority: c[2] || 0,
     areaCodes: c[3] || null,
-    nodeById: {},
+    nodeById: {}, // populated by the plugin
     nationalPrefix: c[4] || null,
   });
 }
