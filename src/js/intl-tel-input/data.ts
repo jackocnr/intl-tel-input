@@ -1108,6 +1108,10 @@ export type Country = {
   areaCodes: string[] | null;
   nodeById: object;
   nationalPrefix: string | null;
+  // derived fields, cached for country search efficiency
+  normalisedName?: string;
+  initials?: string;
+  dialCodePlus?: string;
 };
 
 const allCountries: Country[] = [];

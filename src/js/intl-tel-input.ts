@@ -411,6 +411,21 @@ export class Iti {
 
     //* Build fast iso2 -> country map for O(1) lookups (used by _getCountryData).
     this.countryByIso2 = new Map(this.countries.map((c) => [c.iso2, c]));
+
+    //* Precompute and cache country search tokens to speed up filtering
+    this._cacheSearchTokens();
+  }
+
+  //* Precompute and cache country search tokens to speed up filtering
+  private _cacheSearchTokens(): void {
+    for (const c of this.countries) {
+      // Light normalisation: lowercase name (diacritic folding, trimming etc can still occur at query side via normaliseString if needed)
+      c.normalisedName = normaliseString(c.name);
+      // Derive initials (first letter of each alpha sequence)
+      c.initials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map(word => word[0]).join("").toLowerCase();
+      // Cached +dialCode variant
+      c.dialCodePlus = `+${c.dialCode}`;
+    }
   }
 
   //* Sort countries by countryOrder option (if present), then name.
@@ -1323,23 +1338,20 @@ export class Iti {
 
     for (let i = 0; i < this.countries.length; i++) {
       const c = this.countries[i];
-      const normalisedCountryName = normaliseString(c.name);
-      //* Initials: split on non-alpha chars (ignore ampersand, hyphen, dot etc) and take the first letter of each part.
-      const countryInitials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map(word => word[0]).join("").toLowerCase();
 
       if (isReset || queryLength === 0) {
         nameContains.push(c);
-      } else if (c.iso2.toLowerCase() === normalisedQuery) {
+      } else if (c.iso2 === normalisedQuery) {
         iso2Matches.push(c);
-      } else if (normalisedCountryName.startsWith(normalisedQuery)) {
+      } else if (c.normalisedName.startsWith(normalisedQuery)) {
         nameStartWith.push(c);
-      } else if (normalisedCountryName.includes(normalisedQuery)) {
+      } else if (c.normalisedName.includes(normalisedQuery)) {
         nameContains.push(c);
-      } else if (normalisedQuery === c.dialCode || normalisedQuery === `+${c.dialCode}`) {
+      } else if (normalisedQuery === c.dialCode || normalisedQuery === c.dialCodePlus) {
         dialCodeMatches.push(c);
-      } else if (`+${c.dialCode}`.includes(normalisedQuery)) {
+      } else if (c.dialCodePlus.includes(normalisedQuery)) {
         dialCodeContains.push(c);
-      } else if (countryInitials.includes(normalisedQuery)) {
+      } else if (c.initials.includes(normalisedQuery)) {
         initialsMatches.push(c);
       }
     }
