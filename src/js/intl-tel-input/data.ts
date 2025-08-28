@@ -1116,9 +1116,8 @@ export type Country = {
 
 const allCountries: Country[] = [];
 //* Loop over all of the countries above, restructuring the data to be objects with named keys.
-for (let i = 0; i < rawCountryData.length; i++) {
-  const c = rawCountryData[i];
-  allCountries[i] = {
+for (const c of rawCountryData) {
+  allCountries.push({
     name: "", // this is now populated in the plugin
     iso2: c[0],
     dialCode: c[1],
@@ -1126,7 +1125,7 @@ for (let i = 0; i < rawCountryData.length; i++) {
     areaCodes: c[3] || null,
     nodeById: {},
     nationalPrefix: c[4] || null,
-  };
+  });
 }
 
 export default allCountries;

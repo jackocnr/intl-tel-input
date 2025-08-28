@@ -3,8 +3,8 @@ import { I18n } from "./intl-tel-input/i18n/types";
 import defaultEnglishStrings from "./intl-tel-input/i18n/en";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
-for (let i = 0; i < allCountries.length; i++) {
-  allCountries[i].name = defaultEnglishStrings[allCountries[i].iso2];
+for (const c of allCountries) {
+  c.name = defaultEnglishStrings[c.iso2];
 }
 
 declare global {
@@ -517,10 +517,10 @@ export class Iti {
 
   //* Translate Countries by object literal provided on config.
   private _translateCountryNames(): void {
-    for (let i = 0; i < this.countries.length; i++) {
-      const iso2 = this.countries[i].iso2.toLowerCase();
+    for (const c of this.countries) {
+      const iso2 = c.iso2.toLowerCase();
       if (this.options.i18n.hasOwnProperty(iso2)) {
-        this.countries[i].name = this.options.i18n[iso2];
+        c.name = this.options.i18n[iso2];
       }
     }
   }
@@ -545,8 +545,7 @@ export class Iti {
     this.dialCodeToIso2Map = {};
 
     //* First: add dial codes.
-    for (let i = 0; i < this.countries.length; i++) {
-      const c = this.countries[i];
+    for (const c of this.countries) {
       if (!this.dialCodes.has(c.dialCode)) {
         this.dialCodes.add(c.dialCode);
       }
@@ -557,14 +556,12 @@ export class Iti {
     //* This is a second loop over countries, to make sure we have all of the "root" countries
     //* already in the map, so that we can access them, as each time we add an area code substring
     //* to the map, we also need to include the "root" country's code, as that also matches.
-    for (let i = 0; i < this.countries.length; i++) {
-      const c = this.countries[i];
+    for (const c of this.countries) {
       //* Area codes
       if (c.areaCodes) {
         const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
         //* For each area code.
-        for (let j = 0; j < c.areaCodes.length; j++) {
-          const areaCode = c.areaCodes[j];
+        for (const areaCode of c.areaCodes) {
           //* For each digit in the area code to add all partial matches as well.
           for (let k = 1; k < areaCode.length; k++) {
             const partialAreaCode = areaCode.substring(0, k);
@@ -1326,8 +1323,7 @@ export class Iti {
 
   //* Hidden search (countrySearch disabled): Find the first list item whose name starts with the query string.
   private _searchForCountry(query: string): void {
-    for (let i = 0; i < this.countries.length; i++) {
-      const c = this.countries[i];
+    for (const c of this.countries) {
       const startsWith = c.name.substring(0, query.length).toLowerCase() === query;
       if (startsWith) {
         const listItem = c.nodeById[this.id];
@@ -1355,9 +1351,7 @@ export class Iti {
     const dialCodeContains = [];
     const initialsMatches = [];
 
-    for (let i = 0; i < this.countries.length; i++) {
-      const c = this.countries[i];
-
+    for (const c of this.countries) {
       if (isReset || queryLength === 0) {
         nameContains.push(c);
       } else if (c.iso2 === normalisedQuery) {
@@ -1545,9 +1539,9 @@ export class Iti {
       //* B) the right country is not already selected
       if (!isRegionlessNanpNumber && !alreadySelected) {
         //* If using onlyCountries option, iso2Codes[0] may be empty, so we must find the first non-empty index.
-        for (let j = 0; j < iso2Codes.length; j++) {
-          if (iso2Codes[j]) {
-            return iso2Codes[j];
+        for (const iso2 of iso2Codes) {
+          if (iso2) {
+            return iso2;
           }
         }
       }
