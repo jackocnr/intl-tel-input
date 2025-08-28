@@ -96,13 +96,27 @@ export type SomeOptions = Partial<AllOptions>;
 //* These vars persist through all instances of the plugin.
 let id = 0;
 
+// Helper for media query evaluation
+const mq = (q: string): boolean => {
+  return typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia(q).matches;
+};
+
 //* Helper to decide whether to use fullscreen popup by default
 const computeDefaultUseFullscreenPopup = (): boolean => {
   if (typeof navigator !== "undefined" && typeof window !== "undefined") {
     //* We cannot just test screen size as some smartphones/website meta tags will report desktop resolutions.
     //* Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
+    // DEPRECATED: isMobileUserAgent will be removed in next major version
     const isMobileUserAgent = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    return isMobileUserAgent || window.innerWidth <= 500;
+    const isNarrowViewport = mq("(max-width: 500px)");
+    const isShortViewport = mq("(max-height: 600px)");
+    const isCoarsePointer = mq("(pointer: coarse)");
+    /* Heuristic rationale:
+      1. Always treat classic mobile UA as fullscreen-capable
+      2. If narrow width OR (coarse pointer with constrained height) we also prefer fullscreen for usability.
+        - Coarse pointer usually implies touch (phones/tablets, some hybrids) where larger touch targets help (and virtual keyboards may be used, which consume more vertical space)
+    */
+    return isMobileUserAgent || isNarrowViewport || (isCoarsePointer && isShortViewport);
   }
   return false;
 };
