@@ -131,17 +131,19 @@ const getValidationError = (number, countryCode) => {
 };
 
 //* FIXED_LINE_OR_MOBILE is its own category that is different to either MOBILE or FIXED_LINE (e.g. it is used for US numbers which could be used for either purpose - it should really be called something like FIXED_LINE_SLASH_MOBILE). So here we make it more user friendly by allowing it to be in any of those three categories. NOTE: this is actually in-line with how it behaves in other situations e.g. if you call isPossibleNumberForType with type="MOBILE" and the number set to a US number, it returns VALID even though it's type is technically FIXED_LINE_OR_MOBILE.
-const fixNumberTypeNames = (numberTypeNames) => {
+const getPatchedNumberTypeNames = (numberTypeNames) => {
+  const additions = [];
   if (numberTypeNames.includes("FIXED_LINE_OR_MOBILE")) {
     if (!numberTypeNames.includes("MOBILE")) {
-      numberTypeNames.push("MOBILE");
+      additions.push("MOBILE");
     }
     if (!numberTypeNames.includes("FIXED_LINE")) {
-      numberTypeNames.push("FIXED_LINE");
+      additions.push("FIXED_LINE");
     }
   } else if (numberTypeNames.includes("MOBILE") || numberTypeNames.includes("FIXED_LINE")) {
-    numberTypeNames.push("FIXED_LINE_OR_MOBILE");
+    additions.push("FIXED_LINE_OR_MOBILE");
   }
+  return numberTypeNames.concat(additions);
 };
 
 //* Check if given number is valid.
@@ -151,8 +153,8 @@ const isValidNumber = (number, countryCode, numberTypeNames) => {
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
     const isValidNumber = phoneUtil.isValidNumber(numberObj);
     if (numberTypeNames) {
-      fixNumberTypeNames(numberTypeNames);
-      const numberTypes = numberTypeNames.map((typeName) => numberType[typeName]);
+      const patchedTypeNames = getPatchedNumberTypeNames(numberTypeNames);
+      const numberTypes = patchedTypeNames.map((typeName) => numberType[typeName]);
       return isValidNumber && numberTypes.includes(phoneUtil.getNumberType(numberObj));
     }
     return isValidNumber;
@@ -168,8 +170,8 @@ const isPossibleNumber = (number, countryCode, numberTypeNames) => {
     const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
 
     if (numberTypeNames) {
-      fixNumberTypeNames(numberTypeNames);
-      for (let typeName of numberTypeNames) {
+      const patchedTypeNames = getPatchedNumberTypeNames(numberTypeNames);
+      for (let typeName of patchedTypeNames) {
         //* Can't use phoneUtil.isPossibleNumberForType directly as it accepts IS_POSSIBLE_LOCAL_ONLY numbers e.g. local numbers that are much shorter.
         const resultForType = phoneUtil.isPossibleNumberForTypeWithReason(numberObj, numberType[typeName]);
         if (resultForType === i18n.phonenumbers.PhoneNumberUtil.ValidationResult.IS_POSSIBLE) {
