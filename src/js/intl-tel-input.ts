@@ -243,8 +243,8 @@ const translateCursorPosition = (
 };
 
 //* Create a DOM element.
-const createEl = (name: string, attrs: object | null, container?: HTMLElement): HTMLElement => {
-  const el = document.createElement(name);
+const createEl = (tagName: string, attrs?: object | null, container?: HTMLElement): HTMLElement => {
+  const el = document.createElement(tagName);
   if (attrs) {
     Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
   }
@@ -317,6 +317,14 @@ export class Iti {
   private rejectAutoCountryPromise: (reason?: unknown) => void;
   private resolveUtilsScriptPromise: (value?: unknown) => void;
   private rejectUtilsScriptPromise: (reason?: unknown) => void;
+
+  /**
+   * Build a space-delimited class string from an object map of className -> truthy/falsey.
+   * Only keys with truthy values are included.
+   */
+  private static _buildClassNames(flags: Record<string, unknown>): string {
+    return Object.keys(flags).filter((k) => Boolean(flags[k])).join(" ");
+  }
 
   constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
@@ -606,21 +614,14 @@ export class Iti {
     } = this.options;
 
     //* Containers (mostly for positioning).
-    let parentClass = "iti";
-    if (allowDropdown) {
-      parentClass += " iti--allow-dropdown";
-    }
-    if (showFlags) {
-      parentClass += " iti--show-flags";
-    }
-    if (containerClass) {
-      parentClass += ` ${containerClass}`;
-    }
-    if (!useFullscreenPopup) {
-      parentClass += " iti--inline-dropdown";
-    }
-
-    const wrapper = createEl("div", { class: parentClass });
+    const parentClasses = Iti._buildClassNames({
+      "iti": true,
+      "iti--allow-dropdown": allowDropdown,
+      "iti--show-flags": showFlags,
+      "iti--inline-dropdown": !useFullscreenPopup,
+      [containerClass]: Boolean(containerClass),
+    });
+    const wrapper = createEl("div", { class: parentClasses });
     this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
 
     //* If we need a countryContainer
@@ -738,15 +739,13 @@ export class Iti {
 
         //* Create dropdownContainer markup.
         if (dropdownContainer) {
-          let dropdownClasses = "iti iti--container";
-          if (containerClass) {
-            dropdownClasses += ` ${containerClass}`;
-          }
-          if (useFullscreenPopup) {
-            dropdownClasses += " iti--fullscreen-popup";
-          } else {
-            dropdownClasses += " iti--inline-dropdown";
-          }
+          const dropdownClasses = Iti._buildClassNames({
+            "iti": true,
+            "iti--container": true,
+            "iti--fullscreen-popup": useFullscreenPopup,
+            "iti--inline-dropdown": !useFullscreenPopup,
+            [containerClass]: Boolean(containerClass),
+          });
           this.dropdown = createEl("div", { class: dropdownClasses });
           this.dropdown.appendChild(this.dropdownContent);
         } else {
