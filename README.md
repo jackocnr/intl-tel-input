@@ -251,7 +251,7 @@ This will generate the following (hidden) elements, which will be automatically 
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allow localisation/customisation of the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input). The easiest way to do this is to simply import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) and set `i18n` to that value (see option 1 below). You can also override one or more individual keys this way (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, you will need to specify all the country names (which can be copied from the country-list project e.g. here are the [country names in French](https://github.com/umpirsky/country-list/blob/master/data/fr/country.json)), as well as a few UI strings (listed below). [See example](https://intl-tel-input.com/examples/localise-countries.html).
+Allows you to specify translation strings for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input). The easiest way to do this is to import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) and set `i18n` to that value (see option 1 below). You can also override one or more individual keys this way (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, you will need to specify all the country names (which can be copied from the country-list project, e.g. here are the [country names in French](https://github.com/umpirsky/country-list/blob/master/data/fr/country.json)), as well as a few UI strings (listed below). [See example](https://intl-tel-input.com/examples/localise-countries.html).
 
 If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings, as we automatically pull in the country names from the country-list project.
 
@@ -297,7 +297,7 @@ intlTelInput(input, {
     oneSearchResult: "1 result found",
     // Screen reader text for when the search produces multiple results
     multipleSearchResults: "${count} results found",
-    // For more complex pluralisation cases e.g. Polish or Arabic, you can implement your own logic
+    // For more complex pluralisation cases, e.g. Polish or Arabic, you can implement your own logic
     // Note that if this function is defined, the plugin will ignore the "zero", "one" and "multiple" keys listed above
     searchResultsText(count) {
       if (count === 0) return "No results found";
