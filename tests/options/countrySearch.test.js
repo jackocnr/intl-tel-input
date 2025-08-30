@@ -18,7 +18,7 @@ jest.useFakeTimers({advanceTimers: true});
 
 let searchInput, iti, container, user;
 
-describe("countrySearch", () => {
+describe("countrySearch option", () => {
   beforeEach(async () => {
     user = userEvent.setup();
     ({ container, iti } = initPlugin());

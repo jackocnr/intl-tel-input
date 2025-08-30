@@ -57,7 +57,9 @@ exports.teardown = (iti) => {
     instance.destroy();
   }
 
-  document.body.innerHTML = "";
+  if (document.body) {
+    document.body.innerHTML = "";
+  }
   jest.restoreAllMocks();
 };
 
@@ -78,8 +80,14 @@ exports.resetPackageAfterEach = (intlTelInput = intlTelInputWithUtils) => {
   });
 };
 
+exports.getCountryContainer = (root) => root.querySelector(".iti__country-container");
+
+exports.getArrowElement = (root) => root.querySelector(".iti__arrow");
+
+exports.getCountryListElement = (root) => root.querySelector(".iti__country-list");
+
 exports.getCountryListLength = (container) => {
-  const countryList = container.querySelector(".iti__country-list");
+  const countryList = exports.getCountryListElement(container);
   return countryList.querySelectorAll("li.iti__country").length;
 };
 
@@ -96,7 +104,11 @@ exports.getSelectedDialCodeText = (container) => {
 };
 
 exports.isDropdownOpen = (container) => {
-  return !container.querySelector(".iti__dropdown-content").classList.contains("iti__hide");
+  return !exports.getDropdownElement(container).classList.contains("iti__hide");
+};
+
+exports.getDropdownElement = (container) => {
+  return container.querySelector(".iti__dropdown-content");
 };
 
 exports.getSearchInput = (container) => {
@@ -148,3 +160,7 @@ exports.typePlaceholderNumberAsync = async (user, input) => {
 
 // strip formatting chars like space, dash, brackets (leaving just numerics and optional plus)
 exports.stripFormattingChars = (str) => str.replace(/[^0-9+]/g, "");
+
+exports.oneTickAsync = async () => {
+  await new Promise(resolve => setTimeout(resolve));
+};

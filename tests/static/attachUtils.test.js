@@ -18,16 +18,16 @@ describe("attachUtils", function() {
       loadResult = intlTelInput.attachUtils(utilsLoader);
     });
 
-    it("starts loading the utils", () => {
+    test("starts loading the utils", () => {
       expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
     });
 
-    it("resolves the promise", async () => {
+    test("resolves the promise", async () => {
       expect(loadResult).toBeAPromise();
       await expect(loadResult).resolves.toBe(true);
     });
 
-    it("installs the utils module at intlTelInput.utils", async () => {
+    test("installs the utils module at intlTelInput.utils", async () => {
       await loadResult;
 
       expect(intlTelInput).toHaveProperty("utils.isValidNumber");
@@ -35,7 +35,7 @@ describe("attachUtils", function() {
 
     describe("then init plugin with loadUtils option", () => {
 
-      it("resolves the instance's promise", async () => {
+      test("resolves the instance's promise", async () => {
         const { iti } = initPlugin({
           intlTelInput,
           options: {
@@ -67,11 +67,11 @@ describe("attachUtils", function() {
       }));
     });
 
-    it("does not start loading the utils", function() {
+    test("does not start loading the utils", function() {
       expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
     });
 
-    it("does not resolve the promise", async function() {
+    test("does not resolve the promise", async function() {
       await expect(iti.promise).toBePending();
     });
 
@@ -85,11 +85,11 @@ describe("attachUtils", function() {
         attachUtilsPromise = intlTelInput.attachUtils(utilsLoader);
       });
 
-      it("starts loading the utils", function() {
+      test("starts loading the utils", function() {
         expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
       });
 
-      it("resolves the promise", async function() {
+      test("resolves the promise", async function() {
         await expect(attachUtilsPromise).resolves.toBe(true);
       });
 
@@ -107,7 +107,7 @@ describe("attachUtils", function() {
           });
         });
 
-        it("only loads once", function() {
+        test("only loads once", function() {
           expect(utilsLoader).toHaveBeenCalledTimes(1);
         });
 
@@ -133,11 +133,11 @@ describe("attachUtils", function() {
       }));
     });
 
-    it("resolves the promise immediately", async function() {
+    test("resolves the promise immediately", async function() {
       await expect(iti.promise).resolves.toBeInstanceOf(Array);
     });
 
-    it("starts loading the utils", function() {
+    test("starts loading the utils", function() {
       expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
     });
 
@@ -148,14 +148,14 @@ describe("attachUtils", function() {
   describe("calling with a function", function() {
     const mockUtils = { default: { mymodule: "fakeutils" } };
 
-    it("uses the object the function resolves with", async () => {
+    test("uses the object the function resolves with", async () => {
       const result = await intlTelInput.attachUtils(async () => mockUtils);
 
       expect(result).toEqual(true);
       expect(intlTelInput.utils).toBe(mockUtils.default);
     });
 
-    it("rejects if the function rejects", async () => {
+    test("rejects if the function rejects", async () => {
       const loadPromise = intlTelInput.attachUtils(async () => {
         throw new Error("Uhoh!");
       });
@@ -163,7 +163,7 @@ describe("attachUtils", function() {
       await expect(loadPromise).rejects.toThrow("Uhoh!");
     });
 
-    it("rejects if the function throws", async () => {
+    test("rejects if the function throws", async () => {
       const loadPromise = intlTelInput.attachUtils(() => {
         throw new Error("Uhoh!");
       });
@@ -171,7 +171,7 @@ describe("attachUtils", function() {
       await expect(loadPromise).rejects.toThrow("Uhoh!");
     });
 
-    it("rejects if the function returns a non-promise", async () => {
+    test("rejects if the function returns a non-promise", async () => {
       const loadPromise = intlTelInput.attachUtils(() => ({
         anObject: "That is not a promise",
       }));
@@ -179,13 +179,13 @@ describe("attachUtils", function() {
       await expect(loadPromise).rejects.toThrow();
     });
 
-    it("rejects if the function resolves to a non-object", async () => {
+    test("rejects if the function resolves to a non-object", async () => {
       const loadPromise = intlTelInput.attachUtils(async () => "Hello!");
 
       await expect(loadPromise).rejects.toThrow();
     });
 
-    it("does not call the function a second time", async () => {
+    test("does not call the function a second time", async () => {
       const loader = jest.fn(async () => mockUtils);
 
       await intlTelInput.attachUtils(loader);

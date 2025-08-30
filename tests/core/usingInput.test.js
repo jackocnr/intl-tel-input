@@ -17,11 +17,11 @@ describe("using input", () => {
     user = userEvent.setup();
     ({ iti, input, container } = initPlugin());
   });
-      
+
   afterEach(() => {
     teardown(iti);
   });
-  
+
   describe("typing a number with an intl dial code", () => {
     beforeEach(async () => {
       await user.type(input, "+44 1234567");
@@ -33,7 +33,7 @@ describe("using input", () => {
 
     //* This was a bug.
     test("clearing the input again does not change the selected flag", async () => {
-      input.value = "";
+      await user.clear(input);
       await user.type(input, " ");
       expect(checkFlagSelected(container, "gb")).toBe(true);
     });

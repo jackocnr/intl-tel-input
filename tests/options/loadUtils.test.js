@@ -5,12 +5,12 @@
 const intlTelInput = require("intl-tel-input");
 const { initPlugin, resetPackageAfterEach } = require("../helpers/helpers");
 
-describe("loadUtils", () => {
+describe("loadUtils option", () => {
   resetPackageAfterEach(intlTelInput);
 
   const loadUtils = () => import("intl-tel-input/utils");
 
-  it("does not load the utils script if `loadUtils` option is not set", async () => {
+  test("does not load the utils script if `loadUtils` option is not set", async () => {
     const { iti } = initPlugin({ intlTelInput });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
@@ -20,7 +20,7 @@ describe("loadUtils", () => {
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
   });
 
-  it("loads the utils script successfully", async () => {
+  test("loads the utils script successfully", async () => {
     expect(intlTelInput).not.toHaveProperty("utils.isValidNumber");
 
     const { iti } = initPlugin({
@@ -32,7 +32,7 @@ describe("loadUtils", () => {
     expect(intlTelInput).toHaveProperty("utils.isValidNumber");
   });
 
-  it("waits until the page is loaded before loading utils", async () => {
+  test("waits until the page is loaded before loading utils", async () => {
     jest.spyOn(intlTelInput, "documentReady").mockReturnValue(false);
 
     const { iti } = initPlugin({
@@ -50,7 +50,7 @@ describe("loadUtils", () => {
     await iti.promise;
   });
 
-  it("loads utils immediately if page is already finished loading", async function() {
+  test("loads utils immediately if page is already finished loading", async function() {
     jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
     const { iti } = initPlugin({
@@ -63,7 +63,7 @@ describe("loadUtils", () => {
     await iti.promise;
   });
 
-  it("rejects with an error if the utils script cannot load", async function() {
+  test("rejects with an error if the utils script cannot load", async function() {
     jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
     const { iti } = initPlugin({
@@ -72,11 +72,11 @@ describe("loadUtils", () => {
     });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
-    
+
     await expect(iti.promise).rejects.toThrow();
   });
 
-  it("works if loadUtils is a function", async function() {
+  test("works if loadUtils is a function", async function() {
     const mockUtils = { default: { mockUtils: true } };
     jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
@@ -95,7 +95,7 @@ describe("loadUtils", () => {
     expect(intlTelInput.utils).toBe(mockUtils.default);
   });
 
-  it("works if loadUtils returns a custom promise", async function() {
+  test("works if loadUtils returns a custom promise", async function() {
     const mockUtils = { default: { mockUtils: true } };
 
     const { iti } = initPlugin({
@@ -118,7 +118,7 @@ describe("loadUtils", () => {
     const intlTelInput = require("intl-tel-input/intlTelInputWithUtils");
     resetPackageAfterEach(intlTelInput);
 
-    it("ignores the `loadUtils` option and does not load", async () => {
+    test("ignores the `loadUtils` option and does not load", async () => {
       const { iti } = initPlugin({
         intlTelInput,
         options: { loadUtils },

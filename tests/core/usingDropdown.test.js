@@ -22,7 +22,7 @@ describe("using dropdown", () => {
     user = userEvent.setup();
     ({ iti, container, input } = initPlugin());
   });
-      
+
   afterEach(() => {
     teardown(iti);
   });
@@ -41,7 +41,7 @@ describe("using dropdown", () => {
       container.ownerDocument.documentElement.dir = "rtl";
       ({ iti, container, input } = initPlugin());
     });
-        
+
     afterEach(() => {
       teardown(iti);
       container.ownerDocument.documentElement.dir = originalDir;
@@ -53,12 +53,12 @@ describe("using dropdown", () => {
       expect(countryContainer.style.right).toEqual("0px");
     });
   });
-  
+
   test("clicking the selected flag opens the dropdown", async () => {
     await clickSelectedCountryAsync(container, user);
     expect(isDropdownOpen(container)).toBe(true);
   });
-  
+
   test("allows focusing the selected country using the keyboard", async () => {
     await user.keyboard("{Tab}");
     const selectedCountry = getSelectedCountryButton(container);
@@ -111,18 +111,18 @@ describe("using dropdown: disabled input", () => {
     input = injectInput({ disabled: true });
     ({ iti, container } = initPlugin({ input }));
   });
-      
+
   afterEach(() => {
     teardown(iti);
   });
 
-  it("prevents the user from opening the dropdown using the keyboard", async () => {
+  test("prevents the user from opening the dropdown using the keyboard", async () => {
     await user.keyboard("{Tab}");
     const selectedCountry = getSelectedCountryButton(container);
     expect(selectedCountry).not.toHaveFocus();
   });
 
-  it("clicking the selected flag does not open the dropdown", async () => {
+  test("clicking the selected flag does not open the dropdown", async () => {
     await clickSelectedCountryAsync(container, user);
     expect(isDropdownOpen(container)).toBe(false);
   });

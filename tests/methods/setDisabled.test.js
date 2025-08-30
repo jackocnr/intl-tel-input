@@ -13,7 +13,7 @@ const {
 
 let iti, user, container, input;
 
-describe("using setDisabled method", () => {
+describe("setDisabled method", () => {
   beforeEach(() => {
     user = userEvent.setup();
     ({ iti, container, input } = initPlugin());
@@ -24,42 +24,39 @@ describe("using setDisabled method", () => {
     teardown(iti);
   });
 
-  test("disables the input field when setDisabled(true)", async () => {
+  test("disables the input", async () => {
     expect(input.disabled).toBe(true);
   });
 
-  test("disables dropdown to open when setDisabled(true)", async () => {
+  test("disables clicking selected country to open dropdown", async () => {
     await clickSelectedCountryAsync(container, user);
     expect(isDropdownOpen(container)).toBe(false);
   });
 
-  test("enables the input field when setDisabled(true) to setDisabled(false)", async () => {
-    iti.setDisabled(false);
-    expect(input.disabled).toBe(false);
+  test("disables focusing the selected country", async () => {
+    await user.keyboard("{Tab}");
+    const selectedCountryButton = getSelectedCountryButton(container);
+    expect(selectedCountryButton).not.toHaveFocus();
   });
 
-  test("enables dropdown to open when setDisabled(true) to setDisabled(false)", async () => {
-    iti.setDisabled(false);
-    await clickSelectedCountryAsync(container, user);
-    expect(isDropdownOpen(container)).toBe(true);
-  });
-
-  describe("dropdown shortcuts when using setDisabled method", () => {
-    beforeEach(async () => {
-      iti.setDisabled(true);
-    });
-  
-    test("disables focusing the selected country when setDisabled(true)", async () => {
-        await user.keyboard("{Tab}");
-        const selectedCountry = getSelectedCountryButton(container);
-        expect(selectedCountry).not.toHaveFocus();
+  describe("then calling setDisabled(false)", () => {
+    beforeEach(() => {
+      iti.setDisabled(false);
     });
 
-    test("enables focusing the selected country when setDisabled(true) to setDisabled(false)", async () => {
-        iti.setDisabled(false); 
-        await user.keyboard("{Tab}");
-        const selectedCountry = getSelectedCountryButton(container);
-        expect(selectedCountry).toHaveFocus();
+    test("re-enables the input field", async () => {
+      expect(input.disabled).toBe(false);
+    });
+
+    test("re-enables clicking selected flag to open dropdown", async () => {
+      await clickSelectedCountryAsync(container, user);
+      expect(isDropdownOpen(container)).toBe(true);
+    });
+
+    test("re-enables focusing the selected country", async () => {
+      await user.keyboard("{Tab}");
+      const selectedCountryButton = getSelectedCountryButton(container);
+      expect(selectedCountryButton).toHaveFocus();
     });
   });
 });
