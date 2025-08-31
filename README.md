@@ -464,6 +464,12 @@ Change the selected country. It should be rare, if ever, that you need to do thi
 iti.setCountry("gb");
 ```
 
+**setDisabled**  
+Updates the disabled attribute of both the telephone input and the selected country button. Accepts a boolean value. _Note: we recommend using this instead of updating the disabled attribute of the input directly._
+```js
+iti.setDisabled(true);
+```
+
 **setNumber**  
 Insert a number, and update the selected country accordingly. _Note that if `formatOnDisplay` is enabled, this will attempt to format the number to either national or international format according to the `nationalMode` option._  
 ```js
@@ -474,12 +480,6 @@ iti.setNumber("+447733123456");
 Change the placeholderNumberType option.
 ```js
 iti.setPlaceholderNumberType("FIXED_LINE");
-```
-
-**setDisabled**  
-Updates the disabled attribute of both the telephone input and the selected country button. Accepts a boolean value. _Note: we recommend using this instead of updating the disabled attribute of the input directly._
-```js
-iti.setDisabled(true);
 ```
 
 ## Static Methods
