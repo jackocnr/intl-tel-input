@@ -7,6 +7,8 @@
   --iti-border-color: #ccc; //* Used for both the dropdown border, and the divider under the country search input.
   --iti-dialcode-color: #999;
   --iti-dropdown-bg: white;
+  //* Colour for the decorative magnifying glass icon in the country search input.
+  --iti-search-icon-color: #999;
 
   --iti-spacer-horizontal: 8px;
   --iti-flag-height: #{$flag-height};
@@ -165,6 +167,20 @@
     width: 100%;
     border-width: 0;
     border-radius: 3px;
+    //* Add magnifying glass icon (decorative) inside the search field.
+    //* Using an inline SVG so we avoid extra network requests. The icon uses stroke so it blends on light backgrounds.
+    padding-left: 30px; //* Space for icon (8px spacer + ~14px icon + gap).
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 8px center;
+    background-size: 14px 14px;
+
+    //* RTL: put the icon on the right instead.
+    [dir="rtl"] & {
+      padding-left: inherit;
+      padding-right: 30px;
+      background-position: right 8px center;
+    }
 
     & + .iti__country-list {
       border-top: 1px solid var(--iti-border-color);
