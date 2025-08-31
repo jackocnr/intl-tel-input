@@ -15,11 +15,8 @@ If you want to try out a demo playground for the component:
 1. Start the server by running `npm run server`.
 2. Open the demo page in your browser at the address printed to your console.
 
-**Tests** are broken up into two parts. We are currently porting the existing test suite from Grunt & Jasmine to Jest.
-- To run all tests, run `npm test`.
-- To only run the new tests, run `npm run jest`.
-- To only run the old tests, run `npx grunt jasmine:test`.
-- To run & debug the old tests interactively in your browser, run: `npx grunt jasmine:interactive` and load the URL it prints out in your browser.
+**Tests**
+- Run `npm test`.
 
 **Any time you make changes, you’ll need to rebuild the plugin.** Most tests run against the builds, so after making changes, you’ll need to do a build before running tests.
 - To do a complete build, run `npm run build`

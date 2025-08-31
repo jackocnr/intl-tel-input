@@ -30,21 +30,6 @@ module.exports = function(grunt) {
   grunt.registerTask('vue', ['replace:vueWithUtils', 'shell:buildVue']);
   // just angular
   grunt.registerTask('angular', ['replace:angularWithUtils', 'shell:buildAngular']);
-  // Run tests with a server so that async imports/fetches work.
-  grunt.registerTask('jasmine:test', ['connect:test', 'jasmine']);
-  grunt.registerTask('jasmine:interactive', () => {
-    grunt.event.once('connect.test.listening', (host, port) => {
-      const origin = `http://${host === '::' ? 'localhost' : host}:${port}`;
-      console.log(`
-        To view and debug tests in your browser, go to ${origin}/spec.html
-        To play with a demo of the package, go to ${origin}/demo.html
-      `);
-    });
-    grunt.task.run('connect:test:keepalive');
-  });
-
-  // Travis CI
-  grunt.registerTask('travis', ['jasmine:test']);
   // bump version number in 3 files, rebuild js to update headers, then commit, tag and push
   grunt.registerTask('version', ['shell:test', 'bump-only', 'js', 'bump-commit']);
   grunt.registerTask('version:minor', ['shell:test', 'bump-only:minor', 'js', 'bump-commit']);
