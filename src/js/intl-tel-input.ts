@@ -289,6 +289,7 @@ export class Iti {
   private dropdownArrow: HTMLElement;
   private dropdownContent: HTMLElement;
   private searchInput: HTMLInputElement;
+  private searchIcon: HTMLElement;
   private searchClearButton: HTMLButtonElement;
   private searchResultsA11yText: HTMLElement;
   private countryList: HTMLElement;
@@ -702,14 +703,26 @@ export class Iti {
         });
 
         if (countrySearch) {
-          // Wrapper so we can position the clear button over the input without affecting list border
+          // Wrapper so we can position the icons (search + clear)
           const searchWrapper = createEl(
             "div",
-            {
-              class: "iti__search-input-wrapper",
-            },
+            { class: "iti__search-input-wrapper" },
             this.dropdownContent,
           );
+          // Search (magnifying glass) icon SVG
+          this.searchIcon = createEl(
+            "span",
+            {
+              class: "iti__search-icon",
+              "aria-hidden": "true",
+            },
+            searchWrapper,
+          );
+          this.searchIcon.innerHTML = `
+            <svg class="iti__search-icon-svg" width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>`;
           this.searchInput = createEl(
             "input",
             {
@@ -723,7 +736,7 @@ export class Iti {
               "aria-autocomplete": "list",
               "autocomplete": "off",
             },
-            searchWrapper,
+           searchWrapper,
           ) as HTMLInputElement;
           this.searchClearButton = createEl(
             "button",
@@ -731,15 +744,19 @@ export class Iti {
               type: "button",
               class: "iti__search-clear iti__hide",
               "aria-label": i18n.clearSearchAriaLabel,
-              tabindex: "-1", // do not take focus away from input when filtering rapidly
+              tabindex: "-1",
             },
             searchWrapper,
           ) as HTMLButtonElement;
-          // Filled circle with cross (using currentColor for circle fill)
+          const maskId = `iti-${this.id}-clear-mask`;
+          // Mask creates a transparent cross 'cut' through the filled circle so underlying input bg shows.
           this.searchClearButton.innerHTML = `
-            <svg class="iti__search-clear-icon" width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <circle cx="8" cy="8" r="8" fill="currentColor" />
-              <path d="M5.2 5.2a.6.6 0 0 1 .85 0L8 7.15l1.95-1.95a.6.6 0 0 1 .85.85L8.85 8l1.95 1.95a.6.6 0 1 1-.85.85L8 8.85l-1.95 1.95a.6.6 0 0 1-.85-.85L7.15 8 5.2 6.05a.6.6 0 0 1 0-.85Z" fill="#fff" />
+            <svg class="iti__search-clear-svg" width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <mask id="${maskId}" maskUnits="userSpaceOnUse">
+                <rect width="16" height="16" fill="white" />
+                <path d="M5.2 5.2 L10.8 10.8 M10.8 5.2 L5.2 10.8" stroke="black" stroke-linecap="round" class="iti__search-clear-x" />
+              </mask>
+              <circle cx="8" cy="8" r="8" class="iti__search-clear-bg" mask="url(#${maskId})" />
             </svg>`;
           this.searchResultsA11yText = createEl(
             "span",

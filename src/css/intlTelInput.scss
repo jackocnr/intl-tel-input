@@ -160,12 +160,8 @@
     border-radius: 3px;
     //* Add magnifying glass icon (decorative) inside the search field.
     //* Using an inline SVG so we avoid extra network requests. The icon uses stroke so it blends on light backgrounds.
-    padding-left: 30px; //* Space for icon (8px spacer + ~14px icon + gap).
-    padding-right: 28px; //* Space for clear button (positioned absolutely on the right).
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
-    background-repeat: no-repeat;
-    background-position: 8px center;
-    background-size: 14px 14px;
+    padding-left: 30px; //* Space for inline search icon.
+    padding-right: 28px; //* Space for clear button.
 
     //* RTL: put the icon on the right instead.
     [dir="rtl"] & {
@@ -183,23 +179,40 @@
     display: flex;
     align-items: center;
   }
+  &__search-icon {
+    position: absolute;
+    left: 8px;
+    display: flex;
+    pointer-events: none;
+  }
+  [dir="rtl"] &__search-icon {
+    left: auto;
+    right: 8px;
+  }
+  &__search-icon-svg {
+    stroke: var(--iti-search-icon-color);
+    fill: none;
+    stroke-width: 3;
+  }
   &__search-clear {
     position: absolute;
     right: 4px;
     background: transparent;
     border: 0;
-    color: var(--iti-search-icon-color);
     cursor: pointer;
-    line-height: 0;
     padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 3px;
     transition: background-color 0.15s ease;
+    width: 24px;
+    height: 24px;
 
-    .iti__search-clear-icon {
-      display: block;
+    .iti__search-clear-x {
+      stroke-width: 2;
+    }
+    .iti__search-clear-bg {
+      fill: var(--iti-search-icon-color);
     }
   }
   [dir="rtl"] &__search-clear {
