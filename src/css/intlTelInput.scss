@@ -199,6 +199,7 @@
     right: 4px;
     background: transparent;
     border: 0;
+    border-radius: 3px; // nice on hover state
     cursor: pointer;
     padding: 4px;
     display: flex;
@@ -222,6 +223,10 @@
   &__search-clear:hover, &__search-clear:focus-visible {
     background: var(--iti-hover-color);
     outline: none;
+  }
+  &__no-results {
+    text-align: center;
+    padding: 30px 0;
   }
   &__country-list {
     //* Override default list styles.

@@ -291,6 +291,7 @@ export class Iti {
   private searchInput: HTMLInputElement;
   private searchIcon: HTMLElement;
   private searchClearButton: HTMLButtonElement;
+  private searchNoResults: HTMLElement;
   private searchResultsA11yText: HTMLElement;
   private countryList: HTMLElement;
   private dropdown: HTMLElement;
@@ -763,6 +764,16 @@ export class Iti {
             { class: "iti__a11y-text" },
             this.dropdownContent,
           );
+          // Visible no-results message (hidden by default)
+          this.searchNoResults = createEl(
+            "div",
+            {
+              class: "iti__no-results iti__hide",
+              "aria-hidden": "true", // all a11y messaging happens in this.searchResultsA11yText
+            },
+            this.dropdownContent,
+          );
+          this.searchNoResults.textContent = i18n.zeroSearchResults;
         }
 
         this.countryList = createEl(
@@ -1451,6 +1462,11 @@ export class Iti {
     //* If no countries are shown, unhighlight the previously highlighted item.
     if (noCountriesAddedYet) {
       this._highlightListItem(null, false);
+      if (this.searchNoResults) {
+        this.searchNoResults.classList.remove("iti__hide");
+      }
+    } else if (this.searchNoResults) {
+      this.searchNoResults.classList.add("iti__hide");
     }
     //* Scroll to top (useful if user had previously scrolled down).
     this.countryList.scrollTop = 0;
