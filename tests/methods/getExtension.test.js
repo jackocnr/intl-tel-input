@@ -13,6 +13,7 @@ describe("getExtension method", () => {
     ({ iti, input } = initPlugin());
     user = userEvent.setup();
   });
+
   afterEach(() => teardown(iti));
 
   test("works for various delimiters", async () => {

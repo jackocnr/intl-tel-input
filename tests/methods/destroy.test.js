@@ -7,9 +7,11 @@ const { initPlugin, teardown, getCountryContainer, getCountryListElement } = req
 describe("destroy method", () => {
   describe("vanilla init", () => {
     let iti, input;
+
     beforeEach(() => {
       ({ iti, input } = initPlugin());
     });
+
     afterEach(() => teardown(iti));
 
     test("adds markup on init", () => {

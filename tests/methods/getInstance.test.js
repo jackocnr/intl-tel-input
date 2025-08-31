@@ -6,7 +6,11 @@ const intlTelInput = require("intlTelInputWithUtils.js");
 
 describe("getInstance static", () => {
   let iti, input;
-  beforeEach(() => { ({ iti, input } = initPlugin()); });
+
+  beforeEach(() => {
+    ({ iti, input } = initPlugin());
+  });
+
   afterEach(() => teardown(iti));
 
   test("returns instance when exists", () => {

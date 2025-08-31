@@ -13,6 +13,7 @@ describe("getValidationError method", () => {
     ({ iti, input } = initPlugin());
     user = userEvent.setup();
   });
+
   afterEach(() => teardown(iti));
 
   test("too short", async () => {

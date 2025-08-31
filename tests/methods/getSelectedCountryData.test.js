@@ -11,6 +11,7 @@ describe("getSelectedCountryData method", () => {
     ({ iti, input } = initPlugin());
     user = userEvent.setup();
   });
+
   afterEach(() => teardown(iti));
 
   test("gets the right default country data (empty state)", () => {
