@@ -6,10 +6,11 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "No country selected",
   countryListAriaLabel: "List of countries",
   searchPlaceholder: "Search",
+  clearSearchAriaLabel: "Clear search",
   zeroSearchResults: "No results found",
   oneSearchResult: "1 result found",
   multipleSearchResults: "${count} results found",
-  
+
   // additional countries (not supported by country-list library)
   ac: "Ascension Island",
   xk: "Kosovo",

@@ -245,6 +245,7 @@ export type I18n = {
   ax?: string;
   selectedCountryAriaLabel?: string;
   searchPlaceholder?: string;
+  clearSearchAriaLabel?: string;
   countryListAriaLabel?: string;
   oneSearchResult?: string;
   multipleSearchResults?: string;

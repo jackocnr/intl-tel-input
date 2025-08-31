@@ -47,15 +47,6 @@
     box-sizing: border-box;
   }
 
-  &__hide {
-    display: none;
-  }
-
-  //* Need this during init, to get the height of the dropdown.
-  &__v-hide {
-    visibility: hidden;
-  }
-
   &__a11y-text {
     width: 1px;
     height: 1px;
@@ -170,6 +161,7 @@
     //* Add magnifying glass icon (decorative) inside the search field.
     //* Using an inline SVG so we avoid extra network requests. The icon uses stroke so it blends on light backgrounds.
     padding-left: 30px; //* Space for icon (8px spacer + ~14px icon + gap).
+    padding-right: 28px; //* Space for clear button (positioned absolutely on the right).
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
     background-repeat: no-repeat;
     background-position: 8px center;
@@ -185,6 +177,38 @@
     & + .iti__country-list {
       border-top: 1px solid var(--iti-border-color);
     }
+  }
+  &__search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  &__search-clear {
+    position: absolute;
+    right: 4px;
+    background: transparent;
+    border: 0;
+    color: var(--iti-search-icon-color);
+    cursor: pointer;
+    line-height: 0;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: background-color 0.15s ease;
+
+    .iti__search-clear-icon {
+      display: block;
+    }
+  }
+  [dir="rtl"] &__search-clear {
+    right: auto;
+    left: 4px;
+  }
+  &__search-clear:hover, &__search-clear:focus-visible {
+    background: var(--iti-hover-color);
+    outline: none;
   }
   &__country-list {
     //* Override default list styles.
@@ -280,6 +304,16 @@
     &:hover {
       cursor: pointer;
     }
+  }
+
+  // put these at the end, so they override other classes with display:flex etc
+  &__hide {
+    display: none;
+  }
+
+  //* Need this during init, to get the height of the dropdown.
+  &__v-hide {
+    visibility: hidden;
   }
 }
 

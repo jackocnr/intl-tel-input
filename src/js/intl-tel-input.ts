@@ -289,6 +289,7 @@ export class Iti {
   private dropdownArrow: HTMLElement;
   private dropdownContent: HTMLElement;
   private searchInput: HTMLInputElement;
+  private searchClearButton: HTMLButtonElement;
   private searchResultsA11yText: HTMLElement;
   private countryList: HTMLElement;
   private dropdown: HTMLElement;
@@ -311,6 +312,7 @@ export class Iti {
   private _handleClickOffToClose: () => void;
   private _handleKeydownOnDropdown: (e: KeyboardEvent) => void;
   private _handleSearchChange: () => void;
+  private _handleSearchClear: (e: MouseEvent) => void;
   private _handlePageLoad: () => void;
 
   private resolveAutoCountryPromise: (value?: unknown) => void;
@@ -700,6 +702,14 @@ export class Iti {
         });
 
         if (countrySearch) {
+          // Wrapper so we can position the clear button over the input without affecting list border
+          const searchWrapper = createEl(
+            "div",
+            {
+              class: "iti__search-input-wrapper",
+            },
+            this.dropdownContent,
+          );
           this.searchInput = createEl(
             "input",
             {
@@ -713,8 +723,24 @@ export class Iti {
               "aria-autocomplete": "list",
               "autocomplete": "off",
             },
-            this.dropdownContent,
+            searchWrapper,
           ) as HTMLInputElement;
+          this.searchClearButton = createEl(
+            "button",
+            {
+              type: "button",
+              class: "iti__search-clear iti__hide",
+              "aria-label": i18n.clearSearchAriaLabel,
+              tabindex: "-1", // do not take focus away from input when filtering rapidly
+            },
+            searchWrapper,
+          ) as HTMLButtonElement;
+          // Filled circle with cross (using currentColor for circle fill)
+          this.searchClearButton.innerHTML = `
+            <svg class="iti__search-clear-icon" width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <circle cx="8" cy="8" r="8" fill="currentColor" />
+              <path d="M5.2 5.2a.6.6 0 0 1 .85 0L8 7.15l1.95-1.95a.6.6 0 0 1 .85.85L8.85 8l1.95 1.95a.6.6 0 1 1-.85.85L8 8.85l-1.95 1.95a.6.6 0 0 1-.85-.85L7.15 8 5.2 6.05a.6.6 0 0 1 0-.85Z" fill="#fff" />
+            </svg>`;
           this.searchResultsA11yText = createEl(
             "span",
             { class: "iti__a11y-text" },
@@ -1300,6 +1326,12 @@ export class Iti {
         } else {
           this._filterCountries("", true);
         }
+        // show/hide clear button
+        if (this.searchInput.value) {
+          this.searchClearButton.classList.remove("iti__hide");
+        } else {
+          this.searchClearButton.classList.add("iti__hide");
+        }
       };
 
       let keyupTimer: NodeJS.Timeout | null = null;
@@ -1314,6 +1346,15 @@ export class Iti {
         }, 100);
       };
       this.searchInput.addEventListener("input", this._handleSearchChange);
+
+      this._handleSearchClear = (e): void => {
+        e.stopPropagation();
+        this.searchInput.value = "";
+        this.searchInput.focus();
+        doFilter();
+      };
+      // Prevent click from closing dropdown, clear text, refocus input, and reset filter
+      this.searchClearButton.addEventListener("click", this._handleSearchClear);
 
       //* Stop propagation on search input click, so doesn't trigger click-off-to-close listener.
       this.searchInput.addEventListener("click", (e) => e.stopPropagation());
@@ -1801,9 +1842,9 @@ export class Iti {
     this.dropdownArrow.classList.remove("iti__arrow--up");
 
     //* Unbind key events.
-    document.removeEventListener("keydown", this._handleKeydownOnDropdown);
     if (this.options.countrySearch) {
       this.searchInput.removeEventListener("input", this._handleSearchChange);
+      this.searchClearButton.removeEventListener("click", this._handleSearchClear);
     }
     document.documentElement.removeEventListener(
       "click",
