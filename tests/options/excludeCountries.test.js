@@ -4,10 +4,9 @@
 const { userEvent } = require("@testing-library/user-event");
 const { initPlugin, teardown, getCountriesInList, totalCountries, checkFlagSelected } = require("../helpers/helpers");
 
-let iti, container, user, input;
-
 describe("excludeCountries option", () => {
   describe("none excluded", () => {
+    let iti, container, user, input;
 
     beforeEach(() => {
       user = userEvent.setup();
@@ -31,6 +30,8 @@ describe("excludeCountries option", () => {
   });
 
   describe("exclude us + ca", () => {
+    let iti, container, user, input;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { excludeCountries: ["us", "ca"] };

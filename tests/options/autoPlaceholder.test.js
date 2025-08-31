@@ -4,10 +4,10 @@
 const { userEvent } = require("@testing-library/user-event");
 const { initPlugin, teardown, openDropdownSelectCountryAsync } = require("../helpers/helpers");
 
-let iti, input, container, user;
-
 describe("autoPlaceholder option (empty initial placeholder)", () => {
   describe("autoPlaceholder=off", () => {
+    let iti, input;
+
     beforeEach(() => {
       const options = { autoPlaceholder: "off", initialCountry: "af" };
       ({ iti, input } = initPlugin({ options }));
@@ -21,6 +21,8 @@ describe("autoPlaceholder option (empty initial placeholder)", () => {
   });
 
   describe("autoPlaceholder=polite, nationalMode=true", () => {
+    let iti, input, container, user;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { autoPlaceholder: "polite", nationalMode: true, initialCountry: "af" };
@@ -37,6 +39,8 @@ describe("autoPlaceholder option (empty initial placeholder)", () => {
   });
 
   describe("autoPlaceholder=polite, nationalMode=false", () => {
+    let iti, input, container, user;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { autoPlaceholder: "polite", nationalMode: false, initialCountry: "af" };
@@ -55,6 +59,8 @@ describe("autoPlaceholder option (empty initial placeholder)", () => {
 
 describe("autoPlaceholder option (existing placeholder)", () => {
   describe("autoPlaceholder=off", () => {
+    let iti, input;
+
     beforeEach(() => {
       const options = { autoPlaceholder: "off", initialCountry: "af" };
       ({ iti, input } = initPlugin({ inputValue: "", options }));
@@ -69,6 +75,8 @@ describe("autoPlaceholder option (existing placeholder)", () => {
   });
 
   describe("autoPlaceholder=polite", () => {
+    let iti, input;
+
     beforeEach(() => {
       const options = { autoPlaceholder: "polite", initialCountry: "af" };
       ({ iti, input } = initPlugin({ options }));
@@ -83,6 +91,8 @@ describe("autoPlaceholder option (existing placeholder)", () => {
   });
 
   describe("autoPlaceholder=aggressive", () => {
+    let iti, input;
+
     beforeEach(() => {
       const options = { autoPlaceholder: "aggressive", initialCountry: "af" };
       // need an existing placeholder BEFORE init so aggressive mode can overwrite it

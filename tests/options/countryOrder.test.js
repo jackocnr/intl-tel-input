@@ -6,9 +6,9 @@ const { initPlugin, teardown, getCountriesInList } = require("../helpers/helpers
 // countryOrder: ensure specified order is applied before default name sort.
 describe("countryOrder option", () => {
   let iti, container;
-  const options = { onlyCountries: ["us", "gb", "ca", "fr"], countryOrder: ["fr", "ca"] };
 
   beforeEach(() => {
+    const options = { onlyCountries: ["us", "gb", "ca", "fr"], countryOrder: ["fr", "ca"] };
     ({ iti, container } = initPlugin({ options }));
   });
 

@@ -4,9 +4,9 @@
 const { initPlugin, teardown } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 
-let iti, input, user;
-
 describe("getSelectedCountryData method", () => {
+  let iti, input, user;
+
   beforeEach(() => {
     ({ iti, input } = initPlugin());
     user = userEvent.setup();

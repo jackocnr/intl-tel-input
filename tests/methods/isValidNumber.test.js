@@ -6,9 +6,9 @@ const { initPlugin, teardown } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 const intlTelInput = require("intlTelInputWithUtils.js");
 
-let iti, input, user, utilsBackup;
-
 describe("isValidNumber method", () => {
+  let iti, input, user, utilsBackup;
+
   beforeEach(() => {
     ({ iti, input } = initPlugin());
     user = userEvent.setup();

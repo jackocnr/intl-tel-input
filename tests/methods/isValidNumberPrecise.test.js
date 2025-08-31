@@ -5,10 +5,10 @@ const { initPlugin, teardown, openDropdownSelectCountryAsync } = require("../hel
 const { userEvent } = require("@testing-library/user-event");
 const intlTelInput = require("intlTelInputWithUtils.js");
 
-let iti, input, user, utilsBackup, container;
-
 describe("isValidNumberPrecise", () => {
   describe("vanilla", () => {
+    let iti, input, user, utilsBackup;
+
     beforeEach(() => {
       ({ iti, input } = initPlugin());
       user = userEvent.setup();
@@ -44,6 +44,7 @@ describe("isValidNumberPrecise", () => {
   });
 
   describe("nationalMode true", () => {
+    let iti, input, user, container;
     const options = { nationalMode: true };
 
     beforeEach(() => {

@@ -11,10 +11,10 @@ const {
 } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 
-let iti, container, user;
-
 describe("dropdownContainer option", () => {
   describe("dropdownContainer=null", () => {
+    let iti, container, user;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { dropdownContainer: null };
@@ -44,6 +44,8 @@ describe("dropdownContainer option", () => {
   });
 
   describe("dropdownContainer=document.body", () => {
+    let iti, container, user;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { dropdownContainer: document.body };

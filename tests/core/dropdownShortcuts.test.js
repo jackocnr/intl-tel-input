@@ -13,18 +13,17 @@ const {
   getHighlightedItemCode,
 } = require("../helpers/helpers");
 
-let iti, input, user, container;
-
 describe("dropdown shortcuts", () => {
+  let iti, input, user, container;
   beforeEach(() => {
     user = userEvent.setup();
     ({ iti, container, input } = initPlugin());
   });
-      
+
   afterEach(() => {
     teardown(iti);
   });
-  
+
   describe("focusing the selected country", () => {
     beforeEach(async () => {
       const selectedCountry = await getSelectedCountryButton(container);

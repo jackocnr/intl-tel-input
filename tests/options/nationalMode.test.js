@@ -4,10 +4,10 @@
 const { initPlugin, teardown, checkFlagSelected } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 
-let iti, input, user, container;
-
 describe("nationalMode option", () => {
   describe("nationalMode=true, empty input", () => {
+    let iti, input, user, container;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { nationalMode: true };

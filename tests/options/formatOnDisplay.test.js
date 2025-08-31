@@ -4,10 +4,11 @@
 const { initPlugin, teardown } = require("../helpers/helpers");
 
 const us = "+17024181234";
-let iti, input;
 
 describe("formatOnDisplay option", () => {
   describe("formatOnDisplay=false, nationalMode=true, input value set to valid US intl number", () => {
+    let iti, input;
+
     beforeEach(() => {
       const options = { formatOnDisplay: false, nationalMode: true };
       ({ iti, input } = initPlugin({ inputValue: us, options }));
@@ -23,6 +24,8 @@ describe("formatOnDisplay option", () => {
   });
 
   describe("formatOnDisplay=true, nationalMode=true, input value set to valid US intl number", () => {
+    let iti, input;
+
     beforeEach(() => {
       const options = { formatOnDisplay: true, nationalMode: true };
       ({ iti, input } = initPlugin({ inputValue: us, options }));
@@ -38,6 +41,8 @@ describe("formatOnDisplay option", () => {
   });
 
   describe("formatOnDisplay=true, nationalMode=false, input value set to valid US intl number", () => {
+    let iti, input;
+
     beforeEach(() => {
       const options = { formatOnDisplay: true, nationalMode: false };
       ({ iti, input } = initPlugin({ inputValue: us, options }));

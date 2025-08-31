@@ -3,15 +3,21 @@
  */
 
 const { userEvent } = require("@testing-library/user-event");
-const { initPlugin, teardown, getSelectedDialCodeText, typePlaceholderNumberAsync, checkFlagSelected } = require("../helpers/helpers");
+const {
+  initPlugin,
+  teardown,
+  getSelectedDialCodeText,
+  typePlaceholderNumberAsync,
+  checkFlagSelected,
+} = require("../helpers/helpers");
 
-let input, iti, container, user;
 
 //* We test with UK because the ntl number is different to the intl number (aside from the dial code).
 describe("separateDialCode option", () => {
   describe("initialCountry=GB", () => {
+    let input, iti, container;
+
     beforeEach(() => {
-      user = userEvent.setup();
       const options = {
         initialCountry: "gb",
         separateDialCode: true,
@@ -50,12 +56,14 @@ describe("separateDialCode option", () => {
 
   //* We test with Canada because we had some bugs with area codes.
   describe("initialCountry=CA", () => {
+    let input, iti;
+
     beforeEach(() => {
       const options = {
         initialCountry: "ca",
         separateDialCode: true,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti } = initPlugin({ options }));
     });
 
     afterEach(() => {
@@ -74,12 +82,14 @@ describe("separateDialCode option", () => {
 
   //* We test with America Samoa because we had a bug.
   describe("initialCountry=AS", () => {
+    let input, iti;
+
     beforeEach(() => {
       const options = {
         initialCountry: "as",
         separateDialCode: true,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti } = initPlugin({ options }));
     });
 
     afterEach(() => {
@@ -98,12 +108,14 @@ describe("separateDialCode option", () => {
 
   //* We test with Russia because we had a bug.
   describe("initialCountry=RU", () => {
+    let input, iti;
+
     beforeEach(() => {
       const options = {
         initialCountry: "ru",
         separateDialCode: true,
       };
-      ({ input, iti, container } = initPlugin({ options, inputValue: "(922) 555-1234" }));
+      ({ input, iti } = initPlugin({ options, inputValue: "(922) 555-1234" }));
     });
 
     afterEach(() => {
@@ -118,7 +130,10 @@ describe("separateDialCode option", () => {
 
   //* We test with Aland Islands because we had a bug.
   describe("initialCountry=AX", () => {
+    let input, iti, container, user;
+
     beforeEach(() => {
+      user = userEvent.setup();
       const options = {
         initialCountry: "ax",
         separateDialCode: true,
@@ -139,7 +154,10 @@ describe("separateDialCode option", () => {
 
   //* We test with Kazakhstan because we had a bug.
   describe("initialCountry=KZ", () => {
+    let input, iti, container, user;
+
     beforeEach(() => {
+      user = userEvent.setup();
       const options = {
         initialCountry: "kz",
         separateDialCode: true,

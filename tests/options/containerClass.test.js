@@ -4,10 +4,10 @@
 const { initPlugin, teardown, clickSelectedCountryAsync } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 
-let iti, container, user;
-
 describe("containerClass option", () => {
   describe("basic", () => {
+    let iti, container;
+
     beforeEach(() => {
       const options = { containerClass: "cpc" };
       ({ iti, container } = initPlugin({ options }));
@@ -21,6 +21,8 @@ describe("containerClass option", () => {
   });
 
   describe("with fullscreen popup", () => {
+    let iti, container, user;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { containerClass: "cpc", useFullscreenPopup: true };

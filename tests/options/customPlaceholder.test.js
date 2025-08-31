@@ -4,9 +4,8 @@
 const { userEvent } = require("@testing-library/user-event");
 const { initPlugin, teardown, openDropdownSelectCountryAsync } = require("../helpers/helpers");
 
-let iti, input, container, user;
-
 describe("customPlaceholder option", () => {
+  let iti, input, container, user;
   const options = {
     autoPlaceholder: "polite",
     initialCountry: "af",

@@ -5,9 +5,9 @@ const { initPlugin, teardown, getDropdownElement } = require("../helpers/helpers
 
 // fixDropdownWidth: when true, dropdown should not have flexible width class; when false it should.
 describe("fixDropdownWidth option", () => {
-  let iti, container;
-
   describe("default true", () => {
+    let iti, container;
+
     beforeEach(() => {
       ({ iti, container } = initPlugin());
     });
@@ -21,6 +21,8 @@ describe("fixDropdownWidth option", () => {
   });
 
   describe("explicit false", () => {
+    let iti, container;
+
     beforeEach(() => {
       const options = { fixDropdownWidth: false };
       ({ iti, container } = initPlugin({ options }));

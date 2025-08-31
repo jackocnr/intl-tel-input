@@ -11,9 +11,9 @@ const {
   getSelectedCountryButton,
 } = require("../helpers/helpers");
 
-let input, iti, mockEventHandler, container, user;
-
 describe("open:countrydropdown event", () => {
+  let input, iti, mockEventHandler, container, user;
+
   beforeEach(() => {
     user = userEvent.setup();
     input = injectInput();
@@ -21,21 +21,21 @@ describe("open:countrydropdown event", () => {
     input.addEventListener("open:countrydropdown", mockEventHandler);
     ({ iti, container } = initPlugin({ input }));
   });
-      
+
   afterEach(() => {
     input.removeEventListener("open:countrydropdown", mockEventHandler);
     teardown(iti);
   });
-  
+
   test("does not trigger the event", () => {
     expect(mockEventHandler).not.toHaveBeenCalled();
   });
-    
+
   test("clicking the selected country triggers the event", async () => {
     await clickSelectedCountryAsync(container, user);
     expect(mockEventHandler).toHaveBeenCalled();
   });
-  
+
   test("focusing the selected country and hitting Enter triggers the event", async () => {
     const selectedCountry = getSelectedCountryButton(container);
     selectedCountry.focus();

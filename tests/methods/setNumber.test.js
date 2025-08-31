@@ -4,10 +4,10 @@
 const { initPlugin, teardown, checkFlagSelected } = require("../helpers/helpers");
 const intlTelInput = require("intlTelInputWithUtils.js");
 
-let iti, input, container, utilsBackup;
-
 describe("setNumbe method", () => {
   describe("no utils", () => {
+    let iti, input, container, utilsBackup;
+
     beforeEach(() => {
       ({ iti, input, container } = initPlugin());
       utilsBackup = intlTelInput.utils;
@@ -32,6 +32,7 @@ describe("setNumbe method", () => {
   });
 
   describe("with utils, nationalMode true", () => {
+    let iti, input;
     const options = { nationalMode: true };
 
     beforeEach(() => {
@@ -47,6 +48,7 @@ describe("setNumbe method", () => {
   });
 
   describe("with utils, nationalMode false", () => {
+    let iti, input;
     const options = { nationalMode: false };
 
     beforeEach(() => {

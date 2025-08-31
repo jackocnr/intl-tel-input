@@ -13,9 +13,9 @@ const {
   isDropdownOpen,
 } = require("../helpers/helpers");
 
-let user, iti1, iti2, input1, container1, container2;
-
 describe("multiple instances", () => {
+  let user, iti1, iti2, input1, container1, container2;
+
   beforeEach(() => {
     user = userEvent.setup();
     ({ iti: iti1, input: input1, container: container1 } = initPlugin({
@@ -25,12 +25,12 @@ describe("multiple instances", () => {
       options: { onlyCountries: ["al", "cn", "kr", "ru"] },
     }));
   });
-      
+
   afterEach(() => {
     teardown(iti1);
     teardown(iti2);
   });
-  
+
   test("instances have different country lists", () => {
     expect(getCountryListLength(container1)).toEqual(2);
     expect(getCountryListLength(container2)).toEqual(4);

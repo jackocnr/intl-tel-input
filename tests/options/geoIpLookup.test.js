@@ -4,11 +4,9 @@
 const { initPlugin, teardown, oneTickAsync } = require("../helpers/helpers");
 const intlTelInput = require("intlTelInputWithUtils.js");
 
-let iti;
-
 describe("geoIpLookup option", () => {
   describe("vanilla", () => {
-    let resolved;
+    let iti, resolved;
 
     beforeEach(async () => {
       resolved = false;
@@ -28,7 +26,7 @@ describe("geoIpLookup option", () => {
   });
 
   describe("geoIpLookup and initialCountry=auto", () => {
-    let resolved;
+    let iti, resolved;
 
     beforeEach(async () => {
       resolved = false;

@@ -14,10 +14,10 @@ const {
 } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 
-let iti, container, input, user;
-
 describe("allowDropdown option", () => {
   describe("allowDropdown=false", () => {
+    let iti, container, input, user;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { allowDropdown: false };
@@ -51,6 +51,8 @@ describe("allowDropdown option", () => {
   });
 
   describe("allowDropdown=true", () => {
+    let iti, container, input, user;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { allowDropdown: true };

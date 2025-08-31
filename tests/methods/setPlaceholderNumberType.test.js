@@ -3,12 +3,12 @@
  */
 const { initPlugin, teardown } = require("../helpers/helpers");
 
-let iti, input;
 
 describe("setPlaceholderNumberType method", () => {
-  const options = { initialCountry: "gb" };
+  let iti, input;
 
   beforeEach(() => {
+    const options = { initialCountry: "gb" };
     ({ iti, input } = initPlugin({ options }));
   });
   afterEach(() => teardown(iti));

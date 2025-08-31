@@ -6,9 +6,9 @@ const { initPlugin, teardown } = require("../helpers/helpers");
 const intlTelInputWithUtils = require("intlTelInputWithUtils.js");
 const numberType = intlTelInputWithUtils.utils.numberType;
 
-let iti;
-
 describe("getNumberType method", () => {
+  let iti;
+
   beforeEach(() => {
     ({ iti } = initPlugin());
   });

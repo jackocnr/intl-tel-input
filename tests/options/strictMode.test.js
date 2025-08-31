@@ -11,11 +11,12 @@ const {
   checkFlagSelected,
 } = require("../helpers/helpers");
 
-let input, iti, user, container;
 
 // NATIONAL MODE ENABLED
 describe("strictMode option", () => {
   describe("nationalMode=true", () => {
+    let input, iti, user, container;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = {
@@ -169,6 +170,8 @@ describe("strictMode option", () => {
 
   // NATIONAL MODE DISABLED
   describe("nationalMode=false", () => {
+    let input, iti, user, container;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = {
@@ -209,6 +212,8 @@ describe("strictMode option", () => {
 
   // SEPARATE DIAL CODE ENABLED
   describe("separateDialCode=true", () => {
+    let input, iti, user, container;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = {

@@ -6,9 +6,9 @@ const { userEvent } = require("@testing-library/user-event");
 const intlTelInputWithUtils = require("intlTelInputWithUtils.js");
 const validationError = intlTelInputWithUtils.utils.validationError;
 
-let iti, input, user;
-
 describe("getValidationError method", () => {
+  let iti, input, user;
+
   beforeEach(() => {
     ({ iti, input } = initPlugin());
     user = userEvent.setup();

@@ -3,10 +3,10 @@
  */
 const { initPlugin, teardown, checkFlagSelected } = require("../helpers/helpers");
 
-let iti, container;
-
 describe("initialCountry option", () => {
   describe("jp", () => {
+    let iti, container;
+
     beforeEach(() => {
       const options = { initialCountry: "jp" };
       ({ iti, container } = initPlugin({ options }));
@@ -20,6 +20,8 @@ describe("initialCountry option", () => {
   });
 
   describe("ca", () => {
+    let iti, container;
+
     beforeEach(() => {
       const options = { initialCountry: "ca" };
       ({ iti, container } = initPlugin({ inputValue: "+1 800 123 1234", options }));

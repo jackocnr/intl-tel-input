@@ -3,10 +3,10 @@
  */
 const { initPlugin, teardown, checkFlagSelected, getSelectedCountryButton } = require("../helpers/helpers");
 
-let iti, input, container;
-
 describe("setCountry method", () => {
   describe("vanilla init", () => {
+    let iti, input, container;
+
     beforeEach(() => {
       ({ iti, input, container } = initPlugin());
     });
@@ -27,10 +27,11 @@ describe("setCountry method", () => {
   });
 
   describe("separateDialCode disabled", () => {
+    let iti, container;
     const options = { showFlags: true, separateDialCode: false };
 
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, container } = initPlugin({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -43,10 +44,11 @@ describe("setCountry method", () => {
   });
 
   describe("separateDialCode enabled", () => {
+    let iti, container;
     const options = { showFlags: true, separateDialCode: true };
 
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, container } = initPlugin({ options }));
     });
 
     afterEach(() => teardown(iti));

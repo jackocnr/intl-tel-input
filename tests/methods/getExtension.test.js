@@ -4,11 +4,11 @@
 const { initPlugin, teardown } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 
-let iti, input, user;
-const base = "+17024181234";
-const ext = "98765";
-
 describe("getExtension method", () => {
+  let iti, input, user;
+  const base = "+17024181234";
+  const ext = "98765";
+
   beforeEach(() => {
     ({ iti, input } = initPlugin());
     user = userEvent.setup();
@@ -31,5 +31,5 @@ describe("getExtension method", () => {
     await user.clear(input);
     await user.type(input, `${base}${ext}`);
     expect(iti.getExtension()).toBeNull();
-    });
+  });
 });

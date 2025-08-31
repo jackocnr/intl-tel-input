@@ -8,9 +8,9 @@ const {
   checkFlagSelected,
 } = require("../helpers/helpers");
 
-let iti, input, container;
+describe("initial values", () => {
+  let iti, input, container;
 
-describe("initial values", () => {      
   afterEach(() => {
     teardown(iti);
   });
@@ -21,11 +21,11 @@ describe("initial values", () => {
         inputValue: "",
       }));
     });
-    
+
     test("leaves the input empty", () => {
       expect(input.value).toEqual("");
     });
-    
+
     test("leaves the selected country empty", () => {
       expect(checkFlagSelected(container, "")).toBe(true);
     });
@@ -37,11 +37,11 @@ describe("initial values", () => {
         inputValue: "+44 7947 123 456",
       }));
     });
-    
+
     test("formats the number", () => {
       expect(input.value).toEqual("07947 123456");
     });
-    
+
     test("updates the selected country", () => {
       expect(checkFlagSelected(container, "gb")).toBe(true);
     });
@@ -53,11 +53,11 @@ describe("initial values", () => {
         inputValue: "+1 800 123 1234",
       }));
     });
-    
+
     test("formats the number", () => {
       expect(input.value).toEqual("(800) 123-1234");
     });
-    
+
     test("updates the selected country", () => {
       expect(checkFlagSelected(container, "us")).toBe(true);
     });
@@ -69,11 +69,11 @@ describe("initial values", () => {
         inputValue: "+682 21 234",
       }));
     });
-    
+
     test("formats the number", () => {
       expect(input.value).toEqual("21 234");
     });
-    
+
     //* Issue 520.
     test("updates the selected country", () => {
       expect(checkFlagSelected(container, "ck")).toBe(true);
@@ -86,11 +86,11 @@ describe("initial values", () => {
         inputValue: "07947123123",
       }));
     });
-    
+
     test("does not format the number", () => {
       expect(input.value).toEqual("07947123123");
     });
-    
+
     test("leaves the selected country empty", () => {
       expect(checkFlagSelected(container, "")).toBe(true);
     });
@@ -103,11 +103,11 @@ describe("initial values", () => {
         options: { initialCountry: "gb" },
       }));
     });
-    
+
     test("formats the number", () => {
       expect(input.value).toEqual("07947 123123");
     });
-    
+
     test("updates the selected country", () => {
       expect(checkFlagSelected(container, "gb")).toBe(true);
     });

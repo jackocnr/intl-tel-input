@@ -15,9 +15,9 @@ const {
   injectInput,
 } = require("../helpers/helpers");
 
-let iti, user, container, input;
-
 describe("using dropdown", () => {
+  let iti, user, container, input;
+
   beforeEach(() => {
     user = userEvent.setup();
     ({ iti, container, input } = initPlugin());
@@ -106,6 +106,8 @@ describe("using dropdown", () => {
 });
 
 describe("using dropdown: disabled input", () => {
+  let iti, user, container, input;
+
   beforeEach(() => {
     user = userEvent.setup();
     input = injectInput({ disabled: true });

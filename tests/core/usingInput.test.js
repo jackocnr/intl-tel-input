@@ -10,9 +10,9 @@ const {
   openDropdownSelectCountryAsync,
 } = require("../helpers/helpers");
 
-let iti, user, input, container;
-
 describe("using input", () => {
+  let iti, user, input, container;
+
   beforeEach(() => {
     user = userEvent.setup();
     ({ iti, input, container } = initPlugin());

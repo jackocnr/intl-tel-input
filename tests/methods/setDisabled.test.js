@@ -11,9 +11,9 @@ const {
   getSelectedCountryButton,
 } = require("../helpers/helpers");
 
-let iti, user, container, input;
-
 describe("setDisabled method", () => {
+  let iti, user, container, input;
+
   beforeEach(() => {
     user = userEvent.setup();
     ({ iti, container, input } = initPlugin());

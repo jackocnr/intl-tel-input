@@ -10,9 +10,9 @@ const {
   openDropdownSelectCountryAsync,
 } = require("../helpers/helpers");
 
-let input, iti, mockEventHandler, container, user;
-
 describe("countrychange event", () => {
+  let input, iti, mockEventHandler, container, user;
+
   beforeEach(() => {
     user = userEvent.setup();
     input = injectInput();
@@ -20,21 +20,21 @@ describe("countrychange event", () => {
     input.addEventListener("countrychange", mockEventHandler);
     ({ iti, container } = initPlugin({ input }));
   });
-      
+
   afterEach(() => {
     input.removeEventListener("countrychange", mockEventHandler);
     teardown(iti);
   });
-  
+
   test("does not trigger the event", () => {
     expect(mockEventHandler).not.toHaveBeenCalled();
   });
-    
+
   test("calling setCountry triggers the event", () => {
     iti.setCountry("fr");
     expect(mockEventHandler).toHaveBeenCalled();
   });
-    
+
   test("calling setNumber triggers the event", () => {
     iti.setNumber("+34");
     expect(mockEventHandler).toHaveBeenCalled();

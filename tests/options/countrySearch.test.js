@@ -16,9 +16,10 @@ const {
 //* Without the advanceTimers bit, the (time related) tests just hang, see https://github.com/jestjs/jest/issues/12056#issuecomment-1090189268
 jest.useFakeTimers({advanceTimers: true});
 
-let searchInput, iti, container, user;
 
 describe("countrySearch option", () => {
+  let searchInput, iti, container, user;
+
   beforeEach(async () => {
     user = userEvent.setup();
     ({ container, iti } = initPlugin());

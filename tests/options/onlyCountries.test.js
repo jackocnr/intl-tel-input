@@ -10,10 +10,9 @@ const {
 } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 
-let iti, container, input, user;
-
 describe("onlyCountries option", () => {
   describe("restrict to japan, china and korea", () => {
+    let iti, container;
     const only = ["jp", "cn", "kr"];
 
     beforeEach(() => {
@@ -30,6 +29,8 @@ describe("onlyCountries option", () => {
   });
 
   describe("restrict to Afghanistan, Kazakhstan and Russia", () => {
+    let iti, container, input, user;
+
     beforeEach(() => {
       user = userEvent.setup();
       const options = { onlyCountries: ["af", "kz", "ru"] };
@@ -45,7 +46,7 @@ describe("onlyCountries option", () => {
   });
 
   describe("two instances different onlyCountries", () => {
-    let iti2, container2;
+    let iti, container, iti2, container2;
 
     beforeEach(() => {
       const options1 = { onlyCountries: ["jp"] };
