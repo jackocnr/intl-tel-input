@@ -171,6 +171,11 @@
     & + .iti__country-list {
       border-top: 1px solid var(--iti-border-color);
     }
+
+    // hide chrome/safari's native clear button for inputs with type=search
+    &::-webkit-search-cancel-button {
+      appearance: none;
+    }
   }
   &__search-input-wrapper {
     position: relative;
