@@ -69,8 +69,8 @@ describe("allowDropdown option", () => {
       expect(getCountryListElement(container)).toBeTruthy();
     });
 
-    test("adds role=combobox", async () => {
-      expect(getSelectedCountryButton(container).getAttribute("role")).toBe("combobox");
+    test("adds aria-haspopup=dialog", async () => {
+      expect(getSelectedCountryButton(container).getAttribute("aria-haspopup")).toBe("dialog");
     });
 
     test("updates flag when typing", async () => {
