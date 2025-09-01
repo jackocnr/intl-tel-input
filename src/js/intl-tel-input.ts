@@ -788,7 +788,7 @@ export class Iti {
         );
         this._appendListItems();
         if (countrySearch) {
-          this._updateSearchResultsText();
+          this._updateSearchResultsA11yText();
         }
 
         //* Create dropdownContainer markup.
@@ -1470,11 +1470,11 @@ export class Iti {
     }
     //* Scroll to top (useful if user had previously scrolled down).
     this.countryList.scrollTop = 0;
-    this._updateSearchResultsText();
+    this._updateSearchResultsA11yText();
   }
 
   //* Update search results text (for a11y).
-  private _updateSearchResultsText(): void {
+  private _updateSearchResultsA11yText(): void {
     const { i18n } = this.options;
     const count = this.countryList.childElementCount;
     let searchText: string;

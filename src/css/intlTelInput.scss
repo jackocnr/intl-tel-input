@@ -158,8 +158,6 @@
     width: 100%;
     border-width: 0;
     border-radius: 3px;
-    //* Add magnifying glass icon (decorative) inside the search field.
-    //* Using an inline SVG so we avoid extra network requests. The icon uses stroke so it blends on light backgrounds.
     padding-left: 30px; //* Space for inline search icon.
     padding-right: 28px; //* Space for clear button.
 
