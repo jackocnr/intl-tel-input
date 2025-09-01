@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   return {
     js: {
       files: "src/js/**/*",
-      tasks: "shell:buildJs"
+      tasks: "jsfast"
     },
     translations: {
       files: "src/i18n/**/*",

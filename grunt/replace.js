@@ -70,7 +70,7 @@ module.exports = function(grunt) {
             match: /_filterCountries/g,
             replacement: '_p3'
           }, {
-            match: /_updateSearchResultsText/g,
+            match: /_updateSearchResultsA11yText/g,
             replacement: '_p4'
           }, {
             match: /_handleUpDownKey/g,
