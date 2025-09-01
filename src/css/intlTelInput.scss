@@ -7,12 +7,13 @@
   --iti-border-color: #ccc; //* Used for both the dropdown border, and the divider under the country search input.
   --iti-dialcode-color: #999;
   --iti-dropdown-bg: white;
-  //* Colour for the decorative magnifying glass icon in the country search input.
-  --iti-search-icon-color: #999;
+  //* icons include: arrow icon, globe icon (selected country empty state), search magnifying glass icon, search clear icon
+  --iti-icon-color: #555;
 
   --iti-spacer-horizontal: 8px;
   --iti-flag-height: #{$flag-height};
   --iti-flag-width: #{$flag-width};
+  --iti-globe-height: 16px;
   //* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control.
   --iti-border-width: 1px;
 
@@ -20,7 +21,6 @@
   --iti-arrow-width: 6px;
   --iti-triangle-border: calc(var(--iti-arrow-width) / 2);
   --iti-arrow-padding: 6px;
-  --iti-arrow-color: #555;
 
   //* NOTE: image paths are now defined in intlTelInputWithAssets.scss
 
@@ -114,11 +114,11 @@
     height: 0;
     border-left: var(--iti-triangle-border) solid transparent;
     border-right: var(--iti-triangle-border) solid transparent;
-    border-top: var(--iti-arrow-height) solid var(--iti-arrow-color);
+    border-top: var(--iti-arrow-height) solid var(--iti-icon-color);
 
     &--up {
       border-top: none;
-      border-bottom: var(--iti-arrow-height) solid var(--iti-arrow-color);
+      border-bottom: var(--iti-arrow-height) solid var(--iti-icon-color);
     }
   }
 
@@ -181,7 +181,7 @@
     right: 8px;
   }
   &__search-icon-svg {
-    stroke: var(--iti-search-icon-color);
+    stroke: var(--iti-icon-color);
     fill: none;
     stroke-width: 3;
   }
@@ -204,7 +204,7 @@
       stroke-width: 2;
     }
     .iti__search-clear-bg {
-      fill: var(--iti-search-icon-color);
+      fill: var(--iti-icon-color);
     }
   }
   [dir="rtl"] &__search-clear {
@@ -368,17 +368,25 @@
   }
 }
 
-//* Empty state.
-.iti__globe {
-  background-image: var(--iti-path-globe-1x);
-  background-size: contain;
-  background-position: right;
-  box-shadow: none;
-  height: 19px;
-}
-
 //* Media query for high PPI/Retina Displays.
 @media (min-resolution: 2x) {
   .iti__flag { background-image: var(--iti-path-flags-2x); }
-  .iti__globe { background-image: var(--iti-path-globe-2x); }
+}
+
+//* Empty state.
+// Inline globe icon (now rendered as SVG inside .iti__flag). Keep class for width/position logic and to clear box-shadow.
+.iti__globe {
+  background: none;
+  box-shadow: none;
+  height: var(--iti-globe-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; // ensure svg centers
+
+  .iti__globe-svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--iti-icon-color);
+  }
 }

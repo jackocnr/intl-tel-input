@@ -23,7 +23,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build:css', ['sass', 'cssmin']);
 
   // just images
-  grunt.registerTask('build:img', ['shell:globeImages', 'generate-sprite', 'build:css']);
+  grunt.registerTask('build:img', ['generate-sprite', 'build:css']);
 
   // just javascript
   grunt.registerTask('build:js', [
