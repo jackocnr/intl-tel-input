@@ -651,9 +651,8 @@ export class Iti {
             class: "iti__selected-country",
             "aria-expanded": "false",
             "aria-label": this.options.i18n.selectedCountryAriaLabel,
-            "aria-haspopup": "true",
+            "aria-haspopup": "dialog",
             "aria-controls": `iti-${this.id}__dropdown-content`,
-            "role": "combobox",
           },
           this.countryContainer,
         );
@@ -701,6 +700,8 @@ export class Iti {
         this.dropdownContent = createEl("div", {
           id: `iti-${this.id}__dropdown-content`,
           class: `iti__dropdown-content iti__hide ${extraClasses}`,
+          role: "dialog",
+          "aria-modal": "true",
         });
 
         if (countrySearch) {
@@ -727,9 +728,11 @@ export class Iti {
           this.searchInput = createEl(
             "input",
             {
-              type: "text",
+              id: `iti-${this.id}__search-input`, // Chrome says inputs need either a name or an id
+              type: "search",
               class: "iti__search-input",
               placeholder: i18n.searchPlaceholder,
+              // role=combobox + aria-autocomplete=list + aria-activedescendant allows maintaining focus on the search input while allowing users to navigate search results with up/down keyboard keys
               role: "combobox",
               "aria-expanded": "true",
               "aria-label": i18n.searchPlaceholder,
@@ -1641,9 +1644,8 @@ export class Iti {
     if (this.highlightedItem) {
       this.highlightedItem.classList.add("iti__highlight");
       this.highlightedItem.setAttribute("aria-selected", "true");
-      const activeDescendant = this.highlightedItem.getAttribute("id") || "";
-      this.selectedCountry.setAttribute("aria-activedescendant", activeDescendant);
       if (this.options.countrySearch) {
+        const activeDescendant = this.highlightedItem.getAttribute("id") || "";
         this.searchInput.setAttribute("aria-activedescendant", activeDescendant);
       }
     }
@@ -1863,7 +1865,6 @@ export class Iti {
   private _closeDropdown(): void {
     this.dropdownContent.classList.add("iti__hide");
     this.selectedCountry.setAttribute("aria-expanded", "false");
-    this.selectedCountry.removeAttribute("aria-activedescendant");
     if (this.highlightedItem) {
       this.highlightedItem.setAttribute("aria-selected", "false");
     }
