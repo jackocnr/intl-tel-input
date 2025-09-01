@@ -45,6 +45,7 @@ import {
   US,
   PLACEHOLDER_MODES,
 } from "./modules/constants";
+import { buildGlobeIcon } from "./modules/core/icons";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -1194,20 +1195,23 @@ export class Iti {
         iso2 && showFlags
           ? `${CLASSES.FLAG} iti__${iso2}`
           : `${CLASSES.FLAG} ${CLASSES.GLOBE}`;
-      let ariaLabel, title;
+      let ariaLabel, title, selectedCountryInner;
       if (iso2) {
         const { name, dialCode } = this.selectedCountryData;
         title = name;
         ariaLabel = i18n.selectedCountryAriaLabel
           .replace("${countryName}", name)
           .replace("${dialCode}", `+${dialCode}`);
+        selectedCountryInner = "";
       } else {
         title = i18n.noCountrySelected;
         ariaLabel = i18n.noCountrySelected;
+        selectedCountryInner = buildGlobeIcon();
       }
       this.ui.selectedCountryInner.className = flagClass;
       this.ui.selectedCountry.setAttribute("title", title);
       this.ui.selectedCountry.setAttribute(ARIA.LABEL, ariaLabel);
+      this.ui.selectedCountryInner.innerHTML = selectedCountryInner;
     }
 
     //* Update the selected dial code.

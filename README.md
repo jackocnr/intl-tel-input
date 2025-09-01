@@ -100,13 +100,11 @@ _Note: We have now dropped support for all versions of Internet Explorer because
 
 2. Import the CSS: `import 'intl-tel-input/build/css/intlTelInput.css';`
 
-3. Set the path to flags.webp and globe.webp in your CSS, by overriding the CSS variables
+3. Set the path to flags.webp in your CSS, by overriding the CSS variables
   ```css
   .iti {
     --iti-path-flags-1x: url('path/to/flags.webp');
     --iti-path-flags-2x: url('path/to/flags@2x.webp');
-    --iti-path-globe-1x: url('path/to/globe.webp');
-    --iti-path-globe-2x: url('path/to/globe@2x.webp');
   }
   ```
 
@@ -130,13 +128,11 @@ Most bundlers (such as Webpack, Vite, or Parcel) will see this and place the [ut
   <link rel="stylesheet" href="path/to/intlTelInput.css">
   ```
 
-3. Set the path to flags.webp and globe.webp in your CSS, by overriding the CSS variables
+3. Set the path to flags.webp in your CSS, by overriding the CSS variables
   ```css
   .iti {
     --iti-path-flags-1x: url('path/to/flags.webp');
     --iti-path-flags-2x: url('path/to/flags@2x.webp');
-    --iti-path-globe-1x: url('path/to/globe.webp');
-    --iti-path-globe-2x: url('path/to/globe@2x.webp');
   }
   ```
 
@@ -545,8 +541,6 @@ This is triggered when the user closes the dropdown.
 ## Theming / Dark Mode
 There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for the full list.
 
-As for the empty state (globe icon), the default version is dark grey, and we also provide a "light" version that should work better with a dark theme. Alternatively, it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. We recommend you download it in the highest resolution possible, and then scale the image down to the required sizes (20px wide for the default version and 40px wide for the @2x version).
-
 Dark mode example (with screenshot below):
 ```css
 @media (prefers-color-scheme: dark) {
@@ -554,10 +548,8 @@ Dark mode example (with screenshot below):
     --iti-border-color: #5b5b5b;
     --iti-dialcode-color: #999999;
     --iti-dropdown-bg: #0d1117;
-    --iti-arrow-color: #aaaaaa;
+    --iti-icon-color: #aaaaaa;
     --iti-hover-color: #30363d;
-    --iti-path-globe-1x: url("path/to/globe_light.webp");
-    --iti-path-globe-2x: url("path/to/globe_light@2x.webp");
   }
 }
 ```
