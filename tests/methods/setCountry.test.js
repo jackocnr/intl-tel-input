@@ -39,7 +39,7 @@ describe("setCountry method", () => {
     test("flag title", () => {
       iti.setCountry("gb");
       const btn = getSelectedCountryButton(container);
-      expect(btn.getAttribute("title")).toEqual("United Kingdom: +44");
+      expect(btn.getAttribute("title")).toEqual("United Kingdom");
     });
   });
 
