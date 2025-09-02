@@ -310,10 +310,10 @@ export class Iti {
   private _handleWindowScroll: () => void;
   private _handleMouseoverCountryList: (e: MouseEvent) => void;
   private _handleClickCountryList: (e: Event) => void;
-  private _handleClickOffToClose: () => void;
+  private _handleClickOffToClose: (e: MouseEvent) => void;
   private _handleKeydownOnDropdown: (e: KeyboardEvent) => void;
   private _handleSearchChange: () => void;
-  private _handleSearchClear: (e: MouseEvent) => void;
+  private _handleSearchClear: () => void;
   private _handlePageLoad: () => void;
 
   private resolveAutoCountryPromise: (value?: unknown) => void;
@@ -980,14 +980,8 @@ export class Iti {
 
     //* Toggle country dropdown on click.
     this._handleClickSelectedCountry = (): void => {
-      //* Only intercept this event if we're opening the dropdown
-      //* else let it bubble up to the top ("click-off-to-close" listener)
-      //* we cannot just stopPropagation as it may be needed to close another instance.
-      if (
-        this.dropdownContent.classList.contains("iti__hide") &&
-        !this.telInput.disabled &&
-        !this.telInput.readOnly
-      ) {
+      const dropdownClosed = this.dropdownContent.classList.contains("iti__hide");
+      if (dropdownClosed && !this.telInput.disabled && !this.telInput.readOnly) {
         this._openDropdown();
       }
     };
@@ -1286,7 +1280,7 @@ export class Iti {
 
     //* Listen for country selection.
     this._handleClickCountryList = (e): void => {
-    const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(".iti__country");
+      const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(".iti__country");
       if (listItem) {
         this._selectListItem(listItem);
       }
@@ -1295,17 +1289,21 @@ export class Iti {
 
     //* Click off to close (except when this initial opening click is bubbling up).
     //* We cannot just stopPropagation as it may be needed to close another instance.
-    let isOpening = true;
-    this._handleClickOffToClose = (): void => {
-      if (!isOpening) {
+    this._handleClickOffToClose = (e: MouseEvent): void => {
+      const target = e.target as HTMLElement;
+      const clickedInsideDropdown = !!target.closest(`#iti-${this.id}__dropdown-content`);
+      // only close if clicked outside (allow clicks on country search input/clear button/no results message etc)
+      if (!clickedInsideDropdown) {
         this._closeDropdown();
       }
-      isOpening = false;
     };
-    document.documentElement.addEventListener(
-      "click",
-      this._handleClickOffToClose,
-    );
+    // Use setTimeout to allow this event listener to be bound after the current thread of execution, which is where the opening click is happening (which would otherwise immediately trigger click-off-to-close so the dropdown would never open)
+    setTimeout(() => {
+      document.documentElement.addEventListener(
+        "click",
+        this._handleClickOffToClose,
+      );
+    }, 0);
 
     //* Listen for up/down scrolling, enter to select, or escape to close.
     //* Use keydown as keypress doesn't fire for non-char keys and we want to catch if they
@@ -1380,17 +1378,13 @@ export class Iti {
       };
       this.searchInput.addEventListener("input", this._handleSearchChange);
 
-      this._handleSearchClear = (e): void => {
-        e.stopPropagation();
+      this._handleSearchClear = (): void => {
         this.searchInput.value = "";
         this.searchInput.focus();
         doFilter();
       };
       // Prevent click from closing dropdown, clear text, refocus input, and reset filter
       this.searchClearButton.addEventListener("click", this._handleSearchClear);
-
-      //* Stop propagation on search input click, so doesn't trigger click-off-to-close listener.
-      this.searchInput.addEventListener("click", (e) => e.stopPropagation());
     }
   }
 
