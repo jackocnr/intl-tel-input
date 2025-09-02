@@ -1830,6 +1830,11 @@ export class Iti {
 
     this._updateDialCode(listItem.getAttribute("data-dial-code"));
 
+    // reformat any existing number to the new country
+    if (this.options.formatOnDisplay) {
+      this._updateValFromNumber(this.telInput.value);
+    }
+
     //* Focus the input.
     this.telInput.focus();
 
@@ -2229,6 +2234,10 @@ export class Iti {
     if (isCountryChange) {
       this._setCountry(iso2Lower);
       this._updateDialCode(this.selectedCountryData.dialCode);
+      // reformat
+      if (this.options.formatOnDisplay) {
+        this._updateValFromNumber(this.telInput.value);
+      }
       this._triggerCountryChange();
     }
   }

@@ -207,7 +207,7 @@ Automatically format the number as the user types. This feature will be disabled
 
 **formatOnDisplay**  
 Type: `Boolean` Default: `true`  
-Format the input value (according to the `nationalMode` option) during initialisation, and on `setNumber`. Requires the [utils script to be loaded](#loading-the-utilities-script).
+Format the input value (according to the `nationalMode` option) during initialisation, when a new country is selected, on `setNumber` and on `setCountry`. Requires the [utils script to be loaded](#loading-the-utilities-script).
 
 **geoIpLookup**  
 Type: `Function` Default: `null`  
@@ -459,7 +459,7 @@ const isValid = iti.isValidNumberPrecise();
 Returns: `true`/`false`
 
 **setCountry**  
-Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling `setNumber` and passing a number including an international dial code, which is the recommended usage. Note you can omit the country code argument to set the country to the default empty (globe) state.
+Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling `setNumber` and passing a number including an international dial code, which is the recommended usage. Note you can omit the country code argument to set the country to the default empty (globe) state. _Note that if `formatOnDisplay` is enabled, this will attempt to format the number to either national or international format according to the `nationalMode` option._  
 ```js
 iti.setCountry("gb");
 ```
