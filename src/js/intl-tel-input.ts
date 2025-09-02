@@ -1097,7 +1097,7 @@ export class Iti {
 
   //* Initialize the tel input listeners.
   private _initTelInputListeners(): void {
-    const { strictMode, formatAsYouType, separateDialCode, formatOnDisplay, allowDropdown, countrySearch } = this.options;
+    const { strictMode, formatAsYouType, separateDialCode, allowDropdown, countrySearch } = this.options;
     let userOverrideFormatting = false;
     //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
     if (/\p{L}/u.test(this.telInput.value)) {
@@ -1133,9 +1133,9 @@ export class Iti {
         userOverrideFormatting = false;
       }
 
-      const disableFormatOnSetNumber = e?.detail && e.detail["isSetNumber"] && !formatOnDisplay;
-      //* Handle format-as-you-type, unless userOverrideFormatting, or disableFormatOnSetNumber.
-      if (formatAsYouType && !userOverrideFormatting && !disableFormatOnSetNumber) {
+      const isSetNumber = e?.detail && e.detail["isSetNumber"];
+      //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
+      if (formatAsYouType && !userOverrideFormatting && !isSetNumber) {
         //* Maintain caret position after reformatting.
         const currentCaretPos = this.telInput.selectionStart || 0;
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
@@ -1144,6 +1144,7 @@ export class Iti {
         const formattedValue = this._formatNumberAsYouType();
         const newCaretPos = translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
         this.telInput.value = formattedValue;
+        // WARNING: calling setSelectionRange triggers a focus on iOS
         this.telInput.setSelectionRange(newCaretPos, newCaretPos);
       }
     };
