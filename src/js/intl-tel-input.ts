@@ -692,7 +692,7 @@ export class Iti {
       if (separateDialCode) {
         this.selectedDialCode = createEl(
           "div",
-          { class: "iti__selected-dial-code", "aria-hidden": "true", dir: "ltr" },
+          { class: "iti__selected-dial-code", dir: "ltr" },
           this.selectedCountry,
         );
       }
@@ -1683,21 +1683,20 @@ export class Iti {
     }
 
     //* Update the flag class and the a11y text.
-    if (this.selectedCountryInner) {
-      let flagClass = "";
-      let ariaLabel = "";
-      if (iso2 && showFlags) {
-        flagClass = `iti__flag iti__${iso2}`;
+    if (this.selectedCountry) {
+      const flagClass = iso2 && showFlags ? `iti__flag iti__${iso2}` : "iti__flag iti__globe";
+      let ariaLabel, title;
+      if (iso2) {
+        title = this.selectedCountryData.name;
         ariaLabel = i18n.selectedCountryAriaLabel.replace("${country}", this.selectedCountryData.name);
       } else {
-        flagClass = "iti__flag iti__globe";
+        title = i18n.noCountrySelected;
         ariaLabel = i18n.noCountrySelected;
       }
       this.selectedCountryInner.className = flagClass;
+      this.selectedCountry.setAttribute("title", title);
       this.selectedCountry.setAttribute("aria-label", ariaLabel);
     }
-
-    this._setSelectedCountryTitleAttribute(iso2, separateDialCode);
 
     //* Update the selected dial code.
     if (separateDialCode) {
@@ -1762,25 +1761,6 @@ export class Iti {
         this.maxCoreNumberLength = null;
       }
     }
-  }
-
-  private _setSelectedCountryTitleAttribute(iso2: string | null = null, separateDialCode: boolean): void {
-    if (!this.selectedCountry) {
-      return;
-    }
-
-    let title;
-    if (iso2 && !separateDialCode) {
-      title = `${this.selectedCountryData.name}: +${this.selectedCountryData.dialCode}`;
-    } else if (iso2) {
-      //* For screen reader output, we don't want to include the dial code in the reader output twice
-      //* so just use the selected country name here:
-      title = this.selectedCountryData.name;
-    } else {
-      title = this.options.i18n.noCountrySelected;
-    }
-
-    this.selectedCountry.setAttribute("title", title);
   }
 
   //* When the input is in a hidden container during initialisation, we must inject some markup
