@@ -94,9 +94,6 @@ module.exports = function(grunt) {
             match: /_setCountry/g,
             replacement: '_z'
           }, {
-            match: /_setSelectedCountryTitleAttribute/g,
-            replacement: '_z3'
-          }, {
             match: /_getHiddenSelectedCountryWidth/g,
             replacement: '_z2'
           }, {
