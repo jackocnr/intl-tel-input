@@ -58,8 +58,32 @@ module.exports = function(grunt) {
           },
           //* NOTE: here we exclude _trigger which is a substring of _triggerCountryChange etc.
           {
-            match: /_openDropdown/g,
-            replacement: '_n'
+            match: /_openDropdownWithPlus/g,
+            replacement: '_n0'
+          }, {
+            match: /_searchForCountry/g,
+            replacement: '_p0'
+          }, {
+            match: /_ensureHasDialCode/g,
+            replacement: '_u0'
+          }, {
+            match: /_getNewCountryFromNumber/g,
+            replacement: '_v0'
+          }, {
+            match: /_updateInputPadding/g,
+            replacement: '_z3'
+          }, {
+            match: /_updateMaxLength/g,
+            replacement: '_z4'
+          }, {
+            match: /_utilsIsPossibleNumber/g,
+            replacement: '_9a'
+          }, {
+            match: /_validateNumber/g,
+            replacement: '_9b'
+          }, {
+            match: /_utilsIsValidNumber/g,
+            replacement: '_9c'
           }, {
             match: /_setDropdownPosition/g,
             replacement: '_o'
@@ -174,6 +198,15 @@ module.exports = function(grunt) {
           }, {
             match: /_handleHiddenInputSubmit/g,
             replacement: '_a14'
+          }, {
+            match: /_handleKeydownEvent/g,
+            replacement: '_a5'
+          }, {
+            match: /_handleSearchClear/g,
+            replacement: '_a6'
+          }, {
+            match: /_handlePageLoad/g,
+            replacement: '_a8'
           }
         ]
       },
@@ -196,9 +229,6 @@ module.exports = function(grunt) {
           }, {
             match: /\.highlightedItem/g,
             replacement: '.c'
-          }, {
-            match: /\.options/g,
-            replacement: '.d'
           }, {
             match: /\.hadInitialPlaceholder/g,
             replacement: '.e'
@@ -224,9 +254,6 @@ module.exports = function(grunt) {
             match: /\.selectedCountryInner/g,
             replacement: '.l'
           }, {
-            match: /\.countries/g,
-            replacement: '.p'
-          }, {
             match: /\.dialCodeToIso2Map/g,
             replacement: '.q'
           }, {
@@ -238,6 +265,51 @@ module.exports = function(grunt) {
           }, {
             match: /\.dropdownArrow/g,
             replacement: '.u'
+          }, {
+            match: /\.isRTL/g,
+            replacement: '.v'
+          }, {
+            match: /\.showSelectedCountryOnLeft/g,
+            replacement: '.w'
+          }, {
+            match: /\.isAndroid/g,
+            replacement: '.x'
+          }, {
+            match: /\.dialCodeMaxLen/g,
+            replacement: '.y'
+          }, {
+            match: /\.countryByIso2/g,
+            replacement: '.z0'
+          }, {
+            match: /\.dropdownContent/g,
+            replacement: '.m0'
+          }, {
+            match: /\.searchInput/g,
+            replacement: '.m1'
+          }, {
+            match: /\.searchIcon/g,
+            replacement: '.m2'
+          }, {
+            match: /\.searchClearButton/g,
+            replacement: '.m3'
+          }, {
+            match: /\.searchNoResults/g,
+            replacement: '.m4'
+          }, {
+            match: /\.searchResultsA11yText/g,
+            replacement: '.m5'
+          }, {
+            match: /\.hiddenInputCountry/g,
+            replacement: '.m9'
+          }, {
+            match: /\.maxCoreNumberLength/g,
+            replacement: '.n0'
+          }, {
+            match: /\.originalPaddingRight/g,
+            replacement: '.n1'
+          }, {
+            match: /\.originalPaddingLeft/g,
+            replacement: '.n2'
           }
         ]
       },
