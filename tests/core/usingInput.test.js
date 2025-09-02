@@ -40,36 +40,32 @@ describe("using input", () => {
   });
 
   describe("typing a dial code containing a space", () => {
-    const telNo = "98765432";
-
     beforeEach(async () => {
-      await user.type(input, `+4 4 ${telNo}`);
+      await user.type(input, "+4 4 98765432");
     });
 
     test("still updates the flag correctly", () => {
       expect(checkFlagSelected(container, "gb")).toBe(true);
     });
 
-    test("then changing the flag updates the number correctly", async () => {
+    test("then changing the flag updates and re-formats the number correctly", async () => {
       await openDropdownSelectCountryAsync(container, "zw", user);
-      expect(input.value).toBe(`+263 ${telNo}`);
+      expect(input.value).toBe("09 876 5432");
     });
   });
 
   describe("typing a dial code containing a dot", () => {
-    const telNo = "98765432";
-
     beforeEach(async () => {
-      await user.type(input, `+4.4 ${telNo}`);
+      await user.type(input, "+4.4 98765432");
     });
 
     test("still updates the flag correctly", () => {
       expect(checkFlagSelected(container, "gb")).toBe(true);
     });
 
-    test("then changing the flag updates the whole number correctly", async () => {
+    test("then changing the flag updates and re-formats the whole number correctly", async () => {
       await openDropdownSelectCountryAsync(container, "zw", user);
-      expect(input.value).toBe(`+263 ${telNo}`);
+      expect(input.value).toBe("09 876 5432");
     });
   });
 
