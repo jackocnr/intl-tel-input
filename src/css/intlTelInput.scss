@@ -236,6 +236,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    cursor: pointer;
 
     overflow-y: scroll;
     //* Fixes https://github.com/jackocnr/intl-tel-input/issues/765
@@ -289,12 +290,8 @@
   &--allow-dropdown {
     //* Hover state - show country is clickable (unless the input is disabled or readonly)
     .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
-      //* When you hover anything in the container, use cursor:pointer.
-      &:hover {
-        //* Adds specificity to override default browser button cursor styling.
-        &, & button {
-          cursor: pointer;
-        }
+      button.iti__selected-country {
+        cursor: pointer;
       }
       //* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
       .iti__selected-country-primary:hover,
