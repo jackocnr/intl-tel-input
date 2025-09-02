@@ -284,7 +284,6 @@ export class Iti {
   private countryContainer: HTMLElement;
   private selectedCountry: HTMLElement;
   private selectedCountryInner: HTMLElement;
-  private selectedCountryA11yText: HTMLElement;
   private selectedDialCode: HTMLElement;
   private dropdownArrow: HTMLElement;
   private dropdownContent: HTMLElement;
@@ -650,7 +649,7 @@ export class Iti {
             type: "button",
             class: "iti__selected-country",
             "aria-expanded": "false",
-            "aria-label": this.options.i18n.selectedCountryAriaLabel,
+            "aria-label": this.options.i18n.noCountrySelected,
             "aria-haspopup": "dialog",
             "aria-controls": `iti-${this.id}__dropdown-content`,
           },
@@ -669,14 +668,17 @@ export class Iti {
       }
 
       // The element that gets a grey background on hover (if allowDropdown enabled)
-      const selectedCountryPrimary = createEl("div", { class: "iti__selected-country-primary" }, this.selectedCountry);
+      const selectedCountryPrimary = createEl(
+        "div",
+        { class: "iti__selected-country-primary" },
+        this.selectedCountry,
+      );
 
       //* This is where we will add the selected flag (or globe) class later
-      this.selectedCountryInner = createEl("div", { class: "iti__flag" }, selectedCountryPrimary);
-      this.selectedCountryA11yText = createEl(
-        "span",
-        { class: "iti__a11y-text" },
-        this.selectedCountryInner,
+      this.selectedCountryInner = createEl(
+        "div",
+        { class: "iti__flag" },
+        selectedCountryPrimary,
       );
 
       if (allowDropdown) {
@@ -1689,16 +1691,16 @@ export class Iti {
     //* Update the flag class and the a11y text.
     if (this.selectedCountryInner) {
       let flagClass = "";
-      let a11yText = "";
+      let ariaLabel = "";
       if (iso2 && showFlags) {
         flagClass = `iti__flag iti__${iso2}`;
-        a11yText = `${this.selectedCountryData.name} +${this.selectedCountryData.dialCode}`;
+        ariaLabel = i18n.selectedCountryAriaLabel.replace("${country}", this.selectedCountryData.name);
       } else {
         flagClass = "iti__flag iti__globe";
-        a11yText = i18n.noCountrySelected;
+        ariaLabel = i18n.noCountrySelected;
       }
       this.selectedCountryInner.className = flagClass;
-      this.selectedCountryA11yText.textContent = a11yText;
+      this.selectedCountry.setAttribute("aria-label", ariaLabel);
     }
 
     this._setSelectedCountryTitleAttribute(iso2, separateDialCode);
@@ -1781,7 +1783,7 @@ export class Iti {
       //* so just use the selected country name here:
       title = this.selectedCountryData.name;
     } else {
-      title = "Unknown";
+      title = this.options.i18n.noCountrySelected;
     }
 
     this.selectedCountry.setAttribute("title", title);

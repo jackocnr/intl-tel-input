@@ -2,8 +2,8 @@
 import { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
-  selectedCountryAriaLabel: "Selected country",
-  noCountrySelected: "No country selected",
+  selectedCountryAriaLabel: "Change country, selected ${country}",
+  noCountrySelected: "Select country",
   countryListAriaLabel: "List of countries",
   searchPlaceholder: "Search",
   clearSearchAriaLabel: "Clear search",
