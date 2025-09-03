@@ -1,5 +1,4 @@
 import allCountries, { Country } from "./intl-tel-input/data";
-import { CDM } from "./countryDataManager";
 import { I18n } from "./intl-tel-input/i18n/types";
 import defaultEnglishStrings from "./intl-tel-input/i18n/en";
 
@@ -56,6 +55,14 @@ type NumberType =
   | "UNKNOWN"
   | "VOICEMAIL"
   | "VOIP";
+//* Can't just use the Country type, as during the empty state (globe icon), this is set to an empty object for convenience.
+type SelectedCountryData = {
+  name?: string,
+  iso2?: string,
+  dialCode?: string,
+  areaCodes?: string[],
+  nationalPrefix?: string,
+};
 interface AllOptions {
   allowDropdown: boolean;
   autoPlaceholder: string;
@@ -164,6 +171,44 @@ const defaults: AllOptions = {
   //* The number type to enforce during validation.
   validationNumberTypes: ["MOBILE"],
 };
+//* https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
+const regionlessNanpNumbers = [
+  "800",
+  "822",
+  "833",
+  "844",
+  "855",
+  "866",
+  "877",
+  "880",
+  "881",
+  "882",
+  "883",
+  "884",
+  "885",
+  "886",
+  "887",
+  "888",
+  "889",
+];
+
+//* Extract the numeric digits from the given string.
+const getNumeric = (s: string): string => s.replace(/\D/g, "");
+
+//* Normalise string: turns "Réunion" into "Reunion".
+//* from https://stackoverflow.com/a/37511463
+const normaliseString = (s: string = ""): string =>
+  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+//* Check if the given number is a regionless NANP number (expects the number to contain an international dial code)
+const isRegionlessNanp = (number: string): boolean => {
+  const numeric = getNumeric(number);
+  if (numeric.charAt(0) === "1") {
+    const areaCode = numeric.substring(1, 4);
+    return regionlessNanpNumbers.includes(areaCode);
+  }
+  return false;
+};
 
 //* Iterate through the formattedValue until hit the right number of relevant chars.
 const translateCursorPosition = (
@@ -230,7 +275,12 @@ export class Iti {
   private isRTL: boolean;
   private showSelectedCountryOnLeft: boolean;
   private isAndroid: boolean;
-  private selectedCountryData: Partial<Country>;
+  private selectedCountryData: SelectedCountryData;
+  private countries: Country[];
+  private dialCodeMaxLen: number;
+  private dialCodeToIso2Map: Record<string, string[]>;
+  private dialCodes: Set<string>;
+  private countryByIso2: Map<string, Country>;
   private countryContainer: HTMLElement;
   private selectedCountry: HTMLElement;
   private selectedCountryInner: HTMLElement;
@@ -250,7 +300,6 @@ export class Iti {
   private defaultCountry: string;
   private originalPaddingRight: string;
   private originalPaddingLeft: string;
-  private cdm: CDM;
 
   private _handleHiddenInputSubmit: () => void;
   private _handleLabelClick: (e: Event) => void;
@@ -356,14 +405,8 @@ export class Iti {
     //* to assume this variable exists.
     this.selectedCountryData = {};
 
-    //* Process all the country data (filtering, translation, dial codes, search tokens etc.).
-    this.cdm = new CDM(allCountries);
-    this.cdm.prepare({
-      onlyCountries: this.options.onlyCountries,
-      excludeCountries: this.options.excludeCountries,
-      countryOrder: this.options.countryOrder,
-      i18n: this.options.i18n,
-    });
+    //* Process all the data: onlyCountries, excludeCountries, countryOrder etc.
+    this._processCountryData();
 
     //* generate the markup.
     this._generateMarkup();
@@ -381,6 +424,169 @@ export class Iti {
   //********************
   //*  PRIVATE METHODS
   //********************
+
+  //* Prepare all of the country data, including onlyCountries, excludeCountries, countryOrder options.
+  private _processCountryData(): void {
+    //* Process onlyCountries or excludeCountries array if present.
+    this._processAllCountries();
+
+    //* Generate this.dialCodes and this.dialCodeToIso2Map.
+    this._processDialCodes();
+
+    //* Translate country names according to i18n option.
+    this._translateCountryNames();
+
+    //* Sort countries by countryOrder option (if present), then name.
+    this._sortCountries();
+
+    //* Build fast iso2 -> country map for O(1) lookups (used by _getCountryData).
+    this.countryByIso2 = new Map(this.countries.map((c) => [c.iso2, c]));
+
+    //* Precompute and cache country search tokens to speed up filtering
+    this._cacheSearchTokens();
+  }
+
+  //* Precompute and cache country search tokens to speed up filtering
+  private _cacheSearchTokens(): void {
+    for (const c of this.countries) {
+      // Light normalisation: lowercase name (diacritic folding, trimming etc can still occur at query side via normaliseString if needed)
+      c.normalisedName = normaliseString(c.name);
+      // Derive initials (first letter of each alpha sequence)
+      c.initials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map(word => word[0]).join("").toLowerCase();
+      // Cached +dialCode variant
+      c.dialCodePlus = `+${c.dialCode}`;
+    }
+  }
+
+  //* Sort countries by countryOrder option (if present), then name.
+  private _sortCountries() {
+    if (this.options.countryOrder) {
+      this.options.countryOrder = this.options.countryOrder.map((country) => country.toLowerCase());
+    }
+    this.countries.sort((a: Country, b: Country): number => {
+      //* Primary sort: countryOrder option.
+      const { countryOrder } = this.options;
+      if (countryOrder) {
+        const aIndex = countryOrder.indexOf(a.iso2);
+        const bIndex = countryOrder.indexOf(b.iso2);
+        const aIndexExists = aIndex > -1;
+        const bIndexExists = bIndex > -1;
+        if (aIndexExists || bIndexExists) {
+          if (aIndexExists && bIndexExists) {
+            return aIndex - bIndex;
+          }
+          return aIndexExists ? -1 : 1;
+        }
+      }
+
+      //* Secondary sort: country name.
+      return a.name.localeCompare(b.name);
+    });
+  }
+
+  //* Add a dial code to this.dialCodeToIso2Map.
+  private _addToDialCodeMap(iso2: string, dialCode: string, priority?: number): void {
+    //* Update dialCodeMaxLen.
+    if (dialCode.length > this.dialCodeMaxLen) {
+      this.dialCodeMaxLen = dialCode.length;
+    }
+    //* If this entry doesn't already exist, then create it.
+    if (!this.dialCodeToIso2Map.hasOwnProperty(dialCode)) {
+      this.dialCodeToIso2Map[dialCode] = [];
+    }
+    const iso2List = this.dialCodeToIso2Map[dialCode];
+    //* Bail if we already have this country for this dialCode.
+    if (iso2List.includes(iso2)) {
+      return;
+    }
+    //* Use provided priority index (can be 0), else append.
+    const index = priority !== undefined ? priority : iso2List.length;
+    iso2List[index] = iso2;
+  }
+
+  //* Process onlyCountries or excludeCountries array if present.
+  private _processAllCountries(): void {
+    const { onlyCountries, excludeCountries } = this.options;
+    if (onlyCountries.length) {
+      const lowerCaseOnlyCountries = onlyCountries.map((country) =>
+        country.toLowerCase(),
+      );
+      this.countries = allCountries.filter(
+        (country) => lowerCaseOnlyCountries.includes(country.iso2),
+      );
+    } else if (excludeCountries.length) {
+      const lowerCaseExcludeCountries = excludeCountries.map(
+        (country) => country.toLowerCase(),
+      );
+      this.countries = allCountries.filter(
+        (country) => !lowerCaseExcludeCountries.includes(country.iso2),
+      );
+    } else {
+      this.countries = allCountries;
+    }
+  }
+
+  //* Translate Countries by object literal provided on config.
+  private _translateCountryNames(): void {
+    for (const c of this.countries) {
+      const iso2 = c.iso2.toLowerCase();
+      if (this.options.i18n.hasOwnProperty(iso2)) {
+        c.name = this.options.i18n[iso2];
+      }
+    }
+  }
+
+  //* Generate this.dialCodes and this.dialCodeToIso2Map.
+  private _processDialCodes(): void {
+    //* Here we store just dial codes, where the key is the dial code, and the value is true
+    //* e.g. { 1: true, 7: true, 20: true, ... }.
+    this.dialCodes = new Set();
+    this.dialCodeMaxLen = 0;
+
+    //* Here we map dialCodes (inc both dialCode and dialCode+areaCode) to iso2 codes e.g.
+    /*
+     * {
+     *   1: [ 'us', 'ca', ... ],    # all NANP countries (with dial code "1")
+     *   12: [ 'us', 'ca', ... ],   # subset of NANP countries (that have area codes starting with "2")
+     *   120: [ 'us', 'ca' ],       # just US and Canada (that have area codes starting "20")
+     *   1204: [ 'ca' ],            # only Canada (that has a "204" area code)
+     *   ...
+     *  }
+     */
+    this.dialCodeToIso2Map = {};
+
+    //* First: add dial codes.
+    for (const c of this.countries) {
+      if (!this.dialCodes.has(c.dialCode)) {
+        this.dialCodes.add(c.dialCode);
+      }
+      this._addToDialCodeMap(c.iso2, c.dialCode, c.priority);
+    }
+
+    //* Next: add area codes.
+    //* This is a second loop over countries, to make sure we have all of the "root" countries
+    //* already in the map, so that we can access them, as each time we add an area code substring
+    //* to the map, we also need to include the "root" country's code, as that also matches.
+    for (const c of this.countries) {
+      //* Area codes
+      if (c.areaCodes) {
+        const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
+        //* For each area code.
+        for (const areaCode of c.areaCodes) {
+          //* For each digit in the area code to add all partial matches as well.
+          for (let k = 1; k < areaCode.length; k++) {
+            const partialAreaCode = areaCode.substring(0, k);
+            const partialDialCode = c.dialCode + partialAreaCode;
+            //* Start with the root country, as that also matches this partial dial code.
+            this._addToDialCodeMap(rootIso2Code, partialDialCode);
+            this._addToDialCodeMap(c.iso2, partialDialCode);
+          }
+          //* Add the full area code.
+          this._addToDialCodeMap(c.iso2, c.dialCode + areaCode);
+        }
+      }
+    }
+  }
 
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
   private _generateMarkup(): void {
@@ -646,8 +852,8 @@ export class Iti {
 
   //* For each country: add a country list item <li> to the countryList <ul> container.
   private _appendListItems(): void {
-    for (let i = 0; i < this.cdm.countries.length; i++) {
-      const c = this.cdm.countries[i];
+    for (let i = 0; i < this.countries.length; i++) {
+      const c = this.countries[i];
       //* Start by highlighting the first item (useful when countrySearch disabled).
       const extraClass = i === 0 ? "iti__highlight" : "";
 
@@ -694,8 +900,8 @@ export class Iti {
       attributeValue.charAt(0) === "+" &&
       (!inputValue || inputValue.charAt(0) !== "+");
     const val = useAttribute ? attributeValue : inputValue;
-    const dialCode = this.cdm.getDialCode(val);
-    const isRegionlessNanpNumber = CDM.isRegionlessNanp(val);
+    const dialCode = this._getDialCode(val);
+    const isRegionlessNanpNumber = isRegionlessNanp(val);
     const { initialCountry, geoIpLookup } = this.options;
     const isAutoCountry = initialCountry === "auto" && geoIpLookup;
 
@@ -745,7 +951,7 @@ export class Iti {
         this.hiddenInput.value = this.getNumber();
       }
       if (this.hiddenInputCountry) {
-        this.hiddenInputCountry.value = this.selectedCountryData.iso2 || "";
+        this.hiddenInputCountry.value = this.getSelectedCountryData().iso2 || "";
       }
     };
     this.telInput.form?.addEventListener(
@@ -1185,32 +1391,76 @@ export class Iti {
 
   //* Hidden search (countrySearch disabled): Find the first list item whose name starts with the query string.
   private _searchForCountry(query: string): void {
-    const match = this.cdm.searchByNamePrefix(query);
-    if (match) {
-      const listItem = match.nodeById[this.id];
-      if (listItem) {
+    for (const c of this.countries) {
+      const startsWith = c.name.substring(0, query.length).toLowerCase() === query;
+      if (startsWith) {
+        const listItem = c.nodeById[this.id];
+        //* Update highlighting and scroll.
         this._highlightListItem(listItem, false);
         this._scrollTo(listItem);
+        break;
       }
     }
   }
 
   //* Country search enabled: Filter the countries according to the search query.
   private _filterCountries(query: string, isReset: boolean = false): void {
-    const matches = this.cdm.filter(query, isReset);
+    let noCountriesAddedYet = true;
     this.countryList.innerHTML = "";
-    let first = true;
-    for (const c of matches) {
+    const normalisedQuery = normaliseString(query);
+    const queryLength = normalisedQuery.length;
+
+    // search result groups, in order of priority
+    // first, exact ISO2 matches, then name starts with, then name contains, dial code match etc.
+    const iso2Matches = [];
+    const nameStartWith = [];
+    const nameContains = [];
+    const dialCodeMatches = [];
+    const dialCodeContains = [];
+    const initialsMatches = [];
+
+    for (const c of this.countries) {
+      if (isReset || queryLength === 0) {
+        nameContains.push(c);
+      } else if (c.iso2 === normalisedQuery) {
+        iso2Matches.push(c);
+      } else if (c.normalisedName.startsWith(normalisedQuery)) {
+        nameStartWith.push(c);
+      } else if (c.normalisedName.includes(normalisedQuery)) {
+        nameContains.push(c);
+      } else if (normalisedQuery === c.dialCode || normalisedQuery === c.dialCodePlus) {
+        dialCodeMatches.push(c);
+      } else if (c.dialCodePlus.includes(normalisedQuery)) {
+        dialCodeContains.push(c);
+      } else if (c.initials.includes(normalisedQuery)) {
+        initialsMatches.push(c);
+      }
+    }
+
+    // Combine result groups in correct order (and respect country priority order within each group e.g. if search +44, then UK appears first above Guernsey etc)
+    const matchedCountries = [
+      ...iso2Matches.sort((a, b) => a.priority - b.priority),
+      ...nameStartWith.sort((a, b) => a.priority - b.priority),
+      ...nameContains.sort((a, b) => a.priority - b.priority),
+      ...dialCodeMatches.sort((a, b) => a.priority - b.priority),
+      ...dialCodeContains.sort((a, b) => a.priority - b.priority),
+      ...initialsMatches.sort((a, b) => a.priority - b.priority),
+    ];
+
+    for (const c of matchedCountries) {
       const listItem = c.nodeById[this.id];
       if (listItem) {
         this.countryList.appendChild(listItem);
-        if (first) {
+
+        //* Highlight the first item
+        if (noCountriesAddedYet) {
           this._highlightListItem(listItem, false);
-          first = false;
+          noCountriesAddedYet = false;
         }
       }
     }
-    if (first) { // no results
+    //* If no countries are shown, unhighlight the previously highlighted item.
+    if (noCountriesAddedYet) {
       this._highlightListItem(null, false);
       if (this.searchNoResults) {
         this.searchNoResults.classList.remove("iti__hide");
@@ -1308,16 +1558,75 @@ export class Iti {
     return false;
   }
 
+  private _ensureHasDialCode(number: string): string {
+    const { dialCode, nationalPrefix } = this.selectedCountryData;
+    const alreadyHasPlus = number.charAt(0) === "+";
+    if (alreadyHasPlus || !dialCode) {
+      return number;
+    }
+    //* Don't remove "nationalPrefix" digit if separateDialCode is enabled, as it can be part of a valid area code e.g. in Russia then have area codes starting with 8, which is also the national prefix digit.
+    const hasPrefix = nationalPrefix && number.charAt(0) === nationalPrefix && !this.options.separateDialCode;
+    const cleanNumber = hasPrefix ? number.substring(1) : number;
+    return `+${dialCode}${cleanNumber}`;
+  }
+
   // Get the country ISO2 code from the given number
   // BUT ONLY IF ITS CHANGED FROM THE CURRENTLY SELECTED COUNTRY
   // NOTE: consider refactoring this to be more clear
   private _getNewCountryFromNumber(fullNumber: string): string | null {
-    return this.cdm.resolveNewCountryIso2(
-      fullNumber,
-      this.selectedCountryData,
-      this.defaultCountry,
-      this.options.separateDialCode,
-    );
+    const plusIndex = fullNumber.indexOf("+");
+    //* If it contains a plus, discard any chars before it e.g. accidental space char.
+    //* This keeps the selected country auto-updating correctly, which we want as
+    //* libphonenumber's validation/getNumber methods will ignore these chars anyway.
+    let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
+    const selectedIso2 = this.selectedCountryData.iso2;
+    const selectedDialCode = this.selectedCountryData.dialCode;
+
+    //* Ensure the number starts with the dial code, for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
+    number = this._ensureHasDialCode(number);
+
+    //* Try and extract valid dial code (plus area code digits) from input.
+    const dialCodeMatch = this._getDialCode(number, true);
+    const numeric = getNumeric(number);
+    if (dialCodeMatch) {
+      const dialCodeMatchNumeric = getNumeric(dialCodeMatch);
+      const iso2Codes = this.dialCodeToIso2Map[dialCodeMatchNumeric];
+
+      //* If they've just typed a dial code (from empty state), and it matches the last selected country, then stick to that country.
+      //* e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
+      if (!selectedIso2 && this.defaultCountry && iso2Codes.includes(this.defaultCountry)) {
+        return this.defaultCountry;
+      }
+
+      //* Check if the right country is already selected (note: might be empty state - globe icon).
+      // If the currently selected country has area codes, but none of them even partially matched the input number, then we need to switch to the default country for this dial code, so alreadySelected should be false
+      const hasAreaCodesButNoneMatched = this.selectedCountryData.areaCodes && numeric.length > dialCodeMatchNumeric.length;
+      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
+
+      const isRegionlessNanpNumber =
+        selectedDialCode === "1" && isRegionlessNanp(numeric);
+
+      //* Only update the country if:
+      //* A) NOT (we currently have a NANP country selected, and the number is a regionlessNanp)
+      //* AND
+      //* B) the right country is not already selected
+      if (!isRegionlessNanpNumber && !alreadySelected) {
+        //* If using onlyCountries option, iso2Codes[0] may be empty, so we must find the first non-empty index.
+        for (const iso2 of iso2Codes) {
+          if (iso2) {
+            return iso2;
+          }
+        }
+      }
+    } else if (number.charAt(0) === "+" && numeric.length) {
+      //* Invalid dial code, so empty.
+      //* Note: use getNumeric here because the number has not been formatted yet, so could contain bad chars.
+      return "";
+    } else if ((!number || number === "+") && !this.selectedCountryData.iso2) {
+      //* If no selected country, and user either clears the input, or just types a plus, then show default.
+      return this.defaultCountry;
+    }
+    return null;
   }
 
   //* Remove highlighting from other list items and highlight the given item.
@@ -1346,7 +1655,7 @@ export class Iti {
   //* Find the country data for the given iso2 code
   //* the allowFail option is only used during init() for the initialCountry option, and for the iso2 returned from geoIpLookup - in these 2 cases we don't want to error out
   private _getCountryData(iso2: string, allowFail: boolean): Country | null {
-    const country = this.cdm.countryByIso2.get(iso2);
+    const country = this.countryByIso2.get(iso2);
     if (country) {
       return country;
     }
@@ -1613,7 +1922,7 @@ export class Iti {
     let newNumber;
     if (inputVal.charAt(0) === "+") {
       //* There's a plus so we're dealing with a replacement.
-      const prevDialCode = this.cdm.getDialCode(inputVal);
+      const prevDialCode = this._getDialCode(inputVal);
       if (prevDialCode) {
         //* Current number contains a valid dial code, so replace it.
         newNumber = inputVal.replace(prevDialCode, newDialCode);
@@ -1626,22 +1935,69 @@ export class Iti {
     }
   }
 
+  //* Try and extract a valid international dial code from a full telephone number.
+  //* Note: returns the raw string inc plus character and any whitespace/dots etc.
+  private _getDialCode(number: string, includeAreaCode?: boolean): string {
+    let dialCode = "";
+    //* Only interested in international numbers (starting with a plus)
+    if (number.charAt(0) === "+") {
+      let numericChars = "";
+      //* Iterate over chars
+      for (let i = 0; i < number.length; i++) {
+        const c = number.charAt(i);
+        //* If char is number.
+        //* https://stackoverflow.com/a/8935649/217866
+        if (!isNaN(parseInt(c, 10))) {
+          numericChars += c;
+          //* If current numericChars make a valid dial code.
+          if (includeAreaCode) {
+            if (this.dialCodeToIso2Map[numericChars]) {
+              //* Store the actual raw string (useful for matching later).
+              dialCode = number.substring(0, i + 1);
+            }
+          } else {
+            if (this.dialCodes.has(numericChars)) {
+              dialCode = number.substring(0, i + 1);
+              //* If we're just looking for a dial code, we can break as soon as we find one.
+              break;
+            }
+          }
+          //* Stop searching as soon as we can - in this case when we hit max len.
+          if (numericChars.length === this.dialCodeMaxLen) {
+            break;
+          }
+        }
+      }
+    }
+    return dialCode;
+  }
+
   //* Get the input val, adding the dial code if separateDialCode is enabled.
   private _getFullNumber(overrideVal?: string): string {
     const val = overrideVal || this.telInput.value.trim();
     const { dialCode } = this.selectedCountryData;
-    const numericVal = CDM.getNumeric(val);
-    const addDialCode = this.options.separateDialCode && val.charAt(0) !== "+" && dialCode && numericVal;
+    let prefix;
+    const numericVal = getNumeric(val);
 
-    //* When using separateDialCode, it is visible so is effectively part of the typed number.
-    return addDialCode ? `+${dialCode}${val}` : val;
+    if (
+      this.options.separateDialCode &&
+      val.charAt(0) !== "+" &&
+      dialCode &&
+      numericVal
+    ) {
+      //* When using separateDialCode, it is visible so is effectively part of the typed number.
+      prefix = `+${dialCode}`;
+    } else {
+      prefix = "";
+    }
+    return prefix + val;
   }
 
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
   private _beforeSetNumber(fullNumber: string): string {
     let number = fullNumber;
     if (this.options.separateDialCode) {
-      let dialCode = this.cdm.getDialCode(number);
+      let dialCode = this._getDialCode(number);
       //* If there is a valid dial code.
       if (dialCode) {
         //* In case _getDialCode returned an area code as well.
@@ -1814,7 +2170,7 @@ export class Iti {
   }
 
   //* Get the country data for the currently selected country.
-  getSelectedCountryData(): Partial<Country> {
+  getSelectedCountryData(): SelectedCountryData {
     return this.selectedCountryData;
   }
 
