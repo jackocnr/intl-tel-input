@@ -110,6 +110,7 @@
     "build:react": "grunt react",
     "build:vue": "grunt vue",
     "build:angular": "grunt angular",
+    "build:travis": "grunt build:travis",
   "vue:demo": "vite --config vue/demo/validation/vite.config.js"
   },
   "style": "build/css/intlTelInput.css",

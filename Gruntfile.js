@@ -12,6 +12,8 @@ module.exports = function(grunt) {
    */
   // build everything ready for a commit
   grunt.registerTask('build', ['img', 'translations', 'js']);
+  // omit "img" task for travis, which errors out complaining about the "sharp" dep not playing nice with linux
+  grunt.registerTask('build:travis', ['css', 'translations', 'js']);
   // build translations
   grunt.registerTask('build:translations', ['translations', 'js']);
   // build utils
