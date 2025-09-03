@@ -1670,9 +1670,7 @@ export class Iti {
   private _setCountry(iso2?: string | null): boolean {
     const { separateDialCode, showFlags, i18n } = this.options;
 
-    const prevCountry = this.selectedCountryData.iso2
-      ? this.selectedCountryData
-      : {};
+    const prevIso2 = this.selectedCountryData.iso2 || "";
 
     //* Do this first as it will throw an error and stop if iso2 is invalid.
     this.selectedCountryData = iso2
@@ -1688,8 +1686,9 @@ export class Iti {
       const flagClass = iso2 && showFlags ? `iti__flag iti__${iso2}` : "iti__flag iti__globe";
       let ariaLabel, title;
       if (iso2) {
-        title = this.selectedCountryData.name;
-        ariaLabel = i18n.selectedCountryAriaLabel.replace("${country}", this.selectedCountryData.name);
+        const { name, dialCode } = this.selectedCountryData;
+        title = name;
+        ariaLabel = i18n.selectedCountryAriaLabel.replace("${countryName}", name).replace("${dialCode}", `+${dialCode}`);
       } else {
         title = i18n.noCountrySelected;
         ariaLabel = i18n.noCountrySelected;
@@ -1715,7 +1714,7 @@ export class Iti {
     this._updateMaxLength();
 
     //* Return if the country has changed or not.
-    return prevCountry.iso2 !== iso2;
+    return prevIso2 !== iso2;
   }
 
   //* Update the input padding to make space for the selected country/dial code.

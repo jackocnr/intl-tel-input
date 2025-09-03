@@ -284,7 +284,7 @@ intlTelInput(input, {
     ad: "Andorra",
     ...
     // Aria label for the selected country element
-    selectedCountryAriaLabel: "Change country, selected ${country}",
+    selectedCountryAriaLabel: "Change country, selected ${countryName} (${dialCode})",
     // Screen reader text for when no country is selected
     noCountrySelected: "Select country",
     // Aria label for the country list element
