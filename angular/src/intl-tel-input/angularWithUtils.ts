@@ -2,7 +2,7 @@
 import intlTelInput from "./intlTelInputWithUtils";
 //* Keep the TS imports separate, as the above line gets substituted in the angularWithUtils build process.
 import { Iti, SomeOptions } from "../intl-tel-input";
-import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, forwardRef, AfterViewInit } from "@angular/core";
+import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, forwardRef, AfterViewInit, OnChanges, SimpleChanges } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
 
 export { intlTelInput };
@@ -24,7 +24,6 @@ export const PHONE_ERROR_MESSAGES: string[] = [
       #inputRef
       (input)="handleInput()"
       (blur)="handleBlur()"
-      [disabled]="disabled"
     />
   `,
   providers: [
@@ -40,7 +39,7 @@ export const PHONE_ERROR_MESSAGES: string[] = [
     },
   ],
 })
-export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor, Validator {
+export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, ControlValueAccessor, Validator {
   @ViewChild("inputRef", { static: true }) inputRef!: ElementRef<HTMLInputElement>;
 
   @Input() initialValue: string = "";
@@ -82,6 +81,18 @@ export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, 
   ngAfterViewInit() {
     if (this.initialValue) {
       this.iti?.setNumber(this.initialValue);
+    }
+
+    // Apply initial disabled state
+    if (this.disabled) {
+      this.iti?.setDisabled(this.disabled);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Handle changes to the disabled input
+    if (changes["disabled"] && this.iti) {
+      this.iti.setDisabled(this.disabled || false);
     }
   }
 
@@ -153,6 +164,7 @@ export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+    this.iti?.setDisabled(isDisabled);
   }
 
   // ============ Validator Implementation ============
