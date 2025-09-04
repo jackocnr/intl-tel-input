@@ -31,7 +31,9 @@ Run `npm test` to run all the tests. This uses the built JS files, so make sure 
 
 ## Updating the flag images
 
-We get our flags from the [flag-icons](https://github.com/lipis/flag-icons) project. If there is a problem with the flags, you'll need to raise it with them. When there is an update in that project that you want to pull into this project, you can update the npm package with `npm install flag-icons@VERSION --save-dev`, and then rebuild the flag sprite images with `npm run build:img`. Once you've checked everything looks ok (e.g. by opening the included demo.html in your browser), you can then create a pull request on Github. _NOTE: since we removed the build files from the repo, the only changes you will be committing are in package.json and package-lock.json._
+We get our flags from the [flag-icons](https://github.com/lipis/flag-icons) project. If there is a problem with the flags, you'll need to raise it with them. When there is an update in that project that you want to pull into this project, you can update the npm package with `npm install flag-icons@VERSION --save-dev`, and then rebuild the flag sprite images with `npm run build:img`. 
+
+Once you've checked everything looks ok (e.g. by opening the included demo.html in your browser), you can then create a pull request on Github. _NOTE: since we removed the build files from the repo, the only changes you will be committing are in package.json and package-lock.json._
 
 ## Adding a new translation
 
