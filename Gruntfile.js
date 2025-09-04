@@ -24,14 +24,22 @@ module.exports = function(grunt) {
   grunt.registerTask('build:js', [
     'shell:eslint',
     'closure-compiler:utils',
+    'build:tsDeclarations',
+    'shell:buildJs',
+    'replace',
+    'build:components',
+  ]);
+  // just TS declaration files
+  grunt.registerTask('build:tsDeclarations', [
     'shell:genTsDeclaration',
     'shell:genReactTsDeclaration',
     'shell:genAngularTsDeclarationAndJs',
-    'shell:buildJs',
-    'replace',
+  ]);
+  // just 3 components
+  grunt.registerTask('build:components', [
     'build:react',
     'build:vue',
-    'build:angular'
+    'build:angular',
   ]);
   // fast version which only does the core plugin, not eslint, or TS declarations, or any of the wrapper components e.g. react
   grunt.registerTask('build:jsfast', ['shell:buildJs', 'replace']);
@@ -46,10 +54,33 @@ module.exports = function(grunt) {
 
   /**
    * VERSIONING TASKS
-   */
-  // bump version number in 3 files, rebuild js to update headers, then commit, tag and push
-  grunt.registerTask('version', ['shell:test', 'bump-only', 'js', 'bump-commit']);
-  grunt.registerTask('version:minor', ['shell:test', 'bump-only:minor', 'js', 'bump-commit']);
-  grunt.registerTask('version:major', ['shell:test', 'bump-only:major', 'js', 'bump-commit']);
+  */
+  // (1) build for tests, and run tests before allowing a version bump
+  // (2) bump version number in package.json etc
+  // (3) rebuild js to update version numbers in those files
+  // (4) commit, tag and push
+  grunt.registerTask('version', [
+    'build:jsfast',
+    'shell:test',
+    'bump-only',
+    'build:jsVersionNumbers',
+    'bump-commit',
+  ]);
+  grunt.registerTask('version:minor', [
+    'build:jsfast',
+    'shell:test',
+    'bump-only:minor',
+    'build:jsVersionNumbers',
+    'bump-commit'
+  ]);
+  grunt.registerTask('version:major', [
+    'build:jsfast',
+    'shell:test',
+    'bump-only:major',
+    'build:jsVersionNumbers',
+    'bump-commit'
+  ]);
+  // build all the JS that contains a version number
+  grunt.registerTask('build:jsVersionNumbers', ['shell:buildJs', 'replace', 'build:components']);
 
 };
