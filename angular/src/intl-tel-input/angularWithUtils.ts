@@ -138,8 +138,8 @@ export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, 
   // ============ ControlValueAccessor Implementation ============
 
   writeValue(value: string | null): void {
-    if (this.iti && value) {
-      this.iti.setNumber(value);
+    if (this.iti) {
+      this.iti.setNumber(value || "");
     }
   }
 
