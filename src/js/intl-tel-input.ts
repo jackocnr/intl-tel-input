@@ -1723,8 +1723,10 @@ export class Iti {
   //* Update the input padding to make space for the selected country/dial code.
   private _updateInputPadding(): void {
     if (this.selectedCountry) {
+      // if all else fails, these are better than nothing
+      const saneDefaultWidth = this.options.separateDialCode ? 78 : 42;
       //* offsetWidth is zero if input is in a hidden container during initialisation.
-      const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth();
+      const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth() || saneDefaultWidth;
       const inputPadding = selectedCountryWidth + 6;
       if (this.showSelectedCountryOnLeft) {
         this.telInput.style.paddingLeft = `${inputPadding}px`;
@@ -1766,17 +1768,25 @@ export class Iti {
     }
   }
 
-  //* When the input is in a hidden container during initialisation, we must inject some markup
-  //* into the end of the DOM to calculate the correct offsetWidth.
-  //* NOTE: this is only used when separateDialCode is enabled, so countryContainer and selectedCountry
-  //* will definitely exist.
+  //* When input is in a hidden container during init, we cannot calculate the selected country width.
+  //* Fix: clone the markup, make it invisible, add it to the end of the DOM, and then measure it's width.
+  //* To get the right styling to apply, all we need is a shallow clone of the container,
+  //* and then to inject a deep clone of the selectedCountry element.
   private _getHiddenSelectedCountryWidth(): number {
-    //* To get the right styling to apply, all we need is a shallow clone of the container,
-    //* and then to inject a deep clone of the selectedCountry element.
     if (this.telInput.parentNode) {
+      // Use window.top as a fix for same-origin iframes (that are hidden during init) where even appending it to document.body would still be hidden. window.top accesses the top-most document, which will not be hidden.
+      let body;
+      try {
+        body = window.top.document.body;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (e) {
+        // fix for cross-origin iframes, where accessing window.top.document throws a security error
+        body = document.body;
+      }
+
       const containerClone = this.telInput.parentNode.cloneNode(false) as HTMLElement;
       containerClone.style.visibility = "hidden";
-      document.body.appendChild(containerClone);
+      body.appendChild(containerClone);
 
       const countryContainerClone = this.countryContainer.cloneNode() as HTMLElement;
       containerClone.appendChild(countryContainerClone);
@@ -1785,7 +1795,7 @@ export class Iti {
       countryContainerClone.appendChild(selectedCountryClone);
 
       const width = selectedCountryClone.offsetWidth;
-      document.body.removeChild(containerClone);
+      body.removeChild(containerClone);
       return width;
     }
     return 0;
