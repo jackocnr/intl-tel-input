@@ -8,30 +8,45 @@ module.exports = function(grunt) {
   });
 
   /**
-   * TASKS
+   * BUILD TASKS
    */
   // build everything ready for a commit
-  grunt.registerTask('build', ['img', 'translations', 'js']);
-  // stripped down build task for Travis which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
-  grunt.registerTask('build:travis', ['closure-compiler:utils', 'shell:buildJs']);
+  grunt.registerTask('build', ['build:img', 'build:translations', 'build:js']);
   // build translations
-  grunt.registerTask('build:translations', ['translations', 'js']);
+  grunt.registerTask('build:translations', ['build:translations', 'build:js']);
   // build utils
   grunt.registerTask('build:utils', ['closure-compiler:utils']);
   // just CSS
-  grunt.registerTask('css', ['sass', 'cssmin']);
+  grunt.registerTask('build:css', ['sass', 'cssmin']);
   // just images
-  grunt.registerTask('img', ['shell:globeImages', 'generate-sprite', 'css']);
+  grunt.registerTask('build:img', ['shell:globeImages', 'generate-sprite', 'build:css']);
   // just javascript
-  grunt.registerTask('js', ['shell:eslint', 'closure-compiler:utils', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genAngularTsDeclarationAndJs', 'shell:buildJs', 'replace', 'react', 'vue', 'angular']);
+  grunt.registerTask('build:js', [
+    'shell:eslint',
+    'closure-compiler:utils',
+    'shell:genTsDeclaration',
+    'shell:genReactTsDeclaration',
+    'shell:genAngularTsDeclarationAndJs',
+    'shell:buildJs',
+    'replace',
+    'build:react',
+    'build:vue',
+    'build:angular'
+  ]);
   // fast version which only does the core plugin, not eslint, or TS declarations, or any of the wrapper components e.g. react
-  grunt.registerTask('jsfast', ['shell:buildJs', 'replace']);
+  grunt.registerTask('build:jsfast', ['shell:buildJs', 'replace']);
   // just react
-  grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact']);
+  grunt.registerTask('build:react', ['replace:reactWithUtils', 'shell:buildReact']);
   // just vue
-  grunt.registerTask('vue', ['replace:vueWithUtils', 'shell:buildVue']);
+  grunt.registerTask('build:vue', ['replace:vueWithUtils', 'shell:buildVue']);
   // just angular
-  grunt.registerTask('angular', ['replace:angularWithUtils', 'shell:buildAngular']);
+  grunt.registerTask('build:angular', ['replace:angularWithUtils', 'shell:buildAngular']);
+  // stripped down build task for Travis which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
+  grunt.registerTask('build:travis', ['closure-compiler:utils', 'shell:buildJs']);
+
+  /**
+   * VERSIONING TASKS
+   */
   // bump version number in 3 files, rebuild js to update headers, then commit, tag and push
   grunt.registerTask('version', ['shell:test', 'bump-only', 'js', 'bump-commit']);
   grunt.registerTask('version:minor', ['shell:test', 'bump-only:minor', 'js', 'bump-commit']);

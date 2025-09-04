@@ -12,13 +12,9 @@ module.exports = function(grunt) {
       files: ["react/src/intl-tel-input/react.tsx", "react/demo/validation/ValidationApp.tsx", "react/demo/simple/SimpleApp.tsx", "react/demo/set-number/SetNumberApp.tsx"],
       tasks: "react"
     },
-    pluginCss: {
-      files: ["src/css/flags.scss", "src/css/intlTelInput.scss"],
-      tasks: "sass:main"
-    },
-    demoCss: {
-      files: "src/css/demo.scss",
-      tasks: "sass:demo"
+    css: {
+      files: "src/css/**/*",
+      tasks: "sass"
     }
   };
 };
