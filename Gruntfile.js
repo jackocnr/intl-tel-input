@@ -12,8 +12,8 @@ module.exports = function(grunt) {
    */
   // build everything ready for a commit
   grunt.registerTask('build', ['img', 'translations', 'js']);
-  // omit "img" task for travis, which errors out complaining about the "sharp" dep not playing nice with linux
-  grunt.registerTask('build:travis', ['css', 'translations', 'js']);
+  // stripped down build task for Travis which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
+  grunt.registerTask('build:travis', ['closure-compiler:utils', 'shell:buildJs']);
   // build translations
   grunt.registerTask('build:translations', ['translations', 'js']);
   // build utils

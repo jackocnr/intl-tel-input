@@ -7,15 +7,8 @@ const supportedCountries = require('../src/js/intl-tel-input/data.ts').default;
 module.exports = function(grunt) {
   grunt.registerTask('generate-sprite', async function() {
     const done = this.async();
-    // Require sharp only when the task actually runs so CI builds that skip this task don't need it.
-    let sharp;
-    try {
-      // eslint-disable-next-line import/no-extraneous-dependencies, global-require
-      sharp = require('sharp');
-    } catch (e) {
-      grunt.log.writeln('Warning: dependency "sharp" not available – skipping flag sprite generation.');
-      return done();
-    }
+    // Require "sharp" on demand, else Travis was breaking with "Error: Could not load the "sharp" module using the linux-x64 runtime" when Travis doesn't even use this task
+    const sharp = require('sharp');
     // ensure /build/img/ dir exists before trying to write to it
     const buildImgDir = path.join(__dirname, '..', 'build', 'img');
     if (!fs.existsSync(buildImgDir)) {
