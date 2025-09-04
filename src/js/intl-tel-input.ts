@@ -65,6 +65,7 @@ type SelectedCountryData = {
 };
 interface AllOptions {
   allowDropdown: boolean;
+  allowPhonewords: boolean;
   autoPlaceholder: string;
   containerClass: string;
   countryOrder: string[];
@@ -122,6 +123,8 @@ const computeDefaultUseFullscreenPopup = (): boolean => {
 };
 
 const defaults: AllOptions = {
+  // Allow alphanumeric "phonewords" (e.g. +1 800 FLOWERS) as valid numbers
+  allowPhonewords: false,
   //* Whether or not to allow the dropdown.
   allowDropdown: true,
   //* Add a placeholder in the input with an example number for the selected country.
@@ -2203,12 +2206,15 @@ export class Iti {
     if (!this.selectedCountryData.iso2) {
       return false;
     }
-    const val = this._getFullNumber();
-    const alphaCharPosition = val.search(/\p{L}/u);
+
     const testValidity = (s: string) => precise
       ? this._utilsIsValidNumber(s)
       : this._utilsIsPossibleNumber(s);
-    if (alphaCharPosition > -1) {
+
+    const val = this._getFullNumber();
+    const alphaCharPosition = val.search(/\p{L}/u);
+    const hasAlphaChar = alphaCharPosition > -1;
+    if (hasAlphaChar && !this.options.allowPhonewords) {
       const beforeAlphaChar = val.substring(0, alphaCharPosition);
       //* Workaround to allow some alpha chars e.g. "+1 (444) 444-4444 ext. 1234" while rejecting others e.g. "+1 (444) 444-FAST". The only legit use of alpha chars is as an extension separator, in which case, the number before it must be valid on its own.
       const beforeAlphaIsValid = testValidity(beforeAlphaChar);
