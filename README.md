@@ -1,4 +1,4 @@
-# International Telephone Input [![Build Status](https://app.travis-ci.com/jackocnr/intl-tel-input.svg?branch=master)](https://app.travis-ci.com/jackocnr/intl-tel-input) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
+# International Telephone Input <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vue-icon.png" alt="Vue logo" width="16px" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/vue">Vue component</a>!
 
