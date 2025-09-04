@@ -83,7 +83,7 @@ module.exports = function(grunt) {
     'build:jsfast',
     'shell:test',
     'bump-only',
-    'build:versionNumbers',
+    'versionNumbers',
     'bump-commit',
   ]);
 
@@ -91,7 +91,7 @@ module.exports = function(grunt) {
     'build:jsfast',
     'shell:test',
     'bump-only:minor',
-    'build:versionNumbers',
+    'versionNumbers',
     'bump-commit'
   ]);
 
@@ -99,16 +99,11 @@ module.exports = function(grunt) {
     'build:jsfast',
     'shell:test',
     'bump-only:major',
-    'build:versionNumbers',
+    'versionNumbers',
     'bump-commit'
   ]);
 
-  // build all the JS (and readme etc) that contains a version number
-  grunt.registerTask('build:versionNumbers', [
-    'build:jsfast',
-    'replace:readme',
-    'replace:issueTemplate',
-    'build:components',
-  ]);
+  // update version numbers in docs etc
+  grunt.registerTask('versionNumbers', ['replace:readme', 'replace:issueTemplate']);
 
 };
