@@ -10,7 +10,7 @@ dist: jammy
 #     - node_modules
 
 install:
-  - npm install --include=optional
+  - npm install
 
 script:
   - npm run build:travis
