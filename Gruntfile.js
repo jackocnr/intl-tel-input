@@ -8,31 +8,102 @@ module.exports = function(grunt) {
   });
 
   /**
-   * TASKS
+   * BUILD TASKS
    */
   // build everything ready for a commit
-  grunt.registerTask('build', ['img', 'translations', 'js']);
+  grunt.registerTask('build', ['build:img', 'translations', 'build:js']);
+
   // build translations
-  grunt.registerTask('build:translations', ['translations', 'js']);
+  grunt.registerTask('build:translations', ['translations', 'build:js']);
+
   // build utils
   grunt.registerTask('build:utils', ['closure-compiler:utils']);
+
   // just CSS
-  grunt.registerTask('css', ['sass', 'cssmin']);
+  grunt.registerTask('build:css', ['sass', 'cssmin']);
+
   // just images
-  grunt.registerTask('img', ['shell:globeImages', 'generate-sprite', 'css']);
+  grunt.registerTask('build:img', ['shell:globeImages', 'generate-sprite', 'build:css']);
+
   // just javascript
-  grunt.registerTask('js', ['shell:eslint', 'closure-compiler:utils', 'shell:genTsDeclaration', 'shell:genReactTsDeclaration', 'shell:genAngularTsDeclarationAndJs', 'shell:buildJs', 'replace', 'react', 'vue', 'angular']);
-  // fast version which only does the core plugin, not eslint, or TS declarations, or any of the wrapper components e.g. react
-  grunt.registerTask('jsfast', ['shell:buildJs', 'replace']);
+  grunt.registerTask('build:js', [
+    'shell:eslint',
+    'closure-compiler:utils',
+    'shell:genTsDeclaration',
+    'shell:buildJs',
+    'build:replaceMinJs',
+    'build:components',
+  ]);
+
+  // replace private methods etc in the minified JS
+  grunt.registerTask('build:replaceMinJs', [
+    'replace:privateMethods',
+    'replace:inlineMethods',
+    'replace:instanceFields',
+  ]);
+
+  // just 3 components
+  grunt.registerTask('build:components', [
+    'build:react',
+    'build:vue',
+    'build:angular',
+  ]);
+
+  // fast version which only builds the main plugin JS files (see root build.js file for details)
+  grunt.registerTask('build:jsfast', ['shell:buildJs', 'build:replaceMinJs']);
+
   // just react
-  grunt.registerTask('react', ['replace:reactWithUtils', 'shell:buildReact']);
+  grunt.registerTask('build:react', [
+    'replace:reactWithUtils',
+    'shell:genReactTsDeclaration',
+    'shell:buildReact',
+  ]);
+
   // just vue
-  grunt.registerTask('vue', ['replace:vueWithUtils', 'shell:buildVue']);
+  grunt.registerTask('build:vue', ['replace:vueWithUtils', 'shell:buildVue']);
+
   // just angular
-  grunt.registerTask('angular', ['replace:angularWithUtils', 'shell:buildAngular']);
-  // bump version number in 3 files, rebuild js to update headers, then commit, tag and push
-  grunt.registerTask('version', ['shell:test', 'bump-only', 'js', 'bump-commit']);
-  grunt.registerTask('version:minor', ['shell:test', 'bump-only:minor', 'js', 'bump-commit']);
-  grunt.registerTask('version:major', ['shell:test', 'bump-only:major', 'js', 'bump-commit']);
+  grunt.registerTask('build:angular', [
+    'replace:angularWithUtils',
+    'shell:genAngularTsDeclarationAndJs',
+    'shell:buildAngular',
+  ]);
+
+  // stripped down build task for Travis which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
+  grunt.registerTask('build:travis', ['closure-compiler:utils', 'shell:buildJs']);
+
+  /**
+   * VERSIONING TASKS
+  */
+  // (1) build for tests, and run tests before allowing a version bump
+  // (2) bump version number in package.json etc
+  // (3) rebuild js to update version numbers in those files, as well as readme etc
+  // (4) commit, tag and push
+  grunt.registerTask('version', [
+    'build:jsfast',
+    'shell:test',
+    'bump-only',
+    'versionNumbers',
+    'bump-commit',
+  ]);
+
+  grunt.registerTask('version:minor', [
+    'build:jsfast',
+    'shell:test',
+    'bump-only:minor',
+    'versionNumbers',
+    'bump-commit'
+  ]);
+
+  grunt.registerTask('version:major', [
+    'build:jsfast',
+    'shell:test',
+    'bump-only:major',
+    'versionNumbers',
+    'bump-commit'
+  ]);
+
+  // update version numbers in docs etc
+  grunt.registerTask('versionNumbers', ['replace:readme', 'replace:issueTemplate']);
 
 };

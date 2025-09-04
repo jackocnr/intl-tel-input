@@ -77,16 +77,16 @@ _Note: We have now dropped support for all versions of Internet Explorer because
 ## Getting Started (Using a CDN)
 1. Add the CSS
   ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.8.5/build/css/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.1/build/css/intlTelInput.css">
   ```
 
 2. Add the plugin script and initialise it on your input element
   ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.8.5/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.1/build/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.8.5/build/js/utils.js"),
+      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.1/build/js/utils.js"),
     });
   </script>
   ```
@@ -162,6 +162,10 @@ When you initialise the plugin, the first argument is the input element, and the
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled we display the selected flag on the right instead because it is just a marker of state. Note that if `separateDialCode` is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
+
+**allowPhonewords**  
+Type: `Boolean` Default: `false`  
+Whether or not the validation methods return `true` for numbers containing phonewords e.g. "+1 702 FLOWERS".
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
@@ -284,7 +288,7 @@ intlTelInput(input, {
     ad: "Andorra",
     ...
     // Aria label for the selected country element
-    selectedCountryAriaLabel: "Change country, selected ${country}",
+    selectedCountryAriaLabel: "Change country, selected ${countryName} (${dialCode})",
     // Screen reader text for when no country is selected
     noCountrySelected: "Select country",
     // Aria label for the country list element
@@ -322,7 +326,7 @@ The `loadUtils` option takes a function which returns a Promise which resolves t
 ```js
 // (A) import utils module from a CDN
 intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.8.5/build/js/utils.js"),
+  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.1/build/js/utils.js"),
 });
 
 // (B) import utils module from your own hosted version of utils.js
@@ -606,7 +610,7 @@ The `loadUtils` option takes a function which returns a Promise which resolves t
 ```js
 // (A) import utils module from a CDN
 intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.8.5/build/js/utils.js"),
+  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.1/build/js/utils.js"),
 });
 
 // (B) import utils module from your own hosted version of utils.js
