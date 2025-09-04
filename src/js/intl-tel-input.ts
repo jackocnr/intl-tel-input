@@ -634,7 +634,8 @@ export class Iti {
     if (allowDropdown || showFlags || separateDialCode) {
       this.countryContainer = createEl(
         "div",
-        { class: "iti__country-container" },
+        // visibly hidden until we measure it's width to set the input padding correctly
+        { class: "iti__country-container iti__v-hide" },
         wrapper,
       );
       if (this.showSelectedCountryOnLeft) {
@@ -817,7 +818,11 @@ export class Iti {
     }
 
     wrapper.appendChild(this.telInput);
-    this._updateInputPadding();
+
+    if (this.countryContainer) {
+      this._updateInputPadding();
+      this.countryContainer.classList.remove("iti__v-hide");
+    }
 
     if (hiddenInput) {
       const telInputName = this.telInput.getAttribute("name") || "";
