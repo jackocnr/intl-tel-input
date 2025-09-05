@@ -1486,12 +1486,12 @@ export class Iti {
     const { i18n } = this.options;
     const count = this.countryList.childElementCount;
     let searchText: string;
-    if ("searchResultsText" in i18n) {
-      searchText = i18n.searchResultsText(count);
-    }
-    else {
-      if (count === 0) {
-        searchText = i18n.zeroSearchResults;
+    if (count === 0) {
+      searchText = i18n.zeroSearchResults;
+    } else {
+      // one or more results
+      if (i18n.searchResultsText) {
+        searchText = i18n.searchResultsText(count);
       } else if (count === 1) {
         searchText = i18n.oneSearchResult;
       } else {

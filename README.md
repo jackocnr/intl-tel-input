@@ -287,24 +287,25 @@ intlTelInput(input, {
     as: "American Samoa",
     ad: "Andorra",
     ...
-    // Aria label for the selected country element
+    // Aria label for the selected country element, when there is a country selected
     selectedCountryAriaLabel: "Change country, selected ${countryName} (${dialCode})",
-    // Screen reader text for when no country is selected
+    // Aria label and title text for the selected country element, when no country is selected
     noCountrySelected: "Select country",
     // Aria label for the country list element
     countryListAriaLabel: "List of countries",
     // Placeholder for the search input in the dropdown
     searchPlaceholder: "Search",
-    // Screen reader text for when the search produces no results
+    // Aria label for the clear search button
+    clearSearchAriaLabel: "Clear search",
+    // Visible text and screen reader message for when the search produces no results
     zeroSearchResults: "No results found",
-    // Screen reader text for when the search produces 1 result
+    // Screen reader message for when the search produces 1 result
     oneSearchResult: "1 result found",
-    // Screen reader text for when the search produces multiple results
+    // Screen reader message for when the search produces multiple results
     multipleSearchResults: "${count} results found",
-    // For more complex pluralisation cases, e.g. Polish or Arabic, you can implement your own logic
-    // Note that if this function is defined, the plugin will ignore the "zero", "one" and "multiple" keys listed above
+    // OPTIONAL: For more complex pluralisation cases, e.g. Polish or Arabic, you can implement your own logic, like below. In this case, you can omit the "one" and "multiple" keys above.
     searchResultsText(count) {
-      if (count === 0) return "No results found";
+      // NOTE: zero results is always handled by "zeroSearchResults" above
       if (count === 1) return "1 result found";
       return `${count} results found`;
     }

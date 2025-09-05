@@ -6,11 +6,9 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Nie wybrano kraju",
   countryListAriaLabel: "Lista krajów",
   searchPlaceholder: "Szukaj",
+  zeroSearchResults: "Nie znaleziono wyników",
 
   searchResultsText(count) {
-    if (count === 0) {
-      return "Nie znaleziono wyników";
-    }
     if (count === 1) {
       return "Znaleziono 1 wynik";
     }
