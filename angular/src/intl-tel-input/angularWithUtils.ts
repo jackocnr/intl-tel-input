@@ -83,16 +83,14 @@ export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.iti?.setNumber(this.initialValue);
     }
 
-    // Apply initial disabled state
     if (this.disabled) {
       this.iti?.setDisabled(this.disabled);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // Handle changes to the disabled input
-    if (changes["disabled"] && this.iti) {
-      this.iti.setDisabled(this.disabled || false);
+    if (changes["disabled"]) {
+      this.iti?.setDisabled(this.disabled || false);
     }
   }
 
