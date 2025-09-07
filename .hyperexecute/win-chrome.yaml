@@ -1,7 +1,7 @@
 version: 0.2
 
 # OS for the HyperExecute runner
-runson: windows
+runson: win
 
 # Single parallel here; run mac-safari.yaml in a separate job for total 2
 concurrency: 1
