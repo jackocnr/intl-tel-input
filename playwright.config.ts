@@ -1,5 +1,12 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// This suite is intended to run only on LambdaTest. Require credentials.
+if (!process.env.LT_USERNAME || !process.env.LT_ACCESS_KEY) {
+  throw new Error(
+    "LambdaTest credentials missing: set LT_USERNAME and LT_ACCESS_KEY. This project is configured to run only on LambdaTest.",
+  );
+}
+
 function ltWsEndpoint(cap: Record<string, any>) {
   const caps = {
     browserName: cap.browserName || "Chrome",
@@ -48,43 +55,43 @@ export default defineConfig({
         },
       },
     },
-    {
-      name: "Desktop Firefox",
-      use: {
-        ...devices["Desktop Firefox"],
-        connectOptions: {
-          wsEndpoint: ltWsEndpoint({ browserName: "Firefox", name: "Desktop Firefox" }),
-        },
-      },
-    },
-    {
-      name: "Desktop Safari",
-      use: {
-        ...devices["Desktop Safari"],
-        // Safari maps to WebKit in Playwright/LambdaTest
-        connectOptions: {
-          wsEndpoint: ltWsEndpoint({ browserName: "WebKit", platform: "macOS Sonoma", name: "Desktop Safari" }),
-        },
-      },
-    },
-    {
-      name: "Mobile Safari (iPhone 14)",
-      use: {
-        ...devices["iPhone 14"],
-        connectOptions: {
-          wsEndpoint: ltWsEndpoint({ browserName: "WebKit", platform: "macOS Sonoma", name: "Mobile Safari (iPhone 14)" }),
-        },
-      },
-    },
-    {
-      name: "Mobile Chrome (Pixel 7)",
-      use: {
-        ...devices["Pixel 7"],
-        connectOptions: {
-          wsEndpoint: ltWsEndpoint({ browserName: "Chrome", name: "Mobile Chrome (Pixel 7)" }),
-        },
-      },
-    },
+    // {
+    //   name: "Desktop Firefox",
+    //   use: {
+    //     ...devices["Desktop Firefox"],
+    //     connectOptions: {
+    //       wsEndpoint: ltWsEndpoint({ browserName: "Firefox", name: "Desktop Firefox" }),
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "Desktop Safari",
+    //   use: {
+    //     ...devices["Desktop Safari"],
+    //     // Safari maps to WebKit in Playwright/LambdaTest
+    //     connectOptions: {
+    //       wsEndpoint: ltWsEndpoint({ browserName: "WebKit", platform: "macOS Sonoma", name: "Desktop Safari" }),
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "Mobile Safari (iPhone 14)",
+    //   use: {
+    //     ...devices["iPhone 14"],
+    //     connectOptions: {
+    //       wsEndpoint: ltWsEndpoint({ browserName: "WebKit", platform: "macOS Sonoma", name: "Mobile Safari (iPhone 14)" }),
+    //     },
+    //   },
+    // },
+    // {
+    //   name: "Mobile Chrome (Pixel 7)",
+    //   use: {
+    //     ...devices["Pixel 7"],
+    //     connectOptions: {
+    //       wsEndpoint: ltWsEndpoint({ browserName: "Chrome", name: "Mobile Chrome (Pixel 7)" }),
+    //     },
+    //   },
+    // },
   ],
   webServer: {
     command: "./node_modules/.bin/http-server -p 4173 -c-1 .",
