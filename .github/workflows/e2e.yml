@@ -26,34 +26,32 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
+      - name: Download HyperExecute CLI
+        run: |
+          curl -sSL https://downloads.lambdatest.com/hyperexecute-cli/linux -o hyperexecute
+          chmod +x hyperexecute
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Run HyperExecute (Windows Chrome)
+        run: |
+          ./hyperexecute \
+            --config .hyperexecute/win-chrome.yaml \
+            --download-artifacts \
+            --download-artifacts-path ./artifacts/win-chrome \
+            --verbose
 
-      - name: Build (skip image sprite task)
-        run: npm run build:ci
-
-      # Let LT’s grid access localhost
-      - name: Start LambdaTest Tunnel
-        uses: LambdaTest/LambdaTest-tunnel-action@v2
-        with:
-          user: ${{ secrets.LT_USERNAME }}
-          accessKey: ${{ secrets.LT_ACCESS_KEY }}
-          tunnelName: iti-ci
-
-      - name: Run Playwright tests (on LambdaTest)
-        run: npm run test:e2e
+      - name: Run HyperExecute (macOS Safari)
+        run: |
+          ./hyperexecute \
+            --config .hyperexecute/mac-safari.yaml \
+            --download-artifacts \
+            --download-artifacts-path ./artifacts/mac-safari \
+            --verbose
 
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
-          path: playwright-report
+          name: hyperexecute-artifacts
+          path: artifacts
           if-no-files-found: ignore
           retention-days: 7

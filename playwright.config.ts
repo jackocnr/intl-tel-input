@@ -1,4 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pwVersion = require("playwright/package.json").version;
 
 // This suite is intended to run only on LambdaTest. Require credentials.
 if (!process.env.LT_USERNAME || !process.env.LT_ACCESS_KEY) {
@@ -26,7 +28,8 @@ function ltWsEndpoint(cap: Record<string, any>) {
       network: true,
       video: true,
       console: "error",
-      selenium_version: "4.0.0", // ignored by Playwright but accepted by grid
+      // Help LT grid match the client version
+      playwrightClientVersion: pwVersion,
     },
   };
   return (
@@ -39,6 +42,8 @@ export default defineConfig({
   testDir: "tests-e2e",
   timeout: 30_000,
   retries: 0,
+  // You have 2 parallel on HyperExecute Cloud (Multi OS)
+  workers: 2,
   use: {
     baseURL: "http://localhost:4173",
     screenshot: "only-on-failure",
@@ -51,29 +56,20 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         connectOptions: {
-          wsEndpoint: ltWsEndpoint({ browserName: "Chrome", name: "Desktop Chrome" }),
+          wsEndpoint: ltWsEndpoint({ browserName: "Chrome", platform: "Windows 11", name: "Desktop Chrome" }),
         },
       },
     },
-    // {
-    //   name: "Desktop Firefox",
-    //   use: {
-    //     ...devices["Desktop Firefox"],
-    //     connectOptions: {
-    //       wsEndpoint: ltWsEndpoint({ browserName: "Firefox", name: "Desktop Firefox" }),
-    //     },
-    //   },
-    // },
-    // {
-    //   name: "Desktop Safari",
-    //   use: {
-    //     ...devices["Desktop Safari"],
-    //     // Safari maps to WebKit in Playwright/LambdaTest
-    //     connectOptions: {
-    //       wsEndpoint: ltWsEndpoint({ browserName: "WebKit", platform: "macOS Sonoma", name: "Desktop Safari" }),
-    //     },
-    //   },
-    // },
+    {
+      name: "Desktop Safari",
+      use: {
+        ...devices["Desktop Safari"],
+        // Safari maps to WebKit in Playwright/LambdaTest
+        connectOptions: {
+          wsEndpoint: ltWsEndpoint({ browserName: "WebKit", platform: "macOS Sonoma", name: "Desktop Safari" }),
+        },
+      },
+    },
     // {
     //   name: "Mobile Safari (iPhone 14)",
     //   use: {
