@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Build (skip image sprite task)
-        run: npm run build:travis
+        run: npm run build:ci
 
       - name: Run tests
         run: npm test -- --runInBand

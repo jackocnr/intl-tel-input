@@ -69,8 +69,8 @@ module.exports = function(grunt) {
     'shell:buildAngular',
   ]);
 
-  // stripped down build task for Travis which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
-  grunt.registerTask('build:travis', ['closure-compiler:utils', 'shell:buildJs']);
+  // stripped down build task for CI which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
+  grunt.registerTask('build:ci', ['closure-compiler:utils', 'shell:buildJs']);
 
   /**
    * VERSIONING TASKS

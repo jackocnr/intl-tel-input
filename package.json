@@ -109,7 +109,7 @@
     "build:react": "grunt build:react",
     "build:vue": "grunt build:vue",
     "build:angular": "grunt build:angular",
-    "build:travis": "grunt build:travis",
+    "build:ci": "grunt build:ci",
     "prepublishOnly": "grunt build",
     "vue:demo": "vite --config vue/demo/validation/vite.config.js"
   },
