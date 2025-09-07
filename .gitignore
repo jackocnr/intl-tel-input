@@ -13,3 +13,4 @@
 /vue/build/
 /angular/build/
 /*/demo/*/*-bundle.js
+/test-results/
