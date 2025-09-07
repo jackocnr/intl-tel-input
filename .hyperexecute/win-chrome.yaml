@@ -1,47 +1,30 @@
-# LambdaTest HyperExecute config for Windows + Desktop Chrome
 version: 0.2
 
-runner: playwright
+# OS for the HyperExecute runner
+runson: windows
 
-# 1 parallel here; pair with mac-safari.yaml for total 2
+# Single parallel here; run mac-safari.yaml in a separate job for total 2
 concurrency: 1
-
-os: windows
-
-pre:
-  - cmd: npm ci
-  - cmd: npm run build:ci
-
-# Serve the repo (same as playwright.config webServer)
-# HyperExecute has a built-in service option, but we keep explicit for clarity
-services:
-  - name: http-server
-    command: npx http-server -p 4173 -c-1 .
-    wait_on: http://localhost:4173/tests-e2e/fixtures/vanilla.html
-
-# Start LT tunnel so the grid can reach localhost, if needed
-# Comment out if your HyperExecute environment has direct access
-lambdatest:
-  tunnel: true
-  tunnelName: ${LT_TUNNEL:-iti-ci}
 
 env:
   CI: true
-  LT_TUNNEL: ${LT_TUNNEL:-iti-ci}
+  LT_TUNNEL: iti-ci
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
-# Use project filter to only run the Windows/Chrome project
-# Ensure your playwright.config.ts has a project named "Desktop Chrome"
-strategy:
-  matrix:
-    project:
-      - "Desktop Chrome"
+# Install and build before running tests
+pre:
+  - npm ci
+  - npm run build:ci
 
-# The command HyperExecute will run for each matrix entry
-run:
-  command: npx playwright test --project "$project" --reporter=line
+# Enable LT tunnel so remote browsers can reach localhost
+lambdatest:
+  tunnel: true
+  tunnelName: iti-ci
 
-report:
-  artifacts:
-    - "playwright-report/**"
-    - "test-results/**"
+# Run only the Desktop Chrome project
+matrix:
+  project:
+    - Desktop Chrome
+
+testSuites:
+  - npx playwright test --project "$project" --reporter=line

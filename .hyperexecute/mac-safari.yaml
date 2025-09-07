@@ -1,40 +1,25 @@
-# LambdaTest HyperExecute config for macOS + Desktop Safari (WebKit)
 version: 0.2
 
-runner: playwright
+runson: mac
 
-# 1 parallel here; pair with win-chrome.yaml for total 2
 concurrency: 1
-
-os: mac
-
-pre:
-  - sh: npm ci
-  - sh: npm run build:ci
-
-services:
-  - name: http-server
-    command: npx http-server -p 4173 -c-1 .
-    wait_on: http://localhost:4173/tests-e2e/fixtures/vanilla.html
-
-lambdatest:
-  tunnel: true
-  tunnelName: ${LT_TUNNEL:-iti-ci}
 
 env:
   CI: true
-  LT_TUNNEL: ${LT_TUNNEL:-iti-ci}
+  LT_TUNNEL: iti-ci
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
-strategy:
-  matrix:
-    project:
-      - "Desktop Safari"
+pre:
+  - npm ci
+  - npm run build:ci
 
-run:
-  command: npx playwright test --project "$project" --reporter=line
+lambdatest:
+  tunnel: true
+  tunnelName: iti-ci
 
-report:
-  artifacts:
-    - "playwright-report/**"
-    - "test-results/**"
+matrix:
+  project:
+    - Desktop Safari
+
+testSuites:
+  - npx playwright test --project "$project" --reporter=line
