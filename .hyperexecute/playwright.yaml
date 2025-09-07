@@ -17,7 +17,7 @@ cacheDirectories:
 testDiscovery:
   type: raw
   mode: dynamic
-  command: grep 'describe' tests-e2e/*.spec.ts
+  command: ls -1 tests-e2e/*.spec.ts
 testRunnerCommand: npx playwright test $test
 
 jobLabel: [playwright-VanillaJS, win, autosplit]
