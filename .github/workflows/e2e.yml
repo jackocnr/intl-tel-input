@@ -28,7 +28,7 @@ jobs:
 
       - name: Download HyperExecute CLI
         run: |
-          curl -sSL https://downloads.lambdatest.com/hyperexecute-cli/linux -o hyperexecute
+          curl -sSL https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute -o hyperexecute
           chmod +x hyperexecute
 
       - name: Run HyperExecute (Windows Chrome)
