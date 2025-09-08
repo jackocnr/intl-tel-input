@@ -150,6 +150,15 @@ describe("strictMode option", () => {
       expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
     });
 
+    // this was a bug - the number was never capped
+    test("can type Canada ntl placeholder number and no more", async () => {
+      const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "ca", user, input);
+      // try typing extra digit, which should be ignored
+      await user.type(input, "1");
+      // sometimes AYT formatting is slightly different, so strip formatting chars
+      expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
+    });
+
     test("can type UK ntl placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "gb", user, input);
       // try typing extra digit, which should be ignored

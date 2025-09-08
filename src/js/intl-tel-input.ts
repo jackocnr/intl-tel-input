@@ -1597,28 +1597,40 @@ export class Iti {
     const dialCodeMatch = this._getDialCode(number, true);
     const numeric = getNumeric(number);
     if (dialCodeMatch) {
+      // we have a match, so we WILL be selecting a country (unless it's already selected)
       const dialCodeMatchNumeric = getNumeric(dialCodeMatch);
       const iso2Codes = this.dialCodeToIso2Map[dialCodeMatchNumeric];
 
-      //* If they've just typed a dial code (from empty state), and it matches the last selected country, then stick to that country.
-      //* e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
+      // SINGLE country found for the typed dialcode/areacode
+      if (iso2Codes.length === 1) {
+        // if it's already selected, then no change
+        if (iso2Codes[0] === selectedIso2) {
+          return null;
+        }
+        // if it's not already selected, then change
+        return iso2Codes[0];
+      }
+
+      // MULTIPLE countries found for the typed dialcode/areacode
+
+      //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.defaultCountry), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
       if (!selectedIso2 && this.defaultCountry && iso2Codes.includes(this.defaultCountry)) {
         return this.defaultCountry;
       }
 
+      // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
+      const isRegionlessNanpNumber =
+        selectedDialCode === "1" && isRegionlessNanp(numeric);
+      if (isRegionlessNanpNumber) {
+        return null;
+      }
+
       //* Check if the right country is already selected (note: might be empty state - globe icon).
-      // If the currently selected country has area codes, but none of them even partially matched the input number, then we need to switch to the default country for this dial code, so alreadySelected should be false
+      // If the currently selected country has area codes, and they've typed more digits than the best area code match, then that means none of the area codes matched the input number, as a full area code match would have resulted in a single country match above.
       const hasAreaCodesButNoneMatched = this.selectedCountryData.areaCodes && numeric.length > dialCodeMatchNumeric.length;
       const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
 
-      const isRegionlessNanpNumber =
-        selectedDialCode === "1" && isRegionlessNanp(numeric);
-
-      //* Only update the country if:
-      //* A) NOT (we currently have a NANP country selected, and the number is a regionlessNanp)
-      //* AND
-      //* B) the right country is not already selected
-      if (!isRegionlessNanpNumber && !alreadySelected) {
+      if (!alreadySelected) {
         //* If using onlyCountries option, iso2Codes[0] may be empty, so we must find the first non-empty index.
         for (const iso2 of iso2Codes) {
           if (iso2) {
@@ -1630,7 +1642,7 @@ export class Iti {
       //* Invalid dial code, so empty.
       //* Note: use getNumeric here because the number has not been formatted yet, so could contain bad chars.
       return "";
-    } else if ((!number || number === "+") && !this.selectedCountryData.iso2) {
+    } else if ((!number || number === "+") && !selectedIso2) {
       //* If no selected country, and user either clears the input, or just types a plus, then show default.
       return this.defaultCountry;
     }
