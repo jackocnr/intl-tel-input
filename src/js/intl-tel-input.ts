@@ -489,6 +489,10 @@ export class Iti {
 
   //* Add a dial code to this.dialCodeToIso2Map.
   private _addToDialCodeMap(iso2: string, dialCode: string, priority?: number): void {
+    // Bail if no iso2 or dialCode (this can happen with onlyCountries or excludeCountries options).
+    if (!iso2 || !dialCode) {
+      return;
+    }
     //* Update dialCodeMaxLen.
     if (dialCode.length > this.dialCodeMaxLen) {
       this.dialCodeMaxLen = dialCode.length;
@@ -564,6 +568,12 @@ export class Iti {
         this.dialCodes.add(c.dialCode);
       }
       this._addToDialCodeMap(c.iso2, c.dialCode, c.priority);
+    }
+    // if any countries have been excluded, cleanup empty array entries in dialCodeToIso2Map due to the use of c.priority to insert at specific indexes
+    if (this.options.onlyCountries.length || this.options.excludeCountries.length) {
+      this.dialCodes.forEach((dialCode) => {
+        this.dialCodeToIso2Map[dialCode] = this.dialCodeToIso2Map[dialCode].filter(Boolean);
+      });
     }
 
     //* Next: add area codes.
@@ -1607,7 +1617,7 @@ export class Iti {
         if (iso2Codes[0] === selectedIso2) {
           return null;
         }
-        // if it's not already selected, then change
+        // it's not already selected, so change
         return iso2Codes[0];
       }
 
@@ -1629,14 +1639,8 @@ export class Iti {
       // If the currently selected country has area codes, and they've typed more digits than the best area code match, then that means none of the area codes matched the input number, as a full area code match would have resulted in a single country match above.
       const hasAreaCodesButNoneMatched = this.selectedCountryData.areaCodes && numeric.length > dialCodeMatchNumeric.length;
       const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
-
       if (!alreadySelected) {
-        //* If using onlyCountries option, iso2Codes[0] may be empty, so we must find the first non-empty index.
-        for (const iso2 of iso2Codes) {
-          if (iso2) {
-            return iso2;
-          }
-        }
+        return iso2Codes[0];
       }
     } else if (number.charAt(0) === "+" && numeric.length) {
       //* Invalid dial code, so empty.
