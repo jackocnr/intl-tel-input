@@ -1110,7 +1110,7 @@ export class Iti {
   private _openDropdownWithPlus(): void {
     this._openDropdown();
     this.searchInput.value = "+";
-    this._filterCountries("", true);
+    this._filterCountries("");
   }
 
   //* Initialize the tel input listeners.
@@ -1371,11 +1371,7 @@ export class Iti {
     if (this.options.countrySearch) {
       const doFilter = (): void => {
         const inputQuery = this.searchInput.value.trim();
-        if (inputQuery) {
-          this._filterCountries(inputQuery);
-        } else {
-          this._filterCountries("", true);
-        }
+        this._filterCountries(inputQuery);
         // show/hide clear button
         if (this.searchInput.value) {
           this.searchClearButton.classList.remove("iti__hide");
@@ -1422,48 +1418,51 @@ export class Iti {
   }
 
   //* Country search enabled: Filter the countries according to the search query.
-  private _filterCountries(query: string, isReset: boolean = false): void {
+  private _filterCountries(query: string): void {
     let noCountriesAddedYet = true;
     this.countryList.innerHTML = "";
     const normalisedQuery = normaliseString(query);
-    const queryLength = normalisedQuery.length;
+    let matchedCountries;
 
-    // search result groups, in order of priority
-    // first, exact ISO2 matches, then name starts with, then name contains, dial code match etc.
-    const iso2Matches = [];
-    const nameStartWith = [];
-    const nameContains = [];
-    const dialCodeMatches = [];
-    const dialCodeContains = [];
-    const initialsMatches = [];
+    if (query === "") {
+      // reset - back to all countries
+      matchedCountries = this.countries;
+    } else {
+      // search result groups, in order of priority
+      // first, exact ISO2 matches, then name starts with, then name contains, dial code match etc.
+      const iso2Matches = [];
+      const nameStartWith = [];
+      const nameContains = [];
+      const dialCodeMatches = [];
+      const dialCodeContains = [];
+      const initialsMatches = [];
 
-    for (const c of this.countries) {
-      if (isReset || queryLength === 0) {
-        nameContains.push(c);
-      } else if (c.iso2 === normalisedQuery) {
-        iso2Matches.push(c);
-      } else if (c.normalisedName.startsWith(normalisedQuery)) {
-        nameStartWith.push(c);
-      } else if (c.normalisedName.includes(normalisedQuery)) {
-        nameContains.push(c);
-      } else if (normalisedQuery === c.dialCode || normalisedQuery === c.dialCodePlus) {
-        dialCodeMatches.push(c);
-      } else if (c.dialCodePlus.includes(normalisedQuery)) {
-        dialCodeContains.push(c);
-      } else if (c.initials.includes(normalisedQuery)) {
-        initialsMatches.push(c);
+      for (const c of this.countries) {
+        if (c.iso2 === normalisedQuery) {
+          iso2Matches.push(c);
+        } else if (c.normalisedName.startsWith(normalisedQuery)) {
+          nameStartWith.push(c);
+        } else if (c.normalisedName.includes(normalisedQuery)) {
+          nameContains.push(c);
+        } else if (normalisedQuery === c.dialCode || normalisedQuery === c.dialCodePlus) {
+          dialCodeMatches.push(c);
+        } else if (c.dialCodePlus.includes(normalisedQuery)) {
+          dialCodeContains.push(c);
+        } else if (c.initials.includes(normalisedQuery)) {
+          initialsMatches.push(c);
+        }
       }
-    }
 
-    // Combine result groups in correct order (and respect country priority order within each group e.g. if search +44, then UK appears first above Guernsey etc)
-    const matchedCountries = [
-      ...iso2Matches.sort((a, b) => a.priority - b.priority),
-      ...nameStartWith.sort((a, b) => a.priority - b.priority),
-      ...nameContains.sort((a, b) => a.priority - b.priority),
-      ...dialCodeMatches.sort((a, b) => a.priority - b.priority),
-      ...dialCodeContains.sort((a, b) => a.priority - b.priority),
-      ...initialsMatches.sort((a, b) => a.priority - b.priority),
-    ];
+      // Combine result groups in correct order (and respect country priority order within each group e.g. if search +44, then UK appears first above Guernsey etc)
+      matchedCountries = [
+        ...iso2Matches.sort((a, b) => a.priority - b.priority),
+        ...nameStartWith.sort((a, b) => a.priority - b.priority),
+        ...nameContains.sort((a, b) => a.priority - b.priority),
+        ...dialCodeMatches.sort((a, b) => a.priority - b.priority),
+        ...dialCodeContains.sort((a, b) => a.priority - b.priority),
+        ...initialsMatches.sort((a, b) => a.priority - b.priority),
+      ];
+    }
 
     for (const c of matchedCountries) {
       const listItem = c.nodeById[this.id];

@@ -1,4 +1,5 @@
 //* Array of country objects for the country dropdown.
+// By default, it's sorted in English alphabetical order, on country name.
 
 //* Criteria for the plugin to support a given country/territory:
 //* - It has an iso2 code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
@@ -1020,6 +1021,12 @@ const rawCountryData: RawCountry[] = [
     "688",
   ],
   [
+    "vi", // U.S. Virgin Islands
+    "1",
+    24,
+    ["340"],
+  ],
+  [
     "ug", // Uganda
     "256",
   ],
@@ -1046,12 +1053,6 @@ const rawCountryData: RawCountry[] = [
   [
     "uy", // Uruguay
     "598",
-  ],
-  [
-    "vi", // U.S. Virgin Islands
-    "1",
-    24,
-    ["340"],
   ],
   [
     "uz", // Uzbekistan

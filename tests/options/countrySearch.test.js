@@ -12,6 +12,8 @@ const {
   clickSelectedCountryAsync,
   getCountriesInList,
 } = require("../helpers/helpers");
+const allCountries = require("../../build/js/data");
+const allCountryCodes = allCountries.map((country) => country.iso2);
 
 //* Without the advanceTimers bit, the (time related) tests just hang, see https://github.com/jestjs/jest/issues/12056#issuecomment-1090189268
 jest.useFakeTimers({advanceTimers: true});
@@ -116,5 +118,23 @@ describe("countrySearch option", () => {
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(4);
     expect(countriesInList[0]).toBe("gb"); // UK (dial code matches, and highest priority)
+  });
+
+  // this was a bug
+  test("typing 'c', then deleting it, displays original country list correctly", async () => {
+    const countriesInListAtStart = getCountriesInList(container);
+    // double check the country list at the start matches the list in data.ts
+    expect(countriesInListAtStart).toEqual(allCountryCodes);
+
+    await user.type(searchInput, "c");
+    //* Allow for the (intentional) 100ms delay on the search handler.
+    jest.advanceTimersByTime(100);
+    // delete the 'c'
+    await user.type(searchInput, "{backspace}");
+    jest.advanceTimersByTime(100);
+
+    // check we are back to the starting list
+    const countriesInListAtEnd = getCountriesInList(container);
+    expect(countriesInListAtEnd).toEqual(countriesInListAtStart);
   });
 });
