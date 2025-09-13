@@ -310,6 +310,7 @@ export class Iti {
   private _handleCountryContainerKeydown: (e: KeyboardEvent) => void;
   private _handleInputEvent: (e: InputEvent) => void;
   private _handleKeydownEvent: (e: KeyboardEvent) => void;
+  private _handlePasteEvent: (e: ClipboardEvent) => void;
   private _handleWindowScroll: () => void;
   private _handleMouseoverCountryList: (e: MouseEvent) => void;
   private _handleClickCountryList: (e: Event) => void;
@@ -1208,6 +1209,51 @@ export class Iti {
         }
       };
       this.telInput.addEventListener("keydown", this._handleKeydownEvent);
+    }
+
+    // Sanitise pasted values in strictMode
+    if (strictMode) {
+      this._handlePasteEvent = (e: ClipboardEvent): void => {
+        // in strict mode we always control the pasted value
+        e.preventDefault();
+
+        // shortcuts
+        const input = this.telInput;
+        const selStart = input.selectionStart;
+        const selEnd = input.selectionEnd;
+
+        const pasted = e.clipboardData.getData("text");
+        // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
+        const initialCharSelected = selStart === 0 && selEnd > 0;
+        const allowLeadingPlus = !input.value.startsWith("+") || initialCharSelected;
+        // just numerics and pluses
+        const allowedChars = pasted.replace(/[^0-9+]/g, "");
+        const hasLeadingPlus = allowedChars.startsWith("+");
+        // just numerics
+        const numerics = allowedChars.replace(/\+/g, "");
+        const sanitised = hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
+
+        let newVal = input.value.slice(0, selStart) + sanitised + input.value.slice(selEnd);
+        // check length
+        const coreNumber = intlTelInput.utils.getCoreNumber(newVal, this.selectedCountryData.iso2);
+        if (this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength) {
+          if (input.selectionEnd === input.value.length) {
+            // if they try to paste too many digits at the end, then just trim the excess
+            const trimLength = coreNumber.length - this.maxCoreNumberLength;
+            newVal = newVal.slice(0, newVal.length - trimLength);
+          } else {
+            // if they try to paste too many digits in the middle, then just ignore the paste entirely
+            return;
+          }
+        }
+        input.value = newVal;
+        const caretPos = selStart + sanitised.length;
+        input.setSelectionRange(caretPos, caretPos);
+
+        // trigger format-as-you-type and country update etc
+        input.dispatchEvent(new InputEvent("input", { bubbles: true }));
+      };
+      this.telInput.addEventListener("paste", this._handlePasteEvent);
     }
   }
 
@@ -2144,6 +2190,9 @@ export class Iti {
     this.telInput.removeEventListener("input", this._handleInputEvent as EventListener);
     if (this._handleKeydownEvent) {
       this.telInput.removeEventListener("keydown", this._handleKeydownEvent);
+    }
+    if (this._handlePasteEvent) {
+      this.telInput.removeEventListener("paste", this._handlePasteEvent);
     }
 
     //* Remove attribute of id instance: data-intl-tel-input-id.

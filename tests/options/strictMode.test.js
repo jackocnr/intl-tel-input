@@ -3,12 +3,14 @@
  */
 
 const { userEvent } = require("@testing-library/user-event");
+const { fireEvent } = require("@testing-library/dom");
 const {
   initPlugin,
   teardown,
   stripFormattingChars,
   selectCountryAndTypePlaceholderNumberAsync,
   checkFlagSelected,
+  getPasteEventObject,
 } = require("../helpers/helpers");
 
 
@@ -174,6 +176,15 @@ describe("strictMode option", () => {
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
       expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
+    });
+
+    test("paste strips invalid chars, caps length, and formats", async () => {
+      await user.click(input);
+      const pastedContent = "+1a9./-:$@&*b8c7d+123123456";
+      const eventObject = getPasteEventObject(pastedContent);
+      // NOTE: could not get this working with user.paste
+      fireEvent.paste(input, eventObject);
+      expect(input.value).toBe("+1 987-123-1234");
     });
   });
 

@@ -164,3 +164,11 @@ exports.stripFormattingChars = (str) => str.replace(/[^0-9+]/g, "");
 exports.oneTickAsync = async () => {
   await new Promise(resolve => setTimeout(resolve));
 };
+
+exports.getPasteEventObject = (str) => {
+  return {
+    clipboardData: {
+      getData: () => str,
+    },
+  };
+};
