@@ -614,6 +614,17 @@ export class Iti {
 
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
   private _generateMarkup(): void {
+    this._prepareTelInput();
+
+    const wrapper = this._createWrapperAndInsert();
+    this._maybeBuildCountryContainer(wrapper);
+    wrapper.appendChild(this.telInput);
+
+    this._maybeUpdateInputPaddingAndReveal();
+    this._maybeBuildHiddenInputs(wrapper);
+  }
+
+  private _prepareTelInput(): void {
     this.telInput.classList.add("iti__tel-input");
 
     //* If autocomplete does not exist on the element and its form, then
@@ -626,18 +637,14 @@ export class Iti {
     ) {
       this.telInput.setAttribute("autocomplete", "off");
     }
+  }
 
+  private _createWrapperAndInsert(): HTMLElement {
     const {
       allowDropdown,
-      separateDialCode,
       showFlags,
       containerClass,
-      hiddenInput,
-      dropdownContainer,
-      fixDropdownWidth,
       useFullscreenPopup,
-      countrySearch,
-      i18n,
     } = this.options;
 
     //* Containers (mostly for positioning).
@@ -650,6 +657,15 @@ export class Iti {
     });
     const wrapper = createEl("div", { class: parentClasses });
     this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
+    return wrapper;
+  }
+
+  private _maybeBuildCountryContainer(wrapper: HTMLElement): void {
+    const {
+      allowDropdown,
+      separateDialCode,
+      showFlags,
+    } = this.options;
 
     //* If we need a countryContainer
     if (allowDropdown || showFlags || separateDialCode) {
@@ -723,128 +739,152 @@ export class Iti {
       }
 
       if (allowDropdown) {
-        const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
-        this.dropdownContent = createEl("div", {
-          id: `iti-${this.id}__dropdown-content`,
-          class: `iti__dropdown-content iti__hide ${extraClasses}`,
-          role: "dialog",
-          "aria-modal": "true",
-        });
-
-        if (countrySearch) {
-          // Wrapper so we can position the icons (search + clear)
-          const searchWrapper = createEl(
-            "div",
-            { class: "iti__search-input-wrapper" },
-            this.dropdownContent,
-          );
-          // Search (magnifying glass) icon SVG
-          this.searchIcon = createEl(
-            "span",
-            {
-              class: "iti__search-icon",
-              "aria-hidden": "true",
-            },
-            searchWrapper,
-          );
-          this.searchIcon.innerHTML = `
-            <svg class="iti__search-icon-svg" width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>`;
-          this.searchInput = createEl(
-            "input",
-            {
-              id: `iti-${this.id}__search-input`, // Chrome says inputs need either a name or an id
-              type: "search",
-              class: "iti__search-input",
-              placeholder: i18n.searchPlaceholder,
-              // role=combobox + aria-autocomplete=list + aria-activedescendant allows maintaining focus on the search input while allowing users to navigate search results with up/down keyboard keys
-              role: "combobox",
-              "aria-expanded": "true",
-              "aria-label": i18n.searchPlaceholder,
-              "aria-controls": `iti-${this.id}__country-listbox`,
-              "aria-autocomplete": "list",
-              "autocomplete": "off",
-            },
-           searchWrapper,
-          ) as HTMLInputElement;
-          this.searchClearButton = createEl(
-            "button",
-            {
-              type: "button",
-              class: "iti__search-clear iti__hide",
-              "aria-label": i18n.clearSearchAriaLabel,
-              tabindex: "-1",
-            },
-            searchWrapper,
-          ) as HTMLButtonElement;
-          const maskId = `iti-${this.id}-clear-mask`;
-          // Mask creates a transparent cross 'cut' through the filled circle so underlying input bg shows.
-          this.searchClearButton.innerHTML = `
-            <svg class="iti__search-clear-svg" width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <mask id="${maskId}" maskUnits="userSpaceOnUse">
-                <rect width="16" height="16" fill="white" />
-                <path d="M5.2 5.2 L10.8 10.8 M10.8 5.2 L5.2 10.8" stroke="black" stroke-linecap="round" class="iti__search-clear-x" />
-              </mask>
-              <circle cx="8" cy="8" r="8" class="iti__search-clear-bg" mask="url(#${maskId})" />
-            </svg>`;
-          this.searchResultsA11yText = createEl(
-            "span",
-            { class: "iti__a11y-text" },
-            this.dropdownContent,
-          );
-          // Visible no-results message (hidden by default)
-          this.searchNoResults = createEl(
-            "div",
-            {
-              class: "iti__no-results iti__hide",
-              "aria-hidden": "true", // all a11y messaging happens in this.searchResultsA11yText
-            },
-            this.dropdownContent,
-          );
-          this.searchNoResults.textContent = i18n.zeroSearchResults;
-        }
-
-        this.countryList = createEl(
-          "ul",
-          {
-            class: "iti__country-list",
-            id: `iti-${this.id}__country-listbox`,
-            role: "listbox",
-            "aria-label": i18n.countryListAriaLabel,
-          },
-          this.dropdownContent,
-        );
-        this._appendListItems();
-        if (countrySearch) {
-          this._updateSearchResultsA11yText();
-        }
-
-        //* Create dropdownContainer markup.
-        if (dropdownContainer) {
-          const dropdownClasses = Iti._buildClassNames({
-            "iti": true,
-            "iti--container": true,
-            "iti--fullscreen-popup": useFullscreenPopup,
-            "iti--inline-dropdown": !useFullscreenPopup,
-            [containerClass]: Boolean(containerClass),
-          });
-          this.dropdown = createEl("div", { class: dropdownClasses });
-          this.dropdown.appendChild(this.dropdownContent);
-        } else {
-          this.countryContainer.appendChild(this.dropdownContent);
-        }
+        this._buildDropdownContent();
       }
     }
+  }
 
-    wrapper.appendChild(this.telInput);
+  private _buildDropdownContent(): void {
+    const {
+      fixDropdownWidth,
+      useFullscreenPopup,
+      countrySearch,
+      i18n,
+      dropdownContainer,
+      containerClass,
+    } = this.options;
 
+    const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
+    this.dropdownContent = createEl("div", {
+      id: `iti-${this.id}__dropdown-content`,
+      class: `iti__dropdown-content iti__hide ${extraClasses}`,
+      role: "dialog",
+      "aria-modal": "true",
+    });
+
+    if (countrySearch) {
+      // Wrapper so we can position the icons (search + clear)
+      const searchWrapper = createEl(
+        "div",
+        { class: "iti__search-input-wrapper" },
+        this.dropdownContent,
+      );
+
+      // Search (magnifying glass) icon SVG
+      this.searchIcon = createEl(
+        "span",
+        {
+          class: "iti__search-icon",
+          "aria-hidden": "true",
+        },
+        searchWrapper,
+      );
+
+      this.searchIcon.innerHTML = `
+        <svg class="iti__search-icon-svg" width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>`;
+
+      this.searchInput = createEl(
+        "input",
+        {
+          id: `iti-${this.id}__search-input`, // Chrome says inputs need either a name or an id
+          type: "search",
+          class: "iti__search-input",
+          placeholder: i18n.searchPlaceholder,
+          // role=combobox + aria-autocomplete=list + aria-activedescendant allows maintaining focus on the search input while allowing users to navigate search results with up/down keyboard keys
+          role: "combobox",
+          "aria-expanded": "true",
+          "aria-label": i18n.searchPlaceholder,
+          "aria-controls": `iti-${this.id}__country-listbox`,
+          "aria-autocomplete": "list",
+          "autocomplete": "off",
+        },
+       searchWrapper,
+      ) as HTMLInputElement;
+
+      this.searchClearButton = createEl(
+        "button",
+        {
+          type: "button",
+          class: "iti__search-clear iti__hide",
+            "aria-label": i18n.clearSearchAriaLabel,
+          tabindex: "-1",
+        },
+        searchWrapper,
+      ) as HTMLButtonElement;
+
+      const maskId = `iti-${this.id}-clear-mask`;
+      // Mask creates a transparent cross 'cut' through the filled circle so underlying input bg shows.
+      this.searchClearButton.innerHTML = `
+        <svg class="iti__search-clear-svg" width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <mask id="${maskId}" maskUnits="userSpaceOnUse">
+            <rect width="16" height="16" fill="white" />
+            <path d="M5.2 5.2 L10.8 10.8 M10.8 5.2 L5.2 10.8" stroke="black" stroke-linecap="round" class="iti__search-clear-x" />
+          </mask>
+          <circle cx="8" cy="8" r="8" class="iti__search-clear-bg" mask="url(#${maskId})" />
+        </svg>`;
+
+      this.searchResultsA11yText = createEl(
+        "span",
+        { class: "iti__a11y-text" },
+        this.dropdownContent,
+      );
+
+      // Visible no-results message (hidden by default)
+      this.searchNoResults = createEl(
+        "div",
+        {
+          class: "iti__no-results iti__hide",
+          "aria-hidden": "true", // all a11y messaging happens in this.searchResultsA11yText
+        },
+        this.dropdownContent,
+      );
+      this.searchNoResults.textContent = i18n.zeroSearchResults;
+    }
+
+    this.countryList = createEl(
+      "ul",
+      {
+        class: "iti__country-list",
+        id: `iti-${this.id}__country-listbox`,
+        role: "listbox",
+        "aria-label": i18n.countryListAriaLabel,
+      },
+      this.dropdownContent,
+    );
+    this._appendListItems();
+
+    if (countrySearch) {
+      this._updateSearchResultsA11yText();
+    }
+
+    //* Create dropdownContainer markup.
+    if (dropdownContainer) {
+      const dropdownClasses = Iti._buildClassNames({
+        "iti": true,
+        "iti--container": true,
+        "iti--fullscreen-popup": useFullscreenPopup,
+        "iti--inline-dropdown": !useFullscreenPopup,
+        [containerClass]: Boolean(containerClass),
+      });
+      this.dropdown = createEl("div", { class: dropdownClasses });
+      this.dropdown.appendChild(this.dropdownContent);
+    } else {
+      this.countryContainer.appendChild(this.dropdownContent);
+    }
+  }
+
+  private _maybeUpdateInputPaddingAndReveal(): void {
     if (this.countryContainer) {
       this._updateInputPadding();
       this.countryContainer.classList.remove("iti__v-hide");
     }
+  }
 
+  private _maybeBuildHiddenInputs(wrapper: HTMLElement): void {
+    const { hiddenInput } = this.options;
     if (hiddenInput) {
       const telInputName = this.telInput.getAttribute("name") || "";
       const names = hiddenInput(telInputName);
