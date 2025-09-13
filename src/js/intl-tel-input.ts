@@ -1166,6 +1166,12 @@ export class Iti {
 
   //* Initialize the tel input listeners.
   private _initTelInputListeners(): void {
+    this._bindInputListener();
+    this._maybeBindKeydownListener();
+    this._maybeBindPasteListener();
+  }
+
+  private _bindInputListener(): void {
     const { strictMode, formatAsYouType, separateDialCode, allowDropdown, countrySearch } = this.options;
     let userOverrideFormatting = false;
     //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
@@ -1221,7 +1227,10 @@ export class Iti {
     //* the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
     //* whereas "keyup" fires even for shift key, arrow key presses etc.
     this.telInput.addEventListener("input", this._handleInputEvent as EventListener);
+  }
 
+  private _maybeBindKeydownListener(): void {
+    const { strictMode, separateDialCode, allowDropdown, countrySearch } = this.options;
     if (strictMode || separateDialCode) {
       //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
       //* Note that this fires BEFORE the input is updated.
@@ -1260,9 +1269,11 @@ export class Iti {
       };
       this.telInput.addEventListener("keydown", this._handleKeydownEvent);
     }
+  }
 
+  private _maybeBindPasteListener(): void {
     // Sanitise pasted values in strictMode
-    if (strictMode) {
+    if (this.options.strictMode) {
       this._handlePasteEvent = (e: ClipboardEvent): void => {
         // in strict mode we always control the pasted value
         e.preventDefault();
