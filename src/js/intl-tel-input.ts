@@ -344,8 +344,7 @@ export class Iti {
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
   }
 
-  //* Can't be private as it's called from intlTelInput convenience wrapper.
-  _init(): void {
+  private _applyOptionSideEffects(): void {
     //* If showing fullscreen popup, do not fix the width.
     if (this.options.useFullscreenPopup) {
       this.options.fixDropdownWidth = false;
@@ -371,6 +370,11 @@ export class Iti {
       this.options.dropdownContainer = document.body;
     }
 
+    //* Allow overriding the default interface strings.
+    this.options.i18n = { ...defaultEnglishStrings, ...this.options.i18n };
+  }
+
+  private _detectEnvironmentAndLayout(): void {
     this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
 
     //* Check if input has an ancestor with RTL.
@@ -389,10 +393,9 @@ export class Iti {
         this.originalPaddingLeft = this.telInput.style.paddingLeft;
       }
     }
+  }
 
-    //* Allow overriding the default interface strings.
-    this.options.i18n = { ...defaultEnglishStrings, ...this.options.i18n };
-
+  private _createInitPromises(): void {
     //* these promises get resolved when their individual requests complete
     //* this way the dev can do something like iti.promise.then(...) to know when all requests are complete.
     const autoCountryPromise = new Promise((resolve, reject) => {
@@ -404,6 +407,13 @@ export class Iti {
       this.rejectUtilsScriptPromise = reject;
     });
     this.promise = Promise.all([autoCountryPromise, utilsScriptPromise]);
+  }
+
+  //* Can't be private as it's called from intlTelInput convenience wrapper.
+  _init(): void {
+    this._applyOptionSideEffects();
+    this._detectEnvironmentAndLayout();
+    this._createInitPromises();
 
     //* In various situations there could be no country selected initially, but we need to be able
     //* to assume this variable exists.
