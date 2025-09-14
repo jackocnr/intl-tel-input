@@ -1,7 +1,8 @@
 import intlTelInput from "../intl-tel-input";
 //* Keep the TS imports separate, as the above line gets substituted in the reactWithUtils build process.
-import { Iti, SomeOptions } from "../intl-tel-input";
+import { Iti } from "../intl-tel-input";
 import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from "react";
+import { SomeOptions } from "../modules/types/public-api";
 
 // make this available as a named export, so react users can access globals like intlTelInput.utils
 export { intlTelInput };
@@ -44,7 +45,7 @@ const IntlTelInput = forwardRef(function IntlTelInput({
     getInstance: () => itiRef.current,
     getInput: () => inputRef.current,
   }));
-  
+
   const update = useCallback((): void => {
     const num = itiRef.current?.getNumber() || "";
     const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
@@ -66,7 +67,7 @@ const IntlTelInput = forwardRef(function IntlTelInput({
       }
     }
   }, [onChangeCountry, onChangeErrorCode, onChangeNumber, onChangeValidity, usePreciseValidation]);
-  
+
   useEffect(() => {
     if (inputRef.current) {
       itiRef.current = intlTelInput(inputRef.current, initOptions);
@@ -97,7 +98,7 @@ const IntlTelInput = forwardRef(function IntlTelInput({
       itiRef.current.setDisabled(disabled);
     }
   }, [disabled]);
-  
+
   return (
     <input
       type="tel"

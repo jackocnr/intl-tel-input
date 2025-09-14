@@ -1,6 +1,13 @@
 import allCountries, { Country } from "./intl-tel-input/data";
-import { I18n } from "./intl-tel-input/i18n/types";
 import defaultEnglishStrings from "./intl-tel-input/i18n/en";
+import type {
+  UtilsLoader,
+  NumberType,
+  SelectedCountryData,
+  AllOptions,
+  SomeOptions,
+  IntlTelInputInterface,
+} from "./modules/types/public-api";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -12,87 +19,6 @@ declare global {
     iti?: Iti;
   }
 }
-
-type UtilsLoader = () => Promise<{default: ItiUtils}>;
-
-interface IntlTelInputInterface {
-  (input: HTMLInputElement, options?: SomeOptions): Iti;
-  autoCountry?: string;
-  defaults: AllOptions;
-  documentReady: () => boolean;
-  getCountryData: () => Country[];
-  getInstance: (input: HTMLInputElement) => Iti | null;
-  instances: { [key: string]: Iti };
-  attachUtils: (source: UtilsLoader) => Promise<unknown> | null;
-  startedLoadingAutoCountry: boolean;
-  startedLoadingUtilsScript: boolean;
-  version: string | undefined;
-  utils?: ItiUtils;
-}
-type ItiUtils = {
-  formatNumber(number: string, iso2: string | undefined, format?: number): string;
-  formatNumberAsYouType(number: string, iso2: string | undefined): string;
-  getCoreNumber(number: string, iso2: string | undefined): string;
-  getExampleNumber(iso2: string | undefined, nationalMode: boolean, numberType: number, useE164?: boolean): string;
-  getExtension(number: string, iso2: string | undefined): string;
-  getNumberType(number: string, iso2: string | undefined): number;
-  getValidationError(number: string, iso2: string | undefined): number;
-  isPossibleNumber(number: string, iso2: string | undefined, numberType?: NumberType[] | null): boolean;
-  isValidNumber(number: string, iso2: string | undefined, numberType?: NumberType[] | null): boolean;
-  numberFormat: { NATIONAL: number, INTERNATIONAL: number, E164: number, RFC3966: number };
-  numberType: object;
-};
-type NumberType =
-  "FIXED_LINE_OR_MOBILE"
-  | "FIXED_LINE"
-  | "MOBILE"
-  | "PAGER"
-  | "PERSONAL_NUMBER"
-  | "PREMIUM_RATE"
-  | "SHARED_COST"
-  | "TOLL_FREE"
-  | "UAN"
-  | "UNKNOWN"
-  | "VOICEMAIL"
-  | "VOIP";
-//* Can't just use the Country type, as during the empty state (globe icon), this is set to an empty object for convenience.
-type SelectedCountryData = {
-  name?: string,
-  iso2?: string,
-  dialCode?: string,
-  areaCodes?: string[],
-  nationalPrefix?: string,
-};
-interface AllOptions {
-  allowDropdown: boolean;
-  allowPhonewords: boolean;
-  autoPlaceholder: string;
-  containerClass: string;
-  countryOrder: string[];
-  countrySearch: boolean;
-  customPlaceholder: ((selectedCountryPlaceholder: string, selectedCountryData: object) => string) | null;
-  dropdownContainer: HTMLElement | null;
-  excludeCountries: string[];
-  fixDropdownWidth: boolean;
-  formatAsYouType: boolean;
-  formatOnDisplay: boolean;
-  geoIpLookup: ((success: (iso2: string) => void, failure: () => void) => void) | null;
-  hiddenInput: ((telInputName: string) => {phone: string, country?: string}) | null;
-  i18n: I18n,
-  initialCountry: string;
-  loadUtils: UtilsLoader;
-  nationalMode: boolean;
-  onlyCountries: string[];
-  placeholderNumberType: NumberType;
-  showFlags: boolean;
-  separateDialCode: boolean;
-  strictMode: boolean;
-  useFullscreenPopup: boolean;
-  validationNumberTypes: NumberType[] | null;
-}
-
-//* Export this as useful in react component too.
-export type SomeOptions = Partial<AllOptions>;
 
 //* These vars persist through all instances of the plugin.
 let id = 0;

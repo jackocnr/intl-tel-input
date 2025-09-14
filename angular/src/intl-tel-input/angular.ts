@@ -1,8 +1,9 @@
 import intlTelInput from "../intl-tel-input";
 //* Keep the TS imports separate, as the above line gets substituted in the angularWithUtils build process.
-import { Iti, SomeOptions } from "../intl-tel-input";
+import { Iti } from "../intl-tel-input";
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, forwardRef, AfterViewInit, OnChanges, SimpleChanges } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
+import { SomeOptions } from "../modules/types/public-api";
 
 export { intlTelInput };
 
