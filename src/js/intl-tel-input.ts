@@ -11,6 +11,13 @@ import type {
 } from "./modules/types/public-api";
 import { getNumeric, normaliseString } from "./modules/utils/string";
 import { createEl } from "./modules/utils/dom";
+import {
+  processAllCountries,
+  processDialCodes,
+  translateCountryNames,
+  sortCountries,
+  cacheSearchTokens,
+} from "./modules/data/country-data";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -244,174 +251,25 @@ export class Iti {
   //* Prepare all of the country data, including onlyCountries, excludeCountries, countryOrder options.
   private _processCountryData(): void {
     //* Process onlyCountries or excludeCountries array if present.
-    this._processAllCountries();
+    this.countries = processAllCountries(this.options);
 
     //* Generate this.dialCodes and this.dialCodeToIso2Map.
-    this._processDialCodes();
+    const dialRes = processDialCodes(this.countries, this.options);
+    this.dialCodes = dialRes.dialCodes;
+    this.dialCodeMaxLen = dialRes.dialCodeMaxLen;
+    this.dialCodeToIso2Map = dialRes.dialCodeToIso2Map;
 
     //* Translate country names according to i18n option.
-    this._translateCountryNames();
+    translateCountryNames(this.countries, this.options);
 
     //* Sort countries by countryOrder option (if present), then name.
-    this._sortCountries();
+    sortCountries(this.countries, this.options);
 
     //* Build fast iso2 -> country map for O(1) lookups (used by _getCountryData).
     this.countryByIso2 = new Map(this.countries.map((c) => [c.iso2, c]));
 
     //* Precompute and cache country search tokens to speed up filtering
-    this._cacheSearchTokens();
-  }
-
-  //* Precompute and cache country search tokens to speed up filtering
-  private _cacheSearchTokens(): void {
-    for (const c of this.countries) {
-      // Light normalisation: lowercase name (diacritic folding, trimming etc can still occur at query side via normaliseString if needed)
-      c.normalisedName = normaliseString(c.name);
-      // Derive initials (first letter of each alpha sequence)
-      c.initials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map(word => word[0]).join("").toLowerCase();
-      // Cached +dialCode variant
-      c.dialCodePlus = `+${c.dialCode}`;
-    }
-  }
-
-  //* Sort countries by countryOrder option (if present), then name.
-  private _sortCountries() {
-    if (this.options.countryOrder) {
-      this.options.countryOrder = this.options.countryOrder.map((country) => country.toLowerCase());
-    }
-    this.countries.sort((a: Country, b: Country): number => {
-      //* Primary sort: countryOrder option.
-      const { countryOrder } = this.options;
-      if (countryOrder) {
-        const aIndex = countryOrder.indexOf(a.iso2);
-        const bIndex = countryOrder.indexOf(b.iso2);
-        const aIndexExists = aIndex > -1;
-        const bIndexExists = bIndex > -1;
-        if (aIndexExists || bIndexExists) {
-          if (aIndexExists && bIndexExists) {
-            return aIndex - bIndex;
-          }
-          return aIndexExists ? -1 : 1;
-        }
-      }
-
-      //* Secondary sort: country name.
-      return a.name.localeCompare(b.name);
-    });
-  }
-
-  //* Add a dial code to this.dialCodeToIso2Map.
-  private _addToDialCodeMap(iso2: string, dialCode: string, priority?: number): void {
-    // Bail if no iso2 or dialCode (this can happen with onlyCountries or excludeCountries options).
-    if (!iso2 || !dialCode) {
-      return;
-    }
-    //* Update dialCodeMaxLen.
-    if (dialCode.length > this.dialCodeMaxLen) {
-      this.dialCodeMaxLen = dialCode.length;
-    }
-    //* If this entry doesn't already exist, then create it.
-    if (!this.dialCodeToIso2Map.hasOwnProperty(dialCode)) {
-      this.dialCodeToIso2Map[dialCode] = [];
-    }
-    const iso2List = this.dialCodeToIso2Map[dialCode];
-    //* Bail if we already have this country for this dialCode.
-    if (iso2List.includes(iso2)) {
-      return;
-    }
-    //* Use provided priority index (can be 0), else append.
-    const index = priority !== undefined ? priority : iso2List.length;
-    iso2List[index] = iso2;
-  }
-
-  //* Process onlyCountries or excludeCountries array if present.
-  private _processAllCountries(): void {
-    const { onlyCountries, excludeCountries } = this.options;
-    if (onlyCountries.length) {
-      const lowerCaseOnlyCountries = onlyCountries.map((country) =>
-        country.toLowerCase(),
-      );
-      this.countries = allCountries.filter(
-        (country) => lowerCaseOnlyCountries.includes(country.iso2),
-      );
-    } else if (excludeCountries.length) {
-      const lowerCaseExcludeCountries = excludeCountries.map(
-        (country) => country.toLowerCase(),
-      );
-      this.countries = allCountries.filter(
-        (country) => !lowerCaseExcludeCountries.includes(country.iso2),
-      );
-    } else {
-      this.countries = allCountries;
-    }
-  }
-
-  //* Translate Countries by object literal provided on config.
-  private _translateCountryNames(): void {
-    for (const c of this.countries) {
-      const iso2 = c.iso2.toLowerCase();
-      if (this.options.i18n.hasOwnProperty(iso2)) {
-        c.name = this.options.i18n[iso2];
-      }
-    }
-  }
-
-  //* Generate this.dialCodes and this.dialCodeToIso2Map.
-  private _processDialCodes(): void {
-    //* Here we store just dial codes, where the key is the dial code, and the value is true
-    //* e.g. { 1: true, 7: true, 20: true, ... }.
-    this.dialCodes = new Set();
-    this.dialCodeMaxLen = 0;
-
-    //* Here we map dialCodes (inc both dialCode and dialCode+areaCode) to iso2 codes e.g.
-    /*
-     * {
-     *   1: [ 'us', 'ca', ... ],    # all NANP countries (with dial code "1")
-     *   12: [ 'us', 'ca', ... ],   # subset of NANP countries (that have area codes starting with "2")
-     *   120: [ 'us', 'ca' ],       # just US and Canada (that have area codes starting "20")
-     *   1204: [ 'ca' ],            # only Canada (that has a "204" area code)
-     *   ...
-     *  }
-     */
-    this.dialCodeToIso2Map = {};
-
-    //* First: add dial codes.
-    for (const c of this.countries) {
-      if (!this.dialCodes.has(c.dialCode)) {
-        this.dialCodes.add(c.dialCode);
-      }
-      this._addToDialCodeMap(c.iso2, c.dialCode, c.priority);
-    }
-    // if any countries have been excluded, cleanup empty array entries in dialCodeToIso2Map due to the use of c.priority to insert at specific indexes
-    if (this.options.onlyCountries.length || this.options.excludeCountries.length) {
-      this.dialCodes.forEach((dialCode) => {
-        this.dialCodeToIso2Map[dialCode] = this.dialCodeToIso2Map[dialCode].filter(Boolean);
-      });
-    }
-
-    //* Next: add area codes.
-    //* This is a second loop over countries, to make sure we have all of the "root" countries
-    //* already in the map, so that we can access them, as each time we add an area code substring
-    //* to the map, we also need to include the "root" country's code, as that also matches.
-    for (const c of this.countries) {
-      //* Area codes
-      if (c.areaCodes) {
-        const rootIso2Code = this.dialCodeToIso2Map[c.dialCode][0];
-        //* For each area code.
-        for (const areaCode of c.areaCodes) {
-          //* For each digit in the area code to add all partial matches as well.
-          for (let k = 1; k < areaCode.length; k++) {
-            const partialAreaCode = areaCode.substring(0, k);
-            const partialDialCode = c.dialCode + partialAreaCode;
-            //* Start with the root country, as that also matches this partial dial code.
-            this._addToDialCodeMap(rootIso2Code, partialDialCode);
-            this._addToDialCodeMap(c.iso2, partialDialCode);
-          }
-          //* Add the full area code.
-          this._addToDialCodeMap(c.iso2, c.dialCode + areaCode);
-        }
-      }
-    }
+    cacheSearchTokens(this.countries);
   }
 
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
