@@ -19,6 +19,7 @@ import {
   cacheSearchTokens,
 } from "./modules/data/country-data";
 import { beforeSetNumber, formatNumberAsYouType } from "./modules/format/formatting";
+import { translateCursorPosition } from "./modules/format/caret";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -63,38 +64,6 @@ const isRegionlessNanp = (number: string): boolean => {
     return regionlessNanpNumbers.includes(areaCode);
   }
   return false;
-};
-
-//* Iterate through the formattedValue until hit the right number of relevant chars.
-const translateCursorPosition = (
-  relevantChars: number,
-  formattedValue: string,
-  prevCaretPos: number,
-  isDeleteForwards: boolean,
-): number => {
-  //* If the first char is a formatting char, and they backspace delete it:
-  //* Cursor should stay at the start (pos 0), rather than stick to the first digit (pos 1).
-  if (prevCaretPos === 0 && !isDeleteForwards) {
-    return 0;
-  }
-  let count = 0;
-  for (let i = 0; i < formattedValue.length; i++) {
-    if (/[+0-9]/.test(formattedValue[i])) {
-      count++;
-    }
-
-    //* Normal case: stop when you hit the right number of relevant chars
-    //* (cursor will be just after the final relevant char).
-    if (count === relevantChars && !isDeleteForwards) {
-      return i + 1;
-    }
-    //* Spacial case: delete forwards (fn + delete on a mac):
-    //* Wait until hit one extra relevant char, and put the cursor just before it (after any formatting chars).
-    if (isDeleteForwards && count === relevantChars + 1) {
-      return i;
-    }
-  }
-  return formattedValue.length;
 };
 
 //* Run a method on each instance of the plugin.
