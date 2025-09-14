@@ -18,6 +18,7 @@ import {
   sortCountries,
   cacheSearchTokens,
 } from "./modules/data/country-data";
+import { beforeSetNumber, formatNumberAsYouType } from "./modules/format/formatting";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -882,7 +883,14 @@ export class Iti {
         const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
         const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
         const isDeleteForwards = e?.inputType === "deleteContentForward";
-        const formattedValue = this._formatNumberAsYouType();
+        const fullNumber = this._getFullNumber();
+        const formattedValue = formatNumberAsYouType(
+          fullNumber,
+          this.telInput.value,
+          intlTelInput.utils,
+          this.selectedCountryData,
+          this.options.separateDialCode,
+        );
         const newCaretPos = translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
         this.telInput.value = formattedValue;
         // WARNING: calling setSelectionRange triggers a focus on iOS
@@ -1804,50 +1812,19 @@ export class Iti {
 
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
   private _beforeSetNumber(fullNumber: string): string {
-    let number = fullNumber;
-    if (this.options.separateDialCode) {
-      let dialCode = this._getDialCode(number);
-      //* If there is a valid dial code.
-      if (dialCode) {
-        //* In case _getDialCode returned an area code as well.
-        dialCode = `+${this.selectedCountryData.dialCode}`;
-        //* a lot of numbers will have a space separating the dial code and the main number, and
-        //* some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get rid of it.
-        //* NOTE: Don't just trim all non-numerics as may want to preserve an open parenthesis etc.
-        const start =
-          number[dialCode.length] === " " || number[dialCode.length] === "-"
-            ? dialCode.length + 1
-            : dialCode.length;
-          number = number.substring(start);
-      }
-    }
-
+    const dialCode = this._getDialCode(fullNumber);
+    const number = beforeSetNumber(
+      fullNumber,
+      dialCode,
+      this.options.separateDialCode,
+      this.selectedCountryData,
+    );
     return this._cap(number);
   }
 
   //* Trigger the 'countrychange' event.
   private _triggerCountryChange(): void {
     this._trigger("countrychange");
-  }
-
-  //* Format the number as the user types.
-  private _formatNumberAsYouType(): string {
-    const val = this._getFullNumber();
-    const result = intlTelInput.utils
-      ? intlTelInput.utils.formatNumberAsYouType(val, this.selectedCountryData.iso2)
-      : val;
-    //* If separateDialCode and they haven't (re)typed the dial code in the input as well,
-    //* then remove the dial code.
-    const { dialCode } = this.selectedCountryData;
-    if (
-      this.options.separateDialCode &&
-      this.telInput.value.charAt(0) !== "+" &&
-      result.includes(`+${dialCode}`)
-    ) {
-      const afterDialCode = result.split(`+${dialCode}`)[1] || "";
-      return afterDialCode.trim();
-    }
-    return result;
   }
 
   //**************************
