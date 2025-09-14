@@ -1,11 +1,11 @@
-import allCountries, { Country } from "../../intl-tel-input/data";
+import allCountries, { Country, Iso2 } from "../../intl-tel-input/data";
 import { normaliseString } from "../utils/string";
 import type { AllOptions } from "../types/public-api";
 
 export interface DialCodeProcessingResult {
   dialCodes: Set<string>;
   dialCodeMaxLen: number;
-  dialCodeToIso2Map: Record<string, string[]>;
+  dialCodeToIso2Map: Record<string, Iso2[]>;
 }
 
 //* Process onlyCountries or excludeCountries array if present.
@@ -25,8 +25,8 @@ export function processAllCountries(options: AllOptions): Country[] {
 export function translateCountryNames(countries: Country[], options: AllOptions): void {
   for (const c of countries) {
     const iso2 = c.iso2.toLowerCase();
-    if (options.i18n.hasOwnProperty(iso2)) {
-      c.name = (options.i18n as Record<string, string>)[iso2];
+    if (options.i18n[iso2]) {
+      c.name = options.i18n[iso2];
     }
   }
 }
@@ -49,10 +49,10 @@ export function processDialCodes(countries: Country[], options: AllOptions): Dia
    *   ...
    *  }
    */
-  const dialCodeToIso2Map: Record<string, string[]> = {};
+  const dialCodeToIso2Map: Record<string, Iso2[]> = {};
 
   //* Add a dial code to this.dialCodeToIso2Map.
-  const _addToDialCodeMap = (iso2: string, dialCode: string, priority?: number) => {
+  const _addToDialCodeMap = (iso2: Iso2, dialCode: string, priority?: number) => {
     // Bail if no iso2 or dialCode (this can happen with onlyCountries or excludeCountries options).
     if (!iso2 || !dialCode) {
       return;
@@ -119,7 +119,7 @@ export function processDialCodes(countries: Country[], options: AllOptions): Dia
 //* Sort countries by countryOrder option (if present), then name.
 export function sortCountries(countries: Country[], options: AllOptions): void {
   if (options.countryOrder) {
-    options.countryOrder = options.countryOrder.map((country) => country.toLowerCase());
+    options.countryOrder = options.countryOrder.map((iso2) => iso2.toLowerCase() as Iso2);
   }
   countries.sort((a: Country, b: Country): number => {
     //* Primary sort: countryOrder option

@@ -19,8 +19,7 @@
 //*   National prefix, [OPTIONAL - only required if using area codes]
 //* ]
 
-type RawCountry = [string, string, number?, string[]?, string?];
-const rawCountryData: RawCountry[] = [
+export const rawCountryData = [
   [
     "af", // Afghanistan
     "93",
@@ -1099,11 +1098,12 @@ const rawCountryData: RawCountry[] = [
     "zw", // Zimbabwe
     "263",
   ],
-];
+] as const;
+
+export type Iso2 = typeof rawCountryData[number][0];
 
 export type Country = {
-  // these fields are outlined above
-  iso2: string;
+  iso2: Iso2;
   dialCode: string;
   priority: number;
   areaCodes: string[] | null;

@@ -1,4 +1,4 @@
-import allCountries, { Country } from "./intl-tel-input/data";
+import allCountries, { Country, Iso2 } from "./intl-tel-input/data";
 import defaultEnglishStrings from "./intl-tel-input/i18n/en";
 import { defaults, applyOptionSideEffects } from "./modules/core/options";
 import type {
@@ -36,6 +36,10 @@ declare global {
 //* These vars persist through all instances of the plugin.
 let id = 0;
 
+// build a Set for iso2 runtime validation (lightweight)
+const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
+const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
+
 //* Run a method on each instance of the plugin.
 const forEachInstance = (method: string, ...args: any[]): void => {
   const { instances } = intlTelInput;
@@ -60,9 +64,9 @@ export class Iti {
   private selectedCountryData: SelectedCountryData;
   private countries: Country[];
   private dialCodeMaxLen: number;
-  private dialCodeToIso2Map: Record<string, string[]>;
+  private dialCodeToIso2Map: Record<string, Iso2[]>;
   private dialCodes: Set<string>;
-  private countryByIso2: Map<string, Country>;
+  private countryByIso2: Map<Iso2, Country>;
   private countryContainer: HTMLElement;
   private selectedCountry: HTMLElement;
   private selectedCountryInner: HTMLElement;
@@ -79,7 +83,7 @@ export class Iti {
   private hiddenInput: HTMLInputElement;
   private hiddenInputCountry: HTMLInputElement;
   private maxCoreNumberLength: number | null;
-  private defaultCountry: string;
+  private defaultCountry: Iso2;
   private originalPaddingRight: string;
   private originalPaddingLeft: string;
 
@@ -586,9 +590,8 @@ export class Iti {
       this._updateCountryFromNumber(val);
     } else if (!isAutoCountry || overrideAutoCountry) {
       const lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
-      const isValidInitialCountry = lowerInitialCountry && this._getCountryData(lowerInitialCountry, true);
       //* See if we should select a country.
-      if (isValidInitialCountry) {
+      if (isIso2(lowerInitialCountry)) {
         this._setCountry(lowerInitialCountry);
       } else {
         if (dialCode && isRegionlessNanpNumber) {
@@ -596,7 +599,7 @@ export class Iti {
           this._setCountry("us");
         } else {
           //* Display the empty state (globe icon).
-          this._setCountry();
+          this._setCountry("");
         }
       }
     }
@@ -740,8 +743,7 @@ export class Iti {
         this.options.geoIpLookup(
           (iso2 = "") => {
             const iso2Lower = iso2.toLowerCase();
-            const isValidIso2 = iso2Lower && this._getCountryData(iso2Lower, true);
-            if (isValidIso2) {
+            if (isIso2(iso2Lower)) {
               intlTelInput.autoCountry = iso2Lower;
               //* Tell all instances the auto country is ready.
               //TODO: this should just be the current instances
@@ -1314,7 +1316,7 @@ export class Iti {
   // Get the country ISO2 code from the given number
   // BUT ONLY IF ITS CHANGED FROM THE CURRENTLY SELECTED COUNTRY
   // NOTE: consider refactoring this to be more clear
-  private _getNewCountryFromNumber(fullNumber: string): string | null {
+  private _getNewCountryFromNumber(fullNumber: string): Iso2 | "" | null {
     const plusIndex = fullNumber.indexOf("+");
     //* If it contains a plus, discard any chars before it e.g. accidental space char.
     //* This keeps the selected country auto-updating correctly, which we want as
@@ -1399,30 +1401,15 @@ export class Iti {
     }
   }
 
-  //* Find the country data for the given iso2 code
-  //* the allowFail option is only used during init() for the initialCountry option, and for the iso2 returned from geoIpLookup - in these 2 cases we don't want to error out
-  private _getCountryData(iso2: string, allowFail: boolean): Country | null {
-    const country = this.countryByIso2.get(iso2);
-    if (country) {
-      return country;
-    }
-    if (allowFail) {
-      return null;
-    }
-    throw new Error(`No country data for '${iso2}'`);
-  }
-
   //* Update the selected country, dial code (if separateDialCode), placeholder, title, and active list item.
   //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
-  private _setCountry(iso2?: string | null): boolean {
+  private _setCountry(iso2: Iso2 | ""): boolean {
     const { separateDialCode, showFlags, i18n } = this.options;
 
     const prevIso2 = this.selectedCountryData.iso2 || "";
 
-    //* Do this first as it will throw an error and stop if iso2 is invalid.
-    this.selectedCountryData = iso2
-      ? this._getCountryData(iso2, false) || {}
-      : {};
+    this.selectedCountryData = iso2 ? this.countryByIso2.get(iso2) : {};
+
     //* Update the defaultCountry - we only need the iso2 from now on, so just store that.
     if (this.selectedCountryData.iso2) {
       this.defaultCountry = this.selectedCountryData.iso2;
@@ -1579,12 +1566,12 @@ export class Iti {
   //* Called when the user selects a list item from the dropdown.
   private _selectListItem(listItem: HTMLElement): void {
     //* Update selected country and active list item.
-    const countryChanged = this._setCountry(
-      listItem.getAttribute("data-country-code"),
-    );
+    const iso2 = listItem.getAttribute("data-country-code") as Iso2;
+    const countryChanged = this._setCountry(iso2);
     this._closeDropdown();
 
-    this._updateDialCode(listItem.getAttribute("data-dial-code"));
+    const dialCode = listItem.getAttribute("data-dial-code");
+    this._updateDialCode(dialCode);
 
     // reformat any existing number to the new country
     if (this.options.formatOnDisplay) {
@@ -1957,8 +1944,13 @@ export class Iti {
   }
 
   //* Update the selected country, and update the input val accordingly.
-  setCountry(iso2: string): void {
-    const iso2Lower = iso2?.toLowerCase();
+  setCountry(iso2: Iso2): void {
+    const iso2Lower = iso2?.toLowerCase() as Iso2;
+    // handle invalid iso2
+    if (!isIso2(iso2Lower)) {
+      throw new Error(`Invalid country code: '${iso2Lower}'`);
+    }
+
     const currentCountry = this.selectedCountryData.iso2;
     //* There is a country change IF: either there is a new country and it's different to the current one, OR there is no new country (i.e. globe state) and there is a current country
     const isCountryChange = (iso2 && (iso2Lower !== currentCountry) || (!iso2 && currentCountry));

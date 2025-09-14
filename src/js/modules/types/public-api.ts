@@ -1,4 +1,4 @@
-import type { Country } from "../../intl-tel-input/data";
+import type { Country, Iso2 } from "../../intl-tel-input/data";
 import type { I18n } from "../../intl-tel-input/i18n/types";
 // Type-only import to avoid runtime circular dependency. This is erased after compilation.
 import type { Iti } from "../../intl-tel-input";
@@ -39,7 +39,7 @@ export type NumberType =
 // Selected country data (can be empty object in "globe" state)
 export type SelectedCountryData = {
   name?: string;
-  iso2?: string;
+  iso2?: Iso2;
   dialCode?: string;
   areaCodes?: string[];
   nationalPrefix?: string;
@@ -51,21 +51,21 @@ export interface AllOptions {
   allowPhonewords: boolean;
   autoPlaceholder: string;
   containerClass: string;
-  countryOrder: string[] | null;
+  countryOrder: Iso2[] | null;
   countrySearch: boolean;
   customPlaceholder: ((selectedCountryPlaceholder: string, selectedCountryData: object) => string) | null;
   dropdownContainer: HTMLElement | null;
-  excludeCountries: string[];
+  excludeCountries: Iso2[];
   fixDropdownWidth: boolean;
   formatAsYouType: boolean;
   formatOnDisplay: boolean;
-  geoIpLookup: ((success: (iso2: string) => void, failure: () => void) => void) | null;
+  geoIpLookup: ((success: (iso2: Iso2) => void, failure: () => void) => void) | null;
   hiddenInput: ((telInputName: string) => { phone: string; country?: string }) | null;
   i18n: I18n;
-  initialCountry: string;
+  initialCountry: Iso2 | "auto" | "";
   loadUtils: UtilsLoader | null;
   nationalMode: boolean;
-  onlyCountries: string[];
+  onlyCountries: Iso2[];
   placeholderNumberType: NumberType;
   showFlags: boolean;
   separateDialCode: boolean;
@@ -80,7 +80,7 @@ export type SomeOptions = Partial<AllOptions>;
 // Public interface for the factory function (kept here for consumers)
 export interface IntlTelInputInterface {
   (input: HTMLInputElement, options?: SomeOptions): Iti;
-  autoCountry?: string;
+  autoCountry?: Iso2;
   defaults: AllOptions;
   documentReady: () => boolean;
   getCountryData: () => Country[];
