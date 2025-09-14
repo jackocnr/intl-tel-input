@@ -8,6 +8,8 @@ import type {
   SomeOptions,
   IntlTelInputInterface,
 } from "./modules/types/public-api";
+import { getNumeric, normaliseString } from "./modules/utils/string";
+import { createEl } from "./modules/utils/dom";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -121,14 +123,6 @@ const regionlessNanpNumbers = [
   "889",
 ];
 
-//* Extract the numeric digits from the given string.
-const getNumeric = (s: string): string => s.replace(/\D/g, "");
-
-//* Normalise string: turns "Réunion" into "Reunion".
-//* from https://stackoverflow.com/a/37511463
-const normaliseString = (s: string = ""): string =>
-  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
 //* Check if the given number is a regionless NANP number (expects the number to contain an international dial code)
 const isRegionlessNanp = (number: string): boolean => {
   const numeric = getNumeric(number);
@@ -169,18 +163,6 @@ const translateCursorPosition = (
     }
   }
   return formattedValue.length;
-};
-
-//* Create a DOM element.
-const createEl = (tagName: string, attrs?: object | null, container?: HTMLElement): HTMLElement => {
-  const el = document.createElement(tagName);
-  if (attrs) {
-    Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
-  }
-  if (container) {
-    container.appendChild(el);
-  }
-  return el;
 };
 
 //* Run a method on each instance of the plugin.
