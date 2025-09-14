@@ -20,6 +20,7 @@ import {
 } from "./modules/data/country-data";
 import { beforeSetNumber, formatNumberAsYouType } from "./modules/format/formatting";
 import { translateCursorPosition } from "./modules/format/caret";
+import { isRegionlessNanp } from "./modules/data/nanp-regionless";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -34,37 +35,6 @@ declare global {
 
 //* These vars persist through all instances of the plugin.
 let id = 0;
-
-//* https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
-const regionlessNanpNumbers = [
-  "800",
-  "822",
-  "833",
-  "844",
-  "855",
-  "866",
-  "877",
-  "880",
-  "881",
-  "882",
-  "883",
-  "884",
-  "885",
-  "886",
-  "887",
-  "888",
-  "889",
-];
-
-//* Check if the given number is a regionless NANP number (expects the number to contain an international dial code)
-const isRegionlessNanp = (number: string): boolean => {
-  const numeric = getNumeric(number);
-  if (numeric.charAt(0) === "1") {
-    const areaCode = numeric.substring(1, 4);
-    return regionlessNanpNumbers.includes(areaCode);
-  }
-  return false;
-};
 
 //* Run a method on each instance of the plugin.
 const forEachInstance = (method: string, ...args: any[]): void => {
