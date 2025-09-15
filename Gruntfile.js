@@ -37,6 +37,7 @@ module.exports = function(grunt) {
 
   // replace private methods etc in the minified JS
   grunt.registerTask('build:replaceMinJs', [
+    'validate:replacePatterns',
     'replace:privateMethods',
     'replace:inlineMethods',
     'replace:instanceFields',
@@ -105,5 +106,36 @@ module.exports = function(grunt) {
 
   // update version numbers in docs etc
   grunt.registerTask('versionNumbers', ['replace:readme', 'replace:issueTemplate']);
+
+  // AI-written task for when a replace pattern has no matches, normally you don't know which pattern failed, but this will log the name to the output.
+  grunt.registerTask('validate:replacePatterns', 'Validate replace patterns have matches', function() {
+    const config = grunt.config.get('replace');
+    const failed = [];
+    const isPrivate = (key) => ['privateMethods','inlineMethods','instanceFields'].includes(key);
+    Object.keys(config).forEach((key) => {
+      if (!isPrivate(key)) return;
+      const { options, files } = config[key];
+      const patterns = options.patterns || [];
+      Object.entries(files).forEach(([out, src]) => {
+        if (!grunt.file.exists(src)) {
+          grunt.log.warn(`Source file not found for replace:${key}: ${src}`);
+          return;
+        }
+        const content = grunt.file.read(src);
+        patterns.forEach((p) => {
+          if (p.match && content.match(p.match) === null) {
+            failed.push({ key, pattern: p.match.toString(), src });
+          }
+        });
+      });
+    });
+    if (failed.length) {
+      grunt.log.error('Replace pattern validation failed:');
+      failed.forEach(f => grunt.log.error(`  [${f.key}] pattern ${f.pattern} had 0 matches in ${f.src}`));
+      grunt.log.warn(`${failed.length} replace patterns had zero matches.`);
+    } else {
+      grunt.log.ok('All replace patterns matched at least once.');
+    }
+  });
 
 };

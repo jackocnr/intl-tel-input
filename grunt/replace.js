@@ -14,20 +14,23 @@ module.exports = function(grunt) {
             match: /_processCountryData/g,
             replacement: '_b'
           }, {
-            match: /_addToDialCodeMap/g,
-            replacement: '_c'
-          }, {
-            match: /_processAllCountries/g,
-            replacement: '_d'
-          }, {
-            match: /_translateCountryNames/g,
-            replacement: '_d0'
-          }, {
-            match: /_processDialCodes/g,
-            replacement: '_d2'
-          }, {
             match: /_generateMarkup/g,
             replacement: '_f'
+          }, {
+            match: /_detectEnvironmentAndLayout/g,
+            replacement: '_k'
+          }, {
+            match: /_createInitPromises/g,
+            replacement: '_l'
+          }, {
+            match: /_prepareTelInput/g,
+            replacement: '_m'
+          }, {
+            match: /_createWrapperAndInsert/g,
+            replacement: '_n'
+          }, {
+            match: /_maybeBuildCountryContainer/g,
+            replacement: '_s'
           }, {
             match: /_appendListItems/g,
             replacement: '_g'
@@ -60,6 +63,30 @@ module.exports = function(grunt) {
           {
             match: /_openDropdownWithPlus/g,
             replacement: '_n0'
+          }, {
+            match: /_buildDropdownContent/g,
+            replacement: '_t'
+          }, {
+            match: /_buildSearchUI/g,
+            replacement: '_w'
+          }, {
+            match: /_maybeUpdateInputPaddingAndReveal/g,
+            replacement: '_k0'
+          }, {
+            match: /_maybeBuildHiddenInputs/g,
+            replacement: '_l0'
+          }, {
+            match: /_bindInputListener/g,
+            replacement: '_m0'
+          }, {
+            match: /_maybeBindKeydownListener/g,
+            replacement: '_s0'
+          }, {
+            match: /_maybeBindPasteListener/g,
+            replacement: '_t0'
+          }, {
+            match: /_openDropdown/g,
+            replacement: '_w0'
           }, {
             match: /_searchForCountry/g,
             replacement: '_p0'
@@ -103,6 +130,9 @@ module.exports = function(grunt) {
             match: /_handleEnterKey/g,
             replacement: '_r'
           }, {
+            match: /_getMatchedCountries/g,
+            replacement: '_k1'
+          }, {
             match: /_updateValFromNumber/g,
             replacement: '_u'
           }, {
@@ -111,9 +141,6 @@ module.exports = function(grunt) {
           }, {
             match: /_highlightListItem/g,
             replacement: '_x'
-          }, {
-            match: /_getCountryData/g,
-            replacement: '_y'
           }, {
             match: /_setCountry/g,
             replacement: '_z'
@@ -147,9 +174,6 @@ module.exports = function(grunt) {
           }, {
             match: /_triggerCountryChange/g,
             replacement: '_8'
-          }, {
-            match: /_formatNumberAsYouType/g,
-            replacement: '_9'
           }
         ]
       },
