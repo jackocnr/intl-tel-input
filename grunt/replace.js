@@ -60,6 +60,7 @@ module.exports = function(grunt) {
             replacement: '_j2'
           },
           //* NOTE: here we exclude _trigger which is a substring of _triggerCountryChange etc.
+          // AND _openDropdown (which is a substring of _openDropdownWithPlus)
           {
             match: /_openDropdownWithPlus/g,
             replacement: '_n0'
@@ -84,9 +85,6 @@ module.exports = function(grunt) {
           }, {
             match: /_maybeBindPasteListener/g,
             replacement: '_t0'
-          }, {
-            match: /_openDropdown/g,
-            replacement: '_w0'
           }, {
             match: /_searchForCountry/g,
             replacement: '_p0'
