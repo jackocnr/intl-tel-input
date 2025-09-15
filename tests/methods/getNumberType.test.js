@@ -2,9 +2,8 @@
  * @jest-environment jsdom
  */
 
-const { initPlugin, teardown } = require("../helpers/helpers");
-const intlTelInputWithUtils = require("intlTelInputWithUtils.js");
-const numberType = intlTelInputWithUtils.utils.numberType;
+const { initPlugin, teardown, intlTelInput } = require("../helpers/helpers");
+const numberType = intlTelInput.utils.numberType;
 
 describe("getNumberType method", () => {
   let iti;

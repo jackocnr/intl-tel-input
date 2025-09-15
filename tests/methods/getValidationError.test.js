@@ -1,10 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-const { initPlugin, teardown } = require("../helpers/helpers");
+const { initPlugin, teardown, intlTelInput } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
-const intlTelInputWithUtils = require("intlTelInputWithUtils.js");
-const validationError = intlTelInputWithUtils.utils.validationError;
+const validationError = intlTelInput.utils.validationError;
 
 describe("getValidationError method", () => {
   let iti, input, user;

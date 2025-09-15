@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-const intlTelInput = require("intlTelInputWithUtils.js");
+const { intlTelInput } = require("../helpers/helpers");
 
 // no setup/teardown needed for static method test
 describe("getCountryData static", () => {

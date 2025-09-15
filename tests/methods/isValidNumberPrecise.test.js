@@ -1,9 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-const { initPlugin, teardown, openDropdownSelectCountryAsync } = require("../helpers/helpers");
+const { initPlugin, teardown, openDropdownSelectCountryAsync, intlTelInput } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
-const intlTelInput = require("intlTelInputWithUtils.js");
 
 describe("isValidNumberPrecise", () => {
   describe("vanilla", () => {

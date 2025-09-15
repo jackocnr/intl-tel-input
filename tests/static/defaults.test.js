@@ -1,8 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-const { initPlugin, teardown, checkFlagSelected } = require("../helpers/helpers");
-const intlTelInput = require("intlTelInputWithUtils.js");
+const { initPlugin, teardown, checkFlagSelected, intlTelInput } = require("../helpers/helpers");
 const backupInitialCountry = intlTelInput.defaults.initialCountry; // empty string by default
 
 describe("defaults static", () => {

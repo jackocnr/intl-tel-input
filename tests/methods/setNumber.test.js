@@ -1,10 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-const { initPlugin, teardown, checkFlagSelected } = require("../helpers/helpers");
-const intlTelInput = require("intlTelInputWithUtils.js");
+const { initPlugin, teardown, checkFlagSelected, intlTelInput } = require("../helpers/helpers");
 
-describe("setNumbe method", () => {
+describe("setNumber method", () => {
   describe("no utils", () => {
     let iti, input, container, utilsBackup;
 

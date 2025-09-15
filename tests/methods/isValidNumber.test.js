@@ -2,9 +2,8 @@
  * @jest-environment jsdom
  */
 
-const { initPlugin, teardown } = require("../helpers/helpers");
+const { initPlugin, teardown, intlTelInput } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
-const intlTelInput = require("intlTelInputWithUtils.js");
 
 describe("isValidNumber method", () => {
   let iti, input, user, utilsBackup;

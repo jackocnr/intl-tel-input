@@ -1,6 +1,8 @@
 require("@testing-library/jest-dom");
 const intlTelInputWithUtils = require("intlTelInputWithUtils.js");
 
+exports.intlTelInput = intlTelInputWithUtils;
+
 /** @typedef {typeof import("intl-tel-input").default} IntlTelInputInterface */
 /** @typedef {import("intl-tel-input").Iti} Iti */
 /** @typedef {import("intl-tel-input").SomeOptions} SomeOptions */

@@ -1,8 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-const { initPlugin, teardown, injectInput } = require("../helpers/helpers");
-const intlTelInput = require("intlTelInputWithUtils.js");
+const { initPlugin, teardown, injectInput, intlTelInput } = require("../helpers/helpers");
 
 describe("getInstance static", () => {
   let iti, input;
