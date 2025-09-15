@@ -897,6 +897,9 @@ export class Iti {
         const input = this.telInput;
         const selStart = input.selectionStart;
         const selEnd = input.selectionEnd;
+        const before = input.value.slice(0, selStart);
+        const after = input.value.slice(selEnd);
+        const iso2 = this.selectedCountryData.iso2;
 
         const pasted = e.clipboardData.getData("text");
         // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
@@ -908,10 +911,19 @@ export class Iti {
         // just numerics
         const numerics = allowedChars.replace(/\+/g, "");
         const sanitised = hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
+        let newVal = before + sanitised + after;
+        let coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
 
-        let newVal = input.value.slice(0, selStart) + sanitised + input.value.slice(selEnd);
-        // check length
-        const coreNumber = intlTelInput.utils.getCoreNumber(newVal, this.selectedCountryData.iso2);
+        // utils.getCoreNumber returns empty string for very long numbers
+        // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
+        while (coreNumber.length === 0 && newVal.length > 0) {
+          newVal = newVal.slice(0, -1);
+          coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
+        }
+        // if no valid core number can be found, then just ignore the paste
+        if (!coreNumber) {
+          return;
+        }
         if (this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength) {
           if (input.selectionEnd === input.value.length) {
             // if they try to paste too many digits at the end, then just trim the excess

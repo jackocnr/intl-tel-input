@@ -186,6 +186,16 @@ describe("strictMode option", () => {
       fireEvent.paste(input, eventObject);
       expect(input.value).toBe("+1 987-123-1234");
     });
+
+    // PREV BUG
+    test("pasting a very long number still works", async () => {
+      await user.click(input);
+      const pastedContent = "2345678901234567999999";
+      const eventObject = getPasteEventObject(pastedContent);
+      // NOTE: could not get this working with user.paste
+      fireEvent.paste(input, eventObject);
+      expect(input.value).toBe("(234) 567-8901");
+    });
   });
 
   // NATIONAL MODE DISABLED
