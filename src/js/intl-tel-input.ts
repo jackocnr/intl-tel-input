@@ -1701,8 +1701,7 @@ export class Iti {
       for (let i = 0; i < number.length; i++) {
         const c = number.charAt(i);
         //* If char is number.
-        //* https://stackoverflow.com/a/8935649/217866
-        if (!isNaN(parseInt(c, 10))) {
+        if (/[0-9]/.test(c)) {
           numericChars += c;
           //* If current numericChars make a valid dial code.
           if (includeAreaCode) {

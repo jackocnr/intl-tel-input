@@ -1,4 +1,4 @@
-//* Extract the numeric digits from the given string.
+//* Extract the numeric digits from the given string (\D matches any non-digit).
 export const getNumeric = (s: string): string => s.replace(/\D/g, "");
 
 //* Normalise string: turns "Réunion" into "Reunion".
