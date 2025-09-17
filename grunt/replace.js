@@ -275,10 +275,9 @@ module.exports = function(grunt) {
           }, {
             match: /\.selectedCountryInner/g,
             replacement: '.l'
-          }, {
-            match: /\.dialCodeToIso2Map/g,
-            replacement: '.q'
-          }, {
+          },
+          // NOTE: avoid dialCodeToIso2Map and dialCodeMaxLen as these are also used in country-data.ts and it breaks things
+          {
             match: /\.selectedCountryData/g,
             replacement: '.s'
           }, {
@@ -296,9 +295,6 @@ module.exports = function(grunt) {
           }, {
             match: /\.isAndroid/g,
             replacement: '.x'
-          }, {
-            match: /\.dialCodeMaxLen/g,
-            replacement: '.y'
           }, {
             match: /\.countryByIso2/g,
             replacement: '.z0'
