@@ -1617,6 +1617,7 @@ export class Iti {
       this.searchInput.removeEventListener("input", this._handleSearchChange);
       this.searchClearButton.removeEventListener("click", this._handleSearchClear);
     }
+    document.removeEventListener("keydown", this._handleKeydownOnDropdown);
     document.documentElement.removeEventListener(
       "click",
       this._handleClickOffToClose,
