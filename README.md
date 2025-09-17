@@ -305,9 +305,10 @@ intlTelInput(input, {
     multipleSearchResults: "${count} results found",
     // OPTIONAL: For more complex pluralisation cases, e.g. Polish or Arabic, you can implement your own logic, like below. In this case, you can omit the "one" and "multiple" keys above.
     searchResultsText(count) {
-      // NOTE: zero results is always handled by "zeroSearchResults" above
+      // NOTE: zero results are always handled by "zeroSearchResults" above
       if (count === 1) return "1 result found";
-      return `${count} results found`;
+      if (count < 5) return `Some ${count} results found`;
+      return `Many ${count} results found`;
     }
   }
 });
