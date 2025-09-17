@@ -102,6 +102,7 @@ export class Iti {
   private _handleSearchChange: () => void;
   private _handleSearchClear: () => void;
   private _handlePageLoad: () => void;
+  private _doAttachUtils: () => void;
 
   private resolveAutoCountryPromise: (value?: unknown) => void;
   private rejectAutoCountryPromise: (reason?: unknown) => void;
@@ -699,8 +700,7 @@ export class Iti {
 
     //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
     if (loadUtils && !intlTelInput.utils) {
-      this._handlePageLoad = () => {
-        window.removeEventListener("load", this._handlePageLoad);
+      this._doAttachUtils = () => {
         //* Catch and ignore any errors to prevent unhandled-promise failures.
         //* The error from `attachUtils()` is also surfaced in each instance's
         //* `promise` property, so it's not getting lost by being ignored here.
@@ -709,8 +709,12 @@ export class Iti {
 
       //* If the plugin is being initialised after the window.load event has already been fired.
       if (intlTelInput.documentReady()) {
-        this._handlePageLoad();
+        this._doAttachUtils();
       } else {
+        // we need to define a new handler here, as a way of tracking the listener below, so we can check for it's existence in the destroy method
+        this._handlePageLoad = (): void => {
+          this._doAttachUtils();
+        };
         //* Wait until the load event so we don't block any other requests e.g. the flags image.
         window.addEventListener("load", this._handlePageLoad);
       }
@@ -1638,11 +1642,6 @@ export class Iti {
       }
     }
 
-    //* Unhook any deferred resource loads.
-    if (this._handlePageLoad) {
-      window.removeEventListener("load", this._handlePageLoad);
-    }
-
     this._trigger("close:countrydropdown");
   }
 
@@ -1839,6 +1838,11 @@ export class Iti {
     }
     if (this._handlePasteEvent) {
       this.telInput.removeEventListener("paste", this._handlePasteEvent);
+    }
+
+    //* If we registered a window load handler for utils, ensure it's removed.
+    if (this._handlePageLoad) {
+      window.removeEventListener("load", this._handlePageLoad);
     }
 
     //* Remove attribute of id instance: data-intl-tel-input-id.
