@@ -36,15 +36,6 @@ export type NumberType =
   | "VOICEMAIL"
   | "VOIP";
 
-// Selected country data (can be empty object in "globe" state)
-export type SelectedCountryData = {
-  name?: string;
-  iso2?: Iso2;
-  dialCode?: string;
-  areaCodes?: string[];
-  nationalPrefix?: string;
-};
-
 // All configurable options
 export interface AllOptions {
   allowDropdown: boolean;

@@ -146,6 +146,7 @@ describe("strictMode option", () => {
 
     test("can type US ntl placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "us", user, input);
+      expect(checkFlagSelected(container, "us")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -155,6 +156,7 @@ describe("strictMode option", () => {
     // this was a bug - the number was never capped
     test("can type Canada ntl placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "ca", user, input);
+      expect(checkFlagSelected(container, "ca")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -163,6 +165,7 @@ describe("strictMode option", () => {
 
     test("can type UK ntl placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "gb", user, input);
+      expect(checkFlagSelected(container, "gb")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -172,6 +175,7 @@ describe("strictMode option", () => {
     // PREV BUG
     test("can type Russian ntl placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "ru", user, input);
+      expect(checkFlagSelected(container, "ru")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -217,6 +221,7 @@ describe("strictMode option", () => {
 
     test("can type US intl placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "us", user, input);
+      expect(checkFlagSelected(container, "us")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -225,6 +230,7 @@ describe("strictMode option", () => {
 
     test("can type UK intl placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "gb", user, input);
+      expect(checkFlagSelected(container, "gb")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -233,6 +239,7 @@ describe("strictMode option", () => {
 
     test("can type Russian intl placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "ru", user, input);
+      expect(checkFlagSelected(container, "ru")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -259,6 +266,7 @@ describe("strictMode option", () => {
 
     test("can type US placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "us", user, input);
+      expect(checkFlagSelected(container, "us")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -267,6 +275,7 @@ describe("strictMode option", () => {
 
     test("can type UK placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "gb", user, input);
+      expect(checkFlagSelected(container, "gb")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -275,6 +284,7 @@ describe("strictMode option", () => {
 
     test("can type Russian placeholder number and no more", async () => {
       const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, "ru", user, input);
+      expect(checkFlagSelected(container, "ru")).toBe(true);
       // try typing extra digit, which should be ignored
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars

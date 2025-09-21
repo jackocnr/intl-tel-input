@@ -23,25 +23,37 @@ export const rawCountryData = [
   [
     "af", // Afghanistan
     "93",
+    0,
+    null,
+    "0",
   ],
   [
     "ax", // Åland Islands
     "358",
     1,
+    ["18", "4"],
+    "0",
   ],
   [
     "al", // Albania
     "355",
+    0,
+    null,
+    "0",
   ],
   [
     "dz", // Algeria
     "213",
+    0,
+    null,
+    "0",
   ],
   [
     "as", // American Samoa
     "1",
     5,
     ["684"],
+    "1",
   ],
   [
     "ad", // Andorra
@@ -56,20 +68,28 @@ export const rawCountryData = [
     "1",
     6,
     ["264"],
+    "1",
   ],
   [
     "ag", // Antigua and Barbuda
     "1",
     7,
     ["268"],
+    "1",
   ],
   [
     "ar", // Argentina
     "54",
+    0,
+    null,
+    "0",
   ],
   [
     "am", // Armenia
     "374",
+    0,
+    null,
+    "0",
   ],
   [
     "aw", // Aruba
@@ -83,22 +103,29 @@ export const rawCountryData = [
     "au", // Australia
     "61",
     0,
-    null,
+    ["4"], // (mobile range shared with CX and CC)
     "0",
   ],
   [
     "at", // Austria
     "43",
+    0,
+    null,
+    "0",
   ],
   [
     "az", // Azerbaijan
     "994",
+    0,
+    null,
+    "0",
   ],
   [
     "bs", // Bahamas
     "1",
     8,
     ["242"],
+    "1",
   ],
   [
     "bh", // Bahrain
@@ -107,20 +134,30 @@ export const rawCountryData = [
   [
     "bd", // Bangladesh
     "880",
+    0,
+    null,
+    "0",
   ],
   [
     "bb", // Barbados
     "1",
     9,
     ["246"],
+    "1",
   ],
   [
     "by", // Belarus
     "375",
+    0,
+    null,
+    "8",
   ],
   [
     "be", // Belgium
     "32",
+    0,
+    null,
+    "0",
   ],
   [
     "bz", // Belize
@@ -135,6 +172,7 @@ export const rawCountryData = [
     "1",
     10,
     ["441"],
+    "1",
   ],
   [
     "bt", // Bhutan
@@ -143,10 +181,16 @@ export const rawCountryData = [
   [
     "bo", // Bolivia
     "591",
+    0,
+    null,
+    "0",
   ],
   [
     "ba", // Bosnia and Herzegovina
     "387",
+    0,
+    null,
+    "0",
   ],
   [
     "bw", // Botswana
@@ -155,6 +199,9 @@ export const rawCountryData = [
   [
     "br", // Brazil
     "55",
+    0,
+    null,
+    "0",
   ],
   [
     "io", // British Indian Ocean Territory
@@ -165,6 +212,7 @@ export const rawCountryData = [
     "1",
     11,
     ["284"],
+    "1",
   ],
   [
     "bn", // Brunei
@@ -173,6 +221,9 @@ export const rawCountryData = [
   [
     "bg", // Bulgaria
     "359",
+    0,
+    null,
+    "0",
   ],
   [
     "bf", // Burkina Faso
@@ -185,6 +236,9 @@ export const rawCountryData = [
   [
     "kh", // Cambodia
     "855",
+    0,
+    null,
+    "0",
   ],
   [
     "cm", // Cameroon
@@ -194,7 +248,8 @@ export const rawCountryData = [
     "ca", // Canada
     "1",
     1,
-    ["204", "226", "236", "249", "250", "263", "289", "306", "343", "354", "365", "367", "368", "382", "387", "403", "416", "418", "428", "431", "437", "438", "450", "584", "468", "474", "506", "514", "519", "548", "579", "581", "584", "587", "604", "613", "639", "647", "672", "683", "705", "709", "742", "753", "778", "780", "782", "807", "819", "825", "867", "873", "879", "902", "905"],
+    ["204", "226", "236", "249", "250", "257", "263", "289", "306", "343", "354", "365", "367", "368", "382", "403", "416", "418", "428", "431", "437", "438", "450", "468", "474", "506", "514", "519", "548", "579", "581", "584", "587", "604", "613", "639", "647", "672", "683", "705", "709", "742", "753", "778", "780", "782", "807", "819", "825", "867", "873", "879", "902", "905", "942"],
+    "1",
   ],
   [
     "cv", // Cape Verde
@@ -211,6 +266,7 @@ export const rawCountryData = [
     "1",
     12,
     ["345"],
+    "1",
   ],
   [
     "cf", // Central African Republic
@@ -227,24 +283,30 @@ export const rawCountryData = [
   [
     "cn", // China
     "86",
+    0,
+    null,
+    "0",
   ],
   [
     "cx", // Christmas Island
     "61",
     2,
-    ["89164"],
+    ["4", "89164"],
     "0",
   ],
   [
     "cc", // Cocos (Keeling) Islands
     "61",
     1,
-    ["89162"],
+    ["4", "89162"],
     "0",
   ],
   [
     "co", // Colombia
     "57",
+    0,
+    null,
+    "0",
   ],
   [
     "km", // Comoros
@@ -257,6 +319,9 @@ export const rawCountryData = [
   [
     "cd", // Congo (Kinshasa)
     "243",
+    0,
+    null,
+    "0",
   ],
   [
     "ck", // Cook Islands
@@ -273,10 +338,16 @@ export const rawCountryData = [
   [
     "hr", // Croatia
     "385",
+    0,
+    null,
+    "0",
   ],
   [
     "cu", // Cuba
     "53",
+    0,
+    null,
+    "0",
   ],
   [
     "cw", // Curaçao
@@ -304,20 +375,28 @@ export const rawCountryData = [
     "1",
     13,
     ["767"],
+    "1",
   ],
   [
     "do", // Dominican Republic
     "1",
     2,
     ["809", "829", "849"],
+    "1",
   ],
   [
     "ec", // Ecuador
     "593",
+    0,
+    null,
+    "0",
   ],
   [
     "eg", // Egypt
     "20",
+    0,
+    null,
+    "0",
   ],
   [
     "sv", // El Salvador
@@ -330,6 +409,9 @@ export const rawCountryData = [
   [
     "er", // Eritrea
     "291",
+    0,
+    null,
+    "0",
   ],
   [
     "ee", // Estonia
@@ -342,6 +424,9 @@ export const rawCountryData = [
   [
     "et", // Ethiopia
     "251",
+    0,
+    null,
+    "0",
   ],
   [
     "fk", // Falkland Islands (Malvinas)
@@ -359,14 +444,22 @@ export const rawCountryData = [
     "fi", // Finland
     "358",
     0,
+    ["4"], // (mobile range shared with AX)
+    "0",
   ],
   [
     "fr", // France
     "33",
+    0,
+    null,
+    "0",
   ],
   [
     "gf", // French Guiana
     "594",
+    0,
+    null,
+    "0",
   ],
   [
     "pf", // French Polynesia
@@ -383,14 +476,23 @@ export const rawCountryData = [
   [
     "ge", // Georgia
     "995",
+    0,
+    null,
+    "0",
   ],
   [
     "de", // Germany
     "49",
+    0,
+    null,
+    "0",
   ],
   [
     "gh", // Ghana
     "233",
+    0,
+    null,
+    "0",
   ],
   [
     "gi", // Gibraltar
@@ -409,17 +511,21 @@ export const rawCountryData = [
     "1",
     14,
     ["473"],
+    "1",
   ],
   [
     "gp", // Guadeloupe
     "590",
     0,
+    null,
+    "0",
   ],
   [
     "gu", // Guam
     "1",
     15,
     ["671"],
+    "1",
   ],
   [
     "gt", // Guatemala
@@ -459,6 +565,9 @@ export const rawCountryData = [
   [
     "hu", // Hungary
     "36",
+    0,
+    null,
+    "06",
   ],
   [
     "is", // Iceland
@@ -467,33 +576,51 @@ export const rawCountryData = [
   [
     "in", // India
     "91",
+    0,
+    null,
+    "0",
   ],
   [
     "id", // Indonesia
     "62",
+    0,
+    null,
+    "0",
   ],
   [
     "ir", // Iran
     "98",
+    0,
+    null,
+    "0",
   ],
   [
     "iq", // Iraq
     "964",
+    0,
+    null,
+    "0",
   ],
   [
     "ie", // Ireland
     "353",
+    0,
+    null,
+    "0",
   ],
   [
     "im", // Isle of Man
     "44",
     2,
-    ["1624", "74576", "7524", "7924", "7624"],
+    ["1624", "74576", "7524", "7624", "7924"],
     "0",
   ],
   [
     "il", // Israel
     "972",
+    0,
+    null,
+    "0",
   ],
   [
     "it", // Italy
@@ -504,11 +631,15 @@ export const rawCountryData = [
     "jm", // Jamaica
     "1",
     4,
-    ["876", "658"],
+    ["658", "876"],
+    "1",
   ],
   [
     "jp", // Japan
     "81",
+    0,
+    null,
+    "0",
   ],
   [
     "je", // Jersey
@@ -520,6 +651,9 @@ export const rawCountryData = [
   [
     "jo", // Jordan
     "962",
+    0,
+    null,
+    "0",
   ],
   [
     "kz", // Kazakhstan
@@ -531,14 +665,23 @@ export const rawCountryData = [
   [
     "ke", // Kenya
     "254",
+    0,
+    null,
+    "0",
   ],
   [
     "ki", // Kiribati
     "686",
+    0,
+    null,
+    "0",
   ],
   [
     "xk", // Kosovo
     "383",
+    0,
+    null,
+    "0",
   ],
   [
     "kw", // Kuwait
@@ -547,10 +690,16 @@ export const rawCountryData = [
   [
     "kg", // Kyrgyzstan
     "996",
+    0,
+    null,
+    "0",
   ],
   [
     "la", // Laos
     "856",
+    0,
+    null,
+    "0",
   ],
   [
     "lv", // Latvia
@@ -559,6 +708,9 @@ export const rawCountryData = [
   [
     "lb", // Lebanon
     "961",
+    0,
+    null,
+    "0",
   ],
   [
     "ls", // Lesotho
@@ -567,18 +719,30 @@ export const rawCountryData = [
   [
     "lr", // Liberia
     "231",
+    0,
+    null,
+    "0",
   ],
   [
     "ly", // Libya
     "218",
+    0,
+    null,
+    "0",
   ],
   [
     "li", // Liechtenstein
     "423",
+    0,
+    null,
+    "0",
   ],
   [
     "lt", // Lithuania
     "370",
+    0,
+    null,
+    "0",
   ],
   [
     "lu", // Luxembourg
@@ -591,14 +755,23 @@ export const rawCountryData = [
   [
     "mg", // Madagascar
     "261",
+    0,
+    null,
+    "0",
   ],
   [
     "mw", // Malawi
     "265",
+    0,
+    null,
+    "0",
   ],
   [
     "my", // Malaysia
     "60",
+    0,
+    null,
+    "0",
   ],
   [
     "mv", // Maldives
@@ -615,10 +788,16 @@ export const rawCountryData = [
   [
     "mh", // Marshall Islands
     "692",
+    0,
+    null,
+    "1",
   ],
   [
     "mq", // Martinique
     "596",
+    0,
+    null,
+    "0",
   ],
   [
     "mr", // Mauritania
@@ -646,30 +825,43 @@ export const rawCountryData = [
   [
     "md", // Moldova
     "373",
+    0,
+    null,
+    "0",
   ],
   [
     "mc", // Monaco
     "377",
+    0,
+    null,
+    "0",
   ],
   [
     "mn", // Mongolia
     "976",
+    0,
+    null,
+    "0",
   ],
   [
     "me", // Montenegro
     "382",
+    0,
+    null,
+    "0",
   ],
   [
     "ms", // Montserrat
     "1",
     16,
     ["664"],
+    "1",
   ],
   [
     "ma", // Morocco
     "212",
     0,
-    null,
+    ["6", "7"], // (mobile ranges shared with EH)
     "0",
   ],
   [
@@ -679,10 +871,16 @@ export const rawCountryData = [
   [
     "mm", // Myanmar (Burma)
     "95",
+    0,
+    null,
+    "0",
   ],
   [
     "na", // Namibia
     "264",
+    0,
+    null,
+    "0",
   ],
   [
     "nr", // Nauru
@@ -691,10 +889,16 @@ export const rawCountryData = [
   [
     "np", // Nepal
     "977",
+    0,
+    null,
+    "0",
   ],
   [
     "nl", // Netherlands
     "31",
+    0,
+    null,
+    "0",
   ],
   [
     "nc", // New Caledonia
@@ -703,6 +907,9 @@ export const rawCountryData = [
   [
     "nz", // New Zealand
     "64",
+    0,
+    null,
+    "0",
   ],
   [
     "ni", // Nicaragua
@@ -715,6 +922,9 @@ export const rawCountryData = [
   [
     "ng", // Nigeria
     "234",
+    0,
+    null,
+    "0",
   ],
   [
     "nu", // Niue
@@ -727,16 +937,23 @@ export const rawCountryData = [
   [
     "kp", // North Korea
     "850",
+    0,
+    null,
+    "0",
   ],
   [
     "mk", // North Macedonia
     "389",
+    0,
+    null,
+    "0",
   ],
   [
     "mp", // Northern Mariana Islands
     "1",
     17,
     ["670"],
+    "1",
   ],
   [
     "no", // Norway
@@ -750,6 +967,9 @@ export const rawCountryData = [
   [
     "pk", // Pakistan
     "92",
+    0,
+    null,
+    "0",
   ],
   [
     "pw", // Palau
@@ -758,6 +978,9 @@ export const rawCountryData = [
   [
     "ps", // Palestinian Territories
     "970",
+    0,
+    null,
+    "0",
   ],
   [
     "pa", // Panama
@@ -770,14 +993,23 @@ export const rawCountryData = [
   [
     "py", // Paraguay
     "595",
+    0,
+    null,
+    "0",
   ],
   [
     "pe", // Peru
     "51",
+    0,
+    null,
+    "0",
   ],
   [
     "ph", // Philippines
     "63",
+    0,
+    null,
+    "0",
   ],
   [
     "pl", // Poland
@@ -792,6 +1024,7 @@ export const rawCountryData = [
     "1",
     3,
     ["787", "939"],
+    "1",
   ],
   [
     "qa", // Qatar
@@ -807,17 +1040,23 @@ export const rawCountryData = [
   [
     "ro", // Romania
     "40",
+    0,
+    null,
+    "0",
   ],
   [
     "ru", // Russia
     "7",
     0,
-    null,
+    ["33"], // (shared with KZ)
     "8",
   ],
   [
     "rw", // Rwanda
     "250",
+    0,
+    null,
+    "0",
   ],
   [
     "ws", // Samoa
@@ -834,6 +1073,9 @@ export const rawCountryData = [
   [
     "sa", // Saudi Arabia
     "966",
+    0,
+    null,
+    "0",
   ],
   [
     "sn", // Senegal
@@ -842,6 +1084,9 @@ export const rawCountryData = [
   [
     "rs", // Serbia
     "381",
+    0,
+    null,
+    "0",
   ],
   [
     "sc", // Seychelles
@@ -850,6 +1095,9 @@ export const rawCountryData = [
   [
     "sl", // Sierra Leone
     "232",
+    0,
+    null,
+    "0",
   ],
   [
     "sg", // Singapore
@@ -860,14 +1108,21 @@ export const rawCountryData = [
     "1",
     21,
     ["721"],
+    "1",
   ],
   [
     "sk", // Slovakia
     "421",
+    0,
+    null,
+    "0",
   ],
   [
     "si", // Slovenia
     "386",
+    0,
+    null,
+    "0",
   ],
   [
     "sb", // Solomon Islands
@@ -876,18 +1131,30 @@ export const rawCountryData = [
   [
     "so", // Somalia
     "252",
+    0,
+    null,
+    "0",
   ],
   [
     "za", // South Africa
     "27",
+    0,
+    null,
+    "0",
   ],
   [
     "kr", // South Korea
     "82",
+    0,
+    null,
+    "0",
   ],
   [
     "ss", // South Sudan
     "211",
+    0,
+    null,
+    "0",
   ],
   [
     "es", // Spain
@@ -896,11 +1163,16 @@ export const rawCountryData = [
   [
     "lk", // Sri Lanka
     "94",
+    0,
+    null,
+    "0",
   ],
   [
     "bl", // St. Barthélemy
     "590",
     1,
+    null,
+    "0",
   ],
   [
     "sh", // St. Helena
@@ -911,31 +1183,42 @@ export const rawCountryData = [
     "1",
     18,
     ["869"],
+    "1",
   ],
   [
     "lc", // St. Lucia
     "1",
     19,
     ["758"],
+    "1",
   ],
   [
     "mf", // St. Martin
     "590",
     2,
+    null,
+    "0",
   ],
   [
     "pm", // St. Pierre & Miquelon
     "508",
+    0,
+    null,
+    "0",
   ],
   [
     "vc", // St. Vincent & Grenadines
     "1",
     20,
     ["784"],
+    "1",
   ],
   [
     "sd", // Sudan
     "249",
+    0,
+    null,
+    "0",
   ],
   [
     "sr", // Suriname
@@ -950,18 +1233,30 @@ export const rawCountryData = [
   [
     "se", // Sweden
     "46",
+    0,
+    null,
+    "0",
   ],
   [
     "ch", // Switzerland
     "41",
+    0,
+    null,
+    "0",
   ],
   [
     "sy", // Syria
     "963",
+    0,
+    null,
+    "0",
   ],
   [
     "tw", // Taiwan
     "886",
+    0,
+    null,
+    "0",
   ],
   [
     "tj", // Tajikistan
@@ -970,10 +1265,16 @@ export const rawCountryData = [
   [
     "tz", // Tanzania
     "255",
+    0,
+    null,
+    "0",
   ],
   [
     "th", // Thailand
     "66",
+    0,
+    null,
+    "0",
   ],
   [
     "tl", // Timor-Leste
@@ -996,6 +1297,7 @@ export const rawCountryData = [
     "1",
     22,
     ["868"],
+    "1",
   ],
   [
     "tn", // Tunisia
@@ -1004,16 +1306,23 @@ export const rawCountryData = [
   [
     "tr", // Turkey
     "90",
+    0,
+    null,
+    "0",
   ],
   [
     "tm", // Turkmenistan
     "993",
+    0,
+    null,
+    "8",
   ],
   [
     "tc", // Turks & Caicos Islands
     "1",
     23,
     ["649"],
+    "1",
   ],
   [
     "tv", // Tuvalu
@@ -1024,18 +1333,28 @@ export const rawCountryData = [
     "1",
     24,
     ["340"],
+    "1",
   ],
   [
     "ug", // Uganda
     "256",
+    0,
+    null,
+    "0",
   ],
   [
     "ua", // Ukraine
     "380",
+    0,
+    null,
+    "0",
   ],
   [
     "ae", // United Arab Emirates
     "971",
+    0,
+    null,
+    "0",
   ],
   [
     "gb", // United Kingdom
@@ -1048,10 +1367,15 @@ export const rawCountryData = [
     "us", // United States
     "1",
     0,
+    null,
+    "1",
   ],
   [
     "uy", // Uruguay
     "598",
+    0,
+    null,
+    "0",
   ],
   [
     "uz", // Uzbekistan
@@ -1070,10 +1394,16 @@ export const rawCountryData = [
   [
     "ve", // Venezuela
     "58",
+    0,
+    null,
+    "0",
   ],
   [
     "vn", // Vietnam
     "84",
+    0,
+    null,
+    "0",
   ],
   [
     "wf", // Wallis & Futuna
@@ -1083,20 +1413,29 @@ export const rawCountryData = [
     "eh", // Western Sahara
     "212",
     1,
-    ["5288", "5289"],
+    ["5288", "5289", "6", "7"],
     "0",
   ],
   [
     "ye", // Yemen
     "967",
+    0,
+    null,
+    "0",
   ],
   [
     "zm", // Zambia
     "260",
+    0,
+    null,
+    "0",
   ],
   [
     "zw", // Zimbabwe
     "263",
+    0,
+    null,
+    "0",
   ],
 ] as const;
 

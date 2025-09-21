@@ -4,7 +4,6 @@ import { defaults, applyOptionSideEffects } from "./modules/core/options";
 import type {
   UtilsLoader,
   NumberType,
-  SelectedCountryData,
   AllOptions,
   SomeOptions,
   IntlTelInputInterface,
@@ -61,7 +60,7 @@ export class Iti {
   private isRTL: boolean;
   private showSelectedCountryOnLeft: boolean;
   private isAndroid: boolean;
-  private selectedCountryData: SelectedCountryData;
+  private selectedCountryData: Partial<Country>;
   private countries: Country[];
   private dialCodeMaxLen: number;
   private dialCodeToIso2Map: Record<string, Iso2[]>;
@@ -1378,9 +1377,14 @@ export class Iti {
 
       //* Check if the right country is already selected (note: might be empty state - globe icon).
       // If the currently selected country has area codes, and they've typed more digits than the best area code match, then that means none of the area codes matched the input number, as a full area code match would have resulted in a single country match above.
-      const hasAreaCodesButNoneMatched = this.selectedCountryData.areaCodes && numeric.length > dialCodeMatchNumeric.length;
-      const alreadySelected = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
-      if (!alreadySelected) {
+      // we now sometimes list area codes on main countries (priority=0), so ignore those here
+      const isMainCountry = this.selectedCountryData.priority === 0;
+      const hasAreaCodesButNoneMatched = this.selectedCountryData.areaCodes && !isMainCountry && numeric.length > dialCodeMatchNumeric.length;
+      const isValidSelection = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
+      // extra protection: don't return isoCodes[0] if it's already selected
+      const alreadySelected = selectedIso2 === iso2Codes[0];
+
+      if (!isValidSelection && !alreadySelected) {
         return iso2Codes[0];
       }
     } else if (number.charAt(0) === "+" && numeric.length) {
@@ -1901,7 +1905,7 @@ export class Iti {
   }
 
   //* Get the country data for the currently selected country.
-  getSelectedCountryData(): SelectedCountryData {
+  getSelectedCountryData(): Partial<Country> {
     return this.selectedCountryData;
   }
 
