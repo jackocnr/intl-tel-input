@@ -80,6 +80,12 @@ export function processDialCodes(countries: Country[], options: AllOptions): Dia
     if (!dialCodes.has(c.dialCode)) {
       dialCodes.add(c.dialCode);
     }
+    // add the dial code partial matches to the map
+    for (let k = 1; k < c.dialCode.length; k++) {
+      const partialDialCode = c.dialCode.substring(0, k);
+      _addToDialCodeMap(c.iso2, partialDialCode);
+    }
+    // add the full dial code to the map
     _addToDialCodeMap(c.iso2, c.dialCode, c.priority);
   }
   // if any countries have been excluded, cleanup empty array entries in dialCodeToIso2Map due to the use of c.priority to insert at specific indexes

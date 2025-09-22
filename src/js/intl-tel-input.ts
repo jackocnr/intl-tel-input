@@ -1316,6 +1316,7 @@ export class Iti {
     return false;
   }
 
+  // if there is a selected country, and the number doesn't start with a dial code, then add it
   private _ensureHasDialCode(number: string): string {
     const { dialCode, nationalPrefix } = this.selectedCountryData;
     const alreadyHasPlus = number.charAt(0) === "+";
@@ -1340,7 +1341,7 @@ export class Iti {
     const selectedIso2 = this.selectedCountryData.iso2;
     const selectedDialCode = this.selectedCountryData.dialCode;
 
-    //* Ensure the number starts with the dial code, for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
+    //* Ensure the number starts with the dial code (if there is a selected country), for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
     number = this._ensureHasDialCode(number);
 
     //* Try and extract valid dial code (plus area code digits) from input.
@@ -1369,17 +1370,26 @@ export class Iti {
       }
 
       // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
-      const isRegionlessNanpNumber =
-        selectedDialCode === "1" && isRegionlessNanp(numeric);
+      const isRegionlessNanpNumber = selectedDialCode === "1" && isRegionlessNanp(numeric);
       if (isRegionlessNanpNumber) {
         return null;
       }
 
-      //* Check if the right country is already selected (note: might be empty state - globe icon).
-      // If the currently selected country has area codes, and they've typed more digits than the best area code match, then that means none of the area codes matched the input number, as a full area code match would have resulted in a single country match above.
-      // we now sometimes list area codes on main countries (priority=0), so ignore those here
-      const isMainCountry = this.selectedCountryData.priority === 0;
-      const hasAreaCodesButNoneMatched = this.selectedCountryData.areaCodes && !isMainCountry && numeric.length > dialCodeMatchNumeric.length;
+      // if the currently selected country has area codes and the entered number already has a full match to one of them, then don't change the country
+      const { areaCodes, priority } = this.selectedCountryData;
+      if (areaCodes) {
+        const dialCodeAreaCodes = areaCodes.map(areaCode => `${selectedDialCode}${areaCode}`);
+        for (const dialCodeAreaCode of dialCodeAreaCodes) {
+          if (numeric.startsWith(dialCodeAreaCode)) {
+            // it's a full area code match, so the right country is already selected
+            return null;
+          }
+        }
+      }
+
+      // If the currently selected country has area codes (and it's not the "main" country, which only has partial area code coverage), and they've typed more digits than the best area code match, then that means none of the area codes matched the input number, as a full area code match would have been caught above.
+      const isMainCountry = priority === 0;
+      const hasAreaCodesButNoneMatched = areaCodes && !isMainCountry && numeric.length > dialCodeMatchNumeric.length;
       const isValidSelection = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
       // extra protection: don't return isoCodes[0] if it's already selected
       const alreadySelected = selectedIso2 === iso2Codes[0];
@@ -1707,18 +1717,19 @@ export class Iti {
         //* If char is number.
         if (/[0-9]/.test(c)) {
           numericChars += c;
-          //* If current numericChars make a valid dial code.
+          const isMatch = Boolean(this.dialCodeToIso2Map[numericChars]);
+          if (!isMatch) {
+            // if no match, don't continue
+            break;
+          }
           if (includeAreaCode) {
-            if (this.dialCodeToIso2Map[numericChars]) {
-              //* Store the actual raw string (useful for matching later).
-              dialCode = number.substring(0, i + 1);
-            }
-          } else {
-            if (this.dialCodes.has(numericChars)) {
-              dialCode = number.substring(0, i + 1);
-              //* If we're just looking for a dial code, we can break as soon as we find one.
-              break;
-            }
+            //* Store the actual raw string (useful for matching later).
+            dialCode = number.substring(0, i + 1);
+          } else if (this.dialCodes.has(numericChars)) {
+            //* Current numericChars make a valid dial code, so store it and break out as we're done.
+            //* Store the actual raw string (useful for matching later).
+            dialCode = number.substring(0, i + 1);
+            break;
           }
           //* Stop searching as soon as we can - in this case when we hit max len.
           if (numericChars.length === this.dialCodeMaxLen) {

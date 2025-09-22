@@ -626,6 +626,7 @@ export const rawCountryData = [
     "it", // Italy
     "39",
     0,
+    ["3"], // (mobile range shared with VA)
   ],
   [
     "jm", // Jamaica
@@ -959,6 +960,7 @@ export const rawCountryData = [
     "no", // Norway
     "47",
     0,
+    ["4", "9"], // (mobile ranges shared with SJ)
   ],
   [
     "om", // Oman
@@ -1228,7 +1230,7 @@ export const rawCountryData = [
     "sj", // Svalbard & Jan Mayen
     "47",
     1,
-    ["79"],
+    ["4", "79", "9"], // (4 and 9 are mobile ranges shared with NO)
   ],
   [
     "se", // Sweden
@@ -1389,7 +1391,7 @@ export const rawCountryData = [
     "va", // Vatican City
     "39",
     1,
-    ["06698"],
+    ["06698", "3"], // (3 is a mobile range shared with IT)
   ],
   [
     "ve", // Venezuela

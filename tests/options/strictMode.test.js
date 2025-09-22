@@ -295,6 +295,9 @@ describe("strictMode option", () => {
 
 
 
+
+
+
 // // LONG RUNNING TESTS - RUN MANUALLY FROM TIME TO TIME
 // // NOTE: these take so long they crash travis. BUT you can run one block at a time locally.
 
@@ -322,6 +325,7 @@ describe("strictMode option", () => {
 
 //   test.each(countryCodes)("can type ntl placeholder number and no more: %s", async (iso2) => {
 //     let placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, iso2, user, input);
+//     expect(checkFlagSelected(container, iso2)).toBe(true);
 //     // try typing an extra digit, which should be ignored (in most cases - see below)
 //     await user.type(input, "1");
 
@@ -342,8 +346,12 @@ describe("strictMode option", () => {
 //   });
 // });
 
+
+
 // // NATIONAL MODE DISABLED
 // describe("strictMode, with nationalMode=false", () => {
+//   let input, iti, user, container;
+
 //   beforeEach(() => {
 //     user = userEvent.setup();
 //     const options = {
@@ -359,13 +367,18 @@ describe("strictMode option", () => {
 
 //   test.each(countryCodes)("can type intl placeholder number: %s", async (iso2) => {
 //     const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, iso2, user, input);
+//     expect(checkFlagSelected(container, iso2)).toBe(true);
 //     // sometimes AYT formatting is slightly different, so strip formatting chars
 //     expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
 //   });
 // });
 
-// // SEPARATE DIAL CODE ENABLED
+
+
+// SEPARATE DIAL CODE ENABLED
 // describe("strictMode, with separateDialCode=true", () => {
+//   let input, iti, user, container;
+
 //   beforeEach(() => {
 //     user = userEvent.setup();
 //     const options = {
@@ -381,6 +394,7 @@ describe("strictMode option", () => {
 
 //   test.each(countryCodes)("can type separateDialCode placeholder number: %s", async (iso2) => {
 //     const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, iso2, user, input);
+//     expect(checkFlagSelected(container, iso2)).toBe(true);
 //     // sometimes AYT formatting is slightly different, so strip formatting chars
 //     expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
 //   });
