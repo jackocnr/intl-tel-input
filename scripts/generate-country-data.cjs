@@ -1,3 +1,11 @@
+/**
+ * This script loads the existing country data from data.ts,
+ * then parses libphonenumber's PhoneNumberMetadata.xml to look for any updates.
+ *
+ * I decided to keep the hand-made data.ts data instead of just having it all auto-generated from the LPN metadata because LPN only stores the precise ranges that are known to be in use, whereas (1) we know that there are other ranges that have been assigned to a territory and so would make more sense belonging to that one rather than the main country, and (2) because of the high level of precision, the resulting output is massive from LPN e.g. outputting 20x 6-digit numbers for IM (isle of man), when it is clearly documented on the wiki page that they have been assigned the 5 short strings that I have included in data.ts
+ */
+
+
 /* eslint-disable no-console */
 const fs = require("fs");
 const path = require("path");
@@ -788,7 +796,8 @@ function main() {
     try { fs.mkdirSync(outDir, { recursive: true }); } catch { /* ignore */ }
     fs.writeFileSync(path.join(outDir, "rawCountryData.diff.txt"), out + "\n", "utf8");
     if (added || removed || changed) {
-      process.exitCode = 1;
+      // Exit with non-zero to signal differences (suitable for CI failure)
+      process.exit(1);
     }
   }
 
