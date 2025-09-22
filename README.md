@@ -148,20 +148,22 @@ Most bundlers (such as Webpack, Vite, or Parcel) will see this and place the [ut
   ```
 
 ## Recommended Usage
-We highly recommend you [load the included utils.js](#loading-the-utilities-script), which enables formatting and validation etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information.
+We highly recommend you [load the included utils.js](#loading-the-utilities-script), which enables formatting and validation, etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information*.
 
-You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
+You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country* and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
-If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States), and if you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address - [see example](https://intl-tel-input.com/examples/lookup-country.html).
+If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States). If you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address - [see example](https://intl-tel-input.com/examples/lookup-country.html).
 
 If you know the user's language, you can use the included translations to localise the country names (etc) - [see example](https://intl-tel-input.com/examples/localise-countries.html).
+
+_*Except for some small island territories, which share number ranges with the main country, e.g. Aland Islands (shared with Finland), and St. Barthélemy and St. Martin (shared with Guadeloupe). When displaying numbers from these island territories, it's impossible to know which territory the number is for, and so we default to the main one._
 
 ## Initialisation Options
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
 
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled we display the selected flag on the right instead because it is just a marker of state. Note that if `separateDialCode` is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled, we display the selected flag on the right instead because it is just a marker of state. Note that if `separateDialCode` is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
 
 **allowPhonewords**  
 Type: `Boolean` Default: `false`  
