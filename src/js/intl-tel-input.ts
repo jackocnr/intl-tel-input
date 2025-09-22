@@ -1929,12 +1929,22 @@ export class Iti {
     return -99;
   }
 
-  //* Validate the input val (with precise=false)
+  //* Validate the input val using number length only
   isValidNumber(): boolean | null {
+    // custom validation for UK mobile numbers - useful when validationNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
+    const { dialCode, iso2 } = this.selectedCountryData;
+    if (dialCode === "44" ) {
+      const number = this._getFullNumber();
+      const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
+      // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
+      if (coreNumber[0] === "7" && coreNumber.length !== 10) {
+        return false;
+      }
+    }
     return this._validateNumber(false);
   }
 
-  //* Validate the input val (with precise=true)
+  //* Validate the input val with precise validation
   isValidNumberPrecise(): boolean | null {
     return this._validateNumber(true);
   }
