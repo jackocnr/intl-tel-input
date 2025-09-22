@@ -156,7 +156,7 @@ If you know the user's country, you can set it with `initialCountry` (e.g. `"us"
 
 If you know the user's language, you can use the included translations to localise the country names (etc) - [see example](https://intl-tel-input.com/examples/localise-countries.html).
 
-_*Except for some small island territories, which share number ranges with the main country, including the Aland Islands (shared with Finland), St. Barthélemy and St. Martin (shared with Guadeloupe), and the Christmas and Cocos Islands (shared with Australia). When displaying numbers from these island territories, it's impossible to know which territory the number is for, so we default to the main country._
+_*Except for some small satellite territories, which share number ranges with the main country (search data.ts for "shared" for examples). When displaying numbers from those shared ranges, we default to selecting the main country._
 
 ## Initialisation Options
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
