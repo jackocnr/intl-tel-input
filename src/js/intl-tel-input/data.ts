@@ -31,7 +31,7 @@ export const rawCountryData = [
     "ax", // Åland Islands
     "358",
     1,
-    ["18", "4"],
+    ["18", "4"], // (4 is a mobile range shared with FI)
     "0",
   ],
   [
@@ -291,14 +291,14 @@ export const rawCountryData = [
     "cx", // Christmas Island
     "61",
     2,
-    ["4", "89164"],
+    ["4", "89164"], // (4 is a mobile range shared with AU and CC)
     "0",
   ],
   [
     "cc", // Cocos (Keeling) Islands
     "61",
     1,
-    ["4", "89162"],
+    ["4", "89162"], // (4 is a mobile range shared with AU and CX)
     "0",
   ],
   [
@@ -660,7 +660,7 @@ export const rawCountryData = [
     "kz", // Kazakhstan
     "7",
     1,
-    ["33", "7"],
+    ["33", "7"], // (33 is shared with RU)
     "8",
   ],
   [
@@ -1415,7 +1415,7 @@ export const rawCountryData = [
     "eh", // Western Sahara
     "212",
     1,
-    ["5288", "5289", "6", "7"],
+    ["5288", "5289", "6", "7"], // (6 and 7 are mobile ranges shared with MA)
     "0",
   ],
   [
