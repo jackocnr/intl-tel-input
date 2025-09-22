@@ -17,7 +17,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build:translations', ['translations', 'build:js']);
 
   // build utils
-  grunt.registerTask('build:utils', ['closure-compiler:utils']);
+  grunt.registerTask('build:utils', ['closure-compiler:utils', 'shell:checkLpnMetadata']);
 
   // just CSS
   grunt.registerTask('build:css', ['sass', 'cssmin']);

@@ -115,9 +115,6 @@
     "build:react": "grunt build:react",
     "build:vue": "grunt build:vue",
     "build:angular": "grunt build:angular",
-    "generate:country-data": "node scripts/generate-country-data.cjs",
-    "diff:country-data": "node scripts/diff-country-data.cjs",
-    "check:country-data": "npm run generate:country-data && npm run diff:country-data",
     "build:ci": "grunt build:ci",
     "prepublishOnly": "grunt build",
     "vue:demo": "vite --config vue/demo/validation/vite.config.js"

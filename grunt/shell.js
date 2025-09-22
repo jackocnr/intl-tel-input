@@ -35,6 +35,9 @@ module.exports = function(grunt) {
     },
     globeImages: {
       command: 'mkdir -p build/img && cp src/img/globe* build/img/'
-    }
+    },
+    checkLpnMetadata: {
+      command: 'node scripts/check-lpn-metadata.cjs'
+    },
   };
 };
