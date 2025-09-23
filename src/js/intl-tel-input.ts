@@ -1933,7 +1933,7 @@ export class Iti {
   isValidNumber(): boolean | null {
     // custom validation for UK mobile numbers - useful when validationNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
     const { dialCode, iso2 } = this.selectedCountryData;
-    if (dialCode === "44" ) {
+    if (dialCode === "44" && intlTelInput.utils) {
       const number = this._getFullNumber();
       const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
       // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
@@ -1957,6 +1957,9 @@ export class Iti {
 
   //* Shared internal validation logic to handle alpha character extension rules.
   private _validateNumber(precise: boolean): boolean | null {
+    if (!intlTelInput.utils) {
+      return null;
+    }
     if (!this.selectedCountryData.iso2) {
       return false;
     }
