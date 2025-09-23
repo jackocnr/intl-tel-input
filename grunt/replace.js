@@ -290,9 +290,6 @@ module.exports = function(grunt) {
             match: /\.isRTL/g,
             replacement: '.v'
           }, {
-            match: /\.showSelectedCountryOnLeft/g,
-            replacement: '.w'
-          }, {
             match: /\.isAndroid/g,
             replacement: '.x'
           }, {
@@ -322,9 +319,6 @@ module.exports = function(grunt) {
           }, {
             match: /\.maxCoreNumberLength/g,
             replacement: '.n0'
-          }, {
-            match: /\.originalPaddingRight/g,
-            replacement: '.n1'
           }, {
             match: /\.originalPaddingLeft/g,
             replacement: '.n2'

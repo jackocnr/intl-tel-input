@@ -58,7 +58,6 @@ export class Iti {
   private options: AllOptions;
   private hadInitialPlaceholder: boolean;
   private isRTL: boolean;
-  private showSelectedCountryOnLeft: boolean;
   private isAndroid: boolean;
   private selectedCountryData: Partial<Country>;
   private countries: Country[];
@@ -83,7 +82,6 @@ export class Iti {
   private hiddenInputCountry: HTMLInputElement;
   private maxCoreNumberLength: number | null;
   private defaultCountry: Iso2;
-  private originalPaddingRight: string;
   private originalPaddingLeft: string;
 
   private _handleHiddenInputSubmit: () => void;
@@ -132,19 +130,10 @@ export class Iti {
 
     //* Check if input has an ancestor with RTL.
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
-    // force the input direction to LTR as numbers are always written LTR, even in RTL languages
-    this.telInput.dir = "ltr";
-
-    const showOnDefaultSide = this.options.allowDropdown || this.options.separateDialCode;
-    this.showSelectedCountryOnLeft = this.isRTL ? !showOnDefaultSide : showOnDefaultSide;
 
     //* Store original styling before we override it.
     if (this.options.separateDialCode) {
-      if (this.isRTL) {
-        this.originalPaddingRight = this.telInput.style.paddingRight;
-      } else {
-        this.originalPaddingLeft = this.telInput.style.paddingLeft;
-      }
+      this.originalPaddingLeft = this.telInput.style.paddingLeft;
     }
   }
 
@@ -260,6 +249,10 @@ export class Iti {
       [containerClass]: Boolean(containerClass),
     });
     const wrapper = createEl("div", { class: parentClasses });
+    // if the page is RTL, then add dir=LTR to the wrapper as numbers are still written LTR, which means we also need to display any separate dial code to the left as well (but we then make the dropdown content RTL)
+    if (this.isRTL) {
+      wrapper.setAttribute("dir", "ltr");
+    }
     this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
     return wrapper;
   }
@@ -279,11 +272,6 @@ export class Iti {
         { class: "iti__country-container iti__v-hide" },
         wrapper,
       );
-      if (this.showSelectedCountryOnLeft) {
-        this.countryContainer.style.left = "0px";
-      } else {
-        this.countryContainer.style.right = "0px";
-      }
 
       //* Selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
       //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
@@ -337,7 +325,7 @@ export class Iti {
       if (separateDialCode) {
         this.selectedDialCode = createEl(
           "div",
-          { class: "iti__selected-dial-code", dir: "ltr" },
+          { class: "iti__selected-dial-code" },
           this.selectedCountry,
         );
       }
@@ -365,6 +353,9 @@ export class Iti {
       role: "dialog",
       "aria-modal": "true",
     });
+    if (this.isRTL) {
+      this.dropdownContent.setAttribute("dir", "rtl");
+    }
 
     if (countrySearch) {
       this._buildSearchUI();
@@ -1489,11 +1480,7 @@ export class Iti {
       //* offsetWidth is zero if input is in a hidden container during initialisation.
       const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth() || saneDefaultWidth;
       const inputPadding = selectedCountryWidth + 6;
-      if (this.showSelectedCountryOnLeft) {
-        this.telInput.style.paddingLeft = `${inputPadding}px`;
-      } else {
-        this.telInput.style.paddingRight = `${inputPadding}px`;
-      }
+      this.telInput.style.paddingLeft = `${inputPadding}px`;
     }
   }
 
@@ -1865,11 +1852,7 @@ export class Iti {
 
     //* Restore original styling
     if (separateDialCode) {
-      if (this.isRTL) {
-        this.telInput.style.paddingRight = this.originalPaddingRight;
-      } else {
-        this.telInput.style.paddingLeft = this.originalPaddingLeft;
-      }
+      this.telInput.style.paddingLeft = this.originalPaddingLeft;
     }
 
     //* Remove markup (but leave the original input).

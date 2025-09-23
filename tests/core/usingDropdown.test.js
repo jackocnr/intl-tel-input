@@ -13,6 +13,7 @@ const {
   selectCountryAsync,
   checkFlagSelected,
   injectInput,
+  getDropdownElement,
 } = require("../helpers/helpers");
 
 describe("using dropdown", () => {
@@ -27,10 +28,10 @@ describe("using dropdown", () => {
     teardown(iti);
   });
 
-  test("shows selected flag on left by default", () => {
-    const countryContainer = container.querySelector(".iti__country-container");
-    expect(countryContainer.style.left).toEqual("0px");
-    expect(countryContainer.style.right).toEqual("");
+  test("does not add dir attributes by default", () => {
+    expect(container.getAttribute("dir")).toBe(null);
+    const dropdownContent = getDropdownElement(container);
+    expect(dropdownContent.getAttribute("dir")).toBe(null);
   });
 
   describe("with rtl context", () => {
@@ -47,10 +48,10 @@ describe("using dropdown", () => {
       container.ownerDocument.documentElement.dir = originalDir;
     });
 
-    test("shows selected flag on right", () => {
-      const countryContainer = container.querySelector(".iti__country-container");
-      expect(countryContainer.style.left).toEqual("");
-      expect(countryContainer.style.right).toEqual("0px");
+    test("does add dir attributes by default", () => {
+      expect(container.getAttribute("dir")).toBe("ltr");
+      const dropdownContent = getDropdownElement(container);
+      expect(dropdownContent.getAttribute("dir")).toBe("rtl");
     });
   });
 

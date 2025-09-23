@@ -65,10 +65,6 @@
 
     //* Since we wrap the input in a container div, any margin here would interfere with the positioning of the selected country.
     margin: 0 !important;
-
-    [dir="rtl"] & {
-      text-align: right;
-    }
   }
 
   &__country-container {
@@ -77,6 +73,7 @@
     //* Full height.
     top: 0;
     bottom: 0;
+    left: 0;
     //* Prevent the highlighted child from overlapping the input border.
     padding: var(--iti-border-width);
   }
@@ -122,11 +119,6 @@
     border-left: var(--iti-triangle-border) solid transparent;
     border-right: var(--iti-triangle-border) solid transparent;
     border-top: var(--iti-arrow-height) solid var(--iti-arrow-color);
-
-    [dir="rtl"] & {
-      margin-right: var(--iti-arrow-padding);
-      margin-left: 0;
-    }
 
     &--up {
       border-top: none;
@@ -303,11 +295,6 @@
 
   .iti__selected-dial-code {
     margin-left: 4px;
-
-    [dir="rtl"] & {
-      margin-left: 0;
-      margin-right: 4px;
-    }
   }
 
   //* If dropdownContainer option is set, increase z-index to prevent display issues.
