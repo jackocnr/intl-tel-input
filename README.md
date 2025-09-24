@@ -660,7 +660,7 @@ If your error handling code inserts an error message before the `<input>`, it wi
 The dropdown should automatically appear above/below the input depending on the available space. For this to work properly, you must only initialise the plugin after the `<input>` has been added to the DOM.
 
 **Placeholders**  
-To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set `autoPlaceholder` to `"aggressive"` to override any existing placeholder.
+To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set `autoPlaceholder` to `"aggressive"` to override any existing placeholder. Note: this requires the utils script to be loaded.
 
 **Bootstrap input groups**  
 A couple of CSS fixes are required to get the plugin to play nice with Bootstrap [input groups](https://getbootstrap.com/docs/3.3/components/#input-groups). You can see a Codepen [here](https://codepen.io/jackocnr/pen/EyPXed).  
