@@ -1,16 +1,20 @@
 # International Telephone Input [![CI](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vue-icon.png" alt="Vue logo" width="16px" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/vue">Vue component</a>!
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vue-icon.png" alt="Vue logo" width="16" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/vue">Vue component</a>!
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.webp" alt="React logo" width="16px" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/react">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla">Storybook</a>. 
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.webp" alt="React logo" width="16" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/react">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla">Storybook</a>. 
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/angular.png" alt="Angular logo" width="16px" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/angular">Angular component</a>!
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/angular.png" alt="Angular logo" width="16" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/angular">Angular component</a>!
 
 🗣️ NEWS: we now provide [translations](#translations) in over 30 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React, Vue and Angular components are also included.
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla3.png" alt="Screenshot" width="263px" height="269px" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-light.png">
+  <img width="263" height="269" alt="Plugin screenshot showing country dropdown open" src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-light.png">
+</picture>
   
 If you find the plugin helpful, please consider [supporting the project](https://github.com/sponsors/jackocnr).
 
@@ -49,7 +53,7 @@ You can view [a live demo](https://intl-tel-input.com) and see some examples of 
 ## Mobile
 By default, on mobile devices, we show a fullscreen popup instead of the inline dropdown to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area on the sides. [See example](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile2.png" alt="Mobile screenshot" width="270px" height="512px" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile2.png" alt="Mobile screenshot" width="270" height="512" />
 
 ## Features
 * Automatically select the user's current country using an IP lookup
@@ -368,7 +372,7 @@ Type: `Boolean` Default: `false`
 Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the new dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).  
 __Note: if the user enters their number with autofill or by copying and pasting it, and their number includes the international dial code, then this will be shown twice__
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267px" height="51px" alt="Separate Dial Code">
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267" height="51" alt="Separate Dial Code">
 
 **strictMode**  
 Type: `Boolean` Default: `false`  
@@ -576,7 +580,7 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 ```
 
 Example:  
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/dark-mode2.png" alt="Screenshot" width="264px" height="272px" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png" alt="Screenshot" width="263" height="269" />
 
 ## Translations
 We provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input) in over 30 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
