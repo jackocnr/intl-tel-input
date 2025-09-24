@@ -10,6 +10,7 @@ import type {
 } from "./modules/types/public-api";
 import { getNumeric, normaliseString } from "./modules/utils/string";
 import { createEl } from "./modules/utils/dom";
+import { buildClassNames } from "./modules/utils/dom";
 import {
   processAllCountries,
   processDialCodes,
@@ -105,14 +106,6 @@ export class Iti {
   private rejectAutoCountryPromise: (reason?: unknown) => void;
   private resolveUtilsScriptPromise: (value?: unknown) => void;
   private rejectUtilsScriptPromise: (reason?: unknown) => void;
-
-  /**
-   * Build a space-delimited class string from an object map of className -> truthy/falsey.
-   * Only keys with truthy values are included.
-   */
-  private static _buildClassNames(flags: Record<string, unknown>): string {
-    return Object.keys(flags).filter((k) => Boolean(flags[k])).join(" ");
-  }
 
   constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
@@ -241,7 +234,7 @@ export class Iti {
     } = this.options;
 
     //* Containers (mostly for positioning).
-    const parentClasses = Iti._buildClassNames({
+    const parentClasses = buildClassNames({
       "iti": true,
       "iti--allow-dropdown": allowDropdown,
       "iti--show-flags": showFlags,
@@ -379,7 +372,7 @@ export class Iti {
 
     //* Create dropdownContainer markup.
     if (dropdownContainer) {
-      const dropdownClasses = Iti._buildClassNames({
+      const dropdownClasses = buildClassNames({
         "iti": true,
         "iti--container": true,
         "iti--fullscreen-popup": useFullscreenPopup,
