@@ -47,7 +47,7 @@ We now provide React, Vue and Angular components alongside the regular JavaScrip
 You can view [a live demo](https://intl-tel-input.com) and see some examples of how to use the various options. Alternatively, try it for yourself by downloading the project and opening demo.html in a browser.
 
 ## Mobile
-By default, on mobile devices we show a fullscreen popup instead of the inline dropdown, to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area at the sides. [See example](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
+By default, on mobile devices, we show a fullscreen popup instead of the inline dropdown to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area on the sides. [See example](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile2.png" alt="Mobile screenshot" width="270px" height="512px" />
 
@@ -56,14 +56,14 @@ By default, on mobile devices we show a fullscreen popup instead of the inline d
 * Automatically set the input placeholder to an example number for the selected country
 * Navigate the country dropdown by typing a country's name, or using the up/down keys
 * Automatically format the number as the user types
-* Optionally only allow numeric characters and cap the number at the maximum valid length
-* The user types their national number and the plugin gives you the full standardised international number
+* Optionally, only allow numeric characters and cap the number at the maximum valid length
+* The user types their national number, and the plugin gives you the full standardised international number
 * Number validation, including specific error types
 * High-resolution flag images
 * Accessibility provided via ARIA tags
 * Typescript type definitions included
 * Easily customise styles by overriding CSS variables
-* React, Vue and Angular components also included
+* React, Vue, and Angular components also included
 * Translations for country names (etc) provided in many different languages
 * Lots of initialisation options for customisation, as well as instance methods/events for interaction
 
@@ -91,7 +91,7 @@ _Note: We have now dropped support for all versions of Internet Explorer because
   </script>
   ```
 
-## Getting Started (Using a bundler e.g. Webpack)
+## Getting Started (Using a bundler, e.g. Webpack)
 1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
 
 2. Import the CSS: `import 'intl-tel-input/build/css/intlTelInput.css';`
@@ -163,11 +163,11 @@ When you initialise the plugin, the first argument is the input element, and the
 
 **allowDropdown**  
 Type: `Boolean` Default: `true`  
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled, we display the selected flag on the right instead because it is just a marker of state. Note that if `separateDialCode` is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if `separateDialCode` is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
 
 **allowPhonewords**  
 Type: `Boolean` Default: `false`  
-Whether or not the validation methods return `true` for numbers containing phonewords e.g. "+1 702 FLOWERS".
+Whether or not the validation methods return `true` for numbers containing phonewords, e.g. "+1 702 FLOWERS".
 
 **autoPlaceholder**  
 Type: `String` Default: `"polite"`  
@@ -179,7 +179,7 @@ Additional classes to add to the (injected) wrapper `<div>`.
 
 **countryOrder**  
 Type: `Array` Default: `null`  
-Specify the ordering for the country list with an array of iso2 country codes. Any omitted countries will appear after those specified, in alphabetical order e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria etc...
+Specify the ordering for the country list with an array of iso2 country codes. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria etc...
 
 **countrySearch**  
 Type: `Boolean` Default: `true`  
@@ -197,7 +197,7 @@ intlTelInput(input, {
 
 **dropdownContainer**  
 Type: `Node` Default: `null`  
-Expects a node e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. Note that the positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event.
+Expects a node, e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. Note that the positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event.
 
 **excludeCountries**  
 Type: `Array` Default: `[]`  
@@ -235,7 +235,7 @@ _Note that the `failure` callback must be called in the event of an error, hence
 
 **hiddenInput**  
 Type: `Function` Default: `null`  
-Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country code. It accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and country code, respectively. This is useful for non-Ajax form submissions to ensure the full international number and country code are captured, especially when `nationalMode` is enabled.
+Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country code. It accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and country code, respectively. This is useful for old-fashioned, page-load form submissions to ensure the full international number and country code are captured, especially when `nationalMode` is enabled.
 
 ***Note**: This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses `getNumber` internally, firstly it requires the [utils script to be loaded](#loading-the-utilities-script), and secondly, it expects a valid number and so will only work correctly if you have used `isValidNumber` to validate the number before allowing the form submit to go through.
 
@@ -318,12 +318,12 @@ intlTelInput(input, {
 
 **initialCountry**  
 Type: `String` Default: `""`  
-Set the initial country selection by specifying its country code e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note that however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
+Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
 
 **loadUtils**  
 Type: `() => Promise<module>` Default: `null` Example: `() => import("/path/to/utils.js")`
 
-This is one way to lazy load the included utils.js (to enable formatting/validation etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options.
+This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options.
 
 The `loadUtils` option takes a function which returns a Promise which resolves to the utils module. You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
 
@@ -338,7 +338,7 @@ intlTelInput(htmlInputElement, {
   loadUtils: () => import("https://my-domain.com/path/to/utils.js"),
 });
 
-// (C) if your bundler supports it, you can import utils module directly from the package
+// (C) if your bundler supports it, you can import the utils module directly from the package
 intlTelInput(htmlInputElement, {
   loadUtils: () => import("intl-tel-input/utils"),
 });
@@ -346,11 +346,11 @@ intlTelInput(htmlInputElement, {
 
 The module is only loaded when you initialise the plugin, and additionally, only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](#utilities-script) for more information.
 
-If you want more control over when this file is lazy loaded, you can manually invoke the `attachUtils` static method whenever you like, instead of using the `loadUtils` initialisation option.
+If you want more control over when this file is lazy-loaded, you can manually invoke the `attachUtils` static method whenever you like, instead of using the `loadUtils` initialisation option.
 
 **nationalMode**  
 Type: `Boolean` Default: `true`  
-Format numbers in the national format, rather than the international format. This applies to placeholder numbers, and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use `getNumber` to extract a full international number - [see example](https://intl-tel-input.com/examples/national-mode.html). It is recommended to leave this option enabled, to encourage users to enter their numbers in national format as this is usually more familiar to them and so it creates a better user experience.
+Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use `getNumber` to extract a full international number - [see example](https://intl-tel-input.com/examples/national-mode.html). It is recommended to leave this option enabled to encourage users to enter their numbers in national format, as this is usually more familiar to them, and so it creates a better user experience.
 
 **onlyCountries**  
 Type: `Array` Default: `[]`  
@@ -362,11 +362,11 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 
 **showFlags**  
 Type: `Boolean` Default: `true`  
-Set this to false to hide the flags e.g. for political reasons. Instead, it will show a generic globe icon. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showflags) (using the React component).
+Set this to false to hide the flags, e.g. for political reasons. Instead, it will show a generic globe icon. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--showflags) (using the React component).
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
-Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the new dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).  
+Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the new dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).  
 __Note: if the user enters their number with autofill or by copying and pasting it, and their number includes the international dial code, then this will be shown twice__
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267px" height="51px" alt="Separate Dial Code">
@@ -384,7 +384,7 @@ Type: `String[]` Default: `["MOBILE"]`
 Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE"]` so `isValidNumber` will only return `true` for mobile numbers. Alternatively, you could set it to, for example, `["TOLL_FREE", "PREMIUM_RATE"]` to get `isValidNumber` to return `true` for only those kinds of numbers.
 
 ## Instance Methods
-In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin e.g.
+In these examples, `iti` refers to the plugin instance which gets returned when you initialise the plugin, e.g.
 ```js
 const iti = intlTelInput(input);
 ```
@@ -400,7 +400,7 @@ Get the extension from the current number. Requires the [utils script to be load
 ```js
 const extension = iti.getExtension();
 ```
-Returns a string e.g. if the input value was `"(702) 555-5555 ext. 1234"`, this would return `"1234"`
+Returns a string, e.g. if the input value was `"(702) 555-5555 ext. 1234"`, this would return `"1234"`
 
 **getNumber**  
 Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum `intlTelInput.utils.numberFormat` - which you can see [here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L153). Requires the [utils script to be loaded](#loading-the-utilities-script). _Note that even if `nationalMode` is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
@@ -412,17 +412,17 @@ const number = iti.getNumber(intlTelInput.utils.numberFormat.E164);
 Returns a string e.g. `"+17024181234"`
 
 **getNumberType**  
-Get the type (fixed-line/mobile/toll-free etc) of the current number. Requires the [utils script to be loaded](#loading-the-utilities-script).  
+Get the type (fixed-line/mobile/toll-free, etc) of the current number. Requires the [utils script to be loaded](#loading-the-utilities-script).  
 ```js
 const numberType = iti.getNumberType();
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) in the enum `intlTelInput.utils.numberType` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) in the enum `intlTelInput.utils.numberType`, e.g.  
 ```js
 if (numberType === intlTelInput.utils.numberType.MOBILE) {
     // is a mobile number
 }
 ```
-_Note that in the US there's no way to differentiate between fixed-line and mobile numbers, so instead it will return `FIXED_LINE_OR_MOBILE`._
+_Note that in the US, there's no way to differentiate between fixed-line and mobile numbers, so instead it will return `FIXED_LINE_OR_MOBILE`._
 
 **getSelectedCountryData**  
 Get the country data for the currently selected country.  
@@ -443,7 +443,7 @@ Get more information about a validation error. Requires the [utils script to be 
 ```js
 const error = iti.getValidationError();
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L178) in the enum `intlTelInput.utils.validationError` e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L178) in the enum `intlTelInput.utils.validationError`, e.g.  
 ```js
 if (error === intlTelInput.utils.validationError.TOO_SHORT) {
     // the number is too short
@@ -460,14 +460,14 @@ Returns: `true`/`false`
 
 **isValidNumberPrecise** ⚠️ DANGEROUS  
 (Note: only returns `true` for valid <ins>mobile numbers</ins> by default - see `validationNumberTypes`)  
-Check if the current number is valid using precise matching rules for each country/area code etc - [see example](https://intl-tel-input.com/examples/validation.html). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else <ins>you will start rejecting valid numbers</ins>. For a simpler and more future-proof form of validation, see `isValidNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the [utils script to be loaded](#loading-the-utilities-script).  
+Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](https://intl-tel-input.com/examples/validation.html). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else <ins>you will start rejecting valid numbers</ins>. For a simpler and more future-proof form of validation, see `isValidNumber` above. If validation fails, you can use `getValidationError` to get more information. Requires the [utils script to be loaded](#loading-the-utilities-script).  
 ```js
 const isValid = iti.isValidNumberPrecise();
 ```
 Returns: `true`/`false`
 
 **setCountry**  
-Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling `setNumber` and passing a number including an international dial code, which is the recommended usage. Note you can omit the country code argument to set the country to the default empty (globe) state. _Note that if `formatOnDisplay` is enabled, this will attempt to format the number to either national or international format according to the `nationalMode` option._  
+Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling `setNumber` and passing a number including an international dial code, which is the recommended usage. Note, you can omit the country code argument to set the country to the default empty (globe) state. _Note that if `formatOnDisplay` is enabled, this will attempt to format the number to either national or international format according to the `nationalMode` option._  
 ```js
 iti.setCountry("gb");
 ```
@@ -493,7 +493,7 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 ## Static Methods
 
 **getCountryData**  
-Retrieve the plugin's country data - either to re-use elsewhere e.g. to generate your own country dropdown - [see example](https://intl-tel-input.com/examples/country-sync.html), or alternatively, you could use it to modify the country data. Note that any modifications must be done before initialising the plugin.  
+Retrieve the plugin's country data - either to re-use elsewhere, e.g. to generate your own country dropdown - [see example](https://intl-tel-input.com/examples/country-sync.html), or alternatively, you could use it to modify the country data. Note that any modifications must be done before initialising the plugin.  
 ```js
 const countryData = intlTelInput.getCountryData();
 ```
@@ -525,7 +525,7 @@ intlTelInput.attachUtils(loadUtils);
 You can listen for the following events triggered on the input element.
 
 **countrychange**  
-This is triggered when the selected country is updated e.g. if the user selects a country from the dropdown, or they type a different dial code into the input, or you call `setCountry` etc.
+This is triggered when the selected country is updated, e.g. if the user selects a country from the dropdown, or they type a different dial code into the input, or you call `setCountry` etc.
 ```js
 input.addEventListener("countrychange", () => {
   // do something with iti.getSelectedCountryData()
@@ -542,7 +542,7 @@ This is triggered when the user closes the dropdown.
 ## Theming / Dark Mode
 There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for the full list.
 
-As for the empty state (globe icon), the default version is dark grey, and we also provide a "light" version, that should work better with a dark theme. Alternatively, it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. We recommend you download it in the highest resolution possible, and then scale the image down to the required sizes (20px wide for the default version and 40px wide for the @2x version).
+As for the empty state (globe icon), the default version is dark grey, and we also provide a "light" version that should work better with a dark theme. Alternatively, it's easy to [re-generate the globe icon](https://free-icon-rainbow.com/international-call-free-icon) in whatever colour you need for your theme. We recommend you download it in the highest resolution possible, and then scale the image down to the required sizes (20px wide for the default version and 40px wide for the @2x version).
 
 Dark mode example (with screenshot below):
 ```css
@@ -559,7 +559,7 @@ Dark mode example (with screenshot below):
 }
 ```
 
-NOTE: this assumes you already have your own dark mode styling in place for general body/input styling e.g. something like this:
+NOTE: this assumes you already have your own dark mode styling in place for general body/input styling, e.g. something like this:
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -601,7 +601,7 @@ To recompile the utils script yourself (e.g. to update the version of libphonenu
 ## Loading The Utilities Script 
 See [v25 discussion](https://github.com/jackocnr/intl-tel-input/discussions/1842).  
 
-The utils script provides lots of great functionality (see above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
+The utils script provides lots of great functionality (see the above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
 
 **Option 1: intlTelInputWithUtils**  
 If you're not concerned about filesize (e.g. you're lazy loading this script), the easiest thing to do is to just use the full bundle (`/build/js/intlTelInputWithUtils.js`), which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
@@ -609,7 +609,7 @@ If you're not concerned about filesize (e.g. you're lazy loading this script), t
 **Option 2: loadUtils**  
 If you *are* concerned about filesize, you can lazy load the utils module when the plugin initialises, using the `loadUtils` initialisation option.
 
-The `loadUtils` option takes a function which returns a Promise which resolves to the utils module. You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
+The `loadUtils` option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (shown below): (A) from a CDN, (B) from your own hosted version of [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
 
 ```js
 // (A) import utils module from a CDN
@@ -619,28 +619,28 @@ intlTelInput(htmlInputElement, {
 
 // (B) import utils module from your own hosted version of utils.js
 intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://my-domain.com/path/to/utils.js"),
+  loadUtils: () => import("/path/to/utils.js"),
 });
 
-// (C) if your bundler supports it, you can import utils module directly from the package
+// (C) if your bundler supports it, you can import the utils module directly from the package
 intlTelInput(htmlInputElement, {
   loadUtils: () => import("intl-tel-input/utils"),
 });
 ```
 
-If you want more control over when this file is lazy loaded, you can manually invoke the `attachUtils` static method whenever you like, instead of using the `loadUtils` initialisation option.
+If you want more control over when this file is lazy-loaded, you can manually invoke the `attachUtils` static method whenever you like, instead of using the `loadUtils` initialisation option.
 
 ## Troubleshooting
 
 **Full-width input**  
-If you want your input to be full-width, you need to set the container to be the same i.e.
+If you want your input to be full-width, you need to set the container to be the same, i.e.
 
 ```css
 .iti { width: 100%; }
 ```
 
 **dropdownContainer: dropdown not closing on scroll**  
-If you have a scrolling container other than `window` which is causing problems by not closing the dropdown on scroll, simply listen for the scroll event on that element, and trigger a scroll event on `window`, which in turn will close the dropdown e.g.
+If you have a scrolling container other than `window` which is causing problems by not closing the dropdown on scroll, simply listen for the scroll event on that element, and trigger a scroll event on `window`, which in turn will close the dropdown, e.g.
 
 ```js
 scrollingElement.addEventListener("scroll", () => {
@@ -651,16 +651,16 @@ scrollingElement.addEventListener("scroll", () => {
 ```
 
 **Input margin**  
-For the sake of alignment, the default CSS forces the input's vertical margin to `0px`. If you want vertical margin, you should add it to the container (with class `iti`).
+For the sake of alignment, the default CSS forces the input's vertical margin to `0px`. If you want a vertical margin, you should add it to the container (with class `iti`).
 
 **Displaying error messages**  
-If your error handling code inserts an error message before the `<input>` it will break the layout. Instead, you must insert it before the container (with class `iti`).
+If your error handling code inserts an error message before the `<input>`, it will break the layout. Instead, you must insert it before the container (with class `iti`).
 
 **Dropdown position**  
 The dropdown should automatically appear above/below the input depending on the available space. For this to work properly, you must only initialise the plugin after the `<input>` has been added to the DOM.
 
 **Placeholders**  
-To get the automatic country-specific placeholders, simply omit the placeholder attribute on the `<input>`, or set `autoPlaceholder` to `"aggressive"` to override any existing placeholder,
+To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set `autoPlaceholder` to `"aggressive"` to override any existing placeholder.
 
 **Bootstrap input groups**  
 A couple of CSS fixes are required to get the plugin to play nice with Bootstrap [input groups](https://getbootstrap.com/docs/3.3/components/#input-groups). You can see a Codepen [here](https://codepen.io/jackocnr/pen/EyPXed).  
