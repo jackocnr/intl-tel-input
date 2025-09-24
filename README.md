@@ -10,7 +10,7 @@
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React, Vue and Angular components are also included.
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla2.png" alt="Screenshot" width="265px" height="273px" />
+<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla3.png" alt="Screenshot" width="263px" height="269px" />
   
 If you find the plugin helpful, please consider [supporting the project](https://github.com/sponsors/jackocnr).
 
