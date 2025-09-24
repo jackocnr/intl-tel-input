@@ -321,8 +321,7 @@ Type: `String` Default: `""`
 Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](https://intl-tel-input.com/examples/lookup-country.html)). Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
 
 **loadUtils**  
-Type: `() => Promise<module>` Default: `null` Example: `() => import("/path/to/utils.js")`
-
+Type: `() => Promise<module>` Default: `null`  
 This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options.
 
 The `loadUtils` option takes a function which returns a Promise which resolves to the utils module. You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
