@@ -334,7 +334,7 @@ intlTelInput(htmlInputElement, {
 
 // (B) import utils module from your own hosted version of utils.js
 intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://my-domain.com/path/to/utils.js"),
+  loadUtils: () => import("/path/to/utils.js"),
 });
 
 // (C) if your bundler supports it, you can import the utils module directly from the package
