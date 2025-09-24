@@ -201,7 +201,7 @@ Expects a node e.g. `document.body`. Instead of putting the country dropdown mar
 
 **excludeCountries**  
 Type: `Array` Default: `[]`  
-In the dropdown, display all countries except the ones you specify here. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--excludecountries) (using the React component).
+In the dropdown, display all countries except the ones you specify here. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--excludecountries) (using the React component). Also see: `onlyCountries` option.
 
 **fixDropdownWidth**  
 Type: `Boolean` Default: `true`  
@@ -354,7 +354,7 @@ Format numbers in the national format, rather than the international format. Thi
 
 **onlyCountries**  
 Type: `Array` Default: `[]`  
-In the dropdown, display only the countries you specify - [see example](https://intl-tel-input.com/examples/only-countries.html).
+In the dropdown, display only the countries you specify - [see example](https://intl-tel-input.com/examples/only-countries.html). Also see: `excludeCountries` option.
 
 **placeholderNumberType**  
 Type: `String` Default: `"MOBILE"`  
