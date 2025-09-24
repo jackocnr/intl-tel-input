@@ -249,7 +249,7 @@ export class Iti {
       [containerClass]: Boolean(containerClass),
     });
     const wrapper = createEl("div", { class: parentClasses });
-    // if the page is RTL, then add dir=LTR to the wrapper as numbers are still written LTR, which means we also need to display any separate dial code to the left as well (but we then make the dropdown content RTL)
+    // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the dropdown content RTL)
     if (this.isRTL) {
       wrapper.setAttribute("dir", "ltr");
     }
@@ -550,7 +550,9 @@ export class Iti {
       }
       //* And the country name and dial code.
       content += `<span class='iti__country-name'>${c.name}</span>`;
-      content += `<span class='iti__dial-code' dir='ltr'>+${c.dialCode}</span>`;
+      // dial codes should always be LTR
+      const extraAttribute = this.isRTL ? " dir='ltr'" : "";
+      content += `<span class='iti__dial-code'${extraAttribute}>+${c.dialCode}</span>`;
 
       listItem.insertAdjacentHTML("beforeend", content);
     }
