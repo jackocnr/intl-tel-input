@@ -214,7 +214,7 @@ export class Iti {
     //* autocompleted number, which on submit could mean wrong number is saved.
     if (
       !this.telInput.hasAttribute("autocomplete") &&
-      !(this.telInput.form && this.telInput.form.hasAttribute("autocomplete"))
+      !(this.telInput.form?.hasAttribute("autocomplete"))
     ) {
       this.telInput.setAttribute("autocomplete", "off");
     }
@@ -241,7 +241,7 @@ export class Iti {
     if (this.isRTL) {
       wrapper.setAttribute("dir", "ltr");
     }
-    this.telInput.parentNode?.insertBefore(wrapper, this.telInput);
+    this.telInput.before(wrapper);
     return wrapper;
   }
 
@@ -936,8 +936,8 @@ export class Iti {
 
   //* Adhere to the input's maxlength attr.
   private _cap(number: string): string {
-    const max = parseInt(this.telInput.getAttribute("maxlength") || "", 10);
-  return max && number.length > max ? number.substring(0, max) : number;
+    const max = Number(this.telInput.maxLength);
+    return max && number.length > max ? number.substring(0, max) : number;
   }
 
   //* Trigger a custom event on the input (typed via ItiEventMap).
@@ -1629,9 +1629,7 @@ export class Iti {
       if (!this.options.useFullscreenPopup) {
         window.removeEventListener("scroll", this._handleWindowScroll);
       }
-      if (this.dropdown.parentNode) {
-        this.dropdown.parentNode.removeChild(this.dropdown);
-      }
+      this.dropdown.remove();
     }
 
     this._trigger("close:countrydropdown");
@@ -1842,9 +1840,9 @@ export class Iti {
     }
 
     //* Remove markup (but leave the original input).
-    const wrapper = this.telInput.parentNode as HTMLElement | null;
-    wrapper?.before(this.telInput);
-    wrapper?.remove();
+    const wrapper = this.telInput.parentNode as HTMLElement;
+    wrapper.before(this.telInput);
+    wrapper.remove();
 
     if (intlTelInput.instances instanceof Map) {
       intlTelInput.instances.delete(this.id);
