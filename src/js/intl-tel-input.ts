@@ -175,10 +175,10 @@ export class Iti {
     this.countries = processAllCountries(this.options);
 
     //* Generate this.dialCodes and this.dialCodeToIso2Map.
-    const dialRes = processDialCodes(this.countries, this.options);
-    this.dialCodes = dialRes.dialCodes;
-    this.dialCodeMaxLen = dialRes.dialCodeMaxLen;
-    this.dialCodeToIso2Map = dialRes.dialCodeToIso2Map;
+    const { dialCodes, dialCodeMaxLen, dialCodeToIso2Map } = processDialCodes(this.countries, this.options);
+    this.dialCodes = dialCodes;
+    this.dialCodeMaxLen = dialCodeMaxLen;
+    this.dialCodeToIso2Map = dialCodeToIso2Map;
 
     //* Translate country names according to i18n option.
     translateCountryNames(this.countries, this.options);
@@ -680,8 +680,7 @@ export class Iti {
 
   //* Init many requests: utils script / geo ip lookup.
   private _initRequests(): void {
-    // eslint-disable-next-line prefer-const
-    let { loadUtils, initialCountry, geoIpLookup } = this.options;
+    const { loadUtils, initialCountry, geoIpLookup } = this.options;
 
     //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
     if (loadUtils && !intlTelInput.utils) {
@@ -1004,7 +1003,7 @@ export class Iti {
   private _bindDropdownListeners(): void {
     //* When mouse over a list item, just highlight that one
     //* we add the class "highlight", so if they hit "enter" we know which one to select.
-    this._handleMouseoverCountryList = (e): void => {
+    this._handleMouseoverCountryList = (e: MouseEvent): void => {
       //* Handle event delegation, as we're listening for this event on the countryList.
       const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(".iti__country");
       if (listItem) {
@@ -1017,7 +1016,7 @@ export class Iti {
     );
 
     //* Listen for country selection.
-    this._handleClickCountryList = (e): void => {
+    this._handleClickCountryList = (e: MouseEvent): void => {
       const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(".iti__country");
       if (listItem) {
         this._selectListItem(listItem);
@@ -1659,7 +1658,7 @@ export class Iti {
 
   //* Replace any existing dial code with the new one
   //* Note: called from _selectListItem and setCountry
-  private _updateDialCode(newDialCodeBare): void {
+  private _updateDialCode(newDialCodeBare: string): void {
     const inputVal = this.telInput.value;
     //* Save having to pass this every time.
     const newDialCode = `+${newDialCodeBare}`;
@@ -2014,7 +2013,7 @@ export class Iti {
  ********************/
 
 //* Load the utils script.
-const attachUtils = (source: UtilsLoader): Promise<unknown> | null => {
+const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
   //* 2 Options:
   //* 1) Not already started loading (start)
   //* 2) Already started loading (do nothing - just wait for the onload callback to fire, which will
@@ -2059,9 +2058,23 @@ const attachUtils = (source: UtilsLoader): Promise<unknown> | null => {
 //* Convenience wrapper.
 
 //* Run a method on each instance of the plugin.
-const forEachInstance = (method: string, ...args: any[]): void => {
-  const { instances } = intlTelInput;
-  Object.values(instances).forEach((instance) => instance[method](...args));
+type InstanceMethodMap = {
+  handleUtils: () => void;
+  handleAutoCountry: () => void;
+  rejectAutoCountryPromise: (reason?: unknown) => void;
+  rejectUtilsScriptPromise: (reason?: unknown) => void;
+};
+
+const forEachInstance = <K extends keyof InstanceMethodMap>(
+  method: K,
+  ...args: Parameters<InstanceMethodMap[K]>
+): void => {
+  Object.values(intlTelInput.instances).forEach((instance) => {
+    const fn = (instance as unknown as InstanceMethodMap)[method];
+    if (typeof fn === "function") {
+      fn.apply(instance, args);
+    }
+  });
 };
 
 const intlTelInput: IntlTelInputInterface = Object.assign(
