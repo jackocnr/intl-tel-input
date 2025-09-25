@@ -1,11 +1,11 @@
-import { Country } from "../../intl-tel-input/data";
+import { SelectedCountryData } from "../types/public-api";
 
 //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
 export function beforeSetNumber(
   fullNumber: string,
   dialCode: string,
   separateDialCode: boolean,
-  selectedCountryData: Partial<Country>,
+  selectedCountryData: SelectedCountryData,
 ): string {
   let number = fullNumber;
   if (separateDialCode) {
@@ -31,7 +31,7 @@ export function formatNumberAsYouType(
   fullNumber: string,
   telInputValue: string,
   utils: any,
-  selectedCountryData: Partial<Country>,
+  selectedCountryData: SelectedCountryData,
   separateDialCode: boolean,
 ): string {
   const result = utils

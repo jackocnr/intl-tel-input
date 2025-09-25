@@ -7,6 +7,7 @@ import type {
   AllOptions,
   SomeOptions,
   IntlTelInputInterface,
+  SelectedCountryData,
 } from "./modules/types/public-api";
 import { getNumeric, normaliseString } from "./modules/utils/string";
 import { createEl } from "./modules/utils/dom";
@@ -84,7 +85,7 @@ export class Iti {
 
   //* PRIVATE FIELDS - NOT READONLY
   private highlightedItem: HTMLElement | null;
-  private selectedCountryData: Partial<Country>;
+  private selectedCountryData: SelectedCountryData;
   private maxCoreNumberLength: number | null;
   private defaultCountry: Iso2;
 
@@ -158,7 +159,7 @@ export class Iti {
 
     //* In various situations there could be no country selected initially, but we need to be able
     //* to assume this variable exists.
-    this.selectedCountryData = {};
+    this.selectedCountryData = {} as SelectedCountryData;
 
     //* Process all the data: onlyCountries, excludeCountries, countryOrder etc.
     this._processCountryData();
@@ -626,7 +627,7 @@ export class Iti {
         this.hiddenInput.value = this.getNumber();
       }
       if (this.hiddenInputCountry) {
-        this.hiddenInputCountry.value = this.getSelectedCountryData().iso2 || "";
+        this.hiddenInputCountry.value = this.selectedCountryData.iso2 || "";
       }
     };
     this.telInput.form?.addEventListener(
@@ -1430,7 +1431,9 @@ export class Iti {
 
     const prevIso2 = this.selectedCountryData.iso2 || "";
 
-    this.selectedCountryData = iso2 ? this.countryByIso2.get(iso2) : {};
+    this.selectedCountryData = iso2
+      ? this.countryByIso2.get(iso2) as Country
+      : {} as SelectedCountryData;
 
     //* Update the defaultCountry - we only need the iso2 from now on, so just store that.
     if (this.selectedCountryData.iso2) {
@@ -1897,7 +1900,7 @@ export class Iti {
   }
 
   //* Get the country data for the currently selected country.
-  getSelectedCountryData(): Partial<Country> {
+  getSelectedCountryData(): SelectedCountryData {
     return this.selectedCountryData;
   }
 

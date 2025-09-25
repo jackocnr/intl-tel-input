@@ -83,3 +83,11 @@ export interface IntlTelInputInterface {
   version: string | undefined;
   utils?: ItiUtils;
 }
+
+// A discriminated union for when there may be no selected country yet.
+// - When selected: it's a full Country (iso2 is present)
+// - When none selected: it's an empty object literal (iso2 is absent)
+type EmptyObject = Record<string, never>;
+export type SelectedCountryData =
+  | Country
+  | EmptyObject;
