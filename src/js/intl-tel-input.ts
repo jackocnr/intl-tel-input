@@ -45,14 +45,14 @@ const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 // eslint-disable-next-line no-unused-vars
 export class Iti {
   //* Can't be private as it's called from intlTelInput convenience wrapper.
-  id: number;
+  readonly id: number;
   //* NOT Private
   promise: Promise<[unknown, unknown]>;
   //* Private
-  private telInput: HTMLInputElement;
+  private readonly telInput: HTMLInputElement;
   private highlightedItem: HTMLElement | null;
-  private options: AllOptions;
-  private hadInitialPlaceholder: boolean;
+  private readonly options: AllOptions;
+  private readonly hadInitialPlaceholder: boolean;
   private isRTL: boolean;
   private isAndroid: boolean;
   private selectedCountryData: Partial<Country>;
