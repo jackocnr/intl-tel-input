@@ -511,37 +511,43 @@ export class Iti {
   //* For each country: add a country list item <li> to the countryList <ul> container.
   private _appendListItems(): void {
     const frag = document.createDocumentFragment();
-    this.countries.forEach((c, i) => {
-      //* Start by highlighting the first item (useful when countrySearch disabled).
-      const extraClass = i === 0 ? "iti__highlight" : "";
+    for (let i = 0; i < this.countries.length; i++) {
+      const c = this.countries[i];
+      // Compute classes (highlight first item when countrySearch disabled)
+      const liClass = buildClassNames({
+        "iti__country": true,
+        "iti__highlight": i === 0,
+      });
 
-      const listItem = createEl(
-        "li",
-        {
-          id: `iti-${this.id}__item-${c.iso2}`,
-          class: `iti__country ${extraClass}`,
-          tabindex: "-1",
-          role: "option",
-          "data-dial-code": c.dialCode,
-          "data-country-code": c.iso2,
-          "aria-selected": "false",
-        },
-      );
-      //* Store this for later use e.g. country search filtering.
+      const listItem = createEl("li", {
+        id: `iti-${this.id}__item-${c.iso2}`,
+        class: liClass,
+        tabindex: "-1",
+        role: "option",
+        "data-dial-code": c.dialCode,
+        "data-country-code": c.iso2,
+        "aria-selected": "false",
+      });
+
+      // Store this for later use e.g. country search filtering.
       c.nodeById[this.id] = listItem;
 
-      let content = "";
+      // Build contents without innerHTML for safety and clarity
       if (this.options.showFlags) {
-        content += `<div class='iti__flag iti__${c.iso2}'></div>`;
+        createEl("div", { class: `iti__flag iti__${c.iso2}` }, listItem);
       }
-      content += `<span class='iti__country-name'>${c.name}</span>`;
-      // dial codes should always be LTR
-      const extraAttribute = this.isRTL ? " dir='ltr'" : "";
-      content += `<span class='iti__dial-code'${extraAttribute}>+${c.dialCode}</span>`;
 
-      listItem.insertAdjacentHTML("beforeend", content);
+      const nameEl = createEl("span", { class: "iti__country-name" }, listItem);
+      nameEl.textContent = c.name;
+
+      const dialEl = createEl("span", { class: "iti__dial-code" }, listItem);
+      if (this.isRTL) {
+        dialEl.setAttribute("dir", "ltr");
+      }
+      dialEl.textContent = `+${c.dialCode}`;
+
       frag.appendChild(listItem);
-    });
+    }
     this.countryList.appendChild(frag);
   }
 
