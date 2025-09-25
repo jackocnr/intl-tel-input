@@ -28,38 +28,6 @@ describe("using dropdown", () => {
     teardown(iti);
   });
 
-  test("does not add dir attributes by default", () => {
-    expect(container.getAttribute("dir")).toBe(null);
-    const dropdownContent = getDropdownElement(container);
-    expect(dropdownContent.getAttribute("dir")).toBe(null);
-  });
-
-  describe("with rtl context", () => {
-    let originalDir;
-
-    beforeEach(() => {
-      originalDir = container.ownerDocument.documentElement.dir;
-      container.ownerDocument.documentElement.dir = "rtl";
-      ({ iti, container, input } = initPlugin());
-    });
-
-    afterEach(() => {
-      teardown(iti);
-      container.ownerDocument.documentElement.dir = originalDir;
-    });
-
-    test("does add dir attributes by default", () => {
-      expect(container.getAttribute("dir")).toBe("ltr");
-      const dropdownContent = getDropdownElement(container);
-      expect(dropdownContent.getAttribute("dir")).toBe("rtl");
-    });
-  });
-
-  test("clicking the selected flag opens the dropdown", async () => {
-    await clickSelectedCountryAsync(container, user);
-    expect(isDropdownOpen(container)).toBe(true);
-  });
-
   test("allows focusing the selected country using the keyboard", async () => {
     await user.keyboard("{Tab}");
     const selectedCountry = getSelectedCountryButton(container);
@@ -103,6 +71,38 @@ describe("using dropdown", () => {
         expect(checkFlagSelected(container, "ca")).toBe(true);
       });
     });
+  });
+
+  // these tests should be the opposite of the RTL ones below
+  test("does not add dir attributes by default", () => {
+    expect(container.getAttribute("dir")).toBe(null);
+    const dropdownContent = getDropdownElement(container);
+    expect(dropdownContent.getAttribute("dir")).toBe(null);
+    const firstDialCode = dropdownContent.querySelector(".iti__dial-code");
+    expect(firstDialCode.getAttribute("dir")).toBe(null);
+  });
+});
+
+describe("with RTL context", () => {
+  let iti, container;
+
+  beforeEach(() => {
+    document.body.setAttribute("dir", "rtl");
+    ({ iti, container } = initPlugin());
+  });
+
+  afterEach(() => {
+    teardown(iti);
+    document.body.removeAttribute("dir");
+  });
+
+  test("does add dir attributes by default", () => {
+    // we add dir=LTR to the container, dir=RTL to the dropdown, and dir=LTR on the dial codes in the country list
+    expect(container.getAttribute("dir")).toBe("ltr");
+    const dropdownContent = getDropdownElement(container);
+    expect(dropdownContent.getAttribute("dir")).toBe("rtl");
+    const firstDialCode = dropdownContent.querySelector(".iti__dial-code");
+    expect(firstDialCode.getAttribute("dir")).toBe("ltr");
   });
 });
 

@@ -181,63 +181,6 @@ module.exports = function(grunt) {
     },
 
 
-    /*************************
-     * INLINE PRIVATE METHODS
-     *************************/
-    inlineMethods: {
-      options: {
-        patterns: [
-          {
-            match: /_handleMouseoverCountryList/g,
-            replacement: '_a0'
-          }, {
-            match: /_handleClickCountryList/g,
-            replacement: '_a1'
-          }, {
-            match: /_handleClickOffToClose/g,
-            replacement: '_a2'
-          }, {
-            match: /_handleKeydownOnDropdown/g,
-            replacement: '_a3'
-          }, {
-            match: /_handleWindowScroll/g,
-            replacement: '_a4'
-          }, {
-            match: /_handleSearchChange/g,
-            replacement: '_a7'
-          }, {
-            match: /_handleLabelClick/g,
-            replacement: '_a9'
-          }, {
-            match: /_handleClickSelectedCountry/g,
-            replacement: '_a10'
-          }, {
-            match: /_handleCountryContainerKeydown/g,
-            replacement: '_a11'
-          }, {
-            match: /_handleInputEvent/g,
-            replacement: '_a12'
-          }, {
-            match: /_handleHiddenInputSubmit/g,
-            replacement: '_a14'
-          }, {
-            match: /_handleKeydownEvent/g,
-            replacement: '_a5'
-          }, {
-            match: /_handleSearchClear/g,
-            replacement: '_a6'
-          }, {
-            match: /_handlePageLoad/g,
-            replacement: '_a8'
-          }
-        ]
-      },
-      files: {
-        'tmp/two.min.js': 'tmp/one.min.js',
-      }
-    },
-
-
     /*******************
      * INSTANCE FIELDS
      * Note: avoid option names as that will break things!
@@ -326,7 +269,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'build/js/intlTelInput.min.js': 'tmp/two.min.js',
+        'build/js/intlTelInput.min.js': 'tmp/one.min.js',
       }
     },
 

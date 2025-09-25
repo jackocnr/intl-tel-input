@@ -1,5 +1,5 @@
 import allCountries, { Country, Iso2 } from "./intl-tel-input/data";
-import defaultEnglishStrings from "./intl-tel-input/i18n/en";
+import defaultEnglishStrings from "./intl-tel-input/i18n/en/countries";
 import { defaults, applyOptionSideEffects } from "./modules/core/options";
 import type {
   UtilsLoader,
@@ -10,8 +10,7 @@ import type {
   SelectedCountryData,
 } from "./modules/types/public-api";
 import { getNumeric, normaliseString } from "./modules/utils/string";
-import { createEl } from "./modules/utils/dom";
-import { buildClassNames } from "./modules/utils/dom";
+import { createEl, buildClassNames } from "./modules/utils/dom";
 import {
   processAllCountries,
   processDialCodes,
@@ -88,23 +87,9 @@ export class Iti {
   private selectedCountryData: SelectedCountryData;
   private maxCoreNumberLength: number | null;
   private defaultCountry: Iso2;
-
-  private _handleHiddenInputSubmit: () => void;
-  private _handleLabelClick: (e: Event) => void;
-  private _handleClickSelectedCountry: () => void;
-  private _handleCountryContainerKeydown: (e: KeyboardEvent) => void;
-  private _handleInputEvent: (e: InputEvent) => void;
-  private _handleKeydownEvent: (e: KeyboardEvent) => void;
-  private _handlePasteEvent: (e: ClipboardEvent) => void;
-  private _handleWindowScroll: () => void;
-  private _handleMouseoverCountryList: (e: MouseEvent) => void;
-  private _handleClickCountryList: (e: Event) => void;
-  private _handleClickOffToClose: (e: MouseEvent) => void;
-  private _handleKeydownOnDropdown: (e: KeyboardEvent) => void;
-  private _handleSearchChange: () => void;
-  private _handleSearchClear: () => void;
-  private _handlePageLoad: () => void;
-  private _doAttachUtils: () => void;
+  // centralised event management
+  private abortController: AbortController;
+  private dropdownAbortController: AbortController | null;
 
   private resolveAutoCountryPromise: (value?: unknown) => void;
   private rejectAutoCountryPromise: (reason?: unknown) => void;
@@ -160,6 +145,9 @@ export class Iti {
     //* In various situations there could be no country selected initially, but we need to be able
     //* to assume this variable exists.
     this.selectedCountryData = {} as SelectedCountryData;
+
+    // init event controller
+    this.abortController = new AbortController();
 
     //* Process all the data: onlyCountries, excludeCountries, countryOrder etc.
     this._processCountryData();
@@ -622,7 +610,7 @@ export class Iti {
 
   //* Update hidden input on form submit.
   private _initHiddenInputListener(): void {
-    this._handleHiddenInputSubmit = (): void => {
+    const handleHiddenInputSubmit = (): void => {
       if (this.hiddenInput) {
         this.hiddenInput.value = this.getNumber();
       }
@@ -632,16 +620,18 @@ export class Iti {
     };
     this.telInput.form?.addEventListener(
       "submit",
-      this._handleHiddenInputSubmit,
+      handleHiddenInputSubmit,
+      { signal: this.abortController.signal },
     );
   }
 
   //* initialise the dropdown listeners.
   private _initDropdownListeners(): void {
+    const signal = this.abortController.signal;
     //* Hack for input nested inside label (which is valid markup): clicking the selected country to
     //* open the dropdown would then automatically trigger a 2nd click on the input which would
     //* close it again.
-    this._handleLabelClick = (e: Event): void => {
+    const handleLabelClick = (e: Event): void => {
       //* If the dropdown is closed, then focus the input, else ignore the click.
       if (this.dropdownContent.classList.contains("iti__hide")) {
         this.telInput.focus();
@@ -651,22 +641,21 @@ export class Iti {
     };
     const label = this.telInput.closest("label");
     if (label) {
-      label.addEventListener("click", this._handleLabelClick);
+      label.addEventListener("click", handleLabelClick, { signal });
     }
 
     //* Toggle country dropdown on click.
-    this._handleClickSelectedCountry = (): void => {
+    const handleClickSelectedCountry = (): void => {
       const dropdownClosed = this.dropdownContent.classList.contains("iti__hide");
       if (dropdownClosed && !this.telInput.disabled && !this.telInput.readOnly) {
         this._openDropdown();
       }
     };
-    this.selectedCountry.addEventListener("click", this._handleClickSelectedCountry);
+    this.selectedCountry.addEventListener("click", handleClickSelectedCountry, { signal });
 
     //* Open dropdown if selected country is focused and they press up/down/space/enter.
-    this._handleCountryContainerKeydown = (e: KeyboardEvent): void => {
-      const isDropdownHidden =
-        this.dropdownContent.classList.contains("iti__hide");
+    const handleCountryContainerKeydown = (e: KeyboardEvent): void => {
+      const isDropdownHidden = this.dropdownContent.classList.contains("iti__hide");
 
       if (
         isDropdownHidden &&
@@ -684,10 +673,7 @@ export class Iti {
         this._closeDropdown();
       }
     };
-    this.countryContainer.addEventListener(
-      "keydown",
-      this._handleCountryContainerKeydown,
-    );
+    this.countryContainer.addEventListener("keydown", handleCountryContainerKeydown, { signal });
   }
 
   //* Init many requests: utils script / geo ip lookup.
@@ -696,7 +682,7 @@ export class Iti {
 
     //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
     if (loadUtils && !intlTelInput.utils) {
-      this._doAttachUtils = () => {
+      const doAttachUtils = () => {
         //* Catch and ignore any errors to prevent unhandled-promise failures.
         //* The error from `attachUtils()` is also surfaced in each instance's
         //* `promise` property, so it's not getting lost by being ignored here.
@@ -705,14 +691,13 @@ export class Iti {
 
       //* If the plugin is being initialised after the window.load event has already been fired.
       if (intlTelInput.documentReady()) {
-        this._doAttachUtils();
+        doAttachUtils();
       } else {
-        // we need to define a new handler here, as a way of tracking the listener below, so we can check for it's existence in the destroy method
-        this._handlePageLoad = (): void => {
-          this._doAttachUtils();
+        const handlePageLoad = (): void => {
+          doAttachUtils();
         };
         //* Wait until the load event so we don't block any other requests e.g. the flags image.
-        window.addEventListener("load", this._handlePageLoad);
+        window.addEventListener("load", handlePageLoad, { signal: this.abortController.signal });
       }
     } else {
       this.resolveUtilsScriptPromise();
@@ -789,7 +774,7 @@ export class Iti {
 
     //* On input event: (1) Update selected country, (2) Format-as-you-type.
     //* Note that this fires AFTER the input is updated.
-    this._handleInputEvent = (e: InputEvent): void => {
+    const handleInputEvent = (e: InputEvent): void => {
       //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
       if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown && countrySearch) {
         const currentCaretPos = this.telInput.selectionStart || 0;
@@ -841,7 +826,7 @@ export class Iti {
     //* This handles individual key presses as well as cut/paste events
     //* the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
     //* whereas "keyup" fires even for shift key, arrow key presses etc.
-    this.telInput.addEventListener("input", this._handleInputEvent as EventListener);
+    this.telInput.addEventListener("input", handleInputEvent as EventListener, { signal: this.abortController.signal });
   }
 
   private _maybeBindKeydownListener(): void {
@@ -849,7 +834,7 @@ export class Iti {
     if (strictMode || separateDialCode) {
       //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
       //* Note that this fires BEFORE the input is updated.
-      this._handleKeydownEvent = (e: KeyboardEvent): void => {
+      const handleKeydownEvent = (e: KeyboardEvent): void => {
         //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
         if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
           //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
@@ -882,14 +867,14 @@ export class Iti {
           }
         }
       };
-      this.telInput.addEventListener("keydown", this._handleKeydownEvent);
+      this.telInput.addEventListener("keydown", handleKeydownEvent, { signal: this.abortController.signal });
     }
   }
 
   private _maybeBindPasteListener(): void {
     // Sanitise pasted values in strictMode
     if (this.options.strictMode) {
-      this._handlePasteEvent = (e: ClipboardEvent): void => {
+      const handlePasteEvent = (e: ClipboardEvent): void => {
         // in strict mode we always control the pasted value
         e.preventDefault();
 
@@ -941,7 +926,7 @@ export class Iti {
         // trigger format-as-you-type and country update etc
         input.dispatchEvent(new InputEvent("input", { bubbles: true }));
       };
-      this.telInput.addEventListener("paste", this._handlePasteEvent);
+      this.telInput.addEventListener("paste", handlePasteEvent, { signal: this.abortController.signal });
     }
   }
 
@@ -960,6 +945,11 @@ export class Iti {
   //* Open the dropdown.
   private _openDropdown(): void {
     const { fixDropdownWidth, countrySearch } = this.options;
+
+    // create a fresh AbortController for dropdown-scoped listeners
+    // this.dropdownAbortController?.abort();
+    this.dropdownAbortController = new AbortController();
+
     if (fixDropdownWidth) {
       this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
     }
@@ -1005,17 +995,22 @@ export class Iti {
         this.dropdown.style.left = `${inputPosRelativeToVP.left}px`;
 
         //* Close menu on window scroll.
-        this._handleWindowScroll = (): void => this._closeDropdown();
-        window.addEventListener("scroll", this._handleWindowScroll);
+        const handleWindowScroll = (): void => this._closeDropdown();
+        window.addEventListener(
+          "scroll",
+          handleWindowScroll,
+          { signal: this.dropdownAbortController.signal },
+        );
       }
     }
   }
 
   //* We only bind dropdown listeners when the dropdown is open.
   private _bindDropdownListeners(): void {
+    const signal = this.dropdownAbortController.signal;
     //* When mouse over a list item, just highlight that one
     //* we add the class "highlight", so if they hit "enter" we know which one to select.
-    this._handleMouseoverCountryList = (e: MouseEvent): void => {
+    const handleMouseoverCountryList = (e: MouseEvent): void => {
       //* Handle event delegation, as we're listening for this event on the countryList.
       const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(".iti__country");
       if (listItem) {
@@ -1024,21 +1019,22 @@ export class Iti {
     };
     this.countryList.addEventListener(
       "mouseover",
-      this._handleMouseoverCountryList,
+      handleMouseoverCountryList,
+      { signal },
     );
 
     //* Listen for country selection.
-    this._handleClickCountryList = (e: MouseEvent): void => {
+    const handleClickCountryList = (e: MouseEvent): void => {
       const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(".iti__country");
       if (listItem) {
         this._selectListItem(listItem);
       }
     };
-    this.countryList.addEventListener("click", this._handleClickCountryList);
+    this.countryList.addEventListener("click", handleClickCountryList, { signal });
 
     //* Click off to close (except when this initial opening click is bubbling up).
     //* We cannot just stopPropagation as it may be needed to close another instance.
-    this._handleClickOffToClose = (e: MouseEvent): void => {
+    const handleClickOffToClose = (e: MouseEvent): void => {
       const target = e.target as HTMLElement;
       const clickedInsideDropdown = !!target.closest(`#iti-${this.id}__dropdown-content`);
       // only close if clicked outside (allow clicks on country search input/clear button/no results message etc)
@@ -1050,7 +1046,8 @@ export class Iti {
     setTimeout(() => {
       document.documentElement.addEventListener(
         "click",
-        this._handleClickOffToClose,
+        handleClickOffToClose,
+        { signal },
       );
     }, 0);
 
@@ -1060,7 +1057,7 @@ export class Iti {
     //* Listen on the document because that's where key events are triggered if no input has focus.
     let query = "";
     let queryTimer: NodeJS.Timeout | null = null;
-    this._handleKeydownOnDropdown = (e: KeyboardEvent): void => {
+    const handleKeydownOnDropdown = (e: KeyboardEvent): void => {
       //* prevent down key from scrolling the whole page, and enter key from submitting a form etc.
       if (["ArrowUp", "ArrowDown", "Enter", "Escape"].includes(e.key)) {
         e.preventDefault();
@@ -1096,7 +1093,7 @@ export class Iti {
         }, 1000);
       }
     };
-    document.addEventListener("keydown", this._handleKeydownOnDropdown);
+    document.addEventListener("keydown", handleKeydownOnDropdown, { signal });
 
     if (this.options.countrySearch) {
       const doFilter = (): void => {
@@ -1111,7 +1108,7 @@ export class Iti {
       };
 
       let keyupTimer: NodeJS.Timeout | null = null;
-      this._handleSearchChange = (): void => {
+      const handleSearchChange = (): void => {
         //* Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
         if (keyupTimer) {
           clearTimeout(keyupTimer);
@@ -1121,15 +1118,15 @@ export class Iti {
           keyupTimer = null;
         }, 100);
       };
-      this.searchInput.addEventListener("input", this._handleSearchChange);
+      this.searchInput.addEventListener("input", handleSearchChange, { signal });
 
-      this._handleSearchClear = (): void => {
+      const handleSearchClear = (): void => {
         this.searchInput.value = "";
         this.searchInput.focus();
         doFilter();
       };
       // Prevent click from closing dropdown, clear text, refocus input, and reset filter
-      this.searchClearButton.addEventListener("click", this._handleSearchClear);
+      this.searchClearButton.addEventListener("click", handleSearchClear, { signal });
     }
   }
 
@@ -1609,6 +1606,10 @@ export class Iti {
 
   //* Close the dropdown and unbind any listeners.
   private _closeDropdown(): void {
+    // we call closeDropdown in places where it might not even be open e.g. in destroy()
+    if (this.dropdownContent.classList.contains("iti__hide")) {
+      return;
+    }
     this.dropdownContent.classList.add("iti__hide");
     this.selectedCountry.setAttribute("aria-expanded", "false");
     if (this.highlightedItem) {
@@ -1621,27 +1622,12 @@ export class Iti {
     //* Update the arrow.
     this.dropdownArrow.classList.remove("iti__arrow--up");
 
-    //* Unbind key events.
-    if (this.options.countrySearch) {
-      this.searchInput.removeEventListener("input", this._handleSearchChange);
-      this.searchClearButton.removeEventListener("click", this._handleSearchClear);
-    }
-    document.removeEventListener("keydown", this._handleKeydownOnDropdown);
-    document.documentElement.removeEventListener(
-      "click",
-      this._handleClickOffToClose,
-    );
-    this.countryList.removeEventListener(
-      "mouseover",
-      this._handleMouseoverCountryList,
-    );
-    this.countryList.removeEventListener("click", this._handleClickCountryList);
+    //* Unbind dropdown-scoped events in one go
+    this.dropdownAbortController.abort();
+    this.dropdownAbortController = null;
 
-    //* Remove menu from container.
+    //* Remove dropdown from container.
     if (this.options.dropdownContainer) {
-      if (!this.options.useFullscreenPopup) {
-        window.removeEventListener("scroll", this._handleWindowScroll);
-      }
       this.dropdown.remove();
     }
 
@@ -1809,40 +1795,10 @@ export class Iti {
     if (allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
       this._closeDropdown();
-      this.selectedCountry.removeEventListener(
-        "click",
-        this._handleClickSelectedCountry,
-      );
-      this.countryContainer.removeEventListener(
-        "keydown",
-        this._handleCountryContainerKeydown,
-      );
-      //* Label click hack.
-      const label = this.telInput.closest("label");
-      if (label) {
-        label.removeEventListener("click", this._handleLabelClick);
-      }
     }
 
-    //* Unbind hiddenInput listeners.
-    const { form } = this.telInput;
-    if (this._handleHiddenInputSubmit && form) {
-      form.removeEventListener("submit", this._handleHiddenInputSubmit);
-    }
-
-    //* Unbind key events, and cut/paste events.
-    this.telInput.removeEventListener("input", this._handleInputEvent as EventListener);
-    if (this._handleKeydownEvent) {
-      this.telInput.removeEventListener("keydown", this._handleKeydownEvent);
-    }
-    if (this._handlePasteEvent) {
-      this.telInput.removeEventListener("paste", this._handlePasteEvent);
-    }
-
-    //* If we registered a window load handler for utils, ensure it's removed.
-    if (this._handlePageLoad) {
-      window.removeEventListener("load", this._handlePageLoad);
-    }
+    //* Abort all listeners registered via the main controller
+    this.abortController.abort();
 
     //* Remove attribute of id instance: data-intl-tel-input-id.
     this.telInput.removeAttribute("data-intl-tel-input-id");

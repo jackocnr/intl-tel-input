@@ -39,7 +39,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build:replaceMinJs', [
     'validate:replacePatterns',
     'replace:privateMethods',
-    'replace:inlineMethods',
     'replace:instanceFields',
   ]);
 
@@ -111,7 +110,7 @@ module.exports = function(grunt) {
   grunt.registerTask('validate:replacePatterns', 'Validate replace patterns have matches', function() {
     const config = grunt.config.get('replace');
     const failed = [];
-    const isPrivate = (key) => ['privateMethods','inlineMethods','instanceFields'].includes(key);
+    const isPrivate = (key) => ['privateMethods','instanceFields'].includes(key);
     Object.keys(config).forEach((key) => {
       if (!isPrivate(key)) return;
       const { options, files } = config[key];
