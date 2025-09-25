@@ -21,6 +21,7 @@ import {
 import { beforeSetNumber, formatNumberAsYouType } from "./modules/format/formatting";
 import { translateCursorPosition } from "./modules/format/caret";
 import { isRegionlessNanp } from "./modules/data/nanp-regionless";
+import type { ItiEventMap } from "./modules/types/events";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -39,12 +40,6 @@ let id = 0;
 // build a Set for iso2 runtime validation (lightweight)
 const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
 const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
-
-//* Run a method on each instance of the plugin.
-const forEachInstance = (method: string, ...args: any[]): void => {
-  const { instances } = intlTelInput;
-  Object.values(instances).forEach((instance) => instance[method](...args));
-};
 
 //* This is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
@@ -114,7 +109,7 @@ export class Iti {
     this.highlightedItem = null;
 
     //* Process specified options / defaults.
-    this.options = Object.assign({}, defaults, customOptions);
+    this.options = { ...defaults, ...customOptions } as AllOptions;
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
   }
 
@@ -515,8 +510,8 @@ export class Iti {
 
   //* For each country: add a country list item <li> to the countryList <ul> container.
   private _appendListItems(): void {
-    for (let i = 0; i < this.countries.length; i++) {
-      const c = this.countries[i];
+    const frag = document.createDocumentFragment();
+    this.countries.forEach((c, i) => {
       //* Start by highlighting the first item (useful when countrySearch disabled).
       const extraClass = i === 0 ? "iti__highlight" : "";
 
@@ -531,24 +526,23 @@ export class Iti {
           "data-country-code": c.iso2,
           "aria-selected": "false",
         },
-        this.countryList,
       );
       //* Store this for later use e.g. country search filtering.
       c.nodeById[this.id] = listItem;
 
       let content = "";
-      //* Add the flag.
       if (this.options.showFlags) {
         content += `<div class='iti__flag iti__${c.iso2}'></div>`;
       }
-      //* And the country name and dial code.
       content += `<span class='iti__country-name'>${c.name}</span>`;
       // dial codes should always be LTR
       const extraAttribute = this.isRTL ? " dir='ltr'" : "";
       content += `<span class='iti__dial-code'${extraAttribute}>+${c.dialCode}</span>`;
 
       listItem.insertAdjacentHTML("beforeend", content);
-    }
+      frag.appendChild(listItem);
+    });
+    this.countryList.appendChild(frag);
   }
 
   //* Set the initial state of the input value and the selected country by:
@@ -562,8 +556,8 @@ export class Iti {
     const inputValue = this.telInput.value;
     const useAttribute =
       attributeValue &&
-      attributeValue.charAt(0) === "+" &&
-      (!inputValue || inputValue.charAt(0) !== "+");
+      attributeValue.startsWith("+") &&
+      (!inputValue || !inputValue.startsWith("+"));
     const val = useAttribute ? attributeValue : inputValue;
     const dialCode = this._getDialCode(val);
     const isRegionlessNanpNumber = isRegionlessNanp(val);
@@ -850,7 +844,7 @@ export class Iti {
           //* If strictMode, prevent invalid characters.
           if (strictMode) {
             const value = this.telInput.value;
-            const alreadyHasPlus = value.charAt(0) === "+";
+            const alreadyHasPlus = value.startsWith("+");
             const isInitialPlus = !alreadyHasPlus && this.telInput.selectionStart === 0 && e.key === "+";
             const isNumeric = /^[0-9]$/.test(e.key);
             const isAllowedChar = separateDialCode ? isNumeric : isInitialPlus || isNumeric;
@@ -940,13 +934,9 @@ export class Iti {
   return max && number.length > max ? number.substring(0, max) : number;
   }
 
-  //* Trigger a custom event on the input.
-  private _trigger(name: string, detailProps: object = {}): void {
-    const e = new CustomEvent(name, {
-      bubbles: true,
-      cancelable: true,
-      detail: detailProps,
-    });
+  //* Trigger a custom event on the input (typed via ItiEventMap).
+  private _trigger<K extends keyof ItiEventMap>(name: K, detailProps: ItiEventMap[K] = {} as ItiEventMap[K]): void {
+    const e = new CustomEvent(name, { bubbles: true, cancelable: true, detail: detailProps });
     this.telInput.dispatchEvent(e);
   }
 
@@ -1278,7 +1268,7 @@ export class Iti {
     ) {
       const useNational =
         this.options.nationalMode ||
-        (number.charAt(0) !== "+" && !this.options.separateDialCode);
+        (!number.startsWith("+") && !this.options.separateDialCode);
       const { NATIONAL, INTERNATIONAL } = intlTelInput.utils.numberFormat;
       const format = useNational ? NATIONAL : INTERNATIONAL;
       number = intlTelInput.utils.formatNumber(
@@ -1305,12 +1295,12 @@ export class Iti {
   // if there is a selected country, and the number doesn't start with a dial code, then add it
   private _ensureHasDialCode(number: string): string {
     const { dialCode, nationalPrefix } = this.selectedCountryData;
-    const alreadyHasPlus = number.charAt(0) === "+";
+    const alreadyHasPlus = number.startsWith("+");
     if (alreadyHasPlus || !dialCode) {
       return number;
     }
     //* Don't remove "nationalPrefix" digit if separateDialCode is enabled, as it can be part of a valid area code e.g. in Russia then have area codes starting with 8, which is also the national prefix digit.
-    const hasPrefix = nationalPrefix && number.charAt(0) === nationalPrefix && !this.options.separateDialCode;
+    const hasPrefix = nationalPrefix && number.startsWith(nationalPrefix) && !this.options.separateDialCode;
     const cleanNumber = hasPrefix ? number.substring(1) : number;
     return `+${dialCode}${cleanNumber}`;
   }
@@ -1383,7 +1373,7 @@ export class Iti {
       if (!isValidSelection && !alreadySelected) {
         return iso2Codes[0];
       }
-    } else if (number.charAt(0) === "+" && numeric.length) {
+    } else if (number.startsWith("+") && numeric.length) {
       //* Invalid dial code, so empty.
       //* Note: use getNumeric here because the number has not been formatted yet, so could contain bad chars.
       return "";
@@ -1671,7 +1661,7 @@ export class Iti {
     const newDialCode = `+${newDialCodeBare}`;
 
     let newNumber;
-    if (inputVal.charAt(0) === "+") {
+    if (inputVal.startsWith("+")) {
       //* There's a plus so we're dealing with a replacement.
       const prevDialCode = this._getDialCode(inputVal);
       if (prevDialCode) {
@@ -1691,7 +1681,7 @@ export class Iti {
   private _getDialCode(number: string, includeAreaCode?: boolean): string {
     let dialCode = "";
     //* Only interested in international numbers (starting with a plus)
-    if (number.charAt(0) === "+") {
+    if (number.startsWith("+")) {
       let numericChars = "";
       //* Iterate over chars
       for (let i = 0; i < number.length; i++) {
@@ -1730,12 +1720,7 @@ export class Iti {
     let prefix;
     const numericVal = getNumeric(val);
 
-    if (
-      this.options.separateDialCode &&
-      val.charAt(0) !== "+" &&
-      dialCode &&
-      numericVal
-    ) {
+    if (this.options.separateDialCode && !val.startsWith("+") && dialCode && numericVal) {
       //* When using separateDialCode, it is visible so is effectively part of the typed number.
       prefix = `+${dialCode}`;
     } else {
@@ -1851,11 +1836,15 @@ export class Iti {
     }
 
     //* Remove markup (but leave the original input).
-    const wrapper = this.telInput.parentNode;
-    wrapper?.parentNode?.insertBefore(this.telInput, wrapper);
-    wrapper?.parentNode?.removeChild(wrapper);
+    const wrapper = this.telInput.parentNode as HTMLElement | null;
+    wrapper?.before(this.telInput);
+    wrapper?.remove();
 
-    delete intlTelInput.instances[this.id];
+    if (intlTelInput.instances instanceof Map) {
+      intlTelInput.instances.delete(this.id);
+    } else {
+      delete (intlTelInput.instances as any)[this.id];
+    }
   }
 
   //* Get the extension from the current number.
@@ -2064,6 +2053,13 @@ const attachUtils = (source: UtilsLoader): Promise<unknown> | null => {
 };
 
 //* Convenience wrapper.
+
+//* Run a method on each instance of the plugin.
+const forEachInstance = (method: string, ...args: any[]): void => {
+  const { instances } = intlTelInput;
+  Object.values(instances).forEach((instance) => instance[method](...args));
+};
+
 const intlTelInput: IntlTelInputInterface = Object.assign(
   (input: HTMLInputElement, options?: SomeOptions): Iti => {
     const iti = new Iti(input, options);
@@ -2090,6 +2086,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     startedLoadingUtilsScript: false,
     startedLoadingAutoCountry: false,
     version: process.env.VERSION,
-  });
+  },
+);
 
 export default intlTelInput;
