@@ -44,23 +44,28 @@ const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 //* This is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
 export class Iti {
+
+  //* PUBLIC FIELDS
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   readonly id: number;
-  //* NOT Private
+  // accessed externally via iti.promise.then(...)
   promise: Promise<[unknown, unknown]>;
-  //* Private
+
+  //* PRIVATE FIELDS - READONLY
   private readonly telInput: HTMLInputElement;
-  private highlightedItem: HTMLElement | null;
   private readonly options: AllOptions;
   private readonly hadInitialPlaceholder: boolean;
+  // NOTE: most of these fields could be "readonly" (a TypeScript convention), but TS requires them to be assigned in the constructor and there are WAY too many to do that - it would be a mess (e.g. think of all the DOM node fields alone - maybe this will be feasible if we ever extract the DOM node creation to a separate class)
+  private originalPaddingLeft: string;
   private isRTL: boolean;
   private isAndroid: boolean;
-  private selectedCountryData: Partial<Country>;
+  // country data
   private countries: Country[];
   private dialCodeMaxLen: number;
   private dialCodeToIso2Map: Record<string, Iso2[]>;
   private dialCodes: Set<string>;
   private countryByIso2: Map<Iso2, Country>;
+  // DOM nodes
   private countryContainer: HTMLElement;
   private selectedCountry: HTMLElement;
   private selectedCountryInner: HTMLElement;
@@ -76,9 +81,12 @@ export class Iti {
   private dropdown: HTMLElement;
   private hiddenInput: HTMLInputElement;
   private hiddenInputCountry: HTMLInputElement;
+
+  //* PRIVATE FIELDS - NOT READONLY
+  private highlightedItem: HTMLElement | null;
+  private selectedCountryData: Partial<Country>;
   private maxCoreNumberLength: number | null;
   private defaultCountry: Iso2;
-  private originalPaddingLeft: string;
 
   private _handleHiddenInputSubmit: () => void;
   private _handleLabelClick: (e: Event) => void;
@@ -104,6 +112,7 @@ export class Iti {
 
   constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
+    input.setAttribute("data-intl-tel-input-id", this.id.toString());
     this.telInput = input;
 
     this.highlightedItem = null;
@@ -111,6 +120,8 @@ export class Iti {
     //* Process specified options / defaults.
     this.options = { ...defaults, ...customOptions } as AllOptions;
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
+
+    this._init();
   }
 
   private _detectEnvironmentAndLayout(): void {
@@ -935,7 +946,7 @@ export class Iti {
 
   //* Adhere to the input's maxlength attr.
   private _cap(number: string): string {
-    const max = Number(this.telInput.maxLength);
+    const max = Number(this.telInput.getAttribute("maxlength"));
     return max && number.length > max ? number.substring(0, max) : number;
   }
 
@@ -2080,8 +2091,6 @@ const forEachInstance = <K extends keyof InstanceMethodMap>(
 const intlTelInput: IntlTelInputInterface = Object.assign(
   (input: HTMLInputElement, options?: SomeOptions): Iti => {
     const iti = new Iti(input, options);
-    iti._init();
-    input.setAttribute("data-intl-tel-input-id", iti.id.toString());
     intlTelInput.instances[iti.id] = iti;
     input.iti = iti;
     return iti;
