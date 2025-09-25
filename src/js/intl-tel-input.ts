@@ -1448,7 +1448,7 @@ export class Iti {
       const dialCode = this.selectedCountryData.dialCode
         ? `+${this.selectedCountryData.dialCode}`
         : "";
-      this.selectedDialCode.innerHTML = dialCode;
+      this.selectedDialCode.textContent = dialCode;
       this._updateInputPadding();
     }
 
