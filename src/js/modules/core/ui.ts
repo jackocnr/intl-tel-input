@@ -1,6 +1,7 @@
 import { Country } from "../../intl-tel-input/data";
 import { AllOptions } from "../types/public-api";
 import { buildClassNames, createEl } from "../utils/dom";
+import { buildSearchIcon, buildClearIcon } from "./icons";
 
 export default class UI {
   // private
@@ -249,11 +250,7 @@ private _createWrapperAndInsert(): HTMLElement {
       searchWrapper,
     );
 
-    this.searchIcon.innerHTML = `
-      <svg class="iti__search-icon-svg" width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-        <circle cx="11" cy="11" r="7" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>`;
+    this.searchIcon.innerHTML = buildSearchIcon();
 
     this.searchInput = createEl(
       "input",
@@ -284,16 +281,8 @@ private _createWrapperAndInsert(): HTMLElement {
       searchWrapper,
     ) as HTMLButtonElement;
 
-    const maskId = `iti-${this.id}-clear-mask`;
     // Mask creates a transparent cross 'cut' through the filled circle so underlying input bg shows.
-    this.searchClearButton.innerHTML = `
-      <svg class="iti__search-clear-svg" width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <mask id="${maskId}" maskUnits="userSpaceOnUse">
-          <rect width="16" height="16" fill="white" />
-          <path d="M5.2 5.2 L10.8 10.8 M10.8 5.2 L5.2 10.8" stroke="black" stroke-linecap="round" class="iti__search-clear-x" />
-        </mask>
-        <circle cx="8" cy="8" r="8" class="iti__search-clear-bg" mask="url(#${maskId})" />
-      </svg>`;
+    this.searchClearButton.innerHTML = buildClearIcon(this.id);
 
     this.searchResultsA11yText = createEl(
       "span",
