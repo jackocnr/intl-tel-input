@@ -12,7 +12,7 @@ const {
   clickSelectedCountryAsync,
   getCountriesInList,
 } = require("../helpers/helpers");
-const allCountries = require("../../build/js/data");
+const allCountries = require("../../../build/js/data");
 const allCountryCodes = allCountries.map((country) => country.iso2);
 
 //* Without the advanceTimers bit, the (time related) tests just hang, see https://github.com/jestjs/jest/issues/12056#issuecomment-1090189268
