@@ -708,8 +708,18 @@ export class Iti {
   //* We only bind dropdown listeners when the dropdown is open.
   private _bindDropdownListeners(): void {
     const signal = this.dropdownAbortController.signal;
-    //* When mouse over a list item, just highlight that one
-    //* we add the class "highlight", so if they hit "enter" we know which one to select.
+    this._bindDropdownMouseoverListener(signal);
+    this._bindDropdownCountryClickListener(signal);
+    this._bindDropdownClickOffListener(signal);
+    this._bindDropdownKeydownListener(signal);
+    if (this.options.countrySearch) {
+      this._bindDropdownSearchListeners(signal);
+    }
+  }
+
+  //* When mouse over a list item, just highlight that one
+  //* we add the class "highlight", so if they hit "enter" we know which one to select.
+  private _bindDropdownMouseoverListener(signal: AbortSignal): void {
     const handleMouseoverCountryList = (e: MouseEvent): void => {
       //* Handle event delegation, as we're listening for this event on the countryList.
       const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(
@@ -722,8 +732,10 @@ export class Iti {
     this.ui.countryList.addEventListener("mouseover", handleMouseoverCountryList, {
       signal,
     });
+  }
 
-    //* Listen for country selection.
+  //* Listen for country selection.
+  private _bindDropdownCountryClickListener(signal: AbortSignal): void {
     const handleClickCountryList = (e: MouseEvent): void => {
       const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(
         ".iti__country",
@@ -735,9 +747,11 @@ export class Iti {
     this.ui.countryList.addEventListener("click", handleClickCountryList, {
       signal,
     });
+  }
 
-    //* Click off to close (except when this initial opening click is bubbling up).
-    //* We cannot just stopPropagation as it may be needed to close another instance.
+  //* Click off to close (except when this initial opening click is bubbling up).
+  //* We cannot just stopPropagation as it may be needed to close another instance.
+  private _bindDropdownClickOffListener(signal: AbortSignal): void {
     const handleClickOffToClose = (e: MouseEvent): void => {
       const target = e.target as HTMLElement;
       const clickedInsideDropdown = !!target.closest(
@@ -756,11 +770,13 @@ export class Iti {
         { signal },
       );
     }, 0);
+  }
 
-    //* Listen for up/down scrolling, enter to select, or escape to close.
-    //* Use keydown as keypress doesn't fire for non-char keys and we want to catch if they
-    //* just hit down and hold it to scroll down (no keyup event).
-    //* Listen on the document because that's where key events are triggered if no input has focus.
+  //* Listen for up/down scrolling, enter to select, or escape to close.
+  //* Use keydown as keypress doesn't fire for non-char keys and we want to catch if they
+  //* just hit down and hold it to scroll down (no keyup event).
+  //* Listen on the document because that's where key events are triggered if no input has focus.
+  private _bindDropdownKeydownListener(signal: AbortSignal): void {
     let query = "";
     let queryTimer: NodeJS.Timeout | null = null;
     const handleKeydownOnDropdown = (e: KeyboardEvent): void => {
@@ -800,44 +816,45 @@ export class Iti {
       }
     };
     document.addEventListener("keydown", handleKeydownOnDropdown, { signal });
+  }
 
-    if (this.options.countrySearch) {
-      const doFilter = (): void => {
-        const inputQuery = this.ui.searchInput.value.trim();
-        this._filterCountriesByQuery(inputQuery);
-        // show/hide clear button
-        if (this.ui.searchInput.value) {
-          this.ui.searchClearButton.classList.remove("iti__hide");
-        } else {
-          this.ui.searchClearButton.classList.add("iti__hide");
-        }
-      };
+  //* Search input listeners when countrySearch enabled.
+  private _bindDropdownSearchListeners(signal: AbortSignal): void {
+    const doFilter = (): void => {
+      const inputQuery = this.ui.searchInput.value.trim();
+      this._filterCountriesByQuery(inputQuery);
+      // show/hide clear button
+      if (this.ui.searchInput.value) {
+        this.ui.searchClearButton.classList.remove("iti__hide");
+      } else {
+        this.ui.searchClearButton.classList.add("iti__hide");
+      }
+    };
 
-      let keyupTimer: NodeJS.Timeout | null = null;
-      const handleSearchChange = (): void => {
-        //* Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
-        if (keyupTimer) {
-          clearTimeout(keyupTimer);
-        }
-        keyupTimer = setTimeout(() => {
-          doFilter();
-          keyupTimer = null;
-        }, 100);
-      };
-      this.ui.searchInput.addEventListener("input", handleSearchChange, {
-        signal,
-      });
-
-      const handleSearchClear = (): void => {
-        this.ui.searchInput.value = "";
-        this.ui.searchInput.focus();
+    let keyupTimer: NodeJS.Timeout | null = null;
+    const handleSearchChange = (): void => {
+      //* Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
+      if (keyupTimer) {
+        clearTimeout(keyupTimer);
+      }
+      keyupTimer = setTimeout(() => {
         doFilter();
-      };
-      // Prevent click from closing dropdown, clear text, refocus input, and reset filter
-      this.ui.searchClearButton.addEventListener("click", handleSearchClear, {
-        signal,
-      });
-    }
+        keyupTimer = null;
+      }, 100);
+    };
+    this.ui.searchInput.addEventListener("input", handleSearchChange, {
+      signal,
+    });
+
+    const handleSearchClear = (): void => {
+      this.ui.searchInput.value = "";
+      this.ui.searchInput.focus();
+      doFilter();
+    };
+    // Prevent click from closing dropdown, clear text, refocus input, and reset filter
+    this.ui.searchClearButton.addEventListener("click", handleSearchClear, {
+      signal,
+    });
   }
 
   //* Hidden search (countrySearch disabled): Find the first list item whose name starts with the query string.

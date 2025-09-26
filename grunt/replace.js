@@ -110,6 +110,21 @@ module.exports = function(grunt) {
             match: /_bindDropdownListeners/g,
             replacement: '_p'
           }, {
+            match: /_bindDropdownMouseoverListener/g,
+            replacement: '_p1'
+          }, {
+            match: /_bindDropdownCountryClickListener/g,
+            replacement: '_p2'
+          }, {
+            match: /_bindDropdownClickOffListener/g,
+            replacement: '_p4'
+          }, {
+            match: /_bindDropdownKeydownListener/g,
+            replacement: '_p5'
+          }, {
+            match: /_bindDropdownSearchListeners/g,
+            replacement: '_p6'
+          }, {
             match: /_filterCountriesByQuery/g,
             replacement: '_p3'
           }, {
