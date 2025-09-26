@@ -98,7 +98,7 @@ export class Iti {
 
   constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
-    input.setAttribute("data-intl-tel-input-id", this.id.toString());
+    input.dataset.intlTelInputId = this.id.toString();
     this.telInput = input;
 
     this.highlightedItem = null;
@@ -524,10 +524,10 @@ export class Iti {
         class: liClass,
         tabindex: "-1",
         role: "option",
-        "data-dial-code": c.dialCode,
-        "data-country-code": c.iso2,
         "aria-selected": "false",
       });
+      listItem.dataset.dialCode = c.dialCode;
+      listItem.dataset.countryCode = c.iso2;
 
       // Store this for later use e.g. country search filtering.
       c.nodeById[this.id] = listItem;
@@ -1584,11 +1584,11 @@ export class Iti {
   //* Called when the user selects a list item from the dropdown.
   private _selectListItem(listItem: HTMLElement): void {
     //* Update selected country and active list item.
-    const iso2 = listItem.getAttribute("data-country-code") as Iso2;
+    const iso2 = listItem.dataset.countryCode as Iso2;
     const countryChanged = this._setCountry(iso2);
     this._closeDropdown();
 
-    const dialCode = listItem.getAttribute("data-dial-code");
+    const dialCode = listItem.dataset.dialCode;
     this._updateDialCode(dialCode);
 
     // reformat any existing number to the new country
@@ -1801,7 +1801,7 @@ export class Iti {
     this.abortController.abort();
 
     //* Remove attribute of id instance: data-intl-tel-input-id.
-    this.telInput.removeAttribute("data-intl-tel-input-id");
+    delete this.telInput.dataset.intlTelInputId;
 
     //* Restore original styling
     if (separateDialCode) {
@@ -2062,7 +2062,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     getCountryData: (): Country[] => allCountries,
     //* A getter for the plugin instance.
     getInstance: (input: HTMLInputElement): Iti | null => {
-      const id = input.getAttribute("data-intl-tel-input-id");
+      const id = input.dataset.intlTelInputId;
       return id ? intlTelInput.instances[id] : null;
     },
     //* A map from instance ID to instance object.
