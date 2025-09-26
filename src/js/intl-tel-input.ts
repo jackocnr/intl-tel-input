@@ -10,7 +10,10 @@ import type {
   SelectedCountryData,
 } from "./modules/types/public-api";
 import { getNumeric } from "./modules/utils/string";
-import { getMatchedCountries, findFirstCountryStartingWith } from "./modules/core/countrySearch";
+import {
+  getMatchedCountries,
+  findFirstCountryStartingWith,
+} from "./modules/core/countrySearch";
 import UI from "./modules/core/ui";
 import {
   processAllCountries,
@@ -221,7 +224,10 @@ export class Iti {
     if (this.options.allowDropdown) {
       this._initDropdownListeners();
     }
-    if ((this.ui.hiddenInput || this.ui.hiddenInputCountry) && this.ui.telInput.form) {
+    if (
+      (this.ui.hiddenInput || this.ui.hiddenInputCountry) &&
+      this.ui.telInput.form
+    ) {
       this._initHiddenInputListener();
     }
   }
@@ -272,9 +278,13 @@ export class Iti {
         this._openDropdown();
       }
     };
-    this.ui.selectedCountry.addEventListener("click", handleClickSelectedCountry, {
-      signal,
-    });
+    this.ui.selectedCountry.addEventListener(
+      "click",
+      handleClickSelectedCountry,
+      {
+        signal,
+      },
+    );
 
     //* Open dropdown if selected country is focused and they press up/down/space/enter.
     const handleCountryContainerKeydown = (e: KeyboardEvent): void => {
@@ -424,7 +434,8 @@ export class Iti {
           0,
           currentCaretPos - 1,
         );
-        const valueAfterCaret = this.ui.telInput.value.substring(currentCaretPos);
+        const valueAfterCaret =
+          this.ui.telInput.value.substring(currentCaretPos);
         this.ui.telInput.value = valueBeforeCaret + valueAfterCaret;
         this._openDropdownWithPlus();
         return;
@@ -437,7 +448,8 @@ export class Iti {
 
       //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
       const isFormattingChar = e?.data && /[^+0-9]/.test(e.data);
-      const isPaste = e?.inputType === "insertFromPaste" && this.ui.telInput.value;
+      const isPaste =
+        e?.inputType === "insertFromPaste" && this.ui.telInput.value;
       if (isFormattingChar || (isPaste && !strictMode)) {
         userOverrideFormatting = true;
       }
@@ -482,9 +494,13 @@ export class Iti {
     //* This handles individual key presses as well as cut/paste events
     //* the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
     //* whereas "keyup" fires even for shift key, arrow key presses etc.
-    this.ui.telInput.addEventListener("input", handleInputEvent as EventListener, {
-      signal: this.abortController.signal,
-    });
+    this.ui.telInput.addEventListener(
+      "input",
+      handleInputEvent as EventListener,
+      {
+        signal: this.abortController.signal,
+      },
+    );
   }
 
   private _maybeBindKeydownListener(): void {
@@ -729,9 +745,13 @@ export class Iti {
         this.ui.highlightListItem(listItem, false);
       }
     };
-    this.ui.countryList.addEventListener("mouseover", handleMouseoverCountryList, {
-      signal,
-    });
+    this.ui.countryList.addEventListener(
+      "mouseover",
+      handleMouseoverCountryList,
+      {
+        signal,
+      },
+    );
   }
 
   //* Listen for country selection.
