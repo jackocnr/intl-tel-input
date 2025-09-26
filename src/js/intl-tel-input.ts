@@ -47,30 +47,27 @@ const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 //* This is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
 export class Iti {
-  //* PUBLIC FIELDS
+  //* PUBLIC FIELDS - READONLY
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   readonly id: number;
   // accessed externally via iti.promise.then(...)
-  promise: Promise<[unknown, unknown]>;
+  readonly promise: Promise<[unknown, unknown]>;
 
   //* PRIVATE FIELDS - READONLY
   private readonly ui: UI;
   private readonly options: AllOptions;
-  private readonly hadInitialPlaceholder: boolean;
-  // NOTE: most of these fields could be "readonly" (a TypeScript convention), but TS requires them to be assigned in the constructor and there are WAY too many to do that - it would be a mess (e.g. think of all the DOM node fields alone - maybe this will be feasible if we ever extract the DOM node creation to a separate class)
-  private isAndroid: boolean;
+  private readonly isAndroid: boolean;
   // country data
-  private countries: Country[];
-  private dialCodeMaxLen: number;
-  private dialCodeToIso2Map: Record<string, Iso2[]>;
-  private dialCodes: Set<string>;
-  private countryByIso2: Map<Iso2, Country>;
+  private readonly countries: Country[];
+  private readonly dialCodeMaxLen: number;
+  private readonly dialCodeToIso2Map: Record<string, Iso2[]>;
+  private readonly dialCodes: Set<string>;
+  private readonly countryByIso2: Map<Iso2, Country>;
 
   //* PRIVATE FIELDS - NOT READONLY
   private selectedCountryData: SelectedCountryData;
   private maxCoreNumberLength: number | null;
   private defaultCountry: Iso2;
-  // centralised event management
   private abortController: AbortController;
   private dropdownAbortController: AbortController | null;
 
@@ -84,20 +81,37 @@ export class Iti {
 
     //* Process specified options / defaults.
     this.options = { ...defaults, ...customOptions } as AllOptions;
-    this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
+    applyOptionSideEffects(this.options);
 
     this.ui = new UI(input, this.options, this.id);
+    this.isAndroid = Iti._getIsAndroid();
+    this.promise = this._createInitPromises();
+
+    //* Process onlyCountries or excludeCountries array if present.
+    this.countries = processAllCountries(this.options);
+
+    //* Generate this.dialCodes and this.dialCodeToIso2Map.
+    const { dialCodes, dialCodeMaxLen, dialCodeToIso2Map } = processDialCodes(
+      this.countries,
+      this.options,
+    );
+    this.dialCodes = dialCodes;
+    this.dialCodeMaxLen = dialCodeMaxLen;
+    this.dialCodeToIso2Map = dialCodeToIso2Map;
+
+    //* Build fast iso2 -> country map for O(1) lookups (used by _getCountryData).
+    this.countryByIso2 = new Map(this.countries.map((c) => [c.iso2, c]));
+
     this._init();
   }
 
-  private _detectEnvironment(): void {
-    this.isAndroid =
-      typeof navigator !== "undefined"
-        ? /Android/i.test(navigator.userAgent)
-        : false;
+  private static _getIsAndroid(): boolean {
+    return typeof navigator !== "undefined"
+      ? /Android/i.test(navigator.userAgent)
+      : false;
   }
 
-  private _createInitPromises(): void {
+  private _createInitPromises(): Promise<[unknown, unknown]> {
     //* these promises get resolved when their individual requests complete
     //* this way the dev can do something like iti.promise.then(...) to know when all requests are complete.
     const autoCountryPromise = new Promise((resolve, reject) => {
@@ -108,15 +122,11 @@ export class Iti {
       this.resolveUtilsScriptPromise = resolve;
       this.rejectUtilsScriptPromise = reject;
     });
-    this.promise = Promise.all([autoCountryPromise, utilsScriptPromise]);
+    return Promise.all([autoCountryPromise, utilsScriptPromise]);
   }
 
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init(): void {
-    applyOptionSideEffects(this.options);
-    this._detectEnvironment();
-    this._createInitPromises();
-
     //* In various situations there could be no country selected initially, but we need to be able
     //* to assume this variable exists.
     this.selectedCountryData = {} as SelectedCountryData;
@@ -124,7 +134,7 @@ export class Iti {
     // init event controller
     this.abortController = new AbortController();
 
-    //* Process all the data: onlyCountries, excludeCountries, countryOrder etc.
+    //* Process the country data: country name translations, countryOrder etc.
     this._processCountryData();
 
     //* generate the markup.
@@ -146,26 +156,11 @@ export class Iti {
 
   //* Prepare all of the country data, including onlyCountries, excludeCountries, countryOrder options.
   private _processCountryData(): void {
-    //* Process onlyCountries or excludeCountries array if present.
-    this.countries = processAllCountries(this.options);
-
-    //* Generate this.dialCodes and this.dialCodeToIso2Map.
-    const { dialCodes, dialCodeMaxLen, dialCodeToIso2Map } = processDialCodes(
-      this.countries,
-      this.options,
-    );
-    this.dialCodes = dialCodes;
-    this.dialCodeMaxLen = dialCodeMaxLen;
-    this.dialCodeToIso2Map = dialCodeToIso2Map;
-
     //* Translate country names according to i18n option.
     translateCountryNames(this.countries, this.options);
 
     //* Sort countries by countryOrder option (if present), then name.
     sortCountries(this.countries, this.options);
-
-    //* Build fast iso2 -> country map for O(1) lookups (used by _getCountryData).
-    this.countryByIso2 = new Map(this.countries.map((c) => [c.iso2, c]));
 
     //* Precompute and cache country search tokens to speed up filtering
     cacheSearchTokens(this.countries);
@@ -1190,7 +1185,7 @@ export class Iti {
     } = this.options;
     const shouldSetPlaceholder =
       autoPlaceholder === "aggressive" ||
-      (!this.hadInitialPlaceholder && autoPlaceholder === "polite");
+      (!this.ui.hadInitialPlaceholder && autoPlaceholder === "polite");
 
     if (intlTelInput.utils && shouldSetPlaceholder) {
       const numberType = intlTelInput.utils.numberType[placeholderNumberType];

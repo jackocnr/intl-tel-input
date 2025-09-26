@@ -14,7 +14,7 @@ module.exports = function(grunt) {
             match: /_processCountryData/g,
             replacement: '_b'
           }, {
-            match: /_detectEnvironment/g,
+            match: /_getIsAndroid/g,
             replacement: '_k'
           }, {
             match: /_createInitPromises/g,

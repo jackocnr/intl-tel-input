@@ -28,12 +28,14 @@ export default class UI {
   hiddenInput: HTMLInputElement;
   hiddenInputCountry: HTMLInputElement;
   highlightedItem: HTMLElement | null = null;
+  readonly hadInitialPlaceholder: boolean;
 
   constructor(input: HTMLInputElement, options: AllOptions, id: number) {
     input.dataset.intlTelInputId = id.toString();
     this.telInput = input;
     this.options = options;
     this.id = id;
+    this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
     //* Store original styling before we override it.
     if (this.options.separateDialCode) {
