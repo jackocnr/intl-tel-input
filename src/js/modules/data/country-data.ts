@@ -151,10 +151,10 @@ export function sortCountries(countries: Country[], options: AllOptions): void {
 //* Precompute and cache country search tokens to speed up filtering
 export function cacheSearchTokens(countries: Country[]): void {
   for (const c of countries) {
-    // Light normalisation: lowercase name (diacritic folding, trimming etc can still occur at query side via normaliseString if needed)
+    // Normalised name (lowercase, accents removed etc)
     c.normalisedName = normaliseString(c.name);
-    // Derive initials (first letter of each alpha sequence)
-    c.initials = c.name.split(/[^a-zA-ZÀ-ÿа-яА-Я]/).map(word => word[0]).join("").toLowerCase();
+    // Name initials (first letter of each alpha sequence)
+    c.initials = c.normalisedName.split(/[^a-z]/).map(word => word[0]).join("");
     // Cached +dialCode variant
     c.dialCodePlus = `+${c.dialCode}`;
   }
