@@ -2,9 +2,10 @@ import { I18n } from "../../intl-tel-input/i18n/types";
 import type { AllOptions } from "../types/public-api";
 
 // Helper for media query evaluation
-const mq = (q: string): boolean => {
-  return typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia(q).matches;
-};
+const mq = (q: string): boolean =>
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia(q).matches;
 
 //* Helper to decide whether to use fullscreen popup by default
 const computeDefaultUseFullscreenPopup = (): boolean => {
@@ -12,7 +13,10 @@ const computeDefaultUseFullscreenPopup = (): boolean => {
     //* We cannot just test screen size as some smartphones/website meta tags will report desktop resolutions.
     //* Note: to target Android Mobiles (and not Tablets), we must find 'Android' and 'Mobile'
     // DEPRECATED: isMobileUserAgent will be removed in next major version
-    const isMobileUserAgent = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isMobileUserAgent =
+      /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      );
     const isNarrowViewport = mq("(max-width: 500px)");
     const isShortViewport = mq("(max-height: 600px)");
     const isCoarsePointer = mq("(pointer: coarse)");
@@ -21,7 +25,11 @@ const computeDefaultUseFullscreenPopup = (): boolean => {
       2. If narrow width OR (coarse pointer with constrained height) we also prefer fullscreen for usability.
         - Coarse pointer usually implies touch (phones/tablets, some hybrids) where larger touch targets help (and virtual keyboards may be used, which consume more vertical space)
     */
-    return isMobileUserAgent || isNarrowViewport || (isCoarsePointer && isShortViewport);
+    return (
+      isMobileUserAgent ||
+      isNarrowViewport ||
+      (isCoarsePointer && isShortViewport)
+    );
   }
   return false;
 };
@@ -80,7 +88,10 @@ export const defaults: AllOptions = {
 };
 
 // Apply option side-effects (mutates the passed object)
-export function applyOptionSideEffects(o: AllOptions, defaultEnglishStrings: I18n): void {
+export const applyOptionSideEffects = (
+  o: AllOptions,
+  defaultEnglishStrings: I18n,
+): void => {
   //* If showing fullscreen popup, do not fix the width.
   if (o.useFullscreenPopup) {
     o.fixDropdownWidth = false;
@@ -108,4 +119,4 @@ export function applyOptionSideEffects(o: AllOptions, defaultEnglishStrings: I18
 
   //* Allow overriding the default interface strings.
   o.i18n = { ...defaultEnglishStrings, ...o.i18n };
-}
+};

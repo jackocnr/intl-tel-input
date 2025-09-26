@@ -9,31 +9,44 @@ export interface DialCodeProcessingResult {
 }
 
 //* Process onlyCountries or excludeCountries array if present.
-export function processAllCountries(options: AllOptions): Country[] {
+export const processAllCountries = (options: AllOptions): Country[] => {
   const { onlyCountries, excludeCountries } = options;
   if (onlyCountries.length) {
-    const lowerCaseOnlyCountries = onlyCountries.map((country) => country.toLowerCase());
-    return allCountries.filter((country) => lowerCaseOnlyCountries.includes(country.iso2));
+    const lowerCaseOnlyCountries = onlyCountries.map((country) =>
+      country.toLowerCase(),
+    );
+    return allCountries.filter((country) =>
+      lowerCaseOnlyCountries.includes(country.iso2),
+    );
   } else if (excludeCountries.length) {
-    const lowerCaseExcludeCountries = excludeCountries.map((country) => country.toLowerCase());
-    return allCountries.filter((country) => !lowerCaseExcludeCountries.includes(country.iso2));
+    const lowerCaseExcludeCountries = excludeCountries.map((country) =>
+      country.toLowerCase(),
+    );
+    return allCountries.filter(
+      (country) => !lowerCaseExcludeCountries.includes(country.iso2),
+    );
   }
   return allCountries;
-}
+};
 
 //* Translate Countries by object literal provided on config.
-export function translateCountryNames(countries: Country[], options: AllOptions): void {
+export const translateCountryNames = (
+  countries: Country[],
+  options: AllOptions,
+): void => {
   for (const c of countries) {
     const iso2 = c.iso2.toLowerCase();
     if (options.i18n[iso2]) {
       c.name = options.i18n[iso2];
     }
   }
-}
-
+};
 
 //* Generate dialCodes and dialCodeToIso2Map.
-export function processDialCodes(countries: Country[], options: AllOptions): DialCodeProcessingResult {
+export const processDialCodes = (
+  countries: Country[],
+  options: AllOptions,
+): DialCodeProcessingResult => {
   //* Here we store just dial codes, where the key is the dial code, and the value is true
   //* e.g. { 1: true, 7: true, 20: true, ... }.
   const dialCodes = new Set<string>();
@@ -52,7 +65,11 @@ export function processDialCodes(countries: Country[], options: AllOptions): Dia
   const dialCodeToIso2Map: Record<string, Iso2[]> = {};
 
   //* Add a dial code to this.dialCodeToIso2Map.
-  const _addToDialCodeMap = (iso2: Iso2, dialCode: string, priority?: number) => {
+  const _addToDialCodeMap = (
+    iso2: Iso2,
+    dialCode: string,
+    priority?: number,
+  ) => {
     // Bail if no iso2 or dialCode (this can happen with onlyCountries or excludeCountries options).
     if (!iso2 || !dialCode) {
       return;
@@ -120,12 +137,17 @@ export function processDialCodes(countries: Country[], options: AllOptions): Dia
   }
 
   return { dialCodes, dialCodeMaxLen, dialCodeToIso2Map };
-}
+};
 
 //* Sort countries by countryOrder option (if present), then name.
-export function sortCountries(countries: Country[], options: AllOptions): void {
+export const sortCountries = (
+  countries: Country[],
+  options: AllOptions,
+): void => {
   if (options.countryOrder) {
-    options.countryOrder = options.countryOrder.map((iso2) => iso2.toLowerCase() as Iso2);
+    options.countryOrder = options.countryOrder.map(
+      (iso2) => iso2.toLowerCase() as Iso2,
+    );
   }
   countries.sort((a: Country, b: Country): number => {
     //* Primary sort: countryOrder option
@@ -146,16 +168,19 @@ export function sortCountries(countries: Country[], options: AllOptions): void {
     //* Secondary sort: country name
     return a.name.localeCompare(b.name);
   });
-}
+};
 
 //* Precompute and cache country search tokens to speed up filtering
-export function cacheSearchTokens(countries: Country[]): void {
+export const cacheSearchTokens = (countries: Country[]): void => {
   for (const c of countries) {
     // Normalised name (lowercase, accents removed etc)
     c.normalisedName = normaliseString(c.name);
     // Name initials (first letter of each alpha sequence)
-    c.initials = c.normalisedName.split(/[^a-z]/).map(word => word[0]).join("");
+    c.initials = c.normalisedName
+      .split(/[^a-z]/)
+      .map((word) => word[0])
+      .join("");
     // Cached +dialCode variant
     c.dialCodePlus = `+${c.dialCode}`;
   }
-}
+};

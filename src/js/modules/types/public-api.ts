@@ -8,22 +8,44 @@ export type UtilsLoader = () => Promise<{ default: ItiUtils }>;
 
 // Library utilities (loaded lazily)
 export type ItiUtils = {
-  formatNumber(number: string, iso2: string | undefined, format?: number): string;
+  formatNumber(
+    number: string,
+    iso2: string | undefined,
+    format?: number
+  ): string;
   formatNumberAsYouType(number: string, iso2: string | undefined): string;
   getCoreNumber(number: string, iso2: string | undefined): string;
-  getExampleNumber(iso2: string | undefined, nationalMode: boolean, numberType: number, useE164?: boolean): string;
+  getExampleNumber(
+    iso2: string | undefined,
+    nationalMode: boolean,
+    numberType: number,
+    useE164?: boolean
+  ): string;
   getExtension(number: string, iso2: string | undefined): string;
   getNumberType(number: string, iso2: string | undefined): number;
   getValidationError(number: string, iso2: string | undefined): number;
-  isPossibleNumber(number: string, iso2: string | undefined, numberType?: NumberType[] | null): boolean;
-  isValidNumber(number: string, iso2: string | undefined, numberType?: NumberType[] | null): boolean;
-  numberFormat: { NATIONAL: number, INTERNATIONAL: number, E164: number, RFC3966: number };
+  isPossibleNumber(
+    number: string,
+    iso2: string | undefined,
+    numberType?: NumberType[] | null
+  ): boolean;
+  isValidNumber(
+    number: string,
+    iso2: string | undefined,
+    numberType?: NumberType[] | null
+  ): boolean;
+  numberFormat: {
+    NATIONAL: number;
+    INTERNATIONAL: number;
+    E164: number;
+    RFC3966: number;
+  };
   numberType: Record<string, number>;
 };
 
 // Number types exposed publicly
 export type NumberType =
-  "FIXED_LINE_OR_MOBILE"
+  | "FIXED_LINE_OR_MOBILE"
   | "FIXED_LINE"
   | "MOBILE"
   | "PAGER"
@@ -44,14 +66,23 @@ export interface AllOptions {
   containerClass: string;
   countryOrder: Iso2[] | null;
   countrySearch: boolean;
-  customPlaceholder: ((selectedCountryPlaceholder: string, selectedCountryData: object) => string) | null;
+  customPlaceholder:
+    | ((
+        selectedCountryPlaceholder: string,
+        selectedCountryData: object
+      ) => string)
+    | null;
   dropdownContainer: HTMLElement | null;
   excludeCountries: Iso2[];
   fixDropdownWidth: boolean;
   formatAsYouType: boolean;
   formatOnDisplay: boolean;
-  geoIpLookup: ((success: (iso2: Iso2) => void, failure: () => void) => void) | null;
-  hiddenInput: ((telInputName: string) => { phone: string; country?: string }) | null;
+  geoIpLookup:
+    | ((success: (iso2: Iso2) => void, failure: () => void) => void)
+    | null;
+  hiddenInput:
+    | ((telInputName: string) => { phone: string; country?: string })
+    | null;
   i18n: I18n;
   initialCountry: Iso2 | "auto" | "";
   loadUtils: UtilsLoader | null;
@@ -88,6 +119,4 @@ export interface IntlTelInputInterface {
 // - When selected: it's a full Country (iso2 is present)
 // - When none selected: it's an empty object literal (iso2 is absent)
 type EmptyObject = Record<string, never>;
-export type SelectedCountryData =
-  | Country
-  | EmptyObject;
+export type SelectedCountryData = Country | EmptyObject;

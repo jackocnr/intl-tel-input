@@ -1,12 +1,12 @@
 import { SelectedCountryData } from "../types/public-api";
 
 //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
-export function beforeSetNumber(
+export const beforeSetNumber = (
   fullNumber: string,
   dialCode: string,
   separateDialCode: boolean,
   selectedCountryData: SelectedCountryData,
-): string {
+): string => {
   let number = fullNumber;
   if (separateDialCode) {
     //* If there is a valid dial code.
@@ -24,16 +24,16 @@ export function beforeSetNumber(
     }
   }
   return number;
-}
+};
 
 //* Format the number as the user types.
-export function formatNumberAsYouType(
+export const formatNumberAsYouType = (
   fullNumber: string,
   telInputValue: string,
   utils: any,
   selectedCountryData: SelectedCountryData,
   separateDialCode: boolean,
-): string {
+): string => {
   const result = utils
     ? utils.formatNumberAsYouType(fullNumber, selectedCountryData.iso2)
     : fullNumber;
@@ -48,4 +48,4 @@ export function formatNumberAsYouType(
     return afterDialCode.trim();
   }
   return result;
-}
+};

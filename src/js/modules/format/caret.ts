@@ -1,10 +1,10 @@
 //* Iterate through the formattedValue until hit the right number of relevant chars.
-export function translateCursorPosition(
+export const translateCursorPosition = (
   relevantChars: number,
   formattedValue: string,
   prevCaretPos: number,
   isDeleteForwards: boolean,
-): number {
+): number => {
   //* If the first char is a formatting char, and they backspace delete it:
   //* Cursor should stay at the start (pos 0), rather than stick to the first digit (pos 1).
   if (prevCaretPos === 0 && !isDeleteForwards) {
@@ -29,4 +29,4 @@ export function translateCursorPosition(
     }
   }
   return formattedValue.length;
-}
+};
