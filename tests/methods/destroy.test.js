@@ -2,7 +2,12 @@
  * @jest-environment jsdom
  */
 
-const { initPlugin, teardown, getCountryContainer, getCountryListElement } = require("../helpers/helpers");
+const {
+  initPlugin,
+  teardown,
+  getCountryContainer,
+  getCountryListElement,
+} = require("../helpers/helpers");
 
 describe("destroy method", () => {
   describe("vanilla init", () => {
@@ -24,7 +29,8 @@ describe("destroy method", () => {
 
     test("destroy removes markup", () => {
       iti.destroy();
-      const inputParent = input.parentElement; // wrapper removed, input re-inserted
+      // wrapper removed at this point so parent probably is body element
+      const inputParent = input.parentElement;
       expect(inputParent.classList.contains("iti")).toBe(false);
       expect(getCountryContainer(inputParent)).toBeFalsy();
       expect(getCountryListElement(inputParent)).toBeFalsy();

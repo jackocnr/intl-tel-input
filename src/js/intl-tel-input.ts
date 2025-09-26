@@ -10,7 +10,7 @@ import type {
   SelectedCountryData,
 } from "./modules/types/public-api";
 import { getNumeric, normaliseString } from "./modules/utils/string";
-import { createEl, buildClassNames } from "./modules/utils/dom";
+import UI from "./modules/core/ui";
 import {
   processAllCountries,
   processDialCodes,
@@ -54,12 +54,10 @@ export class Iti {
   promise: Promise<[unknown, unknown]>;
 
   //* PRIVATE FIELDS - READONLY
-  private readonly telInput: HTMLInputElement;
+  private readonly ui: UI;
   private readonly options: AllOptions;
   private readonly hadInitialPlaceholder: boolean;
   // NOTE: most of these fields could be "readonly" (a TypeScript convention), but TS requires them to be assigned in the constructor and there are WAY too many to do that - it would be a mess (e.g. think of all the DOM node fields alone - maybe this will be feasible if we ever extract the DOM node creation to a separate class)
-  private originalPaddingLeft: string;
-  private isRTL: boolean;
   private isAndroid: boolean;
   // country data
   private countries: Country[];
@@ -67,25 +65,8 @@ export class Iti {
   private dialCodeToIso2Map: Record<string, Iso2[]>;
   private dialCodes: Set<string>;
   private countryByIso2: Map<Iso2, Country>;
-  // DOM nodes
-  private countryContainer: HTMLElement;
-  private selectedCountry: HTMLElement;
-  private selectedCountryInner: HTMLElement;
-  private selectedDialCode: HTMLElement;
-  private dropdownArrow: HTMLElement;
-  private dropdownContent: HTMLElement;
-  private searchInput: HTMLInputElement;
-  private searchIcon: HTMLElement;
-  private searchClearButton: HTMLButtonElement;
-  private searchNoResults: HTMLElement;
-  private searchResultsA11yText: HTMLElement;
-  private countryList: HTMLElement;
-  private dropdown: HTMLElement;
-  private hiddenInput: HTMLInputElement;
-  private hiddenInputCountry: HTMLInputElement;
 
   //* PRIVATE FIELDS - NOT READONLY
-  private highlightedItem: HTMLElement | null;
   private selectedCountryData: SelectedCountryData;
   private maxCoreNumberLength: number | null;
   private defaultCountry: Iso2;
@@ -100,31 +81,20 @@ export class Iti {
 
   constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
-    input.dataset.intlTelInputId = this.id.toString();
-    this.telInput = input;
-
-    this.highlightedItem = null;
 
     //* Process specified options / defaults.
     this.options = { ...defaults, ...customOptions } as AllOptions;
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
 
+    this.ui = new UI(input, this.options, this.id);
     this._init();
   }
 
-  private _detectEnvironmentAndLayout(): void {
+  private _detectEnvironment(): void {
     this.isAndroid =
       typeof navigator !== "undefined"
         ? /Android/i.test(navigator.userAgent)
         : false;
-
-    //* Check if input has an ancestor with RTL.
-    this.isRTL = !!this.telInput.closest("[dir=rtl]");
-
-    //* Store original styling before we override it.
-    if (this.options.separateDialCode) {
-      this.originalPaddingLeft = this.telInput.style.paddingLeft;
-    }
   }
 
   private _createInitPromises(): void {
@@ -144,7 +114,7 @@ export class Iti {
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   _init(): void {
     applyOptionSideEffects(this.options);
-    this._detectEnvironmentAndLayout();
+    this._detectEnvironment();
     this._createInitPromises();
 
     //* In various situations there could be no country selected initially, but we need to be able
@@ -158,7 +128,7 @@ export class Iti {
     this._processCountryData();
 
     //* generate the markup.
-    this._generateMarkup();
+    this.ui.generateMarkup(this.countries);
 
     //* Set the initial state of the input value and the selected country.
     this._setInitialState();
@@ -201,360 +171,6 @@ export class Iti {
     cacheSearchTokens(this.countries);
   }
 
-  //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
-  private _generateMarkup(): void {
-    this._prepareTelInput();
-
-    const wrapper = this._createWrapperAndInsert();
-    this._maybeBuildCountryContainer(wrapper);
-    wrapper.appendChild(this.telInput);
-
-    this._maybeUpdateInputPaddingAndReveal();
-    this._maybeBuildHiddenInputs(wrapper);
-  }
-
-  private _prepareTelInput(): void {
-    this.telInput.classList.add("iti__tel-input");
-
-    //* If autocomplete does not exist on the element and its form, then
-    //* prevent autocomplete as there's no safe, cross-browser event we can react to, so it can
-    //* easily put the plugin in an inconsistent state e.g. the wrong flag selected for the
-    //* autocompleted number, which on submit could mean wrong number is saved.
-    if (
-      !this.telInput.hasAttribute("autocomplete") &&
-      !this.telInput.form?.hasAttribute("autocomplete")
-    ) {
-      this.telInput.setAttribute("autocomplete", "off");
-    }
-  }
-
-  private _createWrapperAndInsert(): HTMLElement {
-    const { allowDropdown, showFlags, containerClass, useFullscreenPopup } =
-      this.options;
-
-    //* Containers (mostly for positioning).
-    const parentClasses = buildClassNames({
-      iti: true,
-      "iti--allow-dropdown": allowDropdown,
-      "iti--show-flags": showFlags,
-      "iti--inline-dropdown": !useFullscreenPopup,
-      [containerClass]: Boolean(containerClass),
-    });
-    const wrapper = createEl("div", { class: parentClasses });
-    // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the dropdown content RTL)
-    if (this.isRTL) {
-      wrapper.setAttribute("dir", "ltr");
-    }
-    this.telInput.before(wrapper);
-    return wrapper;
-  }
-
-  private _maybeBuildCountryContainer(wrapper: HTMLElement): void {
-    const { allowDropdown, separateDialCode, showFlags } = this.options;
-
-    //* If we need a countryContainer
-    if (allowDropdown || showFlags || separateDialCode) {
-      this.countryContainer = createEl(
-        "div",
-        // visibly hidden until we measure it's width to set the input padding correctly
-        { class: "iti__country-container iti__v-hide" },
-        wrapper,
-      );
-
-      //* Selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
-      //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
-      if (allowDropdown) {
-        this.selectedCountry = createEl(
-          "button",
-          {
-            type: "button",
-            class: "iti__selected-country",
-            "aria-expanded": "false",
-            "aria-label": this.options.i18n.noCountrySelected,
-            "aria-haspopup": "dialog",
-            "aria-controls": `iti-${this.id}__dropdown-content`,
-          },
-          this.countryContainer,
-        );
-
-        if (this.telInput.disabled) {
-          this.selectedCountry.setAttribute("disabled", "true");
-        }
-      } else {
-        this.selectedCountry = createEl(
-          "div",
-          { class: "iti__selected-country" },
-          this.countryContainer,
-        );
-      }
-
-      // The element that gets a grey background on hover (if allowDropdown enabled)
-      const selectedCountryPrimary = createEl(
-        "div",
-        { class: "iti__selected-country-primary" },
-        this.selectedCountry,
-      );
-
-      //* This is where we will add the selected flag (or globe) class later
-      this.selectedCountryInner = createEl(
-        "div",
-        { class: "iti__flag" },
-        selectedCountryPrimary,
-      );
-
-      if (allowDropdown) {
-        this.dropdownArrow = createEl(
-          "div",
-          { class: "iti__arrow", "aria-hidden": "true" },
-          selectedCountryPrimary,
-        );
-      }
-
-      if (separateDialCode) {
-        this.selectedDialCode = createEl(
-          "div",
-          { class: "iti__selected-dial-code" },
-          this.selectedCountry,
-        );
-      }
-
-      if (allowDropdown) {
-        this._buildDropdownContent();
-      }
-    }
-  }
-
-  private _buildDropdownContent(): void {
-    const {
-      fixDropdownWidth,
-      useFullscreenPopup,
-      countrySearch,
-      i18n,
-      dropdownContainer,
-      containerClass,
-    } = this.options;
-
-    const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
-    this.dropdownContent = createEl("div", {
-      id: `iti-${this.id}__dropdown-content`,
-      class: `iti__dropdown-content iti__hide ${extraClasses}`,
-      role: "dialog",
-      "aria-modal": "true",
-    });
-    if (this.isRTL) {
-      this.dropdownContent.setAttribute("dir", "rtl");
-    }
-
-    if (countrySearch) {
-      this._buildSearchUI();
-    }
-
-    this.countryList = createEl(
-      "ul",
-      {
-        class: "iti__country-list",
-        id: `iti-${this.id}__country-listbox`,
-        role: "listbox",
-        "aria-label": i18n.countryListAriaLabel,
-      },
-      this.dropdownContent,
-    );
-    this._appendListItems();
-
-    if (countrySearch) {
-      this._updateSearchResultsA11yText();
-    }
-
-    //* Create dropdownContainer markup.
-    if (dropdownContainer) {
-      const dropdownClasses = buildClassNames({
-        iti: true,
-        "iti--container": true,
-        "iti--fullscreen-popup": useFullscreenPopup,
-        "iti--inline-dropdown": !useFullscreenPopup,
-        [containerClass]: Boolean(containerClass),
-      });
-      this.dropdown = createEl("div", { class: dropdownClasses });
-      this.dropdown.appendChild(this.dropdownContent);
-    } else {
-      this.countryContainer.appendChild(this.dropdownContent);
-    }
-  }
-
-  private _buildSearchUI(): void {
-    const { i18n } = this.options;
-
-    // Wrapper so we can position the icons (search + clear)
-    const searchWrapper = createEl(
-      "div",
-      { class: "iti__search-input-wrapper" },
-      this.dropdownContent,
-    );
-
-    // Search (magnifying glass) icon SVG
-    this.searchIcon = createEl(
-      "span",
-      {
-        class: "iti__search-icon",
-        "aria-hidden": "true",
-      },
-      searchWrapper,
-    );
-
-    this.searchIcon.innerHTML = `
-      <svg class="iti__search-icon-svg" width="14" height="14" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-        <circle cx="11" cy="11" r="7" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>`;
-
-    this.searchInput = createEl(
-      "input",
-      {
-        id: `iti-${this.id}__search-input`, // Chrome says inputs need either a name or an id
-        type: "search",
-        class: "iti__search-input",
-        placeholder: i18n.searchPlaceholder,
-        // role=combobox + aria-autocomplete=list + aria-activedescendant allows maintaining focus on the search input while allowing users to navigate search results with up/down keyboard keys
-        role: "combobox",
-        "aria-expanded": "true",
-        "aria-label": i18n.searchPlaceholder,
-        "aria-controls": `iti-${this.id}__country-listbox`,
-        "aria-autocomplete": "list",
-        autocomplete: "off",
-      },
-      searchWrapper,
-    ) as HTMLInputElement;
-
-    this.searchClearButton = createEl(
-      "button",
-      {
-        type: "button",
-        class: "iti__search-clear iti__hide",
-        "aria-label": i18n.clearSearchAriaLabel,
-        tabindex: "-1",
-      },
-      searchWrapper,
-    ) as HTMLButtonElement;
-
-    const maskId = `iti-${this.id}-clear-mask`;
-    // Mask creates a transparent cross 'cut' through the filled circle so underlying input bg shows.
-    this.searchClearButton.innerHTML = `
-      <svg class="iti__search-clear-svg" width="12" height="12" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <mask id="${maskId}" maskUnits="userSpaceOnUse">
-          <rect width="16" height="16" fill="white" />
-          <path d="M5.2 5.2 L10.8 10.8 M10.8 5.2 L5.2 10.8" stroke="black" stroke-linecap="round" class="iti__search-clear-x" />
-        </mask>
-        <circle cx="8" cy="8" r="8" class="iti__search-clear-bg" mask="url(#${maskId})" />
-      </svg>`;
-
-    this.searchResultsA11yText = createEl(
-      "span",
-      { class: "iti__a11y-text" },
-      this.dropdownContent,
-    );
-
-    // Visible no-results message (hidden by default)
-    this.searchNoResults = createEl(
-      "div",
-      {
-        class: "iti__no-results iti__hide",
-        "aria-hidden": "true", // all a11y messaging happens in this.searchResultsA11yText
-      },
-      this.dropdownContent,
-    );
-    this.searchNoResults.textContent = i18n.zeroSearchResults;
-  }
-
-  private _maybeUpdateInputPaddingAndReveal(): void {
-    if (this.countryContainer) {
-      this._updateInputPadding();
-      this.countryContainer.classList.remove("iti__v-hide");
-    }
-  }
-
-  private _maybeBuildHiddenInputs(wrapper: HTMLElement): void {
-    const { hiddenInput } = this.options;
-    if (hiddenInput) {
-      const telInputName = this.telInput.getAttribute("name") || "";
-      const names = hiddenInput(telInputName);
-
-      if (names.phone) {
-        const existingInput = this.telInput.form?.querySelector(
-          `input[name="${names.phone}"]`,
-        );
-        if (existingInput) {
-          this.hiddenInput = existingInput as HTMLInputElement;
-        } else {
-          //* Create hidden input for the full international number.
-          this.hiddenInput = createEl("input", {
-            type: "hidden",
-            name: names.phone,
-          }) as HTMLInputElement;
-          wrapper.appendChild(this.hiddenInput);
-        }
-      }
-
-      if (names.country) {
-        const existingInput = this.telInput.form?.querySelector(
-          `input[name="${names.country}"]`,
-        );
-        if (existingInput) {
-          this.hiddenInputCountry = existingInput as HTMLInputElement;
-        } else {
-          //* Create hidden input for the selected country iso2 code.
-          this.hiddenInputCountry = createEl("input", {
-            type: "hidden",
-            name: names.country,
-          }) as HTMLInputElement;
-          wrapper.appendChild(this.hiddenInputCountry);
-        }
-      }
-    }
-  }
-
-  //* For each country: add a country list item <li> to the countryList <ul> container.
-  private _appendListItems(): void {
-    const frag = document.createDocumentFragment();
-    for (let i = 0; i < this.countries.length; i++) {
-      const c = this.countries[i];
-      // Compute classes (highlight first item when countrySearch disabled)
-      const liClass = buildClassNames({
-        iti__country: true,
-        iti__highlight: i === 0,
-      });
-
-      const listItem = createEl("li", {
-        id: `iti-${this.id}__item-${c.iso2}`,
-        class: liClass,
-        tabindex: "-1",
-        role: "option",
-        "aria-selected": "false",
-      });
-      listItem.dataset.dialCode = c.dialCode;
-      listItem.dataset.countryCode = c.iso2;
-
-      // Store this for later use e.g. country search filtering.
-      c.nodeById[this.id] = listItem;
-
-      // Build contents without innerHTML for safety and clarity
-      if (this.options.showFlags) {
-        createEl("div", { class: `iti__flag iti__${c.iso2}` }, listItem);
-      }
-
-      const nameEl = createEl("span", { class: "iti__country-name" }, listItem);
-      nameEl.textContent = c.name;
-
-      const dialEl = createEl("span", { class: "iti__dial-code" }, listItem);
-      if (this.isRTL) {
-        dialEl.setAttribute("dir", "ltr");
-      }
-      dialEl.textContent = `+${c.dialCode}`;
-
-      frag.appendChild(listItem);
-    }
-    this.countryList.appendChild(frag);
-  }
-
   //* Set the initial state of the input value and the selected country by:
   //* 1. Extracting a dial code from the given number
   //* 2. Using explicit initialCountry
@@ -562,8 +178,8 @@ export class Iti {
     //* Fix firefox bug: when first load page (with input with value set to number with intl dial code)
     //* and initialising plugin removes the dial code from the input, then refresh page,
     //* and we try to init plugin again but this time on number without dial code so show globe icon.
-    const attributeValue = this.telInput.getAttribute("value");
-    const inputValue = this.telInput.value;
+    const attributeValue = this.ui.telInput.getAttribute("value");
+    const inputValue = this.ui.telInput.value;
     const useAttribute =
       attributeValue &&
       attributeValue.startsWith("+") &&
@@ -609,7 +225,7 @@ export class Iti {
     if (this.options.allowDropdown) {
       this._initDropdownListeners();
     }
-    if ((this.hiddenInput || this.hiddenInputCountry) && this.telInput.form) {
+    if ((this.ui.hiddenInput || this.ui.hiddenInputCountry) && this.ui.telInput.form) {
       this._initHiddenInputListener();
     }
   }
@@ -617,14 +233,14 @@ export class Iti {
   //* Update hidden input on form submit.
   private _initHiddenInputListener(): void {
     const handleHiddenInputSubmit = (): void => {
-      if (this.hiddenInput) {
-        this.hiddenInput.value = this.getNumber();
+      if (this.ui.hiddenInput) {
+        this.ui.hiddenInput.value = this.getNumber();
       }
-      if (this.hiddenInputCountry) {
-        this.hiddenInputCountry.value = this.selectedCountryData.iso2 || "";
+      if (this.ui.hiddenInputCountry) {
+        this.ui.hiddenInputCountry.value = this.selectedCountryData.iso2 || "";
       }
     };
-    this.telInput.form?.addEventListener("submit", handleHiddenInputSubmit, {
+    this.ui.telInput.form?.addEventListener("submit", handleHiddenInputSubmit, {
       signal: this.abortController.signal,
     });
   }
@@ -637,13 +253,13 @@ export class Iti {
     //* close it again.
     const handleLabelClick = (e: Event): void => {
       //* If the dropdown is closed, then focus the input, else ignore the click.
-      if (this.dropdownContent.classList.contains("iti__hide")) {
-        this.telInput.focus();
+      if (this.ui.dropdownContent.classList.contains("iti__hide")) {
+        this.ui.telInput.focus();
       } else {
         e.preventDefault();
       }
     };
-    const label = this.telInput.closest("label");
+    const label = this.ui.telInput.closest("label");
     if (label) {
       label.addEventListener("click", handleLabelClick, { signal });
     }
@@ -651,23 +267,23 @@ export class Iti {
     //* Toggle country dropdown on click.
     const handleClickSelectedCountry = (): void => {
       const dropdownClosed =
-        this.dropdownContent.classList.contains("iti__hide");
+        this.ui.dropdownContent.classList.contains("iti__hide");
       if (
         dropdownClosed &&
-        !this.telInput.disabled &&
-        !this.telInput.readOnly
+        !this.ui.telInput.disabled &&
+        !this.ui.telInput.readOnly
       ) {
         this._openDropdown();
       }
     };
-    this.selectedCountry.addEventListener("click", handleClickSelectedCountry, {
+    this.ui.selectedCountry.addEventListener("click", handleClickSelectedCountry, {
       signal,
     });
 
     //* Open dropdown if selected country is focused and they press up/down/space/enter.
     const handleCountryContainerKeydown = (e: KeyboardEvent): void => {
       const isDropdownHidden =
-        this.dropdownContent.classList.contains("iti__hide");
+        this.ui.dropdownContent.classList.contains("iti__hide");
 
       if (
         isDropdownHidden &&
@@ -685,7 +301,7 @@ export class Iti {
         this._closeDropdown();
       }
     };
-    this.countryContainer.addEventListener(
+    this.ui.countryContainer.addEventListener(
       "keydown",
       handleCountryContainerKeydown,
       { signal },
@@ -771,8 +387,8 @@ export class Iti {
 
   private _openDropdownWithPlus(): void {
     this._openDropdown();
-    this.searchInput.value = "+";
-    this._filterCountries("");
+    this.ui.searchInput.value = "+";
+    this._filterCountriesByQuery("");
   }
 
   //* Initialize the tel input listeners.
@@ -792,7 +408,7 @@ export class Iti {
     } = this.options;
     let userOverrideFormatting = false;
     //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
-    if (/\p{L}/u.test(this.telInput.value)) {
+    if (/\p{L}/u.test(this.ui.telInput.value)) {
       userOverrideFormatting = true;
     }
 
@@ -807,30 +423,30 @@ export class Iti {
         allowDropdown &&
         countrySearch
       ) {
-        const currentCaretPos = this.telInput.selectionStart || 0;
-        const valueBeforeCaret = this.telInput.value.substring(
+        const currentCaretPos = this.ui.telInput.selectionStart || 0;
+        const valueBeforeCaret = this.ui.telInput.value.substring(
           0,
           currentCaretPos - 1,
         );
-        const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
-        this.telInput.value = valueBeforeCaret + valueAfterCaret;
+        const valueAfterCaret = this.ui.telInput.value.substring(currentCaretPos);
+        this.ui.telInput.value = valueBeforeCaret + valueAfterCaret;
         this._openDropdownWithPlus();
         return;
       }
 
       //* Update selected country.
-      if (this._updateCountryFromNumber(this.telInput.value)) {
+      if (this._updateCountryFromNumber(this.ui.telInput.value)) {
         this._triggerCountryChange();
       }
 
       //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
       const isFormattingChar = e?.data && /[^+0-9]/.test(e.data);
-      const isPaste = e?.inputType === "insertFromPaste" && this.telInput.value;
+      const isPaste = e?.inputType === "insertFromPaste" && this.ui.telInput.value;
       if (isFormattingChar || (isPaste && !strictMode)) {
         userOverrideFormatting = true;
       }
       //* If user removes all formatting chars, then reset the override.
-      else if (!/[^+0-9]/.test(this.telInput.value)) {
+      else if (!/[^+0-9]/.test(this.ui.telInput.value)) {
         userOverrideFormatting = false;
       }
 
@@ -838,8 +454,8 @@ export class Iti {
       //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
       if (formatAsYouType && !userOverrideFormatting && !isSetNumber) {
         //* Maintain caret position after reformatting.
-        const currentCaretPos = this.telInput.selectionStart || 0;
-        const valueBeforeCaret = this.telInput.value.substring(
+        const currentCaretPos = this.ui.telInput.selectionStart || 0;
+        const valueBeforeCaret = this.ui.telInput.value.substring(
           0,
           currentCaretPos,
         );
@@ -851,7 +467,7 @@ export class Iti {
         const fullNumber = this._getFullNumber();
         const formattedValue = formatNumberAsYouType(
           fullNumber,
-          this.telInput.value,
+          this.ui.telInput.value,
           intlTelInput.utils,
           this.selectedCountryData,
           this.options.separateDialCode,
@@ -862,15 +478,15 @@ export class Iti {
           currentCaretPos,
           isDeleteForwards,
         );
-        this.telInput.value = formattedValue;
+        this.ui.telInput.value = formattedValue;
         // WARNING: calling setSelectionRange triggers a focus on iOS
-        this.telInput.setSelectionRange(newCaretPos, newCaretPos);
+        this.ui.telInput.setSelectionRange(newCaretPos, newCaretPos);
       }
     };
     //* This handles individual key presses as well as cut/paste events
     //* the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
     //* whereas "keyup" fires even for shift key, arrow key presses etc.
-    this.telInput.addEventListener("input", handleInputEvent as EventListener, {
+    this.ui.telInput.addEventListener("input", handleInputEvent as EventListener, {
       signal: this.abortController.signal,
     });
   }
@@ -903,11 +519,11 @@ export class Iti {
           }
           //* If strictMode, prevent invalid characters.
           if (strictMode) {
-            const value = this.telInput.value;
+            const value = this.ui.telInput.value;
             const alreadyHasPlus = value.startsWith("+");
             const isInitialPlus =
               !alreadyHasPlus &&
-              this.telInput.selectionStart === 0 &&
+              this.ui.telInput.selectionStart === 0 &&
               e.key === "+";
             const isNumeric = /^[0-9]$/.test(e.key);
             const isAllowedChar = separateDialCode
@@ -916,9 +532,9 @@ export class Iti {
 
             // insert the new character in the right place
             const newValue =
-              value.slice(0, this.telInput.selectionStart) +
+              value.slice(0, this.ui.telInput.selectionStart) +
               e.key +
-              value.slice(this.telInput.selectionEnd);
+              value.slice(this.ui.telInput.selectionEnd);
             const newFullNumber = this._getFullNumber(newValue);
             const coreNumber = intlTelInput.utils.getCoreNumber(
               newFullNumber,
@@ -941,7 +557,7 @@ export class Iti {
           }
         }
       };
-      this.telInput.addEventListener("keydown", handleKeydownEvent, {
+      this.ui.telInput.addEventListener("keydown", handleKeydownEvent, {
         signal: this.abortController.signal,
       });
     }
@@ -955,7 +571,7 @@ export class Iti {
         e.preventDefault();
 
         // shortcuts
-        const input = this.telInput;
+        const input = this.ui.telInput;
         const selStart = input.selectionStart;
         const selEnd = input.selectionEnd;
         const before = input.value.slice(0, selStart);
@@ -1007,7 +623,7 @@ export class Iti {
         // trigger format-as-you-type and country update etc
         input.dispatchEvent(new InputEvent("input", { bubbles: true }));
       };
-      this.telInput.addEventListener("paste", handlePasteEvent, {
+      this.ui.telInput.addEventListener("paste", handlePasteEvent, {
         signal: this.abortController.signal,
       });
     }
@@ -1015,7 +631,7 @@ export class Iti {
 
   //* Adhere to the input's maxlength attr.
   private _cap(number: string): string {
-    const max = Number(this.telInput.getAttribute("maxlength"));
+    const max = Number(this.ui.telInput.getAttribute("maxlength"));
     return max && number.length > max ? number.substring(0, max) : number;
   }
 
@@ -1029,7 +645,7 @@ export class Iti {
       cancelable: true,
       detail: detailProps,
     });
-    this.telInput.dispatchEvent(e);
+    this.ui.telInput.dispatchEvent(e);
   }
 
   //* Open the dropdown.
@@ -1041,29 +657,29 @@ export class Iti {
     this.dropdownAbortController = new AbortController();
 
     if (fixDropdownWidth) {
-      this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
+      this.ui.dropdownContent.style.width = `${this.ui.telInput.offsetWidth}px`;
     }
-    this.dropdownContent.classList.remove("iti__hide");
-    this.selectedCountry.setAttribute("aria-expanded", "true");
+    this.ui.dropdownContent.classList.remove("iti__hide");
+    this.ui.selectedCountry.setAttribute("aria-expanded", "true");
 
     this._setDropdownPosition();
 
     if (countrySearch) {
       //* When countrySearch enabled, every time the dropdown is opened we reset by highlighting the first item and scrolling to top.
-      const firstCountryItem = this.countryList
+      const firstCountryItem = this.ui.countryList
         .firstElementChild as HTMLElement;
       if (firstCountryItem) {
-        this._highlightListItem(firstCountryItem, false);
-        this.countryList.scrollTop = 0;
+        this.ui.highlightListItem(firstCountryItem, false);
+        this.ui.countryList.scrollTop = 0;
       }
-      this.searchInput.focus();
+      this.ui.searchInput.focus();
     }
 
     //* Bind all the dropdown-related listeners: mouseover, click, click-off, keydown.
     this._bindDropdownListeners();
 
     //* Update the arrow.
-    this.dropdownArrow.classList.add("iti__arrow--up");
+    this.ui.dropdownArrow.classList.add("iti__arrow--up");
 
     this._trigger("open:countrydropdown");
   }
@@ -1071,19 +687,19 @@ export class Iti {
   //* Set the dropdown position
   private _setDropdownPosition(): void {
     if (this.options.dropdownContainer) {
-      this.options.dropdownContainer.appendChild(this.dropdown);
+      this.options.dropdownContainer.appendChild(this.ui.dropdown);
     }
 
     if (!this.options.useFullscreenPopup) {
       // getBoundingClientRect is relative to the viewport, so when you scroll down, pos.top goes down, hence needing to add on scrollTop below
-      const inputPosRelativeToVP = this.telInput.getBoundingClientRect();
-      const inputHeight = this.telInput.offsetHeight;
+      const inputPosRelativeToVP = this.ui.telInput.getBoundingClientRect();
+      const inputHeight = this.ui.telInput.offsetHeight;
 
       //* If dropdownContainer is enabled, calculate postion.
       if (this.options.dropdownContainer) {
         //* Calculate position.
-        this.dropdown.style.top = `${inputPosRelativeToVP.top + inputHeight}px`;
-        this.dropdown.style.left = `${inputPosRelativeToVP.left}px`;
+        this.ui.dropdown.style.top = `${inputPosRelativeToVP.top + inputHeight}px`;
+        this.ui.dropdown.style.left = `${inputPosRelativeToVP.left}px`;
 
         //* Close menu on window scroll.
         const handleWindowScroll = (): void => this._closeDropdown();
@@ -1105,10 +721,10 @@ export class Iti {
         ".iti__country",
       );
       if (listItem) {
-        this._highlightListItem(listItem, false);
+        this.ui.highlightListItem(listItem, false);
       }
     };
-    this.countryList.addEventListener("mouseover", handleMouseoverCountryList, {
+    this.ui.countryList.addEventListener("mouseover", handleMouseoverCountryList, {
       signal,
     });
 
@@ -1121,7 +737,7 @@ export class Iti {
         this._selectListItem(listItem);
       }
     };
-    this.countryList.addEventListener("click", handleClickCountryList, {
+    this.ui.countryList.addEventListener("click", handleClickCountryList, {
       signal,
     });
 
@@ -1192,13 +808,13 @@ export class Iti {
 
     if (this.options.countrySearch) {
       const doFilter = (): void => {
-        const inputQuery = this.searchInput.value.trim();
-        this._filterCountries(inputQuery);
+        const inputQuery = this.ui.searchInput.value.trim();
+        this._filterCountriesByQuery(inputQuery);
         // show/hide clear button
-        if (this.searchInput.value) {
-          this.searchClearButton.classList.remove("iti__hide");
+        if (this.ui.searchInput.value) {
+          this.ui.searchClearButton.classList.remove("iti__hide");
         } else {
-          this.searchClearButton.classList.add("iti__hide");
+          this.ui.searchClearButton.classList.add("iti__hide");
         }
       };
 
@@ -1213,17 +829,17 @@ export class Iti {
           keyupTimer = null;
         }, 100);
       };
-      this.searchInput.addEventListener("input", handleSearchChange, {
+      this.ui.searchInput.addEventListener("input", handleSearchChange, {
         signal,
       });
 
       const handleSearchClear = (): void => {
-        this.searchInput.value = "";
-        this.searchInput.focus();
+        this.ui.searchInput.value = "";
+        this.ui.searchInput.focus();
         doFilter();
       };
       // Prevent click from closing dropdown, clear text, refocus input, and reset filter
-      this.searchClearButton.addEventListener("click", handleSearchClear, {
+      this.ui.searchClearButton.addEventListener("click", handleSearchClear, {
         signal,
       });
     }
@@ -1237,16 +853,15 @@ export class Iti {
       if (startsWith) {
         const listItem = c.nodeById[this.id];
         //* Update highlighting and scroll.
-        this._highlightListItem(listItem, false);
-        this._scrollTo(listItem);
+        this.ui.highlightListItem(listItem, false);
+        this.ui.scrollTo(listItem);
         break;
       }
     }
   }
 
-  //* Country search enabled: Filter the countries according to the search query.
-  private _filterCountries(query: string): void {
-    this.countryList.innerHTML = "";
+  //* Country search: Filter the countries according to the search query.
+  private _filterCountriesByQuery(query: string): void {
     let matchedCountries: Country[];
 
     if (query === "") {
@@ -1255,32 +870,7 @@ export class Iti {
     } else {
       matchedCountries = this._getMatchedCountries(query);
     }
-
-    let noCountriesAddedYet = true;
-    for (const c of matchedCountries) {
-      const listItem = c.nodeById[this.id];
-      if (listItem) {
-        this.countryList.appendChild(listItem);
-
-        //* Highlight the first item
-        if (noCountriesAddedYet) {
-          this._highlightListItem(listItem, false);
-          noCountriesAddedYet = false;
-        }
-      }
-    }
-    if (noCountriesAddedYet) {
-      //* If no countries are shown, unhighlight the previously highlighted item.
-      this._highlightListItem(null, false);
-      if (this.searchNoResults) {
-        this.searchNoResults.classList.remove("iti__hide");
-      }
-    } else if (this.searchNoResults) {
-      this.searchNoResults.classList.add("iti__hide");
-    }
-    //* Scroll to top (useful if user had previously scrolled down).
-    this.countryList.scrollTop = 0;
-    this._updateSearchResultsA11yText();
+    this.ui.filterCountries(matchedCountries);
   }
 
   private _getMatchedCountries(query: string): Country[] {
@@ -1324,56 +914,32 @@ export class Iti {
     ];
   }
 
-  //* Update search results text (for a11y).
-  private _updateSearchResultsA11yText(): void {
-    const { i18n } = this.options;
-    const count = this.countryList.childElementCount;
-    let searchText: string;
-    if (count === 0) {
-      searchText = i18n.zeroSearchResults;
-    } else {
-      // one or more results
-      if (i18n.searchResultsText) {
-        searchText = i18n.searchResultsText(count);
-      } else if (count === 1) {
-        searchText = i18n.oneSearchResult;
-      } else {
-        // eslint-disable-next-line no-template-curly-in-string
-        searchText = i18n.multipleSearchResults.replace(
-          "${count}",
-          count.toString(),
-        );
-      }
-    }
-    this.searchResultsA11yText.textContent = searchText;
-  }
-
   //* Highlight the next/prev item in the list (and ensure it is visible).
   private _handleUpDownKey(key: string): void {
     let next =
       key === "ArrowUp"
-        ? (this.highlightedItem?.previousElementSibling as HTMLElement)
-        : (this.highlightedItem?.nextElementSibling as HTMLElement);
-    if (!next && this.countryList.childElementCount > 1) {
+        ? (this.ui.highlightedItem?.previousElementSibling as HTMLElement)
+        : (this.ui.highlightedItem?.nextElementSibling as HTMLElement);
+    if (!next && this.ui.countryList.childElementCount > 1) {
       //* Otherwise, we must be at the end, so loop round again.
       next =
         key === "ArrowUp"
-          ? (this.countryList.lastElementChild as HTMLElement)
-          : (this.countryList.firstElementChild as HTMLElement);
+          ? (this.ui.countryList.lastElementChild as HTMLElement)
+          : (this.ui.countryList.firstElementChild as HTMLElement);
     }
     if (next) {
       //* Make sure the next item is visible
       //* (before calling focus(), which can cause the next item to scroll to the middle of the dropdown, which is jarring).
-      this._scrollTo(next);
+      this.ui.scrollTo(next);
       //* If country search enabled, don't lose focus from the search input on up/down
-      this._highlightListItem(next, false);
+      this.ui.highlightListItem(next, false);
     }
   }
 
   //* Select the currently highlighted item.
   private _handleEnterKey(): void {
-    if (this.highlightedItem) {
-      this._selectListItem(this.highlightedItem);
+    if (this.ui.highlightedItem) {
+      this._selectListItem(this.ui.highlightedItem);
     }
   }
 
@@ -1399,7 +965,7 @@ export class Iti {
     }
 
     number = this._beforeSetNumber(number);
-    this.telInput.value = number;
+    this.ui.telInput.value = number;
   }
 
   //* Check if need to select a new country based on the given number
@@ -1520,35 +1086,6 @@ export class Iti {
     return null;
   }
 
-  //* Remove highlighting from other list items and highlight the given item.
-  private _highlightListItem(
-    listItem: HTMLElement | null,
-    shouldFocus: boolean,
-  ): void {
-    const prevItem = this.highlightedItem;
-    if (prevItem) {
-      prevItem.classList.remove("iti__highlight");
-      prevItem.setAttribute("aria-selected", "false");
-    }
-    //* Set this, even if it's null, as it will clear the highlight.
-    this.highlightedItem = listItem;
-    if (this.highlightedItem) {
-      this.highlightedItem.classList.add("iti__highlight");
-      this.highlightedItem.setAttribute("aria-selected", "true");
-      if (this.options.countrySearch) {
-        const activeDescendant = this.highlightedItem.getAttribute("id") || "";
-        this.searchInput.setAttribute(
-          "aria-activedescendant",
-          activeDescendant,
-        );
-      }
-    }
-
-    if (shouldFocus) {
-      this.highlightedItem.focus();
-    }
-  }
-
   //* Update the selected country, dial code (if separateDialCode), placeholder, title, and active list item.
   //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
   private _setCountry(iso2: Iso2 | ""): boolean {
@@ -1566,7 +1103,7 @@ export class Iti {
     }
 
     //* Update the flag class and the a11y text.
-    if (this.selectedCountry) {
+    if (this.ui.selectedCountry) {
       const flagClass =
         iso2 && showFlags ? `iti__flag iti__${iso2}` : "iti__flag iti__globe";
       let ariaLabel, title;
@@ -1580,9 +1117,9 @@ export class Iti {
         title = i18n.noCountrySelected;
         ariaLabel = i18n.noCountrySelected;
       }
-      this.selectedCountryInner.className = flagClass;
-      this.selectedCountry.setAttribute("title", title);
-      this.selectedCountry.setAttribute("aria-label", ariaLabel);
+      this.ui.selectedCountryInner.className = flagClass;
+      this.ui.selectedCountry.setAttribute("title", title);
+      this.ui.selectedCountry.setAttribute("aria-label", ariaLabel);
     }
 
     //* Update the selected dial code.
@@ -1590,8 +1127,8 @@ export class Iti {
       const dialCode = this.selectedCountryData.dialCode
         ? `+${this.selectedCountryData.dialCode}`
         : "";
-      this.selectedDialCode.textContent = dialCode;
-      this._updateInputPadding();
+      this.ui.selectedDialCode.textContent = dialCode;
+      this.ui.updateInputPadding();
     }
 
     //* And the input's placeholder.
@@ -1602,21 +1139,6 @@ export class Iti {
 
     //* Return if the country has changed or not.
     return prevIso2 !== iso2;
-  }
-
-  //* Update the input padding to make space for the selected country/dial code.
-  private _updateInputPadding(): void {
-    if (this.selectedCountry) {
-      // if all else fails, these are better than nothing
-      const saneDefaultWidth = this.options.separateDialCode ? 78 : 42;
-      //* offsetWidth is zero if input is in a hidden container during initialisation.
-      const selectedCountryWidth =
-        this.selectedCountry.offsetWidth ||
-        this._getHiddenSelectedCountryWidth() ||
-        saneDefaultWidth;
-      const inputPadding = selectedCountryWidth + 6;
-      this.telInput.style.paddingLeft = `${inputPadding}px`;
-    }
   }
 
   //* Update the maximum valid number length for the currently selected country.
@@ -1658,44 +1180,6 @@ export class Iti {
     }
   }
 
-  //* When input is in a hidden container during init, we cannot calculate the selected country width.
-  //* Fix: clone the markup, make it invisible, add it to the end of the DOM, and then measure it's width.
-  //* To get the right styling to apply, all we need is a shallow clone of the container,
-  //* and then to inject a deep clone of the selectedCountry element.
-  private _getHiddenSelectedCountryWidth(): number {
-    if (this.telInput.parentNode) {
-      // Use window.top as a fix for same-origin iframes (that are hidden during init) where even appending it to document.body would still be hidden. window.top accesses the top-most document, which will not be hidden.
-      let body;
-      try {
-        body = window.top.document.body;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (e) {
-        // fix for cross-origin iframes, where accessing window.top.document throws a security error
-        body = document.body;
-      }
-
-      const containerClone = this.telInput.parentNode.cloneNode(
-        false,
-      ) as HTMLElement;
-      containerClone.style.visibility = "hidden";
-      body.appendChild(containerClone);
-
-      const countryContainerClone =
-        this.countryContainer.cloneNode() as HTMLElement;
-      containerClone.appendChild(countryContainerClone);
-
-      const selectedCountryClone = this.selectedCountry.cloneNode(
-        true,
-      ) as HTMLElement;
-      countryContainerClone.appendChild(selectedCountryClone);
-
-      const width = selectedCountryClone.offsetWidth;
-      body.removeChild(containerClone);
-      return width;
-    }
-    return 0;
-  }
-
   //* Update the input placeholder to an example number from the currently selected country.
   private _updatePlaceholder(): void {
     const {
@@ -1723,7 +1207,7 @@ export class Iti {
       if (typeof customPlaceholder === "function") {
         placeholder = customPlaceholder(placeholder, this.selectedCountryData);
       }
-      this.telInput.setAttribute("placeholder", placeholder);
+      this.ui.telInput.setAttribute("placeholder", placeholder);
     }
   }
 
@@ -1739,11 +1223,11 @@ export class Iti {
 
     // reformat any existing number to the new country
     if (this.options.formatOnDisplay) {
-      this._updateValFromNumber(this.telInput.value);
+      this._updateValFromNumber(this.ui.telInput.value);
     }
 
     //* Focus the input.
-    this.telInput.focus();
+    this.ui.telInput.focus();
 
     if (countryChanged) {
       this._triggerCountryChange();
@@ -1753,20 +1237,20 @@ export class Iti {
   //* Close the dropdown and unbind any listeners.
   private _closeDropdown(): void {
     // we call closeDropdown in places where it might not even be open e.g. in destroy()
-    if (this.dropdownContent.classList.contains("iti__hide")) {
+    if (this.ui.dropdownContent.classList.contains("iti__hide")) {
       return;
     }
-    this.dropdownContent.classList.add("iti__hide");
-    this.selectedCountry.setAttribute("aria-expanded", "false");
-    if (this.highlightedItem) {
-      this.highlightedItem.setAttribute("aria-selected", "false");
+    this.ui.dropdownContent.classList.add("iti__hide");
+    this.ui.selectedCountry.setAttribute("aria-expanded", "false");
+    if (this.ui.highlightedItem) {
+      this.ui.highlightedItem.setAttribute("aria-selected", "false");
     }
     if (this.options.countrySearch) {
-      this.searchInput.removeAttribute("aria-activedescendant");
+      this.ui.searchInput.removeAttribute("aria-activedescendant");
     }
 
     //* Update the arrow.
-    this.dropdownArrow.classList.remove("iti__arrow--up");
+    this.ui.dropdownArrow.classList.remove("iti__arrow--up");
 
     //* Unbind dropdown-scoped events in one go
     this.dropdownAbortController.abort();
@@ -1774,38 +1258,16 @@ export class Iti {
 
     //* Remove dropdown from container.
     if (this.options.dropdownContainer) {
-      this.dropdown.remove();
+      this.ui.dropdown.remove();
     }
 
     this._trigger("close:countrydropdown");
   }
 
-  //* Check if an element is visible within it's container, else scroll until it is.
-  private _scrollTo(element: HTMLElement): void {
-    const container = this.countryList;
-    const scrollTop = document.documentElement.scrollTop;
-    const containerHeight = container.offsetHeight;
-    const containerTop = container.getBoundingClientRect().top + scrollTop;
-    const containerBottom = containerTop + containerHeight;
-    const elementHeight = element.offsetHeight;
-    const elementTop = element.getBoundingClientRect().top + scrollTop;
-    const elementBottom = elementTop + elementHeight;
-    const newScrollTop = elementTop - containerTop + container.scrollTop;
-
-    if (elementTop < containerTop) {
-      //* Scroll up.
-      container.scrollTop = newScrollTop;
-    } else if (elementBottom > containerBottom) {
-      //* Scroll down.
-      const heightDifference = containerHeight - elementHeight;
-      container.scrollTop = newScrollTop - heightDifference;
-    }
-  }
-
   //* Replace any existing dial code with the new one
   //* Note: called from _selectListItem and setCountry
   private _updateDialCode(newDialCodeBare: string): void {
-    const inputVal = this.telInput.value;
+    const inputVal = this.ui.telInput.value;
     //* Save having to pass this every time.
     const newDialCode = `+${newDialCodeBare}`;
 
@@ -1821,7 +1283,7 @@ export class Iti {
         //* (no way to determine where the invalid dial code ends and the rest of the number begins)
         newNumber = newDialCode;
       }
-      this.telInput.value = newNumber;
+      this.ui.telInput.value = newNumber;
     }
   }
 
@@ -1864,7 +1326,7 @@ export class Iti {
 
   //* Get the input val, adding the dial code if separateDialCode is enabled.
   private _getFullNumber(overrideVal?: string): string {
-    const val = overrideVal || this.telInput.value.trim();
+    const val = overrideVal || this.ui.telInput.value.trim();
     const { dialCode } = this.selectedCountryData;
     let prefix;
     const numericVal = getNumeric(val);
@@ -1912,7 +1374,7 @@ export class Iti {
       this.defaultCountry = intlTelInput.autoCountry;
       const hasSelectedCountryOrGlobe =
         this.selectedCountryData.iso2 ||
-        this.selectedCountryInner.classList.contains("iti__globe");
+        this.ui.selectedCountryInner.classList.contains("iti__globe");
       //* If no country/globe currently selected, then update the country.
       if (!hasSelectedCountryOrGlobe) {
         this.setCountry(this.defaultCountry);
@@ -1926,8 +1388,8 @@ export class Iti {
     //* If the request was successful
     if (intlTelInput.utils) {
       //* If there's an initial value in the input, then format it.
-      if (this.telInput.value) {
-        this._updateValFromNumber(this.telInput.value);
+      if (this.ui.telInput.value) {
+        this._updateValFromNumber(this.ui.telInput.value);
       }
       if (this.selectedCountryData.iso2) {
         this._updatePlaceholder();
@@ -1943,28 +1405,21 @@ export class Iti {
 
   //* Remove plugin.
   destroy(): void {
-    this.telInput.iti = undefined;
-    const { allowDropdown, separateDialCode } = this.options;
-    if (allowDropdown) {
+    // it is possible to call destroy twice, so check there is anything left to destroy
+    if (!this.ui.telInput) {
+      return;
+    }
+    if (this.options.allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
       this._closeDropdown();
     }
 
     //* Abort all listeners registered via the main controller
     this.abortController.abort();
+    this.abortController = null;
 
-    //* Remove attribute of id instance: data-intl-tel-input-id.
-    delete this.telInput.dataset.intlTelInputId;
-
-    //* Restore original styling
-    if (separateDialCode) {
-      this.telInput.style.paddingLeft = this.originalPaddingLeft;
-    }
-
-    //* Remove markup (but leave the original input).
-    const wrapper = this.telInput.parentNode as HTMLElement;
-    wrapper.before(this.telInput);
-    wrapper.remove();
+    //* Remove all added DOM elements and classes.
+    this.ui.destroy();
 
     if (intlTelInput.instances instanceof Map) {
       intlTelInput.instances.delete(this.id);
@@ -2104,7 +1559,7 @@ export class Iti {
       this._updateDialCode(this.selectedCountryData.dialCode);
       // reformat
       if (this.options.formatOnDisplay) {
-        this._updateValFromNumber(this.telInput.value);
+        this._updateValFromNumber(this.ui.telInput.value);
       }
       this._triggerCountryChange();
     }
@@ -2130,11 +1585,11 @@ export class Iti {
   }
 
   setDisabled(disabled: boolean): void {
-    this.telInput.disabled = disabled;
+    this.ui.telInput.disabled = disabled;
     if (disabled) {
-      this.selectedCountry.setAttribute("disabled", "true");
+      this.ui.selectedCountry.setAttribute("disabled", "true");
     } else {
-      this.selectedCountry.removeAttribute("disabled");
+      this.ui.selectedCountry.removeAttribute("disabled");
     }
   }
 }

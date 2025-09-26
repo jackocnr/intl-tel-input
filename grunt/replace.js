@@ -14,10 +14,7 @@ module.exports = function(grunt) {
             match: /_processCountryData/g,
             replacement: '_b'
           }, {
-            match: /_generateMarkup/g,
-            replacement: '_f'
-          }, {
-            match: /_detectEnvironmentAndLayout/g,
+            match: /_detectEnvironment/g,
             replacement: '_k'
           }, {
             match: /_createInitPromises/g,
@@ -95,9 +92,6 @@ module.exports = function(grunt) {
             match: /_getNewCountryFromNumber/g,
             replacement: '_v0'
           }, {
-            match: /_updateInputPadding/g,
-            replacement: '_z3'
-          }, {
             match: /_updateMaxLength/g,
             replacement: '_z4'
           }, {
@@ -116,11 +110,8 @@ module.exports = function(grunt) {
             match: /_bindDropdownListeners/g,
             replacement: '_p'
           }, {
-            match: /_filterCountries/g,
+            match: /_filterCountriesByQuery/g,
             replacement: '_p3'
-          }, {
-            match: /_updateSearchResultsA11yText/g,
-            replacement: '_p4'
           }, {
             match: /_handleUpDownKey/g,
             replacement: '_q'
@@ -137,9 +128,6 @@ module.exports = function(grunt) {
             match: /_updateCountryFromNumber/g,
             replacement: '_v'
           }, {
-            match: /_highlightListItem/g,
-            replacement: '_x'
-          }, {
             match: /_setCountry/g,
             replacement: '_z'
           }, {
@@ -154,9 +142,6 @@ module.exports = function(grunt) {
           }, {
             match: /_closeDropdown/g,
             replacement: '_2'
-          }, {
-            match: /_scrollTo/g,
-            replacement: '_3'
           }, {
             match: /_updateDialCode/g,
             replacement: '_4'
