@@ -8,12 +8,20 @@ module.exports = {
     "build/js",
   ],
   transform: {
-    // Most of the build outputs in this project use UMD syntax, but the
-    // utilities script is a proper ES Module. Unfortunately, Jest cannot treat
-    // a file with a `.js` extension as ESM unless the whole project is ESM
-    // (Jest does not use Node.js built-in resolution and loading logic), so
-    // we have to set up special parsing for that file.
-    // See also: https://jestjs.io/docs/next/ecmascript-modules
+    // Support TypeScript source files directly in tests (lightweight)
+    "^.+\\.(ts|tsx)$": [
+      "babel-jest",
+      {
+        presets: [
+          ["@babel/preset-typescript", { allowDeclareFields: true }],
+        ],
+        plugins: [
+          "@babel/plugin-transform-modules-commonjs",
+          "babel-plugin-add-module-exports",
+        ],
+      },
+    ],
+    // Special handling for the utils ESM file
     "utils.js$": [
       "babel-jest",
       {
