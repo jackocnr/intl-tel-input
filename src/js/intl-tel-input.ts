@@ -9,7 +9,8 @@ import type {
   IntlTelInputInterface,
   SelectedCountryData,
 } from "./modules/types/public-api";
-import { getNumeric, normaliseString } from "./modules/utils/string";
+import { getNumeric } from "./modules/utils/string";
+import { getMatchedCountries, findFirstCountryStartingWith } from "./modules/core/countrySearch";
 import UI from "./modules/core/ui";
 import {
   processAllCountries,
@@ -841,16 +842,13 @@ export class Iti {
 
   //* Hidden search (countrySearch disabled): Find the first list item whose name starts with the query string.
   private _searchForCountry(query: string): void {
-    for (const c of this.countries) {
-      const startsWith =
-        c.name.substring(0, query.length).toLowerCase() === query;
-      if (startsWith) {
-        const listItem = c.nodeById[this.id];
-        //* Update highlighting and scroll.
-        this.ui.highlightListItem(listItem, false);
-        this.ui.scrollTo(listItem);
-        break;
-      }
+    // moved logic to findFirstCountryStartingWith (pure helper) for reuse & testability
+    const match = findFirstCountryStartingWith(this.countries, query);
+    if (match) {
+      const listItem = match.nodeById[this.id];
+      //* Update highlighting and scroll.
+      this.ui.highlightListItem(listItem, false);
+      this.ui.scrollTo(listItem);
     }
   }
 
@@ -862,50 +860,9 @@ export class Iti {
       // reset - back to all countries
       matchedCountries = this.countries;
     } else {
-      matchedCountries = this._getMatchedCountries(query);
+      matchedCountries = getMatchedCountries(this.countries, query);
     }
     this.ui.filterCountries(matchedCountries);
-  }
-
-  private _getMatchedCountries(query: string): Country[] {
-    const normalisedQuery = normaliseString(query);
-    // search result groups, in order of priority
-    // first, exact ISO2 matches, then name starts with, then name contains, dial code match etc.
-    const iso2Matches: Country[] = [];
-    const nameStartWith: Country[] = [];
-    const nameContains: Country[] = [];
-    const dialCodeMatches: Country[] = [];
-    const dialCodeContains: Country[] = [];
-    const initialsMatches: Country[] = [];
-
-    for (const c of this.countries) {
-      if (c.iso2 === normalisedQuery) {
-        iso2Matches.push(c);
-      } else if (c.normalisedName.startsWith(normalisedQuery)) {
-        nameStartWith.push(c);
-      } else if (c.normalisedName.includes(normalisedQuery)) {
-        nameContains.push(c);
-      } else if (
-        normalisedQuery === c.dialCode ||
-        normalisedQuery === c.dialCodePlus
-      ) {
-        dialCodeMatches.push(c);
-      } else if (c.dialCodePlus.includes(normalisedQuery)) {
-        dialCodeContains.push(c);
-      } else if (c.initials.includes(normalisedQuery)) {
-        initialsMatches.push(c);
-      }
-    }
-
-    // Combine result groups in correct order (and respect country priority order within each group e.g. if search +44, then UK appears first above Guernsey etc)
-    return [
-      ...iso2Matches.sort((a, b) => a.priority - b.priority),
-      ...nameStartWith.sort((a, b) => a.priority - b.priority),
-      ...nameContains.sort((a, b) => a.priority - b.priority),
-      ...dialCodeMatches.sort((a, b) => a.priority - b.priority),
-      ...dialCodeContains.sort((a, b) => a.priority - b.priority),
-      ...initialsMatches.sort((a, b) => a.priority - b.priority),
-    ];
   }
 
   //* Highlight the next/prev item in the list (and ensure it is visible).

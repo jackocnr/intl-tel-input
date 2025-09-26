@@ -119,9 +119,6 @@ module.exports = function(grunt) {
             match: /_handleEnterKey/g,
             replacement: '_r'
           }, {
-            match: /_getMatchedCountries/g,
-            replacement: '_k1'
-          }, {
             match: /_updateValFromNumber/g,
             replacement: '_u'
           }, {
