@@ -648,7 +648,6 @@ export class Iti {
     const { fixDropdownWidth, countrySearch } = this.options;
 
     // create a fresh AbortController for dropdown-scoped listeners
-    // this.dropdownAbortController?.abort();
     this.dropdownAbortController = new AbortController();
 
     if (fixDropdownWidth) {
