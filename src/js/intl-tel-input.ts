@@ -1,5 +1,5 @@
 import allCountries, { Country, Iso2 } from "./intl-tel-input/data";
-import defaultEnglishStrings from "./intl-tel-input/i18n/en/countries";
+import defaultEnglishStrings from "./intl-tel-input/i18n/en";
 import { defaults, applyOptionSideEffects } from "./modules/core/options";
 import type {
   UtilsLoader,
@@ -82,7 +82,7 @@ export class Iti {
 
     //* Process specified options / defaults.
     this.options = { ...defaults, ...customOptions } as AllOptions;
-    applyOptionSideEffects(this.options);
+    applyOptionSideEffects(this.options, defaultEnglishStrings);
 
     this.ui = new UI(input, this.options, this.id);
     this.isAndroid = Iti._getIsAndroid();

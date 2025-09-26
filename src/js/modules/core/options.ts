@@ -1,4 +1,4 @@
-import defaultEnglishStrings from "../../intl-tel-input/i18n/en";
+import { I18n } from "../../intl-tel-input/i18n/types";
 import type { AllOptions } from "../types/public-api";
 
 // Helper for media query evaluation
@@ -80,7 +80,7 @@ export const defaults: AllOptions = {
 };
 
 // Apply option side-effects (mutates the passed object)
-export function applyOptionSideEffects(o: AllOptions): void {
+export function applyOptionSideEffects(o: AllOptions, defaultEnglishStrings: I18n): void {
   //* If showing fullscreen popup, do not fix the width.
   if (o.useFullscreenPopup) {
     o.fixDropdownWidth = false;
