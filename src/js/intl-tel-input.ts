@@ -18,7 +18,10 @@ import {
   sortCountries,
   cacheSearchTokens,
 } from "./modules/data/country-data";
-import { beforeSetNumber, formatNumberAsYouType } from "./modules/format/formatting";
+import {
+  beforeSetNumber,
+  formatNumberAsYouType,
+} from "./modules/format/formatting";
 import { translateCursorPosition } from "./modules/format/caret";
 import { isRegionlessNanp } from "./modules/data/nanp-regionless";
 import type { ItiEventMap } from "./modules/types/events";
@@ -44,7 +47,6 @@ const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 //* This is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
 export class Iti {
-
   //* PUBLIC FIELDS
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   readonly id: number;
@@ -111,7 +113,10 @@ export class Iti {
   }
 
   private _detectEnvironmentAndLayout(): void {
-    this.isAndroid = typeof navigator !== "undefined" ? /Android/i.test(navigator.userAgent) : false;
+    this.isAndroid =
+      typeof navigator !== "undefined"
+        ? /Android/i.test(navigator.userAgent)
+        : false;
 
     //* Check if input has an ancestor with RTL.
     this.isRTL = !!this.telInput.closest("[dir=rtl]");
@@ -175,7 +180,10 @@ export class Iti {
     this.countries = processAllCountries(this.options);
 
     //* Generate this.dialCodes and this.dialCodeToIso2Map.
-    const { dialCodes, dialCodeMaxLen, dialCodeToIso2Map } = processDialCodes(this.countries, this.options);
+    const { dialCodes, dialCodeMaxLen, dialCodeToIso2Map } = processDialCodes(
+      this.countries,
+      this.options,
+    );
     this.dialCodes = dialCodes;
     this.dialCodeMaxLen = dialCodeMaxLen;
     this.dialCodeToIso2Map = dialCodeToIso2Map;
@@ -214,23 +222,19 @@ export class Iti {
     //* autocompleted number, which on submit could mean wrong number is saved.
     if (
       !this.telInput.hasAttribute("autocomplete") &&
-      !(this.telInput.form?.hasAttribute("autocomplete"))
+      !this.telInput.form?.hasAttribute("autocomplete")
     ) {
       this.telInput.setAttribute("autocomplete", "off");
     }
   }
 
   private _createWrapperAndInsert(): HTMLElement {
-    const {
-      allowDropdown,
-      showFlags,
-      containerClass,
-      useFullscreenPopup,
-    } = this.options;
+    const { allowDropdown, showFlags, containerClass, useFullscreenPopup } =
+      this.options;
 
     //* Containers (mostly for positioning).
     const parentClasses = buildClassNames({
-      "iti": true,
+      iti: true,
       "iti--allow-dropdown": allowDropdown,
       "iti--show-flags": showFlags,
       "iti--inline-dropdown": !useFullscreenPopup,
@@ -246,11 +250,7 @@ export class Iti {
   }
 
   private _maybeBuildCountryContainer(wrapper: HTMLElement): void {
-    const {
-      allowDropdown,
-      separateDialCode,
-      showFlags,
-    } = this.options;
+    const { allowDropdown, separateDialCode, showFlags } = this.options;
 
     //* If we need a countryContainer
     if (allowDropdown || showFlags || separateDialCode) {
@@ -368,7 +368,7 @@ export class Iti {
     //* Create dropdownContainer markup.
     if (dropdownContainer) {
       const dropdownClasses = buildClassNames({
-        "iti": true,
+        iti: true,
         "iti--container": true,
         "iti--fullscreen-popup": useFullscreenPopup,
         "iti--inline-dropdown": !useFullscreenPopup,
@@ -420,7 +420,7 @@ export class Iti {
         "aria-label": i18n.searchPlaceholder,
         "aria-controls": `iti-${this.id}__country-listbox`,
         "aria-autocomplete": "list",
-        "autocomplete": "off",
+        autocomplete: "off",
       },
       searchWrapper,
     ) as HTMLInputElement;
@@ -430,7 +430,7 @@ export class Iti {
       {
         type: "button",
         class: "iti__search-clear iti__hide",
-          "aria-label": i18n.clearSearchAriaLabel,
+        "aria-label": i18n.clearSearchAriaLabel,
         tabindex: "-1",
       },
       searchWrapper,
@@ -479,7 +479,9 @@ export class Iti {
       const names = hiddenInput(telInputName);
 
       if (names.phone) {
-        const existingInput = this.telInput.form?.querySelector(`input[name="${names.phone}"]`);
+        const existingInput = this.telInput.form?.querySelector(
+          `input[name="${names.phone}"]`,
+        );
         if (existingInput) {
           this.hiddenInput = existingInput as HTMLInputElement;
         } else {
@@ -493,7 +495,9 @@ export class Iti {
       }
 
       if (names.country) {
-        const existingInput = this.telInput.form?.querySelector(`input[name="${names.country}"]`);
+        const existingInput = this.telInput.form?.querySelector(
+          `input[name="${names.country}"]`,
+        );
         if (existingInput) {
           this.hiddenInputCountry = existingInput as HTMLInputElement;
         } else {
@@ -515,8 +519,8 @@ export class Iti {
       const c = this.countries[i];
       // Compute classes (highlight first item when countrySearch disabled)
       const liClass = buildClassNames({
-        "iti__country": true,
-        "iti__highlight": i === 0,
+        iti__country: true,
+        iti__highlight: i === 0,
       });
 
       const listItem = createEl("li", {
@@ -575,7 +579,9 @@ export class Iti {
     if (dialCode && !isRegionlessNanpNumber) {
       this._updateCountryFromNumber(val);
     } else if (!isAutoCountry || overrideAutoCountry) {
-      const lowerInitialCountry = initialCountry ? initialCountry.toLowerCase() : "";
+      const lowerInitialCountry = initialCountry
+        ? initialCountry.toLowerCase()
+        : "";
       //* See if we should select a country.
       if (isIso2(lowerInitialCountry)) {
         this._setCountry(lowerInitialCountry);
@@ -618,11 +624,9 @@ export class Iti {
         this.hiddenInputCountry.value = this.selectedCountryData.iso2 || "";
       }
     };
-    this.telInput.form?.addEventListener(
-      "submit",
-      handleHiddenInputSubmit,
-      { signal: this.abortController.signal },
-    );
+    this.telInput.form?.addEventListener("submit", handleHiddenInputSubmit, {
+      signal: this.abortController.signal,
+    });
   }
 
   //* initialise the dropdown listeners.
@@ -646,16 +650,24 @@ export class Iti {
 
     //* Toggle country dropdown on click.
     const handleClickSelectedCountry = (): void => {
-      const dropdownClosed = this.dropdownContent.classList.contains("iti__hide");
-      if (dropdownClosed && !this.telInput.disabled && !this.telInput.readOnly) {
+      const dropdownClosed =
+        this.dropdownContent.classList.contains("iti__hide");
+      if (
+        dropdownClosed &&
+        !this.telInput.disabled &&
+        !this.telInput.readOnly
+      ) {
         this._openDropdown();
       }
     };
-    this.selectedCountry.addEventListener("click", handleClickSelectedCountry, { signal });
+    this.selectedCountry.addEventListener("click", handleClickSelectedCountry, {
+      signal,
+    });
 
     //* Open dropdown if selected country is focused and they press up/down/space/enter.
     const handleCountryContainerKeydown = (e: KeyboardEvent): void => {
-      const isDropdownHidden = this.dropdownContent.classList.contains("iti__hide");
+      const isDropdownHidden =
+        this.dropdownContent.classList.contains("iti__hide");
 
       if (
         isDropdownHidden &&
@@ -673,7 +685,11 @@ export class Iti {
         this._closeDropdown();
       }
     };
-    this.countryContainer.addEventListener("keydown", handleCountryContainerKeydown, { signal });
+    this.countryContainer.addEventListener(
+      "keydown",
+      handleCountryContainerKeydown,
+      { signal },
+    );
   }
 
   //* Init many requests: utils script / geo ip lookup.
@@ -697,7 +713,9 @@ export class Iti {
           doAttachUtils();
         };
         //* Wait until the load event so we don't block any other requests e.g. the flags image.
-        window.addEventListener("load", handlePageLoad, { signal: this.abortController.signal });
+        window.addEventListener("load", handlePageLoad, {
+          signal: this.abortController.signal,
+        });
       }
     } else {
       this.resolveUtilsScriptPromise();
@@ -765,7 +783,13 @@ export class Iti {
   }
 
   private _bindInputListener(): void {
-    const { strictMode, formatAsYouType, separateDialCode, allowDropdown, countrySearch } = this.options;
+    const {
+      strictMode,
+      formatAsYouType,
+      separateDialCode,
+      allowDropdown,
+      countrySearch,
+    } = this.options;
     let userOverrideFormatting = false;
     //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
     if (/\p{L}/u.test(this.telInput.value)) {
@@ -776,9 +800,18 @@ export class Iti {
     //* Note that this fires AFTER the input is updated.
     const handleInputEvent = (e: InputEvent): void => {
       //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
-      if (this.isAndroid && e?.data === "+" && separateDialCode && allowDropdown && countrySearch) {
+      if (
+        this.isAndroid &&
+        e?.data === "+" &&
+        separateDialCode &&
+        allowDropdown &&
+        countrySearch
+      ) {
         const currentCaretPos = this.telInput.selectionStart || 0;
-        const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos - 1);
+        const valueBeforeCaret = this.telInput.value.substring(
+          0,
+          currentCaretPos - 1,
+        );
         const valueAfterCaret = this.telInput.value.substring(currentCaretPos);
         this.telInput.value = valueBeforeCaret + valueAfterCaret;
         this._openDropdownWithPlus();
@@ -806,8 +839,14 @@ export class Iti {
       if (formatAsYouType && !userOverrideFormatting && !isSetNumber) {
         //* Maintain caret position after reformatting.
         const currentCaretPos = this.telInput.selectionStart || 0;
-        const valueBeforeCaret = this.telInput.value.substring(0, currentCaretPos);
-        const relevantCharsBeforeCaret = valueBeforeCaret.replace(/[^+0-9]/g, "").length;
+        const valueBeforeCaret = this.telInput.value.substring(
+          0,
+          currentCaretPos,
+        );
+        const relevantCharsBeforeCaret = valueBeforeCaret.replace(
+          /[^+0-9]/g,
+          "",
+        ).length;
         const isDeleteForwards = e?.inputType === "deleteContentForward";
         const fullNumber = this._getFullNumber();
         const formattedValue = formatNumberAsYouType(
@@ -817,7 +856,12 @@ export class Iti {
           this.selectedCountryData,
           this.options.separateDialCode,
         );
-        const newCaretPos = translateCursorPosition(relevantCharsBeforeCaret, formattedValue, currentCaretPos, isDeleteForwards);
+        const newCaretPos = translateCursorPosition(
+          relevantCharsBeforeCaret,
+          formattedValue,
+          currentCaretPos,
+          isDeleteForwards,
+        );
         this.telInput.value = formattedValue;
         // WARNING: calling setSelectionRange triggers a focus on iOS
         this.telInput.setSelectionRange(newCaretPos, newCaretPos);
@@ -826,19 +870,33 @@ export class Iti {
     //* This handles individual key presses as well as cut/paste events
     //* the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
     //* whereas "keyup" fires even for shift key, arrow key presses etc.
-    this.telInput.addEventListener("input", handleInputEvent as EventListener, { signal: this.abortController.signal });
+    this.telInput.addEventListener("input", handleInputEvent as EventListener, {
+      signal: this.abortController.signal,
+    });
   }
 
   private _maybeBindKeydownListener(): void {
-    const { strictMode, separateDialCode, allowDropdown, countrySearch } = this.options;
+    const { strictMode, separateDialCode, allowDropdown, countrySearch } =
+      this.options;
     if (strictMode || separateDialCode) {
       //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
       //* Note that this fires BEFORE the input is updated.
       const handleKeydownEvent = (e: KeyboardEvent): void => {
         //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
-        if (e.key && e.key.length === 1 && !e.altKey && !e.ctrlKey && !e.metaKey) {
+        if (
+          e.key &&
+          e.key.length === 1 &&
+          !e.altKey &&
+          !e.ctrlKey &&
+          !e.metaKey
+        ) {
           //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
-          if (separateDialCode && allowDropdown && countrySearch && e.key === "+") {
+          if (
+            separateDialCode &&
+            allowDropdown &&
+            countrySearch &&
+            e.key === "+"
+          ) {
             e.preventDefault();
             this._openDropdownWithPlus();
             return;
@@ -847,27 +905,45 @@ export class Iti {
           if (strictMode) {
             const value = this.telInput.value;
             const alreadyHasPlus = value.startsWith("+");
-            const isInitialPlus = !alreadyHasPlus && this.telInput.selectionStart === 0 && e.key === "+";
+            const isInitialPlus =
+              !alreadyHasPlus &&
+              this.telInput.selectionStart === 0 &&
+              e.key === "+";
             const isNumeric = /^[0-9]$/.test(e.key);
-            const isAllowedChar = separateDialCode ? isNumeric : isInitialPlus || isNumeric;
+            const isAllowedChar = separateDialCode
+              ? isNumeric
+              : isInitialPlus || isNumeric;
 
             // insert the new character in the right place
-            const newValue = value.slice(0, this.telInput.selectionStart) + e.key + value.slice(this.telInput.selectionEnd);
+            const newValue =
+              value.slice(0, this.telInput.selectionStart) +
+              e.key +
+              value.slice(this.telInput.selectionEnd);
             const newFullNumber = this._getFullNumber(newValue);
-            const coreNumber = intlTelInput.utils.getCoreNumber(newFullNumber, this.selectedCountryData.iso2);
-            const hasExceededMaxLength = this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength;
+            const coreNumber = intlTelInput.utils.getCoreNumber(
+              newFullNumber,
+              this.selectedCountryData.iso2,
+            );
+            const hasExceededMaxLength =
+              this.maxCoreNumberLength &&
+              coreNumber.length > this.maxCoreNumberLength;
 
             const newCountry = this._getNewCountryFromNumber(newFullNumber);
             const isChangingDialCode = newCountry !== null;
 
             // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
-            if (!isAllowedChar || (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)) {
+            if (
+              !isAllowedChar ||
+              (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)
+            ) {
               e.preventDefault();
             }
           }
         }
       };
-      this.telInput.addEventListener("keydown", handleKeydownEvent, { signal: this.abortController.signal });
+      this.telInput.addEventListener("keydown", handleKeydownEvent, {
+        signal: this.abortController.signal,
+      });
     }
   }
 
@@ -889,13 +965,15 @@ export class Iti {
         const pasted = e.clipboardData.getData("text");
         // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
         const initialCharSelected = selStart === 0 && selEnd > 0;
-        const allowLeadingPlus = !input.value.startsWith("+") || initialCharSelected;
+        const allowLeadingPlus =
+          !input.value.startsWith("+") || initialCharSelected;
         // just numerics and pluses
         const allowedChars = pasted.replace(/[^0-9+]/g, "");
         const hasLeadingPlus = allowedChars.startsWith("+");
         // just numerics
         const numerics = allowedChars.replace(/\+/g, "");
-        const sanitised = hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
+        const sanitised =
+          hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
         let newVal = before + sanitised + after;
         let coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
 
@@ -909,7 +987,10 @@ export class Iti {
         if (!coreNumber) {
           return;
         }
-        if (this.maxCoreNumberLength && coreNumber.length > this.maxCoreNumberLength) {
+        if (
+          this.maxCoreNumberLength &&
+          coreNumber.length > this.maxCoreNumberLength
+        ) {
           if (input.selectionEnd === input.value.length) {
             // if they try to paste too many digits at the end, then just trim the excess
             const trimLength = coreNumber.length - this.maxCoreNumberLength;
@@ -926,7 +1007,9 @@ export class Iti {
         // trigger format-as-you-type and country update etc
         input.dispatchEvent(new InputEvent("input", { bubbles: true }));
       };
-      this.telInput.addEventListener("paste", handlePasteEvent, { signal: this.abortController.signal });
+      this.telInput.addEventListener("paste", handlePasteEvent, {
+        signal: this.abortController.signal,
+      });
     }
   }
 
@@ -937,8 +1020,15 @@ export class Iti {
   }
 
   //* Trigger a custom event on the input (typed via ItiEventMap).
-  private _trigger<K extends keyof ItiEventMap>(name: K, detailProps: ItiEventMap[K] = {} as ItiEventMap[K]): void {
-    const e = new CustomEvent(name, { bubbles: true, cancelable: true, detail: detailProps });
+  private _trigger<K extends keyof ItiEventMap>(
+    name: K,
+    detailProps: ItiEventMap[K] = {} as ItiEventMap[K],
+  ): void {
+    const e = new CustomEvent(name, {
+      bubbles: true,
+      cancelable: true,
+      detail: detailProps,
+    });
     this.telInput.dispatchEvent(e);
   }
 
@@ -960,7 +1050,8 @@ export class Iti {
 
     if (countrySearch) {
       //* When countrySearch enabled, every time the dropdown is opened we reset by highlighting the first item and scrolling to top.
-      const firstCountryItem = this.countryList.firstElementChild as HTMLElement;
+      const firstCountryItem = this.countryList
+        .firstElementChild as HTMLElement;
       if (firstCountryItem) {
         this._highlightListItem(firstCountryItem, false);
         this.countryList.scrollTop = 0;
@@ -996,11 +1087,9 @@ export class Iti {
 
         //* Close menu on window scroll.
         const handleWindowScroll = (): void => this._closeDropdown();
-        window.addEventListener(
-          "scroll",
-          handleWindowScroll,
-          { signal: this.dropdownAbortController.signal },
-        );
+        window.addEventListener("scroll", handleWindowScroll, {
+          signal: this.dropdownAbortController.signal,
+        });
       }
     }
   }
@@ -1012,31 +1101,37 @@ export class Iti {
     //* we add the class "highlight", so if they hit "enter" we know which one to select.
     const handleMouseoverCountryList = (e: MouseEvent): void => {
       //* Handle event delegation, as we're listening for this event on the countryList.
-      const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(".iti__country");
+      const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(
+        ".iti__country",
+      );
       if (listItem) {
         this._highlightListItem(listItem, false);
       }
     };
-    this.countryList.addEventListener(
-      "mouseover",
-      handleMouseoverCountryList,
-      { signal },
-    );
+    this.countryList.addEventListener("mouseover", handleMouseoverCountryList, {
+      signal,
+    });
 
     //* Listen for country selection.
     const handleClickCountryList = (e: MouseEvent): void => {
-      const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(".iti__country");
+      const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(
+        ".iti__country",
+      );
       if (listItem) {
         this._selectListItem(listItem);
       }
     };
-    this.countryList.addEventListener("click", handleClickCountryList, { signal });
+    this.countryList.addEventListener("click", handleClickCountryList, {
+      signal,
+    });
 
     //* Click off to close (except when this initial opening click is bubbling up).
     //* We cannot just stopPropagation as it may be needed to close another instance.
     const handleClickOffToClose = (e: MouseEvent): void => {
       const target = e.target as HTMLElement;
-      const clickedInsideDropdown = !!target.closest(`#iti-${this.id}__dropdown-content`);
+      const clickedInsideDropdown = !!target.closest(
+        `#iti-${this.id}__dropdown-content`,
+      );
       // only close if clicked outside (allow clicks on country search input/clear button/no results message etc)
       if (!clickedInsideDropdown) {
         this._closeDropdown();
@@ -1118,7 +1213,9 @@ export class Iti {
           keyupTimer = null;
         }, 100);
       };
-      this.searchInput.addEventListener("input", handleSearchChange, { signal });
+      this.searchInput.addEventListener("input", handleSearchChange, {
+        signal,
+      });
 
       const handleSearchClear = (): void => {
         this.searchInput.value = "";
@@ -1126,14 +1223,17 @@ export class Iti {
         doFilter();
       };
       // Prevent click from closing dropdown, clear text, refocus input, and reset filter
-      this.searchClearButton.addEventListener("click", handleSearchClear, { signal });
+      this.searchClearButton.addEventListener("click", handleSearchClear, {
+        signal,
+      });
     }
   }
 
   //* Hidden search (countrySearch disabled): Find the first list item whose name starts with the query string.
   private _searchForCountry(query: string): void {
     for (const c of this.countries) {
-      const startsWith = c.name.substring(0, query.length).toLowerCase() === query;
+      const startsWith =
+        c.name.substring(0, query.length).toLowerCase() === query;
       if (startsWith) {
         const listItem = c.nodeById[this.id];
         //* Update highlighting and scroll.
@@ -1201,7 +1301,10 @@ export class Iti {
         nameStartWith.push(c);
       } else if (c.normalisedName.includes(normalisedQuery)) {
         nameContains.push(c);
-      } else if (normalisedQuery === c.dialCode || normalisedQuery === c.dialCodePlus) {
+      } else if (
+        normalisedQuery === c.dialCode ||
+        normalisedQuery === c.dialCodePlus
+      ) {
         dialCodeMatches.push(c);
       } else if (c.dialCodePlus.includes(normalisedQuery)) {
         dialCodeContains.push(c);
@@ -1236,7 +1339,10 @@ export class Iti {
         searchText = i18n.oneSearchResult;
       } else {
         // eslint-disable-next-line no-template-curly-in-string
-        searchText = i18n.multipleSearchResults.replace("${count}", count.toString());
+        searchText = i18n.multipleSearchResults.replace(
+          "${count}",
+          count.toString(),
+        );
       }
     }
     this.searchResultsA11yText.textContent = searchText;
@@ -1246,14 +1352,14 @@ export class Iti {
   private _handleUpDownKey(key: string): void {
     let next =
       key === "ArrowUp"
-        ? this.highlightedItem?.previousElementSibling as HTMLElement
-        : this.highlightedItem?.nextElementSibling as HTMLElement;
+        ? (this.highlightedItem?.previousElementSibling as HTMLElement)
+        : (this.highlightedItem?.nextElementSibling as HTMLElement);
     if (!next && this.countryList.childElementCount > 1) {
       //* Otherwise, we must be at the end, so loop round again.
       next =
         key === "ArrowUp"
-          ? this.countryList.lastElementChild as HTMLElement
-          : this.countryList.firstElementChild as HTMLElement;
+          ? (this.countryList.lastElementChild as HTMLElement)
+          : (this.countryList.firstElementChild as HTMLElement);
     }
     if (next) {
       //* Make sure the next item is visible
@@ -1314,7 +1420,10 @@ export class Iti {
       return number;
     }
     //* Don't remove "nationalPrefix" digit if separateDialCode is enabled, as it can be part of a valid area code e.g. in Russia then have area codes starting with 8, which is also the national prefix digit.
-    const hasPrefix = nationalPrefix && number.startsWith(nationalPrefix) && !this.options.separateDialCode;
+    const hasPrefix =
+      nationalPrefix &&
+      number.startsWith(nationalPrefix) &&
+      !this.options.separateDialCode;
     const cleanNumber = hasPrefix ? number.substring(1) : number;
     return `+${dialCode}${cleanNumber}`;
   }
@@ -1355,12 +1464,17 @@ export class Iti {
       // MULTIPLE countries found for the typed dialcode/areacode
 
       //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.defaultCountry), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
-      if (!selectedIso2 && this.defaultCountry && iso2Codes.includes(this.defaultCountry)) {
+      if (
+        !selectedIso2 &&
+        this.defaultCountry &&
+        iso2Codes.includes(this.defaultCountry)
+      ) {
         return this.defaultCountry;
       }
 
       // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
-      const isRegionlessNanpNumber = selectedDialCode === "1" && isRegionlessNanp(numeric);
+      const isRegionlessNanpNumber =
+        selectedDialCode === "1" && isRegionlessNanp(numeric);
       if (isRegionlessNanpNumber) {
         return null;
       }
@@ -1368,7 +1482,9 @@ export class Iti {
       // if the currently selected country has area codes and the entered number already has a full match to one of them, then don't change the country
       const { areaCodes, priority } = this.selectedCountryData;
       if (areaCodes) {
-        const dialCodeAreaCodes = areaCodes.map(areaCode => `${selectedDialCode}${areaCode}`);
+        const dialCodeAreaCodes = areaCodes.map(
+          (areaCode) => `${selectedDialCode}${areaCode}`,
+        );
         for (const dialCodeAreaCode of dialCodeAreaCodes) {
           if (numeric.startsWith(dialCodeAreaCode)) {
             // it's a full area code match, so the right country is already selected
@@ -1379,8 +1495,14 @@ export class Iti {
 
       // If the currently selected country has area codes (and it's not the "main" country, which only has partial area code coverage), and they've typed more digits than the best area code match, then that means none of the area codes matched the input number, as a full area code match would have been caught above.
       const isMainCountry = priority === 0;
-      const hasAreaCodesButNoneMatched = areaCodes && !isMainCountry && numeric.length > dialCodeMatchNumeric.length;
-      const isValidSelection = selectedIso2 && iso2Codes.includes(selectedIso2) && !hasAreaCodesButNoneMatched;
+      const hasAreaCodesButNoneMatched =
+        areaCodes &&
+        !isMainCountry &&
+        numeric.length > dialCodeMatchNumeric.length;
+      const isValidSelection =
+        selectedIso2 &&
+        iso2Codes.includes(selectedIso2) &&
+        !hasAreaCodesButNoneMatched;
       // extra protection: don't return isoCodes[0] if it's already selected
       const alreadySelected = selectedIso2 === iso2Codes[0];
 
@@ -1399,7 +1521,10 @@ export class Iti {
   }
 
   //* Remove highlighting from other list items and highlight the given item.
-  private _highlightListItem(listItem: HTMLElement | null, shouldFocus: boolean): void {
+  private _highlightListItem(
+    listItem: HTMLElement | null,
+    shouldFocus: boolean,
+  ): void {
     const prevItem = this.highlightedItem;
     if (prevItem) {
       prevItem.classList.remove("iti__highlight");
@@ -1412,7 +1537,10 @@ export class Iti {
       this.highlightedItem.setAttribute("aria-selected", "true");
       if (this.options.countrySearch) {
         const activeDescendant = this.highlightedItem.getAttribute("id") || "";
-        this.searchInput.setAttribute("aria-activedescendant", activeDescendant);
+        this.searchInput.setAttribute(
+          "aria-activedescendant",
+          activeDescendant,
+        );
       }
     }
 
@@ -1429,8 +1557,8 @@ export class Iti {
     const prevIso2 = this.selectedCountryData.iso2 || "";
 
     this.selectedCountryData = iso2
-      ? this.countryByIso2.get(iso2) as Country
-      : {} as SelectedCountryData;
+      ? (this.countryByIso2.get(iso2) as Country)
+      : ({} as SelectedCountryData);
 
     //* Update the defaultCountry - we only need the iso2 from now on, so just store that.
     if (this.selectedCountryData.iso2) {
@@ -1439,12 +1567,15 @@ export class Iti {
 
     //* Update the flag class and the a11y text.
     if (this.selectedCountry) {
-      const flagClass = iso2 && showFlags ? `iti__flag iti__${iso2}` : "iti__flag iti__globe";
+      const flagClass =
+        iso2 && showFlags ? `iti__flag iti__${iso2}` : "iti__flag iti__globe";
       let ariaLabel, title;
       if (iso2) {
         const { name, dialCode } = this.selectedCountryData;
         title = name;
-        ariaLabel = i18n.selectedCountryAriaLabel.replace("${countryName}", name).replace("${dialCode}", `+${dialCode}`);
+        ariaLabel = i18n.selectedCountryAriaLabel
+          .replace("${countryName}", name)
+          .replace("${dialCode}", `+${dialCode}`);
       } else {
         title = i18n.noCountrySelected;
         ariaLabel = i18n.noCountrySelected;
@@ -1479,7 +1610,10 @@ export class Iti {
       // if all else fails, these are better than nothing
       const saneDefaultWidth = this.options.separateDialCode ? 78 : 42;
       //* offsetWidth is zero if input is in a hidden container during initialisation.
-      const selectedCountryWidth = this.selectedCountry.offsetWidth || this._getHiddenSelectedCountryWidth() || saneDefaultWidth;
+      const selectedCountryWidth =
+        this.selectedCountry.offsetWidth ||
+        this._getHiddenSelectedCountryWidth() ||
+        saneDefaultWidth;
       const inputPadding = selectedCountryWidth + 6;
       this.telInput.style.paddingLeft = `${inputPadding}px`;
     }
@@ -1487,7 +1621,8 @@ export class Iti {
 
   //* Update the maximum valid number length for the currently selected country.
   private _updateMaxLength(): void {
-    const { strictMode, placeholderNumberType, validationNumberTypes } = this.options;
+    const { strictMode, placeholderNumberType, validationNumberTypes } =
+      this.options;
     const { iso2 } = this.selectedCountryData;
     if (strictMode && intlTelInput.utils) {
       if (iso2) {
@@ -1500,7 +1635,13 @@ export class Iti {
         );
         //* See if adding more digits is still valid to get the true maximum valid length.
         let validNumber = exampleNumber;
-        while (intlTelInput.utils.isPossibleNumber(exampleNumber, iso2, validationNumberTypes)) {
+        while (
+          intlTelInput.utils.isPossibleNumber(
+            exampleNumber,
+            iso2,
+            validationNumberTypes,
+          )
+        ) {
           validNumber = exampleNumber;
           exampleNumber += "0";
         }
@@ -1533,14 +1674,19 @@ export class Iti {
         body = document.body;
       }
 
-      const containerClone = this.telInput.parentNode.cloneNode(false) as HTMLElement;
+      const containerClone = this.telInput.parentNode.cloneNode(
+        false,
+      ) as HTMLElement;
       containerClone.style.visibility = "hidden";
       body.appendChild(containerClone);
 
-      const countryContainerClone = this.countryContainer.cloneNode() as HTMLElement;
+      const countryContainerClone =
+        this.countryContainer.cloneNode() as HTMLElement;
       containerClone.appendChild(countryContainerClone);
 
-      const selectedCountryClone = this.selectedCountry.cloneNode(true) as HTMLElement;
+      const selectedCountryClone = this.selectedCountry.cloneNode(
+        true,
+      ) as HTMLElement;
       countryContainerClone.appendChild(selectedCountryClone);
 
       const width = selectedCountryClone.offsetWidth;
@@ -1723,7 +1869,12 @@ export class Iti {
     let prefix;
     const numericVal = getNumeric(val);
 
-    if (this.options.separateDialCode && !val.startsWith("+") && dialCode && numericVal) {
+    if (
+      this.options.separateDialCode &&
+      !val.startsWith("+") &&
+      dialCode &&
+      numericVal
+    ) {
       //* When using separateDialCode, it is visible so is effectively part of the typed number.
       prefix = `+${dialCode}`;
     } else {
@@ -1759,7 +1910,9 @@ export class Iti {
       //* We must set this even if there is an initial val in the input: in case the initial val is
       //* invalid and they delete it - they should see their auto country.
       this.defaultCountry = intlTelInput.autoCountry;
-      const hasSelectedCountryOrGlobe = this.selectedCountryData.iso2 || this.selectedCountryInner.classList.contains("iti__globe");
+      const hasSelectedCountryOrGlobe =
+        this.selectedCountryData.iso2 ||
+        this.selectedCountryInner.classList.contains("iti__globe");
       //* If no country/globe currently selected, then update the country.
       if (!hasSelectedCountryOrGlobe) {
         this.setCountry(this.defaultCountry);
@@ -1891,7 +2044,11 @@ export class Iti {
 
   private _utilsIsPossibleNumber(val: string): boolean | null {
     return intlTelInput.utils
-      ? intlTelInput.utils.isPossibleNumber(val, this.selectedCountryData.iso2, this.options.validationNumberTypes)
+      ? intlTelInput.utils.isPossibleNumber(
+          val,
+          this.selectedCountryData.iso2,
+          this.options.validationNumberTypes,
+        )
       : null;
   }
 
@@ -1904,9 +2061,8 @@ export class Iti {
       return false;
     }
 
-    const testValidity = (s: string) => precise
-      ? this._utilsIsValidNumber(s)
-      : this._utilsIsPossibleNumber(s);
+    const testValidity = (s: string) =>
+      precise ? this._utilsIsValidNumber(s) : this._utilsIsPossibleNumber(s);
 
     const val = this._getFullNumber();
     const alphaCharPosition = val.search(/\p{L}/u);
@@ -1923,7 +2079,11 @@ export class Iti {
 
   private _utilsIsValidNumber(val: string): boolean | null {
     return intlTelInput.utils
-      ? intlTelInput.utils.isValidNumber(val, this.selectedCountryData.iso2, this.options.validationNumberTypes)
+      ? intlTelInput.utils.isValidNumber(
+          val,
+          this.selectedCountryData.iso2,
+          this.options.validationNumberTypes,
+        )
       : null;
   }
 
@@ -1937,7 +2097,8 @@ export class Iti {
 
     const currentCountry = this.selectedCountryData.iso2;
     //* There is a country change IF: either there is a new country and it's different to the current one, OR there is no new country (i.e. globe state) and there is a current country
-    const isCountryChange = (iso2 && (iso2Lower !== currentCountry) || (!iso2 && currentCountry));
+    const isCountryChange =
+      (iso2 && iso2Lower !== currentCountry) || (!iso2 && currentCountry);
     if (isCountryChange) {
       this._setCountry(iso2Lower);
       this._updateDialCode(this.selectedCountryData.dialCode);
@@ -1988,10 +2149,7 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
   //* 1) Not already started loading (start)
   //* 2) Already started loading (do nothing - just wait for the onload callback to fire, which will
   //* trigger handleUtils on all instances, invoking their resolveUtilsScriptPromise functions)
-  if (
-    !intlTelInput.utils &&
-    !intlTelInput.startedLoadingUtilsScript
-  ) {
+  if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
     let loadCall;
     if (typeof source === "function") {
       try {
@@ -2000,7 +2158,11 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
         return Promise.reject(error);
       }
     } else {
-      return Promise.reject(new TypeError(`The argument passed to attachUtils must be a function that returns a promise for the utilities module, not ${typeof source}`));
+      return Promise.reject(
+        new TypeError(
+          `The argument passed to attachUtils must be a function that returns a promise for the utilities module, not ${typeof source}`,
+        ),
+      );
     }
 
     //* Only do this once.
@@ -2010,7 +2172,9 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
       .then((module) => {
         const utils = module?.default;
         if (!utils || typeof utils !== "object") {
-          throw new TypeError("The loader function passed to attachUtils did not resolve to a module object with utils as its default export.");
+          throw new TypeError(
+            "The loader function passed to attachUtils did not resolve to a module object with utils as its default export.",
+          );
         }
 
         intlTelInput.utils = utils;
