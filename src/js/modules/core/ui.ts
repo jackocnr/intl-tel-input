@@ -209,7 +209,7 @@ private _createWrapperAndInsert(): HTMLElement {
     );
     this._appendListItems();
 
-    if (this.options.countrySearch) {
+    if (countrySearch) {
       this.updateSearchResultsA11yText();
     }
 
