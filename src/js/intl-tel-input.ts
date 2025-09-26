@@ -29,6 +29,21 @@ import {
 import { translateCursorPosition } from "./modules/format/caret";
 import { isRegionlessNanp } from "./modules/data/nanp-regionless";
 import type { ItiEventMap } from "./modules/types/events";
+import {
+  EVENTS,
+  CLASSES,
+  SENTINELS,
+  KEYS,
+  REGEX,
+  TIMINGS,
+  INITIAL_COUNTRY,
+  DATA_KEYS,
+  ARIA,
+  UK,
+  INPUT_TYPES,
+  DIAL,
+  US,
+} from "./modules/constants";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
 for (const c of allCountries) {
@@ -187,7 +202,8 @@ export class Iti {
     const dialCode = this._getDialCode(val);
     const isRegionlessNanpNumber = isRegionlessNanp(val);
     const { initialCountry, geoIpLookup } = this.options;
-    const isAutoCountry = initialCountry === "auto" && geoIpLookup;
+    const isAutoCountry =
+      initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
 
     //* If we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
     //* country, else fall back to the default country.
@@ -203,7 +219,7 @@ export class Iti {
       } else {
         if (dialCode && isRegionlessNanpNumber) {
           //* Has intl dial code, is regionless nanp, and no initialCountry, so default to US.
-          this._setCountry("us");
+          this._setCountry(US.ISO2);
         } else {
           //* Display the empty state (globe icon).
           this._setCountry("");
@@ -255,7 +271,7 @@ export class Iti {
     //* close it again.
     const handleLabelClick = (e: Event): void => {
       //* If the dropdown is closed, then focus the input, else ignore the click.
-      if (this.ui.dropdownContent.classList.contains("iti__hide")) {
+      if (this.ui.dropdownContent.classList.contains(CLASSES.HIDE)) {
         this.ui.telInput.focus();
       } else {
         e.preventDefault();
@@ -268,8 +284,9 @@ export class Iti {
 
     //* Toggle country dropdown on click.
     const handleClickSelectedCountry = (): void => {
-      const dropdownClosed =
-        this.ui.dropdownContent.classList.contains("iti__hide");
+      const dropdownClosed = this.ui.dropdownContent.classList.contains(
+        CLASSES.HIDE,
+      );
       if (
         dropdownClosed &&
         !this.ui.telInput.disabled &&
@@ -288,12 +305,15 @@ export class Iti {
 
     //* Open dropdown if selected country is focused and they press up/down/space/enter.
     const handleCountryContainerKeydown = (e: KeyboardEvent): void => {
-      const isDropdownHidden =
-        this.ui.dropdownContent.classList.contains("iti__hide");
+      const isDropdownHidden = this.ui.dropdownContent.classList.contains(
+        CLASSES.HIDE,
+      );
 
       if (
         isDropdownHidden &&
-        ["ArrowUp", "ArrowDown", " ", "Enter"].includes(e.key)
+        (
+          [KEYS.ARROW_UP, KEYS.ARROW_DOWN, KEYS.SPACE, KEYS.ENTER] as string[]
+        ).includes(e.key)
       ) {
         //* Prevent form from being submitted if "ENTER" was pressed.
         e.preventDefault();
@@ -303,7 +323,7 @@ export class Iti {
       }
 
       //* Allow navigation from dropdown to input on TAB.
-      if (e.key === "Tab") {
+      if (e.key === KEYS.TAB) {
         this._closeDropdown();
       }
     };
@@ -344,7 +364,8 @@ export class Iti {
     }
 
     //* Don't bother with IP lookup if we already have a selected country.
-    const isAutoCountry = initialCountry === "auto" && geoIpLookup;
+    const isAutoCountry =
+      initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
     if (isAutoCountry && !this.selectedCountryData.iso2) {
       this._loadAutoCountry();
     } else {
@@ -414,7 +435,7 @@ export class Iti {
     } = this.options;
     let userOverrideFormatting = false;
     //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
-    if (/\p{L}/u.test(this.ui.telInput.value)) {
+    if (REGEX.ALPHA_UNICODE.test(this.ui.telInput.value)) {
       userOverrideFormatting = true;
     }
 
@@ -447,14 +468,14 @@ export class Iti {
       }
 
       //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
-      const isFormattingChar = e?.data && /[^+0-9]/.test(e.data);
+      const isFormattingChar = e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
       const isPaste =
-        e?.inputType === "insertFromPaste" && this.ui.telInput.value;
+        e?.inputType === INPUT_TYPES.PASTE && this.ui.telInput.value;
       if (isFormattingChar || (isPaste && !strictMode)) {
         userOverrideFormatting = true;
       }
       //* If user removes all formatting chars, then reset the override.
-      else if (!/[^+0-9]/.test(this.ui.telInput.value)) {
+      else if (!REGEX.NON_PLUS_NUMERIC.test(this.ui.telInput.value)) {
         userOverrideFormatting = false;
       }
 
@@ -468,10 +489,10 @@ export class Iti {
           currentCaretPos,
         );
         const relevantCharsBeforeCaret = valueBeforeCaret.replace(
-          /[^+0-9]/g,
+          REGEX.NON_PLUS_NUMERIC_GLOBAL,
           "",
         ).length;
-        const isDeleteForwards = e?.inputType === "deleteContentForward";
+        const isDeleteForwards = e?.inputType === INPUT_TYPES.DELETE_FWD;
         const fullNumber = this._getFullNumber();
         const formattedValue = formatNumberAsYouType(
           fullNumber,
@@ -596,7 +617,7 @@ export class Iti {
         const allowLeadingPlus =
           !input.value.startsWith("+") || initialCharSelected;
         // just numerics and pluses
-        const allowedChars = pasted.replace(/[^0-9+]/g, "");
+        const allowedChars = pasted.replace(REGEX.NON_PLUS_NUMERIC_GLOBAL, "");
         const hasLeadingPlus = allowedChars.startsWith("+");
         // just numerics
         const numerics = allowedChars.replace(/\+/g, "");
@@ -670,8 +691,8 @@ export class Iti {
     if (fixDropdownWidth) {
       this.ui.dropdownContent.style.width = `${this.ui.telInput.offsetWidth}px`;
     }
-    this.ui.dropdownContent.classList.remove("iti__hide");
-    this.ui.selectedCountry.setAttribute("aria-expanded", "true");
+    this.ui.dropdownContent.classList.remove(CLASSES.HIDE);
+    this.ui.selectedCountry.setAttribute(ARIA.EXPANDED, "true");
 
     this._setDropdownPosition();
 
@@ -690,9 +711,9 @@ export class Iti {
     this._bindDropdownListeners();
 
     //* Update the arrow.
-    this.ui.dropdownArrow.classList.add("iti__arrow--up");
+    this.ui.dropdownArrow.classList.add(CLASSES.ARROW_UP);
 
-    this._trigger("open:countrydropdown");
+    this._trigger(EVENTS.OPEN_COUNTRY_DROPDOWN);
   }
 
   //* Set the dropdown position
@@ -739,7 +760,7 @@ export class Iti {
     const handleMouseoverCountryList = (e: MouseEvent): void => {
       //* Handle event delegation, as we're listening for this event on the countryList.
       const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(
-        ".iti__country",
+        `.${CLASSES.COUNTRY_ITEM}`,
       );
       if (listItem) {
         this.ui.highlightListItem(listItem, false);
@@ -758,7 +779,7 @@ export class Iti {
   private _bindDropdownCountryClickListener(signal: AbortSignal): void {
     const handleClickCountryList = (e: MouseEvent): void => {
       const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(
-        ".iti__country",
+        `.${CLASSES.COUNTRY_ITEM}`,
       );
       if (listItem) {
         this._selectListItem(listItem);
@@ -801,27 +822,33 @@ export class Iti {
     let queryTimer: NodeJS.Timeout | null = null;
     const handleKeydownOnDropdown = (e: KeyboardEvent): void => {
       //* prevent down key from scrolling the whole page, and enter key from submitting a form etc.
-      if (["ArrowUp", "ArrowDown", "Enter", "Escape"].includes(e.key)) {
+      const allowedKeys = [
+        KEYS.ARROW_UP,
+        KEYS.ARROW_DOWN,
+        KEYS.ENTER,
+        KEYS.ESC,
+      ] as string[];
+      if (allowedKeys.includes(e.key)) {
         e.preventDefault();
         e.stopPropagation();
 
         //* Up and down to navigate.
-        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        if (e.key === KEYS.ARROW_UP || e.key === KEYS.ARROW_DOWN) {
           this._handleUpDownKey(e.key);
         }
         //* Enter to select.
-        else if (e.key === "Enter") {
+        else if (e.key === KEYS.ENTER) {
           this._handleEnterKey();
         }
         //* Esc to close
-        else if (e.key === "Escape") {
+        else if (e.key === KEYS.ESC) {
           this._closeDropdown();
         }
       }
 
       //* When countrySearch disabled: Listen for alpha chars to perform hidden search.
       //* Regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866.
-      if (!this.options.countrySearch && /^[a-zA-ZÀ-ÿа-яА-Я ]$/.test(e.key)) {
+      if (!this.options.countrySearch && REGEX.HIDDEN_SEARCH_CHAR.test(e.key)) {
         e.stopPropagation();
         //* Jump to countries that start with the query string.
         if (queryTimer) {
@@ -832,7 +859,7 @@ export class Iti {
         //* If the timer hits 1 second, reset the query.
         queryTimer = setTimeout(() => {
           query = "";
-        }, 1000);
+        }, TIMINGS.HIDDEN_SEARCH_RESET_MS);
       }
     };
     document.addEventListener("keydown", handleKeydownOnDropdown, { signal });
@@ -845,9 +872,9 @@ export class Iti {
       this._filterCountriesByQuery(inputQuery);
       // show/hide clear button
       if (this.ui.searchInput.value) {
-        this.ui.searchClearButton.classList.remove("iti__hide");
+        this.ui.searchClearButton.classList.remove(CLASSES.HIDE);
       } else {
-        this.ui.searchClearButton.classList.add("iti__hide");
+        this.ui.searchClearButton.classList.add(CLASSES.HIDE);
       }
     };
 
@@ -905,13 +932,13 @@ export class Iti {
   //* Highlight the next/prev item in the list (and ensure it is visible).
   private _handleUpDownKey(key: string): void {
     let next =
-      key === "ArrowUp"
+      key === KEYS.ARROW_UP
         ? (this.ui.highlightedItem?.previousElementSibling as HTMLElement)
         : (this.ui.highlightedItem?.nextElementSibling as HTMLElement);
     if (!next && this.ui.countryList.childElementCount > 1) {
       //* Otherwise, we must be at the end, so loop round again.
       next =
-        key === "ArrowUp"
+        key === KEYS.ARROW_UP
           ? (this.ui.countryList.lastElementChild as HTMLElement)
           : (this.ui.countryList.firstElementChild as HTMLElement);
     }
@@ -1028,7 +1055,7 @@ export class Iti {
 
       // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
       const isRegionlessNanpNumber =
-        selectedDialCode === "1" && isRegionlessNanp(numeric);
+        selectedDialCode === DIAL.NANP && isRegionlessNanp(numeric);
       if (isRegionlessNanpNumber) {
         return null;
       }
@@ -1093,7 +1120,9 @@ export class Iti {
     //* Update the flag class and the a11y text.
     if (this.ui.selectedCountry) {
       const flagClass =
-        iso2 && showFlags ? `iti__flag iti__${iso2}` : "iti__flag iti__globe";
+        iso2 && showFlags
+          ? `${CLASSES.FLAG} iti__${iso2}`
+          : `${CLASSES.FLAG} ${CLASSES.GLOBE}`;
       let ariaLabel, title;
       if (iso2) {
         const { name, dialCode } = this.selectedCountryData;
@@ -1107,7 +1136,7 @@ export class Iti {
       }
       this.ui.selectedCountryInner.className = flagClass;
       this.ui.selectedCountry.setAttribute("title", title);
-      this.ui.selectedCountry.setAttribute("aria-label", ariaLabel);
+      this.ui.selectedCountry.setAttribute(ARIA.LABEL, ariaLabel);
     }
 
     //* Update the selected dial code.
@@ -1202,11 +1231,11 @@ export class Iti {
   //* Called when the user selects a list item from the dropdown.
   private _selectListItem(listItem: HTMLElement): void {
     //* Update selected country and active list item.
-    const iso2 = listItem.dataset.countryCode as Iso2;
+    const iso2 = listItem.dataset[DATA_KEYS.COUNTRY_CODE] as Iso2;
     const countryChanged = this._setCountry(iso2);
     this._closeDropdown();
 
-    const dialCode = listItem.dataset.dialCode;
+    const dialCode = listItem.dataset[DATA_KEYS.DIAL_CODE];
     this._updateDialCode(dialCode);
 
     // reformat any existing number to the new country
@@ -1225,20 +1254,20 @@ export class Iti {
   //* Close the dropdown and unbind any listeners.
   private _closeDropdown(): void {
     // we call closeDropdown in places where it might not even be open e.g. in destroy()
-    if (this.ui.dropdownContent.classList.contains("iti__hide")) {
+    if (this.ui.dropdownContent.classList.contains(CLASSES.HIDE)) {
       return;
     }
-    this.ui.dropdownContent.classList.add("iti__hide");
-    this.ui.selectedCountry.setAttribute("aria-expanded", "false");
+    this.ui.dropdownContent.classList.add(CLASSES.HIDE);
+    this.ui.selectedCountry.setAttribute(ARIA.EXPANDED, "false");
     if (this.ui.highlightedItem) {
-      this.ui.highlightedItem.setAttribute("aria-selected", "false");
+      this.ui.highlightedItem.setAttribute(ARIA.SELECTED, "false");
     }
     if (this.options.countrySearch) {
-      this.ui.searchInput.removeAttribute("aria-activedescendant");
+      this.ui.searchInput.removeAttribute(ARIA.ACTIVE_DESCENDANT);
     }
 
     //* Update the arrow.
-    this.ui.dropdownArrow.classList.remove("iti__arrow--up");
+    this.ui.dropdownArrow.classList.remove(CLASSES.ARROW_UP);
 
     //* Unbind dropdown-scoped events in one go
     this.dropdownAbortController.abort();
@@ -1249,7 +1278,7 @@ export class Iti {
       this.ui.dropdown.remove();
     }
 
-    this._trigger("close:countrydropdown");
+    this._trigger(EVENTS.CLOSE_COUNTRY_DROPDOWN);
   }
 
   //* Replace any existing dial code with the new one
@@ -1347,7 +1376,7 @@ export class Iti {
 
   //* Trigger the 'countrychange' event.
   private _triggerCountryChange(): void {
-    this._trigger("countrychange");
+    this._trigger(EVENTS.COUNTRY_CHANGE);
   }
 
   //**************************
@@ -1356,13 +1385,16 @@ export class Iti {
 
   //* This is called when the geoip call returns.
   handleAutoCountry(): void {
-    if (this.options.initialCountry === "auto" && intlTelInput.autoCountry) {
+    if (
+      this.options.initialCountry === INITIAL_COUNTRY.AUTO &&
+      intlTelInput.autoCountry
+    ) {
       //* We must set this even if there is an initial val in the input: in case the initial val is
       //* invalid and they delete it - they should see their auto country.
       this.defaultCountry = intlTelInput.autoCountry;
       const hasSelectedCountryOrGlobe =
         this.selectedCountryData.iso2 ||
-        this.ui.selectedCountryInner.classList.contains("iti__globe");
+        this.ui.selectedCountryInner.classList.contains(CLASSES.GLOBE);
       //* If no country/globe currently selected, then update the country.
       if (!hasSelectedCountryOrGlobe) {
         this.setCountry(this.defaultCountry);
@@ -1448,7 +1480,7 @@ export class Iti {
         this.selectedCountryData.iso2,
       );
     }
-    return -99;
+    return SENTINELS.UNKNOWN_NUMBER_TYPE;
   }
 
   //* Get the country data for the currently selected country.
@@ -1462,18 +1494,21 @@ export class Iti {
       const { iso2 } = this.selectedCountryData;
       return intlTelInput.utils.getValidationError(this._getFullNumber(), iso2);
     }
-    return -99;
+    return SENTINELS.UNKNOWN_VALIDATION_ERROR;
   }
 
   //* Validate the input val using number length only
   isValidNumber(): boolean | null {
     // custom validation for UK mobile numbers - useful when validationNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
     const { dialCode, iso2 } = this.selectedCountryData;
-    if (dialCode === "44" && intlTelInput.utils) {
+    if (dialCode === UK.DIAL_CODE && intlTelInput.utils) {
       const number = this._getFullNumber();
       const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
       // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
-      if (coreNumber[0] === "7" && coreNumber.length !== 10) {
+      if (
+        coreNumber[0] === UK.MOBILE_PREFIX &&
+        coreNumber.length !== UK.MOBILE_CORE_LENGTH
+      ) {
         return false;
       }
     }
@@ -1508,7 +1543,7 @@ export class Iti {
       precise ? this._utilsIsValidNumber(s) : this._utilsIsPossibleNumber(s);
 
     const val = this._getFullNumber();
-    const alphaCharPosition = val.search(/\p{L}/u);
+    const alphaCharPosition = val.search(REGEX.ALPHA_UNICODE);
     const hasAlphaChar = alphaCharPosition > -1;
     if (hasAlphaChar && !this.options.allowPhonewords) {
       const beforeAlphaChar = val.substring(0, alphaCharPosition);
@@ -1563,7 +1598,7 @@ export class Iti {
       this._triggerCountryChange();
     }
     //* This is required for the React cmp to update its state correctly.
-    this._trigger("input", { isSetNumber: true });
+    this._trigger(EVENTS.INPUT, { isSetNumber: true });
   }
 
   //* Set the placeholder number typ

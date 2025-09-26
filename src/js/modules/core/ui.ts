@@ -2,6 +2,7 @@ import { Country } from "../../intl-tel-input/data";
 import { AllOptions } from "../types/public-api";
 import { buildClassNames, createEl } from "../utils/dom";
 import { buildSearchIcon, buildClearIcon } from "./icons";
+import { CLASSES, ARIA, LAYOUT } from "../constants";
 
 export default class UI {
   // private
@@ -72,31 +73,26 @@ export default class UI {
     }
   }
 
-private _createWrapperAndInsert(): HTMLElement {
-  const {
-    allowDropdown,
-    showFlags,
-    containerClass,
-    useFullscreenPopup,
-  } = this.options;
+  private _createWrapperAndInsert(): HTMLElement {
+    const { allowDropdown, showFlags, containerClass, useFullscreenPopup } =
+      this.options;
 
-  //* Containers (mostly for positioning).
-  const parentClasses = buildClassNames({
-    iti: true,
-    "iti--allow-dropdown": allowDropdown,
-    "iti--show-flags": showFlags,
-    "iti--inline-dropdown": !useFullscreenPopup,
-    [containerClass]: Boolean(containerClass),
-  });
-  const wrapper = createEl("div", { class: parentClasses });
-  // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the dropdown content RTL)
-  if (this.isRTL) {
-    wrapper.setAttribute("dir", "ltr");
+    //* Containers (mostly for positioning).
+    const parentClasses = buildClassNames({
+      iti: true,
+      "iti--allow-dropdown": allowDropdown,
+      "iti--show-flags": showFlags,
+      "iti--inline-dropdown": !useFullscreenPopup,
+      [containerClass]: Boolean(containerClass),
+    });
+    const wrapper = createEl("div", { class: parentClasses });
+    // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the dropdown content RTL)
+    if (this.isRTL) {
+      wrapper.setAttribute("dir", "ltr");
+    }
+    this.telInput.before(wrapper);
+    return wrapper;
   }
-  this.telInput.before(wrapper);
-  return wrapper;
-}
-
 
   private _maybeBuildCountryContainer(wrapper: HTMLElement): void {
     const { allowDropdown, separateDialCode, showFlags } = this.options;
@@ -106,7 +102,7 @@ private _createWrapperAndInsert(): HTMLElement {
       this.countryContainer = createEl(
         "div",
         // visibly hidden until we measure it's width to set the input padding correctly
-        { class: "iti__country-container iti__v-hide" },
+        { class: `iti__country-container ${CLASSES.V_HIDE}` },
         wrapper,
       );
 
@@ -118,10 +114,10 @@ private _createWrapperAndInsert(): HTMLElement {
           {
             type: "button",
             class: "iti__selected-country",
-            "aria-expanded": "false",
-            "aria-label": this.options.i18n.noCountrySelected,
-            "aria-haspopup": "dialog",
-            "aria-controls": `iti-${this.id}__dropdown-content`,
+            [ARIA.EXPANDED]: "false",
+            [ARIA.LABEL]: this.options.i18n.noCountrySelected,
+            [ARIA.HASPOPUP]: "dialog",
+            [ARIA.CONTROLS]: `iti-${this.id}__dropdown-content`,
           },
           this.countryContainer,
         );
@@ -147,14 +143,14 @@ private _createWrapperAndInsert(): HTMLElement {
       //* This is where we will add the selected flag (or globe) class later
       this.selectedCountryInner = createEl(
         "div",
-        { class: "iti__flag" },
+        { class: CLASSES.FLAG },
         selectedCountryPrimary,
       );
 
       if (allowDropdown) {
         this.dropdownArrow = createEl(
           "div",
-          { class: "iti__arrow", "aria-hidden": "true" },
+          { class: "iti__arrow", [ARIA.HIDDEN]: "true" },
           selectedCountryPrimary,
         );
       }
@@ -186,9 +182,9 @@ private _createWrapperAndInsert(): HTMLElement {
     const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
     this.dropdownContent = createEl("div", {
       id: `iti-${this.id}__dropdown-content`,
-      class: `iti__dropdown-content iti__hide ${extraClasses}`,
+      class: `iti__dropdown-content ${CLASSES.HIDE} ${extraClasses}`,
       role: "dialog",
-      "aria-modal": "true",
+      [ARIA.MODAL]: "true",
     });
     if (this.isRTL) {
       this.dropdownContent.setAttribute("dir", "rtl");
@@ -204,7 +200,7 @@ private _createWrapperAndInsert(): HTMLElement {
         class: "iti__country-list",
         id: `iti-${this.id}__country-listbox`,
         role: "listbox",
-        "aria-label": i18n.countryListAriaLabel,
+        [ARIA.LABEL]: i18n.countryListAriaLabel,
       },
       this.dropdownContent,
     );
@@ -245,7 +241,7 @@ private _createWrapperAndInsert(): HTMLElement {
       "span",
       {
         class: "iti__search-icon",
-        "aria-hidden": "true",
+        [ARIA.HIDDEN]: "true",
       },
       searchWrapper,
     );
@@ -261,10 +257,10 @@ private _createWrapperAndInsert(): HTMLElement {
         placeholder: i18n.searchPlaceholder,
         // role=combobox + aria-autocomplete=list + aria-activedescendant allows maintaining focus on the search input while allowing users to navigate search results with up/down keyboard keys
         role: "combobox",
-        "aria-expanded": "true",
-        "aria-label": i18n.searchPlaceholder,
-        "aria-controls": `iti-${this.id}__country-listbox`,
-        "aria-autocomplete": "list",
+        [ARIA.EXPANDED]: "true",
+        [ARIA.LABEL]: i18n.searchPlaceholder,
+        [ARIA.CONTROLS]: `iti-${this.id}__country-listbox`,
+        [ARIA.AUTOCOMPLETE]: "list",
         autocomplete: "off",
       },
       searchWrapper,
@@ -274,8 +270,8 @@ private _createWrapperAndInsert(): HTMLElement {
       "button",
       {
         type: "button",
-        class: "iti__search-clear iti__hide",
-        "aria-label": i18n.clearSearchAriaLabel,
+        class: `iti__search-clear ${CLASSES.HIDE}`,
+        [ARIA.LABEL]: i18n.clearSearchAriaLabel,
         tabindex: "-1",
       },
       searchWrapper,
@@ -294,8 +290,8 @@ private _createWrapperAndInsert(): HTMLElement {
     this.searchNoResults = createEl(
       "div",
       {
-        class: "iti__no-results iti__hide",
-        "aria-hidden": "true", // all a11y messaging happens in this.searchResultsA11yText
+        class: `iti__no-results ${CLASSES.HIDE}`,
+        [ARIA.HIDDEN]: "true", // all a11y messaging happens in this.searchResultsA11yText
       },
       this.dropdownContent,
     );
@@ -305,7 +301,7 @@ private _createWrapperAndInsert(): HTMLElement {
   private _maybeUpdateInputPaddingAndReveal(): void {
     if (this.countryContainer) {
       this.updateInputPadding();
-      this.countryContainer.classList.remove("iti__v-hide");
+      this.countryContainer.classList.remove(CLASSES.V_HIDE);
     }
   }
 
@@ -356,8 +352,8 @@ private _createWrapperAndInsert(): HTMLElement {
       const c = this.countries[i];
       // Compute classes (highlight first item when countrySearch disabled)
       const liClass = buildClassNames({
-        iti__country: true,
-        iti__highlight: i === 0,
+        [CLASSES.COUNTRY_ITEM]: true,
+        [CLASSES.HIGHLIGHT]: i === 0,
       });
 
       const listItem = createEl("li", {
@@ -365,7 +361,7 @@ private _createWrapperAndInsert(): HTMLElement {
         class: liClass,
         tabindex: "-1",
         role: "option",
-        "aria-selected": "false",
+        [ARIA.SELECTED]: "false",
       });
       listItem.dataset.dialCode = c.dialCode;
       listItem.dataset.countryCode = c.iso2;
@@ -375,7 +371,7 @@ private _createWrapperAndInsert(): HTMLElement {
 
       // Build contents without innerHTML for safety and clarity
       if (this.options.showFlags) {
-        createEl("div", { class: `iti__flag iti__${c.iso2}` }, listItem);
+        createEl("div", { class: `${CLASSES.FLAG} iti__${c.iso2}` }, listItem);
       }
 
       const nameEl = createEl("span", { class: "iti__country-name" }, listItem);
@@ -395,14 +391,17 @@ private _createWrapperAndInsert(): HTMLElement {
   //* Update the input padding to make space for the selected country/dial code.
   updateInputPadding(): void {
     if (this.selectedCountry) {
-      // if all else fails, these are better than nothing
-      const saneDefaultWidth = this.options.separateDialCode ? 78 : 42;
+      // fallback widths differ for separateDialCode mode
+      const fallbackWidth = this.options.separateDialCode
+        ? LAYOUT.SANE_SELECTED_WITH_DIAL_WIDTH
+        : LAYOUT.SANE_SELECTED_NO_DIAL_WIDTH;
       //* offsetWidth is zero if input is in a hidden container during initialisation.
       const selectedCountryWidth =
         this.selectedCountry.offsetWidth ||
         this._getHiddenSelectedCountryWidth() ||
-        saneDefaultWidth;
-      const inputPadding = selectedCountryWidth + 6;
+        fallbackWidth;
+      const inputPadding =
+        selectedCountryWidth + LAYOUT.INPUT_PADDING_EXTRA_LEFT;
       this.telInput.style.paddingLeft = `${inputPadding}px`;
     }
   }
@@ -492,26 +491,20 @@ private _createWrapperAndInsert(): HTMLElement {
   }
 
   //* Remove highlighting from other list items and highlight the given item.
-  highlightListItem(
-    listItem: HTMLElement | null,
-    shouldFocus: boolean,
-  ): void {
+  highlightListItem(listItem: HTMLElement | null, shouldFocus: boolean): void {
     const prevItem = this.highlightedItem;
     if (prevItem) {
-      prevItem.classList.remove("iti__highlight");
-      prevItem.setAttribute("aria-selected", "false");
+      prevItem.classList.remove(CLASSES.HIGHLIGHT);
+      prevItem.setAttribute(ARIA.SELECTED, "false");
     }
     //* Set this, even if it's null, as it will clear the highlight.
     this.highlightedItem = listItem;
     if (this.highlightedItem) {
-      this.highlightedItem.classList.add("iti__highlight");
-      this.highlightedItem.setAttribute("aria-selected", "true");
+      this.highlightedItem.classList.add(CLASSES.HIGHLIGHT);
+      this.highlightedItem.setAttribute(ARIA.SELECTED, "true");
       if (this.options.countrySearch) {
         const activeDescendant = this.highlightedItem.getAttribute("id") || "";
-        this.searchInput.setAttribute(
-          "aria-activedescendant",
-          activeDescendant,
-        );
+        this.searchInput.setAttribute(ARIA.ACTIVE_DESCENDANT, activeDescendant);
       }
     }
 
@@ -541,10 +534,10 @@ private _createWrapperAndInsert(): HTMLElement {
       //* If no countries are shown, unhighlight the previously highlighted item.
       this.highlightListItem(null, false);
       if (this.searchNoResults) {
-        this.searchNoResults.classList.remove("iti__hide");
+        this.searchNoResults.classList.remove(CLASSES.HIDE);
       }
     } else if (this.searchNoResults) {
-      this.searchNoResults.classList.add("iti__hide");
+      this.searchNoResults.classList.add(CLASSES.HIDE);
     }
     //* Scroll to top (useful if user had previously scrolled down).
     this.countryList.scrollTop = 0;

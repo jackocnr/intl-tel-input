@@ -1,4 +1,5 @@
 import { I18n } from "../../intl-tel-input/i18n/types";
+import { PLACEHOLDER_MODES } from "../constants";
 import type { AllOptions } from "../types/public-api";
 
 // Helper for media query evaluation
@@ -40,7 +41,7 @@ export const defaults: AllOptions = {
   //* Whether or not to allow the dropdown.
   allowDropdown: true,
   //* Add a placeholder in the input with an example number for the selected country.
-  autoPlaceholder: "polite",
+  autoPlaceholder: PLACEHOLDER_MODES.POLITE,
   //* Modify the parentClass.
   containerClass: "",
   //* The order of the countries in the dropdown. Defaults to alphabetical.
