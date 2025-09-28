@@ -11,164 +11,167 @@ module.exports = function(grunt) {
         patterns: [
           //* Note: _a is now reserved for step two.
           {
-            match: /_processCountryData/g,
+            match: /_processCountryData(?![A-Za-z])/g,
             replacement: '_b'
           }, {
-            match: /_getIsAndroid/g,
+            match: /_getIsAndroid(?![A-Za-z])/g,
             replacement: '_k'
           }, {
-            match: /_createInitPromises/g,
+            match: /_createInitPromises(?![A-Za-z])/g,
             replacement: '_l'
           }, {
-            match: /_prepareTelInput/g,
+            match: /_prepareTelInput(?![A-Za-z])/g,
             replacement: '_m'
           }, {
-            match: /_createWrapperAndInsert/g,
+            match: /_createWrapperAndInsert(?![A-Za-z])/g,
             replacement: '_n'
           }, {
-            match: /_maybeBuildCountryContainer/g,
+            match: /_maybeBuildCountryContainer(?![A-Za-z])/g,
             replacement: '_s'
           }, {
-            match: /_appendListItems/g,
+            match: /_appendListItems(?![A-Za-z])/g,
             replacement: '_g'
           }, {
-            match: /_setInitialState/g,
+            match: /_setInitialState(?![A-Za-z])/g,
             replacement: '_h'
           }, {
-            match: /_initListeners/g,
+            match: /_initListeners(?![A-Za-z])/g,
             replacement: '_i'
           }, {
-            match: /_initHiddenInputListener/g,
+            match: /_initHiddenInputListener(?![A-Za-z])/g,
             replacement: '_i0'
           }, {
-            match: /_initDropdownListeners/g,
+            match: /_initDropdownListeners(?![A-Za-z])/g,
             replacement: '_i2'
           }, {
-            match: /_initRequests/g,
+            match: /_initRequests(?![A-Za-z])/g,
             replacement: '_i3'
           }, {
-            match: /_loadAutoCountry/g,
+            match: /_loadAutoCountry(?![A-Za-z])/g,
             replacement: '_i4'
           }, {
-            match: /_initTelInputListeners/g,
+            match: /_initTelInputListeners(?![A-Za-z])/g,
             replacement: '_j'
           }, {
-            match: /_cap/g,
+            match: /_cap(?![A-Za-z])/g,
             replacement: '_j2'
-          },
-          //* NOTE: here we exclude _trigger which is a substring of _triggerCountryChange etc.
-          // AND _openDropdown (which is a substring of _openDropdownWithPlus)
-          {
-            match: /_openDropdownWithPlus/g,
+          }, {
+            match: /_openDropdown(?![A-Za-z])/g,
             replacement: '_n0'
           }, {
-            match: /_buildDropdownContent/g,
+            match: /_openDropdownWithPlus(?![A-Za-z])/g,
+            replacement: '_n1'
+          }, {
+            match: /_buildDropdownContent(?![A-Za-z])/g,
             replacement: '_t'
           }, {
-            match: /_buildSearchUI/g,
+            match: /_buildSearchUI(?![A-Za-z])/g,
             replacement: '_w'
           }, {
-            match: /_maybeUpdateInputPaddingAndReveal/g,
+            match: /_maybeUpdateInputPaddingAndReveal(?![A-Za-z])/g,
             replacement: '_k0'
           }, {
-            match: /_maybeBuildHiddenInputs/g,
+            match: /_maybeBuildHiddenInputs(?![A-Za-z])/g,
             replacement: '_l0'
           }, {
-            match: /_bindInputListener/g,
+            match: /_bindInputListener(?![A-Za-z])/g,
             replacement: '_m0'
           }, {
-            match: /_maybeBindKeydownListener/g,
+            match: /_maybeBindKeydownListener(?![A-Za-z])/g,
             replacement: '_s0'
           }, {
-            match: /_maybeBindPasteListener/g,
+            match: /_maybeBindPasteListener(?![A-Za-z])/g,
             replacement: '_t0'
           }, {
-            match: /_searchForCountry/g,
+            match: /_searchForCountry(?![A-Za-z])/g,
             replacement: '_p0'
           }, {
-            match: /_ensureHasDialCode/g,
+            match: /_ensureHasDialCode(?![A-Za-z])/g,
             replacement: '_u0'
           }, {
-            match: /_getNewCountryFromNumber/g,
+            match: /_getNewCountryFromNumber(?![A-Za-z])/g,
             replacement: '_v0'
           }, {
-            match: /_updateMaxLength/g,
+            match: /_updateMaxLength(?![A-Za-z])/g,
             replacement: '_z4'
           }, {
-            match: /_utilsIsPossibleNumber/g,
+            match: /_utilsIsPossibleNumber(?![A-Za-z])/g,
             replacement: '_9a'
           }, {
-            match: /_validateNumber/g,
+            match: /_validateNumber(?![A-Za-z])/g,
             replacement: '_9b'
           }, {
-            match: /_utilsIsValidNumber/g,
+            match: /_utilsIsValidNumber(?![A-Za-z])/g,
             replacement: '_9c'
           }, {
-            match: /_setDropdownPosition/g,
+            match: /_setDropdownPosition(?![A-Za-z])/g,
             replacement: '_o'
           }, {
-            match: /_bindDropdownListeners/g,
+            match: /_bindDropdownListeners(?![A-Za-z])/g,
             replacement: '_p'
           }, {
-            match: /_bindDropdownMouseoverListener/g,
+            match: /_bindDropdownMouseoverListener(?![A-Za-z])/g,
             replacement: '_p1'
           }, {
-            match: /_bindDropdownCountryClickListener/g,
+            match: /_bindDropdownCountryClickListener(?![A-Za-z])/g,
             replacement: '_p2'
           }, {
-            match: /_bindDropdownClickOffListener/g,
+            match: /_bindDropdownClickOffListener(?![A-Za-z])/g,
             replacement: '_p4'
           }, {
-            match: /_bindDropdownKeydownListener/g,
+            match: /_bindDropdownKeydownListener(?![A-Za-z])/g,
             replacement: '_p5'
           }, {
-            match: /_bindDropdownSearchListeners/g,
+            match: /_bindDropdownSearchListeners(?![A-Za-z])/g,
             replacement: '_p6'
           }, {
-            match: /_filterCountriesByQuery/g,
+            match: /_filterCountriesByQuery(?![A-Za-z])/g,
             replacement: '_p3'
           }, {
-            match: /_handleUpDownKey/g,
+            match: /_handleUpDownKey(?![A-Za-z])/g,
             replacement: '_q'
           }, {
-            match: /_handleEnterKey/g,
+            match: /_handleEnterKey(?![A-Za-z])/g,
             replacement: '_r'
           }, {
-            match: /_updateValFromNumber/g,
+            match: /_updateValFromNumber(?![A-Za-z])/g,
             replacement: '_u'
           }, {
-            match: /_updateCountryFromNumber/g,
+            match: /_updateCountryFromNumber(?![A-Za-z])/g,
             replacement: '_v'
           }, {
-            match: /_setCountry/g,
+            match: /_setCountry(?![A-Za-z])/g,
             replacement: '_z'
           }, {
-            match: /_getHiddenSelectedCountryWidth/g,
+            match: /_getHiddenSelectedCountryWidth(?![A-Za-z])/g,
             replacement: '_z2'
           }, {
-            match: /_updatePlaceholder/g,
+            match: /_updatePlaceholder(?![A-Za-z])/g,
             replacement: '_0'
           }, {
-            match: /_selectListItem/g,
+            match: /_selectListItem(?![A-Za-z])/g,
             replacement: '_1'
           }, {
-            match: /_closeDropdown/g,
+            match: /_closeDropdown(?![A-Za-z])/g,
             replacement: '_2'
           }, {
-            match: /_updateDialCode/g,
+            match: /_updateDialCode(?![A-Za-z])/g,
             replacement: '_4'
           }, {
-            match: /_getDialCode/g,
+            match: /_getDialCode(?![A-Za-z])/g,
             replacement: '_5'
           }, {
-            match: /_getFullNumber/g,
+            match: /_getFullNumber(?![A-Za-z])/g,
             replacement: '_6'
           }, {
-            match: /_beforeSetNumber/g,
+            match: /_beforeSetNumber(?![A-Za-z])/g,
             replacement: '_7'
           }, {
-            match: /_triggerCountryChange/g,
+            match: /_triggerCountryChange(?![A-Za-z])/g,
             replacement: '_8'
+          }, {
+            match: /_trigger(?![A-Za-z])/g,
+            replacement: '_9'
           }
         ]
       },
@@ -186,45 +189,45 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /\.hadInitialPlaceholder/g,
+            match: /\.hadInitialPlaceholder(?![A-Za-z])/g,
             replacement: '.e'
           }, {
-            match: /\.resolveAutoCountryPromise/g,
+            match: /\.resolveAutoCountryPromise(?![A-Za-z])/g,
             replacement: '.h'
           }, {
-            match: /\.rejectAutoCountryPromise/g,
+            match: /\.rejectAutoCountryPromise(?![A-Za-z])/g,
             replacement: '.i'
           }, {
-            match: /\.resolveUtilsScriptPromise/g,
+            match: /\.resolveUtilsScriptPromise(?![A-Za-z])/g,
             replacement: '.i0'
           }, {
-            match: /\.rejectUtilsScriptPromise/g,
+            match: /\.rejectUtilsScriptPromise(?![A-Za-z])/g,
             replacement: '.i1'
           }, {
-            match: /\.defaultCountry/g,
+            match: /\.defaultCountry(?![A-Za-z])/g,
             replacement: '.j'
           },
           // NOTE: avoid dialCodeToIso2Map and dialCodeMaxLen as these are also used in country-data.ts and it breaks things
           {
-            match: /\.isAndroid/g,
+            match: /\.isAndroid(?![A-Za-z])/g,
             replacement: '.x'
           }, {
-            match: /\.countryByIso2/g,
+            match: /\.countryByIso2(?![A-Za-z])/g,
             replacement: '.z0'
           }, {
-            match: /\.searchClearButton/g,
+            match: /\.searchClearButton(?![A-Za-z])/g,
             replacement: '.m3'
           }, {
-            match: /\.searchResultsA11yText/g,
+            match: /\.searchResultsA11yText(?![A-Za-z])/g,
             replacement: '.m5'
           }, {
-            match: /\.hiddenInputCountry/g,
+            match: /\.hiddenInputCountry(?![A-Za-z])/g,
             replacement: '.m9'
           }, {
-            match: /\.maxCoreNumberLength/g,
+            match: /\.maxCoreNumberLength(?![A-Za-z])/g,
             replacement: '.n0'
           }, {
-            match: /\.originalPaddingLeft/g,
+            match: /\.originalPaddingLeft(?![A-Za-z])/g,
             replacement: '.n2'
           }
         ]
