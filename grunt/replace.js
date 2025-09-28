@@ -186,12 +186,6 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /\.telInput/g,
-            replacement: '.a'
-          }, {
-            match: /\.highlightedItem/g,
-            replacement: '.c'
-          }, {
             match: /\.hadInitialPlaceholder/g,
             replacement: '.e'
           }, {
@@ -209,47 +203,17 @@ module.exports = function(grunt) {
           }, {
             match: /\.defaultCountry/g,
             replacement: '.j'
-          }, {
-            match: /\.countryContainer/g,
-            replacement: '.k'
-          }, {
-            match: /\.selectedCountryInner/g,
-            replacement: '.l'
           },
           // NOTE: avoid dialCodeToIso2Map and dialCodeMaxLen as these are also used in country-data.ts and it breaks things
           {
-            match: /\.selectedCountryData/g,
-            replacement: '.s'
-          }, {
-            match: /\.selectedDialCode/g,
-            replacement: '.t'
-          }, {
-            match: /\.dropdownArrow/g,
-            replacement: '.u'
-          }, {
-            match: /\.isRTL/g,
-            replacement: '.v'
-          }, {
             match: /\.isAndroid/g,
             replacement: '.x'
           }, {
             match: /\.countryByIso2/g,
             replacement: '.z0'
           }, {
-            match: /\.dropdownContent/g,
-            replacement: '.m0'
-          }, {
-            match: /\.searchInput/g,
-            replacement: '.m1'
-          }, {
-            match: /\.searchIcon/g,
-            replacement: '.m2'
-          }, {
             match: /\.searchClearButton/g,
             replacement: '.m3'
-          }, {
-            match: /\.searchNoResults/g,
-            replacement: '.m4'
           }, {
             match: /\.searchResultsA11yText/g,
             replacement: '.m5'
