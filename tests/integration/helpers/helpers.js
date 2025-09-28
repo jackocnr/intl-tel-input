@@ -1,5 +1,6 @@
 require("@testing-library/jest-dom");
-const intlTelInputWithUtils = require("intlTelInputWithUtils.js");
+// test using the minified version to check for minification errors in /grunt/replace.js
+const intlTelInputWithUtils = require("intlTelInputWithUtils.min.js");
 
 exports.intlTelInput = intlTelInputWithUtils;
 

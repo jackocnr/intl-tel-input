@@ -230,13 +230,6 @@ module.exports = function(grunt) {
           {
             match: /_getHiddenSelectedCountryWidth(?![A-Za-z])/g,
             replacement: '_bb'
-          },
-          // ============================
-          // modules/data/country-data.ts
-          // ============================
-          {
-            match: /_addToDialCodeMap(?![A-Za-z])/g,
-            replacement: '_bc'
           }
         ]
       },
