@@ -14,39 +14,39 @@ module.exports = function(grunt) {
           // ============================
           {
             match: /_processCountryData(?![A-Za-z])/g,
-            replacement: '_b'
+            replacement: '_a'
           },
           {
             match: /_getIsAndroid(?![A-Za-z])/g,
-            replacement: '_k'
+            replacement: '_b'
           },
           {
             match: /_createInitPromises(?![A-Za-z])/g,
-            replacement: '_l'
+            replacement: '_c'
           },
           {
             match: /_setInitialState(?![A-Za-z])/g,
-            replacement: '_h'
+            replacement: '_d'
           },
           {
             match: /_initListeners(?![A-Za-z])/g,
-            replacement: '_i'
+            replacement: '_e'
           },
           {
             match: /_initHiddenInputListener(?![A-Za-z])/g,
-            replacement: '_i0'
+            replacement: '_f'
           },
           {
             match: /_initDropdownListeners(?![A-Za-z])/g,
-            replacement: '_i2'
+            replacement: '_g'
           },
           {
             match: /_initRequests(?![A-Za-z])/g,
-            replacement: '_i3'
+            replacement: '_h'
           },
           {
             match: /_loadAutoCountry(?![A-Za-z])/g,
-            replacement: '_i4'
+            replacement: '_i'
           },
           {
             match: /_initTelInputListeners(?![A-Za-z])/g,
@@ -54,191 +54,189 @@ module.exports = function(grunt) {
           },
           {
             match: /_cap(?![A-Za-z])/g,
-            replacement: '_j2'
+            replacement: '_k'
           },
           {
             match: /_openDropdown(?![A-Za-z])/g,
-            replacement: '_n0'
+            replacement: '_l'
           },
           {
             match: /_openDropdownWithPlus(?![A-Za-z])/g,
-            replacement: '_n1'
+            replacement: '_m'
           },
           {
             match: /_maybeBindKeydownListener(?![A-Za-z])/g,
-            replacement: '_s0'
+            replacement: '_n'
           },
           {
             match: /_maybeBindPasteListener(?![A-Za-z])/g,
-            replacement: '_t0'
-          },
-          {
-            match: /_bindInputListener(?![A-Za-z])/g,
-            replacement: '_m0'
-          },
-          {
-            match: /_searchForCountry(?![A-Za-z])/g,
-            replacement: '_p0'
-          },
-          {
-            match: /_ensureHasDialCode(?![A-Za-z])/g,
-            replacement: '_u0'
-          },
-          {
-            match: /_getNewCountryFromNumber(?![A-Za-z])/g,
-            replacement: '_v0'
-          },
-          {
-            match: /_updateMaxLength(?![A-Za-z])/g,
-            replacement: '_z4'
-          },
-          {
-            match: /_utilsIsPossibleNumber(?![A-Za-z])/g,
-            replacement: '_9a'
-          },
-          {
-            match: /_validateNumber(?![A-Za-z])/g,
-            replacement: '_9b'
-          },
-          {
-            match: /_utilsIsValidNumber(?![A-Za-z])/g,
-            replacement: '_9c'
-          },
-          {
-            match: /_setDropdownPosition(?![A-Za-z])/g,
             replacement: '_o'
           },
           {
-            match: /_bindDropdownListeners(?![A-Za-z])/g,
+            match: /_bindInputListener(?![A-Za-z])/g,
             replacement: '_p'
           },
           {
-            match: /_bindDropdownMouseoverListener(?![A-Za-z])/g,
-            replacement: '_p1'
-          },
-          {
-            match: /_bindDropdownCountryClickListener(?![A-Za-z])/g,
-            replacement: '_p2'
-          },
-          {
-            match: /_bindDropdownClickOffListener(?![A-Za-z])/g,
-            replacement: '_p4'
-          },
-          {
-            match: /_bindDropdownKeydownListener(?![A-Za-z])/g,
-            replacement: '_p5'
-          },
-          {
-            match: /_bindDropdownSearchListeners(?![A-Za-z])/g,
-            replacement: '_p6'
-          },
-          {
-            match: /_filterCountriesByQuery(?![A-Za-z])/g,
-            replacement: '_p3'
-          },
-          {
-            match: /_handleUpDownKey(?![A-Za-z])/g,
+            match: /_searchForCountry(?![A-Za-z])/g,
             replacement: '_q'
           },
           {
-            match: /_handleEnterKey(?![A-Za-z])/g,
+            match: /_ensureHasDialCode(?![A-Za-z])/g,
             replacement: '_r'
           },
           {
-            match: /_updateValFromNumber(?![A-Za-z])/g,
+            match: /_getNewCountryFromNumber(?![A-Za-z])/g,
+            replacement: '_s'
+          },
+          {
+            match: /_updateMaxLength(?![A-Za-z])/g,
+            replacement: '_t'
+          },
+          {
+            match: /_utilsIsPossibleNumber(?![A-Za-z])/g,
             replacement: '_u'
           },
           {
-            match: /_updateCountryFromNumber(?![A-Za-z])/g,
+            match: /_validateNumber(?![A-Za-z])/g,
             replacement: '_v'
           },
           {
-            match: /_setCountry(?![A-Za-z])/g,
+            match: /_utilsIsValidNumber(?![A-Za-z])/g,
+            replacement: '_w'
+          },
+          {
+            match: /_setDropdownPosition(?![A-Za-z])/g,
+            replacement: '_x'
+          },
+          {
+            match: /_bindDropdownListeners(?![A-Za-z])/g,
+            replacement: '_y'
+          },
+          {
+            match: /_bindDropdownMouseoverListener(?![A-Za-z])/g,
             replacement: '_z'
           },
           {
+            match: /_bindDropdownCountryClickListener(?![A-Za-z])/g,
+            replacement: '_aa'
+          },
+          {
+            match: /_bindDropdownClickOffListener(?![A-Za-z])/g,
+            replacement: '_ab'
+          },
+          {
+            match: /_bindDropdownKeydownListener(?![A-Za-z])/g,
+            replacement: '_ac'
+          },
+          {
+            match: /_bindDropdownSearchListeners(?![A-Za-z])/g,
+            replacement: '_ad'
+          },
+          {
+            match: /_filterCountriesByQuery(?![A-Za-z])/g,
+            replacement: '_ae'
+          },
+          {
+            match: /_handleUpDownKey(?![A-Za-z])/g,
+            replacement: '_af'
+          },
+          {
+            match: /_handleEnterKey(?![A-Za-z])/g,
+            replacement: '_ag'
+          },
+          {
+            match: /_updateValFromNumber(?![A-Za-z])/g,
+            replacement: '_ah'
+          },
+          {
+            match: /_updateCountryFromNumber(?![A-Za-z])/g,
+            replacement: '_ai'
+          },
+          {
+            match: /_setCountry(?![A-Za-z])/g,
+            replacement: '_aj'
+          },
+          {
             match: /_updatePlaceholder(?![A-Za-z])/g,
-            replacement: '_0'
+            replacement: '_ak'
           },
           {
             match: /_selectListItem(?![A-Za-z])/g,
-            replacement: '_1'
+            replacement: '_al'
           },
           {
             match: /_closeDropdown(?![A-Za-z])/g,
-            replacement: '_2'
+            replacement: '_am'
           },
           {
             match: /_updateDialCode(?![A-Za-z])/g,
-            replacement: '_4'
+            replacement: '_an'
           },
           {
             match: /_getDialCode(?![A-Za-z])/g,
-            replacement: '_5'
+            replacement: '_ao'
           },
           {
             match: /_getFullNumber(?![A-Za-z])/g,
-            replacement: '_6'
+            replacement: '_ap'
           },
           {
             match: /_beforeSetNumber(?![A-Za-z])/g,
-            replacement: '_7'
+            replacement: '_aq'
           },
           {
             match: /_triggerCountryChange(?![A-Za-z])/g,
-            replacement: '_8'
+            replacement: '_ar'
           },
           {
             match: /_trigger(?![A-Za-z])/g,
-            replacement: '_9'
+            replacement: '_as'
           },
-
           // ============================
           // modules/core/ui.ts
           // ============================
           {
             match: /_prepareTelInput(?![A-Za-z])/g,
-            replacement: '_m'
+            replacement: '_at'
           },
           {
             match: /_createWrapperAndInsert(?![A-Za-z])/g,
-            replacement: '_n'
+            replacement: '_au'
           },
           {
             match: /_maybeBuildCountryContainer(?![A-Za-z])/g,
-            replacement: '_s'
+            replacement: '_av'
           },
           {
             match: /_buildDropdownContent(?![A-Za-z])/g,
-            replacement: '_t'
+            replacement: '_aw'
           },
           {
             match: /_buildSearchUI(?![A-Za-z])/g,
-            replacement: '_w'
+            replacement: '_ax'
           },
           {
             match: /_maybeUpdateInputPaddingAndReveal(?![A-Za-z])/g,
-            replacement: '_k0'
+            replacement: '_ay'
           },
           {
             match: /_maybeBuildHiddenInputs(?![A-Za-z])/g,
-            replacement: '_l0'
+            replacement: '_az'
           },
           {
             match: /_appendListItems(?![A-Za-z])/g,
-            replacement: '_g'
+            replacement: '_ba'
           },
           {
             match: /_getHiddenSelectedCountryWidth(?![A-Za-z])/g,
-            replacement: '_z2'
+            replacement: '_bb'
           },
-
           // ============================
           // modules/data/country-data.ts
           // ============================
           {
             match: /_addToDialCodeMap(?![A-Za-z])/g,
-            replacement: '_c0'
+            replacement: '_bc'
           }
         ]
       },
@@ -256,64 +254,64 @@ module.exports = function(grunt) {
         patterns: [
           {
             match: /\.hadInitialPlaceholder(?![A-Za-z])/g,
-            replacement: '.e'
+            replacement: '.a'
           },
           {
             match: /\.resolveAutoCountryPromise(?![A-Za-z])/g,
-            replacement: '.h'
+            replacement: '.b'
           },
           {
             match: /\.rejectAutoCountryPromise(?![A-Za-z])/g,
-            replacement: '.i'
+            replacement: '.c'
           },
           {
             match: /\.resolveUtilsScriptPromise(?![A-Za-z])/g,
-            replacement: '.i0'
+            replacement: '.d'
           },
           {
             match: /\.rejectUtilsScriptPromise(?![A-Za-z])/g,
-            replacement: '.i1'
+            replacement: '.e'
           },
           {
             match: /\.defaultCountry(?![A-Za-z])/g,
-            replacement: '.j'
+            replacement: '.f'
           },
           {
             match: /\.abortController(?![A-Za-z])/g,
-            replacement: '.a0'
+            replacement: '.g'
           },
           {
             match: /\.dropdownAbortController(?![A-Za-z])/g,
-            replacement: '.a1'
+            replacement: '.h'
           },
           // NOTE: avoid dialCodeToIso2Map and dialCodeMaxLen as these are also used in country-data.ts and it breaks things
           {
             match: /\.isAndroid(?![A-Za-z])/g,
-            replacement: '.x'
+            replacement: '.i'
           },
           {
             match: /\.countryByIso2(?![A-Za-z])/g,
-            replacement: '.z0'
+            replacement: '.j'
           },
           {
             match: /\.searchClearButton(?![A-Za-z])/g,
-            replacement: '.m3'
+            replacement: '.k'
           },
           {
             match: /\.searchResultsA11yText(?![A-Za-z])/g,
-            replacement: '.m5'
+            replacement: '.l'
           },
           {
             match: /\.hiddenInputCountry(?![A-Za-z])/g,
-            replacement: '.m9'
+            replacement: '.m'
           },
           {
             match: /\.maxCoreNumberLength(?![A-Za-z])/g,
-            replacement: '.n0'
+            replacement: '.n'
           },
           {
             match: /\.originalPaddingLeft(?![A-Za-z])/g,
-            replacement: '.n2'
+            replacement: '.o'
           }
         ]
       },
