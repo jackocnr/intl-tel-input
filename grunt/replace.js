@@ -92,6 +92,9 @@ module.exports = function(grunt) {
             match: /_getNewCountryFromNumber(?![A-Za-z])/g,
             replacement: '_v0'
           }, {
+            match: /_addToDialCodeMap(?![A-Za-z])/g,
+            replacement: '_c0'
+          }, {
             match: /_updateMaxLength(?![A-Za-z])/g,
             replacement: '_z4'
           }, {
@@ -206,6 +209,12 @@ module.exports = function(grunt) {
           }, {
             match: /\.defaultCountry(?![A-Za-z])/g,
             replacement: '.j'
+          }, {
+            match: /\.abortController(?![A-Za-z])/g,
+            replacement: '.a0'
+          }, {
+            match: /\.dropdownAbortController(?![A-Za-z])/g,
+            replacement: '.a1'
           },
           // NOTE: avoid dialCodeToIso2Map and dialCodeMaxLen as these are also used in country-data.ts and it breaks things
           {
