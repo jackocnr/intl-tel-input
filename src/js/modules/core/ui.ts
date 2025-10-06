@@ -2,7 +2,7 @@ import { Country } from "../../intl-tel-input/data";
 import { AllOptions } from "../types/public-api";
 import { buildClassNames, createEl } from "../utils/dom";
 import { buildSearchIcon, buildClearIcon } from "./icons";
-import { CLASSES, ARIA, LAYOUT } from "../constants";
+import { CLASSES, ARIA, LAYOUT, OFF } from "../constants";
 
 export default class UI {
   // private
@@ -69,7 +69,7 @@ export default class UI {
       !this.telInput.hasAttribute("autocomplete") &&
       !this.telInput.form?.hasAttribute("autocomplete")
     ) {
-      this.telInput.setAttribute("autocomplete", "off");
+      this.telInput.setAttribute("autocomplete", OFF);
     }
   }
 
@@ -261,7 +261,7 @@ export default class UI {
         [ARIA.LABEL]: i18n.searchPlaceholder,
         [ARIA.CONTROLS]: `iti-${this.id}__country-listbox`,
         [ARIA.AUTOCOMPLETE]: "list",
-        autocomplete: "off",
+        autocomplete: OFF,
       },
       searchWrapper,
     ) as HTMLInputElement;

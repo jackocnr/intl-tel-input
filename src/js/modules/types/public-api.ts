@@ -2,7 +2,7 @@ import type { Country, Iso2 } from "../../intl-tel-input/data";
 import type { I18n } from "../../intl-tel-input/i18n/types";
 // Type-only import to avoid runtime circular dependency. This is erased after compilation.
 import type { Iti } from "../../intl-tel-input";
-import type { PLACEHOLDER_MODES } from "../constants";
+import type { PLACEHOLDER_MODES, OFF } from "../constants";
 
 // Loader for the utils module
 export type UtilsLoader = () => Promise<{ default: ItiUtils }>;
@@ -65,7 +65,7 @@ type ValueOf<T> = T[keyof T];
 export interface AllOptions {
   allowDropdown: boolean;
   allowPhonewords: boolean;
-  autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES> | 'off';
+  autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES> | typeof OFF;
   containerClass: string;
   countryOrder: Iso2[] | null;
   countrySearch: boolean;

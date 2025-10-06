@@ -106,3 +106,6 @@ export const ARIA = {
   AUTOCOMPLETE: "aria-autocomplete",
   MODAL: "aria-modal",
 } as const;
+
+// Common values that belong to multiple categories
+export const OFF = 'off'
