@@ -2,6 +2,7 @@ import type { Country, Iso2 } from "../../intl-tel-input/data";
 import type { I18n } from "../../intl-tel-input/i18n/types";
 // Type-only import to avoid runtime circular dependency. This is erased after compilation.
 import type { Iti } from "../../intl-tel-input";
+import type { PLACEHOLDER_MODES } from "../constants";
 
 // Loader for the utils module
 export type UtilsLoader = () => Promise<{ default: ItiUtils }>;
@@ -58,18 +59,20 @@ export type NumberType =
   | "VOICEMAIL"
   | "VOIP";
 
+type ValueOf<T> = T[keyof T];
+
 // All configurable options
 export interface AllOptions {
   allowDropdown: boolean;
   allowPhonewords: boolean;
-  autoPlaceholder: string;
+  autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES> | 'off';
   containerClass: string;
   countryOrder: Iso2[] | null;
   countrySearch: boolean;
   customPlaceholder:
     | ((
         selectedCountryPlaceholder: string,
-        selectedCountryData: object
+        selectedCountryData: SelectedCountryData
       ) => string)
     | null;
   dropdownContainer: HTMLElement | null;
