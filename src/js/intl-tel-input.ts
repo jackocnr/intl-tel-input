@@ -43,6 +43,7 @@ import {
   INPUT_TYPES,
   DIAL,
   US,
+  PLACEHOLDER_MODES,
 } from "./modules/constants";
 
 //* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
@@ -1206,8 +1207,8 @@ export class Iti {
       customPlaceholder,
     } = this.options;
     const shouldSetPlaceholder =
-      autoPlaceholder === "aggressive" ||
-      (!this.ui.hadInitialPlaceholder && autoPlaceholder === "polite");
+      autoPlaceholder === PLACEHOLDER_MODES.AGGRESSIVE ||
+      (!this.ui.hadInitialPlaceholder && autoPlaceholder === PLACEHOLDER_MODES.POLITE);
 
     if (intlTelInput.utils && shouldSetPlaceholder) {
       const numberType = intlTelInput.utils.numberType[placeholderNumberType];
