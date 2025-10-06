@@ -65,7 +65,7 @@ type ValueOf<T> = T[keyof T];
 export interface AllOptions {
   allowDropdown: boolean;
   allowPhonewords: boolean;
-  autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES> | 'off';
+  autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES>;
   containerClass: string;
   countryOrder: Iso2[] | null;
   countrySearch: boolean;

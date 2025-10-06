@@ -82,6 +82,7 @@ export const US = {
 export const PLACEHOLDER_MODES = {
   AGGRESSIVE: "aggressive",
   POLITE: "polite",
+  OFF: "off",
 } as const;
 
 export const INITIAL_COUNTRY = {
