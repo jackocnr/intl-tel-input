@@ -14,7 +14,7 @@ Try it for yourself by downloading the project and opening /angular/demo/validat
 
 ## Getting Started
 ```html
-import IntlTelInput from "intl-tel-input/angularWithUtils";
+import { IntlTelInputComponent } from "intl-tel-input/angularWithUtils";
 import "intl-tel-input/styles";
 
 <intl-tel-input
@@ -27,15 +27,15 @@ import "intl-tel-input/styles";
 />
 ```
 
-See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/validation/validation.component.ts) for a more fleshed-out example of how to handle validation.
+See the [validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/validation/validation.component.ts) for a more fleshed-out example of how to handle validation, or check out the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/form/form.component.ts) for an alternative approach using `ReactiveFormsModule`.
 
-A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import IntlTelInput from `"intl-tel-input/angularWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/angular"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@25.11.3/build/js/utils.js"`.
+A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just `import { IntlTelInputComponent } from "intl-tel-input/angularWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/angular"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@25.11.3/build/js/utils.js"`.
 
 ## Props
 Here's a list of all of the current props you can pass to the IntlTelInput Angular component.
 
-**disabled**    
-Type: `Boolean`, Default: `false`   
+**disabled**
+Type: `Boolean`, Default: `false`
 Sets the disabled attribute of both the telephone input and selected country button. _Note: we recommend using this instead of `inputProps.disabled`._
 
 **initialValue**  
@@ -83,4 +83,4 @@ You can access all of the plugin's [instance methods](https://github.com/jackocn
 
 ## Accessing Static Methods
 
-You can access all of the plugin's [static methods](https://github.com/jackocnr/intl-tel-input/blob/master/README.md#static-methods) by importing `intlTelInput` from the same file as the angular component e.g. `import { intlTelInput } from "intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
+You can access all of the plugin's [static methods](https://github.com/jackocnr/intl-tel-input/blob/master/README.md#static-methods) by importing `intlTelInput` from the same file as the angular component e.g. `import { IntlTelInputComponent } from "intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
