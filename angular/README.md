@@ -34,8 +34,8 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 ## Props
 Here's a list of all of the current props you can pass to the IntlTelInput Angular component.
 
-**disabled**
-Type: `Boolean`, Default: `false`
+**disabled**  
+Type: `Boolean`, Default: `false`  
 Sets the disabled attribute of both the telephone input and selected country button. _Note: we recommend using this instead of `inputProps.disabled`._
 
 **initialValue**  
