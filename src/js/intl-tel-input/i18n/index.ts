@@ -21,6 +21,7 @@ export { default as id, countryTranslations as idCountryTranslations, interfaceT
 export { default as it, countryTranslations as itCountryTranslations, interfaceTranslations as itInterfaceTranslations } from "./it";
 export { default as ja, countryTranslations as jaCountryTranslations, interfaceTranslations as jaInterfaceTranslations } from "./ja";
 export { default as ko, countryTranslations as koCountryTranslations, interfaceTranslations as koInterfaceTranslations } from "./ko";
+export { default as lt, countryTranslations as ltCountryTranslations, interfaceTranslations as ltInterfaceTranslations } from "./lt";
 export { default as mr, countryTranslations as mrCountryTranslations, interfaceTranslations as mrInterfaceTranslations } from "./mr";
 export { default as nl, countryTranslations as nlCountryTranslations, interfaceTranslations as nlInterfaceTranslations } from "./nl";
 export { default as no, countryTranslations as noCountryTranslations, interfaceTranslations as noInterfaceTranslations } from "./no";
