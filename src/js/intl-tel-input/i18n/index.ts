@@ -32,6 +32,7 @@ export { default as ru, countryTranslations as ruCountryTranslations, interfaceT
 export { default as sk, countryTranslations as skCountryTranslations, interfaceTranslations as skInterfaceTranslations } from "./sk";
 export { default as sl, countryTranslations as slCountryTranslations, interfaceTranslations as slInterfaceTranslations } from "./sl";
 export { default as sq, countryTranslations as sqCountryTranslations, interfaceTranslations as sqInterfaceTranslations } from "./sq";
+export { default as sr, countryTranslations as srCountryTranslations, interfaceTranslations as srInterfaceTranslations } from "./sr";
 export { default as sv, countryTranslations as svCountryTranslations, interfaceTranslations as svInterfaceTranslations } from "./sv";
 export { default as te, countryTranslations as teCountryTranslations, interfaceTranslations as teInterfaceTranslations } from "./te";
 export { default as th, countryTranslations as thCountryTranslations, interfaceTranslations as thInterfaceTranslations } from "./th";
