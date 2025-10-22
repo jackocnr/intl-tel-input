@@ -6,7 +6,7 @@
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/angular.png" alt="Angular logo" width="16" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/angular">Angular component</a>!
 
-🗣️ NEWS: we now provide [translations](#translations) in over 30 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
+🗣️ NEWS: we now provide [translations](#translations) in over 40 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
 International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React, Vue and Angular components are also included.
 
@@ -68,7 +68,7 @@ By default, on mobile devices, we show a fullscreen popup instead of the inline 
 * Typescript type definitions included
 * Easily customise styles by overriding CSS variables, e.g. support dark mode
 * React, Vue, and Angular components also included
-* Translations for country names (etc) provided in many different languages, and support for RTL layout
+* Translations for country names (etc) provided in over 40 languages, and support for RTL layout
 * Lots of initialisation options for customisation, as well as instance methods/events for interaction
 
 ## Browser Compatibility
@@ -583,7 +583,7 @@ Example:
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png" alt="Screenshot" width="263" height="269" />
 
 ## Translations
-We provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input) in over 30 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
+We provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input) in over 40 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
 Supported languages: Arabic, Bengali, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, English, Estonian, Finnish, French, German, Greek, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Marathi, Norwegian, Persian, Polish, Portuguese, Romanian, Russian, Slovak, Spanish, Swedish, Telugu, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese.
 
