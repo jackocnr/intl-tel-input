@@ -52,6 +52,8 @@ export const defaults: AllOptions = {
   customPlaceholder: null,
   //* Append menu to specified element.
   dropdownContainer: null,
+  //* Override tabindex for dropdown button.
+  dropdownTabIndex: null,
   //* Don't display these countries.
   excludeCountries: [],
   //* Fix the dropdown width to the input width (rather than being as wide as the longest country name).

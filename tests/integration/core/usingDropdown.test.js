@@ -130,3 +130,16 @@ describe("using dropdown: disabled input", () => {
     expect(isDropdownOpen(container)).toBe(false);
   });
 });
+
+describe("using dropdown: overridden tabIndex", () => {
+  test("prevents focusing the selected country using the keyboard", async () => {
+    const user = userEvent.setup();
+
+    const { iti, container } = initPlugin({ dropdownTabIndex: -1 });
+
+    teardown(iti);
+    await user.keyboard("{Tab}");
+    const selectedCountry = getSelectedCountryButton(container);
+    expect(selectedCountry).not.toHaveFocus();
+  });
+});

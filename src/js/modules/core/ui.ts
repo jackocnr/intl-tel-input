@@ -95,7 +95,7 @@ export default class UI {
   }
 
   private _maybeBuildCountryContainer(wrapper: HTMLElement): void {
-    const { allowDropdown, separateDialCode, showFlags } = this.options;
+    const { allowDropdown, separateDialCode, showFlags, i18n, dropdownTabIndex } = this.options;
 
     //* If we need a countryContainer
     if (allowDropdown || showFlags || separateDialCode) {
@@ -115,9 +115,10 @@ export default class UI {
             type: "button",
             class: "iti__selected-country",
             [ARIA.EXPANDED]: "false",
-            [ARIA.LABEL]: this.options.i18n.noCountrySelected,
+            [ARIA.LABEL]: i18n.noCountrySelected,
             [ARIA.HASPOPUP]: "dialog",
             [ARIA.CONTROLS]: `iti-${this.id}__dropdown-content`,
+            tabindex: dropdownTabIndex,
           },
           this.countryContainer,
         );

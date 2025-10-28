@@ -203,6 +203,12 @@ intlTelInput(input, {
 Type: `Node` Default: `null`  
 Expects a node, e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. Note that the positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event.
 
+**dropdownTabIndex**  
+Type: `number` Default: `null`  
+Sets the [tabindex](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/tabindex) for the dropdown button node.  This can be useful for changing the order in which elements are focussed during keyboard navigation (or for preventing keyboard navigation entirely).  This has accessibility implications and should generally be avoided.
+
+Expects a node, e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. Note that the positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event.
+
 **excludeCountries**  
 Type: `Array` Default: `[]`  
 In the dropdown, display all countries except the ones you specify here. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--excludecountries) (using the React component). Also see: `onlyCountries` option.

@@ -76,6 +76,7 @@ export interface AllOptions {
       ) => string)
     | null;
   dropdownContainer: HTMLElement | null;
+  dropdownTabIndex: number | null;
   excludeCountries: Iso2[];
   fixDropdownWidth: boolean;
   formatAsYouType: boolean;
