@@ -1092,7 +1092,12 @@ export class Iti {
         return iso2Codes[0];
       }
     } else if (number.startsWith("+") && numeric.length) {
-      //* Invalid dial code, so empty.
+      //* If the user is still typing a prefix of the currently selected country's dial code, don't change yet.
+      const currentDial = this.selectedCountryData.dialCode || "";
+      if (currentDial && currentDial.startsWith(numeric)) {
+        return null;
+      }
+      //* Invalid dial code (or prefix of a different country), so empty.
       //* Note: use getNumeric here because the number has not been formatted yet, so could contain bad chars.
       return "";
     } else if ((!number || number === "+") && !selectedIso2) {
@@ -1312,26 +1317,32 @@ export class Iti {
     //* Only interested in international numbers (starting with a plus)
     if (number.startsWith("+")) {
       let numericChars = "";
+      let foundBaseDialCode = false;
       //* Iterate over chars
       for (let i = 0; i < number.length; i++) {
         const c = number.charAt(i);
         //* If char is number.
         if (/[0-9]/.test(c)) {
           numericChars += c;
-          const isMatch = Boolean(this.dialCodeToIso2Map[numericChars]);
-          if (!isMatch) {
-            // if no match, don't continue
+          const hasMapEntry = Boolean(this.dialCodeToIso2Map[numericChars]);
+          if (!hasMapEntry) {
+            // if no mapping for this prefix, stop searching
             break;
           }
-          if (includeAreaCode) {
-            //* Store the actual raw string (useful for matching later).
+
+          // If we've hit a valid base dial code, record it
+          if (this.dialCodes.has(numericChars)) {
             dialCode = number.substring(0, i + 1);
-          } else if (this.dialCodes.has(numericChars)) {
-            //* Current numericChars make a valid dial code, so store it and break out as we're done.
-            //* Store the actual raw string (useful for matching later).
+            foundBaseDialCode = true;
+            // if we're not considering area codes, we can stop at the first valid base dial code
+            if (!includeAreaCode) {
+              break;
+            }
+          } else if (includeAreaCode && foundBaseDialCode) {
+            // Only extend beyond a valid base dial code (avoid partial prefixes like +88 for +880)
             dialCode = number.substring(0, i + 1);
-            break;
           }
+
           //* Stop searching as soon as we can - in this case when we hit max len.
           if (numericChars.length === this.dialCodeMaxLen) {
             break;

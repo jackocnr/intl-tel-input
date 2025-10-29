@@ -77,4 +77,41 @@ describe("nationalMode option", () => {
       expect(checkFlagSelected(container, "ax")).toBe(true);
     });
   });
+
+  describe("nationalMode=false initialCountry=gb", () => {
+    let iti, input, container, user;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+      const options = { nationalMode: false, initialCountry: "gb" };
+      ({ iti, input, container } = initPlugin({ options }));
+    });
+
+    afterEach(() => teardown(iti));
+
+    test("typing +44 maintains GB flag selection", async () => {
+      expect(checkFlagSelected(container, "gb")).toBe(true);
+      await user.type(input, "+");
+      expect(checkFlagSelected(container, "gb")).toBe(true);
+      await user.type(input, "4");
+      expect(checkFlagSelected(container, "gb")).toBe(true);
+      await user.type(input, "4");
+      expect(checkFlagSelected(container, "gb")).toBe(true);
+      await user.type(input, "{backspace}");
+      // input now contains +4
+      expect(checkFlagSelected(container, "gb")).toBe(true);
+      await user.type(input, "{backspace}");
+      // input now contains +
+      expect(checkFlagSelected(container, "gb")).toBe(true);
+      await user.type(input, "{backspace}");
+      // input now empty
+      expect(checkFlagSelected(container, "gb")).toBe(true);
+    });
+
+    // Prev bug: Typing +882 used to show Bangladesh flag (+880) instead of globe icon
+    test("typing invalid intl dial code should show globe icon", async () => {
+      await user.type(input, "+882");
+      expect(checkFlagSelected(container, "")).toBe(true);
+    });
+  });
 });
