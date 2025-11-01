@@ -108,12 +108,17 @@ Example usage:
 For any other native DOM events not listed above, you can access the input element directly using a `ViewChild` reference and add event listeners manually:
 
 ```typescript
-export class MyComponent {
+export class MyComponent implements AfterViewInit, OnDestroy {
   @ViewChild('telInput') telInput!: IntlTelInputComponent;
 
   ngAfterViewInit() {
     const input = this.telInput.getInput();
     input?.addEventListener('mouseenter', this.handleMouseEnter);
+  }
+
+  ngOnDestroy() {
+    const input = this.telInput.getInput();
+    input?.removeEventListener('mouseenter', this.handleMouseEnter);
   }
 
   handleMouseEnter = (event: MouseEvent) => {
