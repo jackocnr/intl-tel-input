@@ -1,6 +1,6 @@
 {
   "name": "intl-tel-input",
-  "version": "25.12.3",
+  "version": "25.12.4",
   "description": "A JavaScript plugin for entering and validating international telephone numbers",
   "keywords": [
     "international",
