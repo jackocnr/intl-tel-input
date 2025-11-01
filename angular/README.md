@@ -40,23 +40,23 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 Here's a list of all of the current props you can pass to the IntlTelInput Angular component.
 
 **disabled**\
-Type: `Boolean`, Default: `false`
+Type: `Boolean`, Default: `false`\
 Sets the disabled attribute of both the telephone input and selected country button. _Note: we recommend using this instead of `inputProps.disabled`._
 
 **initialValue**\
-Type: `String`
+Type: `String`\
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
 
 **initOptions**\
-Type: `Object`
+Type: `Object`\
 An object containing the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
 
 **inputProps**\
-Type: `Object`
+Type: `Object`\
 The props to pass to the input element e.g. `class`, `placeholder`, `required` etc. _Note: we recommend using the separate `disabled` prop instead of `inputProps.disabled`._
 
 **usePreciseValidation**\
-Type: `Boolean`, Default: `false`
+Type: `Boolean`, Default: `false`\
 By default we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise` you can set this to `true`.
 
 ## Events
@@ -64,19 +64,19 @@ By default we use `isValidNumber` for validation, but if you'd rather use `isVal
 Here's a list of all of the current events you can listen to on the IntlTelInput angular component.
 
 **countryChange**\
-Type: `Function`
+Type: `Function`\
 A handler to be called when the selected country changes. It will be passed the new country iso2 code e.g. "gb" for UK.
 
 **errorCodeChange**\
-Type: `Function`
+Type: `Function`\
 A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
 
 **numberChange**\
-Type: `Function`
+Type: `Function`\
 A handler to be called when the number changes. It will be passed the new number.
 
 **validityChange**\
-Type: `Function`
+Type: `Function`\
 A handler to be called when the number validity changes e.g. to true/false. It will be passed the new isValid boolean.
 
 ### Native Input Events
