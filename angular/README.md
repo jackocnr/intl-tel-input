@@ -13,7 +13,28 @@ An Angular component wrapper for the [intl-tel-input](https://github.com/jackocn
 
 ## Demo
 
-Try it for yourself by downloading the project and opening /angular/demo/validation/index.html (etc) in a browser.
+Try it for yourself by running the demos locally:
+
+```bash
+# Clone the repository
+git clone https://github.com/jackocnr/intl-tel-input.git
+cd intl-tel-input
+
+# Initialize submodules (required for build)
+git submodule update --init --recursive
+
+# Install dependencies and build
+npm install
+npm run build
+
+# Serve from project root
+python3 -m http.server
+```
+
+> Then open [http://localhost:8000/angular/demo/simple/](http://localhost:8000/angular/demo/simple/) or other demos from the [angular demo folder](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/)
+
+> [!NOTE]
+> Make sure to serve from the project root, not from the demo folders.
 
 ## Getting Started
 
