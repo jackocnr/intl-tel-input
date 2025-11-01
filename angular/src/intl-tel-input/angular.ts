@@ -1,8 +1,28 @@
 import intlTelInput from "../intl-tel-input";
 //* Keep the TS imports separate, as the above line gets substituted in the angularWithUtils build process.
 import { Iti } from "../intl-tel-input";
-import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, forwardRef, AfterViewInit, OnChanges, SimpleChanges } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+  forwardRef,
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges,
+} from "@angular/core";
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NG_VALIDATORS,
+  Validator,
+  AbstractControl,
+  ValidationErrors,
+} from "@angular/forms";
 import { SomeOptions } from "../modules/types/public-api";
 
 export { intlTelInput };
@@ -23,7 +43,12 @@ export const PHONE_ERROR_MESSAGES: string[] = [
       type="tel"
       #inputRef
       (input)="handleInput()"
-      (blur)="handleBlur()"
+      (blur)="handleBlur($event)"
+      (focus)="handleFocus($event)"
+      (keydown)="handleKeyDown($event)"
+      (keyup)="handleKeyUp($event)"
+      (paste)="handlePaste($event)"
+      (click)="handleClick($event)"
     />
   `,
   providers: [
@@ -39,19 +64,34 @@ export const PHONE_ERROR_MESSAGES: string[] = [
     },
   ],
 })
-export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, ControlValueAccessor, Validator {
-  @ViewChild("inputRef", { static: true }) inputRef!: ElementRef<HTMLInputElement>;
+export class IntlTelInputComponent
+  implements
+    OnInit,
+    AfterViewInit,
+    OnDestroy,
+    OnChanges,
+    ControlValueAccessor,
+    Validator
+{
+  @ViewChild("inputRef", { static: true })
+  inputRef!: ElementRef<HTMLInputElement>;
 
   @Input() initialValue: string = "";
   @Input() usePreciseValidation: boolean = false;
   @Input() inputProps: object = {};
-  @Input() disabled: boolean | undefined = undefined;
+  @Input() disabled?: boolean;
   @Input() initOptions: SomeOptions = {};
 
   @Output() numberChange = new EventEmitter<string>();
   @Output() countryChange = new EventEmitter<string>();
   @Output() validityChange = new EventEmitter<boolean>();
   @Output() errorCodeChange = new EventEmitter<number | null>();
+  @Output() blur = new EventEmitter<FocusEvent>();
+  @Output() focus = new EventEmitter<FocusEvent>();
+  @Output() keydown = new EventEmitter<KeyboardEvent>();
+  @Output() keyup = new EventEmitter<KeyboardEvent>();
+  @Output() paste = new EventEmitter<ClipboardEvent>();
+  @Output() click = new EventEmitter<MouseEvent>();
 
   private iti: Iti | null = null;
   private countryChangeHandler = () => this.handleInput();
@@ -67,15 +107,12 @@ export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.iti = intlTelInput(this.inputRef.nativeElement, this.initOptions);
     }
 
-    this.inputRef.nativeElement.addEventListener("countrychange", this.countryChangeHandler);
+    this.inputRef.nativeElement.addEventListener(
+      "countrychange",
+      this.countryChangeHandler,
+    );
 
     this.applyInputProps();
-
-    for (const key in this.inputProps) {
-      if (this.inputProps.hasOwnProperty(key)) {
-        this.inputRef.nativeElement.setAttribute(key, this.inputProps[key]);
-      }
-    }
   }
 
   ngAfterViewInit() {
@@ -119,14 +156,43 @@ export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, 
     this.onValidatorChange();
   }
 
-  handleBlur() {
+  handleBlur(event: FocusEvent) {
     this.onTouched();
+    this.blur.emit(event);
   }
 
+  handleFocus(event: FocusEvent) {
+    this.focus.emit(event);
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    this.keydown.emit(event);
+  }
+
+  handleKeyUp(event: KeyboardEvent) {
+    this.keyup.emit(event);
+  }
+
+  handlePaste(event: ClipboardEvent) {
+    this.paste.emit(event);
+  }
+
+  handleClick(event: MouseEvent) {
+    this.click.emit(event);
+  }
+
+  /**
+   * This method must be called in `ngAfterViewInit` or later lifecycle hooks,
+   * not in `ngOnInit` or the `constructor`, as the component needs to be fully initialized.
+   */
   getInstance(): Iti | null {
     return this.iti;
   }
 
+  /**
+   * This method must be called in `ngAfterViewInit` or later lifecycle hooks,
+   * not in `ngOnInit` or the `constructor`, as the component needs to be fully initialized.
+   */
   getInput(): HTMLInputElement | null {
     return this.inputRef.nativeElement;
   }
@@ -134,7 +200,10 @@ export class IntlTelInputComponent implements OnInit, AfterViewInit, OnDestroy, 
   ngOnDestroy() {
     this.iti?.destroy();
 
-    this.inputRef.nativeElement.removeEventListener("countrychange", this.countryChangeHandler);
+    this.inputRef.nativeElement.removeEventListener(
+      "countrychange",
+      this.countryChangeHandler,
+    );
   }
 
   private applyInputProps(): void {
