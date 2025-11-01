@@ -13,7 +13,7 @@ An Angular component wrapper for the [intl-tel-input](https://github.com/jackocn
 
 ## Demo
 
-Try it for yourself by running the demos locally:
+Try it yourself by running the demos locally:
 
 ```bash
 # Clone the repository
