@@ -11,7 +11,7 @@ I'm very open to contributions, big and small! For general instructions on submi
 
 ### Setup
 
-Once you have your fork checked out on your local machine, you will need to run the build script in order to get the demo working. First, run `npm install`, and then `npm run build`. You should then be able to open the included demo.html in your browser and have a working plugin!
+Once you have [forked the repository](https://help.github.com/articles/fork-a-repo) and checked out your fork on your local machine, you need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You should now be able to open the included demo.html in your browser and have a working plugin!
 
 ### Making changes
 
