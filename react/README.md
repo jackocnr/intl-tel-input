@@ -53,19 +53,19 @@ The props to pass to the input element, e.g. `className`, `placeholder`, `requir
 
 **onChangeCountry**  
 Type: `Function`  
-A handler to be called when the selected country changes. It will be passed the new country iso2 code, e.g. "gb" for the UK.
+A handler to be called when the selected country changes. It will receive the new country iso2 code, e.g. "gb" for the UK.
 
 **onChangeErrorCode**  
 Type: `Function`  
-A handler to be called when the number validation error changes. It will be passed the new error code (or `null`). Requires the [utils script](#utils-script) to be loaded.
+A handler to be called when the number validation error changes. It will receive the new error code (or `null`). Requires the [utils script](#utils-script) to be loaded.
 
 **onChangeNumber**  
 Type: `Function`  
-A handler to be called when the number changes. It will be passed the new number. Requires the [utils script](#utils-script) to be loaded.
+A handler to be called when the number changes. For valid numbers (see `onChangeValidity`), it will receive the new number in the standard E.164 format. Requires the [utils script](#utils-script) to be loaded.
 
 **onChangeValidity**  
 Type: `Function`  
-A handler to be called when the number validity changes, e.g. to true/false. It will be passed the new isValid boolean. Requires the [utils script](#utils-script) to be loaded.
+A handler to be called when the number validity changes, e.g. to true/false. It will receive the new isValid boolean. Requires the [utils script](#utils-script) to be loaded.
 
 **usePreciseValidation**  
 Type: `Boolean`, Default: `false`  
