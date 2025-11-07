@@ -328,7 +328,7 @@ Set the initial country selection by specifying its country code, e.g. `"us"` fo
 Type: `() => Promise<module>` Default: `null`  
 This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options.
 
-The `loadUtils` option takes a function which returns a Promise which resolves to the utils module (see example code below). You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.4/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
+The `loadUtils` option takes a function that returns a Promise resolving to the utils module (see example code below). You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.4/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
 
 ```js
 // (A) import utils module from a CDN
@@ -607,31 +607,11 @@ See [v25 discussion](https://github.com/jackocnr/intl-tel-input/discussions/1842
 The utils script provides lots of great functionality (see the above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
 
 **Option 1: intlTelInputWithUtils**  
-If you're not concerned about filesize (e.g. you're lazy loading the main plugin script), the easiest thing to do is to just use the full bundle (`/build/js/intlTelInputWithUtils.js`), which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
+If you're not concerned about filesize (e.g. you're lazy loading the main plugin script), the easiest thing to do is to use the full bundle (`/build/js/intlTelInputWithUtils.js`), which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so: `import intlTelInput from "intl-tel-input/intlTelInputWithUtils"`.
 
 **Option 2: loadUtils**  
 If you *are* concerned about filesize, you can lazy load the utils module when the plugin initialises, using the `loadUtils` initialisation option.
 
-The `loadUtils` option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (shown below): (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.4/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
-
-```js
-// (A) import utils module from a CDN
-intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.4/build/js/utils.js"),
-});
-
-// (B) import utils module from your own hosted version of utils.js
-intlTelInput(htmlInputElement, {
-  loadUtils: () => import("/path/to/utils.js"),
-});
-
-// (C) with a bundler, you can import the utils module directly from the package
-intlTelInput(htmlInputElement, {
-  loadUtils: () => import("intl-tel-input/utils"),
-});
-```
-
-If you want more control over when this file is lazy-loaded, you can manually invoke the `attachUtils` static method whenever you like, instead of using the `loadUtils` initialisation option.
 
 ## Troubleshooting
 
