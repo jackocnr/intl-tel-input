@@ -261,7 +261,7 @@ This will generate the following (hidden) elements, which will be automatically 
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allows you to specify translation strings for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input). The easiest way to do this is to import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) and set `i18n` to that value (see option 1 below). You can also override one or more individual keys this way (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, you will need to specify all the country names (which can be copied from the country-list project, e.g. here are the [country names in French](https://github.com/umpirsky/country-list/blob/master/data/fr/country.json)), as well as a few UI strings (listed below). [See example](https://intl-tel-input.com/examples/localise-countries.html).
+Allows you to specify translation strings for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input). The easiest way to do this is to import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) and set `i18n` to that value (see option 1 below). You can also override one or more individual keys this way (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, you will need to specify all the country names (which can be copied from the country-list project, e.g. here are the [country names in French](https://github.com/umpirsky/country-list/blob/master/data/fr/country.json)), as well as a few UI strings (listed below). [See example](https://intl-tel-input.com/examples/localise-countries.html).
 
 If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings, as we automatically pull in the country names from the country-list project.
 
@@ -328,7 +328,7 @@ Set the initial country selection by specifying its country code, e.g. `"us"` fo
 Type: `() => Promise<module>` Default: `null`  
 This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options.
 
-The `loadUtils` option takes a function which returns a Promise which resolves to the utils module. You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
+The `loadUtils` option takes a function which returns a Promise which resolves to the utils module (see example code below). You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.4/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
 
 ```js
 // (A) import utils module from a CDN
@@ -341,7 +341,7 @@ intlTelInput(htmlInputElement, {
   loadUtils: () => import("/path/to/utils.js"),
 });
 
-// (C) if your bundler supports it, you can import the utils module directly from the package
+// (C) with a bundler, you can import the utils module directly from the package
 intlTelInput(htmlInputElement, {
   loadUtils: () => import("intl-tel-input/utils"),
 });
@@ -583,7 +583,7 @@ Example:
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png" alt="Screenshot" width="263" height="269" />
 
 ## Translations
-We provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/build/js/i18n) for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input) in over 40 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
+We provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input) in over 40 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
 
 Supported languages: Arabic, Albanian, Bengali, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, English, Estonian, Finnish, French, German, Greek, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Lithuanian, Marathi, Norwegian, Persian, Polish, Portuguese, Romanian, Russian, Serbian, Slovak, Slovenian, Spanish, Swedish, Telugu, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese.
 
@@ -612,7 +612,7 @@ If you're not concerned about filesize (e.g. you're lazy loading the main plugin
 **Option 2: loadUtils**  
 If you *are* concerned about filesize, you can lazy load the utils module when the plugin initialises, using the `loadUtils` initialisation option.
 
-The `loadUtils` option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (shown below): (A) from a CDN, (B) from your own hosted version of [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
+The `loadUtils` option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (shown below): (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@25.12.4/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
 
 ```js
 // (A) import utils module from a CDN
@@ -625,7 +625,7 @@ intlTelInput(htmlInputElement, {
   loadUtils: () => import("/path/to/utils.js"),
 });
 
-// (C) if your bundler supports it, you can import the utils module directly from the package
+// (C) with a bundler, you can import the utils module directly from the package
 intlTelInput(htmlInputElement, {
   loadUtils: () => import("intl-tel-input/utils"),
 });
