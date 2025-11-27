@@ -1284,6 +1284,9 @@ export class Iti {
       this.ui.dropdown.remove();
     }
 
+    //* Focus the input.
+    this.ui.telInput.focus();
+
     this._trigger(EVENTS.CLOSE_COUNTRY_DROPDOWN);
   }
 
