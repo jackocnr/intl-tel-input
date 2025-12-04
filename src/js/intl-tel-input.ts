@@ -844,6 +844,8 @@ export class Iti {
         //* Esc to close
         else if (e.key === KEYS.ESC) {
           this._closeDropdown();
+          // Accessibility: re-focus the select country button (this is how native <select> elements behave)
+          this.ui.selectedCountry.focus();
         }
       }
 
