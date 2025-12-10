@@ -90,6 +90,7 @@ export class Iti {
   private defaultCountry: Iso2;
   private abortController: AbortController;
   private dropdownAbortController: AbortController | null;
+  private userNumeralSet: "ascii" | "arabic-indic" | "persian";
 
   private resolveAutoCountryPromise: (value?: unknown) => void;
   private rejectAutoCountryPromise: (reason?: unknown) => void;
@@ -129,6 +130,51 @@ export class Iti {
     return typeof navigator !== "undefined"
       ? /Android/i.test(navigator.userAgent)
       : false;
+  }
+
+  private _updateNumeralSet(str: string): void {
+    // If both appear, prefer the most recent typed chars in input handler; here just a simple detection
+    if (/[\u0660-\u0669]/.test(str)) {
+      this.userNumeralSet = "arabic-indic";
+    } else if (/[\u06F0-\u06F9]/.test(str)) {
+      this.userNumeralSet = "persian";
+    } else {
+      this.userNumeralSet = "ascii";
+    }
+  }
+
+  private _mapAsciiToUserNumerals(str: string): string {
+    if (!this.userNumeralSet) {
+      this._updateNumeralSet(this.ui.telInput.value);
+    }
+    if (this.userNumeralSet === "ascii") {
+      return str;
+    }
+    const base = this.userNumeralSet === "arabic-indic" ? 0x0660 : 0x06f0;
+    return str.replace(/[0-9]/g, (d) => String.fromCharCode(base + Number(d)));
+  }
+
+  // Normalize Eastern Arabic (U+0660-0669) and Persian/Extended Arabic-Indic (U+06F0-06F9) numerals to ASCII 0-9
+  private _normaliseNumerals(str: string): string {
+    if (!str) {
+      return "";
+    }
+    this._updateNumeralSet(str);
+    if (this.userNumeralSet === "ascii") {
+      return str;
+    }
+    const base = this.userNumeralSet === "arabic-indic" ? 0x0660 : 0x06f0;
+    const regex = this.userNumeralSet === "arabic-indic" ? /[\u0660-\u0669]/g : /[\u06F0-\u06F9]/g;
+    return str.replace(regex, (ch) => String.fromCharCode(0x30 + (ch.charCodeAt(0) - base)));
+  }
+
+  private _getTelInputValue(): string {
+    const inputValue = this.ui.telInput.value.trim();
+    return this._normaliseNumerals(inputValue);
+  }
+
+  private _setTelInputValue(asciiValue: string): void {
+    this.ui.telInput.value = this._mapAsciiToUserNumerals(asciiValue);
   }
 
   private _createInitPromises(): Promise<[unknown, unknown]> {
@@ -193,8 +239,9 @@ export class Iti {
     //* Fix firefox bug: when first load page (with input with value set to number with intl dial code)
     //* and initialising plugin removes the dial code from the input, then refresh page,
     //* and we try to init plugin again but this time on number without dial code so show globe icon.
-    const attributeValue = this.ui.telInput.getAttribute("value");
-    const inputValue = this.ui.telInput.value;
+    const attributeValueRaw = this.ui.telInput.getAttribute("value");
+    const attributeValue = this._normaliseNumerals(attributeValueRaw);
+    const inputValue = this._getTelInputValue();
     const useAttribute =
       attributeValue &&
       attributeValue.startsWith("+") &&
@@ -436,13 +483,14 @@ export class Iti {
     } = this.options;
     let userOverrideFormatting = false;
     //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
-    if (REGEX.ALPHA_UNICODE.test(this.ui.telInput.value)) {
+    if (REGEX.ALPHA_UNICODE.test(this._getTelInputValue())) {
       userOverrideFormatting = true;
     }
 
     //* On input event: (1) Update selected country, (2) Format-as-you-type.
     //* Note that this fires AFTER the input is updated.
     const handleInputEvent = (e: InputEvent): void => {
+      const inputValue = this._getTelInputValue();
       //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
       if (
         this.isAndroid &&
@@ -452,40 +500,38 @@ export class Iti {
         countrySearch
       ) {
         const currentCaretPos = this.ui.telInput.selectionStart || 0;
-        const valueBeforeCaret = this.ui.telInput.value.substring(
-          0,
-          currentCaretPos - 1,
-        );
-        const valueAfterCaret =
-          this.ui.telInput.value.substring(currentCaretPos);
-        this.ui.telInput.value = valueBeforeCaret + valueAfterCaret;
+        const valueBeforeCaret = inputValue.substring(0, currentCaretPos - 1);
+        const valueAfterCaret = inputValue.substring(currentCaretPos);
+        this._setTelInputValue(valueBeforeCaret + valueAfterCaret);
         this._openDropdownWithPlus();
         return;
       }
 
       //* Update selected country.
-      if (this._updateCountryFromNumber(this.ui.telInput.value)) {
+      if (this._updateCountryFromNumber(inputValue)) {
         this._triggerCountryChange();
       }
 
       //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
       const isFormattingChar = e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
       const isPaste =
-        e?.inputType === INPUT_TYPES.PASTE && this.ui.telInput.value;
+        e?.inputType === INPUT_TYPES.PASTE && inputValue;
       if (isFormattingChar || (isPaste && !strictMode)) {
         userOverrideFormatting = true;
       }
       //* If user removes all formatting chars, then reset the override.
-      else if (!REGEX.NON_PLUS_NUMERIC.test(this.ui.telInput.value)) {
+      else if (!REGEX.NON_PLUS_NUMERIC.test(inputValue)) {
         userOverrideFormatting = false;
       }
 
       const isSetNumber = e?.detail && e.detail["isSetNumber"];
+      // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets
+      const isAscii = this.userNumeralSet === "ascii";
       //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
-      if (formatAsYouType && !userOverrideFormatting && !isSetNumber) {
+      if (formatAsYouType && !userOverrideFormatting && !isSetNumber && isAscii) {
         //* Maintain caret position after reformatting.
         const currentCaretPos = this.ui.telInput.selectionStart || 0;
-        const valueBeforeCaret = this.ui.telInput.value.substring(
+        const valueBeforeCaret = inputValue.substring(
           0,
           currentCaretPos,
         );
@@ -497,7 +543,7 @@ export class Iti {
         const fullNumber = this._getFullNumber();
         const formattedValue = formatNumberAsYouType(
           fullNumber,
-          this.ui.telInput.value,
+          inputValue,
           intlTelInput.utils,
           this.selectedCountryData,
           this.options.separateDialCode,
@@ -508,7 +554,8 @@ export class Iti {
           currentCaretPos,
           isDeleteForwards,
         );
-        this.ui.telInput.value = formattedValue;
+        // Preserve user's numeral set in displayed value
+        this._setTelInputValue(formattedValue);
         // WARNING: calling setSelectionRange triggers a focus on iOS
         this.ui.telInput.setSelectionRange(newCaretPos, newCaretPos);
       }
@@ -553,8 +600,8 @@ export class Iti {
           }
           //* If strictMode, prevent invalid characters.
           if (strictMode) {
-            const value = this.ui.telInput.value;
-            const alreadyHasPlus = value.startsWith("+");
+            const inputValue = this._getTelInputValue();
+            const alreadyHasPlus = inputValue.startsWith("+");
             const isInitialPlus =
               !alreadyHasPlus &&
               this.ui.telInput.selectionStart === 0 &&
@@ -566,9 +613,9 @@ export class Iti {
 
             // insert the new character in the right place
             const newValue =
-              value.slice(0, this.ui.telInput.selectionStart) +
+              inputValue.slice(0, this.ui.telInput.selectionStart) +
               e.key +
-              value.slice(this.ui.telInput.selectionEnd);
+              inputValue.slice(this.ui.telInput.selectionEnd);
             const newFullNumber = this._getFullNumber(newValue);
             const coreNumber = intlTelInput.utils.getCoreNumber(
               newFullNumber,
@@ -608,15 +655,17 @@ export class Iti {
         const input = this.ui.telInput;
         const selStart = input.selectionStart;
         const selEnd = input.selectionEnd;
-        const before = input.value.slice(0, selStart);
-        const after = input.value.slice(selEnd);
+        const inputValue = this._getTelInputValue();
+        const before = inputValue.slice(0, selStart);
+        const after = inputValue.slice(selEnd);
         const iso2 = this.selectedCountryData.iso2;
 
-        const pasted = e.clipboardData.getData("text");
+        const pastedRaw = e.clipboardData.getData("text");
+        const pasted = this._normaliseNumerals(pastedRaw);
         // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
         const initialCharSelected = selStart === 0 && selEnd > 0;
         const allowLeadingPlus =
-          !input.value.startsWith("+") || initialCharSelected;
+          !inputValue.startsWith("+") || initialCharSelected;
         // just numerics and pluses
         const allowedChars = pasted.replace(REGEX.NON_PLUS_NUMERIC_GLOBAL, "");
         const hasLeadingPlus = allowedChars.startsWith("+");
@@ -641,7 +690,7 @@ export class Iti {
           this.maxCoreNumberLength &&
           coreNumber.length > this.maxCoreNumberLength
         ) {
-          if (input.selectionEnd === input.value.length) {
+          if (input.selectionEnd === inputValue.length) {
             // if they try to paste too many digits at the end, then just trim the excess
             const trimLength = coreNumber.length - this.maxCoreNumberLength;
             newVal = newVal.slice(0, newVal.length - trimLength);
@@ -650,7 +699,8 @@ export class Iti {
             return;
           }
         }
-        input.value = newVal;
+        // preserve pasted numeral set in display
+        this._setTelInputValue(newVal);
         const caretPos = selStart + sanitised.length;
         input.setSelectionRange(caretPos, caretPos);
 
@@ -983,7 +1033,7 @@ export class Iti {
     }
 
     number = this._beforeSetNumber(number);
-    this.ui.telInput.value = number;
+    this._setTelInputValue(number);
   }
 
   //* Check if need to select a new country based on the given number
@@ -1248,7 +1298,8 @@ export class Iti {
 
     // reformat any existing number to the new country
     if (this.options.formatOnDisplay) {
-      this._updateValFromNumber(this.ui.telInput.value);
+      const inputValue = this._getTelInputValue();
+      this._updateValFromNumber(inputValue);
     }
 
     //* Focus the input.
@@ -1292,7 +1343,7 @@ export class Iti {
   //* Replace any existing dial code with the new one
   //* Note: called from _selectListItem and setCountry
   private _updateDialCode(newDialCodeBare: string): void {
-    const inputVal = this.ui.telInput.value;
+    const inputVal = this._getTelInputValue();
     //* Save having to pass this every time.
     const newDialCode = `+${newDialCodeBare}`;
 
@@ -1308,7 +1359,7 @@ export class Iti {
         //* (no way to determine where the invalid dial code ends and the rest of the number begins)
         newNumber = newDialCode;
       }
-      this.ui.telInput.value = newNumber;
+      this._setTelInputValue(newNumber);
     }
   }
 
@@ -1357,7 +1408,7 @@ export class Iti {
 
   //* Get the input val, adding the dial code if separateDialCode is enabled.
   private _getFullNumber(overrideVal?: string): string {
-    const val = overrideVal || this.ui.telInput.value.trim();
+    const val = overrideVal ? this._normaliseNumerals(overrideVal) : this._getTelInputValue();
     const { dialCode } = this.selectedCountryData;
     let prefix;
     const numericVal = getNumeric(val);
@@ -1421,9 +1472,10 @@ export class Iti {
   handleUtils(): void {
     //* If the request was successful
     if (intlTelInput.utils) {
+      const inputValue = this._getTelInputValue();
       //* If there's an initial value in the input, then format it.
-      if (this.ui.telInput.value) {
-        this._updateValFromNumber(this.ui.telInput.value);
+      if (inputValue) {
+        this._updateValFromNumber(inputValue);
       }
       if (this.selectedCountryData.iso2) {
         this._updatePlaceholder();
@@ -1477,11 +1529,13 @@ export class Iti {
   getNumber(format?: number): string {
     if (intlTelInput.utils) {
       const { iso2 } = this.selectedCountryData;
-      return intlTelInput.utils.formatNumber(
-        this._getFullNumber(),
+      const fullNumber = this._getFullNumber();
+      const formattedNumber = intlTelInput.utils.formatNumber(
+        fullNumber,
         iso2,
         format,
       );
+      return this._mapAsciiToUserNumerals(formattedNumber);
     }
     return "";
   }
@@ -1596,7 +1650,8 @@ export class Iti {
       this._updateDialCode(this.selectedCountryData.dialCode);
       // reformat
       if (this.options.formatOnDisplay) {
-        this._updateValFromNumber(this.ui.telInput.value);
+        const inputValue = this._getTelInputValue();
+        this._updateValFromNumber(inputValue);
       }
       this._triggerCountryChange();
     }
@@ -1604,10 +1659,11 @@ export class Iti {
 
   //* Set the input value and update the country.
   setNumber(number: string): void {
+    const normalisedNumber = this._normaliseNumerals(number);
     //* We must update the country first, which updates this.selectedCountryData, which is used for
     //* formatting the number before displaying it.
-    const countryChanged = this._updateCountryFromNumber(number);
-    this._updateValFromNumber(number);
+    const countryChanged = this._updateCountryFromNumber(normalisedNumber);
+    this._updateValFromNumber(normalisedNumber);
     if (countryChanged) {
       this._triggerCountryChange();
     }
