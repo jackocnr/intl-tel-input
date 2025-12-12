@@ -674,29 +674,34 @@ export class Iti {
         const sanitised =
           hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
         let newVal = before + sanitised + after;
-        let coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
 
-        // utils.getCoreNumber returns empty string for very long numbers
-        // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
-        while (coreNumber.length === 0 && newVal.length > 0) {
-          newVal = newVal.slice(0, -1);
-          coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
-        }
-        // if no valid core number can be found, then just ignore the paste
-        if (!coreNumber) {
-          return;
-        }
-        if (
-          this.maxCoreNumberLength &&
-          coreNumber.length > this.maxCoreNumberLength
-        ) {
-          if (input.selectionEnd === inputValue.length) {
-            // if they try to paste too many digits at the end, then just trim the excess
-            const trimLength = coreNumber.length - this.maxCoreNumberLength;
-            newVal = newVal.slice(0, newVal.length - trimLength);
-          } else {
-            // if they try to paste too many digits in the middle, then just ignore the paste entirely
+        // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
+        // (fixes bug where you couldn't paste the first digit of a number)
+        if (newVal.length > 5) {
+          let coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
+
+          // utils.getCoreNumber returns empty string for very long numbers
+          // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
+          while (coreNumber.length === 0 && newVal.length > 0) {
+            newVal = newVal.slice(0, -1);
+            coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
+          }
+          // if no valid core number can be found, then just ignore the paste
+          if (!coreNumber) {
             return;
+          }
+          if (
+            this.maxCoreNumberLength &&
+            coreNumber.length > this.maxCoreNumberLength
+          ) {
+            if (input.selectionEnd === inputValue.length) {
+              // if they try to paste too many digits at the end, then just trim the excess
+              const trimLength = coreNumber.length - this.maxCoreNumberLength;
+              newVal = newVal.slice(0, newVal.length - trimLength);
+            } else {
+              // if they try to paste too many digits in the middle, then just ignore the paste entirely
+              return;
+            }
           }
         }
         // preserve pasted numeral set in display
