@@ -133,7 +133,7 @@ export class Iti {
   }
 
   private _updateNumeralSet(str: string): void {
-    // If both appear, prefer the most recent typed chars in input handler; here just a simple detection
+    // If any Arabic-Indic digits, then label it as that set. Same for Persian. Otherwise assume ASCII.
     if (/[\u0660-\u0669]/.test(str)) {
       this.userNumeralSet = "arabic-indic";
     } else if (/[\u06F0-\u06F9]/.test(str)) {
@@ -525,7 +525,7 @@ export class Iti {
       }
 
       const isSetNumber = e?.detail && e.detail["isSetNumber"];
-      // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets
+      // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets - when these numbers contain spaces, they're treated as words, and so they get reversed in a way that breaks our calculations
       const isAscii = this.userNumeralSet === "ascii";
       //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
       if (formatAsYouType && !userOverrideFormatting && !isSetNumber && isAscii) {
@@ -606,16 +606,20 @@ export class Iti {
               !alreadyHasPlus &&
               this.ui.telInput.selectionStart === 0 &&
               e.key === "+";
-            const isNumeric = /^[0-9]$/.test(e.key);
+            // note that we normalise numerals here so this numerics check works, but then later we continue using the original e.key value
+            const normalisedKey = this._normaliseNumerals(e.key);
+            const isNumeric = /^[0-9]$/.test(normalisedKey);
             const isAllowedChar = separateDialCode
               ? isNumeric
               : isInitialPlus || isNumeric;
 
             // insert the new character in the right place
-            const newValue =
-              inputValue.slice(0, this.ui.telInput.selectionStart) +
-              e.key +
-              inputValue.slice(this.ui.telInput.selectionEnd);
+            const input = this.ui.telInput;
+            const selStart = input.selectionStart;
+            const selEnd = input.selectionEnd;
+            const before = inputValue.slice(0, selStart);
+            const after = inputValue.slice(selEnd);
+            const newValue = before + e.key + after;
             const newFullNumber = this._getFullNumber(newValue);
             const coreNumber = intlTelInput.utils.getCoreNumber(
               newFullNumber,
