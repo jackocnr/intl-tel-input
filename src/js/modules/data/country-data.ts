@@ -43,10 +43,7 @@ export const translateCountryNames = (
 };
 
 //* Generate dialCodes and dialCodeToIso2Map.
-export const processDialCodes = (
-  countries: Country[],
-  options: AllOptions,
-): DialCodeProcessingResult => {
+export const processDialCodes = (countries: Country[]): DialCodeProcessingResult => {
   //* Here we store just dial codes, where the key is the dial code, and the value is true
   //* e.g. { 1: true, 7: true, 20: true, ... }.
   const dialCodes = new Set<string>();
@@ -65,11 +62,7 @@ export const processDialCodes = (
   const dialCodeToIso2Map: Record<string, Iso2[]> = {};
 
   //* Add a dial code to this.dialCodeToIso2Map.
-  const _addToDialCodeMap = (
-    iso2: Iso2,
-    dialCode: string,
-    priority?: number,
-  ) => {
+  const _addToDialCodeMap = (iso2: Iso2, dialCode: string) => {
     // Bail if no iso2 or dialCode (this can happen with onlyCountries or excludeCountries options).
     if (!iso2 || !dialCode) {
       return;
@@ -87,13 +80,12 @@ export const processDialCodes = (
     if (iso2List.includes(iso2)) {
       return;
     }
-    //* Use provided priority index (can be 0), else append.
-    const index = priority !== undefined ? priority : iso2List.length;
-    iso2List[index] = iso2;
+    iso2List.push(iso2);
   };
 
-  //* First: add dial codes.
-  for (const c of countries) {
+  // Sort countries by priority so that when we add to the dialCodeToIso2Map, higher priority countries come first
+  const countriesSortedByPriority = [...countries].sort((a, b) => a.priority - b.priority);
+  for (const c of countriesSortedByPriority) {
     if (!dialCodes.has(c.dialCode)) {
       dialCodes.add(c.dialCode);
     }
@@ -103,26 +95,13 @@ export const processDialCodes = (
       _addToDialCodeMap(c.iso2, partialDialCode);
     }
     // add the full dial code to the map
-    _addToDialCodeMap(c.iso2, c.dialCode, c.priority);
-  }
-  // if any countries have been excluded, cleanup empty array entries in dialCodeToIso2Map due to the use of c.priority to insert at specific indexes
-  if (options.onlyCountries.length || options.excludeCountries.length) {
-    dialCodes.forEach((dialCode) => {
-      dialCodeToIso2Map[dialCode] = dialCodeToIso2Map[dialCode].filter(Boolean);
-    });
-  }
+    _addToDialCodeMap(c.iso2, c.dialCode);
 
-  //* Next: add area codes.
-  //* This is a second loop over countries, to make sure we have all of the "root" countries
-  //* already in the map, so that we can access them, as each time we add an area code substring
-  //* to the map, we also need to include the "root" country's code, as that also matches.
-  for (const c of countries) {
-    //* Area codes
     if (c.areaCodes) {
       const rootIso2Code = dialCodeToIso2Map[c.dialCode][0];
       //* For each area code.
       for (const areaCode of c.areaCodes) {
-        //* For each digit in the area code to add all partial matches as well.
+        //* Add partial matches: For each digit in the area code
         for (let k = 1; k < areaCode.length; k++) {
           const partialAreaCode = areaCode.substring(0, k);
           const partialDialCode = c.dialCode + partialAreaCode;

@@ -112,4 +112,17 @@ describe("initial values", () => {
       expect(checkFlagSelected(container, "gb")).toBe(true);
     });
   });
+
+  describe("init plugin on input containing valid intl FI number shared with AX", () => {
+    beforeEach(() => {
+      ({ iti, input, container } = initPlugin({
+        inputValue: "+358457234567",
+      }));
+    });
+
+    // Issue 2111: initialising with a number range shared between FI and AX was selecting AX, but should select FI as it has the higher priority
+    test("updates the selected country", () => {
+      expect(checkFlagSelected(container, "fi")).toBe(true);
+    });
+  });
 });

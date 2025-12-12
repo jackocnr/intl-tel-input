@@ -114,7 +114,6 @@ export class Iti {
     //* Generate this.dialCodes and this.dialCodeToIso2Map.
     const { dialCodes, dialCodeMaxLen, dialCodeToIso2Map } = processDialCodes(
       this.countries,
-      this.options,
     );
     this.dialCodes = dialCodes;
     this.dialCodeMaxLen = dialCodeMaxLen;
