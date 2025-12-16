@@ -1,4 +1,4 @@
-import { Country } from "../../intl-tel-input/data";
+import { Country, Iso2 } from "../../intl-tel-input/data";
 import { AllOptions } from "../types/public-api";
 import { buildClassNames, createEl } from "../utils/dom";
 import { buildSearchIcon, buildClearIcon } from "./icons";
@@ -30,6 +30,7 @@ export default class UI {
   hiddenInput: HTMLInputElement;
   hiddenInputCountry: HTMLInputElement;
   highlightedItem: HTMLElement | null = null;
+  selectedItem: HTMLElement | null = null;
   readonly hadInitialPlaceholder: boolean;
 
   constructor(input: HTMLInputElement, options: AllOptions, id: number) {
@@ -353,7 +354,6 @@ export default class UI {
       // Compute classes (highlight first item when countrySearch disabled)
       const liClass = buildClassNames({
         [CLASSES.COUNTRY_ITEM]: true,
-        [CLASSES.HIGHLIGHT]: i === 0,
       });
 
       const listItem = createEl("li", {
@@ -490,18 +490,16 @@ export default class UI {
     }
   }
 
-  //* Remove highlighting from other list items and highlight the given item.
+  //* Remove highlighting from the previous list item and highlight the new one.
   highlightListItem(listItem: HTMLElement | null, shouldFocus: boolean): void {
     const prevItem = this.highlightedItem;
     if (prevItem) {
       prevItem.classList.remove(CLASSES.HIGHLIGHT);
-      prevItem.setAttribute(ARIA.SELECTED, "false");
     }
     //* Set this, even if it's null, as it will clear the highlight.
     this.highlightedItem = listItem;
     if (this.highlightedItem) {
       this.highlightedItem.classList.add(CLASSES.HIGHLIGHT);
-      this.highlightedItem.setAttribute(ARIA.SELECTED, "true");
       if (this.options.countrySearch) {
         const activeDescendant = this.highlightedItem.getAttribute("id") || "";
         this.searchInput.setAttribute(ARIA.ACTIVE_DESCENDANT, activeDescendant);
@@ -510,6 +508,24 @@ export default class UI {
 
     if (shouldFocus) {
       this.highlightedItem.focus();
+    }
+  }
+
+  updateSelectedItem(iso2: Iso2 | ""): void {
+    // if the existing selected item is different to the new country, set aria-selected to false
+    if (this.selectedItem && this.selectedItem.dataset.countryCode !== iso2) {
+      this.selectedItem.setAttribute(ARIA.SELECTED, "false");
+      this.selectedItem = null;
+    }
+    // if setting to a new country (rather than null/globe icon, or the existing selected item), find the new list item and set aria-selected to true
+    if (iso2 && !this.selectedItem) {
+      const newListItem = this.countryList.querySelector(
+        `[data-country-code="${iso2}"]`,
+      ) as HTMLElement;
+      if (newListItem) {
+        newListItem.setAttribute(ARIA.SELECTED, "true");
+        this.selectedItem = newListItem;
+      }
     }
   }
 
@@ -576,6 +592,7 @@ export default class UI {
     this.hiddenInput = null;
     this.hiddenInputCountry = null;
     this.highlightedItem = null;
+    this.selectedItem = null;
 
     // also clear all references to the list items in the countries data
     for (const c of this.countries) {

@@ -1167,12 +1167,17 @@ export class Iti {
     return null;
   }
 
-  //* Update the selected country, dial code (if separateDialCode), placeholder, title, and active list item.
+  //* Update the selected country, dial code (if separateDialCode), placeholder, title, and selected list item.
   //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
   private _setCountry(iso2: Iso2 | ""): boolean {
-    const { separateDialCode, showFlags, i18n } = this.options;
+    const { separateDialCode, showFlags, i18n, allowDropdown } = this.options;
 
     const prevIso2 = this.selectedCountryData.iso2 || "";
+
+    if (allowDropdown) {
+      // Update the selected list item in the dropdown
+      this.ui.updateSelectedItem(iso2);
+    }
 
     this.selectedCountryData = iso2
       ? (this.countryByIso2.get(iso2) as Country)
@@ -1183,7 +1188,7 @@ export class Iti {
       this.defaultCountry = this.selectedCountryData.iso2;
     }
 
-    //* Update the flag class and the a11y text.
+    //* Update the selected flag class and the a11y text.
     if (this.ui.selectedCountry) {
       const flagClass =
         iso2 && showFlags
@@ -1214,7 +1219,7 @@ export class Iti {
       this.ui.updateInputPadding();
     }
 
-    //* And the input's placeholder.
+    //* Update the input's placeholder.
     this._updatePlaceholder();
 
     //* Update the maximum valid number length.
@@ -1326,11 +1331,14 @@ export class Iti {
     }
     this.ui.dropdownContent.classList.add(CLASSES.HIDE);
     this.ui.selectedCountry.setAttribute(ARIA.EXPANDED, "false");
-    if (this.ui.highlightedItem) {
-      this.ui.highlightedItem.setAttribute(ARIA.SELECTED, "false");
-    }
+
     if (this.options.countrySearch) {
       this.ui.searchInput.removeAttribute(ARIA.ACTIVE_DESCENDANT);
+      // only clear the highlighted item if countrySearch is enabled as this gets reset each time the dropdown is opened
+      if (this.ui.highlightedItem) {
+        this.ui.highlightedItem.classList.remove(CLASSES.HIGHLIGHT);
+        this.ui.highlightedItem = null;
+      }
     }
 
     //* Update the arrow.
