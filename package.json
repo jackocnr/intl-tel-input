@@ -21,6 +21,7 @@
     "react",
     "vue",
     "angular",
+    "svelte",
     "component",
     "typescript"
   ],
@@ -32,6 +33,7 @@
     "@angular/core": "^19.1.4",
     "@angular/forms": "^19.1.4",
     "@angular/platform-browser": "^19.1.4",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@babel/plugin-transform-modules-commonjs": "^7.25.7",
     "@babel/preset-typescript": "^7.27.1",
     "@playwright/test": "^1.47.2",
@@ -76,6 +78,7 @@
     "react-dom": "^18.3.1",
     "sass": "^1.83.1",
     "sharp": "^0.33.5",
+    "svelte": "^5.16.0",
     "time-grunt": "^2.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3",
@@ -88,6 +91,7 @@
     "react/build/*",
     "vue/build/*",
     "angular/build/*",
+    "svelte/build/*",
     "CHANGELOG.md",
     "LICENSE",
     "package.json",
@@ -117,9 +121,11 @@
     "build:react": "grunt build:react",
     "build:vue": "grunt build:vue",
     "build:angular": "grunt build:angular",
+    "build:svelte": "grunt build:svelte",
     "build:ci": "grunt build:ci",
     "prepublishOnly": "grunt build",
-    "vue:demo": "vite --config vue/demo/validation/vite.config.js"
+    "vue:demo": "vite --config vue/demo/validation/vite.config.js",
+    "svelte:demo": "vite --config svelte/demo/validation/vite.config.mjs"
   },
   "style": "build/css/intlTelInput.css",
   "main": "./build/js/intlTelInput.js",
@@ -164,6 +170,12 @@
       "types": "./angular/build/types/intl-tel-input/angularWithUtils.d.ts",
       "import": "./angular/build/IntlTelInputWithUtils.js",
       "default": "./angular/build/IntlTelInputWithUtils.js"
+    },
+    "./svelte": {
+      "import": "./svelte/build/IntlTelInput.mjs"
+    },
+    "./svelteWithUtils": {
+      "import": "./svelte/build/IntlTelInputWithUtils.mjs"
     },
     "./i18n": {
       "types": "./build/js/intlTelInput.d.ts",

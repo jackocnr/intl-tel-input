@@ -397,5 +397,22 @@ module.exports = function(grunt) {
         'angular/src/intl-tel-input/angularWithUtils.ts': 'angular/src/intl-tel-input/angular.ts',
       }
     },
+
+    /**************
+     * Generate svelte/src/IntlTelInputWithUtils.svelte
+     **************/
+    svelteWithUtils: {
+      options: {
+        patterns: [
+          {
+            match: /\<script lang="ts"\>\s*import intlTelInput from "\.\.\/intl\-tel\-input"\;/,
+            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script lang="ts">\nimport intlTelInput from "./intlTelInputWithUtils";'
+          }
+        ]
+      },
+      files: {
+        'svelte/src/intl-tel-input/IntlTelInputWithUtils.svelte': 'svelte/src/intl-tel-input/IntlTelInput.svelte',
+      }
+    },
   };
 };
