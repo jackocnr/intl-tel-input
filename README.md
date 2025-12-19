@@ -81,16 +81,16 @@ _Note: We have now dropped support for all versions of Internet Explorer because
 ## Getting Started (Using a CDN)
 1. Add the CSS
   ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.2/build/css/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.3/build/css/intlTelInput.css">
   ```
 
 2. Add the plugin script and initialise it on your input element
   ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.2/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.3/build/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.2/build/js/utils.js"),
+      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.3/build/js/utils.js"),
     });
   </script>
   ```
@@ -328,12 +328,12 @@ Set the initial country selection by specifying its country code, e.g. `"us"` fo
 Type: `() => Promise<module>` Default: `null`  
 This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options.
 
-The `loadUtils` option takes a function that returns a Promise resolving to the utils module (see example code below). You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.2/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
+The `loadUtils` option takes a function that returns a Promise resolving to the utils module (see example code below). You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.3/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
 
 ```js
 // (A) import utils module from a CDN
 intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.2/build/js/utils.js"),
+  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.3/build/js/utils.js"),
 });
 
 // (B) import utils module from your own hosted version of utils.js
