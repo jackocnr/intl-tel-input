@@ -42,11 +42,12 @@ module.exports = function(grunt) {
     'replace:instanceFields',
   ]);
 
-  // just 3 components
+  // just 4 components
   grunt.registerTask('build:components', [
     'build:react',
     'build:vue',
     'build:angular',
+    'build:svelte',
   ]);
 
   // fast version which only builds the main plugin JS files (see root build.js file for details)
@@ -68,6 +69,9 @@ module.exports = function(grunt) {
     'shell:genAngularTsDeclarationAndJs',
     'shell:buildAngular',
   ]);
+
+  // just svelte
+  grunt.registerTask('build:svelte', ['replace:svelteWithUtils', 'shell:buildSvelte']);
 
   // stripped down build task for CI which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
   grunt.registerTask('build:ci', ['closure-compiler:utils', 'shell:buildJs']);
