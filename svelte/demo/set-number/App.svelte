@@ -33,9 +33,9 @@
 <form>
   <IntlTelInput
     bind:this={intlTelInputRef}
-    onchangeNumber={(n) => number = n}
-    onchangeValidity={(v) => isValid = v}
-    onchangeErrorCode={(e) => errorCode = e}
+    onChangeNumber={(n) => number = n}
+    onChangeValidity={(v) => isValid = v}
+    onChangeErrorCode={(e) => errorCode = e}
     options={{ initialCountry: 'us' }}
   />
   <button class="button" type="button" onclick={handleSetNumber}>

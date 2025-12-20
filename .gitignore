@@ -10,6 +10,7 @@
 .DS_Store
 /build/
 /react/build/
+/svelte/build/
 /vue/build/
 /angular/build/
 /*/demo/*/*-bundle.js
