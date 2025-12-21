@@ -54,19 +54,19 @@ The initial value to put in the input. This will get auto-formatted on init (acc
 ## Events
 Here's a list of all of the current event handlers you can pass to the IntlTelInput Svelte component.
 
-**onchangeCountry**
+**onChangeCountry**
 Type: `Function`
 A handler to be called when the selected country changes. It will be passed the new country iso2 code e.g. "gb" for UK.
 
-**onchangeErrorCode**
+**onChangeErrorCode**
 Type: `Function`
 A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
 
-**onchangeNumber**
+**onChangeNumber**
 Type: `Function`
 A handler to be called when the number changes. It will be passed the new number.
 
-**onchangeValidity**
+**onChangeValidity**
 Type: `Function`
 A handler to be called when the number validity changes e.g. to true/false. It will be passed the new isValid boolean.
 
