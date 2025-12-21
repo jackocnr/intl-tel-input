@@ -30,44 +30,44 @@ See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master
 "svelte:demo": "vite --config svelte/demo/[demo variant]/vite.config.mjs"
 ```
 
-A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import IntlTelInput from `"intl-tel-input/svelteWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/svelte"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.2/build/js/utils.js"`.
+A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import IntlTelInput from `"intl-tel-input/svelteWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/svelte"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@25.13.3/build/js/utils.js"`.
 
 ## Props
 Here's a list of all of the current props you can pass to the IntlTelInput Svelte component.
 
-**disabled**
-Type: `Boolean`, Default: `false`
+**disabled**  
+Type: `Boolean`, Default: `false`  
 Sets the disabled attribute of both the telephone input and selected country button. *Note: we recommend using this instead of `inputProps.disabled`.*
 
-**inputProps**
-Type: `Object`
+**inputProps**  
+Type: `Object`  
 The props to pass to the input element e.g. `id`, `class`, `placeholder`, `required` etc. *Note: we recommend using the separate `disabled` prop instead of `inputProps.disabled`.*
 
-**options**
-Type: `Object`
+**options**  
+Type: `Object`  
 An object containing the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
 
-**value**
-Type: `String`
+**value**  
+Type: `String`  
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
 
 ## Events
 Here's a list of all of the current event handlers you can pass to the IntlTelInput Svelte component.
 
-**onChangeCountry**
-Type: `Function`
+**onChangeCountry**  
+Type: `Function`  
 A handler to be called when the selected country changes. It will be passed the new country iso2 code e.g. "gb" for UK.
 
-**onChangeErrorCode**
-Type: `Function`
+**onChangeErrorCode**  
+Type: `Function`  
 A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
 
-**onChangeNumber**
-Type: `Function`
+**onChangeNumber**  
+Type: `Function`  
 A handler to be called when the number changes. It will be passed the new number.
 
-**onChangeValidity**
-Type: `Function`
+**onChangeValidity**  
+Type: `Function`  
 A handler to be called when the number validity changes e.g. to true/false. It will be passed the new isValid boolean.
 
 ## Accessing Instance Methods
