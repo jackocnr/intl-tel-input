@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Norwegian. Translated by: Eric Pastoor (epastoor) with help of google translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Valgt land",
+  noCountrySelected: "Ingen land er valgt",
+  countryListAriaLabel: "Liste over land",
+  searchPlaceholder: "Leting",
+  zeroSearchResults: "Ingen resultater funnet",
+  oneSearchResult: "1 resultat funnet",
+  multipleSearchResults: "${count} resultater funnet",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

@@ -1,9 +1,15 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Shqip (Albanian). Translated by: ChatGPT 5.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Ndrysho vendin, i zgjedhur ${countryName} (${dialCode})",
+  noCountrySelected: "Zgjidh vendin",
+  countryListAriaLabel: "Lista e vendeve",
+  searchPlaceholder: "Kërko",
+  clearSearchAriaLabel: "Pastro kërkimin",
+  zeroSearchResults: "Nuk u gjet asnjë rezultat",
+  oneSearchResult: "U gjet 1 rezultat",
+  multipleSearchResults: "U gjetën ${count} rezultate",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Turkish. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Seçilen ülke",
+  noCountrySelected: "Hiçbir ülke seçilmedi",
+  countryListAriaLabel: "Ülke listesi",
+  searchPlaceholder: "Ara",
+  zeroSearchResults: "Sonuç bulunamadı",
+  oneSearchResult: "1 sonuç bulundu",
+  multipleSearchResults: "${count} sonuç bulundu",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

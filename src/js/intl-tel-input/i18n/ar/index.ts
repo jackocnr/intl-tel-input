@@ -1,9 +1,29 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Arabic. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "البلد المحدد",
+  noCountrySelected: "لم يتم تحديد أي بلد",
+  countryListAriaLabel: "قائمة الدول",
+  searchPlaceholder: "يبحث",
+  zeroSearchResults: "لم يتم العثور على نتائج",
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+  searchResultsText(count) {
+    if (count === 1) {
+      return "تم العثور على نتيجة واحدة";
+    }
+
+    if (count === 2) {
+      return "تم العثور على نتيجتين";
+    }
+
+    // Numbers ending in 3-10
+    if (count % 100 >= 3 && count % 100 <= 10) {
+      return `تم العثور على ${count} نتائج`;
+    }
+
+    return `تم العثور على ${count} نتيجة`;
+  },
+};
+
+export default interfaceTranslations;

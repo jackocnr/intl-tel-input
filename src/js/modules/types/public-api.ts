@@ -69,6 +69,7 @@ export interface AllOptions {
   containerClass: string;
   countryOrder: Iso2[] | null;
   countrySearch: boolean;
+  countryNameLocale: string;
   customPlaceholder:
     | ((
         selectedCountryPlaceholder: string,

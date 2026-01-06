@@ -1,9 +1,15 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* English. Translated by: Jack O'Connor (jackocnr).
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Change country, selected ${countryName} (${dialCode})",
+  noCountrySelected: "Select country",
+  countryListAriaLabel: "List of countries",
+  searchPlaceholder: "Search",
+  clearSearchAriaLabel: "Clear search",
+  zeroSearchResults: "No results found",
+  oneSearchResult: "1 result found",
+  multipleSearchResults: "${count} results found",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

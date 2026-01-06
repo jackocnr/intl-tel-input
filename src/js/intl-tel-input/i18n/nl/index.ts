@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Dutch. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Geselecteerd land",
+  noCountrySelected: "Geen land geselecteerd",
+  countryListAriaLabel: "Lijst met landen",
+  searchPlaceholder: "Zoekopdracht",
+  zeroSearchResults: "Geen resultaten gevonden",
+  oneSearchResult: "1 resultaat gevonden",
+  multipleSearchResults: "${count} resultaten gevonden",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

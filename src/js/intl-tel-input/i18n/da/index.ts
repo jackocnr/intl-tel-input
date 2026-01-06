@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Danish. Translated by: Matthias Dilger (matthiasdilger).
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Valgt land",
+  noCountrySelected: "Intet land er valgt",
+  countryListAriaLabel: "Liste over lande",
+  searchPlaceholder: "Søg",
+  zeroSearchResults: "Ingen resultater fundet",
+  oneSearchResult: "1 resultat fundet",
+  multipleSearchResults: "${count} resultater fundet",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

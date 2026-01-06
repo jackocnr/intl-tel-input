@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Bengali. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "নির্বাচিত দেশ",
+  noCountrySelected: "কোনো দেশ নির্বাচন করা হয়নি",
+  countryListAriaLabel: "দেশের তালিকা",
+  searchPlaceholder: "অনুসন্ধান করুন",
+  zeroSearchResults: "কোন ফলাফল পাওয়া যায়নি",
+  oneSearchResult: "1টি ফলাফল পাওয়া গেছে",
+  multipleSearchResults: "${count} ফলাফল পাওয়া গেছে",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

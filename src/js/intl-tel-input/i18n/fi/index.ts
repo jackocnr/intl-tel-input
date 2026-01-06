@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Finnish. Translated by: Michael Winton (mrwinton).
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  "selectedCountryAriaLabel": "Valittu maa",
+  "noCountrySelected": "Maata ei ole valittu",
+  "countryListAriaLabel": "Luettelo maista",
+  "searchPlaceholder": "Haku",
+  "zeroSearchResults": "Ei tuloksia",
+  "oneSearchResult": "1 tulos löytyi",
+  "multipleSearchResults": "${count} tulosta löytyi",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

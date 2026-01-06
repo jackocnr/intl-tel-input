@@ -1,5 +1,4 @@
 import allCountries, { Country, Iso2 } from "./intl-tel-input/data";
-import defaultEnglishStrings from "./intl-tel-input/i18n/en";
 import { defaults, applyOptionSideEffects } from "./modules/core/options";
 import type {
   UtilsLoader,
@@ -18,9 +17,9 @@ import UI from "./modules/core/ui";
 import {
   processAllCountries,
   processDialCodes,
-  translateCountryNames,
   sortCountries,
   cacheSearchTokens,
+  generateCountryNames,
 } from "./modules/data/country-data";
 import {
   beforeSetNumber,
@@ -46,11 +45,6 @@ import {
   PLACEHOLDER_MODES,
 } from "./modules/constants";
 import { buildGlobeIcon } from "./modules/core/icons";
-
-//* Populate the country names in the default language - useful if you want to use static getCountryData to populate another country dropdown etc.
-for (const c of allCountries) {
-  c.name = defaultEnglishStrings[c.iso2];
-}
 
 declare global {
   interface HTMLInputElement {
@@ -103,7 +97,7 @@ export class Iti {
 
     //* Process specified options / defaults.
     this.options = { ...defaults, ...customOptions } as AllOptions;
-    applyOptionSideEffects(this.options, defaultEnglishStrings);
+    applyOptionSideEffects(this.options);
 
     this.ui = new UI(input, this.options, this.id);
     this.isAndroid = Iti._getIsAndroid();
@@ -222,8 +216,8 @@ export class Iti {
 
   //* Prepare all of the country data, including onlyCountries, excludeCountries, countryOrder options.
   private _processCountryData(): void {
-    //* Translate country names according to i18n option.
-    translateCountryNames(this.countries, this.options);
+    //* Generate country names using Intl.DisplayNames
+    generateCountryNames(this.countries, this.options);
 
     //* Sort countries by countryOrder option (if present), then name.
     sortCountries(this.countries, this.options);

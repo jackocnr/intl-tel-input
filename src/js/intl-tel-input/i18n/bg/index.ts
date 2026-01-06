@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Bulgarian. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Избрана държава",
+  noCountrySelected: "Няма избрана държава",
+  countryListAriaLabel: "Списък на страните",
+  searchPlaceholder: "Търсене",
+  zeroSearchResults: "Няма намерени резултати",
+  oneSearchResult: "Намерен е 1 резултат",
+  multipleSearchResults: "${count} намерени резултата",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

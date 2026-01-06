@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Thai. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "ประเทศที่เลือก",
+  noCountrySelected: "ไม่ได้เลือกประเทศ",
+  countryListAriaLabel: "รายชื่อประเทศ",
+  searchPlaceholder: "ค้นหา",
+  zeroSearchResults: "ไม่พบผลลัพธ์",
+  oneSearchResult: "พบผลลัพธ์ 1 รายการ",
+  multipleSearchResults: "พบผลลัพธ์ ${count} รายการ",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

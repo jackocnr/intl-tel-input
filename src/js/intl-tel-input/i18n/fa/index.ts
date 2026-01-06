@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Farsi/Persian. Translated by: Mahyar SBT (mahyarsbt).
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "کشور انتخاب شده",
+  noCountrySelected: "هیچ کشوری انتخاب نشده است",
+  countryListAriaLabel: "لیست کشورها",
+  searchPlaceholder: "جستجو",
+  zeroSearchResults: "هیچ نتیجه‌ای یافت نشد",
+  oneSearchResult: "1 نتیجه یافت شد",
+  multipleSearchResults: "${count} نتیجه یافت شد",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

@@ -29,16 +29,24 @@ export const processAllCountries = (options: AllOptions): Country[] => {
   return allCountries;
 };
 
-//* Translate Countries by object literal provided on config.
-export const translateCountryNames = (
+//* Generate country names using Intl.DisplayNames
+export const generateCountryNames = (
   countries: Country[],
   options: AllOptions,
 ): void => {
+  const { countryNameLocale, i18n } = options;
+
+  //* Populate country names using Intl.DisplayNames (per instance) with countryNameLocale.
+  const hasDisplayNames =
+    typeof Intl !== "undefined" &&
+    typeof (Intl as any).DisplayNames === "function";
+  const displayNames = hasDisplayNames
+    ? new (Intl as any).DisplayNames(countryNameLocale, {
+        type: "region",
+      })
+    : null;
   for (const c of countries) {
-    const iso2 = c.iso2.toLowerCase();
-    if (options.i18n[iso2]) {
-      c.name = options.i18n[iso2];
-    }
+    c.name = i18n[c.iso2] || displayNames?.of(c.iso2.toUpperCase());
   }
 };
 

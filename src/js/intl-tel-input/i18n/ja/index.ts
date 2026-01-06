@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Japanese. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "選択した国",
+  noCountrySelected: "国が選択されていません",
+  countryListAriaLabel: "国のリスト",
+  searchPlaceholder: "検索",
+  zeroSearchResults: "結果が見つかりません",
+  oneSearchResult: "1 件の結果が見つかりました",
+  multipleSearchResults: "${count} 件の結果が見つかりました",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

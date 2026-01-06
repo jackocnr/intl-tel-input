@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Hindi. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "चयनित देश",
+  noCountrySelected: "कोई देश चयनित नहीं",
+  countryListAriaLabel: "देशों की सूची",
+  searchPlaceholder: "खोज",
+  zeroSearchResults: "कोई परिणाम नहीं मिला",
+  oneSearchResult: "1 परिणाम मिला",
+  multipleSearchResults: "${count} परिणाम मिले",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

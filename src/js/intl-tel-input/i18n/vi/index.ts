@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Vietnamese. Translated by: Eric Pastoor (epastoor) with help of google translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Quốc gia đã chọn",
+  noCountrySelected: "Không có quốc gia nào được chọn",
+  countryListAriaLabel: "Danh sách các quốc gia",
+  searchPlaceholder: "Khám xét",
+  zeroSearchResults: "Không tìm thấy kết quả nào",
+  oneSearchResult: "Đã tìm thấy 1 kết quả",
+  multipleSearchResults: "Đã tìm thấy ${count} kết quả",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

@@ -37,10 +37,10 @@ Once you've checked everything looks ok (e.g. by opening the included demo.html 
 
 ## Adding a new translation
 
-If we don't currently support a language you need, it's easy to contribute this yourself - you only need to provide a handful of UI translation strings (e.g. the country search input placeholder text), as we automatically pull in the country names from the country-list project.
+If we don't currently support a language you need, it's easy to contribute this yourself - you only need to provide a handful of UI translation strings (e.g. the country search input placeholder text).
 
-The translation files can be found in src/js/intl-tel-input/i18n/. There is a directory for each language we support (e.g. "en" for "English"). Inside each of these directories, you will find 3 files: countries.ts, which contains the (auto-generated) country name translations, interface.ts, which contains the user interface translations, and index.ts (also auto-generated), which ties it all together.
+The translation files can be found in src/js/intl-tel-input/i18n/. There is a directory for each language we support (e.g. "en" for "English"). Inside each of these directories, there is an index.ts, which contains the user interface translations.
 
-All you need to do to add a new translation is create a new language directory, create the interface.ts file and populate it with your UI translation strings, following the same pattern as the other languages e.g. see [the english version here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/i18n/en/interface.ts).
+All you need to do to add a new translation is create a new language directory, create the index.ts file and populate it with your UI translation strings, following the same pattern as the other languages e.g. see [the english version here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/i18n/en/interface.ts).
 
-If you haven't already, you will need to run `npm install` to install the project dependencies, and then you can run `npm run build:translations` to auto-generate the countries.ts and index.ts for your new language. Once you have tested and confirmed that the new translations are working, you can create a pull request on GitHub.
+If you haven't already, you will need to run `npm install` to install the project dependencies, and then you can run `npm run build:translations` to automatically add your new language to the root index.ts file. Once you have tested and confirmed that the new translations are working, you can create a pull request on GitHub.

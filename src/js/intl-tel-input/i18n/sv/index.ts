@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Swedish. Translated by: Nhi Tran.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  "selectedCountryAriaLabel": "Valt land",
+  "noCountrySelected": "Inget land valt",
+  "countryListAriaLabel": "Lista över länder",
+  "searchPlaceholder": "Sök",
+  "zeroSearchResults": "Inga resultat hittades",
+  "oneSearchResult": "1 resultat hittades",
+  "multipleSearchResults": "${count} resultat hittades",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;
