@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* German. Translated by: Jack O'Connor (jackocnr).
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Ausgewähltes Land",
+  noCountrySelected: "Kein Land ausgewählt",
+  countryListAriaLabel: "Liste der Länder",
+  searchPlaceholder: "Suchen",
+  zeroSearchResults: "Keine Suchergebnisse",
+  oneSearchResult: "1 Suchergebnis",
+  multipleSearchResults: "${count} Suchergebnisse",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Greek. Translated by: Anthony Veaudry (anthony0030).
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Επιλεγμένη χώρα",
+  noCountrySelected: "Δεν έχει επιλεγεί χώρα",
+  countryListAriaLabel: "Κατάλογος χωρών",
+  searchPlaceholder: "Αναζήτηση",
+  zeroSearchResults: "Δεν βρέθηκαν αποτελέσματα",
+  oneSearchResult: "Βρέθηκε 1 αποτέλεσμα",
+  multipleSearchResults: "Βρέθηκαν ${count} αποτελέσματα",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

@@ -1,9 +1,27 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Slovak. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Vybraná krajina",
+  noCountrySelected: "Nie je vybratá žiadna krajina",
+  countryListAriaLabel: "Zoznam krajín",
+  searchPlaceholder: "Vyhľadať",
+  zeroSearchResults: "Neboli nájdené žiadne výsledky",
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+  searchResultsText(count) {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    // Numbers ending in 1, but not 11
+    if (mod10 === 1 && mod100 !== 11) {
+      return `${count} výsledok nájdený`;
+    }
+
+    // Numbers ending in 2-4, but not 12-14
+    const isFew = mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14);
+
+    return `${count} ${isFew ? "výsledky nájdené" : "výsledkov nájdených"}`;
+  },
+};
+
+export default interfaceTranslations;

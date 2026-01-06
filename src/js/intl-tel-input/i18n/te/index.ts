@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Telugu. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "ఎంచుకున్న దేశం",
+  noCountrySelected: "ఏ దేశం ఎంచుకోబడలేదు",
+  countryListAriaLabel: "దేశాల జాబితా",
+  searchPlaceholder: "వెతకండి",
+  zeroSearchResults: "ఎటువంటి ఫలితాలు లభించలేదు",
+  oneSearchResult: "1 ఫలితం కనుగొనబడింది",
+  multipleSearchResults: "${count} ఫలితాలు కనుగొనబడ్డాయి",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

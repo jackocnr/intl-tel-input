@@ -1,9 +1,24 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Czech. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Vybraná země",
+  noCountrySelected: "Není vybrána žádná země",
+  countryListAriaLabel: "Seznam zemí",
+  searchPlaceholder: "Vyhledat",
+  zeroSearchResults: "Nebyly nalezeny žádné výsledky",
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+  searchResultsText(count) {
+    if (count === 1) {
+      return "Nalezen 1 výsledek";
+    }
+
+    if (count >= 2 && count <= 4) {
+      return `Nalezeny ${count} výsledky`;
+    }
+
+    return `Nalezeno ${count} výsledků`;
+  },
+};
+
+export default interfaceTranslations;

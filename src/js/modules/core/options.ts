@@ -1,5 +1,5 @@
-import { I18n } from "../../intl-tel-input/i18n/types";
 import { PLACEHOLDER_MODES } from "../constants";
+import defaultEnglishStrings from "../../intl-tel-input/i18n/en";
 import type { AllOptions } from "../types/public-api";
 
 // Helper for media query evaluation
@@ -44,6 +44,8 @@ export const defaults: AllOptions = {
   autoPlaceholder: PLACEHOLDER_MODES.POLITE,
   //* Modify the parentClass.
   containerClass: "",
+  //* Locale for localising country names via Intl.DisplayNames.
+  countryNameLocale: "en",
   //* The order of the countries in the dropdown. Defaults to alphabetical.
   countryOrder: null,
   //* Add a country search input at the top of the dropdown.
@@ -89,10 +91,7 @@ export const defaults: AllOptions = {
 };
 
 // Apply option side-effects (mutates the passed object)
-export const applyOptionSideEffects = (
-  o: AllOptions,
-  defaultEnglishStrings: I18n,
-): void => {
+export const applyOptionSideEffects = (o: AllOptions): void => {
   //* If showing fullscreen popup, do not fix the width.
   if (o.useFullscreenPopup) {
     o.fixDropdownWidth = false;

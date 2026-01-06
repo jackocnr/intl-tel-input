@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* English. Translated by: Mukhammadkhojiakbar Khusanov (khusanov-m).
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Tanlangan davlat",
+  noCountrySelected: "Davlat tanlanmagan",
+  countryListAriaLabel: "Davlatlar roʻyxati",
+  searchPlaceholder: "Davlatni qidiring",
+  zeroSearchResults: "Natija topilmadi",
+  oneSearchResult: "1-ta natija topildi",
+  multipleSearchResults: "${count}-ta natija topildi",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

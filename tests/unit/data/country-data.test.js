@@ -2,7 +2,12 @@
  * @jest-environment node
  */
 
-const { processAllCountries, processDialCodes, translateCountryNames, sortCountries, cacheSearchTokens } = require("../../../src/js/modules/data/country-data.ts");
+const {
+  processAllCountries,
+  processDialCodes,
+  sortCountries,
+  cacheSearchTokens,
+} = require("../../../src/js/modules/data/country-data.ts");
 const allCountries = require("../../../src/js/intl-tel-input/data.ts").default;
 
 describe("data/country-data processAllCountries", () => {
@@ -29,16 +34,6 @@ describe("data/country-data processDialCodes", () => {
     expect(dialCodes.size).toBeGreaterThan(0);
     expect(dialCodeMaxLen).toBeGreaterThan(0);
     expect(Object.keys(dialCodeToIso2Map).length).toBeGreaterThan(0);
-  });
-});
-
-describe("data/country-data translateCountryNames", () => {
-  test("applies i18n name override", () => {
-    const sample = allCountries.slice(0, 1).map(c => ({ ...c }));
-    const iso2 = sample[0].iso2;
-    const options = { i18n: { [iso2]: "ZZZ" } };
-    translateCountryNames(sample, options);
-    expect(sample[0].name).toBe("ZZZ");
   });
 });
 

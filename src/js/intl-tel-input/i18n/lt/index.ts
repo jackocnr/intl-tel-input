@@ -1,9 +1,35 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Lithuanian. Translated by: ChatGPT 5.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel:
+    "Pakeisti šalį, pasirinkta ${countryName} (${dialCode})",
+  noCountrySelected: "Pasirinkite šalį",
+  countryListAriaLabel: "Šalių sąrašas",
+  searchPlaceholder: "Paieška",
+  clearSearchAriaLabel: "Išvalyti paiešką",
+  zeroSearchResults: "Rezultatų nerasta",
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+  searchResultsText(count) {
+    if (count === 1) {
+      return "Rastas 1 rezultatas";
+    }
+
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    // Numbers ending in 1, but not 11
+    if (mod10 === 1 && mod100 !== 11) {
+      return `Rasti ${count} rezultatas`;
+    }
+
+    // Numbers ending in 2-9, but not 11-19
+    if (mod10 >= 2 && mod10 <= 9 && !(mod100 >= 11 && mod100 <= 19)) {
+      return `Rasti ${count} rezultatai`;
+    }
+
+    return `Rasta ${count} rezultatų`;
+  },
+};
+
+export default interfaceTranslations;

@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Spanish. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "País seleccionado",
+  noCountrySelected: "Ningún país seleccionado",
+  countryListAriaLabel: "Lista de países",
+  searchPlaceholder: "Buscar",
+  zeroSearchResults: "No se han encontrado resultados",
+  oneSearchResult: "1 resultado encontrado",
+  multipleSearchResults: "${count} resultados encontrados",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

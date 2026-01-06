@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Italian. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Paese selezionato",
+  noCountrySelected: "Nessun paese selezionato",
+  countryListAriaLabel: "Elenco dei paesi",
+  searchPlaceholder: "Ricerca",
+  zeroSearchResults: "Nessun risultato trovato",
+  oneSearchResult: "1 risultato trovato",
+  multipleSearchResults: "${count} risultati trovati",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

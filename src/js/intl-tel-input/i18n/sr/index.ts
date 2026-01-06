@@ -1,9 +1,29 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Serbian. Translated by: ChatGPT 5.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel:
+    "Промени земљу, изабрано ${countryName} (${dialCode})",
+  noCountrySelected: "Изабери земљу",
+  countryListAriaLabel: "Листа земаља",
+  searchPlaceholder: "Претрага",
+  clearSearchAriaLabel: "Обриши претрагу",
+  zeroSearchResults: "Нема резултата",
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+  searchResultsText(count) {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    // Numbers ending in 1, but not 11
+    if (mod10 === 1 && mod100 !== 11) {
+      return `Пронађен ${count} резултат`;
+    }
+
+    // Numbers ending in 2-4, but not 12-14
+    const isFew = mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14);
+
+    return `${isFew ? "Пронађена" : "Пронађено"} ${count} резултата`;
+  },
+};
+
+export default interfaceTranslations;

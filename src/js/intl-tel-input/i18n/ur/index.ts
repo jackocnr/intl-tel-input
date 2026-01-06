@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Urdu. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "منتخب ملک",
+  noCountrySelected: "کوئی ملک منتخب نہیں کیا گیا۔",
+  countryListAriaLabel: "ممالک کی فہرست",
+  searchPlaceholder: "تلاش کریں۔",
+  zeroSearchResults: "کوئی نتیجہ نہیں",
+  oneSearchResult: "1 نتیجہ ملا",
+  multipleSearchResults: "${count} نتائج ملے",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

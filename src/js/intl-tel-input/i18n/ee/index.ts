@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Estonian. Translated by: Maksim Maksimov (4matic).
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Valitud riik",
+  noCountrySelected: "Ühtegi riiki pole valitud",
+  countryListAriaLabel: "Riikide nimekiri",
+  searchPlaceholder: "Otsi",
+  zeroSearchResults: "Tulemusi ei leitud",
+  oneSearchResult: "1 tulemus leitud",
+  multipleSearchResults: "${count} tulemust leitud",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

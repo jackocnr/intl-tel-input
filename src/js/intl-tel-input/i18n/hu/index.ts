@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Hungarian. Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "Kiválasztott ország",
+  noCountrySelected: "Nincs ország kiválasztva",
+  countryListAriaLabel: "Országok listája",
+  searchPlaceholder: "Keresés",
+  zeroSearchResults: "Nincs találat",
+  oneSearchResult: "1 találat",
+  multipleSearchResults: "${count} találat",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;

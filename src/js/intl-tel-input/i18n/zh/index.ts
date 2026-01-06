@@ -1,9 +1,14 @@
-//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
+//* Chinese (Simplified). Translated by: Google Translate.
 import { I18n } from "../types";
-import countryTranslations from "./countries.js";
-import interfaceTranslations from "./interface.js";
 
-export { countryTranslations, interfaceTranslations };
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel: "所选国家",
+  noCountrySelected: "未选择国家/地区",
+  countryListAriaLabel: "国家名单",
+  searchPlaceholder: "搜索",
+  zeroSearchResults: "未找到结果",
+  oneSearchResult: "找到 1 个结果",
+  multipleSearchResults: "找到 ${count} 个结果",
+};
 
-const allTranslations: I18n = { ...countryTranslations, ...interfaceTranslations };
-export default allTranslations;
+export default interfaceTranslations;
