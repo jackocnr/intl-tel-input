@@ -9,7 +9,8 @@ module.exports = function(grunt) {
         style: "compressed"
       },
       files: {
-        'build/css/intlTelInput.css': 'src/css/intlTelInput.scss'
+        'build/css/intlTelInput-no-assets.css': 'src/css/intlTelInput.scss',
+        'build/css/intlTelInput.css': 'src/css/intlTelInputWithAssets.scss'
       }
     },
     demo: {

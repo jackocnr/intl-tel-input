@@ -22,11 +22,7 @@
   --iti-arrow-padding: 6px;
   --iti-arrow-color: #555;
 
-  //* Image related variables.
-  --iti-path-flags-1x: url('../img/flags.webp');
-  --iti-path-flags-2x: url('../img/flags@2x.webp');
-  --iti-path-globe-1x: url('../img/globe.webp');
-  --iti-path-globe-2x: url('../img/globe@2x.webp');
+  //* NOTE: image paths are now defined in intlTelInputWithAssets.scss
 
   --iti-flag-sprite-width: #{map.get($flags-sprite-1x, width)};
   --iti-flag-sprite-height: #{map.get($flags-sprite-1x, height)};
