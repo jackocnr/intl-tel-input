@@ -1628,20 +1628,30 @@ export class Iti {
       return false;
     }
 
+    const { allowNumberExtensions, allowPhonewords } = this.options;
+
     const testValidity = (s: string) =>
       precise ? this._utilsIsValidNumber(s) : this._utilsIsPossibleNumber(s);
 
     const val = this._getFullNumber();
+    if (!testValidity(val)) {
+      return false;
+    }
+
+    // At this point, we know LPN says the number is valid, but we need to run extra checks
+
     const alphaCharPosition = val.search(REGEX.ALPHA_UNICODE);
     const hasAlphaChar = alphaCharPosition > -1;
-    if (hasAlphaChar && !this.options.allowPhonewords) {
-      const beforeAlphaChar = val.substring(0, alphaCharPosition);
-      //* Workaround to allow some alpha chars e.g. "+1 (444) 444-4444 ext. 1234" while rejecting others e.g. "+1 (444) 444-FAST". The only legit use of alpha chars is as an extension separator, in which case, the number before it must be valid on its own.
-      const beforeAlphaIsValid = testValidity(beforeAlphaChar);
-      const isValid = testValidity(val);
-      return beforeAlphaIsValid && isValid;
+    // if there is an alpha char, we need to check if it's allowed, either as an extension or a phone word
+    if (hasAlphaChar) {
+      const selectedIso2 = this.selectedCountryData.iso2;
+      const hasExtension = Boolean(intlTelInput.utils.getExtension(val, selectedIso2));
+      if (hasExtension) {
+        return allowNumberExtensions;
+      }
+      return allowPhonewords;
     }
-    return testValidity(val);
+    return true;
   }
 
   private _utilsIsValidNumber(val: string): boolean | null {
