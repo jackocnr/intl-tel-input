@@ -1229,7 +1229,7 @@ export class Iti {
 
   //* Update the maximum valid number length for the currently selected country.
   private _updateMaxLength(): void {
-    const { strictMode, placeholderNumberType, validationNumberTypes } =
+    const { strictMode, placeholderNumberType, allowedNumberTypes } =
       this.options;
     const { iso2 } = this.selectedCountryData;
     if (strictMode && intlTelInput.utils) {
@@ -1247,7 +1247,7 @@ export class Iti {
           intlTelInput.utils.isPossibleNumber(
             exampleNumber,
             iso2,
-            validationNumberTypes,
+            allowedNumberTypes,
           )
         ) {
           validNumber = exampleNumber;
@@ -1581,7 +1581,7 @@ export class Iti {
 
   //* Validate the input val using number length only
   isValidNumber(): boolean | null {
-    // custom validation for UK mobile numbers - useful when validationNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
+    // custom validation for UK mobile numbers - useful when allowedNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
     const { dialCode, iso2 } = this.selectedCountryData;
     if (dialCode === UK.DIAL_CODE && intlTelInput.utils) {
       const number = this._getFullNumber();
@@ -1607,7 +1607,7 @@ export class Iti {
       ? intlTelInput.utils.isPossibleNumber(
           val,
           this.selectedCountryData.iso2,
-          this.options.validationNumberTypes,
+          this.options.allowedNumberTypes,
         )
       : null;
   }
@@ -1642,7 +1642,7 @@ export class Iti {
       ? intlTelInput.utils.isValidNumber(
           val,
           this.selectedCountryData.iso2,
-          this.options.validationNumberTypes,
+          this.options.allowedNumberTypes,
         )
       : null;
   }
