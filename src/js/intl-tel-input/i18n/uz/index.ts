@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Davlat tanlanmagan",
   countryListAriaLabel: "Davlatlar roʻyxati",
   searchPlaceholder: "Davlatni qidiring",
-  zeroSearchResults: "Natija topilmadi",
-  oneSearchResult: "1-ta natija topildi",
-  multipleSearchResults: "${count}-ta natija topildi",
+  searchEmptyState: "Natija topilmadi",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Natija topilmadi";
+    }
+    if (count === 1) {
+      return "1-ta natija topildi";
+    }
+    return `${count}-ta natija topildi`;
+  },
 };
 
 export default interfaceTranslations;

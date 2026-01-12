@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Hiçbir ülke seçilmedi",
   countryListAriaLabel: "Ülke listesi",
   searchPlaceholder: "Ara",
-  zeroSearchResults: "Sonuç bulunamadı",
-  oneSearchResult: "1 sonuç bulundu",
-  multipleSearchResults: "${count} sonuç bulundu",
+  searchEmptyState: "Sonuç bulunamadı",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Sonuç bulunamadı";
+    }
+    if (count === 1) {
+      return "1 sonuç bulundu";
+    }
+    return `${count} sonuç bulundu`;
+  },
 };
 
 export default interfaceTranslations;

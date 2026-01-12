@@ -281,7 +281,7 @@ export default class UI {
       },
       this.dropdownContent,
     );
-    this.searchNoResults.textContent = i18n.zeroSearchResults;
+    this.searchNoResults.textContent = i18n.searchEmptyState;
   }
 
   private _maybeUpdateInputPaddingAndReveal(): void {
@@ -433,24 +433,7 @@ export default class UI {
   updateSearchResultsA11yText(): void {
     const { i18n } = this.options;
     const count = this.countryList.childElementCount;
-    let searchText: string;
-    if (count === 0) {
-      searchText = i18n.zeroSearchResults;
-    } else {
-      // one or more results
-      if (i18n.searchResultsText) {
-        searchText = i18n.searchResultsText(count);
-      } else if (count === 1) {
-        searchText = i18n.oneSearchResult;
-      } else {
-        // eslint-disable-next-line no-template-curly-in-string
-        searchText = i18n.multipleSearchResults.replace(
-          "${count}",
-          count.toString(),
-        );
-      }
-    }
-    this.searchResultsA11yText.textContent = searchText;
+    this.searchResultsA11yText.textContent = i18n.searchSummaryAria(count);
   }
 
   //* Check if an element is visible within it's container, else scroll until it is.

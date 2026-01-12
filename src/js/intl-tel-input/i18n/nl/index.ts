@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Geen land geselecteerd",
   countryListAriaLabel: "Lijst met landen",
   searchPlaceholder: "Zoekopdracht",
-  zeroSearchResults: "Geen resultaten gevonden",
-  oneSearchResult: "1 resultaat gevonden",
-  multipleSearchResults: "${count} resultaten gevonden",
+  searchEmptyState: "Geen resultaten gevonden",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Geen resultaten gevonden";
+    }
+    if (count === 1) {
+      return "1 resultaat gevonden";
+    }
+    return `${count} resultaten gevonden`;
+  },
 };
 
 export default interfaceTranslations;

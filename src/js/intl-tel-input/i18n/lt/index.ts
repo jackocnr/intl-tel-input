@@ -8,9 +8,12 @@ const interfaceTranslations: I18n = {
   countryListAriaLabel: "Šalių sąrašas",
   searchPlaceholder: "Paieška",
   clearSearchAriaLabel: "Išvalyti paiešką",
-  zeroSearchResults: "Rezultatų nerasta",
+  searchEmptyState: "Rezultatų nerasta",
 
-  searchResultsText(count) {
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Rezultatų nerasta";
+    }
     if (count === 1) {
       return "Rastas 1 rezultatas";
     }

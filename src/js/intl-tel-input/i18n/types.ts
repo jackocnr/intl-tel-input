@@ -7,9 +7,7 @@ export type I18n = Partial<Record<Iso2, string>> & {
   searchPlaceholder?: string;
   clearSearchAriaLabel?: string;
   countryListAriaLabel?: string;
-  oneSearchResult?: string;
-  multipleSearchResults?: string;
   noCountrySelected?: string;
-  zeroSearchResults?: string;
-  searchResultsText?: (count: number) => string;
+  searchEmptyState?: string;
+  searchSummaryAria?: (count: number) => string;
 };

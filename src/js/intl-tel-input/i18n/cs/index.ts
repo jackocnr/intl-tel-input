@@ -6,9 +6,12 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Není vybrána žádná země",
   countryListAriaLabel: "Seznam zemí",
   searchPlaceholder: "Vyhledat",
-  zeroSearchResults: "Nebyly nalezeny žádné výsledky",
+  searchEmptyState: "Nebyly nalezeny žádné výsledky",
 
-  searchResultsText(count) {
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Nebyly nalezeny žádné výsledky";
+    }
     if (count === 1) {
       return "Nalezen 1 výsledek";
     }

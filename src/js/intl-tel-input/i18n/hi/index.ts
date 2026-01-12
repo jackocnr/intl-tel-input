@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "कोई देश चयनित नहीं",
   countryListAriaLabel: "देशों की सूची",
   searchPlaceholder: "खोज",
-  zeroSearchResults: "कोई परिणाम नहीं मिला",
-  oneSearchResult: "1 परिणाम मिला",
-  multipleSearchResults: "${count} परिणाम मिले",
+  searchEmptyState: "कोई परिणाम नहीं मिला",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "कोई परिणाम नहीं मिला";
+    }
+    if (count === 1) {
+      return "1 परिणाम मिला";
+    }
+    return `${count} परिणाम मिले`;
+  },
 };
 
 export default interfaceTranslations;

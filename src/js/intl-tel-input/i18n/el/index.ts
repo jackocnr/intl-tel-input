@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Δεν έχει επιλεγεί χώρα",
   countryListAriaLabel: "Κατάλογος χωρών",
   searchPlaceholder: "Αναζήτηση",
-  zeroSearchResults: "Δεν βρέθηκαν αποτελέσματα",
-  oneSearchResult: "Βρέθηκε 1 αποτέλεσμα",
-  multipleSearchResults: "Βρέθηκαν ${count} αποτελέσματα",
+  searchEmptyState: "Δεν βρέθηκαν αποτελέσματα",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Δεν βρέθηκαν αποτελέσματα";
+    }
+    if (count === 1) {
+      return "Βρέθηκε 1 αποτέλεσμα";
+    }
+    return `Βρέθηκαν ${count} αποτελέσματα`;
+  },
 };
 
 export default interfaceTranslations;

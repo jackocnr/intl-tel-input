@@ -8,9 +8,12 @@ const interfaceTranslations: I18n = {
   countryListAriaLabel: "Seznam držav",
   searchPlaceholder: "Išči",
   clearSearchAriaLabel: "Počisti iskanje",
-  zeroSearchResults: "Ni rezultatov",
+  searchEmptyState: "Ni rezultatov",
 
-  searchResultsText(count) {
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Ni rezultatov";
+    }
     // Slovenian pluralisation is determined by the last two digits
     const mod100 = count % 100;
 

@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "কোনো দেশ নির্বাচন করা হয়নি",
   countryListAriaLabel: "দেশের তালিকা",
   searchPlaceholder: "অনুসন্ধান করুন",
-  zeroSearchResults: "কোন ফলাফল পাওয়া যায়নি",
-  oneSearchResult: "1টি ফলাফল পাওয়া গেছে",
-  multipleSearchResults: "${count} ফলাফল পাওয়া গেছে",
+  searchEmptyState: "কোন ফলাফল পাওয়া যায়নি",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "কোন ফলাফল পাওয়া যায়নি";
+    }
+    if (count === 1) {
+      return "1টি ফলাফল পাওয়া গেছে";
+    }
+    return `${count} ফলাফল পাওয়া গেছে`;
+  },
 };
 
 export default interfaceTranslations;

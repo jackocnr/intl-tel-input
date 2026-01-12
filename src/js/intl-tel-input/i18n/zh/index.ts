@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "未选择国家/地区",
   countryListAriaLabel: "国家名单",
   searchPlaceholder: "搜索",
-  zeroSearchResults: "未找到结果",
-  oneSearchResult: "找到 1 个结果",
-  multipleSearchResults: "找到 ${count} 个结果",
+  searchEmptyState: "未找到结果",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "未找到结果";
+    }
+    if (count === 1) {
+      return "找到 1 个结果";
+    }
+    return `找到 ${count} 个结果`;
+  },
 };
 
 export default interfaceTranslations;

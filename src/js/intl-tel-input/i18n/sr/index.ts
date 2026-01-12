@@ -8,9 +8,12 @@ const interfaceTranslations: I18n = {
   countryListAriaLabel: "Листа земаља",
   searchPlaceholder: "Претрага",
   clearSearchAriaLabel: "Обриши претрагу",
-  zeroSearchResults: "Нема резултата",
+  searchEmptyState: "Нема резултата",
 
-  searchResultsText(count) {
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Нема резултата";
+    }
     const mod10 = count % 10;
     const mod100 = count % 100;
 

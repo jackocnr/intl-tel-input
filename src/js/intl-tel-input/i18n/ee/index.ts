@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Ühtegi riiki pole valitud",
   countryListAriaLabel: "Riikide nimekiri",
   searchPlaceholder: "Otsi",
-  zeroSearchResults: "Tulemusi ei leitud",
-  oneSearchResult: "1 tulemus leitud",
-  multipleSearchResults: "${count} tulemust leitud",
+  searchEmptyState: "Tulemusi ei leitud",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Tulemusi ei leitud";
+    }
+    if (count === 1) {
+      return "1 tulemus leitud";
+    }
+    return `${count} tulemust leitud`;
+  },
 };
 
 export default interfaceTranslations;

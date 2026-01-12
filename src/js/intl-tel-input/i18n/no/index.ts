@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Ingen land er valgt",
   countryListAriaLabel: "Liste over land",
   searchPlaceholder: "Leting",
-  zeroSearchResults: "Ingen resultater funnet",
-  oneSearchResult: "1 resultat funnet",
-  multipleSearchResults: "${count} resultater funnet",
+  searchEmptyState: "Ingen resultater funnet",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Ingen resultater funnet";
+    }
+    if (count === 1) {
+      return "1 resultat funnet";
+    }
+    return `${count} resultater funnet`;
+  },
 };
 
 export default interfaceTranslations;

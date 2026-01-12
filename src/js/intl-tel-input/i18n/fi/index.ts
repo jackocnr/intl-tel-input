@@ -2,13 +2,21 @@
 import type { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
-  "selectedCountryAriaLabel": "Valittu maa",
-  "noCountrySelected": "Maata ei ole valittu",
-  "countryListAriaLabel": "Luettelo maista",
-  "searchPlaceholder": "Haku",
-  "zeroSearchResults": "Ei tuloksia",
-  "oneSearchResult": "1 tulos löytyi",
-  "multipleSearchResults": "${count} tulosta löytyi",
+  selectedCountryAriaLabel: "Valittu maa",
+  noCountrySelected: "Maata ei ole valittu",
+  countryListAriaLabel: "Luettelo maista",
+  searchPlaceholder: "Haku",
+  searchEmptyState: "Ei tuloksia",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Ei tuloksia";
+    }
+    if (count === 1) {
+      return "1 tulos löytyi";
+    }
+    return `${count} tulosta löytyi`;
+  },
 };
 
 export default interfaceTranslations;

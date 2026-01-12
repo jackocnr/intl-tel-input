@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Intet land er valgt",
   countryListAriaLabel: "Liste over lande",
   searchPlaceholder: "Søg",
-  zeroSearchResults: "Ingen resultater fundet",
-  oneSearchResult: "1 resultat fundet",
-  multipleSearchResults: "${count} resultater fundet",
+  searchEmptyState: "Ingen resultater fundet",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Ingen resultater fundet";
+    }
+    if (count === 1) {
+      return "1 resultat fundet";
+    }
+    return `${count} resultater fundet`;
+  },
 };
 
 export default interfaceTranslations;

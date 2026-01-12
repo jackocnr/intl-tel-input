@@ -2,13 +2,21 @@
 import type { I18n } from "../types";
 
 const interfaceTranslations: I18n = {
-  "selectedCountryAriaLabel": "Valt land",
-  "noCountrySelected": "Inget land valt",
-  "countryListAriaLabel": "Lista över länder",
-  "searchPlaceholder": "Sök",
-  "zeroSearchResults": "Inga resultat hittades",
-  "oneSearchResult": "1 resultat hittades",
-  "multipleSearchResults": "${count} resultat hittades",
+  selectedCountryAriaLabel: "Valt land",
+  noCountrySelected: "Inget land valt",
+  countryListAriaLabel: "Lista över länder",
+  searchPlaceholder: "Sök",
+  searchEmptyState: "Inga resultat hittades",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Inga resultat hittades";
+    }
+    if (count === 1) {
+      return "1 resultat hittades";
+    }
+    return `${count} resultat hittades`;
+  },
 };
 
 export default interfaceTranslations;
