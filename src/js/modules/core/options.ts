@@ -25,10 +25,12 @@ const computeDefaultUseFullscreenPopup = (): boolean => {
 };
 
 export const defaults: AllOptions = {
-  // Allow alphanumeric "phonewords" (e.g. +1 800 FLOWERS) as valid numbers
-  allowPhonewords: false,
   //* Whether or not to allow the dropdown.
   allowDropdown: true,
+  //* Whether or not to allow extensions after the main number.
+  allowNumberExtensions: false,
+  // Allow alphanumeric "phonewords" (e.g. +1 800 FLOWERS) as valid numbers
+  allowPhonewords: false,
   //* Add a placeholder in the input with an example number for the selected country.
   autoPlaceholder: PLACEHOLDER_MODES.POLITE,
   //* Modify the parentClass.

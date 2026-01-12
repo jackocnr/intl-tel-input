@@ -64,6 +64,7 @@ type ValueOf<T> = T[keyof T];
 // All configurable options
 export interface AllOptions {
   allowDropdown: boolean;
+  allowNumberExtensions: boolean;
   allowPhonewords: boolean;
   autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES>;
   containerClass: string;

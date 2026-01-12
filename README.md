@@ -167,6 +167,10 @@ When you initialise the plugin, the first argument is the input element, and the
 Type: `Boolean` Default: `true`  
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if `separateDialCode` is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--allowdropdown) (using the React component).
 
+**allowNumberExtensions**. 
+Type: `Boolean` Default: `false`  
+Whether or not the validation methods return `true` for numbers containing extensions, e.g. "+1 702 123-1234 ext. 1234".
+
 **allowPhonewords**  
 Type: `Boolean` Default: `false`  
 Whether or not the validation methods return `true` for numbers containing phonewords, e.g. "+1 702 FLOWERS".
