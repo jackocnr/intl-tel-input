@@ -19,8 +19,10 @@ const interfaceTranslations: I18n = {
       count % 10 <= 4 &&
       !(count % 100 >= 12 && count % 100 <= 14);
 
-    const suffix = isFew ? "wyniki" : "wyników";
-    return `Znaleziono ${count} ${suffix}`;
+    if (isFew) {
+      return `Znaleziono ${count} wyniki`;
+    }
+    return `Znaleziono ${count} wyników`;
   },
 };
 
