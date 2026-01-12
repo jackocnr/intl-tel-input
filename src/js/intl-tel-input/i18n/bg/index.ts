@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Няма избрана държава",
   countryListAriaLabel: "Списък на страните",
   searchPlaceholder: "Търсене",
-  zeroSearchResults: "Няма намерени резултати",
-  oneSearchResult: "Намерен е 1 резултат",
-  multipleSearchResults: "${count} намерени резултата",
+  searchEmptyState: "Няма намерени резултати",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Няма намерени резултати";
+    }
+    if (count === 1) {
+      return "Намерен е 1 резултат";
+    }
+    return `${count} намерени резултата`;
+  },
 };
 
 export default interfaceTranslations;

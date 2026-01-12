@@ -6,9 +6,12 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "لم يتم تحديد أي بلد",
   countryListAriaLabel: "قائمة الدول",
   searchPlaceholder: "يبحث",
-  zeroSearchResults: "لم يتم العثور على نتائج",
+  searchEmptyState: "لم يتم العثور على نتائج",
 
-  searchResultsText(count) {
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "لم يتم العثور على نتائج";
+    }
     if (count === 1) {
       return "تم العثور على نتيجة واحدة";
     }

@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "No s'ha seleccionat cap país",
   countryListAriaLabel: "Llista de països",
   searchPlaceholder: "Cerca",
-  zeroSearchResults: "Sense resultats",
-  oneSearchResult: "1 resultat trobat",
-  multipleSearchResults: "${count} resultats trobats",
+  searchEmptyState: "Sense resultats",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Sense resultats";
+    }
+    if (count === 1) {
+      return "1 resultat trobat";
+    }
+    return `${count} resultats trobats`;
+  },
 };
 
 export default interfaceTranslations;

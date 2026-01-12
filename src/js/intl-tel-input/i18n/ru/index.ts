@@ -6,9 +6,12 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Страна не выбрана",
   countryListAriaLabel: "Список стран",
   searchPlaceholder: "Поиск",
-  zeroSearchResults: "результатов не найдено",
+  searchEmptyState: "результатов не найдено",
 
-  searchResultsText(count) {
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "результатов не найдено";
+    }
     const mod10 = count % 10;
     const mod100 = count % 100;
 

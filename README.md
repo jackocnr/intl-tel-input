@@ -294,18 +294,13 @@ intlTelInput(input, {
     searchPlaceholder: "Search",
     // Aria label for the clear search button
     clearSearchAriaLabel: "Clear search",
-    // Visible text and screen reader message for when the search produces no results
-    zeroSearchResults: "No results found",
-    // Screen reader message for when the search produces 1 result
-    oneSearchResult: "1 result found",
-    // Screen reader message for when the search produces multiple results
-    multipleSearchResults: "${count} results found",
-    // OPTIONAL: For more complex pluralisation cases, e.g. Polish or Arabic, you can implement your own logic, like below. In this case, you can omit the "one" and "multiple" keys above.
-    searchResultsText(count) {
-      // NOTE: zero results are always handled by "zeroSearchResults" above
+    // Visible text for when the search produces no results
+    searchEmptyState: "No results found",
+    // Screen reader summary of search results
+    searchSummaryAria(count) {
+      if (count === 0) return "No results found";
       if (count === 1) return "1 result found";
-      if (count < 5) return `Some ${count} results found`;
-      return `Many ${count} results found`;
+      return `${count} results found`;
     }
   }
 });

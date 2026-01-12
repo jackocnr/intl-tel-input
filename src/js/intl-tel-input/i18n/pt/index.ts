@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Nenhum país selecionado",
   countryListAriaLabel: "Lista de países",
   searchPlaceholder: "Procurar",
-  zeroSearchResults: "Nenhum resultado encontrado",
-  oneSearchResult: "1 resultado encontrado",
-  multipleSearchResults: "${count} resultados encontrados",
+  searchEmptyState: "Nenhum resultado encontrado",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Nenhum resultado encontrado";
+    }
+    if (count === 1) {
+      return "1 resultado encontrado";
+    }
+    return `${count} resultados encontrados`;
+  },
 };
 
 export default interfaceTranslations;

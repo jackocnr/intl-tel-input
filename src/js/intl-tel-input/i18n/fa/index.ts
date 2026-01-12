@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "هیچ کشوری انتخاب نشده است",
   countryListAriaLabel: "لیست کشورها",
   searchPlaceholder: "جستجو",
-  zeroSearchResults: "هیچ نتیجه‌ای یافت نشد",
-  oneSearchResult: "1 نتیجه یافت شد",
-  multipleSearchResults: "${count} نتیجه یافت شد",
+  searchEmptyState: "هیچ نتیجه‌ای یافت نشد",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "هیچ نتیجه‌ای یافت نشد";
+    }
+    if (count === 1) {
+      return "1 نتیجه یافت شد";
+    }
+    return `${count} نتیجه یافت شد`;
+  },
 };
 
 export default interfaceTranslations;

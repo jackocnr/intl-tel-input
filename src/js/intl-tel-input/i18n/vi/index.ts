@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Không có quốc gia nào được chọn",
   countryListAriaLabel: "Danh sách các quốc gia",
   searchPlaceholder: "Khám xét",
-  zeroSearchResults: "Không tìm thấy kết quả nào",
-  oneSearchResult: "Đã tìm thấy 1 kết quả",
-  multipleSearchResults: "Đã tìm thấy ${count} kết quả",
+  searchEmptyState: "Không tìm thấy kết quả nào",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Không tìm thấy kết quả nào";
+    }
+    if (count === 1) {
+      return "Đã tìm thấy 1 kết quả";
+    }
+    return `Đã tìm thấy ${count} kết quả`;
+  },
 };
 
 export default interfaceTranslations;

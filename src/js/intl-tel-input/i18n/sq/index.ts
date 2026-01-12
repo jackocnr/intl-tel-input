@@ -7,9 +7,17 @@ const interfaceTranslations: I18n = {
   countryListAriaLabel: "Lista e vendeve",
   searchPlaceholder: "Kërko",
   clearSearchAriaLabel: "Pastro kërkimin",
-  zeroSearchResults: "Nuk u gjet asnjë rezultat",
-  oneSearchResult: "U gjet 1 rezultat",
-  multipleSearchResults: "U gjetën ${count} rezultate",
+  searchEmptyState: "Nuk u gjet asnjë rezultat",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Nuk u gjet asnjë rezultat";
+    }
+    if (count === 1) {
+      return "U gjet 1 rezultat";
+    }
+    return `U gjetën ${count} rezultate`;
+  },
 };
 
 export default interfaceTranslations;

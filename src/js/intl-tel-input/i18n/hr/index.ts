@@ -6,9 +6,12 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Zemlja nije odabrana",
   countryListAriaLabel: "Lista zemalja",
   searchPlaceholder: "Pretraži",
-  zeroSearchResults: "Nema pronađenih rezultata",
+  searchEmptyState: "Nema pronađenih rezultata",
 
-  searchResultsText(count) {
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Nema pronađenih rezultata";
+    }
     const mod10 = count % 10;
     const mod100 = count % 100;
 

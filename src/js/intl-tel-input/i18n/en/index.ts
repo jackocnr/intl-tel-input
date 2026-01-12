@@ -7,9 +7,17 @@ const interfaceTranslations: I18n = {
   countryListAriaLabel: "List of countries",
   searchPlaceholder: "Search",
   clearSearchAriaLabel: "Clear search",
-  zeroSearchResults: "No results found",
-  oneSearchResult: "1 result found",
-  multipleSearchResults: "${count} results found",
+  searchEmptyState: "No results found",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "No results found";
+    }
+    if (count === 1) {
+      return "1 result found";
+    }
+    return `${count} results found`;
+  },
 };
 
 export default interfaceTranslations;

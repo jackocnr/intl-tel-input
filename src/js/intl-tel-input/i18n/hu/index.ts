@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Nincs ország kiválasztva",
   countryListAriaLabel: "Országok listája",
   searchPlaceholder: "Keresés",
-  zeroSearchResults: "Nincs találat",
-  oneSearchResult: "1 találat",
-  multipleSearchResults: "${count} találat",
+  searchEmptyState: "Nincs találat",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Nincs találat";
+    }
+    if (count === 1) {
+      return "1 találat";
+    }
+    return `${count} találat`;
+  },
 };
 
 export default interfaceTranslations;

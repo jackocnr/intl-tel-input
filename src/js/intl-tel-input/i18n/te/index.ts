@@ -6,9 +6,17 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "ఏ దేశం ఎంచుకోబడలేదు",
   countryListAriaLabel: "దేశాల జాబితా",
   searchPlaceholder: "వెతకండి",
-  zeroSearchResults: "ఎటువంటి ఫలితాలు లభించలేదు",
-  oneSearchResult: "1 ఫలితం కనుగొనబడింది",
-  multipleSearchResults: "${count} ఫలితాలు కనుగొనబడ్డాయి",
+  searchEmptyState: "ఎటువంటి ఫలితాలు లభించలేదు",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "ఎటువంటి ఫలితాలు లభించలేదు";
+    }
+    if (count === 1) {
+      return "1 ఫలితం కనుగొనబడింది";
+    }
+    return `${count} ఫలితాలు కనుగొనబడ్డాయి`;
+  },
 };
 
 export default interfaceTranslations;
