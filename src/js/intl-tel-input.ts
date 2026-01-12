@@ -540,7 +540,7 @@ export class Iti {
           inputValue,
           intlTelInput.utils,
           this.selectedCountryData,
-          this.options.separateDialCode,
+          separateDialCode,
         );
         const newCaretPos = translateCursorPosition(
           relevantCharsBeforeCaret,
@@ -552,6 +552,13 @@ export class Iti {
         this._setTelInputValue(formattedValue);
         // WARNING: calling setSelectionRange triggers a focus on iOS
         this.ui.telInput.setSelectionRange(newCaretPos, newCaretPos);
+      }
+
+      //* If separateDialCode AND typed dial code (e.g. from paste or autofill), remove typed dial code.
+      if (separateDialCode && inputValue.startsWith("+") && this.selectedCountryData
+    .dialCode) {
+        const cleanNumber = beforeSetNumber(inputValue, true, separateDialCode, this.selectedCountryData);
+        this._setTelInputValue(cleanNumber);
       }
     };
     //* This handles individual key presses as well as cut/paste events
@@ -1443,10 +1450,10 @@ export class Iti {
 
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
   private _beforeSetNumber(fullNumber: string): string {
-    const dialCode = this._getDialCode(fullNumber);
+    const hasValidDialCode = Boolean(this._getDialCode(fullNumber));
     const number = beforeSetNumber(
       fullNumber,
-      dialCode,
+      hasValidDialCode,
       this.options.separateDialCode,
       this.selectedCountryData,
     );

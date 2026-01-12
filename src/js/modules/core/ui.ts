@@ -49,7 +49,7 @@ export default class UI {
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
   generateMarkup(countries: Country[]): void {
     this.countries = countries;
-    this._prepareTelInput();
+    this.telInput.classList.add("iti__tel-input");
 
     const wrapper = this._createWrapperAndInsert();
     this._maybeBuildCountryContainer(wrapper);
@@ -57,21 +57,6 @@ export default class UI {
 
     this._maybeUpdateInputPaddingAndReveal();
     this._maybeBuildHiddenInputs(wrapper);
-  }
-
-  private _prepareTelInput(): void {
-    this.telInput.classList.add("iti__tel-input");
-
-    //* If autocomplete does not exist on the element and its form, then
-    //* prevent autocomplete as there's no safe, cross-browser event we can react to, so it can
-    //* easily put the plugin in an inconsistent state e.g. the wrong flag selected for the
-    //* autocompleted number, which on submit could mean wrong number is saved.
-    if (
-      !this.telInput.hasAttribute("autocomplete") &&
-      !this.telInput.form?.hasAttribute("autocomplete")
-    ) {
-      this.telInput.setAttribute("autocomplete", "off");
-    }
   }
 
   private _createWrapperAndInsert(): HTMLElement {

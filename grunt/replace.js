@@ -196,10 +196,6 @@ module.exports = function(grunt) {
           // modules/core/ui.ts
           // ============================
           {
-            match: /_prepareTelInput(?![A-Za-z])/g,
-            replacement: '_at'
-          },
-          {
             match: /_createWrapperAndInsert(?![A-Za-z])/g,
             replacement: '_au'
           },

@@ -1,18 +1,18 @@
 import type { SelectedCountryData } from "../types/public-api";
 
-//* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
+//* Remove the dial code if separateDialCode is enabled
 export const beforeSetNumber = (
   fullNumber: string,
-  dialCode: string,
+  hasValidDialCode: boolean,
   separateDialCode: boolean,
   selectedCountryData: SelectedCountryData,
 ): string => {
   let number = fullNumber;
   if (separateDialCode) {
     //* If there is a valid dial code.
-    if (dialCode) {
+    if (hasValidDialCode) {
       //* In case _getDialCode returned an area code as well.
-      dialCode = `+${selectedCountryData.dialCode}`;
+      const dialCode = `+${selectedCountryData.dialCode}`;
       //* a lot of numbers will have a space separating the dial code and the main number, and
       //* some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get rid of it.
       //* NOTE: Don't just trim all non-numerics as may want to preserve an open parenthesis etc.
