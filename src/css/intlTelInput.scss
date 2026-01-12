@@ -354,7 +354,10 @@
   width: var(--iti-flag-width);
   border-radius: 1px;
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: var(--iti-path-flags-1x);
+  background-image: image-set(
+    var(--iti-path-flags-1x) 1x,
+    var(--iti-path-flags-2x) 2x
+  );
   background-repeat: no-repeat;
   background-position: var(--iti-flag-offset) 0;
   background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
@@ -366,11 +369,6 @@
   .iti__#{$country-code} {
     --iti-flag-offset: #{$flag-offset};
   }
-}
-
-//* Media query for high PPI/Retina Displays.
-@media (min-resolution: 2x) {
-  .iti__flag { background-image: var(--iti-path-flags-2x); }
 }
 
 //* Empty state.
