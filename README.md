@@ -183,6 +183,10 @@ Set the input's placeholder to an example number for the selected country, and u
 Type: `String` Default: `""`  
 Additional classes to add to the (injected) wrapper `<div>`.
 
+**countryNameLocale**  
+Type: `String` Default: `"en"`  
+The locale to pass to `Intl.DisplayNames` to generate the country names.
+
 **countryOrder**  
 Type: `Array` Default: `null`  
 Specify the ordering for the country list with an array of iso2 country codes. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria etc...
