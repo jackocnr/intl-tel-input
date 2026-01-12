@@ -15,7 +15,10 @@ const interfaceTranslations: I18n = {
 
     const isFew = count % 100 >= 1 && count % 100 <= 19;
 
-    return `${count}${isFew ? "" : " de"} rezultate găsite`;
+    if (isFew) {
+      return `${count} rezultate găsite`;
+    }
+    return `${count} de rezultate găsite`;
   },
 };
 

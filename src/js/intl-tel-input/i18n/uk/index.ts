@@ -20,7 +20,10 @@ const interfaceTranslations: I18n = {
     // Numbers ending in 2-4, but not 12-14
     const isFew = mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14);
 
-    return `Знайдено ${count} ${isFew ? "результати" : "результатів"}`;
+    if (isFew) {
+      return `Знайдено ${count} результати`;
+    }
+    return `Знайдено ${count} результатів`;
   },
 };
 
