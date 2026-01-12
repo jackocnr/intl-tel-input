@@ -97,7 +97,7 @@ export interface AllOptions {
   separateDialCode: boolean;
   strictMode: boolean;
   useFullscreenPopup: boolean;
-  validationNumberTypes: NumberType[] | null;
+  allowedNumberTypes: NumberType[] | null;
 }
 
 // Partial options accepted by the factory

@@ -87,7 +87,7 @@ export const defaults: AllOptions = {
   //* Use full screen popup instead of dropdown for country list.
   useFullscreenPopup: computeDefaultUseFullscreenPopup(),
   //* The number type to enforce during validation.
-  validationNumberTypes: ["MOBILE"],
+  allowedNumberTypes: ["MOBILE", "FIXED_LINE"],
 };
 
 // Apply option side-effects (mutates the passed object)

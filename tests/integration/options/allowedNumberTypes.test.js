@@ -4,9 +4,8 @@
 const { initPlugin, teardown } = require("../helpers/helpers");
 const { userEvent } = require("@testing-library/user-event");
 
-// validationNumberTypes: restrict validation to MOBILE by default; when expanded, landlines pass.
-describe("validationNumberTypes option", () => {
-  describe("default MOBILE only", () => {
+describe("allowedNumberTypes option", () => {
+  describe("default MOBILE/FIXED_LINE only", () => {
     let iti, input, user;
 
     beforeEach(() => {
@@ -20,19 +19,24 @@ describe("validationNumberTypes option", () => {
       expect(iti.isValidNumberPrecise()).toBe(true);
     });
 
-    test("GB landline invalid", async () => {
-      await user.type(input, "+441512345678"); // Liverpool landline (should be FIXED_LINE)
+    test("GB landline valid", async () => {
+      await user.type(input, "+441512345678");
+      expect(iti.isValidNumberPrecise()).toBe(true);
+    });
+
+    test("GB premium rate number invalid", async () => {
+      await user.type(input, "+448701234567");
       expect(iti.isValidNumberPrecise()).toBe(false);
     });
   });
 
-  describe("allow MOBILE + FIXED_LINE", () => {
+  describe("allow PREMIUM_RATE only", () => {
     let iti, input, user;
 
     beforeEach(() => {
       const options = {
         initialCountry: "gb",
-        validationNumberTypes: ["MOBILE", "FIXED_LINE"],
+        allowedNumberTypes: ["PREMIUM_RATE"],
       };
       ({ iti, input } = initPlugin({ options }));
       user = userEvent.setup();
@@ -40,13 +44,13 @@ describe("validationNumberTypes option", () => {
 
     afterEach(() => teardown(iti));
 
-    test("GB mobile valid", async () => {
+    test("GB mobile invalid", async () => {
       await user.type(input, "+447400123456");
-      expect(iti.isValidNumberPrecise()).toBe(true);
+      expect(iti.isValidNumberPrecise()).toBe(false);
     });
 
-    test("GB landline valid", async () => {
-      await user.type(input, "+441512345678"); // Liverpool landline (should be FIXED_LINE)
+    test("GB premium rate number valid", async () => {
+      await user.type(input, "+448701234567");
       expect(iti.isValidNumberPrecise()).toBe(true);
     });
   });
