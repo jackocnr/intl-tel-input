@@ -45,7 +45,7 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 - [Attributions](#attributions)
 
 ## React, Vue, Angular and Svelte Components
-We now provide React, Vue, Angular and Svelte (beta) components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), the [Vue Component](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) the [Angular Component](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md), or the [Svelte (beta) component](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md).
+We now provide React, Vue, Angular and Svelte (beta) components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), the [Vue Component](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) the [Angular Component](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md), or the [Svelte component (beta)](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md).
 
 ## Demo and Examples
 View the [live demo](https://intl-tel-input.com) for examples of how to use the various options. Alternatively, try it for yourself by downloading and building the project (`npm install`, `npm run build`) and opening demo.html in a browser.
