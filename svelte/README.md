@@ -10,7 +10,7 @@ A Svelte 5 component wrapper for the [intl-tel-input](https://github.com/jackocn
 - [Accessing Static Methods](#accessing-static-methods)
 
 ## Demo
-Try it for yourself by downloading the project and running `npm install` and then `npm run svelte:demo` and then copy the given URL into your browser.
+Try it for yourself by downloading and building the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run svelte:demo` and copy the given URL into your browser. By default, this is setup to show the validation demo - you can change this by locating the `"svelte:demo"` task in the scripts section of package.json, and updating the demo path accordingly. View a list of available demos [here](https://github.com/jackocnr/intl-tel-input/tree/master/svelte/demo).
 
 ## Getting Started
 ```svelte
@@ -20,15 +20,13 @@ Try it for yourself by downloading the project and running `npm install` and the
 </script>
 
 <IntlTelInput
-  options={{ initialCountry: 'us' }}
+  options={{
+    initialCountry: 'us',
+  }}
 />
 ```
 
-See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/demo/validation/App.svelte) for a more fleshed-out example of how to handle validation. Make sure to change the path in the `package.json` script to the correct demo if you're running it locally e.g.:
-
-```
-"svelte:demo": "vite --config svelte/demo/[demo variant]/vite.config.mjs"
-```
+See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/demo/validation/App.svelte) for a more fleshed-out example of how to handle validation.
 
 A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import IntlTelInput from `"intl-tel-input/svelteWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/svelte"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the [utils.js](https://github.com/jackocnr/intl-tel-input/blob/master/build/js/utils.js) file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN hosted version e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@25.15.0/build/js/utils.js"`.
 
