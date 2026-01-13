@@ -10,7 +10,9 @@ A Vue component wrapper for the [intl-tel-input](https://github.com/jackocnr/int
 - [Accessing Static Methods](#accessing-static-methods)
 
 ## Demo
-Try it for yourself by downloading the project and running `npm install` and then `npm run vue:demo` and then copy the given URL into your browser.
+There is a demo of the Vue component on the [demo site](https://intl-tel-input.com/examples/vue-component.html) with example code.
+
+Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can now run `npm run vue:demo` and copy the given URL into your browser.
 
 ## Getting Started
 ```vue
