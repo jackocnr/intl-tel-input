@@ -48,7 +48,9 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 We now provide React, Vue, Angular and Svelte (beta) components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), the [Vue Component](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) the [Angular Component](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md), or the [Svelte component (beta)](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md).
 
 ## Demo and Examples
-View the [live demo](https://intl-tel-input.com) for examples of how to use the various options. Alternatively, try it for yourself by downloading and building the project (`npm install`, `npm run build`) and opening demo.html in a browser.
+View the [live demo](https://intl-tel-input.com) for examples of how to use the various options, along with the relevant code snippets. Or play with the options yourself on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla).
+
+Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You should now be able to open the included demo.html in your browser and have a working plugin!
 
 ## Mobile
 By default, on mobile devices, we show a fullscreen popup instead of the inline dropdown to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area on the sides. [See example](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
