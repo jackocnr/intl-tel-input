@@ -1,4 +1,4 @@
-# IntlTelInput Svelte Component
+# IntlTelInput Svelte Component (Beta)
 A Svelte 5 component wrapper for the [intl-tel-input](https://github.com/jackocnr/intl-tel-input) JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/src/intl-tel-input/IntlTelInput.svelte).
 
 ## Table of Contents
