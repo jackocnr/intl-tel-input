@@ -69,7 +69,7 @@ By default, on mobile devices, we show a fullscreen popup instead of the inline 
 * Accessibility provided via ARIA tags
 * Typescript type definitions included
 * Easily customise styles by overriding CSS variables, e.g. support dark mode
-* React, Vue, and Angular components also included
+* React, Vue, Angular and Svelte components also included
 * Translations provided in over 40 languages, as well as support for RTL layout and alternative numeral sets
 * Lots of initialisation options for customisation, as well as instance methods/events for interaction
 
