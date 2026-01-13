@@ -1,14 +1,14 @@
 # International Telephone Input [![CI](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vue-icon.png" alt="Vue logo" width="16" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/vue">Vue component</a>!
+🗣️ NEWS: [v26.0.0-beta.0](https://github.com/jackocnr/intl-tel-input/releases/tag/v26.0.0-beta.0) released, with support for:
+- Autocomplete
+- TypeScript types for the Vue component
+- Country names now generated with `Intl.DisplayNames` (reduced bundle size)
+- A more easily customisable globe icon SVG
+- Modernised CSS
+- More control over number extensions
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/react.webp" alt="React logo" width="16" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/react">React component</a>! Play with it on <a href="https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla">Storybook</a>. 
-
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/angular.png" alt="Angular logo" width="16" />  NEWS: we now have our own <a href="https://github.com/jackocnr/intl-tel-input/tree/master/angular">Angular component</a>!
-
-🗣️ NEWS: we now provide [translations](#translations) in over 40 languages! [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
-
-International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. React, Vue and Angular components are also included.
+International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. [React](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), [Vue](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md), [Angular](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md) and [Svelte (beta)](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md) components are also included.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png">
@@ -25,7 +25,7 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 
 ## Table of Contents
 
-- [React, Vue and Angular Components](#react-vue-and-angular-components)
+- [React, Vue, Angular and Svelte Components](#react-vue-angular-and-svelte-components)
 - [Demo and Examples](#demo-and-examples)
 - [Mobile](#mobile)
 - [Features](#features)
@@ -44,11 +44,11 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 - [Contributing](#contributing)
 - [Attributions](#attributions)
 
-## React, Vue and Angular Components
-We now provide React, Vue and Angular components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), the [Vue Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) or the [Angular Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md).
+## React, Vue, Angular and Svelte Components
+We now provide React, Vue, Angular and Svelte (beta) components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), the [Vue Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) the [Angular Component readme](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md), or the [Svelte (beta) component readme](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md).
 
 ## Demo and Examples
-You can view [a live demo](https://intl-tel-input.com) and see some examples of how to use the various options. Alternatively, try it for yourself by downloading the project and opening demo.html in a browser.
+View the [live demo](https://intl-tel-input.com) for examples of how to use the various options. Alternatively, try it for yourself by downloading and building the project (`npm install`, `npm run build`) and opening demo.html in a browser.
 
 ## Mobile
 By default, on mobile devices, we show a fullscreen popup instead of the inline dropdown to make better use of the limited screen space. This is similar to how a native `<select>` element works. You can control this behaviour with the `useFullscreenPopup` option. The popup can be closed by either selecting a country from the list or by tapping on the grey area on the sides. [See example](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--usefullscreenpopup) (using the React component).
@@ -68,7 +68,7 @@ By default, on mobile devices, we show a fullscreen popup instead of the inline 
 * Typescript type definitions included
 * Easily customise styles by overriding CSS variables, e.g. support dark mode
 * React, Vue, and Angular components also included
-* Translations for country names (etc) provided in over 40 languages, and support for RTL layout
+* Translations provided in over 40 languages, as well as support for RTL layout and alternative numeral sets
 * Lots of initialisation options for customisation, as well as instance methods/events for interaction
 
 ## Browser Compatibility
