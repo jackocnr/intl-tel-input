@@ -11,7 +11,7 @@ A React component wrapper for the [intl-tel-input](https://github.com/jackocnr/i
 - [Troubleshooting](#troubleshooting)
 
 ## Demo and Examples
-Check out [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla) where you can play with the various props. Alternatively, try it for yourself by downloading the project and opening /react/demo/validation.html (etc) in a browser.
+Check out [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--vanilla) where you can play with the various props. Alternatively, try it for yourself by downloading and building the project in three steps (1. initialise the submodules with `git submodule update --init --recursive`, 2. install dependencies with `npm install`, 3. `npm run build`), and then simply open /react/demo/validation/validation.html (etc) in your browser.
 
 ## Getting Started
 ```js
