@@ -11,10 +11,10 @@
 
   // exclude symlinks
   "exclude": [
-    "src/index.ts",
-    "src/intl-tel-input/i18n/**/*.ts",
-    "src/intl-tel-input/utils-compiled.js",
-    "src/intl-tel-input/intlTelInputWithUtils.ts",
-    "src/intl-tel-input/data.ts",
+    // "src/index.ts",
+    // "src/intl-tel-input/i18n/**/*.ts",
+    // "src/intl-tel-input/utils-compiled.js",
+    // "src/intl-tel-input/intlTelInputWithUtils.ts",
+    // "src/intl-tel-input/data.ts",
   ]
 }
