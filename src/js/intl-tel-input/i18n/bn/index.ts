@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "কোনো দেশ নির্বাচন করা হয়নি",
   countryListAriaLabel: "দেশের তালিকা",
   searchPlaceholder: "অনুসন্ধান করুন",
+  clearSearchAriaLabel: "অনুসন্ধান পরিষ্কার করুন",
   searchEmptyState: "কোন ফলাফল পাওয়া যায়নি",
 
   searchSummaryAria(count) {

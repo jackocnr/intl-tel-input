@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Kein Land ausgewählt",
   countryListAriaLabel: "Liste der Länder",
   searchPlaceholder: "Suchen",
+  clearSearchAriaLabel: "Suche löschen",
   searchEmptyState: "Keine Suchergebnisse",
 
   searchSummaryAria(count) {

@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Країну не обрано",
   countryListAriaLabel: "Список країн",
   searchPlaceholder: "Шукати",
+  clearSearchAriaLabel: "Очистити пошук",
   searchEmptyState: "Результатів не знайдено",
 
   searchSummaryAria(count) {

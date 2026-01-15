@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Δεν έχει επιλεγεί χώρα",
   countryListAriaLabel: "Κατάλογος χωρών",
   searchPlaceholder: "Αναζήτηση",
+  clearSearchAriaLabel: "Εκκαθάριση αναζήτησης",
   searchEmptyState: "Δεν βρέθηκαν αποτελέσματα",
 
   searchSummaryAria(count) {

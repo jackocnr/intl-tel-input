@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Davlat tanlanmagan",
   countryListAriaLabel: "Davlatlar roʻyxati",
   searchPlaceholder: "Davlatni qidiring",
+  clearSearchAriaLabel: "Qidiruvni tozalang",
   searchEmptyState: "Natija topilmadi",
 
   searchSummaryAria(count) {

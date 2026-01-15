@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "ఏ దేశం ఎంచుకోబడలేదు",
   countryListAriaLabel: "దేశాల జాబితా",
   searchPlaceholder: "వెతకండి",
+  clearSearchAriaLabel: "శోధనను క్లియర్ చేయండి",
   searchEmptyState: "ఎటువంటి ఫలితాలు లభించలేదు",
 
   searchSummaryAria(count) {

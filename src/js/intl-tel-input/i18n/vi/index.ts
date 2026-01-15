@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Không có quốc gia nào được chọn",
   countryListAriaLabel: "Danh sách các quốc gia",
   searchPlaceholder: "Khám xét",
+  clearSearchAriaLabel: "Xóa tìm kiếm",
   searchEmptyState: "Không tìm thấy kết quả nào",
 
   searchSummaryAria(count) {

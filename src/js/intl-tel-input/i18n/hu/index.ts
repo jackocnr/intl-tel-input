@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Nincs ország kiválasztva",
   countryListAriaLabel: "Országok listája",
   searchPlaceholder: "Keresés",
+  clearSearchAriaLabel: "Keresés törlése",
   searchEmptyState: "Nincs találat",
 
   searchSummaryAria(count) {
