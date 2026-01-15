@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Nie je vybratá žiadna krajina",
   countryListAriaLabel: "Zoznam krajín",
   searchPlaceholder: "Vyhľadať",
+  clearSearchAriaLabel: "Vymazať vyhľadávanie",
   searchEmptyState: "Neboli nájdené žiadne výsledky",
 
   searchSummaryAria(count) {

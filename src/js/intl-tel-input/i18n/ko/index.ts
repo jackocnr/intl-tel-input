@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "선택한 국가가 없습니다.",
   countryListAriaLabel: "국가 목록",
   searchPlaceholder: "검색",
+  clearSearchAriaLabel: "검색 지우기",
   searchEmptyState: "검색 결과가 없습니다",
 
   searchSummaryAria(count) {

@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Ühtegi riiki pole valitud",
   countryListAriaLabel: "Riikide nimekiri",
   searchPlaceholder: "Otsi",
+  clearSearchAriaLabel: "Tühjenda otsing",
   searchEmptyState: "Tulemusi ei leitud",
 
   searchSummaryAria(count) {

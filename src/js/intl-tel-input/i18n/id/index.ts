@@ -6,6 +6,7 @@ const interfaceTranslations: I18n = {
   noCountrySelected: "Tidak ada negara yang dipilih",
   countryListAriaLabel: "Daftar negara",
   searchPlaceholder: "Mencari",
+  clearSearchAriaLabel: "Hapus pencarian",
   searchEmptyState: "Tidak ada hasil yang ditemukan",
 
   searchSummaryAria(count) {
