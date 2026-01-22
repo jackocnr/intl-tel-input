@@ -10,12 +10,14 @@ const modelValue = defineModel<string>({
 
 interface Props {
   options?: SomeOptions,
+  usePreciseValidation?: boolean,
   disabled?: boolean,
   inputProps?: InputHTMLAttributes
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
+  usePreciseValidation: false,
   inputProps: () => ({}),
   options: () => ({}),
 })
@@ -37,7 +39,7 @@ const wasPreviouslyValid = ref(false);
 
 const isValid = () => {
   if (instance.value) {
-    return props.options.strictMode
+    return props.usePreciseValidation
       ? instance.value.isValidNumberPrecise()
       : instance.value.isValidNumber();
   }

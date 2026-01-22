@@ -49,6 +49,10 @@ The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `requ
 Type: `Object`  
 An object containing the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
 
+**usePreciseValidation**  
+Type: `Boolean`, Default: `false`  
+By default, the component uses the plugin's `isValidNumber` method for validation, but if you'd rather use `isValidNumberPrecise`, set this to `true`.
+
 **value**  
 Type: `String`  
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
