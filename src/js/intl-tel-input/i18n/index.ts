@@ -42,3 +42,4 @@ export { default as ur } from "./ur";
 export { default as uz } from "./uz";
 export { default as vi } from "./vi";
 export { default as zh } from "./zh";
+export { default as zhHk } from "./zh-hk";

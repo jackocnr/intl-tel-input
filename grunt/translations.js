@@ -9,6 +9,20 @@ module.exports = function(grunt) {
     const rootIndexFilePath = path.join(supportedLocalesDirectory, 'index.ts');
     let rootIndexFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
 
+    const localeToExportName = (locale) => {
+      // Convert locale folder names (e.g. "zh-hk") into valid JS identifiers (e.g. "zhHk").
+      // Keep the first segment as-is, then capitalize the first letter of subsequent segments.
+      const parts = String(locale)
+        .trim()
+        .split(/[^a-zA-Z0-9]+/)
+        .filter(Boolean);
+
+      if (parts.length === 0) return '';
+
+      const [first, ...rest] = parts;
+      return first + rest.map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+    };
+
     //* Get list of translation locales that exist in this project.
     const supportedLocales = fs.readdirSync(supportedLocalesDirectory, { withFileTypes: true })
       .filter(dir => dir.isDirectory())
@@ -28,7 +42,12 @@ module.exports = function(grunt) {
       }
 
       //* Add the locale export to the content of the root index.ts file
-      rootIndexFileContent += `export { default as ${locale} } from "./${locale}";\n`;
+      const exportName = localeToExportName(locale);
+      if (!exportName) {
+        grunt.log.writeln(`WARNING: Could not generate export name for locale: ${locale} - skipping this locale.\n`);
+        return;
+      }
+      rootIndexFileContent += `export { default as ${exportName} } from "./${locale}";\n`;
     });
     fs.writeFileSync(rootIndexFilePath, rootIndexFileContent);
   });
