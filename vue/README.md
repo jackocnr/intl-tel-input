@@ -78,7 +78,7 @@ A handler to be called when the number validity changes e.g. to true/false. It w
 
 ## Accessing Instance Methods
 
-You can access all of the plugin's [instance methods](https://github.com/jackocnr/intl-tel-input/blob/master/README.md#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType` etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.intlTelInput.instance` e.g. `ref.intlTelInput.instance.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.intlTelInput.input`.
+You can access all of the plugin's [instance methods](https://github.com/jackocnr/intl-tel-input/blob/master/README.md#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType` etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance` e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
 
 ## Accessing Static Methods
 
