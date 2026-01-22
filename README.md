@@ -189,7 +189,7 @@ The locale to pass to `Intl.DisplayNames` to generate the country names.
 
 **countryOrder**  
 Type: `Array` Default: `null`  
-Specify the ordering for the country list with an array of iso2 country codes. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria etc...
+Specify the ordering for the country list with an array of iso2 country codes. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option (now removed)._
 
 **countrySearch**  
 Type: `Boolean` Default: `true`  
@@ -267,7 +267,7 @@ This will generate the following (hidden) elements, which will be automatically 
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allows you to specify translation strings for the user interface text (e.g. the placeholder text for the country search input) or to override any country names (generated with `Intl.DisplayNames`). The easiest way to do this is to import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) and set the `i18n` initialisation option to that value (see option 1 below). You can also override one or more individual keys this way (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, see the required UI strings listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html).
+Allows you to specify translation strings for the user interface text (e.g. the placeholder text for the country search input) or to override any country names (generated with `Intl.DisplayNames`). The easiest way to do this is to import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) and set the `i18n` initialisation option to that value (see option 1 below). You can also override one or more individual keys this way (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, see the required UI strings listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html). _Note: country names are now translated using native `Intl.DisplayNames` - see `countryNameLocale` option._
 
 If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings.
 
