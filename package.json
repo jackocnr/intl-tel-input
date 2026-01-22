@@ -78,7 +78,7 @@
     "react-dom": "^18.3.1",
     "sass": "^1.83.1",
     "sharp": "^0.33.5",
-    "svelte": "^5.16.0",
+    "svelte": "^5.46.4",
     "time-grunt": "^2.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3",
