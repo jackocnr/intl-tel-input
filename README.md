@@ -30,7 +30,6 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 - [Demo and Examples](#demo-and-examples)
 - [Mobile](#mobile)
 - [Features](#features)
-- [Browser Compatibility](#browser-compatibility)
 - [Getting Started](#getting-started-using-a-cdn)
 - [Recommended Usage](#recommended-usage)
 - [Initialisation Options](#initialisation-options)
@@ -73,13 +72,6 @@ By default, on mobile devices, we show a fullscreen popup instead of the inline 
 * React, Vue, Angular and Svelte components also included
 * Translations provided in over 40 languages, as well as support for RTL layout and alternative numeral sets
 * Lots of initialisation options for customisation, as well as instance methods/events for interaction
-
-## Browser Compatibility
-| Chrome |  Firefox  | Safari | Edge |
-| :----: | :-------: | :----: | :--: |
-|    ✓   |     ✓     |  v14+  |   ✓  |
-
-_Note: We have now dropped support for all versions of Internet Explorer because it is [no longer supported](https://blogs.windows.com/windowsexperience/2022/06/15/internet-explorer-11-has-retired-and-is-officially-out-of-support-what-you-need-to-know/) by any version of Windows._
 
 ## Getting Started (Using a CDN)
 1. Add the CSS
