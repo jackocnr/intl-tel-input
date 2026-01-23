@@ -219,7 +219,7 @@ Fix the dropdown width to the input width (rather than being as wide as the long
 
 **formatAsYouType**  
 Type: `Boolean` Default: `true`  
-Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](#loading-the-utilities-script).
+Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](#loading-the-utilities-script). _Note: previously named `autoFormat`._
 
 **formatOnDisplay**  
 Type: `Boolean` Default: `true`  
@@ -267,9 +267,9 @@ This will generate the following (hidden) elements, which will be automatically 
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allows you to specify translation strings for the user interface text (e.g. the placeholder text for the country search input) or to override any country names (generated with `Intl.DisplayNames`). The easiest way to do this is to import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) and set the `i18n` initialisation option to that value (see option 1 below). You can also override one or more individual keys this way (see option 1 below). Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, see the required UI strings listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html). _Note: country names are now translated using native `Intl.DisplayNames` - see `countryNameLocale` option._
+Allows you to specify translation strings for the user interface text (e.g. the placeholder text for the country search input). Country names are now automatically generated with `Intl.DisplayNames` (see `countryNameLocale` option), but they can also be overridden with this option, using the iso2 code as the key name (see example below).
 
-If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings.
+The easiest way to handle translations is to import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) and set the `i18n` initialisation option to that value (see option 1 below). You can also override one or more individual keys this way. Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, please see the required UI strings listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html). If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings. _Note: previously named `localizedCountries`._
 
 Option 1: import one of the provided translation modules
 ```js
@@ -284,6 +284,8 @@ intlTelInput(input, {
   i18n: {
     ...fr,
     searchPlaceholder: "Recherche de pays",
+    // or override a specific country name
+    us: "United States",
   },
 });
 ```
@@ -322,7 +324,7 @@ Set the initial country selection by specifying its country code, e.g. `"us"` fo
 Type: `() => Promise<module>` Default: `null`  
 This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utilities Script](#loading-the-utilities-script) for more options.
 
-The `loadUtils` option takes a function that returns a Promise resolving to the utils module (see example code below). You can `import` the utils module in different ways: (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@26.0.1/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package.
+The `loadUtils` option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (examples below): (A) from a CDN, (B) from your own hosted version of [utils.js](https://cdn.jsdelivr.net/npm/intl-tel-input@26.0.1/build/js/utils.js), or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package. _Note: this replaces the `utilsScript` option (now removed)._
 
 ```js
 // (A) import utils module from a CDN
@@ -363,8 +365,7 @@ Set this to false to hide the flags, e.g. for political reasons. Instead, it wil
 
 **separateDialCode**  
 Type: `Boolean` Default: `false`  
-Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the new dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component).  
-__Note: if the user enters their number with autofill or by copying and pasting it, and their number includes the international dial code, then this will be shown twice__
+Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option on [Storybook](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--separatedialcode) (using the React component). _Note: previously named `showSelectedDialCode`._
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267" height="51" alt="Separate Dial Code">
 
@@ -449,7 +450,7 @@ if (error === intlTelInput.utils.validationError.TOO_SHORT) {
 
 **isValidNumber**  
 (Note: only returns `true` for valid <ins>mobile numbers</ins> by default - see `allowedNumberTypes`)  
-Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` (DANGEROUS) for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use `getValidationError` to get more information. Requires the [utils script to be loaded](#loading-the-utilities-script).  
+Check if the current number is valid based on its length - [see example](https://intl-tel-input.com/examples/validation-practical.html), which should be sufficient for most use cases. See `isValidNumberPrecise` (DANGEROUS) for more precise validation, but the advantage of `isValidNumber` is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use `getValidationError` to get more information. Requires the [utils script to be loaded](#loading-the-utilities-script). _Note: previously named `isPossibleNumber`._  
 ```js
 const isValid = iti.isValidNumber();
 ```
