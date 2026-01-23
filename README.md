@@ -574,7 +574,7 @@ Supported languages: Arabic, Albanian, Bengali, Bosnian, Bulgarian, Catalan, Chi
 If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings.
 
 ## Utilities Script
-The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
+The utilities script ([src/js/utils.js](src/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
 
 * Formatting upon initialisation, as well as with `getNumber` and `setNumber`
 * Validation with `isValidNumber`, `getNumberType` and `getValidationError` methods
@@ -583,10 +583,7 @@ The utilities script ([build/js/utils.js](build/js/utils.js)) is a custom build 
 
 International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution we have found is libphonenumber, from which we have precompiled the relevant parts into a single JavaScript file, included in the build directory. Unfortunately, even after modification, it is still ~260KB. See the section below on the best way to load it.
 
-To recompile the utils script yourself (e.g. to update the version of libphonenumber it is built from), see the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#updating-to-a-new-version-of-libphonenumber).
-
-## Loading The Utilities Script 
-See [v25 discussion](https://github.com/jackocnr/intl-tel-input/discussions/1842).  
+## Loading The Utilities Script
 
 The utils script provides lots of great functionality (see the above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
 
@@ -638,13 +635,12 @@ _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822
 ```
 
 ## Contributing
-See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also on how to update to a new version of libphonenumber, how to update the flag images, or how to add a new translation.
+See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also on how to update the flag images, or how to add a new translation.
 
 ## Attributions
 * Flag images from [flag-icons](https://github.com/lipis/flag-icons)
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
 * Formatting/validation/example number code from [libphonenumber](https://github.com/googlei18n/libphonenumber)
-* Feature contributions are listed in the wiki: [Contributions](https://github.com/jackocnr/intl-tel-input/wiki/Contributions)
 
 User testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)  
 
