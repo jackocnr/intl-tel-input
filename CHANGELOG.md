@@ -4,6 +4,7 @@ Or to view a specific version, e.g. v20.0.0, update the URL accordingly, e.g. ht
 
 ## Breaking changes
 
+- v26.0.0 https://github.com/jackocnr/intl-tel-input/releases/tag/v26.0.0
 - v25.0.0 https://github.com/jackocnr/intl-tel-input/releases/tag/v25.0.0
 - v24.0.0 https://github.com/jackocnr/intl-tel-input/releases/tag/v24.0.0
 - v23.0.0 https://github.com/jackocnr/intl-tel-input/releases/tag/v23.0.0
