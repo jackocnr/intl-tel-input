@@ -1,6 +1,6 @@
 # International Telephone Input [![CI](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
-🗣️ NEWS: [v26.0.1](https://github.com/jackocnr/intl-tel-input/releases/tag/v26.0.1) released, with support for:
+🗣️ NEWS: [v26.0.0](https://github.com/jackocnr/intl-tel-input/releases/tag/v26.0.0) released, with support for:
 - Autocomplete
 - TypeScript types for the Vue component
 - Country names now generated with `Intl.DisplayNames` (reduced bundle size)
