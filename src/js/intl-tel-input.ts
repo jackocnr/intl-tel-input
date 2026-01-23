@@ -1203,7 +1203,7 @@ export class Iti {
         ariaLabel = i18n.selectedCountryAriaLabel
           .replace("${countryName}", name)
           .replace("${dialCode}", `+${dialCode}`);
-        selectedCountryInner = "";
+        selectedCountryInner = showFlags ? "" : buildGlobeIcon();
       } else {
         title = i18n.noCountrySelected;
         ariaLabel = i18n.noCountrySelected;
