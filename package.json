@@ -2,29 +2,6 @@
   "name": "intl-tel-input",
   "version": "26.0.5",
   "description": "A JavaScript plugin for entering and validating international telephone numbers",
-  "keywords": [
-    "international",
-    "country",
-    "dial code",
-    "telephone",
-    "phone",
-    "mobile",
-    "input",
-    "flag",
-    "dropdown",
-    "javascript",
-    "plugin",
-    "css",
-    "html",
-    "validation",
-    "formatting",
-    "react",
-    "vue",
-    "angular",
-    "svelte",
-    "component",
-    "typescript"
-  ],
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "scripts": {
@@ -208,5 +185,28 @@
         "angular/build/types/intl-tel-input/angular.d.ts"
       ]
     }
-  }
+  },
+  "keywords": [
+    "international",
+    "country",
+    "dial code",
+    "telephone",
+    "phone",
+    "mobile",
+    "input",
+    "flag",
+    "dropdown",
+    "javascript",
+    "plugin",
+    "css",
+    "html",
+    "validation",
+    "formatting",
+    "react",
+    "vue",
+    "angular",
+    "svelte",
+    "component",
+    "typescript"
+  ]
 }
