@@ -37,16 +37,24 @@ export const generateCountryNames = (
   const { countryNameLocale, i18n } = options;
 
   //* Populate country names using Intl.DisplayNames (per instance) with countryNameLocale.
-  const hasDisplayNames =
-    typeof Intl !== "undefined" &&
-    typeof (Intl as any).DisplayNames === "function";
-  const displayNames = hasDisplayNames
-    ? new (Intl as any).DisplayNames(countryNameLocale, {
+  let displayNames;
+  try {
+    const hasDisplayNames =
+      typeof Intl !== "undefined" &&
+      typeof (Intl as any).DisplayNames === "function";
+    if (hasDisplayNames) {
+      displayNames = new (Intl as any).DisplayNames(countryNameLocale, {
         type: "region",
-      })
-    : null;
+      });
+    } else {
+      displayNames = null;
+    }
+  } catch (e) {
+    console.error(e);
+    displayNames = null;
+  }
   for (const c of countries) {
-    c.name = i18n[c.iso2] || displayNames?.of(c.iso2.toUpperCase());
+    c.name = i18n[c.iso2] || displayNames?.of(c.iso2.toUpperCase()) || "";
   }
 };
 
