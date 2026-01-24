@@ -37,7 +37,6 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 - [Static Methods](#static-methods)
 - [Events](#events)
 - [Theming / Dark Mode](#theming--dark-mode)
-- [Translations](#translations)
 - [Utilities Script](#utilities-script)
 - [Loading The Utilities Script](#loading-the-utilities-script)
 - [Troubleshooting](#troubleshooting)
@@ -260,9 +259,7 @@ This will generate the following (hidden) elements, which will be automatically 
 
 **i18n**  
 Type: `Object` Default: `{}`  
-Allows you to specify translation strings for the user interface text (e.g. the placeholder text for the country search input). Country names are now automatically generated with `Intl.DisplayNames` (see `countryNameLocale` option), but they can also be overridden with this option, using the iso2 code as the key name (see example below).
-
-The easiest way to handle translations is to import one of the [provided translation modules](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) and set the `i18n` initialisation option to that value (see option 1 below). You can also override one or more individual keys this way. Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, please see the required UI strings listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html). If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings. _Note: previously named `localizedCountries`._
+There are two aspects to the internationalisation of this plugin. The first is the country names, which are translated automatically using the native `Intl.DisplayNames` - just specify the locale you want using the `countryNameLocale` option. The second is the user interface strings (including the country search placeholder, search empty state, and various other strings for screen readers). We provide translations for these in <a href="https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n">over 40 languages</a> - simply import the language module you need and pass it to the plugin using the `i18n` option (see option 1 below). You can also override one or more individual keys this way. Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, please see the required UI strings listed below. [See example](https://intl-tel-input.com/examples/localise-countries.html). If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings. _Note: previously named `localizedCountries`._
 
 Option 1: import one of the provided translation modules
 ```js
@@ -565,13 +562,6 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 
 Example:  
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png" alt="Screenshot" width="263" height="269" />
-
-## Translations
-We provide [translations](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) for the 200+ country names, as well as other user interface text (e.g. the placeholder text for the country search input) in over 40 languages. See the `i18n` option for details on how to use them. [See them in action](https://intl-tel-input.com/storybook/?path=/docs/intltelinput--i18n).
-
-Supported languages: Arabic, Albanian, Bengali, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, English, Estonian, Finnish, French, German, Greek, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Lithuanian, Marathi, Norwegian, Persian, Polish, Portuguese, Romanian, Russian, Serbian, Slovak, Slovenian, Spanish, Swedish, Telugu, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese.
-
-If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings.
 
 ## Utilities Script
 The utilities script ([src/js/utils.js](src/js/utils.js)) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
