@@ -9,7 +9,7 @@
 - More control over number extensions
 - Lots of other fixes and improvements
 
-International Telephone Input is a JavaScript plugin for entering and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. [React](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), [Vue](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md), [Angular](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md) and [Svelte (beta)](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md) components are also included.
+International Telephone Input is a JavaScript plugin for entering, formatting and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. [React](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), [Vue](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md), [Angular](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md) and [Svelte (beta)](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md) components are also included.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png">
