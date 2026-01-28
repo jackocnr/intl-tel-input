@@ -49,7 +49,15 @@ export default class UI {
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
   generateMarkup(countries: Country[]): void {
     this.countries = countries;
+
     this.telInput.classList.add("iti__tel-input");
+    //* Modern browsers pay more attention to autocomplete and inputmode (mobile keyboard mode) than type="tel"
+    if (!this.telInput.hasAttribute("autocomplete")) {
+      this.telInput.setAttribute("autocomplete", "tel");
+    }
+    if (!this.telInput.hasAttribute("inputmode")) {
+      this.telInput.setAttribute("inputmode", "tel");
+    }
 
     const wrapper = this._createWrapperAndInsert();
     this._maybeBuildCountryContainer(wrapper);
