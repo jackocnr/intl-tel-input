@@ -388,3 +388,10 @@
     fill: var(--iti-icon-color);
   }
 }
+
+/* Browsers normally add a coloured outline when you focus an input. Chrome adds a blue outline WITHIN the input. If you focus the input and then hover the selected country, it's bg color square overlaps the focus outline and looks bad. Here, @supports is used to target Chrome only, and move the default outline out by 1px so there's no overlap. */
+@supports (-webkit-appearance:none) and (not (background: -webkit-canvas(foo))) {
+  .iti__tel-input:focus {
+    outline-offset: 1px;
+  }
+}
