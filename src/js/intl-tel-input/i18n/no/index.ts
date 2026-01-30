@@ -5,7 +5,7 @@ const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Valgt land",
   noCountrySelected: "Ingen land er valgt",
   countryListAriaLabel: "Liste over land",
-  searchPlaceholder: "Leting",
+  searchPlaceholder: "Søk",
   clearSearchAriaLabel: "Tøm søk",
   searchEmptyState: "Ingen resultater funnet",
 
