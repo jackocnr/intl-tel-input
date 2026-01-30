@@ -1,23 +1,14 @@
 # International Telephone Input [![CI](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
-🗣️ NEWS: [v26.0.0](https://github.com/jackocnr/intl-tel-input/releases/tag/v26.0.0) released, with support for:
-- Autocomplete
-- TypeScript types for the Vue component
-- Country names now generated with `Intl.DisplayNames` (reduced bundle size)
-- A more easily customisable globe icon SVG
-- Modernised CSS
-- More control over number extensions
-- Lots of other fixes and improvements
+A JavaScript plugin for entering, formatting and validating international telephone numbers. React, Vue, Angular and Svelte components also included.
 
-International Telephone Input is a JavaScript plugin for entering, formatting and validating international telephone numbers. It takes a regular input field, adds a searchable country dropdown, auto-detects the user's country, displays a relevant placeholder number, formats the number as you type, and provides comprehensive validation methods. [React](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), [Vue](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md), [Angular](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md) and [Svelte (beta)](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md) components are also included.
+[Explore docs »](https://intl-tel-input.com/docs/getting-started.html)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-light.png">
   <img width="263" height="269" alt="Plugin screenshot showing country dropdown open" src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-light.png">
 </picture>
-  
-If you find the plugin helpful, please consider [supporting the project](https://github.com/sponsors/jackocnr).
 
 ## Sponsored by
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.webp" height="100" alt="Twilio"/>
