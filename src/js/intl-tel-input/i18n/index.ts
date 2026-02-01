@@ -20,6 +20,7 @@ export { default as hu } from "./hu";
 export { default as id } from "./id";
 export { default as it } from "./it";
 export { default as ja } from "./ja";
+export { default as kn } from "./kn";
 export { default as ko } from "./ko";
 export { default as lt } from "./lt";
 export { default as mr } from "./mr";
