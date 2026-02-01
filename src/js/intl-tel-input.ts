@@ -100,7 +100,7 @@ export class Iti {
     applyOptionSideEffects(this.options);
 
     this.ui = new UI(input, this.options, this.id);
-    this.isAndroid = Iti._getIsAndroid();
+    this.isAndroid = Iti._getIsAndroid.call(this);
     this.promise = this._createInitPromises();
 
     //* Process onlyCountries or excludeCountries array if present.
