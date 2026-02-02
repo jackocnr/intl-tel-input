@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import IntlTelInput from "../../src/intl-tel-input/IntlTelInputWithUtils.vue";
+import IntlTelInput from "../../build/exports/IntlTelInputWithUtils";
+//import IntlTelInput from "../../src/intl-tel-input/IntlTelInputWithUtils.vue";
 
 const errorMap = [
   "Invalid number",
@@ -38,9 +39,7 @@ const handleSubmit = () => {
       @changeNumber="number = $event"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      :options="{
-        initialCountry: 'us',
-      }"
+      :options="{ initialCountry: 'us' }"
     />
     <button class="button" type="button" @click="handleSetNumber">
       Set Number
