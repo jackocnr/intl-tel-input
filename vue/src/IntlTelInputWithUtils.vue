@@ -2,40 +2,37 @@
 <script setup lang="ts">
 import intlTelInput from "./intl-tel-input/intlTelInputWithUtils";
 import type { SomeOptions } from "./modules/types/public-api";
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch, computed } from "vue";
 import type { InputHTMLAttributes } from "vue";
 
-const modelValue = defineModel<string>({
-  default: ''
-});
-
 interface Props {
-  options?: SomeOptions,
-  usePreciseValidation?: boolean,
-  disabled?: boolean,
-  inputProps?: InputHTMLAttributes
+  options?: SomeOptions;
+  usePreciseValidation?: boolean;
+  disabled?: boolean;
+  inputProps?: InputHTMLAttributes;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props & { value?: string | null; modelValue?: string | null }>(), {
   disabled: false,
   usePreciseValidation: false,
   inputProps: () => ({}),
   options: () => ({}),
-})
+});
 
-defineOptions({
-  inheritAttrs: false
-})
+defineOptions({ inheritAttrs: false });
 
 const emit = defineEmits([
   "changeNumber",
   "changeCountry",
   "changeValidity",
   "changeErrorCode",
+  "update:modelValue",
 ]);
 
-const input = ref();
-const instance = ref();
+const displayed = computed(() => props.value ?? props.modelValue ?? "");
+
+const input = ref<HTMLInputElement | null>(null);
+const instance = ref<ReturnType<typeof intlTelInput> | null>(null);
 const wasPreviouslyValid = ref(false);
 
 const isValid = () => {
@@ -57,28 +54,31 @@ const updateValidity = () => {
     emit("changeValidity", !!isCurrentlyValid);
     emit(
       "changeErrorCode",
-      isCurrentlyValid ? null : instance.value.getValidationError()
+      isCurrentlyValid ? null : instance.value?.getValidationError?.() ?? null,
     );
   }
 };
 
 const updateValue = () => {
-  emit("changeNumber", instance.value?.getNumber() ?? "");
+  const number = instance.value?.getNumber() ?? "";
+
+  emit("changeNumber", number);
+  emit("update:modelValue", number);
+
   updateValidity();
 };
 
 const updateCountry = () => {
   emit("changeCountry", instance.value?.getSelectedCountryData().iso2 ?? "");
   updateValue();
-  updateValidity();
 };
 
 onMounted(() => {
   if (input.value) {
     instance.value = intlTelInput(input.value, props.options);
 
-    if (modelValue.value) {
-      instance.value.setNumber(modelValue.value);
+    if (displayed.value) {
+      instance.value.setNumber(displayed.value);
     }
 
     if (props.disabled) {
@@ -90,8 +90,25 @@ onMounted(() => {
 
 watch(
   () => props.disabled,
-  (newValue) => instance.value?.setDisabled(newValue)
+  (newValue) => instance.value?.setDisabled(newValue),
 );
+
+watch(
+  () => displayed.value,
+  (val) => {
+    if (!instance.value) return;
+
+    // Avoid cursor jumping when typing
+    const next = val ?? "";
+    const currentCanonical = instance.value.getNumber?.() ?? "";
+
+    if (currentCanonical === next) return;
+
+    instance.value.setNumber(next);
+    updateValidity();
+  },
+  { flush: "post" },
+)
 
 onUnmounted(() => instance.value?.destroy());
 
@@ -101,7 +118,7 @@ defineExpose({ instance, input });
 <template>
   <input
     ref="input"
-    v-model.lazy="modelValue"
+    :value="displayed"
     type="tel"
     @countrychange="updateCountry"
     @input="updateValue"
