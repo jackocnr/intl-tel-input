@@ -10,7 +10,8 @@
   const CACHE_BUST = "<%= time %>";
 
   // i18nLanguages is injected by grunt/template.js
-  const I18N_LANGUAGE_CODES = JSON.parse("<%= JSON.stringify(i18nLanguages || []) %>");
+  // eslint-disable-next-line quotes -- JSON.stringify output contains double quotes, so single quotes here are safe/readable.
+  const I18N_LANGUAGE_CODES = JSON.parse('<%= JSON.stringify(i18nLanguages || []) %>');
 
   const i18nDisplayNames = (() => {
     try {
