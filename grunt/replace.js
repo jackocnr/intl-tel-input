@@ -17,10 +17,6 @@ module.exports = function(grunt) {
             replacement: '_a'
           },
           {
-            match: /_getIsAndroid(?![A-Za-z])/g,
-            replacement: '_b'
-          },
-          {
             match: /_createInitPromises(?![A-Za-z])/g,
             replacement: '_c'
           },

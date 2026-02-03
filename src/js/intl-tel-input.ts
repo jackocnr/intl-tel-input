@@ -9,6 +9,7 @@ import type {
   SelectedCountryData,
 } from "./modules/types/public-api";
 import { getNumeric } from "./modules/utils/string";
+import { getIsAndroid } from "./modules/utils/isAndroid";
 import {
   getMatchedCountries,
   findFirstCountryStartingWith,
@@ -100,7 +101,7 @@ export class Iti {
     applyOptionSideEffects(this.options);
 
     this.ui = new UI(input, this.options, this.id);
-    this.isAndroid = Iti._getIsAndroid();
+    this.isAndroid = getIsAndroid();
     this.promise = this._createInitPromises();
 
     //* Process onlyCountries or excludeCountries array if present.
@@ -118,12 +119,6 @@ export class Iti {
     this.countryByIso2 = new Map(this.countries.map((c) => [c.iso2, c]));
 
     this._init();
-  }
-
-  private static _getIsAndroid(): boolean {
-    return typeof navigator !== "undefined"
-      ? /Android/i.test(navigator.userAgent)
-      : false;
   }
 
   private _updateNumeralSet(str: string): void {
