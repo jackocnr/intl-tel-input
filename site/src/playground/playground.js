@@ -10,9 +10,7 @@
   const CACHE_BUST = "<%= time %>";
 
   // i18nLanguages is injected by grunt/template.js
-  const I18N_LANGUAGE_CODES = JSON.parse(
-    '<%= JSON.stringify(i18nLanguages || []) %>'
-  );
+  const I18N_LANGUAGE_CODES = JSON.parse("<%= JSON.stringify(i18nLanguages || []) %>");
 
   const i18nDisplayNames = (() => {
     try {
@@ -393,14 +391,14 @@
 
     Object.entries(metaMap).forEach(([key, meta]) => {
       if (meta.type === "multidropdown") {
-        const root = formEl.querySelector(`[data-multidropdown=\"${key}\"]`);
+        const root = formEl.querySelector(`[data-multidropdown="${key}"]`);
         if (!root) return;
-        const checked = [...root.querySelectorAll(`input[type=\"checkbox\"]:checked`)].map((el) => el.value);
+        const checked = [...root.querySelectorAll("input[type=\"checkbox\"]:checked")].map((el) => el.value);
         state[key] = checked;
         return;
       }
 
-      const control = formEl.querySelector(`[${dataAttr}=\"${key}\"]`);
+      const control = formEl.querySelector(`[${dataAttr}="${key}"]`);
       if (!control) return;
 
       if (meta.type === "boolean") {
@@ -432,7 +430,7 @@
     Object.entries(metaMap).forEach(([key, meta]) => {
       if (meta.type === "multidropdown") {
         const values = new Set(Array.isArray(state[key]) ? state[key] : []);
-        const root = formEl.querySelector(`[data-multidropdown=\"${key}\"]`);
+        const root = formEl.querySelector(`[data-multidropdown="${key}"]`);
         if (!root) return;
 
         root.querySelectorAll("input[type=\"checkbox\"]").forEach((el) => {
@@ -444,7 +442,7 @@
         return;
       }
 
-      const control = formEl.querySelector(`[${dataAttr}=\"${key}\"]`);
+      const control = formEl.querySelector(`[${dataAttr}="${key}"]`);
       if (!control) return;
 
       if (meta.type === "boolean") {
@@ -477,7 +475,7 @@
     if (!container) return;
     if (!window.bootstrap || !window.bootstrap.Tooltip) return;
 
-    container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
+    container.querySelectorAll("[data-bs-toggle='tooltip']").forEach((el) => {
       const existing = window.bootstrap.Tooltip.getInstance(el);
       if (existing) existing.dispose();
       new window.bootstrap.Tooltip(el);
@@ -534,7 +532,7 @@
           labelText: meta.label,
           htmlFor: checkbox.id,
           labelClassName: "form-check-label",
-        })
+        }),
       );
 
       return wrapper;
@@ -547,7 +545,7 @@
         labelText: meta.label,
         htmlFor: `${idPrefix}_${key}`,
         labelClassName: "form-label",
-      })
+      }),
     );
 
     if (meta.type === "select") {
@@ -809,7 +807,7 @@
         attrsForm,
         defaultInputAttributes,
         attributeMeta,
-        "data-attr"
+        "data-attr",
       );
       const state = { ...deepClone(defaultInitOptions), ...attrsState };
       setFormFromState(optionsForm, state, optionMeta, "data-option");
@@ -825,7 +823,7 @@
         optionsForm,
         defaultInitOptions,
         optionMeta,
-        "data-option"
+        "data-option",
       );
       const state = { ...optionsState, ...deepClone(defaultInputAttributes) };
       setFormFromState(attrsForm, state, attributeMeta, "data-attr");

@@ -10,7 +10,7 @@ const projectRoot = fileURLToPath(new URL("../../..", import.meta.url));
 export default defineConfig({
   define: {
     "process.env.VERSION": "window.IGNORE_ME", // just to stop runtime errors
-    "process.env.NODE_ENV": `"production"`, // required for vue files
+    "process.env.NODE_ENV": "'production'", // required for vue files
   },
   build: {
     outDir: path.resolve(projectRoot, "build/examples/js"),
