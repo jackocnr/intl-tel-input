@@ -6,8 +6,8 @@ module.exports = function (grunt) {
       dest: "build/intl-tel-input", // destination folder
       expand: true, // required when using cwd
     },
-    public: {
-      cwd: "public", // set working folder / root to copy
+    static: {
+      cwd: "static", // set working folder / root to copy
       src: "**/*", // copy all files and subfolders
       dest: "build", // destination folder
       expand: true, // required when using cwd
