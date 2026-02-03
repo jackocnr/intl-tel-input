@@ -35,7 +35,9 @@ We get our flags from the [flag-icons](https://github.com/lipis/flag-icons) proj
 
 ## Adding a new translation
 
-If we don't currently support a language you need, it's easy to contribute this yourself - you only need to provide a handful of UI translation strings (e.g. the country search input placeholder text).
+NOTE: that country names are now translated automatically using the native `Intl.DisplayNames` (see `countryNameLocale` option), so there's no need to provide translations for these anymore.
+
+The [provided translations](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n) are now just for the user interface strings (e.g. the country search placeholder). If we don't yet support a language you need, it's easy to contribute this yourself - you only need to provide a handful of strings (for example, see the [English translations](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/i18n/en/index.ts)).
 
 The translation files are located in src/js/intl-tel-input/i18n/. There is a directory for each language we support (e.g. "en" for English). Inside each of these directories, there is an index.ts, which contains the translations. All you need to do to add a new translation is create a new language directory, create the index.ts file and populate it with your translation strings, following the same pattern as the other languages, e.g. see [the English version here](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/intl-tel-input/i18n/en/interface.ts).
 
