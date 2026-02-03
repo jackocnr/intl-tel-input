@@ -208,5 +208,8 @@
     "svelte",
     "component",
     "typescript"
+  ],
+  "workspaces": [
+    "site"
   ]
 }

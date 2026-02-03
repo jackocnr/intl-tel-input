@@ -1,0 +1,22 @@
+const input = document.querySelector("#phone");
+const form = document.querySelector("#form");
+const message = document.querySelector("#message");
+
+const iti = window.intlTelInput(input, {
+  initialCountry: "us",
+  hiddenInput: () => ({ phone: "full_phone", country: "country_code" }),
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>") // for formatting/placeholders etc
+});
+
+form.onsubmit = () => {
+  if (!iti.isValidNumber()) {
+    message.innerHTML = "Invalid number. Please try again.";
+    return false;
+  }
+};
+
+const urlParams = new URLSearchParams(window.location.search);
+const fullPhone = urlParams.get('full_phone')
+if (fullPhone) {
+  message.innerHTML = `Submitted hidden input value: ${fullPhone}`;
+}

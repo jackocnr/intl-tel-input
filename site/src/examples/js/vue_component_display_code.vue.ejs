@@ -1,0 +1,16 @@
+<script setup>
+  import IntlTelInput from "intl-tel-input/vue";
+  import "intl-tel-input/styles";
+</script>
+
+<template>
+  <IntlTelInput
+    @changeNumber="number = $event"
+    @changeValidity="isValid = $event"
+    @changeErrorCode="errorCode = $event"
+    :options="{
+      initialCountry: 'us',
+      loadUtils: () => import('/intl-tel-input/js/utils.js?<%= time %>'),
+    }"
+  />
+</template>

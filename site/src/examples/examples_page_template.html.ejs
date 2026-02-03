@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= common_meta_tags %>
+    <title><%= head_title %> example - International Telephone Input</title>
+    <link rel="canonical" href="https://intl-tel-input.com/<%= canonical_path %>" />
+    <meta name="description" content="An example use of International Telephone Input. <%= meta_desc %>">
+
+    <%= common_styles %>
+    <% if (typeof stylesheet_before_demo_css !== 'undefined') { %>
+      <link rel="stylesheet" href="<%= stylesheet_before_demo_css %>?<%= time %>">
+    <% } %>
+    <link rel="stylesheet" href="/css/website.css?<%= time %>" />
+    <% if (typeof stylesheet_after_demo_css !== 'undefined') { %>
+      <link rel="stylesheet" href="<%= stylesheet_after_demo_css %>?<%= time %>">
+    <% } %>
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-overrides.css?<%= time %>">
+
+    <%= analytics %>
+  </head>
+
+  <body>
+    <%= content %>
+  </body>
+</html>

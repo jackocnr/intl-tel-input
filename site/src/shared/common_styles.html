@@ -1,0 +1,27 @@
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+  rel="stylesheet" 
+  integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+  crossorigin="anonymous"
+/>
+
+<link
+  rel="stylesheet"
+  href="/intl-tel-input/css/intlTelInput.css?<%= time %>"
+/>
+
+<!-- Bootstrap v5.3 requires a data-bs-theme attribute to support dark mode -->
+<script>
+  const setTheme = () => {
+    const theme = window.matchMedia('(prefers-color-scheme: dark)').matches 
+      ? 'dark' 
+      : 'light';
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  };
+
+  // Run on load
+  setTheme();
+
+  // Update dynamically if the user changes system settings while on your page
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setTheme);
+</script>

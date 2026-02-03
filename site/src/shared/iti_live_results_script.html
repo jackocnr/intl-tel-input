@@ -1,0 +1,43 @@
+<script>
+  const liveResults = document.querySelector(".iti-live-results");
+  const errorMap = ["", "Bad country code", "Too short", "Too long"];
+  const numberTypeMap = ["FIXED_LINE", "MOBILE", "FIXED_LINE_OR_MOBILE", "TOLL_FREE", "PREMIUM_RATE", "SHARED_COST", "VOIP", "PERSONAL_NUMBER", "PAGER", "UAN", "VOICEMAIL"];
+  
+  if (window.iti && liveResults) {
+    // fix live results box width and height to prevent layout shift
+    const liveResultsStyle = getComputedStyle(liveResults);
+    liveResults.style.width = liveResultsStyle.width;
+    liveResults.style.height = liveResultsStyle.height;
+
+    const setupLiveResults = () => {
+      const itiInput = document.querySelector(".iti__tel-input");
+      const emptyMessage = liveResults.textContent;
+
+      const updateResults = () => {
+        const hasValue = itiInput.value.trim().length > 0;
+        if (hasValue) {
+          if (iti.isValidNumber()) {
+            const number = iti.getNumber();
+            liveResults.textContent = `Valid number: ${number}`;
+            // const selectedCountry = iti.getSelectedCountryData().name;
+            // const numberType = iti.getNumberType();
+            // const showType = Boolean(numberTypeMap[numberType]);
+            // const numberTypeSection = showType ? `, Type: ${numberTypeMap[numberType]}` : "";
+            // liveResults.textContent = `Valid number length: ${number}, Country: ${selectedCountry}${numberTypeSection}`;
+          } else {
+            const errorCode = iti.getValidationError();
+            const errorMessage = errorMap[errorCode];
+            const errorSuffix = errorMessage ? ` (${errorMessage})` : "";
+            liveResults.textContent = `Invalid number${errorSuffix}`;
+          }
+        } else {
+          liveResults.textContent = emptyMessage;
+        }
+      }
+      itiInput.addEventListener("input", updateResults);
+      itiInput.addEventListener("countrychange", updateResults);
+      updateResults();
+    };
+    window.iti.promise.then(setupLiveResults);
+  }
+</script>

@@ -1,0 +1,13 @@
+import IntlTelInput from 'intl-tel-input/react';
+
+<IntlTelInput
+  initialValue={value}
+  onChangeNumber={setNumber}
+  onChangeValidity={setIsValid}
+  onChangeErrorCode={setErrorCode}
+  // any initialisation options from the readme will work here
+  initOptions={{
+    initialCountry: "us",
+    loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>"),
+  }}
+/>

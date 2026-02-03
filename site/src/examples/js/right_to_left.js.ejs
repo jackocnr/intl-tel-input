@@ -1,0 +1,11 @@
+import intlTelInput from "intl-tel-input";
+import ar from "intl-tel-input/i18n/ar"; // arabic
+
+const input = document.querySelector("#phone");
+
+intlTelInput(input, {
+  i18n: ar,
+  countryNameLocale: "ar",
+  initialCountry: "eg",
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>") // for formatting/placeholders etc
+});

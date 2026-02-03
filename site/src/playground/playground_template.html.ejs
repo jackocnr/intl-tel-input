@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= common_meta_tags %>
+    <title>Playground - International Telephone Input</title>
+    <link rel="canonical" href="https://intl-tel-input.com/playground" />
+    <meta
+      name="description"
+      content="intl-tel-input playground - interactively tweak init options and see the plugin update live."
+    />
+    <%= common_styles %>
+    <link rel="stylesheet" href="/css/website.css?<%= time %>" />
+    <%= analytics %>
+  </head>
+
+  <body>
+    <%= layout %>
+    <%= bootstrap_script %>
+    <%= iti_script %>
+    <script src="/playground/playground.js?<%= time %>"></script>
+    <%= iti_live_results_script %>
+  </body>
+</html>

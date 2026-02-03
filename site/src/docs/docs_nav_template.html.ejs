@@ -1,0 +1,8 @@
+<h6 class="mt-4 mb-2 text-uppercase iti-sidebar-heading">Docs</h6>
+<ul class="flex-column nav nav-pills">
+  <% docsDropdownPages.forEach((p) => { %>
+    <li>
+      <a class="nav-link <% if (name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
+    </li>
+  <% }); %>
+</ul>

@@ -1,0 +1,17 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import IntlTelInput from 'intl-tel-input/react';
+
+const App = () => (
+  <IntlTelInput
+    initOptions={{
+      initialCountry: "us",
+      // use a CDN so it also works on intl-tel-input.com
+      loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>"),
+    }}
+  />
+);
+
+const container = document.getElementById("app");
+const root = createRoot(container);
+root.render(<App />);

@@ -1,0 +1,11 @@
+import intlTelInput from "intl-tel-input";
+import { ru } from "intl-tel-input/i18n"; // Russian
+
+const input = document.querySelector("#phone");
+
+intlTelInput(input, {
+  i18n: ru,
+  initialCountry: "ru",
+  countryNameLocale: "ru",
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>") // for formatting/placeholders etc
+});

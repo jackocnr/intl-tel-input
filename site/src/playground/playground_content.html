@@ -1,0 +1,59 @@
+<div class="iti-playground" id="itiPlayground">
+  <div class="mb-4">
+    <h1 class="h3">Playground</h1>
+    <p class="text-muted mb-3">
+      Try different <code>intl-tel-input</code> initialisation options and see the plugin update live.
+      <span class="d-none d-lg-inline">
+        <br />
+        (You can also set options via URL params, e.g. <code>?initialCountry=gb&amp;separateDialCode=true</code>).
+      </span>
+    </p>
+
+    <div style="max-width: 520px;">
+      <input type="tel" id="playgroundPhone" />
+      <div class="iti-live-results">Type a number above to see the output here</div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between gap-2">
+            <h2 class="h5 mb-0">Initialisation options</h2>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundReset">Reset</button>
+            </div>
+          </div>
+          <p class="text-muted mt-2 mb-3">
+            Changes re-initialise the plugin on the input above.
+          </p>
+
+          <form id="playgroundOptions" class="vstack gap-3" aria-label="intl-tel-input initialisation options">
+            <!-- JS renders controls here -->
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between gap-2">
+            <h2 class="h5 mb-0">Input attributes</h2>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundResetAttrs">Reset</button>
+            </div>
+          </div>
+          <p class="text-muted mt-2 mb-3">
+            Changes re-initialise the plugin on the input above.
+          </p>
+
+          <form id="playgroundAttributes" class="vstack gap-3" aria-label="Phone input attributes">
+            <!-- JS renders controls here -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

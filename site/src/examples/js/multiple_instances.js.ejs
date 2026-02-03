@@ -1,0 +1,18 @@
+const inputHome = document.querySelector("#home");
+const inputMobile = document.querySelector("#mobile");
+const inputVacation = document.querySelector("#vacation");
+
+window.intlTelInput(inputHome, {
+  initialCountry: 'gb',
+  placeholderNumberType: 'FIXED_LINE',
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>") // for formatting/placeholders etc
+});
+window.intlTelInput(inputMobile, {
+  initialCountry: 'gb',
+  placeholderNumberType: 'MOBILE',
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>"),
+});
+window.intlTelInput(inputVacation, {
+  onlyCountries: ['es', 'fr', 'it'],
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>"),
+});

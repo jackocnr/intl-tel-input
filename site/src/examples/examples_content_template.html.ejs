@@ -1,0 +1,36 @@
+<h1><%= content_title %></h1>
+
+<div class="section">
+  <% if (desc.charAt(0) === '<') { %>
+    <%= desc %>
+  <% } else { %>
+    <p><%= desc %></p>
+  <% } %>
+</div>
+
+<div class="section demo" <% if (typeof isRtl !== 'undefined') { %>dir="rtl"<% } %>>
+  <h2>Demo</h2>
+  <% if (typeof demo_note !== 'undefined') { %>
+    <%= demo_note %>
+  <% } %>
+  <%= markup %>
+</div>
+
+<% if (typeof hideMarkupSection === 'undefined') { %>
+<div class="section">
+  <h2>Markup</h2>
+  <pre><code class="language-markup"><%- markup %></code></pre>
+</div>
+<% } %>
+
+<div class="section">
+  <h2>Code</h2>
+  <pre><code class="language-javascript"><%- code %></code></pre>
+</div>
+
+<%= bootstrap_script %>
+<% if (typeof iti_script !== 'undefined') { %>
+  <%= iti_script %>
+<% } %>
+<script src="/js/prism.js"></script>
+<script src="/examples/js/<%= script %>?<%= time %>"></script>
