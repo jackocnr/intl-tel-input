@@ -13,8 +13,10 @@
   --iti-spacer-horizontal: 8px;
   --iti-flag-height: #{$flag-height};
   --iti-flag-width: #{$flag-width};
-  //* Separate height for the globe icon, as it's much thinner than the flags, so nice to have it a bit taller
+  //* Separate height for the globe icon, as it's much thinner than the flags, so nice to have it a bit taller. This is also re-used for the search icon.
   --iti-globe-height: 16px;
+  //* Separate height for the search clear icon, which looks too big if it's the same as the others.
+  --iti--search-clear-icon-height: 13px;
   //* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control.
   --iti-border-width: 1px;
 
@@ -182,6 +184,9 @@
     right: 8px;
   }
   &__search-icon-svg {
+    width: var(--iti-globe-height);
+    height: var(--iti-globe-height);
+    display: block;
     stroke: var(--iti-icon-color);
     fill: none;
     stroke-width: 3;
@@ -193,13 +198,11 @@
     border: 0;
     border-radius: 3px; // nice on hover state
     cursor: pointer;
-    padding: 4px;
+    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color 0.15s ease;
-    width: 24px;
-    height: 24px;
 
     .iti__search-clear-x {
       stroke-width: 2;
@@ -207,6 +210,11 @@
     .iti__search-clear-bg {
       fill: var(--iti-icon-color);
     }
+  }
+  &__search-clear-svg {
+    width: var(--iti--search-clear-icon-height);
+    height: var(--iti--search-clear-icon-height);
+    display: block;
   }
   [dir="rtl"] &__search-clear {
     right: auto;
