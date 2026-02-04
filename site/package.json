@@ -13,6 +13,8 @@
     "eslint": "^8.38.0",
     "grunt": "^1.6.1",
     "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-shell": "^4.0.0",
     "grunt-template": "^1.0.0",
     "load-grunt-config": "^4.0.1",
     "markdown-it": "^14.1.0",
@@ -21,6 +23,7 @@
     "prop-types": "^15.8.1"
   },
   "scripts": {
-    "build": "rm -rf build tmp && grunt copy && grunt template:internationalisation_js && grunt template:right_to_left_js && grunt template:react_component_js && node esbuild/build.mjs && grunt template:vue_component_js && vite build --config src/examples/js/viteVueDemo.config.js && grunt template"
+    "watch": "grunt watch",
+    "build": "grunt build"
   }
 }

@@ -112,7 +112,8 @@ module.exports = function (grunt) {
 
   const readCommonPagePartials = () => ({
     common_meta_tags: grunt.file.read("src/shared/common_meta_tags.html"),
-    common_styles: grunt.file.read("src/shared/common_styles.html"),
+    bootstrap_styles: grunt.file.read("src/shared/bootstrap_styles.html"),
+    iti_styles: grunt.file.read("src/shared/iti_styles.html.ejs"),
     analytics: grunt.file.read("src/shared/analytics.html"),
   });
 
@@ -464,6 +465,8 @@ module.exports = function (grunt) {
     },
     pageExtra: {
       stylesheet_before_demo_css: "/css/intlTelInput-largeFlags.css",
+      stylesheet_after_demo_css: "/examples/css/large_flags.css",
+      omit_iti_styles: true, // as using special large styles instead
     },
   });
 

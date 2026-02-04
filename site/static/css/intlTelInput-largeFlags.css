@@ -3,22 +3,17 @@
   --iti-border-color: #ccc;
   --iti-dialcode-color: #999;
   --iti-dropdown-bg: white;
-  --iti-spacer-horizontal: 12px;
+  --iti-icon-color: #555;
+  --iti-spacer-horizontal: 8px;
   --iti-flag-height: 24px;
   --iti-flag-width: 32px;
+  --iti-globe-height: 16px;
+  --iti--search-clear-icon-height: 13px;
   --iti-border-width: 1px;
-  --iti-arrow-height: 8px;
-  --iti-arrow-width: 12px;
+  --iti-arrow-height: 4px;
+  --iti-arrow-width: calc((var(--iti-arrow-height) / 2) * 3);
   --iti-triangle-border: calc(var(--iti-arrow-width) / 2);
-  --iti-arrow-padding: 10px;
-  --iti-arrow-color: #555;
-  --iti-input-padding: 10px;
-  --iti-right-hand-selected-country-padding: calc(var(--iti-spacer-horizontal) + var(--iti-spacer-horizontal) + var(--iti-flag-width));
-  --iti-selected-country-arrow-padding: calc(var(--iti-arrow-padding) + var(--iti-arrow-padding) + var(--iti-flag-width) + var(--iti-spacer-horizontal) + var(--iti-arrow-width) + var(--iti-input-padding));
-  --iti-path-flags-1x: url("../img/largeFlags.png") !important;
-  --iti-path-flags-2x: url("../img/largeFlags@2x.png") !important;
-  --iti-path-globe-1x: url("../img/globe.webp") !important;
-  --iti-path-globe-2x: url("../img/globe@2x.webp") !important;
+  --iti-arrow-padding: 6px;
   --iti-flag-sprite-width: 7808px;
   --iti-flag-sprite-height: 24px;
   --iti-mobile-popup-margin: 30px;
@@ -27,16 +22,9 @@
 .iti {
   position: relative;
   display: inline-block;
-  font-size: 20px;
 }
 .iti * {
   box-sizing: border-box;
-}
-.iti__hide {
-  display: none;
-}
-.iti__v-hide {
-  visibility: hidden;
 }
 .iti__a11y-text {
   width: 1px;
@@ -48,20 +36,15 @@
 .iti input.iti__tel-input,
 .iti input.iti__tel-input[type=text],
 .iti input.iti__tel-input[type=tel] {
-  height: 50px;
-  width: 400px;
   position: relative;
   z-index: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-right: var(--iti-right-hand-selected-country-padding);
-  margin-right: 0;
+  margin: 0 !important;
 }
 .iti__country-container {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 0;
+  left: 0;
   padding: var(--iti-border-width);
 }
 .iti__selected-country {
@@ -94,15 +77,11 @@
   height: 0;
   border-left: var(--iti-triangle-border) solid transparent;
   border-right: var(--iti-triangle-border) solid transparent;
-  border-top: var(--iti-arrow-height) solid var(--iti-arrow-color);
-}
-[dir=rtl] .iti__arrow {
-  margin-right: var(--iti-arrow-padding);
-  margin-left: 0;
+  border-top: var(--iti-arrow-height) solid var(--iti-icon-color);
 }
 .iti__arrow--up {
   border-top: none;
-  border-bottom: var(--iti-arrow-height) solid var(--iti-arrow-color);
+  border-bottom: var(--iti-arrow-height) solid var(--iti-icon-color);
 }
 .iti__dropdown-content {
   border-radius: 3px;
@@ -120,14 +99,84 @@
   width: 100%;
   border-width: 0;
   border-radius: 3px;
+  padding-left: 30px;
+  padding-right: 28px;
+}
+[dir=rtl] .iti__search-input {
+  padding-left: inherit;
+  padding-right: 30px;
+  background-position: right 8px center;
 }
 .iti__search-input + .iti__country-list {
   border-top: 1px solid var(--iti-border-color);
+}
+.iti__search-input::-webkit-search-cancel-button {
+  appearance: none;
+}
+.iti__search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.iti__search-icon {
+  position: absolute;
+  left: 8px;
+  display: flex;
+  pointer-events: none;
+}
+[dir=rtl] .iti__search-icon {
+  left: auto;
+  right: 8px;
+}
+.iti__search-icon-svg {
+  width: var(--iti-globe-height);
+  height: var(--iti-globe-height);
+  display: block;
+  stroke: var(--iti-icon-color);
+  fill: none;
+  stroke-width: 3;
+}
+.iti__search-clear {
+  position: absolute;
+  right: 4px;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+.iti__search-clear .iti__search-clear-x {
+  stroke-width: 2;
+}
+.iti__search-clear .iti__search-clear-bg {
+  fill: var(--iti-icon-color);
+}
+.iti__search-clear-svg {
+  width: var(--iti--search-clear-icon-height);
+  height: var(--iti--search-clear-icon-height);
+  display: block;
+}
+[dir=rtl] .iti__search-clear {
+  right: auto;
+  left: 4px;
+}
+.iti__search-clear:hover, .iti__search-clear:focus-visible {
+  background: var(--iti-hover-color);
+  outline: none;
+}
+.iti__no-results {
+  text-align: center;
+  padding: 30px 0;
 }
 .iti__country-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  cursor: pointer;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
@@ -145,7 +194,7 @@
 .iti__country {
   display: flex;
   align-items: center;
-  padding: 12px var(--iti-spacer-horizontal);
+  padding: 8px var(--iti-spacer-horizontal);
   outline: none;
 }
 .iti__dial-code {
@@ -161,29 +210,7 @@
   margin-right: 0;
   margin-left: var(--iti-spacer-horizontal);
 }
-.iti--allow-dropdown input.iti__tel-input,
-.iti--allow-dropdown input.iti__tel-input[type=text],
-.iti--allow-dropdown input.iti__tel-input[type=tel] {
-  padding-right: var(--iti-input-padding);
-  padding-left: var(--iti-selected-country-arrow-padding);
-  margin-left: 0;
-}
-[dir=rtl] .iti--allow-dropdown input.iti__tel-input,
-[dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=text],
-[dir=rtl] .iti--allow-dropdown input.iti__tel-input[type=tel] {
-  padding-right: var(--iti-selected-country-arrow-padding);
-  padding-left: var(--iti-input-padding);
-  margin-right: 0;
-}
-.iti--allow-dropdown .iti__country-container {
-  right: auto;
-  left: 0;
-}
-[dir=rtl] .iti--allow-dropdown .iti__country-container {
-  right: 0;
-  left: auto;
-}
-.iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])):hover, .iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])):hover button {
+.iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) button.iti__selected-country {
   cursor: pointer;
 }
 .iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country-primary:hover,
@@ -192,10 +219,6 @@
 }
 .iti .iti__selected-dial-code {
   margin-left: 4px;
-}
-[dir=rtl] .iti .iti__selected-dial-code {
-  margin-left: 0;
-  margin-right: 4px;
 }
 .iti--container {
   position: fixed;
@@ -206,6 +229,12 @@
 }
 .iti--container:hover {
   cursor: pointer;
+}
+.iti__hide {
+  display: none;
+}
+.iti__v-hide {
+  visibility: hidden;
 }
 
 .iti--fullscreen-popup.iti--container {
@@ -237,7 +266,7 @@
   width: var(--iti-flag-width);
   border-radius: 1px;
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: var(--iti-path-flags-1x);
+  background-image: image-set(var(--iti-path-flags-1x) 1x, var(--iti-path-flags-2x) 2x);
   background-repeat: no-repeat;
   background-position: var(--iti-flag-offset) 0;
   background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
@@ -1220,18 +1249,27 @@
 }
 
 .iti__globe {
-  background-image: var(--iti-path-globe-1x);
-  background-size: contain;
-  background-position: right;
+  background: none;
   box-shadow: none;
-  height: 19px;
+  height: var(--iti-globe-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.iti__globe .iti__globe-svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--iti-icon-color);
 }
 
-@media (min-resolution: 2x) {
-  .iti__flag {
-    background-image: var(--iti-path-flags-2x);
+/* Browsers normally add a coloured outline when you focus an input. Chrome adds a blue outline WITHIN the input. If you focus the input and then hover the selected country, it's bg color square overlaps the focus outline and looks bad. Here, @supports is used to target Chrome only, and move the default outline out by 1px so there's no overlap. */
+@supports (-webkit-appearance: none) and (not (background: -webkit-canvas(foo))) {
+  .iti__tel-input:focus {
+    outline-offset: 1px;
   }
-  .iti__globe {
-    background-image: var(--iti-path-globe-2x);
-  }
+}
+:root {
+  --iti-path-flags-1x: url('../img/flags.webp');
+  --iti-path-flags-2x: url('../img/flags@2x.webp');
 }
