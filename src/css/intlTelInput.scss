@@ -19,9 +19,9 @@
   --iti--search-clear-icon-height: 13px;
   //* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control.
   --iti-border-width: 1px;
-
+  //* Arrow height must be an even number as it gets halved when calculating arrow width
   --iti-arrow-height: 4px;
-  --iti-arrow-width: 6px;
+  --iti-arrow-width: calc((var(--iti-arrow-height) / 2) * 3);
   --iti-triangle-border: calc(var(--iti-arrow-width) / 2);
   --iti-arrow-padding: 6px;
 
