@@ -5,7 +5,7 @@ const message = document.querySelector("#message");
 const iti = window.intlTelInput(input, {
   initialCountry: "us",
   hiddenInput: () => ({ phone: "full_phone", country: "country_code" }),
-  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>") // for formatting/placeholders etc
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>") // for formatting/placeholders etc
 });
 
 form.onsubmit = () => {

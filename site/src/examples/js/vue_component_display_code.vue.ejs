@@ -10,7 +10,7 @@
     @changeErrorCode="errorCode = $event"
     :options="{
       initialCountry: 'us',
-      loadUtils: () => import('/intl-tel-input/js/utils.js?<%= time %>'),
+      loadUtils: () => import('/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
     }"
   />
 </template>

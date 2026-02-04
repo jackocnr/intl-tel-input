@@ -1,11 +1,89 @@
 module.exports = function (grunt) {
-  // timestamp in asset URLs for cache busting
-  var time = new Date().getTime();
-
   const path = require("path");
   const fs = require("fs");
+  const crypto = require("crypto");
   const MarkdownIt = require("markdown-it");
   const markdownItAnchor = require("markdown-it-anchor");
+
+  const hashCacheByPath = new Map();
+
+  const toPosixPath = (p) => String(p || "").replace(/\\/g, "/");
+
+  const resolveBuildPathFromUrl = (urlPath) => {
+    const clean = toPosixPath(String(urlPath || "").split("?")[0]);
+    const withoutLeadingSlash = clean.replace(/^\//, "");
+    return path.join("build", withoutLeadingSlash);
+  };
+
+  const hashFile = (filePath) => {
+    const resolved = path.resolve(filePath);
+    if (hashCacheByPath.has(resolved)) return hashCacheByPath.get(resolved);
+
+    try {
+      const content = fs.readFileSync(resolved);
+      const hash = crypto.createHash("sha256").update(content).digest("hex").slice(0, 12);
+      hashCacheByPath.set(resolved, hash);
+      return hash;
+    } catch {
+      const fallback = "missing";
+      hashCacheByPath.set(resolved, fallback);
+      return fallback;
+    }
+  };
+
+  const hashDirRecursive = (dirPath) => {
+    const resolved = path.resolve(dirPath);
+    const cacheKey = `${resolved}:dir`;
+    if (hashCacheByPath.has(cacheKey)) return hashCacheByPath.get(cacheKey);
+
+    try {
+      const files = [];
+      const walk = (currentDir) => {
+        fs.readdirSync(currentDir, { withFileTypes: true }).forEach((entry) => {
+          const abs = path.join(currentDir, entry.name);
+          if (entry.isDirectory()) {
+            walk(abs);
+          } else if (entry.isFile()) {
+            files.push(abs);
+          }
+        });
+      };
+      walk(resolved);
+      files.sort((a, b) => a.localeCompare(b));
+
+      const hasher = crypto.createHash("sha256");
+      files.forEach((abs) => {
+        const rel = path.relative(resolved, abs);
+        hasher.update(rel);
+        hasher.update("\0");
+        hasher.update(fs.readFileSync(abs));
+        hasher.update("\0");
+      });
+      const hash = hasher.digest("hex").slice(0, 12);
+      hashCacheByPath.set(cacheKey, hash);
+      return hash;
+    } catch {
+      const fallback = "missing";
+      hashCacheByPath.set(cacheKey, fallback);
+      return fallback;
+    }
+  };
+
+  // Returns a query string fragment (no leading '?'), e.g. "v=abc123".
+  const cacheBust = (urlPath, filePath) => {
+    const resolvedPath = filePath
+      ? path.resolve(String(filePath))
+      : resolveBuildPathFromUrl(urlPath);
+    return `v=${hashFile(resolvedPath)}`;
+  };
+
+  // Directory variant for runtime-dynamic imports (e.g. /i18n/${code}/index.js).
+  const cacheBustDir = (urlDirPath, dirPath) => {
+    const resolvedPath = dirPath
+      ? path.resolve(String(dirPath))
+      : resolveBuildPathFromUrl(urlDirPath);
+    return `v=${hashDirRecursive(resolvedPath)}`;
+  };
 
   const getI18nLanguages = () => {
     try {
@@ -110,10 +188,12 @@ module.exports = function (grunt) {
 
   const orderedDocsKeys = docsDropdownPages.map((p) => p.name);
 
-  const readCommonPagePartials = () => ({
+  const readCommonPagePartials = (data) => ({
     common_meta_tags: grunt.file.read("src/shared/common_meta_tags.html"),
     bootstrap_styles: grunt.file.read("src/shared/bootstrap_styles.html"),
-    iti_styles: grunt.file.read("src/shared/iti_styles.html.ejs"),
+    iti_styles: grunt.template.process(grunt.file.read("src/shared/iti_styles.html.ejs"), {
+      data,
+    }),
     analytics: grunt.file.read("src/shared/analytics.html"),
   });
 
@@ -169,14 +249,14 @@ module.exports = function (grunt) {
       src: "src/shared/iti_script.html.ejs",
       dest: "tmp/shared/iti_script.html",
       options: {
-        data: () => ({ time }),
+        data: () => ({ cacheBust }),
       },
     },
     website_css: {
       src: "src/css/website.css",
       dest: "build/css/website.css",
       options: {
-        data: () => ({ time }),
+        data: () => ({ cacheBust }),
       },
     },
 
@@ -201,8 +281,8 @@ module.exports = function (grunt) {
       dest: "build/index.html",
       options: {
         data: () => ({
-          time: time,
-          ...readCommonPagePartials(),
+          cacheBust,
+          ...readCommonPagePartials({ cacheBust }),
           layout: grunt.file.read("tmp/homepage/homepage_layout.html"),
           bootstrap_script: readBootstrapScript(),
           iti_live_results_script: readItiLiveResultsScript(),
@@ -216,7 +296,11 @@ module.exports = function (grunt) {
       src: "src/playground/playground.js",
       dest: "build/playground/playground.js",
       options: {
-        data: () => ({ time, i18nLanguages: getI18nLanguages() }),
+        data: () => ({
+          cacheBust,
+          cacheBustDir,
+          i18nLanguages: getI18nLanguages(),
+        }),
       },
     },
     playground_layout: {
@@ -239,8 +323,8 @@ module.exports = function (grunt) {
       dest: "build/playground/index.html",
       options: {
         data: () => ({
-          time: time,
-          ...readCommonPagePartials(),
+          cacheBust,
+          ...readCommonPagePartials({ cacheBust }),
           layout: grunt.file.read("tmp/playground/playground_layout.html"),
           bootstrap_script: readBootstrapScript(),
           iti_live_results_script: readItiLiveResultsScript(),
@@ -276,14 +360,14 @@ module.exports = function (grunt) {
     const markupPath =
       content.markupPath || `src/examples/html/${key}.html`;
 
-    config[`${key}_js`] = makeTemplateTask(jsSrc, jsDest, () => ({ time }));
+    config[`${key}_js`] = makeTemplateTask(jsSrc, jsDest, () => ({ cacheBust }));
 
     extraJsTasks.forEach((t) => {
-      config[t.key] = makeTemplateTask(t.src, t.dest, () => ({ time }));
+      config[t.key] = makeTemplateTask(t.src, t.dest, () => ({ cacheBust }));
     });
 
     config[`${key}_content`] = makeExamplesContentTask(contentDest, () => ({
-      time,
+      cacheBust,
       content_title: title,
       desc: grunt.file.read(`src/examples/copy/${key}_desc.html`),
       markup: grunt.file.read(markupPath),
@@ -311,11 +395,11 @@ module.exports = function (grunt) {
     });
 
     config[`${key}_page`] = makeExamplesPageTask(pageDest, () => ({
-      time,
+      cacheBust,
       head_title: title,
       canonical_path: `examples/${slug}.html`,
       meta_desc: metaDesc,
-      ...readCommonPagePartials(),
+      ...readCommonPagePartials({ cacheBust }),
       content: grunt.file.read(layoutDest),
       ...pageExtra,
     }));
@@ -557,11 +641,11 @@ module.exports = function (grunt) {
       dest: destPath,
       options: {
         data: () => ({
-          time: time,
+          cacheBust,
           head_title: headTitle,
           canonical_path: canonicalPath,
           meta_desc: `intl-tel-input documentation: ${headTitle}.`,
-          ...readCommonPagePartials(),
+          ...readCommonPagePartials({ cacheBust }),
           layout: grunt.file.read(`tmp/docs/${key}_layout.html`),
           bootstrap_script: readBootstrapScript(),
         }),

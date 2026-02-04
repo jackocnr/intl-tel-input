@@ -33,4 +33,4 @@
   <%= iti_script %>
 <% } %>
 <script src="/js/prism.js"></script>
-<script src="/examples/js/<%= script %>?<%= time %>"></script>
+<script src="/examples/js/<%= script %>?<%= cacheBust('/examples/js/' + script) %>"></script>

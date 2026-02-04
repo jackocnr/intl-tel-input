@@ -7,7 +7,8 @@
 
   if (!telInput || !optionsForm) return;
 
-  const CACHE_BUST = "<%= time %>";
+  const CACHE_BUST_UTILS = "<%= cacheBust('/intl-tel-input/js/utils.js') %>";
+  const CACHE_BUST_I18N = "<%= cacheBustDir('/intl-tel-input/js/i18n') %>";
 
   // i18nLanguages is injected by grunt/template.js
   // eslint-disable-next-line quotes -- JSON.stringify output contains double quotes, so single quotes here are safe/readable.
@@ -288,7 +289,7 @@
       opts[key] = state[key];
     });
 
-    opts.loadUtils = () => import(`/intl-tel-input/js/utils.js?${CACHE_BUST}`);
+    opts.loadUtils = () => import(`/intl-tel-input/js/utils.js?${CACHE_BUST_UTILS}`);
 
     return opts;
   }
@@ -302,7 +303,7 @@
     if (!code) return null;
 
     try {
-      const mod = await import(`/intl-tel-input/js/i18n/${code}/index.js?${CACHE_BUST}`);
+      const mod = await import(`/intl-tel-input/js/i18n/${code}/index.js?${CACHE_BUST_I18N}`);
       return mod && mod.default ? mod.default : null;
     } catch {
       return null;

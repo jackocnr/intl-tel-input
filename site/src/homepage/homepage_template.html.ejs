@@ -10,7 +10,7 @@
     />
     <%= bootstrap_styles %>
     <%= iti_styles %>
-    <link rel="stylesheet" href="/css/website.css?<%= time %>" />
+    <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
     <%= analytics %>
   </head>
 
@@ -28,7 +28,7 @@
             .then(data => success(data.country_code))
             .catch(() => failure());
         },
-        loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>"),
+        loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
       });
     </script>
     <%= iti_live_results_script %>

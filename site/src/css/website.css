@@ -3,8 +3,8 @@
   --header-bg-color-rgb: 71 194 110;
 
   /* override flag paths, to include cache busting */
-  --iti-path-flags-1x: url("/intl-tel-input/img/flags.webp?<%= time %>");
-  --iti-path-flags-2x: url("/intl-tel-input/img/flags@2x.webp?<%= time %>");
+  --iti-path-flags-1x: url("/intl-tel-input/img/flags.webp?<%= cacheBust('/intl-tel-input/img/flags.webp') %>");
+  --iti-path-flags-2x: url("/intl-tel-input/img/flags@2x.webp?<%= cacheBust('/intl-tel-input/img/flags@2x.webp') %>");
 }
 
 html {
@@ -20,17 +20,17 @@ body {
 
 body.iti-page--homepage {
   background-image:
-    linear-gradient(182deg, rgba(var(--bs-body-bg-rgb), .012), rgba(var(--bs-body-bg-rgb), 1) 87%), 
-    radial-gradient(ellipse at 12% 18%, rgba(28, 115, 245, .45), transparent 55%), 
-    radial-gradient(ellipse at 88% 14%, rgba(255, 212, 120, .45), transparent 55%), 
-    radial-gradient(ellipse at 90% 56%, rgba(128, 63, 240, .42), transparent 52%), 
+    linear-gradient(182deg, rgba(var(--bs-body-bg-rgb), .012), rgba(var(--bs-body-bg-rgb), 1) 87%),
+    radial-gradient(ellipse at 12% 18%, rgba(28, 115, 245, .45), transparent 55%),
+    radial-gradient(ellipse at 88% 14%, rgba(255, 212, 120, .45), transparent 55%),
+    radial-gradient(ellipse at 90% 56%, rgba(128, 63, 240, .42), transparent 52%),
     radial-gradient(ellipse at 10% 60%, rgba(224, 76, 135, .42), transparent 52%);
 }
 
 * {
   box-sizing: border-box;
 }
-  
+
 /* vue and react logos in news section on homepage */
 p img {
   vertical-align: baseline;
@@ -265,7 +265,7 @@ select,
   input[disabled] {
     background-color: #3c3c3c !important;
   }
-  
+
   /* bootstrap's dark mode placeholder color is way too bright */
   input::placeholder,
   .demo input::placeholder,

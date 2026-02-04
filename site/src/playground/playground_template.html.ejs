@@ -10,7 +10,7 @@
     />
     <%= bootstrap_styles %>
     <%= iti_styles %>
-    <link rel="stylesheet" href="/css/website.css?<%= time %>" />
+    <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
     <%= analytics %>
   </head>
 
@@ -18,7 +18,7 @@
     <%= layout %>
     <%= bootstrap_script %>
     <%= iti_script %>
-    <script src="/playground/playground.js?<%= time %>"></script>
+    <script src="/playground/playground.js?<%= cacheBust('/playground/playground.js') %>"></script>
     <%= iti_live_results_script %>
   </body>
 </html>

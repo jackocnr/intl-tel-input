@@ -2,13 +2,12 @@
   import { ref } from "vue";
   import IntlTelInput from "intl-tel-input/vue";
 </script>
-  
+
 <template>
   <IntlTelInput
     :options="{
       initialCountry: 'us',
-      loadUtils: () => import('/intl-tel-input/js/utils.js?<%= time %>'),
+      loadUtils: () => import('/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
     }"
   />
 </template>
-  

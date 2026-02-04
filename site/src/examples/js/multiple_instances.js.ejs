@@ -5,14 +5,14 @@ const inputVacation = document.querySelector("#vacation");
 window.intlTelInput(inputHome, {
   initialCountry: 'gb',
   placeholderNumberType: 'FIXED_LINE',
-  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>") // for formatting/placeholders etc
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>") // for formatting/placeholders etc
 });
 window.intlTelInput(inputMobile, {
   initialCountry: 'gb',
   placeholderNumberType: 'MOBILE',
-  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>"),
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
 });
 window.intlTelInput(inputVacation, {
   onlyCountries: ['es', 'fr', 'it'],
-  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>"),
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
 });

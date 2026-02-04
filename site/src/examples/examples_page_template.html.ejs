@@ -11,14 +11,14 @@
       <%= iti_styles %>
     <% } %>
     <% if (typeof stylesheet_before_demo_css !== 'undefined') { %>
-      <link rel="stylesheet" href="<%= stylesheet_before_demo_css %>?<%= time %>">
+      <link rel="stylesheet" href="<%= stylesheet_before_demo_css %>?<%= cacheBust(stylesheet_before_demo_css) %>">
     <% } %>
-    <link rel="stylesheet" href="/css/website.css?<%= time %>" />
+    <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
     <% if (typeof stylesheet_after_demo_css !== 'undefined') { %>
-      <link rel="stylesheet" href="<%= stylesheet_after_demo_css %>?<%= time %>">
+      <link rel="stylesheet" href="<%= stylesheet_after_demo_css %>?<%= cacheBust(stylesheet_after_demo_css) %>">
     <% } %>
     <link rel="stylesheet" href="/css/prism.css">
-    <link rel="stylesheet" href="/css/prism-overrides.css?<%= time %>">
+    <link rel="stylesheet" href="/css/prism-overrides.css?<%= cacheBust('/css/prism-overrides.css') %>">
 
     <%= analytics %>
   </head>

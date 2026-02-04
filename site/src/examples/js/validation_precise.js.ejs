@@ -9,7 +9,7 @@ const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too lo
 // initialise plugin
 const iti = window.intlTelInput(input, {
   initialCountry: "us",
-  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= time %>"),
+  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
 });
 
 const reset = () => {
