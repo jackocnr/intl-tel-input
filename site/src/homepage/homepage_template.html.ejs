@@ -9,8 +9,17 @@
       content="International Telephone Input - a JavaScript plugin for entering international telephone numbers."
     />
     <%= bootstrap_styles %>
-    <%= iti_styles %>
+
+    <!-- ITI styles - show largeFlags version on desktop -->
+    <link rel="stylesheet" href="/intl-tel-input/css/intlTelInput.css?<%= cacheBust('/intl-tel-input/css/intlTelInput.css') %>" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="/css/intlTelInput-largeFlags.css?<%= cacheBust('/css/intlTelInput-largeFlags.css') %>" media="screen and (min-width: 769px)">
+
+    <!-- website styles must come after ITI styles as contains dark mode overrides -->
     <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
+
+    <!-- large flags overrides must come after website styles -->
+    <link rel="stylesheet" href="/examples/css/large_flags.css?<%= cacheBust('/examples/css/large_flags.css') %>" media="screen and (min-width: 769px)">
+
     <%= analytics %>
   </head>
 

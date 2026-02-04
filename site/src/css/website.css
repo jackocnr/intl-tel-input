@@ -277,7 +277,7 @@ select,
 
 .iti-live-results {
   display: inline-block; /* shrink to fit content */
-  margin: 20px 0;
+  margin: 10px 0 20px;
   border: 1px solid rgb(var(--header-bg-color-rgb));
   padding: 10px;
   border-radius: 3px;
