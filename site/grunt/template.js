@@ -549,7 +549,7 @@ module.exports = function (grunt) {
     },
     pageExtra: {
       stylesheet_before_demo_css: "/css/intlTelInput-largeFlags.css",
-      stylesheet_after_demo_css: "/examples/css/large_flags.css",
+      stylesheet_after_demo_css: "/css/large_flags_overrides.css",
       omit_iti_styles: true, // as using special large styles instead
     },
   });

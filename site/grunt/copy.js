@@ -12,9 +12,9 @@ module.exports = function (grunt) {
       dest: "build", // destination folder
       expand: true, // required when using cwd
     },
-    prism_override_css: {
+    css_overrides: {
       cwd: "src/css", // set working folder / root to copy
-      src: "prism-overrides.css",
+      src: ["prism-overrides.css", "large_flags_overrides.css"],
       dest: "build/css", // destination folder
       expand: true, // required when using cwd
     },
