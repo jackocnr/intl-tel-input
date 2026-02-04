@@ -1,9 +1,9 @@
 :root {
   --iti-spacer-horizontal: 12px;
-  --iti-globe-height: 26px;
+  --iti-globe-height: 22px;
   --iti--search-clear-icon-height: 16px;
-  --iti-arrow-height: 6px;
-  --iti-arrow-padding: 10px;
+  --iti-arrow-height: 5px;
+  --iti-arrow-padding: 9px;
   --iti-path-flags-1x: url('/img/largeFlags.webp');
   --iti-path-flags-2x: url('/img/largeFlags@2x.webp');
 }
@@ -11,12 +11,12 @@
   font-size: 20px;
 }
 .iti input {
-  height: 50px;
+  height: 44px;
   width: 350px !important;
 }
 input.iti__search-input {
-  padding-left: 45px;
-  padding-right: 45px;
+  padding-left: 38px;
+  padding-right: 38px;
 }
 .iti--inline-dropdown .iti__country-list {
   max-height: 210px;
