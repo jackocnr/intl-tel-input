@@ -13,6 +13,7 @@
   --iti-spacer-horizontal: 8px;
   --iti-flag-height: #{$flag-height};
   --iti-flag-width: #{$flag-width};
+  //* Separate height for the globe icon, as it's much thinner than the flags, so nice to have it a bit taller
   --iti-globe-height: 16px;
   //* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control.
   --iti-border-width: 1px;

@@ -15,9 +15,10 @@ module.exports = function(grunt) {
       fs.mkdirSync(buildImgDir, { recursive: true });
     }
 
-    const supportedFilenames = supportedCountries.map(country => `${country.iso2}.svg`).sort();
+    const supportedCountryFilenames = supportedCountries.map(country => `${country.iso2}.svg`).sort();
 
     // customise this number to change the size of the flags (NOTE: flags are 4x3 ratio)
+    // must be a multiple of 3
     const TARGET_HEIGHT = 12;
 
     const TARGET_WIDTH = (TARGET_HEIGHT / 3) * 4;
@@ -41,7 +42,7 @@ module.exports = function(grunt) {
         const spriteFile2xPNG = "build/img/flags@2x.png";
         let outputFileContent = '';
 
-        let totalWidth = supportedFilenames.length * (TARGET_WIDTH + FLAG_MARGIN) - FLAG_MARGIN;
+        let totalWidth = supportedCountryFilenames.length * (TARGET_WIDTH + FLAG_MARGIN) - FLAG_MARGIN;
         const maxHeight = TARGET_HEIGHT;
 
         let flagsMetadata = "$flags: (\n";
@@ -50,7 +51,7 @@ module.exports = function(grunt) {
         const scaledImages1x = [];
         const scaledImages2x = [];
 
-        for (const filename of supportedFilenames) {
+        for (const filename of supportedCountryFilenames) {
           const countryCode = filename.split('.')[0];
           const processedFilename = handleSpecialCases(filename);
           const imagePath = path.join(flagsPath, processedFilename);

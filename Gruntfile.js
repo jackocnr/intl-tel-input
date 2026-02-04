@@ -22,7 +22,7 @@ module.exports = function(grunt) {
   // just CSS
   grunt.registerTask('build:css', ['sass', 'cssmin']);
 
-  // just images
+  // just images (and CSS)
   grunt.registerTask('build:img', ['generate-sprite', 'build:css']);
 
   // just javascript
