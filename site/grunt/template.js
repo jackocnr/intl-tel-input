@@ -1,247 +1,32 @@
 module.exports = function (grunt) {
   const path = require("path");
-  const fs = require("fs");
-  const crypto = require("crypto");
-  const MarkdownIt = require("markdown-it");
-  const markdownItAnchor = require("markdown-it-anchor");
+  const {
+    cacheBust,
+    cacheBustDir,
+    getI18nLanguages,
+    createMarkdownRenderer,
+  } = require("./templateUtils");
 
-  const hashCacheByPath = new Map();
+  const {
+    makeTemplateTask,
+    makeLayoutTask,
+    readCommonPagePartials,
+    readBootstrapScript,
+    readItiLiveResultsScript,
+    readItiScript,
+    LAYOUT_TEMPLATE_PATH,
+    EXAMPLES_CONTENT_TEMPLATE_PATH,
+    EXAMPLES_PAGE_TEMPLATE_PATH,
+  } = require("./templateGruntHelpers");
 
-  const toPosixPath = (p) => String(p || "").replace(/\\/g, "/");
+  const {
+    docsDropdownPages,
+    examplesDropdownPages,
+    docsPageByName,
+    orderedDocsKeys,
+  } = require("./templateNav");
 
-  const resolveBuildPathFromUrl = (urlPath) => {
-    const clean = toPosixPath(String(urlPath || "").split("?")[0]);
-    const withoutLeadingSlash = clean.replace(/^\//, "");
-    return path.join("build", withoutLeadingSlash);
-  };
-
-  const hashFile = (filePath) => {
-    const resolved = path.resolve(filePath);
-    if (hashCacheByPath.has(resolved)) return hashCacheByPath.get(resolved);
-
-    try {
-      const content = fs.readFileSync(resolved);
-      const hash = crypto.createHash("sha256").update(content).digest("hex").slice(0, 12);
-      hashCacheByPath.set(resolved, hash);
-      return hash;
-    } catch {
-      const fallback = "missing";
-      hashCacheByPath.set(resolved, fallback);
-      return fallback;
-    }
-  };
-
-  const hashDirRecursive = (dirPath) => {
-    const resolved = path.resolve(dirPath);
-    const cacheKey = `${resolved}:dir`;
-    if (hashCacheByPath.has(cacheKey)) return hashCacheByPath.get(cacheKey);
-
-    try {
-      const files = [];
-      const walk = (currentDir) => {
-        fs.readdirSync(currentDir, { withFileTypes: true }).forEach((entry) => {
-          const abs = path.join(currentDir, entry.name);
-          if (entry.isDirectory()) {
-            walk(abs);
-          } else if (entry.isFile()) {
-            files.push(abs);
-          }
-        });
-      };
-      walk(resolved);
-      files.sort((a, b) => a.localeCompare(b));
-
-      const hasher = crypto.createHash("sha256");
-      files.forEach((abs) => {
-        const rel = path.relative(resolved, abs);
-        hasher.update(rel);
-        hasher.update("\0");
-        hasher.update(fs.readFileSync(abs));
-        hasher.update("\0");
-      });
-      const hash = hasher.digest("hex").slice(0, 12);
-      hashCacheByPath.set(cacheKey, hash);
-      return hash;
-    } catch {
-      const fallback = "missing";
-      hashCacheByPath.set(cacheKey, fallback);
-      return fallback;
-    }
-  };
-
-  // Returns a query string fragment (no leading '?'), e.g. "v=abc123".
-  const cacheBust = (urlPath, filePath) => {
-    const resolvedPath = filePath
-      ? path.resolve(String(filePath))
-      : resolveBuildPathFromUrl(urlPath);
-    return `v=${hashFile(resolvedPath)}`;
-  };
-
-  // Directory variant for runtime-dynamic imports (e.g. /i18n/${code}/index.js).
-  const cacheBustDir = (urlDirPath, dirPath) => {
-    const resolvedPath = dirPath
-      ? path.resolve(String(dirPath))
-      : resolveBuildPathFromUrl(urlDirPath);
-    return `v=${hashDirRecursive(resolvedPath)}`;
-  };
-
-  const getI18nLanguages = () => {
-    try {
-      const i18nDir = path.join("build", "intl-tel-input", "js", "i18n");
-      return fs
-        .readdirSync(i18nDir, { withFileTypes: true })
-        .filter((d) => d.isDirectory())
-        .map((d) => d.name)
-        .filter(Boolean)
-        .sort((a, b) => a.localeCompare(b));
-    } catch {
-      return [];
-    }
-  };
-
-  const slugifyHeading = (value) =>
-    String(value)
-      .trim()
-      .toLowerCase()
-      // remove apostrophes
-      .replace(/['’]/g, "")
-      // replace non-alphanumeric with hyphens
-      .replace(/[^a-z0-9]+/g, "-")
-      // collapse repeats
-      .replace(/-+/g, "-")
-      // trim hyphens
-      .replace(/^-|-$/g, "");
-
-  const md = new MarkdownIt({
-    html: true,
-    linkify: true,
-    typographer: true,
-  }).use(markdownItAnchor, {
-    slugify: slugifyHeading,
-    permalink: markdownItAnchor.permalink.ariaHidden({
-      placement: "before",
-      symbol: `
-        <svg class="iti-anchor-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false">
-          <path d="M7.775 3.275a3.25 3.25 0 0 1 4.596 0l.354.354a3.25 3.25 0 0 1 0 4.596l-1.7 1.7a3.25 3.25 0 0 1-4.596 0 .75.75 0 0 1 1.06-1.06 1.75 1.75 0 0 0 2.476 0l1.7-1.7a1.75 1.75 0 0 0 0-2.475l-.354-.354a1.75 1.75 0 0 0-2.475 0l-.85.85a.75.75 0 0 1-1.06-1.06z"/>
-          <path d="M8.225 12.725a3.25 3.25 0 0 1-4.596 0l-.354-.354a3.25 3.25 0 0 1 0-4.596l1.7-1.7a3.25 3.25 0 0 1 4.596 0 .75.75 0 0 1-1.06 1.06 1.75 1.75 0 0 0-2.476 0l-1.7 1.7a1.75 1.75 0 0 0 0 2.475l.354.354a1.75 1.75 0 0 0 2.475 0l.85-.85a.75.75 0 0 1 1.06 1.06z"/>
-        </svg>
-      `,
-    }),
-  });
-
-  // Prism language ids differ from common fence shorthands.
-  // E.g. Prism uses "markup" for HTML, and "javascript" (not "js").
-  const normalizePrismFenceLanguage = (info) => {
-    const trimmed = (info || "").trim();
-    if (!trimmed) return info;
-
-    const [rawLang, ...restParts] = trimmed.split(/\s+/);
-    const lang = String(rawLang).toLowerCase();
-    const rest = restParts.length ? ` ${restParts.join(" ")}` : "";
-
-    const languageMap = {
-      html: "markup",
-      js: "javascript",
-    };
-    const mappedLang = languageMap[lang] || lang;
-
-    return `${mappedLang}${rest}`;
-  };
-
-  const defaultFenceRenderer = md.renderer.rules.fence;
-  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
-    tokens[idx].info = normalizePrismFenceLanguage(tokens[idx].info);
-    return defaultFenceRenderer(tokens, idx, options, env, self);
-  };
-
-  // ---- Nav dropdown pages (hardcoded) ----
-  const docsDropdownPages = [
-    { name: "getting_started", href: "/docs/getting-started.html", label: "Getting started" },
-    { name: "options", href: "/docs/options.html", label: "Initialisation options" },
-    { name: "methods", href: "/docs/methods.html", label: "Methods" },
-    { name: "events", href: "/docs/events.html", label: "Events" },
-    { name: "utils", href: "/docs/utils.html", label: "Utilities script" },
-    { name: "theming", href: "/docs/theming.html", label: "Theming / Dark mode" },
-    { name: "troubleshooting", href: "/docs/troubleshooting.html", label: "Troubleshooting" },
-  ];
-
-  const examplesDropdownPages = [
-    { name: "validation_practical", href: "/examples/validation-practical.html", label: "Validation" },
-    { name: "lookup_country", href: "/examples/lookup-country.html", label: "Lookup user's country" },
-    { name: "only_countries", href: "/examples/only-countries.html", label: "Only countries" },
-    { name: "single_country", href: "/examples/single-country.html", label: "Single country" },
-    { name: "internationalisation", href: "/examples/internationalisation.html", label: "Internationalisation" },
-    { name: "right_to_left", href: "/examples/right-to-left.html", label: "Right to Left" },
-    { name: "hidden_input", href: "/examples/hidden-input.html", label: "Hidden input" },
-    { name: "display_number", href: "/examples/display-number.html", label: "Display existing number" },
-    { name: "multiple_instances", href: "/examples/multiple-instances.html", label: "Multiple instances" },
-    { name: "validation_precise", href: "/examples/validation-precise.html", label: "Precise Validation (dangerous)" },
-    { name: "large_flags", href: "/examples/large-flags.html", label: "Large flags" },
-    { name: "react_component", href: "/examples/react-component.html", label: "React component" },
-    { name: "vue_component", href: "/examples/vue-component.html", label: "Vue component" },
-  ];
-
-  const docsPageByName = docsDropdownPages.reduce((acc, p) => {
-    acc[p.name] = p;
-    return acc;
-  }, {});
-
-  const orderedDocsKeys = docsDropdownPages.map((p) => p.name);
-
-  const readCommonPagePartials = (data) => ({
-    common_meta_tags: grunt.file.read("src/shared/common_meta_tags.html"),
-    bootstrap_styles: grunt.file.read("src/shared/bootstrap_styles.html"),
-    iti_styles: grunt.template.process(grunt.file.read("src/shared/iti_styles.html.ejs"), {
-      data,
-    }),
-    analytics: grunt.file.read("src/shared/analytics.html"),
-  });
-
-  const readBootstrapScript = () =>
-    grunt.file.read("src/shared/bootstrap_script.html");
-
-  const readItiLiveResultsScript = () =>
-    grunt.file.read("src/shared/iti_live_results_script.html");
-
-  const readItiScript = () => grunt.file.read("tmp/shared/iti_script.html");
-
-  const makeTemplateTask = (src, dest, data) => ({
-    src,
-    dest,
-    options: {
-      data,
-    },
-  });
-
-  const makeLayoutTask = ({
-    dest,
-    showLeftSidebar,
-    layoutClass,
-    navPath,
-    contentPath,
-    name,
-    pageType,
-    extra = {},
-  }) =>
-    makeTemplateTask("src/layout_template.html.ejs", dest, () => ({
-      showLeftSidebar,
-      layoutClass,
-      ...(navPath ? { nav: grunt.file.read(navPath) } : {}),
-      content: grunt.file.read(contentPath),
-      name,
-      pageType,
-      docsDropdownPages,
-      examplesDropdownPages,
-      ...extra,
-    }));
-
-  const makeExamplesContentTask = (dest, data) =>
-    makeTemplateTask("src/examples/examples_content_template.html.ejs", dest, data);
-
-  const makeExamplesPageTask = (dest, data) =>
-    makeTemplateTask("src/examples/examples_page_template.html.ejs", dest, data);
-
-  const EXAMPLES_NAV_PATH = "src/examples/examples_nav_template.html.ejs";
+  const md = createMarkdownRenderer();
 
   const config = {
     // cache bust common assets
@@ -262,7 +47,7 @@ module.exports = function (grunt) {
 
     // homepage
     homepage_layout: {
-      src: "src/layout_template.html.ejs",
+      src: LAYOUT_TEMPLATE_PATH,
       dest: "tmp/homepage/homepage_layout.html",
       options: {
         data: () => ({
@@ -282,11 +67,11 @@ module.exports = function (grunt) {
       options: {
         data: () => ({
           cacheBust,
-          ...readCommonPagePartials({ cacheBust }),
+          ...readCommonPagePartials(grunt, { cacheBust }),
           layout: grunt.file.read("tmp/homepage/homepage_layout.html"),
-          bootstrap_script: readBootstrapScript(),
-          iti_live_results_script: readItiLiveResultsScript(),
-          iti_script: readItiScript(),
+          bootstrap_script: readBootstrapScript(grunt),
+          iti_live_results_script: readItiLiveResultsScript(grunt),
+          iti_script: readItiScript(grunt),
         }),
       },
     },
@@ -304,7 +89,7 @@ module.exports = function (grunt) {
       },
     },
     playground_layout: {
-      src: "src/layout_template.html.ejs",
+      src: LAYOUT_TEMPLATE_PATH,
       dest: "tmp/playground/playground_layout.html",
       options: {
         data: () => ({
@@ -324,17 +109,15 @@ module.exports = function (grunt) {
       options: {
         data: () => ({
           cacheBust,
-          ...readCommonPagePartials({ cacheBust }),
+          ...readCommonPagePartials(grunt, { cacheBust }),
           layout: grunt.file.read("tmp/playground/playground_layout.html"),
-          bootstrap_script: readBootstrapScript(),
-          iti_live_results_script: readItiLiveResultsScript(),
-          iti_script: readItiScript(),
+          bootstrap_script: readBootstrapScript(grunt),
+          iti_live_results_script: readItiLiveResultsScript(grunt),
+          iti_script: readItiScript(grunt),
         }),
       },
     },
   };
-
-  const slugFromKey = (key) => key.replace(/_/g, "-");
 
   const registerExample = ({
     key,
@@ -346,7 +129,7 @@ module.exports = function (grunt) {
     layoutExtra = {},
     pageExtra = {},
   }) => {
-    const slug = slugFromKey(key);
+    const slug = key.replace(/_/g, "-");
     const jsSrc = js.src || `src/examples/js/${key}.js.ejs`;
     // some examples build to tmp first
     const jsDest = js.dest || `${js.destDir || "build"}/examples/js/${key}.js`;
@@ -366,47 +149,59 @@ module.exports = function (grunt) {
       config[t.key] = makeTemplateTask(t.src, t.dest, () => ({ cacheBust }));
     });
 
-    config[`${key}_content`] = makeExamplesContentTask(contentDest, () => ({
-      cacheBust,
-      content_title: title,
-      desc: grunt.file.read(`src/examples/copy/${key}_desc.html`),
-      markup: grunt.file.read(markupPath),
-      code: grunt.file.read(codePath),
-      script: scriptName,
-      ...(content.demo_note ? { demo_note: content.demo_note } : {}),
-      ...(content.hideMarkupSection
-        ? { hideMarkupSection: true }
-        : {}),
-      ...(content.isRtl ? { isRtl: true } : {}),
-      ...(content.extraData ? content.extraData() : {}),
-      bootstrap_script: readBootstrapScript(),
-      ...(content.includeItiScript ? { iti_script: readItiScript() } : {}),
-    }));
+    config[`${key}_content`] = makeTemplateTask(
+      EXAMPLES_CONTENT_TEMPLATE_PATH,
+      contentDest,
+      () => ({
+        cacheBust,
+        content_title: title,
+        desc: grunt.file.read(`src/examples/copy/${key}_desc.html`),
+        markup: grunt.file.read(markupPath),
+        code: grunt.file.read(codePath),
+        script: scriptName,
+        ...(content.demo_note ? { demo_note: content.demo_note } : {}),
+        ...(content.hideMarkupSection
+          ? { hideMarkupSection: true }
+          : {}),
+        ...(content.isRtl ? { isRtl: true } : {}),
+        ...(content.extraData ? content.extraData() : {}),
+        bootstrap_script: readBootstrapScript(grunt),
+        ...(content.includeItiScript
+          ? { iti_script: readItiScript(grunt) }
+          : {}),
+      })
+    );
 
-    config[`${key}_layout`] = makeLayoutTask({
+    config[`${key}_layout`] = makeLayoutTask(grunt, {
       dest: layoutDest,
       showLeftSidebar: true,
       layoutClass: "iti-layout-both-sidebars",
-      navPath: EXAMPLES_NAV_PATH,
+      navPath: "src/examples/examples_nav_template.html.ejs",
       contentPath: contentDest,
       name: key,
       pageType: "examples",
+      docsDropdownPages,
+      examplesDropdownPages,
       extra: layoutExtra,
     });
 
-    config[`${key}_page`] = makeExamplesPageTask(pageDest, () => ({
-      cacheBust,
-      head_title: title,
-      canonical_path: `examples/${slug}.html`,
-      meta_desc: metaDesc,
-      ...readCommonPagePartials({ cacheBust }),
-      content: grunt.file.read(layoutDest),
-      ...pageExtra,
-    }));
+    config[`${key}_page`] = makeTemplateTask(
+      EXAMPLES_PAGE_TEMPLATE_PATH,
+      pageDest,
+      () => ({
+        cacheBust,
+        head_title: title,
+        canonical_path: `examples/${slug}.html`,
+        meta_desc: metaDesc,
+        ...readCommonPagePartials(grunt, { cacheBust }),
+        content: grunt.file.read(layoutDest),
+        ...pageExtra,
+      })
+    );
   };
 
-  // ---- Examples (generated) ----
-  registerExample({
+  const exampleDefinitions = [
+  {
     key: "lookup_country",
     title: "Lookup user's country",
     metaDesc: "Automatically set the country based on the user's IP address.",
@@ -414,9 +209,8 @@ module.exports = function (grunt) {
       markupPath: "src/examples/html/simple_input.html",
       includeItiScript: true,
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "internationalisation",
     title: "Internationalisation",
     metaDesc: "Support the internationalisation of country names via the i18n option.",
@@ -428,9 +222,8 @@ module.exports = function (grunt) {
       markupPath: "src/examples/html/simple_input.html",
       codePath: "tmp/examples/js/internationalisation.js",
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "right_to_left",
     title: "Right to left",
     metaDesc: "Support for right-to-left languages.",
@@ -444,9 +237,8 @@ module.exports = function (grunt) {
       codePath: "tmp/examples/js/right_to_left.js",
     },
     layoutExtra: { isRtl: true },
-  });
-
-  registerExample({
+  },
+  {
     key: "only_countries",
     title: "Only countries option",
     metaDesc: "Only show European countries in the dropdown.",
@@ -454,9 +246,8 @@ module.exports = function (grunt) {
       markupPath: "src/examples/html/simple_input.html",
       includeItiScript: true,
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "single_country",
     title: "Single country",
     metaDesc: "When you only need to handle numbers from a single country.",
@@ -466,9 +257,8 @@ module.exports = function (grunt) {
       includeItiScript: true,
     },
     pageExtra: { stylesheet_after_demo_css: "/examples/css/validation.css" },
-  });
-
-  registerExample({
+  },
+  {
     key: "validation_practical",
     title: "Validation",
     metaDesc:
@@ -483,9 +273,8 @@ module.exports = function (grunt) {
     pageExtra: {
       stylesheet_after_demo_css: "/examples/css/validation.css",
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "validation_precise",
     title: "Precise Validation (dangerous)",
     metaDesc:
@@ -500,9 +289,8 @@ module.exports = function (grunt) {
     pageExtra: {
       stylesheet_after_demo_css: "/examples/css/validation.css",
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "hidden_input",
     title: "Hidden input option",
     metaDesc:
@@ -510,9 +298,8 @@ module.exports = function (grunt) {
     content: {
       includeItiScript: true,
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "multiple_instances",
     title: "Multiple instances",
     metaDesc: "Use multiple instances of the plugin on the same page.",
@@ -522,9 +309,8 @@ module.exports = function (grunt) {
     pageExtra: {
       stylesheet_after_demo_css: "/examples/css/multiple_instances.css",
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "display_number",
     title: "Display existing number",
     metaDesc: "Automatically format an existing number.",
@@ -534,9 +320,8 @@ module.exports = function (grunt) {
     content: {
       includeItiScript: true,
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "large_flags",
     title: "Large flags",
     metaDesc: "How to display extra large flag images.",
@@ -552,9 +337,8 @@ module.exports = function (grunt) {
       stylesheet_after_demo_css: "/css/large_flags_overrides.css",
       omit_iti_styles: true, // as using special large styles instead
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "react_component",
     title: "React component",
     metaDesc: "How to use intl-tel-input with React.",
@@ -575,9 +359,8 @@ module.exports = function (grunt) {
       codePath: "build/examples/js/react_component_display_code.js",
       script: "react_component_bundle.js",
     },
-  });
-
-  registerExample({
+  },
+  {
     key: "vue_component",
     title: "Vue component",
     metaDesc: "How to use intl-tel-input with Vue.",
@@ -600,7 +383,8 @@ module.exports = function (grunt) {
       codePath: "build/examples/js/vue_component_display_code.vue",
       script: "vue_component_bundle.js",
     },
-  });
+  }];
+  exampleDefinitions.forEach((definition) => registerExample(definition));
 
   orderedDocsKeys.forEach((key) => {
     const mdPath = path.join("src", "docs", `${key}.md`);
@@ -620,7 +404,7 @@ module.exports = function (grunt) {
     };
 
     config[`docs_layout_${key}`] = {
-      src: "src/layout_template.html.ejs",
+      src: LAYOUT_TEMPLATE_PATH,
       dest: `tmp/docs/${key}_layout.html`,
       options: {
         data: () => ({
@@ -645,9 +429,9 @@ module.exports = function (grunt) {
           head_title: headTitle,
           canonical_path: canonicalPath,
           meta_desc: `intl-tel-input documentation: ${headTitle}.`,
-          ...readCommonPagePartials({ cacheBust }),
+          ...readCommonPagePartials(grunt, { cacheBust }),
           layout: grunt.file.read(`tmp/docs/${key}_layout.html`),
-          bootstrap_script: readBootstrapScript(),
+          bootstrap_script: readBootstrapScript(grunt),
         }),
       },
     };
