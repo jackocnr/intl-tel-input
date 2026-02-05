@@ -105,11 +105,33 @@ p img {
 .iti-layout-both-sidebars .iti-right-sidebar {
   grid-area: ads;
 }
-.iti-left-sidebar .nav-link {
+.iti-left-sidebar .nav-link,
+.iti-mobile-sidebar .nav-link {
   color: var(--bs-body-color);
 }
-.nav--primary-links .nav-link {
-  font-weight: 600;
+.nav--primary-links > .nav-item > .nav-link {
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+.iti-mobile-sidebar .iti-mobile-submenu .nav-link {
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.95;
+}
+.iti-mobile-nav-toggle {
+  border: 0;
+  background: none;
+}
+.iti-mobile-nav-toggle__chevron {
+  width: 0.75rem;
+  height: 0.75rem;
+  display: inline-block;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.85;
 }
 .nav-pills .nav-link.active {
   background-color: rgb(var(--header-bg-color-rgb));

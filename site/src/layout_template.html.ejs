@@ -9,7 +9,7 @@
         aria-label="Open navigation menu"
         type="button"
         data-bs-toggle="offcanvas"
-        data-bs-target="#itiSidebar"
+        data-bs-target="#itiMobileSidebar"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -109,45 +109,90 @@
   </nav>
 </header>
 
+<!-- MOBILE NAV SIDEBAR (OFFCANVAS) -->
+<aside class="iti-mobile-sidebar d-lg-none">
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="itiMobileSidebar" aria-labelledby="itiMobileSidebarLabel">
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title" id="itiMobileSidebarLabel">
+        <a href="/">intl-tel-input</a>
+      </h5>
+      <button
+        type="button"
+        class="btn-close btn-close-white"
+        data-bs-dismiss="offcanvas"
+        data-bs-target="#itiMobileSidebar"
+        aria-label="Close navigation menu"
+      ></button>
+    </div>
+    <div class="offcanvas-body flex-column">
+
+      <ul class="flex-column flex-nowrap nav nav-pills nav--primary-links" id="itiMobilePrimaryNav">
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link iti-mobile-nav-toggle text-start w-100 d-flex align-items-center justify-content-between"
+            data-bs-toggle="collapse"
+            data-bs-target="#itiMobileDocsMenu"
+            aria-controls="itiMobileDocsMenu"
+            aria-expanded="<%= pageType === 'docs' ? 'true' : 'false' %>"
+          >
+            Docs
+            <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
+          </button>
+          <ul
+            class="iti-mobile-submenu collapse nav flex-column flex-nowrap nav-pills ms-3 mt-2 <% if (pageType === 'docs') { %>show<% } %>"
+            id="itiMobileDocsMenu"
+            data-bs-parent="#itiMobilePrimaryNav"
+          >
+            <% docsDropdownPages.forEach((p) => { %>
+              <li class="nav-item">
+                <a class="nav-link py-2 <% if (pageType === 'docs' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
+              </li>
+            <% }); %>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link <% if (pageType === 'playground') { %>active<% } %>" href="/playground">Playground</a>
+        </li>
+
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link iti-mobile-nav-toggle text-start w-100 d-flex align-items-center justify-content-between"
+            data-bs-toggle="collapse"
+            data-bs-target="#itiMobileExamplesMenu"
+            aria-controls="itiMobileExamplesMenu"
+            aria-expanded="<%= pageType === 'examples' ? 'true' : 'false' %>"
+          >
+            Examples
+            <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
+          </button>
+          <ul
+            class="iti-mobile-submenu collapse nav flex-column flex-nowrap nav-pills ms-3 mt-2 <% if (pageType === 'examples') { %>show<% } %>"
+            id="itiMobileExamplesMenu"
+            data-bs-parent="#itiMobilePrimaryNav"
+          >
+            <% examplesDropdownPages.forEach((p) => { %>
+              <li class="nav-item">
+                <a class="nav-link py-2 <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
+              </li>
+            <% }); %>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
 <!-- MAIN PAGE LAYOUT -->
 <div class="container-xxl iti-gutter mt-3 my-md-4 <%= layoutClass %>">
 
-  <!-- LEFT SIDEBAR (MOBILE: HIDDEN BUT TOGGLEABLE, DESKTOP: DEPENDS ON showLeftSidebar) -->
-  <aside class="iti-left-sidebar">
-    <div class="<% if (showLeftSidebar) { %>offcanvas-lg<% } else { %>offcanvas<% } %> offcanvas-start" id="itiSidebar">
-      <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title">
-          <a href="/">intl-tel-input</a>
-        </h5>
-        <button
-          type="button"
-          class="btn-close btn-close-white"
-          data-bs-dismiss="offcanvas"
-          data-bs-target="#itiSidebar"
-          aria-label="Close navigation menu"
-        ></button>
-      </div>
-      <div class="offcanvas-body flex-column">
-
-        <!-- MAIN NAV LINKS (MOBILE ONLY) -->
-        <ul class="flex-column nav nav-pills d-lg-none nav--primary-links">
-          <li>
-            <a class="nav-link" href="/docs">Docs</a>
-          </li>
-          <li>
-            <a class="nav-link" href="/playground">Playground</a>
-          </li>
-          <li>
-            <a class="nav-link" href="/examples">Examples</a>
-          </li>
-        </ul>
-
-        <!-- PAGE SPECIFIC LINKS (MOBILE and DESKTOP) -->
-        <% if (typeof nav !== 'undefined') { %>
-          <%= nav %>
-        <% } %>
-      </div>
-    </div>
+  <!-- LEFT SIDEBAR (DESKTOP ONLY: PAGE-SPECIFIC NAV) -->
+  <aside class="iti-left-sidebar d-none <% if (showLeftSidebar) { %>d-lg-block<% } %>">
+    <% if (typeof nav !== 'undefined') { %>
+      <%= nav %>
+    <% } %>
   </aside>
 
   <!-- MAIN PAGE CONTENT -->
