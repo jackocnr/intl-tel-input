@@ -199,6 +199,35 @@
   <main class="iti-main order-1" <% if (typeof isRtl !== 'undefined') { %>style="text-align:right;"<% } %>>
     <div class="iti-content ps-lg-2">
       <%= content %>
+
+      <%
+        const pagesForPrevNext = pageType === 'docs'
+          ? docsDropdownPages
+          : (pageType === 'examples' ? examplesDropdownPages : null);
+        const activeIndex = pagesForPrevNext
+          ? pagesForPrevNext.findIndex((p) => p.name === name)
+          : -1;
+        const prevPage = (pagesForPrevNext && activeIndex > 0)
+          ? pagesForPrevNext[activeIndex - 1]
+          : null;
+        const nextPage = (pagesForPrevNext && activeIndex >= 0 && activeIndex < pagesForPrevNext.length - 1)
+          ? pagesForPrevNext[activeIndex + 1]
+          : null;
+      %>
+      <% if ((prevPage || nextPage) && pagesForPrevNext) { %>
+        <nav class="d-flex justify-content-between mt-5 pt-4 border-top" aria-label="Page navigation">
+          <div>
+            <% if (prevPage) { %>
+              <a href="<%= prevPage.href %>">&larr; <%= prevPage.label %></a>
+            <% } %>
+          </div>
+          <div class="text-end">
+            <% if (nextPage) { %>
+              <a href="<%= nextPage.href %>"><%= nextPage.label %> &rarr;</a>
+            <% } %>
+          </div>
+        </nav>
+      <% } %>
     </div>
   </main>
 
