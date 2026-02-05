@@ -35,7 +35,7 @@ Additional classes to add to the (injected) wrapper `<div>`.
 ## countryNameLocale
 
 Type: `String` Default: `"en"`  
-The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"`, or `"zh-Hans"`. For translating the other UI strings, like the country search placeholder, see [i18n](#i18n) option. View the plugin with `countryNameLocale` set to `"zh"`, and `i18n` set to the provided ZH user interface translations in the [Playground](/playground/?countryNameLocale=zh&i18n=zh) (and open the country dropdown).
+The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"`, or `"zh-Hans"`. For translating the other UI strings, like the country search placeholder, see [i18n](#i18n) option. View the plugin with `countryNameLocale` set to `"zh"`, and `i18n` set to the provided ZH user interface translations in the [Playground](/playground/?countryNameLocale=zh&i18n=zh&initialCountry=cn) (and open the country dropdown).
 
 ## countryOrder
 
@@ -128,7 +128,7 @@ This will generate the following (hidden) elements, which will be automatically 
 ## i18n
 
 Type: `Object` Default: `{}`  
-There are two aspects to the internationalisation of this plugin. The first is the country names, which are translated automatically using the native `Intl.DisplayNames` - just specify the locale you want using the `countryNameLocale` option. The second is the user interface strings (including the country search placeholder, search empty state, and various other strings for screen readers). We provide translations for these in <a href="https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n">over 40 languages</a> - simply import the language module you need and pass it to the plugin using the `i18n` option (see option 1 below). You can also override one or more individual keys this way. Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, please see the required UI strings listed below. [See example](/examples/internationalisation.html). If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings. View the plugin with `countryNameLocale` set to `"zh"`, and `i18n` set to the provided ZH user interface translations in the [Playground](/playground/?countryNameLocale=zh&i18n=zh) (and open the country dropdown). _Note: previously named `localizedCountries`._
+There are two aspects to the internationalisation of this plugin. The first is the country names, which are translated automatically using the native `Intl.DisplayNames` - just specify the locale you want using the `countryNameLocale` option. The second is the user interface strings (including the country search placeholder, search empty state, and various other strings for screen readers). We provide translations for these in <a href="https://github.com/jackocnr/intl-tel-input/tree/master/src/js/intl-tel-input/i18n">over 40 languages</a> - simply import the language module you need and pass it to the plugin using the `i18n` option (see option 1 below). You can also override one or more individual keys this way. Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, please see the required UI strings listed below. [See example](/examples/internationalisation.html). If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings. View the plugin with `countryNameLocale` set to `"zh"`, and `i18n` set to the provided ZH user interface translations in the [Playground](/playground/?countryNameLocale=zh&i18n=zh&initialCountry=cn) (and open the country dropdown). _Note: previously named `localizedCountries`._
 
 Option 1: import one of the provided translation modules
 ```js
@@ -226,19 +226,19 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 ## separateDialCode
 
 Type: `Boolean` Default: `false`  
-Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. In the case that the user tries to type a new dial code (as well), we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Try the plugin with this enabled in the [Playground](/playground/?separateDialCode=true). _Note: previously named `showSelectedDialCode`._
+Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. In the case that the user tries to type a new dial code (as well), we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Try the plugin with this enabled (and initialCountry="gb") in the [Playground](/playground/?separateDialCode=true&initialCountry=gb). _Note: previously named `showSelectedDialCode`._
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267" height="51" alt="Separate Dial Code">
 
 ## showFlags
 
 Type: `Boolean` Default: `true`  
-Set this to false to hide the flags, e.g. for political reasons. Instead, it will show a generic globe icon. Try the plugin with this disabled in the [Playground](/playground/?showFlags=false).
+Set this to false to hide the flags, e.g. for political reasons. Instead, it will show a generic globe icon. Try the plugin with this disabled in the [Playground](/playground/?showFlags=false) (and open country dropdown).
 
 ## strictMode
 
 Type: `Boolean` Default: `false`  
-As the user types in the input, ignore any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects `allowedNumberTypes`). Requires the [utils script to be loaded](/docs/utils.html#loading-the-utilities-script). Try the plugin with this enabled in the [Playground](/playground/?strictMode=true).
+As the user types in the input, ignore any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects `allowedNumberTypes`). Requires the [utils script to be loaded](/docs/utils.html#loading-the-utilities-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground/?strictMode=true&initialCountry=us).
 
 ## useFullscreenPopup
 
