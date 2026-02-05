@@ -10,12 +10,12 @@ Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, a
 ## allowedNumberTypes
 
 Type: `String[]` Default: `["MOBILE", "FIXED_LINE"]`  
-Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE", "FIXED_LINE"]` so `isValidNumber` (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. Play with this option in the [Playground](/playground/?value=%2B447947692123+ext.+12345). _Note: previously named `validationNumberTypes`._
+Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with `strictMode`. Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE", "FIXED_LINE"]` so `isValidNumber` (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. Play with this option in the [Playground](/playground). _Note: previously named `validationNumberTypes`._
 
 ## allowNumberExtensions
 
 Type: `Boolean` Default: `false`  
-Whether or not the validation methods return `true` for numbers containing extensions, e.g. "+1 702 123-1234 ext. 1234". Try toggling this option on/off on a number with an extension in the [Playground](/playground).
+Whether or not the validation methods return `true` for numbers containing extensions, e.g. "+1 702 123-1234 ext. 1234". Try toggling this option on/off on a number with an extension in the [Playground](/playground/?value=%2B447947692123+ext.+12345).
 
 ## allowPhonewords
 
