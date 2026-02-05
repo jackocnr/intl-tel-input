@@ -1,9 +1,10 @@
 (() => {
   const errorMap = ["", "Bad country code", "Too short", "Too long"];
+  const getItiInstance = () => Object.values(window.intlTelInput?.instances ?? {})[0];
 
   const init = () => {
     const liveResults = document.querySelector(".iti-live-results");
-    if (!liveResults || !window.iti) return;
+    if (!liveResults || !window.intlTelInput || !getItiInstance()) return;
 
     // Fix live results box width and height to prevent layout shift
     const liveResultsStyle = getComputedStyle(liveResults);
@@ -11,7 +12,6 @@
     if (liveResultsStyle.height) liveResults.style.height = liveResultsStyle.height;
 
     const setupLiveResults = () => {
-      const iti = window.iti;
       const itiInput = document.querySelector(".iti__tel-input");
       if (!itiInput) return;
 
@@ -24,6 +24,7 @@
           return;
         }
 
+        const iti = getItiInstance();
         if (iti.isValidNumber()) {
           const number = iti.getNumber();
           liveResults.textContent = `Valid number: ${number}`;
@@ -41,8 +42,9 @@
       updateResults();
     };
 
-    if (window.iti.promise && typeof window.iti.promise.then === "function") {
-      window.iti.promise.then(setupLiveResults);
+    const iti = getItiInstance();
+    if (iti.promise && typeof iti.promise.then === "function") {
+      iti.promise.then(setupLiveResults);
     } else {
       setupLiveResults();
     }

@@ -1,4 +1,5 @@
 (function () {
+  let iti = null;
   const telInput = document.querySelector("#playgroundPhone");
   const optionsForm = document.querySelector("#playgroundOptions");
   const attrsForm = document.querySelector("#playgroundAttributes");
@@ -741,9 +742,9 @@
   let reinitTimer = null;
 
   function destroyCurrentInstance() {
-    if (window.iti && typeof window.iti.destroy === "function") {
+    if (iti && typeof iti.destroy === "function") {
       try {
-        window.iti.destroy();
+        iti.destroy();
       } catch {
         // ignore
       }
@@ -765,7 +766,7 @@
 
     destroyCurrentInstance();
     initOptions.i18n = i18n;
-    window.iti = window.intlTelInput(telInput, initOptions);
+    iti = window.intlTelInput(telInput, initOptions);
 
     // Trigger live results box to update by triggering an input event on the telInput
     window.setTimeout(() => {

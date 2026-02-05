@@ -29,7 +29,7 @@
     <%= iti_script %>
     <script>
       const input = document.querySelector("#phone");
-      window.iti = window.intlTelInput(input, {
+      window.intlTelInput(input, {
         initialCountry: "auto",
         geoIpLookup: (success, failure) => {
           fetch("https://ipapi.co/json")
