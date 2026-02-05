@@ -10,8 +10,51 @@
     </p>
   </div>
 
-  <div class="row g-4">
-    <div class="col-12 col-lg-6 order-1">
+  <div class="iti-playground-layout">
+    <div class="iti-playground-layout__col iti-playground-layout__col--left">
+      <div class="iti-playground-layout__options">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2">
+              <h2 class="h5 mb-0">Initialisation options</h2>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundReset">Reset</button>
+              </div>
+            </div>
+            <p class="text-muted mt-2 mb-3">
+              Changes re-initialise the plugin on the input above.
+            </p>
+
+            <form id="playgroundOptions" class="vstack gap-3" aria-label="intl-tel-input initialisation options">
+              <!-- JS renders controls here -->
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="iti-playground-layout__attrs">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2">
+              <h2 class="h5 mb-0">Input attributes</h2>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundResetAttrs">Reset</button>
+              </div>
+            </div>
+            <p class="text-muted mt-2 mb-3">
+              Changes re-initialise the plugin on the input above.
+            </p>
+
+            <form id="playgroundAttributes" class="vstack gap-3" aria-label="Phone input attributes">
+              <!-- JS renders controls here -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="iti-playground-layout__col iti-playground-layout__col--right">
+      <div class="iti-playground-layout__demo">
       <div class="card">
         <div class="card-body">
           <h2 class="h5 mb-3">Live Demo</h2>
@@ -22,9 +65,9 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
 
-    <div class="col-12 col-lg-6 order-4 order-lg-2">
+      <div class="iti-playground-layout__code">
       <div class="card">
         <div class="card-body">
           <div class="d-flex align-items-center justify-content-between gap-2">
@@ -37,45 +80,6 @@
         </div>
       </div>
     </div>
-
-    <div class="col-12 col-lg-6 order-2 order-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between gap-2">
-            <h2 class="h5 mb-0">Initialisation options</h2>
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundReset">Reset</button>
-            </div>
-          </div>
-          <p class="text-muted mt-2 mb-3">
-            Changes re-initialise the plugin on the input above.
-          </p>
-
-          <form id="playgroundOptions" class="vstack gap-3" aria-label="intl-tel-input initialisation options">
-            <!-- JS renders controls here -->
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-lg-6 order-3 order-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between gap-2">
-            <h2 class="h5 mb-0">Input attributes</h2>
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundResetAttrs">Reset</button>
-            </div>
-          </div>
-          <p class="text-muted mt-2 mb-3">
-            Changes re-initialise the plugin on the input above.
-          </p>
-
-          <form id="playgroundAttributes" class="vstack gap-3" aria-label="Phone input attributes">
-            <!-- JS renders controls here -->
-          </form>
-        </div>
-      </div>
     </div>
   </div>
 </div>

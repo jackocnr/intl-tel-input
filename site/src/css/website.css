@@ -413,6 +413,68 @@ select,
   --bs-btn-active-border-color: var(--bs-btn-border-color);
 }
 
+/* playground: responsive layout
+  Mobile: single column (Demo, Options, Attributes, Code)
+   Desktop (lg+): two columns with Options/Attributes on the left, and Demo/Code on the right */
+.iti-playground .iti-playground-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* bootstrap g-4 */
+}
+
+/* On mobile, flatten the column wrappers so we can control ordering. */
+.iti-playground .iti-playground-layout__col {
+  display: contents;
+}
+
+.iti-playground .iti-playground-layout__demo {
+  order: 1;
+}
+.iti-playground .iti-playground-layout__options {
+  order: 2;
+}
+.iti-playground .iti-playground-layout__attrs {
+  order: 3;
+}
+.iti-playground .iti-playground-layout__code {
+  order: 4;
+}
+
+.iti-playground .iti-playground-layout__demo,
+.iti-playground .iti-playground-layout__options,
+.iti-playground .iti-playground-layout__attrs,
+.iti-playground .iti-playground-layout__code {
+  min-width: 0;
+}
+
+@media (min-width: 992px) {
+  .iti-playground .iti-playground-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 1.5rem; /* bootstrap g-4 */
+    align-items: start;
+  }
+
+  .iti-playground .iti-playground-layout__col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* bootstrap g-4 */
+    min-width: 0;
+  }
+
+  .iti-playground .iti-playground-layout__col--left {
+    grid-column: 1;
+  }
+
+  .iti-playground .iti-playground-layout__col--right {
+    grid-column: 2;
+    position: sticky;
+    top: calc(70px + 1rem);
+    max-height: calc(100vh - 70px - 2rem);
+    overflow: auto;
+  }
+}
+
 /* playground: option info tooltip */
 .iti-playground .iti-playground-info {
   display: inline-flex;
