@@ -11,6 +11,9 @@
     <%= bootstrap_styles %>
     <%= iti_styles %>
     <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
+
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/prism-overrides.css?<%= cacheBust('/css/prism-overrides.css') %>">
     <%= analytics %>
   </head>
 
@@ -20,5 +23,6 @@
     <%= iti_script %>
     <script src="/playground/playground.js?<%= cacheBust('/playground/playground.js') %>"></script>
     <%= iti_live_results_script %>
+    <script src="/js/prism.js"></script>
   </body>
 </html>

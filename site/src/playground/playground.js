@@ -385,6 +385,12 @@
   function renderInitCodeFromState(state) {
     if (!initCodeEl) return;
     initCodeEl.textContent = buildInitCodeFromState(state);
+
+    // Prism highlights on page load, but we update this block live, so we need to re-run highlighting.
+    // Prism is loaded after this script, so guard for it not being available yet.
+    if (window.Prism && typeof window.Prism.highlightElement === "function") {
+      window.Prism.highlightElement(initCodeEl);
+    }
   }
 
   function encodeJsonParam(value) {
