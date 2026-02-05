@@ -226,7 +226,7 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
 ## separateDialCode
 
 Type: `Boolean` Default: `false`  
-Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. Since the user cannot edit the displayed dial code, they may try to type a new one - in this case, to avoid having two dial codes next to each other, we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option in the [Playground](/playground). _Note: previously named `showSelectedDialCode`._
+Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. In the case that the user tries to type a new dial code (as well), we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires `allowDropdown` and `countrySearch` to be enabled). Play with this option in the [Playground](/playground). _Note: previously named `showSelectedDialCode`._
 
 <img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267" height="51" alt="Separate Dial Code">
 
