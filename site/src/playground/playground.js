@@ -348,7 +348,7 @@
 
     if (!hasI18n && nonDefaultOptionEntries.length === 0) {
       return [
-        "const input = document.querySelector(\"#playgroundPhone\");",
+        "const input = document.querySelector(\"#phone\");",
         "const iti = window.intlTelInput(input);",
       ].join("\n");
     }
@@ -357,14 +357,14 @@
 
     if (hasI18n) {
       lines.push("(async () => {");
-      lines.push("  const input = document.querySelector(\"#playgroundPhone\");");
+      lines.push("  const input = document.querySelector(\"#phone\");");
       lines.push(
         `  const i18n = (await import("/intl-tel-input/js/i18n/${encodeURIComponent(i18nCode)}/index.js")).default;`,
       );
       lines.push("  const iti = window.intlTelInput(input, {");
       lines.push("    i18n,");
     } else {
-      lines.push("const input = document.querySelector(\"#playgroundPhone\");");
+      lines.push("const input = document.querySelector(\"#phone\");");
       lines.push("const iti = window.intlTelInput(input, {");
     }
 
