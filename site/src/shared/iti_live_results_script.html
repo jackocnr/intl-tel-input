@@ -1,8 +1,7 @@
 <script>
   const liveResults = document.querySelector(".iti-live-results");
   const errorMap = ["", "Bad country code", "Too short", "Too long"];
-  const numberTypeMap = ["FIXED_LINE", "MOBILE", "FIXED_LINE_OR_MOBILE", "TOLL_FREE", "PREMIUM_RATE", "SHARED_COST", "VOIP", "PERSONAL_NUMBER", "PAGER", "UAN", "VOICEMAIL"];
-  
+
   if (window.iti && liveResults) {
     // fix live results box width and height to prevent layout shift
     const liveResultsStyle = getComputedStyle(liveResults);
@@ -19,11 +18,6 @@
           if (iti.isValidNumber()) {
             const number = iti.getNumber();
             liveResults.textContent = `Valid number: ${number}`;
-            // const selectedCountry = iti.getSelectedCountryData().name;
-            // const numberType = iti.getNumberType();
-            // const showType = Boolean(numberTypeMap[numberType]);
-            // const numberTypeSection = showType ? `, Type: ${numberTypeMap[numberType]}` : "";
-            // liveResults.textContent = `Valid number length: ${number}, Country: ${selectedCountry}${numberTypeSection}`;
           } else {
             const errorCode = iti.getValidationError();
             const errorMessage = errorMap[errorCode];

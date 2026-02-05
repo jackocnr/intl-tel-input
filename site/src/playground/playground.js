@@ -691,6 +691,11 @@
     destroyCurrentInstance();
     initOptions.i18n = i18n;
     window.iti = window.intlTelInput(telInput, initOptions);
+
+    // Trigger live results box to update by triggering an input event on the telInput
+    window.setTimeout(() => {
+      telInput.dispatchEvent(new Event("input", { bubbles: true }));
+    }, 0);
   }
 
   function scheduleReinit() {
