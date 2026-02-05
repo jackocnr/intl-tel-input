@@ -21,8 +21,10 @@ const readCommonPagePartials = (grunt, data) => ({
 
 const readBootstrapScript = (grunt) => grunt.file.read("src/shared/bootstrap_script.html");
 
-const readItiLiveResultsScript = (grunt) =>
-  grunt.file.read("src/shared/iti_live_results_script.html");
+const readItiLiveResultsScript = (grunt, data) =>
+  grunt.template.process(grunt.file.read("src/shared/iti_live_results_script.html.ejs"), {
+    data,
+  });
 
 const readItiScript = (grunt) => grunt.file.read("tmp/shared/iti_script.html");
 
