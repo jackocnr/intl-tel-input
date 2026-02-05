@@ -128,6 +128,8 @@
         ></button>
       </div>
       <div class="offcanvas-body flex-column">
+
+        <!-- MAIN NAV LINKS (MOBILE ONLY) -->
         <ul class="flex-column nav nav-pills d-lg-none nav--primary-links">
           <li>
             <a class="nav-link" href="/docs">Docs</a>
@@ -139,6 +141,8 @@
             <a class="nav-link" href="/examples">Examples</a>
           </li>
         </ul>
+
+        <!-- PAGE SPECIFIC LINKS (MOBILE and DESKTOP) -->
         <% if (typeof nav !== 'undefined') { %>
           <%= nav %>
         <% } %>
