@@ -131,7 +131,7 @@
     countryNameLocale: {
       type: "text",
       label: "countryNameLocale",
-      description: "Locale used to display country names (e.g. 'fr' for French).",
+      description: "Locale used when generating country names with Intl.DisplayNames (e.g. 'fr' for French).",
       placeholder: "e.g. fr",
     },
     countrySearch: {
