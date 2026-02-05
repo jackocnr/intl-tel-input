@@ -73,6 +73,15 @@
 
   const { defaults } = window.intlTelInput;
 
+  const SPECIAL_PLAYGROUND_OPTION_KEYS = [
+    "i18n",
+    "loadUtils",
+    "customPlaceholder",
+    "dropdownContainer",
+    "geoIpLookup",
+    "hiddenInput",
+  ];
+
   const defaultInitOptions = {
     allowDropdown: defaults.allowDropdown,
     allowedNumberTypes: defaults.allowedNumberTypes,
@@ -83,6 +92,10 @@
     countryNameLocale: defaults.countryNameLocale,
     countryOrder: defaults.countryOrder,
     countrySearch: defaults.countrySearch,
+    customPlaceholder: false, // in playground, this is a checkbox
+    dropdownContainer: false, // in playground, this is a checkbox
+    geoIpLookup: false, // in playground, this is a checkbox
+    hiddenInput: false, // in playground, this is a checkbox
     excludeCountries: defaults.excludeCountries,
     fixDropdownWidth: defaults.fixDropdownWidth,
     formatAsYouType: defaults.formatAsYouType,
@@ -147,6 +160,26 @@
       type: "boolean",
       description: "Enable the search input inside the country dropdown.",
     },
+    customPlaceholder: {
+      type: "boolean",
+      label: "customPlaceholder",
+      description: "Customise the auto-generated placeholder.",
+    },
+    dropdownContainer: {
+      type: "boolean",
+      label: "dropdownContainer",
+      description: "Append the dropdown to a specific element (useful when the input is inside a container with overflow:hidden).",
+    },
+    geoIpLookup: {
+      type: "boolean",
+      label: "geoIpLookup",
+      description: "Auto-detect the user's country by IP address (async). Requires initialCountry='auto'.",
+    },
+    hiddenInput: {
+      type: "boolean",
+      label: "hiddenInput",
+      description: "Add hidden inputs that get populated with the full number and country code on submit.",
+    },
     excludeCountries: {
       type: "json",
       description: "Exclude specific countries (array of ISO2 codes) from the dropdown.",
@@ -178,7 +211,7 @@
     loadUtils: {
       type: "boolean",
       label: "loadUtils",
-      description: "Dynamically load utils.js (required for formatting/validation).",
+      description: "Dynamically load utils.js, required for formatting/validation (async).",
     },
     nationalMode: {
       type: "boolean",
@@ -279,13 +312,33 @@
     const opts = {};
 
     Object.keys(defaultInitOptions).forEach((key) => {
-      if (key === "i18n") return;
-      if (key === "loadUtils") return;
+      if (SPECIAL_PLAYGROUND_OPTION_KEYS.includes(key)) return;
       opts[key] = state[key];
     });
 
     if (state.loadUtils) {
       opts.loadUtils = () => import(`/intl-tel-input/js/utils.js?${CACHE_BUST_UTILS}`);
+    }
+
+    if (state.customPlaceholder) {
+      opts.customPlaceholder = (selectedCountryPlaceholder) => `e.g. ${selectedCountryPlaceholder}`;
+    }
+
+    if (state.dropdownContainer) {
+      opts.dropdownContainer = document.body;
+    }
+
+    if (state.geoIpLookup) {
+      opts.geoIpLookup = (success, failure) => {
+        fetch("https://ipapi.co/json")
+          .then((res) => res.json())
+          .then((data) => success(data.country_code))
+          .catch(() => failure());
+      };
+    }
+
+    if (state.hiddenInput) {
+      opts.hiddenInput = () => ({ phone: "phone_full", country: "country_code" });
     }
 
     return opts;
@@ -331,8 +384,7 @@
     const nonDefaultOptionEntries = [];
 
     Object.keys(defaultInitOptions).forEach((key) => {
-      if (key === "i18n") return;
-      if (key === "loadUtils") return;
+      if (SPECIAL_PLAYGROUND_OPTION_KEYS.includes(key)) return;
       const meta = optionMeta[key];
       if (!meta) return;
       const value = state[key];
@@ -340,12 +392,34 @@
       nonDefaultOptionEntries.push([key, value]);
     });
 
-    // Special-case: loadUtils should be shown in the code snippet when enabled (even though it's
-    // the playground default), and omitted when disabled.
-    const includeLoadUtilsInCode = Boolean(state.loadUtils);
     const optionEntriesForCode = [...nonDefaultOptionEntries];
-    if (includeLoadUtilsInCode) {
+    if (state.loadUtils) {
       optionEntriesForCode.push(["loadUtils", "() => import(\"/intl-tel-input/js/utils.js\")"]);
+    }
+
+    if (state.customPlaceholder) {
+      optionEntriesForCode.push([
+        "customPlaceholder",
+        "(selectedCountryPlaceholder) => `e.g. ${selectedCountryPlaceholder}`",
+      ]);
+    }
+
+    if (state.dropdownContainer) {
+      optionEntriesForCode.push(["dropdownContainer", "document.body"]);
+    }
+
+    if (state.geoIpLookup) {
+      optionEntriesForCode.push([
+        "geoIpLookup",
+        "(success, failure) => {\n    fetch(\"https://ipapi.co/json\")\n      .then((res) => res.json())\n      .then((data) => success(data.country_code))\n      .catch(() => failure())\n  }",
+      ]);
+    }
+
+    if (state.hiddenInput) {
+      optionEntriesForCode.push([
+        "hiddenInput",
+        "() => ({ phone: \"phone_full\", country: \"country_code\" })",
+      ]);
     }
 
     const i18nCode = String(state.i18n ?? "").trim();
@@ -374,7 +448,10 @@
     }
 
     optionEntriesForCode.forEach(([key, value]) => {
-      const formatted = key === "loadUtils" && typeof value === "string" ? value : formatJsValue(value);
+      const isRawJsSnippet =
+        ["loadUtils", "customPlaceholder", "dropdownContainer", "geoIpLookup", "hiddenInput"].includes(key) &&
+        typeof value === "string";
+      const formatted = isRawJsSnippet ? value : formatJsValue(value);
       lines.push(`${hasI18n ? "    " : "  "}${key}: ${formatted},`);
     });
 
@@ -596,50 +673,92 @@
     return group;
   }
 
+  function buildBooleanExampleControl(key, meta, { idPrefix, dataAttr, exampleText }) {
+    // Custom layout: show the code example to the right of the label (desktop), then the checkbox below.
+    const wrapper = document.createElement("div");
+    wrapper.className = "iti-playground-control iti-playground-control--loadutils";
+
+    const checkboxRow = document.createElement("div");
+    checkboxRow.className = "form-check iti-playground-loadutils-toggle";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "form-check-input";
+    checkbox.id = `${idPrefix}_${key}`;
+    checkbox.setAttribute(dataAttr, key);
+
+    const enableLabel = document.createElement("label");
+    enableLabel.className = "form-check-label";
+    enableLabel.htmlFor = checkbox.id;
+    enableLabel.textContent = "Enable";
+
+    checkboxRow.appendChild(checkbox);
+    checkboxRow.appendChild(enableLabel);
+
+    wrapper.appendChild(
+      buildLabelGroup(meta, {
+        labelText: meta.label || key,
+        htmlFor: checkbox.id,
+        labelClassName: "form-label",
+      }),
+    );
+
+    const example = document.createElement("pre");
+    example.className = "mb-0 language-javascript iti-playground-loadutils-example";
+    const code = document.createElement("code");
+    code.className = "language-javascript";
+    code.textContent = exampleText;
+    example.appendChild(code);
+    wrapper.appendChild(example);
+
+    wrapper.appendChild(checkboxRow);
+
+    return wrapper;
+  }
+
   function buildControlRow(key, meta, { idPrefix, dataAttr }) {
     const wrapper = document.createElement("div");
 
     if (meta.type === "boolean") {
       if (key === "loadUtils") {
-        // Custom layout: show the code example to the right of the label (desktop), then the checkbox below.
-        wrapper.className = "iti-playground-control iti-playground-control--loadutils";
+        return buildBooleanExampleControl(key, meta, {
+          idPrefix,
+          dataAttr,
+          exampleText: "() => import(\"/intl-tel-input/js/utils.js\")",
+        });
+      }
 
-        const checkboxRow = document.createElement("div");
-        checkboxRow.className = "form-check iti-playground-loadutils-toggle";
+      if (key === "customPlaceholder") {
+        return buildBooleanExampleControl(key, meta, {
+          idPrefix,
+          dataAttr,
+          exampleText: "(selectedCountryPlaceholder) => \"e.g. \" + selectedCountryPlaceholder",
+        });
+      }
 
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.className = "form-check-input";
-        checkbox.id = `${idPrefix}_${key}`;
-        checkbox.setAttribute(dataAttr, key);
+      if (key === "dropdownContainer") {
+        return buildBooleanExampleControl(key, meta, {
+          idPrefix,
+          dataAttr,
+          exampleText: "document.body",
+        });
+      }
 
-        const enableLabel = document.createElement("label");
-        enableLabel.className = "form-check-label";
-        enableLabel.htmlFor = checkbox.id;
-        enableLabel.textContent = "Enable";
+      if (key === "geoIpLookup") {
+        return buildBooleanExampleControl(key, meta, {
+          idPrefix,
+          dataAttr,
+          exampleText:
+            "(success, failure) => {\n    fetch(\"https://ipapi.co/json\")\n      .then((res) => res.json())\n      .then((data) => success(data.country_code))\n      .catch(() => failure())\n  }",
+        });
+      }
 
-        checkboxRow.appendChild(checkbox);
-        checkboxRow.appendChild(enableLabel);
-
-        wrapper.appendChild(
-          buildLabelGroup(meta, {
-            labelText: meta.label || key,
-            htmlFor: checkbox.id,
-            labelClassName: "form-label",
-          }),
-        );
-
-        const example = document.createElement("pre");
-        example.className = "mb-0 language-javascript iti-playground-loadutils-example";
-        const code = document.createElement("code");
-        code.className = "language-javascript";
-        code.textContent = "() => import(\"/intl-tel-input/js/utils.js\"),";
-        example.appendChild(code);
-        wrapper.appendChild(example);
-
-        wrapper.appendChild(checkboxRow);
-
-        return wrapper;
+      if (key === "hiddenInput") {
+        return buildBooleanExampleControl(key, meta, {
+          idPrefix,
+          dataAttr,
+          exampleText: "() => ({ phone: \"phone_full\", country: \"country_code\" })",
+        });
       }
 
       wrapper.className = "form-check iti-playground-control iti-playground-control--check";
