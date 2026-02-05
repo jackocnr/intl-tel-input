@@ -11,7 +11,6 @@ const docsDropdownPages = [
 const examplesDropdownPages = [
   { name: "validation_practical", href: "/examples/validation-practical.html", label: "Validation" },
   { name: "lookup_country", href: "/examples/lookup-country.html", label: "Lookup user's country" },
-  { name: "only_countries", href: "/examples/only-countries.html", label: "Only countries" },
   { name: "single_country", href: "/examples/single-country.html", label: "Single country" },
   { name: "internationalisation", href: "/examples/internationalisation.html", label: "Internationalisation" },
   { name: "right_to_left", href: "/examples/right-to-left.html", label: "Right to Left" },

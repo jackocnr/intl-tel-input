@@ -239,15 +239,6 @@ module.exports = function (grunt) {
     layoutExtra: { isRtl: true },
   },
   {
-    key: "only_countries",
-    title: "Only countries option",
-    metaDesc: "Only show European countries in the dropdown.",
-    content: {
-      markupPath: "src/examples/html/simple_input.html",
-      includeItiScript: true,
-    },
-  },
-  {
     key: "single_country",
     title: "Single country",
     metaDesc: "When you only need to handle numbers from a single country.",
