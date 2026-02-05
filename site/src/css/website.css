@@ -494,6 +494,7 @@ select,
 }
 
 .iti-playground .iti-playground-labelgroup {
+  padding-top: 3px;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -521,7 +522,16 @@ select,
     grid-template-columns: minmax(160px, 220px) 1fr;
     column-gap: 12px;
     row-gap: 6px;
-    align-items: center;
+    align-items: start;
+  }
+
+  /* playground: loadUtils has an example snippet + a checkbox, so keep the example aligned with the label, and put the checkbox beneath. */
+  .iti-playground .iti-playground-control--loadutils {
+    align-items: start;
+  }
+  .iti-playground .iti-playground-control--loadutils > .iti-playground-loadutils-toggle {
+    grid-column: 2;
+    margin-top: 6px;
   }
   .iti-playground .iti-playground-control:not(.iti-playground-control--check) > .iti-playground-labelgroup {
     margin-bottom: 0;

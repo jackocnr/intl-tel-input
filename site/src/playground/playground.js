@@ -89,6 +89,7 @@
     formatOnDisplay: defaults.formatOnDisplay,
     i18n: "", // different default for playground display
     initialCountry: defaults.initialCountry,
+    loadUtils: true, // in playground, this is a checkbox
     nationalMode: defaults.nationalMode,
     onlyCountries: defaults.onlyCountries,
     placeholderNumberType: defaults.placeholderNumberType,
@@ -173,6 +174,11 @@
       type: "text",
       description: "Initial selected country (ISO2 code), e.g. 'gb'.",
       placeholder: "e.g. gb",
+    },
+    loadUtils: {
+      type: "boolean",
+      label: "loadUtils",
+      description: "Dynamically load utils.js (required for formatting/validation).",
     },
     nationalMode: {
       type: "boolean",
@@ -274,10 +280,13 @@
 
     Object.keys(defaultInitOptions).forEach((key) => {
       if (key === "i18n") return;
+      if (key === "loadUtils") return;
       opts[key] = state[key];
     });
 
-    opts.loadUtils = () => import(`/intl-tel-input/js/utils.js?${CACHE_BUST_UTILS}`);
+    if (state.loadUtils) {
+      opts.loadUtils = () => import(`/intl-tel-input/js/utils.js?${CACHE_BUST_UTILS}`);
+    }
 
     return opts;
   }
@@ -323,6 +332,7 @@
 
     Object.keys(defaultInitOptions).forEach((key) => {
       if (key === "i18n") return;
+      if (key === "loadUtils") return;
       const meta = optionMeta[key];
       if (!meta) return;
       const value = state[key];
@@ -330,10 +340,18 @@
       nonDefaultOptionEntries.push([key, value]);
     });
 
+    // Special-case: loadUtils should be shown in the code snippet when enabled (even though it's
+    // the playground default), and omitted when disabled.
+    const includeLoadUtilsInCode = Boolean(state.loadUtils);
+    const optionEntriesForCode = [...nonDefaultOptionEntries];
+    if (includeLoadUtilsInCode) {
+      optionEntriesForCode.push(["loadUtils", "() => import(\"/intl-tel-input/js/utils.js\")"]);
+    }
+
     const i18nCode = String(state.i18n ?? "").trim();
     const hasI18n = Boolean(i18nCode);
 
-    if (!hasI18n && nonDefaultOptionEntries.length === 0) {
+    if (!hasI18n && optionEntriesForCode.length === 0) {
       return [
         "const input = document.querySelector(\"#phone\");",
         "const iti = window.intlTelInput(input);",
@@ -355,8 +373,8 @@
       lines.push("const iti = window.intlTelInput(input, {");
     }
 
-    nonDefaultOptionEntries.forEach(([key, value]) => {
-      const formatted = formatJsValue(value);
+    optionEntriesForCode.forEach(([key, value]) => {
+      const formatted = key === "loadUtils" && typeof value === "string" ? value : formatJsValue(value);
       lines.push(`${hasI18n ? "    " : "  "}${key}: ${formatted},`);
     });
 
@@ -582,6 +600,48 @@
     const wrapper = document.createElement("div");
 
     if (meta.type === "boolean") {
+      if (key === "loadUtils") {
+        // Custom layout: show the code example to the right of the label (desktop), then the checkbox below.
+        wrapper.className = "iti-playground-control iti-playground-control--loadutils";
+
+        const checkboxRow = document.createElement("div");
+        checkboxRow.className = "form-check iti-playground-loadutils-toggle";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "form-check-input";
+        checkbox.id = `${idPrefix}_${key}`;
+        checkbox.setAttribute(dataAttr, key);
+
+        const enableLabel = document.createElement("label");
+        enableLabel.className = "form-check-label";
+        enableLabel.htmlFor = checkbox.id;
+        enableLabel.textContent = "Enable";
+
+        checkboxRow.appendChild(checkbox);
+        checkboxRow.appendChild(enableLabel);
+
+        wrapper.appendChild(
+          buildLabelGroup(meta, {
+            labelText: meta.label || key,
+            htmlFor: checkbox.id,
+            labelClassName: "form-label",
+          }),
+        );
+
+        const example = document.createElement("pre");
+        example.className = "mb-0 language-javascript iti-playground-loadutils-example";
+        const code = document.createElement("code");
+        code.className = "language-javascript";
+        code.textContent = "() => import(\"/intl-tel-input/js/utils.js\"),";
+        example.appendChild(code);
+        wrapper.appendChild(example);
+
+        wrapper.appendChild(checkboxRow);
+
+        return wrapper;
+      }
+
       wrapper.className = "form-check iti-playground-control iti-playground-control--check";
 
       const checkbox = document.createElement("input");
@@ -739,8 +799,19 @@
 
   let initNonce = 0;
 
+  function detachUtilsIfNeeded(state) {
+    if (!state || state.loadUtils) return;
+    if (!window.intlTelInput) return;
+    // If utils were previously attached, clear them so disabling loadUtils actually disables
+    // formatting/validation, and allow re-attaching if the user re-enables it.
+    window.intlTelInput.utils = null;
+    window.intlTelInput.startedLoadingUtilsScript = false;
+  }
+
   async function initWithStateAsync(state) {
     const nonce = (initNonce += 1);
+
+    detachUtilsIfNeeded(state);
 
     const initOptions = toInitOptions(state);
     const i18n = await resolveI18nSelection(state.i18n);
