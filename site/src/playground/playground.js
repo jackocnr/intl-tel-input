@@ -71,28 +71,31 @@
     "VOICEMAIL",
   ];
 
+  const { defaults } = window.intlTelInput;
+
   const defaultInitOptions = {
-    allowDropdown: true,
-    allowNumberExtensions: false,
-    allowPhonewords: false,
-    allowedNumberTypes: ["MOBILE", "FIXED_LINE"],
-    autoPlaceholder: "polite",
-    countryNameLocale: "en",
-    countrySearch: true,
-    countryOrder: null,
-    excludeCountries: [],
-    fixDropdownWidth: true,
-    formatAsYouType: true,
-    formatOnDisplay: true,
-    i18n: "",
-    initialCountry: "",
-    nationalMode: true,
-    onlyCountries: [],
-    placeholderNumberType: "MOBILE",
-    separateDialCode: false,
-    showFlags: true,
-    strictMode: false,
-    useFullscreenPopup: window.intlTelInput.defaults.useFullscreenPopup,
+    allowDropdown: defaults.allowDropdown,
+    allowedNumberTypes: defaults.allowedNumberTypes,
+    allowNumberExtensions: defaults.allowNumberExtensions,
+    allowPhonewords: defaults.allowPhonewords,
+    autoPlaceholder: defaults.autoPlaceholder,
+    containerClass: defaults.containerClass,
+    countryNameLocale: defaults.countryNameLocale,
+    countryOrder: defaults.countryOrder,
+    countrySearch: defaults.countrySearch,
+    excludeCountries: defaults.excludeCountries,
+    fixDropdownWidth: defaults.fixDropdownWidth,
+    formatAsYouType: defaults.formatAsYouType,
+    formatOnDisplay: defaults.formatOnDisplay,
+    i18n: "", // different default for playground display
+    initialCountry: defaults.initialCountry,
+    nationalMode: defaults.nationalMode,
+    onlyCountries: defaults.onlyCountries,
+    placeholderNumberType: defaults.placeholderNumberType,
+    separateDialCode: defaults.separateDialCode,
+    showFlags: defaults.showFlags,
+    strictMode: defaults.strictMode,
+    useFullscreenPopup: defaults.useFullscreenPopup,
   };
 
   const defaultInputAttributes = {
@@ -105,126 +108,109 @@
   const optionMeta = {
     allowDropdown: {
       type: "boolean",
-      label: "allowDropdown",
       description: "Allow clicking the selected country to open the dropdown.",
+    },
+    allowedNumberTypes: {
+      type: "multidropdown",
+      description: "Restrict the types of numbers that are considered valid.",
+      options: NUMBER_TYPES,
     },
     allowNumberExtensions: {
       type: "boolean",
-      label: "allowNumberExtensions",
       description: "Accept number extensions as valid (e.g. x123).",
     },
     allowPhonewords: {
       type: "boolean",
-      label: "allowPhonewords",
       description: "Accept letters in the number (phonewords) as valid.",
-    },
-    allowedNumberTypes: {
-      type: "multidropdown",
-      label: "allowedNumberTypes",
-      description: "Restrict the types of numbers that are considered valid.",
-      options: NUMBER_TYPES,
     },
     autoPlaceholder: {
       type: "select",
-      label: "autoPlaceholder",
       description: "Automatically set a placeholder based on the selected country and placeholderNumberType.",
       options: AUTO_PLACEHOLDER_OPTIONS,
     },
+    containerClass: {
+      type: "text",
+      description: "Additional CSS class to add to the container element.",
+    },
     countryNameLocale: {
       type: "text",
-      label: "countryNameLocale",
       description: "Locale used when generating country names with Intl.DisplayNames (e.g. 'fr' for French).",
       placeholder: "e.g. fr",
     },
-    countrySearch: {
-      type: "boolean",
-      label: "countrySearch",
-      description: "Enable the search input inside the country dropdown.",
-    },
     countryOrder: {
       type: "json",
-      label: "countryOrder",
       description: "Custom ordering for countries, given as an array of ISO2 codes. Any countries not listed will appear at the end in default order.",
       placeholder: "e.g. ['us', 'gb']",
     },
+    countrySearch: {
+      type: "boolean",
+      description: "Enable the search input inside the country dropdown.",
+    },
     excludeCountries: {
       type: "json",
-      label: "excludeCountries",
       description: "Exclude specific countries (array of ISO2 codes) from the dropdown.",
       placeholder: "e.g. ['ru', 'cn']",
     },
     fixDropdownWidth: {
       type: "boolean",
-      label: "fixDropdownWidth",
       description: "Keep the dropdown width aligned to the input width.",
     },
     formatAsYouType: {
       type: "boolean",
-      label: "formatAsYouType",
       description: "Format the number as the user types.",
     },
     formatOnDisplay: {
       type: "boolean",
-      label: "formatOnDisplay",
       description: "Format any initial value when the plugin initialises.",
     },
     i18n: {
       type: "select",
-      label: "i18n",
       description: "Translate UI strings (e.g. country search placeholder) using the provided language packs.",
       options: ["", ...I18N_LANGUAGE_CODES],
       optionLabels: I18N_OPTION_LABELS,
     },
     initialCountry: {
       type: "text",
-      label: "initialCountry",
       description: "Initial selected country (ISO2 code), e.g. 'gb'.",
       placeholder: "e.g. gb",
     },
     nationalMode: {
       type: "boolean",
-      label: "nationalMode",
       description: "Display numbers in national format (instead of international) where applicable.",
     },
     onlyCountries: {
       type: "json",
-      label: "onlyCountries",
       description: "Restrict the dropdown to only these countries (array of ISO2 codes).",
       placeholder: "e.g. ['us', 'ca', 'mx']",
     },
     placeholderNumberType: {
       type: "select",
-      label: "placeholderNumberType",
       description: "Number type used when generating placeholders (e.g. MOBILE).",
       options: NUMBER_TYPES,
     },
     separateDialCode: {
       type: "boolean",
-      label: "separateDialCode",
       description: "Show the dial code separately from the number input.",
     },
     showFlags: {
       type: "boolean",
-      label: "showFlags",
       description: "Show country flags in the dropdown and selected country.",
     },
     strictMode: {
       type: "boolean",
-      label: "strictMode",
       description: "As the user types in the input, ignore irrelevant characters and cap the number at the maximum valid length.",
     },
     useFullscreenPopup: {
       type: "boolean",
-      label: "useFullscreenPopup",
       description: "Use a fullscreen-style country picker instead of the dropdown (defaults to true on small screens).",
     },
   };
 
   const attributeMeta = {
     value: { type: "text", label: "value (initial)" },
-    placeholder: { type: "text", label: "placeholder" },
-    disabled: { type: "boolean", label: "disabled" },
-    readOnly: { type: "boolean", label: "readOnly" },
+    placeholder: { type: "text" },
+    disabled: { type: "boolean" },
+    readOnly: { type: "boolean" },
   };
 
   const attributeQueryAliases = {
@@ -607,7 +593,7 @@
       wrapper.appendChild(checkbox);
       wrapper.appendChild(
         buildLabelGroup(meta, {
-          labelText: meta.label,
+          labelText: meta.label || key,
           htmlFor: checkbox.id,
           labelClassName: "form-check-label",
         }),
@@ -620,7 +606,7 @@
 
     wrapper.appendChild(
       buildLabelGroup(meta, {
-        labelText: meta.label,
+        labelText: meta.label || key,
         htmlFor: `${idPrefix}_${key}`,
         labelClassName: "form-label",
       }),

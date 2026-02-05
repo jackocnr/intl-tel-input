@@ -27,6 +27,8 @@ const computeDefaultUseFullscreenPopup = (): boolean => {
 export const defaults: AllOptions = {
   //* Whether or not to allow the dropdown.
   allowDropdown: true,
+  //* The number type to enforce during validation.
+  allowedNumberTypes: ["MOBILE", "FIXED_LINE"],
   //* Whether or not to allow extensions after the main number.
   allowNumberExtensions: false,
   // Allow alphanumeric "phonewords" (e.g. +1 800 FLOWERS) as valid numbers
@@ -77,8 +79,6 @@ export const defaults: AllOptions = {
   strictMode: false,
   //* Use full screen popup instead of dropdown for country list.
   useFullscreenPopup: computeDefaultUseFullscreenPopup(),
-  //* The number type to enforce during validation.
-  allowedNumberTypes: ["MOBILE", "FIXED_LINE"],
 };
 
 // Apply option side-effects (mutates the passed object)
