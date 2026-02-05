@@ -4,6 +4,7 @@
   const attrsForm = document.querySelector("#playgroundAttributes");
   const resetOptionsButton = document.querySelector("#playgroundReset");
   const resetAttrsButton = document.querySelector("#playgroundResetAttrs");
+  const initCodeEl = document.querySelector("#playgroundInitCode");
 
   if (!telInput || !optionsForm) return;
 
@@ -316,6 +317,74 @@
     } catch {
       return String(value);
     }
+  }
+
+  function formatJsValue(value) {
+    if (value === undefined) return "undefined";
+    if (value === null) return "null";
+    if (typeof value === "string") return JSON.stringify(value);
+    if (typeof value === "number" || typeof value === "boolean") return String(value);
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return safeStringify(value);
+    }
+  }
+
+  function buildInitCodeFromState(state) {
+    const nonDefaultOptionEntries = [];
+
+    Object.keys(defaultInitOptions).forEach((key) => {
+      if (key === "i18n") return;
+      const meta = optionMeta[key];
+      if (!meta) return;
+      const value = state[key];
+      if (isDefaultForKey(key, meta, value)) return;
+      nonDefaultOptionEntries.push([key, value]);
+    });
+
+    const i18nCode = String(state.i18n ?? "").trim();
+    const hasI18n = Boolean(i18nCode);
+
+    if (!hasI18n && nonDefaultOptionEntries.length === 0) {
+      return [
+        "const input = document.querySelector(\"#playgroundPhone\");",
+        "const iti = window.intlTelInput(input);",
+      ].join("\n");
+    }
+
+    const lines = [];
+
+    if (hasI18n) {
+      lines.push("(async () => {");
+      lines.push("  const input = document.querySelector(\"#playgroundPhone\");");
+      lines.push(
+        `  const i18n = (await import("/intl-tel-input/js/i18n/${encodeURIComponent(i18nCode)}/index.js")).default;`,
+      );
+      lines.push("  const iti = window.intlTelInput(input, {");
+      lines.push("    i18n,");
+    } else {
+      lines.push("const input = document.querySelector(\"#playgroundPhone\");");
+      lines.push("const iti = window.intlTelInput(input, {");
+    }
+
+    nonDefaultOptionEntries.forEach(([key, value]) => {
+      const formatted = formatJsValue(value);
+      lines.push(`${hasI18n ? "    " : "  "}${key}: ${formatted},`);
+    });
+
+    lines.push(`${hasI18n ? "  " : ""});`);
+
+    if (hasI18n) {
+      lines.push("})();");
+    }
+
+    return lines.join("\n");
+  }
+
+  function renderInitCodeFromState(state) {
+    if (!initCodeEl) return;
+    initCodeEl.textContent = buildInitCodeFromState(state);
   }
 
   function encodeJsonParam(value) {
@@ -703,6 +772,7 @@
     reinitTimer = window.setTimeout(() => {
       const state = getCombinedStateFromControls();
       updateUrlFromState(state);
+      renderInitCodeFromState(state);
       void initWithStateAsync(state);
     }, 100);
   }
@@ -796,6 +866,7 @@
 
   setFormFromState(optionsForm, initialState, optionMeta, "data-option");
   setFormFromState(attrsForm, initialState, attributeMeta, "data-attr");
+  renderInitCodeFromState(initialState);
   void initWithStateAsync(initialState);
   updateUrlFromState(initialState);
 
@@ -818,6 +889,7 @@
       );
       const state = { ...deepClone(defaultInitOptions), ...attrsState };
       setFormFromState(optionsForm, state, optionMeta, "data-option");
+      renderInitCodeFromState(state);
       void initWithStateAsync(state);
       updateUrlFromState(state);
     });
@@ -834,6 +906,7 @@
       );
       const state = { ...optionsState, ...deepClone(defaultInputAttributes) };
       setFormFromState(attrsForm, state, attributeMeta, "data-attr");
+      renderInitCodeFromState(state);
       void initWithStateAsync(state);
       updateUrlFromState(state);
     });
