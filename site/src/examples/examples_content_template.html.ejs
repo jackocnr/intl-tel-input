@@ -38,5 +38,6 @@
 <% if (typeof iti_script !== 'undefined') { %>
   <%= iti_script %>
 <% } %>
-<script src="/js/prism.js"></script>
+<script src="/js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 <script src="/examples/js/<%= script %>?<%= cacheBust('/examples/js/' + script) %>"></script>

@@ -24,25 +24,6 @@ const defaultSlugifyHeading = (value) =>
     // trim hyphens
     .replace(/^-|-$/g, "");
 
-// Prism language ids differ from common fence shorthands.
-// E.g. Prism uses "markup" for HTML, and "javascript" (not "js").
-const normalizePrismFenceLanguage = (info) => {
-  const trimmed = (info || "").trim();
-  if (!trimmed) return info;
-
-  const [rawLang, ...restParts] = trimmed.split(/\s+/);
-  const lang = String(rawLang).toLowerCase();
-  const rest = restParts.length ? ` ${restParts.join(" ")}` : "";
-
-  const languageMap = {
-    html: "markup",
-    js: "javascript",
-  };
-
-  const mappedLang = languageMap[lang] || lang;
-  return `${mappedLang}${rest}`;
-};
-
 const createMarkdownRenderer = ({ slugifyHeading = defaultSlugifyHeading } = {}) => {
   const md = new MarkdownIt({
     html: true,
@@ -60,13 +41,6 @@ const createMarkdownRenderer = ({ slugifyHeading = defaultSlugifyHeading } = {})
       `,
     }),
   });
-
-  const defaultFenceRenderer = md.renderer.rules.fence;
-  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
-    tokens[idx].info = normalizePrismFenceLanguage(tokens[idx].info);
-    return defaultFenceRenderer(tokens, idx, options, env, self);
-  };
-
   return md;
 };
 

@@ -7,9 +7,11 @@
     <meta name="description" content="<%= meta_desc %>">
 
     <%= bootstrap_styles %>
+
+    <link rel="stylesheet" href="/css/highlight-github-light.min.css" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
+    <link rel="stylesheet" href="/css/highlight-github-dark.min.css" media="(prefers-color-scheme: dark)">
+
     <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
-    <link rel="stylesheet" href="/css/prism.css">
-    <link rel="stylesheet" href="/css/prism-overrides.css?<%= cacheBust('/css/prism-overrides.css') %>">
 
     <%= analytics %>
   </head>
@@ -17,6 +19,7 @@
   <body>
     <%= layout %>
     <%= bootstrap_script %>
-    <script src="/js/prism.js"></script>
+    <script src="/js/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
   </body>
 </html>
