@@ -1,11 +1,21 @@
 # Getting Started
 
-Choose from one of the three options below
+## Components
+
+For the component docs, click one of the following links:
+- [React component docs](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) 
+- [Vue component docs](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md)
+- [Angular component docs](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md)
+- [Svelte component docs](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md)
+
+## JavaScript Plugin
+
+For the JavaScript plugin, you can choose from one of the three Getting Started options below
 - Using a CDN
 - Using a bundler
 - Not using a bundler
 
-## Getting Started (Using a CDN)
+### Using a CDN
 
 1. Add the CSS
   ```html
@@ -23,7 +33,7 @@ Choose from one of the three options below
   </script>
   ```
 
-## Getting Started (Using a bundler, e.g. Webpack)
+### Using a bundler, e.g. Webpack
 
 1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
 
@@ -49,7 +59,7 @@ Choose from one of the three options below
 
 Most bundlers (such as Webpack, Vite, or Parcel) will see this and place the [utilities script](/docs/utils.html) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
 
-## Getting Started (Not using a bundler)
+### Not using a bundler
 
 1. Download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest), or better yet install it with [npm](https://www.npmjs.com/package/intl-tel-input)
 
