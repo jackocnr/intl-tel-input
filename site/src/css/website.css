@@ -155,6 +155,8 @@ p img {
 }
 .iti-main {
   grid-area: main;
+  /* need some space at the bottom on mobile */
+  padding-bottom: 30px;
 }
 
 
@@ -368,6 +370,10 @@ select,
 }
 .homepage-content .section {
   margin-bottom: 60px;
+}
+/* remove margin on last section */
+.section:last-child {
+  margin-bottom: 0;
 }
 @media (min-width: 992px) {
   .homepage-content {
