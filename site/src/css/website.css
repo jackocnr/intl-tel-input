@@ -5,6 +5,7 @@
   /* override flag paths, to include cache busting */
   --iti-path-flags-1x: url("/intl-tel-input/img/flags.webp?<%= cacheBust('/intl-tel-input/img/flags.webp') %>");
   --iti-path-flags-2x: url("/intl-tel-input/img/flags@2x.webp?<%= cacheBust('/intl-tel-input/img/flags@2x.webp') %>");
+  --iti-icon-color: var(--bs-body-color);
 }
 
 html {
@@ -157,7 +158,6 @@ p img {
 }
 
 
-/* DEMO STYLES */
 h2,
 h3 {
   margin-top: 20px;
@@ -229,7 +229,10 @@ h1 {
 .demo input[type=tel] {
   width: 250px;
 }
-.demo ::placeholder {
+input::placeholder,
+.demo input::placeholder,
+input.form-control::placeholder,
+textarea.form-control::placeholder {
   color: #bbb;
 }
 .actions {
@@ -295,7 +298,7 @@ select,
     --iti-border-color: #5b5b5b;
     --iti-dialcode-color: #999999;
     --iti-dropdown-bg: var(--bs-dark);
-    --iti-icon-color: #aaaaaa;
+    --iti-icon-color: var(--bs-body-color);
     --iti-hover-color: #30363d;
   }
 
@@ -306,7 +309,7 @@ select,
   }
 
   /* multidropdown down arrow */
-  .iti-playground .iti-playground-multidropdown-toggle.dropdown-toggle::after {
+  .iti-playground-multidropdown-toggle.dropdown-toggle::after {
     border-top-color: rgba(222, 226, 230, 0.85);
   }
 
@@ -339,7 +342,9 @@ select,
 
 
 
-/* HOMEPAGE */
+/**************
+ * HOMEPAGE
+ **************/
 .homepage-content {
   margin-top: 60px;
   max-width: 580px;
@@ -395,8 +400,13 @@ select,
   text-align: left;
 }
 
+
+
+/**************
+ * PLAYGROUND
+ **************/
 /* playground: disable hover styling on collapsed multidropdown toggle */
-.iti-playground .iti-playground-multidropdown-toggle {
+.iti-playground-multidropdown-toggle {
   cursor: default;
   display: flex;
   align-items: center;
@@ -416,57 +426,57 @@ select,
 /* playground: responsive layout
   Mobile: single column (Demo, Options, Attributes, Code)
    Desktop (lg+): two columns with Options/Attributes on the left, and Demo/Code on the right */
-.iti-playground .iti-playground-layout {
+.iti-playground-layout {
   display: flex;
   flex-direction: column;
   gap: 1.5rem; /* bootstrap g-4 */
 }
 
 /* On mobile, flatten the column wrappers so we can control ordering. */
-.iti-playground .iti-playground-layout__col {
+.iti-playground-layout__col {
   display: contents;
 }
 
-.iti-playground .iti-playground-layout__demo {
+.iti-playground-layout__demo {
   order: 1;
 }
-.iti-playground .iti-playground-layout__options {
+.iti-playground-layout__options {
   order: 2;
 }
-.iti-playground .iti-playground-layout__attrs {
+.iti-playground-layout__attrs {
   order: 3;
 }
-.iti-playground .iti-playground-layout__code {
+.iti-playground-layout__code {
   order: 4;
 }
 
-.iti-playground .iti-playground-layout__demo,
-.iti-playground .iti-playground-layout__options,
-.iti-playground .iti-playground-layout__attrs,
-.iti-playground .iti-playground-layout__code {
+.iti-playground-layout__demo,
+.iti-playground-layout__options,
+.iti-playground-layout__attrs,
+.iti-playground-layout__code {
   min-width: 0;
 }
 
 @media (min-width: 992px) {
-  .iti-playground .iti-playground-layout {
+  .iti-playground-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 1.5rem; /* bootstrap g-4 */
     align-items: start;
   }
 
-  .iti-playground .iti-playground-layout__col {
+  .iti-playground-layout__col {
     display: flex;
     flex-direction: column;
     gap: 1.5rem; /* bootstrap g-4 */
     min-width: 0;
   }
 
-  .iti-playground .iti-playground-layout__col--left {
+  .iti-playground-layout__col--left {
     grid-column: 1;
   }
 
-  .iti-playground .iti-playground-layout__col--right {
+  .iti-playground-layout__col--right {
     grid-column: 2;
     position: sticky;
     top: calc(70px + 1rem);
@@ -476,7 +486,7 @@ select,
 }
 
 /* playground: option info tooltip */
-.iti-playground .iti-playground-info {
+.iti-playground-info {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -493,31 +503,35 @@ select,
   cursor: help;
 }
 
-.iti-playground .iti-playground-labelgroup {
+.iti-playground-labelgroup {
   padding-top: 3px;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
 }
-.iti-playground .iti-playground-labelgroup > .form-label {
+.iti-playground-labelgroup > .form-label {
   margin-bottom: 0;
 }
 /* preserve bootstrap-like spacing for stacked (mobile) label + control */
-.iti-playground .iti-playground-control:not(.iti-playground-control--check) > .iti-playground-labelgroup {
+.iti-playground-control:not(.iti-playground-control--check) > .iti-playground-labelgroup {
   margin-bottom: var(--bs-form-label-margin-bottom, 0.5rem);
 }
-.iti-playground .iti-playground-info:focus-visible {
+.iti-playground-info:focus-visible {
   outline: 2px solid rgb(var(--header-bg-color-rgb));
   outline-offset: 2px;
 }
 
-.iti-playground .iti-playground-multidropdown-toggle.dropdown-toggle::after {
+.iti-playground-multidropdown-toggle.dropdown-toggle::after {
   margin-left: auto;
+}
+
+.iti-playground-example-toggle {
+  margin-top: 6px;
 }
 
 /* playground: on wider screens, align label + control horizontally to save space */
 @media (min-width: 600px) {
-  .iti-playground .iti-playground-control:not(.iti-playground-control--check) {
+  .iti-playground-control:not(.iti-playground-control--check) {
     display: grid;
     grid-template-columns: minmax(160px, 220px) 1fr;
     column-gap: 12px;
@@ -526,24 +540,24 @@ select,
   }
 
   /* playground: loadUtils has an example snippet + a checkbox, so keep the example aligned with the label, and put the checkbox beneath. */
-  .iti-playground .iti-playground-control--loadutils {
+  .iti-playground-control--example-code {
     align-items: start;
   }
-  .iti-playground .iti-playground-control--loadutils > .iti-playground-loadutils-toggle {
+  .iti-playground-control--example-code > .iti-playground-example-toggle {
     grid-column: 2;
-    margin-top: 6px;
+    margin-top: 0;
   }
-  .iti-playground .iti-playground-control:not(.iti-playground-control--check) > .iti-playground-labelgroup {
+  .iti-playground-control:not(.iti-playground-control--check) > .iti-playground-labelgroup {
     margin-bottom: 0;
   }
-  .iti-playground .iti-playground-control:not(.iti-playground-control--check) > .form-control,
-  .iti-playground .iti-playground-control:not(.iti-playground-control--check) > .form-select,
-  .iti-playground .iti-playground-control:not(.iti-playground-control--check) > .dropdown {
+  .iti-playground-control:not(.iti-playground-control--check) > .form-control,
+  .iti-playground-control:not(.iti-playground-control--check) > .form-select,
+  .iti-playground-control:not(.iti-playground-control--check) > .dropdown {
     min-width: 0;
   }
 
   /* On mobile, checkboxes appear on LHS. Here, we move them to the RHS. */
-  .iti-playground .iti-playground-control.iti-playground-control--check {
+  .iti-playground-control.iti-playground-control--check {
     display: grid;
     grid-template-columns: minmax(160px, 220px) 1fr;
     grid-template-areas: "label control";
@@ -552,11 +566,11 @@ select,
     align-items: center;
     padding-left: 0; /* override bootstrap .form-check */
   }
-  .iti-playground .iti-playground-control.iti-playground-control--check > .iti-playground-labelgroup {
+  .iti-playground-control.iti-playground-control--check > .iti-playground-labelgroup {
     grid-area: label;
     margin-bottom: 0;
   }
-  .iti-playground .iti-playground-control.iti-playground-control--check > .form-check-input {
+  .iti-playground-control.iti-playground-control--check > .form-check-input {
     grid-area: control;
     margin-left: 0; /* override bootstrap negative margin */
     float: none; /* override bootstrap float */
@@ -566,4 +580,7 @@ select,
 .form-control,
 .form-select {
   width: 100%;
+}
+.iti-playground pre {
+  display: block;
 }

@@ -676,10 +676,10 @@
   function buildBooleanExampleControl(key, meta, { idPrefix, dataAttr, exampleText }) {
     // Custom layout: show the code example to the right of the label (desktop), then the checkbox below.
     const wrapper = document.createElement("div");
-    wrapper.className = "iti-playground-control iti-playground-control--loadutils";
+    wrapper.className = "iti-playground-control iti-playground-control--example-code";
 
     const checkboxRow = document.createElement("div");
-    checkboxRow.className = "form-check iti-playground-loadutils-toggle";
+    checkboxRow.className = "form-check iti-playground-example-toggle";
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -690,7 +690,7 @@
     const enableLabel = document.createElement("label");
     enableLabel.className = "form-check-label";
     enableLabel.htmlFor = checkbox.id;
-    enableLabel.textContent = "Enable";
+    enableLabel.textContent = "Enable example code";
 
     checkboxRow.appendChild(checkbox);
     checkboxRow.appendChild(enableLabel);
