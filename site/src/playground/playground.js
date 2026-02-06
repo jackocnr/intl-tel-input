@@ -322,7 +322,7 @@
     }
 
     if (state.customPlaceholder) {
-      opts.customPlaceholder = (selectedCountryPlaceholder) => `e.g. ${selectedCountryPlaceholder}`;
+      opts.customPlaceholder = (exampleNumber) => exampleNumber ? `e.g. ${exampleNumber}` : "Phone number";
     }
 
     if (state.dropdownContainer) {
@@ -401,7 +401,7 @@
     if (state.customPlaceholder) {
       optionEntriesForCode.push([
         "customPlaceholder",
-        "(selectedCountryPlaceholder) => `e.g. ${selectedCountryPlaceholder}`",
+        "(exampleNumber) => exampleNumber ? `e.g. ${exampleNumber}` : 'Phone number'",
       ]);
     }
 
@@ -742,7 +742,7 @@
         return buildBooleanExampleControl(key, meta, {
           idPrefix,
           dataAttr,
-          exampleText: "(selectedCountryPlaceholder) => \"e.g. \" + selectedCountryPlaceholder",
+          exampleText: "(exampleNumber) => exampleNumber ? `e.g. ${exampleNumber}` : 'Phone number'",
         });
       }
 
