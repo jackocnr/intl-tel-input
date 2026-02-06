@@ -108,7 +108,7 @@
   </nav>
 </header>
 
-<!-- TOGGLEABLE NAV SIDEBAR (MOBILE: TOGGLEABLE, DESKTOP: HIDDEN) -->
+<!-- MOBILE NAV SIDEBAR (MOBILE: TOGGLEABLE, DESKTOP: HIDDEN) -->
 <aside class="iti-mobile-sidebar d-lg-none">
   <div class="offcanvas offcanvas-start" tabindex="-1" id="itiMobileSidebar" aria-labelledby="itiMobileSidebarLabel">
     <div class="offcanvas-header border-bottom">
@@ -135,7 +135,22 @@
             aria-controls="itiMobileDocsMenu"
             aria-expanded="<%= pageType === 'docs' ? 'true' : 'false' %>"
           >
-            Docs
+            <span class="d-flex align-items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-book-half"
+                style="color: rgb(53 217 184)"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
+              </svg>
+              Docs
+            </span>
             <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
           </button>
           <ul
@@ -152,7 +167,23 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link <% if (pageType === 'playground') { %>active<% } %>" href="/playground">Playground</a>
+          <a class="nav-link d-flex align-items-center gap-2 <% if (pageType === 'playground') { %>active<% } %>" href="/playground">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-joystick"
+              style="color: rgb(230 68 134)"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M10 2a2 2 0 0 1-1.5 1.937v5.087c.863.083 1.5.377 1.5.726 0 .414-.895.75-2 .75s-2-.336-2-.75c0-.35.637-.643 1.5-.726V3.937A2 2 0 1 1 10 2" />
+              <path d="M0 9.665v1.717a1 1 0 0 0 .553.894l6.553 3.277a2 2 0 0 0 1.788 0l6.553-3.277a1 1 0 0 0 .553-.894V9.665c0-.1-.06-.19-.152-.23L9.5 6.715v.993l5.227 2.178a.125.125 0 0 1 .001.23l-5.94 2.546a2 2 0 0 1-1.576 0l-5.94-2.546a.125.125 0 0 1 .001-.23L6.5 7.708l-.013-.988L.152 9.435a.25.25 0 0 0-.152.23" />
+            </svg>
+            Playground
+          </a>
         </li>
 
         <li class="nav-item">
@@ -164,7 +195,23 @@
             aria-controls="itiMobileExamplesMenu"
             aria-expanded="<%= pageType === 'examples' ? 'true' : 'false' %>"
           >
-            Examples
+            <span class="d-flex align-items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-code-square"
+                style="color: rgb(222 159 74)"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                <path d="M6.854 4.646a.5.5 0 0 1 0 .708L4.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0m2.292 0a.5.5 0 0 0 0 .708L11.793 8l-2.647 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0" />
+              </svg>
+              Examples
+            </span>
             <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
           </button>
           <ul
