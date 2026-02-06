@@ -6,9 +6,36 @@
   const resetOptionsButton = document.querySelector("#playgroundReset");
   const resetAttrsButton = document.querySelector("#playgroundResetAttrs");
   const initCodeEl = document.querySelector("#playgroundInitCode");
+  const copyInitCodeButton = document.querySelector("#playgroundCopyInitCode");
   const infoIconTemplate = document.querySelector("#itiPlaygroundInfoIconTemplate");
 
   if (!telInput || !optionsForm) return;
+
+  function copyTextToClipboard(text) {
+    const value = String(text || "");
+    if (!value) return Promise.resolve(false);
+    if (!navigator.clipboard || !window.isSecureContext) return Promise.resolve(false);
+    return navigator.clipboard.writeText(value).then(
+      () => true,
+      () => false,
+    );
+  }
+
+  if (copyInitCodeButton && initCodeEl) {
+    let copiedResetTimer = null;
+    copyInitCodeButton.addEventListener("click", () => {
+      const originalLabel = copyInitCodeButton.textContent;
+      copyTextToClipboard(initCodeEl.textContent).then((ok) => {
+        if (!ok) return;
+        copyInitCodeButton.textContent = "Copied!";
+        if (copiedResetTimer) window.clearTimeout(copiedResetTimer);
+        copiedResetTimer = window.setTimeout(() => {
+          copyInitCodeButton.textContent = originalLabel;
+          copiedResetTimer = null;
+        }, 2000);
+      });
+    });
+  }
 
   const CACHE_BUST_UTILS = "<%= cacheBust('/intl-tel-input/js/utils.js') %>";
   const CACHE_BUST_I18N = "<%= cacheBustDir('/intl-tel-input/js/i18n') %>";
