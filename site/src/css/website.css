@@ -143,8 +143,9 @@ p img {
   background: none;
 }
 .iti-mobile-nav-toggle__chevron {
-  width: 0.75rem;
-  height: 0.75rem;
+  margin: 0px 0 3px 6px;
+  width: 8px;
+  height: 8px;
   display: inline-block;
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
