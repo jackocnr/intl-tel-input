@@ -493,14 +493,15 @@ select,
   width: 16px;
   height: 16px;
   margin-left: 0;
-  border-radius: 999px;
-  border: 1px solid var(--bs-border-color, #ced4da);
   color: var(--bs-secondary-color, #6c757d);
-  font-size: 11px;
-  line-height: 1;
-  font-weight: 700;
   user-select: none;
   cursor: help;
+}
+
+.iti-playground-info > svg {
+  display: block;
+  width: 16px;
+  height: 16px;
 }
 
 .iti-playground-labelgroup {

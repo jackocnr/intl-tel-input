@@ -6,6 +6,7 @@
   const resetOptionsButton = document.querySelector("#playgroundReset");
   const resetAttrsButton = document.querySelector("#playgroundResetAttrs");
   const initCodeEl = document.querySelector("#playgroundInitCode");
+  const infoIconTemplate = document.querySelector("#itiPlaygroundInfoIconTemplate");
 
   if (!telInput || !optionsForm) return;
 
@@ -641,12 +642,21 @@
     });
   }
 
+  function cloneInfoIconSvg() {
+    if (!infoIconTemplate || !infoIconTemplate.content) return null;
+    const svg = infoIconTemplate.content.querySelector("svg");
+    return svg ? svg.cloneNode(true) : null;
+  }
+
   function createInfoIcon(meta) {
     const text = String(meta && meta.description ? meta.description : "").trim();
     if (!text) return null;
     const icon = document.createElement("span");
     icon.className = "iti-playground-info";
-    icon.textContent = "i";
+
+    const svg = cloneInfoIconSvg();
+    if (svg) icon.appendChild(svg);
+
     icon.tabIndex = 0;
     icon.setAttribute("role", "button");
     icon.setAttribute("aria-label", text);
