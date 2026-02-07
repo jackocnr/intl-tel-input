@@ -389,7 +389,7 @@ module.exports = function (grunt) {
       dest: `tmp/docs/${key}_content.html`,
       options: {
         data: () => ({
-          html: md.render(grunt.file.read(mdPath)),
+          html: md.render(grunt.file.read(mdPath), { docKey: key }),
         }),
       },
     };

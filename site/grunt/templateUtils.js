@@ -24,6 +24,106 @@ const defaultSlugifyHeading = (value) =>
     // trim hyphens
     .replace(/^-|-$/g, "");
 
+// This plugin (AI-generated) looks for the "options" doc, and injects extra layout markup for display purposes. It relies on each h6 option being immediately followed by a paragraph containing the Type/Default info, and then any remaining content for that option (e.g. description, examples) coming after that in the same section (until the next heading).
+const addDocOptionsLayoutPlugin = (md) => {
+  md.core.ruler.after("inline", "iti_doc_options_layout", (state) => {
+    const env = state.env || {};
+    if (env.docKey !== "options") return;
+
+    const tokens = state.tokens;
+    const isHeadingOpen = (token, tag) => token && token.type === "heading_open" && token.tag === tag;
+    const isAnyHeadingOpen = (token) => token && token.type === "heading_open" && /^h[1-6]$/.test(token.tag);
+
+    const makeHtmlBlock = (content) => {
+      const token = new state.Token("html_block", "", 0);
+      token.content = content;
+      return token;
+    };
+
+    const startRow = () =>
+      makeHtmlBlock(
+        '<div class="iti-doc-options__row">\n' +
+          '  <div class="iti-doc-options__cell iti-doc-options__cell--key">\n',
+      );
+
+    const switchToValueCell = () =>
+      makeHtmlBlock(
+        "  </div>\n" +
+          '  <div class="iti-doc-options__cell iti-doc-options__cell--value">\n',
+      );
+
+    const endRow = () => makeHtmlBlock("  </div>\n</div>\n");
+
+    const nextTokens = [];
+    let i = 0;
+
+    const consumeThroughHeadingClose = (tag) => {
+      while (i < tokens.length) {
+        const t = tokens[i];
+        nextTokens.push(t);
+        i += 1;
+        if (t.type === "heading_close" && t.tag === tag) return;
+      }
+    };
+
+    const consumeOneParagraph = () => {
+      if (i >= tokens.length || tokens[i].type !== "paragraph_open") return false;
+      while (i < tokens.length) {
+        const t = tokens[i];
+        nextTokens.push(t);
+        i += 1;
+        if (t.type === "paragraph_close") return true;
+      }
+      return true;
+    };
+
+    const consumeUntilNextHeading = () => {
+      while (i < tokens.length) {
+        const t = tokens[i];
+        if (isAnyHeadingOpen(t)) return;
+        nextTokens.push(t);
+        i += 1;
+      }
+    };
+
+    const consumeOptionBlock = () => {
+      nextTokens.push(startRow());
+
+      // H6 heading (option name) lives in the key cell.
+      nextTokens.push(tokens[i]);
+      i += 1;
+      consumeThroughHeadingClose("h6");
+
+      // First paragraph (Type/Default) also lives in the key cell.
+      const hadMetaParagraph = consumeOneParagraph();
+
+      // Switch to the value cell for the rest of the option content.
+      nextTokens.push(switchToValueCell());
+
+      // If there was no Type/Default paragraph, we still want to consume content in the value cell.
+      if (!hadMetaParagraph) {
+        // no-op (value cell is already open)
+      }
+
+      consumeUntilNextHeading();
+      nextTokens.push(endRow());
+    };
+
+    while (i < tokens.length) {
+      const token = tokens[i];
+      if (isHeadingOpen(token, "h6")) {
+        consumeOptionBlock();
+        continue;
+      }
+
+      nextTokens.push(token);
+      i += 1;
+    }
+
+    state.tokens = nextTokens;
+  });
+};
+
 const createMarkdownRenderer = ({ slugifyHeading = defaultSlugifyHeading } = {}) => {
   const md = new MarkdownIt({
     html: true,
@@ -41,6 +141,8 @@ const createMarkdownRenderer = ({ slugifyHeading = defaultSlugifyHeading } = {})
       `,
     }),
   });
+
+  addDocOptionsLayoutPlugin(md);
   return md;
 };
 

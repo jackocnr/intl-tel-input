@@ -259,6 +259,47 @@ h1 {
   height: 20px;
 }
 
+/* Docs options layout: keep code blocks within the content width */
+.iti-doc-options__row {
+  border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+  display: flex;
+}
+.iti-doc-options__row p:last-child,
+.iti-doc-options__row pre:last-child {
+  margin-bottom: 0;
+}
+.iti-doc-options__row + .iti-doc-options__row {
+  border-top: none;
+}
+.iti-doc-options__cell {
+  vertical-align: top;
+  box-sizing: border-box;
+  padding: var(--bs-table-cell-padding-y, 0.5rem) var(--bs-table-cell-padding-x, 0.5rem);
+  min-width: 0;
+}
+.iti-doc-options__cell--key {
+  flex: 0 0 210px; /* this is wide enough for all of the option names */
+  border-right: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+}
+.iti-doc-options__cell--key h6 {
+  font-weight: 700;
+}
+.iti-doc-options__cell--value {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Docs options layout: stack key/value on small screens */
+@media (max-width: 600px) {
+  .iti-doc-options__row {
+    flex-direction: column;
+  }
+  .iti-doc-options__cell--key {
+    flex: 0 0 auto;
+    border-right: none;
+  }
+}
+
 /* bootstrap override */
 @media (min-width: 1200px) {
   .h2,
