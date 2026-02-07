@@ -39,7 +39,7 @@
         <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav">
         </ul>
 
-        <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+        <ul class="navbar-nav flex-row flex-wrap ms-md-auto gap-2">
           <li class="nav-item dropdown col-6 col-lg-auto">
             <a
               class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 <% if (pageType === 'docs') { %>active<% } %>"
@@ -81,7 +81,7 @@
           </li>
           <li class="nav-item col-6 col-lg-auto">
             <a
-              class="nav-link px-lg-2"
+              class="nav-link px-lg-2 d-inline-flex align-items-center nav-link--github"
               href="https://github.com/jackocnr/intl-tel-input"
               rel="noopener"
             >
@@ -156,7 +156,7 @@
             </span>
           </button>
           <ul
-            class="iti-mobile-submenu collapse nav flex-column flex-nowrap nav-pills ms-4 mb-3 mt-2 <% if (pageType === 'docs') { %>show<% } %>"
+            class="iti-mobile-submenu collapse nav flex-column flex-nowrap nav-pills ms-4 mb-2 <% if (pageType === 'docs') { %>show<% } %>"
             id="itiMobileDocsMenu"
             data-bs-parent="#itiMobilePrimaryNav"
           >
@@ -169,7 +169,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link d-flex align-items-center gap-2 <% if (pageType === 'playground') { %>active<% } %>" href="/playground">
+          <a class="nav-link d-flex align-items-center gap-2" href="/playground">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -219,7 +219,7 @@
             </span>
           </button>
           <ul
-            class="iti-mobile-submenu collapse nav flex-column flex-nowrap nav-pills ms-4 mb-3 mt-2 <% if (pageType === 'examples') { %>show<% } %>"
+            class="iti-mobile-submenu collapse nav flex-column flex-nowrap nav-pills ms-4 mb-2 <% if (pageType === 'examples') { %>show<% } %>"
             id="itiMobileExamplesMenu"
             data-bs-parent="#itiMobilePrimaryNav"
           >
@@ -267,7 +267,7 @@
 <!-- MAIN PAGE LAYOUT -->
 <div class="container-xxl iti-gutter mt-3 my-md-4 <%= layoutClass %>">
 
-  <!-- LEFT SIDEBAR (DESKTOP ONLY: PAGE-SPECIFIC NAV, MOBILE: HIDDEN) -->
+  <!-- LEFT SIDEBAR (DESKTOP: PAGE-SPECIFIC NAV, MOBILE: HIDDEN) -->
   <aside class="iti-left-sidebar d-none <% if (showLeftSidebar) { %>d-lg-block<% } %>">
     <% if (typeof nav !== 'undefined') { %>
       <%= nav %>

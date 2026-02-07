@@ -83,6 +83,9 @@ p img {
 #bdNavbar .nav-link.active {
   font-weight: bold;
 }
+.nav-link--github {
+  height: 100%; /* required for vertical alignment */
+}
 
 @media (min-width: 992px) {
   #bdNavbar .navbar-nav .nav-link {
@@ -99,7 +102,7 @@ p img {
 /* Header docs dropdown: active item uses header green */
 #bdNavbar .dropdown-item.active,
 #bdNavbar .dropdown-item:active {
-  background-color: rgb(var(--header-bg-color-rgb));
+  background-color: rgb(var(--header-bg-color-rgb) / 0.5);
   color: white;
 }
 
@@ -166,10 +169,15 @@ p img {
   margin-top: 8px;
 }
 .nav-pills .nav-link.active {
-  background-color: rgb(var(--header-bg-color-rgb));
+  background-color: rgb(var(--header-bg-color-rgb) / 0.5);
 }
 .nav-pills .nav-link:not(.active):hover {
   background-color: rgb(var(--header-bg-color-rgb) / 0.5);
+}
+
+/* Mobile nav: remove hover styles (prevents iOS/Android sticky :hover states) */
+.iti-mobile-sidebar .nav-pills .nav-link:not(.active):hover {
+  background-color: transparent;
 }
 @media (min-width: 992px) {
   .iti-layout-both-sidebars .iti-left-sidebar,
