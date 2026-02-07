@@ -47,21 +47,16 @@ p img {
   border: 0;
 }
 
-/* Header dropdown toggle: replace Bootstrap caret triangle with inline icon */
+/* Header dropdown toggle: replace Bootstrap caret triangle with CSS chevron */
 .iti-navbar .dropdown-toggle::after {
-  display: none;
-}
-
-.iti-navbar .bi-chevron-down {
-  width: 12px;
-  height: 12px;
-  margin-top: 1px;
-  margin-left: 2px;
-}
-
-.iti-navbar .bi-chevron-down path {
-  stroke: currentColor;
-  stroke-width: 1;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin: 0px 0 3px 4px;
+  content: "";
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 /* LAYOUT */
