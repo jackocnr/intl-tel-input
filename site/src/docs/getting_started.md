@@ -11,9 +11,9 @@ For the component docs, click one of the following links:
 ## JavaScript Plugin
 
 For the JavaScript plugin, you can choose from one of the three Getting Started options below
-- Using a CDN
-- Using a bundler
-- Not using a bundler
+- [Using a CDN](#using-a-cdn)
+- [Using a bundler, e.g. Vite](#using-a-bundler-e-g-vite)
+- [Not using a bundler](#not-using-a-bundler)
 
 ### Using a CDN
 
@@ -33,7 +33,7 @@ For the JavaScript plugin, you can choose from one of the three Getting Started 
   </script>
   ```
 
-### Using a bundler, e.g. Webpack
+### Using a bundler, e.g. Vite
 
 1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
 
@@ -57,7 +57,7 @@ For the JavaScript plugin, you can choose from one of the three Getting Started 
   });
   ```
 
-Most bundlers (such as Webpack, Vite, or Parcel) will see this and place the [utilities script](/docs/utils.html) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
+Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utilities script](/docs/utils.html) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
 
 ### Not using a bundler
 
