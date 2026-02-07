@@ -89,6 +89,18 @@ p img {
   font-weight: bold;
 }
 
+@media (min-width: 992px) {
+  #bdNavbar .navbar-nav .nav-link {
+    opacity: 0.85;
+  }
+  #bdNavbar .navbar-nav .nav-link:hover,
+  #bdNavbar .navbar-nav .nav-link:focus,
+  #bdNavbar .navbar-nav .nav-link.active,
+  #bdNavbar .navbar-nav .show > .nav-link {
+    opacity: 1;
+  }
+}
+
 /* Header docs dropdown: active item uses header green */
 #bdNavbar .dropdown-item.active,
 #bdNavbar .dropdown-item:active {
