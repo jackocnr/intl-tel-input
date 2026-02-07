@@ -69,12 +69,6 @@ p img {
   display: none;
 }
 @media (min-width: 992px) {
-  .iti-layout-right-sidebar {
-    display: grid;
-    grid-template-areas: "main ads";
-    grid-template-columns: 5fr 1fr;
-    gap: 1.5rem;
-  }
   .iti-layout-both-sidebars {
     display: grid;
     grid-template-areas: "nav main ads";
@@ -126,7 +120,6 @@ p img {
   grid-area: nav;
 }
 /* right sidebar */
-.iti-layout-right-sidebar .iti-right-sidebar,
 .iti-layout-both-sidebars .iti-right-sidebar {
   grid-area: ads;
 }
@@ -176,7 +169,6 @@ p img {
   background-color: rgb(var(--header-bg-color-rgb) / 0.5);
 }
 @media (min-width: 992px) {
-  .iti-layout-right-sidebar .iti-right-sidebar,
   .iti-layout-both-sidebars .iti-left-sidebar,
   .iti-layout-both-sidebars .iti-right-sidebar {
     position: sticky;
