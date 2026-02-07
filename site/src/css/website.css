@@ -72,7 +72,8 @@ p img {
   .iti-layout-both-sidebars {
     display: grid;
     grid-template-areas: "nav main ads";
-    grid-template-columns: 1fr 4fr 1fr;
+    /* this minmax ensures main block doesn't encroach on sidebars */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
     gap: 1.5rem;
   }
 }
@@ -118,10 +119,12 @@ p img {
 /* left sidebar */
 .iti-layout-both-sidebars .iti-left-sidebar {
   grid-area: nav;
+  min-width: 0;
 }
 /* right sidebar */
 .iti-layout-both-sidebars .iti-right-sidebar {
   grid-area: ads;
+  min-width: 0;
 }
 .iti-left-sidebar .nav-link,
 .iti-mobile-sidebar .nav-link {
@@ -182,6 +185,7 @@ p img {
 }
 .iti-main {
   grid-area: main;
+  min-width: 0;
   /* need some space at the bottom on mobile */
   padding-bottom: 30px;
 }
