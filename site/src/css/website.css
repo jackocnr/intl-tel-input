@@ -337,11 +337,6 @@ select,
     border-color: var(--bs-border-color);
   }
 
-  /* multidropdown down arrow */
-  .iti-playground-multidropdown-toggle.dropdown-toggle::after {
-    border-top-color: rgba(222, 226, 230, 0.85);
-  }
-
   /* bootstrap's dark mode theme doesn't seem to support changing the bg color on a disabled input */
   input[disabled] {
     background-color: #3c3c3c !important;
@@ -438,7 +433,7 @@ select,
 /**************
  * PLAYGROUND
  **************/
-/* playground: disable hover styling on collapsed multidropdown toggle */
+/* multidropdown toggle: disable hover styling when closed */
 .iti-playground-multidropdown-toggle {
   cursor: default;
   display: flex;
@@ -454,6 +449,24 @@ select,
   --bs-btn-active-bg: var(--bs-btn-bg);
   --bs-btn-active-color: var(--bs-btn-color);
   --bs-btn-active-border-color: var(--bs-btn-border-color);
+}
+/* multidropdown toggle: use CSS chevron for down arrow */
+.iti-playground-multidropdown-toggle.dropdown-toggle::after {
+  opacity: 0.85;
+  margin: 0 3px 2px auto;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  content: "";
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+/* multidropdown toggle: flip down arrow when open */
+.iti-playground-multidropdown-toggle.dropdown-toggle.show::after,
+.dropdown.show > .iti-playground-multidropdown-toggle.dropdown-toggle::after {
+  margin-top: 6px;
+  transform: rotate(225deg);
 }
 
 /* playground: responsive layout
@@ -553,10 +566,6 @@ select,
 .iti-playground-info:focus-visible {
   outline: 2px solid rgb(var(--header-bg-color-rgb));
   outline-offset: 2px;
-}
-
-.iti-playground-multidropdown-toggle.dropdown-toggle::after {
-  margin-left: auto;
 }
 
 .iti-playground-example-toggle {
