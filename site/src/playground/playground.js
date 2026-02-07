@@ -3,7 +3,7 @@
   const telInput = document.querySelector("#playgroundPhone");
   const optionsForm = document.querySelector("#playgroundOptions");
   const attrsForm = document.querySelector("#playgroundAttributes");
-  const resetOptionsButton = document.querySelector("#playgroundReset");
+  const resetAllButton = document.querySelector("#playgroundResetAll");
   const resetAttrsButton = document.querySelector("#playgroundResetAttrs");
   const initCodeEl = document.querySelector("#playgroundInitCode");
   const copyInitCodeButton = document.querySelector("#playgroundCopyInitCode");
@@ -283,6 +283,80 @@
   const attributeQueryAliases = {
     readOnly: "readonly",
   };
+
+  const optionResetGroupKeys = new Map();
+
+  const OPTION_GROUPS = [
+    {
+      title: "Country Options",
+      description: "Choose which countries are available, the order they're displayed in, and how the initial country is determined.",
+      keys: [
+        "countryOrder",
+        "excludeCountries",
+        "initialCountry",
+        "geoIpLookup",
+        "onlyCountries",
+      ],
+    },
+    {
+      title: "User Interface Options",
+      description: "Control dropdown behaviour and whether certain UI elements are displayed.",
+      keys: [
+        "allowDropdown",
+        "containerClass",
+        "countrySearch",
+        "dropdownContainer",
+        "fixDropdownWidth",
+        "separateDialCode",
+        "showFlags",
+        "useFullscreenPopup",
+      ],
+    },
+    {
+      title: "Placeholder Options",
+      description: "Configure the automatically generated placeholder numbers.",
+      keys: [
+        "autoPlaceholder",
+        "customPlaceholder",
+        "placeholderNumberType",
+      ],
+    },
+    {
+      title: "Formatting Options",
+      description: "How numbers are formatted as you type and on initial display.",
+      keys: [
+        "formatAsYouType",
+        "formatOnDisplay",
+        "nationalMode",
+        "strictMode",
+      ],
+    },
+    {
+      title: "Validation Options",
+      description: "Adjust what is considered a valid number.",
+      keys: [
+        "allowedNumberTypes",
+        "allowNumberExtensions",
+        "allowPhonewords",
+      ],
+    },
+    {
+      title: "Translation Options",
+      description: "Localise country names and the plugin UI strings, e.g. the country search placeholder.",
+      keys: [
+        "countryNameLocale",
+        "i18n",
+      ],
+    },
+    {
+      title: "Miscellaneous Options",
+      description: "Extra features like hidden inputs and loading the utilities module.",
+      keys: [
+        "hiddenInput",
+        "loadUtils",
+      ],
+    },
+  ];
 
   function deepClone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -932,13 +1006,96 @@
     return wrapper;
   }
 
-  function renderControls(formEl, metaMap, idPrefix, dataAttr) {
+  function createControlGroup(title, groupId, description) {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+
+    const headerRow = document.createElement("div");
+    headerRow.className = "d-flex align-items-center justify-content-between gap-2";
+
+    const heading = document.createElement("h2");
+    // Match the original "Initialisation options" card title size.
+    heading.className = "h5 mb-0";
+    heading.textContent = title;
+
+    const actions = document.createElement("div");
+    actions.className = "d-flex gap-2";
+
+    const resetButton = document.createElement("button");
+    resetButton.type = "button";
+    resetButton.className = "btn btn-outline-secondary btn-sm";
+    resetButton.textContent = "Reset";
+    resetButton.setAttribute("data-playground-reset", "options");
+    resetButton.setAttribute("data-playground-reset-group", String(groupId));
+
+    actions.appendChild(resetButton);
+    headerRow.appendChild(heading);
+    headerRow.appendChild(actions);
+
+    const helperText = document.createElement("p");
+    helperText.className = "text-muted mt-2 mb-3";
+    helperText.textContent = description;
+
+    const stack = document.createElement("div");
+    stack.className = "vstack gap-3";
+
+    body.appendChild(headerRow);
+    body.appendChild(helperText);
+    body.appendChild(stack);
+    card.appendChild(body);
+
+    return { group: card, stack };
+  }
+
+  function renderControls(formEl, metaMap, idPrefix, dataAttr, groups = null) {
     if (!formEl) return;
     formEl.innerHTML = "";
 
-    Object.entries(metaMap).forEach(([key, meta]) => {
-      formEl.appendChild(buildControlRow(key, meta, { idPrefix, dataAttr }));
+    if (!groups) {
+      Object.entries(metaMap).forEach(([key, meta]) => {
+        formEl.appendChild(buildControlRow(key, meta, { idPrefix, dataAttr }));
+      });
+      initTooltips(formEl);
+      return;
+    }
+
+    const allKeys = Object.keys(metaMap);
+    const usedKeys = new Set();
+    optionResetGroupKeys.clear();
+
+    groups.forEach(({ title, description, keys }, index) => {
+      const groupKeys = (Array.isArray(keys) ? keys : []).filter((k) => metaMap[k]);
+      if (groupKeys.length === 0) return;
+
+      const groupId = `group_${index}`;
+      optionResetGroupKeys.set(groupId, groupKeys);
+      const { group, stack } = createControlGroup(title, groupId, description);
+
+      groupKeys.forEach((key) => {
+        usedKeys.add(key);
+        stack.appendChild(buildControlRow(key, metaMap[key], { idPrefix, dataAttr }));
+      });
+
+      formEl.appendChild(group);
     });
+
+    const remainingKeys = allKeys.filter((k) => !usedKeys.has(k));
+    if (remainingKeys.length) {
+      const groupId = "group_other";
+      optionResetGroupKeys.set(groupId, remainingKeys);
+      const { group, stack } = createControlGroup(
+        "Other",
+        groupId,
+        "Additional options that don’t fit into the groups above.",
+      );
+      remainingKeys.forEach((key) => {
+        stack.appendChild(buildControlRow(key, metaMap[key], { idPrefix, dataAttr }));
+      });
+      formEl.appendChild(group);
+    }
 
     initTooltips(formEl);
   }
@@ -1079,7 +1236,7 @@
 
 
   // boot
-  renderControls(optionsForm, optionMeta, "opt", "data-option");
+  renderControls(optionsForm, optionMeta, "opt", "data-option", OPTION_GROUPS);
   renderControls(attrsForm, attributeMeta, "attr", "data-attr");
 
   const initialOptionsState = parseQueryOverrides(defaultInitOptions, optionMeta);
@@ -1100,20 +1257,66 @@
     attrsForm.addEventListener("change", scheduleReinit);
   }
 
-  if (resetOptionsButton) {
-    resetOptionsButton.addEventListener("click", () => {
-      // we store both options and attributes in the same state object that is passed to initWithStateAsync and updateUrlFromState, so we must gather the current attribute settings first
-      const attrsState = getStateFromForm(
-        attrsForm,
-        defaultInputAttributes,
-        attributeMeta,
-        "data-attr",
-      );
-      const state = { ...deepClone(defaultInitOptions), ...attrsState };
-      setFormFromState(optionsForm, state, optionMeta, "data-option");
-      renderInitCodeFromState(state);
-      void initWithStateAsync(state);
-      updateUrlFromState(state);
+  function resetOptionGroupToDefaults(groupKeys) {
+    const keys = Array.isArray(groupKeys) ? groupKeys : [];
+    if (keys.length === 0) return;
+
+    const optionsState = getStateFromForm(
+      optionsForm,
+      defaultInitOptions,
+      optionMeta,
+      "data-option",
+    );
+
+    keys.forEach((key) => {
+      optionsState[key] = deepClone(defaultInitOptions[key]);
+    });
+
+    // Gather attributes too because we pass a single combined state object downstream.
+    const attrsState = getStateFromForm(
+      attrsForm,
+      defaultInputAttributes,
+      attributeMeta,
+      "data-attr",
+    );
+
+    const state = { ...optionsState, ...attrsState };
+    setFormFromState(optionsForm, state, optionMeta, "data-option");
+    renderInitCodeFromState(state);
+    void initWithStateAsync(state);
+    updateUrlFromState(state);
+  }
+
+  optionsForm.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    const btn = event.target.closest("[data-playground-reset=\"options\"]");
+    if (!btn) return;
+
+    const groupId = btn.getAttribute("data-playground-reset-group");
+    const groupKeys = groupId ? optionResetGroupKeys.get(groupId) : null;
+    if (!groupKeys) return;
+
+    event.preventDefault();
+    resetOptionGroupToDefaults(groupKeys);
+  });
+
+  function resetAllToDefaults() {
+    const state = {
+      ...deepClone(defaultInitOptions),
+      ...deepClone(defaultInputAttributes),
+    };
+
+    setFormFromState(optionsForm, state, optionMeta, "data-option");
+    setFormFromState(attrsForm, state, attributeMeta, "data-attr");
+    renderInitCodeFromState(state);
+    void initWithStateAsync(state);
+    updateUrlFromState(state);
+  }
+
+  if (resetAllButton) {
+    resetAllButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      resetAllToDefaults();
     });
   }
 

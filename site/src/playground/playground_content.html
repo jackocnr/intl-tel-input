@@ -21,30 +21,16 @@
   <div class="iti-playground-layout">
     <div class="iti-playground-layout__col iti-playground-layout__col--left">
       <div class="iti-playground-layout__options">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between gap-2">
-              <h2 class="h5 mb-0">Initialisation options</h2>
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundReset">Reset</button>
-              </div>
-            </div>
-            <p class="text-muted mt-2 mb-3">
-              Any changes here will re-initialise the plugin.
-            </p>
-
-            <form id="playgroundOptions" class="vstack gap-3" aria-label="intl-tel-input initialisation options">
-              <!-- JS renders controls here -->
-            </form>
-          </div>
-        </div>
+        <form id="playgroundOptions" class="vstack gap-3" aria-label="intl-tel-input initialisation options">
+          <!-- JS renders group cards here -->
+        </form>
       </div>
 
       <div class="iti-playground-layout__attrs">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between gap-2">
-              <h2 class="h5 mb-0">Input attributes</h2>
+              <h2 class="h5 mb-0">Input Attributes</h2>
               <div class="d-flex gap-2">
                 <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundResetAttrs">Reset</button>
               </div>
@@ -65,7 +51,12 @@
       <div class="iti-playground-layout__demo">
       <div class="card">
         <div class="card-body">
-          <h2 class="h5 mb-3">Live Demo</h2>
+          <div class="d-flex align-items-center justify-content-between gap-2">
+            <h2 class="h5 mb-0">Live Demo</h2>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundResetAll">Reset All</button>
+            </div>
+          </div>
           <p class="text-muted mt-2 mb-3">
             This is reset each time the options are changed. For a persistent number, see the Attributes section.
           </p>
@@ -82,7 +73,7 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex align-items-center justify-content-between gap-2">
-            <h2 class="h5 mb-0">Initialisation code</h2>
+            <h2 class="h5 mb-0">Initialisation Code</h2>
             <div class="d-flex gap-2">
               <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundCopyInitCode" aria-label="Copy initialisation code">Copy</button>
             </div>
