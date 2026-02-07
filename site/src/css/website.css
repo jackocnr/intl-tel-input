@@ -145,6 +145,11 @@ p img {
   font-weight: 500;
   opacity: 0.95;
 }
+
+/* Mobile sidebar icon + label spacing: slightly wider than Bootstrap gap-2 */
+.iti-mobile-sidebar .d-flex.align-items-center.gap-2 {
+  gap: calc(0.5rem + 2px) !important;
+}
 .iti-mobile-nav-toggle {
   border: 0;
   background: none;
@@ -158,6 +163,11 @@ p img {
   border-bottom: 2px solid currentColor;
   transform: rotate(45deg);
   opacity: 0.85;
+}
+
+.iti-mobile-nav-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+  transform: rotate(225deg);
+  margin-top: 8px;
 }
 .nav-pills .nav-link.active {
   background-color: rgb(var(--header-bg-color-rgb));
