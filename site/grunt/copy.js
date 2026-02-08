@@ -12,6 +12,12 @@ module.exports = function (grunt) {
       dest: "build", // destination folder
       expand: true, // required when using cwd
     },
+    htaccess: {
+      cwd: "static", // set working folder / root to copy
+      src: ".htaccess", // copy the .htaccess dotfile
+      dest: "build", // destination folder
+      expand: true, // required when using cwd
+    },
     js: {
       cwd: "src/js", // set working folder / root to copy
       src: "**/*.js",
