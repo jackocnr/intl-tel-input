@@ -57,7 +57,7 @@ For the JavaScript plugin, you can choose from one of the three Getting Started 
   });
   ```
 
-Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utilities script](/docs/utils.html) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
+Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utilities script](/docs/utils) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
 
 ### Not using a bundler
 
@@ -89,12 +89,12 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [u
 
 ## Recommended Usage
 
-We highly recommend you [load the included utils.js](/docs/utils.html#loading-the-utilities-script), which enables formatting and validation, etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information*.
+We highly recommend you [load the included utils.js](/docs/utils#loading-the-utilities-script), which enables formatting and validation, etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information*.
 
 You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country* and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
 
-If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States). If you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address - [see example](https://intl-tel-input.com/examples/lookup-country.html).
+If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States). If you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address - [see example](/examples/lookup-country).
 
-If you know the user's language, there is a built in way to translate the country names and user interface strings - [see example](https://intl-tel-input.com/examples/internationalisation.html).
+If you know the user's language, there is a built in way to translate the country names and user interface strings - [see example](/examples/internationalisation).
 
 _*Except for some small satellite territories, which share number ranges with the main country (search data.ts for "shared" for examples). When displaying numbers from those shared ranges, we default to selecting the main country._

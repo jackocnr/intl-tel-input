@@ -9,7 +9,7 @@
 }
 
 html {
-  /* fix: links with # scroll values in (e.g. docs/options.html#separatedialcode) scroll until subtitle is below header, as it has position:sticky */
+  /* fix: links with # scroll values in (e.g. docs/options#separatedialcode) scroll until subtitle is below header, as it has position:sticky */
   scroll-padding-top: 70px;
 }
 
