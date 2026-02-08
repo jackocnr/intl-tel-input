@@ -8,6 +8,7 @@
   const initCodeEl = document.querySelector("#playgroundInitCode");
   const copyInitCodeButton = document.querySelector("#playgroundCopyInitCode");
   const infoIconTemplate = document.querySelector("#itiPlaygroundInfoIconTemplate");
+  const optionGroupTemplate = document.querySelector("#itiPlaygroundOptionGroupTemplate");
 
   if (!telInput || !optionsForm) return;
 
@@ -1007,47 +1008,21 @@
   }
 
   function createControlGroup(title, groupId, description) {
-    const card = document.createElement("div");
-    card.className = "card";
+    const root = optionGroupTemplate.content.firstElementChild;
+    const group = root.cloneNode(true);
 
-    const body = document.createElement("div");
-    body.className = "card-body";
+    const titleEl = group.querySelector("[data-role=\"title\"]");
+    titleEl.textContent = title;
 
-    const headerRow = document.createElement("div");
-    headerRow.className = "d-flex align-items-center justify-content-between gap-2";
+    const descEl = group.querySelector("[data-role=\"description\"]");
+    descEl.textContent = description;
 
-    const heading = document.createElement("h2");
-    // Match the original "Initialisation options" card title size.
-    heading.className = "h5 mb-0";
-    heading.textContent = title;
-
-    const actions = document.createElement("div");
-    actions.className = "d-flex gap-2";
-
-    const resetButton = document.createElement("button");
-    resetButton.type = "button";
-    resetButton.className = "btn btn-outline-secondary btn-sm";
-    resetButton.textContent = "Reset";
-    resetButton.setAttribute("data-playground-reset", "options");
+    const resetButton = group.querySelector("[data-role=\"reset\"]");
     resetButton.setAttribute("data-playground-reset-group", String(groupId));
 
-    actions.appendChild(resetButton);
-    headerRow.appendChild(heading);
-    headerRow.appendChild(actions);
+    const stack = group.querySelector("[data-role=\"stack\"]");
 
-    const helperText = document.createElement("p");
-    helperText.className = "text-muted mt-2 mb-3";
-    helperText.textContent = description;
-
-    const stack = document.createElement("div");
-    stack.className = "vstack gap-3";
-
-    body.appendChild(headerRow);
-    body.appendChild(helperText);
-    body.appendChild(stack);
-    card.appendChild(body);
-
-    return { group: card, stack };
+    return { group, stack };
   }
 
   function renderControls(formEl, metaMap, idPrefix, dataAttr, groups = null) {

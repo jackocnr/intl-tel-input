@@ -7,6 +7,28 @@
     </svg>
   </template>
 
+  <template id="itiPlaygroundOptionGroupTemplate">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between gap-2">
+          <h2 class="h5 mb-0" data-role="title"></h2>
+          <div class="d-flex gap-2">
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              data-role="reset"
+              data-playground-reset="options"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+        <p class="text-muted mt-2 mb-3" data-role="description"></p>
+        <div class="vstack gap-3" data-role="stack"></div>
+      </div>
+    </div>
+  </template>
+
   <div class="mb-4">
     <h1 class="h3">Playground</h1>
     <p class="text-muted mb-3">
