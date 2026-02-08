@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# 1. If someone types .html, redirect them to the clean URL
+RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+RewriteRule ^ /%1 [L,R=301]
+
+# 2. If the clean URL is requested, internally point it to the .html file
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [L]
