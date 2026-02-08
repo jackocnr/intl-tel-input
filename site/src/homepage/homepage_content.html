@@ -37,22 +37,147 @@
 
   <div class="section section--features">
     <h2>Features</h2>
-    <ul>
-      <li>Automatically select the user's current country using an IP lookup</li>
-      <li>Automatically set the input placeholder to an example number for the selected country</li>
-      <li>Navigate the country dropdown by typing a country's name, or using the up/down keys</li>
-      <li>Automatically format the number as the user types</li>
-      <li>Optionally, only allow numeric characters and cap the number at the maximum valid length</li>
-      <li>The user types their national number, and the plugin gives you the full standardised international number</li>
-      <li>Number validation, including specific error types</li>
-      <li>High-resolution flag images</li>
-      <li>Accessibility provided via ARIA tags</li>
-      <li>Typescript type definitions included</li>
-      <li>Easily customise styles by overriding CSS variables, e.g. support dark mode</li>
-      <li>React, Vue, Angular and Svelte components also included</li>
-      <li>Translations provided in over 40 languages, as well as support for RTL layout and alternative numeral sets</li>
-      <li>Lots of initialisation options for customisation, as well as instance methods/events for interaction</li>
-    </ul>
+
+    <div class="row g-3 text-start mt-2">
+      <div class="col-12 col-md-6">
+        <div class="card bg-transparent h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-stars text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <h3 class="h5 mb-2">Smart defaults</h3>
+                <ul class="mb-0">
+                  <li>Auto-select the user's country via IP lookup</li>
+                  <li>Auto-generate an example placeholder for the selected country</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="card bg-transparent h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-search text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <h3 class="h5 mb-2">Fast country picking</h3>
+                <ul class="mb-0">
+                  <li>Search by typing a country's name</li>
+                  <li>Keyboard navigation via up/down keys</li>
+                  <li>High-resolution flag images</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="card bg-transparent h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-telephone text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <h3 class="h5 mb-2">Formatting & output</h3>
+                <ul class="mb-0">
+                  <li>Format the number as the user types</li>
+                  <li>Users type a national number; you can store the standardised international number</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="card bg-transparent h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-shield-check text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <h3 class="h5 mb-2">Validation built in</h3>
+                <ul class="mb-0">
+                  <li>Validate numbers, with specific error types</li>
+                  <li>Optional strict mode: numeric-only input + max valid length</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="card bg-transparent h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-globe text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <h3 class="h5 mb-2">Global-ready</h3>
+                <ul class="mb-0">
+                  <li>Translations in 40+ languages</li>
+                  <li>RTL layout and alternative numeral set support</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="card bg-transparent h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-universal-access text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <h3 class="h5 mb-2">Accessible & typed</h3>
+                <ul class="mb-0">
+                  <li>Accessibility provided via ARIA tags</li>
+                  <li>TypeScript type definitions included</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="card bg-transparent h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-sliders text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <h3 class="h5 mb-2">Customisable</h3>
+                <ul class="mb-0">
+                  <li>Override CSS variables (e.g. for dark mode)</li>
+                  <li>Lots of initialisation options + instance methods/events</li>
+                  <li>React, Vue, Angular and Svelte components included</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section section--playground">
+    <h2>Playground presets</h2>
+    <p class="text-muted mb-3">
+      Jump straight into the <a href="/playground">Playground</a> with some common configurations.
+    </p>
+
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      <a class="btn btn-outline-primary btn-sm" href="/playground?initialCountry=auto&geoIpLookup=true&loadUtils=true">Auto country lookup</a>
+      <a class="btn btn-outline-primary btn-sm" href="/playground?strictMode=true&initialCountry=us&loadUtils=true">Strict numeric mode</a>
+      <a class="btn btn-outline-primary btn-sm" href="/playground?allowDropdown=false&onlyCountries=%5B%22us%22%5D&showFlags=false&loadUtils=true">Single-country input</a>
+      <a class="btn btn-outline-primary btn-sm" href="/playground?countryNameLocale=vi&i18n=vi&initialCountry=vn">Vietnamese UI</a>
+    </div>
+
+    <p class="text-muted mt-3 mb-0">
+      Or browse the <a href="/docs">docs</a> and <a href="/examples">examples</a>.
+    </p>
   </div>
 
   <div class="section">
