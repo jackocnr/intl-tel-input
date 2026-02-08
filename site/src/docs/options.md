@@ -2,6 +2,17 @@
 
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
 
+## Contents
+
+- [Country Options](#country-options)
+- [User Interface Options](#user-interface-options)
+- [Placeholder Options](#placeholder-options)
+- [Formatting Options](#formatting-options)
+- [Validation Options](#validation-options)
+- [Translation Options](#translation-options)
+- [Miscellaneous Options](#miscellaneous-options)
+
+
 ## Country Options
 
 Choose which countries are available, the order they're displayed in, and how the initial country is determined.
