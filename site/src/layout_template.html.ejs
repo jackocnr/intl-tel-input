@@ -42,13 +42,13 @@
         <ul class="navbar-nav flex-row flex-wrap ms-md-auto gap-2">
           <li class="nav-item dropdown col-6 col-lg-auto">
             <a
-              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 <% if (pageType === 'docs') { %>active<% } %>"
+              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 iti-navlink-no-shift <% if (pageType === 'docs') { %>active<% } %>"
               href="#"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Docs
+              <span data-text="Docs">Docs</span>
             </a>
             <ul class="dropdown-menu">
               <% docsDropdownPages.forEach((p) => { %>
@@ -59,17 +59,20 @@
             </ul>
           </li>
           <li class="nav-item col-6 col-lg-auto">
-            <a class="nav-link py-2 px-0 px-lg-2 <% if (pageType === 'playground') { %>active<% } %>" href="/playground">Playground</a>
+            <a
+              class="nav-link py-2 px-0 px-lg-2 iti-navlink-no-shift <% if (pageType === 'playground') { %>active<% } %>"
+              href="/playground"
+            ><span data-text="Playground">Playground</span></a>
           </li>
           <li class="nav-item dropdown col-6 col-lg-auto">
             <a
-              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 <% if (pageType === 'examples') { %>active<% } %>"
+              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 iti-navlink-no-shift <% if (pageType === 'examples') { %>active<% } %>"
               href="#"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Examples
+              <span data-text="Examples">Examples</span>
             </a>
             <ul class="dropdown-menu">
               <% examplesDropdownPages.forEach((p) => { %>

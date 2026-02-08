@@ -80,8 +80,22 @@ p img {
 #bdNavbar .nav-link {
   color: white;
 }
+
+/* Prevent nav items shifting when toggling font-weight by reserving space
+   for the bold version of the label (used on the active state). */
+#bdNavbar .nav-link.iti-navlink-no-shift > span {
+  display: inline-block;
+}
+#bdNavbar .nav-link.iti-navlink-no-shift > span::after {
+  content: attr(data-text);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+#bdNavbar .nav-link.iti-navlink-no-shift > span::after,
 #bdNavbar .nav-link.active {
-  font-weight: bold;
+  font-weight: 700;
 }
 .nav-link--github {
   height: 100%; /* required for vertical alignment */
