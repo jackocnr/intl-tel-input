@@ -2,7 +2,7 @@
 
 A JavaScript plugin for entering, formatting and validating international telephone numbers. React, Vue, Angular and Svelte components also included.
 
-[Explore docs »](https://intl-tel-input.com/docs/getting-started.html)
+[Explore docs »](https://intl-tel-input.com/docs/getting-started)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png">
