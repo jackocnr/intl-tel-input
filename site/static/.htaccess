@@ -3,7 +3,7 @@ RewriteEngine On
 
 # 1. REMOVE TRAILING SLASH
 # If a user/browser asks for /playground/, redirect to /playground
-# (this was happening on my mobile due to it's cache, since we previously had a playground directory, it previously redirected from /playground to /playground/)
+# (this was happening on my mobile due to it's (301 Moved Permanently) cache, since we previously had a playground directory, so it had been redirecting from /playground to /playground/)
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)/$ /$1 [L,R=301]
 
@@ -13,7 +13,7 @@ RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [L,R=301]
 
 # 3. MAP CLEAN URL TO FILE (Internal Rewrite)
-# This points the clean URL to the actual file behind the scenes
+# This points the clean URL (/playground) to the actual file behind the scenes (/playground.html)
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f
