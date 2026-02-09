@@ -1,13 +1,20 @@
 Options -MultiViews
 RewriteEngine On
 
-# 1. External Redirect: Clean up the URL for the user
+# 1. REMOVE TRAILING SLASH
+# If a user/browser asks for /playground/, redirect to /playground
+# (this was happening on my mobile due to it's cache, since we previously had a playground directory, it previously redirected from /playground to /playground/)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# 2. REMOVE .HTML EXTENSION (External Redirect)
+# If a user types /playground.html, redirect them to /playground
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [L,R=301]
 
-# 2. Internal Rewrite: Map clean URL back to the file
-# Added ENV:REDIRECT_STATUS check to prevent loops
+# 3. MAP CLEAN URL TO FILE (Internal Rewrite)
+# This points the clean URL to the actual file behind the scenes
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f
-RewriteRule ^(.*)$ $1.html [L]
+RewriteRule ^([^/]+)$ $1.html [L]
