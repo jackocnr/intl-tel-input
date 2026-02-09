@@ -1,10 +1,13 @@
+Options -MultiViews
 RewriteEngine On
 
-# 1. If someone types .html, redirect them to the clean URL
+# 1. External Redirect: Clean up the URL for the user
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [L,R=301]
 
-# 2. If the clean URL is requested, internally point it to the .html file
+# 2. Internal Rewrite: Map clean URL back to the file
+# Added ENV:REDIRECT_STATUS check to prevent loops
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.html -f
 RewriteRule ^(.*)$ $1.html [L]
