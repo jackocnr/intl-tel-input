@@ -23,7 +23,7 @@ describe("countryNameLocale = fr", () => {
     );
     expect(usNameEl).toBeTruthy();
     // In French, US is "États-Unis".
-    expect(usNameEl.textContent).toBe("États-Unis");
+    expect(usNameEl.textContent).toBe("États-Unis+1"); // NOTE: we now put the dial code inside the country name span
   });
 
   test("country search matches without accents", async () => {
