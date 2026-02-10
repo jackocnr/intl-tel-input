@@ -29,12 +29,6 @@ Default: `[]`
 
 An array of iso2 country codes to exclude from the country dropdown e.g. `["gb", "us"]`. Play with this option in the [Playground](/playground). Also see: `onlyCountries` option.
 
-###### initialCountry
-Type: `String`  
-Default: `""`  
-
-Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](/examples/lookup-country)). Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de).
-
 ###### geoIpLookup
 Type: `Function`  
 Default: `null`  
@@ -54,6 +48,12 @@ intlTelInput(input, {
 });
 ```
 _Note that the `failure` callback must be called in the event of an error, hence the use of `catch()` in this example. Tip: store the result in a cookie to avoid repeat lookups!_
+
+###### initialCountry
+Type: `String`  
+Default: `""`  
+
+Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](/examples/lookup-country)). Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de).
 
 ###### onlyCountries
 Type: `String[]`  
