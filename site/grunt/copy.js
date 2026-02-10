@@ -6,6 +6,12 @@ module.exports = function (grunt) {
       dest: "build/intl-tel-input", // destination folder
       expand: true, // required when using cwd
     },
+    react: {
+      cwd: "../react/build", // set working folder / root to copy
+      src: "**/*", // copy all files and subfolders
+      dest: "build/intl-tel-input/react", // destination folder
+      expand: true, // required when using cwd
+    },
     static: {
       cwd: "static", // set working folder / root to copy
       src: "**/*", // copy all files and subfolders
