@@ -213,18 +213,14 @@ const hashDirRecursive = (dirPath) => {
 };
 
 // Returns a query string fragment (no leading '?'), e.g. "v=abc123".
-const cacheBust = (urlPath, filePath) => {
-  const resolvedPath = filePath
-    ? path.resolve(String(filePath))
-    : resolveBuildPathFromUrl(urlPath);
+const cacheBust = (urlPath) => {
+  const resolvedPath = resolveBuildPathFromUrl(urlPath);
   return `v=${hashFile(resolvedPath)}`;
 };
 
 // Directory variant for runtime-dynamic imports (e.g. /i18n/${code}/index.js).
-const cacheBustDir = (urlDirPath, dirPath) => {
-  const resolvedPath = dirPath
-    ? path.resolve(String(dirPath))
-    : resolveBuildPathFromUrl(urlDirPath);
+const cacheBustDir = (urlDirPath) => {
+  const resolvedPath = resolveBuildPathFromUrl(urlDirPath);
   return `v=${hashDirRecursive(resolvedPath)}`;
 };
 
