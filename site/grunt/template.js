@@ -2,7 +2,7 @@ module.exports = function (grunt) {
   const path = require("path");
   const {
     cacheBust,
-    cacheBustDir,
+    getDirHash,
     getI18nLanguages,
     createMarkdownRenderer,
   } = require("./templateUtils");
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
       options: {
         data: () => ({
           cacheBust,
-          cacheBustDir,
+          getDirHash,
           i18nLanguages: getI18nLanguages(),
         }),
       },

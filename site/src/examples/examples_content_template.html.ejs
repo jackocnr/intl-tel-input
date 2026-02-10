@@ -40,4 +40,4 @@
 <% } %>
 <script src="/js/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
-<script src="/examples/js/<%= script %>?<%= cacheBust('/examples/js/' + script) %>"></script>
+<script src="<%= cacheBust('/examples/js/' + script) %>"></script>

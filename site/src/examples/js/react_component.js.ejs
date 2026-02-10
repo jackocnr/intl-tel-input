@@ -7,7 +7,7 @@ const App = () => (
     initOptions={{
       initialCountry: "us",
       // use a CDN so it also works on intl-tel-input.com
-      loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+      loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
     }}
   />
 );

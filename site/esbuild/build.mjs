@@ -4,7 +4,6 @@ import externalUtilsPlugin from "./externalUtilsPlugin.mjs";
 const sharedOptions = {
   bundle: true,
   plugins: [externalUtilsPlugin],
-  format: "cjs",
   minify: true,
 };
 

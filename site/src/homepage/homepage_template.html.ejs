@@ -11,14 +11,14 @@
     <%= bootstrap_styles %>
 
     <!-- ITI styles - show largeFlags version on desktop -->
-    <link rel="stylesheet" href="/intl-tel-input/css/intlTelInput.css?<%= cacheBust('/intl-tel-input/css/intlTelInput.css') %>" media="screen and (max-width: 768px)">
-    <link rel="stylesheet" href="/css/intlTelInput-largeFlags.css?<%= cacheBust('/css/intlTelInput-largeFlags.css') %>" media="screen and (min-width: 769px)">
+    <link rel="stylesheet" href="<%= cacheBust('/intl-tel-input/css/intlTelInput.css') %>" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="<%= cacheBust('/css/intlTelInput-largeFlags.css') %>" media="screen and (min-width: 769px)">
 
     <!-- website styles must come after ITI styles as contains dark mode overrides -->
-    <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
+    <link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
 
     <!-- large flags overrides must come after website styles -->
-    <link rel="stylesheet" href="/css/large_flags_overrides.css?<%= cacheBust('/css/large_flags_overrides.css') %>" media="screen and (min-width: 769px)">
+    <link rel="stylesheet" href="<%= cacheBust('/css/large_flags_overrides.css') %>" media="screen and (min-width: 769px)">
 
     <%= analytics %>
   </head>
@@ -37,7 +37,7 @@
             .then(data => success(data.country_code))
             .catch(() => failure());
         },
-        loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+        loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
       });
     </script>
     <%= iti_live_results_script %>

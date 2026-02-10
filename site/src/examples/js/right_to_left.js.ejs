@@ -7,5 +7,5 @@ intlTelInput(input, {
   i18n: ar,
   countryNameLocale: "ar",
   initialCountry: "eg",
-  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>") // for formatting/placeholders etc
+  loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>") // for formatting/placeholders etc
 });

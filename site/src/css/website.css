@@ -3,8 +3,8 @@
   --header-bg-color-rgb: 71 194 110;
 
   /* override flag paths, to include cache busting */
-  --iti-path-flags-1x: url("/intl-tel-input/img/flags.webp?<%= cacheBust('/intl-tel-input/img/flags.webp') %>");
-  --iti-path-flags-2x: url("/intl-tel-input/img/flags@2x.webp?<%= cacheBust('/intl-tel-input/img/flags@2x.webp') %>");
+  --iti-path-flags-1x: url("<%= cacheBust('/intl-tel-input/img/flags.webp') %>");
+  --iti-path-flags-2x: url("<%= cacheBust('/intl-tel-input/img/flags@2x.webp') %>");
   --iti-icon-color: var(--bs-body-color);
 }
 

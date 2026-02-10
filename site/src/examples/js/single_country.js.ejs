@@ -11,7 +11,7 @@ const iti = window.intlTelInput(input, {
   onlyCountries: ["us"],
   allowDropdown: false,
   showFlags: false,
-  loadUtils: () => import("/intl-tel-input/js/utils.js?<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+  loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
 });
 
 const reset = () => {

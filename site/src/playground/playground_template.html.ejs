@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/css/highlight-github-light.min.css" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
     <link rel="stylesheet" href="/css/highlight-github-dark.min.css" media="(prefers-color-scheme: dark)">
 
-    <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
+    <link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
 
     <%= analytics %>
   </head>
@@ -23,7 +23,7 @@
     <%= layout %>
     <%= bootstrap_script %>
     <%= iti_script %>
-    <script src="/js/playground.js?<%= cacheBust('/js/playground.js') %>"></script>
+    <script src="<%= cacheBust('/js/playground.js') %>"></script>
     <%= iti_live_results_script %>
     <script src="/js/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>

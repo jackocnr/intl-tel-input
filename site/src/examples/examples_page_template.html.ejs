@@ -15,11 +15,11 @@
     <link rel="stylesheet" href="/css/highlight-github-dark.min.css" media="(prefers-color-scheme: dark)">
 
     <% if (typeof stylesheet_before_demo_css !== 'undefined') { %>
-      <link rel="stylesheet" href="<%= stylesheet_before_demo_css %>?<%= cacheBust(stylesheet_before_demo_css) %>">
+      <link rel="stylesheet" href="<%= cacheBust(stylesheet_before_demo_css) %>">
     <% } %>
-    <link rel="stylesheet" href="/css/website.css?<%= cacheBust('/css/website.css') %>" />
+    <link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
     <% if (typeof stylesheet_after_demo_css !== 'undefined') { %>
-      <link rel="stylesheet" href="<%= stylesheet_after_demo_css %>?<%= cacheBust(stylesheet_after_demo_css) %>">
+      <link rel="stylesheet" href="<%= cacheBust(stylesheet_after_demo_css) %>">
     <% } %>
 
     <%= analytics %>

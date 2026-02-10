@@ -212,16 +212,16 @@ const hashDirRecursive = (dirPath) => {
   }
 };
 
-// Returns a query string fragment (no leading '?'), e.g. "v=abc123".
+// Take a URL path (e.g. "/intl-tel-input/js/utils.js"), resolve it to a file in the build directory, hash that file, and return the URL with a cache-busting query param (e.g. "/intl-tel-input/js/utils.js?v=abc123").
 const cacheBust = (urlPath) => {
   const resolvedPath = resolveBuildPathFromUrl(urlPath);
-  return `v=${hashFile(resolvedPath)}`;
+  return `${urlPath}?v=${hashFile(resolvedPath)}`;
 };
 
-// Directory variant for runtime-dynamic imports (e.g. /i18n/${code}/index.js).
-const cacheBustDir = (urlDirPath) => {
+// Take a URL path to a directory (e.g. "/intl-tel-input/js/i18n"), resolve it to a directory in the build directory, hash all files within that directory recursively, and return the hash to use as a cache-busting query param (e.g. "abc123").
+const getDirHash = (urlDirPath) => {
   const resolvedPath = resolveBuildPathFromUrl(urlDirPath);
-  return `v=${hashDirRecursive(resolvedPath)}`;
+  return hashDirRecursive(resolvedPath);
 };
 
 const getI18nLanguages = () => {
@@ -241,6 +241,6 @@ const getI18nLanguages = () => {
 module.exports = {
   createMarkdownRenderer,
   cacheBust,
-  cacheBustDir,
+  getDirHash,
   getI18nLanguages,
 };
