@@ -9,6 +9,7 @@ module.exports = function (grunt) {
     "template:internationalisation_js",
     "template:right_to_left_js",
     "template:react_component_js",
+    "template:playground_js",
     "shell:esbuild",
     "template:vue_component_js",
     "shell:vite",

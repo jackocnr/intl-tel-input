@@ -1,10 +1,11 @@
-import { build } from 'esbuild'
+import { build } from "esbuild";
 import externalUtilsPlugin from "./externalUtilsPlugin.mjs";
 
 const sharedOptions = {
   bundle: true,
   plugins: [externalUtilsPlugin],
   format: "cjs",
+  minify: true,
 };
 
 // internationalisation example
@@ -27,4 +28,11 @@ build({
   loader: { ".js": "jsx" },
   entryPoints: ["tmp/examples/js/react_component.js"],
   outfile: "build/examples/js/react_component_bundle.js",
+});
+
+// playground
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/playground/playground.js"],
+  outfile: "build/js/playground.js",
 });

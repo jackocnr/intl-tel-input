@@ -79,7 +79,7 @@ module.exports = function (grunt) {
     // playground
     playground_js: {
       src: "src/playground/playground.js",
-      dest: "build/js/playground.js",
+      dest: "tmp/playground/playground.js",
       options: {
         data: () => ({
           cacheBust,
