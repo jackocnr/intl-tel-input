@@ -1,11 +1,11 @@
-import intlTelInput from "../../../build/intl-tel-input/js/intlTelInput";
-import { ru } from "../../../build/intl-tel-input/js/i18n";
+import intlTelInput from "intl-tel-input";
+import { ru } from "intl-tel-input/i18n"; // Russian
 
 const input = document.querySelector("#phone");
 
 intlTelInput(input, {
   i18n: ru,
-  initialCountry: "ru",
-  countryNameLocale: "ru",
+  initialCountry: "ru", // Russia
+  countryNameLocale: "ru", // Russian
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>") // for formatting/placeholders etc
 });

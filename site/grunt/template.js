@@ -218,9 +218,16 @@ module.exports = function (grunt) {
       destDir: "tmp",
       script: "internationalisation_bundle.js",
     },
+    extraJsTasks: [
+      {
+        key: "internationalisation_display_code_js",
+        src: "src/examples/js/internationalisation_display_code.js.ejs",
+        dest: "build/examples/js/internationalisation_display_code.js",
+      },
+    ],
     content: {
       markupPath: "src/examples/html/simple_input.html",
-      codePath: "tmp/examples/js/internationalisation.js",
+      codePath: "build/examples/js/internationalisation_display_code.js",
     },
   },
   {
@@ -231,10 +238,17 @@ module.exports = function (grunt) {
       destDir: "tmp",
       script: "right_to_left_bundle.js",
     },
+    extraJsTasks: [
+      {
+        key: "right_to_left_display_code_js",
+        src: "src/examples/js/right_to_left_display_code.js.ejs",
+        dest: "build/examples/js/right_to_left_display_code.js",
+      },
+    ],
     content: {
       markupPath: "src/examples/html/simple_input.html",
       isRtl: true,
-      codePath: "tmp/examples/js/right_to_left.js",
+      codePath: "build/examples/js/right_to_left_display_code.js",
     },
     layoutExtra: { isRtl: true },
   },
