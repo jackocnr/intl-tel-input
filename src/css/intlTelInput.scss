@@ -267,7 +267,9 @@
 
   //* Check icon shown on the right for the selected country.
   &__country-check {
-    margin-inline-start: auto;
+    // align with clear icon which has padding:5px and right:4px, so is 9px from right edge
+    // here, the parent list item has padding:8px, so add 1px to make it 9px from right edge
+    margin: 0 1px 0 auto;
     display: flex;
     align-items: center;
     color: var(--iti-icon-color);
