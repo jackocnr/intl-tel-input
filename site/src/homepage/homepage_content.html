@@ -1,10 +1,11 @@
 <div class="d-flex flex-column align-items-center text-center homepage-content">
-  <h1>International Telephone&nbsp;Input</h1>
-  <p class="subtitle">A JavaScript plugin for entering, formatting and validating international telephone numbers. React, Vue, Angular and Svelte components also included.</p>
-
-  <div class="demo section section--homepage-demo">
-    <input type="tel" id="phone" />
-    <div class="iti-live-results">Type a number above to see the output here</div>
+  <div class="section section--homepage-demo demo d-flex flex-column align-items-center">
+    <h1>International Telephone&nbsp;Input</h1>
+    <p class="subtitle">A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes TypeScript definitions, plus React, Vue, Angular and Svelte components.</p>
+    <div>
+      <input type="tel" id="phone" />
+      <div class="iti-live-results">Type a number above to see the output here</div>
+    </div>
     <a href="/docs" class="btn btn-primary btn-lg d-inline-flex align-items-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -38,25 +39,8 @@
   <div class="section section--features">
     <h2>Features</h2>
 
-    <div class="row g-3 text-start mt-2">
-      <div class="col-12 col-md-6">
-        <div class="card bg-transparent h-100">
-          <div class="card-body">
-            <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-stars text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
-              <div>
-                <h3 class="h5 mb-2">Smart defaults</h3>
-                <ul class="mb-0">
-                  <li>Auto-select the user's country via IP lookup</li>
-                  <li>Auto-generate an example placeholder for the selected country</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6">
+    <div class="row g-4 text-start mt-2">
+      <div class="col-12 col-md-6 col-lg-4">
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
@@ -64,9 +48,8 @@
               <div>
                 <h3 class="h5 mb-2">Fast country picking</h3>
                 <ul class="mb-0">
-                  <li>Search by typing a country's name</li>
-                  <li>Keyboard navigation via up/down keys</li>
-                  <li>High-resolution flag images</li>
+                  <li>Search by country name or dial code</li>
+                  <li>Full keyboard navigation</li>
                 </ul>
               </div>
             </div>
@@ -74,7 +57,24 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card bg-transparent h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-stars text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <h3 class="h5 mb-2">Smart defaults</h3>
+                <ul class="mb-0">
+                  <li>Optionally auto-detect the user's country</li>
+                  <li>Example placeholders per country</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
@@ -82,8 +82,8 @@
               <div>
                 <h3 class="h5 mb-2">Formatting & output</h3>
                 <ul class="mb-0">
-                  <li>Format the number as the user types</li>
-                  <li>Users type a national number; you can store the standardised international number</li>
+                  <li>Formats the number as the user types</li>
+                  <li>Extract standard E.164 numbers to store</li>
                 </ul>
               </div>
             </div>
@@ -91,16 +91,16 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6 col-lg-4">
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
               <i class="bi bi-shield-check text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
               <div>
-                <h3 class="h5 mb-2">Validation built in</h3>
+                <h3 class="h5 mb-2">Validation</h3>
                 <ul class="mb-0">
-                  <li>Validate numbers, with specific error types</li>
-                  <li>Optional strict mode: numeric-only input + max valid length</li>
+                  <li>Validate numbers with specific error types</li>
+                  <li>Strict mode: only allow users to type valid digits and enforce max length</li>
                 </ul>
               </div>
             </div>
@@ -108,16 +108,16 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6 col-lg-4">
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
               <i class="bi bi-globe text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
               <div>
-                <h3 class="h5 mb-2">Global-ready</h3>
+                <h3 class="h5 mb-2">International &amp; accessible</h3>
                 <ul class="mb-0">
-                  <li>Translations in 40+ languages</li>
-                  <li>RTL layout and alternative numeral set support</li>
+                  <li>Translated into 40+ languages, with support for RTL and alternative numerals</li>
+                  <li>Screen reader-friendly ARIA markup</li>
                 </ul>
               </div>
             </div>
@@ -125,24 +125,7 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-6">
-        <div class="card bg-transparent h-100">
-          <div class="card-body">
-            <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-universal-access text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
-              <div>
-                <h3 class="h5 mb-2">Accessible & typed</h3>
-                <ul class="mb-0">
-                  <li>Accessibility provided via ARIA tags</li>
-                  <li>TypeScript type definitions included</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6 col-lg-4">
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
@@ -150,9 +133,8 @@
               <div>
                 <h3 class="h5 mb-2">Customisable</h3>
                 <ul class="mb-0">
-                  <li>Override CSS variables (e.g. for dark mode)</li>
-                  <li>Lots of initialisation options + instance methods/events</li>
-                  <li>React, Vue, Angular and Svelte components included</li>
+                  <li>Override CSS variables (e.g. dark mode)</li>
+                  <li>Extensive options, methods, and events</li>
                 </ul>
               </div>
             </div>

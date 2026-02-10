@@ -440,9 +440,12 @@ select,
  **************/
 .homepage-content {
   margin-top: 60px;
-  max-width: 580px;
   margin-left: auto;
   margin-right: auto;
+}
+.homepage-content .section--homepage-demo,
+.homepage-content .section--twilio {
+  max-width: 580px;
 }
 .homepage-content h1 {
   font-size: 41px;
@@ -469,6 +472,9 @@ select,
 @media (min-width: 992px) {
   .homepage-content {
     margin-top: 100px;
+  }
+  .homepage-content .section--homepage-demo,
+  .homepage-content .section--twilio {
     max-width: 700px;
   }
   .homepage-content h1 {

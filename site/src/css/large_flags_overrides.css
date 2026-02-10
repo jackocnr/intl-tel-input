@@ -10,9 +10,12 @@
 .iti {
   font-size: 20px;
 }
+.iti,
+.iti input {
+  width: 350px !important;
+}
 .iti input {
   height: 44px;
-  width: 350px !important;
 }
 input.iti__search-input {
   padding-left: 38px;
