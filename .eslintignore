@@ -5,4 +5,4 @@
 **/tmp/**
 Gruntfile.js
 **/intl-tel-input/utils.js
-site/static/js/prism.js
+site/static/js/highlight.min.js
