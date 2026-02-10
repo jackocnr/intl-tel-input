@@ -282,6 +282,11 @@
   &__dial-code {
     margin-left: var(--iti-spacer-horizontal);
     color: var(--iti-dialcode-color);
+
+    [dir="rtl"] & {
+      margin-left: 0;
+      margin-right: var(--iti-spacer-horizontal);
+    }
   }
   &__country.iti__highlight {
     background-color: var(--iti-hover-color);
