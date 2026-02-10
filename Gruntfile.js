@@ -11,19 +11,41 @@ module.exports = function(grunt) {
    * BUILD TASKS
    */
   // build everything ready for a commit
-  grunt.registerTask('build', ['clean:allBuild', 'build:img', 'translations', 'build:js']);
+  grunt.registerTask('build', [
+    'clean:allBuild',
+    'build:img',
+    'translations',
+    'build:js',
+  ]);
 
   // build translations
-  grunt.registerTask('build:translations', ['clean:buildJs', 'clean:tmpIntermediates', 'translations', 'build:js']);
+  grunt.registerTask('build:translations', [
+    'clean:buildJs',
+    'clean:tmpIntermediates',
+    'translations',
+    'build:js',
+  ]);
 
   // build utils
-  grunt.registerTask('build:utils', ['clean:utils', 'closure-compiler:utils', 'shell:checkLpnMetadata']);
+  grunt.registerTask('build:utils', [
+    'clean:utils',
+    'closure-compiler:utils',
+    'shell:checkLpnMetadata',
+  ]);
 
   // just CSS
-  grunt.registerTask('build:css', ['clean:buildCss', 'sass', 'cssmin']);
+  grunt.registerTask('build:css', [
+    'clean:buildCss',
+    'sass',
+    'cssmin',
+  ]);
 
   // just images (and CSS)
-  grunt.registerTask('build:img', ['clean:buildImg', 'generate-sprite', 'build:css']);
+  grunt.registerTask('build:img', [
+    'clean:buildImg',
+    'generate-sprite',
+    'build:css',
+  ]);
 
   // just javascript
   grunt.registerTask('build:js', [
@@ -57,8 +79,21 @@ module.exports = function(grunt) {
     'build:svelte',
   ]);
 
+  // Ensure build/js/utils.js exists (src/js/intl-tel-input/utils.js is a symlink to it).
+  grunt.registerTask('ensure:utils', 'Build utils if missing', function() {
+    if (!grunt.file.exists('build/js/utils.js')) {
+      grunt.task.run('closure-compiler:utils');
+    }
+  });
+
   // fast version which only builds the main plugin JS files (see root build.js file for details)
-  grunt.registerTask('build:jsfast', ['clean:buildJs', 'clean:tmpIntermediates', 'shell:buildJs', 'build:replaceMinJs']);
+  grunt.registerTask('build:jsfast', [
+    'clean:buildJsKeepUtils',
+    'clean:tmpIntermediates',
+    'ensure:utils',
+    'shell:buildJs',
+    'build:replaceMinJs',
+  ]);
 
   // just react
   grunt.registerTask('build:react', [
@@ -69,7 +104,11 @@ module.exports = function(grunt) {
   ]);
 
   // just vue
-  grunt.registerTask('build:vue', ['clean:vueBuild', 'replace:vueWithUtils', 'shell:buildVue']);
+  grunt.registerTask('build:vue', [
+    'clean:vueBuild',
+    'replace:vueWithUtils',
+    'shell:buildVue',
+  ]);
 
   // just angular
   grunt.registerTask('build:angular', [
@@ -80,10 +119,19 @@ module.exports = function(grunt) {
   ]);
 
   // just svelte
-  grunt.registerTask('build:svelte', ['clean:svelteBuild', 'replace:svelteWithUtils', 'shell:buildSvelte']);
+  grunt.registerTask('build:svelte', [
+    'clean:svelteBuild',
+    'replace:svelteWithUtils',
+    'shell:buildSvelte',
+  ]);
 
   // stripped down build task for CI which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
-  grunt.registerTask('build:ci', ['clean:buildJs', 'clean:tmpIntermediates', 'closure-compiler:utils', 'shell:buildJs']);
+  grunt.registerTask('build:ci', [
+    'clean:buildJs',
+    'clean:tmpIntermediates',
+    'closure-compiler:utils',
+    'shell:buildJs',
+  ]);
 
   /**
    * VERSIONING TASKS
@@ -117,26 +165,39 @@ module.exports = function(grunt) {
   ]);
 
   // update version numbers in docs etc
-  grunt.registerTask('versionNumbers', ['replace:readme', 'replace:issueTemplate']);
+  grunt.registerTask('versionNumbers', [
+    'replace:readme',
+    'replace:issueTemplate',
+  ]);
 
   // AI-written task for when a replace pattern has no matches, normally you don't know which pattern failed, but this will log the name to the output.
   grunt.registerTask('validate:replacePatterns', 'Validate replace patterns have matches', function() {
     const config = grunt.config.get('replace');
     const failed = [];
     const isPrivate = (key) => ['privateMethods','instanceFields'].includes(key);
+    const resolveValidationSource = (key, src) => {
+      // instanceFields runs after privateMethods and normally reads tmp/one.min.js,
+      // but validate:replacePatterns runs before tmp/one.min.js exists.
+      // Validate instanceFields patterns against tmp/built.min.js instead when available.
+      if (key === 'instanceFields' && src === 'tmp/one.min.js' && grunt.file.exists('tmp/built.min.js')) {
+        return 'tmp/built.min.js';
+      }
+      return src;
+    };
     Object.keys(config).forEach((key) => {
       if (!isPrivate(key)) return;
       const { options, files } = config[key];
       const patterns = options.patterns || [];
       Object.entries(files).forEach(([out, src]) => {
-        if (!grunt.file.exists(src)) {
-          grunt.log.warn(`Source file not found for replace:${key}: ${src}`);
+        const validationSrc = resolveValidationSource(key, src);
+        if (!grunt.file.exists(validationSrc)) {
+          grunt.log.warn(`Source file not found for replace:${key}: ${validationSrc}`);
           return;
         }
-        const content = grunt.file.read(src);
+        const content = grunt.file.read(validationSrc);
         patterns.forEach((p) => {
           if (p.match && content.match(p.match) === null) {
-            failed.push({ key, pattern: p.match.toString(), src });
+            failed.push({ key, pattern: p.match.toString(), src: validationSrc });
           }
         });
       });

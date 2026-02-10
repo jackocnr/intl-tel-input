@@ -4,6 +4,10 @@ module.exports = function(grunt) {
     buildImg: ['build/img/*'],
     buildJs: ['build/js/*'],
 
+    // Used by build:jsfast/watch. Preserves build/js/utils.js because
+    // src/js/intl-tel-input/utils.js is a symlink to it.
+    buildJsKeepUtils: ['build/js/*', '!build/js/utils.js'],
+
     reactBuild: ['react/build/*'],
     vueBuild: ['vue/build/*'],
     angularBuild: ['angular/build/*'],
