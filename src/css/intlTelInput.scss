@@ -372,6 +372,33 @@
   background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
 }
 
+//* Loading state (used while geoIpLookup is resolving auto country).
+.iti__loading {
+  position: relative;
+  background: none;
+  box-shadow: none;
+}
+
+.iti__loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--iti-flag-height);
+  height: var(--iti-flag-height);
+  box-sizing: border-box;
+  border: 2px solid var(--iti-icon-color);
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: iti-spinner 1s linear infinite;
+}
+
+@keyframes iti-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @each $country-code, $values in $flags {
   $flag-offset: map.get($values, offset);
 

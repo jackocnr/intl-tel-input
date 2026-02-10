@@ -15,6 +15,7 @@ export const CLASSES = {
   ARROW_UP: "iti__arrow--up",
   GLOBE: "iti__globe",
   FLAG: "iti__flag",
+  LOADING: "iti__loading",
   COUNTRY_ITEM: "iti__country",
   HIGHLIGHT: "iti__highlight",
 } as const;

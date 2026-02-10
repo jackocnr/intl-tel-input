@@ -37,11 +37,11 @@
         // fixDropdownWidth: false,
         // formatAsYouType: false,
         // formatOnDisplay: false,
-        // geoIpLookup: function(callback) {
+        // geoIpLookup: function(success, failure) {
         //   fetch("https://ipapi.co/json")
-        //     .then(function(res) { return res.json(); })
-        //     .then(function(data) { callback(data.country_code); })
-        //     .catch(function() { callback(); });
+        //     .then((res) => res.json())
+        //     .then((data) => success(data.country_code))
+        //     .catch(() => failure());
         // },
         // hiddenInput: () => ({ phone: "phone_full", country: "country_code" }),
         // i18n: { searchPlaceholder: "Custom search" },

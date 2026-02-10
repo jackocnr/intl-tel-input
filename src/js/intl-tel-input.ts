@@ -102,7 +102,7 @@ export class Iti {
 
     this.ui = new UI(input, this.options, this.id);
     this.isAndroid = getIsAndroid();
-    this.promise = this._createInitPromises();
+    this.promise = this._createInitPromises(this.options);
 
     //* Process onlyCountries or excludeCountries array if present.
     this.countries = processAllCountries(this.options);
@@ -166,17 +166,37 @@ export class Iti {
     this.ui.telInput.value = this._mapAsciiToUserNumerals(asciiValue);
   }
 
-  private _createInitPromises(): Promise<[unknown, unknown]> {
-    //* these promises get resolved when their individual requests complete
-    //* this way the dev can do something like iti.promise.then(...) to know when all requests are complete.
-    const autoCountryPromise = new Promise((resolve, reject) => {
-      this.resolveAutoCountryPromise = resolve;
-      this.rejectAutoCountryPromise = reject;
-    });
-    const utilsScriptPromise = new Promise((resolve, reject) => {
-      this.resolveUtilsScriptPromise = resolve;
-      this.rejectUtilsScriptPromise = reject;
-    });
+  private _createInitPromises(options: AllOptions): Promise<[unknown, unknown]> {
+    const { initialCountry, geoIpLookup, loadUtils } = options;
+    const needsAutoCountryPromise = initialCountry === INITIAL_COUNTRY.AUTO && Boolean(geoIpLookup);
+    const needsUtilsScriptPromise = Boolean(loadUtils) && !intlTelInput.utils;
+
+    //* These promises get resolved when their individual requests complete.
+    //* This way the dev can do something like iti.promise.then(...) to know when all requests are complete.
+    let autoCountryPromise: Promise<unknown>;
+    if (needsAutoCountryPromise) {
+      autoCountryPromise = new Promise<unknown>((resolve, reject) => {
+        this.resolveAutoCountryPromise = resolve;
+        this.rejectAutoCountryPromise = reject;
+      });
+    } else {
+      autoCountryPromise = Promise.resolve(undefined);
+      this.resolveAutoCountryPromise = (): void => {};
+      this.rejectAutoCountryPromise = (): void => {};
+    }
+
+    let utilsScriptPromise: Promise<unknown>;
+    if (needsUtilsScriptPromise) {
+      utilsScriptPromise = new Promise<unknown>((resolve, reject) => {
+        this.resolveUtilsScriptPromise = resolve;
+        this.rejectUtilsScriptPromise = reject;
+      });
+    } else {
+      utilsScriptPromise = Promise.resolve(undefined);
+      this.resolveUtilsScriptPromise = (): void => {};
+      this.rejectUtilsScriptPromise = (): void => {};
+    }
+
     return Promise.all([autoCountryPromise, utilsScriptPromise]);
   }
 
@@ -236,34 +256,33 @@ export class Iti {
       attributeValue.startsWith("+") &&
       (!inputValue || !inputValue.startsWith("+"));
     const val = useAttribute ? attributeValue : inputValue;
+
     const dialCode = this._getDialCode(val);
     const isRegionlessNanpNumber = isRegionlessNanp(val);
     const { initialCountry, geoIpLookup } = this.options;
     const isAutoCountry =
       initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
+    const doingAutoCountryLookup = isAutoCountry && !overrideAutoCountry;
+    const initialCountryLower = initialCountry.toLowerCase();
+    const isValidInitialCountry = isIso2(initialCountryLower);
 
-    //* If we already have a dial code, and it's not a regionlessNanp, we can go ahead and set the
-    //* country, else fall back to the default country.
-    if (dialCode && !isRegionlessNanpNumber) {
-      this._updateCountryFromNumber(val);
-    } else if (!isAutoCountry || overrideAutoCountry) {
-      const lowerInitialCountry = initialCountry
-        ? initialCountry.toLowerCase()
-        : "";
-      //* See if we should select a country.
-      if (isIso2(lowerInitialCountry)) {
-        this._setCountry(lowerInitialCountry);
-      } else {
-        if (dialCode && isRegionlessNanpNumber) {
-          //* Has intl dial code, is regionless nanp, and no initialCountry, so default to US.
+    if (dialCode) {
+      if (isRegionlessNanpNumber) {
+        //* For regionless NANP numbers, we can't tell from the number which country to select, so defer to initialCountry, else auto country lookup, else default to US.
+        if (isValidInitialCountry) {
+          this._setCountry(initialCountryLower);
+        } else if (!doingAutoCountryLookup) {
           this._setCountry(US.ISO2);
-        } else {
-          //* Display the empty state (globe icon).
-          this._setCountry("");
         }
+      } else {
+        this._updateCountryFromNumber(val);
       }
+    } else if (isValidInitialCountry) {
+      this._setCountry(initialCountryLower);
+    } else if (!doingAutoCountryLookup) {
+      //* No valid dial code, no valid initialCountry, and no country lookup, so default to empty (globe icon).
+      this._setCountry("");
     }
-    //* NOTE: if initialCountry is set to auto, that will be handled separately.
 
     //* Format - note this wont be run after _updateDialCode as that's only called if no val.
     if (val) {
@@ -371,7 +390,7 @@ export class Iti {
     );
   }
 
-  //* Init many requests: utils script / geo ip lookup.
+  //* Init requests: utils script / geo ip lookup.
   private _initRequests(): void {
     const { loadUtils, initialCountry, geoIpLookup } = this.options;
 
@@ -400,13 +419,15 @@ export class Iti {
       this.resolveUtilsScriptPromise();
     }
 
-    //* Don't bother with IP lookup if we already have a selected country.
     const isAutoCountry =
-      initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
-    if (isAutoCountry && !this.selectedCountryData.iso2) {
-      this._loadAutoCountry();
-    } else {
-      this.resolveAutoCountryPromise();
+    initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
+    if (isAutoCountry) {
+      //* Don't bother with IP lookup if we already have a selected country.
+      if (this.selectedCountryData.iso2) {
+        this.resolveAutoCountryPromise();
+      } else {
+        this._loadAutoCountry();
+      }
     }
   }
 
@@ -414,17 +435,20 @@ export class Iti {
   private _loadAutoCountry(): void {
     //* 3 options:
     //* 1) Already loaded (we're done)
-    //* 2) Not already started loading (start)
-    //* 3) Already started loading (do nothing - just wait for loading callback to fire)
+    //* 2) Another instance has already started loading (do nothing - just wait for loading callback to fire)
+    //* 3) Not already started loading (start)
     if (intlTelInput.autoCountry) {
       this.handleAutoCountry();
-    } else if (!intlTelInput.startedLoadingAutoCountry) {
-      //* Don't do this twice!
-      intlTelInput.startedLoadingAutoCountry = true;
+    } else {
+      this.ui.selectedCountryInner.classList.add(CLASSES.LOADING);
 
-      if (typeof this.options.geoIpLookup === "function") {
-        this.options.geoIpLookup(
-          (iso2 = "") => {
+      if (!intlTelInput.startedLoadingAutoCountry) {
+        //* Don't do this twice!
+        intlTelInput.startedLoadingAutoCountry = true;
+
+        if (typeof this.options.geoIpLookup === "function") {
+          const successCallback = (iso2 = "") => {
+            this.ui.selectedCountryInner.classList.remove(CLASSES.LOADING);
             const iso2Lower = iso2.toLowerCase();
             if (isIso2(iso2Lower)) {
               intlTelInput.autoCountry = iso2Lower;
@@ -436,15 +460,15 @@ export class Iti {
               //* this, which allows the plugin to finish initialising.
               setTimeout(() => forEachInstance("handleAutoCountry"));
             } else {
-              this._setInitialState(true);
-              forEachInstance("rejectAutoCountryPromise");
+              forEachInstance("handleAutoCountryFailure");
             }
-          },
-          () => {
-            this._setInitialState(true);
-            forEachInstance("rejectAutoCountryPromise");
-          },
-        );
+          };
+          const failureCallback = () => {
+            this.ui.selectedCountryInner.classList.remove(CLASSES.LOADING);
+            forEachInstance("handleAutoCountryFailure");
+          };
+          this.options.geoIpLookup(successCallback, failureCallback);
+        }
       }
     }
   }
@@ -1067,9 +1091,7 @@ export class Iti {
     return `+${dialCode}${cleanNumber}`;
   }
 
-  // Get the country ISO2 code from the given number
-  // BUT ONLY IF ITS CHANGED FROM THE CURRENTLY SELECTED COUNTRY
-  // NOTE: consider refactoring this to be more clear
+  //* Get the new country based on the input number, or return null if no change, or empty string if should be empty (e.g. if they type an invalid dial code).
   private _getNewCountryFromNumber(fullNumber: string): Iso2 | "" | null {
     const plusIndex = fullNumber.indexOf("+");
     //* If it contains a plus, discard any chars before it e.g. accidental space char.
@@ -1155,9 +1177,8 @@ export class Iti {
         return null;
       }
       //* Invalid dial code (or prefix of a different country), so empty.
-      //* Note: use getNumeric here because the number has not been formatted yet, so could contain bad chars.
       return "";
-    } else if ((!number || number === "+") && !selectedIso2) {
+    } else if ((!number || number === "+") && !selectedIso2 && this.defaultCountry) {
       //* If no selected country, and user either clears the input, or just types a plus, then show default.
       return this.defaultCountry;
     }
@@ -1484,6 +1505,13 @@ export class Iti {
     }
   }
 
+  //* This is called when the geoip call fails or times out.
+  handleAutoCountryFailure(): void {
+    //* Reset the initial state
+    this._setInitialState(true);
+    this.rejectAutoCountryPromise();
+  }
+
   //* This is called when the utils request completes.
   handleUtils(): void {
     //* If the request was successful
@@ -1499,6 +1527,11 @@ export class Iti {
       }
     }
     this.resolveUtilsScriptPromise();
+  }
+
+  //* This is called when the utils request fails or times out.
+  handleUtilsFailure(error): void {
+    this.rejectUtilsScriptPromise(error);
   }
 
   //********************
@@ -1756,7 +1789,7 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
         return true;
       })
       .catch((error: Error) => {
-        forEachInstance("rejectUtilsScriptPromise", error);
+        forEachInstance("handleUtilsFailure", error);
         throw error;
       });
   }
@@ -1768,9 +1801,9 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
 //* Run a method on each instance of the plugin.
 type InstanceMethodMap = {
   handleUtils: () => void;
+  handleUtilsFailure: (reason?: unknown) => void;
   handleAutoCountry: () => void;
-  rejectAutoCountryPromise: (reason?: unknown) => void;
-  rejectUtilsScriptPromise: (reason?: unknown) => void;
+  handleAutoCountryFailure: () => void;
 };
 
 const forEachInstance = <K extends keyof InstanceMethodMap>(
