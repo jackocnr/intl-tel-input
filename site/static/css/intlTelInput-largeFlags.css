@@ -197,8 +197,23 @@
   padding: 8px var(--iti-spacer-horizontal);
   outline: none;
 }
+.iti__country-check {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  color: var(--iti-icon-color);
+}
+.iti__country-check-svg {
+  width: var(--iti--search-clear-icon-height);
+  height: var(--iti--search-clear-icon-height);
+  display: block;
+}
 .iti__dial-code {
+  margin-left: var(--iti-spacer-horizontal);
   color: var(--iti-dialcode-color);
+}
+.iti__country-list .iti__flag {
+  flex-shrink: 0;
 }
 .iti__country.iti__highlight {
   background-color: var(--iti-hover-color);
