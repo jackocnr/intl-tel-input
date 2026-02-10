@@ -32,6 +32,6 @@ build({
 // playground
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/playground/playground.js"],
+  entryPoints: ["src/playground/js/playground.js"],
   outfile: "build/js/playground.js",
 });

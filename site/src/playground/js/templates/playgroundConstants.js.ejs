@@ -1,0 +1,6 @@
+// NOTE: DO NOT IMPORT THIS FILE
+// This file is built by grunt/template.js and output to the tmp dir
+
+export const I18N_LANGUAGE_CODES = JSON.parse('<%= JSON.stringify(i18nLanguages || []) %>');
+export const UTILS_PATH = "<%= cacheBust('/intl-tel-input/js/utils.js') %>";
+export const I18N_DIR_HASH = "<%= getDirHash('/intl-tel-input/js/i18n') %>";
