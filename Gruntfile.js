@@ -11,22 +11,24 @@ module.exports = function(grunt) {
    * BUILD TASKS
    */
   // build everything ready for a commit
-  grunt.registerTask('build', ['build:img', 'translations', 'build:js']);
+  grunt.registerTask('build', ['clean:allBuild', 'build:img', 'translations', 'build:js']);
 
   // build translations
-  grunt.registerTask('build:translations', ['translations', 'build:js']);
+  grunt.registerTask('build:translations', ['clean:buildJs', 'clean:tmpIntermediates', 'translations', 'build:js']);
 
   // build utils
-  grunt.registerTask('build:utils', ['closure-compiler:utils', 'shell:checkLpnMetadata']);
+  grunt.registerTask('build:utils', ['clean:utils', 'closure-compiler:utils', 'shell:checkLpnMetadata']);
 
   // just CSS
-  grunt.registerTask('build:css', ['sass', 'cssmin']);
+  grunt.registerTask('build:css', ['clean:buildCss', 'sass', 'cssmin']);
 
   // just images (and CSS)
-  grunt.registerTask('build:img', ['generate-sprite', 'build:css']);
+  grunt.registerTask('build:img', ['clean:buildImg', 'generate-sprite', 'build:css']);
 
   // just javascript
   grunt.registerTask('build:js', [
+    'clean:buildJs',
+    'clean:tmpIntermediates',
     'shell:eslint',
     'closure-compiler:utils',
     'shell:genTsDeclaration',
@@ -37,6 +39,7 @@ module.exports = function(grunt) {
 
   // replace private methods etc in the minified JS
   grunt.registerTask('build:replaceMinJs', [
+    'clean:replaceMinJs',
     'validate:replacePatterns',
     'replace:privateMethods',
     'replace:instanceFields',
@@ -44,6 +47,10 @@ module.exports = function(grunt) {
 
   // just 4 components
   grunt.registerTask('build:components', [
+    'clean:reactBuild',
+    'clean:vueBuild',
+    'clean:angularBuild',
+    'clean:svelteBuild',
     'build:react',
     'build:vue',
     'build:angular',
@@ -51,30 +58,32 @@ module.exports = function(grunt) {
   ]);
 
   // fast version which only builds the main plugin JS files (see root build.js file for details)
-  grunt.registerTask('build:jsfast', ['shell:buildJs', 'build:replaceMinJs']);
+  grunt.registerTask('build:jsfast', ['clean:buildJs', 'clean:tmpIntermediates', 'shell:buildJs', 'build:replaceMinJs']);
 
   // just react
   grunt.registerTask('build:react', [
+    'clean:reactBuild',
     'replace:reactWithUtils',
     'shell:genReactTsDeclaration',
     'shell:buildReact',
   ]);
 
   // just vue
-  grunt.registerTask('build:vue', ['replace:vueWithUtils', 'shell:buildVue']);
+  grunt.registerTask('build:vue', ['clean:vueBuild', 'replace:vueWithUtils', 'shell:buildVue']);
 
   // just angular
   grunt.registerTask('build:angular', [
+    'clean:angularBuild',
     'replace:angularWithUtils',
     'shell:genAngularTsDeclarationAndJs',
     'shell:buildAngular',
   ]);
 
   // just svelte
-  grunt.registerTask('build:svelte', ['replace:svelteWithUtils', 'shell:buildSvelte']);
+  grunt.registerTask('build:svelte', ['clean:svelteBuild', 'replace:svelteWithUtils', 'shell:buildSvelte']);
 
   // stripped down build task for CI which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
-  grunt.registerTask('build:ci', ['closure-compiler:utils', 'shell:buildJs']);
+  grunt.registerTask('build:ci', ['clean:buildJs', 'clean:tmpIntermediates', 'closure-compiler:utils', 'shell:buildJs']);
 
   /**
    * VERSIONING TASKS
