@@ -491,6 +491,7 @@ select,
 .section--homepage-demo .iti,
 .section--homepage-demo input[type=tel] {
   width: 100%;
+  text-align: left; /* required because we have text-align:center on this section */
 }
 /* to match the other sections, which have a <p> at the bottom with this margin */
 .section--homepage-demo .btn-primary {

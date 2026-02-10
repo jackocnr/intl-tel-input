@@ -265,8 +265,22 @@
     outline: none;
   }
 
+  //* Check icon shown on the right for the selected country.
+  &__country-check {
+    margin-inline-start: auto;
+    display: flex;
+    align-items: center;
+    color: var(--iti-icon-color);
+  }
+  &__country-check-svg {
+    width: var(--iti--search-clear-icon-height);
+    height: var(--iti--search-clear-icon-height);
+    display: block;
+  }
+
   //* The grey dial codes, displayed after the country names in the dropdown.
   &__dial-code {
+    margin-left: var(--iti-spacer-horizontal);
     color: var(--iti-dialcode-color);
   }
   &__country.iti__highlight {
@@ -282,6 +296,9 @@
       margin-right: 0;
       margin-left: var(--iti-spacer-horizontal);
     }
+  }
+  &__country-list .iti__flag {
+    flex-shrink: 0; // stop long country names from shrinking the flag
   }
 
   &--allow-dropdown {

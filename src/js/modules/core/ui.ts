@@ -1,7 +1,11 @@
 import type { Country, Iso2 } from "../../intl-tel-input/data";
 import type { AllOptions } from "../types/public-api";
 import { buildClassNames, createEl } from "../utils/dom";
-import { buildSearchIcon, buildClearIcon } from "./icons";
+import {
+  buildSearchIcon,
+  buildClearIcon,
+  buildCheckIcon,
+} from "./icons";
 import { CLASSES, ARIA, LAYOUT } from "../constants";
 
 export default class UI {
@@ -370,7 +374,7 @@ export default class UI {
       const nameEl = createEl("span", { class: "iti__country-name" }, listItem);
       nameEl.textContent = c.name;
 
-      const dialEl = createEl("span", { class: "iti__dial-code" }, listItem);
+      const dialEl = createEl("span", { class: "iti__dial-code" }, nameEl);
       if (this.isRTL) {
         dialEl.setAttribute("dir", "ltr");
       }
@@ -487,12 +491,15 @@ export default class UI {
     }
   }
 
+  // Update the selected list item in the dropdown
   updateSelectedItem(iso2: Iso2 | ""): void {
     // if the existing selected item is different to the new country, set aria-selected to false
     if (this.selectedItem && this.selectedItem.dataset.countryCode !== iso2) {
       this.selectedItem.setAttribute(ARIA.SELECTED, "false");
+      this.selectedItem.querySelector(".iti__country-check")?.remove();
       this.selectedItem = null;
     }
+
     // if setting to a new country (rather than null/globe icon, or the existing selected item), find the new list item and set aria-selected to true
     if (iso2 && !this.selectedItem) {
       const newListItem = this.countryList.querySelector(
@@ -500,6 +507,12 @@ export default class UI {
       ) as HTMLElement;
       if (newListItem) {
         newListItem.setAttribute(ARIA.SELECTED, "true");
+        const checkIcon = createEl(
+          "span",
+          { class: "iti__country-check", [ARIA.HIDDEN]: "true" },
+          newListItem,
+        );
+        checkIcon.innerHTML = buildCheckIcon();
         this.selectedItem = newListItem;
       }
     }
