@@ -198,7 +198,7 @@
   outline: none;
 }
 .iti__country-check {
-  margin-inline-start: auto;
+  margin: 0 1px 0 auto;
   display: flex;
   align-items: center;
   color: var(--iti-icon-color);

@@ -17,9 +17,15 @@
 .iti input {
   height: 44px;
 }
+.iti__search-icon {
+  left: 13px;
+}
+.iti__search-clear {
+  right: 8px;
+}
 input.iti__search-input {
-  padding-left: 38px;
-  padding-right: 38px;
+  padding-left: 44px;
+  padding-right: 40px;
 }
 .iti--inline-dropdown .iti__country-list {
   max-height: 210px;
