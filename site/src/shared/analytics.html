@@ -1,3 +1,19 @@
+<!-- SilkTide (cookie consent notice) pre-GTM code -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('consent', 'default', {
+    analytics_storage: localStorage.getItem('silktideCookieChoice_analytics') === 'true' ? 'granted' : 'denied',
+    ad_storage: localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+    ad_user_data: localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+    ad_personalization: localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+    functionality_storage: localStorage.getItem('silktideCookieChoice_necessary') === 'true' ? 'granted' : 'denied',
+    security_storage: localStorage.getItem('silktideCookieChoice_necessary') === 'true' ? 'granted' : 'denied'
+  });
+</script>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -6,7 +22,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-5S6BCFGL');</script>
 <!-- End Google Tag Manager -->
 
-<!-- Cookie Consent Notice -->
+<!-- SilkTide Cookie Consent Notice -->
 <link rel="stylesheet" id="silktide-consent-manager-css" href="/cookie-banner/silktide-consent-manager.css">
 <script src="/cookie-banner/silktide-consent-manager.js"></script>
 <script>
@@ -21,11 +37,9 @@ silktideCookieBannerManager.updateCookieBannerConfig({
     {
       id: "necessary",
       name: "Necessary",
-      description: "<p>These cookies are necessary for the website to function properly and cannot be switched off. They help with things like logging in and setting your privacy preferences.</p>",
+      description: "<p>These cookies are necessary for the website to function properly and cannot be switched off. They help with things like setting your privacy preferences.</p>",
       required: true,
-      onAccept: function() {
-        console.log('Add logic for the required Necessary here');
-      }
+      onAccept: function() {}
     },
     {
       id: "analytics",
@@ -33,17 +47,17 @@ silktideCookieBannerManager.updateCookieBannerConfig({
       description: "<p>These cookies help us improve the site by tracking which pages are most popular and how visitors move around the site.</p>",
       defaultValue: true,
       onAccept: function() {
-        // gtag('consent', 'update', {
-        //   analytics_storage: 'granted',
-        // });
-        dataLayer.push({
-          'event': 'consent_accepted_analytics',
+        gtag('consent', 'update', {
+          analytics_storage: 'granted',
         });
+        // dataLayer.push({
+        //   'event': 'consent_accepted_analytics',
+        // });
       },
       onReject: function() {
-        // gtag('consent', 'update', {
-        //   analytics_storage: 'denied',
-        // });
+        gtag('consent', 'update', {
+          analytics_storage: 'denied',
+        });
       }
     },
     {
@@ -51,21 +65,21 @@ silktideCookieBannerManager.updateCookieBannerConfig({
       name: "Advertising",
       description: "<p>These cookies provide extra features and personalization to improve your experience. They may be set by us or by partners whose services we use.</p>",
       onAccept: function() {
-        // gtag('consent', 'update', {
-        //   ad_storage: 'granted',
-        //   ad_user_data: 'granted',
-        //   ad_personalization: 'granted',
-        // });
-        dataLayer.push({
-          'event': 'consent_accepted_advertising',
+        gtag('consent', 'update', {
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted',
         });
+        // dataLayer.push({
+        //   'event': 'consent_accepted_advertising',
+        // });
       },
       onReject: function() {
-        // gtag('consent', 'update', {
-        //   ad_storage: 'denied',
-        //   ad_user_data: 'denied',
-        //   ad_personalization: 'denied',
-        // });
+        gtag('consent', 'update', {
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+        });
       }
     }
   ],
