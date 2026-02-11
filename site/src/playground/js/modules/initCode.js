@@ -89,7 +89,7 @@ export function buildInitCodeFromState(state, { defaultInitOptions, optionMeta, 
   return lines.join("\n");
 }
 
-export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions, optionMeta, defaultState, specialOptionKeys, windowObj = window }) {
+export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions, optionMeta, defaultState, specialOptionKeys }) {
   if (!initCodeEl) return;
   initCodeEl.textContent = buildInitCodeFromState(state, {
     defaultInitOptions,
@@ -101,8 +101,8 @@ export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions,
   // Highlight.js highlights on page load, but we update this block live, so we need to re-run highlighting.
   // Highlight.js marks nodes as already-highlighted via `data-highlighted`, so clear that first.
   // Highlight.js is loaded after this script, so guard for it not being available yet.
-  if (windowObj.hljs && typeof windowObj.hljs.highlightElement === "function") {
+  if (window.hljs && typeof window.hljs.highlightElement === "function") {
     delete initCodeEl.dataset.highlighted;
-    windowObj.hljs.highlightElement(initCodeEl);
+    window.hljs.highlightElement(initCodeEl);
   }
 }

@@ -10,10 +10,17 @@ import { renderControls, getStateFromForm, setFormFromState } from "./modules/fo
 import { renderInitCodeFromState } from "./modules/initCode.js";
 import { createPlaygroundConfig } from "./modules/playgroundConfig.js";
 import { ItiPlaygroundController } from "./modules/itiController.js";
-import { createDefaultState, deepClone, parseQueryOverrides } from "./modules/stateUtils.js";
+import {
+  createDefaultState,
+  deepClone,
+  parseBooleanParam,
+  parseQueryOverrides,
+} from "./modules/stateUtils.js";
 import { updateUrlFromState } from "./modules/urlState.js";
 
 const telInput = document.querySelector("#playgroundPhone");
+const playgroundContainer = document.querySelector("#itiPlayground");
+const keepDropdownOpenCheckbox = document.querySelector("#playgroundKeepDropdownOpen");
 const optionsForm = document.querySelector("#playgroundOptions");
 const attrsForm = document.querySelector("#playgroundAttributes");
 const resetAllButton = document.querySelector("#playgroundResetAll");
@@ -22,6 +29,69 @@ const initCodeEl = document.querySelector("#playgroundInitCode");
 const copyInitCodeButton = document.querySelector("#playgroundCopyInitCode");
 const infoIconTemplate = document.querySelector("#itiPlaygroundInfoIconTemplate");
 const optionGroupTemplate = document.querySelector("#itiPlaygroundOptionGroupTemplate");
+
+const KEEP_DROPDOWN_OPEN_PARAM = "keepDropdownOpen";
+
+function shouldDisableKeepDropdownOpen(state) {
+  return state.useFullscreenPopup || !state.allowDropdown;
+}
+
+function syncKeepDropdownOpenAvailability(state) {
+  const disabled = shouldDisableKeepDropdownOpen(state);
+  keepDropdownOpenCheckbox.disabled = disabled;
+
+  if (disabled && keepDropdownOpenCheckbox.checked) {
+    keepDropdownOpenCheckbox.checked = false;
+    syncKeepDropdownOpen();
+  }
+}
+
+function getFullState(state) {
+  return {
+    ...(state || {}),
+    dropdownAlwaysOpen:
+      Boolean(keepDropdownOpenCheckbox.checked) &&
+      !shouldDisableKeepDropdownOpen(state),
+  };
+}
+
+function getKeepDropdownOpenFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return parseBooleanParam(params.get(KEEP_DROPDOWN_OPEN_PARAM), true);
+}
+
+function updateKeepDropdownOpenUrlParam(enabled) {
+  const currentUrl = new URL(window.location.href);
+  if (enabled) {
+    // Keep the URL clean: omit the param when true (default).
+    currentUrl.searchParams.delete(KEEP_DROPDOWN_OPEN_PARAM);
+  } else {
+    // Only include the param when false.
+    currentUrl.searchParams.set(KEEP_DROPDOWN_OPEN_PARAM, "false");
+  }
+
+  const nextUrl = currentUrl;
+  const compareUrl = new URL(window.location.href);
+  if (compareUrl.search === nextUrl.search) return;
+  window.history.replaceState(null, "", nextUrl);
+}
+
+// set the checkbox state from the URL param on initial load (default checked)
+keepDropdownOpenCheckbox.checked = getKeepDropdownOpenFromUrl();
+
+const syncKeepDropdownOpen = () => {
+  // when keeping the dropdown open, use a CSS class to update the page layout
+  playgroundContainer.classList.toggle(
+    "iti-playground--keep-dropdown-open",
+    keepDropdownOpenCheckbox.checked,
+  );
+  updateKeepDropdownOpenUrlParam(keepDropdownOpenCheckbox.checked);
+};
+keepDropdownOpenCheckbox.addEventListener("change", () => {
+  syncKeepDropdownOpen();
+  scheduleReinit();
+});
+syncKeepDropdownOpen();
 
 bindCopyCodeButton(copyInitCodeButton, initCodeEl);
 
@@ -51,6 +121,11 @@ const itiController = new ItiPlaygroundController({
   defaultInitOptions,
   specialOptionKeys,
 });
+
+function initItiWithState(state) {
+  syncKeepDropdownOpenAvailability(state);
+  return itiController.initWithState(getFullState(state)).then(() => syncKeepDropdownOpen());
+}
 
 const { resetGroupKeys: optionResetGroupKeys } = renderControls(optionsForm, optionMeta, {
   idPrefix: "opt",
@@ -94,7 +169,7 @@ renderInitCodeFromState(initialState, initCodeEl, {
   specialOptionKeys,
 });
 
-void itiController.initWithState(initialState);
+void initItiWithState(initialState);
 updateUrlFromState(initialState, {
   optionMeta,
   attributeMeta,
@@ -107,6 +182,7 @@ function scheduleReinit() {
   if (reinitTimer) window.clearTimeout(reinitTimer);
   reinitTimer = window.setTimeout(() => {
     const state = getCombinedStateFromControls();
+    syncKeepDropdownOpenAvailability(state);
     updateUrlFromState(state, {
       optionMeta,
       attributeMeta,
@@ -119,7 +195,7 @@ function scheduleReinit() {
       defaultState,
       specialOptionKeys,
     });
-    void itiController.initWithState(state);
+    void initItiWithState(state);
   }, 100);
 }
 
@@ -151,7 +227,7 @@ function resetOptionGroupToDefaults(groupKeys) {
     defaultState,
     specialOptionKeys,
   });
-  void itiController.initWithState(state);
+  void initItiWithState(state);
   updateUrlFromState(state, {
     optionMeta,
     attributeMeta,
@@ -187,7 +263,7 @@ function resetAllToDefaults() {
     defaultState,
     specialOptionKeys,
   });
-  void itiController.initWithState(state);
+  void initItiWithState(state);
   updateUrlFromState(state, {
     optionMeta,
     attributeMeta,
@@ -216,7 +292,7 @@ if (resetAttrsButton) {
       defaultState,
       specialOptionKeys,
     });
-    void itiController.initWithState(state);
+    void initItiWithState(state);
     updateUrlFromState(state, {
       optionMeta,
       attributeMeta,

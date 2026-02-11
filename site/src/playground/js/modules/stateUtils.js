@@ -22,8 +22,8 @@ export function parseJsonParam(value, fallback) {
   }
 }
 
-export function parseQueryOverrides(defaults, metaMap, { aliases = {}, windowObj = window } = {}) {
-  const params = new URLSearchParams(windowObj.location.search);
+export function parseQueryOverrides(defaults, metaMap, { aliases = {} } = {}) {
+  const params = new URLSearchParams(window.location.search);
   const next = deepClone(defaults);
 
   Object.keys(metaMap).forEach((key) => {

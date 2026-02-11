@@ -2,10 +2,10 @@ import { encodeJsonParam, isDefaultForKey } from "./stateUtils.js";
 
 export function buildShareUrlFromState(
   state,
-  { optionMeta, attributeMeta, attributeQueryAliases, defaultState, windowObj = window },
+  { optionMeta, attributeMeta, attributeQueryAliases, defaultState },
   { excludeDefaults = false } = {},
 ) {
-  const url = new URL(windowObj.location.href);
+  const url = new URL(window.location.href);
   const allMeta = {
     ...optionMeta,
     ...attributeMeta,
@@ -37,9 +37,8 @@ export function buildShareUrlFromState(
 }
 
 export function updateUrlFromState(state, deps) {
-  const { windowObj = window } = deps;
   const nextUrl = buildShareUrlFromState(state, deps, { excludeDefaults: true });
-  const currentUrl = new URL(windowObj.location.href);
+  const currentUrl = new URL(window.location.href);
   if (currentUrl.search === nextUrl.search) return;
-  windowObj.history.replaceState(null, "", nextUrl);
+  window.history.replaceState(null, "", nextUrl);
 }

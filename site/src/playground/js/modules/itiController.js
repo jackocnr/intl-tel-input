@@ -69,6 +69,10 @@ function toInitOptions(state, { defaultInitOptions, specialOptionKeys, utilsPath
     opts.hiddenInput = () => ({ phone: "phone_full", country: "country_code" });
   }
 
+  if (typeof state.dropdownAlwaysOpen === "boolean") {
+    opts.dropdownAlwaysOpen = state.dropdownAlwaysOpen;
+  }
+
   return opts;
 }
 

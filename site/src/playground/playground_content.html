@@ -83,10 +83,12 @@
               This is reset each time the options are changed. For a persistent number, see the Attributes section.
             </p>
 
-            <div style="max-width: 520px;">
-              <input type="tel" id="playgroundPhone" />
-              <div class="iti-live-results">Type a number above to see the output here</div>
+            <input type="tel" id="playgroundPhone" />
+            <div class="form-check mt-2 playground-dropdown-checkbox">
+              <input class="form-check-input" type="checkbox" id="playgroundKeepDropdownOpen" checked />
+              <label class="form-check-label" for="playgroundKeepDropdownOpen">Keep dropdown open</label>
             </div>
+            <div class="iti-live-results">Type a number above to see the output here</div>
           </div>
         </div>
       </div>
