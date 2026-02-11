@@ -6,3 +6,4 @@
 Gruntfile.js
 **/intl-tel-input/utils.js
 site/static/js/highlight.min.js
+site/static/js/silktide-consent-manager.js
