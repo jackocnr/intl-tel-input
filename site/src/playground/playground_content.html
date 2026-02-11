@@ -2,8 +2,8 @@
 
   <template id="itiPlaygroundInfoIconTemplate">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
     </svg>
   </template>
 
@@ -71,39 +71,40 @@
 
     <div class="iti-playground-layout__col iti-playground-layout__col--right">
       <div class="iti-playground-layout__demo">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between gap-2">
-            <h2 class="h5 mb-0">Live Demo</h2>
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundResetAll">Reset All</button>
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2">
+              <h2 class="h5 mb-0">Live Demo</h2>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundResetAll">Reset All</button>
+              </div>
             </div>
-          </div>
-          <p class="text-muted mt-2 mb-3">
-            This is reset each time the options are changed. For a persistent number, see the Attributes section.
-          </p>
+            <p class="text-muted mt-2 mb-3">
+              This is reset each time the options are changed. For a persistent number, see the Attributes section.
+            </p>
 
-          <div style="max-width: 520px;">
-            <input type="tel" id="playgroundPhone" />
-            <div class="iti-live-results">Type a number above to see the output here</div>
+            <div style="max-width: 520px;">
+              <input type="tel" id="playgroundPhone" />
+              <div class="iti-live-results">Type a number above to see the output here</div>
+            </div>
           </div>
         </div>
       </div>
-      </div>
 
       <div class="iti-playground-layout__code">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between gap-2">
-            <h2 class="h5 mb-0">Initialisation Code</h2>
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundCopyInitCode" aria-label="Copy initialisation code">Copy</button>
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2">
+              <h2 class="h5 mb-0">Initialisation Code</h2>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="playgroundCopyInitCode" aria-label="Copy initialisation code">Copy</button>
+              </div>
             </div>
+            <p class="text-muted mt-2 mb-3">
+              JavaScript snippet for initialising the plugin with your (non-default) options. By default, we add <code>loadUtils</code> for formatting/placeholders.
+            </p>
+            <pre class="mb-0 language-javascript"><code id="playgroundInitCode" class="language-javascript"></code></pre>
           </div>
-          <p class="text-muted mt-2 mb-3">
-            JavaScript snippet for initialising the plugin with your (non-default) options. By default, we add <code>loadUtils</code> for formatting/placeholders.
-          </p>
-          <pre class="mb-0 language-javascript"><code id="playgroundInitCode" class="language-javascript"></code></pre>
         </div>
       </div>
     </div>

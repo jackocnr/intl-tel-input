@@ -451,6 +451,12 @@ select,
   font-size: 41px;
   font-weight: 600;
 }
+/* allow this part of title to wrap on small screens, but keep together on larger screens */
+@media (min-width: 420px) {
+  .homepage-content h1 .keep-together {
+    white-space: nowrap;
+  }
+}
 .homepage-content p.subtitle {
   color: rgba(33, 37, 41, 0.75);
 }
@@ -605,6 +611,13 @@ select,
     max-height: calc(100vh - 70px - 2rem);
     overflow: auto;
   }
+}
+
+.iti-playground-layout__demo .iti,
+.iti-playground-layout__demo .iti__tel-input,
+.iti-playground-layout__demo .iti-live-results {
+  width: 100%;
+  max-width: 350px;
 }
 
 /* playground: option info tooltip */
