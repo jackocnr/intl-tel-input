@@ -10,13 +10,29 @@ export function parseBooleanParam(value, fallback) {
   return fallback;
 }
 
+// The playground textareas are user-facing and often contain JS-style literals
+// (e.g. ['us', 'gb']) rather than strict JSON (e.g. ["us", "gb"]).
+// Avoid eval; instead, do a minimal, safe normalization and retry JSON.parse.
+const cleanTextForJson = (text) => {
+  const withoutTrailingCommas = text.replace(/,\s*([\]}])/g, "$1");
+  const normalizedQuotes = withoutTrailingCommas.replace(/'((?:\\.|[^'\\])*)'/g, (_m, inner) => {
+    // Basic support for common escapes used in these inputs.
+    const unescaped = String(inner)
+      .replace(/\\'/g, "'")
+      .replace(/\\\\/g, "\\");
+    return JSON.stringify(unescaped);
+  });
+  return normalizedQuotes;
+};
+
 export function parseJsonParam(value, fallback) {
   if (value === null || value === undefined) return fallback;
   const text = String(value).trim();
   if (!text) return fallback;
   if (text === "null") return null;
   try {
-    return JSON.parse(text);
+    const cleaned = cleanTextForJson(text);
+    return JSON.parse(cleaned);
   } catch {
     return fallback;
   }
