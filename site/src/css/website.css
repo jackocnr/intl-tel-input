@@ -456,16 +456,12 @@ select,
     white-space: nowrap;
   }
 }
-.homepage-content p.subtitle {
-  color: rgba(33, 37, 41, 0.75);
-}
-.homepage-content p.subtitle a {
+.homepage-content .text-muted a {
   color: inherit;
 }
-@media (prefers-color-scheme: dark) {
-  .homepage-content p.subtitle {
-    color: rgba(222, 226, 230, 0.75);
-  }
+/* keep the same muted hue, but remove Bootstrap's alpha transparency on interaction */
+.homepage-content .text-muted a:hover {
+  color: rgb(var(--bs-secondary-color-rgb));
 }
 .homepage-content .section {
   margin-bottom: 60px;
@@ -507,6 +503,12 @@ select,
 }
 .section--features ul {
   text-align: left;
+}
+/* there is a br in the middle of the playground preset links: ignore it on mobile, show it on larger screens to break the links into two rows */
+@media (min-width: 550px) {
+  .playground-presets {
+    max-width: 550px;
+  }
 }
 
 
