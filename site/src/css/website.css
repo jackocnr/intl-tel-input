@@ -439,9 +439,40 @@ select,
   text-align: left;
 }
 
+
+
+
+
+
+
+/*********************************
+ * SILKTIDE COOKIE CONSENT NOTICE
+ *********************************/
 /* hide SilkTide cookie icon, and implement our own in the menu */
 #silktide-cookie-icon {
   display: none !important;
+}
+/* make the secondary button look different to the primary button */
+#silktide-wrapper .reject-all,
+#silktide-wrapper .preferences-reject-all {
+  background: transparent !important;
+  color: rgb(var(--header-bg-color-rgb)) !important;
+}
+/* override ugly hover colors on all 3 buttons: accept, reject, preferences */
+#silktide-wrapper .accept-all:hover,
+#silktide-wrapper .preferences-accept-all:hover {
+  background-color: #25ad4f !important;
+  border-color: #25ad4f !important;
+  color: white !important;
+}
+#silktide-wrapper .reject-all:hover,
+#silktide-wrapper .preferences-reject-all:hover {
+  background-color: #f5f5f5 !important;
+  color: rgb(var(--header-bg-color-rgb)) !important;
+}
+#silktide-banner .preferences span:hover,
+#silktide-modal footer a:hover {
+  color: #25ad4f !important;
 }
 
 
