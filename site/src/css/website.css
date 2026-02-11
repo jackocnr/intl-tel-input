@@ -459,6 +459,9 @@ select,
 .homepage-content p.subtitle {
   color: rgba(33, 37, 41, 0.75);
 }
+.homepage-content p.subtitle a {
+  color: inherit;
+}
 @media (prefers-color-scheme: dark) {
   .homepage-content p.subtitle {
     color: rgba(222, 226, 230, 0.75);
