@@ -1,6 +1,6 @@
 # International Telephone Input [![CI](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/>
 
-A JavaScript plugin for entering, formatting and validating international telephone numbers. React, Vue, Angular and Svelte components also included.
+A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes TypeScript definitions, plus React, Vue, Angular and Svelte components.
 
 [Explore docs »](https://intl-tel-input.com/docs/getting-started)
 
