@@ -223,6 +223,10 @@ export class Iti {
 
     //* Utils script, and auto country.
     this._initRequests();
+
+    if (this.options.dropdownAlwaysOpen) {
+      this._openDropdown();
+    }
   }
 
   //********************
@@ -784,7 +788,9 @@ export class Iti {
         this.ui.highlightListItem(firstCountryItem, false);
         this.ui.countryList.scrollTop = 0;
       }
-      this.ui.searchInput.focus();
+      if (!this.options.dropdownAlwaysOpen) {
+        this.ui.searchInput.focus();
+      }
     }
 
     //* Bind all the dropdown-related listeners: mouseover, click, click-off, keydown.
@@ -827,7 +833,9 @@ export class Iti {
     const signal = this.dropdownAbortController.signal;
     this._bindDropdownMouseoverListener(signal);
     this._bindDropdownCountryClickListener(signal);
-    this._bindDropdownClickOffListener(signal);
+    if (!this.options.dropdownAlwaysOpen) {
+      this._bindDropdownClickOffListener(signal);
+    }
     this._bindDropdownKeydownListener(signal);
     if (this.options.countrySearch) {
       this._bindDropdownSearchListeners(signal);
@@ -1347,7 +1355,7 @@ export class Iti {
   //* Close the dropdown and unbind any listeners.
   private _closeDropdown(): void {
     // we call closeDropdown in places where it might not even be open e.g. in destroy()
-    if (this.ui.dropdownContent.classList.contains(CLASSES.HIDE)) {
+    if (this.ui.dropdownContent.classList.contains(CLASSES.HIDE) || this.options.dropdownAlwaysOpen) {
       return;
     }
     this.ui.dropdownContent.classList.add(CLASSES.HIDE);

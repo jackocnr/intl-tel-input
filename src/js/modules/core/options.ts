@@ -45,6 +45,8 @@ export const defaults: AllOptions = {
   countrySearch: true,
   //* Modify the auto placeholder.
   customPlaceholder: null,
+  //* Always show the dropdown
+  dropdownAlwaysOpen: false,
   //* Append menu to specified element.
   dropdownContainer: null,
   //* Don't display these countries.
@@ -83,6 +85,11 @@ export const defaults: AllOptions = {
 
 // Apply option side-effects (mutates the passed object)
 export const applyOptionSideEffects = (o: AllOptions): void => {
+  if (o.dropdownAlwaysOpen) {
+    o.useFullscreenPopup = false;
+    o.allowDropdown = true;
+  }
+
   //* If showing fullscreen popup, do not fix the width.
   if (o.useFullscreenPopup) {
     o.fixDropdownWidth = false;

@@ -77,6 +77,7 @@ export interface AllOptions {
         selectedCountryData: SelectedCountryData
       ) => string)
     | null;
+  dropdownAlwaysOpen: boolean;
   dropdownContainer: HTMLElement | null;
   excludeCountries: Iso2[];
   fixDropdownWidth: boolean;
