@@ -111,9 +111,10 @@ export class ItiPlaygroundController {
     initOptions.i18n = i18n;
     this.iti = window.intlTelInput(this.telInput, initOptions);
 
-    // Trigger live results box to update by triggering an input event on the telInput
+    // Trigger live results box to update by triggering a countrychange event on the telInput
+    // (avoid triggering an input event as the plugin responds to that)
     window.setTimeout(() => {
-      this.telInput.dispatchEvent(new Event("input", { bubbles: true }));
+      this.telInput.dispatchEvent(new Event("countrychange"));
     }, 0);
   }
 }
