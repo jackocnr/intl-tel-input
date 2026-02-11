@@ -41,12 +41,14 @@
 
         <ul class="navbar-nav flex-row flex-wrap ms-md-auto gap-2">
           <li class="nav-item dropdown col-6 col-lg-auto">
-            <a
-              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 iti-navlink-no-shift <% if (pageType === 'docs') { %>active<% } %>"
-              href="/docs"
+            <button
+              type="button"
+              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 bg-transparent border-0 iti-navlink-no-shift <% if (pageType === 'docs') { %>active<% } %>"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
               <span data-text="Docs">Docs</span>
-            </a>
+            </button>
             <ul class="dropdown-menu">
               <% docsDropdownPages.forEach((p) => { %>
                 <li>
@@ -62,12 +64,14 @@
             ><span data-text="Playground">Playground</span></a>
           </li>
           <li class="nav-item dropdown col-6 col-lg-auto">
-            <a
-              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 iti-navlink-no-shift <% if (pageType === 'examples') { %>active<% } %>"
-              href="/examples"
+            <button
+              type="button"
+              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 bg-transparent border-0 iti-navlink-no-shift <% if (pageType === 'examples') { %>active<% } %>"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
               <span data-text="Examples">Examples</span>
-            </a>
+            </button>
             <ul class="dropdown-menu">
               <% examplesDropdownPages.forEach((p) => { %>
                 <li>

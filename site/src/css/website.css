@@ -124,10 +124,18 @@ p img {
 @media (hover: hover) and (pointer: fine) {
   #bdNavbar .dropdown:hover > .dropdown-menu {
     display: block;
+    /* Match Bootstrap's positioning styles that normally apply when JS adds data-bs-popper */
+    top: 100%;
+    left: 0;
+    margin-top: var(--bs-dropdown-spacer);
   }
 }
 #bdNavbar .dropdown:focus-within > .dropdown-menu {
   display: block;
+  /* Match Bootstrap's positioning styles that normally apply when JS adds data-bs-popper */
+  top: 100%;
+  left: 0;
+  margin-top: var(--bs-dropdown-spacer);
 }
 .offcanvas-title a {
   color: var(--bs-body-color);
