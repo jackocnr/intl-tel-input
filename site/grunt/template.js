@@ -182,7 +182,10 @@ module.exports = function (grunt) {
       pageType: "examples",
       docsDropdownPages,
       examplesDropdownPages,
-      extra: layoutExtra,
+      extra: {
+        ...layoutExtra,
+        show_right_sidebar_ad: true,
+      },
     });
 
     config[`${key}_page`] = makeTemplateTask(
@@ -421,6 +424,7 @@ module.exports = function (grunt) {
           pageType: "docs",
           docsDropdownPages,
           examplesDropdownPages,
+          show_right_sidebar_ad: true,
         }),
       },
     };

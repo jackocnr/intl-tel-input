@@ -328,5 +328,19 @@
   </main>
 
   <!-- RIGHT SIDEBAR (MOBILE: HIDDEN, DESKTOP: DEPENDS ON layoutClass) -->
-  <aside class="iti-right-sidebar"></aside>
+  <aside class="iti-right-sidebar">
+    <% if (typeof show_right_sidebar_ad !== 'undefined' && show_right_sidebar_ad) { %>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1090343328224651" crossorigin="anonymous"></script>
+      <!-- right sidebar -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-1090343328224651"
+          data-ad-slot="1699358650"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    <% } %>
+  </aside>
 </div>
