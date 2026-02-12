@@ -741,6 +741,10 @@ select,
     min-width: 0;
   }
 
+  .iti-playground-control:not(.iti-playground-control--check) > .form-text {
+    grid-column: 2;
+  }
+
   /* On mobile, checkboxes appear on LHS. Here, we move them to the RHS. */
   .iti-playground-control.iti-playground-control--check {
     display: grid;

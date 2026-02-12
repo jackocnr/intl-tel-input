@@ -265,8 +265,16 @@ function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
     textarea.id = `${idPrefix}_${key}`;
     textarea.rows = 2;
     textarea.setAttribute(dataAttr, key);
-    textarea.placeholder = meta.placeholder || "";
     wrapper.appendChild(textarea);
+
+    const placeholderText = String(meta.placeholder || "").trim();
+    if (placeholderText) {
+      const placeholderEl = document.createElement("span");
+      placeholderEl.className = "form-text";
+      placeholderEl.textContent = placeholderText;
+      wrapper.appendChild(placeholderEl);
+    }
+
     return wrapper;
   }
 
