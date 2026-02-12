@@ -1,16 +1,5 @@
 import { formatJsValue, isDefaultForKey } from "./stateUtils.js";
 
-function buildGeoIpLookupSnippet() {
-  return (
-    "(success, failure) => {\n" +
-    "    fetch(\"https://ipapi.co/json\")\n" +
-    "      .then((res) => res.json())\n" +
-    "      .then((data) => success(data.country_code))\n" +
-    "      .catch(() => failure())\n" +
-    "  }"
-  );
-}
-
 export function buildInitCodeFromState(state, { defaultInitOptions, optionMeta, defaultState, specialOptionKeys }) {
   const nonDefaultOptionEntries = [];
 
@@ -36,15 +25,31 @@ export function buildInitCodeFromState(state, { defaultInitOptions, optionMeta, 
   }
 
   if (state.dropdownContainer) {
-    optionEntriesForCode.push(["dropdownContainer", "document.body"]);
+    optionEntriesForCode.push([
+      "dropdownContainer",
+      "document.body",
+    ]);
   }
 
   if (state.geoIpLookup) {
-    optionEntriesForCode.push(["geoIpLookup", buildGeoIpLookupSnippet()]);
+    optionEntriesForCode.push([
+      "geoIpLookup",
+      [
+        "(success, failure) => {",
+        "    fetch(\"https://ipapi.co/json\")",
+        "      .then((res) => res.json())",
+        "      .then((data) => success(data.country_code))",
+        "      .catch(() => failure());",
+        "  }",
+      ].join("\n"),
+    ]);
   }
 
   if (state.hiddenInput) {
-    optionEntriesForCode.push(["hiddenInput", "() => ({ phone: \"phone_full\", country: \"country_code\" })"]);
+    optionEntriesForCode.push([
+      "hiddenInput",
+      "() => ({ phone: \"phone_full\", country: \"country_code\" })",
+    ]);
   }
 
   const i18nCode = String(state.i18n ?? "").trim();
@@ -62,8 +67,7 @@ export function buildInitCodeFromState(state, { defaultInitOptions, optionMeta, 
   if (hasI18n) {
     lines.push("(async () => {");
     lines.push("  const input = document.querySelector(\"#phone\");");
-    lines.push(
-      `  const i18n = (await import("/intl-tel-input/js/i18n/${encodeURIComponent(i18nCode)}/index.js")).default;`,
+    lines.push(`  const i18n = (await import("/intl-tel-input/js/i18n/${encodeURIComponent(i18nCode)}/index.js")).default;`,
     );
     lines.push("  const iti = window.intlTelInput(input, {");
     lines.push("    i18n,");

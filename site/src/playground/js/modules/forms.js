@@ -139,8 +139,14 @@ function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
         idPrefix,
         dataAttr,
         infoIconTemplate,
-        exampleText:
-          "(success, failure) => {\n    fetch(\"https://ipapi.co/json\")\n      .then((res) => res.json())\n      .then((data) => success(data.country_code))\n      .catch(() => failure())\n  }",
+        exampleText: [
+          "(success, failure) => {",
+          "  fetch(\"https://ipapi.co/json\")",
+          "    .then((res) => res.json())",
+          "    .then((data) => success(data.country_code))",
+          "    .catch(() => failure());",
+          "}",
+        ].join("\n"),
       });
     }
 
