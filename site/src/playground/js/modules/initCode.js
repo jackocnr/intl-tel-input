@@ -1,6 +1,9 @@
 import { formatJsValue, isDefaultForKey } from "./stateUtils.js";
 
-export function buildInitCodeFromState(state, { defaultInitOptions, optionMeta, defaultState, specialOptionKeys }) {
+// This module is responsible for generating the initialization code snippet based on the current state of the playground.
+export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions, optionMeta, defaultState, specialOptionKeys }) {
+  if (!initCodeEl) return;
+
   const nonDefaultOptionEntries = [];
 
   Object.keys(defaultInitOptions).forEach((key) => {
@@ -90,17 +93,9 @@ export function buildInitCodeFromState(state, { defaultInitOptions, optionMeta, 
     lines.push("})();");
   }
 
-  return lines.join("\n");
-}
+  const output = lines.join("\n");
 
-export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions, optionMeta, defaultState, specialOptionKeys }) {
-  if (!initCodeEl) return;
-  initCodeEl.textContent = buildInitCodeFromState(state, {
-    defaultInitOptions,
-    optionMeta,
-    defaultState,
-    specialOptionKeys,
-  });
+  initCodeEl.textContent = output;
 
   // Highlight.js highlights on page load, but we update this block live, so we need to re-run highlighting.
   // Highlight.js marks nodes as already-highlighted via `data-highlighted`, so clear that first.
