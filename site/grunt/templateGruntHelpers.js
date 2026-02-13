@@ -16,10 +16,10 @@ const readCommonPagePartials = (grunt, data) => ({
   iti_styles: grunt.template.process(grunt.file.read("src/shared/iti_styles.html.ejs"), {
     data,
   }),
-  analytics: grunt.file.read("src/shared/analytics.html"),
+  common_head_end: grunt.file.read("src/shared/common_head_end.html"),
 });
 
-const readBootstrapScript = (grunt) => grunt.file.read("src/shared/bootstrap_script.html");
+const readCommonBodyEndScript = (grunt) => grunt.file.read("src/shared/common_body_end.html");
 
 const readItiLiveResultsScript = (grunt, data) =>
   grunt.template.process(grunt.file.read("src/shared/iti_live_results_script.html.ejs"), {
@@ -62,7 +62,7 @@ module.exports = {
   makeTemplateTask,
   makeLayoutTask,
   readCommonPagePartials,
-  readBootstrapScript,
+  readCommonBodyEndScript,
   readItiLiveResultsScript,
   readItiScript,
 };

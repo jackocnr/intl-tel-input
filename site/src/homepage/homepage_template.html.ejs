@@ -20,12 +20,12 @@
     <!-- large flags overrides must come after website styles -->
     <link rel="stylesheet" href="<%= cacheBust('/css/large_flags_overrides.css') %>" media="screen and (min-width: 769px)">
 
-    <%= analytics %>
+    <%= common_head_end %>
   </head>
 
   <body class="iti-page--homepage">
     <%= layout %>
-    <%= bootstrap_script %>
+    <%= common_body_end %>
     <%= iti_script %>
     <script>
       const input = document.querySelector("#phone");

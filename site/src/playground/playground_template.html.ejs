@@ -16,12 +16,12 @@
 
     <link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
 
-    <%= analytics %>
+    <%= common_head_end %>
   </head>
 
   <body>
     <%= layout %>
-    <%= bootstrap_script %>
+    <%= common_body_end %>
     <%= iti_script %>
     <script src="<%= cacheBust('/js/playground.js') %>"></script>
     <%= iti_live_results_script %>

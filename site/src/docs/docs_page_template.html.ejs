@@ -13,12 +13,12 @@
 
     <link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
 
-    <%= analytics %>
+    <%= common_head_end %>
   </head>
 
   <body>
     <%= layout %>
-    <%= bootstrap_script %>
+    <%= common_body_end %>
     <script src="/js/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
   </body>
