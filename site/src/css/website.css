@@ -128,15 +128,11 @@ p img {
     /* Match Bootstrap's positioning styles that normally apply when JS adds data-bs-popper */
     top: 100%;
     left: 0;
-    margin-top: var(--bs-dropdown-spacer);
   }
 }
-#bdNavbar .dropdown:focus-within > .dropdown-menu {
-  display: block;
-  /* Match Bootstrap's positioning styles that normally apply when JS adds data-bs-popper */
-  top: 100%;
-  left: 0;
-  margin-top: var(--bs-dropdown-spacer);
+/* override Bootstrap's margin which causes a gap between the dropdown and toggle */
+.dropdown-menu[data-bs-popper] {
+  margin-top: 0 !important;
 }
 .offcanvas-title a {
   color: var(--bs-body-color);
