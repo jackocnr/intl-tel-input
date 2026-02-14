@@ -30,12 +30,6 @@ module.exports = function (grunt) {
       dest: "build/js", // destination folder
       expand: true, // required when using cwd
     },
-    css_overrides: {
-      cwd: "src/css", // set working folder / root to copy
-      src: ["large_flags_overrides.css"],
-      dest: "build/css", // destination folder
-      expand: true, // required when using cwd
-    },
     examples_css: {
       cwd: "src/examples/css", // set working folder / root to copy
       src: "*",
