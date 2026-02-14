@@ -2,6 +2,24 @@ module.exports = function (grunt) {
   // load all tasks from package.json
   require("load-grunt-config")(grunt);
 
+  grunt.registerTask("strip-html-comments", () => {
+    const htmlFiles = grunt.file.expand({ dot: true }, ["build/**/*.html"]);
+    let updatedCount = 0;
+
+    htmlFiles.forEach((filePath) => {
+      const input = grunt.file.read(filePath);
+      const output = input.replace(/<!--[\s\S]*?-->/g, "");
+      if (output !== input) {
+        grunt.file.write(filePath, output);
+        updatedCount += 1;
+      }
+    });
+
+    grunt.log.writeln(
+      `strip-html-comments: processed ${htmlFiles.length} files, updated ${updatedCount}`
+    );
+  });
+
   // build css
   grunt.registerTask("build:css", [
     "template:website_css",
@@ -33,5 +51,6 @@ module.exports = function (grunt) {
     "build:esbuild",
     "build:vue_component",
     "template",
+    "strip-html-comments",
   ]);
 };
