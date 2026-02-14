@@ -474,6 +474,20 @@ select,
 
 
 
+/*************************
+ * GOOGLE CONSENT NOTICE
+ *************************/
+// on mobile, leave as it is, but on desktop, move to bottom right, so you can see more of the content behind it
+@media (min-width: 800px) {
+  body .fc-consent-root .fc-dialog-container {
+    position: absolute !important;
+    bottom: 30px !important;
+    right: 30px !important;
+  }
+}
+
+
+
 
 /**************
  * HOMEPAGE
