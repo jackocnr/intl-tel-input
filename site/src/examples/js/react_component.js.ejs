@@ -1,16 +1,51 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import IntlTelInput from '../../../build/intl-tel-input/react/IntlTelInput';
+import React, { useState, ReactElement } from "react";
+import { createRoot } from "react-dom/client";
+import IntlTelInput from "../../../build/intl-tel-input/react/IntlTelInput";
 
-const App = () => (
-  <IntlTelInput
-    initOptions={{
-      initialCountry: "us",
-      // use a CDN so it also works on intl-tel-input.com
-      loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
-    }}
-  />
-);
+const errorMap = [
+  "Invalid number",
+  "Invalid country code",
+  "Too short",
+  "Too long",
+  "Invalid number",
+];
+
+const App = () => {
+  const [isValid, setIsValid] = useState(null);
+  const [number, setNumber] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
+  const [notice, setNotice] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValid) {
+      setNotice(`Valid number: ${number}`);
+    } else {
+      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
+      setNotice(`Error: ${errorMessage}`);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <IntlTelInput
+        onChangeNumber={setNumber}
+        onChangeValidity={setIsValid}
+        onChangeErrorCode={setErrorCode}
+        initOptions={{
+          initialCountry: "us",
+          loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+        }}
+        inputProps={{
+          name: "phone",
+        }}
+      />
+      {" "}
+      <button className="button" type="submit">Validate</button>
+      {notice && <div className="notice">{notice}</div>}
+    </form>
+  );
+};
 
 const container = document.getElementById("app");
 const root = createRoot(container);

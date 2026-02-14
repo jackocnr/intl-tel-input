@@ -1,13 +1,34 @@
 import IntlTelInput from "intl-tel-input/react";
+import "intl-tel-input/styles";
 
-<IntlTelInput
-  initialValue={value}
-  onChangeNumber={setNumber}
-  onChangeValidity={setIsValid}
-  onChangeErrorCode={setErrorCode}
-  // any initialisation options from the readme will work here
-  initOptions={{
-    initialCountry: "us",
-    loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
-  }}
-/>
+const App = () => {
+  const [isValid, setIsValid] = useState(null);
+  const [number, setNumber] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
+  const [notice, setNotice] = useState(null);
+
+  const handleSubmit = () => {
+    if (isValid) {
+      setNotice(`Valid number: ${number}`);
+    } else {
+      const errorMessage = errorMap[errorCode];
+      setNotice(`Error: ${errorMessage}`);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <IntlTelInput
+        onChangeNumber={setNumber}
+        onChangeValidity={setIsValid}
+        onChangeErrorCode={setErrorCode}
+        initOptions={{
+          initialCountry: "us",
+          loadUtils: () => import("intl-tel-input/utils"),
+        }}
+      />
+      <button className="button" type="submit">Validate</button>
+      {notice && <div className="notice">{notice}</div>}
+    </form>
+  );
+};
