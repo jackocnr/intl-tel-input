@@ -25,7 +25,7 @@
     "prop-types": "^15.8.1"
   },
   "scripts": {
-    "watch": "grunt watch",
+    "watch": "grunt watch --env=dev",
     "build": "grunt build"
   }
 }

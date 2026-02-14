@@ -7,6 +7,10 @@ module.exports = function (grunt) {
     createMarkdownRenderer,
   } = require("./templateUtils");
 
+  const env = grunt.option("env");
+  const isDevBuild = env === "dev" || env === "development";
+  const showRightSidebarAd = !isDevBuild;
+
   const {
     makeTemplateTask,
     makeLayoutTask,
@@ -74,7 +78,7 @@ module.exports = function (grunt) {
       options: {
         data: () => ({
           cacheBust,
-          ...readCommonPagePartials(grunt, { cacheBust }),
+          ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
           layout: grunt.file.read("tmp/homepage/homepage_layout.html"),
           common_body_end: readCommonBodyEndScript(grunt),
           iti_live_results_script: readItiLiveResultsScript(grunt, { cacheBust }),
@@ -116,7 +120,7 @@ module.exports = function (grunt) {
       options: {
         data: () => ({
           cacheBust,
-          ...readCommonPagePartials(grunt, { cacheBust }),
+          ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
           layout: grunt.file.read("tmp/playground/playground_layout.html"),
           common_body_end: readCommonBodyEndScript(grunt),
           iti_live_results_script: readItiLiveResultsScript(grunt, { cacheBust }),
@@ -191,7 +195,7 @@ module.exports = function (grunt) {
       examplesDropdownPages,
       extra: {
         ...layoutExtra,
-        show_right_sidebar_ad: true,
+        show_right_sidebar_ad: showRightSidebarAd,
       },
     });
 
@@ -203,7 +207,7 @@ module.exports = function (grunt) {
         head_title: title,
         canonical_path: `examples/${slug}.html`,
         meta_desc: metaDesc,
-        ...readCommonPagePartials(grunt, { cacheBust }),
+        ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
         content: grunt.file.read(layoutDest),
         ...pageExtra,
       })
@@ -431,7 +435,7 @@ module.exports = function (grunt) {
           pageType: "docs",
           docsDropdownPages,
           examplesDropdownPages,
-          show_right_sidebar_ad: true,
+          show_right_sidebar_ad: showRightSidebarAd,
         }),
       },
     };
@@ -445,7 +449,7 @@ module.exports = function (grunt) {
           head_title: headTitle,
           canonical_path: canonicalPath,
           meta_desc: `intl-tel-input documentation: ${headTitle}.`,
-          ...readCommonPagePartials(grunt, { cacheBust }),
+          ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
           layout: grunt.file.read(`tmp/docs/${key}_layout.html`),
           common_body_end: readCommonBodyEndScript(grunt),
         }),
