@@ -1,14 +1,15 @@
-<!-- SilkTide (cookie consent notice) pre-GTM code -->
-<!-- <script>
+<script>
   window.dataLayer = window.dataLayer || [];
   function gtag() {dataLayer.push(arguments);}
+  // set the "default" consent state to deny everything, which is then updated later (or immediately if the user has already consented)
   gtag('consent', 'default', {
-    analytics_storage: localStorage.getItem('silktideCookieChoice_analytics') === 'true' ? 'granted' : 'denied',
-    ad_storage: localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
-    ad_user_data: localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
-    ad_personalization: localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    wait_for_update: 500,
   });
-</script> -->
+</script>
 
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
