@@ -12,6 +12,24 @@ module.exports = function (grunt) {
       dest: "build/intl-tel-input/react", // destination folder
       expand: true, // required when using cwd
     },
+    vue: {
+      cwd: "../vue/build", // set working folder / root to copy
+      src: "**/*", // copy all files and subfolders
+      dest: "build/intl-tel-input/vue", // destination folder
+      expand: true, // required when using cwd
+    },
+    angular: {
+      cwd: "../angular/build", // set working folder / root to copy
+      src: "**/*", // copy all files and subfolders
+      dest: "build/intl-tel-input/angular", // destination folder
+      expand: true, // required when using cwd
+    },
+    svelte: {
+      cwd: "../svelte/build", // set working folder / root to copy
+      src: "**/*", // copy all files and subfolders
+      dest: "build/intl-tel-input/svelte", // destination folder
+      expand: true, // required when using cwd
+    },
     static: {
       cwd: "static", // set working folder / root to copy
       src: "**/*", // copy all files and subfolders

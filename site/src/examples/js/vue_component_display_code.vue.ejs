@@ -1,16 +1,34 @@
 <script setup>
   import IntlTelInput from "intl-tel-input/vue";
   import "intl-tel-input/styles";
+
+  const isValid = ref(null);
+  const number = ref(null);
+  const errorCode = ref(null);
+  const notice = ref(null);
+
+  const handleSubmit = () => {
+    if (isValid.value) {
+      notice.value = `Valid number: ${number.value}`;
+    } else {
+      const errorMessage = errorMap[errorCode.value];
+      notice.value = `Error: ${errorMessage}`;
+    }
+  };
 </script>
 
 <template>
-  <IntlTelInput
-    @changeNumber="number = $event"
-    @changeValidity="isValid = $event"
-    @changeErrorCode="errorCode = $event"
-    :options="{
-      initialCountry: 'us',
-      loadUtils: () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
-    }"
-  />
+  <form @submit.prevent="handleSubmit">
+    <IntlTelInput
+      @changeNumber="number = $event"
+      @changeValidity="isValid = $event"
+      @changeErrorCode="errorCode = $event"
+      :options="{
+        initialCountry: 'us',
+        loadUtils: () => import('intl-tel-input/utils'),
+      }"
+    />
+    <button class="button" type="submit">Validate</button>
+    <div v-if="notice" class="notice">{{ notice }}</div>
+  </form>
 </template>

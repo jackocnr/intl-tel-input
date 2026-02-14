@@ -382,7 +382,7 @@ module.exports = function (grunt) {
     js: {
       // need to specify the source because of the alternative .vue extension
       src: "src/examples/js/vue_component.vue.ejs",
-      dest: "tmp/examples/vue_component.vue",
+      dest: "tmp/examples/js/vue_component.vue",
       script: "vue_component_bundle.js",
     },
     extraJsTasks: [
