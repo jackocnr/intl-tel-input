@@ -32,6 +32,7 @@ module.exports = function (grunt) {
   grunt.registerTask("build:esbuild", [
     "template:internationalisation_js",
     "template:right_to_left_js",
+    "template:angular_component_js",
     "template:react_component_js",
     "template:playground_js",
     "shell:esbuild",

@@ -402,6 +402,28 @@ module.exports = function (grunt) {
       codePath: "build/examples/js/vue_component_display_code.vue",
       script: "vue_component_bundle.js",
     },
+  },
+  {
+    key: "angular_component",
+    title: "Anglar component",
+    metaDesc: "How to use intl-tel-input with Angular.",
+    js: {
+      dest: "tmp/examples/js/angular_component.js",
+      script: "angular_component_bundle.js",
+    },
+    extraJsTasks: [
+      {
+        key: "angular_component_display_code_js",
+        src: "src/examples/js/angular_component_display_code.js.ejs",
+        dest: "build/examples/js/angular_component_display_code.js",
+      },
+    ],
+    content: {
+      markupPath: "src/examples/html/angular_component.html",
+      hideMarkupSection: true,
+      codePath: "build/examples/js/angular_component_display_code.js",
+      script: "angular_component_bundle.js",
+    }
   }];
   exampleDefinitions.forEach((definition) => registerExample(definition));
 
