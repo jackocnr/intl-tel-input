@@ -1,9 +1,7 @@
-import "zone.js";
-import "@angular/compiler";
-import { bootstrapApplication } from "@angular/platform-browser";
 import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/IntlTelInputWithUtils.js";
+import { IntlTelInputComponent } from "intl-tel-input/angularWithUtils";
+import "intl-tel-input/styles";
 
 @Component({
   selector: "app-root",
@@ -13,11 +11,9 @@ import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/Int
         #telInput
         formControlName="phone"
         name="phone"
-        [initOptions]="{
-          initialCountry: 'us',
-        }"
+        [initOptions]="initOptions"
       />
-      <button style="margin-left: 4px;" class="button" type="submit" [disabled]="!fg.valid">
+      <button class="button" type="submit" [disabled]="!fg.valid">
         Validate
       </button>
       <div class="notice">
@@ -35,24 +31,26 @@ import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/Int
   imports: [IntlTelInputComponent, ReactiveFormsModule]
 })
 export class AppComponent {
-  @ViewChild("telInput") telInput;
+  @ViewChild("telInput") telInput!: IntlTelInputComponent;
 
-  fg = new FormGroup({
-    phone: new FormControl("", [Validators.required]),
+  initOptions = {
+    initialCountry: "us",
+    loadUtils: () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
+  };
+
+  fg: FormGroup = new FormGroup({
+    phone: new FormControl<string>("", [Validators.required]),
   });
 
-  notice = null;
+  notice: string | null = null;
 
   get phone() {
     return this.fg.get("phone");
   }
 
-  handleSubmit() {
+  handleSubmit(): void {
     if (this.fg.valid) {
       this.notice = `Valid number: ${this.telInput.getInstance()?.getNumber()}`;
     }
   }
 }
-
-bootstrapApplication(AppComponent)
-  .catch((err) => console.error(err));

@@ -408,22 +408,23 @@ module.exports = function (grunt) {
     title: "Anglar component",
     metaDesc: "How to use intl-tel-input with Angular.",
     js: {
-      dest: "tmp/examples/js/angular_component.js",
+      src: "src/examples/js/angular_component.ts.ejs",
+      dest: "tmp/examples/js/angular_component.ts",
       script: "angular_component_bundle.js",
     },
     extraJsTasks: [
       {
         key: "angular_component_display_code_js",
-        src: "src/examples/js/angular_component_display_code.js.ejs",
-        dest: "build/examples/js/angular_component_display_code.js",
+        src: "src/examples/js/angular_component_display_code.ts.ejs",
+        dest: "build/examples/js/angular_component_display_code.ts",
       },
     ],
     content: {
       markupPath: "src/examples/html/angular_component.html",
       hideMarkupSection: true,
-      codePath: "build/examples/js/angular_component_display_code.js",
+      codePath: "build/examples/js/angular_component_display_code.ts",
       script: "angular_component_bundle.js",
-    }
+    },
   }];
   exampleDefinitions.forEach((definition) => registerExample(definition));
 
