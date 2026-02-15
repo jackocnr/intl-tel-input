@@ -1,58 +1,56 @@
-import { Component } from "@angular/core";
-import {
-  IntlTelInputComponent,
-  PHONE_ERROR_MESSAGES,
-} from "intl-tel-input/angular";
+import { Component, ViewChild } from "@angular/core";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { IntlTelInputComponent } from "intl-tel-input/angular";
+import "intl-tel-input/styles";
 
 @Component({
   selector: "app-root",
   template: `
-    <form (submit)="handleSubmit($event)">
+    <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
       <intl-tel-input
-        (numberChange)="handleNumberChange($event)"
-        (validityChange)="handleValidityChange($event)"
-        (errorCodeChange)="handleErrorCodeChange($event)"
+        #telInput
+        formControlName="phone"
+        name="phone"
         [initOptions]="initOptions"
       />
-      <button class="button" type="submit">Validate</button>
-      @if (notice) {
-        <div class="notice">{{ notice }}</div>
-      }
+      <button class="button" type="submit" [disabled]="!fg.valid">
+        Validate
+      </button>
+      <div class="notice">
+        @if (phone?.errors?.["required"] && phone?.touched) {
+          Phone number is required.
+        } @else if (phone?.errors?.["invalidPhone"] && phone?.touched) {
+          {{ phone?.errors?.["invalidPhone"].errorMessage }}
+        } @else if (notice) {
+          {{ notice }}
+        }
+      </div>
     </form>
   `,
   standalone: true,
-  imports: [IntlTelInputComponent],
+  imports: [IntlTelInputComponent, ReactiveFormsModule],
 })
 export class AppComponent {
+  @ViewChild("telInput") telInput!: IntlTelInputComponent;
+
   initOptions = {
     initialCountry: "us",
     loadUtils: () => import("intl-tel-input/utils"),
   };
 
-  isValid: boolean | null = null;
-  number: string | null = null;
-  errorCode: number | null = null;
+  fg: FormGroup = new FormGroup({
+    phone: new FormControl<string>("", [Validators.required]),
+  });
+
   notice: string | null = null;
 
-  handleNumberChange(value: string): void {
-    this.number = value;
+  get phone() {
+    return this.fg.get("phone");
   }
 
-  handleValidityChange(value: boolean): void {
-    this.isValid = value;
-  }
-
-  handleErrorCodeChange(value: number | null): void {
-    this.errorCode = value;
-  }
-
-  handleSubmit(event?: SubmitEvent): void {
-    event?.preventDefault();
-    if (this.isValid) {
-      this.notice = `Valid number: ${this.number}`;
-    } else {
-      const errorMessage = PHONE_ERROR_MESSAGES[this.errorCode || 0];
-      this.notice = `Error: ${errorMessage}`;
+  handleSubmit(): void {
+    if (this.fg.valid) {
+      this.notice = `Valid number: ${this.telInput.getInstance()?.getNumber()}`;
     }
   }
 }
