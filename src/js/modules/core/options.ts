@@ -84,7 +84,7 @@ export const defaults: AllOptions = {
   useFullscreenPopup: computeDefaultUseFullscreenPopup(),
 };
 
-const toString = (val: unknown): string => Object.prototype.toString.call(val);
+const toString = (val: unknown): string => JSON.stringify(val);
 
 const isPlainObject = (val: unknown): val is Record<string, unknown> =>
   Boolean(val) && typeof val === "object" && !Array.isArray(val);
@@ -111,6 +111,9 @@ const warn = (message: string): void => {
 const warnOption = (optionName: string, expectedType: string, actualValue: unknown): void => {
   warn(`Option '${optionName}' must be ${expectedType}; got ${toString(actualValue)}. Ignoring.`);
 };
+
+const hasOwn = (obj: object, key: string): boolean =>
+  Object.prototype.hasOwnProperty.call(obj, key);
 
 const validateIso2Array = (key: string, value: unknown): boolean => {
   const expectedType = "an array of ISO2 country code strings";
@@ -150,7 +153,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
 
   for (const [key, value] of Object.entries(customOptions)) {
     // Check option exists
-    if (!Object.prototype.hasOwnProperty.call(defaults, key)) {
+    if (!hasOwn(defaults, key)) {
       warn(`Unknown option '${key}'. Ignoring.`);
       continue;
     }
@@ -231,6 +234,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
           warnOption("i18n", "an object", value);
           break;
         }
+        // don't bother validating the shape of the object, as the standard use is to just pass in one of the provided i18n objects.
         validatedOptions[key] = value;
         break;
 

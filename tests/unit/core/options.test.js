@@ -87,4 +87,9 @@ describe("core/options validateOptions", () => {
     ).not.toThrow();
     expect(warnSpy).not.toHaveBeenCalled();
   });
+
+  test("warns on invalid i18n option type", () => {
+    expect(() => validateOptions({ i18n: [] })).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
+  });
 });
