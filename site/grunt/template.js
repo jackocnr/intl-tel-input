@@ -430,6 +430,32 @@ module.exports = function (grunt) {
       script: "vue_component_bundle.js",
     },
   }];
+
+  exampleDefinitions.push({
+    key: "svelte_component",
+    title: "Svelte component",
+    metaDesc: "How to use intl-tel-input with Svelte.",
+    js: {
+      // need to specify the source because of the alternative .svelte extension
+      src: "src/examples/js/svelte_component.svelte.ejs",
+      dest: "tmp/examples/js/svelte_component.svelte",
+      script: "svelte_component_bundle.js",
+    },
+    extraJsTasks: [
+      {
+        key: "svelte_component_display_code_svelte",
+        src: "src/examples/js/svelte_component_display_code.svelte.ejs",
+        dest: "build/examples/js/svelte_component_display_code.svelte",
+      },
+    ],
+    content: {
+      markupPath: "src/examples/html/component.html",
+      hideMarkupSection: true,
+      codePath: "build/examples/js/svelte_component_display_code.svelte",
+      script: "svelte_component_bundle.js",
+    },
+  });
+
   exampleDefinitions.forEach((definition) => registerExample(definition));
 
   orderedDocsKeys.forEach((key) => {

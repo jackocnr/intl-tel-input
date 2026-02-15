@@ -1,0 +1,38 @@
+<script>
+  import IntlTelInput from "../../../../svelte/src/intl-tel-input/IntlTelInputWithUtils.svelte";
+
+  const errorMap = [
+    "Invalid number",
+    "Invalid country code",
+    "Too short",
+    "Too long",
+    "Invalid number",
+  ];
+
+  let isValid = $state(null);
+  let number = $state(null);
+  let errorCode = $state(null);
+  let notice = $state(null);
+
+  const handleSubmit = () => {
+    if (isValid) {
+      notice = `Valid number: ${number}`;
+    } else {
+      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
+      notice = `Error: ${errorMessage}`;
+    }
+  };
+</script>
+
+<form>
+  <IntlTelInput
+    onChangeNumber={(n) => (number = n)}
+    onChangeValidity={(v) => (isValid = v)}
+    onChangeErrorCode={(e) => (errorCode = e)}
+    options={{ initialCountry: "us" }}
+  />
+  <button class="button" type="button" onclick={handleSubmit}>Validate</button>
+  {#if notice}
+    <div class="notice">{notice}</div>
+  {/if}
+</form>

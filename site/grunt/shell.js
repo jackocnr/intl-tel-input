@@ -11,5 +11,8 @@ module.exports = function(grunt) {
     vite: {
       command: "vite build --config src/examples/js/viteVueDemo.config.js",
     },
+    viteSvelte: {
+      command: "vite build --config src/examples/js/viteSvelteDemo.config.mjs",
+    },
   };
 };
