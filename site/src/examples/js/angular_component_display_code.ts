@@ -14,7 +14,6 @@ import {
         (errorCodeChange)="handleErrorCodeChange($event)"
         [initOptions]="initOptions"
       />
-      <span>&nbsp;</span>
       <button class="button" type="submit">Validate</button>
       @if (notice) {
         <div class="notice">{{ notice }}</div>
