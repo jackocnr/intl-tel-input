@@ -7,11 +7,19 @@
   const errorCode = ref(null);
   const notice = ref(null);
 
+  const errorMap = [
+    "Invalid number",
+    "Invalid country code",
+    "Too short",
+    "Too long",
+    "Invalid number",
+  ];
+
   const handleSubmit = () => {
     if (isValid.value) {
       notice.value = `Valid number: ${number.value}`;
     } else {
-      const errorMessage = errorMap[errorCode.value];
+      const errorMessage = errorMap[errorCode.value || 0];
       notice.value = `Error: ${errorMessage}`;
     }
   };

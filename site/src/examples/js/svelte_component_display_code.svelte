@@ -20,7 +20,7 @@
     if (isValid) {
       notice = `Valid number: ${number}`;
     } else {
-      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
+      const errorMessage = errorMap[errorCode || 0];
       notice = `Error: ${errorMessage}`;
     }
   };
