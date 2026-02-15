@@ -7,3 +7,5 @@ When making changes to the root src/ code, make sure to also update the tests (i
 When making changes to the root src/ code, make sure to also update the documentation if necessary. The documentation is located in the site/src/docs/ directory. If you are not sure how to update the documentation, just ask me.
 
 When writing code, prioritise clarity and brevity. Try to follow the existing code style as much as possible.
+
+When making changes in the root site/ directory, remember there are no tests for this, so don't bother running the tests.

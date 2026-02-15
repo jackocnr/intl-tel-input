@@ -29,6 +29,8 @@ const initCodeEl = document.querySelector("#playgroundInitCode");
 const copyInitCodeButton = document.querySelector("#playgroundCopyInitCode");
 const infoIconTemplate = document.querySelector("#itiPlaygroundInfoIconTemplate");
 const optionGroupTemplate = document.querySelector("#itiPlaygroundOptionGroupTemplate");
+const iso2ModalEl = document.querySelector("#itiPlaygroundIso2Modal");
+const iso2ModalTableBody = document.querySelector("#itiPlaygroundIso2ModalTableBody");
 
 const KEEP_DROPDOWN_OPEN_PARAM = "keepDropdownOpen";
 
@@ -299,5 +301,43 @@ if (resetAttrsButton) {
       attributeQueryAliases,
       defaultState,
     });
+  });
+}
+
+function getSupportedCountries() {
+  if (!window.intlTelInput || typeof window.intlTelInput.getCountryData !== "function") {
+    return [];
+  }
+  const data = window.intlTelInput.getCountryData();
+  return Array.isArray(data) ? data : [];
+}
+
+function renderSupportedCountriesTable() {
+  if (!iso2ModalTableBody) return;
+  iso2ModalTableBody.innerHTML = "";
+
+  const countries = getSupportedCountries();
+
+  const fragment = document.createDocumentFragment();
+  countries.forEach(({ name, iso2 }) => {
+    const row = document.createElement("tr");
+
+    const countryCell = document.createElement("td");
+    countryCell.textContent = name;
+
+    const iso2Cell = document.createElement("td");
+    iso2Cell.textContent = iso2;
+
+    row.appendChild(countryCell);
+    row.appendChild(iso2Cell);
+    fragment.appendChild(row);
+  });
+
+  iso2ModalTableBody.appendChild(fragment);
+}
+
+if (iso2ModalEl) {
+  iso2ModalEl.addEventListener("show.bs.modal", () => {
+    renderSupportedCountriesTable();
   });
 }

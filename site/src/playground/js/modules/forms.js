@@ -301,7 +301,7 @@ function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
   return wrapper;
 }
 
-function createControlGroup(optionGroupTemplate, title, groupId, description) {
+function createControlGroup(optionGroupTemplate, title, groupId, description, { iso2ModalId = null } = {}) {
   const root = optionGroupTemplate.content.firstElementChild;
   const group = root.cloneNode(true);
 
@@ -310,6 +310,21 @@ function createControlGroup(optionGroupTemplate, title, groupId, description) {
 
   const descEl = group.querySelector("[data-role=\"description\"]");
   descEl.textContent = description;
+
+  const modalId = String(iso2ModalId || "").trim();
+  if (modalId) {
+    descEl.appendChild(document.createTextNode(" "));
+
+    const link = document.createElement("a");
+    link.href = "#";
+    link.textContent = "Supported ISO2 country codes";
+    link.setAttribute("data-bs-toggle", "modal");
+    link.setAttribute("data-bs-target", `#${modalId}`);
+    link.addEventListener("click", (e) => e.preventDefault());
+
+    descEl.appendChild(link);
+    descEl.appendChild(document.createTextNode("."));
+  }
 
   const resetButton = group.querySelector("[data-role=\"reset\"]");
   resetButton.setAttribute("data-playground-reset-group", String(groupId));
@@ -338,13 +353,13 @@ export function renderControls(formEl, metaMap, { idPrefix, dataAttr, groups = n
   const allKeys = Object.keys(metaMap);
   const usedKeys = new Set();
 
-  groups.forEach(({ title, description, keys }, index) => {
+  groups.forEach(({ title, description, keys, iso2ModalId }, index) => {
     const groupKeys = (Array.isArray(keys) ? keys : []).filter((k) => metaMap[k]);
     if (groupKeys.length === 0) return;
 
     const groupId = `group_${index}`;
     resetGroupKeys.set(groupId, groupKeys);
-    const { group, stack } = createControlGroup(optionGroupTemplate, title, groupId, description);
+    const { group, stack } = createControlGroup(optionGroupTemplate, title, groupId, description, { iso2ModalId });
 
     groupKeys.forEach((key) => {
       usedKeys.add(key);

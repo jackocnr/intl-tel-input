@@ -26,6 +26,7 @@ export const OPTION_GROUPS = [
   {
     title: "Country Options",
     description: "Choose which countries are available, the order they're displayed in, and how the initial country is determined.",
+    iso2ModalId: "itiPlaygroundIso2Modal",
     keys: ["countryOrder", "excludeCountries", "geoIpLookup", "initialCountry", "onlyCountries"],
   },
   {
