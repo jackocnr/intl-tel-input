@@ -323,7 +323,9 @@ module.exports = function(grunt) {
         'react/README.md': 'react/README.md',
         'vue/README.md': 'vue/README.md',
         'angular/README.md': 'angular/README.md',
-        'svelte/README.md': 'svelte/README.md'
+        'svelte/README.md': 'svelte/README.md',
+        'site/src/docs/options.md': 'site/src/docs/options.md',
+        'site/src/docs/getting_started.md': 'site/src/docs/getting_started.md',
       }
     },
     issueTemplate: {
