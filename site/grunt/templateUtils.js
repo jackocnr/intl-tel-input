@@ -238,9 +238,36 @@ const getI18nLanguages = () => {
   }
 };
 
+const escapeHtmlAttr = (value) =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const buildOpenGraphMetaTags = ({
+  siteName,
+  type = "website",
+  title,
+  description,
+  url,
+  image,
+}) => {
+  return [
+    `<meta property="og:site_name" content="${escapeHtmlAttr(siteName)}" />`,
+    `<meta property="og:type" content="${escapeHtmlAttr(type)}" />`,
+    `<meta property="og:title" content="${escapeHtmlAttr(title)}" />`,
+    `<meta property="og:description" content="${escapeHtmlAttr(description)}" />`,
+    `<meta property="og:url" content="${escapeHtmlAttr(url)}" />`,
+    `<meta property="og:image" content="${escapeHtmlAttr(image)}" />`,
+  ].join("\n");
+};
+
 module.exports = {
   createMarkdownRenderer,
   cacheBust,
   getDirHash,
   getI18nLanguages,
+  buildOpenGraphMetaTags,
 };

@@ -5,6 +5,7 @@ module.exports = function (grunt) {
     getDirHash,
     getI18nLanguages,
     createMarkdownRenderer,
+    buildOpenGraphMetaTags,
   } = require("./templateUtils");
 
   const env = grunt.option("env");
@@ -31,6 +32,9 @@ module.exports = function (grunt) {
   } = require("./templateNav");
 
   const md = createMarkdownRenderer();
+
+  const OG_SITE_NAME = "International Telephone Input";
+  const OG_IMAGE_URL = "https://intl-tel-input.com/img/favicon.png";
 
   const config = {
     // cache bust common assets
@@ -79,6 +83,14 @@ module.exports = function (grunt) {
         data: () => ({
           cacheBust,
           ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
+          og_meta_tags: buildOpenGraphMetaTags({
+            siteName: OG_SITE_NAME,
+            title: "International Telephone Input",
+            description:
+              "International Telephone Input - a JavaScript plugin for entering international telephone numbers.",
+            url: "https://intl-tel-input.com",
+            image: OG_IMAGE_URL,
+          }),
           layout: grunt.file.read("tmp/homepage/homepage_layout.html"),
           common_body_end: readCommonBodyEndScript(grunt),
           iti_live_results_script: readItiLiveResultsScript(grunt, { cacheBust }),
@@ -121,6 +133,14 @@ module.exports = function (grunt) {
         data: () => ({
           cacheBust,
           ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
+          og_meta_tags: buildOpenGraphMetaTags({
+            siteName: OG_SITE_NAME,
+            title: "Playground - International Telephone Input",
+            description:
+              "intl-tel-input playground - interactively tweak init options and see the plugin update live.",
+            url: "https://intl-tel-input.com/playground",
+            image: OG_IMAGE_URL,
+          }),
           layout: grunt.file.read("tmp/playground/playground_layout.html"),
           common_body_end: readCommonBodyEndScript(grunt),
           iti_live_results_script: readItiLiveResultsScript(grunt, { cacheBust }),
@@ -207,6 +227,13 @@ module.exports = function (grunt) {
         head_title: title,
         canonical_path: `examples/${slug}`,
         meta_desc: metaDesc,
+        og_meta_tags: buildOpenGraphMetaTags({
+          siteName: OG_SITE_NAME,
+          title: `${title} example - International Telephone Input`,
+          description: `An example use of International Telephone Input. ${metaDesc}`,
+          url: `https://intl-tel-input.com/examples/${slug}`,
+          image: OG_IMAGE_URL,
+        }),
         ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
         content: grunt.file.read(layoutDest),
         ...pageExtra,
@@ -449,6 +476,13 @@ module.exports = function (grunt) {
           head_title: headTitle,
           canonical_path: canonicalPath,
           meta_desc: `intl-tel-input documentation: ${headTitle}.`,
+          og_meta_tags: buildOpenGraphMetaTags({
+            siteName: OG_SITE_NAME,
+            title: `${headTitle} - International Telephone Input`,
+            description: `intl-tel-input documentation: ${headTitle}.`,
+            url: `https://intl-tel-input.com/${canonicalPath}`,
+            image: OG_IMAGE_URL,
+          }),
           ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
           layout: grunt.file.read(`tmp/docs/${key}_layout.html`),
           common_body_end: readCommonBodyEndScript(grunt),
