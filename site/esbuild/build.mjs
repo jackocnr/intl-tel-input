@@ -29,6 +29,15 @@ build({
   outfile: "build/examples/js/react_component_bundle.js",
 });
 
+// angular component example
+build({
+  ...sharedOptions,
+  loader: { ".ts": "ts" },
+  tsconfig: "../angular/tsconfig.json",
+  entryPoints: ["tmp/examples/js/angular_component.ts"],
+  outfile: "build/examples/js/angular_component_bundle.js",
+});
+
 // playground
 build({
   ...sharedOptions,

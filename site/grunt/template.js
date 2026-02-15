@@ -385,6 +385,29 @@ module.exports = function (grunt) {
     },
   },
   {
+    key: "angular_component",
+    title: "Angular component",
+    metaDesc: "How to use intl-tel-input with Angular.",
+    js: {
+      src: "src/examples/js/angular_component.ts.ejs",
+      dest: "tmp/examples/js/angular_component.ts",
+      script: "angular_component_bundle.js",
+    },
+    extraJsTasks: [
+      {
+        key: "angular_component_display_code_ts",
+        src: "src/examples/js/angular_component_display_code.ts.ejs",
+        dest: "build/examples/js/angular_component_display_code.ts",
+      },
+    ],
+    content: {
+      markupPath: "src/examples/html/angular_component.html",
+      hideMarkupSection: true,
+      codePath: "build/examples/js/angular_component_display_code.ts",
+      script: "angular_component_bundle.js",
+    },
+  },
+  {
     key: "react_component",
     title: "React component",
     metaDesc: "How to use intl-tel-input with React.",
