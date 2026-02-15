@@ -2,7 +2,7 @@ import type { Country, Iso2 } from "../../intl-tel-input/data";
 import type { I18n } from "../../intl-tel-input/i18n/types";
 // Type-only import to avoid runtime circular dependency. This is erased after compilation.
 import type { Iti } from "../../intl-tel-input";
-import type { PLACEHOLDER_MODES } from "../constants";
+import type { NUMBER_TYPE_SET, PLACEHOLDER_MODES } from "../constants";
 
 // Loader for the utils module
 export type UtilsLoader = () => Promise<{ default: ItiUtils }>;
@@ -45,19 +45,9 @@ export type ItiUtils = {
 };
 
 // Number types exposed publicly
-export type NumberType =
-  | "FIXED_LINE_OR_MOBILE"
-  | "FIXED_LINE"
-  | "MOBILE"
-  | "PAGER"
-  | "PERSONAL_NUMBER"
-  | "PREMIUM_RATE"
-  | "SHARED_COST"
-  | "TOLL_FREE"
-  | "UAN"
-  | "UNKNOWN"
-  | "VOICEMAIL"
-  | "VOIP";
+type SetValues<T> = T extends ReadonlySet<infer U> ? U : never;
+
+export type NumberType = SetValues<typeof NUMBER_TYPE_SET>;
 
 type ValueOf<T> = T[keyof T];
 
