@@ -205,7 +205,7 @@ module.exports = function (grunt) {
       () => ({
         cacheBust,
         head_title: title,
-        canonical_path: `examples/${slug}.html`,
+        canonical_path: `examples/${slug}`,
         meta_desc: metaDesc,
         ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
         content: grunt.file.read(layoutDest),
@@ -409,7 +409,7 @@ module.exports = function (grunt) {
     const mdPath = path.join("src", "docs", `${key}.md`);
     const urlSlug = key.replace(/_/g, "-");
     const destPath = `build/docs/${urlSlug}.html`;
-    const canonicalPath = `docs/${urlSlug}.html`;
+    const canonicalPath = `docs/${urlSlug}`;
     const headTitle = (docsPageByName[key] && docsPageByName[key].label) || key;
 
     config[`docs_content_${key}`] = {
