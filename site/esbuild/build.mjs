@@ -32,19 +32,6 @@ build({
 // angular component exemple
 build({
   ...sharedOptions,
-  // loader: { ".js": "ts" },
-  // entryPoints: ["tmp/examples/js/angular_component.js"],
-  // outfile: "build/examples/js/angular_component_bundle.js",
-  // target: "es2020",
-  // format: "iife",
-  // minify: false,
-  // tsconfigRaw: {
-  //   compilerOptions: {
-  //     experimentalDecorators: true,
-  //     emitDecoratorMetadata: true,
-  //     useDefineForClassFields: false,
-  //   },
-  // },
   loader: { ".ts": "ts" },
   tsconfig: "../angular/tsconfig.json",
   entryPoints: ["tmp/examples/js/angular_component.ts"],
