@@ -227,7 +227,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         break;
 
       case "i18n":
-        if (!isPlainObject(value)) {
+        if (value && !isPlainObject(value)) {
           warnOption("i18n", "an object", value);
           break;
         }
