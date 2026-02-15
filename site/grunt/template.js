@@ -259,16 +259,9 @@ module.exports = function (grunt) {
       destDir: "tmp",
       script: "internationalisation_bundle.js",
     },
-    extraJsTasks: [
-      {
-        key: "internationalisation_display_code_js",
-        src: "src/examples/js/internationalisation_display_code.js.ejs",
-        dest: "build/examples/js/internationalisation_display_code.js",
-      },
-    ],
     content: {
       markupPath: "src/examples/html/simple_input.html",
-      codePath: "build/examples/js/internationalisation_display_code.js",
+      codePath: "src/examples/js/internationalisation_display_code.js",
     },
   },
   {
@@ -279,17 +272,10 @@ module.exports = function (grunt) {
       destDir: "tmp",
       script: "right_to_left_bundle.js",
     },
-    extraJsTasks: [
-      {
-        key: "right_to_left_display_code_js",
-        src: "src/examples/js/right_to_left_display_code.js.ejs",
-        dest: "build/examples/js/right_to_left_display_code.js",
-      },
-    ],
     content: {
       markupPath: "src/examples/html/simple_input.html",
       isRtl: true,
-      codePath: "build/examples/js/right_to_left_display_code.js",
+      codePath: "src/examples/js/right_to_left_display_code.js",
     },
     layoutExtra: { isRtl: true },
   },
@@ -393,17 +379,10 @@ module.exports = function (grunt) {
       dest: "tmp/examples/js/angular_component.ts",
       script: "angular_component_bundle.js",
     },
-    extraJsTasks: [
-      {
-        key: "angular_component_display_code_ts",
-        src: "src/examples/js/angular_component_display_code.ts.ejs",
-        dest: "build/examples/js/angular_component_display_code.ts",
-      },
-    ],
     content: {
       markupPath: "src/examples/html/angular_component.html",
       hideMarkupSection: true,
-      codePath: "build/examples/js/angular_component_display_code.ts",
+      codePath: "src/examples/js/angular_component_display_code.ts",
       script: "angular_component_bundle.js",
     },
   },
@@ -415,17 +394,10 @@ module.exports = function (grunt) {
       dest: "tmp/examples/js/react_component.js",
       script: "react_component_bundle.js",
     },
-    extraJsTasks: [
-      {
-        key: "react_component_display_code_js",
-        src: "src/examples/js/react_component_display_code.js.ejs",
-        dest: "build/examples/js/react_component_display_code.js",
-      },
-    ],
     content: {
       markupPath: "src/examples/html/component.html",
       hideMarkupSection: true,
-      codePath: "build/examples/js/react_component_display_code.js",
+      codePath: "src/examples/js/react_component_display_code.js",
       script: "react_component_bundle.js",
     },
   },
@@ -439,17 +411,10 @@ module.exports = function (grunt) {
       dest: "tmp/examples/js/vue_component.vue",
       script: "vue_component_bundle.js",
     },
-    extraJsTasks: [
-      {
-        key: "vue_component_display_code_js",
-        src: "src/examples/js/vue_component_display_code.vue.ejs",
-        dest: "build/examples/js/vue_component_display_code.vue",
-      },
-    ],
     content: {
       markupPath: "src/examples/html/component.html",
       hideMarkupSection: true,
-      codePath: "build/examples/js/vue_component_display_code.vue",
+      codePath: "src/examples/js/vue_component_display_code.vue",
       script: "vue_component_bundle.js",
     },
   }];
@@ -464,17 +429,10 @@ module.exports = function (grunt) {
       dest: "tmp/examples/js/svelte_component.svelte",
       script: "svelte_component_bundle.js",
     },
-    extraJsTasks: [
-      {
-        key: "svelte_component_display_code_svelte",
-        src: "src/examples/js/svelte_component_display_code.svelte.ejs",
-        dest: "build/examples/js/svelte_component_display_code.svelte",
-      },
-    ],
     content: {
       markupPath: "src/examples/html/component.html",
       hideMarkupSection: true,
-      codePath: "build/examples/js/svelte_component_display_code.svelte",
+      codePath: "src/examples/js/svelte_component_display_code.svelte",
       script: "svelte_component_bundle.js",
     },
   });

@@ -52,7 +52,7 @@ export class AppComponent {
     if (this.isValid) {
       this.notice = `Valid number: ${this.number}`;
     } else {
-      const errorMessage = PHONE_ERROR_MESSAGES[this.errorCode];
+      const errorMessage = PHONE_ERROR_MESSAGES[this.errorCode || 0];
       this.notice = `Error: ${errorMessage}`;
     }
   }

@@ -7,5 +7,5 @@ intlTelInput(input, {
   i18n: ru,
   initialCountry: "ru", // Russia
   countryNameLocale: "ru", // Russian
-  loadUtils: () => import("intl-tel-input/utils")
+  loadUtils: () => import("intl-tel-input/utils"),
 });
