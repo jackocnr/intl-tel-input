@@ -53,7 +53,7 @@ _Note that the `failure` callback must be called in the event of an error, hence
 Type: `String`  
 Default: `""`  
 
-Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the `geoIpLookup` option - [see example](/examples/lookup-country)). Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de).
+Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de).
 
 ###### onlyCountries
 Type: `String[]`  
@@ -69,7 +69,7 @@ Control dropdown behaviour and whether certain UI elements are displayed.
 Type: `Boolean`  
 Default: `true`  
 
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if showFlags is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. Try the plugin with `allowDropdown` disabled in the [Playground](/playground?allowDropdown=false).
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, [`allowDropdown`](/docs/options#allowdropdown) is forced to `true` as the dropdown is required when the user types "+" in this case. Try the plugin with [`allowDropdown`](#allowdropdown) disabled in the [Playground](/playground?allowDropdown=false).
 
 ###### containerClass
 Type: `String`  
@@ -159,13 +159,13 @@ Automatically format the number as the user types. This feature will be disabled
 Type: `Boolean`  
 Default: `true`  
 
-Format the input value (according to the [`nationalMode`](#nationalmode) option) during initialisation, when a new country is selected, and when calling `setNumber` or `setCountry`. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123).
+Format the input value (according to the [`nationalMode`](#nationalmode) option) during initialisation, when a new country is selected, and when calling [`setNumber`](/docs/methods#setnumber) or [`setCountry`](/docs/methods#setcountry). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123).
 
 ###### nationalMode
 Type: `Boolean`  
 Default: `true`  
 
-Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use `getNumber` to extract a full international number. It is recommended to leave this option enabled to encourage users to enter their numbers in national format, as this is usually more familiar to them, and so it creates a better user experience. Play with this option in the [Playground](/playground).
+Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use [`getNumber`](/docs/methods#getnumber) to extract a full international number. It is recommended to leave this option enabled to encourage users to enter their numbers in national format, as this is usually more familiar to them, and so it creates a better user experience. Play with this option in the [Playground](/playground).
 
 ###### strictMode
 Type: `Boolean`  
@@ -181,7 +181,7 @@ Adjust what is considered a valid number.
 Type: `String[]`  
 Default: `["MOBILE", "FIXED_LINE"]`  
 
-Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE", "FIXED_LINE"]` so `isValidNumber` (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. Play with this option in the [Playground](/playground). _Note: previously named `validationNumberTypes`._
+Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE", "FIXED_LINE"]` so [`isValidNumber`](/docs/methods#isvalidnumber) (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. Play with this option in the [Playground](/playground). _Note: previously named `validationNumberTypes`._
 
 ###### allowNumberExtensions
 Type: `Boolean`  
@@ -266,7 +266,7 @@ Default: `null`
 
 Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country code. It accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and country code, respectively. This is useful for old-fashioned, page-load form submissions to ensure the full international number and country code are captured, especially when [`nationalMode`](#nationalmode) is enabled. [See example](/examples/hidden-input).
 
-***Note**: This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses `getNumber` internally, firstly it requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script), and secondly, it expects a valid number and so will only work correctly if you have used `isValidNumber` to validate the number before allowing the form submit to go through.
+***Note**: This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses [`getNumber`](/docs/methods#getnumber) internally, firstly it requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script), and secondly, it expects a valid number and so will only work correctly if you have used [`isValidNumber`](/docs/methods#isvalidnumber) to validate the number before allowing the form submit to go through.
 
 ```js
 intlTelInput(input, {
@@ -290,7 +290,7 @@ Default: `null`
 
 This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utilities Script](/docs/utils#loading-the-utilities-script) for more options.
 
-The `loadUtils` option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (examples below): (A) from a CDN, (B) from your own hosted version of utils.js, or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package. Play with this option in the [Playground](/playground). _Note: this replaces the `utilsScript` option (now removed)._
+The [`loadUtils`](#loadutils) option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (examples below): (A) from a CDN, (B) from your own hosted version of utils.js, or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package. Play with this option in the [Playground](/playground). _Note: this replaces the `utilsScript` option (now removed)._ 
 
 ```js
 // (A) import utils module from a CDN
@@ -311,4 +311,4 @@ intlTelInput(htmlInputElement, {
 
 The module is only loaded when you initialise the plugin, and additionally, only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](/docs/utils) for more information.
 
-If you want more control over when this file is lazy-loaded, you can manually invoke the `attachUtils` static method whenever you like, instead of using the `loadUtils` initialisation option.
+If you want more control over when this file is lazy-loaded, you can manually invoke the [`attachUtils`](/docs/methods#attachutils) static method whenever you like, instead of using the [`loadUtils`](/docs/options#loadutils) initialisation option.
