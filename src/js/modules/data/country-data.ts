@@ -11,14 +11,14 @@ export interface DialCodeProcessingResult {
 //* Process onlyCountries or excludeCountries array if present.
 export const processAllCountries = (options: AllOptions): Country[] => {
   const { onlyCountries, excludeCountries } = options;
-  if (onlyCountries.length) {
+  if (onlyCountries?.length) {
     const lowerCaseOnlyCountries = onlyCountries.map((country) =>
       country.toLowerCase(),
     );
     return allCountries.filter((country) =>
       lowerCaseOnlyCountries.includes(country.iso2),
     );
-  } else if (excludeCountries.length) {
+  } else if (excludeCountries?.length) {
     const lowerCaseExcludeCountries = excludeCountries.map((country) =>
       country.toLowerCase(),
     );

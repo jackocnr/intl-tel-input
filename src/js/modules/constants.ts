@@ -89,6 +89,24 @@ export const INITIAL_COUNTRY = {
   AUTO: "auto",
 } as const;
 
+// libphonenumber number types (string literals exposed in public options)
+// must be kept in sync with the same list in utils.js and the libphonenumber metadata
+// TODO: add a build step to extract this from i18n.phonenumbers.PhoneNumberType in third_party/libphonenumber/javascript/i18n/phonenumbers/phonenumberutil.js
+export const NUMBER_TYPE_SET = new Set<string>([
+  "FIXED_LINE",
+  "MOBILE",
+  "FIXED_LINE_OR_MOBILE",
+  "TOLL_FREE",
+  "PREMIUM_RATE",
+  "SHARED_COST",
+  "VOIP",
+  "PERSONAL_NUMBER",
+  "PAGER",
+  "UAN",
+  "VOICEMAIL",
+  "UNKNOWN",
+]);
+
 // Data-* keys used on DOM nodes
 export const DATA_KEYS = {
   COUNTRY_CODE: "countryCode",

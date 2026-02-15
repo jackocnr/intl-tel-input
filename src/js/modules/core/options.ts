@@ -1,6 +1,7 @@
-import { PLACEHOLDER_MODES } from "../constants";
+import { INITIAL_COUNTRY, PLACEHOLDER_MODES, NUMBER_TYPE_SET } from "../constants";
 import defaultEnglishStrings from "../../intl-tel-input/i18n/en";
-import type { AllOptions } from "../types/public-api";
+import allCountries, { type Iso2 } from "../../intl-tel-input/data";
+import type { AllOptions, SomeOptions } from "../types/public-api";
 
 // Helper for media query evaluation
 const mq = (q: string): boolean =>
@@ -81,6 +82,208 @@ export const defaults: AllOptions = {
   strictMode: false,
   //* Use full screen popup instead of dropdown for country list.
   useFullscreenPopup: computeDefaultUseFullscreenPopup(),
+};
+
+const toString = (val: unknown): string => Object.prototype.toString.call(val);
+
+const isPlainObject = (val: unknown): val is Record<string, unknown> =>
+  Boolean(val) && typeof val === "object" && !Array.isArray(val);
+
+const isFn = (val: unknown): val is (...args: unknown[]) => unknown =>
+  typeof val === "function";
+
+const isElLike = (val: unknown): val is HTMLElement => {
+  if (!val || typeof val !== "object") return false;
+  const v = val as any;
+  return v.nodeType === 1 && typeof v.tagName === "string" && typeof v.appendChild === "function";
+};
+
+const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
+const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
+
+const placeholderModeSet = new Set<string>(Object.values(PLACEHOLDER_MODES));
+
+const warn = (message: string): void => {
+  // eslint-disable-next-line no-console
+  console.warn(`[intl-tel-input] ${message}`);
+};
+
+const warnOption = (optionName: string, expectedType: string, actualValue: unknown): void => {
+  warn(`Option '${optionName}' must be ${expectedType}; got ${toString(actualValue)}. Ignoring.`);
+};
+
+const validateIso2Array = (key: string, value: unknown): boolean => {
+  const expectedType = "an array of ISO2 country code strings";
+  if (!Array.isArray(value)) {
+    warnOption(key, expectedType, value);
+    return false;
+  }
+  for (const v of value) {
+    if (typeof v !== "string") {
+      warnOption(key, expectedType, value);
+      return false;
+    }
+    const lower = v.toLowerCase();
+    if (!isIso2(lower)) {
+      warn(`Invalid country code in '${key}': '${v}'. Ignoring.`);
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Validate runtime init options
+ */
+export const validateOptions = (customOptions: unknown): SomeOptions => {
+  if (customOptions === undefined) {
+    return {};
+  }
+
+  if (!isPlainObject(customOptions)) {
+    const error = `The second argument must be an options object; got ${toString(customOptions)}. Using defaults.`;
+    warn(error);
+    return {};
+  }
+
+  const validatedOptions: Record<string, unknown> = {};
+
+  for (const [key, value] of Object.entries(customOptions)) {
+    // Check option exists
+    if (!Object.prototype.hasOwnProperty.call(defaults, key)) {
+      warn(`Unknown option '${key}'. Ignoring.`);
+      continue;
+    }
+
+    switch (key) {
+      case "allowDropdown":
+      case "allowNumberExtensions":
+      case "allowPhonewords":
+      case "countrySearch":
+      case "dropdownAlwaysOpen":
+      case "fixDropdownWidth":
+      case "formatAsYouType":
+      case "formatOnDisplay":
+      case "nationalMode":
+      case "showFlags":
+      case "separateDialCode":
+      case "strictMode":
+      case "useFullscreenPopup":
+        if (typeof value !== "boolean") {
+          warnOption(key, "a boolean", value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "autoPlaceholder":
+        if (typeof value !== "string" || !placeholderModeSet.has(value)) {
+          const validModes = Array.from(placeholderModeSet).join(", ");
+          warnOption("autoPlaceholder", `one of ${validModes}`, value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "containerClass":
+      case "countryNameLocale":
+        if (typeof value !== "string") {
+          warnOption(key, "a string", value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "countryOrder":
+        if (value === null || validateIso2Array(key, value)) {
+          validatedOptions[key] = value;
+        }
+        break;
+
+      case "customPlaceholder":
+      case "geoIpLookup":
+      case "hiddenInput":
+      case "loadUtils":
+        if (value !== null && !isFn(value)) {
+          warnOption(key, "a function or null", value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "dropdownContainer":
+        if (value !== null && !isElLike(value)) {
+          warnOption("dropdownContainer", "an HTMLElement or null", value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "excludeCountries":
+      case "onlyCountries":
+        if (validateIso2Array(key, value)) {
+          validatedOptions[key] = value;
+        }
+        break;
+
+      case "i18n":
+        if (!isPlainObject(value)) {
+          warnOption("i18n", "an object", value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "initialCountry": {
+        if (typeof value !== "string") {
+          warnOption("initialCountry", "a string", value);
+          break;
+        }
+        const lower = value.toLowerCase();
+        if (lower && (lower !== INITIAL_COUNTRY.AUTO && !isIso2(lower))) {
+          warnOption("initialCountry", "a valid ISO2 country code or 'auto'", value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+      }
+
+      case "placeholderNumberType":
+        if (typeof value !== "string" || !NUMBER_TYPE_SET.has(value)) {
+          const validTypes = Array.from(NUMBER_TYPE_SET).join(", ");
+          warnOption("placeholderNumberType", `one of ${validTypes}`, value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "allowedNumberTypes":
+        if (value !== null) {
+          if (!Array.isArray(value)) {
+            warnOption("allowedNumberTypes", "an array of number types or null", value);
+            break;
+          }
+          let allValid = true;
+          for (const v of value as unknown[]) {
+            if (typeof v !== "string" || !NUMBER_TYPE_SET.has(v)) {
+              const validTypes = Array.from(NUMBER_TYPE_SET).join(", ");
+              warnOption("allowedNumberTypes", `an array of valid number types (${validTypes})`, v);
+              allValid = false;
+              break;
+            }
+          }
+          if (allValid) {
+            // include it (even if empty)
+            validatedOptions[key] = value;
+          }
+        } else {
+          validatedOptions[key] = null;
+        }
+        break;
+    }
+  }
+
+  return validatedOptions as SomeOptions;
 };
 
 // Apply option side-effects (mutates the passed object)

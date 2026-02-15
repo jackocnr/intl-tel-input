@@ -1,5 +1,5 @@
 import allCountries, { type Country, type Iso2 } from "./intl-tel-input/data";
-import { defaults, applyOptionSideEffects } from "./modules/core/options";
+import { defaults, applyOptionSideEffects, validateOptions } from "./modules/core/options";
 import type {
   UtilsLoader,
   NumberType,
@@ -60,6 +60,22 @@ let id = 0;
 const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
 const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 
+const validateInput = (input: unknown): void => {
+  const tagName = (input as { tagName?: unknown } | null)?.tagName;
+  const isInputEl =
+    Boolean(input) &&
+    typeof input === "object" &&
+    tagName === "INPUT" &&
+    typeof (input as { setAttribute?: unknown }).setAttribute === "function";
+
+  if (!isInputEl) {
+    const type = Object.prototype.toString.call(input);
+    throw new TypeError(
+      `The first argument must be an HTMLInputElement, not ${type}`,
+    );
+  }
+};
+
 //* This is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
 export class Iti {
@@ -96,8 +112,11 @@ export class Iti {
   constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
 
+    validateInput(input);
+    const validatedOptions = validateOptions(customOptions);
+
     //* Process specified options / defaults.
-    this.options = { ...defaults, ...customOptions } as AllOptions;
+    this.options = { ...defaults, ...validatedOptions } as AllOptions;
     applyOptionSideEffects(this.options);
 
     this.ui = new UI(input, this.options, this.id);
