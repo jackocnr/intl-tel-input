@@ -16,6 +16,10 @@ export default defineConfig({
     outDir: path.resolve(projectRoot, "build/examples/js"),
     emptyOutDir: false,
     copyPublicDir: false,
+    rollupOptions: {
+      // stop vite/rollup from complaining about the dynamic import of utils.js
+      external: (id) => id.startsWith("/intl-tel-input/js/utils.js"),
+    },
     lib: {
       entry: path.resolve(projectRoot, "src/examples/js/svelte_main.js"),
       formats: ["cjs"],

@@ -1,5 +1,5 @@
 <script>
-  import IntlTelInput from "../../../../svelte/src/intl-tel-input/IntlTelInputWithUtils.svelte";
+  import IntlTelInput from "../../../../svelte/src/intl-tel-input/IntlTelInput.svelte";
 
   const errorMap = [
     "Invalid number",
@@ -14,7 +14,8 @@
   let errorCode = $state(null);
   let notice = $state(null);
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     if (isValid) {
       notice = `Valid number: ${number}`;
     } else {
@@ -24,14 +25,17 @@
   };
 </script>
 
-<form>
+<form onsubmit={handleSubmit}>
   <IntlTelInput
     onChangeNumber={(n) => (number = n)}
     onChangeValidity={(v) => (isValid = v)}
     onChangeErrorCode={(e) => (errorCode = e)}
-    options={{ initialCountry: "us" }}
+    options={{
+      initialCountry: "us",
+      loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+    }}
   />
-  <button class="button" type="button" onclick={handleSubmit}>Validate</button>
+  <button class="button" type="submit">Validate</button>
   {#if notice}
     <div class="notice">{notice}</div>
   {/if}

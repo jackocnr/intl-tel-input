@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import {
   IntlTelInputComponent,
   PHONE_ERROR_MESSAGES,
-} from "intl-tel-input/angularWithUtils";
+} from "intl-tel-input/angular";
 
 @Component({
   selector: "app-root",
@@ -12,9 +12,7 @@ import {
         (numberChange)="handleNumberChange($event)"
         (validityChange)="handleValidityChange($event)"
         (errorCodeChange)="handleErrorCodeChange($event)"
-        [initOptions]="{
-          initialCountry: 'us',
-        }"
+        [initOptions]="initOptions"
       />
       <span>&nbsp;</span>
       <button class="button" type="submit">Validate</button>
@@ -27,6 +25,11 @@ import {
   imports: [IntlTelInputComponent],
 })
 export class AppComponent {
+  initOptions = {
+    initialCountry: "us",
+    loadUtils: () => import("intl-tel-input/utils"),
+  };
+
   isValid: boolean | null = null;
   number: string | null = null;
   errorCode: number | null = null;

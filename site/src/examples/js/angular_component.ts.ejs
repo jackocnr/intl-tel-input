@@ -6,7 +6,7 @@ import { bootstrapApplication } from "@angular/platform-browser";
 import {
   IntlTelInputComponent,
   PHONE_ERROR_MESSAGES,
-} from "../../../build/intl-tel-input/angular/IntlTelInputWithUtils.js";
+} from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 
 @Component({
   selector: "app-root",
@@ -16,9 +16,7 @@ import {
         (numberChange)="handleNumberChange($event)"
         (validityChange)="handleValidityChange($event)"
         (errorCodeChange)="handleErrorCodeChange($event)"
-        [initOptions]="{
-          initialCountry: 'us',
-        }"
+        [initOptions]="initOptions"
       />
       <span>&nbsp;</span>
       <button class="button" type="submit">Validate</button>
@@ -31,6 +29,11 @@ import {
   imports: [IntlTelInputComponent],
 })
 class AppComponent {
+  initOptions = {
+    initialCountry: "us",
+    loadUtils: () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
+  };
+
   isValid: boolean | null = null;
   number: string | null = null;
   errorCode: number | null = null;
