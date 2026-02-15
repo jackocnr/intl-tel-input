@@ -10,7 +10,7 @@ If you want your input to be full-width, you need to set the container to be the
 
 ## dropdownContainer: dropdown not closing on scroll
 
-If you have a scrolling container other than `window` which is causing problems by not closing the dropdown on scroll, simply listen for the scroll event on that element, and trigger a scroll event on `window`, which in turn will close the dropdown, e.g.
+If you are using the [`dropdownContainer`](/docs/options#dropdowncontainer) option and you have a scrolling container other than `window` which is causing problems by not closing the dropdown on scroll, simply listen for the scroll event on that element, and trigger a scroll event on `window`, which in turn will close the dropdown, e.g.
 
 ```js
 scrollingElement.addEventListener("scroll", () => {
@@ -34,7 +34,7 @@ The dropdown should automatically appear above/below the input depending on the 
 
 ## Placeholders
 
-To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set `autoPlaceholder` to `"aggressive"` to override any existing placeholder. Note: this requires the utils script to be loaded.
+To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set [`autoPlaceholder`](/docs/options#autoplaceholder) to `"aggressive"` to override any existing placeholder. Note: this requires the utils script to be loaded.
 
 ## Bootstrap input groups
 

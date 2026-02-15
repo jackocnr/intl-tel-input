@@ -29,7 +29,7 @@ build({
   outfile: "build/examples/js/react_component_bundle.js",
 });
 
-// angular component exemple
+// angular component example
 build({
   ...sharedOptions,
   loader: { ".ts": "ts" },

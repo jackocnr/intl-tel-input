@@ -19,16 +19,16 @@ For the JavaScript plugin, you can choose from one of the three Getting Started 
 
 1. Add the CSS
   ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@26.0.6/build/css/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@26.4.0/build/css/intlTelInput.css">
   ```
 
 2. Add the plugin script and initialise it on your input element
   ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@26.0.6/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@26.4.0/build/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@26.0.6/build/js/utils.js"),
+      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@26.4.0/build/js/utils.js"),
     });
   </script>
   ```
@@ -89,11 +89,11 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [u
 
 ## Recommended Usage
 
-We highly recommend you [load the included utils.js](/docs/utils#loading-the-utilities-script), which enables formatting and validation, etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when `nationalMode` or `separateDialCode` is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information*.
+We highly recommend you [load the included utils.js](/docs/utils#loading-the-utilities-script), which enables formatting and validation, etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when [`nationalMode`](/docs/options#nationalmode) or [`separateDialCode`](/docs/options#separatedialcode) is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information*.
 
-You can always get the full international number (including country code) using `getNumber`, then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country* and format it according to the options you specify (e.g. when using `nationalMode` it will automatically display the number in national format, removing the international dial code).
+You can always get the full international number (including country code) using [`getNumber`](/docs/methods#getnumber), then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country* and format it according to the options you specify (e.g. when using [`nationalMode`](/docs/options#nationalmode) it will automatically display the number in national format, removing the international dial code).
 
-If you know the user's country, you can set it with `initialCountry` (e.g. `"us"` for the United States). If you don't, we recommend setting `initialCountry` to `"auto"` (along with the `geoIpLookup` option) to determine the user's country based on their IP address - [see example](/examples/lookup-country).
+If you know the user's country, you can set it with [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"` for the United States). If you don't, we recommend setting [`initialCountry`](/docs/options#initialcountry) to `"auto"` (along with the [`geoIpLookup`](/docs/options#geoiplookup) option) to determine the user's country based on their IP address - [see example](/examples/lookup-country).
 
 If you know the user's language, there is a built in way to translate the country names and user interface strings - [see example](/examples/internationalisation).
 

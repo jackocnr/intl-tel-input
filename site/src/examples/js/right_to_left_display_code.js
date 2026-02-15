@@ -10,5 +10,5 @@ intlTelInput(input, {
   countryNameLocale: "ar",
   // Egypt
   initialCountry: "eg",
-  loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")
+  loadUtils: () => import("intl-tel-input/utils"),
 });

@@ -22,6 +22,7 @@ const examplesDropdownPages = [
   { name: "react_component", href: "/examples/react-component", label: "React component" },
   { name: "vue_component", href: "/examples/vue-component", label: "Vue component" },
   { name: "angular_component", href: "/examples/angular-component", label: "Angular component" },
+  { name: "svelte_component", href: "/examples/svelte-component", label: "Svelte component" },
 ];
 
 const docsPageByName = docsDropdownPages.reduce((acc, p) => {

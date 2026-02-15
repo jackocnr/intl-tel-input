@@ -44,6 +44,12 @@ module.exports = function (grunt) {
     "shell:vite",
   ]);
 
+  // build svelte component
+  grunt.registerTask("build:svelte_component", [
+    "template:svelte_component_js",
+    "shell:viteSvelte",
+  ]);
+
   // build all
   grunt.registerTask("build", [
     "shell:clearBuild",
@@ -51,6 +57,7 @@ module.exports = function (grunt) {
     "build:css",
     "build:esbuild",
     "build:vue_component",
+    "build:svelte_component",
     "template",
     "strip-html-comments",
   ]);

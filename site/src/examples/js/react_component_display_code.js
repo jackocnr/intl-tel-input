@@ -1,5 +1,14 @@
+import React, { useState } from "react";
 import IntlTelInput from "intl-tel-input/react";
 import "intl-tel-input/styles";
+
+const errorMap = [
+  "Invalid number",
+  "Invalid country code",
+  "Too short",
+  "Too long",
+  "Invalid number",
+];
 
 const App = () => {
   const [isValid, setIsValid] = useState(null);
@@ -11,7 +20,7 @@ const App = () => {
     if (isValid) {
       setNotice(`Valid number: ${number}`);
     } else {
-      const errorMessage = errorMap[errorCode];
+      const errorMessage = errorMap[errorCode || 0];
       setNotice(`Error: ${errorMessage}`);
     }
   };
@@ -32,3 +41,4 @@ const App = () => {
     </form>
   );
 };
+export default App;
