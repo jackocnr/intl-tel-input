@@ -1,4 +1,4 @@
-import React, { useState, ReactElement } from "react";
+import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import IntlTelInput from "../../../build/intl-tel-input/react/IntlTelInput.js";
 
@@ -11,19 +11,31 @@ const errorMap = [
 ];
 
 const App = () => {
-  const [isValid, setIsValid] = useState(null);
-  const [number, setNumber] = useState(null);
-  const [errorCode, setErrorCode] = useState(null);
-  const [notice, setNotice] = useState(null);
+  const [number, setNumber] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [errorCode, setErrorCode] = useState(0);
+  const [noticeMode, setNoticeMode] = useState("off");
+
+  const notice = useMemo(
+    () => {
+      if (noticeMode === "off") {
+        return null;
+      }
+      if (isValid) {
+        return noticeMode === "submit" ? `Valid number: ${number}` : "";
+      }
+      if (number) {
+        const errorMessage = errorMap[errorCode || 0] || "Invalid number";
+        return `Error: ${errorMessage}`;
+      }
+      return "Please enter a number";
+    },
+    [noticeMode, isValid, number, errorCode],
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isValid) {
-      setNotice(`Valid number: ${number}`);
-    } else {
-      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
-      setNotice(`Error: ${errorMessage}`);
-    }
+    setNoticeMode("submit");
   };
 
   return (
@@ -38,6 +50,7 @@ const App = () => {
         }}
         inputProps={{
           name: "phone",
+          onBlur: () => setNoticeMode("blur"),
         }}
       />
       {" "}

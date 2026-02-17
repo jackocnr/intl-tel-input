@@ -1,28 +1,21 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import IntlTelInput from "intl-tel-input/react";
 import "intl-tel-input/styles";
 
-const errorMap = [
-  "Invalid number",
-  "Invalid country code",
-  "Too short",
-  "Too long",
-  "Invalid number",
-];
-
 const App = () => {
-  const [isValid, setIsValid] = useState(null);
-  const [number, setNumber] = useState(null);
-  const [errorCode, setErrorCode] = useState(null);
-  const [notice, setNotice] = useState(null);
+  const [number, setNumber] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [errorCode, setErrorCode] = useState(0);
+  const [noticeMode, setNoticeMode] = useState("off");
 
-  const handleSubmit = () => {
-    if (isValid) {
-      setNotice(`Valid number: ${number}`);
-    } else {
-      const errorMessage = errorMap[errorCode || 0];
-      setNotice(`Error: ${errorMessage}`);
-    }
+  const notice = useMemo(
+    () => putYourNoticeLogicHere(noticeMode, isValid, number, errorCode),
+    [noticeMode, isValid, number, errorCode],
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setNoticeMode("submit");
   };
 
   return (
@@ -34,6 +27,10 @@ const App = () => {
         initOptions={{
           initialCountry: "us",
           loadUtils: () => import("intl-tel-input/utils"),
+        }}
+        inputProps={{
+          name: "phone",
+          onBlur: () => setNoticeMode("blur"),
         }}
       />
       <button className="button" type="submit">Validate</button>
