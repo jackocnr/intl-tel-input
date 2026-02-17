@@ -1514,6 +1514,12 @@ export class Iti {
 
   //* This is called when the geoip call returns.
   handleAutoCountry(): void {
+    // If destroyed/unmounted, abort any UI work but still resolve the init promise
+    if (!this.ui?.telInput) {
+      this.resolveAutoCountryPromise?.();
+      return;
+    }
+
     if (
       this.options.initialCountry === INITIAL_COUNTRY.AUTO &&
       intlTelInput.autoCountry
@@ -1534,6 +1540,12 @@ export class Iti {
 
   //* This is called when the geoip call fails or times out.
   handleAutoCountryFailure(): void {
+    // If instance destroyed/unmounted, just reject the promise and avoid DOM/state ops
+    if (!this.ui?.telInput) {
+      this.rejectAutoCountryPromise?.();
+      return;
+    }
+
     //* Reset the initial state
     this._setInitialState(true);
     this.rejectAutoCountryPromise();
@@ -1541,6 +1553,12 @@ export class Iti {
 
   //* This is called when the utils request completes.
   handleUtils(): void {
+    // If instance destroyed/unmounted, avoid touching DOM/state but still resolve promise
+    if (!this.ui?.telInput) {
+      this.resolveUtilsScriptPromise?.();
+      return;
+    }
+
     //* If the request was successful
     if (intlTelInput.utils) {
       const inputValue = this._getTelInputValue();
@@ -1558,6 +1576,12 @@ export class Iti {
 
   //* This is called when the utils request fails or times out.
   handleUtilsFailure(error): void {
+    // If instance destroyed/unmounted, just reject the promise and avoid DOM/state ops
+    if (!this.ui?.telInput) {
+      this.rejectUtilsScriptPromise?.(error);
+      return;
+    }
+
     this.rejectUtilsScriptPromise(error);
   }
 
