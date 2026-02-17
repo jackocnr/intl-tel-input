@@ -1,0 +1,57 @@
+/* small shared utilities */
+.demo input[type="tel"] {
+  width: 250px;
+}
+input::placeholder,
+.demo input::placeholder,
+input.form-control::placeholder,
+textarea.form-control::placeholder {
+  color: #bbb;
+}
+.actions {
+  margin-top: 20px;
+}
+.actions a {
+  margin-right: 10px;
+}
+.iti__selected-country-primary {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+/* form styling (for homepage AND example pages) */
+input:not([type="checkbox"]),
+.button,
+select,
+.form-select {
+  height: 38px;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 3px;
+  color: inherit;
+}
+/* fix: the above padding breaks the ITI search input padding */
+input.iti__search-input {
+  padding-left: 30px;
+  padding-right: 28px;
+}
+select,
+.form-select {
+  padding-left: 8px; /* for some reason this is required to look consistent */
+}
+input,
+select,
+.form-select {
+  border: 1px solid #ccc;
+  width: 250px;
+}
+.button {
+  color: #fff;
+  background-color: #428bca;
+  border: 1px solid #357ebd;
+}
+.button:hover {
+  background-color: #3276b1;
+  border-color: #285e8e;
+  cursor: pointer;
+}

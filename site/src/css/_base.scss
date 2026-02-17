@@ -1,0 +1,50 @@
+html {
+  /* fix: links with # scroll values in (e.g. docs/options#separatedialcode) scroll until subtitle is below header, as it has position:sticky */
+  scroll-padding-top: 70px;
+}
+
+body {
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* vue and react logos in news section on homepage */
+p img {
+  vertical-align: baseline;
+}
+
+/* bootstrap override */
+@media (min-width: 1200px) {
+  .h2,
+  h2 {
+    font-size: 1.7rem;
+  }
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+/** Cookie / Google consent repositioning (desktop) **/
+@media (min-width: 800px) {
+  body .fc-consent-root .fc-dialog-container {
+    position: absolute !important;
+    bottom: 30px !important;
+    right: 30px !important;
+  }
+}
+
+.iti-live-results {
+  margin: 10px 0 20px;
+  border: 1px solid rgb(var(--header-bg-color-rgb));
+  padding: 10px;
+  border-radius: 3px;
+  background-color: rgb(var(--header-bg-color-rgb) / 0.3);
+  font-style: italic;
+  text-align: left;
+}

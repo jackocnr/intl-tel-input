@@ -46,15 +46,15 @@ module.exports = function (grunt) {
       },
     },
     website_css: {
-      src: "src/css/website.scss",
-      dest: "tmp/css/website.scss",
+      src: "build/css/website.css",
+      dest: "build/css/website.css",
       options: {
         data: () => ({ cacheBust }),
       },
     },
     large_flags_overrides_css: {
-      src: "src/css/large_flags_overrides.scss",
-      dest: "tmp/css/large_flags_overrides.scss",
+      src: "build/css/large_flags_overrides.css",
+      dest: "build/css/large_flags_overrides.css",
       options: {
         data: () => ({ cacheBust }),
       },

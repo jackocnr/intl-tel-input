@@ -6,11 +6,10 @@ module.exports = function(grunt) {
       options: {
         implementation: sass,
         sourcemap: "none",
-        style: "compressed"
       },
       files: {
-        'tmp/css/website.css': 'tmp/css/website.scss',
-        'tmp/css/large_flags_overrides.css': 'tmp/css/large_flags_overrides.scss',
+        'build/css/website.css': 'src/css/website.scss',
+        'build/css/large_flags_overrides.css': 'src/css/large_flags_overrides.scss',
       }
     },
   };
