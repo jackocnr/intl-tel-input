@@ -2,7 +2,13 @@
 import intlTelInput from "./intlTelInputWithUtils";
 //* Keep the TS imports separate, as the above line gets substituted in the reactWithUtils build process.
 import { Iti } from "../intl-tel-input";
-import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from "react";
+import React, {
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  useCallback,
+} from "react";
 import { SomeOptions } from "../modules/types/public-api";
 
 // make this available as a named export, so react users can access globals like intlTelInput.utils
@@ -25,21 +31,28 @@ type ItiProps = {
 export type IntlTelInputRef = {
   getInstance: () => Iti | null;
   getInput: () => HTMLInputElement | null;
-}
+};
 
-const IntlTelInput = forwardRef(function IntlTelInput({
-  initialValue = "",
-  onChangeNumber = () => {},
-  onChangeCountry = () => {},
-  onChangeValidity = () => {},
-  onChangeErrorCode = () => {},
-  usePreciseValidation = false,
-  initOptions = {},
-  inputProps = {},
-  disabled = undefined,
-}: ItiProps, ref: React.ForwardedRef<IntlTelInputRef>) {
+const IntlTelInput = forwardRef(function IntlTelInput(
+  {
+    initialValue = "",
+    onChangeNumber = () => {},
+    onChangeCountry = () => {},
+    onChangeValidity = () => {},
+    onChangeErrorCode = () => {},
+    usePreciseValidation = false,
+    initOptions = {},
+    inputProps = {},
+    disabled = undefined,
+  }: ItiProps,
+  ref: React.ForwardedRef<IntlTelInputRef>,
+) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
+  const lastEmittedNumberRef = useRef<string>();
+  const lastEmittedCountryRef = useRef<string>();
+  const lastEmittedValidityRef = useRef<boolean>();
+  const lastEmittedErrorCodeRef = useRef<number | null>();
 
   // expose the instance and input ref to the parent component
   useImperativeHandle(ref, () => ({
@@ -53,21 +66,37 @@ const IntlTelInput = forwardRef(function IntlTelInput({
     // note: this number will be in standard E164 format, but any container component can use
     // intlTelInput.utils.formatNumber() to convert this to another format
     // as well as intlTelInput.utils.getNumberType() etc. if need be
-    onChangeNumber(num);
-    onChangeCountry(countryIso);
+    if (num !== lastEmittedNumberRef.current) {
+      lastEmittedNumberRef.current = num;
+      onChangeNumber(num);
+    }
+    if (countryIso !== lastEmittedCountryRef.current) {
+      lastEmittedCountryRef.current = countryIso;
+      onChangeCountry(countryIso);
+    }
 
     if (itiRef.current) {
-      const isValid = usePreciseValidation ? itiRef.current.isValidNumberPrecise() : itiRef.current.isValidNumber();
-      if (isValid) {
-        onChangeValidity(true);
-        onChangeErrorCode(null);
-      } else {
-        const errorCode = itiRef.current.getValidationError();
-        onChangeValidity(false);
+      const isValid = usePreciseValidation
+        ? itiRef.current.isValidNumberPrecise()
+        : itiRef.current.isValidNumber();
+      const errorCode = isValid ? null : itiRef.current.getValidationError();
+
+      if (isValid !== lastEmittedValidityRef.current) {
+        lastEmittedValidityRef.current = isValid;
+        onChangeValidity(isValid);
+      }
+      if (errorCode !== lastEmittedErrorCodeRef.current) {
+        lastEmittedErrorCodeRef.current = errorCode;
         onChangeErrorCode(errorCode);
       }
     }
-  }, [onChangeCountry, onChangeErrorCode, onChangeNumber, onChangeValidity, usePreciseValidation]);
+  }, [
+    onChangeCountry,
+    onChangeErrorCode,
+    onChangeNumber,
+    onChangeValidity,
+    usePreciseValidation,
+  ]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -76,7 +105,7 @@ const IntlTelInput = forwardRef(function IntlTelInput({
     return (): void => {
       itiRef.current?.destroy();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
