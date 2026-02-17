@@ -17,15 +17,34 @@ body {
   min-height: 100vh;
   background-repeat: no-repeat;
   background-size: cover;
-}
 
-body.iti-page--homepage {
-  background-image:
-    linear-gradient(182deg, rgba(var(--bs-body-bg-rgb), .012), rgba(var(--bs-body-bg-rgb), 1) 87%),
-    radial-gradient(ellipse at 12% 18%, rgba(65, 133, 234, 0.32), transparent 55%),
-    radial-gradient(ellipse at 88% 14%, rgba(111, 167, 104, .45), transparent 55%),
-    radial-gradient(ellipse at 90% 56%, rgba(128, 63, 240, .42), transparent 52%),
-    radial-gradient(ellipse at 10% 60%, rgba(224, 76, 135, .42), transparent 52%);
+  &.iti-page--homepage {
+    background-image: linear-gradient(
+        182deg,
+        rgba(var(--bs-body-bg-rgb), 0.012),
+        rgba(var(--bs-body-bg-rgb), 1) 87%
+      ),
+      radial-gradient(
+        ellipse at 12% 18%,
+        rgba(65, 133, 234, 0.32),
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse at 88% 14%,
+        rgba(111, 167, 104, 0.45),
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse at 90% 56%,
+        rgba(128, 63, 240, 0.42),
+        transparent 52%
+      ),
+      radial-gradient(
+        ellipse at 10% 60%,
+        rgba(224, 76, 135, 0.42),
+        transparent 52%
+      );
+  }
 }
 
 * {
@@ -41,22 +60,23 @@ p img {
 .iti-navbar {
   padding: 0.75rem 0;
   background-color: rgb(var(--header-bg-color-rgb));
-}
-.iti-navbar .navbar-toggler {
-  padding: 0;
-  border: 0;
-}
 
-/* Header dropdown toggle: replace Bootstrap caret triangle with CSS chevron */
-.iti-navbar .dropdown-toggle::after {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin: 0px 0 3px 4px;
-  content: "";
-  border: solid currentColor;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  .navbar-toggler {
+    padding: 0;
+    border: 0;
+  }
+
+  /* Header dropdown toggle: replace Bootstrap caret triangle with CSS chevron */
+  .dropdown-toggle::after {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin: 0px 0 3px 4px;
+    content: "";
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
 }
 
 /* LAYOUT */
@@ -68,6 +88,7 @@ p img {
 .iti-right-sidebar {
   display: none;
 }
+
 @media (min-width: 992px) {
   .iti-layout-both-sidebars {
     display: grid;
@@ -77,57 +98,62 @@ p img {
     gap: 1.5rem;
   }
 }
-#bdNavbar .nav-link {
-  color: white;
-}
 
-/* Prevent nav items shifting when toggling font-weight by reserving space
-   for the bold version of the label (used on the active state). */
-#bdNavbar .nav-link.iti-navlink-no-shift > span {
-  display: inline-block;
-}
-#bdNavbar .nav-link.iti-navlink-no-shift > span::after {
-  content: attr(data-text);
-  display: block;
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-}
-#bdNavbar .nav-link.iti-navlink-no-shift > span::after,
-#bdNavbar .nav-link.active {
-  font-weight: 700;
-}
-.nav-link--github,
-.cookie-prefs-header {
-  height: 100%; /* required for vertical alignment */
-}
+#bdNavbar {
+  .nav-link {
+    color: white;
 
-@media (min-width: 992px) {
-  #bdNavbar .navbar-nav .nav-link {
-    opacity: 0.85;
+    /* Prevent nav items shifting when toggling font-weight by reserving space
+       for the bold version of the label (used on the active state). */
+    &.iti-navlink-no-shift > span {
+      display: inline-block;
+    }
+    &.iti-navlink-no-shift > span::after {
+      content: attr(data-text);
+      display: block;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+    &.iti-navlink-no-shift > span::after,
+    &.active {
+      font-weight: 700;
+    }
   }
-  #bdNavbar .navbar-nav .nav-link:hover,
-  #bdNavbar .navbar-nav .nav-link:focus,
-  #bdNavbar .navbar-nav .nav-link.active,
-  #bdNavbar .navbar-nav .show > .nav-link {
-    opacity: 1;
+
+  .nav-link--github,
+  .cookie-prefs-header {
+    height: 100%; /* required for vertical alignment */
   }
-}
 
-/* Header docs dropdown: active item uses header green */
-#bdNavbar .dropdown-item.active,
-#bdNavbar .dropdown-item:active {
-  background-color: rgb(var(--header-bg-color-rgb) / 0.5);
-  color: white;
-}
+  @media (min-width: 992px) {
+    .navbar-nav {
+      .nav-link {
+        opacity: 0.85;
+      }
+      .nav-link:hover,
+      .nav-link:focus,
+      .nav-link.active,
+      .show > .nav-link {
+        opacity: 1;
+      }
+    }
+  }
+  /* Header docs dropdown: active item uses header green */
+  .dropdown-item.active,
+  .dropdown-item:active {
+    background-color: rgb(var(--header-bg-color-rgb) / 0.5);
+    color: white;
+  }
 
-/* Header nav dropdown: open on hover (desktop) + keyboard focus */
-@media (hover: hover) and (pointer: fine) {
-  #bdNavbar .dropdown:hover > .dropdown-menu {
-    display: block;
-    /* Match Bootstrap's positioning styles that normally apply when JS adds data-bs-popper */
-    top: 100%;
-    left: 0;
+  /* Header nav dropdown: open on hover (desktop) + keyboard focus */
+  @media (hover: hover) and (pointer: fine) {
+    .dropdown:hover > .dropdown-menu {
+      display: block;
+      /* Match Bootstrap's positioning styles that normally apply when JS adds data-bs-popper */
+      top: 100%;
+      left: 0;
+    }
   }
 }
 /* override Bootstrap's margin which causes a gap between the dropdown and toggle */
@@ -138,16 +164,17 @@ p img {
   color: var(--bs-body-color);
   text-decoration: none;
 }
-/* left sidebar */
-.iti-layout-both-sidebars .iti-left-sidebar {
-  grid-area: nav;
-  min-width: 0;
+.iti-layout-both-sidebars {
+  .iti-left-sidebar {
+    grid-area: nav;
+    min-width: 0;
+  }
+  .iti-right-sidebar {
+    grid-area: ads;
+    min-width: 0;
+  }
 }
-/* right sidebar */
-.iti-layout-both-sidebars .iti-right-sidebar {
-  grid-area: ads;
-  min-width: 0;
-}
+
 .iti-left-sidebar .nav-link,
 .iti-mobile-sidebar .nav-link {
   color: var(--bs-body-color);
@@ -158,56 +185,67 @@ p img {
   padding-top: 0.65rem;
   padding-bottom: 0.65rem;
 }
-.iti-mobile-sidebar .iti-mobile-submenu .nav-link {
-  font-size: 0.95rem;
-  font-weight: 500;
-  opacity: 0.95;
-}
 
-/* Mobile sidebar icon + label spacing: slightly wider than Bootstrap gap-2 */
-.iti-mobile-sidebar .d-flex.align-items-center.gap-2 {
-  gap: calc(0.5rem + 2px) !important;
+.iti-mobile-sidebar {
+  .iti-mobile-submenu .nav-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0.95;
+  }
+  /* Mobile sidebar icon + label spacing: slightly wider than Bootstrap gap-2 */
+  .d-flex.align-items-center.gap-2 {
+    gap: calc(0.5rem + 2px) !important;
+  }
 }
+/* Mobile sidebar icon + label spacing: slightly wider than Bootstrap gap-2 */
 .iti-mobile-nav-toggle {
   border: 0;
   background: none;
-}
-.iti-mobile-nav-toggle__chevron {
-  margin: 0px 0 3px 6px;
-  width: 8px;
-  height: 8px;
-  display: inline-block;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg);
-  opacity: 0.85;
-}
 
-.iti-mobile-nav-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
-  transform: rotate(225deg);
-  margin-top: 8px;
+  &__chevron {
+    margin: 0px 0 3px 6px;
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    opacity: 0.85;
+  }
+
+  &[aria-expanded="true"] &__chevron {
+    transform: rotate(225deg);
+    margin-top: 8px;
+  }
 }
-.nav-pills .nav-link.active {
-  background-color: rgb(var(--header-bg-color-rgb) / 0.5);
-}
-.nav-pills .nav-link:not(.active):hover {
-  background-color: rgb(var(--header-bg-color-rgb) / 0.5);
+.nav-pills {
+  .nav-link.active {
+    background-color: rgb(var(--header-bg-color-rgb) / 0.5);
+  }
+  .nav-link:not(.active):hover {
+    background-color: rgb(var(--header-bg-color-rgb) / 0.5);
+  }
 }
 
 /* Mobile nav: remove hover styles (prevents iOS/Android sticky :hover states) */
-.iti-mobile-sidebar .nav-pills .nav-link:not(.active):hover {
-  background-color: transparent;
+.iti-mobile-sidebar {
+  .nav-pills .nav-link:not(.active):hover {
+    background-color: transparent;
+  }
 }
+
 @media (min-width: 992px) {
-  .iti-layout-both-sidebars .iti-left-sidebar,
-  .iti-layout-both-sidebars .iti-right-sidebar {
-    position: sticky;
-    top: 5rem;
-    display: block !important;
-    height: calc(100vh - 6rem);
-    padding-left: 0.25rem;
-    margin-left: -0.25rem;
-    overflow-y: auto;
+  .iti-layout-both-sidebars {
+    .iti-left-sidebar,
+    .iti-right-sidebar {
+      position: sticky;
+      top: 5rem;
+      display: block !important;
+      height: calc(100vh - 6rem);
+      padding-left: 0.25rem;
+      margin-left: -0.25rem;
+      overflow-y: auto;
+    }
   }
 }
 .iti-main {
@@ -216,7 +254,6 @@ p img {
   /* need some space at the bottom on mobile */
   padding-bottom: 30px;
 }
-
 
 h2,
 h3 {
@@ -232,90 +269,99 @@ h1 {
   margin-bottom: 0.25rem;
   font-size: 0.875rem;
   color: var(--bs-secondary-color);
-}
-.iti-breadcrumb__list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.iti-breadcrumb__item + .iti-breadcrumb__item::before {
-  content: "/";
-  opacity: 0.6;
-  padding: 0 0.4rem;
-}
-.iti-breadcrumb a {
-  color: inherit;
-  text-decoration: none;
-}
-.iti-breadcrumb a:hover {
-  text-decoration: underline;
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  &__item + &__item::before {
+    content: "/";
+    opacity: 0.6;
+    padding: 0 0.4rem;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 /* Docs heading permalinks (generated by markdown-it-anchor) */
-.iti-main :is(h1, h2, h3, h4, h5, h6) {
-  position: relative;
-}
-.iti-main :is(h1, h2, h3, h4, h5, h6) > .header-anchor {
-  height: 100%;
-  opacity: 0;
-  position: absolute;
-  left: -24px;
-  padding-right: 8px; /* ensure no hover gap between title and anchor */
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  color: inherit;
-}
-.iti-main :is(h1, h2, h3, h4, h5, h6):is(:hover) > .header-anchor {
-  opacity: 1;
-}
-.iti-main .header-anchor .iti-anchor-icon {
-  display: block;
-  width: 20px;
-  height: 20px;
+.iti-main {
+  :is(h1, h2, h3, h4, h5, h6) {
+    position: relative;
+  }
+  :is(h1, h2, h3, h4, h5, h6) > .header-anchor {
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    left: -24px;
+    padding-right: 8px; /* ensure no hover gap between title and anchor */
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
+  }
+  :is(h1, h2, h3, h4, h5, h6):is(:hover) > .header-anchor {
+    opacity: 1;
+  }
+  .header-anchor .iti-anchor-icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* Docs options layout: keep code blocks within the content width */
-.iti-doc-options__row {
-  border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
-  display: flex;
-}
-.iti-doc-options__row p:last-child,
-.iti-doc-options__row pre:last-child {
-  margin-bottom: 0;
-}
-.iti-doc-options__row + .iti-doc-options__row {
-  border-top: none;
-}
-.iti-doc-options__cell {
-  vertical-align: top;
-  box-sizing: border-box;
-  padding: var(--bs-table-cell-padding-y, 0.5rem) var(--bs-table-cell-padding-x, 0.5rem);
-  min-width: 0;
-}
-.iti-doc-options__cell--key {
-  flex: 0 0 210px; /* this is wide enough for all of the option names */
-  border-right: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
-}
-.iti-doc-options__cell--key h6 {
-  font-weight: 700;
-}
-.iti-doc-options__cell--value {
-  flex: 1 1 auto;
-  min-width: 0;
-}
+.iti-doc-options {
+  &__row {
+    border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+    display: flex;
 
-/* Docs options layout: stack key/value on small screens */
-@media (max-width: 600px) {
-  .iti-doc-options__row {
-    flex-direction: column;
+    p:last-child,
+    pre:last-child {
+      margin-bottom: 0;
+    }
+
+    & + & {
+      border-top: none;
+    }
   }
-  .iti-doc-options__cell--key {
-    flex: 0 0 auto;
-    border-right: none;
+
+  &__cell {
+    vertical-align: top;
+    box-sizing: border-box;
+    padding: var(--bs-table-cell-padding-y, 0.5rem)
+      var(--bs-table-cell-padding-x, 0.5rem);
+    min-width: 0;
+  }
+  &__cell--key {
+    flex: 0 0 210px; /* this is wide enough for all of the option names */
+    border-right: var(--bs-border-width, 1px) solid
+      var(--bs-border-color, #dee2e6);
+    h6 {
+      font-weight: 700;
+    }
+  }
+  &__cell--value {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  /* Docs options layout: stack key/value on small screens */
+  @media (max-width: 600px) {
+    &__row {
+      flex-direction: column;
+      &__cell--key {
+        flex: 0 0 auto;
+        border-right: none;
+      }
+    }
   }
 }
 
@@ -329,7 +375,7 @@ h1 {
 .section {
   margin-bottom: 30px;
 }
-.demo input[type=tel] {
+.demo input[type="tel"] {
   width: 250px;
 }
 input::placeholder,
@@ -435,12 +481,6 @@ select,
   text-align: left;
 }
 
-
-
-
-
-
-
 /*********************************
  * SILKTIDE COOKIE CONSENT NOTICE
  *********************************/
@@ -471,9 +511,6 @@ select,
   color: #25ad4f !important;
 } */
 
-
-
-
 /*************************
  * GOOGLE CONSENT NOTICE
  *************************/
@@ -486,9 +523,6 @@ select,
   }
 }
 
-
-
-
 /**************
  * HOMEPAGE
  **************/
@@ -496,89 +530,103 @@ select,
   margin-top: 60px;
   margin-left: auto;
   margin-right: auto;
-}
-.homepage-content .section--homepage-demo,
-.homepage-content .section--twilio {
-  max-width: 580px;
-}
-.homepage-content h1 {
-  font-size: 41px;
-  font-weight: 600;
-}
-/* allow this part of title to wrap on small screens, but keep together on larger screens */
-@media (min-width: 420px) {
-  .homepage-content h1 .keep-together {
-    white-space: nowrap;
+
+  .section--homepage-demo,
+  .section--twilio {
+    max-width: 580px;
   }
-}
-.homepage-content .text-muted a {
-  color: inherit;
-}
-/* keep the same muted hue, but remove Bootstrap's alpha transparency on interaction */
-.homepage-content .text-muted a:hover {
-  color: rgb(var(--bs-secondary-color-rgb));
-}
-.homepage-content .section {
-  margin-bottom: 60px;
-}
-/* remove margin on last section */
-.section:last-child {
-  margin-bottom: 0;
-}
-@media (min-width: 992px) {
-  .homepage-content {
+
+  h1 {
+    font-size: 41px;
+    font-weight: 600;
+  }
+
+  /* allow this part of title to wrap on small screens, but keep together on larger screens */
+  @media (min-width: 420px) {
+    h1 .keep-together {
+      white-space: nowrap;
+    }
+  }
+
+  .text-muted a {
+    color: inherit;
+    /* keep the same muted hue, but remove Bootstrap's alpha transparency on interaction */
+    &:hover {
+      color: rgb(var(--bs-secondary-color-rgb));
+    }
+  }
+
+  .section {
+    margin-bottom: 60px;
+  }
+
+  /* remove margin on last section */
+  .section:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 992px) {
     margin-top: 100px;
-  }
-  .homepage-content .section--homepage-demo,
-  .homepage-content .section--twilio {
-    max-width: 700px;
-  }
-  .homepage-content h1 {
-    font-size: 58px;
-  }
-  .homepage-content p.subtitle {
-    font-size: 23px;
-  }
-}
-.section--homepage-demo {
-  margin-top: 10px;
-}
-/* homepage: make the demo input width match the live results box */
-.section--homepage-demo .iti,
-.section--homepage-demo input[type=tel] {
-  width: 100%;
-  text-align: left; /* required because we have text-align:center on this section */
-}
-/* to match the other sections, which have a <p> at the bottom with this margin */
-.section--homepage-demo .btn-primary {
-  margin-bottom: 16px;
-}
-.section--twilio h2 {
-  margin-bottom: 0;
-}
-/* icons that should match link colour */
-.section--features .link-icon {
-  color: rgb(var(--bs-link-color-rgb)) !important;
-}
-/* there is a br in the middle of the playground preset links: ignore it on mobile, show it on larger screens to break the links into two rows */
-@media (min-width: 550px) {
-  .playground-presets {
-    max-width: 550px;
-  }
-}
 
-/* Make the playground preset outline buttons use the link colour */
-.playground-presets .btn-outline-primary {
-  color: rgb(var(--bs-link-color-rgb));
-  border-color: rgb(var(--bs-link-color-rgb));
-}
-.playground-presets .btn-outline-primary:hover,
-.playground-presets .btn-outline-primary:focus {
-  background-color: rgba(var(--bs-link-color-rgb), 0.1);
-  border-color: rgb(var(--bs-link-color-rgb));
-}
+    .section--homepage-demo,
+    .section--twilio {
+      max-width: 700px;
+    }
 
+    h1 {
+      font-size: 58px;
+    }
 
+    p.subtitle {
+      font-size: 23px;
+    }
+  }
+
+  .section--homepage-demo {
+    margin-top: 10px;
+
+    /* homepage: make the demo input width match the live results box */
+    .iti,
+    input[type="tel"] {
+      width: 100%;
+      text-align: left; /* required because we have text-align:center on this section */
+    }
+
+    /* to match the other sections, which have a <p> at the bottom with this margin */
+    .btn-primary {
+      margin-bottom: 16px;
+    }
+  }
+
+  .section--twilio {
+    h2 {
+      margin-bottom: 0;
+    }
+  }
+
+  /* icons that should match link colour */
+  .section--features {
+    .link-icon {
+      color: rgb(var(--bs-link-color-rgb)) !important;
+    }
+  }
+  /* there is a br in the middle of the playground preset links: ignore it on mobile, show it on larger screens to break the links into two rows */
+  @media (min-width: 550px) {
+    .playground-presets {
+      max-width: 550px;
+    }
+  }
+  /* Make the playground preset outline buttons use the link colour */
+  .playground-presets .btn-outline-primary {
+    color: rgb(var(--bs-link-color-rgb));
+    border-color: rgb(var(--bs-link-color-rgb));
+  }
+  .playground-presets .btn-outline-primary:hover,
+  .playground-presets .btn-outline-primary:focus {
+    background-color: rgba(var(--bs-link-color-rgb), 0.1);
+    border-color: rgb(var(--bs-link-color-rgb));
+  }
+}
 
 /**************
  * PLAYGROUND
@@ -599,100 +647,99 @@ select,
   --bs-btn-active-bg: var(--bs-btn-bg);
   --bs-btn-active-color: var(--bs-btn-color);
   --bs-btn-active-border-color: var(--bs-btn-border-color);
-}
-/* multidropdown toggle: use CSS chevron for down arrow */
-.iti-playground-multidropdown-toggle.dropdown-toggle::after {
-  opacity: 0.85;
-  margin: 0 3px 2px auto;
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  content: "";
-  border: solid currentColor;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-/* multidropdown toggle: flip down arrow when open */
-.iti-playground-multidropdown-toggle.dropdown-toggle.show::after,
-.dropdown.show > .iti-playground-multidropdown-toggle.dropdown-toggle::after {
-  margin-top: 6px;
-  transform: rotate(225deg);
+
+  /* multidropdown toggle: use CSS chevron for down arrow */
+  &.dropdown-toggle::after {
+    opacity: 0.85;
+    margin: 0 3px 2px auto;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    content: "";
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  /* multidropdown toggle: flip down arrow when open */
+  &.dropdown-toggle.show::after,
+  .dropdown.show > &.dropdown-toggle::after {
+    margin-top: 6px;
+    transform: rotate(225deg);
+  }
 }
 
-/* playground: responsive layout
-  Mobile: single column (Demo, Options, Attributes, Code)
-   Desktop (lg+): two columns with Options/Attributes on the left, and Demo/Code on the right */
 .iti-playground-layout {
   display: flex;
   flex-direction: column;
   gap: 1.5rem; /* bootstrap g-4 */
-}
 
-/* On mobile, flatten the column wrappers so we can control ordering. */
-.iti-playground-layout__col {
-  display: contents;
-}
+  /* On mobile, flatten the column wrappers so we can control ordering. */
+  &__col {
+    display: contents;
+  }
+  &__demo {
+    order: 1;
+  }
+  &__options {
+    order: 2;
+  }
+  &__attrs {
+    order: 3;
+  }
+  &__code {
+    order: 4;
+  }
 
-.iti-playground-layout__demo {
-  order: 1;
-}
-.iti-playground-layout__options {
-  order: 2;
-}
-.iti-playground-layout__attrs {
-  order: 3;
-}
-.iti-playground-layout__code {
-  order: 4;
-}
+  &__demo,
+  &__options,
+  &__attrs,
+  &__code {
+    min-width: 0;
+  }
 
-.iti-playground-layout__demo,
-.iti-playground-layout__options,
-.iti-playground-layout__attrs,
-.iti-playground-layout__code {
-  min-width: 0;
-}
-
-@media (min-width: 992px) {
-  .iti-playground-layout {
+  @media (min-width: 992px) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 1.5rem; /* bootstrap g-4 */
     align-items: start;
+
+    &__col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem; /* bootstrap g-4 */
+      min-width: 0;
+    }
+
+    &__col--left {
+      grid-column: 1;
+    }
+
+    &__col--right {
+      grid-column: 2;
+      position: sticky;
+      top: calc(70px + 1rem);
+      max-height: calc(100vh - 70px - 2rem);
+      overflow: auto;
+    }
   }
 
-  .iti-playground-layout__col {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem; /* bootstrap g-4 */
-    min-width: 0;
-  }
-
-  .iti-playground-layout__col--left {
-    grid-column: 1;
-  }
-
-  .iti-playground-layout__col--right {
-    grid-column: 2;
-    position: sticky;
-    top: calc(70px + 1rem);
-    max-height: calc(100vh - 70px - 2rem);
-    overflow: auto;
+  &__demo {
+    .iti,
+    .iti__tel-input,
+    .iti-live-results {
+      width: 100%;
+      max-width: 350px;
+    }
   }
 }
 
-.iti-playground-layout__demo .iti,
-.iti-playground-layout__demo .iti__tel-input,
-.iti-playground-layout__demo .iti-live-results {
-  width: 100%;
-  max-width: 350px;
-}
-
-.iti-playground--keep-dropdown-open .iti__dropdown-content.iti__hide {
-  display: block !important;
-}
-.iti-playground--keep-dropdown-open .playground-dropdown-checkbox {
-  margin-top: 240px !important
+.iti-playground--keep-dropdown-open {
+  .iti__dropdown-content.iti__hide {
+    display: block !important;
+  }
+  .playground-dropdown-checkbox {
+    margin-top: 240px !important;
+  }
 }
 
 /* playground: option info tooltip */
@@ -706,12 +753,17 @@ select,
   color: var(--bs-secondary-color, #6c757d);
   user-select: none;
   cursor: help;
-}
 
-.iti-playground-info > svg {
-  display: block;
-  width: 16px;
-  height: 16px;
+  > svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(var(--header-bg-color-rgb));
+    outline-offset: 2px;
+  }
 }
 
 .iti-playground-labelgroup {
@@ -719,73 +771,73 @@ select,
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-}
-.iti-playground-labelgroup > .form-label {
-  margin-bottom: 0;
-}
-/* preserve bootstrap-like spacing for stacked (mobile) label + control */
-.iti-playground-control:not(.iti-playground-control--check) > .iti-playground-labelgroup {
-  margin-bottom: var(--bs-form-label-margin-bottom, 0.5rem);
-}
-.iti-playground-info:focus-visible {
-  outline: 2px solid rgb(var(--header-bg-color-rgb));
-  outline-offset: 2px;
+
+  > .form-label {
+    margin-bottom: 0;
+  }
 }
 
 .iti-playground-example-toggle {
   margin-top: 6px;
 }
 
-/* playground: on wider screens, align label + control horizontally to save space */
-@media (min-width: 600px) {
-  .iti-playground-control:not(.iti-playground-control--check) {
-    display: grid;
-    grid-template-columns: minmax(160px, 220px) 1fr;
-    column-gap: 12px;
-    row-gap: 6px;
-    align-items: start;
+/* preserve bootstrap-like spacing for stacked (mobile) label + control */
+.iti-playground-control {
+  &:not(.iti-playground-control--check) > .iti-playground-labelgroup {
+    margin-bottom: var(--bs-form-label-margin-bottom, 0.5rem);
   }
 
-  /* playground: loadUtils has an example snippet + a checkbox, so keep the example aligned with the label, and put the checkbox beneath. */
-  .iti-playground-control--example-code {
-    align-items: start;
-  }
-  .iti-playground-control--example-code > .iti-playground-example-toggle {
-    grid-column: 2;
-    margin-top: 0;
-  }
-  .iti-playground-control:not(.iti-playground-control--check) > .iti-playground-labelgroup {
-    margin-bottom: 0;
-  }
-  .iti-playground-control:not(.iti-playground-control--check) > .form-control,
-  .iti-playground-control:not(.iti-playground-control--check) > .form-select,
-  .iti-playground-control:not(.iti-playground-control--check) > .dropdown {
-    min-width: 0;
-  }
+  /* playground: on wider screens, align label + control horizontally to save space */
+  @media (min-width: 600px) {
+    /* playground: loadUtils has an example snippet + a checkbox, so keep the example aligned with the label, and put the checkbox beneath. */
+    &--example-code {
+      align-items: start;
+    }
+    &--example-code > .iti-playground-example-toggle {
+      grid-column: 2;
+      margin-top: 0;
+    }
+    /* Shared grid layout for controls on wider screens */
+    & {
+      display: grid;
+      grid-template-columns: minmax(160px, 220px) 1fr;
+      grid-template-areas: "label control";
+      column-gap: 12px;
 
-  .iti-playground-control:not(.iti-playground-control--check) > .form-text {
-    grid-column: 2;
-  }
+      > .iti-playground-labelgroup {
+        grid-area: label;
+        margin-bottom: 0;
+      }
+    }
 
-  /* On mobile, checkboxes appear on LHS. Here, we move them to the RHS. */
-  .iti-playground-control.iti-playground-control--check {
-    display: grid;
-    grid-template-columns: minmax(160px, 220px) 1fr;
-    grid-template-areas: "label control";
-    column-gap: 12px;
-    row-gap: 0;
-    align-items: center;
-    padding-left: 0; /* override bootstrap .form-check */
-  }
-  .iti-playground-control.iti-playground-control--check > .iti-playground-labelgroup {
-    grid-area: label;
-    margin-bottom: 0;
-  }
-  .iti-playground-control.iti-playground-control--check > .form-check-input {
-    grid-area: control;
-    margin-left: 0; /* override bootstrap negative margin */
-    float: none; /* override bootstrap float */
-    justify-self: start;
+    /* Non-checkbox controls: slightly more vertical spacing and form-specific tweaks */
+    &:not(.iti-playground-control--check) {
+      row-gap: 6px;
+      align-items: start;
+
+      > .form-control,
+      > .form-select,
+      > .dropdown {
+        min-width: 0;
+      }
+      > .form-text {
+        grid-column: 2;
+      }
+    }
+
+    /* On mobile, checkboxes appear on LHS. Here, we move them to the RHS. */
+    &.iti-playground-control--check {
+      row-gap: 0;
+      align-items: center;
+      padding-left: 0; /* override bootstrap .form-check */
+
+      > .form-check-input {
+        grid-area: control;
+        margin-left: 0;
+        float: none;
+        justify-self: start;
+      }
+    }
   }
 }
 .form-control,
