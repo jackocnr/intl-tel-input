@@ -436,19 +436,20 @@ select,
 /* for dark mode users */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* input dark mode styling
-    (bootstrap styles only work on inputs with .form-control) */
-    input {
-      background-color: var(--bs-body-bg);
-      border-color: var(--bs-border-color);
-      color: var(--bs-body-color);
-    }
     /* plugin overrides */
     --iti-border-color: #5b5b5b;
     --iti-dialcode-color: #999999;
     --iti-dropdown-bg: var(--bs-dark);
     --iti-icon-color: var(--bs-body-color);
     --iti-hover-color: #30363d;
+  }
+
+  /* input dark mode styling
+  (bootstrap styles only work on inputs with .form-control) */
+  input {
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
   }
 
   /* bootstrap's dark mode seems to neglect select's border-color */
