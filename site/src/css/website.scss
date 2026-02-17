@@ -556,14 +556,26 @@ select,
 .section--twilio h2 {
   margin-bottom: 0;
 }
-.section--features ul {
-  text-align: left;
+/* icons that should match link colour */
+.section--features .link-icon {
+  color: rgb(var(--bs-link-color-rgb)) !important;
 }
 /* there is a br in the middle of the playground preset links: ignore it on mobile, show it on larger screens to break the links into two rows */
 @media (min-width: 550px) {
   .playground-presets {
     max-width: 550px;
   }
+}
+
+/* Make the playground preset outline buttons use the link colour */
+.playground-presets .btn-outline-primary {
+  color: rgb(var(--bs-link-color-rgb));
+  border-color: rgb(var(--bs-link-color-rgb));
+}
+.playground-presets .btn-outline-primary:hover,
+.playground-presets .btn-outline-primary:focus {
+  background-color: rgba(var(--bs-link-color-rgb), 0.1);
+  border-color: rgb(var(--bs-link-color-rgb));
 }
 
 
