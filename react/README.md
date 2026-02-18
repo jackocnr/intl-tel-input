@@ -16,6 +16,10 @@ You can see a live demo and example code showcasing the React component on the [
 Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You should now be able to open the validation demo page /react/demo/validation/validation.html in your browser and give it a try. View other available demos [here](https://github.com/jackocnr/intl-tel-input/tree/master/react/demo).
 
 ## Getting Started
+
+First, install the package: `npm install intl-tel-input`
+
+Then, add something like this to your code:
 ```js
 import IntlTelInput from "intl-tel-input/reactWithUtils";
 import "intl-tel-input/styles";
