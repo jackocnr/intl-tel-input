@@ -74,7 +74,7 @@ module.exports = function (grunt) {
       },
     },
     homepage_page: {
-      src: "src/homepage/homepage_template.html.ejs",
+      src: "src/homepage/homepage_page_template.html.ejs",
       dest: "build/index.html",
       options: {
         data: () => ({
@@ -124,7 +124,7 @@ module.exports = function (grunt) {
       },
     },
     playground_page: {
-      src: "src/playground/playground_template.html.ejs",
+      src: "src/playground/playground_page_template.html.ejs",
       dest: "build/playground.html",
       options: {
         data: () => ({
