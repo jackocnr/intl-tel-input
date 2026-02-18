@@ -13,7 +13,9 @@ An Angular component wrapper for the [intl-tel-input](https://github.com/jackocn
 
 ## Demo
 
-Try it yourself by running the demos locally:
+You can see a live demo and example code showcasing the Angular component on the [demo site](https://intl-tel-input.com/examples/angular-component).
+
+Or try it yourself by running the demos locally:
 
 ```bash
 # Clone the repository
