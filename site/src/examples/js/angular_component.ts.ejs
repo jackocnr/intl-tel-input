@@ -52,6 +52,7 @@ export class AppComponent {
   }
 
   handleSubmit(): void {
+    this.phone?.markAsTouched();
     if (this.fg.valid) {
       this.notice = `Valid number: ${this.telInput.getInstance()?.getNumber()}`;
     }
