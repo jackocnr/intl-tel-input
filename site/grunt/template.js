@@ -24,6 +24,13 @@ module.exports = function (grunt) {
     EXAMPLES_PAGE_TEMPLATE_PATH,
   } = require("./templateGruntHelpers");
 
+  // Helper: create a cache-bust template task for a built asset path
+  const makeCacheBustTask = (assetPath) => ({
+    src: assetPath,
+    dest: assetPath,
+    options: { data: () => ({ cacheBust }) },
+  });
+
   const {
     docsDropdownPages,
     examplesDropdownPages,
@@ -45,20 +52,10 @@ module.exports = function (grunt) {
         data: () => ({ cacheBust }),
       },
     },
-    website_css: {
-      src: "build/css/website.css",
-      dest: "build/css/website.css",
-      options: {
-        data: () => ({ cacheBust }),
-      },
-    },
-    large_flags_overrides_css: {
-      src: "build/css/large_flags_overrides.css",
-      dest: "build/css/large_flags_overrides.css",
-      options: {
-        data: () => ({ cacheBust }),
-      },
-    },
+    website_css: makeCacheBustTask("build/css/website.css"),
+    homepage_css: makeCacheBustTask("build/css/homepage.css"),
+    playground_css: makeCacheBustTask("build/css/playground.css"),
+    large_flags_overrides_css: makeCacheBustTask("build/css/large_flags_overrides.css"),
 
     // homepage
     homepage_layout: {
