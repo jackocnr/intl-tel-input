@@ -377,7 +377,7 @@ module.exports = function (grunt) {
       script: "angular_component_bundle.js",
     },
     content: {
-      markupPath: "src/examples/html/angular_component.html",
+      markupPath: "src/examples/html/component.html",
       hideMarkupSection: true,
       codePath: "src/examples/js/angular_component_display_code.ts",
       script: "angular_component_bundle.js",
