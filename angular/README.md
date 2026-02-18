@@ -40,6 +40,10 @@ python3 -m http.server
 
 ## Getting Started
 
+First, install the package: `npm install intl-tel-input`
+
+Then, add something like this to your code:
+
 ```html
 import { IntlTelInputComponent } from "intl-tel-input/angularWithUtils";
 import "intl-tel-input/styles";
