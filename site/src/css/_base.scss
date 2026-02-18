@@ -85,3 +85,8 @@ h1 {
     }
   }
 }
+
+// prevent layout shift when initialise components / show validation errors in demos
+#app {
+  min-height: 62px;
+}
