@@ -22,6 +22,7 @@ import {
   cacheSearchTokens,
   generateCountryNames,
 } from "./modules/data/country-data";
+import { hasRegionlessDialCode } from "./modules/data/intl-regionless";
 import {
   beforeSetNumber,
   formatNumberAsYouType,
@@ -1070,15 +1071,17 @@ export class Iti {
   //* Update the input's value to the given val (format first if possible)
   //* NOTE: this is called from _setInitialState, handleUtils and setNumber.
   private _updateValFromNumber(fullNumber: string): void {
+    const { formatOnDisplay, nationalMode, separateDialCode } = this.options;
     let number = fullNumber;
     if (
-      this.options.formatOnDisplay &&
+      formatOnDisplay &&
       intlTelInput.utils &&
       this.selectedCountryData
     ) {
+      const isRegionless = hasRegionlessDialCode(fullNumber);
       const useNational =
-        this.options.nationalMode ||
-        (!number.startsWith("+") && !this.options.separateDialCode);
+        (nationalMode && !isRegionless) ||
+        (!number.startsWith("+") && !separateDialCode);
       const { NATIONAL, INTERNATIONAL } = intlTelInput.utils.numberFormat;
       const format = useNational ? NATIONAL : INTERNATIONAL;
       number = intlTelInput.utils.formatNumber(
@@ -1703,9 +1706,6 @@ export class Iti {
     if (!intlTelInput.utils) {
       return null;
     }
-    if (!this.selectedCountryData.iso2) {
-      return false;
-    }
 
     const { allowNumberExtensions, allowPhonewords } = this.options;
 
@@ -1713,6 +1713,16 @@ export class Iti {
       precise ? this._utilsIsValidNumber(s) : this._utilsIsPossibleNumber(s);
 
     const val = this._getFullNumber();
+
+    // If there's no selected country, still allow validation for regionless intl numbers (e.g. +800, +808, +870, +881, +882, +883, +888, +979).
+    if (!this.selectedCountryData.iso2) {
+      const isRegionlessDialCode = hasRegionlessDialCode(val);
+      // if first char is plus, and next 3 chars are a regionless dial code
+      if (!isRegionlessDialCode) {
+        return false;
+      }
+    }
+
     if (!testValidity(val)) {
       return false;
     }
