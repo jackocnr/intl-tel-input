@@ -15,6 +15,10 @@ You can see a live demo and example code showcasing the Vue component on the [de
 Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run vue:demo` and copy the given URL into your browser. By default, this is set up to show the validation demo - you can change this by locating the `"vue:demo"` task in the scripts section of package.json, and updating the demo path accordingly. View a list of available demos [here](https://github.com/jackocnr/intl-tel-input/tree/master/vue/demo).
 
 ## Getting Started
+
+First, install the package: `npm install intl-tel-input`
+
+Then, add something like this to your code:
 ```vue
 <script setup>
   import IntlTelInput from "intl-tel-input/vueWithUtils";
