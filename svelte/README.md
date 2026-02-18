@@ -10,6 +10,8 @@ A Svelte 5 component wrapper for the [intl-tel-input](https://github.com/jackocn
 - [Accessing Static Methods](#accessing-static-methods)
 
 ## Demo
+You can see a live demo and example code showcasing the Svelte component on the [demo site](https://intl-tel-input.com/examples/svelte-component).
+
 Try it for yourself by downloading and building the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run svelte:demo` and copy the given URL into your browser. By default, this is set up to show the validation demo - you can change this by locating the `"svelte:demo"` task in the scripts section of package.json, and updating the demo path accordingly. View a list of available demos [here](https://github.com/jackocnr/intl-tel-input/tree/master/svelte/demo).
 
 ## Getting Started
