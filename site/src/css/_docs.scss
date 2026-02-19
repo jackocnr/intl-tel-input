@@ -38,10 +38,10 @@
   @media (max-width: 600px) {
     &__row {
       flex-direction: column;
-      &__cell--key {
-        flex: 0 0 auto;
-        border-right: none;
-      }
+    }
+    &__cell--key {
+      flex: 0 0 auto;
+      border-right: none;
     }
   }
 }

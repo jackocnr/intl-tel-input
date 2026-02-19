@@ -3,10 +3,10 @@
 ## Components
 
 For the component docs, click one of the following links:
-- [React component docs](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) 
-- [Vue component docs](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md)
-- [Angular component docs](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md)
-- [Svelte component docs](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md)
+- [React component docs](/docs/react-component) 
+- [Vue component docs](/docs/vue-component)
+- [Angular component docs](/docs/angular-component)
+- [Svelte component docs](/docs/svelte-component)
 
 ## JavaScript Plugin
 

@@ -1,0 +1,116 @@
+# Vue Component
+
+A Vue component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/vue/src/intl-tel-input/IntlTelInput.vue).
+
+## Table of Contents
+
+- [Demo](#demo)
+- [Getting Started](#getting-started)
+- [Props](#props)
+- [Events](#events)
+- [Accessing Instance Methods](#accessing-instance-methods)
+- [Accessing Static Methods](#accessing-static-methods)
+
+## Demo
+
+You can see a live demo and example code on the [Vue component](/examples/vue-component) example page.
+
+Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run vue:demo` and copy the given URL into your browser. By default, this is set up to show the validation demo - you can change this by locating the `"vue:demo"` task in the scripts section of package.json, and updating the demo path accordingly. View a list of available demos [here](https://github.com/jackocnr/intl-tel-input/tree/master/vue/demo).
+
+## Getting Started
+
+First, install the package: 
+
+```sh
+npm install intl-tel-input
+```
+
+Then, add something like this to your code:
+
+```html
+<script setup>
+  import IntlTelInput from "intl-tel-input/vueWithUtils";
+  import "intl-tel-input/styles";
+</script>
+
+<template>
+  <IntlTelInput
+    :options="{
+      initialCountry: 'us',
+    }"
+  />
+</template>
+```
+
+See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/validation/App.vue) for a more fleshed-out example of how to handle validation. See the instructions above for how to run this demo (and others) yourself.
+
+A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize), then you can just import IntlTelInput from `"intl-tel-input/vueWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/vue"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the utils.js file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN-hosted version, e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@26.5.0/build/js/utils.js"`.
+
+## Props
+
+Here's a list of all of the current props you can pass to the IntlTelInput Vue component.
+
+###### disabled
+Type: `Boolean`  
+Default: `false`  
+
+Sets the disabled attribute of both the telephone input and the selected country button. *Note: we recommend using this instead of `inputProps.disabled`.*
+
+###### inputProps
+Type: `Object`  
+Default: `{}`  
+
+The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onBlur`. *Note: we recommend using the separate `disabled` prop instead of `inputProps.disabled`.*
+
+###### options
+Type: `Object`  
+Default: `{}`  
+
+An object containing the [initialisation options](/docs/options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
+
+###### usePreciseValidation
+Type: `Boolean`
+Default: `false`  
+
+By default, the component uses the plugin's `isValidNumber` method for validation, but if you'd rather use `isValidNumberPrecise`, set this to `true`.
+
+###### value
+Type: `String`  
+Default: `""`  
+
+The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
+
+## Events
+Here's a list of all of the current events you can listen to on the IntlTelInput Vue component.
+
+###### changeCountry
+Type: `Function`  
+Default: `null`  
+
+A handler to be called when the selected country changes. It will be passed the new country iso2 code, e.g. "gb" for the UK.
+
+###### changeErrorCode
+Type: `Function`  
+Default: `null`  
+
+A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
+
+###### changeNumber
+Type: `Function`  
+Default: `null`  
+
+A handler to be called when the number changes. It will be passed the new number.
+
+###### changeValidity
+Type: `Function`  
+Default: `null`  
+
+A handler to be called when the number validity changes, e.g. to true/false. It will be passed the new isValid boolean.
+
+## Accessing Instance Methods
+
+You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
+
+## Accessing Static Methods
+
+You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Vue component, e.g. `import { intlTelInput } from "intl-tel-input/vue"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.

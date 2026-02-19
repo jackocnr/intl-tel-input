@@ -6,6 +6,10 @@ const docsDropdownPages = [
   { name: "utils", href: "/docs/utils", label: "Utilities script" },
   { name: "theming", href: "/docs/theming", label: "Theming / Dark mode" },
   { name: "troubleshooting", href: "/docs/troubleshooting", label: "Troubleshooting" },
+  { name: "react_component", href: "/docs/react-component", label: "React component" },
+  { name: "vue_component", href: "/docs/vue-component", label: "Vue component" },
+  { name: "angular_component", href: "/docs/angular-component", label: "Angular component" },
+  { name: "svelte_component", href: "/docs/svelte-component", label: "Svelte component" },
 ];
 
 const examplesDropdownPages = [
@@ -13,11 +17,11 @@ const examplesDropdownPages = [
   { name: "lookup_country", href: "/examples/lookup-country", label: "Lookup user's country" },
   { name: "single_country", href: "/examples/single-country", label: "Single country" },
   { name: "internationalisation", href: "/examples/internationalisation", label: "Internationalisation" },
-  { name: "right_to_left", href: "/examples/right-to-left", label: "Right to Left" },
+  { name: "right_to_left", href: "/examples/right-to-left", label: "Right to left" },
   { name: "hidden_input", href: "/examples/hidden-input", label: "Hidden input" },
   { name: "display_number", href: "/examples/display-number", label: "Display existing number" },
   { name: "multiple_instances", href: "/examples/multiple-instances", label: "Multiple instances" },
-  { name: "validation_precise", href: "/examples/validation-precise", label: "Precise Validation (dangerous)" },
+  { name: "validation_precise", href: "/examples/validation-precise", label: "Precise validation (dangerous)" },
   { name: "large_flags", href: "/examples/large-flags", label: "Large flags" },
   { name: "react_component", href: "/examples/react-component", label: "React component" },
   { name: "vue_component", href: "/examples/vue-component", label: "Vue component" },

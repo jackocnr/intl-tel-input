@@ -24,11 +24,12 @@ const defaultSlugifyHeading = (value) =>
     // trim hyphens
     .replace(/^-|-$/g, "");
 
-// This plugin (AI-generated) looks for the "options" doc, and injects extra layout markup for display purposes. It relies on each h6 option being immediately followed by a paragraph containing the Type/Default info, and then any remaining content for that option (e.g. description, examples) coming after that in the same section (until the next heading).
+// This plugin (AI-generated) looks for the "options" doc (etc), and injects table layout markup for display purposes. It relies on each h6 option being immediately followed by a paragraph containing the Type/Default info, and then any remaining content for that option (e.g. description, examples) coming after that in the same section (until the next heading).
 const addDocOptionsLayoutPlugin = (md) => {
   md.core.ruler.after("inline", "iti_doc_options_layout", (state) => {
     const env = state.env || {};
-    if (env.docKey !== "options") return;
+    const applyToDocKeys = ["options", "react_component", "vue_component", "angular_component", "svelte_component"];
+    if (!applyToDocKeys.includes(env.docKey)) return;
 
     const tokens = state.tokens;
     const isHeadingOpen = (token, tag) => token && token.type === "heading_open" && token.tag === tag;
@@ -64,6 +65,14 @@ const addDocOptionsLayoutPlugin = (md) => {
         i += 1;
         if (t.type === "heading_close" && t.tag === tag) return;
       }
+    };
+
+    const findHeadingCloseIndex = (startIndex, tag) => {
+      for (let k = startIndex; k < tokens.length; k += 1) {
+        const t = tokens[k];
+        if (t.type === "heading_close" && t.tag === tag) return k;
+      }
+      return -1;
     };
 
     const consumeOneParagraph = () => {
@@ -112,7 +121,22 @@ const addDocOptionsLayoutPlugin = (md) => {
     while (i < tokens.length) {
       const token = tokens[i];
       if (isHeadingOpen(token, "h6")) {
-        consumeOptionBlock();
+        // Only treat this heading as an "option" row when the very next block
+        // after the heading close is a paragraph (the Type/Default meta).
+        const closeIdx = findHeadingCloseIndex(i, "h6");
+        const afterClose = closeIdx >= 0 ? closeIdx + 1 : -1;
+        if (afterClose >= 0 && tokens[afterClose] && tokens[afterClose].type === "paragraph_open") {
+          const inlineToken = tokens[afterClose + 1];
+          const inlineContent = inlineToken && inlineToken.type === "inline" ? inlineToken.content : "";
+          if (inlineContent.includes("Type:") && inlineContent.includes("Default:")) {
+            consumeOptionBlock();
+            continue;
+          }
+        }
+
+        // Not an options entry: emit the heading tokens unchanged.
+        nextTokens.push(token);
+        i += 1;
         continue;
       }
 
