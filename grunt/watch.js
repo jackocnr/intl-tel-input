@@ -27,6 +27,10 @@ module.exports = function(grunt) {
       files: ["vue/src/intl-tel-input/IntlTelInput.vue"],
       tasks: "build:vue"
     },
+    svelte: {
+      files: ["svelte/src/intl-tel-input/IntlTelInput.svelte"],
+      tasks: "build:svelte"
+    },
     angular: {
       files: [
         "angular/src/intl-tel-input/angular.tsx",
