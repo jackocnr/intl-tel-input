@@ -101,10 +101,6 @@ module.exports = function(grunt) {
             replacement: '_w'
           },
           {
-            match: /_setDropdownPosition(?![A-Za-z])/g,
-            replacement: '_x'
-          },
-          {
             match: /_bindDropdownListeners(?![A-Za-z])/g,
             replacement: '_y'
           },
@@ -127,14 +123,6 @@ module.exports = function(grunt) {
           {
             match: /_bindDropdownSearchListeners(?![A-Za-z])/g,
             replacement: '_ad'
-          },
-          {
-            match: /_filterCountriesByQuery(?![A-Za-z])/g,
-            replacement: '_ae'
-          },
-          {
-            match: /_handleUpDownKey(?![A-Za-z])/g,
-            replacement: '_af'
           },
           {
             match: /_handleEnterKey(?![A-Za-z])/g,

@@ -1,12 +1,14 @@
 import type { Country, Iso2 } from "../../intl-tel-input/data";
-import type { AllOptions } from "../types/public-api";
+import type { AllOptions, SelectedCountryData } from "../types/public-api";
 import { buildClassNames, createEl } from "../utils/dom";
 import {
   buildSearchIcon,
   buildClearIcon,
   buildCheckIcon,
+  buildGlobeIcon,
 } from "./icons";
-import { CLASSES, ARIA, LAYOUT } from "../constants";
+import { CLASSES, ARIA, LAYOUT, KEYS, TIMINGS } from "../constants";
+import { getMatchedCountries } from "./countrySearch";
 
 export default class UI {
   // private
@@ -15,6 +17,7 @@ export default class UI {
   private readonly isRTL: boolean;
   private readonly originalPaddingLeft: string;
   private countries: Country[];
+  private searchKeyupTimer: ReturnType<typeof setTimeout> | null = null;
 
   // public
   telInput: HTMLInputElement;
@@ -47,6 +50,23 @@ export default class UI {
     //* Store original styling before we override it.
     if (this.options.separateDialCode) {
       this.originalPaddingLeft = this.telInput.style.paddingLeft;
+    }
+  }
+
+  // Validate that the provided element is an HTMLInputElement.
+  static validateInput(input: unknown): void {
+    const tagName = (input as { tagName?: unknown } | null)?.tagName;
+    const isInputEl =
+      Boolean(input) &&
+      typeof input === "object" &&
+      tagName === "INPUT" &&
+      typeof (input as { setAttribute?: unknown }).setAttribute === "function";
+
+    if (!isInputEl) {
+      const type = Object.prototype.toString.call(input);
+      throw new TypeError(
+        `The first argument must be an HTMLInputElement, not ${type}`,
+      );
     }
   }
 
@@ -448,6 +468,48 @@ export default class UI {
     this.searchResultsA11yText.textContent = i18n.searchSummaryAria(count);
   }
 
+  //* Country search: Filter the countries according to the search query.
+  filterCountriesByQuery(query: string): void {
+    let matchedCountries: Country[];
+
+    if (query === "") {
+      // reset - back to all countries
+      matchedCountries = this.countries;
+    } else {
+      matchedCountries = getMatchedCountries(this.countries, query);
+    }
+    this.filterCountries(matchedCountries);
+  }
+
+  // Search input handlers
+  private doFilter(): void {
+    const inputQuery = this.searchInput.value.trim();
+    this.filterCountriesByQuery(inputQuery);
+    // show/hide clear button
+    if (this.searchInput.value) {
+      this.searchClearButton.classList.remove(CLASSES.HIDE);
+    } else {
+      this.searchClearButton.classList.add(CLASSES.HIDE);
+    }
+  }
+
+  handleSearchChange(): void {
+    // Filtering country nodes is expensive (lots of DOM manipulation), so rate limit it.
+    if (this.searchKeyupTimer) {
+      clearTimeout(this.searchKeyupTimer);
+    }
+    this.searchKeyupTimer = setTimeout(() => {
+      this.doFilter();
+      this.searchKeyupTimer = null;
+    }, TIMINGS.SEARCH_DEBOUNCE_MS);
+  }
+
+  handleSearchClear(): void {
+    this.searchInput.value = "";
+    this.searchInput.focus();
+    this.doFilter();
+  }
+
   //* Check if an element is visible within it's container, else scroll until it is.
   scrollTo(element: HTMLElement): void {
     const container = this.countryList;
@@ -488,6 +550,28 @@ export default class UI {
 
     if (shouldFocus) {
       this.highlightedItem.focus();
+    }
+  }
+
+  //* Highlight the next/prev item in the list (and ensure it is visible).
+  handleUpDownKey(key: string): void {
+    let next =
+      key === KEYS.ARROW_UP
+        ? (this.highlightedItem?.previousElementSibling as HTMLElement)
+        : (this.highlightedItem?.nextElementSibling as HTMLElement);
+    if (!next && this.countryList.childElementCount > 1) {
+      //* Otherwise, we must be at the end, so loop round again.
+      next =
+        key === KEYS.ARROW_UP
+          ? (this.countryList.lastElementChild as HTMLElement)
+          : (this.countryList.firstElementChild as HTMLElement);
+    }
+    if (next) {
+      //* Make sure the next item is visible
+      //* (before calling focus(), which can cause the next item to scroll to the middle of the dropdown, which is jarring).
+      this.scrollTo(next);
+      //* If country search enabled, don't lose focus from the search input on up/down
+      this.highlightListItem(next, false);
     }
   }
 
@@ -588,5 +672,126 @@ export default class UI {
       delete c.nodeById[this.id];
     }
     this.countries = null;
+  }
+
+  // UI: Open the dropdown (DOM only).
+  openDropdown(): void {
+    const { fixDropdownWidth, countrySearch, dropdownAlwaysOpen } = this.options;
+
+    if (fixDropdownWidth) {
+      this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
+    }
+    this.dropdownContent.classList.remove(CLASSES.HIDE);
+    this.selectedCountry.setAttribute(ARIA.EXPANDED, "true");
+
+    this.setDropdownPosition();
+
+    //* When countrySearch enabled, every time the dropdown is opened we reset by highlighting the first item and scrolling to top.
+    if (countrySearch) {
+      const firstCountryItem = this.countryList.firstElementChild as HTMLElement;
+      if (firstCountryItem) {
+        this.highlightListItem(firstCountryItem, false);
+        this.countryList.scrollTop = 0;
+      }
+      if (!dropdownAlwaysOpen) {
+        this.searchInput.focus();
+      }
+    }
+
+    // Update the arrow.
+    this.dropdownArrow.classList.add(CLASSES.ARROW_UP);
+  }
+
+  // UI: Close the dropdown (DOM only).
+  closeDropdown(): void {
+    const { countrySearch, dropdownContainer } = this.options;
+
+    this.dropdownContent.classList.add(CLASSES.HIDE);
+    this.selectedCountry.setAttribute(ARIA.EXPANDED, "false");
+
+    if (countrySearch) {
+      this.searchInput.removeAttribute(ARIA.ACTIVE_DESCENDANT);
+      // only clear the highlighted item if countrySearch is enabled as this gets reset each time the dropdown is opened
+      if (this.highlightedItem) {
+        this.highlightedItem.classList.remove(CLASSES.HIGHLIGHT);
+        this.highlightedItem = null;
+      }
+    }
+
+    // Update the arrow.
+    this.dropdownArrow.classList.remove(CLASSES.ARROW_UP);
+
+    // Remove dropdown from container if using external container
+    if (dropdownContainer) {
+      this.dropdown.remove();
+    }
+  }
+
+  // UI: Position the dropdown (DOM only). Does not bind scroll listeners.
+  setDropdownPosition(): void {
+    const { dropdownContainer, useFullscreenPopup } = this.options;
+
+    if (dropdownContainer) {
+      dropdownContainer.appendChild(this.dropdown);
+    }
+
+    if (!useFullscreenPopup) {
+      // getBoundingClientRect is relative to the viewport, so when you scroll down, pos.top goes down, hence needing to add on scrollTop below
+      const inputPosRelativeToVP = this.telInput.getBoundingClientRect();
+      const inputHeight = this.telInput.offsetHeight;
+
+      //* If dropdownContainer is enabled, calculate postion.
+      if (dropdownContainer && this.dropdown) {
+        //* Calculate position.
+        this.dropdown.style.top = `${inputPosRelativeToVP.top + inputHeight}px`;
+        this.dropdown.style.left = `${inputPosRelativeToVP.left}px`;
+      }
+    }
+  }
+
+  // UI: Whether the dropdown is currently closed (hidden).
+  isDropdownClosed(): boolean {
+    return this.dropdownContent.classList.contains(CLASSES.HIDE);
+  }
+
+  setCountry(selectedCountryData: SelectedCountryData): void {
+    const { allowDropdown, showFlags, separateDialCode, i18n } = this.options;
+    const { name, dialCode, iso2 = "" } = selectedCountryData;
+
+    if (allowDropdown) {
+      // Update the selected list item in the dropdown
+      this.updateSelectedItem(iso2);
+    }
+
+    //* Update the selected flag class and the a11y text.
+    if (this.selectedCountry) {
+      const flagClass =
+        iso2 && showFlags
+          ? `${CLASSES.FLAG} iti__${iso2}`
+          : `${CLASSES.FLAG} ${CLASSES.GLOBE}`;
+      let ariaLabel, title, selectedCountryInner;
+      if (iso2) {
+        title = name;
+        ariaLabel = i18n.selectedCountryAriaLabel
+          .replace("${countryName}", name)
+          .replace("${dialCode}", `+${dialCode}`);
+        selectedCountryInner = showFlags ? "" : buildGlobeIcon();
+      } else {
+        title = i18n.noCountrySelected;
+        ariaLabel = i18n.noCountrySelected;
+        selectedCountryInner = buildGlobeIcon();
+      }
+      this.selectedCountryInner.className = flagClass;
+      this.selectedCountry.setAttribute("title", title);
+      this.selectedCountry.setAttribute(ARIA.LABEL, ariaLabel);
+      this.selectedCountryInner.innerHTML = selectedCountryInner;
+    }
+
+    //* Update the selected dial code.
+    if (separateDialCode) {
+      const fullDialCode = dialCode ? `+${dialCode}` : "";
+      this.selectedDialCode.textContent = fullDialCode;
+      this.updateInputPadding();
+    }
   }
 }
