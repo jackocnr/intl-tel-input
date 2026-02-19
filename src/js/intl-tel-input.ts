@@ -47,6 +47,7 @@ import {
   PLACEHOLDER_MODES,
 } from "./modules/constants";
 import { buildGlobeIcon } from "./modules/core/icons";
+import { Numerals } from "./modules/core/numerals";
 
 declare global {
   interface HTMLInputElement {
@@ -103,7 +104,7 @@ export class Iti {
   private defaultCountry: Iso2;
   private abortController: AbortController;
   private dropdownAbortController: AbortController | null;
-  private userNumeralSet: "ascii" | "arabic-indic" | "persian";
+  private numerals: Numerals;
 
   private resolveAutoCountryPromise: (value?: unknown) => void;
   private rejectAutoCountryPromise: (reason?: unknown) => void;
@@ -122,6 +123,7 @@ export class Iti {
 
     this.ui = new UI(input, this.options, this.id);
     this.isAndroid = getIsAndroid();
+    this.numerals = new Numerals();
     this.promise = this._createInitPromises(this.options);
 
     //* Process onlyCountries or excludeCountries array if present.
@@ -141,49 +143,14 @@ export class Iti {
     this._init();
   }
 
-  private _updateNumeralSet(str: string): void {
-    // If any Arabic-Indic digits, then label it as that set. Same for Persian. Otherwise assume ASCII.
-    if (/[\u0660-\u0669]/.test(str)) {
-      this.userNumeralSet = "arabic-indic";
-    } else if (/[\u06F0-\u06F9]/.test(str)) {
-      this.userNumeralSet = "persian";
-    } else {
-      this.userNumeralSet = "ascii";
-    }
-  }
-
-  private _mapAsciiToUserNumerals(str: string): string {
-    if (!this.userNumeralSet) {
-      this._updateNumeralSet(this.ui.telInput.value);
-    }
-    if (this.userNumeralSet === "ascii") {
-      return str;
-    }
-    const base = this.userNumeralSet === "arabic-indic" ? 0x0660 : 0x06f0;
-    return str.replace(/[0-9]/g, (d) => String.fromCharCode(base + Number(d)));
-  }
-
-  // Normalize Eastern Arabic (U+0660-0669) and Persian/Extended Arabic-Indic (U+06F0-06F9) numerals to ASCII 0-9
-  private _normaliseNumerals(str: string): string {
-    if (!str) {
-      return "";
-    }
-    this._updateNumeralSet(str);
-    if (this.userNumeralSet === "ascii") {
-      return str;
-    }
-    const base = this.userNumeralSet === "arabic-indic" ? 0x0660 : 0x06f0;
-    const regex = this.userNumeralSet === "arabic-indic" ? /[\u0660-\u0669]/g : /[\u06F0-\u06F9]/g;
-    return str.replace(regex, (ch) => String.fromCharCode(0x30 + (ch.charCodeAt(0) - base)));
-  }
-
   private _getTelInputValue(): string {
     const inputValue = this.ui.telInput.value.trim();
-    return this._normaliseNumerals(inputValue);
+    return this.numerals.normalise(inputValue);
   }
 
   private _setTelInputValue(asciiValue: string): void {
-    this.ui.telInput.value = this._mapAsciiToUserNumerals(asciiValue);
+    const currentValue = this.ui.telInput.value;
+    this.ui.telInput.value = this.numerals.denormalise(asciiValue, currentValue);
   }
 
   private _createInitPromises(options: AllOptions): Promise<[unknown, unknown]> {
@@ -273,7 +240,7 @@ export class Iti {
     //* and initialising plugin removes the dial code from the input, then refresh page,
     //* and we try to init plugin again but this time on number without dial code so show globe icon.
     const attributeValueRaw = this.ui.telInput.getAttribute("value");
-    const attributeValue = this._normaliseNumerals(attributeValueRaw);
+    const attributeValue = this.numerals.normalise(attributeValueRaw);
     const inputValue = this._getTelInputValue();
     const useAttribute =
       attributeValue &&
@@ -563,7 +530,7 @@ export class Iti {
 
       const isSetNumber = e?.detail && e.detail["isSetNumber"];
       // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets - when these numbers contain spaces, they're treated as words, and so they get reversed in a way that breaks our calculations
-      const isAscii = this.userNumeralSet === "ascii";
+      const isAscii = this.numerals.isAscii();
       //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
       if (formatAsYouType && !userOverrideFormatting && !isSetNumber && isAscii) {
         //* Maintain caret position after reformatting.
@@ -651,7 +618,7 @@ export class Iti {
               this.ui.telInput.selectionStart === 0 &&
               e.key === "+";
             // note that we normalise numerals here so this numerics check works, but then later we continue using the original e.key value
-            const normalisedKey = this._normaliseNumerals(e.key);
+            const normalisedKey = this.numerals.normalise(e.key);
             const isNumeric = /^[0-9]$/.test(normalisedKey);
             const isAllowedChar = separateDialCode
               ? isNumeric
@@ -709,7 +676,7 @@ export class Iti {
         const iso2 = this.selectedCountryData.iso2;
 
         const pastedRaw = e.clipboardData.getData("text");
-        const pasted = this._normaliseNumerals(pastedRaw);
+        const pasted = this.numerals.normalise(pastedRaw);
         // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
         const initialCharSelected = selStart === 0 && selEnd > 0;
         const allowLeadingPlus =
@@ -1475,7 +1442,7 @@ export class Iti {
 
   //* Get the input val, adding the dial code if separateDialCode is enabled.
   private _getFullNumber(overrideVal?: string): string {
-    const val = overrideVal ? this._normaliseNumerals(overrideVal) : this._getTelInputValue();
+    const val = overrideVal ? this.numerals.normalise(overrideVal) : this._getTelInputValue();
     const { dialCode } = this.selectedCountryData;
     let prefix;
     const numericVal = getNumeric(val);
@@ -1638,7 +1605,8 @@ export class Iti {
         iso2,
         format,
       );
-      return this._mapAsciiToUserNumerals(formattedNumber);
+      const currentVal = this.ui.telInput.value;
+      return this.numerals.denormalise(formattedNumber, currentVal);
     }
     return "";
   }
@@ -1779,7 +1747,7 @@ export class Iti {
 
   //* Set the input value and update the country.
   setNumber(number: string): void {
-    const normalisedNumber = this._normaliseNumerals(number);
+    const normalisedNumber = this.numerals.normalise(number);
     //* We must update the country first, which updates this.selectedCountryData, which is used for
     //* formatting the number before displaying it.
     const countryChanged = this._updateCountryFromNumber(normalisedNumber);
