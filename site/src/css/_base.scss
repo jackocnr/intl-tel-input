@@ -1,0 +1,92 @@
+html {
+  /* fix: links with # scroll values in (e.g. docs/options#separatedialcode) scroll until subtitle is below header, as it has position:sticky */
+  scroll-padding-top: 70px;
+}
+
+body {
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* vue and react logos in news section on homepage */
+p img {
+  vertical-align: baseline;
+}
+
+h2,
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+h1 {
+  margin-bottom: 20px;
+}
+
+/* bootstrap override */
+@media (min-width: 1200px) {
+  .h2,
+  h2 {
+    font-size: 1.7rem;
+  }
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+/** Cookie / Google consent repositioning (desktop) **/
+@media (min-width: 800px) {
+  body .fc-consent-root .fc-dialog-container {
+    position: absolute !important;
+    bottom: 30px !important;
+    right: 30px !important;
+  }
+}
+
+.iti-live-results {
+  margin: 10px 0 20px;
+  border: 1px solid rgb(var(--header-bg-color-rgb));
+  padding: 10px;
+  border-radius: 3px;
+  background-color: rgb(var(--header-bg-color-rgb) / 0.3);
+  font-style: italic;
+  text-align: left;
+}
+
+/* Page breadcrumb (Docs/Examples) */
+.iti-breadcrumb {
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  &__item + &__item::before {
+    content: "/";
+    opacity: 0.6;
+    padding: 0 0.4rem;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// prevent layout shift when initialise components / show validation errors in demos
+#app {
+  min-height: 62px;
+}

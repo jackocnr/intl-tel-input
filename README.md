@@ -16,7 +16,7 @@ A JavaScript plugin for entering, formatting and validating international teleph
 Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more](https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input). We can't wait to see what you build.
 
 ## React, Vue, Angular and Svelte Components
-We provide React, Vue, Angular and Svelte (beta) components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md), the [Vue Component](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) the [Angular Component](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md), or the [Svelte component (beta)](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md).
+We provide React, Vue, Angular and Svelte (beta) components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component](https://intl-tel-input.com/docs/react-component), the [Vue Component](https://intl-tel-input.com/docs/vue-component) the [Angular Component](https://intl-tel-input.com/docs/angular-component), or the [Svelte component](https://intl-tel-input.com/docs/svelte-component).
 
 ## Docs and Examples
 We have a newly updated website, where you can find [a full set of docs](https://intl-tel-input.com/docs/getting-started.html), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/validation-practical.html) of different setups.

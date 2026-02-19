@@ -6,7 +6,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 
 @Component({
-  selector: "app-root",
+  selector: "#app",
   template: `
     <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
       <intl-tel-input

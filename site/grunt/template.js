@@ -24,6 +24,13 @@ module.exports = function (grunt) {
     EXAMPLES_PAGE_TEMPLATE_PATH,
   } = require("./templateGruntHelpers");
 
+  // Helper: create a cache-bust template task for a built asset path
+  const makeCacheBustTask = (assetPath) => ({
+    src: assetPath,
+    dest: assetPath,
+    options: { data: () => ({ cacheBust }) },
+  });
+
   const {
     docsDropdownPages,
     examplesDropdownPages,
@@ -45,20 +52,10 @@ module.exports = function (grunt) {
         data: () => ({ cacheBust }),
       },
     },
-    website_css: {
-      src: "src/css/website.scss",
-      dest: "tmp/css/website.scss",
-      options: {
-        data: () => ({ cacheBust }),
-      },
-    },
-    large_flags_overrides_css: {
-      src: "src/css/large_flags_overrides.scss",
-      dest: "tmp/css/large_flags_overrides.scss",
-      options: {
-        data: () => ({ cacheBust }),
-      },
-    },
+    website_css: makeCacheBustTask("build/css/website.css"),
+    homepage_css: makeCacheBustTask("build/css/homepage.css"),
+    playground_css: makeCacheBustTask("build/css/playground.css"),
+    large_flags_overrides_css: makeCacheBustTask("build/css/large_flags_overrides.css"),
 
     // homepage
     homepage_layout: {
@@ -77,7 +74,7 @@ module.exports = function (grunt) {
       },
     },
     homepage_page: {
-      src: "src/homepage/homepage_template.html.ejs",
+      src: "src/homepage/homepage_page_template.html.ejs",
       dest: "build/index.html",
       options: {
         data: () => ({
@@ -127,7 +124,7 @@ module.exports = function (grunt) {
       },
     },
     playground_page: {
-      src: "src/playground/playground_template.html.ejs",
+      src: "src/playground/playground_page_template.html.ejs",
       dest: "build/playground.html",
       options: {
         data: () => ({
@@ -380,7 +377,7 @@ module.exports = function (grunt) {
       script: "angular_component_bundle.js",
     },
     content: {
-      markupPath: "src/examples/html/angular_component.html",
+      markupPath: "src/examples/html/component.html",
       hideMarkupSection: true,
       codePath: "src/examples/js/angular_component_display_code.ts",
       script: "angular_component_bundle.js",

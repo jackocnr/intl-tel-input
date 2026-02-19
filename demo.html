@@ -22,6 +22,7 @@
       const input = document.querySelector("#phone");
       const iti = window.intlTelInput(input, {
         // allowDropdown: false,
+        // allowedNumberTypes: ["TOLL_FREE"],
         // allowNumberExtensions: true,
         // allowPhonewords: true,
         // autoPlaceholder: "off",
@@ -54,7 +55,6 @@
         // separateDialCode: true,
         // strictMode: true,
         // useFullscreenPopup: true,
-        // allowedNumberTypes: null,
       });
       window.iti = iti; // useful for testing
 

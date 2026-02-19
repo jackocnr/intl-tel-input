@@ -3,10 +3,10 @@
 ## Components
 
 For the component docs, click one of the following links:
-- [React component docs](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) 
-- [Vue component docs](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md)
-- [Angular component docs](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md)
-- [Svelte component docs](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md)
+- [React component docs](/docs/react-component) 
+- [Vue component docs](/docs/vue-component)
+- [Angular component docs](/docs/angular-component)
+- [Svelte component docs](/docs/svelte-component)
 
 ## JavaScript Plugin
 
@@ -19,16 +19,16 @@ For the JavaScript plugin, you can choose from one of the three Getting Started 
 
 1. Add the CSS
   ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@26.4.1/build/css/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@26.5.1/build/css/intlTelInput.css">
   ```
 
 2. Add the plugin script and initialise it on your input element
   ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@26.4.1/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@26.5.1/build/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@26.4.1/build/js/utils.js"),
+      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@26.5.1/build/js/utils.js"),
     });
   </script>
   ```

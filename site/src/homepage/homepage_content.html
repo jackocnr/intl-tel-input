@@ -1,7 +1,7 @@
 <div class="d-flex flex-column align-items-center text-center homepage-content">
   <div class="section section--homepage-demo demo d-flex flex-column align-items-center">
     <h1>International<br><span class="keep-together">Telephone Input</span></h1>
-    <p class="subtitle text-muted">A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes TypeScript definitions, plus <a href="https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md">React</a>, <a href="https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md">Vue</a>, <a href="https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md">Angular</a> and <a href="https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md">Svelte</a> components.</p>
+    <p class="subtitle text-muted">A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes TypeScript definitions, plus <a href="/docs/react-component">React</a>, <a href="/docs/vue-component">Vue</a>, <a href="/docs/angular-component">Angular</a> and <a href="/docs/svelte-component">Svelte</a> components.</p>
     <div>
       <input type="tel" id="phone" />
       <div class="iti-live-results">Type a number above to see the output here</div>
@@ -44,7 +44,7 @@
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-search text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <i class="bi bi-search fs-5 lh-1 flex-shrink-0 link-icon" aria-hidden="true"></i>
               <div>
                 <h3 class="h5 mb-2">Fast country picking</h3>
                 <ul class="mb-0">
@@ -61,7 +61,7 @@
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-stars text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <i class="bi bi-stars fs-5 lh-1 flex-shrink-0 link-icon" aria-hidden="true"></i>
               <div>
                 <h3 class="h5 mb-2">Smart defaults</h3>
                 <ul class="mb-0">
@@ -78,7 +78,7 @@
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-telephone text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <i class="bi bi-telephone fs-5 lh-1 flex-shrink-0 link-icon" aria-hidden="true"></i>
               <div>
                 <h3 class="h5 mb-2">Formatting & output</h3>
                 <ul class="mb-0">
@@ -95,7 +95,7 @@
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-shield-check text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <i class="bi bi-shield-check fs-5 lh-1 flex-shrink-0 link-icon" aria-hidden="true"></i>
               <div>
                 <h3 class="h5 mb-2">Validation</h3>
                 <ul class="mb-0">
@@ -112,7 +112,7 @@
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-globe text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <i class="bi bi-globe fs-5 lh-1 flex-shrink-0 link-icon" aria-hidden="true"></i>
               <div>
                 <h3 class="h5 mb-2">International &amp; accessible</h3>
                 <ul class="mb-0">
@@ -129,7 +129,7 @@
         <div class="card bg-transparent h-100">
           <div class="card-body">
             <div class="d-flex align-items-start gap-3">
-              <i class="bi bi-sliders text-primary fs-5 lh-1 flex-shrink-0" aria-hidden="true"></i>
+              <i class="bi bi-sliders fs-5 lh-1 flex-shrink-0 link-icon" aria-hidden="true"></i>
               <div>
                 <h3 class="h5 mb-2">Customisable</h3>
                 <ul class="mb-0">
@@ -152,11 +152,11 @@
     </p>
 
     <div class="d-flex flex-wrap justify-content-center gap-2 playground-presets">
-      <a class="btn btn-outline-primary btn-sm" href="/playground?initialCountry=auto&geoIpLookup=true&loadUtils=true">Auto country lookup</a>
-      <a class="btn btn-outline-primary btn-sm" href="/playground?strictMode=true&initialCountry=us&loadUtils=true">Strict numeric mode</a>
+      <a class="btn btn-outline-primary btn-sm" href="/playground?initialCountry=auto&geoIpLookup=true">Auto country lookup</a>
+      <a class="btn btn-outline-primary btn-sm" href="/playground?strictMode=true&initialCountry=us">Strict numeric mode</a>
       <a class="btn btn-outline-primary btn-sm" href="/playground?separateDialCode=true&initialCountry=gb">Separate dial code</a>
-      <a class="btn btn-outline-primary btn-sm" href="/playground?allowDropdown=false&initialCountry=us">No dropdown</a>
-      <a class="btn btn-outline-primary btn-sm" href="/playground?onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D&initialCountry=gb">Only European countries</a>
+      <a class="btn btn-outline-primary btn-sm" href="/playground?keepDropdownOpen=false&allowDropdown=false&initialCountry=us">No dropdown</a>
+      <a class="btn btn-outline-primary btn-sm" href="/playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D">Only European countries</a>
       <a class="btn btn-outline-primary btn-sm" href="/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn">Chinese UI</a>
     </div>
 

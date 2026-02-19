@@ -18,7 +18,7 @@ function cloneInfoIconSvg(infoIconTemplate) {
 }
 
 function createInfoIcon(meta, infoIconTemplate) {
-  const text = String(meta && meta.description ? meta.description : "").trim();
+  const text = String(meta && meta.tooltip ? meta.tooltip : "").trim();
   if (!text) return null;
   const icon = document.createElement("span");
   icon.className = "iti-playground-info";

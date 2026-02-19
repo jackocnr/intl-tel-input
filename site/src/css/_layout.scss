@@ -1,0 +1,50 @@
+/* LAYOUT */
+.iti-gutter {
+  --bs-gutter-x: 3rem;
+}
+/* never show the right sidebar on mobile (or on some desktop pages) */
+/* NOTE: can't include left-sidebar here, because it is always used on mobile */
+.iti-right-sidebar {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .iti-layout-both-sidebars {
+    display: grid;
+    grid-template-areas: "nav main ads";
+    /* this minmax ensures main block doesn't encroach on sidebars */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+.iti-layout-both-sidebars {
+  .iti-left-sidebar {
+    grid-area: nav;
+    min-width: 0;
+  }
+  .iti-right-sidebar {
+    grid-area: ads;
+    min-width: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .iti-layout-both-sidebars {
+    .iti-left-sidebar,
+    .iti-right-sidebar {
+      position: sticky;
+      top: 5rem;
+      display: block !important;
+      height: calc(100vh - 6rem);
+      padding-left: 0.25rem;
+      margin-left: -0.25rem;
+      overflow-y: auto;
+    }
+  }
+}
+.iti-main {
+  grid-area: main;
+  min-width: 0;
+  padding-bottom: 30px;
+}

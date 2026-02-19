@@ -22,9 +22,9 @@ module.exports = function (grunt) {
 
   // build css
   grunt.registerTask("build:css", [
+    "sass",
     "template:website_css",
     "template:large_flags_overrides_css",
-    "sass",
     "cssmin",
   ]);
 

@@ -1,0 +1,217 @@
+@use 'variables';
+
+/**************
+ * PLAYGROUND
+ **************/
+/* multidropdown toggle: disable hover styling when closed */
+.iti-playground-multidropdown-toggle {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  --bs-btn-bg: var(--bs-body-bg);
+  --bs-btn-color: var(--bs-body-color);
+  --bs-btn-border-color: var(--bs-border-color, #ced4da);
+  --bs-btn-hover-bg: var(--bs-btn-bg);
+  --bs-btn-hover-color: var(--bs-btn-color);
+  --bs-btn-hover-border-color: var(--bs-btn-border-color);
+  --bs-btn-active-bg: var(--bs-btn-bg);
+  --bs-btn-active-color: var(--bs-btn-color);
+  --bs-btn-active-border-color: var(--bs-btn-border-color);
+
+  /* multidropdown toggle: use CSS chevron for down arrow */
+  &.dropdown-toggle::after {
+    opacity: 0.85;
+    margin: 0 3px 2px auto;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    content: "";
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  /* multidropdown toggle: flip down arrow when open */
+  &.dropdown-toggle.show::after,
+  .dropdown.show > &.dropdown-toggle::after {
+    margin-top: 6px;
+    transform: rotate(225deg);
+  }
+}
+
+.iti-playground-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* bootstrap g-4 */
+
+  /* On mobile, flatten the column wrappers so we can control ordering. */
+  &__col {
+    display: contents;
+  }
+  &__demo {
+    order: 1;
+  }
+  &__options {
+    order: 2;
+  }
+  &__attrs {
+    order: 3;
+  }
+  &__code {
+    order: 4;
+  }
+
+  &__demo,
+  &__options,
+  &__attrs,
+  &__code {
+    min-width: 0;
+  }
+
+  @media (min-width: 992px) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 1.5rem; /* bootstrap g-4 */
+    align-items: start;
+
+    &__col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem; /* bootstrap g-4 */
+      min-width: 0;
+    }
+
+    &__col--left {
+      grid-column: 1;
+    }
+
+    &__col--right {
+      grid-column: 2;
+      position: sticky;
+      top: calc(70px + 1rem);
+      max-height: calc(100vh - 70px - 2rem);
+      overflow: auto;
+    }
+  }
+
+  &__demo {
+    .iti,
+    .iti__tel-input,
+    .iti-live-results {
+      width: 100%;
+      max-width: 350px;
+    }
+  }
+}
+
+.iti-playground--keep-dropdown-open {
+  .iti__dropdown-content.iti__hide {
+    display: block !important;
+  }
+  .playground-dropdown-checkbox {
+    margin-top: 240px !important;
+  }
+}
+
+/* playground: option info tooltip */
+.iti-playground-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 0;
+  color: var(--bs-secondary-color, #6c757d);
+  user-select: none;
+  cursor: help;
+
+  > svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(var(--header-bg-color-rgb));
+    outline-offset: 2px;
+  }
+}
+
+.iti-playground-labelgroup {
+  padding-top: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  > .form-label {
+    margin-bottom: 0;
+  }
+}
+
+.iti-playground-example-toggle {
+  margin-top: 6px;
+}
+
+/* preserve bootstrap-like spacing for stacked (mobile) label + control */
+.iti-playground-control {
+  &:not(.iti-playground-control--check) > .iti-playground-labelgroup {
+    margin-bottom: var(--bs-form-label-margin-bottom, 0.5rem);
+  }
+
+  /* playground: on wider screens, align label + control horizontally to save space */
+  @media (min-width: 600px) {
+    /* playground: loadUtils has an example snippet + a checkbox, so keep the example aligned with the label, and put the checkbox beneath. */
+    &--example-code {
+      align-items: start;
+    }
+    &--example-code > .iti-playground-example-toggle {
+      grid-column: 2;
+      margin-top: 0;
+    }
+    /* Shared grid layout for controls on wider screens */
+    & {
+      display: grid;
+      grid-template-columns: minmax(160px, 220px) 1fr;
+      grid-template-areas: "label control";
+      column-gap: 12px;
+
+      > .iti-playground-labelgroup {
+        grid-area: label;
+        margin-bottom: 0;
+      }
+    }
+
+    /* Non-checkbox controls: slightly more vertical spacing and form-specific tweaks */
+    &:not(.iti-playground-control--check) {
+      row-gap: 6px;
+      align-items: start;
+
+      > .form-control,
+      > .form-select,
+      > .dropdown {
+        min-width: 0;
+      }
+      > .form-text {
+        grid-column: 2;
+      }
+    }
+
+    /* On mobile, checkboxes appear on LHS. Here, we move them to the RHS. */
+    &.iti-playground-control--check {
+      row-gap: 0;
+      align-items: center;
+      padding-left: 0; /* override bootstrap .form-check */
+
+      > .form-check-input {
+        grid-area: control;
+        margin-left: 0;
+        float: none;
+        justify-self: start;
+      }
+    }
+  }
+}
+.iti-playground pre {
+  display: block;
+}

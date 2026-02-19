@@ -4,7 +4,7 @@ import { IntlTelInputComponent } from "intl-tel-input/angular";
 import "intl-tel-input/styles";
 
 @Component({
-  selector: "app-root",
+  selector: "#app",
   template: `
     <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
       <intl-tel-input

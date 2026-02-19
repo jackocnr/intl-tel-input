@@ -10,6 +10,7 @@ import intlTelInput from "./intlTelInputWithUtils";
     disabled = false,
     inputProps = {},
     options = {},
+    usePreciseValidation = false,
     value = "",
     onChangeNumber,
     onChangeCountry,
@@ -20,6 +21,7 @@ import intlTelInput from "./intlTelInputWithUtils";
     inputProps?: Record<string, unknown>;
     options?: SomeOptions;
     value?: string;
+    usePreciseValidation?: boolean;
     onChangeNumber?: (number: string) => void;
     onChangeCountry?: (country: string) => void;
     onChangeValidity?: (valid: boolean) => void;
@@ -35,7 +37,7 @@ import intlTelInput from "./intlTelInputWithUtils";
   // Validation helper
   const isValid = (): boolean | null => {
     if (!instance) return null;
-    return options.strictMode
+    return usePreciseValidation
       ? instance.isValidNumberPrecise()
       : instance.isValidNumber();
   };

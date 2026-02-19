@@ -1,0 +1,149 @@
+/* TOP NAVBAR */
+.iti-navbar {
+  padding: 0.75rem 0;
+  background-color: rgb(var(--header-bg-color-rgb));
+
+  .navbar-toggler {
+    padding: 0;
+    border: 0;
+  }
+
+  /* Header dropdown toggle: replace Bootstrap caret triangle with CSS chevron */
+  .dropdown-toggle::after {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin: 0px 0 3px 4px;
+    content: "";
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+}
+
+#bdNavbar {
+  .nav-link {
+    color: white;
+
+    /* Prevent nav items shifting when toggling font-weight by reserving space
+       for the bold version of the label (used on the active state). */
+    &.iti-navlink-no-shift > span {
+      display: inline-block;
+    }
+    &.iti-navlink-no-shift > span::after {
+      content: attr(data-text);
+      display: block;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+    &.iti-navlink-no-shift > span::after,
+    &.active {
+      font-weight: 700;
+    }
+  }
+
+  .nav-link--github,
+  .cookie-prefs-header {
+    height: 100%; /* required for vertical alignment */
+  }
+
+  @media (min-width: 992px) {
+    .navbar-nav {
+      .nav-link {
+        opacity: 0.85;
+      }
+      .nav-link:hover,
+      .nav-link:focus,
+      .nav-link.active,
+      .show > .nav-link {
+        opacity: 1;
+      }
+    }
+  }
+  /* Header docs dropdown: active item uses header green */
+  .dropdown-item.active,
+  .dropdown-item:active {
+    background-color: rgb(var(--header-bg-color-rgb) / 0.5);
+    color: white;
+  }
+
+  /* Header nav dropdown: open on hover (desktop) + keyboard focus */
+  @media (hover: hover) and (pointer: fine) {
+    .dropdown:hover > .dropdown-menu {
+      display: block;
+      /* Match Bootstrap's positioning styles that normally apply when JS adds data-bs-popper */
+      top: 100%;
+      left: 0;
+    }
+  }
+}
+/* override Bootstrap's margin which causes a gap between the dropdown and toggle */
+.dropdown-menu[data-bs-popper] {
+  margin-top: 0 !important;
+}
+.offcanvas-title a {
+  color: var(--bs-body-color);
+  text-decoration: none;
+}
+
+
+/* Mobile nav: remove hover styles (prevents iOS/Android sticky :hover states) */
+.iti-mobile-sidebar {
+  .nav-pills .nav-link:not(.active):hover {
+    background-color: transparent;
+  }
+}
+
+
+.iti-left-sidebar .nav-link,
+.iti-mobile-sidebar .nav-link {
+  color: var(--bs-body-color);
+}
+.nav--primary-links > .nav-item > .nav-link {
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+}
+
+.iti-mobile-sidebar {
+  .iti-mobile-submenu .nav-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0.95;
+  }
+  /* Mobile sidebar icon + label spacing: slightly wider than Bootstrap gap-2 */
+  .d-flex.align-items-center.gap-2 {
+    gap: calc(0.5rem + 2px) !important;
+  }
+}
+/* Mobile sidebar icon + label spacing: slightly wider than Bootstrap gap-2 */
+.iti-mobile-nav-toggle {
+  border: 0;
+  background: none;
+
+  &__chevron {
+    margin: 0px 0 3px 6px;
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    opacity: 0.85;
+  }
+
+  &[aria-expanded="true"] &__chevron {
+    transform: rotate(225deg);
+    margin-top: 8px;
+  }
+}
+.nav-pills {
+  .nav-link.active {
+    background-color: rgb(var(--header-bg-color-rgb) / 0.5);
+  }
+  .nav-link:not(.active):hover {
+    background-color: rgb(var(--header-bg-color-rgb) / 0.5);
+  }
+}
