@@ -14,7 +14,13 @@ import { IntlTelInputComponent } from '../../src/intl-tel-input/angularWithUtils
           initialCountry: 'us',
         }"
       />
-      <button class="button" type="submit" [disabled]="!fg.valid">
+      <button 
+        class="button" 
+        type="submit" 
+        [disabled]="!fg.valid"
+        [style.opacity]="fg.valid ? '1' : '0.5'"
+        [style.cursor]="fg.valid ? 'pointer' : 'not-allowed'"
+      >
         Validate
       </button>
       <div class="notice">
@@ -45,7 +51,6 @@ export class AppComponent {
   }
 
   handleSubmit(): void {
-    this.phone?.markAsTouched();
     if (this.fg.valid) {
       this.notice = `Valid number: ${this.telInput.getInstance()?.getNumber()}`;
     }
