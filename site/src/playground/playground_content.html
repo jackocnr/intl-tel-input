@@ -29,32 +29,31 @@
     </div>
   </template>
 
-  <div class="mb-4 d-flex align-items-start justify-content-between gap-3">
-    <div>
-      <h1 class="h3">Playground</h1>
-      <p class="text-muted mb-3">
-        Try different <code>intl-tel-input</code> initialisation options and see the plugin update live.
-        <span class="d-none d-lg-inline">
-          <br />
-          (You can also set options via URL params, e.g. <code>?initialCountry=gb&amp;separateDialCode=true</code>).
-        </span>
-      </p>
-    </div>
-
-    <div class="ms-auto text-end">
-      <label for="playgroundPresetsSelect" class="form-label visually-hidden">Playground presets</label>
-      <div class="d-flex gap-2">
-        <select id="playgroundPresetsSelect" class="form-select form-select-sm" aria-label="Playground presets" onchange="if(this.value) window.location.href=this.value">
-          <option value="">Presets</option>
-          <option value="/playground?geoIpLookup=true&initialCountry=auto">Auto country lookup</option>
-          <option value="/playground?initialCountry=us&strictMode=true">Strict numeric mode</option>
-          <option value="/playground?initialCountry=gb&separateDialCode=true">Separate dial code</option>
-          <option value="/playground?keepDropdownOpen=false&allowDropdown=false&initialCountry=us">No dropdown</option>
-          <option value="/playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D">Only European countries</option>
-          <option value="/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn">Chinese UI</option>
-        </select>
+  <div class="mb-4">
+    <div class="d-flex align-items-start justify-content-between gap-3">
+      <h1 class="h3 mb-0">Playground</h1>
+      <div class="ms-auto text-end">
+        <label for="playgroundPresetsSelect" class="form-label visually-hidden">Playground presets</label>
+        <div class="d-flex gap-2">
+          <select id="playgroundPresetsSelect" class="form-select form-select-sm playground-presets-select" aria-label="Playground presets" onchange="if(this.value) window.location.href=this.value">
+            <option value="">Presets</option>
+            <option value="/playground?geoIpLookup=true&initialCountry=auto">Auto country lookup</option>
+            <option value="/playground?initialCountry=us&strictMode=true">Strict numeric mode</option>
+            <option value="/playground?initialCountry=gb&separateDialCode=true">Separate dial code</option>
+            <option value="/playground?keepDropdownOpen=false&allowDropdown=false&initialCountry=us">No dropdown</option>
+            <option value="/playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D">Only European countries</option>
+            <option value="/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn">Chinese UI</option>
+          </select>
+        </div>
       </div>
     </div>
+    <p class="text-muted mt-3 mb-3">
+      Try different <code>intl-tel-input</code> initialisation options and see the plugin update live.
+      <span class="d-none d-lg-inline">
+        <br />
+        (You can also set options via URL params, e.g. <code>?initialCountry=gb&amp;separateDialCode=true</code>).
+      </span>
+    </p>
   </div>
 
   <div class="iti-playground-layout">

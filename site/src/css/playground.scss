@@ -40,6 +40,13 @@
   }
 }
 
+// mobile: make the presets select smaller so it doesn't distract from the page title
+@media (max-width: 576px) {
+  .playground-presets-select {
+    width: 7em;
+  }
+}
+
 .iti-playground-layout {
   display: flex;
   flex-direction: column;
