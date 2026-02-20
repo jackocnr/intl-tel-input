@@ -33,7 +33,7 @@ const App = () => {
           onBlur: () => setNoticeMode("blur"),
         }}
       />
-      <button className="button" type="submit">Validate</button>
+      <button type="submit">Validate</button>
       {notice && <div className="notice">{notice}</div>}
     </form>
   );

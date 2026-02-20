@@ -39,22 +39,26 @@ const App = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <IntlTelInput
-        onChangeNumber={setNumber}
-        onChangeValidity={setIsValid}
-        onChangeErrorCode={setErrorCode}
-        initOptions={{
-          initialCountry: "us",
-          loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
-        }}
-        inputProps={{
-          name: "phone",
-          onBlur: () => setNoticeMode("blur"),
-        }}
-      />
-      {" "}
-      <button className="button" type="submit">Validate</button>
+    <form onSubmit={handleSubmit} className="row g-2">
+      <div className="col-auto">
+        <IntlTelInput
+          onChangeNumber={setNumber}
+          onChangeValidity={setIsValid}
+          onChangeErrorCode={setErrorCode}
+          initOptions={{
+            initialCountry: "us",
+            loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+          }}
+          inputProps={{
+            name: "phone",
+            onBlur: () => setNoticeMode("blur"),
+            className: "form-control",
+          }}
+        />
+      </div>
+      <div className="col-auto">
+        <button className="btn btn-primary" type="submit">Validate</button>
+      </div>
       {notice && <div className="notice">{notice}</div>}
     </form>
   );

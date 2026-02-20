@@ -26,16 +26,24 @@
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
-    <IntlTelInput
-      @changeNumber="number = $event"
-      @changeValidity="isValid = $event"
-      @changeErrorCode="errorCode = $event"
-      :options="{
-        initialCountry: 'us',
-        loadUtils: () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
-      }"
-    /> <button class="button" type="submit">Validate</button>
+  <form @submit.prevent="handleSubmit" class="row g-2">
+    <div class="col-auto">
+      <IntlTelInput
+        @changeNumber="number = $event"
+        @changeValidity="isValid = $event"
+        @changeErrorCode="errorCode = $event"
+        :options="{
+          initialCountry: 'us',
+          loadUtils: () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
+        }"
+        :inputProps="{
+          class: 'form-control',
+        }"
+      />
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" type="submit">Validate</button>
+    </div>
     <div v-if="notice" class="notice">{{ notice }}</div>
   </form>
 </template>

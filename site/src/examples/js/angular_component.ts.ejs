@@ -8,17 +8,21 @@ import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/Int
 @Component({
   selector: "#app",
   template: `
-    <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
-      <intl-tel-input
-        #telInput
-        formControlName="phone"
-        name="phone"
-        [initOptions]="initOptions"
-      />
-      <span>&nbsp;</span>
-      <button class="button" type="submit" [disabled]="!fg.valid">
-        Validate
-      </button>
+    <form [formGroup]="fg" (ngSubmit)="handleSubmit()" class="row g-2">
+      <div class="col-auto">
+        <intl-tel-input
+          #telInput
+          formControlName="phone"
+          name="phone"
+          [initOptions]="initOptions"
+          [inputProps]="{ class: 'form-control' }"
+        />
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-primary" type="submit" [disabled]="!fg.valid">
+          Validate
+        </button>
+      </div>
       <div class="notice">
         @if (phone?.errors?.["required"] && phone?.touched) {
           Phone number is required.

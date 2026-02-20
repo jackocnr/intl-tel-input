@@ -25,17 +25,24 @@
   };
 </script>
 
-<form onsubmit={handleSubmit}>
-  <IntlTelInput
-    onChangeNumber={(n) => (number = n)}
-    onChangeValidity={(v) => (isValid = v)}
-    onChangeErrorCode={(e) => (errorCode = e)}
-    options={{
-      initialCountry: "us",
-      loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
-    }}
-  />
-  <button class="button" type="submit">Validate</button>
+<form onsubmit={handleSubmit} class="row g-2">
+  <div class="col-auto">
+    <IntlTelInput
+      onChangeNumber={(n) => (number = n)}
+      onChangeValidity={(v) => (isValid = v)}
+      onChangeErrorCode={(e) => (errorCode = e)}
+      options={{
+        initialCountry: "us",
+        loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+      }}
+      inputProps={{
+        class: "form-control",
+      }}
+    />
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-primary" type="submit">Validate</button>
+  </div>
   {#if notice}
     <div class="notice">{notice}</div>
   {/if}

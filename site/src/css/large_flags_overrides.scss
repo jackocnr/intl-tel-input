@@ -17,6 +17,9 @@
 .iti input {
   height: 44px;
 }
+.iti__tel-input {
+  font-size: inherit !important; // bootstrap override
+}
 .iti__search-icon {
   left: 13px;
 }

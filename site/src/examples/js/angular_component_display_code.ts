@@ -13,7 +13,7 @@ import "intl-tel-input/styles";
         name="phone"
         [initOptions]="initOptions"
       />
-      <button class="button" type="submit" [disabled]="!fg.valid">
+      <button type="submit" [disabled]="!fg.valid">
         Validate
       </button>
       <div class="notice">

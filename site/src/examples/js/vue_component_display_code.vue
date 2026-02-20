@@ -36,7 +36,7 @@
         loadUtils: () => import('intl-tel-input/utils'),
       }"
     />
-    <button class="button" type="submit">Validate</button>
+    <button type="submit">Validate</button>
     <div v-if="notice" class="notice">{{ notice }}</div>
   </form>
 </template>
