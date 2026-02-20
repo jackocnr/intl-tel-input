@@ -19,13 +19,13 @@ import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/Int
         />
       </div>
       <div class="col-auto">
-        <button class="btn btn-primary" type="submit" [disabled]="!fg.valid">
+        <button class="btn btn-primary" type="submit">
           Validate
         </button>
       </div>
       <div class="notice">
         @if (phone?.errors?.["required"] && phone?.touched) {
-          Phone number is required.
+          Please enter a number
         } @else if (phone?.errors?.["invalidPhone"] && phone?.touched) {
           {{ phone?.errors?.["invalidPhone"].errorMessage }}
         } @else if (notice) {

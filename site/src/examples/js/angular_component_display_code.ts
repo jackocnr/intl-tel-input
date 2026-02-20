@@ -13,12 +13,12 @@ import "intl-tel-input/styles";
         name="phone"
         [initOptions]="initOptions"
       />
-      <button type="submit" [disabled]="!fg.valid">
+      <button type="submit">
         Validate
       </button>
       <div class="notice">
         @if (phone?.errors?.["required"] && phone?.touched) {
-          Phone number is required.
+          Please enter a number
         } @else if (phone?.errors?.["invalidPhone"] && phone?.touched) {
           {{ phone?.errors?.["invalidPhone"].errorMessage }}
         } @else if (notice) {
