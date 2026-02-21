@@ -31,6 +31,7 @@
   },
   "scripts": {
     "watch": "grunt watch --env=dev",
-    "build": "grunt build"
+    "build": "grunt build --env=dev",
+    "build:prod": "grunt build --env=prod"
   }
 }
