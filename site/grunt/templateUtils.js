@@ -41,49 +41,38 @@ const addDocOptionsLayoutPlugin = (md) => {
       return token;
     };
 
-    const startRow = () =>
+    const startRowAndKeyCellMarkup = () =>
       makeHtmlBlock(
         '<div class="iti-doc-options__row">\n' +
           '  <div class="iti-doc-options__cell iti-doc-options__cell--key">\n',
       );
 
-    const switchToValueCell = () =>
+    const endKeyCellAndStartValueCellMarkup = () =>
       makeHtmlBlock(
         "  </div>\n" +
           '  <div class="iti-doc-options__cell iti-doc-options__cell--value">\n',
       );
 
-    const endRow = () => makeHtmlBlock("  </div>\n</div>\n");
+    const endValueCellAndRowMarkup = () => makeHtmlBlock("  </div>\n</div>\n");
 
     const nextTokens = [];
     let i = 0;
 
-    const consumeThroughHeadingClose = (tag) => {
+    const consumeThroughHeadingClose = (tagName) => {
       while (i < tokens.length) {
         const t = tokens[i];
         nextTokens.push(t);
         i += 1;
-        if (t.type === "heading_close" && t.tag === tag) return;
+        if (t.type === "heading_close" && t.tag === tagName) return;
       }
     };
 
-    const findHeadingCloseIndex = (startIndex, tag) => {
+    const findHeadingCloseIndex = (startIndex, tagName) => {
       for (let k = startIndex; k < tokens.length; k += 1) {
         const t = tokens[k];
-        if (t.type === "heading_close" && t.tag === tag) return k;
+        if (t.type === "heading_close" && t.tag === tagName) return k;
       }
       return -1;
-    };
-
-    const consumeOneParagraph = () => {
-      if (i >= tokens.length || tokens[i].type !== "paragraph_open") return false;
-      while (i < tokens.length) {
-        const t = tokens[i];
-        nextTokens.push(t);
-        i += 1;
-        if (t.type === "paragraph_close") return true;
-      }
-      return true;
     };
 
     const consumeUntilNextHeading = () => {
@@ -96,35 +85,27 @@ const addDocOptionsLayoutPlugin = (md) => {
     };
 
     const consumeOptionBlock = () => {
-      nextTokens.push(startRow());
+      nextTokens.push(startRowAndKeyCellMarkup());
 
       // H6 heading (option name) lives in the key cell.
       nextTokens.push(tokens[i]);
       i += 1;
       consumeThroughHeadingClose("h6");
 
-      // First paragraph (Type/Default) also lives in the key cell.
-      const hadMetaParagraph = consumeOneParagraph();
-
       // Switch to the value cell for the rest of the option content.
-      nextTokens.push(switchToValueCell());
-
-      // If there was no Type/Default paragraph, we still want to consume content in the value cell.
-      if (!hadMetaParagraph) {
-        // no-op (value cell is already open)
-      }
+      nextTokens.push(endKeyCellAndStartValueCellMarkup());
 
       consumeUntilNextHeading();
-      nextTokens.push(endRow());
+      nextTokens.push(endValueCellAndRowMarkup());
     };
 
     while (i < tokens.length) {
       const token = tokens[i];
       if (isHeadingOpen(token, "h6")) {
         // Only treat this heading as an "option" row when the very next block
-        // after the heading close is a paragraph (the Type/Default meta).
-        const closeIdx = findHeadingCloseIndex(i, "h6");
-        const afterClose = closeIdx >= 0 ? closeIdx + 1 : -1;
+        // after the heading close is a paragraph containing the Type/Default meta info
+        const closeIndex = findHeadingCloseIndex(i, "h6");
+        const afterClose = closeIndex >= 0 ? closeIndex + 1 : -1;
         if (afterClose >= 0 && tokens[afterClose] && tokens[afterClose].type === "paragraph_open") {
           const inlineToken = tokens[afterClose + 1];
           const inlineContent = inlineToken && inlineToken.type === "inline" ? inlineToken.content : "";
