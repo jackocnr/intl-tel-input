@@ -33,7 +33,7 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 ```
 
 Example:  
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/vanilla-dark.png" alt="Screenshot" width="263" height="269" />
+<img src="/img/iti-vanilla-dark.png" alt="Screenshot" width="265" height="280" />
 
 <div class="article-ad">
   <ins class="adsbygoogle"

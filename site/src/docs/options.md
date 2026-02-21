@@ -111,7 +111,11 @@ Default: `false`
 
 Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. In the case that the user tries to type a new dial code (as well), we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`allowDropdown`](#allowdropdown) and [`countrySearch`](#countrysearch) to be enabled). Try the plugin with this enabled in the [Playground](/playground?separateDialCode=true&initialCountry=gb). _Note: previously named `showSelectedDialCode`._
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/separate-dial-code4.png" width="267" height="51" alt="Separate Dial Code">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/img/iti-separate-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="/img/iti-separate-light.png">
+  <img width="262" height="50" alt="Separate dial code" src="/img/iti-separate-light.png">
+</picture>
 
 ###### showFlags
 Type: `Boolean`  

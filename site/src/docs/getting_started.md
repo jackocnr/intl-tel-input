@@ -47,7 +47,7 @@ For the JavaScript plugin, you can choose from one of the three Getting Started 
 
 1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
 
-2. Import the CSS: `import 'intl-tel-input/build/css/intlTelInput.css';`
+2. Import the CSS: `import 'intl-tel-input/styles';`
 
 3. Set the path to flags.webp in your CSS, by overriding the CSS variables
   ```css

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <title>ITI Screenshotting</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <script>
+      const setTheme = () => {
+        const theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+      };
+
+      // Run on load
+      setTheme();
+
+      // Update dynamically if the user changes system settings while on your page
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setTheme);
+    </script>
+
+    <link rel="stylesheet" href="/intl-tel-input/css/intlTelInput.min.css?v=df24cc64d1d7" />
+    <link rel="stylesheet" href="/css/website.css?v=acf9a03fbf5c" />
+  </head>
+
+  <body style="margin:50px">
+    <input id="phone" type="tel" style="width:100px" />
+
+    <script src="/intl-tel-input/js/intlTelInput.min.js?v=31d1fe9a88f4"></script>
+    <script>
+      const input = document.querySelector("#phone");
+      window.intlTelInput(input, {
+        useFullscreenPopup: true,
+        loadUtils: () => import("/intl-tel-input/js/utils.js?v=de02f033c674"),
+      });
+    </script>
+  </body>
+</html>

@@ -47,4 +47,4 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 
 User testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)  
 
-Browser testing via <a href="https://www.lambdatest.com/" target="_blank"><img src="https://raw.githubusercontent.com/jackocnr/intl-tel-input/44e0e66d01e260a7c39b3405c3229b9446882cba/screenshots/LambdaTest%20logo%20-blue.svg" style="vertical-align: middle;margin-left:5px" width="147" height="26" /></a>
+Browser testing via <a href="https://www.lambdatest.com/" target="_blank"><img src="https://raw.githubusercontent.com/jackocnr/intl-tel-input/44e0e66d01e260a7c39b3405c3229b9446882cba/screenshots/lambda_test.svg" style="vertical-align: middle;margin-left:5px" width="147" height="26" /></a>
