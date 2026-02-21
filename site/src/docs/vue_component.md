@@ -80,6 +80,16 @@ Default: `""`
 
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
 
+<div class="article-ad">
+  <ins class="adsbygoogle"
+    style="display:block; text-align:center;"
+    data-ad-layout="in-article"
+    data-ad-format="fluid"
+    data-ad-client="ca-pub-1090343328224651"
+    data-ad-slot="6972377388"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 ## Events
 Here's a list of all of the current events you can listen to on the IntlTelInput Vue component.
 

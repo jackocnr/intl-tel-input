@@ -33,6 +33,16 @@ For the JavaScript plugin, you can choose from one of the three Getting Started 
   </script>
   ```
 
+<div class="article-ad">
+  <ins class="adsbygoogle"
+    style="display:block; text-align:center;"
+    data-ad-layout="in-article"
+    data-ad-format="fluid"
+    data-ad-client="ca-pub-1090343328224651"
+    data-ad-slot="6972377388"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 ### Using a bundler, e.g. Vite
 
 1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
@@ -98,3 +108,13 @@ If you know the user's country, you can set it with [`initialCountry`](/docs/opt
 If you know the user's language, there is a built in way to translate the country names and user interface strings - [see example](/examples/internationalisation).
 
 _*Except for some small satellite territories, which share number ranges with the main country (search data.ts for "shared" for examples). When displaying numbers from those shared ranges, we default to selecting the main country._
+
+<div class="article-ad">
+  <ins class="adsbygoogle"
+    style="display:block; text-align:center;"
+    data-ad-layout="in-article"
+    data-ad-format="fluid"
+    data-ad-client="ca-pub-1090343328224651"
+    data-ad-slot="6972377388"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>

@@ -44,3 +44,13 @@ _Note: there is currently [a bug](https://bugs.webkit.org/show_bug.cgi?id=141822
 ```css
 .iti__arrow { border: none; }
 ```
+
+<div class="article-ad">
+  <ins class="adsbygoogle"
+    style="display:block; text-align:center;"
+    data-ad-layout="in-article"
+    data-ad-format="fluid"
+    data-ad-client="ca-pub-1090343328224651"
+    data-ad-slot="6972377388"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
