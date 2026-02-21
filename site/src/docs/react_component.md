@@ -82,19 +82,19 @@ A handler to be called when the selected country changes. It will receive the ne
 Type: `Function`  
 Default: `null`  
 
-A handler to be called when the number validation error changes. It will receive the new error code (or `null`). Requires the [utils script](#utils-script) to be loaded.
+A handler to be called when the number validation error changes. It will receive the new error code (or `null`). Requires the utils script to be loaded (see above).
 
 ###### onChangeNumber
 Type: `Function`  
 Default: `null`  
 
-A handler to be called when the number changes. For valid numbers (see `onChangeValidity`), it will receive the new number in the standard E.164 format. Requires the [utils script](#utils-script) to be loaded.
+A handler to be called when the number changes. For valid numbers (see `onChangeValidity`), it will receive the new number in the standard E.164 format. Requires the utils script to be loaded (see above).
 
 ###### onChangeValidity
 Type: `Function`  
 Default: `null`  
 
-A handler to be called when the number validity changes, e.g. to true/false. It will receive the new isValid boolean. Requires the [utils script](#utils-script) to be loaded.
+A handler to be called when the number validity changes, e.g. to true/false. It will receive the new isValid boolean. Requires the utils script to be loaded (see above).
 
 ###### usePreciseValidation
 Type: `Boolean`

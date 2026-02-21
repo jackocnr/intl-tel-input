@@ -7,7 +7,6 @@ A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source 
 - [Demo](#demo)
 - [Getting Started](#getting-started)
 - [Props](#props)
-- [Events](#events)
 - [Accessing Instance Methods](#accessing-instance-methods)
 - [Accessing Static Methods](#accessing-static-methods)
 
