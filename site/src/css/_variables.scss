@@ -1,6 +1,6 @@
 :root {
   /* Header background color as space-separated RGB for easy alpha usage via: rgb(var(--header-bg-color-rgb) / <alpha>) */
-  --header-bg-color-rgb: 71 194 110;
+  --header-bg-color-rgb: 16 135 75;
 
   /* override flag paths, to include cache busting */
   --iti-path-flags-1x: url("<%= cacheBust('/intl-tel-input/img/flags.webp') %>");
