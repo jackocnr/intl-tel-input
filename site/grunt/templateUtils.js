@@ -75,8 +75,8 @@ const addDocOptionsLayoutPlugin = (md) => {
       return -1;
     };
 
-    // ad blocks are divs with class="article-ad", but MarkdownIt treats divs as raw "html_block" tokens, so we just look for that token type here.
-    const isAdBlockOpen = (token) => token.type === "html_block";
+    // ad blocks are divs with class="article-ad", but MarkdownIt treats divs and their contents as a single raw "html_block" token
+    const isAdBlockOpen = (token) => token.type === "html_block" && token.content.includes('class="article-ad"');
 
     const consumeUntilNextHeadingOrAdBlock = () => {
       while (i < tokens.length) {
