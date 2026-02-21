@@ -11,6 +11,7 @@ module.exports = function(grunt) {
         'build/css/website.css': 'src/css/website.scss',
         'build/css/large_flags_overrides.css': 'src/css/large_flags_overrides.scss',
         'build/css/playground.css': 'src/css/playground.scss',
+        'build/css/docs.css': 'src/css/docs.scss',
         'build/css/homepage.css': 'src/css/homepage.scss',
       }
     },

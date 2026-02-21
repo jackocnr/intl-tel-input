@@ -54,6 +54,7 @@ module.exports = function (grunt) {
     },
     website_css: makeCacheBustTask("build/css/website.css"),
     homepage_css: makeCacheBustTask("build/css/homepage.css"),
+    docs_css: makeCacheBustTask("build/css/docs.css"),
     playground_css: makeCacheBustTask("build/css/playground.css"),
     large_flags_overrides_css: makeCacheBustTask("build/css/large_flags_overrides.css"),
 
