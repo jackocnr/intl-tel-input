@@ -34,6 +34,15 @@ const iso2ModalTableBody = document.querySelector("#itiPlaygroundIso2ModalTableB
 
 const KEEP_DROPDOWN_OPEN_PARAM = "keepDropdownOpen";
 
+const presetsSelect = document.querySelector("#playgroundPresetsSelect");
+if (presetsSelect) {
+  presetsSelect.addEventListener("change", function () {
+    if (this.value) window.location.href = this.value;
+    // reset the selection, as the longer option text doesn't fit in the box
+    presetsSelect.selectedIndex = 0;
+  });
+}
+
 function shouldDisableKeepDropdownOpen(state) {
   return state.useFullscreenPopup || !state.allowDropdown;
 }
