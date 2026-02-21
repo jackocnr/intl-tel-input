@@ -15,7 +15,7 @@ A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source 
 
 You can see a live demo and example code on the [Svelte component](/examples/svelte-component) example page.
 
-Try it for yourself by downloading and building the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run svelte:demo` and copy the given URL into your browser. By default, this is set up to show the validation demo - you can change this by locating the `"svelte:demo"` task in the scripts section of package.json, and updating the demo path accordingly. View a list of available demos [here](https://github.com/jackocnr/intl-tel-input/tree/master/svelte/demo).
+Try it for yourself by downloading and building the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run svelte:demo` and copy the given URL into your browser. By default, this is set up to show the validation demo - you can change this by locating the `"svelte:demo"` task in the scripts section of package.json, and updating the demo path accordingly. View a list of [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/svelte/demo).
 
 ## Getting Started
 

@@ -103,7 +103,7 @@ We highly recommend you [load the included utils.js](/docs/utils#loading-the-uti
 
 You can always get the full international number (including country code) using [`getNumber`](/docs/methods#getnumber), then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country* and format it according to the options you specify (e.g. when using [`nationalMode`](/docs/options#nationalmode) it will automatically display the number in national format, removing the international dial code).
 
-If you know the user's country, you can set it with [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"` for the United States). If you don't, we recommend setting [`initialCountry`](/docs/options#initialcountry) to `"auto"` (along with the [`geoIpLookup`](/docs/options#geoiplookup) option) to determine the user's country based on their IP address - [see example](/examples/lookup-country).
+If you know the user's country, you can set it with [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"` for the United States). If you don't, we recommend setting `initialCountry` to `"auto"` (along with the [`geoIpLookup`](/docs/options#geoiplookup) option) to determine the user's country based on their IP address - [see example](/examples/lookup-country).
 
 If you know the user's language, there is a built in way to translate the country names and user interface strings - [see example](/examples/internationalisation).
 
