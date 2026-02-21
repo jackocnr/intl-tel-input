@@ -297,7 +297,7 @@ module.exports = function (grunt) {
       markupPath: "src/examples/html/validation.html",
       includeItiScript: true,
       extraData: () => ({
-        demo_note: `<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <u>mobile</u> and <u>fixed line</u> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
+        demo_note: `<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
       }),
     },
     pageExtra: {
@@ -313,7 +313,7 @@ module.exports = function (grunt) {
       markupPath: "src/examples/html/validation.html",
       includeItiScript: true,
       extraData: () => ({
-        demo_note: `<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <u>mobile</u> and <u>fixed line</u> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
+        demo_note: `<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
       }),
     },
     pageExtra: {
