@@ -129,7 +129,11 @@ Default: `true on mobile devices, false otherwise`
 
 Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), to make better use of the limited space (similar to how a native `<select>` works), and as an inline dropdown on larger devices/screens. Play with this option in the [Playground](/playground).
 
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/mobile2.png" alt="Mobile screenshot" width="270" height="512" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/img/iti-mobile-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="/img/iti-mobile-light.png">
+  <img width="350" height="637" alt="Separate dial code" src="/img/iti-mobile-light.png">
+</picture>
 
 ## Placeholder Options
 
