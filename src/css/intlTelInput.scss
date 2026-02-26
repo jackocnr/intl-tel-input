@@ -18,11 +18,10 @@
   --iti-search-clear-icon-height: 13px;
   //* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control.
   --iti-border-width: 1px;
-  //* Arrow height must be an even number as it gets halved when calculating arrow width
-  --iti-arrow-height: 4px;
-  --iti-arrow-width: calc((var(--iti-arrow-height) / 2) * 3);
-  --iti-triangle-border: calc(var(--iti-arrow-width) / 2);
-  --iti-arrow-padding: 6px;
+  //* Used for the dropdown arrow
+  --iti-arrow-size: 5px;
+  --iti-arrow-width: 1.5px;
+  --iti-arrow-padding: 7px;
 
   //* NOTE: image paths are now defined in intlTelInputWithAssets.scss
 
@@ -110,17 +109,18 @@
 
   &__arrow {
     margin-left: var(--iti-arrow-padding);
+    margin-top: -2px;
 
-    //* CSS triangle.
-    width: 0;
-    height: 0;
-    border-left: var(--iti-triangle-border) solid transparent;
-    border-right: var(--iti-triangle-border) solid transparent;
-    border-top: var(--iti-arrow-height) solid var(--iti-icon-color);
+    width: var(--iti-arrow-size);
+    height: var(--iti-arrow-size);
+    box-sizing: border-box;
+    border-right: var(--iti-arrow-width) solid var(--iti-icon-color);
+    border-bottom: var(--iti-arrow-width) solid var(--iti-icon-color);
+    transform: rotate(45deg);
 
     &--up {
-      border-top: none;
-      border-bottom: var(--iti-arrow-height) solid var(--iti-icon-color);
+      margin-top: 4px;
+      transform: rotate(-135deg);
     }
   }
 
