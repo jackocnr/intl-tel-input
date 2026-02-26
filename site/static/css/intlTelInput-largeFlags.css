@@ -9,9 +9,8 @@
   --iti-globe-height: 16px;
   --iti-search-clear-icon-height: 13px;
   --iti-border-width: 1px;
-  --iti-arrow-height: 4px;
-  --iti-arrow-width: calc((var(--iti-arrow-height) / 2) * 3);
-  --iti-triangle-border: calc(var(--iti-arrow-width) / 2);
+  --iti-arrow-size: 6px;
+  --iti-arrow-border-width: 1.5px;
   --iti-arrow-padding: 6px;
   --iti-flag-sprite-width: 5856px;
   --iti-flag-sprite-height: 18px;
@@ -72,15 +71,17 @@
 }
 .iti__arrow {
   margin-left: var(--iti-arrow-padding);
-  width: 0;
-  height: 0;
-  border-left: var(--iti-triangle-border) solid transparent;
-  border-right: var(--iti-triangle-border) solid transparent;
-  border-top: var(--iti-arrow-height) solid var(--iti-icon-color);
+  margin-top: -2px;
+  width: var(--iti-arrow-size);
+  height: var(--iti-arrow-size);
+  box-sizing: border-box;
+  border-right: var(--iti-arrow-border-width) solid var(--iti-icon-color);
+  border-bottom: var(--iti-arrow-border-width) solid var(--iti-icon-color);
+  transform: rotate(45deg);
 }
 .iti__arrow--up {
-  border-top: none;
-  border-bottom: var(--iti-arrow-height) solid var(--iti-icon-color);
+  margin-top: 4px;
+  transform: rotate(-135deg);
 }
 .iti__dropdown-content {
   border-radius: 3px;
