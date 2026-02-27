@@ -3,22 +3,24 @@
 
 :root {
   //* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus.
-  --iti-hover-color: rgba(0, 0, 0, 0.05); //* Used as the bg color for both the selected country and the dropdown items, on hover.
-  --iti-border-color: #ccc; //* Used for both the dropdown border, and the divider under the country search input.
+  //* Used as the bg color for both the selected country and the dropdown items, on hover.
+  --iti-hover-color: rgba(0, 0, 0, 0.05);
+  //* Used for both the dropdown border, and the divider under the country search input.
+  --iti-border-color: #ccc;
   --iti-dropdown-bg: white;
-  //* icons include: arrow icon, globe icon (selected country empty state), search magnifying glass icon, search clear icon
+  //* icons include: arrow icon, globe icon, search icon, clear icon, check icon
   --iti-icon-color: #555;
-
-  --iti-spacer-horizontal: 8px;
+  // horizontal spacing around the flag, country name, search icon, clear icon, check icon etc
+  --iti-spacer-horizontal: 10px;
   --iti-flag-height: #{$flag-height};
   --iti-flag-width: #{$flag-width};
   //* Separate height for the globe icon, as it's much thinner than the flags, so nice to have it a bit taller. This is also re-used for the search icon.
-  --iti-globe-height: 16px;
+  --iti-globe-icon-size: 17px;
   //* Separate height for the search clear icon, which looks too big if it's the same as the others.
-  --iti-search-clear-icon-height: 13px;
+  --iti-clear-icon-size: 15px;
   //* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control.
   --iti-border-width: 1px;
-  //* Used for the dropdown arrow
+  //* Dropdown arrow
   --iti-arrow-size: 5px;
   --iti-arrow-width: 1.5px;
   --iti-arrow-padding: 7px;
@@ -145,8 +147,10 @@
     width: 100%;
     border-width: 0;
     border-radius: 3px;
-    padding-left: 30px; //* Space for inline search icon.
-    padding-right: 28px; //* Space for clear button.
+    //* Space for search icon.
+    padding-left: calc(var(--iti-spacer-horizontal) + var(--iti-globe-icon-size) + var(--iti-spacer-horizontal));
+    //* Space for clear button.
+    padding-right: calc(var(--iti-spacer-horizontal) + var(--iti-clear-icon-size) + var(--iti-spacer-horizontal));
 
     //* RTL: put the icon on the right instead.
     [dir="rtl"] & {
@@ -174,17 +178,17 @@
   }
   &__search-icon {
     position: absolute;
-    left: 8px;
+    left: var(--iti-spacer-horizontal);
     display: flex;
     pointer-events: none;
   }
   [dir="rtl"] &__search-icon {
     left: auto;
-    right: 8px;
+    right: var(--iti-spacer-horizontal);
   }
   &__search-icon-svg {
-    width: var(--iti-globe-height);
-    height: var(--iti-globe-height);
+    width: var(--iti-globe-icon-size);
+    height: var(--iti-globe-icon-size);
     display: block;
     stroke: var(--iti-icon-color);
     fill: none;
@@ -192,12 +196,13 @@
   }
   &__search-clear {
     position: absolute;
-    right: 4px;
+    // half the spacer value as the other half is in the padding
+    right: calc(var(--iti-spacer-horizontal) / 2);
     background: transparent;
     border: 0;
     border-radius: 3px; // nice on hover state
     cursor: pointer;
-    padding: 5px;
+    padding: calc(var(--iti-spacer-horizontal) / 2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -211,13 +216,13 @@
     }
   }
   &__search-clear-svg {
-    width: var(--iti-search-clear-icon-height);
-    height: var(--iti-search-clear-icon-height);
+    width: var(--iti-clear-icon-size);
+    height: var(--iti-clear-icon-size);
     display: block;
   }
   [dir="rtl"] &__search-clear {
     right: auto;
-    left: 4px;
+    left: var(--iti-spacer-horizontal);
   }
   &__search-clear:hover, &__search-clear:focus-visible {
     background: var(--iti-hover-color);
@@ -271,16 +276,14 @@
 
   //* Check icon shown on the right for the selected country.
   &__country-check {
-    // align with clear icon which has padding:5px and right:4px, so is 9px from right edge
-    // here, the parent list item has padding:8px, so add 1px to make it 9px from right edge
-    margin: 0 1px 0 var(--iti-spacer-horizontal);
+    margin-left: var(--iti-spacer-horizontal);
     display: flex;
     align-items: center;
     color: var(--iti-icon-color);
   }
   &__country-check-svg {
-    width: var(--iti-search-clear-icon-height);
-    height: var(--iti-search-clear-icon-height);
+    width: var(--iti-clear-icon-size);
+    height: var(--iti-clear-icon-size);
     display: block;
   }
 
@@ -443,7 +446,7 @@
 .iti__globe {
   background: none;
   box-shadow: none;
-  height: var(--iti-globe-height);
+  height: var(--iti-globe-icon-size);
   display: flex;
   align-items: center;
   justify-content: center;
