@@ -3,6 +3,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import IntlTelInput from "intl-tel-input/angular";
 import "intl-tel-input/styles";
 
+const loadUtilsFn = () => import("intl-tel-input/utils");
+
 @Component({
   selector: "#app",
   template: `
@@ -11,7 +13,8 @@ import "intl-tel-input/styles";
         #telInput
         formControlName="phone"
         name="phone"
-        [initOptions]="initOptions"
+        initialCountry="us"
+        [loadUtils]="loadUtils"
       />
       <button type="submit">Validate</button>
       <div class="notice">{{ noticeText }}</div>
@@ -24,10 +27,7 @@ export class AppComponent {
   @ViewChild("telInput") telInput;
   hasValidated = false;
 
-  initOptions = {
-    initialCountry: "us",
-    loadUtils: () => import("intl-tel-input/utils"),
-  };
+  loadUtils = loadUtilsFn;
 
   fg = new FormGroup({
     phone: new FormControl<string>("", [Validators.required]),

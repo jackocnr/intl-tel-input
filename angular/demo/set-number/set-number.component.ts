@@ -10,9 +10,7 @@ import IntlTelInput, { PHONE_ERROR_MESSAGES } from '../../src/intl-tel-input/ang
         (numberChange)="handleNumberChange($event)"
         (validityChange)="handleValidityChange($event)"
         (errorCodeChange)="handleErrorCodeChange($event)"
-        [initOptions]="{
-          initialCountry: 'us',
-        }"
+        initialCountry="us"
       />
       <button class="button" type="button" (click)="handleSetNumber()">
         Set Number

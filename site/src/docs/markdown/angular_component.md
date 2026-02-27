@@ -56,9 +56,7 @@ import "intl-tel-input/styles";
   #telInput
   (numberChange)="handleNumberChange($event)"
   (validityChange)="handleValidityChange($event)"
-  [initOptions]="{
-    initialCountry: 'us',
-  }"
+  initialCountry="us"
 />
 ```
 
@@ -85,11 +83,21 @@ Default: `""`
 
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
 
-###### initOptions
-Type: `Object`  
-Default: `{}`  
+###### Initialisation options
 
-An object containing the [initialisation options](https://github.com/jackocnr/intl-tel-input?tab=readme-ov-file#initialisation-options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
+All of the plugin's [initialisation options](/docs/options) are supported as individual Angular component inputs using the same option name.
+
+For example, if you're migrating from older usage like:
+
+```html
+<intl-tel-input [initOptions]="{ initialCountry: 'us' }" />
+```
+
+Use:
+
+```html
+<intl-tel-input initialCountry="us" />
+```
 
 ###### inputProps
 Type: `Object`  

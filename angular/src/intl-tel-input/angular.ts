@@ -23,7 +23,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from "@angular/forms";
-import { SomeOptions } from "../modules/types/public-api";
+import type { AllOptions, SomeOptions } from "../modules/types/public-api";
 
 export { intlTelInput };
 
@@ -80,7 +80,37 @@ class IntlTelInput
   @Input() usePreciseValidation: boolean = false;
   @Input() inputProps: object = {};
   @Input() disabled?: boolean;
-  @Input() initOptions: SomeOptions = {};
+
+  // Plugin initialisation options (one @Input per option)
+  @Input() allowDropdown?: AllOptions["allowDropdown"];
+  @Input() allowedNumberTypes?: AllOptions["allowedNumberTypes"];
+  @Input() allowNumberExtensions?: AllOptions["allowNumberExtensions"];
+  @Input() allowPhonewords?: AllOptions["allowPhonewords"];
+  @Input() autoPlaceholder?: AllOptions["autoPlaceholder"];
+  @Input() containerClass?: AllOptions["containerClass"];
+  @Input() countryNameLocale?: AllOptions["countryNameLocale"];
+  @Input() countryOrder?: AllOptions["countryOrder"];
+  @Input() countrySearch?: AllOptions["countrySearch"];
+  @Input() customPlaceholder?: AllOptions["customPlaceholder"];
+  @Input() dropdownAlwaysOpen?: AllOptions["dropdownAlwaysOpen"];
+  @Input() dropdownContainer?: AllOptions["dropdownContainer"];
+  @Input() excludeCountries?: AllOptions["excludeCountries"];
+  @Input() fixDropdownWidth?: AllOptions["fixDropdownWidth"];
+  @Input() formatAsYouType?: AllOptions["formatAsYouType"];
+  @Input() formatOnDisplay?: AllOptions["formatOnDisplay"];
+  @Input() geoIpLookup?: AllOptions["geoIpLookup"];
+  @Input() hiddenInput?: AllOptions["hiddenInput"];
+  @Input() i18n?: AllOptions["i18n"];
+  @Input() initialCountry?: AllOptions["initialCountry"];
+  @Input() loadUtils?: AllOptions["loadUtils"];
+  @Input() nationalMode?: AllOptions["nationalMode"];
+  @Input() onlyCountries?: AllOptions["onlyCountries"];
+  @Input() placeholderNumberType?: AllOptions["placeholderNumberType"];
+  @Input() searchInputClass?: AllOptions["searchInputClass"];
+  @Input() separateDialCode?: AllOptions["separateDialCode"];
+  @Input() showFlags?: AllOptions["showFlags"];
+  @Input() strictMode?: AllOptions["strictMode"];
+  @Input() useFullscreenPopup?: AllOptions["useFullscreenPopup"];
 
   @Output() numberChange = new EventEmitter<string>();
   @Output() countryChange = new EventEmitter<string>();
@@ -110,7 +140,7 @@ class IntlTelInput
 
   ngOnInit() {
     if (this.inputRef.nativeElement) {
-      this.iti = intlTelInput(this.inputRef.nativeElement, this.initOptions);
+      this.iti = intlTelInput(this.inputRef.nativeElement, this.buildInitOptions());
     }
 
     this.inputRef.nativeElement.addEventListener(
@@ -119,6 +149,44 @@ class IntlTelInput
     );
 
     this.applyInputProps();
+  }
+
+  private buildInitOptions(): SomeOptions {
+    const options: Partial<AllOptions> = {
+      allowDropdown: this.allowDropdown,
+      allowedNumberTypes: this.allowedNumberTypes,
+      allowNumberExtensions: this.allowNumberExtensions,
+      allowPhonewords: this.allowPhonewords,
+      autoPlaceholder: this.autoPlaceholder,
+      containerClass: this.containerClass,
+      countryNameLocale: this.countryNameLocale,
+      countryOrder: this.countryOrder,
+      countrySearch: this.countrySearch,
+      customPlaceholder: this.customPlaceholder,
+      dropdownAlwaysOpen: this.dropdownAlwaysOpen,
+      dropdownContainer: this.dropdownContainer,
+      excludeCountries: this.excludeCountries,
+      fixDropdownWidth: this.fixDropdownWidth,
+      formatAsYouType: this.formatAsYouType,
+      formatOnDisplay: this.formatOnDisplay,
+      geoIpLookup: this.geoIpLookup,
+      hiddenInput: this.hiddenInput,
+      i18n: this.i18n,
+      initialCountry: this.initialCountry,
+      loadUtils: this.loadUtils,
+      nationalMode: this.nationalMode,
+      onlyCountries: this.onlyCountries,
+      placeholderNumberType: this.placeholderNumberType,
+      searchInputClass: this.searchInputClass,
+      separateDialCode: this.separateDialCode,
+      showFlags: this.showFlags,
+      strictMode: this.strictMode,
+      useFullscreenPopup: this.useFullscreenPopup,
+    };
+
+    return Object.fromEntries(
+      Object.entries(options).filter(([, value]) => value !== undefined),
+    ) as SomeOptions;
   }
 
   ngAfterViewInit() {

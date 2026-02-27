@@ -10,9 +10,7 @@ import IntlTelInput from '../../src/intl-tel-input/angularWithUtils';
         #telInput
         formControlName="phone"
         name="phone"
-        [initOptions]="{
-          initialCountry: 'us',
-        }"
+        initialCountry="us"
       />
       <button class="button" type="submit" [disabled]="!fg.valid">
         Validate

@@ -13,6 +13,9 @@ const errorMap = [
   "Invalid number",
 ];
 
+// @ts-expect-error Vite/ESM dynamic import is using an EJS-templated URL string.
+const loadUtilsFn = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>");
+
 @Component({
   selector: "#app",
   template: `
@@ -22,7 +25,9 @@ const errorMap = [
           #telInput
           formControlName="phone"
           name="phone"
-          [initOptions]="initOptions"
+          initialCountry="us"
+          [loadUtils]="loadUtils"
+          searchInputClass="form-control"
           [inputProps]="{ class: 'form-control', title: 'Enter your phone number' }"
         />
       </div>
@@ -39,12 +44,7 @@ export class AppComponent {
   @ViewChild("telInput") telInput?: InstanceType<typeof IntlTelInput>;
   private hasValidated = false;
 
-  initOptions = {
-    initialCountry: "us",
-    // @ts-expect-error Vite/ESM dynamic import is using an EJS-templated URL string.
-    loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
-    searchInputClass: "form-control",
-  };
+  loadUtils = loadUtilsFn;
 
   fg: FormGroup = new FormGroup({
     phone: new FormControl<string>("", [Validators.required]),
