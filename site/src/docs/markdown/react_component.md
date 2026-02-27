@@ -32,11 +32,9 @@ import IntlTelInput from "intl-tel-input/reactWithUtils";
 import "intl-tel-input/styles";
 
 <IntlTelInput
-    onChangeNumber={setNumber}
-    onChangeValidity={setIsValid}
-    initOptions={{
-        initialCountry: "us",
-    }}
+  onChangeNumber={setNumber}
+  onChangeValidity={setIsValid}
+  initialCountry="us"
 />
 ```
 
@@ -60,11 +58,21 @@ Default: `""`
 
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input and so will ignore any changes to this value.
 
-###### initOptions
-Type: `Object`  
-Default: `{}`  
+###### Initialisation options
 
-An object containing the [initialisation options](/docs/options) to pass to the plugin. These can be used exactly the same way as with the main JavaScript plugin.
+All of the plugin's [initialisation options](/docs/options) are supported as individual React props using the same option name.
+
+For example, if you're migrating from older usage like:
+
+```js
+<IntlTelInput initOptions={{ initialCountry: "us" }} />
+```
+
+Use:
+
+```js
+<IntlTelInput initialCountry="us" />
+```
 
 ###### inputProps
 Type: `Object`  

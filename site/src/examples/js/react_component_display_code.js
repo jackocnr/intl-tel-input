@@ -23,10 +23,8 @@ const App = () => {
         onChangeNumber={setNumber}
         onChangeValidity={setIsValid}
         onChangeErrorCode={setErrorCode}
-        initOptions={{
-          initialCountry: "us",
-          loadUtils: () => import("intl-tel-input/utils"),
-        }}
+        initialCountry="us"
+        loadUtils={() => import("intl-tel-input/utils")}
         inputProps={{
           name: "phone",
           onBlur: () => setNoticeMode("blur"),

@@ -15,7 +15,7 @@ const App = (): ReactElement => {
   const [number, setNumber] = useState<string | null>(null);
   const [errorCode, setErrorCode] = useState<number | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  
+
   const handleSubmit = (): void => {
     if (isValid) {
       setNotice(`Valid number: ${number}`);
@@ -24,16 +24,14 @@ const App = (): ReactElement => {
       setNotice(`Error: ${errorMessage}`);
     }
   };
-  
+
   return (
     <form>
       <IntlTelInput
         onChangeNumber={setNumber}
         onChangeValidity={setIsValid}
         onChangeErrorCode={setErrorCode}
-        initOptions={{
-          initialCountry: "us",
-        }}
+        initialCountry="us"
       />
       <button className="button" type="button" onClick={handleSubmit}>Validate</button>
       {notice && <div className="notice">{notice}</div>}
