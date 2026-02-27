@@ -45,7 +45,7 @@
         @changeNumber="number = $event"
         @changeValidity="isValid = $event"
         @changeErrorCode="errorCode = $event"
-        :options='{
+        :initOptions='{
           initialCountry: "us",
           loadUtils: () => import("<%= cacheBust(`/intl-tel-input/js/utils.js`) %>"),
           searchInputClass: "form-control",

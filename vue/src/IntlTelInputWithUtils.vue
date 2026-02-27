@@ -6,11 +6,11 @@ import { onMounted, onUnmounted, ref, shallowRef, watch, computed } from "vue";
 import type { InputHTMLAttributes } from "vue";
 
 interface Props {
-  options?: SomeOptions;
+  initOptions?: SomeOptions;
   usePreciseValidation?: boolean;
   disabled?: boolean;
   inputProps?: InputHTMLAttributes;
-  value?: string | null;
+  initialValue?: string | null;
   modelValue?: string | null;
 }
 
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   usePreciseValidation: false,
   inputProps: () => ({}),
-  options: () => ({}),
+  initOptions: () => ({}),
 });
 
 defineOptions({ inheritAttrs: false });
@@ -48,7 +48,12 @@ const sanitizedInputProps = computed(() => {
   return rest;
 });
 
-const displayed = computed(() => props.value ?? props.modelValue ?? "");
+const displayed = computed(
+  () =>
+    props.modelValue ??
+    props.initialValue ??
+    "",
+);
 
 const input = ref<HTMLInputElement | null>(null);
 // Use shallowRef so Vue does not Proxy-wrap the Iti class instance.
@@ -112,7 +117,7 @@ const updateCountry = () => {
 
 onMounted(() => {
   if (input.value) {
-    instance.value = intlTelInput(input.value, props.options);
+    instance.value = intlTelInput(input.value, props.initOptions);
 
     if (displayed.value) {
       instance.value.setNumber(displayed.value);
@@ -156,7 +161,7 @@ watch(
     updateValidity();
   },
   { flush: "post" },
-)
+);
 
 onUnmounted(() => instance.value?.destroy());
 
