@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IntlTelInputComponent } from '../../src/intl-tel-input/angularWithUtils';
+import IntlTelInput from '../../src/intl-tel-input/angularWithUtils';
 
 @Component({
   selector: "app-root",
@@ -29,10 +29,10 @@ import { IntlTelInputComponent } from '../../src/intl-tel-input/angularWithUtils
     </form>
   `,
   standalone: true,
-  imports: [IntlTelInputComponent, ReactiveFormsModule]
+  imports: [IntlTelInput, ReactiveFormsModule]
 })
 export class AppComponent {
-  @ViewChild('telInput') telInput!: IntlTelInputComponent;
+  @ViewChild('telInput') telInput!: IntlTelInput;
 
   fg: FormGroup = new FormGroup({
     phone: new FormControl<string>('', [Validators.required]),

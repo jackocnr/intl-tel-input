@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IntlTelInputComponent, PHONE_ERROR_MESSAGES } from '../../src/intl-tel-input/angularWithUtils';
+import IntlTelInput, { PHONE_ERROR_MESSAGES } from '../../src/intl-tel-input/angularWithUtils';
 
 @Component({
   selector: "app-root",
@@ -22,7 +22,7 @@ import { IntlTelInputComponent, PHONE_ERROR_MESSAGES } from '../../src/intl-tel-
     </div>
   `,
   standalone: true,
-  imports: [IntlTelInputComponent]
+  imports: [IntlTelInput]
 })
 export class AppComponent {
   isValid: boolean | null = null;

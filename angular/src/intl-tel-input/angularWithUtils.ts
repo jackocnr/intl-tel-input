@@ -55,17 +55,17 @@ export const PHONE_ERROR_MESSAGES: string[] = [
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => IntlTelInputComponent),
+      useExisting: forwardRef(() => IntlTelInput),
       multi: true,
     },
     {
       provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => IntlTelInputComponent),
+      useExisting: forwardRef(() => IntlTelInput),
       multi: true,
     },
   ],
 })
-export class IntlTelInputComponent
+class IntlTelInput
   implements
     OnInit,
     AfterViewInit,
@@ -293,3 +293,4 @@ export class IntlTelInputComponent
     this.onValidatorChange = fn;
   }
 }
+export default IntlTelInput;
