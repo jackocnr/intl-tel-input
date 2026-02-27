@@ -5,9 +5,7 @@ import IntlTelInput from '../../src/intl-tel-input/angularWithUtils';
   selector: "app-root",
   template: `
     <intl-tel-input
-      [initOptions]="{
-        initialCountry: 'us',
-      }"
+      initialCountry="us"
     />
   `,
   standalone: true,
