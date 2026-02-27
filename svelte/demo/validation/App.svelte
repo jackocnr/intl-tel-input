@@ -29,7 +29,7 @@
     onChangeNumber={(n) => number = n}
     onChangeValidity={(v) => isValid = v}
     onChangeErrorCode={(e) => errorCode = e}
-    initOptions={{ initialCountry: 'us' }}
+    initialCountry="us"
   />
   <button class="button" type="button" onclick={handleSubmit}>Validate</button>
   {#if notice}

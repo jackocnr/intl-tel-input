@@ -22,10 +22,8 @@
     onChangeNumber={(n) => (number = n)}
     onChangeValidity={(v) => (isValid = v)}
     onChangeErrorCode={(e) => (errorCode = e)}
-    initOptions={{
-      initialCountry: "us",
-      loadUtils: () => import("intl-tel-input/utils"),
-    }}
+    initialCountry="us"
+    loadUtils={() => import("intl-tel-input/utils")}
     inputProps={{
       onblur: () => (noticeMode = "blur"),
     }}
