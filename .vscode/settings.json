@@ -5,6 +5,9 @@
     "editor.formatOnSaveMode": "file", //* required to format on save
     "vs-code-prettier-eslint.prettierLast": false, //* set as "true" to run 'prettier' last not first
     "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.tsserver.exclude": [
+      "**/site/src/examples/js/angular_component_display_code.ts"
+    ],
     "files.associations": {
       "LICENSE": "text",
     },

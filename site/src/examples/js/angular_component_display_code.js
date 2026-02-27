@@ -1,6 +1,6 @@
 import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { IntlTelInputComponent } from "intl-tel-input/angular";
+import IntlTelInput from "intl-tel-input/angular";
 import "intl-tel-input/styles";
 
 @Component({
@@ -18,7 +18,7 @@ import "intl-tel-input/styles";
     </form>
   `,
   standalone: true,
-  imports: [IntlTelInputComponent, ReactiveFormsModule],
+  imports: [IntlTelInput, ReactiveFormsModule],
 })
 export class AppComponent {
   @ViewChild("telInput") telInput;

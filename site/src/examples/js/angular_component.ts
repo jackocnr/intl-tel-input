@@ -3,8 +3,7 @@ import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/IntlTelInput.js";
-import type { IntlTelInputComponent as IntlTelInputComponentType } from "../../../build/intl-tel-input/angular/types/intl-tel-input/angular";
+import IntlTelInput from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 
 const errorMap = [
   "Invalid number",
@@ -42,10 +41,10 @@ const errorMap = [
     </form>
   `,
   standalone: true,
-  imports: [IntlTelInputComponent, ReactiveFormsModule],
+  imports: [IntlTelInput, ReactiveFormsModule],
 })
 export class AppComponent {
-  @ViewChild("telInput") telInput?: IntlTelInputComponentType;
+  @ViewChild("telInput") telInput?: InstanceType<typeof IntlTelInput>;
 
   number = "";
   isValid = false;
