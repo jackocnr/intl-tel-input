@@ -3,5 +3,5 @@
 </script>
 
 <IntlTelInput
-  options={{ initialCountry: 'us' }}
+  initOptions={{ initialCountry: 'us' }}
 />
