@@ -23,7 +23,7 @@
       @changeNumber="handleChangeNumber"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      :options="{
+      :initOptions="{
         initialCountry: 'us',
         loadUtils: () => import('intl-tel-input/utils'),
       }"

@@ -4,5 +4,5 @@ import IntlTelInput from "../../build/exports/IntlTelInputWithUtils";
 </script>
 
 <template>
-  <IntlTelInput :options="{ initialCountry: 'us' }" />
+  <IntlTelInput :initOptions="{ initialCountry: 'us' }" />
 </template>

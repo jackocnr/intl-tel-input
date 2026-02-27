@@ -31,7 +31,7 @@ const handleSubmit = () => {
       @changeNumber="number = $event"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      :options="{
+      :initOptions="{
         initialCountry: 'us',
       }"
     />
