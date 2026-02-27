@@ -9,7 +9,7 @@ import React, {
   useImperativeHandle,
   useCallback,
 } from "react";
-import { SomeOptions } from "../modules/types/public-api";
+import type { SomeOptions } from "../modules/types/public-api";
 
 // make this available as a named export, so react users can access globals like intlTelInput.utils
 export { intlTelInput };
@@ -18,14 +18,13 @@ type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
 
 const noop = () => {};
 
-type ItiProps = {
+type ItiProps = SomeOptions & {
   initialValue?: string;
   onChangeNumber?: (number: string) => void;
   onChangeCountry?: (country: string) => void;
   onChangeValidity?: (valid: boolean) => void;
   onChangeErrorCode?: (errorCode: number | null) => void;
   usePreciseValidation?: boolean;
-  initOptions?: SomeOptions;
   inputProps?: InputProps;
   disabled?: boolean | undefined;
   readOnly?: boolean | undefined;
@@ -45,10 +44,10 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     onChangeValidity = noop,
     onChangeErrorCode = noop,
     usePreciseValidation = false,
-    initOptions = {},
     inputProps = {},
     disabled = undefined,
     readOnly = undefined,
+    ...initOptions
   }: ItiProps,
   ref: React.ForwardedRef<IntlTelInputRef>,
 ) {
@@ -107,7 +106,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
 
   useEffect(() => {
     if (inputRef.current) {
-      itiRef.current = intlTelInput(inputRef.current, initOptions);
+      itiRef.current = intlTelInput(inputRef.current, initOptions as SomeOptions);
     }
     return (): void => {
       itiRef.current?.destroy();

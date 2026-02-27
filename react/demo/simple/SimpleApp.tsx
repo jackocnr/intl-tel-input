@@ -4,9 +4,7 @@ import IntlTelInput from "../../src/intl-tel-input/reactWithUtils";
 
 const App = (): ReactElement => (
   <IntlTelInput
-    initOptions={{
-      initialCountry: "us",
-    }}
+    initialCountry="us"
   />
 );
 
