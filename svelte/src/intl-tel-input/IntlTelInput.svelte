@@ -9,9 +9,9 @@
     disabled = false,
     readonly = false,
     inputProps = {},
-    options = {},
+    initOptions = {},
     usePreciseValidation = false,
-    value = "",
+    initialValue = "",
     onChangeNumber,
     onChangeCountry,
     onChangeValidity,
@@ -20,8 +20,8 @@
     disabled?: boolean;
     readonly?: boolean;
     inputProps?: Record<string, unknown>;
-    options?: SomeOptions;
-    value?: string;
+    initOptions?: SomeOptions;
+    initialValue?: string;
     usePreciseValidation?: boolean;
     onChangeNumber?: (number: string) => void;
     onChangeCountry?: (country: string) => void;
@@ -93,9 +93,9 @@
   // Lifecycle
   onMount(() => {
     if (inputElement) {
-      instance = intlTelInput(inputElement, options);
+      instance = intlTelInput(inputElement, initOptions);
       inputElement.addEventListener("countrychange", updateCountry);
-      if (value) instance.setNumber(value);
+      if (initialValue) instance.setNumber(initialValue);
       if (disabled) instance.setDisabled(disabled);
       if (readonly) instance.setReadonly(readonly);
 

@@ -22,7 +22,7 @@
     onChangeNumber={(n) => (number = n)}
     onChangeValidity={(v) => (isValid = v)}
     onChangeErrorCode={(e) => (errorCode = e)}
-    options={{
+    initOptions={{
       initialCountry: "us",
       loadUtils: () => import("intl-tel-input/utils"),
     }}
