@@ -4,30 +4,31 @@
   import type { SomeOptions } from "../modules/types/public-api";
   import { onMount, onDestroy } from "svelte";
 
-  // Props
-  let {
-    disabled = false,
-    readonly = false,
-    inputProps = {},
-    initOptions = {},
-    usePreciseValidation = false,
-    initialValue = "",
-    onChangeNumber,
-    onChangeCountry,
-    onChangeValidity,
-    onChangeErrorCode,
-  }: {
+  type Props = SomeOptions & {
     disabled?: boolean;
     readonly?: boolean;
     inputProps?: Record<string, unknown>;
-    initOptions?: SomeOptions;
     initialValue?: string;
     usePreciseValidation?: boolean;
     onChangeNumber?: (number: string) => void;
     onChangeCountry?: (country: string) => void;
     onChangeValidity?: (valid: boolean) => void;
     onChangeErrorCode?: (errorCode: number | null) => void;
-  } = $props();
+  };
+
+  // Props
+  let {
+    disabled = false,
+    readonly = false,
+    inputProps = {},
+    usePreciseValidation = false,
+    initialValue = "",
+    onChangeNumber,
+    onChangeCountry,
+    onChangeValidity,
+    onChangeErrorCode,
+    ...initOptions
+  } = $props() as Props;
 
   // State
   let inputElement: HTMLInputElement | undefined = $state();
@@ -93,7 +94,7 @@
   // Lifecycle
   onMount(() => {
     if (inputElement) {
-      instance = intlTelInput(inputElement, initOptions);
+      instance = intlTelInput(inputElement, initOptions as SomeOptions);
       inputElement.addEventListener("countrychange", updateCountry);
       if (initialValue) instance.setNumber(initialValue);
       if (disabled) instance.setDisabled(disabled);

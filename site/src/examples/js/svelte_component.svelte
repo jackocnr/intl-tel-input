@@ -50,11 +50,9 @@
       onChangeNumber={handleChangeNumber}
       onChangeValidity={(v) => (isValid = v)}
       onChangeErrorCode={(e) => (errorCode = e)}
-      initOptions={{
-        initialCountry: "us",
-        loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
-        searchInputClass: "form-control",
-      }}
+      initialCountry="us"
+      loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
+      searchInputClass="form-control"
       inputProps={{
         name: "phone",
         title: "Enter your phone number",
