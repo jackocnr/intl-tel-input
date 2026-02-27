@@ -1,8 +1,8 @@
 :root {
   --iti-spacer-horizontal: 12px;
-  --iti-globe-height: 22px;
-  --iti-search-clear-icon-height: 16px;
-  --iti-arrow-height: 5px;
+  --iti-globe-icon-size: 22px;
+  --iti-clear-icon-size: 16px;
+  --iti-arrow-size: 6px;
   --iti-arrow-padding: 9px;
   --iti-path-flags-1x: url("<%= cacheBust('/img/largeFlags.webp') %>");
   --iti-path-flags-2x: url("<%= cacheBust('/img/largeFlags@2x.webp') %>");
@@ -17,16 +17,6 @@
 .section.demo input,
 .iti__search-input {
   font-size: inherit !important; // bootstrap override
-}
-.iti__search-icon {
-  left: 13px;
-}
-.iti__search-clear {
-  right: 8px;
-}
-input.iti__search-input {
-  padding-left: 44px;
-  padding-right: 40px;
 }
 .iti--inline-dropdown .iti__country-list {
   max-height: 210px;

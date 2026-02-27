@@ -18,10 +18,10 @@ module.exports = function(grunt) {
     const supportedCountryFilenames = supportedCountries.map(country => `${country.iso2}.svg`).sort();
 
     // customise this number to change the size of the flags (NOTE: flags are 4x3 ratio)
-    // must be a multiple of 3
-    const TARGET_HEIGHT = 12;
-
-    const TARGET_WIDTH = (TARGET_HEIGHT / 3) * 4;
+    // must be a multiple of 3, in order to have a (non-rounded) integer width
+    const TARGET_HEIGHT = 15;
+    const FLAG_ASPECT_RATIO = 4 / 3;
+    const TARGET_WIDTH = Math.round(TARGET_HEIGHT * FLAG_ASPECT_RATIO);
     const FLAG_MARGIN = 0;
 
     const specialCases = {
