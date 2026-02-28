@@ -31,9 +31,7 @@ const handleSubmit = () => {
       @changeNumber="number = $event"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      :initOptions="{
-        initialCountry: 'us',
-      }"
+      initialCountry="us"
     />
     <button class="button" type="button" @click="handleSubmit">Validate</button>
     <div v-if="notice" class="notice">{{ notice }}</div>

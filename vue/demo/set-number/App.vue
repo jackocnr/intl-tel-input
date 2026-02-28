@@ -39,7 +39,7 @@ const handleSubmit = () => {
       @changeNumber="number = $event"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      :initOptions="{ initialCountry: 'us' }"
+      initialCountry="us"
     />
     <button class="button" type="button" @click="handleSetNumber">
       Set Number
