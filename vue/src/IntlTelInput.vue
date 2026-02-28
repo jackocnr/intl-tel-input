@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import intlTelInput from "./intl-tel-input";
 import type { SomeOptions } from "./modules/types/public-api";
-import { onMounted, onUnmounted, ref, shallowRef, watch, computed } from "vue";
+import { defaults } from "./modules/core/options";
+import {
+  onMounted,
+  onUnmounted,
+  ref,
+  shallowRef,
+  watch,
+  computed,
+  getCurrentInstance,
+} from "vue";
 import type { InputHTMLAttributes } from "vue";
 
 interface Props {
-  initOptions?: SomeOptions;
   usePreciseValidation?: boolean;
   disabled?: boolean;
   readonly?: boolean;
@@ -14,12 +22,11 @@ interface Props {
   modelValue?: string | null;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props & SomeOptions>(), {
   disabled: false,
   readonly: false,
   usePreciseValidation: false,
   inputProps: () => ({}),
-  initOptions: () => ({}),
 });
 
 defineOptions({ inheritAttrs: false });
@@ -55,6 +62,34 @@ const displayed = computed(
     props.initialValue ??
     "",
 );
+
+const vm = getCurrentInstance();
+
+const hasOwn = (obj: object, key: string): boolean =>
+  Object.prototype.hasOwnProperty.call(obj, key);
+
+const pluginOptionKeys = Object.keys(defaults);
+
+// Vue will coerce absent Boolean props to `false` when props are declared at runtime.
+// That can accidentally override the plugin's own defaults.
+//
+// To preserve plugin defaults, only pass through keys that:
+// 1) are real plugin option keys, and
+// 2) were actually provided by the parent
+const initOptions = computed<SomeOptions>(() => {
+  const rawPassedProps = (vm?.vnode.props ?? {}) as Record<string, unknown>;
+
+  const cleanedOptions: Record<string, unknown> = {};
+  pluginOptionKeys.forEach((optionKey) => {
+    if (!hasOwn(rawPassedProps, optionKey)) {
+      return;
+    }
+    const value = (props as Record<string, unknown>)[optionKey];
+    if (value !== undefined) cleanedOptions[optionKey] = value;
+  });
+
+  return cleanedOptions as SomeOptions;
+});
 
 const input = ref<HTMLInputElement | null>(null);
 // Use shallowRef so Vue does not Proxy-wrap the Iti class instance.
@@ -117,7 +152,7 @@ onMounted(() => {
     return;
   }
 
-  instance.value = intlTelInput(input.value, props.initOptions);
+  instance.value = intlTelInput(input.value, initOptions.value);
 
   if (displayed.value) {
     instance.value.setNumber(displayed.value);

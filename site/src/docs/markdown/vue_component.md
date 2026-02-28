@@ -35,9 +35,7 @@ Then, add something like this to your code:
 
 <template>
   <IntlTelInput
-    :initOptions="{
-      initialCountry: 'us',
-    }"
+    initialCountry="us"
   />
 </template>
 ```
@@ -70,11 +68,21 @@ The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `requ
 
 Note: some keys are reserved for the component/plugin integration and will be ignored if provided via `inputProps`: `type`, `ref`, `@input`/`onInput`, `@countrychange`/`onCountrychange`, `value`, `disabled`. Use the component props (`value`, `disabled`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
 
-###### initOptions
-Type: `Object`  
-Default: `{}`  
+###### Initialisation options
 
-An object containing the [initialisation options](/docs/options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
+All of the plugin's [initialisation options](/docs/options) are supported as individual Vue component props using the same option name.
+
+For example, if you're migrating from older usage like:
+
+```vue
+<IntlTelInput :initOptions="{ initialCountry: 'us' }" />
+```
+
+Use:
+
+```vue
+<IntlTelInput initialCountry="us" />
+```
 
 ###### usePreciseValidation
 Type: `Boolean`

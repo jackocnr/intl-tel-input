@@ -53,11 +53,9 @@
           @changeNumber="handleChangeNumber"
           @changeValidity="isValid = $event"
           @changeErrorCode="errorCode = $event"
-          :initOptions='{
-            initialCountry: "us",
-            loadUtils: () => import("<%= cacheBust(`/intl-tel-input/js/utils.js`) %>"),
-            searchInputClass: "form-control",
-          }'
+          initialCountry="us"
+          :loadUtils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
+          searchInputClass="form-control"
           :inputProps="{
             name: 'phone',
             title: 'Enter your phone number',

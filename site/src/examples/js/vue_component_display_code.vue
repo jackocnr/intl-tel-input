@@ -23,10 +23,8 @@
       @changeNumber="handleChangeNumber"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      :initOptions="{
-        initialCountry: 'us',
-        loadUtils: () => import('intl-tel-input/utils'),
-      }"
+      initialCountry="us"
+      :loadUtils="() => import('intl-tel-input/utils')"
       :inputProps="{
         onBlur: enableValidation,
       }"
