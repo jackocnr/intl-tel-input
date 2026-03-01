@@ -10,9 +10,13 @@
 .DS_Store
 /build/
 /react/build/
+/react/src/intl-tel-input/reactWithUtils.tsx
 /svelte/build/
+/svelte/src/intl-tel-input/IntlTelInputWithUtils.svelte
 /vue/build/
+/vue/src/IntlTelInputWithUtils.vue
 /angular/build/
+/angular/src/intl-tel-input/angularWithUtils.ts
 /*/demo/*/*-bundle.js
 /test-results/
 /playwright-report/
