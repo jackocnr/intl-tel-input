@@ -43,7 +43,7 @@ const sanitizedInputProps = computed(() => {
     type: _type,
     ref: _ref,
     value: _value,
-    // disabled: _disabled,
+    disabled: _disabled,
     onInput: _onInput,
     oninput: _oninput,
     onCountrychange: _onCountrychange,

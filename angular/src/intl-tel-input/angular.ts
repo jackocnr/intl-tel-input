@@ -301,7 +301,7 @@ class IntlTelInput
   private applyInputProps(): void {
     const props = this.inputProps as Record<string, unknown>;
     // Ignore keys that would break functionality
-    const blockedKeys = new Set(["value", "type" /*, "disabled"*/]);
+    const blockedKeys = new Set(["value", "type", "disabled"]);
 
     Object.entries(props).forEach(([key, value]) => {
       if (blockedKeys.has(key)) return;

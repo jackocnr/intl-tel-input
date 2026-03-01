@@ -129,7 +129,7 @@
     // ignore keys that would break functionality
     const {
       value: _value,
-      // disabled: _disabled,
+      disabled: _disabled,
       ...rest
     } = props as Record<string, unknown>;
 

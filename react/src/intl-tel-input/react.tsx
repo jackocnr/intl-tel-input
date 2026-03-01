@@ -134,7 +134,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   // ignore keys that would break functionality
   const {
     value: _value,
-    // disabled: _disabled,
+    disabled: _disabled,
     ...sanitizedInputProps
   } = inputProps as unknown as Record<string, unknown>;
 
