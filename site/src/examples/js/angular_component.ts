@@ -2,7 +2,7 @@ import "zone.js";
 import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 import type { IntlTelInputComponent as IntlTelInputComponentType } from "../../../build/intl-tel-input/angular/types/intl-tel-input/angular";
 
@@ -17,20 +17,28 @@ const errorMap = [
 @Component({
   selector: "#app",
   template: `
-    <form [formGroup]="fg" (ngSubmit)="handleSubmit()" class="row g-2">
+    <form [formGroup]="fg" (ngSubmit)="handleSubmit()" class="row g-2" novalidate>
       <div class="col-auto">
         <intl-tel-input
           #telInput
           formControlName="phone"
-          name="phone"
+          (numberChange)="handleNumberChange($event)"
+          (validityChange)="isValid = $event"
+          (errorCodeChange)="errorCode = $event ?? 0"
+          (blur)="enableValidation()"
           [initOptions]="initOptions"
-          [inputProps]="{ class: 'form-control', title: 'Enter your phone number' }"
+          [inputProps]="inputProps"
         />
+        @if (invalidMsg) {
+          <div class="invalid-feedback d-block">{{ invalidMsg }}</div>
+        }
+        @if (validMsg) {
+          <div class="valid-feedback d-block">{{ validMsg }}</div>
+        }
       </div>
       <div class="col-auto">
-        <button class="btn btn-primary" type="submit">Validate</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
       </div>
-      <div class="notice">{{ noticeText }}</div>
     </form>
   `,
   standalone: true,
@@ -38,7 +46,12 @@ const errorMap = [
 })
 export class AppComponent {
   @ViewChild("telInput") telInput?: IntlTelInputComponentType;
-  private hasValidated = false;
+
+  number = "";
+  isValid = false;
+  errorCode = 0;
+  showValidation = false;
+  submitted = false;
 
   initOptions = {
     initialCountry: "us",
@@ -48,37 +61,48 @@ export class AppComponent {
   };
 
   fg: FormGroup = new FormGroup({
-    phone: new FormControl<string>("", [Validators.required]),
+    phone: new FormControl<string>(""),
   });
 
-  get phone() {
-    return this.fg.get("phone");
+  get inputValidityClass(): string {
+    if (!this.showValidation) return "";
+    return this.number && this.isValid ? "is-valid" : "is-invalid";
   }
 
-  get noticeText(): string | null {
-    const phone = this.phone;
-    if (!phone?.touched) return null;
+  get invalidMsg(): string | null {
+    if (!this.showValidation || this.isValid) return null;
+    return this.number
+      ? errorMap[this.errorCode || 0] || "Invalid number"
+      : "Please enter a number";
+  }
 
-    if (phone.errors?.["required"]) {
-      return "Please enter a number";
-    }
-    if (phone.errors?.["invalidPhone"]) {
-      const errorCode = phone.errors["invalidPhone"].errorCode;
-      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
-      return `Error: ${errorMessage}`;
-    }
+  get validMsg(): string | null {
+    const showValid =
+      this.showValidation && this.number && this.isValid && this.submitted;
+    return showValid ? `Full number: ${this.number}` : null;
+  }
 
-    if (!this.hasValidated || !this.fg.valid) {
-      return null;
-    }
+  get inputProps(): Record<string, unknown> {
+    return {
+      name: "phone",
+      title: "Enter your phone number",
+      required: true,
+      class: `form-control ${this.inputValidityClass}`,
+    };
+  }
 
-    const number = this.telInput?.getInstance?.()?.getNumber();
-    return number ? `Valid number: ${number}` : null;
+  enableValidation(): void {
+    this.showValidation = true;
+  }
+
+  handleNumberChange(newNumber: string): void {
+    this.submitted = false;
+    this.number = newNumber;
   }
 
   handleSubmit(): void {
-    this.phone?.markAsTouched();
-    this.hasValidated = true;
+    this.showValidation = true;
+    this.submitted = true;
   }
 }
 

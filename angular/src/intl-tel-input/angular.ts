@@ -42,6 +42,19 @@ export const PHONE_ERROR_MESSAGES: string[] = [
     <input
       type="tel"
       #inputRef
+      [class]="inputPropsRecord.class || ''"
+      [attr.id]="inputPropsRecord.id ?? null"
+      [attr.name]="inputPropsRecord.name ?? null"
+      [attr.placeholder]="inputPropsRecord.placeholder ?? null"
+      [attr.maxlength]="inputPropsRecord.maxlength ?? null"
+      [attr.minlength]="inputPropsRecord.minlength ?? null"
+      [attr.required]="inputPropsRecord.required ? '' : null"
+      [attr.title]="inputPropsRecord.title ?? null"
+      [attr.tabindex]="inputPropsRecord.tabindex ?? null"
+      [attr.aria-label]="inputPropsRecord['aria-label'] ?? null"
+      [attr.aria-labelledby]="inputPropsRecord['aria-labelledby'] ?? null"
+      [attr.aria-describedby]="inputPropsRecord['aria-describedby'] ?? null"
+      [attr.aria-invalid]="inputPropsRecord['aria-invalid'] ?? null"
       (input)="handleInput()"
       (blur)="handleBlur($event)"
       (focus)="handleFocus($event)"
@@ -96,6 +109,8 @@ export class IntlTelInputComponent
   private iti: Iti | null = null;
   private countryChangeHandler = () => this.handleInput();
 
+  private appliedInputPropKeys = new Set<string>();
+
   private lastEmittedNumber?: string;
   private lastEmittedCountry?: string;
   private lastEmittedValidity?: boolean;
@@ -134,6 +149,10 @@ export class IntlTelInputComponent
   ngOnChanges(changes: SimpleChanges) {
     if (changes["disabled"]) {
       this.iti?.setDisabled(this.disabled || false);
+    }
+
+    if (changes["inputProps"]) {
+      this.applyInputProps();
     }
   }
 
@@ -230,16 +249,52 @@ export class IntlTelInputComponent
     );
   }
 
-  private applyInputProps(): void {
-    const props = this.inputProps as Record<string, unknown>;
-    // Ignore keys that would break functionality
-    const blockedKeys = new Set(["value", "type" /*, "disabled"*/]);
+  get inputPropsRecord(): Record<string, any> {
+    return this.inputProps as Record<string, any>;
+  }
 
+  private applyInputProps(): void {
+    if (!this.inputRef?.nativeElement) return;
+
+    const props = this.inputProps as Record<string, unknown>;
+    // Ignore keys that would break functionality, or are handled via template bindings.
+    const blockedKeys = new Set([
+      "value",
+      "type",
+      // "disabled",
+      // "readonly",
+      "class",
+      "id",
+      "name",
+      "placeholder",
+      "autocomplete",
+      "inputmode",
+      "maxlength",
+      "minlength",
+      "required",
+      "title",
+      "tabindex",
+      "aria-label",
+      "aria-labelledby",
+      "aria-describedby",
+      "aria-invalid",
+    ]);
+
+    const desiredKeys = new Set<string>();
     Object.entries(props).forEach(([key, value]) => {
       if (blockedKeys.has(key)) return;
       if (value === null || value === undefined || value === false) return;
+      desiredKeys.add(key);
       const attributeValue = value === true ? "" : String(value);
       this.inputRef.nativeElement.setAttribute(key, attributeValue);
+      this.appliedInputPropKeys.add(key);
+    });
+
+    // Remove previously-applied attributes that are no longer present.
+    Array.from(this.appliedInputPropKeys).forEach((key) => {
+      if (desiredKeys.has(key)) return;
+      this.inputRef.nativeElement.removeAttribute(key);
+      this.appliedInputPropKeys.delete(key);
     });
   }
 
