@@ -35,6 +35,10 @@ export const PHONE_ERROR_MESSAGES: string[] = [
   "invalid-format",
 ];
 
+const warnInputProp = (prop: string): void => {
+  console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
+};
+
 @Component({
   selector: "intl-tel-input",
   standalone: true,
@@ -310,8 +314,11 @@ class IntlTelInput
   }
 
   private applyInputProps(): void {
+    const { value, disabled, ...sanitisedInputProps } = this.inputProps;
+    if (value !== undefined) warnInputProp("value");
+    if (disabled !== undefined) warnInputProp("disabled");
     const currentKeys = new Set<string>();
-    Object.entries(this.inputProps).forEach(([key, value]) => {
+    Object.entries(sanitisedInputProps).forEach(([key, value]) => {
       currentKeys.add(key);
       this.inputRef.nativeElement.setAttribute(key, value);
     });

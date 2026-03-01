@@ -40,20 +40,22 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-const sanitizedInputProps = computed(() => {
-  // ignore keys that would break functionality
-  const {
-    type: _type,
-    ref: _ref,
-    value: _value,
-    // disabled: _disabled,
-    onInput: _onInput,
-    oninput: _oninput,
-    onCountrychange: _onCountrychange,
-    onCountryChange: _onCountryChange,
-    ...rest
-  } = (props.inputProps ?? {}) as Record<string, unknown>;
+const warnInputProp = (prop: string): void => {
+  console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
+};
 
+const ignoredInputProps = ["type", "ref", "value", "disabled", "onInput", "oninput", "onCountrychange", "onCountryChange"];
+
+const sanitizedInputProps = computed(() => {
+  const input = (props.inputProps ?? {}) as Record<string, unknown>;
+  const rest: Record<string, unknown> = {};
+  for (const [key, val] of Object.entries(input)) {
+    if (ignoredInputProps.includes(key)) {
+      warnInputProp(key);
+    } else {
+      rest[key] = val;
+    }
+  }
   return rest;
 });
 

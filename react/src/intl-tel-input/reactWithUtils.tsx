@@ -14,6 +14,10 @@ import type { SomeOptions } from "../modules/types/public-api";
 // make this available as a named export, so react users can access globals like intlTelInput.utils
 export { intlTelInput };
 
+const warnInputProp = (prop: string): void => {
+  console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
+};
+
 type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
 
 const noop = () => {};
@@ -144,9 +148,11 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   // ignore keys that would break functionality
   const {
     value: _value,
-    // disabled: _disabled,
+    disabled: _disabled,
     ...sanitizedInputProps
   } = inputProps as unknown as Record<string, unknown>;
+  if (_value !== undefined) warnInputProp("value");
+  if (_disabled !== undefined) warnInputProp("disabled");
 
   return (
     <input

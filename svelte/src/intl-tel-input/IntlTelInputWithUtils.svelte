@@ -145,13 +145,20 @@ import intlTelInput from "./intlTelInputWithUtils";
     return inputElement;
   }
 
+  const warnInputProp = (prop: string): void => {
+    console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
+  };
+
   const sanitizeInputProps = (props: Record<string, unknown>) => {
     // ignore keys that would break functionality
     const {
       value: _value,
-      // disabled: _disabled,
+      disabled: _disabled,
       ...rest
     } = props as Record<string, unknown>;
+
+    if (_value !== undefined) warnInputProp("value");
+    if (_disabled !== undefined) warnInputProp("disabled");
 
     return rest;
   };
