@@ -1,29 +1,26 @@
 <script setup>
+  import { computed, ref } from "vue";
   import IntlTelInput from "intl-tel-input/vue";
   import "intl-tel-input/styles";
 
   const number = ref("");
   const isValid = ref(false);
   const errorCode = ref(0);
-  const noticeMode = ref("off");
+  const showValidation = ref(false);
 
-  const notice = computed(() => {
-    // Determine the notice message based on the current state
+  const invalidMsg = computed(() => {
+    // your logic to derive the invalid message
   });
 
-  const handleSubmit = () => {
-    noticeMode.value = "submit";
-  };
-
-  const handleBlur = () => {
-    noticeMode.value = "blur";
+  const enableValidation = () => {
+    showValidation.value = true;
   };
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form @submit.prevent="enableValidation">
     <IntlTelInput
-      @changeNumber="number = $event"
+      @changeNumber="handleChangeNumber"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
       :options="{
@@ -31,10 +28,10 @@
         loadUtils: () => import('intl-tel-input/utils'),
       }"
       :inputProps="{
-        onBlur: handleBlur,
+        onBlur: enableValidation,
       }"
     />
-    <button type="submit">Validate</button>
-    <div v-if="notice" class="notice">{{ notice }}</div>
+    <button type="submit">Submit</button>
+    <div v-if="invalidMsg" class="invalid">{{ invalidMsg }}</div>
   </form>
 </template>

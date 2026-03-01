@@ -5,15 +5,15 @@
   let number = $state("");
   let isValid = $state(false);
   let errorCode = $state(0);
-  let noticeMode = $state("off");
+  let showValidation = $state(false);
 
-  const notice = $derived.by(() => {
-    // Determine the notice message based on the current state
+  const invalidMsg = $derived.by(() => {
+    // your logic to derive invalid message
   });
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    noticeMode = "submit";
+    showValidation = true;
   };
 </script>
 
@@ -27,11 +27,11 @@
       loadUtils: () => import("intl-tel-input/utils"),
     }}
     inputProps={{
-      onblur: () => (noticeMode = "blur"),
+      onblur: () => (showValidation = true),
     }}
   />
-  <button type="submit">Validate</button>
-  {#if notice}
-    <div class="notice">{notice}</div>
+  <button type="submit">Submit</button>
+  {#if invalidMsg}
+    <div class="invalid">{invalidMsg}</div>
   {/if}
 </form>

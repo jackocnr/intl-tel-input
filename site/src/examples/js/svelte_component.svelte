@@ -12,32 +12,42 @@
   let number = $state("");
   let isValid = $state(false);
   let errorCode = $state(0);
-  let noticeMode = $state("off");
+  let showValidation = $state(false);
+  let submitted = $state(false);
 
-  const notice = $derived.by(() => {
-    if (noticeMode === "off") {
-      return null;
-    }
-    if (isValid) {
-      return noticeMode === "submit" ? `Valid number: ${number}` : "";
-    }
-    if (number) {
-      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
-      return `Error: ${errorMessage}`;
-    }
-    return "Please enter a number";
+  const inputValidityClass = $derived.by(() => {
+    if (!showValidation) return "";
+    return number && isValid ? "is-valid" : "is-invalid";
   });
+
+  const invalidMsg = $derived.by(() => {
+    if (!showValidation || isValid) return null;
+    return number
+      ? errorMap[errorCode || 0] || "Invalid number"
+      : "Please enter a number";
+  });
+
+  const validMsg = $derived.by(() => {
+    const showValid = showValidation && number && isValid && submitted;
+    return showValid ? `Full number: ${number}` : null;
+  });
+
+  const handleChangeNumber = (newNumber) => {
+    submitted = false;
+    number = newNumber;
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    noticeMode = "submit";
+    showValidation = true;
+    submitted = true;
   };
 </script>
 
-<form onsubmit={handleSubmit} class="row g-2">
+<form onsubmit={handleSubmit} class="row g-2" novalidate>
   <div class="col-auto">
     <IntlTelInput
-      onChangeNumber={(n) => (number = n)}
+      onChangeNumber={handleChangeNumber}
       onChangeValidity={(v) => (isValid = v)}
       onChangeErrorCode={(e) => (errorCode = e)}
       options={{
@@ -46,16 +56,21 @@
         searchInputClass: "form-control",
       }}
       inputProps={{
-        class: "form-control",
+        name: "phone",
         title: "Enter your phone number",
-        onblur: () => (noticeMode = "blur"),
+        required: true,
+        onblur: () => (showValidation = true),
+        class: `form-control ${inputValidityClass}`,
       }}
     />
+    {#if invalidMsg}
+      <div class="invalid-feedback d-block">{invalidMsg}</div>
+    {/if}
+    {#if validMsg}
+      <div class="valid-feedback d-block">{validMsg}</div>
+    {/if}
   </div>
   <div class="col-auto">
-    <button class="btn btn-primary" type="submit">Validate</button>
+    <button class="btn btn-primary" type="submit">Submit</button>
   </div>
-  {#if notice}
-    <div class="notice">{notice}</div>
-  {/if}
 </form>

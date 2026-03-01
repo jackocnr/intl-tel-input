@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import IntlTelInput from "intl-tel-input/react";
 import "intl-tel-input/styles";
 
@@ -30,7 +30,6 @@ const App = () => {
           loadUtils: () => import("intl-tel-input/utils"),
         }}
         inputProps={{
-          name: "phone",
           onBlur: () => setShowValidation(true),
         }}
       />

@@ -46,31 +46,29 @@ const App = () => {
   return (
     <form onSubmit={handleSubmit} className="row g-2" noValidate>
       <div className="col-auto">
-        <div>
-          <IntlTelInput
-            onChangeNumber={handleChangeNumber}
-            onChangeValidity={setIsValid}
-            onChangeErrorCode={setErrorCode}
-            initOptions={{
-              initialCountry: "us",
-              loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
-              searchInputClass: "form-control",
-            }}
-            inputProps={{
-              name: "phone",
-              title: "Enter your phone number",
-              required: true,
-              onBlur: () => setShowValidation(true),
-              className: `form-control ${inputValidityClass}`,
-            }}
-          />
-          {invalidMsg && (
-            <div className="invalid-feedback d-block">{invalidMsg}</div>
-          )}
-          {validMsg && (
-            <div className="valid-feedback d-block">{validMsg}</div>
-          )}
-        </div>
+        <IntlTelInput
+          onChangeNumber={handleChangeNumber}
+          onChangeValidity={setIsValid}
+          onChangeErrorCode={setErrorCode}
+          initOptions={{
+            initialCountry: "us",
+            loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+            searchInputClass: "form-control",
+          }}
+          inputProps={{
+            name: "phone",
+            title: "Enter your phone number",
+            required: true,
+            onBlur: () => setShowValidation(true),
+            className: `form-control ${inputValidityClass}`,
+          }}
+        />
+        {invalidMsg && (
+          <div className="invalid-feedback d-block">{invalidMsg}</div>
+        )}
+        {validMsg && (
+          <div className="valid-feedback d-block">{validMsg}</div>
+        )}
       </div>
       <div className="col-auto">
         <button className="btn btn-primary" type="submit">Submit</button>
