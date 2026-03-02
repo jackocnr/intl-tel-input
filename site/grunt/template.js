@@ -273,6 +273,10 @@ module.exports = function (grunt) {
     title: "Initialisation options",
     metaDesc: "All the different options you can use when initialising intl-tel-input.",
   }, {
+    key: "localisation",
+    title: "Localisation",
+    metaDesc: "How to localise country names and user interface strings, including RTL support.",
+  }, {
     key: "methods",
     title: "Methods",
     metaDesc: "All the different methods you can call on an intl-tel-input instance.",
