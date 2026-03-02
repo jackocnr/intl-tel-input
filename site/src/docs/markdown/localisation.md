@@ -82,6 +82,8 @@ intlTelInput(input, {
 
 <!-- I18N_LANGUAGE_LIST -->
 
+Don't see your language? You can provide your own translations by passing a custom object to the [`i18n`](/docs/options#i18n) option, and it's also easy to contribute a new language module — see [Adding a new translation](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation).
+
 For the full list of supported keys (and how to provide your own translations), see the [`i18n` option docs](/docs/options#i18n).
 
 
