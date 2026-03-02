@@ -593,6 +593,7 @@ module.exports = function (grunt) {
       dest: `tmp/docs/${key}_content.html`,
       options: {
         data: () => ({
+          docKey: key,
           html: (() => {
             let source = grunt.file.read(mdPath);
             if (key === "localisation") {
