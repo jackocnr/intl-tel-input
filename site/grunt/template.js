@@ -365,6 +365,10 @@ module.exports = function (grunt) {
     title: "Troubleshooting",
     metaDesc: "Solutions to common problems and FAQs about intl-tel-input.",
   }, {
+    key: "faq",
+    title: "FAQ",
+    metaDesc: "Frequently asked questions about intl-tel-input, including common setup and localisation topics.",
+  }, {
     key: "react_component",
     title: "React component",
     metaDesc: "How to use the intl-tel-input React component.",

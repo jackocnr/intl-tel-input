@@ -1,0 +1,99 @@
+# FAQ
+
+## Contents
+
+- [Do I need the utils script?](#do-i-need-the-utils-script)
+- [What format should I store phone numbers in?](#what-format-should-i-store-phone-numbers-in)
+- [How do I submit the full international number in a normal HTML form?](#how-do-i-submit-the-full-international-number-in-a-normal-html-form)
+- [How do I set the initial country?](#how-do-i-set-the-initial-country)
+- [Can I translate the UI and country names?](#can-i-translate-the-ui-and-country-names)
+- [Can I disable formatting as you type?](#can-i-disable-formatting-as-you-type)
+- [How do I prevent users typing invalid characters?](#how-do-i-prevent-users-typing-invalid-characters)
+- [How do I validate a number?](#how-do-i-validate-a-number)
+- [Something looks broken — where should I look first?](#something-looks-broken--where-should-i-look-first)
+
+
+## Do I need the utils script?
+
+It depends on which features you want.
+
+The utilities script enables things like:
+
+- Formatting and validation helpers
+- Automatic country-specific placeholders
+
+See [Utilities script](/docs/utils) for how to load it and what it’s used for.
+
+
+## What format should I store phone numbers in?
+
+In most cases you should store phone numbers in standardised international format (E.164), e.g. `+447740123456`.
+
+If you also need the user’s selected country (e.g. to render a flag next time), store the ISO2 country code as well.
+
+
+## How do I submit the full international number in a normal HTML form?
+
+Use the [`hiddenInput`](/docs/options#hiddeninput) option.
+
+That option listens for the form submit event and injects hidden input(s) containing the full international number (and optionally the country code), so they’re included in the form post.
+
+See the [Hidden input example](/examples/hidden-input).
+
+
+<div class="article-ad">
+  <ins class="adsbygoogle"
+    style="display:block; text-align:center;"
+    data-ad-layout="in-article"
+    data-ad-format="fluid"
+    data-ad-client="ca-pub-1090343328224651"
+    data-ad-slot="6972377388"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+## How do I set the initial country?
+
+Use the [`initialCountry`](/docs/options#initialcountry) option.
+
+- Set it to an ISO2 code like `"us"`.
+- Or set it to `"auto"` and provide [`geoIpLookup`](/docs/options#geoiplookup) to detect the user’s country.
+
+
+## Can I translate the UI and country names?
+
+Yes.
+
+- Country names can be localised using [`countryNameLocale`](/docs/options#countrynamelocale) (uses `Intl.DisplayNames`).
+- UI strings (including accessibility strings) can be translated using [`i18n`](/docs/options#i18n).
+
+See [Localisation](/docs/localisation).
+
+
+## Can I disable formatting as you type?
+
+Yes — use the [`formatAsYouType`](/docs/options#formatasyoutype) option.
+
+
+## How do I prevent users typing invalid characters?
+
+Enable [`strictMode`](/docs/options#strictmode).
+
+When `strictMode` is enabled, the input will reject characters that aren’t valid phone number characters. This is useful if you want to keep the value clean (e.g. only digits, and a leading `+` when appropriate), and avoid users pasting in extra text. This also caps the number at the maximum valid length.
+
+
+## How do I validate a number?
+
+If you’re using the utilities script, you can validate numbers and show useful error messages.
+
+- See the [Validation example](/examples/validation-practical)
+- See the [Utilities script](/docs/utils)
+
+
+## Something looks broken — where should I look first?
+
+A lot of “broken” behaviour is caused by layout/CSS or initialising the plugin before the input is in the DOM.
+
+Start with:
+
+- [Troubleshooting](/docs/troubleshooting)
+- [Initialisation options](/docs/options)

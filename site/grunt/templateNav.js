@@ -9,6 +9,7 @@ const docsDropdownPages = [
   { name: "utils", href: "/docs/utils", label: "Utilities script" },
   { name: "theming", href: "/docs/theming", label: "Theming / dark mode" },
   { name: "troubleshooting", href: "/docs/troubleshooting", label: "Troubleshooting" },
+  { name: "faq", href: "/docs/faq", label: "FAQ" },
   { name: "react_component", href: "/docs/react-component", label: "React component" },
   { name: "vue_component", href: "/docs/vue-component", label: "Vue component" },
   { name: "angular_component", href: "/docs/angular-component", label: "Angular component" },
