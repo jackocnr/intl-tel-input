@@ -200,7 +200,14 @@ module.exports = function (grunt) {
         markup: grunt.file.read(markupPath),
         display_markup: grunt.file.read(displayMarkupPath),
         display_code: (() => {
-          const displayCodeContent = grunt.file.read(displayCode);
+          let displayCodeContent = grunt.file.read(displayCode);
+          // hack so that the validation_precise example page shows the right validation method in the displayed code
+          if (key === "validation_precise") {
+            displayCodeContent = displayCodeContent.replace(
+              /\biti\.isValidNumber\(\)/g,
+              "iti.isValidNumberPrecise()"
+            );
+          }
           return grunt.template.process(displayCodeContent, { data: templateData });
         })(),
         script: scriptName,
@@ -358,7 +365,6 @@ module.exports = function (grunt) {
       "Validate the user's phone number and if there's an error, display a relevant message.",
     js: {
       src: "src/examples/js/validation.js",
-      data: { validationType: "practical" },
     },
     content: {
       markupName: "validation",
@@ -378,7 +384,6 @@ module.exports = function (grunt) {
       "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
     js: {
       src: "src/examples/js/validation.js",
-      data: { validationType: "precise" },
     },
     content: {
       markupName: "validation",

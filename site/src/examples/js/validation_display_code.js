@@ -15,12 +15,8 @@ const updateUI = () => {
     return;
   }
 
-  const validationType = "<%= validationType %>";
-  const usePreciseValidation = validationType === "precise";
-  const isValid = usePreciseValidation ? iti.isValidNumberPrecise() : iti.isValidNumber();
-
   let invalidMsg = "";
-  if (!isValid) {
+  if (!iti.isValidNumber()) {
     const errorCode = iti.getValidationError();
     invalidMsg = yourCodeToDeriveErrorMessage(input.value(), errorCode);
   }
