@@ -35,6 +35,70 @@ module.exports = function (grunt) {
 
   const md = createMarkdownRenderer();
 
+  const toBcp47LanguageTag = (code) => {
+    const raw = String(code || "").trim();
+    if (!raw) return "";
+    const parts = raw.split("-");
+    if (parts.length === 1) return parts[0].toLowerCase();
+    const [lang, region, ...rest] = parts;
+    const normLang = String(lang).toLowerCase();
+    const normRegion = region && region.length === 2 ? String(region).toUpperCase() : String(region || "");
+    return [normLang, normRegion, ...rest].filter(Boolean).join("-");
+  };
+
+  const escapeHtml = (value) =>
+    String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
+  const createI18nLanguageListText = (languageCodes) => {
+    const codes = Array.isArray(languageCodes) ? languageCodes.filter(Boolean) : [];
+    if (!codes.length) {
+      return "_No language modules found._";
+    }
+
+    let displayNames = null;
+    try {
+      if (typeof Intl !== "undefined" && Intl.DisplayNames) {
+        displayNames = new Intl.DisplayNames(["en"], { type: "language" });
+      }
+    } catch {
+      displayNames = null;
+    }
+
+    const items = codes
+      .map((code) => {
+        const tag = toBcp47LanguageTag(code);
+        let label = null;
+        try {
+          label = displayNames && tag ? displayNames.of(tag) : null;
+        } catch {
+          label = null;
+        }
+
+        return {
+          code: String(code),
+          label: label ? String(label) : "",
+        };
+      });
+
+    items.sort((a, b) => {
+      const aKey = a.label || a.code;
+      const bKey = b.label || b.code;
+      return aKey.localeCompare(bKey, "en", { sensitivity: "base" });
+    });
+
+    return items
+      .map(({ code, label }) => {
+        const text = label ? `${label} (${code})` : code;
+        return escapeHtml(text);
+      })
+      .join(", ");
+  };
+
   const homepageTitle = "International Telephone Input";
   const homepageMetaDesc = "A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes React, Vue, Angular and Svelte components.";
   const homepageCanonicalUrl = "https://intl-tel-input.com";
@@ -521,7 +585,14 @@ module.exports = function (grunt) {
       dest: `tmp/docs/${key}_content.html`,
       options: {
         data: () => ({
-          html: md.render(grunt.file.read(mdPath), { docKey: key }),
+          html: (() => {
+            let source = grunt.file.read(mdPath);
+            if (key === "localisation") {
+              const languageList = createI18nLanguageListText(getI18nLanguages());
+              source = source.replace("<!-- I18N_LANGUAGE_LIST -->", `\n${languageList}\n`);
+            }
+            return md.render(source, { docKey: key });
+          })(),
         }),
       },
     };

@@ -78,6 +78,10 @@ intlTelInput(input, {
 });
 ```
 
+### Supported languages
+
+<!-- I18N_LANGUAGE_LIST -->
+
 For the full list of supported keys (and how to provide your own translations), see the [`i18n` option docs](/docs/options#i18n).
 
 
@@ -100,9 +104,3 @@ intl-tel-input supports alternative numerals for phone number input.
 These are normalised internally to ASCII `0-9` for parsing/validation, and when the plugin updates the input value it preserves the user’s numeral set.
 
 Note: format-as-you-type is only applied when the user is typing ASCII digits (caret positioning gets unreliable with RTL numeral sets).
-
-
-## Browser support / fallbacks
-
-- `countryNameLocale` relies on `Intl.DisplayNames`. If you need to support environments without it, you can include a polyfill or provide explicit country name translations via the iso2 keys in the `i18n` option.
-- `i18n` works everywhere (it’s just an object of translated strings), but you’ll need to ensure your bundler/loader can import the language module you choose.
