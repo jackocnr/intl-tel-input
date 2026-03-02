@@ -1,10 +1,16 @@
+const form = document.querySelector("#validation-form");
 const input = document.querySelector("#phone");
-const button = document.querySelector("#btn");
 const errorMsg = document.querySelector("#error-msg");
 const validMsg = document.querySelector("#valid-msg");
 
 // here, the index maps to the error code returned from getValidationError - see readme
-const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+const errorMap = [
+  "Invalid number",
+  "Invalid country code",
+  "Too short",
+  "Too long",
+  "Invalid number",
+];
 
 // initialise plugin
 const iti = window.intlTelInput(input, {
@@ -13,33 +19,55 @@ const iti = window.intlTelInput(input, {
   searchInputClass: "form-control",
 });
 
-const reset = () => {
-  input.classList.remove("error");
-  errorMsg.innerHTML = "";
-  errorMsg.classList.add("hide");
-  validMsg.classList.add("hide");
-};
+let showValidation = false;
+let submitted = false;
 
-const showError = (msg) => {
-  input.classList.add("error");
-  errorMsg.innerHTML = msg;
-  errorMsg.classList.remove("hide");
-};
+const setText = (el, text) => el.textContent = text;
 
-// on click button: validate
-button.addEventListener("click", () => {
-  reset();
-  if (!input.value.trim()) {
-    showError("Required");
-  } else if (iti.isValidNumberPrecise()) {
-    validMsg.classList.remove("hide");
-  } else {
-    const errorCode = iti.getValidationError();
-    const msg = errorMap[errorCode] || "Invalid number";
-    showError(msg);
+const updateUI = () => {
+  if (!showValidation) {
+    return;
   }
+
+  // once showValidation is true, we always show the validity state (via the input class and message below), so keep it up-to-date here
+  const value = input.value.trim();
+  const isValid = Boolean(value) && iti.isValidNumberPrecise();
+
+  input.classList.toggle("is-valid", isValid);
+  input.classList.toggle("is-invalid", !isValid);
+
+  let invalidMsg = "";
+  if (!isValid) {
+    const errorCode = iti.getValidationError();
+    invalidMsg = value
+      ? errorMap[errorCode || 0] || "Invalid number"
+      : "Please enter a number";
+  }
+  setText(errorMsg, invalidMsg);
+
+  const showValid = Boolean(value) && isValid && submitted;
+  setText(validMsg, showValid ? `Full number: ${iti.getNumber()}` : "");
+};
+
+// on submit: validate (and show "Full number" if valid)
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  showValidation = true;
+  submitted = true;
+  updateUI();
 });
 
-// on keyup / change flag: reset
-input.addEventListener("change", reset);
-input.addEventListener("keyup", reset);
+// on blur: enable validation UI
+input.addEventListener("blur", () => {
+  showValidation = true;
+  updateUI();
+});
+
+// while typing / pasting / changing country: remove any submitted state and update validity state
+const handleUserInput = () => {
+  submitted = false;
+  updateUI();
+};
+
+input.addEventListener("input", handleUserInput);
+input.addEventListener("countrychange", handleUserInput);

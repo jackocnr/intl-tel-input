@@ -1,10 +1,17 @@
-<div class="row g-2">
+<form id="validation-form" class="row g-2" noValidate>
   <div class="col-auto">
-    <input id="phone" type="tel" class="form-control" title="Enter your phone number" />
+    <input
+      id="phone"
+      type="tel"
+      class="form-control"
+      name="phone"
+      title="Enter your phone number"
+      required
+    />
+    <div id="error-msg" class="invalid-feedback d-block"></div>
+    <div id="valid-msg" class="valid-feedback d-block"></div>
   </div>
   <div class="col-auto">
-    <button class="btn btn-primary" id="btn" type="button">Validate</button>
+    <button class="btn btn-primary" id="btn" type="submit">Submit</button>
   </div>
-</div>
-<span id="valid-msg" class="hide">✓ Valid</span>
-<span id="error-msg" class="hide"></span>
+</form>
