@@ -341,6 +341,10 @@ module.exports = function (grunt) {
     title: "Localisation",
     metaDesc: "How to localise country names and user interface strings, including RTL support.",
   }, {
+    key: "accessibility",
+    title: "Accessibility",
+    metaDesc: "Accessibility guidance for intl-tel-input, including keyboard and screen reader support.",
+  }, {
     key: "methods",
     title: "Methods",
     metaDesc: "All the different methods you can call on an intl-tel-input instance.",

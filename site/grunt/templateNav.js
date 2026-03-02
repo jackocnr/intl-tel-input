@@ -3,6 +3,7 @@ const docsDropdownPages = [
   { name: "getting_started", href: "/docs/getting-started", label: "Getting started" },
   { name: "options", href: "/docs/options", label: "Initialisation options" },
   { name: "localisation", href: "/docs/localisation", label: "Localisation" },
+  { name: "accessibility", href: "/docs/accessibility", label: "Accessibility" },
   { name: "methods", href: "/docs/methods", label: "Methods" },
   { name: "events", href: "/docs/events", label: "Events" },
   { name: "utils", href: "/docs/utils", label: "Utilities script" },
