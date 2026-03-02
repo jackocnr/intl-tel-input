@@ -179,7 +179,12 @@ module.exports = function (grunt) {
     const fullTitle = `${title} example - International Telephone Input`;
     const canonicalUrl = `https://intl-tel-input.com/examples/${slug}`;
 
-    config[`${key}_js`] = makeTemplateTask(jsSrc, jsDest, () => ({ cacheBust }));
+    const templateData = {
+      cacheBust,
+      ...(js.data || {}),
+    };
+
+    config[`${key}_js`] = makeTemplateTask(jsSrc, jsDest, () => templateData);
 
     extraJsTasks.forEach((t) => {
       config[t.key] = makeTemplateTask(t.src, t.dest, () => ({ cacheBust }));
@@ -194,7 +199,10 @@ module.exports = function (grunt) {
         desc: grunt.file.read(`src/examples/copy/${key}_desc.html`),
         markup: grunt.file.read(markupPath),
         display_markup: grunt.file.read(displayMarkupPath),
-        display_code: grunt.file.read(displayCode),
+        display_code: (() => {
+          const displayCodeContent = grunt.file.read(displayCode);
+          return grunt.template.process(displayCodeContent, { data: templateData });
+        })(),
         script: scriptName,
         ...(content.demo_note ? { demo_note: content.demo_note } : {}),
         ...(content.hideMarkupSection
@@ -348,9 +356,14 @@ module.exports = function (grunt) {
     title: "Validation",
     metaDesc:
       "Validate the user's phone number and if there's an error, display a relevant message.",
+    js: {
+      src: "src/examples/js/validation.js",
+      data: { validationType: "practical" },
+    },
     content: {
       markupName: "validation",
       includeItiScript: true,
+      displayCode: "src/examples/js/validation_display_code.js",
       extraData: () => ({
         demo_note: `<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
       }),
@@ -363,9 +376,14 @@ module.exports = function (grunt) {
     title: "Precise validation (dangerous)",
     metaDesc:
       "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
+    js: {
+      src: "src/examples/js/validation.js",
+      data: { validationType: "precise" },
+    },
     content: {
       markupName: "validation",
       includeItiScript: true,
+      displayCode: "src/examples/js/validation_display_code.js",
       extraData: () => ({
         demo_note: `<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
       }),

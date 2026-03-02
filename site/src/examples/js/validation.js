@@ -1,7 +1,10 @@
-const form = document.querySelector("#validation-form");
+const form = document.querySelector("#form");
 const input = document.querySelector("#phone");
 const errorMsg = document.querySelector("#error-msg");
 const validMsg = document.querySelector("#valid-msg");
+
+const validationType = "<%= validationType %>";
+const usePreciseValidation = validationType === "precise";
 
 // here, the index maps to the error code returned from getValidationError - see readme
 const errorMap = [
@@ -31,7 +34,7 @@ const updateUI = () => {
 
   // once showValidation is true, we always show the validity state (via the input class and message below), so keep it up-to-date here
   const value = input.value.trim();
-  const isValid = Boolean(value) && iti.isValidNumber();
+  const isValid = Boolean(value) && (usePreciseValidation ? iti.isValidNumberPrecise() : iti.isValidNumber());
 
   input.classList.toggle("is-valid", isValid);
   input.classList.toggle("is-invalid", !isValid);
