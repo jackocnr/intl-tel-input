@@ -6,7 +6,7 @@ intl-tel-input supports localisation in a few different areas:
 - User interface strings (search placeholder, empty state, aria-labels, etc.)
 - Right-to-left (RTL) layout
 
-If you want to see this in action first, check out the [Internationalisation example](/examples/internationalisation) and the [Right to left example](/examples/right-to-left).
+If you want to see this in action first, you can experiment with the different language options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options) and view the [Right to left example](/examples/right-to-left).
 
 ## Contents
 

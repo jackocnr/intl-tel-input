@@ -13,7 +13,6 @@ module.exports = function (grunt) {
   // build esbuild
   grunt.registerTask("build:esbuild", [
     "template:lookup_country_js", // needs to go through esbuild for IPAPI_TOKEN injection
-    "template:internationalisation_js",
     "template:right_to_left_js",
     "template:angular_component_js",
     "template:react_component_js",

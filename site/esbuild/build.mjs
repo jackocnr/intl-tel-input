@@ -18,13 +18,6 @@ build({
   outfile: "build/examples/js/lookup_country.js",
 });
 
-// internationalisation example
-build({
-  ...sharedOptions,
-  entryPoints: ["tmp/examples/js/internationalisation.js"],
-  outfile: "build/examples/js/internationalisation_bundle.js",
-});
-
 // right to left example
 build({
   ...sharedOptions,

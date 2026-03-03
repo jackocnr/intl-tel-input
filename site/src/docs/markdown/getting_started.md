@@ -108,7 +108,7 @@ You can always get the full international number (including country code) using 
 
 If you know the user's country, you can set it with [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"` for the United States). If you don't, we recommend setting `initialCountry` to `"auto"` (along with the [`geoIpLookup`](/docs/options#geoiplookup) option) to determine the user's country based on their IP address - [see example](/examples/lookup-country).
 
-If you know the user's language, there is a built in way to translate the country names and user interface strings - [see example](/examples/internationalisation).
+If you know the user's language, there is a built in way to translate the country names and user interface strings - [see example](/playground?countryNameLocale=ru&i18n=ru#translation-options).
 
 _*Except for some small satellite territories, which share number ranges with the main country (search data.ts for "shared" for examples). When displaying numbers from those shared ranges, we default to selecting the main country._
 

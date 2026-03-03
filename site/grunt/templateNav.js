@@ -20,7 +20,6 @@ const examplesDropdownPages = [
   { name: "validation_practical", href: "/examples/validation-practical", label: "Validation" },
   { name: "lookup_country", href: "/examples/lookup-country", label: "Lookup user's country" },
   { name: "single_country", href: "/examples/single-country", label: "Single country" },
-  { name: "internationalisation", href: "/examples/internationalisation", label: "Internationalisation" },
   { name: "right_to_left", href: "/examples/right-to-left", label: "Right to left" },
   { name: "hidden_input", href: "/examples/hidden-input", label: "Hidden input" },
   { name: "display_number", href: "/examples/display-number", label: "Display existing number" },

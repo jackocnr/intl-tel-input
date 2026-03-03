@@ -1,0 +1,4 @@
+/examples/localise-countries.html /playground?countryNameLocale=ru&i18n=ru#translation-options 301
+/examples/internationalisation /playground?countryNameLocale=ru&i18n=ru#translation-options 301
+/examples/validation.html /examples/validation-precise 301
+/storybook /playground 301

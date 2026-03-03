@@ -399,18 +399,6 @@ module.exports = function (grunt) {
       includeItiScript: true,
     },
   }, {
-    key: "internationalisation",
-    title: "Internationalisation",
-    metaDesc: "Support the internationalisation of country names via the i18n option.",
-    js: {
-      destDir: "tmp",
-      script: "internationalisation_bundle.js",
-    },
-    content: {
-      markupName: "simple_input",
-      displayCode: "src/examples/js/internationalisation_display_code.js",
-    },
-  }, {
     key: "right_to_left",
     title: "Right to left",
     metaDesc: "Support for right-to-left languages.",
