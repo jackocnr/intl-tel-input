@@ -31,9 +31,7 @@ function getLanguageLabel(code) {
 }
 
 export function createI18nOptionLabels(languageCodes) {
-  const labels = {
-    "": "None (default)",
-  };
+  const labels = {};
 
   (languageCodes || []).forEach((code) => {
     labels[code] = getLanguageLabel(code);
@@ -49,6 +47,10 @@ export async function resolveI18nSelection(value, { i18nDirHash }) {
 
   const code = String(value).trim();
   if (!code) return null;
+
+  // English is the plugin's built-in default language, so avoid loading an
+  // additional i18n pack (and keep the generated init code simpler).
+  if (code.toLowerCase() === "en") return null;
 
   try {
     const mod = await import(`/intl-tel-input/js/i18n/${code}/index.js?${i18nDirHash}`);

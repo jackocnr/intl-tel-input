@@ -56,7 +56,7 @@ export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions,
   }
 
   const i18nCode = String(state.i18n ?? "").trim();
-  const hasI18n = Boolean(i18nCode);
+  const hasI18n = Boolean(i18nCode) && i18nCode.toLowerCase() !== "en";
 
   if (!hasI18n && optionEntriesForCode.length === 0) {
     return [

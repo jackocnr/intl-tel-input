@@ -90,7 +90,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     fixDropdownWidth: defaults.fixDropdownWidth,
     formatAsYouType: defaults.formatAsYouType,
     formatOnDisplay: defaults.formatOnDisplay,
-    i18n: "", // different default for playground display
+    i18n: "en", // default to English in the Playground
     initialCountry: defaults.initialCountry,
     loadUtils: true, // in playground, this is a checkbox
     nationalMode: defaults.nationalMode,
