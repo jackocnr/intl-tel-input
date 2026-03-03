@@ -32,6 +32,44 @@
   }
 }
 
+@media (min-width: 992px) {
+  .iti-navbar-container {
+    position: relative;
+  }
+
+  // Center search on the page (not within remaining flex space)
+  .iti-navbar-search {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.DocSearch-Container {
+  /* above Bootstrap navbar (z-1020) but below mobile sidebar (z-1055) */
+  z-index: 1051 !important;
+}
+.DocSearch-Button {
+  width: 280px !important;
+}
+
+// mobile search icon button in header
+.iti-navbar-icon-btn {
+  padding: 0.25rem;
+  border: 0;
+  background: transparent;
+  line-height: 1;
+
+  svg {
+    width: 20px;
+  }
+}
+
+.iti-navbar-search {
+  min-width: 0;
+}
+
 // both in header and mobile sidebar
 .iti-logo {
   margin-right: 10px;

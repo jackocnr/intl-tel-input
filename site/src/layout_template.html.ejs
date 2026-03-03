@@ -1,6 +1,6 @@
 <!-- HEADER -->
 <header class="navbar navbar-expand-lg navbar-dark iti-navbar sticky-top">
-  <nav class="container-xxl iti-gutter flex-wrap flex-lg-nowrap">
+  <nav class="container-xxl iti-gutter flex-wrap flex-lg-nowrap iti-navbar-container">
 
     <!-- HEADER MENU TOGGLE BUTTON (MOBILE: VISIBLE, DESKTOP: HIDDEN) -->
     <div class="iti-navbar-toggle">
@@ -33,14 +33,41 @@
       intl-tel-input
     </a>
 
-    <div class="d-flex"></div>
+    <!-- HEADER SEARCH TRIGGER (MOBILE: RHS ICON, DESKTOP: HIDDEN) -->
+    <div class="d-flex align-items-center">
+      <button
+        type="button"
+        id="itiSearchButtonMobile"
+        class="iti-navbar-icon-btn d-lg-none"
+        aria-label="Search"
+        data-iti-search-trigger="mobile"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          class="bi"
+          fill="white"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+        </svg>
+      </button>
+    </div>
 
     <!-- HEADER RHS NAV (MOBILE: HIDDEN, DESKTOP: VISIBLE) -->
     <div class="offcanvas-lg offcanvas-end flex-grow-1" tabindex="-1" id="bdNavbar">
-      <div class="offcanvas-body p-4 pt-0 p-lg-0">
+      <div class="offcanvas-body p-4 pt-0 p-lg-0 d-lg-flex align-items-lg-center">
 
         <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav">
         </ul>
+
+        <!-- HEADER SEARCH TRIGGER (DESKTOP: CENTER "INPUT", MOBILE: HIDDEN) -->
+        <div class="iti-navbar-search d-none d-lg-block">
+          <div id="docsearch"></div>
+        </div>
 
         <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto gap-2">
           <li class="nav-item dropdown col-6 col-lg-auto">

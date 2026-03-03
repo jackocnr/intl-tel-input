@@ -6,3 +6,18 @@
 
 <script src="<%= cacheBust('/js/highlight.min.js') %>"></script>
 <script>hljs.highlightAll();</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@4"></script>
+<script>
+  docsearch({
+    container: "#docsearch",
+    appId: "30NQZ1MMUC",
+    indexName: "ITI Site",
+    apiKey: "36bc251934d6bbefeb56f187686f4810",
+  });
+
+  // mobile search icon trigger
+  const algoliaButton = document.querySelector('#docsearch button');
+  const mobileSearchButton = document.getElementById('itiSearchButtonMobile');
+  mobileSearchButton.addEventListener('click', () => algoliaButton.click());
+</script>
