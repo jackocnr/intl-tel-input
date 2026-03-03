@@ -314,11 +314,28 @@ function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
 }
 
 function createControlGroup(optionGroupTemplate, title, groupId, description, { iso2ModalId = null } = {}) {
+  const slugify = (text) => String(text || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
   const root = optionGroupTemplate.content.firstElementChild;
   const group = root.cloneNode(true);
 
   const titleEl = group.querySelector("[data-role=\"title\"]");
-  titleEl.textContent = title;
+  const slug = slugify(title);
+  if (titleEl) {
+    titleEl.id = slug;
+    titleEl.textContent = "";
+
+    const link = document.createElement("a");
+    link.href = `#${slug}`;
+    link.className = "header-anchor";
+    link.textContent = title;
+
+    titleEl.appendChild(link);
+  }
 
   const descEl = group.querySelector("[data-role=\"description\"]");
   descEl.textContent = description;

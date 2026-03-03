@@ -134,7 +134,9 @@ if (shareButton) {
   const originalLabel = labelEl.textContent;
 
   shareButton.addEventListener("click", () => {
-    const url = window.location.href;
+    const shareUrl = new URL(window.location.href);
+    shareUrl.hash = "";
+    const url = shareUrl.toString();
 
     if (!navigator.clipboard || !window.isSecureContext) return;
     navigator.clipboard.writeText(url).then(
@@ -196,6 +198,18 @@ const { resetGroupKeys: optionResetGroupKeys } = renderControls(optionsForm, opt
     optionGroupTemplate,
   },
 });
+
+// If the page is loaded with a hash, the browser can't scroll to it until after
+// the option groups are rendered.
+if (window.location.hash) {
+  window.requestAnimationFrame(() => {
+    const id = window.location.hash.replace(/^#/, "");
+    const el = id ? document.getElementById(id) : null;
+    if (el && typeof el.scrollIntoView === "function") {
+      el.scrollIntoView({ block: "start" });
+    }
+  });
+}
 
 renderControls(attrsForm, attributeMeta, {
   idPrefix: "attr",

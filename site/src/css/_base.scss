@@ -96,3 +96,27 @@ h1 {
 .article-ad {
   margin: 20px 0;
 }
+
+// Anchor link styles for clickable section titles (used on Docs and Playground pages)
+.header-anchor {
+  // reset title styles, now that they're wrapped in a link
+  color: inherit;
+  &:not(:hover) {
+    text-decoration: none;
+  }
+  // on non-touch screens
+  @media (hover: hover) and (pointer: fine) {
+    &::before {
+      position: absolute;
+      content: "#";
+      margin-left: -0.9em; // space from title
+      padding-right: 0.9em; // allow moving cursor from title to icon without losing hover state
+      margin-top: 0.3em;
+      font-size: 0.75em;
+      color: var(--bs-secondary-color);
+    }
+  }
+  &:not(:hover,:focus)::before {
+    visibility: hidden;
+  }
+}
