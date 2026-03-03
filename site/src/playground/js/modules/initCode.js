@@ -17,7 +17,7 @@ export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions,
 
   const optionEntriesForCode = [...nonDefaultOptionEntries];
   if (state.loadUtils) {
-    optionEntriesForCode.push(["loadUtils", "() => import(\"/intl-tel-input/js/utils.js\")"]);
+    optionEntriesForCode.push(["loadUtils", "() => import(\"intl-tel-input/utils\")"]);
   }
 
   if (state.customPlaceholder) {
@@ -58,39 +58,36 @@ export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions,
   const i18nCode = String(state.i18n ?? "").trim();
   const hasI18n = Boolean(i18nCode) && i18nCode.toLowerCase() !== "en";
 
-  if (!hasI18n && optionEntriesForCode.length === 0) {
-    return [
-      "const input = document.querySelector(\"#phone\");",
-      "const iti = window.intlTelInput(input);",
-    ].join("\n");
-  }
-
   const lines = [];
+  lines.push("import intlTelInput from \"intl-tel-input\";");
 
+  let i18nExportName = "";
   if (hasI18n) {
-    lines.push("(async () => {");
-    lines.push("  const input = document.querySelector(\"#phone\");");
-    lines.push(`  const i18n = (await import("/intl-tel-input/js/i18n/${encodeURIComponent(i18nCode)}/index.js")).default;`,
-    );
-    lines.push("  const iti = window.intlTelInput(input, {");
-    lines.push("    i18n,");
-  } else {
-    lines.push("const input = document.querySelector(\"#phone\");");
-    lines.push("const iti = window.intlTelInput(input, {");
+    i18nExportName = i18nCode.replace(/-([a-z])/g, (_, chr) => chr.toUpperCase());
+    lines.push(`import { ${i18nExportName} } from "intl-tel-input/i18n";`);
   }
 
-  optionEntriesForCode.forEach(([key, value]) => {
-    const isRawJsSnippet =
-      ["loadUtils", "customPlaceholder", "dropdownContainer", "geoIpLookup", "hiddenInput"].includes(key) &&
-      typeof value === "string";
-    const formatted = isRawJsSnippet ? value : formatJsValue(value);
-    lines.push(`${hasI18n ? "    " : "  "}${key}: ${formatted},`);
-  });
+  lines.push("");
+  lines.push("const input = document.querySelector(\"#phone\");");
 
-  lines.push(`${hasI18n ? "  " : ""}});`);
+  if (!hasI18n && optionEntriesForCode.length === 0) {
+    lines.push("const iti = intlTelInput(input);");
+  } else {
+    lines.push("const iti = intlTelInput(input, {");
 
-  if (hasI18n) {
-    lines.push("})();");
+    if (hasI18n) {
+      lines.push(`  i18n: ${i18nExportName},`);
+    }
+
+    optionEntriesForCode.forEach(([key, value]) => {
+      const isRawJsSnippet =
+        ["loadUtils", "customPlaceholder", "dropdownContainer", "geoIpLookup", "hiddenInput"].includes(key) &&
+        typeof value === "string";
+      const formatted = isRawJsSnippet ? value : formatJsValue(value);
+      lines.push(`  ${key}: ${formatted},`);
+    });
+
+    lines.push("});");
   }
 
   const output = lines.join("\n");
