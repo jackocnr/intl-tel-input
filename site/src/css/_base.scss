@@ -87,8 +87,9 @@ h1 {
 }
 
 // prevent layout shift when initialise components / show validation errors in demos
-#app {
-  min-height: 62px;
+#app,
+.validation-demo {
+  min-height: 71px;
 }
 
 // in-article ads should have some margin
