@@ -37,7 +37,6 @@ Example:
 
 Note: the plugin injects its own country UI next to the input, but it does not replace the need for your input to have an accessible name.
 
-
 <div class="article-ad">
   <ins class="adsbygoogle"
     style="display:block; text-align:center;"
