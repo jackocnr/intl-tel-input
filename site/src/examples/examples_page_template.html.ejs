@@ -9,6 +9,7 @@
     <%= og_meta_tags %>
 
     <%= bootstrap_styles %>
+
     <% if (typeof omit_iti_styles === 'undefined') { %>
       <%= iti_styles %>
     <% } %>
@@ -26,7 +27,7 @@
       <link rel="stylesheet" href="<%= cacheBust(stylesheet_after_demo_css) %>">
     <% } %>
 
-    <%= common_head_end %>
+    <%= common_head_end_prod %>
   </head>
 
   <body>

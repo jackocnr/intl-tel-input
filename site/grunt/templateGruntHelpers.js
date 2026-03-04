@@ -15,9 +15,9 @@ const readCommonPagePartials = (grunt, data) => ({
   highlight_styles: grunt.template.process(grunt.file.read("src/shared/highlight_styles.html.ejs"), {
     data,
   }),
-  common_head_end: data && data.isDevBuild
+  common_head_end_prod: data && data.isDevBuild
     ? ""
-    : grunt.file.read("src/shared/common_head_end.html"),
+    : grunt.file.read("src/shared/common_head_end_prod.html"),
 });
 
 const readCommonBodyEndScript = (grunt) => grunt.file.read("src/shared/common_body_end.html");
