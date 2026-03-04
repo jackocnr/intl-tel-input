@@ -48,3 +48,14 @@
   min-width: 0;
   padding-bottom: 30px;
 }
+
+/* Sticky-footer layout: ensure short pages still fill the viewport so any
+ * elements injected at end of <body> (e.g. AdSense) get pushed down. */
+.iti-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.iti-page__main {
+  flex: 1 0 auto;
+}
