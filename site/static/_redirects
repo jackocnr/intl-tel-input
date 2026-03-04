@@ -3,4 +3,6 @@
 /examples/validation.html /examples/validation-precise 301
 /storybook /playground 301
 /docs /docs/choose-integration 302
+/docs/ /docs/choose-integration 302
 /examples /examples/validation-practical 302
+/examples/ /examples/validation-practical 302
