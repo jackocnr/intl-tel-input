@@ -21,7 +21,7 @@ Choose which countries are available, the order they're displayed in, and how th
 Type: `String[]`  
 Default: `null`  
 
-An array of iso2 country codes that is used to order the country dropdown. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. See what this looks like in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D). _Note: this replaces the legacy `preferredCountries` option (now removed)._
+An array of iso2 country codes that is used to order the country dropdown. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. See what this looks like in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D#country-options). _Note: this replaces the legacy `preferredCountries` option (now removed)._ 
 
 ###### excludeCountries
 Type: `String[]`  
@@ -53,13 +53,13 @@ _Note that the `failure` callback must be called in the event of an error, hence
 Type: `String`  
 Default: `""`  
 
-Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de).
+Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
 
 ###### onlyCountries
 Type: `String[]`  
 Default: `[]`  
 
-In the dropdown, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Try the plugin with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D). Also see: [`excludeCountries`](#excludecountries) option.
+In the dropdown, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Try the plugin with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#country-options). Also see: [`excludeCountries`](#excludecountries) option.
 
 <div class="article-ad">
   <ins class="adsbygoogle"
@@ -79,7 +79,7 @@ Control dropdown behaviour and whether certain UI elements are displayed.
 Type: `Boolean`  
 Default: `true`  
 
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, [`allowDropdown`](/docs/options#allowdropdown) is forced to `true` as the dropdown is required when the user types "+" in this case. Try the plugin with [`allowDropdown`](#allowdropdown) disabled in the [Playground](/playground?allowDropdown=false).
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, [`allowDropdown`](/docs/options#allowdropdown) is forced to `true` as the dropdown is required when the user types "+" in this case. Try the plugin with [`allowDropdown`](#allowdropdown) disabled in the [Playground](/playground?allowDropdown=false#user-interface-options).
 
 ###### containerClass
 Type: `String`  
@@ -91,7 +91,7 @@ Additional class(es) to add to the (injected) wrapper div element `<div class="i
 Type: `Boolean`  
 Default: `true`  
 
-Add a search input to the top of the dropdown, so users can filter the displayed countries. View the plugin with this disabled in the [Playground](/playground?countrySearch=false).
+Add a search input to the top of the dropdown, so users can filter the displayed countries. View the plugin with this disabled in the [Playground](/playground?countrySearch=false#user-interface-options).
 
 ###### dropdownContainer
 Type: `Node`  
@@ -103,7 +103,7 @@ Expects a node, e.g. `document.body`. Instead of putting the country dropdown ma
 Type: `Boolean`  
 Default: `true`  
 
-Fix the dropdown width to the input width (rather than being as wide as the longest country name). Try the plugin with this disabled in the [Playground](/playground?fixDropdownWidth=false).
+Fix the dropdown width to the input width (rather than being as wide as the longest country name). Try the plugin with this disabled in the [Playground](/playground?fixDropdownWidth=false#user-interface-options).
 
 ###### searchInputClass
 Type: `String`  
@@ -115,7 +115,7 @@ Additional class(es) to add to the country search input element (requires [`coun
 Type: `Boolean`  
 Default: `false`  
 
-Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. In the case that the user tries to type a new dial code (as well), we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`allowDropdown`](#allowdropdown) and [`countrySearch`](#countrysearch) to be enabled). Try the plugin with this enabled in the [Playground](/playground?separateDialCode=true&initialCountry=gb). _Note: previously named `showSelectedDialCode`._
+Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. In the case that the user tries to type a new dial code (as well), we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`allowDropdown`](#allowdropdown) and [`countrySearch`](#countrysearch) to be enabled). Try the plugin with this enabled in the [Playground](/playground?separateDialCode=true&initialCountry=gb#user-interface-options). _Note: previously named `showSelectedDialCode`._
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/img/iti-separate-dark.png">
@@ -127,7 +127,7 @@ Display the selected country's international dial code next to the input, so it 
 Type: `Boolean`  
 Default: `true`  
 
-Set this to false to hide the flags, e.g. for political reasons. Instead, it will show a generic globe icon. Try the plugin with this disabled in the [Playground](/playground?showFlags=false).
+Set this to false to hide the flags, e.g. for political reasons. Instead, it will show a generic globe icon. Try the plugin with this disabled in the [Playground](/playground?showFlags=false#user-interface-options).
 
 ###### useFullscreenPopup
 Type: `Boolean`  
@@ -149,7 +149,7 @@ Configure the automatically generated placeholder numbers.
 Type: `String`  
 Default: `"polite"`  
 
-Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the [`placeholderNumberType`](#placeholdernumbertype) option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone).
+Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the [`placeholderNumberType`](#placeholdernumbertype) option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#placeholder-options).
 
 ###### customPlaceholder
 Type: `Function`  
@@ -187,13 +187,13 @@ How numbers are formatted as you type and on initial display.
 Type: `Boolean`  
 Default: `true`  
 
-Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this disabled in the [Playground](/playground?formatAsYouType=false). _Note: previously named `autoFormat`._
+Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this disabled in the [Playground](/playground?formatAsYouType=false#formatting-options). _Note: previously named `autoFormat`._
 
 ###### formatOnDisplay
 Type: `Boolean`  
 Default: `true`  
 
-Format the input value (according to the [`nationalMode`](#nationalmode) option) during initialisation, when a new country is selected, and when calling [`setNumber`](/docs/methods#setnumber) or [`setCountry`](/docs/methods#setcountry). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123).
+Format the input value (according to the [`nationalMode`](#nationalmode) option) during initialisation, when a new country is selected, and when calling [`setNumber`](/docs/methods#setnumber) or [`setCountry`](/docs/methods#setcountry). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123#formatting-options).
 
 ###### nationalMode
 Type: `Boolean`  
@@ -205,7 +205,7 @@ Format numbers in the national format, rather than the international format. Thi
 Type: `Boolean`  
 Default: `false`  
 
-As the user types in the input, ignore any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground?strictMode=true&initialCountry=us).
+As the user types in the input, ignore any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground?strictMode=true&initialCountry=us#formatting-options).
 
 ## Validation options
 
@@ -221,7 +221,7 @@ Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/m
 Type: `Boolean`  
 Default: `false`  
 
-Whether or not the validation methods return `true` for numbers containing extensions, e.g. "+1 702 123-1234 ext. 1234". Try toggling this option on/off on a number with an extension in the [Playground](/playground?value=%2B447947692123+ext.+12345).
+Whether or not the validation methods return `true` for numbers containing extensions, e.g. "+1 702 123-1234 ext. 1234". Try toggling this option on/off on a number with an extension in the [Playground](/playground?value=%2B447947692123+ext.+12345#validation-options).
 
 ###### allowPhonewords
 Type: `Boolean`  
