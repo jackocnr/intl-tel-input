@@ -15,6 +15,9 @@
 
     <%= highlight_styles %>
 
+    <!-- Algolia DocSearch -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4" />
+
     <% if (typeof stylesheet_before_demo_css !== 'undefined') { %>
       <link rel="stylesheet" href="<%= cacheBust(stylesheet_before_demo_css) %>">
     <% } %>
@@ -22,10 +25,6 @@
     <% if (typeof stylesheet_after_demo_css !== 'undefined') { %>
       <link rel="stylesheet" href="<%= cacheBust(stylesheet_after_demo_css) %>">
     <% } %>
-
-    <!-- Algolia DocSearch -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4" />
-    <meta name="algolia-site-verification"  content="0CFA182B50BFB071" />
 
     <%= common_head_end %>
   </head>

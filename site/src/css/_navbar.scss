@@ -48,10 +48,39 @@
 
 .DocSearch-Container {
   /* above Bootstrap navbar (z-1020) but below mobile sidebar (z-1055) */
-  z-index: 1051 !important;
+  z-index: 1051;
 }
 .DocSearch-Button {
-  width: 280px !important;
+  width: 260px;
+  --docsearch-search-button-background: rgba(0, 0, 0, .1);
+  --docsearch-search-button-text-color: rgba(255, 255, 255, .65);
+  border: 1px solid rgba(255, 255, 255, .4);
+
+  &:hover {
+    --docsearch-search-button-text-color: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 1);
+  }
+}
+.DocSearch-Button-Keys {
+    min-width: 0;
+    padding: .125rem .25rem;
+    background: rgba(0, 0, 0, .25);
+    border-radius: .25rem
+}
+.DocSearch-Button-Key {
+    color: rgba(255, 255, 255, .65);
+    width: auto;
+    height: 1.25rem;
+    padding-right: .125rem;
+    padding-left: .125rem;
+    background: none;
+    border: none;
+    margin: 0 !important;
+}
+// disable DocSearch's "pressed" styles
+.DocSearch-Button-Key--pressed {
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 // mobile search icon button in header
