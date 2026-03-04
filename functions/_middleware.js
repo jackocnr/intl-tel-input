@@ -37,6 +37,6 @@ export async function onRequest(context) {
 
   // eslint-disable-next-line no-undef
   return new HTMLRewriter()
-    .on("body", new GeoInjector(isEurope))
+    .on("head", new GeoInjector(isEurope))
     .transform(response);
 }
