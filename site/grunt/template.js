@@ -102,9 +102,14 @@ module.exports = function (grunt) {
   const homepageTitle = "International Telephone Input";
   const homepageMetaDesc = "A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes React, Vue, Angular and Svelte components.";
   const homepageCanonicalUrl = "https://intl-tel-input.com";
+
   const playgroundTitle = "Playground - International Telephone Input";
   const playgroundMetaDesc = "Try different initialisation options and see the plugin update live.";
   const playgroundCanonicalUrl = "https://intl-tel-input.com/playground";
+
+  const notFoundTitle = "404 - Page not found | intl-tel-input";
+  const notFoundMetaDesc = "Page not found.";
+  const notFoundCanonicalUrl = "https://intl-tel-input.com/404";
 
   const config = {
     // cache bust common assets
@@ -216,6 +221,47 @@ module.exports = function (grunt) {
           common_body_end: readCommonBodyEndScript(grunt),
           iti_live_results_script: readItiLiveResultsScript(grunt, { cacheBust }),
           iti_script: readItiScript(grunt),
+        }),
+      },
+    },
+
+    // 404
+    not_found_layout: {
+      src: "src/layout_template.html.ejs",
+      dest: "tmp/404/not_found_layout.html",
+      options: {
+        data: () => ({
+          showLeftSidebar: false,
+          layoutClass: "iti-layout-no-sidebars",
+          content: grunt.file.read("src/404/404_content.html"),
+          pageType: "home",
+          name: "404",
+          docsDropdownPages,
+          examplesDropdownPages,
+        }),
+      },
+    },
+    not_found_page: {
+      src: "src/404/404_page_template.html.ejs",
+      dest: "build/404.html",
+      options: {
+        data: () => ({
+          cacheBust,
+          head_title: notFoundTitle,
+          canonical_url: notFoundCanonicalUrl,
+          meta_desc: notFoundMetaDesc,
+          og_meta_tags: buildOpenGraphMetaTags({
+            title: notFoundTitle,
+            description: notFoundMetaDesc,
+            url: notFoundCanonicalUrl,
+          }),
+          ...readCommonPagePartials(grunt, {
+            cacheBust,
+            isDevBuild,
+            iti_styles: "none",
+          }),
+          layout: grunt.file.read("tmp/404/not_found_layout.html"),
+          common_body_end: readCommonBodyEndScript(grunt),
         }),
       },
     },
