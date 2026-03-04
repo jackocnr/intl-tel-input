@@ -8,7 +8,7 @@ const makeTemplateTask = (src, dest, data) => ({
 
 const readCommonPagePartials = (grunt, data) => ({
   common_meta_tags: grunt.file.read("src/shared/common_meta_tags.html"),
-  common_styles: grunt.template.process(grunt.file.read("src/shared/common_styles.html"), {
+  common_styles: grunt.template.process(grunt.file.read("src/shared/common_styles.html.ejs"), {
     data,
   }),
   common_head_end_prod: data && data.isDevBuild
