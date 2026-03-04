@@ -1,0 +1,58 @@
+<!-- Bootstrap styles -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+  crossorigin="anonymous"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  rel="stylesheet"
+  crossorigin="anonymous"
+/>
+<!-- Bootstrap v5.3 requires a data-bs-theme attribute to support dark mode -->
+<script>
+  const setTheme = () => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const theme = mediaQuery.matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  };
+  setTheme();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setTheme);
+</script>
+
+<!-- ITI styles -->
+<% if (iti_styles === "normal") { %>
+  <% const cssFile = isDevBuild ? 'intlTelInput.css' : 'intlTelInput.min.css'; %>
+  <link
+    rel="stylesheet"
+    href="<%= cacheBust('/intl-tel-input/css/' + cssFile) %>"
+  />
+<% } else if (iti_styles === "largeFlags") { %>
+  <link rel="stylesheet" href="<%= cacheBust('/css/intlTelInput-largeFlags.css') %>">
+<% } else if (iti_styles === "homepage") { %>
+  <!-- show regular on mobile and largeFlags version on desktop -->
+  <% const itiCss = isDevBuild ? 'intlTelInput.css' : 'intlTelInput.min.css'; %>
+  <link rel="stylesheet" href="<%= cacheBust('/intl-tel-input/css/' + itiCss) %>" media="screen and (max-width: 991px)">
+  <link rel="stylesheet" href="<%= cacheBust('/css/intlTelInput-largeFlags.css') %>" media="screen and (min-width: 992px)">
+<% } %>
+
+<!-- HighlightJS styles -->
+<% if (typeof highlightjs_styles !== 'undefined') { %>
+  <link rel="stylesheet" href="<%= cacheBust('/css/highlight-github-light.min.css') %>" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
+  <link rel="stylesheet" href="<%= cacheBust('/css/highlight-github-dark.min.css') %>" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="<%= cacheBust('/css/highlightjs_overrides.css') %>">
+<% } %>
+
+<!-- Algolia DocSearch styles -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4" />
+
+<!-- Website styles: must come after ITI styles as contains dark mode overrides -->
+<link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
+
+<!-- Large flags overrides: must come after website styles -->
+<% if (iti_styles === "largeFlags") { %>
+  <link rel="stylesheet" href="<%= cacheBust('/css/large_flags_overrides.css') %>">
+<% } else if (iti_styles === "homepage") { %>
+  <link rel="stylesheet" href="<%= cacheBust('/css/large_flags_overrides.css') %>" media="screen and (min-width: 992px)">
+<% } %>

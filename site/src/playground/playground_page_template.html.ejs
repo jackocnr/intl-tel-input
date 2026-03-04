@@ -7,15 +7,7 @@
     <meta name="description" content="<%= playgroundMetaDesc %>" />
 
     <%= og_meta_tags %>
-    <%= bootstrap_styles %>
-    <%= iti_styles %>
-
-    <%= highlight_styles %>
-
-    <!-- Algolia DocSearch -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4" />
-
-    <link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
+    <%= common_styles %>
     <link rel="stylesheet" href="<%= cacheBust('/css/playground.css') %>" />
 
     <%= common_head_end_prod %>

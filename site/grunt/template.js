@@ -147,7 +147,11 @@ module.exports = function (grunt) {
           homepageCanonicalUrl,
           cacheBust,
           isDevBuild,
-          ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
+          ...readCommonPagePartials(grunt, {
+            cacheBust,
+            isDevBuild,
+            iti_styles: "homepage",
+          }),
           og_meta_tags: buildOpenGraphMetaTags({
             title: homepageTitle,
             description: homepageMetaDesc,
@@ -197,7 +201,12 @@ module.exports = function (grunt) {
           playgroundMetaDesc,
           playgroundCanonicalUrl,
           cacheBust,
-          ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
+          ...readCommonPagePartials(grunt, {
+            cacheBust,
+            isDevBuild,
+            iti_styles: "normal",
+            highlightjs_styles: true,
+          }),
           og_meta_tags: buildOpenGraphMetaTags({
             title: playgroundTitle,
             description: playgroundMetaDesc,
@@ -317,7 +326,12 @@ module.exports = function (grunt) {
           description: metaDesc,
           url: canonicalUrl,
         }),
-        ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
+        ...readCommonPagePartials(grunt, {
+          cacheBust,
+          isDevBuild,
+          iti_styles: pageExtra.iti_styles || "normal",
+          highlightjs_styles: true,
+        }),
         content: grunt.file.read(layoutDest),
         ...pageExtra,
       })
@@ -421,7 +435,7 @@ module.exports = function (grunt) {
       markupName: "validation",
       includeItiScript: true,
     },
-    pageExtra: { stylesheet_after_demo_css: "/examples/css/validation.css" },
+    pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   }, {
     key: "validation_practical",
     title: "Validation",
@@ -439,7 +453,7 @@ module.exports = function (grunt) {
       }),
     },
     pageExtra: {
-      stylesheet_after_demo_css: "/examples/css/validation.css",
+      stylesheet_after_website_css: "/examples/css/validation.css",
     },
   }, {
     key: "validation_precise",
@@ -458,7 +472,7 @@ module.exports = function (grunt) {
       }),
     },
     pageExtra: {
-      stylesheet_after_demo_css: "/examples/css/validation.css",
+      stylesheet_after_website_css: "/examples/css/validation.css",
     },
   }, {
     key: "hidden_input",
@@ -476,7 +490,7 @@ module.exports = function (grunt) {
       includeItiScript: true,
     },
     pageExtra: {
-      stylesheet_after_demo_css: "/examples/css/multiple_instances.css",
+      stylesheet_after_website_css: "/examples/css/multiple_instances.css",
     },
   }, {
     key: "display_number",
@@ -500,9 +514,7 @@ module.exports = function (grunt) {
       includeItiScript: true,
     },
     pageExtra: {
-      stylesheet_before_demo_css: "/css/intlTelInput-largeFlags.css",
-      stylesheet_after_demo_css: "/css/large_flags_overrides.css",
-      omit_iti_styles: true, // as using special large styles instead
+      iti_styles: "largeFlags",
     },
   }, {
     key: "angular_component",
@@ -626,7 +638,12 @@ module.exports = function (grunt) {
             description: metaDesc,
             url: canonicalUrl,
           }),
-          ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
+          ...readCommonPagePartials(grunt, {
+            cacheBust,
+            isDevBuild,
+            highlightjs_styles: true,
+            iti_styles: "none",
+          }),
           layout: grunt.file.read(`tmp/docs/${key}_layout.html`),
           common_body_end: readCommonBodyEndScript(grunt),
         }),

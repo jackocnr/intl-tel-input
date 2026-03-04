@@ -7,24 +7,9 @@
     <meta name="description" content="<%= meta_desc %>">
 
     <%= og_meta_tags %>
-
-    <%= bootstrap_styles %>
-
-    <% if (typeof omit_iti_styles === 'undefined') { %>
-      <%= iti_styles %>
-    <% } %>
-
-    <%= highlight_styles %>
-
-    <!-- Algolia DocSearch -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@4" />
-
-    <% if (typeof stylesheet_before_demo_css !== 'undefined') { %>
-      <link rel="stylesheet" href="<%= cacheBust(stylesheet_before_demo_css) %>">
-    <% } %>
-    <link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
-    <% if (typeof stylesheet_after_demo_css !== 'undefined') { %>
-      <link rel="stylesheet" href="<%= cacheBust(stylesheet_after_demo_css) %>">
+    <%= common_styles %>
+    <% if (typeof stylesheet_after_website_css !== 'undefined') { %>
+      <link rel="stylesheet" href="<%= cacheBust(stylesheet_after_website_css) %>">
     <% } %>
 
     <%= common_head_end_prod %>
