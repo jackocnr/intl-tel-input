@@ -4,7 +4,6 @@ import { Iti } from "../intl-tel-input";
 import {
   Component,
   Input,
-  OnInit,
   OnDestroy,
   ViewChild,
   ElementRef,
@@ -42,19 +41,6 @@ export const PHONE_ERROR_MESSAGES: string[] = [
     <input
       type="tel"
       #inputRef
-      [class]="inputPropsRecord.class || ''"
-      [attr.id]="inputPropsRecord.id ?? null"
-      [attr.name]="inputPropsRecord.name ?? null"
-      [attr.placeholder]="inputPropsRecord.placeholder ?? null"
-      [attr.maxlength]="inputPropsRecord.maxlength ?? null"
-      [attr.minlength]="inputPropsRecord.minlength ?? null"
-      [attr.required]="inputPropsRecord.required ? '' : null"
-      [attr.title]="inputPropsRecord.title ?? null"
-      [attr.tabindex]="inputPropsRecord.tabindex ?? null"
-      [attr.aria-label]="inputPropsRecord['aria-label'] ?? null"
-      [attr.aria-labelledby]="inputPropsRecord['aria-labelledby'] ?? null"
-      [attr.aria-describedby]="inputPropsRecord['aria-describedby'] ?? null"
-      [attr.aria-invalid]="inputPropsRecord['aria-invalid'] ?? null"
       (input)="handleInput()"
       (blur)="handleBlur($event)"
       (focus)="handleFocus($event)"
@@ -79,7 +65,6 @@ export const PHONE_ERROR_MESSAGES: string[] = [
 })
 export class IntlTelInputComponent
   implements
-    OnInit,
     AfterViewInit,
     OnDestroy,
     OnChanges,
@@ -89,11 +74,11 @@ export class IntlTelInputComponent
   @ViewChild("inputRef", { static: true })
   inputRef!: ElementRef<HTMLInputElement>;
 
-  @Input() initialValue: string = "";
+  @Input() initialValue?: string;
   @Input() usePreciseValidation: boolean = false;
-  @Input() inputProps: object = {};
-  @Input() disabled?: boolean;
-  @Input() initOptions: SomeOptions = {};
+  @Input() inputProps: Record<string, string> = {};
+  @Input() disabled: boolean = false;
+  @Input() initOptions?: SomeOptions;
 
   @Output() numberChange = new EventEmitter<string>();
   @Output() countryChange = new EventEmitter<string>();
@@ -106,9 +91,7 @@ export class IntlTelInputComponent
   @Output() paste = new EventEmitter<ClipboardEvent>();
   @Output() click = new EventEmitter<MouseEvent>();
 
-  private iti: Iti | null = null;
-  private countryChangeHandler = () => this.handleInput();
-
+  private iti?: Iti;
   private appliedInputPropKeys = new Set<string>();
 
   private lastEmittedNumber?: string;
@@ -116,6 +99,7 @@ export class IntlTelInputComponent
   private lastEmittedValidity?: boolean;
   private lastEmittedErrorCode?: number | null;
 
+  private countryChangeHandler = () => this.handleInput();
   // eslint-disable-next-line class-methods-use-this
   private onChange: (value: string) => void = () => {};
   // eslint-disable-next-line class-methods-use-this
@@ -123,7 +107,7 @@ export class IntlTelInputComponent
   // eslint-disable-next-line class-methods-use-this
   private onValidatorChange: () => void = () => {};
 
-  ngOnInit() {
+  ngAfterViewInit() {
     if (this.inputRef.nativeElement) {
       this.iti = intlTelInput(this.inputRef.nativeElement, this.initOptions);
     }
@@ -134,9 +118,7 @@ export class IntlTelInputComponent
     );
 
     this.applyInputProps();
-  }
 
-  ngAfterViewInit() {
     if (this.initialValue) {
       this.iti?.setNumber(this.initialValue);
     }
@@ -148,7 +130,7 @@ export class IntlTelInputComponent
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes["disabled"]) {
-      this.iti?.setDisabled(this.disabled || false);
+      this.iti?.setDisabled(this.disabled);
     }
 
     if (changes["inputProps"]) {
@@ -249,53 +231,18 @@ export class IntlTelInputComponent
     );
   }
 
-  get inputPropsRecord(): Record<string, any> {
-    return this.inputProps as Record<string, any>;
-  }
-
   private applyInputProps(): void {
-    if (!this.inputRef?.nativeElement) return;
-
-    const props = this.inputProps as Record<string, unknown>;
-    // Ignore keys that would break functionality, or are handled via template bindings.
-    const blockedKeys = new Set([
-      "value",
-      "type",
-      // "disabled",
-      // "readonly",
-      "class",
-      "id",
-      "name",
-      "placeholder",
-      "autocomplete",
-      "inputmode",
-      "maxlength",
-      "minlength",
-      "required",
-      "title",
-      "tabindex",
-      "aria-label",
-      "aria-labelledby",
-      "aria-describedby",
-      "aria-invalid",
-    ]);
-
-    const desiredKeys = new Set<string>();
-    Object.entries(props).forEach(([key, value]) => {
-      if (blockedKeys.has(key)) return;
-      if (value === null || value === undefined || value === false) return;
-      desiredKeys.add(key);
-      const attributeValue = value === true ? "" : String(value);
-      this.inputRef.nativeElement.setAttribute(key, attributeValue);
-      this.appliedInputPropKeys.add(key);
+    const currentKeys = new Set<string>();
+    Object.entries(this.inputProps).forEach(([key, value]) => {
+      currentKeys.add(key);
+      this.inputRef.nativeElement.setAttribute(key, value);
     });
-
-    // Remove previously-applied attributes that are no longer present.
-    Array.from(this.appliedInputPropKeys).forEach((key) => {
-      if (desiredKeys.has(key)) return;
-      this.inputRef.nativeElement.removeAttribute(key);
-      this.appliedInputPropKeys.delete(key);
+    this.appliedInputPropKeys.forEach((key) => {
+      if (!currentKeys.has(key)) {
+        this.inputRef.nativeElement.removeAttribute(key);
+      }
     });
+    this.appliedInputPropKeys = currentKeys;
   }
 
   // ============ ControlValueAccessor Implementation ============
@@ -338,7 +285,7 @@ export class IntlTelInputComponent
     return {
       invalidPhone: {
         errorCode,
-        errorMessage: PHONE_ERROR_MESSAGES[errorCode],
+        errorMessage: PHONE_ERROR_MESSAGES[errorCode] ?? "unknown",
       },
     };
   }
