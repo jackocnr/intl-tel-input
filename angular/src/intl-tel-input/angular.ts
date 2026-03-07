@@ -285,7 +285,7 @@ export class IntlTelInputComponent
     return {
       invalidPhone: {
         errorCode,
-        errorMessage: PHONE_ERROR_MESSAGES[errorCode],
+        errorMessage: PHONE_ERROR_MESSAGES[errorCode] ?? "unknown",
       },
     };
   }
