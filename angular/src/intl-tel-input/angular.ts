@@ -76,7 +76,7 @@ export class IntlTelInputComponent
 
   @Input() initialValue?: string;
   @Input() usePreciseValidation: boolean = false;
-  @Input() inputProps: object = {};
+  @Input() inputProps: Record<string, string> = {};
   @Input() disabled: boolean = false;
   @Input() initOptions?: SomeOptions;
 
