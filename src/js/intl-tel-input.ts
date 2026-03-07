@@ -1467,18 +1467,32 @@ export class Iti {
 
   //* Validate the input val using number length only
   public isValidNumber(): boolean | null {
-    // custom validation for UK mobile numbers - useful when allowedNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
     const { dialCode, iso2 } = this.#selectedCountryData;
-    if (dialCode === UK.DIAL_CODE && intlTelInput.utils && this.#ui.telInput) {
+    if (intlTelInput.utils && this.#ui.telInput) {
       const number = this.#getFullNumber();
       const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
-      // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
-      if (
-        coreNumber &&
-        coreNumber[0] === UK.MOBILE_PREFIX &&
-        coreNumber.length !== UK.MOBILE_CORE_LENGTH
-      ) {
-        return false;
+      if (coreNumber) {
+        // custom validation for UK mobile numbers - useful when allowedNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
+        if (dialCode === UK.DIAL_CODE) {
+          // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
+          if (coreNumber[0] === UK.MOBILE_PREFIX && coreNumber.length !== UK.MOBILE_CORE_LENGTH) {
+            return false;
+          }
+        }
+        // Fix for NANP and similar countries: libphonenumber can auto-prepend area codes when
+        // parsing local-format numbers (e.g. "2462501" for Barbados gets expanded to "2462462501"),
+        // making incomplete numbers appear "possible". Detect this by comparing the digits actually
+        // typed against the national number libphonenumber derived - if the derived national number
+        // is longer, the library completed digits the user never typed, so the number is incomplete.
+        // Skip this check for phonewords (alpha chars), since getNumeric would undercount their digits.
+        const hasAlphaChar = REGEX.ALPHA_UNICODE.test(number);
+        if (!hasAlphaChar && dialCode) {
+          const nationalPortion = number.startsWith("+") ? number.slice(1 + dialCode.length) : number;
+          const nationalDigitCount = getNumeric(nationalPortion).length;
+          if (coreNumber.length > nationalDigitCount) {
+            return false;
+          }
+        }
       }
     }
     return this.#validateNumber(false);

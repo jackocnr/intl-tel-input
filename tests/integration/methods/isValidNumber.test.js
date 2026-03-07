@@ -47,3 +47,30 @@ describe("isValidNumber method", () => {
     expect(iti.isValidNumber()).toBeNull();
   });
 });
+
+describe("isValidNumber method - NANP Barbados", () => {
+  let iti, input, user;
+  const options = { initialCountry: "bb" };
+
+  beforeEach(() => {
+    ({ iti, input } = initPlugin({ options }));
+    user = userEvent.setup();
+  });
+
+  afterEach(() => {
+    teardown(iti);
+  });
+
+  test("returns false for: NANP partial number that libphonenumber could auto-complete with area code", async () => {
+    // Barbados (bb) has area code 246 and expects 10-digit national numbers.
+    // Typing "2462501" (7 digits) should be invalid - it must not be auto-completed
+    // by libphonenumber prepending area code "246" to yield "2462462501" (10 digits).
+    await user.type(input, "2462501");
+    expect(iti.isValidNumber()).toBe(false);
+  });
+
+  test("returns true for: full NANP Barbados number", async () => {
+    await user.type(input, "2462501234");
+    expect(iti.isValidNumber()).toBe(true);
+  });
+});
