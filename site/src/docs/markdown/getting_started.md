@@ -12,16 +12,16 @@ This page is for getting started with the JavaScript plugin. For the framework c
 
 1. Add the CSS
   ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@26.7.6/build/css/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@26.8.0/build/css/intlTelInput.css">
   ```
 
 2. Add the plugin script and initialise it on your input element
   ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@26.7.6/build/js/intlTelInput.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@26.8.0/build/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@26.7.6/build/js/utils.js"),
+      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@26.8.0/build/js/utils.js"),
     });
   </script>
   ```
