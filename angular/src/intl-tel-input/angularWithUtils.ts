@@ -77,7 +77,7 @@ export class IntlTelInputComponent
 
   @Input() initialValue?: string;
   @Input() usePreciseValidation: boolean = false;
-  @Input() inputProps: object = {};
+  @Input() inputProps: Record<string, string> = {};
   @Input() disabled: boolean = false;
   @Input() initOptions?: SomeOptions;
 
@@ -286,7 +286,7 @@ export class IntlTelInputComponent
     return {
       invalidPhone: {
         errorCode,
-        errorMessage: PHONE_ERROR_MESSAGES[errorCode],
+        errorMessage: PHONE_ERROR_MESSAGES[errorCode] ?? "unknown",
       },
     };
   }
