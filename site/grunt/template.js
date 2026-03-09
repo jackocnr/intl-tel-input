@@ -457,6 +457,7 @@ module.exports = function (grunt) {
     content: {
       markupName: "simple_input",
       includeItiScript: true,
+      displayCode: "src/examples/js/lookup_country_display_code.js",
     },
   }, {
     key: "right_to_left",
@@ -480,6 +481,7 @@ module.exports = function (grunt) {
       demo_note: "<p>Enter a US number:</p>",
       markupName: "validation",
       includeItiScript: true,
+      displayCode: "src/examples/js/single_country_display_code.js",
     },
     pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   }, {
@@ -527,6 +529,8 @@ module.exports = function (grunt) {
       "Automatically populate a hidden input with the full international number, so it gets submitted to your backend.",
     content: {
       includeItiScript: true,
+      markupName: "validation",
+      displayCode: "src/examples/js/hidden_input_display_code.js",
     },
   }, {
     key: "multiple_instances",
@@ -534,6 +538,7 @@ module.exports = function (grunt) {
     metaDesc: "Use multiple instances of the plugin with different configurations on the same page.",
     content: {
       includeItiScript: true,
+      displayCode: "src/examples/js/multiple_instances_display_code.js",
     },
     pageExtra: {
       stylesheet_after_website_css: "/examples/css/multiple_instances.css",
@@ -547,6 +552,7 @@ module.exports = function (grunt) {
     },
     content: {
       includeItiScript: true,
+      displayCode: "src/examples/js/simple_init_plugin_display_code.js",
     },
   }, {
     key: "large_flags",
@@ -558,6 +564,7 @@ module.exports = function (grunt) {
     content: {
       markupName: "simple_input",
       includeItiScript: true,
+      displayCode: "src/examples/js/simple_init_plugin_display_code.js",
     },
     pageExtra: {
       iti_styles: "largeFlags",

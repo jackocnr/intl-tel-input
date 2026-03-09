@@ -6,7 +6,9 @@ const errorMsg = document.querySelector("#error-msg");
 
 // initialise plugin
 const iti = intlTelInput(input, {
-  initialCountry: "us",
+  onlyCountries: ["us"],
+  allowDropdown: false,
+  showFlags: false,
   loadUtils: () => import("intl-tel-input/utils"),
 });
 
