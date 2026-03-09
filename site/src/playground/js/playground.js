@@ -247,6 +247,160 @@ updateUrlFromState(initialState, {
   defaultState,
 });
 
+// Contextual hints: shown when toggling an option that has no visible effect
+// until the user takes an additional action (e.g. selecting a country, typing a number).
+const HINT_CONFIGS = [
+  {
+    optionKey: "separateDialCode",
+    message: "Tip: try selecting a country from the dropdown to see this in action.",
+    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+  },
+  {
+    optionKey: "nationalMode",
+    message: "Tip: set an initialCountry to see how this option formats the placeholder number differently.",
+    shouldShow: () => !telInput.value && !telInput.placeholder,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "formatAsYouType",
+    message: "Tip: try typing a phone number to see this in action.",
+    shouldShow: () => !telInput.value,
+  },
+  {
+    optionKey: "strictMode",
+    message: "Tip: try typing valid/invalid characters in the input to see this in action.",
+    shouldShow: () => !telInput.value,
+  },
+  {
+    optionKey: "formatOnDisplay",
+    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    shouldShow: () => !telInput.value,
+  },
+  {
+    optionKey: "allowNumberExtensions",
+    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    shouldShow: () => !telInput.value,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "allowPhonewords",
+    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    shouldShow: () => !telInput.value,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "geoIpLookup",
+    message: "Tip: set initialCountry to \"auto\" for this to take effect.",
+    shouldShow: () => getCombinedStateFromControls().initialCountry !== "auto",
+  },
+  {
+    optionKey: "countryOrder",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  {
+    optionKey: "excludeCountries",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  {
+    optionKey: "onlyCountries",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  {
+    optionKey: "countrySearch",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "fixDropdownWidth",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "initialCountry",
+    message: "Tip: enable geoIpLookup to get this working.",
+    shouldShow: () => {
+      const state = getCombinedStateFromControls();
+      return state.initialCountry === "auto" && !state.geoIpLookup;
+    },
+  },
+  {
+    optionKey: "autoPlaceholder",
+    message: "Tip: set an initialCountry to see the placeholder.",
+    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "customPlaceholder",
+    message: "Tip: set an initialCountry to see the placeholder.",
+    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "placeholderNumberType",
+    message: "Tip: set an initialCountry to see the placeholder.",
+    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "showFlags",
+    message: "Tip: set an initialCountry and/or enable \"Keep dropdown open\" to see this in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti.getSelectedCountryData().iso2,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "useFullscreenPopup",
+    message: "Tip: click the selected country to open the popup.",
+    shouldShow: () => true,
+  },
+  {
+    optionKey: "containerClass",
+    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
+    shouldShow: () => true,
+  },
+  {
+    optionKey: "searchInputClass",
+    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
+    shouldShow: () => true,
+  },
+];
+
+const hintTimers = {};
+const pendingHintChecks = new Set();
+const hintOptionKeys = new Set(HINT_CONFIGS.map((c) => c.optionKey));
+
+function maybeShowHint(config) {
+  const { optionKey, message, shouldShow } = config;
+  const control = optionsForm.querySelector(`[data-option='${optionKey}']`);
+  if (!control) return;
+  const isCheckbox = control.type === "checkbox";
+  if (isCheckbox && !control.checked && !config.alsoShowOnToggleOff) return;
+  if (!isCheckbox && !control.value.trim()) return;
+  if (!shouldShow()) return;
+
+  const existing = optionsForm.querySelector(`[data-hint-option='${optionKey}']`);
+  if (existing) existing.remove();
+  if (hintTimers[optionKey]) window.clearTimeout(hintTimers[optionKey]);
+
+  const hint = document.createElement("span");
+  hint.className = "iti-playground-hint form-text";
+  hint.setAttribute("data-hint-option", optionKey);
+  hint.textContent = message;
+
+  const controlWrapper = control.closest(".iti-playground-control");
+  if (!controlWrapper) return;
+  controlWrapper.appendChild(hint);
+
+  hintTimers[optionKey] = window.setTimeout(() => {
+    hint.remove();
+    hintTimers[optionKey] = null;
+  }, 5000);
+}
+
 let reinitTimer = null;
 function scheduleReinit() {
   if (reinitTimer) window.clearTimeout(reinitTimer);
@@ -264,12 +418,35 @@ function scheduleReinit() {
       defaultState,
       specialOptionKeys,
     });
-    void initItiWithState(state);
+    initItiWithState(state).then(() => {
+      if (pendingHintChecks.size > 0) {
+        for (const config of HINT_CONFIGS) {
+          if (pendingHintChecks.has(config.optionKey)) {
+            maybeShowHint(config);
+          }
+        }
+        pendingHintChecks.clear();
+      }
+    });
   }, 100);
 }
 
-optionsForm.addEventListener("input", scheduleReinit);
-optionsForm.addEventListener("change", scheduleReinit);
+function maybeQueueHintCheck(event) {
+  const target = event.target;
+  const optionKey = target && target.getAttribute("data-option");
+  if (optionKey && hintOptionKeys.has(optionKey)) {
+    pendingHintChecks.add(optionKey);
+  }
+}
+
+optionsForm.addEventListener("input", (event) => {
+  maybeQueueHintCheck(event);
+  scheduleReinit();
+});
+optionsForm.addEventListener("change", (event) => {
+  maybeQueueHintCheck(event);
+  scheduleReinit();
+});
 
 if (attrsForm) {
   attrsForm.addEventListener("input", scheduleReinit);
