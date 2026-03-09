@@ -242,7 +242,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
   };
 
   const attributeMeta = {
-    value: { type: "text", label: "value (initial)" },
+    value: { type: "text" },
     placeholder: { type: "text" },
     disabled: { type: "boolean" },
     readonly: { type: "boolean" },
