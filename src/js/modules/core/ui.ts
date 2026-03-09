@@ -804,6 +804,8 @@ export default class UI {
       this.#dropdownForContainer.remove();
       this.#dropdownForContainer.style.top = "";
       this.#dropdownForContainer.style.bottom = "";
+      this.#dropdownForContainer.style.paddingLeft = "";
+      this.#dropdownForContainer.style.paddingRight = "";
     } else {
       this.#dropdownContent.style.top = "";
       this.#dropdownContent.style.bottom = "";
@@ -825,11 +827,14 @@ export default class UI {
   #handleDropdownContainer(): void {
     const { dropdownContainer, useFullscreenPopup } = this.#options;
 
-    if (!dropdownContainer) {
-      return;
-    }
-
-    if (!useFullscreenPopup) {
+    if (useFullscreenPopup) {
+      // on wider screens, constrain the popup to the input width instead of full width
+      if (window.innerWidth >= 500) {
+        const inputPos = this.telInput.getBoundingClientRect();
+        this.#dropdownForContainer.style.paddingLeft = `${inputPos.left}px`;
+        this.#dropdownForContainer.style.paddingRight = `${window.innerWidth - inputPos.right}px`;
+      }
+    } else {
       // inline dropdown
       // remember this inputPos is relative to the viewport, not the page
       const inputPos = this.telInput.getBoundingClientRect();
