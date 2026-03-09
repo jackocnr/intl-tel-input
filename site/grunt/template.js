@@ -505,7 +505,7 @@ module.exports = function (grunt) {
     },
   }, {
     key: "validation_precise",
-    title: "Precise validation (dangerous)",
+    title: "Precise validation (advanced)",
     metaDesc:
       "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
     js: {

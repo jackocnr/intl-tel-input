@@ -10,6 +10,7 @@
 - [Can I disable formatting as you type?](#can-i-disable-formatting-as-you-type)
 - [How do I prevent users typing invalid characters?](#how-do-i-prevent-users-typing-invalid-characters)
 - [How do I validate a number?](#how-do-i-validate-a-number)
+- [How do I show the dial code next to the selected flag?](#how-do-i-show-the-dial-code-next-to-the-selected-flag)
 - [Something looks broken — where should I look first?](#something-looks-broken--where-should-i-look-first)
 
 
@@ -87,6 +88,15 @@ If you’re using the utilities script, you can validate numbers and show useful
 
 - See the [Validation example](/examples/validation-practical)
 - See the [Utilities script](/docs/utils)
+
+
+## How do I show the dial code next to the selected flag?
+
+Use the [`separateDialCode`](/docs/options#separatedialcode) option.
+
+When enabled, the selected country's dial code will be displayed next to the flag, and will be automatically removed from the typed number. This is useful if you want to display the dial code visually but keep the input value clean.
+
+Try it out in the [Playground](/playground?initialCountry=gb&separateDialCode=true#user-interface-options).
 
 
 ## Something looks broken — where should I look first?

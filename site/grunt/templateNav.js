@@ -24,7 +24,7 @@ const examplesDropdownPages = [
   { name: "hidden_input", href: "/examples/hidden-input", label: "Hidden input" },
   { name: "display_number", href: "/examples/display-number", label: "Display existing number" },
   { name: "multiple_instances", href: "/examples/multiple-instances", label: "Multiple instances" },
-  { name: "validation_precise", href: "/examples/validation-precise", label: "Precise validation (dangerous)" },
+  { name: "validation_precise", href: "/examples/validation-precise", label: "Precise validation (advanced)" },
   { name: "large_flags", href: "/examples/large-flags", label: "Large flags" },
   { name: "react_component", href: "/examples/react-component", label: "React component" },
   { name: "vue_component", href: "/examples/vue-component", label: "Vue component" },
