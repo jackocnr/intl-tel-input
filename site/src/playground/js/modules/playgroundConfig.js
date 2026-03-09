@@ -179,7 +179,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     fixDropdownWidth: {
       type: "boolean",
-      tooltip: "Keep the dropdown width aligned to the input width.",
+      tooltip: "Keep the dropdown width aligned to the input width, as opposed to the width of the longest country name.",
     },
     formatAsYouType: {
       type: "boolean",
