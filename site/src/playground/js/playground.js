@@ -250,49 +250,7 @@ updateUrlFromState(initialState, {
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).
 const HINT_CONFIGS = [
-  {
-    optionKey: "separateDialCode",
-    message: "Tip: try selecting a country from the dropdown to see this in action.",
-    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
-  },
-  {
-    optionKey: "nationalMode",
-    message: "Tip: set an initialCountry to see how this option formats the placeholder number differently.",
-    shouldShow: () => !telInput.value && !telInput.placeholder,
-    alsoShowOnToggleOff: true,
-  },
-  {
-    optionKey: "formatAsYouType",
-    message: "Tip: try typing a phone number to see this in action.",
-    shouldShow: () => !telInput.value,
-  },
-  {
-    optionKey: "strictMode",
-    message: "Tip: try typing valid/invalid characters in the input to see this in action.",
-    shouldShow: () => !telInput.value,
-  },
-  {
-    optionKey: "formatOnDisplay",
-    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
-    shouldShow: () => !telInput.value,
-  },
-  {
-    optionKey: "allowNumberExtensions",
-    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
-    shouldShow: () => !telInput.value,
-    alsoShowOnToggleOff: true,
-  },
-  {
-    optionKey: "allowPhonewords",
-    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
-    shouldShow: () => !telInput.value,
-    alsoShowOnToggleOff: true,
-  },
-  {
-    optionKey: "geoIpLookup",
-    message: "Tip: set initialCountry to \"auto\" for this to take effect.",
-    shouldShow: () => getCombinedStateFromControls().initialCountry !== "auto",
-  },
+  // Country Options
   {
     optionKey: "countryOrder",
     message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
@@ -304,21 +262,9 @@ const HINT_CONFIGS = [
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
   },
   {
-    optionKey: "onlyCountries",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked,
-  },
-  {
-    optionKey: "countrySearch",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked,
-    alsoShowOnToggleOff: true,
-  },
-  {
-    optionKey: "fixDropdownWidth",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked,
-    alsoShowOnToggleOff: true,
+    optionKey: "geoIpLookup",
+    message: "Tip: set initialCountry to \"auto\" for this to take effect.",
+    shouldShow: () => getCombinedStateFromControls().initialCountry !== "auto",
   },
   {
     optionKey: "initialCountry",
@@ -328,6 +274,56 @@ const HINT_CONFIGS = [
       return state.initialCountry === "auto" && !state.geoIpLookup;
     },
   },
+  {
+    optionKey: "onlyCountries",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  // User Interface Options (allowDropdown not needed as always clear)
+  {
+    optionKey: "containerClass",
+    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
+    shouldShow: () => true,
+  },
+  {
+    optionKey: "countrySearch",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "dropdownContainer",
+    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
+    shouldShow: () => true,
+  },
+  {
+    optionKey: "fixDropdownWidth",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "searchInputClass",
+    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
+    shouldShow: () => true,
+  },
+  {
+    optionKey: "separateDialCode",
+    message: "Tip: try selecting a country from the dropdown to see this in action.",
+    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+  },
+  {
+    optionKey: "showFlags",
+    message: "Tip: set an initialCountry and/or enable \"Keep dropdown open\" to see this in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti.getSelectedCountryData().iso2,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "useFullscreenPopup",
+    message: "Tip: click the selected country to open the popup.",
+    shouldShow: () => true,
+  },
+  // Placeholder Options
   {
     optionKey: "autoPlaceholder",
     message: "Tip: set an initialCountry to see the placeholder.",
@@ -346,26 +342,69 @@ const HINT_CONFIGS = [
     shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
     alsoShowOnToggleOff: true,
   },
+  // Formatting Options
   {
-    optionKey: "showFlags",
-    message: "Tip: set an initialCountry and/or enable \"Keep dropdown open\" to see this in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti.getSelectedCountryData().iso2,
+    optionKey: "formatAsYouType",
+    message: "Tip: try typing a phone number to see this in action.",
+    shouldShow: () => !telInput.value,
+  },
+  {
+    optionKey: "formatOnDisplay",
+    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    shouldShow: () => !telInput.value,
+  },
+  {
+    optionKey: "nationalMode",
+    message: "Tip: set an initialCountry to see how this option formats the placeholder number differently.",
+    shouldShow: () => !telInput.value && !telInput.placeholder,
     alsoShowOnToggleOff: true,
   },
   {
-    optionKey: "useFullscreenPopup",
-    message: "Tip: click the selected country to open the popup.",
-    shouldShow: () => true,
+    optionKey: "strictMode",
+    message: "Tip: try typing valid/invalid characters in the input to see this in action.",
+    shouldShow: () => !telInput.value,
+  },
+  // Validation Options
+  {
+    optionKey: "allowedNumberTypes",
+    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    shouldShow: () => !telInput.value,
+    isMultidropdown: true,
   },
   {
-    optionKey: "containerClass",
+    optionKey: "allowNumberExtensions",
+    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    shouldShow: () => !telInput.value,
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "allowPhonewords",
+    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    shouldShow: () => !telInput.value,
+    alsoShowOnToggleOff: true,
+  },
+  // Translation Options
+  {
+    optionKey: "countryNameLocale",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  {
+    optionKey: "i18n",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  // Miscellaneous Options
+  {
+    optionKey: "hiddenInput",
     message: "Tip: open devtools and inspect the Live Demo to check this is working.",
     shouldShow: () => true,
   },
   {
-    optionKey: "searchInputClass",
-    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
-    shouldShow: () => true,
+    optionKey: "loadUtils",
+    message: "NOTE: without utils, formatting/validation (and more) is disabled.",
+    shouldShow: () => !getCombinedStateFromControls().loadUtils,
+    alsoShowOnToggleOff: true,
   },
 ];
 
@@ -373,13 +412,24 @@ const hintTimers = {};
 const pendingHintChecks = new Set();
 const hintOptionKeys = new Set(HINT_CONFIGS.map((c) => c.optionKey));
 
+function findControl(optionKey, isMultidropdown) {
+  if (isMultidropdown) {
+    return optionsForm.querySelector(`[data-multidropdown='${optionKey}']`);
+  }
+  return optionsForm.querySelector(`[data-option='${optionKey}']`);
+}
+
 function maybeShowHint(config) {
   const { optionKey, message, shouldShow } = config;
-  const control = optionsForm.querySelector(`[data-option='${optionKey}']`);
+  const control = findControl(optionKey, config.isMultidropdown);
   if (!control) return;
-  const isCheckbox = control.type === "checkbox";
-  if (isCheckbox && !control.checked && !config.alsoShowOnToggleOff) return;
-  if (!isCheckbox && !control.value.trim()) return;
+
+  if (!config.isMultidropdown) {
+    const isCheckbox = control.type === "checkbox";
+    if (isCheckbox && !control.checked && !config.alsoShowOnToggleOff) return;
+    if (!isCheckbox && !control.value.trim()) return;
+  }
+
   if (!shouldShow()) return;
 
   const existing = optionsForm.querySelector(`[data-hint-option='${optionKey}']`);
@@ -436,6 +486,16 @@ function maybeQueueHintCheck(event) {
   const optionKey = target && target.getAttribute("data-option");
   if (optionKey && hintOptionKeys.has(optionKey)) {
     pendingHintChecks.add(optionKey);
+    return;
+  }
+  // For multidropdown controls, the change event fires on inner checkboxes;
+  // walk up to find the [data-multidropdown] wrapper.
+  const multidropdown = target && target.closest("[data-multidropdown]");
+  if (multidropdown) {
+    const mdKey = multidropdown.getAttribute("data-multidropdown");
+    if (mdKey && hintOptionKeys.has(mdKey)) {
+      pendingHintChecks.add(mdKey);
+    }
   }
 }
 
