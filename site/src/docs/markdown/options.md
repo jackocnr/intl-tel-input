@@ -167,7 +167,7 @@ intlTelInput(input, {
 Type: `String`  
 Default: `"MOBILE"`  
 
-Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to use for the generated placeholder numbers. Play with this option in the [Playground](/playground).
+Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to use for the generated placeholder numbers. Play with this option in the [Playground](/playground).
 
 <div class="article-ad">
   <ins class="adsbygoogle"
@@ -215,7 +215,7 @@ Adjust what is considered a valid number.
 Type: `String[]`  
 Default: `["MOBILE", "FIXED_LINE"]`  
 
-Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE", "FIXED_LINE"]` so [`isValidNumber`](/docs/methods#isvalidnumber) (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. Play with this option in the [Playground](/playground). _Note: previously named `validationNumberTypes`._
+Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type. By default, it's set to `["MOBILE", "FIXED_LINE"]` so [`isValidNumber`](/docs/methods#isvalidnumber) (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. Play with this option in the [Playground](/playground). _Note: previously named `validationNumberTypes`._
 
 ###### allowNumberExtensions
 Type: `Boolean`  

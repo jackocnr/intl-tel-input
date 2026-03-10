@@ -40,7 +40,7 @@ Get the type (fixed-line/mobile/toll-free, etc) of the current number. Requires 
 ```js
 const numberType = iti.getNumberType();
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L162) in the enum `intlTelInput.utils.numberType`, e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) in the enum `intlTelInput.utils.numberType`, e.g.  
 ```js
 if (numberType === intlTelInput.utils.numberType.MOBILE) {
     // is a mobile number
@@ -69,7 +69,7 @@ Get more information about a validation error. Requires the [utils script to be 
 ```js
 const error = iti.getValidationError();
 ```
-Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L178) in the enum `intlTelInput.utils.validationError`, e.g.  
+Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L223) in the enum `intlTelInput.utils.validationError`, e.g.  
 ```js
 if (error === intlTelInput.utils.validationError.TOO_SHORT) {
     // the number is too short
