@@ -95,6 +95,17 @@ const addDocOptionsLayoutPlugin = (md) => {
       i += 1;
       consumeThroughHeadingClose("h6");
 
+      // The Type/Default paragraph also lives in the key cell.
+      // Consume paragraph_open, inline, paragraph_close.
+      while (i < tokens.length && tokens[i].type !== "paragraph_close") {
+        nextTokens.push(tokens[i]);
+        i += 1;
+      }
+      if (i < tokens.length && tokens[i].type === "paragraph_close") {
+        nextTokens.push(tokens[i]);
+        i += 1;
+      }
+
       // Switch to the value cell for the rest of the option content.
       nextTokens.push(endKeyCellAndStartValueCellMarkup());
 
