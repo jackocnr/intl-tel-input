@@ -299,9 +299,9 @@ describe("strictMode option", () => {
 
 
 // // LONG RUNNING TESTS - RUN MANUALLY FROM TIME TO TIME
-// // NOTE: these take so long they crash travis. BUT you can run one block at a time locally.
+// // NOTE: these take so long they crash travis. BUT they run ok locally, they just take about 60 seconds.
 
-// const allCountries = require("../../build/js/data");
+// const allCountries = require("../../../build/js/data");
 // const countryCodes = allCountries.map((country) => country.iso2);
 // const countriesAllowingExtraDigit = ["ax", "at", "by", "ba", "bg", "kh", "bq", "cd", "fi", "ga", "id", "ie", "lu", "my", "mm", "nz", "rs", "so", "tk", "tv", "vn", "zw"];
 // const countriesAllowingMultipleExtraDigits = ["at", "id", "mm", "tk"];
@@ -315,6 +315,7 @@ describe("strictMode option", () => {
 //     const options = {
 //       strictMode: true,
 //       nationalMode: true,
+//       allowedNumberTypes: ["MOBILE"],
 //     };
 //     ({ input, iti, container } = initPlugin({ options }));
 //   });
@@ -357,6 +358,7 @@ describe("strictMode option", () => {
 //     const options = {
 //       strictMode: true,
 //       nationalMode: false,
+//       allowedNumberTypes: ["MOBILE"],
 //     };
 //     ({ input, iti, container } = initPlugin({ options }));
 //   });
@@ -375,7 +377,7 @@ describe("strictMode option", () => {
 
 
 
-// SEPARATE DIAL CODE ENABLED
+// // SEPARATE DIAL CODE ENABLED
 // describe("strictMode, with separateDialCode=true", () => {
 //   let input, iti, user, container;
 
@@ -384,6 +386,7 @@ describe("strictMode option", () => {
 //     const options = {
 //       strictMode: true,
 //       separateDialCode: true,
+//       allowedNumberTypes: ["MOBILE"],
 //     };
 //     ({ input, iti, container } = initPlugin({ options }));
 //   });
