@@ -5,6 +5,7 @@
 const { userEvent } = require("@testing-library/user-event");
 const { fireEvent } = require("@testing-library/dom");
 const {
+  intlTelInput,
   initPlugin,
   teardown,
   stripFormattingChars,
@@ -301,7 +302,7 @@ describe("strictMode option", () => {
 // // LONG RUNNING TESTS - RUN MANUALLY FROM TIME TO TIME
 // // NOTE: these take so long they crash travis. BUT they run ok locally, they just take about 60 seconds.
 
-// const allCountries = require("../../../build/js/data");
+// const allCountries = intlTelInput.getCountryData();
 // const countryCodes = allCountries.map((country) => country.iso2);
 // const countriesAllowingExtraDigit = ["ax", "at", "by", "ba", "bg", "kh", "bq", "cd", "fi", "ga", "id", "ie", "lu", "my", "mm", "nz", "rs", "so", "tk", "tv", "vn", "zw"];
 // const countriesAllowingMultipleExtraDigits = ["at", "id", "mm", "tk"];
@@ -315,6 +316,7 @@ describe("strictMode option", () => {
 //     const options = {
 //       strictMode: true,
 //       nationalMode: true,
+//       placeholderNumberType: "MOBILE",
 //       allowedNumberTypes: ["MOBILE"],
 //     };
 //     ({ input, iti, container } = initPlugin({ options }));
@@ -359,6 +361,7 @@ describe("strictMode option", () => {
 //       strictMode: true,
 //       nationalMode: false,
 //       allowedNumberTypes: ["MOBILE"],
+//       placeholderNumberType: "MOBILE",
 //     };
 //     ({ input, iti, container } = initPlugin({ options }));
 //   });
@@ -386,6 +389,7 @@ describe("strictMode option", () => {
 //     const options = {
 //       strictMode: true,
 //       separateDialCode: true,
+//       placeholderNumberType: "MOBILE",
 //       allowedNumberTypes: ["MOBILE"],
 //     };
 //     ({ input, iti, container } = initPlugin({ options }));

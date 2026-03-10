@@ -74,3 +74,59 @@ describe("isValidNumber method - NANP Barbados", () => {
     expect(iti.isValidNumber()).toBe(true);
   });
 });
+
+
+
+// // LONG RUNNING TESTS - RUN MANUALLY FROM TIME TO TIME
+
+// // NOTE: none of these are NANP countries
+// const countriesAllowingOneLessDigit = ["af", "ax", "al", "dz", "ar", "am", "at", "az", "by", "be", "bt", "ba", "bw", "br", "bg", "kh", "cn", "cd", "hr", "cw", "ec", "er", "ee", "et", "fi", "fr", "gf", "ga", "de", "gp", "gn", "hu", "ir", "it", "jo", "kz", "ke", "ki", "xk", "kg", "la", "lb", "lr", "ly", "li", "lt", "mg", "mw", "mq", "mu", "yt", "md", "mc", "me", "ma", "mz", "mm", "na", "nz", "ng", "nu", "kp", "mk", "ps", "pa", "pg", "py", "pe", "pl", "re", "ro", "ru", "rw", "sa", "rs", "sl", "sk", "sb", "so", "za", "kr", "ss", "lk", "bl", "sh", "mf", "pm", "sd", "sr", "se", "ch", "sy", "tw", "tz", "th", "tl", "to", "tr", "tm", "tv", "ug", "ua", "ae", "vu", "va", "ve", "eh", "ye", "zm"];
+
+// const countriesAllowingMultipleLessDigits = ["ax", "dz", "ar", "at", "by", "be", "bg", "cd", "ec", "fi", "hu", "jo", "ke", "ki", "lr", "li", "mw", "mc", "na", "nu", "ps", "py", "pl", "ro", "rw", "sk", "sb", "so", "za", "se", "sy", "th", "to", "vu", "ye"];
+
+// const {
+//   stripFormattingChars,
+//   openDropdownSelectCountryAsync,
+// } = require("../helpers/helpers");
+// const allCountries = intlTelInput.getCountryData();
+// const countryCodes = allCountries.map((country) => country.iso2).filter((iso2) => !countriesAllowingMultipleLessDigits.includes(iso2));
+
+// describe("isValidNumber: each digit of placeholder number", () => {
+//   let input, iti, user, container;
+
+//   beforeEach(() => {
+//     user = userEvent.setup();
+//     const options = {
+//       placeholderNumberType: "MOBILE",
+//       allowedNumberTypes: ["MOBILE"],
+//     };
+//     ({ input, iti, container } = initPlugin({ options }));
+//   });
+
+//   afterEach(() => {
+//     teardown(iti);
+//   });
+
+//   test.each(countryCodes)("returns false until full placeholder number is typed: %s", async (iso2) => {
+//     await openDropdownSelectCountryAsync(container, iso2, user);
+//     const placeholder = input.getAttribute("placeholder");
+//     const digits = stripFormattingChars(placeholder);
+//     // type each digit one at a time, checking isValidNumber after each
+//     for (let i = 0; i < digits.length - 1; i++) {
+//       await user.type(input, digits[i]);
+
+//       if (countriesAllowingOneLessDigit.includes(iso2) && i === digits.length - 2) {
+//         // for these countries, the penultimate digit is allowed to be missing, so it should be valid at this point
+//         expect(iti.isValidNumber()).toBe(true);
+//       } else {
+//         // for all other countries, it should still be invalid
+//         // include the input value in the assertion message for easier debugging if it fails
+//         expect(`${input.value}: ${iti.isValidNumber()}`).toBe(`${input.value}: false`);
+//       }
+//     }
+//     // type the final digit - now it should be valid
+//     await user.type(input, digits[digits.length - 1]);
+//     expect(iti.isValidNumber()).toBe(true);
+//   });
+// });
+
