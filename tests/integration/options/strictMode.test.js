@@ -5,7 +5,6 @@
 const { userEvent } = require("@testing-library/user-event");
 const { fireEvent } = require("@testing-library/dom");
 const {
-  intlTelInput,
   initPlugin,
   teardown,
   stripFormattingChars,
@@ -302,6 +301,7 @@ describe("strictMode option", () => {
 // // LONG RUNNING TESTS - RUN MANUALLY FROM TIME TO TIME
 // // NOTE: these take so long they crash travis. BUT they run ok locally, they just take about 60 seconds.
 
+// const { intlTelInput } = require("../helpers/helpers");
 // const allCountries = intlTelInput.getCountryData();
 // const countryCodes = allCountries.map((country) => country.iso2);
 // const countriesAllowingExtraDigit = ["ax", "at", "by", "ba", "bg", "kh", "bq", "cd", "fi", "ga", "id", "ie", "lu", "my", "mm", "nz", "rs", "so", "tk", "tv", "vn", "zw"];
