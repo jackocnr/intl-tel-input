@@ -9,6 +9,8 @@ This page lists the plugin's public API methods.
 
 ## Instance Methods
 
+For all of these examples, we will use the instance variable `iti` returned from the initialisation call, e.g. `const iti = intlTelInput(input, options)`
+
 ### destroy
 
 Remove the plugin from the input, and unbind any event listeners.  
@@ -79,7 +81,7 @@ if (error === intlTelInput.utils.validationError.TOO_SHORT) {
 ### isValidNumber
 
 (Note: only returns `true` for valid <ins>mobile numbers</ins> by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
-Check if the current number is valid based on its length - [see example](/examples/validation-practical), which should be sufficient for most use cases. See [`isValidNumberPrecise`](/docs/methods#isvalidnumberprecise) (ADVANCED) for more precise validation, but the advantage of [`isValidNumber`](/docs/methods#isvalidnumber) is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). _Note: previously named `isPossibleNumber`._  
+Check if the current number is valid based on its length - [see example](/examples/validation-practical), which should be sufficient for most use cases. See [`isValidNumberPrecise`](/docs/methods#isvalidnumberprecise) (advanced) for more precise validation, but the advantage of [`isValidNumber`](/docs/methods#isvalidnumber) is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). _Note: previously named `isPossibleNumber`._  
 ```js
 const isValid = iti.isValidNumber();
 ```

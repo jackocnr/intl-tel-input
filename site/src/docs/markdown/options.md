@@ -33,7 +33,7 @@ An array of iso2 country codes to exclude from the country dropdown e.g. `["gb",
 Type: `Function`  
 Default: `null`  
 
-When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant country code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(...)` to know when initialisation requests like this have completed.
+When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant country code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can do something like `iti.promise.then(...)` to know when initialisation requests like this have completed.
 
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service:  
 ```js
@@ -353,6 +353,6 @@ intlTelInput(htmlInputElement, {
 });
 ```
 
-The module is only loaded when you initialise the plugin, and additionally, only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](/docs/utils) for more information.
+The module is only loaded when you initialise the plugin, and additionally, only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](/docs/utils) for more information.
 
 If you want more control over when this file is lazy-loaded, you can manually invoke the [`attachUtils`](/docs/methods#attachutils) static method whenever you like, instead of using the [`loadUtils`](/docs/options#loadutils) initialisation option.
