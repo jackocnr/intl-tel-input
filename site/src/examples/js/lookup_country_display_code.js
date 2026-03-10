@@ -10,5 +10,4 @@ intlTelInput(input, {
       .catch(() => failure());
   },
   loadUtils: () => import("/intl-tel-input/js/utils.js"),
-  searchInputClass: "form-control",
 });

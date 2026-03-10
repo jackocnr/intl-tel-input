@@ -4,5 +4,4 @@ const input = document.querySelector("#phone");
 intlTelInput(input, {
   initialCountry: "us",
   loadUtils: () => import("intl-tel-input/utils"),
-  searchInputClass: "form-control",
 });

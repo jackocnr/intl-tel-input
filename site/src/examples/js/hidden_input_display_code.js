@@ -10,9 +10,9 @@ const iti = intlTelInput(input, {
   initialCountry: "us",
   hiddenInput: () => ({ phone: "full_phone", country: "country_code" }),
   loadUtils: () => import("intl-tel-input/utils"),
-  searchInputClass: "form-control",
 });
 
+// validation code
 let showValidation = false;
 
 const updateUI = () => {
