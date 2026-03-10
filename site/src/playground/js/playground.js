@@ -652,3 +652,88 @@ if (iso2ModalEl) {
     renderSupportedCountriesTable();
   });
 }
+
+// --- ISO2 array textarea validation ---
+const ISO2_TEXTAREA_KEYS = ["countryOrder", "excludeCountries", "onlyCountries"];
+
+function getValidIso2Set() {
+  return new Set(getSupportedCountries().map((c) => c.iso2));
+}
+
+function isValidIso2Array(value, validIso2s) {
+  const trimmed = value.trim();
+  if (trimmed === "") return null; // empty = neutral, no class
+  let parsed;
+  try {
+    parsed = JSON.parse(trimmed.replace(/'/g, "\""));
+  } catch {
+    return false;
+  }
+  if (!Array.isArray(parsed)) return false;
+  return parsed.every((item) => typeof item === "string" && validIso2s.has(item.toLowerCase()));
+}
+
+function validateIso2Textarea(textarea, { invalidOnly = false } = {}) {
+  const validIso2s = getValidIso2Set();
+  const result = isValidIso2Array(textarea.value, validIso2s);
+  textarea.classList.remove("is-valid", "is-invalid");
+  if (result === true && !invalidOnly) {
+    textarea.classList.add("is-valid");
+  } else if (result === false) {
+    textarea.classList.add("is-invalid");
+  }
+}
+
+ISO2_TEXTAREA_KEYS.forEach((key) => {
+  const textarea = optionsForm.querySelector(`[data-option='${key}']`);
+  if (textarea) {
+    textarea.addEventListener("input", () => validateIso2Textarea(textarea));
+    // on load, only flag invalid values (don't show green for valid)
+    validateIso2Textarea(textarea, { invalidOnly: true });
+  }
+});
+
+// --- initialCountry input validation ---
+function validateInitialCountryInput(input, { invalidOnly = false } = {}) {
+  const trimmed = input.value.trim();
+  input.classList.remove("is-valid", "is-invalid");
+  if (trimmed === "") return; // empty = neutral
+  if (trimmed.toLowerCase() === "auto" || getValidIso2Set().has(trimmed.toLowerCase())) {
+    if (!invalidOnly) input.classList.add("is-valid");
+  } else {
+    input.classList.add("is-invalid");
+  }
+}
+
+const initialCountryInput = optionsForm.querySelector("[data-option='initialCountry']");
+if (initialCountryInput) {
+  initialCountryInput.addEventListener("input", () => validateInitialCountryInput(initialCountryInput));
+  validateInitialCountryInput(initialCountryInput, { invalidOnly: true });
+}
+
+// --- countryNameLocale input validation ---
+function isValidLocale(value) {
+  try {
+    new Intl.DisplayNames([value], { type: "region" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function validateCountryNameLocaleInput(input, { invalidOnly = false } = {}) {
+  const trimmed = input.value.trim();
+  input.classList.remove("is-valid", "is-invalid");
+  if (trimmed === "") return; // empty = neutral
+  if (isValidLocale(trimmed)) {
+    if (!invalidOnly) input.classList.add("is-valid");
+  } else {
+    input.classList.add("is-invalid");
+  }
+}
+
+const countryNameLocaleInput = optionsForm.querySelector("[data-option='countryNameLocale']");
+if (countryNameLocaleInput) {
+  countryNameLocaleInput.addEventListener("input", () => validateCountryNameLocaleInput(countryNameLocaleInput));
+  validateCountryNameLocaleInput(countryNameLocaleInput, { invalidOnly: true });
+}
