@@ -1,7 +1,33 @@
-/examples/localise-countries.html /playground?countryNameLocale=ru&i18n=ru#translation-options 301
+# ancient links from when example pages were in ITI project, loaded into website project through node_modules
+/node_modules/intl-tel-input/examples/gen/is-valid-number.html /examples/validation-practical 301
+/node_modules/intl-tel-input/examples/gen/only-countries-europe.html /playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D#country-options 301
+
+# old links when examples were served from separate build dir
+/build/examples/single-country.html /examples/single-country 301
+/build/examples/validation-practical.html /examples/validation-practical 301
+/build/examples/display-number.html /examples/display-number 301
+/build/examples/react-component.html /examples/react-component 301
+/build/examples/validation-precise.html /examples/validation-precise 301
+/build/examples/internationalisation.html /playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options 301
+/build/examples/hidden-input.html /examples/hidden-input 301
+/build/examples/lookup-country.html /examples/lookup-country 301
+/build/examples/only-countries.html /playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D#country-options 301
+
+# previous example page URLs
+/examples/separate-dial-code.html /playground?initialCountry=gb&separateDialCode=true#user-interface-options 301
+/examples/show-selected-dial-code.html /playground?initialCountry=gb&separateDialCode=true#user-interface-options 301
+/examples/strict-mode.html /playground?initialCountry=us&strictMode=true#formatting-options
+/examples/localise-countries* /playground?countryNameLocale=ru&i18n=ru#translation-options 301
 /examples/internationalisation /playground?countryNameLocale=ru&i18n=ru#translation-options 301
 /examples/validation.html /examples/validation-precise 301
+/examples/validation /examples/validation-precise 301
+/examples/only-countries.html /playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D#country-options 301
+
+# other pages
 /storybook /playground 301
+/storybook/* /playground 301
+
+# root directory redirects
 /docs /docs/choose-integration 302
 /docs/ /docs/choose-integration 302
 /examples /examples/validation-practical 302
