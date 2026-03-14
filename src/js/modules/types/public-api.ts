@@ -58,6 +58,8 @@ export interface AllOptions {
   allowNumberExtensions: boolean;
   allowPhonewords: boolean;
   autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES>;
+  clearOnCountryChange: boolean;
+  clearOnDropdownClose: boolean;
   containerClass: string;
   countryNameLocale: string;
   countryOrder: Iso2[] | null;
