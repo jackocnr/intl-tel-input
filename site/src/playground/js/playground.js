@@ -345,7 +345,7 @@ const HINT_CONFIGS = [
   // Formatting Options
   {
     optionKey: "formatAsYouType",
-    message: "Tip: try typing a phone number to see this in action.",
+    message: "Tip: select a country and type a phone number to see this in action.",
     shouldShow: () => !telInput.value,
   },
   {
@@ -361,7 +361,7 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "strictMode",
-    message: "Tip: try typing valid/invalid characters in the input to see this in action.",
+    message: "Tip: select a country and try typing valid/invalid characters in the input to see this in action.",
     shouldShow: () => !telInput.value,
   },
   // Validation Options
