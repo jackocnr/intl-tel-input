@@ -108,6 +108,75 @@
     }
   }
 
+  .section--social-proof {
+    .social-proof-logos {
+      margin-top: 24px;
+      max-width: 900px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 24px 32px;
+
+      .logo {
+        height: 40px;
+        width: auto;
+        opacity: 0.55;
+        filter: grayscale(100%);
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      /* Logos that are purely text/monochrome: match body text colour */
+      img[src*="ibm"],
+      img[src*="nokia"],
+      img[src*="chopard"],
+      img[src*="doj-text"],
+      img[src*="forbes"] {
+        filter: brightness(0);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        img[src*="ibm"],
+        img[src*="nokia"],
+        img[src*="chopard"],
+        img[src*="doj-text"],
+        img[src*="forbes"] {
+          filter: brightness(0) invert(1);
+        }
+      }
+
+      .logo-quickbooks,
+      .logo-ubuntu {
+        color: var(--bs-body-color);
+      }
+
+      .logo-doj {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        img {
+          height: 100%;
+          width: auto;
+        }
+
+        &:hover img {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    .section--social-proof .social-proof-logos .logo {
+      height: 48px;
+    }
+  }
+
   /* icons that should match link colour */
   .section--features {
     .link-icon {
