@@ -1,0 +1,47 @@
+name: Bug Report
+description: Report a bug or issue with intl-tel-input
+labels: ["bug"]
+body:
+  - type: checkboxes
+    attributes:
+      label: Prerequisites
+      description: Take a couple of minutes to help our maintainers work faster.
+      options:
+        - label: I am using the latest version (v26.8.1) of both intl-tel-input and utils.js.
+          required: true
+        - label: We use libphonenumber for formatting, validation, and placeholder numbers. If my issue relates to one of these things, I have used their [test site](https://libphonenumber.appspot.com) to ensure the issue is not with them, and will provide a link to the results page. Else, I have [reported the issue](https://github.com/google/libphonenumber/blob/master/CONTRIBUTING.md) to them instead of here.
+          required: true
+        - label: I have searched the existing issues (including closed issues) to ensure this has not already been discussed.
+          required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behaviour
+      description: A concise description of what you're experiencing.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: A concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce the issue? (e.g. provide a [Playground](https://intl-tel-input.com/playground) link)
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: comments
+    attributes:
+      label: Anything else?
+      description: Additional comments, screenshots/videos, initialisation options, browser/device info, etc.
+    validations:
+      required: false
