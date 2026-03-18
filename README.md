@@ -1,4 +1,5 @@
-# International Telephone Input [![CI](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/> [![NerdyData.com logo](https://badges.nerdydata.com/719de9d2-d0e7-4988-b02f-9f9d52687076)](https://www.nerdydata.com/reports/international-telephone-input/719de9d2-d0e7-4988-b02f-9f9d52687076)
+# International Telephone Input
+[![CI](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jackocnr/intl-tel-input/actions/workflows/ci.yml) <img src="https://img.shields.io/github/package-json/v/jackocnr/intl-tel-input.svg" alt="version"/> <img src="https://img.shields.io/npm/dm/intl-tel-input.svg"  alt="downloads"/> [![NerdyData.com logo](https://badges.nerdydata.com/719de9d2-d0e7-4988-b02f-9f9d52687076)](https://www.nerdydata.com/reports/international-telephone-input/719de9d2-d0e7-4988-b02f-9f9d52687076)
 
 A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes TypeScript definitions, plus React, Vue, Angular and Svelte components.
 
