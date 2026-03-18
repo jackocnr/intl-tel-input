@@ -2,10 +2,9 @@ module.exports = function(grunt) {
   return {
 
     /**************
-     * README file
-     * Update versions numbers
+     * Update version numbers
      **************/
-    readme: {
+    siteDocs: {
       options: {
         patterns: [
           {
@@ -23,13 +22,27 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /e\.g\. v[0-9]+\.[0-9]+\.[0-9]+ \(please try latest version\)/,
-            replacement: 'e.g. v<%= package.version %> (please try latest version)'
+            match: /the latest version \(v[0-9]+\.[0-9]+\.[0-9]+\)/,
+            replacement: 'the latest version (v<%= package.version %>)'
           }
         ]
       },
       files: {
-        '.github/ISSUE_TEMPLATE.md': '.github/ISSUE_TEMPLATE.md'
+        '.github/ISSUE_TEMPLATE/1_bug_report.yml': '.github/ISSUE_TEMPLATE/1_bug_report.yml'
+      }
+    },
+    // grunt bump already updates the version number at the beginning of package-lock, but not the "inner" one (aprx line 9), so do that here
+    packageLockInner: {
+      options: {
+        patterns: [
+          {
+            match: /"name": "intl-tel-input",\n      "version": "[0-9]+\.[0-9]+\.[0-9]+"/,
+            replacement: '"name": "intl-tel-input",\n      "version": "<%= package.version %>"'
+          }
+        ]
+      },
+      files: {
+        'package-lock.json': 'package-lock.json'
       }
     },
 

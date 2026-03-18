@@ -148,8 +148,9 @@ module.exports = function(grunt) {
 
   // update version numbers in docs etc
   grunt.registerTask('versionNumbers', [
-    'replace:readme',
+    'replace:siteDocs',
     'replace:issueTemplate',
+    'replace:packageLockInner',
   ]);
 
 };
