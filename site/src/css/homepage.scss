@@ -130,17 +130,24 @@
         }
       }
 
-      .logo-quickbooks,
-      .logo-ubuntu {
-        color: var(--bs-body-color);
+      .logo-pair {
+        display: inline-flex;
+        align-items: center;
+
+        img {
+          height: 100%;
+          width: auto;
+        }
       }
 
       /* The following AI generated code attempts to approximate var(--bs-body-color) (#212529 light / #dee2e6 dark) via filters */
 
-      // nike, unicef, and forbes logos are black on transparent
+      // nike, unicef, forbes, ubuntu_text, and quickbooks_text logos are black on transparent
       img[src*="nike.png"],
       img[src*="unicef.png"],
-      img[src*="forbes"] {
+      img[src*="forbes"],
+      img[src*="ubuntu_text"],
+      img[src*="quickbooks_text"] {
         filter: invert(0.13);
 
         @media (prefers-color-scheme: dark) {
