@@ -181,6 +181,54 @@
     }
   }
 
+  .section--stats {
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .stats-row {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: none;
+        gap: 48px;
+      }
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: rgb(var(--bs-link-color-rgb));
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--bs-secondary-color);
+      margin-top: 4px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .section--stats {
+      .stat-number {
+        font-size: 48px;
+      }
+
+      .stat-label {
+        font-size: 16px;
+      }
+    }
+  }
+
   /* icons that should match link colour */
   .section--features {
     .link-icon {
