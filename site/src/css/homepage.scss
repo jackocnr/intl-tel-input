@@ -130,48 +130,39 @@
         }
       }
 
-      /* Logos that are purely text/monochrome: match body text colour */
-      img[src*="ibm"],
-      img[src*="chopard"],
-      img[src*="doj-text"] {
-        filter: brightness(0);
-      }
-
-      img[src*="nokia"],
-      img[src*="forbes"] {
-        filter: brightness(0) opacity(0.7);
-      }
-
-      @media (prefers-color-scheme: dark) {
-        img[src*="ibm"],
-        img[src*="chopard"],
-        img[src*="doj-text"] {
-          filter: brightness(0) invert(1);
-        }
-
-        img[src*="nokia"],
-        img[src*="forbes"] {
-          filter: brightness(0) invert(1) opacity(0.7);
-        }
-      }
-
       .logo-quickbooks,
       .logo-ubuntu {
         color: var(--bs-body-color);
       }
 
-      .logo-doj {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
+      /* The following AI generated code attempts to approximate var(--bs-body-color) (#212529 light / #dee2e6 dark) via filters */
 
-        img {
-          height: 100%;
-          width: auto;
+      // nike, unicef, and forbes logos are black on transparent
+      img[src*="nike.png"],
+      img[src*="unicef.png"],
+      img[src*="forbes"] {
+        filter: invert(0.13);
+
+        @media (prefers-color-scheme: dark) {
+          filter: invert(0.87);
         }
+      }
 
-        &:hover img {
-          opacity: 0.8;
+      // dell logo is blue on transparent, so use brightness(0) to make it black before inverting
+      img[src*="dell"] {
+        filter: brightness(0) invert(0.13);
+
+        @media (prefers-color-scheme: dark) {
+          filter: brightness(0) invert(0.87);
+        }
+      }
+
+      // universal music logo is white on transparent
+      img[src*="universal-music"] {
+        filter: invert(0.87);
+
+        @media (prefers-color-scheme: dark) {
+          filter: invert(0.13);
         }
       }
     }
