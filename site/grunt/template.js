@@ -131,15 +131,22 @@ module.exports = function (grunt) {
       src: "src/layout_template.html.ejs",
       dest: "tmp/homepage/homepage_layout.html",
       options: {
-        data: () => ({
-          layoutClass: "iti-layout-no-sidebars",
-          showLeftSidebar: false,
-          content: grunt.file.read("src/homepage/homepage_content.html"),
-          name: "home",
-          pageType: "home",
-          docsDropdownPages,
-          examplesDropdownPages,
-        }),
+        data: () => {
+          const stats = JSON.parse(grunt.file.read("tmp/stats.json"));
+          const content = grunt.file.read("src/homepage/homepage_content.html")
+            .replace("{{STAT_WEBSITES}}", stats.websites)
+            .replace("{{STAT_DOWNLOADS}}", stats.downloads)
+            .replace("{{STAT_STARS}}", stats.stars);
+          return {
+            layoutClass: "iti-layout-no-sidebars",
+            showLeftSidebar: false,
+            content,
+            name: "home",
+            pageType: "home",
+            docsDropdownPages,
+            examplesDropdownPages,
+          };
+        },
       },
     },
     homepage_page: {

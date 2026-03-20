@@ -35,6 +35,7 @@ module.exports = function (grunt) {
   // build all
   grunt.registerTask("build", [
     "shell:clearBuild",
+    "shell:fetchStats",
     "copy",
     "build:css",
     "build:esbuild",

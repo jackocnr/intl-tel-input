@@ -5,6 +5,9 @@ module.exports = function(grunt) {
     clearBuild: {
       command: "rm -rf build tmp",
     },
+    fetchStats: {
+      command: "node grunt/fetchStats.js",
+    },
     esbuild: {
       command: "node esbuild/build.mjs",
     },
