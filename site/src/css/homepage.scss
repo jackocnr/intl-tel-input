@@ -183,19 +183,10 @@
 
   .section--stats {
     .stats-row {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    @media (min-width: 768px) {
-      .stats-row {
-        grid-template-columns: repeat(4, 1fr);
-        max-width: none;
-        gap: 48px;
-      }
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px 48px;
     }
 
     .stat {
