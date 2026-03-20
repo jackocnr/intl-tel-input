@@ -6,7 +6,7 @@ module.exports = function(grunt) {
       command: "rm -rf build tmp",
     },
     fetchStats: {
-      command: "node grunt/fetchStats.js",
+      command: `node grunt/fetchStats.js --env=${grunt.option("env") || "dev"}`,
     },
     esbuild: {
       command: "node esbuild/build.mjs",

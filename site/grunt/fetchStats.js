@@ -49,6 +49,14 @@ async function fetchStats() {
   // Default/fallback values
   const defaults = { websites: "120k", downloads: "3.2M", stars: "8.2k" };
 
+  const isProd = process.argv.includes("--env=prod");
+  if (!isProd) {
+    console.log("Dev build — using default stats");
+    fs.mkdirSync(path.dirname(statsPath), { recursive: true });
+    fs.writeFileSync(statsPath, JSON.stringify(defaults, null, 2));
+    return;
+  }
+
   let stats = { ...defaults };
 
   try {
