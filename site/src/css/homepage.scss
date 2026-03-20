@@ -130,6 +130,15 @@
         }
       }
 
+      // hide last 3 logos on mobile
+      .logo:nth-last-child(-n+3) {
+        display: none;
+
+        @media (min-width: 768px) {
+          display: inline-flex;
+        }
+      }
+
       .logo-pair {
         display: inline-flex;
         align-items: center;
