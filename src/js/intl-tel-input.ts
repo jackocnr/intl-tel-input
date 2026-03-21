@@ -1401,11 +1401,7 @@ export class Iti {
     this.#ui.destroy();
 
     //* Remove this instance from the global registry.
-    if (intlTelInput.instances instanceof Map) {
-      intlTelInput.instances.delete(this.id);
-    } else {
-      delete (intlTelInput.instances as any)[this.id];
-    }
+    delete (intlTelInput.instances as any)[this.id];
   }
 
   // check if the instance is still valid (not destroyed/unmounted)
@@ -1641,9 +1637,7 @@ export class Iti {
     method: M,
     ...args: ForEachInstanceArgsMap[M]
   ): void {
-    const instances = intlTelInput.instances;
-    const values =
-      instances instanceof Map ? Array.from(instances.values()) : Object.values(instances);
+    const values = Object.values(intlTelInput.instances);
     const arg = args[0];
 
     values.forEach((instance) => {
