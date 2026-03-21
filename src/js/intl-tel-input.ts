@@ -65,7 +65,7 @@ export class Iti {
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   public readonly id: number;
   // accessed externally via iti.promise.then(...)
-  public readonly promise: Promise<[unknown, unknown]>;
+  public readonly promise: Promise<void>;
 
   //* PRIVATE FIELDS
   readonly #ui: UI;
@@ -132,7 +132,7 @@ export class Iti {
     this.#ui.telInput.value = this.#numerals.denormalise(asciiValue, currentValue);
   }
 
-  #createInitPromises(options: AllOptions): Promise<[unknown, unknown]> {
+  #createInitPromises(options: AllOptions): Promise<void> {
     const { initialCountry, geoIpLookup, loadUtils } = options;
     const needsAutoCountryPromise = initialCountry === INITIAL_COUNTRY.AUTO && Boolean(geoIpLookup);
     const needsUtilsScriptPromise = Boolean(loadUtils) && !intlTelInput.utils;
@@ -163,7 +163,7 @@ export class Iti {
       this.#rejectUtilsScriptPromise = (): void => {};
     }
 
-    return Promise.all([autoCountryPromise, utilsScriptPromise]);
+    return Promise.all([autoCountryPromise, utilsScriptPromise]).then(() => {});
   }
 
   #init(): void {
