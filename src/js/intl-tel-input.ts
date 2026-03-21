@@ -607,13 +607,15 @@ export class Iti {
             const after = inputValue.slice(selEnd);
             const newValue = before + e.key + after;
             const newFullNumber = this.#getFullNumber(newValue);
-            const coreNumber = intlTelInput.utils.getCoreNumber(
-              newFullNumber,
-              this.#selectedCountryData.iso2,
-            );
-            const hasExceededMaxLength =
-              this.#maxCoreNumberLength &&
-              coreNumber.length > this.#maxCoreNumberLength;
+
+            let hasExceededMaxLength = false;
+            if (intlTelInput.utils && this.#maxCoreNumberLength) {
+              const coreNumber = intlTelInput.utils.getCoreNumber(
+                newFullNumber,
+                this.#selectedCountryData.iso2,
+              );
+              hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
+            }
 
             const newCountry = this.#getNewCountryFromNumber(newFullNumber);
             const isChangingDialCode = newCountry !== null;
