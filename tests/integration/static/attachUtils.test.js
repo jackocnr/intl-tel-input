@@ -134,7 +134,7 @@ describe("attachUtils", function() {
     });
 
     test("resolves the promise immediately", async function() {
-      await expect(iti.promise).resolves.toBeInstanceOf(Array);
+      await expect(iti.promise).resolves.toBeUndefined();
     });
 
     test("starts loading the utils", function() {
