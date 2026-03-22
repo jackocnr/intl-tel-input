@@ -366,11 +366,8 @@ export class Iti {
       if (intlTelInput.documentReady()) {
         doAttachUtils();
       } else {
-        const handlePageLoad = (): void => {
-          doAttachUtils();
-        };
         //* Wait until the load event so we don't block any other requests e.g. the flags image.
-        window.addEventListener("load", handlePageLoad, {
+        window.addEventListener("load", doAttachUtils, {
           signal: this.#abortController.signal,
         });
       }
