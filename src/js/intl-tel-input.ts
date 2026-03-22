@@ -1189,6 +1189,11 @@ export class Iti {
     // Delegate DOM-only close behaviour to UI
     this.#ui.closeDropdown();
 
+    // Clear search input on dropdown close if option is enabled
+    if (this.#options.clearOnDropdownClose) {
+      this.#ui.handleSearchClear();
+    }
+
     //* Unbind dropdown-scoped events in one go
     this.#dropdownAbortController.abort();
     this.#dropdownAbortController = null;
@@ -1297,6 +1302,10 @@ export class Iti {
 
   //* Trigger the 'countrychange' event.
   #triggerCountryChange(): void {
+    // Clear search input on country change if option is enabled
+    if (this.#options.clearOnCountryChange) {
+      this.#ui.handleSearchClear();
+    }
     this.#trigger(EVENTS.COUNTRY_CHANGE);
   }
 
@@ -1623,6 +1632,11 @@ export class Iti {
     } else {
       this.#ui.selectedCountry.removeAttribute("disabled");
     }
+  }
+
+  //* Clear the search input and reset filtered results.
+  public reset(): void {
+    this.#ui.handleSearchClear();
   }
 
   //********************

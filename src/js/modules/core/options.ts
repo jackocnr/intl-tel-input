@@ -36,6 +36,10 @@ export const defaults: AllOptions = {
   allowPhonewords: false,
   //* Add a placeholder in the input with an example number for the selected country.
   autoPlaceholder: PLACEHOLDER_MODES.POLITE,
+  //* Clear the search input when the selected country changes.
+  clearOnCountryChange: false,
+  //* Clear the search input when the dropdown is closed.
+  clearOnDropdownClose: false,
   //* Add a custom class to the (injected) container element.
   containerClass: "",
   //* Locale for localising country names via Intl.DisplayNames.
