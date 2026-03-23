@@ -604,10 +604,10 @@ export default class UI {
         const activeDescendant = this.highlightedItem.getAttribute("id") || "";
         this.searchInput.setAttribute(ARIA.ACTIVE_DESCENDANT, activeDescendant);
       }
-    }
 
-    if (shouldFocus) {
-      this.highlightedItem.focus();
+      if (shouldFocus) {
+        this.highlightedItem.focus();
+      }
     }
   }
 
