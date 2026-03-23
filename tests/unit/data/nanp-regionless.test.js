@@ -4,9 +4,11 @@
 
 const { isRegionlessNanp, regionlessNanpNumbers } = require("../../../src/js/modules/data/nanp-regionless.ts");
 
+const regionlessNanpNumbersArray = Array.from(regionlessNanpNumbers);
+
 describe("data/nanp-regionless", () => {
   test("identifies known regionless NANP numbers", () => {
-    for (const ac of regionlessNanpNumbers.slice(0,3)) {
+    for (const ac of regionlessNanpNumbersArray.slice(0,3)) {
       expect(isRegionlessNanp(`+1${ac}1234567`)).toBe(true);
     }
   });
