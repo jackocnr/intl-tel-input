@@ -96,7 +96,7 @@ describe("countrySearch option", () => {
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(4);
     expect(countriesInList[0]).toBe("bb"); // Barbados first as name-starts-with
-    expect(countriesInList[1]).toBe("bl"); // St. Barthélemy second as name-contains
+    expect(countriesInList[1]).toBe("ag"); // Antigua and Barbuda second as name-contains (alphabetical)
   });
 
   test("typing '44', filters countries correctly", async () => {
