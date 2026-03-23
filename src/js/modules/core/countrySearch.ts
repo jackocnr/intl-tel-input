@@ -63,16 +63,15 @@ export const getMatchedCountries = (
 };
 
 /**
- * Hidden search (when countrySearch disabled): find first whose name starts with query (case-insensitive).
+ * Hidden search (when countrySearch disabled): find first country whose name starts with query (case-insensitive).
  */
 export const findFirstCountryStartingWith = (
   countries: Country[],
   query: string,
 ): Country | null => {
-  const lowerQuery = query.toLowerCase();
+  const normalisedQuery = normaliseString(query);
   for (const c of countries) {
-    const lowerName = c.name.toLowerCase();
-    if (lowerName.startsWith(lowerQuery)) {
+    if (c.normalisedName.startsWith(normalisedQuery)) {
       return c;
     }
   }
