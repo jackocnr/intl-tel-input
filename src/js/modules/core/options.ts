@@ -1,6 +1,6 @@
 import { INITIAL_COUNTRY, PLACEHOLDER_MODES, NUMBER_TYPE_SET, LAYOUT } from "../constants";
 import defaultEnglishStrings from "../../intl-tel-input/i18n/en";
-import { type Iso2, isIso2 } from "../../intl-tel-input/data";
+import { isIso2 } from "../../intl-tel-input/data";
 import type { AllOptions, SomeOptions } from "../types/public-api";
 
 // Helper for media query evaluation
