@@ -75,7 +75,7 @@ export class Iti {
   readonly #dialCodes: Set<string>;
   readonly #countryByIso2: Map<Iso2, Country>;
 
-  #selectedCountryData: SelectedCountryData;
+  #selectedCountryData: Country | null;
   #maxCoreNumberLength: number | null;
   #defaultCountry: Iso2;
   #abortController: AbortController;
@@ -166,7 +166,7 @@ export class Iti {
   #init(): void {
     //* In various situations there could be no country selected initially, but we need to be able
     //* to assume this variable exists.
-    this.#selectedCountryData = {} as SelectedCountryData;
+    this.#selectedCountryData = null;
 
     // init event controller
     this.#abortController = new AbortController();
@@ -276,7 +276,7 @@ export class Iti {
         this.#ui.hiddenInput.value = this.getNumber();
       }
       if (this.#ui.hiddenInputCountry) {
-        this.#ui.hiddenInputCountry.value = this.#selectedCountryData.iso2 || "";
+        this.#ui.hiddenInputCountry.value = this.#selectedCountryData?.iso2 || "";
       }
     };
     this.#ui.telInput.form?.addEventListener("submit", handleHiddenInputSubmit, {
@@ -375,7 +375,7 @@ export class Iti {
     initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
     if (isAutoCountry) {
       //* Don't bother with IP lookup if we already have a selected country.
-      if (this.#selectedCountryData.iso2) {
+      if (this.#selectedCountryData?.iso2) {
         this.#resolveAutoCountryPromise();
       } else {
         this.#loadAutoCountry();
@@ -509,7 +509,7 @@ export class Iti {
           fullNumber,
           inputValue,
           intlTelInput.utils,
-          this.#selectedCountryData,
+          this.#selectedCountryData ?? ({} as SelectedCountryData),
           separateDialCode,
         );
         const newCaretPos = translateCursorPosition(
@@ -528,13 +528,13 @@ export class Iti {
       if (
         separateDialCode &&
         inputValue.startsWith("+") &&
-        this.#selectedCountryData.dialCode
+        this.#selectedCountryData?.dialCode
       ) {
         const cleanNumber = beforeSetNumber(
           inputValue,
           true,
           separateDialCode,
-          this.#selectedCountryData,
+          this.#selectedCountryData ?? ({} as SelectedCountryData),
         );
         this.#setTelInputValue(cleanNumber);
       }
@@ -605,7 +605,7 @@ export class Iti {
             if (intlTelInput.utils && this.#maxCoreNumberLength) {
               const coreNumber = intlTelInput.utils.getCoreNumber(
                 newFullNumber,
-                this.#selectedCountryData.iso2,
+                this.#selectedCountryData?.iso2,
               );
               hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
             }
@@ -643,7 +643,7 @@ export class Iti {
         const inputValue = this.#getTelInputValue();
         const before = inputValue.slice(0, selStart);
         const after = inputValue.slice(selEnd);
-        const iso2 = this.#selectedCountryData.iso2;
+        const iso2 = this.#selectedCountryData?.iso2;
 
         const pastedRaw = e.clipboardData.getData("text");
         const pasted = this.#numerals.normalise(pastedRaw);
@@ -926,7 +926,7 @@ export class Iti {
       const format = useNational ? NATIONAL : INTERNATIONAL;
       number = intlTelInput.utils.formatNumber(
         number,
-        this.#selectedCountryData.iso2,
+        this.#selectedCountryData?.iso2,
         format,
       );
     }
@@ -947,7 +947,8 @@ export class Iti {
 
   // if there is a selected country, and the number doesn't start with a dial code, then add it
   #ensureHasDialCode(number: string): string {
-    const { dialCode, nationalPrefix } = this.#selectedCountryData;
+    const dialCode = this.#selectedCountryData?.dialCode;
+    const nationalPrefix = this.#selectedCountryData?.nationalPrefix;
     const alreadyHasPlus = number.startsWith("+");
     if (alreadyHasPlus || !dialCode) {
       return number;
@@ -968,8 +969,8 @@ export class Iti {
     //* This keeps the selected country auto-updating correctly, which we want as
     //* libphonenumber's validation/getNumber methods will ignore these chars anyway.
     let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
-    const selectedIso2 = this.#selectedCountryData.iso2;
-    const selectedDialCode = this.#selectedCountryData.dialCode;
+    const selectedIso2 = this.#selectedCountryData?.iso2;
+    const selectedDialCode = this.#selectedCountryData?.dialCode;
 
     //* Ensure the number starts with the dial code (if there is a selected country), for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
     number = this.#ensureHasDialCode(number);
@@ -1011,7 +1012,8 @@ export class Iti {
       }
 
       // if the currently selected country has area codes and the entered number already has a full match to one of them, then don't change the country
-      const { areaCodes, priority } = this.#selectedCountryData;
+      const areaCodes = this.#selectedCountryData?.areaCodes;
+      const priority = this.#selectedCountryData?.priority;
       if (areaCodes) {
         const dialCodeAreaCodes = areaCodes.map(
           (areaCode) => `${selectedDialCode}${areaCode}`,
@@ -1042,7 +1044,7 @@ export class Iti {
       }
     } else if (number.startsWith("+") && numeric.length) {
       //* If the user is still typing a prefix of the currently selected country's dial code, don't change yet.
-      const currentDial = this.#selectedCountryData.dialCode || "";
+      const currentDial = this.#selectedCountryData?.dialCode || "";
       if (currentDial && currentDial.startsWith(numeric)) {
         return null;
       }
@@ -1058,18 +1060,18 @@ export class Iti {
   //* Update the selected country, dial code (if separateDialCode), placeholder, title, and selected list item.
   //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
   #setCountry(iso2: Iso2 | ""): boolean {
-    const prevIso2 = this.#selectedCountryData.iso2 || "";
+    const prevIso2 = this.#selectedCountryData?.iso2 || "";
 
     this.#selectedCountryData = iso2
       ? (this.#countryByIso2.get(iso2) as Country)
-      : ({} as SelectedCountryData);
+      : null;
 
     //* Update the defaultCountry - we only need the iso2 from now on, so just store that.
-    if (this.#selectedCountryData.iso2) {
+    if (this.#selectedCountryData?.iso2) {
       this.#defaultCountry = this.#selectedCountryData.iso2;
     }
 
-    this.#ui.setCountry(this.#selectedCountryData);
+    this.#ui.setCountry(this.#selectedCountryData ?? ({} as SelectedCountryData));
 
     //* Update the input's placeholder.
     this.#updatePlaceholder();
@@ -1085,7 +1087,7 @@ export class Iti {
   #updateMaxLength(): void {
     const { strictMode, placeholderNumberType, allowedNumberTypes } =
       this.#options;
-    const { iso2 } = this.#selectedCountryData;
+    const iso2 = this.#selectedCountryData?.iso2;
     if (strictMode && intlTelInput.utils) {
       if (iso2) {
         const numberType = intlTelInput.utils.numberType[placeholderNumberType];
@@ -1135,7 +1137,7 @@ export class Iti {
     if (intlTelInput.utils && shouldSetPlaceholder) {
       const numberType = intlTelInput.utils.numberType[placeholderNumberType];
       //* Note: Must set placeholder to empty string if no country selected (globe icon showing).
-      let placeholder = this.#selectedCountryData.iso2
+      let placeholder = this.#selectedCountryData?.iso2
         ? intlTelInput.utils.getExampleNumber(
             this.#selectedCountryData.iso2,
             nationalMode,
@@ -1145,7 +1147,7 @@ export class Iti {
 
       placeholder = this.#beforeSetNumber(placeholder);
       if (typeof customPlaceholder === "function") {
-        placeholder = customPlaceholder(placeholder, this.#selectedCountryData);
+        placeholder = customPlaceholder(placeholder, this.#selectedCountryData ?? ({} as SelectedCountryData));
       }
       this.#ui.telInput.setAttribute("placeholder", placeholder);
     }
@@ -1261,7 +1263,7 @@ export class Iti {
   //* Get the input val, adding the dial code if separateDialCode is enabled.
   #getFullNumber(overrideVal?: string): string {
     const val = overrideVal ? this.#numerals.normalise(overrideVal) : this.#getTelInputValue();
-    const { dialCode } = this.#selectedCountryData;
+    const dialCode = this.#selectedCountryData?.dialCode;
     let prefix;
     const numericVal = getNumeric(val);
 
@@ -1286,7 +1288,7 @@ export class Iti {
       fullNumber,
       hasValidDialCode,
       this.#options.separateDialCode,
-      this.#selectedCountryData,
+      this.#selectedCountryData ?? ({} as SelectedCountryData),
     );
     return this.#cap(number);
   }
@@ -1294,7 +1296,7 @@ export class Iti {
   //* Trigger the 'countrychange' event.
   #triggerCountryChange(): void {
     this.#trigger(EVENTS.COUNTRY_CHANGE, {
-      country: this.#selectedCountryData,
+      country: this.#selectedCountryData ?? ({} as SelectedCountryData),
     });
   }
 
@@ -1318,7 +1320,7 @@ export class Iti {
       //* invalid and they delete it - they should see their auto country.
       this.#defaultCountry = intlTelInput.autoCountry;
       const hasSelectedCountryOrGlobe =
-        this.#selectedCountryData.iso2 ||
+        this.#selectedCountryData?.iso2 ||
         this.#ui.selectedCountryInner.classList.contains(CLASSES.GLOBE);
       //* If no country/globe currently selected, then update the country.
       if (!hasSelectedCountryOrGlobe) {
@@ -1356,7 +1358,7 @@ export class Iti {
       if (inputValue) {
         this.#updateValFromNumber(inputValue);
       }
-      if (this.#selectedCountryData.iso2) {
+      if (this.#selectedCountryData?.iso2) {
         this.#updatePlaceholder();
         this.#updateMaxLength();
       }
@@ -1411,7 +1413,7 @@ export class Iti {
     if (intlTelInput.utils && this.#ui.telInput) {
       return intlTelInput.utils.getExtension(
         this.#getFullNumber(),
-        this.#selectedCountryData.iso2,
+        this.#selectedCountryData?.iso2,
       );
     }
     return "";
@@ -1420,7 +1422,7 @@ export class Iti {
   //* Format the number to the given format.
   public getNumber(format?: number): string {
     if (intlTelInput.utils && this.#ui.telInput) {
-      const { iso2 } = this.#selectedCountryData;
+      const iso2 = this.#selectedCountryData?.iso2;
       const fullNumber = this.#getFullNumber();
       const formattedNumber = intlTelInput.utils.formatNumber(
         fullNumber,
@@ -1437,7 +1439,7 @@ export class Iti {
     if (intlTelInput.utils && this.#ui.telInput) {
       return intlTelInput.utils.getNumberType(
         this.#getFullNumber(),
-        this.#selectedCountryData.iso2,
+        this.#selectedCountryData?.iso2,
       );
     }
     return SENTINELS.UNKNOWN_NUMBER_TYPE;
@@ -1445,13 +1447,13 @@ export class Iti {
 
   //* Get the country data for the currently selected country.
   public getSelectedCountryData(): SelectedCountryData {
-    return this.#selectedCountryData;
+    return this.#selectedCountryData ?? ({} as SelectedCountryData);
   }
 
   //* Get the validation error.
   public getValidationError(): number {
     if (intlTelInput.utils && this.#ui.telInput) {
-      const { iso2 } = this.#selectedCountryData;
+      const iso2 = this.#selectedCountryData?.iso2;
       return intlTelInput.utils.getValidationError(this.#getFullNumber(), iso2);
     }
     return SENTINELS.UNKNOWN_VALIDATION_ERROR;
@@ -1459,7 +1461,8 @@ export class Iti {
 
   //* Validate the input val using number length only
   public isValidNumber(): boolean | null {
-    const { dialCode, iso2 } = this.#selectedCountryData;
+    const dialCode = this.#selectedCountryData?.dialCode;
+    const iso2 = this.#selectedCountryData?.iso2;
     if (intlTelInput.utils && this.#ui.telInput) {
       const number = this.#getFullNumber();
       const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
@@ -1499,7 +1502,7 @@ export class Iti {
     return intlTelInput.utils
       ? intlTelInput.utils.isPossibleNumber(
           val,
-          this.#selectedCountryData.iso2,
+          this.#selectedCountryData?.iso2,
           this.#options.allowedNumberTypes,
         )
       : null;
@@ -1519,7 +1522,7 @@ export class Iti {
     const val = this.#getFullNumber();
 
     // If there's no selected country, still allow validation for regionless intl numbers (e.g. +800, +808, +870, +881, +882, +883, +888, +979).
-    if (!this.#selectedCountryData.iso2) {
+    if (!this.#selectedCountryData?.iso2) {
       const isRegionlessDialCode = hasRegionlessDialCode(val);
       // if first char is plus, and next 3 chars are a regionless dial code
       if (!isRegionlessDialCode) {
@@ -1537,7 +1540,7 @@ export class Iti {
     const hasAlphaChar = alphaCharPosition > -1;
     // if there is an alpha char, we need to check if it's allowed, either as an extension or a phone word
     if (hasAlphaChar) {
-      const selectedIso2 = this.#selectedCountryData.iso2;
+      const selectedIso2 = this.#selectedCountryData?.iso2;
       const hasExtension = Boolean(intlTelInput.utils.getExtension(val, selectedIso2));
       if (hasExtension) {
         return allowNumberExtensions;
@@ -1551,7 +1554,7 @@ export class Iti {
     return intlTelInput.utils
       ? intlTelInput.utils.isValidNumber(
           val,
-          this.#selectedCountryData.iso2,
+          this.#selectedCountryData?.iso2,
           this.#options.allowedNumberTypes,
         )
       : null;
@@ -1568,13 +1571,13 @@ export class Iti {
       throw new Error(`Invalid country code: '${iso2Lower}'`);
     }
 
-    const currentCountry = this.#selectedCountryData.iso2;
+    const currentCountry = this.#selectedCountryData?.iso2;
     //* There is a country change IF: either there is a new country and it's different to the current one, OR there is no new country (i.e. globe state) and there is a current country
     const isCountryChange =
       (iso2 && iso2Lower !== currentCountry) || (!iso2 && currentCountry);
     if (isCountryChange) {
       this.#setCountry(iso2Lower);
-      this.#updateDialCode(this.#selectedCountryData.dialCode);
+      this.#updateDialCode(this.#selectedCountryData?.dialCode || "");
       // reformat
       if (this.#options.formatOnDisplay) {
         const inputValue = this.#getTelInputValue();
