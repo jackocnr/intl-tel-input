@@ -568,22 +568,16 @@ export default class UI {
   //* Check if a country list item element is visible within it's container (the country list), else scroll until it is.
   public scrollCountryListToItem(element: HTMLElement): void {
     const container = this.countryList;
-    const scrollTop = document.documentElement.scrollTop;
-    const containerHeight = container.offsetHeight;
-    const containerTop = container.getBoundingClientRect().top + scrollTop;
-    const containerBottom = containerTop + containerHeight;
-    const elementHeight = element.offsetHeight;
-    const elementTop = element.getBoundingClientRect().top + scrollTop;
-    const elementBottom = elementTop + elementHeight;
-    const newScrollTop = elementTop - containerTop + container.scrollTop;
+    const containerRect = container.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    const offsetTop = elementRect.top - containerRect.top + container.scrollTop;
 
-    if (elementTop < containerTop) {
+    if (elementRect.top < containerRect.top) {
       //* Scroll up.
-      container.scrollTop = newScrollTop;
-    } else if (elementBottom > containerBottom) {
+      container.scrollTop = offsetTop;
+    } else if (elementRect.bottom > containerRect.bottom) {
       //* Scroll down.
-      const heightDifference = containerHeight - elementHeight;
-      container.scrollTop = newScrollTop - heightDifference;
+      container.scrollTop = offsetTop - containerRect.height + elementRect.height;
     }
   }
 
