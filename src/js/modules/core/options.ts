@@ -114,12 +114,13 @@ const warnOption = (optionName: string, expectedType: string, actualValue: unkno
 const hasOwn = (obj: object, key: string): boolean =>
   Object.prototype.hasOwnProperty.call(obj, key);
 
-const validateIso2Array = (key: string, value: unknown): boolean => {
+const validateIso2Array = (key: string, value: unknown): string[] | false => {
   const expectedType = "an array of ISO2 country code strings";
   if (!Array.isArray(value)) {
     warnOption(key, expectedType, value);
     return false;
   }
+  const valid: string[] = [];
   for (const v of value) {
     if (typeof v !== "string") {
       warnOption(key, expectedType, value);
@@ -127,11 +128,12 @@ const validateIso2Array = (key: string, value: unknown): boolean => {
     }
     const lower = v.toLowerCase();
     if (!isIso2(lower)) {
-      warn(`Invalid country code in '${key}': '${v}'. Ignoring.`);
-      return false;
+      warn(`Invalid country code in '${key}': '${v}'. Skipping.`);
+    } else {
+      valid.push(v);
     }
   }
-  return true;
+  return valid;
 };
 
 /**
@@ -197,11 +199,17 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         validatedOptions[key] = value;
         break;
 
-      case "countryOrder":
-        if (value === null || validateIso2Array(key, value)) {
+      case "countryOrder": {
+        if (value === null) {
           validatedOptions[key] = value;
+        } else {
+          const filtered = validateIso2Array(key, value);
+          if (filtered !== false) {
+            validatedOptions[key] = filtered;
+          }
         }
         break;
+      }
 
       case "customPlaceholder":
       case "geoIpLookup":
@@ -223,11 +231,13 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         break;
 
       case "excludeCountries":
-      case "onlyCountries":
-        if (validateIso2Array(key, value)) {
-          validatedOptions[key] = value;
+      case "onlyCountries": {
+        const filtered = validateIso2Array(key, value);
+        if (filtered !== false) {
+          validatedOptions[key] = filtered;
         }
         break;
+      }
 
       case "i18n":
         if (value && !isPlainObject(value)) {
