@@ -898,7 +898,7 @@ export class Iti {
       const listItem = match.nodeById[this.id];
       //* Update highlighting and scroll.
       this.#ui.highlightListItem(listItem, false);
-      this.#ui.scrollTo(listItem);
+      this.#ui.scrollCountryListToItem(listItem);
     }
   }
 

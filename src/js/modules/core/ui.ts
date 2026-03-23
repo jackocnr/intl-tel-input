@@ -565,8 +565,8 @@ export default class UI {
     this.#doFilter();
   }
 
-  //* Check if an element is visible within it's container, else scroll until it is.
-  public scrollTo(element: HTMLElement): void {
+  //* Check if a country list item element is visible within it's container (the country list), else scroll until it is.
+  public scrollCountryListToItem(element: HTMLElement): void {
     const container = this.countryList;
     const scrollTop = document.documentElement.scrollTop;
     const containerHeight = container.offsetHeight;
@@ -627,7 +627,7 @@ export default class UI {
     if (next) {
       //* Make sure the next item is visible
       //* (before calling focus(), which can cause the next item to scroll to the middle of the dropdown, which is jarring).
-      this.scrollTo(next);
+      this.scrollCountryListToItem(next);
       //* If country search enabled, don't lose focus from the search input on up/down
       this.highlightListItem(next, false);
     }
