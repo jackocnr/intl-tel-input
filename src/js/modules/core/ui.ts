@@ -16,28 +16,28 @@ export default class UI {
   readonly #id: number;
   readonly #isRTL: boolean;
   readonly #originalPaddingLeft: string;
-  #countries: Country[];
+  #countries: Country[] | null;
   #searchKeyupTimer: ReturnType<typeof setTimeout> | null = null;
   #inlineDropdownHeight: number | null = null;
-  #selectedDialCode: HTMLElement;
-  #dropdownArrow: HTMLElement;
-  #dropdownContent: HTMLElement;
-  #searchIcon: HTMLElement;
-  #searchNoResults: HTMLElement;
-  #searchResultsA11yText: HTMLElement;
+  #selectedDialCode: HTMLElement | null;
+  #dropdownArrow: HTMLElement | null;
+  #dropdownContent: HTMLElement | null;
+  #searchIcon: HTMLElement | null;
+  #searchNoResults: HTMLElement | null;
+  #searchResultsA11yText: HTMLElement | null;
   #dropdownForContainer: HTMLElement | null = null;
   #selectedItem: HTMLElement | null = null;
 
   // public
-  public telInput: HTMLInputElement;
-  public countryContainer: HTMLElement;
-  public selectedCountry: HTMLElement;
-  public selectedCountryInner: HTMLElement;
-  public searchInput: HTMLInputElement;
-  public searchClearButton: HTMLButtonElement;
-  public countryList: HTMLElement;
-  public hiddenInput: HTMLInputElement;
-  public hiddenInputCountry: HTMLInputElement;
+  public telInput: HTMLInputElement | null;
+  public countryContainer: HTMLElement | null;
+  public selectedCountry: HTMLElement | null;
+  public selectedCountryInner: HTMLElement | null;
+  public searchInput: HTMLInputElement | null;
+  public searchClearButton: HTMLButtonElement | null;
+  public countryList: HTMLElement | null;
+  public hiddenInput: HTMLInputElement | null;
+  public hiddenInputCountry: HTMLInputElement | null;
   public highlightedItem: HTMLElement | null = null;
   public readonly hadInitialPlaceholder: boolean;
 
