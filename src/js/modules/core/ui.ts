@@ -656,7 +656,8 @@ export default class UI {
 
   //* Country search: Filter the country list to the given array of countries.
   #filterCountries(matchedCountries: Country[]): void {
-    this.countryList.innerHTML = "";
+    // remove all items from the list
+    this.countryList.replaceChildren();
 
     let noCountriesAddedYet = true;
     for (const c of matchedCountries) {
@@ -823,7 +824,7 @@ export default class UI {
 
     if (useFullscreenPopup) {
       // on wider screens, constrain the popup to the input width instead of full width
-      if (window.innerWidth >= 500) {
+      if (window.innerWidth >= LAYOUT.NARROW_VIEWPORT_WIDTH) {
         const inputPos = this.telInput.getBoundingClientRect();
         this.#dropdownForContainer.style.paddingLeft = `${inputPos.left}px`;
         this.#dropdownForContainer.style.paddingRight = `${window.innerWidth - inputPos.right}px`;
