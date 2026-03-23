@@ -2,9 +2,10 @@
 // Exported as a type-only module to be reused across implementations (vanilla, react, angular, vue)
 // Uses centralised string constants to avoid magic strings & ensure consistency.
 import { EVENTS } from "../constants";
+import type { SelectedCountryData } from "../types/public-api";
 
 export type ItiEventMap = {
-  [EVENTS.COUNTRY_CHANGE]: Record<string, never>;
+  [EVENTS.COUNTRY_CHANGE]: { country: SelectedCountryData };
   [EVENTS.OPEN_COUNTRY_DROPDOWN]: Record<string, never>;
   [EVENTS.CLOSE_COUNTRY_DROPDOWN]: Record<string, never>;
   [EVENTS.INPUT]: { isSetNumber?: boolean };

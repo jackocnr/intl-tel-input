@@ -1294,7 +1294,9 @@ export class Iti {
 
   //* Trigger the 'countrychange' event.
   #triggerCountryChange(): void {
-    this.#trigger(EVENTS.COUNTRY_CHANGE);
+    this.#trigger(EVENTS.COUNTRY_CHANGE, {
+      country: this.#selectedCountryData,
+    });
   }
 
   //**************************
