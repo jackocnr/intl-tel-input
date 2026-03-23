@@ -22,7 +22,7 @@ export const translateCursorPosition = (
     if (relevantCharCount === relevantChars && !isDeleteForwards) {
       return i + 1;
     }
-    //* Spacial case: delete forwards (fn + delete on a mac):
+    //* Special case: delete forwards (fn + delete on a mac):
     //* Wait until hit one extra relevant char, and put the cursor just before it (after any formatting chars).
     if (isDeleteForwards && relevantCharCount === relevantChars + 1) {
       return i;
