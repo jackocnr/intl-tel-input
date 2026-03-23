@@ -1,4 +1,4 @@
-import type { SelectedCountryData } from "../types/public-api";
+import type { ItiUtils, SelectedCountryData } from "../types/public-api";
 
 //* Remove the dial code if separateDialCode is enabled
 export const beforeSetNumber = (
@@ -30,7 +30,7 @@ export const beforeSetNumber = (
 export const formatNumberAsYouType = (
   fullNumber: string,
   telInputValue: string,
-  utils: any,
+  utils: ItiUtils | undefined,
   selectedCountryData: SelectedCountryData,
   separateDialCode: boolean,
 ): string => {
