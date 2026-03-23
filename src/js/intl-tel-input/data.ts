@@ -1477,4 +1477,8 @@ for (const c of rawCountryData) {
   });
 }
 
+// Shared iso2 validation set (built once, reused across modules)
+export const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
+export const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
+
 export default allCountries;

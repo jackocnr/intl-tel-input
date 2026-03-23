@@ -1,4 +1,4 @@
-import allCountries, { type Country, type Iso2 } from "./intl-tel-input/data";
+import allCountries, { type Country, type Iso2, isIso2 } from "./intl-tel-input/data";
 import { defaults, applyOptionSideEffects, validateOptions } from "./modules/core/options";
 import type {
   UtilsLoader,
@@ -54,9 +54,6 @@ declare global {
 //* These vars persist through all instances of the plugin.
 let id = 0;
 
-// build a Set for iso2 runtime validation (lightweight)
-const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
-const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 
 //* This is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars

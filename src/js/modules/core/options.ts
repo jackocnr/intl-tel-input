@@ -1,6 +1,6 @@
 import { INITIAL_COUNTRY, PLACEHOLDER_MODES, NUMBER_TYPE_SET, LAYOUT } from "../constants";
 import defaultEnglishStrings from "../../intl-tel-input/i18n/en";
-import allCountries, { type Iso2 } from "../../intl-tel-input/data";
+import { type Iso2, isIso2 } from "../../intl-tel-input/data";
 import type { AllOptions, SomeOptions } from "../types/public-api";
 
 // Helper for media query evaluation
@@ -99,9 +99,6 @@ const isElLike = (val: unknown): val is HTMLElement => {
   const v = val as any;
   return v.nodeType === 1 && typeof v.tagName === "string" && typeof v.appendChild === "function";
 };
-
-const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
-const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 
 const placeholderModeSet = new Set<string>(Object.values(PLACEHOLDER_MODES));
 
