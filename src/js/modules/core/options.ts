@@ -1,6 +1,6 @@
 import { INITIAL_COUNTRY, PLACEHOLDER_MODES, NUMBER_TYPE_SET, LAYOUT } from "../constants";
 import defaultEnglishStrings from "../../intl-tel-input/i18n/en";
-import { isIso2 } from "../../intl-tel-input/data";
+import { isIso2, type Iso2 } from "../../intl-tel-input/data";
 import type { AllOptions, SomeOptions } from "../types/public-api";
 
 // Helper for media query evaluation
@@ -298,6 +298,23 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
   }
 
   return validatedOptions as SomeOptions;
+};
+
+// Normalise option values so downstream code doesn't have to (mutates the passed object).
+export const normaliseOptions = (o: AllOptions): void => {
+  //* Lowercase all ISO2 codes so consumers can compare directly.
+  if (o.initialCountry) {
+    o.initialCountry = o.initialCountry.toLowerCase() as Iso2 | "auto" | "";
+  }
+  if (o.onlyCountries?.length) {
+    o.onlyCountries = o.onlyCountries.map((c) => c.toLowerCase() as Iso2);
+  }
+  if (o.excludeCountries?.length) {
+    o.excludeCountries = o.excludeCountries.map((c) => c.toLowerCase() as Iso2);
+  }
+  if (o.countryOrder) {
+    o.countryOrder = o.countryOrder.map((c) => c.toLowerCase() as Iso2);
+  }
 };
 
 // Apply option side-effects (mutates the passed object)

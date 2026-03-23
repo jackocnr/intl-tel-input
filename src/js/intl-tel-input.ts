@@ -1,5 +1,5 @@
 import allCountries, { type Country, type Iso2, isIso2 } from "./intl-tel-input/data";
-import { defaults, applyOptionSideEffects, validateOptions } from "./modules/core/options";
+import { defaults, normaliseOptions, applyOptionSideEffects, validateOptions } from "./modules/core/options";
 import type {
   UtilsLoader,
   NumberType,
@@ -95,6 +95,7 @@ export class Iti {
 
     //* Process specified options / defaults.
     this.#options = { ...defaults, ...validatedOptions } as AllOptions;
+    normaliseOptions(this.#options);
     applyOptionSideEffects(this.#options);
 
     this.#ui = new UI(input, this.#options, this.id);
@@ -229,14 +230,13 @@ export class Iti {
     const isAutoCountry =
       initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
     const doingAutoCountryLookup = isAutoCountry && !overrideAutoCountry;
-    const initialCountryLower = initialCountry.toLowerCase();
-    const isValidInitialCountry = isIso2(initialCountryLower);
+    const isValidInitialCountry = isIso2(initialCountry);
 
     if (dialCode) {
       if (isRegionlessNanpNumber) {
         //* For regionless NANP numbers, we can't tell from the number which country to select, so defer to initialCountry, else auto country lookup, else default to US.
         if (isValidInitialCountry) {
-          this.#setCountry(initialCountryLower);
+          this.#setCountry(initialCountry);
         } else if (!doingAutoCountryLookup) {
           this.#setCountry(US.ISO2);
         }
@@ -244,7 +244,7 @@ export class Iti {
         this.#updateCountryFromNumber(val);
       }
     } else if (isValidInitialCountry) {
-      this.#setCountry(initialCountryLower);
+      this.#setCountry(initialCountry);
     } else if (!doingAutoCountryLookup) {
       //* No valid dial code, no valid initialCountry, and no country lookup, so default to empty (globe icon).
       this.#setCountry("");

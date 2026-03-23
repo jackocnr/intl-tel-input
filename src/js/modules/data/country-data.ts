@@ -12,18 +12,12 @@ export interface DialCodeProcessingResult {
 export const processAllCountries = (options: AllOptions): Country[] => {
   const { onlyCountries, excludeCountries } = options;
   if (onlyCountries?.length) {
-    const lowerCaseOnlyCountries = onlyCountries.map((country) =>
-      country.toLowerCase(),
-    );
     return allCountries.filter((country) =>
-      lowerCaseOnlyCountries.includes(country.iso2),
+      onlyCountries.includes(country.iso2),
     );
   } else if (excludeCountries?.length) {
-    const lowerCaseExcludeCountries = excludeCountries.map((country) =>
-      country.toLowerCase(),
-    );
     return allCountries.filter(
-      (country) => !lowerCaseExcludeCountries.includes(country.iso2),
+      (country) => !excludeCountries.includes(country.iso2),
     );
   }
   return allCountries;
@@ -139,14 +133,9 @@ export const sortCountries = (
   countries: Country[],
   options: AllOptions,
 ): void => {
-  if (options.countryOrder) {
-    options.countryOrder = options.countryOrder.map(
-      (iso2) => iso2.toLowerCase() as Iso2,
-    );
-  }
+  const { countryOrder } = options;
   countries.sort((a: Country, b: Country): number => {
     //* Primary sort: countryOrder option
-    const { countryOrder } = options;
     if (countryOrder) {
       const aIndex = countryOrder.indexOf(a.iso2);
       const bIndex = countryOrder.indexOf(b.iso2);
