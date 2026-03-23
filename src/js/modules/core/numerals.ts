@@ -1,8 +1,10 @@
 export class Numerals {
   #userNumeralSet: "ascii" | "arabic-indic" | "persian" | undefined;
 
-  constructor() {
-    // intentionally left uninitialised until we see some input
+  constructor(initialValue: string) {
+    if (initialValue) {
+      this.#updateNumeralSet(initialValue);
+    }
   }
 
   // If any Arabic-Indic digits, then label it as that set. Same for Persian. Otherwise assume ASCII.
@@ -16,12 +18,10 @@ export class Numerals {
     }
   }
 
-  // Denormalise ASCII 0-9 to the user's numeral set, if known. If not known, return the string as-is.
-  public denormalise(str: string, currentInputValue: string): string {
-    if (!this.#userNumeralSet) {
-      this.#updateNumeralSet(currentInputValue);
-    }
-    if (this.#userNumeralSet === "ascii") {
+  // Denormalise ASCII 0-9 to the user's numeral set. If not yet known, return as-is.
+  // NOTE: normalise is always called before this, so it should be impossible for the numeral set to be unknown at this point.
+  public denormalise(str: string): string {
+    if (!this.#userNumeralSet || this.#userNumeralSet === "ascii") {
       return str;
     }
     const base = this.#userNumeralSet === "arabic-indic" ? 0x0660 : 0x06f0;
@@ -43,6 +43,6 @@ export class Numerals {
   }
 
   public isAscii(): boolean {
-    return this.#userNumeralSet === "ascii";
+    return !this.#userNumeralSet || this.#userNumeralSet === "ascii";
   }
 }

@@ -100,7 +100,7 @@ export class Iti {
 
     this.#ui = new UI(input, this.#options, this.id);
     this.#isAndroid = getIsAndroid();
-    this.#numerals = new Numerals();
+    this.#numerals = new Numerals(input.value);
     this.promise = this.#createInitPromises(this.#options);
 
     //* Process onlyCountries or excludeCountries array if present.
@@ -126,8 +126,7 @@ export class Iti {
   }
 
   #setTelInputValue(asciiValue: string): void {
-    const currentValue = this.#ui.telInput.value;
-    this.#ui.telInput.value = this.#numerals.denormalise(asciiValue, currentValue);
+    this.#ui.telInput.value = this.#numerals.denormalise(asciiValue);
   }
 
   #createInitPromises(options: AllOptions): Promise<void> {
@@ -1428,8 +1427,7 @@ export class Iti {
         iso2,
         format,
       );
-      const currentVal = this.#ui.telInput.value;
-      return this.#numerals.denormalise(formattedNumber, currentVal);
+      return this.#numerals.denormalise(formattedNumber);
     }
     return "";
   }
