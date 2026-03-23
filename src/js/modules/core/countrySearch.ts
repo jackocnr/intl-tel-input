@@ -50,13 +50,15 @@ export const getMatchedCountries = (
 
   // Combine result groups in correct order (and respect country priority order within each group e.g. if search +44, then UK appears first above Guernsey etc)
   const sortByPriority = (a: Country, b: Country) => a.priority - b.priority;
+
   return [
-    ...iso2Matches.sort(sortByPriority),
-    ...nameStartWith.sort(sortByPriority),
-    ...nameContains.sort(sortByPriority),
+    ...iso2Matches,
+    ...nameStartWith,
+    ...nameContains,
+    // priority sort is only relevant when showing multiple countries with the same dial code (that's what the priority field is used to distinguish between)
     ...dialCodeMatches.sort(sortByPriority),
     ...dialCodeContains.sort(sortByPriority),
-    ...initialsMatches.sort(sortByPriority),
+    ...initialsMatches,
   ];
 };
 
