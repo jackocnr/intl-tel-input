@@ -1,7 +1,5 @@
 import type { Country, Iso2 } from "../../intl-tel-input/data";
 import type { I18n } from "../../intl-tel-input/i18n/types";
-// Type-only import to avoid runtime circular dependency. This is erased after compilation.
-import type { Iti } from "../../intl-tel-input";
 import type { NUMBER_TYPE_SET, PLACEHOLDER_MODES } from "../constants";
 
 // Loader for the utils module
@@ -95,22 +93,6 @@ export interface AllOptions {
 
 // Partial options accepted by the factory
 export type SomeOptions = Partial<AllOptions>;
-
-// Public interface for the factory function (kept here for consumers)
-export interface IntlTelInputInterface {
-  (input: HTMLInputElement, options?: SomeOptions): Iti;
-  autoCountry?: Iso2;
-  defaults: AllOptions;
-  documentReady: () => boolean;
-  getCountryData: () => Country[];
-  getInstance: (input: HTMLInputElement) => Iti | null;
-  instances: { [key: string]: Iti };
-  attachUtils: (source: UtilsLoader) => Promise<unknown> | null;
-  startedLoadingAutoCountry: boolean;
-  startedLoadingUtilsScript: boolean;
-  version: string | undefined;
-  utils?: ItiUtils;
-}
 
 // A discriminated union for when there may be no selected country yet.
 // - When selected: it's a full Country (iso2 is present)

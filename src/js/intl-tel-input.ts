@@ -2,10 +2,10 @@ import allCountries, { type Country, type Iso2, isIso2 } from "./intl-tel-input/
 import { defaults, normaliseOptions, applyOptionSideEffects, validateOptions } from "./modules/core/options";
 import type {
   UtilsLoader,
+  ItiUtils,
   NumberType,
   AllOptions,
   SomeOptions,
-  IntlTelInputInterface,
   SelectedCountryData,
 } from "./modules/types/public-api";
 import { getNumeric } from "./modules/utils/string";
@@ -1708,6 +1708,21 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
   }
   return null;
 };
+
+interface IntlTelInputInterface {
+  (input: HTMLInputElement, options?: SomeOptions): Iti;
+  autoCountry?: Iso2;
+  defaults: AllOptions;
+  documentReady: () => boolean;
+  getCountryData: () => Country[];
+  getInstance: (input: HTMLInputElement) => Iti | null;
+  instances: { [key: string]: Iti };
+  attachUtils: (source: UtilsLoader) => Promise<unknown> | null;
+  startedLoadingAutoCountry: boolean;
+  startedLoadingUtilsScript: boolean;
+  version: string | undefined;
+  utils?: ItiUtils;
+}
 
 //* Convenience wrapper.
 
