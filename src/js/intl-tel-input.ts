@@ -1618,10 +1618,12 @@ export class Iti {
       return;
     }
     this.#ui.telInput.disabled = disabled;
-    if (disabled) {
-      this.#ui.selectedCountry.setAttribute("disabled", "true");
-    } else {
-      this.#ui.selectedCountry.removeAttribute("disabled");
+    if (this.#ui.selectedCountry) {
+      if (disabled) {
+        this.#ui.selectedCountry.setAttribute("disabled", "true");
+      } else {
+        this.#ui.selectedCountry.removeAttribute("disabled");
+      }
     }
   }
 
