@@ -278,8 +278,8 @@ export class IntlTelInputComponent
 
   // ============ Validator Implementation ============
 
-  validate(control: AbstractControl): ValidationErrors | null {
-    if (!control.value || !this.iti) {
+  validate(_control: AbstractControl): ValidationErrors | null {
+    if (!this.iti || !this.iti.getNumber()) {
       return null;
     }
 
