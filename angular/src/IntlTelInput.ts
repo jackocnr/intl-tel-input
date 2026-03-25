@@ -300,7 +300,7 @@ class IntlTelInput
    * This method must be called in `ngAfterViewInit` or later lifecycle hooks,
    * not in `ngOnInit` or the `constructor`, as the component needs to be fully initialized.
    */
-  getInput(): HTMLInputElement | null {
+  getInput(): HTMLInputElement {
     return this.inputRef.nativeElement;
   }
 
