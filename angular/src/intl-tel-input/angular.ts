@@ -259,6 +259,7 @@ export class IntlTelInputComponent
   writeValue(value: string | null): void {
     if (this.iti) {
       this.iti.setNumber(value || "");
+      this.handleInput();
     }
   }
 
