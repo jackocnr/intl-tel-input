@@ -74,11 +74,13 @@ export class IntlTelInputComponent
   @ViewChild("inputRef", { static: true })
   inputRef!: ElementRef<HTMLInputElement>;
 
+  /** initialValue and initOptions are only used during initialization — changes after init are ignored. */
   @Input() initialValue?: string;
+  @Input() initOptions?: SomeOptions;
+
   @Input() usePreciseValidation: boolean = false;
   @Input() inputProps: Record<string, string> = {};
   @Input() disabled: boolean = false;
-  @Input() initOptions?: SomeOptions;
   @Input() readonly: boolean = false;
 
   @Output() numberChange = new EventEmitter<string>();
