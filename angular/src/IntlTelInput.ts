@@ -68,7 +68,9 @@ class IntlTelInput
   @ViewChild("inputRef", { static: true })
   inputRef!: ElementRef<HTMLInputElement>;
 
+  /** initialValue is only used during initialization — changes after init are ignored. */
   @Input() initialValue?: string;
+
   @Input() usePreciseValidation: boolean = false;
   @Input() inputAttributes: Record<string, string> = {};
   @Input() disabled: boolean = false;
