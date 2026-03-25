@@ -15,29 +15,29 @@ export default class UI {
   readonly #options: AllOptions;
   readonly #id: number;
   readonly #isRTL: boolean;
-  readonly #originalPaddingLeft: string;
-  #countries: Country[] | null;
+  readonly #originalPaddingLeft: string = "";
+  #countries!: Country[];
   #searchKeyupTimer: ReturnType<typeof setTimeout> | null = null;
   #inlineDropdownHeight: number | null = null;
-  #selectedDialCode: HTMLElement | null;
-  #dropdownArrow: HTMLElement | null;
-  #dropdownContent: HTMLElement | null;
-  #searchIcon: HTMLElement | null;
-  #searchNoResults: HTMLElement | null;
-  #searchResultsA11yText: HTMLElement | null;
+  #selectedDialCode: HTMLElement | null = null;
+  #dropdownArrow: HTMLElement | null = null;
+  #dropdownContent: HTMLElement | null = null;
+  #searchIcon: HTMLElement | null = null;
+  #searchNoResults: HTMLElement | null = null;
+  #searchResultsA11yText: HTMLElement | null = null;
   #dropdownForContainer: HTMLElement | null = null;
   #selectedItem: HTMLElement | null = null;
 
   // public
-  public telInput: HTMLInputElement | null;
-  public countryContainer: HTMLElement | null;
-  public selectedCountry: HTMLElement | null;
-  public selectedCountryInner: HTMLElement | null;
-  public searchInput: HTMLInputElement | null;
-  public searchClearButton: HTMLButtonElement | null;
-  public countryList: HTMLElement | null;
-  public hiddenInput: HTMLInputElement | null;
-  public hiddenInputCountry: HTMLInputElement | null;
+  public telInput!: HTMLInputElement;
+  public countryContainer: HTMLElement | null = null;
+  public selectedCountry: HTMLElement | null = null;
+  public selectedCountryInner: HTMLElement | null = null;
+  public searchInput: HTMLInputElement | null = null;
+  public searchClearButton: HTMLButtonElement | null = null;
+  public countryList: HTMLElement | null = null;
+  public hiddenInput: HTMLInputElement | null = null;
+  public hiddenInputCountry: HTMLInputElement | null = null;
   public highlightedItem: HTMLElement | null = null;
   public readonly hadInitialPlaceholder: boolean;
 
@@ -146,7 +146,7 @@ export default class UI {
         );
 
         if (this.telInput.disabled) {
-          this.selectedCountry.setAttribute("disabled", "true");
+          this.selectedCountry!.setAttribute("disabled", "true");
         }
       } else {
         this.selectedCountry = createEl(
@@ -197,11 +197,11 @@ export default class UI {
 
     // Note: fixDropdownWidth is always false if useFullscreenPopup is true
     // don't re-set it if it's already set
-    if (fixDropdownWidth && !this.#dropdownContent.style.width) {
+    if (fixDropdownWidth && !this.#dropdownContent!.style.width) {
       const inputWidth = this.telInput.offsetWidth;
       // dont fix dropdown width if input width is zero (e.g. it's hidden during init)
       if (inputWidth > 0) {
-        this.#dropdownContent.style.width = `${inputWidth}px`;
+        this.#dropdownContent!.style.width = `${inputWidth}px`;
       }
     }
   }
@@ -270,7 +270,7 @@ export default class UI {
       this.#dropdownForContainer = createEl("div", { class: dropdownClasses });
       this.#dropdownForContainer.appendChild(this.#dropdownContent);
     } else {
-      this.countryContainer.appendChild(this.#dropdownContent);
+      this.countryContainer!.appendChild(this.#dropdownContent!);
     }
   }
 
@@ -281,7 +281,7 @@ export default class UI {
     const searchWrapper = createEl(
       "div",
       { class: "iti__search-input-wrapper" },
-      this.#dropdownContent,
+      this.#dropdownContent!,
     );
 
     // Search (magnifying glass) icon SVG
@@ -331,7 +331,7 @@ export default class UI {
     this.#searchResultsA11yText = createEl(
       "span",
       { class: "iti__a11y-text" },
-      this.#dropdownContent,
+      this.#dropdownContent!,
     );
 
     // Visible no-results message (hidden by default)
@@ -341,9 +341,9 @@ export default class UI {
         class: `iti__no-results ${CLASSES.HIDE}`,
         [ARIA.HIDDEN]: "true", // all a11y messaging happens in this.#searchResultsA11yText
       },
-      this.#dropdownContent,
+      this.#dropdownContent!,
     );
-    this.#searchNoResults.textContent = i18n.searchEmptyState;
+    this.#searchNoResults.textContent = i18n.searchEmptyState ?? null;
   }
 
   #maybeUpdateInputPaddingAndReveal(): void {
@@ -434,7 +434,7 @@ export default class UI {
 
       frag.appendChild(listItem);
     }
-    this.countryList.appendChild(frag);
+    this.countryList!.appendChild(frag);
   }
 
   //* Update the input padding to make space for the selected country/dial code.
@@ -459,7 +459,7 @@ export default class UI {
     // Use window.top as a fix for same-origin iframes (that are hidden during init) where even appending it to document.body would still be hidden. window.top accesses the top-most document, which will not be hidden.
     let body;
     try {
-      body = window.top.document.body;
+      body = window.top!.document.body;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       // fix for cross-origin iframes, where accessing window.top.document throws a security error
@@ -475,17 +475,17 @@ export default class UI {
   #getHiddenSelectedCountryWidth(): number {
     if (this.telInput.parentNode) {
       const body = UI.#getBody();
-      const containerClone = this.telInput.parentNode.cloneNode(
+      const containerClone = this.telInput.parentNode!.cloneNode(
         false,
       ) as HTMLElement;
       containerClone.style.visibility = "hidden";
       body.appendChild(containerClone);
 
       const countryContainerClone =
-        this.countryContainer.cloneNode() as HTMLElement;
+        this.countryContainer!.cloneNode() as HTMLElement;
       containerClone.appendChild(countryContainerClone);
 
-      const selectedCountryClone = this.selectedCountry.cloneNode(
+      const selectedCountryClone = this.selectedCountry!.cloneNode(
         true,
       ) as HTMLElement;
       countryContainerClone.appendChild(selectedCountryClone);
@@ -500,27 +500,27 @@ export default class UI {
   // this is run before we add the dropdown to the DOM
   #getHiddenInlineDropdownHeight(): number {
     const body = UI.#getBody();
-    this.#dropdownContent.classList.remove(CLASSES.HIDE);
+    this.#dropdownContent!.classList.remove(CLASSES.HIDE);
 
     // it needs these classes on the container to get the correct height
     const tempContainer = createEl("div", { class: "iti iti--inline-dropdown" });
-    tempContainer.appendChild(this.#dropdownContent);
+    tempContainer.appendChild(this.#dropdownContent!);
 
     tempContainer.style.visibility = "hidden";
     body.appendChild(tempContainer);
-    const height = this.#dropdownContent.offsetHeight;
+    const height = this.#dropdownContent!.offsetHeight;
     body.removeChild(tempContainer);
     tempContainer.style.visibility = "";
 
-    this.#dropdownContent.classList.add(CLASSES.HIDE);
+    this.#dropdownContent!.classList.add(CLASSES.HIDE);
     return height > 0 ? height : LAYOUT.SANE_DROPDOWN_HEIGHT;
   }
 
   //* Update search results text (for a11y).
   #updateSearchResultsA11yText(): void {
     const { i18n } = this.#options;
-    const count = this.countryList.childElementCount;
-    this.#searchResultsA11yText.textContent = i18n.searchSummaryAria(count);
+    const count = this.countryList!.childElementCount;
+    this.#searchResultsA11yText!.textContent = i18n.searchSummaryAria!(count);
   }
 
   //* Country search: Filter the countries according to the search query.
@@ -538,13 +538,13 @@ export default class UI {
 
   // Search input handlers
   #doFilter(): void {
-    const inputQuery = this.searchInput.value.trim();
+    const inputQuery = this.searchInput!.value.trim();
     this.filterCountriesByQuery(inputQuery);
     // show/hide clear button
-    if (this.searchInput.value) {
-      this.searchClearButton.classList.remove(CLASSES.HIDE);
+    if (this.searchInput!.value) {
+      this.searchClearButton!.classList.remove(CLASSES.HIDE);
     } else {
-      this.searchClearButton.classList.add(CLASSES.HIDE);
+      this.searchClearButton!.classList.add(CLASSES.HIDE);
     }
   }
 
@@ -560,24 +560,24 @@ export default class UI {
   }
 
   public handleSearchClear(): void {
-    this.searchInput.value = "";
-    this.searchInput.focus();
+    this.searchInput!.value = "";
+    this.searchInput!.focus();
     this.#doFilter();
   }
 
   //* Check if a country list item element is visible within it's container (the country list), else scroll until it is.
   public scrollCountryListToItem(element: HTMLElement): void {
-    const container = this.countryList;
-    const containerRect = container.getBoundingClientRect();
+    const container = this.countryList!;
+    const containerRect = container!.getBoundingClientRect();
     const elementRect = element.getBoundingClientRect();
-    const offsetTop = elementRect.top - containerRect.top + container.scrollTop;
+    const offsetTop = elementRect.top - containerRect.top + container!.scrollTop;
 
     if (elementRect.top < containerRect.top) {
       //* Scroll up.
-      container.scrollTop = offsetTop;
+      container!.scrollTop = offsetTop;
     } else if (elementRect.bottom > containerRect.bottom) {
       //* Scroll down.
-      container.scrollTop = offsetTop - containerRect.height + elementRect.height;
+      container!.scrollTop = offsetTop - containerRect.height + elementRect.height;
     }
   }
 
@@ -596,7 +596,7 @@ export default class UI {
       this.highlightedItem.classList.add(CLASSES.HIGHLIGHT);
       if (this.#options.countrySearch) {
         const activeDescendant = this.highlightedItem.getAttribute("id") || "";
-        this.searchInput.setAttribute(ARIA.ACTIVE_DESCENDANT, activeDescendant);
+        this.searchInput!.setAttribute(ARIA.ACTIVE_DESCENDANT, activeDescendant);
       }
 
       if (shouldFocus) {
@@ -611,12 +611,12 @@ export default class UI {
       key === KEYS.ARROW_UP
         ? (this.highlightedItem?.previousElementSibling as HTMLElement)
         : (this.highlightedItem?.nextElementSibling as HTMLElement);
-    if (!next && this.countryList.childElementCount > 1) {
+    if (!next && this.countryList!.childElementCount > 1) {
       //* Otherwise, we must be at the end, so loop round again.
       next =
         key === KEYS.ARROW_UP
-          ? (this.countryList.lastElementChild as HTMLElement)
-          : (this.countryList.firstElementChild as HTMLElement);
+          ? (this.countryList!.lastElementChild as HTMLElement)
+          : (this.countryList!.firstElementChild as HTMLElement);
     }
     if (next) {
       //* Make sure the next item is visible
@@ -638,7 +638,7 @@ export default class UI {
 
     // if setting to a new country (rather than null/globe icon, or the existing selected item), find the new list item and set aria-selected to true
     if (iso2 && !this.#selectedItem) {
-      const newListItem = this.countryList.querySelector(
+      const newListItem = this.countryList!.querySelector(
         `[data-country-code="${iso2}"]`,
       ) as HTMLElement;
       if (newListItem) {
@@ -657,13 +657,13 @@ export default class UI {
   //* Country search: Filter the country list to the given array of countries.
   #filterCountries(matchedCountries: Country[]): void {
     // remove all items from the list
-    this.countryList.replaceChildren();
+    this.countryList!.replaceChildren();
 
     let noCountriesAddedYet = true;
     for (const c of matchedCountries) {
       const listItem = c.nodeById[this.#id];
       if (listItem) {
-        this.countryList.appendChild(listItem);
+        this.countryList!.appendChild(listItem);
 
         //* Highlight the first item
         if (noCountriesAddedYet) {
@@ -682,7 +682,7 @@ export default class UI {
       this.#searchNoResults.classList.add(CLASSES.HIDE);
     }
     //* Scroll to top (useful if user had previously scrolled down).
-    this.countryList.scrollTop = 0;
+    this.countryList!.scrollTop = 0;
     this.#updateSearchResultsA11yText();
   }
 
@@ -703,7 +703,7 @@ export default class UI {
     wrapper.remove();
 
     // public
-    this.telInput = null;
+    this.telInput = null as unknown as HTMLInputElement;
     this.countryContainer = null;
     this.selectedCountry = null;
     this.selectedCountryInner = null;
@@ -728,7 +728,7 @@ export default class UI {
     for (const c of this.#countries) {
       delete c.nodeById[this.#id];
     }
-    this.#countries = null;
+    this.#countries = null as unknown as Country[];
   }
 
   // UI: Open the dropdown (DOM only).
@@ -750,40 +750,40 @@ export default class UI {
       const positionBelow = this.#shouldPositionInlineDropdownBelowInput();
       const distance = this.telInput.offsetHeight + LAYOUT.DROPDOWN_MARGIN;
       if (positionBelow) {
-        this.#dropdownContent.style.top = `${distance}px`;
+        this.#dropdownContent!.style.top = `${distance}px`;
       } else {
-        this.#dropdownContent.style.bottom = `${distance}px`;
+        this.#dropdownContent!.style.bottom = `${distance}px`;
       }
     }
 
-    this.#dropdownContent.classList.remove(CLASSES.HIDE);
-    this.selectedCountry.setAttribute(ARIA.EXPANDED, "true");
+    this.#dropdownContent!.classList.remove(CLASSES.HIDE);
+    this.selectedCountry!.setAttribute(ARIA.EXPANDED, "true");
 
     //* When countrySearch enabled, every time the dropdown is opened we reset by highlighting the first item and scrolling to top.
     if (countrySearch) {
-      const firstCountryItem = this.countryList.firstElementChild as HTMLElement;
+      const firstCountryItem = this.countryList!.firstElementChild as HTMLElement;
       if (firstCountryItem) {
         this.highlightListItem(firstCountryItem, false);
-        this.countryList.scrollTop = 0;
+        this.countryList!.scrollTop = 0;
       }
       if (!dropdownAlwaysOpen) {
-        this.searchInput.focus();
+        this.searchInput!.focus();
       }
     }
 
     // Update the arrow.
-    this.#dropdownArrow.classList.add(CLASSES.ARROW_UP);
+    this.#dropdownArrow!.classList.add(CLASSES.ARROW_UP);
   }
 
   // UI: Close the dropdown (DOM only).
   public closeDropdown(): void {
     const { countrySearch, dropdownContainer } = this.#options;
 
-    this.#dropdownContent.classList.add(CLASSES.HIDE);
-    this.selectedCountry.setAttribute(ARIA.EXPANDED, "false");
+    this.#dropdownContent!.classList.add(CLASSES.HIDE);
+    this.selectedCountry!.setAttribute(ARIA.EXPANDED, "false");
 
     if (countrySearch) {
-      this.searchInput.removeAttribute(ARIA.ACTIVE_DESCENDANT);
+      this.searchInput!.removeAttribute(ARIA.ACTIVE_DESCENDANT);
       // only clear the highlighted item if countrySearch is enabled as this gets reset each time the dropdown is opened
       if (this.highlightedItem) {
         this.highlightedItem.classList.remove(CLASSES.HIGHLIGHT);
@@ -792,18 +792,18 @@ export default class UI {
     }
 
     // Update the arrow.
-    this.#dropdownArrow.classList.remove(CLASSES.ARROW_UP);
+    this.#dropdownArrow!.classList.remove(CLASSES.ARROW_UP);
 
     // Remove dropdown from container if using external container
     if (dropdownContainer) {
-      this.#dropdownForContainer.remove();
-      this.#dropdownForContainer.style.top = "";
-      this.#dropdownForContainer.style.bottom = "";
-      this.#dropdownForContainer.style.paddingLeft = "";
-      this.#dropdownForContainer.style.paddingRight = "";
+      this.#dropdownForContainer!.remove();
+      this.#dropdownForContainer!.style.top = "";
+      this.#dropdownForContainer!.style.bottom = "";
+      this.#dropdownForContainer!.style.paddingLeft = "";
+      this.#dropdownForContainer!.style.paddingRight = "";
     } else {
-      this.#dropdownContent.style.top = "";
-      this.#dropdownContent.style.bottom = "";
+      this.#dropdownContent!.style.top = "";
+      this.#dropdownContent!.style.bottom = "";
     }
   }
 
@@ -815,7 +815,7 @@ export default class UI {
     const inputPos = this.telInput.getBoundingClientRect();
     const spaceAbove = inputPos.top;
     const spaceBelow = window.innerHeight - inputPos.bottom;
-    return spaceBelow >= this.#inlineDropdownHeight || spaceBelow >= spaceAbove;
+    return spaceBelow >= this.#inlineDropdownHeight! || spaceBelow >= spaceAbove;
   }
 
   // inject dropdown into container and apply positioning styles
@@ -826,30 +826,30 @@ export default class UI {
       // on wider screens, constrain the popup to the input width instead of full width
       if (window.innerWidth >= LAYOUT.NARROW_VIEWPORT_WIDTH) {
         const inputPos = this.telInput.getBoundingClientRect();
-        this.#dropdownForContainer.style.paddingLeft = `${inputPos.left}px`;
-        this.#dropdownForContainer.style.paddingRight = `${window.innerWidth - inputPos.right}px`;
+        this.#dropdownForContainer!.style.paddingLeft = `${inputPos.left}px`;
+        this.#dropdownForContainer!.style.paddingRight = `${window.innerWidth - inputPos.right}px`;
       }
     } else {
       // inline dropdown
       // remember this inputPos is relative to the viewport, not the page
       const inputPos = this.telInput.getBoundingClientRect();
-      this.#dropdownForContainer.style.left = `${inputPos.left}px`;
+      this.#dropdownForContainer!.style.left = `${inputPos.left}px`;
       const positionBelow = this.#shouldPositionInlineDropdownBelowInput();
       if (positionBelow) {
-        this.#dropdownForContainer.style.top = `${inputPos.bottom + LAYOUT.DROPDOWN_MARGIN}px`;
+        this.#dropdownForContainer!.style.top = `${inputPos.bottom + LAYOUT.DROPDOWN_MARGIN}px`;
       } else {
         // unset the default top:-1000px in the CSS
-        this.#dropdownForContainer.style.top = "unset";
-        this.#dropdownForContainer.style.bottom = `${window.innerHeight - inputPos.top + LAYOUT.DROPDOWN_MARGIN}px`;
+        this.#dropdownForContainer!.style.top = "unset";
+        this.#dropdownForContainer!.style.bottom = `${window.innerHeight - inputPos.top + LAYOUT.DROPDOWN_MARGIN}px`;
       }
     }
 
-    dropdownContainer.appendChild(this.#dropdownForContainer);
+    dropdownContainer!.appendChild(this.#dropdownForContainer!);
   }
 
   // UI: Whether the dropdown is currently closed (hidden).
   public isDropdownClosed(): boolean {
-    return this.#dropdownContent.classList.contains(CLASSES.HIDE);
+    return this.#dropdownContent!.classList.contains(CLASSES.HIDE);
   }
 
   public setCountry(selectedCountryData: SelectedCountryData): void {
@@ -870,8 +870,8 @@ export default class UI {
       let ariaLabel, title, selectedCountryInner;
       if (iso2) {
         title = name;
-        ariaLabel = i18n.selectedCountryAriaLabel
-          .replace("${countryName}", name)
+        ariaLabel = i18n.selectedCountryAriaLabel!
+          .replace("${countryName}", name!)
           .replace("${dialCode}", `+${dialCode}`);
         selectedCountryInner = showFlags ? "" : buildGlobeIcon();
       } else {
@@ -879,16 +879,16 @@ export default class UI {
         ariaLabel = i18n.noCountrySelected;
         selectedCountryInner = buildGlobeIcon();
       }
-      this.selectedCountryInner.className = flagClass;
-      this.selectedCountry.setAttribute("title", title);
-      this.selectedCountry.setAttribute(ARIA.LABEL, ariaLabel);
-      this.selectedCountryInner.innerHTML = selectedCountryInner;
+      this.selectedCountryInner!.className = flagClass;
+      this.selectedCountry!.setAttribute("title", title!);
+      this.selectedCountry!.setAttribute(ARIA.LABEL, ariaLabel!);
+      this.selectedCountryInner!.innerHTML = selectedCountryInner;
     }
 
     //* Update the selected dial code.
     if (separateDialCode) {
       const fullDialCode = dialCode ? `+${dialCode}` : "";
-      this.#selectedDialCode.textContent = fullDialCode;
+      this.#selectedDialCode!.textContent = fullDialCode;
       this.#updateInputPadding();
     }
   }

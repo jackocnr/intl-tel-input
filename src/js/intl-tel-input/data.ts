@@ -1447,7 +1447,7 @@ export type Country = {
   iso2: Iso2;
   dialCode: string;
   priority: number;
-  areaCodes: string[] | null;
+  areaCodes: readonly string[] | null;
   nationalPrefix: string | null;
 
   // the following fields are populated by the plugin

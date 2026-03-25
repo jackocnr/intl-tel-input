@@ -75,15 +75,15 @@ export class Iti {
   readonly #dialCodes: Set<string>;
   readonly #countryByIso2: Map<Iso2, Country>;
 
-  #selectedCountryData: Country | null;
-  #maxCoreNumberLength: number | null;
-  #defaultCountry: Iso2;
-  #abortController: AbortController;
-  #dropdownAbortController: AbortController | null;
-  #numerals: Numerals;
+  #selectedCountryData: Country | null = null;
+  #maxCoreNumberLength: number | null = null;
+  #defaultCountry!: Iso2;
+  #abortController!: AbortController | null;
+  #dropdownAbortController: AbortController | null = null;
+  #numerals!: Numerals;
 
-  #autoCountryDeferred: PromiseWithResolvers<void> | null;
-  #utilsScriptDeferred: PromiseWithResolvers<void> | null;
+  #autoCountryDeferred: PromiseWithResolvers<void> | null = null;
+  #utilsScriptDeferred: PromiseWithResolvers<void> | null = null;
 
   public constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
@@ -144,10 +144,6 @@ export class Iti {
   }
 
   #init(): void {
-    //* In various situations there could be no country selected initially, but we need to be able
-    //* to assume this variable exists.
-    this.#selectedCountryData = null;
-
     // init event controller
     this.#abortController = new AbortController();
 
@@ -195,7 +191,7 @@ export class Iti {
     //* and initialising plugin removes the dial code from the input, then refresh page,
     //* and we try to init plugin again but this time on number without dial code so show globe icon.
     const attributeValueRaw = this.#ui.telInput.getAttribute("value");
-    const attributeValue = this.#numerals.normalise(attributeValueRaw);
+    const attributeValue = this.#numerals.normalise(attributeValueRaw ?? "");
     const inputValue = this.#getTelInputValue();
     const useAttribute =
       attributeValue &&
@@ -260,13 +256,13 @@ export class Iti {
       }
     };
     this.#ui.telInput.form?.addEventListener("submit", handleHiddenInputSubmit, {
-      signal: this.#abortController.signal,
+      signal: this.#abortController!.signal,
     });
   }
 
   //* initialise the dropdown listeners.
   #initDropdownListeners(): void {
-    const signal = this.#abortController.signal;
+    const signal = this.#abortController!.signal;
     //* Hack for input nested inside label (which is valid markup): clicking the selected country to
     //* open the dropdown would then automatically trigger a 2nd click on the input which would
     //* close it again.
@@ -293,7 +289,7 @@ export class Iti {
         this.#openDropdown();
       }
     };
-    this.#ui.selectedCountry.addEventListener(
+    this.#ui.selectedCountry!.addEventListener(
       "click",
       handleClickSelectedCountry,
       {
@@ -318,7 +314,7 @@ export class Iti {
         this.#closeDropdown();
       }
     };
-    this.#ui.countryContainer.addEventListener(
+    this.#ui.countryContainer!.addEventListener(
       "keydown",
       handleCountryContainerKeydown,
       { signal },
@@ -344,7 +340,7 @@ export class Iti {
       } else {
         //* Wait until the load event so we don't block any other requests e.g. the flags image.
         window.addEventListener("load", doAttachUtils, {
-          signal: this.#abortController.signal,
+          signal: this.#abortController!.signal,
         });
       }
     } else {
@@ -372,7 +368,7 @@ export class Iti {
     if (intlTelInput.autoCountry) {
       this.#handleAutoCountry();
     } else {
-      this.#ui.selectedCountryInner.classList.add(CLASSES.LOADING);
+      this.#ui.selectedCountryInner!.classList.add(CLASSES.LOADING);
 
       if (!intlTelInput.startedLoadingAutoCountry) {
         //* Don't do this twice!
@@ -380,7 +376,7 @@ export class Iti {
 
         if (typeof this.#options.geoIpLookup === "function") {
           const successCallback = (iso2 = "") => {
-            this.#ui.selectedCountryInner.classList.remove(CLASSES.LOADING);
+            this.#ui.selectedCountryInner!.classList.remove(CLASSES.LOADING);
             const iso2Lower = iso2.toLowerCase();
             if (isIso2(iso2Lower)) {
               intlTelInput.autoCountry = iso2Lower;
@@ -395,7 +391,7 @@ export class Iti {
             }
           };
           const failureCallback = () => {
-            this.#ui.selectedCountryInner.classList.remove(CLASSES.LOADING);
+            this.#ui.selectedCountryInner!.classList.remove(CLASSES.LOADING);
             Iti.forEachInstance("handleAutoCountryFailure");
           };
           this.#options.geoIpLookup(successCallback, failureCallback);
@@ -406,7 +402,7 @@ export class Iti {
 
   #openDropdownWithPlus(): void {
     this.#openDropdown();
-    this.#ui.searchInput.value = "+";
+    this.#ui.searchInput!.value = "+";
     this.#ui.filterCountriesByQuery("");
   }
 
@@ -468,7 +464,7 @@ export class Iti {
         userOverrideFormatting = false;
       }
 
-      const isSetNumber = e?.detail && e.detail["isSetNumber"];
+      const isSetNumber = e?.detail && (e.detail as unknown as Record<string, unknown>)["isSetNumber"];
       // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets - when these numbers contain spaces, they're treated as words, and so they get reversed in a way that breaks our calculations
       const isAscii = this.#numerals.isAscii();
       //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
@@ -526,7 +522,7 @@ export class Iti {
       "input",
       handleInputEvent as EventListener,
       {
-        signal: this.#abortController.signal,
+        signal: this.#abortController!.signal,
       },
     );
   }
@@ -576,8 +572,8 @@ export class Iti {
             const input = this.#ui.telInput;
             const selStart = input.selectionStart;
             const selEnd = input.selectionEnd;
-            const before = inputValue.slice(0, selStart);
-            const after = inputValue.slice(selEnd);
+            const before = inputValue.slice(0, selStart ?? undefined);
+            const after = inputValue.slice(selEnd ?? undefined);
             const newValue = before + e.key + after;
             const newFullNumber = this.#getFullNumber(newValue);
 
@@ -604,7 +600,7 @@ export class Iti {
         }
       };
       this.#ui.telInput.addEventListener("keydown", handleKeydownEvent, {
-        signal: this.#abortController.signal,
+        signal: this.#abortController!.signal,
       });
     }
   }
@@ -621,14 +617,14 @@ export class Iti {
         const selStart = input.selectionStart;
         const selEnd = input.selectionEnd;
         const inputValue = this.#getTelInputValue();
-        const before = inputValue.slice(0, selStart);
-        const after = inputValue.slice(selEnd);
+        const before = inputValue.slice(0, selStart ?? undefined);
+        const after = inputValue.slice(selEnd ?? undefined);
         const iso2 = this.#selectedCountryData?.iso2;
 
-        const pastedRaw = e.clipboardData.getData("text");
+        const pastedRaw = e.clipboardData!.getData("text");
         const pasted = this.#numerals.normalise(pastedRaw);
         // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
-        const initialCharSelected = selStart === 0 && selEnd > 0;
+        const initialCharSelected = selStart === 0 && selEnd! > 0;
         const allowLeadingPlus =
           !inputValue.startsWith("+") || initialCharSelected;
         // just numerics and pluses
@@ -643,13 +639,13 @@ export class Iti {
         // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
         // (fixes bug where you couldn't paste the first digit of a number)
         if (newVal.length > 5) {
-          let coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
+          let coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
 
           // utils.getCoreNumber returns empty string for very long numbers
           // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
           while (coreNumber.length === 0 && newVal.length > 0) {
             newVal = newVal.slice(0, -1);
-            coreNumber = intlTelInput.utils.getCoreNumber(newVal, iso2);
+            coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
           }
           // if no valid core number can be found, then just ignore the paste
           if (!coreNumber) {
@@ -671,14 +667,14 @@ export class Iti {
         }
         // preserve pasted numeral set in display
         this.#setTelInputValue(newVal);
-        const caretPos = selStart + sanitised.length;
+        const caretPos = selStart! + sanitised.length;
         input.setSelectionRange(caretPos, caretPos);
 
         // trigger format-as-you-type and country update etc
         input.dispatchEvent(new InputEvent("input", { bubbles: true }));
       };
       this.#ui.telInput.addEventListener("paste", handlePasteEvent, {
-        signal: this.#abortController.signal,
+        signal: this.#abortController!.signal,
       });
     }
   }
@@ -727,7 +723,7 @@ export class Iti {
 
   //* We only bind dropdown listeners when the dropdown is open.
   #bindDropdownListeners(): void {
-    const signal = this.#dropdownAbortController.signal;
+    const signal = this.#dropdownAbortController!.signal;
     this.#bindDropdownMouseoverListener(signal);
     this.#bindDropdownCountryClickListener(signal);
     if (!this.#options.dropdownAlwaysOpen) {
@@ -751,7 +747,7 @@ export class Iti {
         this.#ui.highlightListItem(listItem, false);
       }
     };
-    this.#ui.countryList.addEventListener(
+    this.#ui.countryList!.addEventListener(
       "mouseover",
       handleMouseoverCountryList,
       {
@@ -770,7 +766,7 @@ export class Iti {
         this.#selectListItem(listItem);
       }
     };
-    this.#ui.countryList.addEventListener("click", handleClickCountryList, {
+    this.#ui.countryList!.addEventListener("click", handleClickCountryList, {
       signal,
     });
   }
@@ -829,7 +825,7 @@ export class Iti {
         else if (e.key === KEYS.ESC) {
           this.#closeDropdown();
           // Accessibility: re-focus the select country button (this is how native <select> elements behave)
-          this.#ui.selectedCountry.focus();
+          this.#ui.selectedCountry!.focus();
         }
       }
 
@@ -855,14 +851,14 @@ export class Iti {
   //* Search input listeners when countrySearch enabled.
   #bindDropdownSearchListeners(signal: AbortSignal): void {
     // Listen for input in the search box to filter the country list.
-    this.#ui.searchInput.addEventListener(
+    this.#ui.searchInput!.addEventListener(
       "input",
       () => this.#ui.handleSearchChange(),
       { signal },
     );
 
     // Prevent click from closing dropdown, clear text, refocus input, and reset filter
-    this.#ui.searchClearButton.addEventListener(
+    this.#ui.searchClearButton!.addEventListener(
       "click",
       () => this.#ui.handleSearchClear(),
       { signal },
@@ -1141,7 +1137,7 @@ export class Iti {
     this.#closeDropdown();
 
     const dialCode = listItem.dataset[DATA_KEYS.DIAL_CODE];
-    this.#updateDialCode(dialCode);
+    this.#updateDialCode(dialCode!);
 
     // reformat any existing number to the new country
     if (this.#options.formatOnDisplay) {
@@ -1168,7 +1164,7 @@ export class Iti {
     this.#ui.closeDropdown();
 
     //* Unbind dropdown-scoped events in one go
-    this.#dropdownAbortController.abort();
+    this.#dropdownAbortController!.abort();
     this.#dropdownAbortController = null;
 
     this.#trigger(EVENTS.CLOSE_COUNTRY_DROPDOWN);
@@ -1301,7 +1297,7 @@ export class Iti {
       this.#defaultCountry = intlTelInput.autoCountry;
       const hasSelectedCountryOrGlobe =
         this.#selectedCountryData?.iso2 ||
-        this.#ui.selectedCountryInner.classList.contains(CLASSES.GLOBE);
+        this.#ui.selectedCountryInner!.classList.contains(CLASSES.GLOBE);
       //* If no country/globe currently selected, then update the country.
       if (!hasSelectedCountryOrGlobe) {
         this.setCountry(this.#defaultCountry);
@@ -1373,7 +1369,7 @@ export class Iti {
     }
 
     //* Abort all listeners registered via the main controller
-    this.#abortController.abort();
+    this.#abortController!.abort();
     this.#abortController = null;
 
     //* Remove all added DOM elements and classes.
