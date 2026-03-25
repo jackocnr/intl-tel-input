@@ -109,9 +109,7 @@ export class IntlTelInputComponent
   private onValidatorChange: () => void = () => {};
 
   ngAfterViewInit() {
-    if (this.inputRef.nativeElement) {
-      this.iti = intlTelInput(this.inputRef.nativeElement, this.initOptions);
-    }
+    this.iti = intlTelInput(this.inputRef.nativeElement, this.initOptions);
 
     this.inputRef.nativeElement.addEventListener(
       "countrychange",
