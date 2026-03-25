@@ -18,26 +18,26 @@ export default class UI {
   readonly #originalPaddingLeft: string = "";
   #countries!: Country[];
   #searchKeyupTimer: ReturnType<typeof setTimeout> | null = null;
-  #inlineDropdownHeight: number | null = null;
-  #selectedDialCode: HTMLElement | null = null;
-  #dropdownArrow: HTMLElement | null = null;
-  #dropdownContent: HTMLElement | null = null;
-  #searchIcon: HTMLElement | null = null;
-  #searchNoResults: HTMLElement | null = null;
-  #searchResultsA11yText: HTMLElement | null = null;
-  #dropdownForContainer: HTMLElement | null = null;
+  #inlineDropdownHeight?: number;
+  #selectedDialCode?: HTMLElement;
+  #dropdownArrow?: HTMLElement;
+  #dropdownContent?: HTMLElement;
+  #searchIcon?: HTMLElement;
+  #searchNoResults?: HTMLElement;
+  #searchResultsA11yText?: HTMLElement;
+  #dropdownForContainer?: HTMLElement;
   #selectedItem: HTMLElement | null = null;
 
   // public
   public telInput!: HTMLInputElement;
-  public countryContainer: HTMLElement | null = null;
-  public selectedCountry: HTMLElement | null = null;
-  public selectedCountryInner: HTMLElement | null = null;
-  public searchInput: HTMLInputElement | null = null;
-  public searchClearButton: HTMLButtonElement | null = null;
-  public countryList: HTMLElement | null = null;
-  public hiddenInput: HTMLInputElement | null = null;
-  public hiddenInputCountry: HTMLInputElement | null = null;
+  public countryContainer?: HTMLElement;
+  public selectedCountry?: HTMLElement;
+  public selectedCountryInner?: HTMLElement;
+  public searchInput?: HTMLInputElement;
+  public searchClearButton?: HTMLButtonElement;
+  public countryList?: HTMLElement;
+  public hiddenInput?: HTMLInputElement;
+  public hiddenInputCountry?: HTMLInputElement;
   public highlightedItem: HTMLElement | null = null;
   public readonly hadInitialPlaceholder: boolean;
 

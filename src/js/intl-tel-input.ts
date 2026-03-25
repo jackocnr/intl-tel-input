@@ -83,8 +83,8 @@ export class Iti {
   #dropdownAbortController: AbortController | null = null;
   #numerals!: Numerals;
 
-  #autoCountryDeferred: PromiseWithResolvers<void> | null = null;
-  #utilsScriptDeferred: PromiseWithResolvers<void> | null = null;
+  #autoCountryDeferred?: PromiseWithResolvers<void>;
+  #utilsScriptDeferred?: PromiseWithResolvers<void>;
 
   public constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
@@ -135,8 +135,12 @@ export class Iti {
 
     //* These promises get resolved when their individual requests complete.
     //* This way the dev can do something like iti.promise.then(...) to know when all requests are complete.
-    this.#autoCountryDeferred = needsAutoCountryPromise ? Promise.withResolvers<void>() : null;
-    this.#utilsScriptDeferred = needsUtilsScriptPromise ? Promise.withResolvers<void>() : null;
+    if (needsAutoCountryPromise) {
+      this.#autoCountryDeferred = Promise.withResolvers<void>();
+    }
+    if (needsUtilsScriptPromise) {
+      this.#utilsScriptDeferred = Promise.withResolvers<void>();
+    }
 
     return Promise.all([
       this.#autoCountryDeferred?.promise,
