@@ -136,9 +136,7 @@ class IntlTelInput
   private onValidatorChange: () => void = () => {};
 
   ngAfterViewInit() {
-    if (this.inputRef.nativeElement) {
-      this.iti = intlTelInput(this.inputRef.nativeElement, this.buildInitOptions());
-    }
+    this.iti = intlTelInput(this.inputRef.nativeElement, this.buildInitOptions());
 
     this.inputRef.nativeElement.addEventListener(
       "countrychange",
@@ -148,15 +146,15 @@ class IntlTelInput
     this.applyInputAttrs();
 
     if (this.disabled) {
-      this.iti?.setDisabled(this.disabled);
+      this.iti.setDisabled(this.disabled);
     }
 
     if (this.readonly) {
-      this.iti?.setReadonly(this.readonly);
+      this.iti.setReadonly(this.readonly);
     }
 
     // wait for utils to load before calling methods that require it (setNumber, etc.)
-    this.iti?.promise.then(() => {
+    this.iti.promise.then(() => {
       if (!this.iti?.isActive()) return;
       if (this.initialValue) {
         this.iti.setNumber(this.initialValue);
