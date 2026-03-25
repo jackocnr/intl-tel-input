@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES2024",
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "esModuleInterop": true, // required for react (etc) default imports
