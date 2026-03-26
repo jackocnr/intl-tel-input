@@ -822,8 +822,8 @@ export class Iti {
         if (e.key === KEYS.ARROW_UP || e.key === KEYS.ARROW_DOWN) {
           this.#ui.handleUpDownKey(e.key);
         }
-        //* Enter to select.
-        else if (e.key === KEYS.ENTER) {
+        //* Enter to select (but not when IME is composing e.g. Japanese input).
+        else if (e.key === KEYS.ENTER && !e.isComposing) {
           this.#handleEnterKey();
         }
         //* Esc to close
