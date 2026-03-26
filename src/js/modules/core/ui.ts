@@ -687,8 +687,9 @@ export default class UI {
   }
 
   public destroy(): void {
-    //* Break cross-references from long-lived objects back to this instance.
+    // restore all instance refs to enable garbage collection
     this.telInput.iti = undefined;
+    //* Remove attribute of id instance: data-intl-tel-input-id.
     delete this.telInput.dataset.intlTelInputId;
 
     //* Restore original styling
@@ -701,10 +702,33 @@ export default class UI {
     wrapper.before(this.telInput);
     wrapper.remove();
 
-    //* Clear references from shared country data to this instance's list items.
+    // public
+    this.telInput = null as unknown as HTMLInputElement;
+    this.countryContainer = null;
+    this.selectedCountry = null;
+    this.selectedCountryInner = null;
+    this.searchInput = null;
+    this.searchClearButton = null;
+    this.countryList = null;
+    this.hiddenInput = null;
+    this.hiddenInputCountry = null;
+    this.highlightedItem = null;
+
+    // private
+    this.#selectedDialCode = null;
+    this.#dropdownArrow = null;
+    this.#dropdownContent = null;
+    this.#searchIcon = null;
+    this.#searchNoResults = null;
+    this.#searchResultsA11yText = null;
+    this.#dropdownForContainer = null;
+    this.#selectedItem = null;
+
+    // also clear all references to the list items in the countries data (for garbage collection)
     for (const c of this.#countries) {
       delete c.nodeById[this.#id];
     }
+    this.#countries = null as unknown as Country[];
   }
 
   // UI: Open the dropdown (DOM only).
