@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2024",
+    "target": "es6",
     "module": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true, //* Required for react (etc) default imports.
