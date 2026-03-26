@@ -82,8 +82,10 @@ export class Iti {
   #dropdownAbortController: AbortController | null;
   #numerals: Numerals;
 
-  #autoCountryDeferred: PromiseWithResolvers<void> | null;
-  #utilsScriptDeferred: PromiseWithResolvers<void> | null;
+  #resolveAutoCountryPromise: (value?: unknown) => void;
+  #rejectAutoCountryPromise: (reason?: unknown) => void;
+  #resolveUtilsScriptPromise: (value?: unknown) => void;
+  #rejectUtilsScriptPromise: (reason?: unknown) => void;
 
   public constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
@@ -134,13 +136,31 @@ export class Iti {
 
     //* These promises get resolved when their individual requests complete.
     //* This way the dev can do something like iti.promise.then(...) to know when all requests are complete.
-    this.#autoCountryDeferred = needsAutoCountryPromise ? Promise.withResolvers<void>() : null;
-    this.#utilsScriptDeferred = needsUtilsScriptPromise ? Promise.withResolvers<void>() : null;
+    let autoCountryPromise: Promise<unknown>;
+    if (needsAutoCountryPromise) {
+      autoCountryPromise = new Promise<unknown>((resolve, reject) => {
+        this.#resolveAutoCountryPromise = resolve;
+        this.#rejectAutoCountryPromise = reject;
+      });
+    } else {
+      autoCountryPromise = Promise.resolve(undefined);
+      this.#resolveAutoCountryPromise = (): void => {};
+      this.#rejectAutoCountryPromise = (): void => {};
+    }
 
-    return Promise.all([
-      this.#autoCountryDeferred?.promise,
-      this.#utilsScriptDeferred?.promise,
-    ]).then(() => {});
+    let utilsScriptPromise: Promise<unknown>;
+    if (needsUtilsScriptPromise) {
+      utilsScriptPromise = new Promise<unknown>((resolve, reject) => {
+        this.#resolveUtilsScriptPromise = resolve;
+        this.#rejectUtilsScriptPromise = reject;
+      });
+    } else {
+      utilsScriptPromise = Promise.resolve(undefined);
+      this.#resolveUtilsScriptPromise = (): void => {};
+      this.#rejectUtilsScriptPromise = (): void => {};
+    }
+
+    return Promise.all([autoCountryPromise, utilsScriptPromise]).then(() => {});
   }
 
   #init(): void {
@@ -348,7 +368,7 @@ export class Iti {
         });
       }
     } else {
-      this.#utilsScriptDeferred?.resolve();
+      this.#resolveUtilsScriptPromise();
     }
 
     const isAutoCountry =
@@ -356,7 +376,7 @@ export class Iti {
     if (isAutoCountry) {
       //* Don't bother with IP lookup if we already have a selected country.
       if (this.#selectedCountryData?.iso2) {
-        this.#autoCountryDeferred?.resolve();
+        this.#resolveAutoCountryPromise();
       } else {
         this.#loadAutoCountry();
       }
@@ -1288,7 +1308,7 @@ export class Iti {
   #handleAutoCountry(): void {
     // If destroyed/unmounted, abort any UI work but still resolve the init promise
     if (!this.#ui.telInput) {
-      this.#autoCountryDeferred?.resolve();
+      this.#resolveAutoCountryPromise?.();
       return;
     }
 
@@ -1306,7 +1326,7 @@ export class Iti {
       if (!hasSelectedCountryOrGlobe) {
         this.setCountry(this.#defaultCountry);
       }
-      this.#autoCountryDeferred?.resolve();
+      this.#resolveAutoCountryPromise();
     }
   }
 
@@ -1314,20 +1334,20 @@ export class Iti {
   #handleAutoCountryFailure(): void {
     // If instance destroyed/unmounted, just reject the promise and avoid DOM/state ops
     if (!this.#ui.telInput) {
-      this.#autoCountryDeferred?.reject();
+      this.#rejectAutoCountryPromise?.();
       return;
     }
 
     //* Reset the initial state
     this.#setInitialState(true);
-    this.#autoCountryDeferred?.reject();
+    this.#rejectAutoCountryPromise();
   }
 
   //* Called when the utils request completes.
   #handleUtils(): void {
     // If instance destroyed/unmounted, avoid touching DOM/state but still resolve promise
     if (!this.#ui.telInput) {
-      this.#utilsScriptDeferred?.resolve();
+      this.#resolveUtilsScriptPromise?.();
       return;
     }
 
@@ -1343,18 +1363,18 @@ export class Iti {
         this.#updateMaxLength();
       }
     }
-    this.#utilsScriptDeferred?.resolve();
+    this.#resolveUtilsScriptPromise();
   }
 
   //* Called when the utils request fails or times out.
   #handleUtilsFailure(error: unknown): void {
     // If instance destroyed/unmounted, just reject the promise and avoid DOM/state ops
     if (!this.#ui.telInput) {
-      this.#utilsScriptDeferred?.reject(error);
+      this.#rejectUtilsScriptPromise?.(error);
       return;
     }
 
-    this.#utilsScriptDeferred?.reject(error);
+    this.#rejectUtilsScriptPromise(error);
   }
 
   //********************
