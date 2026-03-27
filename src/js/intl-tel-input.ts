@@ -1293,10 +1293,18 @@ export class Iti {
     return this.#cap(number);
   }
 
+  //* Return only the public-facing subset of the selected country data.
+  #getPublicCountryData(): SelectedCountryData {
+    const d = this.#selectedCountryData;
+    if (!d) return {} as SelectedCountryData;
+    const { iso2, dialCode, name } = d;
+    return { iso2, dialCode, name };
+  }
+
   //* Trigger the 'countrychange' event.
   #triggerCountryChange(): void {
     this.#trigger(EVENTS.COUNTRY_CHANGE, {
-      country: this.#selectedCountryData ?? ({} as SelectedCountryData),
+      country: this.#getPublicCountryData(),
     });
   }
 
@@ -1447,7 +1455,7 @@ export class Iti {
 
   //* Get the country data for the currently selected country.
   public getSelectedCountryData(): SelectedCountryData {
-    return this.#selectedCountryData ?? ({} as SelectedCountryData);
+    return this.#getPublicCountryData();
   }
 
   //* Get the validation error.

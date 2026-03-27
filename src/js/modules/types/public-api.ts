@@ -94,8 +94,6 @@ export interface AllOptions {
 // Partial options accepted by the factory
 export type SomeOptions = Partial<AllOptions>;
 
-// A discriminated union for when there may be no selected country yet.
-// - When selected: it's a full Country (iso2 is present)
-// - When none selected: it's an empty object literal (iso2 is absent)
+// The public-facing subset of Country exposed via getSelectedCountryData and events.
 type EmptyObject = Record<string, never>;
-export type SelectedCountryData = Country | EmptyObject;
+export type SelectedCountryData = Pick<Country, "iso2" | "dialCode" | "name"> | EmptyObject;
