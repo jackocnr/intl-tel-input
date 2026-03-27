@@ -5,7 +5,7 @@ import { EVENTS } from "../constants";
 import type { SelectedCountryData } from "../types/public-api";
 
 export type ItiEventMap = {
-  [EVENTS.COUNTRY_CHANGE]: { country: SelectedCountryData };
+  [EVENTS.COUNTRY_CHANGE]: SelectedCountryData;
   [EVENTS.OPEN_COUNTRY_DROPDOWN]: Record<string, never>;
   [EVENTS.CLOSE_COUNTRY_DROPDOWN]: Record<string, never>;
   [EVENTS.INPUT]: { isSetNumber?: boolean };
