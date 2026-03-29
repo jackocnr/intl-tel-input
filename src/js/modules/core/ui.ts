@@ -760,6 +760,9 @@ export default class UI {
 
     if (countrySearch) {
       this.searchInput!.removeAttribute(ARIA.ACTIVE_DESCENDANT);
+      // Clear the search query so it starts fresh next time.
+      this.searchInput!.value = "";
+      this.#doFilter();
       // only clear the highlighted item if countrySearch is enabled as this gets reset each time the dropdown is opened
       if (this.highlightedItem) {
         this.highlightedItem.classList.remove(CLASSES.HIGHLIGHT);
