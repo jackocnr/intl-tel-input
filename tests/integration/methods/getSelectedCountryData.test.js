@@ -15,7 +15,7 @@ describe("getSelectedCountryData method", () => {
   afterEach(() => teardown(iti));
 
   test("gets the right default country data (empty state)", () => {
-    expect(iti.getSelectedCountryData().iso2).toBeUndefined();
+    expect(iti.getSelectedCountryData()).toBeNull();
   });
 
   test("typing +44 updates selected country to gb", async () => {
