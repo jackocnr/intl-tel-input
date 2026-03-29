@@ -26,8 +26,8 @@ import type { AllOptions, SomeOptions } from "../modules/types/public-api";
 
 export { intlTelInput };
 
-const warnInputProp = (prop: string): void => {
-  console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
+const warnInputAttr = (prop: string): void => {
+  console.warn(`intl-tel-input: ignoring inputAttributes.${prop} - see docs for more info.`);
 };
 
 @Component({
@@ -72,7 +72,7 @@ class IntlTelInput
 
   @Input() initialValue?: string;
   @Input() usePreciseValidation: boolean = false;
-  @Input() inputProps: Record<string, string> = {};
+  @Input() inputAttributes: Record<string, string> = {};
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
 
@@ -119,7 +119,7 @@ class IntlTelInput
   @Output() click = new EventEmitter<MouseEvent>();
 
   private iti?: Iti;
-  private appliedInputPropKeys = new Set<string>();
+  private appliedInputAttrKeys = new Set<string>();
 
   private lastEmittedNumber?: string;
   private lastEmittedCountry?: string;
@@ -144,7 +144,7 @@ class IntlTelInput
       this.countryChangeHandler,
     );
 
-    this.applyInputProps();
+    this.applyInputAttrs();
 
     if (this.initialValue) {
       this.iti?.setNumber(this.initialValue);
@@ -206,8 +206,8 @@ class IntlTelInput
       this.iti?.setReadonly(this.readonly);
     }
 
-    if (changes["inputProps"]) {
-      this.applyInputProps();
+    if (changes["inputAttributes"]) {
+      this.applyInputAttrs();
     }
   }
 
@@ -304,21 +304,21 @@ class IntlTelInput
     );
   }
 
-  private applyInputProps(): void {
-    const { value, disabled, ...sanitisedInputProps } = this.inputProps;
-    if (value !== undefined) warnInputProp("value");
-    if (disabled !== undefined) warnInputProp("disabled");
+  private applyInputAttrs(): void {
+    const { value, disabled, ...sanitisedInputAttrs } = this.inputAttributes;
+    if (value !== undefined) warnInputAttr("value");
+    if (disabled !== undefined) warnInputAttr("disabled");
     const currentKeys = new Set<string>();
-    Object.entries(sanitisedInputProps).forEach(([key, value]) => {
+    Object.entries(sanitisedInputAttrs).forEach(([key, value]) => {
       currentKeys.add(key);
       this.inputRef.nativeElement.setAttribute(key, value);
     });
-    this.appliedInputPropKeys.forEach((key) => {
+    this.appliedInputAttrKeys.forEach((key) => {
       if (!currentKeys.has(key)) {
         this.inputRef.nativeElement.removeAttribute(key);
       }
     });
-    this.appliedInputPropKeys = currentKeys;
+    this.appliedInputAttrKeys = currentKeys;
   }
 
   // ============ ControlValueAccessor Implementation ============

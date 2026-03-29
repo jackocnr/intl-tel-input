@@ -35,7 +35,7 @@ const getErrorMessage = (number: string | null, errorCode: number | null): strin
           initialCountry="us"
           [loadUtils]="loadUtils"
           searchInputClass="form-control"
-          [inputProps]="inputProps"
+          [inputAttributes]="inputAttributes"
         />
         @if (invalidMsg) {
           <div class="invalid-feedback d-block">{{ invalidMsg }}</div>
@@ -85,7 +85,7 @@ export class AppComponent {
     return showValid ? `Full number: ${this.number}` : null;
   }
 
-  get inputProps(): Record<string, unknown> {
+  get inputAttributes(): Record<string, unknown> {
     return {
       name: "phone",
       title: "Enter your phone number",

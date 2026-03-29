@@ -75,7 +75,7 @@ Here's a list of all of the current props you can pass to the IntlTelInput Angul
 Type: `Boolean`  
 Default: `false`  
 
-Sets the disabled attribute of both the telephone input and the selected country button. _Note: We recommend using this instead of `inputProps.disabled`._
+Sets the disabled attribute of both the telephone input and the selected country button. _Note: We recommend using this instead of `inputAttributes.disabled`._
 
 ###### readonly
 Type: `Boolean`  
@@ -105,11 +105,11 @@ Use:
 <intl-tel-input initialCountry="us" />
 ```
 
-###### inputProps
+###### inputAttributes
 Type: `Object`  
 Default: `{}`  
 
-The attributes to pass to the input element, e.g. `class`, `placeholder`, `required`, etc. _Note: We recommend using the separate `disabled` prop instead of `inputProps.disabled`._
+The attributes to pass to the input element, e.g. `class`, `placeholder`, `required`, etc. _Note: We recommend using the separate `disabled` prop instead of `inputAttributes.disabled`._
 
 ###### usePreciseValidation
 Type: `Boolean`  
