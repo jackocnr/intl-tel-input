@@ -36,7 +36,7 @@ export default class UI {
   public searchInput?: HTMLInputElement;
   public searchClearButton?: HTMLButtonElement;
   public countryList?: HTMLElement;
-  public hiddenInput?: HTMLInputElement;
+  public hiddenInputPhone?: HTMLInputElement;
   public hiddenInputCountry?: HTMLInputElement;
   public highlightedItem: HTMLElement | null = null;
   public readonly hadInitialPlaceholder: boolean;
@@ -364,14 +364,14 @@ export default class UI {
           `input[name="${names.phone}"]`,
         );
         if (existingInput) {
-          this.hiddenInput = existingInput as HTMLInputElement;
+          this.hiddenInputPhone = existingInput as HTMLInputElement;
         } else {
           //* Create hidden input for the full international number.
-          this.hiddenInput = createEl("input", {
+          this.hiddenInputPhone = createEl("input", {
             type: "hidden",
             name: names.phone,
           }) as HTMLInputElement;
-          wrapper.appendChild(this.hiddenInput);
+          wrapper.appendChild(this.hiddenInputPhone);
         }
       }
 

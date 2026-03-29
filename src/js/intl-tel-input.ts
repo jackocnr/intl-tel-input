@@ -243,7 +243,7 @@ export class Iti {
       this.#initDropdownListeners();
     }
     if (
-      (this.#ui.hiddenInput || this.#ui.hiddenInputCountry) &&
+      (this.#ui.hiddenInputPhone || this.#ui.hiddenInputCountry) &&
       this.#ui.telInput.form
     ) {
       this.#initHiddenInputListener();
@@ -253,8 +253,8 @@ export class Iti {
   //* Update hidden input on form submit.
   #initHiddenInputListener(): void {
     const handleHiddenInputSubmit = (): void => {
-      if (this.#ui.hiddenInput) {
-        this.#ui.hiddenInput.value = this.getNumber();
+      if (this.#ui.hiddenInputPhone) {
+        this.#ui.hiddenInputPhone.value = this.getNumber();
       }
       if (this.#ui.hiddenInputCountry) {
         this.#ui.hiddenInputCountry.value = this.#selectedCountryData?.iso2 || "";
