@@ -68,7 +68,7 @@ export interface AllOptions {
     | null;
   dropdownAlwaysOpen: boolean;
   dropdownContainer: HTMLElement | null;
-  excludeCountries: Iso2[];
+  excludeCountries: Iso2[] | null;
   fixDropdownWidth: boolean;
   formatAsYouType: boolean;
   formatOnDisplay: boolean;
@@ -82,7 +82,7 @@ export interface AllOptions {
   initialCountry: Iso2 | "auto" | "";
   loadUtils: UtilsLoader | null;
   nationalMode: boolean;
-  onlyCountries: Iso2[];
+  onlyCountries: Iso2[] | null;
   placeholderNumberType: NumberType;
   searchInputClass: string;
   separateDialCode: boolean;

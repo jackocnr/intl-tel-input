@@ -51,7 +51,7 @@ export const defaults: AllOptions = {
   //* Append menu to specified element.
   dropdownContainer: null,
   //* Don't display these countries.
-  excludeCountries: [],
+  excludeCountries: null,
   //* Fix the dropdown width to the input width (rather than being as wide as the longest country name).
   fixDropdownWidth: true,
   //* Format the number as the user types
@@ -71,7 +71,7 @@ export const defaults: AllOptions = {
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
   nationalMode: true,
   //* Display only these countries.
-  onlyCountries: [],
+  onlyCountries: null,
   //* Number type to use for placeholders.
   placeholderNumberType: "MOBILE",
   //* Add custom classes to the search input element.
@@ -232,9 +232,13 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
 
       case "excludeCountries":
       case "onlyCountries": {
-        const filtered = validateIso2Array(key, value);
-        if (filtered !== false) {
-          validatedOptions[key] = filtered;
+        if (value === null) {
+          validatedOptions[key] = value;
+        } else {
+          const filtered = validateIso2Array(key, value);
+          if (filtered !== false) {
+            validatedOptions[key] = filtered;
+          }
         }
         break;
       }
@@ -335,7 +339,7 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
   }
 
   //* If theres only one country, then use it!
-  if (o.onlyCountries.length === 1) {
+  if (o.onlyCountries?.length === 1) {
     o.initialCountry = o.onlyCountries[0];
   }
 
