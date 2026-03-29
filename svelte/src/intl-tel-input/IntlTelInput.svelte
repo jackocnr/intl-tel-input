@@ -1,6 +1,10 @@
-<script lang="ts">
+<script module lang="ts">
   import intlTelInput from "../intl-tel-input";
   import type { Iti } from "../intl-tel-input";
+  export { intlTelInput };
+</script>
+
+<script lang="ts">
   import type { SomeOptions } from "../modules/types/public-api";
   import { onMount, onDestroy } from "svelte";
 

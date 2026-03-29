@@ -104,8 +104,8 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /\<script lang="ts"\>\s*import intlTelInput from "\.\.\/intl\-tel\-input"\;/,
-            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script lang="ts">\nimport intlTelInput from "./intlTelInputWithUtils";'
+            match: /\<script module lang="ts"\>\s*import intlTelInput from "\.\.\/intl\-tel\-input"\;/,
+            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script module lang="ts">\nimport intlTelInput from "./intlTelInputWithUtils";'
           }
         ]
       },

@@ -1,7 +1,6 @@
 <script setup>
   import { computed, ref } from "vue";
-  import IntlTelInput from "../../../build/intl-tel-input/vue/exports/IntlTelInput.mjs";
-  import intlTelInput from "../../../build/intl-tel-input/intl-tel-input.js";
+  import IntlTelInput, { intlTelInput } from "../../../build/intl-tel-input/vue/exports/IntlTelInput.mjs";
 
   const getErrorMessage = (number, errorCode) => {
     if (!number) return "Please enter a number";

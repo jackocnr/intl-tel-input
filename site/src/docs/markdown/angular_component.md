@@ -120,7 +120,7 @@ By default, we use `isValidNumber` for validation, but if you'd rather use `isVa
 
 ## Events
 
-Here's a list of all of the current events you can listen to on the IntlTelInput angular component.
+Here's a list of all of the current events you can listen to on the IntlTelInput Angular component.
 
 ###### countryChange
 Type: `Function`  
@@ -203,4 +203,4 @@ You can access all of the plugin's [instance methods](/docs/methods#instance-met
 
 ## Accessing static methods
 
-You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the angular component, e.g. `import { intlTelInput } from "intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
+You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
