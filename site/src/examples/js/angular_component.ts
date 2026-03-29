@@ -3,15 +3,21 @@ import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import IntlTelInput from "../../../build/intl-tel-input/angular/IntlTelInput.js";
+import IntlTelInput, { intlTelInput } from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 
-const errorMap = [
-  "Invalid number",
-  "Invalid country code",
-  "Too short",
-  "Too long",
-  "Invalid number",
-];
+const getErrorMessage = (number: string | null, errorCode: number | null): string => {
+  if (!number) return "Please enter a number";
+  const genericError = "Invalid number";
+  if (errorCode === null) return genericError;
+  const { validationError } = intlTelInput.utils!;
+  const errorMap = {
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+    [validationError.TOO_SHORT]: "Too short",
+    [validationError.TOO_LONG]: "Too long",
+    [validationError.INVALID_LENGTH]: genericError,
+  };
+  return errorMap[errorCode] || genericError;
+};
 
 // @ts-expect-error Vite/ESM dynamic import is using an EJS-templated URL string.
 const loadUtilsFn = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>");
@@ -70,9 +76,7 @@ export class AppComponent {
 
   get invalidMsg(): string | null {
     if (!this.showValidation || this.isValid) return null;
-    return this.number
-      ? errorMap[this.errorCode || 0] || "Invalid number"
-      : "Please enter a number";
+    return getErrorMessage(this.number, this.errorCode);
   }
 
   get validMsg(): string | null {

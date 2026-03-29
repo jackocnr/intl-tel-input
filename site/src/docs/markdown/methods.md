@@ -69,11 +69,12 @@ Returns something like this:
 
 Get more information about a validation error. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script).  
 ```js
-const error = iti.getValidationError();
+const errorCode = iti.getValidationError();
 ```
 Returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L223) in the enum `intlTelInput.utils.validationError`, e.g.  
 ```js
-if (error === intlTelInput.utils.validationError.TOO_SHORT) {
+const { validationError } = intlTelInput.utils;
+if (errorCode === validationError.TOO_SHORT) {
     // the number is too short
 }
 ```

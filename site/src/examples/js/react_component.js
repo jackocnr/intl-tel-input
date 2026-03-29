@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput from "../../../build/intl-tel-input/react/IntlTelInput.js";
+import IntlTelInput, { intlTelInput } from "../../../build/intl-tel-input/react/IntlTelInput.js";
 
-const errorMap = [
-  "Invalid number",
-  "Invalid country code",
-  "Too short",
-  "Too long",
-  "Invalid number",
-];
+const getErrorMessage = (number, errorCode) => {
+  if (!number) return "Please enter a number";
+  const genericError = "Invalid number";
+  const { validationError } = intlTelInput.utils;
+  const errorMap = {
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+    [validationError.TOO_SHORT]: "Too short",
+    [validationError.TOO_LONG]: "Too long",
+    [validationError.INVALID_LENGTH]: genericError,
+  };
+  return errorMap[errorCode] || genericError;
+};
 
 const App = () => {
   const [number, setNumber] = useState("");
@@ -24,9 +29,7 @@ const App = () => {
 
   let invalidMsg = null;
   if (showValidation && !isValid) {
-    invalidMsg = number
-      ? errorMap[errorCode || 0] || "Invalid number"
-      : "Please enter a number";
+    invalidMsg = getErrorMessage(number, errorCode);
   }
 
   const showValid = showValidation && number && isValid && submitted;

@@ -3,15 +3,6 @@ const input = document.querySelector("#phone");
 const errorMsg = document.querySelector("#error-msg");
 const validMsg = document.querySelector("#valid-msg");
 
-// here, the index maps to the error code returned from getValidationError - see readme
-const errorMap = [
-  "Invalid number",
-  "Invalid country code",
-  "Too short",
-  "Too long",
-  "Invalid number",
-];
-
 // initialise plugin
 const iti = window.intlTelInput(input, {
   initialCountry: "us",
@@ -19,6 +10,19 @@ const iti = window.intlTelInput(input, {
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
   searchInputClass: "form-control",
 });
+
+const getErrorMessage = (number, errorCode) => {
+  if (!number) return "Please enter a number";
+  const genericError = "Invalid number";
+  const { validationError } = window.intlTelInput.utils;
+  const errorMap = {
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+    [validationError.TOO_SHORT]: "Too short",
+    [validationError.TOO_LONG]: "Too long",
+    [validationError.INVALID_LENGTH]: genericError,
+  };
+  return errorMap[errorCode] || genericError;
+};
 
 let showValidation = false;
 
@@ -39,9 +43,7 @@ const updateUI = () => {
   let invalidMsg = "";
   if (!isValid) {
     const errorCode = iti.getValidationError();
-    invalidMsg = value
-      ? errorMap[errorCode || 0] || "Invalid number"
-      : "Please enter a number";
+    invalidMsg = getErrorMessage(value, errorCode);
   }
   setText(errorMsg, invalidMsg);
   setText(validMsg, "");

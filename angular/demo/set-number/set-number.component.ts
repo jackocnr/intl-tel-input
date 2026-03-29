@@ -1,5 +1,18 @@
 import { Component, ViewChild } from '@angular/core';
-import IntlTelInput, { PHONE_ERROR_MESSAGES } from '../../src/intl-tel-input/angularWithUtils';
+import IntlTelInput, { intlTelInput } from '../../src/intl-tel-input/angularWithUtils';
+
+const getErrorMessage = (errorCode: number | null): string => {
+  const genericError = "Invalid number";
+  if (errorCode === null) return genericError;
+  const { validationError } = intlTelInput.utils!;
+  const errorMap = {
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+    [validationError.TOO_SHORT]: "Too short",
+    [validationError.TOO_LONG]: "Too long",
+    [validationError.INVALID_LENGTH]: "Invalid number",
+  };
+  return errorMap[errorCode] || genericError;
+};
 
 @Component({
   selector: "app-root",
@@ -57,7 +70,7 @@ export class AppComponent {
     if (this.isValid) {
       this.notice = `Valid number: ${this.number}`;
     } else {
-      const errorMessage = PHONE_ERROR_MESSAGES[this.errorCode || 0] || "Invalid number";
+      const errorMessage = getErrorMessage(this.errorCode);
       this.notice = `Error: ${errorMessage}`;
     }
   }

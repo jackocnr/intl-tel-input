@@ -1,5 +1,13 @@
 (() => {
-  const errorMap = ["", "Bad country code", "Too short", "Too long"];
+  const getErrorMessage = (errorCode) => {
+    const { validationError } = window.intlTelInput.utils;
+    const errorMap = {
+      [validationError.INVALID_COUNTRY_CODE]: "Bad country code",
+      [validationError.TOO_SHORT]: "Too short",
+      [validationError.TOO_LONG]: "Too long",
+    };
+    return errorMap[errorCode] || "";
+  };
   const getItiInstance = () => Object.values(window.intlTelInput?.instances ?? {})[0];
 
   const init = () => {
@@ -32,7 +40,7 @@
         }
 
         const errorCode = iti.getValidationError();
-        const errorMessage = errorMap[errorCode] || "";
+        const errorMessage = getErrorMessage(errorCode);
         const errorSuffix = errorMessage ? ` (${errorMessage})` : "";
         liveResults.textContent = `Invalid number${errorSuffix}`;
       };

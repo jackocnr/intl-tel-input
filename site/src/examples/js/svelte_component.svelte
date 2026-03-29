@@ -1,13 +1,19 @@
 <script>
   import IntlTelInput from "../../../../svelte/src/intl-tel-input/IntlTelInput.svelte";
+  import intlTelInput from "../../../../src/js/intl-tel-input";
 
-  const errorMap = [
-    "Invalid number",
-    "Invalid country code",
-    "Too short",
-    "Too long",
-    "Invalid number",
-  ];
+  const getErrorMessage = (number, errorCode) => {
+    if (!number) return "Please enter a number";
+    const genericError = "Invalid number";
+    const { validationError } = intlTelInput.utils;
+    const errorMap = {
+      [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+      [validationError.TOO_SHORT]: "Too short",
+      [validationError.TOO_LONG]: "Too long",
+      [validationError.INVALID_LENGTH]: genericError,
+    };
+    return errorMap[errorCode] || genericError;
+  };
 
   let number = $state("");
   let isValid = $state(false);
@@ -22,9 +28,7 @@
 
   const invalidMsg = $derived.by(() => {
     if (!showValidation || isValid) return null;
-    return number
-      ? errorMap[errorCode || 0] || "Invalid number"
-      : "Please enter a number";
+    return getErrorMessage(number, errorCode);
   });
 
   const validMsg = $derived.by(() => {

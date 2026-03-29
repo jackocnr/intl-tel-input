@@ -26,14 +26,6 @@ import type { AllOptions, SomeOptions } from "../modules/types/public-api";
 
 export { intlTelInput };
 
-export const PHONE_ERROR_MESSAGES: string[] = [
-  "invalid",
-  "invalid-country-code",
-  "too-short",
-  "too-long",
-  "invalid-format",
-];
-
 const warnInputProp = (prop: string): void => {
   console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
 };
@@ -367,10 +359,7 @@ class IntlTelInput
 
     const errorCode = this.iti.getValidationError();
     return {
-      invalidPhone: {
-        errorCode,
-        errorMessage: PHONE_ERROR_MESSAGES[errorCode] ?? "unknown",
-      },
+      invalidPhone: errorCode,
     };
   }
 

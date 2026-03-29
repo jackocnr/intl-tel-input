@@ -1,14 +1,20 @@
 <script setup>
   import { computed, ref } from "vue";
   import IntlTelInput from "../../../build/intl-tel-input/vue/exports/IntlTelInput.mjs";
+  import intlTelInput from "../../../build/intl-tel-input/intl-tel-input.js";
 
-  const errorMap = [
-    "Invalid number",
-    "Invalid country code",
-    "Too short",
-    "Too long",
-    "Invalid number",
-  ];
+  const getErrorMessage = (number, errorCode) => {
+    if (!number) return "Please enter a number";
+    const genericError = "Invalid number";
+    const { validationError } = intlTelInput.utils;
+    const errorMap = {
+      [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+      [validationError.TOO_SHORT]: "Too short",
+      [validationError.TOO_LONG]: "Too long",
+      [validationError.INVALID_LENGTH]: genericError,
+    };
+    return errorMap[errorCode] || genericError;
+  };
 
   const number = ref("");
   const isValid = ref(false);
@@ -23,9 +29,7 @@
 
   const invalidMsg = computed(() => {
     if (!showValidation.value || isValid.value) return null;
-    return number.value
-      ? errorMap[errorCode.value || 0] || "Invalid number"
-      : "Please enter a number";
+    return getErrorMessage(number.value, errorCode.value);
   });
 
   const validMsg = computed(() => {

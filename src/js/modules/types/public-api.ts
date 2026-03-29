@@ -39,7 +39,29 @@ export type ItiUtils = {
     E164: number;
     RFC3966: number;
   };
-  numberType: Record<string, number>;
+  numberType: {
+    [key: string]: number;
+    FIXED_LINE: number;
+    MOBILE: number;
+    FIXED_LINE_OR_MOBILE: number;
+    TOLL_FREE: number;
+    PREMIUM_RATE: number;
+    SHARED_COST: number;
+    VOIP: number;
+    PERSONAL_NUMBER: number;
+    PAGER: number;
+    UAN: number;
+    VOICEMAIL: number;
+    UNKNOWN: number;
+  };
+  validationError: {
+    IS_POSSIBLE: number;
+    INVALID_COUNTRY_CODE: number;
+    TOO_SHORT: number;
+    TOO_LONG: number;
+    IS_POSSIBLE_LOCAL_ONLY: number;
+    INVALID_LENGTH: number;
+  };
 };
 
 // Number types exposed publicly
