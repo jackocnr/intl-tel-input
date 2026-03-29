@@ -1,6 +1,19 @@
 <script>
-  import IntlTelInput from "intl-tel-input/svelteWithUtils";
+  import IntlTelInput, { intlTelInput } from "intl-tel-input/svelteWithUtils";
   import "intl-tel-input/styles";
+
+  const getErrorMessage = (number, errorCode) => {
+    if (!number) return "Please enter a number";
+    const genericError = "Invalid number";
+    const { validationError } = intlTelInput.utils;
+    const errorMap = {
+      [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+      [validationError.TOO_SHORT]: "Too short",
+      [validationError.TOO_LONG]: "Too long",
+      [validationError.INVALID_LENGTH]: genericError,
+    };
+    return errorMap[errorCode] || genericError;
+  };
 
   let number = $state("");
   let isValid = $state(false);
@@ -8,7 +21,8 @@
   let showValidation = $state(false);
 
   const invalidMsg = $derived.by(() => {
-    // your logic to derive invalid message
+    if (!showValidation || isValid) return null;
+    return getErrorMessage(number, errorCode);
   });
 
   const handleSubmit = (event) => {

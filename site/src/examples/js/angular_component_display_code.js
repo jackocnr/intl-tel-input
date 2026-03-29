@@ -1,7 +1,20 @@
 import { Component, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import IntlTelInput from "intl-tel-input/angular";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import IntlTelInput, { intlTelInput } from "intl-tel-input/angular";
 import "intl-tel-input/styles";
+
+const getErrorMessage = (number, errorCode) => {
+  if (!number) return "Please enter a number";
+  const genericError = "Invalid number";
+  const { validationError } = intlTelInput.utils;
+  const errorMap = {
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+    [validationError.TOO_SHORT]: "Too short",
+    [validationError.TOO_LONG]: "Too long",
+    [validationError.INVALID_LENGTH]: genericError,
+  };
+  return errorMap[errorCode] || genericError;
+};
 
 const loadUtilsFn = () => import("intl-tel-input/utils");
 
@@ -12,12 +25,16 @@ const loadUtilsFn = () => import("intl-tel-input/utils");
       <intl-tel-input
         #telInput
         formControlName="phone"
-        name="phone"
+        (numberChange)="number = $event"
+        (validityChange)="isValid = $event"
+        (errorCodeChange)="errorCode = $event ?? 0"
         initialCountry="us"
         [loadUtils]="loadUtils"
       />
-      <button type="submit">Validate</button>
-      <div class="notice">{{ noticeText }}</div>
+      <button type="submit">Submit</button>
+      @if (invalidMsg) {
+        <div class="invalid-feedback d-block">{{ invalidMsg }}</div>
+      }
     </form>
   `,
   standalone: true,
@@ -25,24 +42,24 @@ const loadUtilsFn = () => import("intl-tel-input/utils");
 })
 export class AppComponent {
   @ViewChild("telInput") telInput;
-  hasValidated = false;
+
+  number = "";
+  isValid = false;
+  errorCode = 0;
+  showValidation = false;
 
   loadUtils = loadUtilsFn;
 
   fg = new FormGroup({
-    phone: new FormControl<string>("", [Validators.required]),
+    phone: new FormControl(""),
   });
 
-  get phone() {
-    return this.fg.get("phone");
-  }
-
-  get noticeText() {
-    // Determine the notice message based on the current state
+  get invalidMsg() {
+    if (!this.showValidation || this.isValid) return null;
+    return getErrorMessage(this.number, this.errorCode);
   }
 
   handleSubmit() {
-    this.phone?.markAsTouched();
-    this.hasValidated = true;
+    this.showValidation = true;
   }
 }
