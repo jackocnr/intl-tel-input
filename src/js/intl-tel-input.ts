@@ -78,7 +78,8 @@ export class Iti {
   #selectedCountryData: Country | null = null;
   #maxCoreNumberLength: number | null = null;
   #defaultCountry!: Iso2;
-  #abortController!: AbortController | null;
+  #destroyed = false;
+  #abortController!: AbortController;
   #dropdownAbortController: AbortController | null = null;
   #numerals!: Numerals;
 
@@ -1289,8 +1290,8 @@ export class Iti {
 
   //* Called when the geoip call returns.
   #handleAutoCountry(): void {
-    // If destroyed/unmounted, abort any UI work but still resolve the init promise
-    if (!this.#ui.telInput) {
+    // If destroyed, abort any UI work but still resolve the init promise
+    if (this.#destroyed) {
       this.#autoCountryDeferred?.resolve();
       return;
     }
@@ -1315,8 +1316,8 @@ export class Iti {
 
   //* Called when the geoip call fails or times out.
   #handleAutoCountryFailure(): void {
-    // If instance destroyed/unmounted, just reject the promise and avoid DOM/state ops
-    if (!this.#ui.telInput) {
+    // If instance destroyed, just reject the promise and avoid DOM/state ops
+    if (this.#destroyed) {
       this.#autoCountryDeferred?.reject();
       return;
     }
@@ -1328,8 +1329,8 @@ export class Iti {
 
   //* Called when the utils request completes.
   #handleUtils(): void {
-    // If instance destroyed/unmounted, avoid touching DOM/state but still resolve promise
-    if (!this.#ui.telInput) {
+    // If instance destroyed, avoid touching DOM/state but still resolve promise
+    if (this.#destroyed) {
       this.#utilsScriptDeferred?.resolve();
       return;
     }
@@ -1351,8 +1352,8 @@ export class Iti {
 
   //* Called when the utils request fails or times out.
   #handleUtilsFailure(error: unknown): void {
-    // If instance destroyed/unmounted, just reject the promise and avoid DOM/state ops
-    if (!this.#ui.telInput) {
+    // If instance destroyed, just reject the promise and avoid DOM/state ops
+    if (this.#destroyed) {
       this.#utilsScriptDeferred?.reject(error);
       return;
     }
@@ -1366,18 +1367,18 @@ export class Iti {
 
   //* Remove plugin.
   public destroy(): void {
-    // it is possible to call destroy twice, so check there is anything left to destroy
-    if (!this.#ui.telInput) {
+    if (this.#destroyed) {
       return;
     }
+    this.#destroyed = true;
+
     if (this.#options.allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
       this.#closeDropdown(true);
     }
 
     //* Abort all listeners registered via the main controller
-    this.#abortController!.abort();
-    this.#abortController = null;
+    this.#abortController.abort();
 
     //* Remove all added DOM elements and classes.
     this.#ui.destroy();
@@ -1386,14 +1387,14 @@ export class Iti {
     delete (intlTelInput.instances as any)[this.id];
   }
 
-  // check if the instance is still valid (not destroyed/unmounted)
+  // check if the instance is still valid (not destroyed)
   public isActive(): boolean {
-    return !!this.#ui?.telInput;
+    return !this.#destroyed;
   }
 
   //* Get the extension from the current number.
   public getExtension(): string {
-    if (intlTelInput.utils && this.#ui.telInput) {
+    if (intlTelInput.utils && !this.#destroyed) {
       return intlTelInput.utils.getExtension(
         this.#getFullNumber(),
         this.#selectedCountryData?.iso2,
@@ -1404,7 +1405,7 @@ export class Iti {
 
   //* Format the number to the given format.
   public getNumber(format?: number): string {
-    if (intlTelInput.utils && this.#ui.telInput) {
+    if (intlTelInput.utils && !this.#destroyed) {
       const iso2 = this.#selectedCountryData?.iso2;
       const fullNumber = this.#getFullNumber();
       const formattedNumber = intlTelInput.utils.formatNumber(
@@ -1419,7 +1420,7 @@ export class Iti {
 
   //* Get the type of the entered number e.g. landline/mobile.
   public getNumberType(): number {
-    if (intlTelInput.utils && this.#ui.telInput) {
+    if (intlTelInput.utils && !this.#destroyed) {
       return intlTelInput.utils.getNumberType(
         this.#getFullNumber(),
         this.#selectedCountryData?.iso2,
@@ -1435,7 +1436,7 @@ export class Iti {
 
   //* Get the validation error.
   public getValidationError(): number {
-    if (intlTelInput.utils && this.#ui.telInput) {
+    if (intlTelInput.utils && !this.#destroyed) {
       const iso2 = this.#selectedCountryData?.iso2;
       return intlTelInput.utils.getValidationError(this.#getFullNumber(), iso2);
     }
@@ -1446,7 +1447,7 @@ export class Iti {
   public isValidNumber(): boolean | null {
     const dialCode = this.#selectedCountryData?.dialCode;
     const iso2 = this.#selectedCountryData?.iso2;
-    if (intlTelInput.utils && this.#ui.telInput) {
+    if (intlTelInput.utils && !this.#destroyed) {
       const number = this.#getFullNumber();
       const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
       if (coreNumber) {
@@ -1493,7 +1494,7 @@ export class Iti {
 
   //* Shared internal validation logic to handle alpha character extension rules.
   #validateNumber(precise: boolean): boolean | null {
-    if (!intlTelInput.utils || !this.#ui.telInput) {
+    if (!intlTelInput.utils || this.#destroyed) {
       return null;
     }
 
@@ -1545,7 +1546,7 @@ export class Iti {
 
   //* Update the selected country, and update the input val accordingly.
   public setCountry(iso2: Iso2): void {
-    if (!this.#ui.telInput) {
+    if (this.#destroyed) {
       return;
     }
     const iso2Lower = iso2?.toLowerCase() as Iso2;
@@ -1572,7 +1573,7 @@ export class Iti {
 
   //* Set the input value and update the country.
   public setNumber(number: string): void {
-    if (!this.#ui.telInput) {
+    if (this.#destroyed) {
       return;
     }
     const normalisedNumber = this.#numerals.normalise(number);
@@ -1589,7 +1590,7 @@ export class Iti {
 
   //* Set the placeholder number type
   public setPlaceholderNumberType(type: NumberType): void {
-    if (!this.#ui.telInput) {
+    if (this.#destroyed) {
       return;
     }
     this.#options.placeholderNumberType = type;
@@ -1598,7 +1599,7 @@ export class Iti {
 
   // Set the disabled state of the input and dropdown.
   public setDisabled(disabled: boolean): void {
-    if (!this.#ui.telInput) {
+    if (this.#destroyed) {
       return;
     }
     // here, we use the disabled property for telInput (type HTMLInputElement), but the disabled attribute for selectedCountry (type HTMLElement, which does not support the disabled property - we use this type as this element can be either a button or a div)
