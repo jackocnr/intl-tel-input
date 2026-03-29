@@ -17,6 +17,7 @@
 /vue/src/IntlTelInputWithUtils.vue
 /angular/build/
 /angular/src/intl-tel-input/angularWithUtils.ts
+/src/css/_metadata.scss
 /*/demo/*/*-bundle.js
 /test-results/
 /playwright-report/
