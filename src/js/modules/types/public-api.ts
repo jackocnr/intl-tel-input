@@ -95,5 +95,4 @@ export interface AllOptions {
 export type SomeOptions = Partial<AllOptions>;
 
 // The public-facing subset of Country exposed via getSelectedCountryData and events.
-type EmptyObject = Record<string, never>;
-export type SelectedCountryData = Pick<Country, "iso2" | "dialCode" | "name"> | EmptyObject;
+export type SelectedCountryData = Pick<Country, "iso2" | "dialCode" | "name"> | null;

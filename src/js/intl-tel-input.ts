@@ -490,7 +490,7 @@ export class Iti {
           fullNumber,
           inputValue,
           intlTelInput.utils,
-          this.#selectedCountryData ?? ({} as SelectedCountryData),
+          this.#selectedCountryData,
           separateDialCode,
         );
         const newCaretPos = translateCursorPosition(
@@ -515,7 +515,7 @@ export class Iti {
           inputValue,
           true,
           separateDialCode,
-          this.#selectedCountryData ?? ({} as SelectedCountryData),
+          this.#selectedCountryData,
         );
         this.#setTelInputValue(cleanNumber);
       }
@@ -1052,7 +1052,7 @@ export class Iti {
       this.#defaultCountry = this.#selectedCountryData.iso2;
     }
 
-    this.#ui.setCountry(this.#selectedCountryData ?? ({} as SelectedCountryData));
+    this.#ui.setCountry(this.#selectedCountryData);
 
     //* Update the input's placeholder.
     this.#updatePlaceholder();
@@ -1128,7 +1128,7 @@ export class Iti {
 
       placeholder = this.#beforeSetNumber(placeholder);
       if (typeof customPlaceholder === "function") {
-        placeholder = customPlaceholder(placeholder, this.#selectedCountryData ?? ({} as SelectedCountryData));
+        placeholder = customPlaceholder(placeholder, this.#selectedCountryData);
       }
       this.#ui.telInput.setAttribute("placeholder", placeholder);
     }
@@ -1269,7 +1269,7 @@ export class Iti {
       fullNumber,
       hasValidDialCode,
       this.#options.separateDialCode,
-      this.#selectedCountryData ?? ({} as SelectedCountryData),
+      this.#selectedCountryData,
     );
     return this.#cap(number);
   }
@@ -1277,7 +1277,7 @@ export class Iti {
   //* Return only the public-facing subset of the selected country data.
   #getPublicCountryData(): SelectedCountryData {
     const d = this.#selectedCountryData;
-    if (!d) return {} as SelectedCountryData;
+    if (!d) return null;
     const { iso2, dialCode, name } = d;
     return { iso2, dialCode, name };
   }

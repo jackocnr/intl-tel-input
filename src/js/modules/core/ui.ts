@@ -830,7 +830,9 @@ export default class UI {
 
   public setCountry(selectedCountryData: SelectedCountryData): void {
     const { allowDropdown, showFlags, separateDialCode, i18n } = this.#options;
-    const { name, dialCode, iso2 = "" } = selectedCountryData;
+    const name = selectedCountryData?.name;
+    const dialCode = selectedCountryData?.dialCode;
+    const iso2 = selectedCountryData?.iso2 ?? "";
 
     if (allowDropdown) {
       // Update the selected list item in the dropdown

@@ -12,7 +12,7 @@ export const beforeSetNumber = (
     //* If there is a valid dial code.
     if (hasValidDialCode) {
       //* In case _getDialCode returned an area code as well.
-      const dialCode = `+${selectedCountryData.dialCode}`;
+      const dialCode = `+${selectedCountryData!.dialCode}`;
       //* a lot of numbers will have a space separating the dial code and the main number, and
       //* some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get rid of it.
       //* NOTE: Don't just trim all non-numerics as may want to preserve an open parenthesis etc.
@@ -35,10 +35,10 @@ export const formatNumberAsYouType = (
   separateDialCode: boolean,
 ): string => {
   const result = utils
-    ? utils.formatNumberAsYouType(fullNumber, selectedCountryData.iso2)
+    ? utils.formatNumberAsYouType(fullNumber, selectedCountryData?.iso2)
     : fullNumber;
   //* If separateDialCode and they haven't (re)typed the dial code in the input as well, then remove the dial code.
-  const { dialCode } = selectedCountryData;
+  const dialCode = selectedCountryData?.dialCode;
   if (
     separateDialCode &&
     telInputValue.charAt(0) !== "+" &&
