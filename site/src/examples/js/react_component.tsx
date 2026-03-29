@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
+// @ts-expect-error resolved at build time.
 import IntlTelInput, { intlTelInput } from "../../../build/intl-tel-input/react/IntlTelInput.js";
 
-const getErrorMessage = (number, errorCode) => {
+const getErrorMessage = (number: string, errorCode: number | null): string => {
   if (!number) return "Please enter a number";
   const genericError = "Invalid number";
-  const { validationError } = intlTelInput.utils;
+  if (errorCode === null) return genericError;
+  const { validationError } = intlTelInput.utils!;
   const errorMap = {
     [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
     [validationError.TOO_SHORT]: "Too short",
@@ -35,12 +37,12 @@ const App = () => {
   const showValid = showValidation && number && isValid && submitted;
   const validMsg = showValid ? `Full number: ${number}` : null;
 
-  const handleChangeNumber = (newNumber) => {
+  const handleChangeNumber = (newNumber: string) => {
     setSubmitted(false);
     setNumber(newNumber);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowValidation(true);
     setSubmitted(true);
@@ -54,6 +56,7 @@ const App = () => {
           onChangeValidity={setIsValid}
           onChangeErrorCode={setErrorCode}
           initialCountry="us"
+          // @ts-expect-error EJS-templated URL string, resolved at build time.
           loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
           searchInputClass="form-control"
           inputProps={{
@@ -78,6 +81,6 @@ const App = () => {
   );
 };
 
-const container = document.getElementById("app");
+const container = document.getElementById("app")!;
 const root = createRoot(container);
 root.render(<App />);

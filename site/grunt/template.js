@@ -594,7 +594,8 @@ module.exports = function (grunt) {
     title: "React component",
     metaDesc: "How to use intl-tel-input with React.",
     js: {
-      dest: "tmp/examples/js/react_component.js",
+      src: "src/examples/js/react_component.tsx",
+      dest: "tmp/examples/js/react_component.tsx",
       script: "react_component_bundle.js",
     },
     content: {

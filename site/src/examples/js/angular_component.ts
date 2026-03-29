@@ -9,6 +9,7 @@ const getErrorMessage = (number: string | null, errorCode: number | null): strin
   if (!number) return "Please enter a number";
   const genericError = "Invalid number";
   if (errorCode === null) return genericError;
+  // @ts-expect-error intlTelInput.utils is populated after utils script loads.
   const { validationError } = intlTelInput.utils!;
   const errorMap = {
     [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",

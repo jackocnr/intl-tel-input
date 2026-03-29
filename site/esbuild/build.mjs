@@ -28,8 +28,8 @@ build({
 // react component example
 build({
   ...sharedOptions,
-  loader: { ".js": "jsx" },
-  entryPoints: ["tmp/examples/js/react_component.js"],
+  loader: { ".tsx": "tsx" },
+  entryPoints: ["tmp/examples/js/react_component.tsx"],
   outfile: "build/examples/js/react_component_bundle.js",
 });
 
