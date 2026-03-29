@@ -1388,7 +1388,7 @@ export class Iti {
     this.#ui.destroy();
 
     //* Remove this instance from the global registry.
-    delete (intlTelInput.instances as any)[this.id];
+    intlTelInput.instances.delete(String(this.id));
   }
 
   // check if the instance is still valid (not destroyed)
@@ -1645,7 +1645,7 @@ export class Iti {
     method: M,
     ...args: ForEachInstanceArgsMap[M]
   ): void {
-    const values = Object.values(intlTelInput.instances);
+    const values = [...intlTelInput.instances.values()];
     const arg = args[0];
 
     values.forEach((instance) => {
@@ -1728,7 +1728,7 @@ interface IntlTelInputInterface {
   documentReady: () => boolean;
   getCountryData: () => Country[];
   getInstance: (input: HTMLInputElement) => Iti | null;
-  instances: { [key: string]: Iti };
+  instances: Map<string, Iti>;
   attachUtils: (source: UtilsLoader) => Promise<unknown> | null;
   startedLoadingAutoCountry: boolean;
   startedLoadingUtilsScript: boolean;
@@ -1741,7 +1741,7 @@ interface IntlTelInputInterface {
 const intlTelInput: IntlTelInputInterface = Object.assign(
   (input: HTMLInputElement, options?: SomeOptions): Iti => {
     const iti = new Iti(input, options);
-    intlTelInput.instances[iti.id] = iti;
+    intlTelInput.instances.set(String(iti.id), iti);
     input.iti = iti;
     return iti;
   },
@@ -1754,10 +1754,10 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     //* A getter for the plugin instance.
     getInstance: (input: HTMLInputElement): Iti | null => {
       const id = input.dataset.intlTelInputId;
-      return id ? intlTelInput.instances[id] : null;
+      return id ? intlTelInput.instances.get(id) ?? null : null;
     },
     //* A map from instance ID to instance object.
-    instances: {},
+    instances: new Map(),
     attachUtils,
     startedLoadingUtilsScript: false,
     startedLoadingAutoCountry: false,
