@@ -735,12 +735,12 @@ export default class UI {
     this.#dropdownContent!.classList.remove(CLASSES.HIDE);
     this.selectedCountry!.setAttribute(ARIA.EXPANDED, "true");
 
-    //* When countrySearch enabled, every time the dropdown is opened we reset by highlighting the first item and scrolling to top.
+    //* When countrySearch enabled, highlight the selected country (or fall back to the first item) and scroll it into view.
     if (countrySearch) {
-      const firstCountryItem = this.countryList!.firstElementChild as HTMLElement;
-      if (firstCountryItem) {
-        this.highlightListItem(firstCountryItem, false);
-        this.countryList!.scrollTop = 0;
+      const itemToHighlight = this.#selectedItem ?? this.countryList!.firstElementChild as HTMLElement;
+      if (itemToHighlight) {
+        this.highlightListItem(itemToHighlight, false);
+        this.scrollCountryListToItem(itemToHighlight);
       }
       if (!dropdownAlwaysOpen) {
         this.searchInput!.focus();
