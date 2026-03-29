@@ -19,9 +19,6 @@ const getErrorMessage = (number: string | null, errorCode: number | null): strin
   return errorMap[errorCode] || genericError;
 };
 
-// @ts-expect-error Vite/ESM dynamic import is using an EJS-templated URL string.
-const loadUtilsFn = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>");
-
 @Component({
   selector: "#app",
   template: `
@@ -32,7 +29,7 @@ const loadUtilsFn = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %
           formControlName="phone"
           (numberChange)="handleNumberChange($event)"
           (validityChange)="isValid = $event"
-          (errorCodeChange)="errorCode = $event ?? 0"
+          (errorCodeChange)="errorCode = $event"
           (blur)="enableValidation()"
           initialCountry="us"
           [loadUtils]="loadUtils"
@@ -63,7 +60,9 @@ export class AppComponent {
   showValidation = false;
   submitted = false;
 
-  loadUtils = loadUtilsFn;
+  // @ts-expect-error Vite/ESM dynamic import is using an EJS-templated URL string.
+  // eslint-disable-next-line class-methods-use-this
+  loadUtils = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>");
 
   fg: FormGroup = new FormGroup({
     phone: new FormControl<string>(""),

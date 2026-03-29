@@ -16,8 +16,6 @@ const getErrorMessage = (number, errorCode) => {
   return errorMap[errorCode] || genericError;
 };
 
-const loadUtilsFn = () => import("intl-tel-input/utils");
-
 @Component({
   selector: "#app",
   template: `
@@ -27,7 +25,7 @@ const loadUtilsFn = () => import("intl-tel-input/utils");
         formControlName="phone"
         (numberChange)="number = $event"
         (validityChange)="isValid = $event"
-        (errorCodeChange)="errorCode = $event ?? 0"
+        (errorCodeChange)="errorCode = $event"
         initialCountry="us"
         [loadUtils]="loadUtils"
       />
@@ -48,7 +46,7 @@ export class AppComponent {
   errorCode = 0;
   showValidation = false;
 
-  loadUtils = loadUtilsFn;
+  loadUtils = () => import("intl-tel-input/utils");
 
   fg = new FormGroup({
     phone: new FormControl(""),
