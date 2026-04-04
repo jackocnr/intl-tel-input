@@ -47,7 +47,7 @@ async function fetchStats() {
   const statsPath = path.join(__dirname, "..", "tmp", "stats.json");
 
   // Default/fallback values
-  const defaults = { websites: "120k", downloads: "3.2M", stars: "8.2k" };
+  const defaults = { websites: "130k", downloads: "3.2M", stars: "8.2k" };
 
   const isProd = process.argv.includes("--env=prod");
   if (!isProd) {
