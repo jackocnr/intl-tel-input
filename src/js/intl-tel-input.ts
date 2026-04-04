@@ -103,6 +103,11 @@ export class Iti {
     this.#numerals = new Numerals(input.value);
     this.promise = this.#createInitPromises(this.#options);
 
+    //* Bind public methods to preserve private field access when instance is wrapped in a Proxy
+    //* This fixes issues with reactive frameworks (e.g., Alpine.js) that proxy the instance
+    this.isValidNumber = this.isValidNumber.bind(this);
+    this.isValidNumberPrecise = this.isValidNumberPrecise.bind(this);
+
     //* Process onlyCountries or excludeCountries array if present.
     this.#countries = processAllCountries(this.#options);
 
