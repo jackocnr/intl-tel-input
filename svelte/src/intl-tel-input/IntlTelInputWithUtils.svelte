@@ -8,6 +8,7 @@ import intlTelInput from "./intlTelInputWithUtils";
   // Props
   let {
     disabled = false,
+    readonly = false,
     inputProps = {},
     options = {},
     usePreciseValidation = false,
@@ -18,6 +19,7 @@ import intlTelInput from "./intlTelInputWithUtils";
     onChangeErrorCode,
   }: {
     disabled?: boolean;
+    readonly?: boolean;
     inputProps?: Record<string, unknown>;
     options?: SomeOptions;
     value?: string;
@@ -90,6 +92,7 @@ import intlTelInput from "./intlTelInputWithUtils";
       inputElement.addEventListener("countrychange", updateCountry);
       if (value) instance.setNumber(value);
       if (disabled) instance.setDisabled(disabled);
+      if (readonly) instance.setReadonly(readonly);
 
       lastEmittedNumber = instance.getNumber() ?? "";
       lastEmittedCountry = instance.getSelectedCountryData().iso2 ?? "";
@@ -114,6 +117,13 @@ import intlTelInput from "./intlTelInputWithUtils";
   $effect(() => {
     if (hasInitialized && instance) {
       instance.setDisabled(disabled);
+    }
+  });
+
+  // Watch readonly prop changes (only after initialization)
+  $effect(() => {
+    if (hasInitialized && instance) {
+      instance.setReadonly(readonly);
     }
   });
 

@@ -1611,7 +1611,7 @@ export class Iti {
     this.#trigger(EVENTS.INPUT, { isSetNumber: true });
   }
 
-  //* Set the placeholder number typ
+  //* Set the placeholder number type
   public setPlaceholderNumberType(type: NumberType): void {
     if (!this.#ui.telInput) {
       return;
@@ -1620,13 +1620,32 @@ export class Iti {
     this.#updatePlaceholder();
   }
 
+  // Set the disabled state of the input and dropdown.
   public setDisabled(disabled: boolean): void {
     if (!this.#ui.telInput) {
       return;
     }
+    // here, we use the disabled property for telInput (type HTMLInputElement), but the disabled attribute for selectedCountry (type HTMLElement, which does not support the disabled property - we use this type as this element can be either a button or a div)
     this.#ui.telInput.disabled = disabled;
     if (this.#ui.selectedCountry) {
       if (disabled) {
+        this.#ui.selectedCountry.setAttribute("disabled", "true");
+      } else {
+        this.#ui.selectedCountry.removeAttribute("disabled");
+      }
+    }
+  }
+
+  // Set the readonly state of the input and dropdown.
+  public setReadonly(readonly: boolean): void {
+    if (!this.#ui.telInput) {
+      return;
+    }
+    // see setDisabled for explanation of property vs attribute usage here
+    this.#ui.telInput.readOnly = readonly;
+    if (this.#ui.selectedCountry) {
+      if (readonly) {
+        // readonly doesn't have any effect on the dropdown button, so we use disabled attribute to disable it
         this.#ui.selectedCountry.setAttribute("disabled", "true");
       } else {
         this.#ui.selectedCountry.removeAttribute("disabled");

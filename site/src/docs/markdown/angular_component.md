@@ -79,6 +79,12 @@ Default: `false`
 
 Sets the disabled attribute of both the telephone input and the selected country button. _Note: We recommend using this instead of `inputProps.disabled`._
 
+###### readonly
+Type: `Boolean`  
+Default: `false`  
+
+Sets the readonly attribute of the telephone input and disables the selected country button.
+
 ###### initialValue
 Type: `String`  
 Default: `""`  

@@ -9,6 +9,7 @@ interface Props {
   options?: SomeOptions;
   usePreciseValidation?: boolean;
   disabled?: boolean;
+  readonly?: boolean;
   inputProps?: InputHTMLAttributes;
   value?: string | null;
   modelValue?: string | null;
@@ -16,6 +17,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
+  readonly: false,
   usePreciseValidation: false,
   inputProps: () => ({}),
   options: () => ({}),
@@ -122,6 +124,10 @@ onMounted(() => {
       instance.value.setDisabled(props.disabled);
     }
 
+    if (props.readonly) {
+      instance.value.setReadonly(props.readonly);
+    }
+
     lastEmittedNumber.value = instance.value.getNumber?.() ?? "";
     lastEmittedCountry.value = instance.value.getSelectedCountryData().iso2 ?? "";
 
@@ -138,6 +144,11 @@ onMounted(() => {
 watch(
   () => props.disabled,
   (newValue) => instance.value?.setDisabled(newValue),
+);
+
+watch(
+  () => props.readonly,
+  (newValue) => instance.value?.setReadonly(newValue),
 );
 
 watch(

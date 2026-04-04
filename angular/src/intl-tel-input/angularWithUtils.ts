@@ -80,6 +80,7 @@ export class IntlTelInputComponent
   @Input() inputProps: Record<string, string> = {};
   @Input() disabled: boolean = false;
   @Input() initOptions?: SomeOptions;
+  @Input() readonly: boolean = false;
 
   @Output() numberChange = new EventEmitter<string>();
   @Output() countryChange = new EventEmitter<string>();
@@ -127,11 +128,19 @@ export class IntlTelInputComponent
     if (this.disabled) {
       this.iti?.setDisabled(this.disabled);
     }
+
+    if (this.readonly) {
+      this.iti?.setReadonly(this.readonly);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes["disabled"]) {
       this.iti?.setDisabled(this.disabled);
+    }
+
+    if (changes["readonly"]) {
+      this.iti?.setReadonly(this.readonly);
     }
 
     if (changes["inputProps"]) {
