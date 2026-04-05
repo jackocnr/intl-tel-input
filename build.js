@@ -37,6 +37,15 @@ const shared = {
   },
 };
 
+const esmShared = {
+  bundle: true,
+  logLevel: "info",
+  format: "esm",
+  define: {
+    "process.env.VERSION": `"${packageJson.version}"`,
+  },
+};
+
 //* build/js/intlTelInput.js
 build({
   ...shared,
@@ -101,6 +110,25 @@ build({
   entryPoints: ["src/js/intl-tel-input/intlTelInputWithUtils.ts"],
   minify: true,
   outfile: "build/js/intlTelInputWithUtils.min.js",
+});
+
+//* ESM builds
+build({
+  ...esmShared,
+  entryPoints: ["src/js/intl-tel-input.ts"],
+  outfile: "build/js/intlTelInput.mjs",
+});
+
+build({
+  ...esmShared,
+  entryPoints: ["src/js/intl-tel-input/intlTelInputWithUtils.ts"],
+  outfile: "build/js/intlTelInputWithUtils.mjs",
+});
+
+build({
+  ...esmShared,
+  entryPoints: ["src/js/intl-tel-input/data.ts"],
+  outfile: "build/js/data.mjs",
 });
 
 //* build/js/i18n

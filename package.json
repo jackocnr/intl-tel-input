@@ -118,17 +118,17 @@
   "exports": {
     ".": {
       "types": "./build/js/intlTelInput.d.ts",
-      "import": "./build/js/intlTelInput.js",
+      "import": "./build/js/intlTelInput.mjs",
       "default": "./build/js/intlTelInput.js"
     },
     "./intlTelInputWithUtils": {
       "types": "./build/js/intlTelInput.d.ts",
-      "import": "./build/js/intlTelInputWithUtils.js",
+      "import": "./build/js/intlTelInputWithUtils.mjs",
       "default": "./build/js/intlTelInputWithUtils.js"
     },
     "./data": {
       "types": "./build/js/intlTelInput.d.ts",
-      "import": "./build/js/data.js",
+      "import": "./build/js/data.mjs",
       "default": "./build/js/data.js"
     },
     "./utils": {

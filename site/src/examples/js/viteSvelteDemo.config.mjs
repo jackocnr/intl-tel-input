@@ -8,14 +8,6 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 const projectRoot = fileURLToPath(new URL("../../..", import.meta.url));
 
 export default defineConfig({
-  resolve: {
-    alias: [
-      // The Svelte component imports from "intl-tel-input" (self-referencing package),
-      // which Vite/Rollup can't resolve from the UMD build output, so alias to source.
-      { find: /^intl-tel-input\/intlTelInputWithUtils$/, replacement: path.resolve(projectRoot, "../src/js/intl-tel-input/intlTelInputWithUtils.ts") },
-      { find: /^intl-tel-input$/, replacement: path.resolve(projectRoot, "../src/js/intl-tel-input.ts") },
-    ],
-  },
   define: {
     "process.env.VERSION": "window.IGNORE_ME", // just to stop runtime errors
     "process.env.NODE_ENV": "'production'", // required for vue files
