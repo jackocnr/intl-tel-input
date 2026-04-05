@@ -65,7 +65,7 @@ export class AppComponent {
 
   get inputValidityClass(): string {
     if (!this.showValidation) return "";
-    return this.phone?.value && this.phone?.valid ? "is-valid" : "is-invalid";
+    return this.phone?.valid ? "is-valid" : "is-invalid";
   }
 
   get invalidMsg(): string | null {
@@ -76,7 +76,7 @@ export class AppComponent {
 
   get validMsg(): string | null {
     const showValid =
-      this.showValidation && this.phone?.value && this.phone?.valid && this.submitted;
+      this.showValidation && this.phone?.valid && this.submitted;
     return showValid ? `Full number: ${this.phone.value}` : null;
   }
 

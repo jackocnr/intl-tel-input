@@ -23,7 +23,7 @@
 
   const inputValidityClass = computed(() => {
     if (!showValidation.value) return "";
-    return number.value && isValid.value ? "is-valid" : "is-invalid";
+    return isValid.value ? "is-valid" : "is-invalid";
   });
 
   const invalidMsg = computed(() => {
@@ -33,7 +33,7 @@
 
   const validMsg = computed(() => {
     const showValid =
-      showValidation.value && number.value && isValid.value && submitted.value;
+      showValidation.value && isValid.value && submitted.value;
     return showValid ? `Full number: ${number.value}` : null;
   });
 

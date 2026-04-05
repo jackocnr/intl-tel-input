@@ -26,7 +26,7 @@ const App = () => {
 
   let inputValidityClass = "";
   if (showValidation) {
-    inputValidityClass = number && isValid ? "is-valid" : "is-invalid";
+    inputValidityClass = isValid ? "is-valid" : "is-invalid";
   }
 
   let invalidMsg = null;
@@ -34,7 +34,7 @@ const App = () => {
     invalidMsg = getErrorMessage(number, errorCode);
   }
 
-  const showValid = showValidation && number && isValid && submitted;
+  const showValid = showValidation && isValid && submitted;
   const validMsg = showValid ? `Full number: ${number}` : null;
 
   const handleChangeNumber = (newNumber: string) => {

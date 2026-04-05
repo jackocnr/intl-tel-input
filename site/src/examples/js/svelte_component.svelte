@@ -22,7 +22,7 @@
 
   const inputValidityClass = $derived.by(() => {
     if (!showValidation) return "";
-    return number && isValid ? "is-valid" : "is-invalid";
+    return isValid ? "is-valid" : "is-invalid";
   });
 
   const invalidMsg = $derived.by(() => {
@@ -31,7 +31,7 @@
   });
 
   const validMsg = $derived.by(() => {
-    const showValid = showValidation && number && isValid && submitted;
+    const showValid = showValidation && isValid && submitted;
     return showValid ? `Full number: ${number}` : null;
   });
 
