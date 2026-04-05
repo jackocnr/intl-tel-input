@@ -121,15 +121,15 @@ export class IntlTelInputComponent
     this.applyInputProps();
 
     if (this.initialValue) {
-      this.iti?.setNumber(this.initialValue);
+      this.iti.setNumber(this.initialValue);
     }
 
     if (this.disabled) {
-      this.iti?.setDisabled(this.disabled);
+      this.iti.setDisabled(this.disabled);
     }
 
     if (this.readonly) {
-      this.iti?.setReadonly(this.readonly);
+      this.iti.setReadonly(this.readonly);
     }
   }
 
