@@ -35,6 +35,7 @@ export type IntlTelInputRef = {
   getInput: () => HTMLInputElement | null;
 };
 
+// Note: React v19 supports ref forwarding with function components, but we still need to use forwardRef to support React v18
 const IntlTelInput = forwardRef(function IntlTelInput(
   {
     initialValue = "",
