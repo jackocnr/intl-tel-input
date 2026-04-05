@@ -59,7 +59,6 @@
       inputProps={{
         name: "phone",
         title: "Enter your phone number",
-        required: true,
         onblur: () => (showValidation = true),
         class: `form-control ${inputValidityClass}`,
       }}

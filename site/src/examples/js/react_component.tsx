@@ -62,7 +62,6 @@ const App = () => {
           inputProps={{
             name: "phone",
             title: "Enter your phone number",
-            required: true,
             onBlur: () => setShowValidation(true),
             className: `form-control ${inputValidityClass}`,
           }}

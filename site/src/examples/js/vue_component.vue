@@ -65,7 +65,6 @@
         :inputProps="{
           name: 'phone',
           title: 'Enter your phone number',
-          required: true,
           onBlur: handleBlur,
           class: `form-control ${inputValidityClass}`,
         }"
