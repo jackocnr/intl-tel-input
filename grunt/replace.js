@@ -47,7 +47,7 @@ module.exports = function(grunt) {
     },
 
     /**************
-     * Generate reactWithUtils.tsx
+     * Generate IntlTelInputWithUtils.tsx
      **************/
     reactWithUtils: {
       options: {
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'react/src/reactWithUtils.tsx': 'react/src/react.tsx',
+        'react/src/IntlTelInputWithUtils.tsx': 'react/src/IntlTelInput.tsx',
       }
     },
 
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /\<script setup lang=\"ts\"\>\simport intlTelInput from \"intl\-tel\-input\"\;/,
+            match: /\<script setup lang=\"ts\"\>\nimport intlTelInput from \"intl\-tel\-input\"\;/,
             replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script setup lang="ts">\nimport intlTelInput from "intl-tel-input/intlTelInputWithUtils";'
           }
         ]
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
     },
 
     /**************
-     * Generate angular/src/angularWithUtils.ts
+     * Generate angular/src/IntlTelInputWithUtils.ts
      **************/
     angularWithUtils: {
       options: {
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'angular/src/angularWithUtils.ts': 'angular/src/angular.ts',
+        'angular/src/IntlTelInputWithUtils.ts': 'angular/src/IntlTelInput.ts',
       }
     },
 

@@ -143,26 +143,26 @@
       "default": "./react/build/IntlTelInput.js"
     },
     "./reactWithUtils": {
-      "types": "./react/build/IntlTelInput.d.ts",
+      "types": "./react/build/IntlTelInputWithUtils.d.ts",
       "require": "./react/build/IntlTelInputWithUtils.cjs",
       "import": "./react/build/IntlTelInputWithUtils.js",
       "default": "./react/build/IntlTelInputWithUtils.js"
     },
     "./vue": {
-      "types": "./vue/build/exports/IntlTelInput.d.ts",
-      "import": "./vue/build/exports/IntlTelInput.mjs"
+      "types": "./vue/build/index.d.ts",
+      "import": "./vue/build/IntlTelInput.mjs"
     },
     "./vueWithUtils": {
-      "types": "./vue/build/exports/IntlTelInputWithUtils.d.ts",
-      "import": "./vue/build/exports/IntlTelInputWithUtils.mjs"
+      "types": "./vue/build/indexWithUtils.d.ts",
+      "import": "./vue/build/IntlTelInputWithUtils.mjs"
     },
     "./angular": {
-      "types": "./angular/build/types/angular.d.ts",
+      "types": "./angular/build/IntlTelInput.d.ts",
       "import": "./angular/build/IntlTelInput.js",
       "default": "./angular/build/IntlTelInput.js"
     },
     "./angularWithUtils": {
-      "types": "./angular/build/types/angularWithUtils.d.ts",
+      "types": "./angular/build/IntlTelInputWithUtils.d.ts",
       "import": "./angular/build/IntlTelInputWithUtils.js",
       "default": "./angular/build/IntlTelInputWithUtils.js"
     },
@@ -196,7 +196,7 @@
         "react/build/IntlTelInput.d.ts"
       ],
       "angular": [
-        "angular/build/types/angular.d.ts"
+        "angular/build/IntlTelInput.d.ts"
       ]
     }
   },

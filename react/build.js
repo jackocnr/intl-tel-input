@@ -14,7 +14,7 @@ const mainShared = {
 //* React Component - CommonJS
 build({
   ...mainShared,
-  entryPoints: ["react/src/react.tsx"],
+  entryPoints: ["react/src/IntlTelInput.tsx"],
   format: "cjs",
   outfile: "react/build/IntlTelInput.cjs",
 });
@@ -22,7 +22,7 @@ build({
 //* React Component - Default (ES Modules)
 build({
   ...mainShared,
-  entryPoints: ["react/src/react.tsx"],
+  entryPoints: ["react/src/IntlTelInput.tsx"],
   format: "esm",
   outfile: "react/build/IntlTelInput.js",
 });
@@ -30,7 +30,7 @@ build({
 //* React Component With Utils - CommonJS
 build({
   ...mainShared,
-  entryPoints: ["react/src/reactWithUtils.tsx"],
+  entryPoints: ["react/src/IntlTelInputWithUtils.tsx"],
   format: "cjs",
   outfile: "react/build/IntlTelInputWithUtils.cjs",
 });
@@ -38,7 +38,7 @@ build({
 //* React Component With Utils - Default (ES Modules)
 build({
   ...mainShared,
-  entryPoints: ["react/src/reactWithUtils.tsx"],
+  entryPoints: ["react/src/IntlTelInputWithUtils.tsx"],
   format: "esm",
   outfile: "react/build/IntlTelInputWithUtils.js",
 });

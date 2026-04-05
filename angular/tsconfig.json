@@ -9,7 +9,7 @@
     "emitDecoratorMetadata": true, //* Required for angular decorators.
     "declaration": true, //* Generate .d.ts files.
     "outDir": "build/temp",
-    "declarationDir": "build/types",
+    "declarationDir": "build",
     "rootDir": "./src",
     "allowJs": true, // allow importing .mjs files e.g. i18n files
   },
@@ -17,7 +17,7 @@
     "strictTemplates": true,
   },
   "include": [
-    "src/angular.ts",
-    "src/angularWithUtils.ts",
+    "src/IntlTelInput.ts",
+    "src/IntlTelInputWithUtils.ts",
   ],
 }

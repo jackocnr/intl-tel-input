@@ -8,7 +8,15 @@ module.exports = function(grunt) {
       command: 'node react/build.js'
     },
     buildVue: {
-      command: 'vite build --config vue/vite.config.mts'
+      //* Build, fix leaked source path in .vue.d.ts, flatten .d.ts output, and clean up.
+      command: [
+        'vite build --config vue/vite.config.mts',
+        // Fix relative source path leaked by @vue/compiler-sfc into the .vue.d.ts files
+        `sed ${sedArg} -e "s|from '../../src/js/modules/types/public-api'|from 'intl-tel-input'|" vue/build/vue/src/IntlTelInput.vue.d.ts vue/build/vue/src/IntlTelInputWithUtils.vue.d.ts`,
+        // vite-plugin-dts mirrors the source directory structure (vue/src/) inside the output dir (vue/build/), resulting in vue/build/vue/src/*.d.ts. Flatten them to vue/build/.
+        'mv vue/build/vue/src/*.d.ts vue/build/',
+        'rm -rf vue/build/vue',
+      ].join(' && ')
     },
     buildAngular: {
       command: 'node angular/build.js'
@@ -21,8 +29,7 @@ module.exports = function(grunt) {
       command: `tsc --p tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" build/js/intlTelInput.d.ts`
     },
     genReactTsDeclaration: {
-      //* Clean up the module names by removing the /index suffix as this is how they will be used.
-      command: `tsc --p react/tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" react/build/IntlTelInput.d.ts`
+      command: 'tsc --p react/tsconfig.json'
     },
     genAngularTsDeclarationAndJs: {
       command: 'ngc --p angular/tsconfig.json'

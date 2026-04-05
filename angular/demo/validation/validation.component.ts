@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import IntlTelInput, { intlTelInput } from '../../src/angularWithUtils';
+import IntlTelInput, { intlTelInput } from '../../src/IntlTelInputWithUtils';
 
 const getErrorMessage = (errorCode: number | null): string => {
   const genericError = "Invalid number";

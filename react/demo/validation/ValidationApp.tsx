@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput, { intlTelInput } from "../../src/reactWithUtils";
+import IntlTelInput, { intlTelInput } from "../../src/IntlTelInputWithUtils";
 
 const getErrorMessage = (errorCode: number | null): string => {
   const genericError = "Invalid number";

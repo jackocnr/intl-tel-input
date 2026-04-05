@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import IntlTelInput from "../../src/angularWithUtils";
+import IntlTelInput from "../../src/IntlTelInputWithUtils";
 
 @Component({
   selector: "app-root",

@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     },
     react: {
       files: [
-        "react/src/react.tsx",
+        "react/src/IntlTelInput.tsx",
         "react/demo/set-number/SetNumberApp.tsx",
         "react/demo/simple/SimpleApp.tsx",
         "react/demo/toggle-disabled/ToggleDisabledApp.tsx",
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     },
     angular: {
       files: [
-        "angular/src/angular.ts",
+        "angular/src/IntlTelInput.ts",
         "angular/demo/form/form.component.ts",
         "angular/demo/set-number/set-number.component.ts",
         "angular/demo/simple/simple.component.ts",

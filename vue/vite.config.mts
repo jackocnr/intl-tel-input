@@ -14,11 +14,11 @@ export default defineConfig({
     emptyOutDir: true,
     lib: {
       entry: [
-        resolve(__dirname, "src/exports/IntlTelInput.ts"),
-        resolve(__dirname, "src/exports/IntlTelInputWithUtils.ts"),
+        resolve(__dirname, "src/index.ts"),
+        resolve(__dirname, "src/indexWithUtils.ts"),
       ],
       formats: ["es"],
-      fileName: "exports/[name]",
+      fileName: (_, entryName) => entryName === "index" ? "IntlTelInput.mjs" : "IntlTelInputWithUtils.mjs",
     },
     rollupOptions: {
       external: ["vue"],
