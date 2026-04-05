@@ -1,5 +1,5 @@
 <script>
-  import IntlTelInput from "../../src/intl-tel-input/IntlTelInputWithUtils.svelte";
+  import IntlTelInput from "../../src/IntlTelInputWithUtils.svelte";
 
   let isDisabled = $state(true);
 

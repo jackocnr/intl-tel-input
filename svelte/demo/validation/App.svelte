@@ -1,5 +1,5 @@
 <script>
-  import IntlTelInput, { intlTelInput } from "../../src/intl-tel-input/IntlTelInputWithUtils.svelte";
+  import IntlTelInput, { intlTelInput } from "../../src/IntlTelInputWithUtils.svelte";
 
   const getErrorMessage = (errorCode) => {
     const genericError = "Invalid number";

@@ -12,7 +12,7 @@
     "allowJs": true, // allow importing .mjs files e.g. i18n files
   },
   "include": [
-    "src/intl-tel-input/react.tsx",
-    "src/intl-tel-input/reactWithUtils.tsx",
+    "src/react.tsx",
+    "src/reactWithUtils.tsx",
   ],
 }

@@ -21,7 +21,7 @@ export const getConfig = (filename) => defineConfig({
     outDir: "build",
     emptyOutDir: false,
     lib: {
-      entry: `src/intl-tel-input/${filename}`,
+      entry: `src/${filename}`,
       formats: ["es"],
       fileName: "[name]",
     },

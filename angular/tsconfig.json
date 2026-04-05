@@ -17,7 +17,7 @@
     "strictTemplates": true,
   },
   "include": [
-    "src/intl-tel-input/angular.ts",
-    "src/intl-tel-input/angularWithUtils.ts",
+    "src/angular.ts",
+    "src/angularWithUtils.ts",
   ],
 }

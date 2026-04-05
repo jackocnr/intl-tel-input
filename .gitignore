@@ -10,13 +10,13 @@
 .DS_Store
 /build/
 /react/build/
-/react/src/intl-tel-input/reactWithUtils.tsx
+/react/src/reactWithUtils.tsx
 /svelte/build/
-/svelte/src/intl-tel-input/IntlTelInputWithUtils.svelte
+/svelte/src/IntlTelInputWithUtils.svelte
 /vue/build/
 /vue/src/IntlTelInputWithUtils.vue
 /angular/build/
-/angular/src/intl-tel-input/angularWithUtils.ts
+/angular/src/angularWithUtils.ts
 /src/css/_metadata.scss
 /*/demo/*/*-bundle.js
 /test-results/

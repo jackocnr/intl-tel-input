@@ -59,7 +59,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'react/src/intl-tel-input/reactWithUtils.tsx': 'react/src/intl-tel-input/react.tsx',
+        'react/src/reactWithUtils.tsx': 'react/src/react.tsx',
       }
     },
 
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'angular/src/intl-tel-input/angularWithUtils.ts': 'angular/src/intl-tel-input/angular.ts',
+        'angular/src/angularWithUtils.ts': 'angular/src/angular.ts',
       }
     },
 
@@ -110,7 +110,7 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'svelte/src/intl-tel-input/IntlTelInputWithUtils.svelte': 'svelte/src/intl-tel-input/IntlTelInput.svelte',
+        'svelte/src/IntlTelInputWithUtils.svelte': 'svelte/src/IntlTelInput.svelte',
       }
     },
   };

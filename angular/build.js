@@ -14,7 +14,7 @@ async function buildMain() {
   //* Angular Component - Default (ES Modules)
   await build({
     ...mainShared,
-    entryPoints: ["angular/build/temp/intl-tel-input/angular.js"],
+    entryPoints: ["angular/build/temp/angular.js"],
     format: "esm",
     outfile: "angular/build/IntlTelInput.js",
   });
@@ -22,7 +22,7 @@ async function buildMain() {
   //* Angular Component With Utils - Default (ES Modules)
   await build({
     ...mainShared,
-    entryPoints: ["angular/build/temp/intl-tel-input/angularWithUtils.js"],
+    entryPoints: ["angular/build/temp/angularWithUtils.js"],
     format: "esm",
     outfile: "angular/build/IntlTelInputWithUtils.js",
   });

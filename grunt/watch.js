@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     },
     react: {
       files: [
-        "react/src/intl-tel-input/react.tsx",
+        "react/src/react.tsx",
         "react/demo/set-number/SetNumberApp.tsx",
         "react/demo/simple/SimpleApp.tsx",
         "react/demo/toggle-disabled/ToggleDisabledApp.tsx",
@@ -28,12 +28,12 @@ module.exports = function(grunt) {
       tasks: "build:vue"
     },
     svelte: {
-      files: ["svelte/src/intl-tel-input/IntlTelInput.svelte"],
+      files: ["svelte/src/IntlTelInput.svelte"],
       tasks: "build:svelte"
     },
     angular: {
       files: [
-        "angular/src/intl-tel-input/angular.ts",
+        "angular/src/angular.ts",
         "angular/demo/form/form.component.ts",
         "angular/demo/set-number/set-number.component.ts",
         "angular/demo/simple/simple.component.ts",
