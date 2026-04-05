@@ -117,31 +117,33 @@ const updateCountry = () => {
 };
 
 onMounted(() => {
-  if (input.value) {
-    instance.value = intlTelInput(input.value, props.options);
+  if (!input.value) {
+    return;
+  }
 
-    if (displayed.value) {
-      instance.value.setNumber(displayed.value);
-    }
+  instance.value = intlTelInput(input.value, props.options);
 
-    if (props.disabled) {
-      instance.value.setDisabled(props.disabled);
-    }
+  if (displayed.value) {
+    instance.value.setNumber(displayed.value);
+  }
 
-    if (props.readonly) {
-      instance.value.setReadonly(props.readonly);
-    }
+  if (props.disabled) {
+    instance.value.setDisabled(props.disabled);
+  }
 
-    lastEmittedNumber.value = instance.value.getNumber?.() ?? "";
-    lastEmittedCountry.value = instance.value.getSelectedCountryData().iso2 ?? "";
+  if (props.readonly) {
+    instance.value.setReadonly(props.readonly);
+  }
 
-    const initialValid = isValid();
-    if (initialValid !== null) {
-      lastEmittedValidity.value = !!initialValid;
-      lastEmittedErrorCode.value = initialValid
-        ? null
-        : instance.value.getValidationError?.() ?? null;
-    }
+  lastEmittedNumber.value = instance.value.getNumber?.() ?? "";
+  lastEmittedCountry.value = instance.value.getSelectedCountryData().iso2 ?? "";
+
+  const initialValid = isValid();
+  if (initialValid !== null) {
+    lastEmittedValidity.value = !!initialValid;
+    lastEmittedErrorCode.value = initialValid
+      ? null
+      : instance.value.getValidationError?.() ?? null;
   }
 });
 
