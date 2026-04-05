@@ -7,7 +7,11 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "esModuleInterop": true, // required for react (etc) default imports
-    "allowJs": true, // allow importing .js files e.g. utils-symlink.js
+    "baseUrl": ".",
+    "paths": {
+      "utils-compiled": ["./build/js/utils.js"]
+    },
+    "allowJs": true,
     "noEmit": true,
   },
   "include": [

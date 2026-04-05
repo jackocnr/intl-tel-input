@@ -90,9 +90,16 @@ build({
   outfile: "build/js/data.min.js",
 });
 
+const withUtilsAlias = {
+  alias: {
+    "utils-compiled": "./build/js/utils.js",
+  },
+};
+
 //* build/js/intlTelInputWithUtils.js
 build({
   ...shared,
+  ...withUtilsAlias,
   banner: {
     js: getBanner("intlTelInput"),
   },
@@ -104,6 +111,7 @@ build({
 //* build/js/intlTelInputWithUtils.min.js
 build({
   ...shared,
+  ...withUtilsAlias,
   banner: {
     js: getBanner("intlTelInput"),
   },
@@ -121,6 +129,7 @@ build({
 
 build({
   ...esmShared,
+  ...withUtilsAlias,
   entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   outfile: "build/js/intlTelInputWithUtils.mjs",
 });

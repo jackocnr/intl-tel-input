@@ -69,7 +69,7 @@ module.exports = function(grunt) {
     'replace:svelteWithUtils',
   ]);
 
-  // Ensure build/js/utils.js exists (src/js/utils-symlink.js is a symlink to it).
+  // Ensure build/js/utils.js exists (esbuild resolves "utils-compiled" alias to it).
   grunt.registerTask('ensure:utils', 'Build utils if missing', function() {
     if (!grunt.file.exists('build/js/utils.js')) {
       grunt.task.run('closure-compiler:utils');

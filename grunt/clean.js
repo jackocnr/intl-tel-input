@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     buildJs: ['build/js/*'],
 
     // Used by build:jsfast/watch. Preserves build/js/utils.js because
-    // src/js/utils-symlink.js is a symlink to it.
+    // esbuild resolves the "utils-compiled" alias to it.
     buildJsKeepUtils: ['build/js/*', '!build/js/utils.js'],
 
     reactBuild: ['react/build/*'],
