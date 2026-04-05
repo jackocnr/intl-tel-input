@@ -60,24 +60,15 @@ const lastEmittedCountry = ref<string>();
 const lastEmittedValidity = ref<boolean>();
 const lastEmittedErrorCode = ref<number | null>();
 
-const isValid = () => {
-  if (instance.value) {
-    return props.usePreciseValidation
-      ? instance.value.isValidNumberPrecise()
-      : instance.value.isValidNumber();
-  }
-
-  return null;
-};
+const isValid = () => props.usePreciseValidation
+  ? instance.value!.isValidNumberPrecise()
+  : instance.value!.isValidNumber();
 
 const updateValidity = () => {
-  const isCurrentlyValid = isValid();
-  if (isCurrentlyValid === null) return;
-
-  const valid = !!isCurrentlyValid;
+  const valid = isValid();
   const errorCode = valid
     ? null
-    : instance.value?.getValidationError?.() ?? null;
+    : instance.value!.getValidationError();
 
   if (valid !== lastEmittedValidity.value) {
     lastEmittedValidity.value = valid;
@@ -126,25 +117,20 @@ onMounted(() => {
   if (displayed.value) {
     instance.value.setNumber(displayed.value);
   }
-
   if (props.disabled) {
     instance.value.setDisabled(props.disabled);
   }
-
   if (props.readonly) {
     instance.value.setReadonly(props.readonly);
   }
 
-  lastEmittedNumber.value = instance.value.getNumber?.() ?? "";
+  lastEmittedNumber.value = instance.value.getNumber() ?? "";
   lastEmittedCountry.value = instance.value.getSelectedCountryData().iso2 ?? "";
 
-  const initialValid = isValid();
-  if (initialValid !== null) {
-    lastEmittedValidity.value = !!initialValid;
-    lastEmittedErrorCode.value = initialValid
-      ? null
-      : instance.value.getValidationError?.() ?? null;
-  }
+  lastEmittedValidity.value = isValid();
+  lastEmittedErrorCode.value = lastEmittedValidity.value
+    ? null
+    : instance.value.getValidationError();
 });
 
 watch(
@@ -160,14 +146,18 @@ watch(
 watch(
   () => displayed.value,
   (val) => {
-    if (!instance.value) return;
+    if (!instance.value) {
+      return;
+    }
 
     // Avoid cursor jumping when typing
     const next = val ?? "";
-    const currentCanonical = instance.value.getNumber?.() ?? "";
+    const currentCanonical = instance.value.getNumber() ?? "";
     const isFocused = document.activeElement === input.value;
 
-    if (isFocused || currentCanonical === next) return;
+    if (isFocused || currentCanonical === next) {
+      return;
+    }
 
     instance.value.setNumber(next);
     updateValidity();
