@@ -15,6 +15,8 @@ export { intlTelInput };
 
 type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
 
+const noop = () => {};
+
 type ItiProps = {
   initialValue?: string;
   onChangeNumber?: (number: string) => void;
@@ -36,10 +38,10 @@ export type IntlTelInputRef = {
 const IntlTelInput = forwardRef(function IntlTelInput(
   {
     initialValue = "",
-    onChangeNumber = () => {},
-    onChangeCountry = () => {},
-    onChangeValidity = () => {},
-    onChangeErrorCode = () => {},
+    onChangeNumber = noop,
+    onChangeCountry = noop,
+    onChangeValidity = noop,
+    onChangeErrorCode = noop,
     usePreciseValidation = false,
     initOptions = {},
     inputProps = {},
