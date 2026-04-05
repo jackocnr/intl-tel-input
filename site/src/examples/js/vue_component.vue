@@ -42,6 +42,10 @@
     number.value = newNumber;
   };
 
+  const handleBlur = () => {
+    showValidation.value = true;
+  };
+
   const handleSubmit = () => {
     showValidation.value = true;
     submitted.value = true;
@@ -62,7 +66,7 @@
           name: 'phone',
           title: 'Enter your phone number',
           required: true,
-          onBlur: () => (showValidation.value = true),
+          onBlur: handleBlur,
           class: `form-control ${inputValidityClass}`,
         }"
       />
