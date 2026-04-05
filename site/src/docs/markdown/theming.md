@@ -33,13 +33,3 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 
 Example:  
 <img src="/img/iti-vanilla-dark.png" alt="Screenshot" width="265" height="280" />
-
-<div class="article-ad">
-  <ins class="adsbygoogle"
-    style="display:block; text-align:center;"
-    data-ad-layout="in-article"
-    data-ad-format="fluid"
-    data-ad-client="ca-pub-1090343328224651"
-    data-ad-slot="6972377388"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>

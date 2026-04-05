@@ -23,12 +23,3 @@ import intlTelInput from "intl-tel-input/intlTelInputWithUtils"
 **Option 2: loadUtils**  
 If you *are* concerned about filesize, you can lazy load the utils module when the plugin initialises, using the [`loadUtils`](/docs/options#loadutils) initialisation option.
 
-<div class="article-ad">
-  <ins class="adsbygoogle"
-    style="display:block; text-align:center;"
-    data-ad-layout="in-article"
-    data-ad-format="fluid"
-    data-ad-client="ca-pub-1090343328224651"
-    data-ad-slot="6972377388"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>

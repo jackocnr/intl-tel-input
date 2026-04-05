@@ -50,7 +50,7 @@
 }
 
 /* Sticky-footer layout: ensure short pages still fill the viewport so any
- * elements injected at end of <body> (e.g. AdSense) get pushed down. */
+ * elements injected at end of <body> (e.g. AdSense edit consent block) get pushed down. */
 .iti-page {
   min-height: 100vh;
   display: flex;

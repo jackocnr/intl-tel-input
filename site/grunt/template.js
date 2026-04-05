@@ -10,7 +10,6 @@ module.exports = function (grunt) {
 
   const env = grunt.option("env");
   const isDevBuild = env === "dev" || env === "development";
-  const showRightSidebarAd = !isDevBuild;
 
   const {
     makeTemplateTask,
@@ -362,7 +361,6 @@ module.exports = function (grunt) {
       examplesDropdownPages,
       extra: {
         ...layoutExtra,
-        show_right_sidebar_ad: showRightSidebarAd,
       },
     });
 
@@ -679,7 +677,6 @@ module.exports = function (grunt) {
           pageType: "docs",
           docsDropdownPages,
           examplesDropdownPages,
-          show_right_sidebar_ad: showRightSidebarAd,
         }),
       },
     };

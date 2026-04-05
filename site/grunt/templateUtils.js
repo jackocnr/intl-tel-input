@@ -75,13 +75,10 @@ const addDocOptionsLayoutPlugin = (md) => {
       return -1;
     };
 
-    // ad blocks are divs with class="article-ad", but MarkdownIt treats divs and their contents as a single raw "html_block" token
-    const isAdBlockOpen = (token) => token.type === "html_block" && token.content.includes('class="article-ad"');
-
-    const consumeUntilNextHeadingOrAdBlock = () => {
+    const consumeUntilNextHeading = () => {
       while (i < tokens.length) {
         const t = tokens[i];
-        if (isAnyHeadingOpen(t) || isAdBlockOpen(t)) return;
+        if (isAnyHeadingOpen(t)) return;
         nextTokens.push(t);
         i += 1;
       }
@@ -109,7 +106,7 @@ const addDocOptionsLayoutPlugin = (md) => {
       // Switch to the value cell for the rest of the option content.
       nextTokens.push(endKeyCellAndStartValueCellMarkup());
 
-      consumeUntilNextHeadingOrAdBlock();
+      consumeUntilNextHeading();
       nextTokens.push(endValueCellAndRowMarkup());
     };
 

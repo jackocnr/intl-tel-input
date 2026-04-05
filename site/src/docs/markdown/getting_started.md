@@ -26,15 +26,6 @@ This page is for getting started with the JavaScript plugin. For the framework c
   </script>
   ```
 
-<div class="article-ad">
-  <ins class="adsbygoogle"
-    style="display:block; text-align:center;"
-    data-ad-layout="in-article"
-    data-ad-format="fluid"
-    data-ad-client="ca-pub-1090343328224651"
-    data-ad-slot="6972377388"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
 
 ### Using a bundler, e.g. Vite
 
@@ -112,12 +103,3 @@ If you know the user's language, there is a built in way to translate the countr
 
 _*Except for some small satellite territories, which share number ranges with the main country (search data.ts for "shared" for examples). When displaying numbers from those shared ranges, we default to selecting the main country._
 
-<div class="article-ad">
-  <ins class="adsbygoogle"
-    style="display:block; text-align:center;"
-    data-ad-layout="in-article"
-    data-ad-format="fluid"
-    data-ad-client="ca-pub-1090343328224651"
-    data-ad-slot="6972377388"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>

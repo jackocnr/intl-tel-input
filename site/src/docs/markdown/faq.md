@@ -42,15 +42,6 @@ That option listens for the form submit event and injects hidden input(s) contai
 See the [Hidden input example](/examples/hidden-input).
 
 
-<div class="article-ad">
-  <ins class="adsbygoogle"
-    style="display:block; text-align:center;"
-    data-ad-layout="in-article"
-    data-ad-format="fluid"
-    data-ad-client="ca-pub-1090343328224651"
-    data-ad-slot="6972377388"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
 
 ## How do I set the initial country?
 
