@@ -18,7 +18,7 @@ const getErrorMessage = (number, errorCode) => {
 const App = () => {
   const [number, setNumber] = useState("");
   const [isValid, setIsValid] = useState(false);
-  const [errorCode, setErrorCode] = useState(0);
+  const [errorCode, setErrorCode] = useState(null);
   const [showValidation, setShowValidation] = useState(false);
 
   let invalidMsg = null;

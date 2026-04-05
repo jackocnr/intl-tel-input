@@ -43,7 +43,7 @@ export class AppComponent {
 
   number = "";
   isValid = false;
-  errorCode = 0;
+  errorCode = null;
   showValidation = false;
 
   loadUtils = () => import("intl-tel-input/utils");

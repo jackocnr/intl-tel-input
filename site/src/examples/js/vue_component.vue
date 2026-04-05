@@ -17,7 +17,7 @@
 
   const number = ref("");
   const isValid = ref(false);
-  const errorCode = ref(0);
+  const errorCode = ref(null);
   const showValidation = ref(false);
   const submitted = ref(false);
 

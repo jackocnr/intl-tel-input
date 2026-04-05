@@ -20,7 +20,7 @@ const getErrorMessage = (number: string, errorCode: number | null): string => {
 const App = () => {
   const [number, setNumber] = useState("");
   const [isValid, setIsValid] = useState(false);
-  const [errorCode, setErrorCode] = useState(0);
+  const [errorCode, setErrorCode] = useState<number | null>(null);
   const [showValidation, setShowValidation] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 

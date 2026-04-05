@@ -57,7 +57,7 @@ export class AppComponent {
 
   number = "";
   isValid = false;
-  errorCode = 0;
+  errorCode: number | null = null;
   showValidation = false;
   submitted = false;
 

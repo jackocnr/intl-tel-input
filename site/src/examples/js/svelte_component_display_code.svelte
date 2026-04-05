@@ -17,7 +17,7 @@
 
   let number = $state("");
   let isValid = $state(false);
-  let errorCode = $state(0);
+  let errorCode = $state(null);
   let showValidation = $state(false);
 
   const invalidMsg = $derived.by(() => {
