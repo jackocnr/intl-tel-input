@@ -1,5 +1,5 @@
 <script>
-  import IntlTelInput, { intlTelInput } from "../../../../svelte/src/intl-tel-input/IntlTelInput.svelte";
+  import IntlTelInput, { intlTelInput } from "../../../../svelte/src/IntlTelInput.svelte";
 
   const getErrorMessage = (number, errorCode) => {
     if (!number) return "Please enter a number";
