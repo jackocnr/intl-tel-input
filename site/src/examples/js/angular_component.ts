@@ -1,7 +1,7 @@
 import "zone.js";
 import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import IntlTelInput, { intlTelInput } from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 
@@ -26,7 +26,6 @@ const getErrorMessage = (number: string | null, errorCode: number | null): strin
     <form [formGroup]="fg" (ngSubmit)="handleSubmit()" class="row g-2" novalidate>
       <div class="col-auto">
         <intl-tel-input
-          #telInput
           formControlName="phone"
           (numberChange)="handleNumberChange($event)"
           (validityChange)="isValid = $event"
@@ -53,8 +52,6 @@ const getErrorMessage = (number: string | null, errorCode: number | null): strin
   imports: [IntlTelInput, ReactiveFormsModule],
 })
 export class AppComponent {
-  @ViewChild("telInput") telInput?: InstanceType<typeof IntlTelInput>;
-
   number = "";
   isValid = false;
   errorCode: number | null = null;

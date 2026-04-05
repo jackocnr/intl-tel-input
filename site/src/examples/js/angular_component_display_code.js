@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import IntlTelInput, { intlTelInput } from "intl-tel-input/angular";
 import "intl-tel-input/styles";
@@ -21,7 +21,6 @@ const getErrorMessage = (number, errorCode) => {
   template: `
     <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
       <intl-tel-input
-        #telInput
         formControlName="phone"
         (numberChange)="number = $event"
         (validityChange)="isValid = $event"
@@ -39,8 +38,6 @@ const getErrorMessage = (number, errorCode) => {
   imports: [IntlTelInput, ReactiveFormsModule],
 })
 export class AppComponent {
-  @ViewChild("telInput") telInput;
-
   number = "";
   isValid = false;
   errorCode = null;
