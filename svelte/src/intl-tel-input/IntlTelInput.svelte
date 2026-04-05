@@ -102,6 +102,9 @@
         lastEmittedErrorCode = initialValid ? null : instance.getValidationError();
       }
       hasInitialized = true;
+
+      // when plugin initialisation has finished (e.g. loaded utils script), update all the state values (updateCountry calls updateValue which calls updateValidity)
+      instance.promise.then(updateCountry);
     }
   });
 
