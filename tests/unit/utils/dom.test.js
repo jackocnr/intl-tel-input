@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { buildClassNames, createEl } = require("../../../src/js/utils/dom.ts");
+const { buildClassNames, createEl } = require("../../../src/js/helpers/dom.ts");
 
 describe("utils/dom", () => {
   test("buildClassNames filters falsy values", () => {

@@ -2,7 +2,7 @@
 // * Maintains original comments/order. Pure functions for reuse & testability.
 
 import type { Country } from "../data";
-import { normaliseString } from "../utils/string";
+import { normaliseString } from "../helpers/string";
 
 /**
  * Country search: Given raw query, return ordered list of countries by priority buckets.

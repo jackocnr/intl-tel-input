@@ -8,8 +8,8 @@ import type {
   SomeOptions,
   SelectedCountryData,
 } from "./types/public-api";
-import { getNumeric } from "./utils/string";
-import { getIsAndroid } from "./utils/isAndroid";
+import { getNumeric } from "./helpers/string";
+import { getIsAndroid } from "./helpers/isAndroid";
 import { findFirstCountryStartingWith } from "./core/countrySearch";
 import UI from "./core/ui";
 import {

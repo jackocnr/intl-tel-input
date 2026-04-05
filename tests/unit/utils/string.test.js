@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-const { getNumeric, normaliseString } = require("../../../src/js/utils/string.ts");
+const { getNumeric, normaliseString } = require("../../../src/js/helpers/string.ts");
 
 describe("utils/string", () => {
   test("getNumeric extracts digits only", () => {

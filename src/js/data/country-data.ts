@@ -1,5 +1,5 @@
 import allCountries, { type Country, type Iso2 } from "../data";
-import { normaliseString } from "../utils/string";
+import { normaliseString } from "../helpers/string";
 import type { AllOptions } from "../types/public-api";
 
 export interface DialCodeProcessingResult {
