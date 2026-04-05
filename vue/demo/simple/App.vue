@@ -1,5 +1,5 @@
 <script setup>
-import IntlTelInput from "../../src/exports/IntlTelInputWithUtils";
+import IntlTelInput from "../../src/indexWithUtils";
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import IntlTelInput, { intlTelInput } from "../../src/exports/IntlTelInputWithUtils";
+import IntlTelInput, { intlTelInput } from "../../src/indexWithUtils";
 
 const getErrorMessage = (errorCode) => {
   const genericError = "Invalid number";

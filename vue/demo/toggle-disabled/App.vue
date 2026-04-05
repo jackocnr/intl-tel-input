@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import IntlTelInput from "../../src/exports/IntlTelInputWithUtils";
+import IntlTelInput from "../../src/indexWithUtils";
 
 const isDisabled = ref(true);
 
