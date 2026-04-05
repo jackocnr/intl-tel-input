@@ -131,6 +131,9 @@ onMounted(() => {
   lastEmittedErrorCode.value = lastEmittedValidity.value
     ? null
     : instance.value.getValidationError();
+
+  // update state values once plugin initialisation has finished (e.g. loaded utils script). note that updateCountry calls updateValue, which calls updateValidity.
+  instance.value.promise.then(updateCountry);
 });
 
 watch(
