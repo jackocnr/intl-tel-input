@@ -68,8 +68,8 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     if (!itiRef.current?.isActive()) {
       return;
     }
-    const num = itiRef.current?.getNumber() || "";
-    const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
+    const num = itiRef.current.getNumber() || "";
+    const countryIso = itiRef.current.getSelectedCountryData().iso2 || "";
     // note: this number will be in standard E164 format, but any container component can use
     // intlTelInput.utils.formatNumber() to convert this to another format
     // as well as intlTelInput.utils.getNumberType() etc. if need be
@@ -82,20 +82,18 @@ const IntlTelInput = forwardRef(function IntlTelInput(
       onChangeCountry(countryIso);
     }
 
-    if (itiRef.current) {
-      const isValid = usePreciseValidation
-        ? itiRef.current.isValidNumberPrecise()
-        : itiRef.current.isValidNumber();
-      const errorCode = isValid ? null : itiRef.current.getValidationError();
+    const isValid = usePreciseValidation
+      ? itiRef.current.isValidNumberPrecise()
+      : itiRef.current.isValidNumber();
+    const errorCode = isValid ? null : itiRef.current.getValidationError();
 
-      if (isValid !== lastEmittedValidityRef.current) {
-        lastEmittedValidityRef.current = isValid;
-        onChangeValidity(isValid);
-      }
-      if (errorCode !== lastEmittedErrorCodeRef.current) {
-        lastEmittedErrorCodeRef.current = errorCode;
-        onChangeErrorCode(errorCode);
-      }
+    if (isValid !== lastEmittedValidityRef.current) {
+      lastEmittedValidityRef.current = isValid;
+      onChangeValidity(isValid);
+    }
+    if (errorCode !== lastEmittedErrorCodeRef.current) {
+      lastEmittedErrorCodeRef.current = errorCode;
+      onChangeErrorCode(errorCode);
     }
   }, [
     onChangeCountry,
