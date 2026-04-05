@@ -51,25 +51,23 @@
 <template>
   <form @submit.prevent="handleSubmit" class="row g-2" novalidate>
     <div class="col-auto">
-      <div>
-        <IntlTelInput
-          @changeNumber="handleChangeNumber"
-          @changeValidity="isValid = $event"
-          @changeErrorCode="errorCode = $event"
-          initialCountry="us"
-          :loadUtils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
-          searchInputClass="form-control"
-          :inputProps="{
-            name: 'phone',
-            title: 'Enter your phone number',
-            required: true,
-            onBlur: () => (showValidation.value = true),
-            class: `form-control ${inputValidityClass}`,
-          }"
-        />
-        <div v-if="invalidMsg" class="invalid-feedback d-block">{{ invalidMsg }}</div>
-        <div v-if="validMsg" class="valid-feedback d-block">{{ validMsg }}</div>
-      </div>
+      <IntlTelInput
+        @changeNumber="handleChangeNumber"
+        @changeValidity="isValid = $event"
+        @changeErrorCode="errorCode = $event"
+        initialCountry="us"
+        :loadUtils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
+        searchInputClass="form-control"
+        :inputProps="{
+          name: 'phone',
+          title: 'Enter your phone number',
+          required: true,
+          onBlur: () => (showValidation.value = true),
+          class: `form-control ${inputValidityClass}`,
+        }"
+      />
+      <div v-if="invalidMsg" class="invalid-feedback d-block">{{ invalidMsg }}</div>
+      <div v-if="validMsg" class="valid-feedback d-block">{{ validMsg }}</div>
     </div>
     <div class="col-auto">
       <button class="btn btn-primary" type="submit">Submit</button>
