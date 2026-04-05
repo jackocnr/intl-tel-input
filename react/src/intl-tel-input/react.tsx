@@ -1,6 +1,6 @@
-import intlTelInput from "../intl-tel-input";
+import intlTelInput from "intl-tel-input";
 //* Keep the TS imports separate, as the above line gets substituted in the reactWithUtils build process.
-import { Iti } from "../intl-tel-input";
+import { Iti } from "intl-tel-input";
 import React, {
   useRef,
   useEffect,
@@ -8,7 +8,7 @@ import React, {
   useImperativeHandle,
   useCallback,
 } from "react";
-import type { SomeOptions } from "../modules/types/public-api";
+import type { SomeOptions } from "intl-tel-input";
 
 // make this available as a named export, so react users can access globals like intlTelInput.utils
 export { intlTelInput };

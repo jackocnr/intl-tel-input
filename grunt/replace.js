@@ -53,8 +53,8 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /import intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
-            replacement: '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\nimport intlTelInput from "./intlTelInputWithUtils";'
+            match: /import intlTelInput from \"intl\-tel\-input\"\;/,
+            replacement: '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\nimport intlTelInput from "intl-tel-input/intlTelInputWithUtils";'
           }
         ]
       },
@@ -70,8 +70,8 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /\<script setup lang=\"ts\"\>\simport intlTelInput from \"\.\/intl\-tel\-input\"\;/,
-            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script setup lang="ts">\nimport intlTelInput from "./intl-tel-input/intlTelInputWithUtils";'
+            match: /\<script setup lang=\"ts\"\>\simport intlTelInput from \"intl\-tel\-input\"\;/,
+            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script setup lang="ts">\nimport intlTelInput from "intl-tel-input/intlTelInputWithUtils";'
           }
         ]
       },
@@ -87,8 +87,8 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /import intlTelInput from \"\.\.\/intl\-tel\-input\"\;/,
-            replacement: '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\nimport intlTelInput from "./intlTelInputWithUtils";'
+            match: /import intlTelInput from \"intl\-tel\-input\"\;/,
+            replacement: '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\nimport intlTelInput from "intl-tel-input/intlTelInputWithUtils";'
           }
         ]
       },
@@ -104,8 +104,8 @@ module.exports = function(grunt) {
       options: {
         patterns: [
           {
-            match: /\<script module lang="ts"\>\s*import intlTelInput from "\.\.\/intl\-tel\-input"\;/,
-            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script module lang="ts">\nimport intlTelInput from "./intlTelInputWithUtils";'
+            match: /\<script module lang="ts"\>\s*import intlTelInput from "intl\-tel\-input"\;/,
+            replacement: '<!-- THIS FILE IS AUTO-GENERATED. DO NOT EDIT. -->\n<script module lang="ts">\nimport intlTelInput from "intl-tel-input/intlTelInputWithUtils";'
           }
         ]
       },

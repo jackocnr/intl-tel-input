@@ -1,6 +1,6 @@
-import intlTelInput from "../intl-tel-input";
+import intlTelInput from "intl-tel-input";
 //* Keep the TS imports separate, as the above line gets substituted in the angularWithUtils build process.
-import { Iti } from "../intl-tel-input";
+import { Iti } from "intl-tel-input";
 import {
   Component,
   Input,
@@ -22,7 +22,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from "@angular/forms";
-import type { AllOptions, SomeOptions } from "../modules/types/public-api";
+import type { AllOptions, SomeOptions } from "intl-tel-input";
 
 export { intlTelInput };
 

@@ -9,6 +9,12 @@ export default defineConfig({
   define: {
     "process.env.VERSION": `"${version}"`,
   },
+  resolve: {
+    alias: {
+      "intl-tel-input/intlTelInputWithUtils": resolve(__dirname, "../src/js/intl-tel-input/intlTelInputWithUtils.ts"),
+      "intl-tel-input": resolve(__dirname, "../src/js/intl-tel-input.ts"),
+    },
+  },
   build: {
     outDir: "build",
     emptyOutDir: true,

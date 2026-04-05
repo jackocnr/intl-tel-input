@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ES2024",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
     "esModuleInterop": true, //* Required for react (etc) default imports.
     "experimentalDecorators": true, //* Required for angular decorators.
     "emitDecoratorMetadata": true, //* Required for angular decorators.
@@ -18,6 +19,5 @@
   "include": [
     "src/intl-tel-input/angular.ts",
     "src/intl-tel-input/angularWithUtils.ts",
-    "src/intl-tel-input/i18n/index.ts",
   ],
 }

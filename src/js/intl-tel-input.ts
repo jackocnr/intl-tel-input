@@ -44,6 +44,7 @@ import {
 } from "./modules/constants";
 import { Numerals } from "./modules/core/numerals";
 import type { ForEachInstanceArgsMap } from "./modules/types/forEachInstanceArgsMap";
+export type { AllOptions, SomeOptions, SelectedCountryData } from "./modules/types/public-api";
 
 declare global {
   interface HTMLInputElement {

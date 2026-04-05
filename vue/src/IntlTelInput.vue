@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import intlTelInput from "./intl-tel-input";
-import type { SomeOptions } from "./modules/types/public-api";
-import { defaults } from "./modules/core/options";
+import intlTelInput from "intl-tel-input";
+// @vue/compiler-sfc can't resolve types from bare package specifiers for defineProps, so we must use a relative path to the source file here.
+import type { SomeOptions } from "../../src/js/modules/types/public-api";
 import {
   onMounted,
   onUnmounted,
@@ -70,7 +70,7 @@ const vm = getCurrentInstance();
 const hasOwn = (obj: object, key: string): boolean =>
   Object.prototype.hasOwnProperty.call(obj, key);
 
-const pluginOptionKeys = Object.keys(defaults);
+const pluginOptionKeys = Object.keys(intlTelInput.defaults);
 
 // Vue will coerce absent Boolean props to `false` when props are declared at runtime.
 // That can accidentally override the plugin's own defaults.
