@@ -67,7 +67,10 @@
   };
 
   const updateValue = () => {
-    const number = instance?.getNumber() ?? "";
+    if (!instance?.isActive()) {
+      return;
+    }
+    const number = instance.getNumber() ?? "";
     if (number !== lastEmittedNumber) {
       lastEmittedNumber = number;
       onChangeNumber?.(number);
@@ -76,7 +79,10 @@
   };
 
   const updateCountry = () => {
-    const country = instance?.getSelectedCountryData().iso2 ?? "";
+    if (!instance?.isActive()) {
+      return;
+    }
+    const country = instance.getSelectedCountryData().iso2 ?? "";
     if (country !== lastEmittedCountry) {
       lastEmittedCountry = country;
       onChangeCountry?.(country);
