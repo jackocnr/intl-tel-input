@@ -11,8 +11,6 @@ module.exports = function(grunt) {
     reactBuild: ['react/build/*'],
     vueBuild: ['vue/build/*'],
     angularBuild: ['angular/build/*'],
-    svelteBuild: ['svelte/build/*'],
-
     // Intermediate artifacts used by the build/minify/replace steps.
     tmpIntermediates: ['tmp/built.min.js', 'tmp/one.min.js'],
 
@@ -27,7 +25,6 @@ module.exports = function(grunt) {
       'react/build/*',
       'vue/build/*',
       'angular/build/*',
-      'svelte/build/*',
       'tmp/built.min.js',
       'tmp/one.min.js',
     ],

@@ -58,16 +58,15 @@ module.exports = function(grunt) {
     'build:components',
   ]);
 
-  // just 4 components
+  // build components (svelte exports source .svelte files, so only needs the WithUtils replace)
   grunt.registerTask('build:components', [
     'clean:reactBuild',
     'clean:vueBuild',
     'clean:angularBuild',
-    'clean:svelteBuild',
     'build:react',
     'build:vue',
     'build:angular',
-    'build:svelte',
+    'replace:svelteWithUtils',
   ]);
 
   // Ensure build/js/utils.js exists (src/js/intl-tel-input/utils.js is a symlink to it).
@@ -108,12 +107,7 @@ module.exports = function(grunt) {
     'shell:buildAngular',
   ]);
 
-  // just svelte
-  grunt.registerTask('build:svelte', [
-    'clean:svelteBuild',
-    'replace:svelteWithUtils',
-    'shell:buildSvelte',
-  ]);
+
 
   /**
    * VERSIONING TASKS

@@ -99,7 +99,7 @@
     "react/build/*",
     "vue/build/*",
     "angular/build/*",
-    "svelte/build/*",
+    "svelte/src/*",
     "CHANGELOG.md",
     "LICENSE",
     "package.json",
@@ -167,10 +167,12 @@
       "default": "./angular/build/IntlTelInputWithUtils.js"
     },
     "./svelte": {
-      "import": "./svelte/build/IntlTelInput.mjs"
+      "svelte": "./svelte/src/IntlTelInput.svelte",
+      "import": "./svelte/src/IntlTelInput.svelte"
     },
     "./svelteWithUtils": {
-      "import": "./svelte/build/IntlTelInputWithUtils.mjs"
+      "svelte": "./svelte/src/IntlTelInputWithUtils.svelte",
+      "import": "./svelte/src/IntlTelInputWithUtils.svelte"
     },
     "./i18n": {
       "types": "./build/js/intlTelInput.d.ts",

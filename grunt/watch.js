@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     },
     svelte: {
       files: ["svelte/src/IntlTelInput.svelte"],
-      tasks: "build:svelte"
+      tasks: "replace:svelteWithUtils"
     },
     angular: {
       files: [

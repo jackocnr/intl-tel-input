@@ -13,9 +13,6 @@ module.exports = function(grunt) {
     buildAngular: {
       command: 'node angular/build.js'
     },
-    buildSvelte: {
-      command: 'vite build --config svelte/viteConfig.mjs && vite build --config svelte/viteConfigWithUtils.mjs'
-    },
     buildJs: {
       command: 'node build.js'
     },
