@@ -68,7 +68,10 @@ import intlTelInput from "./intlTelInputWithUtils";
   };
 
   const updateValue = () => {
-    const number = instance?.getNumber() ?? "";
+    if (!instance?.isActive()) {
+      return;
+    }
+    const number = instance.getNumber() ?? "";
     if (number !== lastEmittedNumber) {
       lastEmittedNumber = number;
       onChangeNumber?.(number);
@@ -77,7 +80,10 @@ import intlTelInput from "./intlTelInputWithUtils";
   };
 
   const updateCountry = () => {
-    const country = instance?.getSelectedCountryData().iso2 ?? "";
+    if (!instance?.isActive()) {
+      return;
+    }
+    const country = instance.getSelectedCountryData().iso2 ?? "";
     if (country !== lastEmittedCountry) {
       lastEmittedCountry = country;
       onChangeCountry?.(country);
@@ -103,6 +109,9 @@ import intlTelInput from "./intlTelInputWithUtils";
         lastEmittedErrorCode = initialValid ? null : instance.getValidationError();
       }
       hasInitialized = true;
+
+      // when plugin initialisation has finished (e.g. loaded utils script), update all the state values (updateCountry calls updateValue which calls updateValidity)
+      instance.promise.then(updateCountry);
     }
   });
 

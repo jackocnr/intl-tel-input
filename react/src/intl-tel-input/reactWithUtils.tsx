@@ -16,6 +16,8 @@ export { intlTelInput };
 
 type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
 
+const noop = () => {};
+
 type ItiProps = {
   initialValue?: string;
   onChangeNumber?: (number: string) => void;
@@ -26,7 +28,7 @@ type ItiProps = {
   initOptions?: SomeOptions;
   inputProps?: InputProps;
   disabled?: boolean | undefined;
-  readonly?: boolean | undefined;
+  readOnly?: boolean | undefined;
 };
 
 export type IntlTelInputRef = {
@@ -34,18 +36,19 @@ export type IntlTelInputRef = {
   getInput: () => HTMLInputElement | null;
 };
 
+// Note: React v19 supports ref forwarding with function components, but we still need to use forwardRef to support React v18
 const IntlTelInput = forwardRef(function IntlTelInput(
   {
     initialValue = "",
-    onChangeNumber = () => {},
-    onChangeCountry = () => {},
-    onChangeValidity = () => {},
-    onChangeErrorCode = () => {},
+    onChangeNumber = noop,
+    onChangeCountry = noop,
+    onChangeValidity = noop,
+    onChangeErrorCode = noop,
     usePreciseValidation = false,
     initOptions = {},
     inputProps = {},
     disabled = undefined,
-    readonly = undefined,
+    readOnly = undefined,
   }: ItiProps,
   ref: React.ForwardedRef<IntlTelInputRef>,
 ) {
@@ -67,8 +70,8 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     if (!itiRef.current?.isActive()) {
       return;
     }
-    const num = itiRef.current?.getNumber() || "";
-    const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
+    const num = itiRef.current.getNumber() || "";
+    const countryIso = itiRef.current.getSelectedCountryData().iso2 || "";
     // note: this number will be in standard E164 format, but any container component can use
     // intlTelInput.utils.formatNumber() to convert this to another format
     // as well as intlTelInput.utils.getNumberType() etc. if need be
@@ -81,20 +84,18 @@ const IntlTelInput = forwardRef(function IntlTelInput(
       onChangeCountry(countryIso);
     }
 
-    if (itiRef.current) {
-      const isValid = usePreciseValidation
-        ? itiRef.current.isValidNumberPrecise()
-        : itiRef.current.isValidNumber();
-      const errorCode = isValid ? null : itiRef.current.getValidationError();
+    const isValid = usePreciseValidation
+      ? itiRef.current.isValidNumberPrecise()
+      : itiRef.current.isValidNumber();
+    const errorCode = isValid ? null : itiRef.current.getValidationError();
 
-      if (isValid !== lastEmittedValidityRef.current) {
-        lastEmittedValidityRef.current = isValid;
-        onChangeValidity(isValid);
-      }
-      if (errorCode !== lastEmittedErrorCodeRef.current) {
-        lastEmittedErrorCodeRef.current = errorCode;
-        onChangeErrorCode(errorCode);
-      }
+    if (isValid !== lastEmittedValidityRef.current) {
+      lastEmittedValidityRef.current = isValid;
+      onChangeValidity(isValid);
+    }
+    if (errorCode !== lastEmittedErrorCodeRef.current) {
+      lastEmittedErrorCodeRef.current = errorCode;
+      onChangeErrorCode(errorCode);
     }
   }, [
     onChangeCountry,
@@ -136,10 +137,10 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }, [disabled]);
 
   useEffect(() => {
-    if (itiRef.current && readonly !== undefined) {
-      itiRef.current.setReadonly(readonly);
+    if (itiRef.current && readOnly !== undefined) {
+      itiRef.current.setReadonly(readOnly);
     }
-  }, [readonly]);
+  }, [readOnly]);
 
   // ignore keys that would break functionality
   const {
