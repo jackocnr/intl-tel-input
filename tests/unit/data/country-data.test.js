@@ -8,7 +8,7 @@ const {
   processDialCodes,
   sortCountries,
   cacheSearchTokens,
-} = require("../../../src/js/modules/data/country-data.ts");
+} = require("../../../src/js/data/country-data.ts");
 const allCountries = require("../../../src/js/data.ts").default;
 
 describe("data/country-data processAllCountries", () => {

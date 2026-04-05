@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import intlTelInput from "intl-tel-input";
 // @vue/compiler-sfc can't resolve types from bare package specifiers for defineProps, so we must use a relative path to the source file here.
-import type { SomeOptions } from "../../src/js/modules/types/public-api";
+import type { SomeOptions } from "../../src/js/types/public-api";
 import {
   onMounted,
   onUnmounted,

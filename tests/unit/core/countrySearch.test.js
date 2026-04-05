@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-const { getMatchedCountries, findFirstCountryStartingWith } = require("../../../src/js/modules/core/countrySearch.ts");
+const { getMatchedCountries, findFirstCountryStartingWith } = require("../../../src/js/core/countrySearch.ts");
 
 // helper to make a Country-like object
 const makeCountry = (overrides) => ({

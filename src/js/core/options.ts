@@ -1,6 +1,6 @@
 import { INITIAL_COUNTRY, PLACEHOLDER_MODES, NUMBER_TYPE_SET, LAYOUT } from "../constants";
-import defaultEnglishStrings from "../../i18n/en";
-import { isIso2, type Iso2 } from "../../data";
+import defaultEnglishStrings from "../i18n/en";
+import { isIso2, type Iso2 } from "../data";
 import type { AllOptions, SomeOptions } from "../types/public-api";
 
 // Helper for media query evaluation

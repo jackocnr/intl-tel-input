@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-const { isRegionlessNanp, regionlessNanpNumbers } = require("../../../src/js/modules/data/nanp-regionless.ts");
+const { isRegionlessNanp, regionlessNanpNumbers } = require("../../../src/js/data/nanp-regionless.ts");
 
 const regionlessNanpNumbersArray = Array.from(regionlessNanpNumbers);
 

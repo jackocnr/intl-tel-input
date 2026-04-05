@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-const { beforeSetNumber, formatNumberAsYouType } = require("../../../src/js/modules/format/formatting.ts");
+const { beforeSetNumber, formatNumberAsYouType } = require("../../../src/js/format/formatting.ts");
 
 describe("format/formatting beforeSetNumber", () => {
   const selected = { dialCode: "44" };

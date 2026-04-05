@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-const { translateCursorPosition } = require("../../../src/js/modules/format/caret.ts");
+const { translateCursorPosition } = require("../../../src/js/format/caret.ts");
 
 describe("format/caret translateCursorPosition", () => {
   test("returns 0 when at start and backspacing", () => {

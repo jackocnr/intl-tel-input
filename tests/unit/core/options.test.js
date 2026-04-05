@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { defaults, applyOptionSideEffects, validateOptions } = require("../../../src/js/modules/core/options.ts");
+const { defaults, applyOptionSideEffects, validateOptions } = require("../../../src/js/core/options.ts");
 
 describe("core/options applyOptionSideEffects", () => {
   const clone = () => JSON.parse(JSON.stringify(defaults));

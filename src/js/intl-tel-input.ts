@@ -1,5 +1,5 @@
 import allCountries, { type Country, type Iso2, isIso2 } from "./data";
-import { defaults, normaliseOptions, applyOptionSideEffects, validateOptions } from "./modules/core/options";
+import { defaults, normaliseOptions, applyOptionSideEffects, validateOptions } from "./core/options";
 import type {
   UtilsLoader,
   ItiUtils,
@@ -7,26 +7,26 @@ import type {
   AllOptions,
   SomeOptions,
   SelectedCountryData,
-} from "./modules/types/public-api";
-import { getNumeric } from "./modules/utils/string";
-import { getIsAndroid } from "./modules/utils/isAndroid";
-import { findFirstCountryStartingWith } from "./modules/core/countrySearch";
-import UI from "./modules/core/ui";
+} from "./types/public-api";
+import { getNumeric } from "./utils/string";
+import { getIsAndroid } from "./utils/isAndroid";
+import { findFirstCountryStartingWith } from "./core/countrySearch";
+import UI from "./core/ui";
 import {
   processAllCountries,
   processDialCodes,
   sortCountries,
   cacheSearchTokens,
   generateCountryNames,
-} from "./modules/data/country-data";
-import { hasRegionlessDialCode } from "./modules/data/intl-regionless";
+} from "./data/country-data";
+import { hasRegionlessDialCode } from "./data/intl-regionless";
 import {
   beforeSetNumber,
   formatNumberAsYouType,
-} from "./modules/format/formatting";
-import { translateCursorPosition } from "./modules/format/caret";
-import { isRegionlessNanp } from "./modules/data/nanp-regionless";
-import type { ItiEventMap } from "./modules/types/events";
+} from "./format/formatting";
+import { translateCursorPosition } from "./format/caret";
+import { isRegionlessNanp } from "./data/nanp-regionless";
+import type { ItiEventMap } from "./types/events";
 import {
   EVENTS,
   CLASSES,
@@ -41,10 +41,10 @@ import {
   DIAL,
   US,
   PLACEHOLDER_MODES,
-} from "./modules/constants";
-import { Numerals } from "./modules/core/numerals";
-import type { ForEachInstanceArgsMap } from "./modules/types/forEachInstanceArgsMap";
-export type { AllOptions, SomeOptions, SelectedCountryData } from "./modules/types/public-api";
+} from "./constants";
+import { Numerals } from "./core/numerals";
+import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap";
+export type { AllOptions, SomeOptions, SelectedCountryData } from "./types/public-api";
 
 declare global {
   interface HTMLInputElement {

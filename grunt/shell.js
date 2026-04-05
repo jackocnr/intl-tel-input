@@ -12,7 +12,7 @@ module.exports = function(grunt) {
       command: [
         'vite build --config vue/vite.config.mts',
         // Fix relative source path leaked by @vue/compiler-sfc into the .vue.d.ts files
-        `sed ${sedArg} -e "s|from '../../src/js/modules/types/public-api'|from 'intl-tel-input'|" vue/build/vue/src/IntlTelInput.vue.d.ts vue/build/vue/src/IntlTelInputWithUtils.vue.d.ts`,
+        `sed ${sedArg} -e "s|from '../../src/js/types/public-api'|from 'intl-tel-input'|" vue/build/vue/src/IntlTelInput.vue.d.ts vue/build/vue/src/IntlTelInputWithUtils.vue.d.ts`,
         // vite-plugin-dts mirrors the source directory structure (vue/src/) inside the output dir (vue/build/), resulting in vue/build/vue/src/*.d.ts. Flatten them to vue/build/.
         'mv vue/build/vue/src/*.d.ts vue/build/',
         'rm -rf vue/build/vue',
