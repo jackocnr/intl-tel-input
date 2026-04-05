@@ -60,7 +60,7 @@ Sets the disabled attribute of both the telephone input and the selected country
 Type: `Boolean`  
 Default: `false`  
 
-Sets the readonly attribute of the telephone input and disables the selected country button.
+Sets the readonly attribute of the telephone input and disables the selected country button. *Note: We recommend using this instead of `inputProps.readonly`.*
 
 ###### inputProps
 Type: `Object`  

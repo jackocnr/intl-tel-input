@@ -27,7 +27,7 @@ type ItiProps = {
   initOptions?: SomeOptions;
   inputProps?: InputProps;
   disabled?: boolean | undefined;
-  readonly?: boolean | undefined;
+  readOnly?: boolean | undefined;
 };
 
 export type IntlTelInputRef = {
@@ -46,7 +46,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     initOptions = {},
     inputProps = {},
     disabled = undefined,
-    readonly = undefined,
+    readOnly = undefined,
   }: ItiProps,
   ref: React.ForwardedRef<IntlTelInputRef>,
 ) {
@@ -137,10 +137,10 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }, [disabled]);
 
   useEffect(() => {
-    if (itiRef.current && readonly !== undefined) {
-      itiRef.current.setReadonly(readonly);
+    if (itiRef.current && readOnly !== undefined) {
+      itiRef.current.setReadonly(readOnly);
     }
-  }, [readonly]);
+  }, [readOnly]);
 
   // ignore keys that would break functionality
   const {

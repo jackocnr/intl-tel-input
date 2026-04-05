@@ -52,13 +52,13 @@ Here's a list of all of the current props you can pass to the IntlTelInput React
 Type: `Boolean`  
 Default: `false`  
 
-Sets the disabled attribute of both the telephone input and the selected country button. _Note: We recommend using this instead of `inputProps.disabled`._
+Disables both the telephone input and the selected country button. _Note: We recommend using this instead of `inputProps.disabled`._
 
-###### readonly
+###### readOnly
 Type: `Boolean`  
 Default: `false`  
 
-Sets the readonly attribute of the telephone input and disables the selected country button.
+Makes the telephone input read-only and disables the selected country button. _Note: We recommend using this instead of `inputProps.readOnly`._
 
 ###### initialValue
 Type: `String`  
