@@ -46,7 +46,7 @@
     //* File Extensions
     "**/*.svg",
     //* Specific files and folders
-    "src/js/intl-tel-input/data.ts",
+    "src/js/data.ts",
     "react/demo/validation-bundle.js",
     "react/demo/simple-bundle.js",
     "react/demo/toggle-disabled.js"

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 // ts-node allows us to require TypeScript files
 require("ts-node").register();
-const supportedCountries = require('../src/js/intl-tel-input/data.ts').default;
+const supportedCountries = require('../src/js/data.ts').default;
 
 module.exports = function(grunt) {
   grunt.registerTask('generate-sprite', async function() {

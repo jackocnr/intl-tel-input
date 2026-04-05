@@ -5,7 +5,7 @@ require("ts-node").register();
 
 module.exports = function(grunt) {
   grunt.registerTask('translations', 'Generate country translations', function() {
-    const supportedLocalesDirectory = "src/js/intl-tel-input/i18n";
+    const supportedLocalesDirectory = "src/js/i18n";
     const rootIndexFilePath = path.join(supportedLocalesDirectory, 'index.ts');
     let rootIndexFileContent = "//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.\n";
 

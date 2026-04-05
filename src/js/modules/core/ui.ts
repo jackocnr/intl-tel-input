@@ -1,4 +1,4 @@
-import type { Country, Iso2 } from "../../intl-tel-input/data";
+import type { Country, Iso2 } from "../../data";
 import type { AllOptions, SelectedCountryData } from "../types/public-api";
 import { buildClassNames, createEl } from "../utils/dom";
 import {

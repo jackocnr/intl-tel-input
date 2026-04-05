@@ -1,4 +1,4 @@
-import allCountries, { type Country, type Iso2, isIso2 } from "./intl-tel-input/data";
+import allCountries, { type Country, type Iso2, isIso2 } from "./data";
 import { defaults, normaliseOptions, applyOptionSideEffects, validateOptions } from "./modules/core/options";
 import type {
   UtilsLoader,

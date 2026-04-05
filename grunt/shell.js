@@ -25,8 +25,11 @@ module.exports = function(grunt) {
       command: 'node build.js'
     },
     genTsDeclaration: {
-      //* Clean up the module names by removing the /index suffix as this is how they will be used.
-      command: `tsc --p tsconfig.json && sed ${sedArg} -e "s/\\/index\\"/\\"/g" build/js/intlTelInput.d.ts`
+      command: [
+        'dts-bundle-generator --no-banner -o build/js/intlTelInput.d.ts src/js/intl-tel-input.ts',
+        'dts-bundle-generator --no-banner -o build/js/data.d.ts src/js/data.ts',
+        'dts-bundle-generator --no-banner -o build/js/i18n.d.ts src/js/i18n/index.ts',
+      ].join(' && ')
     },
     genReactTsDeclaration: {
       command: 'tsc --p react/tsconfig.json'

@@ -1,11 +1,11 @@
 /**
  * Locale bundle integrity checks.
  *
- * Verifies that each locale file in src/js/intl-tel-input/i18n/*
+ * Verifies that each locale file in src/js/i18n/*
  * contains exactly the expected UI translation keys.
  */
 
-// Keep in sync with src/js/intl-tel-input/i18n/types.ts
+// Keep in sync with src/js/i18n/types.ts
 const UI_TRANSLATION_KEYS = [
   "selectedCountryAriaLabel",
   "searchPlaceholder",
@@ -16,7 +16,7 @@ const UI_TRANSLATION_KEYS = [
   "searchSummaryAria",
 ];
 
-const localeModules = require("../../../src/js/intl-tel-input/i18n/index.ts");
+const localeModules = require("../../../src/js/i18n/index.ts");
 
 describe("i18n locale bundles", () => {
   test("each locale exports all and only the expected UI translation keys", () => {

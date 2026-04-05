@@ -51,6 +51,7 @@
     "@vue/tsconfig": "^0.7.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "cspell": "^8.6.1",
+    "dts-bundle-generator": "^9.5.1",
     "esbuild": "^0.25.0",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -127,7 +128,7 @@
       "default": "./build/js/intlTelInputWithUtils.js"
     },
     "./data": {
-      "types": "./build/js/intlTelInput.d.ts",
+      "types": "./build/js/data.d.ts",
       "import": "./build/js/data.mjs",
       "default": "./build/js/data.js"
     },
@@ -175,12 +176,12 @@
       "import": "./svelte/src/IntlTelInputWithUtils.svelte"
     },
     "./i18n": {
-      "types": "./build/js/intlTelInput.d.ts",
+      "types": "./build/js/i18n.d.ts",
       "import": "./build/js/i18n/index.js",
       "default": "./build/js/i18n/index.js"
     },
     "./i18n/*": {
-      "types": "./build/js/intlTelInput.d.ts",
+      "types": "./build/js/i18n.d.ts",
       "import": "./build/js/i18n/*/index.js",
       "default": "./build/js/i18n/*/index.js"
     },

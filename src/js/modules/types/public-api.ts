@@ -1,5 +1,5 @@
-import type { Country, Iso2 } from "../../intl-tel-input/data";
-import type { I18n } from "../../intl-tel-input/i18n/types";
+import type { Country, Iso2 } from "../../data";
+import type { I18n } from "../../i18n/types";
 import type { NUMBER_TYPE_SET, PLACEHOLDER_MODES } from "../constants";
 
 // Loader for the utils module

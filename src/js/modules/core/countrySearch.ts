@@ -1,7 +1,7 @@
 // * Country search & ranking logic extracted from intl-tel-input.ts
 // * Maintains original comments/order. Pure functions for reuse & testability.
 
-import type { Country } from "../../intl-tel-input/data";
+import type { Country } from "../../data";
 import { normaliseString } from "../utils/string";
 
 /**

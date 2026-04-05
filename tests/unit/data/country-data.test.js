@@ -9,7 +9,7 @@ const {
   sortCountries,
   cacheSearchTokens,
 } = require("../../../src/js/modules/data/country-data.ts");
-const allCountries = require("../../../src/js/intl-tel-input/data.ts").default;
+const allCountries = require("../../../src/js/data.ts").default;
 
 describe("data/country-data processAllCountries", () => {
   test("onlyCountries filters list", () => {

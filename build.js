@@ -74,7 +74,7 @@ build({
   banner: {
     js: getBanner("allCountries"),
   },
-  entryPoints: ["src/js/intl-tel-input/data.ts"],
+  entryPoints: ["src/js/data.ts"],
   minify: false,
   outfile: "build/js/data.js",
 });
@@ -85,7 +85,7 @@ build({
   banner: {
     js: getBanner("allCountries"),
   },
-  entryPoints: ["src/js/intl-tel-input/data.ts"],
+  entryPoints: ["src/js/data.ts"],
   minify: true,
   outfile: "build/js/data.min.js",
 });
@@ -96,7 +96,7 @@ build({
   banner: {
     js: getBanner("intlTelInput"),
   },
-  entryPoints: ["src/js/intl-tel-input/intlTelInputWithUtils.ts"],
+  entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   minify: false,
   outfile: "build/js/intlTelInputWithUtils.js",
 });
@@ -107,7 +107,7 @@ build({
   banner: {
     js: getBanner("intlTelInput"),
   },
-  entryPoints: ["src/js/intl-tel-input/intlTelInputWithUtils.ts"],
+  entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   minify: true,
   outfile: "build/js/intlTelInputWithUtils.min.js",
 });
@@ -121,19 +121,19 @@ build({
 
 build({
   ...esmShared,
-  entryPoints: ["src/js/intl-tel-input/intlTelInputWithUtils.ts"],
+  entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   outfile: "build/js/intlTelInputWithUtils.mjs",
 });
 
 build({
   ...esmShared,
-  entryPoints: ["src/js/intl-tel-input/data.ts"],
+  entryPoints: ["src/js/data.ts"],
   outfile: "build/js/data.mjs",
 });
 
 //* build/js/i18n
 build({
   charset: "utf8",
-  entryPoints: ["src/js/intl-tel-input/i18n/**/*.ts"],
+  entryPoints: ["src/js/i18n/**/*.ts"],
   outdir: "build/js/i18n",
 });
