@@ -74,11 +74,13 @@ export class IntlTelInputComponent
   @ViewChild("inputRef", { static: true })
   inputRef!: ElementRef<HTMLInputElement>;
 
+  /** initialValue and initOptions are only used during initialization — changes after init are ignored. */
   @Input() initialValue?: string;
+  @Input() initOptions?: SomeOptions;
+
   @Input() usePreciseValidation: boolean = false;
   @Input() inputProps: Record<string, string> = {};
   @Input() disabled: boolean = false;
-  @Input() initOptions?: SomeOptions;
   @Input() readonly: boolean = false;
 
   @Output() numberChange = new EventEmitter<string>();
@@ -109,9 +111,7 @@ export class IntlTelInputComponent
   private onValidatorChange: () => void = () => {};
 
   ngAfterViewInit() {
-    if (this.inputRef.nativeElement) {
-      this.iti = intlTelInput(this.inputRef.nativeElement, this.initOptions);
-    }
+    this.iti = intlTelInput(this.inputRef.nativeElement, this.initOptions);
 
     this.inputRef.nativeElement.addEventListener(
       "countrychange",
@@ -121,15 +121,15 @@ export class IntlTelInputComponent
     this.applyInputProps();
 
     if (this.initialValue) {
-      this.iti?.setNumber(this.initialValue);
+      this.iti.setNumber(this.initialValue);
     }
 
     if (this.disabled) {
-      this.iti?.setDisabled(this.disabled);
+      this.iti.setDisabled(this.disabled);
     }
 
     if (this.readonly) {
-      this.iti?.setReadonly(this.readonly);
+      this.iti.setReadonly(this.readonly);
     }
   }
 
@@ -219,7 +219,7 @@ export class IntlTelInputComponent
    * This method must be called in `ngAfterViewInit` or later lifecycle hooks,
    * not in `ngOnInit` or the `constructor`, as the component needs to be fully initialized.
    */
-  getInstance(): Iti | null {
+  getInstance(): Iti | undefined {
     return this.iti;
   }
 
@@ -227,7 +227,7 @@ export class IntlTelInputComponent
    * This method must be called in `ngAfterViewInit` or later lifecycle hooks,
    * not in `ngOnInit` or the `constructor`, as the component needs to be fully initialized.
    */
-  getInput(): HTMLInputElement | null {
+  getInput(): HTMLInputElement {
     return this.inputRef.nativeElement;
   }
 
@@ -259,6 +259,7 @@ export class IntlTelInputComponent
   writeValue(value: string | null): void {
     if (this.iti) {
       this.iti.setNumber(value || "");
+      this.handleInput();
     }
   }
 
@@ -277,8 +278,8 @@ export class IntlTelInputComponent
 
   // ============ Validator Implementation ============
 
-  validate(control: AbstractControl): ValidationErrors | null {
-    if (!control.value || !this.iti) {
+  validate(_control: AbstractControl): ValidationErrors | null {
+    if (!this.iti || !this.iti.getNumber()) {
       return null;
     }
 
