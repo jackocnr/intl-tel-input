@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import IntlTelInput, { intlTelInput } from "intl-tel-input/angular";
 import "intl-tel-input/styles";
 
-const getErrorMessage = (number, errorCode) => {
-  if (!number) return "Please enter a number";
+const getErrorMessage = (errorCode) => {
   const genericError = "Invalid number";
+  if (errorCode === null) return genericError;
   const { validationError } = intlTelInput.utils;
   const errorMap = {
     [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
@@ -22,9 +22,6 @@ const getErrorMessage = (number, errorCode) => {
     <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
       <intl-tel-input
         formControlName="phone"
-        (numberChange)="number = $event"
-        (validityChange)="isValid = $event"
-        (errorCodeChange)="errorCode = $event"
         initialCountry="us"
         [loadUtils]="loadUtils"
       />
@@ -38,20 +35,22 @@ const getErrorMessage = (number, errorCode) => {
   imports: [IntlTelInput, ReactiveFormsModule],
 })
 export class AppComponent {
-  number = "";
-  isValid = false;
-  errorCode = null;
   showValidation = false;
 
   loadUtils = () => import("intl-tel-input/utils");
 
   fg = new FormGroup({
-    phone: new FormControl(""),
+    phone: new FormControl("", [Validators.required]),
   });
 
+  get phone() {
+    return this.fg.get("phone");
+  }
+
   get invalidMsg() {
-    if (!this.showValidation || this.isValid) return null;
-    return getErrorMessage(this.number, this.errorCode);
+    if (!this.showValidation || this.phone?.valid) return null;
+    if (!this.phone?.value) return "Please enter a number";
+    return getErrorMessage(this.phone.errors?.["invalidPhone"] ?? null);
   }
 
   handleSubmit() {

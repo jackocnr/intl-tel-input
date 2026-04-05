@@ -2,11 +2,10 @@ import "zone.js";
 import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import IntlTelInput, { intlTelInput } from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 
-const getErrorMessage = (number: string | null, errorCode: number | null): string => {
-  if (!number) return "Please enter a number";
+const getErrorMessage = (errorCode: number | null): string => {
   const genericError = "Invalid number";
   if (errorCode === null) return genericError;
   // @ts-expect-error intlTelInput.utils is populated after utils script loads.
@@ -27,9 +26,6 @@ const getErrorMessage = (number: string | null, errorCode: number | null): strin
       <div class="col-auto">
         <intl-tel-input
           formControlName="phone"
-          (numberChange)="handleNumberChange($event)"
-          (validityChange)="isValid = $event"
-          (errorCodeChange)="errorCode = $event"
           (blur)="enableValidation()"
           initialCountry="us"
           [loadUtils]="loadUtils"
@@ -52,9 +48,6 @@ const getErrorMessage = (number: string | null, errorCode: number | null): strin
   imports: [IntlTelInput, ReactiveFormsModule],
 })
 export class AppComponent {
-  number = "";
-  isValid = false;
-  errorCode: number | null = null;
   showValidation = false;
   submitted = false;
 
@@ -63,41 +56,40 @@ export class AppComponent {
   loadUtils = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>");
 
   fg: FormGroup = new FormGroup({
-    phone: new FormControl<string>(""),
+    phone: new FormControl<string>("", [Validators.required]),
   });
+
+  get phone() {
+    return this.fg.get("phone");
+  }
 
   get inputValidityClass(): string {
     if (!this.showValidation) return "";
-    return this.number && this.isValid ? "is-valid" : "is-invalid";
+    return this.phone?.value && this.phone?.valid ? "is-valid" : "is-invalid";
   }
 
   get invalidMsg(): string | null {
-    if (!this.showValidation || this.isValid) return null;
-    return getErrorMessage(this.number, this.errorCode);
+    if (!this.showValidation || !this.phone || this.phone.valid) return null;
+    if (!this.phone.value) return "Please enter a number";
+    return getErrorMessage(this.phone.errors?.["invalidPhone"] ?? null);
   }
 
   get validMsg(): string | null {
     const showValid =
-      this.showValidation && this.number && this.isValid && this.submitted;
-    return showValid ? `Full number: ${this.number}` : null;
+      this.showValidation && this.phone?.value && this.phone?.valid && this.submitted;
+    return showValid ? `Full number: ${this.phone.value}` : null;
   }
 
   get inputAttributes(): Record<string, unknown> {
     return {
       name: "phone",
       title: "Enter your phone number",
-      required: true,
       class: `form-control ${this.inputValidityClass}`,
     };
   }
 
   enableValidation(): void {
     this.showValidation = true;
-  }
-
-  handleNumberChange(newNumber: string): void {
-    this.submitted = false;
-    this.number = newNumber;
   }
 
   handleSubmit(): void {
