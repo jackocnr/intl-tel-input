@@ -1,12 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-// ts-node allows us to require TypeScript files
-require("ts-node").register();
-const supportedCountries = require('../src/js/data.ts').default;
 
 module.exports = function(grunt) {
   grunt.registerTask('generate-sprite', async function() {
     const done = this.async();
+    // Use dynamic import for ESM-compatible .ts file
+    const { default: supportedCountries } = await import('../src/js/data.ts');
     // Require "sharp" on demand, else Travis was breaking with "Error: Could not load the "sharp" module using the linux-x64 runtime" when Travis doesn't even use this task
     const sharp = require('sharp');
     // ensure /build/img/ dir exists before trying to write to it

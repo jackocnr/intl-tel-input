@@ -42,7 +42,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
   },
   overrides: [{
-    files: [".eslintrc.{js,cjs}"],
+    files: [".eslintrc.cjs"],
     env: { "node": true },
     parserOptions: { "sourceType": "script" },
   }, {
