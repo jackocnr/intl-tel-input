@@ -3,12 +3,11 @@ import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import IntlTelInput, { intlTelInput } from "../../../build/intl-tel-input/angular/IntlTelInput.js";
+import IntlTelInput, { intlTelInput } from "../../../../angular/build/IntlTelInput.js";
 
 const getErrorMessage = (errorCode: number | null): string => {
   const genericError = "Invalid number";
   if (errorCode === null) return genericError;
-  // @ts-expect-error intlTelInput.utils is populated after utils script loads.
   const { validationError } = intlTelInput.utils!;
   const errorMap = {
     [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",

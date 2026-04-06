@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
-// @ts-expect-error resolved at build time.
-import IntlTelInput, { intlTelInput } from "../../../build/intl-tel-input/react/IntlTelInput.js";
+import IntlTelInput, { intlTelInput } from "../../../../react/build/IntlTelInput.js";
 
 const getErrorMessage = (number: string, errorCode: number | null): string => {
   if (!number) return "Please enter a number";

@@ -1,5 +1,5 @@
 <script>
-  import IntlTelInput, { intlTelInput } from "intl-tel-input/svelteWithUtils";
+  import IntlTelInput, { intlTelInput } from "intl-tel-input/svelte";
   import "intl-tel-input/styles";
 
   const getErrorMessage = (number, errorCode) => {
