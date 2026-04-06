@@ -1,55 +1,40 @@
 import { build } from "esbuild";
 import packageJson from "./package.json" with { type: "json" };
 
-const getBanner = (moduleName) =>
+const banner =
   "/*\n" +
   ` * International Telephone Input v${packageJson.version}\n` +
   ` * ${packageJson.repository.url}\n` +
   " * Licensed under the MIT license\n" +
-  " */\n\n" +
-  // we can remove this UMD hack once it is supported by esbuild: https://github.com/evanw/esbuild/issues/507
-  "// UMD\n" +
-  "(function(factory) {\n" +
-  "  if (typeof module === 'object' && module.exports) {\n" +
-  "    module.exports = factory();\n" +
-  "  } else {\n" +
-  `    window.${moduleName} = factory();\n` +
-  "  }\n" +
-  "}(() => {\n";
-
-const footer =
-  "\n// UMD\n" +
-  "  return factoryOutput.default;\n" +
-  "}));";
+  " */";
 
 const shared = {
   bundle: true,
   logLevel: "info",
-  format: "iife",
-  globalName: "factoryOutput",
-  footer: {
-    js: footer,
-  },
   define: {
     "process.env.VERSION": `"${packageJson.version}"`,
+  },
+  alias: {
+    "utils-compiled": "./build/js/utils.js",
   },
 };
 
+const getIife = (globalName) => ({
+  ...shared,
+  format: "iife",
+  globalName: "_factory",
+  banner: { js: banner },
+  footer: { js: `var ${globalName} = _factory.default;` },
+});
+
 const esmShared = {
-  bundle: true,
-  logLevel: "info",
+  ...shared,
   format: "esm",
-  define: {
-    "process.env.VERSION": `"${packageJson.version}"`,
-  },
 };
 
 //* build/js/intlTelInput.js
 build({
-  ...shared,
-  banner: {
-    js: getBanner("intlTelInput"),
-  },
+  ...getIife("intlTelInput"),
   entryPoints: ["src/js/intl-tel-input.ts"],
   minify: false,
   outfile: "build/js/intlTelInput.js",
@@ -57,10 +42,7 @@ build({
 
 //* build/js/intlTelInput.min.js
 build({
-  ...shared,
-  banner: {
-    js: getBanner("intlTelInput"),
-  },
+  ...getIife("intlTelInput"),
   entryPoints: ["src/js/intl-tel-input.ts"],
   minify: true,
   outfile: "build/js/intlTelInput.min.js",
@@ -68,10 +50,7 @@ build({
 
 //* build/js/data.js
 build({
-  ...shared,
-  banner: {
-    js: getBanner("allCountries"),
-  },
+  ...getIife("allCountries"),
   entryPoints: ["src/js/data.ts"],
   minify: false,
   outfile: "build/js/data.js",
@@ -79,28 +58,15 @@ build({
 
 //* build/js/data.min.js
 build({
-  ...shared,
-  banner: {
-    js: getBanner("allCountries"),
-  },
+  ...getIife("allCountries"),
   entryPoints: ["src/js/data.ts"],
   minify: true,
   outfile: "build/js/data.min.js",
 });
 
-const withUtilsAlias = {
-  alias: {
-    "utils-compiled": "./build/js/utils.js",
-  },
-};
-
 //* build/js/intlTelInputWithUtils.js
 build({
-  ...shared,
-  ...withUtilsAlias,
-  banner: {
-    js: getBanner("intlTelInput"),
-  },
+  ...getIife("intlTelInput"),
   entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   minify: false,
   outfile: "build/js/intlTelInputWithUtils.js",
@@ -108,11 +74,7 @@ build({
 
 //* build/js/intlTelInputWithUtils.min.js
 build({
-  ...shared,
-  ...withUtilsAlias,
-  banner: {
-    js: getBanner("intlTelInput"),
-  },
+  ...getIife("intlTelInput"),
   entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   minify: true,
   outfile: "build/js/intlTelInputWithUtils.min.js",
@@ -127,7 +89,6 @@ build({
 
 build({
   ...esmShared,
-  ...withUtilsAlias,
   entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   outfile: "build/js/intlTelInputWithUtils.mjs",
 });
