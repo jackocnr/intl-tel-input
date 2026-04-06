@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, checkFlagSelected } = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+import { initPlugin, teardown, checkFlagSelected } from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 describe("nationalMode option", () => {
   describe("nationalMode=true, empty input", () => {

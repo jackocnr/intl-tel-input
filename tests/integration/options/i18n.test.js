@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, clickSelectedCountryAsync, getSearchInput } = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+import { initPlugin, teardown, clickSelectedCountryAsync, getSearchInput } from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 // i18n: custom strings should override defaults (placeholder text, labels, and a country name override)
 describe("i18n option", () => {

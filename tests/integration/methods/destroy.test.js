@@ -1,13 +1,13 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const {
+import {
   initPlugin,
   teardown,
   getCountryContainer,
   getCountryListElement,
-} = require("../helpers/helpers");
+} from "../helpers/helpers";
 
 describe("destroy method", () => {
   describe("vanilla init", () => {

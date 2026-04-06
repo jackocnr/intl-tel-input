@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, getDropdownElement } = require("../helpers/helpers");
+import { initPlugin, teardown, getDropdownElement } from "../helpers/helpers";
 
 // fixDropdownWidth: when true, dropdown should not have flexible width class; when false it should.
 describe("fixDropdownWidth option", () => {

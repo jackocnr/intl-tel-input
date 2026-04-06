@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { initPlugin, teardown, intlTelInput } = require("../helpers/helpers");
+import { initPlugin, teardown, intlTelInput } from "../helpers/helpers";
 const numberType = intlTelInput.utils.numberType;
 
 describe("getNumberType method", () => {

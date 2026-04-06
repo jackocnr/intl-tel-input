@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, clickSelectedCountryAsync } = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+import { initPlugin, teardown, clickSelectedCountryAsync } from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 describe("containerClass option", () => {
   describe("basic", () => {

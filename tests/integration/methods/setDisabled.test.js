@@ -1,15 +1,15 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { userEvent } = require("@testing-library/user-event");
-const {
+import { userEvent } from "@testing-library/user-event";
+import {
   initPlugin,
   teardown,
   clickSelectedCountryAsync,
   isDropdownOpen,
   getSelectedCountryButton,
-} = require("../helpers/helpers");
+} from "../helpers/helpers";
 
 describe("setDisabled method", () => {
   let iti, user, container, input;

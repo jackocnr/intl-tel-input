@@ -1,15 +1,15 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const {
+import {
   initPlugin,
   teardown,
   clickSelectedCountryAsync,
   getCountryListElement,
   isDropdownOpen,
   selectCountryAsync,
-} = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+} from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 describe("dropdownContainer option", () => {
   describe("dropdownContainer=null", () => {

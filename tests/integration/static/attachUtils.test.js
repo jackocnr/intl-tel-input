@@ -1,10 +1,10 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const intlTelInput = require("intl-tel-input");
-const { initPlugin, resetPackageAfterEach } = require("../helpers/helpers");
-require("../helpers/matchers");
+import intlTelInput from "intl-tel-input";
+import { initPlugin, resetPackageAfterEach } from "../helpers/helpers";
+import "../helpers/matchers";
 
 describe("attachUtils", function() {
   resetPackageAfterEach(intlTelInput);
@@ -39,7 +39,7 @@ describe("attachUtils", function() {
         const { iti } = initPlugin({
           intlTelInput,
           options: {
-            loadUtils: () => import("some/other/url/ok"),
+            loadUtils: () => { const url = "some/other/url/ok"; return import(/* @vite-ignore */ url); },
           },
         });
         await iti.promise;
@@ -52,14 +52,14 @@ describe("attachUtils", function() {
 
 
   describe("init plugin with loadUtils option, but force documentReady=false so it wont fire", function() {
-    /** @type {jest.Mock<() => Promise<any>>} */
+    /** @type {vi.Mock<() => Promise<any>>} */
     let utilsLoader;
     /** @type {intlTelInput.Iti} */
     let iti;
 
     beforeEach(function() {
-      jest.spyOn(intlTelInput, "documentReady").mockReturnValue(false);
-      utilsLoader = jest.fn(async () => import("intl-tel-input/utils"));
+      vi.spyOn(intlTelInput, "documentReady").mockReturnValue(false);
+      utilsLoader = vi.fn(async () => import("intl-tel-input/utils"));
 
       ({ iti } = initPlugin({
         intlTelInput,
@@ -126,7 +126,7 @@ describe("attachUtils", function() {
     let iti;
 
     beforeEach(function() {
-      jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
+      vi.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
       ({ iti } = initPlugin({
         intlTelInput,
         options: { loadUtils: utilsLoader },
@@ -186,7 +186,7 @@ describe("attachUtils", function() {
     });
 
     test("does not call the function a second time", async () => {
-      const loader = jest.fn(async () => mockUtils);
+      const loader = vi.fn(async () => mockUtils);
 
       await intlTelInput.attachUtils(loader);
       await intlTelInput.attachUtils(loader);

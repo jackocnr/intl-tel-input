@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown } = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+import { initPlugin, teardown } from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 // formatAsYouType: true (default) should format while typing, false should not.
 describe("formatAsYouType option", () => {

@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { userEvent } = require("@testing-library/user-event");
-const { initPlugin, teardown, openDropdownSelectCountryAsync } = require("../helpers/helpers");
+import { userEvent } from "@testing-library/user-event";
+import { initPlugin, teardown, openDropdownSelectCountryAsync } from "../helpers/helpers";
 
 describe("customPlaceholder option", () => {
   let iti, input, container, user;

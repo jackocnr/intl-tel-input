@@ -27,7 +27,7 @@ Any time you make changes, you’ll need to rebuild the plugin. You can run `npm
 
 ### Tests
 
-After building all the assets (`npm run build`) you can run `npm test` to run all the tests (Jest + Playwright). For Playwright, you may also need to install the browsers first with `npx playwright install`.
+After building all the assets (`npm run build`) you can run `npm test` to run all the tests (Vitest + Playwright). For Playwright, you may also need to install the browsers first with `npx playwright install`.
 
 ## Updating the flag images
 

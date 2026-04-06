@@ -4,7 +4,6 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
-    "jest/globals": true,
   },
   extends: [
     "eslint:recommended",
@@ -20,7 +19,6 @@ module.exports = {
   plugins: [
     "@typescript-eslint",
     "react",
-    "jest",
   ],
   globals: {
     goog: true,
@@ -41,14 +39,24 @@ module.exports = {
       "caughtErrorsIgnorePattern": "^_",
       "ignoreRestSiblings": true,
     }],
-    "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-require-imports": "off",
   },
   overrides: [{
     files: [".eslintrc.{js,cjs}"],
     env: { "node": true },
     parserOptions: { "sourceType": "script" },
+  }, {
+    files: ["tests/**/*.js"],
+    globals: {
+      describe: "readonly",
+      test: "readonly",
+      expect: "readonly",
+      beforeEach: "readonly",
+      afterEach: "readonly",
+      beforeAll: "readonly",
+      afterAll: "readonly",
+      vi: "readonly",
+    },
   }],
   settings: {
     "import/resolver": {

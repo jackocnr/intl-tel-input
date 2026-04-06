@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { intlTelInput } = require("../helpers/helpers");
+import { intlTelInput } from "../helpers/helpers";
 
 // no setup/teardown needed for static method test
 describe("getCountryData static", () => {

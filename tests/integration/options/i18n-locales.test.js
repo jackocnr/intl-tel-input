@@ -5,6 +5,8 @@
  * contains exactly the expected UI translation keys.
  */
 
+import * as localeModules from "../../../src/js/i18n/index.ts";
+
 // Keep in sync with src/js/i18n/types.ts
 const UI_TRANSLATION_KEYS = [
   "selectedCountryAriaLabel",
@@ -15,8 +17,6 @@ const UI_TRANSLATION_KEYS = [
   "searchEmptyState",
   "searchSummaryAria",
 ];
-
-const localeModules = require("../../../src/js/i18n/index.ts");
 
 describe("i18n locale bundles", () => {
   test("each locale exports all and only the expected UI translation keys", () => {

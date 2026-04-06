@@ -1,14 +1,14 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const {
+import {
   initPlugin,
   teardown,
   getCountryListLength,
   checkFlagSelected,
   getCountriesInList,
-} = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+} from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 describe("onlyCountries option", () => {
   describe("restrict to japan, china and korea", () => {

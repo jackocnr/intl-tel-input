@@ -1,8 +1,8 @@
 /**
- * @jest-environment node
+ * @vitest-environment node
  */
 
-const { beforeSetNumber, formatNumberAsYouType } = require("../../../src/js/format/formatting.ts");
+import { beforeSetNumber, formatNumberAsYouType } from "../../../src/js/format/formatting.ts";
 
 describe("format/formatting beforeSetNumber", () => {
   const selected = { dialCode: "44" };
@@ -22,14 +22,14 @@ describe("format/formatting formatNumberAsYouType", () => {
   const selected = { dialCode: "44", iso2: "gb" };
 
   test("uses utils when provided", () => {
-    const utils = { formatNumberAsYouType: jest.fn(() => "+44 1234") };
+    const utils = { formatNumberAsYouType: vi.fn(() => "+44 1234") };
     const out = formatNumberAsYouType("+441234", "+441234", utils, selected, false);
     expect(out).toBe("+44 1234");
     expect(utils.formatNumberAsYouType).toHaveBeenCalled();
   });
 
   test("strips dial code for separateDialCode when not retyped", () => {
-    const utils = { formatNumberAsYouType: jest.fn(() => "+44 1234") };
+    const utils = { formatNumberAsYouType: vi.fn(() => "+44 1234") };
     const out = formatNumberAsYouType("+441234", "1234", utils, selected, true);
     expect(out).toBe("1234");
   });

@@ -1,9 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const imported = require("../../../src/js/intl-tel-input.ts");
-const intlTelInput = imported.default || imported;
+import intlTelInput from "../../../src/js/intl-tel-input.ts";
 
 describe("Iti constructor argument validation", () => {
   test("throws if input is not an HTMLInputElement", () => {

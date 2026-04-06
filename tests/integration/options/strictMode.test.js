@@ -1,17 +1,17 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { userEvent } = require("@testing-library/user-event");
-const { fireEvent } = require("@testing-library/dom");
-const {
+import { userEvent } from "@testing-library/user-event";
+import { fireEvent } from "@testing-library/dom";
+import {
   initPlugin,
   teardown,
   stripFormattingChars,
   selectCountryAndTypePlaceholderNumberAsync,
   checkFlagSelected,
   getPasteEventObject,
-} = require("../helpers/helpers");
+} from "../helpers/helpers";
 
 
 // NATIONAL MODE ENABLED

@@ -1,9 +1,9 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { userEvent } = require("@testing-library/user-event");
-const {
+import { userEvent } from "@testing-library/user-event";
+import {
   initPlugin,
   teardown,
   getCountryListLength,
@@ -11,7 +11,7 @@ const {
   openDropdownSelectCountryAsync,
   clickSelectedCountryAsync,
   isDropdownOpen,
-} = require("../helpers/helpers");
+} from "../helpers/helpers";
 
 describe("multiple instances", () => {
   let user, iti1, iti2, input1, container1, container2;

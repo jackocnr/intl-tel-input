@@ -1,15 +1,15 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { userEvent } = require("@testing-library/user-event");
-const {
+import { userEvent } from "@testing-library/user-event";
+import {
   initPlugin,
   teardown,
   getSelectedDialCodeText,
   typePlaceholderNumberAsync,
   checkFlagSelected,
-} = require("../helpers/helpers");
+} from "../helpers/helpers";
 
 
 //* We test with UK because the ntl number is different to the intl number (aside from the dial code).

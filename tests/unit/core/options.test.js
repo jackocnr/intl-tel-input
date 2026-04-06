@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { defaults, applyOptionSideEffects, validateOptions } = require("../../../src/js/core/options.ts");
+import { defaults, applyOptionSideEffects, validateOptions } from "../../../src/js/core/options.ts";
 
 describe("core/options applyOptionSideEffects", () => {
   const clone = () => JSON.parse(JSON.stringify(defaults));
@@ -48,7 +48,7 @@ describe("core/options validateOptions", () => {
   let warnSpy;
 
   beforeEach(() => {
-    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   afterEach(() => {

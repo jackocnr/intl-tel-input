@@ -1,9 +1,9 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { userEvent } = require("@testing-library/user-event");
-const {
+import { userEvent } from "@testing-library/user-event";
+import {
   initPlugin,
   teardown,
   getCountryListLength,
@@ -11,12 +11,11 @@ const {
   getSearchInput,
   clickSelectedCountryAsync,
   getCountriesInList,
-} = require("../helpers/helpers");
-const allCountries = require("../../../build/js/data");
+} from "../helpers/helpers";
+import allCountries from "../../../build/js/data.mjs";
 const allCountryCodes = allCountries.map((country) => country.iso2);
 
-//* Without the advanceTimers bit, the (time related) tests just hang, see https://github.com/jestjs/jest/issues/12056#issuecomment-1090189268
-jest.useFakeTimers({advanceTimers: true});
+vi.useFakeTimers({shouldAdvanceTime: true});
 
 
 describe("countrySearch option", () => {
@@ -46,7 +45,7 @@ describe("countrySearch option", () => {
   test("typing iso2 code, 'gb' filters countries correctly", async () => {
     await user.type(searchInput, "gb");
     //* Allow for the (intentional) 100ms delay on the search handler.
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(2);
@@ -57,7 +56,7 @@ describe("countrySearch option", () => {
   test("typing start of country name, 'uk', filters countries correctly", async () => {
     await user.type(searchInput, "uk");
     //* Allow for the (intentional) 100ms delay on the search handler.
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
     // Ukraine comes first because name-starts-with takes priority over initials
     const countriesInList = getCountriesInList(container);
@@ -69,7 +68,7 @@ describe("countrySearch option", () => {
   test("typing country initials, 'us', filters countries correctly", async () => {
     await user.type(searchInput, "us");
     //* Allow for the (intentional) 100ms delay on the search handler.
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(8);
@@ -80,7 +79,7 @@ describe("countrySearch option", () => {
   test("typing 'sk', filters countries correctly", async () => {
     await user.type(searchInput, "sk");
     //* Allow for the (intentional) 100ms delay on the search handler.
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(3);
@@ -91,7 +90,7 @@ describe("countrySearch option", () => {
   test("typing 'bar', filters countries correctly", async () => {
     await user.type(searchInput, "bar");
     //* Allow for the (intentional) 100ms delay on the search handler.
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(4);
@@ -102,7 +101,7 @@ describe("countrySearch option", () => {
   test("typing '44', filters countries correctly", async () => {
     await user.type(searchInput, "44");
     //* Allow for the (intentional) 100ms delay on the search handler.
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(5);
@@ -113,7 +112,7 @@ describe("countrySearch option", () => {
   test("typing '+44', filters countries correctly", async () => {
     await user.type(searchInput, "+44");
     //* Allow for the (intentional) 100ms delay on the search handler.
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
     const countriesInList = getCountriesInList(container);
     expect(countriesInList.length).toBe(4);
@@ -128,10 +127,10 @@ describe("countrySearch option", () => {
 
     await user.type(searchInput, "c");
     //* Allow for the (intentional) 100ms delay on the search handler.
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     // delete the 'c'
     await user.type(searchInput, "{backspace}");
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
     // check we are back to the starting list
     const countriesInListAtEnd = getCountriesInList(container);

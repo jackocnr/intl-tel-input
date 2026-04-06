@@ -1,9 +1,9 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { userEvent } = require("@testing-library/user-event");
-const {
+import { userEvent } from "@testing-library/user-event";
+import {
   initPlugin,
   teardown,
   clickSelectedCountryAsync,
@@ -14,7 +14,7 @@ const {
   checkFlagSelected,
   injectInput,
   getDropdownElement,
-} = require("../helpers/helpers");
+} from "../helpers/helpers";
 
 describe("using dropdown", () => {
   let iti, user, container, input;

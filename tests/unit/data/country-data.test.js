@@ -1,15 +1,15 @@
 /**
- * @jest-environment node
+ * @vitest-environment node
  */
 
-const {
+import {
   processAllCountries,
   generateCountryNames,
   processDialCodes,
   sortCountries,
   cacheSearchTokens,
-} = require("../../../src/js/data/country-data.ts");
-const allCountries = require("../../../src/js/data.ts").default;
+} from "../../../src/js/data/country-data.ts";
+import allCountries from "../../../src/js/data.ts";
 
 describe("data/country-data processAllCountries", () => {
   test("onlyCountries filters list", () => {

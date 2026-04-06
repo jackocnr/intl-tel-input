@@ -1,14 +1,14 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { userEvent } = require("@testing-library/user-event");
-const {
+import { userEvent } from "@testing-library/user-event";
+import {
   injectInput,
   initPlugin,
   teardown,
   openDropdownSelectCountryAsync,
-} = require("../helpers/helpers");
+} from "../helpers/helpers";
 
 describe("countrychange event", () => {
   let input, iti, mockEventHandler, container, user;
@@ -16,7 +16,7 @@ describe("countrychange event", () => {
   beforeEach(() => {
     user = userEvent.setup();
     input = injectInput();
-    mockEventHandler = jest.fn();
+    mockEventHandler = vi.fn();
     input.addEventListener("countrychange", mockEventHandler);
     ({ iti, container } = initPlugin({ input }));
   });

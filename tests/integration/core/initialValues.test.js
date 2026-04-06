@@ -1,12 +1,12 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const {
+import {
   initPlugin,
   teardown,
   checkFlagSelected,
-} = require("../helpers/helpers");
+} from "../helpers/helpers";
 
 describe("initial values", () => {
   let iti, input, container;

@@ -1,8 +1,8 @@
 /**
- * @jest-environment node
+ * @vitest-environment node
  */
 
-const { translateCursorPosition } = require("../../../src/js/format/caret.ts");
+import { translateCursorPosition } from "../../../src/js/format/caret.ts";
 
 describe("format/caret translateCursorPosition", () => {
   test("returns 0 when at start and backspacing", () => {

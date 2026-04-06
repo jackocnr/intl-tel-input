@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { userEvent } = require("@testing-library/user-event");
-const { initPlugin, teardown, getCountriesInList, totalCountries, checkFlagSelected } = require("../helpers/helpers");
+import { userEvent } from "@testing-library/user-event";
+import { initPlugin, teardown, getCountriesInList, totalCountries, checkFlagSelected } from "../helpers/helpers";
 
 describe("excludeCountries option", () => {
   describe("none excluded", () => {

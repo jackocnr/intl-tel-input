@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, getCountriesInList } = require("../helpers/helpers");
+import { initPlugin, teardown, getCountriesInList } from "../helpers/helpers";
 
 // countryOrder: ensure specified order is applied before default name sort.
 describe("countryOrder option", () => {

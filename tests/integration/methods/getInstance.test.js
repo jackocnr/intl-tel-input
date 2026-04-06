@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, injectInput, intlTelInput } = require("../helpers/helpers");
+import { initPlugin, teardown, injectInput, intlTelInput } from "../helpers/helpers";
 
 describe("getInstance static", () => {
   let iti, input;

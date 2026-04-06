@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, checkFlagSelected, getSelectedCountryButton } = require("../helpers/helpers");
+import { initPlugin, teardown, checkFlagSelected, getSelectedCountryButton } from "../helpers/helpers";
 
 describe("setCountry method", () => {
   describe("vanilla init", () => {

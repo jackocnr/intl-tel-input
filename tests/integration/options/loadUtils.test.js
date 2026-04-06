@@ -1,9 +1,9 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const intlTelInput = require("intl-tel-input");
-const { initPlugin, resetPackageAfterEach } = require("../helpers/helpers");
+import intlTelInput from "intl-tel-input";
+import { initPlugin, resetPackageAfterEach } from "../helpers/helpers";
 
 describe("loadUtils option", () => {
   resetPackageAfterEach(intlTelInput);
@@ -33,7 +33,7 @@ describe("loadUtils option", () => {
   });
 
   test("waits until the page is loaded before loading utils", async () => {
-    jest.spyOn(intlTelInput, "documentReady").mockReturnValue(false);
+    vi.spyOn(intlTelInput, "documentReady").mockReturnValue(false);
 
     const { iti } = initPlugin({
       intlTelInput,
@@ -51,7 +51,7 @@ describe("loadUtils option", () => {
   });
 
   test("loads utils immediately if page is already finished loading", async function() {
-    jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
+    vi.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
     const { iti } = initPlugin({
       intlTelInput,
@@ -64,11 +64,11 @@ describe("loadUtils option", () => {
   });
 
   test("rejects with an error if the utils script cannot load", async function() {
-    jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
+    vi.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
     const { iti } = initPlugin({
       intlTelInput,
-      options: { loadUtils: () => import("/some/incorrect/url") },
+      options: { loadUtils: () => { const url = "/some/incorrect/url"; return import(/* @vite-ignore */ url); } },
     });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
@@ -78,7 +78,7 @@ describe("loadUtils option", () => {
 
   test("works if loadUtils is a function", async function() {
     const mockUtils = { default: { mockUtils: true } };
-    jest.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
+    vi.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
     const { iti } = initPlugin({
       intlTelInput,
@@ -114,21 +114,21 @@ describe("loadUtils option", () => {
     expect(intlTelInput.utils).toBe(mockUtils.default);
   });
 
-  describe("in 'withUtils' builds", () => {
-    const intlTelInput = require("intl-tel-input/intlTelInputWithUtils");
-    resetPackageAfterEach(intlTelInput);
+  describe("in 'withUtils' builds", async () => {
+    const { default: intlTelInputWithUtils } = await import("intl-tel-input/intlTelInputWithUtils");
+    resetPackageAfterEach(intlTelInputWithUtils);
 
     test("ignores the `loadUtils` option and does not load", async () => {
       const { iti } = initPlugin({
-        intlTelInput,
+        intlTelInput: intlTelInputWithUtils,
         options: { loadUtils },
       });
 
-      expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
+      expect(intlTelInputWithUtils).toHaveProperty("startedLoadingUtilsScript", false);
 
       await iti.promise;
 
-      expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
+      expect(intlTelInputWithUtils).toHaveProperty("startedLoadingUtilsScript", false);
     });
   });
 

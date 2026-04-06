@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, getCountriesInList, clickSelectedCountryAsync, getSearchInput } = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+import { initPlugin, teardown, getCountriesInList, clickSelectedCountryAsync, getSearchInput } from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 describe("countryNameLocale = fr", () => {
   let iti, container, user;

@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown } = require("../helpers/helpers");
+import { initPlugin, teardown } from "../helpers/helpers";
 
 
 describe("setPlaceholderNumberType method", () => {

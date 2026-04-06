@@ -1,8 +1,8 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, clickSelectedCountryAsync, getCountryListElement } = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+import { initPlugin, teardown, clickSelectedCountryAsync, getCountryListElement } from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 describe("useFullscreenPopup option", () => {
   describe("enabled", () => {

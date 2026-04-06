@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, checkFlagSelected } = require("../helpers/helpers");
+import { initPlugin, teardown, checkFlagSelected } from "../helpers/helpers";
 
 describe("initialCountry option", () => {
   describe("jp", () => {

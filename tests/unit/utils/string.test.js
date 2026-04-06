@@ -1,8 +1,8 @@
 /**
- * @jest-environment node
+ * @vitest-environment node
  */
 
-const { getNumeric, normaliseString } = require("../../../src/js/helpers/string.ts");
+import { getNumeric, normaliseString } from "../../../src/js/helpers/string.ts";
 
 describe("utils/string", () => {
   test("getNumeric extracts digits only", () => {

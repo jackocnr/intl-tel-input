@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, checkFlagSelected, intlTelInput } = require("../helpers/helpers");
+import { initPlugin, teardown, checkFlagSelected, intlTelInput } from "../helpers/helpers";
 const backupInitialCountry = intlTelInput.defaults.initialCountry; // empty string by default
 
 describe("defaults static", () => {

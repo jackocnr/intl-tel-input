@@ -1,9 +1,9 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
-const { initPlugin, teardown, intlTelInput } = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+import { initPlugin, teardown, intlTelInput } from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 describe("isValidNumber method", () => {
   let iti, input, user, utilsBackup;

@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, checkFlagSelected } = require("../helpers/helpers");
+import { initPlugin, teardown, checkFlagSelected } from "../helpers/helpers";
 
 describe("showFlags option", () => {
   describe("default true, with input value set to valid GB number", () => {

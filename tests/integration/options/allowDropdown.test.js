@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const {
+import {
   initPlugin,
   teardown,
   getCountryListElement,
@@ -11,8 +11,8 @@ const {
   isDropdownOpen,
   getDropdownElement,
   getSelectedCountryButton,
-} = require("../helpers/helpers");
-const { userEvent } = require("@testing-library/user-event");
+} from "../helpers/helpers";
+import { userEvent } from "@testing-library/user-event";
 
 describe("allowDropdown option", () => {
   describe("allowDropdown=false", () => {

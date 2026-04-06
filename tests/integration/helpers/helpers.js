@@ -1,18 +1,17 @@
-require("@testing-library/jest-dom");
-// test using the minified version to check for minification errors in /grunt/replace.js
-const intlTelInputWithUtils = require("intlTelInputWithUtils.min.js");
+import "@testing-library/jest-dom/vitest";
+import intlTelInputWithUtils from "intl-tel-input/intlTelInputWithUtils";
 
-exports.intlTelInput = intlTelInputWithUtils;
+export const intlTelInput = intlTelInputWithUtils;
 
 /** @typedef {typeof import("intl-tel-input").default} IntlTelInputInterface */
 /** @typedef {import("intl-tel-input").Iti} Iti */
 /** @typedef {import("intl-tel-input").SomeOptions} SomeOptions */
 
-exports.totalCountries = 244;
+export const totalCountries = 244;
 
 const injectInputDefaults = { inputValue: "", disabled: false };
 
-exports.injectInput = ({ inputValue = "", disabled = false } = injectInputDefaults) => {
+export const injectInput = ({ inputValue = "", disabled = false } = injectInputDefaults) => {
   const input = document.createElement("input");
   if (inputValue) {
     input.value = inputValue;
@@ -29,8 +28,8 @@ exports.injectInput = ({ inputValue = "", disabled = false } = injectInputDefaul
  * @param {{intlTelInput?: IntlTelInputInterface, input?: any, inputValue?: string, options?: SomeOptions}} options
  * @returns {{input: HTMLInputElement, iti: Iti, container: HTMLElement}}
  */
-exports.initPlugin = ({ intlTelInput = intlTelInputWithUtils, input = null, inputValue = "", options = {} } = {}) => {
-  const inputToUse = input || exports.injectInput({ inputValue });
+export const initPlugin = ({ intlTelInput = intlTelInputWithUtils, input = null, inputValue = "", options = {} } = {}) => {
+  const inputToUse = input || injectInput({ inputValue });
   const iti = intlTelInput(inputToUse, options);
   const container = inputToUse.parentElement;
   return { input: inputToUse, iti, container };
@@ -42,7 +41,7 @@ exports.initPlugin = ({ intlTelInput = intlTelInputWithUtils, input = null, inpu
  * all instances.
  * @param {Iti|IntlTelInputInterface} iti
  */
-exports.teardown = (iti) => {
+export const teardown = (iti) => {
   let toDestroy = [];
   if (iti?.instances) {
     toDestroy = Object.values(iti.instances);
@@ -63,67 +62,68 @@ exports.teardown = (iti) => {
   if (document.body) {
     document.body.innerHTML = "";
   }
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 };
 
 /**
  * @param {IntlTelInputInterface} intlTelInput
  */
-exports.resetPackageAfterEach = (intlTelInput = intlTelInputWithUtils) => {
+export const resetPackageAfterEach = (intlTelInput = intlTelInputWithUtils) => {
   const originalUtils = intlTelInput.utils;
 
-  afterEach(function() {
+  afterEach(async function() {
     try {
-      exports.teardown(intlTelInput);
+      teardown(intlTelInput);
     } finally {
-      // Reset package-wide state.
+      // Flush microtasks so any in-flight attachUtils() .then() callbacks settle before we reset package-wide state.
+      await new Promise(resolve => setTimeout(resolve, 0));
       intlTelInput.utils = originalUtils;
       intlTelInput.startedLoadingUtilsScript = false;
     }
   });
 };
 
-exports.getCountryContainer = (root) => root.querySelector(".iti__country-container");
+export const getCountryContainer = (root) => root.querySelector(".iti__country-container");
 
-exports.getArrowElement = (root) => root.querySelector(".iti__arrow");
+export const getArrowElement = (root) => root.querySelector(".iti__arrow");
 
-exports.getCountryListElement = (root) => root.querySelector(".iti__country-list");
+export const getCountryListElement = (root) => root.querySelector(".iti__country-list");
 
-exports.getCountryListLength = (container) => {
-  const countryList = exports.getCountryListElement(container);
+export const getCountryListLength = (container) => {
+  const countryList = getCountryListElement(container);
   return countryList.querySelectorAll("li.iti__country").length;
 };
 
-exports.getHighlightedItemCode = (container) => {
+export const getHighlightedItemCode = (container) => {
   return container.querySelector(".iti__country-list .iti__highlight").getAttribute("data-country-code");
 };
 
-exports.getSelectedCountryButton = (container) => {
+export const getSelectedCountryButton = (container) => {
   return container.querySelector(".iti__selected-country");
 };
 
-exports.getSelectedDialCodeText = (container) => {
+export const getSelectedDialCodeText = (container) => {
   return container.querySelector(".iti__selected-dial-code").textContent;
 };
 
-exports.isDropdownOpen = (container) => {
-  return !exports.getDropdownElement(container).classList.contains("iti__hide");
+export const isDropdownOpen = (container) => {
+  return !getDropdownElement(container).classList.contains("iti__hide");
 };
 
-exports.getDropdownElement = (container) => {
+export const getDropdownElement = (container) => {
   return container.querySelector(".iti__dropdown-content");
 };
 
-exports.getSearchInput = (container) => {
+export const getSearchInput = (container) => {
   return container.querySelector(".iti__search-input");
 };
 
-exports.getCountriesInList = (container) => {
+export const getCountriesInList = (container) => {
   const countryListItems = container.querySelectorAll(".iti__country-list .iti__country");
   return [...countryListItems].map(c => c.getAttribute("data-country-code"));
 };
 
-exports.checkFlagSelected = (container, countryCode = "") => {
+export const checkFlagSelected = (container, countryCode = "") => {
   const flag = container.querySelector(".iti__selected-country .iti__flag");
   if (countryCode.length === 2) {
     return flag.classList.contains(`iti__${countryCode}`);
@@ -134,41 +134,41 @@ exports.checkFlagSelected = (container, countryCode = "") => {
   throw new Error("Invalid country code");
 };
 
-exports.clickSelectedCountryAsync = async (container, user) => {
-  const selectedCountryButton = exports.getSelectedCountryButton(container);
+export const clickSelectedCountryAsync = async (container, user) => {
+  const selectedCountryButton = getSelectedCountryButton(container);
   await user.click(selectedCountryButton);
 };
 
-exports.selectCountryAsync = async (container, iso2, user) => {
+export const selectCountryAsync = async (container, iso2, user) => {
   const countryItem = container.querySelector(`li[data-country-code='${iso2}']`);
   await user.click(countryItem);
 };
 
-exports.openDropdownSelectCountryAsync = async (container, iso2, user) => {
-  await exports.clickSelectedCountryAsync(container, user);
-  await exports.selectCountryAsync(container, iso2, user);
+export const openDropdownSelectCountryAsync = async (container, iso2, user) => {
+  await clickSelectedCountryAsync(container, user);
+  await selectCountryAsync(container, iso2, user);
 };
 
-exports.selectCountryAndTypePlaceholderNumberAsync = async (container, iso2, user, input) => {
-  await exports.openDropdownSelectCountryAsync(container, iso2, user);
-  const placeholderNumberClean = await exports.typePlaceholderNumberAsync(user, input);
+export const selectCountryAndTypePlaceholderNumberAsync = async (container, iso2, user, input) => {
+  await openDropdownSelectCountryAsync(container, iso2, user);
+  const placeholderNumberClean = await typePlaceholderNumberAsync(user, input);
   return placeholderNumberClean;
 };
 
-exports.typePlaceholderNumberAsync = async (user, input) => {
-  const placeholderNumberClean = exports.stripFormattingChars(input.getAttribute("placeholder"));
+export const typePlaceholderNumberAsync = async (user, input) => {
+  const placeholderNumberClean = stripFormattingChars(input.getAttribute("placeholder"));
   await user.type(input, placeholderNumberClean);
   return placeholderNumberClean;
 };
 
 // strip formatting chars like space, dash, brackets (leaving just numerics and optional plus)
-exports.stripFormattingChars = (str) => str.replace(/[^0-9+]/g, "");
+export const stripFormattingChars = (str) => str.replace(/[^0-9+]/g, "");
 
-exports.oneTickAsync = async () => {
+export const oneTickAsync = async () => {
   await new Promise(resolve => setTimeout(resolve));
 };
 
-exports.getPasteEventObject = (str) => {
+export const getPasteEventObject = (str) => {
   return {
     clipboardData: {
       getData: () => str,

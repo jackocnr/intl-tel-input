@@ -1,7 +1,7 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
-const { initPlugin, teardown, oneTickAsync, intlTelInput } = require("../helpers/helpers");
+import { initPlugin, teardown, oneTickAsync, intlTelInput } from "../helpers/helpers";
 
 describe("geoIpLookup option", () => {
   describe("vanilla", () => {
