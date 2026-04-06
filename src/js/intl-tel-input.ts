@@ -648,7 +648,7 @@ export class Iti {
 
         // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
         // (fixes bug where you couldn't paste the first digit of a number)
-        if (newVal.length > 5) {
+        if (newVal.length > 5 && intlTelInput.utils) {
           let coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
 
           // utils.getCoreNumber returns empty string for very long numbers
