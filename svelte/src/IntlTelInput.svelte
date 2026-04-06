@@ -154,13 +154,19 @@
   const sanitizeInputProps = (props: Record<string, unknown>) => {
     // ignore keys that would break functionality
     const {
+      type: _type,
       value: _value,
       disabled: _disabled,
+      readonly: _readonly,
+      oninput: _oninput,
       ...rest
     } = props as Record<string, unknown>;
 
+    if (_type !== undefined) warnInputProp("type");
     if (_value !== undefined) warnInputProp("value");
     if (_disabled !== undefined) warnInputProp("disabled");
+    if (_readonly !== undefined) warnInputProp("readonly");
+    if (_oninput !== undefined) warnInputProp("oninput");
 
     return rest;
   };

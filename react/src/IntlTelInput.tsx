@@ -144,12 +144,22 @@ const IntlTelInput = forwardRef(function IntlTelInput(
 
   // ignore keys that would break functionality
   const {
+    type: _type,
+    ref: _ref,
     value: _value,
+    defaultValue: _defaultValue,
     disabled: _disabled,
+    readOnly: _readOnly,
+    onInput: _onInput,
     ...sanitizedInputProps
   } = inputProps as unknown as Record<string, unknown>;
+  if (_type !== undefined) warnInputProp("type");
+  if (_ref !== undefined) warnInputProp("ref");
   if (_value !== undefined) warnInputProp("value");
+  if (_defaultValue !== undefined) warnInputProp("defaultValue");
   if (_disabled !== undefined) warnInputProp("disabled");
+  if (_readOnly !== undefined) warnInputProp("readOnly");
+  if (_onInput !== undefined) warnInputProp("onInput");
 
   return (
     <input

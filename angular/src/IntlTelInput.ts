@@ -303,7 +303,9 @@ class IntlTelInput
   }
 
   private applyInputAttrs(): void {
-    const { value, disabled, ...sanitisedInputAttrs } = this.inputAttributes;
+    const { type, readonly, value, disabled, ...sanitisedInputAttrs } = this.inputAttributes;
+    if (type !== undefined) warnInputAttr("type");
+    if (readonly !== undefined) warnInputAttr("readonly");
     if (value !== undefined) warnInputAttr("value");
     if (disabled !== undefined) warnInputAttr("disabled");
     const currentKeys = new Set<string>();

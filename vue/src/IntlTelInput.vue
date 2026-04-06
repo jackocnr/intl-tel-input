@@ -43,7 +43,7 @@ const warnInputProp = (prop: string): void => {
   console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
 };
 
-const ignoredInputProps = ["type", "ref", "value", "disabled", "onInput", "oninput", "onCountrychange", "onCountryChange"];
+const ignoredInputProps = ["type", "value", "disabled", "readonly", "onInput", "oninput"];
 
 const sanitizedInputProps = computed(() => {
   const input = (props.inputProps ?? {}) as Record<string, unknown>;
