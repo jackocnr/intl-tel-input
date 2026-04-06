@@ -76,7 +76,10 @@ export default class UI {
     this.#countries = countries;
 
     this.telInput.classList.add("iti__tel-input");
-    //* Modern browsers pay more attention to autocomplete and inputmode (mobile keyboard mode) than type="tel"
+    //* Set useful defaults for phone number input attributes.
+    if (!this.telInput.hasAttribute("type")) {
+      this.telInput.setAttribute("type", "tel");
+    }
     if (!this.telInput.hasAttribute("autocomplete")) {
       this.telInput.setAttribute("autocomplete", "tel");
     }
