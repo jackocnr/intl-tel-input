@@ -37,7 +37,7 @@ jobs:
         run: npm run build
 
       - name: Run JS tests
-        run: npm run test:js -- --runInBand
+        run: npm run test:js
 
       - name: Run e2e tests
         run: npm run test:e2e:linux
