@@ -26,9 +26,9 @@ module.exports = function(grunt) {
     },
     genTsDeclaration: {
       command: [
-        'dts-bundle-generator --no-banner --project tsconfig.dts.json -o build/js/intlTelInput.d.ts src/js/intl-tel-input.ts',
-        'dts-bundle-generator --no-banner --project tsconfig.dts.json -o build/js/data.d.ts src/js/data.ts',
-        'dts-bundle-generator --no-banner --project tsconfig.dts.json -o build/js/i18n.d.ts src/js/i18n/index.ts',
+        'dts-bundle-generator --no-banner -o build/js/intlTelInput.d.ts src/js/intl-tel-input.ts',
+        'dts-bundle-generator --no-banner -o build/js/data.d.ts src/js/data.ts',
+        'dts-bundle-generator --no-banner -o build/js/i18n.d.ts src/js/i18n/index.ts',
       ].join(' && ')
     },
     genReactTsDeclaration: {

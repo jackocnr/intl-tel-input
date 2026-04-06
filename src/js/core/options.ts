@@ -103,7 +103,6 @@ const isElLike = (val: unknown): val is HTMLElement => {
 const placeholderModeSet = new Set<string>(Object.values(PLACEHOLDER_MODES));
 
 const warn = (message: string): void => {
-  // eslint-disable-next-line no-console
   console.warn(`[intl-tel-input] ${message}`);
 };
 

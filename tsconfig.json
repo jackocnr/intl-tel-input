@@ -4,8 +4,8 @@
   "compilerOptions": {
     "strict": true,
     "target": "ES2024",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true, // required for react (etc) default imports
     "baseUrl": ".",
     "paths": {

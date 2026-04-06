@@ -57,7 +57,6 @@ let id = 0;
 
 
 //* This is our plugin class that we will create an instance of
-// eslint-disable-next-line no-unused-vars
 export class Iti {
   //* PUBLIC FIELDS - READONLY
   //* Can't be private as it's called from intlTelInput convenience wrapper.
