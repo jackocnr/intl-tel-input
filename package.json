@@ -24,7 +24,6 @@
     "build:react": "grunt build:react",
     "build:vue": "grunt build:vue",
     "build:angular": "grunt build:angular",
-    "build:svelte": "grunt build:svelte",
     "build:test": "npm run build:js && npm run test",
     "prepublishOnly": "grunt build",
     "vue:demo": "vite --config vue/demo/validation/vite.config.js",

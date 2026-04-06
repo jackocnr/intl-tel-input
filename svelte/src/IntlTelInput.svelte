@@ -12,6 +12,7 @@
     readonly?: boolean;
     inputProps?: Record<string, unknown>;
     initialValue?: string;
+    value?: string | null;
     usePreciseValidation?: boolean;
     onChangeNumber?: (number: string) => void;
     onChangeCountry?: (country: string) => void;
@@ -26,6 +27,7 @@
     inputProps = {},
     usePreciseValidation = false,
     initialValue = "",
+    value = undefined,
     onChangeNumber,
     onChangeCountry,
     onChangeValidity,
@@ -137,6 +139,21 @@
     if (hasInitialized && instance) {
       instance.setReadonly(readonly);
     }
+  });
+
+  // Watch value prop changes (only after initialization)
+  $effect(() => {
+    if (!hasInitialized || !instance) {
+      return;
+    }
+    const next = value ?? "";
+    const currentCanonical = instance.getNumber() ?? "";
+    const isFocused = document.activeElement === inputElement;
+    if (isFocused || currentCanonical === next) {
+      return;
+    }
+    instance.setNumber(next);
+    updateValidity();
   });
 
   // Expose instance and input for parent access

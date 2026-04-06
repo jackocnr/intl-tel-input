@@ -28,6 +28,7 @@ type ItiProps = SomeOptions & {
   inputProps?: InputProps;
   disabled?: boolean | undefined;
   readOnly?: boolean | undefined;
+  value?: string | null;
 };
 
 export type IntlTelInputRef = {
@@ -46,6 +47,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     inputProps = {},
     disabled = undefined,
     readOnly = undefined,
+    value = undefined,
     ...initOptions
   }: ItiProps,
   ref: React.ForwardedRef<IntlTelInputRef>,
@@ -139,6 +141,21 @@ const IntlTelInput = forwardRef(function IntlTelInput(
       itiRef.current.setReadonly(readOnly);
     }
   }, [readOnly]);
+
+  useEffect(() => {
+    // if value is undefined, the component is uncontrolled - do not touch the input
+    if (!itiRef.current || value === undefined) {
+      return;
+    }
+    const next = value ?? "";
+    const currentCanonical = itiRef.current.getNumber() ?? "";
+    const isFocused = document.activeElement === inputRef.current;
+    if (isFocused || currentCanonical === next) {
+      return;
+    }
+    itiRef.current.setNumber(next);
+    update();
+  }, [value, update]);
 
   // ignore keys that would break functionality
   const ignoredInputProps = new Set(["type", "ref", "value", "disabled", "readOnly", "onInput"]);
