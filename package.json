@@ -110,33 +110,27 @@
   "exports": {
     ".": {
       "types": "./build/js/intlTelInput.d.ts",
-      "import": "./build/js/intlTelInput.mjs",
-      "default": "./build/js/intlTelInput.js"
+      "import": "./build/js/intlTelInput.mjs"
     },
     "./intlTelInputWithUtils": {
       "types": "./build/js/intlTelInput.d.ts",
-      "import": "./build/js/intlTelInputWithUtils.mjs",
-      "default": "./build/js/intlTelInputWithUtils.js"
+      "import": "./build/js/intlTelInputWithUtils.mjs"
     },
     "./data": {
       "types": "./build/js/data.d.ts",
-      "import": "./build/js/data.mjs",
-      "default": "./build/js/data.js"
+      "import": "./build/js/data.mjs"
     },
     "./utils": {
       "types": "./build/js/intlTelInput.d.ts",
-      "import": "./build/js/utils.js",
-      "default": "./build/js/utils.js"
+      "import": "./build/js/utils.js"
     },
     "./react": {
       "types": "./react/build/IntlTelInput.d.ts",
-      "import": "./react/build/IntlTelInput.js",
-      "default": "./react/build/IntlTelInput.js"
+      "import": "./react/build/IntlTelInput.js"
     },
     "./reactWithUtils": {
       "types": "./react/build/IntlTelInputWithUtils.d.ts",
-      "import": "./react/build/IntlTelInputWithUtils.js",
-      "default": "./react/build/IntlTelInputWithUtils.js"
+      "import": "./react/build/IntlTelInputWithUtils.js"
     },
     "./vue": {
       "types": "./vue/build/index.d.ts",
@@ -148,13 +142,11 @@
     },
     "./angular": {
       "types": "./angular/build/IntlTelInput.d.ts",
-      "import": "./angular/build/IntlTelInput.js",
-      "default": "./angular/build/IntlTelInput.js"
+      "import": "./angular/build/IntlTelInput.js"
     },
     "./angularWithUtils": {
       "types": "./angular/build/IntlTelInputWithUtils.d.ts",
-      "import": "./angular/build/IntlTelInputWithUtils.js",
-      "default": "./angular/build/IntlTelInputWithUtils.js"
+      "import": "./angular/build/IntlTelInputWithUtils.js"
     },
     "./svelte": {
       "svelte": "./svelte/src/IntlTelInput.svelte",
@@ -166,13 +158,11 @@
     },
     "./i18n": {
       "types": "./build/js/i18n.d.ts",
-      "import": "./build/js/i18n/index.js",
-      "default": "./build/js/i18n/index.js"
+      "import": "./build/js/i18n/index.js"
     },
     "./i18n/*": {
       "types": "./build/js/i18n.d.ts",
-      "import": "./build/js/i18n/*/index.js",
-      "default": "./build/js/i18n/*/index.js"
+      "import": "./build/js/i18n/*/index.js"
     },
     "./styles": "./build/css/intlTelInput.css",
     "./*": "./*"
