@@ -230,18 +230,18 @@ const validationError = {
 };
 
 //* Exports
-//* Note: the below code defines window.intlTelInputUtilsTemp, which is so-called because it will be exported (as an ES Module) and then deleted at the end of this file (see output_wrapper in grunt/closure-compiler.js).
-goog.exportSymbol("intlTelInputUtilsTemp", {});
-goog.exportSymbol("intlTelInputUtilsTemp.formatNumberAsYouType", formatNumberAsYouType);
-goog.exportSymbol("intlTelInputUtilsTemp.formatNumber", formatNumber);
-goog.exportSymbol("intlTelInputUtilsTemp.getExampleNumber", getExampleNumber);
-goog.exportSymbol("intlTelInputUtilsTemp.getExtension", getExtension);
-goog.exportSymbol("intlTelInputUtilsTemp.getNumberType", getNumberType);
-goog.exportSymbol("intlTelInputUtilsTemp.getValidationError", getValidationError);
-goog.exportSymbol("intlTelInputUtilsTemp.isValidNumber", isValidNumber);
-goog.exportSymbol("intlTelInputUtilsTemp.isPossibleNumber", isPossibleNumber);
-goog.exportSymbol("intlTelInputUtilsTemp.getCoreNumber", getCoreNumber);
+//* Note: goog.exportSymbol writes these onto the scope object, which the closure compiler output_wrapper (see grunt/closure-compiler.js) then exports as the default ES Module export.
+goog.exportSymbol("utils", {});
+goog.exportSymbol("utils.formatNumberAsYouType", formatNumberAsYouType);
+goog.exportSymbol("utils.formatNumber", formatNumber);
+goog.exportSymbol("utils.getExampleNumber", getExampleNumber);
+goog.exportSymbol("utils.getExtension", getExtension);
+goog.exportSymbol("utils.getNumberType", getNumberType);
+goog.exportSymbol("utils.getValidationError", getValidationError);
+goog.exportSymbol("utils.isValidNumber", isValidNumber);
+goog.exportSymbol("utils.isPossibleNumber", isPossibleNumber);
+goog.exportSymbol("utils.getCoreNumber", getCoreNumber);
 //* Enums
-goog.exportSymbol("intlTelInputUtilsTemp.numberFormat", numberFormat);
-goog.exportSymbol("intlTelInputUtilsTemp.numberType", numberType);
-goog.exportSymbol("intlTelInputUtilsTemp.validationError", validationError);
+goog.exportSymbol("utils.numberFormat", numberFormat);
+goog.exportSymbol("utils.numberType", numberType);
+goog.exportSymbol("utils.validationError", validationError);
