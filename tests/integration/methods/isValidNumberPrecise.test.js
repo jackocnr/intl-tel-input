@@ -35,10 +35,10 @@ describe("isValidNumberPrecise", () => {
       expect(iti.isValidNumberPrecise()).toBe(false);
     });
 
-    test("utils missing -> null", async () => {
+    test("utils missing -> throws", async () => {
       intlTelInput.utils = null;
       await user.type(input, "+44 7733 123456");
-      expect(iti.isValidNumberPrecise()).toBeNull();
+      expect(() => iti.isValidNumberPrecise()).toThrow();
     });
   });
 

@@ -55,6 +55,11 @@ declare global {
 //* These vars persist through all instances of the plugin.
 let id = 0;
 
+const ensureUtils = (methodName: string): void => {
+  if (!intlTelInput.utils) {
+    throw new Error(`intlTelInput.utils is required for ${methodName}(). See: https://intl-tel-input.com/docs/utils`);
+  }
+};
 
 //* This is our plugin class that we will create an instance of
 export class Iti {
@@ -1398,8 +1403,9 @@ export class Iti {
 
   //* Get the extension from the current number.
   public getExtension(): string {
-    if (intlTelInput.utils && !this.#destroyed) {
-      return intlTelInput.utils.getExtension(
+    ensureUtils("getExtension");
+    if (!this.#destroyed) {
+      return intlTelInput.utils!.getExtension(
         this.#getFullNumber(),
         this.#selectedCountryData?.iso2,
       );
@@ -1409,10 +1415,11 @@ export class Iti {
 
   //* Format the number to the given format.
   public getNumber(format?: number): string {
-    if (intlTelInput.utils && !this.#destroyed) {
+    ensureUtils("getNumber");
+    if (!this.#destroyed) {
       const iso2 = this.#selectedCountryData?.iso2;
       const fullNumber = this.#getFullNumber();
-      const formattedNumber = intlTelInput.utils.formatNumber(
+      const formattedNumber = intlTelInput.utils!.formatNumber(
         fullNumber,
         iso2,
         format,
@@ -1424,8 +1431,9 @@ export class Iti {
 
   //* Get the type of the entered number e.g. landline/mobile.
   public getNumberType(): number {
-    if (intlTelInput.utils && !this.#destroyed) {
-      return intlTelInput.utils.getNumberType(
+    ensureUtils("getNumberType");
+    if (!this.#destroyed) {
+      return intlTelInput.utils!.getNumberType(
         this.#getFullNumber(),
         this.#selectedCountryData?.iso2,
       );
@@ -1440,20 +1448,22 @@ export class Iti {
 
   //* Get the validation error.
   public getValidationError(): number {
-    if (intlTelInput.utils && !this.#destroyed) {
+    ensureUtils("getValidationError");
+    if (!this.#destroyed) {
       const iso2 = this.#selectedCountryData?.iso2;
-      return intlTelInput.utils.getValidationError(this.#getFullNumber(), iso2);
+      return intlTelInput.utils!.getValidationError(this.#getFullNumber(), iso2);
     }
     return SENTINELS.UNKNOWN_VALIDATION_ERROR;
   }
 
   //* Validate the input val using number length only
   public isValidNumber(): boolean | null {
-    const dialCode = this.#selectedCountryData?.dialCode;
-    const iso2 = this.#selectedCountryData?.iso2;
-    if (intlTelInput.utils && !this.#destroyed) {
+    ensureUtils("isValidNumber");
+    if (!this.#destroyed) {
+      const dialCode = this.#selectedCountryData?.dialCode;
+      const iso2 = this.#selectedCountryData?.iso2;
       const number = this.#getFullNumber();
-      const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
+      const coreNumber = intlTelInput.utils!.getCoreNumber(number, iso2);
       if (coreNumber) {
         // custom validation for UK mobile numbers - useful when allowedNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
         if (dialCode === UK.DIAL_CODE) {
@@ -1477,13 +1487,18 @@ export class Iti {
           }
         }
       }
+      return this.#validateNumber(false);
     }
-    return this.#validateNumber(false);
+    return null;
   }
 
   //* Validate the input val with precise validation
   public isValidNumberPrecise(): boolean | null {
-    return this.#validateNumber(true);
+    ensureUtils("isValidNumberPrecise");
+    if (!this.#destroyed) {
+      return this.#validateNumber(true);
+    }
+    return null;
   }
 
   #utilsIsPossibleNumber(val: string): boolean | null {
@@ -1498,10 +1513,6 @@ export class Iti {
 
   //* Shared internal validation logic to handle alpha character extension rules.
   #validateNumber(precise: boolean): boolean | null {
-    if (!intlTelInput.utils || this.#destroyed) {
-      return null;
-    }
-
     const { allowNumberExtensions, allowPhonewords } = this.#options;
 
     const testValidity = (s: string) =>
@@ -1529,7 +1540,7 @@ export class Iti {
     // if there is an alpha char, we need to check if it's allowed, either as an extension or a phone word
     if (hasAlphaChar) {
       const selectedIso2 = this.#selectedCountryData?.iso2;
-      const hasExtension = Boolean(intlTelInput.utils.getExtension(val, selectedIso2));
+      const hasExtension = Boolean(intlTelInput.utils!.getExtension(val, selectedIso2));
       if (hasExtension) {
         return allowNumberExtensions;
       }

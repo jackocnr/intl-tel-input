@@ -40,11 +40,11 @@ describe("isValidNumber method", () => {
     expect(iti.isValidNumber()).toBe(false);
   });
 
-  test("returns null when utils script is not available", async () => {
+  test("throws when utils script is not available", async () => {
     // simulate utils unavailable AFTER init
     intlTelInput.utils = null;
     await user.type(input, "+44 7733 123456");
-    expect(iti.isValidNumber()).toBeNull();
+    expect(() => iti.isValidNumber()).toThrow();
   });
 });
 
