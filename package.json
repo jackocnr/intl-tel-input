@@ -140,11 +140,11 @@
     },
     "./vue": {
       "types": "./vue/build/index.d.ts",
-      "import": "./vue/build/IntlTelInput.mjs"
+      "import": "./vue/build/IntlTelInput.js"
     },
     "./vueWithUtils": {
       "types": "./vue/build/indexWithUtils.d.ts",
-      "import": "./vue/build/IntlTelInputWithUtils.mjs"
+      "import": "./vue/build/IntlTelInputWithUtils.js"
     },
     "./angular": {
       "types": "./angular/build/IntlTelInput.d.ts",

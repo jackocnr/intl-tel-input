@@ -18,7 +18,7 @@ export default defineConfig({
         resolve(__dirname, "src/indexWithUtils.ts"),
       ],
       formats: ["es"],
-      fileName: (_, entryName) => entryName === "index" ? "IntlTelInput.mjs" : "IntlTelInputWithUtils.mjs",
+      fileName: (_, entryName) => entryName === "index" ? "IntlTelInput.js" : "IntlTelInputWithUtils.js",
     },
     rollupOptions: {
       external: ["vue"],
