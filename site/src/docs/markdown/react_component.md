@@ -58,12 +58,6 @@ Default: `false`
 
 Makes the telephone input read-only and disables the selected country button. _Note: We recommend using this instead of `inputProps.readOnly`._
 
-###### initialValue
-Type: `String`  
-Default: `""`  
-
-The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input and so will ignore any changes to this value.
-
 ###### Initialisation options
 
 All of the plugin's [initialisation options](/docs/options) are supported as individual React props using the same option name.
@@ -84,9 +78,9 @@ Use:
 Type: `Object`  
 Default: `{}`  
 
-The props to pass to the input element, e.g. `id`, `className`, `placeholder`, `required`, `onBlur`, etc.
+The props to pass to the input element, e.g. `id`, `className`, `placeholder`, `required`, `onBlur`, `defaultValue` etc. Use `defaultValue` to set the initial value of the input - this will get auto-formatted on init (according to `formatOnDisplay` initialisation option).
 
-Note: some keys are reserved for the component/plugin integration and will be ignored if provided via `inputProps`: `type`, `ref`, `onInput`, `defaultValue`, `value`, `disabled`. Use the component props (`initialValue`, `disabled`) and the callback props instead.
+Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `ref`, `onInput`, `value`, `disabled`, `readOnly`. Use the component props (e.g. `disabled`) and the callback props instead.
 
 ###### onChangeCountry
 Type: `Function`  

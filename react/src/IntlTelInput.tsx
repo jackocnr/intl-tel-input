@@ -20,7 +20,6 @@ type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
 const noop = () => {};
 
 type ItiProps = SomeOptions & {
-  initialValue?: string;
   onChangeNumber?: (number: string) => void;
   onChangeCountry?: (country: string) => void;
   onChangeValidity?: (valid: boolean) => void;
@@ -39,7 +38,6 @@ export type IntlTelInputRef = {
 // Note: React v19 supports ref forwarding with function components, but we still need to use forwardRef to support React v18
 const IntlTelInput = forwardRef(function IntlTelInput(
   {
-    initialValue = "",
     onChangeNumber = noop,
     onChangeCountry = noop,
     onChangeValidity = noop,
@@ -143,7 +141,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }, [readOnly]);
 
   // ignore keys that would break functionality
-  const ignoredInputProps = new Set(["type", "ref", "value", "defaultValue", "disabled", "readOnly", "onInput"]);
+  const ignoredInputProps = new Set(["type", "ref", "value", "disabled", "readOnly", "onInput"]);
 
   const sanitizedInputProps: Record<string, unknown> = {};
   for (const [key, val] of Object.entries(inputProps)) {
@@ -160,7 +158,6 @@ const IntlTelInput = forwardRef(function IntlTelInput(
       type="tel"
       ref={inputRef}
       onInput={update}
-      defaultValue={initialValue}
     />
   );
 });
