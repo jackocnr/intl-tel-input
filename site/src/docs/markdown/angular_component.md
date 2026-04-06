@@ -109,7 +109,9 @@ Use:
 Type: `Object`  
 Default: `{}`  
 
-The attributes to pass to the input element, e.g. `class`, `placeholder`, `required`, etc. _Note: We recommend using the separate `disabled` prop instead of `inputAttributes.disabled`._
+The attributes to pass to the input element, e.g. `class`, `placeholder`, `required`, etc.
+
+Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`. Use the component props (`initialValue`, `disabled`, `readonly`) and the output event bindings instead.
 
 ###### usePreciseValidation
 Type: `Boolean`  

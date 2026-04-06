@@ -63,7 +63,7 @@ Default: `{}`
 
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onblur`, etc.
 
-Note: some keys are reserved for the component/plugin integration and will be ignored if provided via `inputProps`: `type`, `oninput`, `value`, `disabled`. Use the component props (`value`, `disabled`) and the `onChange...` callback props instead.
+Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `oninput`. Use the component props (`disabled`, `readonly`) and the `onChange...` callback props instead.
 
 ###### Initialisation options
 
