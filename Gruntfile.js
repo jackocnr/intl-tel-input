@@ -76,7 +76,7 @@ module.exports = function(grunt) {
     }
   });
 
-  // fast version which only builds the main plugin JS files (see root build.js file for details)
+  // fast version which only builds the main plugin JS files (see root build.mjs file for details)
   grunt.registerTask('build:jsfast', [
     'clean:buildJsKeepUtils',
     'clean:tmpIntermediates',

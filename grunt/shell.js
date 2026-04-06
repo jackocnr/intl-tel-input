@@ -5,7 +5,7 @@ const sedArg = os.platform() === 'darwin' ? '-i ""' : '-i';
 module.exports = function(grunt) {
   return {
     buildReact: {
-      command: 'node react/build.js'
+      command: 'node react/build.mjs'
     },
     buildVue: {
       //* Build, fix leaked source path in .vue.d.ts, flatten .d.ts output, and clean up.
@@ -19,10 +19,10 @@ module.exports = function(grunt) {
       ].join(' && ')
     },
     buildAngular: {
-      command: 'node angular/build.js'
+      command: 'node angular/build.mjs'
     },
     buildJs: {
-      command: 'node build.js'
+      command: 'node build.mjs'
     },
     genTsDeclaration: {
       command: [
