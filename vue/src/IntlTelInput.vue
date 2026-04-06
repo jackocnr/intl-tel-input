@@ -43,13 +43,13 @@ const warnInputProp = (prop: string): void => {
   console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
 };
 
-const ignoredInputProps = ["type", "value", "disabled", "readonly", "onInput", "oninput"];
+const ignoredInputProps = new Set(["type", "value", "disabled", "readonly", "onInput", "oninput"]);
 
 const sanitizedInputProps = computed(() => {
   const input = (props.inputProps ?? {}) as Record<string, unknown>;
   const rest: Record<string, unknown> = {};
   for (const [key, val] of Object.entries(input)) {
-    if (ignoredInputProps.includes(key)) {
+    if (ignoredInputProps.has(key)) {
       warnInputProp(key);
     } else {
       rest[key] = val;

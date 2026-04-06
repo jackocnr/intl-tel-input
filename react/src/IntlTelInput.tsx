@@ -143,23 +143,16 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }, [readOnly]);
 
   // ignore keys that would break functionality
-  const {
-    type: _type,
-    ref: _ref,
-    value: _value,
-    defaultValue: _defaultValue,
-    disabled: _disabled,
-    readOnly: _readOnly,
-    onInput: _onInput,
-    ...sanitizedInputProps
-  } = inputProps as unknown as Record<string, unknown>;
-  if (_type !== undefined) warnInputProp("type");
-  if (_ref !== undefined) warnInputProp("ref");
-  if (_value !== undefined) warnInputProp("value");
-  if (_defaultValue !== undefined) warnInputProp("defaultValue");
-  if (_disabled !== undefined) warnInputProp("disabled");
-  if (_readOnly !== undefined) warnInputProp("readOnly");
-  if (_onInput !== undefined) warnInputProp("onInput");
+  const ignoredInputProps = new Set(["type", "ref", "value", "defaultValue", "disabled", "readOnly", "onInput"]);
+
+  const sanitizedInputProps: Record<string, unknown> = {};
+  for (const [key, val] of Object.entries(inputProps)) {
+    if (ignoredInputProps.has(key)) {
+      warnInputProp(key);
+    } else {
+      sanitizedInputProps[key] = val;
+    }
+  }
 
   return (
     <input

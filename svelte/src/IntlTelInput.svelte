@@ -151,23 +151,17 @@
     console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
   };
 
+  const ignoredInputProps = new Set(["type", "value", "disabled", "readonly", "oninput"]);
+
   const sanitizeInputProps = (props: Record<string, unknown>) => {
-    // ignore keys that would break functionality
-    const {
-      type: _type,
-      value: _value,
-      disabled: _disabled,
-      readonly: _readonly,
-      oninput: _oninput,
-      ...rest
-    } = props as Record<string, unknown>;
-
-    if (_type !== undefined) warnInputProp("type");
-    if (_value !== undefined) warnInputProp("value");
-    if (_disabled !== undefined) warnInputProp("disabled");
-    if (_readonly !== undefined) warnInputProp("readonly");
-    if (_oninput !== undefined) warnInputProp("oninput");
-
+    const rest: Record<string, unknown> = {};
+    for (const [key, val] of Object.entries(props)) {
+      if (ignoredInputProps.has(key)) {
+        warnInputProp(key);
+      } else {
+        rest[key] = val;
+      }
+    }
     return rest;
   };
 </script>

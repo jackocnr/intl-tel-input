@@ -302,16 +302,17 @@ class IntlTelInput
     );
   }
 
+  private ignoredInputAttrs = new Set(["type", "value", "disabled", "readonly"]);
+
   private applyInputAttrs(): void {
-    const { type, readonly, value, disabled, ...sanitisedInputAttrs } = this.inputAttributes;
-    if (type !== undefined) warnInputAttr("type");
-    if (readonly !== undefined) warnInputAttr("readonly");
-    if (value !== undefined) warnInputAttr("value");
-    if (disabled !== undefined) warnInputAttr("disabled");
     const currentKeys = new Set<string>();
-    Object.entries(sanitisedInputAttrs).forEach(([key, value]) => {
-      currentKeys.add(key);
-      this.inputRef.nativeElement.setAttribute(key, value);
+    Object.entries(this.inputAttributes).forEach(([key, value]) => {
+      if (this.ignoredInputAttrs.has(key)) {
+        warnInputAttr(key);
+      } else {
+        currentKeys.add(key);
+        this.inputRef.nativeElement.setAttribute(key, value);
+      }
     });
     this.appliedInputAttrKeys.forEach((key) => {
       if (!currentKeys.has(key)) {
