@@ -58,7 +58,7 @@ module.exports = function(grunt) {
     'build:components',
   ]);
 
-  // build components (svelte exports source .svelte files, so only needs the WithUtils replace)
+  // build components
   grunt.registerTask('build:components', [
     'clean:reactBuild',
     'clean:vueBuild',
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
     'build:react',
     'build:vue',
     'build:angular',
-    'replace:svelteWithUtils',
+    // no need for a svelte build, as we just export the source files directly
   ]);
 
   // Ensure build/js/utils.js exists (esbuild resolves "utils-compiled" alias to it).
@@ -87,7 +87,6 @@ module.exports = function(grunt) {
   // just react
   grunt.registerTask('build:react', [
     'clean:reactBuild',
-    'replace:reactWithUtils',
     'shell:genReactTsDeclaration',
     'shell:buildReact',
   ]);
@@ -95,14 +94,12 @@ module.exports = function(grunt) {
   // just vue
   grunt.registerTask('build:vue', [
     'clean:vueBuild',
-    'replace:vueWithUtils',
     'shell:buildVue',
   ]);
 
   // just angular
   grunt.registerTask('build:angular', [
     'clean:angularBuild',
-    'replace:angularWithUtils',
     'shell:genAngularTsDeclarationAndJs',
     'shell:buildAngular',
   ]);

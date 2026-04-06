@@ -27,10 +27,6 @@ module.exports = function(grunt) {
       files: ["vue/src/IntlTelInput.vue"],
       tasks: "build:vue"
     },
-    svelte: {
-      files: ["svelte/src/IntlTelInput.svelte"],
-      tasks: "replace:svelteWithUtils"
-    },
     angular: {
       files: [
         "angular/src/IntlTelInput.ts",

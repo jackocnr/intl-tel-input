@@ -121,7 +121,7 @@
       "import": "./build/js/data.mjs"
     },
     "./utils": {
-      "types": "./build/js/intlTelInput.d.ts",
+      "types": "./src/js/types/utils.d.ts",
       "import": "./build/js/utils.js"
     },
     "./react": {

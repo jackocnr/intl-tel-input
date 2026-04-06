@@ -1,6 +1,5 @@
 <script module lang="ts">
-  import intlTelInput from "intl-tel-input";
-  import type { Iti } from "intl-tel-input";
+  import intlTelInput, { type Iti } from "intl-tel-input";
   export { intlTelInput };
 </script>
 
