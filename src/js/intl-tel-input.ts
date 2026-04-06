@@ -1403,42 +1403,45 @@ export class Iti {
 
   //* Get the extension from the current number.
   public getExtension(): string {
-    ensureUtils("getExtension");
-    if (!this.#destroyed) {
-      return intlTelInput.utils!.getExtension(
-        this.#getFullNumber(),
-        this.#selectedCountryData?.iso2,
-      );
+    if (this.#destroyed) {
+      return "";
     }
-    return "";
+    ensureUtils("getExtension");
+
+    return intlTelInput.utils!.getExtension(
+      this.#getFullNumber(),
+      this.#selectedCountryData?.iso2,
+    );
   }
 
   //* Format the number to the given format.
   public getNumber(format?: number): string {
-    ensureUtils("getNumber");
-    if (!this.#destroyed) {
-      const iso2 = this.#selectedCountryData?.iso2;
-      const fullNumber = this.#getFullNumber();
-      const formattedNumber = intlTelInput.utils!.formatNumber(
-        fullNumber,
-        iso2,
-        format,
-      );
-      return this.#numerals.denormalise(formattedNumber);
+    if (this.#destroyed) {
+      return "";
     }
-    return "";
+    ensureUtils("getNumber");
+
+    const iso2 = this.#selectedCountryData?.iso2;
+    const fullNumber = this.#getFullNumber();
+    const formattedNumber = intlTelInput.utils!.formatNumber(
+      fullNumber,
+      iso2,
+      format,
+    );
+    return this.#numerals.denormalise(formattedNumber);
   }
 
   //* Get the type of the entered number e.g. landline/mobile.
   public getNumberType(): number {
-    ensureUtils("getNumberType");
-    if (!this.#destroyed) {
-      return intlTelInput.utils!.getNumberType(
-        this.#getFullNumber(),
-        this.#selectedCountryData?.iso2,
-      );
+    if (this.#destroyed) {
+      return SENTINELS.UNKNOWN_NUMBER_TYPE;
     }
-    return SENTINELS.UNKNOWN_NUMBER_TYPE;
+    ensureUtils("getNumberType");
+
+    return intlTelInput.utils!.getNumberType(
+      this.#getFullNumber(),
+      this.#selectedCountryData?.iso2,
+    );
   }
 
   //* Get the country data for the currently selected country.
@@ -1448,57 +1451,60 @@ export class Iti {
 
   //* Get the validation error.
   public getValidationError(): number {
-    ensureUtils("getValidationError");
-    if (!this.#destroyed) {
-      const iso2 = this.#selectedCountryData?.iso2;
-      return intlTelInput.utils!.getValidationError(this.#getFullNumber(), iso2);
+    if (this.#destroyed) {
+      return SENTINELS.UNKNOWN_VALIDATION_ERROR;
     }
-    return SENTINELS.UNKNOWN_VALIDATION_ERROR;
+    ensureUtils("getValidationError");
+
+    const iso2 = this.#selectedCountryData?.iso2;
+    return intlTelInput.utils!.getValidationError(this.#getFullNumber(), iso2);
   }
 
   //* Validate the input val using number length only
   public isValidNumber(): boolean | null {
+    if (this.#destroyed) {
+      return null;
+    }
     ensureUtils("isValidNumber");
-    if (!this.#destroyed) {
-      const dialCode = this.#selectedCountryData?.dialCode;
-      const iso2 = this.#selectedCountryData?.iso2;
-      const number = this.#getFullNumber();
-      const coreNumber = intlTelInput.utils!.getCoreNumber(number, iso2);
-      if (coreNumber) {
-        // custom validation for UK mobile numbers - useful when allowedNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
-        if (dialCode === UK.DIAL_CODE) {
-          // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
-          if (coreNumber[0] === UK.MOBILE_PREFIX && coreNumber.length !== UK.MOBILE_CORE_LENGTH) {
-            return false;
-          }
-        }
-        // Fix for NANP and similar countries: libphonenumber can auto-prepend area codes when
-        // parsing local-format numbers (e.g. "2462501" for Barbados gets expanded to "2462462501"),
-        // making incomplete numbers appear "possible". Detect this by comparing the digits actually
-        // typed against the national number libphonenumber derived - if the derived national number
-        // is longer, the library completed digits the user never typed, so the number is incomplete.
-        // Skip this check for phonewords (alpha chars), since getNumeric would undercount their digits.
-        const hasAlphaChar = REGEX.ALPHA_UNICODE.test(number);
-        if (!hasAlphaChar && dialCode) {
-          const nationalPortion = number.startsWith("+") ? number.slice(1 + dialCode.length) : number;
-          const nationalDigitCount = getNumeric(nationalPortion).length;
-          if (coreNumber.length > nationalDigitCount) {
-            return false;
-          }
+
+    const dialCode = this.#selectedCountryData?.dialCode;
+    const iso2 = this.#selectedCountryData?.iso2;
+    const number = this.#getFullNumber();
+    const coreNumber = intlTelInput.utils!.getCoreNumber(number, iso2);
+    if (coreNumber) {
+      // custom validation for UK mobile numbers - useful when allowedNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
+      if (dialCode === UK.DIAL_CODE) {
+        // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
+        if (coreNumber[0] === UK.MOBILE_PREFIX && coreNumber.length !== UK.MOBILE_CORE_LENGTH) {
+          return false;
         }
       }
-      return this.#validateNumber(false);
+      // Fix for NANP and similar countries: libphonenumber can auto-prepend area codes when
+      // parsing local-format numbers (e.g. "2462501" for Barbados gets expanded to "2462462501"),
+      // making incomplete numbers appear "possible". Detect this by comparing the digits actually
+      // typed against the national number libphonenumber derived - if the derived national number
+      // is longer, the library completed digits the user never typed, so the number is incomplete.
+      // Skip this check for phonewords (alpha chars), since getNumeric would undercount their digits.
+      const hasAlphaChar = REGEX.ALPHA_UNICODE.test(number);
+      if (!hasAlphaChar && dialCode) {
+        const nationalPortion = number.startsWith("+") ? number.slice(1 + dialCode.length) : number;
+        const nationalDigitCount = getNumeric(nationalPortion).length;
+        if (coreNumber.length > nationalDigitCount) {
+          return false;
+        }
+      }
     }
-    return null;
+    return this.#validateNumber(false);
   }
 
   //* Validate the input val with precise validation
   public isValidNumberPrecise(): boolean | null {
-    ensureUtils("isValidNumberPrecise");
-    if (!this.#destroyed) {
-      return this.#validateNumber(true);
+    if (this.#destroyed) {
+      return null;
     }
-    return null;
+    ensureUtils("isValidNumberPrecise");
+
+    return this.#validateNumber(true);
   }
 
   #utilsIsPossibleNumber(val: string): boolean | null {
