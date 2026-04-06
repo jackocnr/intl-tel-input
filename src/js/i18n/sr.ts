@@ -1,0 +1,35 @@
+//* Serbian. Translated by: ChatGPT 5.
+import type { I18n } from "./types";
+
+const interfaceTranslations: I18n = {
+  selectedCountryAriaLabel:
+    "Промени земљу, изабрано ${countryName} (${dialCode})",
+  noCountrySelected: "Изабери земљу",
+  countryListAriaLabel: "Листа земаља",
+  searchPlaceholder: "Претрага",
+  clearSearchAriaLabel: "Обриши претрагу",
+  searchEmptyState: "Нема резултата",
+
+  searchSummaryAria(count) {
+    if (count === 0) {
+      return "Нема резултата";
+    }
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    // Numbers ending in 1, but not 11
+    if (mod10 === 1 && mod100 !== 11) {
+      return `Пронађен ${count} резултат`;
+    }
+
+    // Numbers ending in 2-4, but not 12-14
+    const isFew = mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14);
+
+    if (isFew) {
+      return `Пронађена ${count} резултата`;
+    }
+    return `Пронађено ${count} резултата`;
+  },
+};
+
+export default interfaceTranslations;
