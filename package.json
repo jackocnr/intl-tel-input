@@ -139,13 +139,11 @@
     },
     "./react": {
       "types": "./react/build/IntlTelInput.d.ts",
-      "require": "./react/build/IntlTelInput.cjs",
       "import": "./react/build/IntlTelInput.js",
       "default": "./react/build/IntlTelInput.js"
     },
     "./reactWithUtils": {
       "types": "./react/build/IntlTelInputWithUtils.d.ts",
-      "require": "./react/build/IntlTelInputWithUtils.cjs",
       "import": "./react/build/IntlTelInputWithUtils.js",
       "default": "./react/build/IntlTelInputWithUtils.js"
     },

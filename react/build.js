@@ -11,15 +11,7 @@ const mainShared = {
   define: { "process.env.VERSION": `"${packageJson.version}"` },
 };
 
-//* React Component - CommonJS
-build({
-  ...mainShared,
-  entryPoints: ["react/src/IntlTelInput.tsx"],
-  format: "cjs",
-  outfile: "react/build/IntlTelInput.cjs",
-});
-
-//* React Component - Default (ES Modules)
+//* React Component
 build({
   ...mainShared,
   entryPoints: ["react/src/IntlTelInput.tsx"],
@@ -27,15 +19,7 @@ build({
   outfile: "react/build/IntlTelInput.js",
 });
 
-//* React Component With Utils - CommonJS
-build({
-  ...mainShared,
-  entryPoints: ["react/src/IntlTelInputWithUtils.tsx"],
-  format: "cjs",
-  outfile: "react/build/IntlTelInputWithUtils.cjs",
-});
-
-//* React Component With Utils - Default (ES Modules)
+//* React Component With Utils
 build({
   ...mainShared,
   entryPoints: ["react/src/IntlTelInputWithUtils.tsx"],
