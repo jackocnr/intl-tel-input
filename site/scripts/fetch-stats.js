@@ -61,7 +61,7 @@ async function fetchStats() {
 
   try {
     const ghData = JSON.parse(
-      await httpsGet("https://api.github.com/repos/jackocnr/intl-tel-input")
+      await httpsGet("https://api.github.com/repos/jackocnr/intl-tel-input"),
     );
     stats.stars = formatNumber(roundToDisplay(ghData.stargazers_count));
   } catch (e) {
@@ -70,7 +70,7 @@ async function fetchStats() {
 
   try {
     const npmData = JSON.parse(
-      await httpsGet("https://api.npmjs.org/downloads/point/last-month/intl-tel-input")
+      await httpsGet("https://api.npmjs.org/downloads/point/last-month/intl-tel-input"),
     );
     stats.downloads = formatNumber(roundToDisplay(npmData.downloads));
   } catch (e) {
@@ -79,7 +79,7 @@ async function fetchStats() {
 
   try {
     const nerdyHtml = await httpsGet(
-      "https://www.nerdydata.com/reports/international-telephone-input/719de9d2-d0e7-4988-b02f-9f9d52687076"
+      "https://www.nerdydata.com/reports/international-telephone-input/719de9d2-d0e7-4988-b02f-9f9d52687076",
     );
     const match = nerdyHtml.match(/"answerCount"\s*:\s*(\d+)/);
     if (match) {

@@ -52,7 +52,7 @@ const escapeHtml = (value) =>
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
+    .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
 const createI18nLanguageListText = (languageCodes) => {
@@ -182,7 +182,7 @@ const exampleDefinitions = [{
     includeItiScript: true,
     displayCode: "src/examples/js/validation_display_code.js",
     extraData: () => ({
-      demo_note: `<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
+      demo_note: "<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
     }),
   },
   pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
@@ -196,7 +196,7 @@ const exampleDefinitions = [{
     includeItiScript: true,
     displayCode: "src/examples/js/validation_display_code.js",
     extraData: () => ({
-      demo_note: `<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
+      demo_note: "<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
     }),
   },
   pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },

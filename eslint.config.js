@@ -52,7 +52,7 @@ export default [
       ...reactHooks.configs.recommended.rules,
       semi: ["error", "always"],
       "comma-dangle": ["error", "always-multiline"],
-      quotes: ["error", "double"],
+      quotes: ["error", "double", { allowTemplateLiterals: true }],
       "no-unused-vars": "off",
       "no-prototype-builtins": "off",
       "class-methods-use-this": "error",

@@ -43,14 +43,14 @@ const addDocOptionsLayoutPlugin = (md) => {
 
     const startRowAndKeyCellMarkup = () =>
       makeHtmlBlock(
-        '<div class="iti-doc-options__row">\n' +
-          '  <div class="iti-doc-options__cell iti-doc-options__cell--key">\n',
+        `<div class="iti-doc-options__row">\n` +
+          `  <div class="iti-doc-options__cell iti-doc-options__cell--key">\n`,
       );
 
     const endKeyCellAndStartValueCellMarkup = () =>
       makeHtmlBlock(
         "  </div>\n" +
-          '  <div class="iti-doc-options__cell iti-doc-options__cell--value">\n',
+          `  <div class="iti-doc-options__cell iti-doc-options__cell--value">\n`,
       );
 
     const endValueCellAndRowMarkup = () => makeHtmlBlock("  </div>\n</div>\n");
@@ -251,7 +251,7 @@ const escapeHtmlAttr = (value) =>
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;");
+    .replace(/"/g, "&quot;");
 
 const buildOpenGraphMetaTags = ({
   title,
