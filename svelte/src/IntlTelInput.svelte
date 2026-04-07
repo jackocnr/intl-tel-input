@@ -88,7 +88,7 @@
     if (!instance?.isActive()) {
       return;
     }
-    const country = instance.getSelectedCountryData().iso2 ?? "";
+    const country = instance.getSelectedCountryData()?.iso2 ?? "";
     if (country !== lastEmittedCountry) {
       lastEmittedCountry = country;
       onChangeCountry?.(country);
@@ -106,7 +106,7 @@
       if (readonly) instance.setReadonly(readonly);
 
       lastEmittedNumber = instance.getNumber() ?? "";
-      lastEmittedCountry = instance.getSelectedCountryData().iso2 ?? "";
+      lastEmittedCountry = instance.getSelectedCountryData()?.iso2 ?? "";
 
       const initialValid = isValid();
       if (initialValid !== null) {

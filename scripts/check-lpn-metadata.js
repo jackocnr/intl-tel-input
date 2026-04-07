@@ -7,11 +7,11 @@
 
 
 /* eslint-disable no-console */
-const fs = require("fs");
-const path = require("path");
-const vm = require("vm");
+import fs from "node:fs";
+import path from "node:path";
+import vm from "node:vm";
 
-const REPO_ROOT = path.resolve(__dirname, "..", "");
+const REPO_ROOT = path.resolve(import.meta.dirname, "..", "");
 const XML_PATH = path.resolve(
   REPO_ROOT,
   "third_party/libphonenumber/resources/PhoneNumberMetadata.xml",
@@ -352,7 +352,7 @@ function extendPrefixXml(iso2, base, minLen, xmlSources) {
 
 // No iso2-codes.json; we derive the allowlist from curated data.ts
 
-function main() {
+async function main() {
   let countryToMetadata;
   const dialCodeToRegions = {};
   const xmlNationalPrefixByIso2 = {};
@@ -362,10 +362,10 @@ function main() {
   // For XML mode, we also keep a structured source set per region
   const xmlSourcesByIso2 = {};
   console.log("Loading libphonenumber XML from:", XML_PATH);
-  // Lazy-require to keep default path lightweight
+  // Lazy-import to keep startup lightweight
   let XMLParser;
   try {
-    ({ XMLParser } = require("fast-xml-parser"));
+    ({ XMLParser } = await import("fast-xml-parser"));
   } catch {
     throw new Error(
       "fast-xml-parser is required. Install with: npm i -D fast-xml-parser",
@@ -807,7 +807,7 @@ function main() {
 }
 
 try {
-  main();
+  await main();
 } catch (e) {
   console.error("Generation failed:", e && e.stack ? e.stack : e);
   process.exit(1);

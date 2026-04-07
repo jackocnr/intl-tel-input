@@ -1,13 +1,9 @@
 {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnPaste": false, //* required
     "editor.formatOnType": false, //* required
     "editor.formatOnSaveMode": "file", //* required to format on save
-    "vs-code-prettier-eslint.prettierLast": false, //* set as "true" to run 'prettier' last not first
     "typescript.tsdk": "node_modules/typescript/lib",
-    "typescript.tsserver.exclude": [
-      "**/site/src/examples/js/angular_component_display_code.ts"
-    ],
     "files.associations": {
       "LICENSE": "text",
     },
@@ -22,5 +18,8 @@
     "files.trimTrailingWhitespace": true,
     "[markdown]": {
       "files.trimTrailingWhitespace": false
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }

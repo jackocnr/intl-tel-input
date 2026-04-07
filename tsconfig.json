@@ -17,4 +17,7 @@
   "include": [
     "src/js/**/*.ts",
   ],
+  // Tell the Svelte language server to skip this tsconfig when looking for
+  // a project that owns .svelte files (svelte/tsconfig.json owns those).
+  "exclude": ["**/*.svelte"],
 }
