@@ -13,6 +13,9 @@
     },
     "allowJs": true,
     "noEmit": true,
+    // Don't auto-load every @types/* package — dts-bundle-generator otherwise
+    // traverses unrelated types (e.g. @types/markdown-it from the site workspace) and trips on broken declarations.
+    "types": ["node"],
   },
   "include": [
     "src/js/**/*.ts",

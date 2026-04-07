@@ -7,13 +7,13 @@ import { spawn } from "node:child_process";
 const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
-// Mirrors the original grunt watch.js patterns.
+// Chokidar v4+ no longer supports globs — watch directories recursively instead.
 const watchPaths = [
-  "src/**/*",
-  "static/**/*",
-  "grunt/**/*",
-  "scripts/**/*",
-  "../build/**/*",
+  "src",
+  "static",
+  "grunt",
+  "scripts",
+  "../build",
 ];
 
 let running = false;

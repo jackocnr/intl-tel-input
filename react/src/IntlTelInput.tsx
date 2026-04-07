@@ -112,7 +112,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     return (): void => {
       itiRef.current?.destroy();
     };
-    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
