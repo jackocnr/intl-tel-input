@@ -1,0 +1,51 @@
+// Replacement for grunt-contrib-watch (grunt/watch.js).
+// Re-runs `npm run build` whenever a watched source file changes.
+const chokidar = require("chokidar");
+const path = require("path");
+const { spawn } = require("child_process");
+
+const ROOT = path.resolve(__dirname, "..");
+process.chdir(ROOT);
+
+// Mirrors the original grunt watch.js patterns.
+const watchPaths = [
+  "src/**/*",
+  "static/**/*",
+  "grunt/**/*",
+  "scripts/**/*",
+  "../build/**/*",
+];
+
+let running = false;
+let queued = false;
+let debounceTimer = null;
+
+function trigger() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    if (running) {
+      queued = true;
+      return;
+    }
+    runBuild();
+  }, 100);
+}
+
+function runBuild() {
+  running = true;
+  queued = false;
+  console.log("\n[watch] -> npm run build");
+  const child = spawn("npm", ["run", "build"], { stdio: "inherit" });
+  child.on("exit", (code) => {
+    running = false;
+    if (code !== 0) console.log(`[watch] FAILED (exit ${code})`);
+    if (queued) runBuild();
+  });
+}
+
+chokidar
+  .watch(watchPaths, { ignoreInitial: true })
+  .on("all", trigger)
+  .on("ready", () => {
+    console.log(`[watch] watching ${watchPaths.length} pattern(s)`);
+  });

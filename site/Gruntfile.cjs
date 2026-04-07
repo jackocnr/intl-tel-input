@@ -1,66 +1,7 @@
 module.exports = function (grunt) {
-  // load all tasks from package.json
+  // Phase 1 of the grunt → npm-scripts migration: only the templating step
+  // and the file watcher still run through grunt. Everything else has been
+  // ported to standalone scripts in site/scripts/ and is invoked via npm.
+  // load-grunt-config picks up grunt/template.js and grunt/watch.js.
   require("load-grunt-config")(grunt);
-
-  // build css
-  grunt.registerTask("build:css", [
-    "sass",
-    "template:website_css",
-    "template:large_flags_overrides_css",
-    "cssmin",
-  ]);
-
-  // build esbuild
-  grunt.registerTask("build:esbuild", [
-    "template:lookup_country_js", // needs to go through esbuild for IPAPI_TOKEN injection
-    "template:right_to_left_js",
-    "template:angular_component_js",
-    "template:react_component_js",
-    "template:playground_js",
-    "shell:esbuild",
-  ]);
-
-  // build vue component
-  grunt.registerTask("build:vue_component", [
-    "template:vue_component_js",
-    "shell:vite",
-  ]);
-
-  // build svelte component
-  grunt.registerTask("build:svelte_component", [
-    "template:svelte_component_js",
-    "shell:viteSvelte",
-  ]);
-
-  // build all
-  grunt.registerTask("build", [
-    "shell:clearBuild",
-    "shell:fetchStats",
-    "copy",
-    "build:css",
-    "build:esbuild",
-    "build:vue_component",
-    "build:svelte_component",
-    "template",
-    "replace:validationPrecise",
-    "strip-html-comments",
-  ]);
-
-  grunt.registerTask("strip-html-comments", () => {
-    const htmlFiles = grunt.file.expand({ dot: true }, ["build/**/*.html"]);
-    let updatedCount = 0;
-
-    htmlFiles.forEach((filePath) => {
-      const input = grunt.file.read(filePath);
-      const output = input.replace(/<!--[\s\S]*?-->/g, "");
-      if (output !== input) {
-        grunt.file.write(filePath, output);
-        updatedCount += 1;
-      }
-    });
-
-    grunt.log.writeln(
-      `strip-html-comments: processed ${htmlFiles.length} files, updated ${updatedCount}`
-    );
-  });
 };
