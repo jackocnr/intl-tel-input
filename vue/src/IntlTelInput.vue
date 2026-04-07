@@ -154,9 +154,6 @@ onMounted(() => {
 
   instance.value = intlTelInput(input.value, initOptions.value);
 
-  if (displayed.value) {
-    instance.value.setNumber(displayed.value);
-  }
   if (props.disabled) {
     instance.value.setDisabled(props.disabled);
   }
@@ -164,16 +161,24 @@ onMounted(() => {
     instance.value.setReadonly(props.readonly);
   }
 
-  lastEmittedNumber.value = instance.value.getNumber() ?? "";
   lastEmittedCountry.value = instance.value.getSelectedCountryData().iso2 ?? "";
 
-  lastEmittedValidity.value = isValid();
-  lastEmittedErrorCode.value = lastEmittedValidity.value
-    ? null
-    : instance.value.getValidationError();
-
-  // update state values once plugin initialisation has finished (e.g. loaded utils script). note that updateCountry calls updateValue, which calls updateValidity.
-  instance.value.promise.then(updateCountry);
+  // wait for utils to load before calling methods that require it (getNumber, setNumber, isValidNumber, etc.)
+  instance.value.promise.then(() => {
+    if (!instance.value?.isActive()) {
+      return;
+    }
+    if (displayed.value) {
+      instance.value.setNumber(displayed.value);
+    }
+    lastEmittedNumber.value = instance.value.getNumber() ?? "";
+    lastEmittedValidity.value = isValid();
+    lastEmittedErrorCode.value = lastEmittedValidity.value
+      ? null
+      : instance.value.getValidationError();
+    // update state values now that initialisation has finished. updateCountry calls updateValue, which calls updateValidity.
+    updateCountry();
+  });
 });
 
 watch(
@@ -193,17 +198,23 @@ watch(
       return;
     }
 
-    // Avoid cursor jumping when typing
-    const next = val ?? "";
-    const currentCanonical = instance.value.getNumber() ?? "";
-    const isFocused = document.activeElement === input.value;
+    // wait for utils to load before calling methods that require it
+    instance.value.promise.then(() => {
+      if (!instance.value?.isActive()) {
+        return;
+      }
+      // Avoid cursor jumping when typing
+      const next = val ?? "";
+      const currentCanonical = instance.value.getNumber() ?? "";
+      const isFocused = document.activeElement === input.value;
 
-    if (isFocused || currentCanonical === next) {
-      return;
-    }
+      if (isFocused || currentCanonical === next) {
+        return;
+      }
 
-    instance.value.setNumber(next);
-    updateValidity();
+      instance.value.setNumber(next);
+      updateValidity();
+    });
   },
   { flush: "post" },
 );

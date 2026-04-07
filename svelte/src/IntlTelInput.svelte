@@ -101,22 +101,25 @@
     if (inputElement) {
       instance = intlTelInput(inputElement, initOptions as SomeOptions);
       inputElement.addEventListener("countrychange", updateCountry);
-      if (initialValue) instance.setNumber(initialValue);
       if (disabled) instance.setDisabled(disabled);
       if (readonly) instance.setReadonly(readonly);
 
-      lastEmittedNumber = instance.getNumber() ?? "";
       lastEmittedCountry = instance.getSelectedCountryData()?.iso2 ?? "";
-
-      const initialValid = isValid();
-      if (initialValid !== null) {
-        lastEmittedValidity = !!initialValid;
-        lastEmittedErrorCode = initialValid ? null : instance.getValidationError();
-      }
       hasInitialized = true;
 
-      // when plugin initialisation has finished (e.g. loaded utils script), update all the state values (updateCountry calls updateValue which calls updateValidity)
-      instance.promise.then(updateCountry);
+      // wait for utils to load before calling methods that require it (getNumber, setNumber, isValidNumber, etc.)
+      instance.promise.then(() => {
+        if (!instance?.isActive()) return;
+        if (initialValue) instance.setNumber(initialValue);
+        lastEmittedNumber = instance.getNumber() ?? "";
+        const initialValid = isValid();
+        if (initialValid !== null) {
+          lastEmittedValidity = !!initialValid;
+          lastEmittedErrorCode = initialValid ? null : instance.getValidationError();
+        }
+        // update all state values now that initialisation has finished (updateCountry calls updateValue which calls updateValidity)
+        updateCountry();
+      });
     }
   });
 
@@ -147,13 +150,17 @@
       return;
     }
     const next = value ?? "";
-    const currentCanonical = instance.getNumber() ?? "";
-    const isFocused = document.activeElement === inputElement;
-    if (isFocused || currentCanonical === next) {
-      return;
-    }
-    instance.setNumber(next);
-    updateValidity();
+    // wait for utils to load before calling methods that require it
+    instance.promise.then(() => {
+      if (!instance?.isActive()) return;
+      const currentCanonical = instance.getNumber() ?? "";
+      const isFocused = document.activeElement === inputElement;
+      if (isFocused || currentCanonical === next) {
+        return;
+      }
+      instance.setNumber(next);
+      updateValidity();
+    });
   });
 
   // Expose instance and input for parent access

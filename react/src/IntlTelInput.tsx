@@ -147,14 +147,20 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     if (!itiRef.current || value === undefined) {
       return;
     }
-    const next = value ?? "";
-    const currentCanonical = itiRef.current.getNumber() ?? "";
-    const isFocused = document.activeElement === inputRef.current;
-    if (isFocused || currentCanonical === next) {
-      return;
-    }
-    itiRef.current.setNumber(next);
-    update();
+    // wait for utils to load before trying to access iti methods that use it, e.g. getNumber, setNumber, etc.
+    itiRef.current.promise.then(() => {
+      if (!itiRef.current?.isActive()) {
+        return;
+      }
+      const next = value ?? "";
+      const currentCanonical = itiRef.current.getNumber() ?? "";
+      const isFocused = document.activeElement === inputRef.current;
+      if (isFocused || currentCanonical === next) {
+        return;
+      }
+      itiRef.current.setNumber(next);
+      update();
+    });
   }, [value, update]);
 
   // ignore keys that would break functionality

@@ -124,6 +124,9 @@ class IntlTelInput
   private lastEmittedValidity?: boolean;
   private lastEmittedErrorCode?: number | null;
 
+  // writeValue may be called by Angular forms before utils has loaded; queue it until then
+  private pendingWriteValue?: string;
+
   private countryChangeHandler = () => this.handleInput();
   // eslint-disable-next-line class-methods-use-this
   private onChange: (value: string) => void = () => {};
@@ -144,10 +147,6 @@ class IntlTelInput
 
     this.applyInputAttrs();
 
-    if (this.initialValue) {
-      this.iti?.setNumber(this.initialValue);
-    }
-
     if (this.disabled) {
       this.iti?.setDisabled(this.disabled);
     }
@@ -155,6 +154,18 @@ class IntlTelInput
     if (this.readonly) {
       this.iti?.setReadonly(this.readonly);
     }
+
+    // wait for utils to load before calling methods that require it (setNumber, etc.)
+    this.iti?.promise.then(() => {
+      if (!this.iti?.isActive()) return;
+      if (this.initialValue) {
+        this.iti.setNumber(this.initialValue);
+      }
+      if (this.pendingWriteValue !== undefined) {
+        this.iti.setNumber(this.pendingWriteValue);
+        this.pendingWriteValue = undefined;
+      }
+    });
   }
 
   private buildInitOptions(): SomeOptions {
@@ -325,8 +336,17 @@ class IntlTelInput
   // ============ ControlValueAccessor Implementation ============
 
   writeValue(value: string | null): void {
+    const next = value || "";
     if (this.iti) {
-      this.iti.setNumber(value || "");
+      // wait for utils to load before calling setNumber
+      this.iti.promise.then(() => {
+        if (this.iti?.isActive()) {
+          this.iti.setNumber(next);
+        }
+      });
+    } else {
+      // iti not yet created (writeValue called before ngAfterViewInit) - queue for later
+      this.pendingWriteValue = next;
     }
   }
 
