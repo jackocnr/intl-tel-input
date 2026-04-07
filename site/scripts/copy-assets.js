@@ -1,9 +1,9 @@
 // Replacement for grunt-contrib-copy as configured in grunt/copy.js.
 // Copies four trees into site/build/.
-const fs = require("fs");
-const path = require("path");
+import fs from "node:fs";
+import path from "node:path";
 
-const ROOT = path.resolve(__dirname, "..");
+const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
 const targets = [

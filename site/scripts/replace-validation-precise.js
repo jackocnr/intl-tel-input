@@ -1,9 +1,9 @@
 // Replacement for the grunt-replace `validationPrecise` target.
 // Swaps iti.isValidNumber() -> iti.isValidNumberPrecise() in the precise example.
-const fs = require("fs");
-const path = require("path");
+import fs from "node:fs";
+import path from "node:path";
 
-const ROOT = path.resolve(__dirname, "..");
+const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
 const file = "build/examples/js/validation_precise.js";

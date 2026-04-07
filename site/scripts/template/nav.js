@@ -32,7 +32,4 @@ const examplesDropdownPages = [
   { name: "svelte_component", href: "/examples/svelte-component", label: "Svelte component" },
 ];
 
-module.exports = {
-  docsDropdownPages,
-  examplesDropdownPages,
-};
+export { docsDropdownPages, examplesDropdownPages };

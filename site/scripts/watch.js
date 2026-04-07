@@ -1,10 +1,10 @@
 // Replacement for grunt-contrib-watch (grunt/watch.js).
 // Re-runs `npm run build` whenever a watched source file changes.
-const chokidar = require("chokidar");
-const path = require("path");
-const { spawn } = require("child_process");
+import chokidar from "chokidar";
+import path from "node:path";
+import { spawn } from "node:child_process";
 
-const ROOT = path.resolve(__dirname, "..");
+const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
 // Mirrors the original grunt watch.js patterns.

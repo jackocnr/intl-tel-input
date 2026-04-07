@@ -1,5 +1,5 @@
-import intlTelInput from "../../../build/intl-tel-input/js/intlTelInput";
-import ar from "../../../build/intl-tel-input/js/i18n/ar"; // arabic
+import intlTelInput from "../../../build/intl-tel-input/js/intlTelInput.mjs";
+import ar from "../../../build/intl-tel-input/js/i18n/ar.js"; // arabic
 
 const input = document.querySelector("#phone");
 

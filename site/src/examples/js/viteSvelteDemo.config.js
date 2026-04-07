@@ -31,7 +31,8 @@ export default defineConfig({
     lib: {
       entry: path.resolve(projectRoot, "src/examples/js/svelte_main.js"),
       formats: ["cjs"],
-      fileName: "svelte_component_bundle",
+      // Force .js extension — see comment in viteVueDemo.config.js.
+      fileName: () => "svelte_component_bundle.js",
     },
   },
   plugins: [svelte()],

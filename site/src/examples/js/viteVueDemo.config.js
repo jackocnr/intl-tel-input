@@ -19,7 +19,9 @@ export default defineConfig({
     lib: {
       entry: path.resolve(projectRoot, "src/examples/js/vue_main.js"),
       formats: ["cjs"],
-      fileName: "vue_component_bundle",
+      // Force .js extension. Vite would otherwise use .cjs because the
+      // package.json now has "type": "module" and a bare .js would be ESM.
+      fileName: () => "vue_component_bundle.js",
     },
     rollupOptions: {
       external: [/utils\.js/],

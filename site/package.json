@@ -2,6 +2,7 @@
   "name": "iti-website",
   "version": "1.0.0",
   "description": "The website for intl-tel-input",
+  "type": "module",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -16,9 +17,7 @@
     "clean-css-cli": "^5.6.3",
     "esbuild": "^0.25.0",
     "eslint": "^8.38.0",
-    "grunt": "^1.6.1",
-    "grunt-template": "^1.0.0",
-    "load-grunt-config": "^4.0.1",
+    "lodash.template": "^4.18.1",
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
     "prettier": "^2.8.7",
@@ -33,16 +32,18 @@
     "fetch-stats:prod": "node scripts/fetch-stats.js --env=prod",
     "copy": "node scripts/copy-assets.js",
     "build:css:sass": "sass --no-source-map src/css/website.scss:build/css/website.css src/css/large_flags_overrides.scss:build/css/large_flags_overrides.css src/css/highlightjs_overrides.scss:build/css/highlightjs_overrides.css src/css/playground.scss:build/css/playground.css src/css/docs.scss:build/css/docs.css src/css/homepage.scss:build/css/homepage.css",
-    "build:css:cache-bust": "grunt template:website_css template:large_flags_overrides_css template:homepage_css template:docs_css template:playground_css",
+    "build:css:cache-bust": "node scripts/build-pages.js --task=website_css,large_flags_overrides_css,homepage_css,docs_css,playground_css",
     "build:css:min": "cleancss -o build/css/website.css build/css/website.css && cleancss -o build/css/playground.css build/css/playground.css && cleancss -o build/css/homepage.css build/css/homepage.css && cleancss -o build/css/docs.css build/css/docs.css",
     "build:css": "npm run build:css:sass && npm run build:css:cache-bust && npm run build:css:min",
-    "build:esbuild:templates": "grunt template:lookup_country_js template:right_to_left_js template:angular_component_js template:react_component_js template:playground_js",
-    "build:esbuild": "npm run build:esbuild:templates && node esbuild/build.mjs",
-    "build:vue": "grunt template:vue_component_js && vite build --config src/examples/js/viteVueDemo.config.js",
-    "build:svelte": "grunt template:svelte_component_js && vite build --config src/examples/js/viteSvelteDemo.config.mjs",
+    "build:esbuild:templates": "node scripts/build-pages.js --task=lookup_country_js,right_to_left_js,angular_component_js,react_component_js,playground_js",
+    "build:esbuild": "npm run build:esbuild:templates && node esbuild/build.js",
+    "build:vue": "node scripts/build-pages.js --task=vue_component_js && vite build --config src/examples/js/viteVueDemo.config.js",
+    "build:svelte": "node scripts/build-pages.js --task=svelte_component_js && vite build --config src/examples/js/viteSvelteDemo.config.js",
+    "build:pages": "node scripts/build-pages.js",
+    "build:pages:prod": "node scripts/build-pages.js --env=prod",
     "replace": "node scripts/replace-validation-precise.js",
     "strip-comments": "node scripts/strip-html-comments.js",
-    "build": "npm run clean && npm run fetch-stats && npm run copy && npm run build:css && npm run build:esbuild && npm run build:vue && npm run build:svelte && grunt template --env=dev && npm run replace && npm run strip-comments",
-    "build:prod": "npm run clean && npm run fetch-stats:prod && npm run copy && npm run build:css && npm run build:esbuild && npm run build:vue && npm run build:svelte && grunt template --env=prod && npm run replace && npm run strip-comments"
+    "build": "npm run clean && npm run fetch-stats && npm run copy && npm run build:css && npm run build:esbuild && npm run build:vue && npm run build:svelte && npm run build:pages && npm run replace && npm run strip-comments",
+    "build:prod": "npm run clean && npm run fetch-stats:prod && npm run copy && npm run build:css && npm run build:esbuild && npm run build:vue && npm run build:svelte && npm run build:pages:prod && npm run replace && npm run strip-comments"
   }
 }

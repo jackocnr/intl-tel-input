@@ -1,9 +1,9 @@
 // Replacement for the strip-html-comments inline grunt task.
 // Removes HTML comments from every build/**/*.html file.
-const fs = require("fs");
-const path = require("path");
+import fs from "node:fs";
+import path from "node:path";
 
-const ROOT = path.resolve(__dirname, "..");
+const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
 function* walk(dir) {

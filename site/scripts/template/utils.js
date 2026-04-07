@@ -1,8 +1,8 @@
-const path = require("path");
-const fs = require("fs");
-const crypto = require("crypto");
-const MarkdownIt = require("markdown-it");
-const markdownItAnchor = require("markdown-it-anchor");
+import path from "node:path";
+import fs from "node:fs";
+import crypto from "node:crypto";
+import MarkdownIt from "markdown-it";
+import markdownItAnchor from "markdown-it-anchor";
 
 const BUILD_DIR = "build";
 const HASH_LENGTH = 12;
@@ -268,7 +268,7 @@ const buildOpenGraphMetaTags = ({
   ].join("\n");
 };
 
-module.exports = {
+export {
   createMarkdownRenderer,
   cacheBust,
   getDirHash,

@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import externalUtilsPlugin from "./externalUtilsPlugin.mjs";
+import externalUtilsPlugin from "./externalUtilsPlugin.js";
 
 const sharedOptions = {
   bundle: true,

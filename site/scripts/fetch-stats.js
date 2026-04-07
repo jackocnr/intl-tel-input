@@ -1,6 +1,6 @@
-const https = require("https");
-const fs = require("fs");
-const path = require("path");
+import https from "node:https";
+import fs from "node:fs";
+import path from "node:path";
 
 function httpsGet(url) {
   return new Promise((resolve, reject) => {
@@ -44,7 +44,7 @@ function roundToDisplay(n) {
 }
 
 async function fetchStats() {
-  const statsPath = path.join(__dirname, "..", "tmp", "stats.json");
+  const statsPath = path.join(import.meta.dirname, "..", "tmp", "stats.json");
 
   // Default/fallback values
   const defaults = { websites: "130k", downloads: "3.2M", stars: "8.2k" };
