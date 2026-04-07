@@ -18,7 +18,6 @@ import {
   readCommonBodyEndScript,
   readItiLiveResultsScript,
   readItiScript,
-  buildLayoutData,
 } from "./template/helpers.js";
 
 // Always run from the site/ directory so all relative paths in templates and
@@ -43,7 +42,10 @@ const toBcp47LanguageTag = (code) => {
   if (parts.length === 1) return parts[0].toLowerCase();
   const [lang, region, ...rest] = parts;
   const normLang = String(lang).toLowerCase();
-  const normRegion = region && region.length === 2 ? String(region).toUpperCase() : String(region || "");
+  const normRegion =
+    region && region.length === 2
+      ? String(region).toUpperCase()
+      : String(region || "");
   return [normLang, normRegion, ...rest].filter(Boolean).join("-");
 };
 
@@ -56,7 +58,9 @@ const escapeHtml = (value) =>
     .replace(/'/g, "&#39;");
 
 const createI18nLanguageListText = (languageCodes) => {
-  const codes = Array.isArray(languageCodes) ? languageCodes.filter(Boolean) : [];
+  const codes = Array.isArray(languageCodes)
+    ? languageCodes.filter(Boolean)
+    : [];
   if (!codes.length) return "_No language modules found._";
 
   let displayNames = null;
@@ -68,17 +72,16 @@ const createI18nLanguageListText = (languageCodes) => {
     displayNames = null;
   }
 
-  const items = codes
-    .map((code) => {
-      const tag = toBcp47LanguageTag(code);
-      let label = null;
-      try {
-        label = displayNames && tag ? displayNames.of(tag) : null;
-      } catch {
-        label = null;
-      }
-      return { code: String(code), label: label ? String(label) : "" };
-    });
+  const items = codes.map((code) => {
+    const tag = toBcp47LanguageTag(code);
+    let label = null;
+    try {
+      label = displayNames && tag ? displayNames.of(tag) : null;
+    } catch {
+      label = null;
+    }
+    return { code: String(code), label: label ? String(label) : "" };
+  });
 
   items.sort((a, b) => {
     const aKey = a.label || a.code;
@@ -94,11 +97,13 @@ const createI18nLanguageListText = (languageCodes) => {
 // Page metadata constants -------------------------------------------------
 
 const homepageTitle = "International Telephone Input";
-const homepageMetaDesc = "A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes React, Vue, Angular and Svelte components.";
+const homepageMetaDesc =
+  "A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes React, Vue, Angular and Svelte components.";
 const homepageCanonicalUrl = "https://intl-tel-input.com";
 
 const playgroundTitle = "Playground - International Telephone Input";
-const playgroundMetaDesc = "Try different initialisation options and see the plugin update live.";
+const playgroundMetaDesc =
+  "Try different initialisation options and see the plugin update live.";
 const playgroundCanonicalUrl = "https://intl-tel-input.com/playground";
 
 const notFoundTitle = "404 - Page not found | intl-tel-input";
@@ -134,175 +139,210 @@ tasks.push(cssCacheBust("website_css", "build/css/website.css"));
 tasks.push(cssCacheBust("homepage_css", "build/css/homepage.css"));
 tasks.push(cssCacheBust("docs_css", "build/css/docs.css"));
 tasks.push(cssCacheBust("playground_css", "build/css/playground.css"));
-tasks.push(cssCacheBust("large_flags_overrides_css", "build/css/large_flags_overrides.css"));
+tasks.push(
+  cssCacheBust(
+    "large_flags_overrides_css",
+    "build/css/large_flags_overrides.css",
+  ),
+);
 
 // 3. Static "JS template" tasks — used as inputs to esbuild / vite.
 //    Defined here so they can be invoked individually via --task=NAME from
 //    npm scripts that need them before bundling (build:esbuild, build:vue,
 //    build:svelte).
-const exampleDefinitions = [{
-  key: "lookup_country",
-  title: "Lookup user's country",
-  metaDesc: "Automatically set the country based on the user's IP address.",
-  js: { destDir: "tmp" },
-  content: {
-    markupName: "simple_input",
-    includeItiScript: true,
-    displayCode: "src/examples/js/lookup_country_display_code.js",
+const exampleDefinitions = [
+  {
+    key: "lookup_country",
+    title: "Lookup user's country",
+    metaDesc: "Automatically set the country based on the user's IP address.",
+    js: { destDir: "tmp" },
+    content: {
+      markupName: "simple_input",
+      includeItiScript: true,
+      displayCode: "src/examples/js/lookup_country_display_code.js",
+    },
   },
-}, {
-  key: "right_to_left",
-  title: "Right to left",
-  metaDesc: "Support for right-to-left languages.",
-  js: { destDir: "tmp", script: "right_to_left_bundle.js" },
-  content: {
-    markupName: "simple_input",
-    isRtl: true,
-    displayCode: "src/examples/js/right_to_left_display_code.js",
+  {
+    key: "right_to_left",
+    title: "Right to left",
+    metaDesc: "Support for right-to-left languages.",
+    js: { destDir: "tmp", script: "right_to_left_bundle.js" },
+    content: {
+      markupName: "simple_input",
+      isRtl: true,
+      displayCode: "src/examples/js/right_to_left_display_code.js",
+    },
+    layoutExtra: { isRtl: true },
   },
-  layoutExtra: { isRtl: true },
-}, {
-  key: "single_country",
-  title: "Single country",
-  metaDesc: "When you only need to handle numbers from a single country.",
-  content: {
-    demo_note: "<p>Enter a US number:</p>",
-    markupName: "validation",
-    includeItiScript: true,
-    displayCode: "src/examples/js/single_country_display_code.js",
+  {
+    key: "single_country",
+    title: "Single country",
+    metaDesc: "When you only need to handle numbers from a single country.",
+    content: {
+      demo_note: "<p>Enter a US number:</p>",
+      markupName: "validation",
+      includeItiScript: true,
+      displayCode: "src/examples/js/single_country_display_code.js",
+    },
+    pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
-  pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
-}, {
-  key: "validation_practical",
-  title: "Validation",
-  metaDesc: "Validate the user's phone number and if there's an error, display a relevant message.",
-  js: { src: "src/examples/js/validation.js" },
-  content: {
-    markupName: "validation",
-    includeItiScript: true,
-    displayCode: "src/examples/js/validation_display_code.js",
-    extraData: () => ({
-      demo_note: "<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
-    }),
+  {
+    key: "validation_practical",
+    title: "Validation",
+    metaDesc:
+      "Validate the user's phone number and if there's an error, display a relevant message.",
+    js: { src: "src/examples/js/validation.js" },
+    content: {
+      markupName: "validation",
+      includeItiScript: true,
+      displayCode: "src/examples/js/validation_display_code.js",
+      extraData: () => ({
+        demo_note:
+          "<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
+      }),
+    },
+    pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
-  pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
-}, {
-  key: "validation_precise",
-  title: "Precise validation (advanced)",
-  metaDesc: "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
-  js: { src: "src/examples/js/validation.js" },
-  content: {
-    markupName: "validation",
-    includeItiScript: true,
-    displayCode: "src/examples/js/validation_display_code.js",
-    extraData: () => ({
-      demo_note: "<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
-    }),
+  {
+    key: "validation_precise",
+    title: "Precise validation (advanced)",
+    metaDesc:
+      "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
+    js: { src: "src/examples/js/validation.js" },
+    content: {
+      markupName: "validation",
+      includeItiScript: true,
+      displayCode: "src/examples/js/validation_display_code.js",
+      extraData: () => ({
+        demo_note:
+          "<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
+      }),
+    },
+    pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
-  pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
-}, {
-  key: "hidden_input",
-  title: "Hidden input",
-  metaDesc: "Automatically populate a hidden input with the full international number, so it gets submitted to your backend.",
-  content: {
-    includeItiScript: true,
-    markupName: "validation",
-    displayCode: "src/examples/js/hidden_input_display_code.js",
+  {
+    key: "hidden_input",
+    title: "Hidden input",
+    metaDesc:
+      "Automatically populate a hidden input with the full international number, so it gets submitted to your backend.",
+    content: {
+      includeItiScript: true,
+      markupName: "validation",
+      displayCode: "src/examples/js/hidden_input_display_code.js",
+    },
   },
-}, {
-  key: "multiple_instances",
-  title: "Multiple instances",
-  metaDesc: "Use multiple instances of the plugin with different configurations on the same page.",
-  content: {
-    includeItiScript: true,
-    displayCode: "src/examples/js/multiple_instances_display_code.js",
+  {
+    key: "multiple_instances",
+    title: "Multiple instances",
+    metaDesc:
+      "Use multiple instances of the plugin with different configurations on the same page.",
+    content: {
+      includeItiScript: true,
+      displayCode: "src/examples/js/multiple_instances_display_code.js",
+    },
+    pageExtra: {
+      stylesheet_after_website_css: "/examples/css/multiple_instances.css",
+    },
   },
-  pageExtra: { stylesheet_after_website_css: "/examples/css/multiple_instances.css" },
-}, {
-  key: "display_number",
-  title: "Display existing number",
-  metaDesc: "Automatically format an existing number during initialisation.",
-  js: { src: "src/examples/js/simple_init_plugin.js" },
-  content: {
-    includeItiScript: true,
-    displayCode: "src/examples/js/simple_init_plugin_display_code.js",
+  {
+    key: "display_number",
+    title: "Display existing number",
+    metaDesc: "Automatically format an existing number during initialisation.",
+    js: { src: "src/examples/js/simple_init_plugin.js" },
+    content: {
+      includeItiScript: true,
+      displayCode: "src/examples/js/simple_init_plugin_display_code.js",
+    },
   },
-}, {
-  key: "large_flags",
-  title: "Large flags",
-  metaDesc: "How to display extra large flag images.",
-  js: { src: "src/examples/js/simple_init_plugin.js" },
-  content: {
-    markupName: "simple_input",
-    includeItiScript: true,
-    displayCode: "src/examples/js/simple_init_plugin_display_code.js",
+  {
+    key: "large_flags",
+    title: "Large flags",
+    metaDesc: "How to display extra large flag images.",
+    js: { src: "src/examples/js/simple_init_plugin.js" },
+    content: {
+      markupName: "simple_input",
+      includeItiScript: true,
+      displayCode: "src/examples/js/simple_init_plugin_display_code.js",
+    },
+    pageExtra: { iti_styles: "largeFlags" },
   },
-  pageExtra: { iti_styles: "largeFlags" },
-}, {
-  key: "angular_component",
-  title: "Angular component",
-  metaDesc: "How to use intl-tel-input with Angular.",
-  js: {
-    src: "src/examples/js/angular_component.ts",
-    dest: "tmp/examples/js/angular_component.ts",
-    script: "angular_component_bundle.js",
+  {
+    key: "angular_component",
+    title: "Angular component",
+    metaDesc: "How to use intl-tel-input with Angular.",
+    js: {
+      src: "src/examples/js/angular_component.ts",
+      dest: "tmp/examples/js/angular_component.ts",
+      script: "angular_component_bundle.js",
+    },
+    content: {
+      markupName: "component",
+      hideMarkupSection: true,
+      displayCode: "src/examples/js/angular_component_display_code.js",
+      script: "angular_component_bundle.js",
+    },
   },
-  content: {
-    markupName: "component",
-    hideMarkupSection: true,
-    displayCode: "src/examples/js/angular_component_display_code.js",
-    script: "angular_component_bundle.js",
+  {
+    key: "react_component",
+    title: "React component",
+    metaDesc: "How to use intl-tel-input with React.",
+    js: {
+      src: "src/examples/js/react_component.tsx",
+      dest: "tmp/examples/js/react_component.tsx",
+      script: "react_component_bundle.js",
+    },
+    content: {
+      markupName: "component",
+      hideMarkupSection: true,
+      displayCode: "src/examples/js/react_component_display_code.js",
+      script: "react_component_bundle.js",
+    },
   },
-}, {
-  key: "react_component",
-  title: "React component",
-  metaDesc: "How to use intl-tel-input with React.",
-  js: {
-    src: "src/examples/js/react_component.tsx",
-    dest: "tmp/examples/js/react_component.tsx",
-    script: "react_component_bundle.js",
+  {
+    key: "vue_component",
+    title: "Vue component",
+    metaDesc: "How to use intl-tel-input with Vue.",
+    js: {
+      src: "src/examples/js/vue_component.vue",
+      dest: "tmp/examples/js/vue_component.vue",
+      script: "vue_component_bundle.js",
+    },
+    content: {
+      markupName: "component",
+      hideMarkupSection: true,
+      displayCode: "src/examples/js/vue_component_display_code.vue",
+      script: "vue_component_bundle.js",
+    },
   },
-  content: {
-    markupName: "component",
-    hideMarkupSection: true,
-    displayCode: "src/examples/js/react_component_display_code.js",
-    script: "react_component_bundle.js",
+  {
+    key: "svelte_component",
+    title: "Svelte component",
+    metaDesc: "How to use intl-tel-input with Svelte.",
+    js: {
+      src: "src/examples/js/svelte_component.svelte",
+      dest: "tmp/examples/js/svelte_component.svelte",
+      script: "svelte_component_bundle.js",
+    },
+    content: {
+      markupName: "component",
+      hideMarkupSection: true,
+      displayCode: "src/examples/js/svelte_component_display_code.svelte",
+      script: "svelte_component_bundle.js",
+    },
   },
-}, {
-  key: "vue_component",
-  title: "Vue component",
-  metaDesc: "How to use intl-tel-input with Vue.",
-  js: {
-    src: "src/examples/js/vue_component.vue",
-    dest: "tmp/examples/js/vue_component.vue",
-    script: "vue_component_bundle.js",
-  },
-  content: {
-    markupName: "component",
-    hideMarkupSection: true,
-    displayCode: "src/examples/js/vue_component_display_code.vue",
-    script: "vue_component_bundle.js",
-  },
-}, {
-  key: "svelte_component",
-  title: "Svelte component",
-  metaDesc: "How to use intl-tel-input with Svelte.",
-  js: {
-    src: "src/examples/js/svelte_component.svelte",
-    dest: "tmp/examples/js/svelte_component.svelte",
-    script: "svelte_component_bundle.js",
-  },
-  content: {
-    markupName: "component",
-    hideMarkupSection: true,
-    displayCode: "src/examples/js/svelte_component_display_code.svelte",
-    script: "svelte_component_bundle.js",
-  },
-}];
+];
 
 // For each example, push: js, content, layout, page tasks (in that order).
 for (const def of exampleDefinitions) {
-  const { key, title, metaDesc, js = {}, content = {}, layoutExtra = {}, pageExtra = {} } = def;
+  const {
+    key,
+    title,
+    metaDesc,
+    js = {},
+    content = {},
+    layoutExtra = {},
+    pageExtra = {},
+  } = def;
   const slug = key.replace(/_/g, "-");
   const jsSrc = js.src || `src/examples/js/${key}.js`;
   const jsDest = js.dest || `${js.destDir || "build"}/examples/js/${key}.js`;
@@ -316,7 +356,9 @@ for (const def of exampleDefinitions) {
   const markupName = content.markupName || key;
   const markupPath = `src/examples/html/${markupName}.html`;
   const displayMarkupCandidate = `src/examples/html/${markupName}_display_code.html`;
-  const displayMarkupPath = fs.existsSync(displayMarkupCandidate) ? displayMarkupCandidate : markupPath;
+  const displayMarkupPath = fs.existsSync(displayMarkupCandidate)
+    ? displayMarkupCandidate
+    : markupPath;
 
   const fullTitle = `${title} example - International Telephone Input`;
   const canonicalUrl = `https://intl-tel-input.com/examples/${slug}`;
@@ -370,17 +412,18 @@ for (const def of exampleDefinitions) {
     name: `${key}_layout`,
     src: "src/layout_template.html.ejs",
     dest: layoutDest,
-    data: () => buildLayoutData({
-      showLeftSidebar: true,
-      layoutClass: "iti-layout-both-sidebars",
-      navPath: "src/examples/examples_nav_template.html.ejs",
-      contentPath: contentDest,
-      name: key,
-      pageType: "examples",
-      docsDropdownPages,
-      examplesDropdownPages,
-      extra: { ...layoutExtra },
-    }),
+    data: () =>
+      ({
+        showLeftSidebar: true,
+        layoutClass: "iti-layout-both-sidebars",
+        nav: fs.readFileSync("src/examples/examples_nav_template.html.ejs", "utf8"),
+        content: fs.readFileSync(contentDest, "utf8"),
+        name: key,
+        pageType: "examples",
+        docsDropdownPages,
+        examplesDropdownPages,
+        ...layoutExtra,
+      }),
   });
 
   // 6. Example page (wraps layout in the page template).
@@ -432,7 +475,8 @@ tasks.push({
   dest: "tmp/homepage/homepage_layout.html",
   data: () => {
     const stats = JSON.parse(fs.readFileSync("tmp/stats.json", "utf8"));
-    const content = fs.readFileSync("src/homepage/homepage_content.html", "utf8")
+    const content = fs
+      .readFileSync("src/homepage/homepage_content.html", "utf8")
       .replace("{{STAT_WEBSITES}}", stats.websites)
       .replace("{{STAT_DOWNLOADS}}", stats.downloads)
       .replace("{{STAT_STARS}}", stats.stars);
@@ -556,21 +600,89 @@ tasks.push({
 
 // 8. Docs pages — content (markdown) → layout → page.
 const docsDefinitions = [
-  { key: "choose_integration", title: "Choose integration", metaDesc: "Which integration of intl-tel-input is right for you? Pure JavaScript, React, Vue, Angular or Svelte component?" },
-  { key: "getting_started", title: "Getting started", metaDesc: "How to quickly get up and running with intl-tel-input." },
-  { key: "options", title: "Initialisation options", metaDesc: "All the different options you can use when initialising intl-tel-input." },
-  { key: "localisation", title: "Localisation", metaDesc: "How to localise country names and user interface strings, including RTL support." },
-  { key: "accessibility", title: "Accessibility", metaDesc: "Accessibility guidance for intl-tel-input, including keyboard and screen reader support." },
-  { key: "methods", title: "Methods", metaDesc: "All the different methods you can call on an intl-tel-input instance." },
-  { key: "events", title: "Events", metaDesc: "All the different events that an intl-tel-input instance can emit." },
-  { key: "utils", title: "Utilities script", metaDesc: "Learn about the utils script, what it's for and how to load it." },
-  { key: "theming", title: "Theming / dark mode", metaDesc: "How to theme the plugin, including how to set it up for dark mode." },
-  { key: "troubleshooting", title: "Troubleshooting", metaDesc: "Solutions to common problems and FAQs about intl-tel-input." },
-  { key: "faq", title: "FAQ", metaDesc: "Frequently asked questions about intl-tel-input, including common setup and localisation topics." },
-  { key: "react_component", title: "React component", metaDesc: "How to use the intl-tel-input React component." },
-  { key: "vue_component", title: "Vue component", metaDesc: "How to use the intl-tel-input Vue component." },
-  { key: "angular_component", title: "Angular component", metaDesc: "How to use the intl-tel-input Angular component." },
-  { key: "svelte_component", title: "Svelte component", metaDesc: "How to use the intl-tel-input Svelte component." },
+  {
+    key: "choose_integration",
+    title: "Choose integration",
+    metaDesc:
+      "Which integration of intl-tel-input is right for you? Pure JavaScript, React, Vue, Angular or Svelte component?",
+  },
+  {
+    key: "getting_started",
+    title: "Getting started",
+    metaDesc: "How to quickly get up and running with intl-tel-input.",
+  },
+  {
+    key: "options",
+    title: "Initialisation options",
+    metaDesc:
+      "All the different options you can use when initialising intl-tel-input.",
+  },
+  {
+    key: "localisation",
+    title: "Localisation",
+    metaDesc:
+      "How to localise country names and user interface strings, including RTL support.",
+  },
+  {
+    key: "accessibility",
+    title: "Accessibility",
+    metaDesc:
+      "Accessibility guidance for intl-tel-input, including keyboard and screen reader support.",
+  },
+  {
+    key: "methods",
+    title: "Methods",
+    metaDesc:
+      "All the different methods you can call on an intl-tel-input instance.",
+  },
+  {
+    key: "events",
+    title: "Events",
+    metaDesc:
+      "All the different events that an intl-tel-input instance can emit.",
+  },
+  {
+    key: "utils",
+    title: "Utilities script",
+    metaDesc: "Learn about the utils script, what it's for and how to load it.",
+  },
+  {
+    key: "theming",
+    title: "Theming / dark mode",
+    metaDesc:
+      "How to theme the plugin, including how to set it up for dark mode.",
+  },
+  {
+    key: "troubleshooting",
+    title: "Troubleshooting",
+    metaDesc: "Solutions to common problems and FAQs about intl-tel-input.",
+  },
+  {
+    key: "faq",
+    title: "FAQ",
+    metaDesc:
+      "Frequently asked questions about intl-tel-input, including common setup and localisation topics.",
+  },
+  {
+    key: "react_component",
+    title: "React component",
+    metaDesc: "How to use the intl-tel-input React component.",
+  },
+  {
+    key: "vue_component",
+    title: "Vue component",
+    metaDesc: "How to use the intl-tel-input Vue component.",
+  },
+  {
+    key: "angular_component",
+    title: "Angular component",
+    metaDesc: "How to use the intl-tel-input Angular component.",
+  },
+  {
+    key: "svelte_component",
+    title: "Svelte component",
+    metaDesc: "How to use the intl-tel-input Svelte component.",
+  },
 ];
 
 for (const { key, title, metaDesc } of docsDefinitions) {
@@ -590,7 +702,10 @@ for (const { key, title, metaDesc } of docsDefinitions) {
         let source = fs.readFileSync(mdPath, "utf8");
         if (key === "localisation") {
           const languageList = createI18nLanguageListText(getI18nLanguages());
-          source = source.replace("<!-- I18N_LANGUAGE_LIST -->", `\n${languageList}\n`);
+          source = source.replace(
+            "<!-- I18N_LANGUAGE_LIST -->",
+            `\n${languageList}\n`,
+          );
         }
         return md.render(source, { docKey: key });
       })(),
@@ -650,7 +765,10 @@ function runTask(t) {
 
 if (taskFilter) {
   // --task=name1,name2,...
-  const wanted = taskFilter.split(",").map((s) => s.trim()).filter(Boolean);
+  const wanted = taskFilter
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   for (const name of wanted) {
     const t = tasksByName.get(name);
     if (!t) {

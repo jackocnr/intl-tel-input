@@ -1,35 +1,147 @@
 const docsDropdownPages = [
-  { name: "choose_integration", href: "/docs/choose-integration", label: "Choose integration" },
-  { name: "getting_started", href: "/docs/getting-started", label: "Getting started" },
-  { name: "options", href: "/docs/options", label: "Initialisation options" },
-  { name: "localisation", href: "/docs/localisation", label: "Localisation" },
-  { name: "accessibility", href: "/docs/accessibility", label: "Accessibility" },
-  { name: "methods", href: "/docs/methods", label: "Methods" },
-  { name: "events", href: "/docs/events", label: "Events" },
-  { name: "utils", href: "/docs/utils", label: "Utilities script" },
-  { name: "theming", href: "/docs/theming", label: "Theming / dark mode" },
-  { name: "troubleshooting", href: "/docs/troubleshooting", label: "Troubleshooting" },
-  { name: "faq", href: "/docs/faq", label: "FAQ" },
-  { name: "react_component", href: "/docs/react-component", label: "React component" },
-  { name: "vue_component", href: "/docs/vue-component", label: "Vue component" },
-  { name: "angular_component", href: "/docs/angular-component", label: "Angular component" },
-  { name: "svelte_component", href: "/docs/svelte-component", label: "Svelte component" },
+  {
+    name: "choose_integration",
+    href: "/docs/choose-integration",
+    label: "Choose integration",
+  },
+  {
+    name: "getting_started",
+    href: "/docs/getting-started",
+    label: "Getting started",
+  },
+  {
+    name: "options",
+    href: "/docs/options",
+    label: "Initialisation options",
+  },
+  {
+    name: "localisation",
+    href: "/docs/localisation",
+    label: "Localisation",
+  },
+  {
+    name: "accessibility",
+    href: "/docs/accessibility",
+    label: "Accessibility",
+  },
+  {
+    name: "methods",
+    href: "/docs/methods",
+    label: "Methods",
+  },
+  {
+    name: "events",
+    href: "/docs/events",
+    label: "Events",
+  },
+  {
+    name: "utils",
+    href: "/docs/utils",
+    label: "Utilities script",
+  },
+  {
+    name: "theming",
+    href: "/docs/theming",
+    label: "Theming / dark mode",
+  },
+  {
+    name: "troubleshooting",
+    href: "/docs/troubleshooting",
+    label: "Troubleshooting",
+  },
+  {
+    name: "faq",
+    href: "/docs/faq",
+    label: "FAQ",
+  },
+  {
+    name: "react_component",
+    href: "/docs/react-component",
+    label: "React component",
+  },
+  {
+    name: "vue_component",
+    href: "/docs/vue-component",
+    label: "Vue component",
+  },
+  {
+    name: "angular_component",
+    href: "/docs/angular-component",
+    label: "Angular component",
+  },
+  {
+    name: "svelte_component",
+    href: "/docs/svelte-component",
+    label: "Svelte component",
+  },
 ];
 
 const examplesDropdownPages = [
-  { name: "validation_practical", href: "/examples/validation-practical", label: "Validation" },
-  { name: "lookup_country", href: "/examples/lookup-country", label: "Lookup user's country" },
-  { name: "single_country", href: "/examples/single-country", label: "Single country" },
-  { name: "right_to_left", href: "/examples/right-to-left", label: "Right to left" },
-  { name: "hidden_input", href: "/examples/hidden-input", label: "Hidden input" },
-  { name: "display_number", href: "/examples/display-number", label: "Display existing number" },
-  { name: "multiple_instances", href: "/examples/multiple-instances", label: "Multiple instances" },
-  { name: "validation_precise", href: "/examples/validation-precise", label: "Precise validation (advanced)" },
-  { name: "large_flags", href: "/examples/large-flags", label: "Large flags" },
-  { name: "react_component", href: "/examples/react-component", label: "React component" },
-  { name: "vue_component", href: "/examples/vue-component", label: "Vue component" },
-  { name: "angular_component", href: "/examples/angular-component", label: "Angular component" },
-  { name: "svelte_component", href: "/examples/svelte-component", label: "Svelte component" },
+  {
+    name: "validation_practical",
+    href: "/examples/validation-practical",
+    label: "Validation",
+  },
+  {
+    name: "lookup_country",
+    href: "/examples/lookup-country",
+    label: "Lookup user's country",
+  },
+  {
+    name: "single_country",
+    href: "/examples/single-country",
+    label: "Single country",
+  },
+  {
+    name: "right_to_left",
+    href: "/examples/right-to-left",
+    label: "Right to left",
+  },
+  {
+    name: "hidden_input",
+    href: "/examples/hidden-input",
+    label: "Hidden input",
+  },
+  {
+    name: "display_number",
+    href: "/examples/display-number",
+    label: "Display existing number",
+  },
+  {
+    name: "multiple_instances",
+    href: "/examples/multiple-instances",
+    label: "Multiple instances",
+  },
+  {
+    name: "validation_precise",
+    href: "/examples/validation-precise",
+    label: "Precise validation (advanced)",
+  },
+  {
+    name: "large_flags",
+    href: "/examples/large-flags",
+    label: "Large flags",
+  },
+  {
+    name: "react_component",
+    href: "/examples/react-component",
+    label: "React component",
+  },
+  {
+    name: "vue_component",
+    href: "/examples/vue-component",
+    label: "Vue component",
+  },
+  {
+    name: "angular_component",
+    href: "/examples/angular-component",
+    label: "Angular component",
+  },
+  {
+    name: "svelte_component",
+    href: "/examples/svelte-component",
+    label: "Svelte component",
+  },
 ];
 
 export { docsDropdownPages, examplesDropdownPages };

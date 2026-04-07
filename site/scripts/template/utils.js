@@ -28,12 +28,20 @@ const defaultSlugifyHeading = (value) =>
 const addDocOptionsLayoutPlugin = (md) => {
   md.core.ruler.after("inline", "iti_doc_options_layout", (state) => {
     const env = state.env || {};
-    const applyToDocKeys = ["options", "react_component", "vue_component", "angular_component", "svelte_component"];
+    const applyToDocKeys = [
+      "options",
+      "react_component",
+      "vue_component",
+      "angular_component",
+      "svelte_component",
+    ];
     if (!applyToDocKeys.includes(env.docKey)) return;
 
     const tokens = state.tokens;
-    const isHeadingOpen = (token, tag) => token && token.type === "heading_open" && token.tag === tag;
-    const isAnyHeadingOpen = (token) => token && token.type === "heading_open" && /^h[1-6]$/.test(token.tag);
+    const isHeadingOpen = (token, tag) =>
+      token && token.type === "heading_open" && token.tag === tag;
+    const isAnyHeadingOpen = (token) =>
+      token && token.type === "heading_open" && /^h[1-6]$/.test(token.tag);
 
     const makeHtmlBlock = (content) => {
       const token = new state.Token("html_block", "", 0);
@@ -117,10 +125,20 @@ const addDocOptionsLayoutPlugin = (md) => {
         // after the heading close is a paragraph containing the Type/Default meta info
         const closeIndex = findHeadingCloseIndex(i, "h6");
         const afterClose = closeIndex >= 0 ? closeIndex + 1 : -1;
-        if (afterClose >= 0 && tokens[afterClose] && tokens[afterClose].type === "paragraph_open") {
+        if (
+          afterClose >= 0 &&
+          tokens[afterClose] &&
+          tokens[afterClose].type === "paragraph_open"
+        ) {
           const inlineToken = tokens[afterClose + 1];
-          const inlineContent = inlineToken && inlineToken.type === "inline" ? inlineToken.content : "";
-          if (inlineContent.includes("Type:") && inlineContent.includes("Default:")) {
+          const inlineContent =
+            inlineToken && inlineToken.type === "inline"
+              ? inlineToken.content
+              : "";
+          if (
+            inlineContent.includes("Type:") &&
+            inlineContent.includes("Default:")
+          ) {
             consumeOptionBlock();
             continue;
           }
@@ -140,7 +158,9 @@ const addDocOptionsLayoutPlugin = (md) => {
   });
 };
 
-const createMarkdownRenderer = ({ slugifyHeading = defaultSlugifyHeading } = {}) => {
+const createMarkdownRenderer = ({
+  slugifyHeading = defaultSlugifyHeading,
+} = {}) => {
   const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -253,16 +273,14 @@ const escapeHtmlAttr = (value) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-const buildOpenGraphMetaTags = ({
-  title,
-  description,
-  url,
-}) => {
+const buildOpenGraphMetaTags = ({ title, description, url }) => {
   return [
     `<meta property="og:site_name" content="International Telephone Input" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:title" content="${escapeHtmlAttr(title)}" />`,
-    `<meta property="og:description" content="${escapeHtmlAttr(description)}" />`,
+    `<meta property="og:description" content="${escapeHtmlAttr(
+      description,
+    )}" />`,
     `<meta property="og:url" content="${escapeHtmlAttr(url)}" />`,
     `<meta property="og:image" content="https://intl-tel-input.com/img/logo-green.png" />`,
   ].join("\n");
