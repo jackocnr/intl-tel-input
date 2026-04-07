@@ -54,10 +54,10 @@ const IntlTelInput = forwardRef(function IntlTelInput(
 ) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
-  const lastEmittedNumberRef = useRef<string>();
-  const lastEmittedCountryRef = useRef<string>();
-  const lastEmittedValidityRef = useRef<boolean>();
-  const lastEmittedErrorCodeRef = useRef<number | null>();
+  const lastEmittedNumberRef = useRef<string | undefined>(undefined);
+  const lastEmittedCountryRef = useRef<string | undefined>(undefined);
+  const lastEmittedValidityRef = useRef<boolean | undefined>(undefined);
+  const lastEmittedErrorCodeRef = useRef<number | null | undefined>(undefined);
 
   // expose the instance and input ref to the parent component
   useImperativeHandle(ref, () => ({
@@ -112,7 +112,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     return (): void => {
       itiRef.current?.destroy();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

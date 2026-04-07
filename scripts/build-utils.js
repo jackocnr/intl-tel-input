@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const Compiler = require('google-closure-compiler/lib/node/closure-compiler.js');
+const Compiler = require('google-closure-compiler/lib/node/index.js').default;
 const { getNativeImagePath } = require('google-closure-compiler/lib/utils.js');
 
 const entrySource = fs.readFileSync('src/js/utils.js', 'utf8');

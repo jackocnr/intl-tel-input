@@ -16,10 +16,8 @@ export default defineConfig({
     globals: true,
     include: ["tests/**/*.test.js"],
     pool: "forks",
-    poolOptions: {
-      forks: {
-        execArgv: ["--disable-warning=DEP0040"],
-      },
+    forks: {
+      execArgv: ["--disable-warning=DEP0040"],
     },
   },
 });
