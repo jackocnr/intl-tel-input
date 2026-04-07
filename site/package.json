@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "The website for intl-tel-input",
   "dependencies": {
-    "intl-tel-input": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
