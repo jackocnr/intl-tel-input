@@ -11,7 +11,10 @@
     "outDir": "build/temp",
     "declarationDir": "build",
     "rootDir": "./src",
-    "allowJs": true, // allow importing .mjs files e.g. i18n files
+    //* allowJs is off so ngc doesn't pull build/js/*.{js,mjs} in as inputs
+    //* via the "intl-tel-input" import (which would collide with its own
+    //* output → TS5055). The included sources only need .ts/.d.ts resolution.
+    "allowJs": false,
   },
   "angularCompilerOptions": {
     "strictTemplates": true,
