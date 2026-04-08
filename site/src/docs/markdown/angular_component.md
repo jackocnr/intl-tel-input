@@ -87,7 +87,11 @@ Sets the readonly attribute of the telephone input and disables the selected cou
 Type: `String`  
 Default: `""`  
 
-The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — changes after init are ignored.
+The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use `[(ngModel)]` or a reactive `formControl` instead.
+
+###### Form integration ([(ngModel)] / formControl)
+
+The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
 
 ###### Initialisation options
 

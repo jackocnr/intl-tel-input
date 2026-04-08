@@ -94,7 +94,17 @@ By default, the component uses the plugin's `isValidNumber` method for validatio
 Type: `String`  
 Default: `""`  
 
-The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
+The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use `v-model` instead.
+
+###### v-model (modelValue)
+Type: `String | null`  
+Default: `undefined`  
+
+The component supports `v-model` for two-way binding. When the bound value changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). When the user types, the bound value is kept in sync via the `update:modelValue` event. If you don't use `v-model`, the component is uncontrolled — use `initialValue` for the starting value.
+
+```vue
+<IntlTelInput v-model="phone" />
+```
 
 
 ## Events

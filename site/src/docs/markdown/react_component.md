@@ -74,6 +74,12 @@ Use:
 <IntlTelInput initialCountry="us" />
 ```
 
+###### value
+Type: `String | null`  
+Default: `undefined`  
+
+Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `inputProps.defaultValue` for the initial value instead.
+
 ###### inputProps
 Type: `Object`  
 Default: `{}`  

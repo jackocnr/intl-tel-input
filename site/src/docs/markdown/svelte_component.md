@@ -85,7 +85,13 @@ Use:
 Type: `String`  
 Default: `""`  
 
-The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
+The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use the `value` prop instead.
+
+###### value
+Type: `String | null`  
+Default: `undefined`  
+
+Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `initialValue` for the initial value instead.
 
 ###### onChangeCountry
 Type: `Function`  
