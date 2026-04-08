@@ -9,7 +9,7 @@ test.describe("basic usage test with vanilla plugin", () => {
     const selectedCountry = await page.locator(".iti__selected-country");
 
     // no country is selected by default
-    await expect(selectedCountry).toHaveAttribute("title", "Select country");
+    await expect(selectedCountry).toHaveAttribute("title", "Select country for phone number");
 
     // open country dropdown
     await selectedCountry.click();
