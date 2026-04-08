@@ -79,12 +79,6 @@ Default: `false`
 
 Sets the disabled attribute of both the telephone input and the selected country button. _Note: Use this instead of `inputAttributes.disabled`._
 
-###### readonly
-Type: `Boolean`  
-Default: `false`  
-
-Sets the readonly attribute of the telephone input and disables the selected country button. _Note: Use this instead of `inputAttributes.readonly`._
-
 ###### initialValue
 Type: `String`  
 Default: `""`  
@@ -98,6 +92,12 @@ Default: `{}`
 The attributes to pass to the input element, e.g. `class`, `placeholder`, `required`, etc.
 
 Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`. Use the component props (`initialValue`, `disabled`, `readonly`) and the output event bindings instead.
+
+###### readonly
+Type: `Boolean`  
+Default: `false`  
+
+Sets the readonly attribute of the telephone input and disables the selected country button. _Note: Use this instead of `inputAttributes.readonly`._
 
 ###### usePreciseValidation
 Type: `Boolean`  

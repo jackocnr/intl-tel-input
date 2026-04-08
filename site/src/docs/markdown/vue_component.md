@@ -55,11 +55,11 @@ Default: `false`
 
 Sets the disabled attribute of both the telephone input and the selected country button. *Note: we recommend using this instead of `inputProps.disabled`.*
 
-###### readonly
-Type: `Boolean`  
-Default: `false`  
+###### initialValue
+Type: `String`  
+Default: `""`  
 
-Sets the readonly attribute of the telephone input and disables the selected country button. *Note: We recommend using this instead of `inputProps.readonly`.*
+The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use `v-model` instead.
 
 ###### inputProps
 Type: `Object`  
@@ -69,17 +69,17 @@ The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `requ
 
 Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
 
+###### readonly
+Type: `Boolean`  
+Default: `false`  
+
+Sets the readonly attribute of the telephone input and disables the selected country button. *Note: We recommend using this instead of `inputProps.readonly`.*
+
 ###### usePreciseValidation
 Type: `Boolean`
 Default: `false`  
 
 By default, the component uses the plugin's `isValidNumber` method for validation, but if you'd rather use `isValidNumberPrecise`, set this to `true`.
-
-###### initialValue
-Type: `String`  
-Default: `""`  
-
-The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use `v-model` instead.
 
 ###### v-model (modelValue)
 Type: `String`  

@@ -53,18 +53,6 @@ Default: `false`
 
 Disables both the telephone input and the selected country button. _Note: We recommend using this instead of `inputProps.disabled`._
 
-###### readOnly
-Type: `Boolean`  
-Default: `false`  
-
-Makes the telephone input read-only and disables the selected country button. _Note: We recommend using this instead of `inputProps.readOnly`._
-
-###### value
-Type: `String`  
-Default: `undefined`  
-
-Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `inputProps.defaultValue` for the initial value instead.
-
 ###### inputProps
 Type: `Object`  
 Default: `{}`  
@@ -97,11 +85,23 @@ Default: `null`
 
 A handler to be called when the number validity changes, e.g. to true/false. It will receive the new isValid boolean. Requires the utils script to be loaded (see above).
 
+###### readOnly
+Type: `Boolean`  
+Default: `false`  
+
+Makes the telephone input read-only and disables the selected country button. _Note: We recommend using this instead of `inputProps.readOnly`._
+
 ###### usePreciseValidation
 Type: `Boolean`
 Default: `false`  
 
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
+
+###### value
+Type: `String`  
+Default: `undefined`  
+
+Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `inputProps.defaultValue` for the initial value instead.
 
 
 ## Initialisation options
