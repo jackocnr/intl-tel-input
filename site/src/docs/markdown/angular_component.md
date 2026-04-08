@@ -75,19 +75,19 @@ Here's a list of all of the current props you can pass to the IntlTelInput Angul
 Type: `Boolean`  
 Default: `false`  
 
-Sets the disabled attribute of both the telephone input and the selected country button. _Note: We recommend using this instead of `inputAttributes.disabled`._
+Sets the disabled attribute of both the telephone input and the selected country button. _Note: Use this instead of `inputAttributes.disabled`._
 
 ###### readonly
 Type: `Boolean`  
 Default: `false`  
 
-Sets the readonly attribute of the telephone input and disables the selected country button. _Note: We recommend using this instead of `inputProps.readonly`._
+Sets the readonly attribute of the telephone input and disables the selected country button. _Note: Use this instead of `inputAttributes.readonly`._
 
 ###### initialValue
 Type: `String`  
 Default: `""`  
 
-The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). IntlTelInput is an uncontrolled input, and so will ignore any changes to this value.
+The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — changes after init are ignored.
 
 ###### Initialisation options
 

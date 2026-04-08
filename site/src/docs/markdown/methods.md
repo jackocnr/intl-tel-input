@@ -64,6 +64,7 @@ Returns something like this:
   dialCode: "93"
 }
 ```
+Returns `null` if no country is currently selected (e.g. the empty/globe state).
 
 ### getValidationError
 
