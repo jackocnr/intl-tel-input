@@ -164,12 +164,11 @@ class IntlTelInput
       if (!this.iti?.isActive()) {
         return;
       }
-      if (this.initialValue) {
-        this.iti.setNumber(this.initialValue);
-      }
       if (this.pendingWriteValue !== undefined) {
         this.iti.setNumber(this.pendingWriteValue);
         this.pendingWriteValue = undefined;
+      } else if (this.initialValue) {
+        this.iti.setNumber(this.initialValue);
       }
     });
   }
