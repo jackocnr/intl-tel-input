@@ -223,8 +223,8 @@ class IntlTelInput
   handleInput() {
     if (!this.iti) return;
 
-    const num = this.iti.getNumber() || "";
-    const countryIso = this.iti.getSelectedCountryData().iso2 || "";
+    const num = this.iti.getNumber() ?? "";
+    const countryIso = this.iti.getSelectedCountryData()?.iso2 ?? "";
 
     let hasChanged = false;
     if (num !== this.lastEmittedNumber) {
@@ -240,9 +240,9 @@ class IntlTelInput
       hasChanged = true;
     }
 
-    const isValid = this.usePreciseValidation
+    const isValid = (this.usePreciseValidation
       ? this.iti.isValidNumberPrecise()
-      : this.iti.isValidNumber();
+      : this.iti.isValidNumber()) ?? false;
 
     const errorCode = isValid ? null : this.iti.getValidationError();
 
@@ -293,7 +293,7 @@ class IntlTelInput
    * not in `ngOnInit` or the `constructor`, as the component needs to be fully initialized.
    */
   getInstance(): Iti | null {
-    return this.iti;
+    return this.iti ?? null;
   }
 
   /**

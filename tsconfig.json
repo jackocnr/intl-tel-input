@@ -7,7 +7,6 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "esModuleInterop": true, // required for react (etc) default imports
-    "baseUrl": ".",
     "paths": {
       "utils-compiled": ["./build/js/utils.js"]
     },

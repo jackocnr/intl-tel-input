@@ -7,7 +7,7 @@
       "intl-tel-input": ["../build/js/intlTelInput.d.ts"]
     },
     /* Linting */
-    "strict": false,
+    "strict": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "verbatimModuleSyntax": true
