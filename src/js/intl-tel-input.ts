@@ -61,6 +61,18 @@ const ensureUtils = (methodName: string): void => {
   }
 };
 
+//* Mimics Promise.withResolvers (ES2024) for older runtimes (Safari < 17.4, Node < 21).
+type Deferred<T> = { promise: Promise<T>; resolve: (value: T) => void; reject: (reason?: unknown) => void };
+const createDeferred = <T>(): Deferred<T> => {
+  let resolve!: (value: T) => void;
+  let reject!: (reason?: unknown) => void;
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve, reject };
+};
+
 //* This is our plugin class that we will create an instance of
 export class Iti {
   //* PUBLIC FIELDS - READONLY
@@ -88,8 +100,8 @@ export class Iti {
   #dropdownAbortController: AbortController | null = null;
   #numerals!: Numerals;
 
-  #autoCountryDeferred?: PromiseWithResolvers<void>;
-  #utilsScriptDeferred?: PromiseWithResolvers<void>;
+  #autoCountryDeferred?: Deferred<void>;
+  #utilsScriptDeferred?: Deferred<void>;
 
   public constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
     this.id = id++;
@@ -141,10 +153,10 @@ export class Iti {
     //* These promises get resolved when their individual requests complete.
     //* This way the dev can do something like iti.promise.then(...) to know when all requests are complete.
     if (needsAutoCountryPromise) {
-      this.#autoCountryDeferred = Promise.withResolvers<void>();
+      this.#autoCountryDeferred = createDeferred<void>();
     }
     if (needsUtilsScriptPromise) {
-      this.#utilsScriptDeferred = Promise.withResolvers<void>();
+      this.#utilsScriptDeferred = createDeferred<void>();
     }
 
     return Promise.all([

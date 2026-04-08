@@ -4,7 +4,7 @@
   // Not used by any build — svelte components are exported as source.
   "compilerOptions": {
     "strict": true,
-    "target": "ES2024",
+    "target": "ES2022",
     "module": "esnext",
     "moduleResolution": "bundler",
     "esModuleInterop": true,
