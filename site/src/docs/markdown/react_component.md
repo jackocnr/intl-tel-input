@@ -7,6 +7,7 @@ A React component for the intl-tel-input JavaScript plugin. View the [source cod
 - [Demo](#demo)
 - [Getting started](#getting-started)
 - [Props](#props)
+- [Initialisation options](#initialisation-options)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
 - [Troubleshooting](#troubleshooting)
@@ -58,24 +59,8 @@ Default: `false`
 
 Makes the telephone input read-only and disables the selected country button. _Note: We recommend using this instead of `inputProps.readOnly`._
 
-###### Initialisation options
-
-All of the plugin's [initialisation options](/docs/options) are supported as individual React props using the same option name.
-
-For example, if you're migrating from older usage like:
-
-```js
-<IntlTelInput initOptions={{ initialCountry: "us" }} />
-```
-
-Use:
-
-```js
-<IntlTelInput initialCountry="us" />
-```
-
 ###### value
-Type: `String | null`  
+Type: `String`  
 Default: `undefined`  
 
 Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `inputProps.defaultValue` for the initial value instead.
@@ -118,6 +103,22 @@ Default: `false`
 
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
 
+
+## Initialisation options
+
+All of the plugin's [initialisation options](/docs/options) are supported as individual React props using the same option name.
+
+For example, if you're migrating from older usage like:
+
+```js
+<IntlTelInput initOptions={{ initialCountry: "us" }} />
+```
+
+Use:
+
+```js
+<IntlTelInput initialCountry="us" />
+```
 
 ## Accessing instance methods
 

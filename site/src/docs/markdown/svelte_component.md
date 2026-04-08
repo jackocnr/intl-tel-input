@@ -7,6 +7,7 @@ A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source 
 - [Demo](#demo)
 - [Getting started](#getting-started)
 - [Props](#props)
+- [Initialisation options](#initialisation-options)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
 
@@ -65,22 +66,6 @@ The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `requ
 
 Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `oninput`. Use the component props (`disabled`, `readonly`) and the `onChange...` callback props instead.
 
-###### Initialisation options
-
-All of the plugin's [initialisation options](/docs/options) are supported as individual Svelte component props using the same option name.
-
-For example, if you're migrating from older usage like:
-
-```svelte
-<IntlTelInput initOptions={{ initialCountry: "us" }} />
-```
-
-Use:
-
-```svelte
-<IntlTelInput initialCountry="us" />
-```
-
 ###### initialValue
 Type: `String`  
 Default: `""`  
@@ -88,7 +73,7 @@ Default: `""`
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use the `value` prop instead.
 
 ###### value
-Type: `String | null`  
+Type: `String`  
 Default: `undefined`  
 
 Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `initialValue` for the initial value instead.
@@ -118,11 +103,27 @@ Default: `null`
 A handler to be called when the number validity changes, e.g. to true/false. It will be passed the new isValid boolean.
 
 ###### usePreciseValidation
-Type: `Boolean`
+Type: `Boolean`  
 Default: `false`  
 
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
 
+
+## Initialisation options
+
+All of the plugin's [initialisation options](/docs/options) are supported as individual Svelte component props using the same option name.
+
+For example, if you're migrating from older usage like:
+
+```js
+<IntlTelInput initOptions={{ initialCountry: "us" }} />
+```
+
+Use:
+
+```js
+<IntlTelInput initialCountry="us" />
+```
 
 ## Accessing instance methods
 

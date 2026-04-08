@@ -7,6 +7,8 @@ An Angular component for the intl-tel-input JavaScript plugin. View the [source 
 - [Demo](#demo)
 - [Getting started](#getting-started)
 - [Props](#props)
+- [Form integration](#form-integration-ngmodel--formcontrol)
+- [Initialisation options](#initialisation-options)
 - [Events](#events)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
@@ -89,26 +91,6 @@ Default: `""`
 
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use `[(ngModel)]` or a reactive `formControl` instead.
 
-###### Form integration ([(ngModel)] / formControl)
-
-The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
-
-###### Initialisation options
-
-All of the plugin's [initialisation options](/docs/options) are supported as individual Angular component inputs using the same option name.
-
-For example, if you're migrating from older usage like:
-
-```html
-<intl-tel-input [initOptions]="{ initialCountry: 'us' }" />
-```
-
-Use:
-
-```html
-<intl-tel-input initialCountry="us" />
-```
-
 ###### inputAttributes
 Type: `Object`  
 Default: `{}`  
@@ -123,6 +105,27 @@ Default: `false`
 
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
 
+
+## Form integration ([(ngModel)] / formControl)
+
+The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
+
+
+## Initialisation options
+
+All of the plugin's [initialisation options](/docs/options) are supported as individual Angular component inputs using the same option name.
+
+For example, if you're migrating from older usage like:
+
+```html
+<intl-tel-input [initOptions]="{ initialCountry: 'us' }" />
+```
+
+Use:
+
+```html
+<intl-tel-input initialCountry="us" />
+```
 
 ## Events
 

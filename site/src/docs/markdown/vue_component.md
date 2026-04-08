@@ -7,6 +7,7 @@ A Vue component for the intl-tel-input JavaScript plugin. View the [source code]
 - [Demo](#demo)
 - [Getting started](#getting-started)
 - [Props](#props)
+- [Initialisation options](#initialisation-options)
 - [Events](#events)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
@@ -68,22 +69,6 @@ The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `requ
 
 Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
 
-###### Initialisation options
-
-All of the plugin's [initialisation options](/docs/options) are supported as individual Vue component props using the same option name.
-
-For example, if you're migrating from older usage like:
-
-```vue
-<IntlTelInput :initOptions="{ initialCountry: 'us' }" />
-```
-
-Use:
-
-```vue
-<IntlTelInput initialCountry="us" />
-```
-
 ###### usePreciseValidation
 Type: `Boolean`
 Default: `false`  
@@ -97,13 +82,30 @@ Default: `""`
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use `v-model` instead.
 
 ###### v-model (modelValue)
-Type: `String | null`  
+Type: `String`  
 Default: `undefined`  
 
 The component supports `v-model` for two-way binding. When the bound value changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). When the user types, the bound value is kept in sync via the `update:modelValue` event. If you don't use `v-model`, the component is uncontrolled — use `initialValue` for the starting value.
 
-```vue
+```js
 <IntlTelInput v-model="phone" />
+```
+
+
+## Initialisation options
+
+All of the plugin's [initialisation options](/docs/options) are supported as individual Vue component props using the same option name.
+
+For example, if you're migrating from older usage like:
+
+```js
+<IntlTelInput :initOptions="{ initialCountry: 'us' }" />
+```
+
+Use:
+
+```js
+<IntlTelInput initialCountry="us" />
 ```
 
 
