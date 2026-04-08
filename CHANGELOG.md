@@ -1,9 +1,10 @@
 See the Github Releases page for changelog: https://github.com/jackocnr/intl-tel-input/releases
 
-Or to view a specific version, e.g. v20.0.0, update the URL accordingly, e.g. https://github.com/jackocnr/intl-tel-input/releases/tag/v20.0.0
+Or to view a specific version, e.g. v27.0.0, update the URL accordingly, e.g. https://github.com/jackocnr/intl-tel-input/releases/tag/v27.0.0
 
 ## Breaking changes
 
+- v27.0.0 https://github.com/jackocnr/intl-tel-input/releases/tag/v27.0.0
 - v26.0.0 https://github.com/jackocnr/intl-tel-input/releases/tag/v26.0.0
 - v25.0.0 https://github.com/jackocnr/intl-tel-input/releases/tag/v25.0.0
 - v24.0.0 https://github.com/jackocnr/intl-tel-input/releases/tag/v24.0.0
