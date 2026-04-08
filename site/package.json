@@ -33,7 +33,7 @@
     "build:css:min": "cleancss -o build/css/website.css build/css/website.css && cleancss -o build/css/playground.css build/css/playground.css && cleancss -o build/css/homepage.css build/css/homepage.css && cleancss -o build/css/docs.css build/css/docs.css",
     "build:css": "npm run build:css:sass && npm run build:css:cache-bust && npm run build:css:min",
     "build:esbuild:templates": "node scripts/build-pages.js --task=lookup_country_js,right_to_left_js,angular_component_js,react_component_js,playground_js",
-    "build:esbuild": "npm run build:esbuild:templates && node esbuild/build.js",
+    "build:esbuild": "npm run build:esbuild:templates && node scripts/esbuild.js",
     "build:vue": "node scripts/build-pages.js --task=vue_component_js && vite build --config src/examples/js/viteVueDemo.config.js",
     "build:svelte": "node scripts/build-pages.js --task=svelte_component_js && vite build --config src/examples/js/viteSvelteDemo.config.js",
     "build:pages": "node scripts/build-pages.js",

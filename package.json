@@ -37,7 +37,7 @@
     "build:img:sprite": "node --experimental-strip-types scripts/generate-sprite.js",
     "build:img": "npm run clean:build:img && npm run build:img:sprite && npm run build:css",
     "build:js:dts": "node scripts/build-dts.js",
-    "build:js:core": "node build.js",
+    "build:js:core": "node scripts/esbuild.js",
     "build:js": "npm run clean:build:js && npm run clean:tmp && npm run lint:js && npm run build:utils:closure && npm run build:js:dts && npm run build:js:core && npm run build:components",
     "build:jsfast": "npm run clean:build:js:keep-utils && npm run clean:tmp && npm run ensure:utils && npm run build:js:core",
     "build:jsfast:cmps": "npm run build:jsfast && npm run build:components",

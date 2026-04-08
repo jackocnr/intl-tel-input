@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import packageJson from "./package.json" with { type: "json" };
+import packageJson from "../package.json" with { type: "json" };
 
 const banner =
   "/*\n" +
