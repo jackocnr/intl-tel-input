@@ -44,7 +44,7 @@ export default defineConfig({
     },
     {
       command:
-        "./node_modules/.bin/vite --config svelte/demo/simple/vite.config.mjs --port 4175 --strictPort",
+        "./node_modules/.bin/vite --config svelte/demo/simple/vite.config.js --port 4175 --strictPort",
       url: "http://localhost:4175/",
       reuseExistingServer: true,
       timeout: 120_000,
