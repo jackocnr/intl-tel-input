@@ -361,7 +361,7 @@ export class Iti {
     initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
     if (isAutoCountry) {
       //* Don't bother with IP lookup if we already have a selected country.
-      if (this.#selectedCountryData?.iso2) {
+      if (this.#selectedCountryData) {
         this.#autoCountryDeferred?.resolve();
       } else {
         this.#loadAutoCountry();
@@ -1053,7 +1053,7 @@ export class Iti {
       : null;
 
     //* Update the defaultCountry - we only need the iso2 from now on, so just store that.
-    if (this.#selectedCountryData?.iso2) {
+    if (this.#selectedCountryData) {
       this.#defaultCountry = this.#selectedCountryData.iso2;
     }
 
@@ -1123,7 +1123,7 @@ export class Iti {
     if (intlTelInput.utils && shouldSetPlaceholder) {
       const numberType = intlTelInput.utils.numberType[placeholderNumberType];
       //* Note: Must set placeholder to empty string if no country selected (globe icon showing).
-      let placeholder = this.#selectedCountryData?.iso2
+      let placeholder = this.#selectedCountryData
         ? intlTelInput.utils.getExampleNumber(
             this.#selectedCountryData.iso2,
             nationalMode,
@@ -1313,7 +1313,7 @@ export class Iti {
       //* invalid and they delete it - they should see their auto country.
       this.#defaultCountry = intlTelInput.autoCountry;
       const hasSelectedCountryOrGlobe =
-        this.#selectedCountryData?.iso2 ||
+        this.#selectedCountryData ||
         this.#ui.selectedCountryInner!.classList.contains(CLASSES.GLOBE);
       //* If no country/globe currently selected, then update the country.
       if (!hasSelectedCountryOrGlobe) {
@@ -1351,7 +1351,7 @@ export class Iti {
       if (inputValue) {
         this.#updateValFromNumber(inputValue);
       }
-      if (this.#selectedCountryData?.iso2) {
+      if (this.#selectedCountryData) {
         this.#updatePlaceholder();
         this.#updateMaxLength();
       }
@@ -1527,7 +1527,7 @@ export class Iti {
     const val = this.#getFullNumber();
 
     // If there's no selected country, still allow validation for regionless intl numbers (e.g. +800, +808, +870, +881, +882, +883, +888, +979).
-    if (!this.#selectedCountryData?.iso2) {
+    if (!this.#selectedCountryData) {
       const isRegionlessDialCode = hasRegionlessDialCode(val);
       // if first char is plus, and next 3 chars are a regionless dial code
       if (!isRegionlessDialCode) {

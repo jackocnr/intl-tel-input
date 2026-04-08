@@ -310,12 +310,12 @@ const HINT_CONFIGS = [
   {
     optionKey: "separateDialCode",
     message: "Tip: try selecting a country from the dropdown to see this in action.",
-    shouldShow: () => !itiController.iti?.getSelectedCountryData()?.iso2,
+    shouldShow: () => !itiController.iti?.getSelectedCountryData(),
   },
   {
     optionKey: "showFlags",
     message: "Tip: set an initialCountry and/or enable \"Keep dropdown open\" to see this in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountryData()?.iso2,
+    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
   {
@@ -327,19 +327,19 @@ const HINT_CONFIGS = [
   {
     optionKey: "autoPlaceholder",
     message: "Tip: set an initialCountry to see the placeholder.",
-    shouldShow: () => !itiController.iti?.getSelectedCountryData()?.iso2,
+    shouldShow: () => !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "customPlaceholder",
     message: "Tip: set an initialCountry to see the placeholder.",
-    shouldShow: () => !itiController.iti?.getSelectedCountryData()?.iso2,
+    shouldShow: () => !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "placeholderNumberType",
     message: "Tip: set an initialCountry to see the placeholder.",
-    shouldShow: () => !itiController.iti?.getSelectedCountryData()?.iso2,
+    shouldShow: () => !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
   // Formatting Options
