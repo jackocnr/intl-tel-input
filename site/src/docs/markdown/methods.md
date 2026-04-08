@@ -9,7 +9,20 @@ This page lists the plugin's public API methods.
 
 ## Instance Methods
 
-For all of these examples, we will use the instance variable `iti` returned from the initialisation call, e.g. `const iti = intlTelInput(input, options)`
+For all of these examples, we will use the instance variable `iti` returned from the initialisation call, e.g.
+
+```js
+const iti = intlTelInput(input, options);
+```
+
+> [!IMPORTANT]
+> Methods that require the [utils script](/docs/utils#loading-the-utilities-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always await `iti.promise` first:
+>
+> ```js
+> const iti = intlTelInput(input, { loadUtils: () => import("intl-tel-input/utils") });
+> await iti.promise;
+> const number = iti.getNumber();
+> ```
 
 ### destroy
 
