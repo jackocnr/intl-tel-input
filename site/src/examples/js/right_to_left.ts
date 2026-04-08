@@ -7,6 +7,7 @@ intlTelInput(input, {
   i18n: ar,
   countryNameLocale: "ar",
   initialCountry: "eg",
+  // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
   searchInputClass: "form-control",
 });

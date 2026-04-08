@@ -189,7 +189,7 @@ const exampleDefinitions = [
     title: "Validation",
     metaDesc:
       "Validate the user's phone number and if there's an error, display a relevant message.",
-    js: { src: "src/examples/js/validation.js" },
+    js: { src: "src/examples/js/validation.ts" },
     content: {
       markupName: "validation",
       includeItiScript: true,
@@ -206,7 +206,7 @@ const exampleDefinitions = [
     title: "Precise validation (advanced)",
     metaDesc:
       "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
-    js: { src: "src/examples/js/validation.js" },
+    js: { src: "src/examples/js/validation.ts" },
     content: {
       markupName: "validation",
       includeItiScript: true,
@@ -246,7 +246,7 @@ const exampleDefinitions = [
     key: "display_number",
     title: "Display existing number",
     metaDesc: "Automatically format an existing number during initialisation.",
-    js: { src: "src/examples/js/simple_init_plugin.js" },
+    js: { src: "src/examples/js/simple_init_plugin.ts" },
     content: {
       includeItiScript: true,
       displayCode: "src/examples/js/simple_init_plugin_display_code.js",
@@ -256,7 +256,7 @@ const exampleDefinitions = [
     key: "large_flags",
     title: "Large flags",
     metaDesc: "How to display extra large flag images.",
-    js: { src: "src/examples/js/simple_init_plugin.js" },
+    js: { src: "src/examples/js/simple_init_plugin.ts" },
     content: {
       markupName: "simple_input",
       includeItiScript: true,
@@ -342,8 +342,14 @@ for (const def of exampleDefinitions) {
     pageExtra = {},
   } = def;
   const slug = key.replace(/_/g, "-");
-  const jsSrc = js.src || `src/examples/js/${key}.js`;
-  const jsDest = js.dest || `${js.destDir || "dist"}/examples/js/${key}.js`;
+  const jsSrc = js.src || `src/examples/js/${key}.ts`;
+  // For tmp/ destinations the file is consumed by esbuild, which handles .ts
+  // natively — preserve the source extension so esbuild reads the right loader.
+  // For dist/ destinations the file is served to the browser as-is, so the
+  // extension is forced to .js (and TypeScript types are stripped at render time).
+  const destDir = js.destDir || "dist";
+  const jsExt = destDir === "tmp" && jsSrc.endsWith(".ts") ? ".ts" : ".js";
+  const jsDest = js.dest || `${destDir}/examples/js/${key}${jsExt}`;
   const displayCode = content.displayCode || jsDest;
   const scriptName = js.script || `${key}.js`;
 

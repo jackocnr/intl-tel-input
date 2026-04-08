@@ -1,20 +1,21 @@
-const form = document.querySelector("#form");
-const input = document.querySelector("#phone");
-const errorMsg = document.querySelector("#error-msg");
-const validMsg = document.querySelector("#valid-msg");
+const form = document.querySelector<HTMLFormElement>("#form")!;
+const input = document.querySelector<HTMLInputElement>("#phone")!;
+const errorMsg = document.querySelector<HTMLElement>("#error-msg")!;
+const validMsg = document.querySelector<HTMLElement>("#valid-msg")!;
 
 // initialise plugin
 const iti = window.intlTelInput(input, {
   initialCountry: "us",
   hiddenInput: () => ({ phone: "full_phone", country: "country_code" }),
+  // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
   searchInputClass: "form-control",
 });
 
-const getErrorMessage = (number, errorCode) => {
+const getErrorMessage = (number: string, errorCode: number) => {
   if (!number) return "Please enter a number";
   const genericError = "Invalid number";
-  const { validationError } = window.intlTelInput.utils;
+  const { validationError } = window.intlTelInput.utils!;
   const errorMap = {
     [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
     [validationError.TOO_SHORT]: "Too short",
@@ -26,7 +27,7 @@ const getErrorMessage = (number, errorCode) => {
 
 let showValidation = false;
 
-const setText = (el, text) => el.textContent = text;
+const setText = (el: HTMLElement, text: string) => el.textContent = text;
 
 const updateUI = () => {
   if (!showValidation) {
@@ -35,7 +36,7 @@ const updateUI = () => {
 
   // once showValidation is true, we always show the validity state (via the input class and message below), so keep it up-to-date here
   const value = input.value.trim();
-  const isValid = Boolean(value) && iti.isValidNumber();
+  const isValid = Boolean(value) && iti.isValidNumber() === true;
 
   input.classList.toggle("is-valid", isValid);
   input.classList.toggle("is-invalid", !isValid);

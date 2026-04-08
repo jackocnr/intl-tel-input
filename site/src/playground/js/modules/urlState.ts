@@ -1,4 +1,4 @@
-import { encodeJsonParam, isDefaultForKey } from "./stateUtils.js";
+import { encodeJsonParam, isDefaultForKey } from "./stateUtils";
 
 export function buildShareUrlFromState(
   state,
@@ -14,7 +14,7 @@ export function buildShareUrlFromState(
   // Keep unrelated params, but rewrite all playground-controlled params.
   Object.keys(allMeta).forEach((key) => url.searchParams.delete(key));
 
-  Object.entries(allMeta).forEach(([key, meta]) => {
+  Object.entries(allMeta).forEach(([key, meta]: [string, any]) => {
     const value = state[key];
 
     if (excludeDefaults && isDefaultForKey(key, meta, value, defaultState)) return;

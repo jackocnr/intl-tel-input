@@ -26,14 +26,14 @@ const sharedOptions = {
 // lookup country example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/lookup_country.js"],
+  entryPoints: ["tmp/examples/js/lookup_country.ts"],
   outfile: "dist/examples/js/lookup_country.js",
 });
 
 // right to left example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/right_to_left.js"],
+  entryPoints: ["tmp/examples/js/right_to_left.ts"],
   outfile: "dist/examples/js/right_to_left_bundle.js",
 });
 
@@ -57,13 +57,13 @@ build({
 // playground
 build({
   ...sharedOptions,
-  entryPoints: ["src/playground/js/playground.js"],
+  entryPoints: ["src/playground/js/playground.ts"],
   outfile: "dist/js/playground.js",
 });
 
 // all JS files in /src/js
 build({
   ...sharedOptions,
-  entryPoints: ["src/js/**/*.js"],
+  entryPoints: ["src/js/**/*.ts"],
   outdir: "dist/js",
 });

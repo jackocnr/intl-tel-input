@@ -1,6 +1,6 @@
 (() => {
-  const getErrorMessage = (errorCode) => {
-    const { validationError } = window.intlTelInput.utils;
+  const getErrorMessage = (errorCode: number): string => {
+    const { validationError } = window.intlTelInput.utils!;
     const errorMap = {
       [validationError.INVALID_COUNTRY_CODE]: "Bad country code",
       [validationError.TOO_SHORT]: "Too short",
@@ -8,10 +8,10 @@
     };
     return errorMap[errorCode] || "";
   };
-  const getItiInstance = () => Object.values(window.intlTelInput?.instances ?? {})[0];
+  const getItiInstance = (): any => Object.values(window.intlTelInput?.instances ?? {})[0];
 
   const init = () => {
-    const liveResults = document.querySelector(".iti-live-results");
+    const liveResults = document.querySelector<HTMLElement>(".iti-live-results");
     if (!liveResults || !window.intlTelInput || !getItiInstance()) return;
 
     // Fix live results box width and height to prevent layout shift
@@ -20,7 +20,7 @@
     if (liveResultsStyle.height) liveResults.style.height = liveResultsStyle.height;
 
     const setupLiveResults = () => {
-      const itiInput = document.querySelector(".iti__tel-input");
+      const itiInput = document.querySelector<HTMLInputElement>(".iti__tel-input");
       if (!itiInput) return;
 
       const emptyMessage = liveResults.textContent || "";

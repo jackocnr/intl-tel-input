@@ -1,4 +1,4 @@
-function copyTextToClipboard(text) {
+function copyTextToClipboard(text: string) {
   const value = String(text || "");
   if (!value) return Promise.resolve(false);
   if (!navigator.clipboard || !window.isSecureContext) return Promise.resolve(false);
@@ -8,11 +8,11 @@ function copyTextToClipboard(text) {
   );
 }
 
-export function bindCopyCodeButton(buttonEl, codeEl) {
+export function bindCopyCodeButton(buttonEl: HTMLElement | null, codeEl: HTMLElement | null) {
   if (!buttonEl || !codeEl) return;
 
-  let copiedResetTimer = null;
-  const labelEl = buttonEl.querySelector("[data-role=\"label\"]") || buttonEl;
+  let copiedResetTimer: number | null = null;
+  const labelEl = buttonEl.querySelector<HTMLElement>("[data-role=\"label\"]") || buttonEl;
 
   buttonEl.addEventListener("click", () => {
     const originalLabel = labelEl.textContent;

@@ -20,6 +20,7 @@
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
     "rimraf": "^6.1.3",
+    "typescript": "^6.0.2",
     "zone.js": "^0.16.1"
   },
   "scripts": {
@@ -33,13 +34,14 @@
     "build:css:min": "cleancss -o dist/css/website.css dist/css/website.css && cleancss -o dist/css/playground.css dist/css/playground.css && cleancss -o dist/css/homepage.css dist/css/homepage.css && cleancss -o dist/css/docs.css dist/css/docs.css",
     "build:css": "npm run build:css:sass && npm run build:css:cache-bust && npm run build:css:min",
     "build:esbuild:templates": "node scripts/build-pages.js --task=lookup_country_js,right_to_left_js,angular_component_js,react_component_js,playground_js",
-    "build:esbuild": "npm run build:esbuild:templates && node scripts/esbuild.js",
-    "build:vue": "node scripts/build-pages.js --task=vue_component_js && vite build --config src/examples/js/viteVueDemo.config.js",
-    "build:svelte": "node scripts/build-pages.js --task=svelte_component_js && vite build --config src/examples/js/viteSvelteDemo.config.js",
+    "build:esbuild": "npm run build:esbuild:templates && npm run typecheck && node scripts/esbuild.js",
+    "build:vue": "node scripts/build-pages.js --task=vue_component_js && vite build --config src/examples/js/viteVueDemo.config.ts",
+    "build:svelte": "node scripts/build-pages.js --task=svelte_component_js && vite build --config src/examples/js/viteSvelteDemo.config.ts",
     "build:pages": "node scripts/build-pages.js",
     "build:pages:prod": "node scripts/build-pages.js --env=prod",
     "replace": "node scripts/replace-validation-precise.js",
     "strip-comments": "node scripts/strip-html-comments.js",
+    "typecheck": "tsc -p tsconfig.json",
     "build": "npm run clean && npm run fetch-stats && npm run copy && npm run build:css && npm run build:esbuild && npm run build:vue && npm run build:svelte && npm run build:pages && npm run replace && npm run strip-comments",
     "build:prod": "npm run clean && npm run fetch-stats:prod && npm run copy && npm run build:css && npm run build:esbuild && npm run build:vue && npm run build:svelte && npm run build:pages:prod && npm run replace && npm run strip-comments"
   }

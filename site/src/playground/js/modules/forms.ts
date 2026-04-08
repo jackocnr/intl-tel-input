@@ -1,9 +1,10 @@
-import { deepClone, parseJsonParam, safeStringify } from "./stateUtils.js";
+import { deepClone, parseJsonParam, safeStringify } from "./stateUtils";
 // Add a single event listener for all enable spans
 // Listener toggles the adjacent checkbox
 document.addEventListener("click", function (e) {
-  if (e.target.classList && e.target.classList.contains("form-check-enable-span")) {
-    const checkbox = e.target.previousElementSibling;
+  const target = e.target as HTMLElement;
+  if (target?.classList?.contains("form-check-enable-span")) {
+    const checkbox = target.previousElementSibling as HTMLInputElement | null;
     if (checkbox && checkbox.type === "checkbox") {
       checkbox.checked = !checkbox.checked;
       // Optionally trigger change event if needed
@@ -12,7 +13,7 @@ document.addEventListener("click", function (e) {
   }
 });
 
-function initTooltips(container) {
+function initTooltips(container: Element | null) {
   if (!container) return;
   if (!window.bootstrap || !window.bootstrap.Tooltip) return;
 
@@ -23,13 +24,13 @@ function initTooltips(container) {
   });
 }
 
-function cloneInfoIconSvg(infoIconTemplate) {
+function cloneInfoIconSvg(infoIconTemplate: HTMLTemplateElement | null) {
   if (!infoIconTemplate || !infoIconTemplate.content) return null;
   const svg = infoIconTemplate.content.querySelector("svg");
   return svg ? svg.cloneNode(true) : null;
 }
 
-function createInfoIcon(meta, infoIconTemplate) {
+function createInfoIcon(meta: any, infoIconTemplate: HTMLTemplateElement | null) {
   const text = String(meta && meta.tooltip ? meta.tooltip : "").trim();
   if (!text) return null;
   const icon = document.createElement("span");
@@ -47,7 +48,7 @@ function createInfoIcon(meta, infoIconTemplate) {
   return icon;
 }
 
-function buildLabelGroup(meta, { labelText, htmlFor, labelClassName, infoIconTemplate }) {
+function buildLabelGroup(meta: any, { labelText, htmlFor, labelClassName, infoIconTemplate }: any) {
   const group = document.createElement("div");
   group.className = "iti-playground-labelgroup";
 
@@ -64,7 +65,7 @@ function buildLabelGroup(meta, { labelText, htmlFor, labelClassName, infoIconTem
   return group;
 }
 
-function buildBooleanExampleControl(key, meta, { idPrefix, dataAttr, exampleText, infoIconTemplate }) {
+function buildBooleanExampleControl(key: string, meta: any, { idPrefix, dataAttr, exampleText, infoIconTemplate }: any) {
   // Custom layout: show the code example to the right of the label (desktop), then the checkbox below.
   const wrapper = document.createElement("div");
   wrapper.className = "iti-playground-control iti-playground-control--example-code";
@@ -108,14 +109,14 @@ function buildBooleanExampleControl(key, meta, { idPrefix, dataAttr, exampleText
   return wrapper;
 }
 
-function formatMultiDropdownSelection(values) {
+function formatMultiDropdownSelection(values: any) {
   const items = Array.isArray(values) ? values : [];
   if (items.length === 0) return "None";
   if (items.length <= 2) return items.join(", ");
   return `${items.length} selected`;
 }
 
-function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
+function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconTemplate }: any) {
   const wrapper = document.createElement("div");
 
   if (meta.type === "boolean") {
@@ -209,7 +210,7 @@ function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
     select.id = `${idPrefix}_${key}`;
     select.setAttribute(dataAttr, key);
 
-    meta.options.forEach((value) => {
+    meta.options.forEach((value: string) => {
       const option = document.createElement("option");
       option.value = value;
       option.textContent = (meta.optionLabels && meta.optionLabels[value]) || value;
@@ -240,7 +241,7 @@ function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
     menu.style.maxHeight = "240px";
     menu.style.overflow = "auto";
 
-    meta.options.forEach((value) => {
+    meta.options.forEach((value: string) => {
       const checkWrap = document.createElement("div");
       checkWrap.className = "form-check";
 
@@ -264,7 +265,7 @@ function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
     wrapper.appendChild(dropdown);
 
     dropdown.addEventListener("change", () => {
-      const selected = [...dropdown.querySelectorAll("input[type=\"checkbox\"]:checked")].map((el) => el.value);
+      const selected = [...dropdown.querySelectorAll<HTMLInputElement>("input[type=\"checkbox\"]:checked")].map((el) => el.value);
       button.textContent = formatMultiDropdownSelection(selected);
     });
 
@@ -313,17 +314,17 @@ function buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }) {
   return wrapper;
 }
 
-function createControlGroup(optionGroupTemplate, title, groupId, description, { iso2ModalId = null } = {}) {
-  const slugify = (text) => String(text || "")
+function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: string, groupId: string, description: string, { iso2ModalId = null }: { iso2ModalId?: string | null } = {}) {
+  const slugify = (text: string) => String(text || "")
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-  const root = optionGroupTemplate.content.firstElementChild;
-  const group = root.cloneNode(true);
+  const root = optionGroupTemplate.content.firstElementChild as Element;
+  const group = root.cloneNode(true) as Element;
 
-  const titleEl = group.querySelector("[data-role=\"title\"]");
+  const titleEl = group.querySelector<HTMLElement>("[data-role=\"title\"]");
   const slug = slugify(title);
   if (titleEl) {
     titleEl.id = slug;
@@ -337,7 +338,7 @@ function createControlGroup(optionGroupTemplate, title, groupId, description, { 
     titleEl.appendChild(link);
   }
 
-  const descEl = group.querySelector("[data-role=\"description\"]");
+  const descEl = group.querySelector<HTMLElement>("[data-role=\"description\"]")!;
   descEl.textContent = description;
 
   const modalId = String(iso2ModalId || "").trim();
@@ -355,22 +356,22 @@ function createControlGroup(optionGroupTemplate, title, groupId, description, { 
     descEl.appendChild(document.createTextNode("."));
   }
 
-  const resetButton = group.querySelector("[data-role=\"reset\"]");
+  const resetButton = group.querySelector("[data-role=\"reset\"]")!;
   resetButton.setAttribute("data-playground-reset-group", String(groupId));
 
-  const stack = group.querySelector("[data-role=\"stack\"]");
+  const stack = group.querySelector("[data-role=\"stack\"]")!;
 
   return { group, stack };
 }
 
-export function renderControls(formEl, metaMap, { idPrefix, dataAttr, groups = null, templates = {} } = {}) {
+export function renderControls(formEl: HTMLElement | null, metaMap: Record<string, any>, { idPrefix, dataAttr, groups = null, templates = {} }: { idPrefix?: string; dataAttr?: string; groups?: any; templates?: any } = {}) {
   if (!formEl) return { resetGroupKeys: null };
   formEl.innerHTML = "";
 
   const { infoIconTemplate, optionGroupTemplate } = templates;
 
   if (!groups) {
-    Object.entries(metaMap).forEach(([key, meta]) => {
+    Object.entries(metaMap).forEach(([key, meta]: [string, any]) => {
       formEl.appendChild(buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }));
     });
     initTooltips(formEl);
@@ -382,15 +383,15 @@ export function renderControls(formEl, metaMap, { idPrefix, dataAttr, groups = n
   const allKeys = Object.keys(metaMap);
   const usedKeys = new Set();
 
-  groups.forEach(({ title, description, keys, iso2ModalId }, index) => {
-    const groupKeys = (Array.isArray(keys) ? keys : []).filter((k) => metaMap[k]);
+  groups.forEach(({ title, description, keys, iso2ModalId }: any, index: number) => {
+    const groupKeys = (Array.isArray(keys) ? keys : []).filter((k: string) => metaMap[k]);
     if (groupKeys.length === 0) return;
 
     const groupId = `group_${index}`;
     resetGroupKeys.set(groupId, groupKeys);
     const { group, stack } = createControlGroup(optionGroupTemplate, title, groupId, description, { iso2ModalId });
 
-    groupKeys.forEach((key) => {
+    groupKeys.forEach((key: string) => {
       usedKeys.add(key);
       stack.appendChild(buildControlRow(key, metaMap[key], { idPrefix, dataAttr, infoIconTemplate }));
     });
@@ -398,7 +399,7 @@ export function renderControls(formEl, metaMap, { idPrefix, dataAttr, groups = n
     formEl.appendChild(group);
   });
 
-  const remainingKeys = allKeys.filter((k) => !usedKeys.has(k));
+  const remainingKeys = allKeys.filter((k: string) => !usedKeys.has(k));
   if (remainingKeys.length) {
     const groupId = "group_other";
     resetGroupKeys.set(groupId, remainingKeys);
@@ -408,7 +409,7 @@ export function renderControls(formEl, metaMap, { idPrefix, dataAttr, groups = n
       groupId,
       "Additional options that don’t fit into the groups above.",
     );
-    remainingKeys.forEach((key) => {
+    remainingKeys.forEach((key: string) => {
       stack.appendChild(buildControlRow(key, metaMap[key], { idPrefix, dataAttr, infoIconTemplate }));
     });
     formEl.appendChild(group);
@@ -419,20 +420,20 @@ export function renderControls(formEl, metaMap, { idPrefix, dataAttr, groups = n
   return { resetGroupKeys };
 }
 
-export function getStateFromForm(formEl, defaults, metaMap, dataAttr) {
+export function getStateFromForm(formEl: HTMLElement | null, defaults: Record<string, any>, metaMap: Record<string, any>, dataAttr: string) {
   const state = deepClone(defaults);
   if (!formEl) return state;
 
-  Object.entries(metaMap).forEach(([key, meta]) => {
+  Object.entries(metaMap).forEach(([key, meta]: [string, any]) => {
     if (meta.type === "multidropdown") {
       const root = formEl.querySelector(`[data-multidropdown="${key}"]`);
       if (!root) return;
 
-      const checked = [...root.querySelectorAll("input[type=\"checkbox\"]:checked")].map((el) => el.value);
+      const checked = [...root.querySelectorAll<HTMLInputElement>("input[type=\"checkbox\"]:checked")].map((el) => el.value);
 
       // Keep ordering stable by always following the dropdown option order.
-      const optionOrder = meta && Array.isArray(meta.options) ? meta.options : [];
-      const indexByValue = new Map(optionOrder.map((v, i) => [v, i]));
+      const optionOrder: string[] = meta && Array.isArray(meta.options) ? meta.options : [];
+      const indexByValue = new Map<string, number>(optionOrder.map((v, i) => [v, i]));
       checked.sort(
         (a, b) => (indexByValue.get(a) ?? Number.MAX_SAFE_INTEGER) - (indexByValue.get(b) ?? Number.MAX_SAFE_INTEGER),
       );
@@ -441,7 +442,7 @@ export function getStateFromForm(formEl, defaults, metaMap, dataAttr) {
       return;
     }
 
-    const control = formEl.querySelector(`[${dataAttr}="${key}"]`);
+    const control = formEl.querySelector<HTMLInputElement>(`[${dataAttr}="${key}"]`);
     if (!control) return;
 
     if (meta.type === "boolean") {
@@ -467,7 +468,7 @@ export function getStateFromForm(formEl, defaults, metaMap, dataAttr) {
   return state;
 }
 
-export function setFormFromState(formEl, state, metaMap, dataAttr, { defaultState } = {}) {
+export function setFormFromState(formEl: HTMLElement | null, state: Record<string, any>, metaMap: Record<string, any>, dataAttr: string, { defaultState }: { defaultState?: Record<string, any> } = {}) {
   if (!formEl) return;
 
   Object.entries(metaMap).forEach(([key, meta]) => {
@@ -476,20 +477,20 @@ export function setFormFromState(formEl, state, metaMap, dataAttr, { defaultStat
       const root = formEl.querySelector(`[data-multidropdown="${key}"]`);
       if (!root) return;
 
-      root.querySelectorAll("input[type=\"checkbox\"]").forEach((el) => {
+      root.querySelectorAll<HTMLInputElement>("input[type=\"checkbox\"]").forEach((el) => {
         el.checked = values.has(el.value);
       });
 
       const button = root.querySelector("button[data-bs-toggle=\"dropdown\"]");
       if (button) {
-        const optionOrder = meta && Array.isArray(meta.options) ? meta.options : [];
-        const ordered = optionOrder.filter((v) => values.has(v));
+        const optionOrder: string[] = meta && Array.isArray(meta.options) ? meta.options : [];
+        const ordered = optionOrder.filter((v: string) => values.has(v));
         button.textContent = formatMultiDropdownSelection(ordered);
       }
       return;
     }
 
-    const control = formEl.querySelector(`[${dataAttr}="${key}"]`);
+    const control = formEl.querySelector<HTMLInputElement>(`[${dataAttr}="${key}"]`);
     if (!control) return;
 
     if (meta.type === "boolean") {

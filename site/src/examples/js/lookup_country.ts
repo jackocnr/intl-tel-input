@@ -1,6 +1,5 @@
-const input = document.querySelector("#phone");
+const input = document.querySelector<HTMLInputElement>("#phone")!;
 window.intlTelInput(input, {
-  searchInputClass: "form-control",
   initialCountry: "auto",
   geoIpLookup: (success, failure) => {
     fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
@@ -8,5 +7,7 @@ window.intlTelInput(input, {
       .then(data => success(data.country_code))
       .catch(() => failure());
   },
-  loadUtils: () => import("/intl-tel-input/js/utils.js"),
+  // @ts-expect-error - lodash template tag, resolved at build time
+  loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+  searchInputClass: "form-control",
 });

@@ -1,10 +1,14 @@
-import { formatJsValue, isDefaultForKey } from "./stateUtils.js";
+import { formatJsValue, isDefaultForKey } from "./stateUtils";
 
 // This module is responsible for generating the initialization code snippet based on the current state of the playground.
-export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions, optionMeta, defaultState, specialOptionKeys }) {
+export function renderInitCodeFromState(
+  state: Record<string, any>,
+  initCodeEl: HTMLElement | null,
+  { defaultInitOptions, optionMeta, defaultState, specialOptionKeys }: { defaultInitOptions: Record<string, any>; optionMeta: Record<string, any>; defaultState: Record<string, any>; specialOptionKeys: string[] },
+) {
   if (!initCodeEl) return;
 
-  const nonDefaultOptionEntries = [];
+  const nonDefaultOptionEntries: [string, any][] = [];
 
   Object.keys(defaultInitOptions).forEach((key) => {
     if (specialOptionKeys.includes(key)) return;
@@ -58,7 +62,7 @@ export function renderInitCodeFromState(state, initCodeEl, { defaultInitOptions,
   const i18nCode = String(state.i18n ?? "").trim();
   const hasI18n = Boolean(i18nCode) && i18nCode.toLowerCase() !== "en";
 
-  const lines = [];
+  const lines: string[] = [];
   lines.push("import intlTelInput from \"intl-tel-input\";");
 
   let i18nExportName = "";

@@ -4,50 +4,50 @@ import {
   I18N_DIR_HASH,
 } from "../../../tmp/playground/playgroundConstants.js";
 
-import { bindCopyCodeButton } from "./modules/clipboard.js";
-import { createI18nOptionLabels } from "./modules/i18n.js";
-import { renderControls, getStateFromForm, setFormFromState } from "./modules/forms.js";
-import { renderInitCodeFromState } from "./modules/initCode.js";
-import { createPlaygroundConfig } from "./modules/playgroundConfig.js";
-import { ItiPlaygroundController } from "./modules/itiController.js";
+import { bindCopyCodeButton } from "./modules/clipboard";
+import { createI18nOptionLabels } from "./modules/i18n";
+import { renderControls, getStateFromForm, setFormFromState } from "./modules/forms";
+import { renderInitCodeFromState } from "./modules/initCode";
+import { createPlaygroundConfig } from "./modules/playgroundConfig";
+import { ItiPlaygroundController } from "./modules/itiController";
 import {
   createDefaultState,
   deepClone,
   parseBooleanParam,
   parseQueryOverrides,
-} from "./modules/stateUtils.js";
-import { updateUrlFromState } from "./modules/urlState.js";
+} from "./modules/stateUtils";
+import { updateUrlFromState } from "./modules/urlState";
 
-const telInput = document.querySelector("#playgroundPhone");
-const playgroundContainer = document.querySelector("#itiPlayground");
-const keepDropdownOpenCheckbox = document.querySelector("#playgroundKeepDropdownOpen");
-const optionsForm = document.querySelector("#playgroundOptions");
-const attrsForm = document.querySelector("#playgroundAttributes");
-const resetAllButton = document.querySelector("#playgroundResetAll");
-const shareButton = document.querySelector("#playgroundShareBtn");
-const resetAttrsButton = document.querySelector("#playgroundResetAttrs");
-const initCodeEl = document.querySelector("#playgroundInitCode");
-const copyInitCodeButton = document.querySelector("#playgroundCopyInitCode");
-const infoIconTemplate = document.querySelector("#itiPlaygroundInfoIconTemplate");
-const optionGroupTemplate = document.querySelector("#itiPlaygroundOptionGroupTemplate");
-const iso2ModalEl = document.querySelector("#itiPlaygroundIso2Modal");
-const iso2ModalTableBody = document.querySelector("#itiPlaygroundIso2ModalTableBody");
+const telInput = document.querySelector<HTMLInputElement>("#playgroundPhone")!;
+const playgroundContainer = document.querySelector<HTMLElement>("#itiPlayground")!;
+const keepDropdownOpenCheckbox = document.querySelector<HTMLInputElement>("#playgroundKeepDropdownOpen")!;
+const optionsForm = document.querySelector<HTMLFormElement>("#playgroundOptions")!;
+const attrsForm = document.querySelector<HTMLFormElement>("#playgroundAttributes")!;
+const resetAllButton = document.querySelector<HTMLButtonElement>("#playgroundResetAll");
+const shareButton = document.querySelector<HTMLButtonElement>("#playgroundShareBtn");
+const resetAttrsButton = document.querySelector<HTMLButtonElement>("#playgroundResetAttrs");
+const initCodeEl = document.querySelector<HTMLElement>("#playgroundInitCode")!;
+const copyInitCodeButton = document.querySelector<HTMLButtonElement>("#playgroundCopyInitCode");
+const infoIconTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundInfoIconTemplate");
+const optionGroupTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundOptionGroupTemplate");
+const iso2ModalEl = document.querySelector<HTMLElement>("#itiPlaygroundIso2Modal");
+const iso2ModalTableBody = document.querySelector<HTMLElement>("#itiPlaygroundIso2ModalTableBody");
 
 const KEEP_DROPDOWN_OPEN_PARAM = "keepDropdownOpen";
 
-const presetsSelect = document.querySelector("#playgroundPresetsSelect");
+const presetsSelect = document.querySelector<HTMLSelectElement>("#playgroundPresetsSelect");
 if (presetsSelect) {
-  presetsSelect.addEventListener("change", function () {
+  presetsSelect.addEventListener("change", function (this: HTMLSelectElement) {
     if (this.value) window.location.href = this.value;
     // reset the selection, as the longer option text doesn't fit in the box
     presetsSelect.selectedIndex = 0;
   });
 }
 
-function flashActionButtonLabel(buttonEl, temporaryLabel) {
+function flashActionButtonLabel(buttonEl: HTMLButtonElement | null, temporaryLabel: string) {
   if (!buttonEl) return;
 
-  const labelEl = buttonEl.querySelector("[data-role=\"label\"]") || buttonEl;
+  const labelEl = (buttonEl.querySelector<HTMLElement>("[data-role=\"label\"]") || buttonEl) as HTMLElement;
   const originalLabel = labelEl.textContent;
 
   labelEl.textContent = temporaryLabel;
@@ -129,7 +129,7 @@ syncKeepDropdownOpen();
 bindCopyCodeButton(copyInitCodeButton, initCodeEl);
 
 if (shareButton) {
-  let copiedResetTimer = null;
+  let copiedResetTimer: number | null = null;
   const labelEl = shareButton.querySelector("[data-role=\"label\"]") || shareButton;
   const originalLabel = labelEl.textContent;
 
@@ -310,12 +310,12 @@ const HINT_CONFIGS = [
   {
     optionKey: "separateDialCode",
     message: "Tip: try selecting a country from the dropdown to see this in action.",
-    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+    shouldShow: () => !itiController.iti?.getSelectedCountryData()?.iso2,
   },
   {
     optionKey: "showFlags",
     message: "Tip: set an initialCountry and/or enable \"Keep dropdown open\" to see this in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti.getSelectedCountryData().iso2,
+    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountryData()?.iso2,
     alsoShowOnToggleOff: true,
   },
   {
@@ -327,19 +327,19 @@ const HINT_CONFIGS = [
   {
     optionKey: "autoPlaceholder",
     message: "Tip: set an initialCountry to see the placeholder.",
-    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+    shouldShow: () => !itiController.iti?.getSelectedCountryData()?.iso2,
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "customPlaceholder",
     message: "Tip: set an initialCountry to see the placeholder.",
-    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+    shouldShow: () => !itiController.iti?.getSelectedCountryData()?.iso2,
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "placeholderNumberType",
     message: "Tip: set an initialCountry to see the placeholder.",
-    shouldShow: () => !itiController.iti.getSelectedCountryData().iso2,
+    shouldShow: () => !itiController.iti?.getSelectedCountryData()?.iso2,
     alsoShowOnToggleOff: true,
   },
   // Formatting Options
@@ -408,18 +408,18 @@ const HINT_CONFIGS = [
   },
 ];
 
-const hintTimers = {};
-const pendingHintChecks = new Set();
+const hintTimers: Record<string, number | null> = {};
+const pendingHintChecks = new Set<string>();
 const hintOptionKeys = new Set(HINT_CONFIGS.map((c) => c.optionKey));
 
-function findControl(optionKey, isMultidropdown) {
+function findControl(optionKey: string, isMultidropdown?: boolean) {
   if (isMultidropdown) {
-    return optionsForm.querySelector(`[data-multidropdown='${optionKey}']`);
+    return optionsForm.querySelector<HTMLInputElement>(`[data-multidropdown='${optionKey}']`);
   }
-  return optionsForm.querySelector(`[data-option='${optionKey}']`);
+  return optionsForm.querySelector<HTMLInputElement>(`[data-option='${optionKey}']`);
 }
 
-function maybeShowHint(config) {
+function maybeShowHint(config: any) {
   const { optionKey, message, shouldShow } = config;
   const control = findControl(optionKey, config.isMultidropdown);
   if (!control) return;
@@ -434,7 +434,7 @@ function maybeShowHint(config) {
 
   const existing = optionsForm.querySelector(`[data-hint-option='${optionKey}']`);
   if (existing) existing.remove();
-  if (hintTimers[optionKey]) window.clearTimeout(hintTimers[optionKey]);
+  if (hintTimers[optionKey]) window.clearTimeout(hintTimers[optionKey]!);
 
   const hint = document.createElement("span");
   hint.className = "iti-playground-hint form-text";
@@ -451,7 +451,7 @@ function maybeShowHint(config) {
   }, 5000);
 }
 
-let reinitTimer = null;
+let reinitTimer: number | null = null;
 function scheduleReinit() {
   if (reinitTimer) window.clearTimeout(reinitTimer);
   reinitTimer = window.setTimeout(() => {
@@ -552,7 +552,7 @@ optionsForm.addEventListener("click", (event) => {
 
   event.preventDefault();
   resetOptionGroupToDefaults(groupKeys);
-  flashActionButtonLabel(btn, "Reset!");
+  flashActionButtonLabel(btn as HTMLButtonElement, "Reset!");
 });
 
 function resetAllToDefaults() {

@@ -1,6 +1,7 @@
-import { resolveI18nSelection } from "./i18n.js";
+import type { Iti } from "../../../../../dist/js/intlTelInput";
+import { resolveI18nSelection } from "./i18n";
 
-function applyInputAttributes(state, telInput) {
+function applyInputAttributes(state: any, telInput: HTMLInputElement) {
   if (!state || !telInput) return;
 
   if (typeof state.value === "string") {
@@ -24,7 +25,7 @@ function applyInputAttributes(state, telInput) {
   }
 }
 
-function destroyInstance(iti) {
+function destroyInstance(iti: any) {
   if (iti && typeof iti.destroy === "function") {
     try {
       iti.destroy();
@@ -34,17 +35,20 @@ function destroyInstance(iti) {
   }
 }
 
-function detachUtilsIfNeeded(state) {
+function detachUtilsIfNeeded(state: any) {
   if (!state || state.loadUtils) return;
   if (!window.intlTelInput) return;
   // If utils were previously attached, clear them so disabling loadUtils actually disables
   // formatting/validation, and allow re-attaching if the user re-enables it.
-  window.intlTelInput.utils = null;
+  window.intlTelInput.utils = undefined;
   window.intlTelInput.startedLoadingUtilsScript = false;
 }
 
-function toInitOptions(state, { defaultInitOptions, specialOptionKeys, utilsPath }) {
-  const opts = {};
+function toInitOptions(
+  state: any,
+  { defaultInitOptions, specialOptionKeys, utilsPath }: { defaultInitOptions: Record<string, any>; specialOptionKeys: string[]; utilsPath: string },
+) {
+  const opts: any = {};
 
   Object.keys(defaultInitOptions).forEach((key) => {
     if (specialOptionKeys.includes(key)) return;
@@ -56,7 +60,7 @@ function toInitOptions(state, { defaultInitOptions, specialOptionKeys, utilsPath
   }
 
   if (state.customPlaceholder) {
-    opts.customPlaceholder = (exampleNumber) => (exampleNumber ? `e.g. ${exampleNumber}` : "Phone number");
+    opts.customPlaceholder = (exampleNumber: string) => (exampleNumber ? `e.g. ${exampleNumber}` : "Phone number");
   }
 
   if (state.dropdownContainer) {
@@ -64,7 +68,7 @@ function toInitOptions(state, { defaultInitOptions, specialOptionKeys, utilsPath
   }
 
   if (state.geoIpLookup) {
-    opts.geoIpLookup = (success, failure) => {
+    opts.geoIpLookup = (success: (iso2: string) => void, failure: () => void) => {
       fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
         .then((res) => res.json())
         .then((data) => success(data.country_code))
@@ -84,7 +88,15 @@ function toInitOptions(state, { defaultInitOptions, specialOptionKeys, utilsPath
 }
 
 export class ItiPlaygroundController {
-  constructor({ telInput, utilsPath, i18nDirHash, defaultInitOptions, specialOptionKeys }) {
+  telInput: HTMLInputElement;
+  utilsPath: string;
+  i18nDirHash: string;
+  defaultInitOptions: Record<string, any>;
+  specialOptionKeys: string[];
+  iti: Iti | null;
+  initNonce: number;
+
+  constructor({ telInput, utilsPath, i18nDirHash, defaultInitOptions, specialOptionKeys }: { telInput: HTMLInputElement; utilsPath: string; i18nDirHash: string; defaultInitOptions: Record<string, any>; specialOptionKeys: string[] }) {
     this.telInput = telInput;
     this.utilsPath = utilsPath;
     this.i18nDirHash = i18nDirHash;
@@ -100,7 +112,7 @@ export class ItiPlaygroundController {
     this.iti = null;
   }
 
-  async initWithState(state) {
+  async initWithState(state: any) {
     const nonce = (this.initNonce += 1);
 
     detachUtilsIfNeeded(state);

@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import template from "lodash.template";
+import { transformSync } from "esbuild";
 
 // Explicit `<%`/`%>` delimiters; passing an explicit `interpolate` option
 // suppresses lodash.template's "feature" of also matching ES6 `${...}`
@@ -36,7 +37,12 @@ function renderString(text, data) {
 function renderPage({ src, dest, data }) {
   const text = fs.readFileSync(src, "utf8");
   const resolved = typeof data === "function" ? data() : data;
-  const output = renderString(text, resolved);
+  let output = renderString(text, resolved);
+  // If a .ts source is being written to a .js destination, strip TypeScript
+  // types so the result is browser-loadable plain JavaScript.
+  if (src.endsWith(".ts") && dest.endsWith(".js")) {
+    output = transformSync(output, { loader: "ts", format: "esm" }).code;
+  }
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, output);
 }

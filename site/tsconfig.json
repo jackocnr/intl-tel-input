@@ -1,0 +1,35 @@
+{
+  // Typecheck-only config for the site sources. esbuild/vite handle the
+  // actual transpilation; this exists so `tsc --noEmit` can catch type
+  // errors during the build.
+  //
+  // Strict checking is intentionally relaxed: most of these files were
+  // originally authored as plain JavaScript and rely heavily on DOM lookups
+  // and the `window.intlTelInput` global, so noImplicitAny / strictNullChecks
+  // would generate noise without adding much real safety.
+  //
+  // The example files under src/examples/js/*.ts contain lodash template
+  // tags (e.g. `import("<%= cacheBust(...) %>")`) which aren't valid TS
+  // expressions until build-pages.js renders them, so they're excluded
+  // here — esbuild still strips their types when bundling/templating.
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "moduleDetection": "force",
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "types": ["node"]
+  },
+  "include": [
+    "src/js/**/*.ts",
+    "src/playground/js/**/*.ts",
+    "src/examples/js/**/*.ts",
+    "src/types/**/*.d.ts"
+  ]
+}

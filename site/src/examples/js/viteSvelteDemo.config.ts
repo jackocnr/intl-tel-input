@@ -29,7 +29,7 @@ export default defineConfig({
       external: (id) => id.startsWith("/intl-tel-input/js/utils.js"),
     },
     lib: {
-      entry: path.resolve(projectRoot, "src/examples/js/svelte_main.js"),
+      entry: path.resolve(projectRoot, "src/examples/js/svelte_main.ts"),
       formats: ["cjs"],
       // Force .js extension — see comment in viteVueDemo.config.js.
       fileName: () => "svelte_component_bundle.js",

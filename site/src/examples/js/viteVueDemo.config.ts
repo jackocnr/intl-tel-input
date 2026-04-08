@@ -17,7 +17,7 @@ export default defineConfig({
     emptyOutDir: false,
     copyPublicDir: false,
     lib: {
-      entry: path.resolve(projectRoot, "src/examples/js/vue_main.js"),
+      entry: path.resolve(projectRoot, "src/examples/js/vue_main.ts"),
       formats: ["cjs"],
       // Force .js extension. Vite would otherwise use .cjs because the
       // package.json now has "type": "module" and a bare .js would be ESM.
