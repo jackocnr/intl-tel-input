@@ -1,4 +1,3 @@
-// Replacement for grunt-contrib-watch (grunt/watch.js).
 // Re-runs `npm run build` whenever a watched source file changes.
 import chokidar from "chokidar";
 import path from "node:path";
@@ -11,7 +10,6 @@ process.chdir(ROOT);
 const watchPaths = [
   "src",
   "static",
-  "grunt",
   "scripts",
   "../build",
 ];

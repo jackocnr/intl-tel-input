@@ -1,4 +1,3 @@
-// Replacement for grunt-contrib-copy as configured in grunt/copy.js.
 // Copies four trees into site/build/.
 import fs from "node:fs";
 import path from "node:path";

@@ -8,18 +8,14 @@ export default [
   {
     ignores: [
       "**/demo/",
-      "**/grunt/",
       "**/build/",
       "**/third_party/",
       "**/tmp/",
       ".claude/",
-      ".grunt/",
       "site/static/js/highlight.min.js",
       "site/static/js/silktide-consent-manager.js",
       "site/src/examples/js/*_display_code*",
       "playwright-report/",
-      "Gruntfile.cjs",
-      "site/Gruntfile.cjs",
       "scripts/",
       "src/js/utils.js",
     ],

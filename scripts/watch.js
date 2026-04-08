@@ -1,4 +1,4 @@
-// Replacement for grunt-contrib-watch — runs the appropriate npm script when matching source files change. Mirrors grunt/watch.js one-for-one.
+// Runs the appropriate npm script when matching source files change.
 import chokidar from "chokidar";
 import { spawn } from "node:child_process";
 

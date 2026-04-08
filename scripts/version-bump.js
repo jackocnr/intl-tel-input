@@ -1,9 +1,9 @@
-// Replacement for grunt-bump. Steps:
+// Steps:
 //   1. Bump version in package.json + package-lock.json (no commit, no tag).
 //   2. Run scripts/update-version-numbers.js so docs/issue-template/inner
 //      package-lock entry are updated to match.
 //   3. Stage everything, create the commit, and create the tag — all in one
-//      atomic version commit (matching the old grunt bump-only/bump-commit flow).
+//      atomic version commit.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 

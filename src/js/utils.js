@@ -230,7 +230,7 @@ const validationError = {
 };
 
 //* Exports
-//* Note: goog.exportSymbol writes these onto the scope object, which the closure compiler output_wrapper (see grunt/closure-compiler.js) then exports as the default ES Module export.
+//* Note: goog.exportSymbol writes these onto the scope object, which the closure compiler output_wrapper (see scripts/build-utils.js) then exports as the default ES Module export.
 goog.exportSymbol("utils", {});
 goog.exportSymbol("utils.formatNumberAsYouType", formatNumberAsYouType);
 goog.exportSymbol("utils.formatNumber", formatNumber);

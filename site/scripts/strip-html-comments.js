@@ -1,4 +1,3 @@
-// Replacement for the strip-html-comments inline grunt task.
 // Removes HTML comments from every build/**/*.html file.
 import fs from "node:fs";
 import path from "node:path";

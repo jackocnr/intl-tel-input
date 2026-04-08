@@ -20,4 +20,4 @@ In the site/ directory, run `npm run watch` to automatically re-build when you e
 
 See src/ directory for HTML templates/partials, JS/CSS and the docs markdown files.
 
-See grunt/template.js for where everything is threaded together.
+See scripts/build-pages.js for where everything is threaded together.

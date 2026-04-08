@@ -1,7 +1,6 @@
-// Replacement for the grunt closure-compiler:utils target.
-// Mirrors the gulp/grunt plugin's exact code path: feeds src/js/utils.js as
-// JSON via stdin (--json_streams IN), and passes the rest of the source list
-// via --js flags. Uses the native binary, no Java required.
+// Builds src/js/utils.js with Closure Compiler: feeds it as JSON via stdin
+// (--json_streams IN), and passes the rest of the source list via --js flags.
+// Uses the native binary, no Java required.
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 

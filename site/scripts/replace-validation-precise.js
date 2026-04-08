@@ -1,4 +1,3 @@
-// Replacement for the grunt-replace `validationPrecise` target.
 // Swaps iti.isValidNumber() -> iti.isValidNumberPrecise() in the precise example.
 import fs from "node:fs";
 import path from "node:path";

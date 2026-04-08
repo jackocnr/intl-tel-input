@@ -2,7 +2,6 @@
 /lib/*
 !/lib/libphonenumber
 /.sass-cache/
-/.grunt/
 /tmp/
 /vendor/
 /.idea/

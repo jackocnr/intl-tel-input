@@ -1,6 +1,5 @@
 // Page-shape helpers — used by build-pages.js to construct the data object
-// passed to each layout/page template. Replaces site/grunt/templateGruntHelpers.js
-// (which had the same shape but took grunt.file.read instead of fs.readFileSync).
+// passed to each layout/page template.
 import fs from "node:fs";
 import { renderString } from "./render.js";
 

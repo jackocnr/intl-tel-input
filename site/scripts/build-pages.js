@@ -1,7 +1,6 @@
-// Replacement for grunt/template.js. Renders every HTML page (homepage,
-// playground, 404, examples, docs) plus the various intermediate template
-// files (CSS cache-bust, JS bundles, iti_script). Uses lodash.template for
-// byte-for-byte parity with the old grunt-template pipeline.
+// Renders every HTML page (homepage, playground, 404, examples, docs) plus
+// the various intermediate template files (CSS cache-bust, JS bundles,
+// iti_script). Uses lodash.template.
 import fs from "node:fs";
 import path from "node:path";
 import { renderPage, renderString } from "./template/render.js";
@@ -121,8 +120,7 @@ const cssCacheBust = (key, file) => ({
 // Tasks definition --------------------------------------------------------
 //
 // Each entry is { name, src, dest, data }. Order matters because some tasks
-// read files produced by earlier tasks (matching grunt's task graph). They
-// are grouped here in execution order.
+// read files produced by earlier tasks. They are grouped here in execution order.
 
 const tasks = [];
 

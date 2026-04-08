@@ -74,7 +74,7 @@ exec docker run "${DOCKER_ARGS[@]}" "$IMAGE" bash -lc \
 
     npm ci
 
-    # Closure Compiler (grunt-google-closure-compiler) requires Java.
+    # Closure Compiler requires Java.
     apt-get update
     apt-get install -y --no-install-recommends openjdk-17-jre-headless
     rm -rf /var/lib/apt/lists/*

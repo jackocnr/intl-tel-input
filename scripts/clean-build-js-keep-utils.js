@@ -1,5 +1,5 @@
 // Removes everything in build/js/ EXCEPT utils.js (the closure-compiler output).
-// Mirrors the grunt clean:buildJsKeepUtils target — used by build:jsfast and watch.
+// Used by build:jsfast and watch.
 import fs from 'node:fs';
 import path from 'node:path';
 
