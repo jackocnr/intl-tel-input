@@ -157,6 +157,6 @@ iti.isValidNumber(); // etc
 
 An alternative to the [`loadUtils`](/docs/options#loadutils) option, this method lets you manually load the utils.js script on demand, to enable formatting/validation etc. See [Loading The Utilities Script](/docs/utils#loading-the-utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `attachUtils().then(...)` to know when it's finished.
 ```js
-const loadUtils = () => import("/build/js/utils.js");
+const loadUtils = () => import("/dist/js/utils.js");
 intlTelInput.attachUtils(loadUtils);
 ```

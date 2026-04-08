@@ -10,7 +10,7 @@ export default defineConfig({
     "process.env.VERSION": `"${version}"`,
   },
   build: {
-    outDir: "build",
+    outDir: "dist",
     emptyOutDir: true,
     lib: {
       entry: [
@@ -34,7 +34,7 @@ export default defineConfig({
     dts({
       tsconfigPath: "./tsconfig.app.json",
       entryRoot: "src",
-      // Without this, vite-plugin-dts would resolve the `intl-tel-input` tsconfig path alias and emit a relative path (e.g. `../../../build/js/intlTelInput.d.ts`) into the generated .d.ts files. We want the bare package specifier preserved so consumers import from the published package.
+      // Without this, vite-plugin-dts would resolve the `intl-tel-input` tsconfig path alias and emit a relative path (e.g. `../../../dist/js/intlTelInput.d.ts`) into the generated .d.ts files. We want the bare package specifier preserved so consumers import from the published package.
       aliasesExclude: [/^intl-tel-input$/],
     }),
   ],

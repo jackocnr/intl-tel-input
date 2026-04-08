@@ -14,7 +14,7 @@ build({
   ...mainShared,
   entryPoints: ["react/src/IntlTelInput.tsx"],
   format: "esm",
-  outfile: "react/build/IntlTelInput.js",
+  outfile: "react/dist/IntlTelInput.js",
 });
 
 //* React Component With Utils
@@ -22,7 +22,7 @@ build({
   ...mainShared,
   entryPoints: ["react/src/IntlTelInputWithUtils.tsx"],
   format: "esm",
-  outfile: "react/build/IntlTelInputWithUtils.js",
+  outfile: "react/dist/IntlTelInputWithUtils.js",
 });
 
 //* Demo shared config

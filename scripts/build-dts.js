@@ -15,15 +15,15 @@ import { generateDtsBundle } from "dts-bundle-generator";
 const entries = [
   {
     input: "src/js/intl-tel-input.ts",
-    output: "build/js/intlTelInput.d.ts",
+    output: "dist/js/intlTelInput.d.ts",
   },
   {
     input: "src/js/data.ts",
-    output: "build/js/data.d.ts",
+    output: "dist/js/data.d.ts",
   },
   {
     input: "src/js/i18n/index.ts",
-    output: "build/js/i18n.d.ts",
+    output: "dist/js/i18n.d.ts",
   },
 ];
 

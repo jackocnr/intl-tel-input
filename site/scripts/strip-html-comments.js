@@ -1,4 +1,4 @@
-// Removes HTML comments from every build/**/*.html file.
+// Removes HTML comments from every dist/**/*.html file.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -16,7 +16,7 @@ function* walk(dir) {
   }
 }
 
-const htmlFiles = fs.existsSync("build") ? [...walk("build")] : [];
+const htmlFiles = fs.existsSync("dist") ? [...walk("dist")] : [];
 let updatedCount = 0;
 
 for (const filePath of htmlFiles) {

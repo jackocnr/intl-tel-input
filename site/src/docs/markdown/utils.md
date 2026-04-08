@@ -14,7 +14,7 @@ International number formatting/validation is hard (it varies by country/distric
 The utils script provides lots of great functionality (see the above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
 
 **Option 1: intlTelInputWithUtils**  
-If you're not concerned about filesize (e.g. you're lazy loading the main plugin script), the easiest thing to do is to use the all-in-one bundle (`/build/js/intlTelInputWithUtils.js`), which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so:
+If you're not concerned about filesize (e.g. you're lazy loading the main plugin script), the easiest thing to do is to use the all-in-one bundle (`/dist/js/intlTelInputWithUtils.js`), which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so:
 
 ```js
 import intlTelInput from "intl-tel-input/intlTelInputWithUtils"

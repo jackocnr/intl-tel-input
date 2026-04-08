@@ -14,32 +14,32 @@
     "test:e2e:linux:update": "./scripts/playwright-linux-docker.sh --update-snapshots",
     "lint:js": "eslint . --cache --cache-location node_modules/.cache/eslint/",
     "watch": "node scripts/watch.js",
-    "clean:build:css": "rimraf build/css/*",
-    "clean:build:img": "rimraf build/img/*",
-    "clean:build:js": "rimraf build/js/*",
-    "clean:build:js:keep-utils": "node scripts/clean-build-js-keep-utils.js",
+    "clean:dist:css": "rimraf dist/css/*",
+    "clean:dist:img": "rimraf dist/img/*",
+    "clean:dist:js": "rimraf dist/js/*",
+    "clean:dist:js:keep-utils": "node scripts/clean-dist-js-keep-utils.js",
     "clean:tmp": "rimraf tmp/built.min.js tmp/one.min.js",
-    "clean:utils": "rimraf build/js/utils.js",
-    "clean:react": "rimraf react/build/*",
-    "clean:vue": "rimraf vue/build/*",
-    "clean:angular": "rimraf angular/build/*",
-    "clean:all": "npm run clean:build:css && npm run clean:build:img && npm run clean:build:js && npm run clean:react && npm run clean:vue && npm run clean:angular && npm run clean:tmp",
+    "clean:utils": "rimraf dist/js/utils.js",
+    "clean:react": "rimraf react/dist/*",
+    "clean:vue": "rimraf vue/dist/*",
+    "clean:angular": "rimraf angular/dist/*",
+    "clean:all": "npm run clean:dist:css && npm run clean:dist:img && npm run clean:dist:js && npm run clean:react && npm run clean:vue && npm run clean:angular && npm run clean:tmp",
     "build:translations:gen": "node scripts/translations.js",
-    "build:translations": "npm run clean:build:js && npm run clean:tmp && npm run build:translations:gen && npm run build:js",
+    "build:translations": "npm run clean:dist:js && npm run clean:tmp && npm run build:translations:gen && npm run build:js",
     "build:utils:closure": "node scripts/build-utils.js",
     "build:utils:check": "node scripts/check-lpn-metadata.js",
     "build:utils": "npm run clean:utils && npm run build:utils:closure && npm run build:utils:check",
-    "ensure:utils": "node -e \"process.exit(require('node:fs').existsSync('build/js/utils.js')?0:1)\" || npm run build:utils",
-    "build:css:main": "sass --no-source-map --style=compressed src/css/intlTelInput.scss:build/css/intlTelInput-no-assets.css src/css/intlTelInputWithAssets.scss:build/css/intlTelInput.css",
-    "build:css:demo": "sass --no-source-map src/css/demo.scss build/css/demo.css",
-    "build:css:min": "cleancss -o build/css/intlTelInput.min.css build/css/intlTelInput.css && cleancss -o build/css/intlTelInput-no-assets.min.css build/css/intlTelInput-no-assets.css",
-    "build:css": "npm run clean:build:css && npm run build:css:main && npm run build:css:demo && npm run build:css:min",
+    "ensure:utils": "node -e \"process.exit(require('node:fs').existsSync('dist/js/utils.js')?0:1)\" || npm run build:utils",
+    "build:css:main": "sass --no-source-map --style=compressed src/css/intlTelInput.scss:dist/css/intlTelInput-no-assets.css src/css/intlTelInputWithAssets.scss:dist/css/intlTelInput.css",
+    "build:css:demo": "sass --no-source-map src/css/demo.scss dist/css/demo.css",
+    "build:css:min": "cleancss -o dist/css/intlTelInput.min.css dist/css/intlTelInput.css && cleancss -o dist/css/intlTelInput-no-assets.min.css dist/css/intlTelInput-no-assets.css",
+    "build:css": "npm run clean:dist:css && npm run build:css:main && npm run build:css:demo && npm run build:css:min",
     "build:img:sprite": "node --experimental-strip-types scripts/generate-sprite.js",
-    "build:img": "npm run clean:build:img && npm run build:img:sprite && npm run build:css",
+    "build:img": "npm run clean:dist:img && npm run build:img:sprite && npm run build:css",
     "build:js:dts": "node scripts/build-dts.js",
     "build:js:core": "node scripts/esbuild.js",
-    "build:js": "npm run clean:build:js && npm run clean:tmp && npm run lint:js && npm run build:utils:closure && npm run build:js:dts && npm run build:js:core && npm run build:components",
-    "build:jsfast": "npm run clean:build:js:keep-utils && npm run clean:tmp && npm run ensure:utils && npm run build:js:core",
+    "build:js": "npm run clean:dist:js && npm run clean:tmp && npm run lint:js && npm run build:utils:closure && npm run build:js:dts && npm run build:js:core && npm run build:components",
+    "build:jsfast": "npm run clean:dist:js:keep-utils && npm run clean:tmp && npm run ensure:utils && npm run build:js:core",
     "build:jsfast:cmps": "npm run build:jsfast && npm run build:components",
     "build:react": "npm run clean:react && tsc -p react/tsconfig.json && node react/build.js",
     "build:vue": "npm run clean:vue && vite build --config vue/vite.config.mts",
@@ -105,10 +105,10 @@
     "zone.js": "^0.16.1"
   },
   "files": [
-    "build/*",
-    "react/build/*",
-    "vue/build/*",
-    "angular/build/*",
+    "dist/*",
+    "react/dist/*",
+    "vue/dist/*",
+    "angular/dist/*",
     "svelte/src/*",
     "CHANGELOG.md",
     "LICENSE",
@@ -121,48 +121,48 @@
     "url": "https://github.com/jackocnr/intl-tel-input.git"
   },
   "homepage": "https://intl-tel-input.com",
-  "main": "./build/js/intlTelInput.js",
-  "types": "./build/js/intlTelInput.d.ts",
+  "main": "./dist/js/intlTelInput.js",
+  "types": "./dist/js/intlTelInput.d.ts",
   "exports": {
     ".": {
-      "types": "./build/js/intlTelInput.d.ts",
-      "import": "./build/js/intlTelInput.mjs"
+      "types": "./dist/js/intlTelInput.d.ts",
+      "import": "./dist/js/intlTelInput.mjs"
     },
     "./intlTelInputWithUtils": {
-      "types": "./build/js/intlTelInput.d.ts",
-      "import": "./build/js/intlTelInputWithUtils.mjs"
+      "types": "./dist/js/intlTelInput.d.ts",
+      "import": "./dist/js/intlTelInputWithUtils.mjs"
     },
     "./data": {
-      "types": "./build/js/data.d.ts",
-      "import": "./build/js/data.mjs"
+      "types": "./dist/js/data.d.ts",
+      "import": "./dist/js/data.mjs"
     },
     "./utils": {
       "types": "./src/js/types/utils.d.ts",
-      "import": "./build/js/utils.js"
+      "import": "./dist/js/utils.js"
     },
     "./react": {
-      "types": "./react/build/IntlTelInput.d.ts",
-      "import": "./react/build/IntlTelInput.js"
+      "types": "./react/dist/IntlTelInput.d.ts",
+      "import": "./react/dist/IntlTelInput.js"
     },
     "./reactWithUtils": {
-      "types": "./react/build/IntlTelInputWithUtils.d.ts",
-      "import": "./react/build/IntlTelInputWithUtils.js"
+      "types": "./react/dist/IntlTelInputWithUtils.d.ts",
+      "import": "./react/dist/IntlTelInputWithUtils.js"
     },
     "./vue": {
-      "types": "./vue/build/index.d.ts",
-      "import": "./vue/build/IntlTelInput.js"
+      "types": "./vue/dist/index.d.ts",
+      "import": "./vue/dist/IntlTelInput.js"
     },
     "./vueWithUtils": {
-      "types": "./vue/build/indexWithUtils.d.ts",
-      "import": "./vue/build/IntlTelInputWithUtils.js"
+      "types": "./vue/dist/indexWithUtils.d.ts",
+      "import": "./vue/dist/IntlTelInputWithUtils.js"
     },
     "./angular": {
-      "types": "./angular/build/IntlTelInput.d.ts",
-      "import": "./angular/build/IntlTelInput.js"
+      "types": "./angular/dist/IntlTelInput.d.ts",
+      "import": "./angular/dist/IntlTelInput.js"
     },
     "./angularWithUtils": {
-      "types": "./angular/build/IntlTelInputWithUtils.d.ts",
-      "import": "./angular/build/IntlTelInputWithUtils.js"
+      "types": "./angular/dist/IntlTelInputWithUtils.d.ts",
+      "import": "./angular/dist/IntlTelInputWithUtils.js"
     },
     "./svelte": {
       "svelte": "./svelte/src/IntlTelInput.svelte",
@@ -173,26 +173,26 @@
       "import": "./svelte/src/IntlTelInputWithUtils.svelte"
     },
     "./i18n": {
-      "types": "./build/js/i18n.d.ts",
-      "import": "./build/js/i18n/index.js"
+      "types": "./dist/js/i18n.d.ts",
+      "import": "./dist/js/i18n/index.js"
     },
     "./i18n/*": {
-      "types": "./build/js/i18n.d.ts",
-      "import": "./build/js/i18n/*/index.js"
+      "types": "./dist/js/i18n.d.ts",
+      "import": "./dist/js/i18n/*/index.js"
     },
-    "./styles": "./build/css/intlTelInput.css",
+    "./styles": "./dist/css/intlTelInput.css",
     "./*": "./*"
   },
   "typesVersions": {
     "*": {
       ".": [
-        "build/js/intlTelInput.d.ts"
+        "dist/js/intlTelInput.d.ts"
       ],
       "react": [
-        "react/build/IntlTelInput.d.ts"
+        "react/dist/IntlTelInput.d.ts"
       ],
       "angular": [
-        "angular/build/IntlTelInput.d.ts"
+        "angular/dist/IntlTelInput.d.ts"
       ]
     }
   },

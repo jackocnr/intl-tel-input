@@ -3,7 +3,7 @@ import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import IntlTelInput, { intlTelInput } from "../../../../angular/build/IntlTelInput.js";
+import IntlTelInput, { intlTelInput } from "../../../../angular/dist/IntlTelInput.js";
 
 const getErrorMessage = (errorCode: number | null): string => {
   const genericError = "Invalid number";

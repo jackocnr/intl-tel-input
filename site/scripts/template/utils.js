@@ -4,7 +4,7 @@ import crypto from "node:crypto";
 import MarkdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 
-const BUILD_DIR = "build";
+const BUILD_DIR = "dist";
 const HASH_LENGTH = 12;
 
 const hashCacheByPath = new Map();

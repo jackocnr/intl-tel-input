@@ -1,9 +1,9 @@
-// Removes everything in build/js/ EXCEPT utils.js (the closure-compiler output).
+// Removes everything in dist/js/ EXCEPT utils.js (the closure-compiler output).
 // Used by build:jsfast and watch.
 import fs from 'node:fs';
 import path from 'node:path';
 
-const dir = 'build/js';
+const dir = 'dist/js';
 if (!fs.existsSync(dir)) process.exit(0);
 
 for (const entry of fs.readdirSync(dir)) {

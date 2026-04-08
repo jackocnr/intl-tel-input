@@ -1,4 +1,4 @@
-// Copies four trees into site/build/.
+// Copies four trees into site/dist/.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -7,11 +7,11 @@ process.chdir(ROOT);
 
 const targets = [
   // Mirror of the published intl-tel-input package, served at /intl-tel-input/
-  { from: "../build", to: "build/intl-tel-input" },
+  { from: "../dist", to: "dist/intl-tel-input" },
   // Static site assets (favicon, robots.txt, etc.)
-  { from: "static", to: "build" },
+  { from: "static", to: "dist" },
   // Demo example CSS, copied verbatim
-  { from: "src/examples/css", to: "build/examples/css" },
+  { from: "src/examples/css", to: "dist/examples/css" },
 ];
 
 for (const { from, to } of targets) {

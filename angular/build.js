@@ -14,21 +14,21 @@ async function buildMain() {
   //* Angular Component - Default (ES Modules)
   await build({
     ...mainShared,
-    entryPoints: ["angular/build/temp/IntlTelInput.js"],
+    entryPoints: ["angular/dist/temp/IntlTelInput.js"],
     format: "esm",
-    outfile: "angular/build/IntlTelInput.js",
+    outfile: "angular/dist/IntlTelInput.js",
   });
 
   //* Angular Component With Utils - Default (ES Modules)
   await build({
     ...mainShared,
-    entryPoints: ["angular/build/temp/IntlTelInputWithUtils.js"],
+    entryPoints: ["angular/dist/temp/IntlTelInputWithUtils.js"],
     format: "esm",
-    outfile: "angular/build/IntlTelInputWithUtils.js",
+    outfile: "angular/dist/IntlTelInputWithUtils.js",
   });
 
   // remove temp folder after builds are complete
-  fs.rmSync("angular/build/temp", { recursive: true, force: true });
+  fs.rmSync("angular/dist/temp", { recursive: true, force: true });
 }
 
 buildMain().catch(console.error);

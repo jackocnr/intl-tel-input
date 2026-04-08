@@ -15,7 +15,7 @@ const shared = {
     "process.env.VERSION": `"${packageJson.version}"`,
   },
   alias: {
-    "utils-compiled": "./build/js/utils.js",
+    "utils-compiled": "./dist/js/utils.js",
   },
 };
 
@@ -32,76 +32,76 @@ const esmShared = {
   format: "esm",
 };
 
-//* build/js/intlTelInput.js
+//* dist/js/intlTelInput.js
 build({
   ...getIife("intlTelInput"),
   entryPoints: ["src/js/intl-tel-input.ts"],
   minify: false,
-  outfile: "build/js/intlTelInput.js",
+  outfile: "dist/js/intlTelInput.js",
 });
 
-//* build/js/intlTelInput.min.js
+//* dist/js/intlTelInput.min.js
 build({
   ...getIife("intlTelInput"),
   entryPoints: ["src/js/intl-tel-input.ts"],
   minify: true,
-  outfile: "build/js/intlTelInput.min.js",
+  outfile: "dist/js/intlTelInput.min.js",
 });
 
-//* build/js/data.js
+//* dist/js/data.js
 build({
   ...getIife("allCountries"),
   entryPoints: ["src/js/data.ts"],
   minify: false,
-  outfile: "build/js/data.js",
+  outfile: "dist/js/data.js",
 });
 
-//* build/js/data.min.js
+//* dist/js/data.min.js
 build({
   ...getIife("allCountries"),
   entryPoints: ["src/js/data.ts"],
   minify: true,
-  outfile: "build/js/data.min.js",
+  outfile: "dist/js/data.min.js",
 });
 
-//* build/js/intlTelInputWithUtils.js
+//* dist/js/intlTelInputWithUtils.js
 build({
   ...getIife("intlTelInput"),
   entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   minify: false,
-  outfile: "build/js/intlTelInputWithUtils.js",
+  outfile: "dist/js/intlTelInputWithUtils.js",
 });
 
-//* build/js/intlTelInputWithUtils.min.js
+//* dist/js/intlTelInputWithUtils.min.js
 build({
   ...getIife("intlTelInput"),
   entryPoints: ["src/js/intlTelInputWithUtils.ts"],
   minify: true,
-  outfile: "build/js/intlTelInputWithUtils.min.js",
+  outfile: "dist/js/intlTelInputWithUtils.min.js",
 });
 
 //* ESM builds
 build({
   ...esmShared,
   entryPoints: ["src/js/intl-tel-input.ts"],
-  outfile: "build/js/intlTelInput.mjs",
+  outfile: "dist/js/intlTelInput.mjs",
 });
 
 build({
   ...esmShared,
   entryPoints: ["src/js/intlTelInputWithUtils.ts"],
-  outfile: "build/js/intlTelInputWithUtils.mjs",
+  outfile: "dist/js/intlTelInputWithUtils.mjs",
 });
 
 build({
   ...esmShared,
   entryPoints: ["src/js/data.ts"],
-  outfile: "build/js/data.mjs",
+  outfile: "dist/js/data.mjs",
 });
 
-//* build/js/i18n
+//* dist/js/i18n
 build({
   charset: "utf8",
   entryPoints: ["src/js/i18n/**/*.ts"],
-  outdir: "build/js/i18n",
+  outdir: "dist/js/i18n",
 });

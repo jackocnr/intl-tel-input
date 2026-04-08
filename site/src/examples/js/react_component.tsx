@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput, { intlTelInput } from "../../../../react/build/IntlTelInput.js";
+import IntlTelInput, { intlTelInput } from "../../../../react/dist/IntlTelInput.js";
 
 const getErrorMessage = (number: string, errorCode: number | null): string => {
   if (!number) return "Please enter a number";

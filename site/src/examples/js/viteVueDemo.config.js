@@ -13,7 +13,7 @@ export default defineConfig({
     "process.env.NODE_ENV": "'production'", // required for vue files
   },
   build: {
-    outDir: path.resolve(projectRoot, "build/examples/js"),
+    outDir: path.resolve(projectRoot, "dist/examples/js"),
     emptyOutDir: false,
     copyPublicDir: false,
     lib: {

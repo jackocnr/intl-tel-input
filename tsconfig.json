@@ -8,7 +8,7 @@
     "moduleResolution": "bundler",
     "esModuleInterop": true, // required for react (etc) default imports
     "paths": {
-      "utils-compiled": ["./build/js/utils.js"]
+      "utils-compiled": ["./dist/js/utils.js"]
     },
     "allowJs": true,
     "noEmit": true,

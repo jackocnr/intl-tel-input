@@ -11,7 +11,7 @@ const watchPaths = [
   "src",
   "static",
   "scripts",
-  "../build",
+  "../dist",
 ];
 
 let running = false;

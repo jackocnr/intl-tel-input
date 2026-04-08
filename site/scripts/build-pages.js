@@ -21,7 +21,7 @@ import {
 
 // Always run from the site/ directory so all relative paths in templates and
 // data functions resolve correctly (templates use paths like "src/...",
-// "tmp/...", "build/..." that assume cwd === site).
+// "tmp/...", "dist/..." that assume cwd === site).
 process.chdir(path.resolve(import.meta.dirname, ".."));
 
 // CLI args ----------------------------------------------------------------
@@ -133,14 +133,14 @@ tasks.push({
 });
 
 // 2. CSS cache-bust (in-place rewrites of built CSS files).
-tasks.push(cssCacheBust("website_css", "build/css/website.css"));
-tasks.push(cssCacheBust("homepage_css", "build/css/homepage.css"));
-tasks.push(cssCacheBust("docs_css", "build/css/docs.css"));
-tasks.push(cssCacheBust("playground_css", "build/css/playground.css"));
+tasks.push(cssCacheBust("website_css", "dist/css/website.css"));
+tasks.push(cssCacheBust("homepage_css", "dist/css/homepage.css"));
+tasks.push(cssCacheBust("docs_css", "dist/css/docs.css"));
+tasks.push(cssCacheBust("playground_css", "dist/css/playground.css"));
 tasks.push(
   cssCacheBust(
     "large_flags_overrides_css",
-    "build/css/large_flags_overrides.css",
+    "dist/css/large_flags_overrides.css",
   ),
 );
 
@@ -343,13 +343,13 @@ for (const def of exampleDefinitions) {
   } = def;
   const slug = key.replace(/_/g, "-");
   const jsSrc = js.src || `src/examples/js/${key}.js`;
-  const jsDest = js.dest || `${js.destDir || "build"}/examples/js/${key}.js`;
+  const jsDest = js.dest || `${js.destDir || "dist"}/examples/js/${key}.js`;
   const displayCode = content.displayCode || jsDest;
   const scriptName = js.script || `${key}.js`;
 
   const contentDest = content.dest || `tmp/examples/${key}_content.html`;
   const layoutDest = content.layoutDest || `tmp/examples/${key}_layout.html`;
-  const pageDest = content.pageDest || `build/examples/${slug}.html`;
+  const pageDest = content.pageDest || `dist/examples/${slug}.html`;
 
   const markupName = content.markupName || key;
   const markupPath = `src/examples/html/${markupName}.html`;
@@ -493,7 +493,7 @@ tasks.push({
 tasks.push({
   name: "homepage_page",
   src: "src/homepage/homepage_page_template.html.ejs",
-  dest: "build/index.html",
+  dest: "dist/index.html",
   data: () => ({
     homepageTitle,
     homepageMetaDesc,
@@ -536,7 +536,7 @@ tasks.push({
 tasks.push({
   name: "playground_page",
   src: "src/playground/playground_page_template.html.ejs",
-  dest: "build/playground.html",
+  dest: "dist/playground.html",
   data: () => ({
     playgroundTitle,
     playgroundMetaDesc,
@@ -579,7 +579,7 @@ tasks.push({
 tasks.push({
   name: "not_found_page",
   src: "src/404/404_page_template.html.ejs",
-  dest: "build/404.html",
+  dest: "dist/404.html",
   data: () => ({
     cacheBust,
     head_title: notFoundTitle,
@@ -686,7 +686,7 @@ const docsDefinitions = [
 for (const { key, title, metaDesc } of docsDefinitions) {
   const mdPath = path.join("src", "docs", "markdown", `${key}.md`);
   const urlSlug = key.replace(/_/g, "-");
-  const destPath = `build/docs/${urlSlug}.html`;
+  const destPath = `dist/docs/${urlSlug}.html`;
   const canonicalUrl = `https://intl-tel-input.com/docs/${urlSlug}`;
   const fullTitle = `${title} docs - International Telephone Input`;
 

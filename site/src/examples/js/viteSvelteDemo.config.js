@@ -12,8 +12,8 @@ export default defineConfig({
     alias: [
       // The Svelte component source imports from "intl-tel-input" (self-referencing),
       // which can't be resolved from the site build context, so alias to the ESM build.
-      { find: /^intl-tel-input\/intlTelInputWithUtils$/, replacement: path.resolve(projectRoot, "../build/js/intlTelInputWithUtils.mjs") },
-      { find: /^intl-tel-input$/, replacement: path.resolve(projectRoot, "../build/js/intlTelInput.mjs") },
+      { find: /^intl-tel-input\/intlTelInputWithUtils$/, replacement: path.resolve(projectRoot, "../dist/js/intlTelInputWithUtils.mjs") },
+      { find: /^intl-tel-input$/, replacement: path.resolve(projectRoot, "../dist/js/intlTelInput.mjs") },
     ],
   },
   define: {
@@ -21,7 +21,7 @@ export default defineConfig({
     "process.env.NODE_ENV": "'production'", // required for vue files
   },
   build: {
-    outDir: path.resolve(projectRoot, "build/examples/js"),
+    outDir: path.resolve(projectRoot, "dist/examples/js"),
     emptyOutDir: false,
     copyPublicDir: false,
     rollupOptions: {

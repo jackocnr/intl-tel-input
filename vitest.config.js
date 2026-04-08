@@ -7,9 +7,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
-      "intl-tel-input/intlTelInputWithUtils": path.resolve(__dirname, "build/js/intlTelInputWithUtils.mjs"),
-      "intl-tel-input/utils": path.resolve(__dirname, "build/js/utils.js"),
-      "intl-tel-input": path.resolve(__dirname, "build/js/intlTelInput.mjs"),
+      "intl-tel-input/intlTelInputWithUtils": path.resolve(__dirname, "dist/js/intlTelInputWithUtils.mjs"),
+      "intl-tel-input/utils": path.resolve(__dirname, "dist/js/utils.js"),
+      "intl-tel-input": path.resolve(__dirname, "dist/js/intlTelInput.mjs"),
     },
   },
   test: {

@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>International Telephone Input</title>
-    <link rel="stylesheet" href="build/css/intlTelInput.css" />
-    <link rel="stylesheet" href="build/css/demo.css" />
+    <link rel="stylesheet" href="dist/css/intlTelInput.css" />
+    <link rel="stylesheet" href="dist/css/demo.css" />
   </head>
 
   <body>
@@ -17,7 +17,7 @@
       <span id="error-msg" class="hide"></span>
     </form>
 
-    <script src="build/js/intlTelInputWithUtils.js"></script>
+    <script src="dist/js/intlTelInputWithUtils.js"></script>
     <script>
       const input = document.querySelector("#phone");
       const iti = window.intlTelInput(input, {
@@ -47,7 +47,7 @@
         // hiddenInput: () => ({ phone: "phone_full", country: "country_code" }),
         // i18n: { searchPlaceholder: "Custom search" },
         // initialCountry: "us",
-        // loadUtils: () => import("/build/js/utils.js"), // leading slash (and http-server) required for this to work in chrome
+        // loadUtils: () => import("/dist/js/utils.js"), // leading slash (and http-server) required for this to work in chrome
         // nationalMode: false,
         // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
         // placeholderNumberType: "MOBILE",

@@ -5,7 +5,7 @@ import path from "node:path";
 const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
-const file = "build/examples/js/validation_precise.js";
+const file = "dist/examples/js/validation_precise.js";
 const original = fs.readFileSync(file, "utf8");
 const updated = original.replace(/\biti\.isValidNumber\(\)/g, "iti.isValidNumberPrecise()");
 

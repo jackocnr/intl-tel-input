@@ -9,9 +9,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // --experimental-strip-types (stable in node >=22.6).
 const { default: supportedCountries } = await import('../src/js/data.ts');
 
-const buildImgDir = path.join(__dirname, '..', 'build', 'img');
-if (!fs.existsSync(buildImgDir)) {
-  fs.mkdirSync(buildImgDir, { recursive: true });
+const distImgDir = path.join(__dirname, '..', 'dist', 'img');
+if (!fs.existsSync(distImgDir)) {
+  fs.mkdirSync(distImgDir, { recursive: true });
 }
 
 const supportedCountryFilenames = supportedCountries
@@ -62,10 +62,10 @@ const createSprite = async (images, width, height, outputFile, format) => {
 const fileWarning = '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.';
 const flagsPath = 'node_modules/flag-icons/flags/4x3';
 const outputFile = 'src/css/_metadata.scss';
-const spriteFile1xWebP = 'build/img/flags.webp';
-const spriteFile2xWebP = 'build/img/flags@2x.webp';
-const spriteFile1xPNG = 'build/img/flags.png';
-const spriteFile2xPNG = 'build/img/flags@2x.png';
+const spriteFile1xWebP = 'dist/img/flags.webp';
+const spriteFile2xWebP = 'dist/img/flags@2x.webp';
+const spriteFile1xPNG = 'dist/img/flags.png';
+const spriteFile2xPNG = 'dist/img/flags@2x.png';
 
 const totalWidth = supportedCountryFilenames.length * (TARGET_WIDTH + FLAG_MARGIN) - FLAG_MARGIN;
 const maxHeight = TARGET_HEIGHT;

@@ -8,7 +8,7 @@ export default [
   {
     ignores: [
       "**/demo/",
-      "**/build/",
+      "**/dist/",
       "**/third_party/",
       "**/tmp/",
       ".claude/",

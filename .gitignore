@@ -7,11 +7,11 @@
 /.idea/
 *.iml
 .DS_Store
-/build/
-/react/build/
-/svelte/build/
-/vue/build/
-/angular/build/
+/dist/
+/react/dist/
+/svelte/dist/
+/vue/dist/
+/angular/dist/
 /src/css/_metadata.scss
 /*/demo/*/*-bundle.js
 /test-results/

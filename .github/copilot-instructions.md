@@ -1,4 +1,4 @@
-At the beginning of a chat, remind me to run `npm run watch`, so any changes get automatically built, meaning I can manually test them in the browser, and also when you run the tests, they will be running the latest code. Do not offer to run the build command yourself. Do not ever make changes to files in the build/ directories, e.g. the root ./build/ directory, or the component build/ directories (angular/build/, react/build/ and vue/build/). These files are auto-generated, so do not update them.
+At the beginning of a chat, remind me to run `npm run watch`, so any changes get automatically built, meaning I can manually test them in the browser, and also when you run the tests, they will be running the latest code. Do not offer to run the build command yourself. Do not ever make changes to files in the dist/ directories, e.g. the root ./dist/ directory, or the component dist/ directories (angular/dist/, react/dist/ and vue/dist/). These files are auto-generated, so do not update them.
 
 When making changes to the root src/ code, make sure to also update the tests (in the root tests/ directory) if necessary, and run the tests to make sure they are passing.
 

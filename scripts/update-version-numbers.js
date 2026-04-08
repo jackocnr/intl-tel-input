@@ -8,8 +8,8 @@ const replacements = [
       'site/src/docs/markdown/options.md',
       'site/src/docs/markdown/getting_started.md',
     ],
-    match: /intl-tel-input@([0-9.]+)\/build/g,
-    replacement: `intl-tel-input@${version}/build`,
+    match: /intl-tel-input@([0-9.]+)\/dist/g,
+    replacement: `intl-tel-input@${version}/dist`,
   },
   {
     files: ['.github/ISSUE_TEMPLATE/1_bug_report.yml'],

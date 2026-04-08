@@ -22,7 +22,7 @@ const compiler = new Compiler({
   ],
   entry_point: 'goog:i18n.phonenumbers.demo',
   compilation_level: 'ADVANCED_OPTIMIZATIONS',
-  js_output_file: 'build/js/utils.js',
+  js_output_file: 'dist/js/utils.js',
   output_wrapper:
     'var _scope = {};\n(function () {%output%}).call(_scope);\nexport default _scope.utils;',
 });
@@ -48,5 +48,5 @@ child.on('exit', (code) => {
     process.stderr.write(stderr);
     process.exit(code ?? 1);
   }
-  console.log('Built build/js/utils.js');
+  console.log('Built dist/js/utils.js');
 });

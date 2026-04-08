@@ -4,7 +4,7 @@
     "target": "ES2024",
     "lib": ["ES2024", "DOM", "DOM.Iterable"],
     "paths": {
-      "intl-tel-input": ["../build/js/intlTelInput.d.ts"]
+      "intl-tel-input": ["../dist/js/intlTelInput.d.ts"]
     },
     /* Linting */
     "strict": true,
