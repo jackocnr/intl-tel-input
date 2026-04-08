@@ -292,8 +292,8 @@ class IntlTelInput
    * This method must be called in `ngAfterViewInit` or later lifecycle hooks,
    * not in `ngOnInit` or the `constructor`, as the component needs to be fully initialized.
    */
-  getInstance(): Iti | null {
-    return this.iti ?? null;
+  getInstance(): Iti | undefined {
+    return this.iti;
   }
 
   /**
