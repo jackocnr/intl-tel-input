@@ -7,7 +7,9 @@ import IntlTelInput, { intlTelInput } from "../../../../angular/dist/IntlTelInpu
 
 const getErrorMessage = (errorCode: number | null): string => {
   const genericError = "Invalid number";
-  if (errorCode === null) return genericError;
+  if (errorCode === null) {
+    return genericError;
+  }
   const { validationError } = intlTelInput.utils!;
   const errorMap = {
     [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
@@ -63,13 +65,19 @@ export class AppComponent {
   }
 
   get inputValidityClass(): string {
-    if (!this.showValidation) return "";
+    if (!this.showValidation) {
+      return "";
+    }
     return this.phone?.valid ? "is-valid" : "is-invalid";
   }
 
   get invalidMsg(): string | null {
-    if (!this.showValidation || !this.phone || this.phone.valid) return null;
-    if (!this.phone.value) return "Please enter a number";
+    if (!this.showValidation || !this.phone || this.phone.valid) {
+      return null;
+    }
+    if (!this.phone.value) {
+      return "Please enter a number";
+    }
     return getErrorMessage(this.phone.errors?.["invalidPhone"] ?? null);
   }
 

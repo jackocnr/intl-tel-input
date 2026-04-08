@@ -17,7 +17,9 @@ export function buildShareUrlFromState(
   Object.entries(allMeta).forEach(([key, meta]: [string, any]) => {
     const value = state[key];
 
-    if (excludeDefaults && isDefaultForKey(key, meta, value, defaultState)) return;
+    if (excludeDefaults && isDefaultForKey(key, meta, value, defaultState)) {
+      return;
+    }
 
     if (meta.type === "boolean") {
       url.searchParams.set(key, value ? "true" : "false");
@@ -38,6 +40,8 @@ export function buildShareUrlFromState(
 export function updateUrlFromState(state, deps) {
   const nextUrl = buildShareUrlFromState(state, deps, { excludeDefaults: true });
   const currentUrl = new URL(window.location.href);
-  if (currentUrl.search === nextUrl.search) return;
+  if (currentUrl.search === nextUrl.search) {
+    return;
+  }
   window.history.replaceState(null, "", nextUrl);
 }

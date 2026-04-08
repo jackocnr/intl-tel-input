@@ -39,7 +39,9 @@ describe("attachUtils", function() {
         const { iti } = initPlugin({
           intlTelInput,
           options: {
-            loadUtils: () => { const url = "some/other/url/ok"; return import(/* @vite-ignore */ url); },
+            loadUtils: () => {
+              const url = "some/other/url/ok"; return import(/* @vite-ignore */ url);
+            },
           },
         });
         await iti.promise;

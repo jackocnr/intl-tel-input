@@ -14,30 +14,42 @@ document.addEventListener("click", function (e) {
 });
 
 function initTooltips(container: Element | null) {
-  if (!container) return;
-  if (!window.bootstrap || !window.bootstrap.Tooltip) return;
+  if (!container) {
+    return;
+  }
+  if (!window.bootstrap || !window.bootstrap.Tooltip) {
+    return;
+  }
 
   container.querySelectorAll("[data-bs-toggle='tooltip']").forEach((el) => {
     const existing = window.bootstrap.Tooltip.getInstance(el);
-    if (existing) existing.dispose();
+    if (existing) {
+      existing.dispose();
+    }
     new window.bootstrap.Tooltip(el);
   });
 }
 
 function cloneInfoIconSvg(infoIconTemplate: HTMLTemplateElement | null) {
-  if (!infoIconTemplate || !infoIconTemplate.content) return null;
+  if (!infoIconTemplate || !infoIconTemplate.content) {
+    return null;
+  }
   const svg = infoIconTemplate.content.querySelector("svg");
   return svg ? svg.cloneNode(true) : null;
 }
 
 function createInfoIcon(meta: any, infoIconTemplate: HTMLTemplateElement | null) {
   const text = String(meta && meta.tooltip ? meta.tooltip : "").trim();
-  if (!text) return null;
+  if (!text) {
+    return null;
+  }
   const icon = document.createElement("span");
   icon.className = "iti-playground-info";
 
   const svg = cloneInfoIconSvg(infoIconTemplate);
-  if (svg) icon.appendChild(svg);
+  if (svg) {
+    icon.appendChild(svg);
+  }
 
   icon.tabIndex = 0;
   icon.setAttribute("role", "button");
@@ -60,7 +72,9 @@ function buildLabelGroup(meta: any, { labelText, htmlFor, labelClassName, infoIc
   group.appendChild(label);
 
   const infoIcon = createInfoIcon(meta, infoIconTemplate);
-  if (infoIcon) group.appendChild(infoIcon);
+  if (infoIcon) {
+    group.appendChild(infoIcon);
+  }
 
   return group;
 }
@@ -111,8 +125,12 @@ function buildBooleanExampleControl(key: string, meta: any, { idPrefix, dataAttr
 
 function formatMultiDropdownSelection(values: any) {
   const items = Array.isArray(values) ? values : [];
-  if (items.length === 0) return "None";
-  if (items.length <= 2) return items.join(", ");
+  if (items.length === 0) {
+    return "None";
+  }
+  if (items.length <= 2) {
+    return items.join(", ");
+  }
   return `${items.length} selected`;
 }
 
@@ -297,7 +315,9 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
     numberInput.className = "form-control";
     numberInput.id = `${idPrefix}_${key}`;
     numberInput.setAttribute(dataAttr, key);
-    if (meta.placeholder) numberInput.placeholder = meta.placeholder;
+    if (meta.placeholder) {
+      numberInput.placeholder = meta.placeholder;
+    }
     wrapper.appendChild(numberInput);
     return wrapper;
   }
@@ -307,7 +327,9 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
   input.className = "form-control";
   input.id = `${idPrefix}_${key}`;
   input.setAttribute(dataAttr, key);
-  if (meta.placeholder) input.placeholder = meta.placeholder;
+  if (meta.placeholder) {
+    input.placeholder = meta.placeholder;
+  }
 
   wrapper.appendChild(input);
 
@@ -365,7 +387,9 @@ function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: str
 }
 
 export function renderControls(formEl: HTMLElement | null, metaMap: Record<string, any>, { idPrefix, dataAttr, groups = null, templates = {} }: { idPrefix?: string; dataAttr?: string; groups?: any; templates?: any } = {}) {
-  if (!formEl) return { resetGroupKeys: null };
+  if (!formEl) {
+    return { resetGroupKeys: null };
+  }
   formEl.innerHTML = "";
 
   const { infoIconTemplate, optionGroupTemplate } = templates;
@@ -385,7 +409,9 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
 
   groups.forEach(({ title, description, keys, iso2ModalId }: any, index: number) => {
     const groupKeys = (Array.isArray(keys) ? keys : []).filter((k: string) => metaMap[k]);
-    if (groupKeys.length === 0) return;
+    if (groupKeys.length === 0) {
+      return;
+    }
 
     const groupId = `group_${index}`;
     resetGroupKeys.set(groupId, groupKeys);
@@ -422,12 +448,16 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
 
 export function getStateFromForm(formEl: HTMLElement | null, defaults: Record<string, any>, metaMap: Record<string, any>, dataAttr: string) {
   const state = deepClone(defaults);
-  if (!formEl) return state;
+  if (!formEl) {
+    return state;
+  }
 
   Object.entries(metaMap).forEach(([key, meta]: [string, any]) => {
     if (meta.type === "multidropdown") {
       const root = formEl.querySelector(`[data-multidropdown="${key}"]`);
-      if (!root) return;
+      if (!root) {
+        return;
+      }
 
       const checked = [...root.querySelectorAll<HTMLInputElement>("input[type=\"checkbox\"]:checked")].map((el) => el.value);
 
@@ -443,7 +473,9 @@ export function getStateFromForm(formEl: HTMLElement | null, defaults: Record<st
     }
 
     const control = formEl.querySelector<HTMLInputElement>(`[${dataAttr}="${key}"]`);
-    if (!control) return;
+    if (!control) {
+      return;
+    }
 
     if (meta.type === "boolean") {
       state[key] = Boolean(control.checked);
@@ -469,13 +501,17 @@ export function getStateFromForm(formEl: HTMLElement | null, defaults: Record<st
 }
 
 export function setFormFromState(formEl: HTMLElement | null, state: Record<string, any>, metaMap: Record<string, any>, dataAttr: string, { defaultState }: { defaultState?: Record<string, any> } = {}) {
-  if (!formEl) return;
+  if (!formEl) {
+    return;
+  }
 
   Object.entries(metaMap).forEach(([key, meta]) => {
     if (meta.type === "multidropdown") {
       const values = new Set(Array.isArray(state[key]) ? state[key] : []);
       const root = formEl.querySelector(`[data-multidropdown="${key}"]`);
-      if (!root) return;
+      if (!root) {
+        return;
+      }
 
       root.querySelectorAll<HTMLInputElement>("input[type=\"checkbox\"]").forEach((el) => {
         el.checked = values.has(el.value);
@@ -491,7 +527,9 @@ export function setFormFromState(formEl: HTMLElement | null, state: Record<strin
     }
 
     const control = formEl.querySelector<HTMLInputElement>(`[${dataAttr}="${key}"]`);
-    if (!control) return;
+    if (!control) {
+      return;
+    }
 
     if (meta.type === "boolean") {
       control.checked = Boolean(state[key]);

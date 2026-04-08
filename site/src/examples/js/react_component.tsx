@@ -3,9 +3,13 @@ import { createRoot } from "react-dom/client";
 import IntlTelInput, { intlTelInput } from "../../../../react/dist/IntlTelInput.js";
 
 const getErrorMessage = (number: string, errorCode: number | null): string => {
-  if (!number) return "Please enter a number";
+  if (!number) {
+    return "Please enter a number";
+  }
   const genericError = "Invalid number";
-  if (errorCode === null) return genericError;
+  if (errorCode === null) {
+    return genericError;
+  }
   const { validationError } = intlTelInput.utils!;
   const errorMap = {
     [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",

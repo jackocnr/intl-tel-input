@@ -2,7 +2,9 @@ import type { Iti } from "../../../../../dist/js/intlTelInput";
 import { resolveI18nSelection } from "./i18n";
 
 function applyInputAttributes(state: any, telInput: HTMLInputElement) {
-  if (!state || !telInput) return;
+  if (!state || !telInput) {
+    return;
+  }
 
   if (typeof state.value === "string") {
     telInput.value = state.value;
@@ -36,8 +38,12 @@ function destroyInstance(iti: any) {
 }
 
 function detachUtilsIfNeeded(state: any) {
-  if (!state || state.loadUtils) return;
-  if (!window.intlTelInput) return;
+  if (!state || state.loadUtils) {
+    return;
+  }
+  if (!window.intlTelInput) {
+    return;
+  }
   // If utils were previously attached, clear them so disabling loadUtils actually disables
   // formatting/validation, and allow re-attaching if the user re-enables it.
   window.intlTelInput.utils = undefined;
@@ -51,7 +57,9 @@ function toInitOptions(
   const opts: any = {};
 
   Object.keys(defaultInitOptions).forEach((key) => {
-    if (specialOptionKeys.includes(key)) return;
+    if (specialOptionKeys.includes(key)) {
+      return;
+    }
     opts[key] = state[key];
   });
 
@@ -125,7 +133,9 @@ export class ItiPlaygroundController {
 
     const i18n = await resolveI18nSelection(state.i18n, { i18nDirHash: this.i18nDirHash });
 
-    if (nonce !== this.initNonce) return;
+    if (nonce !== this.initNonce) {
+      return;
+    }
 
     // Apply attributes BEFORE initialising the plugin, so it can read the correct DOM state.
     applyInputAttributes(state, this.telInput);

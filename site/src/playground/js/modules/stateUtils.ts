@@ -3,10 +3,16 @@ export function deepClone(value) {
 }
 
 export function parseBooleanParam(value, fallback) {
-  if (value === null || value === undefined) return fallback;
+  if (value === null || value === undefined) {
+    return fallback;
+  }
   const v = String(value).trim().toLowerCase();
-  if (["1", "true", "yes", "y", "on"].includes(v)) return true;
-  if (["0", "false", "no", "n", "off"].includes(v)) return false;
+  if (["1", "true", "yes", "y", "on"].includes(v)) {
+    return true;
+  }
+  if (["0", "false", "no", "n", "off"].includes(v)) {
+    return false;
+  }
   return fallback;
 }
 
@@ -26,10 +32,16 @@ const cleanTextForJson = (text) => {
 };
 
 export function parseJsonParam(value, fallback) {
-  if (value === null || value === undefined) return fallback;
+  if (value === null || value === undefined) {
+    return fallback;
+  }
   const text = String(value).trim();
-  if (!text) return fallback;
-  if (text === "null") return null;
+  if (!text) {
+    return fallback;
+  }
+  if (text === "null") {
+    return null;
+  }
   try {
     const cleaned = cleanTextForJson(text);
     return JSON.parse(cleaned);
@@ -44,7 +56,9 @@ export function parseQueryOverrides(defaults, metaMap, { aliases = {} } = {}) {
 
   Object.keys(metaMap).forEach((key) => {
     const paramKey = params.has(key) ? key : aliases[key];
-    if (!paramKey || !params.has(paramKey)) return;
+    if (!paramKey || !params.has(paramKey)) {
+      return;
+    }
     const raw = params.get(paramKey);
     const meta = metaMap[key];
 
@@ -75,10 +89,18 @@ export function safeStringify(value) {
 }
 
 export function formatJsValue(value) {
-  if (value === undefined) return "undefined";
-  if (value === null) return "null";
-  if (typeof value === "string") return JSON.stringify(value);
-  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  if (value === undefined) {
+    return "undefined";
+  }
+  if (value === null) {
+    return "null";
+  }
+  if (typeof value === "string") {
+    return JSON.stringify(value);
+  }
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
   try {
     return JSON.stringify(value);
   } catch {
@@ -87,7 +109,9 @@ export function formatJsValue(value) {
 }
 
 export function encodeJsonParam(value) {
-  if (value === null) return "";
+  if (value === null) {
+    return "";
+  }
   try {
     return JSON.stringify(value);
   } catch {
@@ -96,14 +120,24 @@ export function encodeJsonParam(value) {
 }
 
 export function deepEqual(a, b) {
-  if (a === b) return true;
-  if (a === null || b === null || a === undefined || b === undefined) return a === b;
-  if (typeof a !== typeof b) return false;
+  if (a === b) {
+    return true;
+  }
+  if (a === null || b === null || a === undefined || b === undefined) {
+    return a === b;
+  }
+  if (typeof a !== typeof b) {
+    return false;
+  }
 
   if (Array.isArray(a) && Array.isArray(b)) {
-    if (a.length !== b.length) return false;
+    if (a.length !== b.length) {
+      return false;
+    }
     for (let i = 0; i < a.length; i += 1) {
-      if (!deepEqual(a[i], b[i])) return false;
+      if (!deepEqual(a[i], b[i])) {
+        return false;
+      }
     }
     return true;
   }
@@ -111,11 +145,17 @@ export function deepEqual(a, b) {
   if (typeof a === "object" && typeof b === "object") {
     const aKeys = Object.keys(a).sort();
     const bKeys = Object.keys(b).sort();
-    if (aKeys.length !== bKeys.length) return false;
+    if (aKeys.length !== bKeys.length) {
+      return false;
+    }
     for (let i = 0; i < aKeys.length; i += 1) {
-      if (aKeys[i] !== bKeys[i]) return false;
+      if (aKeys[i] !== bKeys[i]) {
+        return false;
+      }
       const key = aKeys[i];
-      if (!deepEqual(a[key], b[key])) return false;
+      if (!deepEqual(a[key], b[key])) {
+        return false;
+      }
     }
     return true;
   }
@@ -124,7 +164,9 @@ export function deepEqual(a, b) {
 }
 
 export function normalizeStringArrayAsSet(value) {
-  if (!Array.isArray(value)) return [];
+  if (!Array.isArray(value)) {
+    return [];
+  }
   return value
     .map((v) => String(v))
     .filter(Boolean)

@@ -38,14 +38,18 @@ const KEEP_DROPDOWN_OPEN_PARAM = "keepDropdownOpen";
 const presetsSelect = document.querySelector<HTMLSelectElement>("#playgroundPresetsSelect");
 if (presetsSelect) {
   presetsSelect.addEventListener("change", function (this: HTMLSelectElement) {
-    if (this.value) window.location.href = this.value;
+    if (this.value) {
+      window.location.href = this.value;
+    }
     // reset the selection, as the longer option text doesn't fit in the box
     presetsSelect.selectedIndex = 0;
   });
 }
 
 function flashActionButtonLabel(buttonEl: HTMLButtonElement | null, temporaryLabel: string) {
-  if (!buttonEl) return;
+  if (!buttonEl) {
+    return;
+  }
 
   const labelEl = (buttonEl.querySelector<HTMLElement>("[data-role=\"label\"]") || buttonEl) as HTMLElement;
   const originalLabel = labelEl.textContent;
@@ -105,7 +109,9 @@ function updateKeepDropdownOpenUrlParam(enabled) {
 
   const nextUrl = currentUrl;
   const compareUrl = new URL(window.location.href);
-  if (compareUrl.search === nextUrl.search) return;
+  if (compareUrl.search === nextUrl.search) {
+    return;
+  }
   window.history.replaceState(null, "", nextUrl);
 }
 
@@ -138,13 +144,17 @@ if (shareButton) {
     shareUrl.hash = "";
     const url = shareUrl.toString();
 
-    if (!navigator.clipboard || !window.isSecureContext) return;
+    if (!navigator.clipboard || !window.isSecureContext) {
+      return;
+    }
     navigator.clipboard.writeText(url).then(
       () => {
         labelEl.textContent = "Copied URL!";
         shareButton.disabled = true;
 
-        if (copiedResetTimer) window.clearTimeout(copiedResetTimer);
+        if (copiedResetTimer) {
+          window.clearTimeout(copiedResetTimer);
+        }
         copiedResetTimer = window.setTimeout(() => {
           labelEl.textContent = originalLabel;
           shareButton.disabled = false;
@@ -422,19 +432,31 @@ function findControl(optionKey: string, isMultidropdown?: boolean) {
 function maybeShowHint(config: any) {
   const { optionKey, message, shouldShow } = config;
   const control = findControl(optionKey, config.isMultidropdown);
-  if (!control) return;
+  if (!control) {
+    return;
+  }
 
   if (!config.isMultidropdown) {
     const isCheckbox = control.type === "checkbox";
-    if (isCheckbox && !control.checked && !config.alsoShowOnToggleOff) return;
-    if (!isCheckbox && !control.value.trim()) return;
+    if (isCheckbox && !control.checked && !config.alsoShowOnToggleOff) {
+      return;
+    }
+    if (!isCheckbox && !control.value.trim()) {
+      return;
+    }
   }
 
-  if (!shouldShow()) return;
+  if (!shouldShow()) {
+    return;
+  }
 
   const existing = optionsForm.querySelector(`[data-hint-option='${optionKey}']`);
-  if (existing) existing.remove();
-  if (hintTimers[optionKey]) window.clearTimeout(hintTimers[optionKey]!);
+  if (existing) {
+    existing.remove();
+  }
+  if (hintTimers[optionKey]) {
+    window.clearTimeout(hintTimers[optionKey]!);
+  }
 
   const hint = document.createElement("span");
   hint.className = "iti-playground-hint form-text";
@@ -442,7 +464,9 @@ function maybeShowHint(config: any) {
   hint.textContent = message;
 
   const controlWrapper = control.closest(".iti-playground-control");
-  if (!controlWrapper) return;
+  if (!controlWrapper) {
+    return;
+  }
   controlWrapper.appendChild(hint);
 
   hintTimers[optionKey] = window.setTimeout(() => {
@@ -453,7 +477,9 @@ function maybeShowHint(config: any) {
 
 let reinitTimer: number | null = null;
 function scheduleReinit() {
-  if (reinitTimer) window.clearTimeout(reinitTimer);
+  if (reinitTimer) {
+    window.clearTimeout(reinitTimer);
+  }
   reinitTimer = window.setTimeout(() => {
     const state = getCombinedStateFromControls();
     syncKeepDropdownOpenAvailability(state);
@@ -515,7 +541,9 @@ if (attrsForm) {
 
 function resetOptionGroupToDefaults(groupKeys) {
   const keys = Array.isArray(groupKeys) ? groupKeys : [];
-  if (keys.length === 0) return;
+  if (keys.length === 0) {
+    return;
+  }
 
   const optionsState = getStateFromForm(optionsForm, defaultInitOptions, optionMeta, "data-option");
   keys.forEach((key) => {
@@ -542,13 +570,19 @@ function resetOptionGroupToDefaults(groupKeys) {
 }
 
 optionsForm.addEventListener("click", (event) => {
-  if (!(event.target instanceof Element)) return;
+  if (!(event.target instanceof Element)) {
+    return;
+  }
   const btn = event.target.closest("[data-playground-reset=\"options\"]");
-  if (!btn) return;
+  if (!btn) {
+    return;
+  }
 
   const groupId = btn.getAttribute("data-playground-reset-group");
   const groupKeys = groupId && optionResetGroupKeys ? optionResetGroupKeys.get(groupId) : null;
-  if (!groupKeys) return;
+  if (!groupKeys) {
+    return;
+  }
 
   event.preventDefault();
   resetOptionGroupToDefaults(groupKeys);
@@ -618,7 +652,9 @@ function getSupportedCountries() {
 }
 
 function renderSupportedCountriesTable() {
-  if (!iso2ModalTableBody) return;
+  if (!iso2ModalTableBody) {
+    return;
+  }
   iso2ModalTableBody.innerHTML = "";
 
   const countries = getSupportedCountries();
@@ -662,14 +698,18 @@ function getValidIso2Set() {
 
 function isValidIso2Array(value, validIso2s) {
   const trimmed = value.trim();
-  if (trimmed === "") return null; // empty = neutral, no class
+  if (trimmed === "") {
+    return null;
+  } // empty = neutral, no class
   let parsed;
   try {
     parsed = JSON.parse(trimmed.replace(/'/g, "\""));
   } catch {
     return false;
   }
-  if (!Array.isArray(parsed)) return false;
+  if (!Array.isArray(parsed)) {
+    return false;
+  }
   return parsed.every((item) => typeof item === "string" && validIso2s.has(item.toLowerCase()));
 }
 
@@ -697,9 +737,13 @@ ISO2_TEXTAREA_KEYS.forEach((key) => {
 function validateInitialCountryInput(input, { invalidOnly = false } = {}) {
   const trimmed = input.value.trim();
   input.classList.remove("is-valid", "is-invalid");
-  if (trimmed === "") return; // empty = neutral
+  if (trimmed === "") {
+    return;
+  } // empty = neutral
   if (trimmed.toLowerCase() === "auto" || getValidIso2Set().has(trimmed.toLowerCase())) {
-    if (!invalidOnly) input.classList.add("is-valid");
+    if (!invalidOnly) {
+      input.classList.add("is-valid");
+    }
   } else {
     input.classList.add("is-invalid");
   }
@@ -724,9 +768,13 @@ function isValidLocale(value) {
 function validateCountryNameLocaleInput(input, { invalidOnly = false } = {}) {
   const trimmed = input.value.trim();
   input.classList.remove("is-valid", "is-invalid");
-  if (trimmed === "") return; // empty = neutral
+  if (trimmed === "") {
+    return;
+  } // empty = neutral
   if (isValidLocale(trimmed)) {
-    if (!invalidOnly) input.classList.add("is-valid");
+    if (!invalidOnly) {
+      input.classList.add("is-valid");
+    }
   } else {
     input.classList.add("is-invalid");
   }

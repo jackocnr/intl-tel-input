@@ -12,16 +12,24 @@
 
   const init = () => {
     const liveResults = document.querySelector<HTMLElement>(".iti-live-results");
-    if (!liveResults || !window.intlTelInput || !getItiInstance()) return;
+    if (!liveResults || !window.intlTelInput || !getItiInstance()) {
+      return;
+    }
 
     // Fix live results box width and height to prevent layout shift
     const liveResultsStyle = getComputedStyle(liveResults);
-    if (liveResultsStyle.width) liveResults.style.width = liveResultsStyle.width;
-    if (liveResultsStyle.height) liveResults.style.height = liveResultsStyle.height;
+    if (liveResultsStyle.width) {
+      liveResults.style.width = liveResultsStyle.width;
+    }
+    if (liveResultsStyle.height) {
+      liveResults.style.height = liveResultsStyle.height;
+    }
 
     const setupLiveResults = () => {
       const itiInput = document.querySelector<HTMLInputElement>(".iti__tel-input");
-      if (!itiInput) return;
+      if (!itiInput) {
+        return;
+      }
 
       const emptyMessage = liveResults.textContent || "";
 

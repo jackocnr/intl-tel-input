@@ -36,8 +36,12 @@ function runBuild() {
   const child = spawn("npm", ["run", "build"], { stdio: "inherit" });
   child.on("exit", (code) => {
     running = false;
-    if (code !== 0) console.log(`[watch] FAILED (exit ${code})`);
-    if (queued) runBuild();
+    if (code !== 0) {
+      console.log(`[watch] FAILED (exit ${code})`);
+    }
+    if (queued) {
+      runBuild();
+    }
   });
 }
 

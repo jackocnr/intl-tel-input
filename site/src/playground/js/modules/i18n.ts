@@ -1,6 +1,8 @@
 const i18nDisplayNames = (() => {
   try {
-    if (typeof Intl === "undefined" || !Intl.DisplayNames) return null;
+    if (typeof Intl === "undefined" || !Intl.DisplayNames) {
+      return null;
+    }
     return new Intl.DisplayNames(["en"], { type: "language" });
   } catch {
     return null;
@@ -9,9 +11,13 @@ const i18nDisplayNames = (() => {
 
 function toBcp47LanguageTag(code) {
   const raw = String(code || "").trim();
-  if (!raw) return "";
+  if (!raw) {
+    return "";
+  }
   const parts = raw.split("-");
-  if (parts.length === 1) return parts[0].toLowerCase();
+  if (parts.length === 1) {
+    return parts[0].toLowerCase();
+  }
   if (parts.length >= 2) {
     const [lang, region, ...rest] = parts;
     const normLang = String(lang).toLowerCase();
@@ -23,9 +29,13 @@ function toBcp47LanguageTag(code) {
 
 function getLanguageLabel(code) {
   const rawCode = String(code || "").trim();
-  if (!rawCode) return "";
+  if (!rawCode) {
+    return "";
+  }
   const tag = toBcp47LanguageTag(code);
-  if (!tag) return rawCode;
+  if (!tag) {
+    return rawCode;
+  }
   const label = i18nDisplayNames ? i18nDisplayNames.of(tag) : null;
   return label ? `${label} (${rawCode})` : rawCode;
 }
@@ -41,16 +51,24 @@ export function createI18nOptionLabels(languageCodes) {
 }
 
 export async function resolveI18nSelection(value, { i18nDirHash }) {
-  if (value === null || value === undefined) return null;
+  if (value === null || value === undefined) {
+    return null;
+  }
 
-  if (typeof value === "object") return value;
+  if (typeof value === "object") {
+    return value;
+  }
 
   const code = String(value).trim();
-  if (!code) return null;
+  if (!code) {
+    return null;
+  }
 
   // English is the plugin's built-in default language, so avoid loading an
   // additional i18n pack (and keep the generated init code simpler).
-  if (code.toLowerCase() === "en") return null;
+  if (code.toLowerCase() === "en") {
+    return null;
+  }
 
   try {
     const mod = await import(`/intl-tel-input/js/i18n/${code}/index.js?${i18nDirHash}`);

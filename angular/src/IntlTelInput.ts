@@ -25,7 +25,9 @@ import {
 export { intlTelInput };
 
 const warnInputAttr = (prop: string): void => {
-  console.warn(`intl-tel-input: ignoring inputAttributes.${prop} - see docs for more info.`);
+  console.warn(
+    `intl-tel-input: ignoring inputAttributes.${prop} - see docs for more info.`,
+  );
 };
 
 @Component({
@@ -63,8 +65,7 @@ class IntlTelInput
     OnDestroy,
     OnChanges,
     ControlValueAccessor,
-    Validator
-{
+    Validator {
   @ViewChild("inputRef", { static: true })
   inputRef!: ElementRef<HTMLInputElement>;
 
@@ -138,7 +139,10 @@ class IntlTelInput
   private onValidatorChange: () => void = () => {};
 
   ngAfterViewInit() {
-    this.iti = intlTelInput(this.inputRef.nativeElement, this.buildInitOptions());
+    this.iti = intlTelInput(
+      this.inputRef.nativeElement,
+      this.buildInitOptions(),
+    );
 
     this.inputRef.nativeElement.addEventListener(
       "countrychange",
@@ -157,7 +161,9 @@ class IntlTelInput
 
     // wait for utils to load before calling methods that require it (setNumber, etc.)
     this.iti.promise.then(() => {
-      if (!this.iti?.isActive()) return;
+      if (!this.iti?.isActive()) {
+        return;
+      }
       if (this.initialValue) {
         this.iti.setNumber(this.initialValue);
       }
@@ -221,7 +227,9 @@ class IntlTelInput
   }
 
   handleInput() {
-    if (!this.iti) return;
+    if (!this.iti) {
+      return;
+    }
 
     const num = this.iti.getNumber() ?? "";
     const countryIso = this.iti.getSelectedCountryData()?.iso2 ?? "";
@@ -240,9 +248,10 @@ class IntlTelInput
       hasChanged = true;
     }
 
-    const isValid = (this.usePreciseValidation
-      ? this.iti.isValidNumberPrecise()
-      : this.iti.isValidNumber()) ?? false;
+    const isValid =
+      (this.usePreciseValidation
+        ? this.iti.isValidNumberPrecise()
+        : this.iti.isValidNumber()) ?? false;
 
     const errorCode = isValid ? null : this.iti.getValidationError();
 
@@ -313,7 +322,12 @@ class IntlTelInput
     );
   }
 
-  private ignoredInputAttrs = new Set(["type", "value", "disabled", "readonly"]);
+  private ignoredInputAttrs = new Set([
+    "type",
+    "value",
+    "disabled",
+    "readonly",
+  ]);
 
   private applyInputAttrs(): void {
     const currentKeys = new Set<string>();

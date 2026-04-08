@@ -35,7 +35,9 @@ const addDocOptionsLayoutPlugin = (md) => {
       "angular_component",
       "svelte_component",
     ];
-    if (!applyToDocKeys.includes(env.docKey)) return;
+    if (!applyToDocKeys.includes(env.docKey)) {
+      return;
+    }
 
     const tokens = state.tokens;
     const isHeadingOpen = (token, tag) =>
@@ -71,14 +73,18 @@ const addDocOptionsLayoutPlugin = (md) => {
         const t = tokens[i];
         nextTokens.push(t);
         i += 1;
-        if (t.type === "heading_close" && t.tag === tagName) return;
+        if (t.type === "heading_close" && t.tag === tagName) {
+          return;
+        }
       }
     };
 
     const findHeadingCloseIndex = (startIndex, tagName) => {
       for (let k = startIndex; k < tokens.length; k += 1) {
         const t = tokens[k];
-        if (t.type === "heading_close" && t.tag === tagName) return k;
+        if (t.type === "heading_close" && t.tag === tagName) {
+          return k;
+        }
       }
       return -1;
     };
@@ -86,7 +92,9 @@ const addDocOptionsLayoutPlugin = (md) => {
     const consumeUntilNextHeading = () => {
       while (i < tokens.length) {
         const t = tokens[i];
-        if (isAnyHeadingOpen(t)) return;
+        if (isAnyHeadingOpen(t)) {
+          return;
+        }
         nextTokens.push(t);
         i += 1;
       }
@@ -182,7 +190,9 @@ const resolveBuildPathFromUrl = (urlPath) => {
 
 const hashFile = (filePath) => {
   const resolved = path.resolve(filePath);
-  if (hashCacheByPath.has(resolved)) return hashCacheByPath.get(resolved);
+  if (hashCacheByPath.has(resolved)) {
+    return hashCacheByPath.get(resolved);
+  }
 
   try {
     const content = fs.readFileSync(resolved);
@@ -203,7 +213,9 @@ const hashFile = (filePath) => {
 const hashDirRecursive = (dirPath) => {
   const resolved = path.resolve(dirPath);
   const cacheKey = `${resolved}:dir`;
-  if (hashCacheByPath.has(cacheKey)) return hashCacheByPath.get(cacheKey);
+  if (hashCacheByPath.has(cacheKey)) {
+    return hashCacheByPath.get(cacheKey);
+  }
 
   try {
     const files = [];

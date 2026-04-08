@@ -68,7 +68,9 @@ describe("loadUtils option", () => {
 
     const { iti } = initPlugin({
       intlTelInput,
-      options: { loadUtils: () => { const url = "/some/incorrect/url"; return import(/* @vite-ignore */ url); } },
+      options: { loadUtils: () => {
+        const url = "/some/incorrect/url"; return import(/* @vite-ignore */ url);
+      } },
     });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);

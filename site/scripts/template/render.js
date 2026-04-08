@@ -24,7 +24,9 @@ function renderString(text, data) {
   while (result.indexOf("<%") >= 0) {
     last = result;
     result = template(result, TEMPLATE_OPTIONS)(data);
-    if (result === last) break;
+    if (result === last) {
+      break;
+    }
   }
   return result;
 }

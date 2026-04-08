@@ -468,9 +468,8 @@ export class Iti {
         e?.inputType === INPUT_TYPES.PASTE && inputValue;
       if (isFormattingChar || (isPaste && !strictMode)) {
         userOverrideFormatting = true;
-      }
-      //* If user removes all formatting chars, then reset the override.
-      else if (!REGEX.NON_PLUS_NUMERIC.test(inputValue)) {
+      } else if (!REGEX.NON_PLUS_NUMERIC.test(inputValue)) {
+        //* If user removes all formatting chars, then reset the override.
         userOverrideFormatting = false;
       }
 
@@ -823,16 +822,14 @@ export class Iti {
         e.preventDefault();
         e.stopPropagation();
 
-        //* Up and down to navigate.
         if (e.key === KEYS.ARROW_UP || e.key === KEYS.ARROW_DOWN) {
+          //* Up and down to navigate.
           this.#ui.handleUpDownKey(e.key);
-        }
-        //* Enter to select (but not when IME is composing e.g. Japanese input).
-        else if (e.key === KEYS.ENTER && !e.isComposing) {
+        }  else if (e.key === KEYS.ENTER && !e.isComposing) {
+          //* Enter to select (but not when IME is composing e.g. Japanese input).
           this.#handleEnterKey();
-        }
-        //* Esc to close
-        else if (e.key === KEYS.ESC) {
+        } else if (e.key === KEYS.ESC) {
+          //* Esc to close
           this.#closeDropdown();
           // Accessibility: re-focus the select country button (this is how native <select> elements behave)
           this.#ui.selectedCountry!.focus();
@@ -1282,7 +1279,9 @@ export class Iti {
   //* Return only the public-facing subset of the selected country data.
   #getPublicCountryData(): SelectedCountryData {
     const d = this.#selectedCountryData;
-    if (!d) return null;
+    if (!d) {
+      return null;
+    }
     const { iso2, dialCode, name } = d;
     return { iso2, dialCode, name };
   }

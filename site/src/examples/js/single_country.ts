@@ -13,7 +13,9 @@ const iti = window.intlTelInput(input, {
 });
 
 const getErrorMessage = (number: string, errorCode: number) => {
-  if (!number) return "Please enter a number";
+  if (!number) {
+    return "Please enter a number";
+  }
   const genericError = "Invalid number";
   const { validationError } = window.intlTelInput.utils!;
   const errorMap = {

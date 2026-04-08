@@ -6,16 +6,24 @@ export function renderInitCodeFromState(
   initCodeEl: HTMLElement | null,
   { defaultInitOptions, optionMeta, defaultState, specialOptionKeys }: { defaultInitOptions: Record<string, any>; optionMeta: Record<string, any>; defaultState: Record<string, any>; specialOptionKeys: string[] },
 ) {
-  if (!initCodeEl) return;
+  if (!initCodeEl) {
+    return;
+  }
 
   const nonDefaultOptionEntries: [string, any][] = [];
 
   Object.keys(defaultInitOptions).forEach((key) => {
-    if (specialOptionKeys.includes(key)) return;
+    if (specialOptionKeys.includes(key)) {
+      return;
+    }
     const meta = optionMeta[key];
-    if (!meta) return;
+    if (!meta) {
+      return;
+    }
     const value = state[key];
-    if (isDefaultForKey(key, meta, value, defaultState)) return;
+    if (isDefaultForKey(key, meta, value, defaultState)) {
+      return;
+    }
     nonDefaultOptionEntries.push([key, value]);
   });
 

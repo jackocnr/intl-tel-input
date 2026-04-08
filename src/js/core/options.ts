@@ -95,7 +95,9 @@ const isFn = (val: unknown): val is (...args: unknown[]) => unknown =>
   typeof val === "function";
 
 const isElLike = (val: unknown): val is HTMLElement => {
-  if (!val || typeof val !== "object") return false;
+  if (!val || typeof val !== "object") {
+    return false;
+  }
   const v = val as any;
   return v.nodeType === 1 && typeof v.tagName === "string" && typeof v.appendChild === "function";
 };

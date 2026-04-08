@@ -36,9 +36,13 @@ const md = createMarkdownRenderer();
 // Local helper used by the localisation doc page only.
 const toBcp47LanguageTag = (code) => {
   const raw = String(code || "").trim();
-  if (!raw) return "";
+  if (!raw) {
+    return "";
+  }
   const parts = raw.split("-");
-  if (parts.length === 1) return parts[0].toLowerCase();
+  if (parts.length === 1) {
+    return parts[0].toLowerCase();
+  }
   const [lang, region, ...rest] = parts;
   const normLang = String(lang).toLowerCase();
   const normRegion =
@@ -60,7 +64,9 @@ const createI18nLanguageListText = (languageCodes) => {
   const codes = Array.isArray(languageCodes)
     ? languageCodes.filter(Boolean)
     : [];
-  if (!codes.length) return "_No language modules found._";
+  if (!codes.length) {
+    return "_No language modules found._";
+  }
 
   let displayNames = null;
   try {
@@ -782,5 +788,7 @@ if (taskFilter) {
     runTask(t);
   }
 } else {
-  for (const t of tasks) runTask(t);
+  for (const t of tasks) {
+    runTask(t);
+  }
 }

@@ -49,6 +49,10 @@ export default [
         ignoreRestSiblings: true,
       }],
       "@typescript-eslint/no-explicit-any": "off",
+      curly: ["error", "all"],
+      // allowSingleLine:false prevents this: `if (condition) {return;}`
+      "brace-style": ["error", "1tbs", { allowSingleLine: false }],
+      "no-trailing-spaces": "error",
     },
   },
   {

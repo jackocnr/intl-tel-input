@@ -6,7 +6,9 @@ function httpsGet(url) {
   return new Promise((resolve, reject) => {
     https.get(url, { headers: { "User-Agent": "intl-tel-input-build" } }, (res) => {
       let data = "";
-      res.on("data", (chunk) => { data += chunk; });
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
       res.on("end", () => {
         if (res.statusCode !== 200) {
           reject(new Error(`HTTP ${res.statusCode} for ${url}`));
