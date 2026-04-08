@@ -8,13 +8,18 @@ const replacements = [
       'site/src/docs/markdown/options.md',
       'site/src/docs/markdown/getting_started.md',
     ],
-    match: /intl-tel-input@([0-9.]+)\/dist/g,
+    match: /intl-tel-input@[0-9]+\.[0-9]+\.[0-9]+\/dist/g,
     replacement: `intl-tel-input@${version}/dist`,
   },
   {
     files: ['.github/ISSUE_TEMPLATE/1_bug_report.yml'],
     match: /the latest version \(v[0-9]+\.[0-9]+\.[0-9]+\)/,
     replacement: `the latest version (v${version})`,
+  },
+  {
+    files: ['composer.json'],
+    match: /"version": "[0-9]+\.[0-9]+\.[0-9]+"/,
+    replacement: `"version": "${version}"`,
   },
   {
     // version-bump already updates the top-level version in package-lock.json,
