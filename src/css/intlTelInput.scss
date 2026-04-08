@@ -12,8 +12,9 @@
   --iti-icon-color: #555;
   // horizontal spacing around the flag, country name, search icon, clear icon, check icon etc
   --iti-spacer-horizontal: 10px;
-  --iti-flag-height: #{$flag-height};
   --iti-flag-width: #{$flag-width};
+  //* Flags are a 4:3 aspect ratio, so height is derived from width — consumers only need to override --iti-flag-width to scale.
+  --iti-flag-height: calc(var(--iti-flag-width) * 3 / 4);
   //* Separate height for the globe icon, as it's much thinner than the flags, so nice to have it a bit taller. This is also re-used for the search icon.
   --iti-globe-icon-size: 17px;
   //* Separate height for the search clear icon, which looks too big if it's the same as the others.
@@ -391,8 +392,9 @@
 }
 
 .iti__flag {
-  //* Start with an offset to hide any flags. This is useful to show an empty state (with correct dimensions) while geoIpLookup is loading.
-  --iti-flag-offset: 100px;
+  //* Unit-less multiple of --iti-flag-width. Default is a large positive value to hide all flags
+  //* (useful for the empty state shown while geoIpLookup is resolving).
+  --iti-flag-offset: 100;
   height: var(--iti-flag-height);
   width: var(--iti-flag-width);
   border-radius: 1px;
@@ -402,8 +404,12 @@
     var(--iti-path-flags-2x) 2x
   );
   background-repeat: no-repeat;
-  background-position: var(--iti-flag-offset) 0;
-  background-size: var(--iti-flag-sprite-width) var(--iti-flag-sprite-height);
+  //* Offset and sprite size are expressed as multiples of --iti-flag-width / --iti-flag-height
+  //* so consumers can scale the flags by overriding just those two vars.
+  background-position: calc(var(--iti-flag-offset) * var(--iti-flag-width)) 0;
+  background-size:
+    calc(var(--iti-flag-sprite-width) * var(--iti-flag-width))
+    calc(var(--iti-flag-sprite-height) * var(--iti-flag-height));
 }
 
 //* Loading state (used while geoIpLookup is resolving auto country).

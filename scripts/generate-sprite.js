@@ -113,8 +113,10 @@ for (const filename of supportedCountryFilenames) {
   scaledImages1x.push({ buffer: pngBuffer1x, offset: currentOffset });
   scaledImages2x.push({ buffer: pngBuffer2x, offset: currentOffset * 2 });
 
+  //* Unit-less multiple of --iti-flag-width, so consumers can scale flags by overriding that one var.
+  const offsetMultiplier = currentOffset / TARGET_WIDTH;
   flagsMetadata += `  ${countryCode}: (\n`;
-  flagsMetadata += `    offset: ${-currentOffset}px,\n`;
+  flagsMetadata += `    offset: ${-offsetMultiplier},\n`;
   flagsMetadata += '  ),\n';
 
   currentOffset += TARGET_WIDTH + FLAG_MARGIN;
@@ -130,12 +132,14 @@ await createSprite(scaledImages2x, totalWidth * 2, maxHeight * 2, spriteFile2xPN
 console.log(`2x combined images saved as ${spriteFile2xWebP} and ${spriteFile2xPNG}`);
 
 let outputFileContent = fileWarning + '\n\n';
+//* Sprite dimensions expressed as unit-less multiples of --iti-flag-width / --iti-flag-height,
+//* so the whole sprite scales when the consumer overrides those vars.
 outputFileContent += '$flags-sprite-1x: (\n';
-outputFileContent += `  height: ${maxHeight}px,\n`;
-outputFileContent += `  width: ${totalWidth}px,\n`;
+outputFileContent += `  height: 1,\n`;
+outputFileContent += `  width: ${supportedCountryFilenames.length},\n`;
 outputFileContent += ');\n\n';
+//* Flag height is derived from width via the 4:3 aspect ratio, so no $flag-height export.
 outputFileContent += `$flag-width: ${TARGET_WIDTH}px;\n\n`;
-outputFileContent += `$flag-height: ${TARGET_HEIGHT}px;\n\n`;
 outputFileContent += flagsMetadata + '\n\n';
 outputFileContent += fileWarning + '\n';
 
