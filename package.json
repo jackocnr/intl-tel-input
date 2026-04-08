@@ -12,7 +12,7 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:linux": "./scripts/playwright-linux-docker.sh",
     "test:e2e:linux:update": "./scripts/playwright-linux-docker.sh --update-snapshots",
-    "lint:js": "eslint .",
+    "lint:js": "eslint . --cache --cache-location node_modules/.cache/eslint/",
     "watch": "node scripts/watch.js",
     "clean:build:css": "rimraf build/css/*",
     "clean:build:img": "rimraf build/img/*",

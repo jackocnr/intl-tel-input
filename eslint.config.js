@@ -23,10 +23,6 @@ export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    plugins: {
-      react,
-      "react-hooks": reactHooks,
-    },
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -38,14 +34,7 @@ export default [
         i18n: true,
       },
     },
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
     rules: {
-      ...react.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
       semi: ["error", "always"],
       "comma-dangle": ["error", "always-multiline"],
       quotes: ["error", "double", { allowTemplateLiterals: true }],
@@ -60,6 +49,22 @@ export default [
         ignoreRestSiblings: true,
       }],
       "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+  {
+    files: ["react/**/*.{ts,tsx,js,jsx}"],
+    plugins: {
+      react,
+      "react-hooks": reactHooks,
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    rules: {
+      ...react.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
     },
   },
   {
