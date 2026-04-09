@@ -27,6 +27,7 @@ export default class UI {
   #searchResultsA11yText?: HTMLElement;
   #dropdownForContainer?: HTMLElement;
   #selectedItem: HTMLElement | null = null;
+  #viewportHandler: (() => void) | null = null;
 
   // public
   public telInput!: HTMLInputElement;
@@ -750,6 +751,19 @@ export default class UI {
       }
     }
 
+    // When using fullscreen popup, listen for virtual keyboard show/hide via visualViewport
+    // so the popup resizes to stay above the keyboard.
+    if (this.#options.useFullscreenPopup && this.#dropdownForContainer && window.visualViewport) {
+      this.#viewportHandler = (): void => {
+        this.#adjustFullscreenPopupToViewport();
+        // Re-scroll to highlighted item after keyboard resize
+        if (this.highlightedItem) {
+          this.scrollCountryListToItem(this.highlightedItem);
+        }
+      };
+      window.visualViewport.addEventListener("resize", this.#viewportHandler);
+    }
+
     // Update the arrow.
     this.#dropdownArrow!.classList.add(CLASSES.ARROW_UP);
   }
@@ -775,6 +789,12 @@ export default class UI {
 
     // Update the arrow.
     this.#dropdownArrow!.classList.remove(CLASSES.ARROW_UP);
+
+    // Clean up visualViewport listeners
+    if (this.#viewportHandler && window.visualViewport) {
+      window.visualViewport.removeEventListener("resize", this.#viewportHandler);
+      this.#viewportHandler = null;
+    }
 
     // Remove dropdown from container if using external container
     if (dropdownContainer) {
@@ -827,6 +847,17 @@ export default class UI {
     }
 
     dropdownContainer!.appendChild(this.#dropdownForContainer!);
+  }
+
+  // Adjust the fullscreen popup dimensions to match the visual viewport,
+  // so it stays above the virtual keyboard on mobile devices.
+  #adjustFullscreenPopupToViewport(): void {
+    const vv = window.visualViewport;
+    if (!vv || !this.#dropdownForContainer) {
+      return;
+    }
+    const virtualKeyboardHeight = window.innerHeight - vv.height;
+    this.#dropdownForContainer.style.bottom = `${virtualKeyboardHeight}px`;
   }
 
   // UI: Whether the dropdown is currently closed (hidden).
