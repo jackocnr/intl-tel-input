@@ -739,16 +739,14 @@ export default class UI {
     this.#dropdownContent!.classList.remove(CLASSES.HIDE);
     this.selectedCountry!.setAttribute(ARIA.EXPANDED, "true");
 
-    //* When countrySearch enabled, highlight the selected country (or fall back to the first item) and scroll it into view.
-    if (countrySearch) {
-      const itemToHighlight = this.#selectedItem ?? this.countryList!.firstElementChild as HTMLElement;
-      if (itemToHighlight) {
-        this.highlightListItem(itemToHighlight, false);
-        this.scrollCountryListToItem(itemToHighlight);
-      }
-      if (!dropdownAlwaysOpen) {
-        this.searchInput!.focus();
-      }
+    //* Highlight the selected country (or fall back to the first item) and scroll it into view.
+    const itemToHighlight = this.#selectedItem ?? this.countryList!.firstElementChild as HTMLElement;
+    if (itemToHighlight) {
+      this.highlightListItem(itemToHighlight, false);
+      this.scrollCountryListToItem(itemToHighlight);
+    }
+    if (countrySearch && !dropdownAlwaysOpen) {
+      this.searchInput!.focus();
     }
 
     // When using fullscreen popup, listen for virtual keyboard show/hide via visualViewport
