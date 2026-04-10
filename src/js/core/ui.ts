@@ -92,6 +92,7 @@ export default class UI {
     this.#maybeBuildCountryContainer(wrapper);
     wrapper.appendChild(this.telInput);
 
+    this.#maybeEnsureDropdownWidthSet();
     this.#maybeUpdateInputPaddingAndReveal();
     this.#maybeBuildHiddenInputs(wrapper);
   }
@@ -195,11 +196,11 @@ export default class UI {
   }
 
   #maybeEnsureDropdownWidthSet(): void {
-    const { fixDropdownWidth } = this.#options;
+    const { fixDropdownWidth, allowDropdown } = this.#options;
 
     // Note: fixDropdownWidth is always false if useFullscreenPopup is true
     // don't re-set it if it's already set
-    if (!fixDropdownWidth || this.#dropdownContent!.style.width) {
+    if (!allowDropdown || !fixDropdownWidth || this.#dropdownContent!.style.width) {
       return;
     }
 
@@ -252,8 +253,6 @@ export default class UI {
     }
 
     if (!useFullscreenPopup) {
-      // inline dropdown
-      this.#maybeEnsureDropdownWidthSet();
       // capture the dropdown height for later uses: (1) on dropdown open: decide whether to position it above or below the input, and (2) when countrySearch enabled, fix the dropdown height to prevent it jumping around when filtering the country list.
       this.#inlineDropdownHeight = this.#getHiddenInlineDropdownHeight();
       // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down. (NOTE: the country list just has a max-height as it may only be needed to show a few items e.g. from onlyCountries, or from filtering with a search query)
