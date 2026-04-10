@@ -2,7 +2,8 @@
 import type { I18n } from "./types";
 
 const interfaceTranslations: I18n = {
-  selectedCountryAriaLabel: "Ndrysho vendin, i zgjedhur ${countryName} (${dialCode})",
+  selectedCountryAriaLabel:
+    "Ndrysho vendin, i zgjedhur ${countryName} (${dialCode})",
   noCountrySelected: "Zgjidh vendin",
   countryListAriaLabel: "Lista e vendeve",
   searchPlaceholder: "Kërko",

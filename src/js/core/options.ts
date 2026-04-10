@@ -1,4 +1,9 @@
-import { INITIAL_COUNTRY, PLACEHOLDER_MODES, NUMBER_TYPE_SET, LAYOUT } from "../constants";
+import {
+  INITIAL_COUNTRY,
+  PLACEHOLDER_MODES,
+  NUMBER_TYPE_SET,
+  LAYOUT,
+} from "../constants";
 import defaultEnglishStrings from "../i18n/en";
 import { isIso2, type Iso2 } from "../data";
 import type { AllOptions, SomeOptions } from "../types/public-api";
@@ -9,7 +14,8 @@ const mq = (q: string): boolean =>
   typeof window.matchMedia === "function" &&
   window.matchMedia(q).matches;
 
-const isNarrowViewport = () => mq(`(max-width: ${LAYOUT.NARROW_VIEWPORT_WIDTH}px)`);
+const isNarrowViewport = () =>
+  mq(`(max-width: ${LAYOUT.NARROW_VIEWPORT_WIDTH}px)`);
 
 //* Helper to decide whether to use fullscreen popup by default
 const computeDefaultUseFullscreenPopup = (): boolean => {
@@ -17,10 +23,7 @@ const computeDefaultUseFullscreenPopup = (): boolean => {
     const isShortViewport = mq("(max-height: 600px)");
     const isCoarsePointer = mq("(pointer: coarse)");
     /* Heuristic rationale: If narrow width OR (coarse pointer with constrained height) we  prefer fullscreen for usability. Coarse pointer usually implies touch (phones/tablets, some hybrids) where larger touch targets help (and virtual keyboards may be used, which consume more vertical space). */
-    return (
-      isNarrowViewport() ||
-      (isCoarsePointer && isShortViewport)
-    );
+    return isNarrowViewport() || (isCoarsePointer && isShortViewport);
   }
   return false;
 };
@@ -99,7 +102,11 @@ const isElLike = (val: unknown): val is HTMLElement => {
     return false;
   }
   const v = val as any;
-  return v.nodeType === 1 && typeof v.tagName === "string" && typeof v.appendChild === "function";
+  return (
+    v.nodeType === 1 &&
+    typeof v.tagName === "string" &&
+    typeof v.appendChild === "function"
+  );
 };
 
 const placeholderModeSet = new Set<string>(Object.values(PLACEHOLDER_MODES));
@@ -108,8 +115,14 @@ const warn = (message: string): void => {
   console.warn(`[intl-tel-input] ${message}`);
 };
 
-const warnOption = (optionName: string, expectedType: string, actualValue: unknown): void => {
-  warn(`Option '${optionName}' must be ${expectedType}; got ${toString(actualValue)}. Ignoring.`);
+const warnOption = (
+  optionName: string,
+  expectedType: string,
+  actualValue: unknown,
+): void => {
+  warn(
+    `Option '${optionName}' must be ${expectedType}; got ${toString(actualValue)}. Ignoring.`,
+  );
 };
 
 const hasOwn = (obj: object, key: string): boolean =>
@@ -259,8 +272,12 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
           break;
         }
         const lower = value.toLowerCase();
-        if (lower && (lower !== INITIAL_COUNTRY.AUTO && !isIso2(lower))) {
-          warnOption("initialCountry", "a valid ISO2 country code or 'auto'", value);
+        if (lower && lower !== INITIAL_COUNTRY.AUTO && !isIso2(lower)) {
+          warnOption(
+            "initialCountry",
+            "a valid ISO2 country code or 'auto'",
+            value,
+          );
           break;
         }
         validatedOptions[key] = value;
@@ -279,14 +296,22 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       case "allowedNumberTypes":
         if (value !== null) {
           if (!Array.isArray(value)) {
-            warnOption("allowedNumberTypes", "an array of number types or null", value);
+            warnOption(
+              "allowedNumberTypes",
+              "an array of number types or null",
+              value,
+            );
             break;
           }
           let allValid = true;
           for (const v of value as unknown[]) {
             if (typeof v !== "string" || !NUMBER_TYPE_SET.has(v)) {
               const validTypes = Array.from(NUMBER_TYPE_SET).join(", ");
-              warnOption("allowedNumberTypes", `an array of valid number types (${validTypes})`, v);
+              warnOption(
+                "allowedNumberTypes",
+                `an array of valid number types (${validTypes})`,
+                v,
+              );
               allValid = false;
               break;
             }

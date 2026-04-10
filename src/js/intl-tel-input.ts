@@ -1,5 +1,10 @@
 import allCountries, { type Country, type Iso2, isIso2 } from "./data";
-import { defaults, normaliseOptions, applyOptionSideEffects, validateOptions } from "./core/options";
+import {
+  defaults,
+  normaliseOptions,
+  applyOptionSideEffects,
+  validateOptions,
+} from "./core/options";
 import type {
   UtilsLoader,
   ItiUtils,
@@ -20,10 +25,7 @@ import {
   generateCountryNames,
 } from "./data/country-data";
 import { hasRegionlessDialCode } from "./data/intl-regionless";
-import {
-  beforeSetNumber,
-  formatNumberAsYouType,
-} from "./format/formatting";
+import { beforeSetNumber, formatNumberAsYouType } from "./format/formatting";
 import { translateCursorPosition } from "./format/caret";
 import { isRegionlessNanp } from "./data/nanp-regionless";
 import type { ItiEventMap } from "./types/events";
@@ -44,7 +46,11 @@ import {
 } from "./constants";
 import { Numerals } from "./core/numerals";
 import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap";
-export type { AllOptions, SomeOptions, SelectedCountryData } from "./types/public-api";
+export type {
+  AllOptions,
+  SomeOptions,
+  SelectedCountryData,
+} from "./types/public-api";
 
 declare global {
   interface HTMLInputElement {
@@ -57,12 +63,18 @@ let id = 0;
 
 const ensureUtils = (methodName: string): void => {
   if (!intlTelInput.utils) {
-    throw new Error(`intlTelInput.utils is required for ${methodName}(). See: https://intl-tel-input.com/docs/utils`);
+    throw new Error(
+      `intlTelInput.utils is required for ${methodName}(). See: https://intl-tel-input.com/docs/utils`,
+    );
   }
 };
 
 //* Mimics Promise.withResolvers (ES2024) for older runtimes (Safari < 17.4, Node < 21).
-type Deferred<T> = { promise: Promise<T>; resolve: (value: T) => void; reject: (reason?: unknown) => void };
+type Deferred<T> = {
+  promise: Promise<T>;
+  resolve: (value: T) => void;
+  reject: (reason?: unknown) => void;
+};
 const createDeferred = <T>(): Deferred<T> => {
   let resolve!: (value: T) => void;
   let reject!: (reason?: unknown) => void;
@@ -147,7 +159,8 @@ export class Iti {
 
   #createInitPromises(options: AllOptions): Promise<void> {
     const { initialCountry, geoIpLookup, loadUtils } = options;
-    const needsAutoCountryPromise = initialCountry === INITIAL_COUNTRY.AUTO && Boolean(geoIpLookup);
+    const needsAutoCountryPromise =
+      initialCountry === INITIAL_COUNTRY.AUTO && Boolean(geoIpLookup);
     const needsUtilsScriptPromise = Boolean(loadUtils) && !intlTelInput.utils;
 
     //* These promises get resolved when their individual requests complete.
@@ -274,12 +287,17 @@ export class Iti {
         this.#ui.hiddenInputPhone.value = this.getNumber();
       }
       if (this.#ui.hiddenInputCountry) {
-        this.#ui.hiddenInputCountry.value = this.#selectedCountryData?.iso2 || "";
+        this.#ui.hiddenInputCountry.value =
+          this.#selectedCountryData?.iso2 || "";
       }
     };
-    this.#ui.telInput.form?.addEventListener("submit", handleHiddenInputSubmit, {
-      signal: this.#abortController!.signal,
-    });
+    this.#ui.telInput.form?.addEventListener(
+      "submit",
+      handleHiddenInputSubmit,
+      {
+        signal: this.#abortController!.signal,
+      },
+    );
   }
 
   //* initialise the dropdown listeners.
@@ -321,7 +339,12 @@ export class Iti {
 
     //* Open dropdown if selected country is focused and they press up/down/space/enter.
     const handleCountryContainerKeydown = (e: KeyboardEvent): void => {
-      const allowedKeys = [KEYS.ARROW_UP, KEYS.ARROW_DOWN, KEYS.SPACE, KEYS.ENTER] as string[];
+      const allowedKeys = [
+        KEYS.ARROW_UP,
+        KEYS.ARROW_DOWN,
+        KEYS.SPACE,
+        KEYS.ENTER,
+      ] as string[];
 
       if (this.#ui.isDropdownClosed() && allowedKeys.includes(e.key)) {
         //* Prevent form from being submitted if "ENTER" was pressed.
@@ -372,7 +395,7 @@ export class Iti {
 
     //* (2) AUTO COUNTRY
     const isAutoCountry =
-    initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
+      initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
     if (!isAutoCountry) {
       return;
     }
@@ -482,8 +505,7 @@ export class Iti {
 
       //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
       const isFormattingChar = e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
-      const isPaste =
-        e?.inputType === INPUT_TYPES.PASTE && inputValue;
+      const isPaste = e?.inputType === INPUT_TYPES.PASTE && inputValue;
       if (isFormattingChar || (isPaste && !strictMode)) {
         userOverrideFormatting = true;
       } else if (!REGEX.NON_PLUS_NUMERIC.test(inputValue)) {
@@ -491,17 +513,21 @@ export class Iti {
         userOverrideFormatting = false;
       }
 
-      const isSetNumber = e?.detail && (e.detail as unknown as Record<string, unknown>)["isSetNumber"];
+      const isSetNumber =
+        e?.detail &&
+        (e.detail as unknown as Record<string, unknown>)["isSetNumber"];
       // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets - when these numbers contain spaces, they're treated as words, and so they get reversed in a way that breaks our calculations
       const isAscii = this.#numerals.isAscii();
       //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
-      if (formatAsYouType && !userOverrideFormatting && !isSetNumber && isAscii) {
+      if (
+        formatAsYouType &&
+        !userOverrideFormatting &&
+        !isSetNumber &&
+        isAscii
+      ) {
         //* Maintain caret position after reformatting.
         const currentCaretPos = this.#ui.telInput.selectionStart || 0;
-        const valueBeforeCaret = inputValue.substring(
-          0,
-          currentCaretPos,
-        );
+        const valueBeforeCaret = inputValue.substring(0, currentCaretPos);
         const relevantCharsBeforeCaret = valueBeforeCaret.replace(
           REGEX.NON_PLUS_NUMERIC_GLOBAL,
           "",
@@ -565,23 +591,12 @@ export class Iti {
     //* Note that this fires BEFORE the input is updated.
     const handleKeydownEvent = (e: KeyboardEvent): void => {
       //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
-      if (
-        !e.key ||
-        e.key.length !== 1 ||
-        e.altKey ||
-        e.ctrlKey ||
-        e.metaKey
-      ) {
+      if (!e.key || e.key.length !== 1 || e.altKey || e.ctrlKey || e.metaKey) {
         return;
       }
 
       //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
-      if (
-        separateDialCode &&
-        allowDropdown &&
-        countrySearch &&
-        e.key === "+"
-      ) {
+      if (separateDialCode && allowDropdown && countrySearch && e.key === "+") {
         e.preventDefault();
         this.#openDropdownWithPlus();
         return;
@@ -851,7 +866,7 @@ export class Iti {
         if (e.key === KEYS.ARROW_UP || e.key === KEYS.ARROW_DOWN) {
           //* Up and down to navigate.
           this.#ui.handleUpDownKey(e.key);
-        }  else if (e.key === KEYS.ENTER && !e.isComposing) {
+        } else if (e.key === KEYS.ENTER && !e.isComposing) {
           //* Enter to select (but not when IME is composing e.g. Japanese input).
           this.#handleEnterKey();
         } else if (e.key === KEYS.ESC) {
@@ -864,7 +879,10 @@ export class Iti {
 
       //* When countrySearch disabled: Listen for alpha chars to perform hidden search.
       //* Regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866.
-      if (!this.#options.countrySearch && REGEX.HIDDEN_SEARCH_CHAR.test(e.key)) {
+      if (
+        !this.#options.countrySearch &&
+        REGEX.HIDDEN_SEARCH_CHAR.test(e.key)
+      ) {
         e.stopPropagation();
         //* Jump to countries that start with the query string.
         if (queryTimer) {
@@ -922,11 +940,7 @@ export class Iti {
   #updateValFromNumber(fullNumber: string): void {
     const { formatOnDisplay, nationalMode, separateDialCode } = this.#options;
     let number = fullNumber;
-    if (
-      formatOnDisplay &&
-      intlTelInput.utils &&
-      this.#selectedCountryData
-    ) {
+    if (formatOnDisplay && intlTelInput.utils && this.#selectedCountryData) {
       const isRegionless = hasRegionlessDialCode(fullNumber);
       const useNational =
         (nationalMode && !isRegionless) ||
@@ -1059,7 +1073,11 @@ export class Iti {
       }
       //* Invalid dial code (or prefix of a different country), so empty.
       return "";
-    } else if ((!number || number === "+") && !selectedIso2 && this.#defaultCountry) {
+    } else if (
+      (!number || number === "+") &&
+      !selectedIso2 &&
+      this.#defaultCountry
+    ) {
       //* If no selected country, and user either clears the input, or just types a plus, then show default.
       return this.#defaultCountry;
     }
@@ -1144,7 +1162,8 @@ export class Iti {
     } = this.#options;
     const shouldSetPlaceholder =
       autoPlaceholder === PLACEHOLDER_MODES.AGGRESSIVE ||
-      (!this.#ui.hadInitialPlaceholder && autoPlaceholder === PLACEHOLDER_MODES.POLITE);
+      (!this.#ui.hadInitialPlaceholder &&
+        autoPlaceholder === PLACEHOLDER_MODES.POLITE);
 
     if (!intlTelInput.utils || !shouldSetPlaceholder) {
       return;
@@ -1194,7 +1213,10 @@ export class Iti {
   //* Close the dropdown and unbind any listeners.
   #closeDropdown(isDestroy?: boolean): void {
     // we call closeDropdown in places where it might not even be open e.g. in destroy()
-    if (this.#ui.isDropdownClosed() || (this.#options.dropdownAlwaysOpen && !isDestroy)) {
+    if (
+      this.#ui.isDropdownClosed() ||
+      (this.#options.dropdownAlwaysOpen && !isDestroy)
+    ) {
       return;
     }
 
@@ -1280,7 +1302,9 @@ export class Iti {
 
   //* Get the input val, adding the dial code if separateDialCode is enabled.
   #getFullNumber(overrideVal?: string): string {
-    const val = overrideVal ? this.#numerals.normalise(overrideVal) : this.#getTelInputValue();
+    const val = overrideVal
+      ? this.#numerals.normalise(overrideVal)
+      : this.#getTelInputValue();
     const dialCode = this.#selectedCountryData?.dialCode;
     let prefix;
     const numericVal = getNumeric(val);
@@ -1514,7 +1538,10 @@ export class Iti {
       // custom validation for UK mobile numbers - useful when allowedNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
       if (dialCode === UK.DIAL_CODE) {
         // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
-        if (coreNumber[0] === UK.MOBILE_PREFIX && coreNumber.length !== UK.MOBILE_CORE_LENGTH) {
+        if (
+          coreNumber[0] === UK.MOBILE_PREFIX &&
+          coreNumber.length !== UK.MOBILE_CORE_LENGTH
+        ) {
           return false;
         }
       }
@@ -1526,7 +1553,9 @@ export class Iti {
       // Skip this check for phonewords (alpha chars), since getNumeric would undercount their digits.
       const hasAlphaChar = REGEX.ALPHA_UNICODE.test(number);
       if (!hasAlphaChar && dialCode) {
-        const nationalPortion = number.startsWith("+") ? number.slice(1 + dialCode.length) : number;
+        const nationalPortion = number.startsWith("+")
+          ? number.slice(1 + dialCode.length)
+          : number;
         const nationalDigitCount = getNumeric(nationalPortion).length;
         if (coreNumber.length > nationalDigitCount) {
           return false;
@@ -1585,7 +1614,9 @@ export class Iti {
     // if there is an alpha char, we need to check if it's allowed, either as an extension or a phone word
     if (hasAlphaChar) {
       const selectedIso2 = this.#selectedCountryData?.iso2;
-      const hasExtension = Boolean(intlTelInput.utils!.getExtension(val, selectedIso2));
+      const hasExtension = Boolean(
+        intlTelInput.utils!.getExtension(val, selectedIso2),
+      );
       if (hasExtension) {
         return allowNumberExtensions;
       }
@@ -1812,7 +1843,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     //* A getter for the plugin instance.
     getInstance: (input: HTMLInputElement): Iti | null => {
       const id = input.dataset.intlTelInputId;
-      return id ? intlTelInput.instances.get(id) ?? null : null;
+      return id ? (intlTelInput.instances.get(id) ?? null) : null;
     },
     //* A map from instance ID to instance object.
     instances: new Map(),

@@ -38,8 +38,13 @@ export class Numerals {
       return str;
     }
     const base = this.#userNumeralSet === "arabic-indic" ? 0x0660 : 0x06f0;
-    const regex = this.#userNumeralSet === "arabic-indic" ? /[\u0660-\u0669]/g : /[\u06F0-\u06F9]/g;
-    return str.replace(regex, (ch) => String.fromCharCode(0x30 + (ch.charCodeAt(0) - base)));
+    const regex =
+      this.#userNumeralSet === "arabic-indic"
+        ? /[\u0660-\u0669]/g
+        : /[\u06F0-\u06F9]/g;
+    return str.replace(regex, (ch) =>
+      String.fromCharCode(0x30 + (ch.charCodeAt(0) - base)),
+    );
   }
 
   public isAscii(): boolean {

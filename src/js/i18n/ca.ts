@@ -21,4 +21,3 @@ const interfaceTranslations: I18n = {
 };
 
 export default interfaceTranslations;
-

@@ -97,12 +97,8 @@ export default class UI {
   }
 
   #createWrapperAndInsert(): HTMLElement {
-    const {
-      allowDropdown,
-      showFlags,
-      containerClass,
-      useFullscreenPopup,
-    } = this.#options;
+    const { allowDropdown, showFlags, containerClass, useFullscreenPopup } =
+      this.#options;
 
     //* Containers (mostly for positioning).
     const parentClasses = buildClassNames({
@@ -515,7 +511,9 @@ export default class UI {
     this.#dropdownContent!.classList.remove(CLASSES.HIDE);
 
     // it needs these classes on the container to get the correct height
-    const tempContainer = createEl("div", { class: "iti iti--inline-dropdown" });
+    const tempContainer = createEl("div", {
+      class: "iti iti--inline-dropdown",
+    });
     tempContainer.appendChild(this.#dropdownContent!);
 
     tempContainer.style.visibility = "hidden";
@@ -582,14 +580,16 @@ export default class UI {
     const container = this.countryList!;
     const containerRect = container!.getBoundingClientRect();
     const elementRect = element.getBoundingClientRect();
-    const offsetTop = elementRect.top - containerRect.top + container!.scrollTop;
+    const offsetTop =
+      elementRect.top - containerRect.top + container!.scrollTop;
 
     if (elementRect.top < containerRect.top) {
       //* Scroll up.
       container!.scrollTop = offsetTop;
     } else if (elementRect.bottom > containerRect.bottom) {
       //* Scroll down.
-      container!.scrollTop = offsetTop - containerRect.height + elementRect.height;
+      container!.scrollTop =
+        offsetTop - containerRect.height + elementRect.height;
     }
   }
 
@@ -608,7 +608,10 @@ export default class UI {
       this.highlightedItem.classList.add(CLASSES.HIGHLIGHT);
       if (this.#options.countrySearch) {
         const activeDescendant = this.highlightedItem.getAttribute("id") || "";
-        this.searchInput!.setAttribute(ARIA.ACTIVE_DESCENDANT, activeDescendant);
+        this.searchInput!.setAttribute(
+          ARIA.ACTIVE_DESCENDANT,
+          activeDescendant,
+        );
       }
 
       if (shouldFocus) {
@@ -721,11 +724,8 @@ export default class UI {
 
   // UI: Open the dropdown (DOM only).
   public openDropdown(): void {
-    const {
-      countrySearch,
-      dropdownAlwaysOpen,
-      dropdownContainer,
-    } = this.#options;
+    const { countrySearch, dropdownAlwaysOpen, dropdownContainer } =
+      this.#options;
 
     // if fixDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
     this.#maybeEnsureDropdownWidthSet();
@@ -748,7 +748,9 @@ export default class UI {
     this.selectedCountry!.setAttribute(ARIA.EXPANDED, "true");
 
     //* Highlight the selected country (or fall back to the first item) and scroll it into view.
-    const itemToHighlight = this.#selectedItem ?? this.countryList!.firstElementChild as HTMLElement;
+    const itemToHighlight =
+      this.#selectedItem ??
+      (this.countryList!.firstElementChild as HTMLElement);
     if (itemToHighlight) {
       this.highlightListItem(itemToHighlight, false);
       this.scrollCountryListToItem(itemToHighlight);
@@ -759,7 +761,11 @@ export default class UI {
 
     // When using fullscreen popup, listen for virtual keyboard show/hide via visualViewport
     // so the popup resizes to stay above the keyboard.
-    if (this.#options.useFullscreenPopup && this.#dropdownForContainer && window.visualViewport) {
+    if (
+      this.#options.useFullscreenPopup &&
+      this.#dropdownForContainer &&
+      window.visualViewport
+    ) {
       this.#viewportHandler = (): void => {
         this.#adjustFullscreenPopupToViewport();
         // Re-scroll to highlighted item after keyboard resize
@@ -798,7 +804,10 @@ export default class UI {
 
     // Clean up visualViewport listeners
     if (this.#viewportHandler && window.visualViewport) {
-      window.visualViewport.removeEventListener("resize", this.#viewportHandler);
+      window.visualViewport.removeEventListener(
+        "resize",
+        this.#viewportHandler,
+      );
       this.#viewportHandler = null;
     }
 
@@ -823,7 +832,9 @@ export default class UI {
     const inputPos = this.telInput.getBoundingClientRect();
     const spaceAbove = inputPos.top;
     const spaceBelow = window.innerHeight - inputPos.bottom;
-    return spaceBelow >= this.#inlineDropdownHeight! || spaceBelow >= spaceAbove;
+    return (
+      spaceBelow >= this.#inlineDropdownHeight! || spaceBelow >= spaceAbove
+    );
   }
 
   // inject dropdown into container and apply positioning styles
@@ -891,8 +902,8 @@ export default class UI {
       let ariaLabel, title, selectedCountryInner;
       if (iso2) {
         title = name;
-        ariaLabel = i18n.selectedCountryAriaLabel!
-          .replace("${countryName}", name!)
+        ariaLabel = i18n
+          .selectedCountryAriaLabel!.replace("${countryName}", name!)
           .replace("${dialCode}", `+${dialCode}`);
         selectedCountryInner = showFlags ? "" : buildGlobeIcon();
       } else {

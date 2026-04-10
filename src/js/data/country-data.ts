@@ -53,7 +53,9 @@ export const generateCountryNames = (
 };
 
 //* Generate dialCodes and dialCodeToIso2Map.
-export const processDialCodes = (countries: Country[]): DialCodeProcessingResult => {
+export const processDialCodes = (
+  countries: Country[],
+): DialCodeProcessingResult => {
   //* Here we store just dial codes, where the key is the dial code, and the value is true
   //* e.g. { 1: true, 7: true, 20: true, ... }.
   const dialCodes = new Set<string>();
@@ -94,7 +96,9 @@ export const processDialCodes = (countries: Country[]): DialCodeProcessingResult
   };
 
   // Sort countries by priority so that when we add to the dialCodeToIso2Map, higher priority countries come first
-  const countriesSortedByPriority = [...countries].sort((a, b) => a.priority - b.priority);
+  const countriesSortedByPriority = [...countries].sort(
+    (a, b) => a.priority - b.priority,
+  );
   for (const c of countriesSortedByPriority) {
     if (!dialCodes.has(c.dialCode)) {
       dialCodes.add(c.dialCode);

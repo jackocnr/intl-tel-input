@@ -10,7 +10,7 @@ export type ItiUtils = {
   formatNumber(
     number: string,
     iso2: string | undefined,
-    format?: number
+    format?: number,
   ): string;
   formatNumberAsYouType(number: string, iso2: string | undefined): string;
   getCoreNumber(number: string, iso2: string | undefined): string;
@@ -18,7 +18,7 @@ export type ItiUtils = {
     iso2: string | undefined,
     nationalMode: boolean,
     numberType: number,
-    useE164?: boolean
+    useE164?: boolean,
   ): string;
   getExtension(number: string, iso2: string | undefined): string;
   getNumberType(number: string, iso2: string | undefined): number;
@@ -26,12 +26,12 @@ export type ItiUtils = {
   isPossibleNumber(
     number: string,
     iso2: string | undefined,
-    numberType?: NumberType[] | null
+    numberType?: NumberType[] | null,
   ): boolean;
   isValidNumber(
     number: string,
     iso2: string | undefined,
-    numberType?: NumberType[] | null
+    numberType?: NumberType[] | null,
   ): boolean;
   numberFormat: {
     NATIONAL: number;
@@ -85,7 +85,7 @@ export interface AllOptions {
   customPlaceholder:
     | ((
         selectedCountryPlaceholder: string,
-        selectedCountryData: SelectedCountryData
+        selectedCountryData: SelectedCountryData,
       ) => string)
     | null;
   dropdownAlwaysOpen: boolean;
@@ -117,4 +117,7 @@ export interface AllOptions {
 export type SomeOptions = Partial<AllOptions>;
 
 // The public-facing subset of Country exposed via getSelectedCountryData and events.
-export type SelectedCountryData = Pick<Country, "iso2" | "dialCode" | "name"> | null;
+export type SelectedCountryData = Pick<
+  Country,
+  "iso2" | "dialCode" | "name"
+> | null;
