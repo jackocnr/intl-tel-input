@@ -127,7 +127,7 @@ export default class UI {
 
     this.countryContainer = createEl(
       "div",
-      // visibly hidden until we measure it's width to set the input padding correctly
+      // visibly hidden until we measure its width to set the input padding correctly
       { class: `iti__country-container ${CLASSES.V_HIDE}` },
       wrapper,
     );
@@ -254,9 +254,9 @@ export default class UI {
     if (!useFullscreenPopup) {
       // inline dropdown
       this.#maybeEnsureDropdownWidthSet();
-      // capture the dropdownHeight before injecting it into the DOM, using a clever invisible technique. This is used later to decide whether to show dropdown above/below input.
+      // capture the dropdown height for later uses: (1) on dropdown open: decide whether to position it above or below the input, and (2) when countrySearch enabled, fix the dropdown height to prevent it jumping around when filtering the country list.
       this.#inlineDropdownHeight = this.#getHiddenInlineDropdownHeight();
-      // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down.
+      // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down. (NOTE: the country list just has a max-height as it may only be needed to show a few items e.g. from onlyCountries, or from filtering with a search query)
       if (countrySearch) {
         this.#dropdownContent.style.height = `${this.#inlineDropdownHeight}px`;
       }
@@ -505,9 +505,10 @@ export default class UI {
     return width;
   }
 
-  // this is run before we add the dropdown to the DOM
+  // Get the dropdown height (before it is added to the DOM)
   #getHiddenInlineDropdownHeight(): number {
     const body = UI.#getBody();
+    // it's safe to remove the hide class as the dropdown has not yet been added to the DOM
     this.#dropdownContent!.classList.remove(CLASSES.HIDE);
 
     // it needs these classes on the container to get the correct height
