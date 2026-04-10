@@ -505,6 +505,8 @@ export class Iti {
         userOverrideFormatting = false;
       }
 
+      //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents
+      //* (from setNumber), so we need the cast to access the custom detail property.
       const isSetNumber =
         e?.detail &&
         (e.detail as unknown as Record<string, unknown>)["isSetNumber"];
@@ -983,7 +985,7 @@ export class Iti {
     //* If it contains a plus, discard any chars before it e.g. accidental space char.
     //* This keeps the selected country auto-updating correctly, which we want as
     //* libphonenumber's validation/getNumber methods will ignore these chars anyway.
-    let number = plusIndex ? fullNumber.substring(plusIndex) : fullNumber;
+    let number = plusIndex > 0 ? fullNumber.substring(plusIndex) : fullNumber;
     const selectedIso2 = this.#selectedCountryData?.iso2;
     const selectedDialCode = this.#selectedCountryData?.dialCode;
 

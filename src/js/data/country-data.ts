@@ -20,7 +20,8 @@ export const processAllCountries = (options: AllOptions): Country[] => {
       (country) => !excludeCountries.includes(country.iso2),
     );
   }
-  return allCountries;
+  //* Create new array so avoid a bug where multiple instances with different countryOrder options interfere with each other (as they were sharing the same allCountries array, which is mutated by sortCountries).
+  return [...allCountries];
 };
 
 //* Generate country names using Intl.DisplayNames
@@ -84,7 +85,7 @@ export const processDialCodes = (
       dialCodeMaxLen = dialCode.length;
     }
     //* If this entry doesn't already exist, then create it.
-    if (!dialCodeToIso2Map.hasOwnProperty(dialCode)) {
+    if (!Object.hasOwn(dialCodeToIso2Map, dialCode)) {
       dialCodeToIso2Map[dialCode] = [];
     }
     const iso2List = dialCodeToIso2Map[dialCode];

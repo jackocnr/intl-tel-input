@@ -125,9 +125,6 @@ const warnOption = (
   );
 };
 
-const hasOwn = (obj: object, key: string): boolean =>
-  Object.prototype.hasOwnProperty.call(obj, key);
-
 const validateIso2Array = (key: string, value: unknown): string[] | false => {
   const expectedType = "an array of ISO2 country code strings";
   if (!Array.isArray(value)) {
@@ -168,7 +165,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
 
   for (const [key, value] of Object.entries(customOptions)) {
     // Check option exists
-    if (!hasOwn(defaults, key)) {
+    if (!Object.hasOwn(defaults, key)) {
       warn(`Unknown option '${key}'. Ignoring.`);
       continue;
     }

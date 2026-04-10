@@ -65,9 +65,6 @@ const displayed = computed(
 
 const vm = getCurrentInstance();
 
-const hasOwn = (obj: object, key: string): boolean =>
-  Object.prototype.hasOwnProperty.call(obj, key);
-
 const pluginOptionKeys = Object.keys(intlTelInput.defaults);
 
 // Vue will coerce absent Boolean props to `false` when props are declared at runtime.
@@ -81,7 +78,7 @@ const initOptions = computed<SomeOptions>(() => {
 
   const cleanedOptions: Record<string, unknown> = {};
   pluginOptionKeys.forEach((optionKey) => {
-    if (!hasOwn(rawPassedProps, optionKey)) {
+    if (!Object.hasOwn(rawPassedProps, optionKey)) {
       return;
     }
     const value = (props as Record<string, unknown>)[optionKey];
