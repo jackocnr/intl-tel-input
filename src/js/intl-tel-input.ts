@@ -368,18 +368,14 @@ export class Iti {
 
   //* Init requests: utils script / geo ip lookup.
   #initRequests(): void {
-    const { loadUtils, initialCountry, geoIpLookup } = this.#options;
-
-    //* (1) UTILS SCRIPT
-    //* If utils is already loaded, or loadUtils is not set, resolve immediately.
-    if (intlTelInput.utils || !loadUtils) {
-      this.#utilsScriptDeferred?.resolve();
-    } else {
+    //* (1) UTILS SCRIPT — deferred only exists when loadUtils was set and utils aren't loaded yet.
+    if (this.#utilsScriptDeferred) {
+      const { loadUtils } = this.#options;
       const doAttachUtils = () => {
         //* Catch and ignore any errors to prevent unhandled-promise failures.
         //* The error from `attachUtils()` is also surfaced in each instance's
         //* `promise` property, so it's not getting lost by being ignored here.
-        intlTelInput.attachUtils(loadUtils)?.catch(() => {});
+        intlTelInput.attachUtils(loadUtils!)?.catch(() => {});
       };
 
       //* If the plugin is being initialised after the window.load event has already been fired.
@@ -393,18 +389,14 @@ export class Iti {
       }
     }
 
-    //* (2) AUTO COUNTRY
-    const isAutoCountry =
-      initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
-    if (!isAutoCountry) {
-      return;
-    }
-
-    //* Don't bother with IP lookup if we already have a selected country.
-    if (this.#selectedCountryData) {
-      this.#autoCountryDeferred?.resolve();
-    } else {
-      this.#loadAutoCountry();
+    //* (2) AUTO COUNTRY — deferred only exists when initialCountry is "auto" with a geoIpLookup.
+    if (this.#autoCountryDeferred) {
+      //* Don't bother with IP lookup if we already have a selected country.
+      if (this.#selectedCountryData) {
+        this.#autoCountryDeferred.resolve();
+      } else {
+        this.#loadAutoCountry();
+      }
     }
   }
 
@@ -1357,16 +1349,13 @@ export class Iti {
 
   //* Called when the geoip call returns.
   #handleAutoCountry(): void {
-    // If destroyed, abort any UI work but still resolve the init promise
-    if (this.#destroyed) {
-      this.#autoCountryDeferred?.resolve();
+    if (!this.#autoCountryDeferred || !intlTelInput.autoCountry) {
       return;
     }
 
-    if (
-      this.#options.initialCountry !== INITIAL_COUNTRY.AUTO ||
-      !intlTelInput.autoCountry
-    ) {
+    // If destroyed, abort any UI work but still resolve the init promise
+    if (this.#destroyed) {
+      this.#autoCountryDeferred.resolve();
       return;
     }
 
@@ -1380,7 +1369,7 @@ export class Iti {
     if (!hasSelectedCountryOrGlobe) {
       this.setCountry(this.#defaultCountry);
     }
-    this.#autoCountryDeferred?.resolve();
+    this.#autoCountryDeferred.resolve();
   }
 
   //* Called when the geoip call fails or times out.
