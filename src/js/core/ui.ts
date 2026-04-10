@@ -124,75 +124,77 @@ export default class UI {
   #maybeBuildCountryContainer(wrapper: HTMLElement): void {
     const { allowDropdown, separateDialCode, showFlags } = this.#options;
 
-    //* If we need a countryContainer
-    if (allowDropdown || showFlags || separateDialCode) {
-      this.countryContainer = createEl(
-        "div",
-        // visibly hidden until we measure it's width to set the input padding correctly
-        { class: `iti__country-container ${CLASSES.V_HIDE}` },
-        wrapper,
+    //* If we don't need a countryContainer
+    if (!allowDropdown && !showFlags && !separateDialCode) {
+      return;
+    }
+
+    this.countryContainer = createEl(
+      "div",
+      // visibly hidden until we measure it's width to set the input padding correctly
+      { class: `iti__country-container ${CLASSES.V_HIDE}` },
+      wrapper,
+    );
+
+    //* Selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
+    //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
+    if (allowDropdown) {
+      this.selectedCountry = createEl(
+        "button",
+        {
+          type: "button",
+          class: "iti__selected-country",
+          [ARIA.EXPANDED]: "false",
+          [ARIA.LABEL]: this.#options.i18n.noCountrySelected,
+          [ARIA.HASPOPUP]: "dialog",
+          [ARIA.CONTROLS]: `iti-${this.#id}__dropdown-content`,
+        },
+        this.countryContainer,
       );
 
-      //* Selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
-      //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
-      if (allowDropdown) {
-        this.selectedCountry = createEl(
-          "button",
-          {
-            type: "button",
-            class: "iti__selected-country",
-            [ARIA.EXPANDED]: "false",
-            [ARIA.LABEL]: this.#options.i18n.noCountrySelected,
-            [ARIA.HASPOPUP]: "dialog",
-            [ARIA.CONTROLS]: `iti-${this.#id}__dropdown-content`,
-          },
-          this.countryContainer,
-        );
-
-        if (this.telInput.disabled) {
-          this.selectedCountry!.setAttribute("disabled", "true");
-        }
-      } else {
-        this.selectedCountry = createEl(
-          "div",
-          { class: "iti__selected-country" },
-          this.countryContainer,
-        );
+      if (this.telInput.disabled) {
+        this.selectedCountry!.setAttribute("disabled", "true");
       }
-
-      // The element that gets a grey background on hover (if allowDropdown enabled)
-      const selectedCountryPrimary = createEl(
+    } else {
+      this.selectedCountry = createEl(
         "div",
-        { class: "iti__selected-country-primary" },
-        this.selectedCountry,
+        { class: "iti__selected-country" },
+        this.countryContainer,
       );
+    }
 
-      //* This is where we will add the selected flag (or globe) class later
-      this.selectedCountryInner = createEl(
+    // The element that gets a grey background on hover (if allowDropdown enabled)
+    const selectedCountryPrimary = createEl(
+      "div",
+      { class: "iti__selected-country-primary" },
+      this.selectedCountry,
+    );
+
+    //* This is where we will add the selected flag (or globe) class later
+    this.selectedCountryInner = createEl(
+      "div",
+      { class: CLASSES.FLAG },
+      selectedCountryPrimary,
+    );
+
+    if (allowDropdown) {
+      this.#dropdownArrow = createEl(
         "div",
-        { class: CLASSES.FLAG },
+        { class: "iti__arrow", [ARIA.HIDDEN]: "true" },
         selectedCountryPrimary,
       );
+    }
 
-      if (allowDropdown) {
-        this.#dropdownArrow = createEl(
-          "div",
-          { class: "iti__arrow", [ARIA.HIDDEN]: "true" },
-          selectedCountryPrimary,
-        );
-      }
+    if (separateDialCode) {
+      this.#selectedDialCode = createEl(
+        "div",
+        { class: "iti__selected-dial-code" },
+        this.selectedCountry,
+      );
+    }
 
-      if (separateDialCode) {
-        this.#selectedDialCode = createEl(
-          "div",
-          { class: "iti__selected-dial-code" },
-          this.selectedCountry,
-        );
-      }
-
-      if (allowDropdown) {
-        this.#buildDropdownContent();
-      }
+    if (allowDropdown) {
+      this.#buildDropdownContent();
     }
   }
 
@@ -201,12 +203,14 @@ export default class UI {
 
     // Note: fixDropdownWidth is always false if useFullscreenPopup is true
     // don't re-set it if it's already set
-    if (fixDropdownWidth && !this.#dropdownContent!.style.width) {
-      const inputWidth = this.telInput.offsetWidth;
-      // dont fix dropdown width if input width is zero (e.g. it's hidden during init)
-      if (inputWidth > 0) {
-        this.#dropdownContent!.style.width = `${inputWidth}px`;
-      }
+    if (!fixDropdownWidth || this.#dropdownContent!.style.width) {
+      return;
+    }
+
+    const inputWidth = this.telInput.offsetWidth;
+    // dont fix dropdown width if input width is zero (e.g. it's hidden during init)
+    if (inputWidth > 0) {
+      this.#dropdownContent!.style.width = `${inputWidth}px`;
     }
   }
 
@@ -351,48 +355,51 @@ export default class UI {
   }
 
   #maybeUpdateInputPaddingAndReveal(): void {
-    if (this.countryContainer) {
-      this.#updateInputPadding();
-      this.countryContainer.classList.remove(CLASSES.V_HIDE);
+    if (!this.countryContainer) {
+      return;
     }
+    this.#updateInputPadding();
+    this.countryContainer.classList.remove(CLASSES.V_HIDE);
   }
 
   #maybeBuildHiddenInputs(wrapper: HTMLElement): void {
     const { hiddenInput } = this.#options;
-    if (hiddenInput) {
-      const telInputName = this.telInput.getAttribute("name") || "";
-      const names = hiddenInput(telInputName);
+    if (!hiddenInput) {
+      return;
+    }
 
-      if (names.phone) {
-        const existingInput = this.telInput.form?.querySelector(
-          `input[name="${names.phone}"]`,
-        );
-        if (existingInput) {
-          this.hiddenInputPhone = existingInput as HTMLInputElement;
-        } else {
-          //* Create hidden input for the full international number.
-          this.hiddenInputPhone = createEl("input", {
-            type: "hidden",
-            name: names.phone,
-          }) as HTMLInputElement;
-          wrapper.appendChild(this.hiddenInputPhone);
-        }
+    const telInputName = this.telInput.getAttribute("name") || "";
+    const names = hiddenInput(telInputName);
+
+    if (names.phone) {
+      const existingInput = this.telInput.form?.querySelector(
+        `input[name="${names.phone}"]`,
+      );
+      if (existingInput) {
+        this.hiddenInputPhone = existingInput as HTMLInputElement;
+      } else {
+        //* Create hidden input for the full international number.
+        this.hiddenInputPhone = createEl("input", {
+          type: "hidden",
+          name: names.phone,
+        }) as HTMLInputElement;
+        wrapper.appendChild(this.hiddenInputPhone);
       }
+    }
 
-      if (names.country) {
-        const existingInput = this.telInput.form?.querySelector(
-          `input[name="${names.country}"]`,
-        );
-        if (existingInput) {
-          this.hiddenInputCountry = existingInput as HTMLInputElement;
-        } else {
-          //* Create hidden input for the selected country iso2 code.
-          this.hiddenInputCountry = createEl("input", {
-            type: "hidden",
-            name: names.country,
-          }) as HTMLInputElement;
-          wrapper.appendChild(this.hiddenInputCountry);
-        }
+    if (names.country) {
+      const existingInput = this.telInput.form?.querySelector(
+        `input[name="${names.country}"]`,
+      );
+      if (existingInput) {
+        this.hiddenInputCountry = existingInput as HTMLInputElement;
+      } else {
+        //* Create hidden input for the selected country iso2 code.
+        this.hiddenInputCountry = createEl("input", {
+          type: "hidden",
+          name: names.country,
+        }) as HTMLInputElement;
+        wrapper.appendChild(this.hiddenInputCountry);
       }
     }
   }
@@ -477,28 +484,29 @@ export default class UI {
   //* To get the right styling to apply, all we need is a shallow clone of the container,
   //* and then to inject a deep clone of the selectedCountry element.
   #getHiddenSelectedCountryWidth(): number {
-    if (this.telInput.parentNode) {
-      const body = UI.#getBody();
-      const containerClone = this.telInput.parentNode!.cloneNode(
-        false,
-      ) as HTMLElement;
-      containerClone.style.visibility = "hidden";
-      body.appendChild(containerClone);
-
-      const countryContainerClone =
-        this.countryContainer!.cloneNode() as HTMLElement;
-      containerClone.appendChild(countryContainerClone);
-
-      const selectedCountryClone = this.selectedCountry!.cloneNode(
-        true,
-      ) as HTMLElement;
-      countryContainerClone.appendChild(selectedCountryClone);
-
-      const width = selectedCountryClone.offsetWidth;
-      body.removeChild(containerClone);
-      return width;
+    if (!this.telInput.parentNode) {
+      return 0;
     }
-    return 0;
+
+    const body = UI.#getBody();
+    const containerClone = this.telInput.parentNode!.cloneNode(
+      false,
+    ) as HTMLElement;
+    containerClone.style.visibility = "hidden";
+    body.appendChild(containerClone);
+
+    const countryContainerClone =
+      this.countryContainer!.cloneNode() as HTMLElement;
+    containerClone.appendChild(countryContainerClone);
+
+    const selectedCountryClone = this.selectedCountry!.cloneNode(
+      true,
+    ) as HTMLElement;
+    countryContainerClone.appendChild(selectedCountryClone);
+
+    const width = selectedCountryClone.offsetWidth;
+    body.removeChild(containerClone);
+    return width;
   }
 
   // this is run before we add the dropdown to the DOM

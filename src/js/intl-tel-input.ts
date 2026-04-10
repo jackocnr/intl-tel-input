@@ -347,8 +347,11 @@ export class Iti {
   #initRequests(): void {
     const { loadUtils, initialCountry, geoIpLookup } = this.#options;
 
-    //* If the user has specified the path to the utils script, fetch it on window.load, else resolve.
-    if (loadUtils && !intlTelInput.utils) {
+    //* (1) UTILS SCRIPT
+    //* If utils is already loaded, or loadUtils is not set, resolve immediately.
+    if (intlTelInput.utils || !loadUtils) {
+      this.#utilsScriptDeferred?.resolve();
+    } else {
       const doAttachUtils = () => {
         //* Catch and ignore any errors to prevent unhandled-promise failures.
         //* The error from `attachUtils()` is also surfaced in each instance's
@@ -365,19 +368,20 @@ export class Iti {
           signal: this.#abortController!.signal,
         });
       }
-    } else {
-      this.#utilsScriptDeferred?.resolve();
     }
 
+    //* (2) AUTO COUNTRY
     const isAutoCountry =
     initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
-    if (isAutoCountry) {
-      //* Don't bother with IP lookup if we already have a selected country.
-      if (this.#selectedCountryData) {
-        this.#autoCountryDeferred?.resolve();
-      } else {
-        this.#loadAutoCountry();
-      }
+    if (!isAutoCountry) {
+      return;
+    }
+
+    //* Don't bother with IP lookup if we already have a selected country.
+    if (this.#selectedCountryData) {
+      this.#autoCountryDeferred?.resolve();
+    } else {
+      this.#loadAutoCountry();
     }
   }
 
@@ -389,36 +393,38 @@ export class Iti {
     //* 3) Not already started loading (start)
     if (intlTelInput.autoCountry) {
       this.#handleAutoCountry();
-    } else {
-      this.#ui.selectedCountryInner!.classList.add(CLASSES.LOADING);
+      return;
+    }
 
-      if (!intlTelInput.startedLoadingAutoCountry) {
-        //* Don't do this twice!
-        intlTelInput.startedLoadingAutoCountry = true;
+    this.#ui.selectedCountryInner!.classList.add(CLASSES.LOADING);
 
-        if (typeof this.#options.geoIpLookup === "function") {
-          const successCallback = (iso2 = "") => {
-            this.#ui.selectedCountryInner!.classList.remove(CLASSES.LOADING);
-            const iso2Lower = iso2.toLowerCase();
-            if (isIso2(iso2Lower)) {
-              intlTelInput.autoCountry = iso2Lower;
-              //* Tell all instances the auto country is ready.
-              //* UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
-              //* away (e.g. if they have already done the geo ip lookup somewhere else). Using
-              //* setTimeout means that the current thread of execution will finish before executing
-              //* this, which allows the plugin to finish initialising.
-              setTimeout(() => Iti.forEachInstance("handleAutoCountry"));
-            } else {
-              Iti.forEachInstance("handleAutoCountryFailure");
-            }
-          };
-          const failureCallback = () => {
-            this.#ui.selectedCountryInner!.classList.remove(CLASSES.LOADING);
-            Iti.forEachInstance("handleAutoCountryFailure");
-          };
-          this.#options.geoIpLookup(successCallback, failureCallback);
+    //* Don't do this twice!
+    if (intlTelInput.startedLoadingAutoCountry) {
+      return;
+    }
+    intlTelInput.startedLoadingAutoCountry = true;
+
+    if (typeof this.#options.geoIpLookup === "function") {
+      const successCallback = (iso2 = "") => {
+        this.#ui.selectedCountryInner!.classList.remove(CLASSES.LOADING);
+        const iso2Lower = iso2.toLowerCase();
+        if (isIso2(iso2Lower)) {
+          intlTelInput.autoCountry = iso2Lower;
+          //* Tell all instances the auto country is ready.
+          //* UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
+          //* away (e.g. if they have already done the geo ip lookup somewhere else). Using
+          //* setTimeout means that the current thread of execution will finish before executing
+          //* this, which allows the plugin to finish initialising.
+          setTimeout(() => Iti.forEachInstance("handleAutoCountry"));
+        } else {
+          Iti.forEachInstance("handleAutoCountryFailure");
         }
-      }
+      };
+      const failureCallback = () => {
+        this.#ui.selectedCountryInner!.classList.remove(CLASSES.LOADING);
+        Iti.forEachInstance("handleAutoCountryFailure");
+      };
+      this.#options.geoIpLookup(successCallback, failureCallback);
     }
   }
 
@@ -551,153 +557,161 @@ export class Iti {
   #maybeBindKeydownListener(): void {
     const { strictMode, separateDialCode, allowDropdown, countrySearch } =
       this.#options;
-    if (strictMode || separateDialCode) {
-      //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
-      //* Note that this fires BEFORE the input is updated.
-      const handleKeydownEvent = (e: KeyboardEvent): void => {
-        //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
-        if (
-          e.key &&
-          e.key.length === 1 &&
-          !e.altKey &&
-          !e.ctrlKey &&
-          !e.metaKey
-        ) {
-          //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
-          if (
-            separateDialCode &&
-            allowDropdown &&
-            countrySearch &&
-            e.key === "+"
-          ) {
-            e.preventDefault();
-            this.#openDropdownWithPlus();
-            return;
-          }
-          //* If strictMode, prevent invalid characters.
-          if (strictMode) {
-            const inputValue = this.#getTelInputValue();
-            const alreadyHasPlus = inputValue.startsWith("+");
-            const isInitialPlus =
-              !alreadyHasPlus &&
-              this.#ui.telInput.selectionStart === 0 &&
-              e.key === "+";
-            // note that we normalise numerals here so this numerics check works, but then later we continue using the original e.key value
-            const normalisedKey = this.#numerals.normalise(e.key);
-            const isNumeric = /^[0-9]$/.test(normalisedKey);
-            const isAllowedChar = separateDialCode
-              ? isNumeric
-              : isInitialPlus || isNumeric;
-
-            // insert the new character in the right place
-            const input = this.#ui.telInput;
-            const selStart = input.selectionStart;
-            const selEnd = input.selectionEnd;
-            const before = inputValue.slice(0, selStart ?? undefined);
-            const after = inputValue.slice(selEnd ?? undefined);
-            const newValue = before + e.key + after;
-            const newFullNumber = this.#getFullNumber(newValue);
-
-            let hasExceededMaxLength = false;
-            if (intlTelInput.utils && this.#maxCoreNumberLength) {
-              const coreNumber = intlTelInput.utils.getCoreNumber(
-                newFullNumber,
-                this.#selectedCountryData?.iso2,
-              );
-              hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
-            }
-
-            const newCountry = this.#getNewCountryFromNumber(newFullNumber);
-            const isChangingDialCode = newCountry !== null;
-
-            // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
-            if (
-              !isAllowedChar ||
-              (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)
-            ) {
-              e.preventDefault();
-            }
-          }
-        }
-      };
-      this.#ui.telInput.addEventListener("keydown", handleKeydownEvent, {
-        signal: this.#abortController!.signal,
-      });
+    if (!strictMode && !separateDialCode) {
+      return;
     }
+
+    //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
+    //* Note that this fires BEFORE the input is updated.
+    const handleKeydownEvent = (e: KeyboardEvent): void => {
+      //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
+      if (
+        !e.key ||
+        e.key.length !== 1 ||
+        e.altKey ||
+        e.ctrlKey ||
+        e.metaKey
+      ) {
+        return;
+      }
+
+      //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
+      if (
+        separateDialCode &&
+        allowDropdown &&
+        countrySearch &&
+        e.key === "+"
+      ) {
+        e.preventDefault();
+        this.#openDropdownWithPlus();
+        return;
+      }
+      //* If strictMode, prevent invalid characters.
+      if (!strictMode) {
+        return;
+      }
+
+      const inputValue = this.#getTelInputValue();
+      const alreadyHasPlus = inputValue.startsWith("+");
+      const isInitialPlus =
+        !alreadyHasPlus &&
+        this.#ui.telInput.selectionStart === 0 &&
+        e.key === "+";
+      // note that we normalise numerals here so this numerics check works, but then later we continue using the original e.key value
+      const normalisedKey = this.#numerals.normalise(e.key);
+      const isNumeric = /^[0-9]$/.test(normalisedKey);
+      const isAllowedChar = separateDialCode
+        ? isNumeric
+        : isInitialPlus || isNumeric;
+
+      // insert the new character in the right place
+      const input = this.#ui.telInput;
+      const selStart = input.selectionStart;
+      const selEnd = input.selectionEnd;
+      const before = inputValue.slice(0, selStart ?? undefined);
+      const after = inputValue.slice(selEnd ?? undefined);
+      const newValue = before + e.key + after;
+      const newFullNumber = this.#getFullNumber(newValue);
+
+      let hasExceededMaxLength = false;
+      if (intlTelInput.utils && this.#maxCoreNumberLength) {
+        const coreNumber = intlTelInput.utils.getCoreNumber(
+          newFullNumber,
+          this.#selectedCountryData?.iso2,
+        );
+        hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
+      }
+
+      const newCountry = this.#getNewCountryFromNumber(newFullNumber);
+      const isChangingDialCode = newCountry !== null;
+
+      // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
+      if (
+        !isAllowedChar ||
+        (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)
+      ) {
+        e.preventDefault();
+      }
+    };
+    this.#ui.telInput.addEventListener("keydown", handleKeydownEvent, {
+      signal: this.#abortController!.signal,
+    });
   }
 
   #maybeBindPasteListener(): void {
     // Sanitise pasted values in strictMode
-    if (this.#options.strictMode) {
-      const handlePasteEvent = (e: ClipboardEvent): void => {
-        // in strict mode we always control the pasted value
-        e.preventDefault();
+    if (!this.#options.strictMode) {
+      return;
+    }
 
-        // shortcuts
-        const input = this.#ui.telInput;
-        const selStart = input.selectionStart;
-        const selEnd = input.selectionEnd;
-        const inputValue = this.#getTelInputValue();
-        const before = inputValue.slice(0, selStart ?? undefined);
-        const after = inputValue.slice(selEnd ?? undefined);
-        const iso2 = this.#selectedCountryData?.iso2;
+    const handlePasteEvent = (e: ClipboardEvent): void => {
+      // in strict mode we always control the pasted value
+      e.preventDefault();
 
-        const pastedRaw = e.clipboardData!.getData("text");
-        const pasted = this.#numerals.normalise(pastedRaw);
-        // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
-        const initialCharSelected = selStart === 0 && selEnd! > 0;
-        const allowLeadingPlus =
-          !inputValue.startsWith("+") || initialCharSelected;
-        // just numerics and pluses
-        const allowedChars = pasted.replace(REGEX.NON_PLUS_NUMERIC_GLOBAL, "");
-        const hasLeadingPlus = allowedChars.startsWith("+");
-        // just numerics
-        const numerics = allowedChars.replace(/\+/g, "");
-        const sanitised =
-          hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
-        let newVal = before + sanitised + after;
+      // shortcuts
+      const input = this.#ui.telInput;
+      const selStart = input.selectionStart;
+      const selEnd = input.selectionEnd;
+      const inputValue = this.#getTelInputValue();
+      const before = inputValue.slice(0, selStart ?? undefined);
+      const after = inputValue.slice(selEnd ?? undefined);
+      const iso2 = this.#selectedCountryData?.iso2;
 
-        // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
-        // (fixes bug where you couldn't paste the first digit of a number)
-        if (newVal.length > 5 && intlTelInput.utils) {
-          let coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
+      const pastedRaw = e.clipboardData!.getData("text");
+      const pasted = this.#numerals.normalise(pastedRaw);
+      // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
+      const initialCharSelected = selStart === 0 && selEnd! > 0;
+      const allowLeadingPlus =
+        !inputValue.startsWith("+") || initialCharSelected;
+      // just numerics and pluses
+      const allowedChars = pasted.replace(REGEX.NON_PLUS_NUMERIC_GLOBAL, "");
+      const hasLeadingPlus = allowedChars.startsWith("+");
+      // just numerics
+      const numerics = allowedChars.replace(/\+/g, "");
+      const sanitised =
+        hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
+      let newVal = before + sanitised + after;
 
-          // utils.getCoreNumber returns empty string for very long numbers
-          // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
-          while (coreNumber.length === 0 && newVal.length > 0) {
-            newVal = newVal.slice(0, -1);
-            coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
-          }
-          // if no valid core number can be found, then just ignore the paste
-          if (!coreNumber) {
+      // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
+      // (fixes bug where you couldn't paste the first digit of a number)
+      if (newVal.length > 5 && intlTelInput.utils) {
+        let coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
+
+        // utils.getCoreNumber returns empty string for very long numbers
+        // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
+        while (coreNumber.length === 0 && newVal.length > 0) {
+          newVal = newVal.slice(0, -1);
+          coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
+        }
+        // if no valid core number can be found, then just ignore the paste
+        if (!coreNumber) {
+          return;
+        }
+        if (
+          this.#maxCoreNumberLength &&
+          coreNumber.length > this.#maxCoreNumberLength
+        ) {
+          if (input.selectionEnd === inputValue.length) {
+            // if they try to paste too many digits at the end, then just trim the excess
+            const trimLength = coreNumber.length - this.#maxCoreNumberLength;
+            newVal = newVal.slice(0, newVal.length - trimLength);
+          } else {
+            // if they try to paste too many digits in the middle, then just ignore the paste entirely
             return;
           }
-          if (
-            this.#maxCoreNumberLength &&
-            coreNumber.length > this.#maxCoreNumberLength
-          ) {
-            if (input.selectionEnd === inputValue.length) {
-              // if they try to paste too many digits at the end, then just trim the excess
-              const trimLength = coreNumber.length - this.#maxCoreNumberLength;
-              newVal = newVal.slice(0, newVal.length - trimLength);
-            } else {
-              // if they try to paste too many digits in the middle, then just ignore the paste entirely
-              return;
-            }
-          }
         }
-        // preserve pasted numeral set in display
-        this.#setTelInputValue(newVal);
-        const caretPos = selStart! + sanitised.length;
-        input.setSelectionRange(caretPos, caretPos);
+      }
+      // preserve pasted numeral set in display
+      this.#setTelInputValue(newVal);
+      const caretPos = selStart! + sanitised.length;
+      input.setSelectionRange(caretPos, caretPos);
 
-        // trigger format-as-you-type and country update etc
-        input.dispatchEvent(new InputEvent("input", { bubbles: true }));
-      };
-      this.#ui.telInput.addEventListener("paste", handlePasteEvent, {
-        signal: this.#abortController!.signal,
-      });
-    }
+      // trigger format-as-you-type and country update etc
+      input.dispatchEvent(new InputEvent("input", { bubbles: true }));
+    };
+    this.#ui.telInput.addEventListener("paste", handlePasteEvent, {
+      signal: this.#abortController!.signal,
+    });
   }
 
   //* Adhere to the input's maxlength attr.
@@ -1082,38 +1096,41 @@ export class Iti {
   #updateMaxLength(): void {
     const { strictMode, placeholderNumberType, allowedNumberTypes } =
       this.#options;
-    const iso2 = this.#selectedCountryData?.iso2;
-    if (strictMode && intlTelInput.utils) {
-      if (iso2) {
-        const numberType = intlTelInput.utils.numberType[placeholderNumberType];
-        let exampleNumber = intlTelInput.utils.getExampleNumber(
-          iso2,
-          false,
-          numberType,
-          true,
-        );
-        //* See if adding more digits is still valid to get the true maximum valid length.
-        let validNumber = exampleNumber;
-        while (
-          intlTelInput.utils.isPossibleNumber(
-            exampleNumber,
-            iso2,
-            allowedNumberTypes,
-          )
-        ) {
-          validNumber = exampleNumber;
-          exampleNumber += "0";
-        }
-        const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, iso2);
-        this.#maxCoreNumberLength = coreNumber.length;
+    if (!strictMode || !intlTelInput.utils) {
+      return;
+    }
 
-        // hack for Belarus, because for some reason, getCoreNumber("80294911911"), aka the placeholder number, returns "294911911" (9 digits), but getCoreNumber("8029491191"), aka you're typing the penultimate digit of the placeholder number, returns "8029491191" (10 digits) and so strictMode blocks it. so we increase the max length to 10 digits to allow this penultimate digit, and then when they type the final digit, getCoreNumber will return 9 digits again, so it will be fine.
-        if (iso2 === "by") {
-          this.#maxCoreNumberLength = coreNumber.length + 1;
-        }
-      } else {
-        this.#maxCoreNumberLength = null;
-      }
+    const iso2 = this.#selectedCountryData?.iso2;
+    if (!iso2) {
+      this.#maxCoreNumberLength = null;
+      return;
+    }
+
+    const numberType = intlTelInput.utils.numberType[placeholderNumberType];
+    let exampleNumber = intlTelInput.utils.getExampleNumber(
+      iso2,
+      false,
+      numberType,
+      true,
+    );
+    //* See if adding more digits is still valid to get the true maximum valid length.
+    let validNumber = exampleNumber;
+    while (
+      intlTelInput.utils.isPossibleNumber(
+        exampleNumber,
+        iso2,
+        allowedNumberTypes,
+      )
+    ) {
+      validNumber = exampleNumber;
+      exampleNumber += "0";
+    }
+    const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, iso2);
+    this.#maxCoreNumberLength = coreNumber.length;
+
+    // hack for Belarus, because for some reason, getCoreNumber("80294911911"), aka the placeholder number, returns "294911911" (9 digits), but getCoreNumber("8029491191"), aka you're typing the penultimate digit of the placeholder number, returns "8029491191" (10 digits) and so strictMode blocks it. so we increase the max length to 10 digits to allow this penultimate digit, and then when they type the final digit, getCoreNumber will return 9 digits again, so it will be fine.
+    if (iso2 === "by") {
+      this.#maxCoreNumberLength = coreNumber.length + 1;
     }
   }
 
@@ -1129,23 +1146,25 @@ export class Iti {
       autoPlaceholder === PLACEHOLDER_MODES.AGGRESSIVE ||
       (!this.#ui.hadInitialPlaceholder && autoPlaceholder === PLACEHOLDER_MODES.POLITE);
 
-    if (intlTelInput.utils && shouldSetPlaceholder) {
-      const numberType = intlTelInput.utils.numberType[placeholderNumberType];
-      //* Note: Must set placeholder to empty string if no country selected (globe icon showing).
-      let placeholder = this.#selectedCountryData
-        ? intlTelInput.utils.getExampleNumber(
-            this.#selectedCountryData.iso2,
-            nationalMode,
-            numberType,
-          )
-        : "";
-
-      placeholder = this.#beforeSetNumber(placeholder);
-      if (typeof customPlaceholder === "function") {
-        placeholder = customPlaceholder(placeholder, this.#selectedCountryData);
-      }
-      this.#ui.telInput.setAttribute("placeholder", placeholder);
+    if (!intlTelInput.utils || !shouldSetPlaceholder) {
+      return;
     }
+
+    const numberType = intlTelInput.utils.numberType[placeholderNumberType];
+    //* Note: Must set placeholder to empty string if no country selected (globe icon showing).
+    let placeholder = this.#selectedCountryData
+      ? intlTelInput.utils.getExampleNumber(
+          this.#selectedCountryData.iso2,
+          nationalMode,
+          numberType,
+        )
+      : "";
+
+    placeholder = this.#beforeSetNumber(placeholder);
+    if (typeof customPlaceholder === "function") {
+      placeholder = customPlaceholder(placeholder, this.#selectedCountryData);
+    }
+    this.#ui.telInput.setAttribute("placeholder", placeholder);
   }
 
   //* Called when the user selects a list item from the dropdown.
@@ -1193,63 +1212,67 @@ export class Iti {
   //* Note: called from _selectListItem and setCountry
   #updateDialCode(newDialCodeBare: string): void {
     const inputVal = this.#getTelInputValue();
-    //* Save having to pass this every time.
-    const newDialCode = `+${newDialCodeBare}`;
-
-    let newNumber;
-    if (inputVal.startsWith("+")) {
-      //* There's a plus so we're dealing with a replacement.
-      const prevDialCode = this.#getDialCode(inputVal);
-      if (prevDialCode) {
-        //* Current number contains a valid dial code, so replace it.
-        newNumber = inputVal.replace(prevDialCode, newDialCode);
-      } else {
-        //* Current number contains an invalid dial code, so ditch it
-        //* (no way to determine where the invalid dial code ends and the rest of the number begins)
-        newNumber = newDialCode;
-      }
-      this.#setTelInputValue(newNumber);
+    if (!inputVal.startsWith("+")) {
+      return;
     }
+
+    //* There's a plus so we're dealing with a replacement.
+    const newDialCode = `+${newDialCodeBare}`;
+    const prevDialCode = this.#getDialCode(inputVal);
+    let newNumber;
+    if (prevDialCode) {
+      //* Current number contains a valid dial code, so replace it.
+      newNumber = inputVal.replace(prevDialCode, newDialCode);
+    } else {
+      //* Current number contains an invalid dial code, so ditch it
+      //* (no way to determine where the invalid dial code ends and the rest of the number begins)
+      newNumber = newDialCode;
+    }
+    this.#setTelInputValue(newNumber);
   }
 
   //* Try and extract a valid international dial code from a full telephone number.
   //* Note: returns the raw string inc plus character and any whitespace/dots etc.
   #getDialCode(number: string, includeAreaCode?: boolean): string {
-    let dialCode = "";
     //* Only interested in international numbers (starting with a plus)
-    if (number.startsWith("+")) {
-      let numericChars = "";
-      let foundBaseDialCode = false;
-      //* Iterate over chars
-      for (let i = 0; i < number.length; i++) {
-        const c = number.charAt(i);
-        //* If char is number.
-        if (/[0-9]/.test(c)) {
-          numericChars += c;
-          const hasMapEntry = Boolean(this.#dialCodeToIso2Map[numericChars]);
-          if (!hasMapEntry) {
-            // if no mapping for this prefix, stop searching
-            break;
-          }
+    if (!number.startsWith("+")) {
+      return "";
+    }
 
-          // If we've hit a valid base dial code, record it
-          if (this.#dialCodes.has(numericChars)) {
-            dialCode = number.substring(0, i + 1);
-            foundBaseDialCode = true;
-            // if we're not considering area codes, we can stop at the first valid base dial code
-            if (!includeAreaCode) {
-              break;
-            }
-          } else if (includeAreaCode && foundBaseDialCode) {
-            // Only extend beyond a valid base dial code (avoid partial prefixes like +88 for +880)
-            dialCode = number.substring(0, i + 1);
-          }
+    let dialCode = "";
+    let numericChars = "";
+    let foundBaseDialCode = false;
+    //* Iterate over chars
+    for (let i = 0; i < number.length; i++) {
+      const c = number.charAt(i);
+      //* If char is not a number, skip it.
+      if (!/[0-9]/.test(c)) {
+        continue;
+      }
 
-          //* Stop searching as soon as we can - in this case when we hit max len.
-          if (numericChars.length === this.#dialCodeMaxLen) {
-            break;
-          }
+      numericChars += c;
+      const hasMapEntry = Boolean(this.#dialCodeToIso2Map[numericChars]);
+      if (!hasMapEntry) {
+        // if no mapping for this prefix, stop searching
+        break;
+      }
+
+      // If we've hit a valid base dial code, record it
+      if (this.#dialCodes.has(numericChars)) {
+        dialCode = number.substring(0, i + 1);
+        foundBaseDialCode = true;
+        // if we're not considering area codes, we can stop at the first valid base dial code
+        if (!includeAreaCode) {
+          break;
         }
+      } else if (includeAreaCode && foundBaseDialCode) {
+        // Only extend beyond a valid base dial code (avoid partial prefixes like +88 for +880)
+        dialCode = number.substring(0, i + 1);
+      }
+
+      //* Stop searching as soon as we can - in this case when we hit max len.
+      if (numericChars.length === this.#dialCodeMaxLen) {
+        break;
       }
     }
     return dialCode;
@@ -1317,21 +1340,23 @@ export class Iti {
     }
 
     if (
-      this.#options.initialCountry === INITIAL_COUNTRY.AUTO &&
-      intlTelInput.autoCountry
+      this.#options.initialCountry !== INITIAL_COUNTRY.AUTO ||
+      !intlTelInput.autoCountry
     ) {
-      //* We must set this even if there is an initial val in the input: in case the initial val is
-      //* invalid and they delete it - they should see their auto country.
-      this.#defaultCountry = intlTelInput.autoCountry;
-      const hasSelectedCountryOrGlobe =
-        this.#selectedCountryData ||
-        this.#ui.selectedCountryInner!.classList.contains(CLASSES.GLOBE);
-      //* If no country/globe currently selected, then update the country.
-      if (!hasSelectedCountryOrGlobe) {
-        this.setCountry(this.#defaultCountry);
-      }
-      this.#autoCountryDeferred?.resolve();
+      return;
     }
+
+    //* We must set this even if there is an initial val in the input: in case the initial val is
+    //* invalid and they delete it - they should see their auto country.
+    this.#defaultCountry = intlTelInput.autoCountry;
+    const hasSelectedCountryOrGlobe =
+      this.#selectedCountryData ||
+      this.#ui.selectedCountryInner!.classList.contains(CLASSES.GLOBE);
+    //* If no country/globe currently selected, then update the country.
+    if (!hasSelectedCountryOrGlobe) {
+      this.setCountry(this.#defaultCountry);
+    }
+    this.#autoCountryDeferred?.resolve();
   }
 
   //* Called when the geoip call fails or times out.
@@ -1355,17 +1380,20 @@ export class Iti {
       return;
     }
 
-    //* If the request was successful
-    if (intlTelInput.utils) {
-      const inputValue = this.#getTelInputValue();
-      //* If there's an initial value in the input, then format it.
-      if (inputValue) {
-        this.#updateValFromNumber(inputValue);
-      }
-      if (this.#selectedCountryData) {
-        this.#updatePlaceholder();
-        this.#updateMaxLength();
-      }
+    //* If the request was not successful
+    if (!intlTelInput.utils) {
+      this.#utilsScriptDeferred?.resolve();
+      return;
+    }
+
+    const inputValue = this.#getTelInputValue();
+    //* If there's an initial value in the input, then format it.
+    if (inputValue) {
+      this.#updateValFromNumber(inputValue);
+    }
+    if (this.#selectedCountryData) {
+      this.#updatePlaceholder();
+      this.#updateMaxLength();
     }
     this.#utilsScriptDeferred?.resolve();
   }
@@ -1591,16 +1619,18 @@ export class Iti {
     //* There is a country change IF: either there is a new country and it's different to the current one, OR there is no new country (i.e. globe state) and there is a current country
     const isCountryChange =
       (iso2 && iso2Lower !== currentCountry) || (!iso2 && currentCountry);
-    if (isCountryChange) {
-      this.#setCountry(iso2Lower);
-      this.#updateDialCode(this.#selectedCountryData?.dialCode || "");
-      // reformat
-      if (this.#options.formatOnDisplay) {
-        const inputValue = this.#getTelInputValue();
-        this.#updateValFromNumber(inputValue);
-      }
-      this.#triggerCountryChange();
+    if (!isCountryChange) {
+      return;
     }
+
+    this.#setCountry(iso2Lower);
+    this.#updateDialCode(this.#selectedCountryData?.dialCode || "");
+    // reformat
+    if (this.#options.formatOnDisplay) {
+      const inputValue = this.#getTelInputValue();
+      this.#updateValFromNumber(inputValue);
+    }
+    this.#triggerCountryChange();
   }
 
   //* Set the input value and update the country.
