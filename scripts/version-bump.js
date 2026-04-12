@@ -13,7 +13,10 @@ if (!['patch', 'minor', 'major'].includes(level)) {
   process.exit(1);
 }
 
-const run = (cmd, args) => execFileSync(cmd, args, { stdio: 'inherit' });
+const run = (cmd, args) => {
+  console.log(`\n> ${cmd} ${args.join(' ')}`);
+  execFileSync(cmd, args, { stdio: 'inherit' });
+};
 
 // 1. Bump version (no git side effects). `npm version` updates both
 //    package.json and package-lock.json's top-level version.
