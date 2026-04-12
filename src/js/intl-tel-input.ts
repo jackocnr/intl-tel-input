@@ -191,6 +191,9 @@ export class Iti {
     //* Set the initial state of the input value and the selected country.
     this.#setInitialState();
 
+    //* Now that input padding is finalised, set the dropdown width.
+    this.#ui.maybeEnsureDropdownWidthSet();
+
     //* Start all of the event listeners: input keydown, selectedCountry click.
     this.#initListeners();
 

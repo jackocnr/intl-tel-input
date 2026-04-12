@@ -92,7 +92,6 @@ export default class UI {
     this.#maybeBuildCountryContainer(wrapper);
     wrapper.appendChild(this.telInput);
 
-    this.#maybeEnsureDropdownWidthSet();
     this.#maybeUpdateInputPaddingAndReveal();
     this.#maybeBuildHiddenInputs(wrapper);
   }
@@ -195,7 +194,7 @@ export default class UI {
     }
   }
 
-  #maybeEnsureDropdownWidthSet(): void {
+  public maybeEnsureDropdownWidthSet(): void {
     const { fixDropdownWidth, allowDropdown } = this.#options;
 
     // Note: fixDropdownWidth is always false if useFullscreenPopup is true
@@ -728,7 +727,7 @@ export default class UI {
       this.#options;
 
     // if fixDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
-    this.#maybeEnsureDropdownWidthSet();
+    this.maybeEnsureDropdownWidthSet();
 
     // dropdownContainer is used (1) to show the inline dropdown when dropdownContainer option is set, and (2) to show the fullscreen popup on mobile
     if (dropdownContainer) {
