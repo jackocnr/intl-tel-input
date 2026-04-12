@@ -30,5 +30,9 @@ run('git', ['add', '-A']);
 run('git', ['commit', '-m', tag]);
 run('git', ['tag', tag]);
 
-console.log(`\nCreated version commit and tag ${tag}.`);
-console.log('Push with: git push && git push --tags');
+run('git', ['push']);
+run('git', ['push', '--tags']);
+run('npm', ['login']);
+run('npm', ['publish']);
+
+console.log(`\n${tag} committed, tagged, pushed, and published to npm.`);
