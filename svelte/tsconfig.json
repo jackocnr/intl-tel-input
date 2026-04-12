@@ -1,16 +1,13 @@
 {
-  // IDE-only config so Svelte's type-checker can resolve "intl-tel-input"
-  // (via the workspace package.json `exports`) from inside .svelte files.
-  // Not used by any build — svelte components are exported as source.
+  // Used by the IDE for type-checking .svelte files.
   "compilerOptions": {
     "strict": true,
-    "target": "ES2022",
+    "target": "ES2024",
     "module": "esnext",
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "noEmit": true,
     "types": ["svelte"]
   },
   "include": ["src/**/*.ts", "src/**/*.svelte"]

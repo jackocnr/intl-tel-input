@@ -4,21 +4,9 @@
 </script>
 
 <script lang="ts">
-  import type { SomeOptions } from "intl-tel-input";
+  // Resolves to IntlTelInput.svelte.d.ts (the type declaration file for this component).
+  import type { Props } from "./IntlTelInput.svelte";
   import { onMount, onDestroy } from "svelte";
-
-  type Props = SomeOptions & {
-    disabled?: boolean;
-    readonly?: boolean;
-    inputProps?: Record<string, unknown>;
-    initialValue?: string;
-    value?: string | null;
-    usePreciseValidation?: boolean;
-    onChangeNumber?: (number: string) => void;
-    onChangeCountry?: (country: string) => void;
-    onChangeValidity?: (valid: boolean) => void;
-    onChangeErrorCode?: (errorCode: number | null) => void;
-  };
 
   // Props
   let {

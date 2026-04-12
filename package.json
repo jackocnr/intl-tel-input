@@ -166,10 +166,12 @@
       "import": "./angular/dist/IntlTelInputWithUtils.js"
     },
     "./svelte": {
+      "types": "./svelte/src/IntlTelInput.svelte.d.ts",
       "svelte": "./svelte/src/IntlTelInput.svelte",
       "import": "./svelte/src/IntlTelInput.svelte"
     },
     "./svelteWithUtils": {
+      "types": "./svelte/src/IntlTelInput.svelte.d.ts",
       "svelte": "./svelte/src/IntlTelInputWithUtils.svelte",
       "import": "./svelte/src/IntlTelInputWithUtils.svelte"
     },
