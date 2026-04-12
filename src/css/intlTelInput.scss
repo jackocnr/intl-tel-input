@@ -63,6 +63,9 @@
     //* Input is bottom level, below selected country and dropdown.
     z-index: 0;
 
+    //* By default the input is inline, which means any inherited line-height will make the wrapper (and hence the selected country) taller than the input. Block is a better default in this case, given it should fill the wrapper.
+    display: block;
+
     //* Ensure the input fills the wrapper e.g. when the wrapper is inside a flex/grid container.
     //* When the wrapper has no explicit width (standard inline-block), this is a cyclic percentage
     //* and resolves to auto per CSS Sizing 3, so it has no effect and any consumer-set width wins.
