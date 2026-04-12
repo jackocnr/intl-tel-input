@@ -36,10 +36,10 @@ Example:
 
 ## Scaling down the flag images
 
-The flags are rendered at a generous default size so they look crisp on high-DPI displays. If they're too big for your design, you can shrink them in pure CSS by overriding a single variable — `--iti-flag-width`. The height is derived automatically from the 4:3 aspect ratio, and the sprite offsets scale along with it, so every flag stays aligned.
+The flags are rendered at a generous default size so they look crisp on high-DPI displays. If they're too big for your design, you can shrink them in the CSS by overriding a single variable `--iti-flag-width`. The height is derived automatically from the 4:3 aspect ratio, and the sprite offsets scale along with it, so every flag stays aligned.
 
 ```css
-.iti {
+:root {
   --iti-flag-width: 16px;
 }
 ```
