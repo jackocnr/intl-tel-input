@@ -9,7 +9,7 @@
 // We call its programmatic API (instead of the CLI) so all three entry points
 // share one TS compilation pass — measurably faster than spawning the CLI
 // three times, each of which would re-bootstrap tsc from scratch.
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, copyFileSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { generateDtsBundle } from "dts-bundle-generator";
 
@@ -38,3 +38,8 @@ results.forEach((dts, i) => {
   writeFileSync(entries[i].output, dts);
   console.log(`Wrote ${entries[i].output}`);
 });
+
+// utils.js is compiled by Google Closure Compiler (not TypeScript), so its
+// hand-written .d.ts just needs to be copied into dist alongside the others.
+copyFileSync("src/js/types/utils.d.ts", "dist/js/utils.d.ts");
+console.log("Wrote dist/js/utils.d.ts");

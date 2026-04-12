@@ -138,7 +138,7 @@
       "import": "./dist/js/data.mjs"
     },
     "./utils": {
-      "types": "./src/js/types/utils.d.ts",
+      "types": "./dist/js/utils.d.ts",
       "import": "./dist/js/utils.js"
     },
     "./react": {
