@@ -63,6 +63,11 @@
     //* Input is bottom level, below selected country and dropdown.
     z-index: 0;
 
+    //* Ensure the input fills the wrapper e.g. when the wrapper is inside a flex/grid container.
+    //* When the wrapper has no explicit width (standard inline-block), this is a cyclic percentage
+    //* and resolves to auto per CSS Sizing 3, so it has no effect and any consumer-set width wins.
+    min-width: 100%;
+
     //* Since we wrap the input in a container div, any margin here would interfere with the positioning of the selected country.
     margin: 0 !important;
   }
