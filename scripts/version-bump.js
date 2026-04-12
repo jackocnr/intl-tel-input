@@ -32,10 +32,14 @@ const tag = `v${version}`;
 run('git', ['add', '-A']);
 run('git', ['commit', '-m', tag]);
 run('git', ['tag', tag]);
-
 run('git', ['push']);
 run('git', ['push', '--tags']);
-run('npm', ['login']);
+
+try {
+  execFileSync('npm', ['whoami'], { stdio: 'pipe' });
+} catch {
+  run('npm', ['login']);
+}
 run('npm', ['publish']);
 
 console.log(`\n${tag} committed, tagged, pushed, and published to npm.`);
