@@ -49,7 +49,7 @@ async function fetchStats() {
   const statsPath = path.join(import.meta.dirname, "..", "tmp", "stats.json");
 
   // Default/fallback values
-  const defaults = { websites: "130k", downloads: "3.2M", stars: "8.2k" };
+  const defaults = { websites: "137k", downloads: "3.2M", stars: "8.2k" };
 
   const isProd = process.argv.includes("--env=prod");
   if (!isProd) {
