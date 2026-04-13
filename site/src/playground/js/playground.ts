@@ -702,13 +702,18 @@ function isValidIso2Array(value, validIso2s) {
     return null;
   } // empty = neutral, no class
   let parsed;
-  try {
-    parsed = JSON.parse(trimmed.replace(/'/g, "\""));
-  } catch {
-    return false;
-  }
-  if (!Array.isArray(parsed)) {
-    return false;
+  // Accept bare comma-separated values (e.g. "us, gb") as well as JSON arrays.
+  if (!trimmed.startsWith("[")) {
+    parsed = trimmed.split(",").map((s) => s.trim()).filter(Boolean);
+  } else {
+    try {
+      parsed = JSON.parse(trimmed.replace(/'/g, "\""));
+    } catch {
+      return false;
+    }
+    if (!Array.isArray(parsed)) {
+      return false;
+    }
   }
   return parsed.every((item) => typeof item === "string" && validIso2s.has(item.toLowerCase()));
 }

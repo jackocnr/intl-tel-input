@@ -20,6 +20,14 @@ export function parseBooleanParam(value, fallback) {
 // (e.g. ['us', 'gb']) rather than strict JSON (e.g. ["us", "gb"]).
 // Avoid eval; instead, do a minimal, safe normalization and retry JSON.parse.
 const cleanTextForJson = (text) => {
+  // If the text doesn't start with [ or {, treat it as a bare comma-separated
+  // list of strings (e.g. "us, gb") and wrap it into a JSON array.
+  const trimmed = text.trim();
+  if (trimmed && !trimmed.startsWith("[") && !trimmed.startsWith("{")) {
+    const items = trimmed.split(",").map((s) => s.trim()).filter(Boolean);
+    return JSON.stringify(items);
+  }
+
   const withoutTrailingCommas = text.replace(/,\s*([\]}])/g, "$1");
   const normalizedQuotes = withoutTrailingCommas.replace(/'((?:\\.|[^'\\])*)'/g, (_m, inner) => {
     // Basic support for common escapes used in these inputs.
