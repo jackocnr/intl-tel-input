@@ -268,9 +268,9 @@ const getI18nLanguages = () => {
   try {
     const i18nDir = path.join(BUILD_DIR, "intl-tel-input", "js", "i18n");
     return fs
-      .readdirSync(i18nDir, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
-      .map((d) => d.name)
+      .readdirSync(i18nDir)
+      .filter((f) => f.endsWith(".js") && f !== "index.js" && f !== "types.js")
+      .map((f) => f.replace(/\.js$/, ""))
       .filter(Boolean)
       .sort((a, b) => a.localeCompare(b));
   } catch {

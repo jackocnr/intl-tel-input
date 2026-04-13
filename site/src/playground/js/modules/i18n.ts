@@ -71,7 +71,7 @@ export async function resolveI18nSelection(value, { i18nDirHash }) {
   }
 
   try {
-    const mod = await import(`/intl-tel-input/js/i18n/${code}/index.js?${i18nDirHash}`);
+    const mod = await import(`/intl-tel-input/js/i18n/${code}.js?${i18nDirHash}`);
     return mod && mod.default ? mod.default : null;
   } catch {
     return null;
