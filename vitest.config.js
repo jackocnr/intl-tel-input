@@ -19,5 +19,15 @@ export default defineConfig({
     forks: {
       execArgv: ["--disable-warning=DEP0040"],
     },
+    coverage: {
+      provider: "v8",
+      include: ["src/js/**/*.ts"],
+      exclude: [
+        "src/js/i18n/**",
+        "src/js/types/**",
+      ],
+      reporter: ["text", "html", "lcov"],
+      reportsDirectory: "coverage",
+    },
   },
 });

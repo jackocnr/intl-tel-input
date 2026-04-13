@@ -16,4 +16,5 @@
 /*/demo/*/*-bundle.js
 /test-results/
 /playwright-report/
+/coverage/
 /.claude/
