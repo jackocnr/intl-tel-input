@@ -14,7 +14,6 @@ import type {
   SelectedCountryData,
 } from "./types/public-api";
 import { getNumeric } from "./helpers/string";
-import { getIsAndroid } from "./helpers/isAndroid";
 import { findFirstCountryStartingWith } from "./core/countrySearch";
 import UI from "./core/ui";
 import {
@@ -127,7 +126,7 @@ export class Iti {
     applyOptionSideEffects(this.#options);
 
     this.#ui = new UI(input, this.#options, this.id);
-    this.#isAndroid = getIsAndroid();
+    this.#isAndroid = typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent);
     this.#numerals = new Numerals(input.value);
     this.promise = this.#createInitPromises(this.#options);
 
