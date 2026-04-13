@@ -4,22 +4,41 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>International Telephone Input</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="dist/css/intlTelInput.css" />
     <link rel="stylesheet" href="dist/css/demo.css" />
+    <!-- Bootstrap v5.3 requires a data-bs-theme attribute to support dark mode -->
+    <script>
+      const setTheme = () => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const theme = mediaQuery.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+      };
+      setTheme();
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setTheme);
+    </script>
   </head>
 
   <body>
     <h1>International Telephone Input</h1>
-    <form>
-      <input id="phone" name="phone" type="tel" value="" />
-      <button class="button" id="btn" type="button">Validate</button>
-      <span id="valid-msg" class="hide"></span>
-      <span id="error-msg" class="hide"></span>
+    <form id="form" novalidate>
+      <div class="d-flex align-items-start gap-2">
+        <div>
+          <input id="phone" name="phone" type="tel" class="form-control" required />
+          <div id="error-msg" class="invalid-feedback d-block"></div>
+          <div id="valid-msg" class="valid-feedback d-block"></div>
+        </div>
+        <button class="btn btn-primary" id="btn" type="submit">Validate</button>
+      </div>
     </form>
 
     <script src="dist/js/intlTelInputWithUtils.js"></script>
     <script>
+      const form = document.querySelector("#form");
       const input = document.querySelector("#phone");
+      const errorMsg = document.querySelector("#error-msg");
+      const validMsg = document.querySelector("#valid-msg");
+
       const iti = window.intlTelInput(input, {
         // allowDropdown: false,
         // allowedNumberTypes: ["TOLL_FREE"],
@@ -55,14 +74,14 @@
         // separateDialCode: true,
         // strictMode: true,
         // useFullscreenPopup: true,
+        searchInputClass: "form-control",
       });
       window.iti = iti; // useful for testing
 
-      const button = document.querySelector("#btn");
-      const errorMsg = document.querySelector("#error-msg");
-      const validMsg = document.querySelector("#valid-msg");
-
-      const getErrorMessage = (errorCode) => {
+      const getErrorMessage = (number, errorCode) => {
+        if (!number) {
+          return "Please enter a number";
+        }
         const genericError = "Invalid number";
         const { validationError } = window.intlTelInput.utils;
         const errorMap = {
@@ -74,38 +93,53 @@
         return errorMap[errorCode] || genericError;
       };
 
-      const reset = () => {
-        input.classList.remove("error");
-        errorMsg.innerHTML = "";
-        validMsg.innerHTML = "";
-        errorMsg.classList.add("hide");
-        validMsg.classList.add("hide");
-      };
+      let showValidation = false;
+      let submitted = false;
 
-      const showError = (msg) => {
-        input.classList.add("error");
-        errorMsg.innerHTML = msg;
-        errorMsg.classList.remove("hide");
-      };
-
-      // on click button: validate
-      button.addEventListener('click', () => {
-        reset();
-        if (!input.value.trim()) {
-          showError("Required");
-        } else if (iti.isValidNumber()) {
-          validMsg.innerHTML = "Valid number: " + iti.getNumber();
-          validMsg.classList.remove("hide");
-        } else {
-          const errorCode = iti.getValidationError();
-          const msg = getErrorMessage(errorCode);
-          showError(msg);
+      const updateUI = () => {
+        if (!showValidation) {
+          return;
         }
+
+        const value = input.value.trim();
+        const isValid = Boolean(value) && iti.isValidNumber() === true;
+
+        input.classList.toggle("is-valid", isValid);
+        input.classList.toggle("is-invalid", !isValid);
+
+        if (!isValid) {
+          const errorCode = iti.getValidationError();
+          errorMsg.textContent = getErrorMessage(value, errorCode);
+        } else {
+          errorMsg.textContent = "";
+        }
+
+        const showValid = Boolean(value) && isValid && submitted;
+        validMsg.textContent = showValid ? "Full number: " + iti.getNumber() : "";
+      };
+
+      // on submit: validate (and show "Full number" if valid)
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        showValidation = true;
+        submitted = true;
+        updateUI();
       });
 
-      // on keyup / change flag: reset
-      input.addEventListener('change', reset);
-      input.addEventListener('keyup', reset);
+      // on blur: enable validation UI
+      input.addEventListener("blur", () => {
+        showValidation = true;
+        updateUI();
+      });
+
+      // while typing / changing country: remove submitted state and update validity
+      const handleUserInput = () => {
+        submitted = false;
+        updateUI();
+      };
+
+      input.addEventListener("input", handleUserInput);
+      input.addEventListener("countrychange", handleUserInput);
     </script>
   </body>
 </html>

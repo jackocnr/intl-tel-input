@@ -57,24 +57,24 @@ input::placeholder {
 @media (prefers-color-scheme: dark) {
   // general site styling
   body, input {
-    color: white;
-    background-color: #0d1117;
+    color: #dee2e6;
+    background-color: #212529;
   }
   input[disabled] {
     background-color: #3c3c3c;
   }
   input {
-    border-color: #5b5b5b;
+    border-color: #495057;
   }
   input::placeholder {
-    color: #8d96a0;
+    color: #5a5a5a;
   }
   // intl-tel-input styling
   .iti {
-    --iti-border-color: #5b5b5b;
-    --iti-dropdown-bg: #0d1117;
+    --iti-border-color: #495057;
+    --iti-dropdown-bg: #212529;
     --iti-hover-color: #30363d;
-    --iti-icon-color: #aaa;
+    --iti-icon-color: #dee2e6;
   }
 }
 
