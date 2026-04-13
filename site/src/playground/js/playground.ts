@@ -32,6 +32,7 @@ const infoIconTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygr
 const optionGroupTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundOptionGroupTemplate");
 const iso2ModalEl = document.querySelector<HTMLElement>("#itiPlaygroundIso2Modal");
 const iso2ModalTableBody = document.querySelector<HTMLElement>("#itiPlaygroundIso2ModalTableBody");
+const iso2ModalSearch = document.querySelector<HTMLInputElement>("#itiPlaygroundIso2ModalSearch");
 
 const KEEP_DROPDOWN_OPEN_PARAM = "keepDropdownOpen";
 
@@ -651,16 +652,21 @@ function getSupportedCountries() {
   return Array.isArray(data) ? data : [];
 }
 
-function renderSupportedCountriesTable() {
+function renderSupportedCountriesTable(filter = "") {
   if (!iso2ModalTableBody) {
     return;
   }
   iso2ModalTableBody.innerHTML = "";
 
   const countries = getSupportedCountries();
+  const query = filter.toLowerCase().trim();
 
   const fragment = document.createDocumentFragment();
   countries.forEach(({ name, iso2, dialCode }) => {
+    if (query && !name.toLowerCase().includes(query) && !iso2.includes(query) && !("+"+dialCode).includes(query)) {
+      return;
+    }
+
     const row = document.createElement("tr");
 
     const countryCell = document.createElement("td");
@@ -681,11 +687,33 @@ function renderSupportedCountriesTable() {
   });
 
   iso2ModalTableBody.appendChild(fragment);
+
+  if (query && iso2ModalTableBody.childElementCount === 0) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 2;
+    cell.className = "text-center text-muted py-3";
+    cell.textContent = "No countries found";
+    row.appendChild(cell);
+    iso2ModalTableBody.appendChild(row);
+  }
 }
 
 if (iso2ModalEl) {
   iso2ModalEl.addEventListener("show.bs.modal", () => {
+    if (iso2ModalSearch) {
+      iso2ModalSearch.value = "";
+    }
     renderSupportedCountriesTable();
+  });
+  iso2ModalEl.addEventListener("shown.bs.modal", () => {
+    iso2ModalSearch?.focus();
+  });
+}
+
+if (iso2ModalSearch) {
+  iso2ModalSearch.addEventListener("input", () => {
+    renderSupportedCountriesTable(iso2ModalSearch.value);
   });
 }
 
