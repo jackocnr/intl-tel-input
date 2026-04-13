@@ -413,7 +413,7 @@ describe("UI.setCountry", () => {
   test("marks list item as selected with aria and check icon", () => {
     const { ui } = buildUI();
     ui.setCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
-    const gbItem = ui.countryList.querySelector('[data-country-code="gb"]');
+    const gbItem = ui.countryList.querySelector("[data-country-code=\"gb\"]");
     expect(gbItem.getAttribute(ARIA.SELECTED)).toBe("true");
     expect(gbItem.querySelector(".iti__country-check")).not.toBeNull();
   });
@@ -423,8 +423,8 @@ describe("UI.setCountry", () => {
     ui.setCountry({ iso2: "us", dialCode: "1", name: "United States" });
     ui.setCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
 
-    const usItem = ui.countryList.querySelector('[data-country-code="us"]');
-    const gbItem = ui.countryList.querySelector('[data-country-code="gb"]');
+    const usItem = ui.countryList.querySelector("[data-country-code=\"us\"]");
+    const gbItem = ui.countryList.querySelector("[data-country-code=\"gb\"]");
     expect(usItem.getAttribute(ARIA.SELECTED)).toBe("false");
     expect(usItem.querySelector(".iti__country-check")).toBeNull();
     expect(gbItem.getAttribute(ARIA.SELECTED)).toBe("true");
