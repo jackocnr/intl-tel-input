@@ -120,6 +120,23 @@ describe("React IntlTelInput wrapper", () => {
     expect(input.getAttribute("placeholder")).toBe("enter number");
   });
 
+  test("initOptions are init-only: changing initialCountry on re-render is a no-op", () => {
+    const ref = createRef();
+    const { rerender } = render(<IntlTelInput ref={ref} initialCountry="gb" />);
+    expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
+    rerender(<IntlTelInput ref={ref} initialCountry="fr" />);
+    // initOptions snapshot at mount time only; re-rendering does not re-init the plugin
+    expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
+  });
+
+  test("ref.current stays stable across re-renders", () => {
+    const ref = createRef();
+    const { rerender } = render(<IntlTelInput ref={ref} value="" />);
+    const firstInstance = ref.current.getInstance();
+    rerender(<IntlTelInput ref={ref} value="+44" />);
+    expect(ref.current.getInstance()).toBe(firstInstance);
+  });
+
   test("warns and ignores unsafe inputProps (type, value, disabled, readOnly, onInput)", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const ignoredOnInput = vi.fn();

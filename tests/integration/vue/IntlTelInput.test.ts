@@ -130,6 +130,53 @@ describe("Vue IntlTelInput wrapper", () => {
     expect(input.getAttribute("placeholder")).toBe("enter number");
   });
 
+  test("modelValue takes precedence over initialValue when both are provided", async () => {
+    const itiRef = ref<{ instance: { getSelectedCountryData: () => { iso2: string } } | null } | null>(null);
+    const Wrapper = defineComponent({
+      setup() {
+        return () => h(IntlTelInput, {
+          ref: itiRef,
+          modelValue: "+447733123456",
+          initialValue: "+33123456789",
+        });
+      },
+    });
+    render(Wrapper);
+    await waitFor(() => expect(itiRef.value?.instance).toBeTruthy());
+    // +44 means GB, so modelValue wins over initialValue (+33 = FR)
+    expect(itiRef.value!.instance!.getSelectedCountryData().iso2).toBe("gb");
+  });
+
+  test("falls back to initialValue when modelValue is null/undefined", async () => {
+    const itiRef = ref<{ instance: { getSelectedCountryData: () => { iso2: string } } | null } | null>(null);
+    const Wrapper = defineComponent({
+      setup() {
+        return () => h(IntlTelInput, {
+          ref: itiRef,
+          modelValue: null,
+          initialValue: "+447733123456",
+        });
+      },
+    });
+    render(Wrapper);
+    await waitFor(() => expect(itiRef.value?.instance).toBeTruthy());
+    expect(itiRef.value!.instance!.getSelectedCountryData().iso2).toBe("gb");
+  });
+
+  test("omitted boolean props do not override plugin defaults (e.g. nationalMode)", async () => {
+    const { container } = render(IntlTelInput, { props: { initialCountry: "us" } });
+    await waitFor(() => {
+      const input = container.querySelector("input") as HTMLInputElement;
+      expect(input.parentElement?.classList.contains("iti")).toBe(true);
+    });
+    // If boolean props were coerced to false, nationalMode (default true) would be wrong.
+    // Assert via behavior: typing a US national number should not auto-prepend the +1 dial code.
+    const input = getTelInput();
+    input.value = "7024181234";
+    input.dispatchEvent(new Event("input"));
+    expect(input.value).not.toContain("+1");
+  });
+
   test("warns and ignores unsafe inputProps (type, value, disabled, readonly, oninput)", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const ignoredOnInput = vi.fn();

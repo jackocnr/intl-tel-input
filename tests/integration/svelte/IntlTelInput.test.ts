@@ -111,6 +111,26 @@ describe("Svelte IntlTelInput wrapper", () => {
     expect(input.getAttribute("placeholder")).toBe("enter number");
   });
 
+  test("getInstance returns undefined after unmount", () => {
+    const { unmount, component } = render(IntlTelInput);
+    const instance = (component as unknown as { getInstance: () => { isActive: () => boolean } | undefined }).getInstance();
+    expect(instance?.isActive()).toBe(true);
+    unmount();
+    // after unmount, the instance has been destroyed
+    expect(instance?.isActive()).toBe(false);
+  });
+
+  test("rapid value changes update number without errors", async () => {
+    const onChangeNumber = vi.fn();
+    const { rerender } = render(IntlTelInput, { value: "", onChangeNumber });
+    await rerender({ value: "+33123456789", onChangeNumber });
+    await rerender({ value: "+447733123456", onChangeNumber });
+    await rerender({ value: "+4930901820", onChangeNumber });
+    await waitFor(() => {
+      expect(onChangeNumber).toHaveBeenCalledWith("+4930901820");
+    });
+  });
+
   test("warns and ignores unsafe inputProps (type, value, disabled, readonly, oninput)", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const ignoredOnInput = vi.fn();

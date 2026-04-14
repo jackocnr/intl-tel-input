@@ -28,6 +28,31 @@ describe("data/country-data processAllCountries", () => {
   });
 });
 
+describe("data integrity", () => {
+  test("every country has iso2 (2 lowercase letters) and a dialCode", () => {
+    for (const c of allCountries) {
+      expect(c.iso2).toMatch(/^[a-z]{2}$/);
+      expect(typeof c.dialCode).toBe("string");
+      expect(c.dialCode.length).toBeGreaterThan(0);
+      expect(c.dialCode).toMatch(/^\d+$/);
+    }
+  });
+
+  test("iso2 codes are unique across all countries", () => {
+    const seen = new Set();
+    for (const c of allCountries) {
+      expect(seen.has(c.iso2)).toBe(false);
+      seen.add(c.iso2);
+    }
+  });
+
+  test("raw data has name field (populated at runtime by generateCountryNames)", () => {
+    for (const c of allCountries) {
+      expect(typeof c.name).toBe("string");
+    }
+  });
+});
+
 describe("data/country-data processDialCodes", () => {
   test("creates dial code map and length", () => {
     const sample = allCountries.slice(0, 5);

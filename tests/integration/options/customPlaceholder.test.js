@@ -25,3 +25,26 @@ describe("customPlaceholder option", () => {
     expect(input.getAttribute("placeholder")).toEqual("e.g. 07400 123456");
   });
 });
+
+describe("customPlaceholder with empty country (globe state)", () => {
+  afterEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  test("receives null countryData and empty placeholder when no country selected", () => {
+    const calls = [];
+    const options = {
+      autoPlaceholder: "polite",
+      customPlaceholder: (p, countryData) => {
+        calls.push({ p, countryData });
+        return `pl:${p}`;
+      },
+    };
+    const { iti, input } = initPlugin({ options });
+    expect(calls.length).toBeGreaterThan(0);
+    expect(calls[0].countryData).toBeNull();
+    expect(calls[0].p).toEqual("");
+    expect(input.getAttribute("placeholder")).toEqual("pl:");
+    iti.destroy();
+  });
+});

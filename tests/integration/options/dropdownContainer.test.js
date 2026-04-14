@@ -64,4 +64,34 @@ describe("dropdownContainer option", () => {
       expect(getCountryListElement(root)).toBeFalsy();
     });
   });
+
+  describe("dropdownContainer=custom element", () => {
+    let iti, container, user, customContainer;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+      customContainer = document.createElement("div");
+      customContainer.id = "custom-dd-container";
+      document.body.appendChild(customContainer);
+      ({ iti, container } = initPlugin({ options: { dropdownContainer: customContainer } }));
+    });
+
+    afterEach(() => {
+      teardown(iti);
+      customContainer.remove();
+    });
+
+    test("injects dropdown into the custom container on open", async () => {
+      expect(getCountryListElement(customContainer)).toBeFalsy();
+      await clickSelectedCountryAsync(container, user);
+      expect(getCountryListElement(customContainer)).toBeTruthy();
+    });
+
+    test("still injects into document even when container detached from DOM", async () => {
+      customContainer.remove(); // detach before opening
+      await clickSelectedCountryAsync(container, user);
+      // dropdown goes into the (now-detached) container; should not throw
+      expect(getCountryListElement(customContainer)).toBeTruthy();
+    });
+  });
 });

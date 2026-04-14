@@ -24,3 +24,39 @@ describe("countryOrder option", () => {
     expect(list[3]).toBe("us");
   });
 });
+
+describe("countryOrder + excludeCountries", () => {
+  let iti, container;
+
+  beforeEach(() => {
+    const options = { excludeCountries: ["fr"], countryOrder: ["us", "fr", "gb"] };
+    ({ iti, container } = initPlugin({ options }));
+  });
+
+  afterEach(() => teardown(iti));
+
+  test("excluded country is not in list, even if in countryOrder", () => {
+    const list = getCountriesInList(container);
+    expect(list).not.toContain("fr");
+    expect(list[0]).toBe("us");
+    expect(list[1]).toBe("gb");
+  });
+});
+
+describe("countryOrder with non-existent code", () => {
+  let iti, container;
+
+  beforeEach(() => {
+    const options = { onlyCountries: ["us", "gb"], countryOrder: ["zz", "gb", "us"] };
+    ({ iti, container } = initPlugin({ options }));
+  });
+
+  afterEach(() => teardown(iti));
+
+  test("unknown codes in countryOrder are ignored", () => {
+    const list = getCountriesInList(container);
+    expect(list.length).toBe(2);
+    expect(list[0]).toBe("gb");
+    expect(list[1]).toBe("us");
+  });
+});

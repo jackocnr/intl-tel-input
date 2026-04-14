@@ -24,6 +24,59 @@ describe("geoIpLookup option", () => {
     });
   });
 
+  describe("geoIpLookup failure path", () => {
+    let iti, rejected;
+
+    beforeEach(async () => {
+      rejected = false;
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+      const options = {
+        initialCountry: "auto",
+        geoIpLookup: (_success, failure) => setTimeout(() => failure(), 0),
+      };
+      ({ iti } = initPlugin({ options }));
+      iti.promise.catch(() => {
+        rejected = true;
+      });
+    });
+
+    afterEach(() => {
+      teardown(iti);
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+    });
+
+    test("iti.promise rejects when failure callback invoked", async () => {
+      await expect(iti.promise).rejects.toBeUndefined();
+      expect(rejected).toBe(true);
+    });
+  });
+
+  describe("geoIpLookup invalid iso2 response", () => {
+    let iti;
+
+    beforeEach(() => {
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+      const options = {
+        initialCountry: "auto",
+        geoIpLookup: (cb) => setTimeout(() => cb("zz"), 0),
+      };
+      ({ iti } = initPlugin({ options }));
+    });
+
+    afterEach(() => {
+      teardown(iti);
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+    });
+
+    test("treated as failure: iti.promise rejects", async () => {
+      await expect(iti.promise).rejects.toBeUndefined();
+    });
+  });
+
   describe("geoIpLookup and initialCountry=auto", () => {
     let iti, resolved;
 
