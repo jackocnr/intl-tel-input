@@ -175,13 +175,24 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     }
   }
 
+  // The iti plugin reparents the input into its own `.iti` wrapper at init time.
+  // If the <input> is the component's direct output, React's fiber tree (which still
+  // thinks the input is a direct child of its host container) and the real DOM diverge,
+  // and React 19's commit phase throws NotFoundError when it tries to call
+  // parent.removeChild(input) on the wrong parent. Wrapping the input in a stable
+  // React-owned element means React only ever needs to mutate *that* element as a
+  // child of its container - iti's reparenting happens entirely inside it.
+  // `display: contents` keeps the wrapper out of the layout tree so iti's own
+  // styling (inline-block on `.iti`) is preserved.
   return (
-    <input
-      {...(sanitizedInputProps as InputProps)}
-      type="tel"
-      ref={inputRef}
-      onInput={update}
-    />
+    <span style={{ display: "contents" }}>
+      <input
+        {...(sanitizedInputProps as InputProps)}
+        type="tel"
+        ref={inputRef}
+        onInput={update}
+      />
+    </span>
   );
 });
 
