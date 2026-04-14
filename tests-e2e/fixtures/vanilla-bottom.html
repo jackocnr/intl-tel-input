@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>intl-tel-input fixture (input at bottom of viewport)</title>
+    <link rel="stylesheet" href="/dist/css/intlTelInput.css" />
+    <style>
+      body { font-family: -apple-system, system-ui, sans-serif; margin: 0; }
+      #phone { width: 260px; padding: 8px 10px; font-size: 16px; }
+      .spacer { height: 560px; }
+      .container { padding: 0 24px 24px; }
+    </style>
+  </head>
+  <body>
+    <div class="spacer"></div>
+    <div class="container">
+      <input id="phone" type="tel" />
+    </div>
+
+    <script src="/dist/js/intlTelInputWithUtils.js"></script>
+    <script>
+      const input = document.querySelector('#phone');
+      window.iti = window.intlTelInput(input);
+    </script>
+  </body>
+</html>

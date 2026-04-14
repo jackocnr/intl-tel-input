@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>intl-tel-input fixture (RTL)</title>
+    <link rel="stylesheet" href="/dist/css/intlTelInput.css" />
+    <style>
+      body { font-family: -apple-system, system-ui, sans-serif; padding: 24px; }
+      #phone { width: 260px; padding: 8px 10px; font-size: 16px; }
+      .container { margin-top: 16px; }
+    </style>
+  </head>
+  <body>
+    <h1>Fixture</h1>
+    <div class="container">
+      <input id="phone" type="tel" />
+    </div>
+
+    <script src="/dist/js/intlTelInputWithUtils.js"></script>
+    <script type="module">
+      import ar from "/dist/js/i18n/ar.js";
+      const input = document.querySelector('#phone');
+      window.iti = window.intlTelInput(input, { i18n: ar, initialCountry: "sa", countryNameLocale: "ar" });
+    </script>
+  </body>
+</html>
