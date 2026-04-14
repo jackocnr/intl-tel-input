@@ -652,6 +652,8 @@ function getSupportedCountries() {
   return Array.isArray(data) ? data : [];
 }
 
+const englishDisplayNames = new Intl.DisplayNames(["en"], { type: "region" });
+
 function renderSupportedCountriesTable(filter = "") {
   if (!iso2ModalTableBody) {
     return;
@@ -662,7 +664,8 @@ function renderSupportedCountriesTable(filter = "") {
   const query = filter.toLowerCase().trim();
 
   const fragment = document.createDocumentFragment();
-  countries.forEach(({ name, iso2, dialCode }) => {
+  countries.forEach(({ iso2, dialCode }) => {
+    const name = englishDisplayNames.of(iso2.toUpperCase()) || iso2;
     if (query && !name.toLowerCase().includes(query) && !iso2.includes(query) && !("+"+dialCode).includes(query)) {
       return;
     }
