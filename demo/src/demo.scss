@@ -1,0 +1,51 @@
+// This file is used for the demo.html page, as well as the component demo pages.
+
+@use "bootstrap/scss/bootstrap";
+@use "intlTelInputWithAssets.scss";
+
+body {
+  margin: 20px;
+}
+input[type="tel"] {
+  width: 250px;
+}
+
+// override bootstrap default placeholder color which is too high contrast for our design
+.form-control::placeholder {
+  color: #bbb;
+
+  @media (prefers-color-scheme: dark) {
+    color: #5a5a5a;
+  }
+}
+
+//* For react demo.
+.notice {
+  margin-top: 15px;
+}
+
+// match bootstrap input border radius
+.iti__selected-country-primary {
+  border-top-left-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
+}
+.iti__dropdown-content,
+.iti__search-input {
+  border-radius: var(--bs-border-radius);
+}
+
+:root {
+  /* fix flag image paths (demo.css lives in demo/dist/ not dist/css/) */
+  --iti-path-flags-1x: url("../../dist/img/flags.webp");
+  --iti-path-flags-2x: url("../../dist/img/flags@2x.webp");
+
+  /* plugin overrides (NOTE: the bootstrap vars handle dark mode automatically) */
+  --iti-border-color: var(--bs-border-color);
+  --iti-dropdown-bg: var(--bs-body-bg);
+  --iti-icon-color: var(--bs-body-color);
+  --iti-hover-color: #f8f9fa;
+
+  @media (prefers-color-scheme: dark) {
+    --iti-hover-color: #30363d;
+  }
+}
