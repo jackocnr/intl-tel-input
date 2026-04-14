@@ -39,4 +39,28 @@ test.describe("visual snapshots", () => {
 
     await expect(page).toHaveScreenshot("vanilla-us-number.png");
   });
+
+  test("dropdown open", async ({ page }) => {
+    await page.locator(".iti__selected-country").click();
+    await expect(page.locator(".iti__country-list")).toBeVisible();
+
+    await expect(page).toHaveScreenshot("vanilla-dropdown-open.png");
+  });
+});
+
+test.describe("visual snapshots - useFullscreenPopup", () => {
+  test.skip(
+    process.platform !== "linux",
+    "Visual snapshots are recorded on Linux to avoid cross-platform rendering diffs.",
+  );
+
+  test("fullscreen popup open", async ({ page }) => {
+    await page.goto("/tests-e2e/fixtures/vanilla-fullscreen.html");
+    await expect(page.locator(".iti")).toBeVisible();
+
+    await page.locator(".iti__selected-country").click();
+    await expect(page.locator(".iti__country-list")).toBeVisible();
+
+    await expect(page).toHaveScreenshot("vanilla-fullscreen-popup-open.png");
+  });
 });
