@@ -96,6 +96,29 @@ describe("Angular IntlTelInput wrapper", () => {
     expect(errorCodeChange).toHaveBeenLastCalledWith(null);
   });
 
+  test("emits numberChange / countryChange / validityChange / errorCodeChange when the value changes via writeValue (ControlValueAccessor)", async () => {
+    const { component } = mount();
+    const numberChange = vi.fn();
+    const countryChange = vi.fn();
+    const validityChange = vi.fn();
+    const errorCodeChange = vi.fn();
+    component.numberChange.subscribe(numberChange);
+    component.countryChange.subscribe(countryChange);
+    component.validityChange.subscribe(validityChange);
+    component.errorCodeChange.subscribe(errorCodeChange);
+
+    const instance = component.getInstance()!;
+    await instance.promise;
+
+    component.writeValue("+447733123456");
+
+    await waitUntil(() => numberChange.mock.calls.length > 0);
+    expect(numberChange).toHaveBeenCalledWith("+447733123456");
+    expect(countryChange).toHaveBeenCalledWith("gb");
+    expect(validityChange).toHaveBeenCalledWith(true);
+    expect(errorCodeChange).toHaveBeenLastCalledWith(null);
+  });
+
   test("disabled input toggles the input disabled state", () => {
     const { fixture } = mount({ disabled: true });
     expect(getTelInput(fixture).disabled).toBe(true);

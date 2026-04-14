@@ -17,6 +17,15 @@ describe("Svelte IntlTelInput wrapper", () => {
     expect(input.parentElement?.classList.contains("iti")).toBe(true);
   });
 
+  test("exposes the underlying iti instance and input via getInstance/getInput", () => {
+    const { component } = render(IntlTelInput);
+    const instance = (component as unknown as { getInstance: () => { isActive: () => boolean } | undefined }).getInstance();
+    const input = (component as unknown as { getInput: () => HTMLInputElement | undefined }).getInput();
+    expect(instance).toBeTruthy();
+    expect(instance!.isActive()).toBe(true);
+    expect(input).toBe(getTelInput());
+  });
+
   test("destroys the iti instance on unmount", () => {
     const { unmount, container } = render(IntlTelInput);
     const input = container.querySelector("input") as HTMLInputElement;

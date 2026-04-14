@@ -1,6 +1,6 @@
 import { render, screen, waitFor, cleanup } from "@testing-library/vue";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { nextTick } from "vue";
+import { defineComponent, h, nextTick, ref } from "vue";
 import IntlTelInput, { intlTelInput } from "../../../vue/src/indexWithUtils";
 
 const getTelInput = () => screen.getByRole("textbox") as HTMLInputElement;
@@ -19,11 +19,16 @@ describe("Vue IntlTelInput wrapper", () => {
   });
 
   test("exposes the underlying iti instance and input via defineExpose", async () => {
-    const { container } = render(IntlTelInput);
-    const input = container.querySelector("input") as HTMLInputElement;
-    await waitFor(() => expect(input.parentElement?.classList.contains("iti")).toBe(true));
-    // sanity: instance is active
-    expect(input.getAttribute("type")).toBe("tel");
+    const itiRef = ref<{ instance: { isActive: () => boolean } | null; input: HTMLInputElement | null } | null>(null);
+    const Wrapper = defineComponent({
+      setup() {
+        return () => h(IntlTelInput, { ref: itiRef });
+      },
+    });
+    render(Wrapper);
+    await waitFor(() => expect(itiRef.value?.instance).toBeTruthy());
+    expect(itiRef.value!.instance!.isActive()).toBe(true);
+    expect(itiRef.value!.input).toBeInstanceOf(HTMLInputElement);
   });
 
   test("destroys the iti instance on unmount", async () => {
