@@ -65,6 +65,19 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     getInput: () => inputRef.current,
   }));
 
+  const seedInitialState = useCallback((): void => {
+    if (!itiRef.current?.isActive()) {
+      return;
+    }
+    lastEmittedNumberRef.current = itiRef.current.getNumber() ?? "";
+    lastEmittedCountryRef.current = itiRef.current.getSelectedCountryData()?.iso2 ?? "";
+    const isValid = (usePreciseValidation
+      ? itiRef.current.isValidNumberPrecise()
+      : itiRef.current.isValidNumber()) ?? false;
+    lastEmittedValidityRef.current = isValid;
+    lastEmittedErrorCodeRef.current = isValid ? null : itiRef.current.getValidationError();
+  }, [usePreciseValidation]);
+
   const update = useCallback((): void => {
     // if the instance is not valid (e.g. has been destroyed/unmounted), do not attempt to call any methods on it
     if (!itiRef.current?.isActive()) {
@@ -120,15 +133,16 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     const inputRefCurrent = inputRef.current;
     if (inputRefCurrent) {
       inputRefCurrent.addEventListener("countrychange", update);
-      // when plugin initialisation has finished (e.g. loaded utils script), update all the state values
-      itiRef.current?.promise.then(update);
+      // when plugin initialisation has finished (e.g. loaded utils script), seed the refs
+      // with the current state so we don't fire change callbacks on initial mount
+      itiRef.current?.promise.then(seedInitialState);
     }
     return (): void => {
       if (inputRefCurrent) {
         inputRefCurrent.removeEventListener("countrychange", update);
       }
     };
-  }, [update]);
+  }, [update, seedInitialState]);
 
   useEffect(() => {
     if (itiRef.current && disabled !== undefined) {

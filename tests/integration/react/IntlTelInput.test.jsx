@@ -45,9 +45,6 @@ describe("React IntlTelInput wrapper", () => {
         value=""
       />,
     );
-    await waitFor(() => expect(onChangeNumber).toHaveBeenCalled());
-    onChangeNumber.mockClear();
-    onChangeCountry.mockClear();
 
     rerender(
       <IntlTelInput
@@ -73,10 +70,6 @@ describe("React IntlTelInput wrapper", () => {
         value=""
       />,
     );
-    await waitFor(() => expect(onChangeValidity).toHaveBeenCalledWith(false));
-    onChangeValidity.mockClear();
-    onChangeErrorCode.mockClear();
-
     rerender(
       <IntlTelInput
         onChangeValidity={onChangeValidity}
