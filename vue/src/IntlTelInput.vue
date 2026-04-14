@@ -73,12 +73,19 @@ const pluginOptionKeys = Object.keys(intlTelInput.defaults);
 // To preserve plugin defaults, only pass through keys that:
 // 1) are real plugin option keys, and
 // 2) were actually provided by the parent
+//
+// We normalize raw vnode prop keys to camelCase before checking, because Vue's
+// template compiler may pass props in kebab-case depending on how the consumer
+// writes the attribute.
 const initOptions = computed<SomeOptions>(() => {
   const rawPassedProps = (vm?.vnode.props ?? {}) as Record<string, unknown>;
+  const passedCamelKeys = new Set(
+    Object.keys(rawPassedProps).map((k) => k.replace(/-([a-z])/g, (_, c) => c.toUpperCase())),
+  );
 
   const cleanedOptions: Record<string, unknown> = {};
   pluginOptionKeys.forEach((optionKey) => {
-    if (!Object.hasOwn(rawPassedProps, optionKey)) {
+    if (!passedCamelKeys.has(optionKey)) {
       return;
     }
     const value = (props as Record<string, unknown>)[optionKey];
