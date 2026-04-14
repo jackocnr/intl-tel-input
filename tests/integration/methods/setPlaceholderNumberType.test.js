@@ -22,4 +22,17 @@ describe("setPlaceholderNumberType method", () => {
     iti.setPlaceholderNumberType("MOBILE");
     expect(input.getAttribute("placeholder")).toEqual("07400 123456");
   });
+
+  test("placeholder updates after switching country", async () => {
+    iti.setPlaceholderNumberType("MOBILE");
+    iti.setCountry("us");
+    expect(input.getAttribute("placeholder")).toEqual("(201) 555-0123");
+  });
+
+  test("switching type re-renders placeholder", async () => {
+    iti.setPlaceholderNumberType("MOBILE");
+    expect(input.getAttribute("placeholder")).toEqual("07400 123456");
+    iti.setPlaceholderNumberType("FIXED_LINE");
+    expect(input.getAttribute("placeholder")).toEqual("0121 234 5678");
+  });
 });

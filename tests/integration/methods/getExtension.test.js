@@ -32,4 +32,18 @@ describe("getExtension method", () => {
     await user.type(input, `${base}${ext}`);
     expect(iti.getExtension()).toBeNull();
   });
+
+  test("returns empty string for empty input", () => {
+    expect(iti.getExtension()).toEqual("");
+  });
+
+  test("returns null for number without extension", async () => {
+    await user.type(input, base);
+    expect(iti.getExtension()).toBeNull();
+  });
+
+  test("returns empty string after destroy", () => {
+    iti.destroy();
+    expect(iti.getExtension()).toEqual("");
+  });
 });

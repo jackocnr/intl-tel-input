@@ -29,4 +29,18 @@ describe("getValidationError method", () => {
     await user.type(input, "+969");
     expect(iti.getValidationError()).toEqual(validationError.INVALID_COUNTRY_CODE);
   });
+
+  test("valid number returns IS_POSSIBLE", async () => {
+    await user.type(input, "+447733123456");
+    expect(iti.getValidationError()).toEqual(validationError.IS_POSSIBLE);
+  });
+
+  test("empty input returns INVALID_COUNTRY_CODE", () => {
+    expect(iti.getValidationError()).toEqual(validationError.INVALID_COUNTRY_CODE);
+  });
+
+  test("ignores extension when validating", async () => {
+    await user.type(input, "+447733123456 ext. 99");
+    expect(iti.getValidationError()).toEqual(validationError.IS_POSSIBLE);
+  });
 });

@@ -7,6 +7,7 @@ import {
   teardown,
   getCountryContainer,
   getCountryListElement,
+  intlTelInput,
 } from "../helpers/helpers";
 
 describe("destroy method", () => {
@@ -34,6 +35,27 @@ describe("destroy method", () => {
       expect(inputParent.classList.contains("iti")).toBe(false);
       expect(getCountryContainer(inputParent)).toBeFalsy();
       expect(getCountryListElement(inputParent)).toBeFalsy();
+    });
+
+    test("destroy removes the instance from the global registry", () => {
+      const id = iti.id;
+      expect(intlTelInput.instances.get(String(id))).toBe(iti);
+      iti.destroy();
+      expect(intlTelInput.instances.get(String(id))).toBeUndefined();
+    });
+
+    test("destroy is idempotent", () => {
+      iti.destroy();
+      expect(() => iti.destroy()).not.toThrow();
+    });
+
+    test("public methods are safe to call after destroy", () => {
+      iti.destroy();
+      expect(iti.isActive()).toBe(false);
+      expect(iti.getNumber()).toEqual("");
+      expect(iti.getExtension()).toEqual("");
+      expect(() => iti.setReadonly(true)).not.toThrow();
+      expect(() => iti.setDisabled(true)).not.toThrow();
     });
   });
 });

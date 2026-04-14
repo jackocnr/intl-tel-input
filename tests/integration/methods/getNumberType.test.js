@@ -30,4 +30,18 @@ describe("getNumberType method", () => {
     iti.setNumber("+448000123456");
     expect(iti.getNumberType()).toEqual(numberType.TOLL_FREE);
   });
+
+  test("returns -99 for an invalid number", async () => {
+    iti.setNumber("+441");
+    expect(iti.getNumberType()).toEqual(-99);
+  });
+
+  test("returns -99 for empty input", async () => {
+    expect(iti.getNumberType()).toEqual(-99);
+  });
+
+  test("ignores extension when determining type", async () => {
+    iti.setNumber("+447733123456 ext. 99");
+    expect(iti.getNumberType()).toEqual(numberType.MOBILE);
+  });
 });
