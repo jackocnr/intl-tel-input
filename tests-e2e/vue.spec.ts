@@ -4,7 +4,7 @@ test.describe("vue component demo", () => {
   test.use({ baseURL: "http://localhost:4174" });
 
   test("mounts and formats a number", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/simple/");
 
     const input = page.locator("input[type=\"tel\"]");
     await expect(input).toBeVisible();

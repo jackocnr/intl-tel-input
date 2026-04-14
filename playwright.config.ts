@@ -38,14 +38,14 @@ export default defineConfig({
     {
       command:
         "./node_modules/.bin/vite --config vue/demo/vite.config.js --port 4174 --strictPort",
-      url: "http://localhost:4174/",
+      url: "http://localhost:4174/simple/",
       reuseExistingServer: true,
       timeout: 120_000,
     },
     {
       command:
         "./node_modules/.bin/vite --config svelte/demo/vite.config.js --port 4175 --strictPort",
-      url: "http://localhost:4175/",
+      url: "http://localhost:4175/simple/",
       reuseExistingServer: true,
       timeout: 120_000,
     },
