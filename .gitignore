@@ -19,3 +19,5 @@
 /playwright-report/
 /coverage/
 /.claude/
+tests/integration/**/__screenshots__/
+/.vitest-attachments/

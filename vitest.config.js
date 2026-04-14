@@ -1,5 +1,7 @@
 import { defineConfig } from "vitest/config";
 import { playwright } from "@vitest/browser-playwright";
+import vue from "@vitejs/plugin-vue";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -13,6 +15,28 @@ const sharedAlias = {
 
 export default defineConfig({
   resolve: { alias: sharedAlias },
+  define: {
+    "process.env.NODE_ENV": JSON.stringify("test"),
+  },
+  optimizeDeps: {
+    include: [
+      "@angular/compiler",
+      "@angular/core",
+      "@angular/core/testing",
+      "@angular/platform-browser/testing",
+      "@testing-library/vue",
+      "@testing-library/svelte",
+      "zone.js",
+      "zone.js/testing",
+    ],
+    esbuildOptions: {
+      define: {
+        "process.env.NODE_ENV": JSON.stringify("test"),
+        "process.env": "({})",
+        "process": "({env:{}})",
+      },
+    },
+  },
   test: {
     globals: true,
     coverage: {
@@ -36,10 +60,20 @@ export default defineConfig({
       },
       {
         resolve: { alias: sharedAlias },
+        plugins: [vue(), svelte()],
         test: {
           globals: true,
           name: "browser",
-          include: ["tests/integration/react/**/*.test.{js,jsx}"],
+          include: [
+            "tests/integration/react/**/*.test.{js,jsx}",
+            "tests/integration/vue/**/*.test.{js,ts}",
+            "tests/integration/svelte/**/*.test.{js,ts}",
+            "tests/integration/angular/**/*.test.ts",
+          ],
+          setupFiles: [
+            "tests/integration/process-shim.ts",
+            "tests/integration/angular/setup.ts",
+          ],
           browser: {
             enabled: true,
             provider: playwright(),
