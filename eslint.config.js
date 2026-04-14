@@ -37,7 +37,7 @@ export default [
     rules: {
       semi: ["error", "always"],
       "comma-dangle": ["error", "always-multiline"],
-      quotes: ["error", "double", { allowTemplateLiterals: true }],
+      quotes: ["error", "double", { allowTemplateLiterals: true, avoidEscape: true }],
       "no-unused-vars": "off",
       "no-prototype-builtins": "off",
       "class-methods-use-this": "error",
