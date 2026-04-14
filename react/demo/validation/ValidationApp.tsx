@@ -37,8 +37,10 @@ const App = (): ReactElement => {
         onChangeValidity={setIsValid}
         onChangeErrorCode={setErrorCode}
         initialCountry="us"
+        inputProps={{ className: "form-control" }}
+        searchInputClass="form-control"
       />
-      <button className="button" type="button" onClick={handleSubmit}>Validate</button>
+      <button className="btn btn-primary" type="button" onClick={handleSubmit}>Validate</button>
       {notice && <div className="notice">{notice}</div>}
     </form>
   );

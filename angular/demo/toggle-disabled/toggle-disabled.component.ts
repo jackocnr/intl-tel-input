@@ -7,8 +7,10 @@ import IntlTelInput from '../../src/IntlTelInputWithUtils';
     <div>
       <intl-tel-input
         [disabled]="isDisabled"
+        [inputAttributes]="{ class: 'form-control' }"
+        searchInputClass="form-control"
       />
-      <button class="button" type="button" (click)="toggleDisabled()">Toggle</button>
+      <button class="btn btn-primary" type="button" (click)="toggleDisabled()">Toggle</button>
     </div>
   `,
   standalone: true,

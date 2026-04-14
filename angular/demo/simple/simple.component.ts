@@ -6,6 +6,8 @@ import IntlTelInput from '../../src/IntlTelInputWithUtils';
   template: `
     <intl-tel-input
       initialCountry="us"
+      [inputAttributes]="{ class: 'form-control' }"
+      searchInputClass="form-control"
     />
   `,
   standalone: true,

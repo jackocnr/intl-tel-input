@@ -9,6 +9,10 @@
 </script>
 
 <form>
-  <IntlTelInput disabled={isDisabled} />
-  <button class="button" type="button" onclick={toggleDisabled}>Toggle</button>
+  <IntlTelInput
+    disabled={isDisabled}
+    inputProps={{ class: "form-control" }}
+    searchInputClass="form-control"
+  />
+  <button class="btn btn-primary" type="button" onclick={toggleDisabled}>Toggle</button>
 </form>

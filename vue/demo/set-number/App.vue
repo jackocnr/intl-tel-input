@@ -43,11 +43,13 @@ const handleSubmit = () => {
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
       initialCountry="us"
+      :input-props="{ class: 'form-control' }"
+      search-input-class="form-control"
     />
-    <button class="button" type="button" @click="handleSetNumber">
+    <button class="btn btn-primary" type="button" @click="handleSetNumber">
       Set Number
     </button>
-    <button class="button" type="button" @click="handleSubmit">Validate</button>
+    <button class="btn btn-primary" type="button" @click="handleSubmit">Validate</button>
     <div v-if="notice" class="notice">{{ notice }}</div>
   </form>
 </template>

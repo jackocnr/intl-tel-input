@@ -41,11 +41,13 @@
     onChangeValidity={(v) => isValid = v}
     onChangeErrorCode={(e) => errorCode = e}
     initialCountry="us"
+    inputProps={{ class: "form-control" }}
+    searchInputClass="form-control"
   />
-  <button class="button" type="button" onclick={handleSetNumber}>
+  <button class="btn btn-primary" type="button" onclick={handleSetNumber}>
     Set Number
   </button>
-  <button class="button" type="button" onclick={handleSubmit}>Validate</button>
+  <button class="btn btn-primary" type="button" onclick={handleSubmit}>Validate</button>
   {#if notice}
     <div class="notice">{notice}</div>
   {/if}

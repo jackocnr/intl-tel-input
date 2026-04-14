@@ -5,6 +5,8 @@ import IntlTelInput from "../../src/IntlTelInputWithUtils";
 const App = (): ReactElement => (
   <IntlTelInput
     initialCountry="us"
+    inputProps={{ className: "form-control" }}
+    searchInputClass="form-control"
   />
 );
 

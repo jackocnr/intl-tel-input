@@ -16,8 +16,10 @@ import IntlTelInput from "../../src/IntlTelInputWithUtils";
         formControlName="phone"
         name="phone"
         initialCountry="us"
+        [inputAttributes]="{ class: 'form-control' }"
+        searchInputClass="form-control"
       />
-      <button class="button" type="submit" [disabled]="!fg.valid">
+      <button class="btn btn-primary" type="submit" [disabled]="!fg.valid">
         Validate
       </button>
       <div class="notice">

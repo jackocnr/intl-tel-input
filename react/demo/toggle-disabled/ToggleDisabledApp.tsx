@@ -11,8 +11,10 @@ const App = (): ReactElement => {
     <form>
       <IntlTelInput
         disabled={isDisabled}
+        inputProps={{ className: "form-control" }}
+        searchInputClass="form-control"
       />
-      <button className="button" type="button" onClick={toggleDisabled}>Toggle</button>
+      <button className="btn btn-primary" type="button" onClick={toggleDisabled}>Toggle</button>
     </form>
   );
 };

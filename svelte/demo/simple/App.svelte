@@ -4,4 +4,6 @@
 
 <IntlTelInput
   initialCountry="us"
+  inputProps={{ class: "form-control" }}
+  searchInputClass="form-control"
 />

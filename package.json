@@ -54,8 +54,8 @@
     "version:patch": "npm run build:test && npm run version:bump -- patch",
     "version:minor": "npm run build:test && npm run version:bump -- minor",
     "version:major": "npm run build:test && npm run version:bump -- major",
-    "vue:demo": "vite --config vue/demo/validation/vite.config.js",
-    "svelte:demo": "vite --config svelte/demo/validation/vite.config.js"
+    "vue:demo": "vite --config vue/demo/vite.config.js vue/demo/${DEMO:-validation}",
+    "svelte:demo": "vite --config svelte/demo/vite.config.js svelte/demo/${DEMO:-validation}"
   },
   "devDependencies": {
     "@angular/common": "^21.2.7",
