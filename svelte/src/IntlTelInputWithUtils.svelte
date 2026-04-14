@@ -8,8 +8,17 @@
 <script lang="ts">
   import IntlTelInput from "./IntlTelInput.svelte";
   import type { ComponentProps } from "svelte";
+  import type { Iti } from "intl-tel-input";
 
-  let { ...props }: ComponentProps<IntlTelInput> = $props();
+  let { ...props }: ComponentProps<typeof IntlTelInput> = $props();
+  let inner: ReturnType<typeof IntlTelInput> | undefined = $state();
+
+  export function getInstance(): Iti | undefined {
+    return inner?.getInstance();
+  }
+  export function getInput(): HTMLInputElement | undefined {
+    return inner?.getInput();
+  }
 </script>
 
-<IntlTelInput {...props} />
+<IntlTelInput bind:this={inner} {...props} />
