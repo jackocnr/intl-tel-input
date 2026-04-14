@@ -17,28 +17,7 @@ An Angular component for the intl-tel-input JavaScript plugin. View the [source 
 
 You can see a live demo and example code on the [Angular component](/examples/angular-component) example page.
 
-Or try it yourself by running the demos locally:
-
-```bash
-# Clone the repository
-git clone https://github.com/jackocnr/intl-tel-input.git
-cd intl-tel-input
-
-# Initialise submodules (required for build)
-git submodule update --init --recursive
-
-# Install dependencies and build
-npm install
-npm run build
-
-# Serve from project root
-python3 -m http.server
-```
-
-> Then open [http://localhost:8000/angular/demo/simple/](http://localhost:8000/angular/demo/simple/) or other demos from the [angular demo folder](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/)
-
-> [!NOTE]
-> Make sure to serve from the project root, not from the demo folders.
+Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You should now be able to open the validation demo page /angular/demo/validation/index.html in your browser and give it a try. View other [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/angular/demo).
 
 ## Getting started
 
