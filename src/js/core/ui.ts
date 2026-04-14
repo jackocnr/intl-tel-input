@@ -710,10 +710,12 @@ export default class UI {
       this.telInput.style.paddingLeft = this.#originalPaddingLeft;
     }
 
-    //* Remove markup (but leave the original input).
-    const wrapper = this.telInput.parentNode as HTMLElement;
-    wrapper.before(this.telInput);
-    wrapper.remove();
+    //* Remove markup (but leave the original input). parentNode may be null if the host framework (e.g. Svelte) detached the input before destroy() ran; the orphaned wrapper has no parent and will be GC'd once references are released.
+    const wrapper = this.telInput.parentNode as HTMLElement | null;
+    if (wrapper) {
+      wrapper.before(this.telInput);
+      wrapper.remove();
+    }
 
     //* Clear references from shared country data to this instance's list items.
     for (const c of this.#countries) {
