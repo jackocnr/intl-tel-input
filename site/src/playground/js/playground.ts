@@ -673,8 +673,9 @@ function renderSupportedCountriesTable(filter = "") {
     const row = document.createElement("tr");
 
     const countryCell = document.createElement("td");
+    countryCell.className = "d-flex align-items-center";
     const flagDiv = document.createElement("div");
-    flagDiv.className = `iti__flag iti__${iso2} d-inline-block`;
+    flagDiv.className = `iti__flag iti__${iso2}`;
     const countryNameSpan = document.createElement("span");
     countryNameSpan.className = "ms-2";
     countryNameSpan.textContent = `${name} (+${dialCode})`;
