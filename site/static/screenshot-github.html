@@ -15,6 +15,18 @@
     <link rel="stylesheet" href="/intl-tel-input/css/intlTelInput.min.css?v=df24cc64d1d7" />
     <link rel="stylesheet" href="/css/website.css?v=acf9a03fbf5c" />
 
+    <!-- override BS vars to match Github styles -->
+    <style>
+      [data-bs-theme="light"] {
+        --bs-body-bg: #fff;
+        --bs-body-color: #1f2328;
+      }
+      [data-bs-theme="dark"] {
+        --bs-body-bg: #0d1117;
+        --bs-body-color: #f0f6fc;
+      }
+    </style>
+
     <script>
       const setTheme = () => {
         const theme = window.matchMedia('(prefers-color-scheme: dark)').matches
