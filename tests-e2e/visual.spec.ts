@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 
+test.skip(process.platform !== "linux", "Visual snapshots are Linux-only");
+
 test.describe("visual snapshots", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/tests-e2e/fixtures/vanilla.html");
