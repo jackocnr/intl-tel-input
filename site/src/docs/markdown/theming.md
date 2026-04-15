@@ -32,7 +32,7 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 ```
 
 Example:  
-<img src="/img/iti-vanilla-dark.png" alt="Screenshot" width="265" height="280" />
+<img src="/img/iti-dark-theme.png" alt="Screenshot" width="270" height="280" />
 
 ## Scaling down the flag images
 

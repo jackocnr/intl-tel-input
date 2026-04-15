@@ -110,7 +110,7 @@ Display the selected country's international dial code next to the input, so it 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/img/iti-separate-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="/img/iti-separate-light.png">
-  <img width="262" height="50" alt="Separate dial code" src="/img/iti-separate-light.png">
+  <img width="271" height="48" alt="Separate dial code" src="/img/iti-separate-light.png">
 </picture>
 
 ###### showFlags
@@ -128,7 +128,7 @@ Control when the country list appears as a fullscreen popup vs an inline dropdow
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/img/iti-mobile-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="/img/iti-mobile-light.png">
-  <img width="350" height="637" alt="Separate dial code" src="/img/iti-mobile-light.png">
+  <img width="350" height="642" alt="Mobile fullscreen popup" src="/img/iti-mobile-light.png">
 </picture>
 
 ## Placeholder options
