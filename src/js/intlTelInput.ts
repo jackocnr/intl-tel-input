@@ -265,7 +265,7 @@ export class Iti {
 
   //* Initialise the main event listeners: input keyup, and click selected country.
   #initListeners(): void {
-    this.#initTelInputListeners();
+    this.#bindTelInputListeners();
 
     if (this.#options.allowDropdown) {
       this.#ui.bindInitialDropdownListeners(
@@ -274,31 +274,10 @@ export class Iti {
         () => this.#closeDropdown(),
       );
     }
-    if (
-      (this.#ui.hiddenInputPhone || this.#ui.hiddenInputCountry) &&
-      this.#ui.telInput.form
-    ) {
-      this.#initHiddenInputListener();
-    }
-  }
-
-  //* Update hidden input on form submit.
-  #initHiddenInputListener(): void {
-    const handleHiddenInputSubmit = (): void => {
-      if (this.#ui.hiddenInputPhone) {
-        this.#ui.hiddenInputPhone.value = this.getNumber();
-      }
-      if (this.#ui.hiddenInputCountry) {
-        this.#ui.hiddenInputCountry.value =
-          this.#selectedCountry?.iso2 || "";
-      }
-    };
-    this.#ui.telInput.form?.addEventListener(
-      "submit",
-      handleHiddenInputSubmit,
-      {
-        signal: this.#abortController!.signal,
-      },
+    this.#ui.bindHiddenInputSubmitListener(
+      this.#abortController!.signal,
+      () => this.getNumber(),
+      () => this.#selectedCountry?.iso2 || "",
     );
   }
 
@@ -381,12 +360,11 @@ export class Iti {
 
   #openDropdownWithPlus(): void {
     this.#openDropdown();
-    this.#ui.searchInput!.value = "+";
-    this.#ui.filterCountriesByQuery("");
+    this.#ui.prefillSearchWithPlus();
   }
 
   //* Initialize the tel input listeners.
-  #initTelInputListeners(): void {
+  #bindTelInputListeners(): void {
     this.#bindInputListener();
     this.#maybeBindKeydownListener();
     this.#maybeBindPasteListener();
@@ -1441,32 +1419,15 @@ export class Iti {
     if (this.#destroyed) {
       return;
     }
-    // here, we use the disabled property for telInput (type HTMLInputElement), but the disabled attribute for selectedCountryEl (type HTMLElement, which does not support the disabled property - we use this type as this element can be either a button or a div)
-    this.#ui.telInput.disabled = disabled;
-    if (this.#ui.selectedCountryEl) {
-      if (disabled) {
-        this.#ui.selectedCountryEl.setAttribute("disabled", "true");
-      } else {
-        this.#ui.selectedCountryEl.removeAttribute("disabled");
-      }
-    }
+    this.#ui.setDisabled(disabled);
   }
 
   // Set the readonly state of the input and dropdown.
   public setReadonly(readonly: boolean): void {
-    if (!this.#ui.telInput) {
+    if (this.#destroyed) {
       return;
     }
-    // see setDisabled for explanation of property vs attribute usage here
-    this.#ui.telInput.readOnly = readonly;
-    if (this.#ui.selectedCountryEl) {
-      if (readonly) {
-        // readonly doesn't have any effect on the dropdown button, so we use disabled attribute to disable it
-        this.#ui.selectedCountryEl.setAttribute("disabled", "true");
-      } else {
-        this.#ui.selectedCountryEl.removeAttribute("disabled");
-      }
-    }
+    this.#ui.setReadonly(readonly);
   }
 
   //********************
