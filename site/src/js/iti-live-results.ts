@@ -8,7 +8,7 @@
     };
     return errorMap[errorCode] || "";
   };
-  const getItiInstance = (): any => Object.values(window.intlTelInput?.instances ?? {})[0];
+  const getItiInstance = (): any => window.intlTelInput?.instances?.values().next().value;
 
   const init = () => {
     const liveResults = document.querySelector<HTMLElement>(".iti-live-results");
