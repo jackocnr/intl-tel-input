@@ -107,6 +107,9 @@ afterEach(() => {
   document.body.innerHTML = "";
 });
 
+// Observe which list item is currently highlighted (field is private; check the DOM class).
+const getHighlighted = (ui) => ui.countryList.querySelector(`.${CLASSES.HIGHLIGHT}`);
+
 // ── validateInput ──────────────────────────────────────────────
 describe("UI.validateInput", () => {
   test("accepts a real input element", () => {
@@ -261,7 +264,7 @@ describe("UI.highlightListItem", () => {
     const item = ui.countryList.children[0];
     ui.highlightListItem(item, false);
     expect(item.classList.contains(CLASSES.HIGHLIGHT)).toBe(true);
-    expect(ui.highlightedListItem).toBe(item);
+    expect(getHighlighted(ui)).toBe(item);
   });
 
   test("removes highlight from previous item", () => {
@@ -280,7 +283,7 @@ describe("UI.highlightListItem", () => {
     ui.highlightListItem(item, false);
     ui.highlightListItem(null, false);
     expect(item.classList.contains(CLASSES.HIGHLIGHT)).toBe(false);
-    expect(ui.highlightedListItem).toBeNull();
+    expect(getHighlighted(ui)).toBeNull();
   });
 
   test("sets aria-activedescendant on search input when countrySearch enabled", () => {
@@ -307,14 +310,14 @@ describe("UI.handleUpDownKey", () => {
     const { ui } = buildUI();
     ui.highlightListItem(ui.countryList.children[0], false);
     ui.handleUpDownKey(KEYS.ARROW_DOWN);
-    expect(ui.highlightedListItem).toBe(ui.countryList.children[1]);
+    expect(getHighlighted(ui)).toBe(ui.countryList.children[1]);
   });
 
   test("ArrowUp moves to previous sibling", () => {
     const { ui } = buildUI();
     ui.highlightListItem(ui.countryList.children[1], false);
     ui.handleUpDownKey(KEYS.ARROW_UP);
-    expect(ui.highlightedListItem).toBe(ui.countryList.children[0]);
+    expect(getHighlighted(ui)).toBe(ui.countryList.children[0]);
   });
 
   test("ArrowDown wraps to first item from last", () => {
@@ -322,14 +325,14 @@ describe("UI.handleUpDownKey", () => {
     const last = ui.countryList.children[ui.countryList.children.length - 1];
     ui.highlightListItem(last, false);
     ui.handleUpDownKey(KEYS.ARROW_DOWN);
-    expect(ui.highlightedListItem).toBe(ui.countryList.children[0]);
+    expect(getHighlighted(ui)).toBe(ui.countryList.children[0]);
   });
 
   test("ArrowUp wraps to last item from first", () => {
     const { ui } = buildUI();
     ui.highlightListItem(ui.countryList.children[0], false);
     ui.handleUpDownKey(KEYS.ARROW_UP);
-    expect(ui.highlightedListItem).toBe(
+    expect(getHighlighted(ui)).toBe(
       ui.countryList.children[ui.countryList.children.length - 1],
     );
   });
@@ -354,27 +357,29 @@ describe("UI.filterCountriesByQuery", () => {
   test("highlights first matched country", () => {
     const { ui } = buildUI();
     ui.filterCountriesByQuery("united");
-    expect(ui.highlightedListItem).toBe(ui.countryList.children[0]);
+    expect(getHighlighted(ui)).toBe(ui.countryList.children[0]);
   });
 
   test("clears highlight when no matches", () => {
     const { ui } = buildUI();
     ui.highlightListItem(ui.countryList.children[0], false);
     ui.filterCountriesByQuery("zzzzz");
-    expect(ui.highlightedListItem).toBeNull();
+    expect(getHighlighted(ui)).toBeNull();
     expect(ui.countryList.children.length).toBe(0);
   });
 });
 
-// ── handleSearchClear ──────────────────────────────────────────
-describe("UI.handleSearchClear", () => {
-  test("clears search input and restores all countries", () => {
-    const { ui } = buildUI({ countrySearch: true });
+// ── search clear button ───────────────────────────────────────
+describe("UI search clear button", () => {
+  test("clicking it clears search input and restores all countries", () => {
+    const { ui } = buildUI({ countrySearch: true, dropdownAlwaysOpen: true });
+    ui.openDropdown(() => {}, () => {});
+
     ui.searchInput.value = "germany";
     ui.filterCountriesByQuery("germany");
     expect(ui.countryList.children.length).toBe(1);
 
-    ui.handleSearchClear();
+    document.querySelector(".iti__search-clear").click();
     expect(ui.searchInput.value).toBe("");
     expect(ui.countryList.children.length).toBe(3);
   });
@@ -440,14 +445,14 @@ describe("UI dropdown open/close", () => {
 
   test("openDropdown makes dropdown visible", () => {
     const { ui } = buildUI({ dropdownAlwaysOpen: true });
-    ui.openDropdown();
+    ui.openDropdown(() => {}, () => {});
     expect(ui.isDropdownClosed()).toBe(false);
     expect(ui.selectedCountryEl.getAttribute(ARIA.EXPANDED)).toBe("true");
   });
 
   test("closeDropdown hides dropdown", () => {
     const { ui } = buildUI({ dropdownAlwaysOpen: true });
-    ui.openDropdown();
+    ui.openDropdown(() => {}, () => {});
     ui.closeDropdown();
     expect(ui.isDropdownClosed()).toBe(true);
     expect(ui.selectedCountryEl.getAttribute(ARIA.EXPANDED)).toBe("false");
@@ -455,13 +460,13 @@ describe("UI dropdown open/close", () => {
 
   test("openDropdown highlights first item when none selected", () => {
     const { ui } = buildUI({ dropdownAlwaysOpen: true });
-    ui.openDropdown();
-    expect(ui.highlightedListItem).toBe(ui.countryList.children[0]);
+    ui.openDropdown(() => {}, () => {});
+    expect(getHighlighted(ui)).toBe(ui.countryList.children[0]);
   });
 
   test("closeDropdown clears search input when countrySearch enabled", () => {
     const { ui } = buildUI({ countrySearch: true, dropdownAlwaysOpen: true });
-    ui.openDropdown();
+    ui.openDropdown(() => {}, () => {});
     ui.searchInput.value = "test";
     ui.closeDropdown();
     expect(ui.searchInput.value).toBe("");
@@ -469,9 +474,9 @@ describe("UI dropdown open/close", () => {
 
   test("closeDropdown resets highlighted item when countrySearch enabled", () => {
     const { ui } = buildUI({ countrySearch: true, dropdownAlwaysOpen: true });
-    ui.openDropdown();
+    ui.openDropdown(() => {}, () => {});
     ui.closeDropdown();
-    expect(ui.highlightedListItem).toBeNull();
+    expect(getHighlighted(ui)).toBeNull();
   });
 });
 

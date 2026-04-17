@@ -14,7 +14,6 @@ import type {
   SelectedCountryData,
 } from "./types/public-api";
 import { getNumeric } from "./helpers/string";
-import { findFirstCountryStartingWith } from "./core/countrySearch";
 import UI from "./core/ui";
 import {
   processAllCountries,
@@ -30,11 +29,8 @@ import { isRegionlessNanp } from "./data/nanp-regionless";
 import type { ItiEventMap } from "./types/events";
 import {
   EVENTS,
-  CLASSES,
   SENTINELS,
-  KEYS,
   REGEX,
-  TIMINGS,
   INITIAL_COUNTRY,
   DATA_KEYS,
   UK,
@@ -108,7 +104,6 @@ export class Iti {
   #defaultCountryIso2!: Iso2;
   #destroyed = false;
   #abortController!: AbortController;
-  #dropdownAbortController: AbortController | null = null;
   #numerals!: Numerals;
 
   #autoCountryDeferred?: Deferred<void>;
@@ -271,8 +266,13 @@ export class Iti {
   //* Initialise the main event listeners: input keyup, and click selected country.
   #initListeners(): void {
     this.#initTelInputListeners();
+
     if (this.#options.allowDropdown) {
-      this.#initDropdownListeners();
+      this.#ui.bindInitialDropdownListeners(
+        this.#abortController!.signal,
+        () => this.#openDropdown(),
+        () => this.#closeDropdown(),
+      );
     }
     if (
       (this.#ui.hiddenInputPhone || this.#ui.hiddenInputCountry) &&
@@ -299,72 +299,6 @@ export class Iti {
       {
         signal: this.#abortController!.signal,
       },
-    );
-  }
-
-  //* initialise the dropdown listeners.
-  #initDropdownListeners(): void {
-    const signal = this.#abortController!.signal;
-    //* Hack for input nested inside label (which is valid markup): clicking the selected country to
-    //* open the dropdown would then automatically trigger a 2nd click on the input which would
-    //* close it again.
-    const handleLabelClick = (e: Event): void => {
-      //* If the dropdown is closed, then focus the input, else ignore the click.
-      if (this.#ui.isDropdownClosed()) {
-        this.#ui.telInput.focus();
-      } else {
-        e.preventDefault();
-      }
-    };
-    const label = this.#ui.telInput.closest("label");
-    if (label) {
-      label.addEventListener("click", handleLabelClick, { signal });
-    }
-
-    //* Toggle country dropdown on click.
-    const handleClickSelectedCountry = (): void => {
-      if (
-        this.#ui.isDropdownClosed() &&
-        !this.#ui.telInput.disabled &&
-        !this.#ui.telInput.readOnly
-      ) {
-        this.#openDropdown();
-      }
-    };
-    this.#ui.selectedCountryEl!.addEventListener(
-      "click",
-      handleClickSelectedCountry,
-      {
-        signal,
-      },
-    );
-
-    //* Open dropdown if selected country is focused and they press up/down/space/enter.
-    const handleCountryContainerKeydown = (e: KeyboardEvent): void => {
-      const allowedKeys = [
-        KEYS.ARROW_UP,
-        KEYS.ARROW_DOWN,
-        KEYS.SPACE,
-        KEYS.ENTER,
-      ] as string[];
-
-      if (this.#ui.isDropdownClosed() && allowedKeys.includes(e.key)) {
-        //* Prevent form from being submitted if "ENTER" was pressed.
-        e.preventDefault();
-        //* Prevent event from being handled again by document.
-        e.stopPropagation();
-        this.#openDropdown();
-      }
-
-      //* Allow navigation from dropdown to input on TAB.
-      if (e.key === KEYS.TAB) {
-        this.#closeDropdown();
-      }
-    };
-    this.#ui.countryContainer!.addEventListener(
-      "keydown",
-      handleCountryContainerKeydown,
-      { signal },
     );
   }
 
@@ -413,7 +347,7 @@ export class Iti {
       return;
     }
 
-    this.#ui.selectedFlagEl!.classList.add(CLASSES.LOADING);
+    this.#ui.setLoading(true);
 
     //* Don't do this twice!
     if (intlTelInput.startedLoadingAutoCountry) {
@@ -423,7 +357,7 @@ export class Iti {
 
     if (typeof this.#options.geoIpLookup === "function") {
       const successCallback = (iso2 = "") => {
-        this.#ui.selectedFlagEl!.classList.remove(CLASSES.LOADING);
+        this.#ui.setLoading(false);
         const iso2Lower = iso2.toLowerCase();
         if (isIso2(iso2Lower)) {
           intlTelInput.autoCountry = iso2Lower;
@@ -438,7 +372,7 @@ export class Iti {
         }
       };
       const failureCallback = () => {
-        this.#ui.selectedFlagEl!.classList.remove(CLASSES.LOADING);
+        this.#ui.setLoading(false);
         Iti.forEachInstance("handleAutoCountryFailure");
       };
       this.#options.geoIpLookup(successCallback, failureCallback);
@@ -746,189 +680,11 @@ export class Iti {
 
   //* Open the dropdown.
   #openDropdown(): void {
-    const { dropdownContainer, useFullscreenPopup } = this.#options;
-    // create a fresh AbortController for dropdown-scoped listeners
-    this.#dropdownAbortController = new AbortController();
-
-    // Delegate DOM updates to UI
-    this.#ui.openDropdown();
-
-    // If using an external dropdown container, close menu on window scroll
-    if (!useFullscreenPopup && dropdownContainer) {
-      const handleWindowScroll = (): void => this.#closeDropdown();
-      window.addEventListener("scroll", handleWindowScroll, {
-        signal: this.#dropdownAbortController.signal,
-      });
-    }
-
-    // Bind all the dropdown-related listeners: mouseover, click, click-off, keydown.
-    this.#bindDropdownListeners();
-
+    this.#ui.openDropdown(
+      (li) => this.#selectListItem(li),
+      () => this.#closeDropdown(),
+    );
     this.#dispatchEvent(EVENTS.OPEN_COUNTRY_DROPDOWN);
-  }
-
-  //* We only bind dropdown listeners when the dropdown is open.
-  #bindDropdownListeners(): void {
-    const signal = this.#dropdownAbortController!.signal;
-    this.#bindDropdownMouseoverListener(signal);
-    this.#bindDropdownCountryClickListener(signal);
-    if (!this.#options.dropdownAlwaysOpen) {
-      this.#bindDropdownClickOffListener(signal);
-    }
-    this.#bindDropdownKeydownListener(signal);
-    if (this.#options.countrySearch) {
-      this.#bindDropdownSearchListeners(signal);
-    }
-  }
-
-  //* When mouse over a list item, just highlight that one
-  //* we add the class "highlight", so if they hit "enter" we know which one to select.
-  #bindDropdownMouseoverListener(signal: AbortSignal): void {
-    const handleMouseoverCountryList = (e: MouseEvent): void => {
-      //* Handle event delegation, as we're listening for this event on the countryList.
-      const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(
-        `.${CLASSES.COUNTRY_ITEM}`,
-      );
-      if (listItem) {
-        this.#ui.highlightListItem(listItem, false);
-      }
-    };
-    this.#ui.countryList!.addEventListener(
-      "mouseover",
-      handleMouseoverCountryList,
-      {
-        signal,
-      },
-    );
-  }
-
-  //* Listen for country selection.
-  #bindDropdownCountryClickListener(signal: AbortSignal): void {
-    const handleClickCountryList = (e: MouseEvent): void => {
-      const listItem: HTMLElement | null = (e.target as HTMLElement)?.closest(
-        `.${CLASSES.COUNTRY_ITEM}`,
-      );
-      if (listItem) {
-        this.#selectListItem(listItem);
-      }
-    };
-    this.#ui.countryList!.addEventListener("click", handleClickCountryList, {
-      signal,
-    });
-  }
-
-  //* Click off to close (except when this initial opening click is bubbling up).
-  //* We cannot just stopPropagation as it may be needed to close another instance.
-  #bindDropdownClickOffListener(signal: AbortSignal): void {
-    const handleClickOffToClose = (e: MouseEvent): void => {
-      const target = e.target as HTMLElement;
-      const clickedInsideDropdown = !!target.closest(
-        `#iti-${this.id}__dropdown-content`,
-      );
-      // only close if clicked outside (allow clicks on country search input/clear button/no results message etc)
-      if (!clickedInsideDropdown) {
-        this.#closeDropdown();
-      }
-    };
-    // Use setTimeout to allow this event listener to be bound after the current thread of execution, which is where the opening click is happening (which would otherwise immediately trigger click-off-to-close so the dropdown would never open)
-    setTimeout(() => {
-      document.documentElement.addEventListener(
-        "click",
-        handleClickOffToClose,
-        { signal },
-      );
-    }, 0);
-  }
-
-  //* Listen for up/down scrolling, enter to select, or escape to close.
-  //* Use keydown as keypress doesn't fire for non-char keys and we want to catch if they
-  //* just hit down and hold it to scroll down (no keyup event).
-  //* Listen on the document because that's where key events are triggered if no input has focus.
-  #bindDropdownKeydownListener(signal: AbortSignal): void {
-    let query = "";
-    let queryTimer: ReturnType<typeof setTimeout> | null = null;
-    const handleKeydownOnDropdown = (e: KeyboardEvent): void => {
-      //* prevent down key from scrolling the whole page, and enter key from submitting a form etc.
-      const allowedKeys = [
-        KEYS.ARROW_UP,
-        KEYS.ARROW_DOWN,
-        KEYS.ENTER,
-        KEYS.ESC,
-      ] as string[];
-      if (allowedKeys.includes(e.key)) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (e.key === KEYS.ARROW_UP || e.key === KEYS.ARROW_DOWN) {
-          //* Up and down to navigate.
-          this.#ui.handleUpDownKey(e.key);
-        } else if (e.key === KEYS.ENTER && !e.isComposing) {
-          //* Enter to select (but not when IME is composing e.g. Japanese input).
-          this.#handleEnterKey();
-        } else if (e.key === KEYS.ESC) {
-          //* Esc to close
-          this.#closeDropdown();
-          // Accessibility: re-focus the select country button (this is how native <select> elements behave)
-          this.#ui.selectedCountryEl!.focus();
-        }
-      }
-
-      //* When countrySearch disabled: Listen for alpha chars to perform hidden search.
-      //* Regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866.
-      if (
-        !this.#options.countrySearch &&
-        REGEX.HIDDEN_SEARCH_CHAR.test(e.key)
-      ) {
-        e.stopPropagation();
-        //* Jump to countries that start with the query string.
-        if (queryTimer) {
-          clearTimeout(queryTimer);
-        }
-        query += e.key.toLowerCase();
-        this.#searchForCountry(query);
-        //* If the timer hits 1 second, reset the query.
-        queryTimer = setTimeout(() => {
-          query = "";
-        }, TIMINGS.HIDDEN_SEARCH_RESET_MS);
-      }
-    };
-    document.addEventListener("keydown", handleKeydownOnDropdown, { signal });
-  }
-
-  //* Search input listeners when countrySearch enabled.
-  #bindDropdownSearchListeners(signal: AbortSignal): void {
-    // Listen for input in the search box to filter the country list.
-    this.#ui.searchInput!.addEventListener(
-      "input",
-      () => this.#ui.handleSearchChange(),
-      { signal },
-    );
-
-    // Prevent click from closing dropdown, clear text, refocus input, and reset filter
-    this.#ui.searchClearButton!.addEventListener(
-      "click",
-      () => this.#ui.handleSearchClear(),
-      { signal },
-    );
-  }
-
-  //* Hidden search (countrySearch disabled): Find the first list item whose name starts with the query string.
-  #searchForCountry(query: string): void {
-    // moved logic to findFirstCountryStartingWith (pure helper) for reuse & testability
-    const match = findFirstCountryStartingWith(this.#countries, query);
-    if (match) {
-      const listItem = match.listItemByInstanceId[this.id];
-      //* Update highlighting and scroll.
-      this.#ui.highlightListItem(listItem, false);
-      this.#ui.scrollCountryListToItem(listItem);
-    }
-  }
-
-  //* Select the currently highlighted item.
-  #handleEnterKey(): void {
-    if (this.#ui.highlightedListItem) {
-      this.#selectListItem(this.#ui.highlightedListItem);
-    }
   }
 
   //* Update the input's value to the given val (format first if possible)
@@ -1182,8 +938,11 @@ export class Iti {
     this.#ui.telInput.setAttribute("placeholder", placeholder);
   }
 
-  //* Called when the user selects a list item from the dropdown.
-  #selectListItem(listItem: HTMLElement): void {
+  //* Called when the user selects a list item from the dropdown (no-op if listItem is null).
+  #selectListItem(listItem: HTMLElement | null): void {
+    if (!listItem) {
+      return;
+    }
     //* Update selected country and active list item.
     const iso2 = listItem.dataset[DATA_KEYS.COUNTRY_CODE] as Iso2;
     const countryChanged = this.#setCountry(iso2);
@@ -1216,13 +975,7 @@ export class Iti {
       return;
     }
 
-    // Delegate DOM-only close behaviour to UI
     this.#ui.closeDropdown();
-
-    //* Unbind dropdown-scoped events in one go
-    this.#dropdownAbortController!.abort();
-    this.#dropdownAbortController = null;
-
     this.#dispatchEvent(EVENTS.CLOSE_COUNTRY_DROPDOWN);
   }
 
@@ -1368,7 +1121,7 @@ export class Iti {
     this.#defaultCountryIso2 = intlTelInput.autoCountry;
     const hasSelectedCountryOrGlobe =
       this.#selectedCountry ||
-      this.#ui.selectedFlagEl!.classList.contains(CLASSES.GLOBE);
+      this.#ui.isShowingGlobe();
     //* If no country/globe currently selected, then update the country.
     if (!hasSelectedCountryOrGlobe) {
       this.setCountry(this.#defaultCountryIso2);
