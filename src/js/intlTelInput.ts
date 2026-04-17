@@ -154,16 +154,16 @@ export class Iti {
 
   #createInitPromise(options: AllOptions): Promise<void> {
     const { initialCountry, geoIpLookup, loadUtils } = options;
-    const needsAutoCountryPromise =
+    const needsAutoCountryDeferred =
       initialCountry === INITIAL_COUNTRY.AUTO && Boolean(geoIpLookup);
-    const needsUtilsScriptPromise = Boolean(loadUtils) && !intlTelInput.utils;
+    const needsUtilsDeferred = Boolean(loadUtils) && !intlTelInput.utils;
 
     //* These promises get resolved when their individual requests complete.
     //* This way the dev can do something like iti.promise.then(...) to know when all requests are complete.
-    if (needsAutoCountryPromise) {
+    if (needsAutoCountryDeferred) {
       this.#autoCountryDeferred = createDeferred<void>();
     }
-    if (needsUtilsScriptPromise) {
+    if (needsUtilsDeferred) {
       this.#utilsDeferred = createDeferred<void>();
     }
 
@@ -666,7 +666,7 @@ export class Iti {
   }
 
   //* Update the input's value to the given number (format first if possible)
-  //* NOTE: this is called from setInitialState, handleUtils and setNumber.
+  //* NOTE: this is called from setInitialState, handleUtilsLoaded and setNumber.
   #updateValueFromNumber(fullNumber: string): void {
     const { formatOnDisplay, nationalMode, separateDialCode } = this.#options;
     let number = fullNumber;
@@ -1442,7 +1442,7 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
   //* 2 Options:
   //* 1) Not already started loading (start)
   //* 2) Already started loading (do nothing - just wait for the onload callback to fire, which will
-  //* trigger handleUtils on all instances, invoking their resolveUtilsScriptPromise functions)
+  //* trigger handleUtilsLoaded on all instances, resolving their #utilsDeferred promises)
   if (!intlTelInput.utils && !intlTelInput.startedLoadingUtils) {
     let loadCall;
     if (typeof source === "function") {
