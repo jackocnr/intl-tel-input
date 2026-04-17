@@ -440,7 +440,7 @@ export default class UI {
     this.countryList!.appendChild(frag);
   }
 
-  //* Update the input padding to make space for the selected country/dial code.
+  //* Update the input padding to make space for (1) the selected country/globe, (2) the arrow, and (3) the separate dial code, all of which are optional, hence handling this in the JS rather than CSS.
   #updateInputPadding(): void {
     if (this.selectedCountry) {
       // fallback widths differ for separateDialCode mode
