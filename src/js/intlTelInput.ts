@@ -521,7 +521,6 @@ export class Iti {
         !alreadyHasPlus &&
         this.#ui.telInputEl.selectionStart === 0 &&
         e.key === "+";
-      // note that we normalise numerals here so this numerics check works, but then later we continue using the original e.key value
       const normalisedKey = this.#numerals.normalise(e.key);
       const isNumeric = /^[0-9]$/.test(normalisedKey);
       const isAllowedChar = separateDialCode
@@ -534,8 +533,8 @@ export class Iti {
       const selEnd = input.selectionEnd;
       const before = inputValue.slice(0, selStart ?? undefined);
       const after = inputValue.slice(selEnd ?? undefined);
-      const newValue = before + e.key + after;
-      const newFullNumber = this.#getFullNumber(newValue);
+      const newValue = before + normalisedKey + after;
+      const newFullNumber = this.#buildFullNumber(newValue);
 
       let hasExceededMaxLength = false;
       if (intlTelInput.utils && this.#maxCoreNumberLength) {
@@ -1028,27 +1027,23 @@ export class Iti {
     return dialCode;
   }
 
-  //* Get the input value, adding the dial code if separateDialCode is enabled.
-  #getFullNumber(overrideValue?: string): string {
-    const value = overrideValue
-      ? this.#numerals.normalise(overrideValue)
-      : this.#getTelInputValue();
+  //* Build a full number from an already-normalised value, adding the dial code if separateDialCode is enabled.
+  #buildFullNumber(value: string): string {
     const dialCode = this.#selectedCountry?.dialCode;
-    let prefix;
     const numericValue = getNumeric(value);
-
-    if (
+    //* When using separateDialCode, it is visible so is effectively part of the typed number.
+    const usePrefix =
       this.#options.separateDialCode &&
       !value.startsWith("+") &&
       dialCode &&
-      numericValue
-    ) {
-      //* When using separateDialCode, it is visible so is effectively part of the typed number.
-      prefix = `+${dialCode}`;
-    } else {
-      prefix = "";
-    }
-    return prefix + value;
+      numericValue;
+    return (usePrefix ? `+${dialCode}` : "") + value;
+  }
+
+  //* Get the input value as a full number, adding the dial code if separateDialCode is enabled.
+  #getFullNumber(): string {
+    const value = this.#getTelInputValue();
+    return this.#buildFullNumber(value);
   }
 
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
