@@ -17,7 +17,6 @@ const makeCountry = (overrides) => ({
   normalisedName: "test country",
   dialCodePlus: "+1",
   initials: "tc",
-  listItemByInstanceId: {},
   ...overrides,
 });
 
@@ -93,11 +92,7 @@ const buildUI = (optionOverrides = {}, inputAttrs = {}) => {
   const options = makeOptions(optionOverrides);
   const ui = new UI(input, options, 0);
 
-  // Each country needs its own listItemByInstanceId map per instance
-  const testCountries = countries.map((c) => ({
-    ...c,
-    listItemByInstanceId: { ...c.listItemByInstanceId },
-  }));
+  const testCountries = countries.map((c) => ({ ...c }));
 
   ui.buildMarkup(testCountries);
   return { ui, input, countries: testCountries };
@@ -258,7 +253,7 @@ describe("UI hidden inputs", () => {
       hiddenInput: (name) => ({ phone: `${name}_full`, country: `${name}_country` }),
     });
     const ui = new UI(input, options, 1);
-    const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
+    const testCountries = countries.map((c) => ({ ...c }));
     ui.buildMarkup(testCountries);
 
     const phoneHidden = getHiddenInput(input, "phone_full");
@@ -548,14 +543,6 @@ describe("UI.destroy", () => {
     expect(input.dataset.intlTelInputId).toBeUndefined();
   });
 
-  test("clears listItemByInstanceId references on countries", () => {
-    const { ui, countries: testCountries } = buildUI();
-    // After markup, listItemByInstanceId[0] should be set
-    expect(testCountries[0].listItemByInstanceId[0]).toBeDefined();
-    ui.destroy();
-    expect(testCountries[0].listItemByInstanceId[0]).toBeUndefined();
-  });
-
   test("restores original paddingLeft when separateDialCode was enabled", () => {
     const input = document.createElement("input");
     input.style.paddingLeft = "20px";
@@ -563,7 +550,7 @@ describe("UI.destroy", () => {
 
     const options = makeOptions({ separateDialCode: true });
     const ui = new UI(input, options, 2);
-    const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
+    const testCountries = countries.map((c) => ({ ...c }));
     ui.buildMarkup(testCountries);
 
     // paddingLeft will have been overwritten by buildMarkup
@@ -602,7 +589,7 @@ describe("UI RTL support", () => {
 
     const options = makeOptions();
     const ui = new UI(input, options, 3);
-    const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
+    const testCountries = countries.map((c) => ({ ...c }));
     ui.buildMarkup(testCountries);
 
     const wrapper = input.parentNode;

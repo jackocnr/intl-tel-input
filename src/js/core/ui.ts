@@ -36,6 +36,7 @@ export default class UI {
   #detachedDropdownEl?: HTMLElement;
   #selectedListItemEl: HTMLElement | null = null;
   #highlightedListItemEl: HTMLElement | null = null;
+  readonly #listItemByIso2: Map<Iso2, HTMLElement> = new Map();
   #viewportHandler: (() => void) | null = null;
   #dropdownAbortController: AbortController | null = null;
 
@@ -418,7 +419,7 @@ export default class UI {
       listItem.dataset.countryCode = c.iso2;
 
       // Store this for later use e.g. country search filtering.
-      c.listItemByInstanceId[this.#id] = listItem;
+      this.#listItemByIso2.set(c.iso2, listItem);
 
       // Build contents without innerHTML for safety and clarity
       if (this.#options.showFlags) {
@@ -933,7 +934,7 @@ export default class UI {
   #searchForCountry(query: string): void {
     const match = findFirstCountryStartingWith(this.#countries, query);
     if (match) {
-      const listItem = match.listItemByInstanceId[this.#id];
+      const listItem = this.#listItemByIso2.get(match.iso2)!;
       this.#highlightListItem(listItem, false);
       this.#scrollCountryListToItem(listItem);
     }
@@ -995,7 +996,7 @@ export default class UI {
 
     let noCountriesAddedYet = true;
     for (const c of matchedCountries) {
-      const listItem = c.listItemByInstanceId[this.#id];
+      const listItem = this.#listItemByIso2.get(c.iso2);
       if (listItem) {
         this.#countryListEl!.appendChild(listItem);
 
@@ -1221,9 +1222,6 @@ export default class UI {
       wrapper.remove();
     }
 
-    //* Clear references from shared country data to this instance's list items.
-    for (const c of this.#countries) {
-      delete c.listItemByInstanceId[this.#id];
-    }
+    this.#listItemByIso2.clear();
   }
 }
