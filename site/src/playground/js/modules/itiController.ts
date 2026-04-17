@@ -141,6 +141,9 @@ export class ItiPlaygroundController {
     applyInputAttributes(state, this.telInput);
 
     this.destroy();
+    // Clear any padding-left set by the previous init, so switching to a config
+    // that doesn't touch padding doesn't inherit stale padding from the old one.
+    this.telInput.style.paddingLeft = "";
     initOptions.i18n = i18n;
     // we need this bootstrap class, but don't want to bother users with this, so just add it here.
     initOptions.searchInputClass += " form-control";
