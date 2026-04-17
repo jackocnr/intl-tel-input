@@ -35,7 +35,7 @@ const esmShared = {
 //* dist/js/intlTelInput.js
 build({
   ...getIife("intlTelInput"),
-  entryPoints: ["src/js/intl-tel-input.ts"],
+  entryPoints: ["src/js/intlTelInput.ts"],
   minify: false,
   outfile: "dist/js/intlTelInput.js",
 });
@@ -43,7 +43,7 @@ build({
 //* dist/js/intlTelInput.min.js
 build({
   ...getIife("intlTelInput"),
-  entryPoints: ["src/js/intl-tel-input.ts"],
+  entryPoints: ["src/js/intlTelInput.ts"],
   minify: true,
   outfile: "dist/js/intlTelInput.min.js",
 });
@@ -83,7 +83,7 @@ build({
 //* ESM builds
 build({
   ...esmShared,
-  entryPoints: ["src/js/intl-tel-input.ts"],
+  entryPoints: ["src/js/intlTelInput.ts"],
   outfile: "dist/js/intlTelInput.mjs",
 });
 

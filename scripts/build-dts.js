@@ -15,7 +15,7 @@ import { generateDtsBundle } from "dts-bundle-generator";
 
 const entries = [
   {
-    input: "src/js/intl-tel-input.ts",
+    input: "src/js/intlTelInput.ts",
     output: "dist/js/intlTelInput.d.ts",
   },
   {

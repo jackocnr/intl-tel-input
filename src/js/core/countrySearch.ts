@@ -1,4 +1,4 @@
-// * Country search & ranking logic extracted from intl-tel-input.ts
+// * Country search & ranking logic extracted from intlTelInput.ts
 // * Maintains original comments/order. Pure functions for reuse & testability.
 
 import type { Country } from "../data";
