@@ -6,7 +6,7 @@ import { getNumeric } from "../helpers/string";
 //* https://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes#Non-geographic_area_codes
 // e.g. +1800 is a toll-free number, which can be used across NANP countries and is not associated with any specific country
 // NOTE: this export is used in the tests!
-export const regionlessNanpNumbers = new Set([
+export const regionlessNanpAreaCodes = new Set([
   "800",
   "822",
   "833",
@@ -31,7 +31,7 @@ export const isRegionlessNanp = (number: string): boolean => {
   const numeric = getNumeric(number);
   if (numeric.startsWith(DIAL.NANP) && numeric.length >= 4) {
     const areaCode = numeric.substring(1, 4);
-    return regionlessNanpNumbers.has(areaCode);
+    return regionlessNanpAreaCodes.has(areaCode);
   }
   return false;
 };

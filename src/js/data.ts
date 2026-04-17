@@ -1509,7 +1509,7 @@ export type Country = {
   // the following fields are populated by the plugin
   name: string;
   // Map instance id to corresponding country dropdown <li> element
-  nodeById: { [instanceId: number]: HTMLElement };
+  listItemByInstanceId: { [instanceId: number]: HTMLElement };
   // derived fields, cached for country search efficiency
   normalisedName: string;
   initials: string;
@@ -1525,7 +1525,7 @@ for (const c of rawCountryData) {
     dialCode: c[1],
     priority: c[2] || 0,
     areaCodes: c[3] || null,
-    nodeById: {}, // populated by the plugin
+    listItemByInstanceId: {}, // populated by the plugin
     nationalPrefix: c[4] || null,
     normalisedName: "", // populated in the plugin
     initials: "", // populated in the plugin

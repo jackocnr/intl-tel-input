@@ -2,13 +2,13 @@
  * @vitest-environment node
  */
 
-import { isRegionlessNanp, regionlessNanpNumbers } from "../../../src/js/data/nanp-regionless.ts";
+import { isRegionlessNanp, regionlessNanpAreaCodes } from "../../../src/js/data/nanp-regionless.ts";
 
-const regionlessNanpNumbersArray = Array.from(regionlessNanpNumbers);
+const regionlessNanpAreaCodesArray = Array.from(regionlessNanpAreaCodes);
 
 describe("data/nanp-regionless", () => {
   test("identifies known regionless NANP numbers", () => {
-    for (const ac of regionlessNanpNumbersArray.slice(0,3)) {
+    for (const ac of regionlessNanpAreaCodesArray.slice(0,3)) {
       expect(isRegionlessNanp(`+1${ac}1234567`)).toBe(true);
     }
   });

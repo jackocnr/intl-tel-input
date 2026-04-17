@@ -17,7 +17,7 @@ const makeCountry = (overrides) => ({
   normalisedName: "test country",
   dialCodePlus: "+1",
   initials: "tc",
-  nodeById: {},
+  listItemByInstanceId: {},
   ...overrides,
 });
 
@@ -93,10 +93,10 @@ const buildUI = (optionOverrides = {}, inputAttrs = {}) => {
   const options = makeOptions(optionOverrides);
   const ui = new UI(input, options, 0);
 
-  // Each country needs its own nodeById map per instance
+  // Each country needs its own listItemByInstanceId map per instance
   const testCountries = countries.map((c) => ({
     ...c,
-    nodeById: { ...c.nodeById },
+    listItemByInstanceId: { ...c.listItemByInstanceId },
   }));
 
   ui.generateMarkup(testCountries);
@@ -159,13 +159,13 @@ describe("UI.generateMarkup", () => {
 
   test("creates selectedCountry button when allowDropdown is true", () => {
     const { ui } = buildUI({ allowDropdown: true });
-    expect(ui.selectedCountry.tagName).toBe("BUTTON");
-    expect(ui.selectedCountry.getAttribute(ARIA.HASPOPUP)).toBe("dialog");
+    expect(ui.selectedCountryEl.tagName).toBe("BUTTON");
+    expect(ui.selectedCountryEl.getAttribute(ARIA.HASPOPUP)).toBe("dialog");
   });
 
   test("creates selectedCountry div when allowDropdown is false", () => {
     const { ui } = buildUI({ allowDropdown: false, showFlags: true });
-    expect(ui.selectedCountry.tagName).toBe("DIV");
+    expect(ui.selectedCountryEl.tagName).toBe("DIV");
   });
 
   test("builds country list with correct number of items", () => {
@@ -214,13 +214,13 @@ describe("UI.generateMarkup", () => {
 
   test("creates dial code element when separateDialCode is true", () => {
     const { ui } = buildUI({ separateDialCode: true });
-    const dialCodeEl = ui.selectedCountry.querySelector(".iti__selected-dial-code");
+    const dialCodeEl = ui.selectedCountryEl.querySelector(".iti__selected-dial-code");
     expect(dialCodeEl).not.toBeNull();
   });
 
   test("does not create dropdown arrow when allowDropdown is false", () => {
     const { ui } = buildUI({ allowDropdown: false, showFlags: true });
-    const arrow = ui.selectedCountry.querySelector(".iti__arrow");
+    const arrow = ui.selectedCountryEl.querySelector(".iti__arrow");
     expect(arrow).toBeNull();
   });
 });
@@ -238,7 +238,7 @@ describe("UI hidden inputs", () => {
       hiddenInput: (name) => ({ phone: `${name}_full`, country: `${name}_country` }),
     });
     const ui = new UI(input, options, 1);
-    const testCountries = countries.map((c) => ({ ...c, nodeById: {} }));
+    const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
     ui.generateMarkup(testCountries);
 
     expect(ui.hiddenInputPhone).toBeDefined();
@@ -261,7 +261,7 @@ describe("UI.highlightListItem", () => {
     const item = ui.countryList.children[0];
     ui.highlightListItem(item, false);
     expect(item.classList.contains(CLASSES.HIGHLIGHT)).toBe(true);
-    expect(ui.highlightedItem).toBe(item);
+    expect(ui.highlightedListItem).toBe(item);
   });
 
   test("removes highlight from previous item", () => {
@@ -280,7 +280,7 @@ describe("UI.highlightListItem", () => {
     ui.highlightListItem(item, false);
     ui.highlightListItem(null, false);
     expect(item.classList.contains(CLASSES.HIGHLIGHT)).toBe(false);
-    expect(ui.highlightedItem).toBeNull();
+    expect(ui.highlightedListItem).toBeNull();
   });
 
   test("sets aria-activedescendant on search input when countrySearch enabled", () => {
@@ -307,14 +307,14 @@ describe("UI.handleUpDownKey", () => {
     const { ui } = buildUI();
     ui.highlightListItem(ui.countryList.children[0], false);
     ui.handleUpDownKey(KEYS.ARROW_DOWN);
-    expect(ui.highlightedItem).toBe(ui.countryList.children[1]);
+    expect(ui.highlightedListItem).toBe(ui.countryList.children[1]);
   });
 
   test("ArrowUp moves to previous sibling", () => {
     const { ui } = buildUI();
     ui.highlightListItem(ui.countryList.children[1], false);
     ui.handleUpDownKey(KEYS.ARROW_UP);
-    expect(ui.highlightedItem).toBe(ui.countryList.children[0]);
+    expect(ui.highlightedListItem).toBe(ui.countryList.children[0]);
   });
 
   test("ArrowDown wraps to first item from last", () => {
@@ -322,14 +322,14 @@ describe("UI.handleUpDownKey", () => {
     const last = ui.countryList.children[ui.countryList.children.length - 1];
     ui.highlightListItem(last, false);
     ui.handleUpDownKey(KEYS.ARROW_DOWN);
-    expect(ui.highlightedItem).toBe(ui.countryList.children[0]);
+    expect(ui.highlightedListItem).toBe(ui.countryList.children[0]);
   });
 
   test("ArrowUp wraps to last item from first", () => {
     const { ui } = buildUI();
     ui.highlightListItem(ui.countryList.children[0], false);
     ui.handleUpDownKey(KEYS.ARROW_UP);
-    expect(ui.highlightedItem).toBe(
+    expect(ui.highlightedListItem).toBe(
       ui.countryList.children[ui.countryList.children.length - 1],
     );
   });
@@ -354,14 +354,14 @@ describe("UI.filterCountriesByQuery", () => {
   test("highlights first matched country", () => {
     const { ui } = buildUI();
     ui.filterCountriesByQuery("united");
-    expect(ui.highlightedItem).toBe(ui.countryList.children[0]);
+    expect(ui.highlightedListItem).toBe(ui.countryList.children[0]);
   });
 
   test("clears highlight when no matches", () => {
     const { ui } = buildUI();
     ui.highlightListItem(ui.countryList.children[0], false);
     ui.filterCountriesByQuery("zzzzz");
-    expect(ui.highlightedItem).toBeNull();
+    expect(ui.highlightedListItem).toBeNull();
     expect(ui.countryList.children.length).toBe(0);
   });
 });
@@ -385,20 +385,20 @@ describe("UI.setCountry", () => {
   test("updates flag class for selected country", () => {
     const { ui } = buildUI();
     ui.setCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
-    expect(ui.selectedCountryInner.className).toBe("iti__flag iti__gb");
+    expect(ui.selectedFlagEl.className).toBe("iti__flag iti__gb");
   });
 
   test("shows globe icon when iso2 is empty", () => {
     const { ui } = buildUI();
     ui.setCountry({ iso2: "", dialCode: "", name: "" });
-    expect(ui.selectedCountryInner.className).toContain(CLASSES.GLOBE);
-    expect(ui.selectedCountryInner.innerHTML).toContain("iti__globe-svg");
+    expect(ui.selectedFlagEl.className).toContain(CLASSES.GLOBE);
+    expect(ui.selectedFlagEl.innerHTML).toContain("iti__globe-svg");
   });
 
   test("sets aria-label on selectedCountry", () => {
     const { ui } = buildUI();
     ui.setCountry({ iso2: "us", dialCode: "1", name: "United States" });
-    const label = ui.selectedCountry.getAttribute(ARIA.LABEL);
+    const label = ui.selectedCountryEl.getAttribute(ARIA.LABEL);
     expect(label).toContain("United States");
     expect(label).toContain("+1");
   });
@@ -406,7 +406,7 @@ describe("UI.setCountry", () => {
   test("updates dial code element when separateDialCode enabled", () => {
     const { ui } = buildUI({ separateDialCode: true });
     ui.setCountry({ iso2: "de", dialCode: "49", name: "Germany" });
-    const dialCodeEl = ui.selectedCountry.querySelector(".iti__selected-dial-code");
+    const dialCodeEl = ui.selectedCountryEl.querySelector(".iti__selected-dial-code");
     expect(dialCodeEl.textContent).toBe("+49");
   });
 
@@ -442,7 +442,7 @@ describe("UI dropdown open/close", () => {
     const { ui } = buildUI({ dropdownAlwaysOpen: true });
     ui.openDropdown();
     expect(ui.isDropdownClosed()).toBe(false);
-    expect(ui.selectedCountry.getAttribute(ARIA.EXPANDED)).toBe("true");
+    expect(ui.selectedCountryEl.getAttribute(ARIA.EXPANDED)).toBe("true");
   });
 
   test("closeDropdown hides dropdown", () => {
@@ -450,13 +450,13 @@ describe("UI dropdown open/close", () => {
     ui.openDropdown();
     ui.closeDropdown();
     expect(ui.isDropdownClosed()).toBe(true);
-    expect(ui.selectedCountry.getAttribute(ARIA.EXPANDED)).toBe("false");
+    expect(ui.selectedCountryEl.getAttribute(ARIA.EXPANDED)).toBe("false");
   });
 
   test("openDropdown highlights first item when none selected", () => {
     const { ui } = buildUI({ dropdownAlwaysOpen: true });
     ui.openDropdown();
-    expect(ui.highlightedItem).toBe(ui.countryList.children[0]);
+    expect(ui.highlightedListItem).toBe(ui.countryList.children[0]);
   });
 
   test("closeDropdown clears search input when countrySearch enabled", () => {
@@ -471,7 +471,7 @@ describe("UI dropdown open/close", () => {
     const { ui } = buildUI({ countrySearch: true, dropdownAlwaysOpen: true });
     ui.openDropdown();
     ui.closeDropdown();
-    expect(ui.highlightedItem).toBeNull();
+    expect(ui.highlightedListItem).toBeNull();
   });
 });
 
@@ -492,12 +492,12 @@ describe("UI.destroy", () => {
     expect(input.dataset.intlTelInputId).toBeUndefined();
   });
 
-  test("clears nodeById references on countries", () => {
+  test("clears listItemByInstanceId references on countries", () => {
     const { ui, countries: testCountries } = buildUI();
-    // After markup, nodeById[0] should be set
-    expect(testCountries[0].nodeById[0]).toBeDefined();
+    // After markup, listItemByInstanceId[0] should be set
+    expect(testCountries[0].listItemByInstanceId[0]).toBeDefined();
     ui.destroy();
-    expect(testCountries[0].nodeById[0]).toBeUndefined();
+    expect(testCountries[0].listItemByInstanceId[0]).toBeUndefined();
   });
 
   test("restores original paddingLeft when separateDialCode was enabled", () => {
@@ -507,7 +507,7 @@ describe("UI.destroy", () => {
 
     const options = makeOptions({ separateDialCode: true });
     const ui = new UI(input, options, 2);
-    const testCountries = countries.map((c) => ({ ...c, nodeById: {} }));
+    const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
     ui.generateMarkup(testCountries);
 
     // paddingLeft will have been overwritten by generateMarkup
@@ -531,7 +531,7 @@ describe("UI.scrollCountryListToItem", () => {
 describe("UI with disabled input", () => {
   test("disables the selectedCountry button when input is disabled", () => {
     const { ui } = buildUI({}, { disabled: "true" });
-    expect(ui.selectedCountry.getAttribute("disabled")).toBe("true");
+    expect(ui.selectedCountryEl.getAttribute("disabled")).toBe("true");
   });
 });
 
@@ -547,7 +547,7 @@ describe("UI RTL support", () => {
 
     const options = makeOptions();
     const ui = new UI(input, options, 3);
-    const testCountries = countries.map((c) => ({ ...c, nodeById: {} }));
+    const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
     ui.generateMarkup(testCountries);
 
     const wrapper = input.parentNode;
@@ -567,6 +567,6 @@ describe("UI with showFlags: false", () => {
   test("setCountry uses globe class when showFlags is false and iso2 is set", () => {
     const { ui } = buildUI({ showFlags: false });
     ui.setCountry({ iso2: "us", dialCode: "1", name: "United States" });
-    expect(ui.selectedCountryInner.className).toContain(CLASSES.GLOBE);
+    expect(ui.selectedFlagEl.className).toContain(CLASSES.GLOBE);
   });
 });

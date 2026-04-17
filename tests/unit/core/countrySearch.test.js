@@ -12,7 +12,7 @@ const makeCountry = (overrides) => ({
   areaCodes: null,
   nationalPrefix: null,
   name: "",
-  nodeById: {},
+  listItemByInstanceId: {},
   ...overrides,
 });
 

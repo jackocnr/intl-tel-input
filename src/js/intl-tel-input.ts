@@ -103,9 +103,9 @@ export class Iti {
   readonly #dialCodes: Set<string>;
   readonly #countryByIso2: Map<Iso2, Country>;
 
-  #selectedCountryData: Country | null = null;
+  #selectedCountry: Country | null = null;
   #maxCoreNumberLength: number | null = null;
-  #defaultCountry!: Iso2;
+  #defaultCountryIso2!: Iso2;
   #destroyed = false;
   #abortController!: AbortController;
   #dropdownAbortController: AbortController | null = null;
@@ -193,7 +193,7 @@ export class Iti {
     //* Now that input padding is finalised, set the dropdown width.
     this.#ui.maybeEnsureDropdownWidthSet();
 
-    //* Start all of the event listeners: input keydown, selectedCountry click.
+    //* Start all of the event listeners: input keydown, selectedCountryEl click.
     this.#initListeners();
 
     //* Utils script, and auto country.
@@ -290,7 +290,7 @@ export class Iti {
       }
       if (this.#ui.hiddenInputCountry) {
         this.#ui.hiddenInputCountry.value =
-          this.#selectedCountryData?.iso2 || "";
+          this.#selectedCountry?.iso2 || "";
       }
     };
     this.#ui.telInput.form?.addEventListener(
@@ -331,7 +331,7 @@ export class Iti {
         this.#openDropdown();
       }
     };
-    this.#ui.selectedCountry!.addEventListener(
+    this.#ui.selectedCountryEl!.addEventListener(
       "click",
       handleClickSelectedCountry,
       {
@@ -394,7 +394,7 @@ export class Iti {
     //* (2) AUTO COUNTRY — deferred only exists when initialCountry is "auto" with a geoIpLookup.
     if (this.#autoCountryDeferred) {
       //* Don't bother with IP lookup if we already have a selected country.
-      if (this.#selectedCountryData) {
+      if (this.#selectedCountry) {
         this.#autoCountryDeferred.resolve();
       } else {
         this.#loadAutoCountry();
@@ -413,7 +413,7 @@ export class Iti {
       return;
     }
 
-    this.#ui.selectedCountryInner!.classList.add(CLASSES.LOADING);
+    this.#ui.selectedFlagEl!.classList.add(CLASSES.LOADING);
 
     //* Don't do this twice!
     if (intlTelInput.startedLoadingAutoCountry) {
@@ -423,7 +423,7 @@ export class Iti {
 
     if (typeof this.#options.geoIpLookup === "function") {
       const successCallback = (iso2 = "") => {
-        this.#ui.selectedCountryInner!.classList.remove(CLASSES.LOADING);
+        this.#ui.selectedFlagEl!.classList.remove(CLASSES.LOADING);
         const iso2Lower = iso2.toLowerCase();
         if (isIso2(iso2Lower)) {
           intlTelInput.autoCountry = iso2Lower;
@@ -438,7 +438,7 @@ export class Iti {
         }
       };
       const failureCallback = () => {
-        this.#ui.selectedCountryInner!.classList.remove(CLASSES.LOADING);
+        this.#ui.selectedFlagEl!.classList.remove(CLASSES.LOADING);
         Iti.forEachInstance("handleAutoCountryFailure");
       };
       this.#options.geoIpLookup(successCallback, failureCallback);
@@ -494,7 +494,7 @@ export class Iti {
 
       //* Update selected country.
       if (this.#updateCountryFromNumber(inputValue)) {
-        this.#triggerCountryChange();
+        this.#dispatchCountryChangeEvent();
       }
 
       //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
@@ -534,7 +534,7 @@ export class Iti {
           fullNumber,
           inputValue,
           intlTelInput.utils,
-          this.#selectedCountryData,
+          this.#selectedCountry,
           separateDialCode,
         );
         const newCaretPos = translateCursorPosition(
@@ -553,13 +553,13 @@ export class Iti {
       if (
         separateDialCode &&
         inputValue.startsWith("+") &&
-        this.#selectedCountryData?.dialCode
+        this.#selectedCountry?.dialCode
       ) {
         const cleanNumber = beforeSetNumber(
           inputValue,
           true,
           separateDialCode,
-          this.#selectedCountryData,
+          this.#selectedCountry,
         );
         this.#setTelInputValue(cleanNumber);
       }
@@ -628,7 +628,7 @@ export class Iti {
       if (intlTelInput.utils && this.#maxCoreNumberLength) {
         const coreNumber = intlTelInput.utils.getCoreNumber(
           newFullNumber,
-          this.#selectedCountryData?.iso2,
+          this.#selectedCountry?.iso2,
         );
         hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
       }
@@ -666,7 +666,7 @@ export class Iti {
       const inputValue = this.#getTelInputValue();
       const before = inputValue.slice(0, selStart ?? undefined);
       const after = inputValue.slice(selEnd ?? undefined);
-      const iso2 = this.#selectedCountryData?.iso2;
+      const iso2 = this.#selectedCountry?.iso2;
 
       const pastedRaw = e.clipboardData!.getData("text");
       const pasted = this.#numerals.normalise(pastedRaw);
@@ -726,13 +726,13 @@ export class Iti {
   }
 
   //* Adhere to the input's maxlength attr.
-  #cap(number: string): string {
+  #truncateToMaxLength(number: string): string {
     const max = Number(this.#ui.telInput.getAttribute("maxlength"));
     return max && number.length > max ? number.substring(0, max) : number;
   }
 
   //* Trigger a custom event on the input (typed via ItiEventMap).
-  #trigger<K extends keyof ItiEventMap>(
+  #dispatchEvent<K extends keyof ItiEventMap>(
     name: K,
     detailProps: ItiEventMap[K] = {} as ItiEventMap[K],
   ): void {
@@ -764,7 +764,7 @@ export class Iti {
     // Bind all the dropdown-related listeners: mouseover, click, click-off, keydown.
     this.#bindDropdownListeners();
 
-    this.#trigger(EVENTS.OPEN_COUNTRY_DROPDOWN);
+    this.#dispatchEvent(EVENTS.OPEN_COUNTRY_DROPDOWN);
   }
 
   //* We only bind dropdown listeners when the dropdown is open.
@@ -869,7 +869,7 @@ export class Iti {
           //* Esc to close
           this.#closeDropdown();
           // Accessibility: re-focus the select country button (this is how native <select> elements behave)
-          this.#ui.selectedCountry!.focus();
+          this.#ui.selectedCountryEl!.focus();
         }
       }
 
@@ -917,7 +917,7 @@ export class Iti {
     // moved logic to findFirstCountryStartingWith (pure helper) for reuse & testability
     const match = findFirstCountryStartingWith(this.#countries, query);
     if (match) {
-      const listItem = match.nodeById[this.id];
+      const listItem = match.listItemByInstanceId[this.id];
       //* Update highlighting and scroll.
       this.#ui.highlightListItem(listItem, false);
       this.#ui.scrollCountryListToItem(listItem);
@@ -926,8 +926,8 @@ export class Iti {
 
   //* Select the currently highlighted item.
   #handleEnterKey(): void {
-    if (this.#ui.highlightedItem) {
-      this.#selectListItem(this.#ui.highlightedItem);
+    if (this.#ui.highlightedListItem) {
+      this.#selectListItem(this.#ui.highlightedListItem);
     }
   }
 
@@ -936,7 +936,7 @@ export class Iti {
   #updateValFromNumber(fullNumber: string): void {
     const { formatOnDisplay, nationalMode, separateDialCode } = this.#options;
     let number = fullNumber;
-    if (formatOnDisplay && intlTelInput.utils && this.#selectedCountryData) {
+    if (formatOnDisplay && intlTelInput.utils && this.#selectedCountry) {
       const isRegionless = hasRegionlessDialCode(fullNumber);
       const useNational =
         (nationalMode && !isRegionless) ||
@@ -945,12 +945,12 @@ export class Iti {
       const format = useNational ? NATIONAL : INTERNATIONAL;
       number = intlTelInput.utils.formatNumber(
         number,
-        this.#selectedCountryData?.iso2,
+        this.#selectedCountry?.iso2,
         format,
       );
     }
 
-    number = this.#beforeSetNumber(number);
+    number = this.#prepareNumberForInput(number);
     this.#setTelInputValue(number);
   }
 
@@ -966,8 +966,8 @@ export class Iti {
 
   // if there is a selected country, and the number doesn't start with a dial code, then add it
   #ensureHasDialCode(number: string): string {
-    const dialCode = this.#selectedCountryData?.dialCode;
-    const nationalPrefix = this.#selectedCountryData?.nationalPrefix;
+    const dialCode = this.#selectedCountry?.dialCode;
+    const nationalPrefix = this.#selectedCountry?.nationalPrefix;
     const alreadyHasPlus = number.startsWith("+");
     if (alreadyHasPlus || !dialCode) {
       return number;
@@ -988,8 +988,8 @@ export class Iti {
     //* This keeps the selected country auto-updating correctly, which we want as
     //* libphonenumber's validation/getNumber methods will ignore these chars anyway.
     let number = plusIndex > 0 ? fullNumber.substring(plusIndex) : fullNumber;
-    const selectedIso2 = this.#selectedCountryData?.iso2;
-    const selectedDialCode = this.#selectedCountryData?.dialCode;
+    const selectedIso2 = this.#selectedCountry?.iso2;
+    const selectedDialCode = this.#selectedCountry?.dialCode;
 
     //* Ensure the number starts with the dial code (if there is a selected country), for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
     number = this.#ensureHasDialCode(number);
@@ -1017,10 +1017,10 @@ export class Iti {
       //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.defaultCountry), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
       if (
         !selectedIso2 &&
-        this.#defaultCountry &&
-        iso2Codes.includes(this.#defaultCountry)
+        this.#defaultCountryIso2 &&
+        iso2Codes.includes(this.#defaultCountryIso2)
       ) {
-        return this.#defaultCountry;
+        return this.#defaultCountryIso2;
       }
 
       // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
@@ -1031,8 +1031,8 @@ export class Iti {
       }
 
       // if the currently selected country has area codes and the entered number already has a full match to one of them, then don't change the country
-      const areaCodes = this.#selectedCountryData?.areaCodes;
-      const priority = this.#selectedCountryData?.priority;
+      const areaCodes = this.#selectedCountry?.areaCodes;
+      const priority = this.#selectedCountry?.priority;
       if (areaCodes) {
         const dialCodeAreaCodes = areaCodes.map(
           (areaCode) => `${selectedDialCode}${areaCode}`,
@@ -1063,7 +1063,7 @@ export class Iti {
       }
     } else if (number.startsWith("+") && numeric.length) {
       //* If the user is still typing a prefix of the currently selected country's dial code, don't change yet.
-      const currentDial = this.#selectedCountryData?.dialCode || "";
+      const currentDial = this.#selectedCountry?.dialCode || "";
       if (currentDial && currentDial.startsWith(numeric)) {
         return null;
       }
@@ -1072,10 +1072,10 @@ export class Iti {
     } else if (
       (!number || number === "+") &&
       !selectedIso2 &&
-      this.#defaultCountry
+      this.#defaultCountryIso2
     ) {
       //* If no selected country, and user either clears the input, or just types a plus, then show default.
-      return this.#defaultCountry;
+      return this.#defaultCountryIso2;
     }
     return null;
   }
@@ -1083,18 +1083,18 @@ export class Iti {
   //* Update the selected country, dial code (if separateDialCode), placeholder, title, and selected list item.
   //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
   #setCountry(iso2: Iso2 | ""): boolean {
-    const prevIso2 = this.#selectedCountryData?.iso2 || "";
+    const prevIso2 = this.#selectedCountry?.iso2 || "";
 
-    this.#selectedCountryData = iso2
+    this.#selectedCountry = iso2
       ? (this.#countryByIso2.get(iso2) as Country)
       : null;
 
     //* Update the defaultCountry - we only need the iso2 from now on, so just store that.
-    if (this.#selectedCountryData) {
-      this.#defaultCountry = this.#selectedCountryData.iso2;
+    if (this.#selectedCountry) {
+      this.#defaultCountryIso2 = this.#selectedCountry.iso2;
     }
 
-    this.#ui.setCountry(this.#selectedCountryData);
+    this.#ui.setCountry(this.#selectedCountry);
 
     //* Update the input's placeholder.
     this.#updatePlaceholder();
@@ -1114,7 +1114,7 @@ export class Iti {
       return;
     }
 
-    const iso2 = this.#selectedCountryData?.iso2;
+    const iso2 = this.#selectedCountry?.iso2;
     if (!iso2) {
       this.#maxCoreNumberLength = null;
       return;
@@ -1167,17 +1167,17 @@ export class Iti {
 
     const numberType = intlTelInput.utils.numberType[placeholderNumberType];
     //* Note: Must set placeholder to empty string if no country selected (globe icon showing).
-    let placeholder = this.#selectedCountryData
+    let placeholder = this.#selectedCountry
       ? intlTelInput.utils.getExampleNumber(
-          this.#selectedCountryData.iso2,
+          this.#selectedCountry.iso2,
           nationalMode,
           numberType,
         )
       : "";
 
-    placeholder = this.#beforeSetNumber(placeholder);
+    placeholder = this.#prepareNumberForInput(placeholder);
     if (typeof customPlaceholder === "function") {
-      placeholder = customPlaceholder(placeholder, this.#selectedCountryData);
+      placeholder = customPlaceholder(placeholder, this.#selectedCountry);
     }
     this.#ui.telInput.setAttribute("placeholder", placeholder);
   }
@@ -1202,7 +1202,7 @@ export class Iti {
     this.#ui.telInput.focus();
 
     if (countryChanged) {
-      this.#triggerCountryChange();
+      this.#dispatchCountryChangeEvent();
     }
   }
 
@@ -1223,7 +1223,7 @@ export class Iti {
     this.#dropdownAbortController!.abort();
     this.#dropdownAbortController = null;
 
-    this.#trigger(EVENTS.CLOSE_COUNTRY_DROPDOWN);
+    this.#dispatchEvent(EVENTS.CLOSE_COUNTRY_DROPDOWN);
   }
 
   //* Replace any existing dial code with the new one
@@ -1301,7 +1301,7 @@ export class Iti {
     const val = overrideVal
       ? this.#numerals.normalise(overrideVal)
       : this.#getTelInputValue();
-    const dialCode = this.#selectedCountryData?.dialCode;
+    const dialCode = this.#selectedCountry?.dialCode;
     let prefix;
     const numericVal = getNumeric(val);
 
@@ -1320,20 +1320,20 @@ export class Iti {
   }
 
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
-  #beforeSetNumber(fullNumber: string): string {
+  #prepareNumberForInput(fullNumber: string): string {
     const hasValidDialCode = Boolean(this.#getDialCode(fullNumber));
     const number = beforeSetNumber(
       fullNumber,
       hasValidDialCode,
       this.#options.separateDialCode,
-      this.#selectedCountryData,
+      this.#selectedCountry,
     );
-    return this.#cap(number);
+    return this.#truncateToMaxLength(number);
   }
 
   //* Return only the public-facing subset of the selected country data.
   #getPublicCountryData(): SelectedCountryData {
-    const d = this.#selectedCountryData;
+    const d = this.#selectedCountry;
     if (!d) {
       return null;
     }
@@ -1341,10 +1341,10 @@ export class Iti {
     return { iso2, dialCode, name };
   }
 
-  //* Trigger the 'countrychange' event.
-  #triggerCountryChange(): void {
+  //* Dispatch the 'countrychange' event.
+  #dispatchCountryChangeEvent(): void {
     const countryData = this.#getPublicCountryData();
-    this.#trigger(EVENTS.COUNTRY_CHANGE, countryData);
+    this.#dispatchEvent(EVENTS.COUNTRY_CHANGE, countryData);
   }
 
   //**************************
@@ -1365,13 +1365,13 @@ export class Iti {
 
     //* We must set this even if there is an initial val in the input: in case the initial val is
     //* invalid and they delete it - they should see their auto country.
-    this.#defaultCountry = intlTelInput.autoCountry;
+    this.#defaultCountryIso2 = intlTelInput.autoCountry;
     const hasSelectedCountryOrGlobe =
-      this.#selectedCountryData ||
-      this.#ui.selectedCountryInner!.classList.contains(CLASSES.GLOBE);
+      this.#selectedCountry ||
+      this.#ui.selectedFlagEl!.classList.contains(CLASSES.GLOBE);
     //* If no country/globe currently selected, then update the country.
     if (!hasSelectedCountryOrGlobe) {
-      this.setCountry(this.#defaultCountry);
+      this.setCountry(this.#defaultCountryIso2);
     }
     this.#autoCountryDeferred.resolve();
   }
@@ -1408,7 +1408,7 @@ export class Iti {
     if (inputValue) {
       this.#updateValFromNumber(inputValue);
     }
-    if (this.#selectedCountryData) {
+    if (this.#selectedCountry) {
       this.#updatePlaceholder();
       this.#updateMaxLength();
     }
@@ -1466,7 +1466,7 @@ export class Iti {
 
     return intlTelInput.utils!.getExtension(
       this.#getFullNumber(),
-      this.#selectedCountryData?.iso2,
+      this.#selectedCountry?.iso2,
     );
   }
 
@@ -1477,7 +1477,7 @@ export class Iti {
     }
     ensureUtils("getNumber");
 
-    const iso2 = this.#selectedCountryData?.iso2;
+    const iso2 = this.#selectedCountry?.iso2;
     const fullNumber = this.#getFullNumber();
     const formattedNumber = intlTelInput.utils!.formatNumber(
       fullNumber,
@@ -1496,7 +1496,7 @@ export class Iti {
 
     return intlTelInput.utils!.getNumberType(
       this.#getFullNumber(),
-      this.#selectedCountryData?.iso2,
+      this.#selectedCountry?.iso2,
     );
   }
 
@@ -1512,7 +1512,7 @@ export class Iti {
     }
     ensureUtils("getValidationError");
 
-    const iso2 = this.#selectedCountryData?.iso2;
+    const iso2 = this.#selectedCountry?.iso2;
     return intlTelInput.utils!.getValidationError(this.#getFullNumber(), iso2);
   }
 
@@ -1523,8 +1523,8 @@ export class Iti {
     }
     ensureUtils("isValidNumber");
 
-    const dialCode = this.#selectedCountryData?.dialCode;
-    const iso2 = this.#selectedCountryData?.iso2;
+    const dialCode = this.#selectedCountry?.dialCode;
+    const iso2 = this.#selectedCountry?.iso2;
     const number = this.#getFullNumber();
     const coreNumber = intlTelInput.utils!.getCoreNumber(number, iso2);
     if (coreNumber) {
@@ -1572,7 +1572,7 @@ export class Iti {
     return intlTelInput.utils
       ? intlTelInput.utils.isPossibleNumber(
           val,
-          this.#selectedCountryData?.iso2,
+          this.#selectedCountry?.iso2,
           this.#options.allowedNumberTypes,
         )
       : null;
@@ -1588,7 +1588,7 @@ export class Iti {
     const val = this.#getFullNumber();
 
     // If there's no selected country, still allow validation for regionless intl numbers (e.g. +800, +808, +870, +881, +882, +883, +888, +979).
-    if (!this.#selectedCountryData) {
+    if (!this.#selectedCountry) {
       const isRegionlessDialCode = hasRegionlessDialCode(val);
       // if first char is plus, and next 3 chars are a regionless dial code
       if (!isRegionlessDialCode) {
@@ -1606,7 +1606,7 @@ export class Iti {
     const hasAlphaChar = alphaCharPosition > -1;
     // if there is an alpha char, we need to check if it's allowed, either as an extension or a phone word
     if (hasAlphaChar) {
-      const selectedIso2 = this.#selectedCountryData?.iso2;
+      const selectedIso2 = this.#selectedCountry?.iso2;
       const hasExtension = Boolean(
         intlTelInput.utils!.getExtension(val, selectedIso2),
       );
@@ -1622,7 +1622,7 @@ export class Iti {
     return intlTelInput.utils
       ? intlTelInput.utils.isValidNumber(
           val,
-          this.#selectedCountryData?.iso2,
+          this.#selectedCountry?.iso2,
           this.#options.allowedNumberTypes,
         )
       : null;
@@ -1639,7 +1639,7 @@ export class Iti {
       throw new Error(`Invalid country code: '${iso2Lower}'`);
     }
 
-    const currentCountry = this.#selectedCountryData?.iso2;
+    const currentCountry = this.#selectedCountry?.iso2;
     //* There is a country change IF: either there is a new country and it's different to the current one, OR there is no new country (i.e. globe state) and there is a current country
     const isCountryChange =
       (iso2 && iso2Lower !== currentCountry) || (!iso2 && currentCountry);
@@ -1648,13 +1648,13 @@ export class Iti {
     }
 
     this.#setCountry(iso2Lower);
-    this.#updateDialCode(this.#selectedCountryData?.dialCode || "");
+    this.#updateDialCode(this.#selectedCountry?.dialCode || "");
     // reformat
     if (this.#options.formatOnDisplay) {
       const inputValue = this.#getTelInputValue();
       this.#updateValFromNumber(inputValue);
     }
-    this.#triggerCountryChange();
+    this.#dispatchCountryChangeEvent();
   }
 
   //* Set the input value and update the country.
@@ -1668,10 +1668,10 @@ export class Iti {
     const countryChanged = this.#updateCountryFromNumber(normalisedNumber);
     this.#updateValFromNumber(normalisedNumber);
     if (countryChanged) {
-      this.#triggerCountryChange();
+      this.#dispatchCountryChangeEvent();
     }
     //* This is required for the React cmp to update its state correctly.
-    this.#trigger(EVENTS.INPUT, { isSetNumber: true });
+    this.#dispatchEvent(EVENTS.INPUT, { isSetNumber: true });
   }
 
   //* Set the placeholder number type
@@ -1688,13 +1688,13 @@ export class Iti {
     if (this.#destroyed) {
       return;
     }
-    // here, we use the disabled property for telInput (type HTMLInputElement), but the disabled attribute for selectedCountry (type HTMLElement, which does not support the disabled property - we use this type as this element can be either a button or a div)
+    // here, we use the disabled property for telInput (type HTMLInputElement), but the disabled attribute for selectedCountryEl (type HTMLElement, which does not support the disabled property - we use this type as this element can be either a button or a div)
     this.#ui.telInput.disabled = disabled;
-    if (this.#ui.selectedCountry) {
+    if (this.#ui.selectedCountryEl) {
       if (disabled) {
-        this.#ui.selectedCountry.setAttribute("disabled", "true");
+        this.#ui.selectedCountryEl.setAttribute("disabled", "true");
       } else {
-        this.#ui.selectedCountry.removeAttribute("disabled");
+        this.#ui.selectedCountryEl.removeAttribute("disabled");
       }
     }
   }
@@ -1706,12 +1706,12 @@ export class Iti {
     }
     // see setDisabled for explanation of property vs attribute usage here
     this.#ui.telInput.readOnly = readonly;
-    if (this.#ui.selectedCountry) {
+    if (this.#ui.selectedCountryEl) {
       if (readonly) {
         // readonly doesn't have any effect on the dropdown button, so we use disabled attribute to disable it
-        this.#ui.selectedCountry.setAttribute("disabled", "true");
+        this.#ui.selectedCountryEl.setAttribute("disabled", "true");
       } else {
-        this.#ui.selectedCountry.removeAttribute("disabled");
+        this.#ui.selectedCountryEl.removeAttribute("disabled");
       }
     }
   }
