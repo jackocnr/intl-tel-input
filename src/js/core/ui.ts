@@ -37,7 +37,6 @@ export default class UI {
   #selectedListItemEl: HTMLElement | null = null;
   #highlightedListItemEl: HTMLElement | null = null;
   readonly #listItemByIso2: Map<Iso2, HTMLElement> = new Map();
-  #viewportHandler: (() => void) | null = null;
   #dropdownAbortController: AbortController | null = null;
 
   // public
@@ -767,14 +766,17 @@ export default class UI {
       this.#detachedDropdownEl &&
       window.visualViewport
     ) {
-      this.#viewportHandler = (): void => {
-        this.#adjustFullscreenPopupToViewport();
-        // Re-scroll to highlighted item after keyboard resize
-        if (this.#highlightedListItemEl) {
-          this.#scrollCountryListToItem(this.#highlightedListItemEl);
-        }
-      };
-      window.visualViewport.addEventListener("resize", this.#viewportHandler);
+      window.visualViewport.addEventListener(
+        "resize",
+        (): void => {
+          this.#adjustFullscreenPopupToViewport();
+          // Re-scroll to highlighted item after keyboard resize
+          if (this.#highlightedListItemEl) {
+            this.#scrollCountryListToItem(this.#highlightedListItemEl);
+          }
+        },
+        { signal: this.#dropdownAbortController.signal },
+      );
     }
 
     // Update the arrow.
@@ -1046,15 +1048,6 @@ export default class UI {
 
     // Update the arrow.
     this.#dropdownArrowEl!.classList.remove(CLASSES.ARROW_UP);
-
-    // Clean up visualViewport listeners
-    if (this.#viewportHandler && window.visualViewport) {
-      window.visualViewport.removeEventListener(
-        "resize",
-        this.#viewportHandler,
-      );
-      this.#viewportHandler = null;
-    }
 
     // Remove dropdown from container if using external container
     if (dropdownContainer) {
