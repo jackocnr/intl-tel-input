@@ -55,15 +55,15 @@ export const SENTINELS = {
 // Layout / sizing fallbacks (used when measuring elements fails e.g., hidden containers)
 export const LAYOUT = {
   NARROW_VIEWPORT_WIDTH: 500, // keep in sync with .iti__country-list CSS media query
-  SANE_SELECTED_WITH_DIAL_WIDTH: 78, // px width fallback when separateDialCode enabled
-  SANE_SELECTED_NO_DIAL_WIDTH: 42, // px width fallback when no separate dial code
+  FALLBACK_SELECTED_WITH_DIAL_WIDTH: 78, // px width fallback when separateDialCode enabled
+  FALLBACK_SELECTED_NO_DIAL_WIDTH: 42, // px width fallback when no separate dial code
   INPUT_PADDING_EXTRA_LEFT: 6, // px gap between selected country container and input text
   DROPDOWN_MARGIN: 3, // px margin between dropdown and tel input
-  SANE_DROPDOWN_HEIGHT: 200, // px height fallback for dropdown
+  FALLBACK_DROPDOWN_HEIGHT: 200, // px height fallback for dropdown
 } as const;
 
 // Helpful grouping for dial code logic (kept lean; expand only if reused widely)
-export const DIAL = {
+export const DIAL_CODE = {
   PLUS: "+",
   NANP: "1", // North American Numbering Plan
 } as const;

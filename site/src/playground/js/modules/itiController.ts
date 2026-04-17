@@ -47,7 +47,7 @@ function detachUtilsIfNeeded(state: any) {
   // If utils were previously attached, clear them so disabling loadUtils actually disables
   // formatting/validation, and allow re-attaching if the user re-enables it.
   window.intlTelInput.utils = undefined;
-  window.intlTelInput.startedLoadingUtilsScript = false;
+  window.intlTelInput.startedLoadingUtils = false;
 }
 
 function toInitOptions(

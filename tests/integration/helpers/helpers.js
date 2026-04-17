@@ -78,7 +78,7 @@ export const resetPackageAfterEach = (intlTelInput = intlTelInputWithUtils) => {
       // Flush microtasks so any in-flight attachUtils() .then() callbacks settle before we reset package-wide state.
       await new Promise(resolve => setTimeout(resolve, 0));
       intlTelInput.utils = originalUtils;
-      intlTelInput.startedLoadingUtilsScript = false;
+      intlTelInput.startedLoadingUtils = false;
     }
   });
 };

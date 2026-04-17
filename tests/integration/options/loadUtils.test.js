@@ -13,11 +13,11 @@ describe("loadUtils option", () => {
   test("does not load the utils script if `loadUtils` option is not set", async () => {
     const { iti } = initPlugin({ intlTelInput });
 
-    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
+    expect(intlTelInput).toHaveProperty("startedLoadingUtils", false);
 
     await iti.promise;
 
-    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
+    expect(intlTelInput).toHaveProperty("startedLoadingUtils", false);
   });
 
   test("loads the utils script successfully", async () => {
@@ -40,12 +40,12 @@ describe("loadUtils option", () => {
       options: { loadUtils },
     });
 
-    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
+    expect(intlTelInput).toHaveProperty("startedLoadingUtils", false);
 
     const loadEvent = new Event("load");
     window.dispatchEvent(loadEvent);
 
-    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+    expect(intlTelInput).toHaveProperty("startedLoadingUtils", true);
 
     await iti.promise;
   });
@@ -58,7 +58,7 @@ describe("loadUtils option", () => {
       options: { loadUtils },
     });
 
-    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+    expect(intlTelInput).toHaveProperty("startedLoadingUtils", true);
 
     await iti.promise;
   });
@@ -73,7 +73,7 @@ describe("loadUtils option", () => {
       } },
     });
 
-    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+    expect(intlTelInput).toHaveProperty("startedLoadingUtils", true);
 
     await expect(iti.promise).rejects.toThrow();
   });
@@ -91,7 +91,7 @@ describe("loadUtils option", () => {
       },
     });
 
-    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+    expect(intlTelInput).toHaveProperty("startedLoadingUtils", true);
     await iti.promise;
 
     expect(intlTelInput.utils).toBe(mockUtils.default);
@@ -110,7 +110,7 @@ describe("loadUtils option", () => {
       },
     });
 
-    expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+    expect(intlTelInput).toHaveProperty("startedLoadingUtils", true);
     await iti.promise;
 
     expect(intlTelInput.utils).toBe(mockUtils.default);
@@ -126,11 +126,11 @@ describe("loadUtils option", () => {
         options: { loadUtils },
       });
 
-      expect(intlTelInputWithUtils).toHaveProperty("startedLoadingUtilsScript", false);
+      expect(intlTelInputWithUtils).toHaveProperty("startedLoadingUtils", false);
 
       await iti.promise;
 
-      expect(intlTelInputWithUtils).toHaveProperty("startedLoadingUtilsScript", false);
+      expect(intlTelInputWithUtils).toHaveProperty("startedLoadingUtils", false);
     });
   });
 

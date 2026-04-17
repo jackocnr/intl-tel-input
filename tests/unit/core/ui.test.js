@@ -486,17 +486,17 @@ describe("UI.setCountry", () => {
   });
 });
 
-// ── openDropdown / closeDropdown / isDropdownClosed ─────────────
+// ── openDropdown / closeDropdown / isDropdownOpen ─────────────
 describe("UI dropdown open/close", () => {
-  test("isDropdownClosed returns true initially", () => {
+  test("isDropdownOpen returns false initially", () => {
     const { ui } = buildUI();
-    expect(ui.isDropdownClosed()).toBe(true);
+    expect(ui.isDropdownOpen()).toBe(false);
   });
 
   test("openDropdown makes dropdown visible", () => {
     const { ui, input } = buildUI({ dropdownAlwaysOpen: true });
     ui.openDropdown(() => {}, () => {});
-    expect(ui.isDropdownClosed()).toBe(false);
+    expect(ui.isDropdownOpen()).toBe(true);
     expect(getSelectedCountryEl(input).getAttribute(ARIA.EXPANDED)).toBe("true");
   });
 
@@ -504,7 +504,7 @@ describe("UI dropdown open/close", () => {
     const { ui, input } = buildUI({ dropdownAlwaysOpen: true });
     ui.openDropdown(() => {}, () => {});
     ui.closeDropdown();
-    expect(ui.isDropdownClosed()).toBe(true);
+    expect(ui.isDropdownOpen()).toBe(false);
     expect(getSelectedCountryEl(input).getAttribute(ARIA.EXPANDED)).toBe("false");
   });
 

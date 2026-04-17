@@ -1,4 +1,4 @@
-import { DIAL } from "../constants";
+import { DIAL_CODE } from "../constants";
 import { getNumeric } from "../helpers/string";
 
 // NANP (North American Numbering Plan) countries (e.g. USA, Canada, and many more) use +1 as their international dial code
@@ -29,7 +29,7 @@ export const regionlessNanpAreaCodes = new Set([
 //* Check if the given number is a regionless NANP number (expects the number to contain an international dial code)
 export const isRegionlessNanp = (number: string): boolean => {
   const numeric = getNumeric(number);
-  if (numeric.startsWith(DIAL.NANP) && numeric.length >= 4) {
+  if (numeric.startsWith(DIAL_CODE.NANP) && numeric.length >= 4) {
     const areaCode = numeric.substring(1, 4);
     return regionlessNanpAreaCodes.has(areaCode);
   }

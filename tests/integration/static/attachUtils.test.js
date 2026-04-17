@@ -19,7 +19,7 @@ describe("attachUtils", function() {
     });
 
     test("starts loading the utils", () => {
-      expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+      expect(intlTelInput).toHaveProperty("startedLoadingUtils", true);
     });
 
     test("resolves the promise", async () => {
@@ -70,7 +70,7 @@ describe("attachUtils", function() {
     });
 
     test("does not start loading the utils", function() {
-      expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", false);
+      expect(intlTelInput).toHaveProperty("startedLoadingUtils", false);
     });
 
     test("does not resolve the promise", async function() {
@@ -88,7 +88,7 @@ describe("attachUtils", function() {
       });
 
       test("starts loading the utils", function() {
-        expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+        expect(intlTelInput).toHaveProperty("startedLoadingUtils", true);
       });
 
       test("resolves the promise", async function() {
@@ -140,7 +140,7 @@ describe("attachUtils", function() {
     });
 
     test("starts loading the utils", function() {
-      expect(intlTelInput).toHaveProperty("startedLoadingUtilsScript", true);
+      expect(intlTelInput).toHaveProperty("startedLoadingUtils", true);
     });
 
   });

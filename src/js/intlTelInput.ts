@@ -35,7 +35,7 @@ import {
   DATA_KEYS,
   UK,
   INPUT_TYPES,
-  DIAL,
+  DIAL_CODE,
   US,
   PLACEHOLDER_MODES,
 } from "./constants";
@@ -102,7 +102,8 @@ export class Iti {
   #selectedCountry: Country | null = null;
   #maxCoreNumberLength: number | null = null;
   #fallbackCountryIso2!: Iso2;
-  #destroyed = false;
+  // is this instance still active (not destroyed)
+  #active = true;
   #abortController!: AbortController;
   #numerals!: Numerals;
 
@@ -123,7 +124,7 @@ export class Iti {
     this.#ui = new UI(input, this.#options, this.id);
     this.#isAndroid = typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent);
     this.#numerals = new Numerals(input.value);
-    this.promise = this.#createInitPromises(this.#options);
+    this.promise = this.#createInitPromise(this.#options);
 
     //* Process onlyCountries or excludeCountries array if present.
     this.#countries = processAllCountries(this.#options);
@@ -143,15 +144,15 @@ export class Iti {
   }
 
   #getTelInputValue(): string {
-    const inputValue = this.#ui.telInput.value.trim();
+    const inputValue = this.#ui.telInputEl.value.trim();
     return this.#numerals.normalise(inputValue);
   }
 
   #setTelInputValue(asciiValue: string): void {
-    this.#ui.telInput.value = this.#numerals.denormalise(asciiValue);
+    this.#ui.telInputEl.value = this.#numerals.denormalise(asciiValue);
   }
 
-  #createInitPromises(options: AllOptions): Promise<void> {
+  #createInitPromise(options: AllOptions): Promise<void> {
     const { initialCountry, geoIpLookup, loadUtils } = options;
     const needsAutoCountryPromise =
       initialCountry === INITIAL_COUNTRY.AUTO && Boolean(geoIpLookup);
@@ -186,7 +187,7 @@ export class Iti {
     this.#setInitialState();
 
     //* Now that input padding is finalised, set the dropdown width.
-    this.#ui.maybeEnsureDropdownWidthSet();
+    this.#ui.ensureDropdownWidthSet();
 
     //* Start all of the event listeners: input keydown, selectedCountryEl click.
     this.#initListeners();
@@ -222,17 +223,17 @@ export class Iti {
     //* Fix firefox bug: when first load page (with input with value set to number with intl dial code)
     //* and initialising plugin removes the dial code from the input, then refresh page,
     //* and we try to init plugin again but this time on number without dial code so show globe icon.
-    const attributeValueRaw = this.#ui.telInput.getAttribute("value");
+    const attributeValueRaw = this.#ui.telInputEl.getAttribute("value");
     const attributeValue = this.#numerals.normalise(attributeValueRaw ?? "");
     const inputValue = this.#getTelInputValue();
     const useAttribute =
       attributeValue &&
       attributeValue.startsWith("+") &&
       (!inputValue || !inputValue.startsWith("+"));
-    const val = useAttribute ? attributeValue : inputValue;
+    const value = useAttribute ? attributeValue : inputValue;
 
-    const dialCode = this.#getDialCode(val);
-    const isRegionlessNanpNumber = isRegionlessNanp(val);
+    const dialCode = this.#getDialCode(value);
+    const isRegionlessNanpNumber = isRegionlessNanp(value);
     const { initialCountry, geoIpLookup } = this.#options;
     const isAutoCountry =
       initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
@@ -248,7 +249,7 @@ export class Iti {
           this.#setCountry(US.ISO2);
         }
       } else {
-        this.#updateCountryFromNumber(val);
+        this.#updateCountryFromNumber(value);
       }
     } else if (isValidInitialCountry) {
       this.#setCountry(initialCountry);
@@ -257,9 +258,9 @@ export class Iti {
       this.#setCountry("");
     }
 
-    //* Format - note this wont be run after updateDialCode as that's only called if no val.
-    if (val) {
-      this.#updateValFromNumber(val);
+    //* Format - note this wont be run after updateDialCode as that's only called if no value.
+    if (value) {
+      this.#updateValueFromNumber(value);
     }
   }
 
@@ -366,8 +367,8 @@ export class Iti {
   //* Initialize the tel input listeners.
   #bindTelInputListeners(): void {
     this.#bindInputListener();
-    this.#maybeBindKeydownListener();
-    this.#maybeBindPasteListener();
+    this.#bindKeydownListener();
+    this.#bindPasteListener();
   }
 
   #bindInputListener(): void {
@@ -379,7 +380,7 @@ export class Iti {
       countrySearch,
     } = this.#options;
     let userOverrideFormatting = false;
-    //* If the initial val contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
+    //* If the initial value contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
     if (REGEX.ALPHA_UNICODE.test(this.#getTelInputValue())) {
       userOverrideFormatting = true;
     }
@@ -396,7 +397,7 @@ export class Iti {
         allowDropdown &&
         countrySearch
       ) {
-        const currentCaretPos = this.#ui.telInput.selectionStart || 0;
+        const currentCaretPos = this.#ui.telInputEl.selectionStart || 0;
         const valueBeforeCaret = inputValue.substring(0, currentCaretPos - 1);
         const valueAfterCaret = inputValue.substring(currentCaretPos);
         this.#setTelInputValue(valueBeforeCaret + valueAfterCaret);
@@ -434,7 +435,7 @@ export class Iti {
         isAscii
       ) {
         //* Maintain caret position after reformatting.
-        const currentCaretPos = this.#ui.telInput.selectionStart || 0;
+        const currentCaretPos = this.#ui.telInputEl.selectionStart || 0;
         const valueBeforeCaret = inputValue.substring(0, currentCaretPos);
         const relevantCharsBeforeCaret = valueBeforeCaret.replace(
           REGEX.NON_PLUS_NUMERIC_GLOBAL,
@@ -458,7 +459,7 @@ export class Iti {
         // Preserve user's numeral set in displayed value
         this.#setTelInputValue(formattedValue);
         // WARNING: calling setSelectionRange triggers a focus on iOS
-        this.#ui.telInput.setSelectionRange(newCaretPos, newCaretPos);
+        this.#ui.telInputEl.setSelectionRange(newCaretPos, newCaretPos);
       }
 
       //* If separateDialCode AND typed dial code (e.g. from paste or autofill), remove typed dial code.
@@ -479,7 +480,7 @@ export class Iti {
     //* This handles individual key presses as well as cut/paste events
     //* the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
     //* whereas "keyup" fires even for shift key, arrow key presses etc.
-    this.#ui.telInput.addEventListener(
+    this.#ui.telInputEl.addEventListener(
       "input",
       handleInputEvent as EventListener,
       {
@@ -488,7 +489,7 @@ export class Iti {
     );
   }
 
-  #maybeBindKeydownListener(): void {
+  #bindKeydownListener(): void {
     const { strictMode, separateDialCode, allowDropdown, countrySearch } =
       this.#options;
     if (!strictMode && !separateDialCode) {
@@ -518,7 +519,7 @@ export class Iti {
       const alreadyHasPlus = inputValue.startsWith("+");
       const isInitialPlus =
         !alreadyHasPlus &&
-        this.#ui.telInput.selectionStart === 0 &&
+        this.#ui.telInputEl.selectionStart === 0 &&
         e.key === "+";
       // note that we normalise numerals here so this numerics check works, but then later we continue using the original e.key value
       const normalisedKey = this.#numerals.normalise(e.key);
@@ -528,7 +529,7 @@ export class Iti {
         : isInitialPlus || isNumeric;
 
       // insert the new character in the right place
-      const input = this.#ui.telInput;
+      const input = this.#ui.telInputEl;
       const selStart = input.selectionStart;
       const selEnd = input.selectionEnd;
       const before = inputValue.slice(0, selStart ?? undefined);
@@ -556,12 +557,12 @@ export class Iti {
         e.preventDefault();
       }
     };
-    this.#ui.telInput.addEventListener("keydown", handleKeydownEvent, {
+    this.#ui.telInputEl.addEventListener("keydown", handleKeydownEvent, {
       signal: this.#abortController!.signal,
     });
   }
 
-  #maybeBindPasteListener(): void {
+  #bindPasteListener(): void {
     // Sanitise pasted values in strictMode
     if (!this.#options.strictMode) {
       return;
@@ -572,7 +573,7 @@ export class Iti {
       e.preventDefault();
 
       // shortcuts
-      const input = this.#ui.telInput;
+      const input = this.#ui.telInputEl;
       const selStart = input.selectionStart;
       const selEnd = input.selectionEnd;
       const inputValue = this.#getTelInputValue();
@@ -593,18 +594,18 @@ export class Iti {
       const numerics = allowedChars.replace(/\+/g, "");
       const sanitised =
         hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
-      let newVal = before + sanitised + after;
+      let newValue = before + sanitised + after;
 
       // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
       // (fixes bug where you couldn't paste the first digit of a number)
-      if (newVal.length > 5 && intlTelInput.utils) {
-        let coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
+      if (newValue.length > 5 && intlTelInput.utils) {
+        let coreNumber = intlTelInput.utils!.getCoreNumber(newValue, iso2);
 
         // utils.getCoreNumber returns empty string for very long numbers
         // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
-        while (coreNumber.length === 0 && newVal.length > 0) {
-          newVal = newVal.slice(0, -1);
-          coreNumber = intlTelInput.utils!.getCoreNumber(newVal, iso2);
+        while (coreNumber.length === 0 && newValue.length > 0) {
+          newValue = newValue.slice(0, -1);
+          coreNumber = intlTelInput.utils!.getCoreNumber(newValue, iso2);
         }
         // if no valid core number can be found, then just ignore the paste
         if (!coreNumber) {
@@ -617,7 +618,7 @@ export class Iti {
           if (input.selectionEnd === inputValue.length) {
             // if they try to paste too many digits at the end, then just trim the excess
             const trimLength = coreNumber.length - this.#maxCoreNumberLength;
-            newVal = newVal.slice(0, newVal.length - trimLength);
+            newValue = newValue.slice(0, newValue.length - trimLength);
           } else {
             // if they try to paste too many digits in the middle, then just ignore the paste entirely
             return;
@@ -625,21 +626,21 @@ export class Iti {
         }
       }
       // preserve pasted numeral set in display
-      this.#setTelInputValue(newVal);
+      this.#setTelInputValue(newValue);
       const caretPos = selStart! + sanitised.length;
       input.setSelectionRange(caretPos, caretPos);
 
       // trigger format-as-you-type and country update etc
       input.dispatchEvent(new InputEvent("input", { bubbles: true }));
     };
-    this.#ui.telInput.addEventListener("paste", handlePasteEvent, {
+    this.#ui.telInputEl.addEventListener("paste", handlePasteEvent, {
       signal: this.#abortController!.signal,
     });
   }
 
   //* Adhere to the input's maxlength attr.
   #truncateToMaxLength(number: string): string {
-    const max = Number(this.#ui.telInput.getAttribute("maxlength"));
+    const max = Number(this.#ui.telInputEl.getAttribute("maxlength"));
     return max && number.length > max ? number.substring(0, max) : number;
   }
 
@@ -653,7 +654,7 @@ export class Iti {
       cancelable: true,
       detail: detailProps,
     });
-    this.#ui.telInput.dispatchEvent(e);
+    this.#ui.telInputEl.dispatchEvent(e);
   }
 
   //* Open the dropdown.
@@ -665,9 +666,9 @@ export class Iti {
     this.#dispatchEvent(EVENTS.OPEN_COUNTRY_DROPDOWN);
   }
 
-  //* Update the input's value to the given val (format first if possible)
+  //* Update the input's value to the given number (format first if possible)
   //* NOTE: this is called from setInitialState, handleUtils and setNumber.
-  #updateValFromNumber(fullNumber: string): void {
+  #updateValueFromNumber(fullNumber: string): void {
     const { formatOnDisplay, nationalMode, separateDialCode } = this.#options;
     let number = fullNumber;
     if (formatOnDisplay && intlTelInput.utils && this.#selectedCountry) {
@@ -759,7 +760,7 @@ export class Iti {
 
       // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
       const isRegionlessNanpNumber =
-        selectedDialCode === DIAL.NANP && isRegionlessNanp(numeric);
+        selectedDialCode === DIAL_CODE.NANP && isRegionlessNanp(numeric);
       if (isRegionlessNanpNumber) {
         return null;
       }
@@ -913,7 +914,7 @@ export class Iti {
     if (typeof customPlaceholder === "function") {
       placeholder = customPlaceholder(placeholder, this.#selectedCountry);
     }
-    this.#ui.telInput.setAttribute("placeholder", placeholder);
+    this.#ui.telInputEl.setAttribute("placeholder", placeholder);
   }
 
   //* Called when the user selects a list item from the dropdown (no-op if listItem is null).
@@ -932,11 +933,11 @@ export class Iti {
     // reformat any existing number to the new country
     if (this.#options.formatOnDisplay) {
       const inputValue = this.#getTelInputValue();
-      this.#updateValFromNumber(inputValue);
+      this.#updateValueFromNumber(inputValue);
     }
 
     //* Focus the input.
-    this.#ui.telInput.focus();
+    this.#ui.telInputEl.focus();
 
     if (countryChanged) {
       this.#dispatchCountryChangeEvent();
@@ -947,7 +948,7 @@ export class Iti {
   #closeDropdown(isDestroy?: boolean): void {
     // we call closeDropdown in places where it might not even be open e.g. in destroy()
     if (
-      this.#ui.isDropdownClosed() ||
+      !this.#ui.isDropdownOpen() ||
       (this.#options.dropdownAlwaysOpen && !isDestroy)
     ) {
       return;
@@ -959,19 +960,19 @@ export class Iti {
 
   //* Replace any existing dial code with the new one
   //* Note: called from selectListItem and setCountry
-  #updateDialCode(newDialCodeBare: string): void {
-    const inputVal = this.#getTelInputValue();
-    if (!inputVal.startsWith("+")) {
+  #updateDialCode(newDialCodeDigits: string): void {
+    const inputValue = this.#getTelInputValue();
+    if (!inputValue.startsWith("+")) {
       return;
     }
 
     //* There's a plus so we're dealing with a replacement.
-    const newDialCode = `+${newDialCodeBare}`;
-    const prevDialCode = this.#getDialCode(inputVal);
+    const newDialCode = `+${newDialCodeDigits}`;
+    const prevDialCode = this.#getDialCode(inputValue);
     let newNumber;
     if (prevDialCode) {
       //* Current number contains a valid dial code, so replace it.
-      newNumber = inputVal.replace(prevDialCode, newDialCode);
+      newNumber = inputValue.replace(prevDialCode, newDialCode);
     } else {
       //* Current number contains an invalid dial code, so ditch it
       //* (no way to determine where the invalid dial code ends and the rest of the number begins)
@@ -1027,27 +1028,27 @@ export class Iti {
     return dialCode;
   }
 
-  //* Get the input val, adding the dial code if separateDialCode is enabled.
-  #getFullNumber(overrideVal?: string): string {
-    const val = overrideVal
-      ? this.#numerals.normalise(overrideVal)
+  //* Get the input value, adding the dial code if separateDialCode is enabled.
+  #getFullNumber(overrideValue?: string): string {
+    const value = overrideValue
+      ? this.#numerals.normalise(overrideValue)
       : this.#getTelInputValue();
     const dialCode = this.#selectedCountry?.dialCode;
     let prefix;
-    const numericVal = getNumeric(val);
+    const numericValue = getNumeric(value);
 
     if (
       this.#options.separateDialCode &&
-      !val.startsWith("+") &&
+      !value.startsWith("+") &&
       dialCode &&
-      numericVal
+      numericValue
     ) {
       //* When using separateDialCode, it is visible so is effectively part of the typed number.
       prefix = `+${dialCode}`;
     } else {
       prefix = "";
     }
-    return prefix + val;
+    return prefix + value;
   }
 
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
@@ -1089,12 +1090,12 @@ export class Iti {
     }
 
     // If destroyed, abort any UI work but still resolve the init promise
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       this.#autoCountryDeferred.resolve();
       return;
     }
 
-    //* We must set this even if there is an initial val in the input: in case the initial val is
+    //* We must set this even if there is an initial value in the input: in case the initial value is
     //* invalid and they delete it - they should see their auto country.
     this.#fallbackCountryIso2 = intlTelInput.autoCountry;
     const hasSelectedCountryOrGlobe =
@@ -1110,7 +1111,7 @@ export class Iti {
   //* Called when the geoip call fails or times out.
   #handleAutoCountryFailure(): void {
     // If instance destroyed, just reject the promise and avoid DOM/state ops
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       this.#autoCountryDeferred?.reject();
       return;
     }
@@ -1123,7 +1124,7 @@ export class Iti {
   //* Called when the utils request completes.
   #handleUtilsLoaded(): void {
     // If instance destroyed, avoid touching DOM/state but still resolve promise
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       this.#utilsScriptDeferred?.resolve();
       return;
     }
@@ -1137,7 +1138,7 @@ export class Iti {
     const inputValue = this.#getTelInputValue();
     //* If there's an initial value in the input, then format it.
     if (inputValue) {
-      this.#updateValFromNumber(inputValue);
+      this.#updateValueFromNumber(inputValue);
     }
     if (this.#selectedCountry) {
       this.#updatePlaceholder();
@@ -1149,7 +1150,7 @@ export class Iti {
   //* Called when the utils request fails or times out.
   #handleUtilsFailure(error: unknown): void {
     // If instance destroyed, just reject the promise and avoid DOM/state ops
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       this.#utilsScriptDeferred?.reject(error);
       return;
     }
@@ -1163,10 +1164,10 @@ export class Iti {
 
   //* Remove plugin.
   public destroy(): void {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return;
     }
-    this.#destroyed = true;
+    this.#active = false;
 
     if (this.#options.allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
@@ -1185,12 +1186,12 @@ export class Iti {
 
   // check if the instance is still valid (not destroyed)
   public isActive(): boolean {
-    return !this.#destroyed;
+    return this.#active;
   }
 
   //* Get the extension from the current number.
   public getExtension(): string {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return "";
     }
     ensureUtils("getExtension");
@@ -1203,7 +1204,7 @@ export class Iti {
 
   //* Format the number to the given format.
   public getNumber(format?: number): string {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return "";
     }
     ensureUtils("getNumber");
@@ -1220,7 +1221,7 @@ export class Iti {
 
   //* Get the type of the entered number e.g. landline/mobile.
   public getNumberType(): number {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return SENTINELS.UNKNOWN_NUMBER_TYPE;
     }
     ensureUtils("getNumberType");
@@ -1238,7 +1239,7 @@ export class Iti {
 
   //* Get the validation error.
   public getValidationError(): number {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return SENTINELS.UNKNOWN_VALIDATION_ERROR;
     }
     ensureUtils("getValidationError");
@@ -1247,9 +1248,9 @@ export class Iti {
     return intlTelInput.utils!.getValidationError(this.#getFullNumber(), iso2);
   }
 
-  //* Validate the input val using number length only
+  //* Validate the input value using number length only
   public isValidNumber(): boolean | null {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return null;
     }
     ensureUtils("isValidNumber");
@@ -1289,9 +1290,9 @@ export class Iti {
     return this.#validateNumber(false);
   }
 
-  //* Validate the input val with precise validation
+  //* Validate the input value with precise validation
   public isValidNumberPrecise(): boolean | null {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return null;
     }
     ensureUtils("isValidNumberPrecise");
@@ -1299,10 +1300,10 @@ export class Iti {
     return this.#validateNumber(true);
   }
 
-  #utilsIsPossibleNumber(val: string): boolean | null {
+  #utilsIsPossibleNumber(value: string): boolean | null {
     return intlTelInput.utils
       ? intlTelInput.utils.isPossibleNumber(
-          val,
+          value,
           this.#selectedCountry?.iso2,
           this.#options.allowedNumberTypes,
         )
@@ -1316,30 +1317,30 @@ export class Iti {
     const testValidity = (s: string) =>
       precise ? this.#utilsIsValidNumber(s) : this.#utilsIsPossibleNumber(s);
 
-    const val = this.#getFullNumber();
+    const value = this.#getFullNumber();
 
     // If there's no selected country, still allow validation for regionless intl numbers (e.g. +800, +808, +870, +881, +882, +883, +888, +979).
     if (!this.#selectedCountry) {
-      const isRegionlessDialCode = hasRegionlessDialCode(val);
+      const isRegionlessDialCode = hasRegionlessDialCode(value);
       // if first char is plus, and next 3 chars are a regionless dial code
       if (!isRegionlessDialCode) {
         return false;
       }
     }
 
-    if (!testValidity(val)) {
+    if (!testValidity(value)) {
       return false;
     }
 
     // At this point, we know LPN says the number is valid, but we need to run extra checks
 
-    const alphaCharPosition = val.search(REGEX.ALPHA_UNICODE);
+    const alphaCharPosition = value.search(REGEX.ALPHA_UNICODE);
     const hasAlphaChar = alphaCharPosition > -1;
     // if there is an alpha char, we need to check if it's allowed, either as an extension or a phone word
     if (hasAlphaChar) {
       const selectedIso2 = this.#selectedCountry?.iso2;
       const hasExtension = Boolean(
-        intlTelInput.utils!.getExtension(val, selectedIso2),
+        intlTelInput.utils!.getExtension(value, selectedIso2),
       );
       if (hasExtension) {
         return allowNumberExtensions;
@@ -1349,19 +1350,19 @@ export class Iti {
     return true;
   }
 
-  #utilsIsValidNumber(val: string): boolean | null {
+  #utilsIsValidNumber(value: string): boolean | null {
     return intlTelInput.utils
       ? intlTelInput.utils.isValidNumber(
-          val,
+          value,
           this.#selectedCountry?.iso2,
           this.#options.allowedNumberTypes,
         )
       : null;
   }
 
-  //* Update the selected country, and update the input val accordingly.
+  //* Update the selected country, and update the input value accordingly.
   public setCountry(iso2: Iso2): void {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return;
     }
     const iso2Lower = iso2?.toLowerCase() as Iso2;
@@ -1383,21 +1384,21 @@ export class Iti {
     // reformat
     if (this.#options.formatOnDisplay) {
       const inputValue = this.#getTelInputValue();
-      this.#updateValFromNumber(inputValue);
+      this.#updateValueFromNumber(inputValue);
     }
     this.#dispatchCountryChangeEvent();
   }
 
   //* Set the input value and update the country.
   public setNumber(number: string): void {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return;
     }
     const normalisedNumber = this.#numerals.normalise(number);
     //* We must update the country first, which updates this.selectedCountry, which is used for
     //* formatting the number before displaying it.
     const countryChanged = this.#updateCountryFromNumber(normalisedNumber);
-    this.#updateValFromNumber(normalisedNumber);
+    this.#updateValueFromNumber(normalisedNumber);
     if (countryChanged) {
       this.#dispatchCountryChangeEvent();
     }
@@ -1407,7 +1408,7 @@ export class Iti {
 
   //* Set the placeholder number type
   public setPlaceholderNumberType(type: NumberType): void {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return;
     }
     this.#options.placeholderNumberType = type;
@@ -1416,7 +1417,7 @@ export class Iti {
 
   // Set the disabled state of the input and dropdown.
   public setDisabled(disabled: boolean): void {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return;
     }
     this.#ui.setDisabled(disabled);
@@ -1424,7 +1425,7 @@ export class Iti {
 
   // Set the readonly state of the input and dropdown.
   public setReadonly(readonly: boolean): void {
-    if (this.#destroyed) {
+    if (!this.isActive()) {
       return;
     }
     this.#ui.setReadonly(readonly);
@@ -1477,7 +1478,7 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
   //* 1) Not already started loading (start)
   //* 2) Already started loading (do nothing - just wait for the onload callback to fire, which will
   //* trigger handleUtils on all instances, invoking their resolveUtilsScriptPromise functions)
-  if (!intlTelInput.utils && !intlTelInput.startedLoadingUtilsScript) {
+  if (!intlTelInput.utils && !intlTelInput.startedLoadingUtils) {
     let loadCall;
     if (typeof source === "function") {
       try {
@@ -1494,7 +1495,7 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
     }
 
     //* Only do this once.
-    intlTelInput.startedLoadingUtilsScript = true;
+    intlTelInput.startedLoadingUtils = true;
 
     return loadCall
       .then((module) => {
@@ -1527,7 +1528,7 @@ interface IntlTelInputInterface {
   instances: Map<string, Iti>;
   attachUtils: (source: UtilsLoader) => Promise<unknown> | null;
   startedLoadingAutoCountry: boolean;
-  startedLoadingUtilsScript: boolean;
+  startedLoadingUtils: boolean;
   version: string | undefined;
   utils?: ItiUtils;
 }
@@ -1555,7 +1556,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     //* A map from instance ID to instance object.
     instances: new Map(),
     attachUtils,
-    startedLoadingUtilsScript: false,
+    startedLoadingUtils: false,
     startedLoadingAutoCountry: false,
     version: process.env.VERSION,
   },
