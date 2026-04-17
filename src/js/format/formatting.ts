@@ -11,7 +11,7 @@ export const beforeSetNumber = (
     return fullNumber;
   }
 
-  //* In case _getDialCode returned an area code as well.
+  //* In case getDialCode returned an area code as well.
   const dialCode = `+${selectedCountryData!.dialCode}`;
   //* a lot of numbers will have a space separating the dial code and the main number, and
   //* some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get rid of it.

@@ -136,7 +136,7 @@ export class Iti {
     this.#dialCodeMaxLen = dialCodeMaxLen;
     this.#dialCodeToIso2Map = dialCodeToIso2Map;
 
-    //* Build fast iso2 -> country map for O(1) lookups (used by _getCountryData).
+    //* Build fast iso2 -> country map for O(1) lookups (used by setCountry).
     this.#countryByIso2 = new Map(this.#countries.map((c) => [c.iso2, c]));
 
     this.#init();
@@ -257,7 +257,7 @@ export class Iti {
       this.#setCountry("");
     }
 
-    //* Format - note this wont be run after _updateDialCode as that's only called if no val.
+    //* Format - note this wont be run after updateDialCode as that's only called if no val.
     if (val) {
       this.#updateValFromNumber(val);
     }
@@ -688,7 +688,7 @@ export class Iti {
   }
 
   //* Update the input's value to the given val (format first if possible)
-  //* NOTE: this is called from _setInitialState, handleUtils and setNumber.
+  //* NOTE: this is called from setInitialState, handleUtils and setNumber.
   #updateValFromNumber(fullNumber: string): void {
     const { formatOnDisplay, nationalMode, separateDialCode } = this.#options;
     let number = fullNumber;
@@ -711,7 +711,7 @@ export class Iti {
   }
 
   //* Check if need to select a new country based on the given number
-  //* Note: called from _setInitialState, keyup handler, setNumber.
+  //* Note: called from setInitialState, keyup handler, setNumber.
   #updateCountryFromNumber(fullNumber: string): boolean {
     const iso2 = this.#getNewCountryFromNumber(fullNumber);
     if (iso2 !== null) {
@@ -770,7 +770,7 @@ export class Iti {
 
       // MULTIPLE countries found for the typed dialcode/areacode
 
-      //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.defaultCountry), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
+      //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.defaultCountryIso2), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
       if (
         !selectedIso2 &&
         this.#defaultCountryIso2 &&
@@ -837,7 +837,7 @@ export class Iti {
   }
 
   //* Update the selected country, dial code (if separateDialCode), placeholder, title, and selected list item.
-  //* Note: called from _setInitialState, _updateCountryFromNumber, _selectListItem, setCountry.
+  //* Note: called from setInitialState, updateCountryFromNumber, selectListItem, setCountry.
   #setCountry(iso2: Iso2 | ""): boolean {
     const prevIso2 = this.#selectedCountry?.iso2 || "";
 
@@ -845,7 +845,7 @@ export class Iti {
       ? (this.#countryByIso2.get(iso2) as Country)
       : null;
 
-    //* Update the defaultCountry - we only need the iso2 from now on, so just store that.
+    //* Update the defaultCountryIso2 - we only need the iso2 from now on, so just store that.
     if (this.#selectedCountry) {
       this.#defaultCountryIso2 = this.#selectedCountry.iso2;
     }
@@ -980,7 +980,7 @@ export class Iti {
   }
 
   //* Replace any existing dial code with the new one
-  //* Note: called from _selectListItem and setCountry
+  //* Note: called from selectListItem and setCountry
   #updateDialCode(newDialCodeBare: string): void {
     const inputVal = this.#getTelInputValue();
     if (!inputVal.startsWith("+")) {
@@ -1416,7 +1416,7 @@ export class Iti {
       return;
     }
     const normalisedNumber = this.#numerals.normalise(number);
-    //* We must update the country first, which updates this.selectedCountryData, which is used for
+    //* We must update the country first, which updates this.selectedCountry, which is used for
     //* formatting the number before displaying it.
     const countryChanged = this.#updateCountryFromNumber(normalisedNumber);
     this.#updateValFromNumber(normalisedNumber);
