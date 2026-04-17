@@ -313,7 +313,7 @@ The [`loadUtils`](#loadutils) option takes a function that returns a Promise res
 ```js
 // (A) import utils module from a CDN
 intlTelInput(htmlInputElement, {
-  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@27.0.10/dist/js/utils.js"),
+  loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@27.0.11/dist/js/utils.js"),
 });
 
 // (B) import utils module from your own hosted version of utils.js
