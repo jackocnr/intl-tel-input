@@ -19,7 +19,7 @@
 }
 .playground-action-btn:hover {
   background-color: #e3e1e1;
-  @media (prefers-color-scheme: dark) {
+  [data-bs-theme="dark"] & {
     background-color: #363535;
   }
 }

@@ -159,7 +159,7 @@
       img[src*="quickbooks_text"] {
         filter: invert(0.13);
 
-        @media (prefers-color-scheme: dark) {
+        [data-bs-theme="dark"] & {
           filter: invert(0.87);
         }
       }
@@ -168,7 +168,7 @@
       img[src*="dell"] {
         filter: brightness(0) invert(0.13);
 
-        @media (prefers-color-scheme: dark) {
+        [data-bs-theme="dark"] & {
           filter: brightness(0) invert(0.87);
         }
       }
@@ -177,7 +177,7 @@
       img[src*="universal-music"] {
         filter: invert(0.87);
 
-        @media (prefers-color-scheme: dark) {
+        [data-bs-theme="dark"] & {
           filter: invert(0.13);
         }
       }

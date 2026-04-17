@@ -9,7 +9,7 @@ input.form-control::placeholder,
 textarea.form-control::placeholder {
   color: #bbb;
 
-  @media (prefers-color-scheme: dark) {
+  [data-bs-theme="dark"] & {
     color: #5a5a5a;
   }
 }
@@ -26,7 +26,7 @@ textarea.form-control::placeholder {
   --iti-icon-color: var(--bs-body-color);
   --iti-hover-color: #f8f9fa;
 
-  @media (prefers-color-scheme: dark) {
+  &[data-bs-theme="dark"] {
     --iti-hover-color: #30363d;
   }
 }
