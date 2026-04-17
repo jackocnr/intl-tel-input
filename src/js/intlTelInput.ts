@@ -1287,7 +1287,7 @@ export class Iti {
         }
       }
     }
-    return this.#validateNumber(false);
+    return this.#validateNumber("possible");
   }
 
   //* Validate the input value with precise validation
@@ -1297,67 +1297,37 @@ export class Iti {
     }
     ensureUtils("isValidNumberPrecise");
 
-    return this.#validateNumber(true);
-  }
-
-  #utilsIsPossibleNumber(value: string): boolean | null {
-    return intlTelInput.utils
-      ? intlTelInput.utils.isPossibleNumber(
-          value,
-          this.#selectedCountry?.iso2,
-          this.#options.allowedNumberTypes,
-        )
-      : null;
+    return this.#validateNumber("precise");
   }
 
   //* Shared internal validation logic to handle alpha character extension rules.
-  #validateNumber(precise: boolean): boolean | null {
-    const { allowNumberExtensions, allowPhonewords } = this.#options;
-
-    const testValidity = (s: string) =>
-      precise ? this.#utilsIsValidNumber(s) : this.#utilsIsPossibleNumber(s);
-
+  #validateNumber(mode: "possible" | "precise"): boolean | null {
+    const { allowNumberExtensions, allowPhonewords, allowedNumberTypes } =
+      this.#options;
+    const iso2 = this.#selectedCountry?.iso2;
     const value = this.#getFullNumber();
 
     // If there's no selected country, still allow validation for regionless intl numbers (e.g. +800, +808, +870, +881, +882, +883, +888, +979).
-    if (!this.#selectedCountry) {
-      const isRegionlessDialCode = hasRegionlessDialCode(value);
-      // if first char is plus, and next 3 chars are a regionless dial code
-      if (!isRegionlessDialCode) {
-        return false;
-      }
-    }
-
-    if (!testValidity(value)) {
+    if (!this.#selectedCountry && !hasRegionlessDialCode(value)) {
       return false;
     }
 
-    // At this point, we know LPN says the number is valid, but we need to run extra checks
+    const check =
+      mode === "precise"
+        ? intlTelInput.utils!.isValidNumber
+        : intlTelInput.utils!.isPossibleNumber;
+    if (!check(value, iso2, allowedNumberTypes)) {
+      return false;
+    }
 
-    const alphaCharPosition = value.search(REGEX.ALPHA_UNICODE);
-    const hasAlphaChar = alphaCharPosition > -1;
-    // if there is an alpha char, we need to check if it's allowed, either as an extension or a phone word
-    if (hasAlphaChar) {
-      const selectedIso2 = this.#selectedCountry?.iso2;
+    // LPN says the number is valid - now run extra checks for extensions / phonewords.
+    if (REGEX.ALPHA_UNICODE.test(value)) {
       const hasExtension = Boolean(
-        intlTelInput.utils!.getExtension(value, selectedIso2),
+        intlTelInput.utils!.getExtension(value, iso2),
       );
-      if (hasExtension) {
-        return allowNumberExtensions;
-      }
-      return allowPhonewords;
+      return hasExtension ? allowNumberExtensions : allowPhonewords;
     }
     return true;
-  }
-
-  #utilsIsValidNumber(value: string): boolean | null {
-    return intlTelInput.utils
-      ? intlTelInput.utils.isValidNumber(
-          value,
-          this.#selectedCountry?.iso2,
-          this.#options.allowedNumberTypes,
-        )
-      : null;
   }
 
   //* Update the selected country, and update the input value accordingly.
