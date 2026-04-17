@@ -715,7 +715,7 @@ export class Iti {
     return `+${dialCode}${cleanNumber}`;
   }
 
-  //* Get the new country based on the input number, or return null if no change, or empty string if should be empty (e.g. if they type an invalid dial code).
+  //* Get the new country iso2 (or "" for empty/globe state) based on the input number, or return null if no change.
   #resolveCountryChangeFromNumber(fullNumber: string): Iso2 | "" | null {
     const plusIndex = fullNumber.indexOf("+");
     //* If it contains a plus, discard any chars before it e.g. accidental space char.
@@ -723,7 +723,6 @@ export class Iti {
     //* libphonenumber's validation/getNumber methods will ignore these chars anyway.
     let number = plusIndex > 0 ? fullNumber.substring(plusIndex) : fullNumber;
     const selectedIso2 = this.#selectedCountry?.iso2;
-    const selectedDialCode = this.#selectedCountry?.dialCode;
 
     //* Ensure the number starts with the dial code (if there is a selected country), for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
     number = this.#withDialCodePrefix(number);
@@ -747,55 +746,13 @@ export class Iti {
       }
 
       // MULTIPLE countries found for the typed dialcode/areacode
-
-      //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.fallbackCountryIso2), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
-      if (
-        !selectedIso2 &&
-        this.#fallbackCountryIso2 &&
-        iso2Codes.includes(this.#fallbackCountryIso2)
-      ) {
-        return this.#fallbackCountryIso2;
-      }
-
-      // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
-      const isRegionlessNanpNumber =
-        selectedDialCode === DIAL_CODE.NANP && isRegionlessNanp(numeric);
-      if (isRegionlessNanpNumber) {
-        return null;
-      }
-
-      // if the currently selected country has area codes and the entered number already has a full match to one of them, then don't change the country
-      const areaCodes = this.#selectedCountry?.areaCodes;
-      const priority = this.#selectedCountry?.priority;
-      if (areaCodes) {
-        const dialCodeAreaCodes = areaCodes.map(
-          (areaCode) => `${selectedDialCode}${areaCode}`,
-        );
-        for (const dialCodeAreaCode of dialCodeAreaCodes) {
-          if (numeric.startsWith(dialCodeAreaCode)) {
-            // it's a full area code match, so the right country is already selected
-            return null;
-          }
-        }
-      }
-
-      // If the currently selected country has area codes (and it's not the "main" country, which only has partial area code coverage), and they've typed more digits than the best area code match, then that means none of the area codes matched the input number, as a full area code match would have been caught above.
-      const isMainCountry = priority === 0;
-      const hasAreaCodesButNoneMatched =
-        areaCodes &&
-        !isMainCountry &&
-        numeric.length > dialCodeMatchNumeric.length;
-      const isValidSelection =
-        selectedIso2 &&
-        iso2Codes.includes(selectedIso2) &&
-        !hasAreaCodesButNoneMatched;
-      // extra protection: don't return isoCodes[0] if it's already selected
-      const alreadySelected = selectedIso2 === iso2Codes[0];
-
-      if (!isValidSelection && !alreadySelected) {
-        return iso2Codes[0];
-      }
+      return this.#resolveCountryChangeFromMultiMatch(
+        iso2Codes,
+        dialCodeMatchNumeric,
+        numeric,
+      );
     } else if (number.startsWith("+") && numeric.length) {
+      //* NO DIAL CODE MATCH
       //* If the user is still typing a prefix of the currently selected country's dial code, don't change yet.
       const currentDial = this.#selectedCountry?.dialCode || "";
       if (currentDial && currentDial.startsWith(numeric)) {
@@ -810,6 +767,65 @@ export class Iti {
     ) {
       //* If no selected country, and user either clears the input, or just types a plus, then show default.
       return this.#fallbackCountryIso2;
+    }
+    return null;
+  }
+
+  //* Resolve the country when multiple countries share the matched dial code.
+  #resolveCountryChangeFromMultiMatch(
+    iso2Codes: Iso2[],
+    dialCodeMatchNumeric: string,
+    numeric: string,
+  ): Iso2 | null {
+    const selectedIso2 = this.#selectedCountry?.iso2;
+    const selectedDialCode = this.#selectedCountry?.dialCode;
+
+    //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.fallbackCountryIso2), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
+    if (
+      !selectedIso2 &&
+      this.#fallbackCountryIso2 &&
+      iso2Codes.includes(this.#fallbackCountryIso2)
+    ) {
+      return this.#fallbackCountryIso2;
+    }
+
+    // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
+    const isRegionlessNanpNumber =
+      selectedDialCode === DIAL_CODE.NANP && isRegionlessNanp(numeric);
+    if (isRegionlessNanpNumber) {
+      return null;
+    }
+
+    // if the currently selected country has area codes and the entered number already has a full match to one of them, then don't change the country
+    const areaCodes = this.#selectedCountry?.areaCodes;
+    const priority = this.#selectedCountry?.priority;
+    if (areaCodes) {
+      const dialCodeAreaCodes = areaCodes.map(
+        (areaCode) => `${selectedDialCode}${areaCode}`,
+      );
+      for (const dialCodeAreaCode of dialCodeAreaCodes) {
+        if (numeric.startsWith(dialCodeAreaCode)) {
+          // it's a full area code match, so the right country is already selected
+          return null;
+        }
+      }
+    }
+
+    // If the currently selected country has area codes (and it's not the "main" country, which only has partial area code coverage), and they've typed more digits than the best area code match, then that means none of the area codes matched the input number, as a full area code match would have been caught above, so switch to the main country for that dial code (priority 0).
+    const isMainCountry = priority === 0;
+    const hasAreaCodesButNoneMatched =
+      areaCodes &&
+      !isMainCountry &&
+      numeric.length > dialCodeMatchNumeric.length;
+    const isValidSelection =
+      selectedIso2 &&
+      iso2Codes.includes(selectedIso2) &&
+      !hasAreaCodesButNoneMatched;
+    // extra protection: don't return isoCodes[0] if it's already selected
+    const alreadySelected = selectedIso2 === iso2Codes[0];
+
+    if (!isValidSelection && !alreadySelected) {
+      return iso2Codes[0];
     }
     return null;
   }
