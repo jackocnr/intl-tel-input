@@ -23,8 +23,8 @@ import {
   generateCountryNames,
 } from "./data/country-data";
 import { hasRegionlessDialCode } from "./data/intl-regionless";
-import { beforeSetNumber, formatNumberAsYouType } from "./format/formatting";
-import { translateCursorPosition } from "./format/caret";
+import { stripSeparateDialCode, formatNumberAsYouType } from "./format/formatting";
+import { computeNewCursorPosition } from "./format/caret";
 import { isRegionlessNanp } from "./data/nanp-regionless";
 import type { ItiEventMap } from "./types/events";
 import {
@@ -101,7 +101,7 @@ export class Iti {
 
   #selectedCountry: Country | null = null;
   #maxCoreNumberLength: number | null = null;
-  #defaultCountryIso2!: Iso2;
+  #fallbackCountryIso2!: Iso2;
   #destroyed = false;
   #abortController!: AbortController;
   #numerals!: Numerals;
@@ -322,7 +322,7 @@ export class Iti {
     //* 2) Another instance has already started loading (do nothing - just wait for loading callback to fire)
     //* 3) Not already started loading (start)
     if (intlTelInput.autoCountry) {
-      this.#handleAutoCountry();
+      this.#handleAutoCountryLoaded();
       return;
     }
 
@@ -345,7 +345,7 @@ export class Iti {
           //* away (e.g. if they have already done the geo ip lookup somewhere else). Using
           //* setTimeout means that the current thread of execution will finish before executing
           //* this, which allows the plugin to finish initialising.
-          setTimeout(() => Iti.forEachInstance("handleAutoCountry"));
+          setTimeout(() => Iti.forEachInstance("handleAutoCountryLoaded"));
         } else {
           Iti.forEachInstance("handleAutoCountryFailure");
         }
@@ -449,7 +449,7 @@ export class Iti {
           this.#selectedCountry,
           separateDialCode,
         );
-        const newCaretPos = translateCursorPosition(
+        const newCaretPos = computeNewCursorPosition(
           relevantCharsBeforeCaret,
           formattedValue,
           currentCaretPos,
@@ -467,7 +467,7 @@ export class Iti {
         inputValue.startsWith("+") &&
         this.#selectedCountry?.dialCode
       ) {
-        const cleanNumber = beforeSetNumber(
+        const cleanNumber = stripSeparateDialCode(
           inputValue,
           true,
           separateDialCode,
@@ -545,7 +545,7 @@ export class Iti {
         hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
       }
 
-      const newCountry = this.#getNewCountryFromNumber(newFullNumber);
+      const newCountry = this.#resolveCountryChangeFromNumber(newFullNumber);
       const isChangingDialCode = newCountry !== null;
 
       // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
@@ -691,7 +691,7 @@ export class Iti {
   //* Check if need to select a new country based on the given number
   //* Note: called from setInitialState, keyup handler, setNumber.
   #updateCountryFromNumber(fullNumber: string): boolean {
-    const iso2 = this.#getNewCountryFromNumber(fullNumber);
+    const iso2 = this.#resolveCountryChangeFromNumber(fullNumber);
     if (iso2 !== null) {
       return this.#setCountry(iso2);
     }
@@ -716,7 +716,7 @@ export class Iti {
   }
 
   //* Get the new country based on the input number, or return null if no change, or empty string if should be empty (e.g. if they type an invalid dial code).
-  #getNewCountryFromNumber(fullNumber: string): Iso2 | "" | null {
+  #resolveCountryChangeFromNumber(fullNumber: string): Iso2 | "" | null {
     const plusIndex = fullNumber.indexOf("+");
     //* If it contains a plus, discard any chars before it e.g. accidental space char.
     //* This keeps the selected country auto-updating correctly, which we want as
@@ -748,13 +748,13 @@ export class Iti {
 
       // MULTIPLE countries found for the typed dialcode/areacode
 
-      //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.defaultCountryIso2), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
+      //* If they've just typed a dial code (from empty state), and it matches the last selected country (this.fallbackCountryIso2), then stick to that country e.g. if they select Aland Islands, then type it's dial code +358, we should stick to that country and not switch to Finland!
       if (
         !selectedIso2 &&
-        this.#defaultCountryIso2 &&
-        iso2Codes.includes(this.#defaultCountryIso2)
+        this.#fallbackCountryIso2 &&
+        iso2Codes.includes(this.#fallbackCountryIso2)
       ) {
-        return this.#defaultCountryIso2;
+        return this.#fallbackCountryIso2;
       }
 
       // if they're typing a regionless NANP number and they already have a NANP country selected, then don't change the country
@@ -806,10 +806,10 @@ export class Iti {
     } else if (
       (!number || number === "+") &&
       !selectedIso2 &&
-      this.#defaultCountryIso2
+      this.#fallbackCountryIso2
     ) {
       //* If no selected country, and user either clears the input, or just types a plus, then show default.
-      return this.#defaultCountryIso2;
+      return this.#fallbackCountryIso2;
     }
     return null;
   }
@@ -823,9 +823,9 @@ export class Iti {
       ? (this.#countryByIso2.get(iso2) as Country)
       : null;
 
-    //* Update the defaultCountryIso2 - we only need the iso2 from now on, so just store that.
+    //* Update the fallbackCountryIso2 - we only need the iso2 from now on, so just store that.
     if (this.#selectedCountry) {
-      this.#defaultCountryIso2 = this.#selectedCountry.iso2;
+      this.#fallbackCountryIso2 = this.#selectedCountry.iso2;
     }
 
     this.#ui.setCountry(this.#selectedCountry);
@@ -1053,7 +1053,7 @@ export class Iti {
   //* Remove the dial code if separateDialCode is enabled also cap the length if the input has a maxlength attribute
   #prepareNumberForInput(fullNumber: string): string {
     const hasValidDialCode = Boolean(this.#getDialCode(fullNumber));
-    const number = beforeSetNumber(
+    const number = stripSeparateDialCode(
       fullNumber,
       hasValidDialCode,
       this.#options.separateDialCode,
@@ -1083,7 +1083,7 @@ export class Iti {
   //**************************
 
   //* Called when the geoip call returns.
-  #handleAutoCountry(): void {
+  #handleAutoCountryLoaded(): void {
     if (!this.#autoCountryDeferred || !intlTelInput.autoCountry) {
       return;
     }
@@ -1096,13 +1096,13 @@ export class Iti {
 
     //* We must set this even if there is an initial val in the input: in case the initial val is
     //* invalid and they delete it - they should see their auto country.
-    this.#defaultCountryIso2 = intlTelInput.autoCountry;
+    this.#fallbackCountryIso2 = intlTelInput.autoCountry;
     const hasSelectedCountryOrGlobe =
       this.#selectedCountry ||
       this.#ui.isShowingGlobe();
     //* If no country/globe currently selected, then update the country.
     if (!hasSelectedCountryOrGlobe) {
-      this.setCountry(this.#defaultCountryIso2);
+      this.setCountry(this.#fallbackCountryIso2);
     }
     this.#autoCountryDeferred.resolve();
   }
@@ -1121,7 +1121,7 @@ export class Iti {
   }
 
   //* Called when the utils request completes.
-  #handleUtils(): void {
+  #handleUtilsLoaded(): void {
     // If instance destroyed, avoid touching DOM/state but still resolve promise
     if (this.#destroyed) {
       this.#utilsScriptDeferred?.resolve();
@@ -1450,14 +1450,14 @@ export class Iti {
       }
 
       switch (method) {
-        case "handleUtils":
-          instance.#handleUtils();
+        case "handleUtilsLoaded":
+          instance.#handleUtilsLoaded();
           break;
         case "handleUtilsFailure":
           instance.#handleUtilsFailure(arg);
           break;
-        case "handleAutoCountry":
-          instance.#handleAutoCountry();
+        case "handleAutoCountryLoaded":
+          instance.#handleAutoCountryLoaded();
           break;
         case "handleAutoCountryFailure":
           instance.#handleAutoCountryFailure();
@@ -1506,7 +1506,7 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
         }
 
         intlTelInput.utils = utils;
-        Iti.forEachInstance("handleUtils");
+        Iti.forEachInstance("handleUtilsLoaded");
         return true;
       })
       .catch((error: Error) => {

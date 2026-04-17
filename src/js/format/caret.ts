@@ -1,5 +1,5 @@
 //* Iterate through the formattedValue until hit the right number of relevant chars.
-export const translateCursorPosition = (
+export const computeNewCursorPosition = (
   relevantChars: number,
   formattedValue: string,
   prevCaretPos: number,

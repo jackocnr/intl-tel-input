@@ -1,6 +1,6 @@
 export type ForEachInstanceArgsMap = {
-  handleUtils: [];
+  handleUtilsLoaded: [];
   handleUtilsFailure: [error?: unknown];
-  handleAutoCountry: [];
+  handleAutoCountryLoaded: [];
   handleAutoCountryFailure: [];
 };

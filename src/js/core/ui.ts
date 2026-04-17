@@ -541,7 +541,7 @@ export default class UI {
     } else {
       matchedCountries = getMatchedCountries(this.#countries, query);
     }
-    this.#filterCountries(matchedCountries);
+    this.#showFilteredCountries(matchedCountries);
   }
 
   //* Pre-fill the search input with "+" and show all countries
@@ -989,7 +989,7 @@ export default class UI {
   }
 
   //* Country search: Filter the country list to the given array of countries.
-  #filterCountries(matchedCountries: Country[]): void {
+  #showFilteredCountries(matchedCountries: Country[]): void {
     // remove all items from the list
     this.#countryList!.replaceChildren();
 

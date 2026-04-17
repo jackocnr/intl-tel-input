@@ -2,18 +2,18 @@
  * @vitest-environment node
  */
 
-import { beforeSetNumber, formatNumberAsYouType } from "../../../src/js/format/formatting.ts";
+import { stripSeparateDialCode, formatNumberAsYouType } from "../../../src/js/format/formatting.ts";
 
-describe("format/formatting beforeSetNumber", () => {
+describe("format/formatting stripSeparateDialCode", () => {
   const selected = { dialCode: "44" };
 
   test("removes dial code when separateDialCode and present", () => {
-    const out = beforeSetNumber("+44 1234", "+44", true, selected);
+    const out = stripSeparateDialCode("+44 1234", "+44", true, selected);
     expect(out).toBe("1234");
   });
 
   test("returns full number when separateDialCode false", () => {
-    const out = beforeSetNumber("+44 1234", "+44", false, selected);
+    const out = stripSeparateDialCode("+44 1234", "+44", false, selected);
     expect(out).toBe("+44 1234");
   });
 });

@@ -23,7 +23,7 @@ export const getMatchedCountries = (
   // search result groups, in order of priority
   // first, exact ISO2 matches, then name starts with, then name contains, dial code match etc.
   const iso2Matches: Country[] = [];
-  const nameStartWith: Country[] = [];
+  const nameStartsWith: Country[] = [];
   const nameContains: Country[] = [];
   const dialCodeMatches: Country[] = [];
   const dialCodeContains: Country[] = [];
@@ -33,7 +33,7 @@ export const getMatchedCountries = (
     if (c.iso2 === normalisedQuery) {
       iso2Matches.push(c);
     } else if (c.normalisedName.startsWith(normalisedQuery)) {
-      nameStartWith.push(c);
+      nameStartsWith.push(c);
     } else if (c.normalisedName.includes(normalisedQuery)) {
       nameContains.push(c);
     } else if (
@@ -53,7 +53,7 @@ export const getMatchedCountries = (
 
   return [
     ...iso2Matches,
-    ...nameStartWith,
+    ...nameStartsWith,
     ...nameContains,
     // priority sort is only relevant when showing multiple countries with the same dial code (that's what the priority field is used to distinguish between)
     ...dialCodeMatches.sort(sortByPriority),

@@ -1,7 +1,7 @@
 import type { ItiUtils, SelectedCountryData } from "../types/public-api";
 
 //* Remove the dial code if separateDialCode is enabled
-export const beforeSetNumber = (
+export const stripSeparateDialCode = (
   fullNumber: string,
   hasValidDialCode: boolean,
   separateDialCode: boolean,
