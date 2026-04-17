@@ -72,7 +72,7 @@ export default class UI {
   }
 
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
-  public generateMarkup(countries: Country[]): void {
+  public buildMarkup(countries: Country[]): void {
     this.#countries = countries;
 
     this.telInputEl.classList.add("iti__tel-input");
@@ -652,7 +652,7 @@ export default class UI {
 
   //* Wire up triggers that open/close the dropdown: label click (focus input or swallow repeat click),
   //* selected-country click (open), and keydown on countryContainer (open on arrow/space/enter, close on tab).
-  public bindInitialDropdownListeners(
+  public bindAllInitialDropdownListeners(
     signal: AbortSignal,
     onOpen: () => void,
     onClose: () => void,
@@ -794,11 +794,11 @@ export default class UI {
     this.#bindListItemHover(signal);
     this.#bindListItemClick(signal, onSelect);
     if (!this.#options.dropdownAlwaysOpen) {
-      this.#bindClickOffDropdownToClose(signal, onClose);
+      this.#bindOutsideClickToClose(signal, onClose);
     }
     this.#bindDropdownKeydownListener(signal, onSelect, onClose);
     if (this.#options.countrySearch) {
-      this.#bindSearchInputListeners(signal);
+      this.#bindSearchInputListener(signal);
     }
     if (!this.#options.useFullscreenPopup && this.#options.dropdownContainer) {
       //* Close on window scroll when the dropdown is detached into an external container
@@ -844,7 +844,7 @@ export default class UI {
   }
 
   //* Invoke onClickOff when the user clicks anywhere outside the dropdown.
-  #bindClickOffDropdownToClose(signal: AbortSignal, onClickOff: () => void): void {
+  #bindOutsideClickToClose(signal: AbortSignal, onClickOff: () => void): void {
     //* Use setTimeout to bind this listener after the current thread of execution, which is where the opening click is happening (otherwise it would immediately trigger onClickOff so the dropdown would never open).
     setTimeout(() => {
       document.documentElement.addEventListener(
@@ -915,8 +915,8 @@ export default class UI {
     document.addEventListener("keydown", handleKeydown, { signal });
   }
 
-  //* Wire up search input listeners (countrySearch): typing filters the list, the clear button resets it.
-  #bindSearchInputListeners(signal: AbortSignal): void {
+  //* Wire up country search input listener: typing filters the list, the clear button resets it.
+  #bindSearchInputListener(signal: AbortSignal): void {
     this.#searchInputEl!.addEventListener(
       "input",
       () => this.#handleSearchChange(),

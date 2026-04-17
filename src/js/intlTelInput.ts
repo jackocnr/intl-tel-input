@@ -24,7 +24,7 @@ import {
 } from "./data/country-data";
 import { hasRegionlessDialCode } from "./data/intl-regionless";
 import { stripSeparateDialCode, formatNumberAsYouType } from "./format/formatting";
-import { computeNewCursorPosition } from "./format/caret";
+import { computeNewCaretPosition } from "./format/caret";
 import { isRegionlessNanp } from "./data/nanp-regionless";
 import type { ItiEventMap } from "./types/events";
 import {
@@ -54,7 +54,7 @@ declare global {
 }
 
 //* These vars persist through all instances of the plugin.
-let id = 0;
+let nextId = 0;
 
 const ensureUtils = (methodName: string): void => {
   if (!intlTelInput.utils) {
@@ -94,7 +94,7 @@ export class Iti {
   readonly #isAndroid: boolean;
   // country data
   readonly #countries: Country[];
-  readonly #dialCodeMaxLen: number;
+  readonly #dialCodeMaxLength: number;
   readonly #dialCodeToIso2Map: Record<string, Iso2[]>;
   readonly #dialCodes: Set<string>;
   readonly #countryByIso2: Map<Iso2, Country>;
@@ -103,15 +103,15 @@ export class Iti {
   #maxCoreNumberLength: number | null = null;
   #fallbackCountryIso2!: Iso2;
   // is this instance still active (not destroyed)
-  #active = true;
+  #isActive = true;
   #abortController!: AbortController;
   #numerals!: Numerals;
 
   #autoCountryDeferred?: Deferred<void>;
-  #utilsScriptDeferred?: Deferred<void>;
+  #utilsDeferred?: Deferred<void>;
 
   public constructor(input: HTMLInputElement, customOptions: SomeOptions = {}) {
-    this.id = id++;
+    this.id = nextId++;
 
     UI.validateInput(input);
     const validatedOptions = validateOptions(customOptions);
@@ -130,11 +130,11 @@ export class Iti {
     this.#countries = processAllCountries(this.#options);
 
     //* Generate this.dialCodes and this.dialCodeToIso2Map.
-    const { dialCodes, dialCodeMaxLen, dialCodeToIso2Map } = processDialCodes(
+    const { dialCodes, dialCodeMaxLength, dialCodeToIso2Map } = processDialCodes(
       this.#countries,
     );
     this.#dialCodes = dialCodes;
-    this.#dialCodeMaxLen = dialCodeMaxLen;
+    this.#dialCodeMaxLength = dialCodeMaxLength;
     this.#dialCodeToIso2Map = dialCodeToIso2Map;
 
     //* Build fast iso2 -> country map for O(1) lookups (used by setCountry).
@@ -164,12 +164,12 @@ export class Iti {
       this.#autoCountryDeferred = createDeferred<void>();
     }
     if (needsUtilsScriptPromise) {
-      this.#utilsScriptDeferred = createDeferred<void>();
+      this.#utilsDeferred = createDeferred<void>();
     }
 
     return Promise.all([
       this.#autoCountryDeferred?.promise,
-      this.#utilsScriptDeferred?.promise,
+      this.#utilsDeferred?.promise,
     ]).then(() => {});
   }
 
@@ -181,7 +181,7 @@ export class Iti {
     this.#processCountryData();
 
     //* generate the markup.
-    this.#ui.generateMarkup(this.#countries);
+    this.#ui.buildMarkup(this.#countries);
 
     //* Set the initial state of the input value and the selected country.
     this.#setInitialState();
@@ -193,7 +193,7 @@ export class Iti {
     this.#initListeners();
 
     //* Utils script, and auto country.
-    this.#initRequests();
+    this.#startAsyncLoads();
 
     if (this.#options.dropdownAlwaysOpen) {
       this.#openDropdown();
@@ -266,10 +266,10 @@ export class Iti {
 
   //* Initialise the main event listeners: input keyup, and click selected country.
   #initListeners(): void {
-    this.#bindTelInputListeners();
+    this.#bindAllTelInputListeners();
 
     if (this.#options.allowDropdown) {
-      this.#ui.bindInitialDropdownListeners(
+      this.#ui.bindAllInitialDropdownListeners(
         this.#abortController!.signal,
         () => this.#openDropdown(),
         () => this.#closeDropdown(),
@@ -283,9 +283,9 @@ export class Iti {
   }
 
   //* Init requests: utils script / geo ip lookup.
-  #initRequests(): void {
+  #startAsyncLoads(): void {
     //* (1) UTILS SCRIPT — deferred only exists when loadUtils was set and utils aren't loaded yet.
-    if (this.#utilsScriptDeferred) {
+    if (this.#utilsDeferred) {
       const { loadUtils } = this.#options;
       const doAttachUtils = () => {
         //* Catch and ignore any errors to prevent unhandled-promise failures.
@@ -365,7 +365,7 @@ export class Iti {
   }
 
   //* Initialize the tel input listeners.
-  #bindTelInputListeners(): void {
+  #bindAllTelInputListeners(): void {
     this.#bindInputListener();
     this.#bindKeydownListener();
     this.#bindPasteListener();
@@ -441,7 +441,7 @@ export class Iti {
           REGEX.NON_PLUS_NUMERIC_GLOBAL,
           "",
         ).length;
-        const isDeleteForwards = e?.inputType === INPUT_TYPES.DELETE_FWD;
+        const isDeleteForwards = e?.inputType === INPUT_TYPES.DELETE_FORWARD;
         const fullNumber = this.#getFullNumber();
         const formattedValue = formatNumberAsYouType(
           fullNumber,
@@ -450,7 +450,7 @@ export class Iti {
           this.#selectedCountry,
           separateDialCode,
         );
-        const newCaretPos = computeNewCursorPosition(
+        const newCaretPos = computeNewCaretPosition(
           relevantCharsBeforeCaret,
           formattedValue,
           currentCaretPos,
@@ -700,7 +700,7 @@ export class Iti {
   }
 
   // if there is a selected country, and the number doesn't start with a dial code, then add it
-  #ensureHasDialCode(number: string): string {
+  #withDialCodePrefix(number: string): string {
     const dialCode = this.#selectedCountry?.dialCode;
     const nationalPrefix = this.#selectedCountry?.nationalPrefix;
     const alreadyHasPlus = number.startsWith("+");
@@ -727,7 +727,7 @@ export class Iti {
     const selectedDialCode = this.#selectedCountry?.dialCode;
 
     //* Ensure the number starts with the dial code (if there is a selected country), for getDialCode to work properly (e.g. if number is entered in national format, or with separateDialCode enabled)
-    number = this.#ensureHasDialCode(number);
+    number = this.#withDialCodePrefix(number);
 
     //* Try and extract valid dial code (plus area code digits) from input.
     const dialCodeMatch = this.#getDialCode(number, true);
@@ -835,14 +835,14 @@ export class Iti {
     this.#updatePlaceholder();
 
     //* Update the maximum valid number length.
-    this.#updateMaxLength();
+    this.#updateMaxCoreNumberLength();
 
     //* Return if the country has changed or not.
     return prevIso2 !== iso2;
   }
 
   //* Update the maximum valid number length for the currently selected country.
-  #updateMaxLength(): void {
+  #updateMaxCoreNumberLength(): void {
     const { strictMode, placeholderNumberType, allowedNumberTypes } =
       this.#options;
     if (!strictMode || !intlTelInput.utils) {
@@ -923,7 +923,7 @@ export class Iti {
       return;
     }
     //* Update selected country and active list item.
-    const iso2 = listItem.dataset[DATA_KEYS.COUNTRY_CODE] as Iso2;
+    const iso2 = listItem.dataset[DATA_KEYS.ISO2] as Iso2;
     const countryChanged = this.#setCountry(iso2);
     this.#closeDropdown();
 
@@ -1021,7 +1021,7 @@ export class Iti {
       }
 
       //* Stop searching as soon as we can - in this case when we hit max len.
-      if (numericChars.length === this.#dialCodeMaxLen) {
+      if (numericChars.length === this.#dialCodeMaxLength) {
         break;
       }
     }
@@ -1090,7 +1090,7 @@ export class Iti {
     }
 
     // If destroyed, abort any UI work but still resolve the init promise
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       this.#autoCountryDeferred.resolve();
       return;
     }
@@ -1111,7 +1111,7 @@ export class Iti {
   //* Called when the geoip call fails or times out.
   #handleAutoCountryFailure(): void {
     // If instance destroyed, just reject the promise and avoid DOM/state ops
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       this.#autoCountryDeferred?.reject();
       return;
     }
@@ -1124,14 +1124,14 @@ export class Iti {
   //* Called when the utils request completes.
   #handleUtilsLoaded(): void {
     // If instance destroyed, avoid touching DOM/state but still resolve promise
-    if (!this.isActive()) {
-      this.#utilsScriptDeferred?.resolve();
+    if (!this.#isActive) {
+      this.#utilsDeferred?.resolve();
       return;
     }
 
     //* If the request was not successful
     if (!intlTelInput.utils) {
-      this.#utilsScriptDeferred?.resolve();
+      this.#utilsDeferred?.resolve();
       return;
     }
 
@@ -1142,20 +1142,20 @@ export class Iti {
     }
     if (this.#selectedCountry) {
       this.#updatePlaceholder();
-      this.#updateMaxLength();
+      this.#updateMaxCoreNumberLength();
     }
-    this.#utilsScriptDeferred?.resolve();
+    this.#utilsDeferred?.resolve();
   }
 
   //* Called when the utils request fails or times out.
   #handleUtilsFailure(error: unknown): void {
     // If instance destroyed, just reject the promise and avoid DOM/state ops
-    if (!this.isActive()) {
-      this.#utilsScriptDeferred?.reject(error);
+    if (!this.#isActive) {
+      this.#utilsDeferred?.reject(error);
       return;
     }
 
-    this.#utilsScriptDeferred?.reject(error);
+    this.#utilsDeferred?.reject(error);
   }
 
   //********************
@@ -1164,10 +1164,10 @@ export class Iti {
 
   //* Remove plugin.
   public destroy(): void {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return;
     }
-    this.#active = false;
+    this.#isActive = false;
 
     if (this.#options.allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
@@ -1186,12 +1186,12 @@ export class Iti {
 
   // check if the instance is still valid (not destroyed)
   public isActive(): boolean {
-    return this.#active;
+    return this.#isActive;
   }
 
   //* Get the extension from the current number.
   public getExtension(): string {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return "";
     }
     ensureUtils("getExtension");
@@ -1204,7 +1204,7 @@ export class Iti {
 
   //* Format the number to the given format.
   public getNumber(format?: number): string {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return "";
     }
     ensureUtils("getNumber");
@@ -1221,7 +1221,7 @@ export class Iti {
 
   //* Get the type of the entered number e.g. landline/mobile.
   public getNumberType(): number {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return SENTINELS.UNKNOWN_NUMBER_TYPE;
     }
     ensureUtils("getNumberType");
@@ -1239,7 +1239,7 @@ export class Iti {
 
   //* Get the validation error.
   public getValidationError(): number {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return SENTINELS.UNKNOWN_VALIDATION_ERROR;
     }
     ensureUtils("getValidationError");
@@ -1250,7 +1250,7 @@ export class Iti {
 
   //* Validate the input value using number length only
   public isValidNumber(): boolean | null {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return null;
     }
     ensureUtils("isValidNumber");
@@ -1292,7 +1292,7 @@ export class Iti {
 
   //* Validate the input value with precise validation
   public isValidNumberPrecise(): boolean | null {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return null;
     }
     ensureUtils("isValidNumberPrecise");
@@ -1332,7 +1332,7 @@ export class Iti {
 
   //* Update the selected country, and update the input value accordingly.
   public setCountry(iso2: Iso2): void {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return;
     }
     const iso2Lower = iso2?.toLowerCase() as Iso2;
@@ -1361,7 +1361,7 @@ export class Iti {
 
   //* Set the input value and update the country.
   public setNumber(number: string): void {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return;
     }
     const normalisedNumber = this.#numerals.normalise(number);
@@ -1378,7 +1378,7 @@ export class Iti {
 
   //* Set the placeholder number type
   public setPlaceholderNumberType(type: NumberType): void {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return;
     }
     this.#options.placeholderNumberType = type;
@@ -1387,7 +1387,7 @@ export class Iti {
 
   // Set the disabled state of the input and dropdown.
   public setDisabled(disabled: boolean): void {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return;
     }
     this.#ui.setDisabled(disabled);
@@ -1395,7 +1395,7 @@ export class Iti {
 
   // Set the readonly state of the input and dropdown.
   public setReadonly(readonly: boolean): void {
-    if (!this.isActive()) {
+    if (!this.#isActive) {
       return;
     }
     this.#ui.setReadonly(readonly);

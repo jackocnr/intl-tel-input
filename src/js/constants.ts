@@ -31,7 +31,7 @@ export const KEYS = {
 
 export const INPUT_TYPES = {
   PASTE: "insertFromPaste",
-  DELETE_FWD: "deleteContentForward",
+  DELETE_FORWARD: "deleteContentForward",
 } as const;
 
 export const REGEX = {
@@ -118,7 +118,9 @@ export const NUMBER_TYPE_SET = new Set(NUMBER_TYPES) as ReadonlySet<
 
 // Data-* keys used on DOM nodes
 export const DATA_KEYS = {
-  COUNTRY_CODE: "countryCode",
+  // e.g. <li data-country-code="us"> for country items in dropdown
+  // in the future, the value should be changed to "iso2", but this is a breaking change for another day
+  ISO2: "countryCode",
   DIAL_CODE: "dialCode",
 } as const;
 

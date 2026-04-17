@@ -9,19 +9,19 @@ import { isIso2, type Iso2 } from "../data";
 import type { AllOptions, SomeOptions } from "../types/public-api";
 
 // Helper for media query evaluation
-const mq = (q: string): boolean =>
+const mediaQuery = (q: string): boolean =>
   typeof window !== "undefined" &&
   typeof window.matchMedia === "function" &&
   window.matchMedia(q).matches;
 
 const isNarrowViewport = () =>
-  mq(`(max-width: ${LAYOUT.NARROW_VIEWPORT_WIDTH}px)`);
+  mediaQuery(`(max-width: ${LAYOUT.NARROW_VIEWPORT_WIDTH}px)`);
 
 //* Helper to decide whether to use fullscreen popup by default
 const computeDefaultUseFullscreenPopup = (): boolean => {
   if (typeof navigator !== "undefined" && typeof window !== "undefined") {
-    const isShortViewport = mq("(max-height: 600px)");
-    const isCoarsePointer = mq("(pointer: coarse)");
+    const isShortViewport = mediaQuery("(max-height: 600px)");
+    const isCoarsePointer = mediaQuery("(pointer: coarse)");
     /* Heuristic rationale: If narrow width OR (coarse pointer with constrained height) we  prefer fullscreen for usability. Coarse pointer usually implies touch (phones/tablets, some hybrids) where larger touch targets help (and virtual keyboards may be used, which consume more vertical space). */
     return isNarrowViewport() || (isCoarsePointer && isShortViewport);
   }
@@ -94,7 +94,7 @@ const toString = (val: unknown): string => JSON.stringify(val);
 const isPlainObject = (val: unknown): val is Record<string, unknown> =>
   Boolean(val) && typeof val === "object" && !Array.isArray(val);
 
-const isFn = (val: unknown): val is (...args: unknown[]) => unknown =>
+const isFunction = (val: unknown): val is (...args: unknown[]) => unknown =>
   typeof val === "function";
 
 const isElLike = (val: unknown): val is HTMLElement => {
@@ -226,7 +226,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       case "geoIpLookup":
       case "hiddenInput":
       case "loadUtils":
-        if (value !== null && !isFn(value)) {
+        if (value !== null && !isFunction(value)) {
           warnOption(key, "a function or null", value);
           break;
         }

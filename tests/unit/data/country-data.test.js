@@ -56,9 +56,9 @@ describe("data integrity", () => {
 describe("data/country-data processDialCodes", () => {
   test("creates dial code map and length", () => {
     const sample = allCountries.slice(0, 5);
-    const { dialCodes, dialCodeMaxLen, dialCodeToIso2Map } = processDialCodes(sample, { onlyCountries: [], excludeCountries: [] });
+    const { dialCodes, dialCodeMaxLength, dialCodeToIso2Map } = processDialCodes(sample, { onlyCountries: [], excludeCountries: [] });
     expect(dialCodes.size).toBeGreaterThan(0);
-    expect(dialCodeMaxLen).toBeGreaterThan(0);
+    expect(dialCodeMaxLength).toBeGreaterThan(0);
     expect(Object.keys(dialCodeToIso2Map).length).toBeGreaterThan(0);
   });
 });

@@ -2,9 +2,9 @@ import allCountries, { type Country, type Iso2 } from "../data";
 import { normaliseString } from "../helpers/string";
 import type { AllOptions } from "../types/public-api";
 
-export interface DialCodeProcessingResult {
+export interface ProcessedDialCodes {
   dialCodes: Set<string>;
-  dialCodeMaxLen: number;
+  dialCodeMaxLength: number;
   dialCodeToIso2Map: Record<string, Iso2[]>;
 }
 
@@ -56,11 +56,11 @@ export const generateCountryNames = (
 //* Generate dialCodes and dialCodeToIso2Map.
 export const processDialCodes = (
   countries: Country[],
-): DialCodeProcessingResult => {
+): ProcessedDialCodes => {
   //* Here we store just dial codes, where the key is the dial code, and the value is true
   //* e.g. { 1: true, 7: true, 20: true, ... }.
   const dialCodes = new Set<string>();
-  let dialCodeMaxLen = 0;
+  let dialCodeMaxLength = 0;
 
   //* Here we map dialCodes (inc both dialCode and dialCode+areaCode) to iso2 codes e.g.
   /*
@@ -80,9 +80,9 @@ export const processDialCodes = (
     if (!iso2 || !dialCode) {
       return;
     }
-    //* Update dialCodeMaxLen.
-    if (dialCode.length > dialCodeMaxLen) {
-      dialCodeMaxLen = dialCode.length;
+    //* Update dialCodeMaxLength.
+    if (dialCode.length > dialCodeMaxLength) {
+      dialCodeMaxLength = dialCode.length;
     }
     //* If this entry doesn't already exist, then create it.
     if (!Object.hasOwn(dialCodeToIso2Map, dialCode)) {
@@ -130,7 +130,7 @@ export const processDialCodes = (
     }
   }
 
-  return { dialCodes, dialCodeMaxLen, dialCodeToIso2Map };
+  return { dialCodes, dialCodeMaxLength, dialCodeToIso2Map };
 };
 
 //* Sort countries by countryOrder option (if present), then name.

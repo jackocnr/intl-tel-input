@@ -99,7 +99,7 @@ const buildUI = (optionOverrides = {}, inputAttrs = {}) => {
     listItemByInstanceId: { ...c.listItemByInstanceId },
   }));
 
-  ui.generateMarkup(testCountries);
+  ui.buildMarkup(testCountries);
   return { ui, input, countries: testCountries };
 };
 
@@ -150,8 +150,8 @@ describe("UI.validateInput", () => {
   });
 });
 
-// ── generateMarkup ─────────────────────────────────────────────
-describe("UI.generateMarkup", () => {
+// ── buildMarkup ─────────────────────────────────────────────
+describe("UI.buildMarkup", () => {
   test("wraps input in iti container", () => {
     const { input } = buildUI();
     const wrapper = input.parentNode;
@@ -259,7 +259,7 @@ describe("UI hidden inputs", () => {
     });
     const ui = new UI(input, options, 1);
     const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
-    ui.generateMarkup(testCountries);
+    ui.buildMarkup(testCountries);
 
     const phoneHidden = getHiddenInput(input, "phone_full");
     const countryHidden = getHiddenInput(input, "phone_country");
@@ -564,9 +564,9 @@ describe("UI.destroy", () => {
     const options = makeOptions({ separateDialCode: true });
     const ui = new UI(input, options, 2);
     const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
-    ui.generateMarkup(testCountries);
+    ui.buildMarkup(testCountries);
 
-    // paddingLeft will have been overwritten by generateMarkup
+    // paddingLeft will have been overwritten by buildMarkup
     expect(input.style.paddingLeft).not.toBe("20px");
     ui.destroy();
     expect(input.style.paddingLeft).toBe("20px");
@@ -603,7 +603,7 @@ describe("UI RTL support", () => {
     const options = makeOptions();
     const ui = new UI(input, options, 3);
     const testCountries = countries.map((c) => ({ ...c, listItemByInstanceId: {} }));
-    ui.generateMarkup(testCountries);
+    ui.buildMarkup(testCountries);
 
     const wrapper = input.parentNode;
     expect(wrapper.getAttribute("dir")).toBe("ltr");
