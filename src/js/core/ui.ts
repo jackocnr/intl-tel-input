@@ -50,9 +50,7 @@ export default class UI {
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
     this.#isRTL = !!this.telInput.closest("[dir=rtl]");
     //* Store original styling before we override it.
-    if (this.#options.separateDialCode) {
-      this.#originalPaddingLeft = this.telInput.style.paddingLeft;
-    }
+    this.#originalPaddingLeft = this.telInput.style.paddingLeft;
   }
 
   // Validate that the provided element is an HTMLInputElement.
@@ -706,9 +704,7 @@ export default class UI {
     delete this.telInput.dataset.intlTelInputId;
 
     //* Restore original styling
-    if (this.#options.separateDialCode) {
-      this.telInput.style.paddingLeft = this.#originalPaddingLeft;
-    }
+    this.telInput.style.paddingLeft = this.#originalPaddingLeft;
 
     //* Remove markup (but leave the original input). parentNode may be null if the host framework (e.g. Svelte) detached the input before destroy() ran; the orphaned wrapper has no parent and will be GC'd once references are released.
     const wrapper = this.telInput.parentNode as HTMLElement | null;
