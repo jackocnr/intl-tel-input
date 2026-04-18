@@ -15,7 +15,7 @@ A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source 
 
 You can see a live demo and example code on the [Svelte component](/examples/svelte-component) example page.
 
-Try it for yourself by downloading and building the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run svelte:demo` and copy the given URL into your browser. This defaults to the validation demo — to run a different one, set the `DEMO` env var, e.g. `DEMO=simple npm run svelte:demo`. View a list of [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/svelte/demo).
+Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run svelte:demo` and copy the given URL into your browser. This defaults to the validation demo — to run a different one, set the `DEMO` env var, e.g. `DEMO=simple npm run svelte:demo`. View a list of [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/svelte/demo).
 
 ## Getting started
 
@@ -43,7 +43,7 @@ See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master
 > [!NOTE]
 > The package ships the raw `.svelte` source file rather than a pre-built `.mjs` bundle, so your project's existing Svelte tooling compiles it alongside your own components. Any standard Svelte setup (SvelteKit, Vite + `@sveltejs/vite-plugin-svelte`, etc.) handles this out of the box.
 
-A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize) then you can just import IntlTelInput from `"intl-tel-input/svelteWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/svelte"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the utils.js file, and then set the `loadUtils` option to that URL, or just point it to a CDN-hosted version, e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@26.5.0/dist/js/utils.js"`.
+A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about filesize), then you can just import `IntlTelInput` from `"intl-tel-input/svelteWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/svelte"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the utils.js file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN-hosted version, e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@27.0.11/dist/js/utils.js"`.
 
 ## Props
 
