@@ -55,7 +55,10 @@ _Note that the `failure` callback must be called in the event of an error, hence
 Type: `String`  
 Default: `""`  
 
-Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
+Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. View the plugin with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
+
+> [!WARNING]
+> Only set this if you're sure of the user's country. If set incorrectly and the user auto-fills their national number and submits without checking, the number can pass validation but be stored with the wrong dial code.
 
 ###### onlyCountries
 Type: `String[]`  
@@ -119,7 +122,7 @@ Display the selected country's international dial code next to the input, so it 
 Type: `Boolean`  
 Default: `true`  
 
-Set this to false to hide the flags, e.g. for political reasons. Instead, it will show a generic globe icon. Try the plugin with this disabled in the [Playground](/playground?showFlags=false#user-interface-options).
+Set this to false to hide the flags. Instead, it will show a generic globe icon. Try the plugin with this disabled in the [Playground](/playground?showFlags=false#user-interface-options).
 
 ###### useFullscreenPopup
 Type: `Boolean`  
@@ -228,7 +231,13 @@ The locale to pass to `Intl.DisplayNames` to generate the country names. Should 
 Type: `Object`  
 Default: `{}`  
 
-For translating country names, see [`countryNameLocale`](#countrynamelocale) option above. The `i18n` option is for translating the user interface strings (including the country search placeholder, search empty state, and various other strings for screen readers). We provide translations for these in <a href="https://github.com/jackocnr/intl-tel-input/tree/master/src/js/i18n">over 40 languages</a> - simply import the language module you need and pass it to the plugin using the `i18n` option (see option 1 below). You can also override one or more individual keys this way. Alternatively, you can provide your own custom translations (see option 2 below). If providing your own, please see the required UI strings listed below. If we don't currently support a language you need, it's easy to [contribute this](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself - you only need to provide a handful of UI translation strings. View the plugin with `countryNameLocale` set to `"zh"`, and `i18n` set to the provided ZH user interface translations in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options). _Note: previously named `localizedCountries`._
+Translate the plugin's user interface strings, including the country search placeholder, search empty state, and various accessibility strings for screen readers. For translating country names (a separate concern), see the [`countryNameLocale`](#countrynamelocale) option above.
+
+We provide translations in <a href="https://github.com/jackocnr/intl-tel-input/tree/master/src/js/i18n">over 40 languages</a> — import the module you need and pass it in (Option 1 below). You can also override one or more keys the same way.
+
+If you need a language we don't currently ship, either provide your own custom translations (Option 2 below, see the required UI strings listed) or — it's easy — [contribute a new language module](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself.
+
+Try it out with `countryNameLocale` set to `"zh"` and `i18n` set to the provided ZH translations in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options). _Note: previously named `localizedCountries`._
 
 Option 1: import one of the provided translation modules
 ```js

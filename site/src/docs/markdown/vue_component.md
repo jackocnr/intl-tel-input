@@ -47,8 +47,6 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 
 ## Props
 
-Here's a list of all of the current props you can pass to the IntlTelInput Vue component.
-
 ###### disabled
 Type: `Boolean`  
 Default: `false`  
@@ -110,7 +108,6 @@ Use:
 
 
 ## Events
-Here's a list of all of the current events you can listen to on the IntlTelInput Vue component.
 
 ###### changeCountry
 Type: `Function`  

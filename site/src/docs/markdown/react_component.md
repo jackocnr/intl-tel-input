@@ -45,8 +45,6 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 
 ## Props
 
-Here's a list of all of the current props you can pass to the IntlTelInput React component.
-
 ###### disabled
 Type: `Boolean`  
 Default: `false`  
@@ -77,7 +75,7 @@ A handler to be called when the number validation error changes. It will receive
 Type: `Function`  
 Default: `null`  
 
-A handler to be called when the number changes. For valid numbers (see `onChangeValidity`), it will receive the new number in the standard E.164 format. Requires the utils script to be loaded (see above).
+A handler to be called when the number changes. It will receive the new number in the standard E.164 format. Requires the utils script to be loaded (see above).
 
 ###### onChangeValidity
 Type: `Function`  

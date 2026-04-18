@@ -93,13 +93,17 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [u
 
 ## Recommended usage
 
-We highly recommend you [load the included utils.js](/docs/utils#loading-the-utilities-script), which enables formatting and validation, etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when [`nationalMode`](/docs/options#nationalmode) or [`separateDialCode`](/docs/options#separatedialcode) is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the dial code separately, as full international numbers include the dial code information*.
+We recommend three things:
 
-You can always get the full international number (including dial code) using [`getNumber`](/docs/methods#getnumber), then you only have to store that one string in your database (you don't have to store the country separately), and then the next time you initialise the plugin with that number in the input, it will automatically set the country* and format it according to the options you specify (e.g. when using [`nationalMode`](/docs/options#nationalmode) it will automatically display the number in national format, removing the international dial code).
+- **[Load the utils.js module](/docs/utils#loading-the-utilities-script)** to enable formatting and validation.
+- **Store numbers in full international (E.164) format**, e.g. `"+17024181234"`. The dial code is embedded, so you don't need to store the country separately*.
+- **Pass the stored E.164 number as the input value on initialisation.** The plugin will automatically set the country* and format the number according to your options (e.g. with [`nationalMode`](/docs/options#nationalmode) it will display the number in national format, stripping the dial code and adding the national prefix if required).
 
-If you know the user's country, you can set it with [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"` for the United States). If you don't, we recommend setting `initialCountry` to `"auto"` (along with the [`geoIpLookup`](/docs/options#geoiplookup) option) to determine the user's country based on their IP address - [see example](/examples/lookup-country).
+To read the number back out in E.164, use [`getNumber`](/docs/methods#getnumber). This works even when [`nationalMode`](/docs/options#nationalmode) or [`separateDialCode`](/docs/options#separatedialcode) is enabled.
 
-If you know the user's language, there is a built in way to translate the country names and user interface strings - [see example](/playground?countryNameLocale=ru&i18n=ru#translation-options).
+If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set it to `"auto"` along with the [`geoIpLookup`](/docs/options#geoiplookup) option to determine the country from their IP address — [see example](/examples/lookup-country).
+
+If you know the user's language, you can translate the country names and UI strings — [see example](/playground?countryNameLocale=ru&i18n=ru#translation-options).
 
 _*Except for some small satellite territories, which share number ranges with the main country (search data.ts for "shared" for examples). When displaying numbers from those shared ranges, we default to selecting the main country._
 
