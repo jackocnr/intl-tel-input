@@ -1349,7 +1349,7 @@ export class Iti {
     const iso2Lower = iso2?.toLowerCase() as Iso2;
     // handle invalid iso2
     if (!isIso2(iso2Lower)) {
-      throw new Error(`Invalid country code: '${iso2Lower}'`);
+      throw new Error(`Invalid iso2 code: '${iso2Lower}'`);
     }
 
     const currentCountry = this.#selectedCountry?.iso2;
@@ -1531,7 +1531,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     getCountryData: (): Country[] => allCountries,
     //* A getter for the plugin instance.
     getInstance: (input: HTMLInputElement): Iti | null => {
-      const id = input.dataset.intlTelInputId;
+      const id = input.dataset[DATA_KEYS.INSTANCE_ID];
       return id ? (intlTelInput.instances.get(id) ?? null) : null;
     },
     //* A map from instance ID to instance object.

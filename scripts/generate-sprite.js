@@ -77,7 +77,7 @@ const scaledImages1x = [];
 const scaledImages2x = [];
 
 for (const filename of supportedCountryFilenames) {
-  const countryCode = filename.split('.')[0];
+  const iso2 = filename.split('.')[0];
   const processedFilename = handleSpecialCases(filename);
   const imagePath = path.join(flagsPath, processedFilename);
 
@@ -115,7 +115,7 @@ for (const filename of supportedCountryFilenames) {
 
   //* Unit-less multiple of --iti-flag-width, so consumers can scale flags by overriding that one var.
   const offsetMultiplier = currentOffset / TARGET_WIDTH;
-  flagsMetadata += `  ${countryCode}: (\n`;
+  flagsMetadata += `  ${iso2}: (\n`;
   flagsMetadata += `    offset: ${-offsetMultiplier},\n`;
   flagsMetadata += '  ),\n';
 

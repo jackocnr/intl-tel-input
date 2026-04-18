@@ -122,6 +122,8 @@ export const DATA_KEYS = {
   // in the future, the value should be changed to "iso2", but this is a breaking change for another day
   ISO2: "countryCode",
   DIAL_CODE: "dialCode",
+  // e.g. <input data-intl-tel-input-id="0"> on the input element
+  INSTANCE_ID: "intlTelInputId",
 } as const;
 
 // ARIA attribute names (avoid typos & for potential future refactors)

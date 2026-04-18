@@ -123,15 +123,15 @@ export const getCountriesInList = (container) => {
   return [...countryListItems].map(c => c.getAttribute("data-country-code"));
 };
 
-export const checkFlagSelected = (container, countryCode = "") => {
+export const checkFlagSelected = (container, iso2 = "") => {
   const flag = container.querySelector(".iti__selected-country .iti__flag");
-  if (countryCode.length === 2) {
-    return flag.classList.contains(`iti__${countryCode}`);
+  if (iso2.length === 2) {
+    return flag.classList.contains(`iti__${iso2}`);
   }
-  if (countryCode.length === 0) {
+  if (iso2.length === 0) {
     return flag.classList.contains("iti__globe");
   }
-  throw new Error("Invalid country code");
+  throw new Error("Invalid iso2 code");
 };
 
 export const clickSelectedCountryAsync = async (container, user) => {

@@ -25,7 +25,7 @@ describe("getValidationError method", () => {
     expect(iti.getValidationError()).toEqual(validationError.TOO_LONG);
   });
 
-  test("invalid country code", async () => {
+  test("invalid dial code", async () => {
     await user.type(input, "+969");
     expect(iti.getValidationError()).toEqual(validationError.INVALID_COUNTRY_CODE);
   });

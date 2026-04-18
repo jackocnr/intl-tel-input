@@ -7,7 +7,7 @@ import {
   buildCheckIcon,
   buildGlobeIcon,
 } from "./icons";
-import { CLASSES, ARIA, LAYOUT, KEYS, REGEX, TIMINGS } from "../constants";
+import { CLASSES, ARIA, LAYOUT, KEYS, REGEX, TIMINGS, DATA_KEYS } from "../constants";
 import { findFirstCountryStartingWith, getMatchedCountries } from "./countrySearch";
 
 export default class UI {
@@ -44,7 +44,7 @@ export default class UI {
   public readonly hadInitialPlaceholder: boolean;
 
   public constructor(input: HTMLInputElement, options: AllOptions, id: number) {
-    input.dataset.intlTelInputId = id.toString();
+    input.dataset[DATA_KEYS.INSTANCE_ID] = id.toString();
     this.telInputEl = input;
     this.#options = options;
     this.#id = id;
@@ -414,8 +414,8 @@ export default class UI {
         role: "option",
         [ARIA.SELECTED]: "false",
       });
-      listItem.dataset.dialCode = c.dialCode;
-      listItem.dataset.countryCode = c.iso2;
+      listItem.dataset[DATA_KEYS.DIAL_CODE] = c.dialCode;
+      listItem.dataset[DATA_KEYS.ISO2] = c.iso2;
 
       // Store this for later use e.g. country search filtering.
       this.#listItemByIso2.set(c.iso2, listItem);
@@ -967,7 +967,7 @@ export default class UI {
   // Update the selected list item in the dropdown
   #updateSelectedListItem(iso2: Iso2 | ""): void {
     // if the existing selected item is different to the new country, set aria-selected to false
-    if (this.#selectedListItemEl && this.#selectedListItemEl.dataset.countryCode !== iso2) {
+    if (this.#selectedListItemEl && this.#selectedListItemEl.dataset[DATA_KEYS.ISO2] !== iso2) {
       this.#selectedListItemEl.setAttribute(ARIA.SELECTED, "false");
       this.#selectedListItemEl.querySelector(".iti__country-check")?.remove();
       this.#selectedListItemEl = null;
@@ -1203,7 +1203,7 @@ export default class UI {
   public destroy(): void {
     //* Break cross-references from long-lived objects back to this instance.
     this.telInputEl.iti = undefined;
-    delete this.telInputEl.dataset.intlTelInputId;
+    delete this.telInputEl.dataset[DATA_KEYS.INSTANCE_ID];
 
     //* Restore original styling
     this.telInputEl.style.paddingLeft = this.#originalPaddingLeft;

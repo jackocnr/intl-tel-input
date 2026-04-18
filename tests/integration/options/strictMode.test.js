@@ -303,7 +303,7 @@ describe("strictMode option", () => {
 
 // const { intlTelInput } = require("../helpers/helpers");
 // const allCountries = intlTelInput.getCountryData();
-// const countryCodes = allCountries.map((country) => country.iso2);
+// const iso2Codes = allCountries.map((country) => country.iso2);
 // const countriesAllowingExtraDigit = ["ax", "at", "by", "ba", "bg", "kh", "bq", "cd", "fi", "ga", "id", "ie", "lu", "my", "mm", "nz", "rs", "so", "tk", "tv", "vn", "zw"];
 // const countriesAllowingMultipleExtraDigits = ["at", "id", "mm", "tk"];
 
@@ -326,7 +326,7 @@ describe("strictMode option", () => {
 //     teardown(iti);
 //   });
 
-//   test.each(countryCodes)("can type ntl placeholder number and no more: %s", async (iso2) => {
+//   test.each(iso2Codes)("can type ntl placeholder number and no more: %s", async (iso2) => {
 //     let placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, iso2, user, input);
 //     expect(checkFlagSelected(container, iso2)).toBe(true);
 //     // try typing an extra digit, which should be ignored (in most cases - see below)
@@ -370,7 +370,7 @@ describe("strictMode option", () => {
 //     teardown(iti);
 //   });
 
-//   test.each(countryCodes)("can type intl placeholder number: %s", async (iso2) => {
+//   test.each(iso2Codes)("can type intl placeholder number: %s", async (iso2) => {
 //     const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, iso2, user, input);
 //     expect(checkFlagSelected(container, iso2)).toBe(true);
 //     // sometimes AYT formatting is slightly different, so strip formatting chars
@@ -399,7 +399,7 @@ describe("strictMode option", () => {
 //     teardown(iti);
 //   });
 
-//   test.each(countryCodes)("can type separateDialCode placeholder number: %s", async (iso2) => {
+//   test.each(iso2Codes)("can type separateDialCode placeholder number: %s", async (iso2) => {
 //     const placeholderNumberClean = await selectCountryAndTypePlaceholderNumberAsync(container, iso2, user, input);
 //     expect(checkFlagSelected(container, iso2)).toBe(true);
 //     // sometimes AYT formatting is slightly different, so strip formatting chars

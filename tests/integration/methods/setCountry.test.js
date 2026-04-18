@@ -26,7 +26,7 @@ describe("setCountry method", () => {
     });
 
     test("throws for unknown iso2 code", () => {
-      expect(() => iti.setCountry("zz")).toThrow(/Invalid country code: 'zz'/);
+      expect(() => iti.setCountry("zz")).toThrow(/Invalid iso2 code: 'zz'/);
     });
 
     test("throws for non-string iso2", () => {

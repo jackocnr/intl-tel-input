@@ -6,12 +6,12 @@ goog.require("i18n.phonenumbers.Error");
 goog.require("i18n.phonenumbers.AsYouTypeFormatter");
 
 //* Format the number as the user types.
-const formatNumberAsYouType = (number, countryCode) => {
+const formatNumberAsYouType = (number, iso2) => {
   try {
     //* Have to clean it first, as AYTF stops formatting as soon as it hits any formatting char (even it's own)
     //* (it's designed to be fed one char at a time, as opposed to every char every time).
     const clean = number.replace(/[^+0-9]/g, "");
-    const formatter = new i18n.phonenumbers.AsYouTypeFormatter(countryCode);
+    const formatter = new i18n.phonenumbers.AsYouTypeFormatter(iso2);
     let result = "";
     for (let i = 0; i < clean.length; i++) {
       result = formatter.inputDigit(clean.charAt(i));
@@ -23,10 +23,10 @@ const formatNumberAsYouType = (number, countryCode) => {
 };
 
 //* Format the given number to the given format.
-const formatNumber = (number, countryCode, formatArg) => {
+const formatNumber = (number, iso2, formatArg) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
     if (phoneUtil.isPossibleNumber(numberObj)) {
       const format =
         typeof formatArg === "undefined"
@@ -41,11 +41,11 @@ const formatNumber = (number, countryCode, formatArg) => {
 };
 
 //* Get an example number for the given country code.
-const getExampleNumber = (countryCode, national, numberType, useE164) => {
+const getExampleNumber = (iso2, national, numberType, useE164) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.getExampleNumberForType(
-      countryCode,
+      iso2,
       numberType,
     );
     let format;
@@ -63,10 +63,10 @@ const getExampleNumber = (countryCode, national, numberType, useE164) => {
 };
 
 //* Get the core number, without any international dial code, or national prefix.
-const getCoreNumber = (number, countryCode) => {
+const getCoreNumber = (number, iso2) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
     return numberObj.getNationalNumber().toString();
   } catch {
     return "";
@@ -74,10 +74,10 @@ const getCoreNumber = (number, countryCode) => {
 };
 
 //* Get the extension from the given number
-const getExtension = (number, countryCode) => {
+const getExtension = (number, iso2) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
     return numberObj.getExtension();
   } catch {
     return "";
@@ -85,10 +85,10 @@ const getExtension = (number, countryCode) => {
 };
 
 //* Get the type of the given number e.g. fixed-line/mobile.
-const getNumberType = (number, countryCode) => {
+const getNumberType = (number, iso2) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
     return phoneUtil.getNumberType(numberObj);
   } catch {
     //* Broken
@@ -98,13 +98,13 @@ const getNumberType = (number, countryCode) => {
 
 //* Get more info if the validation has failed e.g. too long/too short.
 //* NOTE that isPossibleNumberWithReason returns a i18n.phonenumbers.PhoneNumberUtil.ValidationResult.
-const getValidationError = (number, countryCode) => {
-  if (!countryCode) {
+const getValidationError = (number, iso2) => {
+  if (!iso2) {
     return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.INVALID_COUNTRY_CODE;
   }
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
     return phoneUtil.isPossibleNumberWithReason(numberObj);
   } catch (e) {
     //* Here I convert thrown errors into ValidationResult enums (if possible).
@@ -147,10 +147,10 @@ const getPatchedNumberTypeNames = (numberTypeNames) => {
 };
 
 //* Check if given number is valid.
-const isValidNumber = (number, countryCode, numberTypeNames) => {
+const isValidNumber = (number, iso2, numberTypeNames) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
     const isValidNumber = phoneUtil.isValidNumber(numberObj);
     if (numberTypeNames) {
       const patchedTypeNames = getPatchedNumberTypeNames(numberTypeNames);
@@ -164,10 +164,10 @@ const isValidNumber = (number, countryCode, numberTypeNames) => {
 };
 
 //* Check if given number is possible.
-const isPossibleNumber = (number, countryCode, numberTypeNames) => {
+const isPossibleNumber = (number, iso2, numberTypeNames) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-    const numberObj = phoneUtil.parseAndKeepRawInput(number, countryCode);
+    const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
 
     if (numberTypeNames) {
       const patchedTypeNames = getPatchedNumberTypeNames(numberTypeNames);

@@ -139,7 +139,7 @@ const validateIso2Array = (key: string, value: unknown): string[] | false => {
     }
     const lower = v.toLowerCase();
     if (!isIso2(lower)) {
-      warn(`Invalid country code in '${key}': '${v}'. Skipping.`);
+      warn(`Invalid iso2 code in '${key}': '${v}'. Skipping.`);
     } else {
       valid.push(v);
     }
