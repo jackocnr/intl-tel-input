@@ -13,7 +13,7 @@ We provide native wrappers for the four most popular frontend frameworks. These 
 * [React component docs](/docs/react-component) – For React 16.8+ (Hooks-based)
 * [Vue component docs](/docs/vue-component) – Supports Vue 3
 * [Angular component docs](/docs/angular-component) – For modern Angular versions
-* [Svelte Component Docs](/docs/svelte-component) – Lightweight and reactive
+* [Svelte component docs](/docs/svelte-component) – Lightweight and reactive
 
 ---
 

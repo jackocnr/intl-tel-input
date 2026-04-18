@@ -126,7 +126,7 @@ const warnOption = (
 };
 
 const validateIso2Array = (key: string, value: unknown): string[] | false => {
-  const expectedType = "an array of ISO2 country code strings";
+  const expectedType = "an array of iso2 country code strings";
   if (!Array.isArray(value)) {
     warnOption(key, expectedType, value);
     return false;
@@ -272,7 +272,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         if (lower && lower !== INITIAL_COUNTRY.AUTO && !isIso2(lower)) {
           warnOption(
             "initialCountry",
-            "a valid ISO2 country code or 'auto'",
+            "a valid iso2 country code or 'auto'",
             value,
           );
           break;
@@ -329,7 +329,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
 
 // Normalise option values so downstream code doesn't have to (mutates the passed object).
 export const normaliseOptions = (o: AllOptions): void => {
-  //* Lowercase all ISO2 codes so consumers can compare directly.
+  //* Lowercase all iso2 codes so consumers can compare directly.
   if (o.initialCountry) {
     o.initialCountry = o.initialCountry.toLowerCase() as Iso2 | "auto" | "";
   }

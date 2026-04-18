@@ -2,6 +2,13 @@
 
 You can listen for the following events triggered on the input element.
 
+## Contents
+
+- [countrychange](#countrychange)
+- [open:countrydropdown](#open-countrydropdown)
+- [close:countrydropdown](#close-countrydropdown)
+
+
 ## countrychange
 
 This is triggered when the selected country is updated, e.g. if the user selects a country from the dropdown, or they type a different dial code into the input, or you call [`setCountry`](/docs/methods#setcountry) etc.

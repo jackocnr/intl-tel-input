@@ -1,7 +1,7 @@
 import { getNumeric } from "../helpers/string";
 
 // Non-geographic / regionless international dial codes that should always be
-// treated as international numbers (no associated ISO2 country).
+// treated as international numbers (no associated iso2 country).
 // e.g. +800 is the Universal International Freephone Service (UIFS), which is not associated with any country
 export const regionlessDialCodes: Set<string> = new Set([
   "800",

@@ -1,5 +1,15 @@
 # Troubleshooting
 
+## Contents
+
+- [Full-width input](#full-width-input)
+- [dropdownContainer: dropdown not closing on scroll](#dropdowncontainer-dropdown-not-closing-on-scroll)
+- [Input margin](#input-margin)
+- [Displaying error messages](#displaying-error-messages)
+- [Dropdown position](#dropdown-position)
+- [Placeholders](#placeholders)
+
+
 ## Full-width input
 
 If you want your input to be full-width, you need to set the container to be the same, i.e.

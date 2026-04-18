@@ -46,7 +46,7 @@ See the [Hidden input example](/examples/hidden-input).
 
 Use the [`initialCountry`](/docs/options#initialcountry) option.
 
-- If you already know the user's country, set it to the relevant ISO2 code, e.g. `"us"`.
+- If you already know the user's country, set it to the relevant iso2 code, e.g. `"us"`.
 - Or set it to `"auto"` and provide [`geoIpLookup`](/docs/options#geoiplookup) to detect the user’s country.
 
 

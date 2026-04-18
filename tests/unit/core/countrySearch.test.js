@@ -55,7 +55,7 @@ const countries = [
 ];
 
 describe("countrySearch getMatchedCountries", () => {
-  test("ISO2 exact match wins over others", () => {
+  test("iso2 exact match wins over others", () => {
     const result = getMatchedCountries(countries, "gb");
     expect(result[0].iso2).toBe("gb");
   });

@@ -7,7 +7,7 @@ import { normaliseString } from "../helpers/string";
 /**
  * Country search: Given raw query, return ordered list of countries by priority buckets.
  * Buckets (in order):
- *  1. exact ISO2 matches
+ *  1. exact iso2 matches
  *  2. name starts with
  *  3. name contains
  *  4. dial code exact match (bare or with plus)
@@ -21,7 +21,7 @@ export const getMatchedCountries = (
 ): Country[] => {
   const normalisedQuery = normaliseString(query);
   // search result groups, in order of priority
-  // first, exact ISO2 matches, then name starts with, then name contains, dial code match etc.
+  // first, exact iso2 matches, then name starts with, then name contains, dial code match etc.
   const iso2Matches: Country[] = [];
   const nameStartsWith: Country[] = [];
   const nameContains: Country[] = [];
