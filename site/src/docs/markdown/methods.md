@@ -114,7 +114,7 @@ Returns: `true`/`false`
 
 ### setCountry
 
-Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and passing a number including an international dial code, which is the recommended usage. Note, you can omit the country code argument to set the country to the default empty (globe) state. _Note that if [`formatOnDisplay`](/docs/options#formatondisplay) is enabled, this will attempt to format the number to either national or international format according to the [`nationalMode`](/docs/options#nationalmode) option._  
+Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and passing a number including an international dial code, which is the recommended usage. Note, you can omit the iso2 code argument to set the country to the default empty (globe) state. _Note that if [`formatOnDisplay`](/docs/options#formatondisplay) is enabled, this will attempt to format the number to either national or international format according to the [`nationalMode`](/docs/options#nationalmode) option._  
 ```js
 iti.setCountry("gb");
 ```

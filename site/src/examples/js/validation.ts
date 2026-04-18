@@ -18,7 +18,7 @@ const getErrorMessage = (number: string, errorCode: number) => {
   const genericError = "Invalid number";
   const { validationError } = window.intlTelInput.utils!;
   const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
     [validationError.TOO_SHORT]: "Too short",
     [validationError.TOO_LONG]: "Too long",
     [validationError.INVALID_LENGTH]: genericError,

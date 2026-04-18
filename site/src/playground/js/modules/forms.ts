@@ -186,7 +186,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
         idPrefix,
         dataAttr,
         infoIconTemplate,
-        exampleText: "() => ({ phone: \"phone_full\", country: \"country_code\" })",
+        exampleText: "() => ({ phone: \"phone_full\", country: \"country_iso2\" })",
       });
     }
 

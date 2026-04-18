@@ -170,7 +170,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     hiddenInput: {
       type: "boolean",
       label: "hiddenInput",
-      tooltip: "Add hidden inputs that get populated with the full number and country code on submit.",
+      tooltip: "Add hidden inputs that get populated with the full number and the selected country's iso2 code on submit.",
     },
     excludeCountries: {
       type: "json",

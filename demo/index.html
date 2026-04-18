@@ -49,10 +49,10 @@
         // geoIpLookup: function(success, failure) {
         //   fetch("https://ipapi.co/json")
         //     .then((res) => res.json())
-        //     .then((data) => success(data.country_code))
+        //     .then((data) => success(data.country_iso2))
         //     .catch(() => failure());
         // },
-        // hiddenInput: () => ({ phone: "phone_full", country: "country_code" }),
+        // hiddenInput: () => ({ phone: "phone_full", country: "country_iso2" }),
         // i18n: { searchPlaceholder: "Custom search" },
         // initialCountry: "us",
         // loadUtils: () => import("/dist/js/utils.js"), // leading slash (and http-server) required for this to work in chrome
@@ -74,7 +74,7 @@
         const genericError = "Invalid number";
         const { validationError } = window.intlTelInput.utils;
         const errorMap = {
-          [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+          [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
           [validationError.TOO_SHORT]: "Too short",
           [validationError.TOO_LONG]: "Too long",
           [validationError.INVALID_LENGTH]: genericError,

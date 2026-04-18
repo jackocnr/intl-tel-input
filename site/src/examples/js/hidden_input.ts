@@ -6,7 +6,7 @@ const validMsg = document.querySelector<HTMLElement>("#valid-msg")!;
 // initialise plugin
 const iti = window.intlTelInput(input, {
   initialCountry: "us",
-  hiddenInput: () => ({ phone: "full_phone", country: "country_code" }),
+  hiddenInput: () => ({ phone: "full_phone", country: "country_iso2" }),
   // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
   searchInputClass: "form-control",
@@ -19,7 +19,7 @@ const getErrorMessage = (number: string, errorCode: number) => {
   const genericError = "Invalid number";
   const { validationError } = window.intlTelInput.utils!;
   const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid country code",
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
     [validationError.TOO_SHORT]: "Too short",
     [validationError.TOO_LONG]: "Too long",
     [validationError.INVALID_LENGTH]: genericError,

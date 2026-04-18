@@ -8,7 +8,7 @@ const validMsg = document.querySelector("#valid-msg");
 // initialise plugin
 const iti = intlTelInput(input, {
   initialCountry: "us",
-  hiddenInput: () => ({ phone: "full_phone", country: "country_code" }),
+  hiddenInput: () => ({ phone: "full_phone", country: "country_iso2" }),
   loadUtils: () => import("intl-tel-input/utils"),
 });
 

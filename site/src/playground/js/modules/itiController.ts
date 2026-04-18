@@ -85,7 +85,7 @@ function toInitOptions(
   }
 
   if (state.hiddenInput) {
-    opts.hiddenInput = () => ({ phone: "phone_full", country: "country_code" });
+    opts.hiddenInput = () => ({ phone: "phone_full", country: "country_iso2" });
   }
 
   if (typeof state.dropdownAlwaysOpen === "boolean") {

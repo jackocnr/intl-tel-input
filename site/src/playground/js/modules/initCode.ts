@@ -63,7 +63,7 @@ export function renderInitCodeFromState(
   if (state.hiddenInput) {
     optionEntriesForCode.push([
       "hiddenInput",
-      "() => ({ phone: \"phone_full\", country: \"country_code\" })",
+      "() => ({ phone: \"phone_full\", country: \"country_iso2\" })",
     ]);
   }
 

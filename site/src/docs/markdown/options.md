@@ -1,6 +1,8 @@
 # Initialisation options
 
-When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Country codes should always be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes. Try out different options in the [Playground](/playground).
+When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Try out different options in the [Playground](/playground).
+
+_Throughout these docs, "iso2 code" means the two-letter country identifier ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), e.g. `"gb"`), and "dial code" means the international calling prefix (e.g. `+44`)._
 
 ## Contents
 
@@ -21,19 +23,19 @@ Choose which countries are available, the order they're displayed in, and how th
 Type: `String[]`  
 Default: `null`  
 
-An array of iso2 country codes that is used to order the country dropdown. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. See what this looks like in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D#country-options). _Note: this replaces the legacy `preferredCountries` option (now removed)._ 
+An array of iso2 codes that is used to order the country dropdown. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. See what this looks like in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D#country-options). _Note: this replaces the legacy `preferredCountries` option (now removed)._ 
 
 ###### excludeCountries
 Type: `String[]`  
 Default: `null`  
 
-An array of iso2 country codes to exclude from the country dropdown e.g. `["gb", "us"]`. Play with this option in the [Playground](/playground). Also see: [`onlyCountries`](#onlycountries) option.
+An array of iso2 codes to exclude from the country dropdown e.g. `["gb", "us"]`. Play with this option in the [Playground](/playground). Also see: [`onlyCountries`](#onlycountries) option.
 
 ###### geoIpLookup
 Type: `Function`  
 Default: `null`  
 
-When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant country code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can do something like `iti.promise.then(...)` to know when initialisation requests like this have completed.
+When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant iso2 code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can do something like `iti.promise.then(...)` to know when initialisation requests like this have completed.
 
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service:  
 ```js
@@ -53,7 +55,7 @@ _Note that the `failure` callback must be called in the event of an error, hence
 Type: `String`  
 Default: `""`  
 
-Set the initial country selection by specifying its country code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
+Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. (Be careful not to do this unless you are sure of the user's country, as it can lead to tricky issues if set incorrectly and the user auto-fills their national number and submits the form without checking - in certain cases, this can pass validation and you can end up storing a number with the wrong dial code). You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. View the plugin with this set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
 
 ###### onlyCountries
 Type: `String[]`  
@@ -282,7 +284,7 @@ Extra features like hidden inputs and loading the utilities module.
 Type: `Function`  
 Default: `null`  
 
-Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country code. It accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and country code, respectively. This is useful for old-fashioned, page-load form submissions to ensure the full international number and country code are captured, especially when [`nationalMode`](#nationalmode) is enabled. [See example](/examples/hidden-input).
+Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. It accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and iso2 code, respectively. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`nationalMode`](#nationalmode) is enabled. [See example](/examples/hidden-input).
 
 ***Note**: This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses [`getNumber`](/docs/methods#getnumber) internally, firstly it requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script), and secondly, it expects a valid number and so will only work correctly if you have used [`isValidNumber`](/docs/methods#isvalidnumber) to validate the number before allowing the form submit to go through.
 
@@ -290,7 +292,7 @@ Allows the creation of hidden input fields within a form, which, on submit, get 
 intlTelInput(input, {
   hiddenInput: (telInputName) => ({
     phone: "phone_full",
-    country: "country_code"
+    country: "country_iso2"
   }),
 });
 ```
@@ -299,7 +301,7 @@ This will generate the following (hidden) elements, which will be automatically 
 
 ```html
 <input type="hidden" name="phone_full">
-<input type="hidden" name="country_code">
+<input type="hidden" name="country_iso2">
 ```
 
 ###### loadUtils

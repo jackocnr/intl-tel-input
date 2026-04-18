@@ -37,7 +37,7 @@ You can always get the E.164 number from the plugin using `getNumber`, even if t
 
 Use the [`hiddenInput`](/docs/options#hiddeninput) option.
 
-That option listens for the form submit event and injects hidden input(s) containing the full international number (and optionally the country code), so they’re included in the form post.
+That option listens for the form submit event and injects hidden input(s) containing the full international number (and optionally the selected country's iso2 code), so they’re included in the form post.
 
 See the [Hidden input example](/examples/hidden-input).
 
