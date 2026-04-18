@@ -110,28 +110,28 @@ Use:
 ## Events
 
 ###### changeCountry
-Type: `Function`  
+Type: `(iso2: string) => void`  
 Default: `null`  
 
-A handler to be called when the selected country changes. It will be passed the new country iso2 code, e.g. "gb" for the UK.
+Emitted when the selected country changes. The handler receives the new country's iso2 code (e.g. `"gb"`), or `""` if no country is selected.
 
 ###### changeErrorCode
-Type: `Function`  
+Type: `(errorCode: number | null) => void`  
 Default: `null`  
 
-A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
+Emitted when the number validation error changes. The handler receives an integer that matches the [`intlTelInput.utils.validationError`](/docs/methods#getvalidationerror) enum, or `null` if the number is valid. Requires the utils script to be loaded (see above).
 
 ###### changeNumber
-Type: `Function`  
+Type: `(number: string) => void`  
 Default: `null`  
 
-A handler to be called when the number changes. It will be passed the new number.
+Emitted when the number changes. The handler receives the new number in standardised E.164 format (e.g. `"+447700900123"`), or `""` if the input is empty. Requires the utils script to be loaded (see above).
 
 ###### changeValidity
-Type: `Function`  
+Type: `(isValid: boolean) => void`  
 Default: `null`  
 
-A handler to be called when the number validity changes, e.g. to true/false. It will be passed the new isValid boolean.
+Emitted when the number validity changes. The handler receives the new validity boolean. Requires the utils script to be loaded (see above).
 
 ## Accessing instance methods
 

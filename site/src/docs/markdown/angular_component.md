@@ -107,28 +107,28 @@ Use:
 ## Events
 
 ###### countryChange
-Type: `Function`  
+Type: `EventEmitter<string>`  
 Default: `null`  
 
-A handler to be called when the selected country changes. It will be passed the new country iso2 code, e.g. "gb" for the UK.
+Emitted when the selected country changes. Emits the new country's iso2 code (e.g. `"gb"`), or `""` if no country is selected.
 
 ###### errorCodeChange
-Type: `Function`  
+Type: `EventEmitter<number | null>`  
 Default: `null`  
 
-A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
+Emitted when the number validation error changes. Emits an integer that matches the [`intlTelInput.utils.validationError`](/docs/methods#getvalidationerror) enum, or `null` if the number is valid. Requires the utils script to be loaded (see above).
 
 ###### numberChange
-Type: `Function`  
+Type: `EventEmitter<string>`  
 Default: `null`  
 
-A handler to be called when the number changes. It will be passed the new number.
+Emitted when the number changes. Emits the new number in standardised E.164 format (e.g. `"+447700900123"`), or `""` if the input is empty. Requires the utils script to be loaded (see above).
 
 ###### validityChange
-Type: `Function`  
+Type: `EventEmitter<boolean>`  
 Default: `null`  
 
-A handler to be called when the number validity changes, e.g. to true/false. It will be passed the new isValid boolean.
+Emitted when the number validity changes. Emits the new validity boolean. Requires the utils script to be loaded (see above).
 
 ### Native input events
 

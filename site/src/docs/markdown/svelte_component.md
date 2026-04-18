@@ -68,28 +68,28 @@ The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `requ
 Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `oninput`. Use the component props (`disabled`, `readonly`) and the `onChange...` callback props instead.
 
 ###### onChangeCountry
-Type: `Function`  
+Type: `(iso2: string) => void`  
 Default: `null`  
 
-A handler to be called when the selected country changes. It will be passed the new country iso2 code, e.g. "gb" for the UK.
+A handler to be called when the selected country changes. Receives the new country's iso2 code (e.g. `"gb"`), or `""` if no country is selected.
 
 ###### onChangeErrorCode
-Type: `Function`  
+Type: `(errorCode: number | null) => void`  
 Default: `null`  
 
-A handler to be called when the number validation error changes. It will be passed the new error code (or `null`).
+A handler to be called when the number validation error changes. Receives an integer that matches the [`intlTelInput.utils.validationError`](/docs/methods#getvalidationerror) enum, or `null` if the number is valid. Requires the utils script to be loaded (see above).
 
 ###### onChangeNumber
-Type: `Function`  
+Type: `(number: string) => void`  
 Default: `null`  
 
-A handler to be called when the number changes. It will be passed the new number.
+A handler to be called when the number changes. Receives the new number in standardised E.164 format (e.g. `"+447700900123"`), or `""` if the input is empty. Requires the utils script to be loaded (see above).
 
 ###### onChangeValidity
-Type: `Function`  
+Type: `(isValid: boolean) => void`  
 Default: `null`  
 
-A handler to be called when the number validity changes, e.g. to true/false. It will be passed the new isValid boolean.
+A handler to be called when the number validity changes. Receives the new validity boolean. Requires the utils script to be loaded (see above).
 
 ###### readonly
 Type: `Boolean`  

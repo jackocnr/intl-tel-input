@@ -21,8 +21,8 @@ const noop = () => {};
 
 type ItiProps = SomeOptions & {
   onChangeNumber?: (number: string) => void;
-  onChangeCountry?: (country: string) => void;
-  onChangeValidity?: (valid: boolean) => void;
+  onChangeCountry?: (iso2: string) => void;
+  onChangeValidity?: (isValid: boolean) => void;
   onChangeErrorCode?: (errorCode: number | null) => void;
   usePreciseValidation?: boolean;
   inputProps?: InputProps;
