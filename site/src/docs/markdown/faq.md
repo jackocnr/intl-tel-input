@@ -7,7 +7,6 @@
 - [How do I submit the full international number in a normal HTML form?](#how-do-i-submit-the-full-international-number-in-a-normal-html-form)
 - [How do I set the initial country?](#how-do-i-set-the-initial-country)
 - [Can I translate the UI and country names?](#can-i-translate-the-ui-and-country-names)
-- [Can I disable formatting as you type?](#can-i-disable-formatting-as-you-type)
 - [How do I prevent users typing invalid characters?](#how-do-i-prevent-users-typing-invalid-characters)
 - [How do I validate a number?](#how-do-i-validate-a-number)
 - [How do I show the dial code next to the selected flag?](#how-do-i-show-the-dial-code-next-to-the-selected-flag)

@@ -14,9 +14,7 @@ If you are using the [`dropdownContainer`](/docs/options#dropdowncontainer) opti
 
 ```js
 scrollingElement.addEventListener("scroll", () => {
-  const e = document.createEvent('Event');
-  e.initEvent("scroll", true, true);
-  window.dispatchEvent(e);
+  window.dispatchEvent(new Event("scroll"));
 });
 ```
 
@@ -35,7 +33,3 @@ The dropdown should automatically appear above/below the input depending on the 
 ## Placeholders
 
 To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set [`autoPlaceholder`](/docs/options#autoplaceholder) to `"aggressive"` to override any existing placeholder. Note: this requires the utils script to be loaded.
-
-## Bootstrap input groups
-
-A couple of CSS fixes are required to get the plugin to play nice with Bootstrap [input groups](https://getbootstrap.com/docs/3.3/components/#input-groups). [Codepen](https://codepen.io/jackocnr/pen/EyPXed).

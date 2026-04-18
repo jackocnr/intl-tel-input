@@ -95,7 +95,7 @@ if (errorCode === validationError.TOO_SHORT) {
 
 ### isValidNumber
 
-(Note: only returns `true` for valid <ins>mobile numbers</ins> by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
+(Note: only returns `true` for valid **mobile numbers** by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
 Check if the current number is valid based on its length - [see example](/examples/validation-practical), which should be sufficient for most use cases. See [`isValidNumberPrecise`](/docs/methods#isvalidnumberprecise) (advanced) for more precise validation, but the advantage of [`isValidNumber`](/docs/methods#isvalidnumber) is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). _Note: previously named `isPossibleNumber`._  
 ```js
 const isValid = iti.isValidNumber();
@@ -105,8 +105,8 @@ Returns: `true`/`false`
 ### isValidNumberPrecise
 
 ⚠️ **ADVANCED**  
-(Note: only returns `true` for valid <ins>mobile numbers</ins> by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
-Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](/examples/validation-precise). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else <ins>you will start rejecting valid numbers</ins>. For a simpler and more future-proof form of validation, see [`isValidNumber`](/docs/methods#isvalidnumber) above. If validation fails, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script).  
+(Note: only returns `true` for valid **mobile numbers** by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
+Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](/examples/validation-precise). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else **you will start rejecting valid numbers**. For a simpler and more future-proof form of validation, see [`isValidNumber`](/docs/methods#isvalidnumber) above. If validation fails, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script).  
 ```js
 const isValid = iti.isValidNumberPrecise();
 ```

@@ -14,7 +14,6 @@ If you want to see this in action first, you can experiment with the different l
 - [Localising user interface strings](#localising-user-interface-strings)
 - [Right-to-left (RTL) languages](#right-to-left-rtl-languages)
 - [Alternative numerals](#alternative-numerals)
-- [Browser support / fallbacks](#browser-support--fallbacks)
 
 
 ## Localising country names

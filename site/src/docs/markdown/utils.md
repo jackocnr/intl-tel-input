@@ -1,6 +1,6 @@
 # Utilities script
 
-The utilities script (src/js/utils.js) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
+The utilities script (src/js/utils.js) is a custom build of Google's [libphonenumber](https://github.com/google/libphonenumber) which enables the following features:
 
 * Formatting upon initialisation, as well as with [`getNumber`](/docs/methods#getnumber) and [`setNumber`](/docs/methods#setnumber)
 * Validation with [`isValidNumber`](/docs/methods#isvalidnumber), [`getNumberType`](/docs/methods#getnumbertype) and [`getValidationError`](/docs/methods#getvalidationerror) methods
