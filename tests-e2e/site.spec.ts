@@ -66,6 +66,71 @@ test.describe("site playground", () => {
   });
 });
 
+test.describe("site nav — mobile layout", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("hamburger sits top-left and opens a left-anchored sidebar", async ({ page }) => {
+    await page.goto(`${SITE}/`);
+
+    const hamburger = page.locator(".navbar-toggler");
+    await expect(hamburger).toBeVisible();
+    await expect(page.locator(".bd-navbar-nav")).toBeHidden();
+
+    const vw = page.viewportSize()!.width;
+    const hb = (await hamburger.boundingBox())!;
+    expect(hb.x).toBeLessThan(vw * 0.25);
+    expect(hb.y).toBeLessThan(80);
+
+    const sidebar = page.locator("#itiMobileSidebar");
+    await expect(sidebar).toBeHidden();
+    await hamburger.click();
+    await expect(sidebar).toBeVisible();
+
+    const sb = (await sidebar.boundingBox())!;
+    expect(sb.x).toBeLessThanOrEqual(1);
+    expect(sb.width).toBeGreaterThan(vw * 0.5);
+
+    const examples = sidebar.getByRole("button", { name: "Examples" });
+    await expect(examples).toBeVisible();
+
+    const submenu = sidebar.locator("#itiMobileExamplesMenu");
+    await expect(submenu).toBeHidden();
+    await examples.click();
+    await expect(submenu).toBeVisible();
+
+    await submenu.locator(".nav-link").first().click();
+    await expect(page).toHaveURL(/\/examples\//);
+  });
+});
+
+test.describe("site nav — desktop layout", () => {
+  test.use({ viewport: { width: 1280, height: 800 } });
+
+  test("Examples dropdown lives top-right and navigates on click", async ({ page }) => {
+    await page.goto(`${SITE}/`);
+
+    await expect(page.locator(".navbar-toggler")).toBeHidden();
+
+    const examples = page.getByRole("button", { name: "Examples" });
+    await expect(examples).toBeVisible();
+
+    const vw = page.viewportSize()!.width;
+    const box = (await examples.boundingBox())!;
+    expect(box.x).toBeGreaterThan(vw * 0.5);
+    expect(box.y).toBeLessThan(80);
+
+    const menu = examples.locator(
+      "xpath=following-sibling::ul[contains(@class,'dropdown-menu')]",
+    );
+    await expect(menu).toBeHidden();
+    await examples.click();
+    await expect(menu).toBeVisible();
+
+    await menu.locator(".dropdown-item").first().click();
+    await expect(page).toHaveURL(/\/examples\//);
+  });
+});
+
 test.describe("site example pages", () => {
   test("display-number example parses the initial +44 value and reformats it", async ({ page }) => {
     await page.goto(`${SITE}/examples/display-number.html`);
