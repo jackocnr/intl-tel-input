@@ -49,5 +49,11 @@ export default defineConfig({
       reuseExistingServer: true,
       timeout: 120_000,
     },
+    {
+      command: "./node_modules/.bin/http-server site/dist -p 4176 -c-1 -s",
+      url: "http://localhost:4176/",
+      reuseExistingServer: true,
+      timeout: 120_000,
+    },
   ],
 });

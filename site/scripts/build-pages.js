@@ -163,7 +163,6 @@ const exampleDefinitions = [
     content: {
       markupName: "simple_input",
       includeItiScript: true,
-      displayCode: "src/examples/js/lookup_country_display_code.js",
     },
   },
   {
@@ -174,7 +173,6 @@ const exampleDefinitions = [
     content: {
       markupName: "simple_input",
       isRtl: true,
-      displayCode: "src/examples/js/right_to_left_display_code.js",
     },
     layoutExtra: { isRtl: true },
   },
@@ -186,7 +184,6 @@ const exampleDefinitions = [
       demo_note: "<p>Enter a US number:</p>",
       markupName: "validation",
       includeItiScript: true,
-      displayCode: "src/examples/js/single_country_display_code.js",
     },
     pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
@@ -232,7 +229,6 @@ const exampleDefinitions = [
     content: {
       includeItiScript: true,
       markupName: "validation",
-      displayCode: "src/examples/js/hidden_input_display_code.js",
     },
   },
   {
@@ -242,7 +238,6 @@ const exampleDefinitions = [
       "Use multiple instances of the plugin with different configurations on the same page.",
     content: {
       includeItiScript: true,
-      displayCode: "src/examples/js/multiple_instances_display_code.js",
     },
     pageExtra: {
       stylesheet_after_website_css: "/examples/css/multiple_instances.css",
@@ -252,21 +247,17 @@ const exampleDefinitions = [
     key: "display_number",
     title: "Display existing number",
     metaDesc: "Automatically format an existing number during initialisation.",
-    js: { src: "src/examples/js/simple_init_plugin.ts" },
     content: {
       includeItiScript: true,
-      displayCode: "src/examples/js/simple_init_plugin_display_code.js",
     },
   },
   {
     key: "large_flags",
     title: "Large flags",
     metaDesc: "How to display extra large flag images.",
-    js: { src: "src/examples/js/simple_init_plugin.ts" },
     content: {
       markupName: "simple_input",
       includeItiScript: true,
-      displayCode: "src/examples/js/simple_init_plugin_display_code.js",
     },
     pageExtra: { iti_styles: "largeFlags" },
   },
@@ -282,7 +273,6 @@ const exampleDefinitions = [
     content: {
       markupName: "component",
       hideMarkupSection: true,
-      displayCode: "src/examples/js/angular_component_display_code.js",
       script: "angular_component_bundle.js",
     },
   },
@@ -298,7 +288,6 @@ const exampleDefinitions = [
     content: {
       markupName: "component",
       hideMarkupSection: true,
-      displayCode: "src/examples/js/react_component_display_code.js",
       script: "react_component_bundle.js",
     },
   },
@@ -314,7 +303,6 @@ const exampleDefinitions = [
     content: {
       markupName: "component",
       hideMarkupSection: true,
-      displayCode: "src/examples/js/vue_component_display_code.vue",
       script: "vue_component_bundle.js",
     },
   },
@@ -330,7 +318,6 @@ const exampleDefinitions = [
     content: {
       markupName: "component",
       hideMarkupSection: true,
-      displayCode: "src/examples/js/svelte_component_display_code.svelte",
       script: "svelte_component_bundle.js",
     },
   },
@@ -356,7 +343,10 @@ for (const def of exampleDefinitions) {
   const destDir = js.destDir || "dist";
   const jsExt = destDir === "tmp" && jsSrc.endsWith(".ts") ? ".ts" : ".js";
   const jsDest = js.dest || `${destDir}/examples/js/${key}${jsExt}`;
-  const displayCode = content.displayCode || jsDest;
+  const srcExt = path.extname(jsSrc);
+  const displayCodeExt = [".vue", ".svelte"].includes(srcExt) ? srcExt : ".js";
+  const displayCode =
+    content.displayCode || `src/examples/js/${key}_display_code${displayCodeExt}`;
   const scriptName = js.script || `${key}.js`;
 
   const contentDest = content.dest || `tmp/examples/${key}_content.html`;
