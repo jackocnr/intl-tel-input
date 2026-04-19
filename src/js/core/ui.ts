@@ -601,27 +601,26 @@ export default class UI {
   //* Remove highlighting from the previous list item and highlight the new one.
   #highlightListItem(
     listItem: HTMLElement | null,
-    shouldFocus: boolean,
+    doScroll: boolean = true,
   ): void {
-    const prevItem = this.#highlightedListItemEl;
-    if (prevItem) {
-      prevItem.classList.remove(CLASSES.HIGHLIGHT);
-    }
-    //* Set this, even if it's null, as it will clear the highlight.
-    this.#highlightedListItemEl = listItem;
-    if (this.#highlightedListItemEl) {
-      this.#highlightedListItemEl.classList.add(CLASSES.HIGHLIGHT);
+    //* Unhighlight the previous item.
+    this.#highlightedListItemEl?.classList.remove(CLASSES.HIGHLIGHT);
+
+    if (listItem) {
+      listItem.classList.add(CLASSES.HIGHLIGHT);
       if (this.#options.countrySearch) {
-        const activeDescendant = this.#highlightedListItemEl.getAttribute("id") || "";
+        const activeDescendant = listItem.getAttribute("id") || "";
         this.#searchInputEl!.setAttribute(
           ARIA.ACTIVE_DESCENDANT,
           activeDescendant,
         );
       }
-
-      if (shouldFocus) {
-        this.#highlightedListItemEl.focus();
+      if (doScroll) {
+        this.#scrollCountryListToItem(listItem);
       }
+      this.#highlightedListItemEl = listItem;
+    } else {
+      this.#highlightedListItemEl = null;
     }
   }
 
@@ -752,8 +751,7 @@ export default class UI {
       this.#selectedListItemEl ??
       (this.#countryListEl!.firstElementChild as HTMLElement);
     if (itemToHighlight) {
-      this.#highlightListItem(itemToHighlight, false);
-      this.#scrollCountryListToItem(itemToHighlight);
+      this.#highlightListItem(itemToHighlight);
     }
     if (countrySearch && !dropdownAlwaysOpen) {
       this.#searchInputEl!.focus();
@@ -937,8 +935,7 @@ export default class UI {
     const match = findFirstCountryStartingWith(this.#countries, query);
     if (match) {
       const listItem = this.#listItemByIso2.get(match.iso2)!;
-      this.#highlightListItem(listItem, false);
-      this.#scrollCountryListToItem(listItem);
+      this.#highlightListItem(listItem);
     }
   }
 
@@ -957,10 +954,7 @@ export default class UI {
     }
     if (next) {
       //* Make sure the next item is visible
-      //* (before calling focus(), which can cause the next item to scroll to the middle of the dropdown, which is jarring).
-      this.#scrollCountryListToItem(next);
-      //* If country search enabled, don't lose focus from the search input on up/down
-      this.#highlightListItem(next, false);
+      this.#highlightListItem(next);
     }
   }
 
@@ -987,6 +981,12 @@ export default class UI {
         );
         checkIcon.innerHTML = buildCheckIcon();
         this.#selectedListItemEl = newListItem;
+        //* With dropdownAlwaysOpen, the dropdown is visible throughout, so keep the highlighted
+        //* row in sync with the selection (e.g. when geoIpLookup resolves, or the user types a
+        //* different dial code) — otherwise it keeps pointing at a stale row.
+        if (this.#options.dropdownAlwaysOpen) {
+          this.#highlightListItem(newListItem);
+        }
       }
     }
   }
@@ -1011,7 +1011,7 @@ export default class UI {
     }
     if (noCountriesAddedYet) {
       //* If no countries are shown, unhighlight the previously highlighted item.
-      this.#highlightListItem(null, false);
+      this.#highlightListItem(null);
       if (this.#noResultsMessageEl) {
         this.#noResultsMessageEl.classList.remove(CLASSES.HIDE);
       }
