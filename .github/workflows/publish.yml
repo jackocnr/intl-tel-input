@@ -36,7 +36,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PREV_TAG=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^")
-          NOTES=$(git log --pretty=format:"- %s ([%h](https://github.com/jackocnr/intl-tel-input/commit/%H))" "$PREV_TAG..${GITHUB_REF_NAME}^")
+          NOTES=$(git log --pretty=format:"- %s ([%h](https://github.com/jackocnr/intl-tel-input/commit/%H))" "$PREV_TAG..${GITHUB_REF_NAME}^" -- src/ angular/ react/ svelte/ vue/ scripts/ package.json tsconfig.json)
           gh release create "${GITHUB_REF_NAME}" \
             --title "${GITHUB_REF_NAME}" \
             --notes "$NOTES"
