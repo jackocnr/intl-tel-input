@@ -125,7 +125,8 @@
   &__demo {
     .iti,
     input[type="tel"],
-    .iti-live-results {
+    .iti-live-results,
+    .demo-input-wrap {
       width: 100%;
       max-width: 350px;
     }

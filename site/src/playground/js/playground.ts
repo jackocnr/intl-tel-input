@@ -174,6 +174,7 @@ const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
 
 const {
   defaultInitOptions,
+  playgroundInitialOptions,
   defaultInputAttributes,
   optionMeta,
   attributeMeta,
@@ -185,7 +186,12 @@ const {
   i18nOptionLabels,
 });
 
+// Library defaults — what the user would get calling intlTelInput(input) with no options.
+// Used for code-snippet diffing so the copied snippet lists every opinionated override.
 const defaultState = createDefaultState(defaultInitOptions, defaultInputAttributes);
+// Playground opinionated start — used for form initial state, URL diffing, and "Reset" actions.
+// Keeps the first-load URL clean despite the form starting with non-library defaults.
+const playgroundInitialState = createDefaultState(playgroundInitialOptions, defaultInputAttributes);
 
 const itiController = new ItiPlaygroundController({
   telInput,
@@ -237,12 +243,12 @@ function getCombinedStateFromControls() {
   };
 }
 
-const initialOptionsState = parseQueryOverrides(defaultInitOptions, optionMeta);
+const initialOptionsState = parseQueryOverrides(playgroundInitialOptions, optionMeta);
 const initialAttrsState = parseQueryOverrides(defaultInputAttributes, attributeMeta);
 const initialState = { ...initialOptionsState, ...initialAttrsState };
 
-setFormFromState(optionsForm, initialState, optionMeta, "data-option", { defaultState });
-setFormFromState(attrsForm, initialState, attributeMeta, "data-attr", { defaultState });
+setFormFromState(optionsForm, initialState, optionMeta, "data-option", { defaultState: playgroundInitialState });
+setFormFromState(attrsForm, initialState, attributeMeta, "data-attr", { defaultState: playgroundInitialState });
 
 renderInitCodeFromState(initialState, initCodeEl, {
   defaultInitOptions,
@@ -255,8 +261,25 @@ void initItiWithState(initialState);
 updateUrlFromState(initialState, {
   optionMeta,
   attributeMeta,
-  defaultState,
+  defaultState: playgroundInitialState,
 });
+
+const strictToastEl = document.getElementById("playgroundStrictRejectToast");
+const strictToastBody = document.getElementById("playgroundStrictRejectToastBody");
+if (strictToastEl && strictToastBody && window.bootstrap?.Toast) {
+  const strictToast = window.bootstrap.Toast.getOrCreateInstance(strictToastEl);
+  telInput.addEventListener("strict:reject", (e) => {
+    const { reason, rejectedInput, source } = (e as CustomEvent).detail;
+    if (reason === "max-length") {
+      strictToastBody.textContent = "Maximum length reached for this country";
+    } else if (source === "paste") {
+      strictToastBody.textContent = "Stripped invalid characters from pasted text";
+    } else {
+      strictToastBody.textContent = `Character not allowed: "${rejectedInput}"`;
+    }
+    strictToast.show();
+  });
+}
 
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).
@@ -487,7 +510,7 @@ function scheduleReinit() {
     updateUrlFromState(state, {
       optionMeta,
       attributeMeta,
-      defaultState,
+      defaultState: playgroundInitialState,
     });
     renderInitCodeFromState(state, initCodeEl, {
       defaultInitOptions,
@@ -548,14 +571,14 @@ function resetOptionGroupToDefaults(groupKeys) {
 
   const optionsState = getStateFromForm(optionsForm, defaultInitOptions, optionMeta, "data-option");
   keys.forEach((key) => {
-    optionsState[key] = deepClone(defaultInitOptions[key]);
+    optionsState[key] = deepClone(playgroundInitialOptions[key]);
   });
 
   // Gather attributes too because we pass a single combined state object downstream.
   const attrsState = getStateFromForm(attrsForm, defaultInputAttributes, attributeMeta, "data-attr");
 
   const state = { ...optionsState, ...attrsState };
-  setFormFromState(optionsForm, state, optionMeta, "data-option", { defaultState });
+  setFormFromState(optionsForm, state, optionMeta, "data-option", { defaultState: playgroundInitialState });
   revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
     defaultInitOptions,
@@ -567,7 +590,7 @@ function resetOptionGroupToDefaults(groupKeys) {
   updateUrlFromState(state, {
     optionMeta,
     attributeMeta,
-    defaultState,
+    defaultState: playgroundInitialState,
   });
 }
 
@@ -593,12 +616,12 @@ optionsForm.addEventListener("click", (event) => {
 
 function resetAllToDefaults() {
   const state = {
-    ...deepClone(defaultInitOptions),
+    ...deepClone(playgroundInitialOptions),
     ...deepClone(defaultInputAttributes),
   };
 
-  setFormFromState(optionsForm, state, optionMeta, "data-option", { defaultState });
-  setFormFromState(attrsForm, state, attributeMeta, "data-attr", { defaultState });
+  setFormFromState(optionsForm, state, optionMeta, "data-option", { defaultState: playgroundInitialState });
+  setFormFromState(attrsForm, state, attributeMeta, "data-attr", { defaultState: playgroundInitialState });
   revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
     defaultInitOptions,
@@ -610,7 +633,7 @@ function resetAllToDefaults() {
   updateUrlFromState(state, {
     optionMeta,
     attributeMeta,
-    defaultState,
+    defaultState: playgroundInitialState,
   });
 }
 
@@ -628,7 +651,7 @@ if (resetAttrsButton) {
     // so we must gather the current option settings first.
     const optionsState = getStateFromForm(optionsForm, defaultInitOptions, optionMeta, "data-option");
     const state = { ...optionsState, ...deepClone(defaultInputAttributes) };
-    setFormFromState(attrsForm, state, attributeMeta, "data-attr", { defaultState });
+    setFormFromState(attrsForm, state, attributeMeta, "data-attr", { defaultState: playgroundInitialState });
     renderInitCodeFromState(state, initCodeEl, {
       defaultInitOptions,
       optionMeta,
@@ -639,7 +662,7 @@ if (resetAttrsButton) {
     updateUrlFromState(state, {
       optionMeta,
       attributeMeta,
-      defaultState,
+      defaultState: playgroundInitialState,
     });
 
     flashActionButtonLabel(resetAttrsButton, "Reset!");

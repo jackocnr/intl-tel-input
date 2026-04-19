@@ -35,3 +35,12 @@ textarea.form-control::placeholder {
 .iti__search-input {
   border-radius: var(--bs-border-radius);
 }
+
+/* float strict:reject toast just above the input (shared by homepage + playground demos) */
+.demo-input-wrap .demo-toast-container {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: left;
+}
