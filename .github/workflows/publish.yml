@@ -22,11 +22,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
-
-      - name: Upgrade npm (trusted publishing requires >= 11.5.1)
-        run: npm install -g npm@latest --force
 
       - name: Print npm version
         run: npm --version
