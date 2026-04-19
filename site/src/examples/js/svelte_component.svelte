@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte";
   import IntlTelInput, { intlTelInput } from "../../../../svelte/src/IntlTelInput.svelte";
 
   const getErrorMessage = (number, errorCode) => {
@@ -14,11 +15,21 @@
     return errorMap[errorCode] || genericError;
   };
 
+  const geoIpLookup = (success, failure) => {
+    fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
+      .then((res) => res.json())
+      .then((data) => success(data.country_code))
+      .catch(() => failure());
+  };
+
   let number = $state("");
   let isValid = $state(false);
   let errorCode = $state(null);
   let showValidation = $state(false);
   let submitted = $state(false);
+  let toastMessage = $state("");
+  let itiRef;
+  let toastDivRef;
 
   const inputValidityClass = $derived.by(() => {
     if (!showValidation) return "";
@@ -45,15 +56,44 @@
     showValidation = true;
     submitted = true;
   };
+
+  onMount(() => {
+    const input = itiRef?.getInput();
+    if (!input || !toastDivRef || !window.bootstrap?.Toast) return;
+    const toast = window.bootstrap.Toast.getOrCreateInstance(toastDivRef);
+    input.addEventListener("strict:reject", (e) => {
+      const { reason, rejectedInput, source } = e.detail;
+      if (reason === "max-length") {
+        toastMessage = "Maximum length reached for this country";
+      } else if (source === "paste") {
+        toastMessage = "Stripped invalid characters from pasted text";
+      } else {
+        toastMessage = `Character not allowed: "${rejectedInput}"`;
+      }
+      toast.show();
+    });
+  });
 </script>
 
-<form onsubmit={handleSubmit} class="row g-2" novalidate>
+<form onsubmit={handleSubmit} class="row g-2 demo-input-wrap position-relative" novalidate>
+  <div class="toast-container demo-toast-container">
+    <div bind:this={toastDivRef} class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+      <div class="d-flex">
+        <div class="toast-body">{toastMessage}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
   <div class="col-auto">
     <IntlTelInput
+      bind:this={itiRef}
       onChangeNumber={handleChangeNumber}
       onChangeValidity={(v) => (isValid = v)}
       onChangeErrorCode={(e) => (errorCode = e)}
-      initialCountry="us"
+      initialCountry="auto"
+      separateDialCode={true}
+      strictMode={true}
+      {geoIpLookup}
       loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
       searchInputClass="form-control"
       inputProps={{

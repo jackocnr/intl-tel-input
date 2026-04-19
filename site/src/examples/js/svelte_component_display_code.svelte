@@ -15,6 +15,13 @@
     return errorMap[errorCode] || genericError;
   };
 
+  const geoIpLookup = (success, failure) => {
+    fetch("https://ipapi.co/json")
+      .then(res => res.json())
+      .then(data => success(data.country_code))
+      .catch(() => failure());
+  };
+
   let number = $state("");
   let isValid = $state(false);
   let errorCode = $state(null);
@@ -36,7 +43,10 @@
     onChangeNumber={(n) => (number = n)}
     onChangeValidity={(v) => (isValid = v)}
     onChangeErrorCode={(e) => (errorCode = e)}
-    initialCountry="us"
+    initialCountry="auto"
+    separateDialCode={true}
+    strictMode={true}
+    {geoIpLookup}
     loadUtils={() => import("intl-tel-input/utils")}
     inputProps={{
       onblur: () => (showValidation = true),

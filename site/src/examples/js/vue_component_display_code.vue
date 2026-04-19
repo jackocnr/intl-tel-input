@@ -16,6 +16,13 @@
     return errorMap[errorCode] || genericError;
   };
 
+  const geoIpLookup = (success, failure) => {
+    fetch("https://ipapi.co/json")
+      .then(res => res.json())
+      .then(data => success(data.country_code))
+      .catch(() => failure());
+  };
+
   const number = ref("");
   const isValid = ref(false);
   const errorCode = ref(null);
@@ -37,7 +44,10 @@
       @changeNumber="handleChangeNumber"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      initialCountry="us"
+      initialCountry="auto"
+      :separateDialCode="true"
+      :strictMode="true"
+      :geoIpLookup="geoIpLookup"
       :loadUtils="() => import('intl-tel-input/utils')"
       :inputProps="{
         onBlur: enableValidation,

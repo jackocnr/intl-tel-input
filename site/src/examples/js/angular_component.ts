@@ -1,7 +1,7 @@
 import "zone.js";
 import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
-import { Component } from "@angular/core";
+import { Component, ViewChild, AfterViewInit } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import IntlTelInput, { intlTelInput } from "../../../../angular/dist/IntlTelInput.js";
 
@@ -23,12 +23,24 @@ const getErrorMessage = (errorCode: number | null): string => {
 @Component({
   selector: "#app",
   template: `
-    <form [formGroup]="fg" (ngSubmit)="handleSubmit()" class="row g-2" novalidate>
+    <form [formGroup]="fg" (ngSubmit)="handleSubmit()" class="row g-2 demo-input-wrap position-relative" novalidate>
+      <div class="toast-container demo-toast-container">
+        <div #toastRef class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+          <div class="d-flex">
+            <div class="toast-body">{{ toastMessage }}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
       <div class="col-auto">
         <intl-tel-input
+          #iti
           formControlName="phone"
           (blur)="enableValidation()"
-          initialCountry="us"
+          initialCountry="auto"
+          [separateDialCode]="true"
+          [strictMode]="true"
+          [geoIpLookup]="geoIpLookup"
           [loadUtils]="loadUtils"
           searchInputClass="form-control"
           [inputAttributes]="inputAttributes"
@@ -48,13 +60,25 @@ const getErrorMessage = (errorCode: number | null): string => {
   standalone: true,
   imports: [IntlTelInput, ReactiveFormsModule],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+  @ViewChild("iti") itiComponent!: IntlTelInput;
+  @ViewChild("toastRef") toastRef!: { nativeElement: HTMLElement };
+
   showValidation = false;
   submitted = false;
+  toastMessage = "";
 
   // @ts-expect-error Vite/ESM dynamic import is using an EJS-templated URL string.
   // eslint-disable-next-line class-methods-use-this
   loadUtils = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>");
+
+  // eslint-disable-next-line class-methods-use-this
+  geoIpLookup = (success: (iso2: string) => void, failure: () => void): void => {
+    fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
+      .then((res) => res.json())
+      .then((data) => success(data.country_code))
+      .catch(() => failure());
+  };
 
   fg: FormGroup = new FormGroup({
     phone: new FormControl<string>("", [Validators.required]),
@@ -102,6 +126,26 @@ export class AppComponent {
   handleSubmit(): void {
     this.showValidation = true;
     this.submitted = true;
+  }
+
+  ngAfterViewInit(): void {
+    const input = this.itiComponent.getInput();
+    const toastEl = this.toastRef.nativeElement;
+    if (!input || !toastEl || !window.bootstrap?.Toast) {
+      return;
+    }
+    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
+    input.addEventListener("strict:reject", (e) => {
+      const { reason, rejectedInput, source } = (e as CustomEvent).detail;
+      if (reason === "max-length") {
+        this.toastMessage = "Maximum length reached for this country";
+      } else if (source === "paste") {
+        this.toastMessage = "Stripped invalid characters from pasted text";
+      } else {
+        this.toastMessage = `Character not allowed: "${rejectedInput}"`;
+      }
+      toast.show();
+    });
   }
 }
 

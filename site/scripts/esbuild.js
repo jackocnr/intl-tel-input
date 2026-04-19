@@ -37,6 +37,39 @@ build({
   outfile: "dist/examples/js/right_to_left_bundle.js",
 });
 
+// validation examples (same source, one output per example)
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/examples/js/validation_practical.ts"],
+  outfile: "dist/examples/js/validation_practical.js",
+});
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/examples/js/validation_precise.ts"],
+  outfile: "dist/examples/js/validation_precise.js",
+});
+
+// hidden input example
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/examples/js/hidden_input.ts"],
+  outfile: "dist/examples/js/hidden_input.js",
+});
+
+// multiple instances example
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/examples/js/multiple_instances.ts"],
+  outfile: "dist/examples/js/multiple_instances.js",
+});
+
+// large flags example
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/examples/js/large_flags.ts"],
+  outfile: "dist/examples/js/large_flags.js",
+});
+
 // react component example
 build({
   ...sharedOptions,

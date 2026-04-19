@@ -36,11 +36,16 @@ textarea.form-control::placeholder {
   border-radius: var(--bs-border-radius);
 }
 
+/* on example pages, shrink the wrap so the absolute-positioned toast can't be wider than the input */
+.section.demo .demo-input-wrap {
+  width: fit-content;
+}
+
 /* float strict:reject toast just above the input (shared by homepage + playground demos) */
 .demo-input-wrap .demo-toast-container {
   position: absolute;
   bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  width: 100%;
   text-align: left;
 }

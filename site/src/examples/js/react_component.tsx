@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput, { intlTelInput } from "../../../../react/dist/IntlTelInput.js";
+import IntlTelInput, {
+  intlTelInput,
+  type IntlTelInputRef,
+} from "../../../../react/dist/IntlTelInput.js";
 
 const getErrorMessage = (number: string, errorCode: number | null): string => {
   if (!number) {
@@ -20,12 +23,22 @@ const getErrorMessage = (number: string, errorCode: number | null): string => {
   return errorMap[errorCode] || genericError;
 };
 
+const geoIpLookup = (success: (iso2: string) => void, failure: () => void): void => {
+  fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
+    .then((res) => res.json())
+    .then((data) => success(data.country_code))
+    .catch(() => failure());
+};
+
 const App = () => {
   const [number, setNumber] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [errorCode, setErrorCode] = useState<number | null>(null);
   const [showValidation, setShowValidation] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const itiRef = useRef<IntlTelInputRef>(null);
+  const toastDivRef = useRef<HTMLDivElement>(null);
 
   let inputValidityClass = "";
   if (showValidation) {
@@ -51,14 +64,48 @@ const App = () => {
     setSubmitted(true);
   };
 
+  useEffect(() => {
+    const input = itiRef.current?.getInput();
+    const toastEl = toastDivRef.current;
+    if (!input || !toastEl || !window.bootstrap?.Toast) {
+      return undefined;
+    }
+    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
+    const handleReject = (e: Event) => {
+      const { reason, rejectedInput, source } = (e as CustomEvent).detail;
+      if (reason === "max-length") {
+        setToastMessage("Maximum length reached for this country");
+      } else if (source === "paste") {
+        setToastMessage("Stripped invalid characters from pasted text");
+      } else {
+        setToastMessage(`Character not allowed: "${rejectedInput}"`);
+      }
+      toast.show();
+    };
+    input.addEventListener("strict:reject", handleReject);
+    return () => input.removeEventListener("strict:reject", handleReject);
+  }, []);
+
   return (
-    <form onSubmit={handleSubmit} className="row g-2" noValidate>
+    <form onSubmit={handleSubmit} className="row g-2 demo-input-wrap position-relative" noValidate>
+      <div className="toast-container demo-toast-container">
+        <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+          <div className="d-flex">
+            <div className="toast-body">{toastMessage}</div>
+            <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
       <div className="col-auto">
         <IntlTelInput
+          ref={itiRef}
           onChangeNumber={handleChangeNumber}
           onChangeValidity={setIsValid}
           onChangeErrorCode={setErrorCode}
-          initialCountry="us"
+          initialCountry="auto"
+          separateDialCode
+          strictMode
+          geoIpLookup={geoIpLookup}
           // @ts-expect-error EJS-templated URL string, resolved at build time.
           loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
           searchInputClass="form-control"

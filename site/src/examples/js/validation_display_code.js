@@ -6,7 +6,15 @@ const errorMsg = document.querySelector("#error-msg");
 
 // initialise plugin
 const iti = intlTelInput(input, {
-  initialCountry: "us",
+  initialCountry: "auto",
+  separateDialCode: true,
+  strictMode: true,
+  geoIpLookup: (success, failure) => {
+    fetch("https://ipapi.co/json")
+      .then(res => res.json())
+      .then(data => success(data.country_code))
+      .catch(() => failure());
+  },
   loadUtils: () => import("intl-tel-input/utils"),
 });
 

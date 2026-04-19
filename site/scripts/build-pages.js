@@ -196,7 +196,7 @@ const exampleDefinitions = [
     title: "Validation",
     metaDesc:
       "Validate the user's phone number and if there's an error, display a relevant message.",
-    js: { src: "src/examples/js/validation.ts" },
+    js: { src: "src/examples/js/validation.ts", destDir: "tmp" },
     content: {
       markupName: "validation",
       includeItiScript: true,
@@ -213,7 +213,7 @@ const exampleDefinitions = [
     title: "Precise validation (advanced)",
     metaDesc:
       "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
-    js: { src: "src/examples/js/validation.ts" },
+    js: { src: "src/examples/js/validation.ts", destDir: "tmp" },
     content: {
       markupName: "validation",
       includeItiScript: true,
@@ -230,6 +230,7 @@ const exampleDefinitions = [
     title: "Hidden input",
     metaDesc:
       "Automatically populate a hidden input with the full international number, so it gets submitted to your backend.",
+    js: { destDir: "tmp" },
     content: {
       includeItiScript: true,
       markupName: "validation",
@@ -240,6 +241,7 @@ const exampleDefinitions = [
     title: "Multiple instances",
     metaDesc:
       "Use multiple instances of the plugin with different configurations on the same page.",
+    js: { destDir: "tmp" },
     content: {
       includeItiScript: true,
     },
@@ -259,6 +261,7 @@ const exampleDefinitions = [
     key: "large_flags",
     title: "Large flags",
     metaDesc: "How to display extra large flag images.",
+    js: { destDir: "tmp" },
     content: {
       markupName: "simple_input",
       includeItiScript: true,

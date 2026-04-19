@@ -10,5 +10,7 @@ intlTelInput(input, {
   countryNameLocale: "ar",
   // Egypt
   initialCountry: "eg",
+  separateDialCode: true,
+  strictMode: true,
   loadUtils: () => import("intl-tel-input/utils"),
 });

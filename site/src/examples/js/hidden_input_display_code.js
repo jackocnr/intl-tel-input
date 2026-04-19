@@ -7,7 +7,15 @@ const validMsg = document.querySelector("#valid-msg");
 
 // initialise plugin
 const iti = intlTelInput(input, {
-  initialCountry: "us",
+  initialCountry: "auto",
+  separateDialCode: true,
+  strictMode: true,
+  geoIpLookup: (success, failure) => {
+    fetch("https://ipapi.co/json")
+      .then(res => res.json())
+      .then(data => success(data.country_code))
+      .catch(() => failure());
+  },
   hiddenInput: () => ({ phone: "full_phone", country: "country_iso2" }),
   loadUtils: () => import("intl-tel-input/utils"),
 });

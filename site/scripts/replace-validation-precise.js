@@ -1,11 +1,13 @@
 // Swaps iti.isValidNumber() -> iti.isValidNumberPrecise() in the precise example.
+// Runs on the templated tmp/ source before esbuild bundles it, so the substitution
+// survives minification (which would otherwise rename the `iti` identifier).
 import fs from "node:fs";
 import path from "node:path";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
-const file = "dist/examples/js/validation_precise.js";
+const file = "tmp/examples/js/validation_precise.ts";
 const original = fs.readFileSync(file, "utf8");
 const updated = original.replace(/\biti\.isValidNumber\(\)/g, "iti.isValidNumberPrecise()");
 

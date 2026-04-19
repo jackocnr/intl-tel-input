@@ -3,6 +3,8 @@ import intlTelInput from "intl-tel-input";
 const input = document.querySelector("#phone");
 intlTelInput(input, {
   initialCountry: "auto",
+  separateDialCode: true,
+  strictMode: true,
   geoIpLookup: (success, failure) => {
     fetch("https://ipapi.co/json")
       .then(res => res.json())

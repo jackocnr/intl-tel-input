@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, ref } from "vue";
+  import { computed, onMounted, ref } from "vue";
   import IntlTelInput, { intlTelInput } from "../../../../vue/dist/IntlTelInput.js";
 
   const getErrorMessage = (number, errorCode) => {
@@ -15,11 +15,21 @@
     return errorMap[errorCode] || genericError;
   };
 
+  const geoIpLookup = (success, failure) => {
+    fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
+      .then((res) => res.json())
+      .then((data) => success(data.country_code))
+      .catch(() => failure());
+  };
+
   const number = ref("");
   const isValid = ref(false);
   const errorCode = ref(null);
   const showValidation = ref(false);
   const submitted = ref(false);
+  const toastMessage = ref("");
+  const itiRef = ref(null);
+  const toastDivRef = ref(null);
 
   const inputValidityClass = computed(() => {
     if (!showValidation.value) return "";
@@ -50,16 +60,46 @@
     showValidation.value = true;
     submitted.value = true;
   };
+
+  onMounted(() => {
+    const input = itiRef.value?.input;
+    const toastEl = toastDivRef.value;
+    if (!input || !toastEl || !window.bootstrap?.Toast) return;
+    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
+    input.addEventListener("strict:reject", (e) => {
+      const { reason, rejectedInput, source } = e.detail;
+      if (reason === "max-length") {
+        toastMessage.value = "Maximum length reached for this country";
+      } else if (source === "paste") {
+        toastMessage.value = "Stripped invalid characters from pasted text";
+      } else {
+        toastMessage.value = `Character not allowed: "${rejectedInput}"`;
+      }
+      toast.show();
+    });
+  });
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit" class="row g-2" novalidate>
+  <form @submit.prevent="handleSubmit" class="row g-2 demo-input-wrap position-relative" novalidate>
+    <div class="toast-container demo-toast-container">
+      <div ref="toastDivRef" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+        <div class="d-flex">
+          <div class="toast-body">{{ toastMessage }}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
     <div class="col-auto">
       <IntlTelInput
+        ref="itiRef"
         @changeNumber="handleChangeNumber"
         @changeValidity="isValid = $event"
         @changeErrorCode="errorCode = $event"
-        initialCountry="us"
+        initialCountry="auto"
+        :separateDialCode="true"
+        :strictMode="true"
+        :geoIpLookup="geoIpLookup"
         :loadUtils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
         searchInputClass="form-control"
         :inputProps="{

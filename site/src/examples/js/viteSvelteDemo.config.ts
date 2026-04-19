@@ -19,6 +19,7 @@ export default defineConfig({
   define: {
     "process.env.VERSION": "window.IGNORE_ME", // just to stop runtime errors
     "process.env.NODE_ENV": "'production'", // required for vue files
+    "process.env.IPAPI_TOKEN": JSON.stringify(process.env.IPAPI_TOKEN || ""),
   },
   build: {
     outDir: path.resolve(projectRoot, "dist/examples/js"),
