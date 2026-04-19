@@ -128,7 +128,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jackocnr/intl-tel-input.git"
+    "url": "git+https://github.com/jackocnr/intl-tel-input.git"
   },
   "homepage": "https://intl-tel-input.com",
   "main": "./dist/js/intlTelInput.js",
