@@ -1125,6 +1125,10 @@ export default class UI {
     this.#selectedFlagEl!.classList.toggle(CLASSES.LOADING, isLoading);
   }
 
+  public isLoading(): boolean {
+    return this.#selectedFlagEl!.classList.contains(CLASSES.LOADING);
+  }
+
   // Set the disabled state of the input and dropdown.
   public setDisabled(disabled: boolean): void {
     this.telInputEl.disabled = disabled;
@@ -1150,11 +1154,6 @@ export default class UI {
         this.#selectedCountryEl.removeAttribute("disabled");
       }
     }
-  }
-
-  // Whether the selected flag is currently showing the globe icon (no country selected).
-  public isShowingGlobe(): boolean {
-    return this.#selectedFlagEl!.classList.contains(CLASSES.GLOBE);
   }
 
   public setCountry(selectedCountryData: SelectedCountryData): void {
@@ -1186,6 +1185,7 @@ export default class UI {
         ariaLabel = i18n.noCountrySelected;
         flagInnerHtml = buildGlobeIcon();
       }
+      // Note: if auto country loading state is still active at this point, the loading class gets wiped here, which is appropriate as a country has been selected.
       this.#selectedFlagEl!.className = flagClass;
       this.#selectedCountryEl!.setAttribute("title", title!);
       this.#selectedCountryEl!.setAttribute(ARIA.LABEL, ariaLabel!);

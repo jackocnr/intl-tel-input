@@ -337,7 +337,6 @@ export class Iti {
 
     if (typeof this.#options.geoIpLookup === "function") {
       const successCallback = (iso2 = "") => {
-        this.#ui.setLoading(false);
         const iso2Lower = iso2.toLowerCase();
         if (isIso2(iso2Lower)) {
           intlTelInput.autoCountry = iso2Lower;
@@ -352,7 +351,6 @@ export class Iti {
         }
       };
       const failureCallback = () => {
-        this.#ui.setLoading(false);
         Iti.forEachInstance("handleAutoCountryFailure");
       };
       this.#options.geoIpLookup(successCallback, failureCallback);
@@ -1134,16 +1132,13 @@ export class Iti {
       return;
     }
 
-    //* We must set this even if there is an initial value in the input: in case the initial value is
-    //* invalid and they delete it - they should see their auto country.
-    this.#fallbackCountryIso2 = intlTelInput.autoCountry;
-    const hasSelectedCountryOrGlobe =
-      this.#selectedCountry ||
-      this.#ui.isShowingGlobe();
-    //* If no country/globe currently selected, then update the country.
-    if (!hasSelectedCountryOrGlobe) {
-      this.setCountry(this.#fallbackCountryIso2);
+    //* If still loading, the user hasn't interrupted, so adopt the auto country. Otherwise the user has already selected a country or cleared to globe, so just stash the auto country as a fallback.
+    if (this.#ui.isLoading()) {
+      this.setCountry(intlTelInput.autoCountry);
+    } else {
+      this.#fallbackCountryIso2 = intlTelInput.autoCountry;
     }
+    this.#ui.setLoading(false);
     this.#autoCountryDeferred.resolve();
   }
 
@@ -1157,6 +1152,7 @@ export class Iti {
 
     //* Reset the initial state
     this.#setInitialState(true);
+    this.#ui.setLoading(false);
     this.#autoCountryDeferred?.reject();
   }
 
