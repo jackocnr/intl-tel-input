@@ -52,7 +52,7 @@
     "build:test": "npm run build && npm run test",
     "prepublishOnly": "npm run build",
     "version:bump": "node scripts/version-bump.js",
-    "version:patch": "npm run version:bump -- patch",
+    "version:patch": "npm run build:test && npm run version:bump -- patch",
     "version:minor": "npm run build:test && npm run version:bump -- minor",
     "version:major": "npm run build:test && npm run version:bump -- major",
     "vue:demo": "vite --config vue/demo/vite.config.js vue/demo/${DEMO:-validation}",
