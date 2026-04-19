@@ -244,18 +244,18 @@ export class Iti {
       if (isRegionlessNanpNumber) {
         //* For regionless NANP numbers, we can't tell from the number which country to select, so defer to initialCountry, else auto country lookup, else default to US.
         if (isValidInitialCountry) {
-          this.#setCountry(initialCountry);
+          this.#updateSelectedCountry(initialCountry);
         } else if (!doingAutoCountryLookup) {
-          this.#setCountry(US.ISO2);
+          this.#updateSelectedCountry(US.ISO2);
         }
       } else {
         this.#updateCountryFromNumber(value);
       }
     } else if (isValidInitialCountry) {
-      this.#setCountry(initialCountry);
+      this.#updateSelectedCountry(initialCountry);
     } else if (!doingAutoCountryLookup) {
       //* No valid dial code, no valid initialCountry, and no country lookup, so default to empty (globe icon).
-      this.#setCountry("");
+      this.#updateSelectedCountry("");
     }
 
     //* Format - note this wont be run after updateDialCode as that's only called if no value.
@@ -719,7 +719,7 @@ export class Iti {
   #updateCountryFromNumber(fullNumber: string): boolean {
     const iso2 = this.#resolveCountryChangeFromNumber(fullNumber);
     if (iso2 !== null) {
-      return this.#setCountry(iso2);
+      return this.#updateSelectedCountry(iso2);
     }
     return false;
   }
@@ -858,7 +858,7 @@ export class Iti {
 
   //* Update the selected country, dial code (if separateDialCode), placeholder, title, and selected list item.
   //* Note: called from setInitialState, updateCountryFromNumber, selectListItem, setCountry.
-  #setCountry(iso2: Iso2 | ""): boolean {
+  #updateSelectedCountry(iso2: Iso2 | ""): boolean {
     const prevIso2 = this.#selectedCountry?.iso2 || "";
 
     this.#selectedCountry = iso2
@@ -965,7 +965,7 @@ export class Iti {
     }
     //* Update selected country and active list item.
     const iso2 = listItem.dataset[DATA_KEYS.ISO2] as Iso2;
-    const countryChanged = this.#setCountry(iso2);
+    const countryChanged = this.#updateSelectedCountry(iso2);
     this.#closeDropdown();
 
     const dialCode = listItem.dataset[DATA_KEYS.DIAL_CODE];
@@ -1384,7 +1384,7 @@ export class Iti {
       return;
     }
 
-    this.#setCountry(iso2Lower);
+    this.#updateSelectedCountry(iso2Lower);
     this.#updateDialCode(this.#selectedCountry?.dialCode || "");
     // reformat
     if (this.#options.formatOnDisplay) {
