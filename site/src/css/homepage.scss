@@ -100,6 +100,15 @@
     .btn-primary {
       margin-bottom: 16px;
     }
+
+    /* float the strict:reject toast just above the input so feedback stays next to its cause */
+    .demo-toast-container {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: left;
+    }
   }
 
   .section--twilio {
