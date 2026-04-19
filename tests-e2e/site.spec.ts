@@ -40,21 +40,24 @@ test.describe("site playground", () => {
     const codeBlock = page.locator("#playgroundInitCode");
     const initialCode = (await codeBlock.textContent()) || "";
 
-    await page.locator("#opt_separateDialCode").check();
+    await page.locator("#opt_allowNumberExtensions").check();
 
     await expect(codeBlock).not.toHaveText(initialCode);
-    await expect(codeBlock).toContainText("separateDialCode");
+    await expect(codeBlock).toContainText("allowNumberExtensions");
   });
 
   test("toggling separateDialCode updates the Live Demo", async ({ page }) => {
     await page.goto(`${SITE}/playground.html`);
 
-    // The dial-code element shouldn't exist in the default configuration.
+    // The playground enables separateDialCode by default, so the dial-code element is present on load.
+    await expect(page.locator(".iti__selected-dial-code")).toHaveCount(1);
+
+    await page.locator("#opt_separateDialCode").uncheck();
+
+    // Re-init is debounced (~100ms) and async, so wait for the new DOM to settle.
     await expect(page.locator(".iti__selected-dial-code")).toHaveCount(0);
 
     await page.locator("#opt_separateDialCode").check();
-
-    // Re-init is debounced (~100ms) and async, so wait for the new DOM to settle.
     await expect(page.locator(".iti__selected-dial-code")).toHaveCount(1);
 
     await page.locator(".iti__selected-country").first().click();
