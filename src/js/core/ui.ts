@@ -549,8 +549,11 @@ export default class UI {
 
   //* Pre-fill the search input with "+" and show all countries
   //* (used when user types "+" in the phone input to open the dropdown).
+  //* Explicitly focus the search input (openDropdown skips this when
+  //* dropdownAlwaysOpen, but here we need focus to redirect subsequent keystrokes).
   public prefillSearchWithPlus(): void {
     this.#searchInputEl!.value = "+";
+    this.#searchInputEl!.focus();
     this.#filterCountriesByQuery("");
   }
 
