@@ -128,7 +128,7 @@ Set this to false to hide the flags. Instead, it will show a generic globe icon.
 Type: `Boolean`  
 Default: `true on mobile devices, false otherwise`  
 
-Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on mobile devices (based on user-agent and screen width), to make better use of the limited space (similar to how a native `<select>` works), and as an inline dropdown on larger devices/screens. Play with this option in the [Playground](/playground).
+Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on narrow viewports (or on touch devices with limited vertical space), to make better use of the available space (similar to how a native `<select>` works), and as an inline dropdown on larger screens. Play with this option in the [Playground](/playground).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/img/iti-mobile-dark.png">
