@@ -26,7 +26,10 @@ jobs:
           cache: npm
 
       - name: Upgrade npm (trusted publishing requires >= 11.5.1)
-        run: npm install -g npm@latest
+        run: npm install -g npm@latest --force
+
+      - name: Print npm version
+        run: npm --version
 
       - name: Install dependencies
         run: npm ci
