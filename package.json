@@ -49,7 +49,7 @@
     "build:components": "npm run build:react && npm run build:vue && npm run build:angular",
     "build:site": "npm run build --workspace=site",
     "build": "npm run clean:all && npm run build:img && npm run build:translations:gen && npm run build:js && npm run build:site",
-    "build:test": "npm run build:jsfast:cmps && npm run test",
+    "build:test": "npm run build && npm run test",
     "prepublishOnly": "npm run build",
     "version:bump": "node scripts/version-bump.js",
     "version:patch": "npm run build:test && npm run version:bump -- patch",
