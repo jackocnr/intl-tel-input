@@ -556,6 +556,7 @@ function resetOptionGroupToDefaults(groupKeys) {
 
   const state = { ...optionsState, ...attrsState };
   setFormFromState(optionsForm, state, optionMeta, "data-option", { defaultState });
+  revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
     defaultInitOptions,
     optionMeta,
@@ -598,6 +599,7 @@ function resetAllToDefaults() {
 
   setFormFromState(optionsForm, state, optionMeta, "data-option", { defaultState });
   setFormFromState(attrsForm, state, attributeMeta, "data-attr", { defaultState });
+  revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
     defaultInitOptions,
     optionMeta,
@@ -821,4 +823,19 @@ const countryNameLocaleInput = optionsForm.querySelector("[data-option='countryN
 if (countryNameLocaleInput) {
   countryNameLocaleInput.addEventListener("input", () => validateCountryNameLocaleInput(countryNameLocaleInput));
   validateCountryNameLocaleInput(countryNameLocaleInput, { invalidOnly: true });
+}
+
+function revalidateCustomInputs() {
+  ISO2_TEXTAREA_KEYS.forEach((key) => {
+    const textarea = optionsForm.querySelector(`[data-option='${key}']`);
+    if (textarea) {
+      validateIso2Textarea(textarea, { invalidOnly: true });
+    }
+  });
+  if (initialCountryInput) {
+    validateInitialCountryInput(initialCountryInput, { invalidOnly: true });
+  }
+  if (countryNameLocaleInput) {
+    validateCountryNameLocaleInput(countryNameLocaleInput, { invalidOnly: true });
+  }
 }
