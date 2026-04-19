@@ -34,4 +34,9 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^")
+          NOTES=$(git log --pretty=format:"- %s ([%h](https://github.com/jackocnr/intl-tel-input/commit/%H))" "$PREV_TAG..${GITHUB_REF_NAME}")
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "${GITHUB_REF_NAME}" \
+            --notes "$NOTES"
