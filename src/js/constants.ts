@@ -7,6 +7,7 @@ export const EVENTS = {
   CLOSE_COUNTRY_DROPDOWN: "close:countrydropdown",
   COUNTRY_CHANGE: "countrychange",
   INPUT: "input", // used for synthetic input trigger
+  STRICT_REJECT: "strict:reject",
 } as const;
 
 export const CLASSES = {

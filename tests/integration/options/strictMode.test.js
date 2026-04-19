@@ -200,6 +200,47 @@ describe("strictMode option", () => {
       fireEvent.paste(input, eventObject);
       expect(input.value).toBe("(234) 567-8901");
     });
+
+    test("strict:reject fires with source=key, reason=invalid when typing an invalid character", async () => {
+      const events = [];
+      input.addEventListener("strict:reject", (e) => events.push(e.detail));
+      await user.type(input, "a");
+      expect(events).toEqual([{ source: "key", rejectedInput: "a", reason: "invalid" }]);
+    });
+
+    test("strict:reject fires with source=key, reason=max-length when typing past the max length", async () => {
+      const events = [];
+      await user.type(input, "7021234567");
+      input.addEventListener("strict:reject", (e) => events.push(e.detail));
+      await user.type(input, "8");
+      expect(events).toEqual([{ source: "key", rejectedInput: "8", reason: "max-length" }]);
+    });
+
+    test("strict:reject fires with source=paste, reason=invalid when pasted content has non-digit chars stripped", async () => {
+      const events = [];
+      input.addEventListener("strict:reject", (e) => events.push(e.detail));
+      await user.click(input);
+      const pastedContent = "a9871234567";
+      fireEvent.paste(input, getPasteEventObject(pastedContent));
+      expect(events).toEqual([{ source: "paste", rejectedInput: pastedContent, reason: "invalid" }]);
+    });
+
+    test("strict:reject fires with source=paste, reason=max-length when pasted content is trimmed at end", async () => {
+      const events = [];
+      input.addEventListener("strict:reject", (e) => events.push(e.detail));
+      await user.click(input);
+      const pastedContent = "2345678901234567999999";
+      fireEvent.paste(input, getPasteEventObject(pastedContent));
+      expect(events).toEqual([{ source: "paste", rejectedInput: pastedContent, reason: "max-length" }]);
+    });
+
+    test("strict:reject does not fire when pasted content is fully accepted", async () => {
+      const events = [];
+      input.addEventListener("strict:reject", (e) => events.push(e.detail));
+      await user.click(input);
+      fireEvent.paste(input, getPasteEventObject("2345678901"));
+      expect(events).toEqual([]);
+    });
   });
 
   // NATIONAL MODE DISABLED

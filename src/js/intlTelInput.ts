@@ -26,7 +26,7 @@ import { hasRegionlessDialCode } from "./data/intl-regionless";
 import { stripSeparateDialCode, formatNumberAsYouType } from "./format/formatting";
 import { computeNewCaretPosition } from "./format/caret";
 import { isRegionlessNanp } from "./data/nanp-regionless";
-import type { ItiEventMap } from "./types/events";
+import type { ItiEventMap, StrictRejectReason } from "./types/events";
 import {
   EVENTS,
   SENTINELS,
@@ -553,6 +553,11 @@ export class Iti {
         !isAllowedChar ||
         (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)
       ) {
+        this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+          source: "key",
+          rejectedInput: e.key,
+          reason: !isAllowedChar ? "invalid" : "max-length",
+        });
         e.preventDefault();
       }
     };
@@ -595,6 +600,10 @@ export class Iti {
         hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
       let newValue = before + sanitised + after;
 
+      // track the most-severe modification reason to emit as strict:reject at the end
+      let rejectReason: StrictRejectReason | null =
+        sanitised !== pasted ? "invalid" : null;
+
       // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
       // (fixes bug where you couldn't paste the first digit of a number)
       if (newValue.length > 5 && intlTelInput.utils) {
@@ -606,8 +615,13 @@ export class Iti {
           newValue = newValue.slice(0, -1);
           coreNumber = intlTelInput.utils!.getCoreNumber(newValue, iso2);
         }
-        // if no valid core number can be found, then just ignore the paste
+        // if no valid core number can be found, then just ignore the paste (defensive path for pathologically long input)
         if (!coreNumber) {
+          this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+            source: "paste",
+            rejectedInput: pastedRaw,
+            reason: "max-length",
+          });
           return;
         }
         if (
@@ -618,8 +632,14 @@ export class Iti {
             // if they try to paste too many digits at the end, then just trim the excess
             const trimLength = coreNumber.length - this.#maxCoreNumberLength;
             newValue = newValue.slice(0, newValue.length - trimLength);
+            rejectReason = "max-length";
           } else {
             // if they try to paste too many digits in the middle, then just ignore the paste entirely
+            this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+              source: "paste",
+              rejectedInput: pastedRaw,
+              reason: "max-length",
+            });
             return;
           }
         }
@@ -631,6 +651,14 @@ export class Iti {
 
       // trigger format-as-you-type and country update etc
       input.dispatchEvent(new InputEvent("input", { bubbles: true }));
+
+      if (rejectReason) {
+        this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+          source: "paste",
+          rejectedInput: pastedRaw,
+          reason: rejectReason,
+        });
+      }
     };
     this.#ui.telInputEl.addEventListener("paste", handlePasteEvent, {
       signal: this.#abortController!.signal,

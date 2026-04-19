@@ -4,9 +4,17 @@
 import { EVENTS } from "../constants";
 import type { SelectedCountryData } from "../types/public-api";
 
+export type StrictRejectSource = "key" | "paste";
+export type StrictRejectReason = "invalid" | "max-length";
+
 export type ItiEventMap = {
   [EVENTS.COUNTRY_CHANGE]: SelectedCountryData;
   [EVENTS.OPEN_COUNTRY_DROPDOWN]: Record<string, never>;
   [EVENTS.CLOSE_COUNTRY_DROPDOWN]: Record<string, never>;
   [EVENTS.INPUT]: { isSetNumber?: boolean };
+  [EVENTS.STRICT_REJECT]: {
+    source: StrictRejectSource;
+    rejectedInput: string;
+    reason: StrictRejectReason;
+  };
 };
