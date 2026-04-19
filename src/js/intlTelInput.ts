@@ -234,14 +234,20 @@ export class Iti {
     const { initialCountry, geoIpLookup } = this.#options;
     const isAutoCountry =
       initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
-    const doingAutoCountryLookup = isAutoCountry && !overrideAutoCountry;
-    const isValidInitialCountry = isIso2(initialCountry);
+    //* If auto country has already been loaded (e.g. from a previous instance), use it synchronously to avoid a broken initial state.
+    const resolvedInitialCountry =
+      isAutoCountry && intlTelInput.autoCountry
+        ? intlTelInput.autoCountry
+        : initialCountry;
+    const doingAutoCountryLookup =
+      isAutoCountry && !overrideAutoCountry && !intlTelInput.autoCountry;
+    const isValidInitialCountry = isIso2(resolvedInitialCountry);
 
     if (dialCode) {
       if (isRegionlessNanpNumber) {
         //* For regionless NANP numbers, we can't tell from the number which country to select, so defer to initialCountry, else auto country lookup, else default to US.
         if (isValidInitialCountry) {
-          this.#updateSelectedCountry(initialCountry);
+          this.#updateSelectedCountry(resolvedInitialCountry);
         } else if (!doingAutoCountryLookup) {
           this.#updateSelectedCountry(US.ISO2);
         }
@@ -249,7 +255,7 @@ export class Iti {
         this.#updateCountryFromNumber(value);
       }
     } else if (isValidInitialCountry) {
-      this.#updateSelectedCountry(initialCountry);
+      this.#updateSelectedCountry(resolvedInitialCountry);
     } else if (!doingAutoCountryLookup) {
       //* No valid dial code, no valid initialCountry, and no country lookup, so default to empty (globe icon).
       this.#updateSelectedCountry("");
