@@ -18,6 +18,10 @@ import {
   readItiLiveResultsScript,
   readItiScript,
 } from "./template/helpers.js";
+import {
+  renderPlaygroundPresetsHomepage,
+  renderPlaygroundPresetsPlayground,
+} from "../src/shared/playground_presets.js";
 
 // Always run from the site/ directory so all relative paths in templates and
 // data functions resolve correctly (templates use paths like "src/...",
@@ -479,7 +483,8 @@ tasks.push({
       .readFileSync("src/homepage/homepage_content.html", "utf8")
       .replace("{{STAT_WEBSITES}}", stats.websites)
       .replace("{{STAT_DOWNLOADS}}", stats.downloads)
-      .replace("{{STAT_STARS}}", stats.stars);
+      .replace("{{STAT_STARS}}", stats.stars)
+      .replace("{{PLAYGROUND_PRESETS}}", renderPlaygroundPresetsHomepage());
     return {
       layoutClass: "iti-layout-no-sidebars",
       showLeftSidebar: false,
@@ -527,7 +532,9 @@ tasks.push({
   data: () => ({
     showLeftSidebar: false,
     layoutClass: "iti-layout-no-sidebars iti-layout--playground",
-    content: fs.readFileSync("src/playground/playground_content.html", "utf8"),
+    content: fs
+      .readFileSync("src/playground/playground_content.html", "utf8")
+      .replace("{{PLAYGROUND_PRESETS}}", renderPlaygroundPresetsPlayground()),
     pageType: "playground",
     name: "playground",
     docsDropdownPages,
