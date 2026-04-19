@@ -32,4 +32,4 @@ jobs:
         run: npm ci
 
       - name: Publish
-        run: npm publish
+        run: npm publish --provenance
