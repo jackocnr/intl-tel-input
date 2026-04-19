@@ -93,6 +93,9 @@ export default class UI {
 
     this.#updateInputPaddingAndReveal();
     this.#buildHiddenInputs(wrapper);
+
+    // call this before setInitialState (see commit msg)
+    this.ensureDropdownWidthSet();
   }
 
   #createWrapperAndInsert(): HTMLElement {
