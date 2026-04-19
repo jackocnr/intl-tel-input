@@ -234,7 +234,6 @@ defineExpose({ instance, input });
     v-bind="sanitizedInputProps"
     ref="input"
     type="tel"
-    @countrychange="updateCountry"
-    @input="updateValue"
+    @input="updateCountry"
   />
 </template>

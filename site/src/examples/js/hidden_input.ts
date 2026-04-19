@@ -96,7 +96,6 @@ input.addEventListener("blur", () => {
 
 // while typing / pasting / changing country: update validity state
 input.addEventListener("input", updateUI);
-input.addEventListener("countrychange", updateUI);
 
 // if the form was submitted and the page reloaded with the full phone number in the query string, show it here
 const urlParams = new URLSearchParams(window.location.search);

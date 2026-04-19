@@ -130,7 +130,6 @@ class IntlTelInput
   // writeValue may be called by Angular forms before utils has loaded; queue it until then
   private pendingWriteValue?: string;
 
-  private countryChangeHandler = () => this.handleInput();
   // eslint-disable-next-line class-methods-use-this
   private onChange: (value: string) => void = () => {};
   // eslint-disable-next-line class-methods-use-this
@@ -142,11 +141,6 @@ class IntlTelInput
     this.iti = intlTelInput(
       this.inputRef.nativeElement,
       this.buildInitOptions(),
-    );
-
-    this.inputRef.nativeElement.addEventListener(
-      "countrychange",
-      this.countryChangeHandler,
     );
 
     this.applyInputAttrs();
@@ -314,11 +308,6 @@ class IntlTelInput
 
   ngOnDestroy() {
     this.iti?.destroy();
-
-    this.inputRef.nativeElement.removeEventListener(
-      "countrychange",
-      this.countryChangeHandler,
-    );
   }
 
   private ignoredInputAttrs = new Set([

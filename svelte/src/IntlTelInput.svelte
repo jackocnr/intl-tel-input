@@ -88,7 +88,6 @@
   onMount(() => {
     if (inputElement) {
       instance = intlTelInput(inputElement, initOptions as SomeOptions);
-      inputElement.addEventListener("countrychange", updateCountry);
       if (disabled) instance.setDisabled(disabled);
       if (readonly) instance.setReadonly(readonly);
 
@@ -112,9 +111,6 @@
   });
 
   onDestroy(() => {
-    if (inputElement) {
-      inputElement.removeEventListener("countrychange", updateCountry);
-    }
     instance?.destroy();
   });
 
@@ -183,5 +179,5 @@
   {...sanitizeInputProps(inputProps)}
   bind:this={inputElement}
   type="tel"
-  oninput={updateValue}
+  oninput={updateCountry}
 />

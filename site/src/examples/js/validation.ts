@@ -94,10 +94,7 @@ input.addEventListener("blur", () => {
 });
 
 // while typing / pasting / changing country: remove any submitted state and update validity state
-const handleUserInput = () => {
+input.addEventListener("input", () => {
   submitted = false;
   updateUI();
-};
-
-input.addEventListener("input", handleUserInput);
-input.addEventListener("countrychange", handleUserInput);
+});

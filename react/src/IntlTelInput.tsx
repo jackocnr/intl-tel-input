@@ -129,20 +129,10 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }, []);
 
   useEffect(() => {
-    // store a reference to the current input ref, which otherwise is already lost in the cleanup function
-    const inputRefCurrent = inputRef.current;
-    if (inputRefCurrent) {
-      inputRefCurrent.addEventListener("countrychange", update);
-      // when plugin initialisation has finished (e.g. loaded utils script), seed the refs
-      // with the current state so we don't fire change callbacks on initial mount
-      itiRef.current?.promise.then(seedInitialState);
-    }
-    return (): void => {
-      if (inputRefCurrent) {
-        inputRefCurrent.removeEventListener("countrychange", update);
-      }
-    };
-  }, [update, seedInitialState]);
+    // when plugin initialisation has finished (e.g. loaded utils script), seed the refs
+    // with the current state so we don't fire change callbacks on initial mount
+    itiRef.current?.promise.then(seedInitialState);
+  }, [seedInitialState]);
 
   useEffect(() => {
     if (itiRef.current && disabled !== undefined) {

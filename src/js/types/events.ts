@@ -11,7 +11,7 @@ export type ItiEventMap = {
   [EVENTS.COUNTRY_CHANGE]: SelectedCountryData;
   [EVENTS.OPEN_COUNTRY_DROPDOWN]: Record<string, never>;
   [EVENTS.CLOSE_COUNTRY_DROPDOWN]: Record<string, never>;
-  [EVENTS.INPUT]: { isSetNumber?: boolean };
+  [EVENTS.INPUT]: { isSetNumber?: boolean; isCountryChange?: boolean };
   [EVENTS.STRICT_REJECT]: {
     source: StrictRejectSource;
     rejectedInput: string;

@@ -94,4 +94,3 @@ const handleUserInput = () => {
 };
 
 input.addEventListener("input", handleUserInput);
-input.addEventListener("countrychange", handleUserInput);

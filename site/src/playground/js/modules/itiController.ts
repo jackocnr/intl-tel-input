@@ -149,10 +149,9 @@ export class ItiPlaygroundController {
     initOptions.searchInputClass += " form-control";
     this.iti = window.intlTelInput(this.telInput, initOptions);
 
-    // Trigger live results box to update by triggering a countrychange event on the telInput
-    // (avoid triggering an input event as the plugin responds to that)
+    // Force the live results box to re-render against the new instance.
     window.setTimeout(() => {
-      this.telInput.dispatchEvent(new Event("countrychange"));
+      this.telInput.dispatchEvent(new Event("iti-live-results:refresh"));
     }, 0);
   }
 }

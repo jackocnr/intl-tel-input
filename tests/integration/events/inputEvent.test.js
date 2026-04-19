@@ -3,17 +3,22 @@
  */
 
 import { userEvent } from "@testing-library/user-event";
-import { injectInput, initPlugin, teardown } from "../helpers/helpers";
+import {
+  injectInput,
+  initPlugin,
+  teardown,
+  openDropdownSelectCountryAsync,
+} from "../helpers/helpers";
 
 describe("input event", () => {
-  let input, iti, mockEventHandler, user;
+  let input, iti, mockEventHandler, container, user;
 
   beforeEach(() => {
     user = userEvent.setup();
     input = injectInput();
     mockEventHandler = vi.fn();
     input.addEventListener("input", mockEventHandler);
-    ({ iti } = initPlugin({ input }));
+    ({ iti, container } = initPlugin({ input }));
   });
 
   afterEach(() => {
@@ -34,5 +39,19 @@ describe("input event", () => {
     const event = mockEventHandler.mock.calls.at(-1)[0];
     // native input events have no detail, or detail without isSetNumber
     expect(event.detail?.isSetNumber).toBeFalsy();
+  });
+
+  test("setCountry fires input event with isCountryChange=true", () => {
+    iti.setCountry("fr");
+    expect(mockEventHandler).toHaveBeenCalled();
+    const event = mockEventHandler.mock.calls.at(-1)[0];
+    expect(event.detail).toEqual({ isCountryChange: true });
+  });
+
+  test("selecting a country from the dropdown fires input event with isCountryChange=true", async () => {
+    await openDropdownSelectCountryAsync(container, "af", user);
+    expect(mockEventHandler).toHaveBeenCalled();
+    const event = mockEventHandler.mock.calls.at(-1)[0];
+    expect(event.detail).toEqual({ isCountryChange: true });
   });
 });

@@ -53,8 +53,13 @@
         liveResults.textContent = `Invalid number${errorSuffix}`;
       };
 
+      // No matching removeEventListener: this runs once per page load and the tel input
+      // element persists across plugin destroy/re-init, so the listeners live for the
+      // lifetime of the page and the browser reclaims them on unload.
       itiInput.addEventListener("input", updateResults);
-      itiInput.addEventListener("countrychange", updateResults);
+      // Custom event dispatched by the playground controller after it re-inits the
+      // plugin, to force the live results to re-render against the new instance.
+      itiInput.addEventListener("iti-live-results:refresh", updateResults);
       updateResults();
     };
 

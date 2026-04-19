@@ -46,4 +46,3 @@ input.addEventListener("blur", () => {
 
 // while typing / pasting / changing country: update validity state
 input.addEventListener("input", updateUI);
-input.addEventListener("countrychange", updateUI);

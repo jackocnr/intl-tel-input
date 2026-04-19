@@ -389,6 +389,14 @@ export class Iti {
     //* On input event: (1) Update selected country, (2) Format-as-you-type.
     //* Note that this fires AFTER the input is updated.
     const handleInputEvent = (e: InputEvent): void => {
+      //* Skip re-entry from our own synthetic input events fired after a country change —
+      //* selectListItem/setCountry have already done the country + formatting work.
+      if (
+        e?.detail &&
+        (e.detail as unknown as Record<string, unknown>)["isCountryChange"]
+      ) {
+        return;
+      }
       const inputValue = this.#getTelInputValue();
       //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
       if (
@@ -985,6 +993,8 @@ export class Iti {
 
     if (countryChanged) {
       this.#dispatchCountryChangeEvent();
+      //* Also dispatch a synthetic input event so generic input listeners (validation, framework wrappers) pick it up without needing a separate countrychange listener.
+      this.#dispatchEvent(EVENTS.INPUT, { isCountryChange: true });
     }
   }
 
@@ -1395,6 +1405,7 @@ export class Iti {
       this.#updateValueFromNumber(inputValue);
     }
     this.#dispatchCountryChangeEvent();
+    this.#dispatchEvent(EVENTS.INPUT, { isCountryChange: true });
   }
 
   //* Set the input value and update the country.
