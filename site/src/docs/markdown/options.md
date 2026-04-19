@@ -193,7 +193,9 @@ Format numbers in the national format, rather than the international format. Thi
 Type: `Boolean`  
 Default: `false`  
 
-As the user types in the input, ignore any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground?strictMode=true&initialCountry=us#formatting-options).
+As the user types (or pastes) in the input, reject any irrelevant characters<sup>*</sup>. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground?strictMode=true&initialCountry=us#formatting-options).
+
+<sup>*</sup> When user input is rejected or modified, the plugin fires a [`strict:reject`](/docs/events#strict-reject) event — listen for this to give the user feedback (e.g. a toast) so the rejection isn't silent. For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
 
 ## Validation options
 
