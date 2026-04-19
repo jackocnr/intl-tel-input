@@ -4,6 +4,8 @@
 //      package-lock entry are updated to match.
 //   3. Stage everything, create the commit, and create the tag — all in one
 //      atomic version commit.
+//   4. Push the tag — GitHub Actions (.github/workflows/publish.yml) picks it
+//      up and publishes to npm.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
@@ -35,11 +37,4 @@ run('git', ['tag', tag]);
 run('git', ['push']);
 run('git', ['push', '--tags']);
 
-try {
-  execFileSync('npm', ['whoami'], { stdio: 'pipe' });
-} catch {
-  run('npm', ['login']);
-}
-run('npm', ['publish']);
-
-console.log(`\n${tag} committed, tagged, pushed, and published to npm.`);
+console.log(`\n${tag} committed, tagged, and pushed. GitHub Actions will publish to npm.`);
