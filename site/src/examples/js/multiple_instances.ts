@@ -45,7 +45,9 @@ window.intlTelInput(inputVacation, {
 const setupRejectToast = (input: HTMLInputElement, toastId: string, toastBodyId: string) => {
   const toastEl = document.getElementById(toastId);
   const toastBody = document.getElementById(toastBodyId);
-  if (!toastEl || !toastBody || !window.bootstrap?.Toast) return;
+  if (!toastEl || !toastBody || !window.bootstrap?.Toast) {
+    return;
+  }
   const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
   input.addEventListener("strict:reject", (e: Event) => {
     const { reason, rejectedInput, source } = (e as CustomEvent).detail;

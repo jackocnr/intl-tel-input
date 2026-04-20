@@ -365,6 +365,15 @@ export class Iti {
     this.#ui.prefillSearchWithPlus();
   }
 
+  //* Delete the character just typed (the one immediately before the caret). Used by Android workarounds where we can't preventDefault on keydown.
+  #removeJustTypedChar(inputValue: string): number {
+    const currentCaretPos = this.#ui.telInputEl.selectionStart || 0;
+    const valueBeforeCaret = inputValue.substring(0, currentCaretPos - 1);
+    const valueAfterCaret = inputValue.substring(currentCaretPos);
+    this.#setTelInputValue(valueBeforeCaret + valueAfterCaret);
+    return currentCaretPos - 1;
+  }
+
   //* Initialize the tel input listeners.
   #bindAllTelInputListeners(): void {
     this.#bindInputListener();
@@ -398,6 +407,7 @@ export class Iti {
         return;
       }
       const inputValue = this.#getTelInputValue();
+
       //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
       if (
         this.#isAndroid &&
@@ -406,11 +416,24 @@ export class Iti {
         allowDropdown &&
         countrySearch
       ) {
-        const currentCaretPos = this.#ui.telInputEl.selectionStart || 0;
-        const valueBeforeCaret = inputValue.substring(0, currentCaretPos - 1);
-        const valueAfterCaret = inputValue.substring(currentCaretPos);
-        this.#setTelInputValue(valueBeforeCaret + valueAfterCaret);
+        this.#removeJustTypedChar(inputValue);
         this.#openDropdownWithPlus();
+        return;
+      }
+
+      //* Android strictMode workaround: the keydown-based filter can't block these because e.key is "Unidentified" on Android virtual keyboards, so strip them here on input.
+      if (
+        this.#isAndroid &&
+        strictMode &&
+        (e?.data === " " || e?.data === "-" || e?.data === ".")
+      ) {
+        const newCaretPos = this.#removeJustTypedChar(inputValue);
+        this.#ui.telInputEl.setSelectionRange(newCaretPos, newCaretPos);
+        this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+          source: "key",
+          rejectedInput: e.data,
+          reason: "invalid",
+        });
         return;
       }
 
