@@ -252,6 +252,10 @@ export class Iti {
           this.#updateSelectedCountry(US.ISO2);
         }
       } else {
+        //* Pre-select initialCountry so that for numbers from a range shared between multiple countries (e.g. +358 4xx mobile, shared between FI and AX), we stick with the user's preference instead of defaulting to the main country.
+        if (isValidInitialCountry) {
+          this.#updateSelectedCountry(resolvedInitialCountry);
+        }
         this.#updateCountryFromNumber(value);
       }
     } else if (isValidInitialCountry) {

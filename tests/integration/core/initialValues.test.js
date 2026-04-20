@@ -125,4 +125,30 @@ describe("initial values", () => {
       expect(checkFlagSelected(container, "fi")).toBe(true);
     });
   });
+
+  describe("init plugin on input containing number from range shared between FI and AX, with initialCountry=AX", () => {
+    beforeEach(() => {
+      ({ iti, input, container } = initPlugin({
+        inputValue: "+358457234567",
+        options: { initialCountry: "ax" },
+      }));
+    });
+
+    test("respects initialCountry and selects AX", () => {
+      expect(checkFlagSelected(container, "ax")).toBe(true);
+    });
+  });
+
+  describe("init plugin on input containing FI-only number (outside AX area codes), with initialCountry=AX", () => {
+    beforeEach(() => {
+      ({ iti, input, container } = initPlugin({
+        inputValue: "+3580912345678",
+        options: { initialCountry: "ax" },
+      }));
+    });
+
+    test("ignores initialCountry and selects FI", () => {
+      expect(checkFlagSelected(container, "fi")).toBe(true);
+    });
+  });
 });
