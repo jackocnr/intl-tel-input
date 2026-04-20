@@ -147,7 +147,8 @@ tasks.push({
   data: () => ({ cacheBust, isDevBuild }),
 });
 
-// 2. CSS cache-bust (in-place rewrites of built CSS files).
+// 2. Cache bust any URLs inside CSS files
+// e.g. url("<%= cacheBust('flags.webp') %>") → url("flags.webp?v=HASH")
 tasks.push(cssCacheBust("website_css", "dist/css/website.css"));
 tasks.push(cssCacheBust("homepage_css", "dist/css/homepage.css"));
 tasks.push(cssCacheBust("docs_css", "dist/css/docs.css"));
