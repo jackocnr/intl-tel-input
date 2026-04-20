@@ -11,26 +11,31 @@ const geoIpLookup = (success, failure) => {
     .catch(() => failure());
 };
 
-intlTelInput(inputHome, {
-  initialCountry: "auto",
+const baseOptions = {
   separateDialCode: true,
   strictMode: true,
+  loadUtils: () => import("intl-tel-input/utils"),
+};
+
+// initialise plugin - home
+intlTelInput(inputHome, {
+  ...baseOptions,
+  initialCountry: "auto",
   geoIpLookup,
   placeholderNumberType: "FIXED_LINE",
-  loadUtils: () => import("intl-tel-input/utils"),
 });
+
+// initialise plugin - mobile
 intlTelInput(inputMobile, {
+  ...baseOptions,
   initialCountry: "auto",
-  separateDialCode: true,
-  strictMode: true,
   geoIpLookup,
   placeholderNumberType: "MOBILE",
-  loadUtils: () => import("intl-tel-input/utils"),
 });
+
+// initialise plugin - vacation
 intlTelInput(inputVacation, {
+  ...baseOptions,
   initialCountry: "es",
-  separateDialCode: true,
-  strictMode: true,
   onlyCountries: ["es", "fr", "it"],
-  loadUtils: () => import("intl-tel-input/utils"),
 });
