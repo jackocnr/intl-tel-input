@@ -1,35 +1,53 @@
-# Choosing your integration
+# Choose your integration
 
-`intl-tel-input` is available in two primary flavours: a standalone **JavaScript plugin** and a set of native **framework components**. While both offer the same core features (country-picker, formatting and validation), the best choice depends on your project’s architecture.
+`intl-tel-input` comes in two flavours: a standalone **JavaScript plugin** and a set of native **framework components**. Both offer the same core features — country picker, formatting and validation — so pick the one that matches your stack.
 
-## 1. JavaScript plugin
-The original version of `intl-tel-input`. Use this if you are not using a modern frontend framework, or if you prefer to manage the DOM manually. It is lightweight, has zero dependencies, and works in any environment.
+<div class="iti-integration-choice row g-4 my-4">
+  <div class="col-md-6">
+    <div class="iti-integration-card card h-100">
+      <div class="card-body d-flex flex-column">
+        <i class="bi bi-filetype-js iti-integration-card__icon" aria-hidden="true"></i>
+        <h2 class="h4 mt-3 mb-2">JavaScript plugin</h2>
+        <p class="mb-3">If you're <strong>not</strong> using a frontend framework, or prefer to manage the DOM yourself.</p>
+        <ul class="mb-4 ps-3">
+          <li>Zero dependencies</li>
+          <li>Lightweight</li>
+          <li>Works anywhere</li>
+        </ul>
+        <div class="mt-auto">
+          <a href="/docs/getting-started" class="btn btn-primary">Get started</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-[Getting Started with the JS Plugin](/docs/getting-started)
-
-## 2. Framework components
-We provide native wrappers for the four most popular frontend frameworks. These components handle the lifecycle of the plugin for you (initialisation and cleanup) and allow you to sync the input value directly with your app’s state.
-
-* [React component docs](/docs/react-component) – For React 16.8+ (Hooks-based)
-* [Vue component docs](/docs/vue-component) – Supports Vue 3
-* [Angular component docs](/docs/angular-component) – For modern Angular versions
-* [Svelte component docs](/docs/svelte-component) – Lightweight and reactive
-
----
+  <div class="col-md-6">
+    <div class="iti-integration-card card h-100">
+      <div class="card-body d-flex flex-column">
+        <i class="bi bi-boxes iti-integration-card__icon" aria-hidden="true"></i>
+        <h2 class="h4 mt-3 mb-2">Framework components</h2>
+        <p class="mb-3">If you're using React, Vue, Angular, or Svelte — the component handles lifecycle, two-way binding, and change callbacks for you.</p>
+        <p class="iti-integration-card__cta mb-2">Pick your framework:</p>
+        <div class="d-flex flex-wrap gap-2 mt-auto">
+          <a href="/docs/react-component" class="btn btn-primary">React</a>
+          <a href="/docs/vue-component" class="btn btn-primary">Vue</a>
+          <a href="/docs/angular-component" class="btn btn-primary">Angular</a>
+          <a href="/docs/svelte-component" class="btn btn-primary">Svelte</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 ## FAQ
 
-**Can I use the JS Plugin inside a React/Vue/Angular/Svelte app?**  
+**Can I manually use the JavaScript Plugin inside a React (etc) app myself?**  
 Technically yes — but our native framework components are the recommended path, and do the heavy lifting for you so you can drop a phone input into your app in just a few lines of code:
 
 * **Lifecycle handled** — initialisation on mount and `destroy()` on unmount, so you don't leak instances or listeners.
 * **Two-way value binding** — pass the number in as a prop and it stays in sync with your app's state, with internal guards to avoid cursor jumps while typing.
-* **Reactive `disabled` and `readonly`** — toggle them like any other prop and the component calls the right plugin methods for you.
 * **Typed change callbacks** — `changeNumber`, `changeCountry`, `changeValidity`, and `changeErrorCode` exposed as idiomatic, fully-typed handlers for each framework.
-* **Utils-aware internals** — the component awaits `iti.promise` before seeding or updating its own state, so initial values and prop-driven updates work even when utils are loaded asynchronously.
 * **Escape hatch** — grab the underlying `Iti` instance via a ref for anything the component doesn't expose directly.
-
-Pick your framework in the list above to get started.
 
 **Do the components include all the plugin features?**  
 Yes. All [initialisation options](/docs/options) and [methods](/docs/methods) are available through the component props and refs.

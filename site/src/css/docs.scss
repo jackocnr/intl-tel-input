@@ -1,3 +1,21 @@
+/* Choose Integration page: two big CTA cards */
+.iti-integration-choice {
+  .iti-integration-card.card {
+    border-width: 2px;
+  }
+
+  .iti-integration-card__icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    color: rgb(var(--bs-link-color-rgb));
+  }
+
+  .iti-integration-card__cta {
+    color: rgb(var(--bs-link-color-rgb));
+    font-weight: 500;
+  }
+}
+
 /* Docs options page layout: keep code blocks within the content width */
 .iti-doc-options {
   &__row {
