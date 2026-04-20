@@ -42,11 +42,12 @@ window.intlTelInput(inputVacation, {
   searchInputClass: "form-control",
 });
 
-const toastEl = document.getElementById("strictRejectToast");
-const toastBody = document.getElementById("strictRejectToastBody");
-if (toastEl && toastBody && window.bootstrap?.Toast) {
+const setupRejectToast = (input: HTMLInputElement, toastId: string, toastBodyId: string) => {
+  const toastEl = document.getElementById(toastId);
+  const toastBody = document.getElementById(toastBodyId);
+  if (!toastEl || !toastBody || !window.bootstrap?.Toast) return;
   const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
-  const handleStrictReject = (e: Event) => {
+  input.addEventListener("strict:reject", (e: Event) => {
     const { reason, rejectedInput, source } = (e as CustomEvent).detail;
     if (reason === "max-length") {
       toastBody.textContent = "Maximum length reached for this country";
@@ -56,8 +57,8 @@ if (toastEl && toastBody && window.bootstrap?.Toast) {
       toastBody.textContent = `Character not allowed: "${rejectedInput}"`;
     }
     toast.show();
-  };
-  inputHome.addEventListener("strict:reject", handleStrictReject);
-  inputMobile.addEventListener("strict:reject", handleStrictReject);
-  inputVacation.addEventListener("strict:reject", handleStrictReject);
-}
+  });
+};
+setupRejectToast(inputHome, "homeToast", "homeToastBody");
+setupRejectToast(inputMobile, "mobileToast", "mobileToastBody");
+setupRejectToast(inputVacation, "vacationToast", "vacationToastBody");

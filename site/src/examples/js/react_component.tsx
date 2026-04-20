@@ -87,16 +87,16 @@ const App = () => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="row g-2 demo-input-wrap position-relative" noValidate>
-      <div className="toast-container demo-toast-container">
-        <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-          <div className="d-flex">
-            <div className="toast-body">{toastMessage}</div>
-            <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    <form onSubmit={handleSubmit} className="row g-2" noValidate>
+      <div className="col-auto demo-input-wrap position-relative">
+        <div className="toast-container demo-toast-container">
+          <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+            <div className="d-flex">
+              <div className="toast-body">{toastMessage}</div>
+              <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="col-auto">
         <IntlTelInput
           ref={itiRef}
           onChangeNumber={handleChangeNumber}
