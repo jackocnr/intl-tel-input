@@ -5,7 +5,22 @@ This page lists the plugin's public API methods.
 ## Contents
 
 - [Instance methods](#instance-methods)
+  - [destroy](#destroy)
+  - [getExtension](#getextension)
+  - [getNumber](#getnumber)
+  - [getNumberType](#getnumbertype)
+  - [getSelectedCountryData](#getselectedcountrydata)
+  - [getValidationError](#getvalidationerror)
+  - [isValidNumber](#isvalidnumber)
+  - [isValidNumberPrecise](#isvalidnumberprecise)
+  - [setCountry](#setcountry)
+  - [setDisabled](#setdisabled)
+  - [setNumber](#setnumber)
+  - [setPlaceholderNumberType](#setplaceholdernumbertype)
 - [Static methods](#static-methods)
+  - [getCountryData](#getcountrydata)
+  - [getInstance](#getinstance)
+  - [attachUtils](#attachutils)
 
 ## Instance Methods
 
