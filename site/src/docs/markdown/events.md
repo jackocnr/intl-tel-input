@@ -45,3 +45,40 @@ input.addEventListener("strict:reject", (e) => {
 });
 ```
 
+#### Worked example: Bootstrap toast
+
+Here is a worked example showing a [Bootstrap toast](https://getbootstrap.com/docs/5.3/components/toasts/) with a contextual message when input is rejected.
+
+First, add the toast markup alongside your input. The outer `toast-container` below pins the toast to the top-right of the viewport as a simple, portable default — adapt the utility classes to suit your layout (on this site, for example, we position the toast directly above the input):
+
+```html
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="strictRejectToast" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+    <div class="d-flex">
+      <div class="toast-body" id="strictRejectToastBody"></div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+```
+
+Then wire up the `strict:reject` listener to populate and show it:
+
+```js
+const toastEl = document.getElementById("strictRejectToast");
+const toastBody = document.getElementById("strictRejectToastBody");
+const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+
+input.addEventListener("strict:reject", (e) => {
+  const { source, rejectedInput, reason } = e.detail;
+  if (reason === "max-length") {
+    toastBody.textContent = "Maximum length reached for this country";
+  } else if (source === "paste") {
+    toastBody.textContent = "Stripped invalid characters from pasted text";
+  } else {
+    toastBody.textContent = `Character not allowed: "${rejectedInput}"`;
+  }
+  toast.show();
+});
+```
+

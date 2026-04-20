@@ -37,7 +37,7 @@ Default: `null`
 
 When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant iso2 code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can do something like `iti.promise.then(...)` to know when initialisation requests like this have completed.
 
-Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service:  
+Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup>:  
 ```js
 intlTelInput(input, {
   initialCountry: "auto",
@@ -50,6 +50,9 @@ intlTelInput(input, {
 });
 ```
 _Note that the `failure` callback must be called in the event of an error, hence the use of `catch()` in this example. Tip: store the result in a cookie to avoid repeat lookups!_
+
+> [!NOTE]  
+> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its daily/monthly quota is reached. For production, you should either sign up for a paid plan, swap in any other IP-lookup provider, or roll your own solution — the plugin just cares that you eventually call `success(iso2Code)` or `failure()`.
 
 ###### initialCountry
 Type: `String`  

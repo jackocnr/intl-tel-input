@@ -93,6 +93,28 @@ if (errorCode === validationError.TOO_SHORT) {
 }
 ```
 
+#### Deriving a user-facing error message
+
+Several of the [Example pages](/examples) show a `yourCodeToDeriveErrorMessage(value, errorCode)` call — turning the error code into a message is left to you because the wording (and translations) belong to your app. Here is a reasonable starting point which maps the main error codes to a short message:
+
+```js
+const getErrorMessage = (number, errorCode) => {
+  if (!number) {
+    return "Please enter a number";
+  }
+  const genericError = "Invalid number";
+  const { validationError } = intlTelInput.utils;
+  const errorMap = {
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
+    [validationError.TOO_SHORT]: "Too short",
+    [validationError.TOO_LONG]: "Too long",
+    [validationError.INVALID_LENGTH]: genericError,
+  };
+  return errorMap[errorCode] || genericError;
+};
+```
+
+
 ### isValidNumber
 
 (Note: only returns `true` for valid **mobile numbers** by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  

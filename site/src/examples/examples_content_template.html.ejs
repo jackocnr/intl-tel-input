@@ -31,6 +31,9 @@
 
 <div class="section">
   <h2>JavaScript</h2>
+  <% if (typeof notesHtml !== 'undefined' && notesHtml) { %>
+    <%= notesHtml %>
+  <% } %>
   <pre><code class="language-javascript"><%- display_code %></code></pre>
 </div>
 

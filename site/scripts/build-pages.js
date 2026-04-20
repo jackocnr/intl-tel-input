@@ -22,6 +22,10 @@ import {
   renderPlaygroundPresetsHomepage,
   renderPlaygroundPresetsPlayground,
 } from "../src/shared/playground_presets.js";
+import {
+  renderNotesHtml,
+  renderPlaygroundNotesHtml,
+} from "../src/shared/notes.js";
 
 // Always run from the site/ directory so all relative paths in templates and
 // data functions resolve correctly (templates use paths like "src/...",
@@ -154,6 +158,11 @@ tasks.push(
   ),
 );
 
+// Shared "Notes" callouts: each example page opts in via `content.notes`
+// (array of keys), and the Playground renders the same set via a placeholder
+// in playground_content.html. The note copy itself lives in
+// src/shared/notes.js so both pipelines stay in sync.
+
 // 3. Static "JS template" tasks — used as inputs to esbuild / vite.
 //    Defined here so they can be invoked individually via --task=NAME from
 //    npm scripts that need them before bundling (build:esbuild, build:vue,
@@ -167,6 +176,7 @@ const exampleDefinitions = [
     content: {
       markupName: "simple_input",
       includeItiScript: true,
+      notes: ["strictMode", "geoIpLookup"],
     },
   },
   {
@@ -177,6 +187,7 @@ const exampleDefinitions = [
     content: {
       markupName: "simple_input",
       isRtl: true,
+      notes: ["strictMode"],
     },
     layoutExtra: { isRtl: true },
   },
@@ -188,6 +199,7 @@ const exampleDefinitions = [
       demo_note: "<p>Enter a US number:</p>",
       markupName: "validation",
       includeItiScript: true,
+      notes: ["strictMode", "deriveErrorMessage"],
     },
     pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
@@ -201,6 +213,7 @@ const exampleDefinitions = [
       markupName: "validation",
       includeItiScript: true,
       displayCode: "src/examples/js/validation_display_code.js",
+      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
       extraData: () => ({
         demo_note:
           "<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
@@ -218,6 +231,7 @@ const exampleDefinitions = [
       markupName: "validation",
       includeItiScript: true,
       displayCode: "src/examples/js/validation_display_code.js",
+      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
       extraData: () => ({
         demo_note:
           "<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
@@ -234,6 +248,7 @@ const exampleDefinitions = [
     content: {
       includeItiScript: true,
       markupName: "validation",
+      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
   {
@@ -244,6 +259,7 @@ const exampleDefinitions = [
     js: { destDir: "tmp" },
     content: {
       includeItiScript: true,
+      notes: ["strictMode", "geoIpLookup"],
     },
     pageExtra: {
       stylesheet_after_website_css: "/examples/css/multiple_instances.css",
@@ -255,6 +271,7 @@ const exampleDefinitions = [
     metaDesc: "Automatically format an existing number during initialisation.",
     content: {
       includeItiScript: true,
+      notes: ["strictMode"],
     },
   },
   {
@@ -265,6 +282,7 @@ const exampleDefinitions = [
     content: {
       markupName: "simple_input",
       includeItiScript: true,
+      notes: ["strictMode", "geoIpLookup"],
     },
     pageExtra: { iti_styles: "largeFlags" },
   },
@@ -281,6 +299,7 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "angular_component_bundle.js",
+      notes: ["strictMode", "geoIpLookup"],
     },
   },
   {
@@ -296,6 +315,7 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "react_component_bundle.js",
+      notes: ["strictMode", "geoIpLookup"],
     },
   },
   {
@@ -311,6 +331,7 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "vue_component_bundle.js",
+      notes: ["strictMode", "geoIpLookup"],
     },
   },
   {
@@ -326,6 +347,7 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "svelte_component_bundle.js",
+      notes: ["strictMode", "geoIpLookup"],
     },
   },
 ];
@@ -408,6 +430,9 @@ for (const def of exampleDefinitions) {
       ...(content.demo_note ? { demo_note: content.demo_note } : {}),
       ...(content.hideMarkupSection ? { hideMarkupSection: true } : {}),
       ...(content.isRtl ? { isRtl: true } : {}),
+      ...(content.notes && content.notes.length
+        ? { notesHtml: renderNotesHtml(content.notes) }
+        : {}),
       ...(content.extraData ? content.extraData() : {}),
       common_body_end: readCommonBodyEndScript(),
       ...(content.includeItiScript ? { iti_script: readItiScript() } : {}),
@@ -537,7 +562,11 @@ tasks.push({
     layoutClass: "iti-layout-no-sidebars iti-layout--playground",
     content: fs
       .readFileSync("src/playground/playground_content.html", "utf8")
-      .replace("{{PLAYGROUND_PRESETS}}", renderPlaygroundPresetsPlayground()),
+      .replace("{{PLAYGROUND_PRESETS}}", renderPlaygroundPresetsPlayground())
+      .replace(
+        "{{PLAYGROUND_NOTES}}",
+        renderPlaygroundNotesHtml(["strictMode", "geoIpLookup"]),
+      ),
     pageType: "playground",
     name: "playground",
     docsDropdownPages,

@@ -499,6 +499,28 @@ function maybeShowHint(config: any) {
   }, 5000);
 }
 
+const notesContainer = document.getElementById("playgroundNotes");
+function updateNotesVisibility(state) {
+  if (!notesContainer) {
+    return;
+  }
+  const noteKeys = ["strictMode", "geoIpLookup"];
+  let anyVisible = false;
+  noteKeys.forEach((key) => {
+    const el = notesContainer.querySelector(`[data-note-for="${key}"]`);
+    if (!el) {
+      return;
+    }
+    const isActive = Boolean(state[key]);
+    if (isActive) {
+      anyVisible = true;
+    }
+    el.toggleAttribute("hidden", !isActive);
+  });
+  notesContainer.toggleAttribute("hidden", !anyVisible);
+}
+updateNotesVisibility(initialState);
+
 let reinitTimer: number | null = null;
 function scheduleReinit() {
   if (reinitTimer) {
@@ -518,6 +540,7 @@ function scheduleReinit() {
       defaultState,
       specialOptionKeys,
     });
+    updateNotesVisibility(state);
     initItiWithState(state).then(() => {
       if (pendingHintChecks.size > 0) {
         for (const config of HINT_CONFIGS) {
@@ -586,6 +609,7 @@ function resetOptionGroupToDefaults(groupKeys) {
     defaultState,
     specialOptionKeys,
   });
+  updateNotesVisibility(state);
   void initItiWithState(state);
   updateUrlFromState(state, {
     optionMeta,
@@ -629,6 +653,7 @@ function resetAllToDefaults() {
     defaultState,
     specialOptionKeys,
   });
+  updateNotesVisibility(state);
   void initItiWithState(state);
   updateUrlFromState(state, {
     optionMeta,
@@ -658,6 +683,7 @@ if (resetAttrsButton) {
       defaultState,
       specialOptionKeys,
     });
+    updateNotesVisibility(state);
     void initItiWithState(state);
     updateUrlFromState(state, {
       optionMeta,
