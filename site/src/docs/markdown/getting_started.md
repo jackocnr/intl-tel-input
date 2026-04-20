@@ -35,25 +35,11 @@ This page is for getting started with the JavaScript plugin. For the framework c
 npm install intl-tel-input
 ```
 
-2. Import the CSS
-
-```js
-import "intl-tel-input/styles";
-```
-
-3. Set the path to flags.webp in your CSS, by overriding the CSS variables
-
-```css
-.iti {
-  --iti-path-flags-1x: url("path/to/flags.webp");
-  --iti-path-flags-2x: url("path/to/flags@2x.webp");
-}
-```
-
-4. Import the JS and initialise the plugin on your input element
+2. Import the JS and CSS, then initialise the plugin on your input element
 
 ```js
 import intlTelInput from "intl-tel-input";
+import "intl-tel-input/styles";
 
 const input = document.querySelector("#phone");
 intlTelInput(input, {
@@ -61,7 +47,7 @@ intlTelInput(input, {
 });
 ```
 
-Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utilities script](/docs/utils) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
+Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utils script](/docs/utils) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
 
 ### Not using a bundler
 
@@ -72,15 +58,7 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [u
   <link rel="stylesheet" href="path/to/intlTelInput.css">
   ```
 
-3. Set the path to flags.webp in your CSS, by overriding the CSS variables
-  ```css
-  .iti {
-    --iti-path-flags-1x: url('path/to/flags.webp');
-    --iti-path-flags-2x: url('path/to/flags@2x.webp');
-  }
-  ```
-
-4. Add the plugin script and initialise it on your input element
+3. Add the plugin script and initialise it on your input element
   ```html
   <script src="path/to/intlTelInput.js"></script>
   <script>
