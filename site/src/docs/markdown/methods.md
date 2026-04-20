@@ -206,7 +206,7 @@ iti.isValidNumber(); // etc
 
 ### attachUtils
 
-An alternative to the [`loadUtils`](/docs/options#loadutils) option, this method lets you manually load the utils.js script on demand, to enable formatting/validation etc. See [Loading The Utilities Script](/docs/utils#loading-the-utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `attachUtils().then(...)` to know when it's finished.
+An alternative to the [`loadUtils`](/docs/options#loadutils) option, which loads the utils.js script at plugin initialisation time, this method allows you to load the utils at your time of choosing. See [Loading The Utilities Script](/docs/utils#loading-the-utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `attachUtils().then(...)` to know when it's finished.
 ```js
 const loadUtils = () => import("/dist/js/utils.js");
 intlTelInput.attachUtils(loadUtils);
