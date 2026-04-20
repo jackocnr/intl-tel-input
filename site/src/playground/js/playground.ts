@@ -360,8 +360,19 @@ const HINT_CONFIGS = [
   // Placeholder Options
   {
     optionKey: "autoPlaceholder",
-    message: "Tip: set an initialCountry to see the placeholder.",
-    shouldShow: () => !itiController.iti?.getSelectedCountryData(),
+    message: () => {
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: set an initialCountry to see the placeholder.";
+      }
+      return "Tip: \"polite\" only differs from \"aggressive\" when the input has a placeholder attribute — set one below to see the effect.";
+    },
+    shouldShow: () => {
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return true;
+      }
+      const state = getCombinedStateFromControls();
+      return state.autoPlaceholder === "polite" && !state.placeholder;
+    },
     alsoShowOnToggleOff: true,
   },
   {
@@ -482,10 +493,15 @@ function maybeShowHint(config: any) {
     window.clearTimeout(hintTimers[optionKey]!);
   }
 
+  const messageText = typeof message === "function" ? message() : message;
+  if (!messageText) {
+    return;
+  }
+
   const hint = document.createElement("span");
   hint.className = "iti-playground-hint form-text";
   hint.setAttribute("data-hint-option", optionKey);
-  hint.textContent = message;
+  hint.textContent = messageText;
 
   const controlWrapper = control.closest(".iti-playground-control");
   if (!controlWrapper) {

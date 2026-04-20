@@ -336,7 +336,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
   return wrapper;
 }
 
-function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: string, groupId: string, description: string, { iso2ModalId = null }: { iso2ModalId?: string | null } = {}) {
+function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: string, groupId: string, description: string, { iso2ModalId = null, icon = null }: { iso2ModalId?: string | null; icon?: string | null } = {}) {
   const slugify = (text: string) => String(text || "")
     .trim()
     .toLowerCase()
@@ -351,6 +351,13 @@ function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: str
   if (titleEl) {
     titleEl.id = slug;
     titleEl.textContent = "";
+
+    if (icon) {
+      const iconEl = document.createElement("i");
+      iconEl.className = `bi ${icon} text-muted me-2`;
+      iconEl.setAttribute("aria-hidden", "true");
+      titleEl.appendChild(iconEl);
+    }
 
     const link = document.createElement("a");
     link.href = `#${slug}`;
@@ -407,7 +414,7 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
   const allKeys = Object.keys(metaMap);
   const usedKeys = new Set();
 
-  groups.forEach(({ title, description, keys, iso2ModalId }: any, index: number) => {
+  groups.forEach(({ title, description, keys, iso2ModalId, icon }: any, index: number) => {
     const groupKeys = (Array.isArray(keys) ? keys : []).filter((k: string) => metaMap[k]);
     if (groupKeys.length === 0) {
       return;
@@ -415,7 +422,7 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
 
     const groupId = `group_${index}`;
     resetGroupKeys.set(groupId, groupKeys);
-    const { group, stack } = createControlGroup(optionGroupTemplate, title, groupId, description, { iso2ModalId });
+    const { group, stack } = createControlGroup(optionGroupTemplate, title, groupId, description, { iso2ModalId, icon });
 
     groupKeys.forEach((key: string) => {
       usedKeys.add(key);
@@ -434,6 +441,7 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
       "Other",
       groupId,
       "Additional options that don’t fit into the groups above.",
+      { icon: "bi-question-circle" },
     );
     remainingKeys.forEach((key: string) => {
       stack.appendChild(buildControlRow(key, metaMap[key], { idPrefix, dataAttr, infoIconTemplate }));
