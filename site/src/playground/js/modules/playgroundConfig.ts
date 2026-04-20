@@ -66,7 +66,7 @@ export const OPTION_GROUPS = [
   },
   {
     title: "Miscellaneous Options",
-    description: "Extra features like hidden inputs and loading the utilities module.",
+    description: "Extra features like hidden inputs and loading the utils module.",
     keys: ["hiddenInput", "loadUtils"],
   },
 ];

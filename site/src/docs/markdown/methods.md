@@ -31,7 +31,7 @@ const iti = intlTelInput(input, options);
 ```
 
 > [!IMPORTANT]
-> Methods that require the [utils script](/docs/utils#loading-the-utilities-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always await `iti.promise` first:
+> Methods that require the [utils script](/docs/utils#loading-the-utils-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always await `iti.promise` first:
 >
 > ```js
 > const iti = intlTelInput(input, { loadUtils: () => import("intl-tel-input/utils") });
@@ -48,7 +48,7 @@ iti.destroy();
 
 ### getExtension
 
-Get the extension from the current number. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script).
+Get the extension from the current number. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
 ```js
 const extension = iti.getExtension();
 ```
@@ -56,7 +56,7 @@ Returns a string, e.g. if the input value was `"(702) 555-5555 ext. 1234"`, this
 
 ### getNumber
 
-Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum [`intlTelInput.utils.numberFormat`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). _Note that even if [`nationalMode`](/docs/options#nationalmode) is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
+Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum [`intlTelInput.utils.numberFormat`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note that even if [`nationalMode`](/docs/options#nationalmode) is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
 ```js
 const number = iti.getNumber();
 // or
@@ -66,7 +66,7 @@ Returns a string e.g. `"+17024181234"`
 
 ### getNumberType
 
-Get the type (fixed-line/mobile/toll-free, etc) of the current number. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script).  
+Get the type (fixed-line/mobile/toll-free, etc) of the current number. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).  
 ```js
 const numberType = iti.getNumberType();
 ```
@@ -96,7 +96,7 @@ Returns `null` if no country is currently selected (e.g. the empty/globe state).
 
 ### getValidationError
 
-Get more information about a validation error. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script).  
+Get more information about a validation error. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).  
 ```js
 const errorCode = iti.getValidationError();
 ```
@@ -133,7 +133,7 @@ const getErrorMessage = (number, errorCode) => {
 ### isValidNumber
 
 (Note: only returns `true` for valid **mobile numbers** by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
-Check if the current number is valid based on its length - [see example](/examples/validation-practical), which should be sufficient for most use cases. See [`isValidNumberPrecise`](/docs/methods#isvalidnumberprecise) (advanced) for more precise validation, but the advantage of [`isValidNumber`](/docs/methods#isvalidnumber) is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). _Note: previously named `isPossibleNumber`._  
+Check if the current number is valid based on its length - [see example](/examples/validation-practical), which should be sufficient for most use cases. See [`isValidNumberPrecise`](/docs/methods#isvalidnumberprecise) (advanced) for more precise validation, but the advantage of [`isValidNumber`](/docs/methods#isvalidnumber) is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note: previously named `isPossibleNumber`._  
 ```js
 const isValid = iti.isValidNumber();
 ```
@@ -143,7 +143,7 @@ Returns: `true`/`false`
 
 ⚠️ **ADVANCED**  
 (Note: only returns `true` for valid **mobile numbers** by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
-Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](/examples/validation-precise). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else **you will start rejecting valid numbers**. For a simpler and more future-proof form of validation, see [`isValidNumber`](/docs/methods#isvalidnumber) above. If validation fails, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script).  
+Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](/examples/validation-precise). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else **you will start rejecting valid numbers**. For a simpler and more future-proof form of validation, see [`isValidNumber`](/docs/methods#isvalidnumber) above. If validation fails, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).  
 ```js
 const isValid = iti.isValidNumberPrecise();
 ```
@@ -206,7 +206,7 @@ iti.isValidNumber(); // etc
 
 ### attachUtils
 
-An alternative to the [`loadUtils`](/docs/options#loadutils) option, which loads the utils.js script at plugin initialisation time, this method allows you to load the utils at your time of choosing. See [Loading The Utilities Script](/docs/utils#loading-the-utilities-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `attachUtils().then(...)` to know when it's finished.
+An alternative to the [`loadUtils`](/docs/options#loadutils) option, which loads the utils.js script at plugin initialisation time, this method allows you to load the utils at your time of choosing. See [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `attachUtils().then(...)` to know when it's finished.
 ```js
 const loadUtils = () => import("/dist/js/utils.js");
 intlTelInput.attachUtils(loadUtils);

@@ -147,7 +147,7 @@ Configure the automatically generated placeholder numbers.
 Type: `String`  
 Default: `"polite"`  
 
-Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the [`placeholderNumberType`](#placeholdernumbertype) option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#placeholder-options).
+Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the [`placeholderNumberType`](#placeholdernumbertype) option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#placeholder-options).
 
 ###### customPlaceholder
 Type: `Function`  
@@ -178,13 +178,13 @@ How numbers are formatted as you type and on initial display.
 Type: `Boolean`  
 Default: `true`  
 
-Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this disabled in the [Playground](/playground?formatAsYouType=false#formatting-options). _Note: previously named `autoFormat`._
+Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). Try the plugin with this disabled in the [Playground](/playground?formatAsYouType=false#formatting-options). _Note: previously named `autoFormat`._
 
 ###### formatOnDisplay
 Type: `Boolean`  
 Default: `true`  
 
-Format the input value (according to the [`nationalMode`](#nationalmode) option) during initialisation, when a new country is selected, and when calling [`setNumber`](/docs/methods#setnumber) or [`setCountry`](/docs/methods#setcountry). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123#formatting-options).
+Format the input value (according to the [`nationalMode`](#nationalmode) option) during initialisation, when a new country is selected, and when calling [`setNumber`](/docs/methods#setnumber) or [`setCountry`](/docs/methods#setcountry). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123#formatting-options).
 
 ###### nationalMode
 Type: `Boolean`  
@@ -196,7 +196,7 @@ Format numbers in the national format, rather than the international format. Thi
 Type: `Boolean`  
 Default: `false`  
 
-As the user types (or pastes) in the input, reject any irrelevant characters<sup>*</sup>. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground?strictMode=true&initialCountry=us#formatting-options).
+As the user types (or pastes) in the input, reject any irrelevant characters<sup>*</sup>. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground?strictMode=true&initialCountry=us#formatting-options).
 
 <sup>*</sup> When user input is rejected or modified, the plugin fires a [`strict:reject`](/docs/events#strict-reject) event — listen for this to give the user feedback (e.g. a toast) so the rejection isn't silent. For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
 
@@ -292,7 +292,7 @@ intlTelInput(input, {
 
 ## Miscellaneous options
 
-Extra features like hidden inputs and loading the utilities module.
+Extra features like hidden inputs and loading the utils module.
 
 ###### hiddenInput
 Type: `Function`  
@@ -301,7 +301,7 @@ Default: `null`
 Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. It accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and iso2 code, respectively. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`nationalMode`](#nationalmode) is enabled. [See example](/examples/hidden-input).
 
 > [!NOTE]
-> This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses [`getNumber`](/docs/methods#getnumber) internally, firstly it requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script), and secondly, it expects a valid number and so will only work correctly if you have used [`isValidNumber`](/docs/methods#isvalidnumber) to validate the number before allowing the form submit to go through.
+> This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses [`getNumber`](/docs/methods#getnumber) internally, firstly it requires the [utils script to be loaded](/docs/utils#loading-the-utils-script), and secondly, it expects a valid number and so will only work correctly if you have used [`isValidNumber`](/docs/methods#isvalidnumber) to validate the number before allowing the form submit to go through.
 
 ```js
 intlTelInput(input, {
@@ -323,7 +323,7 @@ This will generate the following (hidden) elements, which will be automatically 
 Type: `() => Promise<module>`  
 Default: `null`  
 
-This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utilities Script](/docs/utils#loading-the-utilities-script) for more options.
+This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more options.
 
 The [`loadUtils`](#loadutils) option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (examples below): (A) from a CDN, (B) from your own hosted version of utils.js, or (C) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package. Play with this option in the [Playground](/playground). _Note: this replaces the `utilsScript` option (now removed)._ 
 
@@ -344,6 +344,6 @@ intlTelInput(htmlInputElement, {
 });
 ```
 
-The module is only loaded when you initialise the plugin, and additionally, only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utilities Script](/docs/utils) for more information.
+The module is only loaded when you initialise the plugin, and additionally, only when the page has finished loading (on the window load event) to prevent blocking (the script is ~260KB). When instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can do something like `iti.promise.then(callback)` to know when initialisation requests like this have finished. See [Utils Script](/docs/utils) for more information.
 
 If you want more control over when this file is lazy-loaded, you can manually invoke the [`attachUtils`](/docs/methods#attachutils) static method whenever you like, instead of using the [`loadUtils`](/docs/options#loadutils) initialisation option.

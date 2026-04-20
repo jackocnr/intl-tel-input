@@ -1535,7 +1535,7 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
     } else {
       return Promise.reject(
         new TypeError(
-          `The argument passed to attachUtils must be a function that returns a promise for the utilities module, not ${typeof source}`,
+          `The argument passed to attachUtils must be a function that returns a promise for the utils module, not ${typeof source}`,
         ),
       );
     }

@@ -73,7 +73,7 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [u
 
 We recommend three things:
 
-- **[Load the utils.js module](/docs/utils#loading-the-utilities-script)** to enable formatting and validation.
+- **[Load the utils.js module](/docs/utils#loading-the-utils-script)** to enable formatting and validation.
 - **Store numbers in full international (E.164) format**, e.g. `"+17024181234"`. The dial code is embedded, so you don't need to store the country separately*.
 - **Pass the stored E.164 number as the input value on initialisation.** The plugin will automatically set the country* and format the number according to your options (e.g. with [`nationalMode`](/docs/options#nationalmode) it will display the number in national format, stripping the dial code and adding the national prefix if required).
 

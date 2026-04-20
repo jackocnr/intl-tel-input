@@ -671,7 +671,7 @@ const docsDefinitions = [
   },
   {
     key: "utils",
-    title: "Utilities script",
+    title: "Utils script",
     metaDesc: "Learn about the utils script, what it's for and how to load it.",
   },
   {

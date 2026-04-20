@@ -5,7 +5,7 @@ import type { NUMBER_TYPE_SET, PLACEHOLDER_MODES } from "../constants";
 // Loader for the utils module
 export type UtilsLoader = () => Promise<{ default: ItiUtils }>;
 
-// Library utilities (loaded lazily)
+// Library utils (loaded lazily)
 export type ItiUtils = {
   formatNumber(
     number: string,

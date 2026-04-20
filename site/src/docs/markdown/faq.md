@@ -17,12 +17,12 @@
 
 It depends on which features you want.
 
-The utilities script enables things like:
+The utils script enables things like:
 
 - Formatting and validation helpers
 - Automatic country-specific placeholders
 
-See [Utilities script](/docs/utils) for how to load it and what it’s used for.
+See [Utils script](/docs/utils) for how to load it and what it’s used for.
 
 
 ## What format should I store phone numbers in?
@@ -69,10 +69,10 @@ When `strictMode` is enabled, the input will reject characters that aren’t val
 
 ## How do I validate a number?
 
-If you’re using the utilities script, you can validate numbers and show useful error messages.
+If you’re using the utils script, you can validate numbers and show useful error messages.
 
 - See the [Validation example](/examples/validation-practical)
-- See the [Utilities script](/docs/utils)
+- See the [Utils script](/docs/utils)
 
 
 ## How do I show the dial code next to the selected flag?

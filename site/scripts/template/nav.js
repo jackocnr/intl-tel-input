@@ -37,7 +37,7 @@ const docsDropdownPages = [
   {
     name: "utils",
     href: "/docs/utils",
-    label: "Utilities script",
+    label: "Utils script",
   },
   {
     name: "theming",
