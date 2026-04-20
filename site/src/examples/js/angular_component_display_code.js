@@ -1,20 +1,7 @@
 import { Component } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import IntlTelInput, { intlTelInput } from "intl-tel-input/angular";
+import IntlTelInput from "intl-tel-input/angular";
 import "intl-tel-input/styles";
-
-const getErrorMessage = (errorCode) => {
-  const genericError = "Invalid number";
-  if (errorCode === null) return genericError;
-  const { validationError } = intlTelInput.utils;
-  const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
-    [validationError.TOO_SHORT]: "Too short",
-    [validationError.TOO_LONG]: "Too long",
-    [validationError.INVALID_LENGTH]: genericError,
-  };
-  return errorMap[errorCode] || genericError;
-};
 
 @Component({
   selector: "#app",
@@ -60,7 +47,7 @@ export class AppComponent {
   get invalidMsg() {
     if (!this.showValidation || this.phone?.valid) return null;
     if (!this.phone?.value) return "Please enter a number";
-    return getErrorMessage(this.phone.errors?.["invalidPhone"] ?? null);
+    return yourCodeToDeriveErrorMessage(this.phone.errors?.["invalidPhone"] ?? null);
   }
 
   handleSubmit() {

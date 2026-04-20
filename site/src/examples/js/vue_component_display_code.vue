@@ -1,20 +1,7 @@
 <script setup>
   import { computed, ref } from "vue";
-  import IntlTelInput, { intlTelInput } from "intl-tel-input/vue";
+  import IntlTelInput from "intl-tel-input/vue";
   import "intl-tel-input/styles";
-
-  const getErrorMessage = (number, errorCode) => {
-    if (!number) return "Please enter a number";
-    const genericError = "Invalid number";
-    const { validationError } = intlTelInput.utils;
-    const errorMap = {
-      [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
-      [validationError.TOO_SHORT]: "Too short",
-      [validationError.TOO_LONG]: "Too long",
-      [validationError.INVALID_LENGTH]: genericError,
-    };
-    return errorMap[errorCode] || genericError;
-  };
 
   const geoIpLookup = (success, failure) => {
     fetch("https://ipapi.co/json")
@@ -30,7 +17,7 @@
 
   const invalidMsg = computed(() => {
     if (!showValidation.value || isValid.value) return null;
-    return getErrorMessage(number.value, errorCode.value);
+    return yourCodeToDeriveErrorMessage(number.value, errorCode.value);
   });
 
   const enableValidation = () => {

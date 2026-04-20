@@ -299,7 +299,7 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "angular_component_bundle.js",
-      notes: ["strictMode", "geoIpLookup"],
+      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
   {
@@ -315,7 +315,7 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "react_component_bundle.js",
-      notes: ["strictMode", "geoIpLookup"],
+      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
   {
@@ -331,7 +331,7 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "vue_component_bundle.js",
-      notes: ["strictMode", "geoIpLookup"],
+      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
   {
@@ -347,7 +347,7 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "svelte_component_bundle.js",
-      notes: ["strictMode", "geoIpLookup"],
+      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
 ];

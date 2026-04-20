@@ -52,7 +52,7 @@ intlTelInput(input, {
 _Note that the `failure` callback must be called in the event of an error, hence the use of `catch()` in this example. Tip: store the result in a cookie to avoid repeat lookups!_
 
 > [!NOTE]  
-> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its daily/monthly quota is reached. For production, you should either sign up for a paid plan, swap in any other IP-lookup provider, or roll your own solution — the plugin just cares that you eventually call `success(iso2Code)` or `failure()`.
+> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its quota is reached. For production, you should either sign up for a paid plan, swap in another IP-lookup provider, or roll your own solution — the plugin just cares that you eventually call `success(iso2Code)` or `failure()`.
 
 ###### initialCountry
 Type: `String`  
