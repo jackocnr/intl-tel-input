@@ -32,7 +32,7 @@ export const rawCountryData = [
     "358",
     1,
     ["18", "4"], // (4 is a mobile range shared with FI)
-    // NOTE: https://en.wikipedia.org/wiki/Telephone%20numbers%20in%20%C3%85land says some 4XXX ranges (e.g. 4570) are specific to AX, but LPN doesn't respect this (https://libphonenumber.appspot.com/phonenumberparser?number=%2B3584570123456 says region=FI) so we won't either. We keep the 4 area code range here so that if the user selects AX and types this kind of number, we wont change the flag to FI. Whereas if they type +3580 (etc) then we will.
+    // NOTE: https://en.wikipedia.org/wiki/Telephone%20numbers%20in%20%C3%85land says some 4XXX ranges (e.g. 4570) are specific to AX, but LPN doesn't respect this (https://libphonenumber.appspot.com/phonenumberparser?number=%2B3584570123456 says region=FI) so we won't either. Also it's too much of a maintenance burden to keep track of. Keep the 4 area code range here so that if the user selects AX and types this kind of number, we wont change the flag to FI. Whereas if they type a FI-only range then we will.
     "0",
   ],
   [
