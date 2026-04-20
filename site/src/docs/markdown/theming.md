@@ -5,10 +5,10 @@ There are lots of CSS variables available for theming. See [intlTelInput.scss](h
 Dark mode example (with screenshot below):
 ```css
 @media (prefers-color-scheme: dark) {
-  .iti {
-    --iti-border-color: #5b5b5b;
-    --iti-dropdown-bg: #0d1117;
-    --iti-icon-color: #aaaaaa;
+  :root {
+    --iti-border-color: #495057;
+    --iti-dropdown-bg: #212529;
+    --iti-icon-color: #dee2e6;
     --iti-hover-color: #30363d;
   }
 }
@@ -19,14 +19,14 @@ NOTE: this assumes you already have your own dark mode styling in place for gene
 ```css
 @media (prefers-color-scheme: dark) {
   body, input {
-    color: white;
-    background-color: #0d1117;
+    color: #dee2e6;
+    background-color: #212529;
   }
   input {
-    border-color: #5b5b5b;
+    border-color: #495057;
   }
   input::placeholder {
-    color: #8d96a0;
+    color: #5a5a5a;
   }
 }
 ```
