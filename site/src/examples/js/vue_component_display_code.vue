@@ -28,7 +28,7 @@
 <template>
   <form @submit.prevent="enableValidation">
     <IntlTelInput
-      @changeNumber="handleChangeNumber"
+      @changeNumber="number = $event"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
       initialCountry="auto"

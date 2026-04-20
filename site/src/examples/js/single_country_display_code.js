@@ -21,7 +21,7 @@ const updateUI = () => {
   let invalidMsg = "";
   if (!iti.isValidNumber()) {
     const errorCode = iti.getValidationError();
-    invalidMsg = yourCodeToDeriveErrorMessage(input.value(), errorCode);
+    invalidMsg = yourCodeToDeriveErrorMessage(input.value, errorCode);
   }
   errorMsg.textContent = invalidMsg;
 };
