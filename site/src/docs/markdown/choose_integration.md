@@ -19,8 +19,17 @@ We provide native wrappers for the four most popular frontend frameworks. These 
 
 ## FAQ
 
-**Can I use the JS Plugin inside a React/Vue app?**  
-Yes, but it is not recommended. You would need to manually handle `useEffect` or `onMounted` hooks to prevent memory leaks and ensure the plugin re-initialises correctly when the component updates. Our native components do this for you out of the box.
+**Can I use the JS Plugin inside a React/Vue/Angular/Svelte app?**  
+Technically yes — but our native framework components are the recommended path, and do the heavy lifting for you so you can drop a phone input into your app in just a few lines of code:
+
+* **Lifecycle handled** — initialisation on mount and `destroy()` on unmount, so you don't leak instances or listeners.
+* **Two-way value binding** — pass the number in as a prop and it stays in sync with your app's state, with internal guards to avoid cursor jumps while typing.
+* **Reactive `disabled` and `readonly`** — toggle them like any other prop and the component calls the right plugin methods for you.
+* **Typed change callbacks** — `changeNumber`, `changeCountry`, `changeValidity`, and `changeErrorCode` exposed as idiomatic, fully-typed handlers for each framework.
+* **Utils-aware internals** — the component awaits `iti.promise` before seeding or updating its own state, so initial values and prop-driven updates work even when utils are loaded asynchronously.
+* **Escape hatch** — grab the underlying `Iti` instance via a ref for anything the component doesn't expose directly.
+
+Pick your framework in the list above to get started.
 
 **Do the components include all the plugin features?**  
 Yes. All [initialisation options](/docs/options) and [methods](/docs/methods) are available through the component props and refs.
