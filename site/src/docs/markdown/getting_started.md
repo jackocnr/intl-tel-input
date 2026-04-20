@@ -83,5 +83,5 @@ If you know the user's country, set [`initialCountry`](/docs/options#initialcoun
 
 If you know the user's language, you can translate the country names and UI strings — [see example](/playground?countryNameLocale=ru&i18n=ru#translation-options).
 
-_*Except for some small satellite territories, which share number ranges with the main country (search data.ts for "shared" for examples). When displaying numbers from those shared ranges, we default to selecting the main country._
+_*Except for some small satellite territories, which share number ranges with the main country. For example, Åland Islands shares the dial code +358 (and some area code ranges) with Finland, so a number like +358 XX XXX XXXX could belong to either — when initialising the plugin with a number like this, we default to selecting the main country (Finland). In order to ensure the user's original selected flag is re-displayed, you'd need to store the country iso2 code alongside the number, and use it for the `initialCountry` during initialisation. (Search [`data.ts`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.ts) for "shared" for more examples.)_
 
