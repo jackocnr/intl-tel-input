@@ -489,6 +489,15 @@ tasks.push({
   }),
 });
 
+// homepage_js — templates cacheBust() tokens in homepage.ts into tmp/ where
+// esbuild picks it up. Same pattern as the example *_js tasks.
+tasks.push({
+  name: "homepage_js",
+  src: "src/js/homepage.ts",
+  dest: "tmp/js/homepage.ts",
+  data: () => ({ cacheBust }),
+});
+
 // homepage
 tasks.push({
   name: "homepage_layout",

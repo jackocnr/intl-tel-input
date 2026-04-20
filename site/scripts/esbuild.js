@@ -94,9 +94,16 @@ build({
   outfile: "dist/js/playground.js",
 });
 
-// all JS files in /src/js
+// homepage — templated through tmp/ first so cacheBust() resolves
 build({
   ...sharedOptions,
-  entryPoints: ["src/js/**/*.ts"],
-  outdir: "dist/js",
+  entryPoints: ["tmp/js/homepage.ts"],
+  outfile: "dist/js/homepage.js",
+});
+
+// iti-live-results — no templating, built directly from src
+build({
+  ...sharedOptions,
+  entryPoints: ["src/js/iti-live-results.ts"],
+  outfile: "dist/js/iti-live-results.js",
 });

@@ -7,9 +7,6 @@ import markdownItAnchor from "markdown-it-anchor";
 const BUILD_DIR = "dist";
 const HASH_LENGTH = 12;
 
-const env = (process.argv.find((a) => a.startsWith("--env=")) || "--env=dev").slice(6);
-const isDevBuild = env === "dev" || env === "development";
-
 const hashCacheByPath = new Map();
 
 const toPosixPath = (p) => String(p || "").replace(/\\/g, "/");
@@ -255,20 +252,14 @@ const hashDirRecursive = (dirPath) => {
   }
 };
 
-// Take a URL path (e.g. "/intl-tel-input/js/utils.js"), resolve it to a file in the build directory, hash that file, and return the URL with a cache-busting query param (e.g. "/intl-tel-input/js/utils.js?v=abc123"). Skipped on dev builds (localhost doesn't benefit from cache busting).
+// Take a URL path (e.g. "/intl-tel-input/js/utils.js"), resolve it to a file in the build directory, hash that file, and return the URL with a cache-busting query param (e.g. "/intl-tel-input/js/utils.js?v=abc123").
 const cacheBust = (urlPath) => {
-  if (isDevBuild) {
-    return urlPath;
-  }
   const resolvedPath = resolveBuildPathFromUrl(urlPath);
   return `${urlPath}?v=${hashFile(resolvedPath)}`;
 };
 
-// Take a URL path to a directory (e.g. "/intl-tel-input/js/i18n"), resolve it to a directory in the build directory, hash all files within that directory recursively, and return the hash to use as a cache-busting query param (e.g. "abc123"). Skipped on dev builds.
+// Take a URL path to a directory (e.g. "/intl-tel-input/js/i18n"), resolve it to a directory in the build directory, hash all files within that directory recursively, and return the hash to use as a cache-busting query param (e.g. "abc123").
 const getDirHash = (urlDirPath) => {
-  if (isDevBuild) {
-    return "";
-  }
   const resolvedPath = resolveBuildPathFromUrl(urlDirPath);
   return hashDirRecursive(resolvedPath);
 };

@@ -11,7 +11,7 @@ window.intlTelInput(input, {
       .catch(() => failure());
   },
   // @ts-expect-error - resolved at runtime from a separate URL
-  loadUtils: () => import("/intl-tel-input/js/utils.js"),
+  loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
 });
 
 const toastEl = document.getElementById("strictRejectToast");
