@@ -23,6 +23,7 @@ import {
   renderPlaygroundPresetsPlayground,
 } from "../src/shared/playground_presets.js";
 import {
+  deriveNotesFromCode,
   renderNotesHtml,
   renderPlaygroundNotesHtml,
 } from "../src/shared/notes.js";
@@ -158,10 +159,10 @@ tasks.push(
   ),
 );
 
-// Shared "Notes" callouts: each example page opts in via `content.notes`
-// (array of keys), and the Playground renders the same set via a placeholder
-// in playground_content.html. The note copy itself lives in
-// src/shared/notes.js so both pipelines stay in sync.
+// Shared "Notes" callouts are auto-derived from each page's display code at
+// render time (see deriveNotesFromCode usage below), and the Playground
+// renders the same set via a placeholder in playground_content.html. The note
+// copy itself lives in src/shared/notes.js so both pipelines stay in sync.
 
 // 3. Static "JS template" tasks — used as inputs to esbuild / vite.
 //    Defined here so they can be invoked individually via --task=NAME from
@@ -176,7 +177,6 @@ const exampleDefinitions = [
     content: {
       markupName: "simple_input",
       includeItiScript: true,
-      notes: ["strictMode", "geoIpLookup"],
     },
   },
   {
@@ -187,7 +187,6 @@ const exampleDefinitions = [
     content: {
       markupName: "simple_input",
       isRtl: true,
-      notes: ["strictMode"],
     },
     layoutExtra: { isRtl: true },
   },
@@ -199,7 +198,6 @@ const exampleDefinitions = [
       demo_note: "<p>Enter a US number:</p>",
       markupName: "validation",
       includeItiScript: true,
-      notes: ["strictMode", "deriveErrorMessage"],
     },
     pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
@@ -213,7 +211,6 @@ const exampleDefinitions = [
       markupName: "validation",
       includeItiScript: true,
       displayCode: "src/examples/js/validation_display_code.js",
-      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
       extraData: () => ({
         demo_note:
           "<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
@@ -231,7 +228,6 @@ const exampleDefinitions = [
       markupName: "validation",
       includeItiScript: true,
       displayCode: "src/examples/js/validation_display_code.js",
-      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
       extraData: () => ({
         demo_note:
           "<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
@@ -248,7 +244,6 @@ const exampleDefinitions = [
     content: {
       includeItiScript: true,
       markupName: "validation",
-      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
   {
@@ -259,7 +254,6 @@ const exampleDefinitions = [
     js: { destDir: "tmp" },
     content: {
       includeItiScript: true,
-      notes: ["strictMode", "geoIpLookup"],
     },
     pageExtra: {
       stylesheet_after_website_css: "/examples/css/multiple_instances.css",
@@ -271,7 +265,6 @@ const exampleDefinitions = [
     metaDesc: "Automatically format an existing number during initialisation.",
     content: {
       includeItiScript: true,
-      notes: ["strictMode"],
     },
   },
   {
@@ -282,7 +275,6 @@ const exampleDefinitions = [
     content: {
       markupName: "simple_input",
       includeItiScript: true,
-      notes: ["strictMode", "geoIpLookup"],
     },
     pageExtra: { iti_styles: "largeFlags" },
   },
@@ -299,7 +291,6 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "angular_component_bundle.js",
-      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
   {
@@ -315,7 +306,6 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "react_component_bundle.js",
-      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
   {
@@ -331,7 +321,6 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "vue_component_bundle.js",
-      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
   {
@@ -347,7 +336,6 @@ const exampleDefinitions = [
       markupName: "component",
       hideMarkupSection: true,
       script: "svelte_component_bundle.js",
-      notes: ["strictMode", "geoIpLookup", "deriveErrorMessage"],
     },
   },
 ];
@@ -408,35 +396,35 @@ for (const def of exampleDefinitions) {
     name: `${key}_content`,
     src: "src/examples/examples_content_template.html.ejs",
     dest: contentDest,
-    data: () => ({
-      cacheBust,
-      content_title: title,
-      desc: fs.readFileSync(`src/examples/copy/${key}_desc.html`, "utf8"),
-      markup: fs.readFileSync(markupPath, "utf8"),
-      display_markup: fs.readFileSync(displayMarkupPath, "utf8"),
-      display_code: (() => {
-        let displayCodeContent = fs.readFileSync(displayCode, "utf8");
-        // hack so that the validation_precise example page shows the right
-        // validation method in the displayed code
-        if (key === "validation_precise") {
-          displayCodeContent = displayCodeContent.replace(
-            /\biti\.isValidNumber\(\)/g,
-            "iti.isValidNumberPrecise()",
-          );
-        }
-        return renderString(displayCodeContent, templateData);
-      })(),
-      script: scriptName,
-      ...(content.demo_note ? { demo_note: content.demo_note } : {}),
-      ...(content.hideMarkupSection ? { hideMarkupSection: true } : {}),
-      ...(content.isRtl ? { isRtl: true } : {}),
-      ...(content.notes && content.notes.length
-        ? { notesHtml: renderNotesHtml(content.notes) }
-        : {}),
-      ...(content.extraData ? content.extraData() : {}),
-      common_body_end: readCommonBodyEndScript(),
-      ...(content.includeItiScript ? { iti_script: readItiScript() } : {}),
-    }),
+    data: () => {
+      let displayCodeContent = fs.readFileSync(displayCode, "utf8");
+      // hack so that the validation_precise example page shows the right
+      // validation method in the displayed code
+      if (key === "validation_precise") {
+        displayCodeContent = displayCodeContent.replace(
+          /\biti\.isValidNumber\(\)/g,
+          "iti.isValidNumberPrecise()",
+        );
+      }
+      const renderedDisplayCode = renderString(displayCodeContent, templateData);
+      const notes = deriveNotesFromCode(renderedDisplayCode);
+      return {
+        cacheBust,
+        content_title: title,
+        desc: fs.readFileSync(`src/examples/copy/${key}_desc.html`, "utf8"),
+        markup: fs.readFileSync(markupPath, "utf8"),
+        display_markup: fs.readFileSync(displayMarkupPath, "utf8"),
+        display_code: renderedDisplayCode,
+        script: scriptName,
+        ...(content.demo_note ? { demo_note: content.demo_note } : {}),
+        ...(content.hideMarkupSection ? { hideMarkupSection: true } : {}),
+        ...(content.isRtl ? { isRtl: true } : {}),
+        ...(notes.length ? { notesHtml: renderNotesHtml(notes) } : {}),
+        ...(content.extraData ? content.extraData() : {}),
+        common_body_end: readCommonBodyEndScript(),
+        ...(content.includeItiScript ? { iti_script: readItiScript() } : {}),
+      };
+    },
   });
 
   // 5. Example layout (wraps content in src/layout_template.html.ejs).
