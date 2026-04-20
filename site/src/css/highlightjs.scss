@@ -1,0 +1,17 @@
+@use "sass:meta";
+
+/* Theme is driven by [data-bs-theme] instead of prefers-color-scheme for consistency */
+@include meta.load-css("vendor/highlight-github-light");
+
+[data-bs-theme="dark"] {
+  @include meta.load-css("vendor/highlight-github-dark");
+}
+
+/* Match GitHub's rendered code block background */
+.hljs {
+  background-color: #f6f8fa;
+
+  [data-bs-theme="dark"] & {
+    background-color: #151b23;
+  }
+}

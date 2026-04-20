@@ -29,7 +29,7 @@
     "fetch-stats": "node scripts/fetch-stats.js",
     "fetch-stats:prod": "node scripts/fetch-stats.js --env=prod",
     "copy": "node scripts/copy-assets.js",
-    "build:css:sass": "sass --no-source-map src/css/website.scss:dist/css/website.css src/css/large_flags_overrides.scss:dist/css/large_flags_overrides.css src/css/highlightjs_overrides.scss:dist/css/highlightjs_overrides.css src/css/playground.scss:dist/css/playground.css src/css/docs.scss:dist/css/docs.css src/css/homepage.scss:dist/css/homepage.css",
+    "build:css:sass": "sass --no-source-map src/css/website.scss:dist/css/website.css src/css/large_flags_overrides.scss:dist/css/large_flags_overrides.css src/css/highlightjs.scss:dist/css/highlightjs.css src/css/playground.scss:dist/css/playground.css src/css/docs.scss:dist/css/docs.css src/css/homepage.scss:dist/css/homepage.css",
     "build:css:cache-bust": "node scripts/build-pages.js --task=website_css,large_flags_overrides_css,homepage_css,docs_css,playground_css",
     "build:css:min": "cleancss -o dist/css/website.css dist/css/website.css && cleancss -o dist/css/playground.css dist/css/playground.css && cleancss -o dist/css/homepage.css dist/css/homepage.css && cleancss -o dist/css/docs.css dist/css/docs.css",
     "build:css": "npm run build:css:sass && npm run build:css:cache-bust && npm run build:css:min",
