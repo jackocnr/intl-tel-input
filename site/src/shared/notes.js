@@ -12,7 +12,10 @@ export const NOTE_BODIES = {
     '<code>yourCodeToDeriveErrorMessage</code> is up to you — see <a href="/docs/methods#deriving-a-user-facing-error-message">Deriving a user-facing error message</a> for a worked example.',
 };
 
-export const renderNoteAlert = (key, { dataKey = null, hidden = false } = {}) => {
+export const renderNoteAlert = (
+  key,
+  { dataKey = null, hidden = false } = {},
+) => {
   const body = NOTE_BODIES[key];
   if (!body) {
     throw new Error(`Unknown note key: ${key}`);
@@ -44,8 +47,12 @@ export const renderPlaygroundNotesHtml = (keys) =>
 // so notes stay in sync with the code automatically.
 export const deriveNotesFromCode = (code) => {
   const notes = [];
-  if (/\bstrictMode\b/.test(code)) notes.push("strictMode");
-  if (/\bgeoIpLookup\b/.test(code)) notes.push("geoIpLookup");
+  if (/\bstrictMode\b/.test(code)) {
+    notes.push("strictMode");
+  }
+  if (/\bgeoIpLookup\b/.test(code)) {
+    notes.push("geoIpLookup");
+  }
   if (/\byourCodeToDeriveErrorMessage\b/.test(code)) {
     notes.push("deriveErrorMessage");
   }
