@@ -24,7 +24,7 @@ intlTelInput(input, {
 });
 ```
 
-_Note: this example uses ESM imports. If you're not using a bundler, see the [Getting Started](/docs/getting-started) page for examples of other approaches._
+_Note: this example uses ESM imports. If you're not using a bundler, see the [JavaScript plugin](/docs/javascript-plugin) page for examples of other approaches._
 
 **Option 2: Use the all-in-one bundle**  
 Import `intlTelInputWithUtils` instead of `intlTelInput`. It's the same plugin with utils bundled in, so everything works out of the box — no extra configuration. Best if you're already lazy loading the main plugin script, or if the extra ~260KB up front isn't a concern.

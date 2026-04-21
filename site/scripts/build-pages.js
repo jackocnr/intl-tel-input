@@ -643,15 +643,16 @@ tasks.push({
 // 8. Docs pages — content (markdown) → layout → page.
 const docsDefinitions = [
   {
-    key: "choose_integration",
-    title: "Choose integration",
-    metaDesc:
-      "Which integration of intl-tel-input is right for you? Pure JavaScript, React, Vue, Angular or Svelte component?",
-  },
-  {
     key: "getting_started",
     title: "Getting started",
-    metaDesc: "How to quickly get up and running with intl-tel-input.",
+    metaDesc:
+      "Get started with intl-tel-input. Choose your integration: pure JavaScript plugin, or React, Vue, Angular or Svelte component.",
+  },
+  {
+    key: "javascript_plugin",
+    title: "JavaScript plugin",
+    metaDesc:
+      "How to get up and running with the intl-tel-input JavaScript plugin.",
   },
   {
     key: "options",

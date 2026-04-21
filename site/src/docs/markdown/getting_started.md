@@ -1,65 +1,56 @@
-# Getting started with the JavaScript plugin
+# Getting started
 
-This page is for getting started with the JavaScript plugin. For the framework components (React, Vue, Angular and Svelte), see [Choosing your integration](/docs/choose-integration).
+`intl-tel-input` comes in two flavours: a standalone **JavaScript plugin** and a set of native **framework components**. Both offer the same core features — country picker, formatting and validation — so pick the one that matches your stack.
 
-## Contents
-- [Using a bundler, e.g. Vite](#using-a-bundler-e-g-vite)
-- [Using a script tag](#using-a-script-tag)
-- [Recommended usage](#recommended-usage)
+<div class="iti-integration-choice row g-4 my-4">
+  <div class="col-md-6">
+    <div class="iti-integration-card card h-100">
+      <div class="card-body d-flex flex-column">
+        <i class="bi bi-filetype-js iti-integration-card__icon" aria-hidden="true"></i>
+        <h2 class="h4 mt-3 mb-2">JavaScript plugin</h2>
+        <p class="mb-3">If you're <strong>not</strong> using a frontend framework, or prefer to manage the DOM yourself.</p>
+        <ul class="mb-4 ps-3">
+          <li>Zero dependencies</li>
+          <li>Lightweight</li>
+          <li>Works anywhere</li>
+        </ul>
+        <div class="mt-auto">
+          <a href="/docs/javascript-plugin" class="btn btn-primary">Get started</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-### Using a bundler, e.g. Vite
+  <div class="col-md-6">
+    <div class="iti-integration-card card h-100">
+      <div class="card-body d-flex flex-column">
+        <i class="bi bi-boxes iti-integration-card__icon" aria-hidden="true"></i>
+        <h2 class="h4 mt-3 mb-2">Framework components</h2>
+        <p class="mb-3">If you're using React, Vue, Angular, or Svelte — the component handles lifecycle, two-way binding, and change callbacks for you.</p>
+        <p class="iti-integration-card__cta mb-2">Pick your framework:</p>
+        <div class="d-flex flex-wrap gap-2 mt-auto">
+          <a href="/docs/react-component" class="btn btn-primary">React</a>
+          <a href="/docs/vue-component" class="btn btn-primary">Vue</a>
+          <a href="/docs/angular-component" class="btn btn-primary">Angular</a>
+          <a href="/docs/svelte-component" class="btn btn-primary">Svelte</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-1. Install with npm
+## FAQ
 
-```bash
-npm install intl-tel-input
-```
+**Can I manually use the JavaScript Plugin inside a React (etc) app myself?**  
+Technically yes — but our native framework components are the recommended path, and do the heavy lifting for you so you can drop a phone input into your app in just a few lines of code:
 
-2. Import the JS and CSS, then initialise the plugin on your input element
+* **Lifecycle handled** — initialisation on mount and `destroy()` on unmount, so you don't leak instances or listeners.
+* **Two-way value binding** — pass the number in as a prop and it stays in sync with your app's state, with internal guards to avoid cursor jumps while typing.
+* **Typed change callbacks** — `changeNumber`, `changeCountry`, `changeValidity`, and `changeErrorCode` exposed as idiomatic, fully-typed handlers for each framework.
+* **Escape hatch** — grab the underlying `Iti` instance via a ref for anything the component doesn't expose directly.
 
-```js
-import intlTelInput from "intl-tel-input";
-import "intl-tel-input/styles";
+**Do the components include all the plugin features?**  
+Yes. All [initialisation options](/docs/options) and [methods](/docs/methods) are available through the component props and refs.
 
-const input = document.querySelector("#phone");
-intlTelInput(input, {
-  loadUtils: () => import("intl-tel-input/utils"),
-});
-```
-
-Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utils script](/docs/utils) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
-
-### Using a script tag
-
-1. Add the CSS
-  ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/css/intlTelInput.css">
-  ```
-
-2. Add the plugin script and initialise it on your input element
-  ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/js/intlTelInput.min.js"></script>
-  <script>
-    const input = document.querySelector("#phone");
-    window.intlTelInput(input, {
-      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/js/utils.js"),
-    });
-  </script>
-  ```
-
-The examples above load the files from [jsDelivr](https://www.jsdelivr.com/) for a quick start. To host the files yourself instead, download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest) (or install with [npm](https://www.npmjs.com/package/intl-tel-input)) and replace the URLs with your own paths, e.g. `path/to/intlTelInput.css`, `path/to/intlTelInput.js`, and `https://your-domain.com/path/to/utils.js` for the `loadUtils` import.
-
-## Recommended usage
-
-**Load the utils module.** [Lazy-load `utils.js`](/docs/utils#loading-the-utils-script) to enable formatting and validation.
-
-**Store and restore numbers in E.164 format.** Since the dial code is embedded in the number (e.g. `"+17024181234"`), you don't need to store the country separately. To read the number out in E.164, use [`getNumber`](/docs/methods#getnumber). To restore it, pass the stored E.164 number as the input value on initialisation — the plugin will automatically set the country<sup>*</sup> and format the number according to your options.
-
-**Validate before saving.** Before storing a number, call [`isValidNumber`](/docs/methods#isvalidnumber) (requires the utils module) and reject invalid input.
-
-**Set the initial country.** If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set it to `"auto"` along with the [`geoIpLookup`](/docs/options#geoiplookup) option to determine the country from their IP address — [see example](/examples/lookup-country).
-
-**Translate the UI.** If you know the user's language, you can translate the country names and UI strings — see [Localisation](/docs/localisation).
-
-_<sup>*</sup>Except for some small satellite territories, which share number ranges with the main country, in which case we default to selecting the main country._
-
+**Which version is the most "up to date"?**  
+All versions are maintained simultaneously. When the core JavaScript logic is updated, those changes are immediately available to the React, Vue, Angular, and Svelte components.

@@ -1,13 +1,38 @@
 const docsDropdownPages = [
   {
-    name: "choose_integration",
-    href: "/docs/choose-integration",
-    label: "Choose integration",
-  },
-  {
     name: "getting_started",
     href: "/docs/getting-started",
     label: "Getting started",
+  },
+  {
+    name: "javascript_plugin",
+    href: "/docs/javascript-plugin",
+    label: "JavaScript plugin",
+    nested: true,
+  },
+  {
+    name: "react_component",
+    href: "/docs/react-component",
+    label: "React component",
+    nested: true,
+  },
+  {
+    name: "vue_component",
+    href: "/docs/vue-component",
+    label: "Vue component",
+    nested: true,
+  },
+  {
+    name: "angular_component",
+    href: "/docs/angular-component",
+    label: "Angular component",
+    nested: true,
+  },
+  {
+    name: "svelte_component",
+    href: "/docs/svelte-component",
+    label: "Svelte component",
+    nested: true,
   },
   {
     name: "options",
@@ -53,26 +78,6 @@ const docsDropdownPages = [
     name: "faq",
     href: "/docs/faq",
     label: "FAQ",
-  },
-  {
-    name: "react_component",
-    href: "/docs/react-component",
-    label: "React component",
-  },
-  {
-    name: "vue_component",
-    href: "/docs/vue-component",
-    label: "Vue component",
-  },
-  {
-    name: "angular_component",
-    href: "/docs/angular-component",
-    label: "Angular component",
-  },
-  {
-    name: "svelte_component",
-    href: "/docs/svelte-component",
-    label: "Svelte component",
   },
 ];
 
