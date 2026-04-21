@@ -14,7 +14,8 @@ Dark mode example (with screenshot below):
 }
 ```
 
-NOTE: this assumes you already have your own dark mode styling in place for general body/input styling, e.g. something like this:
+> [!NOTE]
+> This assumes you already have your own dark mode styling in place for general body/input styling, e.g. something like this:
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -46,4 +47,5 @@ The flags are rendered at a generous default size so they look crisp on high-DPI
 
 If you need a non-4:3 box around the flag (e.g. a square placeholder), override `--iti-flag-height` as well.
 
-NOTE: scaling *up* past the default is not recommended — the sprite is rasterised at a fixed resolution and will look soft if enlarged. To show larger flags than the default, re-generate the sprite at a higher resolution instead.
+> [!WARNING]
+> Scaling *up* past the default is not recommended — the sprite is rasterised at a fixed resolution and will look soft if enlarged. To show larger flags than the default, re-generate the sprite at a higher resolution instead.

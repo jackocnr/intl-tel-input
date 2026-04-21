@@ -57,7 +57,8 @@ Default: `{}`
 
 The props to pass to the input element, e.g. `id`, `className`, `placeholder`, `required`, `onBlur`, `defaultValue` etc. Use `defaultValue` to set the initial value of the input - this will get auto-formatted on init (according to `formatOnDisplay` initialisation option).
 
-Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `ref`, `onInput`, `value`, `disabled`, `readOnly`. Use the component props (`disabled`, `readOnly`) and the callback props instead.
+> [!NOTE]
+> The following keys are reserved for the component/plugin integration and will be ignored: `type`, `ref`, `onInput`, `value`, `disabled`, `readOnly`. Use the component props (`disabled`, `readOnly`) and the callback props instead.
 
 ###### onChangeCountry
 Type: `(iso2: string) => void`  

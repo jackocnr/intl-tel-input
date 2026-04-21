@@ -35,7 +35,8 @@ Example:
 <input id="phone" type="tel" autocomplete="tel" />
 ```
 
-Note: the plugin injects its own country UI next to the input, but it does not replace the need for your input to have an accessible name.
+> [!IMPORTANT]
+> The plugin injects its own country UI next to the input, but it does not replace the need for your input to have an accessible name.
 
 
 ## Keyboard support

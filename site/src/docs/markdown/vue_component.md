@@ -65,7 +65,8 @@ Default: `{}`
 
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onBlur`.
 
-Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
+> [!NOTE]
+> The following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
 
 ###### readonly
 Type: `boolean`  

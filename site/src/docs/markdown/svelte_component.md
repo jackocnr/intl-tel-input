@@ -65,7 +65,8 @@ Default: `{}`
 
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onblur`, etc.
 
-Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `oninput`. Use the component props (`disabled`, `readonly`) and the `onChange...` callback props instead.
+> [!NOTE]
+> The following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `oninput`. Use the component props (`disabled`, `readonly`) and the `onChange...` callback props instead.
 
 ###### onChangeCountry
 Type: `(iso2: string) => void`  

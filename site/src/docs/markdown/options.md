@@ -163,7 +163,8 @@ intlTelInput(input, {
 });
 ```
 
-Note: when no country is selected (globe state), `selectedCountryPlaceholder` is an empty string and `selectedCountryData` is `null`, so remember to guard against null when reading properties off it.
+> [!IMPORTANT]
+> When no country is selected (globe state), `selectedCountryPlaceholder` is an empty string and `selectedCountryData` is `null`, so remember to guard against null when reading properties off it.
 
 ###### placeholderNumberType
 Type: `string`  
