@@ -903,8 +903,11 @@ export default class UI {
 
       //* When countrySearch disabled: listen for alpha chars to perform hidden search.
       //* Regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866.
+      //* Skip when the event target is the tel input — otherwise with dropdownAlwaysOpen
+      //* enabled, typing letters in the tel input would scroll the dropdown.
       if (
         !this.#options.countrySearch &&
+        e.target !== this.telInputEl &&
         REGEX.HIDDEN_SEARCH_CHAR.test(e.key)
       ) {
         e.stopPropagation();
