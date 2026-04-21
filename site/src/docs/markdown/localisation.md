@@ -1,12 +1,6 @@
 # Localisation
 
-intl-tel-input supports localisation in a few different areas:
-
-- Country names in the dropdown
-- User interface strings (e.g. the country search placeholder)
-- Right-to-left (RTL) layout
-
-If you want to see this in action first, you can experiment with the different language options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options) and view the [Right to left example](/examples/right-to-left).
+intl-tel-input supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options), or view the [Right to left example](/examples/right-to-left).
 
 ## Contents
 
@@ -18,7 +12,7 @@ If you want to see this in action first, you can experiment with the different l
 
 ## Localising country names
 
-Country names are generated using the native `Intl.DisplayNames` API. Use the [`countryNameLocale`](/docs/options#countrynamelocale) option to specify the locale (a BCP 47 language tag):
+Country names are generated using the native `Intl.DisplayNames` API, which supports hundreds of locales out of the box. Use the [`countryNameLocale`](/docs/options#countrynamelocale) option to specify the locale (a BCP 47 language tag):
 
 ```js
 intlTelInput(input, {
