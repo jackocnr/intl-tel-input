@@ -25,19 +25,12 @@ This page lists the plugin's public API methods.
 
 ## Instance Methods
 
-For all of these examples, we will use the instance variable `iti` returned from the initialisation call, e.g.
-
-```js
-const iti = intlTelInput(input, options);
-```
+These methods are called on the plugin instance. With the [JavaScript plugin](/docs/javascript-plugin) you get the instance directly from the initialisation call `const iti = intlTelInput(input, options)`; with the [React/Vue/Angular/Svelte components](/docs/getting-started) you access it via a `ref` (see each component's docs for the exact syntax). The examples below all use a variable named `iti` for the instance:
 
 > [!IMPORTANT]
 > Methods that require the [utils script](/docs/utils#loading-the-utils-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always await `iti.promise` first:
 >
 > ```js
-> const iti = intlTelInput(input, {
->   loadUtils: () => import("intl-tel-input/utils"),
-> });
 > await iti.promise;
 > const number = iti.getNumber();
 > ```
