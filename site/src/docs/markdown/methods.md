@@ -35,7 +35,9 @@ const iti = intlTelInput(input, options);
 > Methods that require the [utils script](/docs/utils#loading-the-utils-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always await `iti.promise` first:
 >
 > ```js
-> const iti = intlTelInput(input, { loadUtils: () => import("intl-tel-input/utils") });
+> const iti = intlTelInput(input, {
+>   loadUtils: () => import("intl-tel-input/utils"),
+> });
 > await iti.promise;
 > const number = iti.getNumber();
 > ```
