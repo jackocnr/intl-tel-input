@@ -11,15 +11,31 @@ International number formatting/validation is hard (it varies by country/distric
 
 ## Loading the utils script
 
-The utils script provides lots of great functionality (see the above section), but comes at the cost of increased file size (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about file size or not.
+The utils script adds ~260KB on top of the ~30KB main plugin. There are two ways to load it — **if you're not sure which to pick, use Option 1.** It keeps your initial page load small, which is the safer default for most sites.
 
-**Option 1: intlTelInputWithUtils**  
-If you're not concerned about file size (e.g. you're lazy loading the main plugin script), the easiest thing to do is to use the all-in-one bundle (`/dist/js/intlTelInputWithUtils.js`), which comes with the utils script included. This script can be used exactly like the main intlTelInput.js - so it can either be loaded directly onto the page (which defines `window.intlTelInput` like usual), or it can be imported like so:
+**Option 1: Lazy load utils on demand (recommended)**  
+Import the regular `intlTelInput` and fetch the utils separately, using the [`loadUtils`](/docs/options#loadutils) option. The main plugin loads immediately (~30KB); the ~260KB utils file is fetched in the background after initialisation, so formatting/validation kicks in shortly after the input appears without blocking your initial page load.
 
 ```js
-import intlTelInput from "intl-tel-input/intlTelInputWithUtils"
+import intlTelInput from "intl-tel-input";
+
+intlTelInput(input, {
+  loadUtils: () => import("intl-tel-input/utils"),
+});
 ```
 
-**Option 2: loadUtils**  
-If you *are* concerned about file size, you can lazy load the utils module when the plugin initialises, using the [`loadUtils`](/docs/options#loadutils) initialisation option.
+_Note: this example uses ESM imports. If you're not using a bundler, see the [Getting Started](/docs/getting-started) page for examples of other approaches._
+
+**Option 2: Use the all-in-one bundle**  
+Import `intlTelInputWithUtils` instead of `intlTelInput`. It's the same plugin with utils bundled in, so everything works out of the box — no extra configuration. Best if you're already lazy loading the main plugin script, or if the extra ~260KB up front isn't a concern.
+
+```js
+import intlTelInput from "intl-tel-input/intlTelInputWithUtils";
+
+intlTelInput(input, {
+  // init options - no need for loadUtils here any more
+});
+```
+
+You can also load it directly onto the page via a `<script>` tag — it defines `window.intlTelInput` just like the main script.
 
