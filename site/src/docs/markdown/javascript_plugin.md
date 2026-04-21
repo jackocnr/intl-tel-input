@@ -27,7 +27,7 @@ intlTelInput(input, {
 });
 ```
 
-Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utils script](/docs/utils) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
+Most bundlers (such as Vite, Turbopack or Parcel) will see the `loadUtils` dynamic import and place the [utils script](/docs/utils) in a separate bundle and load it asynchronously, when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other example.
 
 ### Using a script tag
 
@@ -47,7 +47,7 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [u
   </script>
   ```
 
-The examples above load the files from [jsDelivr](https://www.jsdelivr.com/) for a quick start. To host the files yourself instead, download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest) (or install with [npm](https://www.npmjs.com/package/intl-tel-input)) and replace the URLs with your own paths, e.g. `path/to/intlTelInput.css`, `path/to/intlTelInput.js`, and `https://your-domain.com/path/to/utils.js` for the `loadUtils` import.
+The examples above load the files from [jsDelivr](https://www.jsdelivr.com/) for a quick start. To host the files yourself instead, download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest) (or install with [npm](https://www.npmjs.com/package/intl-tel-input)) and replace the URLs with your own paths, e.g. `path/to/intlTelInput.css`, `path/to/intlTelInput.js`, and `/path/to/utils.js` for the `loadUtils` import.
 
 ## Recommended usage
 
