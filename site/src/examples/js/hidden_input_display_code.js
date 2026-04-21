@@ -20,6 +20,9 @@ const iti = intlTelInput(input, {
   loadUtils: () => import("intl-tel-input/utils"),
 });
 
+// wait for utils to load before calling isValidNumber
+await iti.promise;
+
 // validation code
 let showValidation = false;
 
