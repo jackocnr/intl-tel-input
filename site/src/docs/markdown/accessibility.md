@@ -2,13 +2,6 @@
 
 intl-tel-input aims to be accessible out of the box, but good accessibility also depends on how you integrate it into your form.
 
-This page covers:
-
-- How the country dropdown and search are exposed to assistive tech
-- Keyboard interaction
-- What you should do to ensure the phone input has an accessible name and helpful errors
-- How to translate the plugin’s accessibility strings
-
 
 ## Contents
 
@@ -32,7 +25,7 @@ Example:
 
 ```html
 <label for="phone">Phone number</label>
-<input id="phone" type="tel" autocomplete="tel" />
+<input id="phone" name="phone" type="tel" autocomplete="tel" />
 ```
 
 > [!IMPORTANT]
