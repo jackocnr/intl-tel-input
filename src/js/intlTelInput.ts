@@ -498,11 +498,13 @@ export class Iti {
         this.#ui.telInputEl.setSelectionRange(newCaretPos, newCaretPos);
       }
 
-      //* If separateDialCode AND typed dial code (e.g. from paste or autofill), remove typed dial code.
+      //* If separateDialCode AND typed dial code (e.g. from paste or autofill, or from typing a dial code when countrySearch disabled), then remove the typed dial code.
+      //* Only strip when a full dial code is actually present — otherwise a lone typed "+" (or partial prefix) would get erased.
       if (
         separateDialCode &&
         inputValue.startsWith("+") &&
-        this.#selectedCountry?.dialCode
+        this.#selectedCountry &&
+        this.#getDialCode(inputValue)
       ) {
         const cleanNumber = stripSeparateDialCode(
           inputValue,
@@ -546,7 +548,7 @@ export class Iti {
         this.#openDropdownWithPlus();
         return;
       }
-      //* If strictMode, prevent invalid characters.
+      //* If strictMode disabled: do nothing, else: enforce strictMode by preventing invalid characters.
       if (!strictMode) {
         return;
       }

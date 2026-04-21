@@ -152,6 +152,30 @@ describe("separateDialCode option", () => {
     });
   });
 
+  //* Regression: typing "+" with separateDialCode enabled (and allowDropdown or countrySearch disabled, so the keydown handler doesn't intercept it) should not erase the character when strictMode is off.
+  describe("typing plus with allowDropdown=false", () => {
+    let input, iti, user;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+      const options = {
+        initialCountry: "gb",
+        separateDialCode: true,
+        allowDropdown: false,
+      };
+      ({ input, iti } = initPlugin({ options }));
+    });
+
+    afterEach(() => {
+      teardown(iti);
+    });
+
+    test("typing a plus character is preserved in the input", async () => {
+      await user.type(input, "+");
+      expect(input.value).toBe("+");
+    });
+  });
+
   //* We test with Kazakhstan because we had a bug.
   describe("initialCountry=KZ", () => {
     let input, iti, container, user;
