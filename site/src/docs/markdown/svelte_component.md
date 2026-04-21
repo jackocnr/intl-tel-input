@@ -45,6 +45,8 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 
 ## Props
 
+Any of the plugin's [initialisation options](#plugin-initialisation-options) (like `initialCountry`) can also be passed as a prop.
+
 ###### disabled
 Type: `boolean`  
 Default: `false`  

@@ -45,6 +45,8 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 
 ## Props
 
+Any of the plugin's [initialisation options](#plugin-initialisation-options) (like `initialCountry`) can also be passed as a prop.
+
 ###### disabled
 Type: `boolean`  
 Default: `false`  
@@ -96,6 +98,8 @@ All of the plugin's [initialisation options](/docs/options) are supported as ind
 ```js
 <IntlTelInput initialCountry="us" />
 ```
+
+In Vue templates you can also use the kebab-case form (e.g. `initial-country`) if you prefer — both work.
 
 > [!NOTE]
 > If you're migrating from an older version, the previous `:initOptions="{ initialCountry: 'us' }"` style is no longer supported — pass each option as its own prop instead.
