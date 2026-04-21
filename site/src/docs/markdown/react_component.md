@@ -103,19 +103,14 @@ Optional controlled value. If provided, the component becomes controlled — whe
 
 ## Initialisation options
 
-All of the plugin's [initialisation options](/docs/options) are supported as individual React props using the same option name.
-
-For example, if you're migrating from older usage like:
-
-```js
-<IntlTelInput initOptions={{ initialCountry: "us" }} />
-```
-
-Use:
+All of the plugin's [initialisation options](/docs/options) are supported as individual React props using the same option name. For example:
 
 ```js
 <IntlTelInput initialCountry="us" />
 ```
+
+> [!NOTE]
+> If you're migrating from an older version, the previous `initOptions={{ initialCountry: "us" }}` style is no longer supported — pass each option as its own prop instead.
 
 ## Accessing instance methods
 

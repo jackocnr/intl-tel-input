@@ -7,8 +7,8 @@ An Angular component for the intl-tel-input JavaScript plugin. View the [source 
 - [Demo](#demo)
 - [Getting started](#getting-started)
 - [Props](#props)
-- [Form integration](#form-integration-ngmodel--formcontrol)
 - [Initialisation options](#initialisation-options)
+- [Form integration](#form-integration-ngmodel--formcontrol)
 - [Events](#events)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
@@ -82,26 +82,22 @@ Default: `false`
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
 
 
-## Form integration ([(ngModel)] / formControl)
-
-The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
-
-
 ## Initialisation options
 
-All of the plugin's [initialisation options](/docs/options) are supported as individual Angular component inputs using the same option name.
-
-For example, if you're migrating from older usage like:
-
-```html
-<intl-tel-input [initOptions]="{ initialCountry: 'us' }" />
-```
-
-Use:
+All of the plugin's [initialisation options](/docs/options) are supported as individual Angular component inputs using the same option name. For example:
 
 ```html
 <intl-tel-input initialCountry="us" />
 ```
+
+> [!NOTE]
+> If you're migrating from an older version, the previous `[initOptions]="{ initialCountry: 'us' }"` style is no longer supported — pass each option as its own input instead.
+
+
+## Form integration ([(ngModel)] / formControl)
+
+The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
+
 
 ## Events
 
