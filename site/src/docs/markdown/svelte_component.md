@@ -48,19 +48,19 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 ## Props
 
 ###### disabled
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 Sets the disabled attribute of both the telephone input and the selected country button. *Note: We recommend using this instead of `inputProps.disabled`.*
 
 ###### initialValue
-Type: `String`  
+Type: `string`  
 Default: `""`  
 
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use the `value` prop instead.
 
 ###### inputProps
-Type: `Object`  
+Type: `object`  
 Default: `{}`  
 
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onblur`, etc.
@@ -92,19 +92,19 @@ Default: `null`
 A handler to be called when the number validity changes. Receives the new validity boolean. Requires the utils script to be loaded (see above).
 
 ###### readonly
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 Sets the readonly attribute of the telephone input and disables the selected country button. *Note: We recommend using this instead of `inputProps.readonly`.*
 
 ###### usePreciseValidation
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
 
 ###### value
-Type: `String`  
+Type: `string`  
 Default: `undefined`  
 
 Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `initialValue` for the initial value instead. **Important:** when using `value`, you should also use `onChangeNumber` to keep the value in sync with user input, otherwise programmatic updates (e.g. clearing the input) may not work as expected.

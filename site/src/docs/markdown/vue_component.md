@@ -48,19 +48,19 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 ## Props
 
 ###### disabled
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 Sets the disabled attribute of both the telephone input and the selected country button. *Note: we recommend using this instead of `inputProps.disabled`.*
 
 ###### initialValue
-Type: `String`  
+Type: `string`  
 Default: `""`  
 
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use `v-model` instead.
 
 ###### inputProps
-Type: `Object`  
+Type: `object`  
 Default: `{}`  
 
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onBlur`.
@@ -68,19 +68,19 @@ The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `requ
 Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
 
 ###### readonly
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 Sets the readonly attribute of the telephone input and disables the selected country button. *Note: We recommend using this instead of `inputProps.readonly`.*
 
 ###### usePreciseValidation
-Type: `Boolean`
+Type: `boolean`
 Default: `false`  
 
 By default, the component uses the plugin's `isValidNumber` method for validation, but if you'd rather use `isValidNumberPrecise`, set this to `true`.
 
 ###### v-model (modelValue)
-Type: `String`  
+Type: `string`  
 Default: `undefined`  
 
 The component supports `v-model` for two-way binding. When the bound value changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). When the user types, the bound value is kept in sync via the `update:modelValue` event. If you don't use `v-model`, the component is uncontrolled — use `initialValue` for the starting value.

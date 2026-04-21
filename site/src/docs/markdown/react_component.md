@@ -46,13 +46,13 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 ## Props
 
 ###### disabled
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 Disables both the telephone input and the selected country button. _Note: We recommend using this instead of `inputProps.disabled`._
 
 ###### inputProps
-Type: `Object`  
+Type: `object`  
 Default: `{}`  
 
 The props to pass to the input element, e.g. `id`, `className`, `placeholder`, `required`, `onBlur`, `defaultValue` etc. Use `defaultValue` to set the initial value of the input - this will get auto-formatted on init (according to `formatOnDisplay` initialisation option).
@@ -84,19 +84,19 @@ Default: `null`
 A handler to be called when the number validity changes. Receives the new validity boolean. Requires the utils script to be loaded (see above).
 
 ###### readOnly
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 Makes the telephone input read-only and disables the selected country button. _Note: We recommend using this instead of `inputProps.readOnly`._
 
 ###### usePreciseValidation
-Type: `Boolean`
+Type: `boolean`
 Default: `false`  
 
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
 
 ###### value
-Type: `String`  
+Type: `string`  
 Default: `undefined`  
 
 Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `inputProps.defaultValue` for the initial value instead. **Important:** when using `value`, you should also use `onChangeNumber` to keep the value in sync with user input, otherwise programmatic updates (e.g. clearing the input) may not work as expected.

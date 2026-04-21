@@ -51,19 +51,19 @@ A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chu
 ## Props
 
 ###### disabled
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 Sets the disabled attribute of both the telephone input and the selected country button. _Note: Use this instead of `inputAttributes.disabled`._
 
 ###### initialValue
-Type: `String`  
+Type: `string`  
 Default: `""`  
 
 The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use `[(ngModel)]` or a reactive `formControl` instead.
 
 ###### inputAttributes
-Type: `Object`  
+Type: `object`  
 Default: `{}`  
 
 The attributes to pass to the input element, e.g. `class`, `placeholder`, `required`, etc.
@@ -71,13 +71,13 @@ The attributes to pass to the input element, e.g. `class`, `placeholder`, `requi
 Note: the following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`. Use the component props (`initialValue`, `disabled`, `readonly`) and the output event bindings instead.
 
 ###### readonly
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 Sets the readonly attribute of the telephone input and disables the selected country button. _Note: Use this instead of `inputAttributes.readonly`._
 
 ###### usePreciseValidation
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`  
 
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
