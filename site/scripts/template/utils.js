@@ -3,6 +3,7 @@ import fs from "node:fs";
 import crypto from "node:crypto";
 import MarkdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
+import markdownItGithubAlerts from "markdown-it-github-alerts";
 
 const BUILD_DIR = "dist";
 const HASH_LENGTH = 12;
@@ -176,7 +177,7 @@ const createMarkdownRenderer = ({
   }).use(markdownItAnchor, {
     slugify: slugifyHeading,
     permalink: markdownItAnchor.permalink.headerLink({ safariReaderFix: true }),
-  });
+  }).use(markdownItGithubAlerts);
 
   addDocOptionsLayoutPlugin(md);
   return md;

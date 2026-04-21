@@ -1,3 +1,43 @@
+/* GitHub-style alert callouts (rendered by markdown-it-github-alerts) */
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: 0.25em solid #888;
+
+  > :first-child { margin-top: 0; }
+  > :last-child { margin-bottom: 0; }
+
+  .markdown-alert-title {
+    display: flex;
+    font-weight: 500;
+    align-items: center;
+    line-height: 1;
+
+    .octicon {
+      margin-right: 0.5rem;
+      display: inline-block;
+      overflow: visible !important;
+      vertical-align: text-bottom;
+      fill: currentColor;
+    }
+  }
+
+  &.markdown-alert-note { border-left-color: var(--color-note); .markdown-alert-title { color: var(--color-note); } }
+  &.markdown-alert-tip { border-left-color: var(--color-tip); .markdown-alert-title { color: var(--color-tip); } }
+  &.markdown-alert-warning { border-left-color: var(--color-warning); .markdown-alert-title { color: var(--color-warning); } }
+  &.markdown-alert-caution { border-left-color: var(--color-caution); .markdown-alert-title { color: var(--color-caution); } }
+  &.markdown-alert-important { border-left-color: var(--color-important); .markdown-alert-title { color: var(--color-important); } }
+}
+
 /* Choose Integration page: two big CTA cards */
 .iti-integration-choice {
   .iti-integration-card.card {
