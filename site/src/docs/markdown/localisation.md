@@ -58,9 +58,9 @@ intlTelInput(input, {
 });
 ```
 
-### Supported locales
+### Supported UI locales
 
-Currently, we support the following <!-- I18N_LOCALE_COUNT --> locales:
+We currently ship user interface translations for the following <!-- I18N_LOCALE_COUNT --> locales:
 
 <!-- I18N_LOCALE_LIST -->
 

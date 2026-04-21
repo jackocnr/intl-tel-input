@@ -741,13 +741,13 @@ for (const { key, title, metaDesc } of docsDefinitions) {
       docKey: key,
       html: (() => {
         let source = fs.readFileSync(mdPath, "utf8");
+        const locales = getI18nLanguages();
+        source = source.replaceAll(
+          "<!-- I18N_LOCALE_COUNT -->",
+          String(locales.length),
+        );
         if (key === "localisation") {
-          const locales = getI18nLanguages();
           const localeList = createI18nLanguageListText(locales);
-          source = source.replace(
-            "<!-- I18N_LOCALE_COUNT -->",
-            String(locales.length),
-          );
           source = source.replace(
             "<!-- I18N_LOCALE_LIST -->",
             `\n${localeList}\n`,

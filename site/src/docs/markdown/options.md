@@ -239,11 +239,11 @@ The locale to pass to `Intl.DisplayNames` to generate the country names. Should 
 Type: `object`  
 Default: `{}`  
 
-Translate the plugin's user interface strings, including the country search placeholder, search empty state, and various accessibility strings for screen readers. For translating country names (a separate concern), see the [`countryNameLocale`](#countrynamelocale) option above.
+Translate the plugin's user interface strings, including the country search placeholder, no-results message, and various accessibility labels. For translating country names (a separate concern), see the [`countryNameLocale`](#countrynamelocale) option above.
 
-We provide translations for <a href="/docs/localisation#supported-locales">many locales</a> — import the module you need and pass it in (Option 1 below). You can also override one or more keys the same way.
+We provide translations for <a href="/docs/localisation#supported-ui-locales"><!-- I18N_LOCALE_COUNT --> locales</a> — import the module you need and pass it in (Option 1 below). You can also override one or more keys the same way.
 
-If you need a locale we don't currently ship, either provide your own custom translations (Option 2 below, see the required UI strings listed) or — it's easy — [contribute a new locale module](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself.
+If you need a locale we don't currently ship, it's easy to [contribute a new locale](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself. Alternatively, you can specify your own translations inline (Option 2 below).
 
 Try it out with `countryNameLocale` set to `"zh"` and `i18n` set to the provided ZH translations in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options). _Note: previously named `localizedCountries`._
 
