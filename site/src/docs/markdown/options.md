@@ -35,7 +35,9 @@ An array of iso2 codes to exclude from the country dropdown e.g. `["gb", "us"]`.
 Type: `(success: (iso2: string) => void, failure: () => void) => void`  
 Default: `null`  
 
-When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant iso2 code. Also note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can `await iti.promise` to know when initialisation requests like this have completed.
+When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant iso2 code.
+
+Note that when instantiating the plugin, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned under the `promise` instance property, so with an instance variable `iti` you can `await iti.promise` to know when initialisation requests like this have completed.
 
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup>:  
 ```js
@@ -233,64 +235,23 @@ Localise country names and the plugin UI strings, e.g. the country search placeh
 Type: `string`  
 Default: `"en"`  
 
-The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). For translating the other UI strings, like the country search placeholder, see the [`i18n`](#i18n) option below. View the plugin with `countryNameLocale` set to `"zh"`, and `i18n` set to the provided ZH user interface translations in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
+The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). For translating the other UI strings, like the country search placeholder, see [`i18n`](#i18n) below.
+
+View the plugin in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
 
 ###### i18n
 Type: `object`  
 Default: `{}`  
 
-Translate the plugin's user interface strings, including the country search placeholder, no-results message, and various accessibility labels. For translating country names (a separate concern), see the [`countryNameLocale`](#countrynamelocale) option above.
+Translate the plugin's UI strings (country search placeholder, no-results message, ARIA labels). For translating country names, see [`countryNameLocale`](#countrynamelocale) above.
 
-We provide translations for <a href="/docs/localisation#supported-ui-locales"><!-- I18N_LOCALE_COUNT --> locales</a> — import the module you need and pass it in (Option 1 below). You can also override one or more keys the same way.
+We ship translations for [<!-- I18N_LOCALE_COUNT -->  locales](/docs/localisation#supported-ui-locales) — import one and pass it in as the `i18n` option:
 
-If you need a locale we don't currently ship, it's easy to [contribute a new locale](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation) yourself. Alternatively, you can specify your own translations inline (Option 2 below).
-
-Try it out with `countryNameLocale` set to `"zh"` and `i18n` set to the provided ZH translations in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options). _Note: previously named `localizedCountries`._
-
-Option 1: import one of the provided translation modules
 ```js
 import { fr } from "intl-tel-input/i18n";
-
-intlTelInput(input, {
-  i18n: fr,
-});
-
-// or to override one or more keys, you could do something like this
-intlTelInput(input, {
-  i18n: {
-    ...fr,
-    searchPlaceholder: "Recherche de pays",
-    // or override a specific country name
-    us: "United States",
-  },
-});
 ```
 
-Option 2: define your own custom translations
-```js
-intlTelInput(input, {
-  i18n: {
-    // Aria label for the selected country element, when there is a country selected
-    selectedCountryAriaLabel: "Change country, selected ${countryName} (${dialCode})",
-    // Aria label and title text for the selected country element, when no country is selected
-    noCountrySelected: "Select country",
-    // Aria label for the country list element
-    countryListAriaLabel: "List of countries",
-    // Placeholder for the search input in the dropdown
-    searchPlaceholder: "Search",
-    // Aria label for the clear search button
-    clearSearchAriaLabel: "Clear search",
-    // Visible text for when the search produces no results
-    searchEmptyState: "No results found",
-    // Screen reader summary of search results
-    searchSummaryAria(count) {
-      if (count === 0) return "No results found";
-      if (count === 1) return "1 result found";
-      return `${count} results found`;
-    }
-  }
-});
-```
+See the [Localisation docs](/docs/localisation#localising-user-interface-strings) for overriding individual keys, defining custom translations, and the full list of translatable keys. View the plugin in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options). _Note: previously named `localizedCountries`._
 
 
 ## Miscellaneous options

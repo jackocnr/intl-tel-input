@@ -20,16 +20,7 @@ intlTelInput(input, {
 });
 ```
 
-You can also override individual country names via the [`i18n`](/docs/options#i18n) option by providing iso2 keys (e.g. `"gb"`, `"us"`):
-
-```js
-intlTelInput(input, {
-  countryNameLocale: "fr",
-  i18n: {
-    gb: "Royaume-Uni",
-  },
-});
-```
+You can also override individual country names via the [`i18n`](/docs/options#i18n) option by providing the iso2 key (e.g. `"us"` for United States) - see below.
 
 ## Localising user interface strings
 
@@ -53,7 +44,23 @@ import { fr } from "intl-tel-input/i18n";
 intlTelInput(input, {
   i18n: {
     ...fr,
-    searchPlaceholder: "Rechercher un pays",
+    // override the translation for the country search placeholder
+    searchPlaceholder: "Rechercher",
+  },
+});
+```
+
+You can also override one or more country names in a similar way:
+
+```js
+import { fr } from "intl-tel-input/i18n";
+
+intlTelInput(input, {
+  countryNameLocale: "fr",
+  i18n: {
+    ...fr,
+    // override the country name for the United States
+    us: "États-Unis",
   },
 });
 ```
@@ -66,7 +73,34 @@ We currently ship user interface translations for the following <!-- I18N_LOCALE
 
 Don't see your locale? It's easy to contribute a new one yourself — see [Adding a new translation](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation).
 
-Alternatively, you can specify your own translations inline by passing a custom object to the [`i18n`](/docs/options#i18n) option.
+Alternatively, you can specify your own translations inline by passing a custom object to the [`i18n`](/docs/options#i18n) option — see the full list of translatable keys below.
+
+### Translatable keys
+
+Here is the full set of UI strings the [`i18n`](/docs/options#i18n) option accepts, shown with their default English values for reference:
+
+```js
+{
+  // Aria label for the selected country element, when there is a country selected
+  selectedCountryAriaLabel: "Change country for phone number, currently selected ${countryName} (${dialCode})",
+  // Aria label and title text for the selected country element, when no country is selected
+  noCountrySelected: "Select country for phone number",
+  // Aria label for the country list element
+  countryListAriaLabel: "List of countries",
+  // Placeholder for the search input in the dropdown
+  searchPlaceholder: "Search",
+  // Aria label for the clear search button
+  clearSearchAriaLabel: "Clear search",
+  // Visible text for when the search produces no results
+  searchEmptyState: "No results found",
+  // Screen reader summary of search results
+  searchSummaryAria(count) {
+    if (count === 0) return "No results found";
+    if (count === 1) return "1 result found";
+    return `${count} results found`;
+  },
+}
+```
 
 
 ## Right-to-left (RTL) languages

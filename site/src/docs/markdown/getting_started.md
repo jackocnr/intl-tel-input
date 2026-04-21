@@ -42,7 +42,7 @@
 ## FAQ
 
 **Can I manually use the JavaScript Plugin inside a React (etc) app myself?**  
-Technically yes — but our native framework components are the recommended path, and do the heavy lifting for you so you can drop a phone input into your app in just a few lines of code:
+Technically yes, but our native framework components are the recommended path - they do the heavy lifting for you so you can drop a phone input into your app in just a few lines of code:
 
 * **Lifecycle handled** — initialisation on mount and `destroy()` on unmount, so you don't leak instances or listeners.
 * **Two-way value binding** — pass the number in as a prop and it stays in sync with your app's state, with internal guards to avoid cursor jumps while typing.
@@ -50,7 +50,7 @@ Technically yes — but our native framework components are the recommended path
 * **Escape hatch** — grab the underlying `Iti` instance via a ref for anything the component doesn't expose directly.
 
 **Do the components include all the plugin features?**  
-Yes. All [initialisation options](/docs/options) and [methods](/docs/methods) are available through the component props and refs.
+Yes — plus more. All [initialisation options](/docs/options) and [methods](/docs/methods) are available through the component props and refs, and on top of that you get the framework-native conveniences like two-way binding and typed callbacks (see above).
 
 **Which version is the most "up to date"?**  
 All versions are maintained simultaneously. When the core JavaScript logic is updated, those changes are immediately available to the React, Vue, Angular, and Svelte components.

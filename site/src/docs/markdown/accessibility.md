@@ -8,15 +8,13 @@ intl-tel-input aims to be accessible out of the box, but good accessibility also
 - [Accessible naming](#accessible-naming)
 - [Keyboard support](#keyboard-support)
 - [Screen reader support](#screen-reader-support)
-- [Translating accessibility strings](#translating-accessibility-strings)
-- [Form validation and errors](#form-validation-and-errors)
 
 
 ## Accessible naming
 
-Make sure the telephone input has an accessible name.
+Make sure the telephone input has an *accessible name* — a human-readable description that assistive technologies (like screen readers) can announce to identify the field.
 
-Recommended:
+Recommended ways to provide one:
 
 - Use a visible `<label>` connected via `for`/`id` (best for most forms)
 - Or use `aria-label` / `aria-labelledby` if you can’t use a visible label
@@ -25,29 +23,23 @@ Example:
 
 ```html
 <label for="phone">Phone number</label>
-<input id="phone" name="phone" type="tel" autocomplete="tel" />
+<input id="phone" type="tel" autocomplete="tel" />
 ```
 
 > [!IMPORTANT]
-> The plugin injects its own country UI next to the input, but it does not replace the need for your input to have an accessible name.
+> Although the plugin adds its own ARIA attributes to the country UI it injects, it's still up to you to give the underlying `<input>` an accessible name.
 
 
 ## Keyboard support
 
-When the dropdown is enabled, the country selector can be operated with the keyboard:
-
-- From the country button, press Up/Down, Space, or Enter to open the dropdown
-- Press Esc to close the dropdown (focus returns to the country button)
-- Use Up/Down to move through countries
-- Press Enter to select the highlighted country
-- If country search is disabled, typing letters will jump to matching countries (like a native `<select>`)
-
-If the country search input is enabled, users can type to filter the list.
+The country selector is fully keyboard-operable: Up/Down/Space/Enter to open and navigate, Esc to close, Enter to select. With country search enabled, users can type to filter; otherwise typing jumps to matching countries like a native `<select>`.
 
 
 ## Screen reader support
 
-The plugin’s dropdown/search UI includes ARIA attributes to expose state and relationships (e.g. expanded state, controls relationships, listbox semantics), and it provides screen reader text for things like:
+The plugin is built to work well with screen readers out of the box.
+
+Its dropdown/search UI includes ARIA attributes to expose state and relationships (e.g. expanded state, controls relationships, listbox semantics), and it provides screen reader text for things like:
 
 - The selected country button label (including the “no country selected” state)
 - Country list label
@@ -55,20 +47,4 @@ The plugin’s dropdown/search UI includes ARIA attributes to expose state and r
 - Clear-search button label
 - A live summary of the number of matching results while searching
 
-
-## Translating accessibility strings
-
-If you localise the UI using the [`i18n`](/docs/options#i18n) option, that also covers the accessibility strings listed above (placeholders and ARIA labels).
-
-See the [Localisation docs](/docs/localisation) for the full list of locales and how to provide your own.
-
-
-## Form validation and errors
-
-intl-tel-input can help you validate numbers (see the [Initialisation options](/docs/options) and the [Validation examples](/examples/validation-practical)), but you are responsible for presenting validation errors accessibly.
-
-General guidance:
-
-- Use a clear, specific error message text
-- Ensure the error is programmatically associated with the input (e.g. `aria-describedby`)
-- Don’t rely on color alone to convey an error state
+Translations for these accessibility strings are provided out of the box in [many languages](/docs/localisation#supported-ui-locales), and it's easy to override or add your own with the [`i18n`](/docs/options#i18n) option.

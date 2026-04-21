@@ -55,7 +55,7 @@ This example loads the assets from [jsDelivr](https://www.jsdelivr.com/) for a q
 
 ## Recommended usage
 
-**Load the utils module.** [Lazy-load `utils.js`](/docs/utils#loading-the-utils-script) to enable formatting and validation.
+**Load the utils module.** Load [`utils.js`](/docs/utils#loading-the-utils-script) to enable formatting and validation.
 
 **Store and restore numbers in E.164 format.** Since the dial code is embedded in the number (e.g. `"+17024181234"`), you don't need to store the country separately. To read the number out in E.164, use [`getNumber`](/docs/methods#getnumber). To restore it, pass the stored E.164 number as the input value on initialisation — the plugin will automatically set the country<sup>*</sup> and format the number according to your options.
 
