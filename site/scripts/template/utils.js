@@ -25,20 +25,23 @@ const defaultSlugifyHeading = (value) =>
     // trim hyphens
     .replace(/^-|-$/g, "");
 
-// This plugin (AI-generated) looks for the "options" doc (etc), and injects table layout markup for display purposes. It relies on each h6 option being immediately followed by a paragraph containing the Type/Default info, and then any remaining content for that option (e.g. description, examples) coming after that in the same section (until the next heading).
+// This plugin (AI-generated) injects table layout markup around each h6 entry (option/method/etc) whose heading is immediately followed by a paragraph containing a "Type:" declaration. Any remaining content for that entry (e.g. description, examples) is grouped into the same section, until the next heading. Only runs on docs listed in docOptionsLayoutDocKeys.
+const docOptionsLayoutDocKeys = [
+  "options",
+  "methods",
+  "react_component",
+  "vue_component",
+  "angular_component",
+  "svelte_component",
+];
+
 const addDocOptionsLayoutPlugin = (md) => {
   md.core.ruler.after("inline", "iti_doc_options_layout", (state) => {
     const env = state.env || {};
-    const applyToDocKeys = [
-      "options",
-      "react_component",
-      "vue_component",
-      "angular_component",
-      "svelte_component",
-    ];
-    if (!applyToDocKeys.includes(env.docKey)) {
+    if (!docOptionsLayoutDocKeys.includes(env.docKey)) {
       return;
     }
+    const headingTag = "h6";
 
     const tokens = state.tokens;
     const isHeadingOpen = (token, tag) =>
@@ -104,10 +107,10 @@ const addDocOptionsLayoutPlugin = (md) => {
     const consumeOptionBlock = () => {
       nextTokens.push(startRowAndKeyCellMarkup());
 
-      // H6 heading (option name) lives in the key cell.
+      // The entry heading (option/method name) lives in the key cell.
       nextTokens.push(tokens[i]);
       i += 1;
-      consumeThroughHeadingClose("h6");
+      consumeThroughHeadingClose(headingTag);
 
       // The Type/Default paragraph also lives in the key cell.
       // Consume paragraph_open, inline, paragraph_close.
@@ -129,10 +132,10 @@ const addDocOptionsLayoutPlugin = (md) => {
 
     while (i < tokens.length) {
       const token = tokens[i];
-      if (isHeadingOpen(token, "h6")) {
-        // Only treat this heading as an "option" row when the very next block
-        // after the heading close is a paragraph containing the Type/Default meta info
-        const closeIndex = findHeadingCloseIndex(i, "h6");
+      if (isHeadingOpen(token, headingTag)) {
+        // Only treat this heading as an entry row when the very next block
+        // after the heading close is a paragraph containing all required meta substrings
+        const closeIndex = findHeadingCloseIndex(i, headingTag);
         const afterClose = closeIndex >= 0 ? closeIndex + 1 : -1;
         if (
           afterClose >= 0 &&
@@ -144,16 +147,13 @@ const addDocOptionsLayoutPlugin = (md) => {
             inlineToken && inlineToken.type === "inline"
               ? inlineToken.content
               : "";
-          if (
-            inlineContent.includes("Type:") &&
-            inlineContent.includes("Default:")
-          ) {
+          if (inlineContent.includes("Type:")) {
             consumeOptionBlock();
             continue;
           }
         }
 
-        // Not an options entry: emit the heading tokens unchanged.
+        // Not an entry row: emit the heading tokens unchanged.
         nextTokens.push(token);
         i += 1;
         continue;

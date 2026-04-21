@@ -40,7 +40,7 @@ const iti = intlTelInput(input, options);
 > const number = iti.getNumber();
 > ```
 
-### destroy
+###### destroy
 Type: `() => void`  
 
 Remove the plugin from the input, and unbind any event listeners.
@@ -49,7 +49,7 @@ Remove the plugin from the input, and unbind any event listeners.
 iti.destroy();
 ```
 
-### getExtension
+###### getExtension
 Type: `() => string`  
 
 Get the extension from the current number. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
@@ -60,7 +60,7 @@ const extension = iti.getExtension();
 
 For example, if the input value was `"(702) 555-5555 ext. 1234"`, this would return `"1234"`.
 
-### getNumber
+###### getNumber
 Type: `(format?: number) => string`  
 
 Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum [`intlTelInput.utils.numberFormat`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note that even if [`nationalMode`](/docs/options#nationalmode) is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
@@ -72,7 +72,7 @@ const { INTERNATIONAL } = intlTelInput.utils.numberFormat;
 const number = iti.getNumber(INTERNATIONAL); // e.g. "+1 702-418-1234"
 ```
 
-### getNumberType
+###### getNumberType
 Type: `() => number`  
 
 Get the type (fixed-line/mobile/toll-free, etc) of the current number. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). It returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) in the enum `intlTelInput.utils.numberType`.
@@ -86,7 +86,7 @@ if (numberType === MOBILE || numberType === FIXED_LINE_OR_MOBILE) {
 ```
 _Note that in some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases it will return `FIXED_LINE_OR_MOBILE` — hence the need to check for both values above._
 
-### getSelectedCountryData
+###### getSelectedCountryData
 Type: `() => { name: string, iso2: string, dialCode: string } | null`  
 
 Get the country data for the currently selected country.  
@@ -103,7 +103,7 @@ Returns something like this:
 ```
 Returns `null` if no country is currently selected (e.g. the empty/globe state).
 
-### getValidationError
+###### getValidationError
 Type: `() => number`  
 
 Get more information about an invalid number. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). It returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L223) in the enum `intlTelInput.utils.validationError`.
@@ -116,7 +116,7 @@ if (errorCode === validationError.TOO_SHORT) {
 }
 ```
 
-###### **Deriving a user-facing error message**
+**Deriving a user-facing error message**
 
 Several of the [Example pages](/examples/validation-practical) show a `yourCodeToDeriveErrorMessage(value, errorCode)` call — turning the error code into a message is left to you because the wording (and translations) belong to your app. Here is a reasonable starting point which maps the main error codes to a short message:
 
@@ -138,7 +138,7 @@ const getErrorMessage = (number, errorCode) => {
 ```
 
 
-### isValidNumber
+###### isValidNumber
 Type: `() => boolean`  
 
 (Note: only returns `true` for valid **mobile and fixed_line numbers** by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
@@ -149,7 +149,7 @@ const isValid = iti.isValidNumber();
 ```
 Returns: `true`/`false`
 
-### isValidNumberPrecise
+###### isValidNumberPrecise
 Type: `() => boolean`  
 
 ⚠️ **ADVANCED**  
@@ -161,7 +161,7 @@ const isValid = iti.isValidNumberPrecise();
 ```
 Returns: `true`/`false`
 
-### setCountry
+###### setCountry
 Type: `(iso2?: string) => void`  
 
 Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and passing a number including an international dial code, which is the recommended usage. Note, you can omit the iso2 code argument to set the country to the default empty (globe) state. _Note that if [`formatOnDisplay`](/docs/options#formatondisplay) is enabled, this will attempt to format the number to either national or international format according to the [`nationalMode`](/docs/options#nationalmode) option._  
@@ -170,7 +170,7 @@ Change the selected country. It should be rare, if ever, that you need to do thi
 iti.setCountry("gb");
 ```
 
-### setDisabled
+###### setDisabled
 Type: `(disabled: boolean) => void`  
 
 Updates the disabled attribute of both the telephone input and the selected country button. Accepts a boolean value. _Note: use this instead of updating the disabled attribute of the input directly, as that leaves the selected country clickable._
@@ -179,7 +179,7 @@ Updates the disabled attribute of both the telephone input and the selected coun
 iti.setDisabled(true);
 ```
 
-### setNumber
+###### setNumber
 Type: `(number: string) => void`  
 
 Insert a number, and update the selected country accordingly. _Note that if [`formatOnDisplay`](/docs/options#formatondisplay) is enabled, this will attempt to format the number to either national or international format according to the [`nationalMode`](/docs/options#nationalmode) option._  
@@ -188,7 +188,7 @@ Insert a number, and update the selected country accordingly. _Note that if [`fo
 iti.setNumber("+447733123456");
 ```
 
-### setPlaceholderNumberType
+###### setPlaceholderNumberType
 Type: `(type: string) => void`  
 
 Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option.
@@ -197,7 +197,7 @@ Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option
 iti.setPlaceholderNumberType("FIXED_LINE");
 ```
 
-### setReadonly
+###### setReadonly
 Type: `(readonly: boolean) => void`  
 
 Updates the readonly attribute of the telephone input and disables the selected country button. Accepts a boolean value. _Note: use this instead of updating the readonly attribute of the input directly, as that leaves the selected country clickable._
@@ -208,7 +208,7 @@ iti.setReadonly(true);
 
 ## Static Methods
 
-### attachUtils
+###### attachUtils
 Type: `(source: () => Promise<unknown>) => Promise<unknown> | null`  
 
 An alternative to the [`loadUtils`](/docs/options#loadutils) option (which loads the utils.js script at plugin initialisation time), this method allows you to load the utils at your time of choosing. See [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more information. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can `await` it to know when it's finished. _Note: This method should only be called once per page - it will return `null` if utils have already been loaded, or are in the process of being loaded._
@@ -219,7 +219,7 @@ await intlTelInput.attachUtils(loadUtils);
 // you can now call methods that use utils
 ```
 
-### getCountryData
+###### getCountryData
 Type: `() => Array<{ name: string, iso2: string, dialCode: string }>`  
 
 Retrieve the plugin's country data - either to re-use elsewhere (e.g. to generate your own country dropdown), or alternatively, you could use it to modify the country data. Note that any modifications must be done before initialising the plugin.  
@@ -238,7 +238,7 @@ Returns an array of country objects:
 }, ...]
 ```
 
-### getInstance
+###### getInstance
 Type: `(input: HTMLInputElement) => Iti | null`  
 
 After initialising the plugin, you can always access the instance again using this method, by just passing in the relevant input element.
