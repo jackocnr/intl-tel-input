@@ -7,7 +7,7 @@ A Vue component for the intl-tel-input JavaScript plugin. View the [source code]
 - [Demo](#demo)
 - [Getting started](#getting-started)
 - [Props](#props)
-- [Initialisation options](#initialisation-options)
+- [Plugin initialisation options](#plugin-initialisation-options)
 - [Events](#events)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
@@ -89,7 +89,7 @@ The component supports `v-model` for two-way binding. When the bound value chang
 ```
 
 
-## Initialisation options
+## Plugin initialisation options
 
 All of the plugin's [initialisation options](/docs/options) are supported as individual Vue component props using the same option name. For example:
 

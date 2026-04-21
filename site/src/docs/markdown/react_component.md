@@ -7,7 +7,7 @@ A React component for the intl-tel-input JavaScript plugin. View the [source cod
 - [Demo](#demo)
 - [Getting started](#getting-started)
 - [Props](#props)
-- [Initialisation options](#initialisation-options)
+- [Plugin initialisation options](#plugin-initialisation-options)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
 - [Troubleshooting](#troubleshooting)
@@ -101,7 +101,7 @@ Default: `undefined`
 Optional controlled value. If provided, the component becomes controlled — whenever this prop changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). Leave it `undefined` to keep the component uncontrolled and use `inputProps.defaultValue` for the initial value instead. **Important:** when using `value`, you should also use `onChangeNumber` to keep the value in sync with user input, otherwise programmatic updates (e.g. clearing the input) may not work as expected.
 
 
-## Initialisation options
+## Plugin initialisation options
 
 All of the plugin's [initialisation options](/docs/options) are supported as individual React props using the same option name. For example:
 

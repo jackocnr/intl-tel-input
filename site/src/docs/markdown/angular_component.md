@@ -7,7 +7,7 @@ An Angular component for the intl-tel-input JavaScript plugin. View the [source 
 - [Demo](#demo)
 - [Getting started](#getting-started)
 - [Props](#props)
-- [Initialisation options](#initialisation-options)
+- [Plugin initialisation options](#plugin-initialisation-options)
 - [Form integration](#form-integration-ngmodel--formcontrol)
 - [Events](#events)
 - [Accessing instance methods](#accessing-instance-methods)
@@ -82,7 +82,7 @@ Default: `false`
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
 
 
-## Initialisation options
+## Plugin initialisation options
 
 All of the plugin's [initialisation options](/docs/options) are supported as individual Angular component inputs using the same option name. For example:
 
