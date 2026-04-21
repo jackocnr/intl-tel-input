@@ -6,6 +6,7 @@ How to get up and running with the JavaScript plugin. For the  React/Angular/Sve
 - [Using a bundler, e.g. Vite](#using-a-bundler-e-g-vite)
 - [Using a script tag](#using-a-script-tag)
 - [Recommended usage](#recommended-usage)
+- [Next steps](#next-steps)
 
 ### Using a bundler, e.g. Vite
 
@@ -23,13 +24,16 @@ import "intl-tel-input/styles";
 
 const input = document.querySelector("#phone");
 intlTelInput(input, {
+  // modern bundlers will place utils in a separate bundle, loaded on demand
   loadUtils: () => import("intl-tel-input/utils"),
 });
 ```
 
-Most bundlers (such as Vite, Turbopack or Parcel) will see the `loadUtils` dynamic import and place the [utils script](/docs/utils) in a separate bundle and load it asynchronously, when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other example.
+3. Customize with any of the plugin's [initialisation options](/docs/options).
 
 ### Using a script tag
+
+This example loads the assets from [jsDelivr](https://www.jsdelivr.com/) for a quick start. Alternatively, use your own hosted files.
 
 1. Add the CSS
   ```html
@@ -47,7 +51,7 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see the `loadUtils` dynam
   </script>
   ```
 
-The examples above load the files from [jsDelivr](https://www.jsdelivr.com/) for a quick start. To host the files yourself instead, download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest) (or install with [npm](https://www.npmjs.com/package/intl-tel-input)) and replace the URLs with your own paths, e.g. `path/to/intlTelInput.css`, `path/to/intlTelInput.js`, and `/path/to/utils.js` for the `loadUtils` import.
+3. Customize with any of the plugin's [initialisation options](/docs/options).
 
 ## Recommended usage
 
@@ -62,4 +66,8 @@ The examples above load the files from [jsDelivr](https://www.jsdelivr.com/) for
 **Translate the UI.** If you know the user's language, you can translate the country names and UI strings — see [Localisation](/docs/localisation).
 
 _<sup>*</sup>Except for some small satellite territories, which share number ranges with the main country, in which case we default to selecting the main country._
+
+## Next steps
+
+The plugin has dozens of [initialisation options](/docs/options) for customizing its behaviour — country picker, formatting, validation, placeholders, localisation, and more. Browse the full list, or try them interactively in the [playground](/playground).
 
