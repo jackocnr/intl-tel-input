@@ -113,7 +113,9 @@ Additional class(es) to add to the country search input element (requires [`coun
 Type: `boolean`  
 Default: `false`  
 
-Display the selected country's international dial code next to the input, so it looks like it's part of the typed number. This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. In the case that the user tries to type a new dial code (as well), we automatically open the country dropdown and put the newly typed dial code in the search input instead. So if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`allowDropdown`](#allowdropdown) and [`countrySearch`](#countrysearch) to be enabled). Try the plugin with this enabled in the [Playground](/playground?separateDialCode=true&initialCountry=gb#user-interface-options). _Note: previously named `showSelectedDialCode`._
+Display the selected country's international dial code next to the input, so it looks like it's part of the typed number, but is actually separate (they cannot delete it). This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. Play with this option in the [Playground](/playground). _Note: previously named `showSelectedDialCode`._
+
+If the user tries to type a new dial code (as well as the displayed one), we automatically open the country dropdown and focus the search input, so the dial code appears there instead - this way, if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`allowDropdown`](#allowdropdown) and [`countrySearch`](#countrysearch) to be enabled).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/img/iti-separate-dark.png">
@@ -196,9 +198,9 @@ Format numbers in the national format, rather than the international format. Thi
 Type: `boolean`  
 Default: `false`  
 
-As the user types (or pastes) in the input, reject any irrelevant characters<sup>*</sup>. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground?strictMode=true&initialCountry=us#formatting-options).
+As the user types (or pastes) in the input, reject any irrelevant characters<sup>*</sup>. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). Play with this option in the [Playground](/playground).
 
-<sup>*</sup> When user input is rejected or modified, the plugin fires a [`strict:reject`](/docs/events#strict-reject) event — listen for this to give the user feedback (e.g. a toast) so the rejection isn't silent. For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
+<sup>*</sup>When user input is rejected or modified, the plugin fires a [`strict:reject`](/docs/events#strict-reject) event — listen for this to give the user feedback (e.g. a toast) so the rejection isn't silent. For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
 
 ## Validation options
 

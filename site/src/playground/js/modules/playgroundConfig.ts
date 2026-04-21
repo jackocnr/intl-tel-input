@@ -244,7 +244,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     separateDialCode: {
       type: "boolean",
-      tooltip: "Show the dial code separately from the number input.",
+      tooltip: "Display the selected country’s dial code next to the input, so it looks like it’s part of the typed number.",
     },
     showFlags: {
       type: "boolean",
