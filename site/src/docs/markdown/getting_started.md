@@ -3,29 +3,9 @@
 This page is for getting started with the JavaScript plugin. For the framework components (React, Vue, Angular and Svelte), see [Choosing your integration](/docs/choose-integration).
 
 ## Contents
-- [Using a CDN](#using-a-cdn)
 - [Using a bundler, e.g. Vite](#using-a-bundler-e-g-vite)
-- [Not using a bundler](#not-using-a-bundler)
+- [Using a script tag](#using-a-script-tag)
 - [Recommended usage](#recommended-usage)
-
-### Using a CDN
-
-1. Add the CSS
-  ```html
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.2/dist/css/intlTelInput.css">
-  ```
-
-2. Add the plugin script and initialise it on your input element
-  ```html
-  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.2/dist/js/intlTelInput.min.js"></script>
-  <script>
-    const input = document.querySelector("#phone");
-    window.intlTelInput(input, {
-      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.2/dist/js/utils.js"),
-    });
-  </script>
-  ```
-
 
 ### Using a bundler, e.g. Vite
 
@@ -49,39 +29,37 @@ intlTelInput(input, {
 
 Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utils script](/docs/utils) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
 
-### Not using a bundler
+### Using a script tag
 
-1. Download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest), or better yet install it with [npm](https://www.npmjs.com/package/intl-tel-input)
-
-2. Add the stylesheet
+1. Add the CSS
   ```html
-  <link rel="stylesheet" href="path/to/intlTelInput.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.2/dist/css/intlTelInput.css">
   ```
 
-3. Add the plugin script and initialise it on your input element
+2. Add the plugin script and initialise it on your input element
   ```html
-  <script src="path/to/intlTelInput.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.2/dist/js/intlTelInput.min.js"></script>
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtils: () => import("https://your-domain.com/path/to/utils.js"),
+      loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.2/dist/js/utils.js"),
     });
   </script>
   ```
 
+The examples above load the files from [jsDelivr](https://www.jsdelivr.com/) for a quick start. To host the files yourself instead, download the [latest release](https://github.com/jackocnr/intl-tel-input/releases/latest) (or install with [npm](https://www.npmjs.com/package/intl-tel-input)) and replace the URLs with your own paths, e.g. `path/to/intlTelInput.css`, `path/to/intlTelInput.js`, and `https://your-domain.com/path/to/utils.js` for the `loadUtils` import.
+
 ## Recommended usage
 
-We recommend three things:
+**Load the utils module.** [Lazy-load `utils.js`](/docs/utils#loading-the-utils-script) to enable formatting and validation.
 
-- **[Load the utils.js module](/docs/utils#loading-the-utils-script)** to enable formatting and validation.
-- **Store numbers in full international (E.164) format**, e.g. `"+17024181234"`. The dial code is embedded, so you don't need to store the country separately*.
-- **Pass the stored E.164 number as the input value on initialisation.** The plugin will automatically set the country* and format the number according to your options (e.g. with [`nationalMode`](/docs/options#nationalmode) it will display the number in national format, stripping the dial code and adding the national prefix if required).
+**Store and restore numbers in E.164 format.** Since the dial code is embedded in the number (e.g. `"+17024181234"`), you don't need to store the country separately. To read the number out in E.164, use [`getNumber`](/docs/methods#getnumber). To restore it, pass the stored E.164 number as the input value on initialisation — the plugin will automatically set the country<sup>*</sup> and format the number according to your options.
 
-To read the number back out in E.164, use [`getNumber`](/docs/methods#getnumber). This works even when [`nationalMode`](/docs/options#nationalmode) or [`separateDialCode`](/docs/options#separatedialcode) is enabled.
+**Validate before saving.** Before storing a number, call [`isValidNumber`](/docs/methods#isvalidnumber) (requires the utils module) and reject invalid input.
 
-If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set it to `"auto"` along with the [`geoIpLookup`](/docs/options#geoiplookup) option to determine the country from their IP address — [see example](/examples/lookup-country).
+**Set the initial country.** If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set it to `"auto"` along with the [`geoIpLookup`](/docs/options#geoiplookup) option to determine the country from their IP address — [see example](/examples/lookup-country).
 
-If you know the user's language, you can translate the country names and UI strings — [see example](/playground?countryNameLocale=ru&i18n=ru#translation-options).
+**Translate the UI.** If you know the user's language, you can translate the country names and UI strings — see [Localisation](/docs/localisation).
 
-_*Except for some small satellite territories, which share number ranges with the main country. For example, Åland Islands shares the number range +3584 with Finland, so a number like +358 4X XXX XXXX could belong to either — when initialising the plugin with a number like this, we default to selecting the main country (Finland). In order to ensure the user's original selected flag is re-displayed in cases like these, you'd need to store the selected country iso2 code alongside the number, and use it for the `initialCountry` during initialisation. (Search [`data.ts`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/data.ts) for "shared" for more examples.)_
+_<sup>*</sup>Except for some small satellite territories, which share number ranges with the main country, in which case we default to selecting the main country._
 
