@@ -35,9 +35,7 @@ Then, add something like this to your code:
 </script>
 
 <template>
-  <IntlTelInput
-    initialCountry="us"
-  />
+  <IntlTelInput initialCountry="us" />
 </template>
 ```
 

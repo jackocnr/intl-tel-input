@@ -33,12 +33,10 @@ Then, add something like this to your code:
 import IntlTelInput from "intl-tel-input/angularWithUtils";
 import "intl-tel-input/styles";
 
-<intl-tel-input
-  #telInput
-  (numberChange)="handleNumberChange($event)"
-  (validityChange)="handleValidityChange($event)"
-  initialCountry="us"
-/>
+@Component({
+  imports: [IntlTelInput],
+  template: `<intl-tel-input initialCountry="us" />`,
+})
 ```
 
 > [!NOTE]

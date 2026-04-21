@@ -32,11 +32,9 @@ Then, add something like this to your code:
 import IntlTelInput from "intl-tel-input/reactWithUtils";
 import "intl-tel-input/styles";
 
-<IntlTelInput
-  onChangeNumber={setNumber}
-  onChangeValidity={setIsValid}
-  initialCountry="us"
-/>
+const PhoneInput = () => (
+  <IntlTelInput initialCountry="us" />
+);
 ```
 
 See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/validation/ValidationApp.tsx) for a more fleshed-out example of how to handle validation.

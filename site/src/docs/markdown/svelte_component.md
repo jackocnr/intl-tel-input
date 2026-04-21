@@ -33,9 +33,7 @@ Then, add something like this to your code:
   import "intl-tel-input/styles";
 </script>
 
-<IntlTelInput
-  initialCountry="us"
-/>
+<IntlTelInput initialCountry="us" />
 ```
 
 See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/demo/validation/App.svelte) for a more fleshed-out example of how to handle validation.
