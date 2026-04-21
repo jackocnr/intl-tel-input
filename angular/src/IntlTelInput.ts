@@ -130,6 +130,9 @@ class IntlTelInput
   // writeValue may be called by Angular forms before utils has loaded; queue it until then
   private pendingWriteValue?: string;
 
+  // if an input event fires before utils has loaded, we defer the update until the promise resolves
+  private pendingUpdate = false;
+
   // eslint-disable-next-line class-methods-use-this
   private onChange: (value: string) => void = () => {};
   // eslint-disable-next-line class-methods-use-this
@@ -163,6 +166,14 @@ class IntlTelInput
         this.pendingWriteValue = undefined;
       } else if (this.initialValue) {
         this.iti.setNumber(this.initialValue);
+      }
+      // if an input event fired during the utils-loading gap, replay it now so the skipped emissions fire
+      if (this.pendingUpdate) {
+        this.pendingUpdate = false;
+        this.handleInput();
+      } else if (this.inputRef.nativeElement.value) {
+        // input was populated via writeValue/initialValue — re-run validation now that utils is loaded
+        this.onValidatorChange();
       }
     });
   }
@@ -221,6 +232,11 @@ class IntlTelInput
 
   handleInput() {
     if (!this.iti) {
+      return;
+    }
+    // if utils has not loaded yet, getNumber/isValidNumber/etc. will throw. defer until the promise resolves.
+    if (!intlTelInput.utils) {
+      this.pendingUpdate = true;
       return;
     }
 
@@ -368,7 +384,9 @@ class IntlTelInput
   // ============ Validator Implementation ============
 
   validate(_control: AbstractControl): ValidationErrors | null {
-    if (!this.iti || !this.iti.getNumber()) {
+    // if utils has not loaded yet, getNumber/isValidNumber/etc. will throw. treat as valid until then;
+    // the ngAfterViewInit promise handler calls onValidatorChange once utils is ready so forms will re-validate.
+    if (!this.iti || !intlTelInput.utils || !this.iti.getNumber()) {
       return null;
     }
 

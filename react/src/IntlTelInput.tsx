@@ -58,6 +58,8 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   const lastEmittedCountryRef = useRef<string | undefined>(undefined);
   const lastEmittedValidityRef = useRef<boolean | undefined>(undefined);
   const lastEmittedErrorCodeRef = useRef<number | null | undefined>(undefined);
+  // if an input event fires before utils has loaded, we defer the update until the promise resolves
+  const pendingUpdateRef = useRef<boolean>(false);
 
   // expose the instance and input ref to the parent component
   useImperativeHandle(ref, () => ({
@@ -81,6 +83,11 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   const update = useCallback((): void => {
     // if the instance is not valid (e.g. has been destroyed/unmounted), do not attempt to call any methods on it
     if (!itiRef.current?.isActive()) {
+      return;
+    }
+    // if utils has not loaded yet, getNumber/isValidNumber/etc. will throw. defer until the promise resolves.
+    if (!intlTelInput.utils) {
+      pendingUpdateRef.current = true;
       return;
     }
     const num = itiRef.current.getNumber() ?? "";
@@ -129,10 +136,20 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }, []);
 
   useEffect(() => {
-    // when plugin initialisation has finished (e.g. loaded utils script), seed the refs
-    // with the current state so we don't fire change callbacks on initial mount
-    itiRef.current?.promise.then(seedInitialState);
-  }, [seedInitialState]);
+    itiRef.current?.promise.then(() => {
+      if (!itiRef.current?.isActive()) {
+        return;
+      }
+      // if an input event fired during the utils-loading gap, replay it now so the skipped emissions fire.
+      // otherwise seed the refs with current state so we don't fire change callbacks on initial mount.
+      if (pendingUpdateRef.current) {
+        pendingUpdateRef.current = false;
+        update();
+      } else {
+        seedInitialState();
+      }
+    });
+  }, [seedInitialState, update]);
 
   useEffect(() => {
     if (itiRef.current && disabled !== undefined) {

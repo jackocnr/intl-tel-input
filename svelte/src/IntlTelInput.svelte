@@ -31,6 +31,8 @@
   let lastEmittedValidity: boolean | undefined = $state();
   let lastEmittedErrorCode: number | null | undefined = $state();
   let hasInitialized = $state(false);
+  // if an input event fires before utils has loaded, we defer the update until the promise resolves
+  let pendingUpdate = false;
 
   // Validation helper
   const isValid = (): boolean | null => {
@@ -43,6 +45,11 @@
   // Update handlers
   const updateValidity = () => {
     if (!instance) return;
+    // if utils has not loaded yet, isValidNumber/getValidationError will throw. defer until the promise resolves.
+    if (!intlTelInput.utils) {
+      pendingUpdate = true;
+      return;
+    }
     const isCurrentlyValid = isValid();
     if (isCurrentlyValid === null) return;
 
@@ -62,6 +69,11 @@
 
   const updateValue = () => {
     if (!instance?.isActive()) {
+      return;
+    }
+    // if utils has not loaded yet, getNumber will throw. defer until the promise resolves.
+    if (!intlTelInput.utils) {
+      pendingUpdate = true;
       return;
     }
     const number = instance.getNumber() ?? "";
@@ -98,14 +110,19 @@
       instance.promise.then(() => {
         if (!instance?.isActive()) return;
         if (initialValue) instance.setNumber(initialValue);
-        lastEmittedNumber = instance.getNumber() ?? "";
-        const initialValid = isValid();
-        if (initialValid !== null) {
-          lastEmittedValidity = !!initialValid;
-          lastEmittedErrorCode = initialValid ? null : instance.getValidationError();
+        // if an input event fired during the utils-loading gap, replay it now so the skipped emissions fire.
+        // otherwise seed silently so we don't fire change callbacks on initial mount.
+        if (pendingUpdate) {
+          pendingUpdate = false;
+          updateCountry();
+        } else {
+          lastEmittedNumber = instance.getNumber() ?? "";
+          const initialValid = isValid();
+          if (initialValid !== null) {
+            lastEmittedValidity = !!initialValid;
+            lastEmittedErrorCode = initialValid ? null : instance.getValidationError();
+          }
         }
-        // update all state values now that initialisation has finished (updateCountry calls updateValue which calls updateValidity)
-        updateCountry();
       });
     }
   });

@@ -103,12 +103,22 @@ const lastEmittedNumber = ref<string>();
 const lastEmittedCountry = ref<string>();
 const lastEmittedValidity = ref<boolean>();
 const lastEmittedErrorCode = ref<number | null>();
+// if an input event fires before utils has loaded, we defer the update until the promise resolves
+let pendingUpdate = false;
 
 const isValid = () => (props.usePreciseValidation
   ? instance.value!.isValidNumberPrecise()
   : instance.value!.isValidNumber()) ?? false;
 
 const updateValidity = () => {
+  if (!instance.value?.isActive()) {
+    return;
+  }
+  // if utils has not loaded yet, isValidNumber/getValidationError will throw. defer until the promise resolves.
+  if (!intlTelInput.utils) {
+    pendingUpdate = true;
+    return;
+  }
   const valid = isValid();
   const errorCode = valid
     ? null
@@ -127,6 +137,11 @@ const updateValidity = () => {
 
 const updateValue = () => {
   if (!instance.value?.isActive()) {
+    return;
+  }
+  // if utils has not loaded yet, getNumber will throw. defer until the promise resolves.
+  if (!intlTelInput.utils) {
+    pendingUpdate = true;
     return;
   }
   const number = instance.value.getNumber() ?? "";
@@ -175,13 +190,18 @@ onMounted(() => {
     if (displayed.value) {
       instance.value.setNumber(displayed.value);
     }
-    lastEmittedNumber.value = instance.value.getNumber() ?? "";
-    lastEmittedValidity.value = isValid();
-    lastEmittedErrorCode.value = lastEmittedValidity.value
-      ? null
-      : instance.value.getValidationError();
-    // update state values now that initialisation has finished. updateCountry calls updateValue, which calls updateValidity.
-    updateCountry();
+    // if an input event fired during the utils-loading gap, replay it now so the skipped emissions fire.
+    // otherwise seed silently so we don't fire change callbacks on initial mount.
+    if (pendingUpdate) {
+      pendingUpdate = false;
+      updateCountry();
+    } else {
+      lastEmittedNumber.value = instance.value.getNumber() ?? "";
+      lastEmittedValidity.value = isValid();
+      lastEmittedErrorCode.value = lastEmittedValidity.value
+        ? null
+        : instance.value.getValidationError();
+    }
   });
 });
 
