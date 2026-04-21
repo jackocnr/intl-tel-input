@@ -106,6 +106,8 @@ export class Iti {
   #isActive = true;
   #abortController!: AbortController;
   #numerals!: Numerals;
+  //* Tracks whether the user has typed/pasted their own formatting chars, so AYT-formatting should back off.
+  #userOverrideFormatting = false;
 
   #autoCountryDeferred?: Deferred<void>;
   #utilsDeferred?: Deferred<void>;
@@ -402,8 +404,8 @@ export class Iti {
     });
   }
 
-  //* Reformat the input value using libphonenumber's AYT formatter, preserving caret position.
-  #reformatAsYouType(inputValue: string, isDeleteForwards: boolean): void {
+  //* Format the input value using libphonenumber's AYT formatter, preserving caret position (called after an input event).
+  #formatAsYouType(inputValue: string, isDeleteForwards: boolean): void {
     const currentCaretPos = this.#ui.telInputEl.selectionStart || 0;
     const valueBeforeCaret = inputValue.substring(0, currentCaretPos);
     const relevantCharsBeforeCaret = valueBeforeCaret.replace(
@@ -449,175 +451,168 @@ export class Iti {
   }
 
   #bindInputListener(): void {
-    const {
-      strictMode,
-      formatAsYouType,
-      separateDialCode,
-      allowDropdown,
-      countrySearch,
-    } = this.#options;
-    let userOverrideFormatting = false;
     //* If the initial value contains any alpha chars (e.g. the extension separator "ext."), then set the override, as libphonenumber's AYT-formatter cannot handle alphas.
-    if (REGEX.ALPHA_UNICODE.test(this.#getTelInputValue())) {
-      userOverrideFormatting = true;
-    }
-
-    //* On input event: (1) Update selected country, (2) Format-as-you-type.
-    //* Note that this fires AFTER the input is updated.
-    const handleInputEvent = (e: InputEvent): void => {
-      //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents (from setNumber/setCountry), so we read detail via a cast.
-      const detail = e?.detail as unknown as Record<string, unknown> | null | undefined;
-      //* Skip re-entry from our own synthetic input events fired after a country change —
-      //* selectListItem/setCountry have already done the country + formatting work.
-      if (detail?.["isCountryChange"]) {
-        return;
-      }
-      const inputValue = this.#getTelInputValue();
-
-      //* Android workaround for handling plus when separateDialCode enabled
-      if (
-        this.#isAndroid &&
-        e?.data === "+" &&
-        separateDialCode &&
-        allowDropdown &&
-        countrySearch
-      ) {
-        this.#handleAndroidPlusKey(inputValue);
-        return;
-      }
-
-      //* Android strictMode workaround: the keydown-based filter can't block thesee
-      if (
-        this.#isAndroid &&
-        strictMode &&
-        (e?.data === " " || e?.data === "-" || e?.data === ".")
-      ) {
-        this.#handleAndroidStrictReject(inputValue, e.data);
-        return;
-      }
-
-      //* Update selected country.
-      if (this.#updateCountryFromNumber(inputValue)) {
-        this.#dispatchCountryChangeEvent();
-      }
-
-      //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
-      const isFormattingChar = e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
-      const isPaste = e?.inputType === INPUT_TYPES.PASTE && inputValue;
-      if (isFormattingChar || (isPaste && !strictMode)) {
-        userOverrideFormatting = true;
-      } else if (!REGEX.NON_PLUS_NUMERIC.test(inputValue)) {
-        //* If user removes all formatting chars, then reset the override.
-        userOverrideFormatting = false;
-      }
-
-      //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
-      // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets - when these numbers contain spaces, they're treated as words, and so they get reversed in a way that breaks our calculations
-      if (
-        formatAsYouType &&
-        !userOverrideFormatting &&
-        !detail?.["isSetNumber"] &&
-        this.#numerals.isAscii()
-      ) {
-        this.#reformatAsYouType(
-          inputValue,
-          e?.inputType === INPUT_TYPES.DELETE_FORWARD,
-        );
-      }
-
-      //* Strip any typed dial code when separateDialCode enabled
-      if (separateDialCode) {
-        this.#stripTypedDialCode(inputValue);
-      }
-    };
+    this.#userOverrideFormatting = REGEX.ALPHA_UNICODE.test(
+      this.#getTelInputValue(),
+    );
     //* This handles individual key presses as well as cut/paste events
     //* the advantage of the "input" event over "keyup" etc is that "input" only fires when the value changes,
     //* whereas "keyup" fires even for shift key, arrow key presses etc.
     this.#ui.telInputEl.addEventListener(
       "input",
-      handleInputEvent as EventListener,
+      this.#handleInputEvent as EventListener,
       {
         signal: this.#abortController!.signal,
       },
     );
   }
 
-  #bindKeydownListener(): void {
-    const { strictMode, separateDialCode, allowDropdown, countrySearch } =
-      this.#options;
-    if (!strictMode && !separateDialCode) {
+  //* On input event: (1) Update selected country, (2) Format-as-you-type.
+  //* Note that this fires AFTER the input is updated.
+  #handleInputEvent = (e: InputEvent): void => {
+    const { strictMode, formatAsYouType, separateDialCode, allowDropdown, countrySearch } = this.#options;
+    //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents (from setNumber/setCountry), so we read detail via a cast.
+    const detail = e?.detail as unknown as Record<string, unknown> | null | undefined;
+    //* Skip re-entry from our own synthetic input events fired after a country change —
+    //* selectListItem/setCountry have already done the country + formatting work.
+    if (detail?.["isCountryChange"]) {
+      return;
+    }
+    const inputValue = this.#getTelInputValue();
+
+    //* Android workaround for handling plus when separateDialCode enabled
+    if (
+      this.#isAndroid &&
+      e?.data === "+" &&
+      separateDialCode &&
+      allowDropdown &&
+      countrySearch
+    ) {
+      this.#handleAndroidPlusKey(inputValue);
       return;
     }
 
-    //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
-    //* Note that this fires BEFORE the input is updated.
-    const handleKeydownEvent = (e: KeyboardEvent): void => {
-      //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
-      if (!e.key || e.key.length !== 1 || e.altKey || e.ctrlKey || e.metaKey) {
-        return;
-      }
+    //* Android strictMode workaround: the keydown-based filter can't block these
+    if (
+      this.#isAndroid &&
+      strictMode &&
+      (e?.data === " " || e?.data === "-" || e?.data === ".")
+    ) {
+      this.#handleAndroidStrictReject(inputValue, e.data);
+      return;
+    }
 
-      //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
-      if (separateDialCode && allowDropdown && countrySearch && e.key === "+") {
-        e.preventDefault();
-        this.#openDropdownWithPlus();
-        return;
-      }
-      //* If strictMode disabled: do nothing, else: enforce strictMode by preventing invalid characters.
-      if (!strictMode) {
-        return;
-      }
+    //* Update selected country.
+    if (this.#updateCountryFromNumber(inputValue)) {
+      this.#dispatchCountryChangeEvent();
+    }
 
-      const inputValue = this.#getTelInputValue();
-      const alreadyHasPlus = inputValue.startsWith("+");
-      const isInitialPlus =
-        !alreadyHasPlus &&
-        this.#ui.telInputEl.selectionStart === 0 &&
-        e.key === "+";
-      const normalisedKey = this.#numerals.normalise(e.key);
-      const isNumeric = /^[0-9]$/.test(normalisedKey);
-      const isAllowedChar = separateDialCode
-        ? isNumeric
-        : isInitialPlus || isNumeric;
+    //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
+    const isFormattingChar = e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
+    const isPaste = e?.inputType === INPUT_TYPES.PASTE && inputValue;
+    if (isFormattingChar || (isPaste && !strictMode)) {
+      this.#userOverrideFormatting = true;
+    } else if (!REGEX.NON_PLUS_NUMERIC.test(inputValue)) {
+      //* If user removes all formatting chars, then reset the override.
+      this.#userOverrideFormatting = false;
+    }
 
-      // insert the new character in the right place
-      const input = this.#ui.telInputEl;
-      const selStart = input.selectionStart;
-      const selEnd = input.selectionEnd;
-      const before = inputValue.slice(0, selStart ?? undefined);
-      const after = inputValue.slice(selEnd ?? undefined);
-      const newValue = before + normalisedKey + after;
-      const newFullNumber = this.#buildFullNumber(newValue);
+    //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
+    // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets - when these numbers contain spaces, they're treated as words, and so they get reversed in a way that breaks our calculations
+    if (
+      formatAsYouType &&
+      !this.#userOverrideFormatting &&
+      !detail?.["isSetNumber"] &&
+      this.#numerals.isAscii()
+    ) {
+      this.#formatAsYouType(
+        inputValue,
+        e?.inputType === INPUT_TYPES.DELETE_FORWARD,
+      );
+    }
 
-      let hasExceededMaxLength = false;
-      if (intlTelInput.utils && this.#maxCoreNumberLength) {
-        const coreNumber = intlTelInput.utils.getCoreNumber(
-          newFullNumber,
-          this.#selectedCountry?.iso2,
-        );
-        hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
-      }
+    //* Strip any typed dial code when separateDialCode enabled
+    if (separateDialCode) {
+      this.#stripTypedDialCode(inputValue);
+    }
+  };
 
-      const newCountry = this.#resolveCountryChangeFromNumber(newFullNumber);
-      const isChangingDialCode = newCountry !== null;
-
-      // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
-      if (
-        !isAllowedChar ||
-        (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)
-      ) {
-        this.#dispatchEvent(EVENTS.STRICT_REJECT, {
-          source: "key",
-          rejectedInput: e.key,
-          reason: !isAllowedChar ? "invalid" : "max-length",
-        });
-        e.preventDefault();
-      }
-    };
-    this.#ui.telInputEl.addEventListener("keydown", handleKeydownEvent, {
+  #bindKeydownListener(): void {
+    const { strictMode, separateDialCode } = this.#options;
+    if (!strictMode && !separateDialCode) {
+      return;
+    }
+    this.#ui.telInputEl.addEventListener("keydown", this.#handleKeydownEvent, {
       signal: this.#abortController!.signal,
     });
   }
+
+  //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
+  //* Note that this fires BEFORE the input is updated.
+  #handleKeydownEvent = (e: KeyboardEvent): void => {
+    const { strictMode, separateDialCode, allowDropdown, countrySearch } = this.#options;
+    //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
+    if (!e.key || e.key.length !== 1 || e.altKey || e.ctrlKey || e.metaKey) {
+      return;
+    }
+
+    //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
+    if (separateDialCode && allowDropdown && countrySearch && e.key === "+") {
+      e.preventDefault();
+      this.#openDropdownWithPlus();
+      return;
+    }
+    //* If strictMode disabled: do nothing, else: enforce strictMode by preventing invalid characters.
+    if (!strictMode) {
+      return;
+    }
+
+    const inputValue = this.#getTelInputValue();
+    const alreadyHasPlus = inputValue.startsWith("+");
+    const isInitialPlus =
+      !alreadyHasPlus &&
+      this.#ui.telInputEl.selectionStart === 0 &&
+      e.key === "+";
+    const normalisedKey = this.#numerals.normalise(e.key);
+    const isNumeric = /^[0-9]$/.test(normalisedKey);
+    const isAllowedChar = separateDialCode
+      ? isNumeric
+      : isInitialPlus || isNumeric;
+
+    // insert the new character in the right place
+    const input = this.#ui.telInputEl;
+    const selStart = input.selectionStart;
+    const selEnd = input.selectionEnd;
+    const before = inputValue.slice(0, selStart ?? undefined);
+    const after = inputValue.slice(selEnd ?? undefined);
+    const newValue = before + normalisedKey + after;
+    const newFullNumber = this.#buildFullNumber(newValue);
+
+    let hasExceededMaxLength = false;
+    if (intlTelInput.utils && this.#maxCoreNumberLength) {
+      const coreNumber = intlTelInput.utils.getCoreNumber(
+        newFullNumber,
+        this.#selectedCountry?.iso2,
+      );
+      hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
+    }
+
+    const newCountry = this.#resolveCountryChangeFromNumber(newFullNumber);
+    const isChangingDialCode = newCountry !== null;
+
+    // ignore the char if (1) it's not an allowed char, or (2) this new char will exceed the max length and this char will not change the selected country and it's not the initial plus (aka they're starting to type a dial code)
+    if (
+      !isAllowedChar ||
+      (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)
+    ) {
+      this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+        source: "key",
+        rejectedInput: e.key,
+        reason: !isAllowedChar ? "invalid" : "max-length",
+      });
+      e.preventDefault();
+    }
+  };
 
   #bindPasteListener(): void {
     // Sanitise pasted values in strictMode
@@ -625,51 +620,74 @@ export class Iti {
       return;
     }
 
-    const handlePasteEvent = (e: ClipboardEvent): void => {
-      // in strict mode we always control the pasted value
-      e.preventDefault();
+    this.#ui.telInputEl.addEventListener("paste", this.#handlePasteEvent, {
+      signal: this.#abortController!.signal,
+    });
+  }
 
-      // shortcuts
-      const input = this.#ui.telInputEl;
-      const selStart = input.selectionStart;
-      const selEnd = input.selectionEnd;
-      const inputValue = this.#getTelInputValue();
-      const before = inputValue.slice(0, selStart ?? undefined);
-      const after = inputValue.slice(selEnd ?? undefined);
-      const iso2 = this.#selectedCountry?.iso2;
+  #handlePasteEvent = (e: ClipboardEvent): void => {
+    // in strict mode we always control the pasted value
+    e.preventDefault();
 
-      const pastedRaw = e.clipboardData!.getData("text");
-      const pasted = this.#numerals.normalise(pastedRaw);
-      // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
-      const initialCharSelected = selStart === 0 && selEnd! > 0;
-      const allowLeadingPlus =
-        !inputValue.startsWith("+") || initialCharSelected;
-      // just numerics and pluses
-      const allowedChars = pasted.replace(REGEX.NON_PLUS_NUMERIC_GLOBAL, "");
-      const hasLeadingPlus = allowedChars.startsWith("+");
-      // just numerics
-      const numerics = allowedChars.replace(/\+/g, "");
-      const sanitised =
-        hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
-      let newValue = before + sanitised + after;
+    // shortcuts
+    const input = this.#ui.telInputEl;
+    const selStart = input.selectionStart;
+    const selEnd = input.selectionEnd;
+    const inputValue = this.#getTelInputValue();
+    const before = inputValue.slice(0, selStart ?? undefined);
+    const after = inputValue.slice(selEnd ?? undefined);
+    const iso2 = this.#selectedCountry?.iso2;
 
-      // track the most-severe modification reason to emit as strict:reject at the end
-      let rejectReason: StrictRejectReason | null =
-        sanitised !== pasted ? "invalid" : null;
+    const pastedRaw = e.clipboardData!.getData("text");
+    const pasted = this.#numerals.normalise(pastedRaw);
+    // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
+    const initialCharSelected = selStart === 0 && selEnd! > 0;
+    const allowLeadingPlus =
+      !inputValue.startsWith("+") || initialCharSelected;
+    // just numerics and pluses
+    const allowedChars = pasted.replace(REGEX.NON_PLUS_NUMERIC_GLOBAL, "");
+    const hasLeadingPlus = allowedChars.startsWith("+");
+    // just numerics
+    const numerics = allowedChars.replace(/\+/g, "");
+    const sanitised =
+      hasLeadingPlus && allowLeadingPlus ? `+${numerics}` : numerics;
+    let newValue = before + sanitised + after;
 
-      // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
-      // (fixes bug where you couldn't paste the first digit of a number)
-      if (newValue.length > 5 && intlTelInput.utils) {
-        let coreNumber = intlTelInput.utils!.getCoreNumber(newValue, iso2);
+    // track the most-severe modification reason to emit as strict:reject at the end
+    let rejectReason: StrictRejectReason | null =
+      sanitised !== pasted ? "invalid" : null;
 
-        // utils.getCoreNumber returns empty string for very long numbers
-        // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
-        while (coreNumber.length === 0 && newValue.length > 0) {
-          newValue = newValue.slice(0, -1);
-          coreNumber = intlTelInput.utils!.getCoreNumber(newValue, iso2);
-        }
-        // if no valid core number can be found, then just ignore the paste (defensive path for pathologically long input)
-        if (!coreNumber) {
+    // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
+    // (fixes bug where you couldn't paste the first digit of a number)
+    if (newValue.length > 5 && intlTelInput.utils) {
+      let coreNumber = intlTelInput.utils!.getCoreNumber(newValue, iso2);
+
+      // utils.getCoreNumber returns empty string for very long numbers
+      // if this is the case, keep trimming the new value until we have a valid core number (or nothing left)
+      while (coreNumber.length === 0 && newValue.length > 0) {
+        newValue = newValue.slice(0, -1);
+        coreNumber = intlTelInput.utils!.getCoreNumber(newValue, iso2);
+      }
+      // if no valid core number can be found, then just ignore the paste (defensive path for pathologically long input)
+      if (!coreNumber) {
+        this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+          source: "paste",
+          rejectedInput: pastedRaw,
+          reason: "max-length",
+        });
+        return;
+      }
+      if (
+        this.#maxCoreNumberLength &&
+        coreNumber.length > this.#maxCoreNumberLength
+      ) {
+        if (input.selectionEnd === inputValue.length) {
+          // if they try to paste too many digits at the end, then just trim the excess
+          const trimLength = coreNumber.length - this.#maxCoreNumberLength;
+          newValue = newValue.slice(0, newValue.length - trimLength);
+          rejectReason = "max-length";
+        } else {
+          // if they try to paste too many digits in the middle, then just ignore the paste entirely
           this.#dispatchEvent(EVENTS.STRICT_REJECT, {
             source: "paste",
             rejectedInput: pastedRaw,
@@ -677,46 +695,24 @@ export class Iti {
           });
           return;
         }
-        if (
-          this.#maxCoreNumberLength &&
-          coreNumber.length > this.#maxCoreNumberLength
-        ) {
-          if (input.selectionEnd === inputValue.length) {
-            // if they try to paste too many digits at the end, then just trim the excess
-            const trimLength = coreNumber.length - this.#maxCoreNumberLength;
-            newValue = newValue.slice(0, newValue.length - trimLength);
-            rejectReason = "max-length";
-          } else {
-            // if they try to paste too many digits in the middle, then just ignore the paste entirely
-            this.#dispatchEvent(EVENTS.STRICT_REJECT, {
-              source: "paste",
-              rejectedInput: pastedRaw,
-              reason: "max-length",
-            });
-            return;
-          }
-        }
       }
-      // preserve pasted numeral set in display
-      this.#setTelInputValue(newValue);
-      const caretPos = selStart! + sanitised.length;
-      input.setSelectionRange(caretPos, caretPos);
+    }
+    // preserve pasted numeral set in display
+    this.#setTelInputValue(newValue);
+    const caretPos = selStart! + sanitised.length;
+    input.setSelectionRange(caretPos, caretPos);
 
-      // trigger format-as-you-type and country update etc
-      input.dispatchEvent(new InputEvent("input", { bubbles: true }));
+    // trigger format-as-you-type and country update etc
+    input.dispatchEvent(new InputEvent("input", { bubbles: true }));
 
-      if (rejectReason) {
-        this.#dispatchEvent(EVENTS.STRICT_REJECT, {
-          source: "paste",
-          rejectedInput: pastedRaw,
-          reason: rejectReason,
-        });
-      }
-    };
-    this.#ui.telInputEl.addEventListener("paste", handlePasteEvent, {
-      signal: this.#abortController!.signal,
-    });
-  }
+    if (rejectReason) {
+      this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+        source: "paste",
+        rejectedInput: pastedRaw,
+        reason: rejectReason,
+      });
+    }
+  };
 
   //* Adhere to the input's maxlength attr.
   #truncateToMaxLength(number: string): string {
