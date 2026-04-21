@@ -17,10 +17,11 @@ This page lists the plugin's public API methods.
   - [setDisabled](#setdisabled)
   - [setNumber](#setnumber)
   - [setPlaceholderNumberType](#setplaceholdernumbertype)
+  - [setReadonly](#setreadonly)
 - [Static methods](#static-methods)
+  - [attachUtils](#attachutils)
   - [getCountryData](#getcountrydata)
   - [getInstance](#getinstance)
-  - [attachUtils](#attachutils)
 
 ## Instance Methods
 
@@ -158,7 +159,7 @@ iti.setCountry("gb");
 
 ### setDisabled
 
-Updates the disabled attribute of both the telephone input and the selected country button. Accepts a boolean value. _Note: we recommend using this instead of updating the disabled attribute of the input directly._
+Updates the disabled attribute of both the telephone input and the selected country button. Accepts a boolean value. _Note: use this instead of updating the disabled attribute of the input directly, as that leaves the selected country clickable._
 ```js
 iti.setDisabled(true);
 ```
@@ -177,8 +178,23 @@ Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option
 iti.setPlaceholderNumberType("FIXED_LINE");
 ```
 
+### setReadonly
+
+Updates the readonly attribute of the telephone input and disables the selected country button. Accepts a boolean value. _Note: use this instead of updating the readonly attribute of the input directly, as that leaves the selected country clickable._
+```js
+iti.setReadonly(true);
+```
+
 
 ## Static Methods
+
+### attachUtils
+
+An alternative to the [`loadUtils`](/docs/options#loadutils) option (which loads the utils.js script at plugin initialisation time), this method allows you to load the utils at your time of choosing. See [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `attachUtils().then(...)` to know when it's finished.
+```js
+const loadUtils = () => import("/dist/js/utils.js");
+intlTelInput.attachUtils(loadUtils);
+```
 
 ### getCountryData
 
@@ -202,12 +218,4 @@ After initialising the plugin, you can always access the instance again using th
 const input = document.querySelector('#phone');
 const iti = intlTelInput.getInstance(input);
 iti.isValidNumber(); // etc
-```
-
-### attachUtils
-
-An alternative to the [`loadUtils`](/docs/options#loadutils) option, which loads the utils.js script at plugin initialisation time, this method allows you to load the utils at your time of choosing. See [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more information. This method should only be called once per page. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can use `attachUtils().then(...)` to know when it's finished.
-```js
-const loadUtils = () => import("/dist/js/utils.js");
-intlTelInput.attachUtils(loadUtils);
 ```
