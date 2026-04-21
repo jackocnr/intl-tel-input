@@ -3,7 +3,7 @@
 intl-tel-input supports localisation in a few different areas:
 
 - Country names in the dropdown
-- User interface strings (search placeholder, empty state, aria-labels, etc.)
+- User interface strings (e.g. the country search placeholder)
 - Right-to-left (RTL) layout
 
 If you want to see this in action first, you can experiment with the different language options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options) and view the [Right to left example](/examples/right-to-left).
@@ -18,9 +18,7 @@ If you want to see this in action first, you can experiment with the different l
 
 ## Localising country names
 
-Country names are generated using the native `Intl.DisplayNames` API.
-
-Use the [`countryNameLocale`](/docs/options#countrynamelocale) option to specify the locale (a BCP 47 language tag):
+Country names are generated using the native `Intl.DisplayNames` API. Use the [`countryNameLocale`](/docs/options#countrynamelocale) option to specify the locale (a BCP 47 language tag):
 
 ```js
 intlTelInput(input, {
@@ -39,11 +37,9 @@ intlTelInput(input, {
 });
 ```
 
-
-
 ## Localising user interface strings
 
-Use the [`i18n`](/docs/options#i18n) option to translate the plugin’s user interface strings (search placeholder, empty state, aria-labels, etc.).
+Use the [`i18n`](/docs/options#i18n) option to translate the plugin’s user interface strings (e.g. the country search placeholder, no-results message, and various accessibility labels).
 
 We provide translations for many languages in the `intl-tel-input/i18n` entrypoint, so you can import the one you need and pass it in:
 
@@ -70,16 +66,18 @@ intlTelInput(input, {
 
 ### Supported languages
 
+Currently, we support the following <!-- I18N_LANGUAGE_COUNT --> languages:
+
 <!-- I18N_LANGUAGE_LIST -->
 
-Don't see your language? You can provide your own translations by passing a custom object to the [`i18n`](/docs/options#i18n) option, and it's also easy to contribute a new language module — see [Adding a new translation](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation).
+Don't see your language? It's easy to contribute a new language yourself — see [Adding a new translation](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation).
 
-For the full list of supported keys (and how to provide your own translations), see the [`i18n` option docs](/docs/options#i18n).
+Alternatively, you can specify your own translations inline by passing a custom object to the [`i18n`](/docs/options#i18n) option.
 
 
 ## Right-to-left (RTL) languages
 
-For RTL languages, add `dir="rtl"` to the plugin container (or another appropriate ancestor) so the layout flows right-to-left.
+On RTL sites (i.e. where `dir="rtl"` is set on the `<html>` element, or any other ancestor of the plugin), the plugin layout will automatically flow right-to-left.
 
 Phone numbers and dial codes are still displayed left-to-right, as that’s the standard way to write telephone numbers.
 
@@ -90,9 +88,10 @@ See the [Right to left example](/examples/right-to-left).
 
 intl-tel-input supports alternative numerals for phone number input.
 
-- Arabic-Indic digits (U+0660–U+0669)
-- Persian / Extended Arabic-Indic digits (U+06F0–U+06F9)
+- Arabic-Indic digits: ٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
+- Persian / Extended Arabic-Indic digits: ۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹
 
 These are normalised internally to ASCII `0-9` for parsing/validation, and when the plugin updates the input value it preserves the user’s numeral set.
 
-Note: format-as-you-type is only applied when the user is typing ASCII digits (caret positioning gets unreliable with RTL numeral sets).
+> [!NOTE]
+> Format-as-you-type is automatically disabled when the user types non-ASCII digits, since caret positioning gets unreliable with RTL numeral sets.

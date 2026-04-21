@@ -38,6 +38,26 @@
   &.markdown-alert-important { border-left-color: var(--color-important); .markdown-alert-title { color: var(--color-important); } }
 }
 
+/* Localisation page: supported language chips */
+.iti-language-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+
+  &__item {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.875em;
+    line-height: 1.4;
+    background: var(--bs-tertiary-bg, #f1f3f5);
+    border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+    border-radius: 999px;
+  }
+}
+
 /* Choose Integration page: two big CTA cards */
 .iti-integration-choice {
   .iti-integration-card.card {

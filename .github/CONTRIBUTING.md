@@ -35,10 +35,8 @@ We get our flags from the [flag-icons](https://github.com/lipis/flag-icons) proj
 
 ## Adding a new translation
 
-NOTE: that country names are now translated automatically using the native `Intl.DisplayNames` (see `countryNameLocale` option).
+The [provided translations](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/i18n) cover just the user interface strings (e.g. the country search placeholder, no-results message, and various accessibility labels) — country names are translated automatically using the native `Intl.DisplayNames` API (see the `countryNameLocale` option). So contributing a new language only requires adding a handful of strings — for example, see the [English translations](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/i18n/en.ts).
 
-The [provided translations](https://github.com/jackocnr/intl-tel-input/tree/master/src/js/i18n) are now just for the user interface strings (e.g. the country search placeholder, and various bits of screen reader text). If we don't yet support a language you need, it's easy to contribute this yourself - you only need to provide a handful of strings (for example, see the [English translations](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/i18n/en.ts)).
-
-Inside src/js/i18n/, there is a file for each language we support (e.g. "en.ts" for English). All you need to do to add a new translation is create a new language file and populate it with your translation strings, following the same pattern as the other languages.
+Inside src/js/i18n/, there is a file for each language we support (e.g. "en.ts" for English). All you need to do to add a new translation is create a new language file, named after the language's [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) (e.g. "de.ts" for German), and populate it with your translation strings, following the same pattern as the other languages. For region-specific variants, append the region code with a hyphen (e.g. "zh-hk.ts" for Traditional Chinese as used in Hong Kong).
 
 If you haven't already, you will need to run `npm install` to install the project dependencies, and then you can run `npm run build:translations` to automatically add your new language to the root index.ts file. Once you have tested and confirmed that the new translations are working, you can create a pull request on GitHub.

@@ -103,9 +103,13 @@ const createI18nLanguageListText = (languageCodes) => {
     return aKey.localeCompare(bKey, "en", { sensitivity: "base" });
   });
 
-  return items
-    .map(({ code, label }) => escapeHtml(label ? `${label} (${code})` : code))
-    .join(", ");
+  const listItems = items
+    .map(({ code, label }) => {
+      const text = escapeHtml(label ? `${label} (${code})` : code);
+      return `  <li class="iti-language-list__item">${text}</li>`;
+    })
+    .join("\n");
+  return `<ul class="iti-language-list">\n${listItems}\n</ul>`;
 };
 
 // Page metadata constants -------------------------------------------------
@@ -738,7 +742,12 @@ for (const { key, title, metaDesc } of docsDefinitions) {
       html: (() => {
         let source = fs.readFileSync(mdPath, "utf8");
         if (key === "localisation") {
-          const languageList = createI18nLanguageListText(getI18nLanguages());
+          const languages = getI18nLanguages();
+          const languageList = createI18nLanguageListText(languages);
+          source = source.replace(
+            "<!-- I18N_LANGUAGE_COUNT -->",
+            String(languages.length),
+          );
           source = source.replace(
             "<!-- I18N_LANGUAGE_LIST -->",
             `\n${languageList}\n`,
