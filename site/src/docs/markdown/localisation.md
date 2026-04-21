@@ -35,7 +35,7 @@ intlTelInput(input, {
 
 Use the [`i18n`](/docs/options#i18n) option to translate the plugin’s user interface strings (e.g. the country search placeholder, no-results message, and various accessibility labels).
 
-We provide translations for many languages in the `intl-tel-input/i18n` entrypoint, so you can import the one you need and pass it in:
+We provide translations for many locales in the `intl-tel-input/i18n` entrypoint, so you can import the one you need and pass it in:
 
 ```js
 import { fr } from "intl-tel-input/i18n";
@@ -58,13 +58,13 @@ intlTelInput(input, {
 });
 ```
 
-### Supported languages
+### Supported locales
 
-Currently, we support the following <!-- I18N_LANGUAGE_COUNT --> languages:
+Currently, we support the following <!-- I18N_LOCALE_COUNT --> locales:
 
-<!-- I18N_LANGUAGE_LIST -->
+<!-- I18N_LOCALE_LIST -->
 
-Don't see your language? It's easy to contribute a new language yourself — see [Adding a new translation](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation).
+Don't see your locale? It's easy to contribute a new one yourself — see [Adding a new translation](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation).
 
 Alternatively, you can specify your own translations inline by passing a custom object to the [`i18n`](/docs/options#i18n) option.
 

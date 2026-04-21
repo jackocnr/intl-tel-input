@@ -67,7 +67,7 @@ The plugin’s dropdown/search UI includes ARIA attributes to expose state and r
 
 If you localise the UI using the [`i18n`](/docs/options#i18n) option, that also covers the accessibility strings listed above (placeholders and ARIA labels).
 
-See the [Localisation docs](/docs/localisation) for the full language list and how to provide your own.
+See the [Localisation docs](/docs/localisation) for the full list of locales and how to provide your own.
 
 
 ## Form validation and errors
