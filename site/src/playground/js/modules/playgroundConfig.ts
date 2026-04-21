@@ -210,7 +210,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     i18n: {
       type: "select",
-      tooltip: "Translate UI strings (e.g. the country search placeholder) using the provided language packs.",
+      tooltip: "Translate UI strings (e.g. the country search placeholder) using the provided locales.",
       options: ["", ...(i18nLanguageCodes || [])],
       optionLabels: i18nOptionLabels,
     },

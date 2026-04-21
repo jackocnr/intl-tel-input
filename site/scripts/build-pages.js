@@ -514,6 +514,7 @@ tasks.push({
       .replace("{{STAT_WEBSITES}}", stats.websites)
       .replace("{{STAT_DOWNLOADS}}", stats.downloads)
       .replace("{{STAT_STARS}}", stats.stars)
+      .replace("{{STAT_LOCALES}}", getI18nLanguages().length)
       .replace("{{PLAYGROUND_PRESETS}}", renderPlaygroundPresetsHomepage());
     return {
       layoutClass: "iti-layout-no-sidebars",
