@@ -385,6 +385,69 @@ export class Iti {
     this.#bindPasteListener();
   }
 
+  //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
+  #handleAndroidPlusKey(inputValue: string): void {
+    this.#removeJustTypedChar(inputValue);
+    this.#openDropdownWithPlus();
+  }
+
+  //* Android strictMode workaround: the keydown-based filter can't block these because e.key is "Unidentified" on Android virtual keyboards, so strip them here on input.
+  #handleAndroidStrictReject(inputValue: string, rejectedInput: string): void {
+    const newCaretPos = this.#removeJustTypedChar(inputValue);
+    this.#ui.telInputEl.setSelectionRange(newCaretPos, newCaretPos);
+    this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+      source: "key",
+      rejectedInput,
+      reason: "invalid",
+    });
+  }
+
+  //* Reformat the input value using libphonenumber's AYT formatter, preserving caret position.
+  #reformatAsYouType(inputValue: string, isDeleteForwards: boolean): void {
+    const currentCaretPos = this.#ui.telInputEl.selectionStart || 0;
+    const valueBeforeCaret = inputValue.substring(0, currentCaretPos);
+    const relevantCharsBeforeCaret = valueBeforeCaret.replace(
+      REGEX.NON_PLUS_NUMERIC_GLOBAL,
+      "",
+    ).length;
+    const fullNumber = this.#getFullNumber();
+    const formattedValue = formatNumberAsYouType(
+      fullNumber,
+      inputValue,
+      intlTelInput.utils,
+      this.#selectedCountry,
+      this.#options.separateDialCode,
+    );
+    const newCaretPos = computeNewCaretPosition(
+      relevantCharsBeforeCaret,
+      formattedValue,
+      currentCaretPos,
+      isDeleteForwards,
+    );
+    // Preserve user's numeral set in displayed value
+    this.#setTelInputValue(formattedValue);
+    // WARNING: calling setSelectionRange triggers a focus on iOS
+    this.#ui.telInputEl.setSelectionRange(newCaretPos, newCaretPos);
+  }
+
+  //* If separateDialCode AND typed dial code (e.g. from paste or autofill, or from typing a dial code when countrySearch disabled), then remove the typed dial code.
+  //* Only strip when a full dial code is actually present — otherwise a lone typed "+" (or partial prefix) would get erased.
+  #stripTypedDialCode(inputValue: string): void {
+    if (
+      inputValue.startsWith("+") &&
+      this.#selectedCountry &&
+      this.#getDialCode(inputValue)
+    ) {
+      const cleanNumber = stripSeparateDialCode(
+        inputValue,
+        true,
+        true,
+        this.#selectedCountry,
+      );
+      this.#setTelInputValue(cleanNumber);
+    }
+  }
+
   #bindInputListener(): void {
     const {
       strictMode,
@@ -402,17 +465,16 @@ export class Iti {
     //* On input event: (1) Update selected country, (2) Format-as-you-type.
     //* Note that this fires AFTER the input is updated.
     const handleInputEvent = (e: InputEvent): void => {
+      //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents (from setNumber/setCountry), so we read detail via a cast.
+      const detail = e?.detail as unknown as Record<string, unknown> | null | undefined;
       //* Skip re-entry from our own synthetic input events fired after a country change —
       //* selectListItem/setCountry have already done the country + formatting work.
-      if (
-        e?.detail &&
-        (e.detail as unknown as Record<string, unknown>)["isCountryChange"]
-      ) {
+      if (detail?.["isCountryChange"]) {
         return;
       }
       const inputValue = this.#getTelInputValue();
 
-      //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
+      //* Android workaround for handling plus when separateDialCode enabled
       if (
         this.#isAndroid &&
         e?.data === "+" &&
@@ -420,24 +482,17 @@ export class Iti {
         allowDropdown &&
         countrySearch
       ) {
-        this.#removeJustTypedChar(inputValue);
-        this.#openDropdownWithPlus();
+        this.#handleAndroidPlusKey(inputValue);
         return;
       }
 
-      //* Android strictMode workaround: the keydown-based filter can't block these because e.key is "Unidentified" on Android virtual keyboards, so strip them here on input.
+      //* Android strictMode workaround: the keydown-based filter can't block thesee
       if (
         this.#isAndroid &&
         strictMode &&
         (e?.data === " " || e?.data === "-" || e?.data === ".")
       ) {
-        const newCaretPos = this.#removeJustTypedChar(inputValue);
-        this.#ui.telInputEl.setSelectionRange(newCaretPos, newCaretPos);
-        this.#dispatchEvent(EVENTS.STRICT_REJECT, {
-          source: "key",
-          rejectedInput: e.data,
-          reason: "invalid",
-        });
+        this.#handleAndroidStrictReject(inputValue, e.data);
         return;
       }
 
@@ -456,63 +511,23 @@ export class Iti {
         userOverrideFormatting = false;
       }
 
-      //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents
-      //* (from setNumber), so we need the cast to access the custom detail property.
-      const isSetNumber =
-        e?.detail &&
-        (e.detail as unknown as Record<string, unknown>)["isSetNumber"];
-      // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets - when these numbers contain spaces, they're treated as words, and so they get reversed in a way that breaks our calculations
-      const isAscii = this.#numerals.isAscii();
       //* Handle format-as-you-type, unless userOverrideFormatting, or isSetNumber.
+      // only do formatAsYouType if userNumeralSet is ascii as too complicated to maintain caret position with RTL numeral sets - when these numbers contain spaces, they're treated as words, and so they get reversed in a way that breaks our calculations
       if (
         formatAsYouType &&
         !userOverrideFormatting &&
-        !isSetNumber &&
-        isAscii
+        !detail?.["isSetNumber"] &&
+        this.#numerals.isAscii()
       ) {
-        //* Maintain caret position after reformatting.
-        const currentCaretPos = this.#ui.telInputEl.selectionStart || 0;
-        const valueBeforeCaret = inputValue.substring(0, currentCaretPos);
-        const relevantCharsBeforeCaret = valueBeforeCaret.replace(
-          REGEX.NON_PLUS_NUMERIC_GLOBAL,
-          "",
-        ).length;
-        const isDeleteForwards = e?.inputType === INPUT_TYPES.DELETE_FORWARD;
-        const fullNumber = this.#getFullNumber();
-        const formattedValue = formatNumberAsYouType(
-          fullNumber,
+        this.#reformatAsYouType(
           inputValue,
-          intlTelInput.utils,
-          this.#selectedCountry,
-          separateDialCode,
+          e?.inputType === INPUT_TYPES.DELETE_FORWARD,
         );
-        const newCaretPos = computeNewCaretPosition(
-          relevantCharsBeforeCaret,
-          formattedValue,
-          currentCaretPos,
-          isDeleteForwards,
-        );
-        // Preserve user's numeral set in displayed value
-        this.#setTelInputValue(formattedValue);
-        // WARNING: calling setSelectionRange triggers a focus on iOS
-        this.#ui.telInputEl.setSelectionRange(newCaretPos, newCaretPos);
       }
 
-      //* If separateDialCode AND typed dial code (e.g. from paste or autofill, or from typing a dial code when countrySearch disabled), then remove the typed dial code.
-      //* Only strip when a full dial code is actually present — otherwise a lone typed "+" (or partial prefix) would get erased.
-      if (
-        separateDialCode &&
-        inputValue.startsWith("+") &&
-        this.#selectedCountry &&
-        this.#getDialCode(inputValue)
-      ) {
-        const cleanNumber = stripSeparateDialCode(
-          inputValue,
-          true,
-          separateDialCode,
-          this.#selectedCountry,
-        );
-        this.#setTelInputValue(cleanNumber);
+      //* Strip any typed dial code when separateDialCode enabled
+      if (separateDialCode) {
+        this.#stripTypedDialCode(inputValue);
       }
     };
     //* This handles individual key presses as well as cut/paste events
