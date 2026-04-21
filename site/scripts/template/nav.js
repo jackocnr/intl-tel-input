@@ -40,16 +40,6 @@ const docsDropdownPages = [
     label: "Initialisation options",
   },
   {
-    name: "localisation",
-    href: "/docs/localisation",
-    label: "Localisation",
-  },
-  {
-    name: "accessibility",
-    href: "/docs/accessibility",
-    label: "Accessibility",
-  },
-  {
     name: "methods",
     href: "/docs/methods",
     label: "Methods",
@@ -68,6 +58,16 @@ const docsDropdownPages = [
     name: "theming",
     href: "/docs/theming",
     label: "Theming / dark mode",
+  },
+  {
+    name: "localisation",
+    href: "/docs/localisation",
+    label: "Localisation",
+  },
+  {
+    name: "accessibility",
+    href: "/docs/accessibility",
+    label: "Accessibility",
   },
   {
     name: "troubleshooting",
