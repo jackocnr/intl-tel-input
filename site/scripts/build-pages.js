@@ -655,6 +655,12 @@ const docsDefinitions = [
       "How to get up and running with the intl-tel-input JavaScript plugin.",
   },
   {
+    key: "best_practices",
+    title: "Best practices",
+    metaDesc:
+      "General advice for getting the most out of intl-tel-input — utils, validation, E.164 storage, initial country, and localisation.",
+  },
+  {
     key: "options",
     title: "Initialisation options",
     metaDesc:

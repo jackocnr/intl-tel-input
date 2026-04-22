@@ -46,6 +46,8 @@ See the [validation demo](https://github.com/jackocnr/intl-tel-input/blob/master
 
 A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about file size), then you can just import `IntlTelInput` from `"intl-tel-input/angularWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/angular"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the utils.js file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN-hosted version, e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/js/utils.js"`.
 
+Also see [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
+
 ## Props
 
 Any of the plugin's [initialisation options](#plugin-initialisation-options) (like `initialCountry`) can also be passed as an input.

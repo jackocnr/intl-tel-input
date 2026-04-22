@@ -1,6 +1,6 @@
 # Initialisation options
 
-The options below are shared across the [JavaScript plugin](/docs/javascript-plugin) and the [React/Vue/Angular/Svelte components](/docs/getting-started) — pass them as part of the options object (JS plugin) or as props (components).
+The options below are shared across the [JavaScript plugin](/docs/javascript-plugin) and the [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component) and [Svelte](/docs/svelte-component) components — pass them as part of the options object (JS plugin) or as props (components).
 
 _Throughout these docs, "iso2 code" means the two-letter country identifier ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), e.g. `"gb"`), and "dial code" means the international calling prefix (e.g. `+44`)._
 

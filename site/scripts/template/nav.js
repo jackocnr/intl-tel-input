@@ -35,6 +35,11 @@ const docsDropdownPages = [
     nested: true,
   },
   {
+    name: "best_practices",
+    href: "/docs/best-practices",
+    label: "Best practices",
+  },
+  {
     name: "options",
     href: "/docs/options",
     label: "Options",
