@@ -3,7 +3,7 @@
 
 A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes React, Vue, Angular and Svelte components, plus TypeScript definitions.
 
-[Explore docs »](https://intl-tel-input.com/docs/getting-started)
+[Explore docs »](https://intl-tel-input.com/docs/integrations)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/iti-github-dark.png">
@@ -20,7 +20,7 @@ Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, m
 We provide React, Vue, Angular and Svelte (beta) components alongside the regular JavaScript plugin. This readme is for the JavaScript plugin. View the [React Component](https://intl-tel-input.com/docs/react-component), the [Vue Component](https://intl-tel-input.com/docs/vue-component) the [Angular Component](https://intl-tel-input.com/docs/angular-component), or the [Svelte component](https://intl-tel-input.com/docs/svelte-component).
 
 ## Docs and Examples
-We have a newly updated website, where you can find [a full set of docs](https://intl-tel-input.com/docs/getting-started.html), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/validation-practical.html) of different setups.
+We have a newly updated website, where you can find [a full set of docs](https://intl-tel-input.com/docs/integrations), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/validation-practical.html) of different setups.
 
 ## Features
 * Automatically select the user's current country using an IP lookup

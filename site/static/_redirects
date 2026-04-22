@@ -28,8 +28,9 @@
 /storybook/* /playground 301
 
 # root directory redirects
-/docs /docs/getting-started 302
-/docs/ /docs/getting-started 302
-/docs/choose-integration /docs/getting-started 301
+/docs /docs/integrations 302
+/docs/ /docs/integrations 302
+/docs/getting-started /docs/integrations 301
+/docs/choose-integration /docs/integrations 301
 /examples /examples/validation-practical 302
 /examples/ /examples/validation-practical 302

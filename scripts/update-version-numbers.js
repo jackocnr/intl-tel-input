@@ -6,7 +6,7 @@ const replacements = [
   {
     files: [
       'site/src/docs/markdown/options.md',
-      'site/src/docs/markdown/getting_started.md',
+      'site/src/docs/markdown/integrations.md',
       'site/src/docs/markdown/angular_component.md',
       'site/src/docs/markdown/react_component.md',
       'site/src/docs/markdown/svelte_component.md',

@@ -643,8 +643,8 @@ tasks.push({
 // 8. Docs pages — content (markdown) → layout → page.
 const docsDefinitions = [
   {
-    key: "getting_started",
-    title: "Getting started",
+    key: "integrations",
+    title: "Choose your integration",
     metaDesc:
       "Get started with intl-tel-input. Choose your integration: pure JavaScript plugin, or React, Vue, Angular or Svelte component.",
   },

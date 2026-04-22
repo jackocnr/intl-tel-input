@@ -88,8 +88,4 @@ Try it out in the [Playground](/playground?initialCountry=gb&separateDialCode=tr
 
 A lot of “broken” behaviour is caused by layout/CSS or initialising the plugin before the input is in the DOM. Check devtools: is the plugin CSS loading? Have you overridden the flag paths correctly, and are the flag images loading?
 
-Also see:
-
-- [Getting started](/docs/getting-started)
-- [Troubleshooting](/docs/troubleshooting)
-- [Initialisation options](/docs/options)
+Also see [Troubleshooting](/docs/troubleshooting).

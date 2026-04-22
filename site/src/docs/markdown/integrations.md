@@ -1,4 +1,4 @@
-# Getting started
+# Choose your integration
 
 `intl-tel-input` comes in two flavours: a standalone **JavaScript plugin** and a set of native **framework components**. Both offer the same core features — country picker, formatting and validation — so pick the one that matches your stack.
 

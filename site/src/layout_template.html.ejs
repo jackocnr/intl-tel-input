@@ -81,8 +81,8 @@
             </button>
             <ul class="dropdown-menu">
               <% docsDropdownPages.forEach((p) => { %>
-                <li>
-                  <a class="dropdown-item <% if (pageType === 'docs' && name === p.name) { %>active<% } %>"<% if (p.nested) { %> style="padding-left: 2.25rem;"<% } %> href="<%= p.href %>"><%= p.label %></a>
+                <li<% if (p.nested) { %> class="iti-dropdown-nested"<% } %>>
+                  <a class="dropdown-item <% if (pageType === 'docs' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
                 </li>
               <% }); %>
             </ul>
@@ -195,7 +195,7 @@
             data-bs-parent="#itiMobilePrimaryNav"
           >
             <% docsDropdownPages.forEach((p) => { %>
-              <li class="nav-item<% if (p.nested) { %> ms-4<% } %>">
+              <li class="nav-item<% if (p.nested) { %> iti-nav-nested<% } %>">
                 <a class="nav-link py-2 <% if (pageType === 'docs' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
               </li>
             <% }); %>

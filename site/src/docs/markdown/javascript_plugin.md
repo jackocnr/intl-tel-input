@@ -1,6 +1,6 @@
 # JavaScript plugin
 
-How to get up and running with the JavaScript plugin. For the  React/Angular/Svelte/Vue components instead, see [Getting started](/docs/getting-started).
+How to get up and running with the JavaScript plugin. For the framework components instead, see [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component), or [Svelte](/docs/svelte-component).
 
 
 ## Contents

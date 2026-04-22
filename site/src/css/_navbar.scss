@@ -231,3 +231,29 @@
     background-color: rgb(var(--header-bg-color-rgb) / 0.5);
   }
 }
+
+/* Nested nav items: subtle left border ties the group together visually */
+.iti-left-sidebar .iti-nav-nested,
+.iti-mobile-sidebar .iti-nav-nested {
+  position: relative;
+  border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.15);
+  margin-left: 1.1rem;
+}
+/* Bridge the gap-1 spacing between consecutive nested items in the sidebar */
+.iti-left-sidebar .iti-nav-nested + .iti-nav-nested::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -0.25rem;
+  width: 1px;
+  height: 0.25rem;
+  background: rgba(var(--bs-body-color-rgb), 0.15);
+}
+.dropdown-menu .iti-dropdown-nested {
+  // slightly lighter border in header dropdowns, to distinguish from dropdown border
+  border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.07);
+  margin-left: 1.05rem;
+}
+.dropdown-menu .iti-dropdown-nested > .dropdown-item {
+  padding-left: 0.85rem;
+}
