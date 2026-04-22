@@ -24,6 +24,12 @@ import {
 
 export { intlTelInput };
 
+export type StrictRejectDetail = {
+  source: "key" | "paste";
+  rejectedInput: string;
+  reason: "invalid" | "max-length";
+};
+
 const warnInputAttr = (prop: string): void => {
   console.warn(
     `intl-tel-input: ignoring inputAttributes.${prop} - see docs for more info.`,
@@ -112,6 +118,9 @@ class IntlTelInput
   @Output() countryChange = new EventEmitter<string>();
   @Output() validityChange = new EventEmitter<boolean>();
   @Output() errorCodeChange = new EventEmitter<number | null>();
+  @Output() openCountryDropdown = new EventEmitter<void>();
+  @Output() closeCountryDropdown = new EventEmitter<void>();
+  @Output() strictReject = new EventEmitter<StrictRejectDetail>();
   @Output() blur = new EventEmitter<FocusEvent>();
   @Output() focus = new EventEmitter<FocusEvent>();
   @Output() keydown = new EventEmitter<KeyboardEvent>();
@@ -140,10 +149,29 @@ class IntlTelInput
   // eslint-disable-next-line class-methods-use-this
   private onValidatorChange: () => void = () => {};
 
+  private handleOpenDropdown = (): void => this.openCountryDropdown.emit();
+  private handleCloseDropdown = (): void => this.closeCountryDropdown.emit();
+  private handleStrictReject = (e: Event): void => {
+    this.strictReject.emit((e as CustomEvent<StrictRejectDetail>).detail);
+  };
+
   ngAfterViewInit() {
     this.iti = intlTelInput(
       this.inputRef.nativeElement,
       this.buildInitOptions(),
+    );
+
+    this.inputRef.nativeElement.addEventListener(
+      "open:countrydropdown",
+      this.handleOpenDropdown,
+    );
+    this.inputRef.nativeElement.addEventListener(
+      "close:countrydropdown",
+      this.handleCloseDropdown,
+    );
+    this.inputRef.nativeElement.addEventListener(
+      "strict:reject",
+      this.handleStrictReject,
     );
 
     this.applyInputAttrs();
@@ -323,6 +351,18 @@ class IntlTelInput
   }
 
   ngOnDestroy() {
+    this.inputRef.nativeElement.removeEventListener(
+      "open:countrydropdown",
+      this.handleOpenDropdown,
+    );
+    this.inputRef.nativeElement.removeEventListener(
+      "close:countrydropdown",
+      this.handleCloseDropdown,
+    );
+    this.inputRef.nativeElement.removeEventListener(
+      "strict:reject",
+      this.handleStrictReject,
+    );
     this.iti?.destroy();
   }
 

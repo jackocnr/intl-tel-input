@@ -131,6 +131,24 @@ Default: `null`
 
 Emitted when the number validity changes. The handler receives the new validity boolean. Requires the utils script to be loaded (see above).
 
+###### closeCountryDropdown
+Type: `() => void`  
+Default: `null`  
+
+Emitted when the country dropdown closes.
+
+###### openCountryDropdown
+Type: `() => void`  
+Default: `null`  
+
+Emitted when the country dropdown opens.
+
+###### strictReject
+Type: `(source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length") => void`  
+Default: `null`  
+
+Emitted when [`strictMode`](/docs/options#strictmode) rejects or modifies input. See [strict:reject](/docs/events#strict-reject) for details on each argument.
+
 ## Accessing instance methods
 
 You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.

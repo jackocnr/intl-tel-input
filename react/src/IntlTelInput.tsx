@@ -19,11 +19,22 @@ type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "onInput">;
 
 const noop = () => {};
 
+export type StrictRejectSource = "key" | "paste";
+export type StrictRejectReason = "invalid" | "max-length";
+type StrictRejectDetail = {
+  source: StrictRejectSource;
+  rejectedInput: string;
+  reason: StrictRejectReason;
+};
+
 type ItiProps = SomeOptions & {
   onChangeNumber?: (number: string) => void;
   onChangeCountry?: (iso2: string) => void;
   onChangeValidity?: (isValid: boolean) => void;
   onChangeErrorCode?: (errorCode: number | null) => void;
+  onOpenCountryDropdown?: () => void;
+  onCloseCountryDropdown?: () => void;
+  onStrictReject?: (source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason) => void;
   usePreciseValidation?: boolean;
   inputProps?: InputProps;
   disabled?: boolean | undefined;
@@ -43,6 +54,9 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     onChangeCountry = noop,
     onChangeValidity = noop,
     onChangeErrorCode = noop,
+    onOpenCountryDropdown,
+    onCloseCountryDropdown,
+    onStrictReject,
     usePreciseValidation = false,
     inputProps = {},
     disabled = undefined,
@@ -60,6 +74,14 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   const lastEmittedErrorCodeRef = useRef<number | null | undefined>(undefined);
   // if an input event fires before utils has loaded, we defer the update until the promise resolves
   const pendingUpdateRef = useRef<boolean>(false);
+
+  // keep latest pass-through event handlers in refs so listeners registered once always see fresh callbacks
+  const onOpenCountryDropdownRef = useRef(onOpenCountryDropdown);
+  const onCloseCountryDropdownRef = useRef(onCloseCountryDropdown);
+  const onStrictRejectRef = useRef(onStrictReject);
+  onOpenCountryDropdownRef.current = onOpenCountryDropdown;
+  onCloseCountryDropdownRef.current = onCloseCountryDropdown;
+  onStrictRejectRef.current = onStrictReject;
 
   // expose the instance and input ref to the parent component
   useImperativeHandle(ref, () => ({
@@ -126,10 +148,26 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   ]);
 
   useEffect(() => {
-    if (inputRef.current) {
-      itiRef.current = intlTelInput(inputRef.current, initOptions as SomeOptions);
+    const inputEl = inputRef.current;
+    if (!inputEl) {
+      return undefined;
     }
+    itiRef.current = intlTelInput(inputEl, initOptions as SomeOptions);
+
+    const handleOpen = (): void => onOpenCountryDropdownRef.current?.();
+    const handleClose = (): void => onCloseCountryDropdownRef.current?.();
+    const handleStrictReject = (e: Event): void => {
+      const { source, rejectedInput, reason } = (e as CustomEvent<StrictRejectDetail>).detail;
+      onStrictRejectRef.current?.(source, rejectedInput, reason);
+    };
+    inputEl.addEventListener("open:countrydropdown", handleOpen);
+    inputEl.addEventListener("close:countrydropdown", handleClose);
+    inputEl.addEventListener("strict:reject", handleStrictReject);
+
     return (): void => {
+      inputEl.removeEventListener("open:countrydropdown", handleOpen);
+      inputEl.removeEventListener("close:countrydropdown", handleClose);
+      inputEl.removeEventListener("strict:reject", handleStrictReject);
       itiRef.current?.destroy();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

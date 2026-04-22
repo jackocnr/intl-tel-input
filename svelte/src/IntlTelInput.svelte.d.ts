@@ -4,6 +4,9 @@ import type { Component } from "svelte";
 import type { Iti, SomeOptions } from "intl-tel-input";
 import intlTelInput from "intl-tel-input";
 
+export type StrictRejectSource = "key" | "paste";
+export type StrictRejectReason = "invalid" | "max-length";
+
 export type Props = SomeOptions & {
   disabled?: boolean;
   readonly?: boolean;
@@ -15,6 +18,9 @@ export type Props = SomeOptions & {
   onChangeCountry?: (iso2: string) => void;
   onChangeValidity?: (isValid: boolean) => void;
   onChangeErrorCode?: (errorCode: number | null) => void;
+  onOpenCountryDropdown?: () => void;
+  onCloseCountryDropdown?: () => void;
+  onStrictReject?: (source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason) => void;
 };
 
 export { intlTelInput };

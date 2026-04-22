@@ -20,8 +20,17 @@
     onChangeCountry,
     onChangeValidity,
     onChangeErrorCode,
+    onOpenCountryDropdown,
+    onCloseCountryDropdown,
+    onStrictReject,
     ...initOptions
   } = $props() as Props;
+
+  type StrictRejectDetail = {
+    source: "key" | "paste";
+    rejectedInput: string;
+    reason: "invalid" | "max-length";
+  };
 
   // State
   let inputElement: HTMLInputElement | undefined = $state();
@@ -96,12 +105,23 @@
     updateValue();
   };
 
+  const handleOpenDropdown = (): void => onOpenCountryDropdown?.();
+  const handleCloseDropdown = (): void => onCloseCountryDropdown?.();
+  const handleStrictReject = (e: Event): void => {
+    const { source, rejectedInput, reason } = (e as CustomEvent<StrictRejectDetail>).detail;
+    onStrictReject?.(source, rejectedInput, reason);
+  };
+
   // Lifecycle
   onMount(() => {
     if (inputElement) {
       instance = intlTelInput(inputElement, initOptions as SomeOptions);
       if (disabled) instance.setDisabled(disabled);
       if (readonly) instance.setReadonly(readonly);
+
+      inputElement.addEventListener("open:countrydropdown", handleOpenDropdown);
+      inputElement.addEventListener("close:countrydropdown", handleCloseDropdown);
+      inputElement.addEventListener("strict:reject", handleStrictReject);
 
       lastEmittedCountry = instance.getSelectedCountryData()?.iso2 ?? "";
       hasInitialized = true;
@@ -128,6 +148,11 @@
   });
 
   onDestroy(() => {
+    if (inputElement) {
+      inputElement.removeEventListener("open:countrydropdown", handleOpenDropdown);
+      inputElement.removeEventListener("close:countrydropdown", handleCloseDropdown);
+      inputElement.removeEventListener("strict:reject", handleStrictReject);
+    }
     instance?.destroy();
   });
 

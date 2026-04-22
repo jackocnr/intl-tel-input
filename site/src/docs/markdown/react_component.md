@@ -84,6 +84,24 @@ Default: `null`
 
 A handler to be called when the number validity changes. Receives the new validity boolean. Requires the utils script to be loaded (see above).
 
+###### onCloseCountryDropdown
+Type: `() => void`  
+Default: `null`  
+
+A handler to be called when the country dropdown closes.
+
+###### onOpenCountryDropdown
+Type: `() => void`  
+Default: `null`  
+
+A handler to be called when the country dropdown opens.
+
+###### onStrictReject
+Type: `(source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length") => void`  
+Default: `null`  
+
+A handler to be called when [`strictMode`](/docs/options#strictmode) rejects or modifies input. See [strict:reject](/docs/events#strict-reject) for details on each argument.
+
 ###### readOnly
 Type: `boolean`  
 Default: `false`  

@@ -127,6 +127,24 @@ Default: `null`
 
 Emitted when the number validity changes. Emits the new validity boolean. Requires the utils script to be loaded (see above).
 
+###### closeCountryDropdown
+Type: `EventEmitter<void>`  
+Default: `null`  
+
+Emitted when the country dropdown closes.
+
+###### openCountryDropdown
+Type: `EventEmitter<void>`  
+Default: `null`  
+
+Emitted when the country dropdown opens.
+
+###### strictReject
+Type: `EventEmitter<{ source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length" }>`  
+Default: `null`  
+
+Emitted when [`strictMode`](/docs/options#strictmode) rejects or modifies input. See [strict:reject](/docs/events#strict-reject) for details on the payload.
+
 ### Native input events
 
 The component exposes several commonly used native DOM events that you can bind to using Angular's standard event binding syntax `(eventName)="handlerMethod($event)"`. For other native events not listed below, you can access the input element directly (see [Other native events](#other-native-events) section).

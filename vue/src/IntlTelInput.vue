@@ -29,13 +29,24 @@ const props = withDefaults(defineProps<Props & SomeOptions>(), {
 
 defineOptions({ inheritAttrs: false });
 
-const emit = defineEmits([
-  "changeNumber",
-  "changeCountry",
-  "changeValidity",
-  "changeErrorCode",
-  "update:modelValue",
-]);
+type StrictRejectSource = "key" | "paste";
+type StrictRejectReason = "invalid" | "max-length";
+type StrictRejectDetail = {
+  source: StrictRejectSource;
+  rejectedInput: string;
+  reason: StrictRejectReason;
+};
+
+const emit = defineEmits<{
+  (e: "changeNumber", value: string): void;
+  (e: "changeCountry", value: string): void;
+  (e: "changeValidity", value: boolean): void;
+  (e: "changeErrorCode", value: number | null): void;
+  (e: "openCountryDropdown"): void;
+  (e: "closeCountryDropdown"): void;
+  (e: "strictReject", source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason): void;
+  (e: "update:modelValue", value: string): void;
+}>();
 
 const warnInputProp = (prop: string): void => {
   console.warn(`intl-tel-input: ignoring inputProps.${prop} - see docs for more info.`);
@@ -166,12 +177,23 @@ const updateCountry = () => {
   updateValue();
 };
 
+const handleOpen = (): void => emit("openCountryDropdown");
+const handleClose = (): void => emit("closeCountryDropdown");
+const handleStrictReject = (e: Event): void => {
+  const { source, rejectedInput, reason } = (e as CustomEvent<StrictRejectDetail>).detail;
+  emit("strictReject", source, rejectedInput, reason);
+};
+
 onMounted(() => {
   if (!input.value) {
     return;
   }
 
   instance.value = intlTelInput(input.value, initOptions.value);
+
+  input.value.addEventListener("open:countrydropdown", handleOpen);
+  input.value.addEventListener("close:countrydropdown", handleClose);
+  input.value.addEventListener("strict:reject", handleStrictReject);
 
   if (props.disabled) {
     instance.value.setDisabled(props.disabled);
@@ -243,7 +265,14 @@ watch(
   { flush: "post" },
 );
 
-onUnmounted(() => instance.value?.destroy());
+onUnmounted(() => {
+  if (input.value) {
+    input.value.removeEventListener("open:countrydropdown", handleOpen);
+    input.value.removeEventListener("close:countrydropdown", handleClose);
+    input.value.removeEventListener("strict:reject", handleStrictReject);
+  }
+  instance.value?.destroy();
+});
 
 defineExpose({ instance, input });
 </script>
