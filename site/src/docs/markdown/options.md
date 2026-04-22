@@ -238,11 +238,12 @@ Play with this option in the [Playground](/playground?separateDialCode=false&nat
 Type: `boolean`  
 Default: `false`  
 
-As the user types (or pastes) in the input, reject any irrelevant characters<sup>*</sup>. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
+As the user types (or pastes) in the input, reject any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
 
 Play with this option in the [Playground](/playground#formatting-options).
 
-<sup>*</sup>When user input is rejected or modified, the plugin fires a [`strict:reject`](/docs/javascript-plugin#strict-reject) event — listen for this to give the user feedback (e.g. a toast) so the rejection isn't silent. For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
+> [!IMPORTANT]
+> `strictMode` silently drops rejected input by default — listen for the [`strict:reject`](/docs/javascript-plugin#strict-reject) event (or use the equivalent `onStrictReject` / `strictReject` callback in the component wrappers) to give the user feedback (e.g. a toast). For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
 
 
 ## Validation options
