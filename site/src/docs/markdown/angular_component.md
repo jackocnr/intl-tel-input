@@ -8,7 +8,7 @@ An Angular component for the intl-tel-input JavaScript plugin. View the [source 
 - [Getting started](#getting-started)
 - [Props](#props)
 - [Plugin initialisation options](#plugin-initialisation-options)
-- [Form integration](#form-integration-ngmodel--formcontrol)
+- [Form integration](#form-integration-ngmodel-formcontrol)
 - [Events](#events)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
@@ -96,7 +96,7 @@ All of the plugin's [initialisation options](/docs/options) are supported as ind
 > If you're migrating from an older version, the previous `[initOptions]="{ initialCountry: 'us' }"` style is no longer supported — pass each option as its own input instead.
 
 
-## Form integration ([(ngModel)] / formControl)
+## Form integration (ngModel / formControl)
 
 The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
 
@@ -143,7 +143,20 @@ Emitted when the country dropdown opens.
 Type: `EventEmitter<{ source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length" }>`  
 Default: `null`  
 
-Emitted when [`strictMode`](/docs/options#strictmode) rejects or modifies input. See [strict:reject](/docs/events#strict-reject) for details on the payload.
+Emitted when [`strictMode`](/docs/options#strictmode) rejects or modifies input. The event payload has three fields describing what was rejected and why, so you can give the user appropriate feedback (e.g. a toast or a shake animation):
+
+- `source`: either `"key"` (a keystroke) or `"paste"` (a clipboard paste).
+- `rejectedInput`: the raw string that was rejected or stripped — for `"key"` this is the single character pressed, and for `"paste"` it's the full pasted text.
+- `reason`: either `"invalid"` (the input contained a disallowed character) or `"max-length"` (accepting the input would have exceeded the maximum valid length for the selected country).
+
+Here is an example that selects a user-facing message based on these fields:
+
+```js
+const { source, rejectedInput, reason } = $event;
+if (reason === "max-length") msg = "Maximum length reached for this country";
+else if (source === "paste") msg = "Stripped invalid characters from pasted text";
+else msg = `Character not allowed: "${rejectedInput}"`;
+```
 
 ### Native input events
 

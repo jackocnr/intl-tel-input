@@ -100,7 +100,19 @@ A handler to be called when the country dropdown opens.
 Type: `(source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length") => void`  
 Default: `null`  
 
-A handler to be called when [`strictMode`](/docs/options#strictmode) rejects or modifies input. See [strict:reject](/docs/events#strict-reject) for details on each argument.
+A handler to be called when [`strictMode`](/docs/options#strictmode) rejects or modifies input. The handler receives three arguments describing what was rejected and why, so you can give the user appropriate feedback (e.g. a toast or a shake animation):
+
+- `source`: either `"key"` (a keystroke) or `"paste"` (a clipboard paste).
+- `rejectedInput`: the raw string that was rejected or stripped — for `"key"` this is the single character pressed, and for `"paste"` it's the full pasted text.
+- `reason`: either `"invalid"` (the input contained a disallowed character) or `"max-length"` (accepting the input would have exceeded the maximum valid length for the selected country).
+
+Here is an example that selects a user-facing message based on these args:
+
+```js
+if (reason === "max-length") msg = "Maximum length reached for this country";
+else if (source === "paste") msg = "Stripped invalid characters from pasted text";
+else msg = `Character not allowed: "${rejectedInput}"`;
+```
 
 ###### readOnly
 Type: `boolean`  
