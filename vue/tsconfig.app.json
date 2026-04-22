@@ -1,14 +1,18 @@
+// Used by the IDE (via reference from tsconfig.json) and by vite-plugin-dts
+// during `build:vue`. vite-plugin-dts is what actually emits the .d.ts files
+// into vue/dist — plain tsc is never run against this config by the build.
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "rootDir": "src",
-    // Resolve the `intl-tel-input` package name to source rather than dist,
-    // so the IDE and build stay accurate regardless of `dist/` state.
+    // Resolve to dist rather than source (unlike svelte). Source-path mapping
+    // pulls ../src/js files into the program and trips TS6059 against
+    // rootDir: "src", and removing rootDir breaks vite-plugin-dts's emit
+    // layout (entry files end up flagged as "Outside emitted").
     "paths": {
-      "intl-tel-input": ["../src/js/intlTelInput.ts"],
-      "intl-tel-input/utils": ["../src/js/types/utils.d.ts"]
+      "intl-tel-input": ["../dist/js/intlTelInput.d.ts"]
     },
     /* Linting */
     "strict": true,

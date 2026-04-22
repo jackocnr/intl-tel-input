@@ -1,4 +1,4 @@
-// Unlike svelte/vue, this config does NOT path-map "intl-tel-input" to
+// Unlike svelte, this config does NOT path-map "intl-tel-input" to
 // ../src/js/intlTelInput.ts. Mapping to source would require switching
 // moduleResolution to "bundler" (the source uses extensionless imports) and
 // pulling the whole src/js tree into the program, which then violates

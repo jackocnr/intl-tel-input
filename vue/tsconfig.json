@@ -1,3 +1,6 @@
+// Entry point for Vue's IDE integration. Volar follows the references
+// below to check `src/` under tsconfig.app.json and vite/tooling files
+// under tsconfig.node.json. Standard Vue 3 + Vite project layout.
 {
     "files": [],
     "references": [
