@@ -1,23 +1,16 @@
 # Svelte component
 
-A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/src/IntlTelInput.svelte).
+A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/src/IntlTelInput.svelte), see a live demo on the [Svelte component](/examples/svelte-component) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md) to run the full set of demos locally.
 
 ## Contents
 
-- [Demo](#demo)
-- [Getting started](#getting-started)
+- [Installation](#installation)
 - [Props](#props)
 - [Plugin initialisation options](#plugin-initialisation-options)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
 
-## Demo
-
-You can see a live demo and example code on the [Svelte component](/examples/svelte-component) example page.
-
-Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run svelte:demo` and copy the given URL into your browser. This defaults to the validation demo — to run a different one, set the `DEMO` env var, e.g. `DEMO=simple npm run svelte:demo`. View a list of [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/svelte/demo).
-
-## Getting started
+## Installation
 
 First, install the package: 
 
@@ -29,21 +22,20 @@ Then, add something like this to your code:
 
 ```html
 <script>
-  import IntlTelInput from "intl-tel-input/svelteWithUtils";
+  import IntlTelInput from "intl-tel-input/svelte";
   import "intl-tel-input/styles";
 </script>
 
-<IntlTelInput initialCountry="us" />
+<IntlTelInput
+  initialCountry="us"
+  loadUtils={() => import("intl-tel-input/utils")}
+/>
 ```
 
-See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/demo/validation/App.svelte) for a more fleshed-out example of how to handle validation.
-
 > [!NOTE]
-> The package ships the raw `.svelte` source file rather than a pre-built `.mjs` bundle, so your project's existing Svelte tooling compiles it alongside your own components. Any standard Svelte setup (SvelteKit, Vite + `@sveltejs/vite-plugin-svelte`, etc.) handles this out of the box.
+> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"intl-tel-input/svelteWithUtils"` to bundle utils directly.
 
-A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about file size), then you can just import `IntlTelInput` from `"intl-tel-input/svelteWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/svelte"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the utils.js file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN-hosted version, e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/js/utils.js"`.
-
-Also see [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
+See [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
 
 ## Props
 
@@ -53,7 +45,7 @@ Any of the plugin's [initialisation options](#plugin-initialisation-options) (li
 Type: `boolean`  
 Default: `false`  
 
-Sets the disabled attribute of both the telephone input and the selected country button. *Note: We recommend using this instead of `inputProps.disabled`.*
+Sets the disabled attribute of both the telephone input and the selected country button. Use this instead of `inputProps.disabled`, as this disables the country button too.
 
 ###### initialValue
 Type: `string`  
@@ -128,7 +120,7 @@ else msg = `Character not allowed: "${rejectedInput}"`;
 Type: `boolean`  
 Default: `false`  
 
-Sets the readonly attribute of the telephone input and disables the selected country button. *Note: We recommend using this instead of `inputProps.readonly`.*
+Sets the readonly attribute of the telephone input and disables the selected country button. Use this instead of `inputProps.readonly`, as this disables the country button too.
 
 ###### usePreciseValidation
 Type: `boolean`  

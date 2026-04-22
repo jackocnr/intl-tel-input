@@ -168,7 +168,7 @@ iti.setCountry("gb");
 ###### setDisabled
 Type: `(disabled: boolean) => void`  
 
-Updates the disabled attribute of both the telephone input and the selected country button. Accepts a boolean value. _Note: use this instead of updating the disabled attribute of the input directly, as that leaves the selected country clickable._
+Updates the disabled attribute of both the telephone input and the selected country button. Accepts a boolean value. Use this instead of updating the input's disabled attribute directly, as this disables the country button too.
 
 ```js
 iti.setDisabled(true);
@@ -195,7 +195,7 @@ iti.setPlaceholderNumberType("FIXED_LINE");
 ###### setReadonly
 Type: `(readonly: boolean) => void`  
 
-Updates the readonly attribute of the telephone input and disables the selected country button. Accepts a boolean value. _Note: use this instead of updating the readonly attribute of the input directly, as that leaves the selected country clickable._
+Updates the readonly attribute of the telephone input and disables the selected country button. Accepts a boolean value. Use this instead of updating the input's readonly attribute directly, as this disables the country button too.
 
 ```js
 iti.setReadonly(true);

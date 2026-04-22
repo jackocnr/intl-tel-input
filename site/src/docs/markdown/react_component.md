@@ -1,24 +1,17 @@
 # React component
 
-A React component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/react/src/IntlTelInput.tsx).
+A React component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/react/src/IntlTelInput.tsx), see a live demo on the [React component](/examples/react-component) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) to run the full set of demos locally.
 
 ## Contents
 
-- [Demo](#demo)
-- [Getting started](#getting-started)
+- [Installation](#installation)
 - [Props](#props)
 - [Plugin initialisation options](#plugin-initialisation-options)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
 - [Troubleshooting](#troubleshooting)
 
-## Demo
-
-You can see a live demo and example code on the [React component](/examples/react-component) example page.
-
-Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You should now be able to open the validation demo page /react/demo/validation/index.html in your browser and give it a try. View other [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/react/demo).
-
-## Getting started
+## Installation
 
 First, install the package: 
 
@@ -29,19 +22,21 @@ npm install intl-tel-input
 Then, add something like this to your code:
 
 ```js
-import IntlTelInput from "intl-tel-input/reactWithUtils";
+import IntlTelInput from "intl-tel-input/react";
 import "intl-tel-input/styles";
 
 const PhoneInput = () => (
-  <IntlTelInput initialCountry="us" />
+  <IntlTelInput
+    initialCountry="us"
+    loadUtils={() => import("intl-tel-input/utils")}
+  />
 );
 ```
 
-See the [Validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/validation/ValidationApp.tsx) for a more fleshed-out example of how to handle validation.
+> [!NOTE]
+> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"intl-tel-input/reactWithUtils"` to bundle utils directly.
 
-A note on the utils script (~260KB): if you're lazy loading the IntlTelInput chunk (and so less worried about file size), then you can just import `IntlTelInput` from `"intl-tel-input/reactWithUtils"`, to include the utils script. Alternatively, if you use the main `"intl-tel-input/react"` import, then you should couple this with the `loadUtils` initialisation option - you will need to host the utils.js file, and then set the `loadUtils` option to that URL, or alternatively just point it to a CDN-hosted version, e.g. `"https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/js/utils.js"`.
-
-Also see [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
+See [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
 
 ## Props
 
@@ -51,7 +46,7 @@ Any of the plugin's [initialisation options](#plugin-initialisation-options) (li
 Type: `boolean`  
 Default: `false`  
 
-Disables both the telephone input and the selected country button. _Note: We recommend using this instead of `inputProps.disabled`._
+Disables both the telephone input and the selected country button. Use this instead of `inputProps.disabled`, as this disables the country button too.
 
 ###### inputProps
 Type: `object`  
@@ -120,7 +115,7 @@ else msg = `Character not allowed: "${rejectedInput}"`;
 Type: `boolean`  
 Default: `false`  
 
-Makes the telephone input read-only and disables the selected country button. _Note: We recommend using this instead of `inputProps.readOnly`._
+Makes the telephone input read-only and disables the selected country button. Use this instead of `inputProps.readOnly`, as this disables the country button too.
 
 ###### usePreciseValidation
 Type: `boolean`
@@ -153,19 +148,3 @@ You can access all of the plugin's [instance methods](/docs/methods#instance-met
 ## Accessing static methods
 
 You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the React component, e.g. `import { intlTelInput } from "intl-tel-input/react"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
-
-## Troubleshooting
-
-###### Error when toggling presence of IntlTelInput component
-
-Error message: `Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.`
-
-Solution: wrap the component in a div, e.g.
-
-```js
-{showIntlTelInput && (
-    <div>
-        <IntlTelInput />
-    </div>
-)}
-```
