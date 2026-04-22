@@ -8,7 +8,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "types": ["svelte"],
+    // "node" is needed because the source-path mapping below pulls src/js/intlTelInput.ts
+    // into svelte-check's program, and that file references process.env.VERSION.
+    "types": ["svelte", "node"],
     // Resolve the `intl-tel-input` package name to source rather than dist,
     // so the IDE stays accurate even when `dist/` has been cleaned.
     "paths": {

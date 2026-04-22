@@ -6,6 +6,7 @@
 <script lang="ts">
   // Resolves to IntlTelInput.svelte.d.ts (the type declaration file for this component).
   import type { Props } from "./IntlTelInput.svelte";
+  import type { SomeOptions } from "intl-tel-input";
   import { onMount, onDestroy } from "svelte";
 
   // Props
