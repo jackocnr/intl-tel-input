@@ -2,13 +2,18 @@
 
 How to get up and running with the JavaScript plugin. For the  React/Angular/Svelte/Vue components instead, see [Getting started](/docs/getting-started).
 
+
 ## Contents
-- [Using a bundler, e.g. Vite](#using-a-bundler-e-g-vite)
-- [Using a script tag](#using-a-script-tag)
+- [Installation](#installation)
+- [Initialisation options](#initialisation-options)
+- [Methods](#methods)
 - [Events](#events)
 - [Next steps](#next-steps)
 
-### Using a bundler, e.g. Vite
+
+## Installation
+
+##### Using a bundler, e.g. Vite
 
 1. Install with npm
 
@@ -29,9 +34,7 @@ intlTelInput(input, {
 });
 ```
 
-3. Customize with any of the plugin's [initialisation options](/docs/options).
-
-### Using a script tag
+##### Using a script tag
 
 This example loads the assets from [jsDelivr](https://www.jsdelivr.com/) for a quick start. Alternatively, use your own hosted files.
 
@@ -51,13 +54,22 @@ This example loads the assets from [jsDelivr](https://www.jsdelivr.com/) for a q
   </script>
   ```
 
-3. Customize with any of the plugin's [initialisation options](/docs/options).
+
+## Initialisation options
+
+The plugin has dozens of options for customising its behaviour — country picker, formatting, validation, placeholders, localisation, and more. See the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground).
+
+
+## Methods
+
+Once the plugin is initialised, you can call methods on the returned instance — e.g. `setNumber`, `setCountry`, `getNumber`, `isValidNumber`. See the full list on the [Methods](/docs/methods) page.
+
 
 ## Events
 
 The plugin triggers the following custom events on the `<input>` element. Listen for them with `input.addEventListener(...)`.
 
-### countrychange
+##### countrychange
 
 Triggered when the selected country is updated, e.g. if the user selects a country from the dropdown, or they type a different dial code into the input, or you call [`setCountry`](/docs/methods#setcountry) etc. The selected country data is available at `e.detail` (the same data returned by [`getSelectedCountryData`](/docs/methods#getselectedcountrydata)).
 
@@ -68,15 +80,15 @@ input.addEventListener("countrychange", (e) => {
 });
 ```
 
-### open:countrydropdown
+##### open:countrydropdown
 
 Triggered when the user opens the dropdown.
 
-### close:countrydropdown
+##### close:countrydropdown
 
 Triggered when the user closes the dropdown.
 
-### strict:reject
+##### strict:reject
 
 Only fires when [`strictMode`](/docs/options#strictmode) is enabled. Triggered when a keystroke or paste is rejected or modified by strict mode — e.g. the character is not allowed, or the input would exceed the maximum valid length for the selected country. Useful for giving the user feedback (e.g. a shake animation, toast, or aria-live announcement) instead of the input being silently dropped.
 
@@ -91,7 +103,7 @@ input.addEventListener("strict:reject", (e) => {
 });
 ```
 
-#### Worked example: Bootstrap toast
+###### Worked example: Bootstrap toast
 
 Here is a worked example showing a [Bootstrap toast](https://getbootstrap.com/docs/5.3/components/toasts/) with a contextual message when input is rejected.
 
@@ -128,7 +140,8 @@ input.addEventListener("strict:reject", (e) => {
 });
 ```
 
+
 ## Next steps
 
-Read the [Best practices](/docs/best-practices) for advice on validation, E.164 storage, and localisation. The plugin also has dozens of [initialisation options](/docs/options) for customizing its behaviour — country picker, formatting, validation, placeholders, localisation, and more. Browse the full list, or try them interactively in the [playground](/playground).
+Read the [Best practices](/docs/best-practices) for advice on validation, E.164 storage, and localisation.
 
