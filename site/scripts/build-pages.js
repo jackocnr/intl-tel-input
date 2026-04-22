@@ -679,12 +679,6 @@ const docsDefinitions = [
       "All the different methods you can call on an intl-tel-input instance.",
   },
   {
-    key: "events",
-    title: "Events",
-    metaDesc:
-      "All the different events that an intl-tel-input instance can emit.",
-  },
-  {
     key: "utils",
     title: "Utils script",
     metaDesc: "Learn about the utils script, what it's for and how to load it.",

@@ -37,17 +37,12 @@ const docsDropdownPages = [
   {
     name: "options",
     href: "/docs/options",
-    label: "Initialisation options",
+    label: "Options",
   },
   {
     name: "methods",
     href: "/docs/methods",
     label: "Methods",
-  },
-  {
-    name: "events",
-    href: "/docs/events",
-    label: "Events",
   },
   {
     name: "utils",

@@ -5,7 +5,7 @@
 
 export const NOTE_BODIES = {
   strictMode:
-    'By default, <code>strictMode</code> silently drops invalid keys, which is confusing — listen for the <a href="/docs/events#worked-example-bootstrap-toast"><code>strict:reject</code></a> event to give users feedback (see linked docs for a worked example).',
+    'By default, <code>strictMode</code> silently drops invalid keys, which is confusing — listen for the <a href="/docs/javascript-plugin#worked-example-bootstrap-toast"><code>strict:reject</code></a> event to give users feedback (see linked docs for a worked example).',
   geoIpLookup:
     '<code>geoIpLookup</code> here uses <a rel="noopener" href="https://ipapi.co">ipapi</a>\'s limited free tier — for production, pick a paid plan, another provider, or roll your own.',
   deriveErrorMessage:
