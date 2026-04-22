@@ -352,7 +352,7 @@ The [`loadUtils`](#loadutils) option takes a function that returns a Promise res
 
 (B) import utils module from a URL (CDN or your own hosted version)
 ```js
-() => import("https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/js/utils.js"),
+() => import("https://cdn.jsdelivr.net/npm/intl-tel-input@27.2.0/dist/js/utils.js"),
 ```
 
 The module is only loaded once the plugin initialises, and additionally, only once the page has finished loading (on the window `load` event) to prevent blocking (the script is ~260KB). The `promise` property on the plugin instance resolves once loading is complete — see [Utils Script](/docs/utils) for more information.
