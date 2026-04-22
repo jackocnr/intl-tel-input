@@ -41,6 +41,12 @@ import {
 } from "./constants";
 import { Numerals } from "./core/numerals";
 import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap";
+// The published surface (dist/js/intlTelInput.d.ts) is broader than these
+// re-exports: dts-bundle-generator hoists every reachable type (Iso2, Country,
+// I18n, UtilsLoader, ItiUtils, NumberType, IntlTelInputInterface, etc.) to the
+// top level. Consumers that resolve "intl-tel-input" to source instead of dist
+// will only see what's re-exported here, so add any additional public types
+// to this block (not just to dist by implication).
 export type {
   AllOptions,
   SomeOptions,

@@ -14,6 +14,9 @@
     //* allowJs is off so ngc doesn't pull dist/js/*.{js,mjs} in as inputs
     //* via the "intl-tel-input" import (which would collide with its own
     //* output → TS5055). The included sources only need .ts/.d.ts resolution.
+    //* We also can't point "intl-tel-input" at ../src/js (like the other
+    //* wrappers do) because ngc generates .ngtypecheck.ts shadow files for
+    //* every module it pulls into the graph, and those violate rootDir.
     "allowJs": false,
   },
   "angularCompilerOptions": {

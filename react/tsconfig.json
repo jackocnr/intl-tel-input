@@ -1,3 +1,11 @@
+// Unlike svelte/vue, this config does NOT path-map "intl-tel-input" to
+// ../src/js/intlTelInput.ts. Mapping to source would require switching
+// moduleResolution to "bundler" (the source uses extensionless imports) and
+// pulling the whole src/js tree into the program, which then violates
+// rootDir: "./src" (TS6059) and surfaces process/implicit-any issues that the
+// root tsconfig hides via types: ["node"]. Resolution currently goes through
+// the package's exports map to dist/js/intlTelInput.d.ts; keep that and rely
+// on ensure:dts to guarantee it's present.
 {
   "compilerOptions": {
     "target": "ES2022",

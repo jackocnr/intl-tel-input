@@ -4,8 +4,11 @@
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "rootDir": "src",
+    // Resolve the `intl-tel-input` package name to source rather than dist,
+    // so the IDE and build stay accurate regardless of `dist/` state.
     "paths": {
-      "intl-tel-input": ["../dist/js/intlTelInput.d.ts"]
+      "intl-tel-input": ["../src/js/intlTelInput.ts"],
+      "intl-tel-input/utils": ["../src/js/types/utils.d.ts"]
     },
     /* Linting */
     "strict": true,
