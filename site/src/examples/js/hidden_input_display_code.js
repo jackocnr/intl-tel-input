@@ -7,16 +7,19 @@ const validMsg = document.querySelector("#valid-msg");
 
 // initialise plugin
 const iti = intlTelInput(input, {
-  initialCountry: "auto",
   separateDialCode: true,
   strictMode: true,
+  hiddenInput: () => ({
+    phone: "full_phone",
+    country: "country_iso2",
+  }),
+  initialCountry: "auto",
   geoIpLookup: (success, failure) => {
     fetch("https://ipapi.co/json")
       .then(res => res.json())
       .then(data => success(data.country_code))
       .catch(() => failure());
   },
-  hiddenInput: () => ({ phone: "full_phone", country: "country_iso2" }),
   loadUtils: () => import("intl-tel-input/utils"),
 });
 
@@ -59,7 +62,8 @@ input.addEventListener("input", updateUI);
 
 // if the form was submitted and the page reloaded with the full phone number in the query string, show it here
 const urlParams = new URLSearchParams(window.location.search);
+const phone = urlParams.get("phone");
 const fullPhone = urlParams.get("full_phone");
 if (fullPhone) {
-  validMsg.textContent = `Submitted value: ${fullPhone}`;
+  validMsg.innerHTML = `Submitted values<br>phone: ${phone}<br>full_phone: ${fullPhone}`;
 }

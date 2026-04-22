@@ -1,6 +1,4 @@
-<p>You can change the display size of the flags using the CSS variable <code>--iti-flag-width</code> (the height scales automatically). But you cannot change the underlying flag image size without rebuilding it yourself. The flag sprite is pre-built to a specific size (20x15px by default, or 40x30px for retina), so scaling <em>down</em> via the CSS variable works fine, but scaling <em>up</em> past the default looks soft because the sprite is rasterised at a fixed resolution.</p>
-
-<p>To show larger, crisp flags, you need to rebuild the images yourself at a higher resolution. Here's how:</p>
+<p>You can resize the flags with the <code>--iti-flag-width</code> CSS variable (height scales automatically), but the sprite is rasterised at a fixed size (20x15px, or 40x30px retina), so scaling <em>up</em> past the default looks soft. For crisp larger flags you need to rebuild the sprite yourself:</p>
 
 <ol>
 <li>Follow the <a rel="noopener" href="https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#changes-to-the-plugin">Contributing</a> guidelines to download the project and get it building (<code>npm run build</code>) without errors.</li>

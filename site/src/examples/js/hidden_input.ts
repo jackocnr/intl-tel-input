@@ -54,7 +54,7 @@ const getErrorMessage = (number: string, errorCode: number) => {
 
 let showValidation = false;
 
-const setText = (el: HTMLElement, text: string) => el.textContent = text;
+const setText = (el: HTMLElement, text: string) => el.innerHTML = text;
 
 const updateUI = () => {
   if (!showValidation) {
@@ -99,7 +99,8 @@ input.addEventListener("input", updateUI);
 
 // if the form was submitted and the page reloaded with the full phone number in the query string, show it here
 const urlParams = new URLSearchParams(window.location.search);
+const phone = urlParams.get("phone");
 const fullPhone = urlParams.get("full_phone");
 if (fullPhone) {
-  setText(validMsg, `Submitted value: ${fullPhone}`);
+  setText(validMsg, `Submitted values<br>phone: ${phone}<br>full_phone: ${fullPhone}`);
 }
