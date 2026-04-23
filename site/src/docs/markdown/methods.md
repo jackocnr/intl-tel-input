@@ -25,7 +25,13 @@ This page lists the plugin's public API methods.
 
 ## Instance Methods
 
-These methods are called on the plugin instance. With the [JavaScript plugin](/docs/javascript-plugin) you get the instance directly from the initialisation call `const iti = intlTelInput(input, options)`; with the [React](/docs/react-component)/[Vue](/docs/vue-component)/[Angular](/docs/angular-component)/[Svelte](/docs/svelte-component) components you access it via a `ref` (see each component's docs for the exact syntax). The examples below all use a variable named `iti` for the instance:
+These methods are called on the plugin instance. The examples below all use a variable named `iti` for the instance — how you get hold of it depends on the integration:
+
+- **JavaScript plugin**: `const iti = intlTelInput(input, options)` — directly from the initialisation call.
+- **React**: `const iti = ref.current.getInstance()` — see [Accessing instance methods](/docs/react-component#accessing-instance-methods).
+- **Vue**: `const iti = ref.value.instance` — see [Accessing instance methods](/docs/vue-component#accessing-instance-methods).
+- **Angular**: `const iti = this.ref.getInstance()` — see [Accessing instance methods](/docs/angular-component#accessing-instance-methods).
+- **Svelte**: `const iti = ref.getInstance()` — see [Accessing instance methods](/docs/svelte-component#accessing-instance-methods).
 
 > [!IMPORTANT]
 > Methods that require the [utils script](/docs/utils#loading-the-utils-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always await `iti.promise` first:

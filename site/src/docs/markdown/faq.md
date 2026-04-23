@@ -29,7 +29,7 @@ See [Utils script](/docs/utils) for how to load it and what it’s used for.
 
 In most cases you should store phone numbers in standardised international format ([E.164](https://en.wikipedia.org/wiki/E.164)), e.g. `+447740123456`. That way, you can just store a single string that contains all the information you need (the phone number and the country it belongs to).
 
-You can always get the E.164 number from the plugin using `getNumber`, even if the user has entered their number in national format, or `separateDialCode` is enabled. For displaying numbers back to the user (e.g. on a user profile page), simply initialise the plugin on an input containing an E.164 number, and it will automatically select the right flag and format the number according to your settings (national format by default).
+You can always get the E.164 number using [`getNumber`](/docs/methods#getnumber), even if the user has entered their number in national format, or `separateDialCode` is enabled. For displaying numbers back to the user (e.g. on a user profile page), simply initialise it on an input containing an E.164 number, and it will automatically select the right flag and format the number according to your settings (national format by default).
 
 
 ## How do I submit the full international number in a normal HTML form?
@@ -86,6 +86,6 @@ Try it out in the [Playground](/playground?initialCountry=gb&separateDialCode=tr
 
 ## Something looks broken — where should I look first?
 
-A lot of “broken” behaviour is caused by layout/CSS or initialising the plugin before the input is in the DOM. Check devtools: is the plugin CSS loading? Have you overridden the flag paths correctly, and are the flag images loading?
+A lot of “broken” behaviour is caused by layout/CSS or initialising on an input that isn't in the DOM yet. Check devtools: is the CSS loading? Have you overridden the flag paths correctly, and are the flag images loading?
 
 Also see [Troubleshooting](/docs/troubleshooting).

@@ -12,57 +12,38 @@ intl-tel-input supports localisation of country names, UI strings, right-to-left
 
 ## Localising country names
 
-Country names are generated using the native `Intl.DisplayNames` API, which supports hundreds of locales out of the box. Use the [`countryNameLocale`](/docs/options#countrynamelocale) option to specify the locale (a BCP 47 language tag):
+Country names are generated using the native `Intl.DisplayNames` API, which supports hundreds of locales out of the box. Use the [`countryNameLocale`](/docs/options#countrynamelocale) option to specify the locale — a BCP 47 language tag, e.g. `"fr"` for French.
 
-```js
-intlTelInput(input, {
-  countryNameLocale: "fr", // French
-});
-```
-
-You can also override individual country names via the [`i18n`](/docs/options#i18n) option by providing the iso2 key (e.g. `"us"` for United States) - see below.
+You can also override individual country names via the [`i18n`](/docs/options#i18n) option by providing the iso2 key (e.g. `"us"` for United States) — see below.
 
 ## Localising user interface strings
 
-Use the [`i18n`](/docs/options#i18n) option to translate the plugin’s user interface strings (e.g. the country search placeholder, no-results message, and various accessibility labels).
+Use the [`i18n`](/docs/options#i18n) option to translate the user interface strings (e.g. the country search placeholder, no-results message, and various accessibility labels).
 
-We provide translations for many locales in the `intl-tel-input/i18n` entrypoint, so you can import the one you need and pass it in:
+We provide translations for many locales in the `intl-tel-input/i18n` entrypoint — import the one you need and pass it into the [`i18n`](/docs/options#i18n) option:
 
 ```js
 import { fr } from "intl-tel-input/i18n";
-
-intlTelInput(input, {
-  i18n: fr,
-});
 ```
 
-You can override one or more keys by spreading the provided translations:
+You can override one or more keys by spreading the provided translations — pass the following as [`i18n`](/docs/options#i18n):
 
 ```js
-import { fr } from "intl-tel-input/i18n";
-
-intlTelInput(input, {
-  i18n: {
-    ...fr,
-    // override the translation for the country search placeholder
-    searchPlaceholder: "Rechercher",
-  },
-});
+{
+  ...fr,
+  // override UI translation (the country search placeholder)
+  searchPlaceholder: "Rechercher",
+}
 ```
 
-You can also override one or more country names in a similar way:
+You can also override one or more country names in a similar way — set [`countryNameLocale`](/docs/options#countrynamelocale) to `"fr"` and pass the following as [`i18n`](/docs/options#i18n):
 
 ```js
-import { fr } from "intl-tel-input/i18n";
-
-intlTelInput(input, {
-  countryNameLocale: "fr",
-  i18n: {
-    ...fr,
-    // override the country name for the United States
-    us: "États-Unis",
-  },
-});
+{
+  ...fr,
+  // override country name (United States)
+  us: "États-Unis",
+}
 ```
 
 ### Supported UI locales
@@ -105,7 +86,7 @@ Here is the full set of UI strings the [`i18n`](/docs/options#i18n) option accep
 
 ## Right-to-left (RTL) languages
 
-On RTL sites (i.e. where `dir="rtl"` is set on the `<html>` element, or any other ancestor of the plugin), the plugin layout will automatically flow right-to-left.
+On RTL sites (i.e. where `dir="rtl"` is set on the `<html>` element, or any other ancestor), the layout will automatically flow right-to-left.
 
 Phone numbers and dial codes are still displayed left-to-right, as that’s the standard way to write telephone numbers.
 
@@ -119,7 +100,7 @@ intl-tel-input supports alternative numerals for phone number input.
 - Arabic-Indic digits: ٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
 - Persian / Extended Arabic-Indic digits: ۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹
 
-These are normalised internally to ASCII `0-9` for parsing/validation, and when the plugin updates the input value it preserves the user’s numeral set.
+These are normalised internally to ASCII `0-9` for parsing/validation, and when the input value is updated it preserves the user’s numeral set.
 
 > [!NOTE]
 > Format-as-you-type is automatically disabled when the user types non-ASCII digits, since caret positioning gets unreliable with RTL numeral sets.

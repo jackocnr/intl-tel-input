@@ -27,7 +27,7 @@ Example:
 ```
 
 > [!IMPORTANT]
-> Although the plugin adds its own ARIA attributes to the country UI it injects, it's still up to you to give the underlying `<input>` an accessible name.
+> Although intl-tel-input adds its own ARIA attributes to the country UI, it's still up to you to give the underlying `<input>` an accessible name.
 
 
 ## Keyboard support
@@ -37,7 +37,7 @@ The country selector is fully keyboard-operable: Up/Down/Space/Enter to open and
 
 ## Screen reader support
 
-The plugin is built to work well with screen readers out of the box.
+intl-tel-input is built to work well with screen readers out of the box.
 
 Its dropdown/search UI includes ARIA attributes to expose state and relationships (e.g. expanded state, controls relationships, listbox semantics), and it provides screen reader text for things like:
 
