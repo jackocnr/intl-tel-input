@@ -107,3 +107,10 @@ build({
   entryPoints: ["src/js/iti-live-results.ts"],
   outfile: "dist/js/iti-live-results.js",
 });
+
+// hljs copy button plugin — no templating, built directly from src
+build({
+  ...sharedOptions,
+  entryPoints: ["src/js/hljs-copy-button.ts"],
+  outfile: "dist/js/hljs-copy-button.js",
+});

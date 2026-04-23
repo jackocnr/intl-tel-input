@@ -15,3 +15,39 @@
     background-color: #151b23;
   }
 }
+
+// Copy button
+pre:has(> .hljs) {
+  position: relative;
+}
+.hljs-copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.5rem;
+  color: inherit;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out, color 0.15s ease-in-out;
+
+  pre:hover &,
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  &:hover {
+    color: #0969da;
+
+    [data-bs-theme="dark"] & {
+      color: #4493f8;
+    }
+  }
+
+  &.hljs-copy-btn--copied {
+    opacity: 1;
+  }
+}
