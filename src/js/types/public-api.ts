@@ -64,12 +64,15 @@ export type ItiUtils = {
   };
 };
 
-// Number types exposed publicly
-type SetValues<T> = T extends ReadonlySet<infer U> ? U : never;
+// Exported to match the dist public surface: dts-bundle-generator hoists
+// these utility types to the top level of dist/js/intlTelInput.d.ts because
+// NumberType / AllOptions reference them, so they're already visible to
+// consumers. Mirror that here so source-path resolution sees the same set.
+export type SetValues<T> = T extends ReadonlySet<infer U> ? U : never;
 
 export type NumberType = SetValues<typeof NUMBER_TYPE_SET>;
 
-type ValueOf<T> = T[keyof T];
+export type ValueOf<T> = T[keyof T];
 
 // All configurable options
 export interface AllOptions {

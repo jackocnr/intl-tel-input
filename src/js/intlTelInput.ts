@@ -41,16 +41,25 @@ import {
 } from "./constants.js";
 import { Numerals } from "./core/numerals.js";
 import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
-// The published surface (dist/js/intlTelInput.d.ts) is broader than these
-// re-exports: dts-bundle-generator hoists every reachable type (Iso2, Country,
-// I18n, UtilsLoader, ItiUtils, NumberType, IntlTelInputInterface, etc.) to the
-// top level. Consumers that resolve "intl-tel-input" to source instead of dist
-// will only see what's re-exported here, so add any additional public types
-// to this block (not just to dist by implication).
+// Re-export the full public type surface, so consumers who resolve
+// "intl-tel-input" to this source file (via tsconfig paths) see the same
+// exports as consumers of the bundled dist/js/intlTelInput.d.ts. Without
+// these re-exports dist is broader than source, because dts-bundle-generator
+// hoists every reachable type to the top level of the dist output while the
+// source file only exposes what's explicitly re-exported. Keep this list in
+// sync with what dist exports; scripts/typecheck-dts.ts is the smoke test.
+export type { Iso2, Country } from "./data.js";
+export type { I18n } from "./i18n/types.js";
+export type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
 export type {
   AllOptions,
   SomeOptions,
   SelectedCountryData,
+  UtilsLoader,
+  ItiUtils,
+  NumberType,
+  SetValues,
+  ValueOf,
 } from "./types/public-api.js";
 
 declare global {
@@ -1583,7 +1592,7 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
   return null;
 };
 
-interface IntlTelInputInterface {
+export interface IntlTelInputInterface {
   (input: HTMLInputElement, options?: SomeOptions): Iti;
   autoCountry?: Iso2;
   defaults: AllOptions;
