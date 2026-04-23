@@ -142,9 +142,17 @@
   }
 }
 
-/* playground: interactive tooltip with docs link */
-.iti-playground-info + .tooltip,
-.tooltip.show {
+.playground-dropdown-checkbox.is-disabled {
+  cursor: pointer;
+  .form-check-label {
+    cursor: pointer;
+  }
+}
+
+/* playground: interactive tooltip with docs link — opt-in via customClass.
+   Most tooltips should keep Bootstrap's default `pointer-events: none` so
+   that hover triggers don't flicker when the cursor crosses onto the tip. */
+.tooltip.iti-playground-tooltip-interactive {
   pointer-events: auto;
 
   a {

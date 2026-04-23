@@ -21,6 +21,7 @@ import { updateUrlFromState } from "./modules/urlState";
 const telInput = document.querySelector<HTMLInputElement>("#playgroundPhone")!;
 const playgroundContainer = document.querySelector<HTMLElement>("#itiPlayground")!;
 const keepDropdownOpenCheckbox = document.querySelector<HTMLInputElement>("#playgroundKeepDropdownOpen")!;
+const keepDropdownOpenWrapper = keepDropdownOpenCheckbox.closest<HTMLElement>(".playground-dropdown-checkbox")!;
 const optionsForm = document.querySelector<HTMLFormElement>("#playgroundOptions")!;
 const attrsForm = document.querySelector<HTMLFormElement>("#playgroundAttributes")!;
 const resetAllButton = document.querySelector<HTMLButtonElement>("#playgroundResetAll");
@@ -64,19 +65,73 @@ function flashActionButtonLabel(buttonEl: HTMLButtonElement | null, temporaryLab
   }, 2000);
 }
 
+function getKeepDropdownOpenDisabledReason(state) {
+  if (state.useFullscreenPopup) {
+    return "Disabled because useFullscreenPopup is on — the dropdown becomes a modal popup.";
+  }
+  if (!state.allowDropdown) {
+    return "Disabled because allowDropdown is off — there is no dropdown to keep open.";
+  }
+  if (state.disabled) {
+    return "Disabled because the input's disabled attribute is set.";
+  }
+  if (state.readonly) {
+    return "Disabled because the input's readonly attribute is set.";
+  }
+  if (state.dropdownContainer) {
+    return "Disabled because dropdownContainer uses position:fixed, which wouldn't work on a scrollable page.";
+  }
+  return null;
+}
+
 function shouldDisableKeepDropdownOpen(state) {
-  return (
-    state.useFullscreenPopup ||
-    !state.allowDropdown ||
-    state.disabled ||
-    state.readonly ||
-    state.dropdownContainer // uses pos:fixed so can't be kept open on scroll
-  );
+  return getKeepDropdownOpenDisabledReason(state) !== null;
+}
+
+let keepDropdownOpenTooltip: any = null;
+let keepDropdownOpenTooltipCleanup: (() => void) | null = null;
+function disposeKeepDropdownOpenTooltip() {
+  if (keepDropdownOpenTooltipCleanup) {
+    keepDropdownOpenTooltipCleanup();
+    keepDropdownOpenTooltipCleanup = null;
+  }
+  if (keepDropdownOpenTooltip) {
+    keepDropdownOpenTooltip.dispose();
+    keepDropdownOpenTooltip = null;
+  }
 }
 
 function syncKeepDropdownOpenAvailability(state) {
-  const disabled = shouldDisableKeepDropdownOpen(state);
+  const reason = getKeepDropdownOpenDisabledReason(state);
+  const disabled = reason !== null;
   keepDropdownOpenCheckbox.disabled = disabled;
+  keepDropdownOpenWrapper.classList.toggle("is-disabled", disabled);
+
+  // Bootstrap Tooltip won't render with an empty title, so dispose+recreate
+  // each time the reason changes rather than try to update an existing instance.
+  disposeKeepDropdownOpenTooltip();
+  if (reason && window.bootstrap?.Tooltip) {
+    keepDropdownOpenTooltip = new window.bootstrap.Tooltip(keepDropdownOpenWrapper, {
+      title: reason,
+      trigger: "click",
+    });
+
+    const onDocumentMousedown = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (target && !keepDropdownOpenWrapper.contains(target)) {
+        keepDropdownOpenTooltip?.hide();
+      }
+    };
+    const onShown = () => document.addEventListener("mousedown", onDocumentMousedown);
+    const onHidden = () => document.removeEventListener("mousedown", onDocumentMousedown);
+    keepDropdownOpenWrapper.addEventListener("shown.bs.tooltip", onShown);
+    keepDropdownOpenWrapper.addEventListener("hidden.bs.tooltip", onHidden);
+    keepDropdownOpenTooltipCleanup = () => {
+      keepDropdownOpenWrapper.removeEventListener("shown.bs.tooltip", onShown);
+      keepDropdownOpenWrapper.removeEventListener("hidden.bs.tooltip", onHidden);
+      document.removeEventListener("mousedown", onDocumentMousedown);
+    };
+  }
 
   if (disabled && keepDropdownOpenCheckbox.checked) {
     keepDropdownOpenCheckbox.checked = false;

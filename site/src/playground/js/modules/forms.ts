@@ -33,6 +33,7 @@ function initTooltips(container: Element | null) {
     const tooltip = new window.bootstrap.Tooltip(el, {
       trigger: "manual",
       html: true,
+      customClass: "iti-playground-tooltip-interactive",
     });
 
     el.addEventListener("mouseenter", () => tooltip.show());
