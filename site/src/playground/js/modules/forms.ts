@@ -21,12 +21,32 @@ function initTooltips(container: Element | null) {
     return;
   }
 
-  container.querySelectorAll("[data-bs-toggle='tooltip']").forEach((el) => {
+  container.querySelectorAll<HTMLElement>("[data-bs-toggle='tooltip']").forEach((el) => {
     const existing = window.bootstrap.Tooltip.getInstance(el);
     if (existing) {
       existing.dispose();
     }
-    new window.bootstrap.Tooltip(el);
+
+    // Manual trigger: the tooltip's ::after extends its hit area to fully cover
+    // the icon, so the whole icon+gap+tooltip region behaves as one hover zone.
+    // Show on icon hover, hide only once the cursor leaves that combined zone.
+    const tooltip = new window.bootstrap.Tooltip(el, {
+      trigger: "manual",
+      html: true,
+    });
+
+    el.addEventListener("mouseenter", () => tooltip.show());
+    el.addEventListener("focus", () => tooltip.show());
+    el.addEventListener("blur", () => tooltip.hide());
+
+    el.addEventListener("inserted.bs.tooltip", () => {
+      const tipEl = (tooltip.tip || null) as HTMLElement | null;
+      if (!tipEl || tipEl.dataset.itiHoverBound === "1") {
+        return;
+      }
+      tipEl.dataset.itiHoverBound = "1";
+      tipEl.addEventListener("mouseleave", () => tooltip.hide());
+    });
   });
 }
 
@@ -38,7 +58,7 @@ function cloneInfoIconSvg(infoIconTemplate: HTMLTemplateElement | null) {
   return svg ? svg.cloneNode(true) : null;
 }
 
-function createInfoIcon(meta: any, infoIconTemplate: HTMLTemplateElement | null) {
+function createInfoIcon(key: string, meta: any, infoIconTemplate: HTMLTemplateElement | null) {
   const text = String(meta && meta.tooltip ? meta.tooltip : "").trim();
   if (!text) {
     return null;
@@ -51,16 +71,22 @@ function createInfoIcon(meta: any, infoIconTemplate: HTMLTemplateElement | null)
     icon.appendChild(svg);
   }
 
+  const slug = String(key || "").toLowerCase();
+  const html = slug
+    ? `${text} <a href="/docs/options#${slug}" target="_blank" rel="noopener">Docs »</a>`
+    : text;
+
   icon.tabIndex = 0;
   icon.setAttribute("role", "button");
   icon.setAttribute("aria-label", text);
   icon.setAttribute("data-bs-toggle", "tooltip");
   icon.setAttribute("data-bs-placement", "top");
-  icon.setAttribute("title", text);
+  icon.setAttribute("data-bs-html", "true");
+  icon.setAttribute("title", html);
   return icon;
 }
 
-function buildLabelGroup(meta: any, { labelText, htmlFor, labelClassName, infoIconTemplate }: any) {
+function buildLabelGroup(key: string, meta: any, { labelText, htmlFor, labelClassName, infoIconTemplate }: any) {
   const group = document.createElement("div");
   group.className = "iti-playground-labelgroup";
 
@@ -71,7 +97,7 @@ function buildLabelGroup(meta: any, { labelText, htmlFor, labelClassName, infoIc
 
   group.appendChild(label);
 
-  const infoIcon = createInfoIcon(meta, infoIconTemplate);
+  const infoIcon = createInfoIcon(key, meta, infoIconTemplate);
   if (infoIcon) {
     group.appendChild(infoIcon);
   }
@@ -102,7 +128,7 @@ function buildBooleanExampleControl(key: string, meta: any, { idPrefix, dataAttr
   checkboxRow.appendChild(enableSpan);
 
   wrapper.appendChild(
-    buildLabelGroup(meta, {
+    buildLabelGroup(key, meta, {
       labelText: meta.label || key,
       htmlFor: checkbox.id,
       labelClassName: "form-label",
@@ -200,7 +226,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
 
     wrapper.appendChild(checkbox);
     wrapper.appendChild(
-      buildLabelGroup(meta, {
+      buildLabelGroup(key, meta, {
         labelText: meta.label || key,
         htmlFor: checkbox.id,
         labelClassName: "form-check-label",
@@ -214,7 +240,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
   wrapper.className = "iti-playground-control";
 
   wrapper.appendChild(
-    buildLabelGroup(meta, {
+    buildLabelGroup(key, meta, {
       labelText: meta.label || key,
       htmlFor: `${idPrefix}_${key}`,
       labelClassName: "form-label",

@@ -142,6 +142,29 @@
   }
 }
 
+/* playground: interactive tooltip with docs link */
+.iti-playground-info + .tooltip,
+.tooltip.show {
+  pointer-events: auto;
+
+  a {
+    color: inherit;
+  }
+
+  /* Extend the tooltip hit area down to fully cover the info icon (plus a
+     small sideways buffer), so the whole icon+gap+tooltip region behaves as
+     one hover target. Tooltip only dismisses once the cursor leaves this. */
+  &::after {
+    content: "";
+    position: absolute;
+    left: -22px;
+    right: -22px;
+    top: -22px;
+    bottom: -22px;
+    z-index: -1;
+  }
+}
+
 /* playground: option info tooltip */
 .iti-playground-info {
   display: inline-flex;
