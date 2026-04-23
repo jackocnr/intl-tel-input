@@ -4,7 +4,6 @@ import {
   I18N_DIR_HASH,
 } from "../../../tmp/playground/playgroundConstants.js";
 
-import { bindCopyCodeButton } from "./modules/clipboard";
 import { createI18nOptionLabels } from "./modules/i18n";
 import { renderControls, getStateFromForm, setFormFromState } from "./modules/forms";
 import { renderInitCodeFromState } from "./modules/initCode";
@@ -28,7 +27,6 @@ const resetAllButton = document.querySelector<HTMLButtonElement>("#playgroundRes
 const shareButton = document.querySelector<HTMLButtonElement>("#playgroundShareBtn");
 const resetAttrsButton = document.querySelector<HTMLButtonElement>("#playgroundResetAttrs");
 const initCodeEl = document.querySelector<HTMLElement>("#playgroundInitCode")!;
-const copyInitCodeButton = document.querySelector<HTMLButtonElement>("#playgroundCopyInitCode");
 const infoIconTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundInfoIconTemplate");
 const optionGroupTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundOptionGroupTemplate");
 const iso2ModalEl = document.querySelector<HTMLElement>("#itiPlaygroundIso2Modal");
@@ -187,8 +185,6 @@ keepDropdownOpenCheckbox.addEventListener("change", () => {
   scheduleReinit();
 });
 syncKeepDropdownOpen();
-
-bindCopyCodeButton(copyInitCodeButton, initCodeEl);
 
 if (shareButton) {
   let copiedResetTimer: number | null = null;
