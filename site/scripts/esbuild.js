@@ -82,7 +82,7 @@ build({
 build({
   ...sharedOptions,
   loader: { ".ts": "ts" },
-  tsconfig: "../angular/tsconfig.json",
+  tsconfig: "../angular/tsconfig.build.json",
   entryPoints: ["tmp/examples/js/angular_component.ts"],
   outfile: "dist/examples/js/angular_component_bundle.js",
 });
