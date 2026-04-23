@@ -446,7 +446,7 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "formatOnDisplay",
-    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    message: "Tip: add a phone number in the Phone Input Attributes section below in order to see this in action.",
     shouldShow: () => !telInput.value,
   },
   {
@@ -463,19 +463,19 @@ const HINT_CONFIGS = [
   // Validation Options
   {
     optionKey: "allowedNumberTypes",
-    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    message: "Tip: add a phone number in the Phone Input Attributes section below in order to see this in action.",
     shouldShow: () => !telInput.value,
     isMultidropdown: true,
   },
   {
     optionKey: "allowNumberExtensions",
-    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    message: "Tip: add a phone number in the Phone Input Attributes section below in order to see this in action.",
     shouldShow: () => !telInput.value,
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "allowPhonewords",
-    message: "Tip: add a phone number in the Input Attributes section below in order to see this in action.",
+    message: "Tip: add a phone number in the Phone Input Attributes section below in order to see this in action.",
     shouldShow: () => !telInput.value,
     alsoShowOnToggleOff: true,
   },
