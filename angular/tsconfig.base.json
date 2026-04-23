@@ -1,0 +1,18 @@
+// Angular-specific settings shared by both tsconfig.json (IDE) and
+// tsconfig.build.json (build). Extends the project-wide base.
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "experimentalDecorators": true, //* Required for angular decorators.
+    "emitDecoratorMetadata": true, //* Required for angular decorators.
+    "allowJs": false, //* .ts/.d.ts resolution only — see tsconfig.build.json for the historical TS5055 context.
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+  },
+  "include": [
+    "src/IntlTelInput.ts",
+    "src/IntlTelInputWithUtils.ts",
+  ],
+}

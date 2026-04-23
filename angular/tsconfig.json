@@ -1,26 +1,21 @@
+// IDE-only config: provides IntelliSense / type-checking for angular/src.
+// Resolves "intl-tel-input" to source rather than dist so the IDE stays
+// accurate regardless of whether dist/ has been built. Deliberately
+// `noEmit: true` and without rootDir — setting rootDir would trip TS6059
+// when source-path resolution pulls ../src/js files into the program, and
+// the IDE has no emit anyway. See tsconfig.build.json (same directory)
+// for the build-side config used by ngc.
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "skipLibCheck": true,
-    "experimentalDecorators": true, //* Required for angular decorators.
-    "emitDecoratorMetadata": true, //* Required for angular decorators.
-    "declaration": true, //* Generate .d.ts files.
-    "outDir": "dist/temp",
-    "declarationDir": "dist",
-    "rootDir": "./src",
-    //* allowJs is off so ngc doesn't pull dist/js/*.{js,mjs} in as inputs
-    //* via the "intl-tel-input" import (which would collide with its own
-    //* output → TS5055). The included sources only need .ts/.d.ts resolution.
-    //* We also can't point "intl-tel-input" at ../src/js (like svelte does)
-    //* because ngc generates .ngtypecheck.ts shadow files for every module
-    //* it pulls into the graph, and those violate rootDir.
-    "allowJs": false,
-  },
-  "angularCompilerOptions": {
-    "strictTemplates": true,
-  },
-  "include": [
-    "src/IntlTelInput.ts",
-    "src/IntlTelInputWithUtils.ts",
-  ],
+    "noEmit": true,
+    // "node" is needed because the source-path mapping below pulls
+    // src/js/intlTelInput.ts into the program and it references
+    // process.env.VERSION.
+    "types": ["node"],
+    "paths": {
+      "intl-tel-input": ["../src/js/intlTelInput.ts"],
+      "intl-tel-input/utils": ["../src/js/types/utils.d.ts"]
+    }
+  }
 }

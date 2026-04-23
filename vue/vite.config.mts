@@ -32,7 +32,7 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      tsconfigPath: "./tsconfig.app.json",
+      tsconfigPath: "./tsconfig.build.json",
       entryRoot: "src",
       // Without this, vite-plugin-dts would resolve the `intl-tel-input` tsconfig path alias and emit a relative path (e.g. `../../../dist/js/intlTelInput.d.ts`) into the generated .d.ts files. We want the bare package specifier preserved so consumers import from the published package.
       aliasesExclude: [/^intl-tel-input$/],

@@ -1,0 +1,20 @@
+// Vue-specific settings shared by both tsconfig.app.json (IDE) and
+// tsconfig.build.json (build). Extends @vue/tsconfig (Vue's ecosystem-standard
+// base) rather than the project-wide ../tsconfig.base.json — @vue/tsconfig
+// already covers the same settings (strict, bundler resolution,
+// esModuleInterop, etc.) plus Vue-specific defaults (jsx: preserve,
+// jsxImportSource, verbatimModuleSyntax), so layering ours on top is
+// redundant.
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    /* Linting */
+    "strict": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts"]
+}

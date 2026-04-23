@@ -1,0 +1,20 @@
+// Used by `build:angular` (ngc -p angular/tsconfig.build.json) to emit the
+// wrapper's .d.ts files. See tsconfig.json (same directory) for the IDE
+// config — they deliberately differ: the IDE resolves "intl-tel-input" to
+// source, while the build resolves to dist (via the package exports map).
+//
+// History note for allowJs: false — kept so ngc doesn't pull
+// dist/js/*.{js,mjs} in as inputs via the "intl-tel-input" import (which
+// would collide with its own output → TS5055). Also, we can't point
+// "intl-tel-input" at ../src/js here (like svelte does) because ngc
+// generates .ngtypecheck.ts shadow files for every module it pulls into
+// the graph, and those violate rootDir.
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "declaration": true, //* Generate .d.ts files.
+    "outDir": "dist/temp",
+    "declarationDir": "dist",
+    "rootDir": "./src"
+  }
+}

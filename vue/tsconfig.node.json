@@ -1,3 +1,8 @@
+// IDE-only config for tooling files that run in Node rather than the browser
+// (currently just vite.config.mts). Referenced from tsconfig.json alongside
+// tsconfig.app.json so Volar picks the right context per file: DOM lib and
+// source paths for src/**, plain Node lib for the vite config. Standard
+// Vue 3 + Vite template layout.
 {
     "compilerOptions": {
       "target": "ES2022",

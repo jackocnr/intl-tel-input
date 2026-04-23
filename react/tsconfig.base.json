@@ -1,0 +1,14 @@
+// React-specific settings shared by both tsconfig.json (IDE) and
+// tsconfig.build.json (build). Extends the project-wide base. Put anything
+// that must be identical in both React configs here.
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "allowJs": true, // allow importing .mjs files e.g. i18n files
+  },
+  "include": [
+    "src/IntlTelInput.tsx",
+    "src/IntlTelInputWithUtils.tsx",
+  ],
+}

@@ -1,22 +1,24 @@
-// Unlike svelte, this config does NOT path-map "intl-tel-input" to
-// ../src/js/intlTelInput.ts. Mapping to source would pull the whole src/js
-// tree into the program, which then violates rootDir: "./src" (TS6059) and
-// surfaces process/implicit-any issues that the root tsconfig hides via
-// types: ["node"]. Resolution currently goes through the package's exports
-// map to dist/js/intlTelInput.d.ts; keep that and rely on ensure:dts to
-// guarantee it's present.
+// IDE-only config: provides IntelliSense / type-checking for react/src.
+// Differs from tsconfig.build.json (same directory) by resolving
+// "intl-tel-input" to source rather than dist, so the IDE stays accurate
+// regardless of whether dist/ has been built. Deliberately `noEmit: true`
+// and without rootDir: setting rootDir would trip TS6059 when source-path
+// resolution pulls ../src/js files into the program, and dropping rootDir
+// without dropping emit would break tsc's output layout (see
+// tsconfig.build.json where emit happens and rootDir is required).
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react",
-    "declaration": true, //* Generate .d.ts files.
-    "emitDeclarationOnly": true, //* ONLY generate .d.ts files (we use esbuild for the actual bundling).
-    "outDir": "dist",
-    "rootDir": "./src",
-    "allowJs": true, // allow importing .mjs files e.g. i18n files
-  },
-  "include": [
-    "src/IntlTelInput.tsx",
-    "src/IntlTelInputWithUtils.tsx",
-  ],
+    "noEmit": true,
+    // "node" is needed because the source-path mapping below pulls
+    // src/js/intlTelInput.ts into the program and it references
+    // process.env.VERSION. "react" is included so JSX / React types
+    // resolve (would be auto-included without an explicit `types` list,
+    // but we've narrowed it to keep the surface predictable).
+    "types": ["node", "react"],
+    "paths": {
+      "intl-tel-input": ["../src/js/intlTelInput.ts"],
+      "intl-tel-input/utils": ["../src/js/types/utils.d.ts"]
+    }
+  }
 }
