@@ -35,7 +35,7 @@ for (const locale of supportedLocales) {
     console.warn(`WARNING: Could not generate export name for locale: ${locale} - skipping this locale.\n`);
     continue;
   }
-  rootIndexFileContent += `export { default as ${exportName} } from "./${locale}";\n`;
+  rootIndexFileContent += `export { default as ${exportName} } from "./${locale}.js";\n`;
 }
 
 fs.writeFileSync(rootIndexFilePath, rootIndexFileContent);
