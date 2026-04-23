@@ -23,20 +23,31 @@ We provide React, Vue, Angular and Svelte (beta) components alongside the regula
 We have a newly updated website, where you can find [a full set of docs](https://intl-tel-input.com/docs/integrations), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/validation-practical.html) of different setups.
 
 ## Features
-* Automatically select the user's current country using an IP lookup
-* Automatically set the input placeholder to an example number for the selected country
-* Navigate the country dropdown by typing a country's name, or using the up/down keys
-* Automatically format the number as the user types
-* Optionally, only allow numeric characters and cap the number at the maximum valid length
-* The user types their national number, and the plugin gives you the full standardised international number
-* Number validation, including specific error types
-* High-resolution flag images
-* Accessibility provided via ARIA tags
-* Typescript type definitions included
-* Easily customise styles by overriding CSS variables, e.g. support dark mode
-* React, Vue, Angular and Svelte components also included
-* Translations provided in over 40 languages, as well as support for RTL layout and alternative numeral sets
-* Lots of initialisation options for customisation, as well as instance methods/events for interaction
+
+🔍 **Fast country picking**
+* Search by country name or dial code
+* Full keyboard navigation
+
+✨ **Smart defaults**
+* Optionally auto-detect the user's country via IP lookup
+* Example placeholders per country
+
+📞 **Formatting & output**
+* Formats the number as the user types
+* Extract standard E.164 numbers to store
+
+🛡️ **Validation**
+* Validate numbers with specific error types
+* Strict mode: only allow valid digits and enforce max length
+
+🌍 **International & accessible**
+* Translated into 40+ languages, with support for RTL and alternative numerals
+* Screen reader-friendly ARIA markup
+
+🎛️ **Customisable**
+* Override CSS variables (e.g. dark mode)
+* Optionally display the dial code next to the number
+* Extensive initialisation options, methods, and events
 
 ## Contributing
 See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also on how to update the flag images, or how to add a new translation.
