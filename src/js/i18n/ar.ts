@@ -1,5 +1,5 @@
 //* Arabic. Translated by: Google Translate.
-import type { I18n } from "./types";
+import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "البلد المحدد",

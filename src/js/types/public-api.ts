@@ -1,6 +1,6 @@
-import type { Country, Iso2 } from "../data";
-import type { I18n } from "../i18n/types";
-import type { NUMBER_TYPE_SET, PLACEHOLDER_MODES } from "../constants";
+import type { Country, Iso2 } from "../data.js";
+import type { I18n } from "../i18n/types.js";
+import type { NUMBER_TYPE_SET, PLACEHOLDER_MODES } from "../constants.js";
 
 // Loader for the utils module
 export type UtilsLoader = () => Promise<{ default: ItiUtils }>;

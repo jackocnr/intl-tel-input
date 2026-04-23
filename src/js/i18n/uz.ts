@@ -1,5 +1,5 @@
 //* English. Translated by: Mukhammadkhojiakbar Khusanov (khusanov-m).
-import type { I18n } from "./types";
+import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Tanlangan davlat",

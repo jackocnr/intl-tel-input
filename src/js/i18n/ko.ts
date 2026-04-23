@@ -1,5 +1,5 @@
 //* Korean. Translated by: Google Translate.
-import type { I18n } from "./types";
+import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "선택한 국가",

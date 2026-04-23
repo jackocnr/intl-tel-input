@@ -1,4 +1,4 @@
-import { ARIA } from "../constants";
+import { ARIA } from "../constants.js";
 
 /** Magnifying glass search icon */
 export const buildSearchIcon = (): string => `

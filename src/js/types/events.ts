@@ -1,8 +1,8 @@
 // Shared event type map for IntlTelInput custom events
 // Exported as a type-only module to be reused across implementations (vanilla, react, angular, vue)
 // Uses centralised string constants to avoid magic strings & ensure consistency.
-import { EVENTS } from "../constants";
-import type { SelectedCountryData } from "../types/public-api";
+import { EVENTS } from "../constants.js";
+import type { SelectedCountryData } from "../types/public-api.js";
 
 export type StrictRejectSource = "key" | "paste";
 export type StrictRejectReason = "invalid" | "max-length";

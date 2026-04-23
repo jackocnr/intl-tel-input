@@ -1,5 +1,5 @@
-import { DIAL_CODE } from "../constants";
-import { getNumeric } from "../helpers/string";
+import { DIAL_CODE } from "../constants.js";
+import { getNumeric } from "../helpers/string.js";
 
 // NANP (North American Numbering Plan) countries (e.g. USA, Canada, and many more) use +1 as their international dial code
 

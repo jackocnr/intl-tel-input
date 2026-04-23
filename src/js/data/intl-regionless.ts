@@ -1,4 +1,4 @@
-import { getNumeric } from "../helpers/string";
+import { getNumeric } from "../helpers/string.js";
 
 // Non-geographic / regionless international dial codes that should always be
 // treated as international numbers (no associated iso2 country).

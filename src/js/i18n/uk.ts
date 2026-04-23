@@ -1,5 +1,5 @@
 //* Ukrainian. Translated by: Oleksandr Shyrykalov (JustSanya).
-import type { I18n } from "./types";
+import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Обрана країна",

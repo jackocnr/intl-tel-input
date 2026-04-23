@@ -1,17 +1,16 @@
 // Unlike svelte, this config does NOT path-map "intl-tel-input" to
-// ../src/js/intlTelInput.ts. Mapping to source would require switching
-// moduleResolution to "bundler" (the source uses extensionless imports) and
-// pulling the whole src/js tree into the program, which then violates
-// rootDir: "./src" (TS6059) and surfaces process/implicit-any issues that the
-// root tsconfig hides via types: ["node"]. Resolution currently goes through
-// the package's exports map to dist/js/intlTelInput.d.ts; keep that and rely
-// on ensure:dts to guarantee it's present.
+// ../src/js/intlTelInput.ts. Mapping to source would pull the whole src/js
+// tree into the program, which then violates rootDir: "./src" (TS6059) and
+// surfaces process/implicit-any issues that the root tsconfig hides via
+// types: ["node"]. Resolution currently goes through the package's exports
+// map to dist/js/intlTelInput.d.ts; keep that and rely on ensure:dts to
+// guarantee it's present.
 {
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true, //* Required for react (etc) default imports.
     "declaration": true, //* Generate .d.ts files.
     "emitDeclarationOnly": true, //* ONLY generate .d.ts files (we use esbuild for the actual bundling).

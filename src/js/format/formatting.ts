@@ -1,4 +1,4 @@
-import type { ItiUtils, SelectedCountryData } from "../types/public-api";
+import type { ItiUtils, SelectedCountryData } from "../types/public-api.js";
 
 //* Remove the dial code if separateDialCode is enabled
 export const stripSeparateDialCode = (

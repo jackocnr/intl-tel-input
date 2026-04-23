@@ -1,6 +1,6 @@
 // Shared constants extracted from intl-tel-input logic to avoid magic strings/numbers
 
-import type { Iso2 } from "./data";
+import type { Iso2 } from "./data.js";
 
 export const EVENTS = {
   OPEN_COUNTRY_DROPDOWN: "open:countrydropdown",

@@ -1,10 +1,10 @@
-import allCountries, { type Country, type Iso2, isIso2 } from "./data";
+import allCountries, { type Country, type Iso2, isIso2 } from "./data.js";
 import {
   defaults,
   normaliseOptions,
   applyOptionSideEffects,
   validateOptions,
-} from "./core/options";
+} from "./core/options.js";
 import type {
   UtilsLoader,
   ItiUtils,
@@ -12,21 +12,21 @@ import type {
   AllOptions,
   SomeOptions,
   SelectedCountryData,
-} from "./types/public-api";
-import { getNumeric } from "./helpers/string";
-import UI from "./core/ui";
+} from "./types/public-api.js";
+import { getNumeric } from "./helpers/string.js";
+import UI from "./core/ui.js";
 import {
   processAllCountries,
   processDialCodes,
   sortCountries,
   cacheSearchTokens,
   generateCountryNames,
-} from "./data/country-data";
-import { hasRegionlessDialCode } from "./data/intl-regionless";
-import { stripSeparateDialCode, formatNumberAsYouType } from "./format/formatting";
-import { computeNewCaretPosition } from "./format/caret";
-import { isRegionlessNanp } from "./data/nanp-regionless";
-import type { ItiEventMap, StrictRejectReason } from "./types/events";
+} from "./data/country-data.js";
+import { hasRegionlessDialCode } from "./data/intl-regionless.js";
+import { stripSeparateDialCode, formatNumberAsYouType } from "./format/formatting.js";
+import { computeNewCaretPosition } from "./format/caret.js";
+import { isRegionlessNanp } from "./data/nanp-regionless.js";
+import type { ItiEventMap, StrictRejectReason } from "./types/events.js";
 import {
   EVENTS,
   SENTINELS,
@@ -38,9 +38,9 @@ import {
   DIAL_CODE,
   US,
   PLACEHOLDER_MODES,
-} from "./constants";
-import { Numerals } from "./core/numerals";
-import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap";
+} from "./constants.js";
+import { Numerals } from "./core/numerals.js";
+import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
 // The published surface (dist/js/intlTelInput.d.ts) is broader than these
 // re-exports: dts-bundle-generator hoists every reachable type (Iso2, Country,
 // I18n, UtilsLoader, ItiUtils, NumberType, IntlTelInputInterface, etc.) to the
@@ -51,7 +51,7 @@ export type {
   AllOptions,
   SomeOptions,
   SelectedCountryData,
-} from "./types/public-api";
+} from "./types/public-api.js";
 
 declare global {
   interface HTMLInputElement {

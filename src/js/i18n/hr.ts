@@ -1,5 +1,5 @@
 //* Croatian. Translated by: Harun Sabljaković (sabljak) */
-import type { I18n } from "./types";
+import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "Odabrana zemlja",

@@ -1,14 +1,14 @@
-import type { Country, Iso2 } from "../data";
-import type { AllOptions, SelectedCountryData } from "../types/public-api";
-import { buildClassNames, createEl } from "../helpers/dom";
+import type { Country, Iso2 } from "../data.js";
+import type { AllOptions, SelectedCountryData } from "../types/public-api.js";
+import { buildClassNames, createEl } from "../helpers/dom.js";
 import {
   buildSearchIcon,
   buildClearIcon,
   buildCheckIcon,
   buildGlobeIcon,
-} from "./icons";
-import { CLASSES, ARIA, LAYOUT, KEYS, REGEX, TIMINGS, DATA_KEYS } from "../constants";
-import { findFirstCountryStartingWith, getMatchedCountries } from "./countrySearch";
+} from "./icons.js";
+import { CLASSES, ARIA, LAYOUT, KEYS, REGEX, TIMINGS, DATA_KEYS } from "../constants.js";
+import { findFirstCountryStartingWith, getMatchedCountries } from "./countrySearch.js";
 
 export default class UI {
   // private

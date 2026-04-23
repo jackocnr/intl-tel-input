@@ -1,4 +1,4 @@
-import type { Iso2 } from "../data";
+import type { Iso2 } from "../data.js";
 
 // Country translation keys + additional UI strings.
 // We reference Iso2 so adding/removing a country automatically updates typing.

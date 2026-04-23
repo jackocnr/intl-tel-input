@@ -1,6 +1,6 @@
-import allCountries, { type Country, type Iso2 } from "../data";
-import { normaliseString } from "../helpers/string";
-import type { AllOptions } from "../types/public-api";
+import allCountries, { type Country, type Iso2 } from "../data.js";
+import { normaliseString } from "../helpers/string.js";
+import type { AllOptions } from "../types/public-api.js";
 
 export interface ProcessedDialCodes {
   dialCodes: Set<string>;

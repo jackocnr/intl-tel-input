@@ -1,5 +1,5 @@
 //* Farsi/Persian. Translated by: Mahyar SBT (mahyarsbt).
-import type { I18n } from "./types";
+import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "کشور انتخاب شده",

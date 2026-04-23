@@ -3,10 +3,10 @@ import {
   PLACEHOLDER_MODES,
   NUMBER_TYPE_SET,
   LAYOUT,
-} from "../constants";
-import defaultEnglishStrings from "../i18n/en";
-import { isIso2, type Iso2 } from "../data";
-import type { AllOptions, SomeOptions } from "../types/public-api";
+} from "../constants.js";
+import defaultEnglishStrings from "../i18n/en.js";
+import { isIso2, type Iso2 } from "../data.js";
+import type { AllOptions, SomeOptions } from "../types/public-api.js";
 
 // Helper for media query evaluation
 const mediaQuery = (q: string): boolean =>
