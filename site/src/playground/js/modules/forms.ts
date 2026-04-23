@@ -179,7 +179,11 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
         idPrefix,
         dataAttr,
         infoIconTemplate,
-        exampleText: "(exampleNumber) => exampleNumber ? `e.g. ${exampleNumber}` : 'Phone number'",
+        exampleText: [
+          "(exampleNumber) => exampleNumber",
+          "  ? exampleNumber.replace(/\\d/g, 'X')",
+          "  : 'Enter number'",
+        ].join("\n"),
       });
     }
 

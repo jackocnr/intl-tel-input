@@ -35,7 +35,11 @@ export function renderInitCodeFromState(
   if (state.customPlaceholder) {
     optionEntriesForCode.push([
       "customPlaceholder",
-      "(exampleNumber) => exampleNumber ? `e.g. ${exampleNumber}` : 'Phone number'",
+      [
+        "(exampleNumber) => exampleNumber",
+        "    ? exampleNumber.replace(/\\d/g, 'X')",
+        "    : 'Enter number'",
+      ].join("\n"),
     ]);
   }
 

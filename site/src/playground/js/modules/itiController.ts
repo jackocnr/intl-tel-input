@@ -68,7 +68,7 @@ function toInitOptions(
   }
 
   if (state.customPlaceholder) {
-    opts.customPlaceholder = (exampleNumber: string) => (exampleNumber ? `e.g. ${exampleNumber}` : "Phone number");
+    opts.customPlaceholder = (exampleNumber: string) => (exampleNumber ? exampleNumber.replace(/\d/g, "X") : "Enter number");
   }
 
   if (state.dropdownContainer) {
