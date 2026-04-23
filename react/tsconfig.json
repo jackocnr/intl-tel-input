@@ -6,12 +6,9 @@
 // map to dist/js/intlTelInput.d.ts; keep that and rely on ensure:dts to
 // guarantee it's present.
 {
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
     "jsx": "react",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "esModuleInterop": true, //* Required for react (etc) default imports.
     "declaration": true, //* Generate .d.ts files.
     "emitDeclarationOnly": true, //* ONLY generate .d.ts files (we use esbuild for the actual bundling).
     "outDir": "dist",

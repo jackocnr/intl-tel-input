@@ -1,10 +1,7 @@
 {
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "esnext",
-    "moduleResolution": "bundler",
     "skipLibCheck": true,
-    "esModuleInterop": true, //* Required for react (etc) default imports.
     "experimentalDecorators": true, //* Required for angular decorators.
     "emitDecoratorMetadata": true, //* Required for angular decorators.
     "declaration": true, //* Generate .d.ts files.

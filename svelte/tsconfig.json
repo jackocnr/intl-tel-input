@@ -1,11 +1,9 @@
 {
   // Used by the IDE for type-checking .svelte files.
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "strict": true,
+    // Svelte 5 component sources use syntax that needs a newer target than the base.
     "target": "ES2024",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "allowJs": true,
     // "node" is needed because the source-path mapping below pulls src/js/intlTelInput.ts

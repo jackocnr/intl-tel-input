@@ -1,6 +1,11 @@
 // Used by the IDE (via reference from tsconfig.json) and by vite-plugin-dts
 // during `build:vue`. vite-plugin-dts is what actually emits the .d.ts files
 // into vue/dist — plain tsc is never run against this config by the build.
+// Unlike the other wrappers, this extends @vue/tsconfig (Vue's ecosystem
+// base) rather than ../tsconfig.base.json. @vue/tsconfig already provides
+// the equivalent settings (strict, bundler resolution, esModuleInterop,
+// etc.) plus Vue-specific defaults (jsx, verbatimModuleSyntax), so layering
+// our base on top would be redundant.
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {

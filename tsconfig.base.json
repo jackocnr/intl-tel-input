@@ -1,0 +1,14 @@
+// Shared TypeScript settings for the whole project. Every tsconfig extends
+// this except vue/tsconfig.app.json, which extends @vue/tsconfig (Vue's
+// ecosystem-standard base) that already covers the same settings. Keep
+// wrapper-specific options (jsx, decorators, emit, paths, types, rootDir)
+// out of this file — they belong in the tsconfig that needs them.
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "strict": true
+  }
+}
