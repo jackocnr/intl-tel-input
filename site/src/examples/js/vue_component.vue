@@ -96,13 +96,14 @@
         @changeNumber="handleChangeNumber"
         @changeValidity="isValid = $event"
         @changeErrorCode="errorCode = $event"
-        initialCountry="auto"
-        :separateDialCode="true"
-        :strictMode="true"
-        :geoIpLookup="geoIpLookup"
-        :loadUtils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
-        searchInputClass="form-control"
-        :inputProps="{
+        initial-country="auto"
+        :separate-dial-code="true"
+        :strict-mode="true"
+        :strict-reject-animation="true"
+        :geo-ip-lookup="geoIpLookup"
+        :load-utils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
+        search-input-class="form-control"
+        :input-props="{
           name: 'phone',
           title: 'Enter your phone number',
           onBlur: handleBlur,

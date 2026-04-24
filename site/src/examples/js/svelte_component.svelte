@@ -93,6 +93,7 @@
       initialCountry="auto"
       separateDialCode={true}
       strictMode={true}
+      strictRejectAnimation={true}
       {geoIpLookup}
       loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
       searchInputClass="form-control"

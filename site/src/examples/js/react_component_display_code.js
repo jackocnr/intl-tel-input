@@ -34,6 +34,7 @@ const App = () => {
         initialCountry="auto"
         separateDialCode
         strictMode
+        strictRejectAnimation
         geoIpLookup={geoIpLookup}
         loadUtils={() => import("intl-tel-input/utils")}
         inputProps={{

@@ -40,6 +40,7 @@ const getErrorMessage = (errorCode: number | null): string => {
           initialCountry="auto"
           [separateDialCode]="true"
           [strictMode]="true"
+          [strictRejectAnimation]="true"
           [geoIpLookup]="geoIpLookup"
           [loadUtils]="loadUtils"
           searchInputClass="form-control"

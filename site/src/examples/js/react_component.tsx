@@ -4,6 +4,7 @@ import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
 } from "../../../../react/dist/IntlTelInput.js";
+import type { Iso2 } from "../../../../dist/js/intlTelInput.js";
 
 const getErrorMessage = (number: string, errorCode: number | null): string => {
   if (!number) {
@@ -23,7 +24,7 @@ const getErrorMessage = (number: string, errorCode: number | null): string => {
   return errorMap[errorCode] || genericError;
 };
 
-const geoIpLookup = (success: (iso2: string) => void, failure: () => void): void => {
+const geoIpLookup = (success: (iso2: Iso2) => void, failure: () => void): void => {
   fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
     .then((res) => res.json())
     .then((data) => success(data.country_code))
@@ -105,6 +106,7 @@ const App = () => {
           initialCountry="auto"
           separateDialCode
           strictMode
+          strictRejectAnimation
           geoIpLookup={geoIpLookup}
           // @ts-expect-error EJS-templated URL string, resolved at build time.
           loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}

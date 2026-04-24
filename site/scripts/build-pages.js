@@ -413,6 +413,9 @@ for (const def of exampleDefinitions) {
       }
       const renderedDisplayCode = renderString(displayCodeContent, templateData);
       const notes = deriveNotesFromCode(renderedDisplayCode);
+      const displayCodeLanguage = [".vue", ".svelte"].includes(displayCodeExt)
+        ? "html"
+        : "javascript";
       return {
         cacheBust,
         content_title: title,
@@ -420,6 +423,7 @@ for (const def of exampleDefinitions) {
         markup: fs.readFileSync(markupPath, "utf8"),
         display_markup: fs.readFileSync(displayMarkupPath, "utf8"),
         display_code: renderedDisplayCode,
+        display_code_language: displayCodeLanguage,
         script: scriptName,
         ...(content.demo_note ? { demo_note: content.demo_note } : {}),
         ...(content.hideMarkupSection ? { hideMarkupSection: true } : {}),

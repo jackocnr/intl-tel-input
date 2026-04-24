@@ -34,7 +34,7 @@
   <% if (typeof notesHtml !== 'undefined' && notesHtml) { %>
     <%= notesHtml %>
   <% } %>
-  <pre><code class="language-javascript"><%- display_code %></code></pre>
+  <pre><code class="language-<%= typeof display_code_language !== 'undefined' ? display_code_language : 'javascript' %>"><%- display_code %></code></pre>
 </div>
 
 <%= common_body_end %>

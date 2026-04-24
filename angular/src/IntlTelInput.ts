@@ -112,6 +112,7 @@ class IntlTelInput
   @Input() separateDialCode?: AllOptions["separateDialCode"];
   @Input() showFlags?: AllOptions["showFlags"];
   @Input() strictMode?: AllOptions["strictMode"];
+  @Input() strictRejectAnimation?: AllOptions["strictRejectAnimation"];
   @Input() useFullscreenPopup?: AllOptions["useFullscreenPopup"];
 
   @Output() numberChange = new EventEmitter<string>();
@@ -236,6 +237,7 @@ class IntlTelInput
       separateDialCode: this.separateDialCode,
       showFlags: this.showFlags,
       strictMode: this.strictMode,
+      strictRejectAnimation: this.strictRejectAnimation,
       useFullscreenPopup: this.useFullscreenPopup,
     };
 
@@ -389,6 +391,11 @@ class IntlTelInput
       }
     });
     this.appliedInputAttrKeys = currentKeys;
+    // Setting the `class` attribute above wipes the plugin-added `iti__tel-input` class;
+    // re-add it so CSS selectors (e.g. the strictRejectAnimation shake) keep matching.
+    if (this.iti) {
+      this.inputRef.nativeElement.classList.add("iti__tel-input");
+    }
   }
 
   // ============ ControlValueAccessor Implementation ============

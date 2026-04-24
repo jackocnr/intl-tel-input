@@ -38,10 +38,14 @@ function isIntegration(value: string | null | undefined): value is Integration {
 
 function readInitialIntegration(): Integration {
   const fromUrl = new URLSearchParams(window.location.search).get("integration");
-  if (isIntegration(fromUrl)) return fromUrl;
+  if (isIntegration(fromUrl)) {
+    return fromUrl;
+  }
   try {
     const fromStorage = window.localStorage.getItem(INTEGRATION_STORAGE_KEY);
-    if (isIntegration(fromStorage)) return fromStorage;
+    if (isIntegration(fromStorage)) {
+      return fromStorage;
+    }
   } catch {
     // localStorage may be unavailable (private mode, sandboxed iframe) — fall through.
   }
@@ -338,7 +342,9 @@ if (integrationSelect) {
   integrationSelect.value = currentIntegration;
   integrationSelect.addEventListener("change", () => {
     const next = integrationSelect.value;
-    if (!isIntegration(next)) return;
+    if (!isIntegration(next)) {
+      return;
+    }
     currentIntegration = next;
     persistIntegration(next);
     renderInitCodeFromState(getCombinedStateFromControls(), initCodeEl, {

@@ -33,6 +33,7 @@
     initialCountry="auto"
     separateDialCode={true}
     strictMode={true}
+    strictRejectAnimation={true}
     {geoIpLookup}
     loadUtils={() => import("intl-tel-input/utils")}
     inputProps={{

@@ -31,12 +31,13 @@
       @changeNumber="number = $event"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      initialCountry="auto"
-      :separateDialCode="true"
-      :strictMode="true"
-      :geoIpLookup="geoIpLookup"
-      :loadUtils="() => import('intl-tel-input/utils')"
-      :inputProps="{
+      initial-country="auto"
+      :separate-dial-code="true"
+      :strict-mode="true"
+      :strict-reject-animation="true"
+      :geo-ip-lookup="geoIpLookup"
+      :load-utils="() => import('intl-tel-input/utils')"
+      :input-props="{
         onBlur: enableValidation,
       }"
     />

@@ -12,6 +12,7 @@ import "intl-tel-input/styles";
         initialCountry="auto"
         [separateDialCode]="true"
         [strictMode]="true"
+        [strictRejectAnimation]="true"
         [geoIpLookup]="geoIpLookup"
         [loadUtils]="loadUtils"
       />
