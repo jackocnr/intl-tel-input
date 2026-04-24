@@ -1,6 +1,6 @@
 # React component
 
-A React component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/react/src/IntlTelInput.tsx), see a live demo on the [React component](/examples/react-component) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) to run the full set of demos locally.
+A React component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/react/src/IntlTelInput.tsx), see a live demo on the [React component](/examples/react-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) to run the full set of demos locally.
 
 ## Contents
 

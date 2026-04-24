@@ -58,7 +58,7 @@ h1 {
   text-align: left;
 }
 
-/* Page breadcrumb (Docs/Examples) */
+/* Page breadcrumb (Docs) */
 .iti-breadcrumb {
   margin-bottom: 0.25rem;
   font-size: 0.875rem;
@@ -80,10 +80,14 @@ h1 {
   flex-wrap: wrap;
   align-items: center;
 }
-.iti-breadcrumb__item + .iti-breadcrumb__item::before {
-  content: "/";
-  opacity: 0.6;
-  padding: 0 0.4rem;
+/* Small uppercase eyebrow above the page title (e.g. integration label on example pages) */
+.iti-page-eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--bs-secondary-color);
 }
 
 /* prevent layout shift when initialise components / show validation errors in demos */

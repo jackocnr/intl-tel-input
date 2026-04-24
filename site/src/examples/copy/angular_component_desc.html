@@ -1,3 +1,7 @@
-<p>This project includes an official Angular component alongside the original JavaScript plugin. It supports all of the same features, including the country picker, formatting, and validation, and comes with TypeScript type definitions included. View all of the supported props in the <a href="/docs/angular-component">Angular component</a> docs.</p>
+<p>The Angular component plugs into <code>ReactiveFormsModule</code> as a custom form control and ships with a built-in validator that checks phone numbers by length (sufficient for most use cases — enable <a href="/docs/angular-component#useprecisevalidation"><code>usePreciseValidation</code></a> for stricter matching).</p>
 
-<p>Below is a live demo and example code demonstrating <code>ReactiveFormsModule</code> integration, validation (on blur/submit), and error messaging. For more patterns and use cases, explore the <a href="https://github.com/jackocnr/intl-tel-input/tree/master/angular/demo">Angular demos</a>.</p>
+<p>Validation respects the <a href="/docs/options#allowednumbertypes"><code>allowedNumberTypes</code></a> option, which is set to <code>["MOBILE", "FIXED_LINE"]</code> by default, meaning it will only consider those types of numbers as valid.</p>
+
+<p>When a number fails validation, the form control's <code>errors["invalidPhone"]</code> contains the error code, which you can then map to your own custom error message — see <a href="/docs/methods#deriving-a-user-facing-error-message">Deriving a user-facing error message</a>.</p>
+
+<p>Note: the red/green styling and warning/success icons are not part of the component — in this example they come from <a rel="noopener" href="https://getbootstrap.com/docs/5.3/forms/validation/">Bootstrap form validation</a>.</p>

@@ -117,9 +117,10 @@ if (errorCode === validationError.TOO_SHORT) {
 }
 ```
 
+<a id="deriving-a-user-facing-error-message"></a>
 **Deriving a user-facing error message**
 
-Several of the [Example pages](/examples/validation-practical) show a `yourCodeToDeriveErrorMessage(value, errorCode)` call — turning the error code into a message is left to you because the wording (and translations) belong to your app. Here is a reasonable starting point which maps the main error codes to a short message:
+Several of the [Example pages](/examples/javascript-plugin/validation) show a `yourCodeToDeriveErrorMessage(value, errorCode)` call — turning the error code into a message is left to you because the wording (and translations) belong to your app. Here is a reasonable starting point which maps the main error codes to a short message:
 
 ```js
 const getErrorMessage = (number, errorCode) => {
@@ -143,7 +144,7 @@ const getErrorMessage = (number, errorCode) => {
 Type: `() => boolean`  
 
 (Note: only returns `true` for valid **mobile** and **fixed_line** numbers by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
-Check if the current number is valid based on its length - [see example](/examples/validation-practical), which should be sufficient for most use cases. See [`isValidNumberPrecise`](/docs/methods#isvalidnumberprecise) (advanced) for more precise validation, but the advantage of [`isValidNumber`](/docs/methods#isvalidnumber) is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note: previously named `isPossibleNumber`._  
+Check if the current number is valid based on its length - [see example](/examples/javascript-plugin/validation), which should be sufficient for most use cases. See [`isValidNumberPrecise`](/docs/methods#isvalidnumberprecise) (advanced) for more precise validation, but the advantage of [`isValidNumber`](/docs/methods#isvalidnumber) is that it is much more future-proof, as while countries around the world regularly update their number rules, they rarely change their number lengths. If this method returns `false`, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note: previously named `isPossibleNumber`._  
 
 ```js
 const isValid = iti.isValidNumber();
@@ -155,7 +156,7 @@ Type: `() => boolean`
 
 ⚠️ **ADVANCED**  
 (Note: only returns `true` for valid **mobile** and **fixed_line** numbers by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
-Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](/examples/validation-precise). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else **you will start rejecting valid numbers**. For a simpler and more future-proof form of validation, see [`isValidNumber`](/docs/methods#isvalidnumber) above. If validation fails, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).  
+Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](/examples/javascript-plugin/validation-precise). Note that these rules change each month for various countries around the world, so you need to constantly keep the plugin up-to-date (e.g. via an automated script) else **you will start rejecting valid numbers**. For a simpler and more future-proof form of validation, see [`isValidNumber`](/docs/methods#isvalidnumber) above. If validation fails, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).  
 
 ```js
 const isValid = iti.isValidNumberPrecise();

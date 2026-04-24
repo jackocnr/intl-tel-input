@@ -1,5 +1,7 @@
-<p>This project includes an official Svelte component alongside the original JavaScript plugin. It supports all of the same features, including the country picker, formatting, and validation. View all of the supported props in the <a href="/docs/svelte-component">Svelte component</a> docs.</p>
+<p>By default, the Svelte component validates phone numbers by length (sufficient for most use cases — enable <a href="/docs/svelte-component#useprecisevalidation"><code>usePreciseValidation</code></a> for stricter matching), surfacing the result through three callback props: <code>onChangeNumber</code>, <code>onChangeValidity</code>, and <code>onChangeErrorCode</code>.</p>
 
-<p>Below is a live demo and example code demonstrating form integration, validation, and error messaging. For more patterns and use cases, explore the <a href="https://github.com/jackocnr/intl-tel-input/tree/master/svelte/demo">Svelte demos</a>.</p>
+<p>Validation respects the <a href="/docs/options#allowednumbertypes"><code>allowedNumberTypes</code></a> option, which is set to <code>["MOBILE", "FIXED_LINE"]</code> by default, meaning it will only consider those types of numbers as valid.</p>
 
-<p>Note: the red/green validation styling and warning/success icons in this example come from <a rel="noopener" href="https://getbootstrap.com/docs/5.3/forms/validation/">Bootstrap form validation</a>.</p>
+<p>When a number fails validation, <code>onChangeErrorCode</code> fires with the error code, which you can then map to your own custom error message — see <a href="/docs/methods#deriving-a-user-facing-error-message">Deriving a user-facing error message</a>.</p>
+
+<p>Note: the red/green styling and warning/success icons are not part of the component — in this example they come from <a rel="noopener" href="https://getbootstrap.com/docs/5.3/forms/validation/">Bootstrap form validation</a>.</p>

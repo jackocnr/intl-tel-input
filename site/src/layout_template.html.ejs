@@ -104,9 +104,13 @@
             </button>
             <ul class="dropdown-menu">
               <% examplesDropdownPages.forEach((p) => { %>
-                <li>
-                  <a class="dropdown-item <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
-                </li>
+                <% if (p.heading) { %>
+                  <li class="iti-dropdown-section-heading"><%= p.label %></li>
+                <% } else { %>
+                  <li<% if (p.nested) { %> class="iti-dropdown-nested"<% } %>>
+                    <a class="dropdown-item <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
+                  </li>
+                <% } %>
               <% }); %>
             </ul>
           </li>
@@ -258,9 +262,13 @@
             data-bs-parent="#itiMobilePrimaryNav"
           >
             <% examplesDropdownPages.forEach((p) => { %>
-              <li class="nav-item">
-                <a class="nav-link py-2 <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
-              </li>
+              <% if (p.heading) { %>
+                <li class="nav-item iti-mobile-section-heading"><%= p.label %></li>
+              <% } else { %>
+                <li class="nav-item<% if (p.nested) { %> iti-nav-nested<% } %>">
+                  <a class="nav-link py-2 <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
+                </li>
+              <% } %>
             <% }); %>
           </ul>
         </li>
@@ -314,17 +322,21 @@
       <%= content %>
 
       <%
-        const pagesForPrevNext = pageType === 'docs'
+        const pagesForPrevNext = (pageType === 'docs'
           ? docsDropdownPages
-          : (pageType === 'examples' ? examplesDropdownPages : null);
-        const activeIndex = pagesForPrevNext
-          ? pagesForPrevNext.findIndex((p) => p.name === name)
-          : -1;
-        const prevPage = (pagesForPrevNext && activeIndex > 0)
-          ? pagesForPrevNext[activeIndex - 1]
+          : (pageType === 'examples' ? examplesDropdownPages : null)
+        );
+        const navigablePages = pagesForPrevNext
+          ? pagesForPrevNext.filter((p) => !p.heading)
           : null;
-        const nextPage = (pagesForPrevNext && activeIndex >= 0 && activeIndex < pagesForPrevNext.length - 1)
-          ? pagesForPrevNext[activeIndex + 1]
+        const activeIndex = navigablePages
+          ? navigablePages.findIndex((p) => p.name === name)
+          : -1;
+        const prevPage = (navigablePages && activeIndex > 0)
+          ? navigablePages[activeIndex - 1]
+          : null;
+        const nextPage = (navigablePages && activeIndex >= 0 && activeIndex < navigablePages.length - 1)
+          ? navigablePages[activeIndex + 1]
           : null;
       %>
       <% if ((prevPage || nextPage) && pagesForPrevNext) { %>

@@ -1,6 +1,6 @@
 # Localisation
 
-intl-tel-input supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options), or view the [Right to left example](/examples/right-to-left).
+intl-tel-input supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options), or view the [Right to left example](/examples/javascript-plugin/right-to-left).
 
 ## Contents
 
@@ -90,7 +90,7 @@ On RTL sites (i.e. where `dir="rtl"` is set on the `<html>` element, or any othe
 
 Phone numbers and dial codes are still displayed left-to-right, as that’s the standard way to write telephone numbers.
 
-See the [Right to left example](/examples/right-to-left).
+See the [Right to left example](/examples/javascript-plugin/right-to-left).
 
 
 ## Alternative numerals

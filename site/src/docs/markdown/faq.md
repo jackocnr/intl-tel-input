@@ -38,7 +38,7 @@ Use the [`hiddenInput`](/docs/options#hiddeninput) option.
 
 That option listens for the form submit event and injects hidden input(s) containing the full international number (and optionally the selected country's iso2 code), so they’re included in the form post.
 
-See the [Hidden input example](/examples/hidden-input).
+See the [Hidden input example](/examples/javascript-plugin/hidden-input).
 
 
 
@@ -71,7 +71,7 @@ When `strictMode` is enabled, the input will reject characters that aren’t val
 
 If you’re using the utils script, you can validate numbers and show useful error messages.
 
-- See the [Validation example](/examples/validation-practical)
+- See the [Validation example](/examples/javascript-plugin/validation)
 - See the [Utils script](/docs/utils)
 
 

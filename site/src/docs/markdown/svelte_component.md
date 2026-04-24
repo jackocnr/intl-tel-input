@@ -1,6 +1,6 @@
 # Svelte component
 
-A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/src/IntlTelInput.svelte), see a live demo on the [Svelte component](/examples/svelte-component) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md) to run the full set of demos locally.
+A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/src/IntlTelInput.svelte), see a live demo on the [Svelte component](/examples/svelte-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/README.md) to run the full set of demos locally.
 
 ## Contents
 

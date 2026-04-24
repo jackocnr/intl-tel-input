@@ -176,6 +176,8 @@ tasks.push(
 const exampleDefinitions = [
   {
     key: "lookup_country",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "lookup-country",
     title: "Lookup user's country",
     metaDesc: "Automatically set the country based on the user's IP address.",
     js: { destDir: "tmp" },
@@ -186,6 +188,8 @@ const exampleDefinitions = [
   },
   {
     key: "right_to_left",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "right-to-left",
     title: "Right to left",
     metaDesc: "Support for right-to-left languages.",
     js: { destDir: "tmp", script: "right_to_left_bundle.js" },
@@ -197,6 +201,8 @@ const exampleDefinitions = [
   },
   {
     key: "single_country",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "single-country",
     title: "Single country",
     metaDesc: "When you only need to handle numbers from a single country.",
     content: {
@@ -208,6 +214,8 @@ const exampleDefinitions = [
   },
   {
     key: "validation_practical",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "validation",
     title: "Validation",
     metaDesc:
       "Validate the user's phone number and if there's an error, display a relevant message.",
@@ -225,6 +233,8 @@ const exampleDefinitions = [
   },
   {
     key: "validation_precise",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "validation-precise",
     title: "Precise validation (advanced)",
     metaDesc:
       "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
@@ -242,6 +252,8 @@ const exampleDefinitions = [
   },
   {
     key: "hidden_input",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "hidden-input",
     title: "Hidden input",
     metaDesc:
       "Automatically populate a hidden input with the full international number, so it gets submitted to your backend.",
@@ -253,6 +265,8 @@ const exampleDefinitions = [
   },
   {
     key: "multiple_instances",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "multiple-instances",
     title: "Multiple instances",
     metaDesc:
       "Use multiple instances of the plugin with different configurations on the same page.",
@@ -266,6 +280,8 @@ const exampleDefinitions = [
   },
   {
     key: "display_number",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "display-number",
     title: "Display existing number",
     metaDesc: "Automatically format an existing number during initialisation.",
     content: {
@@ -274,6 +290,8 @@ const exampleDefinitions = [
   },
   {
     key: "large_flags",
+    integrationSlug: "javascript-plugin",
+    exampleSlug: "large-flags",
     title: "Large flags",
     metaDesc: "How to display extra large flag images.",
     js: { destDir: "tmp" },
@@ -285,7 +303,9 @@ const exampleDefinitions = [
   },
   {
     key: "angular_component",
-    title: "Angular component",
+    integrationSlug: "angular-component",
+    exampleSlug: "validation",
+    title: "Validation",
     metaDesc: "How to use intl-tel-input with Angular.",
     js: {
       src: "src/examples/js/angular_component.ts",
@@ -300,7 +320,9 @@ const exampleDefinitions = [
   },
   {
     key: "react_component",
-    title: "React component",
+    integrationSlug: "react-component",
+    exampleSlug: "validation",
+    title: "Validation",
     metaDesc: "How to use intl-tel-input with React.",
     js: {
       src: "src/examples/js/react_component.tsx",
@@ -315,7 +337,9 @@ const exampleDefinitions = [
   },
   {
     key: "vue_component",
-    title: "Vue component",
+    integrationSlug: "vue-component",
+    exampleSlug: "validation",
+    title: "Validation",
     metaDesc: "How to use intl-tel-input with Vue.",
     js: {
       src: "src/examples/js/vue_component.vue",
@@ -330,7 +354,9 @@ const exampleDefinitions = [
   },
   {
     key: "svelte_component",
-    title: "Svelte component",
+    integrationSlug: "svelte-component",
+    exampleSlug: "validation",
+    title: "Validation",
     metaDesc: "How to use intl-tel-input with Svelte.",
     js: {
       src: "src/examples/js/svelte_component.svelte",
@@ -345,10 +371,20 @@ const exampleDefinitions = [
   },
 ];
 
+const integrationLabels = {
+  "javascript-plugin": "JavaScript plugin",
+  "react-component": "React component",
+  "vue-component": "Vue component",
+  "angular-component": "Angular component",
+  "svelte-component": "Svelte component",
+};
+
 // For each example, push: js, content, layout, page tasks (in that order).
 for (const def of exampleDefinitions) {
   const {
     key,
+    integrationSlug,
+    exampleSlug,
     title,
     metaDesc,
     js = {},
@@ -356,7 +392,8 @@ for (const def of exampleDefinitions) {
     layoutExtra = {},
     pageExtra = {},
   } = def;
-  const slug = key.replace(/_/g, "-");
+  const urlPath = `${integrationSlug}/${exampleSlug}`;
+  const integrationLabel = integrationLabels[integrationSlug];
   const jsSrc = js.src || `src/examples/js/${key}.ts`;
   // For tmp/ destinations the file is consumed by esbuild, which handles .ts
   // natively — preserve the source extension so esbuild reads the right loader.
@@ -373,7 +410,7 @@ for (const def of exampleDefinitions) {
 
   const contentDest = content.dest || `tmp/examples/${key}_content.html`;
   const layoutDest = content.layoutDest || `tmp/examples/${key}_layout.html`;
-  const pageDest = content.pageDest || `dist/examples/${slug}.html`;
+  const pageDest = content.pageDest || `dist/examples/${urlPath}.html`;
 
   const markupName = content.markupName || key;
   const markupPath = `src/examples/html/${markupName}.html`;
@@ -382,8 +419,8 @@ for (const def of exampleDefinitions) {
     ? displayMarkupCandidate
     : markupPath;
 
-  const fullTitle = `${title} example - International Telephone Input`;
-  const canonicalUrl = `https://intl-tel-input.com/examples/${slug}`;
+  const fullTitle = `${title} - ${integrationLabel} example - International Telephone Input`;
+  const canonicalUrl = `https://intl-tel-input.com/examples/${urlPath}`;
 
   const templateData = { cacheBust, ...(js.data || {}) };
 
@@ -419,6 +456,7 @@ for (const def of exampleDefinitions) {
       return {
         cacheBust,
         content_title: title,
+        integration_label: integrationLabel,
         desc: fs.readFileSync(`src/examples/copy/${key}_desc.html`, "utf8"),
         markup: fs.readFileSync(markupPath, "utf8"),
         display_markup: fs.readFileSync(displayMarkupPath, "utf8"),

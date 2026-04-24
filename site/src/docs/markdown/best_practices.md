@@ -22,7 +22,7 @@ Enable [`strictMode`](/docs/options#strictmode) to reject non-numeric characters
 
 ## Set the initial country
 
-If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set it to `"auto"` along with the [`geoIpLookup`](/docs/options#geoiplookup) option to determine the country from their IP address — [see example](/examples/lookup-country).
+If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set it to `"auto"` along with the [`geoIpLookup`](/docs/options#geoiplookup) option to determine the country from their IP address — [see example](/examples/javascript-plugin/lookup-country).
 
 ## Translate the UI
 

@@ -1,8 +1,12 @@
 <h6 class="mt-4 mb-2 text-uppercase iti-sidebar-heading">Examples</h6>
 <ul class="flex-column nav nav-pills gap-1 my-3">
   <% examplesDropdownPages.forEach((p) => { %>
-    <li>
-      <a class="nav-link py-1 <% if (name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
-    </li>
+    <% if (p.heading) { %>
+      <li class="iti-nav-section-heading"><%= p.label %></li>
+    <% } else { %>
+      <li<% if (p.nested) { %> class="iti-nav-nested"<% } %>>
+        <a class="nav-link py-1 <% if (name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
+      </li>
+    <% } %>
   <% }); %>
 </ul>

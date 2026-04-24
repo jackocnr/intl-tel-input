@@ -255,3 +255,27 @@
 .dropdown-menu .iti-dropdown-nested > .dropdown-item {
   padding-left: 0.85rem;
 }
+
+/* Non-link section headings inside the nav (group labels for examples-by-integration) */
+.iti-left-sidebar .iti-nav-section-heading,
+.iti-mobile-sidebar .iti-mobile-section-heading {
+  margin-top: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(var(--bs-body-color-rgb), 0.65);
+}
+.iti-left-sidebar .iti-nav-section-heading:first-child,
+.iti-mobile-sidebar .iti-mobile-section-heading:first-child {
+  margin-top: 0;
+}
+.dropdown-menu .iti-dropdown-section-heading {
+  padding: 0.5rem 1rem 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(var(--bs-body-color-rgb), 0.65);
+}
