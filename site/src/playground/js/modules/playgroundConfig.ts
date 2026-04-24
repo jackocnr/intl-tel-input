@@ -256,7 +256,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     strictRejectAnimation: {
       type: "boolean",
-      tooltip: "When strictMode rejects a whole keystroke or paste, play a subtle animation (shake, or a background-colour flash for users with prefers-reduced-motion).",
+      tooltip: "When strictMode rejects a whole keystroke or paste, play a subtle animation.",
     },
     useFullscreenPopup: {
       type: "boolean",
@@ -265,8 +265,8 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
   };
 
   const attributeMeta = {
-    value: { type: "text" },
-    placeholder: { type: "text" },
+    value: { type: "text", label: "Initial value" },
+    placeholder: { type: "text", label: "Placeholder" },
   };
 
   return {

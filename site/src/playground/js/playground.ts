@@ -6,7 +6,7 @@ import {
 
 import { createI18nOptionLabels } from "./modules/i18n";
 import { renderControls, getStateFromForm, setFormFromState } from "./modules/forms";
-import { renderInitCodeFromState } from "./modules/initCode";
+import { renderInitCodeFromState, type Integration } from "./modules/initCode";
 import { createPlaygroundConfig } from "./modules/playgroundConfig";
 import { ItiPlaygroundController } from "./modules/itiController";
 import {
@@ -27,6 +27,45 @@ const resetAllButton = document.querySelector<HTMLButtonElement>("#playgroundRes
 const shareButton = document.querySelector<HTMLButtonElement>("#playgroundShareBtn");
 const resetAttrsButton = document.querySelector<HTMLButtonElement>("#playgroundResetAttrs");
 const initCodeEl = document.querySelector<HTMLElement>("#playgroundInitCode")!;
+const integrationSelect = document.querySelector<HTMLSelectElement>("#playgroundIntegrationSelect");
+
+const INTEGRATION_VALUES = new Set<Integration>(["vanilla", "react", "vue", "angular", "svelte"]);
+const INTEGRATION_STORAGE_KEY = "iti.playground.integration";
+
+function isIntegration(value: string | null | undefined): value is Integration {
+  return !!value && INTEGRATION_VALUES.has(value as Integration);
+}
+
+function readInitialIntegration(): Integration {
+  const fromUrl = new URLSearchParams(window.location.search).get("integration");
+  if (isIntegration(fromUrl)) return fromUrl;
+  try {
+    const fromStorage = window.localStorage.getItem(INTEGRATION_STORAGE_KEY);
+    if (isIntegration(fromStorage)) return fromStorage;
+  } catch {
+    // localStorage may be unavailable (private mode, sandboxed iframe) — fall through.
+  }
+  return "vanilla";
+}
+
+let currentIntegration: Integration = readInitialIntegration();
+
+function persistIntegration(value: Integration) {
+  try {
+    window.localStorage.setItem(INTEGRATION_STORAGE_KEY, value);
+  } catch {
+    // ignore — see readInitialIntegration
+  }
+  const url = new URL(window.location.href);
+  if (value === "vanilla") {
+    url.searchParams.delete("integration");
+  } else {
+    url.searchParams.set("integration", value);
+  }
+  if (url.search !== window.location.search) {
+    window.history.replaceState(null, "", url);
+  }
+}
 const infoIconTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundInfoIconTemplate");
 const optionGroupTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundOptionGroupTemplate");
 const iso2ModalEl = document.querySelector<HTMLElement>("#itiPlaygroundIso2Modal");
@@ -295,12 +334,28 @@ const initialState = { ...initialOptionsState, ...initialAttrsState };
 setFormFromState(optionsForm, initialState, optionMeta, "data-option", { defaultState: playgroundInitialState });
 setFormFromState(attrsForm, initialState, attributeMeta, "data-attr", { defaultState: playgroundInitialState });
 
+if (integrationSelect) {
+  integrationSelect.value = currentIntegration;
+  integrationSelect.addEventListener("change", () => {
+    const next = integrationSelect.value;
+    if (!isIntegration(next)) return;
+    currentIntegration = next;
+    persistIntegration(next);
+    renderInitCodeFromState(getCombinedStateFromControls(), initCodeEl, {
+      defaultInitOptions,
+      optionMeta,
+      defaultState,
+      specialOptionKeys,
+    }, currentIntegration);
+  });
+}
+
 renderInitCodeFromState(initialState, initCodeEl, {
   defaultInitOptions,
   optionMeta,
   defaultState,
   specialOptionKeys,
-});
+}, currentIntegration);
 
 void initItiWithState(initialState);
 updateUrlFromState(initialState, {
@@ -600,7 +655,7 @@ function scheduleReinit() {
       optionMeta,
       defaultState,
       specialOptionKeys,
-    });
+    }, currentIntegration);
     updateNotesVisibility(state);
     initItiWithState(state).then(() => {
       if (pendingHintChecks.size > 0) {
@@ -669,7 +724,7 @@ function resetOptionGroupToDefaults(groupKeys) {
     optionMeta,
     defaultState,
     specialOptionKeys,
-  });
+  }, currentIntegration);
   updateNotesVisibility(state);
   void initItiWithState(state);
   updateUrlFromState(state, {
@@ -713,7 +768,7 @@ function resetAllToDefaults() {
     optionMeta,
     defaultState,
     specialOptionKeys,
-  });
+  }, currentIntegration);
   updateNotesVisibility(state);
   void initItiWithState(state);
   updateUrlFromState(state, {
@@ -743,7 +798,7 @@ if (resetAttrsButton) {
       optionMeta,
       defaultState,
       specialOptionKeys,
-    });
+    }, currentIntegration);
     updateNotesVisibility(state);
     void initItiWithState(state);
     updateUrlFromState(state, {

@@ -64,9 +64,9 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between gap-2">
-              <h2 class="h5 mb-0" id="input-attributes">
+              <h2 class="h5 mb-0" id="settings">
                 <i class="bi bi-sliders text-muted me-2" aria-hidden="true"></i>
-                <a href="#input-attributes" class="header-anchor">Phone Input Attributes</a>
+                <a href="#settings" class="header-anchor">Settings</a>
               </h2>
               <div class="d-flex gap-2">
                 <button type="button" class="btn btn-outline-secondary btn-sm playground-action-btn" id="playgroundResetAttrs">
@@ -76,10 +76,10 @@
               </div>
             </div>
             <p class="text-muted mt-2 mb-3">
-              These input attributes persist as you change the options above, so you can test how different options work in different scenarios.
+              These map to attributes on the <code>&lt;input&gt;</code> (JS plugin) or props on <code>&lt;IntlTelInput&gt;</code> (framework components).
             </p>
 
-            <form id="playgroundAttributes" class="vstack gap-3" aria-label="Phone input attributes">
+            <form id="playgroundAttributes" class="vstack gap-3" aria-label="Settings">
               <!-- JS renders controls here -->
             </form>
           </div>
@@ -139,9 +139,19 @@
                 <i class="bi bi-code-slash text-muted me-2" aria-hidden="true"></i>
                 Initialisation Code
               </h2>
+              <div class="d-flex gap-2">
+                <label for="playgroundIntegrationSelect" class="form-label visually-hidden">Integration</label>
+                <select id="playgroundIntegrationSelect" class="form-select form-select-sm" aria-label="Integration">
+                  <option value="vanilla">JS plugin</option>
+                  <option value="react">React</option>
+                  <option value="vue">Vue</option>
+                  <option value="angular">Angular</option>
+                  <option value="svelte">Svelte</option>
+                </select>
+              </div>
             </div>
             <p class="text-muted mt-2 mb-3">
-              JavaScript snippet for initialising the plugin with your (non-default) options. By default, we enable several options to give the best experience.
+              Code snippet for initialising the plugin with your (non-default) options. By default, we enable several options to give the best experience.
             </p>
             <div id="playgroundNotes" hidden>
 {{PLAYGROUND_NOTES}}
