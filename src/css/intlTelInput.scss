@@ -50,14 +50,6 @@
     box-sizing: border-box;
   }
 
-  &__a11y-text {
-    width: 1px;
-    height: 1px;
-    clip: rect(1px, 1px, 1px, 1px);
-    overflow: hidden;
-    position: absolute;
-  }
-
   //* Specify types to increase specificity e.g. to override bootstrap v2.3.
   input.iti__tel-input,
   input.iti__tel-input[type="text"],
@@ -77,303 +69,327 @@
     //* Since we wrap the input in a container div, any margin here would interfere with the positioning of the selected country.
     margin: 0 !important;
   }
+}
 
-  &__country-container {
-    //* Positioned over the top of the input.
+.iti__a11y-text {
+  width: 1px;
+  height: 1px;
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  position: absolute;
+}
+
+.iti__country-container {
+  //* Positioned over the top of the input.
+  position: absolute;
+  //* Full height.
+  top: 0;
+  bottom: 0;
+  left: 0;
+  //* Prevent the highlighted child from overlapping the input border.
+  padding: var(--iti-border-width);
+}
+
+//* Now a button element.
+.iti__selected-country {
+  //* Render above the input.
+  z-index: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  //* This must be full-height both for the hover highlight, and to push down the dropdown so it appears below the input.
+  height: 100%;
+
+  //* Reset button styles (can't use all:unset as lose browser default focus outline styles).
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border-radius: 0;
+  font-weight: inherit;
+  line-height: inherit;
+  text-decoration: none;
+}
+
+.iti__selected-country-primary {
+  display: flex;
+  align-items: center;
+  //* This must be full-height for the hover highlight.
+  height: 100%;
+  padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
+}
+
+.iti__arrow {
+  margin-left: var(--iti-arrow-padding);
+  margin-top: -2px;
+
+  width: var(--iti-arrow-size);
+  height: var(--iti-arrow-size);
+  box-sizing: border-box;
+  border-right: var(--iti-arrow-width) solid var(--iti-icon-color);
+  border-bottom: var(--iti-arrow-width) solid var(--iti-icon-color);
+  transform: rotate(45deg);
+
+  &--up {
+    margin-top: 4px;
+    transform: rotate(-135deg);
+  }
+}
+
+.iti__selected-dial-code {
+  margin-left: 4px;
+}
+
+//* The dropdown.
+.iti__dropdown-content {
+  border-radius: 3px;
+  background-color: var(--iti-dropdown-bg);
+
+  .iti--inline-dropdown & {
+    border: var(--iti-border-width) solid var(--iti-border-color);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  }
+  // Note: dont apply these styles when using dropdownContainer, as that uses pos:fixed and so this (child) doesn't need pos:absolute
+  .iti--inline-dropdown:not(.iti--container) & {
     position: absolute;
-    //* Full height.
-    top: 0;
-    bottom: 0;
+    //* Popup so render above everything else.
+    z-index: 2;
     left: 0;
-    //* Prevent the highlighted child from overlapping the input border.
-    padding: var(--iti-border-width);
+  }
+}
+
+.iti__search-input {
+  width: 100%;
+  border-width: 0;
+  border-radius: 3px;
+  //* Space for search icon.
+  padding-left: calc(
+    var(--iti-spacer-horizontal) + var(--iti-globe-icon-size) +
+      var(--iti-spacer-horizontal)
+  );
+  //* Space for clear button.
+  padding-right: calc(
+    var(--iti-spacer-horizontal) + var(--iti-clear-icon-size) +
+      var(--iti-spacer-horizontal)
+  );
+
+  //* RTL: put the icon on the right instead.
+  [dir="rtl"] & {
+    padding-left: inherit;
+    padding-right: 30px;
+    background-position: right 8px center;
   }
 
-  //* Now a button element.
-  &__selected-country {
-    //* Render above the input.
-    z-index: 1;
-    position: relative;
-    display: flex;
-    align-items: center;
-    //* This must be full-height both for the hover highlight, and to push down the dropdown so it appears below the input.
-    height: 100%;
+  // hide chrome/safari's native clear button for inputs with type=search
+  &::-webkit-search-cancel-button {
+    appearance: none;
+  }
+}
 
-    //* Reset button styles (can't use all:unset as lose browser default focus outline styles).
-    background: none;
-    border: 0;
-    margin: 0;
-    padding: 0;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    border-radius: 0;
-    font-weight: inherit;
-    line-height: inherit;
-    text-decoration: none;
-  }
+// give the search input the same v-padding as the country items, for visual consistency
+.iti__search-input,
+.iti__country {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
 
-  &__selected-country-primary {
-    display: flex;
-    align-items: center;
-    //* This must be full-height for the hover highlight.
-    height: 100%;
-    padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
-  }
+.iti__search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--iti-border-color);
+}
 
-  &__arrow {
-    margin-left: var(--iti-arrow-padding);
-    margin-top: -2px;
+.iti__search-icon {
+  position: absolute;
+  left: var(--iti-spacer-horizontal);
+  display: flex;
+  pointer-events: none;
+}
 
-    width: var(--iti-arrow-size);
-    height: var(--iti-arrow-size);
-    box-sizing: border-box;
-    border-right: var(--iti-arrow-width) solid var(--iti-icon-color);
-    border-bottom: var(--iti-arrow-width) solid var(--iti-icon-color);
-    transform: rotate(45deg);
+[dir="rtl"] .iti__search-icon {
+  left: auto;
+  right: var(--iti-spacer-horizontal);
+}
 
-    &--up {
-      margin-top: 4px;
-      transform: rotate(-135deg);
-    }
-  }
+.iti__search-icon-svg {
+  width: var(--iti-globe-icon-size);
+  height: var(--iti-globe-icon-size);
+  display: block;
+  stroke: var(--iti-icon-color);
+  fill: none;
+  stroke-width: 3;
+}
 
-  //* The dropdown.
-  &__dropdown-content {
-    border-radius: 3px;
-    background-color: var(--iti-dropdown-bg);
+.iti__search-clear {
+  position: absolute;
+  // half the spacer value as the other half is in the padding
+  right: calc(var(--iti-spacer-horizontal) / 2);
+  background: transparent;
+  border: 0;
+  border-radius: 3px; // nice on hover state
+  cursor: pointer;
+  padding: calc(var(--iti-spacer-horizontal) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
 
-    .iti--inline-dropdown & {
-      border: var(--iti-border-width) solid var(--iti-border-color);
-      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-    }
-    // Note: dont apply these styles when using dropdownContainer, as that uses pos:fixed and so this (child) doesn't need pos:absolute
-    .iti--inline-dropdown:not(.iti--container) & {
-      position: absolute;
-      //* Popup so render above everything else.
-      z-index: 2;
-      left: 0;
-    }
+  .iti__search-clear-x {
+    stroke-width: 2;
   }
-  &__search-input {
-    width: 100%;
-    border-width: 0;
-    border-radius: 3px;
-    //* Space for search icon.
-    padding-left: calc(
-      var(--iti-spacer-horizontal) + var(--iti-globe-icon-size) +
-        var(--iti-spacer-horizontal)
-    );
-    //* Space for clear button.
-    padding-right: calc(
-      var(--iti-spacer-horizontal) + var(--iti-clear-icon-size) +
-        var(--iti-spacer-horizontal)
-    );
+  .iti__search-clear-bg {
+    fill: var(--iti-icon-color);
+  }
+}
 
-    //* RTL: put the icon on the right instead.
-    [dir="rtl"] & {
-      padding-left: inherit;
-      padding-right: 30px;
-      background-position: right 8px center;
-    }
+.iti__search-clear-svg {
+  width: var(--iti-clear-icon-size);
+  height: var(--iti-clear-icon-size);
+  display: block;
+}
 
-    // hide chrome/safari's native clear button for inputs with type=search
-    &::-webkit-search-cancel-button {
-      appearance: none;
-    }
-  }
-  // give the search input the same v-padding as the country items, for visual consistency
-  &__search-input,
-  &__country {
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  &__search-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--iti-border-color);
-  }
-  &__search-icon {
-    position: absolute;
-    left: var(--iti-spacer-horizontal);
-    display: flex;
-    pointer-events: none;
-  }
-  [dir="rtl"] &__search-icon {
-    left: auto;
-    right: var(--iti-spacer-horizontal);
-  }
-  &__search-icon-svg {
-    width: var(--iti-globe-icon-size);
-    height: var(--iti-globe-icon-size);
-    display: block;
-    stroke: var(--iti-icon-color);
-    fill: none;
-    stroke-width: 3;
-  }
-  &__search-clear {
-    position: absolute;
-    // half the spacer value as the other half is in the padding
-    right: calc(var(--iti-spacer-horizontal) / 2);
-    background: transparent;
-    border: 0;
-    border-radius: 3px; // nice on hover state
-    cursor: pointer;
-    padding: calc(var(--iti-spacer-horizontal) / 2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.15s ease;
+[dir="rtl"] .iti__search-clear {
+  right: auto;
+  left: var(--iti-spacer-horizontal);
+}
 
-    .iti__search-clear-x {
-      stroke-width: 2;
-    }
-    .iti__search-clear-bg {
-      fill: var(--iti-icon-color);
-    }
-  }
-  &__search-clear-svg {
-    width: var(--iti-clear-icon-size);
-    height: var(--iti-clear-icon-size);
-    display: block;
-  }
-  [dir="rtl"] &__search-clear {
-    right: auto;
-    left: var(--iti-spacer-horizontal);
-  }
-  &__search-clear:hover,
-  &__search-clear:focus-visible {
-    background: var(--iti-hover-color);
-    outline: none;
-  }
-  &__no-results {
-    text-align: center;
-    padding: 30px 0;
-  }
-  &__country-list {
-    //* Override default list styles.
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
+.iti__search-clear:hover,
+.iti__search-clear:focus-visible {
+  background: var(--iti-hover-color);
+  outline: none;
+}
 
-    overflow-y: scroll;
-    //* Fixes https://github.com/jackocnr/intl-tel-input/issues/765
-    //* Apple still hasn't fixed the issue where setting overflow: scroll on a div element does not use inertia scrolling
-    //* If this is not set, then the country list scroll stops moving after raising a finger, and users report that scroll is slow
-    //* Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll
-    -webkit-overflow-scrolling: touch;
+.iti__no-results {
+  text-align: center;
+  padding: 30px 0;
+}
 
-    .iti--inline-dropdown & {
-      max-height: 185px;
-    }
-  }
-  &--flexible-dropdown-width &__country-list {
-    //* Don't let the contents wrap AKA the container will be as wide as the contents.
-    white-space: nowrap;
+.iti__country-list {
+  //* Override default list styles.
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 
-    //* Except on small screens, where we force the dropdown width to match the input.
-    @media (max-width: 500px) {
-      white-space: normal;
-    }
-  }
+  overflow-y: scroll;
+  //* Fixes https://github.com/jackocnr/intl-tel-input/issues/765
+  //* Apple still hasn't fixed the issue where setting overflow: scroll on a div element does not use inertia scrolling
+  //* If this is not set, then the country list scroll stops moving after raising a finger, and users report that scroll is slow
+  //* Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll
+  -webkit-overflow-scrolling: touch;
 
-  //* Each country item in dropdown (we must have separate class to differentiate from dividers).
-  &__country {
-    //* Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines.
-    display: flex;
-    align-items: center;
-    padding-left: var(--iti-spacer-horizontal);
-    padding-right: var(--iti-spacer-horizontal);
-    outline: none;
+  .iti--inline-dropdown & {
+    max-height: 185px;
   }
-  &__country-name {
-    // expand to fill available space, so the last flex item, the check mark, is pushed to the right edge
-    flex-grow: 1;
-  }
+}
 
-  //* Check icon shown on the right for the selected country.
-  &__country-check {
+.iti--flexible-dropdown-width .iti__country-list {
+  //* Don't let the contents wrap AKA the container will be as wide as the contents.
+  white-space: nowrap;
+
+  //* Except on small screens, where we force the dropdown width to match the input.
+  @media (max-width: 500px) {
+    white-space: normal;
+  }
+}
+
+//* Each country item in dropdown (we must have separate class to differentiate from dividers).
+.iti__country {
+  //* Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines.
+  display: flex;
+  align-items: center;
+  padding-left: var(--iti-spacer-horizontal);
+  padding-right: var(--iti-spacer-horizontal);
+  outline: none;
+}
+
+.iti__country-name {
+  // expand to fill available space, so the last flex item, the check mark, is pushed to the right edge
+  flex-grow: 1;
+}
+
+//* Check icon shown on the right for the selected country.
+.iti__country-check {
+  margin-left: var(--iti-spacer-horizontal);
+  display: flex;
+  align-items: center;
+  color: var(--iti-icon-color);
+}
+
+.iti__country-check-svg {
+  width: var(--iti-clear-icon-size);
+  height: var(--iti-clear-icon-size);
+  display: block;
+}
+
+.iti__country.iti__highlight {
+  background-color: var(--iti-hover-color);
+}
+
+//* Spacing between country flag and country name.
+.iti__country-list .iti__flag {
+  margin-right: var(--iti-spacer-horizontal);
+
+  [dir="rtl"] & {
+    margin-right: 0;
     margin-left: var(--iti-spacer-horizontal);
-    display: flex;
-    align-items: center;
-    color: var(--iti-icon-color);
   }
-  &__country-check-svg {
-    width: var(--iti-clear-icon-size);
-    height: var(--iti-clear-icon-size);
-    display: block;
-  }
+}
 
-  &__country.iti__highlight {
-    background-color: var(--iti-hover-color);
-  }
+.iti__country-list .iti__flag {
+  flex-shrink: 0; // stop long country names from shrinking the flag
+}
 
-  //* Spacing between country flag and country name.
-  &__country-list .iti__flag {
-    margin-right: var(--iti-spacer-horizontal);
+.iti--allow-dropdown {
+  //* If the adjacent input is disabled/readonly, ensure the country button doesn't look clickable.
+  .iti__country-container:has(+ input[disabled]),
+  .iti__country-container:has(+ input[readonly]) {
+    button.iti__selected-country {
+      cursor: not-allowed;
 
-    [dir="rtl"] & {
-      margin-right: 0;
-      margin-left: var(--iti-spacer-horizontal);
-    }
-  }
-  &__country-list .iti__flag {
-    flex-shrink: 0; // stop long country names from shrinking the flag
-  }
-
-  &--allow-dropdown {
-    //* If the adjacent input is disabled/readonly, ensure the country button doesn't look clickable.
-    .iti__country-container:has(+ input[disabled]),
-    .iti__country-container:has(+ input[readonly]) {
-      button.iti__selected-country {
-        cursor: not-allowed;
-
-        .iti__arrow {
-          visibility: hidden;
-        }
-      }
-    }
-
-    //* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
-    //* Only apply when the input is NOT disabled/readonly.
-    .iti__country-container:not(:has(+ input[disabled])):not(
-        :has(+ input[readonly])
-      ) {
-      .iti__selected-country-primary:hover,
-      .iti__selected-country:has(+ .iti__dropdown-content:hover)
-        .iti__selected-country-primary {
-        background-color: var(--iti-hover-color);
+      .iti__arrow {
+        visibility: hidden;
       }
     }
   }
 
-  .iti__selected-dial-code {
-    margin-left: 4px;
-  }
-
-  //* If dropdownContainer option is set, increase z-index to prevent display issues.
-  &--container {
-    position: fixed;
-    top: -1000px;
-    left: -1000px;
-    //* Higher than default Bootstrap modal z-index of 1050.
-    z-index: 1060;
-    &:hover {
-      cursor: pointer;
+  //* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
+  //* Only apply when the input is NOT disabled/readonly.
+  .iti__country-container:not(:has(+ input[disabled])):not(
+      :has(+ input[readonly])
+    ) {
+    .iti__selected-country-primary:hover,
+    .iti__selected-country:has(+ .iti__dropdown-content:hover)
+      .iti__selected-country-primary {
+      background-color: var(--iti-hover-color);
     }
   }
+}
 
-  // put these at the end, so they override other classes with display:flex etc
-  &__hide {
-    display: none;
+//* If dropdownContainer option is set, increase z-index to prevent display issues.
+.iti--container {
+  position: fixed;
+  top: -1000px;
+  left: -1000px;
+  //* Higher than default Bootstrap modal z-index of 1050.
+  z-index: 1060;
+  &:hover {
+    cursor: pointer;
   }
+}
 
-  //* Need this during init, to get the height of the dropdown.
-  &__v-hide {
-    visibility: hidden;
-  }
+//* Put these at the end, so they override other classes with display:flex etc.
+.iti__hide {
+  display: none;
+}
+
+//* Need this during init, to get the height of the dropdown.
+.iti__v-hide {
+  visibility: hidden;
 }
 
 //* Overrides for mobile popup.
