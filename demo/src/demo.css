@@ -1,7 +1,7 @@
-// This file is used for the demo/index.html page, as well as the component demo pages.
+/* This file is used for the demo/index.html page, as well as the component demo pages.
+   Bootstrap is loaded separately by each demo HTML file (typically from a CDN). */
 
-@use "bootstrap/scss/bootstrap";
-@use "intlTelInputWithAssets.scss";
+@import "../../src/css/intlTelInputWithAssets.css";
 
 body {
   margin: 20px;
@@ -10,7 +10,7 @@ input[type="tel"] {
   width: 250px;
 }
 
-// override bootstrap default placeholder color which is too high contrast for our design
+/* override bootstrap default placeholder color which is too high contrast for our design */
 .form-control::placeholder {
   color: #bbb;
 
@@ -19,12 +19,12 @@ input[type="tel"] {
   }
 }
 
-//* For react demo.
+/* For react demo. */
 .notice {
   margin-top: 15px;
 }
 
-// match bootstrap input border radius
+/* match bootstrap input border radius */
 .iti__selected-country-primary {
   border-top-left-radius: var(--bs-border-radius);
   border-bottom-left-radius: var(--bs-border-radius);

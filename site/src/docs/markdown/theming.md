@@ -1,6 +1,6 @@
 # Theming / dark mode
 
-There are lots of CSS variables available for theming. See [intlTelInput.scss](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.scss) for the full list.
+There are lots of CSS variables available for theming. See [intlTelInput.css](https://github.com/jackocnr/intl-tel-input/blob/master/src/css/intlTelInput.css) for the full list.
 
 Dark mode example (with screenshot below):
 ```css

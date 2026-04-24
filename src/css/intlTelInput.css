@@ -1,9 +1,8 @@
-@use "sass:map";
-@use "metadata" as *;
+@import "flag-offsets.css";
 
 :root {
-  /* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus. */
-  /* Used as the bg color for both the selected country and the dropdown items, on hover. */
+  /* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus.
+     Used as the bg color for both the selected country and the dropdown items, on hover. */
   --iti-hover-color: rgba(0, 0, 0, 0.05);
   /* Used for both the dropdown border, and the divider under the country search input. */
   --iti-border-color: #ccc;
@@ -12,8 +11,8 @@
   --iti-icon-color: #555;
   /* horizontal spacing around the flag, country name, search icon, clear icon, check icon etc */
   --iti-spacer-horizontal: 10px;
-  --iti-flag-width: #{$flag-width};
-  /* Flags are a 4:3 aspect ratio, so height is derived from width — consumers only need to override --iti-flag-width to scale. */
+  /* Flags are a 4:3 aspect ratio, so height is derived from width — consumers only need to override --iti-flag-width to scale.
+     --iti-flag-width itself is set in flag-offsets.css (auto-generated). */
   --iti-flag-height: calc(var(--iti-flag-width) * 3 / 4);
   /* Separate height for the globe icon, as it's much thinner than the flags, so nice to have it a bit taller. This is also re-used for the search icon. */
   --iti-globe-icon-size: 17px;
@@ -26,10 +25,7 @@
   --iti-arrow-width: 1.5px; /* thickness */
   --iti-arrow-padding: 7px;
 
-  /* NOTE: image paths are now defined in intlTelInputWithAssets.scss */
-
-  --iti-flag-sprite-width: #{map.get($flags-sprite-1x, width)};
-  --iti-flag-sprite-height: #{map.get($flags-sprite-1x, height)};
+  /* NOTE: image paths are now defined in intlTelInputWithAssets.css */
 
   /* Enough space for them to click off to close. */
   --iti-mobile-popup-margin: 30px;
@@ -44,8 +40,8 @@
   /* Keep the input's default inline properties. */
   display: inline-block;
 
-  /* Paul Irish (paulirish) says this is ok. */
-  /* http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
+  /* Paul Irish (paulirish) says this is ok.
+     http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
   * {
     box-sizing: border-box;
   }
@@ -61,9 +57,9 @@
     /* By default the input is inline, which means any inherited line-height will make the wrapper (and hence the selected country) taller than the input. Block is a better default in this case, given it should fill the wrapper. */
     display: block;
 
-    /* Ensure the input fills the wrapper e.g. when the wrapper is inside a flex/grid container. */
-    /* When the wrapper has no explicit width (standard inline-block), this is a cyclic percentage */
-    /* and resolves to auto per CSS Sizing 3, so it has no effect and any consumer-set width wins. */
+    /* Ensure the input fills the wrapper e.g. when the wrapper is inside a flex/grid container.
+       When the wrapper has no explicit width (standard inline-block), this is a cyclic percentage
+       and resolves to auto per CSS Sizing 3, so it has no effect and any consumer-set width wins. */
     min-width: 100%;
 
     /* Since we wrap the input in a container div, any margin here would interfere with the positioning of the selected country. */
@@ -122,6 +118,10 @@
   padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
 }
 
+.iti__selected-dial-code {
+  margin-left: 4px;
+}
+
 .iti__arrow {
   margin-left: var(--iti-arrow-padding);
   margin-top: -2px;
@@ -132,15 +132,11 @@
   border-right: var(--iti-arrow-width) solid var(--iti-icon-color);
   border-bottom: var(--iti-arrow-width) solid var(--iti-icon-color);
   transform: rotate(45deg);
-
-  &--up {
-    margin-top: 4px;
-    transform: rotate(-135deg);
-  }
 }
 
-.iti__selected-dial-code {
-  margin-left: 4px;
+.iti__arrow--up {
+  margin-top: 4px;
+  transform: rotate(-135deg);
 }
 
 /* The dropdown. */
@@ -152,7 +148,7 @@
     border: var(--iti-border-width) solid var(--iti-border-color);
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   }
-  /* Note: dont apply these styles when using dropdownContainer, as that uses pos:fixed and so this (child) doesn't need pos:absolute */
+  /* Note: don't apply these styles when using dropdownContainer, as that uses pos:fixed and so this (child) doesn't need pos:absolute */
   .iti--inline-dropdown:not(.iti--container) & {
     position: absolute;
     /* Popup so render above everything else. */
@@ -208,11 +204,11 @@
   left: var(--iti-spacer-horizontal);
   display: flex;
   pointer-events: none;
-}
 
-[dir="rtl"] .iti__search-icon {
-  left: auto;
-  right: var(--iti-spacer-horizontal);
+  [dir="rtl"] & {
+    left: auto;
+    right: var(--iti-spacer-horizontal);
+  }
 }
 
 .iti__search-icon-svg {
@@ -244,23 +240,23 @@
   .iti__search-clear-bg {
     fill: var(--iti-icon-color);
   }
+
+  [dir="rtl"] & {
+    right: auto;
+    left: var(--iti-spacer-horizontal);
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: var(--iti-hover-color);
+    outline: none;
+  }
 }
 
 .iti__search-clear-svg {
   width: var(--iti-clear-icon-size);
   height: var(--iti-clear-icon-size);
   display: block;
-}
-
-[dir="rtl"] .iti__search-clear {
-  right: auto;
-  left: var(--iti-spacer-horizontal);
-}
-
-.iti__search-clear:hover,
-.iti__search-clear:focus-visible {
-  background: var(--iti-hover-color);
-  outline: none;
 }
 
 .iti__no-results {
@@ -276,10 +272,10 @@
   cursor: pointer;
 
   overflow-y: scroll;
-  /* Fixes https://github.com/jackocnr/intl-tel-input/issues/765 */
-  /* Apple still hasn't fixed the issue where setting overflow: scroll on a div element does not use inertia scrolling */
-  /* If this is not set, then the country list scroll stops moving after raising a finger, and users report that scroll is slow */
-  /* Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll */
+  /* Fixes https://github.com/jackocnr/intl-tel-input/issues/765
+     Apple still hasn't fixed the issue where setting overflow: scroll on a div element does not use inertia scrolling
+     If this is not set, then the country list scroll stops moving after raising a finger, and users report that scroll is slow
+     Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll */
   -webkit-overflow-scrolling: touch;
 
   .iti--inline-dropdown & {
@@ -305,6 +301,10 @@
   padding-left: var(--iti-spacer-horizontal);
   padding-right: var(--iti-spacer-horizontal);
   outline: none;
+
+  &.iti__highlight {
+    background-color: var(--iti-hover-color);
+  }
 }
 
 .iti__country-name {
@@ -326,22 +326,15 @@
   display: block;
 }
 
-.iti__country.iti__highlight {
-  background-color: var(--iti-hover-color);
-}
-
 /* Spacing between country flag and country name. */
 .iti__country-list .iti__flag {
   margin-right: var(--iti-spacer-horizontal);
+  flex-shrink: 0; /* stop long country names from shrinking the flag */
 
   [dir="rtl"] & {
     margin-right: 0;
     margin-left: var(--iti-spacer-horizontal);
   }
-}
-
-.iti__country-list .iti__flag {
-  flex-shrink: 0; /* stop long country names from shrinking the flag */
 }
 
 .iti--allow-dropdown {
@@ -357,14 +350,11 @@
     }
   }
 
-  /* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird. */
-  /* Only apply when the input is NOT disabled/readonly. */
-  .iti__country-container:not(:has(+ input[disabled])):not(
-      :has(+ input[readonly])
-    ) {
+  /* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
+     Only apply when the input is NOT disabled/readonly. */
+  .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
     .iti__selected-country-primary:hover,
-    .iti__selected-country:has(+ .iti__dropdown-content:hover)
-      .iti__selected-country-primary {
+    .iti__selected-country:has(+ .iti__dropdown-content:hover) .iti__selected-country-primary {
       background-color: var(--iti-hover-color);
     }
   }
@@ -377,6 +367,7 @@
   left: -1000px;
   /* Higher than default Bootstrap modal z-index of 1050. */
   z-index: 1060;
+
   &:hover {
     cursor: pointer;
   }
@@ -408,18 +399,21 @@
     /* The country search input auto-focuses, so mobile keyboard appears, so stick to top (also because when filter countries down, the height changes and the vertical centring would make it jump around). */
     justify-content: flex-start;
   }
+
   .iti__dropdown-content {
     display: flex;
     flex-direction: column;
     max-height: 100%;
     position: relative; /* Override needed in order to get full-width working properly. */
   }
+
   /* give the search input the same v-padding as the country items, for visual consistency */
   .iti__country,
   .iti__search-input {
     padding-top: 10px;
     padding-bottom: 10px;
   }
+
   .iti__country {
     padding-left: 10px;
     padding-right: 10px;
@@ -429,9 +423,6 @@
 }
 
 .iti__flag {
-  /* Unit-less multiple of --iti-flag-width. Default is a large positive value to hide all flags */
-  /* (useful for the empty state shown while geoIpLookup is resolving). */
-  --iti-flag-offset: 100;
   height: var(--iti-flag-height);
   width: var(--iti-flag-width);
   border-radius: 1px;
@@ -441,9 +432,12 @@
     var(--iti-path-flags-2x) 2x
   );
   background-repeat: no-repeat;
-  /* Offset and sprite size are expressed as multiples of --iti-flag-width / --iti-flag-height */
-  /* so consumers can scale the flags by overriding just those two vars. */
-  background-position: calc(var(--iti-flag-offset) * var(--iti-flag-width)) 0;
+  /* Offset and sprite size are expressed as multiples of --iti-flag-width / --iti-flag-height
+     so consumers can scale the flags by overriding just those two vars.
+     The 100 fallback hides all flags when no country class is set (useful for the empty state
+     shown while geoIpLookup is resolving) — done via var()'s fallback rather than as a rule
+     default so the country-specific offsets win regardless of source order. */
+  background-position: calc(var(--iti-flag-offset, 100) * var(--iti-flag-width)) 0;
   background-size: calc(var(--iti-flag-sprite-width) * var(--iti-flag-width))
     calc(var(--iti-flag-sprite-height) * var(--iti-flag-height));
 }
@@ -453,20 +447,20 @@
   position: relative;
   background: none;
   box-shadow: none;
-}
 
-.iti__loading::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: var(--iti-flag-height);
-  height: var(--iti-flag-height);
-  box-sizing: border-box;
-  border: 2px solid var(--iti-icon-color);
-  border-right-color: transparent;
-  border-radius: 50%;
-  animation: iti-spinner 1s linear infinite;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: var(--iti-flag-height);
+    height: var(--iti-flag-height);
+    box-sizing: border-box;
+    border: 2px solid var(--iti-icon-color);
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: iti-spinner 1s linear infinite;
+  }
 }
 
 @keyframes iti-spinner {
@@ -475,11 +469,23 @@
   }
 }
 
-/* Subtle visual feedback when strictMode rejects the whole input. Opt-in via the strictRejectAnimation option. */
-/* Targets the input and selected-country button (not the wrapper), so an open dropdown doesn't shake along with them. */
-.iti__strict-reject-animation .iti__tel-input,
-.iti__strict-reject-animation .iti__selected-country {
-  animation: iti-strict-reject-shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+/* Subtle visual feedback when strictMode rejects the whole input. Opt-in via the strictRejectAnimation option.
+   Targets the input and selected-country button (not the wrapper), so an open dropdown doesn't shake along with them. */
+.iti__strict-reject-animation {
+  .iti__tel-input,
+  .iti__selected-country {
+    animation: iti-strict-reject-shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  }
+
+  /* Users who have opted out of motion get a brief background-color flash on the input instead (the selected-country button is skipped to avoid an odd-looking flash on a small UI element). */
+  @media (prefers-reduced-motion: reduce) {
+    .iti__tel-input {
+      animation: iti-strict-reject-flash 0.3s ease-out both;
+    }
+    .iti__selected-country {
+      animation: none;
+    }
+  }
 }
 
 @keyframes iti-strict-reject-shake {
@@ -502,33 +508,16 @@
   }
 }
 
-/* Users who have opted out of motion get a brief background-color flash on the input instead (the selected-country button is skipped to avoid an odd-looking flash on a small UI element). */
-@media (prefers-reduced-motion: reduce) {
-  .iti__strict-reject-animation .iti__tel-input {
-    animation: iti-strict-reject-flash 0.3s ease-out both;
-  }
-  .iti__strict-reject-animation .iti__selected-country {
-    animation: none;
-  }
-  /* Keyframe omits 0%/100% so the element falls back to its base background-color */
-  /* (important because `both` fill-mode would otherwise persist the last keyframe). */
-  @keyframes iti-strict-reject-flash {
-    40% {
-      background-color: var(--iti-strict-reject-flash-color);
-    }
+/* Keyframe omits 0%/100% so the element falls back to its base background-color
+   (important because `both` fill-mode would otherwise persist the last keyframe). */
+@keyframes iti-strict-reject-flash {
+  40% {
+    background-color: var(--iti-strict-reject-flash-color);
   }
 }
 
-@each $country-code, $values in $flags {
-  $flag-offset: map.get($values, offset);
-
-  .iti__#{$country-code} {
-    --iti-flag-offset: #{$flag-offset};
-  }
-}
-
-/* Empty state. */
-/* Inline globe icon (now rendered as SVG inside .iti__flag). Keep class for width/position logic and to clear box-shadow. */
+/* Empty state.
+   Inline globe icon (now rendered as SVG inside .iti__flag). Keep class for width/position logic and to clear box-shadow. */
 .iti__globe {
   background: none;
   box-shadow: none;

@@ -59,9 +59,9 @@ const createSprite = async (images, width, height, outputFile, format) => {
   await processedImage.toFile(outputFile);
 };
 
-const fileWarning = '//* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.';
+const fileWarning = '/* THIS FILE IS AUTO-GENERATED. DO NOT EDIT. */';
 const flagsPath = 'node_modules/flag-icons/flags/4x3';
-const outputFile = 'src/css/_metadata.scss';
+const outputFile = 'src/css/flag-offsets.css';
 const spriteFile1xWebP = 'dist/img/flags.webp';
 const spriteFile2xWebP = 'dist/img/flags@2x.webp';
 const spriteFile1xPNG = 'dist/img/flags.png';
@@ -70,7 +70,7 @@ const spriteFile2xPNG = 'dist/img/flags@2x.png';
 const totalWidth = supportedCountryFilenames.length * (TARGET_WIDTH + FLAG_MARGIN) - FLAG_MARGIN;
 const maxHeight = TARGET_HEIGHT;
 
-let flagsMetadata = '$flags: (\n';
+let flagRules = '';
 let currentOffset = 0;
 
 const scaledImages1x = [];
@@ -115,13 +115,10 @@ for (const filename of supportedCountryFilenames) {
 
   //* Unit-less multiple of --iti-flag-width, so consumers can scale flags by overriding that one var.
   const offsetMultiplier = currentOffset / TARGET_WIDTH;
-  flagsMetadata += `  ${iso2}: (\n`;
-  flagsMetadata += `    offset: ${-offsetMultiplier},\n`;
-  flagsMetadata += '  ),\n';
+  flagRules += `.iti__${iso2} { --iti-flag-offset: ${-offsetMultiplier}; }\n`;
 
   currentOffset += TARGET_WIDTH + FLAG_MARGIN;
 }
-flagsMetadata += ');';
 
 await createSprite(scaledImages1x, totalWidth, maxHeight, spriteFile1xWebP, 'webp');
 await createSprite(scaledImages1x, totalWidth, maxHeight, spriteFile1xPNG, 'png');
@@ -134,14 +131,14 @@ console.log(`2x combined images saved as ${spriteFile2xWebP} and ${spriteFile2xP
 let outputFileContent = fileWarning + '\n\n';
 //* Sprite dimensions expressed as unit-less multiples of --iti-flag-width / --iti-flag-height,
 //* so the whole sprite scales when the consumer overrides those vars.
-outputFileContent += '$flags-sprite-1x: (\n';
-outputFileContent += `  height: 1,\n`;
-outputFileContent += `  width: ${supportedCountryFilenames.length},\n`;
-outputFileContent += ');\n\n';
-//* Flag height is derived from width via the 4:3 aspect ratio, so no $flag-height export.
-outputFileContent += `$flag-width: ${TARGET_WIDTH}px;\n\n`;
-outputFileContent += flagsMetadata + '\n\n';
+//* Flag height is derived from width via the 4:3 aspect ratio, so no --iti-flag-height export here.
+outputFileContent += ':root {\n';
+outputFileContent += `  --iti-flag-width: ${TARGET_WIDTH}px;\n`;
+outputFileContent += `  --iti-flag-sprite-width: ${supportedCountryFilenames.length};\n`;
+outputFileContent += `  --iti-flag-sprite-height: 1;\n`;
+outputFileContent += '}\n\n';
+outputFileContent += flagRules + '\n';
 outputFileContent += fileWarning + '\n';
 
 fs.writeFileSync(outputFile, outputFileContent);
-console.log('SCSS file generated successfully.');
+console.log('CSS file generated successfully.');
