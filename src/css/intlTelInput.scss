@@ -160,9 +160,15 @@
     border-width: 0;
     border-radius: 3px;
     //* Space for search icon.
-    padding-left: calc(var(--iti-spacer-horizontal) + var(--iti-globe-icon-size) + var(--iti-spacer-horizontal));
+    padding-left: calc(
+      var(--iti-spacer-horizontal) + var(--iti-globe-icon-size) +
+        var(--iti-spacer-horizontal)
+    );
     //* Space for clear button.
-    padding-right: calc(var(--iti-spacer-horizontal) + var(--iti-clear-icon-size) + var(--iti-spacer-horizontal));
+    padding-right: calc(
+      var(--iti-spacer-horizontal) + var(--iti-clear-icon-size) +
+        var(--iti-spacer-horizontal)
+    );
 
     //* RTL: put the icon on the right instead.
     [dir="rtl"] & {
@@ -236,7 +242,8 @@
     right: auto;
     left: var(--iti-spacer-horizontal);
   }
-  &__search-clear:hover, &__search-clear:focus-visible {
+  &__search-clear:hover,
+  &__search-clear:focus-visible {
     background: var(--iti-hover-color);
     outline: none;
   }
@@ -331,9 +338,12 @@
 
     //* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
     //* Only apply when the input is NOT disabled/readonly.
-    .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
+    .iti__country-container:not(:has(+ input[disabled])):not(
+        :has(+ input[readonly])
+      ) {
       .iti__selected-country-primary:hover,
-      .iti__selected-country:has(+ .iti__dropdown-content:hover) .iti__selected-country-primary {
+      .iti__selected-country:has(+ .iti__dropdown-content:hover)
+        .iti__selected-country-primary {
         background-color: var(--iti-hover-color);
       }
     }
@@ -418,8 +428,7 @@
   //* Offset and sprite size are expressed as multiples of --iti-flag-width / --iti-flag-height
   //* so consumers can scale the flags by overriding just those two vars.
   background-position: calc(var(--iti-flag-offset) * var(--iti-flag-width)) 0;
-  background-size:
-    calc(var(--iti-flag-sprite-width) * var(--iti-flag-width))
+  background-size: calc(var(--iti-flag-sprite-width) * var(--iti-flag-width))
     calc(var(--iti-flag-sprite-height) * var(--iti-flag-height));
 }
 
@@ -458,10 +467,23 @@
 }
 
 @keyframes iti-strict-reject-shake {
-  10%, 90% { transform: translateX(-1px); }
-  20%, 80% { transform: translateX(2px); }
-  30%, 50%, 70% { transform: translateX(-3px); }
-  40%, 60% { transform: translateX(3px); }
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-3px);
+  }
+  40%,
+  60% {
+    transform: translateX(3px);
+  }
 }
 
 //* Users who have opted out of motion get a brief background-color flash on the input instead (the selected-country button is skipped to avoid an odd-looking flash on a small UI element).
@@ -475,7 +497,9 @@
   //* Keyframe omits 0%/100% so the element falls back to its base background-color
   //* (important because `both` fill-mode would otherwise persist the last keyframe).
   @keyframes iti-strict-reject-flash {
-    40% { background-color: var(--iti-strict-reject-flash-color); }
+    40% {
+      background-color: var(--iti-strict-reject-flash-color);
+    }
   }
 }
 
@@ -506,7 +530,7 @@
 }
 
 /* Browsers normally add a coloured outline when you focus an input. Chrome adds a blue outline WITHIN the input. If you focus the input and then hover the selected country, it's bg color square overlaps the focus outline and looks bad. Here, @supports is used to target Chrome only, and move the default outline out by 1px so there's no overlap. */
-@supports (-webkit-appearance:none) and (not (background: -webkit-canvas(foo))) {
+@supports (-webkit-appearance: none) and (not (background: -webkit-canvas(foo))) {
   .iti__tel-input:focus {
     outline-offset: 1px;
   }

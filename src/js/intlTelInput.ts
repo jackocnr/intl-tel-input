@@ -23,7 +23,10 @@ import {
   generateCountryNames,
 } from "./data/country-data.js";
 import { hasRegionlessDialCode } from "./data/intl-regionless.js";
-import { stripSeparateDialCode, formatNumberAsYouType } from "./format/formatting.js";
+import {
+  stripSeparateDialCode,
+  formatNumberAsYouType,
+} from "./format/formatting.js";
 import { computeNewCaretPosition } from "./format/caret.js";
 import { isRegionlessNanp } from "./data/nanp-regionless.js";
 import type { ItiEventMap, StrictRejectReason } from "./types/events.js";
@@ -139,7 +142,8 @@ export class Iti {
     applyOptionSideEffects(this.#options);
 
     this.#ui = new UI(input, this.#options, this.id);
-    this.#isAndroid = typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent);
+    this.#isAndroid =
+      typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent);
     this.#numerals = new Numerals(input.value);
     this.promise = this.#createInitPromise(this.#options);
 
@@ -147,9 +151,8 @@ export class Iti {
     this.#countries = processAllCountries(this.#options);
 
     //* Generate this.dialCodes and this.dialCodeToIso2Map.
-    const { dialCodes, dialCodeMaxLength, dialCodeToIso2Map } = processDialCodes(
-      this.#countries,
-    );
+    const { dialCodes, dialCodeMaxLength, dialCodeToIso2Map } =
+      processDialCodes(this.#countries);
     this.#dialCodes = dialCodes;
     this.#dialCodeMaxLength = dialCodeMaxLength;
     this.#dialCodeToIso2Map = dialCodeToIso2Map;
@@ -486,9 +489,18 @@ export class Iti {
   //* On input event: (1) Update selected country, (2) Format-as-you-type.
   //* Note that this fires AFTER the input is updated.
   #handleInputEvent = (e: InputEvent): void => {
-    const { strictMode, formatAsYouType, separateDialCode, allowDropdown, countrySearch } = this.#options;
+    const {
+      strictMode,
+      formatAsYouType,
+      separateDialCode,
+      allowDropdown,
+      countrySearch,
+    } = this.#options;
     //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents (from setNumber/setCountry), so we read detail via a cast.
-    const detail = e?.detail as unknown as Record<string, unknown> | null | undefined;
+    const detail = e?.detail as unknown as
+      | Record<string, unknown>
+      | null
+      | undefined;
     //* Skip re-entry from our own synthetic input events fired after a country change —
     //* selectListItem/setCountry have already done the country + formatting work.
     if (detail?.["isCountryChange"]) {
@@ -566,7 +578,8 @@ export class Iti {
   //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
   //* Note that this fires BEFORE the input is updated.
   #handleKeydownEvent = (e: KeyboardEvent): void => {
-    const { strictMode, separateDialCode, allowDropdown, countrySearch } = this.#options;
+    const { strictMode, separateDialCode, allowDropdown, countrySearch } =
+      this.#options;
     //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
     if (!e.key || e.key.length !== 1 || e.altKey || e.ctrlKey || e.metaKey) {
       return;
@@ -659,8 +672,7 @@ export class Iti {
     const pasted = this.#numerals.normalise(pastedRaw);
     // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
     const initialCharSelected = selStart === 0 && selEnd! > 0;
-    const allowLeadingPlus =
-      !inputValue.startsWith("+") || initialCharSelected;
+    const allowLeadingPlus = !inputValue.startsWith("+") || initialCharSelected;
     // just numerics and pluses
     const allowedChars = pasted.replace(REGEX.NON_PLUS_NUMERIC_GLOBAL, "");
     const hasLeadingPlus = allowedChars.startsWith("+");
