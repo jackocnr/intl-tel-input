@@ -70,12 +70,6 @@ function getKeepDropdownOpenDisabledReason(state) {
   if (!state.allowDropdown) {
     return "Disabled because allowDropdown is off — there is no dropdown to keep open.";
   }
-  if (state.disabled) {
-    return "Disabled because the input's disabled attribute is set.";
-  }
-  if (state.readonly) {
-    return "Disabled because the input's readonly attribute is set.";
-  }
   if (state.dropdownContainer) {
     return "Disabled because dropdownContainer uses position:fixed, which wouldn't work on a scrollable page.";
   }

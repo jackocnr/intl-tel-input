@@ -128,8 +128,6 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
   const defaultInputAttributes = {
     value: "",
     placeholder: "",
-    disabled: false,
-    readonly: false,
   };
 
   const optionMeta = {
@@ -269,8 +267,6 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
   const attributeMeta = {
     value: { type: "text" },
     placeholder: { type: "text" },
-    disabled: { type: "boolean" },
-    readonly: { type: "boolean" },
   };
 
   return {

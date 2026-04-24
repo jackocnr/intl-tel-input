@@ -15,16 +15,6 @@ function applyInputAttributes(state: any, telInput: HTMLInputElement) {
   if (typeof state.placeholder === "string") {
     telInput.placeholder = state.placeholder;
   }
-
-  telInput.disabled = Boolean(state.disabled);
-  const isReadOnly = Boolean(state.readonly);
-  telInput.readOnly = isReadOnly;
-  // Keep the HTML attribute in sync for visibility in devtools.
-  if (isReadOnly) {
-    telInput.setAttribute("readonly", "");
-  } else {
-    telInput.removeAttribute("readonly");
-  }
 }
 
 function destroyInstance(iti: any) {
