@@ -68,64 +68,63 @@
   flex-direction: column;
   gap: 1.5rem; /* bootstrap g-4 */
 
-  /* On mobile, flatten the column wrappers so we can control ordering. */
-  &__col {
-    display: contents;
-  }
-  &__demo {
-    order: 1;
-  }
-  &__options {
-    order: 2;
-  }
-  &__attrs {
-    order: 3;
-  }
-  &__code {
-    order: 4;
-  }
-
-  &__demo,
-  &__options,
-  &__attrs,
-  &__code {
-    min-width: 0;
-  }
-
   @media (min-width: 992px) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 1.5rem; /* bootstrap g-4 */
     align-items: start;
+  }
+}
+/* On mobile, flatten the column wrappers so we can control ordering. */
+.iti-playground-layout__col {
+  display: contents;
+}
+.iti-playground-layout__demo {
+  order: 1;
+}
+.iti-playground-layout__options {
+  order: 2;
+}
+.iti-playground-layout__attrs {
+  order: 3;
+}
+.iti-playground-layout__code {
+  order: 4;
+}
+.iti-playground-layout__demo,
+.iti-playground-layout__options,
+.iti-playground-layout__attrs,
+.iti-playground-layout__code {
+  min-width: 0;
+}
+.iti-playground-layout__demo {
+  .iti,
+  input[type="tel"],
+  .iti-live-results,
+  .demo-input-wrap {
+    width: 100%;
+    max-width: 350px;
+  }
+}
 
-    &__col {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem; /* bootstrap g-4 */
-      min-width: 0;
-    }
-
-    &__col--left {
-      grid-column: 1;
-    }
-
-    &__col--right {
-      grid-column: 2;
-      position: sticky;
-      top: calc(70px + 1rem);
-      max-height: calc(100vh - 70px - 2rem);
-      overflow: auto;
-    }
+@media (min-width: 992px) {
+  .iti-playground-layout__col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* bootstrap g-4 */
+    min-width: 0;
   }
 
-  &__demo {
-    .iti,
-    input[type="tel"],
-    .iti-live-results,
-    .demo-input-wrap {
-      width: 100%;
-      max-width: 350px;
-    }
+  .iti-playground-layout__col--left {
+    grid-column: 1;
+  }
+
+  .iti-playground-layout__col--right {
+    grid-column: 2;
+    position: sticky;
+    top: calc(70px + 1rem);
+    max-height: calc(100vh - 70px - 2rem);
+    overflow: auto;
   }
 }
 
@@ -216,14 +215,6 @@
 
   /* playground: on wider screens, align label + control horizontally to save space */
   @media (min-width: 600px) {
-    /* playground: loadUtils has an example snippet + a checkbox, so keep the example aligned with the label, and put the checkbox beneath. */
-    &--example-code {
-      align-items: start;
-    }
-    &--example-code > .iti-playground-example-toggle {
-      grid-column: 2;
-      margin-top: 0;
-    }
     /* Shared grid layout for controls on wider screens */
     & {
       display: grid;
@@ -265,6 +256,16 @@
         justify-self: start;
       }
     }
+  }
+}
+/* playground: loadUtils has an example snippet + a checkbox, so keep the example aligned with the label, and put the checkbox beneath. */
+@media (min-width: 600px) {
+  .iti-playground-control--example-code {
+    align-items: start;
+  }
+  .iti-playground-control--example-code > .iti-playground-example-toggle {
+    grid-column: 2;
+    margin-top: 0;
   }
 }
 /* contextual hint (shown after toggling certain options) */

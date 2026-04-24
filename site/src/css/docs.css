@@ -46,16 +46,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
-
-  &__item {
-    display: inline-block;
-    padding: 0.15rem 0.55rem;
-    font-size: 0.875em;
-    line-height: 1.4;
-    background: var(--bs-tertiary-bg, #f1f3f5);
-    border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
-    border-radius: 999px;
-  }
+}
+.iti-locale-list__item {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.875em;
+  line-height: 1.4;
+  background: var(--bs-tertiary-bg, #f1f3f5);
+  border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+  border-radius: 999px;
 }
 
 /* Choose Integration page: two big CTA cards */
@@ -77,49 +76,46 @@
 }
 
 /* Docs options page layout: keep code blocks within the content width */
-.iti-doc-options {
-  &__row {
-    border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
-    display: flex;
+.iti-doc-options__row {
+  border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+  display: flex;
 
-    p:last-child,
-    pre:last-child {
-      margin-bottom: 0;
-    }
-
-    & + & {
-      border-top: none;
-    }
+  p:last-child,
+  pre:last-child {
+    margin-bottom: 0;
   }
 
-  &__cell {
-    vertical-align: top;
-    box-sizing: border-box;
-    padding: var(--bs-table-cell-padding-y, 0.5rem)
-      var(--bs-table-cell-padding-x, 0.5rem);
-    min-width: 0;
+  & + & {
+    border-top: none;
   }
-  &__cell--key {
-    flex: 0 0 210px; /* this is wide enough for all of the option names */
-    border-right: var(--bs-border-width, 1px) solid
-      var(--bs-border-color, #dee2e6);
-    h6 {
-      font-weight: 700;
-    }
+}
+.iti-doc-options__cell {
+  vertical-align: top;
+  box-sizing: border-box;
+  padding: var(--bs-table-cell-padding-y, 0.5rem)
+    var(--bs-table-cell-padding-x, 0.5rem);
+  min-width: 0;
+}
+.iti-doc-options__cell--key {
+  flex: 0 0 210px; /* this is wide enough for all of the option names */
+  border-right: var(--bs-border-width, 1px) solid
+    var(--bs-border-color, #dee2e6);
+  h6 {
+    font-weight: 700;
   }
-  &__cell--value {
-    flex: 1 1 auto;
-    min-width: 0;
+}
+.iti-doc-options__cell--value {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* Docs options layout: stack key/value on small screens */
+@media (max-width: 600px) {
+  .iti-doc-options__row {
+    flex-direction: column;
   }
-  /* Docs options layout: stack key/value on small screens */
-  @media (max-width: 600px) {
-    &__row {
-      flex-direction: column;
-    }
-    &__cell--key {
-      flex: 0 0 auto;
-      border-right: none;
-    }
+  .iti-doc-options__cell--key {
+    flex: 0 0 auto;
+    border-right: none;
   }
 }
 

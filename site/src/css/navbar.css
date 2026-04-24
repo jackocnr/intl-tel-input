@@ -206,22 +206,20 @@
 .iti-mobile-nav-toggle {
   border: 0;
   background: none;
-
-  &__chevron {
-    margin: 0px 0 3px 6px;
-    width: 8px;
-    height: 8px;
-    display: inline-block;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(45deg);
-    opacity: 0.85;
-  }
-
-  &[aria-expanded="true"] &__chevron {
-    transform: rotate(225deg);
-    margin-top: 8px;
-  }
+}
+.iti-mobile-nav-toggle__chevron {
+  margin: 0px 0 3px 6px;
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.85;
+}
+.iti-mobile-nav-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+  transform: rotate(225deg);
+  margin-top: 8px;
 }
 .nav-pills {
   .nav-link.active {

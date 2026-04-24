@@ -64,19 +64,6 @@ h1 {
   font-size: 0.875rem;
   color: var(--bs-secondary-color);
 
-  &__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  &__item + &__item::before {
-    content: "/";
-    opacity: 0.6;
-    padding: 0 0.4rem;
-  }
   a {
     color: inherit;
     text-decoration: none;
@@ -84,6 +71,19 @@ h1 {
       text-decoration: underline;
     }
   }
+}
+.iti-breadcrumb__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.iti-breadcrumb__item + .iti-breadcrumb__item::before {
+  content: "/";
+  opacity: 0.6;
+  padding: 0 0.4rem;
 }
 
 /* prevent layout shift when initialise components / show validation errors in demos */
