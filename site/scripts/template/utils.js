@@ -25,7 +25,7 @@ const defaultSlugifyHeading = (value) =>
     // trim hyphens
     .replace(/^-|-$/g, "");
 
-// This plugin (AI-generated) injects table layout markup around each h6 entry (option/method/etc) whose heading is immediately followed by a paragraph containing a "Type:" declaration. Any remaining content for that entry (e.g. description, examples) is grouped into the same section, until the next heading. Only runs on docs listed in docOptionsLayoutDocKeys.
+// This plugin (AI-generated) injects table layout markup around each h6 entry (option/method/etc) whose heading is immediately followed by a paragraph containing a "Type:" or "Default:" declaration. Any remaining content for that entry (e.g. description, examples) is grouped into the same section, until the next heading. Only runs on docs listed in docOptionsLayoutDocKeys.
 const docOptionsLayoutDocKeys = [
   "options",
   "methods",
@@ -33,6 +33,7 @@ const docOptionsLayoutDocKeys = [
   "vue_component",
   "angular_component",
   "svelte_component",
+  "theming",
 ];
 
 const addDocOptionsLayoutPlugin = (md) => {
@@ -147,7 +148,10 @@ const addDocOptionsLayoutPlugin = (md) => {
             inlineToken && inlineToken.type === "inline"
               ? inlineToken.content
               : "";
-          if (inlineContent.includes("Type:")) {
+          if (
+            inlineContent.includes("Type:") ||
+            inlineContent.includes("Default:")
+          ) {
             consumeOptionBlock();
             continue;
           }
