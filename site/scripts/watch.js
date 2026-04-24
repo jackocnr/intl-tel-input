@@ -20,7 +20,7 @@ const ACTIONS = ["copy", "css", "esbuild", "vue", "svelte", "pages", "full"];
 const ACTION_COMMANDS = {
   copy: [["npm", ["run", "copy"]]],
   css: [
-    ["npm", ["run", "build:css:sass"]],
+    ["npm", ["run", "build:css:bundle"]],
     ["npm", ["run", "build:css:cache-bust"]],
   ],
   esbuild: [

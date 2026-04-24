@@ -1,11 +1,6 @@
-@use "sass:meta";
-
-/* Theme is driven by [data-bs-theme] instead of prefers-color-scheme for consistency */
-@include meta.load-css("vendor/highlight-github-light");
-
-[data-bs-theme="dark"] {
-  @include meta.load-css("vendor/highlight-github-dark");
-}
+/* NOTE: we have modified highlight-github-dark.css to manually wrap it in [data-bs-theme] which is how Bootstrap handles dark mode */
+@import url('./vendor/highlight-github-light.css');
+@import url('./vendor/highlight-github-dark.css');
 
 /* Match GitHub's rendered code block background */
 .hljs {

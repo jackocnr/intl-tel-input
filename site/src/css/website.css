@@ -1,13 +1,9 @@
-
 /* Split into partials for maintainability. Partial files live alongside this file.
    Keep this file as the single entrypoint imported by the build system. */
 
-@use 'variables';
-@use 'base';
-@use 'navbar';
-@use 'layout';
-@use 'forms';
-
-
-/* Any small remaining overrides or page-specific rules can go here. */
+@import url('./variables.css');
+@import url('./base.css');
+@import url('./navbar.css');
+@import url('./layout.css');
+@import url('./forms.css');
 
