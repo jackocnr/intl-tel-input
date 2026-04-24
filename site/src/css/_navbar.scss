@@ -21,7 +21,7 @@
     transform: rotate(45deg);
   }
 
-  // cute spinny logo animation on hover
+  /* cute spinny logo animation on hover */
   @media (hover: hover) and (pointer: fine) {
     .iti-logo {
       transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -37,7 +37,7 @@
     position: relative;
   }
 
-  // Center search on the page (not within remaining flex space)
+  /* Center search on the page (not within remaining flex space) */
   .iti-navbar-search {
     position: absolute;
     left: 50%;
@@ -77,13 +77,13 @@
     border: none;
     margin: 0 !important;
 }
-// disable DocSearch's "pressed" styles
+/* disable DocSearch's "pressed" styles */
 .DocSearch-Button-Key--pressed {
   box-shadow: none !important;
   transform: none !important;
 }
 
-// mobile search icon button in header
+/* mobile search icon button in header */
 .iti-navbar-icon-btn {
   padding: 0.25rem;
   border: 0;
@@ -99,7 +99,7 @@
   min-width: 0;
 }
 
-// both in header and mobile sidebar
+/* both in header and mobile sidebar */
 .iti-logo {
   margin-right: 10px;
 }
@@ -107,7 +107,7 @@
 #bdNavbar {
   .nav-link {
     color: white;
-    // fix: unselected playground link not looking centered (to make space for bold active state)
+    /* fix: unselected playground link not looking centered (to make space for bold active state) */
     text-align: center;
 
     /* Prevent nav items shifting when toggling font-weight by reserving space
@@ -250,7 +250,7 @@
   background: rgba(var(--bs-body-color-rgb), 0.15);
 }
 .dropdown-menu .iti-dropdown-nested {
-  // slightly lighter border in header dropdowns, to distinguish from dropdown border
+  /* slightly lighter border in header dropdowns, to distinguish from dropdown border */
   border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.07);
   margin-left: 1.05rem;
 }

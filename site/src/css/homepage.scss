@@ -130,7 +130,7 @@
         }
       }
 
-      // hide last 3 logos on mobile
+      /* hide last 3 logos on mobile */
       .logo:nth-last-child(-n+3) {
         display: none;
 
@@ -151,7 +151,7 @@
 
       /* The following AI generated code attempts to approximate var(--bs-body-color) (#212529 light / #dee2e6 dark) via filters */
 
-      // nike, unicef, forbes, ubuntu_text, and quickbooks_text logos are black on transparent
+      /* nike, unicef, forbes, ubuntu_text, and quickbooks_text logos are black on transparent */
       img[src*="nike.png"],
       img[src*="unicef.png"],
       img[src*="forbes"],
@@ -164,7 +164,7 @@
         }
       }
 
-      // dell logo is blue on transparent, so use brightness(0) to make it black before inverting
+      /* dell logo is blue on transparent, so use brightness(0) to make it black before inverting */
       img[src*="dell"] {
         filter: brightness(0) invert(0.13);
 
@@ -173,7 +173,7 @@
         }
       }
 
-      // universal music logo is white on transparent
+      /* universal music logo is white on transparent */
       img[src*="universal-music"] {
         filter: invert(0.87);
 

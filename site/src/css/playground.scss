@@ -4,16 +4,16 @@
  * PLAYGROUND
  **************/
 
-// When navigating to a Playground heading via hash, leave space above it.
+/* When navigating to a Playground heading via hash, leave space above it. */
 .iti-playground h2[id] {
   scroll-margin-top: 30px;
 }
 
-// Make enable span behave like a label (default cursor)
+/* Make enable span behave like a label (default cursor) */
 .form-check-enable-span {
   cursor: default;
 }
-// force these buttons to have the same colour as text-muted, which has a high enough contrast ratio to pass a11y guidelines.
+/* force these buttons to have the same colour as text-muted, which has a high enough contrast ratio to pass a11y guidelines. */
 .playground-action-btn {
   color: var(--bs-secondary-color) !important;
 }
@@ -60,7 +60,7 @@
   }
 }
 
-// mobile: make the presets select smaller so it doesn't distract from the page title
+/* mobile: make the presets select smaller so it doesn't distract from the page title */
 @media (max-width: 576px) {
   .playground-presets-select {
     width: 7em;
