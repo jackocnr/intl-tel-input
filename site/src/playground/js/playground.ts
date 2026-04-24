@@ -27,7 +27,7 @@ const resetAllButton = document.querySelector<HTMLButtonElement>("#playgroundRes
 const shareButton = document.querySelector<HTMLButtonElement>("#playgroundShareBtn");
 const resetAttrsButton = document.querySelector<HTMLButtonElement>("#playgroundResetAttrs");
 const initCodeEl = document.querySelector<HTMLElement>("#playgroundInitCode")!;
-const integrationSelect = document.querySelector<HTMLSelectElement>("#playgroundIntegrationSelect");
+const integrationTabs = document.querySelectorAll<HTMLButtonElement>(".iti-playground-integration-tabs [data-integration]");
 
 const INTEGRATION_VALUES = new Set<Integration>(["vanilla", "react", "vue", "angular", "svelte"]);
 const INTEGRATION_STORAGE_KEY = "iti.playground.integration";
@@ -338,15 +338,24 @@ const initialState = { ...initialOptionsState, ...initialAttrsState };
 setFormFromState(optionsForm, initialState, optionMeta, "data-option", { defaultState: playgroundInitialState });
 setFormFromState(attrsForm, initialState, attributeMeta, "data-attr", { defaultState: playgroundInitialState });
 
-if (integrationSelect) {
-  integrationSelect.value = currentIntegration;
-  integrationSelect.addEventListener("change", () => {
-    const next = integrationSelect.value;
-    if (!isIntegration(next)) {
+function syncIntegrationTabs() {
+  integrationTabs.forEach((tab) => {
+    const isActive = tab.dataset.integration === currentIntegration;
+    tab.classList.toggle("active", isActive);
+    tab.setAttribute("aria-selected", isActive ? "true" : "false");
+  });
+}
+
+syncIntegrationTabs();
+integrationTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const next = tab.dataset.integration;
+    if (!isIntegration(next) || next === currentIntegration) {
       return;
     }
     currentIntegration = next;
     persistIntegration(next);
+    syncIntegrationTabs();
     renderInitCodeFromState(getCombinedStateFromControls(), initCodeEl, {
       defaultInitOptions,
       optionMeta,
@@ -354,7 +363,7 @@ if (integrationSelect) {
       specialOptionKeys,
     }, currentIntegration);
   });
-}
+});
 
 renderInitCodeFromState(initialState, initCodeEl, {
   defaultInitOptions,

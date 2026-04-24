@@ -288,6 +288,25 @@
   display: block;
 }
 
+/* playground: integration tabs above the init code snippet */
+.iti-playground-integration-tabs {
+  flex-wrap: wrap;
+
+  .nav-link {
+    padding: 0.35rem 0.75rem;
+    color: var(--bs-secondary-color);
+    border: 1px solid transparent;
+    background: transparent;
+  }
+  .nav-link:hover:not(.active) {
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color) var(--bs-border-color) transparent;
+  }
+  .nav-link.active {
+    color: var(--bs-body-color);
+  }
+}
+
 #itiPlaygroundIso2Modal td {
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;

@@ -134,28 +134,33 @@
       <div class="iti-playground-layout__code">
         <div class="card">
           <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between gap-2">
-              <h2 class="h5 mb-0">
-                <i class="bi bi-code-slash text-muted me-2" aria-hidden="true"></i>
-                Initialisation Code
-              </h2>
-              <div class="d-flex gap-2">
-                <label for="playgroundIntegrationSelect" class="form-label visually-hidden">Integration</label>
-                <select id="playgroundIntegrationSelect" class="form-select form-select-sm" aria-label="Integration">
-                  <option value="vanilla">JS plugin</option>
-                  <option value="react">React</option>
-                  <option value="vue">Vue</option>
-                  <option value="angular">Angular</option>
-                  <option value="svelte">Svelte</option>
-                </select>
-              </div>
-            </div>
+            <h2 class="h5 mb-0">
+              <i class="bi bi-code-slash text-muted me-2" aria-hidden="true"></i>
+              Initialisation Code
+            </h2>
             <p class="text-muted mt-2 mb-3">
               Code snippet for initialising the plugin with your (non-default) options. By default, we enable several options to give the best experience.
             </p>
             <div id="playgroundNotes" hidden>
 {{PLAYGROUND_NOTES}}
             </div>
+            <ul class="nav nav-tabs iti-playground-integration-tabs mb-3" role="tablist" aria-label="Integration">
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link" role="tab" data-integration="vanilla">JS plugin</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link" role="tab" data-integration="react">React</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link" role="tab" data-integration="vue">Vue</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link" role="tab" data-integration="angular">Angular</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link" role="tab" data-integration="svelte">Svelte</button>
+              </li>
+            </ul>
             <pre class="mb-0 language-javascript"><code id="playgroundInitCode" class="language-javascript"></code></pre>
           </div>
         </div>
