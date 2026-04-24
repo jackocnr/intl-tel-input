@@ -2,8 +2,7 @@
 
 :root {
   --iti-flag-width: 20px;
-  --iti-flag-sprite-width: 244;
-  --iti-flag-sprite-height: 1;
+  --iti-flag-count: 244;
 }
 
 .iti__ac { --iti-flag-offset: 0; }

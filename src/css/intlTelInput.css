@@ -438,8 +438,8 @@
      shown while geoIpLookup is resolving) — done via var()'s fallback rather than as a rule
      default so the country-specific offsets win regardless of source order. */
   background-position: calc(var(--iti-flag-offset, 100) * var(--iti-flag-width)) 0;
-  background-size: calc(var(--iti-flag-sprite-width) * var(--iti-flag-width))
-    calc(var(--iti-flag-sprite-height) * var(--iti-flag-height));
+  background-size: calc(var(--iti-flag-count) * var(--iti-flag-width))
+    var(--iti-flag-height);
 }
 
 /* Loading state (used while geoIpLookup is resolving auto country). */

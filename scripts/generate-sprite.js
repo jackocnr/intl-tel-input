@@ -134,8 +134,7 @@ let outputFileContent = fileWarning + '\n\n';
 //* Flag height is derived from width via the 4:3 aspect ratio, so no --iti-flag-height export here.
 outputFileContent += ':root {\n';
 outputFileContent += `  --iti-flag-width: ${TARGET_WIDTH}px;\n`;
-outputFileContent += `  --iti-flag-sprite-width: ${supportedCountryFilenames.length};\n`;
-outputFileContent += `  --iti-flag-sprite-height: 1;\n`;
+outputFileContent += `  --iti-flag-count: ${supportedCountryFilenames.length};\n`;
 outputFileContent += '}\n\n';
 outputFileContent += flagRules + '\n';
 outputFileContent += fileWarning + '\n';
