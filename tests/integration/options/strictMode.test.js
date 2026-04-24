@@ -332,6 +332,64 @@ describe("strictMode option", () => {
       expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
     });
   });
+
+  describe("strictRejectAnimation=true", () => {
+    let input, iti, user, container;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+      const options = {
+        initialCountry: "us",
+        strictMode: true,
+        strictRejectAnimation: true,
+      };
+      ({ input, iti, container } = initPlugin({ options }));
+    });
+
+    afterEach(() => {
+      teardown(iti);
+    });
+
+    test("adds iti__strict-reject-animation class to wrapper when an invalid key is rejected", async () => {
+      await user.type(input, "a");
+      expect(container.classList.contains("iti__strict-reject-animation")).toBe(true);
+    });
+
+    test("adds iti__strict-reject-animation class to wrapper when a key is rejected for exceeding max length", async () => {
+      await user.type(input, "7021234567");
+      expect(container.classList.contains("iti__strict-reject-animation")).toBe(false);
+      await user.type(input, "8");
+      expect(container.classList.contains("iti__strict-reject-animation")).toBe(true);
+    });
+
+    test("does NOT add iti__strict-reject-animation class when paste is only partially stripped", async () => {
+      await user.click(input);
+      // This paste is partially sanitised (letters stripped) but still accepted.
+      fireEvent.paste(input, getPasteEventObject("a9871234567"));
+      expect(container.classList.contains("iti__strict-reject-animation")).toBe(false);
+    });
+
+    test("adds iti__strict-reject-animation class when every pasted character is stripped", async () => {
+      await user.click(input);
+      fireEvent.paste(input, getPasteEventObject("abc"));
+      expect(container.classList.contains("iti__strict-reject-animation")).toBe(true);
+    });
+
+    test("adds iti__strict-reject-animation class when a paste is fully rejected (max-length in middle)", async () => {
+      await user.type(input, "7021234567");
+      // caret now at end; move it into the middle
+      input.setSelectionRange(5, 5);
+      fireEvent.paste(input, getPasteEventObject("99999999"));
+      expect(container.classList.contains("iti__strict-reject-animation")).toBe(true);
+    });
+
+    test("no iti__strict-reject-animation class when option is disabled (default)", async () => {
+      teardown(iti);
+      ({ input, iti, container } = initPlugin({ options: { initialCountry: "us", strictMode: true } }));
+      await user.type(input, "a");
+      expect(container.classList.contains("iti__strict-reject-animation")).toBe(false);
+    });
+  });
 });
 
 

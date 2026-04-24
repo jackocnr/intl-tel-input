@@ -4,8 +4,6 @@
 // omits for clarity, with a pointer to the full explanation in the docs.
 
 export const NOTE_BODIES = {
-  strictMode:
-    'By default, <code>strictMode</code> silently drops invalid keys, which is confusing — listen for the <a href="/docs/javascript-plugin#worked-example-bootstrap-toast"><code>strict:reject</code></a> event (or use the equivalent callback in the component wrappers) to give users feedback.',
   geoIpLookup:
     '<code>geoIpLookup</code> here uses <a rel="noopener" href="https://ipapi.co">ipapi</a>\'s limited free tier — for production, pick a paid plan, another provider, or roll your own.',
   deriveErrorMessage:
@@ -47,9 +45,6 @@ export const renderPlaygroundNotesHtml = (keys) =>
 // so notes stay in sync with the code automatically.
 export const deriveNotesFromCode = (code) => {
   const notes = [];
-  if (/\bstrictMode\b/.test(code)) {
-    notes.push("strictMode");
-  }
   if (/\bgeoIpLookup\b/.test(code)) {
     notes.push("geoIpLookup");
   }

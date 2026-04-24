@@ -18,7 +18,7 @@ Check the number is valid before storing it, and reject invalid input. Get the v
 
 ## Enable strict mode to prevent invalid input
 
-Enable [`strictMode`](/docs/options#strictmode) to reject non-numeric characters and cap the length at the country's max as the user types. But, importantly, make sure to pair it with the `strict:reject` event or `onStrictReject` / `strictReject` callback to give feedback to the user (e.g. a toast or shake animation) so the rejection isn't silent, to avoid confusion.
+Enable [`strictMode`](/docs/options#strictmode) to reject non-numeric characters and cap the length at the country's max as the user types. But, importantly, make sure to pair it with some form of feedback so the rejection isn't silent, to avoid confusion. The simplest option is to enable [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event or use the equivalent `onStrictReject` / `strictReject` callback.
 
 ## Set the initial country
 

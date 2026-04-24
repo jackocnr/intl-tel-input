@@ -56,7 +56,7 @@ export const OPTION_GROUPS = [
     title: "Formatting Options",
     icon: "bi-braces",
     description: "How numbers are formatted as you type and on initial display.",
-    keys: ["formatAsYouType", "formatOnDisplay", "nationalMode", "strictMode"],
+    keys: ["formatAsYouType", "formatOnDisplay", "nationalMode", "strictMode", "strictRejectAnimation"],
   },
   {
     title: "Validation Options",
@@ -107,6 +107,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     separateDialCode: defaults.separateDialCode,
     showFlags: defaults.showFlags,
     strictMode: defaults.strictMode,
+    strictRejectAnimation: defaults.strictRejectAnimation,
     // show dropdown open, even on mobile, as provides a better playground experience for testing options, otherwise they have to scroll down, change option, scroll back up, open dropdown etc
     useFullscreenPopup: false,
   };
@@ -121,6 +122,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     initialCountry: "auto",
     separateDialCode: true,
     strictMode: true,
+    strictRejectAnimation: true,
   };
 
   const defaultInputAttributes = {
@@ -253,6 +255,10 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     strictMode: {
       type: "boolean",
       tooltip: "As the user types in the input, ignore irrelevant characters and cap the number at the maximum valid length.",
+    },
+    strictRejectAnimation: {
+      type: "boolean",
+      tooltip: "When strictMode rejects a whole keystroke or paste, play a subtle animation (shake, or a background-colour flash for users with prefers-reduced-motion).",
     },
     useFullscreenPopup: {
       type: "boolean",

@@ -8,6 +8,7 @@ intl-tel-input aims to be accessible out of the box, but good accessibility also
 - [Accessible naming](#accessible-naming)
 - [Keyboard support](#keyboard-support)
 - [Screen reader support](#screen-reader-support)
+- [Reduced motion](#reduced-motion)
 
 
 ## Accessible naming
@@ -48,3 +49,8 @@ Its dropdown/search UI includes ARIA attributes to expose state and relationship
 - A live summary of the number of matching results while searching
 
 Translations for these accessibility strings are provided out of the box in [many languages](/docs/localisation#supported-ui-locales), and it's easy to override or add your own with the [`i18n`](/docs/options#i18n) option.
+
+
+## Reduced motion
+
+The [`strictRejectAnimation`](/docs/options#strictrejectanimation) option automatically respects the user's `prefers-reduced-motion` setting. When reduced motion is requested by the OS or browser, the default shake animation is replaced with a subtle red background flash on the input — a non-motion equivalent that still communicates the rejection.

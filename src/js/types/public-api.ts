@@ -111,6 +111,7 @@ export interface AllOptions {
   placeholderNumberType: NumberType;
   searchInputClass: string;
   separateDialCode: boolean;
+  strictRejectAnimation: boolean;
   showFlags: boolean;
   strictMode: boolean;
   useFullscreenPopup: boolean;

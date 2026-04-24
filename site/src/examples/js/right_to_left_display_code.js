@@ -12,5 +12,6 @@ intlTelInput(input, {
   initialCountry: "eg",
   separateDialCode: true,
   strictMode: true,
+  strictRejectAnimation: true,
   loadUtils: () => import("intl-tel-input/utils"),
 });

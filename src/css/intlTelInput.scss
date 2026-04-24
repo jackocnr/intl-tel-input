@@ -33,6 +33,9 @@
 
   //* Enough space for them to click off to close.
   --iti-mobile-popup-margin: 30px;
+
+  //* Colour used for the flash variant of the strictRejectAnimation option (shown when the user has prefers-reduced-motion).
+  --iti-strict-reject-flash-color: rgba(255, 0, 0, 0.12);
 }
 
 .iti {
@@ -444,6 +447,35 @@
 @keyframes iti-spinner {
   to {
     transform: rotate(360deg);
+  }
+}
+
+//* Subtle visual feedback when strictMode rejects the whole input. Opt-in via the strictRejectAnimation option.
+//* Targets the input and selected-country button (not the wrapper), so an open dropdown doesn't shake along with them.
+.iti__strict-reject-animation .iti__tel-input,
+.iti__strict-reject-animation .iti__selected-country {
+  animation: iti-strict-reject-shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes iti-strict-reject-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}
+
+//* Users who have opted out of motion get a brief background-color flash on the input instead (the selected-country button is skipped to avoid an odd-looking flash on a small UI element).
+@media (prefers-reduced-motion: reduce) {
+  .iti__strict-reject-animation .iti__tel-input {
+    animation: iti-strict-reject-flash 0.3s ease-out both;
+  }
+  .iti__strict-reject-animation .iti__selected-country {
+    animation: none;
+  }
+  //* Keyframe omits 0%/100% so the element falls back to its base background-color
+  //* (important because `both` fill-mode would otherwise persist the last keyframe).
+  @keyframes iti-strict-reject-flash {
+    40% { background-color: var(--iti-strict-reject-flash-color); }
   }
 }
 

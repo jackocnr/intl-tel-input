@@ -158,6 +158,8 @@ else if (source === "paste") msg = "Stripped invalid characters from pasted text
 else msg = `Character not allowed: "${rejectedInput}"`;
 ```
 
+**See also:** [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation, if you don't need custom feedback logic.
+
 ## Accessing instance methods
 
 You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.

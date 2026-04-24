@@ -14,6 +14,7 @@ const geoIpLookup = (success, failure) => {
 const baseOptions = {
   separateDialCode: true,
   strictMode: true,
+  strictRejectAnimation: true,
   loadUtils: () => import("intl-tel-input/utils"),
 };
 

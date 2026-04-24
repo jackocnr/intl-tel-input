@@ -150,3 +150,5 @@ input.addEventListener("strict:reject", (e) => {
   toast.show();
 });
 ```
+
+**See also:** [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation, if you don't need custom feedback logic.

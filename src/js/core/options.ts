@@ -81,6 +81,8 @@ export const defaults: AllOptions = {
   searchInputClass: "",
   //* Display the international dial code next to the selected flag.
   separateDialCode: false,
+  //* When strictMode rejects a key (etc), play a short feedback animation
+  strictRejectAnimation: false,
   //* Show flags - for both the selected country, and in the country dropdown
   showFlags: true,
   //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
@@ -183,6 +185,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       case "showFlags":
       case "separateDialCode":
       case "strictMode":
+      case "strictRejectAnimation":
       case "useFullscreenPopup":
         if (typeof value !== "boolean") {
           warnOption(key, "a boolean", value);

@@ -4,6 +4,7 @@ window.intlTelInput(input, {
   initialCountry: "auto",
   separateDialCode: true,
   strictMode: true,
+  strictRejectAnimation: true,
   geoIpLookup: (success, failure) => {
     fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
       .then(res => res.json())

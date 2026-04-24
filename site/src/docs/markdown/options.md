@@ -247,7 +247,13 @@ As the user types (or pastes) in the input, reject any irrelevant characters. Th
 Play with this option in the [Playground](/playground#formatting-options).
 
 > [!IMPORTANT]
-> `strictMode` silently drops rejected input by default — listen for the [`strict:reject`](/docs/javascript-plugin#strict-reject) event (or use the equivalent `onStrictReject` / `strictReject` callback in the component wrappers) to give the user feedback (e.g. a toast). For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
+> `strictMode` silently drops rejected input by default — the simplest way to surface that to the user is to enable [`strictRejectAnimation`](#strictrejectanimation) for a built-in shake/flash animation. For richer feedback (e.g. a toast explaining _why_ input was rejected), listen for the [`strict:reject`](/docs/javascript-plugin#strict-reject) event (or use the equivalent `onStrictReject` / `strictReject` callback in the component wrappers). For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
+
+###### strictRejectAnimation
+Type: `boolean`  
+Default: `false`  
+
+When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a whole keystroke or paste is rejected — a brief shake by default, or a background-colour flash for users with `prefers-reduced-motion`. Partial paste sanitisation (e.g. only some characters stripped) does not trigger it. The flash colour can be customised via the `--iti-strict-reject-flash-color` CSS variable.
 
 
 ## Validation options

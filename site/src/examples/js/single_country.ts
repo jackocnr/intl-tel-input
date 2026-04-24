@@ -9,6 +9,7 @@ const iti = window.intlTelInput(input, {
   allowDropdown: false,
   showFlags: false,
   strictMode: true,
+  strictRejectAnimation: true,
   // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
 });

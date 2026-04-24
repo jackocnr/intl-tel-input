@@ -5,6 +5,7 @@ intlTelInput(input, {
   initialCountry: "auto",
   separateDialCode: true,
   strictMode: true,
+  strictRejectAnimation: true,
   geoIpLookup: (success, failure) => {
     fetch("https://ipapi.co/json")
       .then(res => res.json())

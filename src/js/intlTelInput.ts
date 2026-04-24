@@ -412,6 +412,7 @@ export class Iti {
   #handleAndroidStrictReject(inputValue: string, rejectedInput: string): void {
     const newCaretPos = this.#removeJustTypedChar(inputValue);
     this.#ui.telInputEl.setSelectionRange(newCaretPos, newCaretPos);
+    this.#playStrictRejectAnimation();
     this.#dispatchEvent(EVENTS.STRICT_REJECT, {
       source: "key",
       rejectedInput,
@@ -620,6 +621,7 @@ export class Iti {
       !isAllowedChar ||
       (hasExceededMaxLength && !isChangingDialCode && !isInitialPlus)
     ) {
+      this.#playStrictRejectAnimation();
       this.#dispatchEvent(EVENTS.STRICT_REJECT, {
         source: "key",
         rejectedInput: e.key,
@@ -685,6 +687,7 @@ export class Iti {
       }
       // if no valid core number can be found, then just ignore the paste (defensive path for pathologically long input)
       if (!coreNumber) {
+        this.#playStrictRejectAnimation();
         this.#dispatchEvent(EVENTS.STRICT_REJECT, {
           source: "paste",
           rejectedInput: pastedRaw,
@@ -703,6 +706,7 @@ export class Iti {
           rejectReason = "max-length";
         } else {
           // if they try to paste too many digits in the middle, then just ignore the paste entirely
+          this.#playStrictRejectAnimation();
           this.#dispatchEvent(EVENTS.STRICT_REJECT, {
             source: "paste",
             rejectedInput: pastedRaw,
@@ -721,6 +725,10 @@ export class Iti {
     input.dispatchEvent(new InputEvent("input", { bubbles: true }));
 
     if (rejectReason) {
+      // If the paste had content but every character was stripped, treat it as a whole-input rejection.
+      if (pasted.length > 0 && sanitised.length === 0) {
+        this.#playStrictRejectAnimation();
+      }
       this.#dispatchEvent(EVENTS.STRICT_REJECT, {
         source: "paste",
         rejectedInput: pastedRaw,
@@ -733,6 +741,23 @@ export class Iti {
   #truncateToMaxLength(number: string): string {
     const max = Number(this.#ui.telInputEl.getAttribute("maxlength"));
     return max && number.length > max ? number.substring(0, max) : number;
+  }
+
+  //* Play the strict-reject animation (shake, or background-colour flash under prefers-reduced-motion) on the wrapper.
+  //* Called when strictMode rejects the whole input (keystroke, or whole paste).
+  //* Uses the wrapper (not the input) so any separateDialCode / country button move together with the input.
+  #playStrictRejectAnimation(): void {
+    if (!this.#options.strictRejectAnimation) {
+      return;
+    }
+    const wrapperEl = this.#ui.telInputEl.parentElement;
+    if (!wrapperEl) {
+      return;
+    }
+    wrapperEl.classList.remove("iti__strict-reject-animation");
+    //* Force reflow so re-adding the class restarts the animation even if it's already running.
+    void wrapperEl.offsetWidth;
+    wrapperEl.classList.add("iti__strict-reject-animation");
   }
 
   //* Trigger a custom event on the input (typed via ItiEventMap).

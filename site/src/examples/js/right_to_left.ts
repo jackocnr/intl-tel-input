@@ -9,6 +9,7 @@ intlTelInput(input, {
   initialCountry: "eg",
   separateDialCode: true,
   strictMode: true,
+  strictRejectAnimation: true,
   // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
   searchInputClass: "form-control",

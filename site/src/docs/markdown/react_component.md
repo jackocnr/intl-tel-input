@@ -111,6 +111,8 @@ else if (source === "paste") msg = "Stripped invalid characters from pasted text
 else msg = `Character not allowed: "${rejectedInput}"`;
 ```
 
+**See also:** [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation, if you don't need custom feedback logic.
+
 ###### readOnly
 Type: `boolean`  
 Default: `false`  

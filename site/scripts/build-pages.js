@@ -568,7 +568,7 @@ tasks.push({
       .replace("{{PLAYGROUND_PRESETS}}", renderPlaygroundPresetsPlayground())
       .replace(
         "{{PLAYGROUND_NOTES}}",
-        renderPlaygroundNotesHtml(["strictMode", "geoIpLookup"]),
+        renderPlaygroundNotesHtml(["geoIpLookup"]),
       ),
     pageType: "playground",
     name: "playground",

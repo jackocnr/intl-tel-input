@@ -152,6 +152,8 @@ else if (source === "paste") msg = "Stripped invalid characters from pasted text
 else msg = `Character not allowed: "${rejectedInput}"`;
 ```
 
+**See also:** [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation, if you don't need custom feedback logic.
+
 ### Native input events
 
 The component exposes several commonly used native DOM events that you can bind to using Angular's standard event binding syntax `(eventName)="handlerMethod($event)"`. For other native events not listed below, you can access the input element directly (see [Other native events](#other-native-events) section).
