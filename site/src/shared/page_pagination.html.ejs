@@ -1,0 +1,41 @@
+<%
+  let navigablePages = null;
+  if (pageType === 'docs') {
+    navigablePages = docsDropdownPages;
+  } else if (pageType === 'examples') {
+    navigablePages = examplesDropdownSections.flatMap((s) =>
+      s.items.map((p) => ({ ...p, sectionLabel: s.label, sectionName: s.name }))
+    );
+  }
+  const activeIndex = navigablePages
+    ? navigablePages.findIndex((p) => p.name === name)
+    : -1;
+  const activePage = activeIndex >= 0 ? navigablePages[activeIndex] : null;
+  const prevPage = (navigablePages && activeIndex > 0)
+    ? navigablePages[activeIndex - 1]
+    : null;
+  const nextPage = (navigablePages && activeIndex >= 0 && activeIndex < navigablePages.length - 1)
+    ? navigablePages[activeIndex + 1]
+    : null;
+  const formatPageLabel = (p) => {
+    if (!p) return '';
+    if (p.sectionName && activePage && p.sectionName !== activePage.sectionName) {
+      return `${p.sectionLabel}: ${p.label}`;
+    }
+    return p.label;
+  };
+%>
+<% if ((prevPage || nextPage) && navigablePages) { %>
+  <nav class="d-flex justify-content-between mt-5 pt-4 border-top" aria-label="Page navigation">
+    <div>
+      <% if (prevPage) { %>
+        <a href="<%= prevPage.href %>">&larr; <%= formatPageLabel(prevPage) %></a>
+      <% } %>
+    </div>
+    <div class="text-end">
+      <% if (nextPage) { %>
+        <a href="<%= nextPage.href %>"><%= formatPageLabel(nextPage) %> &rarr;</a>
+      <% } %>
+    </div>
+  </nav>
+<% } %>

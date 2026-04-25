@@ -17,6 +17,7 @@ import {
   readCommonBodyEndScript,
   readItiLiveResultsScript,
   readItiScript,
+  readNavPartials,
 } from "./template/helpers.js";
 import {
   renderPlaygroundPresetsHomepage,
@@ -586,6 +587,12 @@ for (const def of exampleDefinitions) {
         pageType: "examples",
         docsDropdownPages,
         examplesDropdownSections,
+        ...readNavPartials({
+          pageType: "examples",
+          name: key,
+          docsDropdownPages,
+          examplesDropdownSections,
+        }),
         ...layoutExtra,
       }),
   });
@@ -663,6 +670,12 @@ tasks.push({
       pageType: "home",
       docsDropdownPages,
       examplesDropdownSections,
+      ...readNavPartials({
+        pageType: "home",
+        name: "home",
+        docsDropdownPages,
+        examplesDropdownSections,
+      }),
     };
   },
 });
@@ -713,6 +726,12 @@ tasks.push({
     name: "playground",
     docsDropdownPages,
     examplesDropdownSections,
+    ...readNavPartials({
+      pageType: "playground",
+      name: "playground",
+      docsDropdownPages,
+      examplesDropdownSections,
+    }),
   }),
 });
 
@@ -756,6 +775,12 @@ tasks.push({
     name: "404",
     docsDropdownPages,
     examplesDropdownSections,
+    ...readNavPartials({
+      pageType: "home",
+      name: "404",
+      docsDropdownPages,
+      examplesDropdownSections,
+    }),
   }),
 });
 
@@ -912,6 +937,12 @@ for (const { key, title, metaDesc } of docsDefinitions) {
       pageType: "docs",
       docsDropdownPages,
       examplesDropdownSections,
+      ...readNavPartials({
+        pageType: "docs",
+        name: key,
+        docsDropdownPages,
+        examplesDropdownSections,
+      }),
     }),
   });
 

@@ -29,9 +29,23 @@ const readItiLiveResultsScript = (data) =>
 // Reads the rendered iti_script (produced upstream by the `iti_script` template task).
 const readItiScript = () => readFile("tmp/shared/iti_script.html");
 
+// Pre-renders the nav-related partials consumed by layout_template.html.ejs
+// (`<%= header_nav %>` / `<%= mobile_nav %>` / `<%= page_pagination %>`).
+// All three reference page context (pageType, name, dropdown data) so they
+// need to be rendered per page rather than read as static strings.
+const readNavPartials = (data) => ({
+  header_nav: renderString(readFile("src/shared/header_nav.html.ejs"), data),
+  mobile_nav: renderString(readFile("src/shared/mobile_nav.html.ejs"), data),
+  page_pagination: renderString(
+    readFile("src/shared/page_pagination.html.ejs"),
+    data,
+  ),
+});
+
 export {
   readCommonPagePartials,
   readCommonBodyEndScript,
   readItiLiveResultsScript,
   readItiScript,
+  readNavPartials,
 };
