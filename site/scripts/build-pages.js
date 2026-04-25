@@ -302,7 +302,7 @@ const exampleDefinitions = [
     metaDesc: "How to use intl-tel-input with Angular.",
     js: {
       src: "src/examples/angular-component/validation/component.ts",
-      dest: "tmp/examples/js/angular_component.ts",
+      destDir: "tmp",
       script: "angular_component_bundle.js",
     },
     content: {
@@ -318,7 +318,7 @@ const exampleDefinitions = [
     metaDesc: "How to use intl-tel-input with React.",
     js: {
       src: "src/examples/react-component/validation/component.tsx",
-      dest: "tmp/examples/js/react_component.tsx",
+      destDir: "tmp",
       script: "react_component_bundle.js",
     },
     content: {
@@ -334,7 +334,7 @@ const exampleDefinitions = [
     metaDesc: "How to use intl-tel-input with Vue.",
     js: {
       src: "src/examples/vue-component/validation/component.vue",
-      dest: "tmp/examples/js/vue_component.vue",
+      destDir: "tmp",
       script: "vue_component_bundle.js",
     },
     content: {
@@ -350,7 +350,7 @@ const exampleDefinitions = [
     metaDesc: "How to use intl-tel-input with Svelte.",
     js: {
       src: "src/examples/svelte-component/validation/component.svelte",
-      dest: "tmp/examples/js/svelte_component.svelte",
+      destDir: "tmp",
       script: "svelte_component_bundle.js",
     },
     content: {
@@ -385,13 +385,18 @@ for (const def of exampleDefinitions) {
   const integrationLabel = integrationLabels[integrationSlug];
   const exampleDir = `src/examples/${integrationSlug}/${exampleSlug}`;
   const jsSrc = js.src || `${exampleDir}/page.ts`;
-  // For tmp/ destinations the file is consumed by esbuild, which handles .ts
-  // natively — preserve the source extension so esbuild reads the right loader.
+  // For tmp/ destinations the file is consumed by esbuild/vite, which handles
+  // .ts/.tsx/.vue/.svelte natively — preserve the source basename so the
+  // bundler reads the right loader and the templated copy ends up at the same
+  // relative depth as the source (so relative imports inside it resolve to the
+  // same files from either location).
   // For dist/ destinations the file is served to the browser as-is, so the
   // extension is forced to .js (and TypeScript types are stripped at render time).
   const destDir = js.destDir || "dist";
   const jsExt = destDir === "tmp" && jsSrc.endsWith(".ts") ? ".ts" : ".js";
-  const jsDest = js.dest || `${destDir}/examples/js/${key}${jsExt}`;
+  const jsDest = js.dest || (destDir === "tmp"
+    ? `tmp/examples/${integrationSlug}/${exampleSlug}/${path.basename(jsSrc)}`
+    : `${destDir}/examples/js/${key}${jsExt}`);
   const srcExt = path.extname(jsSrc);
   const displayCodeExt = [".vue", ".svelte"].includes(srcExt) ? srcExt : ".js";
   const displayCode =

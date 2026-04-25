@@ -26,47 +26,47 @@ const sharedOptions = {
 // lookup country example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/lookup_country.ts"],
+  entryPoints: ["tmp/examples/javascript-plugin/lookup-country/page.ts"],
   outfile: "dist/examples/js/lookup_country.js",
 });
 
 // right to left example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/right_to_left.ts"],
+  entryPoints: ["tmp/examples/javascript-plugin/right-to-left/page.ts"],
   outfile: "dist/examples/js/right_to_left_bundle.js",
 });
 
 // validation examples (same source, one output per example)
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/validation_practical.ts"],
+  entryPoints: ["tmp/examples/javascript-plugin/validation/page.ts"],
   outfile: "dist/examples/js/validation_practical.js",
 });
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/validation_precise.ts"],
+  entryPoints: ["tmp/examples/javascript-plugin/validation-precise/page.ts"],
   outfile: "dist/examples/js/validation_precise.js",
 });
 
 // hidden input example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/hidden_input.ts"],
+  entryPoints: ["tmp/examples/javascript-plugin/hidden-input/page.ts"],
   outfile: "dist/examples/js/hidden_input.js",
 });
 
 // multiple instances example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/multiple_instances.ts"],
+  entryPoints: ["tmp/examples/javascript-plugin/multiple-instances/page.ts"],
   outfile: "dist/examples/js/multiple_instances.js",
 });
 
 // large flags example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/js/large_flags.ts"],
+  entryPoints: ["tmp/examples/javascript-plugin/large-flags/page.ts"],
   outfile: "dist/examples/js/large_flags.js",
 });
 
@@ -74,7 +74,7 @@ build({
 build({
   ...sharedOptions,
   loader: { ".tsx": "tsx" },
-  entryPoints: ["tmp/examples/js/react_component.tsx"],
+  entryPoints: ["tmp/examples/react-component/validation/component.tsx"],
   outfile: "dist/examples/js/react_component_bundle.js",
 });
 
@@ -83,7 +83,7 @@ build({
   ...sharedOptions,
   loader: { ".ts": "ts" },
   tsconfig: "../angular/tsconfig.build.json",
-  entryPoints: ["tmp/examples/js/angular_component.ts"],
+  entryPoints: ["tmp/examples/angular-component/validation/component.ts"],
   outfile: "dist/examples/js/angular_component_bundle.js",
 });
 

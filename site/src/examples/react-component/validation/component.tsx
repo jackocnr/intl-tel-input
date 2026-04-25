@@ -3,8 +3,8 @@ import { createRoot } from "react-dom/client";
 import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
-} from "../../../../react/dist/IntlTelInput.js";
-import type { Iso2 } from "../../../../dist/js/intlTelInput.js";
+} from "../../../../../react/dist/IntlTelInput.js";
+import type { Iso2 } from "../../../../../dist/js/intlTelInput.js";
 
 const getErrorMessage = (number: string, errorCode: number | null): string => {
   if (!number) {
