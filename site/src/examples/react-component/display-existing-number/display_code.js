@@ -6,7 +6,6 @@ const App = () => (
   <>
     <label htmlFor="phone">Phone number</label>
     <IntlTelInput
-      separateDialCode
       loadUtils={() => import("intl-tel-input/utils")}
       inputProps={{
         id: "phone",

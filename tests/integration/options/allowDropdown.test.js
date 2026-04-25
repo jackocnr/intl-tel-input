@@ -20,7 +20,7 @@ describe("allowDropdown option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { allowDropdown: false };
+      const options = { allowDropdown: false, separateDialCode: false };
       ({ iti, container, input } = initPlugin({ options }));
     });
 
@@ -55,7 +55,7 @@ describe("allowDropdown option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { allowDropdown: true };
+      const options = { allowDropdown: true, separateDialCode: false };
       ({ iti, container, input } = initPlugin({ options }));
     });
 

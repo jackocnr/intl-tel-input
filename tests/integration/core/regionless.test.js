@@ -27,7 +27,7 @@ describe("regionless (non-geographic) dial codes", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      const options = { allowedNumberTypes: ["TOLL_FREE"] };
+      const options = { allowedNumberTypes: ["TOLL_FREE"], separateDialCode: false };
       ({ iti, input } = initPlugin({ options }));
       user = userEvent.setup();
     });

@@ -25,6 +25,7 @@ describe("strictMode option", () => {
         initialCountry: "us",
         strictMode: true,
         nationalMode: true,
+        separateDialCode: false,
       };
       ({ input, iti, container } = initPlugin({ options }));
     });
@@ -383,9 +384,9 @@ describe("strictMode option", () => {
       expect(container.classList.contains("iti__strict-reject-animation")).toBe(true);
     });
 
-    test("no iti__strict-reject-animation class when option is disabled (default)", async () => {
+    test("no iti__strict-reject-animation class when option is explicitly disabled", async () => {
       teardown(iti);
-      ({ input, iti, container } = initPlugin({ options: { initialCountry: "us", strictMode: true } }));
+      ({ input, iti, container } = initPlugin({ options: { initialCountry: "us", strictMode: true, strictRejectAnimation: false } }));
       await user.type(input, "a");
       expect(container.classList.contains("iti__strict-reject-animation")).toBe(false);
     });

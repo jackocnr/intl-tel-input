@@ -44,9 +44,6 @@
     onChangeValidity={(v) => (isValid = v)}
     onChangeErrorCode={(e) => (errorCode = e)}
     initialCountry="auto"
-    separateDialCode={true}
-    strictMode={true}
-    strictRejectAnimation={true}
     {geoIpLookup}
     loadUtils={() => import("intl-tel-input/utils")}
     inputProps={{

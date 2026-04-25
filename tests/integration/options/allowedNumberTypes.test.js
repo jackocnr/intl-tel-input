@@ -9,7 +9,7 @@ describe("allowedNumberTypes option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { initialCountry: "gb" } }));
+      ({ iti, input } = initPlugin({ options: { initialCountry: "gb", separateDialCode: false } }));
       user = userEvent.setup();
     });
     afterEach(() => teardown(iti));
@@ -37,6 +37,7 @@ describe("allowedNumberTypes option", () => {
       const options = {
         initialCountry: "gb",
         allowedNumberTypes: ["PREMIUM_RATE"],
+        separateDialCode: false,
       };
       ({ iti, input } = initPlugin({ options }));
       user = userEvent.setup();

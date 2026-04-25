@@ -7,7 +7,6 @@ const App = () => (
     <label htmlFor="phone" className="form-label">Phone number</label>
     <div className="demo-input-wrap">
       <IntlTelInput
-        separateDialCode
         // @ts-expect-error EJS-templated URL string, resolved at build time.
         loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
         searchInputClass="form-control"

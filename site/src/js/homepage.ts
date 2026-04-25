@@ -2,9 +2,6 @@ const input = document.querySelector<HTMLInputElement>("#phone")!;
 window.intlTelInput(input, {
   searchInputClass: "form-control",
   initialCountry: "auto",
-  separateDialCode: true,
-  strictMode: true,
-  strictRejectAnimation: true,
   geoIpLookup: (success, failure) => {
     fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
       .then(res => res.json())

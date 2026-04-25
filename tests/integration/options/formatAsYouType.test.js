@@ -18,8 +18,8 @@ describe("formatAsYouType option", () => {
     afterEach(() => teardown(iti));
 
     test("formats UK mobile as typed", async () => {
-      await user.type(input, "07400123456");
-      expect(input.value).toEqual("07400 123456");
+      await user.type(input, "7400123456");
+      expect(input.value).toEqual("7400 123456");
     });
   });
 

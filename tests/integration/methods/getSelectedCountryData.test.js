@@ -8,7 +8,7 @@ describe("getSelectedCountryData method", () => {
   let iti, input, user;
 
   beforeEach(() => {
-    ({ iti, input } = initPlugin());
+    ({ iti, input } = initPlugin({ options: { separateDialCode: false } }));
     user = userEvent.setup();
   });
 

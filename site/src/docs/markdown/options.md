@@ -132,7 +132,7 @@ Additional class(es) to add to the country search input element (requires [`coun
 
 ###### separateDialCode
 Type: `boolean`  
-Default: `false`  
+Default: `true`  
 
 Display the selected country's international dial code next to the input, so it looks like it's part of the typed number, but is actually separate (they cannot delete it). This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. _Note: previously named `showSelectedDialCode`._
 
@@ -234,24 +234,24 @@ Try toggling this option on/off on an input containing a number in the [Playgrou
 Type: `boolean`  
 Default: `true`  
 
-Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use [`getNumber`](/docs/methods#getnumber) to extract a full international number. 
+Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use [`getNumber`](/docs/methods#getnumber) to extract a full international number. _Note: this is automatically forced off when [`separateDialCode`](#separatedialcode) is enabled, because the displayed dial code is treated as part of the typed number._
 
 Play with this option in the [Playground](/playground?separateDialCode=false&nationalMode=true#formatting-options).
 
 ###### strictMode
 Type: `boolean`  
-Default: `false`  
+Default: `true`  
 
 As the user types (or pastes) in the input, reject any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
 
 Play with this option in the [Playground](/playground#formatting-options).
 
 > [!IMPORTANT]
-> `strictMode` silently drops rejected input by default — the simplest way to surface that to the user is to enable [`strictRejectAnimation`](#strictrejectanimation) for a built-in shake/flash animation. For richer feedback (e.g. a toast explaining _why_ input was rejected), listen for the [`strict:reject`](/docs/javascript-plugin#strict-reject) event (or use the equivalent `onStrictReject` / `strictReject` callback in the component wrappers). For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
+> `strictMode` would silently drop rejected input, so by default we surface that to the user via [`strictRejectAnimation`](#strictrejectanimation), which plays a built-in shake/flash animation. For richer feedback (e.g. a toast explaining _why_ input was rejected), listen for the [`strict:reject`](/docs/javascript-plugin#strict-reject) event (or use the equivalent `onStrictReject` / `strictReject` callback in the component wrappers). For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
 
 ###### strictRejectAnimation
 Type: `boolean`  
-Default: `false`  
+Default: `true`  
 
 When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a whole keystroke or paste is rejected — a brief shake by default, or a background-colour flash for users with `prefers-reduced-motion`. Partial paste sanitisation (e.g. only some characters stripped) does not trigger it. The flash colour can be customised via the `--iti-strict-reject-flash-color` CSS variable.
 

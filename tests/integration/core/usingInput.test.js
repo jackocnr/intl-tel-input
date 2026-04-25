@@ -15,7 +15,7 @@ describe("using input", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, input, container } = initPlugin());
+    ({ iti, input, container } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
   });
 
   afterEach(() => {

@@ -4,9 +4,6 @@ const inputVacation = document.querySelector<HTMLInputElement>("#vacation")!;
 
 window.intlTelInput(inputHome, {
   initialCountry: "auto",
-  separateDialCode: true,
-  strictMode: true,
-  strictRejectAnimation: true,
   geoIpLookup: (success, failure) => {
     fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
       .then(res => res.json())
@@ -20,9 +17,6 @@ window.intlTelInput(inputHome, {
 });
 window.intlTelInput(inputMobile, {
   initialCountry: "auto",
-  separateDialCode: true,
-  strictMode: true,
-  strictRejectAnimation: true,
   geoIpLookup: (success, failure) => {
     fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
       .then(res => res.json())
@@ -36,9 +30,6 @@ window.intlTelInput(inputMobile, {
 });
 window.intlTelInput(inputVacation, {
   initialCountry: "es",
-  separateDialCode: true,
-  strictMode: true,
-  strictRejectAnimation: true,
   onlyCountries: ["es", "fr", "it"],
   // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),

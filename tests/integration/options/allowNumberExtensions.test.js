@@ -13,7 +13,7 @@ describe("allowNumberExtensions option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { allowNumberExtensions: false } }));
+      ({ iti, input } = initPlugin({ options: { allowNumberExtensions: false, separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 
@@ -30,7 +30,7 @@ describe("allowNumberExtensions option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { allowNumberExtensions: true } }));
+      ({ iti, input } = initPlugin({ options: { allowNumberExtensions: true, separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 

@@ -18,7 +18,7 @@ describe("countrychange event", () => {
     input = injectInput();
     mockEventHandler = vi.fn();
     input.addEventListener("countrychange", mockEventHandler);
-    ({ iti, container } = initPlugin({ input }));
+    ({ iti, container } = initPlugin({ input, options: { separateDialCode: false } }));
   });
 
   afterEach(() => {

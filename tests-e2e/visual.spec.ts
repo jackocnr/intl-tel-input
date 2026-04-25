@@ -22,7 +22,7 @@ test.describe("visual snapshots", () => {
     await page.locator(".iti__country-list li.iti__country", { hasText: "United States" }).click();
 
     await input.pressSequentially("4155552671");
-    await expect(input).toHaveValue("(415) 555-2671");
+    await expect(input).toHaveValue("415-555-2671");
 
     await expect(page).toHaveScreenshot("vanilla-us-number.png");
   });

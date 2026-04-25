@@ -106,9 +106,6 @@ const App = () => {
             onChangeValidity={setIsValid}
             onChangeErrorCode={setErrorCode}
             initialCountry="auto"
-            separateDialCode
-            strictMode
-            strictRejectAnimation
             geoIpLookup={geoIpLookup}
             // @ts-expect-error EJS-templated URL string, resolved at build time.
             loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}

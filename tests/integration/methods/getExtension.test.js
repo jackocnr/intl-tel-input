@@ -10,7 +10,7 @@ describe("getExtension method", () => {
   const ext = "98765";
 
   beforeEach(() => {
-    ({ iti, input } = initPlugin());
+    ({ iti, input } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
     user = userEvent.setup();
   });
 

@@ -9,7 +9,7 @@ describe("getValidationError method", () => {
   let iti, input, user;
 
   beforeEach(() => {
-    ({ iti, input } = initPlugin());
+    ({ iti, input } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
     user = userEvent.setup();
   });
 

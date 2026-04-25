@@ -10,8 +10,6 @@ const iti = intlTelInput(input, {
   onlyCountries: ["us"],
   allowDropdown: false,
   showFlags: false,
-  strictMode: true,
-  strictRejectAnimation: true,
   loadUtils: () => import("intl-tel-input/utils"),
 });
 

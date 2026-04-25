@@ -11,7 +11,6 @@ import IntlTelInput from "../../../../../angular/dist/IntlTelInput.js";
     <div class="demo-input-wrap">
       <intl-tel-input
         initialValue="+447733312345"
-        [separateDialCode]="true"
         [loadUtils]="loadUtils"
         searchInputClass="form-control"
         [inputAttributes]="inputAttributes"

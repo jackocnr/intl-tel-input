@@ -162,6 +162,7 @@ describe("separateDialCode option", () => {
         initialCountry: "gb",
         separateDialCode: true,
         allowDropdown: false,
+        strictMode: false,
       };
       ({ input, iti } = initPlugin({ options }));
     });

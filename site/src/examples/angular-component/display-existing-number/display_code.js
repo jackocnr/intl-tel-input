@@ -9,7 +9,6 @@ import "intl-tel-input/styles";
     <intl-tel-input
       initialValue="+447733312345"
       [inputAttributes]="{ id: 'phone' }"
-      [separateDialCode]="true"
       [loadUtils]="loadUtils"
     />
   `,

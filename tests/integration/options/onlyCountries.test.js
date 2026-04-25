@@ -33,7 +33,7 @@ describe("onlyCountries option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { onlyCountries: ["af", "kz", "ru"] };
+      const options = { onlyCountries: ["af", "kz", "ru"], separateDialCode: false };
       ({ iti, input, container } = initPlugin({ options }));
     });
 

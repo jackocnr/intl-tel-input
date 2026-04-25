@@ -34,7 +34,7 @@ for (const t of targets) {
       const input = page.locator('input[type="tel"]');
       await expect(page.locator(".iti__selected-country")).toHaveAttribute("title", "United States");
       await input.pressSequentially("4155552671");
-      await expect(input).toHaveValue("(415) 555-2671");
+      await expect(input).toHaveValue("415-555-2671");
     });
 
     test("opens dropdown and selects a different country", async ({ page }) => {
@@ -43,13 +43,6 @@ for (const t of targets) {
       await expect(page.locator(".iti__dropdown-content")).toBeVisible();
       await page.locator('li[data-country-code="gb"]').first().click();
       await expect(page.locator(".iti__selected-country")).toHaveAttribute("title", /United Kingdom/);
-    });
-
-    test("typing an international number auto-selects the correct country", async ({ page }) => {
-      await gotoTarget(page, t);
-      const input = page.locator('input[type="tel"]');
-      await input.pressSequentially("+33123456789");
-      await expect(page.locator(".iti__selected-country")).toHaveAttribute("title", /France/);
     });
 
     test("dropdown closes when clicking outside", async ({ page }) => {

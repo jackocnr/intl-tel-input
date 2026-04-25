@@ -10,7 +10,7 @@ describe("nationalMode option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: true };
+      const options = { nationalMode: true, separateDialCode: false };
       ({ iti, input, container } = initPlugin({ options }));
     });
 
@@ -28,7 +28,7 @@ describe("nationalMode option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: true, initialCountry: "gb" };
+      const options = { nationalMode: true, initialCountry: "gb", separateDialCode: false };
       ({ iti, input, container } = initPlugin({ options }));
     });
 
@@ -45,7 +45,7 @@ describe("nationalMode option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: false, initialCountry: "us" };
+      const options = { nationalMode: false, initialCountry: "us", separateDialCode: false };
       ({ iti, input, container } = initPlugin({ options }));
     });
 
@@ -65,7 +65,7 @@ describe("nationalMode option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: false, initialCountry: "ax" };
+      const options = { nationalMode: false, initialCountry: "ax", separateDialCode: false };
       ({ iti, input, container } = initPlugin({ options }));
     });
 
@@ -83,7 +83,7 @@ describe("nationalMode option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: false, initialCountry: "gb" };
+      const options = { nationalMode: false, initialCountry: "gb", separateDialCode: false };
       ({ iti, input, container } = initPlugin({ options }));
     });
 

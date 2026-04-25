@@ -20,9 +20,9 @@ describe("customPlaceholder option", () => {
   afterEach(() => teardown(iti));
 
   test("customises placeholder and updates on country change", async () => {
-    expect(input.getAttribute("placeholder")).toEqual("e.g. 070 123 4567");
+    expect(input.getAttribute("placeholder")).toEqual("e.g. 70 123 4567");
     await openDropdownSelectCountryAsync(container, "gb", user);
-    expect(input.getAttribute("placeholder")).toEqual("e.g. 07400 123456");
+    expect(input.getAttribute("placeholder")).toEqual("e.g. 7400 123456");
   });
 });
 

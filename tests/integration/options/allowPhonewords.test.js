@@ -10,7 +10,7 @@ describe("allowPhonewords option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { allowPhonewords: false } }));
+      ({ iti, input } = initPlugin({ options: { allowPhonewords: false, separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 
@@ -27,7 +27,7 @@ describe("allowPhonewords option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { allowPhonewords: true } }));
+      ({ iti, input } = initPlugin({ options: { allowPhonewords: true, separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 

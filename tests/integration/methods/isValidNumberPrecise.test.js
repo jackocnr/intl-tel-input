@@ -9,7 +9,7 @@ describe("isValidNumberPrecise", () => {
     let iti, input, user, utilsBackup;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin());
+      ({ iti, input } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
       utilsBackup = intlTelInput.utils;
     });

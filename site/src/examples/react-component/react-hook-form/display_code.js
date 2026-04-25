@@ -53,8 +53,6 @@ const App = () => {
             value={field.value}
             onChangeNumber={field.onChange}
             initialCountry="auto"
-            separateDialCode
-            strictMode
             geoIpLookup={geoIpLookup}
             loadUtils={() => import("intl-tel-input/utils")}
             inputProps={{

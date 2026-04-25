@@ -7,9 +7,7 @@
 - [How do I submit the full international number in a normal HTML form?](#how-do-i-submit-the-full-international-number-in-a-normal-html-form)
 - [How do I set the initial country?](#how-do-i-set-the-initial-country)
 - [Can I translate the UI and country names?](#can-i-translate-the-ui-and-country-names)
-- [How do I prevent users typing invalid characters?](#how-do-i-prevent-users-typing-invalid-characters)
 - [How do I validate a number?](#how-do-i-validate-a-number)
-- [How do I show the dial code next to the selected flag?](#how-do-i-show-the-dial-code-next-to-the-selected-flag)
 - [Something looks broken — where should I look first?](#something-looks-broken--where-should-i-look-first)
 
 
@@ -60,28 +58,12 @@ Yes.
 See [Localisation](/docs/localisation) for more information.
 
 
-## How do I prevent users typing invalid characters?
-
-Enable [`strictMode`](/docs/options#strictmode).
-
-When `strictMode` is enabled, the input will reject characters that aren’t valid phone number characters. This is useful if you want to keep the value clean (e.g. only digits, and a leading `+` when appropriate), and avoid users pasting in extra text. This also caps the number at the maximum valid length.
-
-
 ## How do I validate a number?
 
 If you’re using the utils script, you can validate numbers and show useful error messages.
 
 - See the [Validation example](/examples/javascript-plugin/validation)
 - See the [Utils script](/docs/utils)
-
-
-## How do I show the dial code next to the selected flag?
-
-Use the [`separateDialCode`](/docs/options#separatedialcode) option.
-
-When enabled, the selected country's dial code will be displayed next to the flag, and treated as if it was part of the typed number. This is useful if you want the user to enter their number in international format, and want to prevent them from being able to delete the dial code.
-
-Try it out in the [Playground](/playground?initialCountry=gb&separateDialCode=true#user-interface-options).
 
 
 ## Something looks broken — where should I look first?

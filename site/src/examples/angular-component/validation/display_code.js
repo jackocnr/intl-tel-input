@@ -12,9 +12,6 @@ import "intl-tel-input/styles";
         formControlName="phone"
         [inputAttributes]="{ id: 'phone' }"
         initialCountry="auto"
-        [separateDialCode]="true"
-        [strictMode]="true"
-        [strictRejectAnimation]="true"
         [geoIpLookup]="geoIpLookup"
         [loadUtils]="loadUtils"
       />

@@ -15,6 +15,6 @@ test.describe("angular component demo", () => {
     await expect(selectedCountry).toHaveAttribute("title", "United States");
 
     await input.pressSequentially("4155552671");
-    await expect(input).toHaveValue("(415) 555-2671");
+    await expect(input).toHaveValue("415-555-2671");
   });
 });

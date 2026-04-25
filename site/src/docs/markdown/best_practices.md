@@ -7,7 +7,7 @@ General advice for getting the most out of `intl-tel-input`, whether you're usin
 - [Load the utils module](#load-the-utils-module)
 - [Store and restore numbers in E.164 format](#store-and-restore-numbers-in-e164-format)
 - [Validate before saving](#validate-before-saving)
-- [Enable strict mode to prevent invalid input](#enable-strict-mode-to-prevent-invalid-input)
+- [Keep strict mode on, with rejection feedback](#keep-strict-mode-on-with-rejection-feedback)
 - [Set the initial country](#set-the-initial-country)
 - [Translate the UI](#translate-the-ui)
 
@@ -45,9 +45,9 @@ const getErrorMessage = (number, errorCode) => {
 };
 ```
 
-## Enable strict mode to prevent invalid input
+## Keep strict mode on, with rejection feedback
 
-Enable [`strictMode`](/docs/options#strictmode) to reject non-numeric characters and cap the length at the country's max as the user types. But, importantly, make sure to pair it with some form of feedback so the rejection isn't silent, to avoid confusion. The simplest option is to enable [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event (plugin) or use the equivalent `onStrictReject` / `strictReject` callback (components).
+[`strictMode`](/docs/options#strictmode) is on by default and rejects non-numeric characters while capping the length at the country's max as the user types. Just as importantly, the rejection shouldn't be silent — by default, [`strictRejectAnimation`](/docs/options#strictrejectanimation) plays a built-in shake/flash animation so the user notices. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event (plugin) or use the equivalent `onStrictReject` / `strictReject` callback (components).
 
 ## Set the initial country
 

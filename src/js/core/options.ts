@@ -80,13 +80,13 @@ export const defaults: AllOptions = {
   //* Add custom classes to the search input element.
   searchInputClass: "",
   //* Display the international dial code next to the selected flag.
-  separateDialCode: false,
+  separateDialCode: true,
   //* When strictMode rejects a key (etc), play a short feedback animation
-  strictRejectAnimation: false,
+  strictRejectAnimation: true,
   //* Show flags - for both the selected country, and in the country dropdown
   showFlags: true,
   //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
-  strictMode: false,
+  strictMode: true,
   //* Use full screen popup instead of dropdown for country list.
   useFullscreenPopup: computeDefaultUseFullscreenPopup(),
 };

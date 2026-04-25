@@ -21,7 +21,7 @@ describe("setNumber method", () => {
 
     test("sets raw value", () => {
       iti.setNumber("+447733123456");
-      expect(input.value).toEqual("+447733123456");
+      expect(input.value).toEqual("7733123456");
     });
 
     test("updates flag", () => {
@@ -30,9 +30,9 @@ describe("setNumber method", () => {
     });
   });
 
-  describe("with utils, nationalMode true", () => {
+  describe("with utils, nationalMode true, separateDialCode false", () => {
     let iti, input;
-    const options = { nationalMode: true };
+    const options = { nationalMode: true, separateDialCode: false };
 
     beforeEach(() => {
       ({ iti, input } = initPlugin({ options }));
@@ -58,7 +58,7 @@ describe("setNumber method", () => {
 
     test("formats to intl", () => {
       iti.setNumber("+447733123456");
-      expect(input.value).toEqual("+44 7733 123456");
+      expect(input.value).toEqual("7733 123456");
     });
   });
 });

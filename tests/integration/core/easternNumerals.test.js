@@ -37,7 +37,7 @@ describe("Eastern numerals support", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      ({ iti, input, container } = initPlugin());
+      ({ iti, input, container } = initPlugin({ options: { separateDialCode: false } }));
     });
 
     afterEach(() => {
@@ -88,8 +88,8 @@ describe("Eastern numerals support", () => {
 
     test("initialising formats the number and sets the flag", () => {
       expect(checkFlagSelected(container, "us")).toBe(true);
-      // "+17021234567" formats to "(702) 123-4567" (NOTE that the hyphenated block is displayed back to front here due to LTR/RTL mixing)
-      expect(input.value).toBe("(٧٠٢) ١٢٣-٤٥٦٧");
+      // "+17021234567" formats to "702-123-4567" in original numerals (separateDialCode shows +1 separately)
+      expect(input.value).toBe("٧٠٢-١٢٣-٤٥٦٧");
     });
   });
 
@@ -98,7 +98,7 @@ describe("Eastern numerals support", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { initialCountry: "us", strictMode: true };
+      const options = { initialCountry: "us", strictMode: true, separateDialCode: false };
       ({ iti, input } = initPlugin({ options }));
     });
 

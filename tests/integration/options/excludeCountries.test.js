@@ -10,7 +10,7 @@ describe("excludeCountries option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { excludeCountries: [] };
+      const options = { excludeCountries: [], separateDialCode: false };
       ({ iti, container, input } = initPlugin({ options }));
     });
 
@@ -34,7 +34,7 @@ describe("excludeCountries option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { excludeCountries: ["us", "ca"] };
+      const options = { excludeCountries: ["us", "ca"], separateDialCode: false };
       ({ iti, container, input } = initPlugin({ options }));
     });
 

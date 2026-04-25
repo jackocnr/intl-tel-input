@@ -112,17 +112,13 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     useFullscreenPopup: false,
   };
 
-  // Opinionated starting state for the playground form: showcases the recommended UX
-  // so users discover these options immediately. Library defaults are still used for
-  // code-snippet diffing so the copied snippet accurately reproduces the playground's
-  // behaviour in a fresh install.
+  // Opinionated starting state for the playground form. Library defaults are still
+  // used for code-snippet diffing so the copied snippet accurately reproduces the
+  // playground's behaviour in a fresh install.
   const playgroundInitialOptions = {
     ...defaultInitOptions,
     geoIpLookup: true,
     initialCountry: "auto",
-    separateDialCode: true,
-    strictMode: true,
-    strictRejectAnimation: true,
   };
 
   const defaultInputAttributes = {

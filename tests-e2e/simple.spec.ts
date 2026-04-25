@@ -24,7 +24,7 @@ test.describe("basic usage test with vanilla plugin", () => {
     await input.pressSequentially("4155552671");
 
     // the input value should have formatting applied (format-as-you-type)
-    await expect(input).toHaveValue("(415) 555-2671");
+    await expect(input).toHaveValue("415-555-2671");
 
     // Calling getNumber should return the full E.164 number
     const e164 = await page.evaluate(() => (window as any).iti.getNumber());

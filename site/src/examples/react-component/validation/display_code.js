@@ -44,9 +44,6 @@ const App = () => {
         onChangeValidity={setIsValid}
         onChangeErrorCode={setErrorCode}
         initialCountry="auto"
-        separateDialCode
-        strictMode
-        strictRejectAnimation
         geoIpLookup={geoIpLookup}
         loadUtils={() => import("intl-tel-input/utils")}
         inputProps={{

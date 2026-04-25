@@ -39,7 +39,7 @@ describe("initial values", () => {
     });
 
     test("formats the number", () => {
-      expect(input.value).toEqual("07947 123456");
+      expect(input.value).toEqual("7947 123456");
     });
 
     test("updates the selected country", () => {
@@ -55,7 +55,7 @@ describe("initial values", () => {
     });
 
     test("formats the number", () => {
-      expect(input.value).toEqual("(800) 123-1234");
+      expect(input.value).toEqual("800-123-1234");
     });
 
     test("updates the selected country", () => {
@@ -105,7 +105,7 @@ describe("initial values", () => {
     });
 
     test("formats the number", () => {
-      expect(input.value).toEqual("07947 123123");
+      expect(input.value).toEqual("7947 123123");
     });
 
     test("updates the selected country", () => {

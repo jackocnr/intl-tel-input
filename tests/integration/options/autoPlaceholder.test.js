@@ -20,39 +20,21 @@ describe("autoPlaceholder option (empty initial placeholder)", () => {
     });
   });
 
-  describe("autoPlaceholder=polite, nationalMode=true", () => {
+  describe("autoPlaceholder=polite", () => {
     let iti, input, container, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { autoPlaceholder: "polite", nationalMode: true, initialCountry: "af" };
+      const options = { autoPlaceholder: "polite", initialCountry: "af" };
       ({ iti, input, container } = initPlugin({ options }));
     });
 
     afterEach(() => teardown(iti));
 
     test("sets and updates placeholder", async () => {
-      expect(input.getAttribute("placeholder")).toEqual("070 123 4567");
+      expect(input.getAttribute("placeholder")).toEqual("70 123 4567");
       await openDropdownSelectCountryAsync(container, "gb", user);
-      expect(input.getAttribute("placeholder")).toEqual("07400 123456");
-    });
-  });
-
-  describe("autoPlaceholder=polite, nationalMode=false", () => {
-    let iti, input, container, user;
-
-    beforeEach(() => {
-      user = userEvent.setup();
-      const options = { autoPlaceholder: "polite", nationalMode: false, initialCountry: "af" };
-      ({ iti, input, container } = initPlugin({ options }));
-    });
-
-    afterEach(() => teardown(iti));
-
-    test("sets and updates placeholder", async () => {
-      expect(input.getAttribute("placeholder")).toEqual("+93 70 123 4567");
-      await openDropdownSelectCountryAsync(container, "gb", user);
-      expect(input.getAttribute("placeholder")).toEqual("+44 7400 123456");
+      expect(input.getAttribute("placeholder")).toEqual("7400 123456");
     });
   });
 });
@@ -105,7 +87,7 @@ describe("autoPlaceholder option (existing placeholder)", () => {
     afterEach(() => teardown(iti));
 
     test("placeholder replaced", async () => {
-      expect(input.getAttribute("placeholder")).toEqual("070 123 4567");
+      expect(input.getAttribute("placeholder")).toEqual("70 123 4567");
     });
   });
 });
