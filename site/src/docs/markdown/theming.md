@@ -127,7 +127,7 @@ Dark mode example (with screenshot below):
     border-color: #495057;
   }
   input::placeholder {
-    color: #5a5a5a;
+    color: #666;
   }
 }
 ```

@@ -2,15 +2,15 @@
 .demo input[type="tel"] {
   width: 250px;
 }
-/* override bootstrap default placeholder color which is too high contrast for our design */
-input::placeholder,
-.demo input::placeholder,
+/* override bootstrap default placeholder color which is so high-contrast it looks too much like a typed number, which is bad when we're showing example numbers as placeholders! */
 input.form-control::placeholder,
 textarea.form-control::placeholder {
   color: #bbb;
-
-  [data-bs-theme="dark"] & {
-    color: #5a5a5a;
+}
+[data-bs-theme="dark"] {
+  input.form-control::placeholder,
+  textarea.form-control::placeholder {
+    color: #666;
   }
 }
 /* match bootstrap input border radius */
