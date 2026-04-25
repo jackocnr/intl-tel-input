@@ -7,7 +7,7 @@ export const NOTE_BODIES = {
   geoIpLookup:
     '<code>geoIpLookup</code> here uses <a rel="noopener" href="https://ipapi.co">ipapi</a>\'s limited free tier — for production, pick a paid plan, another provider, or roll your own.',
   deriveErrorMessage:
-    '<code>yourCodeToDeriveErrorMessage</code> is up to you — see <a href="/docs/methods#deriving-a-user-facing-error-message">Deriving a user-facing error message</a> for a worked example.',
+    '<code>yourCodeToDeriveErrorMessage</code> is up to you — see <a href="/docs/best-practices#deriving-a-user-facing-error-message">Deriving a user-facing error message</a> for a worked example.',
 };
 
 export const renderNoteAlert = (

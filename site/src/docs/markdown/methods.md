@@ -107,38 +107,7 @@ Returns `null` if no country is currently selected (e.g. the empty/globe state).
 ###### getValidationError
 Type: `() => number`  
 
-Get more information about an invalid number. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). It returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L223) in the enum `intlTelInput.utils.validationError`.
-
-```js
-const errorCode = iti.getValidationError();
-const { validationError } = intlTelInput.utils;
-if (errorCode === validationError.TOO_SHORT) {
-    // the number is too short
-}
-```
-
-<a id="deriving-a-user-facing-error-message"></a>
-**Deriving a user-facing error message**
-
-Several of the [Example pages](/examples/javascript-plugin/validation) show a `yourCodeToDeriveErrorMessage(value, errorCode)` call — turning the error code into a message is left to you because the wording (and translations) belong to your app. Here is a reasonable starting point which maps the main error codes to a short message:
-
-```js
-const getErrorMessage = (number, errorCode) => {
-  if (!number) {
-    return "Please enter a number";
-  }
-  const genericError = "Invalid number";
-  const { validationError } = intlTelInput.utils;
-  const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
-    [validationError.TOO_SHORT]: "Too short",
-    [validationError.TOO_LONG]: "Too long",
-    [validationError.INVALID_LENGTH]: genericError,
-  };
-  return errorMap[errorCode] || genericError;
-};
-```
-
+Get more information about an invalid number. It returns an integer that matches the [`intlTelInput.utils.validationError`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L223) enum, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
 
 ###### isValidNumber
 Type: `() => boolean`  

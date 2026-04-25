@@ -107,7 +107,7 @@ Emitted when the selected country changes. Emits the new country's iso2 code (e.
 Type: `EventEmitter<number | null>`  
 Default: `null`  
 
-Emitted when the number validation error changes. Emits an integer that matches the [`intlTelInput.utils.validationError`](/docs/methods#getvalidationerror) enum, or `null` if the number is valid. Requires the utils script to be loaded (see above).
+Emitted when the number validation error changes. Emits an integer that matches the [`intlTelInput.utils.validationError`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L223) enum, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
 
 ###### numberChange
 Type: `EventEmitter<string>`  
@@ -137,7 +137,9 @@ Emitted when the country dropdown opens.
 Type: `EventEmitter<{ source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length" }>`  
 Default: `null`  
 
-Emitted when [`strictMode`](/docs/options#strictmode) rejects or modifies input. The event payload has three fields describing what was rejected and why, so you can give the user appropriate feedback (e.g. a toast or a shake animation):
+Emitted when [`strictMode`](/docs/options#strictmode) rejects or modifies input. For most cases, [`strictRejectAnimation`](/docs/options#strictrejectanimation) gives you a built-in shake/flash animation without writing any handler code — only reach for `strictReject` when you need custom feedback (e.g. a toast that explains _why_ the input was rejected).
+
+The event payload has three fields describing what was rejected and why:
 
 - `source`: either `"key"` (a keystroke) or `"paste"` (a clipboard paste).
 - `rejectedInput`: the raw string that was rejected or stripped — for `"key"` this is the single character pressed, and for `"paste"` it's the full pasted text.
@@ -151,8 +153,6 @@ if (reason === "max-length") msg = "Maximum length reached for this country";
 else if (source === "paste") msg = "Stripped invalid characters from pasted text";
 else msg = `Character not allowed: "${rejectedInput}"`;
 ```
-
-**See also:** [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation, if you don't need custom feedback logic.
 
 ### Native input events
 

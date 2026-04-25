@@ -16,9 +16,28 @@ _<sup>*</sup>Except for some small satellite territories, which share number ran
 
 Check the number is valid before storing it, and reject invalid input. Get the validity from [`isValidNumber`](/docs/methods#isvalidnumber) (plugin) or the `onChangeValidity` / `validityChange` callback (components). Requires the utils module.
 
+##### Deriving a user-facing error message
+
+When a number is invalid, you'll get an error code (from [`getValidationError`](/docs/methods#getvalidationerror) for the plugin, or via the `onChangeErrorCode` / `errorCodeChange` callback for the components). Mapping the error codes to user-facing messages is left to you because the wording belongs to your app. Here is a reasonable starting point:
+
+```js
+const getErrorMessage = (number, errorCode) => {
+  if (!number) return "Please enter a number";
+  const genericError = "Invalid number";
+  const { validationError } = intlTelInput.utils;
+  const errorMap = {
+    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
+    [validationError.TOO_SHORT]: "Too short",
+    [validationError.TOO_LONG]: "Too long",
+    [validationError.INVALID_LENGTH]: genericError,
+  };
+  return errorMap[errorCode] || genericError;
+};
+```
+
 ## Enable strict mode to prevent invalid input
 
-Enable [`strictMode`](/docs/options#strictmode) to reject non-numeric characters and cap the length at the country's max as the user types. But, importantly, make sure to pair it with some form of feedback so the rejection isn't silent, to avoid confusion. The simplest option is to enable [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event or use the equivalent `onStrictReject` / `strictReject` callback.
+Enable [`strictMode`](/docs/options#strictmode) to reject non-numeric characters and cap the length at the country's max as the user types. But, importantly, make sure to pair it with some form of feedback so the rejection isn't silent, to avoid confusion. The simplest option is to enable [`strictRejectAnimation`](/docs/options#strictrejectanimation) for a built-in shake/flash animation. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event (plugin) or use the equivalent `onStrictReject` / `strictReject` callback (components).
 
 ## Set the initial country
 
