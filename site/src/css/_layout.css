@@ -2,7 +2,7 @@
   --bs-gutter-x: 3rem;
 }
 /* never show the right sidebar on mobile (or on some desktop pages) */
-/* NOTE: can't include left-sidebar here, because it is always used on mobile */
+/* NOTE: can't include context-nav here, because it is always used on mobile */
 .iti-right-sidebar {
   display: none;
 }
@@ -18,7 +18,7 @@
 }
 
 .iti-layout-both-sidebars {
-  .iti-left-sidebar {
+  .iti-context-nav {
     grid-area: nav;
     min-width: 0;
   }
@@ -30,7 +30,7 @@
 
 @media (min-width: 992px) {
   .iti-layout-both-sidebars {
-    .iti-left-sidebar,
+    .iti-context-nav,
     .iti-right-sidebar {
       position: sticky;
       top: 5rem;

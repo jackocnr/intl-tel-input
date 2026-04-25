@@ -1,5 +1,5 @@
-/* TOP NAVBAR */
-.iti-navbar {
+/* HEADER NAV (DESKTOP ONLY) */
+.iti-header-nav {
   padding: 0.75rem 0;
   background-image: linear-gradient(rgb(var(--header-bg-color-rgb) / 1), rgb(var(--header-bg-color-rgb) / 0.95));
   box-shadow: 0 .5rem 1rem #00000026;
@@ -33,12 +33,12 @@
 }
 
 @media (min-width: 992px) {
-  .iti-navbar-container {
+  .iti-header-nav-container {
     position: relative;
   }
 
   /* Center search on the page (not within remaining flex space) */
-  .iti-navbar-search {
+  .iti-header-nav-search {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -46,8 +46,10 @@
   }
 }
 
+
+/* ALGOLIA SEARCH MODAL */
 .DocSearch-Container {
-  /* above Bootstrap navbar (z-1020) but below mobile sidebar (z-1055) */
+  /* above Bootstrap navbar (z-1020) but below mobile nav (z-1055) */
   z-index: 1051;
 }
 .DocSearch-Button {
@@ -82,9 +84,8 @@
   box-shadow: none !important;
   transform: none !important;
 }
-
 /* mobile search icon button in header */
-.iti-navbar-icon-btn {
+.iti-header-nav-icon-btn {
   padding: 0.25rem;
   border: 0;
   background: transparent;
@@ -94,12 +95,11 @@
     width: 20px;
   }
 }
-
-.iti-navbar-search {
+.iti-header-nav-search {
   min-width: 0;
 }
 
-/* both in header and mobile sidebar */
+/* The globe icon next to website name: both in header and mobile nav */
 .iti-logo {
   margin-right: 10px;
 }
@@ -112,17 +112,17 @@
 
     /* Prevent nav items shifting when toggling font-weight by reserving space
        for the bold version of the label (used on the active state). */
-    &.iti-navlink-no-shift > span {
+    &.iti-header-nav-link-no-shift > span {
       display: inline-block;
     }
-    &.iti-navlink-no-shift > span::after {
+    &.iti-header-nav-link-no-shift > span::after {
       content: attr(data-text);
       display: block;
       height: 0;
       overflow: hidden;
       visibility: hidden;
     }
-    &.iti-navlink-no-shift > span::after,
+    &.iti-header-nav-link-no-shift > span::after,
     &.active {
       font-weight: 700;
     }
@@ -173,15 +173,15 @@
 
 
 /* Mobile nav: remove hover styles (prevents iOS/Android sticky :hover states) */
-.iti-mobile-sidebar {
+.iti-mobile-nav {
   .nav-pills .nav-link:not(.active):hover {
     background-color: transparent;
   }
 }
 
 
-.iti-left-sidebar .nav-link,
-.iti-mobile-sidebar .nav-link {
+.iti-context-nav .nav-link,
+.iti-mobile-nav .nav-link {
   color: var(--bs-body-color);
 }
 .nav--primary-links > .nav-item > .nav-link {
@@ -191,23 +191,23 @@
   padding-bottom: 0.65rem;
 }
 
-.iti-mobile-sidebar {
-  .iti-mobile-submenu .nav-link {
+.iti-mobile-nav {
+  .iti-nav-submenu .nav-link {
     font-size: 0.95rem;
     font-weight: 500;
     opacity: 0.95;
   }
-  /* Mobile sidebar icon + label spacing: slightly wider than Bootstrap gap-2 */
+  /* Mobile nav icon + label spacing: slightly wider than Bootstrap gap-2 */
   .d-flex.align-items-center.gap-2 {
     gap: calc(0.5rem + 2px) !important;
   }
 }
-/* Mobile sidebar icon + label spacing: slightly wider than Bootstrap gap-2 */
-.iti-mobile-nav-toggle {
+/* Mobile nav icon + label spacing: slightly wider than Bootstrap gap-2 */
+.iti-nav-toggle {
   border: 0;
   background: none;
 }
-.iti-mobile-nav-toggle__chevron {
+.iti-nav-chevron {
   margin: 0px 0 3px 6px;
   width: 8px;
   height: 8px;
@@ -217,7 +217,7 @@
   transform: rotate(45deg);
   opacity: 0.85;
 }
-.iti-mobile-nav-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+.iti-nav-toggle[aria-expanded="true"] .iti-nav-chevron {
   transform: rotate(225deg);
   margin-top: 8px;
 }
@@ -231,14 +231,14 @@
 }
 
 /* Nested nav items: subtle left border ties the group together visually */
-.iti-left-sidebar .iti-nav-nested,
-.iti-mobile-sidebar .iti-nav-nested {
+.iti-context-nav .iti-nav-item--nested,
+.iti-mobile-nav .iti-nav-item--nested {
   position: relative;
   border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.15);
   margin-left: 1.1rem;
 }
-/* Bridge the gap-1 spacing between consecutive nested items in the sidebar */
-.iti-left-sidebar .iti-nav-nested + .iti-nav-nested::before {
+/* Bridge the gap-1 spacing between consecutive nested items in the nav */
+.iti-context-nav .iti-nav-item--nested + .iti-nav-item--nested::before {
   content: "";
   position: absolute;
   left: -1px;
@@ -247,18 +247,18 @@
   height: 0.25rem;
   background: rgba(var(--bs-body-color-rgb), 0.15);
 }
-.dropdown-menu .iti-dropdown-nested {
+.dropdown-menu .iti-nav-item--nested {
   /* slightly lighter border in header dropdowns, to distinguish from dropdown border */
   border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.07);
   margin-left: 1.05rem;
 }
-.dropdown-menu .iti-dropdown-nested > .dropdown-item {
+.dropdown-menu .iti-nav-item--nested > .dropdown-item {
   padding-left: 0.85rem;
 }
 
 /* Non-link section headings inside the nav (group labels for examples-by-integration) */
-.iti-left-sidebar .iti-nav-section-heading,
-.iti-mobile-sidebar .iti-mobile-section-heading {
+.iti-context-nav .iti-nav-section-heading,
+.iti-mobile-nav .iti-nav-section-heading {
   margin-top: 0.75rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
@@ -267,75 +267,75 @@
   letter-spacing: 0.04em;
   color: rgba(var(--bs-body-color-rgb), 0.65);
 }
-.iti-left-sidebar .iti-nav-section-heading:first-child,
-.iti-mobile-sidebar .iti-mobile-section-heading:first-child {
+.iti-context-nav .iti-nav-section-heading:first-child,
+.iti-mobile-nav .iti-nav-section-heading:first-child {
   margin-top: 0;
 }
 
-/* Examples sidebar: collapsible section toggle (button reset + chevron rotation) */
-.iti-left-sidebar .iti-sidebar-section-toggle {
+/* Context nav: collapsible section toggle (button reset + chevron rotation) */
+.iti-context-nav .iti-nav-section-toggle {
   background: none;
   border: 0;
   text-align: left;
 }
-.iti-left-sidebar .iti-sidebar-section-toggle:hover {
+.iti-context-nav .iti-nav-section-toggle:hover {
   color: rgba(var(--bs-body-color-rgb), 0.9);
 }
-.iti-left-sidebar .iti-sidebar-section-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+.iti-context-nav .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
   transform: rotate(225deg);
   margin-top: 8px;
 }
-.iti-left-sidebar .iti-sidebar-sections {
+.iti-context-nav .iti-nav-sections {
   gap: 0;
 }
-.iti-left-sidebar .iti-sidebar-section + .iti-sidebar-section {
+.iti-context-nav .iti-nav-section + .iti-nav-section {
   margin-top: 0.75rem;
 }
 /* Keep submenu items stacked vertically during Bootstrap's collapse animation
    (without this, .nav's flex-wrap causes items to flow horizontally mid-animation) */
-.iti-left-sidebar .iti-sidebar-submenu,
-.iti-mobile-sidebar .iti-mobile-section-submenu {
+.iti-context-nav .iti-nav-submenu,
+.iti-mobile-nav .iti-nav-submenu {
   flex-wrap: nowrap;
 }
 
 /* Header dropdown: collapsible section toggle (button reset + chevron rotation) */
-.dropdown-menu .iti-dropdown-section-toggle {
+.dropdown-menu .iti-nav-section-toggle {
   background: none;
   border: 0;
   text-align: left;
   white-space: nowrap;
 }
-.dropdown-menu .iti-dropdown-section-toggle:hover {
+.dropdown-menu .iti-nav-section-toggle:hover {
   color: rgba(var(--bs-body-color-rgb), 0.9);
 }
-.dropdown-menu .iti-dropdown-section-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+.dropdown-menu .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
   transform: rotate(225deg);
   margin-top: 8px;
 }
-.dropdown-menu > li + li:has(> .iti-dropdown-section-toggle) {
+.dropdown-menu > li + li:has(> .iti-nav-section-toggle) {
   margin-top: 0.5rem;
 }
 
-/* Mobile sidebar: collapsible section toggle (button reset + chevron rotation) */
-.iti-mobile-sidebar .iti-mobile-section-toggle {
+/* Mobile nav: collapsible section toggle (button reset + chevron rotation) */
+.iti-mobile-nav .iti-nav-section-toggle {
   background: none;
   border: 0;
   text-align: left;
 }
-.iti-mobile-sidebar .iti-mobile-section-toggle:hover {
+.iti-mobile-nav .iti-nav-section-toggle:hover {
   color: rgba(var(--bs-body-color-rgb), 0.9);
 }
-.iti-mobile-sidebar .iti-mobile-section-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+.iti-mobile-nav .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
   transform: rotate(225deg);
   margin-top: 8px;
 }
-.iti-mobile-sidebar .iti-mobile-section {
+.iti-mobile-nav .iti-nav-section {
   margin-top: 0.2rem;
 }
-.iti-mobile-sidebar .iti-mobile-section + .iti-mobile-section {
+.iti-mobile-nav .iti-nav-section + .iti-nav-section {
   margin-top: 0.7rem;
 }
-.dropdown-menu .iti-dropdown-section-heading {
+.dropdown-menu .iti-nav-section-heading {
   padding: 0.5rem 1rem 0.25rem;
   font-size: 0.75rem;
   font-weight: 600;

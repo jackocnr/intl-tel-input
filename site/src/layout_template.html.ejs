@@ -1,15 +1,15 @@
-<!-- HEADER -->
-<header class="navbar navbar-expand-lg navbar-dark iti-navbar sticky-top">
-  <nav class="container-xxl iti-gutter flex-wrap flex-lg-nowrap iti-navbar-container">
+<!-- HEADER NAV -->
+<header class="navbar navbar-expand-lg navbar-dark iti-header-nav sticky-top">
+  <nav class="container-xxl iti-gutter flex-wrap flex-lg-nowrap iti-header-nav-container">
 
-    <!-- HEADER MENU TOGGLE BUTTON (MOBILE: VISIBLE, DESKTOP: HIDDEN) -->
-    <div class="iti-navbar-toggle">
+    <!-- HAMBURGER TOGGLE BUTTON (MOBILE: VISIBLE, DESKTOP: HIDDEN) -->
+    <div class="iti-header-nav-toggle">
       <button
         class="navbar-toggler"
         aria-label="Open navigation menu"
         type="button"
         data-bs-toggle="offcanvas"
-        data-bs-target="#itiMobileSidebar"
+        data-bs-target="#itiMobileNav"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -33,12 +33,12 @@
       intl-tel-input
     </a>
 
-    <!-- HEADER SEARCH TRIGGER (MOBILE: RHS ICON, DESKTOP: HIDDEN) -->
+    <!-- HEADER SEARCH TRIGGER ICON (MOBILE: RHS ICON, DESKTOP: HIDDEN) -->
     <div class="d-flex align-items-center">
       <button
         type="button"
         id="itiSearchButtonMobile"
-        class="iti-navbar-icon-btn d-lg-none"
+        class="iti-header-nav-icon-btn d-lg-none"
         aria-label="Search"
         data-iti-search-trigger="mobile"
       >
@@ -57,23 +57,24 @@
       </button>
     </div>
 
-    <!-- HEADER RHS NAV (MOBILE: HIDDEN, DESKTOP: VISIBLE) -->
+    <!-- HEADER NAV MENU CONTAINER (MOBILE: HIDDEN, DESKTOP: VISIBLE) -->
     <div class="offcanvas-lg offcanvas-end flex-grow-1" tabindex="-1" id="bdNavbar">
       <div class="offcanvas-body p-4 pt-0 p-lg-0 d-lg-flex align-items-lg-center">
 
         <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav">
         </ul>
 
-        <!-- HEADER SEARCH TRIGGER (DESKTOP: CENTER "INPUT", MOBILE: HIDDEN) -->
-        <div class="iti-navbar-search d-none d-lg-block">
+        <!-- HEADER SEARCH TRIGGER INPUT (MOBILE: HIDDEN, DESKTOP: VISIBLE) -->
+        <div class="iti-header-nav-search d-none d-lg-block">
           <div id="docsearch"></div>
         </div>
 
+        <!-- HEADER NAV MENU (MOBILE: HIDDEN, DESKTOP: VISIBLE) -->
         <ul class="navbar-nav flex-row flex-wrap align-items-center ms-md-auto gap-2">
           <li class="nav-item dropdown col-6 col-lg-auto">
             <button
               type="button"
-              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 bg-transparent border-0 iti-navlink-no-shift <% if (pageType === 'docs') { %>active<% } %>"
+              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 bg-transparent border-0 iti-header-nav-link-no-shift <% if (pageType === 'docs') { %>active<% } %>"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
@@ -81,7 +82,7 @@
             </button>
             <ul class="dropdown-menu">
               <% docsDropdownPages.forEach((p) => { %>
-                <li<% if (p.nested) { %> class="iti-dropdown-nested"<% } %>>
+                <li<% if (p.nested) { %> class="iti-nav-item--nested"<% } %>>
                   <a class="dropdown-item <% if (pageType === 'docs' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
                 </li>
               <% }); %>
@@ -89,14 +90,14 @@
           </li>
           <li class="nav-item col-6 col-lg-auto">
             <a
-              class="nav-link d-inline-flex align-items-center py-2 px-0 px-lg-2 iti-navlink-no-shift <% if (pageType === 'playground') { %>active<% } %>"
+              class="nav-link d-inline-flex align-items-center py-2 px-0 px-lg-2 iti-header-nav-link-no-shift <% if (pageType === 'playground') { %>active<% } %>"
               href="/playground"
             ><span data-text="Playground">Playground</span></a>
           </li>
           <li class="nav-item dropdown col-6 col-lg-auto">
             <button
               type="button"
-              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 bg-transparent border-0 iti-navlink-no-shift <% if (pageType === 'examples') { %>active<% } %>"
+              class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 py-2 px-0 px-lg-2 bg-transparent border-0 iti-header-nav-link-no-shift <% if (pageType === 'examples') { %>active<% } %>"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
@@ -110,18 +111,18 @@
                 <li>
                   <button
                     type="button"
-                    class="iti-dropdown-section-toggle iti-dropdown-section-heading d-flex align-items-center justify-content-between w-100 gap-1"
+                    class="iti-nav-section-toggle iti-nav-section-heading d-flex align-items-center justify-content-between w-100 gap-1"
                     data-bs-toggle="collapse"
                     data-bs-target="#<%= collapseId %>"
                     aria-controls="<%= collapseId %>"
                     aria-expanded="<%= isActive ? 'true' : 'false' %>"
                   >
                     <span><%= section.label %></span>
-                    <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
+                    <span class="iti-nav-chevron" aria-hidden="true"></span>
                   </button>
-                  <ul class="iti-dropdown-submenu collapse list-unstyled <% if (isActive) { %>show<% } %>" id="<%= collapseId %>">
+                  <ul class="iti-nav-submenu collapse list-unstyled <% if (isActive) { %>show<% } %>" id="<%= collapseId %>">
                     <% section.items.forEach((p) => { %>
-                      <li class="iti-dropdown-nested">
+                      <li class="iti-nav-item--nested">
                         <a class="dropdown-item <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
                       </li>
                     <% }); %>
@@ -159,11 +160,11 @@
   </nav>
 </header>
 
-<!-- MOBILE NAV SIDEBAR (MOBILE: TOGGLEABLE, DESKTOP: HIDDEN) -->
-<aside class="iti-mobile-sidebar d-lg-none">
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="itiMobileSidebar" aria-labelledby="itiMobileSidebarLabel">
+<!-- MOBILE NAV (MOBILE: TOGGLEABLE, DESKTOP: HIDDEN) -->
+<aside class="iti-mobile-nav d-lg-none">
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="itiMobileNav" aria-labelledby="itiMobileNavLabel">
     <div class="offcanvas-header border-bottom">
-      <h5 class="offcanvas-title" id="itiMobileSidebarLabel">
+      <h5 class="offcanvas-title" id="itiMobileNavLabel">
         <a class="d-flex align-items-center" href="/">
           <img src="/img/logo-white.png" alt="intl-tel-input logo" width="25" height="25" class="iti-logo">
           intl-tel-input
@@ -173,7 +174,7 @@
         type="button"
         class="btn-close btn-close-white"
         data-bs-dismiss="offcanvas"
-        data-bs-target="#itiMobileSidebar"
+        data-bs-target="#itiMobileNav"
         aria-label="Close navigation menu"
       ></button>
     </div>
@@ -183,7 +184,7 @@
         <li class="nav-item">
           <button
             type="button"
-            class="nav-link iti-mobile-nav-toggle text-start w-100 d-flex align-items-center"
+            class="nav-link iti-nav-toggle text-start w-100 d-flex align-items-center"
             data-bs-toggle="collapse"
             data-bs-target="#itiMobileDocsMenu"
             aria-controls="itiMobileDocsMenu"
@@ -205,17 +206,17 @@
               </svg>
               <span class="d-inline-flex align-items-center gap-1">
                 Docs
-                <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
+                <span class="iti-nav-chevron" aria-hidden="true"></span>
               </span>
             </span>
           </button>
           <ul
-            class="iti-mobile-submenu collapse nav flex-column flex-nowrap nav-pills ms-4 mb-2 <% if (pageType === 'docs') { %>show<% } %>"
+            class="iti-nav-submenu collapse nav flex-column flex-nowrap nav-pills ms-4 mb-2 <% if (pageType === 'docs') { %>show<% } %>"
             id="itiMobileDocsMenu"
             data-bs-parent="#itiMobilePrimaryNav"
           >
             <% docsDropdownPages.forEach((p) => { %>
-              <li class="nav-item<% if (p.nested) { %> iti-nav-nested<% } %>">
+              <li class="nav-item<% if (p.nested) { %> iti-nav-item--nested<% } %>">
                 <a class="nav-link py-2 <% if (pageType === 'docs' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
               </li>
             <% }); %>
@@ -245,7 +246,7 @@
         <li class="nav-item">
           <button
             type="button"
-            class="nav-link iti-mobile-nav-toggle text-start w-100 d-flex align-items-center"
+            class="nav-link iti-nav-toggle text-start w-100 d-flex align-items-center"
             data-bs-toggle="collapse"
             data-bs-target="#itiMobileExamplesMenu"
             aria-controls="itiMobileExamplesMenu"
@@ -268,12 +269,12 @@
               </svg>
               <span class="d-inline-flex align-items-center gap-1">
                 Examples
-                <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
+                <span class="iti-nav-chevron" aria-hidden="true"></span>
               </span>
             </span>
           </button>
           <ul
-            class="iti-mobile-submenu collapse nav flex-column flex-nowrap nav-pills ms-4 mb-2 <% if (pageType === 'examples') { %>show<% } %>"
+            class="iti-nav-submenu collapse nav flex-column flex-nowrap nav-pills ms-4 mb-2 <% if (pageType === 'examples') { %>show<% } %>"
             id="itiMobileExamplesMenu"
             data-bs-parent="#itiMobilePrimaryNav"
           >
@@ -281,21 +282,21 @@
                  const isActive = pageType === 'examples' && section.items.some((p) => p.name === name);
                  const collapseId = `itiMobileExamples-${section.name}`;
             %>
-              <li class="nav-item iti-mobile-section">
+              <li class="nav-item iti-nav-section">
                 <button
                   type="button"
-                  class="iti-mobile-section-toggle iti-mobile-section-heading d-inline-flex align-items-center gap-1"
+                  class="iti-nav-section-toggle iti-nav-section-heading d-inline-flex align-items-center gap-1"
                   data-bs-toggle="collapse"
                   data-bs-target="#<%= collapseId %>"
                   aria-controls="<%= collapseId %>"
                   aria-expanded="<%= isActive ? 'true' : 'false' %>"
                 >
                   <span><%= section.label %></span>
-                  <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
+                  <span class="iti-nav-chevron" aria-hidden="true"></span>
                 </button>
-                <ul class="iti-mobile-section-submenu collapse nav flex-column flex-nowrap nav-pills <% if (isActive) { %>show<% } %>" id="<%= collapseId %>">
+                <ul class="iti-nav-submenu collapse nav flex-column flex-nowrap nav-pills <% if (isActive) { %>show<% } %>" id="<%= collapseId %>">
                   <% section.items.forEach((p) => { %>
-                    <li class="nav-item iti-nav-nested">
+                    <li class="nav-item iti-nav-item--nested">
                       <a class="nav-link py-2 <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
                     </li>
                   <% }); %>
@@ -341,8 +342,8 @@
 <!-- MAIN PAGE LAYOUT -->
 <div class="container-xxl iti-gutter iti-page__main mt-3 my-md-4 <%= layoutClass %>">
 
-  <!-- LEFT SIDEBAR (DESKTOP: PAGE-SPECIFIC NAV, MOBILE: HIDDEN) -->
-  <aside class="iti-left-sidebar d-none <% if (showLeftSidebar) { %>d-lg-block<% } %>">
+  <!-- CONTEXT NAV (DESKTOP: CONTEXT-SPECIFIC, MOBILE: HIDDEN) -->
+  <aside class="iti-context-nav d-none <% if (showLeftSidebar) { %>d-lg-block<% } %>">
     <% if (typeof nav !== 'undefined') { %>
       <%= nav %>
     <% } %>
@@ -397,7 +398,7 @@
     </div>
   </main>
 
-  <!-- RIGHT SIDEBAR (MOBILE: HIDDEN, DESKTOP: DEPENDS ON layoutClass) -->
+  <!-- RIGHT SIDEBAR (UNUSED) -->
   <aside class="iti-right-sidebar">
   </aside>
 </div>
