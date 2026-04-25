@@ -15,6 +15,7 @@
   // types when bundling/templating.
   "compilerOptions": {
     "target": "ES2022",
+    "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
@@ -31,6 +32,7 @@
     "src/js/**/*.ts",
     "src/playground/js/**/*.ts",
     "src/examples/**/*.ts",
+    "src/examples/**/*.tsx",
     "src/types/**/*.d.ts"
   ]
 }

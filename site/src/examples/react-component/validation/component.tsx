@@ -46,7 +46,7 @@ const App = () => {
     inputValidityClass = isValid ? "is-valid" : "is-invalid";
   }
 
-  let invalidMsg = null;
+  let invalidMsg: string | null = null;
   if (showValidation && !isValid) {
     invalidMsg = getErrorMessage(number, errorCode);
   }
