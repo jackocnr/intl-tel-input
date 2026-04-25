@@ -1,9 +1,9 @@
 /* Split into partials for maintainability. Partial files live alongside this file.
    Keep this file as the single entrypoint imported by the build system. */
 
-@import url('./variables.css');
-@import url('./base.css');
-@import url('./navbar.css');
-@import url('./layout.css');
-@import url('./forms.css');
+@import url('./_variables.css');
+@import url('./_base.css');
+@import url('./_navbar.css');
+@import url('./_layout.css');
+@import url('./_forms.css');
 

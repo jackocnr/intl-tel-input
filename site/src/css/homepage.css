@@ -1,4 +1,4 @@
-@import url('./variables.css');
+@import url('./_variables.css');
 
  body.iti-page--homepage {
   background-image: linear-gradient(
