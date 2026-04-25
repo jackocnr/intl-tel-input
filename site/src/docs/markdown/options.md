@@ -264,9 +264,11 @@ Adjust what is considered a valid number.
 Type: `string[]`  
 Default: `["MOBILE", "FIXED_LINE"]`  
 
-Specify an array of [the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) from the enum `intlTelInput.utils.numberType` to set the number type(s) to enforce during validation, as well as the number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type. 
+Specify an array of keys from the enum [`intlTelInput.utils.numberType`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) to set the number type(s) to enforce during validation, as well as the maximum number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type (not recommended<sup>*</sup>). 
 
 By default, it's set to `["MOBILE", "FIXED_LINE"]` so [`isValidNumber`](/docs/methods#isvalidnumber) (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. _Note: previously named `validationNumberTypes`._
+
+<sup>*</sup>It's best to be as specific as possible, rather than using the catch-all value of `null`. `isValidNumber` works by checking the number's length, and some number types allow very short lengths. For example, Norwegian mobile and landline numbers are 8 digits long, so by default that's the only valid length. But Norwegian UAN numbers can be only 5 digits long, so if you set `allowedNumberTypes` to `null`, validation will pass for any number that is 5-8 digits long.
 
 Play with this option in the [Playground](/playground#validation-options).
 
