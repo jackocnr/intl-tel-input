@@ -84,7 +84,7 @@ test.describe("site nav — mobile layout", () => {
     expect(hb.x).toBeLessThan(vw * 0.25);
     expect(hb.y).toBeLessThan(80);
 
-    const sidebar = page.locator("#itiMobileSidebar");
+    const sidebar = page.locator("#itiMobileNav");
     await expect(sidebar).toBeHidden();
     await hamburger.click();
     await expect(sidebar).toBeVisible();
@@ -101,6 +101,7 @@ test.describe("site nav — mobile layout", () => {
     await examples.click();
     await expect(submenu).toBeVisible();
 
+    await submenu.locator(".iti-nav-section-toggle").first().click();
     await submenu.locator(".nav-link").first().click();
     await expect(page).toHaveURL(/\/examples\//);
   });
@@ -129,6 +130,7 @@ test.describe("site nav — desktop layout", () => {
     await examples.click();
     await expect(menu).toBeVisible();
 
+    await menu.locator(".iti-nav-section-toggle").first().click();
     await menu.locator(".dropdown-item").first().click();
     await expect(page).toHaveURL(/\/examples\//);
   });
