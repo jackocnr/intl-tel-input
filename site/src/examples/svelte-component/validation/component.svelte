@@ -77,7 +77,7 @@
 
 <form onsubmit={handleSubmit} novalidate>
   <label for="phone" class="form-label">Phone number</label>
-  <div class="d-flex gap-2 align-items-start">
+  <div class="d-flex gap-2">
     <div class="demo-input-wrap position-relative">
       <div class="toast-container demo-toast-container">
         <div bind:this={toastDivRef} class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
@@ -107,13 +107,13 @@
           class: `form-control ${inputValidityClass}`,
         }}
       />
-      {#if invalidMsg}
-        <div class="invalid-feedback d-block">{invalidMsg}</div>
-      {/if}
-      {#if validMsg}
-        <div class="valid-feedback d-block">{validMsg}</div>
-      {/if}
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
   </div>
+  {#if invalidMsg}
+    <div class="invalid-feedback d-block">{invalidMsg}</div>
+  {/if}
+  {#if validMsg}
+    <div class="valid-feedback d-block">{validMsg}</div>
+  {/if}
 </form>

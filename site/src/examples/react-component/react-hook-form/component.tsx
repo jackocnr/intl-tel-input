@@ -91,7 +91,7 @@ const App = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <label htmlFor="phone" className="form-label">Phone number</label>
-      <div className="d-flex gap-2 align-items-start">
+      <div className="d-flex gap-2">
         <div className="demo-input-wrap position-relative">
           <div className="toast-container demo-toast-container">
             <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
@@ -136,15 +136,15 @@ const App = () => {
               );
             }}
           />
-          {errors.phone && (
-            <div className="invalid-feedback d-block">{errors.phone.message}</div>
-          )}
-          {showValidMsg && (
-            <div className="valid-feedback d-block">Full number: {validNumber}</div>
-          )}
         </div>
         <button className="btn btn-primary" type="submit">Submit</button>
       </div>
+      {errors.phone && (
+        <div className="invalid-feedback d-block">{errors.phone.message}</div>
+      )}
+      {showValidMsg && (
+        <div className="valid-feedback d-block">Full number: {validNumber}</div>
+      )}
     </form>
   );
 };

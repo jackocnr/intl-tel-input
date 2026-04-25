@@ -1,6 +1,6 @@
 <form id="form" class="validation-demo" noValidate>
   <label for="phone" class="form-label">Phone number</label>
-  <div class="d-flex gap-2 align-items-start">
+  <div class="d-flex gap-2">
     <div class="demo-input-wrap position-relative">
       <%= strictRejectToast("strictRejectToast") %>
       <input
@@ -11,9 +11,9 @@
         title="Enter your phone number"
         required
       />
-      <div id="error-msg" class="invalid-feedback d-block"></div>
-      <div id="valid-msg" class="valid-feedback d-block"></div>
     </div>
     <button class="btn btn-primary" id="btn" type="submit">Submit</button>
   </div>
+  <div id="error-msg" class="invalid-feedback d-block"></div>
+  <div id="valid-msg" class="valid-feedback d-block"></div>
 </form>

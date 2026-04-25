@@ -90,7 +90,7 @@ const App = () => {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <label htmlFor="phone" className="form-label">Phone number</label>
-      <div className="d-flex gap-2 align-items-start">
+      <div className="d-flex gap-2">
         <div className="demo-input-wrap position-relative">
           <div className="toast-container demo-toast-container">
             <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
@@ -121,15 +121,15 @@ const App = () => {
               className: `form-control ${inputValidityClass}`,
             }}
           />
-          {invalidMsg && (
-            <div className="invalid-feedback d-block">{invalidMsg}</div>
-          )}
-          {validMsg && (
-            <div className="valid-feedback d-block">{validMsg}</div>
-          )}
         </div>
         <button className="btn btn-primary" type="submit">Submit</button>
       </div>
+      {invalidMsg && (
+        <div className="invalid-feedback d-block">{invalidMsg}</div>
+      )}
+      {validMsg && (
+        <div className="valid-feedback d-block">{validMsg}</div>
+      )}
     </form>
   );
 };

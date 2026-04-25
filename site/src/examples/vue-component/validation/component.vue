@@ -83,7 +83,7 @@
 <template>
   <form @submit.prevent="handleSubmit" novalidate>
     <label for="phone" class="form-label">Phone number</label>
-    <div class="d-flex gap-2 align-items-start">
+    <div class="d-flex gap-2">
       <div class="demo-input-wrap position-relative">
         <div class="toast-container demo-toast-container">
           <div ref="toastDivRef" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
@@ -113,10 +113,10 @@
             class: `form-control ${inputValidityClass}`,
           }"
         />
-        <div v-if="invalidMsg" class="invalid-feedback d-block">{{ invalidMsg }}</div>
-        <div v-if="validMsg" class="valid-feedback d-block">{{ validMsg }}</div>
       </div>
       <button class="btn btn-primary" type="submit">Submit</button>
     </div>
+    <div v-if="invalidMsg" class="invalid-feedback d-block">{{ invalidMsg }}</div>
+    <div v-if="validMsg" class="valid-feedback d-block">{{ validMsg }}</div>
   </form>
 </template>
