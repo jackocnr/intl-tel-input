@@ -11,7 +11,7 @@ import {
   buildOpenGraphMetaTags,
   createMarkdownRenderer,
 } from "./template/utils.js";
-import { docsDropdownPages, examplesDropdownPages } from "./template/nav.js";
+import { docsDropdownPages, examplesDropdownSections } from "./template/nav.js";
 import {
   readCommonPagePartials,
   readCommonBodyEndScript,
@@ -585,7 +585,7 @@ for (const def of exampleDefinitions) {
         name: key,
         pageType: "examples",
         docsDropdownPages,
-        examplesDropdownPages,
+        examplesDropdownSections,
         ...layoutExtra,
       }),
   });
@@ -662,7 +662,7 @@ tasks.push({
       name: "home",
       pageType: "home",
       docsDropdownPages,
-      examplesDropdownPages,
+      examplesDropdownSections,
     };
   },
 });
@@ -712,7 +712,7 @@ tasks.push({
     pageType: "playground",
     name: "playground",
     docsDropdownPages,
-    examplesDropdownPages,
+    examplesDropdownSections,
   }),
 });
 
@@ -755,7 +755,7 @@ tasks.push({
     pageType: "home",
     name: "404",
     docsDropdownPages,
-    examplesDropdownPages,
+    examplesDropdownSections,
   }),
 });
 
@@ -911,7 +911,7 @@ for (const { key, title, metaDesc } of docsDefinitions) {
       name: key,
       pageType: "docs",
       docsDropdownPages,
-      examplesDropdownPages,
+      examplesDropdownSections,
     }),
   });
 

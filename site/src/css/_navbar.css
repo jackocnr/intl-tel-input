@@ -271,6 +271,70 @@
 .iti-mobile-sidebar .iti-mobile-section-heading:first-child {
   margin-top: 0;
 }
+
+/* Examples sidebar: collapsible section toggle (button reset + chevron rotation) */
+.iti-left-sidebar .iti-sidebar-section-toggle {
+  background: none;
+  border: 0;
+  text-align: left;
+}
+.iti-left-sidebar .iti-sidebar-section-toggle:hover {
+  color: rgba(var(--bs-body-color-rgb), 0.9);
+}
+.iti-left-sidebar .iti-sidebar-section-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+  transform: rotate(225deg);
+  margin-top: 8px;
+}
+.iti-left-sidebar .iti-sidebar-sections {
+  gap: 0;
+}
+.iti-left-sidebar .iti-sidebar-section + .iti-sidebar-section {
+  margin-top: 0.75rem;
+}
+/* Keep submenu items stacked vertically during Bootstrap's collapse animation
+   (without this, .nav's flex-wrap causes items to flow horizontally mid-animation) */
+.iti-left-sidebar .iti-sidebar-submenu,
+.iti-mobile-sidebar .iti-mobile-section-submenu {
+  flex-wrap: nowrap;
+}
+
+/* Header dropdown: collapsible section toggle (button reset + chevron rotation) */
+.dropdown-menu .iti-dropdown-section-toggle {
+  background: none;
+  border: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+.dropdown-menu .iti-dropdown-section-toggle:hover {
+  color: rgba(var(--bs-body-color-rgb), 0.9);
+}
+.dropdown-menu .iti-dropdown-section-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+  transform: rotate(225deg);
+  margin-top: 8px;
+}
+.dropdown-menu > li + li:has(> .iti-dropdown-section-toggle) {
+  margin-top: 0.5rem;
+}
+
+/* Mobile sidebar: collapsible section toggle (button reset + chevron rotation) */
+.iti-mobile-sidebar .iti-mobile-section-toggle {
+  background: none;
+  border: 0;
+  text-align: left;
+}
+.iti-mobile-sidebar .iti-mobile-section-toggle:hover {
+  color: rgba(var(--bs-body-color-rgb), 0.9);
+}
+.iti-mobile-sidebar .iti-mobile-section-toggle[aria-expanded="true"] .iti-mobile-nav-toggle__chevron {
+  transform: rotate(225deg);
+  margin-top: 8px;
+}
+.iti-mobile-sidebar .iti-mobile-section {
+  margin-top: 0.2rem;
+}
+.iti-mobile-sidebar .iti-mobile-section + .iti-mobile-section {
+  margin-top: 0.7rem;
+}
 .dropdown-menu .iti-dropdown-section-heading {
   padding: 0.5rem 1rem 0.25rem;
   font-size: 0.75rem;

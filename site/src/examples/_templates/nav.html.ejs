@@ -1,12 +1,31 @@
 <h6 class="mt-4 mb-2 text-uppercase iti-sidebar-heading">Examples</h6>
-<ul class="flex-column nav nav-pills gap-1 my-3">
-  <% examplesDropdownPages.forEach((p) => { %>
-    <% if (p.heading) { %>
-      <li class="iti-nav-section-heading"><%= p.label %></li>
-    <% } else { %>
-      <li<% if (p.nested) { %> class="iti-nav-nested"<% } %>>
-        <a class="nav-link py-1 <% if (name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
-      </li>
-    <% } %>
+<ul class="flex-column nav nav-pills my-3 iti-sidebar-sections">
+  <% examplesDropdownSections.forEach((section) => {
+       const isActive = section.items.some((p) => p.name === name);
+       const collapseId = `iti-sidebar-${section.name}`;
+  %>
+    <li class="iti-sidebar-section">
+      <button
+        type="button"
+        class="iti-sidebar-section-toggle iti-nav-section-heading d-flex align-items-center justify-content-between w-100"
+        data-bs-toggle="collapse"
+        data-bs-target="#<%= collapseId %>"
+        aria-controls="<%= collapseId %>"
+        aria-expanded="<%= isActive ? 'true' : 'false' %>"
+      >
+        <span><%= section.label %></span>
+        <span class="iti-mobile-nav-toggle__chevron" aria-hidden="true"></span>
+      </button>
+      <ul
+        class="iti-sidebar-submenu collapse flex-column nav nav-pills gap-1 <% if (isActive) { %>show<% } %>"
+        id="<%= collapseId %>"
+      >
+        <% section.items.forEach((p) => { %>
+          <li class="iti-nav-nested">
+            <a class="nav-link py-1 <% if (name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
+          </li>
+        <% }); %>
+      </ul>
+    </li>
   <% }); %>
 </ul>

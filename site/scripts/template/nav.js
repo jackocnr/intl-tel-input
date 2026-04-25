@@ -81,120 +81,127 @@ const docsDropdownPages = [
   },
 ];
 
-const examplesDropdownPages = [
-  { name: "javascript_plugin_heading", label: "JavaScript plugin", heading: true },
+const examplesDropdownSections = [
   {
-    name: "validation_practical",
-    href: "/examples/javascript-plugin/validation",
-    label: "Validation",
-    nested: true,
+    name: "javascript_plugin",
+    label: "JavaScript plugin",
+    items: [
+      {
+        name: "validation_practical",
+        href: "/examples/javascript-plugin/validation",
+        label: "Validation",
+      },
+      {
+        name: "validation_precise",
+        href: "/examples/javascript-plugin/validation-precise",
+        label: "Precise validation (advanced)",
+      },
+      {
+        name: "lookup_country",
+        href: "/examples/javascript-plugin/lookup-country",
+        label: "Lookup user's country",
+      },
+      {
+        name: "single_country",
+        href: "/examples/javascript-plugin/single-country",
+        label: "Single country",
+      },
+      {
+        name: "right_to_left",
+        href: "/examples/javascript-plugin/right-to-left",
+        label: "Right to left",
+      },
+      {
+        name: "hidden_input",
+        href: "/examples/javascript-plugin/hidden-input",
+        label: "Hidden input",
+      },
+      {
+        name: "display_number",
+        href: "/examples/javascript-plugin/display-number",
+        label: "Display existing number",
+      },
+      {
+        name: "multiple_instances",
+        href: "/examples/javascript-plugin/multiple-instances",
+        label: "Multiple instances",
+      },
+      {
+        name: "large_flags",
+        href: "/examples/javascript-plugin/large-flags",
+        label: "Large flags",
+      },
+    ],
   },
-  {
-    name: "validation_precise",
-    href: "/examples/javascript-plugin/validation-precise",
-    label: "Precise validation (advanced)",
-    nested: true,
-  },
-  {
-    name: "lookup_country",
-    href: "/examples/javascript-plugin/lookup-country",
-    label: "Lookup user's country",
-    nested: true,
-  },
-  {
-    name: "single_country",
-    href: "/examples/javascript-plugin/single-country",
-    label: "Single country",
-    nested: true,
-  },
-  {
-    name: "right_to_left",
-    href: "/examples/javascript-plugin/right-to-left",
-    label: "Right to left",
-    nested: true,
-  },
-  {
-    name: "hidden_input",
-    href: "/examples/javascript-plugin/hidden-input",
-    label: "Hidden input",
-    nested: true,
-  },
-  {
-    name: "display_number",
-    href: "/examples/javascript-plugin/display-number",
-    label: "Display existing number",
-    nested: true,
-  },
-  {
-    name: "multiple_instances",
-    href: "/examples/javascript-plugin/multiple-instances",
-    label: "Multiple instances",
-    nested: true,
-  },
-  {
-    name: "large_flags",
-    href: "/examples/javascript-plugin/large-flags",
-    label: "Large flags",
-    nested: true,
-  },
-  { name: "react_component_heading", label: "React component", heading: true },
   {
     name: "react_component",
-    href: "/examples/react-component/validation",
-    label: "Validation",
-    nested: true,
+    label: "React component",
+    items: [
+      {
+        name: "react_component",
+        href: "/examples/react-component/validation",
+        label: "Validation",
+      },
+      {
+        name: "react_hook_form",
+        href: "/examples/react-component/react-hook-form",
+        label: "React Hook Form",
+      },
+      {
+        name: "react_display_existing_number",
+        href: "/examples/react-component/display-existing-number",
+        label: "Display existing number",
+      },
+    ],
   },
-  {
-    name: "react_hook_form",
-    href: "/examples/react-component/react-hook-form",
-    label: "React Hook Form",
-    nested: true,
-  },
-  {
-    name: "react_display_existing_number",
-    href: "/examples/react-component/display-existing-number",
-    label: "Display existing number",
-    nested: true,
-  },
-  { name: "vue_component_heading", label: "Vue component", heading: true },
   {
     name: "vue_component",
-    href: "/examples/vue-component/validation",
-    label: "Validation",
-    nested: true,
+    label: "Vue component",
+    items: [
+      {
+        name: "vue_component",
+        href: "/examples/vue-component/validation",
+        label: "Validation",
+      },
+      {
+        name: "vue_display_existing_number",
+        href: "/examples/vue-component/display-existing-number",
+        label: "Display existing number",
+      },
+    ],
   },
-  {
-    name: "vue_display_existing_number",
-    href: "/examples/vue-component/display-existing-number",
-    label: "Display existing number",
-    nested: true,
-  },
-  { name: "angular_component_heading", label: "Angular component", heading: true },
   {
     name: "angular_component",
-    href: "/examples/angular-component/validation",
-    label: "Validation",
-    nested: true,
+    label: "Angular component",
+    items: [
+      {
+        name: "angular_component",
+        href: "/examples/angular-component/validation",
+        label: "Validation",
+      },
+      {
+        name: "angular_display_existing_number",
+        href: "/examples/angular-component/display-existing-number",
+        label: "Display existing number",
+      },
+    ],
   },
-  {
-    name: "angular_display_existing_number",
-    href: "/examples/angular-component/display-existing-number",
-    label: "Display existing number",
-    nested: true,
-  },
-  { name: "svelte_component_heading", label: "Svelte component", heading: true },
   {
     name: "svelte_component",
-    href: "/examples/svelte-component/validation",
-    label: "Validation",
-    nested: true,
-  },
-  {
-    name: "svelte_display_existing_number",
-    href: "/examples/svelte-component/display-existing-number",
-    label: "Display existing number",
-    nested: true,
+    label: "Svelte component",
+    items: [
+      {
+        name: "svelte_component",
+        href: "/examples/svelte-component/validation",
+        label: "Validation",
+      },
+      {
+        name: "svelte_display_existing_number",
+        href: "/examples/svelte-component/display-existing-number",
+        label: "Display existing number",
+      },
+    ],
   },
 ];
 
-export { docsDropdownPages, examplesDropdownPages };
+export { docsDropdownPages, examplesDropdownSections };
