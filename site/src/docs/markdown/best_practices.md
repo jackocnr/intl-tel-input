@@ -2,6 +2,16 @@
 
 General advice for getting the most out of `intl-tel-input`, whether you're using the [JavaScript plugin](/docs/javascript-plugin) or one of the framework components ([React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component), [Svelte](/docs/svelte-component)).
 
+## Contents
+
+- [Load the utils module](#load-the-utils-module)
+- [Store and restore numbers in E.164 format](#store-and-restore-numbers-in-e164-format)
+- [Validate before saving](#validate-before-saving)
+- [Enable strict mode to prevent invalid input](#enable-strict-mode-to-prevent-invalid-input)
+- [Set the initial country](#set-the-initial-country)
+- [Translate the UI](#translate-the-ui)
+
+
 ## Load the utils module
 
 Load [`utils.js`](/docs/utils#loading-the-utils-script) to enable formatting and validation.

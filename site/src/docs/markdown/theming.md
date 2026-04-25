@@ -2,9 +2,16 @@
 
 The plugin exposes a set of CSS variables (all prefixed `--iti-`) that you can override on `:root` (or any ancestor of the input) to customise colours, spacing, and icon sizes.
 
+## Contents
+
+- [Supported CSS variables](#supported-css-variables)
+- [Dark mode](#dark-mode)
+- [Scaling down the flag images](#scaling-down-the-flag-images)
+
+
 ## Supported CSS variables
 
-### Colour variables
+##### Colour variables
 
 ###### --iti-hover-color
 Default: `rgba(0, 0, 0, 0.05)`  
@@ -31,7 +38,7 @@ Default: `rgba(255, 0, 0, 0.12)`
 
 Flash colour used by [`strictRejectAnimation`](/docs/options#strictrejectanimation) for users with `prefers-reduced-motion`.
 
-### Spacing & sizing variables
+##### Spacing & sizing variables
 
 ###### --iti-spacer-horizontal
 Default: `10px`  
@@ -48,7 +55,7 @@ Default: `30px`
 
 Margin around the fullscreen popup on mobile.
 
-### Dropdown arrow variables
+##### Dropdown arrow variables
 
 ###### --iti-arrow-size
 Default: `5px`  
@@ -65,7 +72,7 @@ Default: `7px`
 
 Padding around the arrow.
 
-### Icon variables
+##### Icon variables
 
 ###### --iti-globe-icon-size
 Default: `17px`  
@@ -77,7 +84,7 @@ Default: `15px`
 
 Size of the search clear button and the selected-country check icon.
 
-### Flag variables
+##### Flag variables
 
 ###### --iti-flag-width
 Default: `20px`  
