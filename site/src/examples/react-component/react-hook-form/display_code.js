@@ -13,7 +13,7 @@ const geoIpLookup = (success, failure) => {
 const App = () => {
   const itiRef = useRef(null);
   const { control, handleSubmit, formState: { errors } } = useForm({
-    mode: "onBlur",
+    mode: "onTouched",
     defaultValues: { phone: "" },
   });
 

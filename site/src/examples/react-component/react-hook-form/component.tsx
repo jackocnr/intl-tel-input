@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
@@ -33,15 +33,16 @@ type FormValues = { phone: string };
 
 const App = () => {
   const itiRef = useRef<IntlTelInputRef>(null);
+  const [validNumber, setValidNumber] = useState<string | null>(null);
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful, submitCount },
-    getValues,
+    formState: { errors },
   } = useForm<FormValues>({
-    mode: "onBlur",
+    mode: "onTouched",
     defaultValues: { phone: "" },
   });
+  const phoneValue = useWatch({ control, name: "phone" });
 
   const validatePhone = (value: string): true | string => {
     const iti = itiRef.current!.getInstance()!;
@@ -55,9 +56,10 @@ const App = () => {
   const onSubmit = (data: FormValues) => {
     // your real submit logic would go here — e.g. POST data.phone to your backend
     console.log("Submitted:", data);
+    setValidNumber(data.phone);
   };
 
-  const showValidMsg = isSubmitSuccessful && submitCount > 0;
+  const showValidMsg = validNumber !== null && validNumber === phoneValue;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="row g-2" noValidate>
@@ -100,7 +102,7 @@ const App = () => {
           <div className="invalid-feedback d-block">{errors.phone.message}</div>
         )}
         {showValidMsg && (
-          <div className="valid-feedback d-block">Full number: {getValues("phone")}</div>
+          <div className="valid-feedback d-block">Full number: {validNumber}</div>
         )}
       </div>
       <div className="col-auto">
