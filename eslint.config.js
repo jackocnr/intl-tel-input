@@ -14,7 +14,7 @@ export default [
       ".claude/",
       "site/static/js/highlight.min.js",
       "site/static/js/silktide-consent-manager.js",
-      "site/src/examples/*_display_code*",
+      "site/src/examples/**/*display_code*",
       "playwright-report/",
       "scripts/",
       "src/js/utils.js",
