@@ -174,9 +174,11 @@
     }
   });
 
-  // Watch value prop changes (only after initialization)
+  // Watch value prop changes (only after initialization).
+  // If value is undefined, the component is uncontrolled — do not touch the input
+  // (otherwise we would clobber any initialValue with an empty string on mount).
   $effect(() => {
-    if (!hasInitialized || !instance) {
+    if (!hasInitialized || !instance || value === undefined) {
       return;
     }
     const next = value ?? "";
