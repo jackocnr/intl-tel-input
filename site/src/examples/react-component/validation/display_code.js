@@ -27,6 +27,7 @@ const App = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <label htmlFor="phone">Phone number</label>
       <IntlTelInput
         onChangeNumber={setNumber}
         onChangeValidity={setIsValid}
@@ -38,6 +39,7 @@ const App = () => {
         geoIpLookup={geoIpLookup}
         loadUtils={() => import("intl-tel-input/utils")}
         inputProps={{
+          id: "phone",
           onBlur: () => setShowValidation(true),
         }}
       />

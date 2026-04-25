@@ -37,6 +37,7 @@ const App = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <label htmlFor="phone">Phone number</label>
       <Controller
         name="phone"
         control={control}
@@ -52,6 +53,7 @@ const App = () => {
             geoIpLookup={geoIpLookup}
             loadUtils={() => import("intl-tel-input/utils")}
             inputProps={{
+              id: "phone",
               name: field.name,
               onBlur: field.onBlur,
               className: fieldState.invalid ? "is-invalid" : "",

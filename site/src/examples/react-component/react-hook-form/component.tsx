@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import IntlTelInput, {
@@ -33,7 +33,9 @@ type FormValues = { phone: string };
 
 const App = () => {
   const itiRef = useRef<IntlTelInputRef>(null);
+  const toastDivRef = useRef<HTMLDivElement>(null);
   const [validNumber, setValidNumber] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState("");
   const {
     control,
     handleSubmit,
@@ -43,6 +45,28 @@ const App = () => {
     defaultValues: { phone: "" },
   });
   const phoneValue = useWatch({ control, name: "phone" });
+
+  useEffect(() => {
+    const input = itiRef.current?.getInput();
+    const toastEl = toastDivRef.current;
+    if (!input || !toastEl || !window.bootstrap?.Toast) {
+      return undefined;
+    }
+    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
+    const handleReject = (e: Event) => {
+      const { reason, rejectedInput, source } = (e as CustomEvent).detail;
+      if (reason === "max-length") {
+        setToastMessage("Maximum length reached for this country");
+      } else if (source === "paste") {
+        setToastMessage("Stripped invalid characters from pasted text");
+      } else {
+        setToastMessage(`Character not allowed: "${rejectedInput}"`);
+      }
+      toast.show();
+    };
+    input.addEventListener("strict:reject", handleReject);
+    return () => input.removeEventListener("strict:reject", handleReject);
+  }, []);
 
   const validatePhone = (value: string): true | string => {
     if (!intlTelInput.utils) {
@@ -65,50 +89,60 @@ const App = () => {
   const showValidMsg = validNumber !== null && validNumber === phoneValue;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="row g-2" noValidate>
-      <div className="col-auto demo-input-wrap">
-        <Controller
-          name="phone"
-          control={control}
-          rules={{ validate: validatePhone }}
-          render={({ field, fieldState }) => {
-            let validityClass = "";
-            if (fieldState.invalid) {
-              validityClass = "is-invalid";
-            } else if (fieldState.isTouched && field.value) {
-              validityClass = "is-valid";
-            }
-            return (
-              <IntlTelInput
-                ref={itiRef}
-                value={field.value}
-                onChangeNumber={field.onChange}
-                initialCountry="auto"
-                separateDialCode
-                strictMode
-                strictRejectAnimation
-                geoIpLookup={geoIpLookup}
-                // @ts-expect-error EJS-templated URL string, resolved at build time.
-                loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
-                searchInputClass="form-control"
-                inputProps={{
-                  name: field.name,
-                  onBlur: field.onBlur,
-                  title: "Enter your phone number",
-                  className: `form-control ${validityClass}`,
-                }}
-              />
-            );
-          }}
-        />
-        {errors.phone && (
-          <div className="invalid-feedback d-block">{errors.phone.message}</div>
-        )}
-        {showValidMsg && (
-          <div className="valid-feedback d-block">Full number: {validNumber}</div>
-        )}
-      </div>
-      <div className="col-auto">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <label htmlFor="phone" className="form-label">Phone number</label>
+      <div className="d-flex gap-2 align-items-start">
+        <div className="demo-input-wrap position-relative">
+          <div className="toast-container demo-toast-container">
+            <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+              <div className="d-flex">
+                <div className="toast-body">{toastMessage}</div>
+                <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+            </div>
+          </div>
+          <Controller
+            name="phone"
+            control={control}
+            rules={{ validate: validatePhone }}
+            render={({ field, fieldState }) => {
+              let validityClass = "";
+              if (fieldState.invalid) {
+                validityClass = "is-invalid";
+              } else if (fieldState.isTouched && field.value) {
+                validityClass = "is-valid";
+              }
+              return (
+                <IntlTelInput
+                  ref={itiRef}
+                  value={field.value}
+                  onChangeNumber={field.onChange}
+                  initialCountry="auto"
+                  separateDialCode
+                  strictMode
+                  strictRejectAnimation
+                  geoIpLookup={geoIpLookup}
+                  // @ts-expect-error EJS-templated URL string, resolved at build time.
+                  loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
+                  searchInputClass="form-control"
+                  inputProps={{
+                    id: "phone",
+                    name: field.name,
+                    onBlur: field.onBlur,
+                    title: "Enter your phone number",
+                    className: `form-control ${validityClass}`,
+                  }}
+                />
+              );
+            }}
+          />
+          {errors.phone && (
+            <div className="invalid-feedback d-block">{errors.phone.message}</div>
+          )}
+          {showValidMsg && (
+            <div className="valid-feedback d-block">Full number: {validNumber}</div>
+          )}
+        </div>
         <button className="btn btn-primary" type="submit">Submit</button>
       </div>
     </form>

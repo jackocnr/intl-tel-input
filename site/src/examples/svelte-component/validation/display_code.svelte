@@ -26,6 +26,7 @@
 </script>
 
 <form onsubmit={handleSubmit}>
+  <label for="phone">Phone number</label>
   <IntlTelInput
     onChangeNumber={(n) => (number = n)}
     onChangeValidity={(v) => (isValid = v)}
@@ -37,6 +38,7 @@
     {geoIpLookup}
     loadUtils={() => import("intl-tel-input/utils")}
     inputProps={{
+      id: "phone",
       onblur: () => (showValidation = true),
     }}
   />

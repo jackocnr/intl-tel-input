@@ -27,6 +27,7 @@
 
 <template>
   <form @submit.prevent="enableValidation">
+    <label for="phone">Phone number</label>
     <IntlTelInput
       @changeNumber="number = $event"
       @changeValidity="isValid = $event"
@@ -38,6 +39,7 @@
       :geo-ip-lookup="geoIpLookup"
       :load-utils="() => import('intl-tel-input/utils')"
       :input-props="{
+        id: 'phone',
         onBlur: enableValidation,
       }"
     />

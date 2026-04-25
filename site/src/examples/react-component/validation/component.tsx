@@ -88,44 +88,46 @@ const App = () => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="row g-2" noValidate>
-      <div className="col-auto demo-input-wrap position-relative">
-        <div className="toast-container demo-toast-container">
-          <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-            <div className="d-flex">
-              <div className="toast-body">{toastMessage}</div>
-              <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    <form onSubmit={handleSubmit} noValidate>
+      <label htmlFor="phone" className="form-label">Phone number</label>
+      <div className="d-flex gap-2 align-items-start">
+        <div className="demo-input-wrap position-relative">
+          <div className="toast-container demo-toast-container">
+            <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+              <div className="d-flex">
+                <div className="toast-body">{toastMessage}</div>
+                <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
             </div>
           </div>
+          <IntlTelInput
+            ref={itiRef}
+            onChangeNumber={handleChangeNumber}
+            onChangeValidity={setIsValid}
+            onChangeErrorCode={setErrorCode}
+            initialCountry="auto"
+            separateDialCode
+            strictMode
+            strictRejectAnimation
+            geoIpLookup={geoIpLookup}
+            // @ts-expect-error EJS-templated URL string, resolved at build time.
+            loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
+            searchInputClass="form-control"
+            inputProps={{
+              id: "phone",
+              name: "phone",
+              title: "Enter your phone number",
+              onBlur: () => setShowValidation(true),
+              className: `form-control ${inputValidityClass}`,
+            }}
+          />
+          {invalidMsg && (
+            <div className="invalid-feedback d-block">{invalidMsg}</div>
+          )}
+          {validMsg && (
+            <div className="valid-feedback d-block">{validMsg}</div>
+          )}
         </div>
-        <IntlTelInput
-          ref={itiRef}
-          onChangeNumber={handleChangeNumber}
-          onChangeValidity={setIsValid}
-          onChangeErrorCode={setErrorCode}
-          initialCountry="auto"
-          separateDialCode
-          strictMode
-          strictRejectAnimation
-          geoIpLookup={geoIpLookup}
-          // @ts-expect-error EJS-templated URL string, resolved at build time.
-          loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
-          searchInputClass="form-control"
-          inputProps={{
-            name: "phone",
-            title: "Enter your phone number",
-            onBlur: () => setShowValidation(true),
-            className: `form-control ${inputValidityClass}`,
-          }}
-        />
-        {invalidMsg && (
-          <div className="invalid-feedback d-block">{invalidMsg}</div>
-        )}
-        {validMsg && (
-          <div className="valid-feedback d-block">{validMsg}</div>
-        )}
-      </div>
-      <div className="col-auto">
         <button className="btn btn-primary" type="submit">Submit</button>
       </div>
     </form>

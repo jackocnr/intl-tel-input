@@ -42,6 +42,11 @@ const taskFilter = (args.find((a) => a.startsWith("--task=")) || "").slice(7);
 
 const md = createMarkdownRenderer();
 
+const allowedNumberTypesNote = fs.readFileSync(
+  "src/examples/_shared/allowed_number_types_note.html",
+  "utf8",
+);
+
 // Local helper used by the localisation doc page only.
 const toBcp47LanguageTag = (code) => {
   const raw = String(code || "").trim();
@@ -206,8 +211,7 @@ const exampleDefinitions = [
     title: "Single country",
     metaDesc: "When you only need to handle numbers from a single country.",
     content: {
-      demo_note: "<p>Enter a US number:</p>",
-      markupName: "validation",
+      demo_note: allowedNumberTypesNote,
       includeItiScript: true,
     },
   },
@@ -223,8 +227,7 @@ const exampleDefinitions = [
       markupName: "validation",
       includeItiScript: true,
       extraData: () => ({
-        demo_note:
-          "<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
+        demo_note: allowedNumberTypesNote,
       }),
     },
   },
@@ -241,8 +244,7 @@ const exampleDefinitions = [
       includeItiScript: true,
       displayCode: "src/examples/javascript-plugin/validation/display_code.js",
       extraData: () => ({
-        demo_note:
-          "<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
+        demo_note: allowedNumberTypesNote,
       }),
     },
   },
@@ -255,6 +257,7 @@ const exampleDefinitions = [
       "Automatically populate a hidden input with the full international number, so it gets submitted to your backend.",
     js: { destDir: "tmp" },
     content: {
+      demo_note: allowedNumberTypesNote,
       includeItiScript: true,
       markupName: "validation",
     },
@@ -306,6 +309,7 @@ const exampleDefinitions = [
       script: "angular_component_bundle.js",
     },
     content: {
+      demo_note: allowedNumberTypesNote,
       hideMarkupSection: true,
       script: "angular_component_bundle.js",
     },
@@ -322,6 +326,7 @@ const exampleDefinitions = [
       script: "react_component_bundle.js",
     },
     content: {
+      demo_note: allowedNumberTypesNote,
       hideMarkupSection: true,
       script: "react_component_bundle.js",
     },
@@ -338,6 +343,7 @@ const exampleDefinitions = [
       script: "react_hook_form_bundle.js",
     },
     content: {
+      demo_note: allowedNumberTypesNote,
       hideMarkupSection: true,
       script: "react_hook_form_bundle.js",
     },
@@ -354,6 +360,7 @@ const exampleDefinitions = [
       script: "vue_component_bundle.js",
     },
     content: {
+      demo_note: allowedNumberTypesNote,
       hideMarkupSection: true,
       script: "vue_component_bundle.js",
     },
@@ -370,6 +377,7 @@ const exampleDefinitions = [
       script: "svelte_component_bundle.js",
     },
     content: {
+      demo_note: allowedNumberTypesNote,
       hideMarkupSection: true,
       script: "svelte_component_bundle.js",
     },

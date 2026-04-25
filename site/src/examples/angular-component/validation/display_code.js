@@ -7,8 +7,10 @@ import "intl-tel-input/styles";
   selector: "#app",
   template: `
     <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
+      <label for="phone">Phone number</label>
       <intl-tel-input
         formControlName="phone"
+        [inputAttributes]="{ id: 'phone' }"
         initialCountry="auto"
         [separateDialCode]="true"
         [strictMode]="true"

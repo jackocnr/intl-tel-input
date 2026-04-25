@@ -81,39 +81,41 @@
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit" class="row g-2" novalidate>
-    <div class="col-auto demo-input-wrap position-relative">
-      <div class="toast-container demo-toast-container">
-        <div ref="toastDivRef" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-          <div class="d-flex">
-            <div class="toast-body">{{ toastMessage }}</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  <form @submit.prevent="handleSubmit" novalidate>
+    <label for="phone" class="form-label">Phone number</label>
+    <div class="d-flex gap-2 align-items-start">
+      <div class="demo-input-wrap position-relative">
+        <div class="toast-container demo-toast-container">
+          <div ref="toastDivRef" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+            <div class="d-flex">
+              <div class="toast-body">{{ toastMessage }}</div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
           </div>
         </div>
+        <IntlTelInput
+          ref="itiRef"
+          @changeNumber="handleChangeNumber"
+          @changeValidity="isValid = $event"
+          @changeErrorCode="errorCode = $event"
+          initial-country="auto"
+          :separate-dial-code="true"
+          :strict-mode="true"
+          :strict-reject-animation="true"
+          :geo-ip-lookup="geoIpLookup"
+          :load-utils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
+          search-input-class="form-control"
+          :input-props="{
+            id: 'phone',
+            name: 'phone',
+            title: 'Enter your phone number',
+            onBlur: handleBlur,
+            class: `form-control ${inputValidityClass}`,
+          }"
+        />
+        <div v-if="invalidMsg" class="invalid-feedback d-block">{{ invalidMsg }}</div>
+        <div v-if="validMsg" class="valid-feedback d-block">{{ validMsg }}</div>
       </div>
-      <IntlTelInput
-        ref="itiRef"
-        @changeNumber="handleChangeNumber"
-        @changeValidity="isValid = $event"
-        @changeErrorCode="errorCode = $event"
-        initial-country="auto"
-        :separate-dial-code="true"
-        :strict-mode="true"
-        :strict-reject-animation="true"
-        :geo-ip-lookup="geoIpLookup"
-        :load-utils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
-        search-input-class="form-control"
-        :input-props="{
-          name: 'phone',
-          title: 'Enter your phone number',
-          onBlur: handleBlur,
-          class: `form-control ${inputValidityClass}`,
-        }"
-      />
-      <div v-if="invalidMsg" class="invalid-feedback d-block">{{ invalidMsg }}</div>
-      <div v-if="validMsg" class="valid-feedback d-block">{{ validMsg }}</div>
-    </div>
-    <div class="col-auto">
       <button class="btn btn-primary" type="submit">Submit</button>
     </div>
   </form>
