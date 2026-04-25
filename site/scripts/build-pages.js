@@ -327,6 +327,22 @@ const exampleDefinitions = [
     },
   },
   {
+    key: "react_hook_form",
+    integrationSlug: "react-component",
+    exampleSlug: "react-hook-form",
+    title: "React Hook Form",
+    metaDesc: "How to integrate intl-tel-input with React Hook Form.",
+    js: {
+      src: "src/examples/react-component/react-hook-form/component.tsx",
+      destDir: "tmp",
+      script: "react_hook_form_bundle.js",
+    },
+    content: {
+      hideMarkupSection: true,
+      script: "react_hook_form_bundle.js",
+    },
+  },
+  {
     key: "vue_component",
     integrationSlug: "vue-component",
     exampleSlug: "validation",

@@ -144,6 +144,12 @@ const examplesDropdownPages = [
     label: "Validation",
     nested: true,
   },
+  {
+    name: "react_hook_form",
+    href: "/examples/react-component/react-hook-form",
+    label: "React Hook Form",
+    nested: true,
+  },
   { name: "vue_component_heading", label: "Vue component", heading: true },
   {
     name: "vue_component",

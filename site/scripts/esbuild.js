@@ -78,6 +78,14 @@ build({
   outfile: "dist/examples/js/react_component_bundle.js",
 });
 
+// react hook form example
+build({
+  ...sharedOptions,
+  loader: { ".tsx": "tsx" },
+  entryPoints: ["tmp/examples/react-component/react-hook-form/component.tsx"],
+  outfile: "dist/examples/js/react_hook_form_bundle.js",
+});
+
 // angular component example
 build({
   ...sharedOptions,
