@@ -210,7 +210,6 @@ const exampleDefinitions = [
       markupName: "validation",
       includeItiScript: true,
     },
-    pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
   {
     key: "validation_practical",
@@ -229,7 +228,6 @@ const exampleDefinitions = [
           "<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
       }),
     },
-    pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
   {
     key: "validation_precise",
@@ -248,7 +246,6 @@ const exampleDefinitions = [
           "<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
       }),
     },
-    pageExtra: { stylesheet_after_website_css: "/examples/css/validation.css" },
   },
   {
     key: "hidden_input",
