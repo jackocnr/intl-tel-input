@@ -1,6 +1,4 @@
-@import url('./_variables.css');
-
- body.iti-page--homepage {
+body.iti-page--homepage {
   background-image: linear-gradient(
       182deg,
       rgba(var(--bs-body-bg-rgb), 0.012),

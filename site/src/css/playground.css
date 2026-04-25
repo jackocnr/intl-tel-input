@@ -1,5 +1,3 @@
-@import url('./_variables.css');
-
 /* When navigating to a Playground heading via hash, leave space above it. */
 .iti-playground h2[id] {
   scroll-margin-top: 30px;
