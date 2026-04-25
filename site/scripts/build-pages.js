@@ -47,6 +47,13 @@ const allowedNumberTypesNote = fs.readFileSync(
   "utf8",
 );
 
+const strictRejectToastPartial = fs.readFileSync(
+  "src/examples/javascript-plugin/_shared/strict_reject_toast.html",
+  "utf8",
+);
+const strictRejectToast = (id) =>
+  renderString(strictRejectToastPartial, { id });
+
 // Local helper used by the localisation doc page only.
 const toBcp47LanguageTag = (code) => {
   const raw = String(code || "").trim();
@@ -482,7 +489,9 @@ for (const def of exampleDefinitions) {
         content_title: title,
         integration_label: integrationLabel,
         desc: fs.readFileSync(`${exampleDir}/desc.html`, "utf8"),
-        markup: fs.readFileSync(markupPath, "utf8"),
+        markup: renderString(fs.readFileSync(markupPath, "utf8"), {
+          strictRejectToast,
+        }),
         display_markup: fs.readFileSync(displayMarkupPath, "utf8"),
         display_code: renderedDisplayCode,
         display_code_language: displayCodeLanguage,

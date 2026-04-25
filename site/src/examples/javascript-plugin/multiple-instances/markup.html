@@ -2,42 +2,21 @@
   <div class="mb-3">
     <label for="home" class="form-label">Home number</label>
     <div class="demo-input-wrap position-relative">
-      <div class="toast-container demo-toast-container">
-        <div id="homeToast" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-          <div class="d-flex">
-            <div class="toast-body" id="homeToastBody"></div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-        </div>
-      </div>
+      <%= strictRejectToast("homeToast") %>
       <input id="home" type="tel" class="form-control" />
     </div>
   </div>
   <div class="mb-3">
     <label for="mobile" class="form-label">Mobile number</label>
     <div class="demo-input-wrap position-relative">
-      <div class="toast-container demo-toast-container">
-        <div id="mobileToast" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-          <div class="d-flex">
-            <div class="toast-body" id="mobileToastBody"></div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-        </div>
-      </div>
+      <%= strictRejectToast("mobileToast") %>
       <input id="mobile" type="tel" class="form-control" />
     </div>
   </div>
   <div class="mb-3">
     <label for="vacation" class="form-label">Vacation number</label>
     <div class="demo-input-wrap position-relative">
-      <div class="toast-container demo-toast-container">
-        <div id="vacationToast" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-          <div class="d-flex">
-            <div class="toast-body" id="vacationToastBody"></div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-        </div>
-      </div>
+      <%= strictRejectToast("vacationToast") %>
       <input id="vacation" type="tel" class="form-control" />
     </div>
   </div>
