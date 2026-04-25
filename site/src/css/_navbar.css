@@ -1,4 +1,8 @@
-/* HEADER NAV (DESKTOP ONLY) */
+/* ===========================
+   HEADER NAV
+   The whole header, inc branding, hamburger, search, and dropdowns.
+   =========================== */
+
 .iti-header-nav {
   padding: 0.75rem 0;
   background-image: linear-gradient(rgb(var(--header-bg-color-rgb) / 1), rgb(var(--header-bg-color-rgb) / 0.95));
@@ -33,7 +37,7 @@
 }
 
 @media (min-width: 992px) {
-  .iti-header-nav-container {
+  .iti-header-nav-row {
     position: relative;
   }
 
@@ -46,43 +50,40 @@
   }
 }
 
+.iti-header-nav {
+  /* ALGOLIA SEARCH INPUT (actually a button) */
+  .DocSearch-Button {
+    width: 260px;
+    --docsearch-search-button-background: rgba(0, 0, 0, .1);
+    --docsearch-search-button-text-color: rgba(255, 255, 255, .65);
+    border: 1px solid rgba(255, 255, 255, .4);
 
-/* ALGOLIA SEARCH MODAL */
-.DocSearch-Container {
-  /* above Bootstrap navbar (z-1020) but below mobile nav (z-1055) */
-  z-index: 1051;
-}
-.DocSearch-Button {
-  width: 260px;
-  --docsearch-search-button-background: rgba(0, 0, 0, .1);
-  --docsearch-search-button-text-color: rgba(255, 255, 255, .65);
-  border: 1px solid rgba(255, 255, 255, .4);
-
-  &:hover {
-    --docsearch-search-button-text-color: rgba(255, 255, 255, 1);
-    border-color: rgba(255, 255, 255, 1);
+    &:hover {
+      --docsearch-search-button-text-color: rgba(255, 255, 255, 1);
+      border-color: rgba(255, 255, 255, 1);
+    }
   }
-}
-.DocSearch-Button-Keys {
-    min-width: 0;
-    padding: .125rem .25rem;
-    background: rgba(0, 0, 0, .25);
-    border-radius: .25rem
-}
-.DocSearch-Button-Key {
-    color: rgba(255, 255, 255, .65);
-    width: auto;
-    height: 1.25rem;
-    padding-right: .125rem;
-    padding-left: .125rem;
-    background: none;
-    border: none;
-    margin: 0 !important;
-}
-/* disable DocSearch's "pressed" styles */
-.DocSearch-Button-Key--pressed {
-  box-shadow: none !important;
-  transform: none !important;
+  .DocSearch-Button-Keys {
+      min-width: 0;
+      padding: .125rem .25rem;
+      background: rgba(0, 0, 0, .25);
+      border-radius: .25rem
+  }
+  .DocSearch-Button-Key {
+      color: rgba(255, 255, 255, .65);
+      width: auto;
+      height: 1.25rem;
+      padding-right: .125rem;
+      padding-left: .125rem;
+      background: none;
+      border: none;
+      margin: 0 !important;
+  }
+  /* disable DocSearch's "pressed" styles */
+  .DocSearch-Button-Key--pressed {
+    box-shadow: none !important;
+    transform: none !important;
+  }
 }
 /* mobile search icon button in header */
 .iti-header-nav-icon-btn {
@@ -98,13 +99,13 @@
 .iti-header-nav-search {
   min-width: 0;
 }
-
-/* The globe icon next to website name: both in header and mobile nav */
-.iti-logo {
-  margin-right: 10px;
+/* ALGOLIA SEARCH MODAL */
+.DocSearch-Container {
+  /* above Bootstrap navbar (z-1020) but below mobile nav (z-1055) */
+  z-index: 1051;
 }
 
-#bdNavbar {
+.iti-header-nav-menu {
   .nav-link {
     color: white;
     /* fix: unselected playground link not looking centered (to make space for bold active state) */
@@ -162,51 +163,166 @@
     }
   }
 }
-/* override Bootstrap's margin which causes a gap between the dropdown and toggle */
-.dropdown-menu[data-bs-popper] {
-  margin-top: 0 !important;
-}
-.offcanvas-title a {
-  color: var(--bs-body-color);
-  text-decoration: none;
-}
 
+.iti-header-nav {
+  /* Header dropdown: nested item border (slightly lighter than the sidebar nav
+     variant, to distinguish from the dropdown's own border) */
+  .iti-nav-item--nested {
+    border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.07);
+    margin-left: 1.05rem;
+  }
+  .iti-nav-item--nested > .dropdown-item {
+    padding-left: 0.85rem;
+  }
 
-/* Mobile nav: remove hover styles (prevents iOS/Android sticky :hover states) */
-.iti-mobile-nav {
-  .nav-pills .nav-link:not(.active):hover {
-    background-color: transparent;
+  /* Header dropdown: collapsible section toggle (button reset + chevron rotation) */
+  .iti-nav-section-toggle {
+    background: none;
+    border: 0;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .iti-nav-section-toggle:hover {
+    color: rgba(var(--bs-body-color-rgb), 0.9);
+  }
+  .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
+    transform: rotate(225deg);
+    margin-top: 8px;
+  }
+  .dropdown-menu > li + li:has(> .iti-nav-section-toggle) {
+    margin-top: 0.5rem;
+  }
+  .iti-nav-section-heading {
+    padding: 0.5rem 1rem 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(var(--bs-body-color-rgb), 0.65);
   }
 }
 
 
-.iti-context-nav .nav-link,
-.iti-mobile-nav .nav-link {
-  color: var(--bs-body-color);
-}
-.nav--primary-links > .nav-item > .nav-link {
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding-top: 0.65rem;
-  padding-bottom: 0.65rem;
-}
+/* =========================
+   MOBILE NAV
+   ========================= */
 
 .iti-mobile-nav {
+  .offcanvas-title a {
+    color: var(--bs-body-color);
+    text-decoration: none;
+  }
+
+  /* Remove hover styles (prevents iOS/Android sticky :hover states) */
+  .nav-pills .nav-link:not(.active):hover {
+    background-color: transparent;
+  }
+
+  .nav--primary-links > .nav-item > .nav-link {
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+  }
+
   .iti-nav-submenu .nav-link {
     font-size: 0.95rem;
     font-weight: 500;
     opacity: 0.95;
   }
+
   /* Mobile nav icon + label spacing: slightly wider than Bootstrap gap-2 */
   .d-flex.align-items-center.gap-2 {
     gap: calc(0.5rem + 2px) !important;
   }
+
+  /* Top-level toggle (Docs / Examples buttons) — button reset */
+  .iti-nav-toggle {
+    border: 0;
+    background: none;
+  }
+  .iti-nav-toggle[aria-expanded="true"] .iti-nav-chevron {
+    transform: rotate(225deg);
+    margin-top: 8px;
+  }
+
+  /* Collapsible section toggle (button reset + chevron rotation) */
+  .iti-nav-section-toggle {
+    background: none;
+    border: 0;
+    text-align: left;
+  }
+  .iti-nav-section-toggle:hover {
+    color: rgba(var(--bs-body-color-rgb), 0.9);
+  }
+  .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
+    transform: rotate(225deg);
+    margin-top: 8px;
+  }
+  .iti-nav-section {
+    margin-top: 0.2rem;
+  }
+  .iti-nav-section + .iti-nav-section {
+    margin-top: 0.7rem;
+  }
 }
-/* Mobile nav icon + label spacing: slightly wider than Bootstrap gap-2 */
-.iti-nav-toggle {
-  border: 0;
-  background: none;
+
+
+/* =========================
+   CONTEXT NAV
+   ========================= */
+
+.iti-context-nav {
+  /* Bridge the gap-1 spacing between consecutive nested items in the nav */
+  .iti-nav-item--nested + .iti-nav-item--nested::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: -0.25rem;
+    width: 1px;
+    height: 0.25rem;
+    background: rgba(var(--bs-body-color-rgb), 0.15);
+  }
+
+  /* Collapsible section toggle (button reset + chevron rotation) */
+  .iti-nav-section-toggle {
+    background: none;
+    border: 0;
+    text-align: left;
+  }
+  .iti-nav-section-toggle:hover {
+    color: rgba(var(--bs-body-color-rgb), 0.9);
+  }
+  .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
+    transform: rotate(225deg);
+    margin-top: 8px;
+  }
+  .iti-nav-sections {
+    gap: 0;
+  }
+  .iti-nav-section + .iti-nav-section {
+    margin-top: 0.75rem;
+  }
 }
+
+
+/* =========================
+   SHARED — rules used by 2+ navs (do not fork into per-nav copies)
+   ========================= */
+
+/* Bootstrap override: remove the gap between any popper-positioned dropdown
+   menu and its toggle (applies to header nav dropdowns AND the playground
+   multidropdown widget) */
+.dropdown-menu[data-bs-popper] {
+  margin-top: 0 !important;
+}
+
+/* Globe icon next to website name: header + mobile nav */
+.iti-logo {
+  margin-right: 10px;
+}
+
+/* Chevron used by all three navs (header dropdown, mobile, context) */
 .iti-nav-chevron {
   margin: 0px 0 3px 6px;
   width: 8px;
@@ -217,9 +333,11 @@
   transform: rotate(45deg);
   opacity: 0.85;
 }
-.iti-nav-toggle[aria-expanded="true"] .iti-nav-chevron {
-  transform: rotate(225deg);
-  margin-top: 8px;
+
+/* Sidebar navs (mobile + context) share visual language: vertical link lists */
+.iti-context-nav .nav-link,
+.iti-mobile-nav .nav-link {
+  color: var(--bs-body-color);
 }
 .nav-pills {
   .nav-link.active {
@@ -236,24 +354,6 @@
   position: relative;
   border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.15);
   margin-left: 1.1rem;
-}
-/* Bridge the gap-1 spacing between consecutive nested items in the nav */
-.iti-context-nav .iti-nav-item--nested + .iti-nav-item--nested::before {
-  content: "";
-  position: absolute;
-  left: -1px;
-  top: -0.25rem;
-  width: 1px;
-  height: 0.25rem;
-  background: rgba(var(--bs-body-color-rgb), 0.15);
-}
-.dropdown-menu .iti-nav-item--nested {
-  /* slightly lighter border in header dropdowns, to distinguish from dropdown border */
-  border-left: 1px solid rgba(var(--bs-body-color-rgb), 0.07);
-  margin-left: 1.05rem;
-}
-.dropdown-menu .iti-nav-item--nested > .dropdown-item {
-  padding-left: 0.85rem;
 }
 
 /* Non-link section headings inside the nav (group labels for examples-by-integration) */
@@ -272,74 +372,9 @@
   margin-top: 0;
 }
 
-/* Context nav: collapsible section toggle (button reset + chevron rotation) */
-.iti-context-nav .iti-nav-section-toggle {
-  background: none;
-  border: 0;
-  text-align: left;
-}
-.iti-context-nav .iti-nav-section-toggle:hover {
-  color: rgba(var(--bs-body-color-rgb), 0.9);
-}
-.iti-context-nav .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
-  transform: rotate(225deg);
-  margin-top: 8px;
-}
-.iti-context-nav .iti-nav-sections {
-  gap: 0;
-}
-.iti-context-nav .iti-nav-section + .iti-nav-section {
-  margin-top: 0.75rem;
-}
 /* Keep submenu items stacked vertically during Bootstrap's collapse animation
    (without this, .nav's flex-wrap causes items to flow horizontally mid-animation) */
 .iti-context-nav .iti-nav-submenu,
 .iti-mobile-nav .iti-nav-submenu {
   flex-wrap: nowrap;
-}
-
-/* Header dropdown: collapsible section toggle (button reset + chevron rotation) */
-.dropdown-menu .iti-nav-section-toggle {
-  background: none;
-  border: 0;
-  text-align: left;
-  white-space: nowrap;
-}
-.dropdown-menu .iti-nav-section-toggle:hover {
-  color: rgba(var(--bs-body-color-rgb), 0.9);
-}
-.dropdown-menu .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
-  transform: rotate(225deg);
-  margin-top: 8px;
-}
-.dropdown-menu > li + li:has(> .iti-nav-section-toggle) {
-  margin-top: 0.5rem;
-}
-
-/* Mobile nav: collapsible section toggle (button reset + chevron rotation) */
-.iti-mobile-nav .iti-nav-section-toggle {
-  background: none;
-  border: 0;
-  text-align: left;
-}
-.iti-mobile-nav .iti-nav-section-toggle:hover {
-  color: rgba(var(--bs-body-color-rgb), 0.9);
-}
-.iti-mobile-nav .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
-  transform: rotate(225deg);
-  margin-top: 8px;
-}
-.iti-mobile-nav .iti-nav-section {
-  margin-top: 0.2rem;
-}
-.iti-mobile-nav .iti-nav-section + .iti-nav-section {
-  margin-top: 0.7rem;
-}
-.dropdown-menu .iti-nav-section-heading {
-  padding: 0.5rem 1rem 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: rgba(var(--bs-body-color-rgb), 0.65);
 }
