@@ -54,12 +54,17 @@ const warnInputProp = (prop: string): void => {
 
 const ignoredInputProps = new Set(["type", "value", "disabled", "readonly", "onInput", "oninput"]);
 
+// Classes the plugin adds directly to the input (e.g. iti__tel-input)
+const pluginInputClasses = ref("");
+
 const sanitizedInputProps = computed(() => {
   const input = (props.inputProps ?? {}) as Record<string, unknown>;
   const rest: Record<string, unknown> = {};
   for (const [key, val] of Object.entries(input)) {
     if (ignoredInputProps.has(key)) {
       warnInputProp(key);
+    } else if (key === "class") {
+      rest[key] = `${pluginInputClasses.value} ${val}`;
     } else {
       rest[key] = val;
     }
@@ -190,6 +195,7 @@ onMounted(() => {
   }
 
   instance.value = intlTelInput(input.value, initOptions.value);
+  pluginInputClasses.value = input.value.className;
 
   input.value.addEventListener("open:countrydropdown", handleOpen);
   input.value.addEventListener("close:countrydropdown", handleClose);

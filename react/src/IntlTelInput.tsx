@@ -68,6 +68,8 @@ const IntlTelInput = forwardRef(function IntlTelInput(
 ) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
+  // Classes the plugin adds directly to the input (e.g. iti__tel-input)
+  const pluginInputClassesRef = useRef<string>("");
   const lastEmittedNumberRef = useRef<string | undefined>(undefined);
   const lastEmittedCountryRef = useRef<string | undefined>(undefined);
   const lastEmittedValidityRef = useRef<boolean | undefined>(undefined);
@@ -153,6 +155,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
       return undefined;
     }
     itiRef.current = intlTelInput(inputEl, initOptions as SomeOptions);
+    pluginInputClassesRef.current = inputEl.className;
 
     const handleOpen = (): void => onOpenCountryDropdownRef.current?.();
     const handleClose = (): void => onCloseCountryDropdownRef.current?.();
@@ -229,6 +232,9 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   for (const [key, val] of Object.entries(inputProps)) {
     if (ignoredInputProps.has(key)) {
       warnInputProp(key);
+    } else if (key === "className") {
+      // Preserve any user-added or plugin-added classes on the input
+      sanitizedInputProps[key] = `${pluginInputClassesRef.current} ${val}`;
     } else {
       sanitizedInputProps[key] = val;
     }

@@ -131,6 +131,8 @@ class IntlTelInput
 
   private iti?: Iti;
   private appliedInputAttrKeys = new Set<string>();
+  // Classes the plugin adds directly to the input (e.g. iti__tel-input)
+  private pluginInputClasses = "";
 
   private lastEmittedNumber?: string;
   private lastEmittedCountry?: string;
@@ -161,6 +163,7 @@ class IntlTelInput
       this.inputRef.nativeElement,
       this.buildInitOptions(),
     );
+    this.pluginInputClasses = this.inputRef.nativeElement.className;
 
     this.inputRef.nativeElement.addEventListener(
       "open:countrydropdown",
@@ -382,7 +385,10 @@ class IntlTelInput
         warnInputAttr(key);
       } else {
         currentKeys.add(key);
-        this.inputRef.nativeElement.setAttribute(key, value);
+        const next = key === "class" && this.pluginInputClasses
+          ? `${this.pluginInputClasses} ${value}`
+          : value;
+        this.inputRef.nativeElement.setAttribute(key, next);
       }
     });
     this.appliedInputAttrKeys.forEach((key) => {
@@ -391,11 +397,6 @@ class IntlTelInput
       }
     });
     this.appliedInputAttrKeys = currentKeys;
-    // Setting the `class` attribute above wipes the plugin-added `iti__tel-input` class;
-    // re-add it so CSS selectors (e.g. the strictRejectAnimation shake) keep matching.
-    if (this.iti) {
-      this.inputRef.nativeElement.classList.add("iti__tel-input");
-    }
   }
 
   // ============ ControlValueAccessor Implementation ============
