@@ -150,11 +150,23 @@ const examplesDropdownPages = [
     label: "React Hook Form",
     nested: true,
   },
+  {
+    name: "react_display_existing_number",
+    href: "/examples/react-component/display-existing-number",
+    label: "Display existing number",
+    nested: true,
+  },
   { name: "vue_component_heading", label: "Vue component", heading: true },
   {
     name: "vue_component",
     href: "/examples/vue-component/validation",
     label: "Validation",
+    nested: true,
+  },
+  {
+    name: "vue_display_existing_number",
+    href: "/examples/vue-component/display-existing-number",
+    label: "Display existing number",
     nested: true,
   },
   { name: "angular_component_heading", label: "Angular component", heading: true },
@@ -164,11 +176,23 @@ const examplesDropdownPages = [
     label: "Validation",
     nested: true,
   },
+  {
+    name: "angular_display_existing_number",
+    href: "/examples/angular-component/display-existing-number",
+    label: "Display existing number",
+    nested: true,
+  },
   { name: "svelte_component_heading", label: "Svelte component", heading: true },
   {
     name: "svelte_component",
     href: "/examples/svelte-component/validation",
     label: "Validation",
+    nested: true,
+  },
+  {
+    name: "svelte_display_existing_number",
+    href: "/examples/svelte-component/display-existing-number",
+    label: "Display existing number",
     nested: true,
   },
 ];

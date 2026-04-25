@@ -322,6 +322,22 @@ const exampleDefinitions = [
     },
   },
   {
+    key: "angular_display_existing_number",
+    integrationSlug: "angular-component",
+    exampleSlug: "display-existing-number",
+    title: "Display existing number",
+    metaDesc: "Automatically format an existing number when rendering the Angular component.",
+    js: {
+      src: "src/examples/angular-component/display-existing-number/component.ts",
+      destDir: "tmp",
+      script: "angular_display_existing_number_bundle.js",
+    },
+    content: {
+      hideMarkupSection: true,
+      script: "angular_display_existing_number_bundle.js",
+    },
+  },
+  {
     key: "react_component",
     integrationSlug: "react-component",
     exampleSlug: "validation",
@@ -356,6 +372,22 @@ const exampleDefinitions = [
     },
   },
   {
+    key: "react_display_existing_number",
+    integrationSlug: "react-component",
+    exampleSlug: "display-existing-number",
+    title: "Display existing number",
+    metaDesc: "Automatically format an existing number when rendering the React component.",
+    js: {
+      src: "src/examples/react-component/display-existing-number/component.tsx",
+      destDir: "tmp",
+      script: "react_display_existing_number_bundle.js",
+    },
+    content: {
+      hideMarkupSection: true,
+      script: "react_display_existing_number_bundle.js",
+    },
+  },
+  {
     key: "vue_component",
     integrationSlug: "vue-component",
     exampleSlug: "validation",
@@ -373,6 +405,22 @@ const exampleDefinitions = [
     },
   },
   {
+    key: "vue_display_existing_number",
+    integrationSlug: "vue-component",
+    exampleSlug: "display-existing-number",
+    title: "Display existing number",
+    metaDesc: "Automatically format an existing number when rendering the Vue component.",
+    js: {
+      src: "src/examples/vue-component/display-existing-number/component.vue",
+      destDir: "tmp",
+      script: "vue_display_existing_number_bundle.js",
+    },
+    content: {
+      hideMarkupSection: true,
+      script: "vue_display_existing_number_bundle.js",
+    },
+  },
+  {
     key: "svelte_component",
     integrationSlug: "svelte-component",
     exampleSlug: "validation",
@@ -387,6 +435,22 @@ const exampleDefinitions = [
       demo_note: allowedNumberTypesNote,
       hideMarkupSection: true,
       script: "svelte_component_bundle.js",
+    },
+  },
+  {
+    key: "svelte_display_existing_number",
+    integrationSlug: "svelte-component",
+    exampleSlug: "display-existing-number",
+    title: "Display existing number",
+    metaDesc: "Automatically format an existing number when rendering the Svelte component.",
+    js: {
+      src: "src/examples/svelte-component/display-existing-number/component.svelte",
+      destDir: "tmp",
+      script: "svelte_display_existing_number_bundle.js",
+    },
+    content: {
+      hideMarkupSection: true,
+      script: "svelte_display_existing_number_bundle.js",
     },
   },
 ];

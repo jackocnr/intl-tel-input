@@ -1,0 +1,5 @@
+<p>When you want to display a user's number back to them, set the <a href="/docs/angular_component#initialvalue"><code>initialValue</code></a> input to the full international number. The component will automatically select the relevant flag and reformat the number to national format (unless you set <a href="/docs/options#nationalmode"><code>nationalMode</code></a> to false).</p>
+
+<p>We recommend that internally you always deal with numbers in full international format. The component then lets the user interact with the familiar national format.</p>
+
+<p>Note: reformatting the number this way requires the utils script to be loaded via the <a href="/docs/options#loadutils"><code>loadUtils</code></a> option. The utils script is a custom build of Google's libphonenumber library, which we use for all formatting, validation, and placeholder generation.</p>

@@ -86,6 +86,14 @@ build({
   outfile: "dist/examples/js/react_hook_form_bundle.js",
 });
 
+// react display existing number example
+build({
+  ...sharedOptions,
+  loader: { ".tsx": "tsx" },
+  entryPoints: ["tmp/examples/react-component/display-existing-number/component.tsx"],
+  outfile: "dist/examples/js/react_display_existing_number_bundle.js",
+});
+
 // angular component example
 build({
   ...sharedOptions,
@@ -93,6 +101,15 @@ build({
   tsconfig: "../angular/tsconfig.build.json",
   entryPoints: ["tmp/examples/angular-component/validation/component.ts"],
   outfile: "dist/examples/js/angular_component_bundle.js",
+});
+
+// angular display existing number example
+build({
+  ...sharedOptions,
+  loader: { ".ts": "ts" },
+  tsconfig: "../angular/tsconfig.build.json",
+  entryPoints: ["tmp/examples/angular-component/display-existing-number/component.ts"],
+  outfile: "dist/examples/js/angular_display_existing_number_bundle.js",
 });
 
 // playground
