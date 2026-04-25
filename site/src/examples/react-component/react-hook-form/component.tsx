@@ -45,6 +45,9 @@ const App = () => {
   const phoneValue = useWatch({ control, name: "phone" });
 
   const validatePhone = (value: string): true | string => {
+    if (!intlTelInput.utils) {
+      return true; // utils still loading; RHF will re-run validate on the next change
+    }
     const iti = itiRef.current!.getInstance()!;
     if (iti.isValidNumber()) {
       return true;

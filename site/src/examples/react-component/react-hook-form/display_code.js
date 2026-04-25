@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
-import IntlTelInput from "intl-tel-input/react";
+import IntlTelInput, { intlTelInput } from "intl-tel-input/react";
 import "intl-tel-input/styles";
 
 const geoIpLookup = (success, failure) => {
@@ -20,6 +20,9 @@ const App = () => {
   // RHF calls this with the current value; we delegate to the plugin's own
   // validation by reading isValidNumber() / getValidationError() off the iti instance.
   const validatePhone = (value) => {
+    if (!intlTelInput.utils) {
+      return true; // utils still loading; RHF will re-run validate on the next change
+    }
     const iti = itiRef.current.getInstance();
     if (iti.isValidNumber()) {
       return true;
