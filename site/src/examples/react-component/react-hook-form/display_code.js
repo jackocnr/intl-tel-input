@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { useForm, Controller } from "react-hook-form";
+import React, { useRef, useState } from "react";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import IntlTelInput, { intlTelInput } from "intl-tel-input/react";
 import "intl-tel-input/styles";
 
@@ -12,10 +12,12 @@ const geoIpLookup = (success, failure) => {
 
 const App = () => {
   const itiRef = useRef(null);
+  const [validNumber, setValidNumber] = useState(null);
   const { control, handleSubmit, formState: { errors } } = useForm({
     mode: "onTouched",
     defaultValues: { phone: "" },
   });
+  const phoneValue = useWatch({ control, name: "phone" });
 
   // RHF calls this with the current value; we delegate to the plugin's own
   // validation by reading isValidNumber() / getValidationError() off the iti instance.
@@ -33,7 +35,10 @@ const App = () => {
 
   const onSubmit = (data) => {
     // submit data.phone to your backend
+    setValidNumber(data.phone);
   };
+
+  const showValidMsg = validNumber !== null && validNumber === phoneValue;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,8 +66,9 @@ const App = () => {
           />
         )}
       />
-      {errors.phone && <div className="invalid">{errors.phone.message}</div>}
       <button type="submit">Submit</button>
+      {errors.phone && <div className="invalid">{errors.phone.message}</div>}
+      {showValidMsg && <div className="valid">Full number: {validNumber}</div>}
     </form>
   );
 };

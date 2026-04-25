@@ -22,6 +22,9 @@ import "intl-tel-input/styles";
       @if (invalidMsg) {
         <div class="invalid-feedback d-block">{{ invalidMsg }}</div>
       }
+      @if (validMsg) {
+        <div class="valid-feedback d-block">{{ validMsg }}</div>
+      }
     </form>
   `,
   standalone: true,
@@ -29,6 +32,7 @@ import "intl-tel-input/styles";
 })
 export class AppComponent {
   showValidation = false;
+  submitted = false;
 
   loadUtils = () => import("intl-tel-input/utils");
 
@@ -53,7 +57,14 @@ export class AppComponent {
     return yourCodeToDeriveErrorMessage(this.phone.errors?.["invalidPhone"] ?? null);
   }
 
+  get validMsg() {
+    const showValid =
+      this.showValidation && this.phone?.valid && this.submitted;
+    return showValid ? `Full number: ${this.phone.value}` : null;
+  }
+
   handleSubmit() {
     this.showValidation = true;
+    this.submitted = true;
   }
 }

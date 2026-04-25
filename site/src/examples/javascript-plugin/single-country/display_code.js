@@ -3,6 +3,7 @@ import intlTelInput from "intl-tel-input";
 const form = document.querySelector("#form");
 const input = document.querySelector("#phone");
 const errorMsg = document.querySelector("#error-msg");
+const validMsg = document.querySelector("#valid-msg");
 
 // initialise plugin
 const iti = intlTelInput(input, {
@@ -18,22 +19,28 @@ const iti = intlTelInput(input, {
 await iti.promise;
 
 let showValidation = false;
+let submitted = false;
 
 const updateUI = () => {
   if (!showValidation) return;
 
+  const isValid = iti.isValidNumber();
+
   let invalidMsg = "";
-  if (!iti.isValidNumber()) {
+  if (!isValid) {
     const errorCode = iti.getValidationError();
     invalidMsg = yourCodeToDeriveErrorMessage(input.value, errorCode);
   }
   errorMsg.textContent = invalidMsg;
+
+  validMsg.textContent = isValid && submitted ? `Full number: ${iti.getNumber()}` : "";
 };
 
-// on submit: enable validation UI
+// on submit: validate (and show "Full number" if valid)
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   showValidation = true;
+  submitted = true;
   updateUI();
 });
 
@@ -43,5 +50,8 @@ input.addEventListener("blur", () => {
   updateUI();
 });
 
-// while typing / pasting / changing country: update validity state
-input.addEventListener("input", updateUI);
+// while typing / pasting / changing country: remove any submitted state and update validity state
+input.addEventListener("input", () => {
+  submitted = false;
+  updateUI();
+});

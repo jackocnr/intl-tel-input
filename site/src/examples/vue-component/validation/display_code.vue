@@ -14,22 +14,39 @@
   const isValid = ref(false);
   const errorCode = ref(null);
   const showValidation = ref(false);
+  const submitted = ref(false);
 
   const invalidMsg = computed(() => {
     if (!showValidation.value || isValid.value) return null;
     return yourCodeToDeriveErrorMessage(number.value, errorCode.value);
   });
 
-  const enableValidation = () => {
+  const validMsg = computed(() => {
+    const showValid =
+      showValidation.value && isValid.value && submitted.value;
+    return showValid ? `Full number: ${number.value}` : null;
+  });
+
+  const handleChangeNumber = (newNumber) => {
+    submitted.value = false;
+    number.value = newNumber;
+  };
+
+  const handleBlur = () => {
     showValidation.value = true;
+  };
+
+  const handleSubmit = () => {
+    showValidation.value = true;
+    submitted.value = true;
   };
 </script>
 
 <template>
-  <form @submit.prevent="enableValidation">
+  <form @submit.prevent="handleSubmit">
     <label for="phone">Phone number</label>
     <IntlTelInput
-      @changeNumber="number = $event"
+      @changeNumber="handleChangeNumber"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
       initial-country="auto"
@@ -40,10 +57,11 @@
       :load-utils="() => import('intl-tel-input/utils')"
       :input-props="{
         id: 'phone',
-        onBlur: enableValidation,
+        onBlur: handleBlur,
       }"
     />
     <button type="submit">Submit</button>
     <div v-if="invalidMsg" class="invalid">{{ invalidMsg }}</div>
+    <div v-if="validMsg" class="valid">{{ validMsg }}</div>
   </form>
 </template>
