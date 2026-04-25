@@ -119,9 +119,8 @@ export const NUMBER_TYPE_SET = new Set(NUMBER_TYPES) as ReadonlySet<
 
 // Data-* keys used on DOM nodes
 export const DATA_KEYS = {
-  // e.g. <li data-country-code="us"> for country items in dropdown
-  // in the future, the value should be changed to "iso2", but this is a breaking change for another day
-  ISO2: "countryCode",
+  // e.g. <li data-iso2="us"> for country items in dropdown
+  ISO2: "iso2",
   DIAL_CODE: "dialCode",
   // e.g. <input data-intl-tel-input-id="0"> on the input element
   INSTANCE_ID: "intlTelInputId",

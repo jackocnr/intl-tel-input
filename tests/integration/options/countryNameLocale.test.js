@@ -19,7 +19,7 @@ describe("countryNameLocale = fr", () => {
 
   test("uses Intl.DisplayNames to generate country names in French", () => {
     const usNameEl = container.querySelector(
-      "li[data-country-code='us'] .iti__country-name",
+      "li[data-iso2='us'] .iti__country-name",
     );
     expect(usNameEl).toBeTruthy();
     // In French, US is "États-Unis".

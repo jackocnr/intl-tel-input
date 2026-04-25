@@ -41,7 +41,7 @@ for (const t of targets) {
       await gotoTarget(page, t);
       await page.locator(".iti__selected-country").click();
       await expect(page.locator(".iti__dropdown-content")).toBeVisible();
-      await page.locator('li[data-country-code="gb"]').first().click();
+      await page.locator('li[data-iso2="gb"]').first().click();
       await expect(page.locator(".iti__selected-country")).toHaveAttribute("title", /United Kingdom/);
     });
 

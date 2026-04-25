@@ -167,7 +167,7 @@ describe("UI.buildMarkup", () => {
   test("country list items have correct data attributes", () => {
     const { input } = buildUI();
     const first = getCountryList(input).children[0];
-    expect(first.dataset.countryCode).toBe("us");
+    expect(first.dataset.iso2).toBe("us");
     expect(first.dataset.dialCode).toBe("1");
   });
 
@@ -363,7 +363,7 @@ describe("UI country search filtering", () => {
     ui.openDropdown(() => {}, () => {});
     typeInSearch(getSearchInput(input), "germany");
     expect(getCountryList(input).children.length).toBe(1);
-    expect(getCountryList(input).children[0].dataset.countryCode).toBe("de");
+    expect(getCountryList(input).children[0].dataset.iso2).toBe("de");
   });
 
   test("highlights first matched country", () => {
@@ -440,7 +440,7 @@ describe("UI.setCountry", () => {
   test("marks list item as selected with aria and check icon", () => {
     const { ui, input } = buildUI();
     ui.setCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
-    const gbItem = getCountryList(input).querySelector("[data-country-code=\"gb\"]");
+    const gbItem = getCountryList(input).querySelector("[data-iso2=\"gb\"]");
     expect(gbItem.getAttribute(ARIA.SELECTED)).toBe("true");
     expect(gbItem.querySelector(".iti__country-check")).not.toBeNull();
   });
@@ -450,8 +450,8 @@ describe("UI.setCountry", () => {
     ui.setCountry({ iso2: "us", dialCode: "1", name: "United States" });
     ui.setCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
 
-    const usItem = getCountryList(input).querySelector("[data-country-code=\"us\"]");
-    const gbItem = getCountryList(input).querySelector("[data-country-code=\"gb\"]");
+    const usItem = getCountryList(input).querySelector("[data-iso2=\"us\"]");
+    const gbItem = getCountryList(input).querySelector("[data-iso2=\"gb\"]");
     expect(usItem.getAttribute(ARIA.SELECTED)).toBe("false");
     expect(usItem.querySelector(".iti__country-check")).toBeNull();
     expect(gbItem.getAttribute(ARIA.SELECTED)).toBe("true");

@@ -1015,7 +1015,7 @@ export default class UI {
     // if setting to a new country (rather than null/globe icon, or the existing selected item), find the new list item and set aria-selected to true
     if (iso2 && !this.#selectedListItemEl) {
       const newListItem = this.#countryListEl!.querySelector(
-        `[data-country-code="${iso2}"]`,
+        `[data-iso2="${iso2}"]`,
       ) as HTMLElement;
       if (newListItem) {
         newListItem.setAttribute(ARIA.SELECTED, "true");

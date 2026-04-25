@@ -95,7 +95,7 @@ export const getCountryListLength = (container) => {
 };
 
 export const getHighlightedItemCode = (container) => {
-  return container.querySelector(".iti__country-list .iti__highlight").getAttribute("data-country-code");
+  return container.querySelector(".iti__country-list .iti__highlight").getAttribute("data-iso2");
 };
 
 export const getSelectedCountryButton = (container) => {
@@ -120,7 +120,7 @@ export const getSearchInput = (container) => {
 
 export const getCountriesInList = (container) => {
   const countryListItems = container.querySelectorAll(".iti__country-list .iti__country");
-  return [...countryListItems].map(c => c.getAttribute("data-country-code"));
+  return [...countryListItems].map(c => c.getAttribute("data-iso2"));
 };
 
 export const checkFlagSelected = (container, iso2 = "") => {
@@ -140,7 +140,7 @@ export const clickSelectedCountryAsync = async (container, user) => {
 };
 
 export const selectCountryAsync = async (container, iso2, user) => {
-  const countryItem = container.querySelector(`li[data-country-code='${iso2}']`);
+  const countryItem = container.querySelector(`li[data-iso2='${iso2}']`);
   await user.click(countryItem);
 };
 

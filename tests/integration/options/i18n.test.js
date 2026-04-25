@@ -24,7 +24,7 @@ describe("i18n option", () => {
   afterEach(() => teardown(iti));
 
   test("overrides country name", () => {
-    const frItem = container.querySelector("li[data-country-code='fr'] .iti__country-name");
+    const frItem = container.querySelector("li[data-iso2='fr'] .iti__country-name");
     expect(frItem.textContent).toContain("République Française");
   });
 
