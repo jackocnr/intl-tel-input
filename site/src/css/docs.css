@@ -119,3 +119,6 @@
   }
 }
 
+.iti-doc-options__row + h5 {
+  margin-top: 1.5rem;
+}
