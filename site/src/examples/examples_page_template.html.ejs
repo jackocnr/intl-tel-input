@@ -8,9 +8,6 @@
 
     <%= og_meta_tags %>
     <%= common_styles %>
-    <% if (typeof stylesheet_after_website_css !== 'undefined') { %>
-      <link rel="stylesheet" href="<%= cacheBust(stylesheet_after_website_css) %>">
-    <% } %>
 
     <%= common_head_end_prod %>
   </head>

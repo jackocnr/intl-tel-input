@@ -271,9 +271,6 @@ const exampleDefinitions = [
     content: {
       includeItiScript: true,
     },
-    pageExtra: {
-      stylesheet_after_website_css: "/examples/css/multiple_instances.css",
-    },
   },
   {
     key: "display_number",

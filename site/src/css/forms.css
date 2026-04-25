@@ -41,6 +41,11 @@ textarea.form-control::placeholder {
   width: fit-content;
 }
 
+/* fixed-width labels for the multiple-instances example so its stacked rows align */
+.multiple-instances-label {
+  width: 150px;
+}
+
 /* float strict:reject toast just above the input (shared by homepage + playground demos) */
 .demo-input-wrap .demo-toast-container {
   position: absolute;

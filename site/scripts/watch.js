@@ -50,9 +50,6 @@ function categorise(p) {
   if (p.startsWith("../dist/")) {
     return "copy";
   }
-  if (p.startsWith("src/examples/css/")) {
-    return "copy";
-  }
 
   if (p.startsWith("src/css/")) {
     return "css";

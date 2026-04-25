@@ -10,8 +10,6 @@ const targets = [
   { from: "../dist", to: "dist/intl-tel-input" },
   // Static site assets (favicon, robots.txt, etc.)
   { from: "static", to: "dist" },
-  // Demo example CSS, copied verbatim
-  { from: "src/examples/css", to: "dist/examples/css" },
 ];
 
 for (const { from, to } of targets) {
