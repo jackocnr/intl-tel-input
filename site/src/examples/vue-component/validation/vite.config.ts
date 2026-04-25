@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
-const projectRoot = fileURLToPath(new URL("../../..", import.meta.url));
+const projectRoot = fileURLToPath(new URL("../../../..", import.meta.url));
 
 export default defineConfig({
   define: {
@@ -18,7 +18,7 @@ export default defineConfig({
     emptyOutDir: false,
     copyPublicDir: false,
     lib: {
-      entry: path.resolve(projectRoot, "src/examples/js/vue_main.ts"),
+      entry: path.resolve(projectRoot, "src/examples/vue-component/validation/main.ts"),
       formats: ["cjs"],
       // Force .js extension. Vite would otherwise use .cjs because the
       // package.json now has "type": "module" and a bare .js would be ESM.

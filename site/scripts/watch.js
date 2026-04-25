@@ -55,9 +55,20 @@ function categorise(p) {
     return "css";
   }
 
-  if (p.startsWith("src/examples/js/")) {
-    if (/_display_code\.(js|vue|svelte)$/.test(p)) {
+  if (p.startsWith("src/examples/")) {
+    // display_code.* files are shown as code on the example page; rebuild pages.
+    if (/\/display_code\.(js|vue|svelte)$/.test(p)) {
       return "pages";
+    }
+    // The vue/svelte example sources, their main.ts, and their vite.config.ts
+    // are bundled by vite — route them to the matching action.
+    if (p.startsWith("src/examples/vue-component/") &&
+        /\/(component\.vue|main\.ts|vite\.config\.ts)$/.test(p)) {
+      return "vue";
+    }
+    if (p.startsWith("src/examples/svelte-component/") &&
+        /\/(component\.svelte|main\.ts|vite\.config\.ts)$/.test(p)) {
+      return "svelte";
     }
     if (p.endsWith(".vue")) {
       return "vue";
@@ -65,15 +76,11 @@ function categorise(p) {
     if (p.endsWith(".svelte")) {
       return "svelte";
     }
-    if (/\/(vue_main\.ts|viteVueDemo\.config\.ts)$/.test(p)) {
-      return "vue";
-    }
-    if (/\/(svelte_main\.ts|viteSvelteDemo\.config\.ts)$/.test(p)) {
-      return "svelte";
-    }
-    if (/\.(ts|tsx|js)$/.test(p)) {
+    // page.ts / component.ts(x) / *.js → esbuild bundles or templates them.
+    if (/\.(tsx|ts|js)$/.test(p)) {
       return "esbuild";
     }
+    // markup.html, desc.html, _shared/*, _templates/* → rebuild pages.
     return "pages";
   }
 
@@ -100,9 +107,6 @@ function categorise(p) {
     return "pages";
   }
   if (p.startsWith("src/shared/")) {
-    return "pages";
-  }
-  if (p.startsWith("src/examples/")) {
     return "pages";
   }
   if (p === "src/layout_template.html.ejs") {

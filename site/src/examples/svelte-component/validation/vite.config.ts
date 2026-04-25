@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 
-const projectRoot = fileURLToPath(new URL("../../..", import.meta.url));
+const projectRoot = fileURLToPath(new URL("../../../..", import.meta.url));
 
 export default defineConfig({
   resolve: {
@@ -30,9 +30,9 @@ export default defineConfig({
       external: (id) => id.startsWith("/intl-tel-input/js/utils.js"),
     },
     lib: {
-      entry: path.resolve(projectRoot, "src/examples/js/svelte_main.ts"),
+      entry: path.resolve(projectRoot, "src/examples/svelte-component/validation/main.ts"),
       formats: ["cjs"],
-      // Force .js extension — see comment in viteVueDemo.config.js.
+      // Force .js extension — see comment in vue-component/validation/vite.config.ts.
       fileName: () => "svelte_component_bundle.js",
     },
   },

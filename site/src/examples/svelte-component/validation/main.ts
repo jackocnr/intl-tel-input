@@ -1,4 +1,4 @@
-import App from "../../../tmp/examples/js/svelte_component.svelte";
+import App from "../../../../tmp/examples/js/svelte_component.svelte";
 
 import { mount } from "svelte";
 

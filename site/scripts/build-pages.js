@@ -218,11 +218,10 @@ const exampleDefinitions = [
     title: "Validation",
     metaDesc:
       "Validate the user's phone number and if there's an error, display a relevant message.",
-    js: { src: "src/examples/js/validation.ts", destDir: "tmp" },
+    js: { destDir: "tmp" },
     content: {
       markupName: "validation",
       includeItiScript: true,
-      displayCode: "src/examples/js/validation_display_code.js",
       extraData: () => ({
         demo_note:
           "<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
@@ -236,11 +235,11 @@ const exampleDefinitions = [
     title: "Precise validation (advanced)",
     metaDesc:
       "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
-    js: { src: "src/examples/js/validation.ts", destDir: "tmp" },
+    js: { src: "src/examples/javascript-plugin/validation/page.ts", destDir: "tmp" },
     content: {
       markupName: "validation",
       includeItiScript: true,
-      displayCode: "src/examples/js/validation_display_code.js",
+      displayCode: "src/examples/javascript-plugin/validation/display_code.js",
       extraData: () => ({
         demo_note:
           "<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>",
@@ -302,12 +301,11 @@ const exampleDefinitions = [
     title: "Validation",
     metaDesc: "How to use intl-tel-input with Angular.",
     js: {
-      src: "src/examples/js/angular_component.ts",
+      src: "src/examples/angular-component/validation/component.ts",
       dest: "tmp/examples/js/angular_component.ts",
       script: "angular_component_bundle.js",
     },
     content: {
-      markupName: "component",
       hideMarkupSection: true,
       script: "angular_component_bundle.js",
     },
@@ -319,12 +317,11 @@ const exampleDefinitions = [
     title: "Validation",
     metaDesc: "How to use intl-tel-input with React.",
     js: {
-      src: "src/examples/js/react_component.tsx",
+      src: "src/examples/react-component/validation/component.tsx",
       dest: "tmp/examples/js/react_component.tsx",
       script: "react_component_bundle.js",
     },
     content: {
-      markupName: "component",
       hideMarkupSection: true,
       script: "react_component_bundle.js",
     },
@@ -336,12 +333,11 @@ const exampleDefinitions = [
     title: "Validation",
     metaDesc: "How to use intl-tel-input with Vue.",
     js: {
-      src: "src/examples/js/vue_component.vue",
+      src: "src/examples/vue-component/validation/component.vue",
       dest: "tmp/examples/js/vue_component.vue",
       script: "vue_component_bundle.js",
     },
     content: {
-      markupName: "component",
       hideMarkupSection: true,
       script: "vue_component_bundle.js",
     },
@@ -353,12 +349,11 @@ const exampleDefinitions = [
     title: "Validation",
     metaDesc: "How to use intl-tel-input with Svelte.",
     js: {
-      src: "src/examples/js/svelte_component.svelte",
+      src: "src/examples/svelte-component/validation/component.svelte",
       dest: "tmp/examples/js/svelte_component.svelte",
       script: "svelte_component_bundle.js",
     },
     content: {
-      markupName: "component",
       hideMarkupSection: true,
       script: "svelte_component_bundle.js",
     },
@@ -388,7 +383,8 @@ for (const def of exampleDefinitions) {
   } = def;
   const urlPath = `${integrationSlug}/${exampleSlug}`;
   const integrationLabel = integrationLabels[integrationSlug];
-  const jsSrc = js.src || `src/examples/js/${key}.ts`;
+  const exampleDir = `src/examples/${integrationSlug}/${exampleSlug}`;
+  const jsSrc = js.src || `${exampleDir}/page.ts`;
   // For tmp/ destinations the file is consumed by esbuild, which handles .ts
   // natively — preserve the source extension so esbuild reads the right loader.
   // For dist/ destinations the file is served to the browser as-is, so the
@@ -399,16 +395,21 @@ for (const def of exampleDefinitions) {
   const srcExt = path.extname(jsSrc);
   const displayCodeExt = [".vue", ".svelte"].includes(srcExt) ? srcExt : ".js";
   const displayCode =
-    content.displayCode || `src/examples/js/${key}_display_code${displayCodeExt}`;
+    content.displayCode || `${exampleDir}/display_code${displayCodeExt}`;
   const scriptName = js.script || `${key}.js`;
 
   const contentDest = content.dest || `tmp/examples/${key}_content.html`;
   const layoutDest = content.layoutDest || `tmp/examples/${key}_layout.html`;
   const pageDest = content.pageDest || `dist/examples/${urlPath}.html`;
 
-  const markupName = content.markupName || key;
-  const markupPath = `src/examples/html/${markupName}.html`;
-  const displayMarkupCandidate = `src/examples/html/${markupName}_display_code.html`;
+  // Markup: shared (when markupName is set) lives in this integration's
+  // _shared/ dir; otherwise it's per-example at markup.html.
+  const markupPath = content.markupName
+    ? `src/examples/${integrationSlug}/_shared/${content.markupName}.html`
+    : `${exampleDir}/markup.html`;
+  const displayMarkupCandidate = content.markupName
+    ? `src/examples/${integrationSlug}/_shared/${content.markupName}_display_code.html`
+    : `${exampleDir}/markup_display.html`;
   const displayMarkupPath = fs.existsSync(displayMarkupCandidate)
     ? displayMarkupCandidate
     : markupPath;
@@ -430,7 +431,7 @@ for (const def of exampleDefinitions) {
   // 4. Example content (read markup, demo code, etc).
   tasks.push({
     name: `${key}_content`,
-    src: "src/examples/examples_content_template.html.ejs",
+    src: "src/examples/_templates/content.html.ejs",
     dest: contentDest,
     data: () => {
       let displayCodeContent = fs.readFileSync(displayCode, "utf8");
@@ -451,7 +452,7 @@ for (const def of exampleDefinitions) {
         cacheBust,
         content_title: title,
         integration_label: integrationLabel,
-        desc: fs.readFileSync(`src/examples/copy/${key}_desc.html`, "utf8"),
+        desc: fs.readFileSync(`${exampleDir}/desc.html`, "utf8"),
         markup: fs.readFileSync(markupPath, "utf8"),
         display_markup: fs.readFileSync(displayMarkupPath, "utf8"),
         display_code: renderedDisplayCode,
@@ -477,7 +478,7 @@ for (const def of exampleDefinitions) {
       ({
         showLeftSidebar: true,
         layoutClass: "iti-layout-both-sidebars",
-        nav: fs.readFileSync("src/examples/examples_nav_template.html.ejs", "utf8"),
+        nav: fs.readFileSync("src/examples/_templates/nav.html.ejs", "utf8"),
         content: fs.readFileSync(contentDest, "utf8"),
         name: key,
         pageType: "examples",
@@ -490,7 +491,7 @@ for (const def of exampleDefinitions) {
   // 6. Example page (wraps layout in the page template).
   tasks.push({
     name: `${key}_page`,
-    src: "src/examples/examples_page_template.html.ejs",
+    src: "src/examples/_templates/page.html.ejs",
     dest: pageDest,
     data: () => ({
       cacheBust,

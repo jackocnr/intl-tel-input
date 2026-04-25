@@ -8,10 +8,11 @@
   // and the `window.intlTelInput` global, so noImplicitAny / strictNullChecks
   // would generate noise without adding much real safety.
   //
-  // The example files under src/examples/js/*.ts contain lodash template
-  // tags (e.g. `import("<%= cacheBust(...) %>")`) which aren't valid TS
-  // expressions until build-pages.js renders them, so they're excluded
-  // here — esbuild still strips their types when bundling/templating.
+  // The example files under src/examples/{integration}/{example}/*.ts contain
+  // lodash template tags (e.g. `import("<%= cacheBust(...) %>")`) which aren't
+  // valid TS expressions until build-pages.js renders them, so they're typechecked
+  // with @ts-expect-error suppressions in place — esbuild still strips their
+  // types when bundling/templating.
   "compilerOptions": {
     "target": "ES2022",
     "module": "esnext",
@@ -29,7 +30,7 @@
   "include": [
     "src/js/**/*.ts",
     "src/playground/js/**/*.ts",
-    "src/examples/js/**/*.ts",
+    "src/examples/**/*.ts",
     "src/types/**/*.d.ts"
   ]
 }
