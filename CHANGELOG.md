@@ -1,6 +1,6 @@
 See the Github Releases page for changelog: https://github.com/jackocnr/intl-tel-input/releases
 
-Or to view a specific version, e.g. v27.3.0, update the URL accordingly, e.g. https://github.com/jackocnr/intl-tel-input/releases/tag/v27.3.0
+Or to view a specific version, e.g. v27.3.1, update the URL accordingly, e.g. https://github.com/jackocnr/intl-tel-input/releases/tag/v27.3.1
 
 ## Breaking changes
 
