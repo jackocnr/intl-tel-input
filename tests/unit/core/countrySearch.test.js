@@ -2,7 +2,11 @@
  * @vitest-environment node
  */
 
-import { getMatchedCountries, findFirstCountryStartingWith } from "../../../src/js/core/countrySearch.ts";
+import {
+  getMatchedCountries,
+  findFirstCountryStartingWith,
+  buildSearchTokens,
+} from "../../../src/js/core/countrySearch.ts";
 
 // helper to make a Country-like object
 const makeCountry = (overrides) => ({
@@ -16,86 +20,65 @@ const makeCountry = (overrides) => ({
 });
 
 const countries = [
-  makeCountry({
-    iso2: "gb",
-    dialCode: "44",
-    priority: 0,
-    name: "United Kingdom",
-    normalisedName: "united kingdom",
-    dialCodePlus: "+44",
-    initials: "uk",
-  }),
-  makeCountry({
-    iso2: "gg",
-    dialCode: "44",
-    priority: 1,
-    name: "Guernsey",
-    normalisedName: "guernsey",
-    dialCodePlus: "+44",
-    initials: "g",
-  }),
-  makeCountry({
-    iso2: "us",
-    dialCode: "1",
-    priority: 0,
-    name: "United States",
-    normalisedName: "united states",
-    dialCodePlus: "+1",
-    initials: "us",
-  }),
-  makeCountry({
-    iso2: "ua",
-    dialCode: "380",
-    priority: 0,
-    name: "Ukraine",
-    normalisedName: "ukraine",
-    dialCodePlus: "+380",
-    initials: "u",
-  }),
+  makeCountry({ iso2: "gb", dialCode: "44", priority: 0, name: "United Kingdom" }),
+  makeCountry({ iso2: "gg", dialCode: "44", priority: 1, name: "Guernsey" }),
+  makeCountry({ iso2: "us", dialCode: "1", priority: 0, name: "United States" }),
+  makeCountry({ iso2: "ua", dialCode: "380", priority: 0, name: "Ukraine" }),
 ];
+
+const tokens = buildSearchTokens(countries);
+
+describe("countrySearch buildSearchTokens", () => {
+  test("computes normalisedName, initials and dialCodePlus per country", () => {
+    const t = tokens.get("gb");
+    expect(t.normalisedName).toBe("united kingdom");
+    expect(t.initials).toBe("uk");
+    expect(t.dialCodePlus).toBe("+44");
+  });
+});
 
 describe("countrySearch getMatchedCountries", () => {
   test("iso2 exact match wins over others", () => {
-    const result = getMatchedCountries(countries, "gb");
+    const result = getMatchedCountries(countries, tokens, "gb");
     expect(result[0].iso2).toBe("gb");
   });
 
   test("name starts-with beats name contains", () => {
-    const result = getMatchedCountries(countries, "united k");
+    const result = getMatchedCountries(countries, tokens, "united k");
     expect(result[0].iso2).toBe("gb");
     expect(result.find(c => c.iso2 === "us")).toBeUndefined();
   });
 
   test("dial code exact (+ or bare) bucket ordering respected", () => {
-    const resultBare = getMatchedCountries(countries, "44");
+    const resultBare = getMatchedCountries(countries, tokens, "44");
     expect(resultBare[0].iso2).toBe("gb");
     expect(resultBare[1].iso2).toBe("gg");
 
-    const resultPlus = getMatchedCountries(countries, "+44");
+    const resultPlus = getMatchedCountries(countries, tokens, "+44");
     expect(resultPlus[0].iso2).toBe("gb");
     expect(resultPlus[1].iso2).toBe("gg");
   });
 
   test("dial code contains bucket after exact dial code", () => {
-    const result = getMatchedCountries(countries, "+3");
+    const result = getMatchedCountries(countries, tokens, "+3");
     const uaIndex = result.findIndex(c => c.iso2 === "ua");
     expect(uaIndex).toBeGreaterThanOrEqual(0);
   });
 
   test("initials bucket last (presence)", () => {
-    const result = getMatchedCountries(countries, "uk"); // initials match for GB
+    const result = getMatchedCountries(countries, tokens, "uk"); // initials match for GB
     expect(result.some(c => c.iso2 === "gb")).toBe(true);
   });
 });
 
 describe("countrySearch findFirstCountryStartingWith", () => {
   test("finds first alphabetical match by original order", () => {
-    const result = findFirstCountryStartingWith(countries, "uni");
+    const result = findFirstCountryStartingWith(countries, tokens, "uni");
     expect(result?.iso2).toBe("gb");
   });
 
   test("returns null when no match", () => {
-    const result = findFirstCountryStartingWith(countries, "zzz");
+    const result = findFirstCountryStartingWith(countries, tokens, "zzz");
     expect(result).toBeNull();
   });
 });

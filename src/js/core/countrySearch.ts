@@ -1,8 +1,34 @@
 // * Country search & ranking logic extracted from intlTelInput.ts
 // * Maintains original comments/order. Pure functions for reuse & testability.
 
-import type { Country } from "../data.js";
+import type { Country, Iso2 } from "../data.js";
 import { normaliseString } from "../helpers/string.js";
+
+export interface SearchTokens {
+  normalisedName: string;
+  initials: string;
+  dialCodePlus: string;
+}
+
+export type SearchTokensMap = Map<Iso2, SearchTokens>;
+
+//* Precompute country search tokens (normalised name, initials, +dialCode) to speed up filtering.
+export const buildSearchTokens = (countries: Country[]): SearchTokensMap => {
+  const tokens: SearchTokensMap = new Map();
+  for (const c of countries) {
+    const normalisedName = normaliseString(c.name);
+    const initials = normalisedName
+      .split(/[^a-z]/)
+      .map((word) => word[0])
+      .join("");
+    tokens.set(c.iso2, {
+      normalisedName,
+      initials,
+      dialCodePlus: `+${c.dialCode}`,
+    });
+  }
+  return tokens;
+};
 
 /**
  * Country search: Given raw query, return ordered list of countries by priority buckets.
@@ -17,6 +43,7 @@ import { normaliseString } from "../helpers/string.js";
  */
 export const getMatchedCountries = (
   countries: Country[],
+  searchTokens: SearchTokensMap,
   query: string,
 ): Country[] => {
   const normalisedQuery = normaliseString(query);
@@ -30,20 +57,21 @@ export const getMatchedCountries = (
   const initialsMatches: Country[] = [];
 
   for (const c of countries) {
+    const t = searchTokens.get(c.iso2)!;
     if (c.iso2 === normalisedQuery) {
       iso2Matches.push(c);
-    } else if (c.normalisedName.startsWith(normalisedQuery)) {
+    } else if (t.normalisedName.startsWith(normalisedQuery)) {
       nameStartsWith.push(c);
-    } else if (c.normalisedName.includes(normalisedQuery)) {
+    } else if (t.normalisedName.includes(normalisedQuery)) {
       nameContains.push(c);
     } else if (
       normalisedQuery === c.dialCode ||
-      normalisedQuery === c.dialCodePlus
+      normalisedQuery === t.dialCodePlus
     ) {
       dialCodeMatches.push(c);
-    } else if (c.dialCodePlus.includes(normalisedQuery)) {
+    } else if (t.dialCodePlus.includes(normalisedQuery)) {
       dialCodeContains.push(c);
-    } else if (c.initials.includes(normalisedQuery)) {
+    } else if (t.initials.includes(normalisedQuery)) {
       initialsMatches.push(c);
     }
   }
@@ -67,11 +95,13 @@ export const getMatchedCountries = (
  */
 export const findFirstCountryStartingWith = (
   countries: Country[],
+  searchTokens: SearchTokensMap,
   query: string,
 ): Country | null => {
   const normalisedQuery = normaliseString(query);
   for (const c of countries) {
-    if (c.normalisedName.startsWith(normalisedQuery)) {
+    const { normalisedName } = searchTokens.get(c.iso2)!;
+    if (normalisedName.startsWith(normalisedQuery)) {
       return c;
     }
   }

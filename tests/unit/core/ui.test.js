@@ -3,6 +3,7 @@
  */
 
 import UI from "../../../src/js/core/ui.ts";
+import { buildSearchTokens } from "../../../src/js/core/countrySearch.ts";
 import { CLASSES, ARIA, KEYS } from "../../../src/js/constants.ts";
 import defaultEnglishStrings from "../../../src/js/i18n/en.ts";
 
@@ -14,9 +15,6 @@ const makeCountry = (overrides) => ({
   areaCodes: null,
   nationalPrefix: null,
   name: "Test Country",
-  normalisedName: "test country",
-  dialCodePlus: "+1",
-  initials: "tc",
   ...overrides,
 });
 
@@ -55,30 +53,9 @@ const makeOptions = (overrides = {}) => ({
 });
 
 const countries = [
-  makeCountry({
-    iso2: "us",
-    dialCode: "1",
-    name: "United States",
-    normalisedName: "united states",
-    dialCodePlus: "+1",
-    initials: "us",
-  }),
-  makeCountry({
-    iso2: "gb",
-    dialCode: "44",
-    name: "United Kingdom",
-    normalisedName: "united kingdom",
-    dialCodePlus: "+44",
-    initials: "uk",
-  }),
-  makeCountry({
-    iso2: "de",
-    dialCode: "49",
-    name: "Germany",
-    normalisedName: "germany",
-    dialCodePlus: "+49",
-    initials: "g",
-  }),
+  makeCountry({ iso2: "us", dialCode: "1", name: "United States" }),
+  makeCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" }),
+  makeCountry({ iso2: "de", dialCode: "49", name: "Germany" }),
 ];
 
 // Helper: create an input, build UI, and return { ui, input, wrapper }
@@ -94,7 +71,7 @@ const buildUI = (optionOverrides = {}, inputAttrs = {}) => {
 
   const testCountries = countries.map((c) => ({ ...c }));
 
-  ui.buildMarkup(testCountries);
+  ui.buildMarkup(testCountries, buildSearchTokens(testCountries));
   return { ui, input, countries: testCountries };
 };
 
@@ -254,7 +231,7 @@ describe("UI hidden inputs", () => {
     });
     const ui = new UI(input, options, 1);
     const testCountries = countries.map((c) => ({ ...c }));
-    ui.buildMarkup(testCountries);
+    ui.buildMarkup(testCountries, buildSearchTokens(testCountries));
 
     const phoneHidden = getHiddenInput(input, "phone_full");
     const countryHidden = getHiddenInput(input, "phone_country");
@@ -551,7 +528,7 @@ describe("UI.destroy", () => {
     const options = makeOptions({ separateDialCode: true });
     const ui = new UI(input, options, 2);
     const testCountries = countries.map((c) => ({ ...c }));
-    ui.buildMarkup(testCountries);
+    ui.buildMarkup(testCountries, buildSearchTokens(testCountries));
 
     // paddingLeft will have been overwritten by buildMarkup
     expect(input.style.paddingLeft).not.toBe("20px");
@@ -590,7 +567,7 @@ describe("UI RTL support", () => {
     const options = makeOptions();
     const ui = new UI(input, options, 3);
     const testCountries = countries.map((c) => ({ ...c }));
-    ui.buildMarkup(testCountries);
+    ui.buildMarkup(testCountries, buildSearchTokens(testCountries));
 
     const wrapper = input.parentNode;
     expect(wrapper.getAttribute("dir")).toBe("ltr");

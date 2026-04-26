@@ -19,9 +19,12 @@ import {
   processAllCountries,
   processDialCodes,
   sortCountries,
-  cacheSearchTokens,
   generateCountryNames,
 } from "./data/country-data.js";
+import {
+  buildSearchTokens,
+  type SearchTokensMap,
+} from "./core/countrySearch.js";
 import { hasRegionlessDialCode } from "./data/intl-regionless.js";
 import {
   stripSeparateDialCode,
@@ -116,6 +119,7 @@ export class Iti {
   readonly #dialCodeToIso2Map: Record<string, Iso2[]>;
   readonly #dialCodes: Set<string>;
   readonly #countryByIso2: Map<Iso2, Country>;
+  #searchTokens!: SearchTokensMap;
 
   #selectedCountry: Country | null = null;
   #maxCoreNumberLength: number | null = null;
@@ -201,7 +205,7 @@ export class Iti {
     this.#processCountryData();
 
     //* generate the markup.
-    this.#ui.buildMarkup(this.#countries);
+    this.#ui.buildMarkup(this.#countries, this.#searchTokens);
 
     //* Set the initial state of the input value and the selected country.
     this.#setInitialState();
@@ -229,8 +233,8 @@ export class Iti {
     //* Sort countries by countryOrder option (if present), then name.
     sortCountries(this.#countries, this.#options);
 
-    //* Precompute and cache country search tokens to speed up filtering
-    cacheSearchTokens(this.#countries);
+    //* Precompute country search tokens (kept off the Country object since they're search-only).
+    this.#searchTokens = buildSearchTokens(this.#countries);
   }
 
   //* Set the initial state of the input value and the selected country by:

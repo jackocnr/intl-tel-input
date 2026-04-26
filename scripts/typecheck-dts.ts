@@ -51,13 +51,10 @@ void _firstCountryIso;
 const _countryShape: Country = {
   iso2: "gb",
   dialCode: "44",
-  dialCodePlus: "+44",
   priority: 0,
   areaCodes: null,
   nationalPrefix: null,
   name: "United Kingdom",
-  normalisedName: "united kingdom",
-  initials: "UK",
 };
 void _countryShape;
 

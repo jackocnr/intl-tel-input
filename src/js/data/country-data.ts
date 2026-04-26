@@ -1,5 +1,4 @@
 import allCountries, { type Country, type Iso2 } from "../data.js";
-import { normaliseString } from "../helpers/string.js";
 import type { AllOptions } from "../types/public-api.js";
 
 export interface ProcessedDialCodes {
@@ -157,19 +156,4 @@ export const sortCountries = (
     //* Secondary sort: country name
     return a.name.localeCompare(b.name);
   });
-};
-
-//* Precompute and cache country search tokens to speed up filtering
-export const cacheSearchTokens = (countries: Country[]): void => {
-  for (const c of countries) {
-    // Normalised name (lowercase, accents removed etc)
-    c.normalisedName = normaliseString(c.name);
-    // Name initials (first letter of each alpha sequence)
-    c.initials = c.normalisedName
-      .split(/[^a-z]/)
-      .map((word) => word[0])
-      .join("");
-    // Cached +dialCode variant
-    c.dialCodePlus = `+${c.dialCode}`;
-  }
 };

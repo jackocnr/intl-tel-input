@@ -7,7 +7,6 @@ import {
   generateCountryNames,
   processDialCodes,
   sortCountries,
-  cacheSearchTokens,
 } from "../../../src/js/data/country-data.ts";
 import allCountries from "../../../src/js/data.ts";
 
@@ -69,17 +68,6 @@ describe("data/country-data sortCountries", () => {
     const order = sample.map(c => c.iso2).reverse();
     sortCountries(sample, { countryOrder: order });
     expect(sample.map(c => c.iso2)).toEqual(order);
-  });
-});
-
-describe("data/country-data cacheSearchTokens", () => {
-  test("adds normalisedName, initials and dialCodePlus", () => {
-    const sample = allCountries.slice(0, 1).map(c => ({ ...c }));
-    cacheSearchTokens(sample);
-    const c = sample[0];
-    expect(c.normalisedName).toBeDefined();
-    expect(c.initials).toBeDefined();
-    expect(c.dialCodePlus).toBe(`+${c.dialCode}`);
   });
 });
 

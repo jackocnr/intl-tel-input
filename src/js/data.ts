@@ -1501,18 +1501,12 @@ export const rawCountryData = [
 export type Iso2 = (typeof rawCountryData)[number][0];
 
 export type Country = {
+  name: string; // populated in the plugin
   iso2: Iso2;
   dialCode: string;
   priority: number;
   areaCodes: readonly string[] | null;
   nationalPrefix: string | null;
-
-  // the following fields are populated by the plugin
-  name: string;
-  // derived fields, cached for country search efficiency
-  normalisedName: string;
-  initials: string;
-  dialCodePlus: string;
 };
 
 const allCountries: Country[] = [];
@@ -1525,9 +1519,6 @@ for (const c of rawCountryData) {
     priority: c[2] || 0,
     areaCodes: c[3] || null,
     nationalPrefix: c[4] || null,
-    normalisedName: "", // populated in the plugin
-    initials: "", // populated in the plugin
-    dialCodePlus: "", // populated in the plugin
   });
 }
 

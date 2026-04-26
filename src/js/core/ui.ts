@@ -7,8 +7,20 @@ import {
   buildCheckIcon,
   buildGlobeIcon,
 } from "./icons.js";
-import { CLASSES, ARIA, LAYOUT, KEYS, REGEX, TIMINGS, DATA_KEYS } from "../constants.js";
-import { findFirstCountryStartingWith, getMatchedCountries } from "./countrySearch.js";
+import {
+  CLASSES,
+  ARIA,
+  LAYOUT,
+  KEYS,
+  REGEX,
+  TIMINGS,
+  DATA_KEYS,
+} from "../constants.js";
+import {
+  findFirstCountryStartingWith,
+  getMatchedCountries,
+  type SearchTokensMap,
+} from "./countrySearch.js";
 import { Numerals } from "./numerals.js";
 
 export default class UI {
@@ -18,6 +30,7 @@ export default class UI {
   readonly #isRTL: boolean;
   readonly #originalPaddingLeft: string = "";
   #countries!: Country[];
+  #searchTokens!: SearchTokensMap;
   #searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   #inlineDropdownHeight?: number;
   #countryContainerEl?: HTMLElement;
@@ -73,8 +86,12 @@ export default class UI {
   }
 
   //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
-  public buildMarkup(countries: Country[]): void {
+  public buildMarkup(
+    countries: Country[],
+    searchTokens: SearchTokensMap,
+  ): void {
     this.#countries = countries;
+    this.#searchTokens = searchTokens;
 
     this.telInputEl.classList.add("iti__tel-input");
     //* Set useful defaults for phone number input attributes.
@@ -202,7 +219,11 @@ export default class UI {
 
     // Note: fixDropdownWidth is always false if useFullscreenPopup is true
     // don't re-set it if it's already set
-    if (!allowDropdown || !fixDropdownWidth || this.#dropdownContentEl!.style.width) {
+    if (
+      !allowDropdown ||
+      !fixDropdownWidth ||
+      this.#dropdownContentEl!.style.width
+    ) {
       return;
     }
 
@@ -532,7 +553,8 @@ export default class UI {
   #updateSearchResultsA11yText(): void {
     const { i18n } = this.#options;
     const count = this.#countryListEl!.childElementCount;
-    this.#searchResultsLiveRegionEl!.textContent = i18n.searchSummaryAria!(count);
+    this.#searchResultsLiveRegionEl!.textContent =
+      i18n.searchSummaryAria!(count);
   }
 
   //* Country search: Filter the countries according to the search query.
@@ -544,7 +566,12 @@ export default class UI {
       matchedCountries = this.#countries;
     } else {
       //* Normalise any Arabic-Indic / Persian digits so dial-code matching works for users typing in alternative numeral sets.
-      matchedCountries = getMatchedCountries(this.#countries, Numerals.toAscii(query));
+      const normalisedQuery = Numerals.toAscii(query);
+      matchedCountries = getMatchedCountries(
+        this.#countries,
+        this.#searchTokens,
+        normalisedQuery,
+      );
     }
     this.#showFilteredCountries(matchedCountries);
   }
@@ -943,7 +970,11 @@ export default class UI {
 
   //* Hidden search (countrySearch disabled): jump to the first list item whose name starts with the query.
   #searchForCountry(query: string): void {
-    const match = findFirstCountryStartingWith(this.#countries, query);
+    const match = findFirstCountryStartingWith(
+      this.#countries,
+      this.#searchTokens,
+      query,
+    );
     if (match) {
       const listItem = this.#listItemByIso2.get(match.iso2)!;
       this.#highlightListItem(listItem);
@@ -972,7 +1003,10 @@ export default class UI {
   // Update the selected list item in the dropdown
   #updateSelectedListItem(iso2: Iso2 | ""): void {
     // if the existing selected item is different to the new country, set aria-selected to false
-    if (this.#selectedListItemEl && this.#selectedListItemEl.dataset[DATA_KEYS.ISO2] !== iso2) {
+    if (
+      this.#selectedListItemEl &&
+      this.#selectedListItemEl.dataset[DATA_KEYS.ISO2] !== iso2
+    ) {
       this.#selectedListItemEl.setAttribute(ARIA.SELECTED, "false");
       this.#selectedListItemEl.querySelector(".iti__country-check")?.remove();
       this.#selectedListItemEl = null;
