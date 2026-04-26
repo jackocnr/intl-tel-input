@@ -22,11 +22,10 @@ const getErrorMessage = (number: string, errorCode: number): string => {
   return errorMap[errorCode] || genericError;
 };
 
-const geoIpLookup = (success: (iso2: Iso2) => void, failure: () => void): void => {
-  fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
-    .then((res) => res.json())
-    .then((data) => success(data.country_code))
-    .catch(() => failure());
+const geoIpLookup = async (): Promise<Iso2> => {
+  const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
+  const data = await res.json();
+  return data.country_code;
 };
 
 type FormValues = { phone: string };

@@ -6,11 +6,10 @@ const validMsg = document.querySelector<HTMLElement>("#valid-msg")!;
 // initialise plugin
 const iti = window.intlTelInput(input, {
   initialCountry: "auto",
-  geoIpLookup: (success, failure) => {
-    fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
-      .then(res => res.json())
-      .then(data => success(data.country_code))
-      .catch(() => failure());
+  geoIpLookup: async () => {
+    const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
+    const data = await res.json();
+    return data.country_code;
   },
   hiddenInput: () => ({ phone: "full_phone", country: "country_iso2" }),
   // @ts-expect-error - lodash template tag, resolved at build time

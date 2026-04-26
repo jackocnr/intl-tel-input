@@ -97,9 +97,7 @@ export interface AllOptions {
   fixDropdownWidth: boolean;
   formatAsYouType: boolean;
   formatOnDisplay: boolean;
-  geoIpLookup:
-    | ((success: (iso2: Iso2) => void, failure: () => void) => void)
-    | null;
+  geoIpLookup: (() => Promise<Iso2>) | null;
   hiddenInput:
     | ((telInputName: string) => { phone: string; country?: string })
     | null;

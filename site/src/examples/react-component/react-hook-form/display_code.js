@@ -3,11 +3,10 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import IntlTelInput, { intlTelInput } from "intl-tel-input/react";
 import "intl-tel-input/styles";
 
-const geoIpLookup = (success, failure) => {
-  fetch("https://ipapi.co/json")
-    .then(res => res.json())
-    .then(data => success(data.country_code))
-    .catch(() => failure());
+const geoIpLookup = async () => {
+  const res = await fetch("https://ipapi.co/json");
+  const data = await res.json();
+  return data.country_code;
 };
 
 const App = () => {

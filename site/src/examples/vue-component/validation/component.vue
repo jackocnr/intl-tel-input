@@ -15,11 +15,10 @@
     return errorMap[errorCode] || genericError;
   };
 
-  const geoIpLookup = (success, failure) => {
-    fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
-      .then((res) => res.json())
-      .then((data) => success(data.country_code))
-      .catch(() => failure());
+  const geoIpLookup = async () => {
+    const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
+    const data = await res.json();
+    return data.country_code;
   };
 
   const number = ref("");

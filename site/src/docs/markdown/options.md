@@ -36,26 +36,25 @@ An array of iso2 codes to exclude from the country dropdown e.g. `["gb", "us"]`.
 Try the plugin with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#country-options) — the dropdown now starts at Bahamas.
 
 ###### geoIpLookup
-Type: `(success: (iso2: string) => void, failure: () => void) => void`  
+Type: `() => Promise<string>`  
 Default: `null`  
 
-When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and then invokes the `success` callback with the relevant iso2 code.
+When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error).
 
 Note that on plugin initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the plugin instance (accessible directly with the JS plugin, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
 
-Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup>:  
+Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `geoIpLookup`):  
 ```js
-(success, failure) => {
-  fetch("https://ipapi.co/json")
-    .then((res) => res.json())
-    .then((data) => success(data.country_code))
-    .catch(() => failure());
+async () => {
+  const res = await fetch("https://ipapi.co/json");
+  const data = await res.json();
+  return data.country_code;
 }
 ```
-_Note that the `failure` callback must be called in the event of an error, hence the use of `catch()` in this example. Tip: store the result in a cookie to avoid repeat lookups!_
+_Tip: store the result in a cookie to avoid repeat lookups!_
 
 > [!NOTE]  
-> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its quota is reached. For production, you should either sign up for a paid plan, swap in another IP-lookup provider, or roll your own solution — the plugin just cares that you eventually call `success(iso2Code)` or `failure()`.
+> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its quota is reached. For production, you should either sign up for a paid plan, swap in another IP-lookup provider, or roll your own solution — the plugin just cares that the returned promise eventually resolves with an iso2 code (or rejects).
 
 Play with this option in the [Playground](/playground#country-options).
 

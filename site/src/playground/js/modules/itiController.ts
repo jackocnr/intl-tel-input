@@ -66,11 +66,10 @@ function toInitOptions(
   }
 
   if (state.geoIpLookup) {
-    opts.geoIpLookup = (success: (iso2: string) => void, failure: () => void): void => {
-      fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
-        .then((res) => res.json())
-        .then((data) => success(data.country_code))
-        .catch(() => failure());
+    opts.geoIpLookup = async (): Promise<string> => {
+      const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
+      const data = await res.json();
+      return data.country_code;
     };
   }
 

@@ -12,11 +12,10 @@ const iti = intlTelInput(input, {
     country: "country_iso2",
   }),
   initialCountry: "auto",
-  geoIpLookup: (success, failure) => {
-    fetch("https://ipapi.co/json")
-      .then(res => res.json())
-      .then(data => success(data.country_code))
-      .catch(() => failure());
+  geoIpLookup: async () => {
+    const res = await fetch("https://ipapi.co/json");
+    const data = await res.json();
+    return data.country_code;
   },
   loadUtils: () => import("intl-tel-input/utils"),
 });

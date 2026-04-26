@@ -4,7 +4,7 @@
 
 <ol>
 <li>Set <a href="/docs/options#initialcountry"><code>initialCountry</code></a> to <code>"auto"</code>. This tells the plugin to use the IP lookup service.</li>
-<li>Set <a href="/docs/options#geoiplookup"><code>geoIpLookup</code></a> to a function that makes the IP lookup request and returns the iso2 code. The plugin will then use that iso2 code to set the initial country.</li>
+<li>Set <a href="/docs/options#geoiplookup"><code>geoIpLookup</code></a> to a function that makes the IP lookup request and returns a <code>Promise</code> resolving to the iso2 code. The plugin will then use that iso2 code to set the initial country.</li>
 </ol>
 
-<p>In the example below, we call the <a rel="noopener" href="https://ipapi.co">ipapi</a> service (which offers a free tier) using the standard <code>fetch</code> API. Note that the <code>failure</code> callback inside <a href="/docs/options#geoiplookup"><code>geoIpLookup</code></a> must be called in the event of an error — hence the use of <code>catch</code> in the example code.</p>
+<p>In the example below, we call the <a rel="noopener" href="https://ipapi.co">ipapi</a> service (which offers a free tier) using the standard <code>fetch</code> API. If the request fails, the returned promise should reject (or resolve with an empty/invalid value) so the plugin falls back appropriately.</p>

@@ -33,7 +33,7 @@ describe("geoIpLookup option", () => {
       intlTelInput.autoCountry = undefined;
       const options = {
         initialCountry: "auto",
-        geoIpLookup: (_success, failure) => setTimeout(() => failure(), 0),
+        geoIpLookup: () => new Promise((_, reject) => setTimeout(() => reject(), 0)),
       };
       ({ iti } = initPlugin({ options }));
       iti.promise.catch(() => {
@@ -47,7 +47,7 @@ describe("geoIpLookup option", () => {
       intlTelInput.autoCountry = undefined;
     });
 
-    test("iti.promise rejects when failure callback invoked", async () => {
+    test("iti.promise rejects when geoIpLookup promise rejects", async () => {
       await expect(iti.promise).rejects.toBeUndefined();
       expect(rejected).toBe(true);
     });
@@ -61,7 +61,7 @@ describe("geoIpLookup option", () => {
       intlTelInput.autoCountry = undefined;
       const options = {
         initialCountry: "auto",
-        geoIpLookup: (cb) => setTimeout(() => cb("zz"), 0),
+        geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("zz"), 0)),
       };
       ({ iti } = initPlugin({ options }));
     });
@@ -84,7 +84,7 @@ describe("geoIpLookup option", () => {
       resolved = false;
       const options = {
         initialCountry: "auto",
-        geoIpLookup: (cb) => setTimeout(() => cb("gb"), 10),
+        geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("gb"), 10)),
       };
       ({ iti } = initPlugin({ options }));
       iti.promise.then(() => {
@@ -110,7 +110,7 @@ describe("geoIpLookup option", () => {
         await iti.promise; // allow the first instance to resolve before initialising the second
         const options = {
           initialCountry: "auto",
-          geoIpLookup: (cb) => setTimeout(() => cb("gb"), 10),
+          geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("gb"), 10)),
         };
         ({ iti: iti2 } = initPlugin({ options }));
         iti2.promise.then(() => {

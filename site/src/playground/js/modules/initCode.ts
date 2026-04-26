@@ -21,11 +21,10 @@ const HLJS_LANGUAGE: Record<Integration, string> = {
 // geoIpLookup and customPlaceholder both get hoisted to a top-level const (or Angular class field)
 // in every integration, so we store them at zero indentation and let each renderer embed them uniformly.
 const GEO_IP_LOOKUP_BODY = [
-  "(success, failure) => {",
-  '  fetch("https://ipapi.co/json")',
-  "    .then((res) => res.json())",
-  "    .then((data) => success(data.country_code))",
-  "    .catch(() => failure());",
+  "async () => {",
+  '  const res = await fetch("https://ipapi.co/json");',
+  "  const data = await res.json();",
+  "  return data.country_code;",
   "}",
 ].join("\n");
 

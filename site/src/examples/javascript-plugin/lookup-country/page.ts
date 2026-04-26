@@ -1,11 +1,10 @@
 const input = document.querySelector<HTMLInputElement>("#phone")!;
 window.intlTelInput(input, {
   initialCountry: "auto",
-  geoIpLookup: (success, failure) => {
-    fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
-      .then(res => res.json())
-      .then(data => success(data.country_code))
-      .catch(() => failure());
+  geoIpLookup: async () => {
+    const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
+    const data = await res.json();
+    return data.country_code;
   },
   // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),

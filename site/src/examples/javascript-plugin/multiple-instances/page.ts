@@ -4,11 +4,10 @@ const inputVacation = document.querySelector<HTMLInputElement>("#vacation")!;
 
 window.intlTelInput(inputHome, {
   initialCountry: "auto",
-  geoIpLookup: (success, failure) => {
-    fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
-      .then(res => res.json())
-      .then(data => success(data.country_code))
-      .catch(() => failure());
+  geoIpLookup: async () => {
+    const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
+    const data = await res.json();
+    return data.country_code;
   },
   placeholderNumberType: "FIXED_LINE",
   // @ts-expect-error - lodash template tag, resolved at build time
@@ -17,11 +16,10 @@ window.intlTelInput(inputHome, {
 });
 window.intlTelInput(inputMobile, {
   initialCountry: "auto",
-  geoIpLookup: (success, failure) => {
-    fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
-      .then(res => res.json())
-      .then(data => success(data.country_code))
-      .catch(() => failure());
+  geoIpLookup: async () => {
+    const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
+    const data = await res.json();
+    return data.country_code;
   },
   placeholderNumberType: "MOBILE",
   // @ts-expect-error - lodash template tag, resolved at build time

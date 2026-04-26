@@ -348,7 +348,7 @@ export class Iti {
   }
 
   //* Perform the geo ip lookup.
-  #loadAutoCountry(): void {
+  async #loadAutoCountry(): Promise<void> {
     //* 3 options:
     //* 1) Already loaded (we're done)
     //* 2) Another instance has already started loading (do nothing - just wait for loading callback to fire)
@@ -367,24 +367,23 @@ export class Iti {
     intlTelInput.startedLoadingAutoCountry = true;
 
     if (typeof this.#options.geoIpLookup === "function") {
-      const successCallback = (iso2 = "") => {
+      try {
+        const iso2 = (await this.#options.geoIpLookup()) ?? "";
         const iso2Lower = iso2.toLowerCase();
-        if (isIso2(iso2Lower)) {
-          intlTelInput.autoCountry = iso2Lower;
-          //* Tell all instances the auto country is ready.
-          //* UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
-          //* away (e.g. if they have already done the geo ip lookup somewhere else). Using
-          //* setTimeout means that the current thread of execution will finish before executing
-          //* this, which allows the plugin to finish initialising.
-          setTimeout(() => Iti.forEachInstance("handleAutoCountryLoaded"));
-        } else {
+        if (!isIso2(iso2Lower)) {
           Iti.forEachInstance("handleAutoCountryFailure");
+          return;
         }
-      };
-      const failureCallback = () => {
+        intlTelInput.autoCountry = iso2Lower;
+        //* Tell all instances the auto country is ready.
+        //* UPDATE: use setTimeout in case their geoIpLookup function resolves straight away
+        //* (e.g. if they have already done the geo ip lookup somewhere else). Using
+        //* setTimeout means that the current thread of execution will finish before executing
+        //* this, which allows the plugin to finish initialising.
+        setTimeout(() => Iti.forEachInstance("handleAutoCountryLoaded"));
+      } catch {
         Iti.forEachInstance("handleAutoCountryFailure");
-      };
-      this.#options.geoIpLookup(successCallback, failureCallback);
+      }
     }
   }
 
