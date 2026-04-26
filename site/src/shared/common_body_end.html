@@ -21,4 +21,30 @@
   const algoliaButton = document.querySelector('#docsearch button');
   const mobileSearchButton = document.getElementById('itiSearchButtonMobile');
   mobileSearchButton.addEventListener('click', () => algoliaButton.click());
+
+  // Header nav fly-out submenus: hover-driven via CSS on hover devices; this
+  // handler provides the touch/click fallback (Bootstrap doesn't nest dropdowns)
+  // and resets state when the parent dropdown closes.
+  const closeFlyout = (toggle) => {
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.nextElementSibling.classList.remove('show');
+  };
+  document.addEventListener('click', (e) => {
+    const toggle = e.target.closest('.iti-flyout-toggle');
+    document.querySelectorAll('.iti-flyout-toggle[aria-expanded="true"]').forEach((t) => {
+      if (t !== toggle) closeFlyout(t);
+    });
+    if (toggle) {
+      e.preventDefault();
+      e.stopPropagation();
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      toggle.nextElementSibling.classList.toggle('show', !expanded);
+    }
+  });
+  document.querySelectorAll('.iti-header-nav .dropdown').forEach((dropdown) => {
+    dropdown.addEventListener('hidden.bs.dropdown', () => {
+      dropdown.querySelectorAll('.iti-flyout-toggle[aria-expanded="true"]').forEach(closeFlyout);
+    });
+  });
 </script>

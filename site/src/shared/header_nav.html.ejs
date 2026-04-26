@@ -103,25 +103,20 @@
               <span data-text="Examples">Examples</span>
             </button>
             <ul class="dropdown-menu">
-              <% examplesDropdownSections.forEach((section) => {
-                   const isActive = section.items.some((p) => p.name === name);
-                   const collapseId = `iti-header-dropdown-${section.name}`;
-              %>
-                <li>
+              <% examplesDropdownSections.forEach((section) => { %>
+                <li class="iti-flyout-section">
                   <button
                     type="button"
-                    class="iti-nav-section-toggle iti-nav-section-heading d-flex align-items-center justify-content-between w-100 gap-1"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#<%= collapseId %>"
-                    aria-controls="<%= collapseId %>"
-                    aria-expanded="<%= isActive ? 'true' : 'false' %>"
+                    class="iti-nav-section-heading iti-flyout-toggle d-flex align-items-center justify-content-between w-100 gap-2"
+                    aria-haspopup="true"
+                    aria-expanded="false"
                   >
                     <span><%= section.label %></span>
-                    <span class="iti-nav-chevron" aria-hidden="true"></span>
+                    <span class="iti-nav-chevron iti-nav-chevron--right" aria-hidden="true"></span>
                   </button>
-                  <ul class="iti-nav-submenu collapse list-unstyled <% if (isActive) { %>show<% } %>" id="<%= collapseId %>">
+                  <ul class="dropdown-menu iti-flyout-menu">
                     <% section.items.forEach((p) => { %>
-                      <li class="iti-nav-item--nested">
+                      <li>
                         <a class="dropdown-item <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
                       </li>
                     <% }); %>

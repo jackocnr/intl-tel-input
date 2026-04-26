@@ -175,30 +175,65 @@
     padding-left: 0.85rem;
   }
 
-  /* Header dropdown: collapsible section toggle (button reset + chevron rotation) */
-  .iti-nav-section-toggle {
+  /* Header dropdown: section heading (button reset, used as flyout toggle) */
+  .iti-flyout-toggle {
     background: none;
     border: 0;
     text-align: left;
     white-space: nowrap;
   }
-  .iti-nav-section-toggle:hover {
+  .iti-flyout-toggle:hover,
+  .iti-flyout-section:hover > .iti-flyout-toggle,
+  .iti-flyout-section:focus-within > .iti-flyout-toggle {
     color: rgba(var(--bs-body-color-rgb), 0.9);
   }
-  .iti-nav-section-toggle[aria-expanded="true"] .iti-nav-chevron {
-    transform: rotate(225deg);
-    margin-top: 8px;
-  }
-  .dropdown-menu > li + li:has(> .iti-nav-section-toggle) {
-    margin-top: 0.5rem;
-  }
   .iti-nav-section-heading {
-    padding: 0.5rem 1rem 0.25rem;
+    padding: 0.5rem 1rem;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: rgba(var(--bs-body-color-rgb), 0.65);
+  }
+
+  /* Cascading fly-out submenu: section header in the parent dropdown, items
+     fly out to the right on hover (or click on touch). Bootstrap doesn't
+     support nested dropdowns natively, so we drive this with CSS hover +
+     focus-within and add a click handler for touch fallback. */
+  .iti-flyout-section {
+    position: relative;
+  }
+  .iti-flyout-menu {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    margin: 0 !important;
+    display: none;
+  }
+  /* Bridge the visual gap so the cursor doesn't close the flyout when moving
+     between heading and items at a slight diagonal */
+  .iti-flyout-menu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -8px;
+    width: 8px;
+    height: 100%;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .iti-flyout-section:hover > .iti-flyout-menu,
+    .iti-flyout-section:focus-within > .iti-flyout-menu {
+      display: block;
+    }
+  }
+  /* Touch fallback: JS toggles .show on click */
+  .iti-flyout-menu.show {
+    display: block;
+  }
+  /* Right-pointing chevron variant: sits at the end of section headings */
+  .iti-nav-chevron--right {
+    transform: rotate(-45deg);
+    margin-bottom: 0;
   }
 }
 
