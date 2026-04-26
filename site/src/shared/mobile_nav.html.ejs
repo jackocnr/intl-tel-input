@@ -117,6 +117,7 @@
           >
             <% examplesDropdownSections.forEach((section) => {
                  const isActive = pageType === 'examples' && section.items.some((p) => p.name === name);
+                 const isExpanded = isActive || (pageType !== 'examples' && section.name === "javascript_plugin");
                  const collapseId = `itiMobileExamples-${section.name}`;
             %>
               <li class="nav-item iti-nav-section">
@@ -126,12 +127,12 @@
                   data-bs-toggle="collapse"
                   data-bs-target="#<%= collapseId %>"
                   aria-controls="<%= collapseId %>"
-                  aria-expanded="<%= isActive ? 'true' : 'false' %>"
+                  aria-expanded="<%= isExpanded ? 'true' : 'false' %>"
                 >
                   <span><%= section.label %></span>
                   <span class="iti-nav-chevron" aria-hidden="true"></span>
                 </button>
-                <ul class="iti-nav-submenu collapse nav flex-column flex-nowrap nav-pills <% if (isActive) { %>show<% } %>" id="<%= collapseId %>">
+                <ul class="iti-nav-submenu collapse nav flex-column flex-nowrap nav-pills <% if (isExpanded) { %>show<% } %>" id="<%= collapseId %>">
                   <% section.items.forEach((p) => { %>
                     <li class="nav-item iti-nav-item--nested">
                       <a class="nav-link py-2 <% if (pageType === 'examples' && name === p.name) { %>active<% } %>" href="<%= p.href %>"><%= p.label %></a>
