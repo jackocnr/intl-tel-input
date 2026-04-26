@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("react component demo", () => {
   test("mounts and formats a number", async ({ page }) => {
-    await page.goto("/react/demo/simple/");
+    await page.goto("/packages/react/demo/simple/");
 
     const input = page.locator("input[type=\"tel\"]");
     await expect(input).toBeVisible();

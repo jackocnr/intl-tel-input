@@ -10,12 +10,12 @@
     "types": [],
     "lib": ["ES2022", "DOM"],
     "paths": {
-      "intl-tel-input": ["../dist/js/intlTelInput.d.ts"],
-      "intl-tel-input/utils": ["../dist/js/utils.d.ts"],
-      "intl-tel-input/data": ["../dist/js/data.d.ts"],
-      "intl-tel-input/i18n": ["../dist/js/i18n.d.ts"],
-      "intl-tel-input/i18n/*": ["../dist/js/i18n.d.ts"],
-      "intl-tel-input/styles": ["../dist/css/styles.d.ts"]
+      "intl-tel-input": ["../packages/core/dist/js/intlTelInput.d.ts"],
+      "intl-tel-input/utils": ["../packages/core/dist/js/utils.d.ts"],
+      "intl-tel-input/data": ["../packages/core/dist/js/data.d.ts"],
+      "intl-tel-input/i18n": ["../packages/core/dist/js/i18n.d.ts"],
+      "intl-tel-input/i18n/*": ["../packages/core/dist/js/i18n.d.ts"],
+      "intl-tel-input/styles": ["../packages/core/dist/css/styles.d.ts"]
     }
   },
   "include": ["typecheck-dts.ts"]

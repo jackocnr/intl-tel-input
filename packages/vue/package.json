@@ -1,0 +1,55 @@
+{
+  "name": "@intl-tel-input/vue",
+  "version": "28.0.0",
+  "description": "A Vue component for the intl-tel-input JavaScript plugin",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jack O'Connor (http://jackocnr.com)",
+  "main": "./dist/IntlTelInput.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/IntlTelInput.js"
+    },
+    "./with-utils": {
+      "types": "./dist/indexWithUtils.d.ts",
+      "import": "./dist/IntlTelInputWithUtils.js"
+    }
+  },
+  "files": [
+    "dist/*",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "dependencies": {
+    "intl-tel-input": "^28.0.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackocnr/intl-tel-input.git",
+    "directory": "packages/vue"
+  },
+  "homepage": "https://intl-tel-input.com/docs/vue-component",
+  "bugs": "https://github.com/jackocnr/intl-tel-input/issues",
+  "keywords": [
+    "intl-tel-input",
+    "vue",
+    "component",
+    "international",
+    "telephone",
+    "phone",
+    "input",
+    "flag",
+    "dropdown",
+    "validation",
+    "typescript"
+  ]
+}

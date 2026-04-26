@@ -1,13 +1,13 @@
 /**
  * Locale bundle integrity checks.
  *
- * Verifies that each locale file in src/js/i18n/*
+ * Verifies that each locale file in packages/core/src/js/i18n/*
  * contains exactly the expected UI translation keys.
  */
 
-import * as localeModules from "../../../src/js/i18n/index.ts";
+import * as localeModules from "../../../packages/core/src/js/i18n/index.ts";
 
-// Keep in sync with src/js/i18n/types.ts
+// Keep in sync with packages/core/src/js/i18n/types.ts
 const UI_TRANSLATION_KEYS = [
   "selectedCountryAriaLabel",
   "searchPlaceholder",

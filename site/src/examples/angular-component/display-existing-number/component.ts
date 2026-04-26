@@ -2,7 +2,7 @@ import "zone.js";
 import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component } from "@angular/core";
-import IntlTelInput from "../../../../../angular/dist/IntlTelInput.js";
+import IntlTelInput from "@intl-tel-input/angular";
 
 @Component({
   selector: "#app",

@@ -1,6 +1,6 @@
 <script setup>
   import { computed, ref } from "vue";
-  import IntlTelInput from "intl-tel-input/vue";
+  import IntlTelInput from "@intl-tel-input/vue";
   import "intl-tel-input/styles";
 
   const geoIpLookup = async () => {

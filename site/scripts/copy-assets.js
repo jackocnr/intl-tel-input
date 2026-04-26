@@ -7,7 +7,7 @@ process.chdir(ROOT);
 
 const targets = [
   // Mirror of the published intl-tel-input package, served at /intl-tel-input/
-  { from: "../dist", to: "dist/intl-tel-input" },
+  { from: "../packages/core/dist", to: "dist/intl-tel-input" },
   // Static site assets (favicon, robots.txt, etc.)
   { from: "static", to: "dist" },
 ];

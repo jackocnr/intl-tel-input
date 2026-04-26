@@ -30,13 +30,6 @@ const replacements = [
     match: /"version": "[0-9]+\.[0-9]+\.[0-9]+"/,
     replacement: `"version": "${version}"`,
   },
-  {
-    // version-bump already updates the top-level version in package-lock.json,
-    // but not the "inner" one (around line 9), so do that here.
-    files: ['package-lock.json'],
-    match: /"name": "intl-tel-input",\n {6}"version": "[0-9]+\.[0-9]+\.[0-9]+"/,
-    replacement: `"name": "intl-tel-input",\n      "version": "${version}"`,
-  },
 ];
 
 // On major version bumps, prepend a new entry to CHANGELOG.md's breaking

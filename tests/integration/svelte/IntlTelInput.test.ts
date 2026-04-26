@@ -1,6 +1,6 @@
 import { render, screen, waitFor, cleanup } from "@testing-library/svelte";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import IntlTelInput, { intlTelInput } from "../../../svelte/src/IntlTelInputWithUtils.svelte";
+import IntlTelInput, { intlTelInput } from "../../../packages/svelte/src/IntlTelInputWithUtils.svelte";
 
 const getTelInput = () => screen.getByRole("textbox") as HTMLInputElement;
 

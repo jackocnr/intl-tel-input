@@ -3,7 +3,7 @@
 // attached to the window — we re-use its real type declarations from the
 // built .d.ts in the parent project so the playground gets accurate types.
 
-import type { IntlTelInputInterface } from "../../../dist/js/intlTelInput";
+import type { IntlTelInputInterface } from "../../../packages/core/dist/js/intlTelInput";
 
 declare global {
   interface Window {

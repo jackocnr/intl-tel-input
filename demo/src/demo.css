@@ -1,7 +1,7 @@
 /* This file is used for the demo/index.html page, as well as the component demo pages.
    Bootstrap is loaded separately by each demo HTML file (typically from a CDN). */
 
-@import "../../src/css/intlTelInputWithAssets.css";
+@import "../../packages/core/src/css/intlTelInputWithAssets.css";
 
 body {
   margin: 20px;
@@ -35,9 +35,9 @@ input[type="tel"] {
 }
 
 :root {
-  /* fix flag image paths (demo.css lives in demo/dist/ not dist/css/) */
-  --iti-path-flags-1x: url("../../dist/img/flags.webp");
-  --iti-path-flags-2x: url("../../dist/img/flags@2x.webp");
+  /* fix flag image paths (demo.css lives in demo/dist/ not packages/core/dist/css/) */
+  --iti-path-flags-1x: url("../../packages/core/dist/img/flags.webp");
+  --iti-path-flags-2x: url("../../packages/core/dist/img/flags@2x.webp");
 
   /* plugin overrides (NOTE: the bootstrap vars handle dark mode automatically) */
   --iti-border-color: var(--bs-border-color);

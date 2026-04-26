@@ -1,0 +1,68 @@
+{
+  "name": "@intl-tel-input/angular",
+  "version": "28.0.0",
+  "description": "An Angular component for the intl-tel-input JavaScript plugin",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jack O'Connor (http://jackocnr.com)",
+  "main": "./dist/IntlTelInput.js",
+  "types": "./dist/IntlTelInput.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/IntlTelInput.d.ts",
+      "import": "./dist/IntlTelInput.js"
+    },
+    "./with-utils": {
+      "types": "./dist/IntlTelInputWithUtils.d.ts",
+      "import": "./dist/IntlTelInputWithUtils.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      ".": [
+        "dist/IntlTelInput.d.ts"
+      ],
+      "with-utils": [
+        "dist/IntlTelInputWithUtils.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist/*",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "dependencies": {
+    "intl-tel-input": "^28.0.0"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=17",
+    "@angular/core": ">=17",
+    "@angular/forms": ">=17",
+    "rxjs": "^7.0.0 || ^8.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackocnr/intl-tel-input.git",
+    "directory": "packages/angular"
+  },
+  "homepage": "https://intl-tel-input.com/docs/angular-component",
+  "bugs": "https://github.com/jackocnr/intl-tel-input/issues",
+  "keywords": [
+    "intl-tel-input",
+    "angular",
+    "component",
+    "international",
+    "telephone",
+    "phone",
+    "input",
+    "flag",
+    "dropdown",
+    "validation",
+    "typescript"
+  ]
+}

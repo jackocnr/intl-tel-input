@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const dir = 'dist/js';
+const dir = 'packages/core/dist/js';
 if (!fs.existsSync(dir)) process.exit(0);
 
 for (const entry of fs.readdirSync(dir)) {

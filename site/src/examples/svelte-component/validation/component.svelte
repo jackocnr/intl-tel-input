@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import IntlTelInput, { intlTelInput } from "../../../../../svelte/src/IntlTelInput.svelte";
+  import IntlTelInput, { intlTelInput } from "@intl-tel-input/svelte";
 
   const getErrorMessage = (number, errorCode) => {
     if (!number) return "Please enter a number";

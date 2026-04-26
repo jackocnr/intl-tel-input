@@ -1,4 +1,4 @@
-import type { Iti } from "../../../../../dist/js/intlTelInput";
+import type { Iti } from "../../../../../packages/core/dist/js/intlTelInput";
 import { resolveI18nSelection } from "./i18n";
 
 function applyInputAttributes(state: any, telInput: HTMLInputElement) {

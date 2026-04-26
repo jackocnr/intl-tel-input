@@ -1,7 +1,7 @@
 import { render, screen, waitFor, cleanup } from "@testing-library/vue";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { defineComponent, h, nextTick, ref } from "vue";
-import IntlTelInput, { intlTelInput } from "../../../vue/src/indexWithUtils";
+import IntlTelInput, { intlTelInput } from "../../../packages/vue/src/indexWithUtils";
 
 const getTelInput = () => screen.getByRole("textbox") as HTMLInputElement;
 

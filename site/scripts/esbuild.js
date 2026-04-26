@@ -98,7 +98,7 @@ build({
 build({
   ...sharedOptions,
   loader: { ".ts": "ts" },
-  tsconfig: "../angular/tsconfig.build.json",
+  tsconfig: "../packages/angular/tsconfig.build.json",
   entryPoints: ["tmp/examples/angular-component/validation/component.ts"],
   outfile: "dist/examples/js/angular_component_bundle.js",
 });
@@ -107,7 +107,7 @@ build({
 build({
   ...sharedOptions,
   loader: { ".ts": "ts" },
-  tsconfig: "../angular/tsconfig.build.json",
+  tsconfig: "../packages/angular/tsconfig.build.json",
   entryPoints: ["tmp/examples/angular-component/display-existing-number/component.ts"],
   outfile: "dist/examples/js/angular_display_existing_number_bundle.js",
 });

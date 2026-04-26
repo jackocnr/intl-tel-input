@@ -12,7 +12,7 @@ import {
   clickSelectedCountryAsync,
   getCountriesInList,
 } from "../helpers/helpers";
-import allCountries from "../../../dist/js/data.mjs";
+import allCountries from "../../../packages/core/dist/js/data.mjs";
 const allCountryCodes = allCountries.map((country) => country.iso2);
 
 vi.useFakeTimers({shouldAdvanceTime: true});

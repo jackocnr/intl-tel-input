@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import IntlTelInput from "intl-tel-input/angular";
+import IntlTelInput from "@intl-tel-input/angular";
 import "intl-tel-input/styles";
 
 @Component({

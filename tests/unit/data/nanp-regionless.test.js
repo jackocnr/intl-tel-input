@@ -2,7 +2,7 @@
  * @vitest-environment node
  */
 
-import { isRegionlessNanp, regionlessNanpAreaCodes } from "../../../src/js/data/nanp-regionless.ts";
+import { isRegionlessNanp, regionlessNanpAreaCodes } from "../../../packages/core/src/js/data/nanp-regionless.ts";
 
 const regionlessNanpAreaCodesArray = Array.from(regionlessNanpAreaCodes);
 

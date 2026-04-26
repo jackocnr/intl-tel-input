@@ -17,7 +17,7 @@ const XML_PATH = path.resolve(
   "third_party/libphonenumber/resources/PhoneNumberMetadata.xml",
 );
 const OUT_TS = path.resolve(REPO_ROOT, "tmp/generated-rawCountryData.ts");
-const CURATED_DATA_TS_PATH = path.resolve(REPO_ROOT, "src/js/data.ts");
+const CURATED_DATA_TS_PATH = path.resolve(REPO_ROOT, "packages/core/src/js/data.ts");
 
 // Extract a compact leading digits prefix representative for a region.
 // Strategy:
@@ -424,7 +424,7 @@ async function main() {
 
   countryToMetadata = countryToMetadataXml;
 
-  // Load curated area codes from src/js/data.ts and seed from those first.
+  // Load curated area codes from packages/core/src/js/data.ts and seed from those first.
   // We only add newly-derived codes if they are not already covered by curated ones.
   // Also capture curated priority per iso2 to preserve priority values in generated output (we don't compute priorities ourselves).
   const curatedPriorityByIso2 = new Map();

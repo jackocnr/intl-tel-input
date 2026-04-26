@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import IntlTelInput from "intl-tel-input/angular";
+import IntlTelInput from "@intl-tel-input/angular";
 import "intl-tel-input/styles";
 
 @Component({

@@ -1,4 +1,4 @@
-/node_modules/
+node_modules/
 /lib/*
 !/lib/libphonenumber
 /.sass-cache/
@@ -7,14 +7,10 @@
 /.idea/
 *.iml
 .DS_Store
-/dist/
+/packages/*/dist/
 /demo/dist/
-/react/dist/
-/svelte/dist/
-/vue/dist/
-/angular/dist/
-/src/css/_metadata.scss
-/*/demo/*/*-bundle.js
+/packages/core/src/css/_metadata.scss
+/packages/*/demo/*/*-bundle.js
 /test-results/
 /playwright-report/
 /coverage/

@@ -2,7 +2,7 @@
  * @vitest-environment node
  */
 
-import { getNumeric, normaliseString } from "../../../src/js/helpers/string.ts";
+import { getNumeric, normaliseString } from "../../../packages/core/src/js/helpers/string.ts";
 
 describe("utils/string", () => {
   test("getNumeric extracts digits only", () => {

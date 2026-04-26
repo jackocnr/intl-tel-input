@@ -1,5 +1,5 @@
 <script>
-  import IntlTelInput from "../../../../../svelte/src/IntlTelInput.svelte";
+  import IntlTelInput from "@intl-tel-input/svelte";
 </script>
 
 <label for="phone" class="form-label">Phone number</label>

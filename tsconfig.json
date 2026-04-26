@@ -4,7 +4,7 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "utils-compiled": ["./dist/js/utils.js"]
+      "utils-compiled": ["./packages/core/dist/js/utils.js"]
     },
     "allowJs": true,
     "noEmit": true,
@@ -13,7 +13,7 @@
     "types": ["node"],
   },
   "include": [
-    "src/js/**/*.ts",
+    "packages/core/src/js/**/*.ts",
   ],
   // Tell the Svelte language server to skip this tsconfig when looking for
   // a project that owns .svelte files (svelte/tsconfig.json owns those).

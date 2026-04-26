@@ -9,8 +9,8 @@ import IntlTelInput, {
   type Props,
   type StrictRejectReason,
   type StrictRejectSource,
-} from "intl-tel-input/svelte";
-import IntlTelInputWithUtils from "intl-tel-input/svelteWithUtils";
+} from "@intl-tel-input/svelte";
+import IntlTelInputWithUtils from "@intl-tel-input/svelte/with-utils";
 
 void intlTelInput;
 

@@ -2,7 +2,7 @@
  * @vitest-environment node
  */
 
-import { computeNewCaretPosition } from "../../../src/js/format/caret.ts";
+import { computeNewCaretPosition } from "../../../packages/core/src/js/format/caret.ts";
 
 describe("format/caret computeNewCaretPosition", () => {
   test("returns 0 when at start and backspacing", () => {

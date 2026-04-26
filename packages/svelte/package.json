@@ -1,0 +1,56 @@
+{
+  "name": "@intl-tel-input/svelte",
+  "version": "28.0.0",
+  "description": "A Svelte component for the intl-tel-input JavaScript plugin",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jack O'Connor (http://jackocnr.com)",
+  "types": "./src/IntlTelInput.svelte.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/IntlTelInput.svelte.d.ts",
+      "svelte": "./src/IntlTelInput.svelte",
+      "import": "./src/IntlTelInput.svelte"
+    },
+    "./with-utils": {
+      "types": "./src/IntlTelInput.svelte.d.ts",
+      "svelte": "./src/IntlTelInputWithUtils.svelte",
+      "import": "./src/IntlTelInputWithUtils.svelte"
+    }
+  },
+  "files": [
+    "src/*",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "dependencies": {
+    "intl-tel-input": "^28.0.0"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackocnr/intl-tel-input.git",
+    "directory": "packages/svelte"
+  },
+  "homepage": "https://intl-tel-input.com/docs/svelte-component",
+  "bugs": "https://github.com/jackocnr/intl-tel-input/issues",
+  "keywords": [
+    "intl-tel-input",
+    "svelte",
+    "component",
+    "international",
+    "telephone",
+    "phone",
+    "input",
+    "flag",
+    "dropdown",
+    "validation",
+    "typescript"
+  ]
+}

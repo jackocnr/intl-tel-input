@@ -7,8 +7,8 @@ import {
   generateCountryNames,
   processDialCodes,
   sortCountries,
-} from "../../../src/js/data/country-data.ts";
-import allCountries from "../../../src/js/data.ts";
+} from "../../../packages/core/src/js/data/country-data.ts";
+import allCountries from "../../../packages/core/src/js/data.ts";
 
 describe("data/country-data processAllCountries", () => {
   test("onlyCountries filters list", () => {

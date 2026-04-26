@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const supportedLocalesDirectory = 'src/js/i18n';
+const supportedLocalesDirectory = 'packages/core/src/js/i18n';
 const rootIndexFilePath = path.join(supportedLocalesDirectory, 'index.ts');
 
 const localeToExportName = (locale) => {

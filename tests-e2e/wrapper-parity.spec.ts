@@ -11,8 +11,8 @@ type Target = {
 };
 
 const targets: Target[] = [
-  { name: "react", url: "/react/demo/simple/" },
-  { name: "angular", url: "/angular/demo/simple/index.html" },
+  { name: "react", url: "/packages/react/demo/simple/" },
+  { name: "angular", url: "/packages/angular/demo/simple/index.html" },
   { name: "vue", url: "/simple/", baseURL: "http://localhost:4174" },
   { name: "svelte", url: "/simple/", baseURL: "http://localhost:4175" },
 ];

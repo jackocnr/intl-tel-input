@@ -22,7 +22,7 @@
       </div>
     </form>
 
-    <script src="../dist/js/intlTelInputWithUtils.js"></script>
+    <script src="../packages/core/dist/js/intlTelInputWithUtils.js"></script>
     <script>
       const form = document.querySelector("#form");
       const input = document.querySelector("#phone");
@@ -55,7 +55,7 @@
         // hiddenInput: () => ({ phone: "phone_full", country: "country_iso2" }),
         // i18n: { searchPlaceholder: "Custom search" },
         // initialCountry: "us",
-        // loadUtils: () => import("/dist/js/utils.js"), // leading slash (and http-server) required for this to work in chrome
+        // loadUtils: () => import("/packages/core/dist/js/utils.js"), // leading slash (and http-server) required for this to work in chrome
         // nationalMode: false,
         // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
         // placeholderNumberType: "MOBILE",

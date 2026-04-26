@@ -1,0 +1,16 @@
+// Used by `build:vue` via vite-plugin-dts (see vue/vite.config.mts). See
+// tsconfig.app.json (same directory) for the IDE config — they deliberately
+// differ: the IDE resolves "intl-tel-input" to source, while the build
+// resolves to dist so vite-plugin-dts inlines the bundled public surface.
+// rootDir: "src" is required for vite-plugin-dts's emit layout — removing
+// it results in entry files being flagged as "Outside emitted" and never
+// written to vue/dist.
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "paths": {
+      "intl-tel-input": ["../core/dist/js/intlTelInput.d.ts"]
+    }
+  }
+}

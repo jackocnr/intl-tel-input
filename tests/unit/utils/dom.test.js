@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { buildClassNames, createEl } from "../../../src/js/helpers/dom.ts";
+import { buildClassNames, createEl } from "../../../packages/core/src/js/helpers/dom.ts";
 
 describe("utils/dom", () => {
   test("buildClassNames filters falsy values", () => {

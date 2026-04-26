@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import IntlTelInput from "intl-tel-input/react";
+import IntlTelInput from "@intl-tel-input/react";
 import "intl-tel-input/styles";
 
 const geoIpLookup = async () => {

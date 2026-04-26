@@ -1,0 +1,17 @@
+// IDE config for vue/src/**. Reached via reference from tsconfig.json
+// (Volar's entry point). Resolves "intl-tel-input" to source rather than
+// dist so the IDE stays accurate regardless of whether dist/ has been
+// built. Deliberately without rootDir — setting rootDir would trip TS6059
+// when source-path resolution pulls ../src/js files into the program.
+// @vue/tsconfig already sets noEmit: true (inherited via tsconfig.base.json),
+// so rootDir's absence has no output-layout consequence here.
+// See tsconfig.build.json for the build-side config used by vite-plugin-dts.
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "intl-tel-input": ["../core/src/js/intlTelInput.ts"],
+      "intl-tel-input/utils": ["../core/src/js/types/utils.d.ts"]
+    }
+  }
+}

@@ -13,7 +13,7 @@ const { getNativeImagePath } = require('google-closure-compiler/lib/utils.js');
 // references the arrays via /*__NUMBER_FORMATS__*/, /*__NUMBER_TYPES__*/,
 // /*__VALIDATION_ERRORS__*/ placeholders that we replace with literal arrays
 // here, before Closure compilation.
-const constantsSource = fs.readFileSync('src/js/constants.ts', 'utf8');
+const constantsSource = fs.readFileSync('packages/core/src/js/constants.ts', 'utf8');
 const extractArray = (name) => {
   const re = new RegExp(`export const ${name} = \\[([\\s\\S]*?)\\] as const;`, 'm');
   const m = constantsSource.match(re);
@@ -27,7 +27,7 @@ const extractArray = (name) => {
   return JSON.stringify(items);
 };
 
-let entrySource = fs.readFileSync('src/js/utils.js', 'utf8');
+let entrySource = fs.readFileSync('packages/core/src/js/utils.js', 'utf8');
 const replacements = {
   '["__NUMBER_FORMATS__"]': extractArray('NUMBER_FORMATS'),
   '["__NUMBER_TYPES__"]': extractArray('NUMBER_TYPES'),
@@ -52,7 +52,7 @@ const compiler = new Compiler({
   ],
   entry_point: 'goog:i18n.phonenumbers.demo',
   compilation_level: 'ADVANCED_OPTIMIZATIONS',
-  js_output_file: 'dist/js/utils.js',
+  js_output_file: 'packages/core/dist/js/utils.js',
   output_wrapper:
     'var _scope = {};\n(function () {%output%}).call(_scope);\nexport default _scope.utils;',
 });
@@ -68,7 +68,7 @@ if (!compiler.javaPath) {
 compiler.commandArguments.push('--json_streams', 'IN');
 
 const child = compiler.run();
-child.stdin.write(JSON.stringify([{ src: entrySource, path: 'src/js/utils.js' }]));
+child.stdin.write(JSON.stringify([{ src: entrySource, path: 'packages/core/src/js/utils.js' }]));
 child.stdin.end();
 
 let stderr = '';
@@ -78,5 +78,5 @@ child.on('exit', (code) => {
     process.stderr.write(stderr);
     process.exit(code ?? 1);
   }
-  console.log('Built dist/js/utils.js');
+  console.log('Built packages/core/dist/js/utils.js');
 });

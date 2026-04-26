@@ -3,8 +3,8 @@ import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component, ViewChild, AfterViewInit } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import IntlTelInput, { intlTelInput } from "../../../../../angular/dist/IntlTelInput.js";
-import type { ValidationError } from "../../../../../dist/js/intlTelInput.js";
+import IntlTelInput, { intlTelInput } from "@intl-tel-input/angular";
+import type { ValidationError } from "intl-tel-input";
 
 const getErrorMessage = (errorCode: ValidationError | null): string => {
   const genericError = "Invalid number";

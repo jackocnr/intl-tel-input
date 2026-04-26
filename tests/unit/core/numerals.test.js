@@ -2,7 +2,7 @@
  * @vitest-environment node
  */
 
-import { Numerals } from "../../../src/js/core/numerals.ts";
+import { Numerals } from "../../../packages/core/src/js/core/numerals.ts";
 
 // Unicode reference:
 //   Arabic-Indic: U+0660 (٠) – U+0669 (٩)

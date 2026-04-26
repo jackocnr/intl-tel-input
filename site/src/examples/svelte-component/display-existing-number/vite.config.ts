@@ -8,8 +8,8 @@ const projectRoot = fileURLToPath(new URL("../../../..", import.meta.url));
 export default defineConfig({
   resolve: {
     alias: [
-      { find: /^intl-tel-input\/intlTelInputWithUtils$/, replacement: path.resolve(projectRoot, "../dist/js/intlTelInputWithUtils.mjs") },
-      { find: /^intl-tel-input$/, replacement: path.resolve(projectRoot, "../dist/js/intlTelInput.mjs") },
+      { find: /^intl-tel-input\/intlTelInputWithUtils$/, replacement: path.resolve(projectRoot, "../packages/core/dist/js/intlTelInputWithUtils.mjs") },
+      { find: /^intl-tel-input$/, replacement: path.resolve(projectRoot, "../packages/core/dist/js/intlTelInput.mjs") },
     ],
   },
   define: {

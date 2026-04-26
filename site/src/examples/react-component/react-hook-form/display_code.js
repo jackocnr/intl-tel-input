@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useForm, Controller, useWatch } from "react-hook-form";
-import IntlTelInput, { intlTelInput } from "intl-tel-input/react";
+import IntlTelInput, { intlTelInput } from "@intl-tel-input/react";
 import "intl-tel-input/styles";
 
 const geoIpLookup = async () => {

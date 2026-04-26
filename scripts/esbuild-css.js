@@ -13,26 +13,26 @@ const shared = {
 //* Library: with assets (intlTelInput.css)
 build({
   ...shared,
-  entryPoints: ["src/css/intlTelInputWithAssets.css"],
-  outfile: "dist/css/intlTelInput.css",
+  entryPoints: ["packages/core/src/css/intlTelInputWithAssets.css"],
+  outfile: "packages/core/dist/css/intlTelInput.css",
 });
 build({
   ...shared,
-  entryPoints: ["src/css/intlTelInputWithAssets.css"],
-  outfile: "dist/css/intlTelInput.min.css",
+  entryPoints: ["packages/core/src/css/intlTelInputWithAssets.css"],
+  outfile: "packages/core/dist/css/intlTelInput.min.css",
   minify: true,
 });
 
 //* Library: no assets (intlTelInput-no-assets.css)
 build({
   ...shared,
-  entryPoints: ["src/css/intlTelInput.css"],
-  outfile: "dist/css/intlTelInput-no-assets.css",
+  entryPoints: ["packages/core/src/css/intlTelInput.css"],
+  outfile: "packages/core/dist/css/intlTelInput-no-assets.css",
 });
 build({
   ...shared,
-  entryPoints: ["src/css/intlTelInput.css"],
-  outfile: "dist/css/intlTelInput-no-assets.min.css",
+  entryPoints: ["packages/core/src/css/intlTelInput.css"],
+  outfile: "packages/core/dist/css/intlTelInput-no-assets.min.css",
   minify: true,
 });
 

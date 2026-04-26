@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { TestBed, ComponentFixture } from "@angular/core/testing";
-import IntlTelInput, { intlTelInput } from "../../../angular/dist/IntlTelInputWithUtils.js";
+import IntlTelInput, { intlTelInput } from "../../../packages/angular/dist/IntlTelInputWithUtils.js";
 
 type ItiComponent = InstanceType<typeof IntlTelInput>;
 type ItiFixture = ComponentFixture<ItiComponent>;

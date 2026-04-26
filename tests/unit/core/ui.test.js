@@ -2,10 +2,10 @@
  * @vitest-environment jsdom
  */
 
-import UI from "../../../src/js/core/ui.ts";
-import { buildSearchTokens } from "../../../src/js/core/countrySearch.ts";
-import { CLASSES, ARIA, KEYS } from "../../../src/js/constants.ts";
-import defaultEnglishStrings from "../../../src/js/i18n/en.ts";
+import UI from "../../../packages/core/src/js/core/ui.ts";
+import { buildSearchTokens } from "../../../packages/core/src/js/core/countrySearch.ts";
+import { CLASSES, ARIA, KEYS } from "../../../packages/core/src/js/constants.ts";
+import defaultEnglishStrings from "../../../packages/core/src/js/i18n/en.ts";
 
 // Helper to create a Country-like object
 const makeCountry = (overrides) => ({

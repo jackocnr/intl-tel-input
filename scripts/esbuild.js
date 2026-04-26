@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import packageJson from "../package.json" with { type: "json" };
+import packageJson from "../packages/core/package.json" with { type: "json" };
 
 const banner =
   "/*\n" +
@@ -15,7 +15,7 @@ const shared = {
     "process.env.VERSION": `"${packageJson.version}"`,
   },
   alias: {
-    "utils-compiled": "./dist/js/utils.js",
+    "utils-compiled": "./packages/core/dist/js/utils.js",
   },
 };
 
@@ -32,76 +32,76 @@ const esmShared = {
   format: "esm",
 };
 
-//* dist/js/intlTelInput.js
+//* packages/core/dist/js/intlTelInput.js
 build({
   ...getIife("intlTelInput"),
-  entryPoints: ["src/js/intlTelInput.ts"],
+  entryPoints: ["packages/core/src/js/intlTelInput.ts"],
   minify: false,
-  outfile: "dist/js/intlTelInput.js",
+  outfile: "packages/core/dist/js/intlTelInput.js",
 });
 
-//* dist/js/intlTelInput.min.js
+//* packages/core/dist/js/intlTelInput.min.js
 build({
   ...getIife("intlTelInput"),
-  entryPoints: ["src/js/intlTelInput.ts"],
+  entryPoints: ["packages/core/src/js/intlTelInput.ts"],
   minify: true,
-  outfile: "dist/js/intlTelInput.min.js",
+  outfile: "packages/core/dist/js/intlTelInput.min.js",
 });
 
-//* dist/js/data.js
+//* packages/core/dist/js/data.js
 build({
   ...getIife("allCountries"),
-  entryPoints: ["src/js/data.ts"],
+  entryPoints: ["packages/core/src/js/data.ts"],
   minify: false,
-  outfile: "dist/js/data.js",
+  outfile: "packages/core/dist/js/data.js",
 });
 
-//* dist/js/data.min.js
+//* packages/core/dist/js/data.min.js
 build({
   ...getIife("allCountries"),
-  entryPoints: ["src/js/data.ts"],
+  entryPoints: ["packages/core/src/js/data.ts"],
   minify: true,
-  outfile: "dist/js/data.min.js",
+  outfile: "packages/core/dist/js/data.min.js",
 });
 
-//* dist/js/intlTelInputWithUtils.js
+//* packages/core/dist/js/intlTelInputWithUtils.js
 build({
   ...getIife("intlTelInput"),
-  entryPoints: ["src/js/intlTelInputWithUtils.ts"],
+  entryPoints: ["packages/core/src/js/intlTelInputWithUtils.ts"],
   minify: false,
-  outfile: "dist/js/intlTelInputWithUtils.js",
+  outfile: "packages/core/dist/js/intlTelInputWithUtils.js",
 });
 
-//* dist/js/intlTelInputWithUtils.min.js
+//* packages/core/dist/js/intlTelInputWithUtils.min.js
 build({
   ...getIife("intlTelInput"),
-  entryPoints: ["src/js/intlTelInputWithUtils.ts"],
+  entryPoints: ["packages/core/src/js/intlTelInputWithUtils.ts"],
   minify: true,
-  outfile: "dist/js/intlTelInputWithUtils.min.js",
+  outfile: "packages/core/dist/js/intlTelInputWithUtils.min.js",
 });
 
 //* ESM builds
 build({
   ...esmShared,
-  entryPoints: ["src/js/intlTelInput.ts"],
-  outfile: "dist/js/intlTelInput.mjs",
+  entryPoints: ["packages/core/src/js/intlTelInput.ts"],
+  outfile: "packages/core/dist/js/intlTelInput.mjs",
 });
 
 build({
   ...esmShared,
-  entryPoints: ["src/js/intlTelInputWithUtils.ts"],
-  outfile: "dist/js/intlTelInputWithUtils.mjs",
+  entryPoints: ["packages/core/src/js/intlTelInputWithUtils.ts"],
+  outfile: "packages/core/dist/js/intlTelInputWithUtils.mjs",
 });
 
 build({
   ...esmShared,
-  entryPoints: ["src/js/data.ts"],
-  outfile: "dist/js/data.mjs",
+  entryPoints: ["packages/core/src/js/data.ts"],
+  outfile: "packages/core/dist/js/data.mjs",
 });
 
-//* dist/js/i18n
+//* packages/core/dist/js/i18n
 build({
   charset: "utf8",
-  entryPoints: ["src/js/i18n/**/*.ts"],
-  outdir: "dist/js/i18n",
+  entryPoints: ["packages/core/src/js/i18n/**/*.ts"],
+  outdir: "packages/core/dist/js/i18n",
 });

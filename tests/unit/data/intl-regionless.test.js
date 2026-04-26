@@ -2,7 +2,7 @@
  * @vitest-environment node
  */
 
-import { hasRegionlessDialCode, regionlessDialCodes } from "../../../src/js/data/intl-regionless.ts";
+import { hasRegionlessDialCode, regionlessDialCodes } from "../../../packages/core/src/js/data/intl-regionless.ts";
 
 describe("data/intl-regionless hasRegionlessDialCode", () => {
   test("identifies +800 (UIFS) as regionless", () => {

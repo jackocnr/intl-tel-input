@@ -12,8 +12,8 @@ export default defineConfig({
     alias: [
       // The Svelte component source imports from "intl-tel-input" (self-referencing),
       // which can't be resolved from the site build context, so alias to the ESM build.
-      { find: /^intl-tel-input\/intlTelInputWithUtils$/, replacement: path.resolve(projectRoot, "../dist/js/intlTelInputWithUtils.mjs") },
-      { find: /^intl-tel-input$/, replacement: path.resolve(projectRoot, "../dist/js/intlTelInput.mjs") },
+      { find: /^intl-tel-input\/intlTelInputWithUtils$/, replacement: path.resolve(projectRoot, "../packages/core/dist/js/intlTelInputWithUtils.mjs") },
+      { find: /^intl-tel-input$/, replacement: path.resolve(projectRoot, "../packages/core/dist/js/intlTelInput.mjs") },
     ],
   },
   define: {

@@ -1,6 +1,6 @@
 # React component
 
-A React component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/react/src/IntlTelInput.tsx), see a live demo on the [React component](/examples/react-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/react/README.md) to run the full set of demos locally.
+A React component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/packages/react/src/IntlTelInput.tsx), see a live demo on the [React component](/examples/react-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/packages/react/README.md) to run the full set of demos locally.
 
 ## Contents
 
@@ -22,7 +22,7 @@ npm install intl-tel-input
 Then, add something like this to your code:
 
 ```js
-import IntlTelInput from "intl-tel-input/react";
+import IntlTelInput from "@intl-tel-input/react";
 import "intl-tel-input/styles";
 
 const PhoneInput = () => (
@@ -34,7 +34,7 @@ const PhoneInput = () => (
 ```
 
 > [!NOTE]
-> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"intl-tel-input/reactWithUtils"` to bundle utils directly.
+> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"@intl-tel-input/react/with-utils"` to bundle utils directly.
 
 See [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
 
@@ -148,8 +148,8 @@ All of the plugin's [initialisation options](/docs/options) are supported as ind
 
 ## Accessing instance methods
 
-You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()`, e.g. `ref.current.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/set-number/SetNumberApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
+You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()`, e.g. `ref.current.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/react/demo/set-number/SetNumberApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
 
 ## Accessing static methods
 
-You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the React component, e.g. `import { intlTelInput } from "intl-tel-input/react"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the React component, e.g. `import { intlTelInput } from "@intl-tel-input/react"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.

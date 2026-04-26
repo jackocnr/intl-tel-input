@@ -2,7 +2,7 @@
  * @vitest-environment node
  */
 
-import { stripSeparateDialCode, formatNumberAsYouType } from "../../../src/js/format/formatting.ts";
+import { stripSeparateDialCode, formatNumberAsYouType } from "../../../packages/core/src/js/format/formatting.ts";
 
 describe("format/formatting stripSeparateDialCode", () => {
   const selected = { dialCode: "44" };

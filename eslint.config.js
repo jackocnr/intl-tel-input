@@ -17,7 +17,7 @@ export default [
       "site/src/examples/**/*display_code*",
       "playwright-report/",
       "scripts/",
-      "src/js/utils.js",
+      "packages/core/src/js/utils.js",
     ],
   },
   js.configs.recommended,
@@ -56,7 +56,7 @@ export default [
     },
   },
   {
-    files: ["react/**/*.{ts,tsx,js,jsx}"],
+    files: ["packages/react/**/*.{ts,tsx,js,jsx}"],
     plugins: {
       react,
       "react-hooks": reactHooks,

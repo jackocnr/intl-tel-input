@@ -4,11 +4,11 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
-} from "../../../../../react/dist/IntlTelInput.js";
+} from "@intl-tel-input/react";
 import type {
   Iso2,
   ValidationError,
-} from "../../../../../dist/js/intlTelInput.js";
+} from "intl-tel-input";
 
 const getErrorMessage = (
   number: string,

@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("angular component demo", () => {
   test("mounts and formats a number", async ({ page }) => {
-    await page.goto("/angular/demo/simple/index.html");
+    await page.goto("/packages/angular/demo/simple/index.html");
 
     const input = page.locator("input[type=\"tel\"]");
     await expect(input).toBeVisible();

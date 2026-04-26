@@ -8,9 +8,9 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const sharedAlias = {
-  "intl-tel-input/intlTelInputWithUtils": path.resolve(__dirname, "dist/js/intlTelInputWithUtils.mjs"),
-  "intl-tel-input/utils": path.resolve(__dirname, "dist/js/utils.js"),
-  "intl-tel-input": path.resolve(__dirname, "dist/js/intlTelInput.mjs"),
+  "intl-tel-input/intlTelInputWithUtils": path.resolve(__dirname, "packages/core/dist/js/intlTelInputWithUtils.mjs"),
+  "intl-tel-input/utils": path.resolve(__dirname, "packages/core/dist/js/utils.js"),
+  "intl-tel-input": path.resolve(__dirname, "packages/core/dist/js/intlTelInput.mjs"),
 };
 
 export default defineConfig({
@@ -41,8 +41,8 @@ export default defineConfig({
     globals: true,
     coverage: {
       provider: "v8",
-      include: ["src/js/**/*.ts"],
-      exclude: ["src/js/i18n/**", "src/js/types/**"],
+      include: ["packages/core/src/js/**/*.ts"],
+      exclude: ["packages/core/src/js/i18n/**", "packages/core/src/js/types/**"],
       reporter: ["text", "html", "lcov"],
       reportsDirectory: "coverage",
     },

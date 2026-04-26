@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>intl-tel-input fixture (allowDropdown=false)</title>
-    <link rel="stylesheet" href="/dist/css/intlTelInput.css" />
+    <link rel="stylesheet" href="/packages/core/dist/css/intlTelInput.css" />
     <style>
       body { font-family: -apple-system, system-ui, sans-serif; padding: 24px; }
       #phone { width: 260px; padding: 8px 10px; font-size: 16px; }
@@ -17,7 +17,7 @@
       <input id="phone" type="tel" />
     </div>
 
-    <script src="/dist/js/intlTelInputWithUtils.js"></script>
+    <script src="/packages/core/dist/js/intlTelInputWithUtils.js"></script>
     <script>
       const input = document.querySelector('#phone');
       window.iti = window.intlTelInput(input, { allowDropdown: false, initialCountry: "gb" });

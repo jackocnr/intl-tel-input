@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { defaults, applyOptionSideEffects, validateOptions } from "../../../src/js/core/options.ts";
+import { defaults, applyOptionSideEffects, validateOptions } from "../../../packages/core/src/js/core/options.ts";
 
 describe("core/options applyOptionSideEffects", () => {
   const clone = () => JSON.parse(JSON.stringify(defaults));

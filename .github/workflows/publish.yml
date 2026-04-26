@@ -24,19 +24,36 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Publish
-        run: npm publish --provenance
+      - name: Build
+        run: npm run build
+
+      # Publish core first so the wrappers' "intl-tel-input" dependency is
+      # already on the registry by the time consumers install a wrapper.
+      - name: Publish core
+        run: npm publish --workspace=intl-tel-input --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish wrappers
+        run: |
+          npm publish --workspace=@intl-tel-input/react --provenance
+          npm publish --workspace=@intl-tel-input/vue --provenance
+          npm publish --workspace=@intl-tel-input/angular --provenance
+          npm publish --workspace=@intl-tel-input/svelte --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PREV_TAG=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^")
-          NOTES=$(git log --pretty=format:"- %s ([%h](https://github.com/jackocnr/intl-tel-input/commit/%H))" "$PREV_TAG..${GITHUB_REF_NAME}^" -- src/ angular/ react/ svelte/ vue/ scripts/ package.json tsconfig.json)
+          NOTES=$(git log --pretty=format:"- %s ([%h](https://github.com/jackocnr/intl-tel-input/commit/%H))" "$PREV_TAG..${GITHUB_REF_NAME}^" -- packages/ scripts/ package.json tsconfig.json tsconfig.base.json)
           gh release create "${GITHUB_REF_NAME}" \
             --title "${GITHUB_REF_NAME}" \
             --notes "$NOTES"

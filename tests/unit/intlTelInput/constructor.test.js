@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import intlTelInput from "../../../src/js/intlTelInput.ts";
+import intlTelInput from "../../../packages/core/src/js/intlTelInput.ts";
 
 describe("Iti constructor argument validation", () => {
   test("throws if input is not an HTMLInputElement", () => {

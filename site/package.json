@@ -4,6 +4,11 @@
   "description": "The website for intl-tel-input",
   "type": "module",
   "dependencies": {
+    "@intl-tel-input/angular": "*",
+    "@intl-tel-input/react": "*",
+    "@intl-tel-input/svelte": "*",
+    "@intl-tel-input/vue": "*",
+    "intl-tel-input": "*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hook-form": "^7.73.1"

@@ -1,5 +1,5 @@
 <script setup>
-  import IntlTelInput from "intl-tel-input/vue";
+  import IntlTelInput from "@intl-tel-input/vue";
   import "intl-tel-input/styles";
 </script>
 

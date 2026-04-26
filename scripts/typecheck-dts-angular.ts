@@ -1,8 +1,8 @@
 // Consumer-style smoke test for the Angular wrapper's generated .d.ts files.
 // See scripts/typecheck-dts.ts for the rationale.
 
-import IntlTelInput, { intlTelInput, type StrictRejectDetail } from "intl-tel-input/angular";
-import IntlTelInputWithUtils from "intl-tel-input/angularWithUtils";
+import IntlTelInput, { intlTelInput, type StrictRejectDetail } from "@intl-tel-input/angular";
+import IntlTelInputWithUtils from "@intl-tel-input/angular/with-utils";
 
 void intlTelInput;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput from "../../../../../react/dist/IntlTelInput.js";
+import IntlTelInput from "@intl-tel-input/react";
 
 const App = () => (
   <>

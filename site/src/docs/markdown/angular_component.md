@@ -1,6 +1,6 @@
 # Angular component
 
-An Angular component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/angular/src/IntlTelInput.ts), see a live demo on the [Angular component](/examples/angular-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/angular/README.md) to run the full set of demos locally.
+An Angular component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/src/IntlTelInput.ts), see a live demo on the [Angular component](/examples/angular-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/README.md) to run the full set of demos locally.
 
 ## Contents
 
@@ -23,7 +23,7 @@ npm install intl-tel-input
 Then, add something like this to your code:
 
 ```ts
-import IntlTelInput from "intl-tel-input/angular";
+import IntlTelInput from "@intl-tel-input/angular";
 import "intl-tel-input/styles";
 
 @Component({
@@ -36,7 +36,7 @@ export class PhoneInputComponent {
 ```
 
 > [!NOTE]
-> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"intl-tel-input/angularWithUtils"` to bundle utils directly.
+> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"@intl-tel-input/angular/with-utils"` to bundle utils directly.
 
 See [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
 
@@ -92,7 +92,7 @@ All of the plugin's [initialisation options](/docs/options) are supported as ind
 
 ## Form integration (ngModel / formControl)
 
-The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
+The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
 
 
 ## Events
@@ -204,11 +204,11 @@ export class MyComponent implements AfterViewInit, OnDestroy {
 
 ## Accessing instance methods
 
-You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/set-number/set-number.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
+You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/set-number/set-number.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
 
 > [!IMPORTANT]
 > You must use `ngAfterViewInit` (not `ngOnInit` or `constructor`) to access instance or input methods, as the component needs to be fully initialised first.
 
 ## Accessing static methods
 
-You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "@intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.

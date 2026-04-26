@@ -15,16 +15,16 @@ import { generateDtsBundle } from "dts-bundle-generator";
 
 const entries = [
   {
-    input: "src/js/intlTelInput.ts",
-    output: "dist/js/intlTelInput.d.ts",
+    input: "packages/core/src/js/intlTelInput.ts",
+    output: "packages/core/dist/js/intlTelInput.d.ts",
   },
   {
-    input: "src/js/data.ts",
-    output: "dist/js/data.d.ts",
+    input: "packages/core/src/js/data.ts",
+    output: "packages/core/dist/js/data.d.ts",
   },
   {
-    input: "src/js/i18n/index.ts",
-    output: "dist/js/i18n.d.ts",
+    input: "packages/core/src/js/i18n/index.ts",
+    output: "packages/core/dist/js/i18n.d.ts",
   },
 ];
 
@@ -41,5 +41,5 @@ results.forEach((dts, i) => {
 
 // utils.js is compiled by Google Closure Compiler (not TypeScript), so its
 // hand-written .d.ts just needs to be copied into dist alongside the others.
-copyFileSync("src/js/types/utils.d.ts", "dist/js/utils.d.ts");
-console.log("Wrote dist/js/utils.d.ts");
+copyFileSync("packages/core/src/js/types/utils.d.ts", "packages/core/dist/js/utils.d.ts");
+console.log("Wrote packages/core/dist/js/utils.d.ts");

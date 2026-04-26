@@ -6,7 +6,7 @@ import {
   getMatchedCountries,
   findFirstCountryStartingWith,
   buildSearchTokens,
-} from "../../../src/js/core/countrySearch.ts";
+} from "../../../packages/core/src/js/core/countrySearch.ts";
 
 // helper to make a Country-like object
 const makeCountry = (overrides) => ({

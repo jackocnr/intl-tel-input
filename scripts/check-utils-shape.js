@@ -15,8 +15,8 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const UTILS_JS = resolve(REPO_ROOT, "dist/js/utils.js");
-const PUBLIC_API = resolve(REPO_ROOT, "src/js/types/public-api.ts");
+const UTILS_JS = resolve(REPO_ROOT, "packages/core/dist/js/utils.js");
+const PUBLIC_API = resolve(REPO_ROOT, "packages/core/src/js/types/public-api.ts");
 
 if (!existsSync(UTILS_JS)) {
   console.error(`${UTILS_JS} not found — run build:utils first.`);
@@ -96,7 +96,7 @@ const expectedNames = new Set(expected.map((m) => m.name));
 
 const utils = (await import(pathToFileURL(UTILS_JS).href)).default;
 if (!utils || typeof utils !== "object") {
-  console.error("dist/js/utils.js default export is not an object.");
+  console.error("packages/core/dist/js/utils.js default export is not an object.");
   process.exit(1);
 }
 

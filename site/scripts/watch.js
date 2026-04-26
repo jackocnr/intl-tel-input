@@ -9,7 +9,7 @@ import { spawn } from "node:child_process";
 const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
-const watchPaths = ["src", "static", "scripts", "../dist"];
+const watchPaths = ["src", "static", "scripts", "../packages/core/dist"];
 
 // Action = one pipeline stage. Order in this array = execution order when
 // multiple actions are queued in the same tick.
@@ -47,7 +47,7 @@ function categorise(p) {
   if (p.startsWith("static/")) {
     return "copy";
   }
-  if (p.startsWith("../dist/")) {
+  if (p.startsWith("../packages/core/dist/")) {
     return "copy";
   }
 

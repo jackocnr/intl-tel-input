@@ -6,8 +6,8 @@ import IntlTelInput, {
   type IntlTelInputRef,
   type StrictRejectReason,
   type StrictRejectSource,
-} from "intl-tel-input/react";
-import IntlTelInputWithUtils from "intl-tel-input/reactWithUtils";
+} from "@intl-tel-input/react";
+import IntlTelInputWithUtils from "@intl-tel-input/react/with-utils";
 import { useRef } from "react";
 
 void intlTelInput;

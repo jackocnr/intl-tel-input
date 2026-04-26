@@ -1,5 +1,5 @@
 <script>
-  import IntlTelInput from "intl-tel-input/svelte";
+  import IntlTelInput from "@intl-tel-input/svelte";
   import "intl-tel-input/styles";
 </script>
 

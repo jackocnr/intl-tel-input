@@ -1,6 +1,6 @@
 # Vue component
 
-A Vue component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/vue/src/IntlTelInput.vue), see a live demo on the [Vue component](/examples/vue-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/vue/README.md) to run the full set of demos locally.
+A Vue component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/src/IntlTelInput.vue), see a live demo on the [Vue component](/examples/vue-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/README.md) to run the full set of demos locally.
 
 ## Contents
 
@@ -23,7 +23,7 @@ Then, add something like this to your code:
 
 ```html
 <script setup>
-  import IntlTelInput from "intl-tel-input/vue";
+  import IntlTelInput from "@intl-tel-input/vue";
   import "intl-tel-input/styles";
 </script>
 
@@ -36,7 +36,7 @@ Then, add something like this to your code:
 ```
 
 > [!NOTE]
-> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"intl-tel-input/vueWithUtils"` to bundle utils directly.
+> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"@intl-tel-input/vue/with-utils"` to bundle utils directly.
 
 See [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
 
@@ -162,8 +162,8 @@ else msg = `Character not allowed: "${rejectedInput}"`;
 
 ## Accessing instance methods
 
-You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
+You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
 
 ## Accessing static methods
 
-You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Vue component, e.g. `import { intlTelInput } from "intl-tel-input/vue"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Vue component, e.g. `import { intlTelInput } from "@intl-tel-input/vue"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.

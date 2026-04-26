@@ -1,7 +1,8 @@
 {
-  "name": "intl-tel-input",
-  "version": "27.3.1",
-  "description": "A JavaScript plugin for entering and validating international telephone numbers",
+  "name": "intl-tel-input-monorepo",
+  "version": "28.0.0",
+  "private": true,
+  "description": "Monorepo for intl-tel-input and its official framework wrappers",
   "type": "module",
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
@@ -15,15 +16,15 @@
     "test:e2e:linux:update": "./scripts/playwright-linux-docker.sh --update-snapshots",
     "lint:js": "eslint . --cache --cache-location node_modules/.cache/eslint/",
     "watch": "node scripts/watch.js",
-    "clean:dist:css": "rimraf dist/css/*",
-    "clean:dist:img": "rimraf dist/img/*",
-    "clean:dist:js": "rimraf dist/js/*",
+    "clean:dist:css": "rimraf packages/core/dist/css/*",
+    "clean:dist:img": "rimraf packages/core/dist/img/*",
+    "clean:dist:js": "rimraf packages/core/dist/js/*",
     "clean:dist:js:keep-utils": "node scripts/clean-dist-js-keep-utils.js",
     "clean:tmp": "rimraf tmp/built.min.js tmp/one.min.js",
-    "clean:utils": "rimraf dist/js/utils.js",
-    "clean:react": "rimraf react/dist/*",
-    "clean:vue": "rimraf vue/dist/*",
-    "clean:angular": "rimraf angular/dist/*",
+    "clean:utils": "rimraf packages/core/dist/js/utils.js",
+    "clean:react": "rimraf packages/react/dist/*",
+    "clean:vue": "rimraf packages/vue/dist/*",
+    "clean:angular": "rimraf packages/angular/dist/*",
     "clean:all": "npm run clean:dist:css && npm run clean:dist:img && npm run clean:dist:js && npm run clean:react && npm run clean:vue && npm run clean:angular && npm run clean:tmp",
     "build:translations:gen": "node scripts/translations.js",
     "build:translations": "npm run clean:dist:js && npm run clean:tmp && npm run build:translations:gen && npm run build:js",
@@ -31,10 +32,10 @@
     "build:utils:check": "node scripts/check-lpn-metadata.js",
     "build:utils:check:shape": "node scripts/check-utils-shape.js",
     "build:utils": "npm run clean:utils && npm run build:utils:closure && npm run build:utils:check && npm run build:utils:check:shape",
-    "ensure:utils": "node -e \"process.exit(require('node:fs').existsSync('dist/js/utils.js')?0:1)\" || npm run build:utils",
-    "ensure:dts": "node -e \"process.exit(require('node:fs').existsSync('dist/js/intlTelInput.d.ts')?0:1)\" || npm run build:js:dts",
+    "ensure:utils": "node -e \"process.exit(require('node:fs').existsSync('packages/core/dist/js/utils.js')?0:1)\" || npm run build:utils",
+    "ensure:dts": "node -e \"process.exit(require('node:fs').existsSync('packages/core/dist/js/intlTelInput.d.ts')?0:1)\" || npm run build:js:dts",
     "build:css:bundle": "node scripts/esbuild-css.js",
-    "build:css": "npm run clean:dist:css && npm run build:css:bundle && cp src/css/styles.d.ts dist/css/",
+    "build:css": "npm run clean:dist:css && npm run build:css:bundle && cp packages/core/src/css/styles.d.ts packages/core/dist/css/",
     "build:img:sprite": "node --experimental-strip-types scripts/generate-sprite.js",
     "build:img": "npm run clean:dist:img && npm run build:img:sprite && npm run build:css",
     "build:js:dts": "node scripts/build-dts.js",
@@ -43,26 +44,25 @@
     "typecheck:dts": "npm run ensure:dts && npm run build:js:dts:check",
     "typecheck:dts:components": "tsc -p scripts/tsconfig.typecheck-dts-components.json",
     "typecheck:main": "tsc --noEmit -p tsconfig.json",
-    "typecheck:svelte": "svelte-check --workspace svelte --tsconfig tsconfig.json",
-    "typecheck:vue": "vue-tsc --noEmit -p vue/tsconfig.build.json",
+    "typecheck:svelte": "svelte-check --workspace packages/svelte --tsconfig tsconfig.json",
+    "typecheck:vue": "vue-tsc --noEmit -p packages/vue/tsconfig.build.json",
     "build:js:core": "node scripts/esbuild.js",
     "build:js": "npm run clean:dist:js && npm run clean:tmp && npm run lint:js && npm run build:utils:closure && npm run build:utils:check:shape && npm run build:js:dts && npm run build:js:dts:check && npm run typecheck:main && npm run build:js:core && npm run build:components && npm run build:components:dts:check && npm run typecheck:svelte",
     "build:jsfast": "npm run clean:dist:js:keep-utils && npm run clean:tmp && npm run ensure:utils && npm run build:js:core",
     "build:jsfast:cmps": "npm run build:jsfast && npm run build:components",
-    "build:react": "npm run ensure:dts && npm run clean:react && tsc -p react/tsconfig.build.json && node react/build.js",
-    "build:vue": "npm run ensure:dts && npm run clean:vue && npm run typecheck:vue && vite build --config vue/vite.config.mts",
-    "build:angular": "npm run ensure:dts && npm run clean:angular && ngc -p angular/tsconfig.build.json && node angular/build.js",
+    "build:react": "npm run ensure:dts && npm run clean:react && tsc -p packages/react/tsconfig.build.json && node packages/react/build.js",
+    "build:vue": "npm run ensure:dts && npm run clean:vue && npm run typecheck:vue && vite build --config packages/vue/vite.config.mts",
+    "build:angular": "npm run ensure:dts && npm run clean:angular && ngc -p packages/angular/tsconfig.build.json && node packages/angular/build.js",
     "build:components": "npm run build:react && npm run build:vue && npm run build:angular",
     "build:site": "npm run build --workspace=site",
     "build": "npm run clean:all && npm run build:img && npm run build:translations:gen && npm run build:js && npm run build:site",
     "build:test": "npm run build && npm run test",
-    "prepublishOnly": "npm run build",
     "version:bump": "node scripts/version-bump.js",
     "version:patch": "npm run build:test && npm run version:bump -- patch",
     "version:minor": "npm run build:test && npm run version:bump -- minor",
     "version:major": "npm run build:test && npm run version:bump -- major",
-    "vue:demo": "vite --config vue/demo/vite.config.js vue/demo/${DEMO:-validation}",
-    "svelte:demo": "vite --config svelte/demo/vite.config.js svelte/demo/${DEMO:-validation}"
+    "vue:demo": "vite --config packages/vue/demo/vite.config.js packages/vue/demo/${DEMO:-validation}",
+    "svelte:demo": "vite --config packages/svelte/demo/vite.config.js packages/svelte/demo/${DEMO:-validation}"
   },
   "devDependencies": {
     "@angular/common": "^21.2.7",
@@ -120,127 +120,14 @@
     "vue-tsc": "^3.2.7",
     "zone.js": "^0.16.1"
   },
-  "files": [
-    "dist/*",
-    "react/dist/*",
-    "vue/dist/*",
-    "angular/dist/*",
-    "svelte/src/*",
-    "CHANGELOG.md",
-    "LICENSE",
-    "package.json",
-    "package-lock.json",
-    "README.md"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jackocnr/intl-tel-input.git"
   },
   "homepage": "https://intl-tel-input.com",
-  "main": "./dist/js/intlTelInput.js",
-  "types": "./dist/js/intlTelInput.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/js/intlTelInput.d.ts",
-      "import": "./dist/js/intlTelInput.mjs"
-    },
-    "./intlTelInputWithUtils": {
-      "types": "./dist/js/intlTelInput.d.ts",
-      "import": "./dist/js/intlTelInputWithUtils.mjs"
-    },
-    "./data": {
-      "types": "./dist/js/data.d.ts",
-      "import": "./dist/js/data.mjs"
-    },
-    "./utils": {
-      "types": "./dist/js/utils.d.ts",
-      "import": "./dist/js/utils.js"
-    },
-    "./react": {
-      "types": "./react/dist/IntlTelInput.d.ts",
-      "import": "./react/dist/IntlTelInput.js"
-    },
-    "./reactWithUtils": {
-      "types": "./react/dist/IntlTelInputWithUtils.d.ts",
-      "import": "./react/dist/IntlTelInputWithUtils.js"
-    },
-    "./vue": {
-      "types": "./vue/dist/index.d.ts",
-      "import": "./vue/dist/IntlTelInput.js"
-    },
-    "./vueWithUtils": {
-      "types": "./vue/dist/indexWithUtils.d.ts",
-      "import": "./vue/dist/IntlTelInputWithUtils.js"
-    },
-    "./angular": {
-      "types": "./angular/dist/IntlTelInput.d.ts",
-      "import": "./angular/dist/IntlTelInput.js"
-    },
-    "./angularWithUtils": {
-      "types": "./angular/dist/IntlTelInputWithUtils.d.ts",
-      "import": "./angular/dist/IntlTelInputWithUtils.js"
-    },
-    "./svelte": {
-      "types": "./svelte/src/IntlTelInput.svelte.d.ts",
-      "svelte": "./svelte/src/IntlTelInput.svelte",
-      "import": "./svelte/src/IntlTelInput.svelte"
-    },
-    "./svelteWithUtils": {
-      "types": "./svelte/src/IntlTelInput.svelte.d.ts",
-      "svelte": "./svelte/src/IntlTelInputWithUtils.svelte",
-      "import": "./svelte/src/IntlTelInputWithUtils.svelte"
-    },
-    "./i18n": {
-      "types": "./dist/js/i18n.d.ts",
-      "import": "./dist/js/i18n/index.js"
-    },
-    "./i18n/*": {
-      "types": "./dist/js/i18n.d.ts",
-      "import": "./dist/js/i18n/*/index.js"
-    },
-    "./styles": {
-      "types": "./dist/css/styles.d.ts",
-      "default": "./dist/css/intlTelInput.css"
-    },
-    "./*": "./*"
-  },
-  "typesVersions": {
-    "*": {
-      ".": [
-        "dist/js/intlTelInput.d.ts"
-      ],
-      "react": [
-        "react/dist/IntlTelInput.d.ts"
-      ],
-      "angular": [
-        "angular/dist/IntlTelInput.d.ts"
-      ]
-    }
-  },
-  "keywords": [
-    "international",
-    "country",
-    "dial code",
-    "telephone",
-    "phone",
-    "mobile",
-    "input",
-    "flag",
-    "dropdown",
-    "javascript",
-    "plugin",
-    "css",
-    "html",
-    "validation",
-    "formatting",
-    "react",
-    "vue",
-    "angular",
-    "svelte",
-    "component",
-    "typescript"
-  ],
+  "bugs": "https://github.com/jackocnr/intl-tel-input/issues",
   "workspaces": [
+    "packages/*",
     "site"
   ]
 }

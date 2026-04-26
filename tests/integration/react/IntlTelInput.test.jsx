@@ -1,7 +1,7 @@
 import { createRef } from "react";
 import { render, screen, waitFor, cleanup } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import IntlTelInput, { intlTelInput } from "../../../react/src/IntlTelInputWithUtils";
+import IntlTelInput, { intlTelInput } from "../../../packages/react/src/IntlTelInputWithUtils";
 
 const getTelInput = () => screen.getByRole("textbox");
 
