@@ -194,23 +194,28 @@ await intlTelInput.attachUtils(loadUtils);
 > This method should only be called once per page - it will return `null` if utils have already been loaded, or are in the process of being loaded.
 
 ###### getCountryData
-Type: `() => Array<{ name: string, iso2: string, dialCode: string }>`  
+Type: `() => Array<{ name: string, iso2: string, dialCode: string, priority: number, areaCodes: string[] | null, nationalPrefix: string | null }>`  
 
-Retrieve the plugin's country data - either to re-use elsewhere (e.g. to generate your own country dropdown), or alternatively, you could use it to modify the country data. Note that any modifications must be done before initialising the plugin.  
+Retrieve the plugin's country data - either to re-use elsewhere (e.g. to generate your own country dropdown), or alternatively, you could use it to modify the country data. _Note that any modifications must be done before initialising the plugin._  
 
 ```js
 const countryData = intlTelInput.getCountryData();
 ```
 
-Returns an array of country objects:
+Returns an array of country objects, e.g.:
 
 ```js
 [{
   name: "Afghanistan",
   iso2: "af",
-  dialCode: "93"
+  dialCode: "93",
+  priority: 0,
+  areaCodes: null,
+  nationalPrefix: "0"
 }, ...]
 ```
+
+_Note that `name` is only populated after the plugin has been initialised._
 
 ###### getInstance
 Type: `(input: HTMLInputElement) => Iti | null`  
