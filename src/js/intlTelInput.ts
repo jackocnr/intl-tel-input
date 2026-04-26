@@ -8,7 +8,9 @@ import {
 import type {
   UtilsLoader,
   ItiUtils,
+  NumberFormat,
   NumberType,
+  ValidationError,
   AllOptions,
   SomeOptions,
   SelectedCountryData,
@@ -35,7 +37,6 @@ import { isRegionlessNanp } from "./data/nanp-regionless.js";
 import type { ItiEventMap, StrictRejectReason } from "./types/events.js";
 import {
   EVENTS,
-  SENTINELS,
   REGEX,
   INITIAL_COUNTRY,
   DATA_KEYS,
@@ -43,8 +44,16 @@ import {
   INPUT_TYPES,
   DIAL_CODE,
   US,
+  NUMBER_FORMAT,
+  NUMBER_TYPE,
+  VALIDATION_ERROR,
   PLACEHOLDER_MODES,
 } from "./constants.js";
+// Re-export the enum constant objects so consumers can write
+// VALIDATION_ERROR.TOO_SHORT / NUMBER_TYPE.MOBILE / NUMBER_FORMAT.E164 instead
+// of typo-prone bare strings - especially useful in plain JS where the literal
+// union types don't apply.
+export { NUMBER_FORMAT, NUMBER_TYPE, VALIDATION_ERROR } from "./constants.js";
 import { Numerals } from "./core/numerals.js";
 import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
 // Re-export the full public type surface, so consumers who resolve
@@ -63,8 +72,10 @@ export type {
   SelectedCountryData,
   UtilsLoader,
   ItiUtils,
+  ArrayValues,
+  NumberFormat,
   NumberType,
-  SetValues,
+  ValidationError,
   ValueOf,
 } from "./types/public-api.js";
 
@@ -820,8 +831,9 @@ export class Iti {
       const useNational =
         (nationalMode && !isRegionless) ||
         (!number.startsWith("+") && !separateDialCode);
-      const { NATIONAL, INTERNATIONAL } = intlTelInput.utils.numberFormat;
-      const format = useNational ? NATIONAL : INTERNATIONAL;
+      const format = useNational
+        ? NUMBER_FORMAT.NATIONAL
+        : NUMBER_FORMAT.INTERNATIONAL;
       number = intlTelInput.utils.formatNumber(
         number,
         this.#selectedCountry?.iso2,
@@ -1015,11 +1027,10 @@ export class Iti {
       return;
     }
 
-    const numberType = intlTelInput.utils.numberType[placeholderNumberType];
     let exampleNumber = intlTelInput.utils.getExampleNumber(
       iso2,
       false,
-      numberType,
+      placeholderNumberType,
       true,
     );
     //* See if adding more digits is still valid to get the true maximum valid length.
@@ -1060,13 +1071,12 @@ export class Iti {
       return;
     }
 
-    const numberType = intlTelInput.utils.numberType[placeholderNumberType];
     //* Note: Must set placeholder to empty string if no country selected (globe icon showing).
     let placeholder = this.#selectedCountry
       ? intlTelInput.utils.getExampleNumber(
           this.#selectedCountry.iso2,
           nationalMode,
-          numberType,
+          placeholderNumberType,
         )
       : "";
 
@@ -1347,8 +1357,8 @@ export class Iti {
     );
   }
 
-  //* Format the number to the given format.
-  public getNumber(format?: number): string {
+  //* Format the number to the given format (defaults to "E164").
+  public getNumber(format?: NumberFormat): string {
     if (!this.#isActive) {
       return "";
     }
@@ -1364,10 +1374,10 @@ export class Iti {
     return this.#numerals.denormalise(formattedNumber);
   }
 
-  //* Get the type of the entered number e.g. landline/mobile.
-  public getNumberType(): number {
+  //* Get the type of the entered number e.g. "FIXED_LINE" / "MOBILE", or null if it can't be determined / instance is destroyed.
+  public getNumberType(): NumberType | null {
     if (!this.#isActive) {
-      return SENTINELS.UNKNOWN_NUMBER_TYPE;
+      return null;
     }
     ensureUtils("getNumberType");
 
@@ -1382,10 +1392,10 @@ export class Iti {
     return this.#selectedCountry ?? null;
   }
 
-  //* Get the validation error.
-  public getValidationError(): number {
+  //* Get the validation error e.g. "TOO_SHORT" / "TOO_LONG", or null if it can't be determined / instance is destroyed.
+  public getValidationError(): ValidationError | null {
     if (!this.#isActive) {
-      return SENTINELS.UNKNOWN_VALIDATION_ERROR;
+      return null;
     }
     ensureUtils("getValidationError");
 
@@ -1637,6 +1647,12 @@ export interface IntlTelInputInterface {
   startedLoadingUtils: boolean;
   version: string | undefined;
   utils?: ItiUtils;
+  // Enum constant objects, also exposed at module top-level. Available here so
+  // <script>-tag consumers (no ES imports) can still write
+  // window.intlTelInput.VALIDATION_ERROR.TOO_SHORT etc.
+  NUMBER_FORMAT: typeof NUMBER_FORMAT;
+  NUMBER_TYPE: typeof NUMBER_TYPE;
+  VALIDATION_ERROR: typeof VALIDATION_ERROR;
 }
 
 //* Convenience wrapper.
@@ -1665,6 +1681,9 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     startedLoadingUtils: false,
     startedLoadingAutoCountry: false,
     version: process.env.VERSION,
+    NUMBER_FORMAT,
+    NUMBER_TYPE,
+    VALIDATION_ERROR,
   },
 );
 

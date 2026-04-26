@@ -1,5 +1,5 @@
 import intlTelInput, { Iti } from "intl-tel-input";
-import type { SomeOptions } from "intl-tel-input";
+import type { SomeOptions, ValidationError } from "intl-tel-input";
 import React, {
   useRef,
   useEffect,
@@ -31,7 +31,7 @@ type ItiProps = SomeOptions & {
   onChangeNumber?: (number: string) => void;
   onChangeCountry?: (iso2: string) => void;
   onChangeValidity?: (isValid: boolean) => void;
-  onChangeErrorCode?: (errorCode: number | null) => void;
+  onChangeErrorCode?: (errorCode: ValidationError | null) => void;
   onOpenCountryDropdown?: () => void;
   onCloseCountryDropdown?: () => void;
   onStrictReject?: (source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason) => void;
@@ -73,7 +73,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   const lastEmittedNumberRef = useRef<string | undefined>(undefined);
   const lastEmittedCountryRef = useRef<string | undefined>(undefined);
   const lastEmittedValidityRef = useRef<boolean | undefined>(undefined);
-  const lastEmittedErrorCodeRef = useRef<number | null | undefined>(undefined);
+  const lastEmittedErrorCodeRef = useRef<ValidationError | null | undefined>(undefined);
   // if an input event fires before utils has loaded, we defer the update until the promise resolves
   const pendingUpdateRef = useRef<boolean>(false);
 

@@ -1,6 +1,11 @@
 import type { Country, Iso2 } from "../data.js";
 import type { I18n } from "../i18n/types.js";
-import type { NUMBER_TYPE_SET, PLACEHOLDER_MODES } from "../constants.js";
+import type {
+  NUMBER_FORMATS,
+  NUMBER_TYPES,
+  PLACEHOLDER_MODES,
+  VALIDATION_ERRORS,
+} from "../constants.js";
 
 // Loader for the utils module
 export type UtilsLoader = () => Promise<{ default: ItiUtils }>;
@@ -10,19 +15,22 @@ export type ItiUtils = {
   formatNumber(
     number: string,
     iso2: string | undefined,
-    format?: number,
+    format?: NumberFormat,
   ): string;
   formatNumberAsYouType(number: string, iso2: string | undefined): string;
   getCoreNumber(number: string, iso2: string | undefined): string;
   getExampleNumber(
     iso2: string | undefined,
     nationalMode: boolean,
-    numberType: number,
+    numberType: NumberType,
     useE164?: boolean,
   ): string;
   getExtension(number: string, iso2: string | undefined): string;
-  getNumberType(number: string, iso2: string | undefined): number;
-  getValidationError(number: string, iso2: string | undefined): number;
+  getNumberType(number: string, iso2: string | undefined): NumberType | null;
+  getValidationError(
+    number: string,
+    iso2: string | undefined,
+  ): ValidationError | null;
   isPossibleNumber(
     number: string,
     iso2: string | undefined,
@@ -33,44 +41,17 @@ export type ItiUtils = {
     iso2: string | undefined,
     numberType?: NumberType[] | null,
   ): boolean;
-  numberFormat: {
-    NATIONAL: number;
-    INTERNATIONAL: number;
-    E164: number;
-    RFC3966: number;
-  };
-  numberType: {
-    [key: string]: number;
-    FIXED_LINE: number;
-    MOBILE: number;
-    FIXED_LINE_OR_MOBILE: number;
-    TOLL_FREE: number;
-    PREMIUM_RATE: number;
-    SHARED_COST: number;
-    VOIP: number;
-    PERSONAL_NUMBER: number;
-    PAGER: number;
-    UAN: number;
-    VOICEMAIL: number;
-    UNKNOWN: number;
-  };
-  validationError: {
-    IS_POSSIBLE: number;
-    INVALID_COUNTRY_CODE: number;
-    TOO_SHORT: number;
-    TOO_LONG: number;
-    IS_POSSIBLE_LOCAL_ONLY: number;
-    INVALID_LENGTH: number;
-  };
 };
 
 // Exported to match the dist public surface: dts-bundle-generator hoists
 // these utility types to the top level of dist/js/intlTelInput.d.ts because
 // NumberType / AllOptions reference them, so they're already visible to
 // consumers. Mirror that here so source-path resolution sees the same set.
-export type SetValues<T> = T extends ReadonlySet<infer U> ? U : never;
+export type ArrayValues<T extends readonly unknown[]> = T[number];
 
-export type NumberType = SetValues<typeof NUMBER_TYPE_SET>;
+export type NumberFormat = ArrayValues<typeof NUMBER_FORMATS>;
+export type NumberType = ArrayValues<typeof NUMBER_TYPES>;
+export type ValidationError = ArrayValues<typeof VALIDATION_ERRORS>;
 
 export type ValueOf<T> = T[keyof T];
 

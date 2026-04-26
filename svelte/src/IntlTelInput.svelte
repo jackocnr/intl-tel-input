@@ -6,7 +6,7 @@
 <script lang="ts">
   // Resolves to IntlTelInput.svelte.d.ts (the type declaration file for this component).
   import type { Props } from "./IntlTelInput.svelte";
-  import type { SomeOptions } from "intl-tel-input";
+  import type { SomeOptions, ValidationError } from "intl-tel-input";
   import { onMount, onDestroy } from "svelte";
 
   // Props
@@ -41,7 +41,7 @@
   let lastEmittedNumber: string | undefined = $state();
   let lastEmittedCountry: string | undefined = $state();
   let lastEmittedValidity: boolean | undefined = $state();
-  let lastEmittedErrorCode: number | null | undefined = $state();
+  let lastEmittedErrorCode: ValidationError | null | undefined = $state();
   let hasInitialized = $state(false);
   // if an input event fires before utils has loaded, we defer the update until the promise resolves
   let pendingUpdate = false;

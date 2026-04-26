@@ -107,7 +107,7 @@ Emitted when the selected country changes. Emits the new country's iso2 code (e.
 Type: `EventEmitter<number | null>`  
 Default: `null`  
 
-Emitted when the number validation error changes. Emits an integer that matches the [`intlTelInput.utils.validationError`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L223) enum, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
+Emitted when the number validation error changes. Emits a `ValidationError` string (one of `"IS_POSSIBLE"`, `"INVALID_COUNTRY_CODE"`, `"TOO_SHORT"`, `"TOO_LONG"`, `"IS_POSSIBLE_LOCAL_ONLY"`, `"INVALID_LENGTH"`), or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
 
 ###### numberChange
 Type: `EventEmitter<string>`  
@@ -211,4 +211,4 @@ You can access all of the plugin's [instance methods](/docs/methods#instance-met
 
 ## Accessing static methods
 
-You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
+You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import intlTelInput, { type SomeOptions } from "intl-tel-input";
+import intlTelInput, { type SomeOptions, type ValidationError } from "intl-tel-input";
 import {
   onMounted,
   onUnmounted,
@@ -41,7 +41,7 @@ const emit = defineEmits<{
   (e: "changeNumber", value: string): void;
   (e: "changeCountry", value: string): void;
   (e: "changeValidity", value: boolean): void;
-  (e: "changeErrorCode", value: number | null): void;
+  (e: "changeErrorCode", value: ValidationError | null): void;
   (e: "openCountryDropdown"): void;
   (e: "closeCountryDropdown"): void;
   (e: "strictReject", source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason): void;
@@ -118,7 +118,7 @@ const instance = shallowRef<ReturnType<typeof intlTelInput> | null>(null);
 const lastEmittedNumber = ref<string>();
 const lastEmittedCountry = ref<string>();
 const lastEmittedValidity = ref<boolean>();
-const lastEmittedErrorCode = ref<number | null>();
+const lastEmittedErrorCode = ref<ValidationError | null>();
 // if an input event fires before utils has loaded, we defer the update until the promise resolves
 let pendingUpdate = false;
 

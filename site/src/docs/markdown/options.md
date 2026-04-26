@@ -201,10 +201,10 @@ For example, the snippet below masks each digit with an `X`, or falls back to `"
 View the plugin with this enabled in the [Playground](/playground?customPlaceholder=true#placeholder-options).
 
 ###### placeholderNumberType
-Type: `string`  
+Type: `NumberType`  
 Default: `"MOBILE"`  
 
-Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) from the enum `intlTelInput.utils.numberType` (e.g. `"FIXED_LINE"`) to set the number type to use for the generated placeholder numbers. 
+Set the number type to use for the generated placeholder numbers. `NumberType` is one of `"FIXED_LINE"`, `"MOBILE"`, `"FIXED_LINE_OR_MOBILE"`, `"TOLL_FREE"`, `"PREMIUM_RATE"`, `"SHARED_COST"`, `"VOIP"`, `"PERSONAL_NUMBER"`, `"PAGER"`, `"UAN"`, `"VOICEMAIL"`, or `"UNKNOWN"`. 
 
 View the plugin with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
 
@@ -260,10 +260,10 @@ When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a 
 Adjust what is considered a valid number.
 
 ###### allowedNumberTypes
-Type: `string[]`  
+Type: `NumberType[] | null`  
 Default: `["MOBILE", "FIXED_LINE"]`  
 
-Specify an array of keys from the enum [`intlTelInput.utils.numberType`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) to set the number type(s) to enforce during validation, as well as the maximum number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type (not recommended<sup>*</sup>). 
+Set the number type(s) to enforce during validation (and the maximum number length to enforce with [strictMode](#strictmode)) — see [`placeholderNumberType`](#placeholdernumbertype) for the full list of `NumberType` values. Set it to `null` to not enforce any particular type (not recommended<sup>*</sup>). 
 
 By default, it's set to `["MOBILE", "FIXED_LINE"]` so [`isValidNumber`](/docs/methods#isvalidnumber) (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. _Note: previously named `validationNumberTypes`._
 

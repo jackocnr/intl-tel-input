@@ -48,11 +48,6 @@ export const TIMINGS = {
   NEXT_TICK: 0,
 } as const;
 
-export const SENTINELS = {
-  UNKNOWN_NUMBER_TYPE: -99,
-  UNKNOWN_VALIDATION_ERROR: -99,
-} as const;
-
 // Layout / sizing fallbacks (used when measuring elements fails e.g., hidden containers)
 export const LAYOUT = {
   NARROW_VIEWPORT_WIDTH: 500, // keep in sync with .iti__country-list CSS media query
@@ -93,10 +88,27 @@ export const INITIAL_COUNTRY = {
   AUTO: "auto",
 } as const;
 
-// libphonenumber number types (string literals exposed in public options)
-// must be kept in sync with the same list in utils.js and the libphonenumber metadata
-// TODO: add a build step to extract this from i18n.phonenumbers.PhoneNumberType in third_party/libphonenumber/javascript/i18n/phonenumbers/phonenumberutil.js
-const NUMBER_TYPES = [
+// libphonenumber enums - sole source of truth for both the plugin (option
+// validation, public types) and utils.js (which builds its int maps from
+// these arrays at build time via scripts/build-utils.js).
+//
+// Order matters - the array index is the integer value libphonenumber uses,
+// EXCEPT for NUMBER_TYPES.UNKNOWN which libphonenumber maps to -1 (handled
+// explicitly in utils.js).
+//
+// Mirrors:
+//   - i18n.phonenumbers.PhoneNumberFormat
+//   - i18n.phonenumbers.PhoneNumberType
+//   - i18n.phonenumbers.PhoneNumberUtil.ValidationResult
+// in third_party/libphonenumber/javascript/i18n/phonenumbers/phonenumberutil.js
+export const NUMBER_FORMATS = [
+  "E164",
+  "INTERNATIONAL",
+  "NATIONAL",
+  "RFC3966",
+] as const;
+
+export const NUMBER_TYPES = [
   "FIXED_LINE",
   "MOBILE",
   "FIXED_LINE_OR_MOBILE",
@@ -111,11 +123,28 @@ const NUMBER_TYPES = [
   "UNKNOWN",
 ] as const;
 
-export const NUMBER_TYPE_SET = new Set(NUMBER_TYPES) as ReadonlySet<
-  (typeof NUMBER_TYPES)[number]
-> & {
-  has(value: string): boolean;
-};
+export const VALIDATION_ERRORS = [
+  "IS_POSSIBLE",
+  "INVALID_COUNTRY_CODE",
+  "TOO_SHORT",
+  "TOO_LONG",
+  "IS_POSSIBLE_LOCAL_ONLY",
+  "INVALID_LENGTH",
+] as const;
+
+// Convenience constants so consumers can write NUMBER_TYPE.MOBILE instead of
+// the bare string "MOBILE" - typo-safe and matches the PLACEHOLDER_MODES style.
+// Derived from the arrays above so there's no second list to keep in sync.
+const toEnumObject = <T extends readonly string[]>(
+  arr: T,
+): Readonly<{ [K in T[number]]: K }> =>
+  Object.fromEntries(arr.map((v) => [v, v])) as Readonly<{
+    [K in T[number]]: K;
+  }>;
+
+export const NUMBER_FORMAT = toEnumObject(NUMBER_FORMATS);
+export const NUMBER_TYPE = toEnumObject(NUMBER_TYPES);
+export const VALIDATION_ERROR = toEnumObject(VALIDATION_ERRORS);
 
 // Data-* keys used on DOM nodes
 export const DATA_KEYS = {

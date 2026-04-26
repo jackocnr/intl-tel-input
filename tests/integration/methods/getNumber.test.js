@@ -1,9 +1,8 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, intlTelInput } from "../helpers/helpers";
+import { initPlugin, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
-const numberFormat = intlTelInput.utils.numberFormat;
 
 describe("getNumber method", () => {
   describe("initial value US number", () => {
@@ -20,11 +19,11 @@ describe("getNumber method", () => {
     });
 
     test("INTERNATIONAL format", async () => {
-      expect(iti.getNumber(numberFormat.INTERNATIONAL)).toEqual("+1 702-418-1234");
+      expect(iti.getNumber("INTERNATIONAL")).toEqual("+1 702-418-1234");
     });
 
     test("NATIONAL format", async () => {
-      expect(iti.getNumber(numberFormat.NATIONAL)).toEqual("(702) 418-1234");
+      expect(iti.getNumber("NATIONAL")).toEqual("(702) 418-1234");
     });
   });
 

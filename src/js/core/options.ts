@@ -1,7 +1,8 @@
 import {
   INITIAL_COUNTRY,
   PLACEHOLDER_MODES,
-  NUMBER_TYPE_SET,
+  NUMBER_TYPE,
+  NUMBER_TYPES,
   LAYOUT,
 } from "../constants.js";
 import defaultEnglishStrings from "../i18n/en.js";
@@ -32,7 +33,7 @@ export const defaults: AllOptions = {
   //* Whether or not to allow the dropdown.
   allowDropdown: true,
   //* The number type to enforce during validation.
-  allowedNumberTypes: ["MOBILE", "FIXED_LINE"],
+  allowedNumberTypes: [NUMBER_TYPE.MOBILE, NUMBER_TYPE.FIXED_LINE],
   //* Whether or not to allow extensions after the main number.
   allowNumberExtensions: false,
   // Allow alphanumeric "phonewords" (e.g. +1 800 FLOWERS) as valid numbers
@@ -78,7 +79,7 @@ export const defaults: AllOptions = {
   //* Display only these countries.
   onlyCountries: null,
   //* Number type to use for placeholders.
-  placeholderNumberType: "MOBILE",
+  placeholderNumberType: NUMBER_TYPE.MOBILE,
   //* Add custom classes to the search input element.
   searchInputClass: "",
   //* Display the international dial code next to the selected flag.
@@ -295,8 +296,11 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       }
 
       case "placeholderNumberType":
-        if (typeof value !== "string" || !NUMBER_TYPE_SET.has(value)) {
-          const validTypes = Array.from(NUMBER_TYPE_SET).join(", ");
+        if (
+          typeof value !== "string" ||
+          !(NUMBER_TYPES as readonly string[]).includes(value)
+        ) {
+          const validTypes = NUMBER_TYPES.join(", ");
           warnOption("placeholderNumberType", `one of ${validTypes}`, value);
           break;
         }
@@ -315,8 +319,11 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
           }
           let allValid = true;
           for (const v of value as unknown[]) {
-            if (typeof v !== "string" || !NUMBER_TYPE_SET.has(v)) {
-              const validTypes = Array.from(NUMBER_TYPE_SET).join(", ");
+            if (
+              typeof v !== "string" ||
+              !(NUMBER_TYPES as readonly string[]).includes(v)
+            ) {
+              const validTypes = NUMBER_TYPES.join(", ");
               warnOption(
                 "allowedNumberTypes",
                 `an array of valid number types (${validTypes})`,

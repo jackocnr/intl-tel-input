@@ -5,21 +5,27 @@ import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
 } from "../../../../../react/dist/IntlTelInput.js";
-import type { Iso2 } from "../../../../../dist/js/intlTelInput.js";
+import type {
+  Iso2,
+  ValidationError,
+} from "../../../../../dist/js/intlTelInput.js";
 
-const getErrorMessage = (number: string, errorCode: number): string => {
+const getErrorMessage = (
+  number: string,
+  errorCode: ValidationError | null,
+): string => {
   if (!number) {
     return "Please enter a number";
   }
   const genericError = "Invalid number";
-  const { validationError } = intlTelInput.utils!;
-  const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
-    [validationError.TOO_SHORT]: "Too short",
-    [validationError.TOO_LONG]: "Too long",
-    [validationError.INVALID_LENGTH]: genericError,
+  const { VALIDATION_ERROR } = intlTelInput;
+  const errorMap: Record<string, string> = {
+    [VALIDATION_ERROR.INVALID_COUNTRY_CODE]: "Invalid dial code",
+    [VALIDATION_ERROR.TOO_SHORT]: "Too short",
+    [VALIDATION_ERROR.TOO_LONG]: "Too long",
+    [VALIDATION_ERROR.INVALID_LENGTH]: genericError,
   };
-  return errorMap[errorCode] || genericError;
+  return (errorCode && errorMap[errorCode]) || genericError;
 };
 
 const geoIpLookup = async (): Promise<Iso2> => {

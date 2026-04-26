@@ -2,8 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { initPlugin, teardown, intlTelInput } from "../helpers/helpers";
-const numberType = intlTelInput.utils.numberType;
+import { initPlugin, teardown } from "../helpers/helpers";
 
 describe("getNumberType method", () => {
   let iti;
@@ -18,30 +17,30 @@ describe("getNumberType method", () => {
 
   test("returns the right type for a UK mobile number", async () => {
     iti.setNumber("+447733123456");
-    expect(iti.getNumberType()).toEqual(numberType.MOBILE);
+    expect(iti.getNumberType()).toEqual("MOBILE");
   });
 
   test("returns the right type for a UK landline number", async () => {
     iti.setNumber("+441531123456");
-    expect(iti.getNumberType()).toEqual(numberType.FIXED_LINE);
+    expect(iti.getNumberType()).toEqual("FIXED_LINE");
   });
 
   test("returns the right type for a UK toll-free number", async () => {
     iti.setNumber("+448000123456");
-    expect(iti.getNumberType()).toEqual(numberType.TOLL_FREE);
+    expect(iti.getNumberType()).toEqual("TOLL_FREE");
   });
 
-  test("returns -99 for an invalid number", async () => {
+  test("returns null for an invalid number", async () => {
     iti.setNumber("+441");
-    expect(iti.getNumberType()).toEqual(-99);
+    expect(iti.getNumberType()).toBeNull();
   });
 
-  test("returns -99 for empty input", async () => {
-    expect(iti.getNumberType()).toEqual(-99);
+  test("returns null for empty input", async () => {
+    expect(iti.getNumberType()).toBeNull();
   });
 
   test("ignores extension when determining type", async () => {
     iti.setNumber("+447733123456 ext. 99");
-    expect(iti.getNumberType()).toEqual(numberType.MOBILE);
+    expect(iti.getNumberType()).toEqual("MOBILE");
   });
 });

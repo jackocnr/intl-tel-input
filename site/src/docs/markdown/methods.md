@@ -62,30 +62,33 @@ const extension = iti.getExtension();
 For example, if the input value was `"(702) 555-5555 ext. 1234"`, this would return `"1234"`.
 
 ###### getNumber
-Type: `(format?: number) => string`  
+Type: `(format?: NumberFormat) => string`  
 
-Get the current number in the given format (defaults to [E.164 standard](https://en.wikipedia.org/wiki/E.164)). The different formats are available in the enum [`intlTelInput.utils.numberFormat`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L198). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note that even if [`nationalMode`](/docs/options#nationalmode) is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
+Get the current number in the given format (defaults to `"E164"`, [the E.164 standard](https://en.wikipedia.org/wiki/E.164)). `NumberFormat` is the string union `"E164" | "INTERNATIONAL" | "NATIONAL" | "RFC3966"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note that even if [`nationalMode`](/docs/options#nationalmode) is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
 
 ```js
-const number = iti.getNumber(); // format defaults to E.164 e.g. "+17024181234"
+const number = iti.getNumber(); // defaults to "E164" e.g. "+17024181234"
 // or
-const { INTERNATIONAL } = intlTelInput.utils.numberFormat;
-const number = iti.getNumber(INTERNATIONAL); // e.g. "+1 702-418-1234"
+const number = iti.getNumber("INTERNATIONAL"); // e.g. "+1 702-418-1234"
 ```
 
 ###### getNumberType
-Type: `() => number`  
+Type: `() => NumberType | null`  
 
-Get the type (fixed-line/mobile/toll-free, etc) of the current number. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). It returns an integer, which you can match against the [various options](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L207) in the enum `intlTelInput.utils.numberType`.
+Get the type (fixed-line/mobile/toll-free, etc) of the current number, or `null` if it can't be determined. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). `NumberType` is the string union `"FIXED_LINE" | "MOBILE" | "FIXED_LINE_OR_MOBILE" | "TOLL_FREE" | "PREMIUM_RATE" | "SHARED_COST" | "VOIP" | "PERSONAL_NUMBER" | "PAGER" | "UAN" | "VOICEMAIL" | "UNKNOWN"`.
 
 ```js
 const numberType = iti.getNumberType();
-const { MOBILE, FIXED_LINE_OR_MOBILE } = intlTelInput.utils.numberType;
-if (numberType === MOBILE || numberType === FIXED_LINE_OR_MOBILE) {
+if (numberType === "MOBILE" || numberType === "FIXED_LINE_OR_MOBILE") {
     // is (or could be) a mobile number
 }
 ```
-_Note that in some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases it will return `FIXED_LINE_OR_MOBILE` — hence the need to check for both values above._
+
+> [!TIP]
+> If you'd rather not write the strings by hand (handy in plain JS where typos won't fail typechecking), use the `intlTelInput.NUMBER_TYPE` constant object — e.g. `numberType === intlTelInput.NUMBER_TYPE.MOBILE`.
+
+> [!NOTE]
+> In some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases it will return `"FIXED_LINE_OR_MOBILE"` — hence the need to check for both values above.
 
 ###### getSelectedCountryData
 Type: `() => Country | null`  
@@ -96,9 +99,9 @@ const countryData = iti.getSelectedCountryData();
 ```
 
 ###### getValidationError
-Type: `() => number`  
+Type: `() => ValidationError | null`  
 
-Get more information about an invalid number. It returns an integer that matches the [`intlTelInput.utils.validationError`](https://github.com/jackocnr/intl-tel-input/blob/master/src/js/utils.js#L223) enum, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
+Get more information about an invalid number. It returns one of `"IS_POSSIBLE"`, `"INVALID_COUNTRY_CODE"`, `"TOO_SHORT"`, `"TOO_LONG"`, `"IS_POSSIBLE_LOCAL_ONLY"`, `"INVALID_LENGTH"`, or `null` if it can't be determined. For typo-safety when matching against multiple values (e.g. an error map), use the `intlTelInput.VALIDATION_ERROR` constant object — see [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
 
 ###### isValidNumber
 Type: `() => boolean`  
@@ -151,7 +154,7 @@ iti.setNumber("+447733123456");
 ```
 
 ###### setPlaceholderNumberType
-Type: `(type: string) => void`  
+Type: `(type: NumberType) => void`  
 
 Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option.
 

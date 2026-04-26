@@ -35,19 +35,19 @@ if (toastEl && toastBody && window.bootstrap?.Toast) {
   });
 }
 
-const getErrorMessage = (number: string, errorCode: number) => {
+const getErrorMessage = (number: string, errorCode: string | null) => {
   if (!number) {
     return "Please enter a number";
   }
   const genericError = "Invalid number";
-  const { validationError } = window.intlTelInput.utils!;
-  const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
-    [validationError.TOO_SHORT]: "Too short",
-    [validationError.TOO_LONG]: "Too long",
-    [validationError.INVALID_LENGTH]: genericError,
+  const { VALIDATION_ERROR } = window.intlTelInput;
+  const errorMap: Record<string, string> = {
+    [VALIDATION_ERROR.INVALID_COUNTRY_CODE]: "Invalid dial code",
+    [VALIDATION_ERROR.TOO_SHORT]: "Too short",
+    [VALIDATION_ERROR.TOO_LONG]: "Too long",
+    [VALIDATION_ERROR.INVALID_LENGTH]: genericError,
   };
-  return errorMap[errorCode] || genericError;
+  return (errorCode && errorMap[errorCode]) || genericError;
 };
 
 let showValidation = false;

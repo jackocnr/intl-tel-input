@@ -1,5 +1,9 @@
 import intlTelInput, { Iti } from "intl-tel-input";
-import type { AllOptions, SomeOptions } from "intl-tel-input";
+import type {
+  AllOptions,
+  SomeOptions,
+  ValidationError,
+} from "intl-tel-input";
 import {
   Component,
   Input,
@@ -119,7 +123,7 @@ class IntlTelInput
   @Output() numberChange = new EventEmitter<string>();
   @Output() countryChange = new EventEmitter<string>();
   @Output() validityChange = new EventEmitter<boolean>();
-  @Output() errorCodeChange = new EventEmitter<number | null>();
+  @Output() errorCodeChange = new EventEmitter<ValidationError | null>();
   @Output() openCountryDropdown = new EventEmitter<void>();
   @Output() closeCountryDropdown = new EventEmitter<void>();
   @Output() strictReject = new EventEmitter<StrictRejectDetail>();
@@ -138,7 +142,7 @@ class IntlTelInput
   private lastEmittedNumber?: string;
   private lastEmittedCountry?: string;
   private lastEmittedValidity?: boolean;
-  private lastEmittedErrorCode?: number | null;
+  private lastEmittedErrorCode?: ValidationError | null;
 
   // writeValue may be called by Angular forms before utils has loaded; queue it until then
   private pendingWriteValue?: string;

@@ -5,6 +5,30 @@ goog.require("i18n.phonenumbers.PhoneNumberUtil");
 goog.require("i18n.phonenumbers.Error");
 goog.require("i18n.phonenumbers.AsYouTypeFormatter");
 
+//* Libphonenumber enum name arrays - single source of truth lives in
+//* src/js/constants.ts. The placeholder arrays below are replaced with the
+//* real values at build time by scripts/build-utils.js (which matches the
+//* exact `["__…__"]` strings).
+const NUMBER_FORMATS = ["__NUMBER_FORMATS__"];
+const NUMBER_TYPES = ["__NUMBER_TYPES__"];
+const VALIDATION_ERRORS = ["__VALIDATION_ERRORS__"];
+
+//* Build name -> integer maps from the arrays. Array index = libphonenumber
+//* integer value, except NumberType.UNKNOWN which is -1.
+const numberFormat = {};
+NUMBER_FORMATS.forEach((name, i) => { numberFormat[name] = i; });
+const numberType = {};
+NUMBER_TYPES.forEach((name, i) => { numberType[name] = i; });
+numberType["UNKNOWN"] = -1;
+const validationError = {};
+VALIDATION_ERRORS.forEach((name, i) => { validationError[name] = i; });
+
+//* Reverse maps for converting libphonenumber integers back to string names.
+const numberTypeName = {};
+Object.keys(numberType).forEach((name) => { numberTypeName[numberType[name]] = name; });
+const validationErrorName = {};
+Object.keys(validationError).forEach((name) => { validationErrorName[validationError[name]] = name; });
+
 //* Format the number as the user types.
 const formatNumberAsYouType = (number, iso2) => {
   try {
@@ -22,16 +46,16 @@ const formatNumberAsYouType = (number, iso2) => {
   }
 };
 
-//* Format the given number to the given format.
-const formatNumber = (number, iso2, formatArg) => {
+//* Format the given number to the given format (string name like "E164").
+const formatNumber = (number, iso2, formatName) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
     if (phoneUtil.isPossibleNumber(numberObj)) {
       const format =
-        typeof formatArg === "undefined"
+        typeof formatName === "undefined"
           ? i18n.phonenumbers.PhoneNumberFormat.E164
-          : formatArg;
+          : numberFormat[formatName];
       return phoneUtil.format(numberObj, format);
     }
     return number;
@@ -40,13 +64,13 @@ const formatNumber = (number, iso2, formatArg) => {
   }
 };
 
-//* Get an example number for the given country code.
-const getExampleNumber = (iso2, national, numberType, useE164) => {
+//* Get an example number for the given country code, by number type name (e.g. "MOBILE").
+const getExampleNumber = (iso2, national, numberTypeName, useE164) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.getExampleNumberForType(
       iso2,
-      numberType,
+      numberType[numberTypeName],
     );
     let format;
     if (useE164) {
@@ -85,34 +109,34 @@ const getExtension = (number, iso2) => {
   }
 };
 
-//* Get the type of the given number e.g. fixed-line/mobile.
+//* Get the type of the given number e.g. "FIXED_LINE" / "MOBILE", or null if it can't be determined.
 const getNumberType = (number, iso2) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
-    return phoneUtil.getNumberType(numberObj);
+    const intType = phoneUtil.getNumberType(numberObj);
+    return numberTypeName[intType] || null;
   } catch {
-    //* Broken
-    return -99;
+    return null;
   }
 };
 
-//* Get more info if the validation has failed e.g. too long/too short.
+//* Get more info if the validation has failed e.g. "TOO_LONG" / "TOO_SHORT", or null if it can't be determined.
 //* NOTE that isPossibleNumberWithReason returns a i18n.phonenumbers.PhoneNumberUtil.ValidationResult.
 const getValidationError = (number, iso2) => {
   if (!iso2) {
-    return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.INVALID_COUNTRY_CODE;
+    return "INVALID_COUNTRY_CODE";
   }
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
-    return phoneUtil.isPossibleNumberWithReason(numberObj);
+    const result = phoneUtil.isPossibleNumberWithReason(numberObj);
+    return validationErrorName[result] || null;
   } catch (e) {
     //* Here I convert thrown errors into ValidationResult enums (if possible).
     //* errors are from i18n.phonenumbers.Error in the file https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js.
     if (e.message === i18n.phonenumbers.Error.INVALID_COUNTRY_CODE) {
-      return i18n.phonenumbers.PhoneNumberUtil.ValidationResult
-        .INVALID_COUNTRY_CODE;
+      return "INVALID_COUNTRY_CODE";
     }
     if (
       //* Hack to solve issue where parseAndKeepRawInput throws weird error for zero or 1-digit (national) numbers e.g. "3" or "+13" s
@@ -120,14 +144,14 @@ const getValidationError = (number, iso2) => {
       e.message === i18n.phonenumbers.Error.TOO_SHORT_AFTER_IDD ||
       e.message === i18n.phonenumbers.Error.TOO_SHORT_NSN
     ) {
-      return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_SHORT;
+      return "TOO_SHORT";
     }
     if (e.message === i18n.phonenumbers.Error.TOO_LONG) {
-      return i18n.phonenumbers.PhoneNumberUtil.ValidationResult.TOO_LONG;
+      return "TOO_LONG";
     }
 
     //* Broken
-    return -99;
+    return null;
   }
 };
 
@@ -191,45 +215,6 @@ const isPossibleNumber = (number, iso2, numberTypeNames) => {
   }
 };
 
-/********************
- * NOTE: for following sections, keys must be in quotes to force closure compiler to preserve them
- ********************/
-
-//* copied this from i18n.phonenumbers.PhoneNumberFormat in the file https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js.
-const numberFormat = {
-  "E164": 0,
-  "INTERNATIONAL": 1,
-  "NATIONAL": 2,
-  "RFC3966": 3,
-};
-
-//* copied this from i18n.phonenumbers.PhoneNumberType in https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js and put the keys in quotes to force closure compiler to preserve the keys
-// TODO: There must be a way to just tell closure compiler to preserve the keys on i18n.phonenumbers.PhoneNumberType and just export that.
-const numberType = {
-  "FIXED_LINE": 0,
-  "MOBILE": 1,
-  "FIXED_LINE_OR_MOBILE": 2,
-  "TOLL_FREE": 3,
-  "PREMIUM_RATE": 4,
-  "SHARED_COST": 5,
-  "VOIP": 6,
-  "PERSONAL_NUMBER": 7,
-  "PAGER": 8,
-  "UAN": 9,
-  "VOICEMAIL": 10,
-  "UNKNOWN": -1,
-};
-
-//* copied this from i18n.phonenumbers.PhoneNumberUtil.ValidationResult in https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js and again put the keys in quotes.
-const validationError = {
-  "IS_POSSIBLE": 0,
-  "INVALID_COUNTRY_CODE": 1,
-  "TOO_SHORT": 2,
-  "TOO_LONG": 3,
-  "IS_POSSIBLE_LOCAL_ONLY": 4,
-  "INVALID_LENGTH": 5,
-};
-
 //* Exports
 //* Note: goog.exportSymbol writes these onto the scope object, which the closure compiler output_wrapper (see scripts/build-utils.js) then exports as the default ES Module export.
 goog.exportSymbol("utils", {});
@@ -242,7 +227,3 @@ goog.exportSymbol("utils.getValidationError", getValidationError);
 goog.exportSymbol("utils.isValidNumber", isValidNumber);
 goog.exportSymbol("utils.isPossibleNumber", isPossibleNumber);
 goog.exportSymbol("utils.getCoreNumber", getCoreNumber);
-//* Enums
-goog.exportSymbol("utils.numberFormat", numberFormat);
-goog.exportSymbol("utils.numberType", numberType);
-goog.exportSymbol("utils.validationError", validationError);
