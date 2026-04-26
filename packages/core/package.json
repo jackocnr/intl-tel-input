@@ -30,7 +30,7 @@
     },
     "./i18n/*": {
       "types": "./dist/js/i18n.d.ts",
-      "import": "./dist/js/i18n/*/index.js"
+      "import": "./dist/js/i18n/*.js"
     },
     "./styles": {
       "types": "./dist/css/styles.d.ts",
