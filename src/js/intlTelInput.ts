@@ -406,7 +406,7 @@ export class Iti {
   #bindAllTelInputListeners(): void {
     this.#bindInputListener();
     this.#bindKeydownListener();
-    this.#bindPasteListener();
+    this.#bindStrictPasteListener();
   }
 
   //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
@@ -648,18 +648,19 @@ export class Iti {
     }
   };
 
-  #bindPasteListener(): void {
+  #bindStrictPasteListener(): void {
     // Sanitise pasted values in strictMode
     if (!this.#options.strictMode) {
       return;
     }
 
-    this.#ui.telInputEl.addEventListener("paste", this.#handlePasteEvent, {
+    this.#ui.telInputEl.addEventListener("paste", this.#handleStrictPasteEvent, {
       signal: this.#abortController!.signal,
     });
   }
 
-  #handlePasteEvent = (e: ClipboardEvent): void => {
+  // Handle paste events when strictMode is enabled by sanitising the pasted content before it's inserted into the input, and rejecting it entirely if it would result in an invalid number
+  #handleStrictPasteEvent = (e: ClipboardEvent): void => {
     // in strict mode we always control the pasted value
     e.preventDefault();
 
@@ -689,6 +690,18 @@ export class Iti {
     // track the most-severe modification reason to emit as strict:reject at the end
     let rejectReason: StrictRejectReason | null =
       sanitised !== pasted ? "invalid" : null;
+
+    // Reject super long pastes upfront, before any libphonenumber work.
+    // E.164 caps numbers at 15 digits; 30 leaves headroom for formatting chars.
+    if (newValue.length > 30) {
+      this.#playStrictRejectAnimation();
+      this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+        source: "paste",
+        rejectedInput: pastedRaw,
+        reason: "max-length",
+      });
+      return;
+    }
 
     // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
     // (fixes bug where you couldn't paste the first digit of a number)

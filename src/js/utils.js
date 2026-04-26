@@ -62,18 +62,19 @@ const getExampleNumber = (iso2, national, numberType, useE164) => {
   }
 };
 
-//* Get the core number, without any international dial code, or national prefix.
+//* Get the core number, AKA the national significant number (NSN) - without any international dial code, or national prefix.
 const getCoreNumber = (number, iso2) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
+    // getNationalNumber returns the NSN (no national prefix)
     return numberObj.getNationalNumber().toString();
   } catch {
     return "";
   }
 };
 
-//* Get the extension from the given number
+//* Get the extension from the given number.
 const getExtension = (number, iso2) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
