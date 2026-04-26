@@ -182,13 +182,16 @@ iti.setReadonly(true);
 ###### attachUtils
 Type: `(source: () => Promise<unknown>) => Promise<unknown> | null`  
 
-An alternative to the [`loadUtils`](/docs/options#loadutils) option (which loads the utils.js script at plugin initialisation time), this method allows you to load the utils at your time of choosing. See [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more information. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can `await` it to know when it's finished. _Note: This method should only be called once per page - it will return `null` if utils have already been loaded, or are in the process of being loaded._
+An alternative to the [`loadUtils`](/docs/options#loadutils) option (which loads the utils.js script at plugin initialisation time), this method allows you to load the utils at your time of choosing. See [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more information. A [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object is returned so you can `await` it to know when it's finished.
 
 ```js
 const loadUtils = () => import("/dist/js/utils.js");
 await intlTelInput.attachUtils(loadUtils);
 // you can now call methods that use utils
 ```
+
+> [!NOTE]
+> This method should only be called once per page - it will return `null` if utils have already been loaded, or are in the process of being loaded.
 
 ###### getCountryData
 Type: `() => Array<{ name: string, iso2: string, dialCode: string }>`  

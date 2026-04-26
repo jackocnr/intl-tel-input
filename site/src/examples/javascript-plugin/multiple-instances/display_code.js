@@ -10,29 +10,25 @@ const geoIpLookup = async () => {
   return data.country_code;
 };
 
-const baseOptions = {
-  loadUtils: () => import("intl-tel-input/utils"),
-};
-
 // initialise plugin - home
 intlTelInput(inputHome, {
-  ...baseOptions,
   initialCountry: "auto",
   geoIpLookup,
   placeholderNumberType: "FIXED_LINE",
+  loadUtils: () => import("intl-tel-input/utils"),
 });
 
 // initialise plugin - mobile
 intlTelInput(inputMobile, {
-  ...baseOptions,
   initialCountry: "auto",
   geoIpLookup,
   placeholderNumberType: "MOBILE",
+  loadUtils: () => import("intl-tel-input/utils"),
 });
 
 // initialise plugin - vacation
 intlTelInput(inputVacation, {
-  ...baseOptions,
   initialCountry: "es",
   onlyCountries: ["es", "fr", "it"],
+  loadUtils: () => import("intl-tel-input/utils"),
 });
