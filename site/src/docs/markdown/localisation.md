@@ -14,7 +14,13 @@ intl-tel-input supports localisation of country names, UI strings, right-to-left
 
 Country names are generated using the native `Intl.DisplayNames` API, which supports hundreds of locales out of the box. Use the [`countryNameLocale`](/docs/options#countrynamelocale) option to specify the locale — a BCP 47 language tag, e.g. `"fr"` for French.
 
-You can also override individual country names via the [`i18n`](/docs/options#i18n) option by providing the iso2 key (e.g. `"us"` for United States) — see below.
+You can also override individual country names via the [`countryNameOverrides`](/docs/options#countrynameoverrides) option, by passing an object keyed by iso2 code:
+
+```js
+{
+  us: "États-Unis",
+}
+```
 
 ## Localising user interface strings
 
@@ -33,16 +39,6 @@ You can override one or more keys by spreading the provided translations — pas
   ...fr,
   // override UI translation (the country search placeholder)
   searchPlaceholder: "Rechercher",
-}
-```
-
-You can also override one or more country names in a similar way — set [`countryNameLocale`](/docs/options#countrynamelocale) to `"fr"` and pass the following as [`i18n`](/docs/options#i18n):
-
-```js
-{
-  ...fr,
-  // override country name (United States)
-  us: "États-Unis",
 }
 ```
 

@@ -68,7 +68,7 @@ export const OPTION_GROUPS = [
     title: "Translation Options",
     icon: "bi-translate",
     description: "Localise country names and the plugin UI strings, e.g. the country search placeholder.",
-    keys: ["countryNameLocale", "i18n"],
+    keys: ["countryNameLocale", "countryNameOverrides", "i18n"],
   },
   {
     title: "Miscellaneous Options",
@@ -87,6 +87,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     autoPlaceholder: defaults.autoPlaceholder,
     containerClass: defaults.containerClass,
     countryNameLocale: defaults.countryNameLocale,
+    countryNameOverrides: defaults.countryNameOverrides,
     countryOrder: defaults.countryOrder,
     countrySearch: defaults.countrySearch,
     customPlaceholder: false, // in playground, this is a checkbox
@@ -157,6 +158,11 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       type: "text",
       tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. 'fr' for French).",
       placeholder: "e.g. fr",
+    },
+    countryNameOverrides: {
+      type: "json",
+      tooltip: "Override individual country names, keyed by iso2 code.",
+      placeholder: 'e.g. { "us": "United States of America" }',
     },
     countryOrder: {
       type: "json",

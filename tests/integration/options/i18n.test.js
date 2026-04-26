@@ -13,6 +13,8 @@ describe("i18n option", () => {
       clearSearchAriaLabel: "Effacer la recherche",
       searchEmptyState: "Aucun résultat",
       searchSummaryAria: (count) => `Résumé: ${count}`,
+    },
+    countryNameOverrides: {
       fr: "République Française",
     },
   };
@@ -23,7 +25,7 @@ describe("i18n option", () => {
   });
   afterEach(() => teardown(iti));
 
-  test("overrides country name", () => {
+  test("countryNameOverrides overrides country name", () => {
     const frItem = container.querySelector("li[data-iso2='fr'] .iti__country-name");
     expect(frItem.textContent).toContain("République Française");
   });

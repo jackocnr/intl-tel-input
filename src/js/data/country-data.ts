@@ -28,7 +28,7 @@ export const generateCountryNames = (
   countries: Country[],
   options: AllOptions,
 ): void => {
-  const { countryNameLocale, i18n } = options;
+  const { countryNameLocale, countryNameOverrides } = options;
 
   //* Populate country names using Intl.DisplayNames (per instance) with countryNameLocale.
   let displayNames;
@@ -48,7 +48,7 @@ export const generateCountryNames = (
     displayNames = null;
   }
   for (const c of countries) {
-    c.name = i18n[c.iso2] || displayNames?.of(c.iso2.toUpperCase()) || "";
+    c.name = countryNameOverrides[c.iso2] || displayNames?.of(c.iso2.toUpperCase()) || "";
   }
 };
 

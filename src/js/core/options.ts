@@ -43,6 +43,8 @@ export const defaults: AllOptions = {
   containerClass: "",
   //* Locale for localising country names via Intl.DisplayNames.
   countryNameLocale: "en",
+  //* Override individual country names by iso2 code.
+  countryNameOverrides: {},
   //* The order of the countries in the dropdown. Defaults to alphabetical.
   countryOrder: null,
   //* Add a country search input at the top of the dropdown.
@@ -263,6 +265,14 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
           break;
         }
         // don't bother validating the shape of the object, as the standard use is to just pass in one of the provided i18n objects.
+        validatedOptions[key] = value;
+        break;
+
+      case "countryNameOverrides":
+        if (value && !isPlainObject(value)) {
+          warnOption("countryNameOverrides", "an object", value);
+          break;
+        }
         validatedOptions[key] = value;
         break;
 

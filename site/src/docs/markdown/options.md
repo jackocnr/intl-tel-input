@@ -301,11 +301,23 @@ The locale to pass to `Intl.DisplayNames` to generate the country names. Should 
 
 View the plugin in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
 
+###### countryNameOverrides
+Type: `object`  
+Default: `{}`  
+
+Override individual country names, keyed by iso2 code. Useful when the name produced by [`countryNameLocale`](#countrynamelocale) doesn't match your preferred wording, e.g.
+
+```js
+{
+  us: "United States of America",
+}
+```
+
 ###### i18n
 Type: `object`  
 Default: `{}`  
 
-Translate the plugin's UI strings (country search placeholder, no-results message, ARIA labels). For translating country names, see [`countryNameLocale`](#countrynamelocale) above.
+Translate the plugin's UI strings (country search placeholder, no-results message, ARIA labels). For translating country names, see [`countryNameLocale`](#countrynamelocale) above; to override individual country names, see [`countryNameOverrides`](#countrynameoverrides).
 
 We ship translations for [<!-- I18N_LOCALE_COUNT -->  locales](/docs/localisation#supported-ui-locales) — import one and pass it in as the `i18n` option:
 

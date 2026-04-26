@@ -91,6 +91,7 @@ class IntlTelInput
   @Input() autoPlaceholder?: AllOptions["autoPlaceholder"];
   @Input() containerClass?: AllOptions["containerClass"];
   @Input() countryNameLocale?: AllOptions["countryNameLocale"];
+  @Input() countryNameOverrides?: AllOptions["countryNameOverrides"];
   @Input() countryOrder?: AllOptions["countryOrder"];
   @Input() countrySearch?: AllOptions["countrySearch"];
   @Input() customPlaceholder?: AllOptions["customPlaceholder"];
@@ -219,6 +220,7 @@ class IntlTelInput
       autoPlaceholder: this.autoPlaceholder,
       containerClass: this.containerClass,
       countryNameLocale: this.countryNameLocale,
+      countryNameOverrides: this.countryNameOverrides,
       countryOrder: this.countryOrder,
       countrySearch: this.countrySearch,
       customPlaceholder: this.customPlaceholder,

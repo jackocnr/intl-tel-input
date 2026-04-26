@@ -83,6 +83,7 @@ export interface AllOptions {
   autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES>;
   containerClass: string;
   countryNameLocale: string;
+  countryNameOverrides: Partial<Record<Iso2, string>>;
   countryOrder: Iso2[] | null;
   countrySearch: boolean;
   customPlaceholder:

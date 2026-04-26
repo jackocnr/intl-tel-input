@@ -1,8 +1,5 @@
-import type { Iso2 } from "../data.js";
-
-// Country translation keys + additional UI strings.
-// We reference Iso2 so adding/removing a country automatically updates typing.
-export type I18n = Partial<Record<Iso2, string>> & {
+// UI strings shown by the plugin.
+export type I18n = {
   selectedCountryAriaLabel?: string;
   searchPlaceholder?: string;
   clearSearchAriaLabel?: string;

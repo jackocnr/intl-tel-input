@@ -1005,6 +1005,43 @@ if (countryNameLocaleInput) {
   validateCountryNameLocaleInput(countryNameLocaleInput, { invalidOnly: true });
 }
 
+// --- countryNameOverrides textarea validation ---
+function isValidCountryNameOverrides(value, validIso2s) {
+  const trimmed = value.trim();
+  if (trimmed === "") {
+    return null;
+  } // empty = neutral, no class
+  let parsed;
+  try {
+    parsed = JSON.parse(trimmed.replace(/'/g, "\""));
+  } catch {
+    return false;
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return false;
+  }
+  return Object.entries(parsed).every(
+    ([k, v]) => validIso2s.has(k.toLowerCase()) && typeof v === "string" && v.trim() !== "",
+  );
+}
+
+function validateCountryNameOverridesTextarea(textarea, { invalidOnly = false } = {}) {
+  const validIso2s = getValidIso2Set();
+  const result = isValidCountryNameOverrides(textarea.value, validIso2s);
+  textarea.classList.remove("is-valid", "is-invalid");
+  if (result === true && !invalidOnly) {
+    textarea.classList.add("is-valid");
+  } else if (result === false) {
+    textarea.classList.add("is-invalid");
+  }
+}
+
+const countryNameOverridesInput = optionsForm.querySelector("[data-option='countryNameOverrides']");
+if (countryNameOverridesInput) {
+  countryNameOverridesInput.addEventListener("input", () => validateCountryNameOverridesTextarea(countryNameOverridesInput));
+  validateCountryNameOverridesTextarea(countryNameOverridesInput, { invalidOnly: true });
+}
+
 function revalidateCustomInputs() {
   ISO2_TEXTAREA_KEYS.forEach((key) => {
     const textarea = optionsForm.querySelector(`[data-option='${key}']`);
@@ -1017,5 +1054,8 @@ function revalidateCustomInputs() {
   }
   if (countryNameLocaleInput) {
     validateCountryNameLocaleInput(countryNameLocaleInput, { invalidOnly: true });
+  }
+  if (countryNameOverridesInput) {
+    validateCountryNameOverridesTextarea(countryNameOverridesInput, { invalidOnly: true });
   }
 }

@@ -581,7 +581,11 @@ export function setFormFromState(formEl: HTMLElement | null, state: Record<strin
     } else if (meta.type === "json") {
       const value = state[key];
       const defaultValue = defaultState ? defaultState[key] : undefined;
-      if (Array.isArray(value) && value.length === 0 && Array.isArray(defaultValue) && defaultValue.length === 0) {
+      const isEmptyArray = (v: unknown): boolean => Array.isArray(v) && v.length === 0;
+      const isEmptyObject = (v: unknown): boolean => Boolean(v) && typeof v === "object" && !Array.isArray(v) && Object.keys(v as object).length === 0;
+      if (isEmptyArray(value) && isEmptyArray(defaultValue)) {
+        control.value = "";
+      } else if (isEmptyObject(value) && isEmptyObject(defaultValue)) {
         control.value = "";
       } else if (value === null) {
         control.value = "";

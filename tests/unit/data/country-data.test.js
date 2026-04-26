@@ -75,18 +75,18 @@ describe("data/country-data generateCountryNames", () => {
   test("uses Intl.DisplayNames with countryNameLocale", () => {
     // Pull out US for this test.
     const sample = [{ ...allCountries.find(c => c.iso2 === "us") }];
-    generateCountryNames(sample, { countryNameLocale: "fr", i18n: {} });
+    generateCountryNames(sample, { countryNameLocale: "fr", countryNameOverrides: {} });
     // In French, US is "États-Unis".
     expect(sample[0].name).toBe("États-Unis");
   });
 
-  test("i18n country name overrides DisplayNames", () => {
+  test("countryNameOverrides overrides DisplayNames", () => {
     // Pull out France for this test.
     const sample = [{ ...allCountries.find(c => c.iso2 === "fr") }];
     // In English, France is "France", but we will override it.
     generateCountryNames(sample, {
       countryNameLocale: "en",
-      i18n: { fr: "République Française" },
+      countryNameOverrides: { fr: "République Française" },
     });
     expect(sample[0].name).toBe("République Française");
   });
