@@ -130,7 +130,7 @@ test.describe("site nav — desktop layout", () => {
     await examples.click();
     await expect(menu).toBeVisible();
 
-    await menu.locator(".iti-nav-section-toggle").first().click();
+    await menu.locator(".iti-flyout-toggle").first().click();
     await menu.locator(".dropdown-item").first().click();
     await expect(page).toHaveURL(/\/examples\//);
   });
