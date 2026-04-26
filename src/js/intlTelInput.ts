@@ -1221,20 +1221,9 @@ export class Iti {
     return this.#truncateToMaxLength(number);
   }
 
-  //* Return only the public-facing subset of the selected country data.
-  #getPublicCountryData(): SelectedCountryData {
-    const d = this.#selectedCountry;
-    if (!d) {
-      return null;
-    }
-    const { iso2, dialCode, name } = d;
-    return { iso2, dialCode, name };
-  }
-
   //* Dispatch the 'countrychange' event.
   #dispatchCountryChangeEvent(): void {
-    const countryData = this.#getPublicCountryData();
-    this.#dispatchEvent(EVENTS.COUNTRY_CHANGE, countryData);
+    this.#dispatchEvent(EVENTS.COUNTRY_CHANGE, this.#selectedCountry ?? null);
   }
 
   //**************************
@@ -1390,7 +1379,7 @@ export class Iti {
 
   //* Get the country data for the currently selected country.
   public getSelectedCountryData(): SelectedCountryData {
-    return this.#getPublicCountryData();
+    return this.#selectedCountry ?? null;
   }
 
   //* Get the validation error.

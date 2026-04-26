@@ -88,21 +88,12 @@ if (numberType === MOBILE || numberType === FIXED_LINE_OR_MOBILE) {
 _Note that in some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases it will return `FIXED_LINE_OR_MOBILE` — hence the need to check for both values above._
 
 ###### getSelectedCountryData
-Type: `() => { name: string, iso2: string, dialCode: string } | null`  
+Type: `() => Country | null`  
 
-Get the country data for the currently selected country.  
+Get the [country data](#getcountrydata) for the currently selected country, or `null` if no country is currently selected (e.g. the empty/globe state).
 ```js
 const countryData = iti.getSelectedCountryData();
 ```
-Returns something like this:
-```js
-{
-  name: "Afghanistan",
-  iso2: "af",
-  dialCode: "93"
-}
-```
-Returns `null` if no country is currently selected (e.g. the empty/globe state).
 
 ###### getValidationError
 Type: `() => number`  
@@ -194,7 +185,7 @@ await intlTelInput.attachUtils(loadUtils);
 > This method should only be called once per page - it will return `null` if utils have already been loaded, or are in the process of being loaded.
 
 ###### getCountryData
-Type: `() => Array<{ name: string, iso2: string, dialCode: string, priority: number, areaCodes: string[] | null, nationalPrefix: string | null }>`  
+Type: `() => Country[]`  
 
 Retrieve the plugin's country data - either to re-use elsewhere (e.g. to generate your own country dropdown), or alternatively, you could use it to modify the country data. _Note that any modifications must be done before initialising the plugin._  
 
@@ -202,20 +193,14 @@ Retrieve the plugin's country data - either to re-use elsewhere (e.g. to generat
 const countryData = intlTelInput.getCountryData();
 ```
 
-Returns an array of country objects, e.g.:
+Returns an array of `Country` objects, each with the following properties:
 
-```js
-[{
-  name: "Afghanistan",
-  iso2: "af",
-  dialCode: "93",
-  priority: 0,
-  areaCodes: null,
-  nationalPrefix: "0"
-}, ...]
-```
-
-_Note that `name` is only populated after the plugin has been initialised._
+- `name` (`string`): Localised country name (e.g. `"Afghanistan"`). Only populated after the plugin has been initialised.
+- `iso2` (`string`): Two-letter [ISO 3166-1 alpha-2 code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (e.g. `"af"`).
+- `dialCode` (`string`): International dial code, without the leading `+` (e.g. `"93"`).
+- `priority` (`number`): Sort order when multiple countries share a dial code — lower comes first (e.g. for `+1`, US has priority `0`, Canada `1`).
+- `areaCodes` (`string[] | null`): Area codes used to disambiguate countries that share a dial code (e.g. NANP), or `null` if none.
+- `nationalPrefix` (`string | null`): The trunk prefix used for domestic calls (e.g. `"0"` in the UK), or `null` if none.
 
 ###### getInstance
 Type: `(input: HTMLInputElement) => Iti | null`  

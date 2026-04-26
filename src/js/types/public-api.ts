@@ -119,8 +119,5 @@ export interface AllOptions {
 // Partial options accepted by the factory
 export type SomeOptions = Partial<AllOptions>;
 
-// The public-facing subset of Country exposed via getSelectedCountryData and events.
-export type SelectedCountryData = Pick<
-  Country,
-  "iso2" | "dialCode" | "name"
-> | null;
+// Exposed via getSelectedCountryData and events. Null when no country is selected.
+export type SelectedCountryData = Country | null;

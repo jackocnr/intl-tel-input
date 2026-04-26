@@ -182,10 +182,10 @@ Set the input's placeholder to an example number for the selected country, and u
 Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#placeholder-options).
 
 ###### customPlaceholder
-Type: `(exampleNumber: string, selectedCountryData: { name: string, iso2: string, dialCode: string } | null) => string`  
+Type: `(exampleNumber: string, selectedCountryData: Country | null) => string`  
 Default: `null`  
 
-Customise the placeholder text. Your function receives the example number (used as the default placeholder), along with the selected country data, and whatever string you return is used as the placeholder instead.
+Customise the placeholder text. Your function receives the example number (used as the default placeholder), along with the [selected country data](/docs/methods#getcountrydata), and whatever string you return is used as the placeholder instead.
 
 For example, the snippet below masks each digit with an `X`, or falls back to `"Enter number"` when no country is selected:
 
