@@ -1,6 +1,6 @@
 {
   "name": "@intl-tel-input/angular",
-  "version": "28.0.0",
+  "version": "28.0.1",
   "description": "An Angular component for the intl-tel-input JavaScript plugin",
   "type": "module",
   "license": "MIT",
@@ -34,7 +34,7 @@
     "README.md"
   ],
   "dependencies": {
-    "intl-tel-input": "^28.0.0"
+    "intl-tel-input": "^28.0.1"
   },
   "peerDependencies": {
     "@angular/common": ">=17",

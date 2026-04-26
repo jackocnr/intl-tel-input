@@ -1,6 +1,6 @@
 {
   "name": "@intl-tel-input/vue",
-  "version": "28.0.0",
+  "version": "28.0.1",
   "description": "A Vue component for the intl-tel-input JavaScript plugin",
   "type": "module",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "README.md"
   ],
   "dependencies": {
-    "intl-tel-input": "^28.0.0"
+    "intl-tel-input": "^28.0.1"
   },
   "peerDependencies": {
     "vue": "^3.0.0"

@@ -1,6 +1,6 @@
 {
   "name": "intl-tel-input-monorepo",
-  "version": "28.0.0",
+  "version": "28.0.1",
   "private": true,
   "description": "Monorepo for intl-tel-input and its official framework wrappers",
   "type": "module",
