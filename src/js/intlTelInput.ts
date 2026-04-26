@@ -322,7 +322,7 @@ export class Iti {
         //* Catch and ignore any errors to prevent unhandled-promise failures.
         //* The error from `attachUtils()` is also surfaced in each instance's
         //* `promise` property, so it's not getting lost by being ignored here.
-        intlTelInput.attachUtils(loadUtils!)?.catch(() => {});
+        intlTelInput.attachUtils(loadUtils!).catch(() => {});
       };
 
       //* If the plugin is being initialised after the window.load event has already been fired.
@@ -368,8 +368,8 @@ export class Iti {
 
     if (typeof this.#options.geoIpLookup === "function") {
       try {
-        const iso2 = (await this.#options.geoIpLookup()) ?? "";
-        const iso2Lower = iso2.toLowerCase();
+        const iso2 = await this.#options.geoIpLookup();
+        const iso2Lower = typeof iso2 === "string" ? iso2.toLowerCase() : "";
         if (!isIso2(iso2Lower)) {
           Iti.forEachInstance("handleAutoCountryFailure");
           return;
@@ -1600,49 +1600,39 @@ export class Iti {
  ********************/
 
 //* Load the utils script.
-const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
+const attachUtils = async (source: UtilsLoader): Promise<boolean | null> => {
   //* 2 Options:
   //* 1) Not already started loading (start)
   //* 2) Already started loading (do nothing - just wait for the onload callback to fire, which will
   //* trigger handleUtilsLoaded on all instances, resolving their #utilsDeferred promises)
-  if (!intlTelInput.utils && !intlTelInput.startedLoadingUtils) {
-    let loadCall;
-    if (typeof source === "function") {
-      try {
-        loadCall = Promise.resolve(source());
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    } else {
-      return Promise.reject(
-        new TypeError(
-          `The argument passed to attachUtils must be a function that returns a promise for the utils module, not ${typeof source}`,
-        ),
+  if (intlTelInput.utils || intlTelInput.startedLoadingUtils) {
+    return null;
+  }
+  if (typeof source !== "function") {
+    throw new TypeError(
+      `The argument passed to attachUtils must be a function that returns a promise for the utils module, not ${typeof source}`,
+    );
+  }
+
+  //* Only do this once.
+  intlTelInput.startedLoadingUtils = true;
+
+  try {
+    const module = await source();
+    const utils = module?.default;
+    if (!utils || typeof utils !== "object") {
+      throw new TypeError(
+        "The loader function passed to attachUtils did not resolve to a module object with utils as its default export.",
       );
     }
 
-    //* Only do this once.
-    intlTelInput.startedLoadingUtils = true;
-
-    return loadCall
-      .then((module) => {
-        const utils = module?.default;
-        if (!utils || typeof utils !== "object") {
-          throw new TypeError(
-            "The loader function passed to attachUtils did not resolve to a module object with utils as its default export.",
-          );
-        }
-
-        intlTelInput.utils = utils;
-        Iti.forEachInstance("handleUtilsLoaded");
-        return true;
-      })
-      .catch((error: Error) => {
-        Iti.forEachInstance("handleUtilsFailure", error);
-        throw error;
-      });
+    intlTelInput.utils = utils;
+    Iti.forEachInstance("handleUtilsLoaded");
+    return true;
+  } catch (error) {
+    Iti.forEachInstance("handleUtilsFailure", error as Error);
+    throw error;
   }
-  return null;
 };
 
 export interface IntlTelInputInterface {
@@ -1653,7 +1643,7 @@ export interface IntlTelInputInterface {
   getCountryData: () => Country[];
   getInstance: (input: HTMLInputElement) => Iti | null;
   instances: Map<string, Iti>;
-  attachUtils: (source: UtilsLoader) => Promise<unknown> | null;
+  attachUtils: (source: UtilsLoader) => Promise<boolean | null>;
   startedLoadingAutoCountry: boolean;
   startedLoadingUtils: boolean;
   version: string | undefined;
