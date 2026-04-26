@@ -24,7 +24,6 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: npm ci
@@ -36,8 +35,6 @@ jobs:
       # already on the registry by the time consumers install a wrapper.
       - name: Publish core
         run: npm publish --workspace=intl-tel-input --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish wrappers
         run: |
@@ -45,8 +42,6 @@ jobs:
           npm publish --workspace=@intl-tel-input/vue --provenance
           npm publish --workspace=@intl-tel-input/angular --provenance
           npm publish --workspace=@intl-tel-input/svelte --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         env:
