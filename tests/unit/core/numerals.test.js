@@ -142,6 +142,39 @@ describe("Numerals.denormalise", () => {
   });
 });
 
+// ── Numerals.toAscii (static, stateless) ───────────────────────
+describe("Numerals.toAscii", () => {
+  test("returns empty string for falsy input", () => {
+    expect(Numerals.toAscii("")).toBe("");
+    expect(Numerals.toAscii(undefined)).toBe("");
+    expect(Numerals.toAscii(null)).toBe("");
+  });
+
+  test("passes ASCII through unchanged", () => {
+    expect(Numerals.toAscii("+1 (234) 56-78")).toBe("+1 (234) 56-78");
+  });
+
+  test("converts Arabic-Indic digits to ASCII", () => {
+    expect(Numerals.toAscii(`+${ARABIC_INDIC_01234}${ARABIC_INDIC_56789}`)).toBe(
+      "+0123456789",
+    );
+  });
+
+  test("converts Persian digits to ASCII", () => {
+    expect(Numerals.toAscii(`+${PERSIAN_01234}${PERSIAN_56789}`)).toBe(
+      "+0123456789",
+    );
+  });
+
+  test("does not affect any instance's tracked numeral set", () => {
+    const n = new Numerals(ARABIC_INDIC_01234);
+    expect(n.isAscii()).toBe(false);
+    Numerals.toAscii(PERSIAN_01234);
+    // Instance state untouched by static call.
+    expect(n.isAscii()).toBe(false);
+  });
+});
+
 // ── round-trip normalise → denormalise ─────────────────────────
 describe("Numerals round-trip", () => {
   test("Arabic-Indic survives normalise then denormalise", () => {

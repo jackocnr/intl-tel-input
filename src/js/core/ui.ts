@@ -9,6 +9,7 @@ import {
 } from "./icons.js";
 import { CLASSES, ARIA, LAYOUT, KEYS, REGEX, TIMINGS, DATA_KEYS } from "../constants.js";
 import { findFirstCountryStartingWith, getMatchedCountries } from "./countrySearch.js";
+import { Numerals } from "./numerals.js";
 
 export default class UI {
   // private
@@ -542,7 +543,8 @@ export default class UI {
       // reset - back to all countries
       matchedCountries = this.#countries;
     } else {
-      matchedCountries = getMatchedCountries(this.#countries, query);
+      //* Normalise any Arabic-Indic / Persian digits so dial-code matching works for users typing in alternative numeral sets.
+      matchedCountries = getMatchedCountries(this.#countries, Numerals.toAscii(query));
     }
     this.#showFilteredCountries(matchedCountries);
   }

@@ -1,6 +1,22 @@
 export class Numerals {
   #userNumeralSet: "ascii" | "arabic-indic" | "persian" | undefined;
 
+  //* Stateless conversion of any Arabic-Indic / Persian digits to ASCII 0-9.
+  //* Use this when you need to normalise digits without affecting any instance's tracked numeral set (e.g. for the country-search query).
+  public static toAscii(str: string): string {
+    if (!str) {
+      return "";
+    }
+    // Note: yes it runs two replaces, but a replace call is really a test + manipulate, so for standard ascii input, it just runs 2x tests. Not worth splitting up and adding test guards.
+    return str
+      .replace(/[٠-٩]/g, (ch) =>
+        String.fromCharCode(0x30 + (ch.charCodeAt(0) - 0x0660)),
+      )
+      .replace(/[۰-۹]/g, (ch) =>
+        String.fromCharCode(0x30 + (ch.charCodeAt(0) - 0x06f0)),
+      );
+  }
+
   constructor(initialValue: string) {
     if (initialValue) {
       this.#updateNumeralSet(initialValue);
@@ -9,9 +25,9 @@ export class Numerals {
 
   // If any Arabic-Indic digits, then label it as that set. Same for Persian. Otherwise assume ASCII.
   #updateNumeralSet(str: string): void {
-    if (/[\u0660-\u0669]/.test(str)) {
+    if (/[٠-٩]/.test(str)) {
       this.#userNumeralSet = "arabic-indic";
-    } else if (/[\u06F0-\u06F9]/.test(str)) {
+    } else if (/[۰-۹]/.test(str)) {
       this.#userNumeralSet = "persian";
     } else {
       this.#userNumeralSet = "ascii";
@@ -28,23 +44,18 @@ export class Numerals {
     return str.replace(/[0-9]/g, (d) => String.fromCharCode(base + Number(d)));
   }
 
-  // Normalize Eastern Arabic (U+0660-0669) and Persian/Extended Arabic-Indic (U+06F0-06F9) numerals to ASCII 0-9
+  // Normalize Eastern Arabic (U+0660-0669) and Persian/Extended Arabic-Indic (U+06F0-06F9) numerals to ASCII 0-9.
+  // Tracks the user's numeral set as a side effect so denormalise can mirror it back.
   public normalise(str: string): string {
     if (!str) {
       return "";
     }
     this.#updateNumeralSet(str);
+    //* Fast-path ASCII (the common case) so we skip both replaces on every keystroke.
     if (this.#userNumeralSet === "ascii") {
       return str;
     }
-    const base = this.#userNumeralSet === "arabic-indic" ? 0x0660 : 0x06f0;
-    const regex =
-      this.#userNumeralSet === "arabic-indic"
-        ? /[\u0660-\u0669]/g
-        : /[\u06F0-\u06F9]/g;
-    return str.replace(regex, (ch) =>
-      String.fromCharCode(0x30 + (ch.charCodeAt(0) - base)),
-    );
+    return Numerals.toAscii(str);
   }
 
   public isAscii(): boolean {
