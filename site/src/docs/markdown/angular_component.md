@@ -107,7 +107,7 @@ Emitted when the selected country changes. Emits the new country's iso2 code (e.
 Type: `EventEmitter<number | null>`  
 Default: `null`  
 
-Emitted when the number validation error changes. Emits a `ValidationError` string (one of `"IS_POSSIBLE"`, `"INVALID_COUNTRY_CODE"`, `"TOO_SHORT"`, `"TOO_LONG"`, `"IS_POSSIBLE_LOCAL_ONLY"`, `"INVALID_LENGTH"`), or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
+Emitted when the number validation error changes. Emits a [`ValidationError`](/docs/types#validationerror) string, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
 
 ###### numberChange
 Type: `EventEmitter<string>`  

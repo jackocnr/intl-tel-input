@@ -64,7 +64,7 @@ For example, if the input value was `"(702) 555-5555 ext. 1234"`, this would ret
 ###### getNumber
 Type: `(format?: NumberFormat) => string`  
 
-Get the current number in the given format (defaults to `"E164"`, [the E.164 standard](https://en.wikipedia.org/wiki/E.164)). `NumberFormat` is the string union `"E164" | "INTERNATIONAL" | "NATIONAL" | "RFC3966"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note that even if [`nationalMode`](/docs/options#nationalmode) is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
+Get the current number in the given [`NumberFormat`](/docs/types#numberformat) (defaults to `"E164"`). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note that even if [`nationalMode`](/docs/options#nationalmode) is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
 
 ```js
 const number = iti.getNumber(); // defaults to "E164" e.g. "+17024181234"
@@ -72,10 +72,13 @@ const number = iti.getNumber(); // defaults to "E164" e.g. "+17024181234"
 const number = iti.getNumber("INTERNATIONAL"); // e.g. "+1 702-418-1234"
 ```
 
+> [!TIP]
+> You can also pass a [constant](/docs/types#constant-objects), e.g. `iti.getNumber(intlTelInput.NUMBER_FORMAT.INTERNATIONAL)` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
+
 ###### getNumberType
 Type: `() => NumberType | null`  
 
-Get the type (fixed-line/mobile/toll-free, etc) of the current number, or `null` if it can't be determined. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). `NumberType` is the string union `"FIXED_LINE" | "MOBILE" | "FIXED_LINE_OR_MOBILE" | "TOLL_FREE" | "PREMIUM_RATE" | "SHARED_COST" | "VOIP" | "PERSONAL_NUMBER" | "PAGER" | "UAN" | "VOICEMAIL" | "UNKNOWN"`.
+Get the [`NumberType`](/docs/types#numbertype) (fixed-line/mobile/toll-free, etc) of the current number, or `null` if it can't be determined. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
 
 ```js
 const numberType = iti.getNumberType();
@@ -85,7 +88,7 @@ if (numberType === "MOBILE" || numberType === "FIXED_LINE_OR_MOBILE") {
 ```
 
 > [!TIP]
-> If you'd rather not write the strings by hand (handy in plain JS where typos won't fail typechecking), use the `intlTelInput.NUMBER_TYPE` constant object — e.g. `numberType === intlTelInput.NUMBER_TYPE.MOBILE`.
+> You can also compare against a [constant](/docs/types#constant-objects), e.g. `numberType === intlTelInput.NUMBER_TYPE.MOBILE` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
 
 > [!NOTE]
 > In some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases it will return `"FIXED_LINE_OR_MOBILE"` — hence the need to check for both values above.
@@ -93,7 +96,7 @@ if (numberType === "MOBILE" || numberType === "FIXED_LINE_OR_MOBILE") {
 ###### getSelectedCountryData
 Type: `() => Country | null`  
 
-Get the [country data](#getcountrydata) for the currently selected country, or `null` if no country is currently selected (e.g. the empty/globe state).
+Get the [`Country`](/docs/types#country) for the currently selected country, or `null` if no country is currently selected (e.g. the empty/globe state).
 ```js
 const countryData = iti.getSelectedCountryData();
 ```
@@ -101,7 +104,7 @@ const countryData = iti.getSelectedCountryData();
 ###### getValidationError
 Type: `() => ValidationError | null`  
 
-Get more information about an invalid number. It returns one of `"IS_POSSIBLE"`, `"INVALID_COUNTRY_CODE"`, `"TOO_SHORT"`, `"TOO_LONG"`, `"IS_POSSIBLE_LOCAL_ONLY"`, `"INVALID_LENGTH"`, or `null` if it can't be determined. For typo-safety when matching against multiple values (e.g. an error map), use the `intlTelInput.VALIDATION_ERROR` constant object — see [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
+Get more information about an invalid number — returns a [`ValidationError`](/docs/types#validationerror) string, or `null` if it can't be determined. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for a worked example. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
 
 ###### isValidNumber
 Type: `() => boolean`  
@@ -156,11 +159,14 @@ iti.setNumber("+447733123456");
 ###### setPlaceholderNumberType
 Type: `(type: NumberType) => void`  
 
-Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option.
+Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option — see [`NumberType`](/docs/types#numbertype) for the valid values.
 
 ```js
 iti.setPlaceholderNumberType("FIXED_LINE");
 ```
+
+> [!TIP]
+> You can also pass a [constant](/docs/types#constant-objects), e.g. `iti.setPlaceholderNumberType(intlTelInput.NUMBER_TYPE.FIXED_LINE)` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
 
 ###### setReadonly
 Type: `(readonly: boolean) => void`  
@@ -190,20 +196,11 @@ await intlTelInput.attachUtils(loadUtils);
 ###### getCountryData
 Type: `() => Country[]`  
 
-Retrieve the plugin's country data - either to re-use elsewhere (e.g. to generate your own country dropdown), or alternatively, you could use it to modify the country data. _Note that any modifications must be done before initialising the plugin._  
+Retrieve the plugin's country data — either to re-use elsewhere (e.g. to generate your own country dropdown), or alternatively, you could use it to modify the country data. _Note that any modifications must be done before initialising the plugin._ See [`Country`](/docs/types#country) for the shape of each entry.
 
 ```js
 const countryData = intlTelInput.getCountryData();
 ```
-
-Returns an array of `Country` objects, each with the following properties:
-
-- `name` (`string`): Localised country name (e.g. `"Afghanistan"`). Only populated after the plugin has been initialised.
-- `iso2` (`string`): Two-letter [ISO 3166-1 alpha-2 code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (e.g. `"af"`).
-- `dialCode` (`string`): International dial code, without the leading `+` (e.g. `"93"`).
-- `priority` (`number`): Sort order when multiple countries share a dial code — lower comes first (e.g. for `+1`, US has priority `0`, Canada `1`).
-- `areaCodes` (`string[] | null`): Area codes used to disambiguate countries that share a dial code (e.g. NANP), or `null` if none.
-- `nationalPrefix` (`string | null`): The trunk prefix used for domestic calls (e.g. `"0"` in the UK), or `null` if none.
 
 ###### getInstance
 Type: `(input: HTMLInputElement) => Iti | null`  

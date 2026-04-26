@@ -50,6 +50,11 @@ const docsDropdownPages = [
     label: "Methods",
   },
   {
+    name: "types",
+    href: "/docs/types",
+    label: "Types",
+  },
+  {
     name: "utils",
     href: "/docs/utils",
     label: "Utils script",

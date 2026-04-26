@@ -185,7 +185,7 @@ Play with this option on an input that contains a placeholder in the [Playground
 Type: `(exampleNumber: string, selectedCountryData: Country | null) => string`  
 Default: `null`  
 
-Customise the placeholder text. Your function receives the example number (used as the default placeholder), along with the [selected country data](/docs/methods#getcountrydata), and whatever string you return is used as the placeholder instead.
+Customise the placeholder text. Your function receives the example number (used as the default placeholder), along with the [selected country data](/docs/types#country), and whatever string you return is used as the placeholder instead.
 
 For example, the snippet below masks each digit with an `X`, or falls back to `"Enter number"` when no country is selected:
 
@@ -204,9 +204,12 @@ View the plugin with this enabled in the [Playground](/playground?customPlacehol
 Type: `NumberType`  
 Default: `"MOBILE"`  
 
-Set the number type to use for the generated placeholder numbers. `NumberType` is one of `"FIXED_LINE"`, `"MOBILE"`, `"FIXED_LINE_OR_MOBILE"`, `"TOLL_FREE"`, `"PREMIUM_RATE"`, `"SHARED_COST"`, `"VOIP"`, `"PERSONAL_NUMBER"`, `"PAGER"`, `"UAN"`, `"VOICEMAIL"`, or `"UNKNOWN"`. 
+Set the [number type](/docs/types#numbertype) to use for the generated placeholder numbers. 
 
 View the plugin with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
+
+> [!TIP]
+> You can also pass a [constant](/docs/types#constant-objects), e.g. `placeholderNumberType: intlTelInput.NUMBER_TYPE.FIXED_LINE` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
 
 
 ## Formatting options
@@ -263,13 +266,16 @@ Adjust what is considered a valid number.
 Type: `NumberType[] | null`  
 Default: `["MOBILE", "FIXED_LINE"]`  
 
-Set the number type(s) to enforce during validation (and the maximum number length to enforce with [strictMode](#strictmode)) — see [`placeholderNumberType`](#placeholdernumbertype) for the full list of `NumberType` values. Set it to `null` to not enforce any particular type (not recommended<sup>*</sup>). 
+Set the [number type(s)](/docs/types#numbertype) to enforce during validation, as well as the maximum number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type (not recommended<sup>*</sup>). 
 
 By default, it's set to `["MOBILE", "FIXED_LINE"]` so [`isValidNumber`](/docs/methods#isvalidnumber) (etc) will only return `true` for those kinds of numbers. Alternatively, you could set it to simply `["MOBILE"]` if you only wanted to accept mobile numbers as valid. _Note: previously named `validationNumberTypes`._
 
 <sup>*</sup>It's best to be as specific as possible, rather than using the catch-all value of `null`. `isValidNumber` works by checking the number's length, and some number types allow very short lengths. For example, Norwegian mobile and landline numbers are 8 digits long, so by default that's the only valid length. But Norwegian UAN numbers can be only 5 digits long, so if you set `allowedNumberTypes` to `null`, validation will pass for any number that is 5-8 digits long.
 
 Play with this option in the [Playground](/playground#validation-options).
+
+> [!TIP]
+> You can also pass [constants](/docs/types#constant-objects), e.g. `allowedNumberTypes: [intlTelInput.NUMBER_TYPE.MOBILE, intlTelInput.NUMBER_TYPE.FIXED_LINE]` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
 
 ###### allowNumberExtensions
 Type: `boolean`  

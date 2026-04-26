@@ -72,7 +72,7 @@ A handler to be called when the selected country changes. Receives the new count
 Type: `(errorCode: number | null) => void`  
 Default: `null`  
 
-A handler to be called when the number validation error changes. Receives a `ValidationError` string (one of `"IS_POSSIBLE"`, `"INVALID_COUNTRY_CODE"`, `"TOO_SHORT"`, `"TOO_LONG"`, `"IS_POSSIBLE_LOCAL_ONLY"`, `"INVALID_LENGTH"`), or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
+A handler to be called when the number validation error changes. Receives a [`ValidationError`](/docs/types#validationerror) string, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
 
 ###### onChangeNumber
 Type: `(number: string) => void`  

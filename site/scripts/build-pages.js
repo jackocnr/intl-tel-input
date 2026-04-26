@@ -849,6 +849,12 @@ const docsDefinitions = [
       "All the different methods you can call on an intl-tel-input instance.",
   },
   {
+    key: "types",
+    title: "Types",
+    metaDesc:
+      "Reference for the public types and constant objects exposed by intl-tel-input — NumberType, ValidationError, Country, and more.",
+  },
+  {
     key: "utils",
     title: "Utils script",
     metaDesc: "Learn about the utils script, what it's for and how to load it.",
