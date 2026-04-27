@@ -43,7 +43,7 @@ We have a [newly updated website](https://intl-tel-input.com), where you can fin
 
 🎛️ **Developer-friendly**
 * Override CSS variables (e.g. dark mode)
-* Extensive initialisation options, methods, and events
+* Extensive initialisation options
 * TypeScript definitions included
 
 ## Contributing
