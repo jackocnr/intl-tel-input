@@ -11,10 +11,10 @@ International number formatting/validation is hard (it varies by country/distric
 
 ## Loading the utils script
 
-The utils script adds ~260KB on top of the ~30KB main plugin. There are two ways to load it — **if you're not sure which to pick, use Option 1.** It keeps your initial page load small, which is the safer default for most sites.
+The utils script adds ~260KB on top of the ~30KB core library. There are two ways to load it — **if you're not sure which to pick, use Option 1.** It keeps your initial page load small, which is the safer default for most sites.
 
 **Option 1: Lazy load utils on demand (recommended)**  
-Use the [`loadUtils`](/docs/options#loadutils) option to fetch the utils separately. The main plugin/component loads quickly (~30KB); the ~260KB utils file is fetched in the background after initialisation, so formatting/validation kicks in shortly after the input appears without blocking your initial page load.
+Use the [`loadUtils`](/docs/options#loadutils) option to fetch the utils separately. The core library/component loads quickly (~30KB); the ~260KB utils file is fetched in the background after initialisation, so formatting/validation kicks in shortly after the input appears without blocking your initial page load.
 
 **Option 2: Use the all-in-one bundle**  
 Each distribution ships a companion entry point that bundles utils directly — `intl-tel-input/intlTelInputWithUtils` for the vanilla JavaScript library, `@intl-tel-input/react/with-utils` for React, `@intl-tel-input/vue/with-utils` for Vue, and so on. Everything works out of the box, with no extra configuration. Best if you're already lazy loading the main script, or if the extra ~260KB up front isn't a concern.

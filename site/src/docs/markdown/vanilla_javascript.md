@@ -13,7 +13,7 @@ How to get up and running with the vanilla JavaScript library. See a live demo o
 
 ## Installation
 
-There are two ways to install the plugin: [using a bundler](#using-a-bundler) (e.g. Vite, webpack), or [using a script tag](#using-a-script-tag) (e.g. via a CDN).
+There are two ways to install the core library: [using a bundler](#using-a-bundler) (e.g. Vite, webpack), or [using a script tag](#using-a-script-tag) (e.g. via a CDN).
 
 ##### Using a bundler
 
@@ -23,7 +23,7 @@ First, install the package:
 npm install intl-tel-input
 ```
 
-Then, import the JS and CSS, and initialise the plugin on your input element:
+Then, import the JS and CSS, and initialise the core library on your input element:
 
 ```js
 import intlTelInput from "intl-tel-input";
@@ -36,7 +36,7 @@ intlTelInput(input, {
 ```
 
 > [!NOTE]
-> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if the plugin is already lazy-loaded in your app, import from `"intl-tel-input/intlTelInputWithUtils"` to bundle utils directly.
+> The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if the core library is already lazy-loaded in your app, import from `"intl-tel-input/intlTelInputWithUtils"` to bundle utils directly.
 
 ##### Using a script tag
 
@@ -48,7 +48,7 @@ First, add the CSS:
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/css/intlTelInput.css">
 ```
 
-Then, add the plugin script and initialise it on your input element:
+Then, add the core library script and initialise it on your input element:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@27.1.3/dist/js/intlTelInput.min.js"></script>
@@ -68,17 +68,17 @@ See [Best practices](/docs/best-practices) for general advice on loading the uti
 
 ## Initialisation options
 
-The plugin has dozens of options for customising its behaviour — country picker, formatting, validation, placeholders, localisation, and more. See the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground).
+The core library has dozens of options for customising its behaviour — country picker, formatting, validation, placeholders, localisation, and more. See the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground).
 
 
 ## Methods
 
-Once the plugin is initialised, you can call methods on the returned instance — e.g. `setNumber`, `setCountry`, `getNumber`, `isValidNumber`. See the full list on the [Methods](/docs/methods) page.
+Once the core library is initialised, you can call methods on the returned instance — e.g. `setNumber`, `setCountry`, `getNumber`, `isValidNumber`. See the full list on the [Methods](/docs/methods) page.
 
 
 ## Events
 
-The plugin triggers the following custom events on the `<input>` element. Listen for them with `input.addEventListener(...)`.
+The core library triggers the following custom events on the `<input>` element. Listen for them with `input.addEventListener(...)`.
 
 ##### countrychange
 

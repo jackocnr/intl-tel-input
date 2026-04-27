@@ -1,6 +1,6 @@
 # Localisation
 
-intl-tel-input supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options), or view the [Right to left example](/examples/vanilla-javascript/right-to-left).
+`intl-tel-input` supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options), or view the [Right to left example](/examples/vanilla-javascript/right-to-left).
 
 ## Contents
 
@@ -91,7 +91,7 @@ See the [Right to left example](/examples/vanilla-javascript/right-to-left).
 
 ## Alternative numerals
 
-intl-tel-input supports alternative numerals for phone number input.
+`intl-tel-input` supports alternative numerals for phone number input.
 
 - Arabic-Indic digits: ٠ ١ ٢ ٣ ٤ ٥ ٦ ٧ ٨ ٩
 - Persian / Extended Arabic-Indic digits: ۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹

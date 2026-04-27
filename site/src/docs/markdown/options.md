@@ -33,7 +33,7 @@ Default: `null`
 
 An array of iso2 codes to exclude from the country dropdown e.g. `["gb", "us"]`. Also see: [`onlyCountries`](#onlycountries) option.
 
-Try the plugin with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#country-options) — the dropdown now starts at Bahamas.
+Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#country-options) — the dropdown now starts at Bahamas.
 
 ###### geoIpLookup
 Type: `() => Promise<string>`  
@@ -41,7 +41,7 @@ Default: `null`
 
 When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error).
 
-Note that on plugin initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the plugin instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
+Note that on initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the core library instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
 
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `geoIpLookup`):  
 ```js
@@ -54,7 +54,7 @@ async () => {
 _Tip: store the result in a cookie to avoid repeat lookups!_
 
 > [!NOTE]  
-> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its quota is reached. For production, you should either sign up for a paid plan, swap in another IP-lookup provider, or roll your own solution — the plugin just cares that the returned promise eventually resolves with an iso2 code (or rejects).
+> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its quota is reached. For production, you should either sign up for a paid plan, swap in another IP-lookup provider, or roll your own solution — the core library just cares that the returned promise eventually resolves with an iso2 code (or rejects).
 
 Play with this option in the [Playground](/playground#country-options).
 
@@ -64,7 +64,7 @@ Default: `""`
 
 Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/vanilla-javascript/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. 
 
-View the plugin with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
+View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
 
 > [!WARNING]
 > Only set this if you're sure of the user's country. If set incorrectly and the user auto-fills their national number and submits without checking, the number can pass validation but be stored with the wrong dial code.
@@ -75,7 +75,7 @@ Default: `null`
 
 In the dropdown, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Also see: [`excludeCountries`](#excludecountries) option.
 
-Try the plugin with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#country-options).
+Try `intl-tel-input` with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#country-options).
 
 
 ## User interface options
@@ -88,7 +88,7 @@ Default: `true`
 
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, [`allowDropdown`](/docs/options#allowdropdown) is forced to `true` as the dropdown is required when the user types "+" in this case. 
 
-Try the plugin with [`allowDropdown`](#allowdropdown) disabled in the [Playground](/playground?allowDropdown=false#user-interface-options).
+Try `intl-tel-input` with [`allowDropdown`](#allowdropdown) disabled in the [Playground](/playground?allowDropdown=false#user-interface-options).
 
 ###### containerClass
 Type: `string`  
@@ -102,7 +102,7 @@ Default: `true`
 
 Add a search input to the top of the dropdown, so users can filter the displayed countries. 
 
-View the plugin with this disabled in the [Playground](/playground?countrySearch=false#user-interface-options).
+View `intl-tel-input` with this disabled in the [Playground](/playground?countrySearch=false#user-interface-options).
 
 ###### dropdownContainer
 Type: `HTMLElement`  
@@ -121,7 +121,7 @@ Default: `true`
 
 Fix the dropdown width to the input width (rather than being as wide as the longest country name). 
 
-Try the plugin with this disabled in the [Playground](/playground?fixDropdownWidth=false#user-interface-options).
+Try `intl-tel-input` with this disabled in the [Playground](/playground?fixDropdownWidth=false#user-interface-options).
 
 ###### searchInputClass
 Type: `string`  
@@ -152,7 +152,7 @@ Default: `true`
 
 Set this to false to hide the flags. Instead, it will show a generic globe icon. 
 
-Try the plugin with this disabled in the [Playground](/playground?showFlags=false#user-interface-options).
+Try `intl-tel-input` with this disabled in the [Playground](/playground?showFlags=false#user-interface-options).
 
 ###### useFullscreenPopup
 Type: `boolean`  
@@ -160,7 +160,7 @@ Default: `true on mobile devices, false otherwise`
 
 Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on narrow viewports (or on touch devices with limited vertical space), to make better use of the available space (similar to how a native `<select>` works), and as an inline dropdown on larger screens. 
 
-Try the plugin with this option enabled on the [Playground](/playground?useFullscreenPopup=true#user-interface-options).
+Try `intl-tel-input` with this option enabled on the [Playground](/playground?useFullscreenPopup=true#user-interface-options).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/img/iti-mobile-dark.png">
@@ -198,7 +198,7 @@ For example, the snippet below masks each digit with an `X`, or falls back to `"
 > [!IMPORTANT]
 > When no country is selected (globe state), `exampleNumber` is an empty string and `selectedCountryData` is `null`, so remember to guard against null when reading properties off it.
 
-View the plugin with this enabled in the [Playground](/playground?customPlaceholder=true#placeholder-options).
+View `intl-tel-input` with this enabled in the [Playground](/playground?customPlaceholder=true#placeholder-options).
 
 ###### placeholderNumberType
 Type: `NumberType`  
@@ -206,7 +206,7 @@ Default: `"MOBILE"`
 
 Set the [number type](/docs/types#numbertype) to use for the generated placeholder numbers. 
 
-View the plugin with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
+View `intl-tel-input` with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
 
 > [!TIP]
 > You can also pass a [constant](/docs/types#constant-objects), e.g. `placeholderNumberType: intlTelInput.NUMBER_TYPE.FIXED_LINE` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
@@ -222,7 +222,7 @@ Default: `true`
 
 Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note: previously named `autoFormat`._
 
-Try the plugin with this disabled in the [Playground](/playground?formatAsYouType=false#formatting-options).
+Try `intl-tel-input` with this disabled in the [Playground](/playground?formatAsYouType=false#formatting-options).
 
 ###### formatOnDisplay
 Type: `boolean`  
@@ -292,12 +292,12 @@ Default: `false`
 Whether or not the validation methods return `true` for numbers containing phonewords, e.g. "+1 702 FLOWERS".
 
 > [!NOTE]  
-> When processing phoneword numbers, the plugin will automatically convert them to digits e.g. via [`getNumber`](/docs/methods#getnumber), or when initialising the plugin on an input containing a phoneword number.
+> When processing phoneword numbers, the core library will automatically convert them to digits e.g. via [`getNumber`](/docs/methods#getnumber), or when initialising the core library on an input containing a phoneword number.
 
 
 ## Translation options
 
-Localise country names and the plugin UI strings, e.g. the country search placeholder.
+Localise country names and the core library UI strings, e.g. the country search placeholder.
 
 ###### countryNameLocale
 Type: `string`  
@@ -305,7 +305,7 @@ Default: `"en"`
 
 The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). For translating the other UI strings, like the country search placeholder, see [`i18n`](#i18n) below.
 
-View the plugin in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
+View `intl-tel-input` in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
 
 ###### countryNameOverrides
 Type: `object`  
@@ -319,13 +319,13 @@ Override individual country names, keyed by iso2 code. Useful when the name prod
 }
 ```
 
-View the plugin with the US renamed to "United States of America" in the [Playground](/playground?countryNameOverrides=%7B%22us%22%3A%22United+States+of+America%22%7D&initialCountry=us#translation-options).
+View `intl-tel-input` with the US renamed to "United States of America" in the [Playground](/playground?countryNameOverrides=%7B%22us%22%3A%22United+States+of+America%22%7D&initialCountry=us#translation-options).
 
 ###### i18n
 Type: `object`  
 Default: `{}`  
 
-Translate the plugin's UI strings (country search placeholder, no-results message, ARIA labels). For translating country names, see [`countryNameLocale`](#countrynamelocale) above; to override individual country names, see [`countryNameOverrides`](#countrynameoverrides).
+Translate the core library's UI strings (country search placeholder, no-results message, ARIA labels). For translating country names, see [`countryNameLocale`](#countrynamelocale) above; to override individual country names, see [`countryNameOverrides`](#countrynameoverrides).
 
 We ship translations for [<!-- I18N_LOCALE_COUNT -->  locales](/docs/localisation#supported-ui-locales) — import one and pass it in as the `i18n` option:
 
@@ -335,7 +335,7 @@ import { fr } from "intl-tel-input/i18n";
 
 See the [Localisation docs](/docs/localisation#localising-user-interface-strings) for overriding individual keys, defining custom translations, and the full list of translatable keys. _Note: previously named `localizedCountries`._
 
-View the plugin in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
+View `intl-tel-input` in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
 
 
 ## Miscellaneous options
@@ -386,4 +386,4 @@ The [`loadUtils`](#loadutils) option takes a function that returns a Promise res
 () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@28.0.1/dist/js/utils.js"),
 ```
 
-The module is only loaded once the plugin initialises, and additionally, only once the page has finished loading (on the window `load` event) to prevent blocking (the script is ~260KB). The `promise` property on the plugin instance resolves once loading is complete — see [Utils Script](/docs/utils) for more information.
+The module is only loaded once the core library initialises, and additionally, only once the page has finished loading (on the window `load` event) to prevent blocking (the script is ~260KB). The `promise` property on the core library instance resolves once loading is complete — see [Utils Script](/docs/utils) for more information.

@@ -1,6 +1,6 @@
 # Types
 
-Reference for the public types and constant objects exposed by the plugin. Methods, options, and component docs link here instead of restating the values inline.
+Reference for the public types and constant objects exposed by the core library. Methods, options, and component docs link here instead of restating the values inline.
 
 ## Contents
 
@@ -50,9 +50,9 @@ Returned by [`getValidationError`](/docs/methods#getvalidationerror) and the wra
 See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for a worked example.
 
 ## Country
-The shape of each country in the plugin's internal data, returned by [`getCountryData`](/docs/methods#getcountrydata) and [`getSelectedCountryData`](/docs/methods#getselectedcountrydata). Properties:
+The shape of each country in the core library's internal data, returned by [`getCountryData`](/docs/methods#getcountrydata) and [`getSelectedCountryData`](/docs/methods#getselectedcountrydata). Properties:
 
-- `name` (`string`): Localised country name (e.g. `"Afghanistan"`). Only populated after the plugin has been initialised.
+- `name` (`string`): Localised country name (e.g. `"Afghanistan"`). Only populated after the core library has been initialised.
 - `iso2` (`string`): Two-letter [ISO 3166-1 alpha-2 code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (e.g. `"af"`).
 - `dialCode` (`string`): International dial code, without the leading `+` (e.g. `"93"`).
 - `priority` (`number`): Sort order when multiple countries share a dial code — lower comes first (e.g. for `+1`, US has priority `0`, Canada `1`).

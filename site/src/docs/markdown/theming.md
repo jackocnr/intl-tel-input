@@ -1,6 +1,6 @@
 # Theming / dark mode
 
-The plugin exposes a set of CSS variables (all prefixed `--iti-`) that you can override on `:root` (or any ancestor of the input) to customise colours, spacing, and icon sizes.
+The core library exposes a set of CSS variables (all prefixed `--iti-`) that you can override on `:root` (or any ancestor of the input) to customise colours, spacing, and icon sizes.
 
 ## Contents
 

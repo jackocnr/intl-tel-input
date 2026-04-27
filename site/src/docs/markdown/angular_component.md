@@ -1,12 +1,12 @@
 # Angular component
 
-An Angular component for the intl-tel-input library. See a live demo on the [Validation](/examples/angular-component/validation) example page.
+An Angular component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/angular-component/validation) example page.
 
 ## Contents
 
 - [Installation](#installation)
 - [Props](#props)
-- [Plugin initialisation options](#plugin-initialisation-options)
+- [Initialisation options](#initialisation-options)
 - [Form integration](#form-integration-ngmodel-formcontrol)
 - [Events](#events)
 - [Accessing instance methods](#accessing-instance-methods)
@@ -42,7 +42,7 @@ See [Best practices](/docs/best-practices) for general advice on validation, E.1
 
 ## Props
 
-Any of the plugin's [initialisation options](#plugin-initialisation-options) (like `initialCountry`) can also be passed as an input.
+Any of the [initialisation options](#initialisation-options) (like `initialCountry`) can also be passed as an input.
 
 ###### disabled
 Type: `boolean`  
@@ -63,7 +63,7 @@ Default: `{}`
 The attributes to pass to the input element, e.g. `class`, `placeholder`, `required`, etc.
 
 > [!NOTE]
-> The following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`. Use the component props (`initialValue`, `disabled`, `readonly`) and the output event bindings instead.
+> The following keys are reserved for the component/core library integration and will be ignored: `type`, `value`, `disabled`, `readonly`. Use the component props (`initialValue`, `disabled`, `readonly`) and the output event bindings instead.
 
 ###### readonly
 Type: `boolean`  
@@ -78,9 +78,9 @@ Default: `false`
 By default, we use `isValidNumber` for validation, but if you'd rather use `isValidNumberPrecise`, you can set this to `true`.
 
 
-## Plugin initialisation options
+## Initialisation options
 
-All of the plugin's [initialisation options](/docs/options) are supported as individual Angular component inputs using the same option name. For example:
+All of the core library's [initialisation options](/docs/options) are supported as individual Angular component inputs using the same option name. For example:
 
 ```html
 <intl-tel-input initialCountry="us" />
@@ -204,11 +204,11 @@ export class MyComponent implements AfterViewInit, OnDestroy {
 
 ## Accessing instance methods
 
-You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/set-number/set-number.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/set-number/set-number.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
 
 > [!IMPORTANT]
 > You must use `ngAfterViewInit` (not `ngOnInit` or `constructor`) to access instance or input methods, as the component needs to be fully initialised first.
 
 ## Accessing static methods
 
-You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "@intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "@intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getCountryData()` etc.

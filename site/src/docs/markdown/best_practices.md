@@ -18,17 +18,17 @@ Load [`utils.js`](/docs/utils#loading-the-utils-script) to enable formatting and
 
 ## Store and restore numbers in E.164 format
 
-Since the dial code is embedded in the number (e.g. `"+17024181234"`), you don't need to store the country separately. To read the number out in E.164, use [`getNumber`](/docs/methods#getnumber) (or your component's change callback / bound value). To restore it, pass the stored E.164 number as the input's starting value on initialisation — the plugin will automatically set the country<sup>*</sup> and format the number according to your options.
+Since the dial code is embedded in the number (e.g. `"+17024181234"`), you don't need to store the country separately. To read the number out in E.164, use [`getNumber`](/docs/methods#getnumber) (or your component's change callback / bound value). To restore it, pass the stored E.164 number as the input's starting value on initialisation — the core library will automatically set the country<sup>*</sup> and format the number according to your options.
 
 _<sup>*</sup>Except for some small satellite territories, which share number ranges with the main country, in which case we default to selecting the main country._
 
 ## Validate before saving
 
-Check the number is valid before storing it, and reject invalid input. Get the validity from [`isValidNumber`](/docs/methods#isvalidnumber) (plugin) or the `onChangeValidity` / `validityChange` callback (components). Requires the utils module.
+Check the number is valid before storing it, and reject invalid input. Get the validity from [`isValidNumber`](/docs/methods#isvalidnumber) (core library) or the `onChangeValidity` / `validityChange` callback (components). Requires the utils module.
 
 ##### Deriving a user-facing error message
 
-When a number is invalid, you'll get an error code (from [`getValidationError`](/docs/methods#getvalidationerror) for the plugin, or via the `onChangeErrorCode` / `errorCodeChange` callback for the components). Mapping the error codes to user-facing messages is left to you because the wording belongs to your app. Here is a reasonable starting point:
+When a number is invalid, you'll get an error code (from [`getValidationError`](/docs/methods#getvalidationerror) for the core library, or via the `onChangeErrorCode` / `errorCodeChange` callback for the components). Mapping the error codes to user-facing messages is left to you because the wording belongs to your app. Here is a reasonable starting point:
 
 ```js
 const getErrorMessage = (number, errorCode) => {
@@ -47,7 +47,7 @@ const getErrorMessage = (number, errorCode) => {
 
 ## Keep strict mode on, with rejection feedback
 
-[`strictMode`](/docs/options#strictmode) is on by default and rejects non-numeric characters while capping the length at the country's max as the user types. Just as importantly, the rejection shouldn't be silent — by default, [`strictRejectAnimation`](/docs/options#strictrejectanimation) plays a built-in shake/flash animation so the user notices. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event (plugin) or use the equivalent `onStrictReject` / `strictReject` callback (components).
+[`strictMode`](/docs/options#strictmode) is on by default and rejects non-numeric characters while capping the length at the country's max as the user types. Just as importantly, the rejection shouldn't be silent — by default, [`strictRejectAnimation`](/docs/options#strictrejectanimation) plays a built-in shake/flash animation so the user notices. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event (core library) or use the equivalent `onStrictReject` / `strictReject` callback (components).
 
 ## Set the initial country
 

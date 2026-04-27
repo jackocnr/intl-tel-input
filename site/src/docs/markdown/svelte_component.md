@@ -1,12 +1,12 @@
 # Svelte component
 
-A Svelte 5 component for the intl-tel-input library. See a live demo on the [Validation](/examples/svelte-component/validation) example page.
+A Svelte 5 component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/svelte-component/validation) example page.
 
 ## Contents
 
 - [Installation](#installation)
 - [Props](#props)
-- [Plugin initialisation options](#plugin-initialisation-options)
+- [Initialisation options](#initialisation-options)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
 
@@ -39,7 +39,7 @@ See [Best practices](/docs/best-practices) for general advice on validation, E.1
 
 ## Props
 
-Any of the plugin's [initialisation options](#plugin-initialisation-options) (like `initialCountry`) can also be passed as a prop.
+Any of the [initialisation options](#initialisation-options) (like `initialCountry`) can also be passed as a prop.
 
 ###### disabled
 Type: `boolean`  
@@ -60,7 +60,7 @@ Default: `{}`
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onblur`, etc.
 
 > [!NOTE]
-> The following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `oninput`. Use the component props (`disabled`, `readonly`) and the `onChange...` callback props instead.
+> The following keys are reserved for the component/core library integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `oninput`. Use the component props (`disabled`, `readonly`) and the `onChange...` callback props instead.
 
 ###### onChangeCountry
 Type: `(iso2: string) => void`  
@@ -140,9 +140,9 @@ Optional controlled value. If provided, the component becomes controlled — whe
 > When using `value`, you should also use `onChangeNumber` to keep the value in sync with user input, otherwise programmatic updates (e.g. clearing the input) may not work as expected.
 
 
-## Plugin initialisation options
+## Initialisation options
 
-All of the plugin's [initialisation options](/docs/options) are supported as individual Svelte component props using the same option name. For example:
+All of the core library's [initialisation options](/docs/options) are supported as individual Svelte component props using the same option name. For example:
 
 ```js
 <IntlTelInput initialCountry="us" />
@@ -153,8 +153,8 @@ All of the plugin's [initialisation options](/docs/options) are supported as ind
 
 ## Accessing instance methods
 
-You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using `bind:this`), and then calling the `getInstance()` method, e.g. `ref.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/svelte/demo/set-number/App.svelte) for a full example. You can also access the input DOM element via: `ref.getInput()`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using `bind:this`), and then calling the `getInstance()` method, e.g. `ref.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/svelte/demo/set-number/App.svelte) for a full example. You can also access the input DOM element via: `ref.getInput()`.
 
 ## Accessing static methods
 
-You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Svelte component, e.g. `import { intlTelInput } from "@intl-tel-input/svelte"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Svelte component, e.g. `import { intlTelInput } from "@intl-tel-input/svelte"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getCountryData()` etc.

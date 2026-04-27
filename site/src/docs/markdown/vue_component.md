@@ -1,12 +1,12 @@
 # Vue component
 
-A Vue component for the intl-tel-input library. See a live demo on the [Validation](/examples/vue-component/validation) example page.
+A Vue component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/vue-component/validation) example page.
 
 ## Contents
 
 - [Installation](#installation)
 - [Props](#props)
-- [Plugin initialisation options](#plugin-initialisation-options)
+- [Initialisation options](#initialisation-options)
 - [Events](#events)
 - [Accessing instance methods](#accessing-instance-methods)
 - [Accessing static methods](#accessing-static-methods)
@@ -42,7 +42,7 @@ See [Best practices](/docs/best-practices) for general advice on validation, E.1
 
 ## Props
 
-Any of the plugin's [initialisation options](#plugin-initialisation-options) (like `initialCountry`) can also be passed as a prop.
+Any of the [initialisation options](#initialisation-options) (like `initialCountry`) can also be passed as a prop.
 
 ###### disabled
 Type: `boolean`  
@@ -63,7 +63,7 @@ Default: `{}`
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onBlur`.
 
 > [!NOTE]
-> The following keys are reserved for the component/plugin integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
+> The following keys are reserved for the component/core library integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
 
 ###### readonly
 Type: `boolean`  
@@ -75,7 +75,7 @@ Sets the readonly attribute of the telephone input and disables the selected cou
 Type: `boolean`
 Default: `false`  
 
-By default, the component uses the plugin's `isValidNumber` method for validation, but if you'd rather use `isValidNumberPrecise`, set this to `true`.
+By default, the component uses the core library's `isValidNumber` method for validation, but if you'd rather use `isValidNumberPrecise`, set this to `true`.
 
 ###### v-model (modelValue)
 Type: `string`  
@@ -88,9 +88,9 @@ The component supports `v-model` for two-way binding. When the bound value chang
 ```
 
 
-## Plugin initialisation options
+## Initialisation options
 
-All of the plugin's [initialisation options](/docs/options) are supported as individual Vue component props using the same option name. For example:
+All of the core library's [initialisation options](/docs/options) are supported as individual Vue component props using the same option name. For example:
 
 ```js
 <IntlTelInput initialCountry="us" />
@@ -162,8 +162,8 @@ else msg = `Character not allowed: "${rejectedInput}"`;
 
 ## Accessing instance methods
 
-You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
 
 ## Accessing static methods
 
-You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Vue component, e.g. `import { intlTelInput } from "@intl-tel-input/vue"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Vue component, e.g. `import { intlTelInput } from "@intl-tel-input/vue"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getCountryData()` etc.
