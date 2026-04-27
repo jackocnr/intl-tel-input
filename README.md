@@ -26,7 +26,7 @@ We have a [newly updated website](https://intl-tel-input.com), where you can fin
 * Full keyboard navigation
 
 ✨ **Smart defaults**
-* Optionally auto-detect the user's country via IP lookup
+* Optionally auto-detect the user's country
 * Example placeholders per country
 
 📞 **Formatting & output**
@@ -35,7 +35,7 @@ We have a [newly updated website](https://intl-tel-input.com), where you can fin
 
 🛡️ **Validation**
 * Validate numbers with specific error types
-* Strict mode: only allow valid digits and enforce max length
+* Only allow valid digits and enforce max length
 
 🌍 **International & accessible**
 * Translated into 40+ languages, with support for RTL and alternative numerals
@@ -43,7 +43,6 @@ We have a [newly updated website](https://intl-tel-input.com), where you can fin
 
 🎛️ **Developer-friendly**
 * Override CSS variables (e.g. dark mode)
-* Optionally display the dial code next to the number
 * Extensive initialisation options, methods, and events
 * TypeScript definitions included
 
