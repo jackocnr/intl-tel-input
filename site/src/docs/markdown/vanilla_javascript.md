@@ -1,6 +1,6 @@
-# JavaScript plugin
+# Vanilla JavaScript library
 
-How to get up and running with the JavaScript plugin. For the framework components instead, see [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component), or [Svelte](/docs/svelte-component).
+How to get up and running with the vanilla JavaScript library. See a live demo on the [Validation](/examples/vanilla-javascript/validation) example page.
 
 
 ## Contents

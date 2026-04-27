@@ -5,9 +5,9 @@ const docsDropdownPages = [
     label: "Integrations",
   },
   {
-    name: "javascript_plugin",
-    href: "/docs/javascript-plugin",
-    label: "JavaScript plugin",
+    name: "vanilla_javascript",
+    href: "/docs/vanilla-javascript",
+    label: "Vanilla JavaScript",
     nested: true,
   },
   {
@@ -88,52 +88,52 @@ const docsDropdownPages = [
 
 const examplesDropdownSections = [
   {
-    name: "javascript_plugin",
-    label: "JavaScript plugin",
+    name: "vanilla_javascript",
+    label: "Vanilla JavaScript",
     items: [
       {
         name: "validation_practical",
-        href: "/examples/javascript-plugin/validation",
+        href: "/examples/vanilla-javascript/validation",
         label: "Validation",
       },
       {
         name: "validation_precise",
-        href: "/examples/javascript-plugin/validation-precise",
+        href: "/examples/vanilla-javascript/validation-precise",
         label: "Precise validation (advanced)",
       },
       {
         name: "lookup_country",
-        href: "/examples/javascript-plugin/lookup-country",
+        href: "/examples/vanilla-javascript/lookup-country",
         label: "Lookup user's country",
       },
       {
         name: "single_country",
-        href: "/examples/javascript-plugin/single-country",
+        href: "/examples/vanilla-javascript/single-country",
         label: "Single country",
       },
       {
         name: "right_to_left",
-        href: "/examples/javascript-plugin/right-to-left",
+        href: "/examples/vanilla-javascript/right-to-left",
         label: "Right to left",
       },
       {
         name: "hidden_input",
-        href: "/examples/javascript-plugin/hidden-input",
+        href: "/examples/vanilla-javascript/hidden-input",
         label: "Hidden input",
       },
       {
         name: "display_number",
-        href: "/examples/javascript-plugin/display-number",
+        href: "/examples/vanilla-javascript/display-number",
         label: "Display existing number",
       },
       {
         name: "multiple_instances",
-        href: "/examples/javascript-plugin/multiple-instances",
+        href: "/examples/vanilla-javascript/multiple-instances",
         label: "Multiple instances",
       },
       {
         name: "large_flags",
-        href: "/examples/javascript-plugin/large-flags",
+        href: "/examples/vanilla-javascript/large-flags",
         label: "Large flags",
       },
     ],

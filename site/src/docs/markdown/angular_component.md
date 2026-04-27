@@ -1,6 +1,6 @@
 # Angular component
 
-An Angular component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/src/IntlTelInput.ts), see a live demo on the [Angular component](/examples/angular-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/README.md) to run the full set of demos locally.
+An Angular component for the intl-tel-input library. See a live demo on the [Validation](/examples/angular-component/validation) example page.
 
 ## Contents
 

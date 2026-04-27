@@ -117,7 +117,7 @@
           >
             <% examplesDropdownSections.forEach((section) => {
                  const isActive = pageType === 'examples' && section.items.some((p) => p.name === name);
-                 const isExpanded = isActive || (pageType !== 'examples' && section.name === "javascript_plugin");
+                 const isExpanded = isActive || (pageType !== 'examples' && section.name === "vanilla_javascript");
                  const collapseId = `itiMobileExamples-${section.name}`;
             %>
               <li class="nav-item iti-nav-section">

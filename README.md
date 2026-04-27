@@ -17,7 +17,7 @@ For entering, formatting, and validating international telephone numbers. Availa
 Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more](https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input). We can't wait to see what you build.
 
 ## Docs and Examples
-We have a [newly updated website](https://intl-tel-input.com), where you can find [a full set of docs](https://intl-tel-input.com/docs/integrations), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/javascript-plugin/validation) of different setups.
+We have a [newly updated website](https://intl-tel-input.com), where you can find [a full set of docs](https://intl-tel-input.com/docs/integrations), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/vanilla-javascript/validation) of different setups.
 
 ## Features
 

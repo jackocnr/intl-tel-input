@@ -17,7 +17,7 @@ The utils script adds ~260KB on top of the ~30KB main plugin. There are two ways
 Use the [`loadUtils`](/docs/options#loadutils) option to fetch the utils separately. The main plugin/component loads quickly (~30KB); the ~260KB utils file is fetched in the background after initialisation, so formatting/validation kicks in shortly after the input appears without blocking your initial page load.
 
 **Option 2: Use the all-in-one bundle**  
-Each distribution ships a companion entry point that bundles utils directly — `intl-tel-input/intlTelInputWithUtils` for the JS plugin, `@intl-tel-input/react/with-utils` for React, `@intl-tel-input/vue/with-utils` for Vue, and so on. Everything works out of the box, with no extra configuration. Best if you're already lazy loading the main script, or if the extra ~260KB up front isn't a concern.
+Each distribution ships a companion entry point that bundles utils directly — `intl-tel-input/intlTelInputWithUtils` for the vanilla JavaScript library, `@intl-tel-input/react/with-utils` for React, `@intl-tel-input/vue/with-utils` for Vue, and so on. Everything works out of the box, with no extra configuration. Best if you're already lazy loading the main script, or if the extra ~260KB up front isn't a concern.
 
-For exact code, see the quick-start on the relevant docs page: [JavaScript plugin](/docs/javascript-plugin), [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component), or [Svelte](/docs/svelte-component).
+For exact code, see the quick-start on the relevant docs page: [vanilla JavaScript library](/docs/vanilla-javascript), [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component), or [Svelte](/docs/svelte-component).
 

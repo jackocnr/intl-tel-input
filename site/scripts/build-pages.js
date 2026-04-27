@@ -49,7 +49,7 @@ const allowedNumberTypesNote = fs.readFileSync(
 );
 
 const strictRejectToastPartial = fs.readFileSync(
-  "src/examples/javascript-plugin/_shared/strict_reject_toast.html",
+  "src/examples/vanilla-javascript/_shared/strict_reject_toast.html",
   "utf8",
 );
 const strictRejectToast = (id) =>
@@ -189,7 +189,7 @@ tasks.push(
 const exampleDefinitions = [
   {
     key: "lookup_country",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "lookup-country",
     title: "Lookup user's country",
     metaDesc: "Automatically set the country based on the user's IP address.",
@@ -201,7 +201,7 @@ const exampleDefinitions = [
   },
   {
     key: "right_to_left",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "right-to-left",
     title: "Right to left",
     metaDesc: "Support for right-to-left languages.",
@@ -214,7 +214,7 @@ const exampleDefinitions = [
   },
   {
     key: "single_country",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "single-country",
     title: "Single country",
     metaDesc: "When you only need to handle numbers from a single country.",
@@ -225,7 +225,7 @@ const exampleDefinitions = [
   },
   {
     key: "validation_practical",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "validation",
     title: "Validation",
     metaDesc:
@@ -241,16 +241,16 @@ const exampleDefinitions = [
   },
   {
     key: "validation_precise",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "validation-precise",
     title: "Precise validation (advanced)",
     metaDesc:
       "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
-    js: { src: "src/examples/javascript-plugin/validation/page.ts", destDir: "tmp" },
+    js: { src: "src/examples/vanilla-javascript/validation/page.ts", destDir: "tmp" },
     content: {
       markupName: "validation",
       includeItiScript: true,
-      displayCode: "src/examples/javascript-plugin/validation/display_code.js",
+      displayCode: "src/examples/vanilla-javascript/validation/display_code.js",
       extraData: () => ({
         demo_note: allowedNumberTypesNote,
       }),
@@ -258,7 +258,7 @@ const exampleDefinitions = [
   },
   {
     key: "hidden_input",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "hidden-input",
     title: "Hidden input",
     metaDesc:
@@ -272,7 +272,7 @@ const exampleDefinitions = [
   },
   {
     key: "multiple_instances",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "multiple-instances",
     title: "Multiple instances",
     metaDesc:
@@ -284,7 +284,7 @@ const exampleDefinitions = [
   },
   {
     key: "display_number",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "display-number",
     title: "Display existing number",
     metaDesc: "Automatically format an existing number during initialisation.",
@@ -294,7 +294,7 @@ const exampleDefinitions = [
   },
   {
     key: "large_flags",
-    integrationSlug: "javascript-plugin",
+    integrationSlug: "vanilla-javascript",
     exampleSlug: "large-flags",
     title: "Large flags",
     metaDesc: "How to display extra large flag images.",
@@ -457,7 +457,7 @@ const exampleDefinitions = [
 ];
 
 const integrationLabels = {
-  "javascript-plugin": "JavaScript plugin",
+  "vanilla-javascript": "Vanilla JavaScript",
   "react-component": "React component",
   "vue-component": "Vue component",
   "angular-component": "Angular component",
@@ -813,10 +813,10 @@ const docsDefinitions = [
       "Get started with intl-tel-input. Choose your integration: pure JavaScript plugin, or React, Vue, Angular or Svelte component.",
   },
   {
-    key: "javascript_plugin",
-    title: "JavaScript plugin",
+    key: "vanilla_javascript",
+    title: "Vanilla JavaScript library",
     metaDesc:
-      "How to get up and running with the intl-tel-input JavaScript plugin.",
+      "How to get up and running with the intl-tel-input vanilla JavaScript library.",
   },
   {
     key: "best_practices",

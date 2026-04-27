@@ -2,7 +2,7 @@
 
 The vanilla JavaScript library for [intl-tel-input](https://github.com/jackocnr/intl-tel-input). View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/packages/core/src/js/intlTelInput.ts).
 
-[Explore docs »](https://intl-tel-input.com/docs/javascript-plugin)
+[Explore docs »](https://intl-tel-input.com/docs/vanilla-javascript)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/iti-github-dark.png">

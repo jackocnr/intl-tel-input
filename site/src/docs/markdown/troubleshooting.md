@@ -7,7 +7,7 @@
   - [Dropdown container not closing on scroll](#dropdown-container-not-closing-on-scroll)
   - [Input margin](#input-margin)
   - [Placeholders](#placeholders)
-- [JavaScript plugin specifics](#javascript-plugin-specifics)
+- [Vanilla JavaScript library specifics](#vanilla-javascript-library-specifics)
   - [Displaying error messages](#displaying-error-messages)
   - [Dropdown position](#dropdown-position)
 
@@ -40,9 +40,9 @@ For the sake of alignment, the default CSS forces the input's vertical margin to
 
 To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set [`autoPlaceholder`](/docs/options#autoplaceholder) to `"aggressive"` to override any existing placeholder. Note: this requires the utils script to be loaded.
 
-## JavaScript plugin specifics
+## Vanilla JavaScript library specifics
 
-The following issues only apply to the [JavaScript plugin](/docs/javascript-plugin) — the framework components handle them for you.
+The following issues only apply to the [vanilla JavaScript library](/docs/vanilla-javascript) — the framework components handle them for you.
 
 ##### Displaying error messages
 

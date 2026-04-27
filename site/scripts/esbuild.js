@@ -26,47 +26,47 @@ const sharedOptions = {
 // lookup country example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/javascript-plugin/lookup-country/page.ts"],
+  entryPoints: ["tmp/examples/vanilla-javascript/lookup-country/page.ts"],
   outfile: "dist/examples/js/lookup_country.js",
 });
 
 // right to left example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/javascript-plugin/right-to-left/page.ts"],
+  entryPoints: ["tmp/examples/vanilla-javascript/right-to-left/page.ts"],
   outfile: "dist/examples/js/right_to_left_bundle.js",
 });
 
 // validation examples (same source, one output per example)
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/javascript-plugin/validation/page.ts"],
+  entryPoints: ["tmp/examples/vanilla-javascript/validation/page.ts"],
   outfile: "dist/examples/js/validation_practical.js",
 });
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/javascript-plugin/validation-precise/page.ts"],
+  entryPoints: ["tmp/examples/vanilla-javascript/validation-precise/page.ts"],
   outfile: "dist/examples/js/validation_precise.js",
 });
 
 // hidden input example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/javascript-plugin/hidden-input/page.ts"],
+  entryPoints: ["tmp/examples/vanilla-javascript/hidden-input/page.ts"],
   outfile: "dist/examples/js/hidden_input.js",
 });
 
 // multiple instances example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/javascript-plugin/multiple-instances/page.ts"],
+  entryPoints: ["tmp/examples/vanilla-javascript/multiple-instances/page.ts"],
   outfile: "dist/examples/js/multiple_instances.js",
 });
 
 // large flags example
 build({
   ...sharedOptions,
-  entryPoints: ["tmp/examples/javascript-plugin/large-flags/page.ts"],
+  entryPoints: ["tmp/examples/vanilla-javascript/large-flags/page.ts"],
   outfile: "dist/examples/js/large_flags.js",
 });
 

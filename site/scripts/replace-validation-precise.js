@@ -7,7 +7,7 @@ import path from "node:path";
 const ROOT = path.resolve(import.meta.dirname, "..");
 process.chdir(ROOT);
 
-const file = "tmp/examples/javascript-plugin/validation-precise/page.ts";
+const file = "tmp/examples/vanilla-javascript/validation-precise/page.ts";
 const original = fs.readFileSync(file, "utf8");
 const updated = original.replace(/\biti\.isValidNumber\(\)/g, "iti.isValidNumberPrecise()");
 

@@ -1,6 +1,6 @@
 # Initialisation options
 
-The options below are shared across the [JavaScript plugin](/docs/javascript-plugin) and the [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component) and [Svelte](/docs/svelte-component) components. Code examples below show the **value** you pass for each option — with the JS plugin, pass them as properties of the options object, e.g. `intlTelInput(input, { initialCountry: "us" })`; with the framework components, pass them as individual props (with the same name).
+The options below are shared across the [vanilla JavaScript library](/docs/vanilla-javascript) and the [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component) and [Svelte](/docs/svelte-component) components. Code examples below show the **value** you pass for each option — with the vanilla JavaScript library, pass them as properties of the options object, e.g. `intlTelInput(input, { initialCountry: "us" })`; with the framework components, pass them as individual props (with the same name).
 
 _Throughout these docs, "iso2 code" means the two-letter country identifier ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), e.g. `"gb"`), and "dial code" means the international calling prefix (e.g. `+44`)._
 
@@ -41,7 +41,7 @@ Default: `null`
 
 When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error).
 
-Note that on plugin initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the plugin instance (accessible directly with the JS plugin, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
+Note that on plugin initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the plugin instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
 
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `geoIpLookup`):  
 ```js
@@ -62,7 +62,7 @@ Play with this option in the [Playground](/playground#country-options).
 Type: `string`  
 Default: `""`  
 
-Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/javascript-plugin/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. 
+Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/vanilla-javascript/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. 
 
 View the plugin with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
 
@@ -249,7 +249,7 @@ As the user types (or pastes) in the input, reject any irrelevant characters. Th
 Play with this option in the [Playground](/playground#formatting-options).
 
 > [!IMPORTANT]
-> `strictMode` would silently drop rejected input, so by default we surface that to the user via [`strictRejectAnimation`](#strictrejectanimation), which plays a built-in shake/flash animation. For richer feedback (e.g. a toast explaining _why_ input was rejected), listen for the [`strict:reject`](/docs/javascript-plugin#strict-reject) event (or use the equivalent `onStrictReject` / `strictReject` callback in the component wrappers). For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
+> `strictMode` would silently drop rejected input, so by default we surface that to the user via [`strictRejectAnimation`](#strictrejectanimation), which plays a built-in shake/flash animation. For richer feedback (e.g. a toast explaining _why_ input was rejected), listen for the [`strict:reject`](/docs/vanilla-javascript#strict-reject) event (or use the equivalent `onStrictReject` / `strictReject` callback in the component wrappers). For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
 
 ###### strictRejectAnimation
 Type: `boolean`  
@@ -346,7 +346,7 @@ Extra features like hidden inputs and loading the utils module.
 Type: `(telInputName: string) => { phone: string, country?: string }`  
 Default: `null`  
 
-Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`nationalMode`](#nationalmode) or [`separateDialCode`](#separatedialcode) is enabled. [See example](/examples/javascript-plugin/hidden-input).
+Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`nationalMode`](#nationalmode) or [`separateDialCode`](#separatedialcode) is enabled. [See example](/examples/vanilla-javascript/hidden-input).
 
 This option accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and iso2 code, respectively.
 

@@ -1,16 +1,16 @@
 # ancient links from when example pages were in ITI project, loaded into website project through node_modules
-/node_modules/intl-tel-input/examples/gen/is-valid-number.html /examples/javascript-plugin/validation 301
+/node_modules/intl-tel-input/examples/gen/is-valid-number.html /examples/vanilla-javascript/validation 301
 /node_modules/intl-tel-input/examples/gen/only-countries-europe.html /playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D#country-options 301
 
 # old links when examples were served from separate build dir
-/dist/examples/single-country.html /examples/javascript-plugin/single-country 301
-/dist/examples/validation-practical.html /examples/javascript-plugin/validation 301
-/dist/examples/display-number.html /examples/javascript-plugin/display-number 301
+/dist/examples/single-country.html /examples/vanilla-javascript/single-country 301
+/dist/examples/validation-practical.html /examples/vanilla-javascript/validation 301
+/dist/examples/display-number.html /examples/vanilla-javascript/display-number 301
 /dist/examples/react-component.html /examples/react-component/validation 301
-/dist/examples/validation-precise.html /examples/javascript-plugin/validation-precise 301
+/dist/examples/validation-precise.html /examples/vanilla-javascript/validation-precise 301
 /dist/examples/internationalisation.html /playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options 301
-/dist/examples/hidden-input.html /examples/javascript-plugin/hidden-input 301
-/dist/examples/lookup-country.html /examples/javascript-plugin/lookup-country 301
+/dist/examples/hidden-input.html /examples/vanilla-javascript/hidden-input 301
+/dist/examples/lookup-country.html /examples/vanilla-javascript/lookup-country 301
 /dist/examples/only-countries.html /playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D#country-options 301
 
 # previous example page URLs
@@ -19,20 +19,20 @@
 /examples/strict-mode.html /playground?initialCountry=us&strictMode=true#formatting-options
 /examples/localise-countries* /playground?countryNameLocale=ru&i18n=ru#translation-options 301
 /examples/internationalisation /playground?countryNameLocale=ru&i18n=ru#translation-options 301
-/examples/validation.html /examples/javascript-plugin/validation-precise 301
-/examples/validation /examples/javascript-plugin/validation-precise 301
+/examples/validation.html /examples/vanilla-javascript/validation-precise 301
+/examples/validation /examples/vanilla-javascript/validation-precise 301
 /examples/only-countries.html /playground?initialCountry=fr&onlyCountries=%5B%22al%22%2C%22ad%22%2C%22at%22%2C%22by%22%2C%22be%22%2C%22ba%22%2C%22bg%22%2C%22hr%22%2C%22cz%22%2C%22dk%22%2C%22ee%22%2C%22fo%22%2C%22fi%22%2C%22fr%22%2C%22de%22%2C%22gi%22%2C%22gr%22%2C%22va%22%2C%22hu%22%2C%22is%22%2C%22ie%22%2C%22it%22%2C%22lv%22%2C%22li%22%2C%22lt%22%2C%22lu%22%2C%22mk%22%2C%22mt%22%2C%22md%22%2C%22mc%22%2C%22me%22%2C%22nl%22%2C%22no%22%2C%22pl%22%2C%22pt%22%2C%22ro%22%2C%22ru%22%2C%22sm%22%2C%22rs%22%2C%22sk%22%2C%22si%22%2C%22es%22%2C%22se%22%2C%22ch%22%2C%22ua%22%2C%22gb%22%5D#country-options 301
 
 # v1 examples restructure (per-integration URLs)
-/examples/validation-practical /examples/javascript-plugin/validation 301
-/examples/validation-precise /examples/javascript-plugin/validation-precise 301
-/examples/lookup-country /examples/javascript-plugin/lookup-country 301
-/examples/single-country /examples/javascript-plugin/single-country 301
-/examples/right-to-left /examples/javascript-plugin/right-to-left 301
-/examples/hidden-input /examples/javascript-plugin/hidden-input 301
-/examples/display-number /examples/javascript-plugin/display-number 301
-/examples/multiple-instances /examples/javascript-plugin/multiple-instances 301
-/examples/large-flags /examples/javascript-plugin/large-flags 301
+/examples/validation-practical /examples/vanilla-javascript/validation 301
+/examples/validation-precise /examples/vanilla-javascript/validation-precise 301
+/examples/lookup-country /examples/vanilla-javascript/lookup-country 301
+/examples/single-country /examples/vanilla-javascript/single-country 301
+/examples/right-to-left /examples/vanilla-javascript/right-to-left 301
+/examples/hidden-input /examples/vanilla-javascript/hidden-input 301
+/examples/display-number /examples/vanilla-javascript/display-number 301
+/examples/multiple-instances /examples/vanilla-javascript/multiple-instances 301
+/examples/large-flags /examples/vanilla-javascript/large-flags 301
 /examples/react-component /examples/react-component/validation 301
 /examples/vue-component /examples/vue-component/validation 301
 /examples/angular-component /examples/angular-component/validation 301
@@ -47,5 +47,7 @@
 /docs/ /docs/integrations 302
 /docs/getting-started /docs/integrations 301
 /docs/choose-integration /docs/integrations 301
-/examples /examples/javascript-plugin/validation 302
-/examples/ /examples/javascript-plugin/validation 302
+/docs/javascript-plugin /docs/vanilla-javascript 301
+/examples/javascript-plugin/* /examples/vanilla-javascript/:splat 301
+/examples /examples/vanilla-javascript/validation 302
+/examples/ /examples/vanilla-javascript/validation 302

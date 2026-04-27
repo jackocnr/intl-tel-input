@@ -2,14 +2,14 @@
 
 ## Choose your integration
 
-`intl-tel-input` comes in two flavours: a standalone **JavaScript plugin** and a set of native **framework components**. Both offer the same core features — country picker, formatting and validation — so pick the one that matches your stack.
+`intl-tel-input` comes in two flavours: a **vanilla JavaScript library** and a set of native **framework components**. Both offer the same core features — country picker, formatting and validation — so pick the one that matches your stack.
 
 <div class="iti-integration-choice row g-4 my-4">
   <div class="col-md-6">
     <div class="iti-integration-card card h-100">
       <div class="card-body d-flex flex-column">
         <i class="bi bi-filetype-js iti-integration-card__icon" aria-hidden="true"></i>
-        <h2 class="h4 mt-3 mb-2">JavaScript plugin</h2>
+        <h2 class="h4 mt-3 mb-2">Vanilla JavaScript library</h2>
         <p class="mb-3">If you're <strong>not</strong> using a frontend framework, or prefer to manage the DOM yourself.</p>
         <ul class="mb-4 ps-3">
           <li>Zero dependencies</li>
@@ -17,7 +17,7 @@
           <li>Works anywhere</li>
         </ul>
         <div class="mt-auto">
-          <a href="/docs/javascript-plugin" class="btn btn-primary">Get started</a>
+          <a href="/docs/vanilla-javascript" class="btn btn-primary">Get started</a>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
 
 ## FAQ
 
-**Can I manually use the JavaScript Plugin inside a React (etc) app myself?**  
+**Can I manually use the vanilla JavaScript library inside a React (etc) app myself?**  
 Technically yes, but our native framework components are the recommended path - they do the heavy lifting for you so you can drop a phone input into your app in just a few lines of code:
 
 * **Lifecycle handled** — initialisation on mount and `destroy()` on unmount, so you don't leak instances or listeners.

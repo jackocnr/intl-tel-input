@@ -138,7 +138,7 @@ test.describe("site nav — desktop layout", () => {
 
 test.describe("site example pages", () => {
   test("display-number example parses the initial +44 value and reformats it", async ({ page }) => {
-    await page.goto(`${SITE}/examples/javascript-plugin/display-number.html`);
+    await page.goto(`${SITE}/examples/vanilla-javascript/display-number.html`);
 
     const input = page.locator("#phone");
     await expect(input).toHaveClass(/iti__tel-input/);

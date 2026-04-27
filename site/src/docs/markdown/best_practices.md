@@ -1,6 +1,6 @@
 # Best practices
 
-General advice for getting the most out of `intl-tel-input`, whether you're using the [JavaScript plugin](/docs/javascript-plugin) or one of the framework components ([React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component), [Svelte](/docs/svelte-component)).
+General advice for getting the most out of `intl-tel-input`, whether you're using the [vanilla JavaScript library](/docs/vanilla-javascript) or one of the framework components ([React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component), [Svelte](/docs/svelte-component)).
 
 ## Contents
 
@@ -51,7 +51,7 @@ const getErrorMessage = (number, errorCode) => {
 
 ## Set the initial country
 
-If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set it to `"auto"` along with the [`geoIpLookup`](/docs/options#geoiplookup) option to determine the country from their IP address — [see example](/examples/javascript-plugin/lookup-country).
+If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set it to `"auto"` along with the [`geoIpLookup`](/docs/options#geoiplookup) option to determine the country from their IP address — [see example](/examples/vanilla-javascript/lookup-country).
 
 ## Translate the UI
 

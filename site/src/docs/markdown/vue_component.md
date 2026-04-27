@@ -1,6 +1,6 @@
 # Vue component
 
-A Vue component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/src/IntlTelInput.vue), see a live demo on the [Vue component](/examples/vue-component/validation) example page, or follow the [README](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/README.md) to run the full set of demos locally.
+A Vue component for the intl-tel-input library. See a live demo on the [Validation](/examples/vue-component/validation) example page.
 
 ## Contents
 
