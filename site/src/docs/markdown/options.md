@@ -319,6 +319,8 @@ Override individual country names, keyed by iso2 code. Useful when the name prod
 }
 ```
 
+View the plugin with the US renamed to "United States of America" in the [Playground](/playground?countryNameOverrides=%7B%22us%22%3A%22United+States+of+America%22%7D&initialCountry=us#translation-options).
+
 ###### i18n
 Type: `object`  
 Default: `{}`  
