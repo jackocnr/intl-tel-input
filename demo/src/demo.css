@@ -39,7 +39,7 @@ input[type="tel"] {
   --iti-path-flags-1x: url("../../packages/core/dist/img/flags.webp");
   --iti-path-flags-2x: url("../../packages/core/dist/img/flags@2x.webp");
 
-  /* plugin overrides (NOTE: the bootstrap vars handle dark mode automatically) */
+  /* core library overrides (NOTE: the bootstrap vars handle dark mode automatically) */
   --iti-border-color: var(--bs-border-color);
   --iti-dropdown-bg: var(--bs-body-bg);
   --iti-icon-color: var(--bs-body-color);

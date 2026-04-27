@@ -68,7 +68,7 @@ export const defaults: AllOptions = {
   geoIpLookup: null,
   //* Inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber.
   hiddenInput: null,
-  //* Internationalise the plugin text e.g. search input placeholder, country names.
+  //* Internationalise the core library text e.g. search input placeholder, country names.
   i18n: {},
   //* Initial country.
   initialCountry: "",

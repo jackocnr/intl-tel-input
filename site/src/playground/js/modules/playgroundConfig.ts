@@ -67,7 +67,7 @@ export const OPTION_GROUPS = [
   {
     title: "Translation Options",
     icon: "bi-translate",
-    description: "Localise country names and the plugin UI strings, e.g. the country search placeholder.",
+    description: "Localise country names and the core library UI strings, e.g. the country search placeholder.",
     keys: ["countryNameLocale", "countryNameOverrides", "i18n"],
   },
   {
@@ -208,7 +208,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     formatOnDisplay: {
       type: "boolean",
-      tooltip: "Format any initial value when the plugin initialises.",
+      tooltip: "Format any initial value on initialisation.",
     },
     i18n: {
       type: "select",

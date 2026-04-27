@@ -85,7 +85,7 @@ export default class UI {
     }
   }
 
-  //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
+  //* Generate all of the markup for the core library: the selected country overlay, and the dropdown.
   public buildMarkup(
     countries: Country[],
     searchTokens: SearchTokensMap,

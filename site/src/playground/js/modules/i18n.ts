@@ -64,7 +64,7 @@ export async function resolveI18nSelection(value, { i18nDirHash }) {
     return null;
   }
 
-  // English is the plugin's built-in default language, so avoid loading an
+  // English is the core library's built-in default language, so avoid loading an
   // additional i18n pack (and keep the generated init code simpler).
   if (code.toLowerCase() === "en") {
     return null;

@@ -1,12 +1,12 @@
 //* Array of country objects for the country dropdown.
 // By default, it's sorted in English alphabetical order, on country name.
 
-//* Criteria for the plugin to support a given country/territory:
+//* Criteria for the core library to support a given country/territory:
 //* - It has an iso2 code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 //* - It has a flag in the flag-icons project: https://github.com/lipis/flag-icons/tree/main/flags/4x3
 //* - It is supported by libphonenumber (it must be listed on this page): https://github.com/googlei18n/libphonenumber/blob/master/resources/ShortNumberMetadata.xml
 
-//* Criteria for the plugin to support area codes for a given country/territory:
+//* Criteria for the core library to support area codes for a given country/territory:
 //* - The area codes cover all valid numbers for that territory (there are no valid numbers outside of those area codes)
 //* - The area codes are exclusive to that territory (i.e. they are not shared with another territory)
 
@@ -1501,7 +1501,7 @@ export const rawCountryData = [
 export type Iso2 = (typeof rawCountryData)[number][0];
 
 export type Country = {
-  name: string; // populated in the plugin
+  name: string; // populated in the core library
   iso2: Iso2;
   dialCode: string;
   priority: number;
@@ -1513,7 +1513,7 @@ const allCountries: Country[] = [];
 //* Loop over all of the countries above, restructuring the data to be objects with named keys.
 for (const c of rawCountryData) {
   allCountries.push({
-    name: "", // populated in the plugin
+    name: "", // populated in the core library
     iso2: c[0],
     dialCode: c[1],
     priority: c[2] || 0,

@@ -88,7 +88,7 @@ export const INITIAL_COUNTRY = {
   AUTO: "auto",
 } as const;
 
-// libphonenumber enums - sole source of truth for both the plugin (option
+// libphonenumber enums - sole source of truth for both the core library (option
 // validation, public types) and utils.js (which builds its int maps from
 // these arrays at build time via scripts/build-utils.js).
 //

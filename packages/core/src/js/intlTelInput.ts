@@ -85,7 +85,7 @@ declare global {
   }
 }
 
-//* These vars persist through all instances of the plugin.
+//* These vars persist through all instances of the core library.
 let nextId = 0;
 
 const ensureUtils = (methodName: string): void => {
@@ -112,7 +112,7 @@ const createDeferred = <T>(): Deferred<T> => {
   return { promise, resolve, reject };
 };
 
-//* This is our plugin class that we will create an instance of
+//* This is our core library class that we will create an instance of
 export class Iti {
   //* PUBLIC FIELDS - READONLY
   //* Can't be private as it's called from intlTelInput convenience wrapper.
@@ -253,8 +253,8 @@ export class Iti {
   //* 2. Using explicit initialCountry
   #setInitialState(overrideAutoCountry: boolean = false): void {
     //* Fix firefox bug: when first load page (with input with value set to number with intl dial code)
-    //* and initialising plugin removes the dial code from the input, then refresh page,
-    //* and we try to init plugin again but this time on number without dial code so show globe icon.
+    //* and initialising core library removes the dial code from the input, then refresh page,
+    //* and we try to init core library again but this time on number without dial code so show globe icon.
     const attributeValueRaw = this.#ui.telInputEl.getAttribute("value");
     const attributeValue = this.#numerals.normalise(attributeValueRaw ?? "");
     const inputValue = this.#getTelInputValue();
@@ -336,7 +336,7 @@ export class Iti {
         intlTelInput.attachUtils(loadUtils!).catch(() => {});
       };
 
-      //* If the plugin is being initialised after the window.load event has already been fired.
+      //* If the core library is being initialised after the window.load event has already been fired.
       if (intlTelInput.documentReady()) {
         doAttachUtils();
       } else {
@@ -390,7 +390,7 @@ export class Iti {
         //* UPDATE: use setTimeout in case their geoIpLookup function resolves straight away
         //* (e.g. if they have already done the geo ip lookup somewhere else). Using
         //* setTimeout means that the current thread of execution will finish before executing
-        //* this, which allows the plugin to finish initialising.
+        //* this, which allows the core library to finish initialising.
         setTimeout(() => Iti.forEachInstance("handleAutoCountryLoaded"));
       } catch {
         Iti.forEachInstance("handleAutoCountryFailure");
@@ -1317,7 +1317,7 @@ export class Iti {
   //*  PUBLIC METHODS
   //********************
 
-  //* Remove plugin.
+  //* Remove core library.
   public destroy(): void {
     if (!this.#isActive) {
       return;
@@ -1670,7 +1670,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     documentReady: (): boolean => document.readyState === "complete",
     //* Get the country data object.
     getCountryData: (): Country[] => allCountries,
-    //* A getter for the plugin instance.
+    //* A getter for the core library instance.
     getInstance: (input: HTMLInputElement): Iti | null => {
       const id = input.dataset[DATA_KEYS.INSTANCE_ID];
       return id ? (intlTelInput.instances.get(id) ?? null) : null;

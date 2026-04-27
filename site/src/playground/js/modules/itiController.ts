@@ -126,7 +126,7 @@ export class ItiPlaygroundController {
       return;
     }
 
-    // Apply attributes BEFORE initialising the plugin, so it can read the correct DOM state.
+    // Apply attributes BEFORE initialising the core library, so it can read the correct DOM state.
     applyInputAttributes(state, this.telInput);
 
     this.destroy();

@@ -3,24 +3,24 @@
 I'm very open to contributions, big and small! For general instructions on submitting a pull request on GitHub, see these guides: [Fork A Repo](https://help.github.com/articles/fork-a-repo) and [Creating a pull request from a fork](https://help.github.com/articles/creating-a-pull-request-from-a-fork/).
 
 ## Table of Contents
-- [Changes to the plugin](#changes-to-the-plugin)
+- [Changes to the core library](#changes-to-the-core-library)
 - [Updating the flag images](#updating-the-flag-images)
 - [Adding a new translation](#adding-a-new-translation)
 
-## Changes to the plugin
+## Changes to the core library
 
 ### Setup
 
-Once you have [forked the repository](https://help.github.com/articles/fork-a-repo) and checked out your fork on your local machine, you need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You should now be able to open the included demo/index.html in your browser and have a working plugin!
+Once you have [forked the repository](https://help.github.com/articles/fork-a-repo) and checked out your fork on your local machine, you need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You should now be able to open the included demo/index.html in your browser and see it working!
 
 ### Making changes
 
-Any time you make changes, you’ll need to rebuild the plugin. You can run `npm run watch` to do this automatically. Else you can manually run one of the build commands below:
+Any time you make changes, you’ll need to rebuild the core library. You can run `npm run watch` to do this automatically. Else you can manually run one of the build commands below:
 
 - `npm run build` to build everything (slow)
   - Builds flag images, translations, CSS, and all of the JS (see below)
 - `npm run build:js` to build all of the JS (slow)
-  - Builds utils script, main plugin module, TS type declaration files, react/vue/angular/svelte components and demo bundles
+  - Builds utils script, core library module, TS type declaration files, react/vue/angular/svelte components and demo bundles
 - `npm run build:jsfast` to just build the JS needed for the demo/tests (fast)
 - `npm run build:css` to just build the CSS (fast)
 - And lots more - see [package.json "scripts" section](https://github.com/jackocnr/intl-tel-input/blob/master/package.json#L7-L29) for full list
