@@ -23194,7 +23194,7 @@
   for (const c of rawCountryData) {
     allCountries.push({
       name: "",
-      // populated in the plugin
+      // populated in the core library
       iso2: c[0],
       dialCode: c[1],
       priority: c[2] || 0,
@@ -23414,7 +23414,7 @@
     geoIpLookup: null,
     //* Inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber.
     hiddenInput: null,
-    //* Internationalise the plugin text e.g. search input placeholder, country names.
+    //* Internationalise the core library text e.g. search input placeholder, country names.
     i18n: {},
     //* Initial country.
     initialCountry: "",
@@ -23903,7 +23903,7 @@
         );
       }
     }
-    //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
+    //* Generate all of the markup for the core library: the selected country overlay, and the dropdown.
     buildMarkup(countries, searchTokens) {
       this.#countries = countries;
       this.#searchTokens = searchTokens;
@@ -25830,7 +25830,7 @@
     //********************
     //*  PUBLIC METHODS
     //********************
-    //* Remove plugin.
+    //* Remove core library.
     destroy() {
       if (!this.#isActive) {
         return;
@@ -26079,7 +26079,7 @@
       documentReady: () => document.readyState === "complete",
       //* Get the country data object.
       getCountryData: () => data_default,
-      //* A getter for the plugin instance.
+      //* A getter for the core library instance.
       getInstance: (input) => {
         const id = input.dataset[DATA_KEYS.INSTANCE_ID];
         return id ? intlTelInput.instances.get(id) ?? null : null;
@@ -26089,7 +26089,7 @@
       attachUtils,
       startedLoadingUtils: false,
       startedLoadingAutoCountry: false,
-      version: "28.0.0",
+      version: "28.0.1",
       NUMBER_FORMAT,
       NUMBER_TYPE,
       VALIDATION_ERROR

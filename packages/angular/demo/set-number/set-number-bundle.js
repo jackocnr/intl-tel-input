@@ -64862,7 +64862,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
   for (const c of rawCountryData) {
     allCountries.push({
       name: "",
-      // populated in the plugin
+      // populated in the core library
       iso2: c[0],
       dialCode: c[1],
       priority: c[2] || 0,
@@ -65082,7 +65082,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     geoIpLookup: null,
     //* Inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber.
     hiddenInput: null,
-    //* Internationalise the plugin text e.g. search input placeholder, country names.
+    //* Internationalise the core library text e.g. search input placeholder, country names.
     i18n: {},
     //* Initial country.
     initialCountry: "",
@@ -65571,7 +65571,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
         );
       }
     }
-    //* Generate all of the markup for the plugin: the selected country overlay, and the dropdown.
+    //* Generate all of the markup for the core library: the selected country overlay, and the dropdown.
     buildMarkup(countries, searchTokens) {
       this.#countries = countries;
       this.#searchTokens = searchTokens;
@@ -67498,7 +67498,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
     //********************
     //*  PUBLIC METHODS
     //********************
-    //* Remove plugin.
+    //* Remove core library.
     destroy() {
       if (!this.#isActive) {
         return;
@@ -67747,7 +67747,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       documentReady: () => document.readyState === "complete",
       //* Get the country data object.
       getCountryData: () => data_default,
-      //* A getter for the plugin instance.
+      //* A getter for the core library instance.
       getInstance: (input2) => {
         const id = input2.dataset[DATA_KEYS.INSTANCE_ID];
         return id ? intlTelInput.instances.get(id) ?? null : null;
@@ -67757,7 +67757,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       attachUtils,
       startedLoadingUtils: false,
       startedLoadingAutoCountry: false,
-      version: "28.0.0",
+      version: "28.0.1",
       NUMBER_FORMAT,
       NUMBER_TYPE: NUMBER_TYPE2,
       VALIDATION_ERROR

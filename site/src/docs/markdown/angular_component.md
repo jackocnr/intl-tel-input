@@ -92,7 +92,7 @@ All of the core library's [initialisation options](/docs/options) are supported 
 
 ## Form integration (ngModel / formControl)
 
-The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [form demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/form/form.component.ts) for an example using `ReactiveFormsModule`.
+The component implements `ControlValueAccessor`, so you can bind to it with Angular Forms (`[(ngModel)]`, `formControl`, or `formControlName`) for two-way reactive updates. Whenever the bound value changes, the input is updated via `setNumber`. See the [validation demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/validation/validation.component.ts) for an example using `ReactiveFormsModule`.
 
 
 ## Events

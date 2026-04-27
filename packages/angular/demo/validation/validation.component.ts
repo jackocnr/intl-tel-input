@@ -1,66 +1,64 @@
-import { Component } from '@angular/core';
-import IntlTelInput, { intlTelInput } from '../../src/IntlTelInputWithUtils';
-
-const getErrorMessage = (errorCode: number | null): string => {
-  const genericError = "Invalid number";
-  if (errorCode === null) return genericError;
-  const { validationError } = intlTelInput.utils!;
-  const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
-    [validationError.TOO_SHORT]: "Too short",
-    [validationError.TOO_LONG]: "Too long",
-    [validationError.INVALID_LENGTH]: genericError,
-  };
-  return errorMap[errorCode] || genericError;
-};
+import { Component, OnInit, ViewChild } from "@angular/core";
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import IntlTelInput from "../../src/IntlTelInputWithUtils";
 
 @Component({
   selector: "app-root",
   template: `
-    <div>
+    <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
       <intl-tel-input
-        (numberChange)="handleNumberChange($event)"
-        (validityChange)="handleValidityChange($event)"
-        (errorCodeChange)="handleErrorCodeChange($event)"
+        #telInput
+        formControlName="phone"
+        name="phone"
         initialCountry="us"
         [inputAttributes]="{ class: 'form-control' }"
         searchInputClass="form-control"
       />
-      <button class="btn btn-primary" type="button" (click)="handleSubmit()">
+      <button class="btn btn-primary" type="submit" [disabled]="!fg.valid">
         Validate
       </button>
-      @if (notice) {
-        <div class="notice">{{ notice }}</div>
-      }
-    </div>
+      <div class="notice">
+        @if (phone?.errors?.["required"] && phone?.touched) {
+          Phone number is required.
+        } @else if (phone?.errors?.["invalidPhone"] && phone?.touched) {
+          {{ phone?.errors?.["invalidPhone"].errorMessage }}
+        } @else if (isSubmitted && fg.valid) {
+          Valid number: {{ telInput.getInstance()?.getNumber() }}
+        }
+      </div>
+    </form>
   `,
   standalone: true,
-  imports: [IntlTelInput]
+  imports: [IntlTelInput, ReactiveFormsModule],
 })
-export class AppComponent {
-  isValid: boolean | null = null;
-  number: string | null = null;
-  errorCode: number | null = null;
-  notice: string | null = null;
+export class AppComponent implements OnInit {
+  @ViewChild("telInput") telInput!: IntlTelInput;
 
-  handleNumberChange(value: string): void {
-    this.number = value;
+  fg: FormGroup = new FormGroup({
+    phone: new FormControl<string>("", [Validators.required]),
+  });
+
+  isSubmitted = false;
+
+  get phone() {
+    return this.fg.get("phone");
   }
 
-  handleValidityChange(value: boolean): void {
-    this.isValid = value;
-  }
-
-  handleErrorCodeChange(value: number | null): void {
-    this.errorCode = value;
+  ngOnInit(): void {
+    this.phone?.valueChanges.subscribe(() => {
+      this.isSubmitted = false;
+    });
   }
 
   handleSubmit(): void {
-    if (this.isValid) {
-      this.notice = `Valid number: ${this.number}`;
-    } else {
-      const errorMessage = getErrorMessage(this.errorCode);
-      this.notice = `Error: ${errorMessage}`;
+    this.phone?.markAsTouched();
+    if (this.fg.valid) {
+      this.isSubmitted = true;
     }
   }
 }
