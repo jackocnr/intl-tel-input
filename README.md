@@ -38,7 +38,8 @@ We have a [newly updated website](https://intl-tel-input.com), where you can fin
 * Only allow valid digits and enforce max length
 
 🌍 **International & accessible**
-* Translated into 40+ languages, with support for RTL and alternative numerals
+* Translated into 40+ languages
+* Support for RTL and alternative numerals
 * Screen reader-friendly ARIA markup
 
 🎛️ **Developer-friendly**
