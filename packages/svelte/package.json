@@ -1,6 +1,6 @@
 {
   "name": "@intl-tel-input/svelte",
-  "version": "28.0.1",
+  "version": "28.0.2",
   "description": "A Svelte component for the intl-tel-input JavaScript plugin",
   "type": "module",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "README.md"
   ],
   "dependencies": {
-    "intl-tel-input": "^28.0.1"
+    "intl-tel-input": "^28.0.2"
   },
   "peerDependencies": {
     "svelte": "^5.0.0"
