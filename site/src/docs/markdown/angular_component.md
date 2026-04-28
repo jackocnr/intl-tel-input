@@ -104,7 +104,7 @@ Default: `null`
 Emitted when the selected country changes. Emits the new country's iso2 code (e.g. `"gb"`), or `""` if no country is selected.
 
 ###### errorCodeChange
-Type: `EventEmitter<number | null>`  
+Type: `EventEmitter<ValidationError | null>`  
 Default: `null`  
 
 Emitted when the number validation error changes. Emits a [`ValidationError`](/docs/types#validationerror) string, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).

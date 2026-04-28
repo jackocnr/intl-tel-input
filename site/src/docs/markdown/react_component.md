@@ -64,7 +64,7 @@ Default: `null`
 A handler to be called when the selected country changes. Receives the new country's iso2 code (e.g. `"gb"`), or `""` if no country is selected.
 
 ###### onChangeErrorCode
-Type: `(errorCode: number | null) => void`  
+Type: `(errorCode: ValidationError | null) => void`  
 Default: `null`  
 
 A handler to be called when the number validation error changes. Receives a [`ValidationError`](/docs/types#validationerror) string, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
