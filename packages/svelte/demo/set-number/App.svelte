@@ -35,19 +35,21 @@
 </script>
 
 <form>
-  <IntlTelInput
-    bind:this={intlTelInputRef}
-    onChangeNumber={(n) => number = n}
-    onChangeValidity={(v) => isValid = v}
-    onChangeErrorCode={(e) => errorCode = e}
-    initialCountry="us"
-    inputProps={{ class: "form-control" }}
-    searchInputClass="form-control"
-  />
-  <button class="btn btn-primary" type="button" onclick={handleSetNumber}>
-    Set Number
-  </button>
-  <button class="btn btn-primary" type="button" onclick={handleSubmit}>Validate</button>
+  <div class="d-flex align-items-start gap-2">
+    <IntlTelInput
+      bind:this={intlTelInputRef}
+      onChangeNumber={(n) => number = n}
+      onChangeValidity={(v) => isValid = v}
+      onChangeErrorCode={(e) => errorCode = e}
+      initialCountry="us"
+      inputProps={{ class: "form-control" }}
+      searchInputClass="form-control"
+    />
+    <button class="btn btn-primary" type="button" onclick={handleSetNumber}>
+      Set Number
+    </button>
+    <button class="btn btn-primary" type="button" onclick={handleSubmit}>Validate</button>
+  </div>
   {#if notice}
     <div class="notice">{notice}</div>
   {/if}

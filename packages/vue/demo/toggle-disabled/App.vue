@@ -11,11 +11,13 @@ const toggleDisabled = () => {
 
 <template>
   <form>
-    <IntlTelInput
-      :disabled="isDisabled"
-      :input-props="{ class: 'form-control' }"
-      search-input-class="form-control"
-    />
-    <button class="btn btn-primary" type="button" @click="toggleDisabled">Toggle</button>
+    <div class="d-flex align-items-start gap-2">
+      <IntlTelInput
+        :disabled="isDisabled"
+        :input-props="{ class: 'form-control' }"
+        search-input-class="form-control"
+      />
+      <button class="btn btn-primary" type="button" @click="toggleDisabled">Toggle</button>
+    </div>
   </form>
 </template>

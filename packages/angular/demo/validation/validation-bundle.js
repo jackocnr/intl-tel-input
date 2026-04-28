@@ -79988,17 +79988,19 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       selector: "app-root",
       template: `
     <form [formGroup]="fg" (ngSubmit)="handleSubmit()">
-      <intl-tel-input
-        #telInput
-        formControlName="phone"
-        name="phone"
-        initialCountry="us"
-        [inputAttributes]="{ class: 'form-control' }"
-        searchInputClass="form-control"
-      />
-      <button class="btn btn-primary" type="submit" [disabled]="!fg.valid">
-        Validate
-      </button>
+      <div class="d-flex align-items-start gap-2">
+        <intl-tel-input
+          #telInput
+          formControlName="phone"
+          name="phone"
+          initialCountry="us"
+          [inputAttributes]="{ class: 'form-control' }"
+          searchInputClass="form-control"
+        />
+        <button class="btn btn-primary" type="submit" [disabled]="!fg.valid">
+          Validate
+        </button>
+      </div>
       <div class="notice">
         @if (phone?.errors?.["required"] && phone?.touched) {
           Phone number is required.

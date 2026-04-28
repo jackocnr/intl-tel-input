@@ -9,12 +9,14 @@ const App = (): ReactElement => {
 
   return (
     <form>
-      <IntlTelInput
-        disabled={isDisabled}
-        inputProps={{ className: "form-control" }}
-        searchInputClass="form-control"
-      />
-      <button className="btn btn-primary" type="button" onClick={toggleDisabled}>Toggle</button>
+      <div className="d-flex align-items-start gap-2">
+        <IntlTelInput
+          disabled={isDisabled}
+          inputProps={{ className: "form-control" }}
+          searchInputClass="form-control"
+        />
+        <button className="btn btn-primary" type="button" onClick={toggleDisabled}>Toggle</button>
+      </div>
     </form>
   );
 };

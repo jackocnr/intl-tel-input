@@ -18,21 +18,23 @@ const getErrorMessage = (errorCode: number | null): string => {
   selector: "app-root",
   template: `
     <div>
-      <intl-tel-input
-        #telInput
-        (numberChange)="handleNumberChange($event)"
-        (validityChange)="handleValidityChange($event)"
-        (errorCodeChange)="handleErrorCodeChange($event)"
-        initialCountry="us"
-        [inputAttributes]="{ class: 'form-control' }"
-        searchInputClass="form-control"
-      />
-      <button class="btn btn-primary" type="button" (click)="handleSetNumber()">
-        Set Number
-      </button>
-      <button class="btn btn-primary" type="button" (click)="handleSubmit()">
-        Validate
-      </button>
+      <div class="d-flex align-items-start gap-2">
+        <intl-tel-input
+          #telInput
+          (numberChange)="handleNumberChange($event)"
+          (validityChange)="handleValidityChange($event)"
+          (errorCodeChange)="handleErrorCodeChange($event)"
+          initialCountry="us"
+          [inputAttributes]="{ class: 'form-control' }"
+          searchInputClass="form-control"
+        />
+        <button class="btn btn-primary" type="button" (click)="handleSetNumber()">
+          Set Number
+        </button>
+        <button class="btn btn-primary" type="button" (click)="handleSubmit()">
+          Validate
+        </button>
+      </div>
       @if (notice) {
         <div class="notice">{{ notice }}</div>
       }

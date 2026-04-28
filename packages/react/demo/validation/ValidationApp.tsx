@@ -32,15 +32,17 @@ const App = (): ReactElement => {
 
   return (
     <form>
-      <IntlTelInput
-        onChangeNumber={setNumber}
-        onChangeValidity={setIsValid}
-        onChangeErrorCode={setErrorCode}
-        initialCountry="us"
-        inputProps={{ className: "form-control" }}
-        searchInputClass="form-control"
-      />
-      <button className="btn btn-primary" type="button" onClick={handleSubmit}>Validate</button>
+      <div className="d-flex align-items-start gap-2">
+        <IntlTelInput
+          onChangeNumber={setNumber}
+          onChangeValidity={setIsValid}
+          onChangeErrorCode={setErrorCode}
+          initialCountry="us"
+          inputProps={{ className: "form-control" }}
+          searchInputClass="form-control"
+        />
+        <button className="btn btn-primary" type="button" onClick={handleSubmit}>Validate</button>
+      </div>
       {notice && <div className="notice">{notice}</div>}
     </form>
   );

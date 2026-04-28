@@ -4,7 +4,7 @@ import IntlTelInput from '../../src/IntlTelInputWithUtils';
 @Component({
   selector: "app-root",
   template: `
-    <div>
+    <div class="d-flex align-items-start gap-2">
       <intl-tel-input
         [disabled]="isDisabled"
         [inputAttributes]="{ class: 'form-control' }"
