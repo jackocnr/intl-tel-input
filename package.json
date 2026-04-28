@@ -102,6 +102,7 @@
     "globals": "^17.4.0",
     "google-closure-compiler": "^20260405.0.0",
     "google-closure-library": "^20230802.0.0",
+    "highlight.js": "^11.11.1",
     "http-server": "^14.1.1",
     "jsdom": "^29.0.2",
     "playwright": "^1.59.1",

@@ -141,3 +141,11 @@ build({
   entryPoints: ["src/js/hljs-copy-button.ts"],
   outfile: "dist/js/hljs-copy-button.js",
 });
+
+// highlight.js — slim bundle with only the languages used on this site.
+// Exposes window.hljs so common_body_end.html can call hljs.highlightAll().
+build({
+  ...sharedOptions,
+  entryPoints: ["src/js/highlight.ts"],
+  outfile: "dist/js/highlight.min.js",
+});

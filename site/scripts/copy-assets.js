@@ -1,4 +1,4 @@
-// Copies four trees into site/dist/.
+// Copies several trees into site/dist/.
 import fs from "node:fs";
 import path from "node:path";
 

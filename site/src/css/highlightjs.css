@@ -1,6 +1,7 @@
-/* NOTE: we have modified highlight-github-dark.css to manually wrap it in [data-bs-theme] which is how Bootstrap handles dark mode */
-@import url('./vendor/highlight-github-light.css');
-@import url('./vendor/highlight-github-dark.css');
+/* Light theme as-is; dark theme wrapped in [data-bs-theme="dark"] by the
+   `dark-wrap:` esbuild plugin (Bootstrap's dark-mode convention). */
+@import url('highlight.js/styles/github.min.css');
+@import url('dark-wrap:highlight.js/styles/github-dark.min.css');
 
 /* Match GitHub's rendered code block background */
 .hljs {
