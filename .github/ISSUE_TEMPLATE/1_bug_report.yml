@@ -13,6 +13,19 @@ body:
           required: true
         - label: I have searched the existing issues (including closed issues) to ensure this has not already been discussed.
           required: true
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Integration
+      description: Which integration are you using?
+      options:
+        - Vanilla JavaScript library
+        - React component
+        - Vue component
+        - Angular component
+        - Svelte component
+    validations:
+      required: true
   - type: textarea
     id: current
     attributes:

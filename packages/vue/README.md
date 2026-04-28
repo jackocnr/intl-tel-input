@@ -1,6 +1,6 @@
-# IntlTelInput Vue Component
+# Vue component for intl-tel-input
 
-A Vue component for the [intl-tel-input](https://github.com/jackocnr/intl-tel-input) JavaScript library. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/src/IntlTelInput.vue).
+For entering, formatting, and validating international telephone numbers.
 
 [Explore docs »](https://intl-tel-input.com/docs/vue-component)
 
@@ -10,6 +10,10 @@ A Vue component for the [intl-tel-input](https://github.com/jackocnr/intl-tel-in
   <img width="271" height="279" alt="intl-tel-input screenshot showing country dropdown open" src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/iti-github-light.png">
 </picture>
 
+## Resources
+
+Check out the [website](https://intl-tel-input.com), where you can find [a full set of docs](https://intl-tel-input.com/docs/vue-component), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/vue-component/validation) of different setups.
+
 ## Running the demos locally
 
 1. Initialise the submodules: `git submodule update --init --recursive`
@@ -18,3 +22,11 @@ A Vue component for the [intl-tel-input](https://github.com/jackocnr/intl-tel-in
 4. Run a demo: `npm run vue:demo` and copy the given URL into your browser.
 
 This defaults to the validation demo — to run a different one, set the `DEMO` env var, e.g. `DEMO=simple npm run vue:demo`. View the full list of [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/packages/vue/demo).
+
+## Issues and contributing
+
+Please report issues and open pull requests on the [main repository](https://github.com/jackocnr/intl-tel-input).
+
+## License
+
+MIT

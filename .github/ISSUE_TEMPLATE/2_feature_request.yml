@@ -2,6 +2,19 @@ name: Feature Request
 description: Suggest a new feature or improvement
 labels: ["enhancement"]
 body:
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Integration
+      description: Which integration is this for?
+      options:
+        - Vanilla JavaScript library
+        - React component
+        - Vue component
+        - Angular component
+        - Svelte component
+    validations:
+      required: true
   - type: textarea
     id: description
     attributes:

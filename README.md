@@ -16,8 +16,8 @@ For entering, formatting, and validating international telephone numbers. Availa
 
 Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more](https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input). We can't wait to see what you build.
 
-## Docs and Examples
-We have a [newly updated website](https://intl-tel-input.com), where you can find [a full set of docs](https://intl-tel-input.com/docs/integrations), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/vanilla-javascript/validation) of different setups.
+## Resources
+Check out the [website](https://intl-tel-input.com), where you can find [a full set of docs](https://intl-tel-input.com/docs/integrations), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/vanilla-javascript/validation) of different setups.
 
 ## Features
 
@@ -58,3 +58,7 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 User testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)  
 
 Browser testing via <a href="https://www.lambdatest.com/" target="_blank"><img src="https://raw.githubusercontent.com/jackocnr/intl-tel-input/refs/heads/master/screenshots/lambda_test.svg" style="vertical-align:middle;margin-left:5px" width="147" height="26" /></a>
+
+## License
+
+MIT
