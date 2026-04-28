@@ -1,29 +1,30 @@
 import React, { useState, ReactElement, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import IntlTelInput, { intlTelInput } from "../../src/IntlTelInputWithUtils";
+import IntlTelInput, { intlTelInput, type IntlTelInputRef } from "../../src/IntlTelInputWithUtils";
+import type { ValidationError } from "intl-tel-input";
 
-const getErrorMessage = (errorCode: number | null): string => {
+const getErrorMessage = (errorCode: ValidationError | null): string => {
   const genericError = "Invalid number";
   if (errorCode === null) return genericError;
-  const { validationError } = intlTelInput.utils!;
-  const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
-    [validationError.TOO_SHORT]: "Too short",
-    [validationError.TOO_LONG]: "Too long",
-    [validationError.INVALID_LENGTH]: genericError,
+  const { VALIDATION_ERROR } = intlTelInput;
+  const errorMap: Record<string, string> = {
+    [VALIDATION_ERROR.INVALID_COUNTRY_CODE]: "Invalid dial code",
+    [VALIDATION_ERROR.TOO_SHORT]: "Too short",
+    [VALIDATION_ERROR.TOO_LONG]: "Too long",
+    [VALIDATION_ERROR.INVALID_LENGTH]: genericError,
   };
   return errorMap[errorCode] || genericError;
 };
 
 const App = (): ReactElement => {
-  const ref = useRef(null);
+  const ref = useRef<IntlTelInputRef>(null);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [number, setNumber] = useState<string | null>(null);
-  const [errorCode, setErrorCode] = useState<number | null>(null);
+  const [errorCode, setErrorCode] = useState<ValidationError | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
   const handleSetNumber = (): void => {
-    ref.current?.getInstance().setNumber("+14155552671");
+    ref.current?.getInstance()?.setNumber("+14155552671");
   };
 
   const handleSubmit = (): void => {

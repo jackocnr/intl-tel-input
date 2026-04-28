@@ -1,15 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
 import IntlTelInput, { intlTelInput } from '../../src/IntlTelInputWithUtils';
+import type { ValidationError } from "intl-tel-input";
 
-const getErrorMessage = (errorCode: number | null): string => {
+const getErrorMessage = (errorCode: ValidationError | null): string => {
   const genericError = "Invalid number";
   if (errorCode === null) return genericError;
-  const { validationError } = intlTelInput.utils!;
-  const errorMap = {
-    [validationError.INVALID_COUNTRY_CODE]: "Invalid dial code",
-    [validationError.TOO_SHORT]: "Too short",
-    [validationError.TOO_LONG]: "Too long",
-    [validationError.INVALID_LENGTH]: "Invalid number",
+  const { VALIDATION_ERROR } = intlTelInput;
+  const errorMap: Record<string, string> = {
+    [VALIDATION_ERROR.INVALID_COUNTRY_CODE]: "Invalid dial code",
+    [VALIDATION_ERROR.TOO_SHORT]: "Too short",
+    [VALIDATION_ERROR.TOO_LONG]: "Too long",
+    [VALIDATION_ERROR.INVALID_LENGTH]: "Invalid number",
   };
   return errorMap[errorCode] || genericError;
 };
@@ -48,7 +49,7 @@ export class AppComponent {
 
   isValid: boolean | null = null;
   number: string | null = null;
-  errorCode: number | null = null;
+  errorCode: ValidationError | null = null;
   notice: string | null = null;
 
   handleNumberChange(value: string): void {
@@ -59,7 +60,7 @@ export class AppComponent {
     this.isValid = value;
   }
 
-  handleErrorCodeChange(value: number | null): void {
+  handleErrorCodeChange(value: ValidationError | null): void {
     this.errorCode = value;
   }
 
