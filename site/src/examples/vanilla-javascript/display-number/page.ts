@@ -1,3 +1,5 @@
+import { Toast } from "bootstrap";
+
 const input = document.querySelector<HTMLInputElement>("#phone")!;
 window.intlTelInput(input, {
   // @ts-expect-error - lodash template tag, resolved at build time
@@ -7,8 +9,8 @@ window.intlTelInput(input, {
 
 const toastEl = document.getElementById("strictRejectToast");
 const toastBody = document.getElementById("strictRejectToastBody");
-if (toastEl && toastBody && window.bootstrap?.Toast) {
-  const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
+if (toastEl && toastBody) {
+  const toast = Toast.getOrCreateInstance(toastEl);
   input.addEventListener("strict:reject", (e) => {
     const { reason, rejectedInput, source } = (e as CustomEvent).detail;
     if (reason === "max-length") {

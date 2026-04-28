@@ -1,0 +1,3 @@
+/* Vendored bootstrap CSS bundled from the npm dependency
+   so we don't depend on a CDN at runtime. */
+@import "bootstrap/dist/css/bootstrap.min.css";

@@ -23,6 +23,7 @@ const shared = {
 };
 
 const entries = [
+  ["src/css/bootstrap.css", "dist/css/bootstrap.css"],
   ["src/css/website.css", "dist/css/website.css"],
   ["src/css/large_flags_overrides.css", "dist/css/large_flags_overrides.css"],
   ["src/css/highlightjs.css", "dist/css/highlightjs.css"],

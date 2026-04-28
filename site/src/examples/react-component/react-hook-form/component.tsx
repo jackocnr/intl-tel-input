@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useForm, Controller, useWatch } from "react-hook-form";
+import { Toast } from "bootstrap";
 import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
@@ -54,10 +55,10 @@ const App = () => {
   useEffect(() => {
     const input = itiRef.current?.getInput();
     const toastEl = toastDivRef.current;
-    if (!input || !toastEl || !window.bootstrap?.Toast) {
+    if (!input || !toastEl) {
       return undefined;
     }
-    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
+    const toast = Toast.getOrCreateInstance(toastEl);
     const handleReject = (e: Event) => {
       const { reason, rejectedInput, source } = (e as CustomEvent).detail;
       if (reason === "max-length") {

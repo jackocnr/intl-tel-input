@@ -73084,7 +73084,7 @@ Note: Recommended intrinsic image size is calculated assuming a maximum DPR of $
       attachUtils,
       startedLoadingUtils: false,
       startedLoadingAutoCountry: false,
-      version: "28.0.1",
+      version: "28.0.2",
       NUMBER_FORMAT,
       NUMBER_TYPE: NUMBER_TYPE2,
       VALIDATION_ERROR

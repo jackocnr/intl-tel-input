@@ -1,3 +1,5 @@
+import { Toast, Tooltip } from "bootstrap";
+
 import {
   I18N_LANGUAGE_CODES,
   UTILS_PATH,
@@ -123,7 +125,7 @@ function shouldDisableKeepDropdownOpen(state) {
   return getKeepDropdownOpenDisabledReason(state) !== null;
 }
 
-let keepDropdownOpenTooltip: any = null;
+let keepDropdownOpenTooltip: Tooltip | null = null;
 let keepDropdownOpenTooltipCleanup: (() => void) | null = null;
 function disposeKeepDropdownOpenTooltip() {
   if (keepDropdownOpenTooltipCleanup) {
@@ -145,8 +147,8 @@ function syncKeepDropdownOpenAvailability(state) {
   // Bootstrap Tooltip won't render with an empty title, so dispose+recreate
   // each time the reason changes rather than try to update an existing instance.
   disposeKeepDropdownOpenTooltip();
-  if (reason && window.bootstrap?.Tooltip) {
-    keepDropdownOpenTooltip = new window.bootstrap.Tooltip(keepDropdownOpenWrapper, {
+  if (reason) {
+    keepDropdownOpenTooltip = new Tooltip(keepDropdownOpenWrapper, {
       title: reason,
       trigger: "click",
     });
@@ -381,8 +383,8 @@ updateUrlFromState(initialState, {
 
 const strictToastEl = document.getElementById("playgroundStrictRejectToast");
 const strictToastBody = document.getElementById("playgroundStrictRejectToastBody");
-if (strictToastEl && strictToastBody && window.bootstrap?.Toast) {
-  const strictToast = window.bootstrap.Toast.getOrCreateInstance(strictToastEl);
+if (strictToastEl && strictToastBody) {
+  const strictToast = Toast.getOrCreateInstance(strictToastEl);
   telInput.addEventListener("strict:reject", (e) => {
     const { reason, rejectedInput, source } = (e as CustomEvent).detail;
     if (reason === "max-length") {

@@ -1,6 +1,7 @@
 /* This file is used for the demo/index.html page, as well as the component demo pages.
-   Bootstrap is loaded separately by each demo HTML file (typically from a CDN). */
+   Bootstrap is bundled in here via npm so the demo HTML files don't need their own CDN tags. */
 
+@import "bootstrap/dist/css/bootstrap.min.css";
 @import "../../packages/core/src/css/intlTelInputWithAssets.css";
 
 body {

@@ -3,6 +3,7 @@ import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component, ViewChild, AfterViewInit } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Toast } from "bootstrap";
 import IntlTelInput, { intlTelInput } from "@intl-tel-input/angular";
 import type { ValidationError } from "intl-tel-input";
 
@@ -128,10 +129,10 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const input = this.itiComponent.getInput();
     const toastEl = this.toastRef.nativeElement;
-    if (!input || !toastEl || !window.bootstrap?.Toast) {
+    if (!input || !toastEl) {
       return;
     }
-    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
+    const toast = Toast.getOrCreateInstance(toastEl);
     input.addEventListener("strict:reject", (e) => {
       const { reason, rejectedInput, source } = (e as CustomEvent).detail;
       if (reason === "max-length") {

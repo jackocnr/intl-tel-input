@@ -139,3 +139,11 @@ build({
   entryPoints: ["src/js/hljs-copy-button.ts"],
   outfile: "dist/js/hljs-copy-button.js",
 });
+
+// Bootstrap data-API entry — loaded site-wide via common_body_end.html so
+// data-bs-toggle markup (collapse/dropdown/offcanvas) gets wired up.
+build({
+  ...sharedOptions,
+  entryPoints: ["src/js/bootstrap.ts"],
+  outfile: "dist/js/bootstrap.js",
+});

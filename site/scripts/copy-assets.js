@@ -10,6 +10,12 @@ const targets = [
   { from: "../packages/core/dist", to: "dist/intl-tel-input" },
   // Static site assets (favicon, robots.txt, etc.)
   { from: "static", to: "dist" },
+  // Vendored bootstrap-icons font + CSS. The CSS references font files via
+  // relative `url("fonts/...")`, so we copy the whole `font/` dir verbatim.
+  {
+    from: "../node_modules/bootstrap-icons/font",
+    to: "dist/css/bootstrap-icons",
+  },
 ];
 
 for (const { from, to } of targets) {
@@ -17,7 +23,9 @@ for (const { from, to } of targets) {
     console.warn(`copy-assets: source missing, skipping: ${from}`);
     continue;
   }
-  fs.mkdirSync(to, { recursive: true });
+  const isFile = fs.statSync(from).isFile();
+  const dirToEnsure = isFile ? path.dirname(to) : to;
+  fs.mkdirSync(dirToEnsure, { recursive: true });
   fs.cpSync(from, to, {
     recursive: true,
     dereference: false,

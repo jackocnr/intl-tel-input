@@ -1,15 +1,7 @@
-<!-- Bootstrap styles -->
-<link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-  rel="stylesheet"
-  integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-  crossorigin="anonymous"
-/>
-<link
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-  rel="stylesheet"
-  crossorigin="anonymous"
-/>
+<!-- Bootstrap styles (vendored from npm via site/scripts/esbuild-css.js) -->
+<link rel="stylesheet" href="<%= cacheBust('/css/bootstrap.css') %>" />
+<!-- Bootstrap Icons (vendored from npm via site/scripts/copy-assets.js) -->
+<link rel="stylesheet" href="/css/bootstrap-icons/bootstrap-icons.min.css" />
 <!-- Bootstrap v5.3 requires a data-bs-theme attribute to support dark mode -->
 <script>
   const setTheme = () => {

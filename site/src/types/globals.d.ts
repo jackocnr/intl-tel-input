@@ -8,7 +8,6 @@ import type { IntlTelInputInterface } from "../../../packages/core/dist/js/intlT
 declare global {
   interface Window {
     intlTelInput: IntlTelInputInterface;
-    bootstrap: any;
     hljs: any;
   }
 }

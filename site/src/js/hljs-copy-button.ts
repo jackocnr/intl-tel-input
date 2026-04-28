@@ -1,3 +1,5 @@
+import { Tooltip } from "bootstrap";
+
 window.hljs.addPlugin({
   "after:highlightElement": ({ el, text }: { el: HTMLElement; text: string }) => {
     const pre = el.parentElement;
@@ -15,13 +17,9 @@ window.hljs.addPlugin({
     icon.setAttribute("aria-hidden", "true");
     btn.appendChild(icon);
 
-    const tooltip = window.bootstrap?.Tooltip ? new window.bootstrap.Tooltip(btn) : null;
+    const tooltip = new Tooltip(btn);
     const setTooltip = (title: string) => {
-      if (tooltip) {
-        tooltip.setContent({ ".tooltip-inner": title });
-      } else {
-        btn.setAttribute("data-bs-title", title);
-      }
+      tooltip.setContent({ ".tooltip-inner": title });
     };
 
     const resetToIdle = () => {
@@ -58,7 +56,7 @@ window.hljs.addPlugin({
         } else {
           // Not hovering: releasing --copied starts the fade. Leave the
           // tick in place — transitionend will reset it on opacity 0.
-          tooltip?.hide();
+          tooltip.hide();
         }
       }, 3000);
     });

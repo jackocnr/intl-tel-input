@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { Toast } from "bootstrap";
   import IntlTelInput, { intlTelInput } from "@intl-tel-input/svelte";
 
   const getErrorMessage = (number, errorCode) => {
@@ -58,8 +59,8 @@
 
   onMount(() => {
     const input = itiRef?.getInput();
-    if (!input || !toastDivRef || !window.bootstrap?.Toast) return;
-    const toast = window.bootstrap.Toast.getOrCreateInstance(toastDivRef);
+    if (!input || !toastDivRef) return;
+    const toast = Toast.getOrCreateInstance(toastDivRef);
     input.addEventListener("strict:reject", (e) => {
       const { reason, rejectedInput, source } = e.detail;
       if (reason === "max-length") {
