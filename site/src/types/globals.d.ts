@@ -4,10 +4,12 @@
 // built .d.ts in the parent project so the playground gets accurate types.
 
 import type { IntlTelInputInterface } from "../../../packages/core/dist/js/intlTelInput";
+import type * as bootstrap from "bootstrap";
 
 declare global {
   interface Window {
     intlTelInput: IntlTelInputInterface;
+    bootstrap: typeof bootstrap;
     hljs: any;
   }
 }

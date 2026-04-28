@@ -1,6 +1,5 @@
 <script setup>
   import { computed, onMounted, ref } from "vue";
-  import { Toast } from "bootstrap";
   import IntlTelInput, { intlTelInput } from "@intl-tel-input/vue";
 
   const getErrorMessage = (number, errorCode) => {
@@ -65,7 +64,7 @@
     const input = itiRef.value?.input;
     const toastEl = toastDivRef.value;
     if (!input || !toastEl) return;
-    const toast = Toast.getOrCreateInstance(toastEl);
+    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
     input.addEventListener("strict:reject", (e) => {
       const { reason, rejectedInput, source } = e.detail;
       if (reason === "max-length") {

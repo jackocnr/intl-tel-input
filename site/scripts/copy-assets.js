@@ -16,6 +16,12 @@ const targets = [
     from: "../node_modules/bootstrap-icons/font",
     to: "dist/css/bootstrap-icons",
   },
+  // Vendored bootstrap JS bundle (loaded once site-wide as a UMD `<script>`,
+  // exposing `window.bootstrap` — see common_body_end.html).
+  {
+    from: "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+    to: "dist/js/bootstrap.bundle.min.js",
+  },
 ];
 
 for (const { from, to } of targets) {

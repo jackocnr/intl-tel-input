@@ -1,5 +1,3 @@
-import { Toast } from "bootstrap";
-
 const form = document.querySelector<HTMLFormElement>("#form")!;
 const input = document.querySelector<HTMLInputElement>("#phone")!;
 const errorMsg = document.querySelector<HTMLElement>("#error-msg")!;
@@ -23,7 +21,7 @@ const iti = window.intlTelInput(input, {
 const toastEl = document.getElementById("strictRejectToast");
 const toastBody = document.getElementById("strictRejectToastBody");
 if (toastEl && toastBody) {
-  const toast = Toast.getOrCreateInstance(toastEl);
+  const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
   input.addEventListener("strict:reject", (e) => {
     const { reason, rejectedInput, source } = (e as CustomEvent).detail;
     if (reason === "max-length") {

@@ -1,5 +1,3 @@
-import { Toast } from "bootstrap";
-
 const inputHome = document.querySelector<HTMLInputElement>("#home")!;
 const inputMobile = document.querySelector<HTMLInputElement>("#mobile")!;
 const inputVacation = document.querySelector<HTMLInputElement>("#vacation")!;
@@ -40,7 +38,7 @@ const setupRejectToast = (input: HTMLInputElement, toastId: string, toastBodyId:
   if (!toastEl || !toastBody) {
     return;
   }
-  const toast = Toast.getOrCreateInstance(toastEl);
+  const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
   input.addEventListener("strict:reject", (e: Event) => {
     const { reason, rejectedInput, source } = (e as CustomEvent).detail;
     if (reason === "max-length") {

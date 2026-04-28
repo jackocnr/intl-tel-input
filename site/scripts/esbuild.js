@@ -4,10 +4,12 @@ import { build } from "esbuild";
 // Using a plugin (rather than esbuild's built-in `external` option) because the import paths
 // can include a cache-bust query string (e.g. utils.js?v=abc), and esbuild's `external` globs
 // only allow a single "*" wildcard, which isn't enough to match both the path and the query.
+// The filter must be specific enough not to match unrelated `*utils*` imports from third
+// party packages (e.g. popper's `../dom-utils/...` paths inside bootstrap's tooltip/dropdown).
 const externalUtilsPlugin = {
   name: "external-utils-plugin",
   setup({ onResolve }) {
-    onResolve({ filter: /utils/ }, args => {
+    onResolve({ filter: /(^|\/)utils(\.js)?(\?|$)/ }, args => {
       return { path: args.path, external: true };
     });
   },
@@ -138,12 +140,4 @@ build({
   ...sharedOptions,
   entryPoints: ["src/js/hljs-copy-button.ts"],
   outfile: "dist/js/hljs-copy-button.js",
-});
-
-// Bootstrap data-API entry — loaded site-wide via common_body_end.html so
-// data-bs-toggle markup (collapse/dropdown/offcanvas) gets wired up.
-build({
-  ...sharedOptions,
-  entryPoints: ["src/js/bootstrap.ts"],
-  outfile: "dist/js/bootstrap.js",
 });

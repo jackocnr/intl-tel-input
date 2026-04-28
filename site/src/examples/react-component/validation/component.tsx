@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Toast } from "bootstrap";
 import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
@@ -74,7 +73,7 @@ const App = () => {
     if (!input || !toastEl) {
       return undefined;
     }
-    const toast = Toast.getOrCreateInstance(toastEl);
+    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
     const handleReject = (e: Event) => {
       const { reason, rejectedInput, source } = (e as CustomEvent).detail;
       if (reason === "max-length") {

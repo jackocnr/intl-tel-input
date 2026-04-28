@@ -1,5 +1,3 @@
-import { Tooltip } from "bootstrap";
-
 window.hljs.addPlugin({
   "after:highlightElement": ({ el, text }: { el: HTMLElement; text: string }) => {
     const pre = el.parentElement;
@@ -17,7 +15,7 @@ window.hljs.addPlugin({
     icon.setAttribute("aria-hidden", "true");
     btn.appendChild(icon);
 
-    const tooltip = new Tooltip(btn);
+    const tooltip = new window.bootstrap.Tooltip(btn);
     const setTooltip = (title: string) => {
       tooltip.setContent({ ".tooltip-inner": title });
     };

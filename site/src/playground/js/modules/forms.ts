@@ -1,4 +1,3 @@
-import { Tooltip } from "bootstrap";
 import { deepClone, parseJsonParam, safeStringify } from "./stateUtils";
 // Add a single event listener for all enable spans
 // Listener toggles the adjacent checkbox
@@ -20,7 +19,7 @@ function initTooltips(container: Element | null) {
   }
 
   container.querySelectorAll<HTMLElement>("[data-bs-toggle='tooltip']").forEach((el) => {
-    const existing = Tooltip.getInstance(el);
+    const existing = window.bootstrap.Tooltip.getInstance(el);
     if (existing) {
       existing.dispose();
     }
@@ -28,7 +27,7 @@ function initTooltips(container: Element | null) {
     // Manual trigger: the tooltip's ::after extends its hit area to fully cover
     // the icon, so the whole icon+gap+tooltip region behaves as one hover zone.
     // Show on icon hover, hide only once the cursor leaves that combined zone.
-    const tooltip = new Tooltip(el, {
+    const tooltip = new window.bootstrap.Tooltip(el, {
       trigger: "manual",
       html: true,
       customClass: "iti-playground-tooltip-interactive",
