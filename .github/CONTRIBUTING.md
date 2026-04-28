@@ -1,6 +1,6 @@
 # Contributing
 
-I'm very open to contributions, big and small! For general instructions on submitting a pull request on GitHub, see these guides: [Fork A Repo](https://help.github.com/articles/fork-a-repo) and [Creating a pull request from a fork](https://help.github.com/articles/creating-a-pull-request-from-a-fork/).
+We're very open to contributions, big and small! For general instructions on submitting a pull request on GitHub, see these guides: [Fork A Repo](https://help.github.com/articles/fork-a-repo) and [Creating a pull request from a fork](https://help.github.com/articles/creating-a-pull-request-from-a-fork/).
 
 ## Table of Contents
 - [Changes to the core library](#changes-to-the-core-library)

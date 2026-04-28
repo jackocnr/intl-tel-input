@@ -16,7 +16,7 @@ A Vue component for the `intl-tel-input` library. See a live demo on the [Valida
 First, install the package: 
 
 ```sh
-npm install intl-tel-input
+npm install @intl-tel-input/vue
 ```
 
 Then, add something like this to your code:

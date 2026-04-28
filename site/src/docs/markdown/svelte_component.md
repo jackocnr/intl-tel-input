@@ -15,7 +15,7 @@ A Svelte 5 component for the `intl-tel-input` library. See a live demo on the [V
 First, install the package: 
 
 ```sh
-npm install intl-tel-input
+npm install @intl-tel-input/svelte
 ```
 
 Then, add something like this to your code:
