@@ -1,6 +1,6 @@
 {
   "name": "@intl-tel-input/react",
-  "version": "28.0.3",
+  "version": "28.0.4",
   "description": "A React component for intl-tel-input, for entering, formatting, and validating international telephone numbers",
   "type": "module",
   "license": "MIT",
@@ -34,7 +34,7 @@
     "README.md"
   ],
   "dependencies": {
-    "intl-tel-input": "^28.0.3"
+    "intl-tel-input": "^28.0.4"
   },
   "peerDependencies": {
     "react": ">=18",
