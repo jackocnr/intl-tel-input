@@ -320,7 +320,7 @@ export default class UI {
       searchWrapper,
     );
 
-    this.#searchIconEl.innerHTML = buildSearchIcon();
+    this.#searchIconEl.appendChild(buildSearchIcon());
 
     this.#searchInputEl = createEl(
       "input",
@@ -352,7 +352,7 @@ export default class UI {
     ) as HTMLButtonElement;
 
     // Mask creates a transparent cross 'cut' through the filled circle so underlying input bg shows.
-    this.#searchClearButtonEl.innerHTML = buildClearIcon(this.#id);
+    this.#searchClearButtonEl.appendChild(buildClearIcon(this.#id));
 
     this.#searchResultsLiveRegionEl = createEl(
       "span",
@@ -1024,7 +1024,7 @@ export default class UI {
           { class: "iti__country-check", [ARIA.HIDDEN]: "true" },
           newListItem,
         );
-        checkIcon.innerHTML = buildCheckIcon();
+        checkIcon.appendChild(buildCheckIcon());
         this.#selectedListItemEl = newListItem;
         //* With dropdownAlwaysOpen, the dropdown is visible throughout, so keep the highlighted
         //* row in sync with the selection (e.g. when geoIpLookup resolves, or the user types a
@@ -1218,23 +1218,30 @@ export default class UI {
         iso2 && showFlags
           ? `${CLASSES.FLAG} iti__${iso2}`
           : `${CLASSES.FLAG} ${CLASSES.GLOBE}`;
-      let ariaLabel, title, flagInnerHtml;
+      let ariaLabel, title;
+      let flagContent: SVGElement | null = null;
       if (iso2) {
         title = name;
         ariaLabel = i18n
           .selectedCountryAriaLabel!.replace("${countryName}", name!)
           .replace("${dialCode}", `+${dialCode}`);
-        flagInnerHtml = showFlags ? "" : buildGlobeIcon();
+        if (!showFlags) {
+          flagContent = buildGlobeIcon();
+        }
       } else {
         title = i18n.noCountrySelected;
         ariaLabel = i18n.noCountrySelected;
-        flagInnerHtml = buildGlobeIcon();
+        flagContent = buildGlobeIcon();
       }
       // Note: if auto country loading state is still active at this point, the loading class gets wiped here, which is appropriate as a country has been selected.
       this.#selectedFlagEl!.className = flagClass;
       this.#selectedCountryEl!.setAttribute("title", title!);
       this.#selectedCountryEl!.setAttribute(ARIA.LABEL, ariaLabel!);
-      this.#selectedFlagEl!.innerHTML = flagInnerHtml;
+      if (flagContent) {
+        this.#selectedFlagEl!.replaceChildren(flagContent);
+      } else {
+        this.#selectedFlagEl!.replaceChildren();
+      }
     }
 
     //* Update the selected dial code.
