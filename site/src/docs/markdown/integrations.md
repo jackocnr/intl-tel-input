@@ -2,7 +2,7 @@
 
 ## Choose your integration
 
-`intl-tel-input` comes in two flavours: a **vanilla JavaScript library** and a set of native **framework components**. Both offer the same core features — country picker, formatting and validation — so pick the one that matches your stack.
+`intl-tel-input` comes in two flavours: a **vanilla JavaScript library** and a set of native **framework components**. Both offer the same core features — country picker, formatting and validation — so pick the one that matches your stack. Internally, both are powered by the same shared engine (referred to throughout these docs as the **core library**) — the vanilla JS library exposes it directly, while the framework components wrap it.
 
 <div class="iti-integration-choice row g-4 my-4">
   <div class="col-md-6">
@@ -49,7 +49,7 @@ Technically yes, but our native framework components are the recommended path - 
 * **Lifecycle handled** — initialisation on mount and `destroy()` on unmount, so you don't leak instances or listeners.
 * **Two-way value binding** — pass the number in as a prop and it stays in sync with your app's state, with internal guards to avoid cursor jumps while typing.
 * **Typed change callbacks** — `changeNumber`, `changeCountry`, `changeValidity`, and `changeErrorCode` exposed as idiomatic, fully-typed handlers for each framework.
-* **Escape hatch** — grab the underlying core library instance via a ref for anything the component doesn't expose directly.
+* **Escape hatch** — grab the core library instance via a ref for anything the component doesn't expose directly.
 
 **Do the components include all the core library features?**  
 Yes — plus more. All [initialisation options](/docs/options) and [methods](/docs/methods) are available through the component props and refs, and on top of that you get the framework-native conveniences like two-way binding and typed callbacks (see above).

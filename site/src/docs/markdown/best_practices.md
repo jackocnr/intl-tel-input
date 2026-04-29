@@ -24,11 +24,11 @@ _<sup>*</sup>Except for some small satellite territories, which share number ran
 
 ## Validate before saving
 
-Check the number is valid before storing it, and reject invalid input. Get the validity from [`isValidNumber`](/docs/methods#isvalidnumber) (core library) or the `onChangeValidity` / `validityChange` callback (components). Requires the utils module.
+Check the number is valid before storing it, and reject invalid input. Get the validity from [`isValidNumber`](/docs/methods#isvalidnumber) (vanilla JS library) or the `onChangeValidity` / `validityChange` callback (framework components). Requires the utils module.
 
 ##### Deriving a user-facing error message
 
-When a number is invalid, you'll get an error code (from [`getValidationError`](/docs/methods#getvalidationerror) for the core library, or via the `onChangeErrorCode` / `errorCodeChange` callback for the components). Mapping the error codes to user-facing messages is left to you because the wording belongs to your app. Here is a reasonable starting point:
+When a number is invalid, you'll get an error code (from [`getValidationError`](/docs/methods#getvalidationerror) for the vanilla JS library, or via the `onChangeErrorCode` / `errorCodeChange` callback for the framework components). Mapping the error codes to user-facing messages is left to you because the wording belongs to your app. Here is a reasonable starting point:
 
 ```js
 const getErrorMessage = (number, errorCode) => {
@@ -47,7 +47,7 @@ const getErrorMessage = (number, errorCode) => {
 
 ## Keep strict mode on, with rejection feedback
 
-[`strictMode`](/docs/options#strictmode) is on by default and rejects non-numeric characters while capping the length at the country's max as the user types. Just as importantly, the rejection shouldn't be silent — by default, [`strictRejectAnimation`](/docs/options#strictrejectanimation) plays a built-in shake/flash animation so the user notices. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event (core library) or use the equivalent `onStrictReject` / `strictReject` callback (components).
+[`strictMode`](/docs/options#strictmode) is on by default and rejects non-numeric characters while capping the length at the country's max as the user types. Just as importantly, the rejection shouldn't be silent — by default, [`strictRejectAnimation`](/docs/options#strictrejectanimation) plays a built-in shake/flash animation so the user notices. For richer feedback (e.g. a toast that explains _why_ the input was rejected), listen for the `strict:reject` event (vanilla JS library) or use the equivalent `onStrictReject` / `strictReject` callback (framework components).
 
 ## Set the initial country
 

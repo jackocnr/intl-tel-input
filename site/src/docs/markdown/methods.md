@@ -122,7 +122,7 @@ Type: `() => boolean`
 
 ⚠️ **ADVANCED**  
 (Note: only returns `true` for valid **mobile** and **fixed_line** numbers by default - see [`allowedNumberTypes`](/docs/options#allowednumbertypes))  
-Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](/examples/vanilla-javascript/validation-precise). Note that these rules change each month for various countries around the world, so you need to constantly keep the core library up-to-date (e.g. via an automated script) else **you will start rejecting valid numbers**. For a simpler and more future-proof form of validation, see [`isValidNumber`](/docs/methods#isvalidnumber) above. If validation fails, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).  
+Check if the current number is valid using precise matching rules for each country/area code, etc - [see example](/examples/vanilla-javascript/validation-precise). Note that these rules change each month for various countries around the world, so you need to constantly keep the package up-to-date (e.g. via an automated script) else **you will start rejecting valid numbers**. For a simpler and more future-proof form of validation, see [`isValidNumber`](/docs/methods#isvalidnumber) above. If validation fails, you can use [`getValidationError`](/docs/methods#getvalidationerror) to get more information. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).  
 
 ```js
 const isValid = iti.isValidNumberPrecise();
