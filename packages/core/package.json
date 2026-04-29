@@ -1,7 +1,7 @@
 {
   "name": "intl-tel-input",
   "version": "28.0.2",
-  "description": "A JavaScript plugin for entering and validating international telephone numbers",
+  "description": "A JavaScript library for entering, formatting, and validating international telephone numbers",
   "type": "module",
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",

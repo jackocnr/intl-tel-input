@@ -1,7 +1,7 @@
 {
   "name": "@intl-tel-input/react",
   "version": "28.0.2",
-  "description": "A React component for the intl-tel-input JavaScript plugin",
+  "description": "A React component for intl-tel-input, for entering, formatting, and validating international telephone numbers",
   "type": "module",
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",

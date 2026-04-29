@@ -129,12 +129,12 @@ const createI18nLanguageListText = (languageCodes) => {
 
 const homepageTitle = "International Telephone Input";
 const homepageMetaDesc =
-  "A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes React, Vue, Angular and Svelte components.";
+  "For entering, formatting, and validating international telephone numbers. Available in vanilla JavaScript, or as React, Vue, Angular, and Svelte components.";
 const homepageCanonicalUrl = "https://intl-tel-input.com";
 
 const playgroundTitle = "Playground - International Telephone Input";
 const playgroundMetaDesc =
-  "Try different initialisation options and see the plugin update live.";
+  "Try different initialisation options and see intl-tel-input update live.";
 const playgroundCanonicalUrl = "https://intl-tel-input.com/playground";
 
 const notFoundTitle = "404 - Page not found | intl-tel-input";
@@ -276,7 +276,7 @@ const exampleDefinitions = [
     exampleSlug: "multiple-instances",
     title: "Multiple instances",
     metaDesc:
-      "Use multiple instances of the plugin with different configurations on the same page.",
+      "Use multiple instances of intl-tel-input with different configurations on the same page.",
     js: { destDir: "tmp" },
     content: {
       includeItiScript: true,
@@ -810,7 +810,7 @@ const docsDefinitions = [
     key: "integrations",
     title: "Choose your integration",
     metaDesc:
-      "Get started with intl-tel-input. Choose your integration: pure JavaScript plugin, or React, Vue, Angular or Svelte component.",
+      "Get started with intl-tel-input. Choose your integration: vanilla JavaScript library, or React, Vue, Angular, or Svelte component.",
   },
   {
     key: "vanilla_javascript",
@@ -863,7 +863,7 @@ const docsDefinitions = [
     key: "theming",
     title: "Theming / dark mode",
     metaDesc:
-      "How to theme the plugin, including how to set it up for dark mode.",
+      "How to theme intl-tel-input, including how to set it up for dark mode.",
   },
   {
     key: "troubleshooting",

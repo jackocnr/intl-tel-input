@@ -20,7 +20,7 @@ textarea.form-control::placeholder {
 }
 
 :root {
-  /* plugin overrides (NOTE: the bootstrap vars handle dark mode automatically) */
+  /* intl-tel-input overrides (NOTE: the bootstrap vars handle dark mode automatically) */
   --iti-border-color: var(--bs-border-color);
   --iti-dropdown-bg: var(--bs-body-bg);
   --iti-icon-color: var(--bs-body-color);

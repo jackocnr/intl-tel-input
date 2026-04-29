@@ -1,7 +1,7 @@
 <p>You can resize the flags with the <code>--iti-flag-width</code> CSS variable (height scales automatically), but the sprite is rasterised at a fixed size (20x15px, or 40x30px retina), so scaling <em>up</em> past the default looks soft. For crisp larger flags you need to rebuild the sprite yourself:</p>
 
 <ol>
-<li>Follow the <a rel="noopener" href="https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#changes-to-the-plugin">Contributing</a> guidelines to download the project and get it building (<code>npm run build</code>) without errors.</li>
+<li>Follow the <a rel="noopener" href="https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#changes-to-the-core-library">Contributing</a> guidelines to download the project and get it building (<code>npm run build</code>) without errors.</li>
 <li>In <code>scripts/generate-sprite.js</code>, update the <code>TARGET_HEIGHT</code> value — for the demo below we use 18 (so the retina sprite is 36). Whatever height you choose, it must be a multiple of 3 so that the corresponding width is a whole number (flags have a 4:3 aspect ratio).</li>
 <li>Run <code>npm run build:img</code> to generate the new flag images and the updated CSS needed to use them.</li>
 <li>Open <code>demo.html</code> to check the larger flags render correctly.</li>
@@ -9,4 +9,4 @@
 
 <p>You may then want to override some of the CSS variables/styles from <code>src/css/intlTelInput.css</code> in your own CSS to accommodate the larger flag images — see <a href="/css/large_flags_overrides.css">the overrides</a> used in this demo.</p>
 
-<p>When you're happy, copy the built flag images and CSS file into your own project, and load the standard plugin script as usual.</p>
+<p>When you're happy, copy the built flag images and CSS file into your own project, and load the standard library script as usual.</p>

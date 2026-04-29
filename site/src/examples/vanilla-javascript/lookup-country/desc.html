@@ -1,10 +1,10 @@
-<p>For the best user experience, the plugin supports setting the initial selected country to the user's current country, using an IP lookup service. When the user first sees the input, they already see the correct flag and a familiar placeholder number for their country.</p>
+<p>For the best user experience, the library supports setting the initial selected country to the user's current country, using an IP lookup service. When the user first sees the input, they already see the correct flag and a familiar placeholder number for their country.</p>
 
 <p>To achieve this, enable two initialisation options:</p>
 
 <ol>
-<li>Set <a href="/docs/options#initialcountry"><code>initialCountry</code></a> to <code>"auto"</code>. This tells the plugin to use the IP lookup service.</li>
-<li>Set <a href="/docs/options#geoiplookup"><code>geoIpLookup</code></a> to a function that makes the IP lookup request and returns a <code>Promise</code> resolving to the iso2 code. The plugin will then use that iso2 code to set the initial country.</li>
+<li>Set <a href="/docs/options#initialcountry"><code>initialCountry</code></a> to <code>"auto"</code>. This tells the library to use the IP lookup service.</li>
+<li>Set <a href="/docs/options#geoiplookup"><code>geoIpLookup</code></a> to a function that makes the IP lookup request and returns a <code>Promise</code> resolving to the iso2 code. The library will then use that iso2 code to set the initial country.</li>
 </ol>
 
-<p>In the example below, we call the <a rel="noopener" href="https://ipapi.co">ipapi</a> service (which offers a free tier) using the standard <code>fetch</code> API. If the request fails, the returned promise should reject (or resolve with an empty/invalid value) so the plugin falls back appropriately.</p>
+<p>In the example below, we call the <a rel="noopener" href="https://ipapi.co">ipapi</a> service (which offers a free tier) using the standard <code>fetch</code> API. If the request fails, the returned promise should reject (or resolve with an empty/invalid value) so the library falls back appropriately.</p>
