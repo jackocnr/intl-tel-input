@@ -7,7 +7,7 @@ body:
       label: Prerequisites
       description: Take a couple of minutes to help our maintainers work faster.
       options:
-        - label: I am using the latest version (v28.0.2) of both intl-tel-input and utils.js.
+        - label: I am using the latest version (v28.0.3) of both intl-tel-input and utils.js.
           required: true
         - label: We use libphonenumber for formatting, validation, and placeholder numbers. If my issue relates to one of these things, I confirm I have used their [test site](https://libphonenumber.appspot.com) to ensure the issue is not with them, and will provide a link to the test results page showing this. Else, I have [reported the issue](https://github.com/google/libphonenumber/blob/master/CONTRIBUTING.md) to them instead of here.
           required: true
