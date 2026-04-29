@@ -75,7 +75,7 @@ export const defaults: AllOptions = {
   //* A function to load the utils script.
   loadUtils: null,
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
-  nationalMode: true,
+  nationalMode: false,
   //* Display only these countries.
   onlyCountries: null,
   //* Number type to use for placeholders.

@@ -37,7 +37,8 @@ describe("Eastern numerals support", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      ({ iti, input, container } = initIntlTelInput({ options: { separateDialCode: false } }));
+      const options = { separateDialCode: false, nationalMode: true };
+      ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {

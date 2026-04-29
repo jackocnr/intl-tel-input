@@ -234,11 +234,11 @@ Try toggling this option on/off on an input containing a number in the [Playgrou
 
 ###### nationalMode
 Type: `boolean`  
-Default: `true`  
+Default: `false`  
 
-Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use [`getNumber`](/docs/methods#getnumber) to extract a full international number. _Note: this is automatically forced off when [`separateDialCode`](#separatedialcode) is enabled, because the displayed dial code is treated as part of the typed number._
+Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use [`getNumber`](/docs/methods#getnumber) to extract a full international number.
 
-Play with this option in the [Playground](/playground?separateDialCode=false&nationalMode=true#formatting-options).
+Try `intl-tel-input` with `separateDialCode` disabled and `nationalMode` enabled in the [Playground](/playground?separateDialCode=false&nationalMode=true#formatting-options).
 
 ###### strictMode
 Type: `boolean`  

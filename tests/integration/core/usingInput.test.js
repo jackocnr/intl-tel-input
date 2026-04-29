@@ -15,7 +15,8 @@ describe("using input", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, input, container } = initIntlTelInput({ options: { separateDialCode: false, strictMode: false } }));
+    const options = { separateDialCode: false, strictMode: false, nationalMode: true };
+    ({ iti, input, container } = initIntlTelInput({ options }));
   });
 
   afterEach(() => {
