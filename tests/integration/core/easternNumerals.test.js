@@ -5,7 +5,7 @@
 import { userEvent } from "@testing-library/user-event";
 import { fireEvent } from "@testing-library/dom";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   checkFlagSelected,
   getPasteEventObject,
@@ -22,7 +22,7 @@ import {
 // NOTE: These numerals are written right-to-left in isolation, but when used in phone numbers they are treated as left-to-right, just like Western digits.
 
 // Use cases:
-// - Initialising plugin with eastern numerals should format the number and set the flag correctly
+// - Initialising library with eastern numerals should format the number and set the flag correctly
 // - setNumber with eastern numerals should format the number and set the flag correctly
 // - Typing a different international dial code in eastern numerals should update the selected flag
 // - formatOnDisplay should work with eastern numerals
@@ -32,12 +32,12 @@ import {
 // - isValidNumber and isValidNumberPrecise should work with eastern numerals
 
 describe("Eastern numerals support", () => {
-  describe("Vanilla plugin", () => {
+  describe("Vanilla library", () => {
     let iti, user, input, container;
 
     beforeEach(() => {
       user = userEvent.setup();
-      ({ iti, input, container } = initPlugin({ options: { separateDialCode: false } }));
+      ({ iti, input, container } = initIntlTelInput({ options: { separateDialCode: false } }));
     });
 
     afterEach(() => {
@@ -77,7 +77,7 @@ describe("Eastern numerals support", () => {
     let iti, input, container;
 
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "+١٧٠٢١٢٣٤٥٦٧", // "+17021234567" in Arabic-Indic digits
       }));
     });
@@ -99,7 +99,7 @@ describe("Eastern numerals support", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { initialCountry: "us", strictMode: true, separateDialCode: false };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {

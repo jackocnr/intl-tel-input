@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, checkFlagSelected } from "../helpers/helpers";
+import { initIntlTelInput, teardown, checkFlagSelected } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("nationalMode option", () => {
@@ -11,7 +11,7 @@ describe("nationalMode option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { nationalMode: true, separateDialCode: false };
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -29,7 +29,7 @@ describe("nationalMode option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { nationalMode: true, initialCountry: "gb", separateDialCode: false };
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -46,7 +46,7 @@ describe("nationalMode option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { nationalMode: false, initialCountry: "us", separateDialCode: false };
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -66,7 +66,7 @@ describe("nationalMode option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { nationalMode: false, initialCountry: "ax", separateDialCode: false };
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -84,7 +84,7 @@ describe("nationalMode option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { nationalMode: false, initialCountry: "gb", separateDialCode: false };
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

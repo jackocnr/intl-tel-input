@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, getCountriesInList, clickSelectedCountryAsync, getSearchInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, getCountriesInList, clickSelectedCountryAsync, getSearchInput } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("countryNameLocale = fr", () => {
@@ -11,7 +11,7 @@ describe("countryNameLocale = fr", () => {
   };
 
   beforeEach(() => {
-    ({ iti, container } = initPlugin({ options }));
+    ({ iti, container } = initIntlTelInput({ options }));
     user = userEvent.setup();
   });
 

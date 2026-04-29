@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 
 const us = "+17024181234";
 
@@ -11,7 +11,7 @@ describe("formatOnDisplay option", () => {
 
     beforeEach(() => {
       const options = { formatOnDisplay: false, nationalMode: true, separateDialCode: false };
-      ({ iti, input } = initPlugin({ inputValue: us, options }));
+      ({ iti, input } = initIntlTelInput({ inputValue: us, options }));
     });
 
     afterEach(() => teardown(iti));
@@ -28,7 +28,7 @@ describe("formatOnDisplay option", () => {
 
     beforeEach(() => {
       const options = { formatOnDisplay: true, nationalMode: true, separateDialCode: false };
-      ({ iti, input } = initPlugin({ inputValue: us, options }));
+      ({ iti, input } = initIntlTelInput({ inputValue: us, options }));
     });
 
     afterEach(() => teardown(iti));
@@ -45,7 +45,7 @@ describe("formatOnDisplay option", () => {
 
     beforeEach(() => {
       const options = { formatOnDisplay: true, nationalMode: false };
-      ({ iti, input } = initPlugin({ inputValue: us, options }));
+      ({ iti, input } = initIntlTelInput({ inputValue: us, options }));
     });
 
     afterEach(() => teardown(iti));

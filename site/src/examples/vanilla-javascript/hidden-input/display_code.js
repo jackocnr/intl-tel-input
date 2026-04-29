@@ -11,7 +11,7 @@ const geoIpLookup = async () => {
   return data.country_code;
 };
 
-// initialise plugin
+// initialise library
 const iti = intlTelInput(input, {
   hiddenInput: () => ({
     phone: "full_phone",

@@ -1,14 +1,14 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("getSelectedCountryData method", () => {
   let iti, input, user;
 
   beforeEach(() => {
-    ({ iti, input } = initPlugin({ options: { separateDialCode: false } }));
+    ({ iti, input } = initIntlTelInput({ options: { separateDialCode: false } }));
     user = userEvent.setup();
   });
 

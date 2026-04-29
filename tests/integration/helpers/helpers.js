@@ -28,7 +28,7 @@ export const injectInput = ({ inputValue = "", disabled = false } = injectInputD
  * @param {{intlTelInput?: IntlTelInputInterface, input?: any, inputValue?: string, options?: SomeOptions}} options
  * @returns {{input: HTMLInputElement, iti: Iti, container: HTMLElement}}
  */
-export const initPlugin = ({ intlTelInput = intlTelInputWithUtils, input = null, inputValue = "", options = {} } = {}) => {
+export const initIntlTelInput = ({ intlTelInput = intlTelInputWithUtils, input = null, inputValue = "", options = {} } = {}) => {
   const inputToUse = input || injectInput({ inputValue });
   const iti = intlTelInput(inputToUse, options);
   const container = inputToUse.parentElement;

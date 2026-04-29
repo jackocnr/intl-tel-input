@@ -4,7 +4,7 @@
 
 import { userEvent } from "@testing-library/user-event";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   getSelectedCountryButton,
   isDropdownOpen,
@@ -17,7 +17,7 @@ describe("dropdown shortcuts", () => {
   let iti, input, user, container;
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, container, input } = initPlugin());
+    ({ iti, container, input } = initIntlTelInput());
   });
 
   afterEach(() => {

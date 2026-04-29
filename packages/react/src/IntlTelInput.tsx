@@ -68,8 +68,8 @@ const IntlTelInput = forwardRef(function IntlTelInput(
 ) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const itiRef = useRef<Iti | null>(null);
-  // Classes the plugin adds directly to the input (e.g. iti__tel-input)
-  const pluginInputClassesRef = useRef<string>("");
+  // Classes the library adds directly to the input (e.g. iti__tel-input)
+  const libraryInputClassesRef = useRef<string>("");
   const lastEmittedNumberRef = useRef<string | undefined>(undefined);
   const lastEmittedCountryRef = useRef<string | undefined>(undefined);
   const lastEmittedValidityRef = useRef<boolean | undefined>(undefined);
@@ -155,7 +155,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
       return undefined;
     }
     itiRef.current = intlTelInput(inputEl, initOptions as SomeOptions);
-    pluginInputClassesRef.current = inputEl.className;
+    libraryInputClassesRef.current = inputEl.className;
 
     const handleOpen = (): void => onOpenCountryDropdownRef.current?.();
     const handleClose = (): void => onCloseCountryDropdownRef.current?.();
@@ -233,14 +233,14 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     if (ignoredInputProps.has(key)) {
       warnInputProp(key);
     } else if (key === "className") {
-      // Preserve any user-added or plugin-added classes on the input
-      sanitizedInputProps[key] = `${pluginInputClassesRef.current} ${val}`;
+      // Preserve any user-added or library-added classes on the input
+      sanitizedInputProps[key] = `${libraryInputClassesRef.current} ${val}`;
     } else {
       sanitizedInputProps[key] = val;
     }
   }
 
-  // The iti plugin reparents the input into its own `.iti` wrapper at init time.
+  // The iti library reparents the input into its own `.iti` wrapper at init time.
   // If the <input> is the component's direct output, React's fiber tree (which still
   // thinks the input is a direct child of its host container) and the real DOM diverge,
   // and React 19's commit phase throws NotFoundError when it tries to call

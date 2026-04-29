@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, oneTickAsync, intlTelInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, oneTickAsync, intlTelInput } from "../helpers/helpers";
 
 describe("geoIpLookup option", () => {
   describe("vanilla", () => {
@@ -9,7 +9,7 @@ describe("geoIpLookup option", () => {
 
     beforeEach(async () => {
       resolved = false;
-      ({ iti } = initPlugin());
+      ({ iti } = initIntlTelInput());
       iti.promise.then(() => {
         resolved = true;
       });
@@ -35,7 +35,7 @@ describe("geoIpLookup option", () => {
         initialCountry: "auto",
         geoIpLookup: () => new Promise((_, reject) => setTimeout(() => reject(), 0)),
       };
-      ({ iti } = initPlugin({ options }));
+      ({ iti } = initIntlTelInput({ options }));
       iti.promise.catch(() => {
         rejected = true;
       });
@@ -63,7 +63,7 @@ describe("geoIpLookup option", () => {
         initialCountry: "auto",
         geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("zz"), 0)),
       };
-      ({ iti } = initPlugin({ options }));
+      ({ iti } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -86,7 +86,7 @@ describe("geoIpLookup option", () => {
         initialCountry: "auto",
         geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("gb"), 10)),
       };
-      ({ iti } = initPlugin({ options }));
+      ({ iti } = initIntlTelInput({ options }));
       iti.promise.then(() => {
         resolved = true;
       });
@@ -112,7 +112,7 @@ describe("geoIpLookup option", () => {
           initialCountry: "auto",
           geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("gb"), 10)),
         };
-        ({ iti: iti2 } = initPlugin({ options }));
+        ({ iti: iti2 } = initIntlTelInput({ options }));
         iti2.promise.then(() => {
           resolved2 = true;
         });

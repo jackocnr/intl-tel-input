@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   isDropdownOpen,
   selectCountryAsync,
@@ -15,7 +15,7 @@ describe("dropdownAlwaysOpen option", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, container } = initPlugin({ options: { dropdownAlwaysOpen: true } }));
+    ({ iti, container } = initIntlTelInput({ options: { dropdownAlwaysOpen: true } }));
   });
 
   afterEach(() => teardown(iti));

@@ -5,7 +5,7 @@ const input = document.querySelector("#phone");
 const errorMsg = document.querySelector("#error-msg");
 const validMsg = document.querySelector("#valid-msg");
 
-// initialise plugin
+// initialise library
 const iti = intlTelInput(input, {
   onlyCountries: ["us"],
   allowDropdown: false,

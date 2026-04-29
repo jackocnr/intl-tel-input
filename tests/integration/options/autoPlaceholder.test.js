@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { userEvent } from "@testing-library/user-event";
-import { initPlugin, teardown, openDropdownSelectCountryAsync } from "../helpers/helpers";
+import { initIntlTelInput, teardown, openDropdownSelectCountryAsync } from "../helpers/helpers";
 
 describe("autoPlaceholder option (empty initial placeholder)", () => {
   describe("autoPlaceholder=off", () => {
@@ -10,7 +10,7 @@ describe("autoPlaceholder option (empty initial placeholder)", () => {
 
     beforeEach(() => {
       const options = { autoPlaceholder: "off", initialCountry: "af" };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -26,7 +26,7 @@ describe("autoPlaceholder option (empty initial placeholder)", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { autoPlaceholder: "polite", initialCountry: "af" };
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -45,7 +45,7 @@ describe("autoPlaceholder option (existing placeholder)", () => {
 
     beforeEach(() => {
       const options = { autoPlaceholder: "off", initialCountry: "af" };
-      ({ iti, input } = initPlugin({ inputValue: "", options }));
+      ({ iti, input } = initIntlTelInput({ inputValue: "", options }));
       input.setAttribute("placeholder", "lol");
     });
 
@@ -61,7 +61,7 @@ describe("autoPlaceholder option (existing placeholder)", () => {
 
     beforeEach(() => {
       const options = { autoPlaceholder: "polite", initialCountry: "af" };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
       input.setAttribute("placeholder", "lol");
     });
 
@@ -81,7 +81,7 @@ describe("autoPlaceholder option (existing placeholder)", () => {
       input = document.createElement("input");
       input.setAttribute("placeholder", "lol");
       document.body.appendChild(input);
-      ({ iti, input } = initPlugin({ options, input }));
+      ({ iti, input } = initIntlTelInput({ options, input }));
     });
 
     afterEach(() => teardown(iti));

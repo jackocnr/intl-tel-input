@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, getCountriesInList } from "../helpers/helpers";
+import { initIntlTelInput, teardown, getCountriesInList } from "../helpers/helpers";
 
 // countryOrder: ensure specified order is applied before default name sort.
 describe("countryOrder option", () => {
@@ -9,7 +9,7 @@ describe("countryOrder option", () => {
 
   beforeEach(() => {
     const options = { onlyCountries: ["us", "gb", "ca", "fr"], countryOrder: ["fr", "ca"] };
-    ({ iti, container } = initPlugin({ options }));
+    ({ iti, container } = initIntlTelInput({ options }));
   });
 
   afterEach(() => teardown(iti));
@@ -30,7 +30,7 @@ describe("countryOrder + excludeCountries", () => {
 
   beforeEach(() => {
     const options = { excludeCountries: ["fr"], countryOrder: ["us", "fr", "gb"] };
-    ({ iti, container } = initPlugin({ options }));
+    ({ iti, container } = initIntlTelInput({ options }));
   });
 
   afterEach(() => teardown(iti));
@@ -48,7 +48,7 @@ describe("countryOrder with non-existent code", () => {
 
   beforeEach(() => {
     const options = { onlyCountries: ["us", "gb"], countryOrder: ["zz", "gb", "us"] };
-    ({ iti, container } = initPlugin({ options }));
+    ({ iti, container } = initIntlTelInput({ options }));
   });
 
   afterEach(() => teardown(iti));

@@ -36,8 +36,8 @@
   // State
   let inputElement: HTMLInputElement | undefined = $state();
   let instance: Iti | undefined = $state();
-  // Classes the plugin adds directly to the input (e.g. iti__tel-input)
-  let pluginInputClasses = $state("");
+  // Classes the library adds directly to the input (e.g. iti__tel-input)
+  let libraryInputClasses = $state("");
   let lastEmittedNumber: string | undefined = $state();
   let lastEmittedCountry: string | undefined = $state();
   let lastEmittedValidity: boolean | undefined = $state();
@@ -119,7 +119,7 @@
   onMount(() => {
     if (inputElement) {
       instance = intlTelInput(inputElement, initOptions as SomeOptions);
-      pluginInputClasses = inputElement.className;
+      libraryInputClasses = inputElement.className;
       if (disabled) instance.setDisabled(disabled);
       if (readonly) instance.setReadonly(readonly);
 
@@ -215,7 +215,7 @@
       if (ignoredInputProps.has(key)) {
         warnInputProp(key);
       } else if (key === "class") {
-        rest[key] = `${pluginInputClasses} ${val}`;
+        rest[key] = `${libraryInputClasses} ${val}`;
       } else {
         rest[key] = val;
       }

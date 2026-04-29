@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, openDropdownSelectCountryAsync, intlTelInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, openDropdownSelectCountryAsync, intlTelInput } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("isValidNumberPrecise", () => {
@@ -9,7 +9,7 @@ describe("isValidNumberPrecise", () => {
     let iti, input, user, utilsBackup;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
+      ({ iti, input } = initIntlTelInput({ options: { separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
       utilsBackup = intlTelInput.utils;
     });
@@ -47,7 +47,7 @@ describe("isValidNumberPrecise", () => {
     const options = { nationalMode: true };
 
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, input, container } = initIntlTelInput({ options }));
       user = userEvent.setup();
     });
 

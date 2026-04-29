@@ -2,13 +2,13 @@
  * @vitest-environment jsdom
  */
 
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 
 describe("getNumberType method", () => {
   let iti;
 
   beforeEach(() => {
-    ({ iti } = initPlugin());
+    ({ iti } = initIntlTelInput());
   });
 
   afterEach(() => {

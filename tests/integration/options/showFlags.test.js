@@ -1,14 +1,14 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, checkFlagSelected } from "../helpers/helpers";
+import { initIntlTelInput, teardown, checkFlagSelected } from "../helpers/helpers";
 
 describe("showFlags option", () => {
   describe("default true, with input value set to valid GB number", () => {
     let iti, container;
 
     beforeEach(() => {
-      ({ iti, container } = initPlugin({ inputValue: "+447947123123" }));
+      ({ iti, container } = initIntlTelInput({ inputValue: "+447947123123" }));
     });
 
     afterEach(() => teardown(iti));
@@ -23,7 +23,7 @@ describe("showFlags option", () => {
 
     beforeEach(() => {
       const options = { showFlags: false, allowDropdown: true };
-      ({ iti, container } = initPlugin({ options, inputValue: "+447947123123" }));
+      ({ iti, container } = initIntlTelInput({ options, inputValue: "+447947123123" }));
     });
     afterEach(() => teardown(iti));
 

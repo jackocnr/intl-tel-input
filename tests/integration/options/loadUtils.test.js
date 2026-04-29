@@ -3,7 +3,7 @@
  */
 
 import intlTelInput from "intl-tel-input";
-import { initPlugin, resetPackageAfterEach } from "../helpers/helpers";
+import { initIntlTelInput, resetPackageAfterEach } from "../helpers/helpers";
 
 describe("loadUtils option", () => {
   resetPackageAfterEach(intlTelInput);
@@ -11,7 +11,7 @@ describe("loadUtils option", () => {
   const loadUtils = () => import("intl-tel-input/utils");
 
   test("does not load the utils script if `loadUtils` option is not set", async () => {
-    const { iti } = initPlugin({ intlTelInput });
+    const { iti } = initIntlTelInput({ intlTelInput });
 
     expect(intlTelInput).toHaveProperty("startedLoadingUtils", false);
 
@@ -23,7 +23,7 @@ describe("loadUtils option", () => {
   test("loads the utils script successfully", async () => {
     expect(intlTelInput).not.toHaveProperty("utils.isValidNumber");
 
-    const { iti } = initPlugin({
+    const { iti } = initIntlTelInput({
       intlTelInput,
       options: { loadUtils },
     });
@@ -35,7 +35,7 @@ describe("loadUtils option", () => {
   test("waits until the page is loaded before loading utils", async () => {
     vi.spyOn(intlTelInput, "documentReady").mockReturnValue(false);
 
-    const { iti } = initPlugin({
+    const { iti } = initIntlTelInput({
       intlTelInput,
       options: { loadUtils },
     });
@@ -53,7 +53,7 @@ describe("loadUtils option", () => {
   test("loads utils immediately if page is already finished loading", async function() {
     vi.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
-    const { iti } = initPlugin({
+    const { iti } = initIntlTelInput({
       intlTelInput,
       options: { loadUtils },
     });
@@ -66,7 +66,7 @@ describe("loadUtils option", () => {
   test("rejects with an error if the utils script cannot load", async function() {
     vi.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
-    const { iti } = initPlugin({
+    const { iti } = initIntlTelInput({
       intlTelInput,
       options: { loadUtils: () => {
         const url = "/some/incorrect/url"; return import(/* @vite-ignore */ url);
@@ -82,7 +82,7 @@ describe("loadUtils option", () => {
     const mockUtils = { default: { mockUtils: true } };
     vi.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
 
-    const { iti } = initPlugin({
+    const { iti } = initIntlTelInput({
       intlTelInput,
       options: {
         async loadUtils () {
@@ -100,7 +100,7 @@ describe("loadUtils option", () => {
   test("works if loadUtils returns a custom promise", async function() {
     const mockUtils = { default: { mockUtils: true } };
 
-    const { iti } = initPlugin({
+    const { iti } = initIntlTelInput({
       intlTelInput,
       options: {
         loadUtils:  () => ({
@@ -121,7 +121,7 @@ describe("loadUtils option", () => {
     resetPackageAfterEach(intlTelInputWithUtils);
 
     test("ignores the `loadUtils` option and does not load", async () => {
-      const { iti } = initPlugin({
+      const { iti } = initIntlTelInput({
         intlTelInput: intlTelInputWithUtils,
         options: { loadUtils },
       });

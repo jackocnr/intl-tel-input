@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 
 
 describe("setPlaceholderNumberType method", () => {
@@ -9,7 +9,7 @@ describe("setPlaceholderNumberType method", () => {
 
   beforeEach(() => {
     const options = { initialCountry: "gb" };
-    ({ iti, input } = initPlugin({ options }));
+    ({ iti, input } = initIntlTelInput({ options }));
   });
   afterEach(() => teardown(iti));
 

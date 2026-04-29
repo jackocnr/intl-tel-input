@@ -2,14 +2,14 @@
  * @vitest-environment jsdom
  */
 
-import { initPlugin, teardown, intlTelInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, intlTelInput } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("isValidNumber method", () => {
   let iti, input, user, utilsBackup;
 
   beforeEach(() => {
-    ({ iti, input } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
+    ({ iti, input } = initIntlTelInput({ options: { separateDialCode: false, strictMode: false } }));
     user = userEvent.setup();
     utilsBackup = intlTelInput.utils;
   });
@@ -53,7 +53,7 @@ describe("isValidNumber method - NANP Barbados", () => {
   const options = { initialCountry: "bb" };
 
   beforeEach(() => {
-    ({ iti, input } = initPlugin({ options }));
+    ({ iti, input } = initIntlTelInput({ options }));
     user = userEvent.setup();
   });
 
@@ -100,7 +100,7 @@ describe("isValidNumber method - NANP Barbados", () => {
 //       placeholderNumberType: "MOBILE",
 //       allowedNumberTypes: ["MOBILE"],
 //     };
-//     ({ input, iti, container } = initPlugin({ options }));
+//     ({ input, iti, container } = initIntlTelInput({ options }));
 //   });
 
 //   afterEach(() => {

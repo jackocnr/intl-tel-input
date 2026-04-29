@@ -4,7 +4,7 @@
 
 import { userEvent } from "@testing-library/user-event";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   clickSelectedCountryAsync,
   isDropdownOpen,
@@ -21,7 +21,7 @@ describe("using dropdown", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, container, input } = initPlugin());
+    ({ iti, container, input } = initIntlTelInput());
   });
 
   afterEach(() => {
@@ -88,7 +88,7 @@ describe("with RTL context", () => {
 
   beforeEach(() => {
     document.body.setAttribute("dir", "rtl");
-    ({ iti, container } = initPlugin());
+    ({ iti, container } = initIntlTelInput());
   });
 
   afterEach(() => {
@@ -112,7 +112,7 @@ describe("using dropdown: disabled input", () => {
   beforeEach(() => {
     user = userEvent.setup();
     input = injectInput({ disabled: true });
-    ({ iti, container } = initPlugin({ input }));
+    ({ iti, container } = initIntlTelInput({ input }));
   });
 
   afterEach(() => {

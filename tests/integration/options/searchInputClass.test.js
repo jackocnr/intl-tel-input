@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, getSearchInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, getSearchInput } from "../helpers/helpers";
 
 describe("searchInputClass option", () => {
   let iti, container;
@@ -9,7 +9,7 @@ describe("searchInputClass option", () => {
   afterEach(() => teardown(iti));
 
   test("adds the custom class to the search input", () => {
-    ({ iti, container } = initPlugin({
+    ({ iti, container } = initIntlTelInput({
       options: { countrySearch: true, searchInputClass: "my-search" },
     }));
     const search = getSearchInput(container);
@@ -19,7 +19,7 @@ describe("searchInputClass option", () => {
   });
 
   test("defaults to no extra class when not provided", () => {
-    ({ iti, container } = initPlugin({ options: { countrySearch: true } }));
+    ({ iti, container } = initIntlTelInput({ options: { countrySearch: true } }));
     const search = getSearchInput(container);
     // Only the default class is present
     expect(search.className.trim()).toBe("iti__search-input");

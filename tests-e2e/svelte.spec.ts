@@ -9,7 +9,7 @@ test.describe("svelte component demo", () => {
     const input = page.locator("input[type=\"tel\"]");
     await expect(input).toBeVisible();
 
-    // Wait for plugin to initialise.
+    // Wait for library to initialise.
     await expect(page.locator(".iti")).toBeVisible();
 
     // Should default to US per demo options.

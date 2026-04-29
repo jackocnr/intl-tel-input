@@ -10,7 +10,7 @@ const geoIpLookup = async () => {
   return data.country_code;
 };
 
-// initialise plugin - home
+// initialise library - home
 intlTelInput(inputHome, {
   initialCountry: "auto",
   geoIpLookup,
@@ -18,7 +18,7 @@ intlTelInput(inputHome, {
   loadUtils: () => import("intl-tel-input/utils"),
 });
 
-// initialise plugin - mobile
+// initialise library - mobile
 intlTelInput(inputMobile, {
   initialCountry: "auto",
   geoIpLookup,
@@ -26,7 +26,7 @@ intlTelInput(inputMobile, {
   loadUtils: () => import("intl-tel-input/utils"),
 });
 
-// initialise plugin - vacation
+// initialise library - vacation
 intlTelInput(inputVacation, {
   initialCountry: "es",
   onlyCountries: ["es", "fr", "it"],

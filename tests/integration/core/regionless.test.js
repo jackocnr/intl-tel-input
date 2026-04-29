@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("regionless (non-geographic) dial codes", () => {
@@ -12,7 +12,7 @@ describe("regionless (non-geographic) dial codes", () => {
 
     beforeEach(() => {
       const options = { nationalMode: true, formatOnDisplay: true };
-      ({ iti, input } = initPlugin({ inputValue: regionlessNumber, options }));
+      ({ iti, input } = initIntlTelInput({ inputValue: regionlessNumber, options }));
     });
 
     afterEach(() => teardown(iti));
@@ -28,7 +28,7 @@ describe("regionless (non-geographic) dial codes", () => {
 
     beforeEach(() => {
       const options = { allowedNumberTypes: ["TOLL_FREE"], separateDialCode: false };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
       user = userEvent.setup();
     });
 

@@ -4,7 +4,7 @@
 
 import { userEvent } from "@testing-library/user-event";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   getSelectedDialCodeText,
   typePlaceholderNumberAsync,
@@ -22,7 +22,7 @@ describe("separateDialCode option", () => {
         initialCountry: "gb",
         separateDialCode: true,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -63,7 +63,7 @@ describe("separateDialCode option", () => {
         initialCountry: "ca",
         separateDialCode: true,
       };
-      ({ input, iti } = initPlugin({ options }));
+      ({ input, iti } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -89,7 +89,7 @@ describe("separateDialCode option", () => {
         initialCountry: "as",
         separateDialCode: true,
       };
-      ({ input, iti } = initPlugin({ options }));
+      ({ input, iti } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -115,7 +115,7 @@ describe("separateDialCode option", () => {
         initialCountry: "ru",
         separateDialCode: true,
       };
-      ({ input, iti } = initPlugin({ options, inputValue: "(922) 555-1234" }));
+      ({ input, iti } = initIntlTelInput({ options, inputValue: "(922) 555-1234" }));
     });
 
     afterEach(() => {
@@ -138,7 +138,7 @@ describe("separateDialCode option", () => {
         initialCountry: "ax",
         separateDialCode: true,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -164,7 +164,7 @@ describe("separateDialCode option", () => {
         allowDropdown: false,
         strictMode: false,
       };
-      ({ input, iti } = initPlugin({ options }));
+      ({ input, iti } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -187,7 +187,7 @@ describe("separateDialCode option", () => {
         initialCountry: "kz",
         separateDialCode: true,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {

@@ -9,7 +9,6 @@ const geoIpLookup = async () => {
   return data.country_code;
 };
 
-// initialise plugin
 const iti = window.intlTelInput(input, {
   initialCountry: "auto",
   geoIpLookup,

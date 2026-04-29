@@ -4,7 +4,7 @@
 
 import { userEvent } from "@testing-library/user-event";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   clickSelectedCountryAsync,
   isDropdownOpen,
@@ -16,7 +16,7 @@ describe("setDisabled method", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, container, input } = initPlugin());
+    ({ iti, container, input } = initIntlTelInput());
     iti.setDisabled(true);
   });
 

@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("basic usage test with vanilla plugin", () => {
+test.describe("basic usage test with vanilla library", () => {
   test("can select country and type number and getNumber works", async ({ page }) => {
     // Load vanilla fixture page
     await page.goto("/tests-e2e/fixtures/vanilla.html");

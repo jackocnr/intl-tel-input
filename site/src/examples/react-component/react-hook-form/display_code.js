@@ -18,7 +18,7 @@ const App = () => {
   });
   const phoneValue = useWatch({ control, name: "phone" });
 
-  // RHF calls this with the current value; we delegate to the plugin's own
+  // RHF calls this with the current value; we delegate to the underlying library's
   // validation by reading isValidNumber() / getValidationError() off the iti instance.
   const validatePhone = (value) => {
     if (!intlTelInput.utils) {

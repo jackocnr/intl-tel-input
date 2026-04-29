@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("getExtension method", () => {
@@ -10,7 +10,7 @@ describe("getExtension method", () => {
   const ext = "98765";
 
   beforeEach(() => {
-    ({ iti, input } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
+    ({ iti, input } = initIntlTelInput({ options: { separateDialCode: false, strictMode: false } }));
     user = userEvent.setup();
   });
 

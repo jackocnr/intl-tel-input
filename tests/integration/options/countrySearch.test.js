@@ -4,7 +4,7 @@
 
 import { userEvent } from "@testing-library/user-event";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   getCountryListLength,
   totalCountries,
@@ -23,7 +23,7 @@ describe("countrySearch option", () => {
 
   beforeEach(async () => {
     user = userEvent.setup();
-    ({ container, iti } = initPlugin());
+    ({ container, iti } = initIntlTelInput());
     searchInput = getSearchInput(container);
     await clickSelectedCountryAsync(container, user);
   });

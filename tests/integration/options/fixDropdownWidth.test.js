@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, getDropdownElement } from "../helpers/helpers";
+import { initIntlTelInput, teardown, getDropdownElement } from "../helpers/helpers";
 
 // fixDropdownWidth: when true, dropdown should not have flexible width class; when false it should.
 describe("fixDropdownWidth option", () => {
@@ -9,7 +9,7 @@ describe("fixDropdownWidth option", () => {
     let iti, container;
 
     beforeEach(() => {
-      ({ iti, container } = initPlugin());
+      ({ iti, container } = initIntlTelInput());
     });
 
     afterEach(() => teardown(iti));
@@ -25,7 +25,7 @@ describe("fixDropdownWidth option", () => {
 
     beforeEach(() => {
       const options = { fixDropdownWidth: false };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

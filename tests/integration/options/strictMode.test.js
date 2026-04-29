@@ -5,7 +5,7 @@
 import { userEvent } from "@testing-library/user-event";
 import { fireEvent } from "@testing-library/dom";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   stripFormattingChars,
   selectCountryAndTypePlaceholderNumberAsync,
@@ -27,7 +27,7 @@ describe("strictMode option", () => {
         nationalMode: true,
         separateDialCode: false,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -254,7 +254,7 @@ describe("strictMode option", () => {
         strictMode: true,
         nationalMode: false,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -299,7 +299,7 @@ describe("strictMode option", () => {
         strictMode: true,
         separateDialCode: true,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -344,7 +344,7 @@ describe("strictMode option", () => {
         strictMode: true,
         strictRejectAnimation: true,
       };
-      ({ input, iti, container } = initPlugin({ options }));
+      ({ input, iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => {
@@ -386,7 +386,7 @@ describe("strictMode option", () => {
 
     test("no iti__strict-reject-animation class when option is explicitly disabled", async () => {
       teardown(iti);
-      ({ input, iti, container } = initPlugin({ options: { initialCountry: "us", strictMode: true, strictRejectAnimation: false } }));
+      ({ input, iti, container } = initIntlTelInput({ options: { initialCountry: "us", strictMode: true, strictRejectAnimation: false } }));
       await user.type(input, "a");
       expect(container.classList.contains("iti__strict-reject-animation")).toBe(false);
     });
@@ -419,7 +419,7 @@ describe("strictMode option", () => {
 //       placeholderNumberType: "MOBILE",
 //       allowedNumberTypes: ["MOBILE"],
 //     };
-//     ({ input, iti, container } = initPlugin({ options }));
+//     ({ input, iti, container } = initIntlTelInput({ options }));
 //   });
 
 //   afterEach(() => {
@@ -463,7 +463,7 @@ describe("strictMode option", () => {
 //       allowedNumberTypes: ["MOBILE"],
 //       placeholderNumberType: "MOBILE",
 //     };
-//     ({ input, iti, container } = initPlugin({ options }));
+//     ({ input, iti, container } = initIntlTelInput({ options }));
 //   });
 
 //   afterEach(() => {
@@ -492,7 +492,7 @@ describe("strictMode option", () => {
 //       placeholderNumberType: "MOBILE",
 //       allowedNumberTypes: ["MOBILE"],
 //     };
-//     ({ input, iti, container } = initPlugin({ options }));
+//     ({ input, iti, container } = initIntlTelInput({ options }));
 //   });
 
 //   afterEach(() => {

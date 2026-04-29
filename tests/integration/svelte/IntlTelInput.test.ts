@@ -90,7 +90,7 @@ describe("Svelte IntlTelInput wrapper", () => {
     await waitFor(() => expect(getTelInput().readOnly).toBe(false));
   });
 
-  test("initOptions are passed through to the plugin", async () => {
+  test("initOptions are passed through to the library", async () => {
     render(IntlTelInput, { initialCountry: "gb" });
     await waitFor(() => {
       expect(document.body.innerHTML.includes("iti__gb")).toBe(true);

@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 
 describe("hiddenInput option", () => {
   describe("valid names", () => {
@@ -14,7 +14,7 @@ describe("hiddenInput option", () => {
           country: "phone_country",
         }),
       };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -37,7 +37,7 @@ describe("hiddenInput option", () => {
           data: "d",
         }),
       };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

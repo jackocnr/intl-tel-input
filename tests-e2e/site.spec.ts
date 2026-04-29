@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 const SITE = "http://localhost:4176";
 
 test.describe("site homepage demo", () => {
-  test("initialises plugin and shows valid number in live results", async ({ page }) => {
+  test("initialises library and shows valid number in live results", async ({ page }) => {
     await page.goto(`${SITE}/`);
 
     const input = page.locator("#phone");
@@ -144,7 +144,7 @@ test.describe("site example pages", () => {
     await expect(input).toHaveClass(/iti__tel-input/);
 
     // The page hardcodes value="+447733312345" and inits without initialCountry.
-    // Once utils load, the plugin should parse the +44 prefix, switch to UK,
+    // Once utils load, the library should parse the +44 prefix, switch to UK,
     // and reformat the value into national format (no leading "+").
     await expect(page.locator(".iti__selected-country")).toHaveAttribute(
       "title",

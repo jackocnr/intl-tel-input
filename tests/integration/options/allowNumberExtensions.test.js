@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("allowNumberExtensions option", () => {
@@ -13,7 +13,7 @@ describe("allowNumberExtensions option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { allowNumberExtensions: false, separateDialCode: false, strictMode: false } }));
+      ({ iti, input } = initIntlTelInput({ options: { allowNumberExtensions: false, separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 
@@ -30,7 +30,7 @@ describe("allowNumberExtensions option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { allowNumberExtensions: true, separateDialCode: false, strictMode: false } }));
+      ({ iti, input } = initIntlTelInput({ options: { allowNumberExtensions: true, separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 

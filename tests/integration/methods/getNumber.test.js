@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("getNumber method", () => {
@@ -9,7 +9,7 @@ describe("getNumber method", () => {
     let iti;
 
     beforeEach(() => {
-      ({ iti } = initPlugin({ inputValue: "+17024181234" }));
+      ({ iti } = initIntlTelInput({ inputValue: "+17024181234" }));
     });
 
     afterEach(() => teardown(iti));
@@ -31,7 +31,7 @@ describe("getNumber method", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
+      ({ iti, input } = initIntlTelInput({ options: { separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 

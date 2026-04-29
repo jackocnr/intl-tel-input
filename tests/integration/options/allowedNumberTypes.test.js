@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("allowedNumberTypes option", () => {
@@ -9,7 +9,7 @@ describe("allowedNumberTypes option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { initialCountry: "gb", separateDialCode: false } }));
+      ({ iti, input } = initIntlTelInput({ options: { initialCountry: "gb", separateDialCode: false } }));
       user = userEvent.setup();
     });
     afterEach(() => teardown(iti));
@@ -39,7 +39,7 @@ describe("allowedNumberTypes option", () => {
         allowedNumberTypes: ["PREMIUM_RATE"],
         separateDialCode: false,
       };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
       user = userEvent.setup();
     });
 

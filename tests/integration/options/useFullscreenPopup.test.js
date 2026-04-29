@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, clickSelectedCountryAsync, getCountryListElement } from "../helpers/helpers";
+import { initIntlTelInput, teardown, clickSelectedCountryAsync, getCountryListElement } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("useFullscreenPopup option", () => {
@@ -11,7 +11,7 @@ describe("useFullscreenPopup option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { useFullscreenPopup: true };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -31,7 +31,7 @@ describe("useFullscreenPopup option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { useFullscreenPopup: false };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

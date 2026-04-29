@@ -54,8 +54,8 @@ const warnInputProp = (prop: string): void => {
 
 const ignoredInputProps = new Set(["type", "value", "disabled", "readonly", "onInput", "oninput"]);
 
-// Classes the plugin adds directly to the input (e.g. iti__tel-input)
-const pluginInputClasses = ref("");
+// Classes the library adds directly to the input (e.g. iti__tel-input)
+const libraryInputClasses = ref("");
 
 const sanitizedInputProps = computed(() => {
   const input = (props.inputProps ?? {}) as Record<string, unknown>;
@@ -64,7 +64,7 @@ const sanitizedInputProps = computed(() => {
     if (ignoredInputProps.has(key)) {
       warnInputProp(key);
     } else if (key === "class") {
-      rest[key] = `${pluginInputClasses.value} ${val}`;
+      rest[key] = `${libraryInputClasses.value} ${val}`;
     } else {
       rest[key] = val;
     }
@@ -81,13 +81,13 @@ const displayed = computed(
 
 const vm = getCurrentInstance();
 
-const pluginOptionKeys = Object.keys(intlTelInput.defaults);
+const libraryOptionKeys = Object.keys(intlTelInput.defaults);
 
 // Vue will coerce absent Boolean props to `false` when props are declared at runtime.
-// That can accidentally override the plugin's own defaults.
+// That can accidentally override the library's own defaults.
 //
-// To preserve plugin defaults, only pass through keys that:
-// 1) are real plugin option keys, and
+// To preserve library defaults, only pass through keys that:
+// 1) are real library option keys, and
 // 2) were actually provided by the parent
 //
 // We normalize raw vnode prop keys to camelCase before checking, because Vue's
@@ -100,7 +100,7 @@ const initOptions = computed<SomeOptions>(() => {
   );
 
   const cleanedOptions: Record<string, unknown> = {};
-  pluginOptionKeys.forEach((optionKey) => {
+  libraryOptionKeys.forEach((optionKey) => {
     if (!passedCamelKeys.has(optionKey)) {
       return;
     }
@@ -195,7 +195,7 @@ onMounted(() => {
   }
 
   instance.value = intlTelInput(input.value, initOptions.value);
-  pluginInputClasses.value = input.value.className;
+  libraryInputClasses.value = input.value.className;
 
   input.value.addEventListener("open:countrydropdown", handleOpen);
   input.value.addEventListener("close:countrydropdown", handleClose);

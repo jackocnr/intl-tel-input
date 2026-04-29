@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { userEvent } from "@testing-library/user-event";
-import { initPlugin, teardown, getCountriesInList, totalCountries, checkFlagSelected } from "../helpers/helpers";
+import { initIntlTelInput, teardown, getCountriesInList, totalCountries, checkFlagSelected } from "../helpers/helpers";
 
 describe("excludeCountries option", () => {
   describe("none excluded", () => {
@@ -11,7 +11,7 @@ describe("excludeCountries option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { excludeCountries: [], separateDialCode: false };
-      ({ iti, container, input } = initPlugin({ options }));
+      ({ iti, container, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -35,7 +35,7 @@ describe("excludeCountries option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { excludeCountries: ["us", "ca"], separateDialCode: false };
-      ({ iti, container, input } = initPlugin({ options }));
+      ({ iti, container, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

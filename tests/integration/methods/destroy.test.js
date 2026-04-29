@@ -3,7 +3,7 @@
  */
 
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   getCountryContainer,
   getCountryListElement,
@@ -15,7 +15,7 @@ describe("destroy method", () => {
     let iti, input;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin());
+      ({ iti, input } = initIntlTelInput());
     });
 
     afterEach(() => teardown(iti));

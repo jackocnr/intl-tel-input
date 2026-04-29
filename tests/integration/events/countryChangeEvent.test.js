@@ -5,7 +5,7 @@
 import { userEvent } from "@testing-library/user-event";
 import {
   injectInput,
-  initPlugin,
+  initIntlTelInput,
   teardown,
   openDropdownSelectCountryAsync,
 } from "../helpers/helpers";
@@ -18,7 +18,7 @@ describe("countrychange event", () => {
     input = injectInput();
     mockEventHandler = vi.fn();
     input.addEventListener("countrychange", mockEventHandler);
-    ({ iti, container } = initPlugin({ input, options: { separateDialCode: false } }));
+    ({ iti, container } = initIntlTelInput({ input, options: { separateDialCode: false } }));
   });
 
   afterEach(() => {

@@ -87,7 +87,7 @@ class IntlTelInput
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
 
-  // Plugin initialisation options (one @Input per option)
+  // Library initialisation options (one @Input per option)
   @Input() allowDropdown?: AllOptions["allowDropdown"];
   @Input() allowedNumberTypes?: AllOptions["allowedNumberTypes"];
   @Input() allowNumberExtensions?: AllOptions["allowNumberExtensions"];
@@ -136,8 +136,8 @@ class IntlTelInput
 
   private iti?: Iti;
   private appliedInputAttrKeys = new Set<string>();
-  // Classes the plugin adds directly to the input (e.g. iti__tel-input)
-  private pluginInputClasses = "";
+  // Classes the library adds directly to the input (e.g. iti__tel-input)
+  private libraryInputClasses = "";
 
   private lastEmittedNumber?: string;
   private lastEmittedCountry?: string;
@@ -168,7 +168,7 @@ class IntlTelInput
       this.inputRef.nativeElement,
       this.buildInitOptions(),
     );
-    this.pluginInputClasses = this.inputRef.nativeElement.className;
+    this.libraryInputClasses = this.inputRef.nativeElement.className;
 
     this.inputRef.nativeElement.addEventListener(
       "open:countrydropdown",
@@ -391,8 +391,8 @@ class IntlTelInput
         warnInputAttr(key);
       } else {
         currentKeys.add(key);
-        const next = key === "class" && this.pluginInputClasses
-          ? `${this.pluginInputClasses} ${value}`
+        const next = key === "class" && this.libraryInputClasses
+          ? `${this.libraryInputClasses} ${value}`
           : value;
         this.inputRef.nativeElement.setAttribute(key, next);
       }

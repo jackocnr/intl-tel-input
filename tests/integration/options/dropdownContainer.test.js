@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   clickSelectedCountryAsync,
   getCountryListElement,
@@ -18,7 +18,7 @@ describe("dropdownContainer option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { dropdownContainer: null };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -49,7 +49,7 @@ describe("dropdownContainer option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { dropdownContainer: document.body };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -73,7 +73,7 @@ describe("dropdownContainer option", () => {
       customContainer = document.createElement("div");
       customContainer.id = "custom-dd-container";
       document.body.appendChild(customContainer);
-      ({ iti, container } = initPlugin({ options: { dropdownContainer: customContainer } }));
+      ({ iti, container } = initIntlTelInput({ options: { dropdownContainer: customContainer } }));
     });
 
     afterEach(() => {

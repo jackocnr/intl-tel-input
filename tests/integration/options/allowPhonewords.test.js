@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 
@@ -10,7 +10,7 @@ describe("allowPhonewords option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { allowPhonewords: false, separateDialCode: false, strictMode: false } }));
+      ({ iti, input } = initIntlTelInput({ options: { allowPhonewords: false, separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 
@@ -27,7 +27,7 @@ describe("allowPhonewords option", () => {
     let iti, input, user;
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options: { allowPhonewords: true, separateDialCode: false, strictMode: false } }));
+      ({ iti, input } = initIntlTelInput({ options: { allowPhonewords: true, separateDialCode: false, strictMode: false } }));
       user = userEvent.setup();
     });
 

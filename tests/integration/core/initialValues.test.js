@@ -3,7 +3,7 @@
  */
 
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   checkFlagSelected,
 } from "../helpers/helpers";
@@ -15,9 +15,9 @@ describe("initial values", () => {
     teardown(iti);
   });
 
-  describe("init plugin on empty input", () => {
+  describe("empty input", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "",
       }));
     });
@@ -31,9 +31,9 @@ describe("initial values", () => {
     });
   });
 
-  describe("init plugin on input containing valid intl UK number", () => {
+  describe("input containing valid intl UK number", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "+44 7947 123 456",
       }));
     });
@@ -47,9 +47,9 @@ describe("initial values", () => {
     });
   });
 
-  describe("init plugin on input containing valid intl regionless NANP number", () => {
+  describe("input containing valid intl regionless NANP number", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "+1 800 123 1234",
       }));
     });
@@ -63,9 +63,9 @@ describe("initial values", () => {
     });
   });
 
-  describe("init plugin on input containing valid intl Cook Island number", () => {
+  describe("input containing valid intl Cook Island number", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "+682 21 234",
       }));
     });
@@ -80,9 +80,9 @@ describe("initial values", () => {
     });
   });
 
-  describe("init plugin on input containing valid national UK number", () => {
+  describe("input containing valid national UK number", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "07947123123",
       }));
     });
@@ -96,9 +96,9 @@ describe("initial values", () => {
     });
   });
 
-  describe("init plugin on input containing valid national UK number, and initialCountry=GB", () => {
+  describe("input containing valid national UK number, and initialCountry=GB", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "07947123123",
         options: { initialCountry: "gb" },
       }));
@@ -113,9 +113,9 @@ describe("initial values", () => {
     });
   });
 
-  describe("init plugin on input containing valid intl FI number shared with AX", () => {
+  describe("input containing valid intl FI number shared with AX", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "+358457234567",
       }));
     });
@@ -126,9 +126,9 @@ describe("initial values", () => {
     });
   });
 
-  describe("init plugin on input containing number from range shared between FI and AX, with initialCountry=AX", () => {
+  describe("input containing number from range shared between FI and AX, with initialCountry=AX", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "+358457234567",
         options: { initialCountry: "ax" },
       }));
@@ -139,9 +139,9 @@ describe("initial values", () => {
     });
   });
 
-  describe("init plugin on input containing FI-only number (outside AX area codes), with initialCountry=AX", () => {
+  describe("input containing FI-only number (outside AX area codes), with initialCountry=AX", () => {
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin({
+      ({ iti, input, container } = initIntlTelInput({
         inputValue: "+3580912345678",
         options: { initialCountry: "ax" },
       }));

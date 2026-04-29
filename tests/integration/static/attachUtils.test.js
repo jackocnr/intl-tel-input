@@ -3,13 +3,13 @@
  */
 
 import intlTelInput from "intl-tel-input";
-import { initPlugin, resetPackageAfterEach } from "../helpers/helpers";
+import { initIntlTelInput, resetPackageAfterEach } from "../helpers/helpers";
 import "../helpers/matchers";
 
 describe("attachUtils", function() {
   resetPackageAfterEach(intlTelInput);
 
-  describe("calling attachUtils before init plugin", () => {
+  describe("calling attachUtils before init library", () => {
 
     const utilsLoader = () => import("intl-tel-input/utils");
     let loadResult;
@@ -33,10 +33,10 @@ describe("attachUtils", function() {
       expect(intlTelInput).toHaveProperty("utils.isValidNumber");
     });
 
-    describe("then init plugin with loadUtils option", () => {
+    describe("then init library with loadUtils option", () => {
 
       test("resolves the instance's promise", async () => {
-        const { iti } = initPlugin({
+        const { iti } = initIntlTelInput({
           intlTelInput,
           options: {
             loadUtils: () => {
@@ -53,7 +53,7 @@ describe("attachUtils", function() {
 
 
 
-  describe("init plugin with loadUtils option, but force documentReady=false so it wont fire", function() {
+  describe("init library with loadUtils option, but force documentReady=false so it wont fire", function() {
     /** @type {vi.Mock<() => Promise<any>>} */
     let utilsLoader;
     /** @type {intlTelInput.Iti} */
@@ -63,7 +63,7 @@ describe("attachUtils", function() {
       vi.spyOn(intlTelInput, "documentReady").mockReturnValue(false);
       utilsLoader = vi.fn(async () => import("intl-tel-input/utils"));
 
-      ({ iti } = initPlugin({
+      ({ iti } = initIntlTelInput({
         intlTelInput,
         options: { loadUtils: utilsLoader },
       }));
@@ -97,13 +97,13 @@ describe("attachUtils", function() {
 
 
 
-      describe("then init another plugin instance with loadUtils option", function() {
+      describe("then init another library instance with loadUtils option", function() {
 
         beforeEach(async function() {
           // Wait for previous load to finish.
           await attachUtilsPromise;
 
-          initPlugin({
+          initIntlTelInput({
             intlTelInput,
             options: { loadUtils: utilsLoader },
           });
@@ -121,7 +121,7 @@ describe("attachUtils", function() {
 
 
 
-  describe("force documentReady=true then init plugin with loadUtils", function() {
+  describe("force documentReady=true then init library with loadUtils", function() {
 
     const utilsLoader = () => import("intl-tel-input/utils");
     /** @type {intlTelInput.Iti} */
@@ -129,7 +129,7 @@ describe("attachUtils", function() {
 
     beforeEach(function() {
       vi.spyOn(intlTelInput, "documentReady").mockReturnValue(true);
-      ({ iti } = initPlugin({
+      ({ iti } = initIntlTelInput({
         intlTelInput,
         options: { loadUtils: utilsLoader },
       }));

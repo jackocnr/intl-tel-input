@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, checkFlagSelected } from "../helpers/helpers";
+import { initIntlTelInput, teardown, checkFlagSelected } from "../helpers/helpers";
 
 describe("initialCountry option", () => {
   describe("jp", () => {
@@ -9,7 +9,7 @@ describe("initialCountry option", () => {
 
     beforeEach(() => {
       const options = { initialCountry: "jp" };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -24,7 +24,7 @@ describe("initialCountry option", () => {
 
     beforeEach(() => {
       const options = { initialCountry: "ca" };
-      ({ iti, container } = initPlugin({ inputValue: "+1 800 123 1234", options }));
+      ({ iti, container } = initIntlTelInput({ inputValue: "+1 800 123 1234", options }));
     });
 
     afterEach(() => teardown(iti));

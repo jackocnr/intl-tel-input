@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   getCountryListElement,
   checkFlagSelected,
@@ -21,7 +21,7 @@ describe("allowDropdown option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { allowDropdown: false, separateDialCode: false };
-      ({ iti, container, input } = initPlugin({ options }));
+      ({ iti, container, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -56,7 +56,7 @@ describe("allowDropdown option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { allowDropdown: true, separateDialCode: false };
-      ({ iti, container, input } = initPlugin({ options }));
+      ({ iti, container, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

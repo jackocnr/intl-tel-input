@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 
 describe("placeholderNumberType option", () => {
   describe("default (MOBILE)", () => {
@@ -9,7 +9,7 @@ describe("placeholderNumberType option", () => {
 
     beforeEach(() => {
       const options = { initialCountry: "gb" };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -24,7 +24,7 @@ describe("placeholderNumberType option", () => {
 
     beforeEach(() => {
       const options = { initialCountry: "gb", placeholderNumberType: "FIXED_LINE" };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

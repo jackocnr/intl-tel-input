@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, clickSelectedCountryAsync } from "../helpers/helpers";
+import { initIntlTelInput, teardown, clickSelectedCountryAsync } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("containerClass option", () => {
@@ -10,7 +10,7 @@ describe("containerClass option", () => {
 
     beforeEach(() => {
       const options = { containerClass: "cpc" };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -26,7 +26,7 @@ describe("containerClass option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { containerClass: "cpc", useFullscreenPopup: true };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

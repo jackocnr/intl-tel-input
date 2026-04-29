@@ -103,7 +103,7 @@ describe("Vue IntlTelInput wrapper", () => {
     expect(getTelInput().readOnly).toBe(false);
   });
 
-  test("initOptions are passed through to the plugin", async () => {
+  test("initOptions are passed through to the library", async () => {
     render(IntlTelInput, { props: { initialCountry: "gb" } });
     await waitFor(() => {
       const flag = document.querySelector(".iti__selected-flag, .iti__selected-country");
@@ -163,7 +163,7 @@ describe("Vue IntlTelInput wrapper", () => {
     expect(itiRef.value!.instance!.getSelectedCountryData().iso2).toBe("gb");
   });
 
-  test("omitted boolean props do not override plugin defaults (e.g. nationalMode)", async () => {
+  test("omitted boolean props do not override library defaults (e.g. nationalMode)", async () => {
     const { container } = render(IntlTelInput, { props: { initialCountry: "us" } });
     await waitFor(() => {
       const input = container.querySelector("input") as HTMLInputElement;

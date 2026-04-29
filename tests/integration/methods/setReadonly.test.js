@@ -4,7 +4,7 @@
 
 import { userEvent } from "@testing-library/user-event";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   clickSelectedCountryAsync,
   isDropdownOpen,
@@ -15,7 +15,7 @@ describe("setReadonly method", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, container, input } = initPlugin());
+    ({ iti, container, input } = initIntlTelInput());
     iti.setReadonly(true);
   });
 

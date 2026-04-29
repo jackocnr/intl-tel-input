@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { userEvent } from "@testing-library/user-event";
-import { initPlugin, teardown, openDropdownSelectCountryAsync } from "../helpers/helpers";
+import { initIntlTelInput, teardown, openDropdownSelectCountryAsync } from "../helpers/helpers";
 
 describe("customPlaceholder option", () => {
   let iti, input, container, user;
@@ -14,7 +14,7 @@ describe("customPlaceholder option", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, input, container } = initPlugin({ options }));
+    ({ iti, input, container } = initIntlTelInput({ options }));
   });
 
   afterEach(() => teardown(iti));
@@ -40,7 +40,7 @@ describe("customPlaceholder with empty country (globe state)", () => {
         return `pl:${p}`;
       },
     };
-    const { iti, input } = initPlugin({ options });
+    const { iti, input } = initIntlTelInput({ options });
     expect(calls.length).toBeGreaterThan(0);
     expect(calls[0].countryData).toBeNull();
     expect(calls[0].p).toEqual("");

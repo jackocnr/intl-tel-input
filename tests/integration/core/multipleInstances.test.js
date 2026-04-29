@@ -4,7 +4,7 @@
 
 import { userEvent } from "@testing-library/user-event";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   getCountryListLength,
   checkFlagSelected,
@@ -18,10 +18,10 @@ describe("multiple instances", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti: iti1, input: input1, container: container1 } = initPlugin({
+    ({ iti: iti1, input: input1, container: container1 } = initIntlTelInput({
       options: { onlyCountries: ["af", "cn"], separateDialCode: false },
     }));
-    ({ iti: iti2, container: container2 } = initPlugin({
+    ({ iti: iti2, container: container2 } = initIntlTelInput({
       options: { onlyCountries: ["al", "cn", "kr", "ru"], separateDialCode: false },
     }));
   });

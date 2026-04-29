@@ -98,7 +98,7 @@ describe("React IntlTelInput wrapper", () => {
     expect(getTelInput().readOnly).toBe(false);
   });
 
-  test("initOptions are passed through to the plugin", () => {
+  test("initOptions are passed through to the library", () => {
     const ref = createRef();
     render(<IntlTelInput ref={ref} initialCountry="gb" />);
     expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
@@ -125,7 +125,7 @@ describe("React IntlTelInput wrapper", () => {
     const { rerender } = render(<IntlTelInput ref={ref} initialCountry="gb" />);
     expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
     rerender(<IntlTelInput ref={ref} initialCountry="fr" />);
-    // initOptions snapshot at mount time only; re-rendering does not re-init the plugin
+    // initOptions snapshot at mount time only; re-rendering does not re-init the library
     expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
   });
 

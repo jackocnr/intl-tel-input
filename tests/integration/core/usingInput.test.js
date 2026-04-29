@@ -4,7 +4,7 @@
 
 import { userEvent } from "@testing-library/user-event";
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   checkFlagSelected,
   openDropdownSelectCountryAsync,
@@ -15,7 +15,7 @@ describe("using input", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    ({ iti, input, container } = initPlugin({ options: { separateDialCode: false, strictMode: false } }));
+    ({ iti, input, container } = initIntlTelInput({ options: { separateDialCode: false, strictMode: false } }));
   });
 
   afterEach(() => {

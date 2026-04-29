@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, clickSelectedCountryAsync, getSearchInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, clickSelectedCountryAsync, getSearchInput } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 // i18n: custom strings should override defaults (placeholder text, labels, and a country name override)
@@ -20,7 +20,7 @@ describe("i18n option", () => {
   };
 
   beforeEach(() => {
-    ({ iti, container } = initPlugin({ options }));
+    ({ iti, container } = initIntlTelInput({ options }));
     user = userEvent.setup();
   });
   afterEach(() => teardown(iti));

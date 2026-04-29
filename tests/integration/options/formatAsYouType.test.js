@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown } from "../helpers/helpers";
+import { initIntlTelInput, teardown } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 // formatAsYouType: true (default) should format while typing, false should not.
@@ -11,7 +11,7 @@ describe("formatAsYouType option", () => {
 
     beforeEach(() => {
       const options = { formatAsYouType: true, initialCountry: "gb" };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
       user = userEvent.setup();
     });
 
@@ -28,7 +28,7 @@ describe("formatAsYouType option", () => {
 
     beforeEach(() => {
       const options = { formatAsYouType: false, initialCountry: "gb" };
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
       user = userEvent.setup();
     });
 

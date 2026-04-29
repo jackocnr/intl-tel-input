@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import {
-  initPlugin,
+  initIntlTelInput,
   teardown,
   getCountryListLength,
   checkFlagSelected,
@@ -17,7 +17,7 @@ describe("onlyCountries option", () => {
 
     beforeEach(() => {
       const options = { onlyCountries: only };
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -34,7 +34,7 @@ describe("onlyCountries option", () => {
     beforeEach(() => {
       user = userEvent.setup();
       const options = { onlyCountries: ["af", "kz", "ru"], separateDialCode: false };
-      ({ iti, input, container } = initPlugin({ options }));
+      ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -51,8 +51,8 @@ describe("onlyCountries option", () => {
     beforeEach(() => {
       const options1 = { onlyCountries: ["jp"] };
       const options2 = { onlyCountries: ["kr"] };
-      ({ iti, container } = initPlugin({ options: options1 }));
-      ({ iti: iti2, container: container2 } = initPlugin({ options: options2 }));
+      ({ iti, container } = initIntlTelInput({ options: options1 }));
+      ({ iti: iti2, container: container2 } = initIntlTelInput({ options: options2 }));
     });
 
     afterEach(() => {

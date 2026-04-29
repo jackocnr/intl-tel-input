@@ -1,13 +1,13 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, injectInput, intlTelInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, injectInput, intlTelInput } from "../helpers/helpers";
 
 describe("getInstance static", () => {
   let iti, input;
 
   beforeEach(() => {
-    ({ iti, input } = initPlugin());
+    ({ iti, input } = initIntlTelInput());
   });
 
   afterEach(() => teardown(iti));

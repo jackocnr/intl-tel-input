@@ -1,14 +1,14 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, checkFlagSelected, getSelectedCountryButton } from "../helpers/helpers";
+import { initIntlTelInput, teardown, checkFlagSelected, getSelectedCountryButton } from "../helpers/helpers";
 
 describe("setCountry method", () => {
   describe("vanilla init", () => {
     let iti, input, container;
 
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin());
+      ({ iti, input, container } = initIntlTelInput());
     });
 
     afterEach(() => teardown(iti));
@@ -44,7 +44,7 @@ describe("setCountry method", () => {
     const options = { showFlags: true, separateDialCode: false };
 
     beforeEach(() => {
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -61,7 +61,7 @@ describe("setCountry method", () => {
     const options = { showFlags: true, separateDialCode: true };
 
     beforeEach(() => {
-      ({ iti, container } = initPlugin({ options }));
+      ({ iti, container } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));

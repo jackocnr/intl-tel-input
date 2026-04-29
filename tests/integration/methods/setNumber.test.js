@@ -1,14 +1,14 @@
 /**
  * @vitest-environment jsdom
  */
-import { initPlugin, teardown, checkFlagSelected, intlTelInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, checkFlagSelected, intlTelInput } from "../helpers/helpers";
 
 describe("setNumber method", () => {
   describe("no utils", () => {
     let iti, input, container, utilsBackup;
 
     beforeEach(() => {
-      ({ iti, input, container } = initPlugin());
+      ({ iti, input, container } = initIntlTelInput());
       utilsBackup = intlTelInput.utils;
       intlTelInput.utils = null;
     });
@@ -35,7 +35,7 @@ describe("setNumber method", () => {
     const options = { nationalMode: true, separateDialCode: false };
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
@@ -51,7 +51,7 @@ describe("setNumber method", () => {
     const options = { nationalMode: false };
 
     beforeEach(() => {
-      ({ iti, input } = initPlugin({ options }));
+      ({ iti, input } = initIntlTelInput({ options }));
     });
 
     afterEach(() => teardown(iti));
