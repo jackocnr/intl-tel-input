@@ -14,7 +14,7 @@ General advice for getting the most out of `intl-tel-input`, whether you're usin
 
 ## Load the utils module
 
-Load [`utils.js`](/docs/utils#loading-the-utils-script) to enable formatting and validation.
+Load [`utils.js`](/docs/utils#loading-the-utils-script) to enable formatting, validation, and generating placeholder numbers.
 
 ## Store and restore numbers in E.164 format
 

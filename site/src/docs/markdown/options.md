@@ -1,6 +1,6 @@
 # Initialisation options
 
-The options below are shared across the [vanilla JavaScript library](/docs/vanilla-javascript) and the [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component) and [Svelte](/docs/svelte-component) components. Code examples below show the **value** you pass for each option — with the vanilla JavaScript library, pass them as properties of the options object, e.g. `intlTelInput(input, { initialCountry: "us" })`; with the framework components, pass them as individual props (with the same name).
+The options below are shared across the [vanilla JavaScript library](/docs/vanilla-javascript) and the [React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component) and [Svelte](/docs/svelte-component) components. Code examples below show the **value** you pass for each option — with the vanilla JavaScript library, pass them as properties of the options object, e.g. `intlTelInput(input, { initialCountry: "us" })`; with the framework components, pass them as individual props (with the same name), e.g. `<IntlTelInput initialCountry="us" />`.
 
 _Throughout these docs, "iso2 code" means the two-letter country identifier ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), e.g. `"gb"`), and "dial code" means the international calling prefix (e.g. `+44`)._
 
@@ -41,8 +41,6 @@ Default: `null`
 
 When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error).
 
-Note that on initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the core library instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
-
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `geoIpLookup`):  
 ```js
 async () => {
@@ -55,6 +53,9 @@ _Tip: store the result in a cookie to avoid repeat lookups!_
 
 > [!NOTE]  
 > <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its quota is reached. For production, you should either sign up for a paid plan, swap in another IP-lookup provider, or roll your own solution — the core library just cares that the returned promise eventually resolves with an iso2 code (or rejects).
+
+> [!NOTE]  
+> On initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the core library instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
 
 Play with this option in the [Playground](/playground#country-options).
 
