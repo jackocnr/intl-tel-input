@@ -218,6 +218,7 @@ const exampleDefinitions = [
     exampleSlug: "single-country",
     title: "Single country",
     metaDesc: "When you only need to handle numbers from a single country.",
+    js: { destDir: "tmp" },
     content: {
       demo_note: allowedNumberTypesNote,
       includeItiScript: true,

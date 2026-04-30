@@ -32,6 +32,13 @@ build({
   outfile: "dist/examples/js/lookup_country.js",
 });
 
+// single country example
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/examples/vanilla-javascript/single-country/page.ts"],
+  outfile: "dist/examples/js/single_country.js",
+});
+
 // right to left example
 build({
   ...sharedOptions,
