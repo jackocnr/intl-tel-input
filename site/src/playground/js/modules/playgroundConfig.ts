@@ -139,11 +139,11 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     allowNumberExtensions: {
       type: "boolean",
-      tooltip: "Accept number extensions as valid (e.g. x123).",
+      tooltip: "Accept number extensions as valid (e.g. x123). Not compatible with strictMode.",
     },
     allowPhonewords: {
       type: "boolean",
-      tooltip: "Accept letters in the number (phonewords) as valid.",
+      tooltip: "Accept letters in the number (phonewords) as valid. Not compatible with strictMode.",
     },
     autoPlaceholder: {
       type: "select",

@@ -284,7 +284,10 @@ Default: `false`
 
 Whether or not the validation methods return `true` for numbers containing extensions, e.g. "+1 702 123-1234 ext. 1234". 
 
-Try toggling this option on/off on a number with an extension in the [Playground](/playground?value=%2B447947692123+ext.+12345#validation-options).
+Try toggling this option on/off on a number with an extension in the [Playground](/playground?value=%2B447947692123+ext.+12345&strictMode=false#validation-options).
+
+> [!NOTE]
+> Not compatible with [`strictMode`](#strictmode) (which is enabled by default), as that will prevent the user from typing the extension in the first place. Disable `strictMode` to allow extensions to be entered.
 
 ###### allowPhonewords
 Type: `boolean`  
@@ -294,6 +297,9 @@ Whether or not the validation methods return `true` for numbers containing phone
 
 > [!NOTE]  
 > When processing phoneword numbers, the core library will automatically convert them to digits e.g. via [`getNumber`](/docs/methods#getnumber), or when initialising the core library on an input containing a phoneword number.
+
+> [!NOTE]
+> Not compatible with [`strictMode`](#strictmode) (which is enabled by default), as that will prevent the user from typing letters in the first place. Disable `strictMode` to allow phonewords to be entered.
 
 
 ## Translation options
