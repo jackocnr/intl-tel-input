@@ -72,7 +72,7 @@ function createInfoIcon(key: string, meta: any, infoIconTemplate: HTMLTemplateEl
 
   const slug = String(key || "").toLowerCase();
   const html = slug
-    ? `${text} <a href="/docs/options#${slug}" target="_blank" rel="noopener">Docs »</a>`
+    ? `${text} <a href="/docs/options#${slug}" target="_blank" rel="noopener">Docs&nbsp;»</a>`
     : text;
 
   icon.tabIndex = 0;
