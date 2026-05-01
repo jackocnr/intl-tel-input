@@ -36,6 +36,9 @@ const PhoneInput = () => (
 > [!NOTE]
 > The utils script (~260KB) is loaded separately. The example above passes a dynamic import to [`loadUtils`](/docs/options#loadutils) — modern bundlers split this into its own lazy-loaded chunk, so it doesn't hit your initial bundle. Alternatively, if `IntlTelInput` is already lazy-loaded in your app, import from `"@intl-tel-input/react/with-utils"` to bundle utils directly.
 
+> [!NOTE]
+> In Next.js (App Router), use this as a client component — add `"use client"` at the top of the file that renders it. The component initialises inside `useEffect`, so it only runs on the client anyway.
+
 See [Best practices](/docs/best-practices) for general advice on validation, E.164 storage, initial country, and localisation.
 
 ## Props
