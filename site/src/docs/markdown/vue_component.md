@@ -114,7 +114,7 @@ Emitted when the selected country changes. The handler receives the new country'
 Type: `(errorCode: ValidationError | null) => void`  
 Default: `null`  
 
-Emitted when the number validation error changes. The handler receives a [`ValidationError`](/docs/types#validationerror) string, or `null` if the number is valid. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
+Emitted when the number validation error changes. The handler receives a [`ValidationError`](/docs/types#validationerror) string, or `null` if the number is valid. See [Show a user-facing error message](/docs/best-practices#show-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
 
 ###### changeNumber
 Type: `(number: string) => void`  

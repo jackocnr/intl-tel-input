@@ -104,7 +104,7 @@ const countryData = iti.getSelectedCountryData();
 ###### getValidationError
 Type: `() => ValidationError | null`  
 
-Get more information about an invalid number — returns a [`ValidationError`](/docs/types#validationerror) string, or `null` if it can't be determined. See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for a worked example. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
+Get more information about an invalid number — returns a [`ValidationError`](/docs/types#validationerror) string, or `null` if it can't be determined. See [Show a user-facing error message](/docs/best-practices#show-a-user-facing-error-message) for a worked example. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
 
 ###### isValidNumber
 Type: `() => boolean`  

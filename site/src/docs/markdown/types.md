@@ -47,7 +47,7 @@ Returned by [`getValidationError`](/docs/methods#getvalidationerror) and the wra
 - `"IS_POSSIBLE_LOCAL_ONLY"` — the number is only valid as a local (intra-area) number.
 - `"INVALID_LENGTH"` — length is invalid in some other way.
 
-See [Deriving a user-facing error message](/docs/best-practices#deriving-a-user-facing-error-message) for a worked example.
+See [Show a user-facing error message](/docs/best-practices#show-a-user-facing-error-message) for a worked example.
 
 ## Country
 The shape of each country in the core library's internal data, returned by [`getCountryData`](/docs/methods#getcountrydata) and [`getSelectedCountryData`](/docs/methods#getselectedcountrydata). Properties:

@@ -26,7 +26,7 @@ _<sup>*</sup>Except for some small satellite territories, which share number ran
 
 Check the number is valid before storing it, and reject invalid input. Get the validity from [`isValidNumber`](/docs/methods#isvalidnumber) (vanilla JS library) or the `onChangeValidity` / `validityChange` callback (framework components). Requires the utils module.
 
-##### Deriving a user-facing error message
+##### Show a user-facing error message
 
 When a number is invalid, you'll get an error code (from [`getValidationError`](/docs/methods#getvalidationerror) for the vanilla JS library, or via the `onChangeErrorCode` / `errorCodeChange` callback for the framework components). Mapping the error codes to user-facing messages is left to you because the wording belongs to your app. Here is a reasonable starting point:
 
