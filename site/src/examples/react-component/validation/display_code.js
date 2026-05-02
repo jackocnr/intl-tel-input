@@ -17,7 +17,8 @@ const App = () => {
 
   let invalidMsg = null;
   if (showValidation && !isValid) {
-    invalidMsg = yourCodeToDeriveErrorMessage(number, errorCode);
+    // your code here to map the errorCode to a user-facing message
+    invalidMsg = getErrorMessage(number, errorCode);
   }
 
   const validMsg = showValidation && isValid && submitted

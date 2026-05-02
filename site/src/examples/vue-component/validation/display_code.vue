@@ -17,7 +17,8 @@
 
   const invalidMsg = computed(() => {
     if (!showValidation.value || isValid.value) return null;
-    return yourCodeToDeriveErrorMessage(number.value, errorCode.value);
+    // your code here to map the errorCode to a user-facing message
+    return getErrorMessage(number.value, errorCode.value);
   });
 
   const validMsg = computed(() => {

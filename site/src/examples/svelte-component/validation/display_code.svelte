@@ -16,7 +16,8 @@
 
   const invalidMsg = $derived.by(() => {
     if (!showValidation || isValid) return null;
-    return yourCodeToDeriveErrorMessage(number, errorCode);
+    // your code here to map the errorCode to a user-facing message
+    return getErrorMessage(number, errorCode);
   });
 
   const validMsg = $derived.by(() => {

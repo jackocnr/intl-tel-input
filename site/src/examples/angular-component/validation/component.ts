@@ -2,11 +2,22 @@ import "zone.js";
 import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component, ViewChild, AfterViewInit } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
 import IntlTelInput, { intlTelInput } from "@intl-tel-input/angular";
 import type { ValidationError } from "intl-tel-input";
 
-const getErrorMessage = (errorCode: ValidationError | null): string => {
+const getErrorMessage = (
+  number: string,
+  errorCode: ValidationError | null,
+): string => {
+  if (!number) {
+    return "Please enter a number";
+  }
   const genericError = "Invalid number";
   const { VALIDATION_ERROR } = intlTelInput;
   const errorMap: Record<string, string> = {
@@ -26,10 +37,22 @@ const getErrorMessage = (errorCode: ValidationError | null): string => {
       <div class="d-flex gap-2">
         <div class="demo-input-wrap position-relative">
           <div class="toast-container demo-toast-container">
-            <div #toastRef class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+            <div
+              #toastRef
+              class="toast text-bg-primary"
+              role="alert"
+              aria-live="assertive"
+              aria-atomic="true"
+              data-bs-delay="2000"
+            >
               <div class="d-flex">
                 <div class="toast-body">{{ toastMessage }}</div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                <button
+                  type="button"
+                  class="btn-close btn-close-white me-2 m-auto"
+                  data-bs-dismiss="toast"
+                  aria-label="Close"
+                ></button>
               </div>
             </div>
           </div>
@@ -71,7 +94,9 @@ export class AppComponent implements AfterViewInit {
 
   // eslint-disable-next-line class-methods-use-this
   geoIpLookup = async (): Promise<string> => {
-    const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
+    const res = await fetch(
+      `https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`,
+    );
     const data = await res.json();
     return data.country_code;
   };
@@ -95,10 +120,8 @@ export class AppComponent implements AfterViewInit {
     if (!this.showValidation || !this.phone || this.phone.valid) {
       return null;
     }
-    if (!this.phone.value) {
-      return "Please enter a number";
-    }
-    return getErrorMessage(this.phone.errors?.["invalidPhone"] ?? null);
+    const errorCode = this.phone.errors?.["invalidPhone"] ?? null;
+    return getErrorMessage(this.phone.value, errorCode);
   }
 
   get validMsg(): string | null {
@@ -146,5 +169,4 @@ export class AppComponent implements AfterViewInit {
   }
 }
 
-bootstrapApplication(AppComponent)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent).catch((err) => console.error(err));

@@ -29,7 +29,8 @@ const App = () => {
       return true;
     }
     const errorCode = iti.getValidationError();
-    return yourCodeToDeriveErrorMessage(value, errorCode);
+    // your code here to map the errorCode to a user-facing message
+    return getErrorMessage(value, errorCode);
   };
 
   const onSubmit = (data) => {

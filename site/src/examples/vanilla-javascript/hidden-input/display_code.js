@@ -35,7 +35,8 @@ const updateUI = () => {
   const isValid = iti.isValidNumber();
   if (!isValid) {
     const errorCode = iti.getValidationError();
-    invalidMsg = yourCodeToDeriveErrorMessage(input.value, errorCode);
+    // your code here to map the errorCode to a user-facing message
+    invalidMsg = getErrorMessage(input.value, errorCode);
   }
   errorMsg.textContent = invalidMsg;
   return isValid;

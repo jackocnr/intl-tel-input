@@ -5,9 +5,9 @@
 
 export const NOTE_BODIES = {
   geoIpLookup:
-    '<code>geoIpLookup</code> here uses <a rel="noopener" href="https://ipapi.co">ipapi</a>\'s limited free tier — for production, pick a paid plan, another provider, or roll your own.',
+    '<code>geoIpLookup</code> here uses ipapi\'s free tier. For production, swap for a paid plan or alternative - see <a href="/docs/options#geoiplookup">docs</a>.',
   deriveErrorMessage:
-    '<code>yourCodeToDeriveErrorMessage</code> is up to you — see <a href="/docs/best-practices#deriving-a-user-facing-error-message">Deriving a user-facing error message</a> for a worked example.',
+    '<code>getErrorMessage</code> is up to you - see <a href="/docs/best-practices#deriving-a-user-facing-error-message">a worked example</a>.',
 };
 
 export const renderNoteAlert = (
@@ -48,7 +48,7 @@ export const deriveNotesFromCode = (code) => {
   if (/\bgeoIpLookup\b/.test(code)) {
     notes.push("geoIpLookup");
   }
-  if (/\byourCodeToDeriveErrorMessage\b/.test(code)) {
+  if (/\bgetErrorMessage\b/.test(code)) {
     notes.push("deriveErrorMessage");
   }
   return notes;

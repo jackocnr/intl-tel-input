@@ -49,8 +49,9 @@ export class AppComponent {
 
   get invalidMsg() {
     if (!this.showValidation || this.phone?.valid) return null;
-    if (!this.phone?.value) return "Please enter a number";
-    return yourCodeToDeriveErrorMessage(this.phone.errors?.["invalidPhone"] ?? null);
+    const errorCode = this.phone.errors?.["invalidPhone"] ?? null;
+    // your code here to map the errorCode to a user-facing message
+    return getErrorMessage(this.phone.value, errorCode);
   }
 
   get validMsg() {
