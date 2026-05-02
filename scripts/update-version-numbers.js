@@ -1,17 +1,17 @@
 import fs from 'node:fs';
+import path from 'node:path';
 
 const { version } = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
+const docsDir = 'site/src/docs/markdown';
+const docsMarkdownFiles = fs
+  .readdirSync(docsDir)
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => path.join(docsDir, f));
+
 const replacements = [
   {
-    files: [
-      'site/src/docs/markdown/options.md',
-      'site/src/docs/markdown/integrations.md',
-      'site/src/docs/markdown/angular_component.md',
-      'site/src/docs/markdown/react_component.md',
-      'site/src/docs/markdown/svelte_component.md',
-      'site/src/docs/markdown/vue_component.md',
-    ],
+    files: docsMarkdownFiles,
     match: /intl-tel-input@[0-9]+\.[0-9]+\.[0-9]+\/dist/g,
     replacement: `intl-tel-input@${version}/dist`,
   },
@@ -58,8 +58,6 @@ for (const { files, match, replacement } of replacements) {
     if (original !== updated) {
       fs.writeFileSync(file, updated);
       console.log(`Updated ${file}`);
-    } else {
-      console.log(`No changes in ${file}`);
     }
   }
 }
