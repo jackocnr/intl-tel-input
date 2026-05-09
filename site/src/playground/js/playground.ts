@@ -458,12 +458,13 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "separateDialCode",
-    message: "Tip: try selecting a country from the dropdown to see this in action.",
+    message: "Tip: set initialCountry to \"us\" (etc) to see this in action.",
     shouldShow: () => !itiController.iti?.getSelectedCountryData(),
+    alsoShowOnToggleOff: true,
   },
   {
     optionKey: "showFlags",
-    message: "Tip: set an initialCountry and/or enable \"Keep dropdown open\" to see this in action.",
+    message: "Tip: set initialCountry to \"us\" (etc) and/or enable \"Keep dropdown open\" to see this in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
@@ -477,7 +478,7 @@ const HINT_CONFIGS = [
     optionKey: "autoPlaceholder",
     message: () => {
       if (!itiController.iti?.getSelectedCountryData()) {
-        return "Tip: set an initialCountry to see the placeholder.";
+        return "Tip: set initialCountry to \"us\" (etc) to see the placeholder.";
       }
       return "Tip: \"polite\" only differs from \"aggressive\" when the input has a placeholder attribute — set one below to see the effect.";
     },
@@ -492,13 +493,13 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "customPlaceholder",
-    message: "Tip: set an initialCountry to see the placeholder.",
+    message: "Tip: set initialCountry to \"us\" (etc) to see the placeholder.",
     shouldShow: () => !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "placeholderNumberType",
-    message: "Tip: set an initialCountry to see the placeholder.",
+    message: "Tip: set initialCountry to \"us\" (etc) to see the placeholder.",
     shouldShow: () => !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
@@ -515,8 +516,8 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "nationalMode",
-    message: "Tip: set an initialCountry to see how this option formats the placeholder number differently.",
-    shouldShow: () => !telInput.value && !telInput.placeholder,
+    message: "Tip: disable separateDialCode and set initialCountry to \"us\" (etc) to see how this option formats the placeholder number differently.",
+    shouldShow: () => getCombinedStateFromControls().separateDialCode || (!telInput.value && !telInput.placeholder),
     alsoShowOnToggleOff: true,
   },
   {
