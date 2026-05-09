@@ -154,7 +154,7 @@ All of the core library's [initialisation options](/docs/options) are supported 
 
 ## Accessing instance methods
 
-You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()`, e.g. `ref.current.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/react/demo/set-number/SetNumberApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()`, e.g. `ref.current.getInstance().setCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/react/demo/set-country/SetCountryApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
 
 ## Accessing static methods
 

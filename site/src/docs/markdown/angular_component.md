@@ -207,7 +207,7 @@ export class MyComponent implements AfterViewInit, OnDestroy {
 
 ## Accessing instance methods
 
-You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/set-number/set-number.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/set-country/set-country.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
 
 > [!IMPORTANT]
 > You must use `ngAfterViewInit` (not `ngOnInit` or `constructor`) to access instance or input methods, as the component needs to be fully initialised first.

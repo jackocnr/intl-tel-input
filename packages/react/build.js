@@ -46,11 +46,18 @@ build({
   outfile: "packages/react/demo/validation/validation-bundle.js",
 });
 
-//* Set Number demo app
+//* Set Country demo app
 build({
   ...demoShared,
-  entryPoints: ["packages/react/demo/set-number/SetNumberApp.tsx"],
-  outfile: "packages/react/demo/set-number/set-number-bundle.js",
+  entryPoints: ["packages/react/demo/set-country/SetCountryApp.tsx"],
+  outfile: "packages/react/demo/set-country/set-country-bundle.js",
+});
+
+//* Controlled Value demo app
+build({
+  ...demoShared,
+  entryPoints: ["packages/react/demo/controlled-value/ControlledValueApp.tsx"],
+  outfile: "packages/react/demo/controlled-value/controlled-value-bundle.js",
 });
 
 //* Toggle Disabled demo app

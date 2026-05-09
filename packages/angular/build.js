@@ -53,8 +53,14 @@ build({
 
 build({
   ...demoShared,
-  entryPoints: ["packages/angular/demo/set-number/main.ts"],
-  outfile: "packages/angular/demo/set-number/set-number-bundle.js",
+  entryPoints: ["packages/angular/demo/set-country/main.ts"],
+  outfile: "packages/angular/demo/set-country/set-country-bundle.js",
+});
+
+build({
+  ...demoShared,
+  entryPoints: ["packages/angular/demo/controlled-value/main.ts"],
+  outfile: "packages/angular/demo/controlled-value/controlled-value-bundle.js",
 });
 
 build({

@@ -165,7 +165,7 @@ else msg = `Character not allowed: "${rejectedInput}"`;
 
 ## Accessing instance methods
 
-You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/vue/demo/set-country/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
 
 ## Accessing static methods
 
